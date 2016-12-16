@@ -18,7 +18,6 @@ import gov.ca.cwds.rest.resources.cms.AllegationResource;
 import gov.ca.cwds.rest.resources.cms.CmsDocReferralClientResource;
 import gov.ca.cwds.rest.resources.cms.CmsDocumentResource;
 import gov.ca.cwds.rest.resources.cms.CmsReferralResource;
-import gov.ca.cwds.rest.resources.cms.JerseyCmsReferralResource;
 import gov.ca.cwds.rest.resources.cms.ReferralClientResource;
 import gov.ca.cwds.rest.resources.cms.ReferralResource;
 import gov.ca.cwds.rest.resources.cms.ReporterResource;
@@ -52,7 +51,7 @@ public class ResourcesModule extends AbstractModule {
     // bind(ClientResource.class);
     bind(CmsDocReferralClientResource.class);
     bind(CmsDocumentResource.class);
-    bind(CmsReferralResource.class).to(JerseyCmsReferralResource.class);
+    bind(CmsReferralResource.class);
     bind(ReferralClientResource.class);
     bind(ReferralResource.class);
     bind(ReporterResource.class);

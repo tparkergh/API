@@ -39,8 +39,8 @@ public class CmsReferralResourceTest {
   public ExpectedException thrown = ExpectedException.none();
 
   // private final static ResourceDelegate resourceDelegate = mock(ResourceDelegate.class);
-  private static final JerseyCmsReferralResource mockedCmsReferralResource =
-      mock(JerseyCmsReferralResource.class);
+  private static final CmsReferralResource mockedCmsReferralResource =
+      mock(CmsReferralResource.class);
 
   @ClassRule
   public final static ResourceTestRule inMemoryResource =

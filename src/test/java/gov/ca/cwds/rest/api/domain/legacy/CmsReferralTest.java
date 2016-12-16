@@ -33,7 +33,7 @@ import gov.ca.cwds.rest.api.persistence.cms.StaffPerson;
 import gov.ca.cwds.rest.core.Api;
 import gov.ca.cwds.rest.jdbi.CrudsDao;
 import gov.ca.cwds.rest.jdbi.DataAccessEnvironment;
-import gov.ca.cwds.rest.resources.cms.JerseyCmsReferralResource;
+import gov.ca.cwds.rest.resources.cms.CmsReferralResource;
 import io.dropwizard.jackson.Jackson;
 import io.dropwizard.testing.junit.ResourceTestRule;
 import nl.jqno.equalsverifier.EqualsVerifier;
@@ -43,8 +43,8 @@ public class CmsReferralTest {
 
   private static final String ROOT_RESOURCE = "/" + Api.RESOURCE_CMSREFERRAL + "/";;
 
-  private static final JerseyCmsReferralResource mockedCmsReferralResource =
-      mock(JerseyCmsReferralResource.class);
+  private static final CmsReferralResource mockedCmsReferralResource =
+      mock(CmsReferralResource.class);
 
   @ClassRule
   public static final ResourceTestRule resources =
