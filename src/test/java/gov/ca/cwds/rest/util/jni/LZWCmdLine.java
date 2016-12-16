@@ -1,7 +1,7 @@
 package gov.ca.cwds.rest.util.jni;
 
 /**
- * Command line tool to inflate/deflate LZW-compressed documents.
+ * Utility class, not a test. Command line tool to inflate/deflate LZW-compressed documents.
  * 
  * @author CWDS API Team
  */
