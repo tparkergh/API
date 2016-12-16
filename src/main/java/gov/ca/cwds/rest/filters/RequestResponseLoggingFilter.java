@@ -67,22 +67,25 @@ public class RequestResponseLoggingFilter implements Filter {
       HttpServletRequest httpServletRequest = (HttpServletRequest) request;
 
 
-      uniqueId = auditLogger.buildMDC("myuser", httpServletRequest.getSession().getId(),
-          Thread.currentThread().getName());
+      uniqueId = auditLogger.buildMDC(httpServletRequest.getRemoteAddr(), "STUBBED_USER",
+          httpServletRequest.getSession().getId(), Thread.currentThread().getName());
 
       RequestResponseLoggingHttpServletRequest wrappedRequest =
           new RequestResponseLoggingHttpServletRequest(httpServletRequest);
 
-
-      auditLogger.audit("RECEIVED HTTPREQUEST", requestContent(wrappedRequest));
+      auditLogger.audit(httpServletRequest.toString());
+      auditLogger.audit(requestContent(wrappedRequest));
 
       final HttpServletResponse httpServletResponse = (HttpServletResponse) response;
       RequestResponseLoggingHttpServletResponseWrapper wrappedResponse =
           new RequestResponseLoggingHttpServletResponseWrapper(httpServletResponse);
       try {
         chain.doFilter(wrappedRequest, wrappedResponse);
-        auditLogger.audit("RECEIVED HTTPRESPONSE",
-            wrappedResponse.toString() + wrappedResponse.getContent());
+        StringBuilder reponseStringBuilder = new StringBuilder();
+        reponseStringBuilder.append(wrappedResponse.toString())
+            .append(wrappedResponse.getContent());
+        auditLogger
+            .audit(reponseStringBuilder.toString().replaceAll("\n", " ").replaceAll("\r", ""));
       } catch (Exception e) {
         LOGGER.error(e.getMessage(), e);
         throw new ApiException("Unable to handle request:" + uniqueId, e);
@@ -104,14 +107,17 @@ public class RequestResponseLoggingFilter implements Filter {
     String headerName;
     StringBuilder sb = new StringBuilder();
     Enumeration<String> headerNames = request.getHeaderNames();
-    while (headerNames.hasMoreElements()) {
-      headerName = headerNames.nextElement();
-      sb.append(headerName).append(": ").append(request.getHeader(headerName));
-    }
-    InputStream bodyInputStream = request.getInputStream();
-    sb.append(new String(IOUtils.toByteArray(bodyInputStream)));
+    if (headerNames != null) {
+      while (headerNames.hasMoreElements()) {
+        headerName = headerNames.nextElement();
+        sb.append(headerName).append(": ").append(request.getHeader(headerName));
+      }
+      InputStream bodyInputStream = request.getInputStream();
+      sb.append(new String(IOUtils.toByteArray(bodyInputStream)));
 
-    return sb.toString();
+      return sb.toString().replace("\n", " ");
+    }
+    return "";
   }
 
   private class RequestResponseLoggingHttpServletRequest extends HttpServletRequestWrapper {

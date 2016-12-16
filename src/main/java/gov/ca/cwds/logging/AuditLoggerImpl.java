@@ -1,20 +1,35 @@
 package gov.ca.cwds.logging;
 
-import java.util.Date;
 import java.util.UUID;
 
+import org.slf4j.Logger;
 import org.slf4j.MDC;
-import org.slf4j.ext.EventData;
-import org.slf4j.ext.EventLogger;
 
-public class AuditLoggerImpl implements AuditLogger {
+import com.google.inject.Inject;
 
-  private static final String USER_ID = "userid";
-  private static final String SESSION_ID = "sessionid";
-  private static final String REQUEST_ID = "requestid";
-  private static final String TAG = "tag";
-  private static final String DATA = "data";
-  private static final String UNIQUE_ID = "uniqueId";
+import gov.ca.cwds.inject.AuditLogger;
+
+public class AuditLoggerImpl implements gov.ca.cwds.logging.AuditLogger {
+  private final Logger LOGGER;
+
+  public static final String REMOTE_ADDRESS = "remoteAddress";
+  public static final String USER_ID = "userid";
+  public static final String SESSION_ID = "sessionid";
+  public static final String REQUEST_ID = "requestid";
+  public static final String UNIQUE_ID = "uniqueId";
+
+
+  /**
+   * Constructor
+   * 
+   * @param logger The logger
+   */
+  @Inject
+  public AuditLoggerImpl(@AuditLogger Logger logger) {
+    super();
+    LOGGER = logger;
+  }
+
 
   /*
    * (non-Javadoc)
@@ -22,17 +37,8 @@ public class AuditLoggerImpl implements AuditLogger {
    * @see gov.ca.cwds.logging.AuditLogger#audit(java.lang.String, java.lang.String)
    */
   @Override
-  public void audit(String eventType, String data) {
-    MDC.put(TAG, "AUDIT");
-
-    EventData eventData = new EventData();
-    eventData.setEventDateTime(new Date());
-    eventData.setEventType(eventType);
-    eventData.setEventId(MDC.get(UNIQUE_ID));
-    eventData.put(DATA, data);
-    EventLogger.logEvent(eventData);
-
-    MDC.remove(TAG);
+  public void audit(String data) {
+    LOGGER.info(data);
   }
 
 
@@ -40,10 +46,11 @@ public class AuditLoggerImpl implements AuditLogger {
    * (non-Javadoc)
    * 
    * @see gov.ca.cwds.logging.AuditLogger#buildMDC(java.lang.String, java.lang.String,
-   * java.lang.String)
+   * java.lang.String, java.lang.String)
    */
   @Override
-  public String buildMDC(String userid, String sessionId, String requestId) {
+  public String buildMDC(String remoteAddress, String userid, String sessionId, String requestId) {
+    MDC.put(REMOTE_ADDRESS, remoteAddress);
     MDC.put(USER_ID, userid);
     MDC.put(SESSION_ID, sessionId);
     MDC.put(REQUEST_ID, requestId);

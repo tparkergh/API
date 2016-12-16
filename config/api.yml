@@ -74,17 +74,17 @@ server:
       - type: console
 
 logging:
-  level: WARN
+  level: ${LOGLEVEL:-DEBUG}
   loggers:
     "org.hibernate.SQL":
       level: ALL
     "org.hibernate.type.descriptor.sql":
       level: ALL
-    "EventLogger":
+    "AUDIT":
       level: ALL
   appenders:
     - type: console
       threshold: ALL
       timeZone: UTC
       target: stdout
-      logFormat: '%d %level %X{tag} [%thread] %logger: userid:"%X{userid}" sessionid:"%X{sessionid}" requestid:="%X{requestid}" %message%n'  
+      logFormat: '%d %level %X{remoteAddress} [%thread] %logger{0}: userid:"%X{userid}" sessionid:"%X{sessionid}" uniqueId:="%X{uniqueId}" "%message%n"'  

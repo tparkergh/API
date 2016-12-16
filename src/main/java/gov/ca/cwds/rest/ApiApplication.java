@@ -76,8 +76,6 @@ public class ApiApplication extends Application<ApiConfiguration> {
 
     bootstrap.addBundle(guiceBundle);
     bootstrap.addBundle(flywayBundle);
-    // bootstrap.addBundle(cmsHibernateBundle);
-    // bootstrap.addBundle(nsHibernateBundle);
   }
 
   private void migrateDatabase(final ApiConfiguration configuration) {
@@ -97,6 +95,7 @@ public class ApiApplication extends Application<ApiConfiguration> {
         .register(DeclarativeLinkingFeature.class);
 
     environment.servlets().setSessionHandler(new SessionHandler());
+
     LOGGER.info("Application name: {}", configuration.getApplicationName());
     ApiEnvironment apiEnvironment = new ApiEnvironment(environment);
 
