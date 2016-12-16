@@ -13,20 +13,6 @@ import org.flywaydb.core.internal.util.FileCopyUtils;
 public class PKCmdLine {
 
   /**
-   * Track memory to hunt memory leaks and record overall memory consumption.
-   * 
-   * @return free memory in MB
-   */
-  public static long calcMemory() {
-    Runtime runtime = Runtime.getRuntime();
-    long maxMemory = runtime.maxMemory();
-    long allocatedMemory = runtime.totalMemory();
-    long freeMemory = runtime.freeMemory();
-    return (freeMemory + (maxMemory - allocatedMemory)) / 1024L;
-  }
-
-
-  /**
    * Compress (deflate) a CMS PKWare archive and writes resulting decompressed document to given
    * output file.
    * 
