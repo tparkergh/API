@@ -61,7 +61,7 @@ public class CmsDocReferralClientService implements CrudsService {
       retval = new CmsDocReferralClient(docs);
       CmsDocument blobDoc = docDao.find(key);
       if (blobDoc != null) {
-        retval.getCmsDocument().setContent(CmsDocumentDao.decompressDoc(blobDoc));
+        retval.getCmsDocument().setContent(docDao.decompressDoc(blobDoc));
       }
     }
     return retval;

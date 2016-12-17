@@ -57,7 +57,7 @@ public class CmsDocumentService implements CrudsService {
       doc.setDocName(doc.getDocName() != null ? doc.getDocName().trim() : "");
       doc.setDocServ(doc.getDocServ() != null ? doc.getDocServ().trim() : "");
 
-      base64Doc = CmsDocumentDao.decompressDoc(doc);
+      base64Doc = dao.decompressDoc(doc);
       retval = new CmsDocument(doc);
       retval.setBase64Blob(base64Doc);
     } else {

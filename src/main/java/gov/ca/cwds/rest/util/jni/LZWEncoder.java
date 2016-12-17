@@ -101,8 +101,8 @@ public class LZWEncoder {
       retval = true;
     } catch (UnsatisfiedLinkError e) {
       retval = false;
-      e.printStackTrace();
-      LOGGER.error("Failed to load LZW library", e);
+      // e.printStackTrace();
+      // LOGGER.error("Failed to load LZW library", e);
     }
 
     if (!retval && forceLoad) {
@@ -127,6 +127,16 @@ public class LZWEncoder {
    * @param tgt target file name of decompressed result
    */
   public native void fileCopyUncompress(String src, String tgt);
+
+  /**
+   * Convenience method calls static {@link #isClassloaded()}. Easier to mock with Mockito framework
+   * than a static call.
+   * 
+   * @return when the LZW shared library loaded correctly
+   */
+  public boolean didLibraryLoad() {
+    return LZWEncoder.isClassloaded();
+  }
 
   /**
    * Some JUnit tests may not run in all environments, if native libraries did not load correctly.

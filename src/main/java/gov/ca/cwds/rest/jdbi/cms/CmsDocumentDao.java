@@ -3,7 +3,6 @@ package gov.ca.cwds.rest.jdbi.cms;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.nio.file.Files;
-import java.nio.file.Path;
 import java.nio.file.Paths;
 
 import javax.xml.bind.DatatypeConverter;
@@ -30,6 +29,9 @@ public class CmsDocumentDao extends BaseDaoImpl<CmsDocument> {
 
   private static final Logger LOGGER = LoggerFactory.getLogger(CmsDocumentDao.class);
 
+  private LZWEncoder lzw = new LZWEncoder();
+
+
   /**
    * Constructor
    * 
@@ -47,14 +49,14 @@ public class CmsDocumentDao extends BaseDaoImpl<CmsDocument> {
    * @param doc LZW or PK archive to decompress
    * @return base64-encoded String of decompressed document
    */
-  public static String decompressDoc(gov.ca.cwds.rest.api.persistence.cms.CmsDocument doc) {
+  public String decompressDoc(gov.ca.cwds.rest.api.persistence.cms.CmsDocument doc) {
     String retval = "";
 
     if (doc.getCompressionMethod().endsWith("01")) {
-      if (!LZWEncoder.isClassloaded()) {
+      if (!lzw.didLibraryLoad()) {
         LOGGER.warn("LZW compression not enabled!");
       } else {
-        retval = CmsDocumentDao.decompressLZW(doc);
+        retval = decompressLZW(doc);
       }
     } else if (doc.getCompressionMethod().endsWith("02")) {
       retval = decompressPK(doc);
@@ -76,7 +78,7 @@ public class CmsDocumentDao extends BaseDaoImpl<CmsDocument> {
    * @param doc PK archive to decompress
    * @return base64-encoded String of decompressed document
    */
-  protected static String decompressPK(gov.ca.cwds.rest.api.persistence.cms.CmsDocument doc) {
+  protected String decompressPK(gov.ca.cwds.rest.api.persistence.cms.CmsDocument doc) {
     String retval = "";
 
     CmsPKCompressor pk = new CmsPKCompressor();
@@ -104,9 +106,8 @@ public class CmsDocumentDao extends BaseDaoImpl<CmsDocument> {
    * @param doc LZW archive to decompress
    * @return base64-encoded String of decompressed document
    */
-  protected static String decompressLZW(gov.ca.cwds.rest.api.persistence.cms.CmsDocument doc) {
+  protected String decompressLZW(gov.ca.cwds.rest.api.persistence.cms.CmsDocument doc) {
     String retval = "";
-    LZWEncoder lzw = new LZWEncoder();
     try {
       File src = File.createTempFile("src", ".lzw");
       src.deleteOnExit();
@@ -128,11 +129,11 @@ public class CmsDocumentDao extends BaseDaoImpl<CmsDocument> {
       // unhandled C++ exceptions kill the JVM.
       lzw.fileCopyUncompress(src.getAbsolutePath(), tgt.getAbsolutePath());
 
-      Path path = Paths.get(tgt.getAbsolutePath());
-      retval = DatatypeConverter.printBase64Binary(Files.readAllBytes(path));
+      retval =
+          DatatypeConverter.printBase64Binary(Files.readAllBytes(Paths.get(tgt.getAbsolutePath())));
 
       // For security reasons, remove temporary documents immediately.
-      // TODO: pass bytes to C library instead of file names.
+      // TODO: pass bytes to C++ library instead of file names.
       src.delete();
       tgt.delete();
 
