@@ -11,6 +11,7 @@ import org.elasticsearch.client.Client;
 import org.elasticsearch.client.transport.TransportClient;
 import org.elasticsearch.common.settings.Settings;
 import org.elasticsearch.common.transport.InetSocketTransportAddress;
+import org.elasticsearch.common.transport.TransportAddress;
 import org.elasticsearch.index.query.QueryBuilder;
 import org.elasticsearch.index.query.QueryBuilders;
 import org.elasticsearch.search.SearchHit;
@@ -42,6 +43,8 @@ public class ElasticsearchDao {
   private final String clusterName;
   private String indexName;
   private String indexType;
+  private TransportAddress transportAddress;
+  private TransportClient.Builder clientBuilder;
 
   /**
    * Constructor
@@ -77,8 +80,13 @@ public class ElasticsearchDao {
   protected synchronized void init() throws UnknownHostException {
     if (this.client == null) {
       Settings settings = Settings.settingsBuilder().put("cluster.name", clusterName).build();
-      this.client = TransportClient.builder().settings(settings).build().addTransportAddress(
-          new InetSocketTransportAddress(InetAddress.getByName(host), Integer.parseInt(port)));
+
+      TransportAddress transport = buildTransportAddress();
+      setTransportAddress(transport);
+
+      this.client = this.clientBuilder != null ? clientBuilder.build()
+          : TransportClient.builder().settings(settings).build()
+              .addTransportAddress(getTransportAddress());
     }
   }
 
@@ -106,6 +114,8 @@ public class ElasticsearchDao {
   protected void stop() throws Exception {
     LOGGER.info("ElasticSearchDao.stop()");
     this.client.close();
+    setTransportAddress(null);
+    setClientBuilder(null);
   }
 
   /**
@@ -245,6 +255,27 @@ public class ElasticsearchDao {
     } else {
       throw new ApiException("Elasticsearch Index Type must be provided");
     }
+  }
+
+  protected TransportAddress buildTransportAddress() throws UnknownHostException {
+    return transportAddress != null ? transportAddress
+        : new InetSocketTransportAddress(InetAddress.getByName(host), Integer.parseInt(port));
+  }
+
+  public TransportAddress getTransportAddress() throws UnknownHostException {
+    return transportAddress;
+  }
+
+  public void setTransportAddress(TransportAddress transport) {
+    this.transportAddress = transport;
+  }
+
+  public TransportClient.Builder getClientBuilder() {
+    return clientBuilder;
+  }
+
+  public void setClientBuilder(TransportClient.Builder clientBuilder) {
+    this.clientBuilder = clientBuilder;
   }
 
 }

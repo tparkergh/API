@@ -73,7 +73,6 @@ public class CmsDocumentTest {
 
     when(mockedCmsDocumentResource.create(eq(validCmsDocument)))
         .thenReturn(Response.status(Response.Status.NO_CONTENT).entity(null).build());
-
   }
 
   @Test
@@ -224,9 +223,7 @@ public class CmsDocumentTest {
         resources.client().target(ROOT_RESOURCE).request().accept(MediaType.APPLICATION_JSON)
             .post(Entity.entity(toCreate, MediaType.APPLICATION_JSON)).getStatus(),
         is(equalTo(422)));
-
   }
-
 
   @Test
   public void failsWhenDocServMissing() throws Exception {
@@ -236,7 +233,6 @@ public class CmsDocumentTest {
         resources.client().target(ROOT_RESOURCE).request().accept(MediaType.APPLICATION_JSON)
             .post(Entity.entity(toCreate, MediaType.APPLICATION_JSON)).getStatus(),
         is(equalTo(422)));
-
   }
 
   @Test
@@ -248,7 +244,6 @@ public class CmsDocumentTest {
         resources.client().target(ROOT_RESOURCE).request().accept(MediaType.APPLICATION_JSON)
             .post(Entity.entity(toCreate, MediaType.APPLICATION_JSON)).getStatus(),
         is(equalTo(422)));
-
   }
 
   @Test
@@ -263,7 +258,6 @@ public class CmsDocumentTest {
   }
 
   private CmsDocument validCmsDocument() {
-
     return new CmsDocument("0131351421120020*JONESMF 00004", (short) 1234, (long) 1000, "RAMESHA",
         "D7706001", "2007-01-31", "19:59:07", "1234", "CWSCMP01", "string");
   }

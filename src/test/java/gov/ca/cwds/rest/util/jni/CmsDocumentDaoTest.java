@@ -41,22 +41,11 @@ public class CmsDocumentDaoTest {
   @Rule
   public ExpectedException thrown = ExpectedException.none();
 
-  // ===================
-  // MEMBERS:
-  // ===================
-
-  // @InjectMocks
-  // private SessionFactory sessionFactory;
-
   @Mock
   private LZWEncoder lzw;
 
   @InjectMocks
   private CmsDocumentDao cut; // "class under test"
-
-  // @Before
-  // public void setUpBeforeTest() throws Exception {
-  // }
 
   @Before
   public void initMocks() {
@@ -69,9 +58,8 @@ public class CmsDocumentDaoTest {
   // DECOMPRESS LZW:
   // ===================
 
-  // TODO: Test runs great locally but not through Jenkins because it doesn't load the Linux
-  // environment variables. :(
-  @SuppressWarnings("static-access")
+  // TODO: Test runs great locally and even as Jenkins user. However, the Jenkins process doesn't
+  // doesn't load Linux environment variables.
   @Test
   public void testDecompressLZW() {
     try {
@@ -92,10 +80,8 @@ public class CmsDocumentDaoTest {
 
       doReturn(Boolean.TRUE).when(lzw).didLibraryLoad();
 
-      // TODO: Must write the base64-encoded answer to a *file*.
+      // Must write the base64-encoded answer to a *file*.
       // How to do that with Mockito ...
-      // doNothing().when(lzw).fileCopyUncompress(any(String.class), any(String.class));
-
       doAnswer(new Answer<Void>() {
         @Override
         public Void answer(InvocationOnMock invocation) {
@@ -135,7 +121,6 @@ public class CmsDocumentDaoTest {
   // DECOMPRESS PK:
   // ===================
 
-  @SuppressWarnings("static-access")
   @Test
   public void testDecompressPK() {
     try {

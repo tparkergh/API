@@ -102,7 +102,7 @@ public class LZWEncoder {
     } catch (UnsatisfiedLinkError e) {
       retval = false;
       // e.printStackTrace();
-      // LOGGER.error("Failed to load LZW library", e);
+      LOGGER.error("Failed to load LZW library", e);
     }
 
     if (!retval && forceLoad) {

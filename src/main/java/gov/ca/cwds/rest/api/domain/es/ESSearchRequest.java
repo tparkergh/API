@@ -6,12 +6,16 @@ import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.databind.ObjectMapper;
 
 import gov.ca.cwds.rest.api.Request;
 import gov.ca.cwds.rest.api.domain.DomainObject;
 import io.dropwizard.jackson.JsonSnakeCase;
 
+/**
+ * Domain request class for ElasticSearch.
+ * 
+ * @author CWDS API Team
+ */
 @JsonSnakeCase
 public class ESSearchRequest extends DomainObject implements Request {
 
@@ -39,8 +43,18 @@ public class ESSearchRequest extends DomainObject implements Request {
   // ENUMS:
   // ================
 
+  /**
+   * ElasticSearch 2.x+ prefers MUST/MUST_NOT/SHOULD over AND/OR/NOT. In fact, the latter support
+   * classes have been deprecated.
+   * 
+   * <p>
+   * The original idea behind this class was to nest logical operations like normal database WHERE
+   * calls, but ES no longer prefers that traditional approach.
+   * </p>
+   */
   public enum LogicalOperation {
-    AND(1, "AND"), OR(2, "OR"), NOT(3, "OR");
+    AND(1, "AND"), OR(2, "OR"), NOT(3, "OR"), MUST(4, "MUST"), MUST_NOT(5, "MUST_NOT"), SHOULD(6,
+        "SHOULD");
 
     private final int value;
     private final String text;
@@ -344,28 +358,6 @@ public class ESSearchRequest extends DomainObject implements Request {
     } else if (!root.equals(other.root))
       return false;
     return true;
-  }
-
-  // ================
-  // TESTS:
-  // ================
-
-  public static void main(String[] args) {
-    try {
-      ESSearchRequest req = new ESSearchRequest();
-      req.setDocumentType("person");
-      req.getRoot().addElem(new ESFieldSearchEntry("first_name", "bart", QueryType.MATCH));
-      req.getRoot().addElem(new ESFieldSearchEntry("last_name", "simps*", QueryType.WILDCARD));
-
-      new ObjectMapper().writerWithDefaultPrettyPrinter().writeValue(System.out, req);
-      // mapper.writeValue(System.out, req);
-
-      // PersonSearchRequest personReq = new PersonSearchRequest();
-      // new ObjectMapper().writerWithDefaultPrettyPrinter().writeValue(System.out, personReq);
-      System.out.flush();
-    } catch (Exception e) {
-      e.printStackTrace();
-    }
   }
 
 }

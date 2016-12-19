@@ -77,8 +77,8 @@ public class DataAccessModule extends AbstractModule {
     bootstrap.addBundle(nsHibernateBundle);
   }
 
-  /*
-   * (non-Javadoc)
+  /**
+   * {@inheritDoc}
    * 
    * @see com.google.inject.AbstractModule#configure()
    */
