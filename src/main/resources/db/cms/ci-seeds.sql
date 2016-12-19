@@ -43,3 +43,15 @@ INSERT INTO CWSINT.OCL_NM_T
 VALUES 
 	('124', 'Billiam', 'Hill', 'Brian', '1',1 , '1', '1', '2000-01-31 14:44:57.709335' , '1');	
 
+truncate table cwsint.SVC_PVRT immediate;
+INSERT INTO cwsInt.SVC_PVRT 
+ (IDENTIFIER, AGENCY_NM, CITY_NM, FAX_NO, FIRST_NM, LAST_NM, NMPRFX_DSC, PHONE_NO, TEL_EXT_NO, PSTITL_DSC, SVCPVDRC, STATE_C, STREET_NM, STREET_NO, SUFX_TLDSC, ZIP_NM, LST_UPD_ID, LST_UPD_TS, ZIP_SFX_NO, ARCASS_IND, EMAIL_ADDR)
+ VALUES('Abs1Sqb0Nu',	'Test Agency','', 0,'eddie','b.','',0,0,'',0,0,'','','',0,'0Nu','2001-10-10 09:21:26.861715',0,	'N',NULL),
+ ('AiZalVN0Ht',	'Test Agency','', 0,'Mary','R.','',0,0,'', 0,0,'','','',0,'0Ht','2001-12-10 10:10:19.107097',0,	'N',NULL),
+ ('Ao9dm8T0Ki',	'Test Agency','', 0,'Horacio','G.','Dr.',0,0,'Kiddie Care',0,0,'','','',0,'0Ki','2001-04-30 13:22:04.271054',0,'N',NULL);	
+
+truncate table cwsint.OTH_ADLT immediate;
+INSERT INTO cwsInt.OTH_ADLT (IDENTIFIER, BIRTH_DT, END_DT, GENDER_CD, OTH_ADLTNM, START_DT,  LST_UPD_ID, LST_UPD_TS, FKPLC_HM_T, COMNT_DSC, OTH_ADL_CD, IDENTFD_DT, RESOST_IND, PASSBC_CD)
+VALUES('AhfOGkK0QO','1929-09-09','1999-06-05','M','Granpa B.','1990-06-01','0QO','2004-07-15 10:15:49.469117','TUB5YO1q1x','test description','O', NULL, NULL, NULL),
+ ('FpgNIik0KQ','1983-10-04','1999-08-06','F','Karen Q.','2002-09-02','Q1V','2002-10-30 14:43:02.257672','QqKqiTBq1x','','O', NULL, NULL, NULL);
+
