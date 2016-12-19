@@ -34,7 +34,7 @@ public class CollateralIndividual extends CmsPersistentObject {
 
   private static final long serialVersionUID = 1L;
 
-  @Column(name = "BADGE_N")
+  @Column(name = "BADGE_NO")
   private String badgeNumber;
 
   @Type(type = "date")
@@ -82,14 +82,14 @@ public class CollateralIndividual extends CmsPersistentObject {
   @Column(name = "MID_INI_NM")
   private String middleInitialName;
 
-  @Column(name = "NMPRF_DSC")
+  @Column(name = "NMPRFX_DSC")
   private String namePrefixDescription;
 
   @Type(type = "integer")
   @Column(name = "PRM_EXT_NO")
   private Integer primaryExtensionNumber;
 
-  @Column(name = "PRM_PHN_NO")
+  @Column(name = "PRM_TEL_NO")
   private BigInteger primaryPhoneNo;
 
   @Column(name = "RESOST_IND")
