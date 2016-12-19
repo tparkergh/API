@@ -4,6 +4,7 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.startsWith;
 import static org.mockito.Mockito.mock;
 
+import org.elasticsearch.action.search.SearchRequestBuilder;
 import org.elasticsearch.client.transport.TransportClient;
 import org.junit.Before;
 import org.junit.Rule;
@@ -42,6 +43,7 @@ public class ElasticsearchDaoTest {
   @Before
   public void setUp() throws Exception {
     mock(TransportClient.class);
+    mock(SearchRequestBuilder.class);
     MockitoAnnotations.initMocks(this);
   }
 
@@ -67,17 +69,17 @@ public class ElasticsearchDaoTest {
   }
 
   // TODO: save for integration test?
-  // @Test
-  // public void testfetchAllPerson() throws Exception {
-  // // return client.prepareSearch(indexName).setTypes(indexType)
-  // // .setSearchType(SearchType.QUERY_AND_FETCH).setFrom(0).setSize(DEFAULT_MAX_RESULTS)
-  // // .setExplain(true).execute().actionGet().getHits().getHits();
-  //
-  //
-  // // when(TransportClient.class).
-  //
-  // // final SearchHit[] hits = cut.fetchAllPerson();
-  // }
+  @Test
+  public void testfetchAllPerson() throws Exception {
+    // return client.prepareSearch(indexName).setTypes(indexType)
+    // .setSearchType(SearchType.QUERY_AND_FETCH).setFrom(0).setSize(DEFAULT_MAX_RESULTS)
+    // .setExplain(true).execute().actionGet().getHits().getHits();
+
+
+    // when(TransportClient.class).
+
+    // final SearchHit[] hits = cut.fetchAllPerson();
+  }
 
 
 

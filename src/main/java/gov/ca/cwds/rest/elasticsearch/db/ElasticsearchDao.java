@@ -9,6 +9,7 @@ import org.elasticsearch.action.index.IndexResponse;
 import org.elasticsearch.action.search.SearchType;
 import org.elasticsearch.client.Client;
 import org.elasticsearch.client.transport.TransportClient;
+import org.elasticsearch.client.transport.TransportClient.Builder;
 import org.elasticsearch.common.settings.Settings;
 import org.elasticsearch.common.transport.InetSocketTransportAddress;
 import org.elasticsearch.common.transport.TransportAddress;
@@ -84,9 +85,8 @@ public class ElasticsearchDao {
       TransportAddress transport = buildTransportAddress();
       setTransportAddress(transport);
 
-      this.client = this.clientBuilder != null ? clientBuilder.build()
-          : TransportClient.builder().settings(settings).build()
-              .addTransportAddress(getTransportAddress());
+      Builder builder = this.clientBuilder != null ? this.clientBuilder : TransportClient.builder();
+      this.client = builder.settings(settings).build().addTransportAddress(getTransportAddress());
     }
   }
 

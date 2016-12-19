@@ -14,6 +14,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import gov.ca.cwds.rest.api.domain.es.ESSearchRequest;
 import gov.ca.cwds.rest.api.domain.es.ESSearchRequest.ESFieldSearchEntry;
 import gov.ca.cwds.rest.api.domain.es.ESSearchRequest.QueryType;
+import nl.jqno.equalsverifier.EqualsVerifier;
+import nl.jqno.equalsverifier.Warning;
 
 public class ESRequestTest {
 
@@ -45,6 +47,12 @@ public class ESRequestTest {
         "{\"cwds_search\":{\"logic\":\"OR\",\"elems\":[{\"field\":\"first_name\",\"value\":\"bart\",\"elementType\":\"FIELD_TERM\",\"query_type\":\"MATCH\"},{\"field\":\"last_name\",\"value\":\"simps*\",\"elementType\":\"FIELD_TERM\",\"query_type\":\"WILDCARD\"}],\"elementType\":\"GROUP\"},\"document_type\":\"person\"}";
     assertThat("ES JSON incorrect", compare.equals(w.toString()));
   }
+
+  @Test
+  public void equalsHashCodeWork() throws Exception {
+    EqualsVerifier.forClass(ESSearchRequest.class).suppress(Warning.NONFINAL_FIELDS).verify();
+  }
+
 
 
 }

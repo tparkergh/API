@@ -1,6 +1,5 @@
 package gov.ca.cwds.rest.api.domain.es;
 
-import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -17,27 +16,27 @@ import io.dropwizard.jackson.JsonSnakeCase;
  * @author CWDS API Team
  */
 @JsonSnakeCase
-public class ESSearchRequest extends DomainObject implements Request {
+public final class ESSearchRequest extends DomainObject implements Request {
 
-  public static final Method getAnyMethod(Class<?> cls, String name, Class<?>[] argTypes)
-      throws NoSuchMethodException {
-    try {
-      return cls.getDeclaredMethod(name, argTypes);
-    } catch (NoSuchMethodException ex) {
-      final Class<?>[] clses = cls.getInterfaces();
-      for (int j = 0; j < clses.length; ++j)
-        try {
-          return getAnyMethod(clses[j], name, argTypes);
-        } catch (NoSuchMethodException e2) {
-          // Ignore.
-        }
-
-      cls = cls.getSuperclass();
-      if (cls == null)
-        throw ex;
-      return getAnyMethod(cls, name, argTypes);
-    }
-  }
+  // public static final Method getAnyMethod(Class<?> cls, String name, Class<?>[] argTypes)
+  // throws NoSuchMethodException {
+  // try {
+  // return cls.getDeclaredMethod(name, argTypes);
+  // } catch (NoSuchMethodException ex) {
+  // final Class<?>[] clses = cls.getInterfaces();
+  // for (int j = 0; j < clses.length; ++j)
+  // try {
+  // return getAnyMethod(clses[j], name, argTypes);
+  // } catch (NoSuchMethodException e2) {
+  // // Ignore.
+  // }
+  //
+  // cls = cls.getSuperclass();
+  // if (cls == null)
+  // throw ex;
+  // return getAnyMethod(cls, name, argTypes);
+  // }
+  // }
 
   // ================
   // ENUMS:
@@ -118,7 +117,7 @@ public class ESSearchRequest extends DomainObject implements Request {
    * @author CWDS API Team
    */
   @JsonSnakeCase
-  public static class ESSearchGroup implements ESSearchElement {
+  public static final class ESSearchGroup implements ESSearchElement {
     private LogicalOperation logic = LogicalOperation.OR;
     private List<ESSearchElement> elems = new ArrayList<ESSearchElement>();
 
@@ -156,6 +155,11 @@ public class ESSearchRequest extends DomainObject implements Request {
     }
 
     @Override
+    public ElementType getElementType() {
+      return ElementType.GROUP;
+    }
+
+    @Override
     public int hashCode() {
       final int prime = 31;
       int result = 1;
@@ -170,10 +174,8 @@ public class ESSearchRequest extends DomainObject implements Request {
         return true;
       if (obj == null)
         return false;
-
       if (getClass() != obj.getClass())
         return false;
-
       ESSearchGroup other = (ESSearchGroup) obj;
       if (elems == null) {
         if (other.elems != null)
@@ -185,11 +187,6 @@ public class ESSearchRequest extends DomainObject implements Request {
       return true;
     }
 
-    @Override
-    public ElementType getElementType() {
-      return ElementType.GROUP;
-    }
-
   }
 
   /**
@@ -198,7 +195,7 @@ public class ESSearchRequest extends DomainObject implements Request {
    * @author CWDS API Team
    */
   @JsonSnakeCase
-  public static class ESFieldSearchEntry implements ESSearchElement {
+  public static final class ESFieldSearchEntry implements ESSearchElement {
 
     /**
      * Document field to search.
@@ -292,7 +289,6 @@ public class ESSearchRequest extends DomainObject implements Request {
     public ElementType getElementType() {
       return ElementType.FIELD_TERM;
     }
-
   }
 
   // ================
@@ -339,6 +335,7 @@ public class ESSearchRequest extends DomainObject implements Request {
   public int hashCode() {
     final int prime = 31;
     int result = 1;
+    result = prime * result + ((documentType == null) ? 0 : documentType.hashCode());
     result = prime * result + ((root == null) ? 0 : root.hashCode());
     return result;
   }
@@ -352,6 +349,11 @@ public class ESSearchRequest extends DomainObject implements Request {
     if (getClass() != obj.getClass())
       return false;
     ESSearchRequest other = (ESSearchRequest) obj;
+    if (documentType == null) {
+      if (other.documentType != null)
+        return false;
+    } else if (!documentType.equals(other.documentType))
+      return false;
     if (root == null) {
       if (other.root != null)
         return false;
