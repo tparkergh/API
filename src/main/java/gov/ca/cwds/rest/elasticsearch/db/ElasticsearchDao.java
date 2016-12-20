@@ -9,7 +9,6 @@ import org.elasticsearch.action.index.IndexResponse;
 import org.elasticsearch.action.search.SearchType;
 import org.elasticsearch.client.Client;
 import org.elasticsearch.client.transport.TransportClient;
-import org.elasticsearch.client.transport.TransportClient.Builder;
 import org.elasticsearch.common.settings.Settings;
 import org.elasticsearch.common.transport.InetSocketTransportAddress;
 import org.elasticsearch.common.transport.TransportAddress;
@@ -39,13 +38,13 @@ public class ElasticsearchDao {
   private static final int DEFAULT_MAX_RESULTS = 60;
 
   private Client client;
+  private TransportAddress transportAddress;
+
   private final String host;
   private final String port;
   private final String clusterName;
   private String indexName;
-  private String indexType;
-  private TransportAddress transportAddress;
-  private TransportClient.Builder clientBuilder;
+  private String documentType;
 
   /**
    * Constructor
@@ -81,12 +80,10 @@ public class ElasticsearchDao {
   protected synchronized void init() throws UnknownHostException {
     if (this.client == null) {
       Settings settings = Settings.settingsBuilder().put("cluster.name", clusterName).build();
-
-      TransportAddress transport = buildTransportAddress();
-      setTransportAddress(transport);
-
-      Builder builder = this.clientBuilder != null ? this.clientBuilder : TransportClient.builder();
-      this.client = builder.settings(settings).build().addTransportAddress(getTransportAddress());
+      this.client = TransportClient.builder().settings(settings).build()
+          .addTransportAddress(this.transportAddress != null ? this.transportAddress
+              : new InetSocketTransportAddress(InetAddress.getByName(host),
+                  Integer.parseInt(port)));
     }
   }
 
@@ -114,8 +111,8 @@ public class ElasticsearchDao {
   protected void stop() throws Exception {
     LOGGER.info("ElasticSearchDao.stop()");
     this.client.close();
+    setClient(null);
     setTransportAddress(null);
-    setClientBuilder(null);
   }
 
   /**
@@ -129,7 +126,7 @@ public class ElasticsearchDao {
   public boolean index(String document, String id) throws Exception {
     LOGGER.info("ElasticSearchDao.createDocument(): " + document);
     start();
-    IndexResponse response = client.prepareIndex(indexName, indexType, id)
+    IndexResponse response = client.prepareIndex(indexName, documentType, id)
         .setConsistencyLevel(WriteConsistencyLevel.DEFAULT).setSource(document).execute()
         .actionGet();
 
@@ -142,7 +139,8 @@ public class ElasticsearchDao {
 
   /**
    * Returns ALL Person documents in the target ElasticSearch index, up the maximum number of rows
-   * defined by {@link #DEFAULT_MAX_RESULTS}.
+   * defined by {@link #DEFAULT_MAX_RESULTS}. Initializes and starts ElasticSearch client, if not
+   * started.
    * 
    * <p>
    * This method intentionally returns raw ElasticSearch {@link SearchHit}. Calling services should
@@ -161,23 +159,21 @@ public class ElasticsearchDao {
    * @throws Exception unable to connect to ElasticSearch or disconnects midstream, etc.
    */
   public SearchHit[] fetchAllPerson() throws Exception {
-    // Initialize and start ElasticSearch client, if not started.
     start();
 
-    return client.prepareSearch(indexName).setTypes(indexType)
+    return client.prepareSearch(indexName).setTypes(documentType)
         .setSearchType(SearchType.QUERY_AND_FETCH).setFrom(0).setSize(DEFAULT_MAX_RESULTS)
         .setExplain(true).execute().actionGet().getHits().getHits();
   }
 
   /**
-   * Generic OR query for Person.
+   * Generic OR query for Person. Initializes and starts ElasticSearch client, if not started.
    * 
    * @param req boolean hierarchy search request
    * @return array of raw ElasticSearch hits
    * @throws Exception unable to connect, disconnect, bad hair day, etc.
    */
   public SearchHit[] queryPersonOr(ESSearchRequest req) throws Exception {
-    // Initialize and start ElasticSearch client, if not started.
     start();
 
     String field = "";
@@ -198,7 +194,7 @@ public class ElasticsearchDao {
       qb = QueryBuilders.matchQuery(field, value);
     }
 
-    return client.prepareSearch(indexName).setTypes(indexType)
+    return client.prepareSearch(indexName).setTypes(documentType)
         .setSearchType(SearchType.QUERY_AND_FETCH).setQuery(qb).setFrom(0)
         .setSize(DEFAULT_MAX_RESULTS).setExplain(true).execute().actionGet().getHits().getHits();
   }
@@ -247,35 +243,51 @@ public class ElasticsearchDao {
   }
 
   /**
-   * @param indexType the indexType to set
+   * Set the default index (document) type.
+   * 
+   * @param docType the indexType to set
    */
-  public void setIndexType(String indexType) {
-    if (StringUtils.isNotBlank(indexType)) {
-      this.indexType = indexType;
+  public void setDocumentType(String docType) {
+    if (StringUtils.isNotBlank(docType)) {
+      this.documentType = docType;
     } else {
       throw new ApiException("Elasticsearch Index Type must be provided");
     }
   }
 
-  protected TransportAddress buildTransportAddress() throws UnknownHostException {
-    return transportAddress != null ? transportAddress
-        : new InetSocketTransportAddress(InetAddress.getByName(host), Integer.parseInt(port));
+  /**
+   * Default index name
+   * 
+   * @return index name
+   */
+  public String getIndexName() {
+    return indexName;
   }
 
-  public TransportAddress getTransportAddress() throws UnknownHostException {
+  /**
+   * Default index (document) type
+   * 
+   * @return default document type
+   */
+  public String getDocumentType() {
+    return documentType;
+  }
+
+  /**
+   * Really only used for testing but can be used to set a custom ES client.
+   * 
+   * @param client ElasticSearch client, typically a {@link TransportClient}
+   */
+  public void setClient(Client client) {
+    this.client = client;
+  }
+
+  public TransportAddress getTransportAddress() {
     return transportAddress;
   }
 
-  public void setTransportAddress(TransportAddress transport) {
-    this.transportAddress = transport;
-  }
-
-  public TransportClient.Builder getClientBuilder() {
-    return clientBuilder;
-  }
-
-  public void setClientBuilder(TransportClient.Builder clientBuilder) {
-    this.clientBuilder = clientBuilder;
+  public void setTransportAddress(TransportAddress transportAddress) {
+    this.transportAddress = transportAddress;
   }
 
 }

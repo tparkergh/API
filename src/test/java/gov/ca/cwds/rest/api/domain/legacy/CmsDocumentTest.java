@@ -70,7 +70,6 @@ public class CmsDocumentTest {
         crudsDao);
 
     when(crudsDao.find(any())).thenReturn(mock(Referral.class));
-
     when(mockedCmsDocumentResource.create(eq(validCmsDocument)))
         .thenReturn(Response.status(Response.Status.NO_CONTENT).entity(null).build());
   }
