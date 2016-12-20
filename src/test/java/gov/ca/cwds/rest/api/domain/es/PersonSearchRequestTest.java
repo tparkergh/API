@@ -1,4 +1,4 @@
-package gov.ca.cwds.rest.api.domain.legacy;
+package gov.ca.cwds.rest.api.domain.es;
 
 import static io.dropwizard.testing.FixtureHelpers.fixture;
 import static org.hamcrest.MatcherAssert.assertThat;

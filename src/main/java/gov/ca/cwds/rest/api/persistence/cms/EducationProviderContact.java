@@ -1,6 +1,5 @@
 package gov.ca.cwds.rest.api.persistence.cms;
 
-import java.io.Serializable;
 import java.math.BigDecimal;
 
 import javax.persistence.Column;
@@ -173,7 +172,7 @@ public class EducationProviderContact extends CmsPersistentObject {
   }
 
   @Override
-  public Serializable getPrimaryKey() {
+  public String getPrimaryKey() {
     return getId();
   }
 

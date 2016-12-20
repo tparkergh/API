@@ -1,6 +1,5 @@
 package gov.ca.cwds.rest.api.persistence.cms;
 
-import java.io.Serializable;
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.Date;
@@ -266,7 +265,7 @@ public class CollateralIndividual extends CmsPersistentObject {
   }
 
   @Override
-  public Serializable getPrimaryKey() {
+  public String getPrimaryKey() {
     return getId();
   }
 

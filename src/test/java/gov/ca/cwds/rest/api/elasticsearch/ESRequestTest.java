@@ -53,6 +53,4 @@ public class ESRequestTest {
     EqualsVerifier.forClass(ESSearchRequest.class).suppress(Warning.NONFINAL_FIELDS).verify();
   }
 
-
-
 }

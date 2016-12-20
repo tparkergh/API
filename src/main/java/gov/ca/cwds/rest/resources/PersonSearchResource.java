@@ -154,6 +154,15 @@ public class PersonSearchResource {
    * 
    * @return The {@link Response}
    */
+  // @UnitOfWork(value = "ns")
+  // @POST
+  // @ApiResponses(value = {@ApiResponse(code = 400, message = "Unable to process JSON"),
+  // @ApiResponse(code = 406, message = "Accept Header not supported"),
+  // @ApiResponse(code = 409, message = "Conflict - already exists"),
+  // @ApiResponse(code = 422, message = "Unable to validate XYZ")})
+  // @Consumes(value = MediaType.APPLICATION_JSON)
+  // @ApiOperation(value = "Creates a new XYZ", code = HttpStatus.SC_CREATED,
+  // response = PostedScreening.class)
   public Response create(ESPersonSearchRequest screeningReference) {
     return Response.status(Response.Status.NOT_IMPLEMENTED).entity(null).build();
   }
