@@ -4,7 +4,13 @@ import javax.validation.constraints.NotNull;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+import gov.ca.cwds.rest.elasticsearch.db.ElasticsearchDao;
 
+/**
+ * Represents the configuration settings for {@link ElasticsearchDao}.
+ * 
+ * @author CWDS API Team
+ */
 public class ElasticsearchConfiguration {
 
   @NotNull

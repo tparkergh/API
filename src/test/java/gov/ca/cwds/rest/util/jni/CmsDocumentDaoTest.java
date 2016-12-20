@@ -20,6 +20,7 @@ import org.junit.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
+import org.mockito.Spy;
 import org.mockito.invocation.InvocationOnMock;
 import org.mockito.stubbing.Answer;
 
@@ -46,6 +47,7 @@ public class CmsDocumentDaoTest {
   private SessionFactory sf;
 
   @InjectMocks
+  @Spy
   private CmsDocumentDao cut; // "class under test"
 
   @Before

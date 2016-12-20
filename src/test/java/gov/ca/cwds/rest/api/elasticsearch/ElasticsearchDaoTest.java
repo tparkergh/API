@@ -24,6 +24,7 @@ import org.junit.rules.ExpectedException;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
+import org.mockito.Spy;
 
 import gov.ca.cwds.rest.ElasticsearchConfiguration;
 import gov.ca.cwds.rest.api.ApiException;
@@ -45,10 +46,8 @@ public class ElasticsearchDaoTest {
 
 
   @InjectMocks
+  @Spy
   private ElasticsearchDao cut = new ElasticsearchDao(TEST_HOST, TEST_PORT, TEST_CLUSTERNAME);
-
-  @Mock
-  private ElasticsearchConfiguration esConfig;
 
   @Mock
   private TransportClient.Builder clientBuilder;
@@ -80,9 +79,6 @@ public class ElasticsearchDaoTest {
   @Mock
   private SearchHit hit;
 
-  // @Spy
-  // private TransportAddress dummyTransport = DummyTransportAddress.INSTANCE;
-
   @Rule
   public ExpectedException thrown = ExpectedException.none();
 
@@ -92,7 +88,7 @@ public class ElasticsearchDaoTest {
     mock(SearchRequestBuilder.class);
     MockitoAnnotations.initMocks(this);
 
-    // Execute queries against a fake transport and client.
+    // To run queries against a fake transport and client, use this:
     // cut.setTransportAddress(DummyTransportAddress.INSTANCE);
 
     // Mock up searches:
@@ -132,13 +128,19 @@ public class ElasticsearchDaoTest {
     cut.setDocumentType("");
   }
 
-  // @Test
-  // public void testConfigCtor() throws Exception {
-  // // TODO: must construct with config ctor.
-  // assertThat("host", TEST_HOST.equals(cut.getHost()));
-  // assertThat("port", TEST_PORT.equals(cut.getPort()));
-  // assertThat("cluster", TEST_CLUSTERNAME.equals(cut.getClusterName()));
-  // }
+  @Test
+  public void testConfigCtor() throws Exception {
+    ElasticsearchConfiguration config = mock(ElasticsearchConfiguration.class);
+    when(config.getElasticsearchHost()).thenReturn(TEST_HOST);
+    when(config.getElasticsearchPort()).thenReturn(TEST_PORT);
+    when(config.getElasticsearchCluster()).thenReturn(TEST_CLUSTERNAME);
+
+    ElasticsearchDao cut2 = new ElasticsearchDao(config);
+
+    assertThat("host", TEST_HOST.equals(cut2.getHost()));
+    assertThat("port", TEST_PORT.equals(cut2.getPort()));
+    assertThat("cluster", TEST_CLUSTERNAME.equals(cut2.getClusterName()));
+  }
 
   @Test
   public void testSettings() throws Exception {

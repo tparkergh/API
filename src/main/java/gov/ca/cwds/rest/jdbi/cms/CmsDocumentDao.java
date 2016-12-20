@@ -29,7 +29,6 @@ public class CmsDocumentDao extends BaseDaoImpl<CmsDocument> {
 
   private static final Logger LOGGER = LoggerFactory.getLogger(CmsDocumentDao.class);
 
-  // TODO: inject?
   private LZWEncoder lzw = new LZWEncoder();
 
   /**
@@ -143,6 +142,14 @@ public class CmsDocumentDao extends BaseDaoImpl<CmsDocument> {
     }
 
     return retval;
+  }
+
+  public LZWEncoder getLzw() {
+    return lzw;
+  }
+
+  public void setLzw(LZWEncoder lzw) {
+    this.lzw = lzw;
   }
 
 }

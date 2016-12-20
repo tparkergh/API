@@ -1,46 +1,52 @@
 package gov.ca.cwds.rest.services.cms;
 
-import static org.mockito.Mockito.mock;
-
+import org.hibernate.SessionFactory;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.MockitoAnnotations;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import gov.ca.cwds.rest.jdbi.cms.CmsDocReferralClientDao;
 import gov.ca.cwds.rest.jdbi.cms.CmsDocumentDao;
+import gov.ca.cwds.rest.util.jni.LZWEncoder;
 import io.dropwizard.jackson.Jackson;
 
 public class CmsDocReferralClientServiceTest {
 
   private static final ObjectMapper MAPPER = Jackson.newObjectMapper();
 
-  private CmsDocReferralClientService svc;
-  private CmsDocReferralClientDao cmsDocReferralClientDao;
-  private CmsDocumentDao cmsDocumentDao;
-
   @Rule
   public ExpectedException thrown = ExpectedException.none();
 
+  @Mock
+  private LZWEncoder lzw;
+
+  @Mock
+  private SessionFactory sf;
+
+  @InjectMocks
+  private CmsDocumentDao cmsDocumentDao;
+
+  @InjectMocks
+  private CmsDocumentDao cmsDocReferralClientDao;
+
+  @InjectMocks
+  private CmsDocReferralClientService svc;
+
   @Before
-  public void setup() throws Exception {
-    cmsDocumentDao = mock(CmsDocumentDao.class);
-    cmsDocReferralClientDao = mock(CmsDocReferralClientDao.class);
-    svc = new CmsDocReferralClientService(cmsDocReferralClientDao, cmsDocumentDao);
+  public void setup() {
+    MockitoAnnotations.initMocks(this);
   }
 
   // find test
   @Test
   public void findThrowsAssertionError() {
-    // TODO : thrown.expect not working on AssertionError???? WHY???
-    // thrown.expect(AssertionError.class);
-    // try {
-    // svc.find("1");
-    // Assert.fail("Expected AssertionError");
-    // } catch (AssertionError e) {
-    // }
+    thrown.expect(AssertionError.class);
+    svc.find(1L);
   }
 
   @Test
