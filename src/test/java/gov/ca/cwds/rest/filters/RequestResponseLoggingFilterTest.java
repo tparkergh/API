@@ -1,5 +1,8 @@
 package gov.ca.cwds.rest.filters;
 
+import static org.mockito.Matchers.any;
+import static org.mockito.Matchers.startsWith;
+import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -20,6 +23,7 @@ import org.junit.Test;
 import org.mockito.Mockito;
 
 import gov.ca.cwds.logging.AuditLogger;
+import gov.ca.cwds.rest.api.ApiException;
 
 
 public class RequestResponseLoggingFilterTest {
@@ -53,40 +57,70 @@ public class RequestResponseLoggingFilterTest {
     @Override
     public void setReadListener(ReadListener arg0) {}
   };
+
   private AuditLogger auditLogger = Mockito.mock(AuditLogger.class);
 
   @Before
   public void setup() throws Exception {
     filter = new RequestResponseLoggingFilter(auditLogger);
-  }
 
-  @Test
-  public void testDoFilterSetsUpMDC() throws Exception {
     when(mockHttpServletRequest.toString()).thenReturn("requestToString");
     when(mockHttpServletRequest.getRemoteAddr()).thenReturn("remoteAddress");
     when(mockHttpServletRequest.getSession()).thenReturn(mockHttpSession);
 
     when(mockHttpServletRequest.getInputStream()).thenReturn(mockServletInputStream);
     when(mockHttpSession.getId()).thenReturn("sessionid");
+  }
 
+  @Test
+  public void testDoFilterSetsUpMDC() throws Exception {
     filter.doFilter(mockHttpServletRequest, mockHttpServletResponse, mockFilterChain);
 
     verify(auditLogger, times(1)).buildMDC("remoteAddress", "STUBBED_USER", "sessionid",
         Thread.currentThread().getName());
   }
 
-  // @Test(expected = Exception.class)
-  // public void testDoFilterException() throws IOException, ServletException {
-  //
-  // RequestResponseLoggingFilter filter = new RequestResponseLoggingFilter();
-  //
-  // HttpServletRequest mockReq = new MockHttpServletRequest();
-  // HttpServletResponse mockResp = new MockHttpServletResponse();
-  // FilterChain mockFilterChain = Mockito.mock(FilterChain.class);
-  // FilterConfig mockFilterConfig = Mockito.mock(FilterConfig.class);
-  //
-  // filter.init(mockFilterConfig);
-  // filter.doFilter(mockReq, mockResp, mockFilterChain);
-  // filter.destroy();
-  // }
+  @Test
+  public void testDoFilterAuditsHttpServletRequestToString() throws Exception {
+    filter.doFilter(mockHttpServletRequest, mockHttpServletResponse, mockFilterChain);
+
+    verify(auditLogger, times(1)).audit("requestToString");
+  }
+
+  @Test
+  public void testDoFilterAuditsHttpServletRequestContent() throws Exception {
+    filter.doFilter(mockHttpServletRequest, mockHttpServletResponse, mockFilterChain);
+
+    verify(auditLogger, times(1)).audit("foo");
+  }
+
+  @Test
+  public void testDoFilterAuditsHttpServletResponse() throws Exception {
+    filter.doFilter(mockHttpServletRequest, mockHttpServletResponse, mockFilterChain);
+
+    verify(auditLogger, times(1)).audit(startsWith("Mock for HttpServletResponse, hashCode"));
+  }
+
+  @Test
+  public void testDoFilterTearsDownMDCOnSuccess() throws Exception {
+    filter.doFilter(mockHttpServletRequest, mockHttpServletResponse, mockFilterChain);
+
+    verify(auditLogger, times(1)).teardownMDC();
+  }
+
+  @Test(expected = ApiException.class)
+  public void testDoFilterThrowsApiExceptionOnException() throws Exception {
+    doThrow(new ApiException()).when(mockFilterChain).doFilter(any(), any());
+
+    filter.doFilter(mockHttpServletRequest, mockHttpServletResponse, mockFilterChain);
+  }
+
+  @Test(expected = ApiException.class)
+  public void testDoFilterTearsDownMDCOnException() throws Exception {
+    doThrow(new ApiException()).when(mockFilterChain).doFilter(any(), any());
+
+    filter.doFilter(mockHttpServletRequest, mockHttpServletResponse, mockFilterChain);
+    verify(auditLogger, times(1)).teardownMDC();
+  }
+
 }

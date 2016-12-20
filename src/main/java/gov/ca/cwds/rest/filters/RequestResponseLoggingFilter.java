@@ -112,12 +112,11 @@ public class RequestResponseLoggingFilter implements Filter {
         headerName = headerNames.nextElement();
         sb.append(headerName).append(": ").append(request.getHeader(headerName));
       }
-      InputStream bodyInputStream = request.getInputStream();
-      sb.append(new String(IOUtils.toByteArray(bodyInputStream)));
-
-      return sb.toString().replace("\n", " ");
     }
-    return "";
+    InputStream bodyInputStream = request.getInputStream();
+    sb.append(new String(IOUtils.toByteArray(bodyInputStream)));
+
+    return sb.toString().replace("\n", " ");
   }
 
   private class RequestResponseLoggingHttpServletRequest extends HttpServletRequestWrapper {
