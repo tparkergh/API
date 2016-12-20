@@ -15,7 +15,6 @@ import org.hibernate.annotations.NamedQuery;
 import org.hibernate.annotations.Type;
 
 import gov.ca.cwds.rest.api.persistence.PersistentObject;
-// import gov.ca.cwds.rest.validation.Date;
 
 /**
  * {@link PersistentObject} representing a CollateralIndividual
@@ -268,7 +267,6 @@ public class CollateralIndividual extends CmsPersistentObject {
 
   @Override
   public Serializable getPrimaryKey() {
-    // TODO Auto-generated method stub
     return getId();
   }
 
