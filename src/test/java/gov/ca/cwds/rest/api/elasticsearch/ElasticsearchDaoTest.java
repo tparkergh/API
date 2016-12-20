@@ -7,6 +7,9 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 import org.elasticsearch.action.ListenableActionFuture;
+import org.elasticsearch.action.WriteConsistencyLevel;
+import org.elasticsearch.action.index.IndexRequestBuilder;
+import org.elasticsearch.action.index.IndexResponse;
 import org.elasticsearch.action.search.SearchRequestBuilder;
 import org.elasticsearch.action.search.SearchResponse;
 import org.elasticsearch.action.search.SearchType;
@@ -53,10 +56,19 @@ public class ElasticsearchDaoTest {
   private SearchRequestBuilder srb;
 
   @Mock
-  private ListenableActionFuture<SearchResponse> listenable;
+  private IndexRequestBuilder irb;
 
   @Mock
-  private SearchResponse resp;
+  private ListenableActionFuture<SearchResponse> listenSearch;
+
+  @Mock
+  private ListenableActionFuture<IndexResponse> listenIndex;
+
+  @Mock
+  private SearchResponse respSearch;
+
+  @Mock
+  private IndexResponse respIndex;
 
   @Mock
   private SearchHits hits;
@@ -75,23 +87,31 @@ public class ElasticsearchDaoTest {
     mock(TransportClient.class);
     mock(SearchRequestBuilder.class);
     MockitoAnnotations.initMocks(this);
+
+    // Execute queries against a fake transport and client.
     // cut.setTransportAddress(DummyTransportAddress.INSTANCE);
 
-    // Mock this call:
-    // return client.prepareSearch(indexName).setTypes(indexType)
-    // .setSearchType(SearchType.QUERY_AND_FETCH).setFrom(0).setSize(DEFAULT_MAX_RESULTS)
-    // .setExplain(true).execute().actionGet().getHits().getHits();
+    // Mock up searches:
     when(client.prepareSearch(any())).thenReturn(srb);
     when(srb.setTypes(any())).thenReturn(srb);
     when(srb.setSearchType(any(SearchType.class))).thenReturn(srb);
     when(srb.setFrom(0)).thenReturn(srb);
     when(srb.setSize(any(Integer.class))).thenReturn(srb);
     when(srb.setExplain(any(Boolean.class))).thenReturn(srb);
-    when(srb.execute()).thenReturn(listenable);
+    when(srb.execute()).thenReturn(listenSearch);
     when(srb.setQuery(any(QueryBuilder.class))).thenReturn(srb);
-    when(listenable.actionGet()).thenReturn(resp);
-    when(resp.getHits()).thenReturn(hits);
+    when(listenSearch.actionGet()).thenReturn(respSearch);
+    when(respSearch.getHits()).thenReturn(hits);
     when(hits.getHits()).thenReturn(new SearchHit[] {hit});
+
+    // Mock up document creation:
+    when(client.prepareIndex(any(String.class), any(String.class), any(String.class)))
+        .thenReturn(irb);
+    when(irb.setConsistencyLevel(WriteConsistencyLevel.DEFAULT)).thenReturn(irb);
+    when(irb.setSource(any(String.class))).thenReturn(irb);
+    when(irb.execute()).thenReturn(listenIndex);
+    when(listenIndex.actionGet()).thenReturn(respIndex);
+    when(respIndex.isCreated()).thenReturn(true);
   }
 
   @Test
@@ -128,15 +148,28 @@ public class ElasticsearchDaoTest {
   }
 
   @Test
+  public void testIndexDoc() throws Exception {
+    assertThat("index doc", cut.index("fred", "1234"));
+  }
+
+  @Test
   public void testFetchAllPerson() throws Exception {
     final SearchHit[] results = cut.fetchAllPerson();
     assertThat("hits", results != null && results.length > 0);
   }
 
   @Test
-  public void testQueryPersonOr() throws Exception {
+  public void testQueryPersonOrWithWildcard() throws Exception {
     ESSearchRequest req = new ESSearchRequest();
     req.getRoot().addElem(new ESSearchRequest.ESFieldSearchEntry("first_name", "bart*"));
+    final SearchHit[] results = cut.queryPersonOr(req);
+    assertThat("hits", results != null && results.length > 0);
+  }
+
+  @Test
+  public void testQueryPersonOrNoWildcard() throws Exception {
+    ESSearchRequest req = new ESSearchRequest();
+    req.getRoot().addElem(new ESSearchRequest.ESFieldSearchEntry("first_name", "bart"));
     final SearchHit[] results = cut.queryPersonOr(req);
     assertThat("hits", results != null && results.length > 0);
   }
