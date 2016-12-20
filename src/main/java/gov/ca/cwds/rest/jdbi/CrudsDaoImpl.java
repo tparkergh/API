@@ -42,8 +42,8 @@ public class CrudsDaoImpl<T extends PersistentObject> extends AbstractDAO<T>
     return sessionFactory;
   }
 
-  /*
-   * (non-Javadoc)
+  /**
+   * {@inheritDoc}
    * 
    * @see gov.ca.cwds.rest.jdbi.CrudsDao#find(java.io.Serializable)
    */
@@ -52,8 +52,8 @@ public class CrudsDaoImpl<T extends PersistentObject> extends AbstractDAO<T>
     return get(primaryKey);
   }
 
-  /*
-   * (non-Javadoc)
+  /**
+   * {@inheritDoc}
    * 
    * @see gov.ca.cwds.rest.api.persistence.CrudsDao#delete(java.io.Serializable)
    */
@@ -66,11 +66,11 @@ public class CrudsDaoImpl<T extends PersistentObject> extends AbstractDAO<T>
     return object;
   }
 
-  /*
-   * (non-Javadoc)
+  /**
+   * {@inheritDoc}
    * 
    * @see gov.ca.cwds.rest.api.persistence.CrudsDao#create(gov.ca.cwds.rest.api.persistence.
-   * PersistentObject)
+   *      PersistentObject)
    */
   @Override
   public T create(T object) {
@@ -84,11 +84,11 @@ public class CrudsDaoImpl<T extends PersistentObject> extends AbstractDAO<T>
     return persist(object);
   }
 
-  /*
-   * (non-Javadoc)
+  /**
+   * {@inheritDoc}
    * 
    * @see gov.ca.cwds.rest.api.persistence.CrudsDao#update(gov.ca.cwds.rest.api.persistence.
-   * PersistentObject)
+   *      PersistentObject)
    */
   @Override
   public T update(T object) {

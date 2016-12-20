@@ -25,6 +25,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
+import gov.ca.cwds.rest.ElasticsearchConfiguration;
 import gov.ca.cwds.rest.api.ApiException;
 import gov.ca.cwds.rest.api.domain.es.ESSearchRequest;
 import gov.ca.cwds.rest.elasticsearch.db.ElasticsearchDao;
@@ -45,6 +46,9 @@ public class ElasticsearchDaoTest {
 
   @InjectMocks
   private ElasticsearchDao cut = new ElasticsearchDao(TEST_HOST, TEST_PORT, TEST_CLUSTERNAME);
+
+  @Mock
+  private ElasticsearchConfiguration esConfig;
 
   @Mock
   private TransportClient.Builder clientBuilder;
@@ -127,6 +131,14 @@ public class ElasticsearchDaoTest {
     thrown.expectMessage(startsWith("Elasticsearch Index Type must be provided"));
     cut.setDocumentType("");
   }
+
+  // @Test
+  // public void testConfigCtor() throws Exception {
+  // // TODO: must construct with config ctor.
+  // assertThat("host", TEST_HOST.equals(cut.getHost()));
+  // assertThat("port", TEST_PORT.equals(cut.getPort()));
+  // assertThat("cluster", TEST_CLUSTERNAME.equals(cut.getClusterName()));
+  // }
 
   @Test
   public void testSettings() throws Exception {

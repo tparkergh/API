@@ -5,7 +5,6 @@ import static org.junit.Assert.fail;
 import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.doAnswer;
 import static org.mockito.Mockito.doReturn;
-import static org.mockito.Mockito.mock;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -35,7 +34,6 @@ import gov.ca.cwds.rest.jdbi.cms.CmsDocumentDao;
  * 
  * @author CWDS API Team
  */
-// @RunWith(MockitoJUnitRunner.class)
 public class CmsDocumentDaoTest {
 
   @Rule
@@ -44,13 +42,14 @@ public class CmsDocumentDaoTest {
   @Mock
   private LZWEncoder lzw;
 
+  @Mock
+  private SessionFactory sf;
+
   @InjectMocks
   private CmsDocumentDao cut; // "class under test"
 
   @Before
   public void initMocks() {
-    this.cut = new CmsDocumentDao(mock(SessionFactory.class));
-    mock(LZWEncoder.class);
     MockitoAnnotations.initMocks(this);
   }
 
@@ -58,8 +57,8 @@ public class CmsDocumentDaoTest {
   // DECOMPRESS LZW:
   // ===================
 
-  // TODO: Test runs great locally and even as Jenkins user. However, the Jenkins process doesn't
-  // doesn't load Linux environment variables.
+  // TODO: Test runs great in Eclipse (OS X and Windows) and even as the Jenkins user on Linux.
+  // However, the Jenkins service isn't loading Linux environment variables as expected.
   @Test
   public void testDecompressLZW() {
     try {

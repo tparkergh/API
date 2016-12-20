@@ -39,15 +39,17 @@ public class CmsDocumentTest {
 
   private static final CmsDocumentResource mockedCmsDocumentResource =
       mock(CmsDocumentResource.class);
+  private static final ObjectMapper MAPPER = Jackson.newObjectMapper();
 
   @ClassRule
   public static final ResourceTestRule resources =
       ResourceTestRule.builder().addResource(mockedCmsDocumentResource).build();
-  private static final ObjectMapper MAPPER = Jackson.newObjectMapper();
-  private CmsDocument validCmsDocument = validCmsDocument();
 
+  // TODO: SimpleDateFormat not thread safe.
   private final static DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
   private final static DateFormat tf = new SimpleDateFormat("HH:mm:ss");
+
+  private CmsDocument validCmsDocument = validCmsDocument();
   private String id = "0131351421120020*JONESMF 00004";
   private Short segmentCount = 1234;
   private Long docLength = (long) 1000;
@@ -78,7 +80,6 @@ public class CmsDocumentTest {
   public void serializesToJSON() throws Exception {
     final String expected = MAPPER.writeValueAsString(MAPPER
         .readValue(fixture("fixtures/domain/cms/CmsDocument/valid/valid.json"), CmsDocument.class));
-
     assertThat(MAPPER.writeValueAsString(validCmsDocument()), is(equalTo(expected)));
   }
 
@@ -113,6 +114,7 @@ public class CmsDocumentTest {
     assertThat(totest.getDocTime(), is(equalTo(tf.format(persistent.getDocTime()))));
     assertThat(totest.getDocName(), is(equalTo(persistent.getDocName())));
     assertThat(totest.getCompressionMethod(), is(equalTo(persistent.getCompressionMethod())));
+
     // assertThat(totest.getBase64Blob(), is(equalTo(persistent.getBlobSegments())));
   }
 
@@ -143,7 +145,6 @@ public class CmsDocumentTest {
             .post(Entity.entity(toCreate, MediaType.APPLICATION_JSON));
     // String message = response.readEntity(String.class);
     // System.out.print(message);
-    //
     assertThat(response.getStatus(), is(equalTo(204)));
   }
 
@@ -160,7 +161,6 @@ public class CmsDocumentTest {
   }
 
   // document date test
-
   @Test
   public void failsWhenIdMissing() throws Exception {
     CmsDocument toCreate = MAPPER.readValue(

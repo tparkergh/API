@@ -21,7 +21,7 @@ import gov.ca.cwds.rest.util.jni.CmsPKCompressor;
 import gov.ca.cwds.rest.util.jni.LZWEncoder;
 
 /**
- * 
+ * Data Access Object (DAO) for legacy CMS documents.
  * 
  * @author CWDS API Team
  */
@@ -29,8 +29,8 @@ public class CmsDocumentDao extends BaseDaoImpl<CmsDocument> {
 
   private static final Logger LOGGER = LoggerFactory.getLogger(CmsDocumentDao.class);
 
+  // TODO: inject?
   private LZWEncoder lzw = new LZWEncoder();
-
 
   /**
    * Constructor
