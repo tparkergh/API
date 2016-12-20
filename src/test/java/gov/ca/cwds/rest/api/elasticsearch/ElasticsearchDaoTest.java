@@ -153,15 +153,28 @@ public class ElasticsearchDaoTest {
   }
 
   @Test
+  public void testReset() throws Exception {
+    cut.reset(client);
+  }
+
+  @Test
   public void testFetchAllPerson() throws Exception {
     final SearchHit[] results = cut.fetchAllPerson();
     assertThat("hits", results != null && results.length > 0);
   }
 
   @Test
-  public void testQueryPersonOrWithWildcard() throws Exception {
+  public void testQueryPersonOrWithWildcardAsterisk() throws Exception {
     ESSearchRequest req = new ESSearchRequest();
     req.getRoot().addElem(new ESSearchRequest.ESFieldSearchEntry("first_name", "bart*"));
+    final SearchHit[] results = cut.queryPersonOr(req);
+    assertThat("hits", results != null && results.length > 0);
+  }
+
+  @Test
+  public void testQueryPersonOrWithWildcardQuestionMark() throws Exception {
+    ESSearchRequest req = new ESSearchRequest();
+    req.getRoot().addElem(new ESSearchRequest.ESFieldSearchEntry("first_name", "bart?"));
     final SearchHit[] results = cut.queryPersonOr(req);
     assertThat("hits", results != null && results.length > 0);
   }

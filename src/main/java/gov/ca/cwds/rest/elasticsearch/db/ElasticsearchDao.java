@@ -10,6 +10,7 @@ import org.elasticsearch.action.search.SearchType;
 import org.elasticsearch.client.Client;
 import org.elasticsearch.client.transport.TransportClient;
 import org.elasticsearch.common.settings.Settings;
+import org.elasticsearch.common.transport.DummyTransportAddress;
 import org.elasticsearch.common.transport.InetSocketTransportAddress;
 import org.elasticsearch.common.transport.TransportAddress;
 import org.elasticsearch.index.query.QueryBuilder;
@@ -37,6 +38,7 @@ public class ElasticsearchDao {
 
   private static final int DEFAULT_MAX_RESULTS = 60;
 
+  // Used for testing or custom configurations.
   private Client client;
   private TransportAddress transportAddress;
 
@@ -94,7 +96,7 @@ public class ElasticsearchDao {
    * @see #init()
    */
   protected void start() throws Exception {
-    LOGGER.info("ElasticSearchDao.start()");
+    LOGGER.debug("ElasticSearchDao.start()");
 
     // Only enter synchronized method if client is not initialized.
     if (this.client == null) {
@@ -109,10 +111,25 @@ public class ElasticsearchDao {
    * @throws Exception if ElasticSearch client fails to close properly.
    */
   protected void stop() throws Exception {
-    LOGGER.info("ElasticSearchDao.stop()");
+    LOGGER.debug("ElasticSearchDao.stop()");
     this.client.close();
     setClient(null);
     setTransportAddress(null);
+  }
+
+  /**
+   * Stops and starts the ES client. If the client passed in is null, then {@link #init()} will
+   * instantiate a new client with {@link InetSocketTransportAddress}.
+   * 
+   * @param client custom client, used for testing
+   * @throws Exception I/O error or unknown host
+   */
+  public void reset(Client client) throws Exception {
+    LOGGER.debug("ElasticSearchDao.stop()");
+    stop();
+    setClient(client);
+    setTransportAddress(null);
+    start();
   }
 
   /**
@@ -282,10 +299,22 @@ public class ElasticsearchDao {
     this.client = client;
   }
 
+  /**
+   * Get the {@link TransportAddress}, primarily used for testing. See
+   * {@link DummyTransportAddress}.
+   * 
+   * @return current TransportAddress, if any, such {@link DummyTransportAddress}.
+   */
   public TransportAddress getTransportAddress() {
     return transportAddress;
   }
 
+  /**
+   * Set the {@link TransportAddress}, primarily used for testing. See
+   * {@link DummyTransportAddress}.
+   * 
+   * @param transportAddress TransportAddress, if any, such {@link DummyTransportAddress}.
+   */
   public void setTransportAddress(TransportAddress transportAddress) {
     this.transportAddress = transportAddress;
   }
