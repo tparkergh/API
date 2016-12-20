@@ -71,7 +71,6 @@ dependencies {
 	//compile group: 'com.google.inject', name: 'guice', version: '4.1.0'
 	compile group: 'com.hubspot.dropwizard', name: 'dropwizard-guice', version: '1.0.0.2'
 	
-    
 	
     compile fileTree(dir: 'lib', include: ['*.jar'])
     
@@ -157,7 +156,6 @@ publishing {
     }
   }
 }
-
 
 task copyConfig(type: Copy) {
     from 'config'

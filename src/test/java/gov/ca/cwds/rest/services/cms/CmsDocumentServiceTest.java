@@ -4,7 +4,6 @@ import static io.dropwizard.testing.FixtureHelpers.fixture;
 import static org.mockito.Mockito.mock;
 
 import org.apache.commons.lang3.NotImplementedException;
-import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
@@ -17,6 +16,7 @@ import gov.ca.cwds.rest.jdbi.cms.CmsDocumentDao;
 import io.dropwizard.jackson.Jackson;
 
 public class CmsDocumentServiceTest {
+
   private static final ObjectMapper MAPPER = Jackson.newObjectMapper();
   private CmsDocumentService cmsDocumentService;
   private CmsDocumentDao cmsDocumentDao;
@@ -33,13 +33,8 @@ public class CmsDocumentServiceTest {
   // find test
   @Test
   public void findThrowsAssertionError() {
-    // TODO : thrown.expect not working on AssertionError???? WHY???
-    // thrown.expect(AssertionError.class);
-    try {
-      cmsDocumentService.find("1");
-      Assert.fail("Expected AssertionError");
-    } catch (AssertionError e) {
-    }
+    thrown.expect(AssertionError.class);
+    cmsDocumentService.find(1L);
   }
 
   @Test
