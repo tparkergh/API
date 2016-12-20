@@ -55,7 +55,7 @@ public class CrudsDaoImpl<T extends PersistentObject> extends AbstractDAO<T>
   /**
    * {@inheritDoc}
    * 
-   * @see gov.ca.cwds.rest.api.persistence.CrudsDao#delete(java.io.Serializable)
+   * @see CrudsDao#delete(java.io.Serializable)
    */
   @Override
   public T delete(Serializable id) {
@@ -69,8 +69,7 @@ public class CrudsDaoImpl<T extends PersistentObject> extends AbstractDAO<T>
   /**
    * {@inheritDoc}
    * 
-   * @see gov.ca.cwds.rest.api.persistence.CrudsDao#create(gov.ca.cwds.rest.api.persistence.
-   *      PersistentObject)
+   * @see CrudsDao#create(gov.ca.cwds.rest.api.persistence. PersistentObject)
    */
   @Override
   public T create(T object) {
@@ -87,8 +86,7 @@ public class CrudsDaoImpl<T extends PersistentObject> extends AbstractDAO<T>
   /**
    * {@inheritDoc}
    * 
-   * @see gov.ca.cwds.rest.api.persistence.CrudsDao#update(gov.ca.cwds.rest.api.persistence.
-   *      PersistentObject)
+   * @see CrudsDao#update(gov.ca.cwds.rest.api.persistence. PersistentObject)
    */
   @Override
   public T update(T object) {
