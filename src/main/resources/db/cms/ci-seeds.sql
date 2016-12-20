@@ -32,6 +32,11 @@ INSERT INTO cwsInt.ATTRNY_T (IDENTIFIER, CITY_NM, CWATRY_IND, FAX_NO, FIRST_NM, 
 VALUES ('AcjOOPa0BU',' ',' ',0,'Lance',0,1274,'Johnson',0,0,' ',' ','Attorney',0,0,0,' ',' ',' ',0,'0BU','1998-07-30 09:14:09.412017',' ',0,NULL,'N',NULL),
 ('AcoWleS0Rx',' ',' ',0,'Jose',0,0,'Perez',0,0,	' ',' ',' ',0,0,0,' ',' ',' ',0,'0Rx','2004-04-27 12:28:08.960772',' ',0,NULL,'N',NULL);
 
+truncate table cwsint.SB_PVDRT immediate;
+INSERT INTO CWSINT.SB_PVDRT(IDENTIFIER, ADD_TEL_NO, ADD_EXT_NO, BIRTH_DT, CA_DLIC_NO, CITY_NM, EMPLYR_NM, FIRST_NM, FRG_ADRT_B, GENDER_IND, IND_TRBC, LAST_NM, MID_INI_NM, NMPRFX_DSC, SS_NO, STATE_C, STREET_NM, STREET_NO, SUFX_TLDSC, ZIP_NO, LST_UPD_ID, LST_UPD_TS, ZIP_SFX_NO, EDUCATION, EMPL_STAT, PRIM_INC, SEC_INC, YR_INC_AMT, HISP_CD, MRTL_STC, LISOWNIND, LIS_PER_ID, EMAIL_ADDR, ETH_UD_CD, HISP_UD_CD, RESOST_IND, PASSBC_CD)
+VALUES ('aQqUhBQF11', 5300005841, 0, null, '        ', 'Red Bluff           ', '                                   ', 'Phil & Judy         ', 'N', 'F', 0, 'C.                       ', ' ', '      ', '0000000  ', 1828, 'Fake                                    ', '1330      ', '    ', 96080, 'q27', '1998-03-18 19:42:27.3267', 0, 0, 0, 0, 0, 0.00, 'U', 0, 'N', null, null, null, null, null, null);
+(VALUES ('dqOTmRoF11', 0, 0, null, '        ', 'Chico               ', '                                   ', 'Cindy & Paul        ', 'N', 'F', 0, 'M.                       ', ' ', '      ', '0000000  ', 1828, 'Fake Lindo Ave                          ', '127       ', '    ', 95926, 'CNV', '1900-01-01 01:01:01.0', 0, 0, 0, 0, 0, 0.00, 'U', 0, 'N', null, null, null, null, null, null);)
+
 -- Gregg Hill: Adding rows for Other Client Names
 INSERT INTO CWSINT.OCL_NM_T
 	(THIRD_ID, FIRST_NM, LAST_NM, MIDDLE_NM, NMPRFX_DSC, NAME_TPC, SUFX_TLDSC, LST_UPD_ID, LST_UPD_TS, FKCLIENT_T)
