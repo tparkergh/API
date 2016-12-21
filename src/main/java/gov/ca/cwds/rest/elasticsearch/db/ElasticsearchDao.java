@@ -71,6 +71,8 @@ public class ElasticsearchDao {
     this.host = elasticsearchConfiguration.getElasticsearchHost();
     this.clusterName = elasticsearchConfiguration.getElasticsearchCluster();
     this.port = elasticsearchConfiguration.getElasticsearchPort();
+    this.indexName = elasticsearchConfiguration.getPeopleIndexName();
+    this.documentType = elasticsearchConfiguration.getPeopleIndexType();
   }
 
   /**
