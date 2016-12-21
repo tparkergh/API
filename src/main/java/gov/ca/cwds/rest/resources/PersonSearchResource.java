@@ -75,7 +75,8 @@ public class PersonSearchResource {
       hits = ((PersonService) ((ServiceBackedResourceDelegate) resourceDelegate).getService())
           .fetchAllPersons();
     } catch (Exception e) {
-      e.printStackTrace();
+      // e.printStackTrace();
+
     }
 
     if (hits != null) {

@@ -56,7 +56,6 @@ public class RequestResponseLoggingFilter implements Filter {
     this.auditLogger = auditLogger;
   }
 
-
   @Override
   public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain)
       throws IOException, ServletException {
@@ -65,7 +64,6 @@ public class RequestResponseLoggingFilter implements Filter {
     if (request instanceof HttpServletRequest) {
 
       HttpServletRequest httpServletRequest = (HttpServletRequest) request;
-
 
       uniqueId = auditLogger.buildMDC(httpServletRequest.getRemoteAddr(), "STUBBED_USER",
           httpServletRequest.getSession().getId(), Thread.currentThread().getName());
@@ -129,8 +127,8 @@ public class RequestResponseLoggingFilter implements Filter {
       wrappedRequest = request;
     }
 
-    /*
-     * (non-Javadoc)
+    /**
+     * {@inheritDoc}
      * 
      * @see java.lang.Object#toString()
      */
@@ -139,8 +137,8 @@ public class RequestResponseLoggingFilter implements Filter {
       return wrappedRequest.toString();
     }
 
-    /*
-     * (non-Javadoc)
+    /**
+     * {@inheritDoc}
      * 
      * @see javax.servlet.ServletRequestWrapper#getInputStream()
      */
@@ -181,7 +179,6 @@ public class RequestResponseLoggingFilter implements Filter {
 
     private HttpServletResponse wrappedResponse;
 
-
     public RequestResponseLoggingHttpServletResponseWrapper(HttpServletResponse response) {
       super(response);
       wrappedResponse = response;
@@ -220,8 +217,8 @@ public class RequestResponseLoggingFilter implements Filter {
       }
     }
 
-    /*
-     * (non-Javadoc)
+    /**
+     * {@inheritDoc}
      * 
      * @see java.lang.Object#toString()
      */
@@ -229,7 +226,6 @@ public class RequestResponseLoggingFilter implements Filter {
     public String toString() {
       return wrappedResponse.toString();
     }
-
 
     private class TeeServletOutputStream extends ServletOutputStream {
 
