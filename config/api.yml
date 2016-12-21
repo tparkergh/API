@@ -52,11 +52,11 @@ flywayFactory:
 
 
 elasticsearch:
-  elasticsearch.host: localhost
-  elasticsearch.port: 9300
-  elasticsearch.cluster: elasticsearch
-  elasticsearch.clientnode: javaclient
-  elasticsearch.clientport: 10080
+  elasticsearch.host: ${ES_HOST:-localhost}
+  elasticsearch.port: ${ES_PORT:-9300}
+  elasticsearch.cluster: ${ES_CLUSTER}
+  elasticsearch.clientnode: ${ES_CLIENTNODE:-javaclient}
+  elasticsearch.clientport: ${ES_CLIENTPORT:-10080}
   peopleIndexName: people
   peopleIndexType: person
 
