@@ -12,7 +12,7 @@ import gov.ca.cwds.rest.api.persistence.cms.CmsDocReferralClient;
 import gov.ca.cwds.rest.jdbi.CrudsDaoImpl;
 
 /**
- * 
+ * Data Access Object (DAO) for legacy CMS documents and client referral records.
  * 
  * @author CWDS API Team
  */
