@@ -96,9 +96,9 @@ public class PersonService implements CrudsService {
       // Methods start/stop are now protected. Dao manages its own connections.
       elasticsearchDao.index(document, esPerson.getId().toString());
     } catch (JsonProcessingException e) {
-      throw new ApiException("Unable to convert Person to json to Index in Elasticsearch");
+      throw new ApiException("Unable to convert Person to json to Index in Elasticsearch", e);
     } catch (Exception e) {
-      throw new ApiException("Unable to Index Person in Elasticsearch");
+      throw new ApiException("Unable to Index Person in Elasticsearch", e);
     }
     return postedPerson;
   }
