@@ -1,7 +1,6 @@
 package gov.ca.cwds.rest.services;
 
 import java.io.Serializable;
-import java.util.Map;
 
 import org.apache.commons.lang3.NotImplementedException;
 import org.apache.commons.lang3.StringUtils;
@@ -44,7 +43,7 @@ public class PersonService implements CrudsService {
    * 
    * @param personDao The {@link Dao} handling {@link gov.ca.cwds.rest.api.persistence.ns.Person}
    *        objects.
-   * @param elasticsearchDao the Elasticsearch DAO
+   * @param elasticsearchDao the ElasticSearch DAO
    */
   @Inject
   public PersonService(PersonDao personDao, ElasticsearchDao elasticsearchDao) {
@@ -98,19 +97,19 @@ public class PersonService implements CrudsService {
       // The ES Dao manages its own connections. No need to manually start or stop.
       elasticsearchDao.index(document, esPerson.getId().toString());
     } catch (JsonProcessingException e) {
-      throw new ApiException("Unable to convert Person to JSON to Index in Elasticsearch", e);
+      throw new ApiException("Unable to convert Person to JSON to Index in ElasticSearch", e);
     } catch (Exception e) {
-      throw new ApiException("Unable to Index Person in Elasticsearch", e);
+      throw new ApiException("Unable to Index Person in ElasticSearch", e);
     }
     return postedPerson;
   }
 
   /**
-   * Returns all persons in Elasticsearch, up the default number of rows set in
+   * Returns all persons in ElasticSearch, up the default number of rows set in
    * {@link ElasticsearchDao#fetchAllPerson()}.
    * 
    * @return array of {@link ESPerson}
-   * @throws Exception I/O error or unknown host
+   * @throws Exception due to I/O error, unknown host, etc.
    */
   public ESPerson[] fetchAllPersons() throws Exception {
     final SearchHit[] hits = this.elasticsearchDao.fetchAllPerson();
@@ -118,13 +117,7 @@ public class PersonService implements CrudsService {
     final ESPerson[] persons = new ESPerson[hits.length];
     int counter = -1;
     for (SearchHit hit : hits) {
-      final Map<String, Object> m = hit.getSource();
-      LOGGER.debug(m.toString());
-
-      persons[++counter] = new ESPerson(m.getOrDefault("id", "0").toString(),
-          (String) m.getOrDefault("first_name", ""), (String) m.getOrDefault("last_name", ""),
-          (String) m.getOrDefault("gender", null), (String) m.getOrDefault("birth_date", null),
-          (String) m.getOrDefault("ssn", null), null);
+      persons[++counter] = ESPerson.makeESPerson(hit);
     }
 
     return persons;
@@ -136,12 +129,13 @@ public class PersonService implements CrudsService {
    * @param firstName first name to search, if any
    * @param lastName last name to search, if any
    * @param birthDate birth date to search, if any
-   * @return array of found Persons
-   * @throws Exception I/O error or unknown host
+   * @return array of matching {@link ESPerson}
+   * @throws Exception due to I/O error, unknown host, etc.
    */
   public ESPerson[] queryPersonOr(String firstName, String lastName, String birthDate)
       throws Exception {
 
+    // Parse inputs.
     ESSearchRequest req = new ESSearchRequest();
     String field = "";
     String value = "";
@@ -156,21 +150,20 @@ public class PersonService implements CrudsService {
       value = birthDate;
     }
 
+    // Build search request.
     req.getRoot().addElem(new ESSearchRequest.ESFieldSearchEntry(field, value));
-    final SearchHit[] hits = this.elasticsearchDao.queryPersonOr(req);
-    final ESPerson[] persons = new ESPerson[hits.length];
 
+    // Search.
+    final SearchHit[] hits = this.elasticsearchDao.queryPersonOr(req);
+    final ESPerson[] ret = new ESPerson[hits.length];
+
+    // Prep results.
     int counter = -1;
     for (SearchHit hit : hits) {
-      final Map<String, Object> m = hit.getSource();
-
-      persons[++counter] = new ESPerson(m.getOrDefault("id", "0").toString(),
-          (String) m.getOrDefault("first_name", "").toString(), (String) m.getOrDefault("last_name", ""),
-          (String) m.getOrDefault("gender", null), (String) m.getOrDefault("birth_date", null),
-          (String) m.getOrDefault("ssn", null), null);
+      ret[++counter] = ESPerson.makeESPerson(hit);
     }
 
-    return persons;
+    return ret;
   }
 
   // ===================

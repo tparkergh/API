@@ -32,13 +32,13 @@ public final class ESPersonSearchRequest extends DomainObject implements Request
    * 
    * <p>
    * When searching ElasticSearch documents, birth date is lenient and allows wildcards (*,?), such
-   * as "2000-*", "2000-12-*", or "2000-1?-*". This lenient date format differs from most other
+   * as "2000-*", "2000-12-*", or "2000-1?-*". This relaxed date format differs from most other
    * domain date fields.
    * </p>
    * 
    * <p>
-   * That said, birth date is required when creating ElasticSearch documents, but that wouldn't come
-   * from a "search request" object.
+   * That said, birth date is required when creating ElasticSearch documents, but that doesn't apply
+   * to a "search request" object.
    * </p>
    */
   @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = DATE_FORMAT)

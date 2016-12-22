@@ -11,7 +11,7 @@ import gov.ca.cwds.rest.validation.Date;
 import io.swagger.annotations.ApiModelProperty;
 
 /**
- * {@link DomainObject} representing an person
+ * {@link DomainObject} representing a person.
  * 
  * @author CWDS API Team
  */
@@ -71,6 +71,11 @@ public class Person extends DomainObject implements Request, Response {
     this.address = address;
   }
 
+  /**
+   * Construct from persistence {@link gov.ca.cwds.rest.api.persistence.ns.Person} object.
+   * 
+   * @param person persistence layer person
+   */
   public Person(gov.ca.cwds.rest.api.persistence.ns.Person person) {
     this.first_name = person.getFirstName();
     this.last_name = person.getLastName();

@@ -23,28 +23,21 @@ public final class ESSearchRequest extends DomainObject implements Request {
   // ================
 
   /**
-   * ElasticSearch 2.x+ prefers MUST/MUST_NOT/SHOULD over AND/OR/NOT. In fact, the latter support
-   * classes have been deprecated.
+   * ElasticSearch 2.x prefers MUST/MUST_NOT/SHOULD over AND/OR/NOT. In fact, ES has deprecated the
+   * latter support classes.
    * 
    * <p>
-   * The original idea behind this class was to nest logical operations like normal database WHERE
-   * calls, but ES no longer prefers that traditional approach.
+   * ORIGINAL IDEA: nest logical operations like a traditional database WHERE clause, but ES now
+   * prefers "must", "must not", "should".
    * </p>
    */
   public enum LogicalOperation {
-    AND(1, "AND"), OR(2, "OR"), NOT(3, "OR"), MUST(4, "MUST"), MUST_NOT(5, "MUST_NOT"), SHOULD(6,
-        "SHOULD");
+    AND("AND"), OR("OR"), NOT("OR"), MUST("MUST"), MUST_NOT("MUST_NOT"), SHOULD("SHOULD");
 
-    private final int value;
     private final String text;
 
-    LogicalOperation(int value, String text) {
-      this.value = value;
+    LogicalOperation(String text) {
       this.text = text;
-    }
-
-    public int value() {
-      return value;
     }
 
     public String text() {
@@ -53,19 +46,13 @@ public final class ESSearchRequest extends DomainObject implements Request {
   }
 
   public enum QueryType {
-    MATCH(1, "MATCH"), TERM(2, "TERM"), FUZZY(3, "FUZZY"), RANGE(4, "RANGE"), SIMPLE(5,
-        "SIMPLE"), REGEXP(6, "REGEXP"), WILDCARD(7, "WILDCARD"), ALL(8, "ALL");
+    MATCH("MATCH"), TERM("TERM"), FUZZY("FUZZY"), RANGE("RANGE"), SIMPLE("SIMPLE"), REGEXP(
+        "REGEXP"), WILDCARD("WILDCARD"), ALL("ALL");
 
-    private final int value;
     private final String text;
 
-    QueryType(int value, String text) {
-      this.value = value;
+    QueryType(String text) {
       this.text = text;
-    }
-
-    public int value() {
-      return value;
     }
 
     public String text() {

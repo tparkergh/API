@@ -38,9 +38,6 @@ public class ElasticsearchDao {
 
   private static final int DEFAULT_MAX_RESULTS = 60;
 
-  /**
-   * Used for unit testing or for custom configurations.
-   */
   private Client client;
 
   private TransportAddress transportAddress;
@@ -301,7 +298,7 @@ public class ElasticsearchDao {
   }
 
   /**
-   * Really only used for testing but can be used to set a custom ES client.
+   * Used for testing but can be used to set a custom ES client.
    * 
    * @param client ElasticSearch client, typically a {@link TransportClient}
    */
