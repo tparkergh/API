@@ -123,6 +123,35 @@ public class CollateralIndividual extends CmsPersistentObject {
     super();
   }
 
+  /**
+   * Constructor
+   * 
+   * @param badgeNumber The unique badge number
+   * @param birthDate Date of birth
+   * @param cityName The name of the city
+   * @param commentDescription A brief description of any unusual circumstances
+   * @param emailAddress The e-mail address
+   * @param employerName The employer name
+   * @param establishedForCode Defines each type of recipient entity
+   * @param faxNumber The FAX number
+   * @param firstName The first name
+   * @param foreignAddressIndicatorVariable Indicates if there are any occurrences of foreign
+   *        addresses
+   * @param genderCode Indicates the gender
+   * @param id The unique identifier
+   * @param lastName The last name
+   * @param maritalStatus The Martial Status type
+   * @param middleInitialName The middle initial
+   * @param namePrefixDescription The salutation form
+   * @param primaryExtensionNumber The primary phone extension number
+   * @param primaryPhoneNo The primary phone number
+   * @param residedOutOfStateIndicator Indicates if reside out of state
+   * @param stateCode The State Code Type
+   * @param streetName The street name
+   * @param suffixTitleDescription The suffix name
+   * @param zipNumber The zip code
+   * @param zipSuffixNumber The zip suffix number
+   */
   public CollateralIndividual(String badgeNumber, Date birthDate, String cityName,
       String commentDescription, String emailAddress, String employerName,
       String establishedForCode, BigDecimal faxNumber, String firstName,

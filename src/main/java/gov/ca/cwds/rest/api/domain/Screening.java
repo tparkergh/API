@@ -217,6 +217,11 @@ public class Screening extends DomainObject implements Request {
     return narrative;
   }
 
+  /**
+   * {@inheritDoc}
+   * 
+   * @see java.lang.Object#hashCode()
+   */
   @Override
   public int hashCode() {
     final int prime = 31;
@@ -236,6 +241,11 @@ public class Screening extends DomainObject implements Request {
     return result;
   }
 
+  /**
+   * {@inheritDoc}
+   * 
+   * @see java.lang.Object#equals(java.lang.Object)
+   */
   @Override
   public boolean equals(Object obj) {
 
@@ -245,9 +255,6 @@ public class Screening extends DomainObject implements Request {
       return true;
     if (obj == null)
       return false;
-
-    // if (getClass() != obj.getClass())
-    // return false;
 
     if (!(obj instanceof Screening)) {
       return false;

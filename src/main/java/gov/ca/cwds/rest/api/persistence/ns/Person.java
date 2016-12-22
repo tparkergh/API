@@ -67,6 +67,16 @@ public class Person extends NsPersistentObject {
     super();
   }
 
+  /**
+   * 
+   * @param id The identifier of this row
+   * @param firstName The first name
+   * @param lastName The last name
+   * @param gender The gender
+   * @param dateOfBirth The date op birth
+   * @param ssn The SSN
+   * @param address The address of this person
+   */
   public Person(Long id, String firstName, String lastName, String gender, Date dateOfBirth,
       String ssn, Address address) {
     super();

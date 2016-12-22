@@ -59,7 +59,7 @@ public class EducationProviderContact extends CmsPersistentObject {
   private String middleName;
 
   @Column(name = "NM_PREFIX")
-  private String namePrefixExtension;
+  private String namePrefixDescription;
 
   @Type(type = "integer")
   @Column(name = "PH_EXTNO")
@@ -87,9 +87,27 @@ public class EducationProviderContact extends CmsPersistentObject {
     super();
   }
 
+  /**
+   * Consturctor
+   * 
+   * @param departmentOfEducationIndicator Indicates contact came from DOE
+   * @param emailAddress The email address
+   * @param faxNumber The fax number
+   * @param firstName The first name
+   * @param fKeyEducationProvider The foreign key to EDUCATION_PROVIDER_CONTACT
+   * @param id The unique identifier
+   * @param lastName The last name
+   * @param middleName The middle name
+   * @param namePrefixDescription The name prefix description
+   * @param phoneExtension The phone number extension
+   * @param phoneNumber The phone number
+   * @param primaryContactIndicator Indicates that there is primary EDUCATION_PROVIDER_CONTACT
+   * @param suffixTitleDescription The title suffix
+   * @param titleDescription The title description
+   */
   public EducationProviderContact(String departmentOfEducationIndicator, String emailAddress,
       BigDecimal faxNumber, String firstName, String fKeyEducationProvider, String id,
-      String lastName, String middleName, String namePrefixExtension, Integer phoneExtension,
+      String lastName, String middleName, String namePrefixDescription, Integer phoneExtension,
       BigDecimal phoneNumber, String primaryContactIndicator, String suffixTitleDescription,
       String titleDescription) {
 
@@ -101,7 +119,7 @@ public class EducationProviderContact extends CmsPersistentObject {
     this.id = id;
     this.lastName = lastName;
     this.middleName = middleName;
-    this.namePrefixExtension = namePrefixExtension;
+    this.namePrefixDescription = namePrefixDescription;
     this.phoneExtensionNumber = phoneExtension;
     this.phoneNumber = phoneNumber;
     this.primaryContactIndicator = primaryContactIndicator;
@@ -143,7 +161,7 @@ public class EducationProviderContact extends CmsPersistentObject {
   }
 
   public String getNamePrefixExtension() {
-    return namePrefixExtension;
+    return namePrefixDescription;
   }
 
   public Integer getPhoneExtensionNumber() {
@@ -190,7 +208,8 @@ public class EducationProviderContact extends CmsPersistentObject {
     result = prime * result + ((id == null) ? 0 : id.hashCode());
     result = prime * result + ((lastName == null) ? 0 : lastName.hashCode());
     result = prime * result + ((middleName == null) ? 0 : middleName.hashCode());
-    result = prime * result + ((namePrefixExtension == null) ? 0 : namePrefixExtension.hashCode());
+    result =
+        prime * result + ((namePrefixDescription == null) ? 0 : namePrefixDescription.hashCode());
     result =
         prime * result + ((phoneExtensionNumber == null) ? 0 : phoneExtensionNumber.hashCode());
     result = prime * result + ((phoneNumber == null) ? 0 : phoneNumber.hashCode());
@@ -256,10 +275,10 @@ public class EducationProviderContact extends CmsPersistentObject {
         return false;
     } else if (!middleName.equals(other.middleName))
       return false;
-    if (namePrefixExtension == null) {
-      if (other.namePrefixExtension != null)
+    if (namePrefixDescription == null) {
+      if (other.namePrefixDescription != null)
         return false;
-    } else if (!namePrefixExtension.equals(other.namePrefixExtension))
+    } else if (!namePrefixDescription.equals(other.namePrefixDescription))
       return false;
     if (phoneExtensionNumber == null) {
       if (other.phoneExtensionNumber != null)

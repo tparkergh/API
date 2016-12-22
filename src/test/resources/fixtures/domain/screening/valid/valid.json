@@ -1,8 +1,8 @@
 {
   "reference": "screening reference",
-  "ended_at": "10/19/2016",
+  "ended_at": "2016-10-31",
   "incident_county": "Santa Clara",
-  "incident_date": "10/19/2016",
+  "incident_date": "2016-10-31",
   "location_type": "school",
   "communication_method": "phone",
   "name": "screening name",
