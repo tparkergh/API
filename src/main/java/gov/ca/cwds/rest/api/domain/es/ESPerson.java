@@ -25,8 +25,21 @@ import gov.ca.cwds.rest.api.persistence.cms.Reporter;
  */
 public class ESPerson extends Person {
 
+  /**
+   * {@link ObjectMapper}, used to unmarshall JSON Strings from member {@link #sourceJson} into
+   * instances of {@link #sourceType}.
+   * 
+   * <p>
+   * This mapper is thread-safe and reusable across multiple threads, yet any configuration made to
+   * it, such as ignoring unknown JSON properties, applies to ALL target class types.
+   * </p>
+   */
   private static final ObjectMapper MAPPER;
 
+  /**
+   * Relax strict constraints regarding unknown JSON properties, since API classes may change over
+   * time, and not all classes emit version information in JSON.
+   */
   static {
     ObjectMapper mapper = new ObjectMapper();
     mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
@@ -38,7 +51,7 @@ public class ESPerson extends Person {
    * 
    * @author CWDS API Team
    */
-  enum ESColumn {
+  public enum ESColumn {
     ID("id", String.class, ""), FIRST_NAME("first_name", String.class, ""), LAST_NAME("last_name",
         String.class, ""), GENDER("gender", String.class, "U"), BIRTH_DATE("date_of_birth",
             String.class, null), SSN("ssn", String.class,
@@ -72,23 +85,33 @@ public class ESPerson extends Person {
       this.defaultVal = defaultVal;
     }
 
-    public String getCol() {
+    /**
+     * @return ElasticSearch column name
+     */
+    public final String getCol() {
       return col;
     }
 
-    public Class<? extends Serializable> getKlazz() {
+    /**
+     * @return target data type. Must be assignable from the ElasticSearch result data type.
+     */
+    public final Class<? extends Serializable> getKlazz() {
       return klazz;
     }
 
-    public Object getDefaultVal() {
+    /**
+     * @return default value for target field that lacking a corresponding value in the
+     *         ElasticSearch result Map
+     */
+    public final Object getDefaultVal() {
       return defaultVal;
     }
 
   }
 
   /**
-   * Extract field's value from an ElasticSearch result document {@link Map} (key: field name),
-   * using the field's ES column name and data type.
+   * Extract field's value from an ElasticSearch result {@link Map} (key: field name), using the
+   * field's ES column name and data type.
    * 
    * @param <T> expected data type
    * @param m ES result map
@@ -96,7 +119,7 @@ public class ESPerson extends Person {
    * @return field value as specified type T
    */
   @SuppressWarnings("unchecked")
-  protected static <T extends Serializable> T pullData(final Map<String, Object> m, ESColumn f) {
+  protected static <T extends Serializable> T pullCol(final Map<String, Object> m, ESColumn f) {
     return (T) f.klazz.cast(m.getOrDefault(f.col, f.defaultVal));
   }
 
@@ -104,24 +127,32 @@ public class ESPerson extends Person {
    * Produce an ESPerson domain from native ElasticSearch {@link SearchHit}. Parse JSON results and
    * populate associated fields.
    * 
+   * <p>
+   * <strong>Classloader note:</strong> <br>
+   * When running in an application server, the root classloader may not know of our
+   * domain/persistence class, and so we look it up using the current thread's classloader, like
+   * so:</br>
+   * </p>
+   * 
+   * <blockquote>
+   * {@code Class.forName("some.nested.class", false, Thread.currentThread().getContextClassLoader())}</blockquote>
+   * 
    * @param hit search result
    * @return populated domain-level ES object
-   * @see #pullData(Map, ESColumn)
+   * @see #pullCol(Map, ESColumn)
    */
   public static ESPerson makeESPerson(SearchHit hit) {
     final Map<String, Object> m = hit.getSource();
-    ESPerson ret = new ESPerson(ESPerson.<String>pullData(m, ESColumn.ID),
-        ESPerson.<String>pullData(m, ESColumn.FIRST_NAME),
-        ESPerson.<String>pullData(m, ESColumn.LAST_NAME),
-        ESPerson.<String>pullData(m, ESColumn.GENDER),
-        ESPerson.<String>pullData(m, ESColumn.BIRTH_DATE),
-        ESPerson.<String>pullData(m, ESColumn.SSN), ESPerson.<String>pullData(m, ESColumn.TYPE),
-        ESPerson.<String>pullData(m, ESColumn.SOURCE), null);
+    ESPerson ret = new ESPerson(ESPerson.<String>pullCol(m, ESColumn.ID),
+        ESPerson.<String>pullCol(m, ESColumn.FIRST_NAME),
+        ESPerson.<String>pullCol(m, ESColumn.LAST_NAME),
+        ESPerson.<String>pullCol(m, ESColumn.GENDER),
+        ESPerson.<String>pullCol(m, ESColumn.BIRTH_DATE), ESPerson.<String>pullCol(m, ESColumn.SSN),
+        ESPerson.<String>pullCol(m, ESColumn.TYPE), ESPerson.<String>pullCol(m, ESColumn.SOURCE),
+        null);
 
     if (!StringUtils.isBlank(ret.getSourceType()) && !StringUtils.isBlank(ret.getSourceJson())) {
       try {
-        // When running in an application server, the root classloader may not know of our
-        // domain/persistence class, and so we look it up using this thread's classloader.
         final Object obj = MAPPER.readValue(ret.getSourceJson(), Class.forName(ret.getSourceType(),
             false, Thread.currentThread().getContextClassLoader()));
 
@@ -165,15 +196,21 @@ public class ESPerson extends Person {
   private String sourceType;
 
   /**
-   * Raw, nested, child document in JSON from object {@link #sourceType} and stored in ES document.
+   * Raw, nested, child document (typically inherited from {@link @Person} in JSON from object
+   * {@link #sourceType} and stored in ES document.
+   * 
+   * <p>
+   * Note that JSON marshalling intentionally ignores this member, since it represents the JSON to
+   * create a child Object and not the Object itself.
+   * </p>
    */
   @JsonProperty("source")
   @JsonIgnore
   private String sourceJson;
 
   /**
-   * Nested document, instantiated through reflection from Class type {@link #sourceType} and JSON
-   * {@link #sourceJson}.
+   * Nested document Object, constructed by unmarshalling {@link #sourceJson} into an instance of
+   * Class type {@link #sourceType}.
    */
   private Object sourceObj;
 
@@ -246,7 +283,7 @@ public class ESPerson extends Person {
   }
 
   /**
-   * See comments on {@link #sourceJson}.
+   * See comments on {@link #sourceJson}. JSON streaming intentionally ignores this field.
    * 
    * @return the raw JSON of nested person document, if any
    * @see #sourceType
@@ -256,6 +293,12 @@ public class ESPerson extends Person {
     return sourceJson;
   }
 
+  /**
+   * See comments on {@link #sourceObj}.
+   * 
+   * @return an instance of the Object represented by {@link #sourceType} and {@link #sourceJson}.
+   * @see #sourceType
+   */
   public Object getSourceObj() {
     return sourceObj;
   }

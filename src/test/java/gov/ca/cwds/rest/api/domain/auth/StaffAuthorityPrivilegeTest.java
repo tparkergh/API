@@ -1,67 +1,69 @@
 package gov.ca.cwds.rest.api.domain.auth;
 
-import static io.dropwizard.testing.FixtureHelpers.fixture;
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.equalTo;
-import static org.hamcrest.Matchers.is;
-import io.dropwizard.jackson.Jackson;
-import nl.jqno.equalsverifier.EqualsVerifier;
-import nl.jqno.equalsverifier.Warning;
-
+import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.runners.MockitoJUnitRunner;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-
+@RunWith(MockitoJUnitRunner.class)
 public class StaffAuthorityPrivilegeTest {
 
-  private static final ObjectMapper MAPPER = Jackson.newObjectMapper();
+  @Mock
+  private String authPrivilegeCode;
 
-  private String authPrivilegeType = "Countywide Read";
-  private String authPrivilegeCode = "P";
-  private String county = "Placer";
+  @Mock
+  private String authPrivilegeType;
 
-  /*
-   * Constructor Tests
-   */
+  @Mock
+  private String county;
+
+  @InjectMocks
+  private StaffAuthorityPrivilege staffAuthorityPrivilege;
+
+
+  @BeforeClass
+  public static void setUpBeforeClass() throws Exception {}
+
+  @Before
+  public void setUp() throws Exception {}
 
   @Test
-  public void jsonCreatorConstructorTest() throws Exception {
-
-    StaffAuthorityPrivilege domain = new StaffAuthorityPrivilege("Countywide Read", "P", "Placer");
-
-    assertThat(domain.getAuthPrivilegeType(), is(equalTo(authPrivilegeType)));
-    assertThat(domain.getAuthPrivilegeCode(), is(equalTo(authPrivilegeCode)));
-    assertThat(domain.getCounty(), is(equalTo(county)));
-  }
-
-  @Test
-  public void serializesToJSON() throws Exception {
-    final String expected =
-        MAPPER.writeValueAsString(MAPPER.readValue(
-            fixture("fixtures/domain/auth/StaffAuthorityPrivilege/valid/valid.json"),
-            StaffAuthorityPrivilege.class));
-
-    assertThat(MAPPER.writeValueAsString(validStaffAuthorityPrivilege()), is(equalTo(expected)));
+  public final void testHashCode() throws Exception {
+    // TODO
+    throw new RuntimeException("not yet implemented");
   }
 
   @Test
-  public void deserializesFromJSON() throws Exception {
-    assertThat(MAPPER.readValue(
-        fixture("fixtures/domain/auth/StaffAuthorityPrivilege/valid/valid.json"),
-        StaffAuthorityPrivilege.class), is(equalTo(validStaffAuthorityPrivilege())));
+  public final void testStaffAuthorityPrivilege() throws Exception {
+    // TODO
+    throw new RuntimeException("not yet implemented");
   }
 
   @Test
-  public void equalsHashCodeWork() {
-    EqualsVerifier.forClass(UserAuthorization.class).suppress(Warning.NONFINAL_FIELDS).verify();
+  public final void testGetAuthPrivilegeType() throws Exception {
+    // TODO
+    throw new RuntimeException("not yet implemented");
   }
 
-
-  /*
-   * Utils
-   */
-  private StaffAuthorityPrivilege validStaffAuthorityPrivilege() {
-
-    return new StaffAuthorityPrivilege("Countywide Read", "P", "Placer");
+  @Test
+  public final void testGetAuthPrivilegeCode() throws Exception {
+    // TODO
+    throw new RuntimeException("not yet implemented");
   }
+
+  @Test
+  public final void testGetCounty() throws Exception {
+    // TODO
+    throw new RuntimeException("not yet implemented");
+  }
+
+  @Test
+  public final void testEquals() throws Exception {
+    // TODO
+    throw new RuntimeException("not yet implemented");
+  }
+
 }

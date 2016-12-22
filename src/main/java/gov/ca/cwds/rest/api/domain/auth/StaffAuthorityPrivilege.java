@@ -1,10 +1,10 @@
 package gov.ca.cwds.rest.api.domain.auth;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import io.dropwizard.jackson.JsonSnakeCase;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
-
-import com.fasterxml.jackson.annotation.JsonProperty;
 
 
 
@@ -66,8 +66,8 @@ public class StaffAuthorityPrivilege {
     return county;
   }
 
-  /*
-   * (non-Javadoc)
+  /**
+   * {@inheritDoc}
    * 
    * @see java.lang.Object#hashCode()
    */
@@ -81,8 +81,8 @@ public class StaffAuthorityPrivilege {
     return result;
   }
 
-  /*
-   * (non-Javadoc)
+  /**
+   * {@inheritDoc}
    * 
    * @see java.lang.Object#equals(java.lang.Object)
    */

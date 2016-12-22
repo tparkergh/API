@@ -38,16 +38,18 @@ public class DB2PassUserTest {
             .executeUpdate();
 
         // Execute SQL to force extended client information to be sent to the server.
-        ResultSet rs = conn.prepareStatement(
+        // Auto-close the ResultSet upon block exit.
+        try (ResultSet rs = conn.prepareStatement(
             "select c.doc_handle, c.DOC_SEGS, c.CMPRS_PRG, c.DOC_NAME, c.DOC_DATE, c.DOC_TIME, c.DOC_LEN, c.LST_UPD_ID, c.LST_UPD_TS, c.DOC_AUTH, c.DOC_SERV "
                 + "from cwsint.TSCNTRLT c "
                 + "where c.doc_handle = '0001121506110220*RAMESHA 00001' "
                 + "order by c.DOC_HANDLE for read only")
-            .executeQuery();
+            .executeQuery()) {
 
-        while (rs.next()) {
-          final String staffId = rs.getString("LST_UPD_ID");
-          System.out.println("staffId = " + staffId);
+          while (rs.next()) {
+            final String staffId = rs.getString("LST_UPD_ID");
+            System.out.println("staffId = " + staffId);
+          }
         }
       }
 

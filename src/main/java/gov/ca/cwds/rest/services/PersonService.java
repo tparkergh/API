@@ -140,10 +140,10 @@ public class PersonService implements CrudsService {
     String field = "";
     String value = "";
     if (!StringUtils.isBlank(firstName)) {
-      field = "first_name";
+      field = ESPerson.ESColumn.FIRST_NAME.getCol();
       value = firstName;
     } else if (!StringUtils.isBlank(lastName)) {
-      field = "last_name";
+      field = ESPerson.ESColumn.LAST_NAME.getCol();
       value = lastName;
     } else if (!StringUtils.isBlank(birthDate)) {
       field = "birth_date";
