@@ -87,10 +87,10 @@ public class Person extends NsPersistentObject {
    */
   public Person(gov.ca.cwds.rest.api.domain.Person person, Long lastUpdatedId) {
     super(lastUpdatedId);
-    this.firstName = person.getFirst_name();
-    this.lastName = person.getLast_name();
+    this.firstName = person.getFirstName();
+    this.lastName = person.getLastName();
     this.gender = person.getGender();
-    this.dateOfBirth = DomainObject.uncookDateString(person.getDate_of_birth());
+    this.dateOfBirth = DomainObject.uncookDateString(person.getBirthDate());
     this.ssn = person.getSsn();
     this.address = new Address(person.getAddress(), null);
   }

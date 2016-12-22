@@ -20,12 +20,12 @@ public class Person extends DomainObject implements Request, Response {
   @JsonProperty("first_name")
   @ApiModelProperty(example = "bart")
   @Size(max = 50)
-  private String first_name;
+  private String firstName;
 
   @JsonProperty("last_name")
   @ApiModelProperty(example = "simpson")
   @Size(max = 50)
-  private String last_name;
+  private String lastName;
 
   @JsonProperty("gender")
   @ApiModelProperty(example = "M")
@@ -37,7 +37,7 @@ public class Person extends DomainObject implements Request, Response {
   // @PastDate()
   @JsonProperty("birth_date")
   @ApiModelProperty(example = "2012-04-01")
-  private String birth_date;
+  private String birthDate;
 
   @JsonProperty("ssn")
   @ApiModelProperty(example = "999551111")
@@ -50,23 +50,23 @@ public class Person extends DomainObject implements Request, Response {
   /**
    * Constructor
    * 
-   * @param first_name The first name
+   * @param firstName The first name
    * @param last_name The last name
    * @param gender The gender
-   * @param birth_date The date of birth
+   * @param birthDate The date of birth
    * @param ssn The ssn
    * @param address The address
    */
   @JsonCreator
-  public Person(@JsonProperty("first_name") String first_name,
-      @JsonProperty("last_name") String last_name, @JsonProperty("gender") String gender,
-      @JsonProperty("birth_date") String birth_date, @JsonProperty("ssn") String ssn,
+  public Person(@JsonProperty("first_name") String firstName,
+      @JsonProperty("last_name") String lastName, @JsonProperty("gender") String gender,
+      @JsonProperty("birth_date") String birthDate, @JsonProperty("ssn") String ssn,
       @JsonProperty("address") Address address) {
     super();
-    this.first_name = first_name;
-    this.last_name = last_name;
+    this.firstName = firstName;
+    this.lastName = lastName;
     this.gender = gender;
-    this.birth_date = birth_date;
+    this.birthDate = birthDate;
     this.ssn = ssn;
     this.address = address;
   }
@@ -77,10 +77,10 @@ public class Person extends DomainObject implements Request, Response {
    * @param person persistence layer person
    */
   public Person(gov.ca.cwds.rest.api.persistence.ns.Person person) {
-    this.first_name = person.getFirstName();
-    this.last_name = person.getLastName();
+    this.firstName = person.getFirstName();
+    this.lastName = person.getLastName();
     this.gender = person.getGender();
-    this.birth_date = DomainObject.cookDate(person.getDateOfBirth());
+    this.birthDate = DomainObject.cookDate(person.getDateOfBirth());
     this.ssn = person.getSsn();
     if (person.getAddress() != null) {
       this.address = new Address(person.getAddress());
@@ -90,15 +90,15 @@ public class Person extends DomainObject implements Request, Response {
   /**
    * @return the first_name
    */
-  public String getFirst_name() {
-    return first_name;
+  public String getFirstName() {
+    return firstName;
   }
 
   /**
    * @return the last_name
    */
-  public String getLast_name() {
-    return last_name;
+  public String getLastName() {
+    return lastName;
   }
 
   /**
@@ -111,8 +111,8 @@ public class Person extends DomainObject implements Request, Response {
   /**
    * @return the birth_date
    */
-  public String getDate_of_birth() {
-    return birth_date;
+  public String getBirthDate() {
+    return birthDate;
   }
 
   /**
@@ -139,10 +139,10 @@ public class Person extends DomainObject implements Request, Response {
     final int prime = 31;
     int result = 1;
     result = prime * result + ((address == null) ? 0 : address.hashCode());
-    result = prime * result + ((birth_date == null) ? 0 : birth_date.hashCode());
-    result = prime * result + ((first_name == null) ? 0 : first_name.hashCode());
+    result = prime * result + ((birthDate == null) ? 0 : birthDate.hashCode());
+    result = prime * result + ((firstName == null) ? 0 : firstName.hashCode());
     result = prime * result + ((gender == null) ? 0 : gender.hashCode());
-    result = prime * result + ((last_name == null) ? 0 : last_name.hashCode());
+    result = prime * result + ((lastName == null) ? 0 : lastName.hashCode());
     result = prime * result + ((ssn == null) ? 0 : ssn.hashCode());
     return result;
   }
@@ -166,25 +166,25 @@ public class Person extends DomainObject implements Request, Response {
         return false;
     } else if (!address.equals(other.address))
       return false;
-    if (birth_date == null) {
-      if (other.birth_date != null)
+    if (birthDate == null) {
+      if (other.birthDate != null)
         return false;
-    } else if (!birth_date.equals(other.birth_date))
+    } else if (!birthDate.equals(other.birthDate))
       return false;
-    if (first_name == null) {
-      if (other.first_name != null)
+    if (firstName == null) {
+      if (other.firstName != null)
         return false;
-    } else if (!first_name.equals(other.first_name))
+    } else if (!firstName.equals(other.firstName))
       return false;
     if (gender == null) {
       if (other.gender != null)
         return false;
     } else if (!gender.equals(other.gender))
       return false;
-    if (last_name == null) {
-      if (other.last_name != null)
+    if (lastName == null) {
+      if (other.lastName != null)
         return false;
-    } else if (!last_name.equals(other.last_name))
+    } else if (!lastName.equals(other.lastName))
       return false;
     if (ssn == null) {
       if (other.ssn != null)

@@ -91,11 +91,11 @@ public class PersonTest {
         new gov.ca.cwds.rest.api.persistence.ns.Person(domain, (long) 1234565);
 
     Person totest = new Person(persistent);
-    assertThat(totest.getDate_of_birth(),
+    assertThat(totest.getBirthDate(),
         is(equalTo(DomainObject.cookDate(persistent.getDateOfBirth()))));
-    assertThat(totest.getFirst_name(), is(equalTo(persistent.getFirstName())));
+    assertThat(totest.getFirstName(), is(equalTo(persistent.getFirstName())));
     assertThat(totest.getGender(), is(equalTo(persistent.getGender())));
-    assertThat(totest.getLast_name(), is(equalTo(persistent.getLastName())));
+    assertThat(totest.getLastName(), is(equalTo(persistent.getLastName())));
 
   }
 
@@ -105,10 +105,10 @@ public class PersonTest {
     Person domain = new Person(firstName, lastName, gender, birthDate, ssn, address);
 
     assertThat(domain.getAddress(), is(equalTo(address)));
-    assertThat(domain.getDate_of_birth(), is(equalTo(birthDate)));
-    assertThat(domain.getFirst_name(), is(equalTo(firstName)));
+    assertThat(domain.getBirthDate(), is(equalTo(birthDate)));
+    assertThat(domain.getFirstName(), is(equalTo(firstName)));
     assertThat(domain.getGender(), is(equalTo(gender)));
-    assertThat(domain.getLast_name(), is(equalTo(lastName)));
+    assertThat(domain.getLastName(), is(equalTo(lastName)));
     assertThat(domain.getSsn(), is(equalTo(ssn)));
 
   }

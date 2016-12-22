@@ -11,7 +11,11 @@ import org.hibernate.annotations.Type;
 import gov.ca.cwds.rest.api.persistence.PersistentObject;
 
 /**
- * Base class for objects in the persistence layer.
+ * Base class for objects in the NS persistence layer.
+ * 
+ * <p>
+ * Type P stands for the primary key type, which must extend interface {@link Serializable}.
+ * </p>
  * 
  * @author CWDS API Team
  */
@@ -60,8 +64,8 @@ public abstract class NsPersistentObject implements PersistentObject {
     return lastUpdatedTime;
   }
 
-  /*
-   * (non-Javadoc)
+  /**
+   * {@inheritDoc}
    * 
    * @see gov.ca.cwds.rest.api.persistence.PersistentObject#getPrimaryKey()
    */

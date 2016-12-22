@@ -3,9 +3,13 @@ package gov.ca.cwds.rest.api.domain.es;
 import java.io.Serializable;
 import java.util.Map;
 
+import org.apache.commons.lang3.StringUtils;
 import org.elasticsearch.search.SearchHit;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.databind.DeserializationFeature;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 import gov.ca.cwds.rest.api.domain.Address;
 import gov.ca.cwds.rest.api.domain.Person;
@@ -21,33 +25,78 @@ import gov.ca.cwds.rest.api.persistence.cms.Reporter;
  */
 public class ESPerson extends Person {
 
+  private static final ObjectMapper MAPPER;
+
+  static {
+    ObjectMapper mapper = new ObjectMapper();
+    mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+    MAPPER = mapper;
+  }
+
   /**
    * ElasticSearch field names for document type people.person.
    * 
    * @author CWDS API Team
    */
-  protected enum ESColumn {
-    ID("id"), FIRST_NAME("first_name"), LAST_NAME("last_name"), GENDER("gender"), BIRTH_DATE(
-        "date_of_birth"), SSN("ssn"), TYPE("type"), SOURCE("source");
+  enum ESColumn {
+    ID("id", String.class, ""), FIRST_NAME("first_name", String.class, ""), LAST_NAME("last_name",
+        String.class, ""), GENDER("gender", String.class, "U"), BIRTH_DATE("date_of_birth",
+            String.class, null), SSN("ssn", String.class,
+                null), TYPE("type", String.class, null), SOURCE("source", String.class, null);
 
     /**
      * ElasticSearch column name.
      */
-    private final String col;
+    final String col;
 
-    ESColumn(String col) {
+    /**
+     * Value's data type as a Java Class.
+     */
+    final Class<? extends Serializable> klazz;
+
+    /**
+     * Default value, if no value is provided.
+     */
+    final Object defaultVal;
+
+    /**
+     * Enum constructor populates final members.
+     * 
+     * @param col ES column name
+     * @param klazz Java Class of value
+     * @param defaultVal default value. Must be assignable from {@link #klazz}.
+     */
+    ESColumn(String col, Class<? extends Serializable> klazz, Object defaultVal) {
       this.col = col;
+      this.klazz = klazz;
+      this.defaultVal = defaultVal;
     }
 
-    public String text() {
+    public String getCol() {
       return col;
     }
+
+    public Class<? extends Serializable> getKlazz() {
+      return klazz;
+    }
+
+    public Object getDefaultVal() {
+      return defaultVal;
+    }
+
   }
 
+  /**
+   * Extract field's value from an ElasticSearch result document {@link Map} (key: field name),
+   * using the field's ES column name and data type.
+   * 
+   * @param m ES result map
+   * @param f field to extract
+   * @return field value as specified type T
+   */
   @SuppressWarnings("unchecked")
-  protected static <T extends Serializable> T pullField(final Map<String, Object> m,
-      ESColumn f) {
-    return (T) m.getOrDefault(f.text(), "");
+  protected static <T extends Serializable> T pullData(final Map<String, Object> m, ESColumn f) {
+    return (T) f.klazz.cast(m.getOrDefault(f.col, f.defaultVal));
   }
 
   /**
@@ -56,16 +105,32 @@ public class ESPerson extends Person {
    * 
    * @param hit search result
    * @return populated domain-level ES object
+   * @see #pullData(Map, ESColumn)
    */
   public static ESPerson makeESPerson(SearchHit hit) {
     final Map<String, Object> m = hit.getSource();
-    return new ESPerson(
-        // m.getOrDefault("id", "0").toString(),
-        ESPerson.<String>pullField(m, ESColumn.ID),
-        (String) m.getOrDefault(ESColumn.FIRST_NAME.text(), ""),
-        (String) m.getOrDefault("last_name", ""), (String) m.getOrDefault("gender", null),
-        (String) m.getOrDefault("date_of_birth", null), (String) m.getOrDefault("ssn", null),
-        (String) m.getOrDefault("type", null), (String) m.getOrDefault("source", null), null);
+    ESPerson ret = new ESPerson(ESPerson.<String>pullData(m, ESColumn.ID),
+        ESPerson.<String>pullData(m, ESColumn.FIRST_NAME),
+        ESPerson.<String>pullData(m, ESColumn.LAST_NAME),
+        ESPerson.<String>pullData(m, ESColumn.GENDER),
+        ESPerson.<String>pullData(m, ESColumn.BIRTH_DATE),
+        ESPerson.<String>pullData(m, ESColumn.SSN), ESPerson.<String>pullData(m, ESColumn.TYPE),
+        ESPerson.<String>pullData(m, ESColumn.SOURCE), null);
+
+    if (!StringUtils.isBlank(ret.getSourceType()) && !StringUtils.isBlank(ret.getSourceJson())) {
+      try {
+        // When running in an application server, the root classloader may not know of our
+        // domain/persistence class, and so we look it up using this thread's classloader.
+        final Object obj = MAPPER.readValue(ret.getSourceJson(), Class.forName(ret.getSourceType(),
+            false, Thread.currentThread().getContextClassLoader()));
+
+        ret.sourceObj = obj;
+      } catch (Exception e) {
+        throw new RuntimeException("Failed to instantiate class " + ret.getSourceType(), e);
+      }
+    }
+
+    return ret;
   }
 
   /**
@@ -85,7 +150,7 @@ public class ESPerson extends Person {
    * generics, untyped Object, or collections with heterogenous types. For now,
    * 
    * <p>
-   * This case begs Java to add a "union" or equivalent storage technique.
+   * Java lacks "union", polymorphic return types, and true template.
    * </p>
    */
   @JsonProperty("id")
@@ -95,13 +160,33 @@ public class ESPerson extends Person {
    * Original, fully-qualified, persistence-level source class, such
    * "gov.ca.cwds.rest.api.persistence.cms.OtherClientName".
    */
+  @JsonProperty("type")
   private String sourceType;
 
   /**
    * Raw, nested, child document in JSON from object {@link #sourceType} and stored in ES document.
    */
+  @JsonProperty("source")
+  @JsonIgnore
   private String sourceJson;
 
+  /**
+   * Nested document, instantiated through reflection from Class type {@link #sourceType} and JSON
+   * {@link #sourceJson}.
+   */
+  private Object sourceObj;
+
+  /**
+   * Overload constructor.
+   * 
+   * @param id unique identifier
+   * @param firstName The first name
+   * @param last_name The last name
+   * @param gender The gender
+   * @param birthDate The date of birth
+   * @param ssn The ssn
+   * @param address The address
+   */
   public ESPerson(String id, String firstName, String lastName, String gender, String birthDate,
       String ssn, Address address) {
     super(trim(firstName), trim(lastName), trim(gender), trim(birthDate), trim(ssn), address);
@@ -165,8 +250,13 @@ public class ESPerson extends Person {
    * @return the raw JSON of nested person document, if any
    * @see #sourceType
    */
+  @JsonIgnore
   public String getSourceJson() {
     return sourceJson;
+  }
+
+  public Object getSourceObj() {
+    return sourceObj;
   }
 
 }

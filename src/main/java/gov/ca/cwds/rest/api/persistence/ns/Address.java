@@ -76,8 +76,8 @@ public class Address extends NsPersistentObject {
     this.zip = address.getZip();
   }
 
-  /*
-   * (non-Javadoc)
+  /**
+   * {@inheritDoc}
    * 
    * @see gov.ca.cwds.rest.api.persistence.PersistentObject#getPrimaryKey()
    */
@@ -86,14 +86,12 @@ public class Address extends NsPersistentObject {
     return getId();
   }
 
-
   /**
    * @return the id
    */
   public Long getId() {
     return id;
   }
-
 
   /**
    * @return the streetAddress
@@ -102,14 +100,12 @@ public class Address extends NsPersistentObject {
     return streetAddress;
   }
 
-
   /**
    * @return the city
    */
   public String getCity() {
     return city;
   }
-
 
   /**
    * @return the state
@@ -124,7 +120,5 @@ public class Address extends NsPersistentObject {
   public Integer getZip() {
     return zip;
   }
-
-
 
 }

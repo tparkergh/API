@@ -191,7 +191,7 @@ public class ElasticsearchDao {
   }
 
   /**
-   * Generic OR query for Person. Initializes and starts ElasticSearch client, if not started.
+   * Logical OR query for Person. Initializes and starts ElasticSearch client, if not started.
    * 
    * @param req boolean hierarchy search request
    * @return array of raw ElasticSearch hits
