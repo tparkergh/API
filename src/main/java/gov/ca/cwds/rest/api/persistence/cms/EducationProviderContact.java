@@ -160,7 +160,7 @@ public class EducationProviderContact extends CmsPersistentObject {
     return middleName;
   }
 
-  public String getNamePrefixExtension() {
+  public String getNamePrefixDescription() {
     return namePrefixDescription;
   }
 

@@ -45,7 +45,7 @@ public class EducationProviderContactTest {
     EducationProviderContact pre =
         new EducationProviderContact(epc.getdepartmentOfEducationIndicator(), epc.getemailAddress(),
             epc.getFaxNumber(), epc.getFirstName(), epc.getfKeyEducationProvider(), epc.getId(),
-            epc.getLastName(), epc.getMiddleName(), epc.getNamePrefixExtension(),
+            epc.getLastName(), epc.getMiddleName(), epc.getNamePrefixDescription(),
             epc.getPhoneExtensionNumber(), epc.getPhoneNumber(), epc.getPrimaryContactIndicator(),
             epc.getSuffixTitleDescription(), epc.getTitleDescription());
 
@@ -58,7 +58,7 @@ public class EducationProviderContactTest {
     assertThat(pre.getId(), is(equalTo(epc.getId())));
     assertThat(pre.getLastName(), is(equalTo(epc.getLastName())));
     assertThat(pre.getMiddleName(), is(equalTo(epc.getMiddleName())));
-    assertThat(pre.getNamePrefixExtension(), is(equalTo(epc.getNamePrefixExtension())));
+    assertThat(pre.getNamePrefixDescription(), is(equalTo(epc.getNamePrefixDescription())));
     assertThat(pre.getPhoneExtensionNumber(), is(equalTo(epc.getPhoneExtensionNumber())));
     assertThat(pre.getPhoneNumber(), is(equalTo(epc.getPhoneNumber())));
     assertThat(pre.getPrimaryContactIndicator(), is(equalTo(epc.getPrimaryContactIndicator())));
