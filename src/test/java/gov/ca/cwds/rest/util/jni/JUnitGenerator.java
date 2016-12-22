@@ -5,6 +5,8 @@ import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.lang.reflect.Parameter;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Generate JUnit test cases for target class.
@@ -13,10 +15,38 @@ import java.lang.reflect.Parameter;
  */
 public class JUnitGenerator {
 
-  private static final String SPACER = "\n--------------------------\n";
+  private static final String SPACER =
+      "\n----------------------------------------------------------\n";
+  private static final String CLASS_SPACER =
+      "\n==========================================================\n";
+
+  /**
+   * Split annotation settings String into key/value pairs.
+   * 
+   * @param s annotation String
+   * @return map of annotation key/value pairs
+   */
+  protected static Map<String, String> splitAnnotationSettings(String s) {
+    // final String[] inners = s.replace('(', '~').replace(')', '~').split("~");
+    final String[] inners = s.split("[()]");
+    final String[] settings = inners[1].trim().split(",");
+    Map<String, String> ret = new HashMap<String, String>();
+
+    for (String pair : settings) {
+      final String[] tokens = pair.split("[=]");
+      if (tokens.length > 1) {
+        ret.put(tokens[0].trim(), tokens[1].trim());
+      }
+    }
+
+    return ret;
+  }
 
   protected static void drillAnnotation(Annotation ann) {
-    System.out.println("\t\tAnnotation: " + ann);
+    final String s = ann.toString();
+    System.out.println("\t\tAnnotation: " + s);
+    final Map<String, String> m = splitAnnotationSettings(s);
+    System.out.println("\t\t\tSettings: " + m);
   }
 
   protected static void drillAnnotations(String msg, Annotation[] anns) {
@@ -34,17 +64,22 @@ public class JUnitGenerator {
     }
   }
 
-  protected static void drillClass(String className) throws Exception {
-    System.out.println("Class: " + className);
-    final Class<?> klazz =
-        Class.forName(className, false, Thread.currentThread().getContextClassLoader());
+  protected static void drillClass(Class<?> klazz) throws Exception {
+    System.out.println(CLASS_SPACER + "CLASS:\n" + klazz.getName() + ":" + CLASS_SPACER);
 
-    System.out.println(SPACER + "CLASS DECLARED ANNOTATIONS:" + SPACER);
+    final Class<?>[] intrfcs = klazz.getInterfaces();
+    if (intrfcs != null && intrfcs.length > 0) {
+      System.out.println(SPACER + "INTERFACES:\n" + klazz.getName() + ":" + SPACER);
+      for (Class<?> intrfce : intrfcs) {
+        System.out.println(intrfce);
+      }
+    }
 
     // Class level annotations:
+    System.out.println(SPACER + "CLASS DECLARED ANNOTATIONS:" + SPACER);
     drillAnnotations("Class Declared", klazz.getDeclaredAnnotations());
 
-    // Constructors:
+    // CONSTRUCTORS:
     final Constructor<?>[] ctors = klazz.getDeclaredConstructors();
     for (Constructor<?> c : ctors) {
       System.out.println("Constructor: " + c);
@@ -57,21 +92,32 @@ public class JUnitGenerator {
       }
     }
 
-    // Fields on this class:
+    // FIELDS:
     System.out.println(SPACER + "DECLARED FIELDS:" + SPACER);
     for (Field f : klazz.getDeclaredFields()) {
-      System.out.println(f);
-      drillAnnotations("Field Declared", f.getDeclaredAnnotations());
+      if (!f.getName().contains(".serialVersionUID")) {
+        System.out.println(f);
+        drillAnnotations("Field Declared", f.getDeclaredAnnotations());
+      }
     }
 
-    // Methods on this class:
+    // METHODS:
     System.out.println(SPACER + "DECLARED METHODS:" + SPACER);
     for (Method m : klazz.getDeclaredMethods()) {
       System.out.println(m);
       drillAnnotations("Method Declared", m.getDeclaredAnnotations());
     }
 
+    // PARENT CLASS:
+    final Class<?> superKlazz = klazz.getSuperclass();
+    if (superKlazz != null && !"java.lang.Object".equals(superKlazz.getName())) {
+      System.out.println(SPACER + "PARENT CLASS:\n" + klazz.getSuperclass() + " :" + SPACER);
+      drillClass(superKlazz);
+    }
+  }
 
+  protected static void drillClass(String className) throws Exception {
+    drillClass(Class.forName(className, false, Thread.currentThread().getContextClassLoader()));
   }
 
   /**
@@ -91,7 +137,7 @@ public class JUnitGenerator {
       // System.out.println(desc);
 
     } catch (Throwable e) {
-      // Heck, it's a *main* method in a *utility class*. Swallow the exception. :-)
+      // Heck, it's a *main* method ... in a *utility class*. Swallow the exception. :-)
       e.printStackTrace();
     }
   }
