@@ -1,10 +1,5 @@
 package gov.ca.cwds.inject;
 
-import com.google.inject.AbstractModule;
-import com.google.inject.Injector;
-import com.google.inject.Provides;
-import com.google.inject.name.Named;
-
 import gov.ca.cwds.rest.ApiConfiguration;
 import gov.ca.cwds.rest.SwaggerConfiguration;
 import gov.ca.cwds.rest.resources.AddressResource;
@@ -15,6 +10,7 @@ import gov.ca.cwds.rest.resources.ResourceDelegate;
 import gov.ca.cwds.rest.resources.ScreeningResource;
 import gov.ca.cwds.rest.resources.ServiceBackedResourceDelegate;
 import gov.ca.cwds.rest.resources.SwaggerResource;
+import gov.ca.cwds.rest.resources.auth.UserAuthorizationResource;
 import gov.ca.cwds.rest.resources.cms.AllegationResource;
 import gov.ca.cwds.rest.resources.cms.CmsDocReferralClientResource;
 import gov.ca.cwds.rest.resources.cms.CmsDocumentResource;
@@ -26,6 +22,7 @@ import gov.ca.cwds.rest.resources.cms.StaffPersonResource;
 import gov.ca.cwds.rest.services.AddressService;
 import gov.ca.cwds.rest.services.PersonService;
 import gov.ca.cwds.rest.services.ScreeningService;
+import gov.ca.cwds.rest.services.auth.UserAuthorizationService;
 import gov.ca.cwds.rest.services.cms.AllegationService;
 import gov.ca.cwds.rest.services.cms.CmsDocReferralClientService;
 import gov.ca.cwds.rest.services.cms.CmsDocumentService;
@@ -35,6 +32,11 @@ import gov.ca.cwds.rest.services.cms.ReferralClientService;
 import gov.ca.cwds.rest.services.cms.ReferralService;
 import gov.ca.cwds.rest.services.cms.ReporterService;
 import gov.ca.cwds.rest.services.cms.StaffPersonService;
+
+import com.google.inject.AbstractModule;
+import com.google.inject.Injector;
+import com.google.inject.Provides;
+import com.google.inject.name.Named;
 
 public class ResourcesModule extends AbstractModule {
 
@@ -58,6 +60,7 @@ public class ResourcesModule extends AbstractModule {
     bind(ReporterResource.class);
     bind(StaffPersonResource.class);
     bind(PersonSearchResource.class);
+    bind(UserAuthorizationResource.class);
 
 
   }
@@ -156,5 +159,11 @@ public class ResourcesModule extends AbstractModule {
   @StaffPersonServiceBackedResource
   public ResourceDelegate staffPersonServiceBackedResource(Injector injector) {
     return new ServiceBackedResourceDelegate(injector.getInstance(StaffPersonService.class));
+  }
+
+  @Provides
+  @UserAuthorizationServiceBackedResource
+  public ResourceDelegate userAuthorizationServiceBackedResource(Injector injector) {
+    return new ServiceBackedResourceDelegate(injector.getInstance(UserAuthorizationService.class));
   }
 }

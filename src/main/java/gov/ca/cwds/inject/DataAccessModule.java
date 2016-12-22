@@ -1,10 +1,5 @@
 package gov.ca.cwds.inject;
 
-import org.hibernate.SessionFactory;
-
-import com.google.inject.AbstractModule;
-import com.google.inject.Provides;
-
 import gov.ca.cwds.rest.ApiConfiguration;
 import gov.ca.cwds.rest.ElasticsearchConfiguration;
 import gov.ca.cwds.rest.api.persistence.cms.Allegation;
@@ -20,6 +15,7 @@ import gov.ca.cwds.rest.api.persistence.ns.Address;
 import gov.ca.cwds.rest.api.persistence.ns.Person;
 import gov.ca.cwds.rest.api.persistence.ns.Screening;
 import gov.ca.cwds.rest.elasticsearch.db.ElasticsearchDao;
+import gov.ca.cwds.rest.jdbi.auth.UserAuthorizationDao;
 import gov.ca.cwds.rest.jdbi.cms.AllegationDao;
 import gov.ca.cwds.rest.jdbi.cms.AttorneyDao;
 import gov.ca.cwds.rest.jdbi.cms.ClientDao;
@@ -37,6 +33,11 @@ import gov.ca.cwds.rest.jdbi.ns.ScreeningDao;
 import io.dropwizard.db.DataSourceFactory;
 import io.dropwizard.hibernate.HibernateBundle;
 import io.dropwizard.setup.Bootstrap;
+
+import org.hibernate.SessionFactory;
+
+import com.google.inject.AbstractModule;
+import com.google.inject.Provides;
 
 /**
  * DI setup for data access objects
@@ -95,6 +96,8 @@ public class DataAccessModule extends AbstractModule {
     bind(ReferralDao.class);
     bind(ReporterDao.class);
     bind(StaffPersonDao.class);
+
+    bind(UserAuthorizationDao.class);
 
     bind(AddressDao.class);
     bind(PersonDao.class);

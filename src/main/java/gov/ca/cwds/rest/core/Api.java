@@ -78,14 +78,14 @@ public interface Api {
   public final static String RESOURCE_CMSREFERRAL = "_cmsreferrals";
 
   /**
-   * A {@code String} constant representing {@value #RESOURCE_OAUTH_CWDS} api
-   */
-  public final static String RESOURCE_OAUTH_CWDS = "cwdsAuth";
-
-  /**
    * A {@code String} constant representing {@value #RESOURCE_SEARCH_PERSON} api
    */
   public final static String RESOURCE_SEARCH_PERSON = "search_person";
+
+  /**
+   * A {@code String} constant representing {@value #RESOURCE_USER_AUTHORIZATION} api
+   */
+  public final static String RESOURCE_USER_AUTHORIZATION = "user_authorization";
 
 
 }

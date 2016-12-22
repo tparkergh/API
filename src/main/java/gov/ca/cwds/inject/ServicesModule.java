@@ -1,10 +1,9 @@
 package gov.ca.cwds.inject;
 
-import com.google.inject.AbstractModule;
-
 import gov.ca.cwds.rest.services.AddressService;
 import gov.ca.cwds.rest.services.PersonService;
 import gov.ca.cwds.rest.services.ScreeningService;
+import gov.ca.cwds.rest.services.auth.UserAuthorizationService;
 import gov.ca.cwds.rest.services.cms.AllegationService;
 import gov.ca.cwds.rest.services.cms.CmsDocReferralClientService;
 import gov.ca.cwds.rest.services.cms.CmsDocumentService;
@@ -14,6 +13,8 @@ import gov.ca.cwds.rest.services.cms.ReferralClientService;
 import gov.ca.cwds.rest.services.cms.ReferralService;
 import gov.ca.cwds.rest.services.cms.ReporterService;
 import gov.ca.cwds.rest.services.cms.StaffPersonService;
+
+import com.google.inject.AbstractModule;
 
 public class ServicesModule extends AbstractModule {
   public ServicesModule() {}
@@ -33,6 +34,8 @@ public class ServicesModule extends AbstractModule {
     bind(ReferralService.class);
     bind(ReporterService.class);
     bind(StaffPersonService.class);
+
+    bind(UserAuthorizationService.class);
   }
 
 }

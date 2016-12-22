@@ -1,0 +1,59 @@
+package gov.ca.cwds.rest.api.persistence.auth;
+
+import gov.ca.cwds.rest.api.persistence.PersistentObject;
+import gov.ca.cwds.rest.api.persistence.cms.CmsPersistentObject;
+
+import java.io.Serializable;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+
+/**
+ * {@link PersistentObject} representing a User Authorization, this class is just a placeholder for
+ * now
+ * 
+ * @author CWDS API Team
+ */
+@SuppressWarnings("serial")
+@Entity
+public class UserAuthorization extends CmsPersistentObject {
+
+  @Id
+  @Column(name = "USER_ID")
+  private String userId;
+
+  private String staffPersonId;
+
+  private String socialWorker;
+
+  private String supervisor;
+
+  private String overrideAuthority;
+
+  /**
+   * Default constructor
+   * 
+   * Required for Hibernate
+   */
+  public UserAuthorization() {
+    super();
+  }
+
+  public UserAuthorization(String userId, String staffPersonId, String socialWorker,
+      String supervisor, String overrideAuthority) {
+    super();
+    this.userId = userId;
+    this.staffPersonId = staffPersonId;
+    this.socialWorker = socialWorker;
+    this.supervisor = supervisor;
+    this.overrideAuthority = overrideAuthority;
+  }
+
+  @Override
+  public Serializable getPrimaryKey() {
+    // TODO Auto-generated method stub
+    return null;
+  }
+
+}
