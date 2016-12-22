@@ -31,11 +31,18 @@ import io.dropwizard.testing.junit.ResourceTestRule;
 import nl.jqno.equalsverifier.EqualsVerifier;
 import nl.jqno.equalsverifier.Warning;
 
+/**
+ * @author Tabpcenc1
+ *
+ */
 public class AllegationTest {
 
   private static final String ROOT_RESOURCE = "/" + Api.RESOURCE_ALLEGATION + "/";
   private static final AllegationResource mockedAllegationResource = mock(AllegationResource.class);
 
+  /**
+   * 
+   */
   @ClassRule
   public static final ResourceTestRule resources =
       ResourceTestRule.builder().addResource(mockedAllegationResource).build();
@@ -64,6 +71,9 @@ public class AllegationTest {
   private Boolean zippyCreatedIndicator = Boolean.TRUE;
   private Short placementFacilityType = 4;
 
+  /**
+   * 
+   */
   @Before
   public void setup() {
 
@@ -74,6 +84,9 @@ public class AllegationTest {
 
   /*
    * Constructor Tests
+   */
+  /**
+   * @throws Exception
    */
   @Test
   public void persistentObjectConstructorTest() throws Exception {
@@ -118,6 +131,9 @@ public class AllegationTest {
         is(equalTo(persistent.getPlacementFacilityType())));
   }
 
+  /**
+   * @throws Exception
+   */
   @Test
   public void jsonCreatorConstructorTest() throws Exception {
     Allegation domain = new Allegation(abuseEndDate, abuseFrequency, abuseFrequencyPeriodCode,
@@ -146,11 +162,17 @@ public class AllegationTest {
     assertThat(domain.getPlacementFacilityType(), is(equalTo(placementFacilityType)));
   }
 
+  /**
+   * 
+   */
   @Test
   public void equalsHashCodeWork() {
     EqualsVerifier.forClass(Allegation.class).suppress(Warning.NONFINAL_FIELDS).verify();
   }
 
+  /**
+   * @throws Exception
+   */
   @Test
   public void serializesToJSON() throws Exception {
     final String expected = MAPPER.writeValueAsString(MAPPER.readValue(
@@ -159,6 +181,9 @@ public class AllegationTest {
     assertThat(MAPPER.writeValueAsString(validAllegation()), is(equalTo(expected)));
   }
 
+  /**
+   * @throws Exception
+   */
   @Test
   public void deserializesFromJSON() throws Exception {
     assertThat(MAPPER.readValue(fixture("fixtures/domain/legacy/Allegation/valid/valid.json"),
@@ -167,6 +192,9 @@ public class AllegationTest {
 
   /*
    * Successful Tests
+   */
+  /**
+   * @throws Exception
    */
   @Test
   public void successfulWithValid() throws Exception {
@@ -178,6 +206,9 @@ public class AllegationTest {
     assertThat(response.getStatus(), is(equalTo(204)));
   }
 
+  /**
+   * @throws Exception
+   */
   @Test
   public void successfulWithOptionalsNotIncluded() throws Exception {
     Allegation toCreate = MAPPER.readValue(
@@ -192,6 +223,9 @@ public class AllegationTest {
   /*
    * abuseEndDate Tests
    */
+  /**
+   * @throws Exception
+   */
   @Test
   public void successWhenAbuseEndDateEmpty() throws Exception {
     Allegation toCreate =
@@ -203,6 +237,9 @@ public class AllegationTest {
     assertThat(response.getStatus(), is(equalTo(204)));
   }
 
+  /**
+   * @throws Exception
+   */
   @Test
   public void successWhenAbuseEndDateNull() throws Exception {
     Allegation toCreate = MAPPER.readValue(
@@ -213,6 +250,9 @@ public class AllegationTest {
     assertThat(response.getStatus(), is(equalTo(204)));
   }
 
+  /**
+   * @throws Exception
+   */
   @Test
   public void failsWhenAbuseEndDateWrongFormat() throws Exception {
     Allegation toCreate = MAPPER.readValue(
@@ -228,6 +268,9 @@ public class AllegationTest {
 
   /*
    * abuseFrequency Tests
+   *
+   *
+   * @throws Exception
    */
   @Test
   public void failsWhenAbuseFrequencyMissing() throws Exception {
@@ -242,6 +285,9 @@ public class AllegationTest {
         is(greaterThanOrEqualTo(0)));
   }
 
+  /**
+   * @throws Exception
+   */
   @Test
   public void failsWhenAbuseFrequencyNull() throws Exception {
     Allegation toCreate = MAPPER.readValue(
@@ -258,6 +304,9 @@ public class AllegationTest {
   /*
    * abuseFrequencyPeriodCode Tests
    */
+  /**
+   * @throws Exception
+   */
   @Test
   public void failsWhenAbuseFrequencyPeriodCodeMissing() throws Exception {
     Allegation toCreate = MAPPER.readValue(
@@ -272,6 +321,9 @@ public class AllegationTest {
         is(greaterThanOrEqualTo(0)));
   }
 
+  /**
+   * @throws Exception
+   */
   @Test
   public void failsWhenAbuseFrequencyPeriodCodeNull() throws Exception {
     Allegation toCreate = MAPPER.readValue(
@@ -286,6 +338,9 @@ public class AllegationTest {
         is(greaterThanOrEqualTo(0)));
   }
 
+  /**
+   * @throws Exception
+   */
   @Test
   public void failsWhenAbuseFrequencyPeriodCodeEmpty() throws Exception {
     Allegation toCreate = MAPPER.readValue(
@@ -299,6 +354,9 @@ public class AllegationTest {
         "abuseFrequencyPeriodCode must be one of [D, M, W, Y]"), is(greaterThanOrEqualTo(0)));
   }
 
+  /**
+   * @throws Exception
+   */
   @Test
   public void failsWhenAbuseFrequencyPeriodCodeTooLong() throws Exception {
     Allegation toCreate = MAPPER.readValue(
@@ -312,6 +370,9 @@ public class AllegationTest {
         "abuseFrequencyPeriodCode must be one of [D, M, W, Y]"), is(greaterThanOrEqualTo(0)));
   }
 
+  /**
+   * @throws Exception
+   */
   @Test
   public void failsWhenAbuseFrequencyPeriodCodeNotValidValue() throws Exception {
     Allegation toCreate = MAPPER.readValue(
@@ -326,6 +387,9 @@ public class AllegationTest {
         "abuseFrequencyPeriodCode must be one of [D, M, W, Y]"), is(greaterThanOrEqualTo(0)));
   }
 
+  /**
+   * @throws Exception
+   */
   @Test
   public void successWhenAbuseFrequencyPeriodCodeIsD() throws Exception {
     Allegation toCreate = MAPPER.readValue(
@@ -337,6 +401,9 @@ public class AllegationTest {
     assertThat(response.getStatus(), is(equalTo(204)));
   }
 
+  /**
+   * @throws Exception
+   */
   @Test
   public void successWhenAbuseFrequencyPeriodCodeIsM() throws Exception {
     Allegation toCreate = MAPPER.readValue(
@@ -348,6 +415,9 @@ public class AllegationTest {
     assertThat(response.getStatus(), is(equalTo(204)));
   }
 
+  /**
+   * @throws Exception
+   */
   @Test
   public void successWhenAbuseFrequencyPeriodCodeIsW() throws Exception {
     Allegation toCreate = MAPPER.readValue(
@@ -359,6 +429,9 @@ public class AllegationTest {
     assertThat(response.getStatus(), is(equalTo(204)));
   }
 
+  /**
+   * @throws Exception
+   */
   @Test
   public void successWhenAbuseFrequencyPeriodCodeIsY() throws Exception {
     Allegation toCreate = MAPPER.readValue(
@@ -370,6 +443,9 @@ public class AllegationTest {
     assertThat(response.getStatus(), is(equalTo(204)));
   }
 
+  /**
+   * @throws Exception
+   */
   @Test
   public void successWhenAbuseFrequencyPeriodCodeIsLowerCase() throws Exception {
     Allegation toCreate = MAPPER.readValue(
@@ -386,6 +462,9 @@ public class AllegationTest {
   /*
    * abuseLocationDescription Tests
    */
+  /**
+   * @throws Exception
+   */
   @Test
   public void failsWhenAbuseLocationDescriptionMissing() throws Exception {
     Allegation toCreate = MAPPER.readValue(
@@ -400,6 +479,9 @@ public class AllegationTest {
         is(greaterThanOrEqualTo(0)));
   }
 
+  /**
+   * @throws Exception
+   */
   @Test
   public void failsWhenAbuseLocationDescriptionNull() throws Exception {
     Allegation toCreate = MAPPER.readValue(
@@ -414,6 +496,9 @@ public class AllegationTest {
         is(greaterThanOrEqualTo(0)));
   }
 
+  /**
+   * @throws Exception
+   */
   @Test
   public void failsWhenAbuseLocationDescriptionEmpty() throws Exception {
     Allegation toCreate = MAPPER.readValue(
@@ -428,6 +513,9 @@ public class AllegationTest {
         is(greaterThanOrEqualTo(0)));
   }
 
+  /**
+   * @throws Exception
+   */
   @Test
   public void failsWhenAbuseLocationDescriptionTooLong() throws Exception {
     Allegation toCreate = MAPPER.readValue(
@@ -444,6 +532,9 @@ public class AllegationTest {
   /*
    * abuseStartDate Tests
    */
+  /**
+   * @throws Exception
+   */
   @Test
   public void successWhenAbuseStartDateEmpty() throws Exception {
     Allegation toCreate = MAPPER.readValue(
@@ -455,6 +546,9 @@ public class AllegationTest {
     assertThat(response.getStatus(), is(equalTo(204)));
   }
 
+  /**
+   * @throws Exception
+   */
   @Test
   public void successWhenAbuseStartDateNull() throws Exception {
     Allegation toCreate =
@@ -466,6 +560,9 @@ public class AllegationTest {
     assertThat(response.getStatus(), is(equalTo(204)));
   }
 
+  /**
+   * @throws Exception
+   */
   @Test
   public void failsWhenAbuseStartDateWrongFormat() throws Exception {
     Allegation toCreate = MAPPER.readValue(
@@ -484,6 +581,9 @@ public class AllegationTest {
   /*
    * allegationDispositionType Tests
    */
+  /**
+   * @throws Exception
+   */
   @Test
   public void failsWhenAllegationDispositionTypeMissing() throws Exception {
     Allegation toCreate = MAPPER.readValue(
@@ -498,6 +598,9 @@ public class AllegationTest {
         is(greaterThanOrEqualTo(0)));
   }
 
+  /**
+   * @throws Exception
+   */
   @Test
   public void failsWhenAllegationDispositionTypeNull() throws Exception {
     Allegation toCreate = MAPPER.readValue(
@@ -512,6 +615,9 @@ public class AllegationTest {
         is(greaterThanOrEqualTo(0)));
   }
 
+  /**
+   * @throws Exception
+   */
   @Test
   public void failsWhenAllegationDispositionTypeEmplty() throws Exception {
     Allegation toCreate = MAPPER.readValue(
@@ -521,8 +627,6 @@ public class AllegationTest {
         resources.client().target(ROOT_RESOURCE).request().accept(MediaType.APPLICATION_JSON)
             .post(Entity.entity(toCreate, MediaType.APPLICATION_JSON));
     assertThat(response.getStatus(), is(equalTo(422)));
-    // String message = response.readEntity(String.class);
-    // System.out.print(message);
     assertThat(
         response.readEntity(String.class).indexOf("allegationDispositionType may not be null"),
         is(greaterThanOrEqualTo(0)));
@@ -530,6 +634,9 @@ public class AllegationTest {
 
   /*
    * allegationType Tests
+   */
+  /**
+   * @throws Exception
    */
   @Test
   public void failsWhenAllegationTypeMissing() throws Exception {
@@ -544,6 +651,9 @@ public class AllegationTest {
         is(greaterThanOrEqualTo(0)));
   }
 
+  /**
+   * @throws Exception
+   */
   @Test
   public void failsWhenAllegationTypeNull() throws Exception {
     Allegation toCreate = MAPPER.readValue(
@@ -557,6 +667,9 @@ public class AllegationTest {
         is(greaterThanOrEqualTo(0)));
   }
 
+  /**
+   * @throws Exception
+   */
   @Test
   public void failsWhenAllegationTypeEmpty() throws Exception {
     Allegation toCreate = MAPPER.readValue(
@@ -573,6 +686,9 @@ public class AllegationTest {
   /*
    * dispositionDescription Tests
    */
+  /**
+   * @throws Exception
+   */
   @Test
   public void failsWhenDispositionDescriptionMissing() throws Exception {
     Allegation toCreate = MAPPER.readValue(
@@ -586,6 +702,9 @@ public class AllegationTest {
         is(greaterThanOrEqualTo(0)));
   }
 
+  /**
+   * @throws Exception
+   */
   @Test
   public void failsWhenDispositionDescriptionNull() throws Exception {
     Allegation toCreate = MAPPER.readValue(
@@ -599,6 +718,9 @@ public class AllegationTest {
         is(greaterThanOrEqualTo(0)));
   }
 
+  /**
+   * @throws Exception
+   */
   @Test
   public void failsWhenDispositionDescriptionEmpty() throws Exception {
     Allegation toCreate = MAPPER.readValue(
@@ -615,6 +737,9 @@ public class AllegationTest {
   /*
    * dispositionDate Tests
    */
+  /**
+   * @throws Exception
+   */
   @Test
   public void successWhenDispositionDateEmpty() throws Exception {
     Allegation toCreate = MAPPER.readValue(
@@ -626,6 +751,9 @@ public class AllegationTest {
     assertThat(response.getStatus(), is(equalTo(204)));
   }
 
+  /**
+   * @throws Exception
+   */
   @Test
   public void successWhenDispositionDateNull() throws Exception {
     Allegation toCreate = MAPPER.readValue(
@@ -637,6 +765,9 @@ public class AllegationTest {
     assertThat(response.getStatus(), is(equalTo(204)));
   }
 
+  /**
+   * @throws Exception
+   */
   @Test
   public void failsWhenDispositionDateWrongFormat() throws Exception {
     Allegation toCreate = MAPPER.readValue(
@@ -654,6 +785,9 @@ public class AllegationTest {
   /*
    * injuryHarmDetailIndicator Tests
    */
+  /**
+   * @throws Exception
+   */
   @Test
   public void failsWhenInjuryHarmDetailIndicatorMissing() throws Exception {
     Allegation toCreate = MAPPER.readValue(
@@ -668,6 +802,9 @@ public class AllegationTest {
         is(greaterThanOrEqualTo(0)));
   }
 
+  /**
+   * @throws Exception
+   */
   @Test
   public void failsWhenInjuryHarmDetailIndicatorNull() throws Exception {
     Allegation toCreate = MAPPER.readValue(
@@ -682,6 +819,9 @@ public class AllegationTest {
         is(greaterThanOrEqualTo(0)));
   }
 
+  /**
+   * @throws Exception
+   */
   @Test
   public void failsWhenInjuryHarmDetailIndicatorEmpty() throws Exception {
     Allegation toCreate = MAPPER.readValue(
@@ -696,6 +836,9 @@ public class AllegationTest {
         is(greaterThanOrEqualTo(0)));
   }
 
+  /**
+   * @throws Exception
+   */
   @Test
   public void failsWhenInjuryHarmDetailIndicatorAllWhitespace() throws Exception {
     Allegation toCreate = MAPPER.readValue(
@@ -714,6 +857,9 @@ public class AllegationTest {
   /*
    * nonProtectingParentCode Tests
    */
+  /**
+   * @throws Exception
+   */
   @Test
   public void failsWhenNonProtectingParentCodeMissing() throws Exception {
     Allegation toCreate = MAPPER.readValue(
@@ -728,6 +874,9 @@ public class AllegationTest {
         is(greaterThanOrEqualTo(0)));
   }
 
+  /**
+   * @throws Exception
+   */
   @Test
   public void failsWhenNonProtectingParentCodeNull() throws Exception {
     Allegation toCreate = MAPPER.readValue(
@@ -742,6 +891,9 @@ public class AllegationTest {
         is(greaterThanOrEqualTo(0)));
   }
 
+  /**
+   * @throws Exception
+   */
   @Test
   public void failsWhenNonProtectingParentCodeEmpty() throws Exception {
     Allegation toCreate = MAPPER.readValue(
@@ -756,6 +908,9 @@ public class AllegationTest {
         is(greaterThanOrEqualTo(0)));
   }
 
+  /**
+   * @throws Exception
+   */
   @Test
   public void failsWhenNonProtectingParentCodeTooLong() throws Exception {
     Allegation toCreate = MAPPER.readValue(
@@ -769,6 +924,9 @@ public class AllegationTest {
         is(greaterThanOrEqualTo(0)));
   }
 
+  /**
+   * @throws Exception
+   */
   @Test
   public void failsWhenNonProtectingParentCodeNotValidValue() throws Exception {
     Allegation toCreate = MAPPER.readValue(
@@ -783,6 +941,9 @@ public class AllegationTest {
         "nonProtectingParentCode must be one of [U, P, Y, N]"), is(greaterThanOrEqualTo(0)));
   }
 
+  /**
+   * @throws Exception
+   */
   @Test
   public void successWhenNonProtectingParentCodeIsU() throws Exception {
     Allegation toCreate = MAPPER.readValue(
@@ -794,6 +955,9 @@ public class AllegationTest {
     assertThat(response.getStatus(), is(equalTo(204)));
   }
 
+  /**
+   * @throws Exception
+   */
   @Test
   public void successWhenNonProtectingParentCodeIsP() throws Exception {
     Allegation toCreate = MAPPER.readValue(
@@ -805,6 +969,9 @@ public class AllegationTest {
     assertThat(response.getStatus(), is(equalTo(204)));
   }
 
+  /**
+   * @throws Exception
+   */
   @Test
   public void successWhenNonProtectingParentCodeIsY() throws Exception {
     Allegation toCreate = MAPPER.readValue(
@@ -816,6 +983,9 @@ public class AllegationTest {
     assertThat(response.getStatus(), is(equalTo(204)));
   }
 
+  /**
+   * @throws Exception
+   */
   @Test
   public void successWhenNonProtectingParentCodeIsN() throws Exception {
     Allegation toCreate = MAPPER.readValue(
@@ -827,6 +997,9 @@ public class AllegationTest {
     assertThat(response.getStatus(), is(equalTo(204)));
   }
 
+  /**
+   * @throws Exception
+   */
   @Test
   public void successWhenNonProtectingParentCodeIsLowerCase() throws Exception {
     Allegation toCreate = MAPPER.readValue(
@@ -840,6 +1013,9 @@ public class AllegationTest {
 
   /*
    * staffPersonAddedIndicator Tests
+   */
+  /**
+   * @throws Exception
    */
   @Test
   public void failsWhenStaffPersonAddedIndicatorMissing() throws Exception {
@@ -855,6 +1031,9 @@ public class AllegationTest {
         is(greaterThanOrEqualTo(0)));
   }
 
+  /**
+   * @throws Exception
+   */
   @Test
   public void failsWhenStaffPersonAddedIndicatorNull() throws Exception {
     Allegation toCreate = MAPPER.readValue(
@@ -869,6 +1048,9 @@ public class AllegationTest {
         is(greaterThanOrEqualTo(0)));
   }
 
+  /**
+   * @throws Exception
+   */
   @Test
   public void failsWhenStaffPersonAddedIndicatorEmpty() throws Exception {
     Allegation toCreate = MAPPER.readValue(
@@ -883,6 +1065,9 @@ public class AllegationTest {
         is(greaterThanOrEqualTo(0)));
   }
 
+  /**
+   * @throws Exception
+   */
   @Test
   public void failsWhenStaffPersonAddedIndicatorAllWhitespace() throws Exception {
     Allegation toCreate = MAPPER.readValue(
@@ -901,6 +1086,9 @@ public class AllegationTest {
   /*
    * victimClientId Tests
    */
+  /**
+   * @throws Exception
+   */
   @Test
   public void failsWhenVictimClientIdMissing() throws Exception {
     Allegation toCreate = MAPPER.readValue(
@@ -914,6 +1102,9 @@ public class AllegationTest {
         is(greaterThanOrEqualTo(0)));
   }
 
+  /**
+   * @throws Exception
+   */
   @Test
   public void failsWhenVictimClientIdNull() throws Exception {
     Allegation toCreate = MAPPER.readValue(
@@ -927,6 +1118,9 @@ public class AllegationTest {
         is(greaterThanOrEqualTo(0)));
   }
 
+  /**
+   * @throws Exception
+   */
   @Test
   public void failsWhenVictimClientIdEmpty() throws Exception {
     Allegation toCreate = MAPPER.readValue(
@@ -940,6 +1134,9 @@ public class AllegationTest {
         is(greaterThanOrEqualTo(0)));
   }
 
+  /**
+   * @throws Exception
+   */
   @Test
   public void failsWhenVictimClientIdTooLong() throws Exception {
     Allegation toCreate = MAPPER.readValue(
@@ -954,6 +1151,9 @@ public class AllegationTest {
         is(greaterThanOrEqualTo(0)));
   }
 
+  /**
+   * @throws Exception
+   */
   @Test
   public void failsWhenVictimClientIdTooShort() throws Exception {
     Allegation toCreate = MAPPER.readValue(
@@ -971,6 +1171,9 @@ public class AllegationTest {
   /*
    * perpetratorClientId Tests
    */
+  /**
+   * @throws Exception
+   */
   @Test
   public void successWhenPerpetratorClientIdEmpty() throws Exception {
     Allegation toCreate = MAPPER.readValue(
@@ -982,6 +1185,9 @@ public class AllegationTest {
     assertThat(response.getStatus(), is(equalTo(204)));
   }
 
+  /**
+   * @throws Exception
+   */
   @Test
   public void successWhenPerpetratorClientIdNull() throws Exception {
     Allegation toCreate = MAPPER.readValue(
@@ -993,6 +1199,9 @@ public class AllegationTest {
     assertThat(response.getStatus(), is(equalTo(204)));
   }
 
+  /**
+   * @throws Exception
+   */
   @Test
   public void failsWhenPerpetratorClientIdTooLong() throws Exception {
     Allegation toCreate = MAPPER.readValue(
@@ -1011,6 +1220,9 @@ public class AllegationTest {
   /*
    * referralId Tests
    */
+  /**
+   * @throws Exception
+   */
   @Test
   public void failsWhenReferralIdMissing() throws Exception {
     Allegation toCreate = MAPPER.readValue(
@@ -1024,6 +1236,9 @@ public class AllegationTest {
         is(greaterThanOrEqualTo(0)));
   }
 
+  /**
+   * @throws Exception
+   */
   @Test
   public void failsWhenReferralIdNull() throws Exception {
     Allegation toCreate = MAPPER.readValue(
@@ -1036,6 +1251,9 @@ public class AllegationTest {
         is(greaterThanOrEqualTo(0)));
   }
 
+  /**
+   * @throws Exception
+   */
   @Test
   public void failsWhenReferralIdEmpty() throws Exception {
     Allegation toCreate =
@@ -1049,6 +1267,9 @@ public class AllegationTest {
         is(greaterThanOrEqualTo(0)));
   }
 
+  /**
+   * @throws Exception
+   */
   @Test
   public void failsWhenReferralIdTooLong() throws Exception {
     Allegation toCreate = MAPPER.readValue(
@@ -1063,6 +1284,9 @@ public class AllegationTest {
         is(greaterThanOrEqualTo(0)));
   }
 
+  /**
+   * @throws Exception
+   */
   @Test
   public void failsWhenReferralIdTooShort() throws Exception {
     Allegation toCreate = MAPPER.readValue(
@@ -1080,6 +1304,9 @@ public class AllegationTest {
   /*
    * countySpecificCode Tests
    */
+  /**
+   * @throws Exception
+   */
   @Test
   public void failsWhenCountySpecificCodeMissing() throws Exception {
     Allegation toCreate = MAPPER.readValue(
@@ -1093,6 +1320,9 @@ public class AllegationTest {
         is(greaterThanOrEqualTo(0)));
   }
 
+  /**
+   * @throws Exception
+   */
   @Test
   public void failsWhenCountySpecificCodeNull() throws Exception {
     Allegation toCreate = MAPPER.readValue(
@@ -1106,6 +1336,9 @@ public class AllegationTest {
         is(greaterThanOrEqualTo(0)));
   }
 
+  /**
+   * @throws Exception
+   */
   @Test
   public void failsWhenCountySpecificCodeEmpty() throws Exception {
     Allegation toCreate = MAPPER.readValue(
@@ -1119,6 +1352,9 @@ public class AllegationTest {
         is(greaterThanOrEqualTo(0)));
   }
 
+  /**
+   * @throws Exception
+   */
   @Test
   public void failsWhenCountySpecificCodeTooLong() throws Exception {
     Allegation toCreate = MAPPER.readValue(
@@ -1135,6 +1371,9 @@ public class AllegationTest {
   /*
    * zippyCreatedIndicator Tests
    */
+  /**
+   * @throws Exception
+   */
   @Test
   public void failsWhenZippyCreatedIndicatorMissing() throws Exception {
     Allegation toCreate = MAPPER.readValue(
@@ -1148,6 +1387,9 @@ public class AllegationTest {
         is(greaterThanOrEqualTo(0)));
   }
 
+  /**
+   * @throws Exception
+   */
   @Test
   public void failsWhenZippyCreatedIndicatorNull() throws Exception {
     Allegation toCreate = MAPPER.readValue(
@@ -1161,6 +1403,9 @@ public class AllegationTest {
         is(greaterThanOrEqualTo(0)));
   }
 
+  /**
+   * @throws Exception
+   */
   @Test
   public void failsWhenZippyCreatedIndicatorEmpty() throws Exception {
     Allegation toCreate = MAPPER.readValue(
@@ -1174,6 +1419,9 @@ public class AllegationTest {
         is(greaterThanOrEqualTo(0)));
   }
 
+  /**
+   * @throws Exception
+   */
   @Test
   public void failsWhenZippyCreatedIndicatorAllWhitespace() throws Exception {
     Allegation toCreate = MAPPER.readValue(
@@ -1191,6 +1439,9 @@ public class AllegationTest {
   /*
    * placementFacilityType Tests
    */
+  /**
+   * @throws Exception
+   */
   @Test
   public void successWhenPlacementFacilityTypeEmpty() throws Exception {
     Allegation toCreate = MAPPER.readValue(
@@ -1202,6 +1453,9 @@ public class AllegationTest {
     assertThat(response.getStatus(), is(equalTo(204)));
   }
 
+  /**
+   * @throws Exception
+   */
   @Test
   public void successWhenPlacementFacilityTypeNull() throws Exception {
     Allegation toCreate = MAPPER.readValue(

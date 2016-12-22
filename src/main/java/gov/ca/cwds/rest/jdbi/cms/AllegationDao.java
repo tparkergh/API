@@ -8,6 +8,10 @@ import gov.ca.cwds.inject.CmsSessionFactory;
 import gov.ca.cwds.rest.api.persistence.cms.Allegation;
 import gov.ca.cwds.rest.jdbi.CrudsDaoImpl;
 
+/**
+ * @author Tabpcenc1
+ *
+ */
 public class AllegationDao extends CrudsDaoImpl<Allegation> {
 
   /**

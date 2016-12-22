@@ -144,10 +144,16 @@ public class CmsDocumentDao extends BaseDaoImpl<CmsDocument> {
     return retval;
   }
 
+  /**
+   * @return lzw
+   */
   public LZWEncoder getLzw() {
     return lzw;
   }
 
+  /**
+   * @param lzw
+   */
   public void setLzw(LZWEncoder lzw) {
     this.lzw = lzw;
   }

@@ -21,6 +21,11 @@ import org.junit.Test;
 
 import gov.ca.cwds.rest.api.persistence.cms.Allegation;
 
+/**
+ * 
+ * @author Tabpcenc1
+ *
+ */
 public class AllegationDaoIT {
 
   private SessionFactory sessionFactory;
@@ -48,9 +53,15 @@ public class AllegationDaoIT {
   private Short placementFacilityType = 4;
 
 
+  /**
+   * 
+   */
   @Rule
   public ExpectedException thrown = ExpectedException.none();
 
+  /**
+   * 
+   */
   @Before
   public void setup() {
     sessionFactory = new Configuration().configure().buildSessionFactory();
@@ -58,11 +69,17 @@ public class AllegationDaoIT {
     allegationDao = new AllegationDao(sessionFactory);
   }
 
+  /**
+   * 
+   */
   @After
   public void tearndown() {
     sessionFactory.close();
   }
 
+  /**
+   * 
+   */
   @Test
   public void testFind() {
     String id = "Aaeae9r0F4";
@@ -70,6 +87,9 @@ public class AllegationDaoIT {
     assertThat(found.getId(), is(equalTo(id)));
   }
 
+  /**
+   * @throws Exception
+   */
   @Test
   public void testCreate() throws Exception {
 
@@ -87,6 +107,9 @@ public class AllegationDaoIT {
     assertThat(allegation, is(create));
   }
 
+  /**
+   * @throws Exception
+   */
   @Test
   public void testCreateExistingEntityException() throws Exception {
     thrown.expect(EntityExistsException.class);
@@ -101,6 +124,9 @@ public class AllegationDaoIT {
     allegationDao.create(allegation);
   }
 
+  /**
+   * 
+   */
   @Test
   public void testDelete() {
     String id = "Aaeae9r0F4";

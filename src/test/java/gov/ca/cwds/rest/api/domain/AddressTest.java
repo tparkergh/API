@@ -87,22 +87,6 @@ public class AddressTest {
     assertThat(domain.getZip(), is(equalTo(zip)));
   }
 
-  /*
-   * zip test - invalid format
-   */
-  // NOTE : we aren't validating zip right now
-  // @Test
-  // public void failsWhenInvalidZip() throws Exception {
-  // Person serialized =
-  // MAPPER.readValue(fixture("fixtures/domain/address/invalid/zip/invalid.json"), Person.class);
-  // Response response =
-  // resources.client().target(ROOT_RESOURCE).request().accept(MediaType.APPLICATION_JSON)
-  // .post(Entity.entity(serialized, MediaType.APPLICATION_JSON));
-  // assertThat(response.getStatus(), is(equalTo(422)));
-  // assertThat(response.readEntity(String.class).indexOf("must be in the format of"),
-  // is(greaterThanOrEqualTo(0)));
-  // }
-
 
   private Address validAddress() {
 
@@ -113,15 +97,12 @@ public class AddressTest {
       return validAddress;
 
     } catch (JsonParseException e) {
-      // TODO Auto-generated catch block
       e.printStackTrace();
       return null;
     } catch (JsonMappingException e) {
-      // TODO Auto-generated catch block
       e.printStackTrace();
       return null;
     } catch (IOException e) {
-      // TODO Auto-generated catch block
       e.printStackTrace();
       return null;
     }

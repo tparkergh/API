@@ -14,6 +14,8 @@ import com.google.common.collect.ImmutableList;
 import gov.ca.cwds.rest.resources.ScreeningResource;
 import io.dropwizard.jackson.Jackson;
 import io.dropwizard.testing.junit.ResourceTestRule;
+import nl.jqno.equalsverifier.EqualsVerifier;
+import nl.jqno.equalsverifier.Warning;
 
 public class ScreeningRequestTest {
 
@@ -59,9 +61,10 @@ public class ScreeningRequestTest {
   }
 
   // TODO : "equals" seems to work but the test is failing. Need to figure out the message.
-  // @Test
-  // public void equalsHashCodeWork() {
-  // EqualsVerifier.forClass(ScreeningRequest.class).suppress(Warning.NONFINAL_FIELDS).suppress()
-  // .verify();
-  // }
+  // TODO : verify 'STRICT_INHERITENCE' is appropriate here - reference pvitoltracker #136527227
+  @Test
+  public void equalsHashCodeWork() {
+    EqualsVerifier.forClass(Screening.class)
+        .suppress(Warning.NONFINAL_FIELDS, Warning.STRICT_INHERITANCE).suppress().verify();
+  }
 }

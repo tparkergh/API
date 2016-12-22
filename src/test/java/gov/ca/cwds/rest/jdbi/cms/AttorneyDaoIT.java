@@ -26,12 +26,19 @@ import org.junit.Test;
 
 import gov.ca.cwds.rest.api.persistence.cms.Attorney;
 
+/**
+ * @author Tabpcenc1
+ *
+ */
 public class AttorneyDaoIT {
   private static final DateFormat TIMESTAMP_FORMAT = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
   private DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
   private String endDateString = "1998-08-01";
 
 
+  /**
+   * 
+   */
   @Rule
   public ExpectedException thrown = ExpectedException.none();
 
@@ -39,40 +46,51 @@ public class AttorneyDaoIT {
   private static SessionFactory sessionFactory;
   private Session session;
 
+  @SuppressWarnings("javadoc")
   @BeforeClass
   public static void beforeClass() {
     sessionFactory = new Configuration().configure("hibernate.cfg.xml").buildSessionFactory();
     attorneyDao = new AttorneyDao(sessionFactory);
   }
 
+  @SuppressWarnings("javadoc")
   @AfterClass
   public static void afterClass() {
     sessionFactory.close();
   }
 
+  @SuppressWarnings("javadoc")
   @Before
   public void setup() {
     session = sessionFactory.getCurrentSession();
     session.beginTransaction();
   }
 
+  @SuppressWarnings("javadoc")
   @After
   public void tearddown() {
     session.getTransaction().rollback();
   }
 
+  @SuppressWarnings("javadoc")
   @Test
   public void testFindAllNamedQueryExists() throws Exception {
     Query query = session.getNamedQuery("gov.ca.cwds.rest.api.persistence.cms.Attorney.findAll");
     assertThat(query, is(notNullValue()));
   }
 
+  /**
+   * find using query test
+   */
   @Test
   public void testFindAllReturnsCorrectList() {
     Query query = session.getNamedQuery("gov.ca.cwds.rest.api.persistence.cms.Attorney.findAll");
     assertThat(query.list().size(), is(2));
   }
 
+  /**
+   * @throws Exception
+   */
   @Test
   public void testfindAllUpdatedAfterNamedQueryExists() throws Exception {
     Query query =
@@ -80,6 +98,9 @@ public class AttorneyDaoIT {
     assertThat(query, is(notNullValue()));
   }
 
+  /**
+   * @throws Exception
+   */
   @Test
   public void testfindAllUpdatedAfterReturnsCorrectList() throws Exception {
     Query query =
@@ -88,6 +109,7 @@ public class AttorneyDaoIT {
     assertThat(query.list().size(), is(1));
   }
 
+  @SuppressWarnings("javadoc")
   @Test
   public void testFind() {
     String id = "AcjOOPa0BU";
@@ -95,6 +117,11 @@ public class AttorneyDaoIT {
     assertThat(found.getId(), is(id));
   }
 
+  /**
+   * test the create methods
+   * 
+   * @throws Exception
+   */
   @Test
   public void testCreate() throws Exception {
     Attorney attorney = new Attorney("N", " ", " ", " ", null, null, BigDecimal.ZERO, "Lance",
@@ -104,6 +131,7 @@ public class AttorneyDaoIT {
     assertThat(created, is(attorney));
   }
 
+  @SuppressWarnings("javadoc")
   @Test
   public void testCreateExistingEntityException() throws Exception {
     thrown.expect(EntityExistsException.class);
@@ -113,6 +141,9 @@ public class AttorneyDaoIT {
     attorneyDao.create(attorney);
   }
 
+  /**
+   * test the delete method
+   */
   @Test
   public void testDelete() {
     String id = "AcjOOPa0BU";
@@ -120,6 +151,11 @@ public class AttorneyDaoIT {
     assertThat(deleted.getId(), is(id));
   }
 
+  /**
+   * test the update method
+   * 
+   * @throws Exception
+   */
   @Test
   public void testUpdate() throws Exception {
     Date endDate = df.parse(endDateString);
@@ -130,6 +166,7 @@ public class AttorneyDaoIT {
     assertThat(updated, is(attorney));
   }
 
+  @SuppressWarnings("javadoc")
   @Test
   public void testUpdateEntityNotFoundException() throws Exception {
     thrown.expect(EntityNotFoundException.class);

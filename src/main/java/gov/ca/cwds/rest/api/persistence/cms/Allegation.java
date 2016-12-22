@@ -11,6 +11,11 @@ import org.hibernate.annotations.Type;
 
 import gov.ca.cwds.rest.api.domain.DomainObject;
 
+
+/**
+ * @author Tabpcenc1
+ *
+ */
 @SuppressWarnings("serial")
 @Entity
 @Table(name = "ALLGTN_T")
@@ -91,6 +96,28 @@ public class Allegation extends CmsPersistentObject {
     super();
   }
 
+  /**
+   * 
+   * @param id
+   * @param abuseEndDate
+   * @param abuseStartDate
+   * @param abuseFrequency
+   * @param abuseFrequencyPeriodCode
+   * @param abuseLocationDescription
+   * @param allegationDispositionType
+   * @param allegationType
+   * @param dispositionDescription
+   * @param dispositionDate
+   * @param injuryHarmDetailIndicator
+   * @param nonProtectingParentCode
+   * @param staffPersonAddedIndicator
+   * @param victimClientId
+   * @param perpetratorClientId
+   * @param referralId
+   * @param countySpecificCode
+   * @param zippyCreatedIndicator
+   * @param placementFacilityType
+   */
   public Allegation(String id, Date abuseEndDate, Date abuseStartDate, Short abuseFrequency,
       String abuseFrequencyPeriodCode, String abuseLocationDescription,
       Short allegationDispositionType, Short allegationType, String dispositionDescription,

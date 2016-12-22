@@ -83,6 +83,18 @@ public class CmsDocument extends DomainObject implements Request, Response, Seri
   @NotNull
   private String base64Blob;
 
+  /**
+   * @param id
+   * @param segmentCount
+   * @param docLength
+   * @param docAuth
+   * @param docServ
+   * @param docDate
+   * @param docTime
+   * @param docName
+   * @param compressionMethod
+   * @param base64Blob
+   */
   @JsonCreator
   public CmsDocument(@JsonProperty("id") String id,
       @JsonProperty("segmentCount") Short segmentCount, @JsonProperty("docLength") Long docLength,
@@ -105,6 +117,9 @@ public class CmsDocument extends DomainObject implements Request, Response, Seri
     this.base64Blob = base64Blob;
   }
 
+  /**
+   * @param doc
+   */
   public CmsDocument(gov.ca.cwds.rest.api.persistence.cms.CmsDocument doc) {
     this.id = doc.getId();
 
@@ -243,78 +258,135 @@ public class CmsDocument extends DomainObject implements Request, Response, Seri
     return true;
   }
 
+  /**
+   * @return docDate
+   */
   public String getDocDate() {
     return docDate;
   }
 
+  /**
+   * @param docDate
+   */
   public void setDocDate(String docDate) {
     this.docDate = docDate;
   }
 
+  /**
+   * @return docLength
+   */
   public Long getDocLength() {
     return docLength;
   }
 
+  /**
+   * @param docLength
+   */
   public void setDocLength(Long docLength) {
     this.docLength = docLength;
   }
 
+  /**
+   * @return segmentCount
+   */
   public Short getSegmentCount() {
     return segmentCount;
   }
 
+  /**
+   * @param segmentCount
+   */
   public void setSegmentCount(Short segmentCount) {
     this.segmentCount = segmentCount;
   }
 
+  /**
+   * @return docAuth
+   */
   public String getDocAuth() {
     return docAuth;
   }
 
+  /**
+   * @param docAuth
+   */
   public void setDocAuth(String docAuth) {
     this.docAuth = docAuth;
   }
 
+  /**
+   * @return docServ
+   */
   public String getDocServ() {
     return docServ;
   }
 
+  /**
+   * @param docServ
+   */
   public void setDocServ(String docServ) {
     this.docServ = docServ;
   }
 
+  /**
+   * @return compressionMethod
+   */
   public String getCompressionMethod() {
     return compressionMethod;
   }
 
+  /**
+   * @param compressionMethod
+   */
   public void setCompressionMethod(String compressionMethod) {
     this.compressionMethod = compressionMethod;
   }
 
+  /**
+   * @return docName
+   */
   public String getDocName() {
     return docName;
   }
 
+  /**
+   * @param docName
+   */
   public void setDocName(String docName) {
     this.docName = docName;
   }
 
+  /**
+   * @return docTime
+   */
   public String getDocTime() {
     return docTime;
   }
 
+  /**
+   * @param docTime
+   */
   public void setDocTime(String docTime) {
     this.docTime = docTime;
   }
 
+  /**
+   * @param id
+   */
   public void setId(String id) {
     this.id = id;
   }
 
+  /**
+   * @return base65Blob
+   */
   public String getBase64Blob() {
     return base64Blob;
   }
 
+  /**
+   * @param base64Blob
+   */
   public void setBase64Blob(String base64Blob) {
     this.base64Blob = base64Blob;
   }

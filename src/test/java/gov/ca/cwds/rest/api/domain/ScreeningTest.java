@@ -58,9 +58,11 @@ public class ScreeningTest {
     assertThat(serialized, is(expected));
   }
 
+  // TODO : verify 'STRICT_INHERITENCE' is appropriate here - reference pvitoltracker #136527227
   @Test
   public void equalsHashCodeWork() {
-    EqualsVerifier.forClass(Person.class).suppress(Warning.NONFINAL_FIELDS).verify();
+    EqualsVerifier.forClass(Screening.class)
+        .suppress(Warning.STRICT_INHERITANCE, Warning.NONFINAL_FIELDS).verify();
   }
 
   /*

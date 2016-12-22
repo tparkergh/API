@@ -120,6 +120,27 @@ public class Allegation extends DomainObject implements Request, Response {
   @ApiModelProperty(required = false, readOnly = false, example = "1234")
   private Short placementFacilityType;
 
+  /**
+   * 
+   * @param abuseEndDate
+   * @param abuseFrequency
+   * @param abuseFrequencyPeriodCode
+   * @param abuseLocationDescription
+   * @param abuseStartDate
+   * @param allegationDispositionType
+   * @param allegationType
+   * @param dispositionDescription
+   * @param dispositionDate
+   * @param injuryHarmDetailIndicator
+   * @param nonProtectingParentCode
+   * @param staffPersonAddedIndicator
+   * @param victimClientId
+   * @param perpetratorClientId
+   * @param referralId
+   * @param countySpecificCode
+   * @param zippyCreatedIndicator
+   * @param placementFacilityType
+   */
   @JsonCreator
   public Allegation(@JsonProperty("abuseEndDate") String abuseEndDate,
       @JsonProperty("abuseFrequency") Short abuseFrequency,
@@ -160,6 +181,10 @@ public class Allegation extends DomainObject implements Request, Response {
     this.placementFacilityType = placementFacilityType;
   }
 
+  /**
+   * 
+   * @param persistedAllegation
+   */
   public Allegation(gov.ca.cwds.rest.api.persistence.cms.Allegation persistedAllegation) {
     this.abuseEndDate = DomainObject.cookDate(persistedAllegation.getAbuseEndDate());
     this.abuseFrequency = persistedAllegation.getAbuseFrequency();
@@ -365,9 +390,6 @@ public class Allegation extends DomainObject implements Request, Response {
     if (!(obj instanceof Allegation)) {
       return false;
     }
-    // if (getClass() != obj.getClass()) {
-    // return false;
-    // }
     Allegation other = (Allegation) obj;
     if (abuseEndDate == null) {
       if (other.abuseEndDate != null) {
