@@ -90,6 +90,7 @@ public class ESPerson extends Person {
    * Extract field's value from an ElasticSearch result document {@link Map} (key: field name),
    * using the field's ES column name and data type.
    * 
+   * @param <T> expected data type
    * @param m ES result map
    * @param f field to extract
    * @return field value as specified type T
@@ -181,7 +182,7 @@ public class ESPerson extends Person {
    * 
    * @param id unique identifier
    * @param firstName The first name
-   * @param last_name The last name
+   * @param lastName The last name
    * @param gender The gender
    * @param birthDate The date of birth
    * @param ssn The ssn

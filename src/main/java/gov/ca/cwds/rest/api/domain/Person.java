@@ -51,7 +51,7 @@ public class Person extends DomainObject implements Request, Response {
    * Constructor
    * 
    * @param firstName The first name
-   * @param last_name The last name
+   * @param lastName The last name
    * @param gender The gender
    * @param birthDate The date of birth
    * @param ssn The ssn
