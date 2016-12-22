@@ -11,7 +11,7 @@ import org.junit.ClassRule;
 import org.junit.Rule;
 import org.junit.Test;
 
-import gov.ca.cwds.rest.api.domain.es.PersonSearchRequest;
+import gov.ca.cwds.rest.api.domain.es.ESPersonSearchRequest;
 import io.dropwizard.testing.junit.ResourceTestRule;
 
 /**
@@ -20,12 +20,14 @@ import io.dropwizard.testing.junit.ResourceTestRule;
  * 
  * @author CWDS API Team
  */
+// TODO: class name should match ESPersonSearchRequest
+
 public class PersonSearchResourceTest {
   private static final String ROOT_RESOURCE = "/search_persons/";
   private static final String FOUND_RESOURCE = "/search_persons/1";
 
-  PersonSearchRequest personSearchRequest =
-      new PersonSearchRequest("Bart", "Simpson", "2000-01-01");
+  ESPersonSearchRequest personSearchRequest =
+      new ESPersonSearchRequest("Bart", "Simpson", "2000-01-01");
 
   @Rule
   public ExpectedException thrown = ExpectedException.none();
