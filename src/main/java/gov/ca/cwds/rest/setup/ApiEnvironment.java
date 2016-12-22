@@ -18,19 +18,22 @@ import io.dropwizard.setup.AdminEnvironment;
 import io.dropwizard.setup.Environment;
 
 /**
- * Decorator for {@link Environment}. Adds ability to register {@link Service}
+ * Decorator for {@link Environment}. Adds ability to register {@link Service}. Loaded from api.yml.
  * 
  * @author CWDS API Team
  */
 public class ApiEnvironment {
   private Environment environment;
 
+  /**
+   * @param environment environment settings from YAML
+   */
   public ApiEnvironment(Environment environment) {
     this.environment = environment;
   }
 
   /**
-   * Returns the underlying environment
+   * Returns the underlying DropWizard environment
    * 
    * @return The underlying environment
    */
@@ -40,6 +43,7 @@ public class ApiEnvironment {
 
   /**
    * 
+   * @return Jersey env settings
    * @see io.dropwizard.setup.Environment#jersey()
    */
   public JerseyEnvironment jersey() {
@@ -47,7 +51,9 @@ public class ApiEnvironment {
   }
 
   /**
+   * Gets Java thread executor for health checks
    * 
+   * @return the Java threading service
    * @see io.dropwizard.setup.Environment#getHealthCheckExecutorService()
    */
   public ExecutorService getHealthCheckExecutorService() {
@@ -55,6 +61,7 @@ public class ApiEnvironment {
   }
 
   /**
+   * @return DropWizard admin env settings
    * @see io.dropwizard.setup.Environment#admin()
    */
   public AdminEnvironment admin() {
@@ -62,6 +69,7 @@ public class ApiEnvironment {
   }
 
   /**
+   * @return DropWizard lifecycle env settings
    * @see io.dropwizard.setup.Environment#lifecycle()
    */
   public LifecycleEnvironment lifecycle() {
@@ -69,6 +77,7 @@ public class ApiEnvironment {
   }
 
   /**
+   * @return DropWizard servlet env settings
    * @see io.dropwizard.setup.Environment#servlets()
    */
   public ServletEnvironment servlets() {
@@ -76,6 +85,7 @@ public class ApiEnvironment {
   }
 
   /**
+   * @return Jackson ObjectMapper
    * @see io.dropwizard.setup.Environment#getObjectMapper()
    */
   public ObjectMapper getObjectMapper() {
@@ -83,6 +93,7 @@ public class ApiEnvironment {
   }
 
   /**
+   * @return DropWizard setup env name
    * @see io.dropwizard.setup.Environment#getName()
    */
   public String getName() {
@@ -90,6 +101,7 @@ public class ApiEnvironment {
   }
 
   /**
+   * @return DropWizard validator
    * @see io.dropwizard.setup.Environment#getValidator()
    */
   public Validator getValidator() {
@@ -97,7 +109,7 @@ public class ApiEnvironment {
   }
 
   /**
-   * @param validator
+   * @param validator DropWizard validator
    * @see io.dropwizard.setup.Environment#setValidator(javax.validation.Validator)
    */
   public void setValidator(Validator validator) {
@@ -105,6 +117,7 @@ public class ApiEnvironment {
   }
 
   /**
+   * @return DropWizard metrics
    * @see io.dropwizard.setup.Environment#metrics()
    */
   public MetricRegistry metrics() {
@@ -112,6 +125,7 @@ public class ApiEnvironment {
   }
 
   /**
+   * @return DropWizard env for health checks
    * @see io.dropwizard.setup.Environment#healthChecks()
    */
   public HealthCheckRegistry healthChecks() {
@@ -119,6 +133,7 @@ public class ApiEnvironment {
   }
 
   /**
+   * @return DropWizard env application context
    * @see io.dropwizard.setup.Environment#getApplicationContext()
    */
   public MutableServletContextHandler getApplicationContext() {
@@ -126,6 +141,7 @@ public class ApiEnvironment {
   }
 
   /**
+   * @return DropWizard Jersey servlet container for REST services
    * @see io.dropwizard.setup.Environment#getJerseyServletContainer()
    */
   public Servlet getJerseyServletContainer() {
@@ -133,6 +149,7 @@ public class ApiEnvironment {
   }
 
   /**
+   * @return DropWizard env admin context
    * @see io.dropwizard.setup.Environment#getAdminContext()
    */
   public MutableServletContextHandler getAdminContext() {

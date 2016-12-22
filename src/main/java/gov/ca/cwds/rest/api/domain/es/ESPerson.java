@@ -128,10 +128,9 @@ public class ESPerson extends Person {
    * populate associated fields.
    * 
    * <p>
-   * <strong>Classloader note:</strong> <br>
-   * When running in an application server, the root classloader may not know of our
-   * domain/persistence class, and so we look it up using the current thread's classloader, like
-   * so:</br>
+   * <strong>Classloader note:</strong> When running in an application server, the root classloader
+   * may not know of our domain/persistence class, and so we look it up using the current thread's
+   * classloader, like so:
    * </p>
    * 
    * <blockquote>
