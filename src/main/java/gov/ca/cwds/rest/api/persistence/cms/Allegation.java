@@ -147,7 +147,6 @@ public class Allegation extends CmsPersistentObject {
     this.countySpecificCode = countySpecificCode;
     this.zippyCreatedIndicator = zippyCreatedIndicator;
     this.placementFacilityType = placementFacilityType;
-
   }
 
   /**

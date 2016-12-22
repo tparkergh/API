@@ -25,9 +25,6 @@ import io.dropwizard.setup.Environment;
 public class ApiEnvironment {
   private Environment environment;
 
-  /**
-   * @param environment
-   */
   public ApiEnvironment(Environment environment) {
     this.environment = environment;
   }
@@ -42,72 +39,58 @@ public class ApiEnvironment {
   }
 
   /**
-   * @return the Jersey environment
-   * @see io.dropwizard.setup.Environment#jersey()
    * 
+   * @see io.dropwizard.setup.Environment#jersey()
    */
   public JerseyEnvironment jersey() {
     return environment.jersey();
   }
 
   /**
-   * @return the HealthCheckExecutorService
-   * @see io.dropwizard.setup.Environment#getHealthCheckExecutorService()
    * 
+   * @see io.dropwizard.setup.Environment#getHealthCheckExecutorService()
    */
   public ExecutorService getHealthCheckExecutorService() {
     return environment.getHealthCheckExecutorService();
   }
 
   /**
-   * @return the admin environment
    * @see io.dropwizard.setup.Environment#admin()
-   * 
    */
   public AdminEnvironment admin() {
     return environment.admin();
   }
 
   /**
-   * @return lifecycle environment
    * @see io.dropwizard.setup.Environment#lifecycle()
-   * 
    */
   public LifecycleEnvironment lifecycle() {
     return environment.lifecycle();
   }
 
   /**
-   * @return the servlets
    * @see io.dropwizard.setup.Environment#servlets()
-   *
    */
   public ServletEnvironment servlets() {
     return environment.servlets();
   }
 
   /**
-   * @return the ObjectMapper
    * @see io.dropwizard.setup.Environment#getObjectMapper()
-   * 
    */
   public ObjectMapper getObjectMapper() {
     return environment.getObjectMapper();
   }
 
   /**
-   * @return environmenat name
    * @see io.dropwizard.setup.Environment#getName()
-   * 
    */
   public String getName() {
     return environment.getName();
   }
 
   /**
-   * @return the Validator
    * @see io.dropwizard.setup.Environment#getValidator()
-   * 
    */
   public Validator getValidator() {
     return environment.getValidator();
@@ -116,52 +99,41 @@ public class ApiEnvironment {
   /**
    * @param validator
    * @see io.dropwizard.setup.Environment#setValidator(javax.validation.Validator)
-   * 
    */
   public void setValidator(Validator validator) {
     environment.setValidator(validator);
   }
 
   /**
-   * @return the environment metrics
    * @see io.dropwizard.setup.Environment#metrics()
-   * 
    */
   public MetricRegistry metrics() {
     return environment.metrics();
   }
 
   /**
-   * @return the health checks
    * @see io.dropwizard.setup.Environment#healthChecks()
-   * 
    */
   public HealthCheckRegistry healthChecks() {
     return environment.healthChecks();
   }
 
   /**
-   * @return the application context
    * @see io.dropwizard.setup.Environment#getApplicationContext()
-   * 
    */
   public MutableServletContextHandler getApplicationContext() {
     return environment.getApplicationContext();
   }
 
   /**
-   * @return the JerseyServletContainer
    * @see io.dropwizard.setup.Environment#getJerseyServletContainer()
-   * 
    */
   public Servlet getJerseyServletContainer() {
     return environment.getJerseyServletContainer();
   }
 
   /**
-   * @return the AdminContext
    * @see io.dropwizard.setup.Environment#getAdminContext()
-   * 
    */
   public MutableServletContextHandler getAdminContext() {
     return environment.getAdminContext();

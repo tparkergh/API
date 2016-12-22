@@ -7,6 +7,7 @@ import java.util.Map;
 import gov.ca.cwds.rest.services.ServiceException;
 
 public class ServiceUtils {
+
   public static Map<String, String> extractKeyValuePairs(Serializable nameValuePairsSerializable) {
     Map<String, String> keyValuePairs = new HashMap<String, String>();
     if (!(nameValuePairsSerializable instanceof String)) {

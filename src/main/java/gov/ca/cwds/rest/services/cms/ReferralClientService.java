@@ -19,13 +19,10 @@ import gov.ca.cwds.rest.services.CrudsService;
 import gov.ca.cwds.rest.services.ServiceException;
 import gov.ca.cwds.rest.util.ServiceUtils;
 
-// import gov.ca.cwds.rest.util.ServiceUtils;
-
 /**
  * Business layer object to work on {@link ReferralClient}
  * 
  * @author CWDS API Team
- *
  */
 public class ReferralClientService implements CrudsService {
   private static final Logger LOGGER = LoggerFactory.getLogger(ReferralClientService.class);
@@ -46,8 +43,8 @@ public class ReferralClientService implements CrudsService {
     this.referralClientDao = referralClientDao;
   }
 
-  /*
-   * (non-Javadoc)
+  /**
+   * {@inheritDoc}
    * 
    * @see gov.ca.cwds.rest.services.CrudsService#find(java.io.Serializable)
    */
@@ -62,8 +59,8 @@ public class ReferralClientService implements CrudsService {
     return null;
   }
 
-  /*
-   * (non-Javadoc)
+  /**
+   * {@inheritDoc}
    * 
    * @see gov.ca.cwds.rest.services.CrudsService#delete(java.io.Serializable)
    */
@@ -78,11 +75,6 @@ public class ReferralClientService implements CrudsService {
     return null;
   }
 
-  /*
-   * (non-Javadoc)
-   * 
-   * @see gov.ca.cwds.rest.services.CrudsService#create(gov.ca.cwds.rest.api.domain.DomainObject)
-   */
   @Override
   public gov.ca.cwds.rest.api.domain.cms.ReferralClient create(Request request) {
     assert (request instanceof gov.ca.cwds.rest.api.domain.cms.ReferralClient);
@@ -101,11 +93,6 @@ public class ReferralClientService implements CrudsService {
     }
   }
 
-  /*
-   * (non-Javadoc)
-   * 
-   * @see gov.ca.cwds.rest.services.CrudsService#update(gov.ca.cwds.rest.api.domain.DomainObject)
-   */
   @Override
   public gov.ca.cwds.rest.api.domain.cms.ReferralClient update(Serializable primaryKeyObject,
       Request request) {
@@ -113,7 +100,6 @@ public class ReferralClientService implements CrudsService {
     assert (request instanceof gov.ca.cwds.rest.api.domain.cms.ReferralClient);
     gov.ca.cwds.rest.api.domain.cms.ReferralClient referralClient =
         ((gov.ca.cwds.rest.api.domain.cms.ReferralClient) request);
-
 
     try {
       ReferralClient managed = new ReferralClient(referralClient, "q1p");
@@ -132,8 +118,6 @@ public class ReferralClientService implements CrudsService {
     Map<String, String> nameValuePairs = ServiceUtils.extractKeyValuePairs(primaryKey);
     String referralId = nameValuePairs.get(KEY_REFERRAL_ID);
     String clientId = nameValuePairs.get(KEY_CLIENT_ID);
-    ReferralClient.PrimaryKey primaryKeyObject =
-        new ReferralClient.PrimaryKey(referralId, clientId);
-    return primaryKeyObject;
+    return new ReferralClient.PrimaryKey(referralId, clientId);
   }
 }
