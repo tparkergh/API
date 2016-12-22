@@ -18,27 +18,6 @@ import io.dropwizard.jackson.JsonSnakeCase;
 @JsonSnakeCase
 public final class ESSearchRequest extends DomainObject implements Request {
 
-  // The intent of this method is to look up ElasticSearch methods through reflection.
-  // public static final Method getAnyMethod(Class<?> cls, String name, Class<?>[] argTypes)
-  // throws NoSuchMethodException {
-  // try {
-  // return cls.getDeclaredMethod(name, argTypes);
-  // } catch (NoSuchMethodException ex) {
-  // final Class<?>[] clses = cls.getInterfaces();
-  // for (int j = 0; j < clses.length; ++j)
-  // try {
-  // return getAnyMethod(clses[j], name, argTypes);
-  // } catch (NoSuchMethodException e2) {
-  // // Ignore.
-  // }
-  //
-  // cls = cls.getSuperclass();
-  // if (cls == null)
-  // throw ex;
-  // return getAnyMethod(cls, name, argTypes);
-  // }
-  // }
-
   // ================
   // ENUMS:
   // ================

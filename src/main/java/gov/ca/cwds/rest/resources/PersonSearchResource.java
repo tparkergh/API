@@ -19,7 +19,8 @@ import gov.ca.cwds.inject.PersonServiceBackedResource;
 import gov.ca.cwds.rest.api.domain.Person;
 import gov.ca.cwds.rest.api.domain.PostedPerson;
 import gov.ca.cwds.rest.api.domain.ScreeningRequest;
-import gov.ca.cwds.rest.api.domain.es.PersonSearchRequest;
+import gov.ca.cwds.rest.api.domain.es.ESPerson;
+import gov.ca.cwds.rest.api.domain.es.ESPersonSearchRequest;
 import gov.ca.cwds.rest.services.PersonService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -61,22 +62,20 @@ public class PersonSearchResource {
    * 
    * @return the response
    */
-  // @UnitOfWork(value = "ns") // No transaction?
   @POST
   @Path("/all")
   @ApiResponses(value = {@ApiResponse(code = 404, message = "Not found"),
       @ApiResponse(code = 406, message = "Accept Header not supported")})
-  @ApiOperation(value = "Fetch ALL Persons from ElasticSearch", response = PostedPerson[].class)
+  @ApiOperation(value = "Fetch ALL Persons from ElasticSearch", response = ESPerson[].class)
   public Response showAllPersons() {
 
-    PostedPerson[] hits = null;
+    ESPerson[] hits = null;
     try {
       // TODO: remove cast abuse.
       hits = ((PersonService) ((ServiceBackedResourceDelegate) resourceDelegate).getService())
           .fetchAllPersons();
     } catch (Exception e) {
-      // e.printStackTrace();
-
+      throw new RuntimeException("ERROR calling ES \"fetch all persons\"", e);
     }
 
     if (hits != null) {
@@ -90,10 +89,9 @@ public class PersonSearchResource {
    * Query Persons in ElasticSearch by searching on one of the following: first name, last name or
    * birth date.
    * 
-   * @param req JSON {@link PersonSearchRequest}
+   * @param req JSON {@link ESPersonSearchRequest}
    * @return the response
    */
-  // @UnitOfWork(value = "ns") // Q: No transaction?
   @POST
   @Path("/query_or")
   @ApiResponses(value = {@ApiResponse(code = 404, message = "Not found"),
@@ -101,17 +99,17 @@ public class PersonSearchResource {
       @ApiResponse(code = 406, message = "Accept Header not supported")})
   @ApiOperation(
       value = "Query Persons from ElasticSearch by first non-blank field. Wildcards allowed (*,?)",
-      code = HttpStatus.SC_OK, response = PostedPerson[].class)
+      code = HttpStatus.SC_OK, response = ESPerson[].class)
   @Consumes(value = MediaType.APPLICATION_JSON)
   public Response queryPersonOrTerm(
-      @Valid @ApiParam(hidden = false, required = true) PersonSearchRequest req) {
-    PostedPerson[] hits = null;
+      @Valid @ApiParam(hidden = false, required = true) ESPersonSearchRequest req) {
+    ESPerson[] hits = null;
     try {
       // TODO: remove cast abuse.
       hits = ((PersonService) ((ServiceBackedResourceDelegate) resourceDelegate).getService())
           .queryPersonOr(req.getFirstName(), req.getLastName(), req.getBirthDate());
     } catch (Exception e) {
-      e.printStackTrace();
+      throw new RuntimeException("ERROR calling ES \"query person OR\"", e);
     }
 
     if (hits != null) {
@@ -132,12 +130,6 @@ public class PersonSearchResource {
    *
    * @return the response
    */
-  // @UnitOfWork(value = "ns")
-  // @GET
-  // @Path("/{id}")
-  // @ApiResponses(value = {@ApiResponse(code = 404, message = "Not found"),
-  // @ApiResponse(code = 406, message = "Accept Header not supported")})
-  // @ApiOperation(value = "Find Person by id", response = ScreeningResponse.class)
   public Response get(@PathParam("id") @ApiParam(required = true, name = "id",
       value = "The id of the XYZ to find") long id) {
     return Response.status(Response.Status.NOT_IMPLEMENTED).entity(null).build();
@@ -151,37 +143,18 @@ public class PersonSearchResource {
    * 
    * @return {@link Response}
    */
-  // @DELETE
-  // @Path("/{id}")
-  // @ApiOperation(hidden = true, value = "Delete Person - not currently implemented",
-  // code = HttpStatus.SC_OK, response = Object.class)
-  public Response delete(
-      // @PathParam("id") @ApiParam(required = true, value = "id of XYZ to delete")
-      long id,
-      // @HeaderParam("Accept") @ApiParam(hidden = true)
-      String acceptHeader) {
+  public Response delete(long id, String acceptHeader) {
     return Response.status(Response.Status.NOT_IMPLEMENTED).entity(null).build();
   }
 
   /**
    * <strong>NOT IMPLEMENTED! REQUIRED BY {@link ResourceDelegate}.</strong>
    * 
-   * @param screeningReference The {@link PersonSearchRequest}
+   * @param screeningReference The {@link ESPersonSearchRequest}
    * 
    * @return The {@link Response}
    */
-  // @UnitOfWork(value = "ns")
-  // @POST
-  // @ApiResponses(value = {@ApiResponse(code = 400, message = "Unable to process JSON"),
-  // @ApiResponse(code = 406, message = "Accept Header not supported"),
-  // @ApiResponse(code = 409, message = "Conflict - already exists"),
-  // @ApiResponse(code = 422, message = "Unable to validate XYZ")})
-  // @Consumes(value = MediaType.APPLICATION_JSON)
-  // @ApiOperation(value = "Creates a new XYZ", code = HttpStatus.SC_CREATED,
-  // response = PostedScreening.class)
-  public Response create(
-      // @ApiParam(hidden = false, required = true)
-      PersonSearchRequest screeningReference) {
+  public Response create(ESPersonSearchRequest screeningReference) {
     return Response.status(Response.Status.NOT_IMPLEMENTED).entity(null).build();
   }
 
@@ -193,22 +166,7 @@ public class PersonSearchResource {
    *
    * @return The {@link Response}
    */
-  // @UnitOfWork(value = "ns")
-  // @PUT
-  // @Path("/{id}")
-  // @ApiResponses(value = {@ApiResponse(code = 400, message = "Unable to process JSON"),
-  // @ApiResponse(code = 404, message = "not found"),
-  // @ApiResponse(code = 406, message = "Accept Header not supported"),
-  // @ApiResponse(code = 422, message = "Unable to validate XYZ")})
-  // @Consumes(value = MediaType.APPLICATION_JSON)
-  // @ApiOperation(value = "Update XYZ", code = HttpStatus.SC_OK, response =
-  // ScreeningResponse.class)
-  public Response update(
-      // @PathParam("id") @ApiParam(required = true, name = "id", value = "The id of the XYZ to
-      // update")
-      long id,
-      // @ApiParam(required = true, name = "XYZ", value = "The screening request")
-      ScreeningRequest screeningRequest) {
+  public Response update(long id, ScreeningRequest screeningRequest) {
     return Response.status(Response.Status.NOT_IMPLEMENTED).entity(null).build();
   }
 }

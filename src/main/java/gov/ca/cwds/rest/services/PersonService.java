@@ -19,6 +19,7 @@ import gov.ca.cwds.rest.api.Response;
 import gov.ca.cwds.rest.api.domain.DomainObject;
 import gov.ca.cwds.rest.api.domain.Person;
 import gov.ca.cwds.rest.api.domain.PostedPerson;
+import gov.ca.cwds.rest.api.domain.es.ESPerson;
 import gov.ca.cwds.rest.api.domain.es.ESSearchRequest;
 import gov.ca.cwds.rest.elasticsearch.db.ElasticsearchDao;
 import gov.ca.cwds.rest.jdbi.Dao;
@@ -31,11 +32,12 @@ import gov.ca.cwds.rest.jdbi.ns.PersonDao;
  * @author CWDS API Team
  */
 public class PersonService implements CrudsService {
-  private PersonDao personDao;
-  private ElasticsearchDao elasticsearchDao;
 
   private static final Logger LOGGER = LoggerFactory.getLogger(PersonService.class);
   private static final ObjectMapper MAPPER = new ObjectMapper();
+
+  private PersonDao personDao;
+  private ElasticsearchDao elasticsearchDao;
 
   /**
    * Constructor
@@ -93,10 +95,10 @@ public class PersonService implements CrudsService {
         document = MAPPER.writeValueAsString(esPerson);
       }
 
-      // Methods start/stop are now protected. Dao manages its own connections.
+      // The ES Dao manages its own connections. No need to manually start or stop.
       elasticsearchDao.index(document, esPerson.getId().toString());
     } catch (JsonProcessingException e) {
-      throw new ApiException("Unable to convert Person to json to Index in Elasticsearch", e);
+      throw new ApiException("Unable to convert Person to JSON to Index in Elasticsearch", e);
     } catch (Exception e) {
       throw new ApiException("Unable to Index Person in Elasticsearch", e);
     }
@@ -107,19 +109,19 @@ public class PersonService implements CrudsService {
    * Returns all persons in Elasticsearch, up the default number of rows set in
    * {@link ElasticsearchDao#fetchAllPerson()}.
    * 
-   * @return array of {@link PostedPerson}
+   * @return array of {@link ESPerson}
    * @throws Exception I/O error or unknown host
    */
-  public PostedPerson[] fetchAllPersons() throws Exception {
+  public ESPerson[] fetchAllPersons() throws Exception {
     final SearchHit[] hits = this.elasticsearchDao.fetchAllPerson();
 
-    final PostedPerson[] persons = new PostedPerson[hits.length];
+    final ESPerson[] persons = new ESPerson[hits.length];
     int counter = -1;
     for (SearchHit hit : hits) {
       final Map<String, Object> m = hit.getSource();
       LOGGER.debug(m.toString());
 
-      persons[++counter] = new PostedPerson(Long.parseLong(m.getOrDefault("id", "0").toString()),
+      persons[++counter] = new ESPerson(m.getOrDefault("id", "0").toString(),
           (String) m.getOrDefault("first_name", ""), (String) m.getOrDefault("last_name", ""),
           (String) m.getOrDefault("gender", null), (String) m.getOrDefault("birth_date", null),
           (String) m.getOrDefault("ssn", null), null);
@@ -137,7 +139,7 @@ public class PersonService implements CrudsService {
    * @return array of found Persons
    * @throws Exception I/O error or unknown host
    */
-  public PostedPerson[] queryPersonOr(String firstName, String lastName, String birthDate)
+  public ESPerson[] queryPersonOr(String firstName, String lastName, String birthDate)
       throws Exception {
 
     ESSearchRequest req = new ESSearchRequest();
@@ -156,15 +158,14 @@ public class PersonService implements CrudsService {
 
     req.getRoot().addElem(new ESSearchRequest.ESFieldSearchEntry(field, value));
     final SearchHit[] hits = this.elasticsearchDao.queryPersonOr(req);
+    final ESPerson[] persons = new ESPerson[hits.length];
 
-    final PostedPerson[] persons = new PostedPerson[hits.length];
     int counter = -1;
     for (SearchHit hit : hits) {
       final Map<String, Object> m = hit.getSource();
-      // LOGGER.debug(m.toString());
 
-      persons[++counter] = new PostedPerson(Long.parseLong(m.getOrDefault("id", "0").toString()),
-          (String) m.getOrDefault("first_name", ""), (String) m.getOrDefault("last_name", ""),
+      persons[++counter] = new ESPerson(m.getOrDefault("id", "0").toString(),
+          (String) m.getOrDefault("first_name", "").toString(), (String) m.getOrDefault("last_name", ""),
           (String) m.getOrDefault("gender", null), (String) m.getOrDefault("birth_date", null),
           (String) m.getOrDefault("ssn", null), null);
     }

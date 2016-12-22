@@ -38,8 +38,11 @@ public class ElasticsearchDao {
 
   private static final int DEFAULT_MAX_RESULTS = 60;
 
-  // Used for testing or custom configurations.
+  /**
+   * Used for unit testing or for custom configurations.
+   */
   private Client client;
+
   private TransportAddress transportAddress;
 
   private final String host;
@@ -49,11 +52,11 @@ public class ElasticsearchDao {
   private String documentType;
 
   /**
-   * Constructor
+   * Constructor. Construct from required fields.
    * 
-   * @param host The host
-   * @param port The port
-   * @param clusterName The cluster name
+   * @param host The ES host
+   * @param port The port that the ES host is listening on
+   * @param clusterName The ES cluster name
    */
   public ElasticsearchDao(String host, String port, String clusterName) {
     this.host = host;
@@ -62,17 +65,17 @@ public class ElasticsearchDao {
   }
 
   /**
-   * Constructor
+   * Constructor. Construct from YAML configuration.
    * 
-   * @param elasticsearchConfiguration The configuration
+   * @param config The ES configuration
    */
   @Inject
-  public ElasticsearchDao(ElasticsearchConfiguration elasticsearchConfiguration) {
-    this.host = elasticsearchConfiguration.getElasticsearchHost();
-    this.clusterName = elasticsearchConfiguration.getElasticsearchCluster();
-    this.port = elasticsearchConfiguration.getElasticsearchPort();
-    this.indexName = elasticsearchConfiguration.getPeopleIndexName();
-    this.documentType = elasticsearchConfiguration.getPeopleIndexType();
+  public ElasticsearchDao(ElasticsearchConfiguration config) {
+    this.host = config.getElasticsearchHost();
+    this.clusterName = config.getElasticsearchCluster();
+    this.port = config.getElasticsearchPort();
+    this.indexName = config.getPeopleIndexName();
+    this.documentType = config.getPeopleIndexType();
   }
 
   /**
@@ -94,13 +97,18 @@ public class ElasticsearchDao {
   /**
    * Start the ElasticSearch client, if not started already.
    * 
+   * <p>
+   * This method calls the synchronized method, {@link #init()}, only if the underlying
+   * {@link #client} is not initialized.
+   * </p>
+   * 
    * @throws Exception I/O error or unknown host
    * @see #init()
    */
   protected void start() throws Exception {
     LOGGER.debug("ElasticSearchDao.start()");
 
-    // Only enter synchronized method if client is not initialized.
+    // Enter synchronized init method ONLY if client is not initialized.
     if (this.client == null) {
       init();
     }

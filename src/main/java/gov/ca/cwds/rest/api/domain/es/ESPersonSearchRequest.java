@@ -11,13 +11,13 @@ import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 
 /**
- * {@link DomainObject} representing a Person search request for ElasticSearch.
+ * {@link DomainObject} representing a Person search request of ElasticSearch.
  * 
  * @author CWDS API Team
  */
 @ApiModel
 @JsonSnakeCase
-public final class PersonSearchRequest extends DomainObject implements Request {
+public final class ESPersonSearchRequest extends DomainObject implements Request {
 
   @ApiModelProperty(example = "bart")
   @JsonProperty("first_name")
@@ -27,9 +27,20 @@ public final class PersonSearchRequest extends DomainObject implements Request {
   @JsonProperty("last_name")
   private String lastName;
 
-  // BUG: Validation should fail, but annotations do not trap an error.
-  // @PastDate()
-  @gov.ca.cwds.rest.validation.Date(format = DATE_FORMAT, required = false)
+  /**
+   * Birth date input, following the standard API domain date format, {@link DATE_FORMAT}.
+   * 
+   * <p>
+   * When searching ElasticSearch documents, birth date is lenient and allows wildcards (*,?), such
+   * as "2000-*", "2000-12-*", or "2000-1?-*". This lenient date format differs from most other
+   * domain date fields.
+   * </p>
+   * 
+   * <p>
+   * That said, birth date is required when creating ElasticSearch documents, but that wouldn't come
+   * from a "search request" object.
+   * </p>
+   */
   @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = DATE_FORMAT)
   @JsonProperty("birth_date")
   @ApiModelProperty(required = false, readOnly = false, value = "yyyy-MM-dd",
@@ -39,7 +50,7 @@ public final class PersonSearchRequest extends DomainObject implements Request {
   /**
    * Default, no-param, no-op ctor. Required by frameworks.
    */
-  public PersonSearchRequest() {}
+  public ESPersonSearchRequest() {}
 
   /**
    * JSON DropWizard Constructor.
@@ -49,7 +60,7 @@ public final class PersonSearchRequest extends DomainObject implements Request {
    * @param birthDate the birth date to search
    */
   @JsonCreator
-  public PersonSearchRequest(@JsonProperty("first_name") String firstName,
+  public ESPersonSearchRequest(@JsonProperty("first_name") String firstName,
       @JsonProperty("last_name") String lastName, @JsonProperty("birth_date") String birthDate) {
     super();
     this.firstName = firstName != null ? firstName.trim() : "";
@@ -99,7 +110,7 @@ public final class PersonSearchRequest extends DomainObject implements Request {
       return false;
     if (getClass() != obj.getClass())
       return false;
-    PersonSearchRequest other = (PersonSearchRequest) obj;
+    ESPersonSearchRequest other = (ESPersonSearchRequest) obj;
     if (birthDate == null) {
       if (other.birthDate != null)
         return false;
@@ -117,6 +128,5 @@ public final class PersonSearchRequest extends DomainObject implements Request {
       return false;
     return true;
   }
-
 
 }

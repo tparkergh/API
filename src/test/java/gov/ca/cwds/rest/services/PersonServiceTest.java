@@ -7,13 +7,6 @@ import static org.hamcrest.Matchers.nullValue;
 import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
-import gov.ca.cwds.rest.api.Response;
-import gov.ca.cwds.rest.api.domain.Address;
-import gov.ca.cwds.rest.api.domain.DomainObject;
-import gov.ca.cwds.rest.api.domain.Person;
-import gov.ca.cwds.rest.api.domain.PostedPerson;
-import gov.ca.cwds.rest.elasticsearch.db.ElasticsearchDao;
-import gov.ca.cwds.rest.jdbi.ns.PersonDao;
 
 import org.apache.commons.lang3.NotImplementedException;
 import org.hamcrest.junit.ExpectedException;
@@ -21,6 +14,14 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
+
+import gov.ca.cwds.rest.api.Response;
+import gov.ca.cwds.rest.api.domain.Address;
+import gov.ca.cwds.rest.api.domain.DomainObject;
+import gov.ca.cwds.rest.api.domain.Person;
+import gov.ca.cwds.rest.api.domain.PostedPerson;
+import gov.ca.cwds.rest.elasticsearch.db.ElasticsearchDao;
+import gov.ca.cwds.rest.jdbi.ns.PersonDao;
 
 public class PersonServiceTest {
   private PersonService personService;
@@ -83,8 +84,8 @@ public class PersonServiceTest {
         new gov.ca.cwds.rest.api.persistence.ns.Person(2L, "Bart", "Simpson", "M",
             DomainObject.uncookDateString("2013-10-31"), "1234556789", toCreateAddress);
     Person request = new Person(toCreate);
-    when(personDao.create(any(gov.ca.cwds.rest.api.persistence.ns.Person.class))).thenReturn(
-        toCreate);
+    when(personDao.create(any(gov.ca.cwds.rest.api.persistence.ns.Person.class)))
+        .thenReturn(toCreate);
 
     Response response = personService.create(request);
     assertThat(response.getClass(), is(PostedPerson.class));
@@ -99,8 +100,8 @@ public class PersonServiceTest {
         new gov.ca.cwds.rest.api.persistence.ns.Person(2L, "Bart", "Simpson", "M",
             DomainObject.uncookDateString("2016-10-31"), "1234556789", toCreateAddress);
     Person request = new Person(toCreate);
-    when(personDao.create(any(gov.ca.cwds.rest.api.persistence.ns.Person.class))).thenReturn(
-        toCreate);
+    when(personDao.create(any(gov.ca.cwds.rest.api.persistence.ns.Person.class)))
+        .thenReturn(toCreate);
 
     PostedPerson postedPerson = personService.create(request);
     assertThat(postedPerson, is(notNullValue()));
@@ -115,8 +116,8 @@ public class PersonServiceTest {
         new gov.ca.cwds.rest.api.persistence.ns.Person(2L, "Bart", "Simpson", "M",
             DomainObject.uncookDateString("2016-10-31"), "1234556789", toCreateAddress);
     Person request = new Person(toCreate);
-    when(personDao.create(any(gov.ca.cwds.rest.api.persistence.ns.Person.class))).thenReturn(
-        toCreate);
+    when(personDao.create(any(gov.ca.cwds.rest.api.persistence.ns.Person.class)))
+        .thenReturn(toCreate);
 
     Address address = new Address("742 Evergreen Terrace", "Springfield", "WA", 98700);
     PostedPerson expected =

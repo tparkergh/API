@@ -19,7 +19,7 @@ import gov.ca.cwds.rest.services.CrudsService;
 import gov.ca.cwds.rest.services.ServiceException;
 
 /**
- * An implementation of the {@link ResourceDelegate} which passes work to a service layer. All
+ * Implements the {@link ResourceDelegate} and passes work to the service layer. All
  * {@link Resource} should decorate this class. Resources will delegate to this class with the
  * decoration being swagger {@link Annotation} classes for documentation and Jersey
  * {@link Annotation} for RESTful resources.
@@ -29,6 +29,9 @@ import gov.ca.cwds.rest.services.ServiceException;
 public final class ServiceBackedResourceDelegate implements ResourceDelegate {
   private static final Logger LOGGER = LoggerFactory.getLogger(ServiceBackedResourceDelegate.class);
 
+  /**
+   * The underlying, wrapped CRUD service.
+   */
   private CrudsService service;
 
   /**
@@ -121,6 +124,11 @@ public final class ServiceBackedResourceDelegate implements ResourceDelegate {
     return response;
   }
 
+  /**
+   * Exposes the wrapped {@link CrudsService}.
+   * 
+   * @return the underlying, wrapped {@link CrudsService}
+   */
   public CrudsService getService() {
     return service;
   }

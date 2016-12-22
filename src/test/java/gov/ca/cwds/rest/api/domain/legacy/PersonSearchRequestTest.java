@@ -21,7 +21,7 @@ import org.junit.Test;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import gov.ca.cwds.rest.api.domain.es.PersonSearchRequest;
+import gov.ca.cwds.rest.api.domain.es.ESPersonSearchRequest;
 import gov.ca.cwds.rest.api.persistence.cms.Referral;
 import gov.ca.cwds.rest.core.Api;
 import gov.ca.cwds.rest.jdbi.CrudsDao;
@@ -43,12 +43,11 @@ public class PersonSearchRequestTest {
       ResourceTestRule.builder().addResource(mockResource).build();
 
   private static final ObjectMapper MAPPER = Jackson.newObjectMapper();
-  private PersonSearchRequest validPersonSearchRequest = validPersonSearchRequest();
+  private ESPersonSearchRequest validPersonSearchRequest = validPersonSearchRequest();
 
   private String firstName = "bart";
   private String lastName = "simpson";
   private String birthDate = "2008-09-01";
-
 
   public PersonSearchRequestTest() throws ParseException {}
 
@@ -66,7 +65,7 @@ public class PersonSearchRequestTest {
   @Test
   public void serializesToJSON() throws Exception {
     final String expected = MAPPER.writeValueAsString(MAPPER.readValue(
-        fixture("fixtures/domain/es/PersonSearch/valid/valid.json"), PersonSearchRequest.class));
+        fixture("fixtures/domain/es/PersonSearch/valid/valid.json"), ESPersonSearchRequest.class));
 
     assertThat(MAPPER.writeValueAsString(validPersonSearchRequest()), is(equalTo(expected)));
   }
@@ -74,12 +73,13 @@ public class PersonSearchRequestTest {
   @Test
   public void deserializesFromJSON() throws Exception {
     assertThat(MAPPER.readValue(fixture("fixtures/domain/es/PersonSearch/valid/valid.json"),
-        PersonSearchRequest.class), is(equalTo(validPersonSearchRequest())));
+        ESPersonSearchRequest.class), is(equalTo(validPersonSearchRequest())));
   }
 
   @Test
   public void jsonCreatorCtorTest() throws Exception {
-    PersonSearchRequest referralClient = new PersonSearchRequest(firstName, lastName, birthDate);
+    ESPersonSearchRequest referralClient =
+        new ESPersonSearchRequest(firstName, lastName, birthDate);
 
     assertThat(referralClient.getFirstName(), is(equalTo(firstName)));
     assertThat(referralClient.getLastName(), is(equalTo(lastName)));
@@ -88,7 +88,7 @@ public class PersonSearchRequestTest {
 
   @Test
   public void equalsHashCodeWork() {
-    EqualsVerifier.forClass(PersonSearchRequest.class).suppress(Warning.NONFINAL_FIELDS).verify();
+    EqualsVerifier.forClass(ESPersonSearchRequest.class).suppress(Warning.NONFINAL_FIELDS).verify();
   }
 
   /**
@@ -96,8 +96,8 @@ public class PersonSearchRequestTest {
    */
   @Test
   public void successfulWithValid() throws Exception {
-    PersonSearchRequest toCreate = MAPPER.readValue(
-        fixture("fixtures/domain/es/PersonSearch/valid/valid.json"), PersonSearchRequest.class);
+    ESPersonSearchRequest toCreate = MAPPER.readValue(
+        fixture("fixtures/domain/es/PersonSearch/valid/valid.json"), ESPersonSearchRequest.class);
     Response response = resources.client().target(ROOT_RESOURCE + "all").request()
         .accept(MediaType.APPLICATION_JSON)
         .post(Entity.entity(toCreate, MediaType.APPLICATION_JSON));
@@ -110,9 +110,9 @@ public class PersonSearchRequestTest {
    */
   @Test
   public void successWhenBirthDateEmpty() throws Exception {
-    PersonSearchRequest toCreate =
+    ESPersonSearchRequest toCreate =
         MAPPER.readValue(fixture("fixtures/domain/es/PersonSearch/valid/birthDateEmpty.json"),
-            PersonSearchRequest.class);
+            ESPersonSearchRequest.class);
     Response response = resources.client().target(ROOT_RESOURCE + "query_or").request()
         .accept(MediaType.APPLICATION_JSON)
         .post(Entity.entity(toCreate, MediaType.APPLICATION_JSON));
@@ -121,36 +121,34 @@ public class PersonSearchRequestTest {
 
   @Test
   public void successWhenBirthDateNull() throws Exception {
-    PersonSearchRequest toCreate =
+    ESPersonSearchRequest toCreate =
         MAPPER.readValue(fixture("fixtures/domain/es/PersonSearch/valid/birthDateNull.json"),
-            PersonSearchRequest.class);
+            ESPersonSearchRequest.class);
     Response response = resources.client().target(ROOT_RESOURCE + "query_or").request()
         .accept(MediaType.APPLICATION_JSON)
         .post(Entity.entity(toCreate, MediaType.APPLICATION_JSON));
     assertThat(response.getStatus(), is(equalTo(Response.Status.NO_CONTENT.getStatusCode())));
   }
 
-  @Test
-  public void failsWhenBirthDateWrongFormat() throws Exception {
-    PersonSearchRequest toCreate = MAPPER.readValue(
-        fixture("fixtures/domain/es/PersonSearch/invalid/birthDateWrongFormat.json"),
-        PersonSearchRequest.class);
-    Response response = resources.client().target(ROOT_RESOURCE + "query_or").request()
-        .accept(MediaType.APPLICATION_JSON)
-        .post(Entity.entity(toCreate, MediaType.APPLICATION_JSON));
-
-    // final String message = response.readEntity(String.class);
-    // System.out.print(message);
-
-    assertThat(response.getStatus(), is(equalTo(422)));
-    assertThat(response.readEntity(String.class).contains("must be in the format of yyyy-MM-dd"),
-        is(equalTo(true)));
-  }
+  // No longer true, because ES search may include wildcards, even on date fields.
+  // @Test
+  // public void failsWhenBirthDateWrongFormat() throws Exception {
+  // ESPersonSearchRequest toCreate = MAPPER.readValue(
+  // fixture("fixtures/domain/es/PersonSearch/invalid/birthDateWrongFormat.json"),
+  // ESPersonSearchRequest.class);
+  // Response response = resources.client().target(ROOT_RESOURCE + "query_or").request()
+  // .accept(MediaType.APPLICATION_JSON)
+  // .post(Entity.entity(toCreate, MediaType.APPLICATION_JSON));
+  //
+  // assertThat(response.getStatus(), is(equalTo(422)));
+  // assertThat(response.readEntity(String.class).contains("must be in the format of yyyy-MM-dd"),
+  // is(equalTo(true)));
+  // }
 
   /*
    * Utils
    */
-  private PersonSearchRequest validPersonSearchRequest() {
-    return new PersonSearchRequest("bart", "simpson", "2008-09-01");
+  private ESPersonSearchRequest validPersonSearchRequest() {
+    return new ESPersonSearchRequest("bart", "simpson", "2008-09-01");
   }
 }

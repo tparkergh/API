@@ -69,7 +69,7 @@ public class CrudsDaoImpl<T extends PersistentObject> extends AbstractDAO<T>
   /**
    * {@inheritDoc}
    * 
-   * @see CrudsDao#create(gov.ca.cwds.rest.api.persistence. PersistentObject)
+   * @see CrudsDao#create(gov.ca.cwds.rest.api.persistence.PersistentObject)
    */
   @Override
   public T create(T object) {
@@ -86,7 +86,7 @@ public class CrudsDaoImpl<T extends PersistentObject> extends AbstractDAO<T>
   /**
    * {@inheritDoc}
    * 
-   * @see CrudsDao#update(gov.ca.cwds.rest.api.persistence. PersistentObject)
+   * @see CrudsDao#update(gov.ca.cwds.rest.api.persistence.PersistentObject)
    */
   @Override
   public T update(T object) {

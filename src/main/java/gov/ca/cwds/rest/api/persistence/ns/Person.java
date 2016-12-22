@@ -79,7 +79,6 @@ public class Person extends NsPersistentObject {
     this.address = address;
   }
 
-
   /**
    * Constructor
    * 
@@ -96,8 +95,8 @@ public class Person extends NsPersistentObject {
     this.address = new Address(person.getAddress(), null);
   }
 
-  /*
-   * (non-Javadoc)
+  /**
+   * {@inheritDoc}
    * 
    * @see gov.ca.cwds.rest.api.persistence.PersistentObject#getPrimaryKey()
    */
@@ -106,14 +105,12 @@ public class Person extends NsPersistentObject {
     return getId();
   }
 
-
   /**
    * @return the id
    */
   public Long getId() {
     return id;
   }
-
 
   /**
    * @return the firstName
@@ -122,14 +119,12 @@ public class Person extends NsPersistentObject {
     return firstName;
   }
 
-
   /**
    * @return the lastName
    */
   public String getLastName() {
     return lastName;
   }
-
 
   /**
    * @return the gender
@@ -138,7 +133,6 @@ public class Person extends NsPersistentObject {
     return gender;
   }
 
-
   /**
    * @return the dateOfBirth
    */
@@ -146,14 +140,12 @@ public class Person extends NsPersistentObject {
     return dateOfBirth;
   }
 
-
   /**
    * @return the ssn
    */
   public String getSsn() {
     return ssn;
   }
-
 
   /**
    * @return the address

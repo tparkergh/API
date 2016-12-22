@@ -2,7 +2,7 @@ curl -X PUT "http://localhost:9200/people/person/_mapping" -d '{
 "person" : {
   "dynamic" : "strict",
   "properties" : {
-    "id" :                  { "type" : "integer", "index" : "not_analyzed" },
+    "id" :                  { "type" : "string", "index" : "not_analyzed" },
     "ssn" :                 { "type" : "integer", "index" : "not_analyzed" },
     "first_name" :          { "type" : "string",  "index" : "not_analyzed" },
     "last_name" :           { "type" : "string",  "index" : "not_analyzed" },
