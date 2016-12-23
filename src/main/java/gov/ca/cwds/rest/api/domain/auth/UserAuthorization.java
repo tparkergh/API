@@ -86,6 +86,62 @@ public final class UserAuthorization extends DomainObject implements Request, Re
   }
 
 
+  /**
+   * @return the userId
+   */
+  public String getUserId() {
+    return userId;
+  }
+
+
+  /**
+   * @return the staffPersonId
+   */
+  public String getStaffPersonId() {
+    return staffPersonId;
+  }
+
+
+  /**
+   * @return the socialWorker
+   */
+  public Boolean getSocialWorker() {
+    return socialWorker;
+  }
+
+
+  /**
+   * @return the supervisor
+   */
+  public Boolean getSupervisor() {
+    return supervisor;
+  }
+
+
+  /**
+   * @return the overrideAuthority
+   */
+  public Boolean getOverrideAuthority() {
+    return overrideAuthority;
+  }
+
+
+  /**
+   * @return the authorityPrivilege
+   */
+  public Set<StaffAuthorityPrivilege> getAuthorityPrivilege() {
+    return authorityPrivilege;
+  }
+
+
+  /**
+   * @return the unitAuthority
+   */
+  public Set<StaffUnitAuthority> getUnitAuthority() {
+    return unitAuthority;
+  }
+
+
   /*
    * (non-Javadoc)
    * 
