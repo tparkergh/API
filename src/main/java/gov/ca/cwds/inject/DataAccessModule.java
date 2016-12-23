@@ -1,7 +1,14 @@
 package gov.ca.cwds.inject;
 
+import org.hibernate.SessionFactory;
+
+import com.google.inject.AbstractModule;
+import com.google.inject.Provides;
+
 import gov.ca.cwds.rest.ApiConfiguration;
 import gov.ca.cwds.rest.ElasticsearchConfiguration;
+import gov.ca.cwds.rest.api.persistence.auth.StaffAuthorityPrivilege;
+import gov.ca.cwds.rest.api.persistence.auth.UserId;
 import gov.ca.cwds.rest.api.persistence.cms.Allegation;
 import gov.ca.cwds.rest.api.persistence.cms.CmsDocReferralClient;
 import gov.ca.cwds.rest.api.persistence.cms.CmsDocument;
@@ -15,7 +22,10 @@ import gov.ca.cwds.rest.api.persistence.ns.Address;
 import gov.ca.cwds.rest.api.persistence.ns.Person;
 import gov.ca.cwds.rest.api.persistence.ns.Screening;
 import gov.ca.cwds.rest.elasticsearch.db.ElasticsearchDao;
+import gov.ca.cwds.rest.jdbi.auth.StaffAuthorityPrivilegeDao;
+import gov.ca.cwds.rest.jdbi.auth.StaffUnitAuthorityDao;
 import gov.ca.cwds.rest.jdbi.auth.UserAuthorizationDao;
+import gov.ca.cwds.rest.jdbi.auth.UserIdDao;
 import gov.ca.cwds.rest.jdbi.cms.AllegationDao;
 import gov.ca.cwds.rest.jdbi.cms.AttorneyDao;
 import gov.ca.cwds.rest.jdbi.cms.ClientDao;
@@ -34,11 +44,6 @@ import io.dropwizard.db.DataSourceFactory;
 import io.dropwizard.hibernate.HibernateBundle;
 import io.dropwizard.setup.Bootstrap;
 
-import org.hibernate.SessionFactory;
-
-import com.google.inject.AbstractModule;
-import com.google.inject.Provides;
-
 /**
  * DI setup for data access objects
  * 
@@ -48,7 +53,8 @@ public class DataAccessModule extends AbstractModule {
   private final HibernateBundle<ApiConfiguration> cmsHibernateBundle =
       new HibernateBundle<ApiConfiguration>(StaffPerson.class, Referral.class, Allegation.class,
           CrossReport.class, ReferralClient.class, Reporter.class, CmsDocument.class,
-          CmsDocumentBlobSegment.class, CmsDocReferralClient.class) {
+          CmsDocumentBlobSegment.class, CmsDocReferralClient.class, UserId.class,
+          StaffAuthorityPrivilege.class) {
         @Override
         public DataSourceFactory getDataSourceFactory(ApiConfiguration configuration) {
           return configuration.getCmsDataSourceFactory();
@@ -98,6 +104,9 @@ public class DataAccessModule extends AbstractModule {
     bind(StaffPersonDao.class);
 
     bind(UserAuthorizationDao.class);
+    bind(UserIdDao.class);
+    bind(StaffAuthorityPrivilegeDao.class);
+    bind(StaffUnitAuthorityDao.class);
 
     bind(AddressDao.class);
     bind(PersonDao.class);

@@ -1,15 +1,8 @@
 package gov.ca.cwds.rest.services.auth;
 
-import gov.ca.cwds.rest.api.Request;
-import gov.ca.cwds.rest.api.domain.auth.StaffAuthorityPrivilege;
-import gov.ca.cwds.rest.api.domain.auth.StaffUnitAuthority;
-import gov.ca.cwds.rest.api.domain.auth.UserAuthorization;
-import gov.ca.cwds.rest.jdbi.Dao;
-import gov.ca.cwds.rest.jdbi.auth.UserAuthorizationDao;
-import gov.ca.cwds.rest.services.CrudsService;
-
 import java.io.Serializable;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import org.apache.commons.lang3.NotImplementedException;
@@ -18,53 +11,71 @@ import org.slf4j.LoggerFactory;
 
 import com.google.inject.Inject;
 
+import gov.ca.cwds.rest.api.Request;
+import gov.ca.cwds.rest.api.domain.auth.StaffAuthorityPrivilege;
+import gov.ca.cwds.rest.api.domain.auth.StaffUnitAuthority;
+import gov.ca.cwds.rest.api.domain.auth.UserAuthorization;
+import gov.ca.cwds.rest.api.persistence.auth.UserId;
+import gov.ca.cwds.rest.jdbi.auth.StaffAuthorityPrivilegeDao;
+import gov.ca.cwds.rest.jdbi.auth.UserIdDao;
+import gov.ca.cwds.rest.services.CrudsService;
+
+
 /**
  * Business layer object to work on {@link UserAuthorization}
  * 
  * @author CWDS API Team
  */
 public class UserAuthorizationService implements CrudsService {
+  @SuppressWarnings("unused")
   private static final Logger LOGGER = LoggerFactory.getLogger(UserAuthorizationService.class);
 
-  private UserAuthorizationDao userAuthorizationDao;
+  private UserIdDao userIdDao;
+  private StaffAuthorityPrivilegeDao staffAuthorityPrivilegeDao;
 
   /**
    * Constructor
    * 
-   * @param userAuthorizationDao The {@link Dao} handling
-   *        {@link gov.ca.cwds.rest.api.persistence.auth.UserAuthorization} objects.
+   * @param userIdDao The User Id DAO
+   * @param staffAuthorityPrivilegeDao The Staff Authority Privilege DAO
+   * 
    */
   @Inject
-  public UserAuthorizationService(UserAuthorizationDao userAuthorizationDao) {
-    this.userAuthorizationDao = userAuthorizationDao;
+  public UserAuthorizationService(UserIdDao userIdDao,
+      StaffAuthorityPrivilegeDao staffAuthorityPrivilegeDao) {
+    this.userIdDao = userIdDao;
+    this.staffAuthorityPrivilegeDao = staffAuthorityPrivilegeDao;
   }
 
   /*
    * (non-Javadoc)
    * 
    * @see gov.ca.cwds.rest.services.CrudsService#find(java.io.Serializable)
+   * 
    */
+  @SuppressWarnings("null")
   @Override
   public UserAuthorization find(Serializable primaryKey) {
     assert (primaryKey instanceof String);
+    System.out.println(primaryKey);
 
-    StaffUnitAuthority staffUnitAuthority =
-        new StaffUnitAuthority("Unitwide Read", "ABC123", "Sacramento");
-    StaffAuthorityPrivilege authorityPrivilege =
-        new StaffAuthorityPrivilege("Countywide Read", "P", "Placer");
-    StaffAuthorityPrivilege anotherAuthorityPrivilege =
-        new StaffAuthorityPrivilege("Sealed", "P", "San Joaquin");
-    Set<StaffUnitAuthority> testuserUnitAuthority = new HashSet<StaffUnitAuthority>();
-    testuserUnitAuthority.add(staffUnitAuthority);
+    List<UserId> userList = userIdDao.listUserFromLogonId((String) primaryKey);
+    Set<gov.ca.cwds.rest.api.domain.auth.StaffUnitAuthority> testuserUnitAuthority =
+        new HashSet<StaffUnitAuthority>();
     Set<StaffAuthorityPrivilege> testuserAuthorityPrivilege =
         new HashSet<StaffAuthorityPrivilege>();
-    testuserAuthorityPrivilege.add(authorityPrivilege);
-    testuserAuthorityPrivilege.add(anotherAuthorityPrivilege);
-    if (primaryKey != null && primaryKey.equals("testuser")) {
-      return new gov.ca.cwds.rest.api.domain.auth.UserAuthorization("testuser", "q1p", true, false,
-          true, testuserAuthorityPrivilege, testuserUnitAuthority);
+    UserId user = null;
+    gov.ca.cwds.rest.api.persistence.auth.StaffAuthorityPrivilege SocialWorker = null;
+
+    if (userList != null || userList.size() > 0) {
+      user = userList.get(0);
+      SocialWorker = staffAuthorityPrivilegeDao.isSocialWorker(user.getId());
+    } else {
+
     }
-    return null;
+    return new gov.ca.cwds.rest.api.domain.auth.UserAuthorization(user.getLogonId(),
+        user.getStaffPersonId(), SocialWorker == null ? false : true, false, true,
+        testuserAuthorityPrivilege, testuserUnitAuthority);
   }
 
   /*
