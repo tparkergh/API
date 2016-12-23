@@ -20,13 +20,23 @@ public class JUnitGenerator {
   private static final String CLASS_SPACER =
       "\n==========================================================\n";
 
+
+  private static final class ClassStorage {
+    Class<?> klazz;
+
+
+    private ClassStorage() {}
+  }
+
+  private JUnitGenerator() {}
+
   /**
    * Split annotation settings String into key/value pairs.
    * 
    * @param s annotation String
    * @return map of annotation key/value pairs
    */
-  protected static Map<String, String> splitAnnotationSettings(String s) {
+  protected Map<String, String> splitAnnotationSettings(String s) {
     // final String[] inners = s.replace('(', '~').replace(')', '~').split("~");
     final String[] inners = s.split("[()]");
     final String[] settings = inners[1].trim().split(",");
@@ -42,20 +52,20 @@ public class JUnitGenerator {
     return ret;
   }
 
-  protected static void drillAnnotation(Annotation ann) {
+  protected void drillAnnotation(Annotation ann) {
     final String s = ann.toString();
     System.out.println("\t\tAnnotation: " + s);
     final Map<String, String> m = splitAnnotationSettings(s);
     System.out.println("\t\t\tSettings: " + m);
   }
 
-  protected static void drillAnnotations(String msg, Annotation[] anns) {
+  protected void drillAnnotations(String msg, Annotation[] anns) {
     if (anns != null && anns.length > 0) {
       drillAnnotations(msg, anns, 1);
     }
   }
 
-  protected static void drillAnnotations(String msg, Annotation[] anns, int indent) {
+  protected void drillAnnotations(String msg, Annotation[] anns, int indent) {
     if (anns != null && anns.length > 0) {
       // System.out.println(StringUtils.repeat('\t', indent) + "Annotations: " + msg + ":");
       for (Annotation ann : anns) {
@@ -64,9 +74,10 @@ public class JUnitGenerator {
     }
   }
 
-  protected static void drillClass(Class<?> klazz) throws Exception {
+  protected void drillClass(Class<?> klazz) throws Exception {
     System.out.println(CLASS_SPACER + "CLASS:\n" + klazz.getName() + ":" + CLASS_SPACER);
 
+    // INTERFACES:
     final Class<?>[] intrfcs = klazz.getInterfaces();
     if (intrfcs != null && intrfcs.length > 0) {
       System.out.println(SPACER + "INTERFACES:\n" + klazz.getName() + ":" + SPACER);
@@ -75,11 +86,12 @@ public class JUnitGenerator {
       }
     }
 
-    // Class level annotations:
-    System.out.println(SPACER + "CLASS DECLARED ANNOTATIONS:" + SPACER);
+    // CLASS ANNOTATIONS:
+    System.out.println(SPACER + "CLASS ANNOTATIONS:" + SPACER);
     drillAnnotations("Class Declared", klazz.getDeclaredAnnotations());
 
     // CONSTRUCTORS:
+    System.out.println(SPACER + "CONSTRUCTORS:" + SPACER);
     final Constructor<?>[] ctors = klazz.getDeclaredConstructors();
     for (Constructor<?> c : ctors) {
       System.out.println("Constructor: " + c);
@@ -93,7 +105,7 @@ public class JUnitGenerator {
     }
 
     // FIELDS:
-    System.out.println(SPACER + "DECLARED FIELDS:" + SPACER);
+    System.out.println(SPACER + "FIELDS:" + SPACER);
     for (Field f : klazz.getDeclaredFields()) {
       if (!f.getName().contains(".serialVersionUID")) {
         System.out.println(f);
@@ -102,7 +114,7 @@ public class JUnitGenerator {
     }
 
     // METHODS:
-    System.out.println(SPACER + "DECLARED METHODS:" + SPACER);
+    System.out.println(SPACER + "METHODS:" + SPACER);
     for (Method m : klazz.getDeclaredMethods()) {
       System.out.println(m);
       drillAnnotations("Method Declared", m.getDeclaredAnnotations());
@@ -116,7 +128,7 @@ public class JUnitGenerator {
     }
   }
 
-  protected static void drillClass(String className) throws Exception {
+  protected void drillClass(String className) throws Exception {
     drillClass(Class.forName(className, false, Thread.currentThread().getContextClassLoader()));
   }
 
@@ -127,7 +139,8 @@ public class JUnitGenerator {
 
     try {
       final String className = args[0];
-      drillClass(className);
+      JUnitGenerator generator = new JUnitGenerator();
+      generator.drillClass(className);
 
       // ConstructorUtils.getMatchingAccessibleConstructor(cls, parameterTypes)
       // final Object bean = klazz.newInstance();
@@ -137,7 +150,8 @@ public class JUnitGenerator {
       // System.out.println(desc);
 
     } catch (Throwable e) {
-      // Heck, it's a *main* method ... in a *utility class*. Swallow the exception. :-)
+      // Heck, it's a *main* method ... in a *utility class*.
+      // Just swallow the exception. :-)
       e.printStackTrace();
     }
   }
