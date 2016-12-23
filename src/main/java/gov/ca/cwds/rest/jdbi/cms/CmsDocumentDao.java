@@ -29,8 +29,6 @@ public class CmsDocumentDao extends BaseDaoImpl<CmsDocument> {
 
   private static final Logger LOGGER = LoggerFactory.getLogger(CmsDocumentDao.class);
 
-  private LZWEncoder lzw = new LZWEncoder();
-
   /**
    * Constructor
    * 
@@ -52,6 +50,7 @@ public class CmsDocumentDao extends BaseDaoImpl<CmsDocument> {
     String retval = "";
 
     if (doc.getCompressionMethod().endsWith("01")) {
+      LZWEncoder lzw = new LZWEncoder();
       if (!lzw.didLibraryLoad()) {
         LOGGER.warn("LZW compression not enabled!");
       } else {
@@ -81,6 +80,8 @@ public class CmsDocumentDao extends BaseDaoImpl<CmsDocument> {
     String retval = "";
 
     CmsPKCompressor pk = new CmsPKCompressor();
+    LZWEncoder lzw = new LZWEncoder();
+
     try {
       StringBuilder buf = new StringBuilder(doc.getDocLength().intValue() * 2);
       for (CmsDocumentBlobSegment seg : doc.getBlobSegments()) {
@@ -126,6 +127,7 @@ public class CmsDocumentDao extends BaseDaoImpl<CmsDocument> {
       // TODO: Trap std::exception in shared library and return error code.
       // The LZW library currently returns a blank when decompression fails, for safety, since
       // unhandled C++ exceptions kill the JVM.
+      LZWEncoder lzw = new LZWEncoder();
       lzw.fileCopyUncompress(src.getAbsolutePath(), tgt.getAbsolutePath());
 
       retval =
@@ -142,20 +144,6 @@ public class CmsDocumentDao extends BaseDaoImpl<CmsDocument> {
     }
 
     return retval;
-  }
-
-  /**
-   * @return lzw
-   */
-  public LZWEncoder getLzw() {
-    return lzw;
-  }
-
-  /**
-   * @param lzw
-   */
-  public void setLzw(LZWEncoder lzw) {
-    this.lzw = lzw;
   }
 
 }

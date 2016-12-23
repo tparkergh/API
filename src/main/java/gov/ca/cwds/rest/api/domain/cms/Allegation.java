@@ -121,25 +121,26 @@ public class Allegation extends DomainObject implements Request, Response {
   private Short placementFacilityType;
 
   /**
+   * Constructor. Build from JSON.
    * 
-   * @param abuseEndDate
-   * @param abuseFrequency
-   * @param abuseFrequencyPeriodCode
-   * @param abuseLocationDescription
-   * @param abuseStartDate
-   * @param allegationDispositionType
-   * @param allegationType
-   * @param dispositionDescription
-   * @param dispositionDate
-   * @param injuryHarmDetailIndicator
-   * @param nonProtectingParentCode
-   * @param staffPersonAddedIndicator
-   * @param victimClientId
-   * @param perpetratorClientId
-   * @param referralId
-   * @param countySpecificCode
-   * @param zippyCreatedIndicator
-   * @param placementFacilityType
+   * @param abuseEndDate abuse end date
+   * @param abuseFrequency abuse frequency
+   * @param abuseFrequencyPeriodCode abuse frequency period code
+   * @param abuseLocationDescription abuse location
+   * @param abuseStartDate abuse start date
+   * @param allegationDispositionType abuse disposition
+   * @param allegationType type of allegation
+   * @param dispositionDescription description of disposition
+   * @param dispositionDate disposition date
+   * @param injuryHarmDetailIndicator flag injury or harm
+   * @param nonProtectingParentCode non-protecting parent code
+   * @param staffPersonAddedIndicator flag added by staff
+   * @param victimClientId victim or client id
+   * @param perpetratorClientId perpetrator's client id
+   * @param referralId referral id
+   * @param countySpecificCode county code
+   * @param zippyCreatedIndicator created by Zippy
+   * @param placementFacilityType type of placement facility
    */
   @JsonCreator
   public Allegation(@JsonProperty("abuseEndDate") String abuseEndDate,
@@ -183,7 +184,7 @@ public class Allegation extends DomainObject implements Request, Response {
 
   /**
    * 
-   * @param persistedAllegation
+   * @param persistedAllegation persistence level allegation
    */
   public Allegation(gov.ca.cwds.rest.api.persistence.cms.Allegation persistedAllegation) {
     this.abuseEndDate = DomainObject.cookDate(persistedAllegation.getAbuseEndDate());
@@ -335,8 +336,8 @@ public class Allegation extends DomainObject implements Request, Response {
     return placementFacilityType;
   }
 
-  /*
-   * (non-Javadoc)
+  /**
+   * {@inheritDoc}
    * 
    * @see java.lang.Object#hashCode()
    */
@@ -374,8 +375,8 @@ public class Allegation extends DomainObject implements Request, Response {
     return result;
   }
 
-  /*
-   * (non-Javadoc)
+  /**
+   * {@inheritDoc}
    * 
    * @see java.lang.Object#equals(java.lang.Object)
    */

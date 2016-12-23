@@ -84,16 +84,16 @@ public class CmsDocument extends DomainObject implements Request, Response, Seri
   private String base64Blob;
 
   /**
-   * @param id
-   * @param segmentCount
-   * @param docLength
-   * @param docAuth
-   * @param docServ
-   * @param docDate
-   * @param docTime
-   * @param docName
-   * @param compressionMethod
-   * @param base64Blob
+   * @param id primary key
+   * @param segmentCount number of blob segments
+   * @param docLength uncompressed document length
+   * @param docAuth document auth code
+   * @param docServ document server code
+   * @param docDate document date
+   * @param docTime document time
+   * @param docName document name
+   * @param compressionMethod type of compression
+   * @param base64Blob consolidated, base64-encoded, uncompressed document
    */
   @JsonCreator
   public CmsDocument(@JsonProperty("id") String id,
@@ -118,7 +118,9 @@ public class CmsDocument extends DomainObject implements Request, Response, Seri
   }
 
   /**
-   * @param doc
+   * Construct from persistence layer document.
+   * 
+   * @param doc document entity
    */
   public CmsDocument(gov.ca.cwds.rest.api.persistence.cms.CmsDocument doc) {
     this.id = doc.getId();
@@ -259,133 +261,133 @@ public class CmsDocument extends DomainObject implements Request, Response, Seri
   }
 
   /**
-   * @return docDate
+   * @return docDate document date
    */
   public String getDocDate() {
     return docDate;
   }
 
   /**
-   * @param docDate
+   * @param docDate document date
    */
   public void setDocDate(String docDate) {
     this.docDate = docDate;
   }
 
   /**
-   * @return docLength
+   * @return docLength uncompressed document length
    */
   public Long getDocLength() {
     return docLength;
   }
 
   /**
-   * @param docLength
+   * @param docLength uncompressed document length
    */
   public void setDocLength(Long docLength) {
     this.docLength = docLength;
   }
 
   /**
-   * @return segmentCount
+   * @return segmentCount number of blob segments
    */
   public Short getSegmentCount() {
     return segmentCount;
   }
 
   /**
-   * @param segmentCount
+   * @param segmentCount number of blob segments
    */
   public void setSegmentCount(Short segmentCount) {
     this.segmentCount = segmentCount;
   }
 
   /**
-   * @return docAuth
+   * @return docAuth document auth code
    */
   public String getDocAuth() {
     return docAuth;
   }
 
   /**
-   * @param docAuth
+   * @param docAuth document auth code
    */
   public void setDocAuth(String docAuth) {
     this.docAuth = docAuth;
   }
 
   /**
-   * @return docServ
+   * @return docServ document server code
    */
   public String getDocServ() {
     return docServ;
   }
 
   /**
-   * @param docServ
+   * @param docServ document server code
    */
   public void setDocServ(String docServ) {
     this.docServ = docServ;
   }
 
   /**
-   * @return compressionMethod
+   * @return compression method
    */
   public String getCompressionMethod() {
     return compressionMethod;
   }
 
   /**
-   * @param compressionMethod
+   * @param compressionMethod compression method
    */
   public void setCompressionMethod(String compressionMethod) {
     this.compressionMethod = compressionMethod;
   }
 
   /**
-   * @return docName
+   * @return docName document name
    */
   public String getDocName() {
     return docName;
   }
 
   /**
-   * @param docName
+   * @param docName document name
    */
   public void setDocName(String docName) {
     this.docName = docName;
   }
 
   /**
-   * @return docTime
+   * @return docTime document time
    */
   public String getDocTime() {
     return docTime;
   }
 
   /**
-   * @param docTime
+   * @param docTime document time
    */
   public void setDocTime(String docTime) {
     this.docTime = docTime;
   }
 
   /**
-   * @param id
+   * @param id document handle
    */
   public void setId(String id) {
     this.id = id;
   }
 
   /**
-   * @return base65Blob
+   * @return base64Blob consolidated, base64-encoded, uncompressed document s
    */
   public String getBase64Blob() {
     return base64Blob;
   }
 
   /**
-   * @param base64Blob
+   * @param base64Blob consolidated, base64-encoded, uncompressed document
    */
   public void setBase64Blob(String base64Blob) {
     this.base64Blob = base64Blob;

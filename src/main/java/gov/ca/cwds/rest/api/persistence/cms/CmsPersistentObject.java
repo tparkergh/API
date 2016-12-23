@@ -16,12 +16,16 @@ import gov.ca.cwds.rest.api.persistence.PersistentObject;
  * @author CWDS API Team
  */
 @MappedSuperclass
-public abstract class CmsPersistentObject implements PersistentObject, Serializable {
+public abstract class CmsPersistentObject implements PersistentObject {
+
   /**
-   * 
+   * Baseline serialization version.
    */
   private static final long serialVersionUID = 1L;
 
+  /**
+   * Standard timestamp format for legacy DB2 tables.
+   */
   protected static final String TIMESTAMP_FORMAT = "yyyy-MM-dd-HH.mm.ss.SSS";
 
   @Column(name = "\"LST_UPD_ID\"")
@@ -31,18 +35,15 @@ public abstract class CmsPersistentObject implements PersistentObject, Serializa
   @Column(name = "\"LST_UPD_TS\"")
   private Date lastUpdatedTime;
 
-
   /**
-   * Default constructor
+   * Default constructor.
    * 
-   * Required for Hibernate
+   * Required for some framework calls.
    */
-  protected CmsPersistentObject() {
-
-  }
+  protected CmsPersistentObject() {}
 
   /**
-   * Constructor
+   * Constructor.
    * 
    * @param lastUpdatedId the id of the last person to update this object
    */
@@ -65,8 +66,8 @@ public abstract class CmsPersistentObject implements PersistentObject, Serializa
     return lastUpdatedTime;
   }
 
-  /*
-   * (non-Javadoc)
+  /**
+   * {@inheritDoc}
    * 
    * @see gov.ca.cwds.rest.api.persistence.PersistentObject#getPrimaryKey()
    */

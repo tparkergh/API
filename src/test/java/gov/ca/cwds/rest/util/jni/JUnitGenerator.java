@@ -24,6 +24,11 @@ public class JUnitGenerator {
   private static final class ClassStorage {
     Class<?> klazz;
 
+    Map<String, String> classAnnotations;
+    Map<Class<?>, Map<String, String>> interfaceAnnotations;
+    Map<Constructor<?>, Map<String, String>> ctorAnnotations;
+    Map<Field, Map<String, String>> fieldAnnotations;
+    Map<Method, Map<String, String>> methodAnnotations;
 
     private ClassStorage() {}
   }
@@ -37,15 +42,19 @@ public class JUnitGenerator {
    * @return map of annotation key/value pairs
    */
   protected Map<String, String> splitAnnotationSettings(String s) {
-    // final String[] inners = s.replace('(', '~').replace(')', '~').split("~");
-    final String[] inners = s.split("[()]");
-    final String[] settings = inners[1].trim().split(",");
-    Map<String, String> ret = new HashMap<String, String>();
+    Map<String, String> ret = null;
 
-    for (String pair : settings) {
-      final String[] tokens = pair.split("[=]");
-      if (tokens.length > 1) {
-        ret.put(tokens[0].trim(), tokens[1].trim());
+    final String[] inners = s.split("[()]");
+
+    if (inners != null && inners.length > 1) {
+      final String[] settings = inners[1].trim().split(",");
+      ret = new HashMap<String, String>();
+
+      for (String pair : settings) {
+        final String[] tokens = pair.split("[=]");
+        if (tokens.length > 1) {
+          ret.put(tokens[0].trim(), tokens[1].trim());
+        }
       }
     }
 
@@ -83,6 +92,7 @@ public class JUnitGenerator {
       System.out.println(SPACER + "INTERFACES:\n" + klazz.getName() + ":" + SPACER);
       for (Class<?> intrfce : intrfcs) {
         System.out.println(intrfce);
+        drillAnnotations("Interface Declared", intrfce.getDeclaredAnnotations());
       }
     }
 
@@ -118,6 +128,15 @@ public class JUnitGenerator {
     for (Method m : klazz.getDeclaredMethods()) {
       System.out.println(m);
       drillAnnotations("Method Declared", m.getDeclaredAnnotations());
+      final Class<?>[] params = m.getParameterTypes();
+      if (params != null && params.length > 0) {
+        int counter = 0;
+        for (Class<?> p : params) {
+          ++counter;
+          System.out.println("\tparam " + counter + ": " + p);
+          drillAnnotations("", p.getDeclaredAnnotations(), 2);
+        }
+      }
     }
 
     // PARENT CLASS:

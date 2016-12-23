@@ -69,7 +69,7 @@ import gov.ca.cwds.rest.api.persistence.PersistentObject;
     + "    LEFT OUTER JOIN CWSINT.SYS_CD_C AS CDTA " + "    ON CDTA.SYS_ID = CAD.ADDR_TPC "
     + "    AND CDTA.FKS_META_T = 'ADDR_TPC' " + "   ) " + " WHERE CNT.DOC_HANDLE = :docHandle "
     + " ORDER BY 1,2 " + " FOR READ ONLY ", resultClass = CmsDocReferralClient.class)
-public class CmsDocReferralClient extends CmsPersistentObject implements Serializable {
+public class CmsDocReferralClient extends CmsPersistentObject {
 
   private static final long serialVersionUID = 1L;
 
@@ -92,35 +92,28 @@ public class CmsDocReferralClient extends CmsPersistentObject implements Seriali
   @Column(name = "DOC_ADDED_UPD")
   private Date docAddedDate;
 
-  @Id
   @Column(name = "COM_FST_NM")
   private String commonFirstName;
 
   @Column(name = "COM_MID_NM")
   private String commonMiddleName;
 
-  @Id
   @Column(name = "COM_LST_NM")
   private String commonLastName;
 
-  @Id
   @Type(type = "date")
   @Column(name = "BIRTH_DT")
   private Date birthDate;
 
-  @Id
   @Column(name = "OTHERNAME")
   private String otherName;
 
-  @Id
   @Column(name = "NAME_TYPE")
   private String nameType;
 
-  @Id
   @Column(name = "ADDRESS")
   private String address;
 
-  @Id
   @Column(name = "ADDRESS_TYPE")
   private String addressType;
 

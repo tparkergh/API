@@ -13,8 +13,9 @@ import gov.ca.cwds.rest.api.domain.DomainObject;
 
 
 /**
- * @author Tabpcenc1
- *
+ * Class representing an Allegation.
+ * 
+ * @author CWDS API Team
  */
 @SuppressWarnings("serial")
 @Entity
@@ -97,26 +98,27 @@ public class Allegation extends CmsPersistentObject {
   }
 
   /**
+   * Constructor
    * 
-   * @param id
-   * @param abuseEndDate
-   * @param abuseStartDate
-   * @param abuseFrequency
-   * @param abuseFrequencyPeriodCode
-   * @param abuseLocationDescription
-   * @param allegationDispositionType
-   * @param allegationType
-   * @param dispositionDescription
-   * @param dispositionDate
-   * @param injuryHarmDetailIndicator
-   * @param nonProtectingParentCode
-   * @param staffPersonAddedIndicator
-   * @param victimClientId
-   * @param perpetratorClientId
-   * @param referralId
-   * @param countySpecificCode
-   * @param zippyCreatedIndicator
-   * @param placementFacilityType
+   * @param id primary key
+   * @param abuseEndDate abuse end date
+   * @param abuseStartDate abuse start date
+   * @param abuseFrequency abuse frequency
+   * @param abuseFrequencyPeriodCode abuse frequency period code
+   * @param abuseLocationDescription abuse location
+   * @param allegationDispositionType abuse disposition
+   * @param allegationType type of allegation
+   * @param dispositionDescription description of disposition
+   * @param dispositionDate disposition date
+   * @param injuryHarmDetailIndicator flag injury or harm
+   * @param nonProtectingParentCode non-protecting parent code
+   * @param staffPersonAddedIndicator flag added by staff
+   * @param victimClientId victim or client id
+   * @param perpetratorClientId perpetrator's client id
+   * @param referralId referral id
+   * @param countySpecificCode county code
+   * @param zippyCreatedIndicator created by Zippy
+   * @param placementFacilityType type of placement facility
    */
   public Allegation(String id, Date abuseEndDate, Date abuseStartDate, Short abuseFrequency,
       String abuseFrequencyPeriodCode, String abuseLocationDescription,
