@@ -74,15 +74,15 @@ public class CmsDocReferralClient extends CmsPersistentObject {
   private static final long serialVersionUID = 1L;
 
   @Id
-  @Column(name = "REFERL_ID")
+  @Column(name = "REFERL_ID", length = 10)
   private String referlId;
 
   @Id
-  @Column(name = "CLIENT_ID")
+  @Column(name = "CLIENT_ID", length = 10)
   private String clientId;
 
   @Id
-  @Column(name = "DOC_HANDLE")
+  @Column(name = "DOC_HANDLE", length = 30)
   private String docHandle;
 
   @Column(name = "DOC_NAME")
@@ -92,13 +92,13 @@ public class CmsDocReferralClient extends CmsPersistentObject {
   @Column(name = "DOC_ADDED_UPD")
   private Date docAddedDate;
 
-  @Column(name = "COM_FST_NM")
+  @Column(name = "COM_FST_NM", length = 20)
   private String commonFirstName;
 
-  @Column(name = "COM_MID_NM")
+  @Column(name = "COM_MID_NM", length = 20)
   private String commonMiddleName;
 
-  @Column(name = "COM_LST_NM")
+  @Column(name = "COM_LST_NM", length = 25)
   private String commonLastName;
 
   @Type(type = "date")

@@ -1,13 +1,13 @@
 package gov.ca.cwds.rest.api.persistence.auth;
 
-import gov.ca.cwds.rest.api.persistence.PersistentObject;
-import gov.ca.cwds.rest.api.persistence.cms.CmsPersistentObject;
-
 import java.io.Serializable;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
+
+import gov.ca.cwds.rest.api.persistence.PersistentObject;
+import gov.ca.cwds.rest.api.persistence.cms.CmsPersistentObject;
 
 /**
  * {@link PersistentObject} representing a User Authorization, this class is just a placeholder for
@@ -52,7 +52,6 @@ public class UserAuthorization extends CmsPersistentObject {
 
   @Override
   public Serializable getPrimaryKey() {
-    // TODO Auto-generated method stub
     return null;
   }
 

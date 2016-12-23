@@ -14,15 +14,28 @@ import gov.ca.cwds.rest.api.ApiException;
 
 // TODO : RDB move this to DomainChef.
 public abstract class DomainObject {
-  protected static final String DATE_FORMAT = "yyyy-MM-dd";
-  protected static final String TIMESTAMP_FORMAT = "yyyy-MM-dd-HH.mm.ss.SSS";
-  protected static final String TIME_FORMAT = "HH:mm:ss";
+
+  /**
+   * Common date format for domain classes.
+   */
+  public static final String DATE_FORMAT = "yyyy-MM-dd";
+
+  /**
+   * Common timestamp format for domain classes.
+   */
+  public static final String TIMESTAMP_FORMAT = "yyyy-MM-dd-HH.mm.ss.SSS";
+
+  /**
+   * Common time format for domain classes.
+   */
+  public static final String TIME_FORMAT = "HH:mm:ss";
 
   protected static final String ZIP_ALL_ZEROES = "00000";
   protected static final Pattern ZIPCODE_PATTERN = Pattern.compile("0*([1-9]*)");
 
   public DomainObject() {}
 
+  @Override
   public abstract boolean equals(Object obj);
 
   public static String cookBoolean(Boolean uncookedBoolean) {

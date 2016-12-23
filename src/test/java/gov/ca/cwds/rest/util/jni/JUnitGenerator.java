@@ -1,5 +1,7 @@
 package gov.ca.cwds.rest.util.jni;
 
+import java.io.FileInputStream;
+import java.io.PrintWriter;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
@@ -7,6 +9,17 @@ import java.lang.reflect.Method;
 import java.lang.reflect.Parameter;
 import java.util.HashMap;
 import java.util.Map;
+
+import org.apache.commons.compress.utils.IOUtils;
+import org.objectweb.asm.ClassReader;
+import org.objectweb.asm.ClassVisitor;
+import org.objectweb.asm.MethodVisitor;
+import org.objectweb.asm.Opcodes;
+import org.objectweb.asm.util.Printer;
+import org.objectweb.asm.util.Textifier;
+import org.objectweb.asm.util.TraceClassVisitor;
+import org.objectweb.asm.util.TraceMethodVisitor;
+
 
 /**
  * Generate JUnit test cases for target class.
@@ -151,6 +164,26 @@ public class JUnitGenerator {
     drillClass(Class.forName(className, false, Thread.currentThread().getContextClassLoader()));
   }
 
+  public static class YourClassVisitor extends ClassVisitor {
+
+    public YourClassVisitor(int api, ClassVisitor cv) {
+      super(api, cv);
+    }
+
+    @Override
+    public MethodVisitor visitMethod(int access, String name, String desc, String signature,
+        String[] exceptions) {
+      MethodVisitor mv = cv.visitMethod(access, name, desc, signature, exceptions);
+      Printer p = new Textifier(Opcodes.ASM5) {
+        @Override
+        public void visitMethodEnd() {
+          print(new PrintWriter(System.out)); // print it after it has been visited
+        }
+      };
+      return new TraceMethodVisitor(mv, p);
+    }
+  }
+
   /**
    * @param args command line
    */
@@ -161,12 +194,48 @@ public class JUnitGenerator {
       JUnitGenerator generator = new JUnitGenerator();
       generator.drillClass(className);
 
-      // ConstructorUtils.getMatchingAccessibleConstructor(cls, parameterTypes)
-      // final Object bean = klazz.newInstance();
-      // StaffAuthorityPrivilege bean = new StaffAuthorityPrivilege("type", "", "");
-      // @SuppressWarnings("rawtypes")
-      // final Map desc = BeanUtils.describe(bean);
-      // System.out.println(desc);
+      final byte[] classBytes =
+          IOUtils.toByteArray(new FileInputStream("bin/" + className.replace('.', '/') + ".class"));
+
+      // Setup for asm ClassReader, ClassWriter and your implementation of the ClassVisitor(e.g.:
+      // YourClassVisitor)
+      final ClassReader classReader = new ClassReader(classBytes);
+      PrintWriter printWriter = new PrintWriter(System.out);
+      TraceClassVisitor traceClassVisitor = new TraceClassVisitor(printWriter);
+      classReader.accept(traceClassVisitor, ClassReader.SKIP_DEBUG);
+
+      // {
+      // ClassReader cr = new ClassReader(classBytes);
+      // ClassNode cn = new ClassNode();
+      // cr.accept(cn, ClassReader.SKIP_DEBUG | ClassReader.EXPAND_FRAMES);
+      // List<MethodNode> methods = cn.methods;
+      //
+      // for (MethodNode method : methods) {
+      // System.out.println(method.name + " " + method.desc);
+      //
+      // if (method.instructions.size() > 0) {
+      // Analyzer a = new Analyzer(new BasicInterpreter());
+      // a.analyze(cn.name, method);
+      // Frame[] frames = a.getFrames();
+      //
+      // if (frames.length > 0) {
+      // for (Frame f : frames) {
+      // System.out.println(f);
+      //
+      // // for (int i = 0; i < f.getLocals(); i++) {
+      // // f.getLocal(i);
+      // // }
+      //
+      // }
+      // }
+      //
+      // // Elements of the frames array now contains info for each instruction
+      // // from the analyzed method. BasicInterpreter creates BasicValue, that
+      // // is using simplified type system that distinguishes the UNINITIALZED,
+      // // INT, FLOAT, LONG, DOUBLE, REFERENCE and RETURNADDRESS types.
+      // }
+      // }
+      // }
 
     } catch (Throwable e) {
       // Heck, it's a *main* method ... in a *utility class*.

@@ -45,7 +45,7 @@ public class CmsDocumentTest {
   public static final ResourceTestRule resources =
       ResourceTestRule.builder().addResource(mockedCmsDocumentResource).build();
 
-  // TODO: SimpleDateFormat not thread safe.
+  // SimpleDateFormat is NOT not thread safe, but this is a single-threaded test class. No big.
   private final static DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
   private final static DateFormat tf = new SimpleDateFormat("HH:mm:ss");
 

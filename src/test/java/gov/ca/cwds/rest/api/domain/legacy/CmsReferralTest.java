@@ -532,15 +532,12 @@ public class CmsReferralTest {
       return new CmsReferral(referral, allegation, crossReport, referralClient, reporter);
 
     } catch (JsonParseException e) {
-      // TODO Auto-generated catch block
       e.printStackTrace();
       return null;
     } catch (JsonMappingException e) {
-      // TODO Auto-generated catch block
       e.printStackTrace();
       return null;
     } catch (IOException e) {
-      // TODO Auto-generated catch block
       e.printStackTrace();
       return null;
     }
