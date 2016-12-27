@@ -19,6 +19,7 @@ import java.io.Serializable;
  * 
  * @author CWDS API Team
  */
+@FunctionalInterface
 public interface PersistentObject extends Serializable {
 
   /**

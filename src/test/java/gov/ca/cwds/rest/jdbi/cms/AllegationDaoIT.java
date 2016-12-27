@@ -24,7 +24,6 @@ import gov.ca.cwds.rest.api.persistence.cms.Allegation;
 /**
  * 
  * @author Tabpcenc1
- *
  */
 public class AllegationDaoIT {
 
@@ -52,7 +51,6 @@ public class AllegationDaoIT {
   private String zippyCreatedIndicator = "Y";
   private Short placementFacilityType = 4;
 
-
   /**
    * 
    */
@@ -73,7 +71,7 @@ public class AllegationDaoIT {
    * 
    */
   @After
-  public void tearndown() {
+  public void teardown() {
     sessionFactory.close();
   }
 
@@ -92,7 +90,6 @@ public class AllegationDaoIT {
    */
   @Test
   public void testCreate() throws Exception {
-
     Date abuseEndDate = df.parse(abuseEndDateString);
     Date abuseStartDate = df.parse(abuseStartDateString);
     Date dispositionDate = df.parse(dispositionDateString);

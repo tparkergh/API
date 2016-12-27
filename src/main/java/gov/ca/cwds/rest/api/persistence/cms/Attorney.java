@@ -28,6 +28,7 @@ import gov.ca.cwds.rest.api.persistence.PersistentObject;
 @Entity
 @Table(schema = "CWSINT", name = "ATTRNY_T")
 public class Attorney extends CmsPersistentObject {
+
   /**
    * 
    */
@@ -117,7 +118,6 @@ public class Attorney extends CmsPersistentObject {
   @Column(name = "ZIP_SFX_NO")
   private Short zipSuffixNumber;
 
-
   /**
    * Default constructor
    * 
@@ -126,7 +126,6 @@ public class Attorney extends CmsPersistentObject {
   public Attorney() {
     super();
   }
-
 
   /**
    * @param archiveAssociationIndicator The archiveAssociationIndicator
@@ -191,9 +190,8 @@ public class Attorney extends CmsPersistentObject {
     this.zipSuffixNumber = zipSuffixNumber;
   }
 
-
-  /*
-   * (non-Javadoc)
+  /**
+   * {@inheritDoc}
    * 
    * @see gov.ca.cwds.rest.api.persistence.PersistentObject#getPrimaryKey()
    */
@@ -377,9 +375,8 @@ public class Attorney extends CmsPersistentObject {
     return zipSuffixNumber;
   }
 
-
-  /*
-   * (non-Javadoc)
+  /**
+   * {@inheritDoc}
    * 
    * @see java.lang.Object#hashCode()
    */
@@ -428,9 +425,8 @@ public class Attorney extends CmsPersistentObject {
     return result;
   }
 
-
-  /*
-   * (non-Javadoc)
+  /**
+   * {@inheritDoc}
    * 
    * @see java.lang.Object#equals(java.lang.Object)
    */
@@ -636,8 +632,6 @@ public class Attorney extends CmsPersistentObject {
       return false;
     }
     return true;
-
   }
-
 
 }

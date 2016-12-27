@@ -82,7 +82,6 @@ public class StaffPersonService implements CrudsService {
   @Override
   public PostedStaffPerson create(Request request) {
     assert request instanceof gov.ca.cwds.rest.api.domain.cms.StaffPerson;
-
     StaffPerson staffPerson = (StaffPerson) request;
 
     try {

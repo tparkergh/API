@@ -1,21 +1,29 @@
 package gov.ca.cwds.rest.api.persistence.cms;
 
 import java.io.Serializable;
+import java.util.Arrays;
 
-public class VarargPrimaryKey implements Serializable {
+public final class VarargPrimaryKey implements Serializable {
 
   private static final long serialVersionUID = 1L;
 
-  private String concatKey;
+  private final String concatKey;
 
-  public VarargPrimaryKey() {}
+  private final String[] columns;
+
+  private VarargPrimaryKey() {
+    this.concatKey = "";
+    this.columns = new String[0];
+  }
 
   public VarargPrimaryKey(String... values) {
-
     StringBuilder buf = new StringBuilder();
+    this.columns = new String[values.length];
+    int cntr = -1;
     for (String v : values) {
       if (v != null) {
         String v2 = v.trim();
+        this.columns[++cntr] = v2;
         if (v2.length() > 0) {
           buf.append(v2);
         } else {
@@ -40,41 +48,38 @@ public class VarargPrimaryKey implements Serializable {
   }
 
   /**
-   * {@inheritDoc}
    * 
-   * @see java.lang.Object#hashCode()
+   * @return String array of key columns
    */
+  public String[] getColumns() {
+    return columns;
+  }
+
   @Override
-  public final int hashCode() {
-    final int prime = 43;
+  public int hashCode() {
+    final int prime = 31;
     int result = 1;
+    result = prime * result + Arrays.hashCode(columns);
     result = prime * result + ((concatKey == null) ? 0 : concatKey.hashCode());
     return result;
   }
 
-  /**
-   * {@inheritDoc}
-   * 
-   * @see java.lang.Object#equals(java.lang.Object)
-   */
   @Override
-  public final boolean equals(Object obj) {
+  public boolean equals(Object obj) {
     if (this == obj)
       return true;
     if (obj == null)
       return false;
-    if (!(obj instanceof VarargPrimaryKey)) {
+    if (getClass() != obj.getClass())
       return false;
-    }
-
     VarargPrimaryKey other = (VarargPrimaryKey) obj;
-
+    if (!Arrays.equals(columns, other.columns))
+      return false;
     if (concatKey == null) {
       if (other.concatKey != null)
         return false;
     } else if (!concatKey.equals(other.concatKey))
       return false;
-
     return true;
   }
 

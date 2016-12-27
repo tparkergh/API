@@ -10,7 +10,6 @@ public class PrimaryKey3 implements Serializable {
 
   public PrimaryKey3() {
     super();
-
   }
 
   public PrimaryKey3(String keySegmentOne, String keySegmentTwo, String keySegmentThree) {

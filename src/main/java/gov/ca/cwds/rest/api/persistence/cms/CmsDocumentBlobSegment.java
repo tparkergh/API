@@ -6,6 +6,8 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.validation.constraints.Pattern;
+import javax.validation.constraints.Size;
 
 import org.hibernate.annotations.ColumnTransformer;
 
@@ -14,20 +16,27 @@ import gov.ca.cwds.rest.api.persistence.PersistentObject;
 /**
  * {@link PersistentObject} represents a record in TSBLOBT.
  * 
+ * <p>
+ * Note that this entity class does not extend {@link CmsPersistentObject}, because table TSBLOBT
+ * lacks the last update timestamp and last update user id fields.
+ * </p>
+ * 
  * @author CWDS API Team
  */
 @Entity
 @Table(name = "TSBLOBT")
-public class CmsDocumentBlobSegment implements PersistentObject, Serializable {
+public class CmsDocumentBlobSegment implements PersistentObject {
 
   private static final long serialVersionUID = -6101861394294752291L;
 
   @Id
   @Column(name = "DOC_HANDLE", length = 30)
+  @Size(min = 30, max = 30)
   private String docHandle;
 
   @Id
   @Column(name = "DOC_SEGSEQ", length = 4)
+  @Pattern(regexp = "\\d{4}")
   private String segmentSequence;
 
   @ColumnTransformer(read = "blob(DOC_BLOB)")
@@ -145,6 +154,12 @@ public class CmsDocumentBlobSegment implements PersistentObject, Serializable {
     return segmentSequence;
   }
 
+  /**
+   * Sets the the segment's sequence number. See {@link #getSegmentSequence()} for details.
+   * 
+   * @param segmentSequence segment's sequence number
+   * @see #getSegmentSequence()
+   */
   public void setSegmentSequence(String segmentSequence) {
     this.segmentSequence = segmentSequence;
   }
@@ -158,14 +173,28 @@ public class CmsDocumentBlobSegment implements PersistentObject, Serializable {
     return docBlob;
   }
 
+  /**
+   * 
+   * @param docBlob hex of binary, compressed data for this segment
+   */
   public void setDocBlob(String docBlob) {
     this.docBlob = docBlob;
   }
 
+  /**
+   * Get's the document handle.
+   * 
+   * @return the document's id, doc_handle.
+   */
   public String getDocHandle() {
     return docHandle;
   }
 
+  /**
+   * | Set's the document's id, the document handle.
+   * 
+   * @param docHandle 30-character identifier.
+   */
   public void setDocHandle(String docHandle) {
     this.docHandle = docHandle;
   }

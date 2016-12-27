@@ -69,13 +69,13 @@ public class Allegation extends CmsPersistentObject {
   @Column(name = "STFADD_IND")
   private String staffPersonAddedIndicator;
 
-  @Column(name = "FKCLIENT_T")
+  @Column(name = "FKCLIENT_T", length = CMS_ID_LEN)
   private String victimClientId;
 
-  @Column(name = "FKCLIENT_0")
+  @Column(name = "FKCLIENT_0", length = CMS_ID_LEN)
   private String perpetratorClientId;
 
-  @Column(name = "FKREFERL_T")
+  @Column(name = "FKREFERL_T", length = CMS_ID_LEN)
   private String referralId;
 
   @Column(name = "CNTY_SPFCD")
@@ -127,7 +127,6 @@ public class Allegation extends CmsPersistentObject {
       String staffPersonAddedIndicator, String victimClientId, String perpetratorClientId,
       String referralId, String countySpecificCode, String zippyCreatedIndicator,
       Short placementFacilityType) {
-
     super();
 
     this.id = id;

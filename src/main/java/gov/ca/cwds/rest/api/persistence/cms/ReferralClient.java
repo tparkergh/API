@@ -29,11 +29,11 @@ import gov.ca.cwds.rest.api.persistence.ns.NsPersistentObject;
 public class ReferralClient extends CmsPersistentObject {
 
   @Id
-  @Column(name = "FKREFERL_T")
+  @Column(name = "FKREFERL_T", length = CMS_ID_LEN)
   private String referralId;
 
   @Id
-  @Column(name = "FKCLIENT_T")
+  @Column(name = "FKCLIENT_T", length = CMS_ID_LEN)
   private String clientId;
 
   @Column(name = "APRVL_NO")
@@ -118,11 +118,9 @@ public class ReferralClient extends CmsPersistentObject {
 
   public ReferralClient(gov.ca.cwds.rest.api.domain.cms.ReferralClient referralClient,
       String lastUpdateId) {
-
     super(lastUpdateId);
 
     try {
-
       this.referralId = referralClient.getReferralId();
       this.clientId = referralClient.getClientId();
       this.approvalNumber = referralClient.getApprovalNumber();
@@ -148,8 +146,8 @@ public class ReferralClient extends CmsPersistentObject {
     }
   }
 
-  /*
-   * (non-Javadoc)
+  /**
+   * {@inheritDoc}
    * 
    * @see gov.ca.cwds.rest.api.persistence.PersistentObject#getPrimaryKey()
    */
@@ -270,6 +268,12 @@ public class ReferralClient extends CmsPersistentObject {
     return drugIndicator;
   }
 
+  /**
+   * Deprecated: Use class {@link VarargPrimaryKey} instead.
+   * 
+   * @see VarargPrimaryKey
+   */
+  @Deprecated
   public static final class PrimaryKey implements Serializable {
     private static final long serialVersionUID = 1L;
     private String referralId;
@@ -282,8 +286,8 @@ public class ReferralClient extends CmsPersistentObject {
       this.clientId = clientId;
     }
 
-    /*
-     * (non-Javadoc)
+    /**
+     * {@inheritDoc}
      * 
      * @see java.lang.Object#toString()
      */
@@ -292,8 +296,8 @@ public class ReferralClient extends CmsPersistentObject {
       return "referralId=" + referralId.trim() + ",clientId=" + clientId.trim();
     }
 
-    /*
-     * (non-Javadoc)
+    /**
+     * {@inheritDoc}
      * 
      * @see java.lang.Object#hashCode()
      */
@@ -306,8 +310,8 @@ public class ReferralClient extends CmsPersistentObject {
       return result;
     }
 
-    /*
-     * (non-Javadoc)
+    /**
+     * {@inheritDoc}
      * 
      * @see java.lang.Object#equals(java.lang.Object)
      */

@@ -16,14 +16,6 @@ public class VarargPrimaryKeyTest {
   private String argument2 = "argument2";
   private String argument3 = "argument3";
 
-  /*
-   * Constructor test
-   */
-  @Test
-  public void emtpyConstructorIsNotNull() throws Exception {
-    assertThat(VarargPrimaryKey.class.newInstance(), is(notNullValue()));
-  }
-
   @Test
   public void constructorTest() throws Exception {
     VarargPrimaryKey vpk = new VarargPrimaryKey(argument1, argument2, argument3);
@@ -38,8 +30,20 @@ public class VarargPrimaryKeyTest {
   @Test
   public void toStringTest() throws Exception {
     VarargPrimaryKey vpk = new VarargPrimaryKey(argument1, argument2, argument3);
-    // System.out.println(vpk.toString());
-
     assertThat(vpk.toString(), is(equalTo("concatKeyargument1argument2argument3")));
   }
+
+  @Test
+  public void type() throws Exception {
+    assertThat(VarargPrimaryKey.class, notNullValue());
+  }
+
+  @Test
+  public void testGetColumns() throws Exception {
+    VarargPrimaryKey target = new VarargPrimaryKey("one", "two");
+    final String[] actual = target.getColumns();
+    final String[] expected = {"one", "two"};
+    assertThat(actual, is(equalTo(expected)));
+  }
+
 }

@@ -34,8 +34,9 @@ import gov.ca.cwds.rest.api.persistence.cms.CmsPersistentObject;
 @Entity
 @Table(schema = "CWSINT", name = "STF_PVLT")
 public class StaffAuthorityPrivilege extends CmsPersistentObject {
+
   /**
-   * 
+   * Base serialization version.
    */
   private static final long serialVersionUID = 1L;
 
@@ -50,11 +51,11 @@ public class StaffAuthorityPrivilege extends CmsPersistentObject {
   @Column(name = "END_TIME")
   private Date endTime;
 
-  @Column(name = "FKUSERID_T")
+  @Column(name = "FKUSERID_T", length = CMS_ID_LEN)
   private String fkuseridT;
 
   @Id
-  @Column(name = "IDENTIFIER")
+  @Column(name = "IDENTIFIER", length = CMS_ID_LEN)
   private String id;
 
   @Column(name = "ATH_PRVC")
@@ -92,7 +93,6 @@ public class StaffAuthorityPrivilege extends CmsPersistentObject {
    * @param startDate The startDate
    * @param startTime The startTime
    */
-
   public StaffAuthorityPrivilege(String countySpecificCode, Date endDate, Date endTime,
       String fkuseridT, String id, String levelOfAuthPrivilegeCode, Short levelOfAuthPrivilegeType,
       Date startDate, Date startTime) {
@@ -108,8 +108,8 @@ public class StaffAuthorityPrivilege extends CmsPersistentObject {
     this.startTime = startTime;
   }
 
-  /*
-   * (non-Javadoc)
+  /**
+   * {@inheritDoc}
    * 
    * @see gov.ca.cwds.rest.api.persistence.PersistentObject#getPrimaryKey()
    */
@@ -181,8 +181,8 @@ public class StaffAuthorityPrivilege extends CmsPersistentObject {
     return startTime;
   }
 
-  /*
-   * (non-Javadoc)
+  /**
+   * {@inheritDoc}
    * 
    * @see java.lang.Object#hashCode()
    */
@@ -204,8 +204,8 @@ public class StaffAuthorityPrivilege extends CmsPersistentObject {
     return result;
   }
 
-  /*
-   * (non-Javadoc)
+  /**
+   * {@inheritDoc}
    * 
    * @see java.lang.Object#equals(java.lang.Object)
    */
@@ -286,7 +286,6 @@ public class StaffAuthorityPrivilege extends CmsPersistentObject {
     }
     return true;
   }
-
 
 }
 

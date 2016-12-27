@@ -16,6 +16,7 @@ import nl.jqno.equalsverifier.EqualsVerifier;
 import nl.jqno.equalsverifier.Warning;
 
 public class ReferralClientTest {
+
   private final static DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
   private String referralId = "a";
   private String clientId = "b";
@@ -33,7 +34,6 @@ public class ReferralClientTest {
   private Boolean mentalHealthIssuesIndicator = Boolean.TRUE;
   private Boolean alcoholIndicator = null;
   private Boolean drugIndicator = Boolean.FALSE;
-
   private String lastUpdatedId = "h";
 
   /*

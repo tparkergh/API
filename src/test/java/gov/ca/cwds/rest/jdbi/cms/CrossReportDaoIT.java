@@ -36,7 +36,7 @@ public class CrossReportDaoIT {
   }
 
   @After
-  public void tearndown() {
+  public void teardown() {
     sessionFactory.close();
   }
 

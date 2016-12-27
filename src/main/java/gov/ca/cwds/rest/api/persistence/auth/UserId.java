@@ -30,6 +30,7 @@ import gov.ca.cwds.rest.api.persistence.cms.CmsPersistentObject;
 @Entity
 @Table(schema = "CWSINT", name = "USERID_T")
 public class UserId extends CmsPersistentObject {
+
   /**
    * 
    */
@@ -43,14 +44,14 @@ public class UserId extends CmsPersistentObject {
   @Column(name = "END_TM")
   private Date endTime;
 
-  @Column(name = "FKFPSTFPRT")
+  @Column(name = "FKFPSTFPRT", length = CMS_ID_LEN)
   private String fkfpstfprt;
 
-  @Column(name = "FKSTFPERST")
+  @Column(name = "FKSTFPERST", length = CMS_ID_LEN)
   private String staffPersonId;
 
   @Id
-  @Column(name = "IDENTIFIER")
+  @Column(name = "IDENTIFIER", length = CMS_ID_LEN)
   private String id;
 
   @Column(name = "LOGON_ID")
@@ -59,7 +60,6 @@ public class UserId extends CmsPersistentObject {
   @Type(type = "short")
   @Column(name = "SYS_DMC")
   private Short systemDomainType;
-
 
   /**
    * Default constructor
@@ -93,8 +93,8 @@ public class UserId extends CmsPersistentObject {
     this.systemDomainType = systemDomainType;
   }
 
-  /*
-   * (non-Javadoc)
+  /**
+   * {@inheritDoc}
    * 
    * @see gov.ca.cwds.rest.api.persistence.PersistentObject#getPrimaryKey()
    */
@@ -102,7 +102,6 @@ public class UserId extends CmsPersistentObject {
   public String getPrimaryKey() {
     return getId();
   }
-
 
   /**
    * @return the endDate
@@ -153,8 +152,8 @@ public class UserId extends CmsPersistentObject {
     return systemDomainType;
   }
 
-  /*
-   * (non-Javadoc)
+  /**
+   * {@inheritDoc}
    * 
    * @see java.lang.Object#hashCode()
    */
@@ -172,8 +171,8 @@ public class UserId extends CmsPersistentObject {
     return result;
   }
 
-  /*
-   * (non-Javadoc)
+  /**
+   * {@inheritDoc}
    * 
    * @see java.lang.Object#equals(java.lang.Object)
    */

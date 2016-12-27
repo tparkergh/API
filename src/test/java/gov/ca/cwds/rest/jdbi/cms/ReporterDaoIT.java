@@ -33,7 +33,7 @@ public class ReporterDaoIT {
   }
 
   @After
-  public void tearndown() {
+  public void teardown() {
     sessionFactory.close();
   }
 

@@ -11,7 +11,7 @@ import org.hibernate.annotations.Type;
 import gov.ca.cwds.rest.api.persistence.PersistentObject;
 
 /**
- * Base class for objects in the legacy persistence layer.
+ * Base class for objects in the legacy, DB2 persistence layer.
  * 
  * @author CWDS API Team
  */
@@ -23,6 +23,9 @@ public abstract class CmsPersistentObject implements PersistentObject {
    */
   private static final long serialVersionUID = 1L;
 
+  /**
+   * All legacy "identifier" fields and their foreign key are CHAR(10).
+   */
   protected static final int CMS_ID_LEN = 10;
 
   /**

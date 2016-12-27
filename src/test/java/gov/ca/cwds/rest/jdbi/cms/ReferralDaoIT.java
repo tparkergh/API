@@ -33,7 +33,7 @@ public class ReferralDaoIT {
   }
 
   @After
-  public void tearndown() {
+  public void teardown() {
     sessionFactory.close();
   }
 
