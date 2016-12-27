@@ -181,39 +181,6 @@ public class JUnitGenerator {
       TraceClassVisitor traceClassVisitor = new TraceClassVisitor(printWriter);
       classReader.accept(traceClassVisitor, ClassReader.EXPAND_FRAMES);
 
-      // {
-      // ClassReader cr = new ClassReader(classBytes);
-      // ClassNode cn = new ClassNode();
-      // cr.accept(cn, ClassReader.SKIP_DEBUG | ClassReader.EXPAND_FRAMES);
-      // List<MethodNode> methods = cn.methods;
-      //
-      // for (MethodNode method : methods) {
-      // System.out.println(method.name + " " + method.desc);
-      //
-      // if (method.instructions.size() > 0) {
-      // Analyzer a = new Analyzer(new BasicInterpreter());
-      // a.analyze(cn.name, method);
-      // Frame[] frames = a.getFrames();
-      //
-      // if (frames.length > 0) {
-      // for (Frame f : frames) {
-      // System.out.println(f);
-      //
-      // // for (int i = 0; i < f.getLocals(); i++) {
-      // // f.getLocal(i);
-      // // }
-      //
-      // }
-      // }
-      //
-      // // Elements of the frames array now contains info for each instruction
-      // // from the analyzed method. BasicInterpreter creates BasicValue, that
-      // // is using simplified type system that distinguishes the UNINITIALZED,
-      // // INT, FLOAT, LONG, DOUBLE, REFERENCE and RETURNADDRESS types.
-      // }
-      // }
-      // }
-
     } catch (Throwable e) {
       // Heck, it's a *main* method ... in a *utility class*.
       // Just swallow the exception. :-)

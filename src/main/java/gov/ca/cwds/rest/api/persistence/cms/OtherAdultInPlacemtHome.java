@@ -45,7 +45,7 @@ public class OtherAdultInPlacemtHome extends CmsPersistentObject {
   @Column(name = "END_DT")
   private Date endDate;
 
-  @Column(name = "FKPLC_HM_T")
+  @Column(name = "FKPLC_HM_T", length = CMS_ID_LEN)
   private String fkplcHmT;
 
   @Column(name = "GENDER_CD")

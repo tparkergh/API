@@ -6,6 +6,7 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 
@@ -31,14 +32,20 @@ public class CmsDocumentBlobSegment implements PersistentObject {
 
   @Id
   @Column(name = "DOC_HANDLE", length = 30)
+  @NotNull
   @Size(min = 30, max = 30)
+  @Pattern(regexp = "\\d{16}[*][A-Z0-9]+\\s*\\d{5}", message = "invalid DOC_HANDLE")
   private String docHandle;
 
   @Id
   @Column(name = "DOC_SEGSEQ", length = 4)
+  @NotNull
+  @Size(min = 4, max = 4)
   @Pattern(regexp = "\\d{4}")
   private String segmentSequence;
 
+  @NotNull
+  @Size(min = 1, max = 4000)
   @ColumnTransformer(read = "blob(DOC_BLOB)")
   private String docBlob;
 
@@ -174,6 +181,7 @@ public class CmsDocumentBlobSegment implements PersistentObject {
   }
 
   /**
+   * Sets the hexadecimal binary data for this segment, max size 4k.
    * 
    * @param docBlob hex of binary, compressed data for this segment
    */
@@ -182,7 +190,7 @@ public class CmsDocumentBlobSegment implements PersistentObject {
   }
 
   /**
-   * Get's the document handle.
+   * Gets the document handle.
    * 
    * @return the document's id, doc_handle.
    */
@@ -191,7 +199,7 @@ public class CmsDocumentBlobSegment implements PersistentObject {
   }
 
   /**
-   * | Set's the document's id, the document handle.
+   * Sets the document's id, the document handle.
    * 
    * @param docHandle 30-character identifier.
    */

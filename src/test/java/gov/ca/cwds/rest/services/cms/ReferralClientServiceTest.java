@@ -24,6 +24,11 @@ import gov.ca.cwds.rest.api.domain.cms.ReferralClient;
 import gov.ca.cwds.rest.jdbi.cms.ReferralClientDao;
 import io.dropwizard.jackson.Jackson;
 
+/**
+ * See story #136586059, Tech debt: exception handling in service layer.
+ * 
+ * @author CWDS API Team
+ */
 public class ReferralClientServiceTest {
 
   private static final ObjectMapper MAPPER = Jackson.newObjectMapper();
