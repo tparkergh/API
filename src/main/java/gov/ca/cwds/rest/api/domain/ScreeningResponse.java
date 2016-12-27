@@ -1,6 +1,5 @@
 package gov.ca.cwds.rest.api.domain;
 
-import java.util.List;
 import java.util.Set;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
@@ -45,7 +44,7 @@ public class ScreeningResponse extends Screening implements Response {
    * @param started_at The started at
    * @param narrative The narrative
    * @param address The {@link Address}
-   * @param participants The {@link List}
+   * @param participants The {@link Set}
    */
   public ScreeningResponse(String reference, String ended_at, String incident_county,
       String incident_date, String location_type, String communication_method, String name,

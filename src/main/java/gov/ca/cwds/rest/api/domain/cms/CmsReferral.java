@@ -42,6 +42,13 @@ public class CmsReferral extends DomainObject implements Request, Response {
   @Valid
   private Reporter reporter;
 
+  /**
+   * @param referral - Referral object
+   * @param allegation - Allegation object
+   * @param crossReport - CrossReport object
+   * @param referralClient - ReferralClient object
+   * @param reporter - Reporter object
+   */
   @JsonCreator
   public CmsReferral(@JsonProperty("referral") Referral referral,
       @JsonProperty("allegation") Allegation allegation,

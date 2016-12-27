@@ -189,106 +189,184 @@ public class CollateralIndividual extends CmsPersistentObject {
   }
 
 
+  /**
+   * @return serialVersionUID
+   */
   public static long getSerialversionuid() {
     return serialVersionUID;
   }
 
+  /**
+   * @return badgeNumber
+   */
   public String getBadgeNumber() {
     return badgeNumber;
   }
 
+  /**
+   * @return birthDate
+   */
   public Date getBirthDate() {
     return birthDate;
   }
 
+  /**
+   * @return cityName
+   */
   public String getCityName() {
     return cityName;
   }
 
+  /**
+   * @return commentDescription
+   */
   public String getCommentDescription() {
     return commentDescription;
   }
 
+  /**
+   * @return emailAddress
+   */
   public String getEmailAddress() {
     return emailAddress;
   }
 
+  /**
+   * @return employerName
+   */
   public String getEmployerName() {
     return employerName;
   }
 
+  /**
+   * @return establishedForCode
+   */
   public String getEstablishedForCode() {
     return establishedForCode;
   }
 
+  /**
+   * @return faxNumber
+   */
   public BigDecimal getFaxNumber() {
     return faxNumber;
   }
 
+  /**
+   * @return firstName
+   */
   public String getFirstName() {
     return firstName;
   }
 
+  /**
+   * @return foreignAddressIndicatorVariable
+   */
   public String getForeignAddressIndicatorVariable() {
     return foreignAddressIndicatorVariable;
   }
 
+  /**
+   * @return genderCode
+   */
   public String getGenderCode() {
     return genderCode;
   }
 
+  /**
+   * @return id
+   */
   public String getId() {
     return id;
   }
 
+  /**
+   * @return lastName
+   */
   public String getLastName() {
     return lastName;
   }
 
+  /**
+   * @return maritalStatus
+   */
   public Short getMaritalStatus() {
     return maritalStatus;
   }
 
+  /**
+   * @return maritalStatus
+   */
   public String getMiddleInitialName() {
     return middleInitialName;
   }
 
+  /**
+   * @return namePrefixDescription
+   */
   public String getNamePrefixDescription() {
     return namePrefixDescription;
   }
 
+  /**
+   * @return primaryExtensionNumber
+   */
   public Integer getPrimaryExtensionNumber() {
     return primaryExtensionNumber;
   }
 
+  /**
+   * @return primaryPhoneNo
+   */
   public BigInteger getPrimaryPhoneNo() {
     return primaryPhoneNo;
   }
 
+  /**
+   * @return residedOutOfStateIndicator
+   */
   public String getResidedOutOfStateIndicator() {
     return residedOutOfStateIndicator;
   }
 
+  /**
+   * @return stateCode
+   */
   public Short getStateCode() {
     return stateCode;
   }
 
+  /**
+   * @return streetName
+   */
   public String getStreetName() {
     return streetName;
   }
 
+  /**
+   * @return streetNumber
+   */
   public String getStreetNumber() {
     return streetNumber;
   }
 
+  /**
+   * @return suffixTitleDescription
+   */
   public String getSuffixTitleDescription() {
     return suffixTitleDescription;
   }
 
+  /**
+   * @return zipNumber
+   */
   public Integer getZipNumber() {
     return zipNumber;
   }
 
+  /**
+   * @return zipSuffixNumber
+   */
   public Short getZipSuffixNumber() {
     return zipSuffixNumber;
   }
