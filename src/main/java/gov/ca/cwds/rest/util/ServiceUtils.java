@@ -9,11 +9,11 @@ import gov.ca.cwds.rest.services.ServiceException;
 public class ServiceUtils {
 
   public static Map<String, String> extractKeyValuePairs(Serializable nameValuePairsSerializable) {
-    Map<String, String> keyValuePairs = new HashMap<String, String>();
+    Map<String, String> keyValuePairs = new HashMap<>();
     if (!(nameValuePairsSerializable instanceof String)) {
-
       throw new ServiceException("Unable to read nameValuePairs as string");
     }
+
     try {
       String primaryKeyString = (String) nameValuePairsSerializable;
 
@@ -22,7 +22,7 @@ public class ServiceUtils {
         keyValuePairs.put(keyValuePair[0].trim(), keyValuePair[1].trim());
       }
       return keyValuePairs;
-    } catch (Throwable e) {
+    } catch (Exception e) {
       throw new ServiceException("Problem parsing name value pairs", e);
     }
   }

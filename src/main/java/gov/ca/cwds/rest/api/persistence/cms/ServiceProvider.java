@@ -27,6 +27,7 @@ import gov.ca.cwds.rest.api.persistence.PersistentObject;
 @Entity
 @Table(schema = "CWSINT", name = "SVC_PVRT")
 public class ServiceProvider extends CmsPersistentObject {
+
   /**
    * 
    */
@@ -51,7 +52,7 @@ public class ServiceProvider extends CmsPersistentObject {
   private String firstName;
 
   @Id
-  @Column(name = "IDENTIFIER")
+  @Column(name = "IDENTIFIER", length = CMS_ID_LEN)
   private String id;
 
   @Column(name = "LAST_NM")
@@ -94,7 +95,6 @@ public class ServiceProvider extends CmsPersistentObject {
   @Type(type = "short")
   @Column(name = "ZIP_SFX_NO")
   private Short zipSuffixNumber;
-
 
   /**
    * Default constructor

@@ -40,7 +40,6 @@ public class ApplicationResource {
       @Named("app.version") String version) {
     this.applicationName = applicationName;
     this.version = version;
-
   }
 
   /**

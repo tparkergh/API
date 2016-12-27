@@ -24,11 +24,12 @@ import gov.ca.cwds.rest.api.persistence.ns.NsPersistentObject;
 @Entity
 @Table(name = "CRSS_RPT")
 public class CrossReport extends CmsPersistentObject {
-  @Column(name = "FKREFERL_T")
+
+  @Column(name = "FKREFERL_T", length = CMS_ID_LEN)
   private String referralId;
 
   @Id
-  @Column(name = "THIRD_ID")
+  @Column(name = "THIRD_ID", length = CMS_ID_LEN)
   private String thirdId;
 
   @Type(type = "short")

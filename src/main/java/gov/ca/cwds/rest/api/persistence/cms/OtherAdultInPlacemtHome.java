@@ -28,6 +28,7 @@ import gov.ca.cwds.rest.api.persistence.PersistentObject;
 @Entity
 @Table(schema = "CWSINT", name = "OTH_ADLT")
 public class OtherAdultInPlacemtHome extends CmsPersistentObject {
+
   /**
    * 
    */
@@ -51,7 +52,7 @@ public class OtherAdultInPlacemtHome extends CmsPersistentObject {
   private String genderCode;
 
   @Id
-  @Column(name = "IDENTIFIER")
+  @Column(name = "IDENTIFIER", length = CMS_ID_LEN)
   private String id;
 
   @Type(type = "date")
@@ -74,7 +75,6 @@ public class OtherAdultInPlacemtHome extends CmsPersistentObject {
   @Column(name = "START_DT")
   private Date startDate;
 
-
   /**
    * Default constructor
    * 
@@ -83,7 +83,6 @@ public class OtherAdultInPlacemtHome extends CmsPersistentObject {
   public OtherAdultInPlacemtHome() {
     super();
   }
-
 
   /**
    * @param birthDate The birthDate
@@ -118,9 +117,8 @@ public class OtherAdultInPlacemtHome extends CmsPersistentObject {
     this.startDate = startDate;
   }
 
-
-  /*
-   * (non-Javadoc)
+  /**
+   * {@inheritDoc}
    * 
    * @see gov.ca.cwds.rest.api.persistence.PersistentObject#getPrimaryKey()
    */
@@ -214,8 +212,8 @@ public class OtherAdultInPlacemtHome extends CmsPersistentObject {
   }
 
 
-  /*
-   * (non-Javadoc)
+  /**
+   * {@inheritDoc}
    * 
    * @see java.lang.Object#hashCode()
    */
@@ -244,9 +242,8 @@ public class OtherAdultInPlacemtHome extends CmsPersistentObject {
     return result;
   }
 
-
-  /*
-   * (non-Javadoc)
+  /**
+   * {@inheritDoc}
    * 
    * @see java.lang.Object#equals(java.lang.Object)
    */
@@ -362,7 +359,5 @@ public class OtherAdultInPlacemtHome extends CmsPersistentObject {
     }
     return true;
   }
-
-
 
 }

@@ -20,13 +20,13 @@ public class PostedAddress extends Address {
    * Constructor
    * 
    * @param id The id
-   * @param street_address The street address
+   * @param streetAddress The street address
    * @param city The city
    * @param state The state
    * @param zip The zip
    */
-  public PostedAddress(long id, String street_address, String city, String state, Integer zip) {
-    super(street_address, city, state, zip);
+  public PostedAddress(long id, String streetAddress, String city, String state, Integer zip) {
+    super(streetAddress, city, state, zip);
     this.id = id;
   }
 
@@ -37,8 +37,7 @@ public class PostedAddress extends Address {
    */
   public PostedAddress(gov.ca.cwds.rest.api.persistence.ns.Address address) {
     super(address);
-    assert (address.getId() != null);
-
+    assert address.getId() != null;
     this.id = address.getId();
   }
 

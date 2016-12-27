@@ -74,11 +74,11 @@ public class CmsDocReferralClient extends CmsPersistentObject {
   private static final long serialVersionUID = 1L;
 
   @Id
-  @Column(name = "REFERL_ID", length = 10)
+  @Column(name = "REFERL_ID", length = CMS_ID_LEN)
   private String referlId;
 
   @Id
-  @Column(name = "CLIENT_ID", length = 10)
+  @Column(name = "CLIENT_ID", length = CMS_ID_LEN)
   private String clientId;
 
   @Id

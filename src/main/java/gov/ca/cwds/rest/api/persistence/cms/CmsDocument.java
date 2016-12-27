@@ -30,7 +30,7 @@ import gov.ca.cwds.rest.api.persistence.PersistentObject;
 public class CmsDocument extends CmsPersistentObject {
 
   @Id
-  @Column(name = "DOC_HANDLE")
+  @Column(name = "DOC_HANDLE", length = 30)
   private String id;
 
   @Type(type = "short")
@@ -105,6 +105,11 @@ public class CmsDocument extends CmsPersistentObject {
   /**
    * Pseudo copy constructor. Build a persistence document from a domain document.
    * 
+   * <p>
+   * This constructor doesn't populate blob segments directly from a base64-encoded, decompressed
+   * document because that translation requires compression, which doesn't belong here.
+   * </p>
+   * 
    * @param cmsDocument domain (JSON) document object
    */
   public CmsDocument(gov.ca.cwds.rest.api.domain.cms.CmsDocument cmsDocument) {
@@ -119,8 +124,6 @@ public class CmsDocument extends CmsPersistentObject {
     this.docTime = DomainObject.uncookTimeString(cmsDocument.getDocTime());
     this.compressionMethod = cmsDocument.getCompressionMethod();
 
-    // This constructor doesn't populate blob segments directly from a base64-encoded, decompressed
-    // document because that translation requires compression, which doesn't belong here.;)
   }
 
   /**

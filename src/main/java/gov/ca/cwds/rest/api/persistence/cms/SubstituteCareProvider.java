@@ -29,13 +29,14 @@ import gov.ca.cwds.rest.api.persistence.PersistentObject;
 @Entity
 @Table(schema = "CWSINT", name = "SB_PVDRT")
 public class SubstituteCareProvider extends CmsPersistentObject {
+
   /**
    * 
    */
   private static final long serialVersionUID = 1L;
 
   @Id
-  @Column(name = "IDENTIFIER")
+  @Column(name = "IDENTIFIER", length = CMS_ID_LEN)
   private String id;
 
   @Column(name = "ADD_TEL_NO")
@@ -150,7 +151,6 @@ public class SubstituteCareProvider extends CmsPersistentObject {
   @Type(type = "short")
   @Column(name = "ZIP_SFX_NO")
   private Short zipSuffixNumber;
-
 
   /**
    * Default constructor

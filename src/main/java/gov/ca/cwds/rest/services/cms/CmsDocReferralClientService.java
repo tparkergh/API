@@ -25,6 +25,7 @@ import gov.ca.cwds.rest.services.CrudsService;
  * @author CWDS API Team
  */
 public class CmsDocReferralClientService implements CrudsService {
+
   private static final Logger LOGGER = LoggerFactory.getLogger(CmsDocReferralClientService.class);
 
   private CmsDocReferralClientDao dao;
@@ -74,7 +75,7 @@ public class CmsDocReferralClientService implements CrudsService {
    */
   @Override
   public Response delete(Serializable primaryKey) {
-    assert (primaryKey instanceof String);
+    assert primaryKey instanceof String;
     throw new NotImplementedException("Delete is not implemented");
   }
 
@@ -85,7 +86,7 @@ public class CmsDocReferralClientService implements CrudsService {
    */
   @Override
   public PostedScreening create(Request request) {
-    // assert (request instanceof ScreeningReference);
+    // assert request instanceof ScreeningReference;
     throw new NotImplementedException("Create is not implemented");
   }
 
@@ -97,8 +98,8 @@ public class CmsDocReferralClientService implements CrudsService {
    */
   @Override
   public ScreeningResponse update(Serializable primaryKey, Request request) {
-    assert (primaryKey instanceof Long);
-    // assert (request instanceof ScreeningRequest);
+    assert primaryKey instanceof Long;
+    // assert request instanceof ScreeningRequest;
     throw new NotImplementedException("Update is not implemented");
   }
 

@@ -120,6 +120,4 @@ public class Person extends NsElasticsearchObject {
     return source;
   }
 
-
-
 }

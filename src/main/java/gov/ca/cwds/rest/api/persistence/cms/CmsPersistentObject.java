@@ -23,6 +23,8 @@ public abstract class CmsPersistentObject implements PersistentObject {
    */
   private static final long serialVersionUID = 1L;
 
+  protected static final int CMS_ID_LEN = 10;
+
   /**
    * Standard timestamp format for legacy DB2 tables.
    */

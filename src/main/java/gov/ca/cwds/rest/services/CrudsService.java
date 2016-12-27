@@ -10,7 +10,6 @@ import gov.ca.cwds.rest.api.domain.DomainObject;
  * Interface for business {@link Service} which perform CRUDS operations
  * 
  * @author CWDS API Team
- * 
  */
 public interface CrudsService extends Service {
 

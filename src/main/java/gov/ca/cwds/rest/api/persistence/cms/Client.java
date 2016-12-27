@@ -30,6 +30,7 @@ import gov.ca.cwds.rest.api.persistence.PersistentObject;
 @Entity
 @Table(name = "CLIENT_T")
 public class Client extends CmsPersistentObject {
+
   /**
    * 
    */
@@ -149,7 +150,7 @@ public class Client extends CmsPersistentObject {
   private String hispanicOriginCode;
 
   @Id
-  @Column(name = "IDENTIFIER")
+  @Column(name = "IDENTIFIER", length = CMS_ID_LEN)
   private String id;
 
   @Type(type = "short")

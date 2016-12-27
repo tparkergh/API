@@ -249,8 +249,6 @@ public class Screening extends DomainObject implements Request {
   @Override
   public boolean equals(Object obj) {
 
-    // return Objects.equals(this, obj);
-
     if (this == obj)
       return true;
     if (obj == null)

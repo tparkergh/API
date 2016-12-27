@@ -25,6 +25,7 @@ import gov.ca.cwds.rest.util.IdGenerator;
  * @author CWDS API Team
  */
 public class StaffPersonService implements CrudsService {
+
   private static final Logger LOGGER = LoggerFactory.getLogger(StaffPersonService.class);
 
   private StaffPersonDao staffPersonDao;
@@ -40,14 +41,14 @@ public class StaffPersonService implements CrudsService {
     this.staffPersonDao = staffPersonDao;
   }
 
-  /*
-   * (non-Javadoc)
+  /**
+   * {@inheritDoc}
    * 
    * @see gov.ca.cwds.rest.services.CrudsService#find(java.io.Serializable)
    */
   @Override
   public gov.ca.cwds.rest.api.domain.cms.StaffPerson find(Serializable primaryKey) {
-    assert (primaryKey instanceof String);
+    assert primaryKey instanceof String;
 
     gov.ca.cwds.rest.api.persistence.cms.StaffPerson persistedStaffPerson =
         staffPersonDao.find(primaryKey);
@@ -57,8 +58,8 @@ public class StaffPersonService implements CrudsService {
     return null;
   }
 
-  /*
-   * (non-Javadoc)
+  /**
+   * {@inheritDoc}
    * 
    * @see gov.ca.cwds.rest.services.CrudsService#delete(java.io.Serializable)
    */
@@ -73,16 +74,16 @@ public class StaffPersonService implements CrudsService {
     return null;
   }
 
-  /*
-   * (non-Javadoc)
+  /**
+   * {@inheritDoc}
    * 
    * @see gov.ca.cwds.rest.services.CrudsService#create(gov.ca.cwds.rest.api.Request)
    */
   @Override
   public PostedStaffPerson create(Request request) {
-    assert (request instanceof gov.ca.cwds.rest.api.domain.cms.StaffPerson);
+    assert request instanceof gov.ca.cwds.rest.api.domain.cms.StaffPerson;
 
-    StaffPerson staffPerson = ((StaffPerson) request);
+    StaffPerson staffPerson = (StaffPerson) request;
 
     try {
       // TODO : refactor to actually determine who is updating. 'q1p' for now
@@ -98,20 +99,18 @@ public class StaffPersonService implements CrudsService {
     }
   }
 
-
-  /*
-   * (non-Javadoc)
+  /**
+   * {@inheritDoc}
    * 
    * @see gov.ca.cwds.rest.services.CrudsService#update(java.io.Serializable,
-   * gov.ca.cwds.rest.api.Request)
+   *      gov.ca.cwds.rest.api.Request)
    */
   @Override
   public StaffPerson update(Serializable primaryKey, Request request) {
-    assert (primaryKey instanceof String);
-    assert (request instanceof gov.ca.cwds.rest.api.domain.cms.StaffPerson);
+    assert primaryKey instanceof String;
+    assert request instanceof gov.ca.cwds.rest.api.domain.cms.StaffPerson;
     gov.ca.cwds.rest.api.domain.cms.StaffPerson staffPerson =
-        ((gov.ca.cwds.rest.api.domain.cms.StaffPerson) request);
-
+        (gov.ca.cwds.rest.api.domain.cms.StaffPerson) request;
 
     try {
       gov.ca.cwds.rest.api.persistence.cms.StaffPerson managed =

@@ -28,6 +28,7 @@ import gov.ca.cwds.rest.api.persistence.PersistentObject;
 @Table(name = "EDPRVCNT")
 
 public class EducationProviderContact extends CmsPersistentObject {
+
   /**
    * 
    */
@@ -49,7 +50,7 @@ public class EducationProviderContact extends CmsPersistentObject {
   private String fKeyEducationProvider;
 
   @Id
-  @Column(name = "IDENTIFIER")
+  @Column(name = "IDENTIFIER", length = CMS_ID_LEN)
   private String id;
 
   @Column(name = "LAST_NME")
@@ -76,7 +77,6 @@ public class EducationProviderContact extends CmsPersistentObject {
 
   @Column(name = "TITLDESC")
   private String titleDescription;
-
 
   /**
    * Default constructor

@@ -74,7 +74,7 @@ public class CmsDocumentService implements CrudsService {
    */
   @Override
   public Response delete(Serializable primaryKey) {
-    assert (primaryKey instanceof String);
+    assert primaryKey instanceof String;
     throw new NotImplementedException("DELETE NOT IMPLEMENTED!");
   }
 
@@ -88,7 +88,7 @@ public class CmsDocumentService implements CrudsService {
    */
   @Override
   public CmsDocument create(Request request) {
-    // assert (request instanceof CmsDocument);
+    // assert request instanceof CmsDocument;
     throw new NotImplementedException("CREATE NOT IMPLEMENTED!");
   }
 
@@ -103,8 +103,7 @@ public class CmsDocumentService implements CrudsService {
    */
   @Override
   public CmsDocument update(Serializable primaryKey, Request request) {
-    assert (primaryKey instanceof String);
-    // assert (request instanceof CmsDocument);
+    assert primaryKey instanceof String;
     throw new NotImplementedException("UPDATE NOT IMPLEMENTED!");
   }
 

@@ -22,8 +22,10 @@ import gov.ca.cwds.rest.api.domain.cms.Reporter;
 import gov.ca.cwds.rest.services.CrudsService;
 
 public class CmsReferralService implements CrudsService {
+
   @SuppressWarnings("unused")
   private static final Logger LOGGER = LoggerFactory.getLogger(CmsReferralService.class);
+
   private ReferralService referralService;
   private AllegationService allegationService;
   private CrossReportService crossReportService;
@@ -51,14 +53,14 @@ public class CmsReferralService implements CrudsService {
     this.reporterService = reporterService;
   }
 
-  /*
-   * (non-Javadoc)
+  /**
+   * {@inheritDoc}
    * 
    * @see gov.ca.cwds.rest.services.CrudsService#create(gov.ca.cwds.rest.api.Request)
    */
   @Override
   public Response create(Request request) {
-    assert (request instanceof CmsReferral);
+    assert request instanceof CmsReferral;
 
     CmsReferral cmsReferral = (CmsReferral) request;
 
@@ -97,7 +99,6 @@ public class CmsReferralService implements CrudsService {
         incomingCrossReport.getSatisfyCrossReportIndicator());
     crossReport = this.crossReportService.create(crossReport);
 
-
     ReferralClient incomingReferralClient = cmsReferral.getReferralClient();
     ReferralClient referralClient = new ReferralClient(incomingReferralClient.getApprovalNumber(),
         incomingReferralClient.getApprovalStatusType(),
@@ -135,8 +136,8 @@ public class CmsReferralService implements CrudsService {
         postedreporter);
   }
 
-  /*
-   * (non-Javadoc)
+  /**
+   * {@inheritDoc}
    * 
    * @see gov.ca.cwds.rest.services.CrudsService#find(java.io.Serializable)
    */
@@ -145,8 +146,8 @@ public class CmsReferralService implements CrudsService {
     throw new NotImplementedException("find not implement");
   }
 
-  /*
-   * (non-Javadoc)
+  /**
+   * {@inheritDoc}
    * 
    * @see gov.ca.cwds.rest.services.CrudsService#delete(java.io.Serializable)
    */
@@ -155,16 +156,15 @@ public class CmsReferralService implements CrudsService {
     throw new NotImplementedException("delete not implement");
   }
 
-  /*
-   * (non-Javadoc)
+  /**
+   * {@inheritDoc}
    * 
    * @see gov.ca.cwds.rest.services.CrudsService#update(java.io.Serializable,
-   * gov.ca.cwds.rest.api.Request)
+   *      gov.ca.cwds.rest.api.Request)
    */
   @Override
   public Response update(Serializable primaryKey, Request request) {
     throw new NotImplementedException("update not implement");
   }
-
 
 }

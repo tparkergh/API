@@ -192,17 +192,20 @@ public class JUnitGenerator {
     try {
       final String className = args[0];
       JUnitGenerator generator = new JUnitGenerator();
+
+
+      // Drill down through all annotations.
       generator.drillClass(className);
 
+      // Analyze method stack frames to determine conditions to test.
       final byte[] classBytes =
           IOUtils.toByteArray(new FileInputStream("bin/" + className.replace('.', '/') + ".class"));
 
-      // Setup for asm ClassReader, ClassWriter and your implementation of the ClassVisitor(e.g.:
-      // YourClassVisitor)
+      // ASM.
       final ClassReader classReader = new ClassReader(classBytes);
       PrintWriter printWriter = new PrintWriter(System.out);
       TraceClassVisitor traceClassVisitor = new TraceClassVisitor(printWriter);
-      classReader.accept(traceClassVisitor, ClassReader.SKIP_DEBUG);
+      classReader.accept(traceClassVisitor, ClassReader.EXPAND_FRAMES);
 
       // {
       // ClassReader cr = new ClassReader(classBytes);

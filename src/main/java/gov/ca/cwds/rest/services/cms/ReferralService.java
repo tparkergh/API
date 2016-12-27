@@ -25,6 +25,7 @@ import gov.ca.cwds.rest.util.IdGenerator;
  * @author CWDS API Team
  */
 public class ReferralService implements CrudsService {
+
   private static final Logger LOGGER = LoggerFactory.getLogger(ReferralService.class);
 
   private ReferralDao referralDao;
@@ -40,8 +41,8 @@ public class ReferralService implements CrudsService {
     this.referralDao = referralDao;
   }
 
-  /*
-   * (non-Javadoc)
+  /**
+   * {@inheritDoc}
    * 
    * @see gov.ca.cwds.rest.services.CrudsService#find(java.io.Serializable)
    */
@@ -56,8 +57,8 @@ public class ReferralService implements CrudsService {
     return null;
   }
 
-  /*
-   * (non-Javadoc)
+  /**
+   * {@inheritDoc}
    * 
    * @see gov.ca.cwds.rest.services.CrudsService#delete(java.io.Serializable)
    */
@@ -72,8 +73,8 @@ public class ReferralService implements CrudsService {
     return null;
   }
 
-  /*
-   * (non-Javadoc)
+  /**
+   * {@inheritDoc}
    * 
    * @see gov.ca.cwds.rest.services.CrudsService#create(gov.ca.cwds.rest.api.Request)
    */
@@ -82,12 +83,11 @@ public class ReferralService implements CrudsService {
     assert (request instanceof gov.ca.cwds.rest.api.domain.cms.Referral);
 
     gov.ca.cwds.rest.api.domain.cms.Referral referral =
-        ((gov.ca.cwds.rest.api.domain.cms.Referral) request);
+        (gov.ca.cwds.rest.api.domain.cms.Referral) request;
 
     try {
       // TODO : refactor to actually determine who is updating. 'q1p' for now
       Referral managed = new Referral(IdGenerator.randomString(10), referral, "q1p");
-
       managed = referralDao.create(managed);
       return new PostedReferral(managed);
     } catch (EntityExistsException e) {
@@ -96,24 +96,21 @@ public class ReferralService implements CrudsService {
     }
   }
 
-
-  /*
-   * (non-Javadoc)
+  /**
+   * {@inheritDoc}
    * 
    * @see gov.ca.cwds.rest.services.CrudsService#update(java.io.Serializable,
-   * gov.ca.cwds.rest.api.Request)
+   *      gov.ca.cwds.rest.api.Request)
    */
   @Override
   public gov.ca.cwds.rest.api.domain.cms.Referral update(Serializable primaryKey, Request request) {
-    assert (primaryKey instanceof String);
-    assert (request instanceof gov.ca.cwds.rest.api.domain.cms.Referral);
+    assert primaryKey instanceof String;
+    assert request instanceof gov.ca.cwds.rest.api.domain.cms.Referral;
     gov.ca.cwds.rest.api.domain.cms.Referral referral =
-        ((gov.ca.cwds.rest.api.domain.cms.Referral) request);
-
+        (gov.ca.cwds.rest.api.domain.cms.Referral) request;
 
     try {
       Referral managed = new Referral((String) primaryKey, referral, "q1p");
-
       managed = referralDao.update(managed);
       return new gov.ca.cwds.rest.api.domain.cms.Referral(managed);
     } catch (EntityNotFoundException e) {

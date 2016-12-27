@@ -7,11 +7,11 @@ import static org.hamcrest.Matchers.notNullValue;
 
 import org.junit.Test;
 
-import gov.ca.cwds.rest.api.persistence.cms.ReferralClient.PrimaryKey;
 import nl.jqno.equalsverifier.EqualsVerifier;
 import nl.jqno.equalsverifier.Warning;
 
 public class CmsDocumentBlobSegmentTest {
+
   private String docHandle = "doc1handle";
   private String segmentSequence = "10";
   private String docBlob = "test document blob";
@@ -41,7 +41,7 @@ public class CmsDocumentBlobSegmentTest {
 
   @Test
   public void successGetPrimaryKey() throws Exception {
-    PrimaryKey pk = new PrimaryKey(docHandle, segmentSequence);
+    VarargPrimaryKey pk = new VarargPrimaryKey(docHandle, segmentSequence);
     CmsDocumentBlobSegment blob = new CmsDocumentBlobSegment(docHandle, segmentSequence, docBlob);
     assertThat(blob.getPrimaryKey().toString(), is(equalTo(pk.toString())));
   }

@@ -63,7 +63,7 @@ public class Attorney extends CmsPersistentObject {
   private Short governmentEntityType;
 
   @Id
-  @Column(name = "IDENTIFIER")
+  @Column(name = "IDENTIFIER", length = CMS_ID_LEN)
   private String id;
 
   @Type(type = "short")

@@ -24,6 +24,7 @@ import gov.ca.cwds.rest.util.IdGenerator;
  * @author CWDS API Team
  */
 public class CrossReportService implements CrudsService {
+
   private static final Logger LOGGER = LoggerFactory.getLogger(CrossReportService.class);
 
   private CrossReportDao crossReportDao;
@@ -39,14 +40,14 @@ public class CrossReportService implements CrudsService {
     this.crossReportDao = crossReportDao;
   }
 
-  /*
-   * (non-Javadoc)
+  /**
+   * {@inheritDoc}
    * 
    * @see gov.ca.cwds.rest.services.CrudsService#find(java.io.Serializable)
    */
   @Override
   public gov.ca.cwds.rest.api.domain.cms.CrossReport find(Serializable primaryKey) {
-    assert (primaryKey instanceof String);
+    assert primaryKey instanceof String;
 
     gov.ca.cwds.rest.api.persistence.cms.CrossReport persistedCrossReport =
         crossReportDao.find(primaryKey);
@@ -56,14 +57,14 @@ public class CrossReportService implements CrudsService {
     return null;
   }
 
-  /*
-   * (non-Javadoc)
+  /**
+   * {@inheritDoc}
    * 
    * @see gov.ca.cwds.rest.services.CrudsService#delete(java.io.Serializable)
    */
   @Override
   public gov.ca.cwds.rest.api.domain.cms.CrossReport delete(Serializable primaryKey) {
-    assert (primaryKey instanceof String);
+    assert primaryKey instanceof String;
     gov.ca.cwds.rest.api.persistence.cms.CrossReport persistedCrossReport =
         crossReportDao.delete(primaryKey);
     if (persistedCrossReport != null) {
@@ -72,22 +73,21 @@ public class CrossReportService implements CrudsService {
     return null;
   }
 
-  /*
-   * (non-Javadoc)
+  /**
+   * {@inheritDoc}
    * 
    * @see gov.ca.cwds.rest.services.CrudsService#create(gov.ca.cwds.rest.api.Request)
    */
   @Override
   public gov.ca.cwds.rest.api.domain.cms.CrossReport create(Request request) {
-    assert (request instanceof gov.ca.cwds.rest.api.domain.cms.CrossReport);
+    assert request instanceof gov.ca.cwds.rest.api.domain.cms.CrossReport;
 
     gov.ca.cwds.rest.api.domain.cms.CrossReport crossReport =
-        ((gov.ca.cwds.rest.api.domain.cms.CrossReport) request);
+        (gov.ca.cwds.rest.api.domain.cms.CrossReport) request;
 
     try {
       // TODO : refactor to actually determine who is updating. 'q1p' for now
       CrossReport managed = new CrossReport(IdGenerator.randomString(10), crossReport, "q1p");
-
       managed = crossReportDao.create(managed);
       return new gov.ca.cwds.rest.api.domain.cms.CrossReport(managed);
     } catch (EntityExistsException e) {
@@ -96,19 +96,18 @@ public class CrossReportService implements CrudsService {
     }
   }
 
-
-  /*
-   * (non-Javadoc)
+  /**
+   * {@inheritDoc}
    * 
    * @see gov.ca.cwds.rest.services.CrudsService#update(java.io.Serializable,
-   * gov.ca.cwds.rest.api.Request)
+   *      gov.ca.cwds.rest.api.Request)
    */
   @Override
   public gov.ca.cwds.rest.api.domain.cms.CrossReport update(Serializable primaryKey,
       Request request) {
-    assert (request instanceof gov.ca.cwds.rest.api.domain.cms.CrossReport);
+    assert request instanceof gov.ca.cwds.rest.api.domain.cms.CrossReport;
     gov.ca.cwds.rest.api.domain.cms.CrossReport crossReport =
-        ((gov.ca.cwds.rest.api.domain.cms.CrossReport) request);
+        (gov.ca.cwds.rest.api.domain.cms.CrossReport) request;
 
     try {
       CrossReport managed = new CrossReport(crossReport.getThirdId(), crossReport, "q1p");

@@ -118,14 +118,12 @@ public class DataAccessModule extends AbstractModule {
   @Provides
   @CmsSessionFactory
   SessionFactory cmsSessionFactory() {
-    // return new Configuration().configure("hibernate.cfg.xml").buildSessionFactory();
     return cmsHibernateBundle.getSessionFactory();
   }
 
   @Provides
   @NsSessionFactory
   SessionFactory nsSessionFactory() {
-    // return new Configuration().configure("ns-hibernate.cfg.xml").buildSessionFactory();
     return nsHibernateBundle.getSessionFactory();
   }
 

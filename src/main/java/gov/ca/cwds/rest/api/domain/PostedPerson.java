@@ -14,9 +14,9 @@ public class PostedPerson extends Person {
   @JsonProperty("id")
   private long id;
 
-  public PostedPerson(long id, String first_name, String last_name, String gender,
-      String date_of_birth, String ssn, Address address) {
-    super(first_name, last_name, gender, date_of_birth, ssn, address);
+  public PostedPerson(long id, String firstName, String last_name, String gender,
+      String dateOfBirth, String ssn, Address address) {
+    super(firstName, last_name, gender, dateOfBirth, ssn, address);
     this.id = id;
   }
 

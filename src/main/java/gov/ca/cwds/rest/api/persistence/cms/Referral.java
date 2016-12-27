@@ -23,8 +23,9 @@ import gov.ca.cwds.rest.api.persistence.ns.NsPersistentObject;
 @Entity
 @Table(name = "REFERL_T")
 public class Referral extends CmsPersistentObject {
+
   @Id
-  @Column(name = "IDENTIFIER")
+  @Column(name = "IDENTIFIER", length = CMS_ID_LEN)
   private String id;
 
   @Column(name = "ADD_INF_CD")

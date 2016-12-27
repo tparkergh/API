@@ -39,14 +39,14 @@ public class ReporterService implements CrudsService {
     this.reporterDao = reporterDao;
   }
 
-  /*
-   * (non-Javadoc)
+  /**
+   * {@inheritDoc}
    * 
    * @see gov.ca.cwds.rest.services.CrudsService#find(java.io.Serializable)
    */
   @Override
   public gov.ca.cwds.rest.api.domain.cms.Reporter find(Serializable primaryKey) {
-    assert (primaryKey instanceof String);
+    assert primaryKey instanceof String;
 
     gov.ca.cwds.rest.api.persistence.cms.Reporter persistedReporter = reporterDao.find(primaryKey);
     if (persistedReporter != null) {
@@ -55,14 +55,14 @@ public class ReporterService implements CrudsService {
     return null;
   }
 
-  /*
-   * (non-Javadoc)
+  /**
+   * {@inheritDoc}
    * 
    * @see gov.ca.cwds.rest.services.CrudsService#delete(java.io.Serializable)
    */
   @Override
   public gov.ca.cwds.rest.api.domain.cms.Reporter delete(Serializable primaryKey) {
-    assert (primaryKey instanceof String);
+    assert primaryKey instanceof String;
     gov.ca.cwds.rest.api.persistence.cms.Reporter persistedReporter =
         reporterDao.delete(primaryKey);
     if (persistedReporter != null) {
@@ -71,22 +71,21 @@ public class ReporterService implements CrudsService {
     return null;
   }
 
-  /*
-   * (non-Javadoc)
+  /**
+   * {@inheritDoc}
    * 
    * @see gov.ca.cwds.rest.services.CrudsService#create(gov.ca.cwds.rest.api.Request)
    */
   @Override
   public PostedReporter create(Request request) {
-    assert (request instanceof gov.ca.cwds.rest.api.domain.cms.Reporter);
+    assert request instanceof gov.ca.cwds.rest.api.domain.cms.Reporter;
 
     gov.ca.cwds.rest.api.domain.cms.Reporter reporter =
-        ((gov.ca.cwds.rest.api.domain.cms.Reporter) request);
+        (gov.ca.cwds.rest.api.domain.cms.Reporter) request;
 
     try {
       // TODO : refactor to actually determine who is updating. 'q1p' for now
       Reporter managed = new Reporter(reporter, "q1p");
-
       managed = reporterDao.create(managed);
       return new PostedReporter(managed);
     } catch (EntityExistsException e) {
@@ -95,24 +94,21 @@ public class ReporterService implements CrudsService {
     }
   }
 
-
-  /*
-   * (non-Javadoc)
+  /**
+   * {@inheritDoc}
    * 
    * @see gov.ca.cwds.rest.services.CrudsService#update(java.io.Serializable,
-   * gov.ca.cwds.rest.api.Request)
+   *      gov.ca.cwds.rest.api.Request)
    */
   @Override
   public gov.ca.cwds.rest.api.domain.cms.Reporter update(Serializable primaryKey, Request request) {
-    assert (primaryKey instanceof String);
-    assert (request instanceof gov.ca.cwds.rest.api.domain.cms.Reporter);
+    assert primaryKey instanceof String;
+    assert request instanceof gov.ca.cwds.rest.api.domain.cms.Reporter;
     gov.ca.cwds.rest.api.domain.cms.Reporter reporter =
-        ((gov.ca.cwds.rest.api.domain.cms.Reporter) request);
-
+        (gov.ca.cwds.rest.api.domain.cms.Reporter) request;
 
     try {
       Reporter managed = new Reporter(reporter, "q1p");
-
       managed = reporterDao.update(managed);
       return new gov.ca.cwds.rest.api.domain.cms.Reporter(managed);
     } catch (EntityNotFoundException e) {

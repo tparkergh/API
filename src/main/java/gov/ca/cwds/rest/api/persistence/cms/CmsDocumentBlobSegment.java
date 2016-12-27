@@ -10,7 +10,6 @@ import javax.persistence.Table;
 import org.hibernate.annotations.ColumnTransformer;
 
 import gov.ca.cwds.rest.api.persistence.PersistentObject;
-import gov.ca.cwds.rest.api.persistence.cms.ReferralClient.PrimaryKey;
 
 /**
  * {@link PersistentObject} represents a record in TSBLOBT.
@@ -24,11 +23,11 @@ public class CmsDocumentBlobSegment implements PersistentObject, Serializable {
   private static final long serialVersionUID = -6101861394294752291L;
 
   @Id
-  @Column(name = "DOC_HANDLE")
+  @Column(name = "DOC_HANDLE", length = 30)
   private String docHandle;
 
   @Id
-  @Column(name = "DOC_SEGSEQ")
+  @Column(name = "DOC_SEGSEQ", length = 4)
   private String segmentSequence;
 
   @ColumnTransformer(read = "blob(DOC_BLOB)")
@@ -64,7 +63,7 @@ public class CmsDocumentBlobSegment implements PersistentObject, Serializable {
    */
   @Override
   public Serializable getPrimaryKey() {
-    return new PrimaryKey(this.getDocHandle(), this.getSegmentSequence());
+    return new VarargPrimaryKey(this.getDocHandle(), this.getSegmentSequence());
   }
 
   /**

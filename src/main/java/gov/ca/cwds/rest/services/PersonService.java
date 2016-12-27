@@ -58,7 +58,7 @@ public class PersonService implements CrudsService {
    */
   @Override
   public Person find(Serializable primaryKey) {
-    assert (primaryKey instanceof Long);
+    assert primaryKey instanceof Long;
 
     gov.ca.cwds.rest.api.persistence.ns.Person persistedPerson = personDao.find(primaryKey);
     if (persistedPerson != null) {
@@ -74,9 +74,9 @@ public class PersonService implements CrudsService {
    */
   @Override
   public PostedPerson create(Request request) {
-    assert (request instanceof Person);
+    assert request instanceof Person;
 
-    Person person = ((Person) request);
+    Person person = (Person) request;
     gov.ca.cwds.rest.api.persistence.ns.Person managed =
         new gov.ca.cwds.rest.api.persistence.ns.Person(person, null);
 
@@ -88,11 +88,7 @@ public class PersonService implements CrudsService {
               managed.getFirstName(), managed.getLastName(), managed.getSsn(), managed.getGender(),
               DomainObject.cookDate(managed.getDateOfBirth()), managed.getClass().getName(),
               MAPPER.writeValueAsString(managed));
-      String document = "";
-
-      if (esPerson != null) {
-        document = MAPPER.writeValueAsString(esPerson);
-      }
+      String document = MAPPER.writeValueAsString(esPerson);
 
       // The ES Dao manages its own connections. No need to manually start or stop.
       elasticsearchDao.index(document, esPerson.getId().toString());
@@ -177,7 +173,7 @@ public class PersonService implements CrudsService {
    */
   @Override
   public Response delete(Serializable primaryKey) {
-    assert (primaryKey instanceof Long);
+    assert primaryKey instanceof Long;
     throw new NotImplementedException("Delete is not implemented");
   }
 
@@ -189,7 +185,7 @@ public class PersonService implements CrudsService {
    */
   @Override
   public Response update(Serializable primaryKey, Request request) {
-    assert (primaryKey instanceof Long);
+    assert primaryKey instanceof Long;
     throw new NotImplementedException("Update is not implemented");
   }
 

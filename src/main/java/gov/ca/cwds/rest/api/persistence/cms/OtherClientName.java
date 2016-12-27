@@ -24,10 +24,10 @@ import gov.ca.cwds.rest.api.persistence.PersistentObject;
     @NamedQuery(name = "gov.ca.cwds.rest.api.persistence.cms.OtherClientName.findAllUpdatedAfter",
         query = "FROM OtherClientName WHERE lastUpdatedTime > :after")})
 @Entity
-// @Table(schema = "CWSINT", name = "OCL_NM_T")
 @Table(name = "OCL_NM_T")
 public class OtherClientName extends CmsPersistentObject {
-  @Column(name = "FKCLIENT_T")
+
+  @Column(name = "FKCLIENT_T", length = CMS_ID_LEN)
   private String clientId;
 
   @Column(name = "FIRST_NM")
@@ -50,7 +50,7 @@ public class OtherClientName extends CmsPersistentObject {
   private String suffixTitleDescription;
 
   @Id
-  @Column(name = "THIRD_ID")
+  @Column(name = "THIRD_ID", length = CMS_ID_LEN)
   private String thirdId;
 
   /**

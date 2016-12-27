@@ -67,7 +67,7 @@ public class CollateralIndividual extends CmsPersistentObject {
   private String genderCode;
 
   @Id
-  @Column(name = "IDENTIFIER")
+  @Column(name = "IDENTIFIER", length = CMS_ID_LEN)
   private String id;
 
   @Column(name = "LAST_NM")

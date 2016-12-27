@@ -39,7 +39,7 @@ public class AddressService implements CrudsService {
    */
   @Override
   public Address find(Serializable primaryKey) {
-    assert (primaryKey instanceof Long);
+    assert primaryKey instanceof Long;
 
     gov.ca.cwds.rest.api.persistence.ns.Address persistedAddress = addressDao.find(primaryKey);
     if (persistedAddress != null) {
@@ -55,8 +55,7 @@ public class AddressService implements CrudsService {
    */
   @Override
   public Response delete(Serializable primaryKey) {
-    assert (primaryKey instanceof Long);
-
+    assert primaryKey instanceof Long;
     throw new NotImplementedException("Delete is not implemented");
   }
 
@@ -67,16 +66,15 @@ public class AddressService implements CrudsService {
    */
   @Override
   public PostedAddress create(Request request) {
-    assert (request instanceof Address);
+    assert request instanceof Address;
 
-    Address address = ((Address) request);
+    Address address = (Address) request;
     gov.ca.cwds.rest.api.persistence.ns.Address managed =
         new gov.ca.cwds.rest.api.persistence.ns.Address(address, null);
 
     managed = addressDao.create(managed);
     return new PostedAddress(managed);
   }
-
 
   /**
    * {@inheritDoc}
@@ -86,7 +84,7 @@ public class AddressService implements CrudsService {
    */
   @Override
   public Response update(Serializable primaryKey, Request request) {
-    assert (primaryKey instanceof Long);
+    assert primaryKey instanceof Long;
     throw new NotImplementedException("Update is not implemented");
   }
 

@@ -24,7 +24,7 @@ public class Allegation extends CmsPersistentObject {
   protected static final String DATE_FORMAT = "yyyy-MM-dd";
 
   @Id
-  @Column(name = "IDENTIFIER")
+  @Column(name = "IDENTIFIER", length = CMS_ID_LEN)
   private String id;
 
   @Type(type = "date")

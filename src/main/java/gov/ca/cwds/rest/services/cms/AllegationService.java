@@ -25,6 +25,7 @@ import gov.ca.cwds.rest.util.IdGenerator;
  * @author CWDS API Team
  */
 public class AllegationService implements CrudsService {
+
   private static final Logger LOGGER = LoggerFactory.getLogger(AllegationService.class);
 
   private AllegationDao allegationDao;
@@ -40,14 +41,14 @@ public class AllegationService implements CrudsService {
     this.allegationDao = allegationDao;
   }
 
-  /*
-   * (non-Javadoc)
+  /**
+   * {@inheritDoc}
    * 
    * @see gov.ca.cwds.rest.services.CrudsService#find(java.io.Serializable)
    */
   @Override
   public gov.ca.cwds.rest.api.domain.cms.Allegation find(Serializable primaryKey) {
-    assert (primaryKey instanceof String);
+    assert primaryKey instanceof String;
 
     gov.ca.cwds.rest.api.persistence.cms.Allegation persistedAllegation =
         allegationDao.find(primaryKey);
@@ -57,14 +58,14 @@ public class AllegationService implements CrudsService {
     return null;
   }
 
-  /*
-   * (non-Javadoc)
+  /**
+   * {@inheritDoc}
    * 
    * @see gov.ca.cwds.rest.services.CrudsService#delete(java.io.Serializable)
    */
   @Override
   public gov.ca.cwds.rest.api.domain.cms.Allegation delete(Serializable primaryKey) {
-    assert (primaryKey instanceof String);
+    assert primaryKey instanceof String;
     gov.ca.cwds.rest.api.persistence.cms.Allegation persistedAllegation =
         allegationDao.delete(primaryKey);
     if (persistedAllegation != null) {
@@ -73,17 +74,17 @@ public class AllegationService implements CrudsService {
     return null;
   }
 
-  /*
-   * (non-Javadoc)
+  /**
+   * {@inheritDoc}
    * 
    * @see gov.ca.cwds.rest.services.CrudsService#create(gov.ca.cwds.rest.api.Request)
    */
   @Override
   public PostedAllegation create(Request request) {
-    assert (request instanceof gov.ca.cwds.rest.api.domain.cms.Allegation);
+    assert request instanceof gov.ca.cwds.rest.api.domain.cms.Allegation;
 
     gov.ca.cwds.rest.api.domain.cms.Allegation allegation =
-        ((gov.ca.cwds.rest.api.domain.cms.Allegation) request);
+        (gov.ca.cwds.rest.api.domain.cms.Allegation) request;
 
     try {
       // TODO : refactor to actually determine who is updating. 'q1p' for now
@@ -97,21 +98,19 @@ public class AllegationService implements CrudsService {
     }
   }
 
-
-  /*
-   * (non-Javadoc)
+  /**
+   * {@inheritDoc}
    * 
    * @see gov.ca.cwds.rest.services.CrudsService#update(java.io.Serializable,
-   * gov.ca.cwds.rest.api.Request)
+   *      gov.ca.cwds.rest.api.Request)
    */
   @Override
   public gov.ca.cwds.rest.api.domain.cms.Allegation update(Serializable primaryKey,
       Request request) {
-    assert (primaryKey instanceof String);
-    assert (request instanceof gov.ca.cwds.rest.api.domain.cms.Allegation);
+    assert primaryKey instanceof String;
+    assert request instanceof gov.ca.cwds.rest.api.domain.cms.Allegation;
     gov.ca.cwds.rest.api.domain.cms.Allegation allegation =
-        ((gov.ca.cwds.rest.api.domain.cms.Allegation) request);
-
+        (gov.ca.cwds.rest.api.domain.cms.Allegation) request;
 
     try {
       Allegation managed = new Allegation((String) primaryKey, allegation, "q1p");

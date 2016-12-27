@@ -31,6 +31,7 @@ import gov.ca.cwds.rest.jdbi.ns.ScreeningDao;
  * @author CWDS API Team
  */
 public class ScreeningService implements CrudsService {
+
   private static final Logger LOGGER = LoggerFactory.getLogger(ScreeningService.class);
   private ScreeningDao screeningDao;
   private PersonService personService;
@@ -54,7 +55,7 @@ public class ScreeningService implements CrudsService {
    */
   @Override
   public ScreeningResponse find(Serializable primaryKey) {
-    assert (primaryKey instanceof Long);
+    assert primaryKey instanceof Long;
 
     gov.ca.cwds.rest.api.persistence.ns.Screening screening = screeningDao.find(primaryKey);
     if (screening != null) {
@@ -81,7 +82,7 @@ public class ScreeningService implements CrudsService {
    */
   @Override
   public PostedScreening create(Request request) {
-    assert (request instanceof ScreeningReference);
+    assert request instanceof ScreeningReference;
 
     ScreeningReference screeningReference = (ScreeningReference) request;
     gov.ca.cwds.rest.api.persistence.ns.Screening managed =
@@ -99,13 +100,12 @@ public class ScreeningService implements CrudsService {
    */
   @Override
   public ScreeningResponse update(Serializable primaryKey, Request request) {
-    assert (primaryKey instanceof Long);
-    assert (request instanceof ScreeningRequest);
+    assert primaryKey instanceof Long;
+    assert request instanceof ScreeningRequest;
 
     ScreeningRequest screeningRequest = (ScreeningRequest) request;
 
-    Set<gov.ca.cwds.rest.api.persistence.ns.Person> participants =
-        new HashSet<gov.ca.cwds.rest.api.persistence.ns.Person>();
+    Set<gov.ca.cwds.rest.api.persistence.ns.Person> participants = new HashSet<>();
     for (Long participantId : screeningRequest.getParticipant_ids()) {
       Person person = personService.find(participantId);
       if (person == null) {
