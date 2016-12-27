@@ -21,6 +21,7 @@ import com.google.inject.Inject;
 import gov.ca.cwds.inject.CmsDocumentBackedResource;
 import gov.ca.cwds.rest.api.domain.cms.CmsDocument;
 import gov.ca.cwds.rest.resources.ResourceDelegate;
+import gov.ca.cwds.rest.resources.TypedResourceDelegate;
 import io.dropwizard.hibernate.UnitOfWork;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -44,7 +45,7 @@ import io.swagger.annotations.ApiResponses;
 @Consumes(MediaType.APPLICATION_JSON)
 public class CmsDocumentResource {
 
-  private ResourceDelegate resourceDelegate;
+  private TypedResourceDelegate<String, CmsDocument> resourceDelegate;
 
   /**
    * Constructor
@@ -52,7 +53,8 @@ public class CmsDocumentResource {
    * @param resourceDelegate The resourceDelegate to delegate to.
    */
   @Inject
-  public CmsDocumentResource(@CmsDocumentBackedResource ResourceDelegate resourceDelegate) {
+  public CmsDocumentResource(
+      @CmsDocumentBackedResource TypedResourceDelegate<String, CmsDocument> resourceDelegate) {
     this.resourceDelegate = resourceDelegate;
   }
 

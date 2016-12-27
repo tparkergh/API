@@ -11,8 +11,9 @@ import org.junit.ClassRule;
 import org.junit.Rule;
 import org.junit.Test;
 
-import gov.ca.cwds.rest.resources.ResourceDelegate;
+import gov.ca.cwds.rest.api.domain.cms.CmsDocument;
 import gov.ca.cwds.rest.resources.ServiceBackedResourceDelegate;
+import gov.ca.cwds.rest.resources.TypedResourceDelegate;
 import io.dropwizard.testing.junit.ResourceTestRule;
 
 /**
@@ -28,7 +29,8 @@ public class CmsDocumentResourceTest {
   @Rule
   public ExpectedException thrown = ExpectedException.none();
 
-  private final static ResourceDelegate resourceDelegate = mock(ResourceDelegate.class);
+  private final static TypedResourceDelegate<String, CmsDocument> resourceDelegate =
+      mock(TypedResourceDelegate.class);
 
   @ClassRule
   public final static ResourceTestRule inMemoryResource =
@@ -40,8 +42,6 @@ public class CmsDocumentResourceTest {
   /**
    * Get Tests
    */
-
-
   @Test
   public void getDelegatesToResourceDelegate() throws Exception {
     inMemoryResource.client().target(FOUND_RESOURCE).request().accept(MediaType.APPLICATION_JSON)

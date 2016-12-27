@@ -59,7 +59,6 @@ public class PersonService implements CrudsService {
   @Override
   public Person find(Serializable primaryKey) {
     assert primaryKey instanceof Long;
-
     gov.ca.cwds.rest.api.persistence.ns.Person persistedPerson = personDao.find(primaryKey);
     if (persistedPerson != null) {
       return new Person(persistedPerson);
@@ -75,7 +74,6 @@ public class PersonService implements CrudsService {
   @Override
   public PostedPerson create(Request request) {
     assert request instanceof Person;
-
     Person person = (Person) request;
     gov.ca.cwds.rest.api.persistence.ns.Person managed =
         new gov.ca.cwds.rest.api.persistence.ns.Person(person, null);
@@ -95,6 +93,7 @@ public class PersonService implements CrudsService {
     } catch (JsonProcessingException e) {
       throw new ApiException("Unable to convert Person to JSON to Index in ElasticSearch", e);
     } catch (Exception e) {
+      LOGGER.error("Unable to Index Person in ElasticSearch", e);
       throw new ApiException("Unable to Index Person in ElasticSearch", e);
     }
     return postedPerson;
@@ -142,7 +141,7 @@ public class PersonService implements CrudsService {
       field = ESPerson.ESColumn.LAST_NAME.getCol();
       value = lastName;
     } else if (!StringUtils.isBlank(birthDate)) {
-      field = "birth_date";
+      field = ESPerson.ESColumn.BIRTH_DATE.getCol();
       value = birthDate;
     }
 
@@ -154,9 +153,9 @@ public class PersonService implements CrudsService {
     final ESPerson[] ret = new ESPerson[hits.length];
 
     // Prep results.
-    int counter = -1;
+    int ctr = -1;
     for (SearchHit hit : hits) {
-      ret[++counter] = ESPerson.makeESPerson(hit);
+      ret[++ctr] = ESPerson.makeESPerson(hit);
     }
 
     return ret;

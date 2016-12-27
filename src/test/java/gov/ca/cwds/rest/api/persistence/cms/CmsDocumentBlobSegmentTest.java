@@ -56,9 +56,9 @@ public class CmsDocumentBlobSegmentTest {
     assertEquals(0, violations.size());
   }
 
-  //
+  // ====================
   // DOC_HANDLE
-  //
+  // ====================
 
   @Test
   public void testConstraintDocHandlePattern() throws Exception {
@@ -89,9 +89,9 @@ public class CmsDocumentBlobSegmentTest {
     assertEquals("size must be between 30 and 30", violations.iterator().next().getMessage());
   }
 
-  //
+  // ====================
   // DOC_SEGMENT
-  //
+  // ====================
 
   @Test
   public void testConstraintDocSegmentNull() throws Exception {
@@ -120,9 +120,9 @@ public class CmsDocumentBlobSegmentTest {
     // assertEquals("invalid DOC_HANDLE", violations.iterator().next().getMessage());
   }
 
-  //
+  // ====================
   // BLOB
-  //
+  // ====================
 
   @Test
   public void testConstraintBlobNull() throws Exception {
@@ -151,8 +151,6 @@ public class CmsDocumentBlobSegmentTest {
     }
 
     final String theBlob = buf.toString();
-    System.out.println(theBlob.length());
-
     CmsDocumentBlobSegment blob = new CmsDocumentBlobSegment(docHandle, segmentSequence, theBlob);
     Set<ConstraintViolation<CmsDocumentBlobSegment>> violations = validator.validate(blob);
 

@@ -114,7 +114,6 @@ public class AllegationService implements CrudsService {
 
     try {
       Allegation managed = new Allegation((String) primaryKey, allegation, "q1p");
-
       managed = allegationDao.update(managed);
       return new gov.ca.cwds.rest.api.domain.cms.Allegation(managed);
     } catch (EntityNotFoundException e) {

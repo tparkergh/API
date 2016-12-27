@@ -68,26 +68,57 @@ public final class ESPersonSearchRequest extends DomainObject implements Request
     this.birthDate = birthDate != null ? birthDate.trim() : "";
   }
 
+  /**
+   * Gets the first name.
+   * 
+   * @return the first name
+   */
   public String getFirstName() {
     return firstName;
   }
 
+  /**
+   * Sets the first name.
+   * 
+   * @param firstName the first name
+   */
   public void setFirstName(String firstName) {
     this.firstName = firstName;
   }
 
+  /**
+   * Gets the last name.
+   * 
+   * @return the last name
+   */
   public String getLastName() {
     return lastName;
   }
 
+  /**
+   * Sets the last name.
+   * 
+   * @param lastName the last name
+   */
   public void setLastName(String lastName) {
     this.lastName = lastName;
   }
 
+  /**
+   * Gets the birth date
+   * 
+   * @return birth date in format {@link DomainObject#DATE_FORMAT}
+   */
   public String getBirthDate() {
     return birthDate;
   }
 
+  /**
+   * Sets the birth date for search, not necessarily a complete date expression.
+   * 
+   * @param birthDate set birth date for search
+   * @see #birthDate
+   */
   public void setBirthDate(String birthDate) {
     this.birthDate = birthDate;
   }

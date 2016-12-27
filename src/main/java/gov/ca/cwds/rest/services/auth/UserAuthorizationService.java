@@ -13,7 +13,6 @@ import com.google.inject.Inject;
 
 import gov.ca.cwds.rest.api.Request;
 import gov.ca.cwds.rest.api.domain.auth.StaffAuthorityPrivilege;
-import gov.ca.cwds.rest.api.domain.auth.StaffUnitAuthority;
 import gov.ca.cwds.rest.api.domain.auth.UserAuthorization;
 import gov.ca.cwds.rest.api.persistence.auth.UserId;
 import gov.ca.cwds.rest.jdbi.auth.StaffAuthorityPrivilegeDao;
@@ -27,7 +26,7 @@ import gov.ca.cwds.rest.services.CrudsService;
  * @author CWDS API Team
  */
 public class UserAuthorizationService implements CrudsService {
-  @SuppressWarnings("unused")
+
   private static final Logger LOGGER = LoggerFactory.getLogger(UserAuthorizationService.class);
 
   private UserIdDao userIdDao;
@@ -38,7 +37,6 @@ public class UserAuthorizationService implements CrudsService {
    * 
    * @param userIdDao The User Id DAO
    * @param staffAuthorityPrivilegeDao The Staff Authority Privilege DAO
-   * 
    */
   @Inject
   public UserAuthorizationService(UserIdDao userIdDao,
@@ -47,39 +45,35 @@ public class UserAuthorizationService implements CrudsService {
     this.staffAuthorityPrivilegeDao = staffAuthorityPrivilegeDao;
   }
 
-  /*
-   * (non-Javadoc)
+  /**
+   * {@inheritDoc}
    * 
    * @see gov.ca.cwds.rest.services.CrudsService#find(java.io.Serializable)
-   * 
    */
-  @SuppressWarnings("null")
   @Override
   public UserAuthorization find(Serializable primaryKey) {
-    assert (primaryKey instanceof String);
-    System.out.println(primaryKey);
+    assert primaryKey instanceof String;
+    LOGGER.info(primaryKey.toString());
 
     List<UserId> userList = userIdDao.listUserFromLogonId((String) primaryKey);
     Set<gov.ca.cwds.rest.api.domain.auth.StaffUnitAuthority> testuserUnitAuthority =
-        new HashSet<StaffUnitAuthority>();
-    Set<StaffAuthorityPrivilege> testuserAuthorityPrivilege =
-        new HashSet<StaffAuthorityPrivilege>();
+        new HashSet<>();
+    Set<StaffAuthorityPrivilege> testuserAuthorityPrivilege = new HashSet<>();
     UserId user = null;
-    gov.ca.cwds.rest.api.persistence.auth.StaffAuthorityPrivilege SocialWorker = null;
+    gov.ca.cwds.rest.api.persistence.auth.StaffAuthorityPrivilege socialWorker = null;
 
-    if (userList != null || userList.size() > 0) {
+    if (userList != null && !userList.isEmpty()) {
       user = userList.get(0);
-      SocialWorker = staffAuthorityPrivilegeDao.isSocialWorker(user.getId());
-    } else {
-
+      socialWorker = staffAuthorityPrivilegeDao.isSocialWorker(user.getId());
     }
+
     return new gov.ca.cwds.rest.api.domain.auth.UserAuthorization(user.getLogonId(),
-        user.getStaffPersonId(), SocialWorker == null ? false : true, false, true,
-        testuserAuthorityPrivilege, testuserUnitAuthority);
+        user.getStaffPersonId(), socialWorker != null, false, true, testuserAuthorityPrivilege,
+        testuserUnitAuthority);
   }
 
-  /*
-   * (non-Javadoc)
+  /**
+   * {@inheritDoc}
    * 
    * @see gov.ca.cwds.rest.services.CrudsService#delete(java.io.Serializable)
    */
@@ -88,8 +82,8 @@ public class UserAuthorizationService implements CrudsService {
     throw new NotImplementedException("delete not implemented");
   }
 
-  /*
-   * (non-Javadoc)
+  /**
+   * {@inheritDoc}
    * 
    * @see gov.ca.cwds.rest.services.CrudsService#create(gov.ca.cwds.rest.api.Request)
    */
@@ -98,12 +92,11 @@ public class UserAuthorizationService implements CrudsService {
     throw new NotImplementedException("create not implemented");
   }
 
-
-  /*
-   * (non-Javadoc)
+  /**
+   * {@inheritDoc}
    * 
    * @see gov.ca.cwds.rest.services.CrudsService#update(java.io.Serializable,
-   * gov.ca.cwds.rest.api.Request)
+   *      gov.ca.cwds.rest.api.Request)
    */
   @Override
   public gov.ca.cwds.rest.api.domain.auth.UserAuthorization update(Serializable primaryKey,

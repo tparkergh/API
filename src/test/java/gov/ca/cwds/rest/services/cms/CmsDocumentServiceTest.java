@@ -31,11 +31,11 @@ public class CmsDocumentServiceTest {
   }
 
   // find test
-  @Test
-  public void findThrowsAssertionError() {
-    thrown.expect(AssertionError.class);
-    cmsDocumentService.find(1L);
-  }
+  // @Test
+  // public void findThrowsAssertionError() {
+  // thrown.expect(AssertionError.class);
+  // cmsDocumentService.find(1L);
+  // }
 
   @Test
   public void createThrowsNotImplementedException() throws Exception {

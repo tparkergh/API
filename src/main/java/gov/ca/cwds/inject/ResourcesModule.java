@@ -1,7 +1,13 @@
 package gov.ca.cwds.inject;
 
+import com.google.inject.AbstractModule;
+import com.google.inject.Injector;
+import com.google.inject.Provides;
+import com.google.inject.name.Named;
+
 import gov.ca.cwds.rest.ApiConfiguration;
 import gov.ca.cwds.rest.SwaggerConfiguration;
+import gov.ca.cwds.rest.api.domain.cms.CmsDocument;
 import gov.ca.cwds.rest.resources.AddressResource;
 import gov.ca.cwds.rest.resources.ApplicationResource;
 import gov.ca.cwds.rest.resources.PersonResource;
@@ -10,6 +16,8 @@ import gov.ca.cwds.rest.resources.ResourceDelegate;
 import gov.ca.cwds.rest.resources.ScreeningResource;
 import gov.ca.cwds.rest.resources.ServiceBackedResourceDelegate;
 import gov.ca.cwds.rest.resources.SwaggerResource;
+import gov.ca.cwds.rest.resources.TypedResourceDelegate;
+import gov.ca.cwds.rest.resources.TypedServiceBackedResourceDelegate;
 import gov.ca.cwds.rest.resources.auth.UserAuthorizationResource;
 import gov.ca.cwds.rest.resources.cms.AllegationResource;
 import gov.ca.cwds.rest.resources.cms.CmsDocReferralClientResource;
@@ -32,11 +40,6 @@ import gov.ca.cwds.rest.services.cms.ReferralClientService;
 import gov.ca.cwds.rest.services.cms.ReferralService;
 import gov.ca.cwds.rest.services.cms.ReporterService;
 import gov.ca.cwds.rest.services.cms.StaffPersonService;
-
-import com.google.inject.AbstractModule;
-import com.google.inject.Injector;
-import com.google.inject.Provides;
-import com.google.inject.name.Named;
 
 public class ResourcesModule extends AbstractModule {
 
@@ -61,8 +64,6 @@ public class ResourcesModule extends AbstractModule {
     bind(StaffPersonResource.class);
     bind(PersonSearchResource.class);
     bind(UserAuthorizationResource.class);
-
-
   }
 
   @Provides
@@ -121,8 +122,9 @@ public class ResourcesModule extends AbstractModule {
 
   @Provides
   @CmsDocumentBackedResource
-  public ResourceDelegate cmsDocumentBackedResource(Injector injector) {
-    return new ServiceBackedResourceDelegate(injector.getInstance(CmsDocumentService.class));
+  public TypedResourceDelegate<String, CmsDocument> cmsDocumentBackedResource(Injector injector) {
+    return new TypedServiceBackedResourceDelegate<String, CmsDocument, CmsDocument>(
+        injector.getInstance(CmsDocumentService.class));
   }
 
   @Provides
