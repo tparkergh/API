@@ -69,6 +69,9 @@ public class Screening extends DomainObject implements Request {
   @Size(max = 1500)
   private String narrative;
 
+  /**
+   * 
+   */
   public Screening() {
     super();
   }

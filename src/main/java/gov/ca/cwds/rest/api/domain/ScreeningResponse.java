@@ -23,6 +23,9 @@ public class ScreeningResponse extends Screening implements Response {
   @JsonProperty("participants")
   private Set<Person> participants;
 
+  /**
+   * 
+   */
   public ScreeningResponse() {
     super();
   }
@@ -78,7 +81,7 @@ public class ScreeningResponse extends Screening implements Response {
   /**
    * Constructor
    * 
-   * @param reference the reference
+   * @param reference the screening reference
    */
   public ScreeningResponse(String reference) {
     super(reference);
@@ -123,9 +126,6 @@ public class ScreeningResponse extends Screening implements Response {
       return true;
     if (obj == null)
       return false;
-
-    // if (getClass() != obj.getClass())
-    // return false;
 
     if (!(obj instanceof ScreeningResponse)) {
       return false;

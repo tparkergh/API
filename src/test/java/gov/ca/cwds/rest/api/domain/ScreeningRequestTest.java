@@ -17,12 +17,17 @@ import io.dropwizard.testing.junit.ResourceTestRule;
 import nl.jqno.equalsverifier.EqualsVerifier;
 import nl.jqno.equalsverifier.Warning;
 
+/**
+ * @author Tabpcenc1
+ *
+ */
 public class ScreeningRequestTest {
 
   private static final ObjectMapper MAPPER = Jackson.newObjectMapper();
 
   private static final ScreeningResource resource = mock(ScreeningResource.class);
 
+  @SuppressWarnings("javadoc")
   @ClassRule
   public static final ResourceTestRule resources =
       ResourceTestRule.builder().addResource(resource).build();
@@ -30,6 +35,9 @@ public class ScreeningRequestTest {
 
   /*
    * Serialization and deserialization
+   */
+  /**
+   * @throws Exception
    */
   @Test
   public void serializesToJSON() throws Exception {
@@ -47,6 +55,9 @@ public class ScreeningRequestTest {
     assertThat(serialized, is(expected));
   }
 
+  /**
+   * @throws Exception
+   */
   @Test
   public void deserializesFromJSON() throws Exception {
     Address address = new Address("10 main st", "Sacramento", "CA", 95814);
@@ -62,9 +73,12 @@ public class ScreeningRequestTest {
 
   // TODO : "equals" seems to work but the test is failing. Need to figure out the message.
   // TODO : verify 'STRICT_INHERITENCE' is appropriate here - reference pvitoltracker #136527227
+  /**
+   * 
+   */
   @Test
   public void equalsHashCodeWork() {
-    EqualsVerifier.forClass(Screening.class)
+    EqualsVerifier.forClass(ScreeningRequest.class)
         .suppress(Warning.NONFINAL_FIELDS, Warning.STRICT_INHERITANCE).suppress().verify();
   }
 }

@@ -39,6 +39,10 @@ import io.dropwizard.testing.junit.ResourceTestRule;
 import nl.jqno.equalsverifier.EqualsVerifier;
 import nl.jqno.equalsverifier.Warning;
 
+/**
+ * @author Tabpcenc1
+ *
+ */
 public class CmsReferralTest {
 
   private static final String ROOT_RESOURCE = "/" + Api.RESOURCE_CMSREFERRAL + "/";;
@@ -46,6 +50,7 @@ public class CmsReferralTest {
   private static final CmsReferralResource mockedCmsReferralResource =
       mock(CmsReferralResource.class);
 
+  @SuppressWarnings("javadoc")
   @ClassRule
   public static final ResourceTestRule resources =
       ResourceTestRule.builder().addResource(mockedCmsReferralResource).build();
@@ -53,6 +58,7 @@ public class CmsReferralTest {
   private static final ObjectMapper MAPPER = Jackson.newObjectMapper();
   private CmsReferral validCmsReferral = validCmsReferral();
 
+  @SuppressWarnings("javadoc")
   @Before
   public void setup() {
     @SuppressWarnings("rawtypes")
@@ -66,11 +72,17 @@ public class CmsReferralTest {
   }
 
 
+  /**
+   * 
+   */
   @Test
   public void equalsHashCodeWork() {
     EqualsVerifier.forClass(CmsReferral.class).suppress(Warning.NONFINAL_FIELDS).verify();
   }
 
+  /**
+   * @throws Exception
+   */
   @Test
   public void jsonCreatorConstructorTest() throws Exception {
 
