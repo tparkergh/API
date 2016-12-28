@@ -1,7 +1,6 @@
 package gov.ca.cwds.rest.elasticsearch.db;
 
 import java.net.InetAddress;
-import java.net.UnknownHostException;
 
 import org.apache.commons.lang3.StringUtils;
 import org.elasticsearch.action.WriteConsistencyLevel;
@@ -79,15 +78,19 @@ public class ElasticsearchDao {
    * Initialize ElasticSearch client once. Synchronized to prevent race conditions and multiple
    * connections.
    * 
-   * @throws UnknownHostException if host not found
+   * @throws ApiException if host not found
    */
-  protected synchronized void init() throws UnknownHostException {
+  protected synchronized void init() throws ApiException {
     if (this.client == null) {
-      Settings settings = Settings.settingsBuilder().put("cluster.name", clusterName).build();
-      this.client = TransportClient.builder().settings(settings).build()
-          .addTransportAddress(this.transportAddress != null ? this.transportAddress
-              : new InetSocketTransportAddress(InetAddress.getByName(host),
-                  Integer.parseInt(port)));
+      try {
+        Settings settings = Settings.settingsBuilder().put("cluster.name", clusterName).build();
+        this.client = TransportClient.builder().settings(settings).build()
+            .addTransportAddress(this.transportAddress != null ? this.transportAddress
+                : new InetSocketTransportAddress(InetAddress.getByName(host),
+                    Integer.parseInt(port)));
+      } catch (Exception e) {
+        throw new ApiException("Error initializing Elasticsearch client: " + e.getMessage(), e);
+      }
     }
   }
 
@@ -99,10 +102,11 @@ public class ElasticsearchDao {
    * {@link #client} is not initialized.
    * </p>
    * 
-   * @throws Exception I/O error or unknown host
+   * @throws ApiException I/O error or unknown host
    * @see #init()
    */
-  protected void start() throws Exception {
+  protected void start() throws ApiException {
+
     LOGGER.debug("ElasticSearchDao.start()");
 
     // Enter synchronized init method ONLY if client is not initialized.
@@ -115,9 +119,9 @@ public class ElasticsearchDao {
    * Only stop the ElasticSearch client, when the container stops or if the connection becomes
    * unhealthy.
    * 
-   * @throws Exception if ElasticSearch client fails to close properly.
+   * @throws ApiException if ElasticSearch client fails to close properly.
    */
-  protected void stop() throws Exception {
+  protected void stop() throws ApiException {
     LOGGER.debug("ElasticSearchDao.stop()");
     this.client.close();
     setClient(null);
@@ -129,9 +133,9 @@ public class ElasticsearchDao {
    * instantiate a new client with {@link InetSocketTransportAddress}.
    * 
    * @param client custom client, used for testing
-   * @throws Exception I/O error or unknown host
+   * @throws ApiException I/O error or unknown host
    */
-  public void reset(Client client) throws Exception {
+  public void reset(Client client) throws ApiException {
     LOGGER.debug("ElasticSearchDao.stop()");
     stop();
     setClient(client);
@@ -145,9 +149,9 @@ public class ElasticsearchDao {
    * @param document JSON of document
    * @param id the unique identifier
    * @return true if document is indexed false if updated
-   * @throws Exception exception on create document
+   * @throws ApiException exception on create document
    */
-  public boolean index(String document, String id) throws Exception {
+  public boolean index(String document, String id) throws ApiException {
     LOGGER.info("ElasticSearchDao.createDocument(): " + document);
     start();
     IndexResponse response = client.prepareIndex(indexName, documentType, id)
@@ -180,9 +184,10 @@ public class ElasticsearchDao {
    * </blockquote>
    * 
    * @return array of generic ElasticSearch {@link SearchHit}
-   * @throws Exception unable to connect to ElasticSearch or disconnects midstream, etc.
+   * @throws ApiException unable to connect to ElasticSearch, or client disconnects unexpectedly,
+   *         etc.
    */
-  public SearchHit[] fetchAllPerson() throws Exception {
+  public SearchHit[] fetchAllPerson() throws ApiException {
     start();
 
     return client.prepareSearch(indexName).setTypes(documentType)
@@ -195,9 +200,9 @@ public class ElasticsearchDao {
    * 
    * @param req boolean hierarchy search request
    * @return array of raw ElasticSearch hits
-   * @throws Exception unable to connect, disconnect, bad hair day, etc.
+   * @throws ApiException unable to connect, disconnect, bad hair day, etc.
    */
-  public SearchHit[] queryPersonOr(ESSearchRequest req) throws Exception {
+  public SearchHit[] queryPersonOr(ESSearchRequest req) throws ApiException {
     start();
 
     String field = "";
@@ -210,7 +215,7 @@ public class ElasticsearchDao {
       }
     }
 
-    QueryBuilder qb = null;
+    QueryBuilder qb;
     if ((value.contains("*") || value.contains("?"))
         && (!value.startsWith("?") && !value.startsWith("*"))) {
       qb = QueryBuilders.wildcardQuery(field, value);

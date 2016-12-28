@@ -4,13 +4,14 @@ import static io.dropwizard.testing.FixtureHelpers.fixture;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.is;
-import io.dropwizard.jackson.Jackson;
-import nl.jqno.equalsverifier.EqualsVerifier;
-import nl.jqno.equalsverifier.Warning;
 
 import org.junit.Test;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+
+import io.dropwizard.jackson.Jackson;
+import nl.jqno.equalsverifier.EqualsVerifier;
+import nl.jqno.equalsverifier.Warning;
 
 public class StaffUnitAuthorityTest {
 
@@ -37,9 +38,8 @@ public class StaffUnitAuthorityTest {
 
   @Test
   public void serializesToJSON() throws Exception {
-    final String expected =
-        MAPPER.writeValueAsString(MAPPER.readValue(
-            fixture("fixtures/domain/auth/StaffUnitAuthority/valid/valid.json"),
+    final String expected = MAPPER.writeValueAsString(
+        MAPPER.readValue(fixture("fixtures/domain/auth/StaffUnitAuthority/valid/valid.json"),
             StaffUnitAuthority.class));
 
     assertThat(MAPPER.writeValueAsString(validStaffUnitAuthority()), is(equalTo(expected)));
@@ -47,8 +47,7 @@ public class StaffUnitAuthorityTest {
 
   @Test
   public void deserializesFromJSON() throws Exception {
-    assertThat(MAPPER.readValue(
-        fixture("fixtures/domain/auth/StaffUnitAuthority/valid/valid.json"),
+    assertThat(MAPPER.readValue(fixture("fixtures/domain/auth/StaffUnitAuthority/valid/valid.json"),
         StaffUnitAuthority.class), is(equalTo(validStaffUnitAuthority())));
   }
 
@@ -56,7 +55,6 @@ public class StaffUnitAuthorityTest {
   public void equalsHashCodeWork() {
     EqualsVerifier.forClass(UserAuthorization.class).suppress(Warning.NONFINAL_FIELDS).verify();
   }
-
 
   /*
    * Utils

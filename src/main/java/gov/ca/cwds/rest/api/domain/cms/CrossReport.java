@@ -345,8 +345,8 @@ public class CrossReport extends DomainObject implements Request, Response {
     return satisfyCrossReportIndicator;
   }
 
-  /*
-   * (non-Javadoc)
+  /**
+   * {@inheritDoc}
    * 
    * @see java.lang.Object#hashCode()
    */
@@ -389,8 +389,8 @@ public class CrossReport extends DomainObject implements Request, Response {
     return result;
   }
 
-  /*
-   * (non-Javadoc)
+  /**
+   * {@inheritDoc}
    * 
    * @see java.lang.Object#equals(java.lang.Object)
    */
@@ -406,8 +406,6 @@ public class CrossReport extends DomainObject implements Request, Response {
       return false;
     }
     CrossReport other = (CrossReport) obj;
-    //
-    // CrossReport other = (CrossReport) obj;
     if (countySpecificCode == null) {
       if (other.countySpecificCode != null)
         return false;

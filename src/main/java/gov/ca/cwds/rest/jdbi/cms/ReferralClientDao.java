@@ -9,7 +9,7 @@ import gov.ca.cwds.rest.api.persistence.cms.ReferralClient;
 import gov.ca.cwds.rest.jdbi.CrudsDaoImpl;
 
 /**
- * 
+ * DAO for {@link ReferralClient}.
  * 
  * @author CWDS API Team
  */

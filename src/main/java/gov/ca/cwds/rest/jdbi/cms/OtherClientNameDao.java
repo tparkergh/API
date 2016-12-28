@@ -9,7 +9,7 @@ import gov.ca.cwds.rest.api.persistence.cms.OtherClientName;
 import gov.ca.cwds.rest.jdbi.BaseDaoImpl;
 
 /**
- * Other Client Name DAO
+ * DAO for {@link OtherClientName}.
  * 
  * @author CWDS API Team
  */

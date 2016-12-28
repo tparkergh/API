@@ -9,7 +9,7 @@ import gov.ca.cwds.rest.api.persistence.cms.Reporter;
 import gov.ca.cwds.rest.jdbi.BaseDaoImpl;
 
 /**
- * 
+ * DAO for {@link Reporter}.
  * 
  * @author CWDS API Team
  */

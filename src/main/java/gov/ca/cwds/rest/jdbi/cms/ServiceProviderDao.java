@@ -8,6 +8,11 @@ import gov.ca.cwds.inject.CmsSessionFactory;
 import gov.ca.cwds.rest.api.persistence.cms.ServiceProvider;
 import gov.ca.cwds.rest.jdbi.BaseDaoImpl;
 
+/**
+ * DAO for {@link ServiceProvider}.
+ * 
+ * @author CWDS API Team
+ */
 public class ServiceProviderDao extends BaseDaoImpl<ServiceProvider> {
 
   /**

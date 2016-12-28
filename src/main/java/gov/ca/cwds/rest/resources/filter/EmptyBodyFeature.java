@@ -14,11 +14,11 @@ import javax.ws.rs.ext.Provider;
 @Provider
 public class EmptyBodyFeature implements DynamicFeature {
 
-  /*
-   * (non-Javadoc)
+  /**
+   * {@inheritDoc}
    * 
    * @see javax.ws.rs.container.DynamicFeature#configure(javax.ws.rs.container.ResourceInfo,
-   * javax.ws.rs.core.FeatureContext)
+   *      javax.ws.rs.core.FeatureContext)
    */
   @Override
   public void configure(ResourceInfo resourceInfo, FeatureContext context) {

@@ -10,7 +10,7 @@ import gov.ca.cwds.rest.api.Request;
 import io.dropwizard.jackson.JsonSnakeCase;
 
 /**
- * {@link DomainObject} representing a screening request
+ * {@link DomainObject} representing a screening request.
  * 
  * @author CWDS API Team
  */
@@ -20,41 +20,41 @@ public class ScreeningRequest extends Screening implements Request {
   private Address address;
 
   @JsonProperty("participant_ids")
-  private List<Long> participant_ids;
+  private List<Long> participantIds;
 
   /**
    * Constructor
    * 
    * @param reference The reference
-   * @param ended_at The ended at
-   * @param incident_county The incident county
-   * @param incident_date The incident date
-   * @param location_type The location type
-   * @param communication_method The communication method
+   * @param endedAt The ended at
+   * @param incidentCounty The incident county
+   * @param incidentDate The incident date
+   * @param locationType The location type
+   * @param communicationMethod The communication method
    * @param name The name
-   * @param response_time The response time
-   * @param screening_decision The screening decision
+   * @param responseTime The response time
+   * @param screeningDecision The screening decision
    * @param started_at The started at
    * @param narrative The narrative
    * @param address The {@link Address}
-   * @param participant_ids The {@link List}
+   * @param participantIds The {@link List}
    */
   @JsonCreator
   public ScreeningRequest(@JsonProperty("reference") String reference,
-      @JsonProperty("ended_at") String ended_at,
-      @JsonProperty("incident_county") String incident_county,
-      @JsonProperty("incident_date") String incident_date,
-      @JsonProperty("location_type") String location_type,
-      @JsonProperty("communication_method") String communication_method,
-      @JsonProperty("name") String name, @JsonProperty("response_time") String response_time,
-      @JsonProperty("screening_decision") String screening_decision,
+      @JsonProperty("ended_at") String endedAt,
+      @JsonProperty("incident_county") String incidentCounty,
+      @JsonProperty("incident_date") String incidentDate,
+      @JsonProperty("location_type") String locationType,
+      @JsonProperty("communication_method") String communicationMethod,
+      @JsonProperty("name") String name, @JsonProperty("response_time") String responseTime,
+      @JsonProperty("screening_decision") String screeningDecision,
       @JsonProperty("started_at") String started_at, @JsonProperty("narrative") String narrative,
       @JsonProperty("address") Address address,
-      @JsonProperty("participant_ids") List<Long> participant_ids) {
-    super(reference, ended_at, incident_county, incident_date, location_type, communication_method,
-        name, response_time, screening_decision, started_at, narrative);
+      @JsonProperty("participant_ids") List<Long> participantIds) {
+    super(reference, endedAt, incidentCounty, incidentDate, locationType, communicationMethod, name,
+        responseTime, screeningDecision, started_at, narrative);
     this.address = address;
-    this.participant_ids = participant_ids;
+    this.participantIds = participantIds;
   }
 
   /**
@@ -68,11 +68,11 @@ public class ScreeningRequest extends Screening implements Request {
    * @return the participant_ids
    */
   public List<Long> getParticipant_ids() {
-    return participant_ids;
+    return participantIds;
   }
 
-  /*
-   * (non-Javadoc)
+  /**
+   * {@inheritDoc}
    * 
    * @see java.lang.Object#hashCode()
    */
@@ -81,12 +81,12 @@ public class ScreeningRequest extends Screening implements Request {
     final int prime = 31;
     int result = 1;
     result = prime * result + ((address == null) ? 0 : address.hashCode());
-    result = prime * result + ((participant_ids == null) ? 0 : participant_ids.hashCode());
+    result = prime * result + ((participantIds == null) ? 0 : participantIds.hashCode());
     return result;
   }
 
-  /*
-   * (non-Javadoc)
+  /**
+   * {@inheritDoc}
    * 
    * @see java.lang.Object#equals(java.lang.Object)
    */
@@ -104,12 +104,12 @@ public class ScreeningRequest extends Screening implements Request {
         return false;
     } else if (!address.equals(other.address))
       return false;
-    if (participant_ids == null) {
-      if (other.participant_ids != null)
+    if (participantIds == null) {
+      if (other.participantIds != null)
         return false;
-    } else if (other.participant_ids == null) {
+    } else if (other.participantIds == null) {
       return false;
-    } else if (!Arrays.equals(participant_ids.toArray(), other.participant_ids.toArray())) {
+    } else if (!Arrays.equals(participantIds.toArray(), other.participantIds.toArray())) {
       return false;
     }
 

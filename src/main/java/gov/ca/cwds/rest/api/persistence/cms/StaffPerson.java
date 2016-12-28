@@ -8,15 +8,19 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.PersistenceException;
 import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
 
 import org.hibernate.annotations.Type;
 
 import gov.ca.cwds.rest.api.ApiException;
 import gov.ca.cwds.rest.api.domain.DomainObject;
-import gov.ca.cwds.rest.api.persistence.ns.NsPersistentObject;
 
 /**
- * {@link NsPersistentObject} representing a StaffPerson
+ * {@link CmsPersistentObject} representing a StaffPerson.
+ * 
+ * <p>
+ * Note that a staff identifer is a base 62, char(3), not the usual char(10).
+ * </p>
  * 
  * @author CWDS API Team
  */
@@ -26,20 +30,21 @@ import gov.ca.cwds.rest.api.persistence.ns.NsPersistentObject;
 public class StaffPerson extends CmsPersistentObject {
 
   @Id
-  @Column(name = "IDENTIFIER", length = CMS_ID_LEN)
+  @Column(name = "IDENTIFIER", length = 3)
   private String id;
 
   @Type(type = "date")
   @Column(name = "END_DT")
   private Date endDate;
 
-  @Column(name = "FIRST_NM")
+  @Column(name = "FIRST_NM", length = 20, nullable = false)
+  @NotNull
   private String firstName;
 
   @Column(name = "JOB_TL_DSC")
   private String jobTitle;
 
-  @Column(name = "LAST_NM")
+  @Column(name = "LAST_NM", length = 25, nullable = false)
   private String lastName;
 
   @Column(name = "MID_INI_NM")
@@ -181,8 +186,8 @@ public class StaffPerson extends CmsPersistentObject {
     }
   }
 
-  /*
-   * (non-Javadoc)
+  /**
+   * {@inheritDoc}
    * 
    * @see gov.ca.cwds.rest.api.persistence.PersistentObject#getPrimaryKey()
    */

@@ -81,7 +81,7 @@ public class StaffPerson extends DomainObject implements Request, Response {
   @Size(min = 10, max = 10)
   @ApiModelProperty(required = true, readOnly = false, value = "IDENTIFIER of CWS_OFFT",
       example = "1234567def")
-  // TODO Add Foreign Key Validation after CWS_OFFICE table is added to source code
+  // TODO Add Foreign Key Validation after CWS_OFFICE table is added to source code.
   private String cwsOffice;
 
   @NotNull
@@ -107,7 +107,7 @@ public class StaffPerson extends DomainObject implements Request, Response {
   @Size(min = 10, max = 10)
   @ApiModelProperty(required = true, readOnly = false, value = "IDENTIFIER of CWSADDRT",
       example = "1234567ghi")
-  // TODO Add Foreign Key Validation after CWS_OFFICE_ADDRESS table is added to source code
+  // TODO Add Foreign Key Validation after CWS_OFFICE_ADDRESS table is added to source code.
   private String cwsOfficeAddress;
 
   @Size(max = 50)
@@ -331,8 +331,8 @@ public class StaffPerson extends DomainObject implements Request, Response {
     return emailAddress;
   }
 
-  /*
-   * (non-Javadoc)
+  /**
+   * {@inheritDoc}
    * 
    * @see java.lang.Object#hashCode()
    */
@@ -365,8 +365,8 @@ public class StaffPerson extends DomainObject implements Request, Response {
     return result;
   }
 
-  /*
-   * (non-Javadoc)
+  /**
+   * {@inheritDoc}
    * 
    * @see java.lang.Object#equals(java.lang.Object)
    */

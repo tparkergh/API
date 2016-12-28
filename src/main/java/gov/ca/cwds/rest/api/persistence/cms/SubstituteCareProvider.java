@@ -31,7 +31,7 @@ import gov.ca.cwds.rest.api.persistence.PersistentObject;
 public class SubstituteCareProvider extends CmsPersistentObject {
 
   /**
-   * 
+   * Base serialization version. Increment per change.
    */
   private static final long serialVersionUID = 1L;
 
@@ -247,8 +247,8 @@ public class SubstituteCareProvider extends CmsPersistentObject {
     this.zipSuffixNumber = zipSuffixNumber;
   }
 
-  /*
-   * (non-Javadoc)
+  /**
+   * {@inheritDoc}
    * 
    * @see gov.ca.cwds.rest.api.persistence.PersistentObject#getPrimaryKey()
    */
@@ -502,8 +502,8 @@ public class SubstituteCareProvider extends CmsPersistentObject {
     return zipSuffixNumber;
   }
 
-  /*
-   * (non-Javadoc)
+  /**
+   * {@inheritDoc}
    * 
    * @see java.lang.Object#hashCode()
    */
@@ -567,8 +567,8 @@ public class SubstituteCareProvider extends CmsPersistentObject {
     return result;
   }
 
-  /*
-   * (non-Javadoc)
+  /**
+   * {@inheritDoc}
    * 
    * @see java.lang.Object#equals(java.lang.Object)
    */

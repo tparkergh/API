@@ -9,8 +9,9 @@ import gov.ca.cwds.rest.api.persistence.cms.Allegation;
 import gov.ca.cwds.rest.jdbi.CrudsDaoImpl;
 
 /**
- * @author Tabpcenc1
- *
+ * DAO for {@link Allegation}.
+ * 
+ * @author CWDS API Team
  */
 public class AllegationDao extends CrudsDaoImpl<Allegation> {
 

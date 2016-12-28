@@ -8,6 +8,11 @@ import gov.ca.cwds.inject.CmsSessionFactory;
 import gov.ca.cwds.rest.api.persistence.cms.OtherChildInPlacemtHome;
 import gov.ca.cwds.rest.jdbi.BaseDaoImpl;
 
+/**
+ * DAO for {@link OtherChildInPlacemtHome}.
+ * 
+ * @author CWDS API Team
+ */
 public class OtherChildInPlacemtHomeDao extends BaseDaoImpl<OtherChildInPlacemtHome> {
 
   /**

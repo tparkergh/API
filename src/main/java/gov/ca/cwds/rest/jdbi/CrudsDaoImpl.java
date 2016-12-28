@@ -23,7 +23,7 @@ import io.dropwizard.hibernate.AbstractDAO;
  */
 public class CrudsDaoImpl<T extends PersistentObject> extends AbstractDAO<T>
     implements CrudsDao<T> {
-  @SuppressWarnings("unused")
+
   private static final Logger LOGGER = LoggerFactory.getLogger(CrudsDaoImpl.class);
 
   private SessionFactory sessionFactory;
@@ -77,6 +77,7 @@ public class CrudsDaoImpl<T extends PersistentObject> extends AbstractDAO<T>
       T databaseObject = find(object.getPrimaryKey());
       if (databaseObject != null) {
         String msg = MessageFormat.format("entity with id={0} already exists", object);
+        LOGGER.error(msg);
         throw new EntityExistsException(msg);
       }
     }

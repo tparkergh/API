@@ -9,7 +9,7 @@ import gov.ca.cwds.rest.api.persistence.cms.CrossReport;
 import gov.ca.cwds.rest.jdbi.CrudsDaoImpl;
 
 /**
- * 
+ * DAO for {@link CrossReport}.
  * 
  * @author CWDS API Team
  */

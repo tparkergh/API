@@ -8,84 +8,83 @@ package gov.ca.cwds.rest.core;
 public interface Api {
 
   /**
-   * A {@code String} constant representing {@value #RESOURCE_APPLICATION} api.
+   * A {@code String} constant representing {@value #RESOURCE_APPLICATION} API..
    */
-  public final static String RESOURCE_APPLICATION = "application";
+  public static final String RESOURCE_APPLICATION = "application";
 
   /**
-   * A {@code String} constant representing {@value #RESOURCE_ADDRESSES} api.
+   * A {@code String} constant representing {@value #RESOURCE_ADDRESSES} API..
    */
-  public final static String RESOURCE_ADDRESSES = "addresses";
+  public static final String RESOURCE_ADDRESSES = "addresses";
 
   /**
-   * A {@code String} constant representing {@value #RESOURCE_PEOPLE} api.
+   * A {@code String} constant representing {@value #RESOURCE_PEOPLE} API..
    */
-  public final static String RESOURCE_PEOPLE = "people";
+  public static final String RESOURCE_PEOPLE = "people";
 
   /**
-   * A {@code String} constant representing {@value #RESOURCE_SCREENINGS} api.
+   * A {@code String} constant representing {@value #RESOURCE_SCREENINGS} API..
    */
-  public final static String RESOURCE_SCREENINGS = "screenings";
+  public static final String RESOURCE_SCREENINGS = "screenings";
 
   /**
-   * A {@code String} constant representing {@value #RESOURCE_ALLEGATION} api.
+   * A {@code String} constant representing {@value #RESOURCE_ALLEGATION} API..
    */
-  public final static String RESOURCE_ALLEGATION = "_allegations";
+  public static final String RESOURCE_ALLEGATION = "_allegations";
 
   /**
-   * A {@code String} constant representing {@value #RESOURCE_CLIENT} api.
+   * A {@code String} constant representing {@value #RESOURCE_CLIENT} API..
    */
-  public final static String RESOURCE_CLIENT = "_client";
+  public static final String RESOURCE_CLIENT = "_client";
 
   /**
-   * A {@code String} constant representing {@value #RESOURCE_CROSS_REPORT} api
+   * A {@code String} constant representing {@value #RESOURCE_CROSS_REPORT} API.
    */
-  public final static String RESOURCE_CROSS_REPORT = "_crossReports";
+  public static final String RESOURCE_CROSS_REPORT = "_crossReports";
 
   /**
-   * A {@code String} constant representing {@value #RESOURCE_REFERRAL} api
+   * A {@code String} constant representing {@value #RESOURCE_REFERRAL} API.
    */
-  public final static String RESOURCE_REFERRAL = "_referrals";
+  public static final String RESOURCE_REFERRAL = "_referrals";
 
   /**
-   * A {@code String} constant representing {@value #RESOURCE_STAFF_PERSON} api
+   * A {@code String} constant representing {@value #RESOURCE_STAFF_PERSON} API.
    */
-  public final static String RESOURCE_STAFF_PERSON = "_staffpersons";
+  public static final String RESOURCE_STAFF_PERSON = "_staffpersons";
 
   /**
-   * a {@code String} constant representing {@value #RESOURCE_REPORTER} api
+   * A {@code String} constant representing {@value #RESOURCE_REPORTER} API.
    */
-  public final static String RESOURCE_REPORTER = "_reporters";
+  public static final String RESOURCE_REPORTER = "_reporters";
 
   /**
-   * a {@code String} constant representing {@value #RESOURCE_REFERRAL_CLIENT} api
+   * A {@code String} constant representing {@value #RESOURCE_REFERRAL_CLIENT} API.
    */
-  public final static String RESOURCE_REFERRAL_CLIENT = "_referralClients";
+  public static final String RESOURCE_REFERRAL_CLIENT = "_referralClients";
 
   /**
-   * A {@code String} constant representing {@value #RESOURCE_CMS_DOCUMENT} api
+   * A {@code String} constant representing {@value #RESOURCE_CMS_DOCUMENT} API.
    */
-  public final static String RESOURCE_CMS_DOCUMENT = "cmsdocument";
+  public static final String RESOURCE_CMS_DOCUMENT = "cmsdocument";
 
   /**
-   * A {@code String} constant representing {@value #RESOURCE_CMS_DOC_REFRRAL_CLIENT} api
+   * A {@code String} constant representing {@value #RESOURCE_CMS_DOC_REFRRAL_CLIENT} API.
    */
-  public final static String RESOURCE_CMS_DOC_REFRRAL_CLIENT = "cmsdocreferralclient";
+  public static final String RESOURCE_CMS_DOC_REFRRAL_CLIENT = "cmsdocreferralclient";
 
   /**
-   * A {@code String} constant representing {@value #RESOURCE_CMSREFERRAL} api
+   * A {@code String} constant representing {@value #RESOURCE_CMSREFERRAL} API.
    */
-  public final static String RESOURCE_CMSREFERRAL = "_cmsreferrals";
+  public static final String RESOURCE_CMSREFERRAL = "_cmsreferrals";
 
   /**
-   * A {@code String} constant representing {@value #RESOURCE_SEARCH_PERSON} api
+   * A {@code String} constant representing {@value #RESOURCE_SEARCH_PERSON} API.
    */
-  public final static String RESOURCE_SEARCH_PERSON = "search_person";
+  public static final String RESOURCE_SEARCH_PERSON = "search_person";
 
   /**
-   * A {@code String} constant representing {@value #RESOURCE_USER_AUTHORIZATION} api
+   * A {@code String} constant representing {@value #RESOURCE_USER_AUTHORIZATION} API.
    */
-  public final static String RESOURCE_USER_AUTHORIZATION = "user_authorization";
-
+  public static final String RESOURCE_USER_AUTHORIZATION = "user_authorization";
 
 }

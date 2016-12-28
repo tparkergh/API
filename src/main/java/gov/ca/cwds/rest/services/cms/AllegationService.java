@@ -89,7 +89,6 @@ public class AllegationService implements CrudsService {
     try {
       // TODO : refactor to actually determine who is updating. 'q1p' for now
       Allegation managed = new Allegation(IdGenerator.randomString(10), allegation, "q1p");
-
       managed = allegationDao.create(managed);
       return new PostedAllegation(managed);
     } catch (EntityExistsException e) {

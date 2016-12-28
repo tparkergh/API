@@ -36,9 +36,7 @@ public class CrossReportServiceTest {
   @Before
   public void setup() throws Exception {
     crossReportDao = mock(CrossReportDao.class);
-
     crossReportService = new CrossReportService(crossReportDao);
-
   }
 
   // find test

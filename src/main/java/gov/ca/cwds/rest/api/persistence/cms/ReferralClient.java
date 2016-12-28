@@ -15,10 +15,9 @@ import org.hibernate.annotations.Type;
 import gov.ca.cwds.rest.api.ApiException;
 import gov.ca.cwds.rest.api.domain.DomainObject;
 import gov.ca.cwds.rest.api.persistence.cms.ReferralClient.PrimaryKey;
-import gov.ca.cwds.rest.api.persistence.ns.NsPersistentObject;
 
 /**
- * {@link NsPersistentObject} representing a ReferralClient.
+ * {@link CmsPersistentObject} representing a ReferralClient.
  * 
  * @author CWDS API Team
  */

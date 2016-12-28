@@ -8,6 +8,11 @@ import gov.ca.cwds.inject.CmsSessionFactory;
 import gov.ca.cwds.rest.api.persistence.cms.Attorney;
 import gov.ca.cwds.rest.jdbi.BaseDaoImpl;
 
+/**
+ * DAO for {@link Attorney}.
+ * 
+ * @author CWDS API Team
+ */
 public class AttorneyDao extends BaseDaoImpl<Attorney> {
 
   /**

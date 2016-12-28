@@ -12,12 +12,12 @@ import org.hibernate.Transaction;
 import com.google.common.collect.ImmutableList;
 
 import gov.ca.cwds.rest.api.persistence.PersistentObject;
-import gov.ca.cwds.rest.api.persistence.ns.Person;
 
 /**
  * Base class for DAO with some common methods.
  * 
  * @author CWDS API Team
+ * @param <T> type of {@link PersistentObject}
  */
 public abstract class BaseDaoImpl<T extends PersistentObject> extends CrudsDaoImpl<T>
     implements BaseDao<T> {
@@ -46,10 +46,10 @@ public abstract class BaseDaoImpl<T extends PersistentObject> extends CrudsDaoIm
     try {
       txn = session.beginTransaction();
       Query query = session.getNamedQuery(namedQueryName);
-      ImmutableList.Builder<Person> persons = new ImmutableList.Builder<Person>();
-      persons.addAll(query.list());
+      ImmutableList.Builder<T> entities = new ImmutableList.Builder<>();
+      entities.addAll(query.list());
       txn.commit();
-      return (List<T>) persons.build();
+      return entities.build();
     } catch (HibernateException h) {
       if (txn != null) {
         txn.rollback();
@@ -73,7 +73,7 @@ public abstract class BaseDaoImpl<T extends PersistentObject> extends CrudsDaoIm
     try {
       txn = session.beginTransaction();
       Query query = session.getNamedQuery(namedQueryName).setDate("after", datetime);
-      ImmutableList.Builder<T> persons = new ImmutableList.Builder<T>();
+      ImmutableList.Builder<T> persons = new ImmutableList.Builder<>();
       persons.addAll(query.list());
       txn.commit();
       return persons.build();
@@ -85,6 +85,12 @@ public abstract class BaseDaoImpl<T extends PersistentObject> extends CrudsDaoIm
     }
   }
 
+  /**
+   * Builds named query by the naming convention of "entity class.suffix".
+   * 
+   * @param suffix suffix of the named query
+   * @return named query for lookup
+   */
   private String constructNamedQueryName(String suffix) {
     return getEntityClass().getName() + "." + suffix;
   }
