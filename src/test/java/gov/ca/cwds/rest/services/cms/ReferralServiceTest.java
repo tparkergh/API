@@ -23,6 +23,7 @@ import gov.ca.cwds.rest.api.Response;
 import gov.ca.cwds.rest.api.domain.cms.PostedReferral;
 import gov.ca.cwds.rest.api.domain.cms.Referral;
 import gov.ca.cwds.rest.jdbi.cms.ReferralDao;
+import gov.ca.cwds.rest.services.ServiceException;
 import io.dropwizard.jackson.Jackson;
 
 public class ReferralServiceTest {
@@ -175,7 +176,7 @@ public class ReferralServiceTest {
   }
 
   @Test
-  public void createReturnsCorrectPostedPerson() throws Exception {
+  public void createReturnsCorrectPostedReferral() throws Exception {
     Referral referralDomain = MAPPER
         .readValue(fixture("fixtures/domain/legacy/Referral/valid/valid.json"), Referral.class);
     gov.ca.cwds.rest.api.persistence.cms.Referral toCreate =
@@ -189,6 +190,85 @@ public class ReferralServiceTest {
     PostedReferral expected = new PostedReferral(toCreate);
     PostedReferral returned = referralService.create(request);
     assertThat(returned, is(expected));
+  }
+
+  @Test
+  public void failsWhenPostedReferralIdEmpty() throws Exception {
+    thrown.expect(ServiceException.class);
+    thrown.expectMessage("Referral ID cannot be empty");
+    try {
+      Referral referralDomain = MAPPER
+          .readValue(fixture("fixtures/domain/legacy/Referral/valid/valid.json"), Referral.class);
+      gov.ca.cwds.rest.api.persistence.cms.Referral toCreate =
+          new gov.ca.cwds.rest.api.persistence.cms.Referral("", referralDomain, "last_update");
+
+      when(referralDao.create(any(gov.ca.cwds.rest.api.persistence.cms.Referral.class)))
+          .thenReturn(toCreate);
+
+      PostedReferral expected = new PostedReferral(toCreate);
+
+      Assert.fail("Expected AssertionError");
+    } catch (AssertionError e) {
+    }
+  }
+
+
+  @Test
+  public void failsWhenPostedReferralIdNull() throws Exception {
+    thrown.expect(ServiceException.class);
+    thrown.expectMessage("Referral ID cannot be empty");
+    try {
+      Referral referralDomain = MAPPER
+          .readValue(fixture("fixtures/domain/legacy/Referral/valid/valid.json"), Referral.class);
+      gov.ca.cwds.rest.api.persistence.cms.Referral toCreate =
+          new gov.ca.cwds.rest.api.persistence.cms.Referral(null, referralDomain, "last_update");
+
+      when(referralDao.create(any(gov.ca.cwds.rest.api.persistence.cms.Referral.class)))
+          .thenReturn(toCreate);
+
+      PostedReferral expected = new PostedReferral(toCreate);
+
+      Assert.fail("Expected AssertionError");
+    } catch (AssertionError e) {
+    }
+  }
+
+  @Test
+  public void failsWhenPostedReferralIdBlank() throws Exception {
+    thrown.expect(ServiceException.class);
+    thrown.expectMessage("Referral ID cannot be empty");
+    try {
+      Referral referralDomain = MAPPER
+          .readValue(fixture("fixtures/domain/legacy/Referral/valid/valid.json"), Referral.class);
+      gov.ca.cwds.rest.api.persistence.cms.Referral toCreate =
+          new gov.ca.cwds.rest.api.persistence.cms.Referral("   ", referralDomain, "last_update");
+
+      when(referralDao.create(any(gov.ca.cwds.rest.api.persistence.cms.Referral.class)))
+          .thenReturn(toCreate);
+
+      PostedReferral expected = new PostedReferral(toCreate);
+
+      Assert.fail("Expected AssertionError");
+    } catch (AssertionError e) {
+    }
+  }
+
+  @Test
+  public void createReturnsCorrectPostedReferralId() throws Exception {
+    Referral referralDomain = MAPPER
+        .readValue(fixture("fixtures/domain/legacy/Referral/valid/valid.json"), Referral.class);
+    gov.ca.cwds.rest.api.persistence.cms.Referral toCreate =
+        new gov.ca.cwds.rest.api.persistence.cms.Referral("1234567ABC", referralDomain,
+            "last_update");
+
+    Referral request = new Referral(toCreate);
+
+    when(referralDao.create(any(gov.ca.cwds.rest.api.persistence.cms.Referral.class)))
+        .thenReturn(toCreate);
+
+    PostedReferral returned = referralService.create(request);
+
+    assertThat(returned.getId(), is("1234567ABC"));
   }
 
 }

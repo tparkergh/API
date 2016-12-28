@@ -3,7 +3,8 @@ package gov.ca.cwds.rest.util;
 import java.security.SecureRandom;
 
 /**
- * A holder class for generating ids. A real implementation is in the works.
+ * A holder class for generating ids. A real implementation is in the works. See user story
+ * #128886979
  * 
  * @author CWDS API Team
  */

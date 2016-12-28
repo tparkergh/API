@@ -77,23 +77,22 @@ public class ReferralTest {
 
   @Test
   public void domainReferralLastUpdateConstructorTest() throws Exception {
-    gov.ca.cwds.rest.api.domain.cms.Referral domain =
-        new gov.ca.cwds.rest.api.domain.cms.Referral(additionalInfoIncludedCode,
-            anonymousReporterIndicator, applicationForPetitionIndicator, approvalNumber,
-            approvalStatusType, caretakersPerpetratorCode, closureDate, communicationMethodType,
-            currentLocationOfChildren, drmsAllegationDescriptionDoc, drmsErReferralDoc,
-            drmsInvestigationDoc, filedSuspectedChildAbuseReporttoLawEnforcementIndicator,
-            familyAwarenessIndicator, govtEntityType, legalDefinitionCode,
-            legalRightsNoticeIndicator, limitedAccessCode, mandatedCrossReportReceivedDate,
-            referralName, openAdequateCaseCode, receivedDate, receivedTime, referralResponseType,
-            referredToResourceType, responseDeterminationDate, responseDeterminationTime,
-            responseRationaleText, screenerNoteText, specificsIncludedCode,
-            sufficientInformationCode, unfoundedSeriesCode, linkToPrimaryReferralId,
-            allegesAbuseOccurredAtAddressId, firstResponseDeterminedByStaffPersonId,
-            primaryContactStaffPersonId, countySpecificCode, specialProjectReferralIndicator,
-            zippyCreatedIndicator, homelessIndicator, familyRefusedServicesIndicator,
-            firstEvaluatedOutApprovalDate, responsibleAgencyCode, limitedAccessGovtAgencyType,
-            limitedAccessDate, limitedAccessDesc, originalClosureDate);
+    gov.ca.cwds.rest.api.domain.cms.Referral domain = new gov.ca.cwds.rest.api.domain.cms.Referral(
+        additionalInfoIncludedCode, anonymousReporterIndicator, applicationForPetitionIndicator,
+        approvalNumber, approvalStatusType, caretakersPerpetratorCode, closureDate,
+        communicationMethodType, currentLocationOfChildren, drmsAllegationDescriptionDoc,
+        drmsErReferralDoc, drmsInvestigationDoc,
+        filedSuspectedChildAbuseReporttoLawEnforcementIndicator, familyAwarenessIndicator,
+        govtEntityType, legalDefinitionCode, legalRightsNoticeIndicator, limitedAccessCode,
+        mandatedCrossReportReceivedDate, referralName, openAdequateCaseCode, receivedDate,
+        receivedTime, referralResponseType, referredToResourceType, responseDeterminationDate,
+        responseDeterminationTime, responseRationaleText, screenerNoteText, specificsIncludedCode,
+        sufficientInformationCode, unfoundedSeriesCode, linkToPrimaryReferralId,
+        allegesAbuseOccurredAtAddressId, firstResponseDeterminedByStaffPersonId,
+        primaryContactStaffPersonId, countySpecificCode, specialProjectReferralIndicator,
+        zippyCreatedIndicator, homelessIndicator, familyRefusedServicesIndicator,
+        firstEvaluatedOutApprovalDate, responsibleAgencyCode, limitedAccessGovtAgencyType,
+        limitedAccessDate, limitedAccessDesc, originalClosureDate);
 
     Referral persistent = new Referral(id, domain, "z");
     assertThat(persistent.getId(), is(equalTo(id)));

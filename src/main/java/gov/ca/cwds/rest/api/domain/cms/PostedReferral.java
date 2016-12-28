@@ -1,8 +1,11 @@
 package gov.ca.cwds.rest.api.domain.cms;
 
+import org.apache.commons.lang3.StringUtils;
+
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import gov.ca.cwds.rest.api.Response;
+import gov.ca.cwds.rest.services.ServiceException;
 
 /**
  * {@link Response} adding an id to the {@link Referral}
@@ -21,7 +24,10 @@ public class PostedReferral extends Referral {
   public PostedReferral(gov.ca.cwds.rest.api.persistence.cms.Referral referral) {
 
     super(referral);
-    assert (referral.getId() != null);
+    
+    if (StringUtils.isBlank(referral.getId())) {
+      throw new ServiceException("Referral ID cannot be empty");
+    }
 
     this.id = referral.getId();
   }

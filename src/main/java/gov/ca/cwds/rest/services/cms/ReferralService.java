@@ -86,9 +86,14 @@ public class ReferralService implements CrudsService {
         (gov.ca.cwds.rest.api.domain.cms.Referral) request;
 
     try {
-      // TODO : refactor to actually determine who is updating. 'q1p' for now
+      // TODO : refactor to actually determine who is updating. 'q1p' for now - see user story
+      // #136737071 - Tech Debt: Legacy Service classes must use Staff ID for last update ID value
+
       Referral managed = new Referral(IdGenerator.randomString(10), referral, "q1p");
       managed = referralDao.create(managed);
+      if (managed.getId() == null) {
+        throw new ServiceException("Referral ID cannot be null");
+      }
       return new PostedReferral(managed);
     } catch (EntityExistsException e) {
       LOGGER.info("Referral already exists : {}", referral);

@@ -26,10 +26,17 @@ import org.junit.rules.ExpectedException;
 import gov.ca.cwds.rest.api.persistence.ns.Address;
 import gov.ca.cwds.rest.api.persistence.ns.Person;
 
+/**
+ * @author CWDS API Team
+ *
+ */
 public class PersonDaoIT {
 
   private static final DateFormat TIMESTAMP_FORMAT = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 
+  /**
+   * 
+   */
   @Rule
   public ExpectedException thrown = ExpectedException.none();
 

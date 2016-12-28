@@ -84,7 +84,9 @@ public class ReporterService implements CrudsService {
         (gov.ca.cwds.rest.api.domain.cms.Reporter) request;
 
     try {
-      // TODO : refactor to actually determine who is updating. 'q1p' for now
+      // TODO : refactor to actually determine who is updating. 'q1p' for now - #136737071 - Tech
+      // Debt: Legacy Service classes must use Staff ID for last update ID value
+
       Reporter managed = new Reporter(reporter, "q1p");
       managed = reporterDao.create(managed);
       return new PostedReporter(managed);

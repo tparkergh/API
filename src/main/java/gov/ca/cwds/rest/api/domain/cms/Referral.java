@@ -258,6 +258,55 @@ public class Referral extends DomainObject implements Request, Response {
       example = "2000-01-01")
   private String originalClosureDate;
 
+  /**
+   * @param additionalInfoIncludedCode
+   * @param anonymousReporterIndicator
+   * @param applicationForPetitionIndicator
+   * @param approvalNumber
+   * @param approvalStatusType
+   * @param caretakersPerpetratorCode
+   * @param closureDate
+   * @param communicationMethodType
+   * @param currentLocationOfChildren
+   * @param drmsAllegationDescriptionDoc
+   * @param drmsErReferralDoc
+   * @param drmsInvestigationDoc
+   * @param filedSuspectedChildAbuseReporttoLawEnforcementIndicator
+   * @param familyAwarenessIndicator
+   * @param govtEntityType
+   * @param legalDefinitionCode
+   * @param legalRightsNoticeIndicator
+   * @param limitedAccessCode
+   * @param mandatedCrossReportReceivedDate
+   * @param referralName
+   * @param openAdequateCaseCode
+   * @param receivedDate
+   * @param receivedTime
+   * @param referralResponseType
+   * @param referredToResourceType
+   * @param responseDeterminationDate
+   * @param responseDeterminationTime
+   * @param responseRationaleText
+   * @param screenerNoteText
+   * @param specificsIncludedCode
+   * @param sufficientInformationCode
+   * @param unfoundedSeriesCode
+   * @param linkToPrimaryReferralId
+   * @param allegesAbuseOccurredAtAddressId
+   * @param firstResponseDeterminedByStaffPersonId
+   * @param primaryContactStaffPersonId
+   * @param countySpecificCode
+   * @param specialProjectReferralIndicator
+   * @param zippyCreatedIndicator
+   * @param homelessIndicator
+   * @param familyRefusedServicesIndicator
+   * @param firstEvaluatedOutApprovalDate
+   * @param responsibleAgencyCode
+   * @param limitedAccessGovtAgencyType
+   * @param limitedAccessDate
+   * @param limitedAccessDesc
+   * @param originalClosureDate
+   */
   @JsonCreator
   public Referral(@JsonProperty("additionalInfoIncludedCode") Boolean additionalInfoIncludedCode,
       @JsonProperty("anonymousReporterIndicator") Boolean anonymousReporterIndicator,
@@ -357,6 +406,9 @@ public class Referral extends DomainObject implements Request, Response {
     this.originalClosureDate = originalClosureDate;
   }
 
+  /**
+   * @param persistedReferral - persistence Referral object
+   */
   public Referral(gov.ca.cwds.rest.api.persistence.cms.Referral persistedReferral) {
     this.additionalInfoIncludedCode =
         DomainObject.uncookBooleanString(persistedReferral.getAdditionalInfoIncludedCode());
@@ -858,9 +910,6 @@ public class Referral extends DomainObject implements Request, Response {
     if (!(obj instanceof Referral)) {
       return false;
     }
-    // if (getClass() != obj.getClass()) {
-    // return false;
-    // }
     Referral other = (Referral) obj;
     if (additionalInfoIncludedCode == null) {
       if (other.additionalInfoIncludedCode != null) {
