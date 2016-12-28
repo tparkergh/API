@@ -49,6 +49,14 @@ public class ApiException extends RuntimeException {
     super(message, cause);
   }
 
+  /**
+   * Construct and control stack traces.
+   * 
+   * @param message message to display
+   * @param cause Throwable to rethrow
+   * @param enableSuppression if the JVM can suppress this exception
+   * @param writableStackTrace if security permits, the JVM may log the stack trace
+   */
   public ApiException(String message, Throwable cause, boolean enableSuppression,
       boolean writableStackTrace) {
     super(message, cause, enableSuppression, writableStackTrace);

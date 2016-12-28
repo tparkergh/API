@@ -135,16 +135,16 @@ public class Referral extends CmsPersistentObject {
   @Column(name = "UNFD_SR_CD")
   private String unfoundedSeriesCode;
 
-  @Column(name = "FKREFERL_T")
+  @Column(name = "FKREFERL_T", length = CMS_ID_LEN)
   private String linkToPrimaryReferralId;
 
-  @Column(name = "FKADDRS_T")
+  @Column(name = "FKADDRS_T", length = CMS_ID_LEN)
   private String allegesAbuseOccurredAtAddressId;
 
-  @Column(name = "FKSTFPERS0")
+  @Column(name = "FKSTFPERS0", length = CMS_ID_LEN)
   private String firstResponseDeterminedByStaffPersonId;
 
-  @Column(name = "FKSTFPERST")
+  @Column(name = "FKSTFPERST", length = CMS_ID_LEN)
   private String primaryContactStaffPersonId;
 
   @Column(name = "CNTY_SPFCD")
@@ -194,54 +194,55 @@ public class Referral extends CmsPersistentObject {
   }
 
   /**
-   * @param id
-   * @param additionalInfoIncludedCode
-   * @param anonymousReporterIndicator
-   * @param applicationForPetitionIndicator
-   * @param approvalNumber
-   * @param approvalStatusType
-   * @param caretakersPerpetratorCode
-   * @param closureDate
-   * @param communicationMethodType
-   * @param currentLocationOfChildren
-   * @param drmsAllegationDescriptionDoc
-   * @param drmsErReferralDoc
-   * @param drmsInvestigationDoc
-   * @param filedSuspectedChildAbuseReporttoLawEnforcementIndicator
-   * @param familyAwarenessIndicator
-   * @param govtEntityType
-   * @param legalDefinitionCode
-   * @param legalRightsNoticeIndicator
-   * @param limitedAccessCode
-   * @param mandatedCrossReportReceivedDate
-   * @param referralName
-   * @param openAdequateCaseCode
-   * @param receivedDate
-   * @param receivedTime
-   * @param referralResponseType
-   * @param referredToResourceType
-   * @param responseDeterminationDate
-   * @param responseDeterminationTime
-   * @param responseRationaleText
-   * @param screenerNoteText
-   * @param specificsIncludedCode
-   * @param sufficientInformationCode
-   * @param unfoundedSeriesCode
-   * @param linkToPrimaryReferralId
-   * @param allegesAbuseOccurredAtAddressId
-   * @param firstResponseDeterminedByStaffPersonId
-   * @param primaryContactStaffPersonId
-   * @param countySpecificCode
-   * @param specialProjectReferralIndicator
-   * @param zippyCreatedIndicator
-   * @param homelessIndicator
-   * @param familyRefusedServicesIndicator
-   * @param firstEvaluatedOutApprovalDate
-   * @param responsibleAgencyCode
-   * @param limitedAccessGovtAgencyType
-   * @param limitedAccessDate
-   * @param limitedAccessDesc
-   * @param originalClosureDate
+   * @param id the PK identifier
+   * @param additionalInfoIncludedCode additional info included code
+   * @param anonymousReporterIndicator anonymous reporter indicator
+   * @param applicationForPetitionIndicator application for petition indicator
+   * @param approvalNumber approval number
+   * @param approvalStatusType approval status type
+   * @param caretakersPerpetratorCode caretakers perpetrator code
+   * @param closureDate closure date
+   * @param communicationMethodType communication method type
+   * @param currentLocationOfChildren current location of children
+   * @param drmsAllegationDescriptionDoc drms allegation description doc
+   * @param drmsErReferralDoc drms er referral doc
+   * @param drmsInvestigationDoc drms investigation doc
+   * @param filedSuspectedChildAbuseReporttoLawEnforcementIndicator filed suspected child abuse
+   *        report to law enforcement indicator
+   * @param familyAwarenessIndicator family awareness indicator
+   * @param govtEntityType govt entity type
+   * @param legalDefinitionCode legal definition code
+   * @param legalRightsNoticeIndicator legal rights notice indicator
+   * @param limitedAccessCode limited access code
+   * @param mandatedCrossReportReceivedDate mandated cross report received date
+   * @param referralName referral name
+   * @param openAdequateCaseCode open adequate case code
+   * @param receivedDate received date
+   * @param receivedTime received time
+   * @param referralResponseType referral response type
+   * @param referredToResourceType referred to resource type
+   * @param responseDeterminationDate response determination date
+   * @param responseDeterminationTime response determination time
+   * @param responseRationaleText response rationale text
+   * @param screenerNoteText screener note text
+   * @param specificsIncludedCode specifics included code
+   * @param sufficientInformationCode sufficient information code
+   * @param unfoundedSeriesCode unfounded series code
+   * @param linkToPrimaryReferralId link to primary referral id
+   * @param allegesAbuseOccurredAtAddressId alleges abuse occurred at address id
+   * @param firstResponseDeterminedByStaffPersonId first response determined by staff person id
+   * @param primaryContactStaffPersonId primary contact staff person id
+   * @param countySpecificCode county specific code
+   * @param specialProjectReferralIndicator special project referral indicator
+   * @param zippyCreatedIndicator zippy created indicator
+   * @param homelessIndicator homeless indicator
+   * @param familyRefusedServicesIndicator family refused services indicator
+   * @param firstEvaluatedOutApprovalDate first evaluated out approval date
+   * @param responsibleAgencyCode responsible agency code
+   * @param limitedAccessGovtAgencyType limited access govt agency type
+   * @param limitedAccessDate limited access date
+   * @param limitedAccessDesc limited access desc
+   * @param originalClosureDate original closure date
    */
   public Referral(String id, String additionalInfoIncludedCode, String anonymousReporterIndicator,
       String applicationForPetitionIndicator, String approvalNumber, Short approvalStatusType,
@@ -327,7 +328,6 @@ public class Referral extends CmsPersistentObject {
     super(lastUpdatedId);
 
     try {
-
       this.id = id;
       this.additionalInfoIncludedCode =
           DomainObject.cookBoolean(referral.getAdditionalInfoIncludedCode());
@@ -395,8 +395,8 @@ public class Referral extends CmsPersistentObject {
     }
   }
 
-  /*
-   * (non-Javadoc)
+  /**
+   * {@inheritDoc}
    * 
    * @see gov.ca.cwds.rest.api.persistence.PersistentObject#getPrimaryKey()
    */

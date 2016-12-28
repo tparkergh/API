@@ -259,53 +259,54 @@ public class Referral extends DomainObject implements Request, Response {
   private String originalClosureDate;
 
   /**
-   * @param additionalInfoIncludedCode
-   * @param anonymousReporterIndicator
-   * @param applicationForPetitionIndicator
-   * @param approvalNumber
-   * @param approvalStatusType
-   * @param caretakersPerpetratorCode
-   * @param closureDate
-   * @param communicationMethodType
-   * @param currentLocationOfChildren
-   * @param drmsAllegationDescriptionDoc
-   * @param drmsErReferralDoc
-   * @param drmsInvestigationDoc
-   * @param filedSuspectedChildAbuseReporttoLawEnforcementIndicator
-   * @param familyAwarenessIndicator
-   * @param govtEntityType
-   * @param legalDefinitionCode
-   * @param legalRightsNoticeIndicator
-   * @param limitedAccessCode
-   * @param mandatedCrossReportReceivedDate
-   * @param referralName
-   * @param openAdequateCaseCode
-   * @param receivedDate
-   * @param receivedTime
-   * @param referralResponseType
-   * @param referredToResourceType
-   * @param responseDeterminationDate
-   * @param responseDeterminationTime
-   * @param responseRationaleText
-   * @param screenerNoteText
-   * @param specificsIncludedCode
-   * @param sufficientInformationCode
-   * @param unfoundedSeriesCode
-   * @param linkToPrimaryReferralId
-   * @param allegesAbuseOccurredAtAddressId
-   * @param firstResponseDeterminedByStaffPersonId
-   * @param primaryContactStaffPersonId
-   * @param countySpecificCode
-   * @param specialProjectReferralIndicator
-   * @param zippyCreatedIndicator
-   * @param homelessIndicator
-   * @param familyRefusedServicesIndicator
-   * @param firstEvaluatedOutApprovalDate
-   * @param responsibleAgencyCode
-   * @param limitedAccessGovtAgencyType
-   * @param limitedAccessDate
-   * @param limitedAccessDesc
-   * @param originalClosureDate
+   * @param additionalInfoIncludedCode additional Info Included Code
+   * @param anonymousReporterIndicator anonymous Reporter Indicator
+   * @param applicationForPetitionIndicator application For Petition Indicator
+   * @param approvalNumber approval Number
+   * @param approvalStatusType approval Status Type
+   * @param caretakersPerpetratorCode caretakers Perpetrator Code
+   * @param closureDate closure Date
+   * @param communicationMethodType communication Method Type
+   * @param currentLocationOfChildren current Location Of Children
+   * @param drmsAllegationDescriptionDoc drms Allegation Description Doc
+   * @param drmsErReferralDoc drms Er Referral Doc
+   * @param drmsInvestigationDoc drms Investigation Doc
+   * @param filedSuspectedChildAbuseReporttoLawEnforcementIndicator filed Suspected Child Abuse
+   *        Reportto Law Enforcement Indicator
+   * @param familyAwarenessIndicator family Awareness Indicator
+   * @param govtEntityType govt Entity Type
+   * @param legalDefinitionCode legal Definition Code
+   * @param legalRightsNoticeIndicator legal Rights Notice Indicator
+   * @param limitedAccessCode limited Access Code
+   * @param mandatedCrossReportReceivedDate mandated Cross Report Received Date
+   * @param referralName referral Name
+   * @param openAdequateCaseCode open Adequate Case Code
+   * @param receivedDate received Date
+   * @param receivedTime received Time
+   * @param referralResponseType referral Response Type
+   * @param referredToResourceType referred To Resource Type
+   * @param responseDeterminationDate response Determination Date
+   * @param responseDeterminationTime response Determination Time
+   * @param responseRationaleText response Rationale Text
+   * @param screenerNoteText screener Note Text
+   * @param specificsIncludedCode specifics Included Code
+   * @param sufficientInformationCode sufficient Information Code
+   * @param unfoundedSeriesCode unfounded Series Code
+   * @param linkToPrimaryReferralId link To Primary Referral Id
+   * @param allegesAbuseOccurredAtAddressId alleges Abuse Occurred At Address Id
+   * @param firstResponseDeterminedByStaffPersonId first Response Determined By Staff Person Id
+   * @param primaryContactStaffPersonId primary Contact Staff Person Id
+   * @param countySpecificCode county Specific Code
+   * @param specialProjectReferralIndicator special Project Referral Indicator
+   * @param zippyCreatedIndicator zippy Created Indicator
+   * @param homelessIndicator homeless Indicator
+   * @param familyRefusedServicesIndicator family Refused Services Indicator
+   * @param firstEvaluatedOutApprovalDate first Evaluated Out Approval Date
+   * @param responsibleAgencyCode responsible Agency Code
+   * @param limitedAccessGovtAgencyType limited Access Govt Agency Type
+   * @param limitedAccessDate limited Access Date
+   * @param limitedAccessDesc limited Access Desc
+   * @param originalClosureDate original Closure Date
    */
   @JsonCreator
   public Referral(@JsonProperty("additionalInfoIncludedCode") Boolean additionalInfoIncludedCode,
