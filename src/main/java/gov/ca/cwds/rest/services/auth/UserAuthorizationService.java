@@ -63,16 +63,14 @@ public class UserAuthorizationService implements CrudsService {
 
     final String userId = ((String) primaryKey).trim();
     List<UserId> userList = userIdDao.listUserFromLogonId(userId);
-    Set<gov.ca.cwds.rest.api.domain.auth.StaffUnitAuthority> testuserUnitAuthority =
-        new HashSet<>();
-    UserId user;
     gov.ca.cwds.rest.api.persistence.auth.StaffAuthorityPrivilege socialWorker;
 
+    // Found the user?
     if (userList != null && !userList.isEmpty()) {
-      user = userList.get(0);
+      final UserId user = userList.get(0);
       socialWorker = staffAuthorityPrivilegeDao.isSocialWorker(user.getId());
 
-      // Staff auth privs:
+      // Staff authorization privileges:
       final gov.ca.cwds.rest.api.persistence.auth.StaffAuthorityPrivilege[] staffAuthPrivs =
           this.staffAuthorityPrivilegeDao.findByUser(user.getId());
 
@@ -82,7 +80,7 @@ public class UserAuthorizationService implements CrudsService {
             priv.getLevelOfAuthPrivilegeCode(), priv.getCountySpecificCode()));
       }
 
-      // Staff unit auths:
+      // Staff unit authorizations:
       final gov.ca.cwds.rest.api.persistence.auth.StaffUnitAuthority[] staffUnitAuths =
           this.staffUnitAuthorityDao.findByStaff(user.getStaffPersonId());
 
