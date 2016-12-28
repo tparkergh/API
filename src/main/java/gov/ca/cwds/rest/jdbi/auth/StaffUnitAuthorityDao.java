@@ -9,7 +9,7 @@ import gov.ca.cwds.rest.api.persistence.auth.StaffUnitAuthority;
 import gov.ca.cwds.rest.jdbi.CrudsDaoImpl;
 
 /**
- * 
+ * DAO for {@link StaffUnitAuthority}.
  * 
  * @author CWDS API Team
  */

@@ -55,21 +55,33 @@ public class UserAuthorizationService implements CrudsService {
     assert primaryKey instanceof String;
     LOGGER.info(primaryKey.toString());
 
-    List<UserId> userList = userIdDao.listUserFromLogonId((String) primaryKey);
+    final String userId = ((String) primaryKey).trim();
+    List<UserId> userList = userIdDao.listUserFromLogonId(userId);
     Set<gov.ca.cwds.rest.api.domain.auth.StaffUnitAuthority> testuserUnitAuthority =
         new HashSet<>();
-    Set<StaffAuthorityPrivilege> testuserAuthorityPrivilege = new HashSet<>();
-    UserId user = null;
-    gov.ca.cwds.rest.api.persistence.auth.StaffAuthorityPrivilege socialWorker = null;
+    UserId user;
+    gov.ca.cwds.rest.api.persistence.auth.StaffAuthorityPrivilege socialWorker;
 
     if (userList != null && !userList.isEmpty()) {
       user = userList.get(0);
       socialWorker = staffAuthorityPrivilegeDao.isSocialWorker(user.getId());
+
+      final gov.ca.cwds.rest.api.persistence.auth.StaffAuthorityPrivilege[] staffAuthPrivs =
+          this.staffAuthorityPrivilegeDao.findByUser(user.getId());
+
+      Set<StaffAuthorityPrivilege> userAuthorityPrivileges = new HashSet<>();
+      for (gov.ca.cwds.rest.api.persistence.auth.StaffAuthorityPrivilege priv : staffAuthPrivs) {
+        userAuthorityPrivileges
+            .add(new StaffAuthorityPrivilege(priv.getLevelOfAuthPrivilegeType().toString(),
+                priv.getLevelOfAuthPrivilegeCode(), priv.getCountySpecificCode()));
+      }
+
+      return new gov.ca.cwds.rest.api.domain.auth.UserAuthorization(user.getLogonId(),
+          user.getStaffPersonId(), socialWorker != null, false, true, userAuthorityPrivileges,
+          testuserUnitAuthority);
     }
 
-    return new gov.ca.cwds.rest.api.domain.auth.UserAuthorization(user.getLogonId(),
-        user.getStaffPersonId(), socialWorker != null, false, true, testuserAuthorityPrivilege,
-        testuserUnitAuthority);
+    return null;
   }
 
   /**

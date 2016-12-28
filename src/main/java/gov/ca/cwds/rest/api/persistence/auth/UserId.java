@@ -32,7 +32,7 @@ import gov.ca.cwds.rest.api.persistence.cms.CmsPersistentObject;
 public class UserId extends CmsPersistentObject {
 
   /**
-   * 
+   * Base serialization version. Increment per version of this class.
    */
   private static final long serialVersionUID = 1L;
 
@@ -79,7 +79,7 @@ public class UserId extends CmsPersistentObject {
    * @param staffPersonId The staffPersonId
    * @param id The id
    * @param logonId The logonId
-   * @param systemDomainType The systemDomainType
+   * @param systemDomainType The system domain type
    */
   public UserId(Date endDate, Date endTime, String fkfpstfprt, String staffPersonId, String id,
       String logonId, Short systemDomainType) {

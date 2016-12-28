@@ -1,15 +1,15 @@
 package gov.ca.cwds.rest.api.domain.auth;
 
+import java.util.Set;
+
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import gov.ca.cwds.rest.api.Request;
 import gov.ca.cwds.rest.api.Response;
 import gov.ca.cwds.rest.api.domain.DomainObject;
 import io.dropwizard.jackson.JsonSnakeCase;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
-
-import java.util.Set;
-
-import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
  * {@link DomainObject} representing a request for User Authorization.
@@ -48,13 +48,10 @@ public final class UserAuthorization extends DomainObject implements Request, Re
   @JsonProperty("unit_authority")
   private Set<StaffUnitAuthority> unitAuthority;
 
-
-
   /**
    * Default, no-param, no-op constructor Required by frameworks.
    */
   public UserAuthorization() {}
-
 
   /**
    * JSON Constructor
@@ -85,14 +82,12 @@ public final class UserAuthorization extends DomainObject implements Request, Re
     this.unitAuthority = unitAuthority;
   }
 
-
   /**
    * @return the userId
    */
   public String getUserId() {
     return userId;
   }
-
 
   /**
    * @return the staffPersonId
@@ -101,14 +96,12 @@ public final class UserAuthorization extends DomainObject implements Request, Re
     return staffPersonId;
   }
 
-
   /**
    * @return the socialWorker
    */
   public Boolean getSocialWorker() {
     return socialWorker;
   }
-
 
   /**
    * @return the supervisor
@@ -117,14 +110,12 @@ public final class UserAuthorization extends DomainObject implements Request, Re
     return supervisor;
   }
 
-
   /**
    * @return the overrideAuthority
    */
   public Boolean getOverrideAuthority() {
     return overrideAuthority;
   }
-
 
   /**
    * @return the authorityPrivilege
@@ -133,7 +124,6 @@ public final class UserAuthorization extends DomainObject implements Request, Re
     return authorityPrivilege;
   }
 
-
   /**
    * @return the unitAuthority
    */
@@ -141,9 +131,8 @@ public final class UserAuthorization extends DomainObject implements Request, Re
     return unitAuthority;
   }
 
-
-  /*
-   * (non-Javadoc)
+  /**
+   * {@inheritDoc}
    * 
    * @see java.lang.Object#hashCode()
    */
@@ -161,9 +150,8 @@ public final class UserAuthorization extends DomainObject implements Request, Re
     return result;
   }
 
-
-  /*
-   * (non-Javadoc)
+  /**
+   * {@inheritDoc}
    * 
    * @see java.lang.Object#equals(java.lang.Object)
    */

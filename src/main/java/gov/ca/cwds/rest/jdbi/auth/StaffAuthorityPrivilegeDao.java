@@ -10,7 +10,7 @@ import gov.ca.cwds.rest.api.persistence.auth.StaffAuthorityPrivilege;
 import gov.ca.cwds.rest.jdbi.CrudsDaoImpl;
 
 /**
- * 
+ * DAO for {@link StaffAuthorityPrivilege}.
  * 
  * @author CWDS API Team
  */
@@ -24,6 +24,13 @@ public class StaffAuthorityPrivilegeDao extends CrudsDaoImpl<StaffAuthorityPrivi
   @Inject
   public StaffAuthorityPrivilegeDao(@CmsSessionFactory SessionFactory sessionFactory) {
     super(sessionFactory);
+  }
+
+  public StaffAuthorityPrivilege[] findByUser(String userId) {
+    Query query = this.getSessionFactory().getCurrentSession()
+        .getNamedQuery("gov.ca.cwds.rest.api.persistence.auth.StaffAuthorityPrivilege.findByUser")
+        .setString("userId", userId);
+    return (StaffAuthorityPrivilege[]) query.list().toArray(new StaffAuthorityPrivilege[0]);
   }
 
   public StaffAuthorityPrivilege isSocialWorker(String userId) {

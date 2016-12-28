@@ -23,6 +23,8 @@ import gov.ca.cwds.rest.api.persistence.cms.CmsPersistentObject;
 @NamedQueries({
     @NamedQuery(name = "gov.ca.cwds.rest.api.persistence.auth.StaffAuthorityPrivilege.findAll",
         query = "FROM StaffAuthorityPrivilege"),
+    @NamedQuery(name = "gov.ca.cwds.rest.api.persistence.auth.StaffAuthorityPrivilege.findByUser",
+        query = "FROM StaffAuthorityPrivilege WHERE fkuseridT = :userId"),
     @NamedQuery(
         name = "gov.ca.cwds.rest.api.persistence.auth.StaffAuthorityPrivilege.findAllUpdatedAfter",
         query = "FROM StaffAuthorityPrivilege WHERE lastUpdatedTime > :after"),
@@ -36,7 +38,7 @@ import gov.ca.cwds.rest.api.persistence.cms.CmsPersistentObject;
 public class StaffAuthorityPrivilege extends CmsPersistentObject {
 
   /**
-   * Base serialization version.
+   * Base serialization version. Increment per version of this class.
    */
   private static final long serialVersionUID = 1L;
 
@@ -74,7 +76,7 @@ public class StaffAuthorityPrivilege extends CmsPersistentObject {
   private Date startTime;
 
   /**
-   * Default constructor
+   * Default constructor.
    * 
    * Required for Hibernate
    */
@@ -86,7 +88,7 @@ public class StaffAuthorityPrivilege extends CmsPersistentObject {
    * @param countySpecificCode The countySpecificCode
    * @param endDate The endDate
    * @param endTime The endDate
-   * @param fkuseridT The fkuseridT
+   * @param fkuseridT FK to user id table
    * @param id The id
    * @param levelOfAuthPrivilegeCode The levelOfAuthPrivilegeCode
    * @param levelOfAuthPrivilegeType The levelOfAuthPrivilegeType

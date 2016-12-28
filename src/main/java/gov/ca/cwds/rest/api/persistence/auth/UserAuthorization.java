@@ -10,8 +10,11 @@ import gov.ca.cwds.rest.api.persistence.PersistentObject;
 import gov.ca.cwds.rest.api.persistence.cms.CmsPersistentObject;
 
 /**
- * {@link PersistentObject} representing a User Authorization, this class is just a placeholder for
- * now
+ * {@link PersistentObject} representing a User Authorization.
+ * 
+ * <p>
+ * <strong>NOTE: </strong>This class is just a placeholder for now.
+ * </p>
  * 
  * @author CWDS API Team
  */

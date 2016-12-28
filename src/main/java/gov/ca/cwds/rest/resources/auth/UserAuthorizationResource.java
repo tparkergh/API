@@ -1,15 +1,6 @@
 package gov.ca.cwds.rest.resources.auth;
 
 import static gov.ca.cwds.rest.core.Api.RESOURCE_USER_AUTHORIZATION;
-import gov.ca.cwds.inject.UserAuthorizationServiceBackedResource;
-import gov.ca.cwds.rest.api.domain.auth.UserAuthorization;
-import gov.ca.cwds.rest.resources.ResourceDelegate;
-import io.dropwizard.hibernate.UnitOfWork;
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
-import io.swagger.annotations.ApiParam;
-import io.swagger.annotations.ApiResponse;
-import io.swagger.annotations.ApiResponses;
 
 import javax.validation.Valid;
 import javax.ws.rs.Consumes;
@@ -28,12 +19,22 @@ import org.eclipse.jetty.server.Authentication.User;
 
 import com.google.inject.Inject;
 
+import gov.ca.cwds.inject.UserAuthorizationServiceBackedResource;
+import gov.ca.cwds.rest.api.domain.auth.UserAuthorization;
+import gov.ca.cwds.rest.resources.ResourceDelegate;
+import io.dropwizard.hibernate.UnitOfWork;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
+import io.swagger.annotations.ApiResponse;
+import io.swagger.annotations.ApiResponses;
+
 /**
  * A resource providing a RESTful interface for {@link UserAuthorization}. It delegates functions to
- * {@link ResourceDelegate}. It decorates the {@link ResourceDelegate} not in functionality but with @see
- * <a href= "https://github.com/swagger-api/swagger-core/wiki/Annotations-1.5.X">Swagger
- * Annotations</a> and <a
- * href="https://jersey.java.net/documentation/latest/user-guide.html#jaxrs-resources">Jersey
+ * {@link ResourceDelegate}. It decorates the {@link ResourceDelegate} not in functionality but
+ * with @see <a href= "https://github.com/swagger-api/swagger-core/wiki/Annotations-1.5.X">Swagger
+ * Annotations</a> and
+ * <a href="https://jersey.java.net/documentation/latest/user-guide.html#jaxrs-resources">Jersey
  * Annotations</a>
  * 
  * @author CWDS API Team
@@ -43,6 +44,7 @@ import com.google.inject.Inject;
 @Produces(MediaType.APPLICATION_JSON)
 @Consumes(MediaType.APPLICATION_JSON)
 public class UserAuthorizationResource {
+
   private ResourceDelegate resourceDelegate;
 
   /**
@@ -131,9 +133,10 @@ public class UserAuthorizationResource {
   @Consumes(value = MediaType.APPLICATION_JSON)
   @ApiOperation(hidden = true, value = "Update UserAuthorization", code = HttpStatus.SC_NO_CONTENT,
       response = Object.class)
-  public Response update(@PathParam("id") @ApiParam(required = true, name = "id",
-      value = "The id of the UserAuthorization to update") String id, @Valid @ApiParam(
-      hidden = false, required = true) UserAuthorization userAuthorization) {
+  public Response update(
+      @PathParam("id") @ApiParam(required = true, name = "id",
+          value = "The id of the UserAuthorization to update") String id,
+      @Valid @ApiParam(hidden = false, required = true) UserAuthorization userAuthorization) {
     return Response.status(HttpStatus.SC_NOT_IMPLEMENTED).build();
   }
 }

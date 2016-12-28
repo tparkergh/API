@@ -12,7 +12,7 @@ import gov.ca.cwds.rest.api.persistence.auth.UserId;
 import gov.ca.cwds.rest.jdbi.CrudsDaoImpl;
 
 /**
- * 
+ * DAO for {@link UserId}.
  * 
  * @author CWDS API Team
  */
@@ -35,6 +35,5 @@ public class UserIdDao extends CrudsDaoImpl<UserId> {
         .setString("logonId", logonId);
     return query.list();
   }
-
 
 }

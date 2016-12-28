@@ -12,11 +12,10 @@ import org.hibernate.annotations.NamedQueries;
 import org.hibernate.annotations.NamedQuery;
 import org.hibernate.annotations.Type;
 
-import gov.ca.cwds.rest.api.persistence.PersistentObject;
 import gov.ca.cwds.rest.api.persistence.cms.CmsPersistentObject;
 
 /**
- * {@link PersistentObject} representing a StaffPersonUnitAuthority
+ * {@link CmsPersistentObject} representing a StaffPersonUnitAuthority.
  * 
  * @author CWDS API Team
  */
@@ -29,6 +28,7 @@ import gov.ca.cwds.rest.api.persistence.cms.CmsPersistentObject;
 @Entity
 @Table(schema = "CWSINT", name = "STFUATHT")
 public class StaffUnitAuthority extends CmsPersistentObject {
+
   /**
    * 
    */
@@ -57,7 +57,6 @@ public class StaffUnitAuthority extends CmsPersistentObject {
   @Id
   @Column(name = "THIRD_ID")
   private String thirdId;
-
 
   /**
    * Default constructor
@@ -89,8 +88,8 @@ public class StaffUnitAuthority extends CmsPersistentObject {
     this.thirdId = thirdId;
   }
 
-  /*
-   * (non-Javadoc)
+  /**
+   * {@inheritDoc}
    * 
    * @see gov.ca.cwds.rest.api.persistence.PersistentObject#getPrimaryKey()
    */
@@ -148,8 +147,8 @@ public class StaffUnitAuthority extends CmsPersistentObject {
     return StringUtils.trimToEmpty(thirdId);
   }
 
-  /*
-   * (non-Javadoc)
+  /**
+   * {@inheritDoc}
    * 
    * @see java.lang.Object#hashCode()
    */
@@ -167,8 +166,8 @@ public class StaffUnitAuthority extends CmsPersistentObject {
     return result;
   }
 
-  /*
-   * (non-Javadoc)
+  /**
+   * {@inheritDoc}
    * 
    * @see java.lang.Object#equals(java.lang.Object)
    */
