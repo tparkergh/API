@@ -8,6 +8,7 @@ import com.google.inject.Provides;
 import gov.ca.cwds.rest.ApiConfiguration;
 import gov.ca.cwds.rest.ElasticsearchConfiguration;
 import gov.ca.cwds.rest.api.persistence.auth.StaffAuthorityPrivilege;
+import gov.ca.cwds.rest.api.persistence.auth.StaffUnitAuthority;
 import gov.ca.cwds.rest.api.persistence.auth.UserId;
 import gov.ca.cwds.rest.api.persistence.cms.Allegation;
 import gov.ca.cwds.rest.api.persistence.cms.CmsDocReferralClient;
@@ -54,7 +55,7 @@ public class DataAccessModule extends AbstractModule {
       new HibernateBundle<ApiConfiguration>(StaffPerson.class, Referral.class, Allegation.class,
           CrossReport.class, ReferralClient.class, Reporter.class, CmsDocument.class,
           CmsDocumentBlobSegment.class, CmsDocReferralClient.class, UserId.class,
-          StaffAuthorityPrivilege.class) {
+          StaffAuthorityPrivilege.class, StaffUnitAuthority.class) {
         @Override
         public DataSourceFactory getDataSourceFactory(ApiConfiguration configuration) {
           return configuration.getCmsDataSourceFactory();

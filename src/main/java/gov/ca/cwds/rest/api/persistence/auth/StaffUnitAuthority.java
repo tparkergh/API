@@ -22,15 +22,17 @@ import gov.ca.cwds.rest.api.persistence.cms.CmsPersistentObject;
 @NamedQueries({
     @NamedQuery(name = "gov.ca.cwds.rest.api.persistence.auth.StaffUnitAuthority.findAll",
         query = "FROM StaffUnitAuthority"),
+    @NamedQuery(name = "gov.ca.cwds.rest.api.persistence.auth.StaffUnitAuthority.findByStaff",
+        query = "FROM StaffUnitAuthority WHERE FKSTFPERST = :staffId"),
     @NamedQuery(
         name = "gov.ca.cwds.rest.api.persistence.auth.StaffUnitAuthority.findAllUpdatedAfter",
-        query = "FROM SubstituteCareProvider WHERE lastUpdatedTime > :after")})
+        query = "FROM StaffUnitAuthority WHERE lastUpdatedTime > :after")})
 @Entity
 @Table(schema = "CWSINT", name = "STFUATHT")
 public class StaffUnitAuthority extends CmsPersistentObject {
 
   /**
-   * 
+   * Base serialization version. Increment per version of this class.
    */
   private static final long serialVersionUID = 1L;
 
@@ -44,12 +46,14 @@ public class StaffUnitAuthority extends CmsPersistentObject {
   @Column(name = "END_DT")
   private Date endDate;
 
+  // @Id
   @Column(name = "FKASG_UNIT")
   private String fkasgUnit;
 
   @Column(name = "FKSTFPERST")
   private String staffPersonId;
 
+  // @Id
   @Type(type = "date")
   @Column(name = "START_DT")
   private Date startDate;

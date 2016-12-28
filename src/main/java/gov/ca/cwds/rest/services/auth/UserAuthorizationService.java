@@ -13,9 +13,11 @@ import com.google.inject.Inject;
 
 import gov.ca.cwds.rest.api.Request;
 import gov.ca.cwds.rest.api.domain.auth.StaffAuthorityPrivilege;
+import gov.ca.cwds.rest.api.domain.auth.StaffUnitAuthority;
 import gov.ca.cwds.rest.api.domain.auth.UserAuthorization;
 import gov.ca.cwds.rest.api.persistence.auth.UserId;
 import gov.ca.cwds.rest.jdbi.auth.StaffAuthorityPrivilegeDao;
+import gov.ca.cwds.rest.jdbi.auth.StaffUnitAuthorityDao;
 import gov.ca.cwds.rest.jdbi.auth.UserIdDao;
 import gov.ca.cwds.rest.services.CrudsService;
 
@@ -31,18 +33,22 @@ public class UserAuthorizationService implements CrudsService {
 
   private UserIdDao userIdDao;
   private StaffAuthorityPrivilegeDao staffAuthorityPrivilegeDao;
+  private StaffUnitAuthorityDao staffUnitAuthorityDao;
 
   /**
    * Constructor
    * 
    * @param userIdDao The User Id DAO
    * @param staffAuthorityPrivilegeDao The Staff Authority Privilege DAO
+   * @param staffUnitAuthorityDao DAO for Staff Unit Authority
    */
   @Inject
   public UserAuthorizationService(UserIdDao userIdDao,
-      StaffAuthorityPrivilegeDao staffAuthorityPrivilegeDao) {
+      StaffAuthorityPrivilegeDao staffAuthorityPrivilegeDao,
+      StaffUnitAuthorityDao staffUnitAuthorityDao) {
     this.userIdDao = userIdDao;
     this.staffAuthorityPrivilegeDao = staffAuthorityPrivilegeDao;
+    this.staffUnitAuthorityDao = staffUnitAuthorityDao;
   }
 
   /**
@@ -66,19 +72,30 @@ public class UserAuthorizationService implements CrudsService {
       user = userList.get(0);
       socialWorker = staffAuthorityPrivilegeDao.isSocialWorker(user.getId());
 
+      // Staff auth privs:
       final gov.ca.cwds.rest.api.persistence.auth.StaffAuthorityPrivilege[] staffAuthPrivs =
           this.staffAuthorityPrivilegeDao.findByUser(user.getId());
 
-      Set<StaffAuthorityPrivilege> userAuthorityPrivileges = new HashSet<>();
+      Set<StaffAuthorityPrivilege> userAuthPrivs = new HashSet<>();
       for (gov.ca.cwds.rest.api.persistence.auth.StaffAuthorityPrivilege priv : staffAuthPrivs) {
-        userAuthorityPrivileges
-            .add(new StaffAuthorityPrivilege(priv.getLevelOfAuthPrivilegeType().toString(),
-                priv.getLevelOfAuthPrivilegeCode(), priv.getCountySpecificCode()));
+        userAuthPrivs.add(new StaffAuthorityPrivilege(priv.getLevelOfAuthPrivilegeType().toString(),
+            priv.getLevelOfAuthPrivilegeCode(), priv.getCountySpecificCode()));
       }
 
-      return new gov.ca.cwds.rest.api.domain.auth.UserAuthorization(user.getLogonId(),
-          user.getStaffPersonId(), socialWorker != null, false, true, userAuthorityPrivileges,
-          testuserUnitAuthority);
+      // Staff unit auths:
+      final gov.ca.cwds.rest.api.persistence.auth.StaffUnitAuthority[] staffUnitAuths =
+          this.staffUnitAuthorityDao.findByStaff(user.getStaffPersonId());
+
+      Set<StaffUnitAuthority> setStaffUnitAuths = new HashSet<>();
+      for (gov.ca.cwds.rest.api.persistence.auth.StaffUnitAuthority p : staffUnitAuths) {
+        setStaffUnitAuths.add(new StaffUnitAuthority(p.getAuthorityCode(), p.getFkasgUnit(),
+            p.getCountySpecificCode()));
+      }
+
+      return new UserAuthorization(user.getLogonId(), user.getStaffPersonId(), socialWorker != null,
+          false, true, userAuthPrivs, setStaffUnitAuths);
+    } else {
+      LOGGER.warn("No user id found for " + primaryKey);
     }
 
     return null;
