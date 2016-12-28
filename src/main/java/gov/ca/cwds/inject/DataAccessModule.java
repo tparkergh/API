@@ -45,7 +45,7 @@ import io.dropwizard.hibernate.HibernateBundle;
 import io.dropwizard.setup.Bootstrap;
 
 /**
- * DI setup for data access objects
+ * DI (dependency injection) setup for data access objects (DAO).
  * 
  * @author CWDS API Team
  */

@@ -78,9 +78,7 @@ public class CmsDocumentDao extends BaseDaoImpl<CmsDocument> {
    */
   protected String decompressPK(gov.ca.cwds.rest.api.persistence.cms.CmsDocument doc) {
     String retval = "";
-
     CmsPKCompressor pk = new CmsPKCompressor();
-    LZWEncoder lzw = new LZWEncoder();
 
     try {
       StringBuilder buf = new StringBuilder(doc.getDocLength().intValue() * 2);
@@ -139,7 +137,7 @@ public class CmsDocumentDao extends BaseDaoImpl<CmsDocument> {
       tgt.delete();
 
     } catch (Exception e) {
-      LOGGER.error("ERROR DECOMPRESSING LZW! " + e.getMessage());
+      LOGGER.error("ERROR DECOMPRESSING LZW! " + e.getMessage(), e);
       throw new RuntimeException(e);
     }
 

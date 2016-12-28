@@ -18,7 +18,7 @@ import gov.ca.cwds.rest.api.persistence.cms.ReferralClient.PrimaryKey;
 import gov.ca.cwds.rest.api.persistence.ns.NsPersistentObject;
 
 /**
- * {@link NsPersistentObject} representing a ReferralClient
+ * {@link NsPersistentObject} representing a ReferralClient.
  * 
  * @author CWDS API Team
  */
@@ -36,7 +36,7 @@ public class ReferralClient extends CmsPersistentObject {
   @Column(name = "FKCLIENT_T", length = CMS_ID_LEN)
   private String clientId;
 
-  @Column(name = "APRVL_NO")
+  @Column(name = "APRVL_NO", length = 10)
   private String approvalNumber;
 
   @Type(type = "short")

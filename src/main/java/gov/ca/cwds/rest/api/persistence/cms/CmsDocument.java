@@ -64,7 +64,7 @@ public class CmsDocument extends CmsPersistentObject {
   @OneToMany(fetch = FetchType.EAGER)
   @JoinColumn(name = "DOC_HANDLE", nullable = false)
   @OrderBy("DOC_HANDLE, DOC_SEGSEQ")
-  private Set<CmsDocumentBlobSegment> blobSegments = new LinkedHashSet<CmsDocumentBlobSegment>();
+  private Set<CmsDocumentBlobSegment> blobSegments = new LinkedHashSet<>();
 
   /**
    * Default constructor

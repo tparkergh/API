@@ -26,7 +26,6 @@ import gov.ca.cwds.rest.api.persistence.PersistentObject;
         query = "FROM EducationProviderContact WHERE lastUpdatedTime > :after")})
 @Entity
 @Table(name = "EDPRVCNT")
-
 public class EducationProviderContact extends CmsPersistentObject {
 
   /**

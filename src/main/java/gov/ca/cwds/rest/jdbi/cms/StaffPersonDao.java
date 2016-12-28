@@ -9,7 +9,7 @@ import gov.ca.cwds.rest.api.persistence.cms.StaffPerson;
 import gov.ca.cwds.rest.jdbi.CrudsDaoImpl;
 
 /**
- * 
+ * Hibernate DAO for DB2 {@link StaffPerson}.
  * 
  * @author CWDS API Team
  */

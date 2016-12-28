@@ -43,7 +43,6 @@ import gov.ca.cwds.rest.services.cms.StaffPersonService;
 
 public class ResourcesModule extends AbstractModule {
 
-
   public ResourcesModule() {}
 
   @Override

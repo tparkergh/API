@@ -60,9 +60,7 @@ public class AllegationServiceTest {
         new gov.ca.cwds.rest.api.persistence.cms.Allegation(id, expected, "0XA");
 
     when(allegationDao.find(id)).thenReturn(allegation);
-
     Allegation found = allegationService.find(id);
-
     assertThat(found, is(expected));
   }
 
@@ -141,7 +139,6 @@ public class AllegationServiceTest {
 
     when(allegationDao.find("ABC1234567")).thenReturn(allegation);
     when(allegationDao.update(any())).thenReturn(allegation);
-
     allegationService.update("ZZZZZZZZZZ", allegationRequest);
   }
 
@@ -155,12 +152,10 @@ public class AllegationServiceTest {
         new gov.ca.cwds.rest.api.persistence.cms.Allegation(id, allegationDomain, "last_update");
 
     Allegation request = new Allegation(toCreate);
-
     when(allegationDao.create(any(gov.ca.cwds.rest.api.persistence.cms.Allegation.class)))
         .thenReturn(toCreate);
 
     Response response = allegationService.create(request);
-
     assertThat(response.getClass(), is(PostedAllegation.class));
   }
 
@@ -173,12 +168,10 @@ public class AllegationServiceTest {
         new gov.ca.cwds.rest.api.persistence.cms.Allegation(id, allegationDomain, "last_update");
 
     Allegation request = new Allegation(toCreate);
-
     when(allegationDao.create(any(gov.ca.cwds.rest.api.persistence.cms.Allegation.class)))
         .thenReturn(toCreate);
 
     PostedAllegation postedAllegation = allegationService.create(request);
-
     assertThat(postedAllegation, is(notNullValue()));
   }
 
@@ -191,14 +184,11 @@ public class AllegationServiceTest {
         new gov.ca.cwds.rest.api.persistence.cms.Allegation(id, allegationDomain, "last_update");
 
     Allegation request = new Allegation(toCreate);
-
     when(allegationDao.create(any(gov.ca.cwds.rest.api.persistence.cms.Allegation.class)))
         .thenReturn(toCreate);
 
     PostedAllegation expected = new PostedAllegation(toCreate);
-
     PostedAllegation returned = allegationService.create(request);
-
     assertThat(returned, is(expected));
   }
 

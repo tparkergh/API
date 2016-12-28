@@ -42,6 +42,7 @@ public class CrossReportServiceTest {
   }
 
   // find test
+  // TODO: Story #136701343: Tech debt: exception handling in service layer.
   @Test
   public void findThrowsAssertionError() {
     // TODO : thrown.expect not working on AssertionError???? WHY???
@@ -63,9 +64,7 @@ public class CrossReportServiceTest {
         new gov.ca.cwds.rest.api.persistence.cms.CrossReport(expected.getThirdId(), expected,
             "0X5");
     when(crossReportDao.find(eq(expected.getThirdId()))).thenReturn(crossReport);
-
     CrossReport found = crossReportService.find("ABC1234567");
-
     assertThat(found, is(expected));
   }
 
@@ -123,7 +122,6 @@ public class CrossReportServiceTest {
     when(crossReportDao.update(any())).thenReturn(crossReport);
     Object retval = crossReportService.update("ABC1234567", expected);
     assertThat(retval.getClass(), is(CrossReport.class));
-
   }
 
   @Test
@@ -140,9 +138,7 @@ public class CrossReportServiceTest {
 
     CrossReport expected = new CrossReport(crossReport);
     CrossReport updated = crossReportService.update("ABC1234567", expected);
-
     assertThat(updated, is(expected));
-
   }
 
   @Test
@@ -164,7 +160,6 @@ public class CrossReportServiceTest {
 
     when(crossReportDao.find("ABC1234567")).thenReturn(crossReport);
     when(crossReportDao.update(any())).thenReturn(crossReport);
-
     crossReportService.update("ZZZ1234567", crossReportRequest);
   }
 
@@ -178,12 +173,10 @@ public class CrossReportServiceTest {
             crossReportDomain, "ABC");
 
     CrossReport request = new CrossReport(toCreate);
-
     when(crossReportDao.create(any(gov.ca.cwds.rest.api.persistence.cms.CrossReport.class)))
         .thenReturn(toCreate);
 
     Response response = crossReportService.create(request);
-
     assertThat(response.getClass(), is(CrossReport.class));
   }
 
@@ -196,12 +189,10 @@ public class CrossReportServiceTest {
             crossReportDomain, "ABC");
 
     CrossReport request = new CrossReport(toCreate);
-
     when(crossReportDao.create(any(gov.ca.cwds.rest.api.persistence.cms.CrossReport.class)))
         .thenReturn(toCreate);
 
     CrossReport postedCrossReport = crossReportService.create(request);
-
     assertThat(postedCrossReport, is(notNullValue()));
   }
 
@@ -219,9 +210,7 @@ public class CrossReportServiceTest {
         .thenReturn(toCreate);
 
     CrossReport expected = new CrossReport(toCreate);
-
     CrossReport returned = crossReportService.create(request);
-
     assertThat(returned, is(expected));
   }
 }

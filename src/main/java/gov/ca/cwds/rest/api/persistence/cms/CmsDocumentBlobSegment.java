@@ -1,7 +1,5 @@
 package gov.ca.cwds.rest.api.persistence.cms;
 
-import java.io.Serializable;
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
@@ -13,6 +11,7 @@ import javax.validation.constraints.Size;
 import org.hibernate.annotations.ColumnTransformer;
 
 import gov.ca.cwds.rest.api.persistence.PersistentObject;
+import gov.ca.cwds.rest.api.persistence.TypedPersistentObject;
 
 /**
  * {@link PersistentObject} represents a record in TSBLOBT.
@@ -26,7 +25,7 @@ import gov.ca.cwds.rest.api.persistence.PersistentObject;
  */
 @Entity
 @Table(name = "TSBLOBT")
-public class CmsDocumentBlobSegment implements PersistentObject {
+public class CmsDocumentBlobSegment implements TypedPersistentObject<VarargPrimaryKey> {
 
   private static final long serialVersionUID = -6101861394294752291L;
 
@@ -78,7 +77,7 @@ public class CmsDocumentBlobSegment implements PersistentObject {
    * @see gov.ca.cwds.rest.api.persistence.PersistentObject#getPrimaryKey()
    */
   @Override
-  public Serializable getPrimaryKey() {
+  public VarargPrimaryKey getPrimaryKey() {
     return new VarargPrimaryKey(this.getDocHandle(), this.getSegmentSequence());
   }
 

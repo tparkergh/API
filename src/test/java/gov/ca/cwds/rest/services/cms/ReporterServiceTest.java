@@ -59,9 +59,7 @@ public class ReporterServiceTest {
         new gov.ca.cwds.rest.api.persistence.cms.Reporter(expected, "0XA");
 
     when(reporterDao.find("AbiQCgu0Hj")).thenReturn(reporter);
-
     Reporter found = reporterService.find("AbiQCgu0Hj");
-
     assertThat(found, is(expected));
   }
 

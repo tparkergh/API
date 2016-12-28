@@ -8,6 +8,7 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.PersistenceException;
 import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
 
 import org.hibernate.annotations.NamedQueries;
 import org.hibernate.annotations.NamedQuery;
@@ -32,18 +33,8 @@ import gov.ca.cwds.rest.api.persistence.ns.NsPersistentObject;
 @Table(name = "REPTR_T")
 public class Reporter extends CmsPersistentObject {
 
-  // CREATE TABLE REPTR_T (RPTR_BDGNO CHAR(6) NOT NULL,RPTR_CTYNM CHAR(20) NOT NULL,COL_RELC
-  // SMALLINT NOT NULL,CMM_MTHC SMALLINT NOT NULL,CNFWVR_IND CHAR(1) NOT NULL,FDBACK_DOC CHAR(10)
-  // NULL,RPTR_EMPNM CHAR(35) NOT NULL,FEEDBCK_DT DATE NULL,FB_RQR_IND CHAR(1) NOT NULL,RPTR_FSTNM
-  // CHAR(20) NOT NULL,RPTR_LSTNM CHAR(25) NOT NULL,MNRPTR_IND CHAR(1) NOT NULL,MSG_EXT_NO INTEGER
-  // NOT NULL,MSG_TEL_NO DECIMAL(10:0) NOT NULL,MID_INI_NM CHAR(1) NOT NULL,NMPRFX_DSC CHAR(6) NOT
-  // NULL,PRM_TEL_NO DECIMAL(10:0) NOT NULL,PRM_EXT_NO INTEGER NOT NULL,STATE_C SMALLINT NOT
-  // NULL,RPTR_ST_NM CHAR(40) NOT NULL,RPTR_ST_NO CHAR(10) NOT NULL,SUFX_TLDSC CHAR(4) NOT
-  // NULL,RPTR_ZIPNO INTEGER NOT NULL,LST_UPD_ID CHAR(3) NOT NULL,LST_UPD_TS TIMESTAMP NOT
-  // NULL,FKREFERL_T CHAR(10) NOT NULL,FKLAW_ENFT CHAR(10) NULL,ZIP_SFX_NO SMALLINT NOT
-  // NULL,CNTY_SPFCD CHAR(2) NOT NULL);
-
   @Id
+  @NotNull
   @Column(name = "FKREFERL_T", length = CMS_ID_LEN)
   private String referralId;
 
@@ -83,6 +74,7 @@ public class Reporter extends CmsPersistentObject {
   @Column(name = "RPTR_LSTNM")
   private String lastName;
 
+  @NotNull
   @Column(name = "MNRPTR_IND")
   private String mandatedReporterIndicator;
 
@@ -123,7 +115,7 @@ public class Reporter extends CmsPersistentObject {
   @Column(name = "RPTR_ZIPNO")
   private Integer zipNumber;
 
-  @Column(name = "FKLAW_ENFT")
+  @Column(name = "FKLAW_ENFT", length = 10)
   private String lawEnforcementId;
 
   @Type(type = "short")
@@ -224,11 +216,10 @@ public class Reporter extends CmsPersistentObject {
     } catch (ApiException e) {
       throw new PersistenceException(e);
     }
-
   }
 
-  /*
-   * (non-Javadoc)
+  /**
+   * {@inheritDoc}
    * 
    * @see gov.ca.cwds.rest.api.persistence.PersistentObject#getPrimaryKey()
    */

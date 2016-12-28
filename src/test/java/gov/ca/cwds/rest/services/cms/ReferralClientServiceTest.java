@@ -47,6 +47,7 @@ public class ReferralClientServiceTest {
   }
 
   // find test
+  // TODO: Story #136701343: Tech debt: exception handling in service layer.
   @Test
   public void findThrowsAssertionError() {
     // TODO : thrown.expect not working on AssertionError???? WHY???
@@ -90,7 +91,6 @@ public class ReferralClientServiceTest {
 
     gov.ca.cwds.rest.api.persistence.cms.ReferralClient referralClient =
         new gov.ca.cwds.rest.api.persistence.cms.ReferralClient(expected, "ABC");
-
     referralClientService.delete(referralClient.getPrimaryKey().toString());
     verify(referralClientDao, times(1)).delete(referralClient.getPrimaryKey());
   }

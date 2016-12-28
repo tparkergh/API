@@ -45,6 +45,9 @@ import io.swagger.annotations.ApiResponses;
 @Consumes(MediaType.APPLICATION_JSON)
 public class CmsDocumentResource {
 
+  /**
+   * primary key = String, request = {@link CmsDocument}.
+   */
   private TypedResourceDelegate<String, CmsDocument> resourceDelegate;
 
   /**
