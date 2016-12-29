@@ -1,8 +1,11 @@
 package gov.ca.cwds.rest.api.domain.cms;
 
+import org.apache.commons.lang3.StringUtils;
+
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import gov.ca.cwds.rest.api.Response;
+import gov.ca.cwds.rest.services.ServiceException;
 
 /**
  * {@link Response} adding an id to the {@link StaffPerson}
@@ -20,7 +23,9 @@ public class PostedReporter extends Reporter {
    */
   public PostedReporter(gov.ca.cwds.rest.api.persistence.cms.Reporter reporter) {
     super(reporter);
-    assert (reporter.getReferralId() != null);
+    if (StringUtils.isBlank(reporter.getReferralId())) {
+      throw new ServiceException("Reporter ID cannot be empty");
+    }
 
     this.id = reporter.getReferralId();
   }

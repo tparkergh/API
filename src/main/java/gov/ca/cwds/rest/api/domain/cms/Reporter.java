@@ -35,7 +35,7 @@ public class Reporter extends DomainObject implements Request, Response {
 
   @NotEmpty
   @Size(min = 10, max = 10)
-  @ApiModelProperty(required = true, readOnly = false, value = "Reporter Identifier",
+  @ApiModelProperty(required = true, readOnly = false, value = "Referral ID",
       example = "ABC1234567")
   private String referralId;
 
@@ -163,6 +163,35 @@ public class Reporter extends DomainObject implements Request, Response {
   @ApiModelProperty(required = true, readOnly = false, value = "", example = "99")
   private String countySpecificCode;
 
+  /**
+   * @param badgeNumber
+   * @param cityName
+   * @param colltrClientRptrReltnshpType
+   * @param communicationMethodType
+   * @param confidentialWaiverIndicator
+   * @param drmsMandatedRprtrFeedback
+   * @param employerName
+   * @param feedbackDate
+   * @param feedbackRequiredIndicator
+   * @param firstName
+   * @param lastName
+   * @param mandatedReporterIndicator
+   * @param messagePhoneExtensionNumber
+   * @param messagePhoneNumber
+   * @param middleInitialName
+   * @param namePrefixDescription
+   * @param primaryPhoneNumber
+   * @param primaryPhoneExtensionNumber
+   * @param stateCodeType
+   * @param streetName
+   * @param streetNumber
+   * @param suffixTitleDescription
+   * @param zipcode
+   * @param referralId
+   * @param lawEnforcementId
+   * @param zipSuffixNumber
+   * @param countySpecificCode
+   */
   @JsonCreator
   public Reporter(@JsonProperty("badgeNumber") String badgeNumber,
       @JsonProperty("cityName") String cityName,
@@ -220,6 +249,9 @@ public class Reporter extends DomainObject implements Request, Response {
   }
 
 
+  /**
+   * @param persistedReporter - persisted Report object
+   */
   public Reporter(gov.ca.cwds.rest.api.persistence.cms.Reporter persistedReporter) {
     this.referralId = persistedReporter.getReferralId().trim();
     this.badgeNumber = persistedReporter.getBadgeNumber();
@@ -507,8 +539,6 @@ public class Reporter extends DomainObject implements Request, Response {
     if (!(obj instanceof Reporter)) {
       return false;
     }
-    // if (getClass() != obj.getClass())
-    // return false;
     Reporter other = (Reporter) obj;
     if (badgeNumber == null) {
       if (other.badgeNumber != null)

@@ -143,82 +143,142 @@ public class CmsDocument extends CmsPersistentObject {
     return id;
   }
 
+  /**
+   * @return segmentCount
+   */
   public Short getSegmentCount() {
     return segmentCount;
   }
 
+  /**
+   * @param segmentCount
+   */
   public void setSegmentCount(Short segmentCount) {
     this.segmentCount = segmentCount;
   }
 
+  /**
+   * @return docLength
+   */
   public Long getDocLength() {
     return docLength;
   }
 
+  /**
+   * @param docLength
+   */
   public void setDocLength(Long docLength) {
     this.docLength = docLength;
   }
 
+  /**
+   * @return docAuth
+   */
   public String getDocAuth() {
     return docAuth;
   }
 
+  /**
+   * @param docAuth
+   */
   public void setDocAuth(String docAuth) {
     this.docAuth = docAuth;
   }
 
+  /**
+   * @return docServ
+   */
   public String getDocServ() {
     return docServ;
   }
 
+  /**
+   * @param docServ
+   */
   public void setDocServ(String docServ) {
     this.docServ = docServ;
   }
 
+  /**
+   * @return docDate
+   */
   public Date getDocDate() {
     return docDate;
   }
 
+  /**
+   * @param docDate
+   */
   public void setDocDate(Date docDate) {
     this.docDate = docDate;
   }
 
+  /**
+   * @return docTime
+   */
   public Date getDocTime() {
     return docTime;
   }
 
+  /**
+   * @param docTime
+   */
   public void setDocTime(Date docTime) {
     this.docTime = docTime;
   }
 
+  /**
+   * @return docName
+   */
   public String getDocName() {
     return docName;
   }
 
+  /**
+   * @param docName
+   */
   public void setDocName(String docName) {
     this.docName = docName;
   }
 
+  /**
+   * @return compressionMethod
+   */
   public String getCompressionMethod() {
     return compressionMethod;
   }
 
+  /**
+   * @param compressionMethod
+   */
   public void setCompressionMethod(String compressionMethod) {
     this.compressionMethod = compressionMethod;
   }
 
+  /**
+   * @param id
+   */
   public void setId(String id) {
     this.id = id;
   }
 
+  /**
+   * @return blobSegments
+   */
   public Set<CmsDocumentBlobSegment> getBlobSegments() {
     return blobSegments;
   }
 
+  /**
+   * @param blobSegment
+   */
   public void addBlobSegment(CmsDocumentBlobSegment blobSegment) {
     this.blobSegments.add(blobSegment);
   }
 
+  /**
+   * @param blobSegments
+   */
   public void setBlobSegments(Set<CmsDocumentBlobSegment> blobSegments) {
     this.blobSegments = blobSegments;
   }

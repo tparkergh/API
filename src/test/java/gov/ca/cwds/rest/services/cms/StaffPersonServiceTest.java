@@ -5,6 +5,7 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.notNullValue;
 import static org.hamcrest.Matchers.nullValue;
+import static org.junit.Assert.assertEquals;
 import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
@@ -23,6 +24,7 @@ import gov.ca.cwds.rest.api.Response;
 import gov.ca.cwds.rest.api.domain.cms.PostedStaffPerson;
 import gov.ca.cwds.rest.api.domain.cms.StaffPerson;
 import gov.ca.cwds.rest.jdbi.cms.StaffPersonDao;
+import gov.ca.cwds.rest.services.ServiceException;
 import io.dropwizard.jackson.Jackson;
 
 public class StaffPersonServiceTest {
@@ -44,13 +46,11 @@ public class StaffPersonServiceTest {
   // find test
   @Test
   public void findThrowsAssertionError() {
-    // TODO : thrown.expect not working on AssertionError???? WHY???
-    // thrown.expect(AssertionError.class);
+    thrown.expect(AssertionError.class);
     try {
-      staffPersonService.find("1");
-      Assert.fail("Expected AssertionError");
+      staffPersonService.find(1);
     } catch (AssertionError e) {
-
+      assertEquals("Expected AssertionError", e.getMessage());
     }
   }
 
@@ -76,13 +76,13 @@ public class StaffPersonServiceTest {
     assertThat(found, is(nullValue()));
   }
 
+  @Test
   public void deleteThrowsAssersionError() throws Exception {
-    // TODO : thrown.expect not working on AssertionError???? WHY???
-    // thrown.expect(AssertionError.class);
+    thrown.expect(AssertionError.class);
     try {
-      staffPersonService.delete("1");
-      Assert.fail("Expected AssertionError");
+      staffPersonService.delete(1);
     } catch (AssertionError e) {
+      assertEquals("Expected AssertionError", e.getMessage());
     }
   }
 
@@ -101,12 +101,12 @@ public class StaffPersonServiceTest {
   // update test
   @Test
   public void updateThrowsAssertionError() throws Exception {
-    // TODO: thrown.expect not working on AssertionError???? WHY???
-    // thrown.expect(AssertionError.class);
+    thrown.expect(AssertionError.class);
     try {
       staffPersonService.update("xxx", null);
       Assert.fail("Expected AssertionError");
     } catch (AssertionError e) {
+      assertEquals("Expected AssertionError", e.getMessage());
     }
   }
 
@@ -222,5 +222,65 @@ public class StaffPersonServiceTest {
     PostedStaffPerson returned = staffPersonService.create(request);
 
     assertThat(returned, is(expected));
+  }
+
+  @Test
+  public void failsWhenPostedStaffPersonIdBlank() throws Exception {
+    try {
+      StaffPerson staffPersonDomain = MAPPER.readValue(
+          fixture("fixtures/domain/legacy/StaffPerson/valid/valid.json"), StaffPerson.class);
+      gov.ca.cwds.rest.api.persistence.cms.StaffPerson toCreate =
+          new gov.ca.cwds.rest.api.persistence.cms.StaffPerson("   ", staffPersonDomain,
+              "last_update");
+
+      when(staffPersonDao.create(any(gov.ca.cwds.rest.api.persistence.cms.StaffPerson.class)))
+          .thenReturn(toCreate);
+
+      PostedStaffPerson expected = new PostedStaffPerson(toCreate);
+
+      Assert.fail("Expected AssertionError not thrown");
+    } catch (ServiceException e) {
+      assertEquals("StaffPerson ID cannot be empty", e.getMessage());
+    }
+  }
+
+  @Test
+  public void failsWhenPostedStaffPersonIdNull() throws Exception {
+    try {
+      StaffPerson staffPersonDomain = MAPPER.readValue(
+          fixture("fixtures/domain/legacy/StaffPerson/valid/valid.json"), StaffPerson.class);
+      gov.ca.cwds.rest.api.persistence.cms.StaffPerson toCreate =
+          new gov.ca.cwds.rest.api.persistence.cms.StaffPerson(null, staffPersonDomain,
+              "last_update");
+
+      when(staffPersonDao.create(any(gov.ca.cwds.rest.api.persistence.cms.StaffPerson.class)))
+          .thenReturn(toCreate);
+
+      PostedStaffPerson expected = new PostedStaffPerson(toCreate);
+
+      Assert.fail("Expected AssertionError not thrown");
+    } catch (ServiceException e) {
+      assertEquals("StaffPerson ID cannot be empty", e.getMessage());
+    }
+  }
+
+  @Test
+  public void failsWhenPostedStaffPersonIdEmmpty() throws Exception {
+    try {
+      StaffPerson staffPersonDomain = MAPPER.readValue(
+          fixture("fixtures/domain/legacy/StaffPerson/valid/valid.json"), StaffPerson.class);
+      gov.ca.cwds.rest.api.persistence.cms.StaffPerson toCreate =
+          new gov.ca.cwds.rest.api.persistence.cms.StaffPerson("", staffPersonDomain,
+              "last_update");
+
+      when(staffPersonDao.create(any(gov.ca.cwds.rest.api.persistence.cms.StaffPerson.class)))
+          .thenReturn(toCreate);
+
+      PostedStaffPerson expected = new PostedStaffPerson(toCreate);
+
+      Assert.fail("Expected AssertionError not thrown");
+    } catch (ServiceException e) {
+      assertEquals("StaffPerson ID cannot be empty", e.getMessage());
+    }
   }
 }

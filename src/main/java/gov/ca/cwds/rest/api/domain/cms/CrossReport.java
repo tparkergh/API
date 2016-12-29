@@ -123,6 +123,29 @@ public class CrossReport extends DomainObject implements Request, Response {
   @ApiModelProperty(required = true, readOnly = false)
   private Boolean satisfyCrossReportIndicator;
 
+  /**
+   * @param thirdId
+   * @param crossReportMethodType
+   * @param filedOutOfStateIndicator
+   * @param governmentOrgCrossRptIndicatorVar
+   * @param informTime
+   * @param recipientBadgeNumber
+   * @param recipientPhoneExtensionNumber
+   * @param recipientPhoneNumber
+   * @param informDate
+   * @param recipientPositionTitleDesc
+   * @param referenceNumber
+   * @param referralId
+   * @param lawEnforcementId
+   * @param staffPersonId
+   * @param description
+   * @param recipientName
+   * @param outstateLawEnforcementAddr
+   * @param countySpecificCode
+   * @param lawEnforcementIndicator
+   * @param outStateLawEnforcementIndicator
+   * @param satisfyCrossReportIndicator
+   */
   @JsonCreator
   public CrossReport(@JsonProperty("thirdId") String thirdId,
       @JsonProperty("crossReportMethodType") Short crossReportMethodType,
@@ -169,6 +192,9 @@ public class CrossReport extends DomainObject implements Request, Response {
     this.satisfyCrossReportIndicator = satisfyCrossReportIndicator;
   }
 
+  /**
+   * @param persistedCrossReport
+   */
   public CrossReport(gov.ca.cwds.rest.api.persistence.cms.CrossReport persistedCrossReport) {
     this.referralId = persistedCrossReport.getReferralId();
     this.thirdId = persistedCrossReport.getThirdId();

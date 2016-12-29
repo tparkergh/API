@@ -5,12 +5,14 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.notNullValue;
 import static org.hamcrest.Matchers.nullValue;
+import static org.junit.Assert.assertEquals;
 import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
+import org.hibernate.service.spi.ServiceException;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Rule;
@@ -42,12 +44,12 @@ public class ReporterServiceTest {
   // find test
   @Test
   public void findThrowsAssertionError() {
-    // TODO : thrown.expect not working on AssertionError???? WHY???
-    // thrown.expect(AssertionError.class);
+    // service is expecting a String as primary key
+    thrown.expect(AssertionError.class);
     try {
-      reporterService.find("1");
-      Assert.fail("Expected AssertionError");
+      reporterService.find(1);
     } catch (AssertionError e) {
+      assertEquals("Expected AssertionError", e.getMessage());
     }
   }
 
@@ -70,13 +72,14 @@ public class ReporterServiceTest {
   }
 
   // delete test
+  @Test
   public void deleteThrowsAssersionError() throws Exception {
-    // TODO : thrown.expect not working on AssertionError???? WHY???
-    // thrown.expect(AssertionError.class);
+    // service is expecting a String as primary key
+    thrown.expect(AssertionError.class);
     try {
-      reporterService.delete("ABC1234567");
-      Assert.fail("Expected AssertionError");
+      reporterService.delete(1);
     } catch (AssertionError e) {
+      assertEquals("Expected AssertionError", e.getMessage());
     }
   }
 
@@ -95,12 +98,12 @@ public class ReporterServiceTest {
   // update test
   @Test
   public void updateThrowsAssertionError() throws Exception {
-    // TODO: thrown.expect not working on AssertionError???? WHY???
-    // thrown.expect(AssertionError.class);
+    // service expecting domain Reporter object
+    thrown.expect(AssertionError.class);
     try {
       reporterService.update("ABC1234567", null);
-      Assert.fail("Expected AssertionError");
     } catch (AssertionError e) {
+      assertEquals("Expected AssertionError", e.getMessage());
     }
   }
 
@@ -142,6 +145,17 @@ public class ReporterServiceTest {
   }
 
   // create test
+  @Test
+  public void createThrowsAssertionError() throws Exception {
+    // service expecting domain Reporter object - test when null passed to service
+    thrown.expect(AssertionError.class);
+    try {
+      reporterService.create(null);
+    } catch (AssertionError e) {
+      assertEquals("Expected AssertionError", e.getMessage());
+    }
+  }
+
   @Test
   public void createReturnsPostedReporterClass() throws Exception {
     Reporter reporterDomain = MAPPER
@@ -195,4 +209,43 @@ public class ReporterServiceTest {
     assertThat(returned, is(expected));
   }
 
+  // @Test
+  // public void failsWhenPostedReporterServiceEmpty() throws Exception {
+  // try {
+  // Reporter reporterDomain = MAPPER.readValue(
+  // fixture("fixtures/domain/legacy/Reporter/invalid/referralIdEmpty.json"), Reporter.class);
+  // gov.ca.cwds.rest.api.persistence.cms.Reporter toCreate =
+  // new gov.ca.cwds.rest.api.persistence.cms.Reporter(reporterDomain, "last_update");
+  //
+  // when(reporterDao.create(any(gov.ca.cwds.rest.api.persistence.cms.Reporter.class)))
+  // .thenReturn(toCreate);
+  // PostedReporter expected = new PostedReporter(toCreate);
+  // Assert.fail("Expected ServiceException was not thrown");
+  // } catch (ServiceException e) {
+  // assertEquals("Reporter ID cannot be empty", e.getMessage());
+  // }
+  //
+  // }
+
+  @Test
+  public void failsWhenPostedReporterServiceNull() throws Exception {
+    try {
+      Reporter reporterDomain = MAPPER.readValue(
+          fixture("fixtures/domain/legacy/Reporter/invalid/referralIdNull.json"), Reporter.class);
+      gov.ca.cwds.rest.api.persistence.cms.Reporter toCreate =
+          new gov.ca.cwds.rest.api.persistence.cms.Reporter(reporterDomain, "last_update");
+
+      when(reporterDao.create(any(gov.ca.cwds.rest.api.persistence.cms.Reporter.class)))
+          .thenReturn(toCreate);
+      PostedReporter expected = new PostedReporter(toCreate);
+      Assert.fail("Expected ServiceException was not thrown");
+
+
+    } catch (ServiceException e) {
+      assertEquals("Reporter ID cannot be empty", e.getMessage());
+    } catch (NullPointerException ex) {
+      assertEquals(ex.getClass(), NullPointerException.class);
+    }
+
+  }
 }
