@@ -14,7 +14,6 @@ import org.hibernate.annotations.Type;
 
 import gov.ca.cwds.rest.api.ApiException;
 import gov.ca.cwds.rest.api.domain.DomainObject;
-import gov.ca.cwds.rest.api.persistence.cms.ReferralClient.PrimaryKey;
 
 /**
  * {@link CmsPersistentObject} representing a ReferralClient.
@@ -24,8 +23,94 @@ import gov.ca.cwds.rest.api.persistence.cms.ReferralClient.PrimaryKey;
 @SuppressWarnings("serial")
 @Entity
 @Table(name = "REFR_CLT")
-@IdClass(PrimaryKey.class)
+@IdClass(ReferralClient.PrimaryKey.class)
 public class ReferralClient extends CmsPersistentObject {
+
+  /**
+   * Hibernate annotation {@link IdClass} requires that members match the id columns of the parent
+   * class. From the Javadoc of said annotation,
+   * 
+   * <blockquote> "The names of the fields or properties in the primary key class and the primary
+   * key fields or properties of the entity must correspond and their types must be the same."
+   * </blockquote>
+   * 
+   * @see VarargPrimaryKey
+   */
+  public static final class PrimaryKey implements Serializable {
+    private static final long serialVersionUID = 1L;
+
+    private String referralId;
+    private String clientId;
+
+    /**
+     * Default ctor.
+     */
+    public PrimaryKey() {
+      // Default values.
+    }
+
+    /**
+     * Construct from args.
+     * 
+     * @param referralId referral Id
+     * @param clientId client Id
+     */
+    public PrimaryKey(String referralId, String clientId) {
+      this.referralId = referralId;
+      this.clientId = clientId;
+    }
+
+    /**
+     * {@inheritDoc}
+     * 
+     * @see java.lang.Object#toString()
+     */
+    @Override
+    public String toString() {
+      return "referralId=" + referralId.trim() + ",clientId=" + clientId.trim();
+    }
+
+    /**
+     * {@inheritDoc}
+     * 
+     * @see java.lang.Object#hashCode()
+     */
+    @Override
+    public int hashCode() {
+      final int prime = 31;
+      int result = 1;
+      result = prime * result + ((clientId == null) ? 0 : clientId.hashCode());
+      result = prime * result + ((referralId == null) ? 0 : referralId.hashCode());
+      return result;
+    }
+
+    /**
+     * {@inheritDoc}
+     * 
+     * @see java.lang.Object#equals(java.lang.Object)
+     */
+    @Override
+    public boolean equals(Object obj) {
+      if (this == obj)
+        return true;
+      if (obj == null)
+        return false;
+      if (getClass() != obj.getClass())
+        return false;
+      PrimaryKey other = (PrimaryKey) obj;
+      if (clientId == null) {
+        if (other.clientId != null)
+          return false;
+      } else if (!clientId.equals(other.clientId))
+        return false;
+      if (referralId == null) {
+        if (other.referralId != null)
+          return false;
+      } else if (!referralId.equals(other.referralId))
+        return false;
+      return true;
+    }
+  }
 
   @Id
   @Column(name = "FKREFERL_T", length = CMS_ID_LEN)
@@ -265,76 +350,6 @@ public class ReferralClient extends CmsPersistentObject {
    */
   public String getDrugIndicator() {
     return drugIndicator;
-  }
-
-  /**
-   * Deprecated: Use class {@link VarargPrimaryKey} instead.
-   * 
-   * @see VarargPrimaryKey
-   */
-  @Deprecated
-  public static final class PrimaryKey implements Serializable {
-    private static final long serialVersionUID = 1L;
-    private String referralId;
-    private String clientId;
-
-    public PrimaryKey() {}
-
-    public PrimaryKey(String referralId, String clientId) {
-      this.referralId = referralId;
-      this.clientId = clientId;
-    }
-
-    /**
-     * {@inheritDoc}
-     * 
-     * @see java.lang.Object#toString()
-     */
-    @Override
-    public String toString() {
-      return "referralId=" + referralId.trim() + ",clientId=" + clientId.trim();
-    }
-
-    /**
-     * {@inheritDoc}
-     * 
-     * @see java.lang.Object#hashCode()
-     */
-    @Override
-    public int hashCode() {
-      final int prime = 31;
-      int result = 1;
-      result = prime * result + ((clientId == null) ? 0 : clientId.hashCode());
-      result = prime * result + ((referralId == null) ? 0 : referralId.hashCode());
-      return result;
-    }
-
-    /**
-     * {@inheritDoc}
-     * 
-     * @see java.lang.Object#equals(java.lang.Object)
-     */
-    @Override
-    public boolean equals(Object obj) {
-      if (this == obj)
-        return true;
-      if (obj == null)
-        return false;
-      if (getClass() != obj.getClass())
-        return false;
-      PrimaryKey other = (PrimaryKey) obj;
-      if (clientId == null) {
-        if (other.clientId != null)
-          return false;
-      } else if (!clientId.equals(other.clientId))
-        return false;
-      if (referralId == null) {
-        if (other.referralId != null)
-          return false;
-      } else if (!referralId.equals(other.referralId))
-        return false;
-      return true;
-    }
   }
 
 }

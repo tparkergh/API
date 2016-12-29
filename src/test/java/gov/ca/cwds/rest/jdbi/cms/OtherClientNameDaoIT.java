@@ -1,8 +1,8 @@
 package gov.ca.cwds.rest.jdbi.cms;
 
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.greaterThanOrEqualTo;
+import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.notNullValue;
 
 import java.text.DateFormat;
@@ -88,8 +88,10 @@ public class OtherClientNameDaoIT {
 
   @Test
   public void testFind() {
-    String thirdId = "123";
-    OtherClientName found = otherClientNameDao.find(thirdId);
+    final String thirdId = "123";
+    final String clientId = "1";
+    OtherClientName found =
+        otherClientNameDao.find(new OtherClientName.PrimaryKey(clientId, thirdId));
     assertThat(found.getThirdId(), is(thirdId));
   }
 
@@ -110,8 +112,10 @@ public class OtherClientNameDaoIT {
 
   @Test
   public void testDelete() {
-    String thirdId = "123";
-    OtherClientName deleted = otherClientNameDao.delete(thirdId);
+    final String thirdId = "123";
+    final String clientId = "1";
+    OtherClientName deleted =
+        otherClientNameDao.delete(new OtherClientName.PrimaryKey(clientId, thirdId));
     assertThat(deleted.getThirdId(), is(thirdId));
   }
 

@@ -1,8 +1,14 @@
 package gov.ca.cwds.rest.api.persistence.cms;
 
+import java.io.Serializable;
+
+import javax.persistence.AttributeOverride;
+import javax.persistence.AttributeOverrides;
 import javax.persistence.Column;
+import javax.persistence.Embeddable;
+import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
-import javax.persistence.Id;
+import javax.persistence.IdClass;
 import javax.persistence.Table;
 
 import org.apache.commons.lang3.StringUtils;
@@ -28,14 +34,103 @@ import gov.ca.cwds.rest.api.persistence.PersistentObject;
 @Table(name = "OCL_NM_T")
 public class OtherClientName extends CmsPersistentObject {
 
-  // TODO: use @idClass for composite primary key.
-  // @Id
-  @Column(name = "FKCLIENT_T", length = CMS_ID_LEN)
-  private String clientId;
+  /**
+   * Hibernate annotation {@link IdClass} requires that members match the id columns of the parent
+   * class. From the Javadoc of said annotation,
+   * 
+   * <blockquote> "The names of the fields or properties in the primary key class and the primary
+   * key fields or properties of the entity must correspond and their types must be the same."
+   * </blockquote>
+   * 
+   * <p>
+   * Instead of {@link IdClass}, use the nifty approach below using {@link Embeddable} and
+   * {@link EmbeddedId}. Try it on your friends!
+   * </p>
+   * 
+   * @see VarargPrimaryKey
+   */
+  @Embeddable
+  public static final class PrimaryKey implements Serializable {
+    private static final long serialVersionUID = 1L;
 
-  @Id
-  @Column(name = "THIRD_ID", length = CMS_ID_LEN)
-  private String thirdId;
+    String id1;
+    String id2;
+
+    /**
+     * Default ctor.
+     */
+    public PrimaryKey() {
+      // Default values.
+    }
+
+    /**
+     * Construct from arguments.
+     * 
+     * @param id1 generic id 1
+     * @param id2 generic id 2
+     */
+    public PrimaryKey(String id1, String id2) {
+      this.id1 = id1;
+      this.id2 = id2;
+    }
+
+    /**
+     * {@inheritDoc}
+     * 
+     * @see java.lang.Object#toString()
+     */
+    @Override
+    public String toString() {
+      return "referralId=" + id2.trim() + ",clientId=" + id1.trim();
+    }
+
+    /**
+     * {@inheritDoc}
+     * 
+     * @see java.lang.Object#hashCode()
+     */
+    @Override
+    public int hashCode() {
+      final int prime = 31;
+      int result = 1;
+      result = prime * result + ((id1 == null) ? 0 : id1.hashCode());
+      result = prime * result + ((id2 == null) ? 0 : id2.hashCode());
+      return result;
+    }
+
+    /**
+     * {@inheritDoc}
+     * 
+     * @see java.lang.Object#equals(java.lang.Object)
+     */
+    @Override
+    public boolean equals(Object obj) {
+      if (this == obj)
+        return true;
+      if (obj == null)
+        return false;
+      if (getClass() != obj.getClass())
+        return false;
+      PrimaryKey other = (PrimaryKey) obj;
+      if (id1 == null) {
+        if (other.id1 != null)
+          return false;
+      } else if (!id1.equals(other.id1))
+        return false;
+      if (id2 == null) {
+        if (other.id2 != null)
+          return false;
+      } else if (!id2.equals(other.id2))
+        return false;
+      return true;
+    }
+  }
+
+  @AttributeOverrides({
+      @AttributeOverride(name = "id1", column = @Column(name = "FKCLIENT_T", length = CMS_ID_LEN)),
+      @AttributeOverride(name = "id2", column = @Column(name = "THIRD_ID", length = CMS_ID_LEN))})
+  @EmbeddedId
+  OtherClientName.PrimaryKey id;
 
   @Column(name = "FIRST_NM")
   private String firstName;
@@ -63,6 +158,7 @@ public class OtherClientName extends CmsPersistentObject {
    */
   public OtherClientName() {
     super();
+    this.id = new OtherClientName.PrimaryKey();
   }
 
   /**
@@ -80,14 +176,13 @@ public class OtherClientName extends CmsPersistentObject {
   public OtherClientName(String clientId, String firstName, String lastName, String middleName,
       String namePrefixDescription, Short nameType, String suffixTitleDescription, String thirdId) {
     super();
-    this.clientId = clientId;
+    this.id = new OtherClientName.PrimaryKey(clientId, thirdId);
     this.firstName = firstName;
     this.lastName = lastName;
     this.middleName = middleName;
     this.namePrefixDescription = namePrefixDescription;
     this.nameType = nameType;
     this.suffixTitleDescription = suffixTitleDescription;
-    this.thirdId = thirdId;
   }
 
   /**
@@ -96,8 +191,8 @@ public class OtherClientName extends CmsPersistentObject {
    * @see gov.ca.cwds.rest.api.persistence.PersistentObject#getPrimaryKey()
    */
   @Override
-  public String getPrimaryKey() {
-    return getThirdId();
+  public OtherClientName.PrimaryKey getPrimaryKey() {
+    return this.id;
   }
 
   /**
@@ -111,7 +206,7 @@ public class OtherClientName extends CmsPersistentObject {
    * @return the clientId
    */
   public String getClientId() {
-    return StringUtils.trimToEmpty(clientId);
+    return StringUtils.trimToEmpty(id.id1);
   }
 
   /**
@@ -153,14 +248,14 @@ public class OtherClientName extends CmsPersistentObject {
    * @return the thirdId
    */
   public String getThirdId() {
-    return StringUtils.trimToEmpty(thirdId);
+    return StringUtils.trimToEmpty(id.id2);
   }
 
   @Override
   public final int hashCode() {
     final int prime = 31;
     int result = 1;
-    result = prime * result + ((clientId == null) ? 0 : clientId.hashCode());
+    result = prime * result + ((id.id1 == null) ? 0 : id.id1.hashCode());
     result = prime * result + ((firstName == null) ? 0 : firstName.hashCode());
     result = prime * result + ((lastName == null) ? 0 : lastName.hashCode());
     result = prime * result + ((middleName == null) ? 0 : middleName.hashCode());
@@ -169,7 +264,7 @@ public class OtherClientName extends CmsPersistentObject {
     result = prime * result + ((nameType == null) ? 0 : nameType.hashCode());
     result =
         prime * result + ((suffixTitleDescription == null) ? 0 : suffixTitleDescription.hashCode());
-    result = prime * result + ((thirdId == null) ? 0 : thirdId.hashCode());
+    result = prime * result + ((id.id2 == null) ? 0 : id.id2.hashCode());
     result = prime * result
         + ((super.getLastUpdatedId() == null) ? 0 : super.getLastUpdatedId().hashCode());
     result = prime * result
@@ -191,7 +286,7 @@ public class OtherClientName extends CmsPersistentObject {
     }
     OtherClientName o = (OtherClientName) obj;
 
-    // Reduce cognitive complexity.
+    // Reduce cognitive complexity -- at the expense of slightly slower performance.
     if (!EqualsBuilder.reflectionEquals(this, o, false))
       return false;
 

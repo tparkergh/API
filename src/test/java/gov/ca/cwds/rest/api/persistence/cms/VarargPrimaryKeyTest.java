@@ -30,7 +30,7 @@ public class VarargPrimaryKeyTest {
   @Test
   public void toStringTest() throws Exception {
     VarargPrimaryKey vpk = new VarargPrimaryKey(argument1, argument2, argument3);
-    assertThat(vpk.toString(), is(equalTo("concatKeyargument1argument2argument3")));
+    assertThat(vpk.toString(), is(equalTo("varKey_{argument1_argument2_argument3}")));
   }
 
   @Test
