@@ -17,6 +17,8 @@ import org.hibernate.annotations.NamedQueries;
 import org.hibernate.annotations.NamedQuery;
 import org.hibernate.annotations.Type;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import gov.ca.cwds.rest.api.persistence.PersistentObject;
 
 /**
@@ -53,8 +55,8 @@ public class OtherClientName extends CmsPersistentObject {
   public static final class PrimaryKey implements Serializable {
     private static final long serialVersionUID = 1L;
 
-    String id1;
-    String id2;
+    String id1 = "";
+    String id2 = "";
 
     /**
      * Default ctor.
@@ -123,6 +125,22 @@ public class OtherClientName extends CmsPersistentObject {
       } else if (!id2.equals(other.id2))
         return false;
       return true;
+    }
+
+    public String getId1() {
+      return id1;
+    }
+
+    public void setId1(String id1) {
+      this.id1 = id1;
+    }
+
+    public String getId2() {
+      return id2;
+    }
+
+    public void setId2(String id2) {
+      this.id2 = id2;
     }
   }
 
@@ -203,13 +221,6 @@ public class OtherClientName extends CmsPersistentObject {
   }
 
   /**
-   * @return the clientId
-   */
-  public String getClientId() {
-    return StringUtils.trimToEmpty(id.id1);
-  }
-
-  /**
    * @return the lastName
    */
   public String getLastName() {
@@ -245,32 +256,51 @@ public class OtherClientName extends CmsPersistentObject {
   }
 
   /**
+   * @return the clientId
+   */
+  @JsonProperty(value = "clientId")
+  public String getClientId() {
+    return StringUtils.trimToEmpty(id.getId1());
+  }
+
+  /**
    * @return the thirdId
    */
+  @JsonProperty(value = "thirdId")
   public String getThirdId() {
-    return StringUtils.trimToEmpty(id.id2);
+    return StringUtils.trimToEmpty(id.getId2());
+  }
+
+  @JsonProperty(value = "clientId")
+  public void setClientId(String clientId) {
+    id.setId1(clientId);
+  }
+
+  @JsonProperty(value = "thirdId")
+  public void setThirdId(String thirdId) {
+    id.setId2(thirdId);
   }
 
   @Override
   public final int hashCode() {
     final int prime = 31;
-    int result = 1;
-    result = prime * result + ((id.id1 == null) ? 0 : id.id1.hashCode());
-    result = prime * result + ((firstName == null) ? 0 : firstName.hashCode());
-    result = prime * result + ((lastName == null) ? 0 : lastName.hashCode());
-    result = prime * result + ((middleName == null) ? 0 : middleName.hashCode());
-    result =
-        prime * result + ((namePrefixDescription == null) ? 0 : namePrefixDescription.hashCode());
-    result = prime * result + ((nameType == null) ? 0 : nameType.hashCode());
-    result =
-        prime * result + ((suffixTitleDescription == null) ? 0 : suffixTitleDescription.hashCode());
-    result = prime * result + ((id.id2 == null) ? 0 : id.id2.hashCode());
-    result = prime * result
+    int ret = 1;
+    ret = prime * ret + ((id == null || id.getId1() == null) ? 0 : id.getId1().hashCode());
+    ret = prime * ret + ((id == null || id.getId2() == null) ? 0 : id.getId2().hashCode());
+    ret = prime * ret + ((firstName == null) ? 0 : firstName.hashCode());
+    ret = prime * ret + ((lastName == null) ? 0 : lastName.hashCode());
+    ret = prime * ret + ((middleName == null) ? 0 : middleName.hashCode());
+    ret =
+        prime * ret + ((namePrefixDescription == null) ? 0 : namePrefixDescription.hashCode());
+    ret = prime * ret + ((nameType == null) ? 0 : nameType.hashCode());
+    ret =
+        prime * ret + ((suffixTitleDescription == null) ? 0 : suffixTitleDescription.hashCode());
+    ret = prime * ret
         + ((super.getLastUpdatedId() == null) ? 0 : super.getLastUpdatedId().hashCode());
-    result = prime * result
+    ret = prime * ret
         + ((super.getLastUpdatedTime() == null) ? 0 : super.getLastUpdatedTime().hashCode());
 
-    return result;
+    return ret;
   }
 
   @Override
@@ -306,4 +336,5 @@ public class OtherClientName extends CmsPersistentObject {
     }
     return true;
   }
+
 }

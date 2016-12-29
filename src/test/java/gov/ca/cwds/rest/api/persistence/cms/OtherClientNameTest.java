@@ -39,19 +39,19 @@ public class OtherClientNameTest {
   @Test
   public void persistentConstructorTest() throws Exception {
     OtherClientName vocn = validOtherClientName();
-    OtherClientName persistent = new OtherClientName(vocn.getClientId(), vocn.getFirstName(),
+    OtherClientName pers = new OtherClientName(vocn.getClientId(), vocn.getFirstName(),
         vocn.getLastName(), vocn.getMiddleName(), vocn.getNamePrefixDescription(),
         vocn.getNameType(), vocn.getSuffixTitleDescription(), vocn.getThirdId());
 
-    assertThat(persistent.getClientId(), is(equalTo(vocn.getClientId())));
-    assertThat(persistent.getFirstName(), is(equalTo(vocn.getFirstName())));
-    assertThat(persistent.getLastName(), is(equalTo(vocn.getLastName())));
-    assertThat(persistent.getMiddleName(), is(equalTo(vocn.getMiddleName())));
-    assertThat(persistent.getNamePrefixDescription(), is(equalTo(vocn.getNamePrefixDescription())));
-    assertThat(persistent.getNameType(), is(equalTo(vocn.getNameType())));
-    assertThat(persistent.getSuffixTitleDescription(),
+    assertThat(pers.getClientId(), is(equalTo(vocn.getClientId())));
+    assertThat(pers.getFirstName(), is(equalTo(vocn.getFirstName())));
+    assertThat(pers.getLastName(), is(equalTo(vocn.getLastName())));
+    assertThat(pers.getMiddleName(), is(equalTo(vocn.getMiddleName())));
+    assertThat(pers.getNamePrefixDescription(), is(equalTo(vocn.getNamePrefixDescription())));
+    assertThat(pers.getNameType(), is(equalTo(vocn.getNameType())));
+    assertThat(pers.getSuffixTitleDescription(),
         is(equalTo(vocn.getSuffixTitleDescription())));
-    assertThat(persistent.getThirdId(), is(equalTo(vocn.getThirdId())));
+    assertThat(pers.getThirdId(), is(equalTo(vocn.getThirdId())));
   }
 
   private OtherClientName validOtherClientName()
