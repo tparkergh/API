@@ -127,18 +127,30 @@ public class OtherClientName extends CmsPersistentObject {
       return true;
     }
 
+    /**
+     * @return arbitrary id column, {@link #id1}.
+     */
     public String getId1() {
       return id1;
     }
 
+    /**
+     * @param id1 arbitrary id column, {@link #id1}.
+     */
     public void setId1(String id1) {
       this.id1 = id1;
     }
 
+    /**
+     * @return arbitrary id column, {@link #id2}.
+     */
     public String getId2() {
       return id2;
     }
 
+    /**
+     * @param id2 arbitrary id column, {@link #id2}.
+     */
     public void setId2(String id2) {
       this.id2 = id2;
     }
@@ -256,6 +268,8 @@ public class OtherClientName extends CmsPersistentObject {
   }
 
   /**
+   * Delegate accessor: get the client id through the composite primary key.
+   * 
    * @return the clientId
    */
   @JsonProperty(value = "clientId")
@@ -264,18 +278,30 @@ public class OtherClientName extends CmsPersistentObject {
   }
 
   /**
-   * @return the thirdId
+   * Delegate accessor: get the third id through the composite primary key.
+   * 
+   * @return the "thirdId"
    */
   @JsonProperty(value = "thirdId")
   public String getThirdId() {
     return StringUtils.trimToEmpty(id.getId2());
   }
 
+  /**
+   * Delegate accessor: set the client id through the composite primary key.
+   * 
+   * @param clientId the clientId
+   */
   @JsonProperty(value = "clientId")
   public void setClientId(String clientId) {
     id.setId1(clientId);
   }
 
+  /**
+   * Delegate accessor: set the third id through the composite primary key.
+   * 
+   * @param thirdId the "thirdId"
+   */
   @JsonProperty(value = "thirdId")
   public void setThirdId(String thirdId) {
     id.setId2(thirdId);
@@ -290,11 +316,9 @@ public class OtherClientName extends CmsPersistentObject {
     ret = prime * ret + ((firstName == null) ? 0 : firstName.hashCode());
     ret = prime * ret + ((lastName == null) ? 0 : lastName.hashCode());
     ret = prime * ret + ((middleName == null) ? 0 : middleName.hashCode());
-    ret =
-        prime * ret + ((namePrefixDescription == null) ? 0 : namePrefixDescription.hashCode());
+    ret = prime * ret + ((namePrefixDescription == null) ? 0 : namePrefixDescription.hashCode());
     ret = prime * ret + ((nameType == null) ? 0 : nameType.hashCode());
-    ret =
-        prime * ret + ((suffixTitleDescription == null) ? 0 : suffixTitleDescription.hashCode());
+    ret = prime * ret + ((suffixTitleDescription == null) ? 0 : suffixTitleDescription.hashCode());
     ret = prime * ret
         + ((super.getLastUpdatedId() == null) ? 0 : super.getLastUpdatedId().hashCode());
     ret = prime * ret
