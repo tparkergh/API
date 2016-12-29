@@ -73,10 +73,10 @@ public abstract class BaseDaoImpl<T extends PersistentObject> extends CrudsDaoIm
     try {
       txn = session.beginTransaction();
       Query query = session.getNamedQuery(namedQueryName).setDate("after", datetime);
-      ImmutableList.Builder<T> persons = new ImmutableList.Builder<>();
-      persons.addAll(query.list());
+      ImmutableList.Builder<T> results = new ImmutableList.Builder<>();
+      results.addAll(query.list());
       txn.commit();
-      return persons.build();
+      return results.build();
     } catch (HibernateException h) {
       if (txn != null) {
         txn.rollback();

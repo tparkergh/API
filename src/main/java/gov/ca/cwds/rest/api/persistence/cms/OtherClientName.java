@@ -28,7 +28,8 @@ import gov.ca.cwds.rest.api.persistence.PersistentObject;
 @Table(name = "OCL_NM_T")
 public class OtherClientName extends CmsPersistentObject {
 
-  @Id
+  // TODO: use @idClass for composite primary key.
+  // @Id
   @Column(name = "FKCLIENT_T", length = CMS_ID_LEN)
   private String clientId;
 
