@@ -39,7 +39,6 @@ public class OtherClientNameTest {
   @Test
   public void persistentConstructorTest() throws Exception {
     OtherClientName vocn = validOtherClientName();
-
     OtherClientName persistent = new OtherClientName(vocn.getClientId(), vocn.getFirstName(),
         vocn.getLastName(), vocn.getMiddleName(), vocn.getNamePrefixDescription(),
         vocn.getNameType(), vocn.getSuffixTitleDescription(), vocn.getThirdId());
@@ -60,8 +59,6 @@ public class OtherClientNameTest {
 
     OtherClientName validOtherClientName = MAPPER.readValue(
         fixture("fixtures/domain/cms/OtherClientName/valid/valid.json"), OtherClientName.class);
-
     return validOtherClientName;
-
   }
 }

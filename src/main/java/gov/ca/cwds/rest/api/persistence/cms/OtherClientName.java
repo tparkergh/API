@@ -6,6 +6,7 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 
 import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.hibernate.annotations.NamedQueries;
 import org.hibernate.annotations.NamedQuery;
 import org.hibernate.annotations.Type;
@@ -27,8 +28,13 @@ import gov.ca.cwds.rest.api.persistence.PersistentObject;
 @Table(name = "OCL_NM_T")
 public class OtherClientName extends CmsPersistentObject {
 
+  @Id
   @Column(name = "FKCLIENT_T", length = CMS_ID_LEN)
   private String clientId;
+
+  @Id
+  @Column(name = "THIRD_ID", length = CMS_ID_LEN)
+  private String thirdId;
 
   @Column(name = "FIRST_NM")
   private String firstName;
@@ -49,10 +55,6 @@ public class OtherClientName extends CmsPersistentObject {
   @Column(name = "SUFX_TLDSC")
   private String suffixTitleDescription;
 
-  @Id
-  @Column(name = "THIRD_ID", length = CMS_ID_LEN)
-  private String thirdId;
-
   /**
    * Default constructor
    * 
@@ -62,6 +64,18 @@ public class OtherClientName extends CmsPersistentObject {
     super();
   }
 
+  /**
+   * Construct from String inputs.
+   * 
+   * @param clientId the client id
+   * @param firstName first name
+   * @param lastName last name
+   * @param middleName middle name
+   * @param namePrefixDescription name prefix description, if any
+   * @param nameType name type
+   * @param suffixTitleDescription suffix title description, if any
+   * @param thirdId third id, used to uniquely identify records
+   */
   public OtherClientName(String clientId, String firstName, String lastName, String middleName,
       String namePrefixDescription, Short nameType, String suffixTitleDescription, String thirdId) {
     super();
@@ -174,75 +188,24 @@ public class OtherClientName extends CmsPersistentObject {
     if (!(obj instanceof OtherClientName)) {
       return false;
     }
-    OtherClientName other = (OtherClientName) obj;
-    if (clientId == null) {
-      if (other.clientId != null) {
-        return false;
-      }
-    } else if (!clientId.equals(other.clientId)) {
+    OtherClientName o = (OtherClientName) obj;
+
+    // Reduce cognitive complexity.
+    if (!EqualsBuilder.reflectionEquals(this, o, false))
       return false;
-    }
-    if (firstName == null) {
-      if (other.firstName != null) {
-        return false;
-      }
-    } else if (!firstName.equals(other.firstName)) {
-      return false;
-    }
-    if (lastName == null) {
-      if (other.lastName != null) {
-        return false;
-      }
-    } else if (!lastName.equals(other.lastName)) {
-      return false;
-    }
-    if (middleName == null) {
-      if (other.middleName != null) {
-        return false;
-      }
-    } else if (!middleName.equals(other.middleName)) {
-      return false;
-    }
-    if (namePrefixDescription == null) {
-      if (other.namePrefixDescription != null) {
-        return false;
-      }
-    } else if (!namePrefixDescription.equals(other.namePrefixDescription)) {
-      return false;
-    }
-    if (nameType == null) {
-      if (other.nameType != null) {
-        return false;
-      }
-    } else if (!nameType.equals(other.nameType)) {
-      return false;
-    }
-    if (suffixTitleDescription == null) {
-      if (other.suffixTitleDescription != null) {
-        return false;
-      }
-    } else if (!suffixTitleDescription.equals(other.suffixTitleDescription)) {
-      return false;
-    }
-    if (thirdId == null) {
-      if (other.thirdId != null) {
-        return false;
-      }
-    } else if (!thirdId.equals(other.thirdId)) {
-      return false;
-    }
+
     if (super.getLastUpdatedId() == null) {
-      if (other.getLastUpdatedId() != null) {
+      if (o.getLastUpdatedId() != null) {
         return false;
       }
-    } else if (!super.getLastUpdatedId().equals(other.getLastUpdatedId())) {
+    } else if (!super.getLastUpdatedId().equals(o.getLastUpdatedId())) {
       return false;
     }
     if (super.getLastUpdatedTime() == null) {
-      if (other.getLastUpdatedTime() != null) {
+      if (o.getLastUpdatedTime() != null) {
         return false;
       }
-    } else if (!super.getLastUpdatedTime().equals(other.getLastUpdatedTime())) {
+    } else if (!super.getLastUpdatedTime().equals(o.getLastUpdatedTime())) {
       return false;
     }
     return true;
