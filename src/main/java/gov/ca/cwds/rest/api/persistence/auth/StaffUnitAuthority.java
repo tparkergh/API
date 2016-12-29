@@ -27,6 +27,7 @@ import gov.ca.cwds.rest.api.persistence.cms.CmsPersistentObject;
     @NamedQuery(
         name = "gov.ca.cwds.rest.api.persistence.auth.StaffUnitAuthority.findAllUpdatedAfter",
         query = "FROM StaffUnitAuthority WHERE lastUpdatedTime > :after")})
+
 @Entity
 @Table(schema = "CWSINT", name = "STFUATHT")
 public class StaffUnitAuthority extends CmsPersistentObject {
@@ -157,7 +158,7 @@ public class StaffUnitAuthority extends CmsPersistentObject {
    * @see java.lang.Object#hashCode()
    */
   @Override
-  public int hashCode() {
+  public final int hashCode() {
     final int prime = 31;
     int result = 1;
     result = prime * result + ((authorityCode == null) ? 0 : authorityCode.hashCode());
@@ -167,6 +168,10 @@ public class StaffUnitAuthority extends CmsPersistentObject {
     result = prime * result + ((staffPersonId == null) ? 0 : staffPersonId.hashCode());
     result = prime * result + ((startDate == null) ? 0 : startDate.hashCode());
     result = prime * result + ((thirdId == null) ? 0 : thirdId.hashCode());
+    result = prime * result
+        + ((super.getLastUpdatedId() == null) ? 0 : super.getLastUpdatedId().hashCode());
+    result = prime * result
+        + ((super.getLastUpdatedTime() == null) ? 0 : super.getLastUpdatedTime().hashCode());
     return result;
   }
 
@@ -176,7 +181,7 @@ public class StaffUnitAuthority extends CmsPersistentObject {
    * @see java.lang.Object#equals(java.lang.Object)
    */
   @Override
-  public boolean equals(Object obj) {
+  public final boolean equals(Object obj) {
     if (this == obj) {
       return true;
     }
@@ -234,6 +239,20 @@ public class StaffUnitAuthority extends CmsPersistentObject {
         return false;
       }
     } else if (!thirdId.equals(other.thirdId)) {
+      return false;
+    }
+    if (super.getLastUpdatedId() == null) {
+      if (other.getLastUpdatedId() != null) {
+        return false;
+      }
+    } else if (!super.getLastUpdatedId().equals(other.getLastUpdatedId())) {
+      return false;
+    }
+    if (super.getLastUpdatedTime() == null) {
+      if (other.getLastUpdatedTime() != null) {
+        return false;
+      }
+    } else if (!super.getLastUpdatedTime().equals(other.getLastUpdatedTime())) {
       return false;
     }
     return true;

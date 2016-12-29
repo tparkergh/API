@@ -36,5 +36,9 @@
 		<mapping class="gov.ca.cwds.rest.api.persistence.cms.CmsDocument" />
 		<mapping class="gov.ca.cwds.rest.api.persistence.cms.CmsDocReferralClient" />
 		<mapping class="gov.ca.cwds.rest.api.persistence.cms.CmsDocumentBlobSegment"/>
+		<mapping class="gov.ca.cwds.rest.api.persistence.auth.StaffAuthorityPrivilege"/>
+		<mapping class="gov.ca.cwds.rest.api.persistence.auth.StaffUnitAuthority"/>
+		<mapping class="gov.ca.cwds.rest.api.persistence.auth.UserId"/>
+		
 	</session-factory>
 </hibernate-configuration>

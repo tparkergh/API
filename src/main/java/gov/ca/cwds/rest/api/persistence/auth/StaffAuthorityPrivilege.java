@@ -12,6 +12,8 @@ import org.hibernate.annotations.NamedQueries;
 import org.hibernate.annotations.NamedQuery;
 import org.hibernate.annotations.Type;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 import gov.ca.cwds.rest.api.persistence.PersistentObject;
 import gov.ca.cwds.rest.api.persistence.cms.CmsPersistentObject;
 
@@ -49,6 +51,7 @@ public class StaffAuthorityPrivilege extends CmsPersistentObject {
   @Column(name = "END_DT")
   private Date endDate;
 
+  @JsonFormat(pattern = "HH:mm:ss")
   @Type(type = "time")
   @Column(name = "END_TIME")
   private Date endTime;
@@ -71,6 +74,7 @@ public class StaffAuthorityPrivilege extends CmsPersistentObject {
   @Column(name = "START_DT")
   private Date startDate;
 
+  @JsonFormat(pattern = "HH:mm:ss")
   @Type(type = "time")
   @Column(name = "START_TIME")
   private Date startTime;
@@ -189,7 +193,7 @@ public class StaffAuthorityPrivilege extends CmsPersistentObject {
    * @see java.lang.Object#hashCode()
    */
   @Override
-  public int hashCode() {
+  public final int hashCode() {
     final int prime = 31;
     int result = 1;
     result = prime * result + ((countySpecificCode == null) ? 0 : countySpecificCode.hashCode());
@@ -203,6 +207,10 @@ public class StaffAuthorityPrivilege extends CmsPersistentObject {
         + ((levelOfAuthPrivilegeType == null) ? 0 : levelOfAuthPrivilegeType.hashCode());
     result = prime * result + ((startDate == null) ? 0 : startDate.hashCode());
     result = prime * result + ((startTime == null) ? 0 : startTime.hashCode());
+    result = prime * result
+        + ((super.getLastUpdatedId() == null) ? 0 : super.getLastUpdatedId().hashCode());
+    result = prime * result
+        + ((super.getLastUpdatedTime() == null) ? 0 : super.getLastUpdatedTime().hashCode());
     return result;
   }
 
@@ -212,7 +220,7 @@ public class StaffAuthorityPrivilege extends CmsPersistentObject {
    * @see java.lang.Object#equals(java.lang.Object)
    */
   @Override
-  public boolean equals(Object obj) {
+  public final boolean equals(Object obj) {
     if (this == obj) {
       return true;
     }
@@ -284,6 +292,20 @@ public class StaffAuthorityPrivilege extends CmsPersistentObject {
         return false;
       }
     } else if (!startTime.equals(other.startTime)) {
+      return false;
+    }
+    if (super.getLastUpdatedId() == null) {
+      if (other.getLastUpdatedId() != null) {
+        return false;
+      }
+    } else if (!super.getLastUpdatedId().equals(other.getLastUpdatedId())) {
+      return false;
+    }
+    if (super.getLastUpdatedTime() == null) {
+      if (other.getLastUpdatedTime() != null) {
+        return false;
+      }
+    } else if (!super.getLastUpdatedTime().equals(other.getLastUpdatedTime())) {
       return false;
     }
     return true;
