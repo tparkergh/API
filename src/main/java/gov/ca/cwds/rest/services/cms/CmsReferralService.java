@@ -22,7 +22,7 @@ import gov.ca.cwds.rest.api.domain.cms.Reporter;
 import gov.ca.cwds.rest.services.CrudsService;
 
 /**
- * @author Tabpcenc1
+ * @author CWDS API Team
  *
  */
 public class CmsReferralService implements CrudsService {

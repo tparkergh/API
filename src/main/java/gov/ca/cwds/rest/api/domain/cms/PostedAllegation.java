@@ -1,8 +1,11 @@
 package gov.ca.cwds.rest.api.domain.cms;
 
+import org.apache.commons.lang3.StringUtils;
+
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import gov.ca.cwds.rest.api.Response;
+import gov.ca.cwds.rest.services.ServiceException;
 
 /**
  * {@link Response} adding an id to the {@link Allegation}
@@ -20,7 +23,9 @@ public class PostedAllegation extends Allegation {
    */
   public PostedAllegation(gov.ca.cwds.rest.api.persistence.cms.Allegation allegation) {
     super(allegation);
-    assert (allegation.getId() != null);
+    if (StringUtils.isBlank(allegation.getId())) {
+      throw new ServiceException("Allegation ID cannot be blank");
+    }
 
     this.id = allegation.getId();
   }

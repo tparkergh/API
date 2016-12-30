@@ -5,13 +5,13 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.notNullValue;
 import static org.hamcrest.Matchers.nullValue;
+import static org.junit.Assert.assertEquals;
 import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
@@ -23,6 +23,7 @@ import gov.ca.cwds.rest.api.Response;
 import gov.ca.cwds.rest.api.domain.cms.Allegation;
 import gov.ca.cwds.rest.api.domain.cms.PostedAllegation;
 import gov.ca.cwds.rest.jdbi.cms.AllegationDao;
+import gov.ca.cwds.rest.services.ServiceException;
 import io.dropwizard.jackson.Jackson;
 
 public class AllegationServiceTest {
@@ -42,12 +43,12 @@ public class AllegationServiceTest {
   // find test
   @Test
   public void findThrowsAssertionError() {
-    // TODO : thrown.expect not working on AssertionError???? WHY???
-    // thrown.expect(AssertionError.class);
+    // expect string type for primary key test
+    thrown.expect(AssertionError.class);
     try {
-      allegationService.find("1");
-      Assert.fail("Expected AssertionError");
+      allegationService.find(1);
     } catch (AssertionError e) {
+      assertEquals("Expeceted AssertionError", e.getMessage());
     }
   }
 
@@ -70,14 +71,15 @@ public class AllegationServiceTest {
     assertThat(found, is(nullValue()));
   }
 
+  @Test
   // delete test
   public void deleteThrowsAssersionError() throws Exception {
-    // TODO : thrown.expect not working on AssertionError???? WHY???
-    // thrown.expect(AssertionError.class);
+    // expect string type for primary key test
+    thrown.expect(AssertionError.class);
     try {
-      allegationService.delete("ABC1234567");
-      Assert.fail("Expected AssertionError");
+      allegationService.delete(123);
     } catch (AssertionError e) {
+      assertEquals("Expected AssertionError", e.getMessage());
     }
   }
 
@@ -96,12 +98,12 @@ public class AllegationServiceTest {
   // update test
   @Test
   public void updateThrowsAssertionError() throws Exception {
-    // TODO: thrown.expect not working on AssertionError???? WHY???
-    // thrown.expect(AssertionError.class);
+    // expected string type for primary key test
+    thrown.expect(AssertionError.class);
     try {
       allegationService.update("ABC1234567", null);
-      Assert.fail("Expected AssertionError");
     } catch (AssertionError e) {
+      assertEquals("Expected AssertionError", e.getMessage());
     }
   }
 
@@ -192,4 +194,43 @@ public class AllegationServiceTest {
     assertThat(returned, is(expected));
   }
 
+  @Test
+  public void createFailsWhenPostedAllegationIdIsNull() throws Exception {
+    try {
+      Allegation allegationDomain = MAPPER.readValue(
+          fixture("fixtures/domain/legacy/Allegation/valid/valid.json"), Allegation.class);
+      gov.ca.cwds.rest.api.persistence.cms.Allegation toCreate =
+          new gov.ca.cwds.rest.api.persistence.cms.Allegation(null, allegationDomain,
+              "last_update");
+
+      Allegation request = new Allegation(toCreate);
+      when(allegationDao.create(any(gov.ca.cwds.rest.api.persistence.cms.Allegation.class)))
+          .thenReturn(toCreate);
+
+      PostedAllegation expected = new PostedAllegation(toCreate);
+    } catch (ServiceException e) {
+      assertEquals("Allegation ID cannot be blank", e.getMessage());
+    }
+
+  }
+
+  @Test
+  public void createFailsWhenPostedAllegationIdIsBlank() throws Exception {
+    try {
+      Allegation allegationDomain = MAPPER.readValue(
+          fixture("fixtures/domain/legacy/Allegation/valid/valid.json"), Allegation.class);
+      gov.ca.cwds.rest.api.persistence.cms.Allegation toCreate =
+          new gov.ca.cwds.rest.api.persistence.cms.Allegation("    ", allegationDomain,
+              "last_update");
+
+      Allegation request = new Allegation(toCreate);
+      when(allegationDao.create(any(gov.ca.cwds.rest.api.persistence.cms.Allegation.class)))
+          .thenReturn(toCreate);
+
+      PostedAllegation expected = new PostedAllegation(toCreate);
+    } catch (ServiceException e) {
+      assertEquals("Allegation ID cannot be blank", e.getMessage());
+    }
+
+  }
 }

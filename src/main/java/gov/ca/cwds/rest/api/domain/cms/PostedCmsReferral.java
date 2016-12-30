@@ -15,6 +15,13 @@ public class PostedCmsReferral extends DomainObject implements Response {
   private ReferralClient referralClient;
   private Reporter reporter;
 
+  /**
+   * @param referral - PostedReferral
+   * @param allegation = PostedAllegation
+   * @param crossReport - CrossReport
+   * @param referralClient - ReferralClient
+   * @param reporter - PostedReporter
+   */
   public PostedCmsReferral(PostedReferral referral, PostedAllegation allegation,
       CrossReport crossReport, ReferralClient referralClient, PostedReporter reporter) {
     super();

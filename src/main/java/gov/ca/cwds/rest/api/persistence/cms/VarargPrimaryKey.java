@@ -3,6 +3,10 @@ package gov.ca.cwds.rest.api.persistence.cms;
 import java.io.Serializable;
 import java.util.Arrays;
 
+/**
+ * @author CWDS API Team
+ *
+ */
 public final class VarargPrimaryKey implements Serializable {
 
   private static final long serialVersionUID = 1L;
@@ -16,6 +20,9 @@ public final class VarargPrimaryKey implements Serializable {
     this.columns = new String[0];
   }
 
+  /**
+   * @param values String of key values
+   */
   public VarargPrimaryKey(String... values) {
     StringBuilder buf = new StringBuilder();
     this.columns = new String[values.length];
