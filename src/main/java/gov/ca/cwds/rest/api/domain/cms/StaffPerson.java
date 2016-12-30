@@ -114,13 +114,8 @@ public class StaffPerson extends DomainObject implements Request, Response {
   @Size(max = 50)
   @ApiModelProperty(required = false, readOnly = false, value = "",
       example = "john.q.smith@somedomain.com")
-  // NOTE : The legacy system doesn't seem to enforce valid email addresses
   // @Email
   private String emailAddress;
-
-  // @Size(min = 0, max = 20)
-  // @ApiModelProperty(required = true, readOnly = false, value = "", example = "john")
-  // private String twitterName;
 
   /**
    * Constructor
@@ -136,7 +131,7 @@ public class StaffPerson extends DomainObject implements Request, Response {
    * @param startDate The startDate
    * @param nameSuffix The nameSuffix
    * @param telecommuterIndicator The telecommuterIndicator
-   * @param cwsOffice The cwsoffic
+   * @param cwsOffice The cws office
    * @param availabilityAndLocationDescription The availabilityAndLocationDescription
    * @param ssrsLicensingWorkerId The ssrsLicensingWorkerId
    * @param countyCode The countyCode
@@ -350,7 +345,6 @@ public class StaffPerson extends DomainObject implements Request, Response {
     result = prime * result + ((emailAddress == null) ? 0 : emailAddress.hashCode());
     result = prime * result + ((endDate == null) ? 0 : endDate.hashCode());
     result = prime * result + ((firstName == null) ? 0 : firstName.hashCode());
-    // result = prime * result + ((twitterName == null) ? 0 : twitterName.hashCode());
     result = prime * result + ((jobTitle == null) ? 0 : jobTitle.hashCode());
     result = prime * result + ((lastName == null) ? 0 : lastName.hashCode());
     result = prime * result + ((middleInitial == null) ? 0 : middleInitial.hashCode());
@@ -440,13 +434,6 @@ public class StaffPerson extends DomainObject implements Request, Response {
     } else if (!firstName.equals(other.firstName)) {
       return false;
     }
-    // if (twitterName == null) {
-    // if (other.twitterName != null) {
-    // return false;
-    // }
-    // } else if (!twitterName.equals(other.twitterName)) {
-    // return false;
-    // }
     if (jobTitle == null) {
       if (other.jobTitle != null) {
         return false;

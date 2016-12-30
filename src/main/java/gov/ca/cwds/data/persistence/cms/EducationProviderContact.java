@@ -127,64 +127,109 @@ public class EducationProviderContact extends CmsPersistentObject {
     this.titleDescription = titleDescription;
   }
 
-  public String getDepartmentOfEducationIndicator() {
+  /**
+   * @return departmentOfEducationIndicator
+   */
+  public String getdepartmentOfEducationIndicator() {
     return departmentOfEducationIndicator;
   }
 
+  /**
+   * @return emailAddress
+   */
   public String getEmailAddress() {
     return emailAddress;
   }
 
+  /**
+   * @return faxNumber
+   */
   public BigDecimal getFaxNumber() {
     return faxNumber;
   }
 
+  /**
+   * @return firstName
+   */
   public String getFirstName() {
     return firstName;
   }
 
+  /**
+   * @return fKeyEducationProvider
+   */
   public String getfKeyEducationProvider() {
     return fKeyEducationProvider;
   }
 
+  /**
+   * @return id
+   */
   public String getId() {
     return id;
   }
 
+  /**
+   * @return lastName
+   */
   public String getLastName() {
     return lastName;
   }
 
 
+  /**
+   * @return middleName
+   */
   public String getMiddleName() {
     return middleName;
   }
 
+  /**
+   * @return namePrefixDescription
+   */
   public String getNamePrefixDescription() {
     return namePrefixDescription;
   }
 
+  /**
+   * @return phoneExtensionNumber
+   */
   public Integer getPhoneExtensionNumber() {
     return phoneExtensionNumber;
   }
 
+  /**
+   * @return phoneNumber
+   */
   public BigDecimal getPhoneNumber() {
     return phoneNumber;
   }
 
+  /**
+   * @return primaryContactIndicator
+   */
   public String getPrimaryContactIndicator() {
     return primaryContactIndicator;
   }
 
 
+  /**
+   * @return suffixTitleDescription
+   */
   public String getSuffixTitleDescription() {
     return suffixTitleDescription;
   }
 
+  /**
+   * @return titleDescription
+   */
   public String getTitleDescription() {
     return titleDescription;
   }
 
+  /**
+   * @return serialVersionUID
+   */
   public static long getSerialversionuid() {
     return serialVersionUID;
   }

@@ -101,6 +101,29 @@ public class CrossReport extends CmsPersistentObject {
     super();
   }
 
+  /**
+   * @param referralId - Referral ID
+   * @param thirdId - unique key to CrossReport table
+   * @param crossReportMethodType - crossReportMethodType
+   * @param filedOutOfStateIndicator - String filedOutOfStateIndicator
+   * @param governmentOrgCrossRptIndicatorVar - String governmentOrgCrossRptIndicatorVar
+   * @param informTime - Date informTime
+   * @param recipientBadgeNumber - String recipientBadgeNumber
+   * @param recipientPhoneExtensionNumber - Integer recipientPhoneExtensionNumber
+   * @param recipientPhoneNumber - BigDecimal recipientPhoneNumber
+   * @param informDate - Date informDate
+   * @param recipientPositionTitleDesc - String recipientPositionTitleDesc
+   * @param referenceNumber - String referenceNumber
+   * @param lawEnforcementId - String lawEnforcementId
+   * @param staffPersonId - String staffPersonId
+   * @param description - String description
+   * @param recipientName - String recipientName
+   * @param outstateLawEnforcementAddr - String lawEnforcementId
+   * @param countySpecificCode - String countySpecificCode
+   * @param lawEnforcementIndicator - String lawEnforcementIndicator
+   * @param outStateLawEnforcementIndicator - String outStateLawEnforcementIndicator
+   * @param satisfyCrossReportIndicator - String satisfyCrossReportIndicator
+   */
   public CrossReport(String referralId, String thirdId, Short crossReportMethodType,
       String filedOutOfStateIndicator, String governmentOrgCrossRptIndicatorVar, Date informTime,
       String recipientBadgeNumber, Integer recipientPhoneExtensionNumber,
@@ -186,7 +209,7 @@ public class CrossReport extends CmsPersistentObject {
     return getThirdId();
   }
 
-  /*
+  /**
    * @return the referralId
    */
   public String getReferralId() {

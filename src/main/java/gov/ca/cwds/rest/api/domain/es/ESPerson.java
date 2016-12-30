@@ -83,7 +83,9 @@ public class ESPerson extends Person {
      */
     SSN("ssn", String.class, null),
 
-    TYPE("type", String.class, null), SOURCE("source", String.class, null);
+    TYPE("type", String.class, null),
+
+    SOURCE("source", String.class, null);
 
     /**
      * ElasticSearch column name.
@@ -259,7 +261,7 @@ public class ESPerson extends Person {
   }
 
   /**
-   * Overload constructor, used to accomodate nested document members {@link #sourceType} and
+   * Overload constructor, used to accommodate nested document members {@link #sourceType} and
    * {@link #sourceJson}.
    * 
    * @param id identifier

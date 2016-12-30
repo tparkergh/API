@@ -66,12 +66,6 @@ public class PostedScreening extends ScreeningResponse {
     this.id = id;
   }
 
-  // public ScreeningResponseCreated(gov.ca.cwds.rest.api.persistence.ns.Screening screening,
-  // gov.ca.cwds.rest.api.persistence.ns.Address address) {
-  // super(screening, address);
-  // this.id = screening.getId();
-  // }
-
   /**
    * @return the id
    */
