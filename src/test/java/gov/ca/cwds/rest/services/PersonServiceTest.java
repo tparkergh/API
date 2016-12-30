@@ -4,16 +4,17 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.notNullValue;
 import static org.hamcrest.Matchers.nullValue;
+import static org.junit.Assert.assertEquals;
 import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 import org.apache.commons.lang3.NotImplementedException;
-import org.hamcrest.junit.ExpectedException;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
+import org.junit.rules.ExpectedException;
 
 import gov.ca.cwds.data.es.ElasticsearchDao;
 import gov.ca.cwds.data.ns.PersonDao;
@@ -63,12 +64,11 @@ public class PersonServiceTest {
 
   @Test
   public void findThrowsAssertionError() throws Exception {
-    // TODO : thrown.expect not working on AssertionError???? WHY???
-    // thrown.expect(AssertionError.class);
+    thrown.expect(AssertionError.class);
     try {
       personService.find("nonLong");
-      Assert.fail("Expected AssertionError");
     } catch (AssertionError e) {
+      assertEquals("Expected AssertionError", e.getMessage());
     }
   }
 
@@ -129,12 +129,11 @@ public class PersonServiceTest {
 
   @Test
   public void createThrowsAssertionError() throws Exception {
-    // TODO : thrown.expect not working on AssertionError???? WHY???
-    // thrown.expect(AssertionError.class);
+    thrown.expect(AssertionError.class);
     try {
-      personService.find("wrong");
-      Assert.fail("Expected AssertionError");
+      PostedPerson postedPerson = personService.create(null);
     } catch (AssertionError e) {
+      assertEquals("Expected AssertionError", e.getMessage());
     }
   }
 
@@ -149,12 +148,11 @@ public class PersonServiceTest {
 
   @Test
   public void deleteThrowsAssertionError() throws Exception {
-    // TODO : thrown.expect not working on AssertionError???? WHY???
-    // thrown.expect(AssertionError.class);
+    thrown.expect(AssertionError.class);
     try {
       personService.delete("nonLong");
-      Assert.fail("Expected AssertionError");
     } catch (AssertionError e) {
+      assertEquals("Expected AssertionError", e.getMessage());
     }
   }
 
@@ -172,12 +170,12 @@ public class PersonServiceTest {
 
   @Test
   public void updateThrowsAssertionError() throws Exception {
-    // TODO : thrown.expect not working on AssertionError???? WHY???
-    // thrown.expect(AssertionError.class);
+    thrown.expect(AssertionError.class);
     try {
       personService.update("wrong", null);
       Assert.fail("Expected AssertionError");
     } catch (AssertionError e) {
+      assertEquals("Expected AssertionError", e.getMessage());
     }
   }
 }

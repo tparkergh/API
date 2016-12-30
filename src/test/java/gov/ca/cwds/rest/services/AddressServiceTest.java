@@ -4,16 +4,16 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.notNullValue;
 import static org.hamcrest.Matchers.nullValue;
+import static org.junit.Assert.assertEquals;
 import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 import org.apache.commons.lang3.NotImplementedException;
-import org.hamcrest.junit.ExpectedException;
-import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
+import org.junit.rules.ExpectedException;
 
 import gov.ca.cwds.data.ns.AddressDao;
 import gov.ca.cwds.rest.api.domain.Address;
@@ -58,18 +58,27 @@ public class AddressServiceTest {
 
   @Test
   public void findThrowsAssertionError() throws Exception {
-    // TODO : thrown.expect not working on AssertionError???? WHY???
-    // thrown.expect(AssertionError.class);
+    thrown.expect(AssertionError.class);
     try {
       addressService.find("nonLong");
-      Assert.fail("Expected AssertionError");
     } catch (AssertionError e) {
+      assertEquals("Expected AssertionError", e.getMessage());
     }
   }
 
   /*
    * create tests
    */
+  @Test
+  public void createThrowsAssertionError() throws Exception {
+    thrown.expect(AssertionError.class);
+    try {
+      PostedAddress postedAddress = addressService.create(null);
+    } catch (AssertionError e) {
+      assertEquals("Expected AssertionError", e.getMessage());
+    }
+  }
+
   @Test
   public void createReturnsPostedAddress() throws Exception {
     gov.ca.cwds.data.persistence.ns.Address toCreate =
@@ -119,25 +128,34 @@ public class AddressServiceTest {
    * delete tests
    */
   @Test
+  public void deleteThrowsAssertionError() throws Exception {
+    thrown.expect(AssertionError.class);
+    try {
+      addressService.delete("nonLong");
+    } catch (AssertionError e) {
+      assertEquals("Expected AssertionError", e.getMessage());
+    }
+  }
+
+  @Test
   public void deleteThrowsNotImplementedException() throws Exception {
     thrown.expect(NotImplementedException.class);
     addressService.delete(new Long(1));
   }
 
-  @Test
-  public void deleteThrowsAssertionError() throws Exception {
-    // TODO : thrown.expect not working on AssertionError???? WHY???
-    // thrown.expect(AssertionError.class);
-    try {
-      addressService.delete("nonLong");
-      Assert.fail("Expected AssertionError");
-    } catch (AssertionError e) {
-    }
-  }
-
   /*
    * update tests
    */
+  @Test
+  public void updateThrowsAssertionError() throws Exception {
+    thrown.expect(AssertionError.class);
+    try {
+      addressService.update(null, new Address("street", "city", "state", 95555));
+    } catch (AssertionError e) {
+      assertEquals("Expected AssertionError", e.getMessage());
+    }
+  }
+
   @Test
   public void updateThrowsNotImplementedException() throws Exception {
     thrown.expect(NotImplementedException.class);
@@ -145,14 +163,4 @@ public class AddressServiceTest {
     addressService.update(1L, new Address("street", "city", "state", 95555));
   }
 
-  @Test
-  public void updateThrowsAssertionError() throws Exception {
-    // TODO : thrown.expect not working on AssertionError???? WHY???
-    // thrown.expect(AssertionError.class);
-    try {
-      addressService.update("wrong", null);
-      Assert.fail("Expected AssertionError");
-    } catch (AssertionError e) {
-    }
-  }
 }

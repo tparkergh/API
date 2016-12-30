@@ -4,6 +4,7 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.notNullValue;
 import static org.hamcrest.Matchers.nullValue;
+import static org.junit.Assert.assertEquals;
 import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.contains;
 import static org.mockito.Mockito.mock;
@@ -56,8 +57,7 @@ public class ScreeningServiceTest {
    * find tests
    */
   @Test
-  public void findReturnsCorrectScreeningWhenFoundWhenFoundAndParticipantListIsNotNull()
-      throws Exception {
+  public void findReturnsCorrectScreeningWhenFoundAndParticipantListIsNotNull() throws Exception {
     gov.ca.cwds.rest.api.domain.Address domainAddress = new gov.ca.cwds.rest.api.domain.Address(
         "742 Evergreen Terrace", "Springfield", "WA", 98700);
     Person bart = new Person("Bart", "Simpson", "M", "2016-10-31", "123456789", domainAddress);
@@ -91,8 +91,7 @@ public class ScreeningServiceTest {
   }
 
   @Test
-  public void findReturnsCorrectScreeningWhenFoundWhenFoundAndParticipantListIsNull()
-      throws Exception {
+  public void findReturnsCorrectScreeningWhenFoundAndParticipantListIsNull() throws Exception {
     Address address = new Address(1L, "742 Evergreen Terrace", "Springfield", "WA", 98700);
     Date date = DomainChef.uncookDateString("2016-10-31");
     Screening screening = new Screening("X5HNJK", date, "Amador", date, "Home", "email",
@@ -122,12 +121,11 @@ public class ScreeningServiceTest {
 
   @Test
   public void findThrowsAssertionError() throws Exception {
-    // TODO : thrown.expect not working on AssertionError???? WHY???
-    // thrown.expect(AssertionError.class);
+    thrown.expect(AssertionError.class);
     try {
       screeningService.find("nonLong");
-      Assert.fail("Expected AssertionError");
     } catch (AssertionError e) {
+      assertEquals("Expected AssertionError", e.getMessage());
     }
   }
 
@@ -178,6 +176,16 @@ public class ScreeningServiceTest {
     assertThat(returned, is(expected));
   }
 
+  @Test
+  public void createThrowsAssertionError() throws Exception {
+    thrown.expect(AssertionError.class);
+    try {
+      screeningService.create(null);
+    } catch (AssertionError e) {
+      assertEquals("Expected AssertionError", e.getMessage());
+    }
+  }
+
   /*
    * delete tests
    */
@@ -189,12 +197,11 @@ public class ScreeningServiceTest {
 
   @Test
   public void deleteThrowsAssertionError() throws Exception {
-    // TODO : thrown.expect not working on AssertionError???? WHY???
-    // thrown.expect(AssertionError.class);
+    thrown.expect(AssertionError.class);
     try {
       screeningService.delete("nonLong");
-      Assert.fail("Expected AssertionError");
     } catch (AssertionError e) {
+      assertEquals("Expected AssertionError", e.getMessage());
     }
   }
 
@@ -203,12 +210,11 @@ public class ScreeningServiceTest {
    */
   @Test
   public void updateThrowsAssertionError() throws Exception {
-    // TODO : thrown.expect not working on AssertionError???? WHY???
-    // thrown.expect(AssertionError.class);
+    thrown.expect(AssertionError.class);
     try {
       screeningService.update("wrong", null);
-      Assert.fail("Expected AssertionError");
     } catch (AssertionError e) {
+      assertEquals("Expected AssertionError", e.getMessage());
     }
   }
 
@@ -310,12 +316,11 @@ public class ScreeningServiceTest {
 
   @Test
   public void updateThrowsAssertionErrorOnWrongRequestType() throws Exception {
-    // TODO : thrown.expect not working on AssertionError???? WHY???
-    // thrown.expect(AssertionError.class);
+    thrown.expect(AssertionError.class);
     try {
       screeningService.update(1L, new Request() {});
-      Assert.fail("Expected AssertionError");
     } catch (AssertionError e) {
+      assertEquals("Expected AssertionError", e.getMessage());
     }
   }
 
