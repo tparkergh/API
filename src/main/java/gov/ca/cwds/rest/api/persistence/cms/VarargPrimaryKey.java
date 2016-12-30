@@ -3,45 +3,29 @@ package gov.ca.cwds.rest.api.persistence.cms;
 import java.io.Serializable;
 import java.util.Arrays;
 
-/**
- * @author CWDS API Team
- *
- */
+import org.apache.commons.lang3.ArrayUtils;
+import org.apache.commons.lang3.StringUtils;
+
 public final class VarargPrimaryKey implements Serializable {
 
   private static final long serialVersionUID = 1L;
 
-  private final String concatKey;
-
   private final String[] columns;
 
+  /**
+   * Hide the default constructor.
+   */
+  @SuppressWarnings("unused")
   private VarargPrimaryKey() {
-    this.concatKey = "";
     this.columns = new String[0];
   }
 
-  /**
-   * @param values String of key values
-   */
   public VarargPrimaryKey(String... values) {
-    StringBuilder buf = new StringBuilder();
     this.columns = new String[values.length];
     int cntr = -1;
     for (String v : values) {
-      if (v != null) {
-        String v2 = v.trim();
-        this.columns[++cntr] = v2;
-        if (v2.length() > 0) {
-          buf.append(v2);
-        } else {
-          buf.append(' ');
-        }
-      } else {
-        buf.append(' ');
-      }
+      this.columns[++cntr] = !StringUtils.isBlank(v) ? v.trim() : " ";
     }
-
-    this.concatKey = buf.toString();
   }
 
   /**
@@ -51,7 +35,7 @@ public final class VarargPrimaryKey implements Serializable {
    */
   @Override
   public String toString() {
-    return "concatKey" + concatKey;
+    return "varKey_" + ArrayUtils.toString(this.columns, "<null>").replace(',', '_');
   }
 
   /**
@@ -67,7 +51,6 @@ public final class VarargPrimaryKey implements Serializable {
     final int prime = 31;
     int result = 1;
     result = prime * result + Arrays.hashCode(columns);
-    result = prime * result + ((concatKey == null) ? 0 : concatKey.hashCode());
     return result;
   }
 
@@ -79,15 +62,13 @@ public final class VarargPrimaryKey implements Serializable {
       return false;
     if (getClass() != obj.getClass())
       return false;
+
     VarargPrimaryKey other = (VarargPrimaryKey) obj;
-    if (!Arrays.equals(columns, other.columns))
-      return false;
-    if (concatKey == null) {
-      if (other.concatKey != null)
-        return false;
-    } else if (!concatKey.equals(other.concatKey))
-      return false;
-    return true;
+    return Arrays.equals(columns, other.columns);
+  }
+
+  protected final String getPosition(int pos) {
+    return this.columns.length > pos ? this.columns[pos] : null;
   }
 
 }
