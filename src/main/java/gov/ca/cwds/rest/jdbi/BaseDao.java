@@ -9,10 +9,18 @@ import gov.ca.cwds.rest.api.persistence.PersistentObject;
  * Interface with some common DAO functions
  * 
  * @author CWDS API Team
+ * @param <T> type of {@link PersistentObject}
  */
 public interface BaseDao<T extends PersistentObject> extends Dao {
 
-  public List<T> findAll();
+  /**
+   * @return List of T
+   */
+  List<T> findAll();
 
-  public List<T> findAllUpdatedAfter(Date datetime);
+  /**
+   * @param datetime base search date
+   * @return List of T
+   */
+  List<T> findAllUpdatedAfter(Date datetime);
 }

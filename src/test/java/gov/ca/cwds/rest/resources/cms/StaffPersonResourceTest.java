@@ -50,6 +50,8 @@ public class StaffPersonResourceTest {
 
   /**
    * Get Tests
+   * 
+   * @throws Exception required for test compilation
    */
   @Test
   public void getDelegatesToResourceDelegate() throws Exception {
@@ -60,6 +62,8 @@ public class StaffPersonResourceTest {
 
   /**
    * Create Tests
+   * 
+   * @throws Exception required for test compilation
    */
   @Test
   public void createDelegatesToResourceDelegate() throws Exception {
@@ -96,6 +100,8 @@ public class StaffPersonResourceTest {
 
   /**
    * Delete Tests
+   * 
+   * @throws Exception required for test compilation
    */
   // @Test
   // public void deleteDelegatesToResourceDelegate() throws Exception {
@@ -124,6 +130,8 @@ public class StaffPersonResourceTest {
 
   /**
    * Update Tests
+   * 
+   * @throws Exception required for test compilation
    */
   @Test
   public void udpateDelegatesToResourceDelegate() throws Exception {

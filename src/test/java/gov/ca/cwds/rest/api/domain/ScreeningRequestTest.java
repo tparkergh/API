@@ -35,7 +35,7 @@ public class ScreeningRequestTest {
    * Serialization and deserialization
    */
   /**
-   * @throws Exception
+   * @throws Exception required for test compilation
    */
   @Test
   public void serializesToJSON() throws Exception {
@@ -54,7 +54,7 @@ public class ScreeningRequestTest {
   }
 
   /**
-   * @throws Exception
+   * @throws Exception required for test compilation
    */
   @Test
   public void deserializesFromJSON() throws Exception {

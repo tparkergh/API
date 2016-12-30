@@ -164,33 +164,33 @@ public class Reporter extends DomainObject implements Request, Response {
   private String countySpecificCode;
 
   /**
-   * @param badgeNumber
-   * @param cityName
-   * @param colltrClientRptrReltnshpType
-   * @param communicationMethodType
-   * @param confidentialWaiverIndicator
-   * @param drmsMandatedRprtrFeedback
-   * @param employerName
-   * @param feedbackDate
-   * @param feedbackRequiredIndicator
-   * @param firstName
-   * @param lastName
-   * @param mandatedReporterIndicator
-   * @param messagePhoneExtensionNumber
-   * @param messagePhoneNumber
-   * @param middleInitialName
-   * @param namePrefixDescription
-   * @param primaryPhoneNumber
-   * @param primaryPhoneExtensionNumber
-   * @param stateCodeType
-   * @param streetName
-   * @param streetNumber
-   * @param suffixTitleDescription
-   * @param zipcode
-   * @param referralId
-   * @param lawEnforcementId
-   * @param zipSuffixNumber
-   * @param countySpecificCode
+   * @param badgeNumber badge number
+   * @param cityName city name
+   * @param colltrClientRptrReltnshpType ??
+   * @param communicationMethodType communication method
+   * @param confidentialWaiverIndicator confidential waiver flag
+   * @param drmsMandatedRprtrFeedback DRMS mandated reporter feedback
+   * @param employerName employer name
+   * @param feedbackDate feedback date
+   * @param feedbackRequiredIndicator feedback req'd flag
+   * @param firstName first name
+   * @param lastName last name
+   * @param mandatedReporterIndicator mandated reporter flag
+   * @param messagePhoneExtensionNumber message phone ext
+   * @param messagePhoneNumber message phone
+   * @param middleInitialName middle initial/name
+   * @param namePrefixDescription name prefix description
+   * @param primaryPhoneNumber primary phone
+   * @param primaryPhoneExtensionNumber primary phone ext
+   * @param stateCodeType state code
+   * @param streetName street name
+   * @param streetNumber street num
+   * @param suffixTitleDescription title suffix description
+   * @param zipcode zip (zip 5)
+   * @param referralId FK to referral
+   * @param lawEnforcementId law enforcement id
+   * @param zipSuffixNumber zip suffix (zip 4)
+   * @param countySpecificCode county code
    */
   @JsonCreator
   public Reporter(@JsonProperty("badgeNumber") String badgeNumber,
@@ -247,7 +247,6 @@ public class Reporter extends DomainObject implements Request, Response {
     this.zipSuffixNumber = zipSuffixNumber;
     this.countySpecificCode = countySpecificCode;
   }
-
 
   /**
    * @param persistedReporter - persisted Report object
@@ -474,8 +473,8 @@ public class Reporter extends DomainObject implements Request, Response {
     return countySpecificCode;
   }
 
-  /*
-   * (non-Javadoc)
+  /**
+   * {@inheritDoc}
    * 
    * @see java.lang.Object#hashCode()
    */
@@ -523,8 +522,8 @@ public class Reporter extends DomainObject implements Request, Response {
     return result;
   }
 
-  /*
-   * (non-Javadoc)
+  /**
+   * {@inheritDoc}
    * 
    * @see java.lang.Object#equals(java.lang.Object)
    */

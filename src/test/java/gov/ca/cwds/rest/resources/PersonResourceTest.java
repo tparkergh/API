@@ -34,6 +34,8 @@ public class PersonResourceTest {
 
   /**
    * Get Tests
+   * 
+   * @throws Exception required for test compilation
    */
   @Test
   public void getDelegatesToCrudsResource() throws Exception {
@@ -44,6 +46,8 @@ public class PersonResourceTest {
 
   /**
    * Create Tests
+   * 
+   * @throws Exception required for test compilation
    */
   @Test
   public void createDelegatesToCrudsResource() throws Exception {
@@ -68,6 +72,8 @@ public class PersonResourceTest {
 
   /**
    * Delete Tests
+   * 
+   * @throws Exception required for test compilation
    */
   @Test
   public void deleteReturns501() throws Exception {
@@ -79,6 +85,8 @@ public class PersonResourceTest {
 
   /**
    * Update Tests
+   * 
+   * @throws Exception required for test compilation
    */
   @Test
   public void udpateReturns501() throws Exception {

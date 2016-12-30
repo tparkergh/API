@@ -151,7 +151,7 @@ public class CmsDocument extends CmsPersistentObject {
   }
 
   /**
-   * @param segmentCount
+   * @param segmentCount segment count
    */
   public void setSegmentCount(Short segmentCount) {
     this.segmentCount = segmentCount;
@@ -165,21 +165,21 @@ public class CmsDocument extends CmsPersistentObject {
   }
 
   /**
-   * @param docLength
+   * @param docLength document length (uncompressed)
    */
   public void setDocLength(Long docLength) {
     this.docLength = docLength;
   }
 
   /**
-   * @return docAuth
+   * @return docAuth doc "auth" stamp
    */
   public String getDocAuth() {
     return docAuth;
   }
 
   /**
-   * @param docAuth
+   * @param docAuth doc "auth" stamp
    */
   public void setDocAuth(String docAuth) {
     this.docAuth = docAuth;
@@ -193,21 +193,21 @@ public class CmsDocument extends CmsPersistentObject {
   }
 
   /**
-   * @param docServ
+   * @param docServ internal document server
    */
   public void setDocServ(String docServ) {
     this.docServ = docServ;
   }
 
   /**
-   * @return docDate
+   * @return docDate document date
    */
   public Date getDocDate() {
     return docDate;
   }
 
   /**
-   * @param docDate
+   * @param docDate document date
    */
   public void setDocDate(Date docDate) {
     this.docDate = docDate;
@@ -221,21 +221,21 @@ public class CmsDocument extends CmsPersistentObject {
   }
 
   /**
-   * @param docTime
+   * @param docTime time of document creation
    */
   public void setDocTime(Date docTime) {
     this.docTime = docTime;
   }
 
   /**
-   * @return docName
+   * @return docName document name, such as "child.doc"
    */
   public String getDocName() {
     return docName;
   }
 
   /**
-   * @param docName
+   * @param docName document name, such as "child.doc"
    */
   public void setDocName(String docName) {
     this.docName = docName;
@@ -249,35 +249,35 @@ public class CmsDocument extends CmsPersistentObject {
   }
 
   /**
-   * @param compressionMethod
+   * @param compressionMethod compression method, PK or LZW
    */
   public void setCompressionMethod(String compressionMethod) {
     this.compressionMethod = compressionMethod;
   }
 
   /**
-   * @param id
+   * @param id char(10) identifier
    */
   public void setId(String id) {
     this.id = id;
   }
 
   /**
-   * @return blobSegments
+   * @return blobSegments Set of binary, compressed segments
    */
   public Set<CmsDocumentBlobSegment> getBlobSegments() {
     return blobSegments;
   }
 
   /**
-   * @param blobSegment
+   * @param blobSegment add a binary, compressed BLOB segment
    */
   public void addBlobSegment(CmsDocumentBlobSegment blobSegment) {
     this.blobSegments.add(blobSegment);
   }
 
   /**
-   * @param blobSegments
+   * @param blobSegments Set of binary, compressed segments
    */
   public void setBlobSegments(Set<CmsDocumentBlobSegment> blobSegments) {
     this.blobSegments = blobSegments;

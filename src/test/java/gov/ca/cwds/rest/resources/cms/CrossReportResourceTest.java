@@ -20,11 +20,12 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import gov.ca.cwds.rest.api.domain.cms.CrossReport;
 import gov.ca.cwds.rest.resources.ResourceDelegate;
+import gov.ca.cwds.rest.resources.ServiceBackedResourceDelegate;
 import io.dropwizard.jackson.Jackson;
 import io.dropwizard.testing.junit.ResourceTestRule;
 
 /**
- * @link ServiceBackedResourceDelegate}. As such the tests in here reflect that assumption.
+ * {@link ServiceBackedResourceDelegate}. As such the tests in here reflect that assumption.
  * 
  * @author CWDS API Team
  */

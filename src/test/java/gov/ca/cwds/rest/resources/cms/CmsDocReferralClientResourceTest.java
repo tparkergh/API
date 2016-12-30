@@ -40,6 +40,8 @@ public class CmsDocReferralClientResourceTest {
 
   /**
    * Get Tests
+   * 
+   * @throws Exception required for test
    */
   @Test
   public void getDelegatesToResourceDelegate() throws Exception {

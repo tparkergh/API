@@ -81,7 +81,7 @@ public class CmsReferralTest {
   }
 
   /**
-   * @throws Exception
+   * @throws Exception required for test compilation
    */
   @Test
   public void jsonCreatorConstructorTest() throws Exception {
@@ -108,7 +108,6 @@ public class CmsReferralTest {
     assertThat(cmsReferral.getCrossReport(), is(equalTo(crossReport)));
     assertThat(cmsReferral.getReferralClient(), is(equalTo(referralClient)));
     assertThat(cmsReferral.getReporter(), is(equalTo(reporter)));
-
   }
 
   @Test
@@ -178,7 +177,6 @@ public class CmsReferralTest {
             .post(Entity.entity(toCreate, MediaType.APPLICATION_JSON));
 
     assertThat(response.getStatus(), is(equalTo(422)));
-
   }
 
   @Test
@@ -211,11 +209,7 @@ public class CmsReferralTest {
     Response response =
         resources.client().target(ROOT_RESOURCE).request().accept(MediaType.APPLICATION_JSON)
             .post(Entity.entity(toCreate, MediaType.APPLICATION_JSON));
-    // String message = response.readEntity(String.class);
-    // System.out.print(message);
-
     assertThat(response.getStatus(), is(equalTo(422)));
-
   }
 
   @Test
@@ -230,7 +224,6 @@ public class CmsReferralTest {
             .post(Entity.entity(toCreate, MediaType.APPLICATION_JSON));
 
     assertThat(response.getStatus(), is(equalTo(422)));
-
   }
 
   @Test
@@ -243,11 +236,7 @@ public class CmsReferralTest {
     Response response =
         resources.client().target(ROOT_RESOURCE).request().accept(MediaType.APPLICATION_JSON)
             .post(Entity.entity(toCreate, MediaType.APPLICATION_JSON));
-    // String message = response.readEntity(String.class);
-    // System.out.print(message);
-
     assertThat(response.getStatus(), is(equalTo(422)));
-
   }
 
   /*
@@ -263,11 +252,7 @@ public class CmsReferralTest {
     Response response =
         resources.client().target(ROOT_RESOURCE).request().accept(MediaType.APPLICATION_JSON)
             .post(Entity.entity(toCreate, MediaType.APPLICATION_JSON));
-    // String message = response.readEntity(String.class);
-    // System.out.print(message);
-
     assertThat(response.getStatus(), is(equalTo(422)));
-
   }
 
   @Test
@@ -282,7 +267,6 @@ public class CmsReferralTest {
             .post(Entity.entity(toCreate, MediaType.APPLICATION_JSON));
 
     assertThat(response.getStatus(), is(equalTo(422)));
-
   }
 
   @Test
@@ -297,7 +281,6 @@ public class CmsReferralTest {
             .post(Entity.entity(toCreate, MediaType.APPLICATION_JSON));
 
     assertThat(response.getStatus(), is(equalTo(422)));
-
   }
 
   /*
@@ -313,11 +296,7 @@ public class CmsReferralTest {
     Response response =
         resources.client().target(ROOT_RESOURCE).request().accept(MediaType.APPLICATION_JSON)
             .post(Entity.entity(toCreate, MediaType.APPLICATION_JSON));
-    // String message = response.readEntity(String.class);
-    // System.out.print(message);
-
     assertThat(response.getStatus(), is(equalTo(422)));
-
   }
 
   @Test
@@ -332,7 +311,6 @@ public class CmsReferralTest {
             .post(Entity.entity(toCreate, MediaType.APPLICATION_JSON));
 
     assertThat(response.getStatus(), is(equalTo(422)));
-
   }
 
   @Test
@@ -363,9 +341,6 @@ public class CmsReferralTest {
     Response response =
         resources.client().target(ROOT_RESOURCE).request().accept(MediaType.APPLICATION_JSON)
             .post(Entity.entity(toCreate, MediaType.APPLICATION_JSON));
-    // String message = response.readEntity(String.class);
-    // System.out.print(message);
-
     assertThat(response.getStatus(), is(equalTo(204)));
   }
 
@@ -379,11 +354,7 @@ public class CmsReferralTest {
     Response response =
         resources.client().target(ROOT_RESOURCE).request().accept(MediaType.APPLICATION_JSON)
             .post(Entity.entity(toCreate, MediaType.APPLICATION_JSON));
-    // String message = response.readEntity(String.class);
-    // System.out.print(message);
-
     assertThat(response.getStatus(), is(equalTo(422)));
-
   }
 
   @Test
@@ -404,9 +375,7 @@ public class CmsReferralTest {
   public void SuccessWhenCmsReferralEqualsNullCmsReferral() throws Exception {
     CmsReferral validReferral = MAPPER.readValue(
         fixture("fixtures/domain/cms/CmsReferral/valid/cmsReferral.json"), CmsReferral.class);
-
     assertThat(validReferral.equals(null), is(equalTo(Boolean.FALSE)));
-
   }
 
   @Test
@@ -419,7 +388,6 @@ public class CmsReferralTest {
         CmsReferral.class);
 
     assertThat(validReferral.equals(invalidReferral), is(equalTo(Boolean.FALSE)));
-
   }
 
   @Test
@@ -442,7 +410,6 @@ public class CmsReferralTest {
         CmsReferral.class);
 
     assertThat(validCmsReferral.equals(invalidCmsReferral), is(equalTo(Boolean.FALSE)));
-
   }
 
   @Test
@@ -454,7 +421,6 @@ public class CmsReferralTest {
         CmsReferral.class);
 
     assertThat(validCmsReferral.equals(invalidCmsReferral), is(equalTo(Boolean.FALSE)));
-
   }
 
   @Test
@@ -472,13 +438,11 @@ public class CmsReferralTest {
   @Test
   public void SucessWhenCmsReferralAndEmptyReferral() throws Exception {
     CmsReferral validCmsReferral = this.validCmsReferral();
-
     CmsReferral invalidCmsReferral = MAPPER.readValue(
         fixture("fixtures/domain/cms/CmsReferral/invalid/cmsReferralWhenReferralEmpty.json"),
         CmsReferral.class);
 
     assertThat(validCmsReferral.equals(invalidCmsReferral), is(equalTo(Boolean.FALSE)));
-
   }
 
   @Test
@@ -496,14 +460,13 @@ public class CmsReferralTest {
   @Test
   public void SucessWhenCmsReferralAndNullAllegation() throws Exception {
     CmsReferral validCmsReferral = this.validCmsReferral();
-
     CmsReferral invalidCmsReferral = MAPPER.readValue(
         fixture("fixtures/domain/cms/CmsReferral/invalid/cmsReferralNullAllegation.json"),
         CmsReferral.class);
 
     assertThat(invalidCmsReferral.equals(validCmsReferral), is(equalTo(Boolean.FALSE)));
-
   }
+
   // @Test
   // public void failureWhenReferralIdIsDifferentReferralClient() throws Exception {
   // CmsReferral toCreate = MAPPER.readValue(
@@ -553,7 +516,6 @@ public class CmsReferralTest {
       e.printStackTrace();
       return null;
     }
-
 
   }
 }

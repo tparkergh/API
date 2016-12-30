@@ -86,7 +86,7 @@ public class AllegationDaoIT {
   }
 
   /**
-   * @throws Exception
+   * @throws Exception test standard
    */
   @Test
   public void testCreate() throws Exception {
@@ -105,7 +105,7 @@ public class AllegationDaoIT {
   }
 
   /**
-   * @throws Exception
+   * @throws Exception test standard
    */
   @Test
   public void testCreateExistingEntityException() throws Exception {

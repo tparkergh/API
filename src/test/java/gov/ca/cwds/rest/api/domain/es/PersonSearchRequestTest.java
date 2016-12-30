@@ -21,7 +21,6 @@ import org.junit.Test;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import gov.ca.cwds.rest.api.domain.es.ESPersonSearchRequest;
 import gov.ca.cwds.rest.api.persistence.cms.Referral;
 import gov.ca.cwds.rest.core.Api;
 import gov.ca.cwds.rest.jdbi.CrudsDao;
@@ -93,6 +92,8 @@ public class PersonSearchRequestTest {
 
   /**
    * Successful Tests
+   * 
+   * @throws Exception required for test compilation
    */
   @Test
   public void successfulWithValid() throws Exception {
@@ -107,6 +108,8 @@ public class PersonSearchRequestTest {
 
   /**
    * birthDate Tests
+   * 
+   * @throws Exception required for test compilation
    */
   @Test
   public void successWhenBirthDateEmpty() throws Exception {

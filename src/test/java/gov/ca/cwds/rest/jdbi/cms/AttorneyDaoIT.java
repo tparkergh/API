@@ -89,7 +89,7 @@ public class AttorneyDaoIT {
   }
 
   /**
-   * @throws Exception
+   * @throws Exception required for test compilation
    */
   @Test
   public void testfindAllUpdatedAfterNamedQueryExists() throws Exception {
@@ -99,7 +99,7 @@ public class AttorneyDaoIT {
   }
 
   /**
-   * @throws Exception
+   * @throws Exception required for test compilation
    */
   @Test
   public void testfindAllUpdatedAfterReturnsCorrectList() throws Exception {
@@ -120,7 +120,7 @@ public class AttorneyDaoIT {
   /**
    * test the create methods
    * 
-   * @throws Exception
+   * @throws Exception required for test compilation
    */
   @Test
   public void testCreate() throws Exception {
@@ -154,7 +154,7 @@ public class AttorneyDaoIT {
   /**
    * test the update method
    * 
-   * @throws Exception
+   * @throws Exception required for test compilation
    */
   @Test
   public void testUpdate() throws Exception {

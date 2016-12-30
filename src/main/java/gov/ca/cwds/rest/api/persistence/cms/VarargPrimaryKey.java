@@ -1,12 +1,18 @@
 package gov.ca.cwds.rest.api.persistence.cms;
 
 import java.io.Serializable;
-import java.util.Arrays;
 
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
 
-public final class VarargPrimaryKey implements Serializable {
+/**
+ * Generic class to represent composite, multi-column primary keys and unique constraints.
+ * 
+ * @author CWDS API Team
+ */
+public class VarargPrimaryKey implements Serializable {
 
   private static final long serialVersionUID = 1L;
 
@@ -20,6 +26,9 @@ public final class VarargPrimaryKey implements Serializable {
     this.columns = new String[0];
   }
 
+  /**
+   * @param values any number of String keys
+   */
   public VarargPrimaryKey(String... values) {
     this.columns = new String[values.length];
     int cntr = -1;
@@ -47,27 +56,22 @@ public final class VarargPrimaryKey implements Serializable {
   }
 
   @Override
-  public int hashCode() {
-    final int prime = 31;
-    int result = 1;
-    result = prime * result + Arrays.hashCode(columns);
-    return result;
+  public final int hashCode() {
+    return HashCodeBuilder.reflectionHashCode(this, false);
   }
 
   @Override
-  public boolean equals(Object obj) {
-    if (this == obj)
-      return true;
-    if (obj == null)
-      return false;
-    if (getClass() != obj.getClass())
-      return false;
-
-    VarargPrimaryKey other = (VarargPrimaryKey) obj;
-    return Arrays.equals(columns, other.columns);
+  public final boolean equals(Object obj) {
+    return EqualsBuilder.reflectionEquals(this, obj, false);
   }
 
-  protected final String getPosition(int pos) {
+  /**
+   * Returns a column value by position.
+   * 
+   * @param pos zero-based column position
+   * @return value in specified column
+   */
+  public final String getPosition(int pos) {
     return this.columns.length > pos ? this.columns[pos] : null;
   }
 

@@ -41,6 +41,8 @@ public class CmsDocumentResourceTest {
 
   /**
    * Get Tests
+   * 
+   * @throws Exception required for test compilation
    */
   @Test
   public void getDelegatesToResourceDelegate() throws Exception {

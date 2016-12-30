@@ -36,6 +36,7 @@ public class CWDSCompressionUtils {
    * @param iss input stream to run checksum on
    * @return hex checksum string of file bytes
    * @throws IOException if file not found or accessible
+   * @throws NoSuchAlgorithmException if SHA1 algorithm not available
    */
   public static String checksum(InputStream iss) throws IOException, NoSuchAlgorithmException {
     MessageDigest md = MessageDigest.getInstance("SHA1");

@@ -24,6 +24,7 @@ import io.swagger.annotations.ApiModelProperty;
  */
 @ApiModel
 public class CrossReport extends DomainObject implements Request, Response {
+
   @NotNull
   @Size(min = 10, max = 10)
   @ApiModelProperty(required = true, readOnly = true, value = "", example = "1234ABC123")
@@ -124,27 +125,27 @@ public class CrossReport extends DomainObject implements Request, Response {
   private Boolean satisfyCrossReportIndicator;
 
   /**
-   * @param thirdId
-   * @param crossReportMethodType
-   * @param filedOutOfStateIndicator
-   * @param governmentOrgCrossRptIndicatorVar
-   * @param informTime
-   * @param recipientBadgeNumber
-   * @param recipientPhoneExtensionNumber
-   * @param recipientPhoneNumber
-   * @param informDate
-   * @param recipientPositionTitleDesc
-   * @param referenceNumber
-   * @param referralId
-   * @param lawEnforcementId
-   * @param staffPersonId
-   * @param description
-   * @param recipientName
-   * @param outstateLawEnforcementAddr
-   * @param countySpecificCode
-   * @param lawEnforcementIndicator
-   * @param outStateLawEnforcementIndicator
-   * @param satisfyCrossReportIndicator
+   * @param thirdId "third id" makes record unique
+   * @param crossReportMethodType reporting type
+   * @param filedOutOfStateIndicator if filed out of state
+   * @param governmentOrgCrossRptIndicatorVar if a govt cross report
+   * @param informTime inform time
+   * @param recipientBadgeNumber recipient's badge number
+   * @param recipientPhoneExtensionNumber recip's phone ext
+   * @param recipientPhoneNumber recip's phone
+   * @param informDate inform date
+   * @param recipientPositionTitleDesc recip's title
+   * @param referenceNumber reference num
+   * @param referralId FK to referral
+   * @param lawEnforcementId law enforcement id
+   * @param staffPersonId FK to staff person
+   * @param description description of this cross report
+   * @param recipientName recip's name
+   * @param outstateLawEnforcementAddr address of out-of-state law enforcement agency
+   * @param countySpecificCode county code
+   * @param lawEnforcementIndicator if law enforcement involved
+   * @param outStateLawEnforcementIndicator if out-of-state law enforcement agency
+   * @param satisfyCrossReportIndicator if cross reporting is satisfied
    */
   @JsonCreator
   public CrossReport(@JsonProperty("thirdId") String thirdId,
@@ -193,7 +194,7 @@ public class CrossReport extends DomainObject implements Request, Response {
   }
 
   /**
-   * @param persistedCrossReport
+   * @param persistedCrossReport whether the cross report is persisted
    */
   public CrossReport(gov.ca.cwds.rest.api.persistence.cms.CrossReport persistedCrossReport) {
     this.referralId = persistedCrossReport.getReferralId();
