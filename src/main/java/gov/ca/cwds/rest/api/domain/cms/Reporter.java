@@ -280,7 +280,7 @@ public class Reporter extends DomainObject implements Request, Response {
     this.streetNumber = persistedReporter.getStreetNumber();
     this.suffixTitleDescription = persistedReporter.getSuffixTitleDescription();
     this.zipcode = DomainObject.cookZipcodeNumber(persistedReporter.getZipNumber());
-    this.lawEnforcementId = persistedReporter.getLawEnforcementId().trim();
+    this.lawEnforcementId = persistedReporter.getLawEnforcementId();
     this.zipSuffixNumber = persistedReporter.getZipSuffixNumber();
     this.countySpecificCode = persistedReporter.getCountySpecificCode();
   }
