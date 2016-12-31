@@ -19,10 +19,10 @@ import org.junit.rules.ExpectedException;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import gov.ca.cwds.data.cms.ReferralDao;
 import gov.ca.cwds.rest.api.Response;
 import gov.ca.cwds.rest.api.domain.cms.PostedReferral;
 import gov.ca.cwds.rest.api.domain.cms.Referral;
-import gov.ca.cwds.rest.jdbi.cms.ReferralDao;
 import gov.ca.cwds.rest.services.ServiceException;
 import io.dropwizard.jackson.Jackson;
 
@@ -56,8 +56,8 @@ public class ReferralServiceTest {
   public void findReturnsCorrectReferralWhenFound() throws Exception {
     Referral expected = MAPPER
         .readValue(fixture("fixtures/domain/legacy/Referral/valid/valid.json"), Referral.class);
-    gov.ca.cwds.rest.api.persistence.cms.Referral referral =
-        new gov.ca.cwds.rest.api.persistence.cms.Referral("1234567ABC", expected, "0XA");
+    gov.ca.cwds.data.persistence.cms.Referral referral =
+        new gov.ca.cwds.data.persistence.cms.Referral("1234567ABC", expected, "0XA");
 
     when(referralDao.find("1234567ABC")).thenReturn(referral);
     Referral found = referralService.find("1234567ABC");
@@ -109,8 +109,8 @@ public class ReferralServiceTest {
     try {
       Referral referralDomain = MAPPER
           .readValue(fixture("fixtures/domain/legacy/Referral/valid/valid.json"), Referral.class);
-      gov.ca.cwds.rest.api.persistence.cms.Referral toCreate =
-          new gov.ca.cwds.rest.api.persistence.cms.Referral("1234567ABC", referralDomain,
+      gov.ca.cwds.data.persistence.cms.Referral toCreate =
+          new gov.ca.cwds.data.persistence.cms.Referral("1234567ABC", referralDomain,
               "last_update");
 
       Referral request = new Referral(toCreate);
@@ -125,8 +125,8 @@ public class ReferralServiceTest {
     Referral expected = MAPPER
         .readValue(fixture("fixtures/domain/legacy/Referral/valid/valid.json"), Referral.class);
 
-    gov.ca.cwds.rest.api.persistence.cms.Referral referral =
-        new gov.ca.cwds.rest.api.persistence.cms.Referral("1234567ABC", expected, "ABC");
+    gov.ca.cwds.data.persistence.cms.Referral referral =
+        new gov.ca.cwds.data.persistence.cms.Referral("1234567ABC", expected, "ABC");
 
     when(referralDao.find("ABC1234567")).thenReturn(referral);
     when(referralDao.update(any())).thenReturn(referral);
@@ -159,12 +159,12 @@ public class ReferralServiceTest {
   public void createReturnsPostedReferralClass() throws Exception {
     Referral referralDomain = MAPPER
         .readValue(fixture("fixtures/domain/legacy/Referral/valid/valid.json"), Referral.class);
-    gov.ca.cwds.rest.api.persistence.cms.Referral toCreate =
-        new gov.ca.cwds.rest.api.persistence.cms.Referral("1234567ABC", referralDomain,
+    gov.ca.cwds.data.persistence.cms.Referral toCreate =
+        new gov.ca.cwds.data.persistence.cms.Referral("1234567ABC", referralDomain,
             "last_update");
 
     Referral request = new Referral(toCreate);
-    when(referralDao.create(any(gov.ca.cwds.rest.api.persistence.cms.Referral.class)))
+    when(referralDao.create(any(gov.ca.cwds.data.persistence.cms.Referral.class)))
         .thenReturn(toCreate);
 
     Response response = referralService.create(request);
@@ -175,12 +175,12 @@ public class ReferralServiceTest {
   public void createReturnsNonNull() throws Exception {
     Referral referralDomain = MAPPER
         .readValue(fixture("fixtures/domain/legacy/Referral/valid/valid.json"), Referral.class);
-    gov.ca.cwds.rest.api.persistence.cms.Referral toCreate =
-        new gov.ca.cwds.rest.api.persistence.cms.Referral("1234567ABC", referralDomain,
+    gov.ca.cwds.data.persistence.cms.Referral toCreate =
+        new gov.ca.cwds.data.persistence.cms.Referral("1234567ABC", referralDomain,
             "last_update");
 
     Referral request = new Referral(toCreate);
-    when(referralDao.create(any(gov.ca.cwds.rest.api.persistence.cms.Referral.class)))
+    when(referralDao.create(any(gov.ca.cwds.data.persistence.cms.Referral.class)))
         .thenReturn(toCreate);
 
     PostedReferral postedReferral = referralService.create(request);
@@ -191,12 +191,12 @@ public class ReferralServiceTest {
   public void createReturnsCorrectPostedReferral() throws Exception {
     Referral referralDomain = MAPPER
         .readValue(fixture("fixtures/domain/legacy/Referral/valid/valid.json"), Referral.class);
-    gov.ca.cwds.rest.api.persistence.cms.Referral toCreate =
-        new gov.ca.cwds.rest.api.persistence.cms.Referral("1234567ABC", referralDomain,
+    gov.ca.cwds.data.persistence.cms.Referral toCreate =
+        new gov.ca.cwds.data.persistence.cms.Referral("1234567ABC", referralDomain,
             "last_update");
 
     Referral request = new Referral(toCreate);
-    when(referralDao.create(any(gov.ca.cwds.rest.api.persistence.cms.Referral.class)))
+    when(referralDao.create(any(gov.ca.cwds.data.persistence.cms.Referral.class)))
         .thenReturn(toCreate);
 
     PostedReferral expected = new PostedReferral(toCreate);
@@ -209,10 +209,10 @@ public class ReferralServiceTest {
     try {
       Referral referralDomain = MAPPER
           .readValue(fixture("fixtures/domain/legacy/Referral/valid/valid.json"), Referral.class);
-      gov.ca.cwds.rest.api.persistence.cms.Referral toCreate =
-          new gov.ca.cwds.rest.api.persistence.cms.Referral("", referralDomain, "last_update");
+      gov.ca.cwds.data.persistence.cms.Referral toCreate =
+          new gov.ca.cwds.data.persistence.cms.Referral("", referralDomain, "last_update");
 
-      when(referralDao.create(any(gov.ca.cwds.rest.api.persistence.cms.Referral.class)))
+      when(referralDao.create(any(gov.ca.cwds.data.persistence.cms.Referral.class)))
           .thenReturn(toCreate);
 
       PostedReferral expected = new PostedReferral(toCreate);
@@ -227,10 +227,10 @@ public class ReferralServiceTest {
     try {
       Referral referralDomain = MAPPER
           .readValue(fixture("fixtures/domain/legacy/Referral/valid/valid.json"), Referral.class);
-      gov.ca.cwds.rest.api.persistence.cms.Referral toCreate =
-          new gov.ca.cwds.rest.api.persistence.cms.Referral(null, referralDomain, "last_update");
+      gov.ca.cwds.data.persistence.cms.Referral toCreate =
+          new gov.ca.cwds.data.persistence.cms.Referral(null, referralDomain, "last_update");
 
-      when(referralDao.create(any(gov.ca.cwds.rest.api.persistence.cms.Referral.class)))
+      when(referralDao.create(any(gov.ca.cwds.data.persistence.cms.Referral.class)))
           .thenReturn(toCreate);
 
       PostedReferral expected = new PostedReferral(toCreate);
@@ -245,10 +245,10 @@ public class ReferralServiceTest {
     try {
       Referral referralDomain = MAPPER
           .readValue(fixture("fixtures/domain/legacy/Referral/valid/valid.json"), Referral.class);
-      gov.ca.cwds.rest.api.persistence.cms.Referral toCreate =
-          new gov.ca.cwds.rest.api.persistence.cms.Referral("   ", referralDomain, "last_update");
+      gov.ca.cwds.data.persistence.cms.Referral toCreate =
+          new gov.ca.cwds.data.persistence.cms.Referral("   ", referralDomain, "last_update");
 
-      when(referralDao.create(any(gov.ca.cwds.rest.api.persistence.cms.Referral.class)))
+      when(referralDao.create(any(gov.ca.cwds.data.persistence.cms.Referral.class)))
           .thenReturn(toCreate);
 
       PostedReferral expected = new PostedReferral(toCreate);
@@ -262,13 +262,13 @@ public class ReferralServiceTest {
   public void createReturnsCorrectPostedReferralId() throws Exception {
     Referral referralDomain = MAPPER
         .readValue(fixture("fixtures/domain/legacy/Referral/valid/valid.json"), Referral.class);
-    gov.ca.cwds.rest.api.persistence.cms.Referral toCreate =
-        new gov.ca.cwds.rest.api.persistence.cms.Referral("1234567ABC", referralDomain,
+    gov.ca.cwds.data.persistence.cms.Referral toCreate =
+        new gov.ca.cwds.data.persistence.cms.Referral("1234567ABC", referralDomain,
             "last_update");
 
     Referral request = new Referral(toCreate);
 
-    when(referralDao.create(any(gov.ca.cwds.rest.api.persistence.cms.Referral.class)))
+    when(referralDao.create(any(gov.ca.cwds.data.persistence.cms.Referral.class)))
         .thenReturn(toCreate);
 
     PostedReferral returned = referralService.create(request);

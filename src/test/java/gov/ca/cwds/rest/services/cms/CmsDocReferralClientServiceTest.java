@@ -11,7 +11,7 @@ import org.mockito.MockitoAnnotations;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import gov.ca.cwds.rest.jdbi.cms.CmsDocumentDao;
+import gov.ca.cwds.data.cms.CmsDocumentDao;
 import gov.ca.cwds.rest.util.jni.LZWEncoder;
 import io.dropwizard.jackson.Jackson;
 

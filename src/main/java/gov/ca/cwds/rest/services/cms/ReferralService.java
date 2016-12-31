@@ -10,11 +10,11 @@ import org.slf4j.LoggerFactory;
 
 import com.google.inject.Inject;
 
+import gov.ca.cwds.data.Dao;
+import gov.ca.cwds.data.cms.ReferralDao;
+import gov.ca.cwds.data.persistence.cms.Referral;
 import gov.ca.cwds.rest.api.Request;
 import gov.ca.cwds.rest.api.domain.cms.PostedReferral;
-import gov.ca.cwds.rest.api.persistence.cms.Referral;
-import gov.ca.cwds.rest.jdbi.Dao;
-import gov.ca.cwds.rest.jdbi.cms.ReferralDao;
 import gov.ca.cwds.rest.services.CrudsService;
 import gov.ca.cwds.rest.services.ServiceException;
 import gov.ca.cwds.rest.util.IdGenerator;
@@ -33,8 +33,8 @@ public class ReferralService implements CrudsService {
   /**
    * Constructor
    * 
-   * @param referralDao The {@link Dao} handling
-   *        {@link gov.ca.cwds.rest.api.persistence.cms.Referral} objects.
+   * @param referralDao The {@link Dao} handling {@link gov.ca.cwds.data.persistence.cms.Referral}
+   *        objects.
    */
   @Inject
   public ReferralService(ReferralDao referralDao) {
@@ -50,7 +50,7 @@ public class ReferralService implements CrudsService {
   public gov.ca.cwds.rest.api.domain.cms.Referral find(Serializable primaryKey) {
     assert (primaryKey instanceof String);
 
-    gov.ca.cwds.rest.api.persistence.cms.Referral persistedReferral = referralDao.find(primaryKey);
+    gov.ca.cwds.data.persistence.cms.Referral persistedReferral = referralDao.find(primaryKey);
     if (persistedReferral != null) {
       return new gov.ca.cwds.rest.api.domain.cms.Referral(persistedReferral);
     }
@@ -65,8 +65,7 @@ public class ReferralService implements CrudsService {
   @Override
   public gov.ca.cwds.rest.api.domain.cms.Referral delete(Serializable primaryKey) {
     assert (primaryKey instanceof String);
-    gov.ca.cwds.rest.api.persistence.cms.Referral persistedReferral =
-        referralDao.delete(primaryKey);
+    gov.ca.cwds.data.persistence.cms.Referral persistedReferral = referralDao.delete(primaryKey);
     if (persistedReferral != null) {
       return new gov.ca.cwds.rest.api.domain.cms.Referral(persistedReferral);
     }

@@ -12,21 +12,21 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.inject.Inject;
 
+import gov.ca.cwds.data.Dao;
+import gov.ca.cwds.data.es.ElasticsearchDao;
+import gov.ca.cwds.data.ns.PersonDao;
 import gov.ca.cwds.rest.api.ApiException;
 import gov.ca.cwds.rest.api.Request;
 import gov.ca.cwds.rest.api.Response;
-import gov.ca.cwds.rest.api.domain.DomainObject;
+import gov.ca.cwds.rest.api.domain.DomainChef;
 import gov.ca.cwds.rest.api.domain.Person;
 import gov.ca.cwds.rest.api.domain.PostedPerson;
 import gov.ca.cwds.rest.api.domain.es.ESPerson;
 import gov.ca.cwds.rest.api.domain.es.ESSearchRequest;
-import gov.ca.cwds.rest.elasticsearch.db.ElasticsearchDao;
-import gov.ca.cwds.rest.jdbi.Dao;
-import gov.ca.cwds.rest.jdbi.ns.PersonDao;
 
 /**
  * Business layer object to work on {@link Person} and
- * {@link gov.ca.cwds.rest.api.persistence.ns.Person}
+ * {@link gov.ca.cwds.data.persistence.ns.Person}
  * 
  * @author CWDS API Team
  */
@@ -41,7 +41,7 @@ public class PersonService implements CrudsService {
   /**
    * Constructor
    * 
-   * @param personDao The {@link Dao} handling {@link gov.ca.cwds.rest.api.persistence.ns.Person}
+   * @param personDao The {@link Dao} handling {@link gov.ca.cwds.data.persistence.ns.Person}
    *        objects.
    * @param elasticsearchDao the ElasticSearch DAO
    */
@@ -59,7 +59,7 @@ public class PersonService implements CrudsService {
   @Override
   public Person find(Serializable primaryKey) {
     assert primaryKey instanceof Long;
-    gov.ca.cwds.rest.api.persistence.ns.Person persistedPerson = personDao.find(primaryKey);
+    gov.ca.cwds.data.persistence.ns.Person persistedPerson = personDao.find(primaryKey);
     if (persistedPerson != null) {
       return new Person(persistedPerson);
     }
@@ -75,17 +75,16 @@ public class PersonService implements CrudsService {
   public PostedPerson create(Request request) {
     assert request instanceof Person;
     Person person = (Person) request;
-    gov.ca.cwds.rest.api.persistence.ns.Person managed =
-        new gov.ca.cwds.rest.api.persistence.ns.Person(person, null);
+    gov.ca.cwds.data.persistence.ns.Person managed =
+        new gov.ca.cwds.data.persistence.ns.Person(person, null);
 
     managed = personDao.create(managed);
     PostedPerson postedPerson = new PostedPerson(managed);
     try {
-      gov.ca.cwds.rest.api.elasticsearch.ns.Person esPerson =
-          new gov.ca.cwds.rest.api.elasticsearch.ns.Person(managed.getId().toString(),
-              managed.getFirstName(), managed.getLastName(), managed.getSsn(), managed.getGender(),
-              DomainObject.cookDate(managed.getDateOfBirth()), managed.getClass().getName(),
-              MAPPER.writeValueAsString(managed));
+      gov.ca.cwds.rest.api.domain.es.Person esPerson = new gov.ca.cwds.rest.api.domain.es.Person(
+          managed.getId().toString(), managed.getFirstName(), managed.getLastName(),
+          managed.getSsn(), managed.getGender(), DomainChef.cookDate(managed.getDateOfBirth()),
+          managed.getClass().getName(), MAPPER.writeValueAsString(managed));
       String document = MAPPER.writeValueAsString(esPerson);
 
       // The ES Dao manages its own connections. No need to manually start or stop.

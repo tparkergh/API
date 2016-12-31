@@ -13,6 +13,9 @@ import org.slf4j.LoggerFactory;
 
 import com.google.inject.Inject;
 
+import gov.ca.cwds.data.Dao;
+import gov.ca.cwds.data.ns.ScreeningDao;
+import gov.ca.cwds.data.persistence.ns.Address;
 import gov.ca.cwds.rest.api.Request;
 import gov.ca.cwds.rest.api.Response;
 import gov.ca.cwds.rest.api.domain.Person;
@@ -21,9 +24,6 @@ import gov.ca.cwds.rest.api.domain.Screening;
 import gov.ca.cwds.rest.api.domain.ScreeningReference;
 import gov.ca.cwds.rest.api.domain.ScreeningRequest;
 import gov.ca.cwds.rest.api.domain.ScreeningResponse;
-import gov.ca.cwds.rest.api.persistence.ns.Address;
-import gov.ca.cwds.rest.jdbi.Dao;
-import gov.ca.cwds.rest.jdbi.ns.ScreeningDao;
 
 /**
  * Business layer object to work on {@link Screening}
@@ -39,7 +39,7 @@ public class ScreeningService implements CrudsService {
   /**
    * 
    * @param screeningDao The {@link Dao} handling
-   *        {@link gov.ca.cwds.rest.api.persistence.ns.Screening} objects.
+   *        {@link gov.ca.cwds.data.persistence.ns.Screening} objects.
    * @param personService The person service
    */
   @Inject
@@ -57,7 +57,7 @@ public class ScreeningService implements CrudsService {
   public ScreeningResponse find(Serializable primaryKey) {
     assert primaryKey instanceof Long;
 
-    gov.ca.cwds.rest.api.persistence.ns.Screening screening = screeningDao.find(primaryKey);
+    gov.ca.cwds.data.persistence.ns.Screening screening = screeningDao.find(primaryKey);
     if (screening != null) {
       return new ScreeningResponse(screening, screening.getParticipants());
     }
@@ -85,8 +85,8 @@ public class ScreeningService implements CrudsService {
     assert request instanceof ScreeningReference;
 
     ScreeningReference screeningReference = (ScreeningReference) request;
-    gov.ca.cwds.rest.api.persistence.ns.Screening managed =
-        new gov.ca.cwds.rest.api.persistence.ns.Screening(screeningReference.getReference());
+    gov.ca.cwds.data.persistence.ns.Screening managed =
+        new gov.ca.cwds.data.persistence.ns.Screening(screeningReference.getReference());
 
     managed = screeningDao.create(managed);
     return new PostedScreening(managed.getId(), managed.getReference());
@@ -105,7 +105,7 @@ public class ScreeningService implements CrudsService {
 
     ScreeningRequest screeningRequest = (ScreeningRequest) request;
 
-    Set<gov.ca.cwds.rest.api.persistence.ns.Person> participants = new HashSet<>();
+    Set<gov.ca.cwds.data.persistence.ns.Person> participants = new HashSet<>();
     for (Long participantId : screeningRequest.getParticipant_ids()) {
       Person person = personService.find(participantId);
       if (person == null) {
@@ -113,12 +113,12 @@ public class ScreeningService implements CrudsService {
         LOGGER.warn(msg);
         throw new ServiceException(new EntityNotFoundException(msg));
       }
-      participants.add(new gov.ca.cwds.rest.api.persistence.ns.Person(person, null));
+      participants.add(new gov.ca.cwds.data.persistence.ns.Person(person, null));
     }
 
     Address address = new Address(screeningRequest.getAddress(), null);
-    gov.ca.cwds.rest.api.persistence.ns.Screening screening =
-        new gov.ca.cwds.rest.api.persistence.ns.Screening((Long) primaryKey, screeningRequest,
+    gov.ca.cwds.data.persistence.ns.Screening screening =
+        new gov.ca.cwds.data.persistence.ns.Screening((Long) primaryKey, screeningRequest,
             address, participants, null);
 
     screening = screeningDao.update(screening);

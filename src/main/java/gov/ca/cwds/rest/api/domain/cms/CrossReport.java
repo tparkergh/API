@@ -13,6 +13,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 import gov.ca.cwds.rest.api.Request;
 import gov.ca.cwds.rest.api.Response;
+import gov.ca.cwds.rest.api.domain.DomainChef;
 import gov.ca.cwds.rest.api.domain.DomainObject;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
@@ -196,19 +197,19 @@ public class CrossReport extends DomainObject implements Request, Response {
   /**
    * @param persistedCrossReport whether the cross report is persisted
    */
-  public CrossReport(gov.ca.cwds.rest.api.persistence.cms.CrossReport persistedCrossReport) {
+  public CrossReport(gov.ca.cwds.data.persistence.cms.CrossReport persistedCrossReport) {
     this.referralId = persistedCrossReport.getReferralId();
     this.thirdId = persistedCrossReport.getThirdId();
     this.crossReportMethodType = persistedCrossReport.getCrossReportMethodType();
     this.filedOutOfStateIndicator =
-        DomainObject.uncookBooleanString(persistedCrossReport.getFiledOutOfStateIndicator());
-    this.governmentOrgCrossRptIndicatorVar = DomainObject
-        .uncookBooleanString(persistedCrossReport.getGovernmentOrgCrossRptIndicatorVar());
-    this.informTime = DomainObject.cookTime(persistedCrossReport.getInformTime());
+        DomainChef.uncookBooleanString(persistedCrossReport.getFiledOutOfStateIndicator());
+    this.governmentOrgCrossRptIndicatorVar =
+        DomainChef.uncookBooleanString(persistedCrossReport.getGovernmentOrgCrossRptIndicatorVar());
+    this.informTime = DomainChef.cookTime(persistedCrossReport.getInformTime());
     this.recipientBadgeNumber = persistedCrossReport.getRecipientBadgeNumber();
     this.recipientPhoneExtensionNumber = persistedCrossReport.getRecipientPhoneExtensionNumber();
     this.recipientPhoneNumber = persistedCrossReport.getRecipientPhoneNumber();
-    this.informDate = DomainObject.cookDate(persistedCrossReport.getInformDate());
+    this.informDate = DomainChef.cookDate(persistedCrossReport.getInformDate());
     this.recipientPositionTitleDesc = persistedCrossReport.getRecipientPositionTitleDesc();
     this.referenceNumber = persistedCrossReport.getReferenceNumber();
     this.lawEnforcementId = persistedCrossReport.getLawEnforcementId();
@@ -218,11 +219,11 @@ public class CrossReport extends DomainObject implements Request, Response {
     this.outstateLawEnforcementAddr = persistedCrossReport.getOutstateLawEnforcementAddr();
     this.countySpecificCode = persistedCrossReport.getCountySpecificCode();
     this.lawEnforcementIndicator =
-        DomainObject.uncookBooleanString(persistedCrossReport.getLawEnforcementIndicator());
+        DomainChef.uncookBooleanString(persistedCrossReport.getLawEnforcementIndicator());
     this.outStateLawEnforcementIndicator =
-        DomainObject.uncookBooleanString(persistedCrossReport.getOutStateLawEnforcementIndicator());
+        DomainChef.uncookBooleanString(persistedCrossReport.getOutStateLawEnforcementIndicator());
     this.satisfyCrossReportIndicator =
-        DomainObject.uncookBooleanString(persistedCrossReport.getSatisfyCrossReportIndicator());
+        DomainChef.uncookBooleanString(persistedCrossReport.getSatisfyCrossReportIndicator());
   }
 
   /**

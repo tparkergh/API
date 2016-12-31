@@ -15,13 +15,13 @@ import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 
+import gov.ca.cwds.data.es.ElasticsearchDao;
+import gov.ca.cwds.data.ns.PersonDao;
 import gov.ca.cwds.rest.api.Response;
 import gov.ca.cwds.rest.api.domain.Address;
-import gov.ca.cwds.rest.api.domain.DomainObject;
+import gov.ca.cwds.rest.api.domain.DomainChef;
 import gov.ca.cwds.rest.api.domain.Person;
 import gov.ca.cwds.rest.api.domain.PostedPerson;
-import gov.ca.cwds.rest.elasticsearch.db.ElasticsearchDao;
-import gov.ca.cwds.rest.jdbi.ns.PersonDao;
 
 public class PersonServiceTest {
   private PersonService personService;
@@ -46,8 +46,8 @@ public class PersonServiceTest {
     Address address = new Address("742 Evergreen Terrace", "Springfield", "WA", 98700);
     Person expected = new Person("Bart", "Simpson", "M", "2016-10-31", "1234556789", address);
 
-    gov.ca.cwds.rest.api.persistence.ns.Person person =
-        new gov.ca.cwds.rest.api.persistence.ns.Person(expected, null);
+    gov.ca.cwds.data.persistence.ns.Person person =
+        new gov.ca.cwds.data.persistence.ns.Person(expected, null);
 
     when(personDao.find(123L)).thenReturn(person);
     Person found = personService.find(123L);
@@ -77,14 +77,14 @@ public class PersonServiceTest {
    */
   @Test
   public void createReturnsPostedPerson() throws Exception {
-    gov.ca.cwds.rest.api.persistence.ns.Address toCreateAddress =
-        new gov.ca.cwds.rest.api.persistence.ns.Address(1L, "742 Evergreen Terrace", "Springfield",
+    gov.ca.cwds.data.persistence.ns.Address toCreateAddress =
+        new gov.ca.cwds.data.persistence.ns.Address(1L, "742 Evergreen Terrace", "Springfield",
             "WA", new Integer(98700));
-    gov.ca.cwds.rest.api.persistence.ns.Person toCreate =
-        new gov.ca.cwds.rest.api.persistence.ns.Person(2L, "Bart", "Simpson", "M",
-            DomainObject.uncookDateString("2013-10-31"), "1234556789", toCreateAddress);
+    gov.ca.cwds.data.persistence.ns.Person toCreate =
+        new gov.ca.cwds.data.persistence.ns.Person(2L, "Bart", "Simpson", "M",
+            DomainChef.uncookDateString("2013-10-31"), "1234556789", toCreateAddress);
     Person request = new Person(toCreate);
-    when(personDao.create(any(gov.ca.cwds.rest.api.persistence.ns.Person.class)))
+    when(personDao.create(any(gov.ca.cwds.data.persistence.ns.Person.class)))
         .thenReturn(toCreate);
 
     Response response = personService.create(request);
@@ -93,14 +93,14 @@ public class PersonServiceTest {
 
   @Test
   public void createReturnsNonNull() throws Exception {
-    gov.ca.cwds.rest.api.persistence.ns.Address toCreateAddress =
-        new gov.ca.cwds.rest.api.persistence.ns.Address(1L, "742 Evergreen Terrace", "Springfield",
+    gov.ca.cwds.data.persistence.ns.Address toCreateAddress =
+        new gov.ca.cwds.data.persistence.ns.Address(1L, "742 Evergreen Terrace", "Springfield",
             "WA", new Integer(98700));
-    gov.ca.cwds.rest.api.persistence.ns.Person toCreate =
-        new gov.ca.cwds.rest.api.persistence.ns.Person(2L, "Bart", "Simpson", "M",
-            DomainObject.uncookDateString("2016-10-31"), "1234556789", toCreateAddress);
+    gov.ca.cwds.data.persistence.ns.Person toCreate =
+        new gov.ca.cwds.data.persistence.ns.Person(2L, "Bart", "Simpson", "M",
+            DomainChef.uncookDateString("2016-10-31"), "1234556789", toCreateAddress);
     Person request = new Person(toCreate);
-    when(personDao.create(any(gov.ca.cwds.rest.api.persistence.ns.Person.class)))
+    when(personDao.create(any(gov.ca.cwds.data.persistence.ns.Person.class)))
         .thenReturn(toCreate);
 
     PostedPerson postedPerson = personService.create(request);
@@ -109,14 +109,14 @@ public class PersonServiceTest {
 
   @Test
   public void createReturnsCorrectPostedPerson() throws Exception {
-    gov.ca.cwds.rest.api.persistence.ns.Address toCreateAddress =
-        new gov.ca.cwds.rest.api.persistence.ns.Address(1L, "742 Evergreen Terrace", "Springfield",
+    gov.ca.cwds.data.persistence.ns.Address toCreateAddress =
+        new gov.ca.cwds.data.persistence.ns.Address(1L, "742 Evergreen Terrace", "Springfield",
             "WA", new Integer(98700));
-    gov.ca.cwds.rest.api.persistence.ns.Person toCreate =
-        new gov.ca.cwds.rest.api.persistence.ns.Person(2L, "Bart", "Simpson", "M",
-            DomainObject.uncookDateString("2016-10-31"), "1234556789", toCreateAddress);
+    gov.ca.cwds.data.persistence.ns.Person toCreate =
+        new gov.ca.cwds.data.persistence.ns.Person(2L, "Bart", "Simpson", "M",
+            DomainChef.uncookDateString("2016-10-31"), "1234556789", toCreateAddress);
     Person request = new Person(toCreate);
-    when(personDao.create(any(gov.ca.cwds.rest.api.persistence.ns.Person.class)))
+    when(personDao.create(any(gov.ca.cwds.data.persistence.ns.Person.class)))
         .thenReturn(toCreate);
 
     Address address = new Address("742 Evergreen Terrace", "Springfield", "WA", 98700);

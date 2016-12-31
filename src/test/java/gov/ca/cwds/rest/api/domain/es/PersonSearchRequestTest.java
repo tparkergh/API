@@ -21,10 +21,9 @@ import org.junit.Test;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import gov.ca.cwds.rest.api.persistence.cms.Referral;
+import gov.ca.cwds.data.CrudsDao;
+import gov.ca.cwds.data.persistence.cms.Referral;
 import gov.ca.cwds.rest.core.Api;
-import gov.ca.cwds.rest.jdbi.CrudsDao;
-import gov.ca.cwds.rest.jdbi.DataAccessEnvironment;
 import gov.ca.cwds.rest.resources.PersonSearchResource;
 import io.dropwizard.jackson.Jackson;
 import io.dropwizard.testing.junit.ResourceTestRule;
@@ -54,7 +53,6 @@ public class PersonSearchRequestTest {
   public void setup() {
     @SuppressWarnings("rawtypes")
     CrudsDao crudsDao = mock(CrudsDao.class);
-    DataAccessEnvironment.register(gov.ca.cwds.rest.api.persistence.cms.Referral.class, crudsDao);
     when(crudsDao.find(any())).thenReturn(mock(Referral.class));
 
     when(mockResource.create(eq(validPersonSearchRequest)))

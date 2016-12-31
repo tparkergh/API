@@ -11,8 +11,8 @@ import org.junit.rules.ExpectedException;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import gov.ca.cwds.data.cms.CmsDocumentDao;
 import gov.ca.cwds.rest.api.domain.cms.CmsDocument;
-import gov.ca.cwds.rest.jdbi.cms.CmsDocumentDao;
 import io.dropwizard.jackson.Jackson;
 
 public class CmsDocumentServiceTest {

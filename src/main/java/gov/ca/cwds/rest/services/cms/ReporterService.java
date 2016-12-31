@@ -10,11 +10,11 @@ import org.slf4j.LoggerFactory;
 
 import com.google.inject.Inject;
 
+import gov.ca.cwds.data.Dao;
+import gov.ca.cwds.data.cms.ReporterDao;
+import gov.ca.cwds.data.persistence.cms.Reporter;
 import gov.ca.cwds.rest.api.Request;
 import gov.ca.cwds.rest.api.domain.cms.PostedReporter;
-import gov.ca.cwds.rest.api.persistence.cms.Reporter;
-import gov.ca.cwds.rest.jdbi.Dao;
-import gov.ca.cwds.rest.jdbi.cms.ReporterDao;
 import gov.ca.cwds.rest.services.CrudsService;
 import gov.ca.cwds.rest.services.ServiceException;
 
@@ -31,8 +31,8 @@ public class ReporterService implements CrudsService {
   /**
    * Constructor
    * 
-   * @param reporterDao The {@link Dao} handling
-   *        {@link gov.ca.cwds.rest.api.persistence.cms.Reporter} objects.
+   * @param reporterDao The {@link Dao} handling {@link gov.ca.cwds.data.persistence.cms.Reporter}
+   *        objects.
    */
   @Inject
   public ReporterService(ReporterDao reporterDao) {
@@ -48,7 +48,7 @@ public class ReporterService implements CrudsService {
   public gov.ca.cwds.rest.api.domain.cms.Reporter find(Serializable primaryKey) {
     assert primaryKey instanceof String;
 
-    gov.ca.cwds.rest.api.persistence.cms.Reporter persistedReporter = reporterDao.find(primaryKey);
+    gov.ca.cwds.data.persistence.cms.Reporter persistedReporter = reporterDao.find(primaryKey);
     if (persistedReporter != null) {
       return new gov.ca.cwds.rest.api.domain.cms.Reporter(persistedReporter);
     }
@@ -63,8 +63,7 @@ public class ReporterService implements CrudsService {
   @Override
   public gov.ca.cwds.rest.api.domain.cms.Reporter delete(Serializable primaryKey) {
     assert primaryKey instanceof String;
-    gov.ca.cwds.rest.api.persistence.cms.Reporter persistedReporter =
-        reporterDao.delete(primaryKey);
+    gov.ca.cwds.data.persistence.cms.Reporter persistedReporter = reporterDao.delete(primaryKey);
     if (persistedReporter != null) {
       return new gov.ca.cwds.rest.api.domain.cms.Reporter(persistedReporter);
     }

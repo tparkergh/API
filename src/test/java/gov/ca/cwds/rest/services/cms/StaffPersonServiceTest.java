@@ -20,10 +20,10 @@ import org.junit.rules.ExpectedException;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import gov.ca.cwds.data.cms.StaffPersonDao;
 import gov.ca.cwds.rest.api.Response;
 import gov.ca.cwds.rest.api.domain.cms.PostedStaffPerson;
 import gov.ca.cwds.rest.api.domain.cms.StaffPerson;
-import gov.ca.cwds.rest.jdbi.cms.StaffPersonDao;
 import gov.ca.cwds.rest.services.ServiceException;
 import io.dropwizard.jackson.Jackson;
 
@@ -60,8 +60,8 @@ public class StaffPersonServiceTest {
     StaffPerson expected = MAPPER.readValue(
         fixture("fixtures/domain/legacy/StaffPerson/valid/valid.json"), StaffPerson.class);
 
-    gov.ca.cwds.rest.api.persistence.cms.StaffPerson staffPerson =
-        new gov.ca.cwds.rest.api.persistence.cms.StaffPerson(id, expected, "000");
+    gov.ca.cwds.data.persistence.cms.StaffPerson staffPerson =
+        new gov.ca.cwds.data.persistence.cms.StaffPerson(id, expected, "000");
 
     when(staffPersonDao.find(id)).thenReturn(staffPerson);
 
@@ -116,8 +116,8 @@ public class StaffPersonServiceTest {
     StaffPerson expected = MAPPER.readValue(
         fixture("fixtures/domain/legacy/StaffPerson/valid/valid.json"), StaffPerson.class);
 
-    gov.ca.cwds.rest.api.persistence.cms.StaffPerson staffPerson =
-        new gov.ca.cwds.rest.api.persistence.cms.StaffPerson(id, expected, "000");
+    gov.ca.cwds.data.persistence.cms.StaffPerson staffPerson =
+        new gov.ca.cwds.data.persistence.cms.StaffPerson(id, expected, "000");
 
     when(staffPersonDao.find(id)).thenReturn(staffPerson);
     when(staffPersonDao.update(any())).thenReturn(staffPerson);
@@ -132,8 +132,8 @@ public class StaffPersonServiceTest {
     StaffPerson staffPersonRequest = MAPPER.readValue(
         fixture("fixtures/domain/legacy/StaffPerson/valid/valid.json"), StaffPerson.class);
 
-    gov.ca.cwds.rest.api.persistence.cms.StaffPerson staffPerson =
-        new gov.ca.cwds.rest.api.persistence.cms.StaffPerson(id, staffPersonRequest, "000");
+    gov.ca.cwds.data.persistence.cms.StaffPerson staffPerson =
+        new gov.ca.cwds.data.persistence.cms.StaffPerson(id, staffPersonRequest, "000");
 
     when(staffPersonDao.find(id)).thenReturn(staffPerson);
     when(staffPersonDao.update(any())).thenReturn(staffPerson);
@@ -158,8 +158,8 @@ public class StaffPersonServiceTest {
     StaffPerson staffPersonRequest = MAPPER.readValue(
         fixture("fixtures/domain/legacy/StaffPerson/valid/valid.json"), StaffPerson.class);
 
-    gov.ca.cwds.rest.api.persistence.cms.StaffPerson staffPerson =
-        new gov.ca.cwds.rest.api.persistence.cms.StaffPerson(id, staffPersonRequest, "000");
+    gov.ca.cwds.data.persistence.cms.StaffPerson staffPerson =
+        new gov.ca.cwds.data.persistence.cms.StaffPerson(id, staffPersonRequest, "000");
 
     when(staffPersonDao.find(id)).thenReturn(staffPerson);
     when(staffPersonDao.update(any())).thenReturn(staffPerson);
@@ -173,12 +173,12 @@ public class StaffPersonServiceTest {
     String id = "ABC";
     StaffPerson staffPersonDomain = MAPPER.readValue(
         fixture("fixtures/domain/legacy/StaffPerson/valid/valid.json"), StaffPerson.class);
-    gov.ca.cwds.rest.api.persistence.cms.StaffPerson toCreate =
-        new gov.ca.cwds.rest.api.persistence.cms.StaffPerson(id, staffPersonDomain, "last_update");
+    gov.ca.cwds.data.persistence.cms.StaffPerson toCreate =
+        new gov.ca.cwds.data.persistence.cms.StaffPerson(id, staffPersonDomain, "last_update");
 
     StaffPerson request = new StaffPerson(toCreate);
 
-    when(staffPersonDao.create(any(gov.ca.cwds.rest.api.persistence.cms.StaffPerson.class)))
+    when(staffPersonDao.create(any(gov.ca.cwds.data.persistence.cms.StaffPerson.class)))
         .thenReturn(toCreate);
 
     Response response = staffPersonService.create(request);
@@ -191,12 +191,12 @@ public class StaffPersonServiceTest {
     String id = "ABC";
     StaffPerson staffPersonDomain = MAPPER.readValue(
         fixture("fixtures/domain/legacy/StaffPerson/valid/valid.json"), StaffPerson.class);
-    gov.ca.cwds.rest.api.persistence.cms.StaffPerson toCreate =
-        new gov.ca.cwds.rest.api.persistence.cms.StaffPerson(id, staffPersonDomain, "last_update");
+    gov.ca.cwds.data.persistence.cms.StaffPerson toCreate =
+        new gov.ca.cwds.data.persistence.cms.StaffPerson(id, staffPersonDomain, "last_update");
 
     StaffPerson request = new StaffPerson(toCreate);
 
-    when(staffPersonDao.create(any(gov.ca.cwds.rest.api.persistence.cms.StaffPerson.class)))
+    when(staffPersonDao.create(any(gov.ca.cwds.data.persistence.cms.StaffPerson.class)))
         .thenReturn(toCreate);
 
     PostedStaffPerson postedStaffPerson = staffPersonService.create(request);
@@ -209,12 +209,12 @@ public class StaffPersonServiceTest {
     String id = "ABC";
     StaffPerson staffPersonDomain = MAPPER.readValue(
         fixture("fixtures/domain/legacy/StaffPerson/valid/valid.json"), StaffPerson.class);
-    gov.ca.cwds.rest.api.persistence.cms.StaffPerson toCreate =
-        new gov.ca.cwds.rest.api.persistence.cms.StaffPerson(id, staffPersonDomain, "last_update");
+    gov.ca.cwds.data.persistence.cms.StaffPerson toCreate =
+        new gov.ca.cwds.data.persistence.cms.StaffPerson(id, staffPersonDomain, "last_update");
 
     StaffPerson request = new StaffPerson(toCreate);
 
-    when(staffPersonDao.create(any(gov.ca.cwds.rest.api.persistence.cms.StaffPerson.class)))
+    when(staffPersonDao.create(any(gov.ca.cwds.data.persistence.cms.StaffPerson.class)))
         .thenReturn(toCreate);
 
     PostedStaffPerson expected = new PostedStaffPerson(toCreate);
@@ -229,11 +229,11 @@ public class StaffPersonServiceTest {
     try {
       StaffPerson staffPersonDomain = MAPPER.readValue(
           fixture("fixtures/domain/legacy/StaffPerson/valid/valid.json"), StaffPerson.class);
-      gov.ca.cwds.rest.api.persistence.cms.StaffPerson toCreate =
-          new gov.ca.cwds.rest.api.persistence.cms.StaffPerson("   ", staffPersonDomain,
+      gov.ca.cwds.data.persistence.cms.StaffPerson toCreate =
+          new gov.ca.cwds.data.persistence.cms.StaffPerson("   ", staffPersonDomain,
               "last_update");
 
-      when(staffPersonDao.create(any(gov.ca.cwds.rest.api.persistence.cms.StaffPerson.class)))
+      when(staffPersonDao.create(any(gov.ca.cwds.data.persistence.cms.StaffPerson.class)))
           .thenReturn(toCreate);
 
       PostedStaffPerson expected = new PostedStaffPerson(toCreate);
@@ -249,11 +249,11 @@ public class StaffPersonServiceTest {
     try {
       StaffPerson staffPersonDomain = MAPPER.readValue(
           fixture("fixtures/domain/legacy/StaffPerson/valid/valid.json"), StaffPerson.class);
-      gov.ca.cwds.rest.api.persistence.cms.StaffPerson toCreate =
-          new gov.ca.cwds.rest.api.persistence.cms.StaffPerson(null, staffPersonDomain,
+      gov.ca.cwds.data.persistence.cms.StaffPerson toCreate =
+          new gov.ca.cwds.data.persistence.cms.StaffPerson(null, staffPersonDomain,
               "last_update");
 
-      when(staffPersonDao.create(any(gov.ca.cwds.rest.api.persistence.cms.StaffPerson.class)))
+      when(staffPersonDao.create(any(gov.ca.cwds.data.persistence.cms.StaffPerson.class)))
           .thenReturn(toCreate);
 
       PostedStaffPerson expected = new PostedStaffPerson(toCreate);
@@ -269,11 +269,11 @@ public class StaffPersonServiceTest {
     try {
       StaffPerson staffPersonDomain = MAPPER.readValue(
           fixture("fixtures/domain/legacy/StaffPerson/valid/valid.json"), StaffPerson.class);
-      gov.ca.cwds.rest.api.persistence.cms.StaffPerson toCreate =
-          new gov.ca.cwds.rest.api.persistence.cms.StaffPerson("", staffPersonDomain,
+      gov.ca.cwds.data.persistence.cms.StaffPerson toCreate =
+          new gov.ca.cwds.data.persistence.cms.StaffPerson("", staffPersonDomain,
               "last_update");
 
-      when(staffPersonDao.create(any(gov.ca.cwds.rest.api.persistence.cms.StaffPerson.class)))
+      when(staffPersonDao.create(any(gov.ca.cwds.data.persistence.cms.StaffPerson.class)))
           .thenReturn(toCreate);
 
       PostedStaffPerson expected = new PostedStaffPerson(toCreate);

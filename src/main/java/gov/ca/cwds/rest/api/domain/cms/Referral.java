@@ -11,6 +11,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 import gov.ca.cwds.rest.api.Request;
 import gov.ca.cwds.rest.api.Response;
+import gov.ca.cwds.rest.api.domain.DomainChef;
 import gov.ca.cwds.rest.api.domain.DomainObject;
 import io.dropwizard.validation.OneOf;
 import io.swagger.annotations.ApiModel;
@@ -410,44 +411,44 @@ public class Referral extends DomainObject implements Request, Response {
   /**
    * @param persistedReferral - persistence Referral object
    */
-  public Referral(gov.ca.cwds.rest.api.persistence.cms.Referral persistedReferral) {
+  public Referral(gov.ca.cwds.data.persistence.cms.Referral persistedReferral) {
     this.additionalInfoIncludedCode =
-        DomainObject.uncookBooleanString(persistedReferral.getAdditionalInfoIncludedCode());
+        DomainChef.uncookBooleanString(persistedReferral.getAdditionalInfoIncludedCode());
     this.anonymousReporterIndicator =
-        DomainObject.uncookBooleanString(persistedReferral.getAnonymousReporterIndicator());
+        DomainChef.uncookBooleanString(persistedReferral.getAnonymousReporterIndicator());
     this.applicationForPetitionIndicator =
-        DomainObject.uncookBooleanString(persistedReferral.getApplicationForPetitionIndicator());
+        DomainChef.uncookBooleanString(persistedReferral.getApplicationForPetitionIndicator());
     this.approvalNumber = persistedReferral.getApprovalNumber();
     this.approvalStatusType = persistedReferral.getApprovalStatusType();
     this.caretakersPerpetratorCode =
-        DomainObject.uncookBooleanString(persistedReferral.getCaretakersPerpetratorCode());
-    this.closureDate = DomainObject.cookDate(persistedReferral.getClosureDate());
+        DomainChef.uncookBooleanString(persistedReferral.getCaretakersPerpetratorCode());
+    this.closureDate = DomainChef.cookDate(persistedReferral.getClosureDate());
     this.communicationMethodType = persistedReferral.getCommunicationMethodType();
     this.currentLocationOfChildren = persistedReferral.getCurrentLocationOfChildren();
     this.drmsAllegationDescriptionDoc = persistedReferral.getDrmsAllegationDescriptionDoc();
     this.drmsErReferralDoc = persistedReferral.getDrmsErReferralDoc();
     this.drmsInvestigationDoc = persistedReferral.getDrmsInvestigationDoc();
-    this.filedSuspectedChildAbuseReporttoLawEnforcementIndicator = DomainObject.uncookBooleanString(
+    this.filedSuspectedChildAbuseReporttoLawEnforcementIndicator = DomainChef.uncookBooleanString(
         persistedReferral.getFiledSuspectedChildAbuseReporttoLawEnforcementIndicator());
     this.familyAwarenessIndicator =
-        DomainObject.uncookBooleanString(persistedReferral.getFamilyAwarenessIndicator());
+        DomainChef.uncookBooleanString(persistedReferral.getFamilyAwarenessIndicator());
     this.govtEntityType = persistedReferral.getGovtEntityType();
     this.legalDefinitionCode = persistedReferral.getLegalDefinitionCode();
     this.legalRightsNoticeIndicator =
-        DomainObject.uncookBooleanString(persistedReferral.getLegalRightsNoticeIndicator());
+        DomainChef.uncookBooleanString(persistedReferral.getLegalRightsNoticeIndicator());
     this.limitedAccessCode = persistedReferral.getLimitedAccessCode();
     this.mandatedCrossReportReceivedDate =
-        DomainObject.cookDate(persistedReferral.getMandatedCrossReportReceivedDate());
+        DomainChef.cookDate(persistedReferral.getMandatedCrossReportReceivedDate());
     this.referralName = persistedReferral.getReferralName();
     this.openAdequateCaseCode = persistedReferral.getOpenAdequateCaseCode();
-    this.receivedDate = DomainObject.cookDate(persistedReferral.getReceivedDate());
-    this.receivedTime = DomainObject.cookTime(persistedReferral.getReceivedTime());
+    this.receivedDate = DomainChef.cookDate(persistedReferral.getReceivedDate());
+    this.receivedTime = DomainChef.cookTime(persistedReferral.getReceivedTime());
     this.referralResponseType = persistedReferral.getReferralResponseType();
     this.referredToResourceType = persistedReferral.getReferredToResourceType();
     this.responseDeterminationDate =
-        DomainObject.cookDate(persistedReferral.getResponseDeterminationDate());
+        DomainChef.cookDate(persistedReferral.getResponseDeterminationDate());
     this.responseDeterminationTime =
-        DomainObject.cookTime(persistedReferral.getResponseDeterminationTime());
+        DomainChef.cookTime(persistedReferral.getResponseDeterminationTime());
     this.responseRationaleText = persistedReferral.getResponseRationaleText();
     this.screenerNoteText = persistedReferral.getScreenerNoteText();
     this.specificsIncludedCode = persistedReferral.getSpecificsIncludedCode();
@@ -460,20 +461,20 @@ public class Referral extends DomainObject implements Request, Response {
     this.primaryContactStaffPersonId = persistedReferral.getPrimaryContactStaffPersonId();
     this.countySpecificCode = persistedReferral.getCountySpecificCode();
     this.specialProjectReferralIndicator =
-        DomainObject.uncookBooleanString(persistedReferral.getSpecialProjectReferralIndicator());
+        DomainChef.uncookBooleanString(persistedReferral.getSpecialProjectReferralIndicator());
     this.zippyCreatedIndicator =
-        DomainObject.uncookBooleanString(persistedReferral.getZippyCreatedIndicator());
+        DomainChef.uncookBooleanString(persistedReferral.getZippyCreatedIndicator());
     this.homelessIndicator =
-        DomainObject.uncookBooleanString(persistedReferral.getHomelessIndicator());
+        DomainChef.uncookBooleanString(persistedReferral.getHomelessIndicator());
     this.familyRefusedServicesIndicator =
-        DomainObject.uncookBooleanString(persistedReferral.getFamilyRefusedServicesIndicator());
+        DomainChef.uncookBooleanString(persistedReferral.getFamilyRefusedServicesIndicator());
     this.firstEvaluatedOutApprovalDate =
-        DomainObject.cookDate(persistedReferral.getFirstEvaluatedOutApprovalDate());
+        DomainChef.cookDate(persistedReferral.getFirstEvaluatedOutApprovalDate());
     this.responsibleAgencyCode = persistedReferral.getResponsibleAgencyCode();
     this.limitedAccessGovtAgencyType = persistedReferral.getLimitedAccessGovtAgencyType();
-    this.limitedAccessDate = DomainObject.cookDate(persistedReferral.getLimitedAccessDate());
+    this.limitedAccessDate = DomainChef.cookDate(persistedReferral.getLimitedAccessDate());
     this.limitedAccessDesc = persistedReferral.getLimitedAccessDesc();
-    this.originalClosureDate = DomainObject.cookDate(persistedReferral.getOriginalClosureDate());
+    this.originalClosureDate = DomainChef.cookDate(persistedReferral.getOriginalClosureDate());
 
   }
 

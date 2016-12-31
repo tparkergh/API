@@ -15,9 +15,9 @@ import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 
+import gov.ca.cwds.data.ns.AddressDao;
 import gov.ca.cwds.rest.api.domain.Address;
 import gov.ca.cwds.rest.api.domain.PostedAddress;
-import gov.ca.cwds.rest.jdbi.ns.AddressDao;
 
 public class AddressServiceTest {
   private AddressService addressService;
@@ -38,7 +38,7 @@ public class AddressServiceTest {
    */
   @Test
   public void findReturnsCorrectAddressWhenFoundWhenFound() throws Exception {
-    when(addressDao.find(new Long(1))).thenReturn(new gov.ca.cwds.rest.api.persistence.ns.Address(
+    when(addressDao.find(new Long(1))).thenReturn(new gov.ca.cwds.data.persistence.ns.Address(
         1L, "742 Evergreen Terrace", "Springfield", "WA", new Integer(98700)));
 
     Address expected = new Address("742 Evergreen Terrace", "Springfield", "WA", 98700);
@@ -72,12 +72,12 @@ public class AddressServiceTest {
    */
   @Test
   public void createReturnsPostedAddress() throws Exception {
-    gov.ca.cwds.rest.api.persistence.ns.Address toCreate =
-        new gov.ca.cwds.rest.api.persistence.ns.Address(1L, "742 Evergreen Terrace", "Springfield",
+    gov.ca.cwds.data.persistence.ns.Address toCreate =
+        new gov.ca.cwds.data.persistence.ns.Address(1L, "742 Evergreen Terrace", "Springfield",
             "WA", new Integer(98700));
     Address request = new Address(toCreate);
 
-    when(addressDao.create(any(gov.ca.cwds.rest.api.persistence.ns.Address.class)))
+    when(addressDao.create(any(gov.ca.cwds.data.persistence.ns.Address.class)))
         .thenReturn(toCreate);
 
     PostedAddress postedAddress = addressService.create(request);
@@ -86,12 +86,12 @@ public class AddressServiceTest {
 
   @Test
   public void createReturnsNonNull() throws Exception {
-    gov.ca.cwds.rest.api.persistence.ns.Address toCreate =
-        new gov.ca.cwds.rest.api.persistence.ns.Address(1L, "742 Evergreen Terrace", "Springfield",
+    gov.ca.cwds.data.persistence.ns.Address toCreate =
+        new gov.ca.cwds.data.persistence.ns.Address(1L, "742 Evergreen Terrace", "Springfield",
             "WA", new Integer(98700));
     Address request = new Address(toCreate);
 
-    when(addressDao.create(any(gov.ca.cwds.rest.api.persistence.ns.Address.class)))
+    when(addressDao.create(any(gov.ca.cwds.data.persistence.ns.Address.class)))
         .thenReturn(toCreate);
 
     PostedAddress postedAddress = addressService.create(request);
@@ -100,12 +100,12 @@ public class AddressServiceTest {
 
   @Test
   public void createReturnsReturnsCorrectPostedAddress() throws Exception {
-    gov.ca.cwds.rest.api.persistence.ns.Address toCreate =
-        new gov.ca.cwds.rest.api.persistence.ns.Address(1L, "742 Evergreen Terrace", "Springfield",
+    gov.ca.cwds.data.persistence.ns.Address toCreate =
+        new gov.ca.cwds.data.persistence.ns.Address(1L, "742 Evergreen Terrace", "Springfield",
             "WA", new Integer(98700));
     Address request = new Address(toCreate);
 
-    when(addressDao.create(any(gov.ca.cwds.rest.api.persistence.ns.Address.class)))
+    when(addressDao.create(any(gov.ca.cwds.data.persistence.ns.Address.class)))
         .thenReturn(toCreate);
 
     PostedAddress expected =

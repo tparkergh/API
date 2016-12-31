@@ -72,15 +72,15 @@ public class Person extends DomainObject implements Request, Response {
   }
 
   /**
-   * Construct from persistence {@link gov.ca.cwds.rest.api.persistence.ns.Person} object.
+   * Construct from persistence {@link gov.ca.cwds.data.persistence.ns.Person} object.
    * 
    * @param person persistence layer person
    */
-  public Person(gov.ca.cwds.rest.api.persistence.ns.Person person) {
+  public Person(gov.ca.cwds.data.persistence.ns.Person person) {
     this.firstName = person.getFirstName();
     this.lastName = person.getLastName();
     this.gender = person.getGender();
-    this.birthDate = DomainObject.cookDate(person.getDateOfBirth());
+    this.birthDate = DomainChef.cookDate(person.getDateOfBirth());
     this.ssn = person.getSsn();
     if (person.getAddress() != null) {
       this.address = new Address(person.getAddress());

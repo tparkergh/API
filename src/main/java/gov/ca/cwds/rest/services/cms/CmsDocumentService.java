@@ -6,9 +6,9 @@ import org.slf4j.LoggerFactory;
 
 import com.google.inject.Inject;
 
+import gov.ca.cwds.data.Dao;
+import gov.ca.cwds.data.cms.CmsDocumentDao;
 import gov.ca.cwds.rest.api.domain.cms.CmsDocument;
-import gov.ca.cwds.rest.jdbi.Dao;
-import gov.ca.cwds.rest.jdbi.cms.CmsDocumentDao;
 import gov.ca.cwds.rest.services.TypedCrudsService;
 
 /**
@@ -43,7 +43,7 @@ public class CmsDocumentService implements TypedCrudsService<String, CmsDocument
     CmsDocument retval = null;
     String base64Doc = "";
 
-    gov.ca.cwds.rest.api.persistence.cms.CmsDocument doc = dao.find(primaryKey);
+    gov.ca.cwds.data.persistence.cms.CmsDocument doc = dao.find(primaryKey);
     if (doc != null) {
       // Trim strings.
       doc.setCompressionMethod(

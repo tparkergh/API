@@ -12,6 +12,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 import gov.ca.cwds.rest.api.Request;
 import gov.ca.cwds.rest.api.Response;
+import gov.ca.cwds.rest.api.domain.DomainChef;
 import gov.ca.cwds.rest.api.domain.DomainObject;
 import io.dropwizard.validation.OneOf;
 import io.swagger.annotations.ApiModelProperty;
@@ -138,16 +139,16 @@ public class ReferralClient extends DomainObject implements Request, Response {
   }
 
   public ReferralClient(
-      gov.ca.cwds.rest.api.persistence.cms.ReferralClient persistedReferralClient) {
+      gov.ca.cwds.data.persistence.cms.ReferralClient persistedReferralClient) {
     this.approvalNumber = persistedReferralClient.getApprovalNumber();
     this.approvalStatusType = persistedReferralClient.getApprovalStatusType();
     this.dispositionClosureReasonType = persistedReferralClient.getDispositionClosureReasonType();
     this.dispositionCode = persistedReferralClient.getDispositionCode();
-    this.dispositionDate = DomainObject.cookDate(persistedReferralClient.getDispositionDate());
+    this.dispositionDate = DomainChef.cookDate(persistedReferralClient.getDispositionDate());
     this.selfReportedIndicator =
-        DomainObject.uncookBooleanString(persistedReferralClient.getSelfReportedIndicator());
+        DomainChef.uncookBooleanString(persistedReferralClient.getSelfReportedIndicator());
     this.staffPersonAddedIndicator =
-        DomainObject.uncookBooleanString(persistedReferralClient.getStaffPersonAddedIndicator());
+        DomainChef.uncookBooleanString(persistedReferralClient.getStaffPersonAddedIndicator());
     this.referralId = persistedReferralClient.getReferralId().trim();
     this.clientId = persistedReferralClient.getClientId().trim();
     this.dispositionClosureDescription = persistedReferralClient.getDispositionClosureDescription();
@@ -155,11 +156,10 @@ public class ReferralClient extends DomainObject implements Request, Response {
     this.agePeriodCode = persistedReferralClient.getAgePeriodCode();
     this.countySpecificCode = persistedReferralClient.getCountySpecificCode();
     this.mentalHealthIssuesIndicator =
-        DomainObject.uncookBooleanString(persistedReferralClient.getMentalHealthIssuesIndicator());
+        DomainChef.uncookBooleanString(persistedReferralClient.getMentalHealthIssuesIndicator());
     this.alcoholIndicator =
-        DomainObject.uncookBooleanString(persistedReferralClient.getAlcoholIndicator());
-    this.drugIndicator =
-        DomainObject.uncookBooleanString(persistedReferralClient.getDrugIndicator());
+        DomainChef.uncookBooleanString(persistedReferralClient.getAlcoholIndicator());
+    this.drugIndicator = DomainChef.uncookBooleanString(persistedReferralClient.getDrugIndicator());
   }
 
   /**

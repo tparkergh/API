@@ -3,7 +3,7 @@ package gov.ca.cwds.rest.util.jni;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import gov.ca.cwds.rest.api.persistence.cms.StaffPerson;
+import gov.ca.cwds.data.persistence.cms.StaffPerson;
 
 //
 // http://docs.oracle.com/javase/8/docs/technotes/guides/jni/spec/functions.html

@@ -11,10 +11,10 @@ import org.slf4j.LoggerFactory;
 
 import com.google.inject.Inject;
 
+import gov.ca.cwds.data.Dao;
+import gov.ca.cwds.data.cms.ReferralClientDao;
+import gov.ca.cwds.data.persistence.cms.ReferralClient;
 import gov.ca.cwds.rest.api.Request;
-import gov.ca.cwds.rest.api.persistence.cms.ReferralClient;
-import gov.ca.cwds.rest.jdbi.Dao;
-import gov.ca.cwds.rest.jdbi.cms.ReferralClientDao;
 import gov.ca.cwds.rest.services.CrudsService;
 import gov.ca.cwds.rest.services.ServiceException;
 import gov.ca.cwds.rest.util.ServiceUtils;
@@ -37,7 +37,7 @@ public class ReferralClientService implements CrudsService {
    * Constructor
    * 
    * @param referralClientDao The {@link Dao} handling
-   *        {@link gov.ca.cwds.rest.api.persistence.cms.ReferralClient} objects.
+   *        {@link gov.ca.cwds.data.persistence.cms.ReferralClient} objects.
    */
   @Inject
   public ReferralClientService(ReferralClientDao referralClientDao) {
@@ -52,7 +52,7 @@ public class ReferralClientService implements CrudsService {
   @Override
   public gov.ca.cwds.rest.api.domain.cms.ReferralClient find(Serializable primaryKey) {
     ReferralClient.PrimaryKey primaryKeyObject = extractPrimaryKey(primaryKey);
-    gov.ca.cwds.rest.api.persistence.cms.ReferralClient persistedReferralClient =
+    gov.ca.cwds.data.persistence.cms.ReferralClient persistedReferralClient =
         referralClientDao.find(primaryKeyObject);
     if (persistedReferralClient != null) {
       return new gov.ca.cwds.rest.api.domain.cms.ReferralClient(persistedReferralClient);
@@ -68,7 +68,7 @@ public class ReferralClientService implements CrudsService {
   @Override
   public gov.ca.cwds.rest.api.domain.cms.ReferralClient delete(Serializable primaryKey) {
     ReferralClient.PrimaryKey primaryKeyObject = extractPrimaryKey(primaryKey);
-    gov.ca.cwds.rest.api.persistence.cms.ReferralClient persistedReferralClient =
+    gov.ca.cwds.data.persistence.cms.ReferralClient persistedReferralClient =
         referralClientDao.delete(primaryKeyObject);
 
     if (persistedReferralClient != null) {

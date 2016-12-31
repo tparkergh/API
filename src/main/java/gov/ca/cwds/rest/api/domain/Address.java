@@ -57,7 +57,7 @@ public class Address extends DomainObject implements Request, Response {
    * 
    * @param address persistence level address object
    */
-  public Address(gov.ca.cwds.rest.api.persistence.ns.Address address) {
+  public Address(gov.ca.cwds.data.persistence.ns.Address address) {
     this.street_address = address.getStreetAddress();
     this.city = address.getCity();
     this.state = address.getState();

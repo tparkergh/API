@@ -20,7 +20,7 @@ public class PostedPerson extends Person {
     this.id = id;
   }
 
-  public PostedPerson(gov.ca.cwds.rest.api.persistence.ns.Person person) {
+  public PostedPerson(gov.ca.cwds.data.persistence.ns.Person person) {
     super(person);
     this.id = person.getId();
   }

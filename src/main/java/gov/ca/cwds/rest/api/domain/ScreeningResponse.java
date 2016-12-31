@@ -62,15 +62,15 @@ public class ScreeningResponse extends Screening implements Response {
    * @param screening The persistent version of a screening
    * @param participants The list of participants for this screening
    */
-  public ScreeningResponse(gov.ca.cwds.rest.api.persistence.ns.Screening screening,
-      Set<gov.ca.cwds.rest.api.persistence.ns.Person> participants) {
+  public ScreeningResponse(gov.ca.cwds.data.persistence.ns.Screening screening,
+      Set<gov.ca.cwds.data.persistence.ns.Person> participants) {
     super(screening);
     if (screening.getContactAddress() != null) {
       this.address = new Address(screening.getContactAddress());
     }
     ImmutableSet.Builder<Person> participantSetBuilder = ImmutableSet.builder();
     if (participants != null) {
-      for (gov.ca.cwds.rest.api.persistence.ns.Person person : participants) {
+      for (gov.ca.cwds.data.persistence.ns.Person person : participants) {
         participantSetBuilder.add(new Person(person));
       }
     }

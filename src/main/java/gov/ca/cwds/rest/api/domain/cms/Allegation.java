@@ -11,6 +11,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 import gov.ca.cwds.rest.api.Request;
 import gov.ca.cwds.rest.api.Response;
+import gov.ca.cwds.rest.api.domain.DomainChef;
 import gov.ca.cwds.rest.api.domain.DomainObject;
 import io.dropwizard.validation.OneOf;
 import io.swagger.annotations.ApiModel;
@@ -186,27 +187,27 @@ public class Allegation extends DomainObject implements Request, Response {
    * 
    * @param persistedAllegation persistence level allegation
    */
-  public Allegation(gov.ca.cwds.rest.api.persistence.cms.Allegation persistedAllegation) {
-    this.abuseEndDate = DomainObject.cookDate(persistedAllegation.getAbuseEndDate());
+  public Allegation(gov.ca.cwds.data.persistence.cms.Allegation persistedAllegation) {
+    this.abuseEndDate = DomainChef.cookDate(persistedAllegation.getAbuseEndDate());
     this.abuseFrequency = persistedAllegation.getAbuseFrequency();
     this.abuseFrequencyPeriodCode = persistedAllegation.getAbuseFrequencyPeriodCode();
     this.abuseLocationDescription = persistedAllegation.getAbuseLocationDescription();
-    this.abuseStartDate = DomainObject.cookDate(persistedAllegation.getAbuseStartDate());
+    this.abuseStartDate = DomainChef.cookDate(persistedAllegation.getAbuseStartDate());
     this.allegationDispositionType = persistedAllegation.getAllegationDispositionType();
     this.allegationType = persistedAllegation.getAllegationType();
     this.dispositionDescription = persistedAllegation.getDispositionDescription();
-    this.dispositionDate = DomainObject.cookDate(persistedAllegation.getDispositionDate());
+    this.dispositionDate = DomainChef.cookDate(persistedAllegation.getDispositionDate());
     this.injuryHarmDetailIndicator =
-        DomainObject.uncookBooleanString(persistedAllegation.getInjuryHarmDetailIndicator());
+        DomainChef.uncookBooleanString(persistedAllegation.getInjuryHarmDetailIndicator());
     this.nonProtectingParentCode = persistedAllegation.getNonProtectingParentCode();
     this.staffPersonAddedIndicator =
-        DomainObject.uncookBooleanString(persistedAllegation.getStaffPersonAddedIndicator());
+        DomainChef.uncookBooleanString(persistedAllegation.getStaffPersonAddedIndicator());
     this.victimClientId = persistedAllegation.getVictimClientId();
     this.perpetratorClientId = persistedAllegation.getPerpetratorClientId();
     this.referralId = persistedAllegation.getReferralId();
     this.countySpecificCode = persistedAllegation.getCountySpecificCode();
     this.zippyCreatedIndicator =
-        DomainObject.uncookBooleanString(persistedAllegation.getZippyCreatedIndicator());
+        DomainChef.uncookBooleanString(persistedAllegation.getZippyCreatedIndicator());
     this.placementFacilityType = persistedAllegation.getPlacementFacilityType();
   }
 

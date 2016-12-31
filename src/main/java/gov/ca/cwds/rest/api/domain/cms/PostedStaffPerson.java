@@ -21,7 +21,7 @@ public class PostedStaffPerson extends StaffPerson {
    * 
    * @param staffPerson The persisted staffPerson
    */
-  public PostedStaffPerson(gov.ca.cwds.rest.api.persistence.cms.StaffPerson staffPerson) {
+  public PostedStaffPerson(gov.ca.cwds.data.persistence.cms.StaffPerson staffPerson) {
     super(staffPerson);
 
     if (StringUtils.isBlank(staffPerson.getId())) {

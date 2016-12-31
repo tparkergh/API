@@ -30,61 +30,61 @@ public class DomainObjectTest {
   // cookBoolean tests
   @Test
   public void cookBooleanReturnsNullOnNullBoolean() throws Exception {
-    assertThat(DomainObject.cookBoolean(null), is(nullValue()));
+    assertThat(DomainChef.cookBoolean(null), is(nullValue()));
   }
 
   @Test
   public void cookBooleanReturnsYOnTrue() throws Exception {
-    assertThat(DomainObject.cookBoolean(Boolean.TRUE), is(equalTo("Y")));
+    assertThat(DomainChef.cookBoolean(Boolean.TRUE), is(equalTo("Y")));
   }
 
   @Test
   public void cookBooleanReturnsNOnFalse() throws Exception {
-    assertThat(DomainObject.cookBoolean(Boolean.FALSE), is(equalTo("N")));
+    assertThat(DomainChef.cookBoolean(Boolean.FALSE), is(equalTo("N")));
   }
 
   // uncookBoolean tests
   @Test
   public void uncookBooleanStringReturnsFalseOnN() throws Exception {
-    assertThat(DomainObject.uncookBooleanString("N"), is(equalTo(Boolean.FALSE)));
+    assertThat(DomainChef.uncookBooleanString("N"), is(equalTo(Boolean.FALSE)));
   }
 
   @Test
   public void uncookBooleanStringReturnsFalseOnSmallN() throws Exception {
-    assertThat(DomainObject.uncookBooleanString("n"), is(equalTo(Boolean.FALSE)));
+    assertThat(DomainChef.uncookBooleanString("n"), is(equalTo(Boolean.FALSE)));
   }
 
   @Test
   public void uncookBooleanStringReturnsFalseOnY() throws Exception {
-    assertThat(DomainObject.uncookBooleanString("Y"), is(equalTo(Boolean.TRUE)));
+    assertThat(DomainChef.uncookBooleanString("Y"), is(equalTo(Boolean.TRUE)));
   }
 
   @Test
   public void uncookBooleanStringReturnsFalseOnSmallY() throws Exception {
-    assertThat(DomainObject.uncookBooleanString("y"), is(equalTo(Boolean.TRUE)));
+    assertThat(DomainChef.uncookBooleanString("y"), is(equalTo(Boolean.TRUE)));
   }
 
   @Test
   public void uncookBooleanstringReturnsNullOnNull() throws Exception {
-    assertThat(DomainObject.uncookBooleanString(null), is(nullValue()));
+    assertThat(DomainChef.uncookBooleanString(null), is(nullValue()));
   }
 
   @Test
   public void uncookBooleanstringReturnsNullOnEmpty() throws Exception {
-    assertThat(DomainObject.uncookBooleanString("  "), is(nullValue()));
+    assertThat(DomainChef.uncookBooleanString("  "), is(nullValue()));
   }
 
   @Test
   public void uncookBooleanStringThrowsDomainExceptionOnNonYOrN() throws Exception {
     thrown.expect(ApiException.class);
     thrown.expectCause(Is.isA(ParseException.class));
-    DomainObject.uncookBooleanString("T");
+    DomainChef.uncookBooleanString("T");
   }
 
   // cookDate tests
   @Test
   public void cookDateReturnsNullOnNullDate() throws Exception {
-    assertThat(DomainObject.cookDate(null), is(nullValue()));
+    assertThat(DomainChef.cookDate(null), is(nullValue()));
   }
 
   @Test
@@ -92,13 +92,13 @@ public class DomainObjectTest {
     DateFormat df = new SimpleDateFormat(DATE_FORMAT);
     Date date = new Date();
 
-    assertThat(DomainObject.cookDate(date), is(equalTo(df.format(date))));
+    assertThat(DomainChef.cookDate(date), is(equalTo(df.format(date))));
   }
 
   // cookTimestamp tests
   @Test
   public void cookTimestampReturnsNullOnNullDate() throws Exception {
-    assertThat(DomainObject.cookTimestamp(null), is(nullValue()));
+    assertThat(DomainChef.cookTimestamp(null), is(nullValue()));
   }
 
   @Test
@@ -106,13 +106,13 @@ public class DomainObjectTest {
     DateFormat df = new SimpleDateFormat(TIMESTAMP_FORMAT);
     Date date = new Date();
 
-    assertThat(DomainObject.cookTimestamp(date), is(equalTo(df.format(date))));
+    assertThat(DomainChef.cookTimestamp(date), is(equalTo(df.format(date))));
   }
 
   // cookTime tests
   @Test
   public void cookTimeReturnsNullOnNullDate() throws Exception {
-    assertThat(DomainObject.cookTime(null), is(nullValue()));
+    assertThat(DomainChef.cookTime(null), is(nullValue()));
   }
 
   @Test
@@ -120,7 +120,7 @@ public class DomainObjectTest {
     DateFormat df = new SimpleDateFormat(TIME_FORMAT);
     Date date = new Date();
 
-    assertThat(DomainObject.cookTime(date), is(equalTo(df.format(date))));
+    assertThat(DomainChef.cookTime(date), is(equalTo(df.format(date))));
   }
 
   // uncookDateString tests
@@ -132,19 +132,19 @@ public class DomainObjectTest {
 
     Date dateBasedOnFormat = df.parse(df.format(dateWithTime));
 
-    assertThat(DomainObject.uncookDateString(dateString), is(equalTo(dateBasedOnFormat)));
+    assertThat(DomainChef.uncookDateString(dateString), is(equalTo(dateBasedOnFormat)));
   }
 
   @Test
   public void uncookDateStringReturnsNullOnNullString() throws Exception {
-    assertThat(DomainObject.uncookDateString(null), is(nullValue()));
+    assertThat(DomainChef.uncookDateString(null), is(nullValue()));
   }
 
   @Test
   public void uncookDateStringThrowsExceptionOnBadInput() throws Exception {
     thrown.expect(ApiException.class);
     thrown.expectCause(Is.isA(ParseException.class));
-    DomainObject.uncookDateString("dlfjkdfjdkfjkd");
+    DomainChef.uncookDateString("dlfjkdfjdkfjkd");
   }
 
   // uncookTimestampString tests
@@ -154,89 +154,89 @@ public class DomainObjectTest {
     Date date = new Date();
     String dateString = df.format(date);
 
-    assertThat(DomainObject.uncookTimestampString(dateString), is(equalTo(date)));
+    assertThat(DomainChef.uncookTimestampString(dateString), is(equalTo(date)));
   }
 
   @Test
   public void uncookTimestampStringReturnsNullOnNullString() throws Exception {
-    assertThat(DomainObject.uncookTimestampString(null), is(nullValue()));
+    assertThat(DomainChef.uncookTimestampString(null), is(nullValue()));
   }
 
   @Test
   public void uncookTimestampStringThrowsExceptionOnBadInput() throws Exception {
     thrown.expect(ApiException.class);
     thrown.expectCause(Is.isA(ParseException.class));
-    DomainObject.uncookTimestampString("dlfjkdfjdkfjkd");
+    DomainChef.uncookTimestampString("dlfjkdfjdkfjkd");
   }
 
   // uncookTimeString tests
   @Test
   public void uncookTimeStringReturnsCorrectDate() throws Exception {
     Date dt = new SimpleDateFormat("HH:mm:ss").parse("14:20:20");
-    assertThat(DomainObject.uncookTimeString("14:20:20"), is(equalTo(dt)));
+    assertThat(DomainChef.uncookTimeString("14:20:20"), is(equalTo(dt)));
   }
 
   @Test
   public void uncookTimeStringReturnsNullOnNullString() throws Exception {
-    assertThat(DomainObject.uncookTimeString(null), is(nullValue()));
+    assertThat(DomainChef.uncookTimeString(null), is(nullValue()));
   }
 
   @Test
   public void uncookTimeStringThrowsExceptionOnBadInput() throws Exception {
     thrown.expect(ApiException.class);
     thrown.expectCause(Is.isA(ParseException.class));
-    DomainObject.uncookTimeString("dlfjkdfjdkfjkd");
+    DomainChef.uncookTimeString("dlfjkdfjdkfjkd");
   }
 
   // cookZipcodeNumber tests
   @Test
   public void cookZipcodeNumberReturnsEmptyStringWhenZipcodeNumberIsNull() throws Exception {
-    assertThat(DomainObject.cookZipcodeNumber(null), is(equalTo("")));
+    assertThat(DomainChef.cookZipcodeNumber(null), is(equalTo("")));
   }
 
   @Test
   public void cookZipcodeNumberReturnsEmptyStringWhenZipcodeNumberEquals0() throws Exception {
-    assertThat(DomainObject.cookZipcodeNumber(new Integer(0)), is(equalTo("")));
+    assertThat(DomainChef.cookZipcodeNumber(new Integer(0)), is(equalTo("")));
   }
 
   @Test
   public void cookZipcodeNumberReturnsCorrectValueWhenLeading0Needed() throws Exception {
-    assertThat(DomainObject.cookZipcodeNumber(new Integer(5842)), is(equalTo("05842")));
+    assertThat(DomainChef.cookZipcodeNumber(new Integer(5842)), is(equalTo("05842")));
   }
 
   @Test
   public void cookZipcodeNumberReturnsCorrectValueWhenNoLeading0Needed() throws Exception {
-    assertThat(DomainObject.cookZipcodeNumber(new Integer(95842)), is(equalTo("95842")));
+    assertThat(DomainChef.cookZipcodeNumber(new Integer(95842)), is(equalTo("95842")));
   }
 
   // uncookZipcodeString tests
   @Test
   public void uncookZipcodeStringReturnsCorrectIntegerWhenLeading0s() throws Exception {
-    assertThat(DomainObject.uncookZipcodeString("05842"), is(equalTo(new Integer(5842))));
+    assertThat(DomainChef.uncookZipcodeString("05842"), is(equalTo(new Integer(5842))));
   }
 
   @Test
   public void uncookZipcodeStringReturnsCorrectIntegerWhenLeadingNo0s() throws Exception {
-    assertThat(DomainObject.uncookZipcodeString("95842"), is(equalTo(new Integer(95842))));
+    assertThat(DomainChef.uncookZipcodeString("95842"), is(equalTo(new Integer(95842))));
   }
 
   @Test
   public void uncookZipcodeStringReturnsCorrect0WhenEmpty() throws Exception {
-    assertThat(DomainObject.uncookZipcodeString(" "), is(equalTo(new Integer(0))));
+    assertThat(DomainChef.uncookZipcodeString(" "), is(equalTo(new Integer(0))));
   }
 
   @Test
   public void uncookZipcodeStringThrowsExceptionOnBadGroupMatching() throws Exception {
     thrown.expect(ApiException.class);
     thrown.expectCause(Is.isA(NumberFormatException.class));
-    DomainObject.uncookZipcodeString("000000");
+    DomainChef.uncookZipcodeString("000000");
   }
 
   @Test
   public void uncookZipcodeStringThrowsExceptionOnNoMatch() throws Exception {
     thrown.expect(ApiException.class);
     thrown.expectMessage(startsWith("Unable to uncook zipcode string"));
-    DomainObject.uncookZipcodeString("dlfjkdfjdkfjkd");
+    DomainChef.uncookZipcodeString("dlfjkdfjdkfjkd");
   }
 
 }

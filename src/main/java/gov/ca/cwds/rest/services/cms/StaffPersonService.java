@@ -10,11 +10,11 @@ import org.slf4j.LoggerFactory;
 
 import com.google.inject.Inject;
 
+import gov.ca.cwds.data.Dao;
+import gov.ca.cwds.data.cms.StaffPersonDao;
 import gov.ca.cwds.rest.api.Request;
 import gov.ca.cwds.rest.api.domain.cms.PostedStaffPerson;
 import gov.ca.cwds.rest.api.domain.cms.StaffPerson;
-import gov.ca.cwds.rest.jdbi.Dao;
-import gov.ca.cwds.rest.jdbi.cms.StaffPersonDao;
 import gov.ca.cwds.rest.services.CrudsService;
 import gov.ca.cwds.rest.services.ServiceException;
 import gov.ca.cwds.rest.util.IdGenerator;
@@ -34,7 +34,7 @@ public class StaffPersonService implements CrudsService {
    * Constructor
    * 
    * @param staffPersonDao The {@link Dao} handling
-   *        {@link gov.ca.cwds.rest.api.persistence.cms.StaffPerson} objects.
+   *        {@link gov.ca.cwds.data.persistence.cms.StaffPerson} objects.
    */
   @Inject
   public StaffPersonService(StaffPersonDao staffPersonDao) {
@@ -50,7 +50,7 @@ public class StaffPersonService implements CrudsService {
   public gov.ca.cwds.rest.api.domain.cms.StaffPerson find(Serializable primaryKey) {
     assert primaryKey instanceof String;
 
-    gov.ca.cwds.rest.api.persistence.cms.StaffPerson persistedStaffPerson =
+    gov.ca.cwds.data.persistence.cms.StaffPerson persistedStaffPerson =
         staffPersonDao.find(primaryKey);
     if (persistedStaffPerson != null) {
       return new gov.ca.cwds.rest.api.domain.cms.StaffPerson(persistedStaffPerson);
@@ -66,7 +66,7 @@ public class StaffPersonService implements CrudsService {
   @Override
   public gov.ca.cwds.rest.api.domain.cms.StaffPerson delete(Serializable primaryKey) {
     assert (primaryKey instanceof String);
-    gov.ca.cwds.rest.api.persistence.cms.StaffPerson persistedStaffPerson =
+    gov.ca.cwds.data.persistence.cms.StaffPerson persistedStaffPerson =
         staffPersonDao.delete(primaryKey);
     if (persistedStaffPerson != null) {
       return new gov.ca.cwds.rest.api.domain.cms.StaffPerson(persistedStaffPerson);
@@ -88,9 +88,9 @@ public class StaffPersonService implements CrudsService {
       // TODO : refactor to actually determine who is updating. 'q1p' for now - #136737071 - Tech
       // Debt: Legacy Service classes must use Staff ID for last update ID value
 
-      gov.ca.cwds.rest.api.persistence.cms.StaffPerson managed =
-          new gov.ca.cwds.rest.api.persistence.cms.StaffPerson(IdGenerator.randomString(3),
-              staffPerson, "q1p");
+      gov.ca.cwds.data.persistence.cms.StaffPerson managed =
+          new gov.ca.cwds.data.persistence.cms.StaffPerson(IdGenerator.randomString(3), staffPerson,
+              "q1p");
 
       managed = staffPersonDao.create(managed);
       return new PostedStaffPerson(managed);
@@ -114,9 +114,8 @@ public class StaffPersonService implements CrudsService {
         (gov.ca.cwds.rest.api.domain.cms.StaffPerson) request;
 
     try {
-      gov.ca.cwds.rest.api.persistence.cms.StaffPerson managed =
-          new gov.ca.cwds.rest.api.persistence.cms.StaffPerson((String) primaryKey, staffPerson,
-              "q1p");
+      gov.ca.cwds.data.persistence.cms.StaffPerson managed =
+          new gov.ca.cwds.data.persistence.cms.StaffPerson((String) primaryKey, staffPerson, "q1p");
 
       managed = staffPersonDao.update(managed);
       return new gov.ca.cwds.rest.api.domain.cms.StaffPerson(managed);

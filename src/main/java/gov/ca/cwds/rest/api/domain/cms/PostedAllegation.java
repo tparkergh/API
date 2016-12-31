@@ -21,7 +21,7 @@ public class PostedAllegation extends Allegation {
    * 
    * @param allegation The persisted allegation
    */
-  public PostedAllegation(gov.ca.cwds.rest.api.persistence.cms.Allegation allegation) {
+  public PostedAllegation(gov.ca.cwds.data.persistence.cms.Allegation allegation) {
     super(allegation);
     if (StringUtils.isBlank(allegation.getId())) {
       throw new ServiceException("Allegation ID cannot be blank");

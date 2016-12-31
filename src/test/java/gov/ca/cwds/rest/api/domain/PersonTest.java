@@ -87,12 +87,12 @@ public class PersonTest {
 
     Person domain = this.validPerson();
 
-    gov.ca.cwds.rest.api.persistence.ns.Person persistent =
-        new gov.ca.cwds.rest.api.persistence.ns.Person(domain, (long) 1234565);
+    gov.ca.cwds.data.persistence.ns.Person persistent =
+        new gov.ca.cwds.data.persistence.ns.Person(domain, (long) 1234565);
 
     Person totest = new Person(persistent);
     assertThat(totest.getBirthDate(),
-        is(equalTo(DomainObject.cookDate(persistent.getDateOfBirth()))));
+        is(equalTo(DomainChef.cookDate(persistent.getDateOfBirth()))));
     assertThat(totest.getFirstName(), is(equalTo(persistent.getFirstName())));
     assertThat(totest.getGender(), is(equalTo(persistent.getGender())));
     assertThat(totest.getLastName(), is(equalTo(persistent.getLastName())));

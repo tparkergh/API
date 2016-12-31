@@ -74,32 +74,31 @@ public class ScreeningTest {
   public void persistentObjectConstructorTest() throws Exception {
 
     Screening domain = this.validScreening();
-    gov.ca.cwds.rest.api.persistence.ns.Address address = this.validAddress();
+    gov.ca.cwds.data.persistence.ns.Address address = this.validAddress();
 
-    gov.ca.cwds.rest.api.persistence.ns.Person person = this.validPerson();
+    gov.ca.cwds.data.persistence.ns.Person person = this.validPerson();
     final Long id = (long) 1234567;
     final Long lastUpdateId = (long) 234567;
 
-    Set<gov.ca.cwds.rest.api.persistence.ns.Person> persons =
-        new HashSet<gov.ca.cwds.rest.api.persistence.ns.Person>();
+    Set<gov.ca.cwds.data.persistence.ns.Person> persons =
+        new HashSet<gov.ca.cwds.data.persistence.ns.Person>();
     persons.add(person);
 
-    gov.ca.cwds.rest.api.persistence.ns.Screening persistent =
-        new gov.ca.cwds.rest.api.persistence.ns.Screening(id, domain, address, persons,
+    gov.ca.cwds.data.persistence.ns.Screening persistent =
+        new gov.ca.cwds.data.persistence.ns.Screening(id, domain, address, persons,
             lastUpdateId);
 
     Screening totest = new Screening(persistent);
     assertThat(totest.getReference(), is(equalTo(persistent.getReference())));
-    assertThat(totest.getEnded_at(), is(equalTo(DomainObject.cookDate(persistent.getEndedAt()))));
+    assertThat(totest.getEnded_at(), is(equalTo(DomainChef.cookDate(persistent.getEndedAt()))));
     assertThat(totest.getIncident_county(), is(equalTo(persistent.getIncidentCounty())));
     assertThat(totest.getIncident_date(),
-        is(equalTo(DomainObject.cookDate(persistent.getIncidentDate()))));
+        is(equalTo(DomainChef.cookDate(persistent.getIncidentDate()))));
     assertThat(totest.getLocation_type(), is(equalTo(persistent.getLocationType())));
     assertThat(totest.getCommunication_method(), is(equalTo(persistent.getCommunicationMethod())));
     assertThat(totest.getName(), is(equalTo(persistent.getName())));
     assertThat(totest.getScreening_decision(), is(equalTo(persistent.getScreeningDecision())));
-    assertThat(totest.getStarted_at(),
-        is(equalTo(DomainObject.cookDate(persistent.getStartedAt()))));
+    assertThat(totest.getStarted_at(), is(equalTo(DomainChef.cookDate(persistent.getStartedAt()))));
     assertThat(totest.getNarrative(), is(equalTo(persistent.getNarrative())));
 
   }
@@ -152,12 +151,12 @@ public class ScreeningTest {
    * 
    * @Address
    */
-  private gov.ca.cwds.rest.api.persistence.ns.Address validAddress() {
+  private gov.ca.cwds.data.persistence.ns.Address validAddress() {
 
     try {
-      gov.ca.cwds.rest.api.persistence.ns.Address validAddress =
+      gov.ca.cwds.data.persistence.ns.Address validAddress =
           MAPPER.readValue(fixture("fixtures/persistence/ns/Address/validPersistentAddress.json"),
-              gov.ca.cwds.rest.api.persistence.ns.Address.class);
+              gov.ca.cwds.data.persistence.ns.Address.class);
 
       return validAddress;
 
@@ -178,12 +177,12 @@ public class ScreeningTest {
    * 
    * @Person
    */
-  private gov.ca.cwds.rest.api.persistence.ns.Person validPerson() {
+  private gov.ca.cwds.data.persistence.ns.Person validPerson() {
 
     try {
-      gov.ca.cwds.rest.api.persistence.ns.Person validPerson =
+      gov.ca.cwds.data.persistence.ns.Person validPerson =
           MAPPER.readValue(fixture("fixtures/persistence/ns/Person/validPersistentPerson.json"),
-              gov.ca.cwds.rest.api.persistence.ns.Person.class);
+              gov.ca.cwds.data.persistence.ns.Person.class);
 
       return validPerson;
 

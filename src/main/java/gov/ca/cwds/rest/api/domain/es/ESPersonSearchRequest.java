@@ -5,6 +5,7 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import gov.ca.cwds.rest.api.Request;
+import gov.ca.cwds.rest.api.domain.DomainChef;
 import gov.ca.cwds.rest.api.domain.DomainObject;
 import io.dropwizard.jackson.JsonSnakeCase;
 import io.swagger.annotations.ApiModel;
@@ -41,7 +42,7 @@ public final class ESPersonSearchRequest extends DomainObject implements Request
    * to a "search request" object.
    * </p>
    */
-  @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = DATE_FORMAT)
+  @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = DomainChef.DATE_FORMAT)
   @JsonProperty("birth_date")
   @ApiModelProperty(required = false, readOnly = false, value = "yyyy-MM-dd",
       example = "2000-01-01")

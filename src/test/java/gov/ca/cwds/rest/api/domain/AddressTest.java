@@ -67,8 +67,8 @@ public class AddressTest {
   public void persistentObjectConstructorTest() throws Exception {
     Address domain = this.validAddress();
 
-    gov.ca.cwds.rest.api.persistence.ns.Address persistent =
-        new gov.ca.cwds.rest.api.persistence.ns.Address(domain, (long) 1234565);
+    gov.ca.cwds.data.persistence.ns.Address persistent =
+        new gov.ca.cwds.data.persistence.ns.Address(domain, (long) 1234565);
 
     Address totest = new Address(persistent);
     assertThat(totest.getCity(), is(equalTo(persistent.getCity())));

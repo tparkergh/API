@@ -13,6 +13,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 import gov.ca.cwds.rest.api.Request;
 import gov.ca.cwds.rest.api.Response;
+import gov.ca.cwds.rest.api.domain.DomainChef;
 import gov.ca.cwds.rest.api.domain.DomainObject;
 import gov.ca.cwds.rest.validation.IfThen;
 import gov.ca.cwds.rest.validation.MutuallyExclusive;
@@ -251,23 +252,23 @@ public class Reporter extends DomainObject implements Request, Response {
   /**
    * @param persistedReporter - persisted Report object
    */
-  public Reporter(gov.ca.cwds.rest.api.persistence.cms.Reporter persistedReporter) {
+  public Reporter(gov.ca.cwds.data.persistence.cms.Reporter persistedReporter) {
     this.referralId = persistedReporter.getReferralId().trim();
     this.badgeNumber = persistedReporter.getBadgeNumber();
     this.cityName = persistedReporter.getCityName();
     this.colltrClientRptrReltnshpType = persistedReporter.getColltrClientRptrReltnshpType();
     this.communicationMethodType = persistedReporter.getCommunicationMethodType();
     this.confidentialWaiverIndicator =
-        DomainObject.uncookBooleanString(persistedReporter.getConfidentialWaiverIndicator());
+        DomainChef.uncookBooleanString(persistedReporter.getConfidentialWaiverIndicator());
     this.drmsMandatedRprtrFeedback = persistedReporter.getDrmsMandatedRprtrFeedback();
     this.employerName = persistedReporter.getEmployerName();
-    this.feedbackDate = DomainObject.cookDate(persistedReporter.getFeedbackDate());
+    this.feedbackDate = DomainChef.cookDate(persistedReporter.getFeedbackDate());
     this.feedbackRequiredIndicator =
-        DomainObject.uncookBooleanString(persistedReporter.getFeedbackRequiredIndicator());
+        DomainChef.uncookBooleanString(persistedReporter.getFeedbackRequiredIndicator());
     this.firstName = persistedReporter.getFirstName();
     this.lastName = persistedReporter.getLastName();
     this.mandatedReporterIndicator =
-        DomainObject.uncookBooleanString(persistedReporter.getMandatedReporterIndicator());
+        DomainChef.uncookBooleanString(persistedReporter.getMandatedReporterIndicator());
     this.messagePhoneExtensionNumber = persistedReporter.getMessagePhoneExtensionNumber();
     this.messagePhoneNumber = persistedReporter.getMessagePhoneNumber();
     this.middleInitialName = persistedReporter.getMiddleInitialName();
@@ -278,7 +279,7 @@ public class Reporter extends DomainObject implements Request, Response {
     this.streetName = persistedReporter.getStreetName();
     this.streetNumber = persistedReporter.getStreetNumber();
     this.suffixTitleDescription = persistedReporter.getSuffixTitleDescription();
-    this.zipcode = DomainObject.cookZipcodeNumber(persistedReporter.getZipNumber());
+    this.zipcode = DomainChef.cookZipcodeNumber(persistedReporter.getZipNumber());
     this.lawEnforcementId = persistedReporter.getLawEnforcementId();
     this.zipSuffixNumber = persistedReporter.getZipSuffixNumber();
     this.countySpecificCode = persistedReporter.getCountySpecificCode();

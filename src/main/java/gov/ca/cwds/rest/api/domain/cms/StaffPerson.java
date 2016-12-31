@@ -13,6 +13,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 import gov.ca.cwds.rest.api.Request;
 import gov.ca.cwds.rest.api.Response;
+import gov.ca.cwds.rest.api.domain.DomainChef;
 import gov.ca.cwds.rest.api.domain.DomainObject;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
@@ -181,8 +182,8 @@ public class StaffPerson extends DomainObject implements Request, Response {
     this.emailAddress = emailAddress;
   }
 
-  public StaffPerson(gov.ca.cwds.rest.api.persistence.cms.StaffPerson persistedStaffPerson) {
-    this.endDate = DomainObject.cookDate(persistedStaffPerson.getEndDate());
+  public StaffPerson(gov.ca.cwds.data.persistence.cms.StaffPerson persistedStaffPerson) {
+    this.endDate = DomainChef.cookDate(persistedStaffPerson.getEndDate());
     this.firstName = persistedStaffPerson.getFirstName();
     this.jobTitle = persistedStaffPerson.getJobTitle();
     this.lastName = persistedStaffPerson.getLastName();
@@ -190,17 +191,17 @@ public class StaffPerson extends DomainObject implements Request, Response {
     this.namePrefix = persistedStaffPerson.getNamePrefix();
     this.phoneNumber = persistedStaffPerson.getPhoneNumber();
     this.phoneExt = persistedStaffPerson.getPhoneExt();
-    this.startDate = DomainObject.cookDate(persistedStaffPerson.getStartDate());
+    this.startDate = DomainChef.cookDate(persistedStaffPerson.getStartDate());
     this.nameSuffix = persistedStaffPerson.getNameSuffix();
     this.telecommuterIndicator =
-        DomainObject.uncookBooleanString(persistedStaffPerson.getTelecommuterIndicator());
+        DomainChef.uncookBooleanString(persistedStaffPerson.getTelecommuterIndicator());
     this.cwsOffice = persistedStaffPerson.getCwsOffice();
     this.availabilityAndLocationDescription =
         persistedStaffPerson.getAvailabilityAndLocationDescription();
     this.ssrsLicensingWorkerId = persistedStaffPerson.getSsrsLicensingWorkerId();
     this.countyCode = persistedStaffPerson.getCountyCode();
     this.dutyWorkerIndicator =
-        DomainObject.uncookBooleanString(persistedStaffPerson.getDutyWorkerIndicator());
+        DomainChef.uncookBooleanString(persistedStaffPerson.getDutyWorkerIndicator());
     this.cwsOfficeAddress = persistedStaffPerson.getCwsOfficeAddress();
     this.emailAddress = persistedStaffPerson.getEmailAddress();
   }

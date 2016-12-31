@@ -11,10 +11,10 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import gov.ca.cwds.data.persistence.cms.OtherClientName;
+import gov.ca.cwds.data.persistence.cms.Reporter;
 import gov.ca.cwds.rest.api.domain.Address;
 import gov.ca.cwds.rest.api.domain.Person;
-import gov.ca.cwds.rest.api.persistence.cms.OtherClientName;
-import gov.ca.cwds.rest.api.persistence.cms.Reporter;
 
 /**
  * Generic "person" class for ElasticSearch results, which decorates domain-level {@link Person}
@@ -254,11 +254,11 @@ public class ESPerson extends Person {
 
   /**
    * Construct from a persistence-level, new style
-   * {@link gov.ca.cwds.rest.api.persistence.ns.Person}.
+   * {@link gov.ca.cwds.data.persistence.ns.Person}.
    * 
    * @param person database NS person object
    */
-  public ESPerson(gov.ca.cwds.rest.api.persistence.ns.Person person) {
+  public ESPerson(gov.ca.cwds.data.persistence.ns.Person person) {
     super(person);
     this.id = person.getId().toString();
   }

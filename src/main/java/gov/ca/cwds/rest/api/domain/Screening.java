@@ -130,16 +130,16 @@ public class Screening extends DomainObject implements Request {
    * 
    * @param screening persistence level screening object
    */
-  public Screening(gov.ca.cwds.rest.api.persistence.ns.Screening screening) {
+  public Screening(gov.ca.cwds.data.persistence.ns.Screening screening) {
     this.reference = screening.getReference();
-    this.ended_at = DomainObject.cookDate(screening.getEndedAt());
+    this.ended_at = DomainChef.cookDate(screening.getEndedAt());
     this.incident_county = screening.getIncidentCounty();
-    this.incident_date = DomainObject.cookDate(screening.getIncidentDate());
+    this.incident_date = DomainChef.cookDate(screening.getIncidentDate());
     this.location_type = screening.getLocationType();
     this.communication_method = screening.getCommunicationMethod();
     this.name = screening.getName();
     this.screening_decision = screening.getScreeningDecision();
-    this.started_at = DomainObject.cookDate(screening.getStartedAt());
+    this.started_at = DomainChef.cookDate(screening.getStartedAt());
     this.narrative = screening.getNarrative();
   }
 

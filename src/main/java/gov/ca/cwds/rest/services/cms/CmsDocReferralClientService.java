@@ -9,14 +9,14 @@ import org.slf4j.LoggerFactory;
 
 import com.google.inject.Inject;
 
+import gov.ca.cwds.data.cms.CmsDocReferralClientDao;
+import gov.ca.cwds.data.cms.CmsDocumentDao;
+import gov.ca.cwds.data.persistence.cms.CmsDocument;
 import gov.ca.cwds.rest.api.Request;
 import gov.ca.cwds.rest.api.Response;
 import gov.ca.cwds.rest.api.domain.PostedScreening;
 import gov.ca.cwds.rest.api.domain.ScreeningResponse;
 import gov.ca.cwds.rest.api.domain.cms.CmsDocReferralClient;
-import gov.ca.cwds.rest.api.persistence.cms.CmsDocument;
-import gov.ca.cwds.rest.jdbi.cms.CmsDocReferralClientDao;
-import gov.ca.cwds.rest.jdbi.cms.CmsDocumentDao;
 import gov.ca.cwds.rest.services.CrudsService;
 
 /**
@@ -56,7 +56,7 @@ public class CmsDocReferralClientService implements CrudsService {
 
     final String key = (String) primaryKey;
     LOGGER.info("primaryKey=" + key);
-    List<gov.ca.cwds.rest.api.persistence.cms.CmsDocReferralClient> docs =
+    List<gov.ca.cwds.data.persistence.cms.CmsDocReferralClient> docs =
         dao.listDocReferralClient(key);
     if (docs != null) {
       retval = new CmsDocReferralClient(docs);

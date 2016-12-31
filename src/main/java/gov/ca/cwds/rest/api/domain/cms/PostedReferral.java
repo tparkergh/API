@@ -21,7 +21,7 @@ public class PostedReferral extends Referral {
    * 
    * @param referral The persisted referral
    */
-  public PostedReferral(gov.ca.cwds.rest.api.persistence.cms.Referral referral) {
+  public PostedReferral(gov.ca.cwds.data.persistence.cms.Referral referral) {
 
     super(referral);
     

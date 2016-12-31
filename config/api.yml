@@ -74,7 +74,7 @@ server:
       - type: console
 
 logging:
-  level: ${LOGLEVEL:-WARN}
+  level: ${LOGLEVEL:-DEBUG}
   loggers:
     "org.hibernate.SQL":
       level: ALL

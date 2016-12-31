@@ -21,7 +21,7 @@ public class PostedReporter extends Reporter {
    * 
    * @param reporter The persisted reporter
    */
-  public PostedReporter(gov.ca.cwds.rest.api.persistence.cms.Reporter reporter) {
+  public PostedReporter(gov.ca.cwds.data.persistence.cms.Reporter reporter) {
     super(reporter);
     if (StringUtils.isBlank(reporter.getReferralId())) {
       throw new ServiceException("Reporter ID cannot be empty");

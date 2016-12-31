@@ -19,10 +19,10 @@ import org.junit.rules.ExpectedException;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import gov.ca.cwds.data.cms.AllegationDao;
 import gov.ca.cwds.rest.api.Response;
 import gov.ca.cwds.rest.api.domain.cms.Allegation;
 import gov.ca.cwds.rest.api.domain.cms.PostedAllegation;
-import gov.ca.cwds.rest.jdbi.cms.AllegationDao;
 import gov.ca.cwds.rest.services.ServiceException;
 import io.dropwizard.jackson.Jackson;
 
@@ -57,8 +57,8 @@ public class AllegationServiceTest {
     String id = "Aaeae9r0F4";
     Allegation expected = MAPPER
         .readValue(fixture("fixtures/domain/legacy/Allegation/valid/valid.json"), Allegation.class);
-    gov.ca.cwds.rest.api.persistence.cms.Allegation allegation =
-        new gov.ca.cwds.rest.api.persistence.cms.Allegation(id, expected, "0XA");
+    gov.ca.cwds.data.persistence.cms.Allegation allegation =
+        new gov.ca.cwds.data.persistence.cms.Allegation(id, expected, "0XA");
 
     when(allegationDao.find(id)).thenReturn(allegation);
     Allegation found = allegationService.find(id);
@@ -113,8 +113,8 @@ public class AllegationServiceTest {
     Allegation expected = MAPPER
         .readValue(fixture("fixtures/domain/legacy/Allegation/valid/valid.json"), Allegation.class);
 
-    gov.ca.cwds.rest.api.persistence.cms.Allegation allegation =
-        new gov.ca.cwds.rest.api.persistence.cms.Allegation(id, expected, "ABC");
+    gov.ca.cwds.data.persistence.cms.Allegation allegation =
+        new gov.ca.cwds.data.persistence.cms.Allegation(id, expected, "ABC");
 
     when(allegationDao.find("ABC1234567")).thenReturn(allegation);
     when(allegationDao.update(any())).thenReturn(allegation);
@@ -136,8 +136,8 @@ public class AllegationServiceTest {
     Allegation allegationRequest = MAPPER
         .readValue(fixture("fixtures/domain/legacy/Allegation/valid/valid.json"), Allegation.class);
 
-    gov.ca.cwds.rest.api.persistence.cms.Allegation allegation =
-        new gov.ca.cwds.rest.api.persistence.cms.Allegation(id, allegationRequest, "ABC");
+    gov.ca.cwds.data.persistence.cms.Allegation allegation =
+        new gov.ca.cwds.data.persistence.cms.Allegation(id, allegationRequest, "ABC");
 
     when(allegationDao.find("ABC1234567")).thenReturn(allegation);
     when(allegationDao.update(any())).thenReturn(allegation);
@@ -150,11 +150,11 @@ public class AllegationServiceTest {
     String id = "Aaeae9r0F4";
     Allegation allegationDomain = MAPPER
         .readValue(fixture("fixtures/domain/legacy/Allegation/valid/valid.json"), Allegation.class);
-    gov.ca.cwds.rest.api.persistence.cms.Allegation toCreate =
-        new gov.ca.cwds.rest.api.persistence.cms.Allegation(id, allegationDomain, "last_update");
+    gov.ca.cwds.data.persistence.cms.Allegation toCreate =
+        new gov.ca.cwds.data.persistence.cms.Allegation(id, allegationDomain, "last_update");
 
     Allegation request = new Allegation(toCreate);
-    when(allegationDao.create(any(gov.ca.cwds.rest.api.persistence.cms.Allegation.class)))
+    when(allegationDao.create(any(gov.ca.cwds.data.persistence.cms.Allegation.class)))
         .thenReturn(toCreate);
 
     Response response = allegationService.create(request);
@@ -166,11 +166,11 @@ public class AllegationServiceTest {
     String id = "Aaeae9r0F4";
     Allegation allegationDomain = MAPPER
         .readValue(fixture("fixtures/domain/legacy/Allegation/valid/valid.json"), Allegation.class);
-    gov.ca.cwds.rest.api.persistence.cms.Allegation toCreate =
-        new gov.ca.cwds.rest.api.persistence.cms.Allegation(id, allegationDomain, "last_update");
+    gov.ca.cwds.data.persistence.cms.Allegation toCreate =
+        new gov.ca.cwds.data.persistence.cms.Allegation(id, allegationDomain, "last_update");
 
     Allegation request = new Allegation(toCreate);
-    when(allegationDao.create(any(gov.ca.cwds.rest.api.persistence.cms.Allegation.class)))
+    when(allegationDao.create(any(gov.ca.cwds.data.persistence.cms.Allegation.class)))
         .thenReturn(toCreate);
 
     PostedAllegation postedAllegation = allegationService.create(request);
@@ -182,11 +182,11 @@ public class AllegationServiceTest {
     String id = "Aaeae9r0F4";
     Allegation allegationDomain = MAPPER
         .readValue(fixture("fixtures/domain/legacy/Allegation/valid/valid.json"), Allegation.class);
-    gov.ca.cwds.rest.api.persistence.cms.Allegation toCreate =
-        new gov.ca.cwds.rest.api.persistence.cms.Allegation(id, allegationDomain, "last_update");
+    gov.ca.cwds.data.persistence.cms.Allegation toCreate =
+        new gov.ca.cwds.data.persistence.cms.Allegation(id, allegationDomain, "last_update");
 
     Allegation request = new Allegation(toCreate);
-    when(allegationDao.create(any(gov.ca.cwds.rest.api.persistence.cms.Allegation.class)))
+    when(allegationDao.create(any(gov.ca.cwds.data.persistence.cms.Allegation.class)))
         .thenReturn(toCreate);
 
     PostedAllegation expected = new PostedAllegation(toCreate);
@@ -199,12 +199,12 @@ public class AllegationServiceTest {
     try {
       Allegation allegationDomain = MAPPER.readValue(
           fixture("fixtures/domain/legacy/Allegation/valid/valid.json"), Allegation.class);
-      gov.ca.cwds.rest.api.persistence.cms.Allegation toCreate =
-          new gov.ca.cwds.rest.api.persistence.cms.Allegation(null, allegationDomain,
+      gov.ca.cwds.data.persistence.cms.Allegation toCreate =
+          new gov.ca.cwds.data.persistence.cms.Allegation(null, allegationDomain,
               "last_update");
 
       Allegation request = new Allegation(toCreate);
-      when(allegationDao.create(any(gov.ca.cwds.rest.api.persistence.cms.Allegation.class)))
+      when(allegationDao.create(any(gov.ca.cwds.data.persistence.cms.Allegation.class)))
           .thenReturn(toCreate);
 
       PostedAllegation expected = new PostedAllegation(toCreate);
@@ -219,12 +219,12 @@ public class AllegationServiceTest {
     try {
       Allegation allegationDomain = MAPPER.readValue(
           fixture("fixtures/domain/legacy/Allegation/valid/valid.json"), Allegation.class);
-      gov.ca.cwds.rest.api.persistence.cms.Allegation toCreate =
-          new gov.ca.cwds.rest.api.persistence.cms.Allegation("    ", allegationDomain,
+      gov.ca.cwds.data.persistence.cms.Allegation toCreate =
+          new gov.ca.cwds.data.persistence.cms.Allegation("    ", allegationDomain,
               "last_update");
 
       Allegation request = new Allegation(toCreate);
-      when(allegationDao.create(any(gov.ca.cwds.rest.api.persistence.cms.Allegation.class)))
+      when(allegationDao.create(any(gov.ca.cwds.data.persistence.cms.Allegation.class)))
           .thenReturn(toCreate);
 
       PostedAllegation expected = new PostedAllegation(toCreate);

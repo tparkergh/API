@@ -10,10 +10,10 @@ import org.slf4j.LoggerFactory;
 
 import com.google.inject.Inject;
 
+import gov.ca.cwds.data.Dao;
+import gov.ca.cwds.data.cms.CrossReportDao;
+import gov.ca.cwds.data.persistence.cms.CrossReport;
 import gov.ca.cwds.rest.api.Request;
-import gov.ca.cwds.rest.api.persistence.cms.CrossReport;
-import gov.ca.cwds.rest.jdbi.Dao;
-import gov.ca.cwds.rest.jdbi.cms.CrossReportDao;
 import gov.ca.cwds.rest.services.CrudsService;
 import gov.ca.cwds.rest.services.ServiceException;
 import gov.ca.cwds.rest.util.IdGenerator;
@@ -33,7 +33,7 @@ public class CrossReportService implements CrudsService {
    * Constructor
    * 
    * @param crossReportDao The {@link Dao} handling
-   *        {@link gov.ca.cwds.rest.api.persistence.cms.CrossReport} objects.
+   *        {@link gov.ca.cwds.data.persistence.cms.CrossReport} objects.
    */
   @Inject
   public CrossReportService(CrossReportDao crossReportDao) {
@@ -49,7 +49,7 @@ public class CrossReportService implements CrudsService {
   public gov.ca.cwds.rest.api.domain.cms.CrossReport find(Serializable primaryKey) {
     assert primaryKey instanceof String;
 
-    gov.ca.cwds.rest.api.persistence.cms.CrossReport persistedCrossReport =
+    gov.ca.cwds.data.persistence.cms.CrossReport persistedCrossReport =
         crossReportDao.find(primaryKey);
     if (persistedCrossReport != null) {
       return new gov.ca.cwds.rest.api.domain.cms.CrossReport(persistedCrossReport);
@@ -65,7 +65,7 @@ public class CrossReportService implements CrudsService {
   @Override
   public gov.ca.cwds.rest.api.domain.cms.CrossReport delete(Serializable primaryKey) {
     assert primaryKey instanceof String;
-    gov.ca.cwds.rest.api.persistence.cms.CrossReport persistedCrossReport =
+    gov.ca.cwds.data.persistence.cms.CrossReport persistedCrossReport =
         crossReportDao.delete(primaryKey);
     if (persistedCrossReport != null) {
       return new gov.ca.cwds.rest.api.domain.cms.CrossReport(persistedCrossReport);

@@ -13,10 +13,10 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.mockito.Spy;
 
-import gov.ca.cwds.rest.api.domain.DomainObject;
-import gov.ca.cwds.rest.api.persistence.cms.CmsDocument;
-import gov.ca.cwds.rest.api.persistence.cms.CmsDocumentBlobSegment;
-import gov.ca.cwds.rest.jdbi.cms.CmsDocumentDao;
+import gov.ca.cwds.data.cms.CmsDocumentDao;
+import gov.ca.cwds.data.persistence.cms.CmsDocument;
+import gov.ca.cwds.data.persistence.cms.CmsDocumentBlobSegment;
+import gov.ca.cwds.rest.api.domain.DomainChef;
 
 
 /**
@@ -120,8 +120,8 @@ public class CmsDocumentDaoTest {
           , 6881L // docLength
           , "CWDST   " // docAuth
           , "D7701V01" // docServ
-          , DomainObject.uncookDateString("2016-07-13") // docDate
-          , DomainObject.uncookTimeString("15:51:15") // docTime
+          , DomainChef.uncookDateString("2016-07-13") // docDate
+          , DomainChef.uncookTimeString("15:51:15") // docTime
           , "ininv.doc" // docName
           , "PKWare02" // compressionMethod
       );

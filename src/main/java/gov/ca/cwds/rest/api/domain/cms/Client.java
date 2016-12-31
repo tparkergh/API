@@ -11,6 +11,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 import gov.ca.cwds.rest.api.Request;
 import gov.ca.cwds.rest.api.Response;
+import gov.ca.cwds.rest.api.domain.DomainChef;
 import gov.ca.cwds.rest.api.domain.DomainObject;
 import io.dropwizard.validation.OneOf;
 import io.swagger.annotations.ApiModel;
@@ -473,38 +474,38 @@ public class Client extends DomainObject implements Request, Response {
     this.zippyCreatedIndicator = zippyCreatedIndicator;
   }
 
-  public Client(gov.ca.cwds.rest.api.persistence.cms.Client persistedClient) {
+  public Client(gov.ca.cwds.data.persistence.cms.Client persistedClient) {
     this.adjudicatedDelinquentIndicator =
-        DomainObject.uncookBooleanString(persistedClient.getAdjudicatedDelinquentIndicator());
+        DomainChef.uncookBooleanString(persistedClient.getAdjudicatedDelinquentIndicator());
     this.adoptionStatusCode = persistedClient.getAdoptionStatusCode();
     this.alienRegistrationNumber = persistedClient.getAlienRegistrationNumber();
     this.birthCity = persistedClient.getBirthCity();
     this.birthCountryCodeType = persistedClient.getBirthCountryCodeType();
-    this.birthDate = DomainObject.cookDate(persistedClient.getBirthDate());
+    this.birthDate = DomainChef.cookDate(persistedClient.getBirthDate());
     this.birthFacilityName = persistedClient.getBirthFacilityName();
     this.birthStateCodeType = persistedClient.getBirthStateCodeType();
     this.birthplaceVerifiedIndicator =
-        DomainObject.uncookBooleanString(persistedClient.getBirthplaceVerifiedIndicator());
+        DomainChef.uncookBooleanString(persistedClient.getBirthplaceVerifiedIndicator());
     this.childClientIndicatorVar =
-        DomainObject.uncookBooleanString(persistedClient.getChildClientIndicatorVar());
+        DomainChef.uncookBooleanString(persistedClient.getChildClientIndicatorVar());
     this.clientIndexNumber = persistedClient.getClientIndexNumber();
     this.commentDescription = persistedClient.getCommentDescription();
     this.commonFirstName = persistedClient.getCommonFirstName();
     this.commonLastName = persistedClient.getCommonLastName();
     this.commonMiddleName = persistedClient.getCommonMiddleName();
     this.confidentialityActionDate =
-        DomainObject.cookDate(persistedClient.getConfidentialityActionDate());
+        DomainChef.cookDate(persistedClient.getConfidentialityActionDate());
     this.confidentialityInEffectIndicator =
-        DomainObject.uncookBooleanString(persistedClient.getConfidentialityInEffectIndicator());
-    this.creationDate = DomainObject.cookDate(persistedClient.getCreationDate());
+        DomainChef.uncookBooleanString(persistedClient.getConfidentialityInEffectIndicator());
+    this.creationDate = DomainChef.cookDate(persistedClient.getCreationDate());
     this.currCaChildrenServIndicator =
-        DomainObject.uncookBooleanString(persistedClient.getCurrCaChildrenServIndicator());
+        DomainChef.uncookBooleanString(persistedClient.getCurrCaChildrenServIndicator());
     this.currentlyOtherDescription = persistedClient.getCurrentlyOtherDescription();
     this.currentlyRegionalCenterIndicator =
-        DomainObject.uncookBooleanString(persistedClient.getCurrentlyRegionalCenterIndicator());
-    this.deathDate = DomainObject.cookDate(persistedClient.getDeathDate());
+        DomainChef.uncookBooleanString(persistedClient.getCurrentlyRegionalCenterIndicator());
+    this.deathDate = DomainChef.cookDate(persistedClient.getDeathDate());
     this.deathDateVerifiedIndicator =
-        DomainObject.uncookBooleanString(persistedClient.getDeathDateVerifiedIndicator());
+        DomainChef.uncookBooleanString(persistedClient.getDeathDateVerifiedIndicator());
     this.deathPlace = persistedClient.getDeathPlace();
     this.deathReasonText = persistedClient.getDeathReasonText();
     this.driverLicenseNumber = persistedClient.getDriverLicenseNumber();
@@ -513,7 +514,7 @@ public class Client extends DomainObject implements Request, Response {
     this.estimatedDobCode = persistedClient.getEstimatedDobCode();
     this.ethUnableToDetReasonCode = persistedClient.getEthUnableToDetReasonCode();
     this.fatherParentalRightTermDate =
-        DomainObject.cookDate(persistedClient.getFatherParentalRightTermDate());
+        DomainChef.cookDate(persistedClient.getFatherParentalRightTermDate());
     this.genderCode = persistedClient.getGenderCode();
     this.healthSummaryText = persistedClient.getHealthSummaryText();
     this.hispUnableToDetReasonCode = persistedClient.getHispUnableToDetReasonCode();
@@ -523,45 +524,45 @@ public class Client extends DomainObject implements Request, Response {
     this.immigrationStatusType = persistedClient.getImmigrationStatusType();
     this.incapacitatedParentCode = persistedClient.getIncapacitatedParentCode();
     this.individualHealthCarePlanIndicator =
-        DomainObject.uncookBooleanString(persistedClient.getIndividualHealthCarePlanIndicator());
+        DomainChef.uncookBooleanString(persistedClient.getIndividualHealthCarePlanIndicator());
     this.limitationOnScpHealthIndicator =
-        DomainObject.uncookBooleanString(persistedClient.getLimitationOnScpHealthIndicator());
+        DomainChef.uncookBooleanString(persistedClient.getLimitationOnScpHealthIndicator());
     this.literateCode = persistedClient.getLiterateCode();
     this.maritalCohabitatnHstryIndicatorVar =
-        DomainObject.uncookBooleanString(persistedClient.getMaritalCohabitatnHstryIndicatorVar());
+        DomainChef.uncookBooleanString(persistedClient.getMaritalCohabitatnHstryIndicatorVar());
     this.maritalStatusType = persistedClient.getMaritalStatusType();
     this.militaryStatusCode = persistedClient.getMilitaryStatusCode();
     this.motherParentalRightTermDate =
-        DomainObject.cookDate(persistedClient.getMotherParentalRightTermDate());
+        DomainChef.cookDate(persistedClient.getMotherParentalRightTermDate());
     this.namePrefixDescription = persistedClient.getNamePrefixDescription();
     this.nameType = persistedClient.getNameType();
     this.outstandingWarrantIndicator =
-        DomainObject.uncookBooleanString(persistedClient.getOutstandingWarrantIndicator());
+        DomainChef.uncookBooleanString(persistedClient.getOutstandingWarrantIndicator());
     this.prevCaChildrenServIndicator =
-        DomainObject.uncookBooleanString(persistedClient.getPrevCaChildrenServIndicator());
+        DomainChef.uncookBooleanString(persistedClient.getPrevCaChildrenServIndicator());
     this.prevOtherDescription = persistedClient.getPrevOtherDescription();
     this.prevRegionalCenterIndicator =
-        DomainObject.uncookBooleanString(persistedClient.getPrevRegionalCenterIndicator());
+        DomainChef.uncookBooleanString(persistedClient.getPrevRegionalCenterIndicator());
     this.primaryEthnicityType = persistedClient.getPrimaryEthnicityType();
     this.primaryLanguageType = persistedClient.getPrimaryLanguageType();
     this.religionType = persistedClient.getReligionType();
     this.secondaryLanguageType = persistedClient.getSecondaryLanguageType();
     this.sensitiveHlthInfoOnFileIndicator =
-        DomainObject.uncookBooleanString(persistedClient.getSensitiveHlthInfoOnFileIndicator());
+        DomainChef.uncookBooleanString(persistedClient.getSensitiveHlthInfoOnFileIndicator());
     this.sensitivityIndicator = persistedClient.getSensitivityIndicator();
     this.soc158PlacementCode = persistedClient.getSoc158PlacementCode();
     this.soc158SealedClientIndicator =
-        DomainObject.uncookBooleanString(persistedClient.getSoc158SealedClientIndicator());
+        DomainChef.uncookBooleanString(persistedClient.getSoc158SealedClientIndicator());
     this.socialSecurityNumChangedCode = persistedClient.getSocialSecurityNumChangedCode();
     this.socialSecurityNumber = persistedClient.getSocialSecurityNumber();
     this.suffixTitleDescription = persistedClient.getSuffixTitleDescription();
     this.tribalAncestryClientIndicatorVar =
-        DomainObject.uncookBooleanString(persistedClient.getTribalAncestryClientIndicatorVar());
+        DomainChef.uncookBooleanString(persistedClient.getTribalAncestryClientIndicatorVar());
     this.tribalMembrshpVerifctnIndicatorVar =
-        DomainObject.uncookBooleanString(persistedClient.getTribalMembrshpVerifctnIndicatorVar());
+        DomainChef.uncookBooleanString(persistedClient.getTribalMembrshpVerifctnIndicatorVar());
     this.unemployedParentCode = persistedClient.getUnemployedParentCode();
     this.zippyCreatedIndicator =
-        DomainObject.uncookBooleanString(persistedClient.getZippyCreatedIndicator());
+        DomainChef.uncookBooleanString(persistedClient.getZippyCreatedIndicator());
   }
 
   /**

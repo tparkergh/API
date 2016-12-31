@@ -20,6 +20,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 import gov.ca.cwds.rest.api.Request;
 import gov.ca.cwds.rest.api.Response;
+import gov.ca.cwds.rest.api.domain.DomainChef;
 import gov.ca.cwds.rest.api.domain.DomainObject;
 import gov.ca.cwds.rest.core.Api;
 import io.swagger.annotations.ApiModel;
@@ -470,10 +471,10 @@ public class CmsDocReferralClient extends DomainObject implements Request, Respo
   }
 
   public CmsDocReferralClient(
-      List<gov.ca.cwds.rest.api.persistence.cms.CmsDocReferralClient> docs) {
+      List<gov.ca.cwds.data.persistence.cms.CmsDocReferralClient> docs) {
     super();
 
-    for (gov.ca.cwds.rest.api.persistence.cms.CmsDocReferralClient entry : docs) {
+    for (gov.ca.cwds.data.persistence.cms.CmsDocReferralClient entry : docs) {
       CmsDocReferralClientDetail detail = new CmsDocReferralClientDetail();
       detail.setReferlId(entry.getReferlId());
       detail.setClientId(entry.getClientId());
@@ -488,7 +489,7 @@ public class CmsDocReferralClient extends DomainObject implements Request, Respo
 
       this.setDocName(entry.getDocName());
       this.setId(entry.getDocHandle());
-      this.setDocAddedDate(DomainObject.cookDate(entry.getDocAddedDate()));
+      this.setDocAddedDate(DomainChef.cookDate(entry.getDocAddedDate()));
 
       this.cmsDocument.setContent("6833c22e050ac434e10042e190d870007c0001801f");
       this.cmsDocument.setName(entry.getDocName());

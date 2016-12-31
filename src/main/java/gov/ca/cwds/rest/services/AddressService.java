@@ -6,12 +6,12 @@ import org.apache.commons.lang3.NotImplementedException;
 
 import com.google.inject.Inject;
 
+import gov.ca.cwds.data.Dao;
+import gov.ca.cwds.data.ns.AddressDao;
 import gov.ca.cwds.rest.api.Request;
 import gov.ca.cwds.rest.api.Response;
 import gov.ca.cwds.rest.api.domain.Address;
 import gov.ca.cwds.rest.api.domain.PostedAddress;
-import gov.ca.cwds.rest.jdbi.Dao;
-import gov.ca.cwds.rest.jdbi.ns.AddressDao;
 
 /**
  * Business layer object to work on {@link Address}
@@ -24,7 +24,7 @@ public class AddressService implements CrudsService {
   /**
    * Constructor
    * 
-   * @param addressDao The {@link Dao} handling {@link gov.ca.cwds.rest.api.persistence.ns.Address}
+   * @param addressDao The {@link Dao} handling {@link gov.ca.cwds.data.persistence.ns.Address}
    *        objects.
    */
   @Inject
@@ -41,7 +41,7 @@ public class AddressService implements CrudsService {
   public Address find(Serializable primaryKey) {
     assert primaryKey instanceof Long;
 
-    gov.ca.cwds.rest.api.persistence.ns.Address persistedAddress = addressDao.find(primaryKey);
+    gov.ca.cwds.data.persistence.ns.Address persistedAddress = addressDao.find(primaryKey);
     if (persistedAddress != null) {
       return new Address(persistedAddress);
     }
@@ -69,8 +69,8 @@ public class AddressService implements CrudsService {
     assert request instanceof Address;
 
     Address address = (Address) request;
-    gov.ca.cwds.rest.api.persistence.ns.Address managed =
-        new gov.ca.cwds.rest.api.persistence.ns.Address(address, null);
+    gov.ca.cwds.data.persistence.ns.Address managed =
+        new gov.ca.cwds.data.persistence.ns.Address(address, null);
 
     managed = addressDao.create(managed);
     return new PostedAddress(managed);

@@ -10,11 +10,11 @@ import org.slf4j.LoggerFactory;
 
 import com.google.inject.Inject;
 
+import gov.ca.cwds.data.Dao;
+import gov.ca.cwds.data.cms.AllegationDao;
+import gov.ca.cwds.data.persistence.cms.Allegation;
 import gov.ca.cwds.rest.api.Request;
 import gov.ca.cwds.rest.api.domain.cms.PostedAllegation;
-import gov.ca.cwds.rest.api.persistence.cms.Allegation;
-import gov.ca.cwds.rest.jdbi.Dao;
-import gov.ca.cwds.rest.jdbi.cms.AllegationDao;
 import gov.ca.cwds.rest.services.CrudsService;
 import gov.ca.cwds.rest.services.ServiceException;
 import gov.ca.cwds.rest.util.IdGenerator;
@@ -34,7 +34,7 @@ public class AllegationService implements CrudsService {
    * Constructor
    * 
    * @param allegationDao The {@link Dao} handling
-   *        {@link gov.ca.cwds.rest.api.persistence.cms.Allegation} objects.
+   *        {@link gov.ca.cwds.data.persistence.cms.Allegation} objects.
    */
   @Inject
   public AllegationService(AllegationDao allegationDao) {
@@ -50,7 +50,7 @@ public class AllegationService implements CrudsService {
   public gov.ca.cwds.rest.api.domain.cms.Allegation find(Serializable primaryKey) {
     assert primaryKey instanceof String;
 
-    gov.ca.cwds.rest.api.persistence.cms.Allegation persistedAllegation =
+    gov.ca.cwds.data.persistence.cms.Allegation persistedAllegation =
         allegationDao.find(primaryKey);
     if (persistedAllegation != null) {
       return new gov.ca.cwds.rest.api.domain.cms.Allegation(persistedAllegation);
@@ -66,7 +66,7 @@ public class AllegationService implements CrudsService {
   @Override
   public gov.ca.cwds.rest.api.domain.cms.Allegation delete(Serializable primaryKey) {
     assert primaryKey instanceof String;
-    gov.ca.cwds.rest.api.persistence.cms.Allegation persistedAllegation =
+    gov.ca.cwds.data.persistence.cms.Allegation persistedAllegation =
         allegationDao.delete(primaryKey);
     if (persistedAllegation != null) {
       return new gov.ca.cwds.rest.api.domain.cms.Allegation(persistedAllegation);
