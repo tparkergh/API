@@ -13,6 +13,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import gov.ca.cwds.data.persistence.cms.OtherClientName;
 import gov.ca.cwds.data.persistence.cms.Reporter;
+import gov.ca.cwds.rest.api.ApiException;
 import gov.ca.cwds.rest.api.domain.Address;
 import gov.ca.cwds.rest.api.domain.Person;
 
@@ -157,7 +158,7 @@ public class ESPerson extends Person {
 
         ret.sourceObj = obj;
       } catch (Exception e) {
-        throw new RuntimeException("Failed to instantiate class " + ret.getSourceType(), e);
+        throw new ApiException("Failed to instantiate class " + ret.getSourceType(), e);
       }
     }
 
@@ -253,8 +254,7 @@ public class ESPerson extends Person {
   }
 
   /**
-   * Construct from a persistence-level, new style
-   * {@link gov.ca.cwds.data.persistence.ns.Person}.
+   * Construct from a persistence-level, new style {@link gov.ca.cwds.data.persistence.ns.Person}.
    * 
    * @param person database NS person object
    */

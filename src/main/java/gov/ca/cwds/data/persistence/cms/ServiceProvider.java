@@ -30,7 +30,7 @@ import gov.ca.cwds.data.persistence.PersistentObject;
 public class ServiceProvider extends CmsPersistentObject {
 
   /**
-   * 
+   * Base serialization value. Increment by class version.
    */
   private static final long serialVersionUID = 1L;
 

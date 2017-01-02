@@ -31,7 +31,7 @@ import gov.ca.cwds.data.persistence.PersistentObject;
 public class Attorney extends CmsPersistentObject {
 
   /**
-   * 
+   * Base serialization value. Increment by version.
    */
   private static final long serialVersionUID = 1L;
 

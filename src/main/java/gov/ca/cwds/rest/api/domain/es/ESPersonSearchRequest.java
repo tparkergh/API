@@ -51,7 +51,9 @@ public final class ESPersonSearchRequest extends DomainObject implements Request
   /**
    * Default, no-param, no-op ctor. Required by frameworks.
    */
-  public ESPersonSearchRequest() {}
+  public ESPersonSearchRequest() {
+    // Required by frameworks.
+  }
 
   /**
    * JSON DropWizard Constructor.

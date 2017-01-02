@@ -10,10 +10,10 @@ import gov.ca.cwds.data.es.NsElasticsearchObject;
 public class Person extends NsElasticsearchObject {
 
   private String id;
-  private String first_name;
-  private String last_name;
+  private String firstName;
+  private String lastName;
   private String gender;
-  private String date_of_birth;
+  private String dateOfBirth;
   private String ssn;
   private String type;
   private String source;
@@ -41,17 +41,17 @@ public class Person extends NsElasticsearchObject {
       String ssn, String type, String source) {
     super();
     this.id = id;
-    this.first_name = firstName;
-    this.last_name = lastName;
+    this.firstName = firstName;
+    this.lastName = lastName;
     this.gender = gender;
-    this.date_of_birth = dateOfBirth;
+    this.dateOfBirth = dateOfBirth;
     this.ssn = ssn;
     this.type = type;
     this.source = source;
   }
 
   /**
-   * @return the id
+   * @return the unique identifier
    */
   public String getId() {
     return id;
@@ -60,15 +60,15 @@ public class Person extends NsElasticsearchObject {
   /**
    * @return the first_name
    */
-  public String getFirst_name() {
-    return first_name;
+  public String getFirstName() {
+    return firstName;
   }
 
   /**
    * @return the last_name
    */
-  public String getLast_name() {
-    return last_name;
+  public String getLastName() {
+    return lastName;
   }
 
   /**
@@ -81,8 +81,8 @@ public class Person extends NsElasticsearchObject {
   /**
    * @return the date_of_birth
    */
-  public String getDate_of_birth() {
-    return date_of_birth;
+  public String getDateOfBirth() {
+    return dateOfBirth;
   }
 
   /**

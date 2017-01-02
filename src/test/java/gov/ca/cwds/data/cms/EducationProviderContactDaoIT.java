@@ -106,7 +106,7 @@ public class EducationProviderContactDaoIT {
     EducationProviderContact epc = validEducationProviderContact();
 
     EducationProviderContact educationProviderContact =
-        new EducationProviderContact(epc.getdepartmentOfEducationIndicator(), epc.getemailAddress(),
+        new EducationProviderContact(epc.getDepartmentOfEducationIndicator(), epc.getEmailAddress(),
             epc.getFaxNumber(), epc.getFirstName(), epc.getfKeyEducationProvider(), epc.getId(),
             epc.getLastName(), epc.getMiddleName(), epc.getNamePrefixDescription(),
             epc.getPhoneExtensionNumber(), epc.getPhoneNumber(), epc.getPrimaryContactIndicator(),
@@ -125,7 +125,7 @@ public class EducationProviderContactDaoIT {
     EducationProviderContact epc = validExistingEducationProviderContact();
 
     EducationProviderContact educationProviderContact =
-        new EducationProviderContact(epc.getdepartmentOfEducationIndicator(), epc.getemailAddress(),
+        new EducationProviderContact(epc.getDepartmentOfEducationIndicator(), epc.getEmailAddress(),
             epc.getFaxNumber(), epc.getFirstName(), epc.getfKeyEducationProvider(), epc.getId(),
             epc.getLastName(), epc.getMiddleName(), epc.getNamePrefixDescription(),
             epc.getPhoneExtensionNumber(), epc.getPhoneNumber(), epc.getPrimaryContactIndicator(),
@@ -147,7 +147,7 @@ public class EducationProviderContactDaoIT {
     EducationProviderContact epc = validExistingEducationProviderContact();
 
     EducationProviderContact educationProviderContact =
-        new EducationProviderContact(epc.getdepartmentOfEducationIndicator(), epc.getemailAddress(),
+        new EducationProviderContact(epc.getDepartmentOfEducationIndicator(), epc.getEmailAddress(),
             epc.getFaxNumber(), epc.getFirstName(), epc.getfKeyEducationProvider(), epc.getId(),
             epc.getLastName(), epc.getMiddleName(), epc.getNamePrefixDescription(),
             epc.getPhoneExtensionNumber(), epc.getPhoneNumber(), epc.getPrimaryContactIndicator(),
@@ -166,7 +166,7 @@ public class EducationProviderContactDaoIT {
     EducationProviderContact epc = validEducationProviderContact();
 
     EducationProviderContact educationProviderContact =
-        new EducationProviderContact(epc.getdepartmentOfEducationIndicator(), epc.getemailAddress(),
+        new EducationProviderContact(epc.getDepartmentOfEducationIndicator(), epc.getEmailAddress(),
             epc.getFaxNumber(), epc.getFirstName(), epc.getfKeyEducationProvider(), epc.getId(),
             epc.getLastName(), epc.getMiddleName(), epc.getNamePrefixDescription(),
             epc.getPhoneExtensionNumber(), epc.getPhoneNumber(), epc.getPrimaryContactIndicator(),

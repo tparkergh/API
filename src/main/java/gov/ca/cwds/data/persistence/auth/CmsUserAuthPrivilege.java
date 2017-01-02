@@ -231,18 +231,38 @@ public class CmsUserAuthPrivilege {
       register(this);
     }
 
+    /**
+     * Primary key of CMS system code table.
+     * 
+     * @return system code PK
+     */
     public long getSysId() {
       return this.sysId;
     }
 
+    /**
+     * Get category of this system code or zero if none.
+     * 
+     * @return system code category
+     */
     public long getCategoryId() {
       return this.categoryId;
     }
 
+    /**
+     * Description of this system code.
+     * 
+     * @return system code description
+     */
     public String getDescription() {
       return description;
     }
 
+    /**
+     * Relative order of system code in category
+     * 
+     * @return system code order
+     */
     public String getOrderInCategory() {
       return orderInCategory;
     }

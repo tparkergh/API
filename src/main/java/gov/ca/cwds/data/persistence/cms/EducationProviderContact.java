@@ -30,7 +30,7 @@ import gov.ca.cwds.data.persistence.PersistentObject;
 public class EducationProviderContact extends CmsPersistentObject {
 
   /**
-   * 
+   * Base serialization value. Increment by class version.
    */
   private static final long serialVersionUID = 1L;
 
@@ -88,7 +88,7 @@ public class EducationProviderContact extends CmsPersistentObject {
   }
 
   /**
-   * Consturctor
+   * Constructor
    * 
    * @param departmentOfEducationIndicator Indicates contact came from DOE
    * @param emailAddress The email address
@@ -127,11 +127,11 @@ public class EducationProviderContact extends CmsPersistentObject {
     this.titleDescription = titleDescription;
   }
 
-  public String getdepartmentOfEducationIndicator() {
+  public String getDepartmentOfEducationIndicator() {
     return departmentOfEducationIndicator;
   }
 
-  public String getemailAddress() {
+  public String getEmailAddress() {
     return emailAddress;
   }
 
