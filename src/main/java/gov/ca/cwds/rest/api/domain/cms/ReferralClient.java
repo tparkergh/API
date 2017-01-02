@@ -63,6 +63,7 @@ public class ReferralClient extends DomainObject implements Request, Response {
   @Size(min = 10, max = 10)
   @ApiModelProperty(required = true, readOnly = false, value = "named in referral",
       example = "ABC1234567")
+  // TODO Add Foreign Key Validation after REFERL_T table is added to source code
   private String referralId;
 
   @NotEmpty
@@ -70,7 +71,7 @@ public class ReferralClient extends DomainObject implements Request, Response {
   @Size(min = 10, max = 10)
   @ApiModelProperty(required = true, readOnly = false, value = "identifies a client",
       example = "ABC1234567")
-  // TODO Add Foreign Key Validation after CLIENT table is added to source code
+  // TODO Add Foreign Key Validation after CLIENT_T table is added to source code
   private String clientId;
 
   @NotEmpty
@@ -103,6 +104,24 @@ public class ReferralClient extends DomainObject implements Request, Response {
   private Boolean drugIndicator;
 
 
+  /**
+   * @param approvalNumber - String approvalNumber
+   * @param approvalStatusType - Short approvalStatusType
+   * @param dispositionClosureReasonType - Short dispositionClosureReasonType
+   * @param dispositionCode - String dispositionDate
+   * @param dispositionDate - Boolean selfReportedIndicator
+   * @param selfReportedIndicator - Boolean selfReportedIndicator
+   * @param staffPersonAddedIndicator - Boolean staffPersonAddedIndicator
+   * @param referralId - String referralId
+   * @param clientId - String clientId
+   * @param dispositionClosureDescription - String dispositionClosureDescription
+   * @param ageNumber - Short ageNumber
+   * @param agePeriodCode - String agePeriodCode
+   * @param countySpecificCode - String countySpecificCode
+   * @param mentalHealthIssuesIndicator - Boolean mentalHealthIssuesIndicator
+   * @param alcoholIndicator - Boolean alcoholIndicator
+   * @param drugIndicator - Boolean drugIndicator
+   */
   @JsonCreator
   public ReferralClient(@JsonProperty("approvalNumber") String approvalNumber,
       @JsonProperty("approvalStatusType") Short approvalStatusType,
@@ -138,6 +157,9 @@ public class ReferralClient extends DomainObject implements Request, Response {
     this.drugIndicator = drugIndicator;
   }
 
+  /**
+   * @param persistedReferralClient - persisted ReferralClient object
+   */
   public ReferralClient(
       gov.ca.cwds.data.persistence.cms.ReferralClient persistedReferralClient) {
     this.approvalNumber = persistedReferralClient.getApprovalNumber();
@@ -323,8 +345,6 @@ public class ReferralClient extends DomainObject implements Request, Response {
     if (!(obj instanceof ReferralClient)) {
       return false;
     }
-    // if (getClass() != obj.getClass())
-    // return false;
     ReferralClient other = (ReferralClient) obj;
     if (ageNumber == null) {
       if (other.ageNumber != null)
