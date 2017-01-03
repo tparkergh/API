@@ -96,7 +96,7 @@ public class ScreeningResource {
   }
 
   /**
-   * Create a {@link Screening}
+   * Create a {@link Screening}.
    * 
    * @param screeningReference The {@link ScreeningReference}
    * 
@@ -117,7 +117,7 @@ public class ScreeningResource {
   }
 
   /**
-   * Update a {@link Screening}
+   * Update a {@link Screening}.
    *
    * @param id the id
    * @param screeningRequest {@link Screening}

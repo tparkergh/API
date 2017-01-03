@@ -94,7 +94,7 @@ public class CmsDocReferralClientResource {
   }
 
   /**
-   * Create an {@link CmsDocReferralClient}
+   * Create an {@link CmsDocReferralClient}.
    * 
    * @param doc The {@link CmsDocReferralClient}
    * 
@@ -115,7 +115,7 @@ public class CmsDocReferralClientResource {
   }
 
   /**
-   * Update an {@link CmsDocReferralClient}
+   * Update an {@link CmsDocReferralClient}.
    * 
    * @param id the id
    * @param doc {@link CmsDocReferralClient}

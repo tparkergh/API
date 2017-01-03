@@ -16,6 +16,7 @@ import org.apache.http.HttpStatus;
 import com.google.inject.Inject;
 
 import gov.ca.cwds.inject.PersonServiceBackedResource;
+import gov.ca.cwds.rest.api.ApiException;
 import gov.ca.cwds.rest.api.domain.Person;
 import gov.ca.cwds.rest.api.domain.PostedPerson;
 import gov.ca.cwds.rest.api.domain.ScreeningRequest;
@@ -71,11 +72,11 @@ public class PersonSearchResource {
 
     ESPerson[] hits = null;
     try {
-      // TODO: remove cast abuse.
+      // TODO: remove cast abuse. Story #136701343.
       hits = ((PersonService) ((ServiceBackedResourceDelegate) resourceDelegate).getService())
           .fetchAllPersons();
     } catch (Exception e) {
-      throw new RuntimeException("ERROR calling ES \"fetch all persons\"", e);
+      throw new ApiException("ERROR calling ES \"fetch all persons\"", e);
     }
 
     if (hits != null) {
@@ -105,11 +106,11 @@ public class PersonSearchResource {
       @Valid @ApiParam(hidden = false, required = true) ESPersonSearchRequest req) {
     ESPerson[] hits = null;
     try {
-      // TODO: remove cast abuse.
+      // TODO: remove cast abuse. Story #136701343.
       hits = ((PersonService) ((ServiceBackedResourceDelegate) resourceDelegate).getService())
           .queryPersonOr(req.getFirstName(), req.getLastName(), req.getBirthDate());
     } catch (Exception e) {
-      throw new RuntimeException("ERROR calling ES \"query person OR\"", e);
+      throw new ApiException("ERROR calling ES \"query person OR\"", e);
     }
 
     if (hits != null) {

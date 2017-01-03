@@ -91,7 +91,7 @@ public class AllegationResource {
   }
 
   /**
-   * Create an {@link Allegation}
+   * Create an {@link Allegation}.
    * 
    * @param allegation The {@link Allegation}
    * 
@@ -111,7 +111,7 @@ public class AllegationResource {
   }
 
   /**
-   * Update an {@link Allegation}
+   * Update an {@link Allegation}.
    * 
    * @param id the id
    * @param allegation {@link Allegation}

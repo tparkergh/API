@@ -67,7 +67,6 @@ public class CmsReferralService implements CrudsService {
     assert request instanceof CmsReferral;
 
     CmsReferral cmsReferral = (CmsReferral) request;
-
     PostedReferral referral = this.referralService.create(cmsReferral.getReferral());
     String referralId = referral.getId();
     Allegation incomingAllegation = cmsReferral.getAllegation();

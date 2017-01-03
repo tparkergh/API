@@ -29,72 +29,74 @@ import gov.ca.cwds.data.persistence.PersistentObject;
 @Table(schema = "CWSINT", name = "SVC_PVRT")
 public class ServiceProvider extends CmsPersistentObject {
 
+  // CREATE TABLE SVC_PVRT (FAX_NO DECIMAL(10:0) NOT NULL,PHONE_NO DECIMAL(10:0) NOT NULL);
+
   /**
    * Base serialization value. Increment by class version.
    */
   private static final long serialVersionUID = 1L;
 
-  @Column(name = "AGENCY_NM")
+  @Column(name = "AGENCY_NM", length = 35, nullable = false)
   private String agencyName;
 
-  @Column(name = "ARCASS_IND")
+  @Column(name = "ARCASS_IND", length = 1, nullable = false)
   private String archiveAssociationIndicator;
 
-  @Column(name = "CITY_NM")
+  @Column(name = "CITY_NM", length = 20, nullable = false)
   private String cityName;
 
-  @Column(name = "EMAIL_ADDR")
+  @Column(name = "EMAIL_ADDR", length = 50)
   private String emailAddress;
 
   @Column(name = "FAX_NO")
   private BigDecimal faxNumber;
 
-  @Column(name = "FIRST_NM")
+  @Column(name = "FIRST_NM", length = 20, nullable = false)
   private String firstName;
 
   @Id
   @Column(name = "IDENTIFIER", length = CMS_ID_LEN)
   private String id;
 
-  @Column(name = "LAST_NM")
+  @Column(name = "LAST_NM", length = 20, nullable = false)
   private String lastName;
 
-  @Column(name = "NMPRFX_DSC")
+  @Column(name = "NMPRFX_DSC", length = 6, nullable = false)
   private String namePrefixDescription;
 
   @Type(type = "integer")
-  @Column(name = "TEL_EXT_NO")
+  @Column(name = "TEL_EXT_NO", nullable = false)
   private Integer phoneExtensionNumber;
 
   @Column(name = "PHONE_NO")
   private BigDecimal phoneNumber;
 
-  @Column(name = "PSTITL_DSC")
+  @Column(name = "PSTITL_DSC", length = 30, nullable = false)
   private String positionTitleDescription;
 
   @Type(type = "short")
-  @Column(name = "SVCPVDRC")
+  @Column(name = "SVCPVDRC", nullable = false)
   private Short serviceProviderType;
 
   @Type(type = "short")
-  @Column(name = "STATE_C")
+  @Column(name = "STATE_C", nullable = false)
   private Short stateCodeType;
 
-  @Column(name = "STREET_NM")
+  @Column(name = "STREET_NM", length = 40, nullable = false)
   private String streetName;
 
-  @Column(name = "STREET_NO")
+  @Column(name = "STREET_NO", length = 10, nullable = false)
   private String streetNumber;
 
-  @Column(name = "SUFX_TLDSC")
+  @Column(name = "SUFX_TLDSC", length = 4, nullable = false)
   private String suffixTitleDescription;
 
   @Type(type = "integer")
-  @Column(name = "ZIP_NM")
+  @Column(name = "ZIP_NM", nullable = false)
   private Integer zipNumber;
 
   @Type(type = "short")
-  @Column(name = "ZIP_SFX_NO")
+  @Column(name = "ZIP_SFX_NO", nullable = false)
   private Short zipSuffixNumber;
 
   /**
@@ -155,11 +157,8 @@ public class ServiceProvider extends CmsPersistentObject {
     this.zipSuffixNumber = zipSuffixNumber;
   }
 
-
-  /*
-   * (non-Javadoc)
-   * 
-   * @see gov.ca.cwds.rest.api.persistence.PersistentObject#getPrimaryKey()
+  /**
+   * {@inheritDoc}
    */
   @Override
   public String getPrimaryKey() {
@@ -299,8 +298,8 @@ public class ServiceProvider extends CmsPersistentObject {
     return zipSuffixNumber;
   }
 
-  /*
-   * (non-Javadoc)
+  /**
+   * {@inheritDoc}
    * 
    * @see java.lang.Object#hashCode()
    */
@@ -339,8 +338,8 @@ public class ServiceProvider extends CmsPersistentObject {
     return result;
   }
 
-  /*
-   * (non-Javadoc)
+  /**
+   * {@inheritDoc}
    * 
    * @see java.lang.Object#equals(java.lang.Object)
    */
@@ -505,6 +504,5 @@ public class ServiceProvider extends CmsPersistentObject {
     }
     return true;
   }
-
 
 }

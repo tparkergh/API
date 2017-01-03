@@ -53,10 +53,37 @@ public class ESPerson extends Person {
    * @author CWDS API Team
    */
   public enum ESColumn {
-    ID("id", String.class, ""), FIRST_NAME("first_name", String.class, ""), LAST_NAME("last_name",
-        String.class, ""), GENDER("gender", String.class, "U"), BIRTH_DATE("date_of_birth",
-            String.class, null), SSN("ssn", String.class,
-                null), TYPE("type", String.class, null), SOURCE("source", String.class, null);
+    /**
+     * ElasticSearch identifier
+     */
+    ID("id", String.class, ""),
+
+    /**
+     * first name
+     */
+    FIRST_NAME("first_name", String.class, ""),
+
+    /**
+     * last name
+     */
+    LAST_NAME("last_name", String.class, ""),
+
+    /**
+     * gender code (M,F,U)
+     */
+    GENDER("gender", String.class, "U"),
+
+    /**
+     * birth date
+     */
+    BIRTH_DATE("date_of_birth", String.class, null),
+
+    /**
+     * social security number
+     */
+    SSN("ssn", String.class, null),
+
+    TYPE("type", String.class, null), SOURCE("source", String.class, null);
 
     /**
      * ElasticSearch column name.
