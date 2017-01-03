@@ -52,7 +52,7 @@ flywayFactory:
 
 
 elasticsearch:
-  elasticsearch.host: ${ES_HOST:-localhost}
+  elasticsearch.host: ${ES_HOST:-es.dev.cwds.tabordasolutions.net}
   elasticsearch.port: ${ES_PORT:-9300}
   elasticsearch.cluster: ${ES_CLUSTER:-elasticsearch}
   elasticsearch.clientnode: ${ES_CLIENTNODE:-javaclient}

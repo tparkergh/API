@@ -8,7 +8,6 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.PersistenceException;
 import javax.persistence.Table;
-import javax.validation.constraints.NotNull;
 
 import org.hibernate.annotations.Type;
 
@@ -38,7 +37,6 @@ public class StaffPerson extends CmsPersistentObject {
   private Date endDate;
 
   @Column(name = "FIRST_NM", length = 20, nullable = false)
-  @NotNull
   private String firstName;
 
   @Column(name = "JOB_TL_DSC")

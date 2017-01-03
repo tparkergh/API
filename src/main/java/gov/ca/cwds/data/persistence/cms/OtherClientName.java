@@ -53,16 +53,16 @@ public class OtherClientName extends CmsPersistentObject {
    * @see VarargPrimaryKey
    */
   @Embeddable
-  public static final class PrimaryKey implements Serializable {
+  public static final class EmbeddablePrimaryKey implements Serializable {
     private static final long serialVersionUID = 1L;
 
-    String id1 = "";
-    String id2 = "";
+    private String id1 = "";
+    private String id2 = "";
 
     /**
      * Default ctor.
      */
-    public PrimaryKey() {
+    public EmbeddablePrimaryKey() {
       // Default values.
     }
 
@@ -72,7 +72,7 @@ public class OtherClientName extends CmsPersistentObject {
      * @param id1 generic id 1
      * @param id2 generic id 2
      */
-    public PrimaryKey(String id1, String id2) {
+    public EmbeddablePrimaryKey(String id1, String id2) {
       this.id1 = id1;
       this.id2 = id2;
     }
@@ -114,7 +114,7 @@ public class OtherClientName extends CmsPersistentObject {
         return false;
       if (getClass() != obj.getClass())
         return false;
-      PrimaryKey other = (PrimaryKey) obj;
+      EmbeddablePrimaryKey other = (EmbeddablePrimaryKey) obj;
       if (id1 == null) {
         if (other.id1 != null)
           return false;
@@ -161,7 +161,7 @@ public class OtherClientName extends CmsPersistentObject {
       @AttributeOverride(name = "id1", column = @Column(name = "FKCLIENT_T", length = CMS_ID_LEN)),
       @AttributeOverride(name = "id2", column = @Column(name = "THIRD_ID", length = CMS_ID_LEN))})
   @EmbeddedId
-  OtherClientName.PrimaryKey id;
+  private OtherClientName.EmbeddablePrimaryKey id;
 
   @Column(name = "FIRST_NM")
   private String firstName;
@@ -189,7 +189,7 @@ public class OtherClientName extends CmsPersistentObject {
    */
   public OtherClientName() {
     super();
-    this.id = new OtherClientName.PrimaryKey();
+    this.id = new OtherClientName.EmbeddablePrimaryKey();
   }
 
   /**
@@ -207,7 +207,8 @@ public class OtherClientName extends CmsPersistentObject {
   public OtherClientName(String clientId, String firstName, String lastName, String middleName,
       String namePrefixDescription, Short nameType, String suffixTitleDescription, String thirdId) {
     super();
-    this.id = new OtherClientName.PrimaryKey(clientId, thirdId);
+    this.id = new OtherClientName.EmbeddablePrimaryKey(clientId, thirdId);
+
     this.firstName = firstName;
     this.lastName = lastName;
     this.middleName = middleName;
@@ -222,7 +223,7 @@ public class OtherClientName extends CmsPersistentObject {
    * @see gov.ca.cwds.data.persistence.PersistentObject#getPrimaryKey()
    */
   @Override
-  public OtherClientName.PrimaryKey getPrimaryKey() {
+  public OtherClientName.EmbeddablePrimaryKey getPrimaryKey() {
     return this.id;
   }
 

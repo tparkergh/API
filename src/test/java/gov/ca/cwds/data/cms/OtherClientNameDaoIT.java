@@ -89,7 +89,7 @@ public class OtherClientNameDaoIT {
     final String thirdId = "123";
     final String clientId = "1";
     OtherClientName found =
-        otherClientNameDao.find(new OtherClientName.PrimaryKey(clientId, thirdId));
+        otherClientNameDao.find(new OtherClientName.EmbeddablePrimaryKey(clientId, thirdId));
     assertThat(found.getThirdId(), is(thirdId));
   }
 
@@ -113,7 +113,7 @@ public class OtherClientNameDaoIT {
     final String thirdId = "123";
     final String clientId = "1";
     OtherClientName deleted =
-        otherClientNameDao.delete(new OtherClientName.PrimaryKey(clientId, thirdId));
+        otherClientNameDao.delete(new OtherClientName.EmbeddablePrimaryKey(clientId, thirdId));
     assertThat(deleted.getThirdId(), is(thirdId));
   }
 

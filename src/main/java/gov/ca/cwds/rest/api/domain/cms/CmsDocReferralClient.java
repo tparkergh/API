@@ -448,7 +448,10 @@ public class CmsDocReferralClient extends DomainObject implements Request, Respo
   @JsonProperty("cms_document")
   private CmsDocReferralClientDocument cmsDocument = new CmsDocReferralClientDocument();
 
-  private Set<CmsDocReferralClientDetail> details = new LinkedHashSet<CmsDocReferralClientDetail>();
+  /**
+   * Order set of document referral/client details.
+   */
+  private Set<CmsDocReferralClientDetail> details = new LinkedHashSet<>();
 
   @JsonCreator
   public CmsDocReferralClient(@JsonProperty("id") String docHandle,
@@ -470,8 +473,12 @@ public class CmsDocReferralClient extends DomainObject implements Request, Respo
     }
   }
 
-  public CmsDocReferralClient(
-      List<gov.ca.cwds.data.persistence.cms.CmsDocReferralClient> docs) {
+  /**
+   * Construct from List of persistence layer referral/client document records.
+   * 
+   * @param docs persistence layer referral/client doc entries
+   */
+  public CmsDocReferralClient(List<gov.ca.cwds.data.persistence.cms.CmsDocReferralClient> docs) {
     super();
 
     for (gov.ca.cwds.data.persistence.cms.CmsDocReferralClient entry : docs) {
@@ -576,26 +583,56 @@ public class CmsDocReferralClient extends DomainObject implements Request, Respo
     return true;
   }
 
+  /**
+   * The 30 char document handle.
+   * 
+   * @return doc handle
+   */
   public String getId() {
     return id;
   }
 
+  /**
+   * The 30 char document handle.
+   * 
+   * @param id doc handle
+   */
   public void setId(String id) {
     this.id = id;
   }
 
+  /**
+   * Name of uncompressed document, such as HELLO.DOC.
+   * 
+   * @return document name
+   */
   public String getDocName() {
     return docName;
   }
 
+  /**
+   * Name of uncompressed document, such as HELLO.DOC.
+   * 
+   * @param docName document name
+   */
   public void setDocName(String docName) {
     this.docName = docName;
   }
 
+  /**
+   * When the document was first added.
+   * 
+   * @return When the document was first added
+   */
   public String getDocAddedDate() {
     return docAddedDate;
   }
 
+  /**
+   * Set when the document was first added.
+   * 
+   * @param docAddedDate When the document was first added
+   */
   public void setDocAddedDate(String docAddedDate) {
     this.docAddedDate = docAddedDate;
   }
@@ -608,10 +645,20 @@ public class CmsDocReferralClient extends DomainObject implements Request, Respo
     this.details = details;
   }
 
+  /**
+   * Fetch underlying document
+   * 
+   * @return the document linked to referral/client
+   */
   public CmsDocReferralClientDocument getCmsDocument() {
     return cmsDocument;
   }
 
+  /**
+   * Set the underlying document
+   * 
+   * @param cmsDocument the document linked to referral/client
+   */
   public void setCmsDocument(CmsDocReferralClientDocument cmsDocument) {
     this.cmsDocument = cmsDocument;
   }

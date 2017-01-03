@@ -125,35 +125,35 @@ public class StaffAuthorityPrivilege extends CmsPersistentObject {
   }
 
   /**
-   * @return the countySpecificCode
+   * @return county code
    */
   public String getCountySpecificCode() {
     return StringUtils.trimToEmpty(countySpecificCode);
   }
 
   /**
-   * @return the endDate
+   * @return the end date
    */
   public Date getEndDate() {
     return endDate;
   }
 
   /**
-   * @return the endTime
+   * @return the end time
    */
   public Date getEndTime() {
     return endTime;
   }
 
   /**
-   * @return the fkuseridT
+   * @return foreign key to the user table
    */
   public String getFkuseridT() {
     return StringUtils.trimToEmpty(fkuseridT);
   }
 
   /**
-   * @return the id
+   * @return the primary key
    */
   public String getId() {
     return StringUtils.trimToEmpty(id);
