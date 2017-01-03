@@ -31,7 +31,7 @@ public class UserIdDao extends CrudsDaoImpl<UserId> {
   @SuppressWarnings("unchecked")
   public List<UserId> listUserFromLogonId(String logonId) {
     Query query = this.getSessionFactory().getCurrentSession()
-        .getNamedQuery("gov.ca.cwds.rest.api.persistence.auth.UserId.findUserFromLogonId")
+        .getNamedQuery("gov.ca.cwds.data.persistence.auth.UserId.findUserFromLogonId")
         .setString("logonId", logonId);
     return query.list();
   }

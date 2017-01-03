@@ -26,9 +26,10 @@ public class StaffAuthorityPrivilegeDao extends CrudsDaoImpl<StaffAuthorityPrivi
     super(sessionFactory);
   }
 
+  @SuppressWarnings("unchecked")
   public StaffAuthorityPrivilege[] findByUser(String userId) {
     Query query = this.getSessionFactory().getCurrentSession()
-        .getNamedQuery("gov.ca.cwds.rest.api.persistence.auth.StaffAuthorityPrivilege.findByUser")
+        .getNamedQuery("gov.ca.cwds.data.persistence.auth.StaffAuthorityPrivilege.findByUser")
         .setString("userId", userId);
     return (StaffAuthorityPrivilege[]) query.list().toArray(new StaffAuthorityPrivilege[0]);
   }
@@ -36,7 +37,7 @@ public class StaffAuthorityPrivilegeDao extends CrudsDaoImpl<StaffAuthorityPrivi
   public StaffAuthorityPrivilege isSocialWorker(String userId) {
     Query query = this.getSessionFactory().getCurrentSession()
         .getNamedQuery(
-            "gov.ca.cwds.rest.api.persistence.auth.StaffAuthorityPrivilege.checkForSocialWorker")
+            "gov.ca.cwds.data.persistence.auth.StaffAuthorityPrivilege.checkForSocialWorker")
         .setString("userId", userId);
     return (StaffAuthorityPrivilege) query.uniqueResult();
   }

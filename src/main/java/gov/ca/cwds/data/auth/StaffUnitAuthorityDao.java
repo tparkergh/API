@@ -30,7 +30,7 @@ public class StaffUnitAuthorityDao extends CrudsDaoImpl<StaffUnitAuthority> {
   @SuppressWarnings("unchecked")
   public StaffUnitAuthority[] findByStaff(String staffId) {
     Query query = this.getSessionFactory().getCurrentSession()
-        .getNamedQuery("gov.ca.cwds.rest.api.persistence.auth.StaffUnitAuthority.findByStaff")
+        .getNamedQuery("gov.ca.cwds.data.persistence.auth.StaffUnitAuthority.findByStaff")
         .setString("staffId", staffId);
     return (StaffUnitAuthority[]) query.list().toArray(new StaffUnitAuthority[0]);
 
