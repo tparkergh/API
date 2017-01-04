@@ -89,9 +89,11 @@ public class StaffAuthorityPrivilege extends CmsPersistentObject {
   }
 
   /**
-   * @param countySpecificCode The countySpecificCode
-   * @param endDate The endDate
-   * @param endTime The endDate
+   * Constructor. Build from fields.
+   * 
+   * @param countySpecificCode county code
+   * @param endDate end date. null = active
+   * @param endTime end time
    * @param fkuseridT FK to user id table
    * @param id The id
    * @param levelOfAuthPrivilegeCode The levelOfAuthPrivilegeCode

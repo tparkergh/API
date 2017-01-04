@@ -11,19 +11,106 @@ import java.util.concurrent.ConcurrentHashMap;
 public class CmsUserAuthPrivilege {
 
   private static final Map<Long, UserAuthPriv> privBySysId = new ConcurrentHashMap<>();
+  private static final Map<Long, AuthorizationLevel> authLvlBySysId = new ConcurrentHashMap<>();
 
   private static final void register(UserAuthPriv en) {
     privBySysId.put(en.sysId, en);
   }
 
+  private static final void register(AuthorizationLevel en) {
+    authLvlBySysId.put(en.sysId, en);
+  }
+
   /**
-   * Look up user level privileges by sys id.
+   * Look up user level privileges by SYS_ID.
    * 
    * @param sysId system code id, per table SYS_CD_C
    * @return matching user privilege
    */
   public static final UserAuthPriv findUserPrivBySysId(long sysId) {
     return privBySysId.get(sysId);
+  }
+
+  /**
+   * Look up authorization level by SYS_ID.
+   * 
+   * @param sysId system code id, per table SYS_CD_C
+   * @return matching user privilege
+   */
+  public static final AuthorizationLevel findAuthLvlBySysId(long sysId) {
+    return authLvlBySysId.get(sysId);
+  }
+
+  /**
+   * Enumerated types for user authorization privileges, for FKS_META_T = LVL_ATHC.
+   * 
+   * @author CWDS API Team
+   */
+  public enum AuthorizationLevel {
+
+    /**
+     * County Administration
+     */
+    AUTH_LVL_COUNTY(1298, "County Administration", "0001"),
+
+    /**
+     * Office Administration
+     */
+    AUTH_LVL_OFFICE(1299, "Office Administration", "0002"),
+
+    /**
+     * State Administration
+     */
+    AUTH_LVL_STATE(1300, "State Administration", "0003"),
+
+    /**
+     * User
+     */
+    AUTH_LVL_USER(1301, "User", "0004"),
+
+    /**
+     * Global Administration
+     */
+    AUTH_LVL_GLOBAL(2201, "Global Administration", "0005");
+
+    private final long sysId;
+    private final String description;
+    private final String orderInCategory;
+
+    private AuthorizationLevel(long sysId, String shortDsc, String lgcId) {
+      this.sysId = sysId;
+      this.description = shortDsc;
+      this.orderInCategory = lgcId;
+      register(this);
+    }
+
+    /**
+     * Primary key of CMS system code table.
+     * 
+     * @return system code PK
+     */
+    public long getSysId() {
+      return this.sysId;
+    }
+
+    /**
+     * Description of this system code.
+     * 
+     * @return system code description
+     */
+    public String getDescription() {
+      return description;
+    }
+
+    /**
+     * Relative order of system code in category. Authorization level only has one category.
+     * 
+     * @return system code order
+     */
+    public String getOrderInCategory() {
+      return orderInCategory;
+    }
+
   }
 
   /**
@@ -56,7 +143,7 @@ public class CmsUserAuthPrivilege {
     /**
      * Assignment Match
      */
-    USR_PRV_ASSIGNMENT_MATCH(1464, "Assignment Match", 1460, "0005"),
+    USR_PRV_ASSIGNMENT_MATCH(1464, "Assignment Match", 1460, "0005", false),
 
     /**
      * Bulletin Administrator
@@ -71,7 +158,7 @@ public class CmsUserAuthPrivilege {
     /**
      * Code Table Maintenance
      */
-    USR_PRV_CODE_TABLE_MAINTENANCE(1467, "Code Table Maintenance", 1460, "0008"),
+    USR_PRV_CODE_TABLE_MAINTENANCE(1467, "Code Table Maintenance", 1460, "0008", false),
 
     /**
      * County License Case Management
@@ -136,12 +223,12 @@ public class CmsUserAuthPrivilege {
     /**
      * Authority
      */
-    USR_PRV_AUTHORITY(2672, "Authority", 1462, "0022"),
+    USR_PRV_AUTHORITY(2672, "Authority", 1462, "0022", false),
 
     /**
      * Probation
      */
-    USR_PRV_PROBATION(1480, "Probation", 1462, "0023"),
+    USR_PRV_PROBATION(1480, "Probation", 1462, "0023", false),
 
     /**
      * Sealed
@@ -166,7 +253,7 @@ public class CmsUserAuthPrivilege {
     /**
      * State Read Assignment
      */
-    USR_PRV_STATE_READ_ASSIGNMENT(1485, "State Read Assignment", 1463, "0028"),
+    USR_PRV_STATE_READ_ASSIGNMENT(1485, "State Read Assignment", 1463, "0028", false),
 
     /**
      * Statewide Read
@@ -222,12 +309,24 @@ public class CmsUserAuthPrivilege {
     private final long categoryId;
     private final String description;
     private final String orderInCategory;
+    private final boolean active;
 
     private UserAuthPriv(long sysId, String shortDsc, long categoryId, String lgcId) {
       this.sysId = sysId;
       this.description = shortDsc;
       this.categoryId = categoryId;
       this.orderInCategory = lgcId;
+      this.active = true;
+      register(this);
+    }
+
+    private UserAuthPriv(long sysId, String shortDsc, long categoryId, String lgcId,
+        boolean active) {
+      this.sysId = sysId;
+      this.description = shortDsc;
+      this.categoryId = categoryId;
+      this.orderInCategory = lgcId;
+      this.active = active;
       register(this);
     }
 
@@ -265,6 +364,15 @@ public class CmsUserAuthPrivilege {
      */
     public String getOrderInCategory() {
       return orderInCategory;
+    }
+
+    /**
+     * A handful of privileges are marked as inactive.
+     * 
+     * @return whether the privilege is active
+     */
+    public boolean isActive() {
+      return active;
     }
 
   }
