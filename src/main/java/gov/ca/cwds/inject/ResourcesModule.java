@@ -18,7 +18,6 @@ import gov.ca.cwds.rest.resources.ServiceBackedResourceDelegate;
 import gov.ca.cwds.rest.resources.SwaggerResource;
 import gov.ca.cwds.rest.resources.TypedResourceDelegate;
 import gov.ca.cwds.rest.resources.TypedServiceBackedResourceDelegate;
-import gov.ca.cwds.rest.resources.auth.UserAuthorizationResource;
 import gov.ca.cwds.rest.resources.cms.AllegationResource;
 import gov.ca.cwds.rest.resources.cms.CmsDocReferralClientResource;
 import gov.ca.cwds.rest.resources.cms.CmsDocumentResource;
@@ -30,7 +29,6 @@ import gov.ca.cwds.rest.resources.cms.StaffPersonResource;
 import gov.ca.cwds.rest.services.AddressService;
 import gov.ca.cwds.rest.services.PersonService;
 import gov.ca.cwds.rest.services.ScreeningService;
-import gov.ca.cwds.rest.services.auth.UserAuthorizationService;
 import gov.ca.cwds.rest.services.cms.AllegationService;
 import gov.ca.cwds.rest.services.cms.CmsDocReferralClientService;
 import gov.ca.cwds.rest.services.cms.CmsDocumentService;
@@ -62,7 +60,6 @@ public class ResourcesModule extends AbstractModule {
     bind(ReporterResource.class);
     bind(StaffPersonResource.class);
     bind(PersonSearchResource.class);
-    bind(UserAuthorizationResource.class);
   }
 
   @Provides
@@ -160,11 +157,5 @@ public class ResourcesModule extends AbstractModule {
   @StaffPersonServiceBackedResource
   public ResourceDelegate staffPersonServiceBackedResource(Injector injector) {
     return new ServiceBackedResourceDelegate(injector.getInstance(StaffPersonService.class));
-  }
-
-  @Provides
-  @UserAuthorizationServiceBackedResource
-  public ResourceDelegate userAuthorizationServiceBackedResource(Injector injector) {
-    return new ServiceBackedResourceDelegate(injector.getInstance(UserAuthorizationService.class));
   }
 }
