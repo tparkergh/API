@@ -5,10 +5,6 @@ import org.hibernate.SessionFactory;
 import com.google.inject.AbstractModule;
 import com.google.inject.Provides;
 
-import gov.ca.cwds.data.auth.StaffAuthorityPrivilegeDao;
-import gov.ca.cwds.data.auth.StaffUnitAuthorityDao;
-import gov.ca.cwds.data.auth.UserAuthorizationDao;
-import gov.ca.cwds.data.auth.UserIdDao;
 import gov.ca.cwds.data.cms.AllegationDao;
 import gov.ca.cwds.data.cms.AttorneyDao;
 import gov.ca.cwds.data.cms.ClientDao;
@@ -24,9 +20,6 @@ import gov.ca.cwds.data.es.ElasticsearchDao;
 import gov.ca.cwds.data.ns.AddressDao;
 import gov.ca.cwds.data.ns.PersonDao;
 import gov.ca.cwds.data.ns.ScreeningDao;
-import gov.ca.cwds.data.persistence.auth.StaffAuthorityPrivilege;
-import gov.ca.cwds.data.persistence.auth.StaffUnitAuthority;
-import gov.ca.cwds.data.persistence.auth.UserId;
 import gov.ca.cwds.data.persistence.cms.Allegation;
 import gov.ca.cwds.data.persistence.cms.CmsDocReferralClient;
 import gov.ca.cwds.data.persistence.cms.CmsDocument;
@@ -54,8 +47,7 @@ public class DataAccessModule extends AbstractModule {
   private final HibernateBundle<ApiConfiguration> cmsHibernateBundle =
       new HibernateBundle<ApiConfiguration>(StaffPerson.class, Referral.class, Allegation.class,
           CrossReport.class, ReferralClient.class, Reporter.class, CmsDocument.class,
-          CmsDocumentBlobSegment.class, CmsDocReferralClient.class, UserId.class,
-          StaffAuthorityPrivilege.class, StaffUnitAuthority.class) {
+          CmsDocumentBlobSegment.class, CmsDocReferralClient.class) {
         @Override
         public DataSourceFactory getDataSourceFactory(ApiConfiguration configuration) {
           return configuration.getCmsDataSourceFactory();
@@ -103,11 +95,6 @@ public class DataAccessModule extends AbstractModule {
     bind(ReferralDao.class);
     bind(ReporterDao.class);
     bind(StaffPersonDao.class);
-
-    bind(UserAuthorizationDao.class);
-    bind(UserIdDao.class);
-    bind(StaffAuthorityPrivilegeDao.class);
-    bind(StaffUnitAuthorityDao.class);
 
     bind(AddressDao.class);
     bind(PersonDao.class);
