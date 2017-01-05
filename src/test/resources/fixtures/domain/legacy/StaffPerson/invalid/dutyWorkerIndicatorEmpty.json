@@ -15,7 +15,7 @@
   "availabilityAndLocationDescription": "abc",
   "ssrsLicensingWorkerId": "1234",
   "countyCode": "99",
-  "dutyWorkerIndicator": null,
+  "dutyWorkerIndicator": "",
   "cwsOfficeAddress": "3XPCP92b24",
   "emailAddress": "john.doe@anyco.com"
 }

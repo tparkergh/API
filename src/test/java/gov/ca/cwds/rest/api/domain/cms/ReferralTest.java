@@ -24,9 +24,7 @@ import org.junit.Test;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import gov.ca.cwds.data.CrudsDao;
-import gov.ca.cwds.data.persistence.cms.StaffPerson;
 import gov.ca.cwds.rest.api.domain.DomainChef;
-import gov.ca.cwds.rest.api.domain.cms.Referral;
 import gov.ca.cwds.rest.core.Api;
 import gov.ca.cwds.rest.resources.cms.ReferralResource;
 import io.dropwizard.jackson.Jackson;
@@ -100,20 +98,21 @@ public class ReferralTest {
   private String limitedAccessDesc = "x";
   private String originalClosureDate = "1946-02-09";
 
+  @SuppressWarnings("javadoc")
   @Before
   public void setup() {
     @SuppressWarnings("rawtypes")
     CrudsDao crudsDao = mock(CrudsDao.class);
-    when(crudsDao.find(any())).thenReturn(mock(StaffPerson.class));
+    when(crudsDao.find(any())).thenReturn(mock(gov.ca.cwds.data.persistence.cms.Referral.class));
 
     when(mockedReferralResource.create(eq(validReferral)))
         .thenReturn(Response.status(Response.Status.NO_CONTENT).entity(null).build());
-
   }
 
   /*
    * Constructor Tests
    */
+  @SuppressWarnings("javadoc")
   @Test
   public void persistentObjectConstructorTest() throws Exception {
     Referral domain = new Referral(additionalInfoIncludedCode, anonymousReporterIndicator,
@@ -337,6 +336,7 @@ public class ReferralTest {
   /*
    * additionalInfoIncludedCode Tests
    */
+  @SuppressWarnings("javadoc")
   @Test
   public void failsWhenAdditionalInfoIncludedCodeNull() throws Exception {
     Referral toCreate = MAPPER.readValue(

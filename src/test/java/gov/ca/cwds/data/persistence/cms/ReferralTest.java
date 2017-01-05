@@ -1,53 +1,67 @@
 package gov.ca.cwds.data.persistence.cms;
 
+import static io.dropwizard.testing.FixtureHelpers.fixture;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.notNullValue;
 
+import java.io.IOException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.Date;
 
 import org.junit.Test;
 
-import gov.ca.cwds.data.persistence.cms.Referral;
-import gov.ca.cwds.rest.api.domain.DomainChef;
+import com.fasterxml.jackson.core.JsonParseException;
+import com.fasterxml.jackson.databind.JsonMappingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
+import gov.ca.cwds.rest.api.domain.DomainChef;
+import io.dropwizard.jackson.Jackson;
+
+/**
+ * @author CWDS API Team
+ *
+ */
 public class ReferralTest {
+
+  private static final ObjectMapper MAPPER = Jackson.newObjectMapper();
+
   private final static DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
   @SuppressWarnings("unused")
   private final static DateFormat tf = new SimpleDateFormat("yyyy-MM-dd-HH.mm.ss.SSS");
   private final static DateFormat timeOnlyFormat = new SimpleDateFormat("HH:mm:ss");
-  private String id = "a";
-  private Boolean additionalInfoIncludedCode = Boolean.TRUE;
-  private Boolean anonymousReporterIndicator = Boolean.TRUE;
-  private Boolean applicationForPetitionIndicator = Boolean.FALSE;
+  private String id = "1234567ABC";
+  private String additionalInfoIncludedCode = "Y";
+  private String anonymousReporterIndicator = "Y";
+  private String applicationForPetitionIndicator = "N";
   private String approvalNumber = "c";
-  private Short approvalStatusType = 1;
-  private Boolean caretakersPerpetratorCode = Boolean.FALSE;
-  private String closureDate = "1991-06-06";
-  private Short communicationMethodType = 2;
-  private String currentLocationOfChildren = "e";
-  private String drmsAllegationDescriptionDoc = "f";
+  private Short approvalStatusType = 122;
+  private String caretakersPerpetratorCode = "N";
+  private Date closureDate = DomainChef.uncookDateString("1991-06-06");
+  private Short communicationMethodType = 408;
+  private String currentLocationOfChildren = "child location";
+  private String drmsAllegationDescriptionDoc = "allegation desc";
   private String drmsErReferralDoc = "g";
   private String drmsInvestigationDoc = "h";
-  private Boolean filedSuspectedChildAbuseReporttoLawEnforcementIndicator = Boolean.TRUE;
-  private Boolean familyAwarenessIndicator = Boolean.FALSE;
-  private Short govtEntityType = 3;
+  private String filedSuspectedChildAbuseReporttoLawEnforcementIndicator = "Y";
+  private String familyAwarenessIndicator = "N";
+  private Short govtEntityType = 1077;
   private String legalDefinitionCode = "i";
-  private Boolean legalRightsNoticeIndicator = Boolean.FALSE;
+  private String legalRightsNoticeIndicator = "N";
   private String limitedAccessCode = "j";
-  private String mandatedCrossReportReceivedDate = "2001-01-01";
-  private String referralName = "k";
+  private Date mandatedCrossReportReceivedDate = DomainChef.uncookDateString("1991-06-06");
+  private String referralName = "referral name";
   private String openAdequateCaseCode = "l";
-  private String receivedDate = "2010-06-30";
-  private String receivedTime = "14:46:00";
+  private Date receivedDate = DomainChef.uncookDateString("1991-06-06");
+  private Date receivedTime = DomainChef.uncookTimeString("14:46:59");
   private Short referralResponseType = 4;
   private Short referredToResourceType = 5;
-  private String responseDeterminationDate = "1985-09-04";
-  private String responseDeterminationTime = "14:46:00";
-  private String responseRationaleText = "m";
-  private String screenerNoteText = "n";
+  private Date responseDeterminationDate = DomainChef.uncookDateString("1991-06-06");
+  private Date responseDeterminationTime = DomainChef.uncookDateString("1991-06-06");
+  private String responseRationaleText = "response rational";
+  private String screenerNoteText = "screener notes";
   private String specificsIncludedCode = "o";
   private String sufficientInformationCode = "p";
   private String unfoundedSeriesCode = "q";
@@ -56,17 +70,17 @@ public class ReferralTest {
   private String firstResponseDeterminedByStaffPersonId = "t";
   private String primaryContactStaffPersonId = "u";
   private String countySpecificCode = "v";
-  private Boolean specialProjectReferralIndicator = Boolean.TRUE;
-  private Boolean zippyCreatedIndicator = Boolean.FALSE;
-  private Boolean homelessIndicator = Boolean.TRUE;
-  private Boolean familyRefusedServicesIndicator = Boolean.FALSE;
-  private String firstEvaluatedOutApprovalDate = "1995-07-31";
+  private String specialProjectReferralIndicator = "Y";
+  private String zippyCreatedIndicator = "N";
+  private String homelessIndicator = "Y";
+  private String familyRefusedServicesIndicator = "N";
+  private Date firstEvaluatedOutApprovalDate = DomainChef.uncookDateString("1991-06-06");
   private String responsibleAgencyCode = "w";
   private Short limitedAccessGovtAgencyType = 6;
-  private String limitedAccessDate = "2001-01-01";
+  private Date limitedAccessDate = DomainChef.uncookDateString("1991-06-06");
   private String limitedAccessDesc = "x";
-  private String originalClosureDate = "1946-02-09";
-  private String lastUpdatedId = "z";
+  private Date originalClosureDate = DomainChef.uncookDateString("1991-06-06");
+  private String lastUpdatedId = "0X5";
 
   /*
    * Constructor test
@@ -77,86 +91,135 @@ public class ReferralTest {
   }
 
   @Test
-  public void domainReferralLastUpdateConstructorTest() throws Exception {
-    gov.ca.cwds.rest.api.domain.cms.Referral domain = new gov.ca.cwds.rest.api.domain.cms.Referral(
-        additionalInfoIncludedCode, anonymousReporterIndicator, applicationForPetitionIndicator,
-        approvalNumber, approvalStatusType, caretakersPerpetratorCode, closureDate,
-        communicationMethodType, currentLocationOfChildren, drmsAllegationDescriptionDoc,
-        drmsErReferralDoc, drmsInvestigationDoc,
-        filedSuspectedChildAbuseReporttoLawEnforcementIndicator, familyAwarenessIndicator,
-        govtEntityType, legalDefinitionCode, legalRightsNoticeIndicator, limitedAccessCode,
-        mandatedCrossReportReceivedDate, referralName, openAdequateCaseCode, receivedDate,
-        receivedTime, referralResponseType, referredToResourceType, responseDeterminationDate,
-        responseDeterminationTime, responseRationaleText, screenerNoteText, specificsIncludedCode,
-        sufficientInformationCode, unfoundedSeriesCode, linkToPrimaryReferralId,
-        allegesAbuseOccurredAtAddressId, firstResponseDeterminedByStaffPersonId,
-        primaryContactStaffPersonId, countySpecificCode, specialProjectReferralIndicator,
-        zippyCreatedIndicator, homelessIndicator, familyRefusedServicesIndicator,
-        firstEvaluatedOutApprovalDate, responsibleAgencyCode, limitedAccessGovtAgencyType,
-        limitedAccessDate, limitedAccessDesc, originalClosureDate);
+  public void constructorUsingDomainTest() throws Exception {
 
-    Referral persistent = new Referral(id, domain, "z");
+    gov.ca.cwds.rest.api.domain.cms.Referral domainReferral = validDomainReferral();
+
+    Referral persistent = new Referral(id, domainReferral, "0X5");
+
     assertThat(persistent.getId(), is(equalTo(id)));
     assertThat(DomainChef.uncookBooleanString(persistent.getAdditionalInfoIncludedCode()),
-        is(equalTo(additionalInfoIncludedCode)));
-    assertThat(persistent.getAnonymousReporterIndicator(), is(equalTo("Y")));
-    assertThat(persistent.getApplicationForPetitionIndicator(), is(equalTo("N")));
-    assertThat(persistent.getApprovalNumber(), is(equalTo(approvalNumber)));
-    assertThat(persistent.getApprovalStatusType(), is(equalTo(approvalStatusType)));
+        is(equalTo(domainReferral.getAdditionalInfoIncludedCode())));
+    assertThat(DomainChef.uncookBooleanString(persistent.getAnonymousReporterIndicator()),
+        is(equalTo(domainReferral.getAnonymousReporterIndicator())));
+    assertThat(DomainChef.uncookBooleanString(persistent.getApplicationForPetitionIndicator()),
+        is(equalTo(domainReferral.getApplicationForPetitionIndicator())));
+    assertThat(persistent.getApprovalNumber(), is(equalTo(domainReferral.getApprovalNumber())));
+    assertThat(persistent.getApprovalStatusType(),
+        is(equalTo(domainReferral.getApprovalStatusType())));
     assertThat(DomainChef.uncookBooleanString(persistent.getCaretakersPerpetratorCode()),
-        is(equalTo(caretakersPerpetratorCode)));
-    assertThat(persistent.getClosureDate(), is(equalTo(df.parse(closureDate))));
-    assertThat(persistent.getCommunicationMethodType(), is(equalTo(communicationMethodType)));
-    assertThat(persistent.getCurrentLocationOfChildren(), is(equalTo(currentLocationOfChildren)));
+        is(equalTo(domainReferral.getCaretakersPerpetratorCode())));
+    assertThat(persistent.getClosureDate(), is(equalTo(df.parse(domainReferral.getClosureDate()))));
+    assertThat(persistent.getCommunicationMethodType(),
+        is(equalTo(domainReferral.getCommunicationMethodType())));
+    assertThat(persistent.getCurrentLocationOfChildren(),
+        is(equalTo(domainReferral.getCurrentLocationOfChildren())));
     assertThat(persistent.getDrmsAllegationDescriptionDoc(),
-        is(equalTo(drmsAllegationDescriptionDoc)));
-    assertThat(persistent.getDrmsErReferralDoc(), is(equalTo(drmsErReferralDoc)));
-    assertThat(persistent.getDrmsInvestigationDoc(), is(equalTo(drmsInvestigationDoc)));
-    assertThat(persistent.getFiledSuspectedChildAbuseReporttoLawEnforcementIndicator(),
-        is(equalTo("Y")));
-    assertThat(persistent.getFamilyAwarenessIndicator(), is(equalTo("N")));
-    assertThat(persistent.getGovtEntityType(), is(equalTo(govtEntityType)));
-    assertThat(persistent.getLegalDefinitionCode(), is(equalTo(legalDefinitionCode)));
-    assertThat(persistent.getLegalRightsNoticeIndicator(), is(equalTo("N")));
-    assertThat(persistent.getLimitedAccessCode(), is(equalTo(limitedAccessCode)));
+        is(equalTo(domainReferral.getDrmsAllegationDescriptionDoc())));
+    assertThat(persistent.getDrmsErReferralDoc(),
+        is(equalTo(domainReferral.getDrmsErReferralDoc())));
+    assertThat(persistent.getDrmsInvestigationDoc(),
+        is(equalTo(domainReferral.getDrmsInvestigationDoc())));
+    assertThat(
+        DomainChef.uncookBooleanString(
+            persistent.getFiledSuspectedChildAbuseReporttoLawEnforcementIndicator()),
+        is(equalTo(domainReferral.getFiledSuspectedChildAbuseReporttoLawEnforcementIndicator())));
+    assertThat(DomainChef.uncookBooleanString(persistent.getFamilyAwarenessIndicator()),
+        is(equalTo(domainReferral.getFamilyAwarenessIndicator())));
+    assertThat(persistent.getGovtEntityType(), is(equalTo(domainReferral.getGovtEntityType())));
+    assertThat(persistent.getLegalDefinitionCode(),
+        is(equalTo(domainReferral.getLegalDefinitionCode())));
+    assertThat(DomainChef.uncookBooleanString(persistent.getLegalRightsNoticeIndicator()),
+        is(equalTo(domainReferral.getLegalRightsNoticeIndicator())));
+    assertThat(persistent.getLimitedAccessCode(),
+        is(equalTo(domainReferral.getLimitedAccessCode())));
     assertThat(persistent.getMandatedCrossReportReceivedDate(),
-        is(equalTo(df.parse(mandatedCrossReportReceivedDate))));
-    assertThat(persistent.getReferralName(), is(equalTo(referralName)));
-    assertThat(persistent.getOpenAdequateCaseCode(), is(equalTo(openAdequateCaseCode)));
-    assertThat(persistent.getReceivedDate(), is(equalTo(df.parse(receivedDate))));
-    assertThat(persistent.getReceivedTime(), is(equalTo(timeOnlyFormat.parse(receivedTime))));
-    assertThat(persistent.getReferralResponseType(), is(equalTo(referralResponseType)));
-    assertThat(persistent.getReferredToResourceType(), is(equalTo(referredToResourceType)));
+        is(equalTo(df.parse(domainReferral.getMandatedCrossReportReceivedDate()))));
+    assertThat(persistent.getReferralName(), is(equalTo(domainReferral.getReferralName())));
+    assertThat(persistent.getOpenAdequateCaseCode(),
+        is(equalTo(domainReferral.getOpenAdequateCaseCode())));
+    assertThat(persistent.getReceivedDate(),
+        is(equalTo(df.parse(domainReferral.getReceivedDate()))));
+    assertThat(persistent.getReceivedTime(),
+        is(equalTo(timeOnlyFormat.parse(domainReferral.getReceivedTime()))));
+    assertThat(persistent.getReferralResponseType(),
+        is(equalTo(domainReferral.getReferralResponseType())));
+    assertThat(persistent.getReferredToResourceType(),
+        is(equalTo(domainReferral.getReferredToResourceType())));
     assertThat(persistent.getResponseDeterminationDate(),
-        is(equalTo(df.parse(responseDeterminationDate))));
+        is(equalTo(df.parse(domainReferral.getResponseDeterminationDate()))));
     assertThat(persistent.getResponseDeterminationTime(),
-        is(equalTo(timeOnlyFormat.parse(responseDeterminationTime))));
-    assertThat(persistent.getResponseRationaleText(), is(equalTo(responseRationaleText)));
-    assertThat(persistent.getScreenerNoteText(), is(equalTo(screenerNoteText)));
-    assertThat(persistent.getSpecificsIncludedCode(), is(equalTo(specificsIncludedCode)));
-    assertThat(persistent.getSufficientInformationCode(), is(equalTo(sufficientInformationCode)));
-    assertThat(persistent.getUnfoundedSeriesCode(), is(equalTo(unfoundedSeriesCode)));
-    assertThat(persistent.getLinkToPrimaryReferralId(), is(equalTo(linkToPrimaryReferralId)));
+        is(equalTo(timeOnlyFormat.parse(domainReferral.getResponseDeterminationTime()))));
+    assertThat(persistent.getResponseRationaleText(),
+        is(equalTo(domainReferral.getResponseRationaleText())));
+    assertThat(persistent.getScreenerNoteText(), is(equalTo(domainReferral.getScreenerNoteText())));
+    assertThat(persistent.getSpecificsIncludedCode(),
+        is(equalTo(domainReferral.getSpecificsIncludedCode())));
+    assertThat(persistent.getSufficientInformationCode(),
+        is(equalTo(domainReferral.getSufficientInformationCode())));
+    assertThat(persistent.getUnfoundedSeriesCode(),
+        is(equalTo(domainReferral.getUnfoundedSeriesCode())));
+    assertThat(persistent.getLinkToPrimaryReferralId(),
+        is(equalTo(domainReferral.getLinkToPrimaryReferralId())));
     assertThat(persistent.getAllegesAbuseOccurredAtAddressId(),
-        is(equalTo(allegesAbuseOccurredAtAddressId)));
+        is(equalTo(domainReferral.getAllegesAbuseOccurredAtAddressId())));
     assertThat(persistent.getFirstResponseDeterminedByStaffPersonId(),
-        is(equalTo(firstResponseDeterminedByStaffPersonId)));
+        is(equalTo(domainReferral.getFirstResponseDeterminedByStaffPersonId())));
     assertThat(persistent.getPrimaryContactStaffPersonId(),
-        is(equalTo(primaryContactStaffPersonId)));
-    assertThat(persistent.getCountySpecificCode(), is(equalTo(countySpecificCode)));
-    assertThat(persistent.getSpecialProjectReferralIndicator(), is(equalTo("Y")));
-    assertThat(persistent.getZippyCreatedIndicator(), is(equalTo("N")));
-    assertThat(persistent.getHomelessIndicator(), is(equalTo("Y")));
-    assertThat(persistent.getFamilyRefusedServicesIndicator(), is(equalTo("N")));
+        is(equalTo(domainReferral.getPrimaryContactStaffPersonId())));
+    assertThat(persistent.getCountySpecificCode(),
+        is(equalTo(domainReferral.getCountySpecificCode())));
+    assertThat(DomainChef.uncookBooleanString(persistent.getSpecialProjectReferralIndicator()),
+        is(equalTo(domainReferral.getSpecialProjectReferralIndicator())));
+    assertThat(DomainChef.uncookBooleanString(persistent.getZippyCreatedIndicator()),
+        is(equalTo(domainReferral.getZippyCreatedIndicator())));
+    assertThat(DomainChef.uncookBooleanString(persistent.getHomelessIndicator()),
+        is(equalTo(domainReferral.getHomelessIndicator())));
+    assertThat(DomainChef.uncookBooleanString(persistent.getFamilyRefusedServicesIndicator()),
+        is(equalTo(domainReferral.getFamilyRefusedServicesIndicator())));
     assertThat(persistent.getFirstEvaluatedOutApprovalDate(),
-        is(equalTo(df.parse(firstEvaluatedOutApprovalDate))));
-    assertThat(persistent.getResponsibleAgencyCode(), is(equalTo(responsibleAgencyCode)));
+        is(equalTo(df.parse(domainReferral.getFirstEvaluatedOutApprovalDate()))));
+    assertThat(persistent.getResponsibleAgencyCode(),
+        is(equalTo(domainReferral.getResponsibleAgencyCode())));
     assertThat(persistent.getLimitedAccessGovtAgencyType(),
-        is(equalTo(limitedAccessGovtAgencyType)));
-    assertThat(persistent.getLimitedAccessDate(), is(equalTo(df.parse(limitedAccessDate))));
-    assertThat(persistent.getLimitedAccessDesc(), is(equalTo(limitedAccessDesc)));
-    assertThat(persistent.getOriginalClosureDate(), is(equalTo(df.parse(originalClosureDate))));
+        is(equalTo(domainReferral.getLimitedAccessGovtAgencyType())));
+    assertThat(persistent.getLimitedAccessDate(),
+        is(equalTo(df.parse(domainReferral.getLimitedAccessDate()))));
+    assertThat(persistent.getLimitedAccessDesc(),
+        is(equalTo(domainReferral.getLimitedAccessDesc())));
+    assertThat(persistent.getOriginalClosureDate(),
+        is(equalTo(df.parse(domainReferral.getOriginalClosureDate()))));
     assertThat(persistent.getLastUpdatedId(), is(equalTo(lastUpdatedId)));
   }
 
+  @Test
+  public void persistenConstructorTest() throws Exception {
+
+    Referral persistentReferral = new Referral(id, additionalInfoIncludedCode,
+        anonymousReporterIndicator, applicationForPetitionIndicator, approvalNumber,
+        approvalStatusType, caretakersPerpetratorCode, closureDate, communicationMethodType,
+        currentLocationOfChildren, drmsAllegationDescriptionDoc, drmsErReferralDoc,
+        drmsInvestigationDoc, filedSuspectedChildAbuseReporttoLawEnforcementIndicator,
+        familyAwarenessIndicator, govtEntityType, legalDefinitionCode, legalRightsNoticeIndicator,
+        limitedAccessCode, mandatedCrossReportReceivedDate, referralName, openAdequateCaseCode,
+        receivedDate, receivedTime, referralResponseType, referredToResourceType,
+        responseDeterminationDate, responseDeterminationTime, responseRationaleText,
+        screenerNoteText, specificsIncludedCode, sufficientInformationCode, unfoundedSeriesCode,
+        linkToPrimaryReferralId, allegesAbuseOccurredAtAddressId,
+        firstResponseDeterminedByStaffPersonId, primaryContactStaffPersonId, countySpecificCode,
+        specialProjectReferralIndicator, zippyCreatedIndicator, homelessIndicator,
+        familyRefusedServicesIndicator, firstEvaluatedOutApprovalDate, responsibleAgencyCode,
+        limitedAccessGovtAgencyType, limitedAccessDate, limitedAccessDesc, originalClosureDate);
+
+  }
+
+  private gov.ca.cwds.rest.api.domain.cms.Referral validDomainReferral()
+      throws JsonParseException, JsonMappingException, IOException {
+
+    gov.ca.cwds.rest.api.domain.cms.Referral validDomainReferral =
+        MAPPER.readValue(fixture("fixtures/domain/legacy/Referral/valid/valid.json"),
+            gov.ca.cwds.rest.api.domain.cms.Referral.class);
+    return validDomainReferral;
+
+  }
 }

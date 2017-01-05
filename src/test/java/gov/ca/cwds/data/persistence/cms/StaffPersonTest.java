@@ -11,8 +11,6 @@ import java.text.SimpleDateFormat;
 
 import org.junit.Test;
 
-import gov.ca.cwds.data.persistence.cms.StaffPerson;
-
 public class StaffPersonTest {
   private final static DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
   private String id = "a";
@@ -46,7 +44,7 @@ public class StaffPersonTest {
   }
 
   @Test
-  public void domainStaffPersonLastUpdateConstructorTest() throws Exception {
+  public void constructorUsingDomainTest() throws Exception {
     gov.ca.cwds.rest.api.domain.cms.StaffPerson domain =
         new gov.ca.cwds.rest.api.domain.cms.StaffPerson(endDate, firstName, jobTitle, lastName,
             middleInitial, namePrefix, phoneNumber, phoneExt, startDate, nameSuffix,

@@ -1,6 +1,6 @@
 {
   
-  "endDate": "08/07/2012",
+  "endDate": "2017-01-03",
   "firstName": "12345678901234567890",
   "jobTitle": "123456789012345678901234567890",
   "lastName": "lastname",
@@ -8,7 +8,7 @@
   "namePrefix": "Mr",
   "phoneNumber": 9165551212,
   "phoneExt": 22,
-  "startDate": "08/20/2012",
+  "startDate": "2012-09-30",
   "nameSuffix": "sufx",
   "telecommuterIndicator": true,
   "cwsOffice": "MIZN02k11B",
