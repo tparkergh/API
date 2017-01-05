@@ -1,7 +1,20 @@
 package gov.ca.cwds.rest.resources;
 
 import static gov.ca.cwds.rest.core.Api.RESOURCE_SCREENINGS;
+import gov.ca.cwds.inject.ScreeningServiceBackedResource;
+import gov.ca.cwds.rest.api.domain.PostedScreening;
+import gov.ca.cwds.rest.api.domain.Screening;
+import gov.ca.cwds.rest.api.domain.ScreeningReference;
+import gov.ca.cwds.rest.api.domain.ScreeningRequest;
+import gov.ca.cwds.rest.api.domain.ScreeningResponse;
+import io.dropwizard.hibernate.UnitOfWork;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
+import io.swagger.annotations.ApiResponse;
+import io.swagger.annotations.ApiResponses;
 
+import javax.validation.Valid;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
@@ -18,25 +31,11 @@ import org.apache.http.HttpStatus;
 
 import com.google.inject.Inject;
 
-import gov.ca.cwds.inject.ScreeningServiceBackedResource;
-import gov.ca.cwds.rest.api.domain.PostedScreening;
-import gov.ca.cwds.rest.api.domain.Screening;
-import gov.ca.cwds.rest.api.domain.ScreeningReference;
-import gov.ca.cwds.rest.api.domain.ScreeningRequest;
-import gov.ca.cwds.rest.api.domain.ScreeningResponse;
-import io.dropwizard.hibernate.UnitOfWork;
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
-import io.swagger.annotations.ApiParam;
-import io.swagger.annotations.ApiResponse;
-import io.swagger.annotations.ApiResponses;
-
 /**
  * A resource providing a RESTful interface for {@link Screening}. It delegates functions to
  * {@link ServiceBackedResourceDelegate}. It decorates the {@link ServiceBackedResourceDelegate} not
- * in functionality but with @see
- * <a href= "https://github.com/swagger-api/swagger-core/wiki/Annotations-1.5.X">Swagger
- * Annotations</a> and
+ * in functionality but with @see <a href=
+ * "https://github.com/swagger-api/swagger-core/wiki/Annotations-1.5.X">Swagger Annotations</a> and
  * <a href="https://jersey.java.net/documentation/latest/user-guide.html#jaxrs-resources">Jersey
  * Annotations</a>
  * 
@@ -89,8 +88,8 @@ public class ScreeningResource {
   @Path("/{id}")
   @ApiOperation(hidden = true, value = "Delete Screening - not currently implemented",
       code = HttpStatus.SC_OK, response = Object.class)
-  public Response delete(
-      @PathParam("id") @ApiParam(required = true, value = "id of person to delete") long id,
+  public Response delete(@PathParam("id") @ApiParam(required = true,
+      value = "id of person to delete") long id,
       @HeaderParam("Accept") @ApiParam(hidden = true) String acceptHeader) {
     return Response.status(Response.Status.NOT_IMPLEMENTED).entity(null).build();
   }
@@ -112,7 +111,7 @@ public class ScreeningResource {
   @ApiOperation(value = "Creates a new screening", code = HttpStatus.SC_CREATED,
       response = PostedScreening.class)
   public Response create(
-      @ApiParam(hidden = false, required = true) ScreeningReference screeningReference) {
+      @Valid @ApiParam(hidden = false, required = true) ScreeningReference screeningReference) {
     return resourceDelegate.create(screeningReference);
   }
 
@@ -134,11 +133,9 @@ public class ScreeningResource {
   @Consumes(value = MediaType.APPLICATION_JSON)
   @ApiOperation(value = "Update Screening", code = HttpStatus.SC_OK,
       response = ScreeningResponse.class)
-  public Response update(
-      @PathParam("id") @ApiParam(required = true, name = "id",
-          value = "The id of the Screening to update") long id,
-      @ApiParam(required = true, name = "screeningRequest",
-          value = "The screening request") ScreeningRequest screeningRequest) {
+  public Response update(@PathParam("id") @ApiParam(required = true, name = "id",
+      value = "The id of the Screening to update") long id, @ApiParam(required = true,
+      name = "screeningRequest", value = "The screening request") ScreeningRequest screeningRequest) {
     return resourceDelegate.update(id, screeningRequest);
   }
 }
