@@ -119,7 +119,6 @@ public final class CmsUserAuthPrivilege {
    * </p>
    * 
    * @author CWDS API Team
-   * @see StaffUnitAuthority
    */
   public enum UnitAuthority {
 
