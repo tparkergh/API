@@ -4,7 +4,8 @@ import static gov.ca.cwds.rest.core.Api.RESOURCE_SEARCH_PERSON;
 
 import javax.validation.Valid;
 import javax.ws.rs.Consumes;
-import javax.ws.rs.GET;
+import javax.ws.rs.DELETE;
+import javax.ws.rs.HeaderParam;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
@@ -64,7 +65,7 @@ public class PersonSearchResource {
    * 
    * @return the response
    */
-  @GET
+  @POST
   @Path("/all")
   @ApiResponses(value = {@ApiResponse(code = 404, message = "Not found"),
       @ApiResponse(code = 406, message = "Accept Header not supported")})
@@ -145,7 +146,11 @@ public class PersonSearchResource {
    * 
    * @return {@link Response}
    */
-  public Response delete(long id, String acceptHeader) {
+  @DELETE
+  @Path("/{id}")
+  public Response delete(
+      @PathParam("id") @ApiParam(required = true, value = "id of person to delete") long id,
+      @HeaderParam("Accept") @ApiParam(hidden = true) String acceptHeader) {
     return Response.status(Response.Status.NOT_IMPLEMENTED).entity(null).build();
   }
 

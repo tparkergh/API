@@ -18,12 +18,18 @@ public class ApiApplication extends BaseApiApplication<ApiConfiguration> {
   @SuppressWarnings("unused")
   private static final Logger LOGGER = LoggerFactory.getLogger(ApiApplication.class);
 
+  /**
+   * Start the CWDS RESTful API application.
+   * 
+   * @param args command line
+   * @throws Exception if startup fails
+   */
   public static void main(final String[] args) throws Exception {
     new ApiApplication().run(args);
   }
 
-  /*
-   * (non-Javadoc)
+  /**
+   * {@inheritDoc}
    * 
    * @see gov.ca.cwds.rest.BaseApiApplication#applicationModule(io.dropwizard.setup.Bootstrap)
    */
@@ -31,7 +37,5 @@ public class ApiApplication extends BaseApiApplication<ApiConfiguration> {
   public Module applicationModule(Bootstrap<ApiConfiguration> bootstrap) {
     return new ApplicationModule(bootstrap);
   }
-
-
 
 }

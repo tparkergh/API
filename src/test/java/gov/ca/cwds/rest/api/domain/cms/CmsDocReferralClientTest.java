@@ -24,7 +24,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import gov.ca.cwds.data.CrudsDao;
 import gov.ca.cwds.data.persistence.cms.Referral;
 import gov.ca.cwds.rest.api.domain.DomainChef;
-import gov.ca.cwds.rest.api.domain.cms.CmsDocReferralClient;
 import gov.ca.cwds.rest.api.domain.cms.CmsDocReferralClient.CmsDocReferralClientDetail;
 import gov.ca.cwds.rest.api.domain.cms.CmsDocReferralClient.CmsDocReferralClientDocument;
 import gov.ca.cwds.rest.resources.cms.CmsDocReferralClientResource;
@@ -49,9 +48,7 @@ public class CmsDocReferralClientTest {
   public void setup() {
     @SuppressWarnings("rawtypes")
     CrudsDao crudsDao = mock(CrudsDao.class);
-
     when(crudsDao.find(any())).thenReturn(mock(Referral.class));
-
     when(mockedCmsDocReferralClientResource.create(eq(validCmsDocReferralClient)))
         .thenReturn(Response.status(Response.Status.NO_CONTENT).entity(null).build());
   }
@@ -135,7 +132,6 @@ public class CmsDocReferralClientTest {
 
     return new CmsDocReferralClient("0131351421120020*JONESMF 00004", "MJS000.DOC", "2015-01-01",
         cd, details);
-
   }
 
 }
