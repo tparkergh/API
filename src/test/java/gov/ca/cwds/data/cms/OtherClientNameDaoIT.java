@@ -23,6 +23,7 @@ import org.junit.BeforeClass;
 import org.junit.Rule;
 import org.junit.Test;
 
+import gov.ca.cwds.data.persistence.EmbeddableCompositeKey2;
 import gov.ca.cwds.data.persistence.cms.OtherClientName;
 
 public class OtherClientNameDaoIT {
@@ -88,8 +89,7 @@ public class OtherClientNameDaoIT {
   public void testFind() {
     final String thirdId = "123";
     final String clientId = "1";
-    OtherClientName found =
-        otherClientNameDao.find(new OtherClientName.EmbeddablePrimaryKey(clientId, thirdId));
+    OtherClientName found = otherClientNameDao.find(new EmbeddableCompositeKey2(clientId, thirdId));
     assertThat(found.getThirdId(), is(thirdId));
   }
 
@@ -113,7 +113,7 @@ public class OtherClientNameDaoIT {
     final String thirdId = "123";
     final String clientId = "1";
     OtherClientName deleted =
-        otherClientNameDao.delete(new OtherClientName.EmbeddablePrimaryKey(clientId, thirdId));
+        otherClientNameDao.delete(new EmbeddableCompositeKey2(clientId, thirdId));
     assertThat(deleted.getThirdId(), is(thirdId));
   }
 

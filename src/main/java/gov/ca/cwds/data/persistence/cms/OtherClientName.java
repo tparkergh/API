@@ -1,14 +1,10 @@
 package gov.ca.cwds.data.persistence.cms;
 
-import java.io.Serializable;
-
 import javax.persistence.AttributeOverride;
 import javax.persistence.AttributeOverrides;
 import javax.persistence.Column;
-import javax.persistence.Embeddable;
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
-import javax.persistence.IdClass;
 import javax.persistence.Table;
 
 import org.apache.commons.lang3.StringUtils;
@@ -19,6 +15,7 @@ import org.hibernate.annotations.Type;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+import gov.ca.cwds.data.persistence.EmbeddableCompositeKey2;
 import gov.ca.cwds.data.persistence.PersistentObject;
 
 
@@ -37,131 +34,11 @@ import gov.ca.cwds.data.persistence.PersistentObject;
 @Table(name = "OCL_NM_T")
 public class OtherClientName extends CmsPersistentObject {
 
-  /**
-   * Hibernate annotation {@link IdClass} requires that members match the id columns of the parent
-   * class. From the Javadoc of said annotation,
-   * 
-   * <blockquote> "The names of the fields or properties in the primary key class and the primary
-   * key fields or properties of the entity must correspond and their types must be the same."
-   * </blockquote>
-   * 
-   * <p>
-   * Instead of {@link IdClass}, use the nifty approach below using {@link Embeddable} and
-   * {@link EmbeddedId}. Try it on your friends!
-   * </p>
-   * 
-   * @see VarargPrimaryKey
-   */
-  @Embeddable
-  public static final class EmbeddablePrimaryKey implements Serializable {
-    private static final long serialVersionUID = 1L;
-
-    private String id1 = "";
-    private String id2 = "";
-
-    /**
-     * Default ctor.
-     */
-    public EmbeddablePrimaryKey() {
-      // Default values.
-    }
-
-    /**
-     * Construct from arguments.
-     * 
-     * @param id1 generic id 1
-     * @param id2 generic id 2
-     */
-    public EmbeddablePrimaryKey(String id1, String id2) {
-      this.id1 = id1;
-      this.id2 = id2;
-    }
-
-    /**
-     * {@inheritDoc}
-     * 
-     * @see java.lang.Object#toString()
-     */
-    @Override
-    public String toString() {
-      return "referralId=" + id2.trim() + ",clientId=" + id1.trim();
-    }
-
-    /**
-     * {@inheritDoc}
-     * 
-     * @see java.lang.Object#hashCode()
-     */
-    @Override
-    public int hashCode() {
-      final int prime = 31;
-      int result = 1;
-      result = prime * result + ((id1 == null) ? 0 : id1.hashCode());
-      result = prime * result + ((id2 == null) ? 0 : id2.hashCode());
-      return result;
-    }
-
-    /**
-     * {@inheritDoc}
-     * 
-     * @see java.lang.Object#equals(java.lang.Object)
-     */
-    @Override
-    public boolean equals(Object obj) {
-      if (this == obj)
-        return true;
-      if (obj == null)
-        return false;
-      if (getClass() != obj.getClass())
-        return false;
-      EmbeddablePrimaryKey other = (EmbeddablePrimaryKey) obj;
-      if (id1 == null) {
-        if (other.id1 != null)
-          return false;
-      } else if (!id1.equals(other.id1))
-        return false;
-      if (id2 == null) {
-        if (other.id2 != null)
-          return false;
-      } else if (!id2.equals(other.id2))
-        return false;
-      return true;
-    }
-
-    /**
-     * @return arbitrary id column, {@link #id1}.
-     */
-    public String getId1() {
-      return id1;
-    }
-
-    /**
-     * @param id1 arbitrary id column, {@link #id1}.
-     */
-    public void setId1(String id1) {
-      this.id1 = id1;
-    }
-
-    /**
-     * @return arbitrary id column, {@link #id2}.
-     */
-    public String getId2() {
-      return id2;
-    }
-
-    /**
-     * @param id2 arbitrary id column, {@link #id2}.
-     */
-    public void setId2(String id2) {
-      this.id2 = id2;
-    }
-  }
-
   @AttributeOverrides({
       @AttributeOverride(name = "id1", column = @Column(name = "FKCLIENT_T", length = CMS_ID_LEN)),
       @AttributeOverride(name = "id2", column = @Column(name = "THIRD_ID", length = CMS_ID_LEN))})
   @EmbeddedId
-  private OtherClientName.EmbeddablePrimaryKey id;
+  private EmbeddableCompositeKey2 id;
 
   @Column(name = "FIRST_NM")
   private String firstName;
@@ -189,7 +66,7 @@ public class OtherClientName extends CmsPersistentObject {
    */
   public OtherClientName() {
     super();
-    this.id = new OtherClientName.EmbeddablePrimaryKey();
+    this.id = new EmbeddableCompositeKey2();
   }
 
   /**
@@ -202,12 +79,12 @@ public class OtherClientName extends CmsPersistentObject {
    * @param namePrefixDescription name prefix description, if any
    * @param nameType name type
    * @param suffixTitleDescription suffix title description, if any
-   * @param thirdId third id, used to uniquely identify records
+   * @param thirdId "third" id, generated value (staff + timestamp) for unique identification
    */
   public OtherClientName(String clientId, String firstName, String lastName, String middleName,
       String namePrefixDescription, Short nameType, String suffixTitleDescription, String thirdId) {
     super();
-    this.id = new OtherClientName.EmbeddablePrimaryKey(clientId, thirdId);
+    this.id = new EmbeddableCompositeKey2(clientId, thirdId);
 
     this.firstName = firstName;
     this.lastName = lastName;
@@ -223,7 +100,7 @@ public class OtherClientName extends CmsPersistentObject {
    * @see gov.ca.cwds.data.persistence.PersistentObject#getPrimaryKey()
    */
   @Override
-  public OtherClientName.EmbeddablePrimaryKey getPrimaryKey() {
+  public EmbeddableCompositeKey2 getPrimaryKey() {
     return this.id;
   }
 
