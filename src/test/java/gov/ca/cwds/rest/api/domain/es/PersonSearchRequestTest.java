@@ -88,7 +88,20 @@ public class PersonSearchRequestTest {
     EqualsVerifier.forClass(ESPersonSearchRequest.class).suppress(Warning.NONFINAL_FIELDS).verify();
   }
 
-
+  /**
+   * Successful Tests
+   * 
+   * @throws Exception required for test compilation
+   */
+  @Test
+  public void successfulWithValid() throws Exception {
+    ESPersonSearchRequest toCreate = MAPPER.readValue(
+        fixture("fixtures/domain/es/PersonSearch/valid/valid.json"), ESPersonSearchRequest.class);
+    Response response = resources.client().target(ROOT_RESOURCE + "all").request()
+        .accept(MediaType.APPLICATION_JSON)
+        .post(Entity.entity(toCreate, MediaType.APPLICATION_JSON));
+    assertThat(response.getStatus(), is(equalTo(Response.Status.NO_CONTENT.getStatusCode())));
+  }
 
   /**
    * birthDate Tests

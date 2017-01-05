@@ -94,7 +94,7 @@ public class PersonSearchResourceTest {
     ESPerson[] hits = new ESPerson[2];
     when(personService.fetchAllPersons()).thenReturn(hits);
     javax.ws.rs.core.Response response = backedinMemoryResource.client().target(FOUND_RESOURCE)
-        .request().accept(MediaType.APPLICATION_JSON).get();
+        .request().accept(MediaType.APPLICATION_JSON).post(null);
     ESPerson[] result = response.readEntity(ESPerson[].class);
     assertThat(result.length, is(2));
   }
@@ -106,7 +106,7 @@ public class PersonSearchResourceTest {
   public void testShowAllPersons404() throws Exception {
     when(personService.fetchAllPersons()).thenReturn(null);
     javax.ws.rs.core.Response response = backedinMemoryResource.client().target(FOUND_RESOURCE)
-        .request().accept(MediaType.APPLICATION_JSON).get();
+        .request().accept(MediaType.APPLICATION_JSON).post(null);
     int receivedStatus = response.getStatus();
     assertThat(receivedStatus, is(404));
   }
@@ -123,7 +123,7 @@ public class PersonSearchResourceTest {
     }
 
     int receivedStatus = backedinMemoryResource.client().target(FOUND_RESOURCE).request()
-        .accept(MediaType.APPLICATION_JSON).get().getStatus();
+        .accept(MediaType.APPLICATION_JSON).post(null).getStatus();
     assertThat(receivedStatus, is(500));
   }
 
