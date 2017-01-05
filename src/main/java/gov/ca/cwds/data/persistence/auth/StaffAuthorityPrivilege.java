@@ -134,7 +134,7 @@ public class StaffAuthorityPrivilege extends CmsPersistentObject {
   }
 
   /**
-   * @return the end date
+   * @return the end date. Null = currently active.
    */
   public Date getEndDate() {
     return endDate;

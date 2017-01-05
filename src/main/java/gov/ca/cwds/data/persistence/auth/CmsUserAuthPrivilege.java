@@ -209,7 +209,6 @@ public final class CmsUserAuthPrivilege {
       this.sysId = sysId;
       this.description = shortDsc;
       this.orderInCategory = lgcId;
-      // register(this);
     }
 
     /**

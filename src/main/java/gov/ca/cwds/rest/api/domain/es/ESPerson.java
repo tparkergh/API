@@ -83,6 +83,9 @@ public class ESPerson extends Person {
      */
     SSN("ssn", String.class, null),
 
+    /**
+     * CWDS API class type.
+     */
     TYPE("type", String.class, null),
 
     SOURCE("source", String.class, null);
@@ -136,7 +139,6 @@ public class ESPerson extends Person {
     public final Object getDefaultVal() {
       return defaultVal;
     }
-
   }
 
   /**
@@ -186,8 +188,12 @@ public class ESPerson extends Person {
             false, Thread.currentThread().getContextClassLoader()));
 
         ret.sourceObj = obj;
+      } catch (ClassNotFoundException ce) {
+        throw new ApiException("ElasticSearch Person error: Failed to instantiate class "
+            + ret.getSourceType() + ", ES person id=" + ret.getId(), ce);
       } catch (Exception e) {
-        throw new ApiException("Failed to instantiate class " + ret.getSourceType(), e);
+        throw new ApiException(
+            "ElasticSearch Person error: " + e.getMessage() + ", ES person id=" + ret.getId(), e);
       }
     }
 

@@ -126,6 +126,21 @@ public class CmsDocReferralClient extends CmsPersistentObject {
     super();
   }
 
+  /**
+   * Constructor. Build from field params.
+   * 
+   * @param docHandle 30-char document handle (unique id)
+   * @param referlId FK to referral
+   * @param clientId FK to client
+   * @param commonFirstName first name
+   * @param commonMiddleName middle name
+   * @param commonLastName last name
+   * @param birthDate date of birth
+   * @param otherName other name, if any
+   * @param nameType type of name
+   * @param address street address
+   * @param addressType type of address
+   */
   public CmsDocReferralClient(String docHandle, String referlId, String clientId,
       String commonFirstName, String commonMiddleName, String commonLastName, Date birthDate,
       String otherName, String nameType, String address, String addressType) {
@@ -150,13 +165,12 @@ public class CmsDocReferralClient extends CmsPersistentObject {
    */
   @Override
   public Serializable getPrimaryKey() {
-    return new VarargPrimaryKey(getDocHandle(), getReferlId(), getClientId(), getCommonLastName(),
-        getCommonFirstName(), String.valueOf(getBirthDate().getTime()), getOtherName(),
-        getAddressType(), getAddress());
+    // Use correct composite primary key, not other columns which do not comprise the key.
+    return new VarargPrimaryKey(getDocHandle(), getReferlId(), getClientId());
   }
 
   /**
-   * @return the id
+   * @return the "id", the unique document handle.
    */
   public String getId() {
     return this.docHandle;

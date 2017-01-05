@@ -118,8 +118,9 @@ public class ReferralService implements CrudsService {
       managed = referralDao.update(managed);
       return new gov.ca.cwds.rest.api.domain.cms.Referral(managed);
     } catch (EntityNotFoundException e) {
-      LOGGER.info("Referral not found : {}", referral);
-      throw new ServiceException(e);
+      final String msg = "Referral not found : " + referral;
+      LOGGER.error("Referral not found : {}", referral);
+      throw new ServiceException(msg, e);
     }
   }
 
