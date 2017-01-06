@@ -9,6 +9,7 @@ import javax.ws.rs.client.Entity;
 import javax.ws.rs.core.MediaType;
 
 import org.hamcrest.junit.ExpectedException;
+import org.junit.Assert;
 import org.junit.ClassRule;
 import org.junit.Rule;
 import org.junit.Test;
@@ -74,8 +75,16 @@ public class PersonSearchResourceTest {
 
   }
 
+  @Test
+  public void createReturns404() throws Exception {
+    int receivedStatus = inMemoryResource.client().target(NO_FOUND_RESOURCE).request()
+        .accept(MediaType.APPLICATION_JSON).post(null).getStatus();
+    int expectedStatus = 404;
+    assertThat(receivedStatus, is(expectedStatus));
+  }
+
   /*
-   * 501 for Non Implemented Delete
+   * 501 for unimplemented delete
    */
   @Test
   public void deleteReturns501() throws Exception {
@@ -83,7 +92,17 @@ public class PersonSearchResourceTest {
         .accept(MediaType.APPLICATION_JSON).delete().getStatus();
     int expectedStatus = 501;
     assertThat(receivedStatus, is(expectedStatus));
+  }
 
+  /*
+   * 501 for unimplemented create
+   */
+  @Test
+  public void createReturns501() throws Exception {
+    int receivedStatus = inMemoryResource.client().target(DELETE_RESOURCE).request()
+        .accept(MediaType.APPLICATION_JSON).post(null).getStatus();
+    int expectedStatus = 501;
+    assertThat(receivedStatus, is(expectedStatus));
   }
 
   /*
@@ -133,13 +152,133 @@ public class PersonSearchResourceTest {
   @Test
   public void testqueryPersonOrTerm200() throws Exception {
     ESPerson[] hits = new ESPerson[2];
-    when(personService.queryPersonOr("", "", "")).thenReturn(hits);
+    when(personService.queryPersonOr("a", "b", "1992")).thenReturn(hits);
     ESPersonSearchRequest req = new ESPersonSearchRequest();
+    req.setFirstName("a");
+    req.setLastName("b");
+    req.setBirthDate("1992");
     javax.ws.rs.core.Response response = backedinMemoryResource.client().target(QUERY_RESOURCE)
         .request().accept(MediaType.APPLICATION_JSON)
         .post(Entity.entity(req, MediaType.APPLICATION_JSON));
     ESPerson[] result = response.readEntity(ESPerson[].class);
     assertThat(result.length, is(2));
+  }
+
+  /*
+   * query return empty or null
+   */
+  @Test
+  public void testqueryPersonOrTermReturnsEmpty() throws Exception {
+    ESPerson[] hits = new ESPerson[2];
+    when(personService.queryPersonOr("a", "b", "1992")).thenReturn(hits);
+    ESPersonSearchRequest req = new ESPersonSearchRequest();
+    req.setFirstName("a");
+    req.setLastName("b");
+    req.setBirthDate("2000");
+    javax.ws.rs.core.Response response = backedinMemoryResource.client().target(QUERY_RESOURCE)
+        .request().accept(MediaType.APPLICATION_JSON)
+        .post(Entity.entity(req, MediaType.APPLICATION_JSON));
+    ESPerson[] result = response.readEntity(ESPerson[].class);
+    Assert.assertNull(result);
+  }
+
+  /*
+   * 404 when no person found
+   */
+  @Test
+  public void testqueryPersonOrTerm404() throws Exception {
+    ESPerson[] hits = null;
+    when(personService.queryPersonOr("", "", "")).thenReturn(hits);
+    ESPersonSearchRequest req = new ESPersonSearchRequest();
+    javax.ws.rs.core.Response response = backedinMemoryResource.client().target(QUERY_RESOURCE)
+        .request().accept(MediaType.APPLICATION_JSON)
+        .post(Entity.entity(req, MediaType.APPLICATION_JSON));
+    int receivedStatus = response.getStatus();
+    assertThat(receivedStatus, is(404));
+  }
+
+  /*
+   * 400 for invalid json
+   */
+  @Test
+  public void testqueryPersonOrTerm400() throws Exception {
+    ESPerson[] hits = new ESPerson[2];
+    when(personService.queryPersonOr("", "", "")).thenReturn(hits);
+    @SuppressWarnings("unused")
+    ESPersonSearchRequest req = new ESPersonSearchRequest();
+    javax.ws.rs.core.Response response = backedinMemoryResource.client().target(QUERY_RESOURCE)
+        .request().accept(MediaType.APPLICATION_JSON)
+        .post(Entity.entity("test", MediaType.APPLICATION_JSON));
+    int receivedStatus = response.getStatus();
+    assertThat(receivedStatus, is(400));
+
+  }
+
+  /*
+   * 406 for invalid headers
+   */
+  @Test
+  public void testqueryPersonOrTerm406() throws Exception {
+    ESPerson[] hits = new ESPerson[2];
+    when(personService.queryPersonOr("", "", "")).thenReturn(hits);
+    @SuppressWarnings("unused")
+    ESPersonSearchRequest req = new ESPersonSearchRequest();
+    javax.ws.rs.core.Response response = backedinMemoryResource.client().target(QUERY_RESOURCE)
+        .request().accept(MediaType.APPLICATION_FORM_URLENCODED)
+        .post(Entity.entity("test", MediaType.APPLICATION_JSON));
+    int receivedStatus = response.getStatus();
+    assertThat(receivedStatus, is(406));
+
+  }
+
+  /*
+   * 500 for sever error
+   */
+  @Test
+  public void testqueryPersonOrTerm500() {
+    try {
+      when(personService.queryPersonOr("", "", "")).thenThrow(new Exception());
+    } catch (Exception e) {
+      e.printStackTrace();
+    }
+    ESPersonSearchRequest req = new ESPersonSearchRequest();
+    int receivedStatus = backedinMemoryResource.client().target(QUERY_RESOURCE).request()
+        .accept(MediaType.APPLICATION_JSON).post(Entity.entity(req, MediaType.APPLICATION_JSON))
+        .getStatus();
+    assertThat(receivedStatus, is(500));
+  }
+
+  /*
+   * 500 when the request is null
+   */
+  @Test
+  public void testqueryPersonOrTermNull() throws Exception {
+    ESPerson[] hits = new ESPerson[2];
+    when(personService.queryPersonOr("", "", "")).thenReturn(hits);
+    @SuppressWarnings("unused")
+    ESPersonSearchRequest req = new ESPersonSearchRequest();
+    javax.ws.rs.core.Response response = backedinMemoryResource.client().target(QUERY_RESOURCE)
+        .request().accept(MediaType.APPLICATION_JSON)
+        .post(Entity.entity(null, MediaType.APPLICATION_JSON));
+    int receivedStatus = response.getStatus();
+    assertThat(receivedStatus, is(500));
+  }
+
+  /*
+   * 500 when the request is empty
+   */
+  @Test
+  public void testqueryPersonOrTermEmpty() throws Exception {
+    ESPerson[] hits = new ESPerson[2];
+    when(personService.queryPersonOr("", "", "")).thenReturn(hits);
+    @SuppressWarnings("unused")
+    ESPersonSearchRequest req = new ESPersonSearchRequest();
+    javax.ws.rs.core.Response response = backedinMemoryResource.client().target(QUERY_RESOURCE)
+        .request().accept(MediaType.APPLICATION_JSON)
+        .post(Entity.entity(" ", MediaType.APPLICATION_JSON));
+    int receivedStatus = response.getStatus();
+    assertThat(receivedStatus, is(500));
+
   }
 
 }

@@ -170,6 +170,8 @@ public class PersonSearchResource {
   // @Consumes(value = MediaType.APPLICATION_JSON)
   // @ApiOperation(value = "Creates a new XYZ", code = HttpStatus.SC_CREATED,
   // response = PostedScreening.class)
+  @POST
+  @Path("/{id}")
   public Response create(ESPersonSearchRequest screeningReference) {
     return Response.status(Response.Status.NOT_IMPLEMENTED).entity(null).build();
   }
