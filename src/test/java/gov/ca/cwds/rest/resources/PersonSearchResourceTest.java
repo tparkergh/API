@@ -150,7 +150,7 @@ public class PersonSearchResourceTest {
    * 200 for showing the query person
    */
   @Test
-  public void testqueryPersonOrTerm200() throws Exception {
+  public void testQueryPersonOrTerm200() throws Exception {
     ESPerson[] hits = new ESPerson[2];
     when(personService.queryPersonOr("a", "b", "1992")).thenReturn(hits);
     ESPersonSearchRequest req = new ESPersonSearchRequest();
@@ -168,7 +168,7 @@ public class PersonSearchResourceTest {
    * query return empty or null
    */
   @Test
-  public void testqueryPersonOrTermReturnsEmpty() throws Exception {
+  public void testQueryPersonOrTermReturnsEmpty() throws Exception {
     ESPerson[] hits = new ESPerson[2];
     when(personService.queryPersonOr("a", "b", "1992")).thenReturn(hits);
     ESPersonSearchRequest req = new ESPersonSearchRequest();
@@ -186,7 +186,7 @@ public class PersonSearchResourceTest {
    * 404 when no person found
    */
   @Test
-  public void testqueryPersonOrTerm404() throws Exception {
+  public void testQueryPersonOrTerm404() throws Exception {
     ESPerson[] hits = null;
     when(personService.queryPersonOr("", "", "")).thenReturn(hits);
     ESPersonSearchRequest req = new ESPersonSearchRequest();
@@ -201,7 +201,7 @@ public class PersonSearchResourceTest {
    * 400 for invalid json
    */
   @Test
-  public void testqueryPersonOrTerm400() throws Exception {
+  public void testQueryPersonOrTerm400() throws Exception {
     ESPerson[] hits = new ESPerson[2];
     when(personService.queryPersonOr("", "", "")).thenReturn(hits);
     @SuppressWarnings("unused")
@@ -218,7 +218,7 @@ public class PersonSearchResourceTest {
    * 406 for invalid headers
    */
   @Test
-  public void testqueryPersonOrTerm406() throws Exception {
+  public void testQueryPersonOrTerm406() throws Exception {
     ESPerson[] hits = new ESPerson[2];
     when(personService.queryPersonOr("", "", "")).thenReturn(hits);
     @SuppressWarnings("unused")
@@ -235,7 +235,7 @@ public class PersonSearchResourceTest {
    * 500 for sever error
    */
   @Test
-  public void testqueryPersonOrTerm500() {
+  public void testQueryPersonOrTerm500() {
     try {
       when(personService.queryPersonOr("", "", "")).thenThrow(new Exception());
     } catch (Exception e) {
@@ -252,7 +252,7 @@ public class PersonSearchResourceTest {
    * 500 when the request is null
    */
   @Test
-  public void testqueryPersonOrTermNull() throws Exception {
+  public void testQueryPersonOrTermNull() throws Exception {
     ESPerson[] hits = new ESPerson[2];
     when(personService.queryPersonOr("", "", "")).thenReturn(hits);
     @SuppressWarnings("unused")
@@ -268,7 +268,7 @@ public class PersonSearchResourceTest {
    * 500 when the request is empty
    */
   @Test
-  public void testqueryPersonOrTermEmpty() throws Exception {
+  public void testQueryPersonOrTermEmpty() throws Exception {
     ESPerson[] hits = new ESPerson[2];
     when(personService.queryPersonOr("", "", "")).thenReturn(hits);
     @SuppressWarnings("unused")
