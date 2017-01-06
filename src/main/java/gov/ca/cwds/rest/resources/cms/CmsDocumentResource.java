@@ -46,7 +46,7 @@ import io.swagger.annotations.ApiResponses;
 public class CmsDocumentResource {
 
   /**
-   * primary key = String, request = {@link CmsDocument}.
+   * key (K) = String, request (Q) = {@link CmsDocument}.
    */
   private TypedResourceDelegate<String, CmsDocument> resourceDelegate;
 

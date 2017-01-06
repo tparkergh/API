@@ -79,15 +79,18 @@ public class ESPerson extends Person {
     BIRTH_DATE("date_of_birth", String.class, null),
 
     /**
-     * social security number
+     * Social Security Number
      */
     SSN("ssn", String.class, null),
 
     /**
-     * CWDS API class type.
+     * CWDS API class type, usually a domain class.
      */
     TYPE("type", String.class, null),
 
+    /**
+     * Nested JSON from {@link #TYPE} class.
+     */
     SOURCE("source", String.class, null);
 
     /**

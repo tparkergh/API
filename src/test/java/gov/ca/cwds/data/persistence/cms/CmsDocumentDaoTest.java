@@ -1,4 +1,4 @@
-package gov.ca.cwds.rest.util.jni;
+package gov.ca.cwds.data.persistence.cms;
 
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
@@ -17,6 +17,7 @@ import gov.ca.cwds.data.cms.CmsDocumentDao;
 import gov.ca.cwds.data.persistence.cms.CmsDocument;
 import gov.ca.cwds.data.persistence.cms.CmsDocumentBlobSegment;
 import gov.ca.cwds.rest.api.domain.DomainChef;
+import gov.ca.cwds.rest.util.jni.LZWEncoder;
 
 
 /**

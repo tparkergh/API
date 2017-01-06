@@ -25,7 +25,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import gov.ca.cwds.data.CrudsDao;
 import gov.ca.cwds.data.persistence.cms.Referral;
-import gov.ca.cwds.rest.api.domain.cms.CmsDocument;
 import gov.ca.cwds.rest.core.Api;
 import gov.ca.cwds.rest.resources.cms.CmsDocumentResource;
 import io.dropwizard.jackson.Jackson;
@@ -207,7 +206,6 @@ public class CmsDocumentTest {
         resources.client().target(ROOT_RESOURCE).request().accept(MediaType.APPLICATION_JSON)
             .post(Entity.entity(toCreate, MediaType.APPLICATION_JSON)).getStatus(),
         is(equalTo(422)));
-
   }
 
   @Test
@@ -250,7 +248,6 @@ public class CmsDocumentTest {
         resources.client().target(ROOT_RESOURCE).request().accept(MediaType.APPLICATION_JSON)
             .post(Entity.entity(toCreate, MediaType.APPLICATION_JSON)).getStatus(),
         is(equalTo(422)));
-
   }
 
   private CmsDocument validCmsDocument() {
