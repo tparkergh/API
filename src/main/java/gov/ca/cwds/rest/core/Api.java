@@ -88,6 +88,11 @@ public interface Api {
   public static final String RESOURCE_USER_AUTHORIZATION = "user_authorization";
 
   /**
+   * A {@code String} constant representing {@value #RESOURCE_ADDRESS_VALIDATION} API.
+   */
+  public static final String RESOURCE_ADDRESS_VALIDATION = "address_validation";
+
+  /**
    * A {@code String} constant representing {@value #RESOURCE_AUTOCOMPLETE_PERSON} API.
    */
   public static final String RESOURCE_AUTOCOMPLETE_PERSON = "autocomplete_person";
