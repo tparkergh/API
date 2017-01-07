@@ -17,6 +17,7 @@ import gov.ca.cwds.rest.services.TypedCrudsService;
  * @author CWDS API Team
  */
 public class CmsDocumentService implements TypedCrudsService<String, CmsDocument, CmsDocument> {
+
   private static final Logger LOGGER = LoggerFactory.getLogger(CmsDocumentService.class);
 
   private CmsDocumentDao dao;
@@ -41,7 +42,7 @@ public class CmsDocumentService implements TypedCrudsService<String, CmsDocument
     LOGGER.info("primaryKey=" + primaryKey);
 
     CmsDocument retval = null;
-    String base64Doc = "";
+    String base64Doc;
 
     gov.ca.cwds.data.persistence.cms.CmsDocument doc = dao.find(primaryKey);
     if (doc != null) {

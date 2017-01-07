@@ -54,7 +54,7 @@ shadowJar {
 }
 
 dependencies {
-	compile group: "gov.ca.cwds.api", name: "api-core", version: "0.13.8"
+	compile group: "gov.ca.cwds.api", name: "api-core", version: "0.13.10"
 	compile group: "io.dropwizard", name: "dropwizard-client", version: dropwizardVersion
 	compile group: "io.dropwizard", name: "dropwizard-hibernate", version: dropwizardVersion
 	compile group: "io.dropwizard", name: "dropwizard-views", version: dropwizardVersion
@@ -189,7 +189,6 @@ task pushDockerVersionTagged(type:Exec, dependsOn: tagDockerImage) {
 }
 task publishDocker(dependsOn: [pushDockerVersionTagged, pushDockerLatest]) {
    doLast { 
-	println 'Published'
+	 println 'Published'
    }
- 
 }
