@@ -28,6 +28,10 @@ import gov.ca.cwds.rest.api.domain.Person;
  */
 public class ESPerson extends Person {
 
+  // =========================
+  // PRIVATE STATIC:
+  // =========================
+
   private static final Logger LOGGER = LoggerFactory.getLogger(ESPerson.class);
 
   /**
@@ -41,6 +45,10 @@ public class ESPerson extends Person {
    */
   private static final ObjectMapper MAPPER;
 
+  // =========================
+  // STATIC INITIALIZATION:
+  // =========================
+
   /**
    * Relax strict constraints regarding unknown JSON properties, since API classes may change over
    * time, and not all classes emit version information in JSON.
@@ -48,8 +56,13 @@ public class ESPerson extends Person {
   static {
     ObjectMapper mapper = new ObjectMapper();
     mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+    mapper.configure(DeserializationFeature.FAIL_ON_NULL_FOR_PRIMITIVES, false);
     MAPPER = mapper;
   }
+
+  // =========================
+  // PUBLIC STATIC:
+  // =========================
 
   /**
    * ElasticSearch field names for document type people.person.
@@ -149,25 +162,11 @@ public class ESPerson extends Person {
   }
 
   /**
-   * Extract field's value from an ElasticSearch result {@link Map} (key: field name), using the
-   * field's ES column name and data type.
-   * 
-   * @param <T> expected data type
-   * @param m ES result map
-   * @param f field to extract
-   * @return field value as specified type T
-   */
-  @SuppressWarnings("unchecked")
-  protected static <T extends Serializable> T pullCol(final Map<String, Object> m, ESColumn f) {
-    return (T) f.klazz.cast(m.getOrDefault(f.col, f.defaultVal));
-  }
-
-  /**
    * Produce an ESPerson domain from native ElasticSearch {@link SearchHit}. Parse JSON results and
    * populate associated fields.
    * 
    * <p>
-   * <strong>Classloader note:</strong> When running in an application server, the root classloader
+   * <strong>Classloader Note:</strong> When running in an application server, the root classloader
    * may not know of our domain/persistence class, and so we look it up using the current thread's
    * classloader, like so:
    * </p>
@@ -191,23 +190,34 @@ public class ESPerson extends Person {
 
     if (!StringUtils.isBlank(ret.getSourceType()) && !StringUtils.isBlank(ret.getSourceJson())) {
       try {
-        // Dynamically instantiate the domain class specified by "type" and load from JSON.
-        // Note: When running in an application server, the app server's root classloader may not
-        // know of our domain/persistence class, but the current thread's classloader should.
 
-        // TODO: STORY #137216799: Tech debt: Java class/package changes and reverse compatibility
-        // with existing ElasticSearch documents.
+        // TODO: STORY #137216799:
+        // Tech debt: reverse compatibility with existing ElasticSearch documents.
         if (ret.getSourceType().startsWith("gov.ca.cwds.rest.api.")) {
-          LOGGER.warn("LEGACY CLASS IN ELASTICSEARCH! {}", ret.getSourceType());
+          LOGGER.warn("LEGACY CLASS IN ELASTICSEARCH! class={}, id={}", ret.getSourceType(),
+              ret.getId());
         }
 
-        final Object obj = MAPPER.readValue(ret.getSourceJson(),
-            Class.forName(
-                ret.getSourceType().replaceAll("gov\\.ca\\.cwds\\.rest\\.api\\.",
-                    "gov\\.ca\\.cwds\\.data\\."),
-                false, Thread.currentThread().getContextClassLoader()));
+        if (!StringUtils.isBlank(ret.getSourceJson())) {
 
-        ret.sourceObj = obj;
+          // Remove excess whitespace.
+          // No job should store excess whitespace in ElasticSearch!
+          final String json = ret.getSourceJson().replaceAll("\\s+\",", "\",");
+
+          // Dynamically instantiate the domain class specified by "type" and load from JSON.
+          // Note: When running in an application server, the app server's root classloader may not
+          // know of our domain/persistence class, but the current thread's classloader should.
+
+          // TODO: STORY #137216799: again.
+          final Object obj = MAPPER.readValue(json,
+              Class.forName(
+                  ret.getSourceType().replaceAll("gov\\.ca\\.cwds\\.rest\\.api\\.",
+                      "gov\\.ca\\.cwds\\.data\\."),
+                  false, Thread.currentThread().getContextClassLoader()));
+
+          ret.sourceObj = obj;
+        }
+
       } catch (ClassNotFoundException ce) {
         throw new ApiException("ElasticSearch Person error: Failed to instantiate class "
             + ret.getSourceType() + ", ES person id=" + ret.getId(), ce);
@@ -218,6 +228,24 @@ public class ESPerson extends Person {
     }
 
     return ret;
+  }
+
+  // =========================
+  // PROTECTED STATIC:
+  // =========================
+
+  /**
+   * Extract field's value from an ElasticSearch result {@link Map} (key: field name), using the
+   * field's ES column name and data type.
+   * 
+   * @param <T> expected data type
+   * @param m ES result map
+   * @param f field to extract
+   * @return field value as specified type T
+   */
+  @SuppressWarnings("unchecked")
+  protected static <T extends Serializable> T pullCol(final Map<String, Object> m, ESColumn f) {
+    return (T) f.klazz.cast(m.getOrDefault(f.col, f.defaultVal));
   }
 
   /**
@@ -231,13 +259,18 @@ public class ESPerson extends Person {
     return s != null ? s.trim() : null;
   }
 
+  // ================
+  // MEMBERS:
+  // ================
+
   /**
    * The identifier is String in legacy (CMS, mainframe DB2) but Long in new style (NS, PostGreSQL).
    * Therefore, the generic id here is String to accomodate all possibilities without resorting to
    * generics, untyped Object, or collections with heterogenous types. For now,
    * 
    * <p>
-   * Java lacks "union", polymorphic return types, and true template.
+   * Java lacks a "union" construct (mutually exclusive child structures), polymorphic return types
+   * (though, technically, the JVM can...), and true typed templates.
    * </p>
    */
   @JsonProperty("id")
@@ -277,7 +310,7 @@ public class ESPerson extends Person {
    * @param lastName The last name
    * @param gender The gender
    * @param birthDate The date of birth
-   * @param ssn The ssn
+   * @param ssn Social Security Number
    * @param address The address
    */
   public ESPerson(String id, String firstName, String lastName, String gender, String birthDate,

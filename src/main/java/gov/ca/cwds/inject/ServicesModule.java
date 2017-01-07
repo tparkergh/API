@@ -17,7 +17,10 @@ import gov.ca.cwds.rest.services.cms.ReporterService;
 import gov.ca.cwds.rest.services.cms.StaffPersonService;
 
 public class ServicesModule extends AbstractModule {
-  public ServicesModule() {}
+
+  public ServicesModule() {
+    // Default, no-op.
+  }
 
   @Override
   protected void configure() {
