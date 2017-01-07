@@ -10,8 +10,10 @@ import java.text.SimpleDateFormat;
 
 import org.junit.Test;
 
-import gov.ca.cwds.data.persistence.cms.Allegation;
-
+/**
+ * @author CWDS API Team
+ *
+ */
 public class AllegationTest {
 
   private final static DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
@@ -41,13 +43,15 @@ public class AllegationTest {
   /*
    * Constructor test
    */
+  @SuppressWarnings("javadoc")
   @Test
   public void emtpyConstructorIsNotNull() throws Exception {
     assertThat(Allegation.class.newInstance(), is(notNullValue()));
   }
 
+  @SuppressWarnings("javadoc")
   @Test
-  public void domainAllegationLastUpdateConstructorTest() throws Exception {
+  public void persistentAllegationConstructorTest() throws Exception {
     gov.ca.cwds.rest.api.domain.cms.Allegation domain =
         new gov.ca.cwds.rest.api.domain.cms.Allegation(abuseEndDate, abuseFrequency,
             abuseFrequencyPeriodCode, abuseLocationDescription, abuseStartDate,

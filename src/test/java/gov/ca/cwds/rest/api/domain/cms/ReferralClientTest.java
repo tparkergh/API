@@ -11,6 +11,7 @@ import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
+import java.io.IOException;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -23,12 +24,13 @@ import org.junit.Before;
 import org.junit.ClassRule;
 import org.junit.Test;
 
+import com.fasterxml.jackson.core.JsonParseException;
+import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import gov.ca.cwds.data.CrudsDao;
 import gov.ca.cwds.data.persistence.cms.Referral;
 import gov.ca.cwds.rest.api.domain.DomainChef;
-import gov.ca.cwds.rest.api.domain.cms.ReferralClient;
 import gov.ca.cwds.rest.core.Api;
 import gov.ca.cwds.rest.resources.cms.ReferralClientResource;
 import io.dropwizard.jackson.Jackson;
@@ -36,6 +38,10 @@ import io.dropwizard.testing.junit.ResourceTestRule;
 import nl.jqno.equalsverifier.EqualsVerifier;
 import nl.jqno.equalsverifier.Warning;
 
+/**
+ * @author CWDS API Team
+ *
+ */
 public class ReferralClientTest {
 
   private static final String ROOT_RESOURCE = "/" + Api.RESOURCE_REFERRAL_CLIENT + "/";
@@ -43,12 +49,12 @@ public class ReferralClientTest {
   private static final ReferralClientResource mockedReferralClientResource =
       mock(ReferralClientResource.class);
 
+  @SuppressWarnings("javadoc")
   @ClassRule
   public static final ResourceTestRule resources =
       ResourceTestRule.builder().addResource(mockedReferralClientResource).build();
 
   private static final ObjectMapper MAPPER = Jackson.newObjectMapper();
-  private ReferralClient validReferralClient = validReferralClient();
 
   private final static DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
   private String referralId = "a";
@@ -68,12 +74,17 @@ public class ReferralClientTest {
   private Boolean alcoholIndicator = null;
   private Boolean drugIndicator = Boolean.FALSE;
 
+  @SuppressWarnings("javadoc")
   public ReferralClientTest() throws ParseException {}
 
+  @SuppressWarnings("javadoc")
   @Before
-  public void setup() {
+  public void setup() throws Exception {
     @SuppressWarnings("rawtypes")
     CrudsDao crudsDao = mock(CrudsDao.class);
+
+    ReferralClient validReferralClient = validReferralClient();
+
     when(crudsDao.find(any())).thenReturn(mock(Referral.class));
 
     when(mockedReferralClientResource.create(eq(validReferralClient)))
@@ -81,6 +92,7 @@ public class ReferralClientTest {
 
   }
 
+  @SuppressWarnings("javadoc")
   @Test
   public void serializesToJSON() throws Exception {
     final String expected = MAPPER.writeValueAsString(MAPPER.readValue(
@@ -89,6 +101,7 @@ public class ReferralClientTest {
     assertThat(MAPPER.writeValueAsString(validReferralClient()), is(equalTo(expected)));
   }
 
+  @SuppressWarnings("javadoc")
   @Test
   public void deserializesFromJSON() throws Exception {
     assertThat(MAPPER.readValue(fixture("fixtures/domain/legacy/ReferralClient/valid/valid.json"),
@@ -98,6 +111,7 @@ public class ReferralClientTest {
   /*
    * Constructor Tests
    */
+  @SuppressWarnings("javadoc")
   @Test
   public void persistentObjectConstructorTest() throws Exception {
     ReferralClient domain =
@@ -134,6 +148,7 @@ public class ReferralClientTest {
         is(equalTo(DomainChef.uncookBooleanString(persistent.getDrugIndicator()))));
   }
 
+  @SuppressWarnings("javadoc")
   @Test
   public void jsonCreatorConstructorTest() throws Exception {
     ReferralClient referralClient =
@@ -162,6 +177,7 @@ public class ReferralClientTest {
     assertThat(referralClient.getDrugIndicator(), is(equalTo(Boolean.FALSE)));
   }
 
+  @SuppressWarnings("javadoc")
   @Test
   public void equalsHashCodeWork() {
     EqualsVerifier.forClass(ReferralClient.class).suppress(Warning.NONFINAL_FIELDS).verify();
@@ -170,33 +186,31 @@ public class ReferralClientTest {
   /*
    * Successful Tests
    */
+  @SuppressWarnings("javadoc")
   @Test
   public void successfulWithValid() throws Exception {
-    ReferralClient toCreate = MAPPER.readValue(
-        fixture("fixtures/domain/legacy/ReferralClient/valid/valid.json"), ReferralClient.class);
     Response response =
         resources.client().target(ROOT_RESOURCE).request().accept(MediaType.APPLICATION_JSON)
-            .post(Entity.entity(toCreate, MediaType.APPLICATION_JSON));
-    // String message = response.readEntity(String.class);
-    // System.out.print(message);
-    //
+            .post(Entity.entity(validReferralClient(), MediaType.APPLICATION_JSON));
     assertThat(response.getStatus(), is(equalTo(204)));
   }
 
+  @SuppressWarnings("javadoc")
   @Test
   public void successfulWithOptionalsNotIncluded() throws Exception {
     ReferralClient toCreate = MAPPER.readValue(
         fixture("fixtures/domain/legacy/ReferralClient/valid/optionalsNotIncluded.json"),
         ReferralClient.class);
-    assertThat(
+    Response response =
         resources.client().target(ROOT_RESOURCE).request().accept(MediaType.APPLICATION_JSON)
-            .post(Entity.entity(toCreate, MediaType.APPLICATION_JSON)).getStatus(),
-        is(equalTo(204)));
+            .post(Entity.entity(toCreate, MediaType.APPLICATION_JSON));
+    assertThat(response.getStatus(), is(equalTo(204)));
   }
 
   /*
    * approvalNumber Tests
    */
+  @SuppressWarnings("javadoc")
   @Test
   public void successWhenApprovalNumberEmpty() throws Exception {
     ReferralClient toCreate = MAPPER.readValue(
@@ -208,6 +222,7 @@ public class ReferralClientTest {
     assertThat(response.getStatus(), is(equalTo(204)));
   }
 
+  @SuppressWarnings("javadoc")
   @Test
   public void successWhenApprovalNumberNull() throws Exception {
     ReferralClient toCreate = MAPPER.readValue(
@@ -219,6 +234,7 @@ public class ReferralClientTest {
     assertThat(response.getStatus(), is(equalTo(204)));
   }
 
+  @SuppressWarnings("javadoc")
   @Test
   public void failsWhenApprovalNumberTooLong() throws Exception {
     ReferralClient toCreate = MAPPER.readValue(
@@ -236,6 +252,7 @@ public class ReferralClientTest {
   /*
    * dispositionClosureReasonType Tests
    */
+  @SuppressWarnings("javadoc")
   @Test
   public void failsWhenDispositionClosureReasonTypeMissing() throws Exception {
     ReferralClient toCreate = MAPPER.readValue(
@@ -251,6 +268,7 @@ public class ReferralClientTest {
         is(greaterThanOrEqualTo(0)));
   }
 
+  @SuppressWarnings("javadoc")
   @Test
   public void failsWhenDispositionClosureReasonTypeNull() throws Exception {
     ReferralClient toCreate = MAPPER.readValue(
@@ -266,6 +284,7 @@ public class ReferralClientTest {
         is(greaterThanOrEqualTo(0)));
   }
 
+  @SuppressWarnings("javadoc")
   @Test
   public void failsWhenDispositionClosureReasonTypeAllWhiteSpace() throws Exception {
     ReferralClient toCreate = MAPPER.readValue(
@@ -399,8 +418,6 @@ public class ReferralClientTest {
         resources.client().target(ROOT_RESOURCE).request().accept(MediaType.APPLICATION_JSON)
             .post(Entity.entity(toCreate, MediaType.APPLICATION_JSON));
     assertThat(response.getStatus(), is(equalTo(422)));
-    // String message = response.readEntity(String.class);
-    // System.out.print(message);
     assertThat(
         response.readEntity(String.class).indexOf("dispositionCode must be one of [A, I, S, X]"),
         is(greaterThanOrEqualTo(0)));
@@ -671,8 +688,6 @@ public class ReferralClientTest {
         resources.client().target(ROOT_RESOURCE).request().accept(MediaType.APPLICATION_JSON)
             .post(Entity.entity(toCreate, MediaType.APPLICATION_JSON));
     assertThat(response.getStatus(), is(equalTo(422)));
-    // String message = response.readEntity(String.class);
-    // System.out.print(message);
     assertThat(response.readEntity(String.class).indexOf("referralId may not be empty"),
         is(greaterThanOrEqualTo(0)));
   }
@@ -1022,9 +1037,10 @@ public class ReferralClientTest {
   /*
    * Utils
    */
-  private ReferralClient validReferralClient() {
-    return new ReferralClient("A123", new Short((short) 123), new Short((short) 123), "A",
-        "2000-01-01", false, false, "1234567ABC", "ABC1234567", "description abc",
-        new Short((short) 12), "M", "AB", false, false, false);
+  private ReferralClient validReferralClient()
+      throws JsonParseException, JsonMappingException, IOException {
+    ReferralClient referralClient = MAPPER.readValue(
+        fixture("fixtures/domain/legacy/ReferralClient/valid/valid.json"), ReferralClient.class);
+    return referralClient;
   }
 }

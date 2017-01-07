@@ -79,7 +79,7 @@ public class OtherClientName extends CmsPersistentObject {
    * @param namePrefixDescription name prefix description, if any
    * @param nameType name type
    * @param suffixTitleDescription suffix title description, if any
-   * @param thirdId "third" id, generated value (staff + timestamp) for unique identification
+   * @param thirdId "third" id, generated value (time stamp + staffId) for unique identification
    */
   public OtherClientName(String clientId, String firstName, String lastName, String middleName,
       String namePrefixDescription, Short nameType, String suffixTitleDescription, String thirdId) {

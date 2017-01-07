@@ -30,13 +30,6 @@ public class CmsDocumentServiceTest {
     cmsDocumentService = new CmsDocumentService(cmsDocumentDao);
   }
 
-  // find test
-  // @Test
-  // public void findThrowsAssertionError() {
-  // thrown.expect(AssertionError.class);
-  // cmsDocumentService.find(1L);
-  // }
-
   @Test
   public void createThrowsNotImplementedException() throws Exception {
     thrown.expect(NotImplementedException.class);

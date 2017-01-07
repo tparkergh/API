@@ -90,6 +90,7 @@ public class ReferralTest {
     assertThat(Referral.class.newInstance(), is(notNullValue()));
   }
 
+  @SuppressWarnings("javadoc")
   @Test
   public void constructorUsingDomainTest() throws Exception {
 
@@ -192,25 +193,35 @@ public class ReferralTest {
     assertThat(persistent.getLastUpdatedId(), is(equalTo(lastUpdatedId)));
   }
 
+  @SuppressWarnings("javadoc")
   @Test
   public void persistenConstructorTest() throws Exception {
 
-    Referral persistentReferral = new Referral(id, additionalInfoIncludedCode,
-        anonymousReporterIndicator, applicationForPetitionIndicator, approvalNumber,
-        approvalStatusType, caretakersPerpetratorCode, closureDate, communicationMethodType,
-        currentLocationOfChildren, drmsAllegationDescriptionDoc, drmsErReferralDoc,
-        drmsInvestigationDoc, filedSuspectedChildAbuseReporttoLawEnforcementIndicator,
-        familyAwarenessIndicator, govtEntityType, legalDefinitionCode, legalRightsNoticeIndicator,
-        limitedAccessCode, mandatedCrossReportReceivedDate, referralName, openAdequateCaseCode,
-        receivedDate, receivedTime, referralResponseType, referredToResourceType,
-        responseDeterminationDate, responseDeterminationTime, responseRationaleText,
-        screenerNoteText, specificsIncludedCode, sufficientInformationCode, unfoundedSeriesCode,
-        linkToPrimaryReferralId, allegesAbuseOccurredAtAddressId,
-        firstResponseDeterminedByStaffPersonId, primaryContactStaffPersonId, countySpecificCode,
-        specialProjectReferralIndicator, zippyCreatedIndicator, homelessIndicator,
-        familyRefusedServicesIndicator, firstEvaluatedOutApprovalDate, responsibleAgencyCode,
-        limitedAccessGovtAgencyType, limitedAccessDate, limitedAccessDesc, originalClosureDate);
+    Referral pr = new Referral(id, additionalInfoIncludedCode, anonymousReporterIndicator,
+        applicationForPetitionIndicator, approvalNumber, approvalStatusType,
+        caretakersPerpetratorCode, closureDate, communicationMethodType, currentLocationOfChildren,
+        drmsAllegationDescriptionDoc, drmsErReferralDoc, drmsInvestigationDoc,
+        filedSuspectedChildAbuseReporttoLawEnforcementIndicator, familyAwarenessIndicator,
+        govtEntityType, legalDefinitionCode, legalRightsNoticeIndicator, limitedAccessCode,
+        mandatedCrossReportReceivedDate, referralName, openAdequateCaseCode, receivedDate,
+        receivedTime, referralResponseType, referredToResourceType, responseDeterminationDate,
+        responseDeterminationTime, responseRationaleText, screenerNoteText, specificsIncludedCode,
+        sufficientInformationCode, unfoundedSeriesCode, linkToPrimaryReferralId,
+        allegesAbuseOccurredAtAddressId, firstResponseDeterminedByStaffPersonId,
+        primaryContactStaffPersonId, countySpecificCode, specialProjectReferralIndicator,
+        zippyCreatedIndicator, homelessIndicator, familyRefusedServicesIndicator,
+        firstEvaluatedOutApprovalDate, responsibleAgencyCode, limitedAccessGovtAgencyType,
+        limitedAccessDate, limitedAccessDesc, originalClosureDate);
 
+    assertThat(pr.getId(), is(equalTo(id)));
+    assertThat(pr.getAdditionalInfoIncludedCode(), is(equalTo(additionalInfoIncludedCode)));
+    assertThat(pr.getAnonymousReporterIndicator(), is(equalTo(anonymousReporterIndicator)));
+    assertThat(pr.getApplicationForPetitionIndicator(),
+        is(equalTo(applicationForPetitionIndicator)));
+    assertThat(pr.getApprovalNumber(), is(equalTo(approvalNumber)));
+    assertThat(pr.getApprovalStatusType(), is(equalTo(approvalStatusType)));
+    assertThat(pr.getCaretakersPerpetratorCode(), is(equalTo(caretakersPerpetratorCode)));
+    assertThat(pr.getClosureDate(), is(equalTo(closureDate)));
   }
 
   private gov.ca.cwds.rest.api.domain.cms.Referral validDomainReferral()

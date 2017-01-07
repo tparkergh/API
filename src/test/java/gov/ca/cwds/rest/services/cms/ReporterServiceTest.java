@@ -12,7 +12,8 @@ import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-import org.hibernate.service.spi.ServiceException;
+import javax.persistence.EntityNotFoundException;
+
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Rule;
@@ -25,16 +26,23 @@ import gov.ca.cwds.data.cms.ReporterDao;
 import gov.ca.cwds.rest.api.Response;
 import gov.ca.cwds.rest.api.domain.cms.PostedReporter;
 import gov.ca.cwds.rest.api.domain.cms.Reporter;
+import gov.ca.cwds.rest.services.ServiceException;
 import io.dropwizard.jackson.Jackson;
 
+/**
+ * @author CWDS API Team
+ *
+ */
 public class ReporterServiceTest {
   private static final ObjectMapper MAPPER = Jackson.newObjectMapper();
   private ReporterService reporterService;
   private ReporterDao reporterDao;
 
+  @SuppressWarnings("javadoc")
   @Rule
   public ExpectedException thrown = ExpectedException.none();
 
+  @SuppressWarnings("javadoc")
   @Before
   public void setup() throws Exception {
     reporterDao = mock(ReporterDao.class);
@@ -42,6 +50,7 @@ public class ReporterServiceTest {
   }
 
   // find test
+  @SuppressWarnings("javadoc")
   @Test
   public void findThrowsAssertionError() {
     // service is expecting a String as primary key
@@ -53,6 +62,7 @@ public class ReporterServiceTest {
     }
   }
 
+  @SuppressWarnings("javadoc")
   @Test
   public void findReturnsCorrectReporterWhenFound() throws Exception {
     Reporter expected = MAPPER
@@ -65,6 +75,7 @@ public class ReporterServiceTest {
     assertThat(found, is(expected));
   }
 
+  @SuppressWarnings("javadoc")
   @Test
   public void findReturnsNullWhenNotFound() throws Exception {
     Response found = reporterService.find("ABC1234567");
@@ -72,6 +83,7 @@ public class ReporterServiceTest {
   }
 
   // delete test
+  @SuppressWarnings("javadoc")
   @Test
   public void deleteThrowsAssersionError() throws Exception {
     // service is expecting a String as primary key
@@ -83,12 +95,14 @@ public class ReporterServiceTest {
     }
   }
 
+  @SuppressWarnings("javadoc")
   @Test
   public void deleteDelegatesToCrudsService() {
     reporterService.delete("ABC2345678");
     verify(reporterDao, times(1)).delete("ABC2345678");
   }
 
+  @SuppressWarnings("javadoc")
   @Test
   public void deleteReturnsNullWhenNotFount() throws Exception {
     Response found = reporterService.delete("ABC1234567");
@@ -96,6 +110,7 @@ public class ReporterServiceTest {
   }
 
   // update test
+  @SuppressWarnings("javadoc")
   @Test
   public void updateThrowsAssertionError() throws Exception {
     // service expecting domain Reporter object
@@ -107,6 +122,7 @@ public class ReporterServiceTest {
     }
   }
 
+  @SuppressWarnings("javadoc")
   @Test
   public void updateReturnsReporterResponseOnSuccess() throws Exception {
     Reporter expected = MAPPER
@@ -122,29 +138,25 @@ public class ReporterServiceTest {
     assertThat(retval.getClass(), is(Reporter.class));
   }
 
+  @SuppressWarnings("javadoc")
   @Test
   public void updateThrowsExceptionWhenReporterNotFound() throws Exception {
-    // TODO: test does not throw exception from reporterService.update method
-    //
-    // remove comments before running unit test
-    //
-    // thrown.expect(ServiceException.class);
-    // thrown.expectCause(Is.isA(EntityNotFoundException.class));
-    // thrown.expectMessage(contains("Reporter not found"));
 
-    Reporter reporterRequest = MAPPER
-        .readValue(fixture("fixtures/domain/legacy/Reporter/valid/valid.json"), Reporter.class);
+    try {
+      Reporter reporterRequest = MAPPER
+          .readValue(fixture("fixtures/domain/legacy/Reporter/valid/valid.json"), Reporter.class);
 
-    gov.ca.cwds.data.persistence.cms.Reporter reporter =
-        new gov.ca.cwds.data.persistence.cms.Reporter(reporterRequest, "ABC");
+      when(reporterDao.update(any())).thenThrow(EntityNotFoundException.class);
 
-    when(reporterDao.find("ABC1234567")).thenReturn(reporter);
-    when(reporterDao.update(any())).thenReturn(reporter);
-
-    reporterService.update("ZZZZZZZZZZ", reporterRequest);
+      reporterService.update("ZZZZZZZZZZ", reporterRequest);
+      Assert.fail("Expected ServiceException was not thrown");
+    } catch (Exception ex) {
+      assertEquals(ex.getClass(), ServiceException.class);
+    }
   }
 
   // create test
+  @SuppressWarnings("javadoc")
   @Test
   public void createThrowsAssertionError() throws Exception {
     // service expecting domain Reporter object - test when null passed to service
@@ -156,6 +168,7 @@ public class ReporterServiceTest {
     }
   }
 
+  @SuppressWarnings("javadoc")
   @Test
   public void createReturnsPostedReporterClass() throws Exception {
     Reporter reporterDomain = MAPPER
@@ -173,6 +186,7 @@ public class ReporterServiceTest {
     assertThat(response.getClass(), is(PostedReporter.class));
   }
 
+  @SuppressWarnings("javadoc")
   @Test
   public void createReturnsNonNull() throws Exception {
     Reporter reporterDomain = MAPPER
@@ -190,6 +204,7 @@ public class ReporterServiceTest {
     assertThat(postedReporter, is(notNullValue()));
   }
 
+  @SuppressWarnings("javadoc")
   @Test
   public void createReturnsCorrectPostedPerson() throws Exception {
     Reporter reporterDomain = MAPPER
@@ -209,24 +224,27 @@ public class ReporterServiceTest {
     assertThat(returned, is(expected));
   }
 
-  // @Test
-  // public void failsWhenPostedReporterServiceEmpty() throws Exception {
-  // try {
-  // Reporter reporterDomain = MAPPER.readValue(
-  // fixture("fixtures/domain/legacy/Reporter/invalid/referralIdEmpty.json"), Reporter.class);
-  // gov.ca.cwds.rest.api.persistence.cms.Reporter toCreate =
-  // new gov.ca.cwds.rest.api.persistence.cms.Reporter(reporterDomain, "last_update");
-  //
-  // when(reporterDao.create(any(gov.ca.cwds.rest.api.persistence.cms.Reporter.class)))
-  // .thenReturn(toCreate);
-  // PostedReporter expected = new PostedReporter(toCreate);
-  // Assert.fail("Expected ServiceException was not thrown");
-  // } catch (ServiceException e) {
-  // assertEquals("Reporter ID cannot be empty", e.getMessage());
-  // }
-  //
-  // }
+  @Test
+  public void failsWhenPostedReporterServiceEmpty() throws Exception {
+    try {
+      Reporter reporterDomain = MAPPER.readValue(
+          fixture("fixtures/domain/legacy/Reporter/invalid/referralIdEmpty.json"), Reporter.class);
 
+      gov.ca.cwds.data.persistence.cms.Reporter toCreate =
+          new gov.ca.cwds.data.persistence.cms.Reporter(reporterDomain, "last_update");
+
+      when(reporterDao.create(any(gov.ca.cwds.data.persistence.cms.Reporter.class)))
+          .thenReturn(toCreate);
+
+      PostedReporter expected = new PostedReporter(toCreate);
+      Assert.fail("Expected ServiceException was not thrown");
+    } catch (ServiceException e) {
+      assertEquals("Reporter ID cannot be empty", e.getMessage());
+    }
+
+  }
+
+  @SuppressWarnings("javadoc")
   @Test
   public void failsWhenPostedReporterServiceNull() throws Exception {
     try {
