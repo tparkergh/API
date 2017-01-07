@@ -20,15 +20,25 @@ import gov.ca.cwds.data.persistence.cms.StaffPerson;
 
 /**
  * Calls native CWDS key generation library via JNI.
+ *
+ * <p>
+ * <strong>WARNING: DO NOT CHANGE METHOD SIGNATURES!</strong> Any signature change necessitates
+ * regeneration of JNI headers and recompilation of shared libraries!
+ * </p>
+ * 
+ * <p>
+ * You break it, you buy it. :-)
+ * </p>
  * 
  * <h2>Steps to build and run</h2>
  * 
  * @author CWDS API Team
  */
-public class KeyJNI {
+public final class KeyJNI {
 
   private static final Logger LOGGER = LoggerFactory.getLogger(KeyJNI.class);
-  private static final boolean classLoaded = loadLibs();
+
+  private static final boolean IS_CLASS_LOADED = loadLibs();
 
   /**
    * Load native library at runtime, when the classloader loads this class. Native libraries follow
@@ -56,9 +66,10 @@ public class KeyJNI {
     try {
       System.loadLibrary("KeyJNI");
       retval = true;
+      LOGGER.info("KeyJNI library loaded successfully");
     } catch (UnsatisfiedLinkError e) {
       retval = false;
-      e.printStackTrace();
+      LOGGER.error("KeyJNI library failed to load!", e);
     }
 
     if (!retval && forceLoad) {
@@ -70,7 +81,12 @@ public class KeyJNI {
 
   /**
    * Utility struct class stores details of CWDS key decomposition.
+   * 
+   * <p>
+   * Intentionally simple structure for C++ results. <strong>DO NOT CHANGE!</strong>
+   * </p>
    */
+  @SuppressWarnings("javadoc")
   public static final class KeyDetail {
     public String key;
     public String staffId;
@@ -87,14 +103,19 @@ public class KeyJNI {
   public native String generateKey(String staffId);
 
   /**
-   * Decomposes a generated key.
+   * Decomposes a CMS, char(10), base-62 key.
    * 
-   * @param key the key
+   * @param key the 10 character key
    * @param kd the key detail
    */
   public native void decomposeKey(String key, KeyDetail kd);
 
-  public static boolean isClassloaded() {
-    return classLoaded;
+  /**
+   * Tells whether the JVM successfully loaded the shared library for the target platform.
+   * 
+   * @return whether the JNI shared library loaded successfully
+   */
+  public static final boolean isClassloaded() {
+    return IS_CLASS_LOADED;
   }
 }

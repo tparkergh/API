@@ -15,9 +15,9 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import gov.ca.cwds.data.persistence.cms.OtherClientName;
 import gov.ca.cwds.data.persistence.cms.Reporter;
-import gov.ca.cwds.rest.api.ApiException;
 import gov.ca.cwds.rest.api.domain.Address;
 import gov.ca.cwds.rest.api.domain.Person;
+import gov.ca.cwds.rest.services.ServiceException;
 
 /**
  * Generic "person" class for ElasticSearch results, which decorates domain-level {@link Person}
@@ -219,10 +219,10 @@ public class ESPerson extends Person {
         }
 
       } catch (ClassNotFoundException ce) {
-        throw new ApiException("ElasticSearch Person error: Failed to instantiate class "
+        throw new ServiceException("ElasticSearch Person error: Failed to instantiate class "
             + ret.getSourceType() + ", ES person id=" + ret.getId(), ce);
       } catch (Exception e) {
-        throw new ApiException(
+        throw new ServiceException(
             "ElasticSearch Person error: " + e.getMessage() + ", ES person id=" + ret.getId(), e);
       }
     }

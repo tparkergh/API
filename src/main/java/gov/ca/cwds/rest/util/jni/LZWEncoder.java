@@ -4,6 +4,11 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
+ * <p>
+ * <strong>WARNING: DO NOT CHANGE METHOD SIGNATURES!</strong> Any signature change necessitates
+ * regeneration of JNI headers and recompilation of shared libraries!
+ * </p>
+ * 
  * This JNI native library runs correctly on Linux Jenkins when libLZW.so and libstdc++.so.6 are
  * installed into /usr/local/lib/.
  * 

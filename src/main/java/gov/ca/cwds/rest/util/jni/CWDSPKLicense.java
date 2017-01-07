@@ -10,6 +10,10 @@ package gov.ca.cwds.rest.util.jni;
  * @author CWDS API Team
  */
 public interface CWDSPKLicense {
+
+  /**
+   * License key required for proprietary PKWare algorithms.
+   */
   static final String PKWARE_LICENSE_KEY =
       "R7ZaRC89m4uNvDdttBiWpTOiwCYcA8Gh4/w6xt0fFXEA7AF4ALwASQheHOp6";
 }
