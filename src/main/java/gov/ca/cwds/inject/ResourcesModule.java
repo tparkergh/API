@@ -1,5 +1,10 @@
 package gov.ca.cwds.inject;
 
+import com.google.inject.AbstractModule;
+import com.google.inject.Injector;
+import com.google.inject.Provides;
+import com.google.inject.name.Named;
+
 import gov.ca.cwds.rest.ApiConfiguration;
 import gov.ca.cwds.rest.SwaggerConfiguration;
 import gov.ca.cwds.rest.api.domain.cms.CmsDocument;
@@ -35,11 +40,6 @@ import gov.ca.cwds.rest.services.cms.ReferralClientService;
 import gov.ca.cwds.rest.services.cms.ReferralService;
 import gov.ca.cwds.rest.services.cms.ReporterService;
 import gov.ca.cwds.rest.services.cms.StaffPersonService;
-
-import com.google.inject.AbstractModule;
-import com.google.inject.Injector;
-import com.google.inject.Provides;
-import com.google.inject.name.Named;
 
 public class ResourcesModule extends AbstractModule {
 
@@ -118,6 +118,17 @@ public class ResourcesModule extends AbstractModule {
     return new ServiceBackedResourceDelegate(
         injector.getInstance(CmsDocReferralClientService.class));
   }
+
+  // @Provides
+  // @IntakePersonAutoCompleteServiceResource
+  // public SimpleResourceDelegate<String, ESPersonSearchRequest, ESPersons,
+  // SimpleResourceService<String, ESPersonSearchRequest, ESPersons>>
+  // personAutocompleteResourceDelegate(
+  // Injector injector) {
+  // return new SimpleResourceDelegate<String, ESPersonSearchRequest, ESPersons,
+  // SimpleResourceService<String, ESPersonSearchRequest, ESPersons>>(
+  // injector.getInstance(CmsDocumentService.class));
+  // }
 
   @Provides
   @CmsDocumentBackedResource

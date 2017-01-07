@@ -25,6 +25,7 @@ import gov.ca.cwds.rest.api.domain.Person;
 import gov.ca.cwds.rest.api.domain.PostedPerson;
 
 public class PersonServiceTest {
+
   private PersonService personService;
   private PersonDao personDao;
   ElasticsearchDao elasticsearchDao;
@@ -84,8 +85,7 @@ public class PersonServiceTest {
         new gov.ca.cwds.data.persistence.ns.Person(2L, "Bart", "Simpson", "M",
             DomainChef.uncookDateString("2013-10-31"), "1234556789", toCreateAddress);
     Person request = new Person(toCreate);
-    when(personDao.create(any(gov.ca.cwds.data.persistence.ns.Person.class)))
-        .thenReturn(toCreate);
+    when(personDao.create(any(gov.ca.cwds.data.persistence.ns.Person.class))).thenReturn(toCreate);
 
     Response response = personService.create(request);
     assertThat(response.getClass(), is(PostedPerson.class));
@@ -100,8 +100,7 @@ public class PersonServiceTest {
         new gov.ca.cwds.data.persistence.ns.Person(2L, "Bart", "Simpson", "M",
             DomainChef.uncookDateString("2016-10-31"), "1234556789", toCreateAddress);
     Person request = new Person(toCreate);
-    when(personDao.create(any(gov.ca.cwds.data.persistence.ns.Person.class)))
-        .thenReturn(toCreate);
+    when(personDao.create(any(gov.ca.cwds.data.persistence.ns.Person.class))).thenReturn(toCreate);
 
     PostedPerson postedPerson = personService.create(request);
     assertThat(postedPerson, is(notNullValue()));
@@ -116,8 +115,7 @@ public class PersonServiceTest {
         new gov.ca.cwds.data.persistence.ns.Person(2L, "Bart", "Simpson", "M",
             DomainChef.uncookDateString("2016-10-31"), "1234556789", toCreateAddress);
     Person request = new Person(toCreate);
-    when(personDao.create(any(gov.ca.cwds.data.persistence.ns.Person.class)))
-        .thenReturn(toCreate);
+    when(personDao.create(any(gov.ca.cwds.data.persistence.ns.Person.class))).thenReturn(toCreate);
 
     Address address = new Address("742 Evergreen Terrace", "Springfield", "WA", 98700);
     PostedPerson expected =

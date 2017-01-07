@@ -11,15 +11,16 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
 import org.apache.http.HttpStatus;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.google.inject.Inject;
 
-import gov.ca.cwds.inject.PersonServiceBackedResource;
+import gov.ca.cwds.inject.IntakePersonAutoCompleteServiceResource;
 import gov.ca.cwds.rest.api.ApiException;
-import gov.ca.cwds.rest.api.domain.PostedPerson;
 import gov.ca.cwds.rest.api.domain.es.ESPerson;
 import gov.ca.cwds.rest.api.domain.es.ESPersonSearchRequest;
-import gov.ca.cwds.rest.services.PersonService;
+import gov.ca.cwds.rest.api.domain.es.ESPersons;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
@@ -27,9 +28,9 @@ import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 
 /**
- * A resource providing a RESTful interface for {@link PostedPerson}. It delegates functions to
- * {@link ServiceBackedResourceDelegate}. It decorates the {@link ServiceBackedResourceDelegate} not
- * in functionality but with @see
+ * A resource providing a RESTful interface for {@link ESPersons}. It delegates functions to
+ * {@link SimpleResourceDelegate}. It decorates the {@link SimpleResourceService} not in
+ * functionality but with @see
  * <a href= "https://github.com/swagger-api/swagger-core/wiki/Annotations-1.5.X">Swagger
  * Annotations</a> and
  * <a href="https://jersey.java.net/documentation/latest/user-guide.html#jaxrs-resources">Jersey
@@ -43,7 +44,16 @@ import io.swagger.annotations.ApiResponses;
 @Consumes(MediaType.APPLICATION_JSON)
 public class AutoCompletePersonResource {
 
-  private ResourceDelegate resourceDelegate;
+  /**
+   * Logger for this class.
+   */
+  private static final Logger LOGGER = LoggerFactory.getLogger(AutoCompletePersonResource.class);
+
+  /**
+   * Java desperately needs short-hand notation for typed interfaces and classes, such as C++
+   * "typedef" or "using alias".
+   */
+  private SimpleResourceDelegate<String, ESPersonSearchRequest, ESPersons, SimpleResourceService<String, ESPersonSearchRequest, ESPersons>> resourceDelegate;
 
   /**
    * Constructor
@@ -52,36 +62,12 @@ public class AutoCompletePersonResource {
    */
   @Inject
   public AutoCompletePersonResource(
-      @PersonServiceBackedResource ResourceDelegate resourceDelegate) {
+      @IntakePersonAutoCompleteServiceResource SimpleResourceDelegate<String, ESPersonSearchRequest, ESPersons, SimpleResourceService<String, ESPersonSearchRequest, ESPersons>> resourceDelegate) {
     this.resourceDelegate = resourceDelegate;
   }
 
-  /**
-   * Return all Persons in ElasticSearch.
-   * 
-   * @return the response
-   */
-  @POST
-  @Path("/all")
-  @ApiResponses(value = {@ApiResponse(code = 404, message = "Not found"),
-      @ApiResponse(code = 406, message = "Accept Header not supported")})
-  @ApiOperation(value = "Fetch ALL Persons from ElasticSearch", response = ESPerson[].class)
-  public Response showAllPersons() {
-
-    ESPerson[] hits = null;
-    try {
-      // TODO: remove cast abuse. Story #136701343.
-      hits = ((PersonService) ((ServiceBackedResourceDelegate) resourceDelegate).getService())
-          .fetchAllPersons();
-    } catch (Exception e) {
-      throw new ApiException("ERROR calling ES \"fetch all persons\"", e);
-    }
-
-    if (hits != null) {
-      return Response.ok(hits).build();
-    } else {
-      return Response.status(Response.Status.NOT_FOUND).entity(null).build();
-    }
+  public final Object[] getTypeParams() {
+    return resourceDelegate.getClass().getTypeParameters();
   }
 
   /**
@@ -92,7 +78,7 @@ public class AutoCompletePersonResource {
    * @return the response
    */
   @POST
-  @Path("/query_or")
+  @Path("/person_autocomplete")
   @ApiResponses(value = {@ApiResponse(code = 404, message = "Not found"),
       @ApiResponse(code = 400, message = "Unable to process JSON"),
       @ApiResponse(code = 406, message = "Accept Header not supported")})
@@ -102,20 +88,18 @@ public class AutoCompletePersonResource {
   @Consumes(value = MediaType.APPLICATION_JSON)
   public Response queryPersonOrTerm(
       @Valid @ApiParam(hidden = false, required = true) ESPersonSearchRequest req) {
-    ESPerson[] hits = null;
+
+    LOGGER.info("parameterized types: {}", this.getTypeParams());
+
+    Response ret;
     try {
-      // TODO: remove cast abuse. Story #136701343.
-      hits = ((PersonService) ((ServiceBackedResourceDelegate) resourceDelegate).getService())
-          .queryPersonOr(req.getFirstName(), req.getLastName(), req.getBirthDate());
+      ret = resourceDelegate.handle(req);
     } catch (Exception e) {
-      throw new ApiException("ERROR calling ES \"query person OR\"", e);
+      LOGGER.error("Intake Person AutoComplete ERROR: {}", e.getMessage());
+      throw new ApiException("Intake Person AutoComplete ERROR.", e);
     }
 
-    if (hits != null) {
-      return Response.ok(hits).build();
-    } else {
-      return Response.status(Response.Status.NOT_FOUND).entity(null).build();
-    }
+    return ret;
   }
 
 }

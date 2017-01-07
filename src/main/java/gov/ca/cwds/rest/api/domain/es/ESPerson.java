@@ -5,6 +5,8 @@ import java.util.Map;
 
 import org.apache.commons.lang3.StringUtils;
 import org.elasticsearch.search.SearchHit;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -25,6 +27,8 @@ import gov.ca.cwds.rest.api.domain.Person;
  * @author CWDS API Team
  */
 public class ESPerson extends Person {
+
+  private static final Logger LOGGER = LoggerFactory.getLogger(ESPerson.class);
 
   /**
    * {@link ObjectMapper}, used to unmarshall JSON Strings from member {@link #sourceJson} into
@@ -187,8 +191,21 @@ public class ESPerson extends Person {
 
     if (!StringUtils.isBlank(ret.getSourceType()) && !StringUtils.isBlank(ret.getSourceJson())) {
       try {
-        final Object obj = MAPPER.readValue(ret.getSourceJson(), Class.forName(ret.getSourceType(),
-            false, Thread.currentThread().getContextClassLoader()));
+        // Dynamically instantiate the domain class specified by "type" and load from JSON.
+        // Note: When running in an application server, the app server's root classloader may not
+        // know of our domain/persistence class, but the current thread's classloader should.
+
+        // TODO: STORY #137216799: Tech debt: Java class/package changes and reverse compatibility
+        // with existing ElasticSearch documents.
+        if (ret.getSourceType().startsWith("gov.ca.cwds.rest.api.")) {
+          LOGGER.warn("LEGACY CLASS IN ELASTICSEARCH! {}", ret.getSourceType());
+        }
+
+        final Object obj = MAPPER.readValue(ret.getSourceJson(),
+            Class.forName(
+                ret.getSourceType().replaceAll("gov\\.ca\\.cwds\\.rest\\.api\\.",
+                    "gov\\.ca\\.cwds\\.data\\."),
+                false, Thread.currentThread().getContextClassLoader()));
 
         ret.sourceObj = obj;
       } catch (ClassNotFoundException ce) {
