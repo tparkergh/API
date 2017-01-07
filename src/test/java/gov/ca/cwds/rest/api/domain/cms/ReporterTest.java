@@ -10,6 +10,7 @@ import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
+import java.io.IOException;
 import java.math.BigDecimal;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -22,12 +23,12 @@ import org.junit.Before;
 import org.junit.ClassRule;
 import org.junit.Test;
 
+import com.fasterxml.jackson.core.JsonParseException;
+import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import gov.ca.cwds.data.CrudsDao;
-import gov.ca.cwds.data.persistence.cms.Referral;
 import gov.ca.cwds.rest.api.domain.DomainChef;
-import gov.ca.cwds.rest.api.domain.cms.Reporter;
 import gov.ca.cwds.rest.core.Api;
 import gov.ca.cwds.rest.resources.cms.ReporterResource;
 import io.dropwizard.jackson.Jackson;
@@ -35,19 +36,25 @@ import io.dropwizard.testing.junit.ResourceTestRule;
 import nl.jqno.equalsverifier.EqualsVerifier;
 import nl.jqno.equalsverifier.Warning;
 
+
+/**
+ * @author CWDS API Team
+ *
+ */
+@SuppressWarnings("javadoc")
 public class ReporterTest {
 
   private static final String ROOT_RESOURCE = "/" + Api.RESOURCE_REPORTER + "/";
 
   private static final ReporterResource mockedReporterResource = mock(ReporterResource.class);
 
+  @SuppressWarnings("javadoc")
   @ClassRule
   public static final ResourceTestRule resources =
       ResourceTestRule.builder().addResource(mockedReporterResource).build();
 
   private static final ObjectMapper MAPPER = Jackson.newObjectMapper();
   private final static DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
-  private Reporter validReporter = validReporter();
 
   private String referralId = "1234567ABC";
   private String badgeNumber = "123456";
@@ -77,11 +84,13 @@ public class ReporterTest {
   private Short zipSuffixNumber = 1234;
   private String countySpecificCode = "AB";
 
+  @SuppressWarnings("javadoc")
   @Before
-  public void setup() {
+  public void setup() throws Exception {
     @SuppressWarnings("rawtypes")
     CrudsDao crudsDao = mock(CrudsDao.class);
-    when(crudsDao.find(any())).thenReturn(mock(Referral.class));
+    when(crudsDao.find(any())).thenReturn(mock(gov.ca.cwds.data.persistence.cms.Reporter.class));
+    Reporter validReporter = validReporter();
 
     when(mockedReporterResource.create(eq(validReporter)))
         .thenReturn(Response.status(Response.Status.NO_CONTENT).entity(null).build());
@@ -91,6 +100,7 @@ public class ReporterTest {
   /*
    * Constructor Tests
    */
+  @SuppressWarnings("javadoc")
   @Test
   public void persistentObjectConstructorTest() throws Exception {
     Reporter domain = new Reporter(badgeNumber, cityName, colltrClientRptrReltnshpType,
@@ -145,6 +155,7 @@ public class ReporterTest {
 
   }
 
+  @SuppressWarnings("javadoc")
   @Test
   public void jsonCreatorConstructorTest() throws Exception {
     Reporter reporter = new Reporter(badgeNumber, cityName, colltrClientRptrReltnshpType,
@@ -185,11 +196,13 @@ public class ReporterTest {
     assertThat(reporter.getCountySpecificCode(), is(equalTo(countySpecificCode)));
   }
 
+  @SuppressWarnings("javadoc")
   @Test
   public void equalsHashCodeWork() {
     EqualsVerifier.forClass(Reporter.class).suppress(Warning.NONFINAL_FIELDS).verify();
   }
 
+  @SuppressWarnings("javadoc")
   @Test
   public void serializesToJSON() throws Exception {
     final String expected = MAPPER.writeValueAsString(MAPPER
@@ -198,6 +211,7 @@ public class ReporterTest {
     assertThat(MAPPER.writeValueAsString(validReporter()), is(equalTo(expected)));
   }
 
+  @SuppressWarnings("javadoc")
   @Test
   public void deserializesFromJSON() throws Exception {
     assertThat(MAPPER.readValue(fixture("fixtures/domain/legacy/Reporter/valid/valid.json"),
@@ -207,6 +221,7 @@ public class ReporterTest {
   /*
    * Successful Tests
    */
+  @SuppressWarnings("javadoc")
   @Test
   public void successfulWithValid() throws Exception {
     Reporter toCreate = MAPPER
@@ -219,281 +234,258 @@ public class ReporterTest {
 
   /*
    * Class level streetNameAndCityName tests
+   * 
+   * @IfThen(ifProperty = "streetName", thenProperty = "cityName", required = false)
    */
-  // @Test
-  // public void failsWhenStreetNameProvidedAndCityNameNot() throws Exception {
-  // Reporter toCreate = MAPPER.readValue(
-  // fixture(
-  // "fixtures/domain/legacy/Reporter/invalid/_classLevel/streetNameProvidedAndCityNameNot.json"),
-  // Reporter.class);
-  // Response response =
-  // resources.client().target(ROOT_RESOURCE).request().accept(MediaType.APPLICATION_JSON)
-  // .post(Entity.entity(toCreate, MediaType.APPLICATION_JSON));
-  // assertThat(response.getStatus(), is(equalTo(422)));
-  // assertThat(response.readEntity(String.class),
-  // is(equalTo("{\"errors\":[\"cityName is required since streetName is set\"]}")));
-  // }
-  //
-  // @Test
-  // public void successWhenStreetNameAndCityNameProvided() throws Exception {
-  // Reporter toCreate = MAPPER.readValue(
-  // fixture(
-  // "fixtures/domain/legacy/Reporter/valid/_classLevel/streetNameAndCityName/bothProvided.json"),
-  // Reporter.class);
-  // Response response =
-  // resources.client().target(ROOT_RESOURCE).request().accept(MediaType.APPLICATION_JSON)
-  // .post(Entity.entity(toCreate, MediaType.APPLICATION_JSON));
-  // assertThat(response.getStatus(), is(equalTo(204)));
-  // }
-  //
-  // @Test
-  // public void successWhenStreetNameAndCityNameNotProvided() throws Exception {
-  // Reporter toCreate = MAPPER.readValue(
-  // fixture(
-  // "fixtures/domain/legacy/Reporter/valid/_classLevel/streetNameAndCityName/neitherProvided.json"),
-  // Reporter.class);
-  // Response response =
-  // resources.client().target(ROOT_RESOURCE).request().accept(MediaType.APPLICATION_JSON)
-  // .post(Entity.entity(toCreate, MediaType.APPLICATION_JSON));
-  // assertThat(response.getStatus(), is(equalTo(204)));
-  // }
-  //
-  // @Test
-  // public void successWhenOnlyCityNameProvided() throws Exception {
-  // Reporter toCreate = MAPPER.readValue(
-  // fixture(
-  // "fixtures/domain/legacy/Reporter/valid/_classLevel/streetNameAndCityName/onlyCityNameProvided.json"),
-  // Reporter.class);
-  // Response response =
-  // resources.client().target(ROOT_RESOURCE).request().accept(MediaType.APPLICATION_JSON)
-  // .post(Entity.entity(toCreate, MediaType.APPLICATION_JSON));
-  // assertThat(response.getStatus(), is(equalTo(204)));
-  // }
+  @SuppressWarnings("javadoc")
+  @Test
+  public void testStreetNameNotCityNameFails() throws Exception {
+    Reporter toCreate = MAPPER.readValue(
+        fixture(
+            "fixtures/domain/legacy/Reporter/invalid/_classLevel/streetNameProvidedAndCityNameNot.json"),
+        Reporter.class);
+    Response response =
+        resources.client().target(ROOT_RESOURCE).request().accept(MediaType.APPLICATION_JSON)
+            .post(Entity.entity(toCreate, MediaType.APPLICATION_JSON));
+    assertThat(response.getStatus(), is(equalTo(422)));
+    assertThat(response.readEntity(String.class),
+        is(equalTo("{\"errors\":[\"cityName is required since streetName is set\"]}")));
+  }
+
+  @SuppressWarnings("javadoc")
+  @Test
+  public void testStreetNameAndCityNameSuccess() throws Exception {
+    Reporter toCreate = MAPPER.readValue(
+        fixture("fixtures/domain/legacy/Reporter/valid/streetNameAndCityName.json"),
+        Reporter.class);
+    Response response =
+        resources.client().target(ROOT_RESOURCE).request().accept(MediaType.APPLICATION_JSON)
+            .post(Entity.entity(toCreate, MediaType.APPLICATION_JSON));
+    assertThat(response.getStatus(), is(equalTo(204)));
+  }
+
+  @SuppressWarnings("javadoc")
+  @Test
+  public void testNotStreetNameNotCityNameSuccess() throws Exception {
+    Reporter toCreate = MAPPER.readValue(
+        fixture("fixtures/domain/legacy/Reporter/valid/notStreetNameNotCityName.json"),
+        Reporter.class);
+    Response response =
+        resources.client().target(ROOT_RESOURCE).request().accept(MediaType.APPLICATION_JSON)
+            .post(Entity.entity(toCreate, MediaType.APPLICATION_JSON));
+    assertThat(response.getStatus(), is(equalTo(204)));
+  }
+
+  @SuppressWarnings("javadoc")
+  @Test
+  public void testNotStreetNameAndCityNameSuccess() throws Exception {
+    Reporter toCreate = MAPPER.readValue(
+        fixture("fixtures/domain/legacy/Reporter/valid/NotStreetNameAndCityName.json"),
+        Reporter.class);
+    Response response =
+        resources.client().target(ROOT_RESOURCE).request().accept(MediaType.APPLICATION_JSON)
+            .post(Entity.entity(toCreate, MediaType.APPLICATION_JSON));
+    assertThat(response.getStatus(), is(equalTo(204)));
+  }
 
   /*
+   * 
    * Class level streetNumberAndStreetName tests
+   * 
+   * @IfThen.List({@IfThen(ifProperty = "streetNumber", thenProperty = "streetName", required =
+   * false)
+   * 
    */
-  // @Test
-  // public void failsWhenStreetNumberProvidedAndStreetNameNot() throws Exception {
-  // Reporter toCreate = MAPPER.readValue(
-  // fixture(
-  // "fixtures/domain/legacy/Reporter/invalid/_classLevel/streetNumberAndStreetName/streetNumberProvidedAndStreetNameNot.json"),
-  // Reporter.class);
-  // Response response =
-  // resources.client().target(ROOT_RESOURCE).request().accept(MediaType.APPLICATION_JSON)
-  // .post(Entity.entity(toCreate, MediaType.APPLICATION_JSON));
-  // assertThat(response.getStatus(), is(equalTo(422)));
-  // assertThat(response.readEntity(String.class),
-  // is(equalTo("{\"errors\":[\"streetName is required since streetNumber is set\"]}")));
-  // }
-  //
-  // @Test
-  // public void successWhenStreetNumberAndStreetNameProvided() throws Exception {
-  // Reporter toCreate = MAPPER.readValue(
-  // fixture(
-  // "fixtures/domain/legacy/Reporter/valid/_classLevel/streetNumberAndStreetName/bothProvided.json"),
-  // Reporter.class);
-  // Response response =
-  // resources.client().target(ROOT_RESOURCE).request().accept(MediaType.APPLICATION_JSON)
-  // .post(Entity.entity(toCreate, MediaType.APPLICATION_JSON));
-  // assertThat(response.getStatus(), is(equalTo(204)));
-  // }
-  //
-  // @Test
-  // public void successWhenStreetNumberAndStreetNameNotProvided() throws Exception {
-  // Reporter toCreate = MAPPER.readValue(
-  // fixture(
-  // "fixtures/domain/legacy/Reporter/valid/_classLevel/streetNumberAndStreetName/neitherProvided.json"),
-  // Reporter.class);
-  // Response response =
-  // resources.client().target(ROOT_RESOURCE).request().accept(MediaType.APPLICATION_JSON)
-  // .post(Entity.entity(toCreate, MediaType.APPLICATION_JSON));
-  // assertThat(response.getStatus(), is(equalTo(204)));
-  // }
-  //
-  // @Test
-  // public void successWhenOnlyStreetNameProvided() throws Exception {
-  // Reporter toCreate = MAPPER.readValue(
-  // fixture(
-  // "fixtures/domain/legacy/Reporter/valid/_classLevel/streetNumberAndStreetName/onlyStreetNameProvided.json"),
-  // Reporter.class);
-  // Response response =
-  // resources.client().target(ROOT_RESOURCE).request().accept(MediaType.APPLICATION_JSON)
-  // .post(Entity.entity(toCreate, MediaType.APPLICATION_JSON));
-  // assertThat(response.getStatus(), is(equalTo(204)));
-  // }
+  @SuppressWarnings("javadoc")
+  @Test
+  public void testStreetNumberNotStreetNameFails() throws Exception {
+    Reporter toCreate = MAPPER.readValue(
+        fixture("fixtures/domain/legacy/Reporter/invalid//streetNumberNotStreetName.json"),
+        Reporter.class);
+    Response response =
+        resources.client().target(ROOT_RESOURCE).request().accept(MediaType.APPLICATION_JSON)
+            .post(Entity.entity(toCreate, MediaType.APPLICATION_JSON));
+    assertThat(response.getStatus(), is(equalTo(422)));
+    assertThat(response.readEntity(String.class),
+        is(equalTo("{\"errors\":[\"streetName is required since streetNumber is set\"]}")));
+  }
+
+  @SuppressWarnings("javadoc")
+  @Test
+  public void testStreetNumberAndStreetNameSuccess() throws Exception {
+    Reporter toCreate = MAPPER.readValue(
+        fixture("fixtures/domain/legacy/Reporter/valid/streetNumberAndStreetName.json"),
+        Reporter.class);
+    Response response =
+        resources.client().target(ROOT_RESOURCE).request().accept(MediaType.APPLICATION_JSON)
+            .post(Entity.entity(toCreate, MediaType.APPLICATION_JSON));
+    assertThat(response.getStatus(), is(equalTo(204)));
+  }
+
+  @SuppressWarnings("javadoc")
+  @Test
+  public void testNotStreetNumberNotStreetNameSuccess() throws Exception {
+    Reporter toCreate = MAPPER.readValue(
+        fixture("fixtures/domain/legacy/Reporter/valid/notStreetNumberNotStreetName.json"),
+        Reporter.class);
+    Response response =
+        resources.client().target(ROOT_RESOURCE).request().accept(MediaType.APPLICATION_JSON)
+            .post(Entity.entity(toCreate, MediaType.APPLICATION_JSON));
+    assertThat(response.getStatus(), is(equalTo(204)));
+  }
+
+  @SuppressWarnings("javadoc")
+  @Test
+  public void testStreetNameNotStreetNumberSuccess() throws Exception {
+    Reporter toCreate = MAPPER.readValue(
+        fixture("fixtures/domain/legacy/Reporter/valid/StreetNameNotStreetNumber.json"),
+        Reporter.class);
+    Response response =
+        resources.client().target(ROOT_RESOURCE).request().accept(MediaType.APPLICATION_JSON)
+            .post(Entity.entity(toCreate, MediaType.APPLICATION_JSON));
+    assertThat(response.getStatus(), is(equalTo(204)));
+  }
 
   /*
    * Class level lawEnforcementIdAndEmployerName tests
+   * 
+   * @MutuallyExclusive(required = false, properties = {"employerName", "lawEnforcementId"})
+   * 
    */
-  // @Test
-  // public void failsWhenBothSupplied() throws Exception {
-  // Reporter toCreate = MAPPER.readValue(
-  // fixture(
-  // "fixtures/domain/legacy/Reporter/invalid/_classLevel/lawEnforcementIdAndEmployerName/bothSupplied.json"),
-  // Reporter.class);
-  // Response response =
-  // resources.client().target(ROOT_RESOURCE).request().accept(MediaType.APPLICATION_JSON)
-  // .post(Entity.entity(toCreate, MediaType.APPLICATION_JSON));
-  // assertThat(response.getStatus(), is(equalTo(422)));
-  // assertThat(response.readEntity(String.class), is(equalTo(
-  // "{\"errors\":[\"Properties [employerName, lawEnforcementId] are mutually exclusive but multiple
-  // values are set\"]}")));
-  // }
-  //
-  // @Test
-  // public void successWhenBothEmpty() throws Exception {
-  // Reporter toCreate = MAPPER.readValue(
-  // fixture(
-  // "fixtures/domain/legacy/Reporter/valid/_classLevel/lawEnforcementIdAndEmployerName/bothEmpty.json"),
-  // Reporter.class);
-  // Response response =
-  // resources.client().target(ROOT_RESOURCE).request().accept(MediaType.APPLICATION_JSON)
-  // .post(Entity.entity(toCreate, MediaType.APPLICATION_JSON));
-  // assertThat(response.getStatus(), is(equalTo(204)));
-  // }
-  //
-  // @Test
-  // public void successWhenBothMissing() throws Exception {
-  // Reporter toCreate = MAPPER.readValue(
-  // fixture(
-  // "fixtures/domain/legacy/Reporter/valid/_classLevel/lawEnforcementIdAndEmployerName/bothMissing.json"),
-  // Reporter.class);
-  // Response response =
-  // resources.client().target(ROOT_RESOURCE).request().accept(MediaType.APPLICATION_JSON)
-  // .post(Entity.entity(toCreate, MediaType.APPLICATION_JSON));
-  // assertThat(response.getStatus(), is(equalTo(204)));
-  // }
-  //
-  // @Test
-  // public void successWhenBothNull() throws Exception {
-  // Reporter toCreate = MAPPER.readValue(
-  // fixture(
-  // "fixtures/domain/legacy/Reporter/valid/_classLevel/lawEnforcementIdAndEmployerName/bothNull.json"),
-  // Reporter.class);
-  // Response response =
-  // resources.client().target(ROOT_RESOURCE).request().accept(MediaType.APPLICATION_JSON)
-  // .post(Entity.entity(toCreate, MediaType.APPLICATION_JSON));
-  // assertThat(response.getStatus(), is(equalTo(204)));
-  // }
-  //
-  // @Test
-  // public void successWhenEmployerNameSuppliedLawEnforcementIdNot() throws Exception {
-  // Reporter toCreate = MAPPER.readValue(
-  // fixture(
-  // "fixtures/domain/legacy/Reporter/valid/_classLevel/lawEnforcementIdAndEmployerName/employerNameSuppliedLawEnforcementIdNot.json"),
-  // Reporter.class);
-  // Response response =
-  // resources.client().target(ROOT_RESOURCE).request().accept(MediaType.APPLICATION_JSON)
-  // .post(Entity.entity(toCreate, MediaType.APPLICATION_JSON));
-  // assertThat(response.getStatus(), is(equalTo(204)));
-  // }
-  //
-  // @Test
-  // public void successWhenLawEnforcementIdSuppliedEmployerNameSuppliedNot() throws Exception {
-  // Reporter toCreate = MAPPER.readValue(
-  // fixture(
-  // "fixtures/domain/legacy/Reporter/valid/_classLevel/lawEnforcementIdAndEmployerName/lawEnforcementIdSuppliedEmployerNameNot.json"),
-  // Reporter.class);
-  // Response response =
-  // resources.client().target(ROOT_RESOURCE).request().accept(MediaType.APPLICATION_JSON)
-  // .post(Entity.entity(toCreate, MediaType.APPLICATION_JSON));
-  // assertThat(response.getStatus(), is(equalTo(204)));
-  // }
-  //
-  // /*
-  // * badgeNumber Tests
-  // */
-  // @Test
-  // public void failsWhenBadgeNumberTooLong() throws Exception {
-  // Reporter toCreate = MAPPER.readValue(
-  // fixture("fixtures/domain/legacy/Reporter/invalid/badgeNumber/tooLong.json"),
-  // Reporter.class);
-  // Response response =
-  // resources.client().target(ROOT_RESOURCE).request().accept(MediaType.APPLICATION_JSON)
-  // .post(Entity.entity(toCreate, MediaType.APPLICATION_JSON));
-  // assertThat(response.getStatus(), is(equalTo(422)));
-  // assertThat(response.readEntity(String.class),
-  // is(equalTo("{\"errors\":[\"badgeNumber size must be less than or equal to 6\"]}")));
-  // }
-  //
-  // @Test
-  // public void failsWhenBadgeNumberNotEmptyButNoLawEnforcementId() throws Exception {
-  // Reporter toCreate = MAPPER.readValue(
-  // fixture(
-  // "fixtures/domain/legacy/Reporter/invalid/_classLevel/badgeNumberAndLawEnforcementId/notEmptyButNoLawEnforcementId.json"),
-  // Reporter.class);
-  // Response response =
-  // resources.client().target(ROOT_RESOURCE).request().accept(MediaType.APPLICATION_JSON)
-  // .post(Entity.entity(toCreate, MediaType.APPLICATION_JSON));
-  // assertThat(response.getStatus(), is(equalTo(422)));
-  // assertThat(response.readEntity(String.class),
-  // is(equalTo("{\"errors\":[\"badgeNumber can only be set if lawEnforcementId is set\"]}")));
-  // }
-  //
-  // @Test
-  // public void successWhenBadgeNumberEmptyAndNoLawEnforcementId() throws Exception {
-  // Reporter toCreate = MAPPER.readValue(
-  // fixture(
-  // "fixtures/domain/legacy/Reporter/valid/_classLevel/badgeNumberAndLawEnforcementId/emptyWithNoLawEnforcementId.json"),
-  // Reporter.class);
-  // Response response =
-  // resources.client().target(ROOT_RESOURCE).request().accept(MediaType.APPLICATION_JSON)
-  // .post(Entity.entity(toCreate, MediaType.APPLICATION_JSON));
-  // assertThat(response.getStatus(), is(equalTo(204)));
-  // }
-  //
-  // @Test
-  // public void successWhenBadgeNumberEmpty() throws Exception {
-  // Reporter toCreate = MAPPER.readValue(
-  // fixture(
-  // "fixtures/domain/legacy/Reporter/valid/_classLevel/badgeNumberAndLawEnforcementId/empty.json"),
-  // Reporter.class);
-  // Response response =
-  // resources.client().target(ROOT_RESOURCE).request().accept(MediaType.APPLICATION_JSON)
-  // .post(Entity.entity(toCreate, MediaType.APPLICATION_JSON));
-  // assertThat(response.getStatus(), is(equalTo(204)));
-  // }
-  //
-  // @Test
-  // public void successWhenBadgeNumberMissing() throws Exception {
-  // Reporter toCreate = MAPPER.readValue(
-  // fixture(
-  // "fixtures/domain/legacy/Reporter/valid/_classLevel/badgeNumberAndLawEnforcementId/missing.json"),
-  // Reporter.class);
-  // Response response =
-  // resources.client().target(ROOT_RESOURCE).request().accept(MediaType.APPLICATION_JSON)
-  // .post(Entity.entity(toCreate, MediaType.APPLICATION_JSON));
-  // assertThat(response.getStatus(), is(equalTo(204)));
-  // }
-  //
-  // @Test
-  // public void successWhenBadgeNumberNotEmpty() throws Exception {
-  // Reporter toCreate = MAPPER.readValue(
-  // fixture(
-  // "fixtures/domain/legacy/Reporter/valid/_classLevel/badgeNumberAndLawEnforcementId/notEmpty.json"),
-  // Reporter.class);
-  // Response response =
-  // resources.client().target(ROOT_RESOURCE).request().accept(MediaType.APPLICATION_JSON)
-  // .post(Entity.entity(toCreate, MediaType.APPLICATION_JSON));
-  // assertThat(response.getStatus(), is(equalTo(204)));
-  // }
-  //
-  // @Test
-  // public void successWhenBadgeNumberNull() throws Exception {
-  // Reporter toCreate = MAPPER.readValue(
-  // fixture(
-  // "fixtures/domain/legacy/Reporter/valid/_classLevel/badgeNumberAndLawEnforcementId/null.json"),
-  // Reporter.class);
-  // Response response =
-  // resources.client().target(ROOT_RESOURCE).request().accept(MediaType.APPLICATION_JSON)
-  // .post(Entity.entity(toCreate, MediaType.APPLICATION_JSON));
-  // assertThat(response.getStatus(), is(equalTo(204)));
-  // }
+  @SuppressWarnings("javadoc")
+  @Test
+  public void testLawEnforcementIdAndEmployerNameFails() throws Exception {
+    Reporter toCreate = MAPPER.readValue(
+        fixture("fixtures/domain/legacy/Reporter/invalid/LawEnforcementIdAndEmployerName.json"),
+        Reporter.class);
+    Response response =
+        resources.client().target(ROOT_RESOURCE).request().accept(MediaType.APPLICATION_JSON)
+            .post(Entity.entity(toCreate, MediaType.APPLICATION_JSON));
+    // System.out.println(response.readEntity(String.class));
+    assertThat(response.getStatus(), is(equalTo(422)));
+    assertThat(response.readEntity(String.class), is(equalTo(
+        "{\"errors\":[\"Properties [employerName, lawEnforcementId] are mutually exclusive but multiple values are set\"]}")));
+  }
+
+  @SuppressWarnings("javadoc")
+  @Test
+  public void testLawEnforcementIdNotEmployerNameNotSuccess() throws Exception {
+    Reporter toCreate = MAPPER.readValue(
+        fixture("fixtures/domain/legacy/Reporter/valid/notLawEnforcementIdNotEmployerName.json"),
+        Reporter.class);
+    Response response =
+        resources.client().target(ROOT_RESOURCE).request().accept(MediaType.APPLICATION_JSON)
+            .post(Entity.entity(toCreate, MediaType.APPLICATION_JSON));
+    assertThat(response.getStatus(), is(equalTo(204)));
+
+  }
+
+  @SuppressWarnings("javadoc")
+  @Test
+  public void testLawEnforcementIdNullEmployerNameSuccess() throws Exception {
+    Reporter toCreate = MAPPER.readValue(
+        fixture("fixtures/domain/legacy/Reporter/valid/lawEnforcementIdNullEmployerName.json"),
+        Reporter.class);
+    Response response =
+        resources.client().target(ROOT_RESOURCE).request().accept(MediaType.APPLICATION_JSON)
+            .post(Entity.entity(toCreate, MediaType.APPLICATION_JSON));
+    assertThat(response.getStatus(), is(equalTo(204)));
+  }
+
+  @SuppressWarnings("javadoc")
+  @Test
+  public void testLawEnforcementIdEmployerNameNotSuccess() throws Exception {
+    Reporter toCreate = MAPPER.readValue(
+        fixture("fixtures/domain/legacy/Reporter/valid/lawEnforcementIdEmployerNameNot.json"),
+        Reporter.class);
+    Response response =
+        resources.client().target(ROOT_RESOURCE).request().accept(MediaType.APPLICATION_JSON)
+            .post(Entity.entity(toCreate, MediaType.APPLICATION_JSON));
+    assertThat(response.getStatus(), is(equalTo(204)));
+  }
+
+  /*
+   * badgeNumber Tests
+   * 
+   * @OnlyIf(property = "badgeNumber", ifProperty = "lawEnforcementId")
+   * 
+   */
+  @SuppressWarnings("javadoc")
+  @Test
+  public void testBadgeNumberTooLong() throws Exception {
+    Reporter toCreate = MAPPER.readValue(
+        fixture("fixtures/domain/legacy/Reporter/invalid/badgeNumberTooLong.json"), Reporter.class);
+    Response response =
+        resources.client().target(ROOT_RESOURCE).request().accept(MediaType.APPLICATION_JSON)
+            .post(Entity.entity(toCreate, MediaType.APPLICATION_JSON));
+    assertThat(response.getStatus(), is(equalTo(422)));
+    assertThat(response.readEntity(String.class),
+        is(equalTo("{\"errors\":[\"badgeNumber size must be less than or equal to 6\"]}")));
+  }
+
+  @SuppressWarnings("javadoc")
+  @Test
+  public void testBadgeNumberNotLawEnforcementIdFails() throws Exception {
+    Reporter toCreate = MAPPER.readValue(
+        fixture("fixtures/domain/legacy/Reporter/invalid/badgeNumberNotLawEnforcementId.json"),
+        Reporter.class);
+    Response response =
+        resources.client().target(ROOT_RESOURCE).request().accept(MediaType.APPLICATION_JSON)
+            .post(Entity.entity(toCreate, MediaType.APPLICATION_JSON));
+    assertThat(response.getStatus(), is(equalTo(422)));
+    assertThat(response.readEntity(String.class),
+        is(equalTo("{\"errors\":[\"badgeNumber can only be set if lawEnforcementId is set\"]}")));
+  }
+
+  @SuppressWarnings("javadoc")
+  @Test
+  public void testBadgeNumberEmptyLawEnforcementIdFails() throws Exception {
+    Reporter toCreate = MAPPER.readValue(
+        fixture("fixtures/domain/legacy/Reporter/invalid/badgeNumberEmptyLawEnforcementId.json"),
+        Reporter.class);
+    Response response =
+        resources.client().target(ROOT_RESOURCE).request().accept(MediaType.APPLICATION_JSON)
+            .post(Entity.entity(toCreate, MediaType.APPLICATION_JSON));
+    assertThat(response.getStatus(), is(equalTo(204)));
+  }
+
+  @SuppressWarnings("javadoc")
+  @Test
+  public void testBadgeNumberEmptySuccess() throws Exception {
+    Reporter toCreate = MAPPER.readValue(
+        fixture("fixtures/domain/legacy/Reporter/valid/badgeNumberEmpty.json"), Reporter.class);
+    Response response =
+        resources.client().target(ROOT_RESOURCE).request().accept(MediaType.APPLICATION_JSON)
+            .post(Entity.entity(toCreate, MediaType.APPLICATION_JSON));
+    assertThat(response.getStatus(), is(equalTo(204)));
+  }
+
+  @SuppressWarnings("javadoc")
+  @Test
+  public void testBadgeNumberMissingSuccess() throws Exception {
+    Reporter toCreate = MAPPER.readValue(
+        fixture("fixtures/domain/legacy/Reporter/valid/badgeNumberMissing.json"), Reporter.class);
+    Response response =
+        resources.client().target(ROOT_RESOURCE).request().accept(MediaType.APPLICATION_JSON)
+            .post(Entity.entity(toCreate, MediaType.APPLICATION_JSON));
+    assertThat(response.getStatus(), is(equalTo(204)));
+  }
+
+  @SuppressWarnings("javadoc")
+  @Test
+  public void testBadgeNumberNullSuccess() throws Exception {
+    Reporter toCreate = MAPPER.readValue(
+        fixture("fixtures/domain/legacy/Reporter/valid/badgeNumberNull.json"), Reporter.class);
+    Response response =
+        resources.client().target(ROOT_RESOURCE).request().accept(MediaType.APPLICATION_JSON)
+            .post(Entity.entity(toCreate, MediaType.APPLICATION_JSON));
+    assertThat(response.getStatus(), is(equalTo(204)));
+  }
 
   /*
    * cityName Tests
    */
+  @SuppressWarnings("javadoc")
   @Test
   public void successWhenCityNameMissing() throws Exception {
     Reporter toCreate = MAPPER.readValue(
@@ -506,6 +498,7 @@ public class ReporterTest {
         is(equalTo("{\"errors\":[\"cityName may not be null\"]}")));
   }
 
+  @SuppressWarnings("javadoc")
   @Test
   public void successWhenCityNameNull() throws Exception {
     Reporter toCreate = MAPPER.readValue(
@@ -518,6 +511,7 @@ public class ReporterTest {
         is(equalTo("{\"errors\":[\"cityName may not be null\"]}")));
   }
 
+  @SuppressWarnings("javadoc")
   @Test
   public void successWhenCityNameEmpty() throws Exception {
     Reporter toCreate = MAPPER.readValue(
@@ -528,6 +522,7 @@ public class ReporterTest {
     assertThat(response.getStatus(), is(equalTo(204)));
   }
 
+  @SuppressWarnings("javadoc")
   @Test
   public void failsWhenCityNameTooLong() throws Exception {
     Reporter toCreate = MAPPER.readValue(
@@ -543,6 +538,7 @@ public class ReporterTest {
   /*
    * colltrClientRptrReltnshpType Tests
    */
+  @SuppressWarnings("javadoc")
   @Test
   public void failsWhenColltrClientRptrReltnshpTypeMissing() throws Exception {
     Reporter toCreate = MAPPER.readValue(
@@ -732,6 +728,7 @@ public class ReporterTest {
   /*
    * employerName Tests
    */
+  @SuppressWarnings("javadoc")
   @Test
   public void successWhenEmployerNameValid() throws Exception {
     Reporter toCreate = MAPPER
@@ -742,6 +739,21 @@ public class ReporterTest {
     assertThat(response.getStatus(), is(equalTo(204)));
   }
 
+  @SuppressWarnings("javadoc")
+  @Test
+  public void testEmployerNameNullFails() throws Exception {
+    Reporter toCreate = MAPPER.readValue(
+        fixture("fixtures/domain/legacy/Reporter/invalid/employerNameNull.json"), Reporter.class);
+    Response response =
+        resources.client().target(ROOT_RESOURCE).request().accept(MediaType.APPLICATION_JSON)
+            .post(Entity.entity(toCreate, MediaType.APPLICATION_JSON));
+    // System.out.println(response.readEntity(String.class));
+    assertThat(response.getStatus(), is(equalTo(422)));
+    assertThat(response.readEntity(String.class),
+        is(equalTo("{\"errors\":[\"employerName may not be null\"]}")));
+  }
+
+  @SuppressWarnings("javadoc")
   @Test
   public void failsWhenEmployerNameTooLong() throws Exception {
     Reporter toCreate = MAPPER.readValue(
@@ -1736,12 +1748,13 @@ public class ReporterTest {
   }
 
   /*
-   * Utils
+   * Utilities
    */
-  private Reporter validReporter() {
-    return new Reporter("123456", "ABC", new Short((short) 12), new Short((short) 34), false,
-        "ABC123", "", "2010-01-31", false, "John", "Smith", false, 123, new BigDecimal(1234567),
-        "A", "ABC123", new BigDecimal(1234567), 123, new Short((short) 1234), "ABC STREET", "123",
-        "Ms", "95842", "AbiQCgu0Hj", "1234567ABC", new Short((short) 1234), "AB");
+  private Reporter validReporter() throws JsonParseException, JsonMappingException, IOException {
+
+    Reporter validReporter = MAPPER
+        .readValue(fixture("fixtures/domain/legacy/Reporter/valid/valid.json"), Reporter.class);
+    return validReporter;
+
   }
 }

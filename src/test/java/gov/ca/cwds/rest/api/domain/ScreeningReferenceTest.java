@@ -16,6 +16,10 @@ import io.dropwizard.testing.junit.ResourceTestRule;
 import nl.jqno.equalsverifier.EqualsVerifier;
 import nl.jqno.equalsverifier.Warning;
 
+/**
+ * @author CWDS API Team
+ *
+ */
 public class ScreeningReferenceTest {
 
   private static final ObjectMapper MAPPER = Jackson.newObjectMapper();
@@ -30,6 +34,7 @@ public class ScreeningReferenceTest {
   /*
    * Serialization and deserialization
    */
+  @SuppressWarnings("javadoc")
   @Test
   public void serializesToJSON() throws Exception {
     String expected = MAPPER.writeValueAsString(new ScreeningReference("foobar"));
@@ -40,6 +45,7 @@ public class ScreeningReferenceTest {
     assertThat(serialized, is(expected));
   }
 
+  @SuppressWarnings("javadoc")
   @Test
   public void deserializesFromJSON() throws Exception {
     ScreeningReference expected = new ScreeningReference("foobar");
@@ -48,6 +54,7 @@ public class ScreeningReferenceTest {
     assertThat(serialized, is(expected));
   }
 
+  @SuppressWarnings("javadoc")
   @Test
   public void equalsHashCodeWork() {
     EqualsVerifier.forClass(ScreeningReference.class).suppress(Warning.NONFINAL_FIELDS).verify();

@@ -36,15 +36,18 @@ public class StaffPersonResourceTest {
   private static final String ROOT_RESOURCE = "/_staffpersons/";
   private static final String FOUND_RESOURCE = "/_staffpersons/abc";
 
+  @SuppressWarnings("javadoc")
   @Rule
   public ExpectedException thrown = ExpectedException.none();
 
   private final static ResourceDelegate resourceDelegate = mock(ResourceDelegate.class);
 
+  @SuppressWarnings("javadoc")
   @ClassRule
   public final static ResourceTestRule inMemoryResource =
       ResourceTestRule.builder().addResource(new StaffPersonResource(resourceDelegate)).build();
 
+  @SuppressWarnings("javadoc")
   @Before
   public void setup() throws Exception {}
 

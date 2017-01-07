@@ -37,21 +37,25 @@ public class ReferralResourceTest {
 
   private static final ObjectMapper MAPPER = Jackson.newObjectMapper();
 
+  @SuppressWarnings("javadoc")
   @Rule
   public ExpectedException thrown = ExpectedException.none();
 
   private final static ResourceDelegate resourceDelegate = mock(ResourceDelegate.class);
 
+  @SuppressWarnings("javadoc")
   @ClassRule
   public final static ResourceTestRule inMemoryResource =
       ResourceTestRule.builder().addResource(new ReferralResource(resourceDelegate)).build();
 
+  @SuppressWarnings("javadoc")
   @Before
   public void setup() throws Exception {}
 
   /*
    * Get Tests
    */
+  @SuppressWarnings("javadoc")
   @Test
   public void getDelegatesToResourceDelegate() throws Exception {
     inMemoryResource.client().target(FOUND_RESOURCE).request().accept(MediaType.APPLICATION_JSON)
@@ -62,6 +66,7 @@ public class ReferralResourceTest {
   /*
    * Create Tests
    */
+  @SuppressWarnings("javadoc")
   @Test
   public void createDelegatesToResourceDelegate() throws Exception {
     Referral serialized = MAPPER
@@ -72,8 +77,9 @@ public class ReferralResourceTest {
     verify(resourceDelegate).create(eq(serialized));
   }
 
+  @SuppressWarnings("javadoc")
   @Test
-  public void createValidatesEntity() throws Exception {
+  public void testPost422ValidationError() throws Exception {
     Referral serialized = MAPPER.readValue(
         fixture("fixtures/domain/legacy/Referral/invalid/closureDateWrongFormat.json"),
         Referral.class);
@@ -84,9 +90,22 @@ public class ReferralResourceTest {
     assertThat(status, is(422));
   }
 
+  @SuppressWarnings("javadoc")
+  @Test
+  public void testPost204ResourceSuccess() throws Exception {
+    Referral serialized = MAPPER
+        .readValue(fixture("fixtures/domain/legacy/Referral/valid/valid.json"), Referral.class);
+    Integer status = inMemoryResource.client().target(FOUND_RESOURCE).request()
+        .accept(MediaType.APPLICATION_JSON)
+        .put(Entity.entity(serialized, MediaType.APPLICATION_JSON)).getStatus();
+    assertThat(status, is(204));
+
+  }
+
   /*
    * Delete Tests
    */
+  @SuppressWarnings("javadoc")
   @Test
   public void deleteDelegatesToResourceDelegate() throws Exception {
     inMemoryResource.client().target(FOUND_RESOURCE).request().accept(MediaType.APPLICATION_JSON)
@@ -97,18 +116,20 @@ public class ReferralResourceTest {
   /*
    * Update Tests
    */
-  @Test
-  public void udpateDelegatesToResourceDelegate() throws Exception {
-    Referral serialized = MAPPER
-        .readValue(fixture("fixtures/domain/legacy/Referral/valid/valid.json"), Referral.class);
+  // @SuppressWarnings("javadoc")
+  // @Test
+  // public void udpateDelegatesToResourceDelegate() throws Exception {
+  // Referral serialized = MAPPER
+  // .readValue(fixture("fixtures/domain/legacy/Referral/valid/valid.json"), Referral.class);
+  //
+  // inMemoryResource.client().target(FOUND_RESOURCE).request().accept(MediaType.APPLICATION_JSON)
+  // .put(Entity.entity(serialized, MediaType.APPLICATION_JSON));
+  // verify(resourceDelegate).update(eq("abc"), eq(serialized));
+  // }
 
-    inMemoryResource.client().target(FOUND_RESOURCE).request().accept(MediaType.APPLICATION_JSON)
-        .put(Entity.entity(serialized, MediaType.APPLICATION_JSON));
-    verify(resourceDelegate).update(eq("abc"), eq(serialized));
-  }
-
+  @SuppressWarnings("javadoc")
   @Test
-  public void udpateValidatesEntity() throws Exception {
+  public void testUpdate422ValidationError() throws Exception {
     Referral serialized = MAPPER.readValue(
         fixture("fixtures/domain/legacy/Referral/invalid/closureDateWrongFormat.json"),
         Referral.class);
@@ -117,5 +138,16 @@ public class ReferralResourceTest {
         .accept(MediaType.APPLICATION_JSON)
         .put(Entity.entity(serialized, MediaType.APPLICATION_JSON)).getStatus();
     assertThat(status, is(422));
+  }
+
+  @SuppressWarnings("javadoc")
+  @Test
+  public void testUpdate204ResourceSuccess() throws Exception {
+    Referral serialized = MAPPER
+        .readValue(fixture("fixtures/domain/legacy/Referral/valid/valid.json"), Referral.class);
+    Integer status = inMemoryResource.client().target(FOUND_RESOURCE).request()
+        .accept(MediaType.APPLICATION_JSON)
+        .put(Entity.entity(serialized, MediaType.APPLICATION_JSON)).getStatus();
+    assertThat(status, is(204));
   }
 }

@@ -12,6 +12,8 @@ import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
+import javax.persistence.EntityNotFoundException;
+
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
@@ -26,14 +28,20 @@ import gov.ca.cwds.rest.api.domain.cms.PostedAllegation;
 import gov.ca.cwds.rest.services.ServiceException;
 import io.dropwizard.jackson.Jackson;
 
+/**
+ * @author CWDS API Team
+ *
+ */
 public class AllegationServiceTest {
   private static final ObjectMapper MAPPER = Jackson.newObjectMapper();
   private AllegationService allegationService;
   private AllegationDao allegationDao;
 
+  @SuppressWarnings("javadoc")
   @Rule
   public ExpectedException thrown = ExpectedException.none();
 
+  @SuppressWarnings("javadoc")
   @Before
   public void setup() throws Exception {
     allegationDao = mock(AllegationDao.class);
@@ -41,6 +49,7 @@ public class AllegationServiceTest {
   }
 
   // find test
+  @SuppressWarnings("javadoc")
   @Test
   public void findThrowsAssertionError() {
     // expect string type for primary key test
@@ -52,6 +61,7 @@ public class AllegationServiceTest {
     }
   }
 
+  @SuppressWarnings("javadoc")
   @Test
   public void findReturnsCorrectAllegationWhenFound() throws Exception {
     String id = "Aaeae9r0F4";
@@ -65,12 +75,14 @@ public class AllegationServiceTest {
     assertThat(found, is(expected));
   }
 
+  @SuppressWarnings("javadoc")
   @Test
   public void findReturnsNullWhenNotFound() throws Exception {
     Response found = allegationService.find("ABC1234567");
     assertThat(found, is(nullValue()));
   }
 
+  @SuppressWarnings("javadoc")
   @Test
   // delete test
   public void deleteThrowsAssersionError() throws Exception {
@@ -83,12 +95,14 @@ public class AllegationServiceTest {
     }
   }
 
+  @SuppressWarnings("javadoc")
   @Test
   public void deleteDelegatesToCrudsService() {
     allegationService.delete("ABC2345678");
     verify(allegationDao, times(1)).delete("ABC2345678");
   }
 
+  @SuppressWarnings("javadoc")
   @Test
   public void deleteReturnsNullWhenNotFount() throws Exception {
     Response found = allegationService.delete("ABC1234567");
@@ -96,6 +110,7 @@ public class AllegationServiceTest {
   }
 
   // update test
+  @SuppressWarnings("javadoc")
   @Test
   public void updateThrowsAssertionError() throws Exception {
     // expected string type for primary key test
@@ -107,6 +122,7 @@ public class AllegationServiceTest {
     }
   }
 
+  @SuppressWarnings("javadoc")
   @Test
   public void updateReturnsAllegationResponseOnSuccess() throws Exception {
     String id = "Aaeae9r0F4";
@@ -123,35 +139,30 @@ public class AllegationServiceTest {
     assertThat(retval.getClass(), is(Allegation.class));
   }
 
+  @SuppressWarnings("javadoc")
   @Test
   public void updateThrowsExceptionWhenAllegationNotFound() throws Exception {
-    // TODO: test does not throw exception from allegationService.update method
-    //
-    // remove comments before running unit test
-    //
-    // thrown.expect(ServiceException.class);
-    // thrown.expectCause(Is.isA(EntityNotFoundException.class));
-    // thrown.expectMessage(contains("Allegation not found"));
-    String id = "Aaeae9r0F4";
-    Allegation allegationRequest = MAPPER
-        .readValue(fixture("fixtures/domain/legacy/Allegation/valid/valid.json"), Allegation.class);
+    try {
+      Allegation allegationRequest = MAPPER.readValue(
+          fixture("fixtures/domain/legacy/Allegation/valid/valid.json"), Allegation.class);
 
-    gov.ca.cwds.data.persistence.cms.Allegation allegation =
-        new gov.ca.cwds.data.persistence.cms.Allegation(id, allegationRequest, "ABC");
+      when(allegationDao.update(any())).thenThrow(EntityNotFoundException.class);
 
-    when(allegationDao.find("ABC1234567")).thenReturn(allegation);
-    when(allegationDao.update(any())).thenReturn(allegation);
-    allegationService.update("ZZZZZZZZZZ", allegationRequest);
+      allegationService.update("ZZZZZZZZZZ", allegationRequest);
+    } catch (Exception e) {
+      assertEquals(e.getClass(), ServiceException.class);
+    }
   }
 
   // create test
+  @SuppressWarnings("javadoc")
   @Test
   public void createReturnsPostedAllegation() throws Exception {
     String id = "Aaeae9r0F4";
     Allegation allegationDomain = MAPPER
         .readValue(fixture("fixtures/domain/legacy/Allegation/valid/valid.json"), Allegation.class);
     gov.ca.cwds.data.persistence.cms.Allegation toCreate =
-        new gov.ca.cwds.data.persistence.cms.Allegation(id, allegationDomain, "last_update");
+        new gov.ca.cwds.data.persistence.cms.Allegation(id, allegationDomain, "ABC");
 
     Allegation request = new Allegation(toCreate);
     when(allegationDao.create(any(gov.ca.cwds.data.persistence.cms.Allegation.class)))
@@ -161,13 +172,14 @@ public class AllegationServiceTest {
     assertThat(response.getClass(), is(PostedAllegation.class));
   }
 
+  @SuppressWarnings("javadoc")
   @Test
   public void createReturnsNonNull() throws Exception {
     String id = "Aaeae9r0F4";
     Allegation allegationDomain = MAPPER
         .readValue(fixture("fixtures/domain/legacy/Allegation/valid/valid.json"), Allegation.class);
     gov.ca.cwds.data.persistence.cms.Allegation toCreate =
-        new gov.ca.cwds.data.persistence.cms.Allegation(id, allegationDomain, "last_update");
+        new gov.ca.cwds.data.persistence.cms.Allegation(id, allegationDomain, "ABC");
 
     Allegation request = new Allegation(toCreate);
     when(allegationDao.create(any(gov.ca.cwds.data.persistence.cms.Allegation.class)))
@@ -177,13 +189,14 @@ public class AllegationServiceTest {
     assertThat(postedAllegation, is(notNullValue()));
   }
 
+  @SuppressWarnings("javadoc")
   @Test
   public void createReturnsCorrectPostedPerson() throws Exception {
     String id = "Aaeae9r0F4";
     Allegation allegationDomain = MAPPER
         .readValue(fixture("fixtures/domain/legacy/Allegation/valid/valid.json"), Allegation.class);
     gov.ca.cwds.data.persistence.cms.Allegation toCreate =
-        new gov.ca.cwds.data.persistence.cms.Allegation(id, allegationDomain, "last_update");
+        new gov.ca.cwds.data.persistence.cms.Allegation(id, allegationDomain, "ABC");
 
     Allegation request = new Allegation(toCreate);
     when(allegationDao.create(any(gov.ca.cwds.data.persistence.cms.Allegation.class)))
@@ -194,16 +207,15 @@ public class AllegationServiceTest {
     assertThat(returned, is(expected));
   }
 
+  @SuppressWarnings("javadoc")
   @Test
   public void createFailsWhenPostedAllegationIdIsNull() throws Exception {
     try {
       Allegation allegationDomain = MAPPER.readValue(
           fixture("fixtures/domain/legacy/Allegation/valid/valid.json"), Allegation.class);
       gov.ca.cwds.data.persistence.cms.Allegation toCreate =
-          new gov.ca.cwds.data.persistence.cms.Allegation(null, allegationDomain,
-              "last_update");
+          new gov.ca.cwds.data.persistence.cms.Allegation(null, allegationDomain, "ABC");
 
-      Allegation request = new Allegation(toCreate);
       when(allegationDao.create(any(gov.ca.cwds.data.persistence.cms.Allegation.class)))
           .thenReturn(toCreate);
 
@@ -214,16 +226,15 @@ public class AllegationServiceTest {
 
   }
 
+  @SuppressWarnings("javadoc")
   @Test
   public void createFailsWhenPostedAllegationIdIsBlank() throws Exception {
     try {
       Allegation allegationDomain = MAPPER.readValue(
           fixture("fixtures/domain/legacy/Allegation/valid/valid.json"), Allegation.class);
       gov.ca.cwds.data.persistence.cms.Allegation toCreate =
-          new gov.ca.cwds.data.persistence.cms.Allegation("    ", allegationDomain,
-              "last_update");
+          new gov.ca.cwds.data.persistence.cms.Allegation("    ", allegationDomain, "ABC");
 
-      Allegation request = new Allegation(toCreate);
       when(allegationDao.create(any(gov.ca.cwds.data.persistence.cms.Allegation.class)))
           .thenReturn(toCreate);
 

@@ -14,16 +14,20 @@ import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import gov.ca.cwds.data.persistence.cms.OtherChildInPlacemtHome;
 import io.dropwizard.jackson.Jackson;
 import nl.jqno.equalsverifier.EqualsVerifier;
 import nl.jqno.equalsverifier.Warning;
 
 
+/**
+ * @author CWDS API Team
+ *
+ */
 public class OtherChildInPlacemtHomeTest {
 
   private static final ObjectMapper MAPPER = Jackson.newObjectMapper();
 
+  @SuppressWarnings("javadoc")
   @Test
   public void equalsHashCodeWork() {
     EqualsVerifier.forClass(OtherChildInPlacemtHome.class).suppress(Warning.NONFINAL_FIELDS)
@@ -33,11 +37,13 @@ public class OtherChildInPlacemtHomeTest {
   /*
    * Constructor test
    */
+  @SuppressWarnings("javadoc")
   @Test
   public void emtpyConstructorIsNotNull() throws Exception {
     assertThat(OtherChildInPlacemtHome.class.newInstance(), is(notNullValue()));
   }
 
+  @SuppressWarnings("javadoc")
   @Test
   public void persistentConstructorTest() throws Exception {
     OtherChildInPlacemtHome vocph = validOtherChildInPlacemtHome();

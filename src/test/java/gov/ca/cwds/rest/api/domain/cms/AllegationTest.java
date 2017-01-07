@@ -23,7 +23,6 @@ import org.junit.Test;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import gov.ca.cwds.rest.api.domain.DomainChef;
-import gov.ca.cwds.rest.api.domain.cms.Allegation;
 import gov.ca.cwds.rest.core.Api;
 import gov.ca.cwds.rest.resources.cms.AllegationResource;
 import io.dropwizard.jackson.Jackson;
@@ -32,7 +31,7 @@ import nl.jqno.equalsverifier.EqualsVerifier;
 import nl.jqno.equalsverifier.Warning;
 
 /**
- * @author Tabpcenc1
+ * @author CWDS API Team
  *
  */
 public class AllegationTest {
@@ -275,11 +274,8 @@ public class AllegationTest {
 
   /*
    * abuseFrequency Tests
-   *
-   *
-   * @throws Exception test standard
-   * 
    */
+  @SuppressWarnings("javadoc")
   @Test
   public void failsWhenAbuseFrequencyMissing() throws Exception {
     Allegation toCreate = MAPPER.readValue(

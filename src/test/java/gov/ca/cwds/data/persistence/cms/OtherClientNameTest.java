@@ -14,16 +14,20 @@ import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import gov.ca.cwds.data.persistence.cms.OtherClientName;
 import io.dropwizard.jackson.Jackson;
 import nl.jqno.equalsverifier.EqualsVerifier;
 import nl.jqno.equalsverifier.Warning;
 
 
+/**
+ * @author CWDS API Team
+ *
+ */
 public class OtherClientNameTest {
 
   private static final ObjectMapper MAPPER = Jackson.newObjectMapper();
 
+  @SuppressWarnings("javadoc")
   @Test
   public void equalsHashCodeWork() {
     EqualsVerifier.forClass(OtherClientName.class).suppress(Warning.NONFINAL_FIELDS).verify();
@@ -32,11 +36,13 @@ public class OtherClientNameTest {
   /*
    * Constructor test
    */
+  @SuppressWarnings("javadoc")
   @Test
   public void emtpyConstructorIsNotNull() throws Exception {
     assertThat(OtherClientName.class.newInstance(), is(notNullValue()));
   }
 
+  @SuppressWarnings("javadoc")
   @Test
   public void persistentConstructorTest() throws Exception {
     OtherClientName vocn = validOtherClientName();
@@ -50,8 +56,7 @@ public class OtherClientNameTest {
     assertThat(pers.getMiddleName(), is(equalTo(vocn.getMiddleName())));
     assertThat(pers.getNamePrefixDescription(), is(equalTo(vocn.getNamePrefixDescription())));
     assertThat(pers.getNameType(), is(equalTo(vocn.getNameType())));
-    assertThat(pers.getSuffixTitleDescription(),
-        is(equalTo(vocn.getSuffixTitleDescription())));
+    assertThat(pers.getSuffixTitleDescription(), is(equalTo(vocn.getSuffixTitleDescription())));
     assertThat(pers.getThirdId(), is(equalTo(vocn.getThirdId())));
   }
 

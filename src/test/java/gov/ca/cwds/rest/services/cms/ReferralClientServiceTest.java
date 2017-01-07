@@ -41,6 +41,7 @@ public class ReferralClientServiceTest {
   @Rule
   public ExpectedException thrown = ExpectedException.none();
 
+  @SuppressWarnings("javadoc")
   @Before
   public void setup() throws Exception {
     referralClientDao = mock(ReferralClientDao.class);
@@ -50,6 +51,7 @@ public class ReferralClientServiceTest {
   // find test
   // TODO: Story #136701343: Tech debt: exception handling in service layer.
 
+  @SuppressWarnings("javadoc")
   @Test
   public void findReturnsCorrectReferralClientWhenFound() throws Exception {
     ReferralClient expected = MAPPER.readValue(
@@ -63,6 +65,7 @@ public class ReferralClientServiceTest {
     assertThat(found, is(expected));
   }
 
+  @SuppressWarnings("javadoc")
   @Test
   public void findReturnsNullWhenNotFound() throws Exception {
     ReferralClient expected = MAPPER.readValue(
@@ -75,6 +78,7 @@ public class ReferralClientServiceTest {
     assertThat(found, is(nullValue()));
   }
 
+  @SuppressWarnings("javadoc")
   @Test
   public void deleteDelegatesToCrudsService() throws Exception {
     ReferralClient expected = MAPPER.readValue(
@@ -87,12 +91,14 @@ public class ReferralClientServiceTest {
   }
 
   // delete test
+  @SuppressWarnings("javadoc")
   @Test
   public void deleteReturnsNullWhenNotFound() throws Exception {
     Response found = referralClientService.delete("referralId=1234567ABC,clientId=ABC1234567");
     assertThat(found, is(nullValue()));
   }
 
+  @SuppressWarnings("javadoc")
   @Test
   public void deleteReturnsReferralClientResponseOnSuccess() throws Exception {
     ReferralClient expected = MAPPER.readValue(
@@ -107,6 +113,7 @@ public class ReferralClientServiceTest {
   }
 
   // update test
+  @SuppressWarnings("javadoc")
   @Test
   public void updateThrowsAssertionError() throws Exception {
     thrown.expect(AssertionError.class);
@@ -117,6 +124,7 @@ public class ReferralClientServiceTest {
     }
   }
 
+  @SuppressWarnings("javadoc")
   @Test
   public void updateReturnsReferralClientResponseOnSuccess() throws Exception {
     ReferralClient expected = MAPPER.readValue(
@@ -133,6 +141,7 @@ public class ReferralClientServiceTest {
     assertThat(retval.getClass(), is(ReferralClient.class));
   }
 
+  @SuppressWarnings("javadoc")
   @Test
   public void updateReturnsCorrectReferralClientOnSuccess() throws Exception {
     ReferralClient referralClientRequest = MAPPER.readValue(
@@ -152,6 +161,7 @@ public class ReferralClientServiceTest {
     assertThat(updated, is(expected));
   }
 
+  @SuppressWarnings("javadoc")
   @Test
   public void updateThrowsExceptionWhenReferralClientNotFound() throws Exception {
 
@@ -173,6 +183,7 @@ public class ReferralClientServiceTest {
   }
 
   // create test
+  @SuppressWarnings("javadoc")
   @Test
   public void createThrowsAssertionError() throws Exception {
     thrown.expect(AssertionError.class);
@@ -183,13 +194,13 @@ public class ReferralClientServiceTest {
     }
   }
 
+  @SuppressWarnings("javadoc")
   @Test
   public void createReturnsPostedReferralClient() throws Exception {
     ReferralClient referralClientDomain = MAPPER.readValue(
         fixture("fixtures/domain/legacy/ReferralClient/valid/valid.json"), ReferralClient.class);
     gov.ca.cwds.data.persistence.cms.ReferralClient toCreate =
-        new gov.ca.cwds.data.persistence.cms.ReferralClient(referralClientDomain,
-            "last_update");
+        new gov.ca.cwds.data.persistence.cms.ReferralClient(referralClientDomain, "ABC");
 
     ReferralClient request = new ReferralClient(toCreate);
     when(referralClientDao.create(any(gov.ca.cwds.data.persistence.cms.ReferralClient.class)))
@@ -199,13 +210,13 @@ public class ReferralClientServiceTest {
     assertThat(response.getClass(), is(ReferralClient.class));
   }
 
+  @SuppressWarnings("javadoc")
   @Test
   public void createReturnsNonNull() throws Exception {
     ReferralClient referralClientDomain = MAPPER.readValue(
         fixture("fixtures/domain/legacy/ReferralClient/valid/valid.json"), ReferralClient.class);
     gov.ca.cwds.data.persistence.cms.ReferralClient toCreate =
-        new gov.ca.cwds.data.persistence.cms.ReferralClient(referralClientDomain,
-            "last_update");
+        new gov.ca.cwds.data.persistence.cms.ReferralClient(referralClientDomain, "ABC");
 
     ReferralClient request = new ReferralClient(toCreate);
     when(referralClientDao.create(any(gov.ca.cwds.data.persistence.cms.ReferralClient.class)))
@@ -215,12 +226,13 @@ public class ReferralClientServiceTest {
     assertThat(postedReferralClient, is(notNullValue()));
   }
 
+  @SuppressWarnings("javadoc")
   @Test
   public void createReturnsPostedReferralClientClass() throws Exception {
     ReferralClient referralClientDomain = MAPPER.readValue(
         fixture("fixtures/domain/legacy/ReferralClient/valid/valid.json"), ReferralClient.class);
     gov.ca.cwds.data.persistence.cms.ReferralClient toCreate =
-        new gov.ca.cwds.data.persistence.cms.ReferralClient(referralClientDomain, "2016-12-07");
+        new gov.ca.cwds.data.persistence.cms.ReferralClient(referralClientDomain, "ABC");
 
     ReferralClient request = new ReferralClient(toCreate);
     when(referralClientDao.create(any(gov.ca.cwds.data.persistence.cms.ReferralClient.class)))
@@ -230,13 +242,13 @@ public class ReferralClientServiceTest {
     assertThat(response.getClass(), is(ReferralClient.class));
   }
 
+  @SuppressWarnings("javadoc")
   @Test
   public void createReturnsCorrectPostedPerson() throws Exception {
     ReferralClient referralClientDomain = MAPPER.readValue(
         fixture("fixtures/domain/legacy/ReferralClient/valid/valid.json"), ReferralClient.class);
     gov.ca.cwds.data.persistence.cms.ReferralClient toCreate =
-        new gov.ca.cwds.data.persistence.cms.ReferralClient(referralClientDomain,
-            "last_update");
+        new gov.ca.cwds.data.persistence.cms.ReferralClient(referralClientDomain, "ABC");
 
     ReferralClient request = new ReferralClient(toCreate);
     when(referralClientDao.create(any(gov.ca.cwds.data.persistence.cms.ReferralClient.class)))

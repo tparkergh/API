@@ -19,10 +19,15 @@ import nl.jqno.equalsverifier.EqualsVerifier;
 import nl.jqno.equalsverifier.Warning;
 
 
+/**
+ * @author CWDS API Team
+ *
+ */
 public class ServiceProviderTest {
 
   private static final ObjectMapper MAPPER = Jackson.newObjectMapper();
 
+  @SuppressWarnings("javadoc")
   @Test
   public void equalsHashCodeWork() {
     EqualsVerifier.forClass(ServiceProvider.class).suppress(Warning.NONFINAL_FIELDS).verify();
@@ -31,11 +36,13 @@ public class ServiceProviderTest {
   /*
    * Constructor test
    */
+  @SuppressWarnings("javadoc")
   @Test
   public void emtpyConstructorIsNotNull() throws Exception {
     assertThat(ServiceProvider.class.newInstance(), is(notNullValue()));
   }
 
+  @SuppressWarnings("javadoc")
   @Test
   public void persistentConstructorTest() throws Exception {
     ServiceProvider vsprv = validServiceProvider();

@@ -12,6 +12,8 @@ import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
+import javax.persistence.EntityNotFoundException;
+
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Rule;
@@ -27,6 +29,10 @@ import gov.ca.cwds.rest.api.domain.cms.StaffPerson;
 import gov.ca.cwds.rest.services.ServiceException;
 import io.dropwizard.jackson.Jackson;
 
+/**
+ * @author CWDS API Team
+ *
+ */
 public class StaffPersonServiceTest {
   private static final ObjectMapper MAPPER = Jackson.newObjectMapper();
   private StaffPersonService staffPersonService;
@@ -35,6 +41,7 @@ public class StaffPersonServiceTest {
   @Rule
   public ExpectedException thrown = ExpectedException.none();
 
+  @SuppressWarnings("javadoc")
   @Before
   public void setup() throws Exception {
     staffPersonDao = mock(StaffPersonDao.class);
@@ -44,6 +51,7 @@ public class StaffPersonServiceTest {
   }
 
   // find test
+  @SuppressWarnings("javadoc")
   @Test
   public void findThrowsAssertionError() {
     thrown.expect(AssertionError.class);
@@ -54,6 +62,7 @@ public class StaffPersonServiceTest {
     }
   }
 
+  @SuppressWarnings("javadoc")
   @Test
   public void findReturnsCorrectStaffPersonWhenFound() throws Exception {
     String id = "ABC";
@@ -61,7 +70,7 @@ public class StaffPersonServiceTest {
         fixture("fixtures/domain/legacy/StaffPerson/valid/valid.json"), StaffPerson.class);
 
     gov.ca.cwds.data.persistence.cms.StaffPerson staffPerson =
-        new gov.ca.cwds.data.persistence.cms.StaffPerson(id, expected, "000");
+        new gov.ca.cwds.data.persistence.cms.StaffPerson(id, expected, "2017-01-07");
 
     when(staffPersonDao.find(id)).thenReturn(staffPerson);
 
@@ -70,12 +79,14 @@ public class StaffPersonServiceTest {
     assertThat(found, is(expected));
   }
 
+  @SuppressWarnings("javadoc")
   @Test
   public void findReturnsNullWhenNotFound() throws Exception {
     Response found = staffPersonService.find("0XA");
     assertThat(found, is(nullValue()));
   }
 
+  @SuppressWarnings("javadoc")
   @Test
   public void deleteThrowsAssersionError() throws Exception {
     thrown.expect(AssertionError.class);
@@ -86,12 +97,14 @@ public class StaffPersonServiceTest {
     }
   }
 
+  @SuppressWarnings("javadoc")
   @Test
-  public void deleteReturnsNullWhenNotFount() throws Exception {
+  public void deleteReturnsNullWhenNotFound() throws Exception {
     Response found = staffPersonService.delete("ABC");
     assertThat(found, is(nullValue()));
   }
 
+  @SuppressWarnings("javadoc")
   @Test
   public void deleteDelegatesToCrudsService() {
     staffPersonService.delete("ABC");
@@ -99,6 +112,7 @@ public class StaffPersonServiceTest {
   }
 
   // update test
+  @SuppressWarnings("javadoc")
   @Test
   public void updateThrowsAssertionError() throws Exception {
     thrown.expect(AssertionError.class);
@@ -110,6 +124,7 @@ public class StaffPersonServiceTest {
     }
   }
 
+  @SuppressWarnings("javadoc")
   @Test
   public void updateReturnsStaffPersonResponseOnSuccess() throws Exception {
     String id = "ABC";
@@ -117,7 +132,7 @@ public class StaffPersonServiceTest {
         fixture("fixtures/domain/legacy/StaffPerson/valid/valid.json"), StaffPerson.class);
 
     gov.ca.cwds.data.persistence.cms.StaffPerson staffPerson =
-        new gov.ca.cwds.data.persistence.cms.StaffPerson(id, expected, "000");
+        new gov.ca.cwds.data.persistence.cms.StaffPerson(id, expected, "2017-01-07");
 
     when(staffPersonDao.find(id)).thenReturn(staffPerson);
     when(staffPersonDao.update(any())).thenReturn(staffPerson);
@@ -126,6 +141,7 @@ public class StaffPersonServiceTest {
 
   }
 
+  @SuppressWarnings("javadoc")
   @Test
   public void updateReturnsCorrectStaffPersonOnSuccess() throws Exception {
     String id = "ABC";
@@ -133,7 +149,7 @@ public class StaffPersonServiceTest {
         fixture("fixtures/domain/legacy/StaffPerson/valid/valid.json"), StaffPerson.class);
 
     gov.ca.cwds.data.persistence.cms.StaffPerson staffPerson =
-        new gov.ca.cwds.data.persistence.cms.StaffPerson(id, staffPersonRequest, "000");
+        new gov.ca.cwds.data.persistence.cms.StaffPerson(id, staffPersonRequest, "2017-01-07");
 
     when(staffPersonDao.find(id)).thenReturn(staffPerson);
     when(staffPersonDao.update(any())).thenReturn(staffPerson);
@@ -145,36 +161,44 @@ public class StaffPersonServiceTest {
 
   }
 
+  @SuppressWarnings("javadoc")
   @Test
   public void updateThrowsExceptionWhenStaffPersonNotFound() throws Exception {
-    // TODO: test does not throw exception from allegationService.update method
-    //
-    // remove comments before running unit test
-    //
-    // thrown.expect(ServiceException.class);
-    // thrown.expectCause(Is.isA(EntityNotFoundException.class));
-    // thrown.expectMessage(contains("Expected test to throw"));
-    String id = "ABC";
-    StaffPerson staffPersonRequest = MAPPER.readValue(
-        fixture("fixtures/domain/legacy/StaffPerson/valid/valid.json"), StaffPerson.class);
+    try {
+      String id = "ABC";
+      StaffPerson staffPersonRequest = MAPPER.readValue(
+          fixture("fixtures/domain/legacy/StaffPerson/valid/valid.json"), StaffPerson.class);
 
-    gov.ca.cwds.data.persistence.cms.StaffPerson staffPerson =
-        new gov.ca.cwds.data.persistence.cms.StaffPerson(id, staffPersonRequest, "000");
+      when(staffPersonDao.update(any())).thenThrow(EntityNotFoundException.class);
 
-    when(staffPersonDao.find(id)).thenReturn(staffPerson);
-    when(staffPersonDao.update(any())).thenReturn(staffPerson);
-
-    staffPersonService.update("ZZZ", staffPersonRequest);
+      staffPersonService.update("ZZZ", staffPersonRequest);
+      Assert.fail("Expected EntityNotFoundException was not thrown");
+    } catch (Exception ex) {
+      assertEquals(ex.getClass(), ServiceException.class);
+    }
   }
 
   // create test
+  @SuppressWarnings("javadoc")
+  @Test
+  public void createThrowsAssertionError() throws Exception {
+    thrown.expect(AssertionError.class);
+    try {
+      staffPersonService.create(null);
+      Assert.fail("Expected AssertionError");
+    } catch (AssertionError e) {
+      assertEquals("Expected AssertionError", e.getMessage());
+    }
+  }
+
+  @SuppressWarnings("javadoc")
   @Test
   public void createReturnsPostedStaffPersonClass() throws Exception {
     String id = "ABC";
     StaffPerson staffPersonDomain = MAPPER.readValue(
         fixture("fixtures/domain/legacy/StaffPerson/valid/valid.json"), StaffPerson.class);
     gov.ca.cwds.data.persistence.cms.StaffPerson toCreate =
-        new gov.ca.cwds.data.persistence.cms.StaffPerson(id, staffPersonDomain, "last_update");
+        new gov.ca.cwds.data.persistence.cms.StaffPerson(id, staffPersonDomain, "2017-01-07");
 
     StaffPerson request = new StaffPerson(toCreate);
 
@@ -186,13 +210,14 @@ public class StaffPersonServiceTest {
     assertThat(response.getClass(), is(PostedStaffPerson.class));
   }
 
+  @SuppressWarnings("javadoc")
   @Test
   public void createReturnsNonNull() throws Exception {
     String id = "ABC";
     StaffPerson staffPersonDomain = MAPPER.readValue(
         fixture("fixtures/domain/legacy/StaffPerson/valid/valid.json"), StaffPerson.class);
     gov.ca.cwds.data.persistence.cms.StaffPerson toCreate =
-        new gov.ca.cwds.data.persistence.cms.StaffPerson(id, staffPersonDomain, "last_update");
+        new gov.ca.cwds.data.persistence.cms.StaffPerson(id, staffPersonDomain, "2017-01-07");
 
     StaffPerson request = new StaffPerson(toCreate);
 
@@ -204,13 +229,14 @@ public class StaffPersonServiceTest {
     assertThat(postedStaffPerson, is(notNullValue()));
   }
 
+  @SuppressWarnings("javadoc")
   @Test
   public void createReturnsCorrectPostedPerson() throws Exception {
     String id = "ABC";
     StaffPerson staffPersonDomain = MAPPER.readValue(
         fixture("fixtures/domain/legacy/StaffPerson/valid/valid.json"), StaffPerson.class);
     gov.ca.cwds.data.persistence.cms.StaffPerson toCreate =
-        new gov.ca.cwds.data.persistence.cms.StaffPerson(id, staffPersonDomain, "last_update");
+        new gov.ca.cwds.data.persistence.cms.StaffPerson(id, staffPersonDomain, "2017-01-07");
 
     StaffPerson request = new StaffPerson(toCreate);
 
@@ -224,14 +250,14 @@ public class StaffPersonServiceTest {
     assertThat(returned, is(expected));
   }
 
+  @SuppressWarnings("javadoc")
   @Test
   public void failsWhenPostedStaffPersonIdBlank() throws Exception {
     try {
       StaffPerson staffPersonDomain = MAPPER.readValue(
           fixture("fixtures/domain/legacy/StaffPerson/valid/valid.json"), StaffPerson.class);
       gov.ca.cwds.data.persistence.cms.StaffPerson toCreate =
-          new gov.ca.cwds.data.persistence.cms.StaffPerson("   ", staffPersonDomain,
-              "last_update");
+          new gov.ca.cwds.data.persistence.cms.StaffPerson("   ", staffPersonDomain, "2017-01-07");
 
       when(staffPersonDao.create(any(gov.ca.cwds.data.persistence.cms.StaffPerson.class)))
           .thenReturn(toCreate);
@@ -244,14 +270,14 @@ public class StaffPersonServiceTest {
     }
   }
 
+  @SuppressWarnings("javadoc")
   @Test
   public void failsWhenPostedStaffPersonIdNull() throws Exception {
     try {
       StaffPerson staffPersonDomain = MAPPER.readValue(
           fixture("fixtures/domain/legacy/StaffPerson/valid/valid.json"), StaffPerson.class);
       gov.ca.cwds.data.persistence.cms.StaffPerson toCreate =
-          new gov.ca.cwds.data.persistence.cms.StaffPerson(null, staffPersonDomain,
-              "last_update");
+          new gov.ca.cwds.data.persistence.cms.StaffPerson(null, staffPersonDomain, "2017-01-07");
 
       when(staffPersonDao.create(any(gov.ca.cwds.data.persistence.cms.StaffPerson.class)))
           .thenReturn(toCreate);
@@ -264,14 +290,14 @@ public class StaffPersonServiceTest {
     }
   }
 
+  @SuppressWarnings("javadoc")
   @Test
   public void failsWhenPostedStaffPersonIdEmmpty() throws Exception {
     try {
       StaffPerson staffPersonDomain = MAPPER.readValue(
           fixture("fixtures/domain/legacy/StaffPerson/valid/valid.json"), StaffPerson.class);
       gov.ca.cwds.data.persistence.cms.StaffPerson toCreate =
-          new gov.ca.cwds.data.persistence.cms.StaffPerson("", staffPersonDomain,
-              "last_update");
+          new gov.ca.cwds.data.persistence.cms.StaffPerson("", staffPersonDomain, "2017-01-07");
 
       when(staffPersonDao.create(any(gov.ca.cwds.data.persistence.cms.StaffPerson.class)))
           .thenReturn(toCreate);
