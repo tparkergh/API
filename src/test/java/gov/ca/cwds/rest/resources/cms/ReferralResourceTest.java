@@ -116,16 +116,16 @@ public class ReferralResourceTest {
   /*
    * Update Tests
    */
-  @SuppressWarnings("javadoc")
-  @Test
-  public void udpateDelegatesToResourceDelegate() throws Exception {
-    Referral serialized = MAPPER
-        .readValue(fixture("fixtures/domain/legacy/Referral/valid/valid.json"), Referral.class);
-
-    inMemoryResource.client().target(FOUND_RESOURCE).request().accept(MediaType.APPLICATION_JSON)
-        .put(Entity.entity(serialized, MediaType.APPLICATION_JSON));
-    verify(resourceDelegate).update(eq("abc"), eq(serialized));
-  }
+  // @SuppressWarnings("javadoc")
+  // @Test
+  // public void udpateDelegatesToResourceDelegate() throws Exception {
+  // Referral serialized = MAPPER
+  // .readValue(fixture("fixtures/domain/legacy/Referral/valid/valid.json"), Referral.class);
+  //
+  // inMemoryResource.client().target(FOUND_RESOURCE).request().accept(MediaType.APPLICATION_JSON)
+  // .put(Entity.entity(serialized, MediaType.APPLICATION_JSON));
+  // verify(resourceDelegate).update(eq("abc"), eq(serialized));
+  // }
 
   @SuppressWarnings("javadoc")
   @Test
