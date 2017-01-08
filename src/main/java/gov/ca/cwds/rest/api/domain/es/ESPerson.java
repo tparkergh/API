@@ -126,7 +126,7 @@ public class ESPerson extends Person {
     final Object defaultVal;
 
     /**
-     * Enum constructor populates final members.
+     * Enum constructor populates immutable members.
      * 
      * @param col ES column name
      * @param klazz Java Class of value
@@ -311,7 +311,7 @@ public class ESPerson extends Person {
    * @param gender The gender
    * @param birthDate The date of birth
    * @param ssn Social Security Number
-   * @param address The address
+   * @param address The address, if any
    */
   public ESPerson(String id, String firstName, String lastName, String gender, String birthDate,
       String ssn, Address address) {

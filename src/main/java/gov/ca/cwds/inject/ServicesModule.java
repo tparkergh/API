@@ -16,8 +16,16 @@ import gov.ca.cwds.rest.services.cms.ReferralService;
 import gov.ca.cwds.rest.services.cms.ReporterService;
 import gov.ca.cwds.rest.services.cms.StaffPersonService;
 
+/**
+ * Identifies all CWDS API service classes available for dependency injection by Guice.
+ * 
+ * @author CWDS API Team
+ */
 public class ServicesModule extends AbstractModule {
 
+  /**
+   * Default, no-op constructor.
+   */
   public ServicesModule() {
     // Default, no-op.
   }
@@ -38,8 +46,6 @@ public class ServicesModule extends AbstractModule {
     bind(ReporterService.class);
     bind(StaffPersonService.class);
     bind(AddressValidationService.class);
-
-    // bind();
   }
 
 }
