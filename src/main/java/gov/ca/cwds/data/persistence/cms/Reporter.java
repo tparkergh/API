@@ -423,12 +423,14 @@ public class Reporter extends CmsPersistentObject implements IPersonAware {
 
   @JsonIgnore
   @Override
+  @Transient
   public String getMiddleName() {
     return this.getMiddleInitialName();
   }
 
   @JsonIgnore
   @Override
+  @Transient
   public String getGender() {
     // Does not apply.
     return null;
@@ -436,6 +438,7 @@ public class Reporter extends CmsPersistentObject implements IPersonAware {
 
   @JsonIgnore
   @Override
+  @Transient
   public Date getBirthDate() {
     // Does not apply.
     return null;
@@ -443,6 +446,7 @@ public class Reporter extends CmsPersistentObject implements IPersonAware {
 
   @JsonIgnore
   @Override
+  @Transient
   public String getSsn() {
     // Does not apply.
     return null;
@@ -450,18 +454,21 @@ public class Reporter extends CmsPersistentObject implements IPersonAware {
 
   @JsonIgnore
   @Override
+  @Transient
   public void setFirstName(String firstName) {
     setFirstName(firstName);
   }
 
   @JsonIgnore
   @Override
+  @Transient
   public void setMiddleName(String middleName) {
     this.middleInitialName = middleName;
   }
 
   @JsonIgnore
   @Override
+  @Transient
   public void setLastName(String lastName) {
     this.lastName = lastName;
   }
