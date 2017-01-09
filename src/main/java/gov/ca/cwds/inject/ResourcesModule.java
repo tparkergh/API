@@ -63,6 +63,7 @@ public class ResourcesModule extends AbstractModule {
     bind(StaffPersonResource.class);
     bind(PersonSearchResource.class);
     bind(AddressValidationResource.class);
+    // bind(AutoCompletePersonResource.class);
   }
 
   @Provides

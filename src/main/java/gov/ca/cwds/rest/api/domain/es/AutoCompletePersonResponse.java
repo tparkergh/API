@@ -2,7 +2,6 @@ package gov.ca.cwds.rest.api.domain.es;
 
 import java.io.Serializable;
 
-import gov.ca.cwds.data.es.AutoCompletePerson;
 import gov.ca.cwds.rest.api.Request;
 import gov.ca.cwds.rest.api.Response;
 import io.dropwizard.jackson.JsonSnakeCase;
@@ -66,6 +65,5 @@ public class AutoCompletePersonResponse implements Serializable, Response {
   public void setPersons(AutoCompletePerson[] persons) {
     this.persons = persons;
   }
-
 
 }

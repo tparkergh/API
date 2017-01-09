@@ -5,13 +5,11 @@ import org.elasticsearch.search.SearchHit;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.inject.Inject;
 
-import gov.ca.cwds.data.es.AutoCompletePerson;
 import gov.ca.cwds.data.es.ElasticSearchPerson;
 import gov.ca.cwds.data.es.ElasticsearchDao;
-import gov.ca.cwds.rest.api.domain.Person;
+import gov.ca.cwds.rest.api.domain.es.AutoCompletePerson;
 import gov.ca.cwds.rest.api.domain.es.AutoCompletePersonRequest;
 import gov.ca.cwds.rest.api.domain.es.AutoCompletePersonResponse;
 import gov.ca.cwds.rest.api.domain.es.ESPerson;
@@ -20,8 +18,7 @@ import gov.ca.cwds.rest.resources.SimpleResourceService;
 
 
 /**
- * Business layer object to work on {@link Person} and
- * {@link gov.ca.cwds.data.persistence.ns.Person}
+ * Business service for Intake Person Auto-complete.
  * 
  * @author CWDS API Team
  */
@@ -29,7 +26,6 @@ public class AutoCompletePersonService
     extends SimpleResourceService<String, AutoCompletePersonRequest, AutoCompletePersonResponse> {
 
   private static final Logger LOGGER = LoggerFactory.getLogger(AutoCompletePersonService.class);
-  private static final ObjectMapper MAPPER = new ObjectMapper();
 
   private ElasticsearchDao elasticsearchDao;
 
@@ -52,9 +48,15 @@ public class AutoCompletePersonService
     if (hits != null && hits.length > 0) {
       persons = new AutoCompletePerson[hits.length];
 
-      // TODO: convert ElasticSearchPerson to AutoCompletePerson.
+      // TODO: Convert ElasticSearchPerson to AutoCompletePerson.
+
+      for (ElasticSearchPerson hit : hits) {
+        LOGGER.info(hit.toString());
+      }
+
     } else {
       persons = new AutoCompletePerson[0];
+      LOGGER.debug("No records found");
     }
 
     return new AutoCompletePersonResponse(persons);

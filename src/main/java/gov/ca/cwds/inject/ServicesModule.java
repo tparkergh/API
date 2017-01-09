@@ -46,6 +46,7 @@ public class ServicesModule extends AbstractModule {
     bind(ReporterService.class);
     bind(StaffPersonService.class);
     bind(AddressValidationService.class);
+    // bind(AutoCompletePersonService.class);
   }
 
 }

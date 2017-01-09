@@ -18,8 +18,9 @@ import com.google.inject.Inject;
 
 import gov.ca.cwds.inject.IntakePersonAutoCompleteServiceResource;
 import gov.ca.cwds.rest.api.ApiException;
+import gov.ca.cwds.rest.api.domain.es.AutoCompletePersonRequest;
+import gov.ca.cwds.rest.api.domain.es.AutoCompletePersonResponse;
 import gov.ca.cwds.rest.api.domain.es.ESPerson;
-import gov.ca.cwds.rest.api.domain.es.ESPersonSearchRequest;
 import gov.ca.cwds.rest.api.domain.es.ESPersons;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -53,7 +54,7 @@ public class AutoCompletePersonResource {
    * Java desperately needs short-hand notation for typed interfaces and classes, such as C++
    * "typedef" or "using alias".
    */
-  private SimpleResourceDelegate<String, ESPersonSearchRequest, ESPersons, SimpleResourceService<String, ESPersonSearchRequest, ESPersons>> resourceDelegate;
+  private SimpleResourceDelegate<String, AutoCompletePersonRequest, AutoCompletePersonResponse, SimpleResourceService<String, AutoCompletePersonRequest, AutoCompletePersonResponse>> resourceDelegate;
 
   /**
    * Constructor
@@ -62,16 +63,15 @@ public class AutoCompletePersonResource {
    */
   @Inject
   public AutoCompletePersonResource(
-      @IntakePersonAutoCompleteServiceResource SimpleResourceDelegate<String, ESPersonSearchRequest, ESPersons, SimpleResourceService<String, ESPersonSearchRequest, ESPersons>> resourceDelegate) {
+      @IntakePersonAutoCompleteServiceResource SimpleResourceDelegate<String, AutoCompletePersonRequest, AutoCompletePersonResponse, SimpleResourceService<String, AutoCompletePersonRequest, AutoCompletePersonResponse>> resourceDelegate) {
     this.resourceDelegate = resourceDelegate;
   }
 
   /**
-   * Query Persons in ElasticSearch by searching on one of the following: first name, last name or
-   * birth date.
+   * Intake Person Auto-complete endpoint.
    * 
-   * @param req JSON {@link ESPersonSearchRequest}
-   * @return the response
+   * @param req JSON {@link AutoCompletePersonRequest}
+   * @return web service response
    */
   @POST
   @Path("/person_autocomplete")
@@ -83,7 +83,7 @@ public class AutoCompletePersonResource {
       code = HttpStatus.SC_OK, response = ESPerson[].class)
   @Consumes(value = MediaType.APPLICATION_JSON)
   public Response queryPersonOrTerm(
-      @Valid @ApiParam(hidden = false, required = true) ESPersonSearchRequest req) {
+      @Valid @ApiParam(hidden = false, required = true) AutoCompletePersonRequest req) {
 
     // LOGGER.info("parameterized types: {}", this.getTypeParams());
 
