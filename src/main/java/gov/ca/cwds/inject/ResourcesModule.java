@@ -8,6 +8,8 @@ import com.google.inject.name.Named;
 import gov.ca.cwds.rest.ApiConfiguration;
 import gov.ca.cwds.rest.SwaggerConfiguration;
 import gov.ca.cwds.rest.api.domain.cms.CmsDocument;
+import gov.ca.cwds.rest.api.domain.es.AutoCompletePersonRequest;
+import gov.ca.cwds.rest.api.domain.es.AutoCompletePersonResponse;
 import gov.ca.cwds.rest.resources.AddressResource;
 import gov.ca.cwds.rest.resources.AddressValidationResource;
 import gov.ca.cwds.rest.resources.ApplicationResource;
@@ -16,6 +18,7 @@ import gov.ca.cwds.rest.resources.PersonSearchResource;
 import gov.ca.cwds.rest.resources.ResourceDelegate;
 import gov.ca.cwds.rest.resources.ScreeningResource;
 import gov.ca.cwds.rest.resources.ServiceBackedResourceDelegate;
+import gov.ca.cwds.rest.resources.SimpleResourceDelegate;
 import gov.ca.cwds.rest.resources.SwaggerResource;
 import gov.ca.cwds.rest.resources.TypedResourceDelegate;
 import gov.ca.cwds.rest.resources.TypedServiceBackedResourceDelegate;
@@ -29,6 +32,7 @@ import gov.ca.cwds.rest.resources.cms.ReporterResource;
 import gov.ca.cwds.rest.resources.cms.StaffPersonResource;
 import gov.ca.cwds.rest.services.AddressService;
 import gov.ca.cwds.rest.services.AddressValidationService;
+import gov.ca.cwds.rest.services.AutoCompletePersonService;
 import gov.ca.cwds.rest.services.PersonService;
 import gov.ca.cwds.rest.services.ScreeningService;
 import gov.ca.cwds.rest.services.cms.AllegationService;
@@ -179,4 +183,12 @@ public class ResourcesModule extends AbstractModule {
   public ResourceDelegate addressValidationServiceBackedResource(Injector injector) {
     return new ServiceBackedResourceDelegate(injector.getInstance(AddressValidationService.class));
   }
+
+  @Provides
+  @IntakePersonAutoCompleteServiceResource
+  public SimpleResourceDelegate<String, AutoCompletePersonRequest, AutoCompletePersonResponse, AutoCompletePersonService> autoCompletePersonResource(
+      Injector injector) {
+    return new SimpleResourceDelegate<>(injector.getInstance(AutoCompletePersonService.class));
+  }
+
 }

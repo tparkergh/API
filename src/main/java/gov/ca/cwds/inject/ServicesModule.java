@@ -4,6 +4,7 @@ import com.google.inject.AbstractModule;
 
 import gov.ca.cwds.rest.services.AddressService;
 import gov.ca.cwds.rest.services.AddressValidationService;
+import gov.ca.cwds.rest.services.AutoCompletePersonService;
 import gov.ca.cwds.rest.services.PersonService;
 import gov.ca.cwds.rest.services.ScreeningService;
 import gov.ca.cwds.rest.services.cms.AllegationService;
@@ -46,7 +47,7 @@ public class ServicesModule extends AbstractModule {
     bind(ReporterService.class);
     bind(StaffPersonService.class);
     bind(AddressValidationService.class);
-    // bind(AutoCompletePersonService.class);
+    bind(AutoCompletePersonService.class);
   }
 
 }

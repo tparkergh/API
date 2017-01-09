@@ -22,6 +22,7 @@ import gov.ca.cwds.rest.api.domain.es.AutoCompletePersonRequest;
 import gov.ca.cwds.rest.api.domain.es.AutoCompletePersonResponse;
 import gov.ca.cwds.rest.api.domain.es.ESPerson;
 import gov.ca.cwds.rest.api.domain.es.ESPersons;
+import gov.ca.cwds.rest.services.AutoCompletePersonService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
@@ -54,7 +55,7 @@ public class AutoCompletePersonResource {
    * Java desperately needs short-hand notation for typed interfaces and classes, such as C++
    * "typedef" or "using alias".
    */
-  private SimpleResourceDelegate<String, AutoCompletePersonRequest, AutoCompletePersonResponse, SimpleResourceService<String, AutoCompletePersonRequest, AutoCompletePersonResponse>> resourceDelegate;
+  private SimpleResourceDelegate<String, AutoCompletePersonRequest, AutoCompletePersonResponse, AutoCompletePersonService> resourceDelegate;
 
   /**
    * Constructor
@@ -63,7 +64,7 @@ public class AutoCompletePersonResource {
    */
   @Inject
   public AutoCompletePersonResource(
-      @IntakePersonAutoCompleteServiceResource SimpleResourceDelegate<String, AutoCompletePersonRequest, AutoCompletePersonResponse, SimpleResourceService<String, AutoCompletePersonRequest, AutoCompletePersonResponse>> resourceDelegate) {
+      @IntakePersonAutoCompleteServiceResource SimpleResourceDelegate<String, AutoCompletePersonRequest, AutoCompletePersonResponse, AutoCompletePersonService> resourceDelegate) {
     this.resourceDelegate = resourceDelegate;
   }
 
