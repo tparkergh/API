@@ -17,7 +17,7 @@ import gov.ca.cwds.rest.api.domain.ValidatedAddress;
 public class SmartyStreet {
   private static final Logger LOGGER = LoggerFactory.getLogger(SmartyStreet.class);
   Client client =
-      new ClientBuilder("e14528e5-6ce5-1ada-e46b-e496dc5b9333", "e7QaGKlGV3L2Jlla4s2d").build();
+      new ClientBuilder("8721f357-6381-1001-4633-5157e84b68cb", "Q62NxpgzuBEUq3IalqVx").build();
   String streetAddress;
   String cityName;
   String stateName;
@@ -32,7 +32,11 @@ public class SmartyStreet {
     lookup.setStreet(street);
     lookup.setCity(city);
     lookup.setState(state);
-    lookup.setZipCode(Integer.toString(zipCode));
+    if (zipCode > 0) {
+      lookup.setZipCode(Integer.toString(zipCode));
+    } else {
+      lookup.setZipCode("");
+    }
     lookup.setMaxCandidates(10);
 
     try {
