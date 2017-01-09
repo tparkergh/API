@@ -66,10 +66,6 @@ public class AutoCompletePersonResource {
     this.resourceDelegate = resourceDelegate;
   }
 
-  public final Object[] getTypeParams() {
-    return resourceDelegate.getClass().getTypeParameters();
-  }
-
   /**
    * Query Persons in ElasticSearch by searching on one of the following: first name, last name or
    * birth date.
@@ -89,7 +85,7 @@ public class AutoCompletePersonResource {
   public Response queryPersonOrTerm(
       @Valid @ApiParam(hidden = false, required = true) ESPersonSearchRequest req) {
 
-    LOGGER.info("parameterized types: {}", this.getTypeParams());
+    // LOGGER.info("parameterized types: {}", this.getTypeParams());
 
     Response ret;
     try {
