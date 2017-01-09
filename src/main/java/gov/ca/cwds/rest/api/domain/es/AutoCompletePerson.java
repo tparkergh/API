@@ -3,6 +3,8 @@ package gov.ca.cwds.rest.api.domain.es;
 import java.io.Serializable;
 import java.util.List;
 
+import org.apache.commons.lang3.StringUtils;
+
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonValue;
@@ -145,6 +147,11 @@ public class AutoCompletePerson implements Serializable, IPersonAware, ITypedIde
   // }
   // },
 
+  /**
+   * Enum of language.
+   * 
+   * @author CWDS API Team
+   */
   public enum AutoCompleteLanguage implements Serializable {
 
     /**
@@ -239,7 +246,7 @@ public class AutoCompletePerson implements Serializable, IPersonAware, ITypedIde
     private String city;
     private String state;
     private String zip;
-    private AutoCompletePersonAddressType type;
+    private AutoCompletePersonAddressType addressType;
 
     @Override
     public Long getId() {
@@ -291,12 +298,12 @@ public class AutoCompletePerson implements Serializable, IPersonAware, ITypedIde
       this.zip = zip;
     }
 
-    public AutoCompletePersonAddressType getType() {
-      return type;
+    public AutoCompletePersonAddressType getAddressType() {
+      return addressType;
     }
 
-    public void setType(AutoCompletePersonAddressType type) {
-      this.type = type;
+    public void setAddressType(AutoCompletePersonAddressType addressType) {
+      this.addressType = addressType;
     }
 
   }
@@ -321,7 +328,7 @@ public class AutoCompletePerson implements Serializable, IPersonAware, ITypedIde
 
     private Long id;
     private String number;
-    private AutoCompletePersonPhoneType type;
+    private AutoCompletePersonPhoneType phoneType;
 
     /**
      * Default constructor.
@@ -363,17 +370,17 @@ public class AutoCompletePerson implements Serializable, IPersonAware, ITypedIde
      * 
      * @return phone type
      */
-    public AutoCompletePersonPhoneType getType() {
-      return type;
+    public AutoCompletePersonPhoneType getPhoneType() {
+      return phoneType;
     }
 
     /**
      * Setter for phone type.
      * 
-     * @param type phone type
+     * @param phoneType phone type
      */
-    public void setType(AutoCompletePersonPhoneType type) {
-      this.type = type;
+    public void setPhoneType(AutoCompletePersonPhoneType phoneType) {
+      this.phoneType = phoneType;
     }
 
   }
@@ -397,10 +404,10 @@ public class AutoCompletePerson implements Serializable, IPersonAware, ITypedIde
   @JsonProperty("name_suffix")
   private String nameSuffix;
 
-  @JsonProperty("type")
+  @JsonProperty("gender")
   private String gender;
 
-  @JsonProperty("type")
+  @JsonProperty("ssn")
   private String ssn;
 
   @JsonProperty("date_of_birth")
@@ -426,6 +433,31 @@ public class AutoCompletePerson implements Serializable, IPersonAware, ITypedIde
    */
   public AutoCompletePerson(ElasticSearchPerson esp) {
     this.setId(esp.getId());
+
+    if (esp.getSourceObj() != null && esp.getSourceObj() instanceof IPersonAware) {
+      final IPersonAware personAware = (IPersonAware) esp.getSourceObj();
+
+      if (StringUtils.isBlank(personAware.getFirstName())) {
+        this.setFirstName(personAware.getFirstName());
+      }
+      if (StringUtils.isBlank(personAware.getMiddleName())) {
+        this.setMiddleName(personAware.getMiddleName());
+      }
+      if (StringUtils.isBlank(personAware.getLastName())) {
+        this.setLastName(personAware.getLastName());
+      }
+      if (StringUtils.isBlank(personAware.getGender())) {
+        this.setGender(personAware.getGender());
+      }
+      if (StringUtils.isBlank(personAware.getBirthDate())) {
+        this.setBirthDate(personAware.getBirthDate());
+      }
+      if (StringUtils.isBlank(personAware.getSsn())) {
+        this.setSsn(personAware.getSsn());
+      }
+
+    }
+
   }
 
   @Override
@@ -468,10 +500,20 @@ public class AutoCompletePerson implements Serializable, IPersonAware, ITypedIde
     this.lastName = lastName;
   }
 
+  /**
+   * Getter for name suffix
+   * 
+   * @return name suffix
+   */
   public String getNameSuffix() {
     return nameSuffix;
   }
 
+  /**
+   * Setter for name suffix.
+   * 
+   * @param nameSuffix name suffix
+   */
   public void setNameSuffix(String nameSuffix) {
     this.nameSuffix = nameSuffix;
   }
@@ -505,6 +547,11 @@ public class AutoCompletePerson implements Serializable, IPersonAware, ITypedIde
     return dateOfBirth;
   }
 
+  /**
+   * Setter for date of birth
+   * 
+   * @param dateOfBirth date of birth
+   */
   public void setDateOfBirth(String dateOfBirth) {
     this.dateOfBirth = dateOfBirth;
   }
@@ -518,6 +565,11 @@ public class AutoCompletePerson implements Serializable, IPersonAware, ITypedIde
     return addresses;
   }
 
+  /**
+   * Setter for addresses
+   * 
+   * @param addresses list of addresses
+   */
   public void setAddresses(List<AutoCompletePersonAddress> addresses) {
     this.addresses = addresses;
   }

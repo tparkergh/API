@@ -18,7 +18,8 @@ import gov.ca.cwds.rest.services.cms.ReporterService;
 import gov.ca.cwds.rest.services.cms.StaffPersonService;
 
 /**
- * Identifies all CWDS API service classes available for dependency injection by Guice.
+ * Identifies all CWDS API business layer (aka, service) classes available for dependency injection
+ * by Guice.
  * 
  * @author CWDS API Team
  */

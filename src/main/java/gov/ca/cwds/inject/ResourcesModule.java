@@ -45,9 +45,20 @@ import gov.ca.cwds.rest.services.cms.ReferralService;
 import gov.ca.cwds.rest.services.cms.ReporterService;
 import gov.ca.cwds.rest.services.cms.StaffPersonService;
 
+
+/**
+ * Identifies all CWDS API domain resource classes available for dependency injection by Guice.
+ * 
+ * @author CWDS API Team
+ */
 public class ResourcesModule extends AbstractModule {
 
-  public ResourcesModule() {}
+  /**
+   * Default, no-op constructor.
+   */
+  public ResourcesModule() {
+    // Default, no-op.
+  }
 
   @Override
   protected void configure() {
@@ -57,7 +68,6 @@ public class ResourcesModule extends AbstractModule {
     bind(PersonResource.class);
     bind(ScreeningResource.class);
     bind(AllegationResource.class);
-    // bind(ClientResource.class);
     bind(CmsDocReferralClientResource.class);
     bind(CmsDocumentResource.class);
     bind(CmsReferralResource.class);
@@ -67,7 +77,6 @@ public class ResourcesModule extends AbstractModule {
     bind(StaffPersonResource.class);
     bind(PersonSearchResource.class);
     bind(AddressValidationResource.class);
-    // bind(AutoCompletePersonResource.class);
   }
 
   @Provides
@@ -111,29 +120,12 @@ public class ResourcesModule extends AbstractModule {
     return new ServiceBackedResourceDelegate(injector.getInstance(AllegationService.class));
   }
 
-  // @Provides
-  // @ClientServiceBackedResource
-  // public ResourceDelegate clientServiceBackedResource(Injector injector) {
-  // return new ServiceBackedResourceDelegate(injector.getInstance(ClientServ.class));
-  // }
-
   @Provides
   @CmsDocumentReferralClientServiceBackedResource
   public ResourceDelegate cmsDocumentReferralClientServiceBackedResource(Injector injector) {
     return new ServiceBackedResourceDelegate(
         injector.getInstance(CmsDocReferralClientService.class));
   }
-
-  // @Provides
-  // @IntakePersonAutoCompleteServiceResource
-  // public SimpleResourceDelegate<String, ESPersonSearchRequest, ESPersons,
-  // SimpleResourceService<String, ESPersonSearchRequest, ESPersons>>
-  // personAutocompleteResourceDelegate(
-  // Injector injector) {
-  // return new SimpleResourceDelegate<String, ESPersonSearchRequest, ESPersons,
-  // SimpleResourceService<String, ESPersonSearchRequest, ESPersons>>(
-  // injector.getInstance(CmsDocumentService.class));
-  // }
 
   @Provides
   @CmsDocumentBackedResource
@@ -186,7 +178,7 @@ public class ResourcesModule extends AbstractModule {
 
   @Provides
   @IntakePersonAutoCompleteServiceResource
-  public SimpleResourceDelegate<String, AutoCompletePersonRequest, AutoCompletePersonResponse, AutoCompletePersonService> autoCompletePersonResource(
+  public SimpleResourceDelegate<String, AutoCompletePersonRequest, AutoCompletePersonResponse, AutoCompletePersonService> intakeAutoCompletePersonResource(
       Injector injector) {
     return new SimpleResourceDelegate<>(injector.getInstance(AutoCompletePersonService.class));
   }

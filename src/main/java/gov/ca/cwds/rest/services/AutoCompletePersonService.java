@@ -1,5 +1,8 @@
 package gov.ca.cwds.rest.services;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.apache.commons.lang3.StringUtils;
 import org.elasticsearch.search.SearchHit;
 import org.slf4j.Logger;
@@ -41,25 +44,23 @@ public class AutoCompletePersonService
 
   @Override
   protected AutoCompletePersonResponse handleRequest(AutoCompletePersonRequest req) {
+
     final ElasticSearchPerson[] hits =
         this.elasticsearchDao.autoCompletePerson(req.getSearchCriteria());
 
-    AutoCompletePerson[] persons;
-    if (hits != null && hits.length > 0) {
-      persons = new AutoCompletePerson[hits.length];
-
-      // TODO: Convert ElasticSearchPerson to AutoCompletePerson.
-
+    List<AutoCompletePerson> list = new ArrayList<>(hits.length);
+    if (hits.length > 0) {
+      // Convert ElasticSearchPerson to AutoCompletePerson.
       for (ElasticSearchPerson hit : hits) {
         LOGGER.info(hit.toString());
+        list.add(new AutoCompletePerson(hit));
       }
 
     } else {
-      persons = new AutoCompletePerson[0];
       LOGGER.debug("No records found");
     }
 
-    return new AutoCompletePersonResponse(persons);
+    return new AutoCompletePersonResponse(list.toArray(new AutoCompletePerson[0]));
   }
 
   /**
@@ -107,7 +108,7 @@ public class AutoCompletePersonService
 
   @Override
   protected AutoCompletePersonResponse handleFind(String arg0) {
-    // TODO Auto-generated method stub
+    // No-op for now.
     return null;
   }
 

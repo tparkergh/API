@@ -13,6 +13,7 @@ import org.hibernate.annotations.NamedQueries;
 import org.hibernate.annotations.NamedQuery;
 import org.hibernate.annotations.Type;
 
+import gov.ca.cwds.data.IPersonAware;
 import gov.ca.cwds.data.persistence.PersistentObject;
 import gov.ca.cwds.rest.api.ApiException;
 import gov.ca.cwds.rest.api.domain.DomainChef;
@@ -28,10 +29,10 @@ import gov.ca.cwds.rest.api.domain.DomainChef;
         query = "FROM Client WHERE lastUpdatedTime > :after")})
 @Entity
 @Table(name = "CLIENT_T")
-public class Client extends CmsPersistentObject {
+public class Client extends CmsPersistentObject implements IPersonAware {
 
   /**
-   * 
+   * Base serialization version. Increment by class version.
    */
   private static final long serialVersionUID = 1L;
 
@@ -577,6 +578,7 @@ public class Client extends CmsPersistentObject {
   /**
    * @return the birthDate
    */
+  @Override
   public Date getBirthDate() {
     return birthDate;
   }

@@ -20,7 +20,6 @@ import gov.ca.cwds.inject.IntakePersonAutoCompleteServiceResource;
 import gov.ca.cwds.rest.api.ApiException;
 import gov.ca.cwds.rest.api.domain.es.AutoCompletePersonRequest;
 import gov.ca.cwds.rest.api.domain.es.AutoCompletePersonResponse;
-import gov.ca.cwds.rest.api.domain.es.ESPerson;
 import gov.ca.cwds.rest.api.domain.es.ESPersons;
 import gov.ca.cwds.rest.services.AutoCompletePersonService;
 import io.swagger.annotations.Api;
@@ -52,8 +51,38 @@ public class AutoCompletePersonResource {
   private static final Logger LOGGER = LoggerFactory.getLogger(AutoCompletePersonResource.class);
 
   /**
-   * Java desperately needs short-hand notation for typed interfaces and classes, such as C++
-   * "typedef" or "using alias".
+   * Java lacks short-hand notation for typed interfaces and classes, such as C++ "typedef" or
+   * "using alias", resulting in verbose type declarations.
+   * 
+   * <h4>Resource Delegate Type Parameters</h4>
+   * 
+   * <table>
+   * <tr>
+   * <th>Param</th>
+   * <th>Purpose</th>
+   * <th>Class</th>
+   * </tr>
+   * <tr>
+   * <td>K</td>
+   * <td>Key</td>
+   * <td>String</td>
+   * </tr>
+   * <tr>
+   * <td>Q</td>
+   * <td>API Request</td>
+   * <td>AutoCompletePersonRequest</td>
+   * </tr>
+   * <tr>
+   * <td>P</td>
+   * <td>API Response</td>
+   * <td>AutoCompletePersonResponse</td>
+   * </tr>
+   * <tr>
+   * <td>S</td>
+   * <td>Service</td>
+   * <td>AutoCompletePersonService</td>
+   * </tr>
+   * </table>
    */
   private SimpleResourceDelegate<String, AutoCompletePersonRequest, AutoCompletePersonResponse, AutoCompletePersonService> resourceDelegate;
 
@@ -79,14 +108,11 @@ public class AutoCompletePersonResource {
   @ApiResponses(value = {@ApiResponse(code = 404, message = "Not found"),
       @ApiResponse(code = 400, message = "Unable to process JSON"),
       @ApiResponse(code = 406, message = "Accept Header not supported")})
-  @ApiOperation(
-      value = "Query Persons from ElasticSearch by first non-blank field. Wildcards allowed (*,?)",
-      code = HttpStatus.SC_OK, response = ESPerson[].class)
+  @ApiOperation(value = "Query ElasticSearch Persons on given search criteria",
+      code = HttpStatus.SC_OK, response = AutoCompletePersonResponse[].class)
   @Consumes(value = MediaType.APPLICATION_JSON)
   public Response queryPersonOrTerm(
       @Valid @ApiParam(hidden = false, required = true) AutoCompletePersonRequest req) {
-
-    // LOGGER.info("parameterized types: {}", this.getTypeParams());
 
     Response ret;
     try {
