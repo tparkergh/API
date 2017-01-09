@@ -17,25 +17,11 @@ public interface IAddressAware {
   String getStreetAddress();
 
   /**
-   * Setter for (first) street address
-   * 
-   * @param streetAddress (first) street address
-   */
-  void setStreetAddress(String streetAddress);
-
-  /**
    * Getter for city
    * 
    * @return city
    */
   String getCity();
-
-  /**
-   * Setter for city
-   * 
-   * @param city city
-   */
-  void setCity(String city);
 
   /**
    * Getter for state, 2-char code
@@ -45,13 +31,6 @@ public interface IAddressAware {
   String getState();
 
   /**
-   * Setter for state, 2-char code.
-   * 
-   * @param state state
-   */
-  void setState(String state);
-
-  /**
    * Getter for 5-digit zip
    * 
    * @return zip
@@ -59,10 +38,10 @@ public interface IAddressAware {
   String getZip();
 
   /**
-   * Setter for 5-digit zip
+   * Getter for county
    * 
-   * @param zip zip code
+   * @return county
    */
-  void setZip(String zip);
+  String getCounty();
 
 }

@@ -16,6 +16,7 @@ import org.hibernate.annotations.Type;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
+import gov.ca.cwds.data.IAddressAware;
 import gov.ca.cwds.data.IPersonAware;
 import gov.ca.cwds.data.ns.NsPersistentObject;
 import gov.ca.cwds.rest.api.domain.DomainChef;
@@ -33,7 +34,7 @@ import gov.ca.cwds.rest.api.domain.DomainChef;
 @SuppressWarnings("serial")
 @Entity
 @Table(name = "REPTR_T")
-public class Reporter extends CmsPersistentObject implements IPersonAware {
+public class Reporter extends CmsPersistentObject implements IPersonAware, IAddressAware {
 
   @Id
   @NotNull
@@ -473,19 +474,23 @@ public class Reporter extends CmsPersistentObject implements IPersonAware {
     this.lastName = lastName;
   }
 
+  @JsonIgnore
   @Override
+  @Transient
   public void setGender(String gender) {
     // Does not apply.
   }
 
   @JsonIgnore
   @Override
+  @Transient
   public void setBirthDate(Date birthDate) {
     // Does not apply.
   }
 
   @JsonIgnore
   @Override
+  @Transient
   public void setSsn(String ssn) {
     // Does not apply.
   }
@@ -502,6 +507,49 @@ public class Reporter extends CmsPersistentObject implements IPersonAware {
   @Transient
   public void setNameSuffix(String nameSuffix) {
     this.suffixTitleDescription = nameSuffix;
+  }
+
+  // ==================
+  // IAddressAware:
+  // ==================
+
+  @JsonIgnore
+  @Override
+  @Transient
+  public String getStreetAddress() {
+    return this.streetNumber + " " + this.streetName;
+  }
+
+  @JsonIgnore
+  @Override
+  @Transient
+  public String getCity() {
+    return this.cityName;
+  }
+
+  @JsonIgnore
+  @Override
+  @Transient
+  public String getState() {
+    return this.stateCodeType != null ? this.stateCodeType.toString() : null;
+  }
+
+  @JsonIgnore
+  @Override
+  @Transient
+  public String getZip() {
+    StringBuilder buf = new StringBuilder();
+
+    if (this.zipNumber != null) {
+      buf.append(zipNumber);
+    }
+
+    return buf.toString();
+  }
+
+  @Override
+  public String getCounty() {
+    return this.countySpecificCode;
   }
 
 }
