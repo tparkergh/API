@@ -8,6 +8,8 @@ import org.slf4j.LoggerFactory;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.inject.Inject;
 
+import gov.ca.cwds.data.es.AutoCompletePerson;
+import gov.ca.cwds.data.es.ElasticSearchPerson;
 import gov.ca.cwds.data.es.ElasticsearchDao;
 import gov.ca.cwds.rest.api.domain.Person;
 import gov.ca.cwds.rest.api.domain.es.AutoCompletePersonRequest;
@@ -43,8 +45,19 @@ public class AutoCompletePersonService
 
   @Override
   protected AutoCompletePersonResponse handleRequest(AutoCompletePersonRequest req) {
-    this.elasticsearchDao.autoCompletePerson(req);
-    return null;
+    final ElasticSearchPerson[] hits =
+        this.elasticsearchDao.autoCompletePerson(req.getSearchCriteria());
+
+    AutoCompletePerson[] persons;
+    if (hits != null && hits.length > 0) {
+      persons = new AutoCompletePerson[hits.length];
+
+      // TODO: convert ElasticSearchPerson to AutoCompletePerson.
+    } else {
+      persons = new AutoCompletePerson[0];
+    }
+
+    return new AutoCompletePersonResponse(persons);
   }
 
   /**
