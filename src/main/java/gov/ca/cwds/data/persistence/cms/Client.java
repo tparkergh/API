@@ -1,5 +1,6 @@
 package gov.ca.cwds.data.persistence.cms;
 
+import java.beans.Transient;
 import java.util.Date;
 
 import javax.persistence.Column;
@@ -12,6 +13,8 @@ import org.apache.commons.lang3.StringUtils;
 import org.hibernate.annotations.NamedQueries;
 import org.hibernate.annotations.NamedQuery;
 import org.hibernate.annotations.Type;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import gov.ca.cwds.data.IPersonAware;
 import gov.ca.cwds.data.persistence.PersistentObject;
@@ -1010,7 +1013,99 @@ public class Client extends CmsPersistentObject implements IPersonAware {
     return StringUtils.trimToEmpty(zippyCreatedIndicator);
   }
 
+  // ==================
+  // IPersonAware:
+  // ==================
 
-  // <HashCode>
-  // <Equals>
+  @JsonIgnore
+  @Override
+  @Transient
+  public String getMiddleName() {
+    return this.commonMiddleName;
+  }
+
+  @JsonIgnore
+  @Override
+  @Transient
+  public void setMiddleName(String middleName) {
+    this.commonMiddleName = middleName;
+  }
+
+  @JsonIgnore
+  @Override
+  @Transient
+  public String getFirstName() {
+    return this.commonFirstName;
+  }
+
+  @JsonIgnore
+  @Override
+  @Transient
+  public String getLastName() {
+    return this.commonLastName;
+  }
+
+  @JsonIgnore
+  @Override
+  @Transient
+  public String getGender() {
+    return this.genderCode;
+  }
+
+  @JsonIgnore
+  @Override
+  @Transient
+  public String getSsn() {
+    return this.socialSecurityNumber;
+  }
+
+  @JsonIgnore
+  @Override
+  @Transient
+  public void setFirstName(String firstName) {
+    this.commonFirstName = firstName;
+  }
+
+  @JsonIgnore
+  @Override
+  @Transient
+  public void setLastName(String lastName) {
+    this.commonLastName = lastName;
+  }
+
+  @JsonIgnore
+  @Override
+  @Transient
+  public void setGender(String gender) {
+    this.genderCode = gender;
+  }
+
+  @JsonIgnore
+  @Override
+  @Transient
+  public void setBirthDate(Date birthDate) {
+    this.birthDate = birthDate;
+  }
+
+  @JsonIgnore
+  @Override
+  @Transient
+  public void setSsn(String ssn) {
+    this.socialSecurityNumber = ssn;
+  }
+
+  @JsonIgnore
+  @Override
+  @Transient
+  public String getNameSuffix() {
+    return this.suffixTitleDescription;
+  }
+
+  @JsonIgnore
+  @Override
+  @Transient
+  public void setNameSuffix(String nameSuffix) {
+    this.suffixTitleDescription = nameSuffix;
+  }
+
 }

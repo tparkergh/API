@@ -1,6 +1,6 @@
 package gov.ca.cwds.rest.resources;
 
-import static gov.ca.cwds.rest.core.Api.RESOURCE_AUTOCOMPLETE_PERSON;
+import static gov.ca.cwds.rest.core.Api.RESOURCE_AUTOCOMPLETE;
 
 import javax.validation.Valid;
 import javax.ws.rs.Consumes;
@@ -39,8 +39,8 @@ import io.swagger.annotations.ApiResponses;
  * 
  * @author CWDS API Team
  */
-@Api(value = RESOURCE_AUTOCOMPLETE_PERSON, tags = {RESOURCE_AUTOCOMPLETE_PERSON})
-@Path(value = RESOURCE_AUTOCOMPLETE_PERSON)
+@Api(value = RESOURCE_AUTOCOMPLETE, tags = {RESOURCE_AUTOCOMPLETE})
+@Path(value = RESOURCE_AUTOCOMPLETE)
 @Produces(MediaType.APPLICATION_JSON)
 @Consumes(MediaType.APPLICATION_JSON)
 public class AutoCompletePersonResource {
@@ -104,7 +104,7 @@ public class AutoCompletePersonResource {
    * @return web service response
    */
   @POST
-  @Path("/person_autocomplete")
+  @Path("/person")
   @ApiResponses(value = {@ApiResponse(code = 404, message = "Not found"),
       @ApiResponse(code = 400, message = "Unable to process JSON"),
       @ApiResponse(code = 406, message = "Accept Header not supported")})
@@ -118,7 +118,7 @@ public class AutoCompletePersonResource {
     try {
       ret = resourceDelegate.handle(req);
     } catch (Exception e) {
-      LOGGER.error("Intake Person AutoComplete ERROR: {}", e.getMessage());
+      LOGGER.error("Intake Person AutoComplete ERROR: {}", e.getMessage(), e);
       throw new ApiException("Intake Person AutoComplete ERROR.", e);
     }
 

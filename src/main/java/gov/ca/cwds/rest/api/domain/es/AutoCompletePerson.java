@@ -1,11 +1,15 @@
 package gov.ca.cwds.rest.api.domain.es;
 
 import java.io.Serializable;
+import java.util.Date;
 import java.util.List;
 
 import org.apache.commons.lang3.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonValue;
 
@@ -14,6 +18,7 @@ import gov.ca.cwds.data.IPersonAware;
 import gov.ca.cwds.data.ITypedIdentifier;
 import gov.ca.cwds.data.es.ElasticSearchPerson;
 import gov.ca.cwds.rest.api.Request;
+import gov.ca.cwds.rest.api.domain.DomainChef;
 
 /**
  * A domain API {@link Request} for Intake Person Auto-complete feature to Elasticsearch.
@@ -33,12 +38,15 @@ import gov.ca.cwds.rest.api.Request;
  * 
  * @author CWDS API Team
  */
+@JsonInclude(JsonInclude.Include.ALWAYS)
 public class AutoCompletePerson implements Serializable, IPersonAware, ITypedIdentifier<String> {
 
   /**
    * Base serialization version. Increment by class version.
    */
   private static final long serialVersionUID = 1L;
+
+  private static final Logger LOGGER = LoggerFactory.getLogger(AutoCompletePerson.class);
 
   // [{
   // "id": 1,
@@ -419,6 +427,8 @@ public class AutoCompletePerson implements Serializable, IPersonAware, ITypedIde
   @JsonProperty("phone_numbers")
   private List<AutoCompletePersonPhone> phoneNumbers;
 
+  private List<AutoCompleteLanguage> languages;
+
   /**
    * Default constructor.
    */
@@ -435,24 +445,25 @@ public class AutoCompletePerson implements Serializable, IPersonAware, ITypedIde
     this.setId(esp.getId());
 
     if (esp.getSourceObj() != null && esp.getSourceObj() instanceof IPersonAware) {
+      LOGGER.info("IPersonAware!");
       final IPersonAware personAware = (IPersonAware) esp.getSourceObj();
 
-      if (StringUtils.isBlank(personAware.getFirstName())) {
+      if (StringUtils.isNotBlank(personAware.getFirstName())) {
         this.setFirstName(personAware.getFirstName());
       }
-      if (StringUtils.isBlank(personAware.getMiddleName())) {
+      if (StringUtils.isNotBlank(personAware.getMiddleName())) {
         this.setMiddleName(personAware.getMiddleName());
       }
-      if (StringUtils.isBlank(personAware.getLastName())) {
+      if (StringUtils.isNotBlank(personAware.getLastName())) {
         this.setLastName(personAware.getLastName());
       }
-      if (StringUtils.isBlank(personAware.getGender())) {
+      if (StringUtils.isNotBlank(personAware.getGender())) {
         this.setGender(personAware.getGender());
       }
-      if (StringUtils.isBlank(personAware.getBirthDate())) {
+      if (personAware.getBirthDate() != null) {
         this.setBirthDate(personAware.getBirthDate());
       }
-      if (StringUtils.isBlank(personAware.getSsn())) {
+      if (StringUtils.isNotBlank(personAware.getSsn())) {
         this.setSsn(personAware.getSsn());
       }
 
@@ -583,6 +594,11 @@ public class AutoCompletePerson implements Serializable, IPersonAware, ITypedIde
     return phoneNumbers;
   }
 
+  /**
+   * Setter for phone numbers
+   * 
+   * @param phoneNumbers list of phone numbers
+   */
   public void setPhoneNumbers(List<AutoCompletePersonPhone> phoneNumbers) {
     this.phoneNumbers = phoneNumbers;
   }
@@ -593,13 +609,34 @@ public class AutoCompletePerson implements Serializable, IPersonAware, ITypedIde
    * @return date of birth
    */
   @Override
-  public String getBirthDate() {
-    return getDateOfBirth();
+  public Date getBirthDate() {
+    return StringUtils.isNotBlank(this.dateOfBirth) ? DomainChef.uncookDateString(dateOfBirth)
+        : null;
   }
 
   @Override
-  public void setBirthDate(String birthDate) {
-    setDateOfBirth(birthDate);
+  public void setBirthDate(Date birthDate) {
+    if (birthDate != null) {
+      this.dateOfBirth = DomainChef.cookDate(birthDate);
+    }
+  }
+
+  /**
+   * Getter for language
+   * 
+   * @return languages
+   */
+  public List<AutoCompleteLanguage> getLanguages() {
+    return languages;
+  }
+
+  /**
+   * Setter for languages
+   * 
+   * @param languages list of languages
+   */
+  public void setLanguages(List<AutoCompleteLanguage> languages) {
+    this.languages = languages;
   }
 
 }

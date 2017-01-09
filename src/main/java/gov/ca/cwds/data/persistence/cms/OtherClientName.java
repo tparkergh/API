@@ -1,5 +1,8 @@
 package gov.ca.cwds.data.persistence.cms;
 
+import java.beans.Transient;
+import java.util.Date;
+
 import javax.persistence.AttributeOverride;
 import javax.persistence.AttributeOverrides;
 import javax.persistence.Column;
@@ -13,8 +16,10 @@ import org.hibernate.annotations.NamedQueries;
 import org.hibernate.annotations.NamedQuery;
 import org.hibernate.annotations.Type;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+import gov.ca.cwds.data.IPersonAware;
 import gov.ca.cwds.data.persistence.EmbeddableCompositeKey2;
 import gov.ca.cwds.data.persistence.PersistentObject;
 
@@ -32,7 +37,7 @@ import gov.ca.cwds.data.persistence.PersistentObject;
         query = "FROM OtherClientName WHERE lastUpdatedTime > :after")})
 @Entity
 @Table(name = "OCL_NM_T")
-public class OtherClientName extends CmsPersistentObject {
+public class OtherClientName extends CmsPersistentObject implements IPersonAware {
 
   @AttributeOverrides({
       @AttributeOverride(name = "id1", column = @Column(name = "FKCLIENT_T", length = CMS_ID_LEN)),
@@ -107,6 +112,7 @@ public class OtherClientName extends CmsPersistentObject {
   /**
    * @return the firstName
    */
+  @Override
   public String getFirstName() {
     return StringUtils.trimToEmpty(firstName);
   }
@@ -114,6 +120,7 @@ public class OtherClientName extends CmsPersistentObject {
   /**
    * @return the lastName
    */
+  @Override
   public String getLastName() {
     return StringUtils.trimToEmpty(lastName);
   }
@@ -121,6 +128,7 @@ public class OtherClientName extends CmsPersistentObject {
   /**
    * @return the middleName
    */
+  @Override
   public String getMiddleName() {
     return StringUtils.trimToEmpty(middleName);
   }
@@ -223,21 +231,91 @@ public class OtherClientName extends CmsPersistentObject {
     if (!EqualsBuilder.reflectionEquals(this, o, false))
       return false;
 
-    if (super.getLastUpdatedId() == null) {
-      if (o.getLastUpdatedId() != null) {
-        return false;
-      }
-    } else if (!super.getLastUpdatedId().equals(o.getLastUpdatedId())) {
-      return false;
-    }
-    if (super.getLastUpdatedTime() == null) {
-      if (o.getLastUpdatedTime() != null) {
-        return false;
-      }
-    } else if (!super.getLastUpdatedTime().equals(o.getLastUpdatedTime())) {
-      return false;
-    }
     return true;
+  }
+
+  // ==================
+  // IPersonAware:
+  // ==================
+
+  @JsonIgnore
+  @Override
+  @Transient
+  public String getGender() {
+    // Does not apply
+    return null;
+  }
+
+  @JsonIgnore
+  @Override
+  @Transient
+  public Date getBirthDate() {
+    // Does not apply
+    return null;
+  }
+
+  @JsonIgnore
+  @Override
+  @Transient
+  public String getSsn() {
+    // Does not apply
+    return null;
+  }
+
+  @JsonIgnore
+  @Override
+  @Transient
+  public String getNameSuffix() {
+    return this.suffixTitleDescription;
+  }
+
+  @JsonIgnore
+  @Override
+  @Transient
+  public void setFirstName(String firstName) {
+    this.firstName = firstName;
+  }
+
+  @JsonIgnore
+  @Override
+  @Transient
+  public void setMiddleName(String middleName) {
+    this.middleName = middleName;
+  }
+
+  @JsonIgnore
+  @Override
+  @Transient
+  public void setLastName(String lastName) {
+    this.lastName = lastName;
+  }
+
+  @JsonIgnore
+  @Override
+  @Transient
+  public void setGender(String gender) {
+    // Does not apply
+  }
+
+  @JsonIgnore
+  @Override
+  @Transient
+  public void setBirthDate(Date birthDate) {
+    // Does not apply
+  }
+
+  @JsonIgnore
+  @Override
+  @Transient
+  public void setSsn(String ssn) {
+    // Does not apply
+  }
+
+  @JsonIgnore
+  @Override
+  @Transient
+  public void setNameSuffix(String nameSuffix) {
+    this.suffixTitleDescription = nameSuffix;
   }
 
 }

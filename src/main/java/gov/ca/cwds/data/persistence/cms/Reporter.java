@@ -1,5 +1,6 @@
 package gov.ca.cwds.data.persistence.cms;
 
+import java.beans.Transient;
 import java.math.BigDecimal;
 import java.util.Date;
 
@@ -13,6 +14,9 @@ import org.hibernate.annotations.NamedQueries;
 import org.hibernate.annotations.NamedQuery;
 import org.hibernate.annotations.Type;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
+import gov.ca.cwds.data.IPersonAware;
 import gov.ca.cwds.data.ns.NsPersistentObject;
 import gov.ca.cwds.rest.api.domain.DomainChef;
 
@@ -29,7 +33,7 @@ import gov.ca.cwds.rest.api.domain.DomainChef;
 @SuppressWarnings("serial")
 @Entity
 @Table(name = "REPTR_T")
-public class Reporter extends CmsPersistentObject {
+public class Reporter extends CmsPersistentObject implements IPersonAware {
 
   @Id
   @NotNull
@@ -295,6 +299,7 @@ public class Reporter extends CmsPersistentObject {
   /**
    * @return the firstName
    */
+  @Override
   public String getFirstName() {
     return firstName;
   }
@@ -302,6 +307,7 @@ public class Reporter extends CmsPersistentObject {
   /**
    * @return the lastName
    */
+  @Override
   public String getLastName() {
     return lastName;
   }
@@ -410,4 +416,85 @@ public class Reporter extends CmsPersistentObject {
   public String getCountySpecificCode() {
     return countySpecificCode;
   }
+
+  // ==================
+  // IPersonAware:
+  // ==================
+
+  @JsonIgnore
+  @Override
+  public String getMiddleName() {
+    return this.getMiddleInitialName();
+  }
+
+  @JsonIgnore
+  @Override
+  public String getGender() {
+    // Does not apply.
+    return null;
+  }
+
+  @JsonIgnore
+  @Override
+  public Date getBirthDate() {
+    // Does not apply.
+    return null;
+  }
+
+  @JsonIgnore
+  @Override
+  public String getSsn() {
+    // Does not apply.
+    return null;
+  }
+
+  @JsonIgnore
+  @Override
+  public void setFirstName(String firstName) {
+    setFirstName(firstName);
+  }
+
+  @JsonIgnore
+  @Override
+  public void setMiddleName(String middleName) {
+    this.middleInitialName = middleName;
+  }
+
+  @JsonIgnore
+  @Override
+  public void setLastName(String lastName) {
+    this.lastName = lastName;
+  }
+
+  @Override
+  public void setGender(String gender) {
+    // Does not apply.
+  }
+
+  @JsonIgnore
+  @Override
+  public void setBirthDate(Date birthDate) {
+    // Does not apply.
+  }
+
+  @JsonIgnore
+  @Override
+  public void setSsn(String ssn) {
+    // Does not apply.
+  }
+
+  @JsonIgnore
+  @Override
+  @Transient
+  public String getNameSuffix() {
+    return this.suffixTitleDescription;
+  }
+
+  @JsonIgnore
+  @Override
+  @Transient
+  public void setNameSuffix(String nameSuffix) {
+    this.suffixTitleDescription = nameSuffix;
+  }
+
 }
