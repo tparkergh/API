@@ -69,6 +69,7 @@ dependencies {
     compile group: 'org.elasticsearch', name: 'elasticsearch', version:  '2.3.5'
 	compile group: 'org.slf4j', name: 'slf4j-ext', version: '1.7.22'
 	compile group: 'com.hubspot.dropwizard', name: 'dropwizard-guice', version: '1.0.0.2'
+	compile group: "com.smartystreets.api", name: "smartystreets-java-sdk", version: "1.0.7"
 
     compile fileTree(dir: 'lib', include: ['*.jar'])
     

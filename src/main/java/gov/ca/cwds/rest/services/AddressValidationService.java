@@ -1,14 +1,14 @@
 package gov.ca.cwds.rest.services;
 
-import gov.ca.cwds.rest.api.Request;
-import gov.ca.cwds.rest.api.Response;
-import gov.ca.cwds.rest.api.domain.Address;
-import gov.ca.cwds.rest.api.domain.ValidatedAddress;
-
 import java.io.Serializable;
 import java.util.ArrayList;
 
 import org.apache.commons.lang3.NotImplementedException;
+
+import gov.ca.cwds.rest.api.Request;
+import gov.ca.cwds.rest.api.Response;
+import gov.ca.cwds.rest.api.domain.Address;
+import gov.ca.cwds.rest.api.domain.ValidatedAddress;
 
 /**
  * Business layer object to work on {@link ValidatedAddress}
@@ -24,8 +24,8 @@ public class AddressValidationService implements CrudsService {
    * @return array of {@link ValidatedAddress}
    */
   public ValidatedAddress[] fetchValidatedAddresses(Address address) {
-    ArrayList<ValidatedAddress> validatedAddresses = new ArrayList<ValidatedAddress>();
-    validatedAddresses.add(new ValidatedAddress(address, 1, 2, true));
+    ArrayList<ValidatedAddress> validatedAddresses = new ArrayList<>();
+    validatedAddresses.add(new ValidatedAddress(address, null, null, true));
     return validatedAddresses.toArray(new ValidatedAddress[validatedAddresses.size()]);
   }
 
