@@ -31,7 +31,6 @@ project.ext {
     mainclass = "gov.ca.cwds.rest.ApiApplication" 
 }
 
-
 def dockerTag = apiVersion + ((System.properties.getProperty('build') != null ) ? '.' + System.properties.getProperty('build') : '')
 version = apiVersion
 mainClassName = mainclass
@@ -54,7 +53,7 @@ shadowJar {
 }
 
 dependencies {
-	compile group: "gov.ca.cwds.api", name: "api-core", version: "0.13.12"
+	compile group: "gov.ca.cwds.api", name: "api-core", version: "0.13.14"
 	compile group: "io.dropwizard", name: "dropwizard-client", version: dropwizardVersion
 	compile group: "io.dropwizard", name: "dropwizard-hibernate", version: dropwizardVersion
 	compile group: "io.dropwizard", name: "dropwizard-views", version: dropwizardVersion
@@ -75,7 +74,6 @@ dependencies {
     
 	compile group: 'io.swagger', name: 'swagger-jersey2-jaxrs', version: '1.5.9'
 	compile group: 'io.swagger', name: 'swagger-annotations', version: '1.5.9'
-
     compile group: "org.postgresql", name: "postgresql", version: "9.4.1208.jre7"
 
     testCompile 'org.mockito:mockito-core:2.0.54-beta'

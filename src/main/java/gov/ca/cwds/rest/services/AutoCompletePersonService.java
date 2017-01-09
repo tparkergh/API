@@ -10,9 +10,9 @@ import com.google.inject.Inject;
 
 import gov.ca.cwds.data.es.ElasticsearchDao;
 import gov.ca.cwds.rest.api.domain.Person;
+import gov.ca.cwds.rest.api.domain.es.AutoCompletePersonRequest;
+import gov.ca.cwds.rest.api.domain.es.AutoCompletePersonResponse;
 import gov.ca.cwds.rest.api.domain.es.ESPerson;
-import gov.ca.cwds.rest.api.domain.es.ESPersonSearchRequest;
-import gov.ca.cwds.rest.api.domain.es.ESPersons;
 import gov.ca.cwds.rest.api.domain.es.ESSearchRequest;
 import gov.ca.cwds.rest.resources.SimpleResourceService;
 
@@ -24,7 +24,7 @@ import gov.ca.cwds.rest.resources.SimpleResourceService;
  * @author CWDS API Team
  */
 public class AutoCompletePersonService
-    extends SimpleResourceService<String, ESPersonSearchRequest, ESPersons> {
+    extends SimpleResourceService<String, AutoCompletePersonRequest, AutoCompletePersonResponse> {
 
   private static final Logger LOGGER = LoggerFactory.getLogger(AutoCompletePersonService.class);
   private static final ObjectMapper MAPPER = new ObjectMapper();
@@ -39,6 +39,12 @@ public class AutoCompletePersonService
   @Inject
   public AutoCompletePersonService(ElasticsearchDao elasticsearchDao) {
     this.elasticsearchDao = elasticsearchDao;
+  }
+
+  @Override
+  protected AutoCompletePersonResponse handleRequest(AutoCompletePersonRequest req) {
+    this.elasticsearchDao.autoCompletePerson(req);
+    return null;
   }
 
   /**
@@ -85,13 +91,7 @@ public class AutoCompletePersonService
   }
 
   @Override
-  protected ESPersons handleFind(String arg0) {
-    // TODO Auto-generated method stub
-    return null;
-  }
-
-  @Override
-  protected ESPersons handleRequest(ESPersonSearchRequest arg0) {
+  protected AutoCompletePersonResponse handleFind(String arg0) {
     // TODO Auto-generated method stub
     return null;
   }

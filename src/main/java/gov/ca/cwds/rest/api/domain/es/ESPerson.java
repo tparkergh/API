@@ -300,6 +300,7 @@ public class ESPerson extends Person {
    * Nested document Object, constructed by unmarshalling {@link #sourceJson} into an instance of
    * Class type {@link #sourceType}.
    */
+  @JsonProperty("source_object")
   private Object sourceObj;
 
   /**
