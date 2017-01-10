@@ -14,12 +14,14 @@ public class PostedPerson extends Person {
   @JsonProperty("id")
   private long id;
 
+  @SuppressWarnings("javadoc")
   public PostedPerson(long id, String firstName, String last_name, String gender,
       String dateOfBirth, String ssn, Address address) {
     super(firstName, last_name, gender, dateOfBirth, ssn, address);
     this.id = id;
   }
 
+  @SuppressWarnings("javadoc")
   public PostedPerson(gov.ca.cwds.data.persistence.ns.Person person) {
     super(person);
     this.id = person.getId();

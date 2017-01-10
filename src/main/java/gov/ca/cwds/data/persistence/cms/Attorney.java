@@ -15,7 +15,6 @@ import org.hibernate.annotations.Type;
 
 import gov.ca.cwds.data.persistence.PersistentObject;
 
-
 /**
  * {@link PersistentObject} representing a Attorney
  * 

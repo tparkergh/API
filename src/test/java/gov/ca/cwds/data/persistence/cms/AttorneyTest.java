@@ -14,6 +14,7 @@ import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import gov.ca.cwds.data.persistence.junit.template.PersistentTestTemplate;
 import io.dropwizard.jackson.Jackson;
 import nl.jqno.equalsverifier.EqualsVerifier;
 import nl.jqno.equalsverifier.Warning;
@@ -23,28 +24,28 @@ import nl.jqno.equalsverifier.Warning;
  * @author CWDS API Team
  *
  */
-public class AttorneyTest {
+public class AttorneyTest implements PersistentTestTemplate {
 
   private static final ObjectMapper MAPPER = Jackson.newObjectMapper();
 
-  @SuppressWarnings("javadoc")
+  @Override
   @Test
-  public void equalsHashCodeWork() {
+  public void testEqualsHashCodeWorks() {
     EqualsVerifier.forClass(Attorney.class).suppress(Warning.NONFINAL_FIELDS).verify();
   }
 
   /*
    * Constructor test
    */
-  @SuppressWarnings("javadoc")
+  @Override
   @Test
-  public void emtpyConstructorIsNotNull() throws Exception {
+  public void testEmptyConstructor() throws Exception {
     assertThat(Attorney.class.newInstance(), is(notNullValue()));
   }
 
-  @SuppressWarnings("javadoc")
+  @Override
   @Test
-  public void persistentConstructorTest() throws Exception {
+  public void testPersistentContructor() throws Exception {
     Attorney vatrny = validAttorney();
 
     Attorney persistent = new Attorney(vatrny.getArchiveAssociationIndicator(),
@@ -99,4 +100,13 @@ public class AttorneyTest {
     return validAttorney;
 
   }
+
+  @Override
+  //
+  // no domain class
+  //
+  public void testConstructorUsingDomain() throws Exception {
+
+  }
+
 }

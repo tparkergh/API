@@ -151,7 +151,7 @@ public class Allegation extends CmsPersistentObject {
   }
 
   /**
-   * Constructor
+   * Constructor using domain
    * 
    * @param id The id
    * @param persistedAllegation The domain object to construct this object from
@@ -327,6 +327,168 @@ public class Allegation extends CmsPersistentObject {
    */
   public Short getPlacementFacilityType() {
     return placementFacilityType;
+  }
+
+  @Override
+  public final int hashCode() {
+    final int prime = 31;
+    int result = 1;
+    result = prime * result + ((abuseEndDate == null) ? 0 : abuseEndDate.hashCode());
+    result = prime * result + ((abuseFrequency == null) ? 0 : abuseFrequency.hashCode());
+    result = prime * result
+        + ((abuseFrequencyPeriodCode == null) ? 0 : abuseFrequencyPeriodCode.hashCode());
+    result = prime * result
+        + ((abuseLocationDescription == null) ? 0 : abuseLocationDescription.hashCode());
+    result = prime * result + ((abuseStartDate == null) ? 0 : abuseStartDate.hashCode());
+    result = prime * result
+        + ((allegationDispositionType == null) ? 0 : allegationDispositionType.hashCode());
+    result = prime * result + ((allegationType == null) ? 0 : allegationType.hashCode());
+    result = prime * result + ((countySpecificCode == null) ? 0 : countySpecificCode.hashCode());
+    result = prime * result + ((dispositionDate == null) ? 0 : dispositionDate.hashCode());
+    result =
+        prime * result + ((dispositionDescription == null) ? 0 : dispositionDescription.hashCode());
+    result = prime * result + ((id == null) ? 0 : id.hashCode());
+    result = prime * result
+        + ((injuryHarmDetailIndicator == null) ? 0 : injuryHarmDetailIndicator.hashCode());
+    result = prime * result
+        + ((nonProtectingParentCode == null) ? 0 : nonProtectingParentCode.hashCode());
+    result = prime * result + ((perpetratorClientId == null) ? 0 : perpetratorClientId.hashCode());
+    result =
+        prime * result + ((placementFacilityType == null) ? 0 : placementFacilityType.hashCode());
+    result = prime * result + ((referralId == null) ? 0 : referralId.hashCode());
+    result = prime * result
+        + ((staffPersonAddedIndicator == null) ? 0 : staffPersonAddedIndicator.hashCode());
+    result = prime * result + ((victimClientId == null) ? 0 : victimClientId.hashCode());
+    result =
+        prime * result + ((zippyCreatedIndicator == null) ? 0 : zippyCreatedIndicator.hashCode());
+    result = prime * result
+        + ((super.getLastUpdatedId() == null) ? 0 : super.getLastUpdatedId().hashCode());
+    result = prime * result
+        + ((super.getLastUpdatedTime() == null) ? 0 : super.getLastUpdatedTime().hashCode());
+    return result;
+  }
+
+  @Override
+  public final boolean equals(Object obj) {
+    if (this == obj)
+      return true;
+    if (obj == null)
+      return false;
+    if (!(obj instanceof Allegation)) {
+      return false;
+    }
+    Allegation other = (Allegation) obj;
+    if (abuseEndDate == null) {
+      if (other.abuseEndDate != null)
+        return false;
+    } else if (!abuseEndDate.equals(other.abuseEndDate))
+      return false;
+    if (abuseFrequency == null) {
+      if (other.abuseFrequency != null)
+        return false;
+    } else if (!abuseFrequency.equals(other.abuseFrequency))
+      return false;
+    if (abuseFrequencyPeriodCode == null) {
+      if (other.abuseFrequencyPeriodCode != null)
+        return false;
+    } else if (!abuseFrequencyPeriodCode.equals(other.abuseFrequencyPeriodCode))
+      return false;
+    if (abuseLocationDescription == null) {
+      if (other.abuseLocationDescription != null)
+        return false;
+    } else if (!abuseLocationDescription.equals(other.abuseLocationDescription))
+      return false;
+    if (abuseStartDate == null) {
+      if (other.abuseStartDate != null)
+        return false;
+    } else if (!abuseStartDate.equals(other.abuseStartDate))
+      return false;
+    if (allegationDispositionType == null) {
+      if (other.allegationDispositionType != null)
+        return false;
+    } else if (!allegationDispositionType.equals(other.allegationDispositionType))
+      return false;
+    if (allegationType == null) {
+      if (other.allegationType != null)
+        return false;
+    } else if (!allegationType.equals(other.allegationType))
+      return false;
+    if (countySpecificCode == null) {
+      if (other.countySpecificCode != null)
+        return false;
+    } else if (!countySpecificCode.equals(other.countySpecificCode))
+      return false;
+    if (dispositionDate == null) {
+      if (other.dispositionDate != null)
+        return false;
+    } else if (!dispositionDate.equals(other.dispositionDate))
+      return false;
+    if (dispositionDescription == null) {
+      if (other.dispositionDescription != null)
+        return false;
+    } else if (!dispositionDescription.equals(other.dispositionDescription))
+      return false;
+    if (id == null) {
+      if (other.id != null)
+        return false;
+    } else if (!id.equals(other.id))
+      return false;
+    if (injuryHarmDetailIndicator == null) {
+      if (other.injuryHarmDetailIndicator != null)
+        return false;
+    } else if (!injuryHarmDetailIndicator.equals(other.injuryHarmDetailIndicator))
+      return false;
+    if (nonProtectingParentCode == null) {
+      if (other.nonProtectingParentCode != null)
+        return false;
+    } else if (!nonProtectingParentCode.equals(other.nonProtectingParentCode))
+      return false;
+    if (perpetratorClientId == null) {
+      if (other.perpetratorClientId != null)
+        return false;
+    } else if (!perpetratorClientId.equals(other.perpetratorClientId))
+      return false;
+    if (placementFacilityType == null) {
+      if (other.placementFacilityType != null)
+        return false;
+    } else if (!placementFacilityType.equals(other.placementFacilityType))
+      return false;
+    if (referralId == null) {
+      if (other.referralId != null)
+        return false;
+    } else if (!referralId.equals(other.referralId))
+      return false;
+    if (staffPersonAddedIndicator == null) {
+      if (other.staffPersonAddedIndicator != null)
+        return false;
+    } else if (!staffPersonAddedIndicator.equals(other.staffPersonAddedIndicator))
+      return false;
+    if (victimClientId == null) {
+      if (other.victimClientId != null)
+        return false;
+    } else if (!victimClientId.equals(other.victimClientId))
+      return false;
+    if (zippyCreatedIndicator == null) {
+      if (other.zippyCreatedIndicator != null)
+        return false;
+    } else if (!zippyCreatedIndicator.equals(other.zippyCreatedIndicator))
+      return false;
+    if (super.getLastUpdatedId() == null) {
+      if (other.getLastUpdatedId() != null) {
+        return false;
+      }
+    } else if (!super.getLastUpdatedId().equals(other.getLastUpdatedId())) {
+      return false;
+    }
+    if (super.getLastUpdatedTime() == null) {
+      if (other.getLastUpdatedTime() != null) {
+        return false;
+      }
+    } else if (!super.getLastUpdatedTime().equals(other.getLastUpdatedTime())) {
+      return false;
+    }
+
+    return true;
   }
 
 }

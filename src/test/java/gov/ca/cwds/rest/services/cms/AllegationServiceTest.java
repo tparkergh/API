@@ -26,13 +26,14 @@ import gov.ca.cwds.rest.api.Response;
 import gov.ca.cwds.rest.api.domain.cms.Allegation;
 import gov.ca.cwds.rest.api.domain.cms.PostedAllegation;
 import gov.ca.cwds.rest.services.ServiceException;
+import gov.ca.cwds.rest.services.junit.template.ServiceTestTemplate;
 import io.dropwizard.jackson.Jackson;
 
 /**
  * @author CWDS API Team
  *
  */
-public class AllegationServiceTest {
+public class AllegationServiceTest implements ServiceTestTemplate {
   private static final ObjectMapper MAPPER = Jackson.newObjectMapper();
   private AllegationService allegationService;
   private AllegationDao allegationDao;
@@ -41,7 +42,7 @@ public class AllegationServiceTest {
   @Rule
   public ExpectedException thrown = ExpectedException.none();
 
-  @SuppressWarnings("javadoc")
+  @Override
   @Before
   public void setup() throws Exception {
     allegationDao = mock(AllegationDao.class);
@@ -49,9 +50,9 @@ public class AllegationServiceTest {
   }
 
   // find test
-  @SuppressWarnings("javadoc")
+  @Override
   @Test
-  public void findThrowsAssertionError() {
+  public void testEntityFindThrowsAssertionError() {
     // expect string type for primary key test
     thrown.expect(AssertionError.class);
     try {
@@ -61,9 +62,9 @@ public class AllegationServiceTest {
     }
   }
 
-  @SuppressWarnings("javadoc")
+  @Override
   @Test
-  public void findReturnsCorrectAllegationWhenFound() throws Exception {
+  public void testEntityFindReturnsCorrectEntity() throws Exception {
     String id = "Aaeae9r0F4";
     Allegation expected = MAPPER
         .readValue(fixture("fixtures/domain/legacy/Allegation/valid/valid.json"), Allegation.class);
@@ -75,17 +76,17 @@ public class AllegationServiceTest {
     assertThat(found, is(expected));
   }
 
-  @SuppressWarnings("javadoc")
+  @Override
   @Test
-  public void findReturnsNullWhenNotFound() throws Exception {
+  public void testEntityFindReturnsNullWhenNotFound() throws Exception {
     Response found = allegationService.find("ABC1234567");
     assertThat(found, is(nullValue()));
   }
 
-  @SuppressWarnings("javadoc")
+  @Override
   @Test
   // delete test
-  public void deleteThrowsAssersionError() throws Exception {
+  public void testEntityDeleteThrowsAssertionError() throws Exception {
     // expect string type for primary key test
     thrown.expect(AssertionError.class);
     try {
@@ -95,24 +96,24 @@ public class AllegationServiceTest {
     }
   }
 
-  @SuppressWarnings("javadoc")
+  @Override
   @Test
-  public void deleteDelegatesToCrudsService() {
+  public void testEntityDeleteDelegatesToCrudsService() {
     allegationService.delete("ABC2345678");
     verify(allegationDao, times(1)).delete("ABC2345678");
   }
 
-  @SuppressWarnings("javadoc")
+  @Override
   @Test
-  public void deleteReturnsNullWhenNotFount() throws Exception {
+  public void testEntityDeleteReturnsNullWhenNotFound() throws Exception {
     Response found = allegationService.delete("ABC1234567");
     assertThat(found, is(nullValue()));
   }
 
   // update test
-  @SuppressWarnings("javadoc")
+  @Override
   @Test
-  public void updateThrowsAssertionError() throws Exception {
+  public void testEntityUpdateThrowsAssertionError() throws Exception {
     // expected string type for primary key test
     thrown.expect(AssertionError.class);
     try {
@@ -122,9 +123,15 @@ public class AllegationServiceTest {
     }
   }
 
-  @SuppressWarnings("javadoc")
+  @Override
+  public void testEntityUpdateReturnsPersistent() throws Exception {
+    // TODO Auto-generated method stub
+
+  }
+
+  @Override
   @Test
-  public void updateReturnsAllegationResponseOnSuccess() throws Exception {
+  public void testEntityUpdateReturnsCorrectEntity() throws Exception {
     String id = "Aaeae9r0F4";
     Allegation expected = MAPPER
         .readValue(fixture("fixtures/domain/legacy/Allegation/valid/valid.json"), Allegation.class);
@@ -139,9 +146,9 @@ public class AllegationServiceTest {
     assertThat(retval.getClass(), is(Allegation.class));
   }
 
-  @SuppressWarnings("javadoc")
+  @Override
   @Test
-  public void updateThrowsExceptionWhenAllegationNotFound() throws Exception {
+  public void testEntityUpdateThrowsExceptionWhenNotFound() throws Exception {
     try {
       Allegation allegationRequest = MAPPER.readValue(
           fixture("fixtures/domain/legacy/Allegation/valid/valid.json"), Allegation.class);
@@ -155,9 +162,9 @@ public class AllegationServiceTest {
   }
 
   // create test
-  @SuppressWarnings("javadoc")
+  @Override
   @Test
-  public void createReturnsPostedAllegation() throws Exception {
+  public void testEntityCreateReturnsPostedClass() throws Exception {
     String id = "Aaeae9r0F4";
     Allegation allegationDomain = MAPPER
         .readValue(fixture("fixtures/domain/legacy/Allegation/valid/valid.json"), Allegation.class);
@@ -174,7 +181,7 @@ public class AllegationServiceTest {
 
   @SuppressWarnings("javadoc")
   @Test
-  public void createReturnsNonNull() throws Exception {
+  public void testEntityCreateReturnsNonNull() throws Exception {
     String id = "Aaeae9r0F4";
     Allegation allegationDomain = MAPPER
         .readValue(fixture("fixtures/domain/legacy/Allegation/valid/valid.json"), Allegation.class);
@@ -189,9 +196,9 @@ public class AllegationServiceTest {
     assertThat(postedAllegation, is(notNullValue()));
   }
 
-  @SuppressWarnings("javadoc")
+  @Override
   @Test
-  public void createReturnsCorrectPostedPerson() throws Exception {
+  public void testEntityCreateReturnsCorrectEntity() throws Exception {
     String id = "Aaeae9r0F4";
     Allegation allegationDomain = MAPPER
         .readValue(fixture("fixtures/domain/legacy/Allegation/valid/valid.json"), Allegation.class);
@@ -207,9 +214,9 @@ public class AllegationServiceTest {
     assertThat(returned, is(expected));
   }
 
-  @SuppressWarnings("javadoc")
+  @Override
   @Test
-  public void createFailsWhenPostedAllegationIdIsNull() throws Exception {
+  public void testEntityCreateNullIDError() throws Exception {
     try {
       Allegation allegationDomain = MAPPER.readValue(
           fixture("fixtures/domain/legacy/Allegation/valid/valid.json"), Allegation.class);
@@ -226,9 +233,9 @@ public class AllegationServiceTest {
 
   }
 
-  @SuppressWarnings("javadoc")
+  @Override
   @Test
-  public void createFailsWhenPostedAllegationIdIsBlank() throws Exception {
+  public void testEntityCreateBlankIDError() throws Exception {
     try {
       Allegation allegationDomain = MAPPER.readValue(
           fixture("fixtures/domain/legacy/Allegation/valid/valid.json"), Allegation.class);
@@ -242,6 +249,24 @@ public class AllegationServiceTest {
     } catch (ServiceException e) {
       assertEquals("Allegation ID cannot be blank", e.getMessage());
     }
+
+  }
+
+  @Override
+  public void testEntityCreateThrowsAssertionError() throws Exception {
+    // TODO Auto-generated method stub
+
+  }
+
+  @Override
+  public void testEntityCreateEmptyError() throws Exception {
+    // TODO Auto-generated method stub
+
+  }
+
+  @Override
+  public void testEntityCreateExistsError() throws Exception {
+    // TODO Auto-generated method stub
 
   }
 }

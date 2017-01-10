@@ -11,6 +11,10 @@ import java.text.SimpleDateFormat;
 
 import org.junit.Test;
 
+/**
+ * @author CWDS API Team
+ *
+ */
 public class StaffPersonTest {
   private final static DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
   private String id = "a";
@@ -38,11 +42,13 @@ public class StaffPersonTest {
   /*
    * Constructor test
    */
+  @SuppressWarnings("javadoc")
   @Test
   public void emtpyConstructorIsNotNull() throws Exception {
     assertThat(StaffPerson.class.newInstance(), is(notNullValue()));
   }
 
+  @SuppressWarnings("javadoc")
   @Test
   public void constructorUsingDomainTest() throws Exception {
     gov.ca.cwds.rest.api.domain.cms.StaffPerson domain =
