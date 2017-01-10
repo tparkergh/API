@@ -24,6 +24,7 @@ import io.swagger.annotations.ApiModelProperty;
  */
 @ApiModel
 public class Client extends DomainObject implements Request, Response {
+
   @ApiModelProperty(required = false, readOnly = false)
   private Boolean adjudicatedDelinquentIndicator;
 

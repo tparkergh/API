@@ -3,7 +3,9 @@ package gov.ca.cwds.rest.api.domain.es;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.builder.EqualsBuilder;
@@ -24,6 +26,7 @@ import gov.ca.cwds.data.IPersonAware;
 import gov.ca.cwds.data.IPersonAwareWritable;
 import gov.ca.cwds.data.IPhoneAware;
 import gov.ca.cwds.data.IPhoneAwareWritable;
+import gov.ca.cwds.data.ISysCodeAware;
 import gov.ca.cwds.data.ITypedIdentifier;
 import gov.ca.cwds.data.es.ElasticSearchPerson;
 import gov.ca.cwds.rest.api.Request;
@@ -60,23 +63,14 @@ public class AutoCompletePerson
 
   private static final Logger LOGGER = LoggerFactory.getLogger(AutoCompletePerson.class);
 
-  // name_suffix:
-  // enum:
-  // - esq
-  // - ii
-  // - iii
-  // - iv
-  // - jr
-  // - sr
-  // - md
-  // - phd
-  // - jd
+  // private static final <T extends Enum<T>> Map<String, IntakeEnumMap<T>> registerType() {
+  // Map<String, IntakeEnumMap<T>> ret = new HashMap<>();
+  // for (IntakeEnumMap<T> type : T.values()) {
+  // ret.put(unitAuth.getUnitAuthCode(), unitAuth);
+  // }
   //
-  // gender:
-  // type: string
-  // enum:
-  // - male
-  // - female
+  // return ret;
+  // }
 
 
   // SAMPLE AUTO-COMPLETE RESULT: (Intake assumes all fields are potentially searchable.)
@@ -151,47 +145,47 @@ public class AutoCompletePerson
    */
   @SuppressWarnings("javadoc")
   // @JsonFormat(shape = JsonFormat.Shape.STRING)
-  public enum AutoCompleteLanguage {
+  public enum AutoCompleteLanguage implements ISysCodeAware {
 
-    @JsonProperty("English")
+    // @JsonProperty("English")
     ENGLISH(1253, "English", 7),
 
-    @JsonProperty("Spanish")
     SPANISH(1274, "Spanish", 1),
 
-    @JsonProperty("American Sign Language")
     AMERICAN_SIGN_LANGUAGE(1248, "American Sign Language", 13),
 
-    @JsonProperty("Arabic")
     ARABIC(1249, "Arabic", 14),
 
-    @JsonProperty("Armenian")
-    ARMENIAN(1250, "Armenian", 15), CAMBODIAN(1251, "Cambodian", 19), CANTONESE(1252, "Cantonese", 74),
+    ARMENIAN(1250, "Armenian", 15),
 
-    @JsonProperty("Arabic")
+    CAMBODIAN(1251, "Cambodian", 19),
+
+    CANTONESE(1252, "Cantonese", 74),
+
     FARSI(1254, "Farsi", 41), FILIPINO(3198, "Filipino", 49), FRENCH(1255, "French", 28),
 
-    @JsonProperty("German")
-    GERMAN(1267, "German", 29), HAWAIIAN(1268, "Hawaiian", 99), HEBREW(1256, "Hebrew", 33), HMONG(1257, "Hmong", 35), ILACANO(1258, "Ilacano", 77),
+    GERMAN(1267, "German", 29), HAWAIIAN(1268, "Hawaiian", 99), HEBREW(1256, "Hebrew",
+        33), HMONG(1257, "Hmong", 35), ILACANO(1258, "Ilacano", 77),
 
-    @JsonProperty("Indochinese")
-    INDOCHINESE(3199, "Indochinese", 99), ITALIAN(1259, "Italian", 42), JAPANESE(1260, "Japanese", 3), KOREAN(1261, "Korean", 4), LAO(1262, "Lao", 43),
+    INDOCHINESE(3199, "Indochinese", 99), ITALIAN(1259, "Italian", 42), JAPANESE(1260, "Japanese",
+        3), KOREAN(1261, "Korean", 4), LAO(1262, "Lao", 43),
 
-    @JsonProperty("Mandarin")
-    MANDARIN(1263, "Mandarin", 75), MIEN(1264, "Mien", 76), OTHER_CHINESE(1265, "Other Chinese", 2), OTHER_NON_ENGLISH(1266, "Other Non-English", 99),
+    MANDARIN(1263, "Mandarin", 75), MIEN(1264, "Mien", 76), OTHER_CHINESE(1265, "Other Chinese",
+        2), OTHER_NON_ENGLISH(1266, "Other Non-English", 99),
 
-    @JsonProperty("Arabic")
-    POLISH(1269, "Polish", 50), PORTUGUESE(1270, "Portuguese", 51), ROMANIAN(3200, "Romanian", 99), RUSSIAN(1271, "Russian", 54),
+    POLISH(1269, "Polish", 50), PORTUGUESE(1270, "Portuguese", 51), ROMANIAN(3200, "Romanian",
+        99), RUSSIAN(1271, "Russian", 54),
 
-    @JsonProperty("Samoan")
-    SAMOAN(1272, "Samoan", 55), SIGN_LANGUAGE_NOT_ASL(1273, "Sign Language (Not ASL)", 78), TAGALOG(1275, "Tagalog", 5),
+    SAMOAN(1272, "Samoan", 55), SIGN_LANGUAGE_NOT_ASL(1273, "Sign Language (Not ASL)",
+        78), TAGALOG(1275, "Tagalog", 5),
 
-    @JsonProperty("Thai")
     THAI(1276, "Thai", 65), TURKISH(1277, "Turkish", 67), VIETNAMESE(1278, "Vietnamese", 69);
 
     private final int sysId;
     private final String description;
     private final int displayOrder;
+
+    private static final Map<Integer, AutoCompleteLanguage> mapBySysId = new HashMap<>();
 
     private AutoCompleteLanguage(int sysId, String description, int displayOrder) {
       this.sysId = sysId;
@@ -204,10 +198,12 @@ public class AutoCompletePerson
      * 
      * @return SYS_ID
      */
+    @Override
     public int getSysId() {
       return sysId;
     }
 
+    @Override
     @JsonValue
     public String getDescription() {
       return description;
@@ -216,6 +212,18 @@ public class AutoCompletePerson
     public int getDisplayOrder() {
       return displayOrder;
     }
+
+    @Override
+    public ISysCodeAware lookupBySysId(int sysId) {
+      return mapBySysId.get(sysId);
+    }
+
+    static {
+      for (AutoCompleteLanguage e : AutoCompleteLanguage.values()) {
+        mapBySysId.put(e.sysId, e);
+      }
+    }
+
   }
 
   @JsonFormat(shape = JsonFormat.Shape.OBJECT)
@@ -512,6 +520,17 @@ public class AutoCompletePerson
   public AutoCompletePerson(ElasticSearchPerson esp) {
     this.setId(esp.getId());
 
+    // TODO: #136994539: minimal system code translation.
+
+    // maritalStatusType: 0,
+    // nameType: 1313,
+    // religionType: 0,
+    // secondaryLanguageType: 0,
+    // primaryEthnicityType: 0,
+    // primaryLanguageType: 1271,
+
+    LOGGER.info("lookup language: {}", AutoCompleteLanguage.ENGLISH.lookupBySysId(3199));
+
     if (esp.getSourceObj() != null) {
 
       if (esp.getSourceObj() instanceof IPersonAware) {
@@ -641,6 +660,7 @@ public class AutoCompletePerson
    * 
    * @return date of birth
    */
+  // @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = DomainObject.DATE_FORMAT)
   public String getDateOfBirth() {
     return dateOfBirth;
   }
@@ -722,12 +742,14 @@ public class AutoCompletePerson
    * @return date of birth
    */
   @Override
+  @JsonIgnore
   public Date getBirthDate() {
     return StringUtils.isNotBlank(this.dateOfBirth) ? DomainChef.uncookDateString(dateOfBirth)
         : null;
   }
 
   @Override
+  @JsonIgnore
   public void setBirthDate(Date birthDate) {
     if (birthDate != null) {
       this.dateOfBirth = DomainChef.cookDate(birthDate);

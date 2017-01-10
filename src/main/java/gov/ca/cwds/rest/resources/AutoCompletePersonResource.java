@@ -98,20 +98,20 @@ public class AutoCompletePersonResource {
   }
 
   /**
-   * Intake Person Auto-complete endpoint.
+   * Endpoint for Intake Auto-complete Person Search.
    * 
    * @param req JSON {@link AutoCompletePersonRequest}
    * @return web service response
    */
   @POST
-  @Path("/person")
+  @Path("/search_person")
   @ApiResponses(value = {@ApiResponse(code = 404, message = "Not found"),
       @ApiResponse(code = 400, message = "Unable to process JSON"),
       @ApiResponse(code = 406, message = "Accept Header not supported")})
   @ApiOperation(value = "Query ElasticSearch Persons on given search terms",
       code = HttpStatus.SC_OK, response = AutoCompletePersonResponse[].class)
   @Consumes(value = MediaType.APPLICATION_JSON)
-  public Response queryPersonOrTerm(
+  public Response searchPerson(
       @Valid @ApiParam(hidden = false, required = true) AutoCompletePersonRequest req) {
 
     Response ret;

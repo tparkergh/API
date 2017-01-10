@@ -40,14 +40,13 @@ public class AutoCompletePersonService
 
   @Override
   protected AutoCompletePersonResponse handleRequest(AutoCompletePersonRequest req) {
-
     final ElasticSearchPerson[] hits =
         this.elasticsearchDao.autoCompletePerson(req.getSearchTerm());
 
     final int len = hits != null ? hits.length : 0;
     List<AutoCompletePerson> list = new ArrayList<>(len);
     if (len > 0) {
-      // Convert ElasticSearchPerson to AutoCompletePerson.
+
       for (ElasticSearchPerson hit : hits) {
         LOGGER.info(hit.toString());
         list.add(new AutoCompletePerson(hit));
