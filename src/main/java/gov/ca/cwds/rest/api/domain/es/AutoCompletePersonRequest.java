@@ -30,7 +30,7 @@ import io.swagger.annotations.ApiModelProperty;
  */
 @ApiModel
 @JsonSnakeCase
-public final class AutoCompletePersonRequest implements Serializable, Request {
+public class AutoCompletePersonRequest implements Serializable, Request {
 
   /**
    * Base serialization version. Increment by class version.

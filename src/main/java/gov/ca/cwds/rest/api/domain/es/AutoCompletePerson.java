@@ -6,6 +6,8 @@ import java.util.Date;
 import java.util.List;
 
 import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -143,55 +145,48 @@ public class AutoCompletePerson
   // },
 
   /**
-   * Enum of language.
+   * Languages.
    * 
    * @author CWDS API Team
    */
-  public enum AutoCompleteLanguage implements Serializable {
+  @SuppressWarnings("javadoc")
+  // @JsonFormat(shape = JsonFormat.Shape.STRING)
+  public enum AutoCompleteLanguage {
 
-    /**
-     * 
-     */
-    AMERICAN_SIGN_LANGUAGE(1248, "American Sign Language", 13), ARABIC(1249, "Arabic", 14),
+    @JsonProperty("English")
+    ENGLISH(1253, "English", 7),
 
-    /**
-     * 
-     */
+    @JsonProperty("Spanish")
+    SPANISH(1274, "Spanish", 1),
+
+    @JsonProperty("American Sign Language")
+    AMERICAN_SIGN_LANGUAGE(1248, "American Sign Language", 13),
+
+    @JsonProperty("Arabic")
+    ARABIC(1249, "Arabic", 14),
+
+    @JsonProperty("Armenian")
     ARMENIAN(1250, "Armenian", 15), CAMBODIAN(1251, "Cambodian", 19), CANTONESE(1252, "Cantonese", 74),
 
-    /**
-     * 
-     */
-    ENGLISH(1253, "English", 7), FARSI(1254, "Farsi", 41), FILIPINO(3198, "Filipino", 49), FRENCH(1255, "French", 28),
+    @JsonProperty("Arabic")
+    FARSI(1254, "Farsi", 41), FILIPINO(3198, "Filipino", 49), FRENCH(1255, "French", 28),
 
-    /**
-     * 
-     */
+    @JsonProperty("German")
     GERMAN(1267, "German", 29), HAWAIIAN(1268, "Hawaiian", 99), HEBREW(1256, "Hebrew", 33), HMONG(1257, "Hmong", 35), ILACANO(1258, "Ilacano", 77),
 
-    /**
-     * 
-     */
+    @JsonProperty("Indochinese")
     INDOCHINESE(3199, "Indochinese", 99), ITALIAN(1259, "Italian", 42), JAPANESE(1260, "Japanese", 3), KOREAN(1261, "Korean", 4), LAO(1262, "Lao", 43),
 
-    /**
-     * 
-     */
+    @JsonProperty("Mandarin")
     MANDARIN(1263, "Mandarin", 75), MIEN(1264, "Mien", 76), OTHER_CHINESE(1265, "Other Chinese", 2), OTHER_NON_ENGLISH(1266, "Other Non-English", 99),
 
-    /**
-     * 
-     */
+    @JsonProperty("Arabic")
     POLISH(1269, "Polish", 50), PORTUGUESE(1270, "Portuguese", 51), ROMANIAN(3200, "Romanian", 99), RUSSIAN(1271, "Russian", 54),
 
-    /**
-     * 
-     */
-    SAMOAN(1272, "Samoan", 55), SIGN_LANGUAGE_NOT_ASL(1273, "Sign Language (Not ASL)", 78), SPANISH(1274, "Spanish", 1), TAGALOG(1275, "Tagalog", 5),
+    @JsonProperty("Samoan")
+    SAMOAN(1272, "Samoan", 55), SIGN_LANGUAGE_NOT_ASL(1273, "Sign Language (Not ASL)", 78), TAGALOG(1275, "Tagalog", 5),
 
-    /**
-     * 
-     */
+    @JsonProperty("Thai")
     THAI(1276, "Thai", 65), TURKISH(1277, "Turkish", 67), VIETNAMESE(1278, "Vietnamese", 69);
 
     private final int sysId;
@@ -224,7 +219,7 @@ public class AutoCompletePerson
   }
 
   @JsonFormat(shape = JsonFormat.Shape.OBJECT)
-  public enum AutoCompletePersonAddressType implements Serializable {
+  public enum AutoCompletePersonAddressType {
     Home, School, Work, Placement, Homeless, Other
   }
 
@@ -259,6 +254,7 @@ public class AutoCompletePerson
     @JsonInclude(JsonInclude.Include.ALWAYS)
     private String zip;
 
+    @JsonProperty("type")
     private AutoCompletePersonAddressType addressType;
 
     /**
@@ -754,6 +750,16 @@ public class AutoCompletePerson
    */
   public void setLanguages(List<AutoCompleteLanguage> languages) {
     this.languages = languages;
+  }
+
+  @Override
+  public int hashCode() {
+    return HashCodeBuilder.reflectionHashCode(this, false);
+  }
+
+  @Override
+  public boolean equals(Object obj) {
+    return EqualsBuilder.reflectionEquals(this, obj, false);
   }
 
 }

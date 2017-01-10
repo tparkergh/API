@@ -4,7 +4,6 @@ import com.google.inject.AbstractModule;
 
 import gov.ca.cwds.rest.services.AddressService;
 import gov.ca.cwds.rest.services.AddressValidationService;
-import gov.ca.cwds.rest.services.AutoCompletePersonService;
 import gov.ca.cwds.rest.services.PersonService;
 import gov.ca.cwds.rest.services.ScreeningService;
 import gov.ca.cwds.rest.services.cms.AllegationService;
@@ -16,6 +15,7 @@ import gov.ca.cwds.rest.services.cms.ReferralClientService;
 import gov.ca.cwds.rest.services.cms.ReferralService;
 import gov.ca.cwds.rest.services.cms.ReporterService;
 import gov.ca.cwds.rest.services.cms.StaffPersonService;
+import gov.ca.cwds.rest.services.es.AutoCompletePersonService;
 
 /**
  * Identifies all CWDS API business layer (aka, service) classes available for dependency injection

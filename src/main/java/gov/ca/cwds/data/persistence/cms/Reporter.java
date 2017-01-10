@@ -528,6 +528,15 @@ public class Reporter extends CmsPersistentObject
           null));
     }
 
+    if (this.messagePhoneNumber != null && !BigDecimal.ZERO.equals(this.messagePhoneNumber)) {
+      LOGGER.debug("add message phone");
+      phones
+          .add(new ReadablePhone(
+              this.messagePhoneNumber.toPlainString(), this.messagePhoneExtensionNumber != null
+                  ? this.messagePhoneExtensionNumber.toString() : null,
+              IPhoneAware.PhoneType.Cell));
+    }
+
     return phones.toArray(new IPhoneAware[0]);
   }
 

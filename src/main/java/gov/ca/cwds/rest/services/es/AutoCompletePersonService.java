@@ -1,4 +1,4 @@
-package gov.ca.cwds.rest.services;
+package gov.ca.cwds.rest.services.es;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -44,8 +44,9 @@ public class AutoCompletePersonService
     final ElasticSearchPerson[] hits =
         this.elasticsearchDao.autoCompletePerson(req.getSearchTerm());
 
-    List<AutoCompletePerson> list = new ArrayList<>(hits.length);
-    if (hits.length > 0) {
+    final int len = hits != null ? hits.length : 0;
+    List<AutoCompletePerson> list = new ArrayList<>(len);
+    if (len > 0) {
       // Convert ElasticSearchPerson to AutoCompletePerson.
       for (ElasticSearchPerson hit : hits) {
         LOGGER.info(hit.toString());

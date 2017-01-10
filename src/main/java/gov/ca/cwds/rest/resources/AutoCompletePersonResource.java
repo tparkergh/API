@@ -21,7 +21,7 @@ import gov.ca.cwds.rest.api.ApiException;
 import gov.ca.cwds.rest.api.domain.es.AutoCompletePersonRequest;
 import gov.ca.cwds.rest.api.domain.es.AutoCompletePersonResponse;
 import gov.ca.cwds.rest.api.domain.es.ESPersons;
-import gov.ca.cwds.rest.services.AutoCompletePersonService;
+import gov.ca.cwds.rest.services.es.AutoCompletePersonService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
