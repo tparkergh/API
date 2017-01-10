@@ -28,7 +28,7 @@ public class AddressValidationService implements CrudsService {
     ValidatedAddress[] addresses = null;
     SmartyStreet smartyStreet = new SmartyStreet();
     addresses =
-        smartyStreet.UsStreetSingleAddress(address.getStreet_address(), address.getCity(),
+        smartyStreet.usStreetSingleAddress(address.getStreet_address(), address.getCity(),
             address.getState(), address.getZip());
 
     return addresses;
