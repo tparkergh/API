@@ -16,7 +16,7 @@ import io.swagger.annotations.Api;
 
 
 /**
- * A resource providing a basic information about the CWDS API
+ * A resource providing a basic information about the CWDS API.
  * 
  * @author CWDS API Team
  */
@@ -33,7 +33,7 @@ public class ApplicationResource {
    * Constructor
    * 
    * @param applicationName The name of the application
-   * @param version The version of the api
+   * @param version The version of the API
    */
   @Inject
   public ApplicationResource(@Named("app.name") String applicationName,
@@ -43,7 +43,7 @@ public class ApplicationResource {
   }
 
   /**
-   * Get the name of the application
+   * Get the name of the application.
    * 
    * @return the application data
    */

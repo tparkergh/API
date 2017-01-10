@@ -17,6 +17,7 @@ import org.junit.Test;
 import gov.ca.cwds.rest.api.domain.es.ESPerson;
 import gov.ca.cwds.rest.api.domain.es.ESPersonSearchRequest;
 import gov.ca.cwds.rest.services.PersonService;
+import gov.ca.cwds.rest.services.ServiceException;
 import io.dropwizard.testing.junit.ResourceTestRule;
 
 /**
@@ -26,6 +27,11 @@ import io.dropwizard.testing.junit.ResourceTestRule;
  * @author CWDS API Team
  */
 // TODO: class name should match ESPersonSearchRequest
+
+// TODO: #136527227:
+// 1) All test methods should throw Exception (fixed). Don't swallow exceptions.
+// 2) Try a few more request params and different result sizes.
+// 3) See comments on PersonSearchTest also.
 
 public class PersonSearchResourceTest {
   private static final String ROOT_RESOURCE = "/search_persons/";
@@ -45,7 +51,6 @@ public class PersonSearchResourceTest {
   private static ResourceDelegate backedResourceDelegate =
       new ServiceBackedResourceDelegate(personService);
 
-
   @ClassRule
   public static final ResourceTestRule inMemoryResource =
       ResourceTestRule.builder().addResource(new PersonSearchResource(resourceDelegate)).build();
@@ -53,7 +58,6 @@ public class PersonSearchResourceTest {
   @ClassRule
   public static final ResourceTestRule backedinMemoryResource = ResourceTestRule.builder()
       .addResource(new PersonSearchResource(backedResourceDelegate)).build();
-
 
   /*
    * 404 test for unimplemented methods
@@ -134,13 +138,8 @@ public class PersonSearchResourceTest {
    * 500 for throwing the Service error
    */
   @Test
-  public void testShowAllPersons500() {
-    try {
-      when(personService.fetchAllPersons()).thenThrow(new Exception());
-    } catch (Exception e) {
-      e.printStackTrace();
-    }
-
+  public void testShowAllPersons500() throws Exception {
+    when(personService.fetchAllPersons()).thenThrow(new ServiceException());
     int receivedStatus = backedinMemoryResource.client().target(FOUND_RESOURCE).request()
         .accept(MediaType.APPLICATION_JSON).post(null).getStatus();
     assertThat(receivedStatus, is(500));
@@ -198,7 +197,7 @@ public class PersonSearchResourceTest {
   }
 
   /*
-   * 400 for invalid json
+   * 400 for invalid JSON
    */
   @Test
   public void testQueryPersonOrTerm400() throws Exception {
@@ -228,19 +227,14 @@ public class PersonSearchResourceTest {
         .post(Entity.entity("test", MediaType.APPLICATION_JSON));
     int receivedStatus = response.getStatus();
     assertThat(receivedStatus, is(406));
-
   }
 
   /*
-   * 500 for sever error
+   * 500 for server error
    */
   @Test
-  public void testQueryPersonOrTerm500() {
-    try {
-      when(personService.queryPersonOr("", "", "")).thenThrow(new Exception());
-    } catch (Exception e) {
-      e.printStackTrace();
-    }
+  public void testQueryPersonOrTerm500() throws Exception {
+    when(personService.queryPersonOr("", "", "")).thenThrow(new Exception());
     ESPersonSearchRequest req = new ESPersonSearchRequest();
     int receivedStatus = backedinMemoryResource.client().target(QUERY_RESOURCE).request()
         .accept(MediaType.APPLICATION_JSON).post(Entity.entity(req, MediaType.APPLICATION_JSON))
@@ -278,7 +272,6 @@ public class PersonSearchResourceTest {
         .post(Entity.entity(" ", MediaType.APPLICATION_JSON));
     int receivedStatus = response.getStatus();
     assertThat(receivedStatus, is(500));
-
   }
 
 }

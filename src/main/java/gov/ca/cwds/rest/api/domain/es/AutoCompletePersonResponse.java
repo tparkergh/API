@@ -38,7 +38,7 @@ public class AutoCompletePersonResponse implements Serializable, Response {
   private AutoCompletePerson[] persons;
 
   /**
-   * Disallow calls to default constructor.
+   * Disallow use of default constructor.
    */
   @SuppressWarnings("unused")
   private AutoCompletePersonResponse() {

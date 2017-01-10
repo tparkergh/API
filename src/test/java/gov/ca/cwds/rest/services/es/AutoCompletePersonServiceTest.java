@@ -52,7 +52,7 @@ public class AutoCompletePersonServiceTest {
   }
 
   @Test
-  public void handleRequest_A$AutoCompletePersonRequest() throws Exception {
+  public void handleRequest_Args$AutoCompletePersonRequest() throws Exception {
     // given
     AutoCompletePersonRequest req = mock(AutoCompletePersonRequest.class);
     // e.g. : given(mocked.called()).willReturn(1);
@@ -65,7 +65,7 @@ public class AutoCompletePersonServiceTest {
   }
 
   @Test
-  public void handleFind_A$String() throws Exception {
+  public void handleFind_Args$String() throws Exception {
     // given
     String arg0 = null;
     // e.g. : given(mocked.called()).willReturn(1);

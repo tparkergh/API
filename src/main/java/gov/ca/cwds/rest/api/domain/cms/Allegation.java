@@ -184,6 +184,7 @@ public class Allegation extends DomainObject implements Request, Response {
   }
 
   /**
+   * Construct from persistence layer CMS allegation.
    * 
    * @param persistedAllegation persistence level allegation
    */
@@ -521,6 +522,5 @@ public class Allegation extends DomainObject implements Request, Response {
     }
     return true;
   }
-
 
 }

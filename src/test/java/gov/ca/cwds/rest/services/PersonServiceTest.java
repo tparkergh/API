@@ -30,6 +30,12 @@ import gov.ca.cwds.rest.api.domain.PostedPerson;
 import gov.ca.cwds.rest.api.domain.es.ESPerson;
 import gov.ca.cwds.rest.api.domain.es.ESSearchRequest;
 
+
+// TODO: #136527227: review:
+// 1) Test conditions in PersonService.queryPersonOr().
+// 2) Review possible conditions in ElasticsearchDao.queryPersonOr(), such as wildcards ("*" or
+// "?").
+
 public class PersonServiceTest {
 
   private PersonService personService;
