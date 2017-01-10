@@ -5,7 +5,6 @@ import gov.ca.cwds.rest.api.Response;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 
-import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
@@ -22,7 +21,6 @@ public class Address extends DomainObject implements Request, Response {
   @JsonProperty("street_address")
   @ApiModelProperty(example = "742 Evergreen Terrace")
   @Size(max = 50)
-  @NotNull
   private String street_address;
 
   @JsonProperty("city")
