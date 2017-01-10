@@ -12,6 +12,7 @@ import com.smartystreets.api.us_street.Client;
 import com.smartystreets.api.us_street.ClientBuilder;
 import com.smartystreets.api.us_street.Lookup;
 
+import gov.ca.cwds.rest.api.ApiException;
 import gov.ca.cwds.rest.api.domain.ValidatedAddress;
 
 public class SmartyStreet {
@@ -26,7 +27,7 @@ public class SmartyStreet {
   Double latitude;
   Double longitude;
 
-  public ValidatedAddress[] UsStreetSingleAddress(String street, String city, String state,
+  public ValidatedAddress[] usStreetSingleAddress(String street, String city, String state,
       Integer zipCode) {
     Lookup lookup = new Lookup();
     lookup.setStreet(street);
@@ -41,10 +42,12 @@ public class SmartyStreet {
 
     try {
       client.send(lookup);
-    } catch (SmartyException ex) {
-      LOGGER.error("Unable to validate the address", ex.getMessage());
-    } catch (IOException ex) {
-      LOGGER.error("Unable to validate the address", ex.getMessage());
+    } catch (SmartyException e) {
+      LOGGER.error("SmartyStreet error, Unable to validate the address", e);
+      throw new ApiException("ERROR calling SmartyStreet - ", e);
+    } catch (IOException e) {
+      LOGGER.error("SmartyStreet IO error, Unable to validate the address", e);
+      throw new ApiException("ERROR calling SmartyStreet - ", e);
     }
 
     ArrayList<Candidate> results = lookup.getResult();
