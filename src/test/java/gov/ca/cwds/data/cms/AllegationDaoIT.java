@@ -113,11 +113,6 @@ public class AllegationDaoIT implements DaoTestTemplate {
     assertThat(allegation, is(create));
   }
 
-  /**
-   * @throws IOException
-   * @throws JsonMappingException
-   * @throws JsonParseException
-   */
   @Override
   @Test
   public void testCreateExistingEntityException() throws Exception {
@@ -138,7 +133,6 @@ public class AllegationDaoIT implements DaoTestTemplate {
         DomainChef.cookBoolean(vda.getZippyCreatedIndicator()), vda.getPlacementFacilityType());
 
     allegationDao.create(allegation);
-
   }
 
   /**

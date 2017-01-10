@@ -1,7 +1,9 @@
 package gov.ca.cwds.data.persistence.cms;
 
 import java.beans.Transient;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -16,6 +18,8 @@ import org.hibernate.annotations.Type;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
+import gov.ca.cwds.data.ILanguageAware;
+import gov.ca.cwds.data.IMultipleLanguagesAware;
 import gov.ca.cwds.data.IPersonAware;
 import gov.ca.cwds.data.persistence.PersistentObject;
 import gov.ca.cwds.rest.api.ApiException;
@@ -32,7 +36,7 @@ import gov.ca.cwds.rest.api.domain.DomainChef;
         query = "FROM Client WHERE lastUpdatedTime > :after")})
 @Entity
 @Table(name = "CLIENT_T")
-public class Client extends CmsPersistentObject implements IPersonAware {
+public class Client extends CmsPersistentObject implements IPersonAware, IMultipleLanguagesAware {
 
   /**
    * Base serialization version. Increment by class version.
@@ -1057,6 +1061,30 @@ public class Client extends CmsPersistentObject implements IPersonAware {
   @Transient
   public String getNameSuffix() {
     return this.suffixTitleDescription;
+  }
+
+  // =========================
+  // IMultipleLanguagesAware:
+  // =========================
+
+  @Override
+  @JsonIgnore
+  @Transient
+  public ILanguageAware[] getLanguages() {
+
+    List<ILanguageAware> languages = new ArrayList<>();
+    if (this.primaryLanguageType != null && this.primaryLanguageType != 0) {
+      languages.add(new ILanguageAware() {
+
+        @Override
+        public Integer getLanguageSysId() {
+          return new Integer(primaryLanguageType);
+        }
+
+      });
+    }
+
+    return languages.toArray(new ILanguageAware[0]);
   }
 
 }

@@ -1,14 +1,14 @@
 package gov.ca.cwds.rest.services;
 
+import java.io.Serializable;
+
+import org.apache.commons.lang3.NotImplementedException;
+
 import gov.ca.cwds.rest.api.Request;
 import gov.ca.cwds.rest.api.Response;
 import gov.ca.cwds.rest.api.domain.Address;
 import gov.ca.cwds.rest.api.domain.ValidatedAddress;
 import gov.ca.cwds.rest.validation.SmartyStreet;
-
-import java.io.Serializable;
-
-import org.apache.commons.lang3.NotImplementedException;
 
 /**
  * Business layer object to work on {@link ValidatedAddress}
@@ -27,12 +27,10 @@ public class AddressValidationService implements CrudsService {
   public ValidatedAddress[] fetchValidatedAddresses(Address address) throws Exception {
     ValidatedAddress[] addresses = null;
     SmartyStreet smartyStreet = new SmartyStreet();
-    addresses =
-        smartyStreet.UsStreetSingleAddress(address.getStreet_address(), address.getCity(),
-            address.getState(), address.getZip());
+    addresses = smartyStreet.usStreetSingleAddress(address.getStreet_address(), address.getCity(),
+        address.getState(), address.getZip());
 
     return addresses;
-
   }
 
   // Not Implemented

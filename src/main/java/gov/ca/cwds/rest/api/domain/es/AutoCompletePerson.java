@@ -21,6 +21,8 @@ import com.fasterxml.jackson.annotation.JsonValue;
 
 import gov.ca.cwds.data.IAddressAware;
 import gov.ca.cwds.data.IAddressAwareWritable;
+import gov.ca.cwds.data.ILanguageAware;
+import gov.ca.cwds.data.IMultipleLanguagesAware;
 import gov.ca.cwds.data.IMultiplePhonesAware;
 import gov.ca.cwds.data.IPersonAware;
 import gov.ca.cwds.data.IPersonAwareWritable;
@@ -215,6 +217,10 @@ public class AutoCompletePerson
 
     @Override
     public ISysCodeAware lookupBySysId(int sysId) {
+      return AutoCompleteLanguage.findBySysId(sysId);
+    }
+
+    public static AutoCompleteLanguage findBySysId(int sysId) {
       return mapBySysId.get(sysId);
     }
 
@@ -571,6 +577,14 @@ public class AutoCompletePerson
         }
       }
 
+      if (esp.getSourceObj() instanceof IMultipleLanguagesAware) {
+        LOGGER.info("IMultipleLanguagesAware!");
+        final IMultipleLanguagesAware langs = (IMultipleLanguagesAware) esp.getSourceObj();
+        for (ILanguageAware lang : langs.getLanguages()) {
+          addLanguage(AutoCompleteLanguage.findBySysId(lang.getLanguageSysId()));
+        }
+      }
+
     }
 
   }
@@ -728,12 +742,27 @@ public class AutoCompletePerson
    * 
    * @param phone phone to add
    */
+  @JsonIgnore
   public void addPhone(AutoCompletePersonPhone phone) {
     if (this.phoneNumbers == null) {
       this.phoneNumbers = new ArrayList<>();
     }
 
     this.phoneNumbers.add(phone);
+  }
+
+  /**
+   * Add a language
+   * 
+   * @param language language to add
+   */
+  @JsonIgnore
+  public void addLanguage(AutoCompleteLanguage language) {
+    if (this.languages == null) {
+      this.languages = new ArrayList<>();
+    }
+
+    this.languages.add(language);
   }
 
   /**
