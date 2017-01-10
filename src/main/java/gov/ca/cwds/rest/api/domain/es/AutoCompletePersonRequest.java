@@ -26,10 +26,6 @@ import io.swagger.annotations.ApiModelProperty;
  * first name, city, state, language, and so forth.
  * </p>
  * 
- * <p>
- * By the nature of "auto-complete", wildcard searches ("*" or "?") are not allowed.
- * </p>
- * 
  * @author CWDS API Team
  */
 @ApiModel
@@ -37,48 +33,47 @@ import io.swagger.annotations.ApiModelProperty;
 public final class AutoCompletePersonRequest implements Serializable, Request {
 
   /**
-   * Base version. Increment by class version.
+   * Base serialization version. Increment by class version.
    */
   private static final long serialVersionUID = 1L;
 
   @ApiModelProperty(required = true, readOnly = false, example = "john")
-  @JsonProperty("search_criteria")
-  private String searchCriteria;
+  @JsonProperty("search_term")
+  private String searchTerm;
 
   /**
    * JSON DropWizard Constructor. Takes solitary search term.
    * 
-   * @param searchCriteria String search term.
+   * @param searchTerm String search term.
    */
   @JsonCreator
-  public AutoCompletePersonRequest(
-      @NotNull @JsonProperty("search_criteria") String searchCriteria) {
-    this.searchCriteria = searchCriteria;
+  public AutoCompletePersonRequest(@NotNull @JsonProperty("search_term") String searchTerm) {
+    this.searchTerm = searchTerm;
   }
 
   /**
-   * Getter for auto-complete search term.
+   * Getter for auto-complete search term(s).
    * 
    * @return search term
    */
-  public String getSearchCriteria() {
-    return searchCriteria;
+  public String getSearchTerm() {
+    return searchTerm;
   }
 
   /**
    * Setter for auto-complete search term.
    * 
-   * @param searchCriteria search term
+   * @param searchTerm search term
    */
-  public void setSearchCriteria(String searchCriteria) {
-    this.searchCriteria = searchCriteria;
+  public void setSearchTerm(String searchTerm) {
+    this.searchTerm = searchTerm;
   }
 
   @Override
   public int hashCode() {
     final int prime = 31;
     int result = 1;
-    result = prime * result + ((searchCriteria == null) ? 0 : searchCriteria.hashCode());
+    result = prime * result + ((searchTerm == null) ? 0 : searchTerm.hashCode());
     return result;
   }
 
@@ -91,10 +86,10 @@ public final class AutoCompletePersonRequest implements Serializable, Request {
     if (getClass() != obj.getClass())
       return false;
     AutoCompletePersonRequest other = (AutoCompletePersonRequest) obj;
-    if (searchCriteria == null) {
-      if (other.searchCriteria != null)
+    if (searchTerm == null) {
+      if (other.searchTerm != null)
         return false;
-    } else if (!searchCriteria.equals(other.searchCriteria))
+    } else if (!searchTerm.equals(other.searchTerm))
       return false;
     return true;
   }

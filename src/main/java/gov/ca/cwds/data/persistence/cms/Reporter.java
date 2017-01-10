@@ -2,7 +2,9 @@ package gov.ca.cwds.data.persistence.cms;
 
 import java.beans.Transient;
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -13,11 +15,16 @@ import javax.validation.constraints.NotNull;
 import org.hibernate.annotations.NamedQueries;
 import org.hibernate.annotations.NamedQuery;
 import org.hibernate.annotations.Type;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import gov.ca.cwds.data.IAddressAware;
+import gov.ca.cwds.data.IMultiplePhonesAware;
 import gov.ca.cwds.data.IPersonAware;
+import gov.ca.cwds.data.IPhoneAware;
+import gov.ca.cwds.data.ReadablePhone;
 import gov.ca.cwds.data.ns.NsPersistentObject;
 import gov.ca.cwds.rest.api.domain.DomainChef;
 
@@ -34,7 +41,10 @@ import gov.ca.cwds.rest.api.domain.DomainChef;
 @SuppressWarnings("serial")
 @Entity
 @Table(name = "REPTR_T")
-public class Reporter extends CmsPersistentObject implements IPersonAware, IAddressAware {
+public class Reporter extends CmsPersistentObject
+    implements IPersonAware, IAddressAware, IMultiplePhonesAware {
+
+  private static final Logger LOGGER = LoggerFactory.getLogger(Reporter.class);
 
   @Id
   @NotNull
@@ -456,57 +466,8 @@ public class Reporter extends CmsPersistentObject implements IPersonAware, IAddr
   @JsonIgnore
   @Override
   @Transient
-  public void setFirstName(String firstName) {
-    setFirstName(firstName);
-  }
-
-  @JsonIgnore
-  @Override
-  @Transient
-  public void setMiddleName(String middleName) {
-    this.middleInitialName = middleName;
-  }
-
-  @JsonIgnore
-  @Override
-  @Transient
-  public void setLastName(String lastName) {
-    this.lastName = lastName;
-  }
-
-  @JsonIgnore
-  @Override
-  @Transient
-  public void setGender(String gender) {
-    // Does not apply.
-  }
-
-  @JsonIgnore
-  @Override
-  @Transient
-  public void setBirthDate(Date birthDate) {
-    // Does not apply.
-  }
-
-  @JsonIgnore
-  @Override
-  @Transient
-  public void setSsn(String ssn) {
-    // Does not apply.
-  }
-
-  @JsonIgnore
-  @Override
-  @Transient
   public String getNameSuffix() {
     return this.suffixTitleDescription;
-  }
-
-  @JsonIgnore
-  @Override
-  @Transient
-  public void setNameSuffix(String nameSuffix) {
-    this.suffixTitleDescription = nameSuffix;
   }
 
   // ==================
@@ -550,6 +511,24 @@ public class Reporter extends CmsPersistentObject implements IPersonAware, IAddr
   @Override
   public String getCounty() {
     return this.countySpecificCode;
+  }
+
+  // =======================
+  // IMultiplePhonesAware:
+  // =======================
+
+  @Override
+  public IPhoneAware[] getPhones() {
+
+    List<IPhoneAware> phones = new ArrayList<>();
+    if (this.primaryPhoneNumber != null && !BigDecimal.ZERO.equals(this.primaryPhoneNumber)) {
+      phones.add(new ReadablePhone(this.primaryPhoneNumber.toPlainString(),
+          this.primaryPhoneExtensionNumber != null ? this.primaryPhoneExtensionNumber.toString()
+              : null,
+          null));
+    }
+
+    return phones.toArray(new IPhoneAware[0]);
   }
 
 }

@@ -42,7 +42,7 @@ public class AutoCompletePersonService
   protected AutoCompletePersonResponse handleRequest(AutoCompletePersonRequest req) {
 
     final ElasticSearchPerson[] hits =
-        this.elasticsearchDao.autoCompletePerson(req.getSearchCriteria());
+        this.elasticsearchDao.autoCompletePerson(req.getSearchTerm());
 
     List<AutoCompletePerson> list = new ArrayList<>(hits.length);
     if (hits.length > 0) {

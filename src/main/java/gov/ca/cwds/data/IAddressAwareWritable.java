@@ -5,6 +5,10 @@ package gov.ca.cwds.data;
  * DAO and service classes to operate on Address-aware objects without knowledge of their
  * implementation.
  * 
+ * <p>
+ * Writable. Provides "setter" methods for all fields.
+ * </p>
+ * 
  * @author CWDS API Team
  */
 public interface IAddressAwareWritable extends IAddressAware {

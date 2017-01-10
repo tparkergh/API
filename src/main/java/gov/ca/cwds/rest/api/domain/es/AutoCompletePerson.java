@@ -10,17 +10,23 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonValue;
 
 import gov.ca.cwds.data.IAddressAware;
 import gov.ca.cwds.data.IAddressAwareWritable;
+import gov.ca.cwds.data.IMultiplePhonesAware;
 import gov.ca.cwds.data.IPersonAware;
+import gov.ca.cwds.data.IPersonAwareWritable;
+import gov.ca.cwds.data.IPhoneAware;
+import gov.ca.cwds.data.IPhoneAwareWritable;
 import gov.ca.cwds.data.ITypedIdentifier;
 import gov.ca.cwds.data.es.ElasticSearchPerson;
 import gov.ca.cwds.rest.api.Request;
 import gov.ca.cwds.rest.api.domain.DomainChef;
+import io.dropwizard.jackson.JsonSnakeCase;
 
 /**
  * A domain API {@link Request} for Intake Person Auto-complete feature to Elasticsearch.
@@ -40,8 +46,10 @@ import gov.ca.cwds.rest.api.domain.DomainChef;
  * 
  * @author CWDS API Team
  */
+@JsonSnakeCase
 @JsonInclude(JsonInclude.Include.ALWAYS)
-public class AutoCompletePerson implements Serializable, IPersonAware, ITypedIdentifier<String> {
+public class AutoCompletePerson
+    implements Serializable, IPersonAwareWritable, ITypedIdentifier<String> {
 
   /**
    * Base serialization version. Increment by class version.
@@ -196,6 +204,11 @@ public class AutoCompletePerson implements Serializable, IPersonAware, ITypedIde
       this.displayOrder = displayOrder;
     }
 
+    /**
+     * Getter for SYS_ID in CMS table SYS_CD_C.
+     * 
+     * @return SYS_ID
+     */
     public int getSysId() {
       return sysId;
     }
@@ -221,7 +234,7 @@ public class AutoCompletePerson implements Serializable, IPersonAware, ITypedIde
    * @author CWDS API Team
    */
   public static final class AutoCompletePersonAddress
-      implements Serializable, IAddressAwareWritable, ITypedIdentifier<Long> {
+      implements Serializable, ITypedIdentifier<Long>, IAddressAwareWritable {
 
     /**
      * Base serialization version. Increment by class version.
@@ -229,11 +242,23 @@ public class AutoCompletePerson implements Serializable, IPersonAware, ITypedIde
     private static final long serialVersionUID = 1L;
 
     private Long id;
+
+    @JsonProperty("street_address")
+    @JsonInclude(JsonInclude.Include.ALWAYS)
     private String streetAddress;
+
+    @JsonInclude(JsonInclude.Include.ALWAYS)
     private String city;
+
+    @JsonInclude(JsonInclude.Include.ALWAYS)
     private String state;
+
+    @JsonInclude(JsonInclude.Include.ALWAYS)
     private String county;
+
+    @JsonInclude(JsonInclude.Include.ALWAYS)
     private String zip;
+
     private AutoCompletePersonAddressType addressType;
 
     /**
@@ -336,33 +361,55 @@ public class AutoCompletePerson implements Serializable, IPersonAware, ITypedIde
 
   }
 
-  @JsonFormat(shape = JsonFormat.Shape.OBJECT)
-  public enum AutoCompletePersonPhoneType {
-    Cell, Work, Home, Other
-  }
-
   /**
    * Child class. Represents the Phone section of Intake Auto-complete.
    * 
    * @author CWDS API Team
    */
   public static final class AutoCompletePersonPhone
-      implements Serializable, ITypedIdentifier<Long> {
+      implements Serializable, ITypedIdentifier<Long>, IPhoneAwareWritable {
 
     /**
      * Base serialization version. Increment by class version.
      */
     private static final long serialVersionUID = 1L;
 
+    @JsonInclude(JsonInclude.Include.ALWAYS)
     private Long id;
-    private String number;
-    private AutoCompletePersonPhoneType phoneType;
+
+    @JsonProperty("phone_number")
+    @JsonInclude(JsonInclude.Include.ALWAYS)
+    private String phoneNumber;
+
+    /**
+     * Not specified by Intake Person Auto-complete YAML.
+     */
+    @JsonIgnore
+    private String phoneNumberExtension;
+
+    @JsonProperty("type")
+    @JsonInclude(JsonInclude.Include.ALWAYS)
+    private IPhoneAware.PhoneType phoneType;
 
     /**
      * Default constructor.
      */
     public AutoCompletePersonPhone() {
       // Default, no-op.
+    }
+
+    /**
+     * Construct a phone from a phone-aware object.
+     * 
+     * @param other another phone object
+     */
+    public AutoCompletePersonPhone(IPhoneAware other) {
+
+      if (other != null) {
+        setPhoneNumber(other.getPhoneNumber());
+        setPhoneType(other.getPhoneType());
+      }
+
     }
 
     @Override
@@ -375,39 +422,33 @@ public class AutoCompletePerson implements Serializable, IPersonAware, ITypedIde
       this.id = id;
     }
 
-    /**
-     * Getter for String representation of phone number, not atomic phone fields.
-     * 
-     * @return whole phone number
-     */
-    public String getNumber() {
-      return number;
+    @Override
+    public String getPhoneNumber() {
+      return this.phoneNumber;
     }
 
-    /**
-     * Setter for String representation of phone number, not atomic phone fields.
-     * 
-     * @param number whole phone number
-     */
-    public void setNumber(String number) {
-      this.number = number;
+    @Override
+    public String getPhoneNumberExtension() {
+      return this.phoneNumberExtension;
     }
 
-    /**
-     * Getter for phone type.
-     * 
-     * @return phone type
-     */
-    public AutoCompletePersonPhoneType getPhoneType() {
-      return phoneType;
+    @Override
+    public PhoneType getPhoneType() {
+      return this.phoneType;
     }
 
-    /**
-     * Setter for phone type.
-     * 
-     * @param phoneType phone type
-     */
-    public void setPhoneType(AutoCompletePersonPhoneType phoneType) {
+    @Override
+    public void setPhoneNumber(String phoneNumber) {
+      this.phoneNumber = phoneNumber;
+    }
+
+    @Override
+    public void getPhoneNumberExtension(String phoneNumberExtension) {
+      this.phoneNumberExtension = phoneNumberExtension;
+    }
+
+    @Override
+    public void setPhoneType(PhoneType phoneType) {
       this.phoneType = phoneType;
     }
 
@@ -418,35 +459,46 @@ public class AutoCompletePerson implements Serializable, IPersonAware, ITypedIde
   // =================
 
   @JsonProperty("id")
+  @JsonInclude(JsonInclude.Include.ALWAYS)
   private String id;
 
   @JsonProperty("first_name")
+  @JsonInclude(JsonInclude.Include.ALWAYS)
   private String firstName;
 
   @JsonProperty("middle_name")
+  @JsonInclude(JsonInclude.Include.ALWAYS)
   private String middleName;
 
   @JsonProperty("last_name")
+  @JsonInclude(JsonInclude.Include.ALWAYS)
   private String lastName;
 
   @JsonProperty("name_suffix")
+  @JsonInclude(JsonInclude.Include.ALWAYS)
   private String nameSuffix;
 
   @JsonProperty("gender")
+  @JsonInclude(JsonInclude.Include.ALWAYS)
   private String gender;
 
   @JsonProperty("ssn")
+  @JsonInclude(JsonInclude.Include.ALWAYS)
   private String ssn;
 
   @JsonProperty("date_of_birth")
+  @JsonInclude(JsonInclude.Include.ALWAYS)
   private String dateOfBirth;
 
   @JsonProperty("addresses")
+  @JsonInclude(JsonInclude.Include.ALWAYS)
   private List<AutoCompletePersonAddress> addresses = new ArrayList<>();
 
   @JsonProperty("phone_numbers")
+  @JsonInclude(JsonInclude.Include.ALWAYS)
   private List<AutoCompletePersonPhone> phoneNumbers;
 
+  @JsonInclude(JsonInclude.Include.ALWAYS)
   private List<AutoCompleteLanguage> languages;
 
   /**
@@ -494,6 +546,14 @@ public class AutoCompletePerson implements Serializable, IPersonAware, ITypedIde
       if (esp.getSourceObj() instanceof IAddressAware) {
         LOGGER.info("IAddressAware!");
         addAddress(new AutoCompletePersonAddress((IAddressAware) esp.getSourceObj()));
+      }
+
+      if (esp.getSourceObj() instanceof IMultiplePhonesAware) {
+        LOGGER.info("IMultiplePhonesAware!");
+        final IMultiplePhonesAware thePhones = (IMultiplePhonesAware) esp.getSourceObj();
+        for (IPhoneAware phone : thePhones.getPhones()) {
+          addPhone(new AutoCompletePersonPhone(phone));
+        }
       }
 
     }
@@ -645,6 +705,19 @@ public class AutoCompletePerson implements Serializable, IPersonAware, ITypedIde
    */
   public void setPhoneNumbers(List<AutoCompletePersonPhone> phoneNumbers) {
     this.phoneNumbers = phoneNumbers;
+  }
+
+  /**
+   * Add a phone
+   * 
+   * @param phone phone to add
+   */
+  public void addPhone(AutoCompletePersonPhone phone) {
+    if (this.phoneNumbers == null) {
+      this.phoneNumbers = new ArrayList<>();
+    }
+
+    this.phoneNumbers.add(phone);
   }
 
   /**

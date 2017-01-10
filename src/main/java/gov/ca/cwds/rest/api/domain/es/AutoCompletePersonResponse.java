@@ -2,6 +2,8 @@ package gov.ca.cwds.rest.api.domain.es;
 
 import java.io.Serializable;
 
+import javax.validation.constraints.NotNull;
+
 import gov.ca.cwds.rest.api.Request;
 import gov.ca.cwds.rest.api.Response;
 import io.dropwizard.jackson.JsonSnakeCase;
@@ -25,10 +27,11 @@ import io.swagger.annotations.ApiModel;
 public class AutoCompletePersonResponse implements Serializable, Response {
 
   /**
-   * Base version. Increment by class version.
+   * Base serialization version. Increment by class version.
    */
   private static final long serialVersionUID = 1L;
 
+  @NotNull
   private AutoCompletePerson[] persons;
 
   /**
