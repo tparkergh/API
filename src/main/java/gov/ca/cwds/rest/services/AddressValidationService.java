@@ -1,14 +1,14 @@
 package gov.ca.cwds.rest.services;
 
-import java.io.Serializable;
-import java.util.ArrayList;
-
-import org.apache.commons.lang3.NotImplementedException;
-
 import gov.ca.cwds.rest.api.Request;
 import gov.ca.cwds.rest.api.Response;
 import gov.ca.cwds.rest.api.domain.Address;
 import gov.ca.cwds.rest.api.domain.ValidatedAddress;
+import gov.ca.cwds.rest.validation.SmartyStreet;
+
+import java.io.Serializable;
+
+import org.apache.commons.lang3.NotImplementedException;
 
 /**
  * Business layer object to work on {@link ValidatedAddress}
@@ -18,15 +18,21 @@ import gov.ca.cwds.rest.api.domain.ValidatedAddress;
 public class AddressValidationService implements CrudsService {
 
   /**
-   * Returns all valid addresses, up the default number set in smartystreet
+   * Returns all valid addresses, up to the default number set in smartystreet
    * 
    * @param address The address to validate
    * @return array of {@link ValidatedAddress}
+   * @throws Exception due to SmartyStreet error, I/O error, etc.
    */
-  public ValidatedAddress[] fetchValidatedAddresses(Address address) {
-    ArrayList<ValidatedAddress> validatedAddresses = new ArrayList<>();
-    validatedAddresses.add(new ValidatedAddress(address, null, null, true));
-    return validatedAddresses.toArray(new ValidatedAddress[validatedAddresses.size()]);
+  public ValidatedAddress[] fetchValidatedAddresses(Address address) throws Exception {
+    ValidatedAddress[] addresses = null;
+    SmartyStreet smartyStreet = new SmartyStreet();
+    addresses =
+        smartyStreet.UsStreetSingleAddress(address.getStreet_address(), address.getCity(),
+            address.getState(), address.getZip());
+
+    return addresses;
+
   }
 
   // Not Implemented
