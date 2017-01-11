@@ -1,5 +1,6 @@
 package gov.ca.cwds.rest.api.domain.es;
 
+import java.io.IOException;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
@@ -31,6 +32,7 @@ import gov.ca.cwds.data.IPhoneAwareWritable;
 import gov.ca.cwds.data.ISysCodeAware;
 import gov.ca.cwds.data.ITypedIdentifier;
 import gov.ca.cwds.data.es.ElasticSearchPerson;
+import gov.ca.cwds.data.persistence.cms.CmsSystemCodeCache;
 import gov.ca.cwds.rest.api.Request;
 import gov.ca.cwds.rest.api.domain.DomainChef;
 import io.dropwizard.jackson.JsonSnakeCase;
@@ -65,70 +67,18 @@ public class AutoCompletePerson
 
   private static final Logger LOGGER = LoggerFactory.getLogger(AutoCompletePerson.class);
 
-  // SAMPLE AUTO-COMPLETE RESULT: (Intake assumes all fields are potentially searchable.)
-  // [{
-  // "id": 1,
-  // "date_of_birth": "1964-01-14",
-  // "first_name": "John",
-  // "gender": null,
-  // "last_name": "Smith",
-  // "middle_name": null,
-  // "ssn": "858584561",
-  // "name_suffix": null,
-  // "addresses": [
-  // {
-  // "city": "city",
-  // "id": 6,
-  // "state": "IN",
-  // "street_address": "876 home",
-  // "zip": "66666",
-  // "type": "Placement"
-  // }
-  // ],
-  // "phone_numbers": [],
-  // "languages": []
-  // }]
+  private static final CmsSystemCodeCache systemCodes = loadSystemCodes();
 
-  // SAMPLE ELASTICSEARCH PERSON DOCUMENT:
-  // {
-  // "first_name": "Todd",
-  // "last_name": "B.",
-  // "gender": "",
-  // "birth_date": "",
-  // "ssn": "",
-  // "id": "TZDqRCG0XH",
-  // "type": "gov.ca.cwds.data.persistence.cms.Reporter",
-  // "source_object": {
-  // "lastUpdatedId": "0XH",
-  // "lastUpdatedTime": 1479394080309,
-  // "referralId": "TZDqRCG0XH",
-  // "badgeNumber": "",
-  // "cityName": "Police",
-  // "colltrClientRptrReltnshpType": 0,
-  // "communicationMethodType": 410,
-  // "confidentialWaiverIndicator": "Y",
-  // "employerName": "test name",
-  // "feedbackDate": 1479340800000,
-  // "feedbackRequiredIndicator": "Y",
-  // "firstName": "Todd",
-  // "lastName": "B.",
-  // "mandatedReporterIndicator": "Y",
-  // "messagePhoneExtensionNumber": 0,
-  // "messagePhoneNumber": 0,
-  // "middleInitialName": "",
-  // "namePrefixDescription": "Mr.",
-  // "primaryPhoneNumber": 4650009886,
-  // "primaryPhoneExtensionNumber": 0,
-  // "stateCodeType": 1828,
-  // "streetName": "Mock Plaza",
-  // "streetNumber": "2323",
-  // "suffixTitleDescription": "",
-  // "zipNumber": 95656,
-  // "zipSuffixNumber": 0,
-  // "countySpecificCode": "28",
-  // "primaryKey": "TZDqRCG0XH"
-  // }
-  // },
+  private static final CmsSystemCodeCache loadSystemCodes() {
+    CmsSystemCodeCache ret = null;
+    try {
+      ret = CmsSystemCodeCache.produce();
+    } catch (IOException e) {
+      LOGGER.error("FAILED TO LOAD CMS SYSTEM CODES!", e);
+    }
+
+    return ret;
+  }
 
   /**
    * County.
@@ -651,7 +601,7 @@ public class AutoCompletePerson
     @Override
     @JsonProperty("state")
     public String getState() {
-      return this.stateType.getStateCd();
+      return this.stateType != null ? this.stateType.getStateCd() : null;
     }
 
     @Override
@@ -750,12 +700,10 @@ public class AutoCompletePerson
      * @param other another phone object
      */
     public AutoCompletePersonPhone(IPhoneAware other) {
-
       if (other != null) {
         setPhoneNumber(other.getPhoneNumber());
         setPhoneType(other.getPhoneType());
       }
-
     }
 
     @Override
@@ -863,6 +811,7 @@ public class AutoCompletePerson
     this.setId(esp.getId());
 
     // TODO: #136994539: minimal system code translation.
+    // TODO: #136994539: mask results, not data in Elasticsearch.
 
     // maritalStatusType: 0,
     // religionType: 0,
@@ -871,8 +820,6 @@ public class AutoCompletePerson
     // DONE:
     // primaryLanguageType: 1271,
     // secondaryLanguageType: 0,
-
-    LOGGER.info("lookup language: {}", AutoCompleteLanguage.ENGLISH.lookupBySysId(3199));
 
     if (esp.getSourceObj() != null) {
 
@@ -912,12 +859,10 @@ public class AutoCompletePerson
       }
 
       if (esp.getSourceObj() instanceof IAddressAware) {
-        LOGGER.info("IAddressAware!");
         addAddress(new AutoCompletePersonAddress((IAddressAware) esp.getSourceObj()));
       }
 
       if (esp.getSourceObj() instanceof IMultiplePhonesAware) {
-        LOGGER.info("IMultiplePhonesAware!");
         final IMultiplePhonesAware thePhones = (IMultiplePhonesAware) esp.getSourceObj();
         for (IPhoneAware phone : thePhones.getPhones()) {
           addPhone(new AutoCompletePersonPhone(phone));
@@ -925,7 +870,6 @@ public class AutoCompletePerson
       }
 
       if (esp.getSourceObj() instanceof IMultipleLanguagesAware) {
-        LOGGER.info("IMultipleLanguagesAware!");
         final IMultipleLanguagesAware langs = (IMultipleLanguagesAware) esp.getSourceObj();
         for (ILanguageAware lang : langs.getLanguages()) {
           addLanguage(AutoCompleteLanguage.findBySysId(lang.getLanguageSysId()));

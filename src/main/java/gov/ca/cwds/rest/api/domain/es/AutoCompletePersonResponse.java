@@ -64,6 +64,7 @@ public class AutoCompletePersonResponse implements Serializable, Response {
    * 
    * @return persons objects suitable for Intake Auto-complete
    */
+  @JsonUnwrapped
   public List<AutoCompletePerson> getPersons() {
     return persons;
   }

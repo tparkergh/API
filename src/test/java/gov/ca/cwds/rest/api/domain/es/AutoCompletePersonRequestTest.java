@@ -16,8 +16,8 @@ import nl.jqno.equalsverifier.Warning;
  * Test domain request class, {@link AutoCompletePersonRequest}.
  * 
  * <p>
- * Mockito cannot mock or spy on final classes, like String, and thereby that framework cannot
- * inject test artifacts into test objects.
+ * NOTE: Mockito cannot mock up or spy on final classes, like String, and thereby that framework
+ * cannot inject test artifacts into test objects.
  * </p>
  * 
  * @author CWDS API Team
