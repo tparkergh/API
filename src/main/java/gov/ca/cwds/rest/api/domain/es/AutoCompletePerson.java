@@ -131,7 +131,154 @@ public class AutoCompletePerson
   // },
 
   /**
-   * Languages.
+   * County.
+   * 
+   * @author CWDS API Team
+   */
+  @SuppressWarnings("javadoc")
+  public enum AutoCompleteCounty implements ISysCodeAware {
+
+    NONE(0, "None", "0"),
+
+    ALAMEDA(6079, "Alameda", "1"),
+
+    BUTTE(6080, "Butte", "4"),
+
+    CONTRA_COSTA(6081, "Contra Costa", "7"),
+
+    DEL_NORTE(6082, "Del Norte", "8"),
+
+    EL_DORADO(6083, "El Dorado", "9"),
+
+    FRESNO(6084, "Fresno", "10"),
+
+    GLENN(6085, "Glenn", "11"),
+
+    IMPERIAL(6086, "Imperial", "13"),
+
+    INYO(6087, "Inyo", "14"),
+
+    KERN(6088, "Kern", "15"),
+
+    KINGS(6089, "Kings", "16"),
+
+    MARIN(6090, "Marin", "21"),
+
+    MARIPOSA(6091, "Mariposa", "22"),
+
+    MENDOCINO(6092, "Mendocino", "23"),
+
+    MERCED(6093, "Merced", "24"),
+
+    MONTEREY(6094, "Monterey", "27"), NAPA(6095, "Napa", "28"),
+
+    ORANGE(6096, "Orange", "30"), PLACER(6097, "Placer", "31"),
+
+    SACRAMENTO(6098, "Sacramento", "34"),
+
+    SAN_BENITO(6099, "San Benito", "35"),
+
+    SAN_BERNARDINO(6100, "San Bernardino", "36"),
+
+    SAN_DIEGO(6101, "San Diego", "37"),
+
+    SAN_FRANCISCO(6102, "San Francisco", "38"),
+
+    SAN_JOAQUIN(6103, "San Joaquin", "39"),
+
+    SAN_LUIS_OBISPO(6104, "San Luis Obispo", "40"),
+
+    SAN_MATEO(6105, "San Mateo", "41"),
+
+    SANTA_BARBARA(6106, "Santa Barbara", "42"),
+
+    SANTA_CLARA(6107, "Santa Clara", "43"),
+
+    SANTA_CRUZ(6108, "Santa Cruz", "44"),
+
+    SHASTA(6109, "Shasta", "45"),
+
+    SOLANO(6110, "Solano", "48"),
+
+    SONOMA(6111, "Sonoma", "49"),
+
+    STANISLAUS(6112, "Stanislaus", "50"),
+
+    SUTTER(6113, "Sutter", "51"),
+
+    TEHAMA(6114, "Tehama", "52"),
+
+    TRINITY(6115, "Trinity", "53"),
+
+    TULARE(6116, "Tulare", "54"),
+
+    TUOLUMNE(6117, "Tuolumne", "55"),
+
+    VENTURA(6118, "Ventura", "56"),
+
+    YOLO(6119, "Yolo", "57"),
+
+    YUBA(6120, "Yuba", "58");
+
+    private final int sysId;
+    private final String description;
+    private final String countyCd;
+
+    private static final Map<Integer, AutoCompleteCounty> mapBySysId = new HashMap<>();
+    private static final Map<String, AutoCompleteCounty> mapByCountyCd = new HashMap<>();
+
+    private AutoCompleteCounty(int sysId, String description, String countyCd) {
+      this.sysId = sysId;
+      this.description = description;
+      this.countyCd = countyCd;
+    }
+
+    /**
+     * Getter for SYS_ID in CMS table SYS_CD_C.
+     * 
+     * @return SYS_ID
+     */
+    @Override
+    public int getSysId() {
+      return sysId;
+    }
+
+    @Override
+    @JsonValue
+    public String getDescription() {
+      return description;
+    }
+
+    @Override
+    public ISysCodeAware lookupBySysId(int sysId) {
+      return AutoCompleteCounty.findBySysId(sysId);
+    }
+
+    public static AutoCompleteCounty findBySysId(int sysId) {
+      return mapBySysId.get(sysId);
+    }
+
+    public static AutoCompleteCounty findByCountyCd(String countyCd) {
+      return mapByCountyCd.containsKey(countyCd) ? mapByCountyCd.get(countyCd)
+          : AutoCompleteCounty.NONE;
+    }
+
+    static {
+      for (AutoCompleteCounty e : AutoCompleteCounty.values()) {
+        mapBySysId.put(e.sysId, e);
+        mapByCountyCd.put(e.countyCd, e);
+      }
+    }
+
+    public String getCountyCd() {
+      return countyCd;
+    }
+
+  }
+
+
+  /**
+   * State.
    * 
    * @author CWDS API Team
    */
@@ -432,8 +579,8 @@ public class AutoCompletePerson
     @JsonProperty("state")
     private AutoCompleteState stateType = AutoCompleteState.NONE;
 
-    @JsonInclude(JsonInclude.Include.ALWAYS)
-    private String county;
+    @JsonProperty("county")
+    private AutoCompleteCounty county;
 
     @JsonInclude(JsonInclude.Include.ALWAYS)
     private String zip;
@@ -458,7 +605,7 @@ public class AutoCompletePerson
         this.setCity(addr.getCity());
       }
       if (StringUtils.isNotBlank(addr.getCounty())) {
-        this.setCounty(addr.getCounty());
+        this.setCounty(AutoCompleteCounty.findByCountyCd(addr.getCounty()).getCountyCd());
       }
       if (StringUtils.isNotBlank(addr.getState())) {
         this.setStateType(AutoCompleteState.findBySysId(Integer.parseInt(addr.getState())));
@@ -526,12 +673,14 @@ public class AutoCompletePerson
 
     @Override
     public String getCounty() {
-      return county;
+      return county.getCountyCd();
     }
 
     @Override
     public void setCounty(String county) {
-      this.county = county;
+      if (StringUtils.isNotBlank(county)) {
+        this.county = AutoCompleteCounty.findByCountyCd(county);
+      }
     }
 
     public AutoCompletePersonAddressType getAddressType() {
