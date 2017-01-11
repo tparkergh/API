@@ -98,8 +98,8 @@ public class CmsReferral extends DomainObject implements Request, Response {
     return reporter;
   }
 
-  /*
-   * (non-Javadoc)
+  /**
+   * {@inheritDoc}
    * 
    * @see java.lang.Object#hashCode()
    */
@@ -115,8 +115,8 @@ public class CmsReferral extends DomainObject implements Request, Response {
     return result;
   }
 
-  /*
-   * (non-Javadoc)
+  /**
+   * {@inheritDoc}
    * 
    * @see java.lang.Object#equals(java.lang.Object)
    */

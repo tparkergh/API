@@ -13,6 +13,7 @@ import org.hibernate.annotations.NamedQueries;
 import org.hibernate.annotations.NamedQuery;
 import org.hibernate.annotations.Type;
 
+import gov.ca.cwds.data.IPersonAware;
 import gov.ca.cwds.data.persistence.PersistentObject;
 
 /**
@@ -27,7 +28,7 @@ import gov.ca.cwds.data.persistence.PersistentObject;
         query = "FROM Attorney WHERE lastUpdatedTime > :after")})
 @Entity
 @Table(schema = "CWSINT", name = "ATTRNY_T")
-public class Attorney extends CmsPersistentObject {
+public class Attorney extends CmsPersistentObject implements IPersonAware {
 
   /**
    * Base serialization value. Increment by version.
@@ -252,6 +253,7 @@ public class Attorney extends CmsPersistentObject {
   /**
    * @return the firstName
    */
+  @Override
   public String getFirstName() {
     return StringUtils.trimToEmpty(firstName);
   }
@@ -280,6 +282,7 @@ public class Attorney extends CmsPersistentObject {
   /**
    * @return the lastName
    */
+  @Override
   public String getLastName() {
     return StringUtils.trimToEmpty(lastName);
   }
@@ -632,6 +635,31 @@ public class Attorney extends CmsPersistentObject {
       return false;
     }
     return true;
+  }
+
+  @Override
+  public String getMiddleName() {
+    return this.getMiddleInitialName();
+  }
+
+  @Override
+  public String getGender() {
+    return null;
+  }
+
+  @Override
+  public Date getBirthDate() {
+    return null;
+  }
+
+  @Override
+  public String getSsn() {
+    return null;
+  }
+
+  @Override
+  public String getNameSuffix() {
+    return null;
   }
 
 }

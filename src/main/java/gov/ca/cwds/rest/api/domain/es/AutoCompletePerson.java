@@ -865,7 +865,6 @@ public class AutoCompletePerson
     // TODO: #136994539: minimal system code translation.
 
     // maritalStatusType: 0,
-    // nameType: 1313,
     // religionType: 0,
     // primaryEthnicityType: 0,
 
@@ -891,7 +890,17 @@ public class AutoCompletePerson
           this.setLastName(personAware.getLastName());
         }
         if (StringUtils.isNotBlank(personAware.getGender())) {
-          this.setGender(personAware.getGender());
+          switch (personAware.getGender()) {
+            case "M":
+              this.setGender("Male");
+              break;
+            case "F":
+              this.setGender("Female");
+              break;
+            case "U":
+              this.setGender("Unknown");
+              break;
+          }
         }
         if (personAware.getBirthDate() != null) {
           this.setBirthDate(personAware.getBirthDate());

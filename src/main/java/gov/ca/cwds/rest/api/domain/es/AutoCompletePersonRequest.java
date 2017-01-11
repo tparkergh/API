@@ -2,7 +2,11 @@ package gov.ca.cwds.rest.api.domain.es;
 
 import java.io.Serializable;
 
+import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
+
+import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -47,7 +51,7 @@ public class AutoCompletePersonRequest implements Serializable, Request {
    * @param searchTerm String search term.
    */
   @JsonCreator
-  public AutoCompletePersonRequest(@NotNull @JsonProperty("search_term") String searchTerm) {
+  public AutoCompletePersonRequest(@Valid @NotNull @JsonProperty("search_term") String searchTerm) {
     this.searchTerm = searchTerm;
   }
 
@@ -70,28 +74,13 @@ public class AutoCompletePersonRequest implements Serializable, Request {
   }
 
   @Override
-  public int hashCode() {
-    final int prime = 31;
-    int result = 1;
-    result = prime * result + ((searchTerm == null) ? 0 : searchTerm.hashCode());
-    return result;
+  public final int hashCode() {
+    return HashCodeBuilder.reflectionHashCode(this, false);
   }
 
   @Override
-  public boolean equals(Object obj) {
-    if (this == obj)
-      return true;
-    if (obj == null)
-      return false;
-    if (getClass() != obj.getClass())
-      return false;
-    AutoCompletePersonRequest other = (AutoCompletePersonRequest) obj;
-    if (searchTerm == null) {
-      if (other.searchTerm != null)
-        return false;
-    } else if (!searchTerm.equals(other.searchTerm))
-      return false;
-    return true;
+  public final boolean equals(Object obj) {
+    return EqualsBuilder.reflectionEquals(this, obj, false);
   }
 
 }
