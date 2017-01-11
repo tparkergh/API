@@ -14,6 +14,7 @@ import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import gov.ca.cwds.data.persistence.junit.template.PersistentTestTemplate;
 import io.dropwizard.jackson.Jackson;
 import nl.jqno.equalsverifier.EqualsVerifier;
 import nl.jqno.equalsverifier.Warning;
@@ -23,13 +24,13 @@ import nl.jqno.equalsverifier.Warning;
  * @author CWDS API Team
  *
  */
-public class OtherChildInPlacemtHomeTest {
+public class OtherChildInPlacemtHomeTest implements PersistentTestTemplate {
 
   private static final ObjectMapper MAPPER = Jackson.newObjectMapper();
 
-  @SuppressWarnings("javadoc")
+  @Override
   @Test
-  public void equalsHashCodeWork() {
+  public void testEqualsHashCodeWorks() {
     EqualsVerifier.forClass(OtherChildInPlacemtHome.class).suppress(Warning.NONFINAL_FIELDS)
         .verify();
   }
@@ -37,15 +38,15 @@ public class OtherChildInPlacemtHomeTest {
   /*
    * Constructor test
    */
-  @SuppressWarnings("javadoc")
+  @Override
   @Test
-  public void emtpyConstructorIsNotNull() throws Exception {
+  public void testEmptyConstructor() throws Exception {
     assertThat(OtherChildInPlacemtHome.class.newInstance(), is(notNullValue()));
   }
 
-  @SuppressWarnings("javadoc")
+  @Override
   @Test
-  public void persistentConstructorTest() throws Exception {
+  public void testPersistentConstructor() throws Exception {
     OtherChildInPlacemtHome vocph = validOtherChildInPlacemtHome();
 
     OtherChildInPlacemtHome persistent =
@@ -69,6 +70,13 @@ public class OtherChildInPlacemtHomeTest {
             OtherChildInPlacemtHome.class);
 
     return validOtherChildInPlacemtHome;
+
+  }
+
+
+  @Override
+  public void testConstructorUsingDomain() throws Exception {
+    // TODO Auto-generated method stub
 
   }
 }

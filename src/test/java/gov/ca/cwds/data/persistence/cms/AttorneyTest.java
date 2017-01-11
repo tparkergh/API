@@ -45,7 +45,7 @@ public class AttorneyTest implements PersistentTestTemplate {
 
   @Override
   @Test
-  public void testPersistentContructor() throws Exception {
+  public void testPersistentConstructor() throws Exception {
     Attorney vatrny = validAttorney();
 
     Attorney persistent = new Attorney(vatrny.getArchiveAssociationIndicator(),

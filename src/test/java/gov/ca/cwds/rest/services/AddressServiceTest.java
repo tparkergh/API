@@ -28,6 +28,7 @@ public class AddressServiceTest implements ServiceTestTemplate {
 
   private AddressDao addressDao;
 
+  @SuppressWarnings("javadoc")
   @Rule
   public ExpectedException thrown = ExpectedException.none();
 
@@ -147,7 +148,7 @@ public class AddressServiceTest implements ServiceTestTemplate {
 
   }
 
-  @Override
+  @SuppressWarnings("javadoc")
   @Test
   public void testEntityCreateExistsError() throws Exception {
 
@@ -230,7 +231,8 @@ public class AddressServiceTest implements ServiceTestTemplate {
   }
 
   @Override
-  public void testEntityUpdateThrowsExceptionWhenNotFound() throws Exception {
+  public void testEntityCreateThrowsNotImplementedException() throws Exception {
+    // TODO Auto-generated method stub
 
   }
 }

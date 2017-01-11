@@ -19,7 +19,7 @@ public interface PersistentTestTemplate {
 
   @SuppressWarnings("javadoc")
   @Test
-  public void testPersistentContructor() throws Exception;
+  public void testPersistentConstructor() throws Exception;
 
   @SuppressWarnings("javadoc")
   @Test

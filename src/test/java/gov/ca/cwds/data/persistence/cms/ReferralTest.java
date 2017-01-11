@@ -17,6 +17,7 @@ import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import gov.ca.cwds.data.persistence.junit.template.PersistentTestTemplate;
 import gov.ca.cwds.rest.api.domain.DomainChef;
 import io.dropwizard.jackson.Jackson;
 
@@ -24,7 +25,7 @@ import io.dropwizard.jackson.Jackson;
  * @author CWDS API Team
  *
  */
-public class ReferralTest {
+public class ReferralTest implements PersistentTestTemplate {
 
   private static final ObjectMapper MAPPER = Jackson.newObjectMapper();
 
@@ -82,17 +83,24 @@ public class ReferralTest {
   private Date originalClosureDate = DomainChef.uncookDateString("1991-06-06");
   private String lastUpdatedId = "0X5";
 
+  @Override
+  public void testEqualsHashCodeWorks() throws Exception {
+    // no equals() or hash() methods in persistent class.
+
+  }
+
   /*
    * Constructor test
    */
+  @Override
   @Test
-  public void emtpyConstructorIsNotNull() throws Exception {
+  public void testEmptyConstructor() throws Exception {
     assertThat(Referral.class.newInstance(), is(notNullValue()));
   }
 
-  @SuppressWarnings("javadoc")
+  @Override
   @Test
-  public void constructorUsingDomainTest() throws Exception {
+  public void testConstructorUsingDomain() throws Exception {
 
     gov.ca.cwds.rest.api.domain.cms.Referral domainReferral = validDomainReferral();
 
@@ -193,9 +201,10 @@ public class ReferralTest {
     assertThat(persistent.getLastUpdatedId(), is(equalTo(lastUpdatedId)));
   }
 
+  @Override
   @SuppressWarnings("javadoc")
   @Test
-  public void persistenConstructorTest() throws Exception {
+  public void testPersistentConstructor() throws Exception {
 
     Referral pr = new Referral(id, additionalInfoIncludedCode, anonymousReporterIndicator,
         applicationForPetitionIndicator, approvalNumber, approvalStatusType,
@@ -222,6 +231,16 @@ public class ReferralTest {
     assertThat(pr.getApprovalStatusType(), is(equalTo(approvalStatusType)));
     assertThat(pr.getCaretakersPerpetratorCode(), is(equalTo(caretakersPerpetratorCode)));
     assertThat(pr.getClosureDate(), is(equalTo(closureDate)));
+    assertThat(pr.getCommunicationMethodType(), is(equalTo(communicationMethodType)));
+    assertThat(pr.getCurrentLocationOfChildren(), is(equalTo(currentLocationOfChildren)));
+    assertThat(pr.getDrmsAllegationDescriptionDoc(), is(equalTo(drmsAllegationDescriptionDoc)));
+    assertThat(pr.getDrmsErReferralDoc(), is(equalTo(drmsErReferralDoc)));
+    assertThat(pr.getDrmsInvestigationDoc(), is(equalTo(drmsInvestigationDoc)));
+    assertThat(pr.getFiledSuspectedChildAbuseReporttoLawEnforcementIndicator(),
+        is(equalTo(filedSuspectedChildAbuseReporttoLawEnforcementIndicator)));
+    assertThat(pr.getFamilyAwarenessIndicator(), is(equalTo(familyAwarenessIndicator)));
+
+
   }
 
   private gov.ca.cwds.rest.api.domain.cms.Referral validDomainReferral()
@@ -233,4 +252,5 @@ public class ReferralTest {
     return validDomainReferral;
 
   }
+
 }

@@ -20,6 +20,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import gov.ca.cwds.data.persistence.junit.template.PersistentTestTemplate;
 import gov.ca.cwds.rest.api.domain.DomainChef;
 import io.dropwizard.jackson.Jackson;
+import nl.jqno.equalsverifier.EqualsVerifier;
+import nl.jqno.equalsverifier.Warning;
 
 /**
  * @author CWDS API Team
@@ -53,17 +55,23 @@ public class CrossReportTest implements PersistentTestTemplate {
   private String satisfyCrossReportIndicator = "N";
   private String lastUpdatedId = "ABC";
 
+
+  @Override
+  @Test
+  public void testEqualsHashCodeWorks() throws Exception {
+    EqualsVerifier.forClass(Attorney.class).suppress(Warning.NONFINAL_FIELDS).verify();
+
+  }
+
   /*
    * Constructor test
    */
-  @SuppressWarnings("javadoc")
   @Override
   @Test
   public void testEmptyConstructor() throws Exception {
     assertThat(CrossReport.class.newInstance(), is(notNullValue()));
   }
 
-  @SuppressWarnings("javadoc")
   @Override
   @Test
   public void testConstructorUsingDomain() throws Exception {
@@ -105,10 +113,9 @@ public class CrossReportTest implements PersistentTestTemplate {
     assertThat(persistent.getLastUpdatedId(), is(equalTo(lastUpdatedId)));
   }
 
-  @SuppressWarnings("javadoc")
   @Override
   @Test
-  public void testPersistentContructor() throws Exception {
+  public void testPersistentConstructor() throws Exception {
 
     CrossReport persistent = new CrossReport(referralId, thirdId, crossReportMethodType,
         filedOutOfStateIndicator, governmentOrgCrossRptIndicatorVar, tf.parse(informTime),
@@ -154,9 +161,4 @@ public class CrossReportTest implements PersistentTestTemplate {
 
   }
 
-  @Override
-  public void testEqualsHashCodeWorks() throws Exception {
-    // TODO Auto-generated method stub
-
-  }
 }

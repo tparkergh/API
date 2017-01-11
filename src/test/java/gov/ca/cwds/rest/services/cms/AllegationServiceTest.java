@@ -146,7 +146,7 @@ public class AllegationServiceTest implements ServiceTestTemplate {
     assertThat(retval.getClass(), is(Allegation.class));
   }
 
-  @Override
+  @SuppressWarnings("javadoc")
   @Test
   public void testEntityUpdateThrowsExceptionWhenNotFound() throws Exception {
     try {
@@ -265,7 +265,25 @@ public class AllegationServiceTest implements ServiceTestTemplate {
   }
 
   @Override
-  public void testEntityCreateExistsError() throws Exception {
+  public void testEntityFindThrowsNotImplementedException() throws Exception {
+    // TODO Auto-generated method stub
+
+  }
+
+  @Override
+  public void testDeleteThrowsNotImplementedException() throws Exception {
+    // TODO Auto-generated method stub
+
+  }
+
+  @Override
+  public void testEntityUpdateThrowsNotImplementedException() throws Exception {
+    // TODO Auto-generated method stub
+
+  }
+
+  @Override
+  public void testEntityCreateThrowsNotImplementedException() throws Exception {
     // TODO Auto-generated method stub
 
   }

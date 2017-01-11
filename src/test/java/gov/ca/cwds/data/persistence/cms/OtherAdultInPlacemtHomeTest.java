@@ -14,6 +14,7 @@ import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import gov.ca.cwds.data.persistence.junit.template.PersistentTestTemplate;
 import io.dropwizard.jackson.Jackson;
 import nl.jqno.equalsverifier.EqualsVerifier;
 import nl.jqno.equalsverifier.Warning;
@@ -23,13 +24,13 @@ import nl.jqno.equalsverifier.Warning;
  * @author CWDS API Team
  *
  */
-public class OtherAdultInPlacemtHomeTest {
+public class OtherAdultInPlacemtHomeTest implements PersistentTestTemplate {
 
   private static final ObjectMapper MAPPER = Jackson.newObjectMapper();
 
-  @SuppressWarnings("javadoc")
+  @Override
   @Test
-  public void equalsHashCodeWork() {
+  public void testEqualsHashCodeWorks() throws Exception {
     EqualsVerifier.forClass(OtherAdultInPlacemtHome.class).suppress(Warning.NONFINAL_FIELDS)
         .verify();
   }
@@ -37,15 +38,15 @@ public class OtherAdultInPlacemtHomeTest {
   /*
    * Constructor test
    */
-  @SuppressWarnings("javadoc")
+  @Override
   @Test
-  public void emtpyConstructorIsNotNull() throws Exception {
+  public void testEmptyConstructor() throws Exception {
     assertThat(OtherAdultInPlacemtHome.class.newInstance(), is(notNullValue()));
   }
 
-  @SuppressWarnings("javadoc")
+  @Override
   @Test
-  public void persistentConstructorTest() throws Exception {
+  public void testPersistentConstructor() throws Exception {
     OtherAdultInPlacemtHome voaph = validOtherAdultInPlacemtHome();
 
     OtherAdultInPlacemtHome persistent = new OtherAdultInPlacemtHome(voaph.getBirthDate(),
@@ -70,6 +71,13 @@ public class OtherAdultInPlacemtHomeTest {
     assertThat(persistent.getStartDate(), is(equalTo(voaph.getStartDate())));
   }
 
+
+  @Override
+  public void testConstructorUsingDomain() throws Exception {
+    // no domain class
+
+  }
+
   private OtherAdultInPlacemtHome validOtherAdultInPlacemtHome()
       throws JsonParseException, JsonMappingException, IOException {
 
@@ -80,4 +88,5 @@ public class OtherAdultInPlacemtHomeTest {
     return validOtherAdultInPlacemtHome;
 
   }
+
 }

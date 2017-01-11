@@ -18,6 +18,7 @@ import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import gov.ca.cwds.data.persistence.junit.template.PersistentTestTemplate;
 import gov.ca.cwds.rest.api.domain.DomainChef;
 import io.dropwizard.jackson.Jackson;
 import nl.jqno.equalsverifier.EqualsVerifier;
@@ -27,8 +28,10 @@ import nl.jqno.equalsverifier.Warning;
  * @author CWDS API Team
  *
  */
-public class ReferralClientTest {
+public class ReferralClientTest implements PersistentTestTemplate {
+
   private static final ObjectMapper MAPPER = Jackson.newObjectMapper();
+
   private final static DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
   private String referralId = "1234567ABC";
   private String clientId = "ABC1234567";
@@ -48,23 +51,24 @@ public class ReferralClientTest {
   private String drugIndicator = "N";
   private String lastUpdatedId = "0X5";
 
-  /*
-   * Constructor test
-   */
-  @SuppressWarnings("javadoc")
+  @Override
   @Test
-  public void emtpyConstructorIsNotNull() throws Exception {
-    assertThat(ReferralClient.class.newInstance(), is(notNullValue()));
-  }
-
-  @SuppressWarnings("javadoc")
-  @Test
-  public void equalsHashCodeWork() {
+  public void testEqualsHashCodeWorks() throws Exception {
     EqualsVerifier.forClass(ReferralClient.PrimaryKey.class).suppress(Warning.NONFINAL_FIELDS)
         .verify();
   }
 
-  @SuppressWarnings("javadoc")
+  /*
+   * Constructor test
+   */
+  @Override
+  @Test
+  public void testEmptyConstructor() throws Exception {
+    assertThat(ReferralClient.class.newInstance(), is(notNullValue()));
+  }
+
+
+  @Override
   @Test
   public void testPersistentConstructor() throws Exception {
 
@@ -86,7 +90,7 @@ public class ReferralClientTest {
 
   }
 
-  @SuppressWarnings("javadoc")
+  @Override
   @Test
   public void testConstructorUsingDomain() throws Exception {
 

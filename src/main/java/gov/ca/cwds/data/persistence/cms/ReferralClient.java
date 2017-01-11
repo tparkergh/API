@@ -175,6 +175,24 @@ public class ReferralClient extends CmsPersistentObject {
     super();
   }
 
+  /**
+   * @param referralId - ID of Referral
+   * @param clientId = ID of Client
+   * @param approvalNumber - approval number
+   * @param approvalStatusType - approval status type
+   * @param dispositionClosureReasonType - disposition closure reason type
+   * @param dispositionCode - disposition code
+   * @param dispositionDate - disposition date
+   * @param selfReportedIndicator = self reporter indicator
+   * @param staffPersonAddedIndicator - staff person added indicator
+   * @param dispositionClosureDescription - disposition closure description
+   * @param ageNumber - age number
+   * @param agePeriodCode - age period code
+   * @param countySpecificCode - county specified code
+   * @param mentalHealthIssuesIndicator - mental health issues indicator
+   * @param alcoholIndicator - alcohol indicator
+   * @param drugIndicator - drug indicator
+   */
   public ReferralClient(String referralId, String clientId, String approvalNumber,
       Short approvalStatusType, Short dispositionClosureReasonType, String dispositionCode,
       Date dispositionDate, String selfReportedIndicator, String staffPersonAddedIndicator,
@@ -200,6 +218,10 @@ public class ReferralClient extends CmsPersistentObject {
     this.drugIndicator = drugIndicator;
   }
 
+  /**
+   * @param referralClient - ID of Client
+   * @param lastUpdateId - ID of Staff
+   */
   public ReferralClient(gov.ca.cwds.rest.api.domain.cms.ReferralClient referralClient,
       String lastUpdateId) {
     super(lastUpdateId);

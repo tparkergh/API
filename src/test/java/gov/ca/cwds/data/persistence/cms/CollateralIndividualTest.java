@@ -14,30 +14,37 @@ import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import gov.ca.cwds.data.persistence.cms.CollateralIndividual;
+import gov.ca.cwds.data.persistence.junit.template.PersistentTestTemplate;
 import io.dropwizard.jackson.Jackson;
 import nl.jqno.equalsverifier.EqualsVerifier;
 import nl.jqno.equalsverifier.Warning;
 
-public class CollateralIndividualTest {
+/**
+ * @author CWDS API Team
+ *
+ */
+public class CollateralIndividualTest implements PersistentTestTemplate {
 
   private static final ObjectMapper MAPPER = Jackson.newObjectMapper();
 
+  @Override
   @Test
-  public void equalsHashCodeWork() {
+  public void testEqualsHashCodeWorks() {
     EqualsVerifier.forClass(CollateralIndividual.class).suppress(Warning.NONFINAL_FIELDS).verify();
   }
 
   /*
    * Constructor test
    */
+  @Override
   @Test
-  public void emtpyConstructorIsNotNull() throws Exception {
+  public void testEmptyConstructor() throws Exception {
     assertThat(CollateralIndividual.class.newInstance(), is(notNullValue()));
   }
 
+  @Override
   @Test
-  public void persistentConstructorTest() throws Exception {
+  public void testPersistentConstructor() throws Exception {
     CollateralIndividual ci = validCollateralIndividual();
 
     CollateralIndividual persistent = new CollateralIndividual(ci.getBadgeNumber(),
@@ -78,6 +85,12 @@ public class CollateralIndividualTest {
     assertThat(persistent.getZipSuffixNumber(), is(equalTo(ci.getZipSuffixNumber())));
   }
 
+  @Override
+  public void testConstructorUsingDomain() throws Exception {
+    // no constructor using the domain class.
+
+  }
+
   private CollateralIndividual validCollateralIndividual()
       throws JsonParseException, JsonMappingException, IOException {
 
@@ -87,4 +100,5 @@ public class CollateralIndividualTest {
 
     return validCollateralIndividual;
   }
+
 }
