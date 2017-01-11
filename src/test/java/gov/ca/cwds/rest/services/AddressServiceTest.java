@@ -2,7 +2,6 @@ package gov.ca.cwds.rest.services;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
-import static org.hamcrest.Matchers.notNullValue;
 import static org.hamcrest.Matchers.nullValue;
 import static org.junit.Assert.assertEquals;
 import static org.mockito.Matchers.any;
@@ -18,8 +17,13 @@ import org.junit.rules.ExpectedException;
 import gov.ca.cwds.data.ns.AddressDao;
 import gov.ca.cwds.rest.api.domain.Address;
 import gov.ca.cwds.rest.api.domain.PostedAddress;
+import gov.ca.cwds.rest.services.junit.template.ServiceTestTemplate;
 
-public class AddressServiceTest {
+/**
+ * @author CWDS API Team
+ *
+ */
+public class AddressServiceTest implements ServiceTestTemplate {
   private AddressService addressService;
 
   private AddressDao addressDao;
@@ -27,6 +31,7 @@ public class AddressServiceTest {
   @Rule
   public ExpectedException thrown = ExpectedException.none();
 
+  @Override
   @Before
   public void setup() throws Exception {
     addressDao = mock(AddressDao.class);
@@ -36,10 +41,23 @@ public class AddressServiceTest {
   /*
    * find tests
    */
+  @Override
   @Test
-  public void findReturnsCorrectAddressWhenFoundWhenFound() throws Exception {
-    when(addressDao.find(new Long(1))).thenReturn(new gov.ca.cwds.data.persistence.ns.Address(
-        1L, "742 Evergreen Terrace", "Springfield", "WA", new Integer(98700)));
+  public void testEntityFindThrowsAssertionError() throws Exception {
+    thrown.expect(AssertionError.class);
+    try {
+      addressService.find("nonLong");
+    } catch (AssertionError e) {
+      assertEquals("Expected AssertionError", e.getMessage());
+    }
+
+  }
+
+  @Override
+  @Test
+  public void testEntityFindReturnsCorrectEntity() throws Exception {
+    when(addressDao.find(new Long(1))).thenReturn(new gov.ca.cwds.data.persistence.ns.Address(1L,
+        "742 Evergreen Terrace", "Springfield", "WA", new Integer(98700)));
 
     Address expected = new Address("742 Evergreen Terrace", "Springfield", "WA", 98700);
 
@@ -48,29 +66,27 @@ public class AddressServiceTest {
     assertThat(found, is(expected));
   }
 
+  @Override
   @Test
-  public void findReturnsNullWhenNotFound() throws Exception {
+  public void testEntityFindReturnsNullWhenNotFound() throws Exception {
     when(addressDao.find(new Long(-1))).thenReturn(null);
     Address found = addressService.find(new Long(-1));
 
     assertThat(found, is(nullValue()));
   }
 
-  @Test
-  public void findThrowsAssertionError() throws Exception {
-    thrown.expect(AssertionError.class);
-    try {
-      addressService.find("nonLong");
-    } catch (AssertionError e) {
-      assertEquals("Expected AssertionError", e.getMessage());
-    }
+
+  @Override
+  public void testEntityFindThrowsNotImplementedException() throws Exception {
+
   }
 
   /*
    * create tests
    */
+  @Override
   @Test
-  public void createThrowsAssertionError() throws Exception {
+  public void testEntityCreateThrowsAssertionError() throws Exception {
     thrown.expect(AssertionError.class);
     try {
       PostedAddress postedAddress = addressService.create(null);
@@ -79,11 +95,11 @@ public class AddressServiceTest {
     }
   }
 
+  @Override
   @Test
-  public void createReturnsPostedAddress() throws Exception {
-    gov.ca.cwds.data.persistence.ns.Address toCreate =
-        new gov.ca.cwds.data.persistence.ns.Address(1L, "742 Evergreen Terrace", "Springfield",
-            "WA", new Integer(98700));
+  public void testEntityCreateReturnsPostedClass() throws Exception {
+    gov.ca.cwds.data.persistence.ns.Address toCreate = new gov.ca.cwds.data.persistence.ns.Address(
+        1L, "742 Evergreen Terrace", "Springfield", "WA", new Integer(98700));
     Address request = new Address(toCreate);
 
     when(addressDao.create(any(gov.ca.cwds.data.persistence.ns.Address.class)))
@@ -93,25 +109,50 @@ public class AddressServiceTest {
     assertThat(postedAddress.getClass(), is(PostedAddress.class));
   }
 
+  @Override
   @Test
-  public void createReturnsNonNull() throws Exception {
-    gov.ca.cwds.data.persistence.ns.Address toCreate =
-        new gov.ca.cwds.data.persistence.ns.Address(1L, "742 Evergreen Terrace", "Springfield",
-            "WA", new Integer(98700));
+  public void testEntityCreateReturnsCorrectEntity() throws Exception {
+    gov.ca.cwds.data.persistence.ns.Address toCreate = new gov.ca.cwds.data.persistence.ns.Address(
+        10L, "742 Evergreen Terrace", "Springfield", "WA", new Integer(98700));
     Address request = new Address(toCreate);
 
     when(addressDao.create(any(gov.ca.cwds.data.persistence.ns.Address.class)))
         .thenReturn(toCreate);
 
-    PostedAddress postedAddress = addressService.create(request);
-    assertThat(postedAddress, is(notNullValue()));
+    PostedAddress expected =
+        new PostedAddress(10, "742 Evergreen Terrace", "Springfield", "WA", new Integer(98700));
+    PostedAddress returned = addressService.create(request);
+
+    assertThat(returned, is(expected));
   }
 
+  @Override
   @Test
-  public void createReturnsReturnsCorrectPostedAddress() throws Exception {
-    gov.ca.cwds.data.persistence.ns.Address toCreate =
-        new gov.ca.cwds.data.persistence.ns.Address(1L, "742 Evergreen Terrace", "Springfield",
-            "WA", new Integer(98700));
+  public void testEntityCreateNullIDError() throws Exception {
+    thrown.expect(AssertionError.class);
+    try {
+      PostedAddress postedAddress = addressService.create(null);
+    } catch (AssertionError e) {
+      assertEquals("Expected AssertionError", e.getMessage());
+    }
+  }
+
+  @Override
+  public void testEntityCreateBlankIDError() throws Exception {
+
+  }
+
+  @Override
+  public void testEntityCreateEmptyError() throws Exception {
+
+  }
+
+  @Override
+  @Test
+  public void testEntityCreateExistsError() throws Exception {
+
+    gov.ca.cwds.data.persistence.ns.Address toCreate = new gov.ca.cwds.data.persistence.ns.Address(
+        (long) 1, "742 Evergreen Terrace", "Springfield", "WA", new Integer(98700));
     Address request = new Address(toCreate);
 
     when(addressDao.create(any(gov.ca.cwds.data.persistence.ns.Address.class)))
@@ -122,13 +163,15 @@ public class AddressServiceTest {
     PostedAddress returned = addressService.create(request);
 
     assertThat(returned, is(expected));
+
   }
 
   /*
    * delete tests
    */
+  @Override
   @Test
-  public void deleteThrowsAssertionError() throws Exception {
+  public void testEntityDeleteThrowsAssertionError() throws Exception {
     thrown.expect(AssertionError.class);
     try {
       addressService.delete("nonLong");
@@ -137,17 +180,29 @@ public class AddressServiceTest {
     }
   }
 
+  @Override
   @Test
-  public void deleteThrowsNotImplementedException() throws Exception {
+  public void testDeleteThrowsNotImplementedException() throws Exception {
     thrown.expect(NotImplementedException.class);
     addressService.delete(new Long(1));
+  }
+
+  @Override
+  public void testEntityDeleteDelegatesToCrudsService() throws Exception {
+
+  }
+
+  @Override
+  public void testEntityDeleteReturnsNullWhenNotFound() throws Exception {
+
   }
 
   /*
    * update tests
    */
+  @Override
   @Test
-  public void updateThrowsAssertionError() throws Exception {
+  public void testEntityUpdateThrowsAssertionError() throws Exception {
     thrown.expect(AssertionError.class);
     try {
       addressService.update(null, new Address("street", "city", "state", 95555));
@@ -156,11 +211,26 @@ public class AddressServiceTest {
     }
   }
 
+  @Override
   @Test
-  public void updateThrowsNotImplementedException() throws Exception {
+  public void testEntityUpdateThrowsNotImplementedException() throws Exception {
     thrown.expect(NotImplementedException.class);
 
     addressService.update(1L, new Address("street", "city", "state", 95555));
   }
 
+  @Override
+  public void testEntityUpdateReturnsPersistent() throws Exception {
+
+  }
+
+  @Override
+  public void testEntityUpdateReturnsCorrectEntity() throws Exception {
+
+  }
+
+  @Override
+  public void testEntityUpdateThrowsExceptionWhenNotFound() throws Exception {
+
+  }
 }

@@ -3,6 +3,7 @@ package gov.ca.cwds.data.cms;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.notNullValue;
+import static org.hamcrest.Matchers.nullValue;
 
 import java.math.BigDecimal;
 import java.text.DateFormat;
@@ -24,14 +25,17 @@ import org.junit.BeforeClass;
 import org.junit.Rule;
 import org.junit.Test;
 
+import gov.ca.cwds.data.junit.template.DaoTestTemplate;
 import gov.ca.cwds.data.persistence.cms.OtherChildInPlacemtHome;
 
-public class OtherChildInPlacemtHomeDaoIT {
+/**
+ * @author CWDS API Team
+ *
+ */
+public class OtherChildInPlacemtHomeDaoIT implements DaoTestTemplate {
   private static final DateFormat TIMESTAMP_FORMAT = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
   private DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
   private String birthDateString = "2002-06-25";
-
-
 
   @Rule
   public ExpectedException thrown = ExpectedException.none();
@@ -40,42 +44,49 @@ public class OtherChildInPlacemtHomeDaoIT {
   private static SessionFactory sessionFactory;
   private Session session;
 
+  @SuppressWarnings("javadoc")
   @BeforeClass
   public static void beforeClass() {
     sessionFactory = new Configuration().configure("hibernate.cfg.xml").buildSessionFactory();
     otherChildInPlacemtHomeDao = new OtherChildInPlacemtHomeDao(sessionFactory);
   }
 
+  @SuppressWarnings("javadoc")
   @AfterClass
   public static void afterClass() {
     sessionFactory.close();
   }
 
+  @Override
   @Before
   public void setup() {
     session = sessionFactory.getCurrentSession();
     session.beginTransaction();
   }
 
+  @Override
   @After
-  public void tearddown() {
+  public void teardown() {
     session.getTransaction().rollback();
   }
 
+  @Override
   @Test
-  public void testFindAllNamedQueryExists() throws Exception {
+  public void testFindAllNamedQueryExist() throws Exception {
     Query query =
         session.getNamedQuery("gov.ca.cwds.data.persistence.cms.OtherChildInPlacemtHome.findAll");
     assertThat(query, is(notNullValue()));
   }
 
+  @Override
   @Test
-  public void testFindAllReturnsCorrectList() {
+  public void testFindAllReturnsCorrectList() throws Exception {
     Query query =
         session.getNamedQuery("gov.ca.cwds.data.persistence.cms.OtherChildInPlacemtHome.findAll");
     assertThat(query.list().size(), is(2));
   }
 
+  @SuppressWarnings("javadoc")
   @Test
   public void testfindAllUpdatedAfterNamedQueryExists() throws Exception {
     Query query = session.getNamedQuery(
@@ -83,6 +94,7 @@ public class OtherChildInPlacemtHomeDaoIT {
     assertThat(query, is(notNullValue()));
   }
 
+  @SuppressWarnings("javadoc")
   @Test
   public void testfindAllUpdatedAfterReturnsCorrectList() throws Exception {
     Query query = session
@@ -92,13 +104,24 @@ public class OtherChildInPlacemtHomeDaoIT {
     assertThat(query.list().size(), is(2));
   }
 
+  @Override
   @Test
-  public void testFind() {
+  public void testFind() throws Exception {
     String id = "PT9kQgI0Mq";
     OtherChildInPlacemtHome found = otherChildInPlacemtHomeDao.find(id);
     assertThat(found.getId(), is(id));
   }
 
+  @Override
+  @Test
+  public void testFindEntityNotFoundException() throws Exception {
+    String id = "ZZZZZZZ999";
+    OtherChildInPlacemtHome found = otherChildInPlacemtHomeDao.find(id);
+    assertThat(found, is(nullValue()));
+
+  }
+
+  @Override
   @Test
   public void testCreate() throws Exception {
     Date birthDate = df.parse(birthDateString);
@@ -108,6 +131,7 @@ public class OtherChildInPlacemtHomeDaoIT {
     assertThat(created, is(otherChildInPlacemtHome));
   }
 
+  @Override
   @Test
   public void testCreateExistingEntityException() throws Exception {
     thrown.expect(EntityExistsException.class);
@@ -117,13 +141,24 @@ public class OtherChildInPlacemtHomeDaoIT {
     otherChildInPlacemtHomeDao.create(otherChildInPlacemtHome);
   }
 
+  @Override
   @Test
-  public void testDelete() {
+  public void testDelete() throws Exception {
     String id = "PT9kQgI0Mq";
     OtherChildInPlacemtHome deleted = otherChildInPlacemtHomeDao.delete(id);
     assertThat(deleted.getId(), is(id));
   }
 
+  @Override
+  @Test
+  public void testDeleteEntityNotFoundException() throws Exception {
+    String id = "ZZZZZZZ999";
+    OtherChildInPlacemtHome deleted = otherChildInPlacemtHomeDao.delete(id);
+    assertThat(deleted, is(nullValue()));
+
+  }
+
+  @Override
   @Test
   public void testUpdate() throws Exception {
 
@@ -134,6 +169,7 @@ public class OtherChildInPlacemtHomeDaoIT {
     assertThat(updated, is(otherChildInPlacemtHome));
   }
 
+  @Override
   @Test
   public void testUpdateEntityNotFoundException() throws Exception {
     thrown.expect(EntityNotFoundException.class);
@@ -143,4 +179,5 @@ public class OtherChildInPlacemtHomeDaoIT {
         birthDate, "0M401G20Mq", "F", "PT9kQgI0Ms", "Milly W.");
     otherChildInPlacemtHomeDao.update(otherChildInPlacemtHome);
   }
+
 }

@@ -1,5 +1,6 @@
 package gov.ca.cwds.data.cms;
 
+import static org.hamcrest.Matchers.nullValue;
 import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertThat;
 
@@ -19,10 +20,15 @@ import org.junit.BeforeClass;
 import org.junit.Rule;
 import org.junit.Test;
 
-import gov.ca.cwds.data.cms.StaffPersonDao;
+import gov.ca.cwds.data.junit.template.DaoTestTemplate;
 import gov.ca.cwds.data.persistence.cms.StaffPerson;
 
-public class StaffPersonDaoIT {
+/**
+ * @author CWDS API Team
+ *
+ */
+public class StaffPersonDaoIT implements DaoTestTemplate {
+  @SuppressWarnings("javadoc")
   @Rule
   public ExpectedException thrown = ExpectedException.none();
 
@@ -30,37 +36,51 @@ public class StaffPersonDaoIT {
   private static SessionFactory sessionFactory;
   private Session session;
 
+  @SuppressWarnings("javadoc")
   @BeforeClass
   public static void beforeClass() {
     sessionFactory = new Configuration().configure("hibernate.cfg.xml").buildSessionFactory();
     staffPersonDao = new StaffPersonDao(sessionFactory);
   }
 
+  @SuppressWarnings("javadoc")
   @AfterClass
   public static void afterClass() {
     sessionFactory.close();
   }
 
+  @Override
   @Before
   public void setup() {
     session = sessionFactory.getCurrentSession();
     session.beginTransaction();
   }
 
+  @Override
   @After
-  public void tearddown() {
+  public void teardown() {
     session.getTransaction().rollback();
   }
 
+  @Override
   @Test
-  public void testFind() {
+  public void testFind() throws Exception {
     String id = "q1p";
     StaffPerson found = staffPersonDao.find(id);
     assertThat(found.getId(), is(id));
   }
 
+  @Override
   @Test
-  public void testCreate() {
+  public void testFindEntityNotFoundException() throws Exception {
+    String id = "ZZZ";
+    StaffPerson found = staffPersonDao.find(id);
+    assertThat(found, is(nullValue()));
+  }
+
+  @Override
+  @Test
+  public void testCreate() throws Exception {
     StaffPerson staffPerson = new StaffPerson("q1k", null, "External Interface",
         "external interface", "SCXCIN7", " ", "", BigDecimal.valueOf(9165672100L), 0, null, "    ",
         "N", "MIZN02k00E", "  ", "    ", "99", "N", "3XPCP92q38", null);
@@ -68,8 +88,9 @@ public class StaffPersonDaoIT {
     assertThat(created, is(staffPerson));
   }
 
+  @Override
   @Test
-  public void testCreateExistingEntityException() {
+  public void testCreateExistingEntityException() throws Exception {
     thrown.expect(EntityExistsException.class);
     StaffPerson staffPerson = new StaffPerson("q1p", null, "External Interface",
         "external interface", "SCXCIN7", " ", "", BigDecimal.valueOf(9165672100L), 0, null, "    ",
@@ -77,15 +98,26 @@ public class StaffPersonDaoIT {
     staffPersonDao.create(staffPerson);
   }
 
+  @Override
   @Test
-  public void testDelete() {
+  public void testDelete() throws Exception {
     String id = "q1p";
     StaffPerson deleted = staffPersonDao.delete(id);
     assertThat(deleted.getId(), is(id));
   }
 
+  @Override
   @Test
-  public void testUpdate() {
+  public void testDeleteEntityNotFoundException() throws Exception {
+    String id = "ZZZ";
+    StaffPerson deleted = staffPersonDao.delete(id);
+    assertThat(deleted, is(nullValue()));
+
+  }
+
+  @Override
+  @Test
+  public void testUpdate() throws Exception {
     StaffPerson staffPerson = new StaffPerson("q1p", null, "External Interface",
         "external interface", "SCXCIN7", " ", "", BigDecimal.valueOf(9165672100L), 0, null, "    ",
         "N", "MIZN02k00E", "  ", "    ", "99", "N", "3XPCP92q38", null);
@@ -93,12 +125,26 @@ public class StaffPersonDaoIT {
     assertThat(updated, is(staffPerson));
   }
 
+  @Override
   @Test
-  public void testUpdateEntityNotFoundException() {
+  public void testUpdateEntityNotFoundException() throws Exception {
     thrown.expect(EntityNotFoundException.class);
     StaffPerson staffPerson = new StaffPerson("q1q", null, "External Interface",
         "external interface", "SCXCIN7", " ", "", BigDecimal.valueOf(9165672100L), 0, null, "    ",
         "N", "MIZN02k00E", "  ", "    ", "99", "N", "3XPCP92q38", null);
     staffPersonDao.update(staffPerson);
   }
+
+  @Override
+  public void testFindAllNamedQueryExist() throws Exception {
+    // TODO Auto-generated method stub
+
+  }
+
+  @Override
+  public void testFindAllReturnsCorrectList() throws Exception {
+    // TODO Auto-generated method stub
+
+  }
+
 }

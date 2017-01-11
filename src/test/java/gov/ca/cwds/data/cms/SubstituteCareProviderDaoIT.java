@@ -3,6 +3,7 @@ package gov.ca.cwds.data.cms;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.notNullValue;
+import static org.hamcrest.Matchers.nullValue;
 
 import java.math.BigDecimal;
 import java.text.DateFormat;
@@ -24,13 +25,19 @@ import org.junit.BeforeClass;
 import org.junit.Rule;
 import org.junit.Test;
 
+import gov.ca.cwds.data.junit.template.DaoTestTemplate;
 import gov.ca.cwds.data.persistence.cms.SubstituteCareProvider;
 
-public class SubstituteCareProviderDaoIT {
+/**
+ * @author CWDS API Team
+ *
+ */
+public class SubstituteCareProviderDaoIT implements DaoTestTemplate {
   private static final DateFormat TIMESTAMP_FORMAT = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
   private DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
   private String birthDateString = "1953-04-26";
 
+  @SuppressWarnings("javadoc")
   @Rule
   public ExpectedException thrown = ExpectedException.none();
 
@@ -38,35 +45,41 @@ public class SubstituteCareProviderDaoIT {
   private static SessionFactory sessionFactory;
   private Session session;
 
+  @SuppressWarnings("javadoc")
   @BeforeClass
   public static void beforeClass() {
     sessionFactory = new Configuration().configure("hibernate.cfg.xml").buildSessionFactory();
     substituteCareProviderDao = new SubstituteCareProviderDao(sessionFactory);
   }
 
+  @SuppressWarnings("javadoc")
   @AfterClass
   public static void afterClass() {
     sessionFactory.close();
   }
 
+  @Override
   @Before
   public void setup() {
     session = sessionFactory.getCurrentSession();
     session.beginTransaction();
   }
 
+  @Override
   @After
-  public void tearddown() {
+  public void teardown() {
     session.getTransaction().rollback();
   }
 
+  @Override
   @Test
-  public void testFindAllNamedQueryExists() throws Exception {
+  public void testFindAllNamedQueryExist() throws Exception {
     Query query =
         session.getNamedQuery("gov.ca.cwds.data.persistence.cms.SubstituteCareProvider.findAll");
     assertThat(query, is(notNullValue()));
   }
 
+  @Override
   @Test
   public void testFindAllReturnsCorrectList() {
     Query query =
@@ -74,6 +87,7 @@ public class SubstituteCareProviderDaoIT {
     assertThat(query.list().size(), is(2));
   }
 
+  @SuppressWarnings("javadoc")
   @Test
   public void testfindAllUpdatedAfterNamedQueryExists() throws Exception {
     Query query = session.getNamedQuery(
@@ -81,6 +95,7 @@ public class SubstituteCareProviderDaoIT {
     assertThat(query, is(notNullValue()));
   }
 
+  @SuppressWarnings("javadoc")
   @Test
   public void testfindAllUpdatedAfterReturnsCorrectList() throws Exception {
     Query query = session
@@ -90,13 +105,24 @@ public class SubstituteCareProviderDaoIT {
     assertThat(query.list().size(), is(2));
   }
 
+  @Override
   @Test
-  public void testFind() {
+  public void testFind() throws Exception {
     String id = "aQqUhBQF11";
     SubstituteCareProvider found = substituteCareProviderDao.find(id);
     assertThat(found.getId(), is(id));
   }
 
+  @Override
+  @Test
+  public void testFindEntityNotFoundException() throws Exception {
+    String id = "ZZZZZZZ999";
+    SubstituteCareProvider found = substituteCareProviderDao.find(id);
+    assertThat(found, is(nullValue()));
+
+  }
+
+  @Override
   @Test
   public void testCreate() throws Exception {
     Date birthDate = df.parse(birthDateString);
@@ -110,6 +136,7 @@ public class SubstituteCareProviderDaoIT {
     assertThat(created, is(substituteCareProvider));
   }
 
+  @Override
   @Test
   public void testCreateExistingEntityException() throws Exception {
     thrown.expect(EntityExistsException.class);
@@ -123,13 +150,23 @@ public class SubstituteCareProviderDaoIT {
     substituteCareProviderDao.create(substituteCareProvider);
   }
 
+  @Override
   @Test
-  public void testDelete() {
+  public void testDelete() throws Exception {
     String id = "aQqUhBQF11";
     SubstituteCareProvider deleted = substituteCareProviderDao.delete(id);
     assertThat(deleted.getId(), is(id));
   }
 
+  @Override
+  @Test
+  public void testDeleteEntityNotFoundException() throws Exception {
+    String id = "ZZZZZZZ999";
+    SubstituteCareProvider deleted = substituteCareProviderDao.delete(id);
+    assertThat(deleted, is(nullValue()));
+  }
+
+  @Override
   @Test
   public void testUpdate() throws Exception {
     Date birthDate = df.parse(birthDateString);
@@ -143,6 +180,7 @@ public class SubstituteCareProviderDaoIT {
     assertThat(updated, is(substituteCareProvider));
   }
 
+  @Override
   @Test
   public void testUpdateEntityNotFoundException() throws Exception {
     thrown.expect(EntityNotFoundException.class);
@@ -155,4 +193,5 @@ public class SubstituteCareProviderDaoIT {
             "889987752", (short) 1828, "1611", "5th Street", "SufixDescrption", 95814, (short) 0);
     substituteCareProviderDao.update(substituteCareProvider);
   }
+
 }

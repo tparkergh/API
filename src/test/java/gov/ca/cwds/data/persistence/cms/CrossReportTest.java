@@ -17,6 +17,7 @@ import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import gov.ca.cwds.data.persistence.junit.template.PersistentTestTemplate;
 import gov.ca.cwds.rest.api.domain.DomainChef;
 import io.dropwizard.jackson.Jackson;
 
@@ -24,7 +25,7 @@ import io.dropwizard.jackson.Jackson;
  * @author CWDS API Team
  *
  */
-public class CrossReportTest {
+public class CrossReportTest implements PersistentTestTemplate {
   private final static DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
   private final static DateFormat tf = new SimpleDateFormat("HH:mm:ss");
   private static final ObjectMapper MAPPER = Jackson.newObjectMapper();
@@ -56,14 +57,16 @@ public class CrossReportTest {
    * Constructor test
    */
   @SuppressWarnings("javadoc")
+  @Override
   @Test
-  public void emtpyConstructorIsNotNull() throws Exception {
+  public void testEmptyConstructor() throws Exception {
     assertThat(CrossReport.class.newInstance(), is(notNullValue()));
   }
 
   @SuppressWarnings("javadoc")
+  @Override
   @Test
-  public void domainCrossReportLastUpdateConstructorTest() throws Exception {
+  public void testConstructorUsingDomain() throws Exception {
 
     gov.ca.cwds.rest.api.domain.cms.CrossReport domain = validCrossReport();
 
@@ -103,8 +106,9 @@ public class CrossReportTest {
   }
 
   @SuppressWarnings("javadoc")
+  @Override
   @Test
-  public void persistentCrossReportContructorTest() throws Exception {
+  public void testPersistentContructor() throws Exception {
 
     CrossReport persistent = new CrossReport(referralId, thirdId, crossReportMethodType,
         filedOutOfStateIndicator, governmentOrgCrossRptIndicatorVar, tf.parse(informTime),
@@ -147,6 +151,12 @@ public class CrossReportTest {
         MAPPER.readValue(fixture("fixtures/domain/legacy/CrossReport/valid/valid.json"),
             gov.ca.cwds.rest.api.domain.cms.CrossReport.class);
     return validCrossReport;
+
+  }
+
+  @Override
+  public void testEqualsHashCodeWorks() throws Exception {
+    // TODO Auto-generated method stub
 
   }
 }

@@ -1,10 +1,7 @@
 package gov.ca.cwds.data.junit.template;
 
 import org.junit.After;
-import org.junit.AfterClass;
 import org.junit.Before;
-import org.junit.BeforeClass;
-import org.junit.Rule;
 import org.junit.Test;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -18,16 +15,6 @@ import io.dropwizard.jackson.Jackson;
 public interface DaoTestTemplate {
 
   static final ObjectMapper MAPPER = Jackson.newObjectMapper();
-
-  @SuppressWarnings("javadoc")
-  @Rule
-
-  @BeforeClass
-  public abstract void beforeClass() throws Exception;
-
-  @SuppressWarnings("javadoc")
-  @AfterClass
-  public abstract void afterClass() throws Exception;
 
   @SuppressWarnings("javadoc")
   @Before

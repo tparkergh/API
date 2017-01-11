@@ -3,6 +3,7 @@ package gov.ca.cwds.data.cms;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.notNullValue;
+import static org.hamcrest.Matchers.nullValue;
 
 import java.math.BigDecimal;
 import java.text.DateFormat;
@@ -23,13 +24,18 @@ import org.junit.BeforeClass;
 import org.junit.Rule;
 import org.junit.Test;
 
-import gov.ca.cwds.data.cms.ServiceProviderDao;
+import gov.ca.cwds.data.junit.template.DaoTestTemplate;
 import gov.ca.cwds.data.persistence.cms.ServiceProvider;
 
-public class ServiceProviderDaoIT {
+/**
+ * @author CWDS API Team
+ *
+ */
+public class ServiceProviderDaoIT implements DaoTestTemplate {
   private static final DateFormat TIMESTAMP_FORMAT = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 
 
+  @SuppressWarnings("javadoc")
   @Rule
   public ExpectedException thrown = ExpectedException.none();
 
@@ -37,42 +43,49 @@ public class ServiceProviderDaoIT {
   private static SessionFactory sessionFactory;
   private Session session;
 
+  @SuppressWarnings("javadoc")
   @BeforeClass
   public static void beforeClass() {
     sessionFactory = new Configuration().configure("hibernate.cfg.xml").buildSessionFactory();
     serviceProviderDao = new ServiceProviderDao(sessionFactory);
   }
 
+  @SuppressWarnings("javadoc")
   @AfterClass
   public static void afterClass() {
     sessionFactory.close();
   }
 
+  @Override
   @Before
   public void setup() {
     session = sessionFactory.getCurrentSession();
     session.beginTransaction();
   }
 
+  @Override
   @After
-  public void tearddown() {
+  public void teardown() {
     session.getTransaction().rollback();
   }
 
+  @Override
   @Test
-  public void testFindAllNamedQueryExists() throws Exception {
+  public void testFindAllNamedQueryExist() throws Exception {
     Query query =
         session.getNamedQuery("gov.ca.cwds.rest.api.persistence.cms.ServiceProvider.findAll");
     assertThat(query, is(notNullValue()));
   }
 
+  @Override
   @Test
-  public void testFindAllReturnsCorrectList() {
+  public void testFindAllReturnsCorrectList() throws Exception {
     Query query =
         session.getNamedQuery("gov.ca.cwds.rest.api.persistence.cms.ServiceProvider.findAll");
     assertThat(query.list().size(), is(3));
   }
 
+  @SuppressWarnings("javadoc")
   @Test
   public void testfindAllUpdatedAfterNamedQueryExists() throws Exception {
     Query query = session
@@ -80,6 +93,7 @@ public class ServiceProviderDaoIT {
     assertThat(query, is(notNullValue()));
   }
 
+  @SuppressWarnings("javadoc")
   @Test
   public void testfindAllUpdatedAfterReturnsCorrectList() throws Exception {
     Query query = session
@@ -88,13 +102,22 @@ public class ServiceProviderDaoIT {
     assertThat(query.list().size(), is(3));
   }
 
+  @Override
   @Test
-  public void testFind() {
+  public void testFind() throws Exception {
     String id = "Ao9dm8T0Ki";
     ServiceProvider found = serviceProviderDao.find(id);
     assertThat(found.getId(), is(id));
   }
 
+  @Override
+  public void testFindEntityNotFoundException() throws Exception {
+    String id = "ZZZZZZZ999";
+    ServiceProvider found = serviceProviderDao.find(id);
+    assertThat(found, is(nullValue()));
+  }
+
+  @Override
   @Test
   public void testCreate() throws Exception {
     ServiceProvider serviceProvider = new ServiceProvider("Test Agency", "N", " ", null,
@@ -104,6 +127,7 @@ public class ServiceProviderDaoIT {
     assertThat(created, is(serviceProvider));
   }
 
+  @Override
   @Test
   public void testCreateExistingEntityException() throws Exception {
     thrown.expect(EntityExistsException.class);
@@ -113,13 +137,24 @@ public class ServiceProviderDaoIT {
     serviceProviderDao.create(serviceProvider);
   }
 
+  @Override
   @Test
-  public void testDelete() {
+  public void testDelete() throws Exception {
     String id = "Ao9dm8T0Ki";
     ServiceProvider deleted = serviceProviderDao.delete(id);
     assertThat(deleted.getId(), is(id));
   }
 
+
+  @Override
+  public void testDeleteEntityNotFoundException() throws Exception {
+    String id = "ZZZZZZZ999";
+    ServiceProvider deleted = serviceProviderDao.delete(id);
+    assertThat(deleted, is(nullValue()));
+
+  }
+
+  @Override
   @Test
   public void testUpdate() throws Exception {
 
@@ -130,6 +165,7 @@ public class ServiceProviderDaoIT {
     assertThat(updated, is(serviceProvider));
   }
 
+  @Override
   @Test
   public void testUpdateEntityNotFoundException() throws Exception {
     thrown.expect(EntityNotFoundException.class);
@@ -139,4 +175,5 @@ public class ServiceProviderDaoIT {
         (short) 0, (short) 0, " ", " ", " ", 0, (short) 0);
     serviceProviderDao.update(serviceProvider);
   }
+
 }

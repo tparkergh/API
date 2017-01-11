@@ -4,6 +4,7 @@ import static io.dropwizard.testing.FixtureHelpers.fixture;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.notNullValue;
+import static org.hamcrest.Matchers.nullValue;
 
 import java.io.IOException;
 import java.text.DateFormat;
@@ -28,10 +29,11 @@ import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import gov.ca.cwds.data.junit.template.DaoTestTemplate;
 import gov.ca.cwds.data.persistence.cms.EducationProviderContact;
 import io.dropwizard.jackson.Jackson;
 
-public class EducationProviderContactDaoIT {
+public class EducationProviderContactDaoIT implements DaoTestTemplate {
   private static final DateFormat TIMESTAMP_FORMAT = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
   private static final ObjectMapper MAPPER = Jackson.newObjectMapper();
 
@@ -42,6 +44,7 @@ public class EducationProviderContactDaoIT {
   private static SessionFactory sessionFactory;
   private Session session;
 
+  @SuppressWarnings("javadoc")
   @BeforeClass
   public static void beforeClass() {
     sessionFactory = new Configuration().configure("hibernate.cfg.xml").buildSessionFactory();
@@ -53,17 +56,21 @@ public class EducationProviderContactDaoIT {
     sessionFactory.close();
   }
 
+  @Override
   @Before
   public void setup() {
     session = sessionFactory.getCurrentSession();
     session.beginTransaction();
   }
 
+  @Override
   @After
-  public void tearddown() {
+  public void teardown() throws Exception {
     session.getTransaction().rollback();
+
   }
 
+  @Override
   @Test
   public void testFindAllNamedQueryExist() throws Exception {
     Query query =
@@ -71,6 +78,7 @@ public class EducationProviderContactDaoIT {
     assertThat(query, is(notNullValue()));
   }
 
+  @Override
   @Test
   public void testFindAllReturnsCorrectList() throws Exception {
     Query query =
@@ -78,6 +86,7 @@ public class EducationProviderContactDaoIT {
     assertThat(query.list().size(), is(2));
   }
 
+  @SuppressWarnings("javadoc")
   @Test
   public void testFindAllUpdatedAfterNameQueryExist() throws Exception {
     Query query = session.getNamedQuery(
@@ -85,6 +94,7 @@ public class EducationProviderContactDaoIT {
     assertThat(query, is(notNullValue()));
   }
 
+  @SuppressWarnings("javadoc")
   @Test
   public void testfindAllUpdatedAfterReturnsCorrectList() throws Exception {
     Query query = session
@@ -94,6 +104,7 @@ public class EducationProviderContactDaoIT {
     assertThat(query.list().size(), is(2));
   }
 
+  @Override
   @Test
   public void testFind() {
     String id = "H2UmfUi0X5";
@@ -101,6 +112,15 @@ public class EducationProviderContactDaoIT {
     assertThat(found.getId(), is(id));
   }
 
+  @Override
+  @Test
+  public void testFindEntityNotFoundException() throws Exception {
+    String id = "ZZZZZZZ999";
+    EducationProviderContact found = educationProviderContactDao.find(id);
+    assertThat(found, is(nullValue()));
+  }
+
+  @Override
   @Test
   public void testCreate() throws Exception {
     EducationProviderContact epc = validEducationProviderContact();
@@ -117,6 +137,7 @@ public class EducationProviderContactDaoIT {
 
   }
 
+  @Override
   @Test
   public void testCreateExistingEntityException() throws Exception {
 
@@ -134,6 +155,7 @@ public class EducationProviderContactDaoIT {
     educationProviderContactDao.create(educationProviderContact);
   }
 
+  @Override
   @Test
   public void testDelete() {
     String id = "H2UmfUi0X5";
@@ -141,6 +163,16 @@ public class EducationProviderContactDaoIT {
     assertThat(deleted.getId(), is(id));
   }
 
+
+  @Override
+  @Test
+  public void testDeleteEntityNotFoundException() throws Exception {
+    String id = "ZZZZZZZ999";
+    EducationProviderContact deleted = educationProviderContactDao.delete(id);
+    assertThat(deleted, is(nullValue()));
+  }
+
+  @Override
   @Test
   public void testUpdate() throws Exception {
 
@@ -158,6 +190,7 @@ public class EducationProviderContactDaoIT {
 
   }
 
+  @Override
   @Test
   public void testUpdateEntityNotFoundException() throws Exception {
 

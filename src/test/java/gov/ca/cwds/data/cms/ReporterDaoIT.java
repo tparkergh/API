@@ -1,5 +1,6 @@
 package gov.ca.cwds.data.cms;
 
+import static org.hamcrest.Matchers.nullValue;
 import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertThat;
 
@@ -16,16 +17,17 @@ import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 
-import gov.ca.cwds.data.cms.ReporterDao;
+import gov.ca.cwds.data.junit.template.DaoTestTemplate;
 import gov.ca.cwds.data.persistence.cms.Reporter;
 
-public class ReporterDaoIT {
+public class ReporterDaoIT implements DaoTestTemplate {
   private SessionFactory sessionFactory;
   private ReporterDao reporterDao;
 
   @Rule
   public ExpectedException thrown = ExpectedException.none();
 
+  @Override
   @Before
   public void setup() {
     sessionFactory = new Configuration().configure().buildSessionFactory();
@@ -33,20 +35,32 @@ public class ReporterDaoIT {
     reporterDao = new ReporterDao(sessionFactory);
   }
 
+  @Override
   @After
   public void teardown() {
     sessionFactory.close();
   }
 
+  @Override
   @Test
-  public void testFind() {
+  public void testFind() throws Exception {
     String id = "AbiQCgu0Hj";
     Reporter found = reporterDao.find(id);
     assertThat(found.getReferralId(), is(id));
   }
 
+  @Override
   @Test
-  public void testCreate() {
+  public void testFindEntityNotFoundException() throws Exception {
+    String id = "ZZZZZZZ999";
+    Reporter found = reporterDao.find(id);
+    assertThat(found, is(nullValue()));
+
+  }
+
+  @Override
+  @Test
+  public void testCreate() throws Exception {
     Reporter reporter = new Reporter("AbiQCgu0AA", "  ", "City", (short) 591, (short) 0, "N", null,
         " ", null, "N", "Fred", "Reporter", "N", 0, BigDecimal.valueOf(0), " ", " ",
         BigDecimal.valueOf(0L), 0, (short) 1828, "Street", "12345", " ", new Integer(95845),
@@ -56,8 +70,10 @@ public class ReporterDaoIT {
 
   }
 
+
+  @Override
   @Test
-  public void testCreateExistingEntityException() {
+  public void testCreateExistingEntityException() throws Exception {
     thrown.expect(EntityExistsException.class);
     Reporter reporter = new Reporter("AbiQCgu0Hj", "  ", "City", (short) 591, (short) 0, "N", null,
         " ", null, "N", "Fred", "Reporter", "N", 0, BigDecimal.valueOf(0), " ", " ",
@@ -66,15 +82,25 @@ public class ReporterDaoIT {
     reporterDao.create(reporter);
   }
 
+  @Override
   @Test
-  public void testDelete() {
+  public void testDelete() throws Exception {
     String id = "AbiQCgu0Hj";
     Reporter deleted = reporterDao.delete(id);
     assertThat(deleted.getReferralId(), is(id));
   }
 
+  @Override
   @Test
-  public void testUpdate() {
+  public void testDeleteEntityNotFoundException() throws Exception {
+    String id = "ZZZZZZZ999";
+    Reporter deleted = reporterDao.delete(id);
+    assertThat(deleted, is(nullValue()));
+  }
+
+  @Override
+  @Test
+  public void testUpdate() throws Exception {
     Reporter reporter = new Reporter("AbiQCgu0Hj", "  ", "City", (short) 591, (short) 0, "N", null,
         " ", null, "N", "Fred", "Reporter", "N", 0, BigDecimal.valueOf(0), " ", " ",
         BigDecimal.valueOf(0L), 0, (short) 1828, "Street", "12345", " ", new Integer(95845),
@@ -83,8 +109,9 @@ public class ReporterDaoIT {
     assertThat(reporter, is(updated));
   }
 
+  @Override
   @Test
-  public void testUpdateEntityNotFoundException() {
+  public void testUpdateEntityNotFoundException() throws Exception {
     thrown.expect(EntityNotFoundException.class);
     Reporter reporter = new Reporter("ZZZZZZ", "  ", "City", (short) 591, (short) 0, "N", null, " ",
         null, "N", "Fred", "Reporter", "N", 0, BigDecimal.valueOf(0), " ", " ",
@@ -93,4 +120,15 @@ public class ReporterDaoIT {
     reporterDao.update(reporter);
   }
 
+  @Override
+  public void testFindAllNamedQueryExist() throws Exception {
+    // TODO Auto-generated method stub
+
+  }
+
+  @Override
+  public void testFindAllReturnsCorrectList() throws Exception {
+    // TODO Auto-generated method stub
+
+  }
 }

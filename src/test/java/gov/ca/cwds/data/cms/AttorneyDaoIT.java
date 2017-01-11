@@ -3,6 +3,7 @@ package gov.ca.cwds.data.cms;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.notNullValue;
+import static org.hamcrest.Matchers.nullValue;
 
 import java.math.BigDecimal;
 import java.text.DateFormat;
@@ -24,17 +25,17 @@ import org.junit.BeforeClass;
 import org.junit.Rule;
 import org.junit.Test;
 
+import gov.ca.cwds.data.junit.template.DaoTestTemplate;
 import gov.ca.cwds.data.persistence.cms.Attorney;
 
 /**
  * @author Tabpcenc1
  *
  */
-public class AttorneyDaoIT {
+public class AttorneyDaoIT implements DaoTestTemplate {
   private static final DateFormat TIMESTAMP_FORMAT = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
   private DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
   private String endDateString = "1998-08-01";
-
 
   /**
    * 
@@ -59,31 +60,32 @@ public class AttorneyDaoIT {
     sessionFactory.close();
   }
 
-  @SuppressWarnings("javadoc")
+  @Override
   @Before
   public void setup() {
     session = sessionFactory.getCurrentSession();
     session.beginTransaction();
   }
 
-  @SuppressWarnings("javadoc")
+  @Override
   @After
-  public void tearddown() {
+  public void teardown() throws Exception {
     session.getTransaction().rollback();
-  }
-
-  @SuppressWarnings("javadoc")
-  @Test
-  public void testFindAllNamedQueryExists() throws Exception {
-    Query query = session.getNamedQuery("gov.ca.cwds.data.persistence.cms.Attorney.findAll");
-    assertThat(query, is(notNullValue()));
   }
 
   /**
    * find using query test
    */
+  @Override
   @Test
-  public void testFindAllReturnsCorrectList() {
+  public void testFindAllNamedQueryExist() throws Exception {
+    Query query = session.getNamedQuery("gov.ca.cwds.data.persistence.cms.Attorney.findAll");
+    assertThat(query, is(notNullValue()));
+  }
+
+  @Override
+  @Test
+  public void testFindAllReturnsCorrectList() throws Exception {
     Query query = session.getNamedQuery("gov.ca.cwds.data.persistence.cms.Attorney.findAll");
     assertThat(query.list().size(), is(2));
   }
@@ -109,7 +111,7 @@ public class AttorneyDaoIT {
     assertThat(query.list().size(), is(1));
   }
 
-  @SuppressWarnings("javadoc")
+  @Override
   @Test
   public void testFind() {
     String id = "AcjOOPa0BU";
@@ -117,11 +119,20 @@ public class AttorneyDaoIT {
     assertThat(found.getId(), is(id));
   }
 
+  @Override
+  @Test
+  public void testFindEntityNotFoundException() throws Exception {
+    String id = "9999999XXX";
+    Attorney found = attorneyDao.find(id);
+    assertThat(found, is(nullValue()));
+  }
+
   /**
    * test the create methods
    * 
    * @throws Exception required for test compilation
    */
+  @Override
   @Test
   public void testCreate() throws Exception {
     Attorney attorney = new Attorney("N", " ", " ", " ", null, null, BigDecimal.ZERO, "Lance",
@@ -131,7 +142,7 @@ public class AttorneyDaoIT {
     assertThat(created, is(attorney));
   }
 
-  @SuppressWarnings("javadoc")
+  @Override
   @Test
   public void testCreateExistingEntityException() throws Exception {
     thrown.expect(EntityExistsException.class);
@@ -144,6 +155,7 @@ public class AttorneyDaoIT {
   /**
    * test the delete method
    */
+  @Override
   @Test
   public void testDelete() {
     String id = "AcjOOPa0BU";
@@ -151,11 +163,20 @@ public class AttorneyDaoIT {
     assertThat(deleted.getId(), is(id));
   }
 
+  @Override
+  @Test
+  public void testDeleteEntityNotFoundException() throws Exception {
+    String id = "9999999ZZZ";
+    Attorney deleted = attorneyDao.delete(id);
+    assertThat(deleted, is(nullValue()));
+  }
+
   /**
    * test the update method
    * 
    * @throws Exception required for test compilation
    */
+  @Override
   @Test
   public void testUpdate() throws Exception {
     Date endDate = df.parse(endDateString);
@@ -166,7 +187,7 @@ public class AttorneyDaoIT {
     assertThat(updated, is(attorney));
   }
 
-  @SuppressWarnings("javadoc")
+  @Override
   @Test
   public void testUpdateEntityNotFoundException() throws Exception {
     thrown.expect(EntityNotFoundException.class);
@@ -176,4 +197,5 @@ public class AttorneyDaoIT {
         0, BigDecimal.ZERO, (short) 0, " ", " ", " ", 0, (short) 0);
     attorneyDao.update(attorney);
   }
+
 }

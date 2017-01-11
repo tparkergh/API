@@ -1,6 +1,7 @@
 package gov.ca.cwds.data.cms;
 
 import static io.dropwizard.testing.FixtureHelpers.fixture;
+import static org.hamcrest.Matchers.nullValue;
 import static org.hamcrest.core.Is.is;
 import static org.hamcrest.core.IsEqual.equalTo;
 import static org.junit.Assert.assertThat;
@@ -45,15 +46,6 @@ public class AllegationDaoIT implements DaoTestTemplate {
   @Rule
   public ExpectedException thrown = ExpectedException.none();
 
-  @Override
-  public void beforeClass() throws Exception {
-
-  }
-
-  @Override
-  public void afterClass() throws Exception {
-
-  }
 
   /**
    * 
@@ -80,13 +72,17 @@ public class AllegationDaoIT implements DaoTestTemplate {
    */
   @Override
   @Test
-  public void testFind() {
+  public void testFind() throws Exception {
     Allegation found = allegationDao.find(id);
     assertThat(found.getId(), is(equalTo(id)));
   }
 
   @Override
-  public void testFindEntityNotFoundException() throws Exception {}
+  @Test
+  public void testFindEntityNotFoundException() throws Exception {
+    Allegation found = allegationDao.find("9999999ZZZ");
+    assertThat(found, is(nullValue()));
+  }
 
   /**
    * Create JUnit test
@@ -140,14 +136,16 @@ public class AllegationDaoIT implements DaoTestTemplate {
    */
   @Override
   @Test
-  public void testDelete() {
+  public void testDelete() throws Exception {
     Allegation deleted = allegationDao.delete(id);
     assertThat(deleted.getId(), is(id));
   }
 
   @Override
+  @Test
   public void testDeleteEntityNotFoundException() throws Exception {
-
+    Allegation deleted = allegationDao.delete("9999999ZZZ");
+    assertThat(deleted, is(nullValue()));
   }
 
   @Override

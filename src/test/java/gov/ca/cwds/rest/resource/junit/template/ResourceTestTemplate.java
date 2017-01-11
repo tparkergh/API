@@ -2,12 +2,18 @@ package gov.ca.cwds.rest.resource.junit.template;
 
 import org.junit.Test;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+
+import io.dropwizard.jackson.Jackson;
+
 /**
  * 
  * @author CWDS API Team
  *
  */
 public interface ResourceTestTemplate {
+
+  static final ObjectMapper MAPPER = Jackson.newObjectMapper();
 
   /*
    * JUnit test for GET

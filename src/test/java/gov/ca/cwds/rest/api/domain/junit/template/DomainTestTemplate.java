@@ -84,7 +84,94 @@ public interface DomainTestTemplate {
    * @NotNull
    * 
    * @ApiModelProperty(required = true) private Boolean property
+   */
+
+  /*
+   * Case: String NotNull NotRequired Size(min=x, max=x)
+   * 
+   * @NotNull
+   * 
+   * @Size(min = 10, max = 10)
+   * 
+   * @ApiModelProperty(required = false) private String Property;
    * 
    */
 
+  /*
+   * Case: String NotEmpty Required Size(min=x, max=y)
+   * 
+   * @NotEmpty
+   * 
+   * @Size(min = 1, max = 2)
+   * 
+   * @ApiModelProperty(required = true, readOnly = false) private String property;
+   */
+
+  /*
+   * Case: String NotRequired Size(max=x)
+   * 
+   * @Size(max = 10)
+   * 
+   * @ApiModelProperty(required = false, readOnly = false) private String property;
+   */
+
+  /*
+   * Case: String NotRequired DateNotRequired
+   * 
+   * @gov.ca.cwds.rest.validation.Date(format = DATE_FORMAT, required = false)
+   * 
+   * @ApiModelProperty(required = false, readOnly = false) private String property
+   */
+
+  /*
+   * Case: String NotNull Required DateRequired
+   * 
+   * @NotNull
+   * 
+   * @gov.ca.cwds.rest.validation.Date(format = DATE_FORMAT, required = true)
+   * 
+   * @ApiModelProperty(required = true, readOnly = fals) private String property;
+   */
+
+  /*
+   * Case: String NotEmpty Size(min=x, max=x) OneOf Required
+   * 
+   * @NotEmpty
+   * 
+   * @Size(min = 1, max = 1)
+   * 
+   * @OneOf(value = {"S", "R", "N"}, ignoreCase = true, ignoreWhitespace = true)
+   * 
+   * @ApiModelProperty(required = true) private String property;
+   */
+
+  /*
+   * Case: Short NotNull NotRequired
+   * 
+   * @NotNull
+   * 
+   * @ApiModelProperty(required = false, readOnly = false) private Short property;
+   */
+
+  /*
+   * Case: Short NotRequired
+   * 
+   * @ApiModelProperty(required = false, readOnly = false) private Short property;
+   */
+
+  /*
+   * Case: BigDecimal NotNull Required
+   * 
+   * @NotNull
+   * 
+   * @ApiModelProperty(required = true, readOnly = false) private BigDecimal property;
+   */
+
+  /*
+   * Case: Integer NotNullRequired
+   * 
+   * @NotNull
+   * 
+   * @ApiModelProperty(required = true, readOnly = false) private Integer phoneExt;
+   */
 }

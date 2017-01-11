@@ -3,6 +3,7 @@ package gov.ca.cwds.data.cms;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.notNullValue;
+import static org.hamcrest.Matchers.nullValue;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -23,9 +24,10 @@ import org.junit.BeforeClass;
 import org.junit.Rule;
 import org.junit.Test;
 
+import gov.ca.cwds.data.junit.template.DaoTestTemplate;
 import gov.ca.cwds.data.persistence.cms.Client;
 
-public class ClientDaoIT {
+public class ClientDaoIT implements DaoTestTemplate {
   private static final DateFormat TIMESTAMP_FORMAT = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
   private DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
   private String birthDateString = "1972-08-17";
@@ -49,29 +51,34 @@ public class ClientDaoIT {
     sessionFactory.close();
   }
 
+  @Override
   @Before
   public void setup() {
     session = sessionFactory.getCurrentSession();
     session.beginTransaction();
   }
 
+  @Override
   @After
-  public void tearddown() {
+  public void teardown() throws Exception {
     session.getTransaction().rollback();
   }
 
+  @Override
   @Test
-  public void testFindAllNamedQueryExists() throws Exception {
+  public void testFindAllNamedQueryExist() throws Exception {
     Query query = session.getNamedQuery("gov.ca.cwds.data.persistence.cms.Client.findAll");
     assertThat(query, is(notNullValue()));
   }
 
+  @Override
   @Test
   public void testFindAllReturnsCorrectList() {
     Query query = session.getNamedQuery("gov.ca.cwds.data.persistence.cms.Client.findAll");
     assertThat(query.list().size(), is(2));
   }
 
+  @SuppressWarnings("javadoc")
   @Test
   public void testfindAllUpdatedAfterNamedQueryExists() throws Exception {
     Query query =
@@ -79,6 +86,7 @@ public class ClientDaoIT {
     assertThat(query, is(notNullValue()));
   }
 
+  @SuppressWarnings("javadoc")
   @Test
   public void testfindAllUpdatedAfterReturnsCorrectList() throws Exception {
     Query query =
@@ -87,6 +95,7 @@ public class ClientDaoIT {
     assertThat(query.list().size(), is(1));
   }
 
+  @Override
   @Test
   public void testFind() {
     String id = "AaiU7IW0Rt";
@@ -94,6 +103,15 @@ public class ClientDaoIT {
     assertThat(found.getId(), is(id));
   }
 
+  @Override
+  @Test
+  public void testFindEntityNotFoundException() throws Exception {
+    String id = "9999999ZZZ";
+    Client found = clientDao.find(id);
+    assertThat(found, is(nullValue()));
+  }
+
+  @Override
   @Test
   public void testCreate() throws Exception {
     Date birthDate = df.parse(birthDateString);
@@ -108,6 +126,7 @@ public class ClientDaoIT {
     assertThat(created, is(client));
   }
 
+  @Override
   @Test
   public void testCreateExistingEntityException() throws Exception {
     thrown.expect(EntityExistsException.class);
@@ -122,6 +141,7 @@ public class ClientDaoIT {
     clientDao.create(client);
   }
 
+  @Override
   @Test
   public void testDelete() {
     String id = "AaiU7IW0Rt";
@@ -129,6 +149,14 @@ public class ClientDaoIT {
     assertThat(deleted.getId(), is(id));
   }
 
+  @Override
+  public void testDeleteEntityNotFoundException() throws Exception {
+    String id = "9999999ZZZ";
+    Client deleted = clientDao.delete(id);
+    assertThat(deleted, is(nullValue()));
+  }
+
+  @Override
   @Test
   public void testUpdate() throws Exception {
     Date birthDate = df.parse(birthDateString);
@@ -143,6 +171,7 @@ public class ClientDaoIT {
     assertThat(updated, is(client));
   }
 
+  @Override
   @Test
   public void testUpdateEntityNotFoundException() throws Exception {
     thrown.expect(EntityNotFoundException.class);
@@ -156,4 +185,6 @@ public class ClientDaoIT {
         " ", "N", "N", "U", "N");
     clientDao.update(client);
   }
+
+
 }
