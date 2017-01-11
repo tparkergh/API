@@ -6,6 +6,8 @@ import static org.hamcrest.CoreMatchers.notNullValue;
 import static org.junit.Assert.assertThat;
 import static org.mockito.Mockito.mock;
 
+import java.util.ArrayList;
+
 import org.elasticsearch.search.SearchHits;
 import org.hamcrest.junit.ExpectedException;
 import org.junit.Before;
@@ -17,7 +19,6 @@ import org.mockito.MockitoAnnotations;
 import org.mockito.Spy;
 
 import gov.ca.cwds.data.es.ElasticsearchDao;
-import gov.ca.cwds.rest.api.domain.es.AutoCompletePerson;
 import gov.ca.cwds.rest.api.domain.es.AutoCompletePersonRequest;
 import gov.ca.cwds.rest.api.domain.es.AutoCompletePersonResponse;
 
@@ -60,7 +61,7 @@ public class AutoCompletePersonServiceTest {
     AutoCompletePersonResponse actual = target.handleRequest(req);
     // then
     // e.g. : verify(mocked).called();
-    AutoCompletePersonResponse expected = new AutoCompletePersonResponse(new AutoCompletePerson[0]);
+    AutoCompletePersonResponse expected = new AutoCompletePersonResponse(new ArrayList<>());
     assertThat(actual, is(equalTo(expected)));
   }
 

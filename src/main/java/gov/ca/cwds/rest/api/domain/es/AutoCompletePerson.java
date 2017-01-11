@@ -579,7 +579,7 @@ public class AutoCompletePerson
     @JsonProperty("state")
     private AutoCompleteState stateType = AutoCompleteState.NONE;
 
-    @JsonProperty("county")
+    // @JsonProperty("county")
     private AutoCompleteCounty county;
 
     @JsonInclude(JsonInclude.Include.ALWAYS)
@@ -672,8 +672,14 @@ public class AutoCompletePerson
     }
 
     @Override
+    @JsonIgnore
     public String getCounty() {
       return county.getCountyCd();
+    }
+
+    @JsonProperty("county")
+    public String getCountyType() {
+      return county.getDescription();
     }
 
     @Override

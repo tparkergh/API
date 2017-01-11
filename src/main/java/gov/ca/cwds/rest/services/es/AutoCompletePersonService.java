@@ -56,7 +56,7 @@ public class AutoCompletePersonService
       LOGGER.info("No records found");
     }
 
-    return new AutoCompletePersonResponse(list.toArray(new AutoCompletePerson[0]));
+    return new AutoCompletePersonResponse(list);
   }
 
   @Override

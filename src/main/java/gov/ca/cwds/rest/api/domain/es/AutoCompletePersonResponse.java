@@ -1,11 +1,15 @@
 package gov.ca.cwds.rest.api.domain.es;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.validation.constraints.NotNull;
 
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
+
+import com.fasterxml.jackson.annotation.JsonUnwrapped;
 
 import gov.ca.cwds.rest.api.Request;
 import gov.ca.cwds.rest.api.Response;
@@ -35,7 +39,8 @@ public class AutoCompletePersonResponse implements Serializable, Response {
   private static final long serialVersionUID = 1L;
 
   @NotNull
-  private AutoCompletePerson[] persons;
+  @JsonUnwrapped
+  private List<AutoCompletePerson> persons = new ArrayList<>();
 
   /**
    * Disallow use of default constructor.
@@ -50,7 +55,7 @@ public class AutoCompletePersonResponse implements Serializable, Response {
    * 
    * @param persons array of {@link AutoCompletePerson}
    */
-  public AutoCompletePersonResponse(AutoCompletePerson[] persons) {
+  public AutoCompletePersonResponse(List<AutoCompletePerson> persons) {
     this.persons = persons;
   }
 
@@ -59,7 +64,7 @@ public class AutoCompletePersonResponse implements Serializable, Response {
    * 
    * @return persons objects suitable for Intake Auto-complete
    */
-  public AutoCompletePerson[] getPersons() {
+  public List<AutoCompletePerson> getPersons() {
     return persons;
   }
 
@@ -68,7 +73,7 @@ public class AutoCompletePersonResponse implements Serializable, Response {
    * 
    * @param persons person objects suitable for Intake Auto-complete
    */
-  public void setPersons(AutoCompletePerson[] persons) {
+  public void setPersons(List<AutoCompletePerson> persons) {
     this.persons = persons;
   }
 
