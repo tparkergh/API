@@ -4,12 +4,11 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.validation.constraints.NotNull;
-
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 
-import com.fasterxml.jackson.annotation.JsonUnwrapped;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonValue;
 
 import gov.ca.cwds.rest.api.Request;
 import gov.ca.cwds.rest.api.Response;
@@ -38,8 +37,7 @@ public class AutoCompletePersonResponse implements Serializable, Response {
    */
   private static final long serialVersionUID = 1L;
 
-  @NotNull
-  @JsonUnwrapped
+  @JsonIgnore
   private List<AutoCompletePerson> persons = new ArrayList<>();
 
   /**
@@ -64,7 +62,7 @@ public class AutoCompletePersonResponse implements Serializable, Response {
    * 
    * @return persons objects suitable for Intake Auto-complete
    */
-  @JsonUnwrapped
+  @JsonValue
   public List<AutoCompletePerson> getPersons() {
     return persons;
   }

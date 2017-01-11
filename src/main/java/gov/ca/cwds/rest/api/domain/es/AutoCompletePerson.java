@@ -810,17 +810,9 @@ public class AutoCompletePerson
   public AutoCompletePerson(ElasticSearchPerson esp) {
     this.setId(esp.getId());
 
-    // TODO: #136994539: minimal system code translation.
-    // TODO: #136994539: mask results, not data in Elasticsearch.
+    // TODO: #136570057: mask results, not data in Elasticsearch.
 
-    // maritalStatusType: 0,
-    // religionType: 0,
-    // primaryEthnicityType: 0,
-
-    // DONE:
-    // primaryLanguageType: 1271,
-    // secondaryLanguageType: 0,
-
+    // Minimal system code translation to meet contract interface.
     if (esp.getSourceObj() != null) {
 
       if (esp.getSourceObj() instanceof IPersonAware) {
@@ -858,10 +850,12 @@ public class AutoCompletePerson
 
       }
 
+      // Address.
       if (esp.getSourceObj() instanceof IAddressAware) {
         addAddress(new AutoCompletePersonAddress((IAddressAware) esp.getSourceObj()));
       }
 
+      // Phone.
       if (esp.getSourceObj() instanceof IMultiplePhonesAware) {
         final IMultiplePhonesAware thePhones = (IMultiplePhonesAware) esp.getSourceObj();
         for (IPhoneAware phone : thePhones.getPhones()) {
@@ -869,6 +863,7 @@ public class AutoCompletePerson
         }
       }
 
+      // Language
       if (esp.getSourceObj() instanceof IMultipleLanguagesAware) {
         final IMultipleLanguagesAware langs = (IMultipleLanguagesAware) esp.getSourceObj();
         for (ILanguageAware lang : langs.getLanguages()) {
