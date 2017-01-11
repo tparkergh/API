@@ -5,6 +5,7 @@ import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.CoreMatchers.notNullValue;
 import static org.junit.Assert.assertThat;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
 import java.util.ArrayList;
 
@@ -21,6 +22,7 @@ import org.mockito.Spy;
 import gov.ca.cwds.data.es.ElasticsearchDao;
 import gov.ca.cwds.rest.api.domain.es.AutoCompletePersonRequest;
 import gov.ca.cwds.rest.api.domain.es.AutoCompletePersonResponse;
+import gov.ca.cwds.rest.services.ServiceException;
 
 public class AutoCompletePersonServiceTest {
 
@@ -33,8 +35,8 @@ public class AutoCompletePersonServiceTest {
   @Mock
   private SearchHits hits;
 
-  @InjectMocks
   @Spy
+  @InjectMocks
   private AutoCompletePersonService target; // "Class Under Test"
 
   @Before
@@ -52,8 +54,8 @@ public class AutoCompletePersonServiceTest {
     assertThat(target, notNullValue());
   }
 
-  @Test
-  public void handleRequest_Args$AutoCompletePersonRequest() throws Exception {
+  @Test(expected = ServiceException.class)
+  public void handleRequest_Args$AutoCompletePersonRequest_T$NPE() throws Exception {
     // given
     AutoCompletePersonRequest req = mock(AutoCompletePersonRequest.class);
     // e.g. : given(mocked.called()).willReturn(1);
@@ -61,6 +63,20 @@ public class AutoCompletePersonServiceTest {
     AutoCompletePersonResponse actual = target.handleRequest(req);
     // then
     // e.g. : verify(mocked).called();
+    AutoCompletePersonResponse expected = new AutoCompletePersonResponse(new ArrayList<>());
+    assertThat(actual, is(equalTo(expected)));
+  }
+
+  @Test
+  public void handleRequest_Args$AutoCompletePersonRequest() throws Exception {
+    // given
+    AutoCompletePersonRequest req = mock(AutoCompletePersonRequest.class);
+    // e.g. : given(mocked.called()).willReturn(1);
+    when(req.getSearchTerm()).thenReturn("fred");
+    AutoCompletePersonResponse actual = target.handleRequest(req);
+    // then
+    // e.g. : verify(mocked).called();
+    // verify(target).handle(req);
     AutoCompletePersonResponse expected = new AutoCompletePersonResponse(new ArrayList<>());
     assertThat(actual, is(equalTo(expected)));
   }
