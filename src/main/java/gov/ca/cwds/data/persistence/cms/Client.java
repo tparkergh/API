@@ -15,6 +15,8 @@ import org.apache.commons.lang3.StringUtils;
 import org.hibernate.annotations.NamedQueries;
 import org.hibernate.annotations.NamedQuery;
 import org.hibernate.annotations.Type;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
@@ -42,6 +44,8 @@ public class Client extends CmsPersistentObject implements IPersonAware, IMultip
    * Base serialization version. Increment by class version.
    */
   private static final long serialVersionUID = 1L;
+
+  private static final Logger LOGGER = LoggerFactory.getLogger(Client.class);
 
   @Column(name = "ADJDEL_IND")
   private String adjudicatedDelinquentIndicator;
@@ -1075,12 +1079,20 @@ public class Client extends CmsPersistentObject implements IPersonAware, IMultip
     List<ILanguageAware> languages = new ArrayList<>();
     if (this.primaryLanguageType != null && this.primaryLanguageType != 0) {
       languages.add(new ILanguageAware() {
-
         @Override
         public Integer getLanguageSysId() {
           return new Integer(primaryLanguageType);
         }
+      });
+    }
 
+    if (this.secondaryLanguageType != null && this.secondaryLanguageType != 0) {
+      LOGGER.info("secondaryLanguageType={}", secondaryLanguageType);
+      languages.add(new ILanguageAware() {
+        @Override
+        public Integer getLanguageSysId() {
+          return new Integer(secondaryLanguageType);
+        }
       });
     }
 

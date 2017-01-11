@@ -65,16 +65,6 @@ public class AutoCompletePerson
 
   private static final Logger LOGGER = LoggerFactory.getLogger(AutoCompletePerson.class);
 
-  // private static final <T extends Enum<T>> Map<String, IntakeEnumMap<T>> registerType() {
-  // Map<String, IntakeEnumMap<T>> ret = new HashMap<>();
-  // for (IntakeEnumMap<T> type : T.values()) {
-  // ret.put(unitAuth.getUnitAuthCode(), unitAuth);
-  // }
-  //
-  // return ret;
-  // }
-
-
   // SAMPLE AUTO-COMPLETE RESULT: (Intake assumes all fields are potentially searchable.)
   // [{
   // "id": 1,
@@ -146,10 +136,190 @@ public class AutoCompletePerson
    * @author CWDS API Team
    */
   @SuppressWarnings("javadoc")
-  // @JsonFormat(shape = JsonFormat.Shape.STRING)
+  public enum AutoCompleteState implements ISysCodeAware {
+
+    NONE(0, "None", ""),
+
+    ALABAMA(1824, "Alabama", "AL"),
+
+    ALASKA(1823, "Alaska", "AK"),
+
+    AMERICAN_SAMOA(1825, "American Samoa", "AM"),
+
+    ARIZONA(1827, "Arizona", "AZ"),
+
+    ARKANSAS(1826, "Arkansas", "AR"),
+
+    CALIFORNIA(1828, "California", "CA"),
+
+    CANAL_ZONE(1832, "Canal Zone", "CZ"),
+
+    COLORADO(1830, "Colorado", "CO"),
+
+    CONNECTICUT(1831, "Connecticut", "CT"),
+
+    DELAWARE(1834, "Delaware", "DE"),
+
+    DISTRICT_OF_COLUMBIA(1833, "District of Columbia", "DC"),
+
+    FLORIDA(1835, "Florida", "FL"),
+
+    GEORGIA(1836, "Georgia", "GA"),
+
+    GUAM(1837, "Guam", "GU"),
+
+    HAWAII(1838, "Hawaii", "HI"),
+
+    IDAHO(1840, "Idaho", "ID"),
+
+    ILLINOIS(1841, "Illinois", "IL"),
+
+    INDIANA(1842, "Indiana", "IN"),
+
+    IOWA(1839, "Iowa", "IA"),
+
+    KANSAS(1843, "Kansas", "KS"),
+
+    KENTUCKY(1844, "Kentucky", "KY"),
+
+    LOUISIANA(1845, "Louisiana", "LA"),
+
+    MAINE(1848, "Maine", "ME"),
+
+    MARYLAND(1847, "Maryland", "MD"),
+
+    MASSACHUSETTS(1846, "Massachusetts", "MA"),
+
+    MICHIGAN(1849, "Michigan", "MI"),
+
+    MINNESOTA(1850, "Minnesota", "MN"),
+
+    MISSISSIPPI(1852, "Mississippi", "MS"),
+
+    MISSOURI(1851, "Missouri", "MO"),
+
+    MONTANA(1853, "Montana", "MT"),
+
+    NEBRASKA(1856, "Nebraska", "NE"),
+
+    NEVADA(1860, "Nevada", "NV"),
+
+    NEW_HAMPSHIRE(1857, "New Hampshire", "NH"),
+
+    NEW_JERSEY(1858, "New Jersey", "NJ"),
+
+    NEW_MEXICO(1859, "New Mexico", "NM"),
+
+    NEW_YORK(1861, "New York", "NY"),
+
+    NORTH_CAROLINA(1854, "North Carolina", "NC"),
+
+    NORTH_DAKOTA(1855, "North Dakota", "ND"),
+
+    NORTHERN_MARIANAS_ISLANDS(1829, "Northern Marianas Islands", "CM"),
+
+    OHIO(1862, "Ohio", "OH"),
+
+    OKLAHOMA(1863, "Oklahoma", "OK"),
+
+    OREGON(1864, "Oregon", "OR"),
+
+    PENNSYLVANIA(1865, "Pennsylvania", "PA"),
+
+    PUERTO_RICO(1866, "Puerto Rico", "PR"),
+
+    RHODE_ISLAND(1867, "Rhode Island", "RI"),
+
+    SOUTH_CAROLINA(1868, "South Carolina", "SC"),
+
+    SOUTH_DAKOTA(1869, "South Dakota", "SD"),
+
+    TENNESSEE(1870, "Tennessee", "TN"),
+
+    TEXAS(1872, "Texas", "TX"),
+
+    TRUST_TERRITORIES(1871, "Trust Territories", "TT"),
+
+    UTAH(1873, "Utah", "UT"),
+
+    VERMONT(1876, "Vermont", "VT"),
+
+    VIRGIN_ISLANDS(1875, "Virgin Islands", "VI"),
+
+    VIRGINIA(1874, "Virginia", "VA"),
+
+    WASHINGTON(1877, "Washington", "WA"),
+
+    WEST_VIRGINIA(1879, "West Virginia", "WV"),
+
+    WISCONSIN(1878, "Wisconsin", "WI"),
+
+    WYOMING(1880, "Wyoming", "WY");
+
+    private final int sysId;
+    private final String description;
+    private final String stateCd;
+
+    private static final Map<Integer, AutoCompleteState> mapBySysId = new HashMap<>();
+    private static final Map<String, AutoCompleteState> mapByStateCd = new HashMap<>();
+
+    private AutoCompleteState(int sysId, String description, String stateCd) {
+      this.sysId = sysId;
+      this.description = description;
+      this.stateCd = stateCd;
+    }
+
+    /**
+     * Getter for SYS_ID in CMS table SYS_CD_C.
+     * 
+     * @return SYS_ID
+     */
+    @Override
+    public int getSysId() {
+      return sysId;
+    }
+
+    @Override
+    @JsonIgnore
+    public String getDescription() {
+      return description;
+    }
+
+    @JsonValue
+    public String getStateCd() {
+      return stateCd;
+    }
+
+    @Override
+    public ISysCodeAware lookupBySysId(int sysId) {
+      return AutoCompleteState.findBySysId(sysId);
+    }
+
+    public static AutoCompleteState findBySysId(int sysId) {
+      return mapBySysId.get(sysId);
+    }
+
+    public static AutoCompleteState findByStateCd(final String stateCd) {
+      return mapBySysId.get(stateCd);
+    }
+
+    static {
+      for (AutoCompleteState e : AutoCompleteState.values()) {
+        mapBySysId.put(e.sysId, e);
+        mapByStateCd.put(e.stateCd, e);
+      }
+    }
+
+  }
+
+  /**
+   * Languages.
+   * 
+   * @author CWDS API Team
+   */
+  @SuppressWarnings("javadoc")
   public enum AutoCompleteLanguage implements ISysCodeAware {
 
-    // @JsonProperty("English")
     ENGLISH(1253, "English", 7),
 
     SPANISH(1274, "Spanish", 1),
@@ -259,8 +429,8 @@ public class AutoCompletePerson
     @JsonInclude(JsonInclude.Include.ALWAYS)
     private String city;
 
-    @JsonInclude(JsonInclude.Include.ALWAYS)
-    private String state;
+    @JsonProperty("state")
+    private AutoCompleteState stateType = AutoCompleteState.NONE;
 
     @JsonInclude(JsonInclude.Include.ALWAYS)
     private String county;
@@ -291,7 +461,7 @@ public class AutoCompletePerson
         this.setCounty(addr.getCounty());
       }
       if (StringUtils.isNotBlank(addr.getState())) {
-        this.setState(addr.getState());
+        this.setStateType(AutoCompleteState.findBySysId(Integer.parseInt(addr.getState())));
       }
       if (StringUtils.isNotBlank(addr.getStreetAddress())) {
         this.setStreetAddress(addr.getStreetAddress());
@@ -332,13 +502,16 @@ public class AutoCompletePerson
     }
 
     @Override
+    @JsonProperty("state")
     public String getState() {
-      return state;
+      return this.stateType.getStateCd();
     }
 
     @Override
     public void setState(String state) {
-      this.state = state;
+      if (StringUtils.isNotBlank(state)) {
+        this.stateType = AutoCompleteState.findByStateCd(state);
+      }
     }
 
     @Override
@@ -367,6 +540,14 @@ public class AutoCompletePerson
 
     public void setAddressType(AutoCompletePersonAddressType addressType) {
       this.addressType = addressType;
+    }
+
+    public AutoCompleteState getStateType() {
+      return stateType;
+    }
+
+    public void setStateType(AutoCompleteState stateType) {
+      this.stateType = stateType;
     }
 
   }
@@ -531,9 +712,11 @@ public class AutoCompletePerson
     // maritalStatusType: 0,
     // nameType: 1313,
     // religionType: 0,
-    // secondaryLanguageType: 0,
     // primaryEthnicityType: 0,
+
+    // DONE:
     // primaryLanguageType: 1271,
+    // secondaryLanguageType: 0,
 
     LOGGER.info("lookup language: {}", AutoCompleteLanguage.ENGLISH.lookupBySysId(3199));
 
