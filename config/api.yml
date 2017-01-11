@@ -59,8 +59,12 @@ elasticsearch:
   elasticsearch.clientport: ${ES_CLIENTPORT:-10080}
   peopleIndexName: people
   peopleIndexType: person
-
-    
+  
+smartystreets:
+  clientId: ${SS_ID:-8721f357-6381-1001-4633-5157e84b68cb}
+  token: ${SS_TOKEN:-Q62NxpgzuBEUq3IalqVx}
+  maxCandidates: ${SS_MAX:-10}
+  
 server:
   applicationConnectors:
   - type: http 

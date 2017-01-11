@@ -1,10 +1,5 @@
 package gov.ca.cwds.inject;
 
-import org.hibernate.SessionFactory;
-
-import com.google.inject.AbstractModule;
-import com.google.inject.Provides;
-
 import gov.ca.cwds.data.cms.AllegationDao;
 import gov.ca.cwds.data.cms.AttorneyDao;
 import gov.ca.cwds.data.cms.ClientDao;
@@ -32,11 +27,18 @@ import gov.ca.cwds.data.persistence.cms.StaffPerson;
 import gov.ca.cwds.data.persistence.ns.Address;
 import gov.ca.cwds.data.persistence.ns.Person;
 import gov.ca.cwds.data.persistence.ns.Screening;
+import gov.ca.cwds.data.validation.SmartyStreetsDao;
 import gov.ca.cwds.rest.ApiConfiguration;
 import gov.ca.cwds.rest.ElasticsearchConfiguration;
+import gov.ca.cwds.rest.SmartyStreetsConfiguration;
 import io.dropwizard.db.DataSourceFactory;
 import io.dropwizard.hibernate.HibernateBundle;
 import io.dropwizard.setup.Bootstrap;
+
+import org.hibernate.SessionFactory;
+
+import com.google.inject.AbstractModule;
+import com.google.inject.Provides;
 
 /**
  * DI (dependency injection) setup for data access objects (DAO).
@@ -101,6 +103,7 @@ public class DataAccessModule extends AbstractModule {
     bind(ScreeningDao.class);
 
     bind(ElasticsearchDao.class);
+    bind(SmartyStreetsDao.class);
   }
 
   @Provides
@@ -118,6 +121,11 @@ public class DataAccessModule extends AbstractModule {
   @Provides
   public ElasticsearchConfiguration elasticSearchConfig(ApiConfiguration apiConfiguration) {
     return apiConfiguration.getElasticsearchConfiguration();
+  }
+
+  @Provides
+  public SmartyStreetsConfiguration smartystreetsConfig(ApiConfiguration apiConfiguration) {
+    return apiConfiguration.getSmartyStreetsConfiguration();
   }
 
 }

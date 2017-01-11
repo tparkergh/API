@@ -1,24 +1,32 @@
 package gov.ca.cwds.rest.validation;
 
+import gov.ca.cwds.data.validation.SmartyStreetsDao;
+import gov.ca.cwds.rest.api.ApiException;
+import gov.ca.cwds.rest.api.domain.ValidatedAddress;
+
 import java.io.IOException;
 import java.util.ArrayList;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.google.inject.Inject;
 import com.smartystreets.api.exceptions.SmartyException;
 import com.smartystreets.api.us_street.Candidate;
 import com.smartystreets.api.us_street.Client;
 import com.smartystreets.api.us_street.ClientBuilder;
 import com.smartystreets.api.us_street.Lookup;
 
-import gov.ca.cwds.rest.api.ApiException;
-import gov.ca.cwds.rest.api.domain.ValidatedAddress;
-
 public class SmartyStreet {
   private static final Logger LOGGER = LoggerFactory.getLogger(SmartyStreet.class);
-  Client client =
-      new ClientBuilder("8721f357-6381-1001-4633-5157e84b68cb", "Q62NxpgzuBEUq3IalqVx").build();
+
+  private SmartyStreetsDao smartyStreetsDao;
+
+  @Inject
+  public SmartyStreet(SmartyStreetsDao smartyStreetsDao) {
+    this.smartyStreetsDao = smartyStreetsDao;
+  }
+
   String streetAddress;
   String cityName;
   String stateName;
@@ -29,6 +37,9 @@ public class SmartyStreet {
 
   public ValidatedAddress[] usStreetSingleAddress(String street, String city, String state,
       Integer zipCode) {
+    Client client =
+        new ClientBuilder(smartyStreetsDao.getClientId(), smartyStreetsDao.getToken()).build();
+
     Lookup lookup = new Lookup();
     lookup.setStreet(street);
     lookup.setCity(city);
@@ -38,7 +49,7 @@ public class SmartyStreet {
     } else {
       lookup.setZipCode("");
     }
-    lookup.setMaxCandidates(10);
+    lookup.setMaxCandidates(smartyStreetsDao.getMaxCandidates());
 
     try {
       client.send(lookup);
@@ -58,8 +69,9 @@ public class SmartyStreet {
       delPoint = false;
       longitude = null;
       latitude = null;
-      ValidatedAddress address = new ValidatedAddress(streetAddress, cityName, stateName, zip,
-          longitude, latitude, delPoint);
+      ValidatedAddress address =
+          new ValidatedAddress(streetAddress, cityName, stateName, zip, longitude, latitude,
+              delPoint);
       returnValidatedAddresses.add(address);
       return returnValidatedAddresses.toArray(new ValidatedAddress[0]);
     }
@@ -82,8 +94,9 @@ public class SmartyStreet {
       stateName = candidate.getComponents().getState();
       zip = Integer.parseInt(candidate.getComponents().getZipCode());
 
-      ValidatedAddress address = new ValidatedAddress(streetAddress, cityName, stateName, zip,
-          longitude, latitude, delPoint);
+      ValidatedAddress address =
+          new ValidatedAddress(streetAddress, cityName, stateName, zip, longitude, latitude,
+              delPoint);
       returnValidatedAddresses.add(address);
 
     }
@@ -91,4 +104,3 @@ public class SmartyStreet {
   }
 
 }
-
