@@ -7,6 +7,7 @@ import io.swagger.annotations.ApiModelProperty;
 
 import javax.validation.constraints.Size;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
@@ -60,8 +61,11 @@ public class ValidatedAddress extends DomainObject implements Request, Response 
    * @param lattitude The lattitude
    * @param deliverable The smarty street deliverable status
    */
-  public ValidatedAddress(String streetAddress, String city, String state, Integer zip,
-      Double longitude, Double lattitude, Boolean deliverable) {
+  @JsonCreator
+  public ValidatedAddress(@JsonProperty("street_address") String streetAddress,
+      @JsonProperty("city") String city, @JsonProperty("state") String state,
+      @JsonProperty("zip") Integer zip, @JsonProperty("longitude") Double longitude,
+      @JsonProperty("lattitude") Double lattitude, @JsonProperty("delivery") Boolean deliverable) {
     super();
     this.streetAddress = streetAddress;
     this.city = city;
@@ -70,6 +74,61 @@ public class ValidatedAddress extends DomainObject implements Request, Response 
     this.longitude = longitude;
     this.lattitude = lattitude;
     this.deliverable = deliverable;
+  }
+
+  /**
+   * @return the streetAddress
+   */
+  public String getStreetAddress() {
+    return streetAddress;
+  }
+
+
+  /**
+   * @return the city
+   */
+  public String getCity() {
+    return city;
+  }
+
+
+  /**
+   * @return the state
+   */
+  public String getState() {
+    return state;
+  }
+
+
+  /**
+   * @return the zip
+   */
+  public Integer getZip() {
+    return zip;
+  }
+
+
+  /**
+   * @return the longitude
+   */
+  public Double getLongitude() {
+    return longitude;
+  }
+
+
+  /**
+   * @return the lattitude
+   */
+  public Double getLattitude() {
+    return lattitude;
+  }
+
+
+  /**
+   * @return the deliverable
+   */
+  public Boolean getDeliverable() {
+    return deliverable;
   }
 
 
@@ -106,7 +165,7 @@ public class ValidatedAddress extends DomainObject implements Request, Response 
     if (obj == null) {
       return false;
     }
-    if (getClass() != obj.getClass()) {
+    if (!(getClass().isInstance(obj))) {
       return false;
     }
     ValidatedAddress other = (ValidatedAddress) obj;
