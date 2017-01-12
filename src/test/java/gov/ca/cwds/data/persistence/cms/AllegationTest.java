@@ -44,7 +44,7 @@ public class AllegationTest implements PersistentTestTemplate {
 
   @Override
   @Test
-  public void testPersistentContructor() throws Exception {
+  public void testPersistentConstructor() throws Exception {
 
     gov.ca.cwds.rest.api.domain.cms.Allegation domain = validDomainAllegation();
 

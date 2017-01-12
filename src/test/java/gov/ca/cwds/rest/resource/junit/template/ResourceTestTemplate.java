@@ -38,6 +38,10 @@ public interface ResourceTestTemplate {
   @Test
   public void testGet406NotSupportedError() throws Exception;
 
+  @SuppressWarnings("javadoc")
+  @Test
+  public void testGet501NotImplemented() throws Exception;
+
   /*
    * JUnit test for POST
    */
@@ -73,6 +77,10 @@ public interface ResourceTestTemplate {
   @Test
   public void testPostNotImplemented() throws Exception;
 
+  @SuppressWarnings("javadoc")
+  @Test
+  public void testPost501NotImplemented() throws Exception;
+
   /*
    * JUnit test for DELETE
    */
@@ -87,6 +95,10 @@ public interface ResourceTestTemplate {
   @SuppressWarnings("javadoc")
   @Test
   public void testDeleteNotImplemented() throws Exception;
+
+  @SuppressWarnings("javadoc")
+  @Test
+  public void testDelete501NotImplemented() throws Exception;
 
   /*
    * JUnit for PUT
@@ -118,5 +130,9 @@ public interface ResourceTestTemplate {
   @SuppressWarnings("javadoc")
   @Test
   public void testUpdateNotImplemented() throws Exception;
+
+  @SuppressWarnings("javadoc")
+  @Test
+  public void testUpdate501NotImplemented() throws Exception;
 
 }
