@@ -4,7 +4,6 @@ import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.CoreMatchers.notNullValue;
 import static org.junit.Assert.assertThat;
-import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 import java.util.ArrayList;
@@ -19,7 +18,9 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.mockito.Spy;
 
+import gov.ca.cwds.data.es.ElasticSearchPerson;
 import gov.ca.cwds.data.es.ElasticsearchDao;
+import gov.ca.cwds.rest.api.domain.es.AutoCompletePerson;
 import gov.ca.cwds.rest.api.domain.es.AutoCompletePersonRequest;
 import gov.ca.cwds.rest.api.domain.es.AutoCompletePersonResponse;
 import gov.ca.cwds.rest.services.ServiceException;
@@ -34,6 +35,9 @@ public class AutoCompletePersonServiceTest {
 
   @Mock
   private SearchHits hits;
+
+  @Mock
+  private AutoCompletePersonRequest req;
 
   @Spy
   @InjectMocks
@@ -55,42 +59,60 @@ public class AutoCompletePersonServiceTest {
   }
 
   @Test(expected = ServiceException.class)
-  public void handleRequest_Args$AutoCompletePersonRequest_T$NPE() throws Exception {
-    // given
-    AutoCompletePersonRequest req = mock(AutoCompletePersonRequest.class);
-    // e.g. : given(mocked.called()).willReturn(1);
-    // when
-    AutoCompletePersonResponse actual = target.handleRequest(req);
-    // then
-    // e.g. : verify(mocked).called();
+  public void testHandleRequest_Args$AutoCompletePersonRequest_T$NPE() throws Exception {
+    final AutoCompletePersonResponse actual = target.handleRequest(req);
     AutoCompletePersonResponse expected = new AutoCompletePersonResponse(new ArrayList<>());
     assertThat(actual, is(equalTo(expected)));
   }
 
   @Test
-  public void handleRequest_Args$AutoCompletePersonRequest() throws Exception {
-    // given
-    AutoCompletePersonRequest req = mock(AutoCompletePersonRequest.class);
-    // e.g. : given(mocked.called()).willReturn(1);
+  public void testHandleRequest_Args$AutoCompletePersonRequest() throws Exception {
+
+    // Issues with spy + injection.
+    // AutoCompletePersonService espion = spy(new AutoCompletePersonService(dao));
+    // final String arg = "hello";
+    // final AutoCompletePersonResponse spyResult = target.find(arg);
+    // when(target.find(any())).thenReturn(new AutoCompletePersonResponse(new ArrayList<>()));
+
     when(req.getSearchTerm()).thenReturn("fred");
-    AutoCompletePersonResponse actual = target.handleRequest(req);
-    // then
-    // e.g. : verify(mocked).called();
-    // verify(target).handle(req);
-    AutoCompletePersonResponse expected = new AutoCompletePersonResponse(new ArrayList<>());
+    final AutoCompletePersonResponse actual = target.handleRequest(req);
+
+    final AutoCompletePersonResponse expected = new AutoCompletePersonResponse(new ArrayList<>());
     assertThat(actual, is(equalTo(expected)));
   }
 
   @Test
-  public void handleFind_Args$String() throws Exception {
-    // given
+  public void testHandleRequest_Args$req_wildcard() throws Exception {
+    when(req.getSearchTerm()).thenReturn("fred*");
+    final AutoCompletePersonResponse actual = target.handleRequest(req);
+    final AutoCompletePersonResponse expected = new AutoCompletePersonResponse(new ArrayList<>());
+    assertThat(actual, is(equalTo(expected)));
+  }
+
+  @Test
+  public void testHandleRequest_Args$req_double_wildcard() throws Exception {
+    when(req.getSearchTerm()).thenReturn("fred**");
+    final AutoCompletePersonResponse actual = target.handleRequest(req);
+    final AutoCompletePersonResponse expected = new AutoCompletePersonResponse(new ArrayList<>());
+    assertThat(actual, is(equalTo(expected)));
+  }
+
+  @Test(expected = ServiceException.class)
+  public void testHandleFind_Args$String_Throw$NPE() throws Exception {
     String arg0 = null;
-    // e.g. : given(mocked.called()).willReturn(1);
-    // when
     AutoCompletePersonResponse actual = target.handleFind(arg0);
-    // then
-    // e.g. : verify(mocked).called();
     AutoCompletePersonResponse expected = null;
+    assertThat(actual, is(equalTo(expected)));
+  }
+
+  @Test
+  public void testFind_Args$String_Found() throws Exception {
+    final String findThis = "nuttin";
+    final ElasticSearchPerson[] empty = new ElasticSearchPerson[0];
+    when(dao.autoCompletePerson(findThis)).thenReturn(empty);
+    AutoCompletePersonResponse actual = target.handleFind(findThis);
+    AutoCompletePersonResponse expected =
+        new AutoCompletePersonResponse(new ArrayList<AutoCompletePerson>());
     assertThat(actual, is(equalTo(expected)));
   }
 
