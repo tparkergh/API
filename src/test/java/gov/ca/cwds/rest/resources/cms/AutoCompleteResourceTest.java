@@ -16,6 +16,7 @@ import org.junit.Rule;
 import org.junit.Test;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.exc.UnrecognizedPropertyException;
 
 import gov.ca.cwds.rest.api.domain.es.AutoCompletePersonRequest;
 import gov.ca.cwds.rest.api.domain.es.AutoCompletePersonResponse;
@@ -42,12 +43,16 @@ public class AutoCompleteResourceTest {
   @Rule
   public ExpectedException thrown = ExpectedException.none();
 
+  // private static final ElasticsearchDao dao = mock(ElasticsearchDao.class);
+
   private static final AutoCompletePersonService svc = mock(AutoCompletePersonService.class);
 
   private static final SimpleResourceDelegate<String, AutoCompletePersonRequest, AutoCompletePersonResponse, AutoCompletePersonService> delegate =
       new SimpleResourceDelegate<>(svc);
+
   private final static SimpleResourceDelegate<String, AutoCompletePersonRequest, AutoCompletePersonResponse, AutoCompletePersonService> resourceDelegate =
       mock(delegate.getClass());
+  // spy(delegate);
 
   @ClassRule
   public final static ResourceTestRule inMemoryResource = ResourceTestRule.builder()
@@ -60,7 +65,7 @@ public class AutoCompleteResourceTest {
    * POST Tests
    */
   @Test
-  public void createValidatesEntity() throws Exception {
+  public void testSearch_good() throws Exception {
     AutoCompletePersonRequest serialized = MAPPER.readValue(
         fixture("fixtures/domain/elasticsearch/Intake/person_autocomplete_good.json"),
         AutoCompletePersonRequest.class);
@@ -71,5 +76,28 @@ public class AutoCompleteResourceTest {
     assertThat(status, is(HttpStatus.SC_OK));
   }
 
+  @Test(expected = UnrecognizedPropertyException.class)
+  public void testSearch_invalid() throws Exception {
+    AutoCompletePersonRequest serialized =
+        MAPPER.readValue(fixture("fixtures/domain/elasticsearch/Intake/es_person.json"),
+            AutoCompletePersonRequest.class);
+
+    int status = inMemoryResource.client().target(FOUND_RESOURCE).request()
+        .accept(MediaType.APPLICATION_JSON)
+        .post(Entity.entity(serialized, MediaType.APPLICATION_JSON)).getStatus();
+    assertThat(status, is(HttpStatus.SC_OK));
+  }
+
+  @Test
+  public void testSearch_blank() throws Exception {
+    AutoCompletePersonRequest serialized = MAPPER.readValue(
+        fixture("fixtures/domain/elasticsearch/Intake/person_autocomplete_blank.json"),
+        AutoCompletePersonRequest.class);
+
+    int status = inMemoryResource.client().target(FOUND_RESOURCE).request()
+        .accept(MediaType.APPLICATION_JSON)
+        .post(Entity.entity(serialized, MediaType.APPLICATION_JSON)).getStatus();
+    assertThat(status, is(HttpStatus.SC_OK));
+  }
 
 }
