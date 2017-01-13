@@ -2,6 +2,7 @@ package gov.ca.cwds.rest.validation;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.List;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -19,13 +20,26 @@ import gov.ca.cwds.rest.api.domain.ValidatedAddress;
 
 public class SmartyStreet {
   private static final Logger LOGGER = LoggerFactory.getLogger(SmartyStreet.class);
-
+  String streetAddress;
+  String cityName;
+  String stateName;
+  Integer zip;
+  boolean delPoint;
+  Double latitude;
+  Double longitude;
   private SmartyStreetsDao smartyStreetsDao;
+
 
   @Inject
   public SmartyStreet() {
-
+    // default constructor
   }
+
+  @Inject
+  public SmartyStreet(SmartyStreetsDao smartyStreetsDao) {
+    this.smartyStreetsDao = smartyStreetsDao;
+  }
+
 
   /**
    * @param smartyStreetsDao the smartyStreetsDao to set
@@ -35,23 +49,11 @@ public class SmartyStreet {
     this.smartyStreetsDao = smartyStreetsDao;
   }
 
-  @Inject
-  public SmartyStreet(SmartyStreetsDao smartyStreetsDao) {
-    this.smartyStreetsDao = smartyStreetsDao;
-  }
-
-  String streetAddress;
-  String cityName;
-  String stateName;
-  Integer zip;
-  boolean delPoint;
-  Double latitude;
-  Double longitude;
-
   public ValidatedAddress[] usStreetSingleAddress(String street, String city, String state,
       Integer zipCode) {
 
-    ArrayList<Candidate> results = getSmartyStreetsCandidates(street, city, state, zipCode);
+    ArrayList<Candidate> results =
+        (ArrayList<Candidate>) getSmartyStreetsCandidates(street, city, state, zipCode);
 
     ArrayList<ValidatedAddress> returnValidatedAddresses = new ArrayList<>();
 
@@ -91,7 +93,7 @@ public class SmartyStreet {
     return returnValidatedAddresses.toArray(new ValidatedAddress[returnValidatedAddresses.size()]);
   }
 
-  public ArrayList<Candidate> getSmartyStreetsCandidates(String street, String city, String state,
+  public List<Candidate> getSmartyStreetsCandidates(String street, String city, String state,
       Integer zipCode) {
 
     Client client =
@@ -109,8 +111,7 @@ public class SmartyStreet {
       throw new ApiException("ERROR calling SmartyStreet - ", e);
     }
 
-    ArrayList<Candidate> results = lookup.getResult();
-    return results;
+    return lookup.getResult();
   }
 
   public Lookup createSmartyStreetsLookup(String street, String city, String state,
