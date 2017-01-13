@@ -70,10 +70,11 @@ public class AutoCompletePersonService
       throw new ServiceException("Search term cannot be null.");
     }
 
+    // Wildcard or no wildcard, that is the question.
     searchTerm = searchTerm.trim().toLowerCase();
-    if (!searchTerm.endsWith("*")) {
-      searchTerm = searchTerm + "*";
-    }
+    // if (!searchTerm.endsWith("*")) {
+    // searchTerm = searchTerm + "*";
+    // }
 
     return callDao(searchTerm);
   }

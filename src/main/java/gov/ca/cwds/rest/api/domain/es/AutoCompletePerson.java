@@ -816,7 +816,7 @@ public class AutoCompletePerson
     if (esp.getSourceObj() != null) {
 
       if (esp.getSourceObj() instanceof IPersonAware) {
-        LOGGER.info("IPersonAware!");
+        LOGGER.debug("IPersonAware!");
         final IPersonAware personAware = (IPersonAware) esp.getSourceObj();
 
         if (StringUtils.isNotBlank(personAware.getFirstName())) {
