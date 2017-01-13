@@ -3,7 +3,6 @@ package gov.ca.cwds.rest.services.cms;
 import static io.dropwizard.testing.FixtureHelpers.fixture;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
-import static org.hamcrest.Matchers.notNullValue;
 import static org.hamcrest.Matchers.nullValue;
 import static org.junit.Assert.assertEquals;
 import static org.mockito.Matchers.any;
@@ -20,28 +19,27 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-
 import gov.ca.cwds.data.cms.ReferralDao;
 import gov.ca.cwds.rest.api.Response;
 import gov.ca.cwds.rest.api.domain.cms.PostedReferral;
 import gov.ca.cwds.rest.api.domain.cms.Referral;
 import gov.ca.cwds.rest.services.ServiceException;
-import io.dropwizard.jackson.Jackson;
+import gov.ca.cwds.rest.services.junit.template.ServiceTestTemplate;
 
 /**
  * @author CWDS API Team
  *
  */
-public class ReferralServiceTest {
-  private static final ObjectMapper MAPPER = Jackson.newObjectMapper();
+public class ReferralServiceTest implements ServiceTestTemplate {
+  // private static final ObjectMapper MAPPER = Jackson.newObjectMapper();
   private ReferralService referralService;
   private ReferralDao referralDao;
 
+  @SuppressWarnings("javadoc")
   @Rule
   public ExpectedException thrown = ExpectedException.none();
 
-  @SuppressWarnings("javadoc")
+  @Override
   @Before
   public void setup() throws Exception {
     referralDao = mock(ReferralDao.class);
@@ -50,9 +48,9 @@ public class ReferralServiceTest {
 
   // find test
   // TODO: Story #136701343: Tech debt: exception handling in service layer.
-  @SuppressWarnings("javadoc")
+  @Override
   @Test
-  public void findThrowsAssertionError() {
+  public void testFindThrowsAssertionError() {
     thrown.expect(AssertionError.class);
     try {
       referralService.find(1);
@@ -61,9 +59,9 @@ public class ReferralServiceTest {
     }
   }
 
-  @SuppressWarnings("javadoc")
+  @Override
   @Test
-  public void findReturnsCorrectReferralWhenFound() throws Exception {
+  public void testFindReturnsCorrectEntity() throws Exception {
     Referral expected = MAPPER
         .readValue(fixture("fixtures/domain/legacy/Referral/valid/valid.json"), Referral.class);
     gov.ca.cwds.data.persistence.cms.Referral referral =
@@ -74,15 +72,17 @@ public class ReferralServiceTest {
     assertThat(found, is(expected));
   }
 
-  @SuppressWarnings("javadoc")
+  @Override
   @Test
-  public void findReturnsNullWhenNotFound() throws Exception {
+  public void testFindReturnsNullWhenNotFound() throws Exception {
     Response found = referralService.find("ABC1234567");
     assertThat(found, is(nullValue()));
   }
 
   // delete test
-  public void deleteThrowsAssersionError() throws Exception {
+  @Override
+  @Test
+  public void testDeleteThrowsAssertionError() throws Exception {
     thrown.expect(AssertionError.class);
     try {
       referralService.delete(1234);
@@ -91,24 +91,49 @@ public class ReferralServiceTest {
     }
   }
 
-  @SuppressWarnings("javadoc")
+  @Override
   @Test
-  public void deleteDelegatesToCrudsService() {
+  public void testDeleteDelegatesToCrudsService() {
     referralService.delete("ABC2345678");
     verify(referralDao, times(1)).delete("ABC2345678");
   }
 
-  @SuppressWarnings("javadoc")
+  @Override
   @Test
-  public void deleteReturnsNullWhenNotFound() throws Exception {
+  public void testDeleteReturnsNullWhenNotFound() throws Exception {
     Response found = referralService.delete("ABC1234567");
     assertThat(found, is(nullValue()));
   }
 
-  // update test
-  @SuppressWarnings("javadoc")
+  @Override
   @Test
-  public void updateThrowsAssertionError() throws Exception {
+  public void testDeleteReturnsClass() throws Exception {
+    // delete success
+    Referral referralDomain = MAPPER
+        .readValue(fixture("fixtures/domain/legacy/Referral/valid/valid.json"), Referral.class);
+
+    gov.ca.cwds.data.persistence.cms.Referral referral =
+        new gov.ca.cwds.data.persistence.cms.Referral("1234567ABC", referralDomain, "ABC");
+
+    when(referralDao.delete("ABC1234567")).thenReturn(referral);
+
+    Referral returned = referralService.delete("ABC1234567");
+
+    assertThat(returned.getClass(), is(Referral.class));
+
+  }
+
+  @Override
+  public void testDeleteThrowsNotImplementedException() throws Exception {
+    // delete is implemented
+
+  }
+
+
+  // update test
+  @Override
+  @Test
+  public void testUpdateThrowsAssertionError() throws Exception {
     thrown.expect(AssertionError.class);
     try {
       referralService.update("ABC1234567", null);
@@ -119,7 +144,7 @@ public class ReferralServiceTest {
 
   @SuppressWarnings("javadoc")
   @Test
-  public void updateThrowsAssertionErrorNullPrimaryKey() throws Exception {
+  public void testUpdateThrowsAssertionErrorNullPrimaryKey() throws Exception {
     thrown.expect(AssertionError.class);
     try {
       Referral referralDomain = MAPPER
@@ -134,48 +159,84 @@ public class ReferralServiceTest {
     }
   }
 
-  @SuppressWarnings("javadoc")
+  @Override
   @Test
-  public void updateReturnsReferralResponseOnSuccess() throws Exception {
+  public void testUpdateReturnsDomain() throws Exception {
     Referral expected = MAPPER
         .readValue(fixture("fixtures/domain/legacy/Referral/valid/valid.json"), Referral.class);
 
     gov.ca.cwds.data.persistence.cms.Referral referral =
         new gov.ca.cwds.data.persistence.cms.Referral("1234567ABC", expected, "ABC");
 
-    when(referralDao.find("ABC1234567")).thenReturn(referral);
-    when(referralDao.update(any())).thenReturn(referral);
+    when(referralDao.update(any(gov.ca.cwds.data.persistence.cms.Referral.class)))
+        .thenReturn(referral);
 
-    Object retval = referralService.update("ABC1234567", expected);
+    Object retval = referralService.update("1234567ABC", expected);
     assertThat(retval.getClass(), is(Referral.class));
   }
 
-  @SuppressWarnings("javadoc")
+  @Override
   @Test
-  public void updateThrowsExceptionWhenReferralNotFound() throws Exception {
+  public void testUpdateThrowsServiceException() throws Exception {
 
     try {
       Referral referralRequest = MAPPER
           .readValue(fixture("fixtures/domain/legacy/Referral/valid/valid.json"), Referral.class);
 
       when(referralDao.update(any())).thenThrow(EntityNotFoundException.class);
+
       referralService.update("ZZZZZZZ0X5", referralRequest);
+
       Assert.fail("Expected EntityNotFoundException was not thrown");
+
     } catch (Exception ex) {
       assertEquals(ex.getClass(), ServiceException.class);
     }
   }
 
+  @Override
+  public void testFindThrowsNotImplementedException() throws Exception {
+    // TODO Auto-generated method stub
+
+  }
+
+  @Override
+  public void testUpdateReturnsCorrectEntity() throws Exception {
+    // TODO Auto-generated method stub
+
+  }
+
+  @Override
+  public void testUpdateThrowsNotImplementedException() throws Exception {
+    // TODO Auto-generated method stub
+
+  }
+
   // create test
-  @SuppressWarnings("javadoc")
+  @Override
   @Test
-  public void createReturnsPostedReferralClass() throws Exception {
+  public void testCreateThrowsAssertionError() throws Exception {
+    thrown.expect(AssertionError.class);
+    try {
+      referralService.create(null);
+    } catch (AssertionError e) {
+      assertEquals("Expected AssertionError", e.getMessage());
+    }
+
+  }
+
+
+  @Override
+  @Test
+  public void testCreateReturnsPostedClass() throws Exception {
     Referral referralDomain = MAPPER
         .readValue(fixture("fixtures/domain/legacy/Referral/valid/valid.json"), Referral.class);
     gov.ca.cwds.data.persistence.cms.Referral toCreate =
         new gov.ca.cwds.data.persistence.cms.Referral("1234567ABC", referralDomain, "0XA");
 
-    Referral request = new Referral(toCreate);
+    Referral request = MAPPER.readValue(fixture("fixtures/domain/legacy/Referral/valid/valid.json"),
+        Referral.class);
+
     when(referralDao.create(any(gov.ca.cwds.data.persistence.cms.Referral.class)))
         .thenReturn(toCreate);
 
@@ -183,25 +244,9 @@ public class ReferralServiceTest {
     assertThat(response.getClass(), is(PostedReferral.class));
   }
 
-  @SuppressWarnings("javadoc")
+  @Override
   @Test
-  public void createReturnsNonNull() throws Exception {
-    Referral referralDomain = MAPPER
-        .readValue(fixture("fixtures/domain/legacy/Referral/valid/valid.json"), Referral.class);
-    gov.ca.cwds.data.persistence.cms.Referral toCreate =
-        new gov.ca.cwds.data.persistence.cms.Referral("1234567ABC", referralDomain, "0XA");
-
-    Referral request = new Referral(toCreate);
-    when(referralDao.create(any(gov.ca.cwds.data.persistence.cms.Referral.class)))
-        .thenReturn(toCreate);
-
-    PostedReferral postedReferral = referralService.create(request);
-    assertThat(postedReferral, is(notNullValue()));
-  }
-
-  @SuppressWarnings("javadoc")
-  @Test
-  public void createReturnsCorrectPostedReferral() throws Exception {
+  public void testCreateReturnsCorrectEntity() throws Exception {
     Referral referralDomain = MAPPER
         .readValue(fixture("fixtures/domain/legacy/Referral/valid/valid.json"), Referral.class);
     gov.ca.cwds.data.persistence.cms.Referral toCreate =
@@ -216,28 +261,30 @@ public class ReferralServiceTest {
     assertThat(returned, is(expected));
   }
 
-  @SuppressWarnings("javadoc")
+  @Override
   @Test
-  public void failsWhenPostedReferralIdEmpty() throws Exception {
+  public void testCreateEmptyIDError() throws Exception {
     try {
       Referral referralDomain = MAPPER
           .readValue(fixture("fixtures/domain/legacy/Referral/valid/valid.json"), Referral.class);
       gov.ca.cwds.data.persistence.cms.Referral toCreate =
           new gov.ca.cwds.data.persistence.cms.Referral("", referralDomain, "0XA");
 
+      Referral request = new Referral(toCreate);
       when(referralDao.create(any(gov.ca.cwds.data.persistence.cms.Referral.class)))
           .thenReturn(toCreate);
 
-      PostedReferral expected = new PostedReferral(toCreate);
+      PostedReferral returned = referralService.create(request);
 
     } catch (ServiceException e) {
       assertEquals("Referral ID cannot be empty", e.getMessage());
     }
   }
 
+  @Override
   @SuppressWarnings("javadoc")
   @Test
-  public void failsWhenPostedReferralIdNull() throws Exception {
+  public void testCreateNullIDError() throws Exception {
     try {
       Referral referralDomain = MAPPER
           .readValue(fixture("fixtures/domain/legacy/Referral/valid/valid.json"), Referral.class);
@@ -254,9 +301,10 @@ public class ReferralServiceTest {
     }
   }
 
+  @Override
   @SuppressWarnings("javadoc")
   @Test
-  public void failsWhenPostedReferralIdBlank() throws Exception {
+  public void testCreateBlankIDError() throws Exception {
     try {
       Referral referralDomain = MAPPER
           .readValue(fixture("fixtures/domain/legacy/Referral/valid/valid.json"), Referral.class);
@@ -275,7 +323,7 @@ public class ReferralServiceTest {
 
   @SuppressWarnings("javadoc")
   @Test
-  public void createReturnsCorrectPostedReferralId() throws Exception {
+  public void testCreateReturnsCorrectReferralId() throws Exception {
     Referral referralDomain = MAPPER
         .readValue(fixture("fixtures/domain/legacy/Referral/valid/valid.json"), Referral.class);
     gov.ca.cwds.data.persistence.cms.Referral toCreate =
@@ -289,6 +337,12 @@ public class ReferralServiceTest {
     PostedReferral returned = referralService.create(request);
 
     assertThat(returned.getId(), is("1234567ABC"));
+  }
+
+  @Override
+  public void testCreateThrowsNotImplementedException() throws Exception {
+    // TODO Auto-generated method stub
+
   }
 
 }

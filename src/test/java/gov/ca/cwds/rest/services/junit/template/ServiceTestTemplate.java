@@ -32,19 +32,19 @@ public interface ServiceTestTemplate {
   /*
    * if Service find() method throws Assertion Error
    */
-  public abstract void testEntityFindThrowsAssertionError() throws Exception;
+  public abstract void testFindThrowsAssertionError() throws Exception;
 
   @SuppressWarnings("javadoc")
   @Test
-  public abstract void testEntityFindReturnsCorrectEntity() throws Exception;
+  public abstract void testFindReturnsCorrectEntity() throws Exception;
 
   @SuppressWarnings("javadoc")
   @Test
-  public abstract void testEntityFindReturnsNullWhenNotFound() throws Exception;
+  public abstract void testFindReturnsNullWhenNotFound() throws Exception;
 
   @SuppressWarnings("javadoc")
   @Test
-  public abstract void testEntityFindThrowsNotImplementedException() throws Exception;
+  public abstract void testFindThrowsNotImplementedException() throws Exception;
 
   /*
    * JUnit test for delete
@@ -54,15 +54,15 @@ public interface ServiceTestTemplate {
   /*
    * if Service delete() method throws Assertion Error
    */
-  public abstract void testEntityDeleteThrowsAssertionError() throws Exception;
+  public abstract void testDeleteThrowsAssertionError() throws Exception;
 
   @SuppressWarnings("javadoc")
   @Test
-  public abstract void testEntityDeleteDelegatesToCrudsService() throws Exception;
+  public abstract void testDeleteDelegatesToCrudsService() throws Exception;
 
   @SuppressWarnings("javadoc")
   @Test
-  public abstract void testEntityDeleteReturnsNullWhenNotFound() throws Exception;
+  public abstract void testDeleteReturnsNullWhenNotFound() throws Exception;
 
   @SuppressWarnings("javadoc")
   @Test
@@ -70,6 +70,11 @@ public interface ServiceTestTemplate {
    * if Service delete() method not implemented
    */
   public abstract void testDeleteThrowsNotImplementedException() throws Exception;
+
+  @SuppressWarnings("javadoc")
+  @Test
+  public abstract void testDeleteReturnsClass() throws Exception;
+
 
   /*
    * JUnit test for update
@@ -79,22 +84,26 @@ public interface ServiceTestTemplate {
   /*
    * if Service update() throws Assertion Error
    */
-  public abstract void testEntityUpdateThrowsAssertionError() throws Exception;
+  public abstract void testUpdateThrowsAssertionError() throws Exception;
 
   @SuppressWarnings("javadoc")
   @Test
-  public abstract void testEntityUpdateReturnsPersistent() throws Exception;
+  public abstract void testUpdateReturnsDomain() throws Exception;
 
   @SuppressWarnings("javadoc")
   @Test
-  public abstract void testEntityUpdateReturnsCorrectEntity() throws Exception;
+  public abstract void testUpdateReturnsCorrectEntity() throws Exception;
+
+  @SuppressWarnings("javadoc")
+  @Test
+  public abstract void testUpdateThrowsServiceException() throws Exception;
 
   @SuppressWarnings("javadoc")
   @Test
   /*
    * if Service update() method throws Exception
    */
-  public abstract void testEntityUpdateThrowsNotImplementedException() throws Exception;
+  public abstract void testUpdateThrowsNotImplementedException() throws Exception;
 
   /*
    * JUnit test for create
@@ -105,40 +114,40 @@ public interface ServiceTestTemplate {
   /*
    * if Service create() throws Assertion Error
    */
-  public abstract void testEntityCreateThrowsAssertionError() throws Exception;
+  public abstract void testCreateThrowsAssertionError() throws Exception;
 
   @SuppressWarnings("javadoc")
   @Test
-  public abstract void testEntityCreateReturnsPostedClass() throws Exception;
+  public abstract void testCreateReturnsPostedClass() throws Exception;
 
   @SuppressWarnings("javadoc")
   @Test
-  public abstract void testEntityCreateReturnsCorrectEntity() throws Exception;
+  public abstract void testCreateReturnsCorrectEntity() throws Exception;
 
   @SuppressWarnings("javadoc")
   @Test
   /*
    * if Service create() throws error for blank ID
    */
-  public abstract void testEntityCreateBlankIDError() throws Exception;
+  public abstract void testCreateBlankIDError() throws Exception;
 
   @SuppressWarnings("javadoc")
   @Test
   /*
    * if Service create() throws error for null ID
    */
-  public abstract void testEntityCreateNullIDError() throws Exception;
+  public abstract void testCreateNullIDError() throws Exception;
 
   @SuppressWarnings("javadoc")
   @Test
   /*
    * if Service create() throws error for empty ID
    */
-  public abstract void testEntityCreateEmptyError() throws Exception;
+  public abstract void testCreateEmptyIDError() throws Exception;
 
   @SuppressWarnings("javadoc")
   @Test
-  public abstract void testEntityCreateThrowsNotImplementedException() throws Exception;
+  public abstract void testCreateThrowsNotImplementedException() throws Exception;
 
 
 }
