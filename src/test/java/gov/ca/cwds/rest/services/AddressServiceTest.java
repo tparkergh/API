@@ -44,7 +44,7 @@ public class AddressServiceTest implements ServiceTestTemplate {
    */
   @Override
   @Test
-  public void testEntityFindThrowsAssertionError() throws Exception {
+  public void testFindThrowsAssertionError() throws Exception {
     thrown.expect(AssertionError.class);
     try {
       addressService.find("nonLong");
@@ -56,7 +56,7 @@ public class AddressServiceTest implements ServiceTestTemplate {
 
   @Override
   @Test
-  public void testEntityFindReturnsCorrectEntity() throws Exception {
+  public void testFindReturnsCorrectEntity() throws Exception {
     when(addressDao.find(new Long(1))).thenReturn(new gov.ca.cwds.data.persistence.ns.Address(1L,
         "742 Evergreen Terrace", "Springfield", "WA", new Integer(98700)));
 
@@ -69,7 +69,7 @@ public class AddressServiceTest implements ServiceTestTemplate {
 
   @Override
   @Test
-  public void testEntityFindReturnsNullWhenNotFound() throws Exception {
+  public void testFindReturnsNullWhenNotFound() throws Exception {
     when(addressDao.find(new Long(-1))).thenReturn(null);
     Address found = addressService.find(new Long(-1));
 
@@ -78,7 +78,7 @@ public class AddressServiceTest implements ServiceTestTemplate {
 
 
   @Override
-  public void testEntityFindThrowsNotImplementedException() throws Exception {
+  public void testFindThrowsNotImplementedException() throws Exception {
 
   }
 
@@ -87,7 +87,7 @@ public class AddressServiceTest implements ServiceTestTemplate {
    */
   @Override
   @Test
-  public void testEntityCreateThrowsAssertionError() throws Exception {
+  public void testCreateThrowsAssertionError() throws Exception {
     thrown.expect(AssertionError.class);
     try {
       PostedAddress postedAddress = addressService.create(null);
@@ -98,7 +98,7 @@ public class AddressServiceTest implements ServiceTestTemplate {
 
   @Override
   @Test
-  public void testEntityCreateReturnsPostedClass() throws Exception {
+  public void testCreateReturnsPostedClass() throws Exception {
     gov.ca.cwds.data.persistence.ns.Address toCreate = new gov.ca.cwds.data.persistence.ns.Address(
         1L, "742 Evergreen Terrace", "Springfield", "WA", new Integer(98700));
     Address request = new Address(toCreate);
@@ -112,7 +112,7 @@ public class AddressServiceTest implements ServiceTestTemplate {
 
   @Override
   @Test
-  public void testEntityCreateReturnsCorrectEntity() throws Exception {
+  public void testCreateReturnsCorrectEntity() throws Exception {
     gov.ca.cwds.data.persistence.ns.Address toCreate = new gov.ca.cwds.data.persistence.ns.Address(
         10L, "742 Evergreen Terrace", "Springfield", "WA", new Integer(98700));
     Address request = new Address(toCreate);
@@ -129,7 +129,7 @@ public class AddressServiceTest implements ServiceTestTemplate {
 
   @Override
   @Test
-  public void testEntityCreateNullIDError() throws Exception {
+  public void testCreateNullIDError() throws Exception {
     thrown.expect(AssertionError.class);
     try {
       PostedAddress postedAddress = addressService.create(null);
@@ -139,18 +139,25 @@ public class AddressServiceTest implements ServiceTestTemplate {
   }
 
   @Override
-  public void testEntityCreateBlankIDError() throws Exception {
+  public void testCreateEmptyIDError() throws Exception {
+    // TODO Auto-generated method stub
 
   }
 
   @Override
-  public void testEntityCreateEmptyError() throws Exception {
+  public void testCreateThrowsNotImplementedException() throws Exception {
+    // TODO Auto-generated method stub
+
+  }
+
+  @Override
+  public void testCreateBlankIDError() throws Exception {
 
   }
 
   @SuppressWarnings("javadoc")
   @Test
-  public void testEntityCreateExistsError() throws Exception {
+  public void testCreateExistsError() throws Exception {
 
     gov.ca.cwds.data.persistence.ns.Address toCreate = new gov.ca.cwds.data.persistence.ns.Address(
         (long) 1, "742 Evergreen Terrace", "Springfield", "WA", new Integer(98700));
@@ -172,13 +179,19 @@ public class AddressServiceTest implements ServiceTestTemplate {
    */
   @Override
   @Test
-  public void testEntityDeleteThrowsAssertionError() throws Exception {
+  public void testDeleteThrowsAssertionError() throws Exception {
     thrown.expect(AssertionError.class);
     try {
       addressService.delete("nonLong");
     } catch (AssertionError e) {
       assertEquals("Expected AssertionError", e.getMessage());
     }
+  }
+
+  @Override
+  public void testDeleteReturnsClass() throws Exception {
+    // TODO Auto-generated method stub
+
   }
 
   @Override
@@ -189,12 +202,12 @@ public class AddressServiceTest implements ServiceTestTemplate {
   }
 
   @Override
-  public void testEntityDeleteDelegatesToCrudsService() throws Exception {
+  public void testDeleteDelegatesToCrudsService() throws Exception {
 
   }
 
   @Override
-  public void testEntityDeleteReturnsNullWhenNotFound() throws Exception {
+  public void testDeleteReturnsNullWhenNotFound() throws Exception {
 
   }
 
@@ -203,7 +216,7 @@ public class AddressServiceTest implements ServiceTestTemplate {
    */
   @Override
   @Test
-  public void testEntityUpdateThrowsAssertionError() throws Exception {
+  public void testUpdateThrowsAssertionError() throws Exception {
     thrown.expect(AssertionError.class);
     try {
       addressService.update(null, new Address("street", "city", "state", 95555));
@@ -214,25 +227,28 @@ public class AddressServiceTest implements ServiceTestTemplate {
 
   @Override
   @Test
-  public void testEntityUpdateThrowsNotImplementedException() throws Exception {
+  public void testUpdateThrowsNotImplementedException() throws Exception {
     thrown.expect(NotImplementedException.class);
 
     addressService.update(1L, new Address("street", "city", "state", 95555));
   }
 
   @Override
-  public void testEntityUpdateReturnsPersistent() throws Exception {
-
-  }
-
-  @Override
-  public void testEntityUpdateReturnsCorrectEntity() throws Exception {
-
-  }
-
-  @Override
-  public void testEntityCreateThrowsNotImplementedException() throws Exception {
+  public void testUpdateReturnsDomain() throws Exception {
     // TODO Auto-generated method stub
 
   }
+
+  @Override
+  public void testUpdateReturnsCorrectEntity() throws Exception {
+    // TODO Auto-generated method stub
+
+  }
+
+  @Override
+  public void testUpdateThrowsServiceException() throws Exception {
+    // TODO Auto-generated method stub
+
+  }
+
 }

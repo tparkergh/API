@@ -52,7 +52,7 @@ public class AllegationServiceTest implements ServiceTestTemplate {
   // find test
   @Override
   @Test
-  public void testEntityFindThrowsAssertionError() {
+  public void testFindThrowsAssertionError() {
     // expect string type for primary key test
     thrown.expect(AssertionError.class);
     try {
@@ -64,7 +64,7 @@ public class AllegationServiceTest implements ServiceTestTemplate {
 
   @Override
   @Test
-  public void testEntityFindReturnsCorrectEntity() throws Exception {
+  public void testFindReturnsCorrectEntity() throws Exception {
     String id = "Aaeae9r0F4";
     Allegation expected = MAPPER
         .readValue(fixture("fixtures/domain/legacy/Allegation/valid/valid.json"), Allegation.class);
@@ -78,7 +78,7 @@ public class AllegationServiceTest implements ServiceTestTemplate {
 
   @Override
   @Test
-  public void testEntityFindReturnsNullWhenNotFound() throws Exception {
+  public void testFindReturnsNullWhenNotFound() throws Exception {
     Response found = allegationService.find("ABC1234567");
     assertThat(found, is(nullValue()));
   }
@@ -86,7 +86,7 @@ public class AllegationServiceTest implements ServiceTestTemplate {
   @Override
   @Test
   // delete test
-  public void testEntityDeleteThrowsAssertionError() throws Exception {
+  public void testDeleteThrowsAssertionError() throws Exception {
     // expect string type for primary key test
     thrown.expect(AssertionError.class);
     try {
@@ -98,22 +98,34 @@ public class AllegationServiceTest implements ServiceTestTemplate {
 
   @Override
   @Test
-  public void testEntityDeleteDelegatesToCrudsService() {
+  public void testDeleteDelegatesToCrudsService() {
     allegationService.delete("ABC2345678");
     verify(allegationDao, times(1)).delete("ABC2345678");
   }
 
   @Override
   @Test
-  public void testEntityDeleteReturnsNullWhenNotFound() throws Exception {
+  public void testDeleteReturnsNullWhenNotFound() throws Exception {
     Response found = allegationService.delete("ABC1234567");
     assertThat(found, is(nullValue()));
+  }
+
+  @Override
+  public void testDeleteThrowsNotImplementedException() throws Exception {
+    // delete is implemented
+
+  }
+
+  @Override
+  public void testDeleteReturnsClass() throws Exception {
+    // TODO Auto-generated method stub
+
   }
 
   // update test
   @Override
   @Test
-  public void testEntityUpdateThrowsAssertionError() throws Exception {
+  public void testUpdateThrowsAssertionError() throws Exception {
     // expected string type for primary key test
     thrown.expect(AssertionError.class);
     try {
@@ -124,14 +136,8 @@ public class AllegationServiceTest implements ServiceTestTemplate {
   }
 
   @Override
-  public void testEntityUpdateReturnsPersistent() throws Exception {
-    // TODO Auto-generated method stub
-
-  }
-
-  @Override
   @Test
-  public void testEntityUpdateReturnsCorrectEntity() throws Exception {
+  public void testUpdateReturnsCorrectEntity() throws Exception {
     String id = "Aaeae9r0F4";
     Allegation expected = MAPPER
         .readValue(fixture("fixtures/domain/legacy/Allegation/valid/valid.json"), Allegation.class);
@@ -148,7 +154,7 @@ public class AllegationServiceTest implements ServiceTestTemplate {
 
   @SuppressWarnings("javadoc")
   @Test
-  public void testEntityUpdateThrowsExceptionWhenNotFound() throws Exception {
+  public void testUpdateThrowsExceptionWhenNotFound() throws Exception {
     try {
       Allegation allegationRequest = MAPPER.readValue(
           fixture("fixtures/domain/legacy/Allegation/valid/valid.json"), Allegation.class);
@@ -161,10 +167,28 @@ public class AllegationServiceTest implements ServiceTestTemplate {
     }
   }
 
+  @Override
+  public void testUpdateReturnsDomain() throws Exception {
+    // TODO Auto-generated method stub
+
+  }
+
+  @Override
+  public void testUpdateThrowsServiceException() throws Exception {
+    // TODO Auto-generated method stub
+
+  }
+
+  @Override
+  public void testUpdateThrowsNotImplementedException() throws Exception {
+    // TODO Auto-generated method stub
+
+  }
+
   // create test
   @Override
   @Test
-  public void testEntityCreateReturnsPostedClass() throws Exception {
+  public void testCreateReturnsPostedClass() throws Exception {
     String id = "Aaeae9r0F4";
     Allegation allegationDomain = MAPPER
         .readValue(fixture("fixtures/domain/legacy/Allegation/valid/valid.json"), Allegation.class);
@@ -181,7 +205,7 @@ public class AllegationServiceTest implements ServiceTestTemplate {
 
   @SuppressWarnings("javadoc")
   @Test
-  public void testEntityCreateReturnsNonNull() throws Exception {
+  public void testCreateReturnsNonNull() throws Exception {
     String id = "Aaeae9r0F4";
     Allegation allegationDomain = MAPPER
         .readValue(fixture("fixtures/domain/legacy/Allegation/valid/valid.json"), Allegation.class);
@@ -198,7 +222,7 @@ public class AllegationServiceTest implements ServiceTestTemplate {
 
   @Override
   @Test
-  public void testEntityCreateReturnsCorrectEntity() throws Exception {
+  public void testCreateReturnsCorrectEntity() throws Exception {
     String id = "Aaeae9r0F4";
     Allegation allegationDomain = MAPPER
         .readValue(fixture("fixtures/domain/legacy/Allegation/valid/valid.json"), Allegation.class);
@@ -216,7 +240,7 @@ public class AllegationServiceTest implements ServiceTestTemplate {
 
   @Override
   @Test
-  public void testEntityCreateNullIDError() throws Exception {
+  public void testCreateNullIDError() throws Exception {
     try {
       Allegation allegationDomain = MAPPER.readValue(
           fixture("fixtures/domain/legacy/Allegation/valid/valid.json"), Allegation.class);
@@ -235,7 +259,7 @@ public class AllegationServiceTest implements ServiceTestTemplate {
 
   @Override
   @Test
-  public void testEntityCreateBlankIDError() throws Exception {
+  public void testCreateBlankIDError() throws Exception {
     try {
       Allegation allegationDomain = MAPPER.readValue(
           fixture("fixtures/domain/legacy/Allegation/valid/valid.json"), Allegation.class);
@@ -253,38 +277,27 @@ public class AllegationServiceTest implements ServiceTestTemplate {
   }
 
   @Override
-  public void testEntityCreateThrowsAssertionError() throws Exception {
+  public void testCreateThrowsAssertionError() throws Exception {
     // TODO Auto-generated method stub
 
   }
 
   @Override
-  public void testEntityCreateEmptyError() throws Exception {
+  public void testCreateEmptyIDError() throws Exception {
     // TODO Auto-generated method stub
 
   }
 
   @Override
-  public void testEntityFindThrowsNotImplementedException() throws Exception {
+  public void testCreateThrowsNotImplementedException() throws Exception {
     // TODO Auto-generated method stub
 
   }
 
   @Override
-  public void testDeleteThrowsNotImplementedException() throws Exception {
+  public void testFindThrowsNotImplementedException() throws Exception {
     // TODO Auto-generated method stub
 
   }
 
-  @Override
-  public void testEntityUpdateThrowsNotImplementedException() throws Exception {
-    // TODO Auto-generated method stub
-
-  }
-
-  @Override
-  public void testEntityCreateThrowsNotImplementedException() throws Exception {
-    // TODO Auto-generated method stub
-
-  }
 }

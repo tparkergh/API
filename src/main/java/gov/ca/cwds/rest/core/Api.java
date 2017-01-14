@@ -23,6 +23,11 @@ public interface Api {
   public static final String RESOURCE_PEOPLE = "people";
 
   /**
+   * A {@code String} constant representing {@value #RESOURCE_PARTICIPANT} API..
+   */
+  public static final String RESOURCE_PARTICIPANT = "participant";
+
+  /**
    * A {@code String} constant representing {@value #RESOURCE_SCREENINGS} API..
    */
   public static final String RESOURCE_SCREENINGS = "screenings";
