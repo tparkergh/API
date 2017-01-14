@@ -2,6 +2,8 @@ package gov.ca.cwds.inject;
 
 import com.google.inject.AbstractModule;
 
+import gov.ca.cwds.data.persistence.cms.CmsSystemCodeCacheService;
+import gov.ca.cwds.data.persistence.cms.ISystemCodeCache;
 import gov.ca.cwds.rest.services.AddressService;
 import gov.ca.cwds.rest.services.AddressValidationService;
 import gov.ca.cwds.rest.services.PersonService;
@@ -49,6 +51,14 @@ public class ServicesModule extends AbstractModule {
     bind(StaffPersonService.class);
     bind(AddressValidationService.class);
     bind(AutoCompletePersonService.class);
+
+    bind(ISystemCodeCache.class).to(CmsSystemCodeCacheService.class);
   }
+
+  // @Provides
+  // @SystemCodeCache
+  // ISystemCodeCache systemCodeCache() {
+  // return new CmsSystemCodeCacheService();
+  // }
 
 }

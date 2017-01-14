@@ -11,6 +11,7 @@ import com.google.inject.Inject;
 
 import gov.ca.cwds.data.es.ElasticSearchPerson;
 import gov.ca.cwds.data.es.ElasticsearchDao;
+import gov.ca.cwds.data.persistence.cms.ISystemCodeCache;
 import gov.ca.cwds.rest.api.domain.es.AutoCompletePerson;
 import gov.ca.cwds.rest.api.domain.es.AutoCompletePersonRequest;
 import gov.ca.cwds.rest.api.domain.es.AutoCompletePersonResponse;
@@ -29,15 +30,19 @@ public class AutoCompletePersonService
   private static final Logger LOGGER = LoggerFactory.getLogger(AutoCompletePersonService.class);
 
   private ElasticsearchDao elasticsearchDao;
+  private ISystemCodeCache sysCodeCache;
 
   /**
    * Constructor
    * 
    * @param elasticsearchDao the ElasticSearch DAO
+   * @param sysCodeCache system code cache
    */
   @Inject
-  public AutoCompletePersonService(ElasticsearchDao elasticsearchDao) {
+  public AutoCompletePersonService(ElasticsearchDao elasticsearchDao,
+      ISystemCodeCache sysCodeCache) {
     this.elasticsearchDao = elasticsearchDao;
+    this.sysCodeCache = sysCodeCache;
   }
 
   /**

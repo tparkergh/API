@@ -1,6 +1,5 @@
 package gov.ca.cwds.rest.api.domain.es;
 
-import java.io.IOException;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
@@ -19,6 +18,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonValue;
+import com.google.inject.Inject;
 
 import gov.ca.cwds.data.IAddressAware;
 import gov.ca.cwds.data.IAddressAwareWritable;
@@ -32,7 +32,8 @@ import gov.ca.cwds.data.IPhoneAwareWritable;
 import gov.ca.cwds.data.ISysCodeAware;
 import gov.ca.cwds.data.ITypedIdentifier;
 import gov.ca.cwds.data.es.ElasticSearchPerson;
-import gov.ca.cwds.data.persistence.cms.CmsSystemCodeCache;
+import gov.ca.cwds.data.persistence.cms.ISystemCodeCache;
+import gov.ca.cwds.inject.SystemCodeCache;
 import gov.ca.cwds.rest.api.Request;
 import gov.ca.cwds.rest.api.domain.DomainChef;
 import io.dropwizard.jackson.JsonSnakeCase;
@@ -67,18 +68,21 @@ public class AutoCompletePerson
 
   private static final Logger LOGGER = LoggerFactory.getLogger(AutoCompletePerson.class);
 
-  private static final CmsSystemCodeCache systemCodes = loadSystemCodes();
+  private static ISystemCodeCache systemCodes;
 
-  private static final CmsSystemCodeCache loadSystemCodes() {
-    CmsSystemCodeCache ret = null;
-    try {
-      ret = CmsSystemCodeCache.produce();
-    } catch (IOException e) {
-      LOGGER.error("FAILED TO LOAD CMS SYSTEM CODES!", e);
-    }
-
-    return ret;
-  }
+  // private static final CmsSystemCodeCache systemCodes = loadSystemCodes();
+  //
+  // private static final CmsSystemCodeCache loadSystemCodes() throws ServiceException {
+  // CmsSystemCodeCache ret = null;
+  // try {
+  // ret = CmsSystemCodeCache.produce();
+  // } catch (ServiceException e) {
+  // LOGGER.error("FAILED TO LOAD CMS SYSTEM CODES!", e);
+  // throw e;
+  // }
+  //
+  // return ret;
+  // }
 
   /**
    * County.
@@ -795,12 +799,12 @@ public class AutoCompletePerson
   @JsonInclude(JsonInclude.Include.ALWAYS)
   private List<AutoCompleteLanguage> languages;
 
-  /**
-   * Default constructor.
-   */
-  public AutoCompletePerson() {
-    // Default, no-op.
-  }
+  // /**
+  // * Default constructor.
+  // */
+  // public AutoCompletePerson() {
+  // // Default, no-op.
+  // }
 
   /**
    * Construct from incoming ElasticSearchPerson.
@@ -1097,6 +1101,15 @@ public class AutoCompletePerson
   @Override
   public boolean equals(Object obj) {
     return EqualsBuilder.reflectionEquals(this, obj, false);
+  }
+
+  public static ISystemCodeCache getSystemCodes() {
+    return systemCodes;
+  }
+
+  @Inject
+  public static void setSystemCodes(@SystemCodeCache ISystemCodeCache systemCodes) {
+    AutoCompletePerson.systemCodes = systemCodes;
   }
 
 }
