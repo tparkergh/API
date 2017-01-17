@@ -15,7 +15,8 @@ import org.junit.ClassRule;
 import org.junit.Rule;
 import org.junit.Test;
 
-import gov.ca.cwds.rest.api.domain.Address;
+import gov.ca.cwds.rest.api.domain.Participant;
+import gov.ca.cwds.rest.resource.junit.template.ResourceTestTemplate;
 import io.dropwizard.testing.junit.ResourceTestRule;
 
 /**
@@ -24,10 +25,10 @@ import io.dropwizard.testing.junit.ResourceTestRule;
  * 
  * @author CWDS API Team
  */
-public class AddressResourceTest {
+public class ParticipantResourceTest implements ResourceTestTemplate {
 
-  private static final String ROOT_RESOURCE = "/addresses/";
-  private static final String FOUND_RESOURCE = "/addresses/1";
+  private static final String ROOT_RESOURCE = "/participant/";
+  private static final String FOUND_RESOURCE = "/participant/1";
 
   @Rule
   public ExpectedException thrown = ExpectedException.none();
@@ -36,97 +37,116 @@ public class AddressResourceTest {
 
   @ClassRule
   public final static ResourceTestRule inMemoryResource =
-      ResourceTestRule.builder().addResource(new AddressResource(resourceDelegate)).build();
+      ResourceTestRule.builder().addResource(new ParticipantResource(resourceDelegate)).build();
 
   @Before
   public void setup() throws Exception {}
 
-  /*
-   * Get Tests
-   */
-  @Test
+
+  @Override
+
   public void testGetDelegatesToResourceDelegate() throws Exception {
-    inMemoryResource.client().target(FOUND_RESOURCE).request().accept(MediaType.APPLICATION_JSON)
-        .get().getStatus();
-    verify(resourceDelegate).get(1L);
 
   }
 
-  // @Test
-  // public void testGet204NoContentSuccess() throws Exception {
-  //
-  // Response response = inMemoryResource.client().target(FOUND_RESOURCE).request()
-  // .accept(MediaType.APPLICATION_JSON).get();
-  //
-  // assertThat(response.getStatus(), is(204));
-  //
-  // }
+  @Override
+  public void testGet201ResourceSuccess() throws Exception {
+    // TODO Auto-generated method stub
 
+  }
+
+  @Override
   public void testGet404NotFoundError() throws Exception {
     // TODO Auto-generated method stub
 
   }
 
+  @Override
   public void testGet406NotSupportedError() throws Exception {
     // TODO Auto-generated method stub
 
   }
 
+  @Override
+  @Test
   public void testGet501NotImplemented() throws Exception {
-    // TODO Auto-generated method stub
+    int receivedStatus = inMemoryResource.client().target(FOUND_RESOURCE).request()
+        .accept(MediaType.APPLICATION_JSON).get().getStatus();
+    int expectedStatus = 501;
+    assertThat(receivedStatus, is(expectedStatus));
 
   }
 
-  /*
-   * Create Tests
-   */
+  @Override
   @Test
   public void testPostDelegatesToResourceDelegate() throws Exception {
-    Address address = new Address("742 Evergreen Terrace", "Springfield", "WA", 98700);
+    Participant participant =
+        new Participant(1, 1, "Marge", "Simpson", "Female", "2017-01-11", "111223333");
     inMemoryResource.client().target(ROOT_RESOURCE).request().accept(MediaType.APPLICATION_JSON)
-        .post(Entity.entity(address, MediaType.APPLICATION_JSON)).getStatus();
-    verify(resourceDelegate).create(eq(address));
+        .post(Entity.entity(participant, MediaType.APPLICATION_JSON)).getStatus();
+    verify(resourceDelegate).create(eq(participant));
+
   }
 
+  @Override
+  @Test
   public void testPostValidatesEntity() throws Exception {
-    // TODO Auto-generated method stub
+    Participant participant =
+        new Participant(1, 1, "Marge", "Simpson", "Female", "11-01-2017", "111223333");
 
+    int status =
+        inMemoryResource.client().target(ROOT_RESOURCE).request().accept(MediaType.APPLICATION_JSON)
+            .post(Entity.entity(participant, MediaType.APPLICATION_JSON)).getStatus();
+    assertThat(status, is(422));
   }
 
+  @Override
   public void testPost400JSONError() throws Exception {
     // TODO Auto-generated method stub
 
   }
 
+  @Override
   public void testPost406NotSupportedError() throws Exception {
     // TODO Auto-generated method stub
 
   }
 
+  @Override
   public void testPost409AlreadyExistsError() throws Exception {
     // TODO Auto-generated method stub
 
   }
 
+  @Override
   public void testPost422ValidationError() throws Exception {
     // TODO Auto-generated method stub
 
   }
 
+  @Override
   public void testPost200ResourceSuccess() throws Exception {
     // TODO Auto-generated method stub
 
   }
 
+  @Override
 
-  public void testPost501NotImplemented() throws Exception {
+  public void testPost501NotImplemented() throws Exception {}
+
+  @Override
+  public void testDelete200ResourceSuccess() throws Exception {
     // TODO Auto-generated method stub
 
   }
 
-  /*
-   * Delete Tests
-   */
+  @Override
+  public void testDelete404NotFoundError() throws Exception {
+    // TODO Auto-generated method stub
+
+  }
+
+  @Override
   @Test
   public void testDelete501NotImplemented() throws Exception {
     int receivedStatus = inMemoryResource.client().target(FOUND_RESOURCE).request()
@@ -136,71 +156,61 @@ public class AddressResourceTest {
 
   }
 
-  public void testDelete200ResourceSuccess() throws Exception {
-    // TODO Auto-generated method stub
-
-  }
-
-  public void testDelete404NotFoundError() throws Exception {
-    // TODO Auto-generated method stub
-
-  }
-
-
-  // @Override
-  // @Test
+  @Override
   public void testDeleteDelegatesToResource() throws Exception {
-    // inMemoryResource.client().target(FOUND_RESOURCE).request().accept(MediaType.APPLICATION_JSON)
-    // .delete().getStatus();
-    // verify(resourceDelegate).delete(1L);
+    // TODO Auto-generated method stub
+
   }
 
-  /*
-   * Update Tests
-   */
-  @Test
-  public void testUpdate501NotImplemented() throws Exception {
-    Address address = new Address("742 Evergreen Terrace", "Springfield", "WA", 98700);
-    int status =
-        inMemoryResource.client().target(ROOT_RESOURCE).request().accept(MediaType.APPLICATION_JSON)
-            .put(Entity.entity(address, MediaType.APPLICATION_JSON)).getStatus();
-    assertThat(status, is(501));
-  }
-
-
+  @Override
   public void testUpdateDelegatesToResourceDelegate() throws Exception {
     // TODO Auto-generated method stub
 
   }
 
+  @Override
   public void testUpdate200ResourceSuccess() throws Exception {
     // TODO Auto-generated method stub
 
   }
 
+  @Override
   public void testUpdate400JSONError() throws Exception {
     // TODO Auto-generated method stub
 
   }
 
+  @Override
   public void testUpdate404NotFoundError() throws Exception {
     // TODO Auto-generated method stub
 
   }
 
+  @Override
   public void testUpdate406NotSupportedError() throws Exception {
     // TODO Auto-generated method stub
 
   }
 
+  @Override
   public void testUpdate422ValidationError() throws Exception {
     // TODO Auto-generated method stub
 
   }
 
-  public void testGet201ResourceSuccess() throws Exception {
-    // TODO Auto-generated method stub
+  @Override
+  @Test
+  public void testUpdate501NotImplemented() throws Exception {
+    Participant participant =
+        new Participant(1, 1, "Marge", "Simpson", "Female", "2017-01-11", "111223333");
+    int receivedStatus =
+        inMemoryResource.client().target(ROOT_RESOURCE).request().accept(MediaType.APPLICATION_JSON)
+            .put(Entity.entity(participant, MediaType.APPLICATION_JSON)).getStatus();
+    int expectedStatus = 501;
+    assertThat(receivedStatus, is(expectedStatus));
 
   }
+
+
 
 }

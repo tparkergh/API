@@ -107,11 +107,24 @@ public class StaffPersonResourceTest {
    * @throws Exception required for test compilation
    */
   // @Test
-  // public void deleteDelegatesToResourceDelegate() throws Exception {
-  // inMemoryResource.client().target(FOUND_RESOURCE).request().accept(MediaType.APPLICATION_JSON)
-  // .delete();
-  // verify(resourceDelegate).delete("abc");
-  // }
+  public void deleteDelegatesToResourceDelegate() throws Exception {
+    // success when run as stand alone JUnit
+    // fails when run as part of the StaffPersonResourceTest class JUnit
+    //
+    // TODO:
+    // org.mockito.exceptions.verification.TooManyActualInvocations:
+    // resourceDelegate.delete("abc");
+    // Wanted 1 time:
+    // -> at
+    // gov.ca.cwds.rest.resources.cms.StaffPersonResourceTest.deleteDelegatesToResourceDelegate(StaffPersonResourceTest.java:116)
+    // But was 2 times. Undesired invocation:
+    // -> at gov.ca.cwds.rest.resources.cms.StaffPersonResource.delete(StaffPersonResource.java:89)
+
+    // inMemoryResource.client().target(FOUND_RESOURCE).request().accept(MediaType.APPLICATION_JSON)
+    // .delete();
+    // verify(resourceDelegate).delete("abc");
+
+  }
 
   @Test
   public void deleteEntity() throws Exception {
@@ -120,16 +133,6 @@ public class StaffPersonResourceTest {
     assertThat(status, is(204));
 
   }
-
-  // @Test
-  // public void deleteEntitySuccess() throws Exception {
-  // inMemoryResource.client().target(FOUND_RESOURCE).request().accept(MediaType.APPLICATION_JSON)
-  // .delete();
-  // // String message = response.readEntity(String.class);
-  // // System.out.print(message);
-  // verify(resourceDelegate).delete("abc");
-  //
-  // }
 
   /**
    * Update Tests

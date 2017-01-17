@@ -32,10 +32,6 @@ public interface ResourceTestTemplate {
 
   @SuppressWarnings("javadoc")
   @Test
-  public void testGetNotImplemented() throws Exception;
-
-  @SuppressWarnings("javadoc")
-  @Test
   public void testGet406NotSupportedError() throws Exception;
 
   @SuppressWarnings("javadoc")
@@ -75,15 +71,16 @@ public interface ResourceTestTemplate {
 
   @SuppressWarnings("javadoc")
   @Test
-  public void testPostNotImplemented() throws Exception;
-
-  @SuppressWarnings("javadoc")
-  @Test
   public void testPost501NotImplemented() throws Exception;
 
   /*
    * JUnit test for DELETE
    */
+
+  @SuppressWarnings("javadoc")
+  @Test
+  public void testDeleteDelegatesToResource() throws Exception;
+
   @SuppressWarnings("javadoc")
   @Test
   public void testDelete200ResourceSuccess() throws Exception;
@@ -91,10 +88,6 @@ public interface ResourceTestTemplate {
   @SuppressWarnings("javadoc")
   @Test
   public void testDelete404NotFoundError() throws Exception;
-
-  @SuppressWarnings("javadoc")
-  @Test
-  public void testDeleteNotImplemented() throws Exception;
 
   @SuppressWarnings("javadoc")
   @Test
@@ -126,10 +119,6 @@ public interface ResourceTestTemplate {
   @SuppressWarnings("javadoc")
   @Test
   public void testUpdate422ValidationError() throws Exception;
-
-  @SuppressWarnings("javadoc")
-  @Test
-  public void testUpdateNotImplemented() throws Exception;
 
   @SuppressWarnings("javadoc")
   @Test
