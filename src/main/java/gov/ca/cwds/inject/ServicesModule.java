@@ -55,10 +55,4 @@ public class ServicesModule extends AbstractModule {
     bind(ISystemCodeCache.class).to(CmsSystemCodeCacheService.class);
   }
 
-  // @Provides
-  // @SystemCodeCache
-  // ISystemCodeCache systemCodeCache() {
-  // return new CmsSystemCodeCacheService();
-  // }
-
 }

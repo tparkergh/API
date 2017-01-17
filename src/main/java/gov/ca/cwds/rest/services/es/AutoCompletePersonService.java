@@ -76,7 +76,9 @@ public class AutoCompletePersonService
     }
 
     // Wildcard or no wildcard, that is the question.
-    searchTerm = searchTerm.trim().toLowerCase();
+    // Tune Elasticsearch field analysis.
+    // TODO: #137794503: exclude reserved characters from queries.
+    searchTerm = searchTerm.trim().toLowerCase().replace('^', ' ');
     // if (!searchTerm.endsWith("*")) {
     // searchTerm = searchTerm + "*";
     // }

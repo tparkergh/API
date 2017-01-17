@@ -70,20 +70,6 @@ public class AutoCompletePerson
 
   private static ISystemCodeCache systemCodes;
 
-  // private static final CmsSystemCodeCache systemCodes = loadSystemCodes();
-  //
-  // private static final CmsSystemCodeCache loadSystemCodes() throws ServiceException {
-  // CmsSystemCodeCache ret = null;
-  // try {
-  // ret = CmsSystemCodeCache.produce();
-  // } catch (ServiceException e) {
-  // LOGGER.error("FAILED TO LOAD CMS SYSTEM CODES!", e);
-  // throw e;
-  // }
-  //
-  // return ret;
-  // }
-
   /**
    * County.
    * 
@@ -874,9 +860,7 @@ public class AutoCompletePerson
           addLanguage(AutoCompleteLanguage.findBySysId(lang.getLanguageSysId()));
         }
       }
-
     }
-
   }
 
   @Override
