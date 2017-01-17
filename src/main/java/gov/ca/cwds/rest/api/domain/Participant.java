@@ -1,5 +1,8 @@
 package gov.ca.cwds.rest.api.domain;
 
+import javax.validation.constraints.Size;
+
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import gov.ca.cwds.rest.api.Request;
@@ -33,19 +36,22 @@ public class Participant extends DomainObject implements Request, Response {
   private String lastName;
 
   @JsonProperty("gender")
-  @ApiModelProperty(example = "Male")
+  @ApiModelProperty(example = "Male", allowableValues = "Male, Female")
   private String gender;
 
   @Date
   @JsonProperty("date_of_birth")
-  @ApiModelProperty(example = "12/13/2010")
+  @ApiModelProperty(example = "2001-09-13")
   private String dateOfBirth;
 
   @JsonProperty("ssn")
-  @ApiModelProperty(example = "111-22-3333")
+  @Size(min = 9, max = 9)
+  @ApiModelProperty(example = "111223333")
   private String ssn;
 
   /**
+   * Constructor
+   * 
    * @param personId The person Id
    * @param screeningId The screening Id
    * @param firstName The first Name
@@ -54,8 +60,11 @@ public class Participant extends DomainObject implements Request, Response {
    * @param dateOfBirth The date Of Birth
    * @param ssn The social security number
    */
-  public Participant(long personId, long screeningId, String firstName, String lastName,
-      String gender, String dateOfBirth, String ssn) {
+  @JsonCreator
+  public Participant(@JsonProperty("person_id") long personId,
+      @JsonProperty("screening_id") long screeningId, @JsonProperty("first_name") String firstName,
+      @JsonProperty("last_name") String lastName, @JsonProperty("gender") String gender,
+      @JsonProperty("date_of_birth") String dateOfBirth, @JsonProperty("ssn") String ssn) {
     super();
     this.personId = personId;
     this.screeningId = screeningId;
@@ -68,7 +77,7 @@ public class Participant extends DomainObject implements Request, Response {
 
 
   /**
-   * @return the personId
+   * @return the person_id
    */
   public long getPersonId() {
     return personId;
@@ -122,7 +131,7 @@ public class Participant extends DomainObject implements Request, Response {
    * @see java.lang.Object#hashCode()
    */
   @Override
-  public int hashCode() {
+  public final int hashCode() {
     final int prime = 31;
     int result = 1;
     result = prime * result + ((dateOfBirth == null) ? 0 : dateOfBirth.hashCode());
@@ -141,14 +150,14 @@ public class Participant extends DomainObject implements Request, Response {
    * @see java.lang.Object#equals(java.lang.Object)
    */
   @Override
-  public boolean equals(Object obj) {
+  public final boolean equals(Object obj) {
     if (this == obj) {
       return true;
     }
     if (obj == null) {
       return false;
     }
-    if (getClass() != obj.getClass()) {
+    if (!(getClass().isInstance(obj))) {
       return false;
     }
     Participant other = (Participant) obj;
