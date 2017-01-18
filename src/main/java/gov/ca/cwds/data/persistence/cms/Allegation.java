@@ -9,6 +9,7 @@ import javax.persistence.Table;
 
 import org.hibernate.annotations.Type;
 
+import gov.ca.cwds.data.SystemCodeSerializer;
 import gov.ca.cwds.rest.api.domain.DomainChef;
 
 
@@ -49,6 +50,7 @@ public class Allegation extends CmsPersistentObject {
   @Column(name = "ALG_DSPC")
   private Short allegationDispositionType;
 
+  @SystemCodeSerializer
   @Type(type = "short")
   @Column(name = "ALG_TPC")
   private Short allegationType;

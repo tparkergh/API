@@ -11,9 +11,12 @@ import java.io.IOException;
 import org.junit.Test;
 
 import com.fasterxml.jackson.core.JsonParseException;
+import com.fasterxml.jackson.core.Version;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.module.SimpleModule;
 
+import gov.ca.cwds.data.ContextualSystemCodeSerializer;
 import gov.ca.cwds.data.persistence.junit.template.PersistentTestTemplate;
 import io.dropwizard.jackson.Jackson;
 import nl.jqno.equalsverifier.EqualsVerifier;
@@ -26,7 +29,16 @@ import nl.jqno.equalsverifier.Warning;
  */
 public class AttorneyTest implements PersistentTestTemplate {
 
-  private static final ObjectMapper MAPPER = Jackson.newObjectMapper();
+  private static final ObjectMapper MAPPER;
+
+  static {
+    ObjectMapper mapper = Jackson.newObjectMapper();
+    SimpleModule module =
+        new SimpleModule("SystemCodeModule", new Version(0, 1, 0, "a", "alpha", ""));
+    module.addSerializer(Short.class, new ContextualSystemCodeSerializer());
+    mapper.registerModule(module);
+    MAPPER = mapper;
+  }
 
   @Override
   @Test
@@ -47,7 +59,6 @@ public class AttorneyTest implements PersistentTestTemplate {
   @Test
   public void testPersistentConstructor() throws Exception {
     Attorney vatrny = validAttorney();
-
     Attorney persistent = new Attorney(vatrny.getArchiveAssociationIndicator(),
         vatrny.getBusinessName(), vatrny.getCityName(), vatrny.getCwsAttorneyIndicator(),
         vatrny.getEmailAddress(), vatrny.getEndDate(), vatrny.getFaxNumber(), vatrny.getFirstName(),
@@ -92,13 +103,28 @@ public class AttorneyTest implements PersistentTestTemplate {
     assertThat(persistent.getZipSuffixNumber(), is(equalTo(vatrny.getZipSuffixNumber())));
   }
 
-  private Attorney validAttorney() throws JsonParseException, JsonMappingException, IOException {
+  @Test
+  public void testSerializeJson() throws Exception {
+    Attorney vatrny = validAttorney();
+    Attorney persistent = new Attorney(vatrny.getArchiveAssociationIndicator(),
+        vatrny.getBusinessName(), vatrny.getCityName(), vatrny.getCwsAttorneyIndicator(),
+        vatrny.getEmailAddress(), vatrny.getEndDate(), vatrny.getFaxNumber(), vatrny.getFirstName(),
+        vatrny.getGovernmentEntityType(), vatrny.getId(), vatrny.getLanguageType(),
+        vatrny.getLastName(), vatrny.getMessagePhoneExtensionNumber(),
+        vatrny.getMessagePhoneNumber(), vatrny.getMiddleInitialName(),
+        vatrny.getNamePrefixDescription(), vatrny.getPositionTitleDescription(),
+        vatrny.getPrimaryPhoneExtensionNumber(), vatrny.getPrimaryPhoneNumber(),
+        vatrny.getStateCodeType(), vatrny.getStreetName(), vatrny.getStreetNumber(),
+        vatrny.getSuffixTitleDescription(), vatrny.getZipNumber(), vatrny.getZipSuffixNumber());
 
+    assertThat(persistent.getZipSuffixNumber(), is(equalTo(vatrny.getZipSuffixNumber())));
+    System.out.println(MAPPER.writeValueAsString(persistent));
+  }
+
+  private Attorney validAttorney() throws JsonParseException, JsonMappingException, IOException {
     Attorney validAttorney = MAPPER
         .readValue(fixture("fixtures/domain/legacy/Attorney/valid/valid.json"), Attorney.class);
-
     return validAttorney;
-
   }
 
   @Override

@@ -13,7 +13,10 @@ import org.hibernate.annotations.NamedQueries;
 import org.hibernate.annotations.NamedQuery;
 import org.hibernate.annotations.Type;
 
+import com.fasterxml.jackson.annotation.JsonPropertyOrder;
+
 import gov.ca.cwds.data.IPersonAware;
+import gov.ca.cwds.data.SystemCodeSerializer;
 import gov.ca.cwds.data.persistence.PersistentObject;
 
 /**
@@ -28,6 +31,7 @@ import gov.ca.cwds.data.persistence.PersistentObject;
         query = "FROM Attorney WHERE lastUpdatedTime > :after")})
 @Entity
 @Table(schema = "CWSINT", name = "ATTRNY_T")
+@JsonPropertyOrder(alphabetic = true)
 public class Attorney extends CmsPersistentObject implements IPersonAware {
 
   /**
@@ -60,6 +64,7 @@ public class Attorney extends CmsPersistentObject implements IPersonAware {
   @Column(name = "FIRST_NM")
   private String firstName;
 
+  @SystemCodeSerializer
   @Type(type = "short")
   @Column(name = "GVR_ENTC")
   private Short governmentEntityType;
@@ -68,6 +73,7 @@ public class Attorney extends CmsPersistentObject implements IPersonAware {
   @Column(name = "IDENTIFIER", length = CMS_ID_LEN)
   private String id;
 
+  @SystemCodeSerializer
   @Type(type = "short")
   @Column(name = "LANG_TPC")
   private Short languageType;
@@ -129,6 +135,8 @@ public class Attorney extends CmsPersistentObject implements IPersonAware {
   }
 
   /**
+   * Construct from all fields.
+   * 
    * @param archiveAssociationIndicator The archiveAssociationIndicator
    * @param businessName The businessName
    * @param cityName The cityName
