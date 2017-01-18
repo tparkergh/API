@@ -34,7 +34,7 @@ public class AttorneyTest implements PersistentTestTemplate {
    * Auto-magically translate CMS system codes when serializing JSON.
    */
   static {
-    // TODO: #137548119: Inject system code cache.
+    // Inject system code cache.
     ObjectMapper mapper = Jackson.newObjectMapper();
     SimpleModule module = new SimpleModule("SystemCodeModule",
         new Version(1, 0, 24, "alpha", "ca.gov.data.persistence.cms", "syscode"));

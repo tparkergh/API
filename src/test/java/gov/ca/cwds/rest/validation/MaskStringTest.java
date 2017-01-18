@@ -15,8 +15,14 @@ public class MaskStringTest {
   String actualSsn;
   String expectedSsn = "";
 
-  private static final MaskString spyMaskString = spy(new MaskString());
+  private MaskString spyMaskString = spy(new MaskString());
 
+  @Test
+  public void returnEmptySsnWhenNull() throws Exception {
+    String ssn = null;
+    actualSsn = spyMaskString.maskSsn(ssn);
+    assertThat(actualSsn, is(equalTo(expectedSsn)));
+  }
 
   @Test
   public void returnEmptySsnWhenZero() throws Exception {
@@ -71,7 +77,6 @@ public class MaskStringTest {
     assertThat(actualSsn, is(equalTo(expectedSsn)));
   }
 
-
   @Test
   public void maskWithHyphenInSsn() throws Exception {
     String ssn = "012-03-0456";
@@ -79,6 +84,5 @@ public class MaskStringTest {
     actualSsn = spyMaskString.maskSsn(ssn);
     assertThat(actualSsn, is(equalTo(expectedSsn)));
   }
-
 
 }
