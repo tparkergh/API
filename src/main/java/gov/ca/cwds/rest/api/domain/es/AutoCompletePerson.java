@@ -36,6 +36,7 @@ import gov.ca.cwds.data.persistence.cms.ISystemCodeCache;
 import gov.ca.cwds.inject.SystemCodeCache;
 import gov.ca.cwds.rest.api.Request;
 import gov.ca.cwds.rest.api.domain.DomainChef;
+import gov.ca.cwds.rest.validation.MaskString;
 import io.dropwizard.jackson.JsonSnakeCase;
 
 /**
@@ -935,6 +936,8 @@ public class AutoCompletePerson
 
   @Override
   public String getSsn() {
+    MaskString mask = new MaskString();
+    ssn = mask.maskSsn(ssn);
     return ssn;
   }
 
