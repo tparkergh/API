@@ -93,15 +93,16 @@ public class ParticipantTest implements PersistentTestTemplate {
 
 
   @Override
+  @Test
   public void testEmptyConstructor() throws Exception {
-    // TODO Auto-generated method stub
-
+    Participant empty = new Participant();
+    assertThat(empty.getClass(), is(Participant.class));
   }
 
 
   @Override
   public void testPersistentConstructor() throws Exception {
-    // TODO Auto-generated method stub
+    // no persistent constructor yet
 
   }
 

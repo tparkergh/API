@@ -32,10 +32,6 @@ public interface ResourceTestTemplate {
 
   @SuppressWarnings("javadoc")
   @Test
-  public void testGet406NotSupportedError() throws Exception;
-
-  @SuppressWarnings("javadoc")
-  @Test
   public void testGet501NotImplemented() throws Exception;
 
   /*

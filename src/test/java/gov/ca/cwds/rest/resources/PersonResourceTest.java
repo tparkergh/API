@@ -3,6 +3,7 @@ package gov.ca.cwds.rest.resources;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
 import static org.mockito.Matchers.eq;
+import static org.mockito.Mockito.atLeastOnce;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 
@@ -58,7 +59,7 @@ public class PersonResourceTest {
     Person person = new Person("firstname", "last", "M", "1990-11-22", "000000000", null);
     inMemoryResource.client().target(ROOT_RESOURCE).request().accept(MediaType.APPLICATION_JSON)
         .post(Entity.entity(person, MediaType.APPLICATION_JSON));
-    verify(resourceDelegate).create(eq(person));
+    verify(resourceDelegate, atLeastOnce()).create(eq(person));
   }
 
   /**

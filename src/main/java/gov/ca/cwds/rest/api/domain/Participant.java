@@ -49,6 +49,12 @@ public class Participant extends DomainObject implements Request, Response {
   @ApiModelProperty(example = "111223333")
   private String ssn;
 
+
+  /**
+   * empty constructor
+   */
+  public Participant() {}
+
   /**
    * Constructor
    * 

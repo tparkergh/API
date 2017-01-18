@@ -65,12 +65,6 @@ public class ParticipantResourceTest implements ResourceTestTemplate {
   }
 
   @Override
-  public void testGet406NotSupportedError() throws Exception {
-    // TODO Auto-generated method stub
-
-  }
-
-  @Override
   @Test
   public void testGet501NotImplemented() throws Exception {
     int receivedStatus = inMemoryResource.client().target(FOUND_RESOURCE).request()

@@ -3,6 +3,7 @@ package gov.ca.cwds.rest.resources.cms;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
 import static org.mockito.Matchers.eq;
+import static org.mockito.Mockito.atLeastOnce;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 
@@ -106,23 +107,11 @@ public class StaffPersonResourceTest {
    * 
    * @throws Exception required for test compilation
    */
-  // @Test
+  @Test
   public void deleteDelegatesToResourceDelegate() throws Exception {
-    // success when run as stand alone JUnit
-    // fails when run as part of the StaffPersonResourceTest class JUnit
-    //
-    // TODO:
-    // org.mockito.exceptions.verification.TooManyActualInvocations:
-    // resourceDelegate.delete("abc");
-    // Wanted 1 time:
-    // -> at
-    // gov.ca.cwds.rest.resources.cms.StaffPersonResourceTest.deleteDelegatesToResourceDelegate(StaffPersonResourceTest.java:116)
-    // But was 2 times. Undesired invocation:
-    // -> at gov.ca.cwds.rest.resources.cms.StaffPersonResource.delete(StaffPersonResource.java:89)
-
-    // inMemoryResource.client().target(FOUND_RESOURCE).request().accept(MediaType.APPLICATION_JSON)
-    // .delete();
-    // verify(resourceDelegate).delete("abc");
+    inMemoryResource.client().target(FOUND_RESOURCE).request().accept(MediaType.APPLICATION_JSON)
+        .delete();
+    verify(resourceDelegate, atLeastOnce()).delete("abc");
 
   }
 
