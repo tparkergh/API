@@ -20,13 +20,18 @@ import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import gov.ca.cwds.data.persistence.junit.template.PersistentTestTemplate;
 import gov.ca.cwds.rest.resources.ParticipantResource;
 import io.dropwizard.jackson.Jackson;
 import io.dropwizard.testing.junit.ResourceTestRule;
 import nl.jqno.equalsverifier.EqualsVerifier;
 import nl.jqno.equalsverifier.Warning;
 
-public class ParticipantTest {
+/**
+ * @author CWDS API Team
+ *
+ */
+public class ParticipantTest implements PersistentTestTemplate {
 
   private long personId = 12345;
   private long screeningId = 12345;
@@ -41,10 +46,12 @@ public class ParticipantTest {
   private static final ParticipantResource mockedParticipantResource =
       mock(ParticipantResource.class);
 
+  @SuppressWarnings("javadoc")
   @ClassRule
   public static final ResourceTestRule resources =
       ResourceTestRule.builder().addResource(mockedParticipantResource).build();
 
+  @SuppressWarnings("javadoc")
   @Before
   public void setup() {
     Participant validParticipant = this.validParticipant();
@@ -57,6 +64,7 @@ public class ParticipantTest {
   /*
    * Serialization and de-serialization
    */
+  @SuppressWarnings("javadoc")
   @Test
   public void serializesToJSON() throws Exception {
     String expected = MAPPER.writeValueAsString(validParticipant());
@@ -67,6 +75,7 @@ public class ParticipantTest {
     assertThat(serialized, is(expected));
   }
 
+  @SuppressWarnings("javadoc")
   @Test
   public void deserializesFromJSON() throws Exception {
     Participant expected = this.validParticipant();
@@ -76,14 +85,29 @@ public class ParticipantTest {
     assertThat(serialized, is(expected));
   }
 
+  @Override
   @Test
-  public void equalsHashCodeWork() {
+  public void testEqualsHashCodeWorks() {
     EqualsVerifier.forClass(Participant.class).suppress(Warning.NONFINAL_FIELDS).verify();
   }
 
 
+  @Override
+  public void testEmptyConstructor() throws Exception {
+    // TODO Auto-generated method stub
+
+  }
+
+
+  @Override
+  public void testPersistentConstructor() throws Exception {
+    // TODO Auto-generated method stub
+
+  }
+
+  @Override
   @Test
-  public void jsonCreatorConstructorTest() throws Exception {
+  public void testConstructorUsingDomain() throws Exception {
 
     Participant domain =
         new Participant(personId, screeningId, firstName, lastName, gender, dateOfBirth, ssn);
@@ -117,5 +141,6 @@ public class ParticipantTest {
       return null;
     }
   }
+
 }
 
