@@ -54,6 +54,7 @@ public class ServicesModule extends AbstractModule {
 
     // Register system code translator with Guice.
     bind(ISystemCodeCache.class).to(CmsSystemCodeCacheService.class);
+    // bind(CmsSystemCodeCacheService.class);
   }
 
 }

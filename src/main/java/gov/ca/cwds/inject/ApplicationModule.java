@@ -37,9 +37,9 @@ public class ApplicationModule extends AbstractModule {
     install(new ServicesModule());
     install(new ResourcesModule());
     install(new DataAccessModule(bootstrap));
-    install(new ApiJsonModule());
     install(new FiltersModule());
     install(new AuditingModule());
+    // install(new ApiJsonModule(bootstrap));
   }
 
 }

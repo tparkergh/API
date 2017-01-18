@@ -25,6 +25,7 @@ import gov.ca.cwds.data.IMultiplePhonesAware;
 import gov.ca.cwds.data.IPersonAware;
 import gov.ca.cwds.data.IPhoneAware;
 import gov.ca.cwds.data.ReadablePhone;
+import gov.ca.cwds.data.SystemCodeSerializer;
 import gov.ca.cwds.data.ns.NsPersistentObject;
 import gov.ca.cwds.rest.api.domain.DomainChef;
 
@@ -57,10 +58,12 @@ public class Reporter extends CmsPersistentObject
   @Column(name = "RPTR_CTYNM")
   private String cityName;
 
+  @SystemCodeSerializer(other = true, description = true)
   @Type(type = "short")
   @Column(name = "COL_RELC")
   private Short colltrClientRptrReltnshpType;
 
+  @SystemCodeSerializer(other = true, description = true)
   @Type(type = "short")
   @Column(name = "CMM_MTHC")
   private Short communicationMethodType;
@@ -111,6 +114,7 @@ public class Reporter extends CmsPersistentObject
   @Column(name = "PRM_EXT_NO")
   private Integer primaryPhoneExtensionNumber;
 
+  @SystemCodeSerializer(other = true, description = true)
   @Type(type = "short")
   @Column(name = "STATE_C")
   private Short stateCodeType;

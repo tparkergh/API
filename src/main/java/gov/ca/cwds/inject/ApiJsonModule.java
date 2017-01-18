@@ -1,13 +1,14 @@
 package gov.ca.cwds.inject;
 
 import com.fasterxml.jackson.core.Version;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.module.SimpleModule;
 import com.google.inject.AbstractModule;
 import com.google.inject.Guice;
 
 import gov.ca.cwds.data.CmsSystemCodeSerializer;
 import gov.ca.cwds.data.persistence.cms.ISystemCodeCache;
+import gov.ca.cwds.rest.ApiConfiguration;
+import io.dropwizard.setup.Bootstrap;
 
 /**
  * Identifies all CWDS API business layer (aka, service) classes available for dependency injection
@@ -17,11 +18,15 @@ import gov.ca.cwds.data.persistence.cms.ISystemCodeCache;
  */
 public class ApiJsonModule extends AbstractModule {
 
+  private Bootstrap<ApiConfiguration> bootstrap;
+
   /**
    * Default, no-op constructor.
+   * 
+   * @param bootstrap API live configuration
    */
-  public ApiJsonModule() {
-    // Default, no-op.
+  public ApiJsonModule(Bootstrap<ApiConfiguration> bootstrap) {
+    this.bootstrap = bootstrap;
   }
 
   @Override
@@ -31,7 +36,8 @@ public class ApiJsonModule extends AbstractModule {
         new SimpleModule("SystemCodeModule", new Version(0, 1, 0, "a", "alpha", ""));
     module.addSerializer(Short.class,
         new CmsSystemCodeSerializer(Guice.createInjector().getInstance(ISystemCodeCache.class)));
-    Guice.createInjector().getInstance(ObjectMapper.class).registerModule(module);
+    // Guice.createInjector().getInstance(ObjectMapper.class).registerModule(module);
+    bootstrap.getObjectMapper().registerModule(module);
   }
 
 }
