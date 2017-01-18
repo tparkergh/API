@@ -52,6 +52,7 @@ public class ServicesModule extends AbstractModule {
     bind(AddressValidationService.class);
     bind(AutoCompletePersonService.class);
 
+    // Register system code translator with Guice.
     bind(ISystemCodeCache.class).to(CmsSystemCodeCacheService.class);
   }
 

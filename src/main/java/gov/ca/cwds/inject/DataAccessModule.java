@@ -111,6 +111,8 @@ public class DataAccessModule extends AbstractModule {
 
     bind(ElasticsearchDao.class);
     bind(SmartyStreetsDao.class);
+
+    // System code loader DAO.
     bind(ISystemCodeDao.class).to(SystemCodeDaoFileImpl.class);
   }
 
