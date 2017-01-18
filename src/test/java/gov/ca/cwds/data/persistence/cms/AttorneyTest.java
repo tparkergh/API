@@ -16,7 +16,7 @@ import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.module.SimpleModule;
 
-import gov.ca.cwds.data.ContextualSystemCodeSerializer;
+import gov.ca.cwds.data.CmsSystemCodeSerializer;
 import gov.ca.cwds.data.persistence.junit.template.PersistentTestTemplate;
 import io.dropwizard.jackson.Jackson;
 import nl.jqno.equalsverifier.EqualsVerifier;
@@ -25,17 +25,21 @@ import nl.jqno.equalsverifier.Warning;
 
 /**
  * @author CWDS API Team
- *
  */
 public class AttorneyTest implements PersistentTestTemplate {
 
   private static final ObjectMapper MAPPER;
 
+  /**
+   * Auto-magically translate CMS system codes when serializing JSON.
+   */
   static {
+    // TODO: #137548119: Inject system code cache.
     ObjectMapper mapper = Jackson.newObjectMapper();
-    SimpleModule module =
-        new SimpleModule("SystemCodeModule", new Version(0, 1, 0, "a", "alpha", ""));
-    module.addSerializer(Short.class, new ContextualSystemCodeSerializer());
+    SimpleModule module = new SimpleModule("SystemCodeModule",
+        new Version(1, 0, 24, "alpha", "ca.gov.data.persistence.cms", "syscode"));
+    module.addSerializer(Short.class,
+        new CmsSystemCodeSerializer(new CmsSystemCodeCacheService(new SystemCodeDaoFileImpl())));
     mapper.registerModule(module);
     MAPPER = mapper;
   }
@@ -118,7 +122,10 @@ public class AttorneyTest implements PersistentTestTemplate {
         vatrny.getSuffixTitleDescription(), vatrny.getZipNumber(), vatrny.getZipSuffixNumber());
 
     assertThat(persistent.getZipSuffixNumber(), is(equalTo(vatrny.getZipSuffixNumber())));
-    System.out.println(MAPPER.writeValueAsString(persistent));
+
+    // For pretty JSON, instead of a single line.
+    MAPPER.writerWithDefaultPrettyPrinter().writeValue(System.out, persistent);
+    // System.out.println(MAPPER.writeValueAsString(persistent));
   }
 
   private Attorney validAttorney() throws JsonParseException, JsonMappingException, IOException {
