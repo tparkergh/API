@@ -211,13 +211,12 @@ public class Person extends NsPersistentObject implements IPersonAware, IAddress
 
   @Override
   public String getZip() {
-    // TODO Auto-generated method stub
-    return null;
+    return this.getAddress() != null && this.getAddress().getZip() != null
+        ? this.getAddress().getZip().toString() : null;
   }
 
   @Override
   public String getCounty() {
-    // TODO Auto-generated method stub
     return null;
   }
 
