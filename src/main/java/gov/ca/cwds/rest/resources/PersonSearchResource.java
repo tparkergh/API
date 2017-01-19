@@ -151,8 +151,8 @@ public class PersonSearchResource {
   public Response delete(
       @PathParam("id") @ApiParam(required = true, value = "id of person to delete") long id,
       @HeaderParam("Accept") @ApiParam(hidden = true) String acceptHeader) {
-    throw new NullPointerException();
-    // return Response.status(Response.Status.NOT_IMPLEMENTED).entity(null).build();
+    // throw new NullPointerException();
+    return Response.status(Response.Status.NOT_IMPLEMENTED).entity(null).build();
   }
 
   /**
