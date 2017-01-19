@@ -807,13 +807,6 @@ public class AutoCompletePerson
   @JsonInclude(JsonInclude.Include.ALWAYS)
   private List<AutoCompleteLanguage> languages;
 
-  // /**
-  // * Default constructor.
-  // */
-  // public AutoCompletePerson() {
-  // // Default, no-op.
-  // }
-
   /**
    * Construct from incoming ElasticSearchPerson.
    * 
