@@ -53,7 +53,9 @@ public class Participant extends DomainObject implements Request, Response {
   /**
    * empty constructor
    */
-  public Participant() {}
+  public Participant() {
+    super();
+  }
 
   /**
    * Constructor
