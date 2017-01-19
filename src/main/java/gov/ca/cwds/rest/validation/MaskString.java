@@ -8,22 +8,20 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- * Masks the Social Security Number to the last 4 digits
+ * Masks the Social Security Number to the last 4 digits.
  * 
  * @author CWDS API Team
- *
  */
 public class MaskString {
 
   private static final Logger LOGGER = LoggerFactory.getLogger(SmartyStreet.class);
-  private static final String ssnWithHyphen = "^(?!000)[0-9]{3}-(?!00)[0-9]{2}-(?!0000)[0-9]{4}$";
-  private static final String ssnWithOutHyphen = "^(?!000)[0-9]{3}(?!00)[0-9]{2}(?!0000)[0-9]{4}$";
-  private static final Pattern pattern1 = Pattern.compile(ssnWithHyphen);
-  private static final Pattern pattern2 = Pattern.compile(ssnWithOutHyphen);
+  private static final String SSN_WITH_HYPHEN = "^(?!000)[0-9]{3}-(?!00)[0-9]{2}-(?!0000)[0-9]{4}$";
+  private static final String SSN_WITHOUT_HYPHEN =
+      "^(?!000)[0-9]{3}(?!00)[0-9]{2}(?!0000)[0-9]{4}$";
+  private static final Pattern patternHyphen = Pattern.compile(SSN_WITH_HYPHEN);
+  private static final Pattern patternNoHyphen = Pattern.compile(SSN_WITHOUT_HYPHEN);
 
   public String maskSsn(String ssn) {
-    Integer length;
-    Integer startPos;
     String returnSsn;
 
     if (StringUtils.isBlank(ssn)) {
@@ -31,16 +29,13 @@ public class MaskString {
       return returnSsn;
     }
 
-    String actualString = ssn.trim();
+    final String actualString = ssn.trim();
+    Matcher matcherHyphen = patternHyphen.matcher(actualString);
+    Matcher matcherNoHyphen = patternNoHyphen.matcher(actualString);
 
-    Matcher matcher1 = pattern1.matcher(actualString);
-    Matcher matcher2 = pattern2.matcher(actualString);
-
-    length = actualString.length();
-
-    startPos = length - 4;
-
-    if (matcher1.matches() || matcher2.matches()) {
+    if (matcherHyphen.matches() || matcherNoHyphen.matches()) {
+      final int length = actualString.length();
+      final int startPos = length - 4;
       returnSsn = actualString.substring(startPos, length);
     } else {
       returnSsn = "";
