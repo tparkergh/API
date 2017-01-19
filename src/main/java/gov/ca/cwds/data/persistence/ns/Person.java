@@ -23,7 +23,7 @@ import gov.ca.cwds.data.ns.NsPersistentObject;
 import gov.ca.cwds.rest.api.domain.DomainChef;
 
 /**
- * {@link NsPersistentObject} representing a Person
+ * {@link NsPersistentObject} representing a Person.
  * 
  * @author CWDS API Team
  */
@@ -72,6 +72,7 @@ public class Person extends NsPersistentObject implements IPersonAware, IAddress
   }
 
   /**
+   * Construct from all fields.
    * 
    * @param id The identifier of this row
    * @param firstName The first name
