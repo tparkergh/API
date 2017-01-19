@@ -53,6 +53,7 @@ public class CmsDocumentService implements TypedCrudsService<String, CmsDocument
       doc.setDocName(doc.getDocName() != null ? doc.getDocName().trim() : "");
       doc.setDocServ(doc.getDocServ() != null ? doc.getDocServ().trim() : "");
 
+      // Decompress!
       base64Doc = dao.decompressDoc(doc);
       retval = new CmsDocument(doc);
       retval.setBase64Blob(base64Doc);

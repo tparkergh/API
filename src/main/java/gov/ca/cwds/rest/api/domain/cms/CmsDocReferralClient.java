@@ -23,6 +23,7 @@ import gov.ca.cwds.rest.api.Response;
 import gov.ca.cwds.rest.api.domain.DomainChef;
 import gov.ca.cwds.rest.api.domain.DomainObject;
 import gov.ca.cwds.rest.core.Api;
+import gov.ca.cwds.rest.services.cms.CmsDocumentService;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 
@@ -41,29 +42,6 @@ public class CmsDocReferralClient extends DomainObject implements Request, Respo
 
   public static final class CmsDocReferralClientDetail implements Serializable {
     private static final long serialVersionUID = 1L;
-
-    public CmsDocReferralClientDetail() {}
-
-    @JsonCreator
-    public CmsDocReferralClientDetail(@JsonProperty("referral_id") String referlId,
-        @JsonProperty("client_id") String clientId,
-        @JsonProperty("common_first_name") String commonFirstName,
-        @JsonProperty("common_middle_name") String commonMiddleName,
-        @JsonProperty("common_last_name") String commonLastName,
-        @JsonProperty("birth_date") String birthDate, @JsonProperty("other_name") String otherName,
-        @JsonProperty("name_type") String nameType, @JsonProperty("address") String address,
-        @JsonProperty("address_type") String addressType) {
-      this.referlId = referlId;
-      this.clientId = clientId;
-      this.commonFirstName = commonFirstName;
-      this.commonMiddleName = commonMiddleName;
-      this.commonLastName = commonLastName;
-      this.birthDate = birthDate;
-      this.otherName = otherName;
-      this.nameType = nameType;
-      this.address = address;
-      this.addressType = addressType;
-    }
 
     @NotEmpty
     @JsonProperty("referral_id")
@@ -100,6 +78,29 @@ public class CmsDocReferralClient extends DomainObject implements Request, Respo
 
     @JsonProperty("address_type")
     private String addressType;
+
+    public CmsDocReferralClientDetail() {}
+
+    @JsonCreator
+    public CmsDocReferralClientDetail(@JsonProperty("referral_id") String referlId,
+        @JsonProperty("client_id") String clientId,
+        @JsonProperty("common_first_name") String commonFirstName,
+        @JsonProperty("common_middle_name") String commonMiddleName,
+        @JsonProperty("common_last_name") String commonLastName,
+        @JsonProperty("birth_date") String birthDate, @JsonProperty("other_name") String otherName,
+        @JsonProperty("name_type") String nameType, @JsonProperty("address") String address,
+        @JsonProperty("address_type") String addressType) {
+      this.referlId = referlId;
+      this.clientId = clientId;
+      this.commonFirstName = commonFirstName;
+      this.commonMiddleName = commonMiddleName;
+      this.commonLastName = commonLastName;
+      this.birthDate = birthDate;
+      this.otherName = otherName;
+      this.nameType = nameType;
+      this.address = address;
+      this.addressType = addressType;
+    }
 
     /**
      * {@inheritDoc}
@@ -340,7 +341,18 @@ public class CmsDocReferralClient extends DomainObject implements Request, Respo
   public static final class CmsDocReferralClientDocument implements Serializable {
     private static final long serialVersionUID = 1L;
 
-    public CmsDocReferralClientDocument() {}
+    @JsonProperty("_name")
+    private String name;
+
+    @JsonProperty("_content")
+    private String content;
+
+    /**
+     * Default, no-op constructor.
+     */
+    public CmsDocReferralClientDocument() {
+      // Default, no-op.
+    }
 
     @JsonCreator
     public CmsDocReferralClientDocument(@JsonProperty("_name") String name,
@@ -348,12 +360,6 @@ public class CmsDocReferralClient extends DomainObject implements Request, Respo
       this.name = name;
       this.content = content;
     }
-
-    @JsonProperty("_name")
-    private String name;
-
-    @JsonProperty("_content")
-    private String content;
 
     /**
      * {@inheritDoc}
@@ -449,7 +455,7 @@ public class CmsDocReferralClient extends DomainObject implements Request, Respo
   private CmsDocReferralClientDocument cmsDocument = new CmsDocReferralClientDocument();
 
   /**
-   * Order set of document referral/client details.
+   * Ordered set of document referral/client details.
    */
   private Set<CmsDocReferralClientDetail> details = new LinkedHashSet<>();
 
@@ -476,6 +482,11 @@ public class CmsDocReferralClient extends DomainObject implements Request, Respo
   /**
    * Construct from List of persistence layer referral/client document records.
    * 
+   * <p>
+   * NOTE: The document service decompresses content, not this domain class. See
+   * {@link CmsDocumentService}.
+   * </p>
+   * 
    * @param docs persistence layer referral/client doc entries
    */
   public CmsDocReferralClient(List<gov.ca.cwds.data.persistence.cms.CmsDocReferralClient> docs) {
@@ -498,6 +509,7 @@ public class CmsDocReferralClient extends DomainObject implements Request, Respo
       this.setId(entry.getDocHandle());
       this.setDocAddedDate(DomainChef.cookDate(entry.getDocAddedDate()));
 
+      // NOTE: The document service decompresses content, not this domain class.
       this.cmsDocument.setContent("6833c22e050ac434e10042e190d870007c0001801f");
       this.cmsDocument.setName(entry.getDocName());
     }

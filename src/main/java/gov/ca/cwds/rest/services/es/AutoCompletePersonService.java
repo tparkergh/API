@@ -58,8 +58,9 @@ public class AutoCompletePersonService
 
     if (len > 0) {
       for (ElasticSearchPerson hit : hits) {
-        LOGGER.debug(hit.toString());
+        LOGGER.info(hit.toString());
         list.add(new AutoCompletePerson(hit));
+        LOGGER.info("AutoCompletePerson: {}", hit.toString());
       }
     } else {
       LOGGER.debug("No records found");

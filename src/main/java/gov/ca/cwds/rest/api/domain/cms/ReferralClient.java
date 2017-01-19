@@ -10,6 +10,7 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+import gov.ca.cwds.data.SystemCodeSerializer;
 import gov.ca.cwds.rest.api.Request;
 import gov.ca.cwds.rest.api.Response;
 import gov.ca.cwds.rest.api.domain.DomainChef;
@@ -27,10 +28,12 @@ public class ReferralClient extends DomainObject implements Request, Response {
   @ApiModelProperty(required = false, readOnly = false, value = "", example = "ABC1234567")
   private String approvalNumber;
 
+  @SystemCodeSerializer(logical = true, description = true)
   @NotNull
   @ApiModelProperty(required = true, readOnly = false, example = "123")
   private Short approvalStatusType;
 
+  @SystemCodeSerializer(logical = true, description = true)
   @NotNull
   @ApiModelProperty(required = false, readOnly = false, example = "234")
   private Short dispositionClosureReasonType;
@@ -105,6 +108,8 @@ public class ReferralClient extends DomainObject implements Request, Response {
 
 
   /**
+   * Construct from all fields.
+   * 
    * @param approvalNumber - String approvalNumber
    * @param approvalStatusType - Short approvalStatusType
    * @param dispositionClosureReasonType - Short dispositionClosureReasonType
@@ -160,8 +165,7 @@ public class ReferralClient extends DomainObject implements Request, Response {
   /**
    * @param persistedReferralClient - persisted ReferralClient object
    */
-  public ReferralClient(
-      gov.ca.cwds.data.persistence.cms.ReferralClient persistedReferralClient) {
+  public ReferralClient(gov.ca.cwds.data.persistence.cms.ReferralClient persistedReferralClient) {
     this.approvalNumber = persistedReferralClient.getApprovalNumber();
     this.approvalStatusType = persistedReferralClient.getApprovalStatusType();
     this.dispositionClosureReasonType = persistedReferralClient.getDispositionClosureReasonType();

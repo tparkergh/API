@@ -73,7 +73,7 @@ public class Attorney extends CmsPersistentObject implements IPersonAware {
   @Column(name = "IDENTIFIER", length = CMS_ID_LEN)
   private String id;
 
-  @SystemCodeSerializer(other = true, description = true)
+  @SystemCodeSerializer(logical = true, description = true)
   @Type(type = "short")
   @Column(name = "LANG_TPC")
   private Short languageType;
@@ -104,7 +104,7 @@ public class Attorney extends CmsPersistentObject implements IPersonAware {
   @Column(name = "PRM_TEL_NO")
   private BigDecimal primaryPhoneNumber;
 
-  @SystemCodeSerializer(other = true, description = true)
+  @SystemCodeSerializer(logical = true, description = true)
   @Type(type = "short")
   @Column(name = "STATE_C")
   private Short stateCodeType;

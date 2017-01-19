@@ -16,6 +16,9 @@ import javax.ws.rs.core.Response;
 
 import org.apache.http.HttpStatus;
 
+import com.google.inject.Inject;
+
+import gov.ca.cwds.inject.CrossReportServiceBackedResource;
 import gov.ca.cwds.rest.api.domain.cms.CrossReport;
 import gov.ca.cwds.rest.resources.ResourceDelegate;
 import io.dropwizard.hibernate.UnitOfWork;
@@ -40,6 +43,7 @@ import io.swagger.annotations.ApiResponses;
 @Produces(MediaType.APPLICATION_JSON)
 @Consumes(MediaType.APPLICATION_JSON)
 public class CrossReportResource {
+
   private ResourceDelegate resourceDelegate;
 
   /**
@@ -47,7 +51,8 @@ public class CrossReportResource {
    * 
    * @param resourceDelegate The resourceDelegate to delegate to.
    */
-  public CrossReportResource(ResourceDelegate resourceDelegate) {
+  @Inject
+  public CrossReportResource(@CrossReportServiceBackedResource ResourceDelegate resourceDelegate) {
     this.resourceDelegate = resourceDelegate;
   }
 

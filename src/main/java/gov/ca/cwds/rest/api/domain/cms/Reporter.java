@@ -52,12 +52,12 @@ public class Reporter extends DomainObject implements Request, Response {
       example = "San Jose")
   private String cityName;
 
-  @SystemCodeSerializer(other = true, description = true)
+  @SystemCodeSerializer(logical = true, description = true)
   @NotNull
   @ApiModelProperty(required = true, readOnly = false, example = "1234")
   private Short colltrClientRptrReltnshpType;
 
-  @SystemCodeSerializer(other = true, description = true)
+  @SystemCodeSerializer(logical = true, description = true)
   @NotNull
   @ApiModelProperty(required = true, readOnly = false, example = "1234")
   private Short communicationMethodType;

@@ -85,6 +85,8 @@ public class CmsDocument extends DomainObject implements Request, Response, Seri
   private String base64Blob;
 
   /**
+   * Construct from all fields.
+   * 
    * @param id primary key
    * @param segmentCount number of blob segments
    * @param docLength uncompressed document length

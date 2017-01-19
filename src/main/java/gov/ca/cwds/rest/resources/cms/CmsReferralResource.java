@@ -68,7 +68,6 @@ public class CmsReferralResource {
   public Response get(@PathParam("id") @ApiParam(required = true, name = "id",
       value = "The id of the CmsReferral to find") String id) {
     return resourceDelegate.get(id);
-    // return Response.status(HttpStatus.SC_NOT_IMPLEMENTED).build();
   }
 
   /**

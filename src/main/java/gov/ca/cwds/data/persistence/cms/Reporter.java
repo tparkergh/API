@@ -58,12 +58,12 @@ public class Reporter extends CmsPersistentObject
   @Column(name = "RPTR_CTYNM")
   private String cityName;
 
-  @SystemCodeSerializer(other = true, description = true)
+  @SystemCodeSerializer(logical = true, description = true)
   @Type(type = "short")
   @Column(name = "COL_RELC")
   private Short colltrClientRptrReltnshpType;
 
-  @SystemCodeSerializer(other = true, description = true)
+  @SystemCodeSerializer(logical = true, description = true)
   @Type(type = "short")
   @Column(name = "CMM_MTHC")
   private Short communicationMethodType;
@@ -114,7 +114,7 @@ public class Reporter extends CmsPersistentObject
   @Column(name = "PRM_EXT_NO")
   private Integer primaryPhoneExtensionNumber;
 
-  @SystemCodeSerializer(other = true, description = true)
+  @SystemCodeSerializer(logical = true, description = true)
   @Type(type = "short")
   @Column(name = "STATE_C")
   private Short stateCodeType;

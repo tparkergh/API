@@ -17,6 +17,8 @@ import org.hibernate.annotations.NamedQueries;
 import org.hibernate.annotations.NamedQuery;
 import org.hibernate.annotations.Type;
 
+import gov.ca.cwds.data.IAddressAware;
+import gov.ca.cwds.data.IPersonAware;
 import gov.ca.cwds.data.ns.NsPersistentObject;
 import gov.ca.cwds.rest.api.domain.DomainChef;
 
@@ -32,7 +34,7 @@ import gov.ca.cwds.rest.api.domain.DomainChef;
         query = "FROM Person WHERE lastUpdatedTime > :after")})
 @Entity
 @Table(name = "person")
-public class Person extends NsPersistentObject {
+public class Person extends NsPersistentObject implements IPersonAware, IAddressAware {
 
   @Id
   @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "seq_person_id")
@@ -127,6 +129,7 @@ public class Person extends NsPersistentObject {
   /**
    * @return the firstName
    */
+  @Override
   public String getFirstName() {
     return firstName;
   }
@@ -134,6 +137,7 @@ public class Person extends NsPersistentObject {
   /**
    * @return the lastName
    */
+  @Override
   public String getLastName() {
     return lastName;
   }
@@ -141,6 +145,7 @@ public class Person extends NsPersistentObject {
   /**
    * @return the gender
    */
+  @Override
   public String getGender() {
     return gender;
   }
@@ -155,6 +160,7 @@ public class Person extends NsPersistentObject {
   /**
    * @return the ssn
    */
+  @Override
   public String getSsn() {
     return ssn;
   }
@@ -164,6 +170,55 @@ public class Person extends NsPersistentObject {
    */
   public Address getAddress() {
     return address;
+  }
+
+  // ================
+  // IPersonAware
+  // ================
+
+  @Override
+  public String getMiddleName() {
+    return null;
+  }
+
+  @Override
+  public Date getBirthDate() {
+    return this.getDateOfBirth();
+  }
+
+  @Override
+  public String getNameSuffix() {
+    return null;
+  }
+
+  @Override
+  public String getStreetAddress() {
+    return this.getAddress() != null && this.getAddress().getStreetAddress() != null
+        ? this.getAddress().getStreetAddress() : null;
+  }
+
+  @Override
+  public String getCity() {
+    return this.getAddress() != null && this.getAddress().getCity() != null
+        ? this.getAddress().getCity() : null;
+  }
+
+  @Override
+  public String getState() {
+    return this.getAddress() != null && this.getAddress().getState() != null
+        ? this.getAddress().getState() : null;
+  }
+
+  @Override
+  public String getZip() {
+    // TODO Auto-generated method stub
+    return null;
+  }
+
+  @Override
+  public String getCounty() {
+    // TODO Auto-generated method stub
+    return null;
   }
 
 }

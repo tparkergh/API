@@ -9,6 +9,7 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+import gov.ca.cwds.data.SystemCodeSerializer;
 import gov.ca.cwds.rest.api.Request;
 import gov.ca.cwds.rest.api.Response;
 import gov.ca.cwds.rest.api.domain.DomainChef;
@@ -45,6 +46,7 @@ public class Client extends DomainObject implements Request, Response {
   @ApiModelProperty(required = false, readOnly = false, value = "", example = "Fresno")
   private String birthCity;
 
+  @SystemCodeSerializer(logical = true, description = true)
   @NotNull
   @ApiModelProperty(required = true, readOnly = false, example = "1234")
   private Short birthCountryCodeType;
@@ -61,6 +63,7 @@ public class Client extends DomainObject implements Request, Response {
   @ApiModelProperty(required = false, readOnly = false, value = "", example = "facility name")
   private String birthFacilityName;
 
+  @SystemCodeSerializer(logical = true, description = true)
   @NotNull
   @ApiModelProperty(required = false, readOnly = false, example = "1234")
   private Short birthStateCodeType;
@@ -152,6 +155,7 @@ public class Client extends DomainObject implements Request, Response {
   @ApiModelProperty(required = false, readOnly = false, value = "", example = "CA1234567891234567")
   private String driverLicenseNumber;
 
+  @SystemCodeSerializer(logical = true, description = true)
   @NotNull
   @ApiModelProperty(required = false, readOnly = false, example = "1828")
   private Short driverLicenseStateCodeType;
@@ -199,10 +203,12 @@ public class Client extends DomainObject implements Request, Response {
   @ApiModelProperty(required = true, readOnly = false, value = "", example = "ABC1234567")
   private String id;
 
+  @SystemCodeSerializer(logical = true, description = true)
   @NotNull
   @ApiModelProperty(required = false, readOnly = false, example = "1234")
   private Short immigrationCountryCodeType;
 
+  @SystemCodeSerializer(logical = true, description = true)
   @NotNull
   @ApiModelProperty(required = false, readOnly = false, example = "1199")
   private Short immigrationStatusType;
@@ -271,18 +277,22 @@ public class Client extends DomainObject implements Request, Response {
   @ApiModelProperty(required = true, readOnly = false)
   private Boolean prevRegionalCenterIndicator;
 
+  @SystemCodeSerializer(logical = true, description = true)
   @NotNull
   @ApiModelProperty(required = false, readOnly = false, example = "839")
   private Short primaryEthnicityType;
 
+  @SystemCodeSerializer(logical = true, description = true)
   @NotNull
   @ApiModelProperty(required = false, readOnly = false, example = "1253")
   private Short primaryLanguageType;
 
+  @SystemCodeSerializer(logical = true, description = true)
   @NotNull
   @ApiModelProperty(required = false, readOnly = false, example = "1234")
   private Short religionType;
 
+  @SystemCodeSerializer(logical = true, description = true)
   @NotNull
   @ApiModelProperty(required = false, readOnly = false, example = "1255")
   private Short secondaryLanguageType;
@@ -335,7 +345,6 @@ public class Client extends DomainObject implements Request, Response {
   @NotNull
   @ApiModelProperty(required = true, readOnly = false)
   private Boolean zippyCreatedIndicator;
-
 
   @JsonCreator
   public Client(

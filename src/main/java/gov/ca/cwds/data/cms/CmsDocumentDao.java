@@ -17,6 +17,7 @@ import gov.ca.cwds.data.BaseDaoImpl;
 import gov.ca.cwds.data.persistence.cms.CmsDocument;
 import gov.ca.cwds.data.persistence.cms.CmsDocumentBlobSegment;
 import gov.ca.cwds.inject.CmsSessionFactory;
+import gov.ca.cwds.rest.services.ServiceException;
 import gov.ca.cwds.rest.util.jni.CmsPKCompressor;
 import gov.ca.cwds.rest.util.jni.LZWEncoder;
 
@@ -91,7 +92,7 @@ public class CmsDocumentDao extends BaseDaoImpl<CmsDocument> {
       retval = DatatypeConverter.printBase64Binary(bytes);
     } catch (Exception e) {
       LOGGER.error("ERROR DECOMPRESSING PK! " + e.getMessage());
-      throw new RuntimeException(e);
+      throw new ServiceException("ERROR DECOMPRESSING PK! " + e.getMessage(), e);
     }
 
     return retval;
@@ -138,7 +139,7 @@ public class CmsDocumentDao extends BaseDaoImpl<CmsDocument> {
 
     } catch (Exception e) {
       LOGGER.error("ERROR DECOMPRESSING LZW! " + e.getMessage(), e);
-      throw new RuntimeException(e);
+      throw new ServiceException("ERROR DECOMPRESSING LZW! " + e.getMessage(), e);
     }
 
     return retval;

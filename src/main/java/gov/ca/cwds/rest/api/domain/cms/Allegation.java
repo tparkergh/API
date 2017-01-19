@@ -9,6 +9,7 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+import gov.ca.cwds.data.SystemCodeSerializer;
 import gov.ca.cwds.rest.api.Request;
 import gov.ca.cwds.rest.api.Response;
 import gov.ca.cwds.rest.api.domain.DomainChef;
@@ -32,6 +33,7 @@ public class Allegation extends DomainObject implements Request, Response {
       example = "2016-11-30")
   private String abuseEndDate;
 
+  @SystemCodeSerializer(logical = true, description = true)
   @NotNull
   @ApiModelProperty(required = false, readOnly = false, example = "1234")
   private Short abuseFrequency;
@@ -56,10 +58,12 @@ public class Allegation extends DomainObject implements Request, Response {
       example = "2016-11-30")
   private String abuseStartDate;
 
+  @SystemCodeSerializer(logical = true, description = true)
   @NotNull
   @ApiModelProperty(required = false, readOnly = false, example = "1234")
   private Short allegationDispositionType;
 
+  @SystemCodeSerializer(logical = true, description = true)
   @NotNull
   @ApiModelProperty(required = true, readOnly = false, example = "1234")
   private Short allegationType;
@@ -118,6 +122,7 @@ public class Allegation extends DomainObject implements Request, Response {
   @ApiModelProperty(required = true, readOnly = false)
   private Boolean zippyCreatedIndicator;
 
+  @SystemCodeSerializer(logical = true, description = true)
   @ApiModelProperty(required = false, readOnly = false, example = "1234")
   private Short placementFacilityType;
 
