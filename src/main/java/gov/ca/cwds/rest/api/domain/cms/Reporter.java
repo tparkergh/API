@@ -11,6 +11,7 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+import gov.ca.cwds.data.SystemCodeSerializer;
 import gov.ca.cwds.rest.api.Request;
 import gov.ca.cwds.rest.api.Response;
 import gov.ca.cwds.rest.api.domain.DomainChef;
@@ -51,10 +52,12 @@ public class Reporter extends DomainObject implements Request, Response {
       example = "San Jose")
   private String cityName;
 
+  @SystemCodeSerializer(other = true, description = true)
   @NotNull
   @ApiModelProperty(required = true, readOnly = false, example = "1234")
   private Short colltrClientRptrReltnshpType;
 
+  @SystemCodeSerializer(other = true, description = true)
   @NotNull
   @ApiModelProperty(required = true, readOnly = false, example = "1234")
   private Short communicationMethodType;
@@ -165,6 +168,8 @@ public class Reporter extends DomainObject implements Request, Response {
   private String countySpecificCode;
 
   /**
+   * Construct from all fields.
+   * 
    * @param badgeNumber badge number
    * @param cityName city name
    * @param colltrClientRptrReltnshpType ??

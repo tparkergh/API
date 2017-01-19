@@ -94,7 +94,6 @@ public class ReporterTest {
 
     when(mockedReporterResource.create(eq(validReporter)))
         .thenReturn(Response.status(Response.Status.NO_CONTENT).entity(null).build());
-
   }
 
   /*
@@ -152,7 +151,6 @@ public class ReporterTest {
     assertThat(totest.getLawEnforcementId(), is(equalTo(persistent.getLawEnforcementId())));
     assertThat(totest.getZipSuffixNumber(), is(equalTo(persistent.getZipSuffixNumber())));
     assertThat(totest.getCountySpecificCode(), is(equalTo(persistent.getCountySpecificCode())));
-
   }
 
   @SuppressWarnings("javadoc")
