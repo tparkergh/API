@@ -10,6 +10,7 @@ import java.util.Map;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
+import org.apache.commons.lang3.math.NumberUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -548,7 +549,7 @@ public class AutoCompletePerson
       if (StringUtils.isNotBlank(addr.getCounty())) {
         this.setCounty(AutoCompleteCounty.findByCountyCd(addr.getCounty()).getCountyCd());
       }
-      if (StringUtils.isNotBlank(addr.getState())) {
+      if (StringUtils.isNotBlank(addr.getState()) && NumberUtils.isDigits(addr.getState())) {
         this.setStateType(AutoCompleteState.findBySysId(Integer.parseInt(addr.getState())));
       }
       if (StringUtils.isNotBlank(addr.getStreetAddress())) {
@@ -615,12 +616,12 @@ public class AutoCompletePerson
     @Override
     @JsonIgnore
     public String getCounty() {
-      return county.getCountyCd();
+      return county != null ? county.getCountyCd() : null;
     }
 
     @JsonProperty("county")
     public String getCountyType() {
-      return county.getDescription();
+      return county != null ? county.getDescription() : null;
     }
 
     @Override
@@ -630,18 +631,38 @@ public class AutoCompletePerson
       }
     }
 
+    /**
+     * Getter for address type.
+     * 
+     * @return address type
+     */
     public AutoCompletePersonAddressType getAddressType() {
       return addressType;
     }
 
+    /**
+     * Setter for address type.
+     * 
+     * @param addressType address type
+     */
     public void setAddressType(AutoCompletePersonAddressType addressType) {
       this.addressType = addressType;
     }
 
+    /**
+     * Getter for state type.
+     * 
+     * @return state type
+     */
     public AutoCompleteState getStateType() {
       return stateType;
     }
 
+    /**
+     * Setter for state type.
+     * 
+     * @param stateType state type
+     */
     public void setStateType(AutoCompleteState stateType) {
       this.stateType = stateType;
     }
