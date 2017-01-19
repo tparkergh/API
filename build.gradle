@@ -135,12 +135,6 @@ cobertura {
 
 publishing {
   publications {
-    shadow(MavenPublication) {
-      from components.shadow
-      groupId 'gov.ca.cwds.api'
-      artifactId 'api'
-        version version + ((System.properties.getProperty('build') != null ) ? '.' + System.properties.getProperty('build') : '')
-    }
     library(MavenPublication) {
       from components.java
       groupId 'gov.ca.cwds.api'
