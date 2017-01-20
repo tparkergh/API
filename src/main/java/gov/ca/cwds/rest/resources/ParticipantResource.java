@@ -1,6 +1,6 @@
 package gov.ca.cwds.rest.resources;
 
-import static gov.ca.cwds.rest.core.Api.RESOURCE_PARTICIPANT;
+import static gov.ca.cwds.rest.core.Api.RESOURCE_PARTICIPANTS;
 
 import javax.validation.Valid;
 import javax.ws.rs.Consumes;
@@ -38,8 +38,8 @@ import io.swagger.annotations.ApiResponses;
  * 
  * @author CWDS API Team
  */
-@Api(value = RESOURCE_PARTICIPANT, tags = RESOURCE_PARTICIPANT)
-@Path(value = RESOURCE_PARTICIPANT)
+@Api(value = RESOURCE_PARTICIPANTS, tags = RESOURCE_PARTICIPANTS)
+@Path(value = RESOURCE_PARTICIPANTS)
 @Produces(MediaType.APPLICATION_JSON)
 @Consumes(MediaType.APPLICATION_JSON)
 

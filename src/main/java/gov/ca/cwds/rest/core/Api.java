@@ -23,9 +23,9 @@ public interface Api {
   public static final String RESOURCE_PEOPLE = "people";
 
   /**
-   * A {@code String} constant representing {@value #RESOURCE_PARTICIPANT} API..
+   * A {@code String} constant representing {@value #RESOURCE_PARTICIPANTS} API..
    */
-  public static final String RESOURCE_PARTICIPANT = "participant";
+  public static final String RESOURCE_PARTICIPANTS = "participants";
 
   /**
    * A {@code String} constant representing {@value #RESOURCE_SCREENINGS} API..
