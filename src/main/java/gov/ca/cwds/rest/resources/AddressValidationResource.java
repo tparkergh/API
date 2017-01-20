@@ -64,7 +64,7 @@ public class AddressValidationResource {
       @ApiResponse(code = 406, message = "Accept Header not supported"),
       @ApiResponse(code = 422, message = "Unable to validate Address")})
   @Consumes(value = MediaType.APPLICATION_JSON)
-  @ApiOperation(value = "Create Address", code = HttpStatus.SC_CREATED,
+  @ApiOperation(value = "Create Address", code = HttpStatus.SC_OK,
       response = ValidatedAddress[].class)
   public Response create(@Valid @ApiParam(hidden = false, required = true) Address address) {
     ValidatedAddress[] addresses = null;

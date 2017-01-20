@@ -4,22 +4,18 @@ import static io.dropwizard.testing.FixtureHelpers.fixture;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.is;
-import static org.mockito.Mockito.mock;
+import io.dropwizard.jackson.Jackson;
 
 import java.io.IOException;
 
-import org.junit.ClassRule;
+import nl.jqno.equalsverifier.EqualsVerifier;
+import nl.jqno.equalsverifier.Warning;
+
 import org.junit.Test;
 
 import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-
-import gov.ca.cwds.rest.resources.AddressResource;
-import io.dropwizard.jackson.Jackson;
-import io.dropwizard.testing.junit.ResourceTestRule;
-import nl.jqno.equalsverifier.EqualsVerifier;
-import nl.jqno.equalsverifier.Warning;
 
 public class AddressTest {
 
@@ -30,13 +26,6 @@ public class AddressTest {
 
   private static final ObjectMapper MAPPER = Jackson.newObjectMapper();
 
-  private static final AddressResource mockedAddressResource = mock(AddressResource.class);
-
-  @ClassRule
-  public static final ResourceTestRule resources =
-      ResourceTestRule.builder().addResource(mockedAddressResource).build();
-
-
   /*
    * Serialization and de-serialization
    */
@@ -44,8 +33,9 @@ public class AddressTest {
   public void serializesToJSON() throws Exception {
     String expected = MAPPER.writeValueAsString(new Address("123 Main", "Sacramento", "CA", 95757));
 
-    String serialized = MAPPER.writeValueAsString(
-        MAPPER.readValue(fixture("fixtures/domain/address/valid/valid.json"), Address.class));
+    String serialized =
+        MAPPER.writeValueAsString(MAPPER.readValue(
+            fixture("fixtures/domain/address/valid/valid.json"), Address.class));
 
     assertThat(serialized, is(expected));
   }
@@ -108,4 +98,3 @@ public class AddressTest {
     }
   }
 }
-
