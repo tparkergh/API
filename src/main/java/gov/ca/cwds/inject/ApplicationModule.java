@@ -34,12 +34,11 @@ public class ApplicationModule extends AbstractModule {
    */
   @Override
   protected void configure() {
+    install(new DataAccessModule(bootstrap));
     install(new ServicesModule());
     install(new ResourcesModule());
-    install(new DataAccessModule(bootstrap));
     install(new FiltersModule());
     install(new AuditingModule());
-    // install(new ApiJsonModule(bootstrap));
   }
 
 }

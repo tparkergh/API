@@ -78,7 +78,7 @@ public class Attorney extends CmsPersistentObject implements IPersonAware, IMult
   @Column(name = "FIRST_NM")
   private String firstName;
 
-  @SystemCodeSerializer
+  @SystemCodeSerializer(logical = true, description = true)
   @JsonDeserialize(using = CmsSystemCodeDeserializer.class)
   @Type(type = "short")
   @Column(name = "GVR_ENTC")

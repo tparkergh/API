@@ -141,12 +141,6 @@ public class ResourcesModule extends AbstractModule {
   }
 
   @Provides
-  @CrossReportServiceBackedResource
-  public ResourceDelegate crossReportServiceBackedResource(Injector injector) {
-    return new ServiceBackedResourceDelegate(injector.getInstance(CrossReportService.class));
-  }
-
-  @Provides
   @ReferralClientServiceBackedResource
   public ResourceDelegate referralClientServiceBackedResource(Injector injector) {
     return new ServiceBackedResourceDelegate(injector.getInstance(ReferralClientService.class));
@@ -174,6 +168,12 @@ public class ResourcesModule extends AbstractModule {
   @AddressValidationServiceBackedResource
   public ResourceDelegate addressValidationServiceBackedResource(Injector injector) {
     return new ServiceBackedResourceDelegate(injector.getInstance(AddressValidationService.class));
+  }
+
+  @Provides
+  @CrossReportServiceBackedResource
+  public ResourceDelegate crossReportServiceBackedResource(Injector injector) {
+    return new ServiceBackedResourceDelegate(injector.getInstance(CrossReportService.class));
   }
 
   @Provides

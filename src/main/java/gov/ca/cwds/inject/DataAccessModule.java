@@ -98,7 +98,6 @@ public class DataAccessModule extends AbstractModule {
     bind(ClientDao.class);
     bind(CmsDocReferralClientDao.class);
     bind(CmsDocumentDao.class);
-    bind(CrossReportDao.class);
     bind(OtherClientNameDao.class);
     bind(ReferralClientDao.class);
     bind(ReferralDao.class);
@@ -108,6 +107,7 @@ public class DataAccessModule extends AbstractModule {
     bind(AddressDao.class);
     bind(PersonDao.class);
     bind(ScreeningDao.class);
+    bind(CrossReportDao.class);
 
     bind(ElasticsearchDao.class);
     bind(SmartyStreetsDao.class);

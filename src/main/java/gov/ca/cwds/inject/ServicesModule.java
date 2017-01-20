@@ -44,15 +44,15 @@ public class ServicesModule extends AbstractModule {
     bind(CmsDocReferralClientService.class);
     bind(CmsDocumentService.class);
     bind(CmsReferralService.class);
-    bind(CrossReportService.class);
     bind(ReferralClientService.class);
     bind(ReferralService.class);
     bind(ReporterService.class);
     bind(StaffPersonService.class);
     bind(AddressValidationService.class);
     bind(AutoCompletePersonService.class);
+    bind(CrossReportService.class);
 
-    // Register system code translator with Guice.
+    // Register CMS system code translator.
     bind(ISystemCodeCache.class).to(CmsSystemCodeCacheService.class);
   }
 
