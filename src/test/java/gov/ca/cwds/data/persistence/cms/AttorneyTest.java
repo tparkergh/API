@@ -142,4 +142,15 @@ public class AttorneyTest implements PersistentTestTemplate {
 
   }
 
+  @Test
+  public void type() throws Exception {
+    assertThat(Attorney.class, notNullValue());
+  }
+
+  @Test
+  public void instantiation() throws Exception {
+    final Attorney target = new Attorney();
+    assertThat(target, notNullValue());
+  }
+
 }

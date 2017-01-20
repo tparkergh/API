@@ -1,7 +1,9 @@
 package gov.ca.cwds.data.persistence.cms;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -12,10 +14,19 @@ import org.apache.commons.lang3.StringUtils;
 import org.hibernate.annotations.NamedQueries;
 import org.hibernate.annotations.NamedQuery;
 import org.hibernate.annotations.Type;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 
+import gov.ca.cwds.data.CmsSystemCodeDeserializer;
+import gov.ca.cwds.data.IMultiplePhonesAware;
 import gov.ca.cwds.data.IPersonAware;
+import gov.ca.cwds.data.IPhoneAware;
+import gov.ca.cwds.data.ReadablePhone;
 import gov.ca.cwds.data.SystemCodeSerializer;
 import gov.ca.cwds.data.persistence.PersistentObject;
 
@@ -32,7 +43,10 @@ import gov.ca.cwds.data.persistence.PersistentObject;
 @Entity
 @Table(schema = "CWSINT", name = "ATTRNY_T")
 @JsonPropertyOrder(alphabetic = true)
-public class Attorney extends CmsPersistentObject implements IPersonAware {
+@JsonIgnoreProperties(ignoreUnknown = true)
+public class Attorney extends CmsPersistentObject implements IPersonAware, IMultiplePhonesAware {
+
+  private static final Logger LOGGER = LoggerFactory.getLogger(Attorney.class);
 
   /**
    * Base serialization value. Increment by version.
@@ -65,6 +79,7 @@ public class Attorney extends CmsPersistentObject implements IPersonAware {
   private String firstName;
 
   @SystemCodeSerializer
+  @JsonDeserialize(using = CmsSystemCodeDeserializer.class)
   @Type(type = "short")
   @Column(name = "GVR_ENTC")
   private Short governmentEntityType;
@@ -74,6 +89,7 @@ public class Attorney extends CmsPersistentObject implements IPersonAware {
   private String id;
 
   @SystemCodeSerializer(logical = true, description = true)
+  @JsonDeserialize(using = CmsSystemCodeDeserializer.class)
   @Type(type = "short")
   @Column(name = "LANG_TPC")
   private Short languageType;
@@ -105,6 +121,7 @@ public class Attorney extends CmsPersistentObject implements IPersonAware {
   private BigDecimal primaryPhoneNumber;
 
   @SystemCodeSerializer(logical = true, description = true)
+  @JsonDeserialize(using = CmsSystemCodeDeserializer.class)
   @Type(type = "short")
   @Column(name = "STATE_C")
   private Short stateCodeType;
@@ -205,6 +222,7 @@ public class Attorney extends CmsPersistentObject implements IPersonAware {
    * 
    * @see gov.ca.cwds.data.persistence.PersistentObject#getPrimaryKey()
    */
+  @JsonIgnore
   @Override
   public String getPrimaryKey() {
     return getId();
@@ -646,29 +664,62 @@ public class Attorney extends CmsPersistentObject implements IPersonAware {
     return true;
   }
 
+  @JsonIgnore
   @Override
   public String getMiddleName() {
     return this.getMiddleInitialName();
   }
 
+  @JsonIgnore
   @Override
   public String getGender() {
     return null;
   }
 
+  @JsonIgnore
   @Override
   public Date getBirthDate() {
     return null;
   }
 
+  @JsonIgnore
   @Override
   public String getSsn() {
     return null;
   }
 
+  @JsonIgnore
   @Override
   public String getNameSuffix() {
     return null;
+  }
+
+  // =======================
+  // IMultiplePhonesAware:
+  // =======================
+
+  @JsonIgnore
+  @Override
+  public IPhoneAware[] getPhones() {
+
+    List<IPhoneAware> phones = new ArrayList<>();
+    if (this.primaryPhoneNumber != null && !BigDecimal.ZERO.equals(this.primaryPhoneNumber)) {
+      phones.add(new ReadablePhone(this.primaryPhoneNumber.toPlainString(),
+          this.primaryPhoneExtensionNumber != null ? this.primaryPhoneExtensionNumber.toString()
+              : null,
+          null));
+    }
+
+    if (this.messagePhoneNumber != null && !BigDecimal.ZERO.equals(this.messagePhoneNumber)) {
+      LOGGER.debug("add message phone");
+      phones
+          .add(new ReadablePhone(
+              this.messagePhoneNumber.toPlainString(), this.messagePhoneExtensionNumber != null
+                  ? this.messagePhoneExtensionNumber.toString() : null,
+              IPhoneAware.PhoneType.Cell));
+    }
+
+    return phones.toArray(new IPhoneAware[0]);
   }
 
 }
