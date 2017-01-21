@@ -127,6 +127,7 @@ public class Reporter extends DomainObject implements Request, Response {
   @ApiModelProperty(required = false, readOnly = false, example = "123")
   private Integer primaryPhoneExtensionNumber;
 
+  @SystemCodeSerializer(logical = true, description = true)
   @NotNull
   @ApiModelProperty(required = false, readOnly = false, example = "12")
   private Short stateCodeType;
