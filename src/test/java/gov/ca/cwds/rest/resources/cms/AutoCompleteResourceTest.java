@@ -20,6 +20,7 @@ import com.fasterxml.jackson.databind.exc.UnrecognizedPropertyException;
 
 import gov.ca.cwds.rest.api.domain.es.AutoCompletePersonRequest;
 import gov.ca.cwds.rest.api.domain.es.AutoCompletePersonResponse;
+import gov.ca.cwds.rest.core.Api;
 import gov.ca.cwds.rest.resources.AutoCompletePersonResource;
 import gov.ca.cwds.rest.resources.ServiceBackedResourceDelegate;
 import gov.ca.cwds.rest.resources.SimpleResourceDelegate;
@@ -35,15 +36,12 @@ import io.dropwizard.testing.junit.ResourceTestRule;
  */
 public class AutoCompleteResourceTest {
 
-  private static final String ROOT_RESOURCE = "/autocomplete/";
-  private static final String FOUND_RESOURCE = "/autocomplete/search_person";
+  private static final String FOUND_RESOURCE = "/" + Api.RESOURCE_AUTOCOMPLETE;
 
   private static final ObjectMapper MAPPER = Jackson.newObjectMapper();
 
   @Rule
   public ExpectedException thrown = ExpectedException.none();
-
-  // private static final ElasticsearchDao dao = mock(ElasticsearchDao.class);
 
   private static final AutoCompletePersonService svc = mock(AutoCompletePersonService.class);
 
@@ -52,7 +50,6 @@ public class AutoCompleteResourceTest {
 
   private final static SimpleResourceDelegate<String, AutoCompletePersonRequest, AutoCompletePersonResponse, AutoCompletePersonService> resourceDelegate =
       mock(delegate.getClass());
-  // spy(delegate);
 
   @ClassRule
   public final static ResourceTestRule inMemoryResource = ResourceTestRule.builder()
@@ -70,7 +67,7 @@ public class AutoCompleteResourceTest {
         fixture("fixtures/domain/elasticsearch/Intake/person_autocomplete_good.json"),
         AutoCompletePersonRequest.class);
 
-    int status = inMemoryResource.client().target(FOUND_RESOURCE).request()
+    final int status = inMemoryResource.client().target(FOUND_RESOURCE).request()
         .accept(MediaType.APPLICATION_JSON)
         .post(Entity.entity(serialized, MediaType.APPLICATION_JSON)).getStatus();
     assertThat(status, is(HttpStatus.SC_OK));
@@ -82,7 +79,7 @@ public class AutoCompleteResourceTest {
         MAPPER.readValue(fixture("fixtures/domain/elasticsearch/Intake/es_person.json"),
             AutoCompletePersonRequest.class);
 
-    int status = inMemoryResource.client().target(FOUND_RESOURCE).request()
+    final int status = inMemoryResource.client().target(FOUND_RESOURCE).request()
         .accept(MediaType.APPLICATION_JSON)
         .post(Entity.entity(serialized, MediaType.APPLICATION_JSON)).getStatus();
     assertThat(status, is(HttpStatus.SC_OK));
@@ -94,7 +91,7 @@ public class AutoCompleteResourceTest {
         fixture("fixtures/domain/elasticsearch/Intake/person_autocomplete_blank.json"),
         AutoCompletePersonRequest.class);
 
-    int status = inMemoryResource.client().target(FOUND_RESOURCE).request()
+    final int status = inMemoryResource.client().target(FOUND_RESOURCE).request()
         .accept(MediaType.APPLICATION_JSON)
         .post(Entity.entity(serialized, MediaType.APPLICATION_JSON)).getStatus();
     assertThat(status, is(HttpStatus.SC_OK));
