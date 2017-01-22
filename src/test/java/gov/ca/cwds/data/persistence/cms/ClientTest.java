@@ -30,7 +30,7 @@ public class ClientTest {
   }
 
   @Test
-  public void testSerializeJAndDeserialize() throws Exception {
+  public void testSerializeAndDeserialize() throws Exception {
     final Client tgt = validBean();
 
     // For pretty JSON, instead of a single line.

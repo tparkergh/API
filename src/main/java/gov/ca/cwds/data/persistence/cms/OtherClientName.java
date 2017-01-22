@@ -17,9 +17,14 @@ import org.hibernate.annotations.NamedQuery;
 import org.hibernate.annotations.Type;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonPropertyOrder;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 
+import gov.ca.cwds.data.CmsSystemCodeDeserializer;
 import gov.ca.cwds.data.IPersonAware;
+import gov.ca.cwds.data.SystemCodeSerializer;
 import gov.ca.cwds.data.persistence.EmbeddableCompositeKey2;
 import gov.ca.cwds.data.persistence.PersistentObject;
 
@@ -37,6 +42,8 @@ import gov.ca.cwds.data.persistence.PersistentObject;
         query = "FROM OtherClientName WHERE lastUpdatedTime > :after")})
 @Entity
 @Table(name = "OCL_NM_T")
+@JsonPropertyOrder(alphabetic = true)
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class OtherClientName extends CmsPersistentObject implements IPersonAware {
 
   @AttributeOverrides({
@@ -57,6 +64,8 @@ public class OtherClientName extends CmsPersistentObject implements IPersonAware
   @Column(name = "NMPRFX_DSC")
   private String namePrefixDescription;
 
+  @SystemCodeSerializer(logical = true, description = true)
+  @JsonDeserialize(using = CmsSystemCodeDeserializer.class)
   @Type(type = "short")
   @Column(name = "NAME_TPC")
   private Short nameType;
@@ -105,6 +114,7 @@ public class OtherClientName extends CmsPersistentObject implements IPersonAware
    * @see gov.ca.cwds.data.persistence.PersistentObject#getPrimaryKey()
    */
   @Override
+  @JsonIgnore
   public EmbeddableCompositeKey2 getPrimaryKey() {
     return this.id;
   }
@@ -267,6 +277,10 @@ public class OtherClientName extends CmsPersistentObject implements IPersonAware
   @Transient
   public String getNameSuffix() {
     return this.suffixTitleDescription;
+  }
+
+  public void setNameType(Short nameType) {
+    this.nameType = nameType;
   }
 
 }

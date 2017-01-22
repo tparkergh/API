@@ -1135,4 +1135,53 @@ public final class Client extends CmsPersistentObject
     return EqualsBuilder.reflectionEquals(this, obj, false);
   }
 
+  @Override
+  public String toString() {
+    return "Client [adjudicatedDelinquentIndicator=" + adjudicatedDelinquentIndicator
+        + ", adoptionStatusCode=" + adoptionStatusCode + ", alienRegistrationNumber="
+        + alienRegistrationNumber + ", birthCity=" + birthCity + ", birthCountryCodeType="
+        + birthCountryCodeType + ", birthDate=" + birthDate + ", birthFacilityName="
+        + birthFacilityName + ", birthStateCodeType=" + birthStateCodeType
+        + ", birthplaceVerifiedIndicator=" + birthplaceVerifiedIndicator
+        + ", childClientIndicatorVar=" + childClientIndicatorVar + ", clientIndexNumber="
+        + clientIndexNumber + ", commentDescription=" + commentDescription + ", commonFirstName="
+        + commonFirstName + ", commonLastName=" + commonLastName + ", commonMiddleName="
+        + commonMiddleName + ", confidentialityActionDate=" + confidentialityActionDate
+        + ", confidentialityInEffectIndicator=" + confidentialityInEffectIndicator
+        + ", creationDate=" + creationDate + ", currCaChildrenServIndicator="
+        + currCaChildrenServIndicator + ", currentlyOtherDescription=" + currentlyOtherDescription
+        + ", currentlyRegionalCenterIndicator=" + currentlyRegionalCenterIndicator + ", deathDate="
+        + deathDate + ", deathDateVerifiedIndicator=" + deathDateVerifiedIndicator + ", deathPlace="
+        + deathPlace + ", deathReasonText=" + deathReasonText + ", driverLicenseNumber="
+        + driverLicenseNumber + ", driverLicenseStateCodeType=" + driverLicenseStateCodeType
+        + ", emailAddress=" + emailAddress + ", estimatedDobCode=" + estimatedDobCode
+        + ", ethUnableToDetReasonCode=" + ethUnableToDetReasonCode
+        + ", fatherParentalRightTermDate=" + fatherParentalRightTermDate + ", genderCode="
+        + genderCode + ", healthSummaryText=" + healthSummaryText + ", hispUnableToDetReasonCode="
+        + hispUnableToDetReasonCode + ", hispanicOriginCode=" + hispanicOriginCode + ", id=" + id
+        + ", immigrationCountryCodeType=" + immigrationCountryCodeType + ", immigrationStatusType="
+        + immigrationStatusType + ", incapacitatedParentCode=" + incapacitatedParentCode
+        + ", individualHealthCarePlanIndicator=" + individualHealthCarePlanIndicator
+        + ", limitationOnScpHealthIndicator=" + limitationOnScpHealthIndicator + ", literateCode="
+        + literateCode + ", maritalCohabitatnHstryIndicatorVar="
+        + maritalCohabitatnHstryIndicatorVar + ", maritalStatusType=" + maritalStatusType
+        + ", militaryStatusCode=" + militaryStatusCode + ", motherParentalRightTermDate="
+        + motherParentalRightTermDate + ", namePrefixDescription=" + namePrefixDescription
+        + ", nameType=" + nameType + ", outstandingWarrantIndicator=" + outstandingWarrantIndicator
+        + ", prevCaChildrenServIndicator=" + prevCaChildrenServIndicator + ", prevOtherDescription="
+        + prevOtherDescription + ", prevRegionalCenterIndicator=" + prevRegionalCenterIndicator
+        + ", primaryEthnicityType=" + primaryEthnicityType + ", primaryLanguageType="
+        + primaryLanguageType + ", religionType=" + religionType + ", secondaryLanguageType="
+        + secondaryLanguageType + ", sensitiveHlthInfoOnFileIndicator="
+        + sensitiveHlthInfoOnFileIndicator + ", sensitivityIndicator=" + sensitivityIndicator
+        + ", soc158PlacementCode=" + soc158PlacementCode + ", soc158SealedClientIndicator="
+        + soc158SealedClientIndicator + ", socialSecurityNumChangedCode="
+        + socialSecurityNumChangedCode + ", socialSecurityNumber=" + socialSecurityNumber
+        + ", suffixTitleDescription=" + suffixTitleDescription
+        + ", tribalAncestryClientIndicatorVar=" + tribalAncestryClientIndicatorVar
+        + ", tribalMembrshpVerifctnIndicatorVar=" + tribalMembrshpVerifctnIndicatorVar
+        + ", unemployedParentCode=" + unemployedParentCode + ", zippyCreatedIndicator="
+        + zippyCreatedIndicator + "]";
+  }
+
 }

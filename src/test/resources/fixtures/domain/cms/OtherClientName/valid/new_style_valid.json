@@ -6,7 +6,11 @@
 	"lastUpdatedTime": null,
 	"middleName": "middlename",
 	"namePrefixDescription": "MR",
-	"nameType": 1311,
+	"nameType": {
+		"sys_id": 1311,
+		"short_description": "AKA",
+		"logical_id": "0001"
+	},
 	"suffixTitleDescription": "Phd",
 	"thirdId": "2345678ABC"
 }
