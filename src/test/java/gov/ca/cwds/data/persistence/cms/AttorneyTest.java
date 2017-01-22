@@ -5,8 +5,12 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.notNullValue;
+import static org.junit.Assert.assertTrue;
 
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.io.PrintStream;
+import java.util.Date;
 
 import org.junit.Test;
 
@@ -17,6 +21,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.module.SimpleModule;
 
 import gov.ca.cwds.data.CmsSystemCodeSerializer;
+import gov.ca.cwds.data.IPhoneAware;
 import gov.ca.cwds.data.persistence.junit.template.PersistentTestTemplate;
 import io.dropwizard.jackson.Jackson;
 import nl.jqno.equalsverifier.EqualsVerifier;
@@ -44,6 +49,20 @@ public class AttorneyTest implements PersistentTestTemplate {
     MAPPER = mapper;
   }
 
+  /**
+   * Despite the fixture location, the domain bean is no longer in use.
+   * 
+   * @return valid Attorney object
+   * @throws JsonParseException if unable parse the fixture JSON
+   * @throws JsonMappingException if unable to map JSON elements to fields
+   * @throws IOException if unable to read the JSON file
+   */
+  private Attorney validAttorney() throws JsonParseException, JsonMappingException, IOException {
+    Attorney validAttorney = MAPPER
+        .readValue(fixture("fixtures/domain/legacy/Attorney/valid/valid.json"), Attorney.class);
+    return validAttorney;
+  }
+
   @Override
   @Test
   public void testEqualsHashCodeWorks() {
@@ -63,9 +82,9 @@ public class AttorneyTest implements PersistentTestTemplate {
   @Test
   public void testPersistentConstructor() throws Exception {
     Attorney vatrny = validAttorney();
-    Attorney persistent = new Attorney(vatrny.getArchiveAssociationIndicator(),
-        vatrny.getBusinessName(), vatrny.getCityName(), vatrny.getCwsAttorneyIndicator(),
-        vatrny.getEmailAddress(), vatrny.getEndDate(), vatrny.getFaxNumber(), vatrny.getFirstName(),
+    Attorney pers = new Attorney(vatrny.getArchiveAssociationIndicator(), vatrny.getBusinessName(),
+        vatrny.getCityName(), vatrny.getCwsAttorneyIndicator(), vatrny.getEmailAddress(),
+        vatrny.getEndDate(), vatrny.getFaxNumber(), vatrny.getFirstName(),
         vatrny.getGovernmentEntityType(), vatrny.getId(), vatrny.getLanguageType(),
         vatrny.getLastName(), vatrny.getMessagePhoneExtensionNumber(),
         vatrny.getMessagePhoneNumber(), vatrny.getMiddleInitialName(),
@@ -74,37 +93,35 @@ public class AttorneyTest implements PersistentTestTemplate {
         vatrny.getStateCodeType(), vatrny.getStreetName(), vatrny.getStreetNumber(),
         vatrny.getSuffixTitleDescription(), vatrny.getZipNumber(), vatrny.getZipSuffixNumber());
 
-    assertThat(persistent.getArchiveAssociationIndicator(),
+    assertThat(pers.getArchiveAssociationIndicator(),
         is(equalTo(vatrny.getArchiveAssociationIndicator())));
-    assertThat(persistent.getBusinessName(), is(equalTo(vatrny.getBusinessName())));
-    assertThat(persistent.getCityName(), is(equalTo(vatrny.getCityName())));
-    assertThat(persistent.getCwsAttorneyIndicator(), is(equalTo(vatrny.getCwsAttorneyIndicator())));
-    assertThat(persistent.getEmailAddress(), is(equalTo(vatrny.getEmailAddress())));
-    assertThat(persistent.getEndDate(), is(equalTo(vatrny.getEndDate())));
-    assertThat(persistent.getFaxNumber(), is(equalTo(vatrny.getFaxNumber())));
-    assertThat(persistent.getFirstName(), is(equalTo(vatrny.getFirstName())));
-    assertThat(persistent.getGovernmentEntityType(), is(equalTo(vatrny.getGovernmentEntityType())));
-    assertThat(persistent.getId(), is(equalTo(vatrny.getId())));
-    assertThat(persistent.getLanguageType(), is(equalTo(vatrny.getLanguageType())));
-    assertThat(persistent.getLastName(), is(equalTo(vatrny.getLastName())));
-    assertThat(persistent.getMessagePhoneExtensionNumber(),
+    assertThat(pers.getBusinessName(), is(equalTo(vatrny.getBusinessName())));
+    assertThat(pers.getCityName(), is(equalTo(vatrny.getCityName())));
+    assertThat(pers.getCwsAttorneyIndicator(), is(equalTo(vatrny.getCwsAttorneyIndicator())));
+    assertThat(pers.getEmailAddress(), is(equalTo(vatrny.getEmailAddress())));
+    assertThat(pers.getEndDate(), is(equalTo(vatrny.getEndDate())));
+    assertThat(pers.getFaxNumber(), is(equalTo(vatrny.getFaxNumber())));
+    assertThat(pers.getFirstName(), is(equalTo(vatrny.getFirstName())));
+    assertThat(pers.getGovernmentEntityType(), is(equalTo(vatrny.getGovernmentEntityType())));
+    assertThat(pers.getId(), is(equalTo(vatrny.getId())));
+    assertThat(pers.getLanguageType(), is(equalTo(vatrny.getLanguageType())));
+    assertThat(pers.getLastName(), is(equalTo(vatrny.getLastName())));
+    assertThat(pers.getMessagePhoneExtensionNumber(),
         is(equalTo(vatrny.getMessagePhoneExtensionNumber())));
-    assertThat(persistent.getMessagePhoneNumber(), is(equalTo(vatrny.getMessagePhoneNumber())));
-    assertThat(persistent.getMiddleInitialName(), is(equalTo(vatrny.getMiddleInitialName())));
-    assertThat(persistent.getNamePrefixDescription(),
-        is(equalTo(vatrny.getNamePrefixDescription())));
-    assertThat(persistent.getPositionTitleDescription(),
+    assertThat(pers.getMessagePhoneNumber(), is(equalTo(vatrny.getMessagePhoneNumber())));
+    assertThat(pers.getMiddleInitialName(), is(equalTo(vatrny.getMiddleInitialName())));
+    assertThat(pers.getNamePrefixDescription(), is(equalTo(vatrny.getNamePrefixDescription())));
+    assertThat(pers.getPositionTitleDescription(),
         is(equalTo(vatrny.getPositionTitleDescription())));
-    assertThat(persistent.getPrimaryPhoneExtensionNumber(),
+    assertThat(pers.getPrimaryPhoneExtensionNumber(),
         is(equalTo(vatrny.getPrimaryPhoneExtensionNumber())));
-    assertThat(persistent.getPrimaryPhoneNumber(), is(equalTo(vatrny.getPrimaryPhoneNumber())));
-    assertThat(persistent.getStateCodeType(), is(equalTo(vatrny.getStateCodeType())));
-    assertThat(persistent.getStreetName(), is(equalTo(vatrny.getStreetName())));
-    assertThat(persistent.getStreetNumber(), is(equalTo(vatrny.getStreetNumber())));
-    assertThat(persistent.getSuffixTitleDescription(),
-        is(equalTo(vatrny.getSuffixTitleDescription())));
-    assertThat(persistent.getZipNumber(), is(equalTo(vatrny.getZipNumber())));
-    assertThat(persistent.getZipSuffixNumber(), is(equalTo(vatrny.getZipSuffixNumber())));
+    assertThat(pers.getPrimaryPhoneNumber(), is(equalTo(vatrny.getPrimaryPhoneNumber())));
+    assertThat(pers.getStateCodeType(), is(equalTo(vatrny.getStateCodeType())));
+    assertThat(pers.getStreetName(), is(equalTo(vatrny.getStreetName())));
+    assertThat(pers.getStreetNumber(), is(equalTo(vatrny.getStreetNumber())));
+    assertThat(pers.getSuffixTitleDescription(), is(equalTo(vatrny.getSuffixTitleDescription())));
+    assertThat(pers.getZipNumber(), is(equalTo(vatrny.getZipNumber())));
+    assertThat(pers.getZipSuffixNumber(), is(equalTo(vatrny.getZipSuffixNumber())));
   }
 
   @Test
@@ -125,13 +142,22 @@ public class AttorneyTest implements PersistentTestTemplate {
 
     // For pretty JSON, instead of a single line.
     MAPPER.writerWithDefaultPrettyPrinter().writeValue(System.out, persistent);
-    // System.out.println(MAPPER.writeValueAsString(persistent));
   }
 
-  private Attorney validAttorney() throws JsonParseException, JsonMappingException, IOException {
-    Attorney validAttorney = MAPPER
-        .readValue(fixture("fixtures/domain/legacy/Attorney/valid/valid.json"), Attorney.class);
-    return validAttorney;
+  @Test
+  public void testSerializeJAndDeserialize() throws Exception {
+    final Attorney att = validAttorney();
+
+    // For pretty JSON, instead of a single line.
+    ByteArrayOutputStream baos = new ByteArrayOutputStream();
+    try (PrintStream ps = new PrintStream(baos)) {
+      MAPPER.writerWithDefaultPrettyPrinter().writeValue(ps, att);
+    } finally {
+    }
+
+    final String json = baos.toString(java.nio.charset.StandardCharsets.UTF_8.name());
+    final Attorney actual = MAPPER.readValue(json, Attorney.class);
+    assertThat(actual, is(equalTo(validAttorney())));
   }
 
   @Override
@@ -151,6 +177,71 @@ public class AttorneyTest implements PersistentTestTemplate {
   public void instantiation() throws Exception {
     final Attorney target = new Attorney();
     assertThat(target, notNullValue());
+  }
+
+  @Test
+  public void getPrimaryKey_Args$() throws Exception {
+    final Attorney target = validAttorney();
+    final String actual = target.getPrimaryKey();
+    final String expected = "OvViVUs0OK";
+    assertThat(actual, is(equalTo(expected)));
+  }
+
+  @Test
+  public void hashCode_Args$() throws Exception {
+    EqualsVerifier.forClass(Attorney.class).suppress(Warning.NONFINAL_FIELDS).verify();
+  }
+
+  @Test
+  public void equals_Args$Object() throws Exception {
+    EqualsVerifier.forClass(Attorney.class).suppress(Warning.NONFINAL_FIELDS).verify();
+  }
+
+  @Test
+  public void getMiddleName_Args$() throws Exception {
+    final Attorney target = validAttorney();
+    final String actual = target.getMiddleName();
+    final String expected = "M";
+    assertThat(actual, is(equalTo(expected)));
+  }
+
+  @Test
+  public void getGender_Args$() throws Exception {
+    final Attorney target = validAttorney();
+    final String actual = target.getGender();
+    final String expected = null;
+    assertThat(actual, is(equalTo(expected)));
+  }
+
+  @Test
+  public void getBirthDate_Args$() throws Exception {
+    Attorney target = validAttorney();
+    Date actual = target.getBirthDate();
+    Date expected = null;
+    assertThat(actual, is(equalTo(expected)));
+  }
+
+  @Test
+  public void getSsn_Args$() throws Exception {
+    final Attorney target = validAttorney();
+    String actual = target.getSsn();
+    String expected = null;
+    assertThat(actual, is(equalTo(expected)));
+  }
+
+  @Test
+  public void getNameSuffix_Args$() throws Exception {
+    final Attorney target = validAttorney();
+    String actual = target.getNameSuffix();
+    String expected = null;
+    assertThat(actual, is(equalTo(expected)));
+  }
+
+  @Test
+  public void getPhones_Args$() throws Exception {
+    final Attorney target = validAttorney();
+    final IPhoneAware[] actual = target.getPhones();
+    assertTrue(actual.length > 1);
   }
 
 }

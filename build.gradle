@@ -53,7 +53,7 @@ shadowJar {
 }
 
 dependencies {
-	compile group: "gov.ca.cwds.api", name: "api-core", version: "0.13.41"
+	compile group: "gov.ca.cwds.api", name: "api-core", version: "0.13.44"
 	compile group: "io.dropwizard", name: "dropwizard-client", version: dropwizardVersion
 	compile group: "io.dropwizard", name: "dropwizard-hibernate", version: dropwizardVersion
 	compile group: "io.dropwizard", name: "dropwizard-views", version: dropwizardVersion
@@ -71,6 +71,7 @@ dependencies {
 	compile 'com.fasterxml.jackson.module:jackson-module-guice:2.7.8'
 	compile group: 'com.hubspot.dropwizard', name: 'dropwizard-guice', version: '1.0.0.2'
 	compile group: "com.smartystreets.api", name: "smartystreets-java-sdk", version: "1.0.7"
+	compile group: 'org.secnod.dropwizard', name: 'dropwizard-shiro', version: '0.2.0'
 
     compile fileTree(dir: 'lib', include: ['*.jar'])
     

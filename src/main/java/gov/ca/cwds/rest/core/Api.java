@@ -100,6 +100,6 @@ public interface Api {
   /**
    * A {@code String} constant representing {@value #RESOURCE_AUTOCOMPLETE} API.
    */
-  public static final String RESOURCE_AUTOCOMPLETE = "autocomplete";
+  public static final String RESOURCE_AUTOCOMPLETE = "people_search";
 
 }

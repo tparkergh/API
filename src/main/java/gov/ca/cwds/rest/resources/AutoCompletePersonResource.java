@@ -104,7 +104,7 @@ public class AutoCompletePersonResource {
    * @return web service response
    */
   @POST
-  @Path("/search_person")
+  @Path("/")
   @ApiResponses(value = {@ApiResponse(code = 404, message = "Not found"),
       @ApiResponse(code = 400, message = "Unable to process JSON"),
       @ApiResponse(code = 406, message = "Accept Header not supported")})

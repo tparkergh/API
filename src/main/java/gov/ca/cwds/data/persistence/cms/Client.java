@@ -19,10 +19,13 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 
+import gov.ca.cwds.data.CmsSystemCodeDeserializer;
 import gov.ca.cwds.data.ILanguageAware;
 import gov.ca.cwds.data.IMultipleLanguagesAware;
 import gov.ca.cwds.data.IPersonAware;
+import gov.ca.cwds.data.SystemCodeSerializer;
 import gov.ca.cwds.data.persistence.PersistentObject;
 import gov.ca.cwds.rest.api.ApiException;
 import gov.ca.cwds.rest.api.domain.DomainChef;
@@ -59,6 +62,8 @@ public class Client extends CmsPersistentObject implements IPersonAware, IMultip
   @Column(name = "BIRTH_CITY")
   private String birthCity;
 
+  @SystemCodeSerializer(logical = true, description = true)
+  @JsonDeserialize(using = CmsSystemCodeDeserializer.class)
   @Type(type = "short")
   @Column(name = "B_CNTRY_C")
   private Short birthCountryCodeType;
@@ -70,6 +75,8 @@ public class Client extends CmsPersistentObject implements IPersonAware, IMultip
   @Column(name = "BR_FAC_NM")
   private String birthFacilityName;
 
+  @SystemCodeSerializer(logical = true, description = true)
+  @JsonDeserialize(using = CmsSystemCodeDeserializer.class)
   @Type(type = "short")
   @Column(name = "B_STATE_C")
   private Short birthStateCodeType;
@@ -131,6 +138,8 @@ public class Client extends CmsPersistentObject implements IPersonAware, IMultip
   @Column(name = "DRV_LIC_NO")
   private String driverLicenseNumber;
 
+  @SystemCodeSerializer(logical = true, description = true)
+  @JsonDeserialize(using = CmsSystemCodeDeserializer.class)
   @Type(type = "short")
   @Column(name = "D_STATE_C")
   private Short driverLicenseStateCodeType;
@@ -164,10 +173,14 @@ public class Client extends CmsPersistentObject implements IPersonAware, IMultip
   @Column(name = "IDENTIFIER", length = CMS_ID_LEN)
   private String id;
 
+  @SystemCodeSerializer(logical = true, description = true)
+  @JsonDeserialize(using = CmsSystemCodeDeserializer.class)
   @Type(type = "short")
   @Column(name = "I_CNTRY_C")
   private Short immigrationCountryCodeType;
 
+  @SystemCodeSerializer(logical = true, description = true)
+  @JsonDeserialize(using = CmsSystemCodeDeserializer.class)
   @Type(type = "short")
   @Column(name = "IMGT_STC")
   private Short immigrationStatusType;
@@ -187,6 +200,8 @@ public class Client extends CmsPersistentObject implements IPersonAware, IMultip
   @Column(name = "MAR_HIST_B")
   private String maritalCohabitatnHstryIndicatorVar;
 
+  @SystemCodeSerializer(logical = true, description = true)
+  @JsonDeserialize(using = CmsSystemCodeDeserializer.class)
   @Type(type = "short")
   @Column(name = "MRTL_STC")
   private Short maritalStatusType;
@@ -201,6 +216,8 @@ public class Client extends CmsPersistentObject implements IPersonAware, IMultip
   @Column(name = "NMPRFX_DSC")
   private String namePrefixDescription;
 
+  @SystemCodeSerializer(logical = true, description = true)
+  @JsonDeserialize(using = CmsSystemCodeDeserializer.class)
   @Type(type = "short")
   @Column(name = "NAME_TPC")
   private Short nameType;
@@ -217,18 +234,26 @@ public class Client extends CmsPersistentObject implements IPersonAware, IMultip
   @Column(name = "PREREG_IND")
   private String prevRegionalCenterIndicator;
 
+  @SystemCodeSerializer(logical = true, description = true)
+  @JsonDeserialize(using = CmsSystemCodeDeserializer.class)
   @Type(type = "short")
   @Column(name = "P_ETHNCTYC")
   private Short primaryEthnicityType;
 
+  @SystemCodeSerializer(logical = true, description = true)
+  @JsonDeserialize(using = CmsSystemCodeDeserializer.class)
   @Type(type = "short")
   @Column(name = "P_LANG_TPC")
   private Short primaryLanguageType;
 
+  @SystemCodeSerializer(logical = true, description = true)
+  @JsonDeserialize(using = CmsSystemCodeDeserializer.class)
   @Type(type = "short")
   @Column(name = "RLGN_TPC")
   private Short religionType;
 
+  @SystemCodeSerializer(logical = true, description = true)
+  @JsonDeserialize(using = CmsSystemCodeDeserializer.class)
   @Type(type = "short")
   @Column(name = "S_LANG_TC")
   private Short secondaryLanguageType;
