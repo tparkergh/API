@@ -1,6 +1,5 @@
 package gov.ca.cwds.data.persistence.cms;
 
-import java.beans.Transient;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -12,6 +11,8 @@ import javax.persistence.PersistenceException;
 import javax.persistence.Table;
 
 import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.hibernate.annotations.NamedQueries;
 import org.hibernate.annotations.NamedQuery;
 import org.hibernate.annotations.Type;
@@ -19,6 +20,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 
 import gov.ca.cwds.data.CmsSystemCodeDeserializer;
@@ -41,7 +44,10 @@ import gov.ca.cwds.rest.api.domain.DomainChef;
         query = "FROM Client WHERE lastUpdatedTime > :after")})
 @Entity
 @Table(name = "CLIENT_T")
-public class Client extends CmsPersistentObject implements IPersonAware, IMultipleLanguagesAware {
+@JsonPropertyOrder(alphabetic = true)
+@JsonIgnoreProperties(ignoreUnknown = true)
+public final class Client extends CmsPersistentObject
+    implements IPersonAware, IMultipleLanguagesAware {
 
   /**
    * Base serialization version. Increment by class version.
@@ -301,6 +307,8 @@ public class Client extends CmsPersistentObject implements IPersonAware, IMultip
   }
 
   /**
+   * Construct from all fields.
+   * 
    * @param adjudicatedDelinquentIndicator The adjudicatedDelinquentIndicator
    * @param adoptionStatusCode The adoptionStatusCode
    * @param alienRegistrationNumber The alienRegistrationNumber
@@ -1052,42 +1060,36 @@ public class Client extends CmsPersistentObject implements IPersonAware, IMultip
 
   @JsonIgnore
   @Override
-  @Transient
   public String getMiddleName() {
     return this.commonMiddleName;
   }
 
   @JsonIgnore
   @Override
-  @Transient
   public String getFirstName() {
     return this.commonFirstName;
   }
 
   @JsonIgnore
   @Override
-  @Transient
   public String getLastName() {
     return this.commonLastName;
   }
 
   @JsonIgnore
   @Override
-  @Transient
   public String getGender() {
     return this.genderCode;
   }
 
   @JsonIgnore
   @Override
-  @Transient
   public String getSsn() {
     return this.socialSecurityNumber;
   }
 
   @JsonIgnore
   @Override
-  @Transient
   public String getNameSuffix() {
     return this.suffixTitleDescription;
   }
@@ -1098,7 +1100,6 @@ public class Client extends CmsPersistentObject implements IPersonAware, IMultip
 
   @Override
   @JsonIgnore
-  @Transient
   public ILanguageAware[] getLanguages() {
 
     List<ILanguageAware> languages = new ArrayList<>();
@@ -1106,7 +1107,7 @@ public class Client extends CmsPersistentObject implements IPersonAware, IMultip
       languages.add(new ILanguageAware() {
         @Override
         public Integer getLanguageSysId() {
-          return new Integer(primaryLanguageType);
+          return primaryLanguageType.intValue();
         }
       });
     }
@@ -1116,12 +1117,22 @@ public class Client extends CmsPersistentObject implements IPersonAware, IMultip
       languages.add(new ILanguageAware() {
         @Override
         public Integer getLanguageSysId() {
-          return new Integer(secondaryLanguageType);
+          return secondaryLanguageType.intValue();
         }
       });
     }
 
     return languages.toArray(new ILanguageAware[0]);
+  }
+
+  @Override
+  public int hashCode() {
+    return HashCodeBuilder.reflectionHashCode(this, false);
+  }
+
+  @Override
+  public boolean equals(Object obj) {
+    return EqualsBuilder.reflectionEquals(this, obj, false);
   }
 
 }

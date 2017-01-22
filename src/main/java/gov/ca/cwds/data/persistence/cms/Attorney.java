@@ -1,5 +1,6 @@
 package gov.ca.cwds.data.persistence.cms;
 
+import java.beans.Transient;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Date;
@@ -666,12 +667,14 @@ public class Attorney extends CmsPersistentObject implements IPersonAware, IMult
 
   @JsonIgnore
   @Override
+  @Transient
   public String getMiddleName() {
     return this.getMiddleInitialName();
   }
 
   @JsonIgnore
   @Override
+  @Transient
   public String getGender() {
     return null;
   }
@@ -684,12 +687,14 @@ public class Attorney extends CmsPersistentObject implements IPersonAware, IMult
 
   @JsonIgnore
   @Override
+  @Transient
   public String getSsn() {
     return null;
   }
 
   @JsonIgnore
   @Override
+  @Transient
   public String getNameSuffix() {
     return null;
   }
@@ -700,6 +705,7 @@ public class Attorney extends CmsPersistentObject implements IPersonAware, IMult
 
   @JsonIgnore
   @Override
+  @Transient
   public IPhoneAware[] getPhones() {
 
     List<IPhoneAware> phones = new ArrayList<>();
