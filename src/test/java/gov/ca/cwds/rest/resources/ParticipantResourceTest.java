@@ -59,18 +59,16 @@ public class ParticipantResourceTest implements ResourceTestTemplate {
   }
 
   @Override
-  public void testGet404NotFoundError() throws Exception {}
-
-  @Override
   @Test
-  public void testGet501NotImplemented() throws Exception {
+  public void testGet404NotFoundError() throws Exception {
     int receivedStatus = inMemoryResource.client().target(FOUND_RESOURCE).request()
         .accept(MediaType.APPLICATION_JSON).get().getStatus();
-    int expectedStatus = 501;
+    int expectedStatus = 404;
     assertThat(receivedStatus, is(expectedStatus));
-
-
   }
+
+  @Override
+  public void testGet501NotImplemented() throws Exception {}
 
   @Override
   @Test
@@ -143,17 +141,15 @@ public class ParticipantResourceTest implements ResourceTestTemplate {
 
   @Override
   public void testDelete404NotFoundError() throws Exception {
-    // TODO Auto-generated method stub
+    int receivedStatus = inMemoryResource.client().target(FOUND_RESOURCE).request()
+        .accept(MediaType.APPLICATION_JSON).delete().getStatus();
+    int expectedStatus = 404;
+    assertThat(receivedStatus, is(expectedStatus));
 
   }
 
   @Override
-  @Test
   public void testDelete501NotImplemented() throws Exception {
-    int receivedStatus = inMemoryResource.client().target(FOUND_RESOURCE).request()
-        .accept(MediaType.APPLICATION_JSON).delete().getStatus();
-    int expectedStatus = 501;
-    assertThat(receivedStatus, is(expectedStatus));
 
   }
 
@@ -182,9 +178,15 @@ public class ParticipantResourceTest implements ResourceTestTemplate {
   }
 
   @Override
-
+  @Test
   public void testUpdate404NotFoundError() throws Exception {
-
+    Participant participant =
+        new Participant(1, 1, "Marge", "Simpson", "Female", "2017-01-11", "111223333");
+    int receivedStatus =
+        inMemoryResource.client().target(ROOT_RESOURCE).request().accept(MediaType.APPLICATION_JSON)
+            .put(Entity.entity(participant, MediaType.APPLICATION_JSON)).getStatus();
+    int expectedStatus = 405;
+    assertThat(receivedStatus, is(expectedStatus));
   }
 
   @Override
@@ -200,17 +202,7 @@ public class ParticipantResourceTest implements ResourceTestTemplate {
   }
 
   @Override
-  @Test
-  public void testUpdate501NotImplemented() throws Exception {
-    Participant participant =
-        new Participant(1, 1, "Marge", "Simpson", "Female", "2017-01-11", "111223333");
-    int receivedStatus =
-        inMemoryResource.client().target(ROOT_RESOURCE).request().accept(MediaType.APPLICATION_JSON)
-            .put(Entity.entity(participant, MediaType.APPLICATION_JSON)).getStatus();
-    int expectedStatus = 501;
-    assertThat(receivedStatus, is(expectedStatus));
-
-  }
+  public void testUpdate501NotImplemented() throws Exception {}
 
 
 

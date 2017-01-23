@@ -4,12 +4,8 @@ import static gov.ca.cwds.rest.core.Api.RESOURCE_PARTICIPANTS;
 
 import javax.validation.Valid;
 import javax.ws.rs.Consumes;
-import javax.ws.rs.DELETE;
-import javax.ws.rs.GET;
 import javax.ws.rs.POST;
-import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
-import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
@@ -61,17 +57,11 @@ public class ParticipantResource {
    * 
    * @param id the id
    * 
-   * @return the response
+   * @return the response /** <strong>NOT IMPLEMENTED! REQUIRED BY
+   *         {@link ResourceDelegate}.</strong>
+   *
    */
-  @UnitOfWork(value = "ns")
-  @GET
-  @Path("/{id}")
-  @ApiResponses(value = {@ApiResponse(code = 404, message = "Not found"),
-      @ApiResponse(code = 406, message = "Accept Header not supported")})
-  @ApiOperation(hidden = true, value = "Find participant by id - not currently implemented ",
-      code = HttpStatus.SC_OK, response = Object.class)
-  public Response get(@PathParam("id") @ApiParam(required = true, name = "id",
-      value = "The id of the Participant to find") long id) {
+  public Response get(long id) {
     return Response.status(Response.Status.NOT_IMPLEMENTED).entity(null).build();
   }
 
@@ -82,12 +72,11 @@ public class ParticipantResource {
    * 
    * @return {@link Response}
    */
-  @DELETE
-  @Path("/{id}")
-  @ApiOperation(hidden = true, value = "Delete Participant - not currently implemented",
-      code = HttpStatus.SC_OK, response = Object.class)
-  public Response delete(
-      @PathParam("id") @ApiParam(required = true, value = "id of participant to delete") long id) {
+  /**
+   * <strong>NOT IMPLEMENTED! REQUIRED BY {@link ResourceDelegate}.</strong>
+   *
+   */
+  public Response delete(long id) {
     return Response.status(Response.Status.NOT_IMPLEMENTED).entity(null).build();
   }
 
@@ -117,21 +106,12 @@ public class ParticipantResource {
    * 
    * @param id the id
    * @param participant {@link Participant}
-   * @return The {@link Response}
+   * @return The {@link Response} /** <strong>NOT IMPLEMENTED! REQUIRED BY
+   *         {@link ResourceDelegate}.</strong>
+   *
    */
-  @UnitOfWork(value = "ns")
-  @PUT
-  @ApiResponses(value = {@ApiResponse(code = 400, message = "Unable to process JSON"),
-      @ApiResponse(code = 404, message = "not found"),
-      @ApiResponse(code = 406, message = "Accept Header not supported"),
-      @ApiResponse(code = 422, message = "Unable to validate Participant")})
-  @Consumes(value = MediaType.APPLICATION_JSON)
-  @ApiOperation(hidden = true, value = "Update Participant - not currently implemented",
-      code = HttpStatus.SC_OK, response = Object.class)
-  public Response update(
-      @PathParam("id") @ApiParam(required = true, name = "id",
-          value = "The id of the Participant to update") long id,
-      @ApiParam(hidden = true) Participant participant) {
+
+  public Response update(long id, Participant participant) {
     return Response.status(Response.Status.NOT_IMPLEMENTED).entity(null).build();
   }
 
