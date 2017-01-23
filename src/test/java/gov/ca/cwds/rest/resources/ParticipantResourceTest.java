@@ -27,8 +27,8 @@ import io.dropwizard.testing.junit.ResourceTestRule;
  */
 public class ParticipantResourceTest implements ResourceTestTemplate {
 
-  private static final String ROOT_RESOURCE = "/participant/";
-  private static final String FOUND_RESOURCE = "/participant/1";
+  private static final String ROOT_RESOURCE = "/participants/";
+  private static final String FOUND_RESOURCE = "/participants/1";
 
   @SuppressWarnings("javadoc")
   @Rule
@@ -59,10 +59,7 @@ public class ParticipantResourceTest implements ResourceTestTemplate {
   }
 
   @Override
-  public void testGet404NotFoundError() throws Exception {
-    // TODO Auto-generated method stub
-
-  }
+  public void testGet404NotFoundError() throws Exception {}
 
   @Override
   @Test
@@ -71,6 +68,7 @@ public class ParticipantResourceTest implements ResourceTestTemplate {
         .accept(MediaType.APPLICATION_JSON).get().getStatus();
     int expectedStatus = 501;
     assertThat(receivedStatus, is(expectedStatus));
+
 
   }
 
@@ -177,8 +175,8 @@ public class ParticipantResourceTest implements ResourceTestTemplate {
   }
 
   @Override
+
   public void testUpdate404NotFoundError() throws Exception {
-    // TODO Auto-generated method stub
 
   }
 
