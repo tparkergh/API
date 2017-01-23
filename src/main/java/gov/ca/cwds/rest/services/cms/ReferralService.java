@@ -37,7 +37,7 @@ public class ReferralService implements CrudsService {
    *        objects.
    */
   @Inject
-  public ReferralService(ReferralDao referralDao) {
+  public ReferralService(final ReferralDao referralDao) {
     this.referralDao = referralDao;
   }
 

@@ -38,7 +38,6 @@ public class ClientTest implements PersistentTestTemplate {
   @Override
   public void testEmptyConstructor() throws Exception {
     assertThat(Client.class.newInstance(), is(notNullValue()));
-
   }
 
   @Override

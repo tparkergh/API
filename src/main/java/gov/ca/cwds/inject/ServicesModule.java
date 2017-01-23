@@ -4,7 +4,7 @@ import com.google.inject.AbstractModule;
 import com.google.inject.Scopes;
 
 import gov.ca.cwds.data.CmsSystemCodeSerializer;
-import gov.ca.cwds.data.GuiceSerializerInjector;
+import gov.ca.cwds.data.SysCodeSerializerInjector;
 import gov.ca.cwds.data.persistence.cms.CmsSystemCodeCacheService;
 import gov.ca.cwds.data.persistence.cms.ISystemCodeCache;
 import gov.ca.cwds.rest.services.AddressService;
@@ -58,7 +58,7 @@ public class ServicesModule extends AbstractModule {
     // Register CMS system code translator.
     bind(ISystemCodeCache.class).to(CmsSystemCodeCacheService.class).in(Scopes.SINGLETON);
     bind(CmsSystemCodeSerializer.class).in(Scopes.SINGLETON);
-    bind(GuiceSerializerInjector.class);
+    bind(SysCodeSerializerInjector.class).asEagerSingleton();
   }
 
 }
