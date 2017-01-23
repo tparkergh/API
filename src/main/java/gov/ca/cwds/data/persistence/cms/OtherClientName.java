@@ -279,8 +279,15 @@ public class OtherClientName extends CmsPersistentObject implements IPersonAware
     return this.suffixTitleDescription;
   }
 
-  public void setNameType(Short nameType) {
-    this.nameType = nameType;
+  // public void setNameType(Short nameType) {
+  // this.nameType = nameType;
+  // }
+
+  @Override
+  public String toString() {
+    return "OtherClientName [id=" + id + ", firstName=" + firstName + ", lastName=" + lastName
+        + ", middleName=" + middleName + ", namePrefixDescription=" + namePrefixDescription
+        + ", nameType=" + nameType + ", suffixTitleDescription=" + suffixTitleDescription + "]";
   }
 
 }

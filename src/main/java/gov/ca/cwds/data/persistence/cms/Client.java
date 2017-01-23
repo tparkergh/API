@@ -474,7 +474,7 @@ public final class Client extends CmsPersistentObject
   }
 
   /**
-   * Constructor
+   * Constructor. Construct from counterpart domain class.
    * 
    * @param client The domain object to construct this object from
    * @param lastUpdatedId the id of the last person to update this object

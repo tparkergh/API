@@ -26,22 +26,26 @@ public class ClientTest {
   private static final ObjectMapper MAPPER = SystemCodeTestHarness.MAPPER;
 
   private Client validBean() throws JsonParseException, JsonMappingException, IOException {
-    return MAPPER.readValue(fixture("fixtures/persistence/legacy/Client/valid.json"), Client.class);
+    return MAPPER.readValue(fixture("fixtures/persistence/legacy/Client/old_style_valid.json"),
+        Client.class);
   }
 
   @Test
   public void testSerializeAndDeserialize() throws Exception {
     final Client tgt = validBean();
 
-    // For pretty JSON, instead of a single line.
+    // Serialize to JSON.
     ByteArrayOutputStream baos = new ByteArrayOutputStream();
     try (PrintStream ps = new PrintStream(baos)) {
       MAPPER.writerWithDefaultPrettyPrinter().writeValue(ps, tgt);
     } finally {
     }
-
     final String json = baos.toString(java.nio.charset.StandardCharsets.UTF_8.name());
+
+    // Deserialize from JSON just written.
     final Client actual = MAPPER.readValue(json, Client.class);
+
+    // Does it match exactly?
     assertThat(actual, is(equalTo(validBean())));
   }
 

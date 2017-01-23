@@ -48,19 +48,21 @@ public class OtherClientNameTest implements PersistentTestTemplate {
   }
 
   @Test
-  public void testSerializeJAndDeserialize() throws Exception {
+  public void testSerializeAndDeserialize() throws Exception {
     final OtherClientName tgt = validBean();
 
-    // For pretty JSON, instead of a single line.
+    // Serialize to JSON.
     ByteArrayOutputStream baos = new ByteArrayOutputStream();
     try (PrintStream ps = new PrintStream(baos)) {
       MAPPER.writerWithDefaultPrettyPrinter().writeValue(ps, tgt);
     } finally {
     }
-
     final String json = baos.toString(java.nio.charset.StandardCharsets.UTF_8.name());
-    System.out.println(json);
+
+    // Deserialize from JSON just written.
     final OtherClientName actual = MAPPER.readValue(json, OtherClientName.class);
+
+    // Does it match exactly?
     assertThat(actual, is(equalTo(validBean())));
   }
 
