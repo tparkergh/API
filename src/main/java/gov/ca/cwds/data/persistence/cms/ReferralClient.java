@@ -12,6 +12,7 @@ import javax.persistence.Table;
 
 import org.hibernate.annotations.Type;
 
+import gov.ca.cwds.data.SystemCodeSerializer;
 import gov.ca.cwds.rest.api.ApiException;
 import gov.ca.cwds.rest.api.domain.DomainChef;
 
@@ -123,10 +124,12 @@ public class ReferralClient extends CmsPersistentObject {
   @Column(name = "APRVL_NO", length = 10)
   private String approvalNumber;
 
+  @SystemCodeSerializer(logical = true, description = true)
   @Type(type = "short")
   @Column(name = "APV_STC")
   private Short approvalStatusType;
 
+  @SystemCodeSerializer(logical = true, description = true)
   @Type(type = "short")
   @Column(name = "DSP_RSNC")
   private Short dispositionClosureReasonType;

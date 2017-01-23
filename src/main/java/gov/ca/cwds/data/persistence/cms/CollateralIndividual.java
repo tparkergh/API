@@ -13,6 +13,7 @@ import org.hibernate.annotations.NamedQueries;
 import org.hibernate.annotations.NamedQuery;
 import org.hibernate.annotations.Type;
 
+import gov.ca.cwds.data.SystemCodeSerializer;
 import gov.ca.cwds.data.persistence.PersistentObject;
 
 
@@ -73,9 +74,10 @@ public class CollateralIndividual extends CmsPersistentObject {
   @Column(name = "LAST_NM")
   private String lastName;
 
+  @SystemCodeSerializer(logical = true, description = true)
   @Type(type = "short")
   @Column(name = "MRTL_STC")
-  private Short maritalStatus;
+  private Short maritalStatusType;
 
   @Column(name = "MID_INI_NM")
   private String middleInitialName;
@@ -93,6 +95,7 @@ public class CollateralIndividual extends CmsPersistentObject {
   @Column(name = "RESOST_IND")
   private String residedOutOfStateIndicator;
 
+  @SystemCodeSerializer(logical = true, description = true)
   @Type(type = "short")
   @Column(name = "STATE_C")
   private Short stateCode;
@@ -174,7 +177,7 @@ public class CollateralIndividual extends CmsPersistentObject {
     this.genderCode = genderCode;
     this.id = id;
     this.lastName = lastName;
-    this.maritalStatus = maritalStatus;
+    this.maritalStatusType = maritalStatus;
     this.middleInitialName = middleInitialName;
     this.namePrefixDescription = namePrefixDescription;
     this.primaryExtensionNumber = primaryExtensionNumber;
@@ -291,7 +294,7 @@ public class CollateralIndividual extends CmsPersistentObject {
    * @return maritalStatus
    */
   public Short getMaritalStatus() {
-    return maritalStatus;
+    return maritalStatusType;
   }
 
   /**
@@ -394,7 +397,7 @@ public class CollateralIndividual extends CmsPersistentObject {
     result = prime * result + ((genderCode == null) ? 0 : genderCode.hashCode());
     result = prime * result + ((id == null) ? 0 : id.hashCode());
     result = prime * result + ((lastName == null) ? 0 : lastName.hashCode());
-    result = prime * result + ((maritalStatus == null) ? 0 : maritalStatus.hashCode());
+    result = prime * result + ((maritalStatusType == null) ? 0 : maritalStatusType.hashCode());
     result = prime * result + ((middleInitialName == null) ? 0 : middleInitialName.hashCode());
     result =
         prime * result + ((namePrefixDescription == null) ? 0 : namePrefixDescription.hashCode());
@@ -492,10 +495,10 @@ public class CollateralIndividual extends CmsPersistentObject {
         return false;
     } else if (!lastName.equals(other.lastName))
       return false;
-    if (maritalStatus == null) {
-      if (other.maritalStatus != null)
+    if (maritalStatusType == null) {
+      if (other.maritalStatusType != null)
         return false;
-    } else if (!maritalStatus.equals(other.maritalStatus))
+    } else if (!maritalStatusType.equals(other.maritalStatusType))
       return false;
     if (middleInitialName == null) {
       if (other.middleInitialName != null)

@@ -10,6 +10,7 @@ import javax.persistence.Table;
 
 import org.hibernate.annotations.Type;
 
+import gov.ca.cwds.data.SystemCodeSerializer;
 import gov.ca.cwds.data.ns.NsPersistentObject;
 import gov.ca.cwds.rest.api.ApiException;
 import gov.ca.cwds.rest.api.domain.DomainChef;
@@ -40,6 +41,7 @@ public class Referral extends CmsPersistentObject {
   @Column(name = "APRVL_NO")
   private String approvalNumber;
 
+  @SystemCodeSerializer(logical = true, description = true)
   @Type(type = "short")
   @Column(name = "APV_STC")
   private Short approvalStatusType;
@@ -51,6 +53,7 @@ public class Referral extends CmsPersistentObject {
   @Column(name = "REFCLSR_DT")
   private Date closureDate;
 
+  @SystemCodeSerializer(logical = true, description = true)
   @Type(type = "short")
   @Column(name = "CMM_MTHC")
   private Short communicationMethodType;
@@ -73,6 +76,7 @@ public class Referral extends CmsPersistentObject {
   @Column(name = "FMY_AW_IND")
   private String familyAwarenessIndicator;
 
+  @SystemCodeSerializer
   @Type(type = "short")
   @Column(name = "GVR_ENTC")
   private Short govtEntityType;
@@ -104,10 +108,12 @@ public class Referral extends CmsPersistentObject {
   @Column(name = "REF_RCV_TM")
   private Date receivedTime;
 
+  @SystemCodeSerializer(logical = true, description = true)
   @Type(type = "short")
   @Column(name = "RFR_RSPC")
   private Short referralResponseType;
 
+  @SystemCodeSerializer(logical = true, description = true)
   @Type(type = "short")
   @Column(name = "RFRD_RSC")
   private Short referredToResourceType;

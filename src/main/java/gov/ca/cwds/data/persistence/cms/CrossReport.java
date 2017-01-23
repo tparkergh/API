@@ -11,6 +11,7 @@ import javax.persistence.Table;
 
 import org.hibernate.annotations.Type;
 
+import gov.ca.cwds.data.SystemCodeSerializer;
 import gov.ca.cwds.rest.api.ApiException;
 import gov.ca.cwds.rest.api.domain.DomainChef;
 
@@ -31,6 +32,7 @@ public class CrossReport extends CmsPersistentObject {
   @Column(name = "THIRD_ID", length = CMS_ID_LEN)
   private String thirdId;
 
+  @SystemCodeSerializer(logical = true, description = true)
   @Type(type = "short")
   @Column(name = "XRPT_MTC")
   private Short crossReportMethodType;

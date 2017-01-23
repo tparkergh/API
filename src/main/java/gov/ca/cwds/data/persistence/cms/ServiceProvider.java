@@ -12,6 +12,7 @@ import org.hibernate.annotations.NamedQueries;
 import org.hibernate.annotations.NamedQuery;
 import org.hibernate.annotations.Type;
 
+import gov.ca.cwds.data.SystemCodeSerializer;
 import gov.ca.cwds.data.persistence.PersistentObject;
 
 
@@ -78,6 +79,7 @@ public class ServiceProvider extends CmsPersistentObject {
   @Column(name = "SVCPVDRC", nullable = false)
   private Short serviceProviderType;
 
+  @SystemCodeSerializer(logical = true, description = true)
   @Type(type = "short")
   @Column(name = "STATE_C", nullable = false)
   private Short stateCodeType;

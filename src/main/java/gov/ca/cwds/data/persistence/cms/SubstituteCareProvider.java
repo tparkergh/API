@@ -13,6 +13,7 @@ import org.hibernate.annotations.NamedQueries;
 import org.hibernate.annotations.NamedQuery;
 import org.hibernate.annotations.Type;
 
+import gov.ca.cwds.data.SystemCodeSerializer;
 import gov.ca.cwds.data.persistence.PersistentObject;
 
 
@@ -60,6 +61,7 @@ public class SubstituteCareProvider extends CmsPersistentObject {
   @Column(name = "CITY_NM")
   private String cityName;
 
+  @SystemCodeSerializer(logical = true, description = true)
   @Type(type = "short")
   @Column(name = "EDUCATION")
   private Short educationType;
@@ -70,6 +72,7 @@ public class SubstituteCareProvider extends CmsPersistentObject {
   @Column(name = "EMPLYR_NM")
   private String employerName;
 
+  @SystemCodeSerializer(logical = true, description = true)
   @Type(type = "short")
   @Column(name = "EMPL_STAT")
   private Short employmentStatusType;
@@ -105,6 +108,7 @@ public class SubstituteCareProvider extends CmsPersistentObject {
   @Column(name = "LIS_PER_ID")
   private String lisPersonId;
 
+  @SystemCodeSerializer(logical = true, description = true)
   @Type(type = "short")
   @Column(name = "MRTL_STC")
   private Short maritalStatusType;
@@ -118,6 +122,7 @@ public class SubstituteCareProvider extends CmsPersistentObject {
   @Column(name = "PASSBC_CD")
   private String passedBackgroundCheckCode;
 
+  @SystemCodeSerializer(logical = true, description = true)
   @Type(type = "short")
   @Column(name = "PRIM_INC")
   private Short primaryIncomeType;
@@ -132,6 +137,7 @@ public class SubstituteCareProvider extends CmsPersistentObject {
   @Column(name = "SS_NO")
   private String socialSecurityNumber;
 
+  @SystemCodeSerializer(logical = true, description = true)
   @Type(type = "short")
   @Column(name = "STATE_C")
   private Short stateCodeType;

@@ -46,11 +46,12 @@ public class Allegation extends CmsPersistentObject {
   @Column(name = "ABUSE_STDT")
   private Date abuseStartDate;
 
+  @SystemCodeSerializer(logical = true, description = true)
   @Type(type = "short")
   @Column(name = "ALG_DSPC")
   private Short allegationDispositionType;
 
-  @SystemCodeSerializer
+  @SystemCodeSerializer(logical = true, description = true)
   @Type(type = "short")
   @Column(name = "ALG_TPC")
   private Short allegationType;
@@ -86,6 +87,7 @@ public class Allegation extends CmsPersistentObject {
   @Column(name = "ZIPPY_IND")
   private String zippyCreatedIndicator;
 
+  @SystemCodeSerializer(logical = true, description = true)
   @Type(type = "short")
   @Column(name = "PLC_FCLC")
   private Short placementFacilityType;
