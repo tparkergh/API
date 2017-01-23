@@ -1,0 +1,113 @@
+{
+  "adjudicatedDelinquentIndicator" : "N",
+  "adoptionStatusCode" : "A",
+  "alienRegistrationNumber" : "ABC123",
+  "birthCity" : "ANY CITY",
+  "birthCountryCodeType" : {
+    "sys_id" : 563,
+    "short_description" : "United States",
+    "logical_id" : "US"
+  },
+  "birthDate" : 470908800000,
+  "birthFacilityName" : "home",
+  "birthStateCodeType" : {
+    "sys_id" : 1828,
+    "short_description" : "California",
+    "logical_id" : "CA"
+  },
+  "birthplaceVerifiedIndicator" : "N",
+  "childClientIndicatorVar" : "N",
+  "clientIndexNumber" : "CIN1234567",
+  "commentDescription" : "COMMENT DESCRIPTION",
+  "commonFirstName" : "Alex",
+  "commonLastName" : "Reese",
+  "commonMiddleName" : "M",
+  "confidentialityActionDate" : 934700400000,
+  "confidentialityInEffectIndicator" : "N",
+  "creationDate" : 951292800000,
+  "currCaChildrenServIndicator" : "N",
+  "currentlyOtherDescription" : "OTHER DESCRIPTION",
+  "currentlyRegionalCenterIndicator" : "N",
+  "deathDate" : 1471244400000,
+  "deathDateVerifiedIndicator" : "N",
+  "deathPlace" : "home",
+  "deathReasonText" : "1234567890",
+  "driverLicenseNumber" : "XYZ4567",
+  "driverLicenseStateCodeType" : {
+    "sys_id" : 1823,
+    "short_description" : "Alaska",
+    "logical_id" : "AK"
+  },
+  "emailAddress" : "alex@email.com",
+  "estimatedDobCode" : "N",
+  "ethUnableToDetReasonCode" : "A",
+  "fatherParentalRightTermDate" : 934700400000,
+  "genderCode" : "M",
+  "healthSummaryText" : "1234567890",
+  "hispUnableToDetReasonCode" : "K",
+  "hispanicOriginCode" : "D",
+  "id" : "AdOY6Ts0X5",
+  "immigrationCountryCodeType" : {
+    "sys_id" : 470,
+    "short_description" : "Algeria",
+    "logical_id" : "AA"
+  },
+  "immigrationStatusType" : {
+    "sys_id" : 1193,
+    "short_description" : "Asylee",
+    "logical_id" : "9994"
+  },
+  "incapacitatedParentCode" : "N",
+  "individualHealthCarePlanIndicator" : "N",
+  "limitationOnScpHealthIndicator" : "N",
+  "literateCode" : "Y",
+  "maritalCohabitatnHstryIndicatorVar" : "N",
+  "maritalStatusType" : {
+    "sys_id" : 1308,
+    "short_description" : "Married",
+    "logical_id" : "0003"
+  },
+  "militaryStatusCode" : "N",
+  "motherParentalRightTermDate" : 934700400000,
+  "namePrefixDescription" : "PREFIX",
+  "nameType" : {
+    "sys_id" : 1313,
+    "short_description" : "Legal",
+    "logical_id" : "0003"
+  },
+  "outstandingWarrantIndicator" : "N",
+  "prevCaChildrenServIndicator" : "N",
+  "prevOtherDescription" : "PREV OTHER DESC",
+  "prevRegionalCenterIndicator" : "N",
+  "primaryEthnicityType" : {
+    "sys_id" : 3165,
+    "short_description" : "South American",
+    "logical_id" : "02"
+  },
+  "primaryLanguageType" : {
+    "sys_id" : 1253,
+    "short_description" : "English",
+    "logical_id" : "07"
+  },
+  "religionType" : {
+    "sys_id" : 1557,
+    "short_description" : "Christian",
+    "logical_id" : "0005"
+  },
+  "secondaryLanguageType" : {
+    "sys_id" : 1253,
+    "short_description" : "English",
+    "logical_id" : "07"
+  },
+  "sensitiveHlthInfoOnFileIndicator" : "N",
+  "sensitivityIndicator" : "S",
+  "soc158PlacementCode" : "Y",
+  "soc158SealedClientIndicator" : "N",
+  "socialSecurityNumChangedCode" : "N",
+  "socialSecurityNumber" : "123456789",
+  "suffixTitleDescription" : "Phd",
+  "tribalAncestryClientIndicatorVar" : "N",
+  "tribalMembrshpVerifctnIndicatorVar" : "N",
+  "unemployedParentCode" : "NA",
+  "zippyCreatedIndicator" : "N"
+}
