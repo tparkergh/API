@@ -14,7 +14,7 @@
   "lawEnforcementId": "123467ABC",
   "description": "ABC DESC",
   "recipientName": "JOHN",
-  "outstateLawEnforcementAddr": "ABC STREET",
+  "outStateLawEnforcementAddr": "ABC STREET",
   "countySpecificCode": "AB",
   "lawEnforcementIndicator": false,
   "outStateLawEnforcementIndicator": false,

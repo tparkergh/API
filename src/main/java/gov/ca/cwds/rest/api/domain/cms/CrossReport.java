@@ -108,7 +108,7 @@ public class CrossReport extends DomainObject implements Request, Response {
   @NotEmpty
   @Size(min = 1, max = 254)
   @ApiModelProperty(required = true, readOnly = false, value = "", example = "law address")
-  private String outstateLawEnforcementAddr;
+  private String outStateLawEnforcementAddr;
 
   @NotEmpty
   @Size(min = 1, max = 2)
@@ -146,7 +146,7 @@ public class CrossReport extends DomainObject implements Request, Response {
    * @param staffPersonId FK to staff person
    * @param description description of this cross report
    * @param recipientName recip's name
-   * @param outstateLawEnforcementAddr address of out-of-state law enforcement agency
+   * @param outStateLawEnforcementAddr address of out-of-state law enforcement agency
    * @param countySpecificCode county code
    * @param lawEnforcementIndicator if law enforcement involved
    * @param outStateLawEnforcementIndicator if out-of-state law enforcement agency
@@ -169,7 +169,7 @@ public class CrossReport extends DomainObject implements Request, Response {
       @JsonProperty("staffPersonId") String staffPersonId,
       @JsonProperty("description") String description,
       @JsonProperty("recipientName") String recipientName,
-      @JsonProperty("outstateLawEnforcementAddr") String outstateLawEnforcementAddr,
+      @JsonProperty("outStateLawEnforcementAddr") String outStateLawEnforcementAddr,
       @JsonProperty("countySpecificCode") String countySpecificCode,
       @JsonProperty("lawEnforcementIndicator") Boolean lawEnforcementIndicator,
       @JsonProperty("outStateLawEnforcementIndicator") Boolean outStateLawEnforcementIndicator,
@@ -191,7 +191,7 @@ public class CrossReport extends DomainObject implements Request, Response {
     this.staffPersonId = staffPersonId;
     this.description = description;
     this.recipientName = recipientName;
-    this.outstateLawEnforcementAddr = outstateLawEnforcementAddr;
+    this.outStateLawEnforcementAddr = outStateLawEnforcementAddr;
     this.countySpecificCode = countySpecificCode;
     this.lawEnforcementIndicator = lawEnforcementIndicator;
     this.outStateLawEnforcementIndicator = outStateLawEnforcementIndicator;
@@ -222,7 +222,7 @@ public class CrossReport extends DomainObject implements Request, Response {
     this.staffPersonId = persistedCrossReport.getStaffPersonId();
     this.description = persistedCrossReport.getDescription();
     this.recipientName = persistedCrossReport.getRecipientName();
-    this.outstateLawEnforcementAddr = persistedCrossReport.getOutstateLawEnforcementAddr();
+    this.outStateLawEnforcementAddr = persistedCrossReport.getOutStateLawEnforcementAddr();
     this.countySpecificCode = persistedCrossReport.getCountySpecificCode();
     this.lawEnforcementIndicator =
         DomainChef.uncookBooleanString(persistedCrossReport.getLawEnforcementIndicator());
@@ -345,10 +345,10 @@ public class CrossReport extends DomainObject implements Request, Response {
   }
 
   /**
-   * @return the outstateLawEnforcementAddr
+   * @return the outStateLawEnforcementAddr
    */
-  public String getOutstateLawEnforcementAddr() {
-    return outstateLawEnforcementAddr;
+  public String getOutStateLawEnforcementAddr() {
+    return outStateLawEnforcementAddr;
   }
 
   /**
@@ -404,7 +404,7 @@ public class CrossReport extends DomainObject implements Request, Response {
     result = prime * result + ((outStateLawEnforcementIndicator == null) ? 0
         : outStateLawEnforcementIndicator.hashCode());
     result = prime * result
-        + ((outstateLawEnforcementAddr == null) ? 0 : outstateLawEnforcementAddr.hashCode());
+        + ((outStateLawEnforcementAddr == null) ? 0 : outStateLawEnforcementAddr.hashCode());
     result =
         prime * result + ((recipientBadgeNumber == null) ? 0 : recipientBadgeNumber.hashCode());
     result = prime * result + ((recipientName == null) ? 0 : recipientName.hashCode());
@@ -490,10 +490,10 @@ public class CrossReport extends DomainObject implements Request, Response {
         return false;
     } else if (!outStateLawEnforcementIndicator.equals(other.outStateLawEnforcementIndicator))
       return false;
-    if (outstateLawEnforcementAddr == null) {
-      if (other.outstateLawEnforcementAddr != null)
+    if (outStateLawEnforcementAddr == null) {
+      if (other.outStateLawEnforcementAddr != null)
         return false;
-    } else if (!outstateLawEnforcementAddr.equals(other.outstateLawEnforcementAddr))
+    } else if (!outStateLawEnforcementAddr.equals(other.outStateLawEnforcementAddr))
       return false;
     if (recipientBadgeNumber == null) {
       if (other.recipientBadgeNumber != null)

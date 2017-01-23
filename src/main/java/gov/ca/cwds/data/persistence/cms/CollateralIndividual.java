@@ -13,6 +13,9 @@ import org.hibernate.annotations.NamedQueries;
 import org.hibernate.annotations.NamedQuery;
 import org.hibernate.annotations.Type;
 
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+
+import gov.ca.cwds.data.CmsSystemCodeDeserializer;
 import gov.ca.cwds.data.SystemCodeSerializer;
 import gov.ca.cwds.data.persistence.PersistentObject;
 
@@ -75,6 +78,7 @@ public class CollateralIndividual extends CmsPersistentObject {
   private String lastName;
 
   @SystemCodeSerializer(logical = true, description = true)
+  @JsonDeserialize(using = CmsSystemCodeDeserializer.class)
   @Type(type = "short")
   @Column(name = "MRTL_STC")
   private Short maritalStatusType;
@@ -96,6 +100,7 @@ public class CollateralIndividual extends CmsPersistentObject {
   private String residedOutOfStateIndicator;
 
   @SystemCodeSerializer(logical = true, description = true)
+  @JsonDeserialize(using = CmsSystemCodeDeserializer.class)
   @Type(type = "short")
   @Column(name = "STATE_C")
   private Short stateCode;

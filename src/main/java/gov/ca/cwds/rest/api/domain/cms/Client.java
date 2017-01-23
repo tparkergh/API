@@ -235,6 +235,7 @@ public class Client extends DomainObject implements Request, Response {
   @ApiModelProperty(required = true, readOnly = false)
   private Boolean maritalCohabitatnHstryIndicatorVar;
 
+  @SystemCodeSerializer(logical = true, description = true)
   @NotNull
   @ApiModelProperty(required = false, readOnly = false, example = "0")
   private Short maritalStatusType;
@@ -256,6 +257,7 @@ public class Client extends DomainObject implements Request, Response {
   @ApiModelProperty(required = false, readOnly = false, value = "", example = " ")
   private String namePrefixDescription;
 
+  @SystemCodeSerializer(logical = true, description = true)
   @NotNull
   @ApiModelProperty(required = true, readOnly = false, example = "1234")
   private Short nameType;

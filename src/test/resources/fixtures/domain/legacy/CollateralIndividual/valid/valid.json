@@ -12,13 +12,21 @@
 "genderCode": "F",
 "id": "H2UmfUi0XA",
 "lastName": "client",
-"maritalStatus": 1308,
+"maritalStatusType": {
+		"sys_id": 1303,
+		"short_description": "Cohabitation Ended",
+		"logical_id": "CA"
+	},
 "middleInitialName": "",
 "namePrefixDescription": " ",
 "primaryExtensionNumber": 345,
 "primaryPhoneNo": 2345566,
 "residedOutOfStateIndicator": "N",
-"stateCode": 1828,
+	"stateCode": {
+		"sys_id": 1828,
+		"short_description": "California",
+		"logical_id": "CA"
+	},
 "streetName": "Berkley lane",
 "streetNumber": "3434",
 "suffixTitleDescription": " ",

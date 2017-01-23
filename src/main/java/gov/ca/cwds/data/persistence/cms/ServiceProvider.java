@@ -12,6 +12,9 @@ import org.hibernate.annotations.NamedQueries;
 import org.hibernate.annotations.NamedQuery;
 import org.hibernate.annotations.Type;
 
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+
+import gov.ca.cwds.data.CmsSystemCodeDeserializer;
 import gov.ca.cwds.data.SystemCodeSerializer;
 import gov.ca.cwds.data.persistence.PersistentObject;
 
@@ -80,6 +83,7 @@ public class ServiceProvider extends CmsPersistentObject {
   private Short serviceProviderType;
 
   @SystemCodeSerializer(logical = true, description = true)
+  @JsonDeserialize(using = CmsSystemCodeDeserializer.class)
   @Type(type = "short")
   @Column(name = "STATE_C", nullable = false)
   private Short stateCodeType;

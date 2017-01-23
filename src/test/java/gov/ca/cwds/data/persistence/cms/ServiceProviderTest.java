@@ -1,6 +1,7 @@
 package gov.ca.cwds.data.persistence.cms;
 
 import static io.dropwizard.testing.FixtureHelpers.fixture;
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.is;
@@ -11,9 +12,12 @@ import java.io.IOException;
 import org.junit.Test;
 
 import com.fasterxml.jackson.core.JsonParseException;
+import com.fasterxml.jackson.core.Version;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.module.SimpleModule;
 
+import gov.ca.cwds.data.CmsSystemCodeSerializer;
 import io.dropwizard.jackson.Jackson;
 import nl.jqno.equalsverifier.EqualsVerifier;
 import nl.jqno.equalsverifier.Warning;
@@ -25,7 +29,22 @@ import nl.jqno.equalsverifier.Warning;
  */
 public class ServiceProviderTest {
 
-  private static final ObjectMapper MAPPER = Jackson.newObjectMapper();
+  private static final ObjectMapper MAPPER;
+
+  /**
+   * Auto-magically translate CMS system codes when serializing JSON.
+   */
+  static {
+    // Inject system code cache.
+    ObjectMapper mapper = Jackson.newObjectMapper();
+    SimpleModule module = new SimpleModule("SystemCodeModule",
+        new Version(1, 0, 24, "alpha", "ca.gov.data.persistence.cms", "syscode"));
+    module.addSerializer(Short.class,
+        new CmsSystemCodeSerializer(new CmsSystemCodeCacheService(new SystemCodeDaoFileImpl())));
+    mapper.registerModule(module);
+    MAPPER = mapper;
+  }
+
 
   @SuppressWarnings("javadoc")
   @Test
@@ -44,7 +63,7 @@ public class ServiceProviderTest {
 
   @SuppressWarnings("javadoc")
   @Test
-  public void persistentConstructorTest() throws Exception {
+  public void testPersistentConstructor() throws Exception {
     ServiceProvider vsprv = validServiceProvider();
 
     ServiceProvider pers = new ServiceProvider(vsprv.getAgencyName(),
@@ -76,6 +95,27 @@ public class ServiceProviderTest {
     assertThat(pers.getSuffixTitleDescription(), is(equalTo(vsprv.getSuffixTitleDescription())));
     assertThat(pers.getZipNumber(), is(equalTo(vsprv.getZipNumber())));
     assertThat(pers.getZipSuffixNumber(), is(equalTo(vsprv.getZipSuffixNumber())));
+  }
+
+  @SuppressWarnings("javadoc")
+  @Test
+  public void testSerialzeJson() throws Exception {
+    ServiceProvider vsprv = validServiceProvider();
+
+    ServiceProvider pers = new ServiceProvider(vsprv.getAgencyName(),
+        vsprv.getArchiveAssociationIndicator(), vsprv.getCityName(), vsprv.getEmailAddress(),
+        vsprv.getFaxNumber(), vsprv.getFirstName(), vsprv.getId(), vsprv.getLastName(),
+        vsprv.getNamePrefixDescription(), vsprv.getPhoneExtensionNumber(), vsprv.getPhoneNumber(),
+        vsprv.getPositionTitleDescription(), vsprv.getServiceProviderType(),
+        vsprv.getStateCodeType(), vsprv.getStreetName(), vsprv.getStreetNumber(),
+        vsprv.getSuffixTitleDescription(), vsprv.getZipNumber(), vsprv.getZipSuffixNumber());
+
+    final String expected = MAPPER.writeValueAsString((MAPPER.readValue(
+        fixture("fixtures/persistent/ServiceProvider/valid/validWithSysCodes.json"),
+        ServiceProvider.class)));
+
+    assertThat(MAPPER.writeValueAsString(pers)).isEqualTo(expected);
+
   }
 
   private ServiceProvider validServiceProvider()

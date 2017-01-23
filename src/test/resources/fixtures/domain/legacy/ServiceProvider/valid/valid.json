@@ -12,7 +12,11 @@
   "phoneNumber": 999,
   "positionTitleDescription": "Kiddie Care",
   "serviceProviderType": 0,
-  "stateCodeType": 0,
+	"stateCodeType": {
+		"sys_id": 1828,
+		"short_description": "California",
+		"logical_id": "CA"
+	},
   "streetName": "streetName",
   "streetNumber": "streetNumber",
   "suffixTitleDescription": "suffixTitleDescription",

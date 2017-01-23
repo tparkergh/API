@@ -65,7 +65,7 @@
     "staffPersonId": "ABC",
     "description": "ABC123",
     "recipientName": "recipient name",
-    "outstateLawEnforcementAddr": "law address",
+    "outStateLawEnforcementAddr": "law address",
     "countySpecificCode": "99",
     "lawEnforcementIndicator": false,
     "outStateLawEnforcementIndicator": false,

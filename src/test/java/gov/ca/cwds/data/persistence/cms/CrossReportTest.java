@@ -1,6 +1,7 @@
 package gov.ca.cwds.data.persistence.cms;
 
 import static io.dropwizard.testing.FixtureHelpers.fixture;
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.is;
@@ -14,9 +15,12 @@ import java.text.SimpleDateFormat;
 import org.junit.Test;
 
 import com.fasterxml.jackson.core.JsonParseException;
+import com.fasterxml.jackson.core.Version;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.module.SimpleModule;
 
+import gov.ca.cwds.data.CmsSystemCodeSerializer;
 import gov.ca.cwds.data.persistence.junit.template.PersistentTestTemplate;
 import gov.ca.cwds.rest.api.domain.DomainChef;
 import io.dropwizard.jackson.Jackson;
@@ -30,10 +34,24 @@ import nl.jqno.equalsverifier.Warning;
 public class CrossReportTest implements PersistentTestTemplate {
   private final static DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
   private final static DateFormat tf = new SimpleDateFormat("HH:mm:ss");
-  private static final ObjectMapper MAPPER = Jackson.newObjectMapper();
+  private static final ObjectMapper MAPPER;
+
+  /**
+   * Auto-magically translate CMS system codes when serializing JSON.
+   */
+  static {
+    // Inject system code cache.
+    ObjectMapper mapper = Jackson.newObjectMapper();
+    SimpleModule module = new SimpleModule("SystemCodeModule",
+        new Version(1, 0, 24, "alpha", "ca.gov.data.persistence.cms", "syscode"));
+    module.addSerializer(Short.class,
+        new CmsSystemCodeSerializer(new CmsSystemCodeCacheService(new SystemCodeDaoFileImpl())));
+    mapper.registerModule(module);
+    MAPPER = mapper;
+  }
 
   private String thirdId = "ABC1234567";
-  private Short crossReportMethodType = 123;
+  private Short crossReportMethodType = 2095;
   private String filedOutOfStateIndicator = "N";
   private String governmentOrgCrossRptIndicatorVar = "N";
   private String informTime = "16:41:49";
@@ -48,7 +66,7 @@ public class CrossReportTest implements PersistentTestTemplate {
   private String staffPersonId = "q1p";
   private String description = "ABC DESC";
   private String recipientName = "JOHN";
-  private String outstateLawEnforcementAddr = "ABC STREET";
+  private String outStateLawEnforcementAddr = "ABC STREET";
   private String countySpecificCode = "AB";
   private String lawEnforcementIndicator = "N";
   private String outStateLawEnforcementIndicator = "N";
@@ -76,7 +94,7 @@ public class CrossReportTest implements PersistentTestTemplate {
   @Test
   public void testConstructorUsingDomain() throws Exception {
 
-    gov.ca.cwds.rest.api.domain.cms.CrossReport domain = validCrossReport();
+    gov.ca.cwds.rest.api.domain.cms.CrossReport domain = validDomainCrossReport();
 
     CrossReport persistent = new CrossReport(domain.getThirdId(), domain, lastUpdatedId);
 
@@ -101,8 +119,8 @@ public class CrossReportTest implements PersistentTestTemplate {
     assertThat(persistent.getStaffPersonId(), is(equalTo(domain.getStaffPersonId())));
     assertThat(persistent.getDescription(), is(equalTo(domain.getDescription())));
     assertThat(persistent.getRecipientName(), is(equalTo(domain.getRecipientName())));
-    assertThat(persistent.getOutstateLawEnforcementAddr(),
-        is(equalTo(domain.getOutstateLawEnforcementAddr())));
+    assertThat(persistent.getOutStateLawEnforcementAddr(),
+        is(equalTo(domain.getOutStateLawEnforcementAddr())));
     assertThat(persistent.getCountySpecificCode(), is(equalTo(domain.getCountySpecificCode())));
     assertThat(persistent.getLawEnforcementIndicator(),
         is(equalTo(DomainChef.cookBoolean(domain.getLawEnforcementIndicator()))));
@@ -111,6 +129,7 @@ public class CrossReportTest implements PersistentTestTemplate {
     assertThat(persistent.getSatisfyCrossReportIndicator(),
         is(equalTo(DomainChef.cookBoolean(domain.getSatisfyCrossReportIndicator()))));
     assertThat(persistent.getLastUpdatedId(), is(equalTo(lastUpdatedId)));
+
   }
 
   @Override
@@ -121,7 +140,7 @@ public class CrossReportTest implements PersistentTestTemplate {
         filedOutOfStateIndicator, governmentOrgCrossRptIndicatorVar, tf.parse(informTime),
         recipientBadgeNumber, recipientPhoneExtensionNumber, recipientPhoneNumber,
         DomainChef.uncookDateString(informDate), recipientPositionTitleDesc, referenceNumber,
-        lawEnforcementId, staffPersonId, description, recipientName, outstateLawEnforcementAddr,
+        lawEnforcementId, staffPersonId, description, recipientName, outStateLawEnforcementAddr,
         countySpecificCode, lawEnforcementIndicator, outStateLawEnforcementIndicator,
         satisfyCrossReportIndicator);
 
@@ -143,7 +162,7 @@ public class CrossReportTest implements PersistentTestTemplate {
     assertThat(persistent.getStaffPersonId(), is(equalTo(staffPersonId)));
     assertThat(persistent.getDescription(), is(equalTo(description)));
     assertThat(persistent.getRecipientName(), is(equalTo(recipientName)));
-    assertThat(persistent.getOutstateLawEnforcementAddr(), is(equalTo(outstateLawEnforcementAddr)));
+    assertThat(persistent.getOutStateLawEnforcementAddr(), is(equalTo(outStateLawEnforcementAddr)));
     assertThat(persistent.getCountySpecificCode(), is(equalTo(countySpecificCode)));
     assertThat(persistent.getLawEnforcementIndicator(), is(equalTo(lawEnforcementIndicator)));
     assertThat(persistent.getOutStateLawEnforcementIndicator(),
@@ -152,7 +171,25 @@ public class CrossReportTest implements PersistentTestTemplate {
         is(equalTo(satisfyCrossReportIndicator)));
   }
 
-  private gov.ca.cwds.rest.api.domain.cms.CrossReport validCrossReport()
+  @SuppressWarnings("javadoc")
+  @Test
+  public void testSerializeJson() throws Exception {
+    CrossReport persistent = new CrossReport(referralId, thirdId, crossReportMethodType,
+        filedOutOfStateIndicator, governmentOrgCrossRptIndicatorVar, tf.parse(informTime),
+        recipientBadgeNumber, recipientPhoneExtensionNumber, recipientPhoneNumber,
+        DomainChef.uncookDateString(informDate), recipientPositionTitleDesc, referenceNumber,
+        lawEnforcementId, staffPersonId, description, recipientName, outStateLawEnforcementAddr,
+        countySpecificCode, lawEnforcementIndicator, outStateLawEnforcementIndicator,
+        satisfyCrossReportIndicator);
+
+    final String expected = MAPPER.writeValueAsString(
+        (MAPPER.readValue(fixture("fixtures/persistent/CrossReport/valid/validWithSysCodes.json"),
+            CrossReport.class)));
+
+    assertThat(MAPPER.writeValueAsString(persistent)).isEqualTo(expected);
+  }
+
+  private gov.ca.cwds.rest.api.domain.cms.CrossReport validDomainCrossReport()
       throws JsonParseException, JsonMappingException, IOException {
     gov.ca.cwds.rest.api.domain.cms.CrossReport validCrossReport =
         MAPPER.readValue(fixture("fixtures/domain/legacy/CrossReport/valid/valid.json"),

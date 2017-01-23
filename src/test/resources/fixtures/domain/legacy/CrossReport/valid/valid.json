@@ -1,6 +1,6 @@
 {
   "thirdId": "ABC1234567",
-  "crossReportMethodType": 123,
+  "crossReportMethodType": 2095,
   "filedOutOfStateIndicator": false,
   "governmentOrgCrossRptIndicatorVar": false,
   "informTime": "16:41:49",
@@ -15,7 +15,7 @@
   "staffPersonId": "q1p",
   "description": "ABC DESC",
   "recipientName": "JOHN",
-  "outstateLawEnforcementAddr": "ABC STREET",
+  "outStateLawEnforcementAddr": "ABC STREET",
   "countySpecificCode": "AB",
   "lawEnforcementIndicator": false,
   "outStateLawEnforcementIndicator": false,

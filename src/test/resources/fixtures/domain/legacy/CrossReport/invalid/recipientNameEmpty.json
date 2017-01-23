@@ -15,7 +15,7 @@
   "staffPersonId": "q1p",
   "description": "ABC DESC",
   "recipientName": "",
-  "outstateLawEnforcementAddr": "ABC STREET",
+  "outStateLawEnforcementAddr": "ABC STREET",
   "countySpecificCode": "AB",
   "lawEnforcementIndicator": false,
   "outStateLawEnforcementIndicator": false,

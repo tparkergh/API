@@ -9,6 +9,9 @@ import javax.persistence.Table;
 
 import org.hibernate.annotations.Type;
 
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+
+import gov.ca.cwds.data.CmsSystemCodeDeserializer;
 import gov.ca.cwds.data.SystemCodeSerializer;
 import gov.ca.cwds.rest.api.domain.DomainChef;
 
@@ -47,11 +50,13 @@ public class Allegation extends CmsPersistentObject {
   private Date abuseStartDate;
 
   @SystemCodeSerializer(logical = true, description = true)
+  @JsonDeserialize(using = CmsSystemCodeDeserializer.class)
   @Type(type = "short")
   @Column(name = "ALG_DSPC")
   private Short allegationDispositionType;
 
   @SystemCodeSerializer(logical = true, description = true)
+  @JsonDeserialize(using = CmsSystemCodeDeserializer.class)
   @Type(type = "short")
   @Column(name = "ALG_TPC")
   private Short allegationType;
@@ -88,6 +93,7 @@ public class Allegation extends CmsPersistentObject {
   private String zippyCreatedIndicator;
 
   @SystemCodeSerializer(logical = true, description = true)
+  @JsonDeserialize(using = CmsSystemCodeDeserializer.class)
   @Type(type = "short")
   @Column(name = "PLC_FCLC")
   private Short placementFacilityType;

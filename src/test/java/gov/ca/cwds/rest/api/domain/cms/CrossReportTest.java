@@ -68,7 +68,7 @@ public class CrossReportTest {
   private String staffPersonId = "h";
   private String description = "i";
   private String recipientName = "j";
-  private String outstateLawEnforcementAddr = "k";
+  private String outStateLawEnforcementAddr = "k";
   private String countySpecificCode = "l";
   private Boolean lawEnforcementIndicator = Boolean.TRUE;
   private Boolean outStateLawEnforcementIndicator = Boolean.FALSE;
@@ -96,7 +96,7 @@ public class CrossReportTest {
         governmentOrgCrossRptIndicatorVar, informTime, recipientBadgeNumber,
         recipientPhoneExtensionNumber, recipientPhoneNumber, informDate, recipientPositionTitleDesc,
         referenceNumber, referralId, lawEnforcementId, staffPersonId, description, recipientName,
-        outstateLawEnforcementAddr, countySpecificCode, lawEnforcementIndicator,
+        outStateLawEnforcementAddr, countySpecificCode, lawEnforcementIndicator,
         outStateLawEnforcementIndicator, satisfyCrossReportIndicator);
     gov.ca.cwds.data.persistence.cms.CrossReport persistent =
         new gov.ca.cwds.data.persistence.cms.CrossReport(thirdId, domain, "lastUpdatedId");
@@ -124,8 +124,8 @@ public class CrossReportTest {
     assertThat(totest.getStaffPersonId(), is(equalTo(persistent.getStaffPersonId())));
     assertThat(totest.getDescription(), is(equalTo(persistent.getDescription())));
     assertThat(totest.getRecipientName(), is(equalTo(persistent.getRecipientName())));
-    assertThat(totest.getOutstateLawEnforcementAddr(),
-        is(equalTo(persistent.getOutstateLawEnforcementAddr())));
+    assertThat(totest.getOutStateLawEnforcementAddr(),
+        is(equalTo(persistent.getOutStateLawEnforcementAddr())));
     assertThat(totest.getCountySpecificCode(), is(equalTo(persistent.getCountySpecificCode())));
     assertThat(totest.getLawEnforcementIndicator(),
         is(equalTo(DomainChef.uncookBooleanString(persistent.getLawEnforcementIndicator()))));
@@ -142,7 +142,7 @@ public class CrossReportTest {
         governmentOrgCrossRptIndicatorVar, informTime, recipientBadgeNumber,
         recipientPhoneExtensionNumber, recipientPhoneNumber, informDate, recipientPositionTitleDesc,
         referenceNumber, referralId, lawEnforcementId, staffPersonId, description, recipientName,
-        outstateLawEnforcementAddr, countySpecificCode, lawEnforcementIndicator,
+        outStateLawEnforcementAddr, countySpecificCode, lawEnforcementIndicator,
         outStateLawEnforcementIndicator, satisfyCrossReportIndicator);
 
     assertThat(domain.getThirdId(), is(equalTo(thirdId)));
@@ -163,7 +163,7 @@ public class CrossReportTest {
     assertThat(domain.getStaffPersonId(), is(equalTo(staffPersonId)));
     assertThat(domain.getDescription(), is(equalTo(description)));
     assertThat(domain.getRecipientName(), is(equalTo(recipientName)));
-    assertThat(domain.getOutstateLawEnforcementAddr(), is(equalTo(outstateLawEnforcementAddr)));
+    assertThat(domain.getOutStateLawEnforcementAddr(), is(equalTo(outStateLawEnforcementAddr)));
     assertThat(domain.getCountySpecificCode(), is(equalTo(countySpecificCode)));
     assertThat(domain.getLawEnforcementIndicator(), is(equalTo(lawEnforcementIndicator)));
     assertThat(domain.getOutStateLawEnforcementIndicator(),
@@ -1067,48 +1067,48 @@ public class CrossReportTest {
   }
 
   /*
-   * outstateLawEnforcementAddr Tests
+   * outStateLawEnforcementAddr Tests
    */
   @Test
   public void failsWhenOutstateLawEnforcementAddrMissing() throws Exception {
     CrossReport toCreate = MAPPER.readValue(
         fixture(
-            "fixtures/domain/legacy/CrossReport/invalid/outstateLawEnforcementAddrMissing.json"),
+            "fixtures/domain/legacy/CrossReport/invalid/outStateLawEnforcementAddrMissing.json"),
         CrossReport.class);
     Response response =
         resources.client().target(ROOT_RESOURCE).request().accept(MediaType.APPLICATION_JSON)
             .post(Entity.entity(toCreate, MediaType.APPLICATION_JSON));
     assertThat(response.getStatus(), is(equalTo(422)));
     assertThat(
-        response.readEntity(String.class).indexOf("outstateLawEnforcementAddr may not be empty"),
+        response.readEntity(String.class).indexOf("outStateLawEnforcementAddr may not be empty"),
         is(greaterThanOrEqualTo(0)));
   }
 
   @Test
   public void failsWhenOutstateLawEnforcementAddrNull() throws Exception {
     CrossReport toCreate = MAPPER.readValue(
-        fixture("fixtures/domain/legacy/CrossReport/invalid/outstateLawEnforcementAddrNull.json"),
+        fixture("fixtures/domain/legacy/CrossReport/invalid/outStateLawEnforcementAddrNull.json"),
         CrossReport.class);
     Response response =
         resources.client().target(ROOT_RESOURCE).request().accept(MediaType.APPLICATION_JSON)
             .post(Entity.entity(toCreate, MediaType.APPLICATION_JSON));
     assertThat(response.getStatus(), is(equalTo(422)));
     assertThat(
-        response.readEntity(String.class).indexOf("outstateLawEnforcementAddr may not be empty"),
+        response.readEntity(String.class).indexOf("outStateLawEnforcementAddr may not be empty"),
         is(greaterThanOrEqualTo(0)));
   }
 
   @Test
   public void failsWhenOutstateLawEnforcementAddrEmpty() throws Exception {
     CrossReport toCreate = MAPPER.readValue(
-        fixture("fixtures/domain/legacy/CrossReport/invalid/outstateLawEnforcementAddrEmpty.json"),
+        fixture("fixtures/domain/legacy/CrossReport/invalid/outStateLawEnforcementAddrEmpty.json"),
         CrossReport.class);
     Response response =
         resources.client().target(ROOT_RESOURCE).request().accept(MediaType.APPLICATION_JSON)
             .post(Entity.entity(toCreate, MediaType.APPLICATION_JSON));
     assertThat(response.getStatus(), is(equalTo(422)));
     assertThat(
-        response.readEntity(String.class).indexOf("outstateLawEnforcementAddr may not be empty"),
+        response.readEntity(String.class).indexOf("outStateLawEnforcementAddr may not be empty"),
         is(greaterThanOrEqualTo(0)));
   }
 
@@ -1116,7 +1116,7 @@ public class CrossReportTest {
   public void successWhenOutstateLawEnforcementAddrAllWhiteSpace() throws Exception {
     CrossReport toCreate = MAPPER.readValue(
         fixture(
-            "fixtures/domain/legacy/CrossReport/valid/outstateLawEnforcementAddrAllWhiteSpace.json"),
+            "fixtures/domain/legacy/CrossReport/valid/outStateLawEnforcementAddrAllWhiteSpace.json"),
         CrossReport.class);
     Response response =
         resources.client().target(ROOT_RESOURCE).request().accept(MediaType.APPLICATION_JSON)

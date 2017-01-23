@@ -88,7 +88,7 @@ public class EducationProviderContactTest implements PersistentTestTemplate {
 
   @Override
   public void testConstructorUsingDomain() throws Exception {
-    // TODO Auto-generated method stub
+    // no domain class
 
   }
 

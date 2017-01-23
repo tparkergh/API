@@ -1,6 +1,7 @@
 package gov.ca.cwds.data.persistence.cms;
 
 import static io.dropwizard.testing.FixtureHelpers.fixture;
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.is;
@@ -11,9 +12,12 @@ import java.io.IOException;
 import org.junit.Test;
 
 import com.fasterxml.jackson.core.JsonParseException;
+import com.fasterxml.jackson.core.Version;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.module.SimpleModule;
 
+import gov.ca.cwds.data.CmsSystemCodeSerializer;
 import gov.ca.cwds.data.persistence.junit.template.PersistentTestTemplate;
 import io.dropwizard.jackson.Jackson;
 import nl.jqno.equalsverifier.EqualsVerifier;
@@ -25,7 +29,21 @@ import nl.jqno.equalsverifier.Warning;
  */
 public class CollateralIndividualTest implements PersistentTestTemplate {
 
-  private static final ObjectMapper MAPPER = Jackson.newObjectMapper();
+  private static final ObjectMapper MAPPER;
+
+  /**
+   * Auto-magically translate CMS system codes when serializing JSON.
+   */
+  static {
+    // Inject system code cache.
+    ObjectMapper mapper = Jackson.newObjectMapper();
+    SimpleModule module = new SimpleModule("SystemCodeModule",
+        new Version(1, 0, 24, "alpha", "ca.gov.data.persistence.cms", "syscode"));
+    module.addSerializer(Short.class,
+        new CmsSystemCodeSerializer(new CmsSystemCodeCacheService(new SystemCodeDaoFileImpl())));
+    mapper.registerModule(module);
+    MAPPER = mapper;
+  }
 
   @Override
   @Test
@@ -87,9 +105,30 @@ public class CollateralIndividualTest implements PersistentTestTemplate {
 
   @Override
   public void testConstructorUsingDomain() throws Exception {
-    // no constructor using the domain class.
+    // no domain class.
 
   }
+
+  @SuppressWarnings("javadoc")
+  @Test
+  public void testSerialJson() throws Exception {
+    CollateralIndividual ci = validCollateralIndividual();
+
+    CollateralIndividual persistent = new CollateralIndividual(ci.getBadgeNumber(),
+        ci.getBirthDate(), ci.getCityName(), ci.getCommentDescription(), ci.getEmailAddress(),
+        ci.getEmployerName(), ci.getEstablishedForCode(), ci.getFaxNumber(), ci.getFirstName(),
+        ci.getForeignAddressIndicatorVariable(), ci.getGenderCode(), ci.getId(), ci.getLastName(),
+        ci.getMaritalStatus(), ci.getMiddleInitialName(), ci.getNamePrefixDescription(),
+        ci.getPrimaryExtensionNumber(), ci.getPrimaryPhoneNo(), ci.getResidedOutOfStateIndicator(),
+        ci.getStateCode(), ci.getStreetName(), ci.getStreetNumber(), ci.getSuffixTitleDescription(),
+        ci.getZipNumber(), ci.getZipSuffixNumber());
+    final String expected = MAPPER.writeValueAsString((MAPPER.readValue(
+        fixture("fixtures/persistent/CollateralIndividual/valid/validWithSysCodes.json"),
+        CollateralIndividual.class)));
+
+    assertThat(MAPPER.writeValueAsString(persistent)).isEqualTo(expected);
+  }
+
 
   private CollateralIndividual validCollateralIndividual()
       throws JsonParseException, JsonMappingException, IOException {

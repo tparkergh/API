@@ -11,6 +11,9 @@ import javax.persistence.Table;
 
 import org.hibernate.annotations.Type;
 
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+
+import gov.ca.cwds.data.CmsSystemCodeDeserializer;
 import gov.ca.cwds.data.SystemCodeSerializer;
 import gov.ca.cwds.rest.api.ApiException;
 import gov.ca.cwds.rest.api.domain.DomainChef;
@@ -33,6 +36,7 @@ public class CrossReport extends CmsPersistentObject {
   private String thirdId;
 
   @SystemCodeSerializer(logical = true, description = true)
+  @JsonDeserialize(using = CmsSystemCodeDeserializer.class)
   @Type(type = "short")
   @Column(name = "XRPT_MTC")
   private Short crossReportMethodType;
@@ -120,7 +124,7 @@ public class CrossReport extends CmsPersistentObject {
    * @param staffPersonId - String staffPersonId
    * @param description - String description
    * @param recipientName - String recipientName
-   * @param outstateLawEnforcementAddr - String lawEnforcementId
+   * @param outStateLawEnforcementAddr - String lawEnforcementId
    * @param countySpecificCode - String countySpecificCode
    * @param lawEnforcementIndicator - String lawEnforcementIndicator
    * @param outStateLawEnforcementIndicator - String outStateLawEnforcementIndicator
@@ -131,7 +135,7 @@ public class CrossReport extends CmsPersistentObject {
       String recipientBadgeNumber, Integer recipientPhoneExtensionNumber,
       BigDecimal recipientPhoneNumber, Date informDate, String recipientPositionTitleDesc,
       String referenceNumber, String lawEnforcementId, String staffPersonId, String description,
-      String recipientName, String outstateLawEnforcementAddr, String countySpecificCode,
+      String recipientName, String outStateLawEnforcementAddr, String countySpecificCode,
       String lawEnforcementIndicator, String outStateLawEnforcementIndicator,
       String satisfyCrossReportIndicator) {
     super();
@@ -151,7 +155,7 @@ public class CrossReport extends CmsPersistentObject {
     this.staffPersonId = staffPersonId;
     this.description = description;
     this.recipientName = recipientName;
-    this.outStateLawEnforcementAddr = outstateLawEnforcementAddr;
+    this.outStateLawEnforcementAddr = outStateLawEnforcementAddr;
     this.countySpecificCode = countySpecificCode;
     this.lawEnforcementIndicator = lawEnforcementIndicator;
     this.outStateLawEnforcementIndicator = outStateLawEnforcementIndicator;
@@ -188,7 +192,7 @@ public class CrossReport extends CmsPersistentObject {
       this.staffPersonId = crossReport.getStaffPersonId();
       this.description = crossReport.getDescription();
       this.recipientName = crossReport.getRecipientName();
-      this.outStateLawEnforcementAddr = crossReport.getOutstateLawEnforcementAddr();
+      this.outStateLawEnforcementAddr = crossReport.getOutStateLawEnforcementAddr();
       this.countySpecificCode = crossReport.getCountySpecificCode();
       this.lawEnforcementIndicator =
           DomainChef.cookBoolean(crossReport.getLawEnforcementIndicator());
@@ -324,9 +328,9 @@ public class CrossReport extends CmsPersistentObject {
   }
 
   /**
-   * @return the outstateLawEnforcementAddr
+   * @return the outStateLawEnforcementAddr
    */
-  public String getOutstateLawEnforcementAddr() {
+  public String getOutStateLawEnforcementAddr() {
     return outStateLawEnforcementAddr;
   }
 
