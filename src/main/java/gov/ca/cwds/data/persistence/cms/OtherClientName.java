@@ -19,10 +19,7 @@ import org.hibernate.annotations.Type;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
-<<<<<<< HEAD
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
-=======
->>>>>>> #137548119 - Translate system codes to text before loading into ES
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 
 import gov.ca.cwds.data.CmsSystemCodeDeserializer;
