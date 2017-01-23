@@ -95,7 +95,7 @@ public class CmsReferralService implements CrudsService {
         incomingCrossReport.getReferenceNumber(), referralId,
         incomingCrossReport.getLawEnforcementId(), incomingCrossReport.getStaffPersonId(),
         incomingCrossReport.getDescription(), incomingCrossReport.getRecipientName(),
-        incomingCrossReport.getOutstateLawEnforcementAddr(),
+        incomingCrossReport.getOutStateLawEnforcementAddr(),
         incomingCrossReport.getCountySpecificCode(),
         incomingCrossReport.getLawEnforcementIndicator(),
         incomingCrossReport.getOutStateLawEnforcementIndicator(),
