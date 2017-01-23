@@ -6,7 +6,6 @@ import javax.validation.Valid;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
-import javax.ws.rs.HeaderParam;
 import javax.ws.rs.POST;
 import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
@@ -69,7 +68,8 @@ public class ParticipantResource {
   @Path("/{id}")
   @ApiResponses(value = {@ApiResponse(code = 404, message = "Not found"),
       @ApiResponse(code = 406, message = "Accept Header not supported")})
-  @ApiOperation(value = "Find participant by id", response = Participant.class, code = 200)
+  @ApiOperation(hidden = true, value = "Find participant by id - not currently implemented ",
+      code = HttpStatus.SC_OK, response = Object.class)
   public Response get(@PathParam("id") @ApiParam(required = true, name = "id",
       value = "The id of the Participant to find") long id) {
     return Response.status(Response.Status.NOT_IMPLEMENTED).entity(null).build();
@@ -117,8 +117,6 @@ public class ParticipantResource {
    * 
    * @param id the id
    * @param participant {@link Participant}
-   * @param acceptHeader The accept header.
-   *
    * @return The {@link Response}
    */
   @UnitOfWork(value = "ns")
@@ -128,13 +126,12 @@ public class ParticipantResource {
       @ApiResponse(code = 406, message = "Accept Header not supported"),
       @ApiResponse(code = 422, message = "Unable to validate Participant")})
   @Consumes(value = MediaType.APPLICATION_JSON)
-  @ApiOperation(hidden = true, value = "Update Participant", code = HttpStatus.SC_NO_CONTENT,
-      response = Object.class)
+  @ApiOperation(hidden = true, value = "Update Participant - not currently implemented",
+      code = HttpStatus.SC_OK, response = Object.class)
   public Response update(
       @PathParam("id") @ApiParam(required = true, name = "id",
           value = "The id of the Participant to update") long id,
-      @ApiParam(hidden = true) Participant participant,
-      @HeaderParam("Accept") @ApiParam(hidden = true) String acceptHeader) {
+      @ApiParam(hidden = true) Participant participant) {
     return Response.status(Response.Status.NOT_IMPLEMENTED).entity(null).build();
   }
 

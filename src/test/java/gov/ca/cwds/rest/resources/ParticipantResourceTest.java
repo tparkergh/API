@@ -129,8 +129,15 @@ public class ParticipantResourceTest implements ResourceTestTemplate {
   public void testPost501NotImplemented() throws Exception {}
 
   @Override
+  @Test
   public void testDelete200ResourceSuccess() throws Exception {
-    // TODO Auto-generated method stub
+    Participant participant =
+        new Participant(1, 1, "Marge", "Simpson", "Female", "2017-01-23", "111223333");
+
+    int status =
+        inMemoryResource.client().target(ROOT_RESOURCE).request().accept(MediaType.APPLICATION_JSON)
+            .post(Entity.entity(participant, MediaType.APPLICATION_JSON)).getStatus();
+    assertThat(status, is(204));
 
   }
 

@@ -321,6 +321,7 @@ public class ClientTest implements PersistentTestTemplate {
     return validDomainClient;
   }
 
+  @SuppressWarnings("javadoc")
   @Test
   public void testSerializeAndDeserialize() throws Exception {
     final Client tgt = validBean();
@@ -340,25 +341,20 @@ public class ClientTest implements PersistentTestTemplate {
     assertThat(actual, is(equalTo(validBean())));
   }
 
-  /*
-   * Constructor test
-   */
-  @Test
-  public void emtpyConstructorIsNotNull() throws Exception {
-    assertThat(Client.class.newInstance(), is(notNullValue()));
-  }
-
+  @SuppressWarnings("javadoc")
   @Test
   public void type() throws Exception {
     assertThat(Client.class, notNullValue());
   }
 
+  @SuppressWarnings("javadoc")
   @Test
   public void instantiation() throws Exception {
     final Client target = validBean();
     assertThat(target, notNullValue());
   }
 
+  @SuppressWarnings("javadoc")
   @Test
   public void getPrimaryKey_Args$() throws Exception {
     final Client target = validBean();
