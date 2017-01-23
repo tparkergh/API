@@ -1,10 +1,8 @@
 package gov.ca.cwds.inject;
 
 import com.google.inject.AbstractModule;
-import com.google.inject.Scopes;
 
 import gov.ca.cwds.data.CmsSystemCodeSerializer;
-import gov.ca.cwds.data.SysCodeSerializerInjector;
 import gov.ca.cwds.data.persistence.cms.CmsSystemCodeCacheService;
 import gov.ca.cwds.data.persistence.cms.ISystemCodeCache;
 import gov.ca.cwds.rest.services.AddressService;
@@ -56,9 +54,8 @@ public class ServicesModule extends AbstractModule {
     bind(CrossReportService.class);
 
     // Register CMS system code translator.
-    bind(ISystemCodeCache.class).to(CmsSystemCodeCacheService.class).in(Scopes.SINGLETON);
-    bind(CmsSystemCodeSerializer.class).in(Scopes.SINGLETON);
-    bind(SysCodeSerializerInjector.class).asEagerSingleton();
+    bind(ISystemCodeCache.class).to(CmsSystemCodeCacheService.class).asEagerSingleton();
+    bind(CmsSystemCodeSerializer.class).asEagerSingleton();
   }
 
 }
