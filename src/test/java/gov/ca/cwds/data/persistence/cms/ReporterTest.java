@@ -16,7 +16,6 @@ import gov.ca.cwds.rest.api.domain.DomainChef;
 
 /**
  * @author CWDS API Team
- *
  */
 public class ReporterTest implements PersistentTestTemplate {
   private final static DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
@@ -47,7 +46,6 @@ public class ReporterTest implements PersistentTestTemplate {
   private String lawEnforcementId = "";
   private Short zipSuffixNumber = 9;
   private String countySpecificCode = "19";
-
   private String lastUpdatedId = "0XA";
 
   /*
@@ -71,41 +69,37 @@ public class ReporterTest implements PersistentTestTemplate {
         suffixTitleDescription, zipcode, referralId, lawEnforcementId, zipSuffixNumber,
         countySpecificCode);
 
-    Reporter persistent = new Reporter(domain, lastUpdatedId);
+    Reporter pers = new Reporter(domain, lastUpdatedId);
 
-    assertThat(persistent.getReferralId(), is(equalTo(referralId)));
-    assertThat(persistent.getBadgeNumber(), is(equalTo(badgeNumber)));
-    assertThat(persistent.getCityName(), is(equalTo(cityName)));
-    assertThat(persistent.getColltrClientRptrReltnshpType(),
-        is(equalTo(colltrClientRptrReltnshpType)));
-    assertThat(persistent.getCommunicationMethodType(), is(equalTo(communicationMethodType)));
-    assertThat(persistent.getConfidentialWaiverIndicator(), is(equalTo("Y")));
-    assertThat(persistent.getDrmsMandatedRprtrFeedback(), is(equalTo(drmsMandatedRprtrFeedback)));
-    assertThat(persistent.getEmployerName(), is(equalTo(employerName)));
-    assertThat(persistent.getFeedbackDate(), is(equalTo(df.parse(feedbackDate))));
-    assertThat(persistent.getFeedbackRequiredIndicator(), is(equalTo("N")));
-    assertThat(persistent.getFirstName(), is(equalTo(firstName)));
-    assertThat(persistent.getLastName(), is(equalTo(lastName)));
-    assertThat(persistent.getMandatedReporterIndicator(), is(equalTo("Y")));
-    assertThat(persistent.getMessagePhoneExtensionNumber(),
-        is(equalTo(messagePhoneExtensionNumber)));
-    assertThat(persistent.getMessagePhoneNumber(), is(equalTo(messagePhoneNumber)));
-    assertThat(persistent.getMiddleInitialName(), is(equalTo(middleInitialName)));
-    assertThat(persistent.getNamePrefixDescription(), is(equalTo(namePrefixDescription)));
-    assertThat(persistent.getPrimaryPhoneNumber(), is(equalTo(primaryPhoneNumber)));
-    assertThat(persistent.getPrimaryPhoneExtensionNumber(),
-        is(equalTo(primaryPhoneExtensionNumber)));
-    assertThat(persistent.getStateCodeType(), is(equalTo(stateCodeType)));
-    assertThat(persistent.getStreetName(), is(equalTo(streetName)));
-    assertThat(persistent.getStreetNumber(), is(equalTo(streetNumber)));
-    assertThat(persistent.getSuffixTitleDescription(), is(equalTo(suffixTitleDescription)));
-    assertThat(persistent.getZipNumber(), is(equalTo(DomainChef.uncookZipcodeString(zipcode))));
-    assertThat(persistent.getLawEnforcementId(), is(equalTo(lawEnforcementId)));
-    assertThat(persistent.getZipSuffixNumber(), is(equalTo(zipSuffixNumber)));
-    assertThat(persistent.getCountySpecificCode(), is(equalTo(countySpecificCode)));
-    assertThat(persistent.getLastUpdatedId(), is(equalTo(lastUpdatedId)));
+    assertThat(pers.getReferralId(), is(equalTo(referralId)));
+    assertThat(pers.getBadgeNumber(), is(equalTo(badgeNumber)));
+    assertThat(pers.getCityName(), is(equalTo(cityName)));
+    assertThat(pers.getColltrClientRptrReltnshpType(), is(equalTo(colltrClientRptrReltnshpType)));
+    assertThat(pers.getCommunicationMethodType(), is(equalTo(communicationMethodType)));
+    assertThat(pers.getConfidentialWaiverIndicator(), is(equalTo("Y")));
+    assertThat(pers.getDrmsMandatedRprtrFeedback(), is(equalTo(drmsMandatedRprtrFeedback)));
+    assertThat(pers.getEmployerName(), is(equalTo(employerName)));
+    assertThat(pers.getFeedbackDate(), is(equalTo(df.parse(feedbackDate))));
+    assertThat(pers.getFeedbackRequiredIndicator(), is(equalTo("N")));
+    assertThat(pers.getFirstName(), is(equalTo(firstName)));
+    assertThat(pers.getLastName(), is(equalTo(lastName)));
+    assertThat(pers.getMandatedReporterIndicator(), is(equalTo("Y")));
+    assertThat(pers.getMessagePhoneExtensionNumber(), is(equalTo(messagePhoneExtensionNumber)));
+    assertThat(pers.getMessagePhoneNumber(), is(equalTo(messagePhoneNumber)));
+    assertThat(pers.getMiddleInitialName(), is(equalTo(middleInitialName)));
+    assertThat(pers.getNamePrefixDescription(), is(equalTo(namePrefixDescription)));
+    assertThat(pers.getPrimaryPhoneNumber(), is(equalTo(primaryPhoneNumber)));
+    assertThat(pers.getPrimaryPhoneExtensionNumber(), is(equalTo(primaryPhoneExtensionNumber)));
+    assertThat(pers.getStateCodeType(), is(equalTo(stateCodeType)));
+    assertThat(pers.getStreetName(), is(equalTo(streetName)));
+    assertThat(pers.getStreetNumber(), is(equalTo(streetNumber)));
+    assertThat(pers.getSuffixTitleDescription(), is(equalTo(suffixTitleDescription)));
+    assertThat(pers.getZipNumber(), is(equalTo(DomainChef.uncookZipcodeString(zipcode))));
+    assertThat(pers.getLawEnforcementId(), is(equalTo(lawEnforcementId)));
+    assertThat(pers.getZipSuffixNumber(), is(equalTo(zipSuffixNumber)));
+    assertThat(pers.getCountySpecificCode(), is(equalTo(countySpecificCode)));
+    assertThat(pers.getLastUpdatedId(), is(equalTo(lastUpdatedId)));
   }
-
 
   @Override
   @Test
@@ -159,7 +153,6 @@ public class ReporterTest implements PersistentTestTemplate {
   @Override
   public void testEqualsHashCodeWorks() throws Exception {
     // TODO Auto-generated method stub
-
   }
 
 }

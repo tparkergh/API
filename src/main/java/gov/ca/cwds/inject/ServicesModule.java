@@ -1,7 +1,10 @@
 package gov.ca.cwds.inject;
 
 import com.google.inject.AbstractModule;
+import com.google.inject.Scopes;
 
+import gov.ca.cwds.data.CmsSystemCodeSerializer;
+import gov.ca.cwds.data.GuiceSerializerInjector;
 import gov.ca.cwds.data.persistence.cms.CmsSystemCodeCacheService;
 import gov.ca.cwds.data.persistence.cms.ISystemCodeCache;
 import gov.ca.cwds.rest.services.AddressService;
@@ -21,7 +24,7 @@ import gov.ca.cwds.rest.services.es.AutoCompletePersonService;
 
 /**
  * Identifies all CWDS API business layer (aka, service) classes available for dependency injection
- * by Guice.
+ * (aka, DI) by Google Guice.
  * 
  * @author CWDS API Team
  */
@@ -53,7 +56,9 @@ public class ServicesModule extends AbstractModule {
     bind(CrossReportService.class);
 
     // Register CMS system code translator.
-    bind(ISystemCodeCache.class).to(CmsSystemCodeCacheService.class);
+    bind(ISystemCodeCache.class).to(CmsSystemCodeCacheService.class).in(Scopes.SINGLETON);
+    bind(CmsSystemCodeSerializer.class).in(Scopes.SINGLETON);
+    bind(GuiceSerializerInjector.class);
   }
 
 }

@@ -19,7 +19,11 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonPropertyOrder;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 
+import gov.ca.cwds.data.CmsSystemCodeDeserializer;
 import gov.ca.cwds.data.IAddressAware;
 import gov.ca.cwds.data.IMultiplePhonesAware;
 import gov.ca.cwds.data.IPersonAware;
@@ -42,6 +46,8 @@ import gov.ca.cwds.rest.api.domain.DomainChef;
 @SuppressWarnings("serial")
 @Entity
 @Table(name = "REPTR_T")
+@JsonPropertyOrder(alphabetic = true)
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class Reporter extends CmsPersistentObject
     implements IPersonAware, IAddressAware, IMultiplePhonesAware {
 
@@ -59,11 +65,13 @@ public class Reporter extends CmsPersistentObject
   private String cityName;
 
   @SystemCodeSerializer(logical = true, description = true)
+  @JsonDeserialize(using = CmsSystemCodeDeserializer.class)
   @Type(type = "short")
   @Column(name = "COL_RELC")
   private Short colltrClientRptrReltnshpType;
 
   @SystemCodeSerializer(logical = true, description = true)
+  @JsonDeserialize(using = CmsSystemCodeDeserializer.class)
   @Type(type = "short")
   @Column(name = "CMM_MTHC")
   private Short communicationMethodType;
@@ -115,6 +123,7 @@ public class Reporter extends CmsPersistentObject
   private Integer primaryPhoneExtensionNumber;
 
   @SystemCodeSerializer(logical = true, description = true)
+  @JsonDeserialize(using = CmsSystemCodeDeserializer.class)
   @Type(type = "short")
   @Column(name = "STATE_C")
   private Short stateCodeType;

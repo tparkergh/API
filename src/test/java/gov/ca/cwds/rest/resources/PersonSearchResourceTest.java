@@ -59,6 +59,16 @@ public class PersonSearchResourceTest {
   public static final ResourceTestRule backedinMemoryResource = ResourceTestRule.builder()
       .addResource(new PersonSearchResource(backedResourceDelegate)).build();
 
+  @Test
+  public void testShowAllPersonsEmpty() throws Exception {
+    ESPerson[] hits = new ESPerson[0];
+    when(personService.fetchAllPersons()).thenReturn(hits);
+    javax.ws.rs.core.Response response = backedinMemoryResource.client().target(FOUND_RESOURCE)
+        .request().accept(MediaType.APPLICATION_JSON).post(null);
+    ESPerson[] result = response.readEntity(ESPerson[].class);
+    assertThat(result.length, is(0));
+  }
+
   /*
    * 404 test for unimplemented methods
    */
