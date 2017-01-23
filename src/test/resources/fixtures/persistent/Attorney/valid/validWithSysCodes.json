@@ -1,0 +1,45 @@
+
+{
+	"archiveAssociationIndicator": "N",
+	"businessName": "businessName",
+	"cityName": "Sacramento",
+	"cwsAttorneyIndicator": "Y",
+	"emailAddress": "lance@email.com",
+	"endDate": 934675200000,
+	"faxNumber": 9998888,
+	"firstName": "Lance",
+	"governmentEntityType": {
+		"sys_id": 1087,
+		"short_description": "Madera",
+		"logical_id": "20"
+	},
+	"id": "OvViVUs0OK",
+	"languageType": {
+		"sys_id": 1274,
+		"short_description": "Spanish",
+		"logical_id": "01"
+	},
+	"lastName": "Johnson",
+	"lastUpdatedId": null,
+	"lastUpdatedTime": null,
+	"messagePhoneExtensionNumber": 987,
+	"messagePhoneNumber": 5051234567,
+	"middleInitialName": "M",
+	"middleName": "M",
+	"namePrefixDescription": "Mr",
+	"nameSuffix": null,
+	"positionTitleDescription": "Attorney",
+	"primaryKey": "OvViVUs0OK",
+	"primaryPhoneExtensionNumber": 876,
+	"primaryPhoneNumber": 50556789012,
+	"stateCodeType": {
+		"sys_id": 1828,
+		"short_description": "California",
+		"logical_id": "CA"
+	},
+	"streetName": "Second Street",
+	"streetNumber": "1033-A",
+	"suffixTitleDescription": "",
+	"zipNumber": 98791,
+	"zipSuffixNumber": null
+}

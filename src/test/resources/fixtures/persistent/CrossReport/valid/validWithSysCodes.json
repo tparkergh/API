@@ -1,0 +1,27 @@
+{
+   "referralId" : "1234567ABC",
+  "thirdId" : "ABC1234567",
+  "crossReportMethodType" : {
+    "sys_id" : 2095,
+    "short_description" : "Electronic Report",
+    "logical_id" : "0002"
+  },
+  "filedOutOfStateIndicator" : "N",
+  "governmentOrgCrossRptIndicatorVar" : "N",
+  "informTime" : 88909000,
+  "recipientBadgeNumber" : "AB123",
+  "recipientPhoneExtensionNumber" : 234,
+  "recipientPhoneNumber" : 1234567,
+  "informDate" : 1454227200000,
+  "recipientPositionTitleDesc" : "ABC23",
+  "referenceNumber" : "DE123",
+  "lawEnforcementId" : "1234567ABC",
+  "staffPersonId" : "q1p",
+  "description" : "ABC DESC",
+  "recipientName" : "JOHN",
+  "outStateLawEnforcementAddr" : "ABC STREET",
+  "countySpecificCode" : "AB",
+  "lawEnforcementIndicator" : "N",
+  "outStateLawEnforcementIndicator" : "N",
+  "satisfyCrossReportIndicator" : "N"
+}
