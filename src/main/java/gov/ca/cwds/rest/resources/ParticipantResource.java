@@ -76,6 +76,7 @@ public class ParticipantResource {
    * <strong>NOT IMPLEMENTED! REQUIRED BY {@link ResourceDelegate}.</strong>
    *
    */
+  @SuppressWarnings("javadoc")
   public Response delete(long id) {
     return Response.status(Response.Status.NOT_IMPLEMENTED).entity(null).build();
   }

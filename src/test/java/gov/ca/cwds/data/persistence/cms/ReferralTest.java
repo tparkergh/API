@@ -1,6 +1,7 @@
 package gov.ca.cwds.data.persistence.cms;
 
 import static io.dropwizard.testing.FixtureHelpers.fixture;
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.is;
@@ -9,7 +10,6 @@ import static org.hamcrest.Matchers.notNullValue;
 import java.io.IOException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
-import java.util.Date;
 
 import org.junit.Test;
 
@@ -19,7 +19,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import gov.ca.cwds.data.persistence.junit.template.PersistentTestTemplate;
 import gov.ca.cwds.rest.api.domain.DomainChef;
-import io.dropwizard.jackson.Jackson;
 
 /**
  * @author CWDS API Team
@@ -27,60 +26,13 @@ import io.dropwizard.jackson.Jackson;
  */
 public class ReferralTest implements PersistentTestTemplate {
 
-  private static final ObjectMapper MAPPER = Jackson.newObjectMapper();
+  private static final ObjectMapper MAPPER = SystemCodeTestHarness.MAPPER;
 
   private final static DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
   @SuppressWarnings("unused")
   private final static DateFormat tf = new SimpleDateFormat("yyyy-MM-dd-HH.mm.ss.SSS");
   private final static DateFormat timeOnlyFormat = new SimpleDateFormat("HH:mm:ss");
   private String id = "1234567ABC";
-  private String additionalInfoIncludedCode = "Y";
-  private String anonymousReporterIndicator = "Y";
-  private String applicationForPetitionIndicator = "N";
-  private String approvalNumber = "c";
-  private Short approvalStatusType = 122;
-  private String caretakersPerpetratorCode = "N";
-  private Date closureDate = DomainChef.uncookDateString("1991-06-06");
-  private Short communicationMethodType = 408;
-  private String currentLocationOfChildren = "child location";
-  private String drmsAllegationDescriptionDoc = "allegation desc";
-  private String drmsErReferralDoc = "g";
-  private String drmsInvestigationDoc = "h";
-  private String filedSuspectedChildAbuseReporttoLawEnforcementIndicator = "Y";
-  private String familyAwarenessIndicator = "N";
-  private Short govtEntityType = 1077;
-  private String legalDefinitionCode = "i";
-  private String legalRightsNoticeIndicator = "N";
-  private String limitedAccessCode = "j";
-  private Date mandatedCrossReportReceivedDate = DomainChef.uncookDateString("1991-06-06");
-  private String referralName = "referral name";
-  private String openAdequateCaseCode = "l";
-  private Date receivedDate = DomainChef.uncookDateString("1991-06-06");
-  private Date receivedTime = DomainChef.uncookTimeString("14:46:59");
-  private Short referralResponseType = 4;
-  private Short referredToResourceType = 5;
-  private Date responseDeterminationDate = DomainChef.uncookDateString("1991-06-06");
-  private Date responseDeterminationTime = DomainChef.uncookDateString("1991-06-06");
-  private String responseRationaleText = "response rational";
-  private String screenerNoteText = "screener notes";
-  private String specificsIncludedCode = "o";
-  private String sufficientInformationCode = "p";
-  private String unfoundedSeriesCode = "q";
-  private String linkToPrimaryReferralId = "r";
-  private String allegesAbuseOccurredAtAddressId = "s";
-  private String firstResponseDeterminedByStaffPersonId = "t";
-  private String primaryContactStaffPersonId = "u";
-  private String countySpecificCode = "v";
-  private String specialProjectReferralIndicator = "Y";
-  private String zippyCreatedIndicator = "N";
-  private String homelessIndicator = "Y";
-  private String familyRefusedServicesIndicator = "N";
-  private Date firstEvaluatedOutApprovalDate = DomainChef.uncookDateString("1991-06-06");
-  private String responsibleAgencyCode = "w";
-  private Short limitedAccessGovtAgencyType = 6;
-  private Date limitedAccessDate = DomainChef.uncookDateString("1991-06-06");
-  private String limitedAccessDesc = "x";
-  private Date originalClosureDate = DomainChef.uncookDateString("1991-06-06");
   private String lastUpdatedId = "0X5";
 
   @Override
@@ -202,45 +154,137 @@ public class ReferralTest implements PersistentTestTemplate {
   }
 
   @Override
-  @SuppressWarnings("javadoc")
   @Test
   public void testPersistentConstructor() throws Exception {
 
-    Referral pr = new Referral(id, additionalInfoIncludedCode, anonymousReporterIndicator,
-        applicationForPetitionIndicator, approvalNumber, approvalStatusType,
-        caretakersPerpetratorCode, closureDate, communicationMethodType, currentLocationOfChildren,
-        drmsAllegationDescriptionDoc, drmsErReferralDoc, drmsInvestigationDoc,
-        filedSuspectedChildAbuseReporttoLawEnforcementIndicator, familyAwarenessIndicator,
-        govtEntityType, legalDefinitionCode, legalRightsNoticeIndicator, limitedAccessCode,
-        mandatedCrossReportReceivedDate, referralName, openAdequateCaseCode, receivedDate,
-        receivedTime, referralResponseType, referredToResourceType, responseDeterminationDate,
-        responseDeterminationTime, responseRationaleText, screenerNoteText, specificsIncludedCode,
-        sufficientInformationCode, unfoundedSeriesCode, linkToPrimaryReferralId,
-        allegesAbuseOccurredAtAddressId, firstResponseDeterminedByStaffPersonId,
-        primaryContactStaffPersonId, countySpecificCode, specialProjectReferralIndicator,
-        zippyCreatedIndicator, homelessIndicator, familyRefusedServicesIndicator,
-        firstEvaluatedOutApprovalDate, responsibleAgencyCode, limitedAccessGovtAgencyType,
-        limitedAccessDate, limitedAccessDesc, originalClosureDate);
+    Referral vr = validReferral();
 
-    assertThat(pr.getId(), is(equalTo(id)));
-    assertThat(pr.getAdditionalInfoIncludedCode(), is(equalTo(additionalInfoIncludedCode)));
-    assertThat(pr.getAnonymousReporterIndicator(), is(equalTo(anonymousReporterIndicator)));
+    Referral pr = new Referral(vr.getId(), vr.getAdditionalInfoIncludedCode(),
+        vr.getAnonymousReporterIndicator(), vr.getApplicationForPetitionIndicator(),
+        vr.getApprovalNumber(), vr.getApprovalStatusType(), vr.getCaretakersPerpetratorCode(),
+        vr.getClosureDate(), vr.getCommunicationMethodType(), vr.getCurrentLocationOfChildren(),
+        vr.getDrmsAllegationDescriptionDoc(), vr.getDrmsErReferralDoc(),
+        vr.getDrmsInvestigationDoc(),
+        vr.getFiledSuspectedChildAbuseReporttoLawEnforcementIndicator(),
+        vr.getFamilyAwarenessIndicator(), vr.getGovtEntityType(), vr.getLegalDefinitionCode(),
+        vr.getLegalRightsNoticeIndicator(), vr.getLimitedAccessCode(),
+        vr.getMandatedCrossReportReceivedDate(), vr.getReferralName(), vr.getOpenAdequateCaseCode(),
+        vr.getReceivedDate(), vr.getReceivedTime(), vr.getReferralResponseType(),
+        vr.getReferredToResourceType(), vr.getResponseDeterminationDate(),
+        vr.getResponseDeterminationTime(), vr.getResponseRationaleText(), vr.getScreenerNoteText(),
+        vr.getSpecificsIncludedCode(), vr.getSufficientInformationCode(),
+        vr.getUnfoundedSeriesCode(), vr.getLinkToPrimaryReferralId(),
+        vr.getAllegesAbuseOccurredAtAddressId(), vr.getFirstResponseDeterminedByStaffPersonId(),
+        vr.getPrimaryContactStaffPersonId(), vr.getCountySpecificCode(),
+        vr.getSpecialProjectReferralIndicator(), vr.getZippyCreatedIndicator(),
+        vr.getHomelessIndicator(), vr.getFamilyRefusedServicesIndicator(),
+        vr.getFirstEvaluatedOutApprovalDate(), vr.getResponsibleAgencyCode(),
+        vr.getLimitedAccessGovtAgencyType(), vr.getLimitedAccessDate(), vr.getLimitedAccessDesc(),
+        vr.getOriginalClosureDate());
+
+    assertThat(pr.getId(), is(equalTo(vr.getId())));
+    assertThat(pr.getAdditionalInfoIncludedCode(), is(equalTo(vr.getAdditionalInfoIncludedCode())));
+    assertThat(pr.getAnonymousReporterIndicator(), is(equalTo(vr.getAnonymousReporterIndicator())));
     assertThat(pr.getApplicationForPetitionIndicator(),
-        is(equalTo(applicationForPetitionIndicator)));
-    assertThat(pr.getApprovalNumber(), is(equalTo(approvalNumber)));
-    assertThat(pr.getApprovalStatusType(), is(equalTo(approvalStatusType)));
-    assertThat(pr.getCaretakersPerpetratorCode(), is(equalTo(caretakersPerpetratorCode)));
-    assertThat(pr.getClosureDate(), is(equalTo(closureDate)));
-    assertThat(pr.getCommunicationMethodType(), is(equalTo(communicationMethodType)));
-    assertThat(pr.getCurrentLocationOfChildren(), is(equalTo(currentLocationOfChildren)));
-    assertThat(pr.getDrmsAllegationDescriptionDoc(), is(equalTo(drmsAllegationDescriptionDoc)));
-    assertThat(pr.getDrmsErReferralDoc(), is(equalTo(drmsErReferralDoc)));
-    assertThat(pr.getDrmsInvestigationDoc(), is(equalTo(drmsInvestigationDoc)));
+        is(equalTo(vr.getApplicationForPetitionIndicator())));
+    assertThat(pr.getApprovalNumber(), is(equalTo(vr.getApprovalNumber())));
+    assertThat(pr.getApprovalStatusType(), is(equalTo(vr.getApprovalStatusType())));
+    assertThat(pr.getCaretakersPerpetratorCode(), is(equalTo(vr.getCaretakersPerpetratorCode())));
+    assertThat(pr.getClosureDate(), is(equalTo(vr.getClosureDate())));
+    assertThat(pr.getCommunicationMethodType(), is(equalTo(vr.getCommunicationMethodType())));
+    assertThat(pr.getCurrentLocationOfChildren(), is(equalTo(vr.getCurrentLocationOfChildren())));
+    assertThat(pr.getDrmsAllegationDescriptionDoc(),
+        is(equalTo(vr.getDrmsAllegationDescriptionDoc())));
+    assertThat(pr.getDrmsErReferralDoc(), is(equalTo(vr.getDrmsErReferralDoc())));
+    assertThat(pr.getDrmsInvestigationDoc(), is(equalTo(vr.getDrmsInvestigationDoc())));
     assertThat(pr.getFiledSuspectedChildAbuseReporttoLawEnforcementIndicator(),
-        is(equalTo(filedSuspectedChildAbuseReporttoLawEnforcementIndicator)));
-    assertThat(pr.getFamilyAwarenessIndicator(), is(equalTo(familyAwarenessIndicator)));
+        is(equalTo(pr.getFiledSuspectedChildAbuseReporttoLawEnforcementIndicator())));
+    assertThat(pr.getFamilyAwarenessIndicator(), is(equalTo(vr.getFamilyAwarenessIndicator())));
+    assertThat(pr.getGovtEntityType(), is(equalTo(vr.getGovtEntityType())));
+    assertThat(pr.getLegalDefinitionCode(), is(equalTo(vr.getLegalDefinitionCode())));
+    assertThat(pr.getLegalRightsNoticeIndicator(), is(equalTo(vr.getLegalRightsNoticeIndicator())));
+    assertThat(pr.getGovtEntityType(), is(equalTo(vr.getGovtEntityType())));
+    assertThat(pr.getLegalDefinitionCode(), is(equalTo(vr.getLegalDefinitionCode())));
+    assertThat(pr.getLegalRightsNoticeIndicator(), is(equalTo(vr.getLegalRightsNoticeIndicator())));
+    assertThat(pr.getLimitedAccessCode(), is(equalTo(vr.getLimitedAccessCode())));
+    assertThat(pr.getMandatedCrossReportReceivedDate(),
+        is(equalTo(vr.getMandatedCrossReportReceivedDate())));
+    assertThat(pr.getReferralName(), is(equalTo(vr.getReferralName())));
+    assertThat(pr.getOpenAdequateCaseCode(), is(equalTo(vr.getOpenAdequateCaseCode())));
+    assertThat(pr.getReceivedDate(), is(equalTo(vr.getReceivedDate())));
+    assertThat(pr.getReceivedTime(), is(equalTo(vr.getReceivedTime())));
+    assertThat(pr.getReferralResponseType(), is(equalTo(vr.getReferralResponseType())));
+    assertThat(pr.getReferredToResourceType(), is(equalTo(vr.getReferredToResourceType())));
+    assertThat(pr.getResponseDeterminationDate(), is(equalTo(vr.getResponseDeterminationDate())));
+    assertThat(pr.getResponseDeterminationTime(), is(equalTo(vr.getResponseDeterminationTime())));
+    assertThat(pr.getResponseRationaleText(), is(equalTo(vr.getResponseRationaleText())));
+    assertThat(pr.getScreenerNoteText(), is(equalTo(vr.getScreenerNoteText())));
+    assertThat(pr.getSpecificsIncludedCode(), is(equalTo(vr.getSpecificsIncludedCode())));
+    assertThat(pr.getSufficientInformationCode(), is(equalTo(vr.getSufficientInformationCode())));
+    assertThat(pr.getUnfoundedSeriesCode(), is(equalTo(vr.getUnfoundedSeriesCode())));
+    assertThat(pr.getLinkToPrimaryReferralId(), is(equalTo(vr.getLinkToPrimaryReferralId())));
+    assertThat(pr.getAllegesAbuseOccurredAtAddressId(),
+        is(equalTo(vr.getAllegesAbuseOccurredAtAddressId())));
+    assertThat(pr.getFirstResponseDeterminedByStaffPersonId(),
+        is(equalTo(vr.getFirstResponseDeterminedByStaffPersonId())));
+    assertThat(pr.getPrimaryContactStaffPersonId(),
+        is(equalTo(vr.getPrimaryContactStaffPersonId())));
+    assertThat(pr.getCountySpecificCode(), is(equalTo(vr.getCountySpecificCode())));
+    assertThat(pr.getSpecialProjectReferralIndicator(),
+        is(equalTo(vr.getSpecialProjectReferralIndicator())));
+    assertThat(pr.getZippyCreatedIndicator(), is(equalTo(vr.getZippyCreatedIndicator())));
+    assertThat(pr.getHomelessIndicator(), is(equalTo(vr.getHomelessIndicator())));
+    assertThat(pr.getFamilyRefusedServicesIndicator(),
+        is(equalTo(vr.getFamilyRefusedServicesIndicator())));
+    assertThat(pr.getFirstEvaluatedOutApprovalDate(),
+        is(equalTo(vr.getFirstEvaluatedOutApprovalDate())));
+    assertThat(pr.getResponsibleAgencyCode(), is(equalTo(vr.getResponsibleAgencyCode())));
+    assertThat(pr.getLimitedAccessGovtAgencyType(),
+        is(equalTo(vr.getLimitedAccessGovtAgencyType())));
+    assertThat(pr.getOriginalClosureDate(), is(equalTo(vr.getOriginalClosureDate())));
 
+  }
 
+  @SuppressWarnings("javadoc")
+  @Test
+  public void testSerializeAndDeserialize() throws Exception {
+
+    Referral vr = validReferral();
+
+    Referral pr = new Referral(vr.getId(), vr.getAdditionalInfoIncludedCode(),
+        vr.getAnonymousReporterIndicator(), vr.getApplicationForPetitionIndicator(),
+        vr.getApprovalNumber(), vr.getApprovalStatusType(), vr.getCaretakersPerpetratorCode(),
+        vr.getClosureDate(), vr.getCommunicationMethodType(), vr.getCurrentLocationOfChildren(),
+        vr.getDrmsAllegationDescriptionDoc(), vr.getDrmsErReferralDoc(),
+        vr.getDrmsInvestigationDoc(),
+        vr.getFiledSuspectedChildAbuseReporttoLawEnforcementIndicator(),
+        vr.getFamilyAwarenessIndicator(), vr.getGovtEntityType(), vr.getLegalDefinitionCode(),
+        vr.getLegalRightsNoticeIndicator(), vr.getLimitedAccessCode(),
+        vr.getMandatedCrossReportReceivedDate(), vr.getReferralName(), vr.getOpenAdequateCaseCode(),
+        vr.getReceivedDate(), vr.getReceivedTime(), vr.getReferralResponseType(),
+        vr.getReferredToResourceType(), vr.getResponseDeterminationDate(),
+        vr.getResponseDeterminationTime(), vr.getResponseRationaleText(), vr.getScreenerNoteText(),
+        vr.getSpecificsIncludedCode(), vr.getSufficientInformationCode(),
+        vr.getUnfoundedSeriesCode(), vr.getLinkToPrimaryReferralId(),
+        vr.getAllegesAbuseOccurredAtAddressId(), vr.getFirstResponseDeterminedByStaffPersonId(),
+        vr.getPrimaryContactStaffPersonId(), vr.getCountySpecificCode(),
+        vr.getSpecialProjectReferralIndicator(), vr.getZippyCreatedIndicator(),
+        vr.getHomelessIndicator(), vr.getFamilyRefusedServicesIndicator(),
+        vr.getFirstEvaluatedOutApprovalDate(), vr.getResponsibleAgencyCode(),
+        vr.getLimitedAccessGovtAgencyType(), vr.getLimitedAccessDate(), vr.getLimitedAccessDesc(),
+        vr.getOriginalClosureDate());
+
+    final String expected = MAPPER.writeValueAsString((MAPPER.readValue(
+        fixture("fixtures/persistent/Referral/valid/validWithSysCodes.json"), Referral.class)));
+
+    assertThat(MAPPER.writeValueAsString(pr)).isEqualTo(expected);
+
+  }
+
+  private Referral validReferral() throws JsonParseException, JsonMappingException, IOException {
+    Referral vr =
+        MAPPER.readValue(fixture("fixtures/persistent/Referral/valid/valid.json"), Referral.class);
+    return vr;
   }
 
   private gov.ca.cwds.rest.api.domain.cms.Referral validDomainReferral()

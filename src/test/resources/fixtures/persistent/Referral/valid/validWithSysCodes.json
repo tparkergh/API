@@ -1,0 +1,73 @@
+{
+  "additionalInfoIncludedCode" : "Y",
+  "allegesAbuseOccurredAtAddressId" : "",
+  "anonymousReporterIndicator" : "Y",
+  "applicationForPetitionIndicator" : "N",
+  "approvalNumber" : "APP1234",
+  "approvalStatusType" : {
+    "sys_id" : 122,
+    "short_description" : "Approved",
+    "logical_id" : "0005"
+  },
+  "caretakersPerpetratorCode" : "N",
+  "closureDate" : 676191600000,
+  "communicationMethodType" : {
+    "sys_id" : 408,
+    "short_description" : "In-Person",
+    "logical_id" : "0001"
+  },
+  "countySpecificCode" : "99",
+  "currentLocationOfChildren" : "child location",
+  "drmsAllegationDescriptionDoc" : "allegation desc",
+  "drmsErReferralDoc" : "referred document",
+  "drmsInvestigationDoc" : "investigation doc",
+  "familyAwarenessIndicator" : "N",
+  "familyRefusedServicesIndicator" : "N",
+  "filedSuspectedChildAbuseReporttoLawEnforcementIndicator" : "Y",
+  "firstEvaluatedOutApprovalDate" : 676191600000,
+  "firstResponseDeterminedByStaffPersonId" : "0XA",
+  "govtEntityType" : {
+    "sys_id" : 1077,
+    "short_description" : "Fresno",
+    "logical_id" : "10"
+  },
+  "homelessIndicator" : "Y",
+  "id" : "1234567ABC",
+  "lastUpdatedId" : null,
+  "lastUpdatedTime" : null,
+  "legalDefinitionCode" : "N",
+  "legalRightsNoticeIndicator" : "N",
+  "limitedAccessCode" : "N",
+  "limitedAccessDate" : 676191600000,
+  "limitedAccessDesc" : "",
+  "limitedAccessGovtAgencyType" : {
+    "sys_id" : 1111,
+    "short_description" : "Santa Cruz",
+    "logical_id" : "44"
+  },
+  "linkToPrimaryReferralId" : "",
+  "mandatedCrossReportReceivedDate" : 676191600000,
+  "openAdequateCaseCode" : "Y",
+  "originalClosureDate" : 676191600000,
+  "primaryContactStaffPersonId" : "0XA",
+  "primaryKey" : "1234567ABC",
+  "receivedDate" : 676191600000,
+  "receivedTime" : 82019000,
+  "referralName" : "referral name",
+  "referralResponseType" : 0,
+  "referredToResourceType" : {
+    "sys_id" : 1536,
+    "short_description" : "Homeless",
+    "logical_id" : "0017"
+  },
+  "responseDeterminationDate" : 676191600000,
+  "responseDeterminationTime" : 676191600000,
+  "responseRationaleText" : "response rational",
+  "responsibleAgencyCode" : "C",
+  "screenerNoteText" : "screener notes",
+  "specialProjectReferralIndicator" : "Y",
+  "specificsIncludedCode" : "N",
+  "sufficientInformationCode" : "N",
+  "unfoundedSeriesCode" : "N",
+  "zippyCreatedIndicator" : "N"
+}

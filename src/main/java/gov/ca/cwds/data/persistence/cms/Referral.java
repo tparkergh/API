@@ -10,6 +10,11 @@ import javax.persistence.Table;
 
 import org.hibernate.annotations.Type;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonPropertyOrder;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+
+import gov.ca.cwds.data.CmsSystemCodeDeserializer;
 import gov.ca.cwds.data.SystemCodeSerializer;
 import gov.ca.cwds.data.ns.NsPersistentObject;
 import gov.ca.cwds.rest.api.ApiException;
@@ -23,6 +28,8 @@ import gov.ca.cwds.rest.api.domain.DomainChef;
 @SuppressWarnings("serial")
 @Entity
 @Table(name = "REFERL_T")
+@JsonPropertyOrder(alphabetic = true)
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class Referral extends CmsPersistentObject {
 
   @Id
@@ -42,6 +49,7 @@ public class Referral extends CmsPersistentObject {
   private String approvalNumber;
 
   @SystemCodeSerializer(logical = true, description = true)
+  @JsonDeserialize(using = CmsSystemCodeDeserializer.class)
   @Type(type = "short")
   @Column(name = "APV_STC")
   private Short approvalStatusType;
@@ -54,6 +62,7 @@ public class Referral extends CmsPersistentObject {
   private Date closureDate;
 
   @SystemCodeSerializer(logical = true, description = true)
+  @JsonDeserialize(using = CmsSystemCodeDeserializer.class)
   @Type(type = "short")
   @Column(name = "CMM_MTHC")
   private Short communicationMethodType;
@@ -76,7 +85,8 @@ public class Referral extends CmsPersistentObject {
   @Column(name = "FMY_AW_IND")
   private String familyAwarenessIndicator;
 
-  @SystemCodeSerializer
+  @SystemCodeSerializer(logical = true, description = true)
+  @JsonDeserialize(using = CmsSystemCodeDeserializer.class)
   @Type(type = "short")
   @Column(name = "GVR_ENTC")
   private Short govtEntityType;
@@ -109,11 +119,13 @@ public class Referral extends CmsPersistentObject {
   private Date receivedTime;
 
   @SystemCodeSerializer(logical = true, description = true)
+  @JsonDeserialize(using = CmsSystemCodeDeserializer.class)
   @Type(type = "short")
   @Column(name = "RFR_RSPC")
   private Short referralResponseType;
 
   @SystemCodeSerializer(logical = true, description = true)
+  @JsonDeserialize(using = CmsSystemCodeDeserializer.class)
   @Type(type = "short")
   @Column(name = "RFRD_RSC")
   private Short referredToResourceType;
@@ -175,6 +187,8 @@ public class Referral extends CmsPersistentObject {
   @Column(name = "RSP_AGY_CD")
   private String responsibleAgencyCode;
 
+  @SystemCodeSerializer(logical = true, description = true)
+  @JsonDeserialize(using = CmsSystemCodeDeserializer.class)
   @Type(type = "short")
   @Column(name = "L_GVR_ENTC")
   private Short limitedAccessGovtAgencyType;

@@ -8,22 +8,17 @@ import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.notNullValue;
 
 import java.io.IOException;
-import java.math.BigDecimal;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 
 import org.junit.Test;
 
 import com.fasterxml.jackson.core.JsonParseException;
-import com.fasterxml.jackson.core.Version;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.module.SimpleModule;
 
-import gov.ca.cwds.data.CmsSystemCodeSerializer;
 import gov.ca.cwds.data.persistence.junit.template.PersistentTestTemplate;
 import gov.ca.cwds.rest.api.domain.DomainChef;
-import io.dropwizard.jackson.Jackson;
 import nl.jqno.equalsverifier.EqualsVerifier;
 import nl.jqno.equalsverifier.Warning;
 
@@ -34,43 +29,8 @@ import nl.jqno.equalsverifier.Warning;
 public class CrossReportTest implements PersistentTestTemplate {
   private final static DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
   private final static DateFormat tf = new SimpleDateFormat("HH:mm:ss");
-  private static final ObjectMapper MAPPER;
+  private static final ObjectMapper MAPPER = SystemCodeTestHarness.MAPPER;
 
-  /**
-   * Auto-magically translate CMS system codes when serializing JSON.
-   */
-  static {
-    // Inject system code cache.
-    ObjectMapper mapper = Jackson.newObjectMapper();
-    SimpleModule module = new SimpleModule("SystemCodeModule",
-        new Version(1, 0, 24, "alpha", "ca.gov.data.persistence.cms", "syscode"));
-    module.addSerializer(Short.class,
-        new CmsSystemCodeSerializer(new CmsSystemCodeCacheService(new SystemCodeDaoFileImpl())));
-    mapper.registerModule(module);
-    MAPPER = mapper;
-  }
-
-  private String thirdId = "ABC1234567";
-  private Short crossReportMethodType = 2095;
-  private String filedOutOfStateIndicator = "N";
-  private String governmentOrgCrossRptIndicatorVar = "N";
-  private String informTime = "16:41:49";
-  private String recipientBadgeNumber = "AB123";
-  private Integer recipientPhoneExtensionNumber = 234;
-  private BigDecimal recipientPhoneNumber = new BigDecimal(1234567);
-  private String informDate = "2016-01-31";
-  private String recipientPositionTitleDesc = "ABC23";
-  private String referenceNumber = "DE123";
-  private String referralId = "1234567ABC";
-  private String lawEnforcementId = "1234567ABC";
-  private String staffPersonId = "q1p";
-  private String description = "ABC DESC";
-  private String recipientName = "JOHN";
-  private String outStateLawEnforcementAddr = "ABC STREET";
-  private String countySpecificCode = "AB";
-  private String lawEnforcementIndicator = "N";
-  private String outStateLawEnforcementIndicator = "N";
-  private String satisfyCrossReportIndicator = "N";
   private String lastUpdatedId = "ABC";
 
 
@@ -110,7 +70,7 @@ public class CrossReportTest implements PersistentTestTemplate {
     assertThat(persistent.getRecipientPhoneExtensionNumber(),
         is(equalTo(domain.getRecipientPhoneExtensionNumber())));
     assertThat(persistent.getRecipientPhoneNumber(), is(equalTo(domain.getRecipientPhoneNumber())));
-    assertThat(persistent.getInformDate(), is(equalTo(df.parse(informDate))));
+    assertThat(persistent.getInformDate(), is(equalTo(df.parse(domain.getInformDate()))));
     assertThat(persistent.getRecipientPositionTitleDesc(),
         is(equalTo(domain.getRecipientPositionTitleDesc())));
     assertThat(persistent.getReferenceNumber(), is(equalTo(domain.getReferenceNumber())));
@@ -136,57 +96,77 @@ public class CrossReportTest implements PersistentTestTemplate {
   @Test
   public void testPersistentConstructor() throws Exception {
 
-    CrossReport persistent = new CrossReport(referralId, thirdId, crossReportMethodType,
-        filedOutOfStateIndicator, governmentOrgCrossRptIndicatorVar, tf.parse(informTime),
-        recipientBadgeNumber, recipientPhoneExtensionNumber, recipientPhoneNumber,
-        DomainChef.uncookDateString(informDate), recipientPositionTitleDesc, referenceNumber,
-        lawEnforcementId, staffPersonId, description, recipientName, outStateLawEnforcementAddr,
-        countySpecificCode, lawEnforcementIndicator, outStateLawEnforcementIndicator,
-        satisfyCrossReportIndicator);
+    CrossReport vcp = validCrossReport();
 
-    assertThat(persistent.getThirdId(), is(equalTo(thirdId)));
-    assertThat(persistent.getCrossReportMethodType(), is(equalTo(crossReportMethodType)));
-    assertThat(persistent.getFiledOutOfStateIndicator(), is(equalTo(filedOutOfStateIndicator)));
+    CrossReport persistent = new CrossReport(vcp.getReferralId(), vcp.getThirdId(),
+        vcp.getCrossReportMethodType(), vcp.getFiledOutOfStateIndicator(),
+        vcp.getGovernmentOrgCrossRptIndicatorVar(), vcp.getInformTime(),
+        vcp.getRecipientBadgeNumber(), vcp.getRecipientPhoneExtensionNumber(),
+        vcp.getRecipientPhoneNumber(), vcp.getInformDate(), vcp.getRecipientPositionTitleDesc(),
+        vcp.getReferenceNumber(), vcp.getLawEnforcementId(), vcp.getStaffPersonId(),
+        vcp.getDescription(), vcp.getRecipientName(), vcp.getOutStateLawEnforcementAddr(),
+        vcp.getCountySpecificCode(), vcp.getLawEnforcementIndicator(),
+        vcp.getOutStateLawEnforcementIndicator(), vcp.getSatisfyCrossReportIndicator());
+
+    assertThat(persistent.getThirdId(), is(equalTo(vcp.getThirdId())));
+    assertThat(persistent.getCrossReportMethodType(), is(equalTo(vcp.getCrossReportMethodType())));
+    assertThat(persistent.getFiledOutOfStateIndicator(),
+        is(equalTo(vcp.getFiledOutOfStateIndicator())));
     assertThat(persistent.getGovernmentOrgCrossRptIndicatorVar(),
-        is(equalTo(governmentOrgCrossRptIndicatorVar)));
-    assertThat(persistent.getInformTime(), is(equalTo(tf.parse(informTime))));
-    assertThat(persistent.getRecipientBadgeNumber(), is(equalTo(recipientBadgeNumber)));
+        is(equalTo(vcp.getGovernmentOrgCrossRptIndicatorVar())));
+    assertThat(persistent.getInformTime(), is(equalTo(vcp.getInformTime())));
+    assertThat(persistent.getRecipientBadgeNumber(), is(equalTo(vcp.getRecipientBadgeNumber())));
     assertThat(persistent.getRecipientPhoneExtensionNumber(),
-        is(equalTo(recipientPhoneExtensionNumber)));
-    assertThat(persistent.getRecipientPhoneNumber(), is(equalTo(recipientPhoneNumber)));
-    assertThat(persistent.getInformDate(), is(equalTo(df.parse(informDate))));
-    assertThat(persistent.getRecipientPositionTitleDesc(), is(equalTo(recipientPositionTitleDesc)));
-    assertThat(persistent.getReferenceNumber(), is(equalTo(referenceNumber)));
-    assertThat(persistent.getReferralId(), is(equalTo(referralId)));
-    assertThat(persistent.getLawEnforcementId(), is(equalTo(lawEnforcementId)));
-    assertThat(persistent.getStaffPersonId(), is(equalTo(staffPersonId)));
-    assertThat(persistent.getDescription(), is(equalTo(description)));
-    assertThat(persistent.getRecipientName(), is(equalTo(recipientName)));
-    assertThat(persistent.getOutStateLawEnforcementAddr(), is(equalTo(outStateLawEnforcementAddr)));
-    assertThat(persistent.getCountySpecificCode(), is(equalTo(countySpecificCode)));
-    assertThat(persistent.getLawEnforcementIndicator(), is(equalTo(lawEnforcementIndicator)));
+        is(equalTo(vcp.getRecipientPhoneExtensionNumber())));
+    assertThat(persistent.getRecipientPhoneNumber(), is(equalTo(vcp.getRecipientPhoneNumber())));
+    assertThat(persistent.getInformDate(), is(equalTo(vcp.getInformDate())));
+    assertThat(persistent.getRecipientPositionTitleDesc(),
+        is(equalTo(vcp.getRecipientPositionTitleDesc())));
+    assertThat(persistent.getReferenceNumber(), is(equalTo(vcp.getReferenceNumber())));
+    assertThat(persistent.getReferralId(), is(equalTo(vcp.getReferralId())));
+    assertThat(persistent.getLawEnforcementId(), is(equalTo(vcp.getLawEnforcementId())));
+    assertThat(persistent.getStaffPersonId(), is(equalTo(vcp.getStaffPersonId())));
+    assertThat(persistent.getDescription(), is(equalTo(vcp.getDescription())));
+    assertThat(persistent.getRecipientName(), is(equalTo(vcp.getRecipientName())));
+    assertThat(persistent.getOutStateLawEnforcementAddr(),
+        is(equalTo(vcp.getOutStateLawEnforcementAddr())));
+    assertThat(persistent.getCountySpecificCode(), is(equalTo(vcp.getCountySpecificCode())));
+    assertThat(persistent.getLawEnforcementIndicator(),
+        is(equalTo(vcp.getLawEnforcementIndicator())));
     assertThat(persistent.getOutStateLawEnforcementIndicator(),
-        is(equalTo(outStateLawEnforcementIndicator)));
+        is(equalTo(vcp.getOutStateLawEnforcementIndicator())));
     assertThat(persistent.getSatisfyCrossReportIndicator(),
-        is(equalTo(satisfyCrossReportIndicator)));
+        is(equalTo(vcp.getSatisfyCrossReportIndicator())));
   }
 
   @SuppressWarnings("javadoc")
   @Test
-  public void testSerializeJson() throws Exception {
-    CrossReport persistent = new CrossReport(referralId, thirdId, crossReportMethodType,
-        filedOutOfStateIndicator, governmentOrgCrossRptIndicatorVar, tf.parse(informTime),
-        recipientBadgeNumber, recipientPhoneExtensionNumber, recipientPhoneNumber,
-        DomainChef.uncookDateString(informDate), recipientPositionTitleDesc, referenceNumber,
-        lawEnforcementId, staffPersonId, description, recipientName, outStateLawEnforcementAddr,
-        countySpecificCode, lawEnforcementIndicator, outStateLawEnforcementIndicator,
-        satisfyCrossReportIndicator);
+  public void testSerializeAndDeserialize() throws Exception {
+
+    CrossReport vcp = validCrossReport();
+
+    CrossReport persistent = new CrossReport(vcp.getReferralId(), vcp.getThirdId(),
+        vcp.getCrossReportMethodType(), vcp.getFiledOutOfStateIndicator(),
+        vcp.getGovernmentOrgCrossRptIndicatorVar(), vcp.getInformTime(),
+        vcp.getRecipientBadgeNumber(), vcp.getRecipientPhoneExtensionNumber(),
+        vcp.getRecipientPhoneNumber(), vcp.getInformDate(), vcp.getRecipientPositionTitleDesc(),
+        vcp.getReferenceNumber(), vcp.getLawEnforcementId(), vcp.getStaffPersonId(),
+        vcp.getDescription(), vcp.getRecipientName(), vcp.getOutStateLawEnforcementAddr(),
+        vcp.getCountySpecificCode(), vcp.getLawEnforcementIndicator(),
+        vcp.getOutStateLawEnforcementIndicator(), vcp.getSatisfyCrossReportIndicator());
 
     final String expected = MAPPER.writeValueAsString(
         (MAPPER.readValue(fixture("fixtures/persistent/CrossReport/valid/validWithSysCodes.json"),
             CrossReport.class)));
 
     assertThat(MAPPER.writeValueAsString(persistent)).isEqualTo(expected);
+  }
+
+  private CrossReport validCrossReport()
+      throws JsonParseException, JsonMappingException, IOException {
+    CrossReport vcp = MAPPER.readValue(fixture("fixtures/persistent/CrossReport/valid/valid.json"),
+        CrossReport.class);
+    return vcp;
   }
 
   private gov.ca.cwds.rest.api.domain.cms.CrossReport validDomainCrossReport()

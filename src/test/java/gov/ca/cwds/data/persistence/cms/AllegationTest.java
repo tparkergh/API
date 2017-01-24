@@ -14,15 +14,11 @@ import java.text.SimpleDateFormat;
 import org.junit.Test;
 
 import com.fasterxml.jackson.core.JsonParseException;
-import com.fasterxml.jackson.core.Version;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.module.SimpleModule;
 
-import gov.ca.cwds.data.CmsSystemCodeSerializer;
 import gov.ca.cwds.data.persistence.junit.template.PersistentTestTemplate;
 import gov.ca.cwds.rest.api.domain.DomainChef;
-import io.dropwizard.jackson.Jackson;
 import nl.jqno.equalsverifier.EqualsVerifier;
 import nl.jqno.equalsverifier.Warning;
 
@@ -36,21 +32,7 @@ public class AllegationTest implements PersistentTestTemplate {
   private String id = "1234567ABC";
   private String lastUpdatedId = "0X5";
 
-  private static final ObjectMapper MAPPER;
-
-  /**
-   * Auto-magically translate CMS system codes when serializing JSON.
-   */
-  static {
-    // Inject system code cache.
-    ObjectMapper mapper = Jackson.newObjectMapper();
-    SimpleModule module = new SimpleModule("SystemCodeModule",
-        new Version(1, 0, 24, "alpha", "ca.gov.data.persistence.cms", "syscode"));
-    module.addSerializer(Short.class,
-        new CmsSystemCodeSerializer(new CmsSystemCodeCacheService(new SystemCodeDaoFileImpl())));
-    mapper.registerModule(module);
-    MAPPER = mapper;
-  }
+  private static final ObjectMapper MAPPER = SystemCodeTestHarness.MAPPER;
 
   /*
    * Constructor test
@@ -65,53 +47,43 @@ public class AllegationTest implements PersistentTestTemplate {
   @Test
   public void testPersistentConstructor() throws Exception {
 
-    gov.ca.cwds.rest.api.domain.cms.Allegation domain = validDomainAllegation();
+    Allegation vp = validAllegation();
 
     gov.ca.cwds.data.persistence.cms.Allegation persistent =
-        new gov.ca.cwds.data.persistence.cms.Allegation(id,
-            DomainChef.uncookDateString(domain.getAbuseEndDate()),
-            DomainChef.uncookDateString(domain.getAbuseStartDate()), domain.getAbuseFrequency(),
-            domain.getAbuseFrequencyPeriodCode(), domain.getAbuseLocationDescription(),
-            domain.getAllegationDispositionType(), domain.getAllegationType(),
-            domain.getDispositionDescription(),
-            DomainChef.uncookDateString(domain.getDispositionDate()),
-            DomainChef.cookBoolean(domain.getInjuryHarmDetailIndicator()),
-            domain.getNonProtectingParentCode(),
-            DomainChef.cookBoolean(domain.getStaffPersonAddedIndicator()),
-            domain.getVictimClientId(), domain.getPerpetratorClientId(), domain.getReferralId(),
-            domain.getCountySpecificCode(),
-            DomainChef.cookBoolean(domain.getZippyCreatedIndicator()),
-            domain.getPlacementFacilityType());
+        new gov.ca.cwds.data.persistence.cms.Allegation(id, vp.getAbuseEndDate(),
+            vp.getAbuseStartDate(), vp.getAbuseFrequency(), vp.getAbuseFrequencyPeriodCode(),
+            vp.getAbuseLocationDescription(), vp.getAllegationDispositionType(),
+            vp.getAllegationType(), vp.getDispositionDescription(), vp.getDispositionDate(),
+            vp.getInjuryHarmDetailIndicator(), vp.getNonProtectingParentCode(),
+            vp.getStaffPersonAddedIndicator(), vp.getVictimClientId(), vp.getPerpetratorClientId(),
+            vp.getReferralId(), vp.getCountySpecificCode(), vp.getZippyCreatedIndicator(),
+            vp.getPlacementFacilityType());
 
     assertThat(persistent.getId(), is(equalTo(id)));
-    assertThat(persistent.getAbuseEndDate(), is(equalTo(df.parse(domain.getAbuseEndDate()))));
-    assertThat(persistent.getAbuseStartDate(), is(equalTo(df.parse(domain.getAbuseStartDate()))));
-    assertThat(persistent.getAbuseFrequency(), is(equalTo(domain.getAbuseFrequency())));
+    assertThat(persistent.getAbuseEndDate(), is(equalTo(vp.getAbuseEndDate())));
+    assertThat(persistent.getAbuseStartDate(), is(equalTo(vp.getAbuseStartDate())));
+    assertThat(persistent.getAbuseFrequency(), is(equalTo(vp.getAbuseFrequency())));
     assertThat(persistent.getAbuseFrequencyPeriodCode(),
-        is(equalTo(domain.getAbuseFrequencyPeriodCode())));
+        is(equalTo(vp.getAbuseFrequencyPeriodCode())));
     assertThat(persistent.getAbuseLocationDescription(),
-        is(equalTo(domain.getAbuseLocationDescription())));
+        is(equalTo(vp.getAbuseLocationDescription())));
     assertThat(persistent.getAllegationDispositionType(),
-        is(equalTo(domain.getAllegationDispositionType())));
-    assertThat(persistent.getAllegationType(), is(equalTo(domain.getAllegationType())));
-    assertThat(persistent.getDispositionDescription(),
-        is(equalTo(domain.getDispositionDescription())));
-    assertThat(persistent.getDispositionDate(),
-        is(equalTo(DomainChef.uncookDateString((domain.getDispositionDate())))));
+        is(equalTo(vp.getAllegationDispositionType())));
+    assertThat(persistent.getAllegationType(), is(equalTo(vp.getAllegationType())));
+    assertThat(persistent.getDispositionDescription(), is(equalTo(vp.getDispositionDescription())));
+    assertThat(persistent.getDispositionDate(), is(equalTo((vp.getDispositionDate()))));
     assertThat(persistent.getInjuryHarmDetailIndicator(),
-        is(equalTo(DomainChef.cookBoolean(domain.getInjuryHarmDetailIndicator()))));
+        is(equalTo(vp.getInjuryHarmDetailIndicator())));
     assertThat(persistent.getNonProtectingParentCode(),
-        is(equalTo(domain.getNonProtectingParentCode())));
+        is(equalTo(vp.getNonProtectingParentCode())));
     assertThat(persistent.getStaffPersonAddedIndicator(),
-        is(equalTo(DomainChef.cookBoolean(domain.getStaffPersonAddedIndicator()))));
-    assertThat(persistent.getPerpetratorClientId(), is(equalTo(domain.getPerpetratorClientId())));
-    assertThat(persistent.getVictimClientId(), is(equalTo(domain.getVictimClientId())));
-    assertThat(persistent.getReferralId(), is(equalTo(domain.getReferralId())));
-    assertThat(persistent.getCountySpecificCode(), is(equalTo(domain.getCountySpecificCode())));
-    assertThat(persistent.getZippyCreatedIndicator(),
-        is(equalTo(DomainChef.cookBoolean(domain.getZippyCreatedIndicator()))));
-    assertThat(persistent.getPlacementFacilityType(),
-        is(equalTo(domain.getPlacementFacilityType())));
+        is(equalTo(vp.getStaffPersonAddedIndicator())));
+    assertThat(persistent.getPerpetratorClientId(), is(equalTo(vp.getPerpetratorClientId())));
+    assertThat(persistent.getVictimClientId(), is(equalTo(vp.getVictimClientId())));
+    assertThat(persistent.getReferralId(), is(equalTo(vp.getReferralId())));
+    assertThat(persistent.getCountySpecificCode(), is(equalTo(vp.getCountySpecificCode())));
+    assertThat(persistent.getZippyCreatedIndicator(), is(equalTo(vp.getZippyCreatedIndicator())));
+    assertThat(persistent.getPlacementFacilityType(), is(equalTo(vp.getPlacementFacilityType())));
   }
 
   @Override
@@ -164,26 +136,32 @@ public class AllegationTest implements PersistentTestTemplate {
 
   @SuppressWarnings("javadoc")
   @Test
-  public void testSerilizeJson() throws Exception {
-    gov.ca.cwds.rest.api.domain.cms.Allegation domain = validDomainAllegation();
+  public void testSerializeAndDeserialize() throws Exception {
+    Allegation vp = validAllegation();
 
-    Allegation persistent = new gov.ca.cwds.data.persistence.cms.Allegation(id,
-        DomainChef.uncookDateString(domain.getAbuseEndDate()),
-        DomainChef.uncookDateString(domain.getAbuseStartDate()), domain.getAbuseFrequency(),
-        domain.getAbuseFrequencyPeriodCode(), domain.getAbuseLocationDescription(),
-        domain.getAllegationDispositionType(), domain.getAllegationType(),
-        domain.getDispositionDescription(),
-        DomainChef.uncookDateString(domain.getDispositionDate()),
-        DomainChef.cookBoolean(domain.getInjuryHarmDetailIndicator()),
-        domain.getNonProtectingParentCode(),
-        DomainChef.cookBoolean(domain.getStaffPersonAddedIndicator()), domain.getVictimClientId(),
-        domain.getPerpetratorClientId(), domain.getReferralId(), domain.getCountySpecificCode(),
-        DomainChef.cookBoolean(domain.getZippyCreatedIndicator()),
-        domain.getPlacementFacilityType());
+    gov.ca.cwds.data.persistence.cms.Allegation persistent =
+        new gov.ca.cwds.data.persistence.cms.Allegation(id, vp.getAbuseEndDate(),
+            vp.getAbuseStartDate(), vp.getAbuseFrequency(), vp.getAbuseFrequencyPeriodCode(),
+            vp.getAbuseLocationDescription(), vp.getAllegationDispositionType(),
+            vp.getAllegationType(), vp.getDispositionDescription(), vp.getDispositionDate(),
+            vp.getInjuryHarmDetailIndicator(), vp.getNonProtectingParentCode(),
+            vp.getStaffPersonAddedIndicator(), vp.getVictimClientId(), vp.getPerpetratorClientId(),
+            vp.getReferralId(), vp.getCountySpecificCode(), vp.getZippyCreatedIndicator(),
+            vp.getPlacementFacilityType());
+
 
     final String expected = MAPPER.writeValueAsString((MAPPER.readValue(
         fixture("fixtures/persistent/Allegation/valid/validWithSysCodes.json"), Allegation.class)));
     assertThat(MAPPER.writeValueAsString(persistent)).isEqualTo(expected);
+  }
+
+  private Allegation validAllegation()
+      throws JsonParseException, JsonMappingException, IOException {
+
+    Allegation validAllegation = MAPPER
+        .readValue(fixture("fixtures/persistent/Allegation/valid/valid.json"), Allegation.class);
+    return validAllegation;
+
   }
 
   private gov.ca.cwds.rest.api.domain.cms.Allegation validDomainAllegation()
