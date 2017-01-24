@@ -47,14 +47,13 @@ public class ParticipantResourceTest implements ResourceTestTemplate {
 
 
   @Override
-
   public void testGetDelegatesToResourceDelegate() throws Exception {
 
   }
 
   @Override
   public void testGet201ResourceSuccess() throws Exception {
-    // TODO Auto-generated method stub
+    // get not implemented
 
   }
 
@@ -95,31 +94,30 @@ public class ParticipantResourceTest implements ResourceTestTemplate {
 
   @Override
   public void testPost400JSONError() throws Exception {
-    // TODO Auto-generated method stub
 
   }
 
   @Override
   public void testPost406NotSupportedError() throws Exception {
-    // TODO Auto-generated method stub
+
 
   }
 
   @Override
   public void testPost409AlreadyExistsError() throws Exception {
-    // TODO Auto-generated method stub
+
 
   }
 
   @Override
   public void testPost422ValidationError() throws Exception {
-    // TODO Auto-generated method stub
+
 
   }
 
   @Override
   public void testPost200ResourceSuccess() throws Exception {
-    // TODO Auto-generated method stub
+
 
   }
 
@@ -155,25 +153,25 @@ public class ParticipantResourceTest implements ResourceTestTemplate {
 
   @Override
   public void testDeleteDelegatesToResource() throws Exception {
-    // TODO Auto-generated method stub
+    // update not implemented
 
   }
 
   @Override
   public void testUpdateDelegatesToResourceDelegate() throws Exception {
-    // TODO Auto-generated method stub
+
 
   }
 
   @Override
   public void testUpdate200ResourceSuccess() throws Exception {
-    // TODO Auto-generated method stub
+
 
   }
 
   @Override
   public void testUpdate400JSONError() throws Exception {
-    // TODO Auto-generated method stub
+
 
   }
 
@@ -191,13 +189,12 @@ public class ParticipantResourceTest implements ResourceTestTemplate {
 
   @Override
   public void testUpdate406NotSupportedError() throws Exception {
-    // TODO Auto-generated method stub
+    // not implemented
 
   }
 
   @Override
   public void testUpdate422ValidationError() throws Exception {
-    // TODO Auto-generated method stub
 
   }
 
