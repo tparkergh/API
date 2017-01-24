@@ -66,17 +66,12 @@ public class ParticipantResource {
   }
 
   /**
-   * Delete an participant
+   * Delete an participant <strong>NOT IMPLEMENTED! REQUIRED BY {@link ResourceDelegate}.</strong>
    * 
    * @param id The id of the {@link Participant}
    * 
    * @return {@link Response}
    */
-  /**
-   * <strong>NOT IMPLEMENTED! REQUIRED BY {@link ResourceDelegate}.</strong>
-   *
-   */
-  @SuppressWarnings("javadoc")
   public Response delete(long id) {
     return Response.status(Response.Status.NOT_IMPLEMENTED).entity(null).build();
   }
