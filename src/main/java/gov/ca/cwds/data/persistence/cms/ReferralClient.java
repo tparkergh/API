@@ -12,6 +12,12 @@ import javax.persistence.Table;
 
 import org.hibernate.annotations.Type;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonPropertyOrder;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+
+import gov.ca.cwds.data.CmsSystemCodeDeserializer;
 import gov.ca.cwds.data.SystemCodeSerializer;
 import gov.ca.cwds.rest.api.ApiException;
 import gov.ca.cwds.rest.api.domain.DomainChef;
@@ -25,6 +31,8 @@ import gov.ca.cwds.rest.api.domain.DomainChef;
 @Entity
 @Table(name = "REFR_CLT")
 @IdClass(ReferralClient.PrimaryKey.class)
+@JsonPropertyOrder(alphabetic = true)
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class ReferralClient extends CmsPersistentObject {
 
   /**
@@ -125,11 +133,13 @@ public class ReferralClient extends CmsPersistentObject {
   private String approvalNumber;
 
   @SystemCodeSerializer(logical = true, description = true)
+  @JsonDeserialize(using = CmsSystemCodeDeserializer.class)
   @Type(type = "short")
   @Column(name = "APV_STC")
   private Short approvalStatusType;
 
   @SystemCodeSerializer(logical = true, description = true)
+  @JsonDeserialize(using = CmsSystemCodeDeserializer.class)
   @Type(type = "short")
   @Column(name = "DSP_RSNC")
   private Short dispositionClosureReasonType;
@@ -261,6 +271,7 @@ public class ReferralClient extends CmsPersistentObject {
    * @see gov.ca.cwds.data.persistence.PersistentObject#getPrimaryKey()
    */
   @Override
+  @JsonIgnore
   public Serializable getPrimaryKey() {
     return new PrimaryKey(this.getReferralId(), this.getClientId());
   }

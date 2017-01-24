@@ -1,6 +1,7 @@
 package gov.ca.cwds.data.persistence.cms;
 
 import static io.dropwizard.testing.FixtureHelpers.fixture;
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.is;
@@ -9,7 +10,6 @@ import static org.hamcrest.Matchers.notNullValue;
 import java.io.IOException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
-import java.util.Date;
 
 import org.apache.commons.lang3.StringUtils;
 import org.junit.Test;
@@ -20,7 +20,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import gov.ca.cwds.data.persistence.junit.template.PersistentTestTemplate;
 import gov.ca.cwds.rest.api.domain.DomainChef;
-import io.dropwizard.jackson.Jackson;
 import nl.jqno.equalsverifier.EqualsVerifier;
 import nl.jqno.equalsverifier.Warning;
 
@@ -30,25 +29,9 @@ import nl.jqno.equalsverifier.Warning;
  */
 public class ReferralClientTest implements PersistentTestTemplate {
 
-  private static final ObjectMapper MAPPER = Jackson.newObjectMapper();
+  private static final ObjectMapper MAPPER = SystemCodeTestHarness.MAPPER;
 
   private final static DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
-  private String referralId = "1234567ABC";
-  private String clientId = "ABC1234567";
-  private String approvalNumber = "A123";
-  private Short approvalStatusType = 123;
-  private Short dispositionClosureReasonType = 123;
-  private String dispositionCode = "A";
-  private Date dispositionDate = DomainChef.uncookDateString("2000-01-01");
-  private String selfReportedIndicator = "N";
-  private String staffPersonAddedIndicator = "N";
-  private String dispositionClosureDescription = "description abc";
-  private Short ageNumber = 12;
-  private String agePeriodCode = "M";
-  private String countySpecificCode = "AB";
-  private String mentalHealthIssuesIndicator = "N";
-  private String alcoholIndicator = "N";
-  private String drugIndicator = "N";
   private String lastUpdatedId = "0X5";
 
   @Override
@@ -72,29 +55,44 @@ public class ReferralClientTest implements PersistentTestTemplate {
   @Test
   public void testPersistentConstructor() throws Exception {
 
-    ReferralClient prc =
-        new ReferralClient(referralId, clientId, approvalNumber, approvalStatusType,
-            dispositionClosureReasonType, dispositionCode, dispositionDate, selfReportedIndicator,
-            staffPersonAddedIndicator, dispositionClosureDescription, ageNumber, agePeriodCode,
-            countySpecificCode, mentalHealthIssuesIndicator, alcoholIndicator, drugIndicator);
+    ReferralClient prc = validReferralClient();
 
-    assertThat(prc.getReferralId(), is(equalTo(referralId)));
-    assertThat(prc.getClientId(), is(equalTo(clientId)));
-    assertThat(prc.getApprovalNumber(), is(equalTo(approvalNumber)));
-    assertThat(prc.getApprovalStatusType(), is(equalTo(approvalStatusType)));
-    assertThat(prc.getDispositionClosureReasonType(), is(equalTo(dispositionClosureReasonType)));
-    assertThat(prc.getDispositionCode(), is(equalTo(dispositionCode)));
-    assertThat(prc.getDispositionDate(), is(equalTo(dispositionDate)));
-    assertThat(prc.getSelfReportedIndicator(), is(equalTo(selfReportedIndicator)));
-    assertThat(prc.getStaffPersonAddedIndicator(), is(equalTo(staffPersonAddedIndicator)));
+    ReferralClient pers = new ReferralClient(prc.getReferralId(), prc.getClientId(),
+        prc.getApprovalNumber(), prc.getApprovalStatusType(), prc.getDispositionClosureReasonType(),
+        prc.getDispositionCode(), prc.getDispositionDate(), prc.getSelfReportedIndicator(),
+        prc.getStaffPersonAddedIndicator(), prc.getDispositionClosureDescription(),
+        prc.getAgeNumber(), prc.getAgePeriodCode(), prc.getCountySpecificCode(),
+        prc.getMentalHealthIssuesIndicator(), prc.getAlcoholIndicator(), prc.getDrugIndicator());
 
+    assertThat(prc.getReferralId(), is(equalTo(pers.getReferralId())));
+    assertThat(prc.getClientId(), is(equalTo(pers.getClientId())));
+    assertThat(prc.getApprovalNumber(), is(equalTo(pers.getApprovalNumber())));
+    assertThat(prc.getApprovalStatusType(), is(equalTo(pers.getApprovalStatusType())));
+    assertThat(prc.getDispositionClosureReasonType(),
+        is(equalTo(pers.getDispositionClosureReasonType())));
+    assertThat(prc.getDispositionClosureDescription(),
+        is(equalTo(pers.getDispositionClosureDescription())));
+    assertThat(prc.getDispositionCode(), is(equalTo(pers.getDispositionCode())));
+    assertThat(prc.getDispositionDate(), is(equalTo(pers.getDispositionDate())));
+    assertThat(prc.getSelfReportedIndicator(), is(equalTo(pers.getSelfReportedIndicator())));
+    assertThat(prc.getStaffPersonAddedIndicator(),
+        is(equalTo(pers.getStaffPersonAddedIndicator())));
+    assertThat(prc.getDispositionClosureDescription(),
+        is(equalTo(pers.getDispositionClosureDescription())));
+    assertThat(prc.getAgeNumber(), is(equalTo(pers.getAgeNumber())));
+    assertThat(prc.getAgePeriodCode(), is(equalTo(pers.getAgePeriodCode())));
+    assertThat(prc.getCountySpecificCode(), is(equalTo(pers.getCountySpecificCode())));
+    assertThat(prc.getMentalHealthIssuesIndicator(),
+        is(equalTo(pers.getMentalHealthIssuesIndicator())));
+    assertThat(prc.getAlcoholIndicator(), is(equalTo(pers.getAlcoholIndicator())));
+    assertThat(prc.getDrugIndicator(), is(equalTo(pers.getDrugIndicator())));
   }
 
   @Override
   @Test
   public void testConstructorUsingDomain() throws Exception {
 
-    gov.ca.cwds.rest.api.domain.cms.ReferralClient domain = validReferralClient();
+    gov.ca.cwds.rest.api.domain.cms.ReferralClient domain = validDomainReferralClient();
 
     ReferralClient persistent = new ReferralClient(domain, lastUpdatedId);
 
@@ -124,7 +122,36 @@ public class ReferralClientTest implements PersistentTestTemplate {
     assertThat(persistent.getLastUpdatedId(), is(equalTo(lastUpdatedId)));
   }
 
-  private gov.ca.cwds.rest.api.domain.cms.ReferralClient validReferralClient()
+  @SuppressWarnings("javadoc")
+  @Test
+  public void testSerializeAndDeserialize() throws Exception {
+
+    ReferralClient prc = validReferralClient();
+
+    ReferralClient pers = new ReferralClient(prc.getReferralId(), prc.getClientId(),
+        prc.getApprovalNumber(), prc.getApprovalStatusType(), prc.getDispositionClosureReasonType(),
+        prc.getDispositionCode(), prc.getDispositionDate(), prc.getSelfReportedIndicator(),
+        prc.getStaffPersonAddedIndicator(), prc.getDispositionClosureDescription(),
+        prc.getAgeNumber(), prc.getAgePeriodCode(), prc.getCountySpecificCode(),
+        prc.getMentalHealthIssuesIndicator(), prc.getAlcoholIndicator(), prc.getDrugIndicator());
+
+    final String expected = MAPPER.writeValueAsString((MAPPER.readValue(
+        fixture("fixtures/persistent/ReferralClient/valid/validWithSysCodes.json"),
+        ReferralClient.class)));
+
+    assertThat(MAPPER.writeValueAsString(pers)).isEqualTo(expected);
+
+  }
+
+
+  private ReferralClient validReferralClient()
+      throws JsonParseException, JsonMappingException, IOException {
+    ReferralClient rc = MAPPER.readValue(
+        fixture("fixtures/persistent/ReferralClient/valid/valid.json"), ReferralClient.class);
+    return rc;
+  }
+
+  private gov.ca.cwds.rest.api.domain.cms.ReferralClient validDomainReferralClient()
       throws JsonParseException, JsonMappingException, IOException {
     gov.ca.cwds.rest.api.domain.cms.ReferralClient validDomainReferralClient =
         MAPPER.readValue(fixture("fixtures/domain/legacy/ReferralClient/valid/valid.json"),

@@ -1,0 +1,29 @@
+  
+  {
+  "ageNumber" : 12,
+  "agePeriodCode" : "M",
+  "alcoholIndicator" : "N",
+  "approvalNumber" : "A123",
+  "approvalStatusType" : {
+    "sys_id" : 123,
+    "short_description" : "Pending Higher Approval",
+    "logical_id" : "0006"
+  },
+  "clientId" : "ABC1234567",
+  "countySpecificCode" : "99",
+  "dispositionClosureDescription" : "description abc",
+  "dispositionClosureReasonType" : {
+    "sys_id" : 678,
+    "short_description" : "Child Unrelated to Family",
+    "logical_id" : "22"
+  },
+  "dispositionCode" : "A",
+  "dispositionDate" : 946713600000,
+  "drugIndicator" : "N",
+  "lastUpdatedId" : null,
+  "lastUpdatedTime" : null,
+  "mentalHealthIssuesIndicator" : "N",
+  "referralId" : "1234567ABC",
+  "selfReportedIndicator" : "N",
+  "staffPersonAddedIndicator" : "N"
+}

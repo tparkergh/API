@@ -1,0 +1,20 @@
+{
+  "ageNumber" : 12,
+  "agePeriodCode" : "M",
+  "alcoholIndicator" : "N",
+  "approvalNumber" : "A123",
+  "approvalStatusType" : 123,
+  "clientId" : "ABC1234567",
+  "countySpecificCode" : "99",
+  "dispositionClosureDescription" : "description abc",
+  "dispositionClosureReasonType" : 678, 
+  "dispositionCode" : "A",
+  "dispositionDate" : 946713600000,
+  "drugIndicator" : "N",
+  "lastUpdatedId" : "0X5",
+  "lastUpdatedTime" : 1485296740974,
+  "mentalHealthIssuesIndicator" : "N",
+  "referralId" : "1234567ABC",
+  "selfReportedIndicator" : "N",
+  "staffPersonAddedIndicator" : "N"
+  }
