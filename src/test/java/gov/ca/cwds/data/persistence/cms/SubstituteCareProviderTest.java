@@ -1,6 +1,7 @@
 package gov.ca.cwds.data.persistence.cms;
 
 import static io.dropwizard.testing.FixtureHelpers.fixture;
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.is;
@@ -14,17 +15,21 @@ import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import gov.ca.cwds.data.persistence.cms.SubstituteCareProvider;
-import io.dropwizard.jackson.Jackson;
+import gov.ca.cwds.data.persistence.junit.template.PersistentTestTemplate;
 import nl.jqno.equalsverifier.EqualsVerifier;
 import nl.jqno.equalsverifier.Warning;
 
-public class SubstituteCareProviderTest {
+/**
+ * @author CWDS API Team
+ *
+ */
+public class SubstituteCareProviderTest implements PersistentTestTemplate {
 
-  private static final ObjectMapper MAPPER = Jackson.newObjectMapper();
+  private static final ObjectMapper MAPPER = SystemCodeTestHarness.MAPPER;
 
   @Test
-  public void equalsHashCodeWork() {
+  @Override
+  public void testEqualsHashCodeWorks() throws Exception {
     EqualsVerifier.forClass(SubstituteCareProvider.class).suppress(Warning.NONFINAL_FIELDS)
         .verify();
   }
@@ -32,13 +37,15 @@ public class SubstituteCareProviderTest {
   /*
    * Constructor test
    */
+  @Override
   @Test
-  public void emtpyConstructorIsNotNull() throws Exception {
+  public void testEmptyConstructor() throws Exception {
     assertThat(SubstituteCareProvider.class.newInstance(), is(notNullValue()));
   }
 
   @Test
-  public void persistentConstructorTest() throws Exception {
+  @Override
+  public void testPersistentConstructor() throws Exception {
     SubstituteCareProvider vsucp = validSubstituteCareProvider();
 
     SubstituteCareProvider persistent =
@@ -106,14 +113,50 @@ public class SubstituteCareProviderTest {
 
   }
 
+  @Override
+  public void testConstructorUsingDomain() throws Exception {
+    // no domain class
+
+  }
+
+  @SuppressWarnings("javadoc")
+  @Test
+  public void testSerializeAndDeserialize() throws Exception {
+    SubstituteCareProvider vsucp = validSubstituteCareProvider();
+
+    SubstituteCareProvider persistent =
+        new SubstituteCareProvider(vsucp.getId(), vsucp.getAdditionalPhoneNumber(),
+            vsucp.getAdditionlPhoneExtensionNumber(), vsucp.getAnnualIncomeAmount(),
+            vsucp.getBirthDate(), vsucp.getCaDriverLicenseNumber(), vsucp.getCityName(),
+            vsucp.getEducationType(), vsucp.getEmailAddress(), vsucp.getEmployerName(),
+            vsucp.getEmploymentStatusType(), vsucp.getEthUnableToDetReasonCode(),
+            vsucp.getFirstName(), vsucp.getForeignAddressIndicatorVar(), vsucp.getGenderIndicator(),
+            vsucp.getHispUnableToDetReasonCode(), vsucp.getHispanicOriginCode(),
+            vsucp.getIndianTribeType(), vsucp.getLastName(), vsucp.getLisOwnershipIndicator(),
+            vsucp.getLisPersonId(), vsucp.getMaritalStatusType(), vsucp.getMiddleInitialName(),
+            vsucp.getNamePrefixDescription(), vsucp.getPassedBackgroundCheckCode(),
+            vsucp.getPrimaryIncomeType(), vsucp.getResidedOutOfStateIndicator(),
+            vsucp.getSecondaryIncomeType(), vsucp.getSocialSecurityNumber(),
+            vsucp.getStateCodeType(), vsucp.getStreetName(), vsucp.getStreetNumber(),
+            vsucp.getSuffixTitleDescription(), vsucp.getZipNumber(), vsucp.getZipSuffixNumber());
+
+    final String expected = MAPPER.writeValueAsString((MAPPER.readValue(
+        fixture("fixtures/persistent/SubstituteCareProvider/valid/validWithSysCodes.json"),
+        SubstituteCareProvider.class)));
+
+    assertThat(MAPPER.writeValueAsString(persistent)).isEqualTo(expected);
+  }
+
+
   private SubstituteCareProvider validSubstituteCareProvider()
       throws JsonParseException, JsonMappingException, IOException {
 
     SubstituteCareProvider validSubstituteCareProvider =
-        MAPPER.readValue(fixture("fixtures/domain/legacy/SubstituteCareProvider/valid/valid.json"),
+        MAPPER.readValue(fixture("fixtures/persistent/SubstituteCareProvider/valid/valid.json"),
             SubstituteCareProvider.class);
 
     return validSubstituteCareProvider;
 
   }
+
 }

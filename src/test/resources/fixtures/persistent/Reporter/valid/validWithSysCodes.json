@@ -1,0 +1,45 @@
+{
+  "badgeNumber" : "b1234",
+  "cityName" : "Fresno",
+  "colltrClientRptrReltnshpType" : {
+    "sys_id" : 1,
+    "short_description" : "Head",
+    "logical_id" : "10"
+  },
+  "communicationMethodType" : {
+    "sys_id" : 2,
+    "short_description" : "Face",
+    "logical_id" : "15"
+  },
+  "confidentialWaiverIndicator" : "Y",
+  "county" : "19",
+  "countySpecificCode" : "19",
+  "drmsMandatedRprtrFeedback" : "d",
+  "employerName" : "School District",
+  "feedbackDate" : 1480492800000,
+  "feedbackRequiredIndicator" : "N",
+  "firstName" : "first",
+  "lastName" : "last",
+  "lastUpdatedId" : null,
+  "lastUpdatedTime" : null,
+  "lawEnforcementId" : "",
+  "mandatedReporterIndicator" : "Y",
+  "messagePhoneExtensionNumber" : 3,
+  "messagePhoneNumber" : 4,
+  "middleInitialName" : "m",
+  "namePrefixDescription" : "",
+  "primaryKey" : "1234567ABC",
+  "primaryPhoneExtensionNumber" : 666,
+  "primaryPhoneNumber" : 5556666,
+  "referralId" : "1234567ABC",
+  "stateCodeType" : {
+    "sys_id" : 19,
+    "short_description" : "Buttocks",
+    "logical_id" : "215"
+  },
+  "streetName" : "first st",
+  "streetNumber" : "999",
+  "suffixTitleDescription" : "",
+  "zipNumber" : 95862,
+  "zipSuffixNumber" : 9
+}

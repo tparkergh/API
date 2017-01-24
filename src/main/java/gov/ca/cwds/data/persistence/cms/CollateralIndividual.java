@@ -13,6 +13,8 @@ import org.hibernate.annotations.NamedQueries;
 import org.hibernate.annotations.NamedQuery;
 import org.hibernate.annotations.Type;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 
 import gov.ca.cwds.data.CmsSystemCodeDeserializer;
@@ -32,6 +34,8 @@ import gov.ca.cwds.data.persistence.PersistentObject;
         query = "FROM CollateralIndividual WHERE lastUpdatedTime > :after")})
 @Entity
 @Table(name = "COLTRL_T")
+@JsonPropertyOrder(alphabetic = true)
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class CollateralIndividual extends CmsPersistentObject {
 
   private static final long serialVersionUID = 1L;

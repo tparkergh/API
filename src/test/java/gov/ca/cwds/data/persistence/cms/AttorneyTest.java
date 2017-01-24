@@ -14,15 +14,11 @@ import java.util.Date;
 import org.junit.Test;
 
 import com.fasterxml.jackson.core.JsonParseException;
-import com.fasterxml.jackson.core.Version;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.module.SimpleModule;
 
-import gov.ca.cwds.data.CmsSystemCodeSerializer;
 import gov.ca.cwds.data.IPhoneAware;
 import gov.ca.cwds.data.persistence.junit.template.PersistentTestTemplate;
-import io.dropwizard.jackson.Jackson;
 import nl.jqno.equalsverifier.EqualsVerifier;
 import nl.jqno.equalsverifier.Warning;
 
@@ -32,21 +28,8 @@ import nl.jqno.equalsverifier.Warning;
  */
 public class AttorneyTest implements PersistentTestTemplate {
 
-  private static final ObjectMapper MAPPER;
+  private static final ObjectMapper MAPPER = SystemCodeTestHarness.MAPPER;
 
-  /**
-   * Auto-magically translate CMS system codes when serializing JSON.
-   */
-  static {
-    // Inject system code cache.
-    ObjectMapper mapper = Jackson.newObjectMapper();
-    SimpleModule module = new SimpleModule("SystemCodeModule",
-        new Version(1, 0, 24, "alpha", "ca.gov.data.persistence.cms", "syscode"));
-    module.addSerializer(Short.class,
-        new CmsSystemCodeSerializer(new CmsSystemCodeCacheService(new SystemCodeDaoFileImpl())));
-    mapper.registerModule(module);
-    MAPPER = mapper;
-  }
 
   @Override
   @Test
@@ -128,22 +111,11 @@ public class AttorneyTest implements PersistentTestTemplate {
 
   }
 
+  @SuppressWarnings("javadoc")
   @Test
-  public void testSerializeJAndDeserialize() throws Exception {
+  public void testSerializeAndDeserialize() throws Exception {
     final Attorney vatrny = validAttorney();
 
-    // For pretty JSON, instead of a single line.
-    // ByteArrayOutputStream baos = new ByteArrayOutputStream();
-    // try (PrintStream ps = new PrintStream(baos)) {
-    // MAPPER.writerWithDefaultPrettyPrinter().writeValue(ps, att);
-    // } finally {
-    // }
-    //
-    // final String json = baos.toString(java.nio.charset.StandardCharsets.UTF_8.name());
-    // final Attorney actual = MAPPER.readValue(json, Attorney.class);
-    // assertThat(actual, is(equalTo(validAttorney())));
-    // MAPPER.writerWithDefaultPrettyPrinter().writeValue(System.out, persistent);
-    // System.out.println(MAPPER.writeValueAsString(persistent));
     Attorney persistent = new Attorney(vatrny.getArchiveAssociationIndicator(),
         vatrny.getBusinessName(), vatrny.getCityName(), vatrny.getCwsAttorneyIndicator(),
         vatrny.getEmailAddress(), vatrny.getEndDate(), vatrny.getFaxNumber(), vatrny.getFirstName(),
@@ -174,17 +146,20 @@ public class AttorneyTest implements PersistentTestTemplate {
 
   }
 
+  @SuppressWarnings("javadoc")
   @Test
   public void type() throws Exception {
     assertThat(Attorney.class, notNullValue());
   }
 
+  @SuppressWarnings("javadoc")
   @Test
   public void instantiation() throws Exception {
     final Attorney target = new Attorney();
     assertThat(target, notNullValue());
   }
 
+  @SuppressWarnings("javadoc")
   @Test
   public void getPrimaryKey_Args$() throws Exception {
     final Attorney target = validAttorney();
@@ -193,16 +168,19 @@ public class AttorneyTest implements PersistentTestTemplate {
     assertThat(actual, is(equalTo(expected)));
   }
 
+  @SuppressWarnings("javadoc")
   @Test
   public void hashCode_Args$() throws Exception {
     EqualsVerifier.forClass(Attorney.class).suppress(Warning.NONFINAL_FIELDS).verify();
   }
 
+  @SuppressWarnings("javadoc")
   @Test
   public void equals_Args$Object() throws Exception {
     EqualsVerifier.forClass(Attorney.class).suppress(Warning.NONFINAL_FIELDS).verify();
   }
 
+  @SuppressWarnings("javadoc")
   @Test
   public void getMiddleName_Args$() throws Exception {
     final Attorney target = validAttorney();
@@ -211,6 +189,7 @@ public class AttorneyTest implements PersistentTestTemplate {
     assertThat(actual, is(equalTo(expected)));
   }
 
+  @SuppressWarnings("javadoc")
   @Test
   public void getGender_Args$() throws Exception {
     final Attorney target = validAttorney();
@@ -219,6 +198,7 @@ public class AttorneyTest implements PersistentTestTemplate {
     assertThat(actual, is(equalTo(expected)));
   }
 
+  @SuppressWarnings("javadoc")
   @Test
   public void getBirthDate_Args$() throws Exception {
     Attorney target = validAttorney();
@@ -227,6 +207,7 @@ public class AttorneyTest implements PersistentTestTemplate {
     assertThat(actual, is(equalTo(expected)));
   }
 
+  @SuppressWarnings("javadoc")
   @Test
   public void getSsn_Args$() throws Exception {
     final Attorney target = validAttorney();
@@ -235,6 +216,7 @@ public class AttorneyTest implements PersistentTestTemplate {
     assertThat(actual, is(equalTo(expected)));
   }
 
+  @SuppressWarnings("javadoc")
   @Test
   public void getNameSuffix_Args$() throws Exception {
     final Attorney target = validAttorney();
@@ -243,6 +225,7 @@ public class AttorneyTest implements PersistentTestTemplate {
     assertThat(actual, is(equalTo(expected)));
   }
 
+  @SuppressWarnings("javadoc")
   @Test
   public void getPhones_Args$() throws Exception {
     final Attorney target = validAttorney();

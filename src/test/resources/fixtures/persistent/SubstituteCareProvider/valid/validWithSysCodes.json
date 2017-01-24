@@ -1,0 +1,52 @@
+{
+  "additionalPhoneNumber" : 0,
+  "additionlPhoneExtensionNumber" : 0,
+  "annualIncomeAmount" : 0.00,
+  "birthDate" : 934675200000,
+  "caDriverLicenseNumber" : "Y134H2OhjZ",
+  "cityName" : "Sacramento",
+  "educationType" : 0,
+  "emailAddress" : "dora@gmail.com",
+  "employerName" : "Ankar",
+  "employmentStatusType" : 0,
+  "ethUnableToDetReasonCode" : "KiliKili",
+  "firstName" : "Fish",
+  "foreignAddressIndicatorVar" : "N",
+  "genderIndicator" : "F",
+  "hispUnableToDetReasonCode" : "Pappa",
+  "hispanicOriginCode" : "OriginCode",
+  "id" : "aQqUhBQF11",
+  "indianTribeType" : {
+    "sys_id" : 2098,
+    "short_description" : "California Indian Tribes",
+    "logical_id" : "0002"
+  },
+  "lastName" : "Tuna",
+  "lastUpdatedId" : null,
+  "lastUpdatedTime" : null,
+  "lisOwnershipIndicator" : "Y",
+  "lisPersonId" : "123Uhd",
+  "maritalStatusType" : {
+    "sys_id" : 1302,
+    "short_description" : "Annulment",
+    "logical_id" : "0001"
+  },
+  "middleInitialName" : "N",
+  "namePrefixDescription" : "Erri",
+  "passedBackgroundCheckCode" : "Yes",
+  "primaryIncomeType" : 0,
+  "primaryKey" : "aQqUhBQF11",
+  "residedOutOfStateIndicator" : "Y",
+  "secondaryIncomeType" : 0,
+  "socialSecurityNumber" : "000994415",
+  "stateCodeType" : {
+    "sys_id" : 1828,
+    "short_description" : "California",
+    "logical_id" : "CA"
+  },
+  "streetName" : "5th St",
+  "streetNumber" : "Number",
+  "suffixTitleDescription" : "Description",
+  "zipNumber" : 95814,
+  "zipSuffixNumber" : 0
+}

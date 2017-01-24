@@ -367,6 +367,7 @@ public class ClientTest implements PersistentTestTemplate {
     assertThat(actual, is(equalTo(expected)));
   }
 
+  @SuppressWarnings("javadoc")
   @Test
   public void getMiddleName_Args$() throws Exception {
     final Client target = validBean();
@@ -380,6 +381,7 @@ public class ClientTest implements PersistentTestTemplate {
     assertThat(actual, is(equalTo(expected)));
   }
 
+  @SuppressWarnings("javadoc")
   @Test
   public void getFirstName_Args$() throws Exception {
     final Client target = validBean();
@@ -393,6 +395,7 @@ public class ClientTest implements PersistentTestTemplate {
     assertThat(actual, is(equalTo(expected)));
   }
 
+  @SuppressWarnings("javadoc")
   @Test
   public void getLastName_Args$() throws Exception {
     final Client target = validBean();
@@ -406,6 +409,7 @@ public class ClientTest implements PersistentTestTemplate {
     assertThat(actual, is(equalTo(expected)));
   }
 
+  @SuppressWarnings("javadoc")
   @Test
   public void getSsn_Args$() throws Exception {
     final Client target = validBean();
@@ -419,6 +423,7 @@ public class ClientTest implements PersistentTestTemplate {
     assertThat(actual, is(equalTo(expected)));
   }
 
+  @SuppressWarnings("javadoc")
   @Test
   public void getNameSuffix_Args$() throws Exception {
     final Client target = validBean();
@@ -427,6 +432,7 @@ public class ClientTest implements PersistentTestTemplate {
     assertThat(actual, is(equalTo(expected)));
   }
 
+  @SuppressWarnings("javadoc")
   @Test
   public void getLanguages_Args$() throws Exception {
     final Client target = validBean();
@@ -434,11 +440,13 @@ public class ClientTest implements PersistentTestTemplate {
     assertTrue(actual.length > 0);
   }
 
+  @SuppressWarnings("javadoc")
   @Test
   public void hashCode_Args$() throws Exception {
     EqualsVerifier.forClass(Client.class).suppress(Warning.NONFINAL_FIELDS).verify();
   }
 
+  @SuppressWarnings("javadoc")
   @Test
   public void equals_Args$Object() throws Exception {
     EqualsVerifier.forClass(Client.class).suppress(Warning.NONFINAL_FIELDS).verify();

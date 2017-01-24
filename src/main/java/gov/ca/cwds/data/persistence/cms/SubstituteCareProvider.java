@@ -13,6 +13,11 @@ import org.hibernate.annotations.NamedQueries;
 import org.hibernate.annotations.NamedQuery;
 import org.hibernate.annotations.Type;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonPropertyOrder;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+
+import gov.ca.cwds.data.CmsSystemCodeDeserializer;
 import gov.ca.cwds.data.SystemCodeSerializer;
 import gov.ca.cwds.data.persistence.PersistentObject;
 
@@ -30,6 +35,8 @@ import gov.ca.cwds.data.persistence.PersistentObject;
         query = "FROM SubstituteCareProvider WHERE lastUpdatedTime > :after")})
 @Entity
 @Table(schema = "CWSINT", name = "SB_PVDRT")
+@JsonPropertyOrder(alphabetic = true)
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class SubstituteCareProvider extends CmsPersistentObject {
 
   /**
@@ -62,6 +69,7 @@ public class SubstituteCareProvider extends CmsPersistentObject {
   private String cityName;
 
   @SystemCodeSerializer(logical = true, description = true)
+  @JsonDeserialize(using = CmsSystemCodeDeserializer.class)
   @Type(type = "short")
   @Column(name = "EDUCATION")
   private Short educationType;
@@ -73,6 +81,7 @@ public class SubstituteCareProvider extends CmsPersistentObject {
   private String employerName;
 
   @SystemCodeSerializer(logical = true, description = true)
+  @JsonDeserialize(using = CmsSystemCodeDeserializer.class)
   @Type(type = "short")
   @Column(name = "EMPL_STAT")
   private Short employmentStatusType;
@@ -95,6 +104,8 @@ public class SubstituteCareProvider extends CmsPersistentObject {
   @Column(name = "HISP_CD")
   private String hispanicOriginCode;
 
+  @SystemCodeSerializer(logical = true, description = true)
+  @JsonDeserialize(using = CmsSystemCodeDeserializer.class)
   @Type(type = "short")
   @Column(name = "IND_TRBC")
   private Short indianTribeType;
@@ -109,6 +120,7 @@ public class SubstituteCareProvider extends CmsPersistentObject {
   private String lisPersonId;
 
   @SystemCodeSerializer(logical = true, description = true)
+  @JsonDeserialize(using = CmsSystemCodeDeserializer.class)
   @Type(type = "short")
   @Column(name = "MRTL_STC")
   private Short maritalStatusType;
@@ -123,6 +135,7 @@ public class SubstituteCareProvider extends CmsPersistentObject {
   private String passedBackgroundCheckCode;
 
   @SystemCodeSerializer(logical = true, description = true)
+  @JsonDeserialize(using = CmsSystemCodeDeserializer.class)
   @Type(type = "short")
   @Column(name = "PRIM_INC")
   private Short primaryIncomeType;
@@ -130,6 +143,8 @@ public class SubstituteCareProvider extends CmsPersistentObject {
   @Column(name = "RESOST_IND")
   private String residedOutOfStateIndicator;
 
+  @SystemCodeSerializer(logical = true, description = true)
+  @JsonDeserialize(using = CmsSystemCodeDeserializer.class)
   @Type(type = "short")
   @Column(name = "SEC_INC")
   private Short secondaryIncomeType;
@@ -138,6 +153,7 @@ public class SubstituteCareProvider extends CmsPersistentObject {
   private String socialSecurityNumber;
 
   @SystemCodeSerializer(logical = true, description = true)
+  @JsonDeserialize(using = CmsSystemCodeDeserializer.class)
   @Type(type = "short")
   @Column(name = "STATE_C")
   private Short stateCodeType;

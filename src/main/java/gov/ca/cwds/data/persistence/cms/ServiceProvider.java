@@ -12,6 +12,8 @@ import org.hibernate.annotations.NamedQueries;
 import org.hibernate.annotations.NamedQuery;
 import org.hibernate.annotations.Type;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 
 import gov.ca.cwds.data.CmsSystemCodeDeserializer;
@@ -31,6 +33,8 @@ import gov.ca.cwds.data.persistence.PersistentObject;
         query = "FROM ServiceProvider WHERE lastUpdatedTime > :after")})
 @Entity
 @Table(schema = "CWSINT", name = "SVC_PVRT")
+@JsonPropertyOrder(alphabetic = true)
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class ServiceProvider extends CmsPersistentObject {
 
   // CREATE TABLE SVC_PVRT (FAX_NO DECIMAL(10:0) NOT NULL,PHONE_NO DECIMAL(10:0) NOT NULL);
