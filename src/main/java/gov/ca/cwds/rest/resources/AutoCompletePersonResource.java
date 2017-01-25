@@ -121,7 +121,7 @@ public class AutoCompletePersonResource {
       ret = resourceDelegate.handle(req);
     } catch (Exception e) {
       LOGGER.error("Intake Person AutoComplete ERROR: {}", e.getMessage(), e);
-      throw new ApiException("Intake Person AutoComplete ERROR.", e);
+      throw new ApiException("Intake Person AutoComplete ERROR. " + e.getMessage(), e);
     }
 
     return ret;
