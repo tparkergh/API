@@ -3,7 +3,9 @@ package gov.ca.cwds.rest.resources.cms;
 import static io.dropwizard.testing.FixtureHelpers.fixture;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
+import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
 
 import javax.ws.rs.client.Entity;
 import javax.ws.rs.core.MediaType;
@@ -14,6 +16,7 @@ import org.junit.Before;
 import org.junit.ClassRule;
 import org.junit.Rule;
 import org.junit.Test;
+import org.mockito.Mockito;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.exc.UnrecognizedPropertyException;
@@ -56,23 +59,27 @@ public class AutoCompleteResourceTest {
       .addResource(new AutoCompletePersonResource(resourceDelegate)).build();
 
   @Before
-  public void setup() throws Exception {}
+  public void setup() throws Exception {
+    Mockito.reset(resourceDelegate);
+  }
 
   /*
    * GET Tests
    */
-  // @Test
-  // public void testSearch_good() throws Exception {
-  // // AutoCompletePersonRequest serialized = MAPPER.readValue(
-  // // fixture("fixtures/domain/elasticsearch/Intake/person_autocomplete_good.json"),
-  // // AutoCompletePersonRequest.class);
-  //
-  // AutoCompletePersonRequest serialized = new AutoCompletePersonRequest("john");
-  // inMemoryResource.client().target(FOUND_RESOURCE).request().accept(MediaType.TEXT_PLAIN)
-  // .get(AutoCompletePersonResponse.class);
-  // // .get();
-  // verify(resourceDelegate).handle(any());
-  // }
+  @Test
+  public void testSearch_good() throws Exception {
+    final AutoCompletePersonResponse actual =
+        inMemoryResource.client().target(FOUND_RESOURCE + "?search_term=john").request()
+            .get(AutoCompletePersonResponse.class);
+    verify(resourceDelegate).handle(any());
+  }
+
+  @Test
+  public void testSearch_blank() throws Exception {
+    final AutoCompletePersonResponse actual = inMemoryResource.client()
+        .target(FOUND_RESOURCE + "?search_term=").request().get(AutoCompletePersonResponse.class);
+    verify(resourceDelegate).handle(any());
+  }
 
   @Test(expected = UnrecognizedPropertyException.class)
   public void testSearch_invalid() throws Exception {
@@ -85,17 +92,5 @@ public class AutoCompleteResourceTest {
         .post(Entity.entity(serialized, MediaType.APPLICATION_JSON)).getStatus();
     assertThat(status, is(HttpStatus.SC_OK));
   }
-
-  // @Test
-  // public void testSearch_blank() throws Exception {
-  // AutoCompletePersonRequest serialized = MAPPER.readValue(
-  // fixture("fixtures/domain/elasticsearch/Intake/person_autocomplete_blank.json"),
-  // AutoCompletePersonRequest.class);
-  //
-  // final int status = inMemoryResource.client().target(FOUND_RESOURCE).request()
-  // .accept(MediaType.APPLICATION_JSON)
-  // .post(Entity.entity(serialized, MediaType.APPLICATION_JSON)).getStatus();
-  // assertThat(status, is(HttpStatus.SC_OK));
-  // }
 
 }

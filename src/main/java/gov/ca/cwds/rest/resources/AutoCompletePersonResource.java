@@ -108,7 +108,7 @@ public class AutoCompletePersonResource {
   @GET
   @Path("/")
   @ApiResponses(value = {@ApiResponse(code = 404, message = "Not found"),
-      @ApiResponse(code = 400, message = "Unable to process JSON")
+      @ApiResponse(code = 400, message = "Unable to parse parameters")
       // @ApiResponse(code = 406, message = "Accept Header not supported")
   })
   @ApiOperation(value = "Query ElasticSearch Persons on given search terms",
