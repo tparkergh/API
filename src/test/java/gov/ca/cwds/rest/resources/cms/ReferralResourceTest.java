@@ -16,6 +16,7 @@ import org.junit.Before;
 import org.junit.ClassRule;
 import org.junit.Rule;
 import org.junit.Test;
+import org.mockito.Mockito;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
@@ -51,7 +52,9 @@ public class ReferralResourceTest {
 
   @SuppressWarnings("javadoc")
   @Before
-  public void setup() throws Exception {}
+  public void setup() throws Exception {
+    Mockito.reset(resourceDelegate);
+  }
 
   /*
    * Get Tests

@@ -10,10 +10,13 @@ import javax.ws.rs.core.MediaType;
 
 import org.hamcrest.junit.ExpectedException;
 import org.junit.Assert;
+import org.junit.Before;
 import org.junit.ClassRule;
 import org.junit.Rule;
 import org.junit.Test;
+import org.mockito.Mockito;
 
+import gov.ca.cwds.rest.api.domain.Address;
 import gov.ca.cwds.rest.api.domain.es.ESPerson;
 import gov.ca.cwds.rest.api.domain.es.ESPersonSearchRequest;
 import gov.ca.cwds.rest.services.PersonService;
@@ -58,6 +61,12 @@ public class PersonSearchResourceTest {
   @ClassRule
   public static final ResourceTestRule backedinMemoryResource = ResourceTestRule.builder()
       .addResource(new PersonSearchResource(backedResourceDelegate)).build();
+
+  @SuppressWarnings("javadoc")
+  @Before
+  public void setup() throws Exception {
+    Mockito.reset(resourceDelegate);
+  }
 
   // @Test
   // public void testShowAllPersonsEmpty() throws Exception {
@@ -171,6 +180,23 @@ public class PersonSearchResourceTest {
         .post(Entity.entity(req, MediaType.APPLICATION_JSON));
     ESPerson[] result = response.readEntity(ESPerson[].class);
     assertThat(result.length, is(2));
+  }
+
+  @Test
+  public void testQueryPersonOrTermMultipleParam() throws Exception {
+    ESPerson[] hits1 = new ESPerson[2];
+    ESPerson[] hits2 = new ESPerson[5];
+    when(personService.queryPersonOr("a", "b", "1992")).thenReturn(hits1);
+    when(personService.queryPersonOr("AAA", "YYY", "1898")).thenReturn(hits2);
+    ESPersonSearchRequest req = new ESPersonSearchRequest();
+    req.setFirstName("AAA");
+    req.setLastName("YYY");
+    req.setBirthDate("1898");
+    javax.ws.rs.core.Response response = backedinMemoryResource.client().target(QUERY_RESOURCE)
+        .request().accept(MediaType.APPLICATION_JSON)
+        .post(Entity.entity(req, MediaType.APPLICATION_JSON));
+    ESPerson[] result = response.readEntity(ESPerson[].class);
+    assertThat(result.length, is(5));
   }
 
   /*

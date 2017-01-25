@@ -5,9 +5,6 @@ import static org.hamcrest.Matchers.is;
 import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
-import gov.ca.cwds.rest.api.domain.Address;
-import gov.ca.cwds.rest.api.domain.ValidatedAddress;
-import io.dropwizard.testing.junit.ResourceTestRule;
 
 import javax.ws.rs.client.Entity;
 import javax.ws.rs.core.MediaType;
@@ -17,6 +14,11 @@ import org.junit.Before;
 import org.junit.ClassRule;
 import org.junit.Rule;
 import org.junit.Test;
+import org.mockito.Mockito;
+
+import gov.ca.cwds.rest.api.domain.Address;
+import gov.ca.cwds.rest.api.domain.ValidatedAddress;
+import io.dropwizard.testing.junit.ResourceTestRule;
 
 /**
  * NOTE : The CWDS API Team has taken the pattern of delegating Resource functions to
@@ -36,29 +38,29 @@ public class AddressValidationResourceTest {
   private final static ResourceDelegate resourceDelegate = mock(ResourceDelegate.class);
 
   @ClassRule
-  public final static ResourceTestRule inMemoryResource = ResourceTestRule.builder()
-      .addResource(new AddressResource(resourceDelegate)).build();
+  public final static ResourceTestRule inMemoryResource =
+      ResourceTestRule.builder().addResource(new AddressResource(resourceDelegate)).build();
 
   @Before
-  public void setup() throws Exception {}
+  public void setup() throws Exception {
+    Mockito.reset(resourceDelegate);
+  }
 
   /*
    * 404 test for unimplemented methods
    */
   @Test
   public void deleteReturns404() throws Exception {
-    int receivedStatus =
-        inMemoryResource.client().target(FOUND_RESOURCE).request()
-            .accept(MediaType.APPLICATION_JSON).delete().getStatus();
+    int receivedStatus = inMemoryResource.client().target(FOUND_RESOURCE).request()
+        .accept(MediaType.APPLICATION_JSON).delete().getStatus();
     int expectedStatus = 404;
     assertThat(receivedStatus, is(expectedStatus));
   }
 
   @Test
   public void getReturns404() throws Exception {
-    int receivedStatus =
-        inMemoryResource.client().target(FOUND_RESOURCE).request()
-            .accept(MediaType.APPLICATION_JSON).get().getStatus();
+    int receivedStatus = inMemoryResource.client().target(FOUND_RESOURCE).request()
+        .accept(MediaType.APPLICATION_JSON).get().getStatus();
     int expectedStatus = 404;
     assertThat(receivedStatus, is(expectedStatus));
 
@@ -66,9 +68,8 @@ public class AddressValidationResourceTest {
 
   @Test
   public void createReturns404() throws Exception {
-    int receivedStatus =
-        inMemoryResource.client().target(FOUND_RESOURCE).request()
-            .accept(MediaType.APPLICATION_JSON).post(null).getStatus();
+    int receivedStatus = inMemoryResource.client().target(FOUND_RESOURCE).request()
+        .accept(MediaType.APPLICATION_JSON).post(null).getStatus();
     int expectedStatus = 404;
     assertThat(receivedStatus, is(expectedStatus));
   }

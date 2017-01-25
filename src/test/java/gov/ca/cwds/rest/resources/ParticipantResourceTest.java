@@ -14,6 +14,7 @@ import org.junit.Before;
 import org.junit.ClassRule;
 import org.junit.Rule;
 import org.junit.Test;
+import org.mockito.Mockito;
 
 import gov.ca.cwds.rest.api.domain.Participant;
 import gov.ca.cwds.rest.resource.junit.template.ResourceTestTemplate;
@@ -43,7 +44,9 @@ public class ParticipantResourceTest implements ResourceTestTemplate {
 
   @SuppressWarnings("javadoc")
   @Before
-  public void setup() throws Exception {}
+  public void setup() throws Exception {
+    Mockito.reset(resourceDelegate);
+  }
 
 
   @Override

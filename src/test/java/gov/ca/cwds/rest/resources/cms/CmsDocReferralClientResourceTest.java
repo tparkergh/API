@@ -10,6 +10,7 @@ import org.junit.Before;
 import org.junit.ClassRule;
 import org.junit.Rule;
 import org.junit.Test;
+import org.mockito.Mockito;
 
 import gov.ca.cwds.rest.resources.ResourceDelegate;
 import gov.ca.cwds.rest.resources.ServiceBackedResourceDelegate;
@@ -36,7 +37,9 @@ public class CmsDocReferralClientResourceTest {
       .addResource(new CmsDocReferralClientResource(resourceDelegate)).build();
 
   @Before
-  public void setup() throws Exception {}
+  public void setup() throws Exception {
+    Mockito.reset(resourceDelegate);
+  }
 
   /**
    * Get Tests

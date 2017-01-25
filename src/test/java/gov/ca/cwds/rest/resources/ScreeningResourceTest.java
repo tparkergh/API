@@ -10,9 +10,11 @@ import javax.ws.rs.client.Entity;
 import javax.ws.rs.core.MediaType;
 
 import org.hamcrest.junit.ExpectedException;
+import org.junit.Before;
 import org.junit.ClassRule;
 import org.junit.Rule;
 import org.junit.Test;
+import org.mockito.Mockito;
 
 import com.google.common.collect.ImmutableList;
 
@@ -39,6 +41,12 @@ public class ScreeningResourceTest {
   @ClassRule
   public static final ResourceTestRule inMemoryResource =
       ResourceTestRule.builder().addResource(new ScreeningResource(resourceDelegate)).build();
+
+  @SuppressWarnings("javadoc")
+  @Before
+  public void setup() throws Exception {
+    Mockito.reset(resourceDelegate);
+  }
 
   /*
    * Get Tests

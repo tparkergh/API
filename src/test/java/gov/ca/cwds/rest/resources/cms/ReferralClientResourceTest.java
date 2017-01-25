@@ -15,6 +15,7 @@ import org.junit.Before;
 import org.junit.ClassRule;
 import org.junit.Rule;
 import org.junit.Test;
+import org.mockito.Mockito;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
@@ -49,7 +50,9 @@ public class ReferralClientResourceTest {
       ResourceTestRule.builder().addResource(new ReferralClientResource(resourceDelegate)).build();
 
   @Before
-  public void setup() throws Exception {}
+  public void setup() throws Exception {
+    Mockito.reset(resourceDelegate);
+  }
 
   @Test
   public void getDelegatesToResourceDelegate() throws Exception {
