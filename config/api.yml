@@ -1,6 +1,9 @@
 applicationName: CWDS API
 version: ${APP_VERSION:-local}
 
+shiro:
+  iniConfigs: ["file:${SHIRO_CONFIG_PATH:-config/shiro.ini}"]
+  
 swagger:
   templateName: swagger.mustache
   assetsPath: /static
