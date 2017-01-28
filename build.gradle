@@ -53,8 +53,13 @@ shadowJar {
 }
 
 dependencies {
-	compile group: "gov.ca.cwds.api", name: "api-core", version: "0.13.52"
-	compile group: 'org.secnod.dropwizard', name: 'dropwizard-shiro', version: '0.2.0'
+	// Dropwizard-guice 1.0.0.2 conflicts with jersey-client 2.25.
+	// Exclude transitive dependencies.
+	// compile group: "gov.ca.cwds.api", name: "api-core", version: "0.15.59"
+	compile ('gov.ca.cwds.api:api-core:0.15.59') {
+	    exclude group: 'org.glassfish.jersey.core'
+	}
+    
 	compile group: "io.dropwizard", name: "dropwizard-client", version: dropwizardVersion
 	compile group: "io.dropwizard", name: "dropwizard-hibernate", version: dropwizardVersion
 	compile group: "io.dropwizard", name: "dropwizard-views", version: dropwizardVersion
@@ -63,30 +68,39 @@ dependencies {
 	compile group: "io.dropwizard", name: "dropwizard-testing", version: dropwizardVersion
 	compile group: "io.dropwizard.metrics", name: "metrics-core", version: metricsVersion
     compile group: "io.dropwizard.modules", name: "dropwizard-flyway", version: dropwizardFlywayVersion
+    
     compile group: "org.glassfish.jersey.ext", name: "jersey-declarative-linking", version: "2.23.2"
 	compile group: "javax.el", name: "javax.el-api", version: "2.2.4"
 	compile group: "org.glassfish.web", name: "javax.el", version: "2.2.4"
 	compile group: 'commons-beanutils', name: 'commons-beanutils', version: '1.8.3'
     compile group: 'org.elasticsearch', name: 'elasticsearch', version:  '2.3.5'
 	compile group: 'org.slf4j', name: 'slf4j-ext', version: '1.7.22'
-	compile 'com.fasterxml.jackson.module:jackson-module-guice:2.7.8'
+	compile group: 'org.glassfish.jersey.core', name: 'jersey-client', version: '2.25'
 	compile group: 'com.hubspot.dropwizard', name: 'dropwizard-guice', version: '1.0.0.2'
+	compile 'com.fasterxml.jackson.module:jackson-module-guice:2.7.8'
 	compile group: "com.smartystreets.api", name: "smartystreets-java-sdk", version: "1.0.7"
 	compile group: 'org.secnod.dropwizard', name: 'dropwizard-shiro', version: '0.2.0'
-
+	
     compile fileTree(dir: 'lib', include: ['*.jar'])
     
 	compile group: 'io.swagger', name: 'swagger-jersey2-jaxrs', version: '1.5.9'
 	compile group: 'io.swagger', name: 'swagger-annotations', version: '1.5.9'
     compile group: "org.postgresql", name: "postgresql", version: "9.4.1208.jre7"
 
+	// testCompile 'org.glassfish.jersey.core:jersey-client:2.26-b01'
     testCompile 'org.mockito:mockito-core:2.0.54-beta'
  	testCompile group: 'org.hamcrest', name: 'hamcrest-junit', version: '2.0.0.0'
- 	
 	testCompile('org.glassfish.jersey.test-framework.providers:jersey-test-framework-provider-grizzly2:2.23.2') {
 		exclude group: 'javax.servlet', module: 'javax.servlet-api'
 		exclude group: 'junit', module: 'junit'
 	}
+	testCompile ('gov.ca.cwds.api:api-core:0.15.59') {
+	     exclude group: 'org.glassfish.jersey.core'
+	}
+	// testCompile ('org.glassfish.jersey.core:jersey-common:2.22.2') {
+	//      exclude group: 'org.glassfish.jersey.core'
+	// }
+    
 	
 	// https://mvnrepository.com/artifact/nl.jqno.equalsverifier/equalsverifier
 	testCompile group: 'nl.jqno.equalsverifier', name: 'equalsverifier', version: '2.1.6'
@@ -128,10 +142,13 @@ run {
 }
 
 cobertura {
-	// TODO: See story #137202471 about the mounting evils of Cobertura ... :-)
+	// See story #137202471 about the mounting evils of Cobertura ... :-)
+
 	coverageFormats = ['xml', 'html']
 	coverageIgnoreTrivial = true
-	coverageIgnores = ['org.slf4j.Logger.*']
+	
+	coverageExcludes  = ['org.slf4j.Logger.*', '.*gov\\.ca\\.cwds\\.data\\.persistence\\.cms\\..*SystemCodeCache.*']
+	coverageIgnores   = ['org.slf4j.Logger.*', '.*gov\\.ca\\.cwds\\.data\\.persistence\\.cms\\..*SystemCodeCache.*']
 	coverageReportDir = new File("$buildDir/reports/cobertura")
 }
 
