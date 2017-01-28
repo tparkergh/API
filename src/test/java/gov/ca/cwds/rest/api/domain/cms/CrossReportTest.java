@@ -17,15 +17,18 @@ import javax.ws.rs.client.Entity;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
+import org.junit.After;
 import org.junit.Before;
 import org.junit.ClassRule;
 import org.junit.Test;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.squarespace.jersey2.guice.JerseyGuiceUtils;
 
 import gov.ca.cwds.rest.api.domain.DomainChef;
 import gov.ca.cwds.rest.core.Api;
 import gov.ca.cwds.rest.resources.cms.CrossReportResource;
+import gov.ca.cwds.rest.resources.cms.JerseyGuiceRule;
 import io.dropwizard.jackson.Jackson;
 import io.dropwizard.testing.junit.ResourceTestRule;
 import nl.jqno.equalsverifier.EqualsVerifier;
@@ -38,6 +41,14 @@ import nl.jqno.equalsverifier.Warning;
 public class CrossReportTest {
 
   private static final String ROOT_RESOURCE = "/" + Api.RESOURCE_CROSS_REPORT + "/";
+
+  @After
+  public void ensureServiceLocatorPopulated() {
+    JerseyGuiceUtils.reset();
+  }
+
+  @ClassRule
+  public static JerseyGuiceRule rule = new JerseyGuiceRule();
 
   private static final CrossReportResource mockedCrossReportResource =
       mock(CrossReportResource.class);

@@ -11,13 +11,17 @@ import javax.ws.rs.client.Entity;
 import javax.ws.rs.core.MediaType;
 
 import org.hamcrest.junit.ExpectedException;
+import org.junit.After;
 import org.junit.Before;
 import org.junit.ClassRule;
 import org.junit.Rule;
 import org.junit.Test;
 import org.mockito.Mockito;
 
+import com.squarespace.jersey2.guice.JerseyGuiceUtils;
+
 import gov.ca.cwds.rest.api.domain.Address;
+import gov.ca.cwds.rest.resources.cms.JerseyGuiceRule;
 import io.dropwizard.testing.junit.ResourceTestRule;
 
 /**
@@ -31,6 +35,14 @@ public class AddressResourceTest {
   private static final String ROOT_RESOURCE = "/addresses/";
   private static final String FOUND_RESOURCE = "/addresses/1";
   private static final String NOT_FOUND_RESOURCE = "/addresses/X";
+
+  @After
+  public void ensureServiceLocatorPopulated() {
+    JerseyGuiceUtils.reset();
+  }
+
+  @ClassRule
+  public static JerseyGuiceRule rule = new JerseyGuiceRule();
 
   @SuppressWarnings("javadoc")
   @Rule

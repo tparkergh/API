@@ -15,6 +15,7 @@ import javax.ws.rs.client.Entity;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
+import org.junit.After;
 import org.junit.Before;
 import org.junit.ClassRule;
 import org.junit.Test;
@@ -22,17 +23,13 @@ import org.junit.Test;
 import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.squarespace.jersey2.guice.JerseyGuiceUtils;
 
 import gov.ca.cwds.data.CrudsDao;
 import gov.ca.cwds.data.persistence.cms.StaffPerson;
-import gov.ca.cwds.rest.api.domain.cms.Allegation;
-import gov.ca.cwds.rest.api.domain.cms.CmsReferral;
-import gov.ca.cwds.rest.api.domain.cms.CrossReport;
-import gov.ca.cwds.rest.api.domain.cms.Referral;
-import gov.ca.cwds.rest.api.domain.cms.ReferralClient;
-import gov.ca.cwds.rest.api.domain.cms.Reporter;
 import gov.ca.cwds.rest.core.Api;
 import gov.ca.cwds.rest.resources.cms.CmsReferralResource;
+import gov.ca.cwds.rest.resources.cms.JerseyGuiceRule;
 import io.dropwizard.jackson.Jackson;
 import io.dropwizard.testing.junit.ResourceTestRule;
 import nl.jqno.equalsverifier.EqualsVerifier;
@@ -48,6 +45,14 @@ public class CmsReferralTest {
 
   private static final CmsReferralResource mockedCmsReferralResource =
       mock(CmsReferralResource.class);
+
+  @After
+  public void ensureServiceLocatorPopulated() {
+    JerseyGuiceUtils.reset();
+  }
+
+  @ClassRule
+  public static JerseyGuiceRule rule = new JerseyGuiceRule();
 
   @SuppressWarnings("javadoc")
   @ClassRule

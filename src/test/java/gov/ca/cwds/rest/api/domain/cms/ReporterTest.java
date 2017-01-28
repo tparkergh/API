@@ -19,6 +19,7 @@ import javax.ws.rs.client.Entity;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
+import org.junit.After;
 import org.junit.Before;
 import org.junit.ClassRule;
 import org.junit.Test;
@@ -26,10 +27,12 @@ import org.junit.Test;
 import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.squarespace.jersey2.guice.JerseyGuiceUtils;
 
 import gov.ca.cwds.data.CrudsDao;
 import gov.ca.cwds.rest.api.domain.DomainChef;
 import gov.ca.cwds.rest.core.Api;
+import gov.ca.cwds.rest.resources.cms.JerseyGuiceRule;
 import gov.ca.cwds.rest.resources.cms.ReporterResource;
 import io.dropwizard.jackson.Jackson;
 import io.dropwizard.testing.junit.ResourceTestRule;
@@ -47,6 +50,14 @@ public class ReporterTest {
   private static final String ROOT_RESOURCE = "/" + Api.RESOURCE_REPORTER + "/";
 
   private static final ReporterResource mockedReporterResource = mock(ReporterResource.class);
+
+  @After
+  public void ensureServiceLocatorPopulated() {
+    JerseyGuiceUtils.reset();
+  }
+
+  @ClassRule
+  public static JerseyGuiceRule rule = new JerseyGuiceRule();
 
   @SuppressWarnings("javadoc")
   @ClassRule

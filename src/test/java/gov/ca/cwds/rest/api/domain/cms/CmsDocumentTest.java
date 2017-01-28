@@ -17,16 +17,19 @@ import javax.ws.rs.client.Entity;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
+import org.junit.After;
 import org.junit.Before;
 import org.junit.ClassRule;
 import org.junit.Test;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.squarespace.jersey2.guice.JerseyGuiceUtils;
 
 import gov.ca.cwds.data.CrudsDao;
 import gov.ca.cwds.data.persistence.cms.Referral;
 import gov.ca.cwds.rest.core.Api;
 import gov.ca.cwds.rest.resources.cms.CmsDocumentResource;
+import gov.ca.cwds.rest.resources.cms.JerseyGuiceRule;
 import io.dropwizard.jackson.Jackson;
 import io.dropwizard.testing.junit.ResourceTestRule;
 import nl.jqno.equalsverifier.EqualsVerifier;
@@ -38,6 +41,14 @@ public class CmsDocumentTest {
   private static final CmsDocumentResource mockedCmsDocumentResource =
       mock(CmsDocumentResource.class);
   private static final ObjectMapper MAPPER = Jackson.newObjectMapper();
+
+  @After
+  public void ensureServiceLocatorPopulated() {
+    JerseyGuiceUtils.reset();
+  }
+
+  @ClassRule
+  public static JerseyGuiceRule rule = new JerseyGuiceRule();
 
   @ClassRule
   public static final ResourceTestRule resources =

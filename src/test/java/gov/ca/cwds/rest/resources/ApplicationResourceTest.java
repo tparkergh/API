@@ -7,15 +7,27 @@ import static org.hamcrest.Matchers.is;
 
 import javax.ws.rs.core.MediaType;
 
+import org.junit.After;
 import org.junit.Before;
 import org.junit.ClassRule;
 import org.junit.Test;
 
+import com.squarespace.jersey2.guice.JerseyGuiceUtils;
+
+import gov.ca.cwds.rest.resources.cms.JerseyGuiceRule;
 import io.dropwizard.testing.junit.ResourceTestRule;
 
 public class ApplicationResourceTest {
   private static final String APP_NAME = "my app";
   private static final String VERSION = "1.0.0";
+
+  @After
+  public void ensureServiceLocatorPopulated() {
+    JerseyGuiceUtils.reset();
+  }
+
+  @ClassRule
+  public static JerseyGuiceRule rule = new JerseyGuiceRule();
 
   @ClassRule
   public static final ResourceTestRule resources =

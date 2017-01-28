@@ -10,14 +10,17 @@ import java.io.IOException;
 import java.util.HashSet;
 import java.util.Set;
 
+import org.junit.After;
 import org.junit.ClassRule;
 import org.junit.Test;
 
 import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.squarespace.jersey2.guice.JerseyGuiceUtils;
 
 import gov.ca.cwds.rest.resources.ScreeningResource;
+import gov.ca.cwds.rest.resources.cms.JerseyGuiceRule;
 import io.dropwizard.jackson.Jackson;
 import io.dropwizard.testing.junit.ResourceTestRule;
 import nl.jqno.equalsverifier.EqualsVerifier;
@@ -28,6 +31,14 @@ public class ScreeningTest {
   private static final ObjectMapper MAPPER = Jackson.newObjectMapper();
 
   private static final ScreeningResource mockedScreeningResource = mock(ScreeningResource.class);
+
+  @After
+  public void ensureServiceLocatorPopulated() {
+    JerseyGuiceUtils.reset();
+  }
+
+  @ClassRule
+  public static JerseyGuiceRule rule = new JerseyGuiceRule();
 
   @ClassRule
   public static final ResourceTestRule resources =
@@ -85,8 +96,7 @@ public class ScreeningTest {
     persons.add(person);
 
     gov.ca.cwds.data.persistence.ns.Screening persistent =
-        new gov.ca.cwds.data.persistence.ns.Screening(id, domain, address, persons,
-            lastUpdateId);
+        new gov.ca.cwds.data.persistence.ns.Screening(id, domain, address, persons, lastUpdateId);
 
     Screening totest = new Screening(persistent);
     assertThat(totest.getReference(), is(equalTo(persistent.getReference())));
