@@ -35,6 +35,7 @@ public class ClientDao extends BaseDaoImpl<Client> implements IBatchBucketDao<Cl
   @Override
   @SuppressWarnings("unchecked")
   public List<Client> bucketList(long bucketNum, long totalBuckets) {
+    this.getSessionFactory().getCurrentSession().beginTransaction();
     return this.getSessionFactory().getCurrentSession()
         .getNamedQuery("gov.ca.cwds.data.persistence.cms.Client.findAllByBucket")
         .setLong("bucket_num", bucketNum).setLong("total_buckets", totalBuckets).list();
