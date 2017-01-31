@@ -29,17 +29,6 @@ public class OtherClientNameTest implements PersistentTestTemplate {
 
   private static final ObjectMapper MAPPER = SystemCodeTestHarness.MAPPER;
 
-  private OtherClientName validBean() throws JsonParseException, JsonMappingException, IOException {
-    return MAPPER.readValue(fixture("fixtures/domain/cms/OtherClientName/valid/valid.json"),
-        OtherClientName.class);
-  }
-
-  private OtherClientName validBeanNewStyle()
-      throws JsonParseException, JsonMappingException, IOException {
-    return MAPPER.readValue(
-        fixture("fixtures/domain/cms/OtherClientName/valid/new_style_valid.json"),
-        OtherClientName.class);
-  }
 
   @Override
   @Test
@@ -47,6 +36,7 @@ public class OtherClientNameTest implements PersistentTestTemplate {
     EqualsVerifier.forClass(OtherClientName.class).suppress(Warning.NONFINAL_FIELDS).verify();
   }
 
+  @SuppressWarnings("javadoc")
   @Test
   public void testSerializeAndDeserialize() throws Exception {
     final OtherClientName tgt = validBean();
@@ -59,13 +49,14 @@ public class OtherClientNameTest implements PersistentTestTemplate {
     }
     final String json = baos.toString(java.nio.charset.StandardCharsets.UTF_8.name());
 
-    // Deserialize from JSON just written.
+    // De serialize from JSON just written.
     final OtherClientName actual = MAPPER.readValue(json, OtherClientName.class);
 
     // Does it match exactly?
     assertThat(actual, is(equalTo(validBean())));
   }
 
+  @SuppressWarnings("javadoc")
   @Test
   public void testSerializeJAndDeserializeNewStyle() throws Exception {
     final OtherClientName tgt = validBeanNewStyle();
@@ -115,25 +106,20 @@ public class OtherClientNameTest implements PersistentTestTemplate {
     // no domain class
   }
 
-  private OtherClientName validOtherClientName()
-      throws JsonParseException, JsonMappingException, IOException {
-
-    OtherClientName validOtherClientName = MAPPER.readValue(
-        fixture("fixtures/domain/cms/OtherClientName/valid/valid.json"), OtherClientName.class);
-    return validOtherClientName;
-  }
-
+  @SuppressWarnings("javadoc")
   @Test
-  public void type() throws Exception {
+  public void testClassType() throws Exception {
     assertThat(OtherClientName.class, notNullValue());
   }
 
+  @SuppressWarnings("javadoc")
   @Test
-  public void instantiation() throws Exception {
+  public void testInstantiation() throws Exception {
     final OtherClientName target = validBean();
     assertThat(target, notNullValue());
   }
 
+  @SuppressWarnings("javadoc")
   @Test
   public void getClientId_Args$() throws Exception {
     final OtherClientName target = validBean();
@@ -147,6 +133,7 @@ public class OtherClientNameTest implements PersistentTestTemplate {
     assertThat(actual, is(equalTo(expected)));
   }
 
+  @SuppressWarnings("javadoc")
   @Test
   public void getThirdId_Args$() throws Exception {
     final OtherClientName target = validBean();
@@ -160,6 +147,7 @@ public class OtherClientNameTest implements PersistentTestTemplate {
     assertThat(actual, is(equalTo(expected)));
   }
 
+  @SuppressWarnings("javadoc")
   @Test
   public void setClientId_Args$String() throws Exception {
     final OtherClientName target = validBean();
@@ -172,6 +160,7 @@ public class OtherClientNameTest implements PersistentTestTemplate {
     // e.g. : verify(mocked).called();
   }
 
+  @SuppressWarnings("javadoc")
   @Test
   public void setThirdId_Args$String() throws Exception {
     final OtherClientName target = validBean();
@@ -184,16 +173,19 @@ public class OtherClientNameTest implements PersistentTestTemplate {
     // e.g. : verify(mocked).called();
   }
 
+  @SuppressWarnings("javadoc")
   @Test
   public void hashCode_Args$() throws Exception {
     EqualsVerifier.forClass(OtherClientName.class).suppress(Warning.NONFINAL_FIELDS).verify();
   }
 
+  @SuppressWarnings("javadoc")
   @Test
   public void equals_Args$Object() throws Exception {
     EqualsVerifier.forClass(OtherClientName.class).suppress(Warning.NONFINAL_FIELDS).verify();
   }
 
+  @SuppressWarnings("javadoc")
   @Test
   public void getGender_Args$() throws Exception {
     final OtherClientName target = validBean();
@@ -207,6 +199,7 @@ public class OtherClientNameTest implements PersistentTestTemplate {
     assertThat(actual, is(equalTo(expected)));
   }
 
+  @SuppressWarnings("javadoc")
   @Test
   public void getBirthDate_Args$() throws Exception {
     final OtherClientName target = validBean();
@@ -220,6 +213,7 @@ public class OtherClientNameTest implements PersistentTestTemplate {
     assertThat(actual, is(equalTo(expected)));
   }
 
+  @SuppressWarnings("javadoc")
   @Test
   public void getSsn_Args$() throws Exception {
     final OtherClientName target = validBean();
@@ -233,6 +227,7 @@ public class OtherClientNameTest implements PersistentTestTemplate {
     assertThat(actual, is(equalTo(expected)));
   }
 
+  @SuppressWarnings("javadoc")
   @Test
   public void getNameSuffix_Args$() throws Exception {
     final OtherClientName target = validBean();
@@ -246,4 +241,25 @@ public class OtherClientNameTest implements PersistentTestTemplate {
     assertThat(actual, is(equalTo(expected)));
   }
 
+  private OtherClientName validBean() throws JsonParseException, JsonMappingException, IOException {
+    return MAPPER.readValue(fixture("fixtures/domain/cms/OtherClientName/valid/valid.json"),
+        OtherClientName.class);
+  }
+
+  private OtherClientName validBeanNewStyle()
+      throws JsonParseException, JsonMappingException, IOException {
+    return MAPPER.readValue(
+        fixture("fixtures/domain/cms/OtherClientName/valid/new_style_valid.json"),
+        OtherClientName.class);
+  }
+
+  private OtherClientName validOtherClientName()
+      throws JsonParseException, JsonMappingException, IOException {
+
+    OtherClientName validOtherClientName = MAPPER.readValue(
+        fixture("fixtures/domain/cms/OtherClientName/valid/valid.json"), OtherClientName.class);
+    return validOtherClientName;
+  }
+
 }
+

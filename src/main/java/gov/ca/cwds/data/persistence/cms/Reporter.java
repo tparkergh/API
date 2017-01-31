@@ -160,6 +160,35 @@ public class Reporter extends CmsPersistentObject
     super();
   }
 
+  /**
+   * @param referralId = Identifier
+   * @param badgeNumber = badge number
+   * @param cityName = city
+   * @param colltrClientRptrReltnshpType - client/reporter relationship type
+   * @param communicationMethodType - communication method type
+   * @param confidentialWaiverIndicator - confidential waiver indicator
+   * @param drmsMandatedRprtrFeedback = drms mandated reporter
+   * @param employerName - name
+   * @param feedbackDate - date
+   * @param feedbackRequiredIndicator - feedback
+   * @param firstName = first name
+   * @param lastName - last name
+   * @param mandatedReporterIndicator - mandated reporter
+   * @param messagePhoneExtensionNumber - phone extension
+   * @param messagePhoneNumber - phone number
+   * @param middleInitialName - middle initial
+   * @param namePrefixDescription - prefix
+   * @param primaryPhoneNumber - phone number
+   * @param primaryPhoneExtensionNumber - extension
+   * @param stateCodeType - state code
+   * @param streetName - street
+   * @param streetNumber - street number
+   * @param suffixTitleDescription - suffix
+   * @param zipNumber - zip
+   * @param lawEnforcementId - law enforcement id
+   * @param zipSuffixNumber - suffix
+   * @param countySpecificCode - county code
+   */
   public Reporter(String referralId, String badgeNumber, String cityName,
       Short colltrClientRptrReltnshpType, Short communicationMethodType,
       String confidentialWaiverIndicator, String drmsMandatedRprtrFeedback, String employerName,

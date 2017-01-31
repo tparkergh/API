@@ -1,13 +1,13 @@
 package gov.ca.cwds.data.cms;
 
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.greaterThanOrEqualTo;
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.notNullValue;
 import static org.hamcrest.Matchers.nullValue;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.List;
 
 import javax.persistence.EntityExistsException;
 import javax.persistence.EntityNotFoundException;
@@ -25,7 +25,6 @@ import org.junit.Rule;
 import org.junit.Test;
 
 import gov.ca.cwds.data.junit.template.DaoTestTemplate;
-import gov.ca.cwds.data.persistence.EmbeddableCompositeKey2;
 import gov.ca.cwds.data.persistence.cms.OtherClientName;
 
 /**
@@ -76,11 +75,18 @@ public class OtherClientNameDaoIT implements DaoTestTemplate {
     assertThat(query, is(notNullValue()));
   }
 
+  @SuppressWarnings("unchecked")
   @Override
   @Test
   public void testFindAllReturnsCorrectList() throws Exception {
     Query query = session.getNamedQuery("gov.ca.cwds.data.persistence.cms.OtherClientName.findAll");
-    assertThat(query.list().size(), greaterThanOrEqualTo(1));
+    final List<OtherClientName> list = query.list();
+    System.out.println("size of query list is: " + list.size());
+    for (OtherClientName oc : list) {
+      System.out.println("id " + oc.getThirdId() + " " + oc.getClientId() + " " + oc.getFirstName()
+          + " " + oc.getLastName() + " " + oc.getLastUpdatedTime());
+    }
+    assertThat(query.list().size(), is(2));
   }
 
   @SuppressWarnings("javadoc")
@@ -97,15 +103,21 @@ public class OtherClientNameDaoIT implements DaoTestTemplate {
     Query query = session
         .getNamedQuery("gov.ca.cwds.data.persistence.cms.OtherClientName.findAllUpdatedAfter")
         .setDate("after", TIMESTAMP_FORMAT.parse("2000-01-01 00:00:00"));
-    assertThat(query.list().size(), greaterThanOrEqualTo(1));
+    @SuppressWarnings("unchecked")
+    final List<OtherClientName> list = query.list();
+    System.out.println("size of query list is: " + list.size());
+    for (OtherClientName oc : list) {
+      System.out.println("id " + oc.getThirdId() + " " + oc.getClientId() + " " + oc.getFirstName()
+          + " " + oc.getLastName() + " " + oc.getLastUpdatedTime());
+    }
+    assertThat(query.list().size(), is(1));
   }
 
   @Override
   @Test
   public void testFind() throws Exception {
-    final String thirdId = "123";
-    final String clientId = "1";
-    OtherClientName found = otherClientNameDao.find(new EmbeddableCompositeKey2(clientId, thirdId));
+    final String thirdId = "123ABCDEFG";
+    OtherClientName found = otherClientNameDao.find(thirdId);
     assertThat(found.getThirdId(), is(thirdId));
   }
 
@@ -113,8 +125,7 @@ public class OtherClientNameDaoIT implements DaoTestTemplate {
   @Test
   public void testFindEntityNotFoundException() throws Exception {
     final String thirdId = "ZZZZZZZ999";
-    final String clientId = "XXXXXXX000";
-    OtherClientName found = otherClientNameDao.find(new EmbeddableCompositeKey2(clientId, thirdId));
+    OtherClientName found = otherClientNameDao.find(thirdId);
     assertThat(found, is(nullValue()));
 
   }
@@ -122,27 +133,26 @@ public class OtherClientNameDaoIT implements DaoTestTemplate {
   @Override
   @Test
   public void testCreate() throws Exception {
-    OtherClientName otherClientName =
-        new OtherClientName("1", "Gregg", "Hill", "Brian", "1", (short) 1, "1", "125");
-    otherClientNameDao.create(otherClientName);
+    OtherClientName otherClientName = new OtherClientName("AapJGAU04Z", "Gregg", "Hill", "Brian",
+        "1", (short) 1, "1", "BCD1234567");
+    OtherClientName created = otherClientNameDao.create(otherClientName);
+    assertThat(created, is(otherClientName));
   }
 
   @Override
   @Test
   public void testCreateExistingEntityException() throws Exception {
     thrown.expect(EntityExistsException.class);
-    OtherClientName otherClientName =
-        new OtherClientName("1", "Gregg", "Hill", "Brian", "1", (short) 1, "1", "123");
+    OtherClientName otherClientName = new OtherClientName("AapJGAU04Z", "Gregg", "Hill", "Brian",
+        "1", (short) 1, "1", "123ABCDEFG");
     otherClientNameDao.create(otherClientName);
   }
 
   @Override
   @Test
   public void testDelete() throws Exception {
-    final String thirdId = "123";
-    final String clientId = "1";
-    OtherClientName deleted =
-        otherClientNameDao.delete(new EmbeddableCompositeKey2(clientId, thirdId));
+    final String thirdId = "123ABCDEFG";
+    OtherClientName deleted = otherClientNameDao.delete(thirdId);
     assertThat(deleted.getThirdId(), is(thirdId));
   }
 
@@ -150,9 +160,7 @@ public class OtherClientNameDaoIT implements DaoTestTemplate {
   @Test
   public void testDeleteEntityNotFoundException() throws Exception {
     final String thirdId = "ZZZZZZZ999";
-    final String clientId = "XXXXXXX000";
-    OtherClientName deleted =
-        otherClientNameDao.delete(new EmbeddableCompositeKey2(clientId, thirdId));
+    OtherClientName deleted = otherClientNameDao.delete(thirdId);
     assertThat(deleted, is(nullValue()));
 
   }
@@ -160,8 +168,8 @@ public class OtherClientNameDaoIT implements DaoTestTemplate {
   @Override
   @Test
   public void testUpdate() throws Exception {
-    OtherClientName otherClientName =
-        new OtherClientName("1", "Gregory", "Hill", "Brian", "1", (short) 1, "1", "123");
+    OtherClientName otherClientName = new OtherClientName("AapJGAU04Z", "Gregory", "Hill", "Brian",
+        "1", (short) 1, "1", "123ABCDEFG");
     OtherClientName updated = otherClientNameDao.update(otherClientName);
     assertThat(updated, is(otherClientName));
   }
@@ -170,8 +178,8 @@ public class OtherClientNameDaoIT implements DaoTestTemplate {
   @Test
   public void testUpdateEntityNotFoundException() throws Exception {
     thrown.expect(EntityNotFoundException.class);
-    OtherClientName otherClientName =
-        new OtherClientName("1", "Gregory", "Hill", "Brian", "1", (short) 1, "1", "ZZZ");
+    OtherClientName otherClientName = new OtherClientName("ZZZZZZZ999", "Gregory", "Hill", "Brian",
+        "1", (short) 1, "1", "ZZZZZZZ999");
     otherClientNameDao.update(otherClientName);
   }
 }

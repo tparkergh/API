@@ -27,6 +27,10 @@ INSERT INTO cwsInt.CLIENT_T(IDENTIFIER, ADPTN_STCD, ALN_REG_NO, BIRTH_DT, BR_FAC
 VALUES ('AaiU7IW0Rt', 'N', ' ', '1972-08-17', ' ', 0, 0, 'N', 'Tumbling', 'Waters', ' ',  'N',	NULL, '2004-08-17', NULL, NULL,	' ', 0,	'M', 0,	0, 'U',	'U', 'N', 0, 'U', ' ', 1313, 'N', 0, 0,	0, 0, 'N', 'N',	' ', 'O', ' ', 'U', '0Rt',	'2004-08-17 08:39:04.891566', ' ', 'Y',	'N', 'U', 'N', 'N', ' ', 'N', 'N', ' ',	'N', 'N', ' ',	NULL,	NULL,	NULL, 'N', NULL, 'N', 'N', 'N',	'N', NULL, NULL, NULL, NULL, 'N', NULL),
 ('AapJGAU04Z', 'N', ' ',	'1995-03-31', ' ',	0,	0,	'N', 'Alexander', 'Zamboanga', ' ',	'N', NULL,	'1998-05-30', NULL, NULL, ' ',	0,	'M', 0,	0, 'U', 'U', 'N', 0, 'U', ' ', 1313, 'N', 0, 0,	0,	0, 'N', 'N', '520565309', 'O', '90', 'U ', '04Z', '1998-05-30 14:18:33.65434', ' ', 'N',	'N', 'U', 'N', 'N', ' ', 'N', 'N', ' ',	'N', 'N', ' ',	NULL, NULL, NULL, 'N', NULL, 'N', 'N', 'N', 'N', NULL, NULL, NULL, NULL, 'N', NULL);
 
+truncate table cwsint.CLIENT_T immediate;
+INSERT INTO cwsInt.CLIENT_T(IDENTIFIER, ADPTN_STCD, ALN_REG_NO, BIRTH_DT, BR_FAC_NM, B_STATE_C, B_CNTRY_C,	CHLD_CLT_B,	COM_FST_NM,	COM_LST_NM, COM_MID_NM, CONF_EFIND, CONF_ACTDT,	CREATN_DT, DEATH_DT, DTH_RN_TXT, DRV_LIC_NO,   	D_STATE_C, GENDER_CD, I_CNTRY_C, IMGT_STC, INCAPC_CD, LITRATE_CD, MAR_HIST_B, MRTL_STC, MILT_STACD, NMPRFX_DSC, NAME_TPC, OUTWRT_IND, P_ETHNCTYC, P_LANG_TPC, RLGN_TPC, S_LANG_TC, SENSTV_IND, SNTV_HLIND, SS_NO, SSN_CHG_CD, 	SUFX_TLDSC,	UNEMPLY_CD,	LST_UPD_ID,	LST_UPD_TS,	COMMNT_DSC, EST_DOB_CD,	BP_VER_IND,	HISP_CD, CURRCA_IND, CURREG_IND, COTH_DESC, PREVCA_IND,	PREREG_IND,	POTH_DESC, HCARE_IND, LIMIT_IND, BIRTH_CITY, HEALTH_TXT, MTERM_DT, FTERM_DT, ZIPPY_IND, DEATH_PLC, TR_MBVRT_B, TRBA_CLT_B, SOC158_IND, DTH_DT_IND, EMAIL_ADDR, ADJDEL_IND, ETH_UD_CD, HISP_UD_CD, SOCPLC_CD, CL_INDX_NO)
+VALUES ('Aj6VfEH00m','N',' ','1990-09-09',' ',0,0,'Y','Victim1 ','SEALED.0909A','  ','N',NULL,'1997-09-09',NULL,NULL,' ',0,'M',0,0,'U ','U','N',0,'U',' ','1313','N',0,0,0,0,'R','N','         ','N','    ','U ','00m','1997-09-09 13:58:38.459282','  ','N','N','U','N','N',' ','N','N',' ','N','N',' ',NULL,NULL,NULL,'N',NULL,'N','N','N','N',NULL,NULL,NULL,NULL,'N',NULL);
+
 truncate table cwsint.ATTRNY_T immediate;
 INSERT INTO cwsInt.ATTRNY_T (IDENTIFIER, CITY_NM, CWATRY_IND, FAX_NO, FIRST_NM, GVR_ENTC, LANG_TPC, LAST_NM, MSG_EXT_NO, MSG_TEL_NO, MID_INI_NM, NMPRFX_DSC, POSTIL_DSC, PRM_EXT_NO, PRM_TEL_NO, STATE_C, STREET_NM, STREET_NO, SUFX_TLDSC, ZIP_NO, LST_UPD_ID, LST_UPD_TS, BUSNSS_NM, ZIP_SFX_NO, END_DT, ARCASS_IND, EMAIL_ADDR)
 VALUES ('AcjOOPa0BU',' ',' ',0,'Lance',0,1274,'Johnson',0,0,' ',' ','Attorney',0,0,0,' ',' ',' ',0,'0BU','1998-07-30 09:14:09.412017',' ',0,NULL,'N',NULL),
@@ -35,18 +39,23 @@ VALUES ('AcjOOPa0BU',' ',' ',0,'Lance',0,1274,'Johnson',0,0,' ',' ','Attorney',0
 truncate table cwsint.SB_PVDRT immediate;
 INSERT INTO CWSINT.SB_PVDRT(IDENTIFIER, ADD_TEL_NO, ADD_EXT_NO, BIRTH_DT, CA_DLIC_NO, CITY_NM, EMPLYR_NM, FIRST_NM, FRG_ADRT_B, GENDER_IND, IND_TRBC, LAST_NM, MID_INI_NM, NMPRFX_DSC, SS_NO, STATE_C, STREET_NM, STREET_NO, SUFX_TLDSC, ZIP_NO, LST_UPD_ID, LST_UPD_TS, ZIP_SFX_NO, EDUCATION, EMPL_STAT, PRIM_INC, SEC_INC, YR_INC_AMT, HISP_CD, MRTL_STC, LISOWNIND, LIS_PER_ID, EMAIL_ADDR, ETH_UD_CD, HISP_UD_CD, RESOST_IND, PASSBC_CD)
 VALUES ('aQqUhBQF11', 5300005841, 0, null, '        ', 'Red Bluff           ', '                                   ', 'Phil & Judy         ', 'N', 'F', 0, 'C.                       ', ' ', '      ', '0000000  ', 1828, 'Fake                                    ', '1330      ', '    ', 96080, 'q27', '1998-03-18 19:42:27.3267', 0, 0, 0, 0, 0, 0.00, 'U', 0, 'N', null, null, null, null, null, null);
-(VALUES ('dqOTmRoF11', 0, 0, null, '        ', 'Chico               ', '                                   ', 'Cindy & Paul        ', 'N', 'F', 0, 'M.                       ', ' ', '      ', '0000000  ', 1828, 'Fake Lindo Ave                          ', '127       ', '    ', 95926, 'CNV', '1900-01-01 01:01:01.0', 0, 0, 0, 0, 0, 0.00, 'U', 0, 'N', null, null, null, null, null, null);)
+--(VALUES ('dqOTmRoF11', 0, 0, null, '        ', 'Chico               ', '                                   ', 'Cindy & Paul        ', 'N', 'F', 0, 'M.                       ', ' ', '      ', '0000000  ', 1828, 'Fake Lindo Ave                          ', '127       ', '    ', 95926, 'CNV', '1900-01-01 01:01:01.0', 0, 0, 0, 0, 0, 0.00, 'U', 0, 'N', null, null, null, null, null, null);)
 
 -- Gregg Hill: Adding rows for Other Client Names
 INSERT INTO CWSINT.OCL_NM_T
 	(THIRD_ID, FIRST_NM, LAST_NM, MIDDLE_NM, NMPRFX_DSC, NAME_TPC, SUFX_TLDSC, LST_UPD_ID, LST_UPD_TS, FKCLIENT_T)
 VALUES 
-	('123', 'Gregg', 'Hill', 'Brian', '1',1 , '1', '1', '1999-01-31 14:44:57.709335' , '1');
+	('123ABCDEFG', 'Gregg', 'Hill', 'Brian', '1',1 , '1', '0XA', '1999-01-31 14:44:57.709335' , 'AapJGAU04Z');
 	
 INSERT INTO CWSINT.OCL_NM_T
 	(THIRD_ID, FIRST_NM, LAST_NM, MIDDLE_NM, NMPRFX_DSC, NAME_TPC, SUFX_TLDSC, LST_UPD_ID, LST_UPD_TS, FKCLIENT_T)
 VALUES 
-	('124', 'Billiam', 'Hill', 'Brian', '1',1 , '1', '1', '2000-01-31 14:44:57.709335' , '1');	
+	('234ABCDEFG', 'Billiam', 'Hill', 'Brian', '1',1 , '1', '0XA', '2000-01-31 14:44:57.709335' , 'Aj6VfEH00m');	
+
+INSERT INTO CWSINT.OCL_NM_T
+	(THIRD_ID, FIRST_NM, LAST_NM, MIDDLE_NM, NMPRFX_DSC, NAME_TPC, SUFX_TLDSC, LST_UPD_ID, LST_UPD_TS, FKCLIENT_T)
+VALUES 
+	('345ABCDEFG', 'Hill', 'Bill', 'E', '1',1 , '1', '0XA', '2017-01-30 14:44:57.709335' , 'AapJGAU04Z');	
 
 truncate table cwsint.SVC_PVRT immediate;
 INSERT INTO cwsInt.SVC_PVRT 
@@ -70,3 +79,4 @@ VALUES
 INSERT INTO CWSINT.EDPRVCNT (DOE_IND, EMAILADR, FAX_NO, FIRST_NME, FKED_PVDRT, IDENTIFIER, LAST_NME, LST_UPD_ID, LST_UPD_TS, MIDDLE_NM, NM_PREFIX, PH_EXTNO, PH_NUMBR, PRICNTIND, SUFFX_TITL, TITLDESC)
 VALUES
 ('N', 'epc@hotmail', 9876543, 'Ed', 'AbiQCgu0X5', 'AbiQCgu0X5', 'Provider', '0XA', '2008-07-30 09:14:09.412017', 'M', '', 1254, 9874333, 'N', '', 'the education provider contact');
+

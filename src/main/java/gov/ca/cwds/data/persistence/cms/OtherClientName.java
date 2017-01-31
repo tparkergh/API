@@ -1,13 +1,12 @@
 package gov.ca.cwds.data.persistence.cms;
 
 import java.beans.Transient;
+import java.io.Serializable;
 import java.util.Date;
 
-import javax.persistence.AttributeOverride;
-import javax.persistence.AttributeOverrides;
 import javax.persistence.Column;
-import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
+import javax.persistence.Id;
 import javax.persistence.Table;
 
 import org.apache.commons.lang3.StringUtils;
@@ -25,7 +24,6 @@ import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import gov.ca.cwds.data.CmsSystemCodeDeserializer;
 import gov.ca.cwds.data.IPersonAware;
 import gov.ca.cwds.data.SystemCodeSerializer;
-import gov.ca.cwds.data.persistence.EmbeddableCompositeKey2;
 import gov.ca.cwds.data.persistence.PersistentObject;
 
 
@@ -37,23 +35,20 @@ import gov.ca.cwds.data.persistence.PersistentObject;
 @SuppressWarnings("serial")
 @NamedQueries({
     @NamedQuery(name = "gov.ca.cwds.data.persistence.cms.OtherClientName.findAll",
-        query = "FROM OtherClientName"),
+        query = "FROM OtherClientName WHERE clientId IN (SELECT id FROM Client WHERE sensitivityIndicator = 'N' AND soc158SealedClientIndicator = 'N')"),
     @NamedQuery(name = "gov.ca.cwds.data.persistence.cms.OtherClientName.findAllUpdatedAfter",
-        query = "FROM OtherClientName WHERE lastUpdatedTime > :after")})
+        query = "FROM OtherClientName WHERE lastUpdatedTime > :after AND clientId IN (SELECT id FROM Client WHERE sensitivityIndicator = 'N' AND soc158SealedClientIndicator = 'N')")})
 @Entity
 @Table(name = "OCL_NM_T")
 @JsonPropertyOrder(alphabetic = true)
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class OtherClientName extends CmsPersistentObject implements IPersonAware {
 
-  @AttributeOverrides({
-      @AttributeOverride(name = "id1", column = @Column(name = "FKCLIENT_T", length = CMS_ID_LEN)),
-      @AttributeOverride(name = "id2", column = @Column(name = "THIRD_ID", length = CMS_ID_LEN))})
-  @EmbeddedId
-  private EmbeddableCompositeKey2 id;
-
   @Column(name = "FIRST_NM")
   private String firstName;
+
+  @Column(name = "FKCLIENT_T", length = CMS_ID_LEN)
+  private String clientId;
 
   @Column(name = "LAST_NM")
   private String lastName;
@@ -73,6 +68,10 @@ public class OtherClientName extends CmsPersistentObject implements IPersonAware
   @Column(name = "SUFX_TLDSC")
   private String suffixTitleDescription;
 
+  @Id
+  @Column(name = "THIRD_ID", length = CMS_ID_LEN)
+  private String thirdId;
+
   /**
    * Default constructor
    * 
@@ -80,7 +79,6 @@ public class OtherClientName extends CmsPersistentObject implements IPersonAware
    */
   public OtherClientName() {
     super();
-    this.id = new EmbeddableCompositeKey2();
   }
 
   /**
@@ -98,14 +96,15 @@ public class OtherClientName extends CmsPersistentObject implements IPersonAware
   public OtherClientName(String clientId, String firstName, String lastName, String middleName,
       String namePrefixDescription, Short nameType, String suffixTitleDescription, String thirdId) {
     super();
-    this.id = new EmbeddableCompositeKey2(clientId, thirdId);
 
     this.firstName = firstName;
+    this.clientId = clientId;
     this.lastName = lastName;
     this.middleName = middleName;
     this.namePrefixDescription = namePrefixDescription;
     this.nameType = nameType;
     this.suffixTitleDescription = suffixTitleDescription;
+    this.thirdId = thirdId;
   }
 
   /**
@@ -113,12 +112,6 @@ public class OtherClientName extends CmsPersistentObject implements IPersonAware
    * 
    * @see gov.ca.cwds.data.persistence.PersistentObject#getPrimaryKey()
    */
-  @Override
-  @JsonIgnore
-  public EmbeddableCompositeKey2 getPrimaryKey() {
-    return this.id;
-  }
-
   /**
    * @return the firstName
    */
@@ -165,51 +158,46 @@ public class OtherClientName extends CmsPersistentObject implements IPersonAware
   }
 
   /**
-   * Delegate accessor: get the client id through the composite primary key.
-   * 
    * @return the clientId
    */
   @JsonProperty(value = "clientId")
   public String getClientId() {
-    return StringUtils.trimToEmpty(id.getId1());
+    return StringUtils.trimToEmpty(clientId);
   }
 
   /**
-   * Delegate accessor: get the third id through the composite primary key.
-   * 
    * @return the "thirdId"
    */
   @JsonProperty(value = "thirdId")
   public String getThirdId() {
-    return StringUtils.trimToEmpty(id.getId2());
+    return StringUtils.trimToEmpty(thirdId);
   }
 
   /**
-   * Delegate accessor: set the client id through the composite primary key.
    * 
    * @param clientId the clientId
    */
   @JsonProperty(value = "clientId")
   public void setClientId(String clientId) {
-    id.setId1(clientId);
+    this.clientId = clientId;
   }
 
   /**
-   * Delegate accessor: set the third id through the composite primary key.
    * 
    * @param thirdId the "thirdId"
    */
   @JsonProperty(value = "thirdId")
   public void setThirdId(String thirdId) {
-    id.setId2(thirdId);
+    // id.setId2(thirdId);
+    this.thirdId = thirdId;
   }
 
   @Override
   public final int hashCode() {
     final int prime = 31;
     int ret = 1;
-    ret = prime * ret + ((id == null || id.getId1() == null) ? 0 : id.getId1().hashCode());
-    ret = prime * ret + ((id == null || id.getId2() == null) ? 0 : id.getId2().hashCode());
+    ret = prime * ret + ((thirdId == null) ? 0 : thirdId.hashCode());
+    ret = prime * ret + ((clientId == null) ? 0 : clientId.hashCode());
     ret = prime * ret + ((firstName == null) ? 0 : firstName.hashCode());
     ret = prime * ret + ((lastName == null) ? 0 : lastName.hashCode());
     ret = prime * ret + ((middleName == null) ? 0 : middleName.hashCode());
@@ -285,9 +273,15 @@ public class OtherClientName extends CmsPersistentObject implements IPersonAware
 
   @Override
   public String toString() {
-    return "OtherClientName [id=" + id + ", firstName=" + firstName + ", lastName=" + lastName
+    return "OtherClientName [id=" + clientId + ", firstName=" + firstName + ", lastName=" + lastName
         + ", middleName=" + middleName + ", namePrefixDescription=" + namePrefixDescription
-        + ", nameType=" + nameType + ", suffixTitleDescription=" + suffixTitleDescription + "]";
+        + ", nameType=" + nameType + ", suffixTitleDescription=" + suffixTitleDescription
+        + ", thirdId=" + thirdId + "]";
+  }
+
+  @Override
+  public Serializable getPrimaryKey() {
+    return this.thirdId;
   }
 
 }

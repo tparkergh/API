@@ -126,7 +126,7 @@ public class AddressResourceTest {
 
   @SuppressWarnings("javadoc")
   public void testPost409AlreadyExistsError() throws Exception {
-    // TODO Auto-generated method stub
+    //
 
   }
 

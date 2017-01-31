@@ -95,7 +95,6 @@ public class ReporterTest {
   private Short zipSuffixNumber = 1234;
   private String countySpecificCode = "AB";
 
-  @SuppressWarnings("javadoc")
   @Before
   public void setup() throws Exception {
     @SuppressWarnings("rawtypes")
@@ -110,7 +109,6 @@ public class ReporterTest {
   /*
    * Constructor Tests
    */
-  @SuppressWarnings("javadoc")
   @Test
   public void persistentObjectConstructorTest() throws Exception {
     Reporter domain = new Reporter(badgeNumber, cityName, colltrClientRptrReltnshpType,
@@ -164,7 +162,6 @@ public class ReporterTest {
     assertThat(totest.getCountySpecificCode(), is(equalTo(persistent.getCountySpecificCode())));
   }
 
-  @SuppressWarnings("javadoc")
   @Test
   public void jsonCreatorConstructorTest() throws Exception {
     Reporter reporter = new Reporter(badgeNumber, cityName, colltrClientRptrReltnshpType,
@@ -205,13 +202,11 @@ public class ReporterTest {
     assertThat(reporter.getCountySpecificCode(), is(equalTo(countySpecificCode)));
   }
 
-  @SuppressWarnings("javadoc")
   @Test
   public void equalsHashCodeWork() {
     EqualsVerifier.forClass(Reporter.class).suppress(Warning.NONFINAL_FIELDS).verify();
   }
 
-  @SuppressWarnings("javadoc")
   @Test
   public void serializesToJSON() throws Exception {
     final String expected = MAPPER.writeValueAsString(MAPPER
@@ -220,7 +215,6 @@ public class ReporterTest {
     assertThat(MAPPER.writeValueAsString(validReporter()), is(equalTo(expected)));
   }
 
-  @SuppressWarnings("javadoc")
   @Test
   public void deserializesFromJSON() throws Exception {
     assertThat(MAPPER.readValue(fixture("fixtures/domain/legacy/Reporter/valid/valid.json"),
@@ -230,7 +224,6 @@ public class ReporterTest {
   /*
    * Successful Tests
    */
-  @SuppressWarnings("javadoc")
   @Test
   public void successfulWithValid() throws Exception {
     Reporter toCreate = MAPPER
@@ -246,7 +239,6 @@ public class ReporterTest {
    * 
    * @IfThen(ifProperty = "streetName", thenProperty = "cityName", required = false)
    */
-  @SuppressWarnings("javadoc")
   @Test
   public void testStreetNameNotCityNameFails() throws Exception {
     Reporter toCreate = MAPPER.readValue(
@@ -261,7 +253,6 @@ public class ReporterTest {
         is(equalTo("{\"errors\":[\"cityName is required since streetName is set\"]}")));
   }
 
-  @SuppressWarnings("javadoc")
   @Test
   public void testStreetNameAndCityNameSuccess() throws Exception {
     Reporter toCreate = MAPPER.readValue(
@@ -273,7 +264,6 @@ public class ReporterTest {
     assertThat(response.getStatus(), is(equalTo(204)));
   }
 
-  @SuppressWarnings("javadoc")
   @Test
   public void testNotStreetNameNotCityNameSuccess() throws Exception {
     Reporter toCreate = MAPPER.readValue(
@@ -285,7 +275,6 @@ public class ReporterTest {
     assertThat(response.getStatus(), is(equalTo(204)));
   }
 
-  @SuppressWarnings("javadoc")
   @Test
   public void testNotStreetNameAndCityNameSuccess() throws Exception {
     Reporter toCreate = MAPPER.readValue(
@@ -305,7 +294,6 @@ public class ReporterTest {
    * false)
    * 
    */
-  @SuppressWarnings("javadoc")
   @Test
   public void testStreetNumberNotStreetNameFails() throws Exception {
     Reporter toCreate = MAPPER.readValue(
@@ -319,7 +307,6 @@ public class ReporterTest {
         is(equalTo("{\"errors\":[\"streetName is required since streetNumber is set\"]}")));
   }
 
-  @SuppressWarnings("javadoc")
   @Test
   public void testStreetNumberAndStreetNameSuccess() throws Exception {
     Reporter toCreate = MAPPER.readValue(
@@ -331,7 +318,6 @@ public class ReporterTest {
     assertThat(response.getStatus(), is(equalTo(204)));
   }
 
-  @SuppressWarnings("javadoc")
   @Test
   public void testNotStreetNumberNotStreetNameSuccess() throws Exception {
     Reporter toCreate = MAPPER.readValue(
@@ -343,7 +329,6 @@ public class ReporterTest {
     assertThat(response.getStatus(), is(equalTo(204)));
   }
 
-  @SuppressWarnings("javadoc")
   @Test
   public void testStreetNameNotStreetNumberSuccess() throws Exception {
     Reporter toCreate = MAPPER.readValue(
@@ -361,7 +346,6 @@ public class ReporterTest {
    * @MutuallyExclusive(required = false, properties = {"employerName", "lawEnforcementId"})
    * 
    */
-  @SuppressWarnings("javadoc")
   @Test
   public void testLawEnforcementIdAndEmployerNameFails() throws Exception {
     Reporter toCreate = MAPPER.readValue(
@@ -376,7 +360,6 @@ public class ReporterTest {
         "{\"errors\":[\"Properties [employerName, lawEnforcementId] are mutually exclusive but multiple values are set\"]}")));
   }
 
-  @SuppressWarnings("javadoc")
   @Test
   public void testLawEnforcementIdNotEmployerNameNotSuccess() throws Exception {
     Reporter toCreate = MAPPER.readValue(
@@ -389,7 +372,6 @@ public class ReporterTest {
 
   }
 
-  @SuppressWarnings("javadoc")
   @Test
   public void testLawEnforcementIdNullEmployerNameSuccess() throws Exception {
     Reporter toCreate = MAPPER.readValue(
@@ -401,7 +383,6 @@ public class ReporterTest {
     assertThat(response.getStatus(), is(equalTo(204)));
   }
 
-  @SuppressWarnings("javadoc")
   @Test
   public void testLawEnforcementIdEmployerNameNotSuccess() throws Exception {
     Reporter toCreate = MAPPER.readValue(
@@ -419,7 +400,6 @@ public class ReporterTest {
    * @OnlyIf(property = "badgeNumber", ifProperty = "lawEnforcementId")
    * 
    */
-  @SuppressWarnings("javadoc")
   @Test
   public void testBadgeNumberTooLong() throws Exception {
     Reporter toCreate = MAPPER.readValue(
@@ -432,7 +412,6 @@ public class ReporterTest {
         is(equalTo("{\"errors\":[\"badgeNumber size must be less than or equal to 6\"]}")));
   }
 
-  @SuppressWarnings("javadoc")
   @Test
   public void testBadgeNumberNotLawEnforcementIdFails() throws Exception {
     Reporter toCreate = MAPPER.readValue(
@@ -446,7 +425,6 @@ public class ReporterTest {
         is(equalTo("{\"errors\":[\"badgeNumber can only be set if lawEnforcementId is set\"]}")));
   }
 
-  @SuppressWarnings("javadoc")
   @Test
   public void testBadgeNumberEmptyLawEnforcementIdFails() throws Exception {
     Reporter toCreate = MAPPER.readValue(
@@ -458,7 +436,6 @@ public class ReporterTest {
     assertThat(response.getStatus(), is(equalTo(204)));
   }
 
-  @SuppressWarnings("javadoc")
   @Test
   public void testBadgeNumberEmptySuccess() throws Exception {
     Reporter toCreate = MAPPER.readValue(
@@ -469,7 +446,6 @@ public class ReporterTest {
     assertThat(response.getStatus(), is(equalTo(204)));
   }
 
-  @SuppressWarnings("javadoc")
   @Test
   public void testBadgeNumberMissingSuccess() throws Exception {
     Reporter toCreate = MAPPER.readValue(
@@ -480,7 +456,6 @@ public class ReporterTest {
     assertThat(response.getStatus(), is(equalTo(204)));
   }
 
-  @SuppressWarnings("javadoc")
   @Test
   public void testBadgeNumberNullSuccess() throws Exception {
     Reporter toCreate = MAPPER.readValue(
@@ -494,7 +469,6 @@ public class ReporterTest {
   /*
    * cityName Tests
    */
-  @SuppressWarnings("javadoc")
   @Test
   public void successWhenCityNameMissing() throws Exception {
     Reporter toCreate = MAPPER.readValue(
@@ -507,7 +481,6 @@ public class ReporterTest {
         is(equalTo("{\"errors\":[\"cityName may not be null\"]}")));
   }
 
-  @SuppressWarnings("javadoc")
   @Test
   public void successWhenCityNameNull() throws Exception {
     Reporter toCreate = MAPPER.readValue(
@@ -520,7 +493,6 @@ public class ReporterTest {
         is(equalTo("{\"errors\":[\"cityName may not be null\"]}")));
   }
 
-  @SuppressWarnings("javadoc")
   @Test
   public void successWhenCityNameEmpty() throws Exception {
     Reporter toCreate = MAPPER.readValue(
@@ -531,7 +503,6 @@ public class ReporterTest {
     assertThat(response.getStatus(), is(equalTo(204)));
   }
 
-  @SuppressWarnings("javadoc")
   @Test
   public void failsWhenCityNameTooLong() throws Exception {
     Reporter toCreate = MAPPER.readValue(
@@ -547,7 +518,6 @@ public class ReporterTest {
   /*
    * colltrClientRptrReltnshpType Tests
    */
-  @SuppressWarnings("javadoc")
   @Test
   public void failsWhenColltrClientRptrReltnshpTypeMissing() throws Exception {
     Reporter toCreate = MAPPER.readValue(
@@ -737,7 +707,6 @@ public class ReporterTest {
   /*
    * employerName Tests
    */
-  @SuppressWarnings("javadoc")
   @Test
   public void successWhenEmployerNameValid() throws Exception {
     Reporter toCreate = MAPPER
@@ -748,7 +717,6 @@ public class ReporterTest {
     assertThat(response.getStatus(), is(equalTo(204)));
   }
 
-  @SuppressWarnings("javadoc")
   @Test
   public void testEmployerNameNullFails() throws Exception {
     Reporter toCreate = MAPPER.readValue(
@@ -762,7 +730,6 @@ public class ReporterTest {
         is(equalTo("{\"errors\":[\"employerName may not be null\"]}")));
   }
 
-  @SuppressWarnings("javadoc")
   @Test
   public void failsWhenEmployerNameTooLong() throws Exception {
     Reporter toCreate = MAPPER.readValue(

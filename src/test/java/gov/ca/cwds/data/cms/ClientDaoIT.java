@@ -1,13 +1,15 @@
 package gov.ca.cwds.data.cms;
 
+import static io.dropwizard.testing.FixtureHelpers.fixture;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.notNullValue;
 import static org.hamcrest.Matchers.nullValue;
 
+import java.io.IOException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
-import java.util.Date;
+import java.util.List;
 
 import javax.persistence.EntityExistsException;
 import javax.persistence.EntityNotFoundException;
@@ -24,15 +26,20 @@ import org.junit.BeforeClass;
 import org.junit.Rule;
 import org.junit.Test;
 
+import com.fasterxml.jackson.core.JsonParseException;
+import com.fasterxml.jackson.databind.JsonMappingException;
+
 import gov.ca.cwds.data.junit.template.DaoTestTemplate;
 import gov.ca.cwds.data.persistence.cms.Client;
 
+/**
+ * @author CWDS API Team
+ *
+ */
 public class ClientDaoIT implements DaoTestTemplate {
   private static final DateFormat TIMESTAMP_FORMAT = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-  private DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
-  private String birthDateString = "1972-08-17";
-  private String creationDateString = "2004-08-17";
 
+  @SuppressWarnings("javadoc")
   @Rule
   public ExpectedException thrown = ExpectedException.none();
 
@@ -40,12 +47,14 @@ public class ClientDaoIT implements DaoTestTemplate {
   private static SessionFactory sessionFactory;
   private Session session;
 
+  @SuppressWarnings("javadoc")
   @BeforeClass
   public static void beforeClass() {
     sessionFactory = new Configuration().configure("hibernate.cfg.xml").buildSessionFactory();
     clientDao = new ClientDao(sessionFactory);
   }
 
+  @SuppressWarnings("javadoc")
   @AfterClass
   public static void afterClass() {
     sessionFactory.close();
@@ -71,16 +80,23 @@ public class ClientDaoIT implements DaoTestTemplate {
     assertThat(query, is(notNullValue()));
   }
 
+  @SuppressWarnings("unchecked")
   @Override
   @Test
   public void testFindAllReturnsCorrectList() {
     Query query = session.getNamedQuery("gov.ca.cwds.data.persistence.cms.Client.findAll");
-    assertThat(query.list().size(), is(3));
+    final List<Client> list = query.list();
+    System.out.println("size of query list is: " + list.size());
+    for (Client c : list) {
+      System.out.println("id " + c.getId() + " " + c.getSensitivityIndicator() + " "
+          + c.getSoc158SealedClientIndicator() + " " + c.getLastUpdatedTime());
+    }
+    assertThat(query.list().size(), is(2));
   }
 
   @SuppressWarnings("javadoc")
   @Test
-  public void testfindAllUpdatedAfterNamedQueryExists() throws Exception {
+  public void testFindAllUpdatedAfterNamedQueryExists() throws Exception {
     Query query =
         session.getNamedQuery("gov.ca.cwds.data.persistence.cms.Client.findAllUpdatedAfter");
     assertThat(query, is(notNullValue()));
@@ -88,10 +104,19 @@ public class ClientDaoIT implements DaoTestTemplate {
 
   @SuppressWarnings("javadoc")
   @Test
-  public void testfindAllUpdatedAfterReturnsCorrectList() throws Exception {
+  public void testFindAllUpdatedAfterReturnsCorrectList() throws Exception {
     Query query =
         session.getNamedQuery("gov.ca.cwds.data.persistence.cms.Client.findAllUpdatedAfter")
-            .setDate("after", TIMESTAMP_FORMAT.parse("2000-11-02 00:00:00"));
+            .setDate("after", TIMESTAMP_FORMAT.parse("2004-01-02 00:00:00"));
+
+    @SuppressWarnings("unchecked")
+    final List<Client> list = query.list();
+    System.out.println("size of query list is: " + list.size());
+    for (Client c : list) {
+      System.out.println("id " + c.getId() + " " + c.getSensitivityIndicator() + " "
+          + c.getSoc158SealedClientIndicator() + " " + c.getLastUpdatedTime());
+    }
+
     assertThat(query.list().size(), is(1));
   }
 
@@ -114,31 +139,77 @@ public class ClientDaoIT implements DaoTestTemplate {
   @Override
   @Test
   public void testCreate() throws Exception {
-    Date birthDate = df.parse(birthDateString);
-    Date creationDate = df.parse(creationDateString);
-    Client client = new Client(null, "N", " ", " ", (short) 0, birthDate, "", (short) 0, "N", "N",
-        null, " ", "Tumbling", "Waters", " ", null, "N", creationDate, "N", " ", "N", null, "N",
-        null, null, " ", (short) 0, null, "Y", null, null, "M", null, null, "U", "AbiOD9Y0Hj",
-        (short) 0, (short) 0, "U", "N", "N", "U", "N", (short) 0, "U", null, " ", (short) 1313, "N",
-        "N", " ", "N", (short) 0, (short) 0, (short) 0, (short) 0, "N", "N", "N", "N", "O", " ",
-        " ", "N", "N", "U", "N");
-    Client created = clientDao.create(client);
-    assertThat(created, is(client));
+
+    Client vc = validClient();
+    Client pers = new Client(vc.getAdjudicatedDelinquentIndicator(), vc.getAdoptionStatusCode(),
+        vc.getAlienRegistrationNumber(), vc.getBirthCity(), vc.getBirthCountryCodeType(),
+        vc.getBirthDate(), vc.getBirthFacilityName(), vc.getBirthStateCodeType(),
+        vc.getBirthplaceVerifiedIndicator(), vc.getChildClientIndicatorVar(),
+        vc.getClientIndexNumber(), vc.getCommentDescription(), vc.getCommonFirstName(),
+        vc.getCommonLastName(), vc.getCommonMiddleName(), vc.getConfidentialityActionDate(),
+        vc.getConfidentialityInEffectIndicator(), vc.getCreationDate(),
+        vc.getCurrCaChildrenServIndicator(), vc.getCurrentlyOtherDescription(),
+        vc.getCurrentlyRegionalCenterIndicator(), vc.getDeathDate(),
+        vc.getDeathDateVerifiedIndicator(), vc.getDeathPlace(), vc.getDeathReasonText(),
+        vc.getDriverLicenseNumber(), vc.getDriverLicenseStateCodeType(), vc.getEmailAddress(),
+        vc.getEstimatedDobCode(), vc.getEthUnableToDetReasonCode(),
+        vc.getFatherParentalRightTermDate(), vc.getGenderCode(), vc.getHealthSummaryText(),
+        vc.getHispUnableToDetReasonCode(), vc.getHispanicOriginCode(), vc.getId(),
+        vc.getImmigrationCountryCodeType(), vc.getImmigrationStatusType(),
+        vc.getIncapacitatedParentCode(), vc.getIndividualHealthCarePlanIndicator(),
+        vc.getLimitationOnScpHealthIndicator(), vc.getLiterateCode(),
+        vc.getMaritalCohabitatnHstryIndicatorVar(), vc.getMaritalStatusType(),
+        vc.getMilitaryStatusCode(), vc.getMotherParentalRightTermDate(),
+        vc.getNamePrefixDescription(), vc.getNameType(), vc.getOutstandingWarrantIndicator(),
+        vc.getPrevCaChildrenServIndicator(), vc.getPrevOtherDescription(),
+        vc.getPrevRegionalCenterIndicator(), vc.getPrimaryEthnicityType(),
+        vc.getPrimaryLanguageType(), vc.getReligionType(), vc.getSecondaryLanguageType(),
+        vc.getSensitiveHlthInfoOnFileIndicator(), vc.getSensitivityIndicator(),
+        vc.getSoc158PlacementCode(), vc.getSoc158SealedClientIndicator(),
+        vc.getSocialSecurityNumChangedCode(), vc.getSocialSecurityNumber(),
+        vc.getSuffixTitleDescription(), vc.getTribalAncestryClientIndicatorVar(),
+        vc.getTribalMembrshpVerifctnIndicatorVar(), vc.getUnemployedParentCode(),
+        vc.getZippyCreatedIndicator());
+    Client created = clientDao.create(pers);
+    assertThat(created, is(pers));
   }
 
   @Override
   @Test
   public void testCreateExistingEntityException() throws Exception {
     thrown.expect(EntityExistsException.class);
-    Date birthDate = df.parse(birthDateString);
-    Date creationDate = df.parse(creationDateString);
-    Client client = new Client(null, "N", " ", " ", (short) 0, birthDate, "", (short) 0, "N", "N",
-        null, " ", "Tumbling", "Waters", " ", null, "N", creationDate, "N", " ", "N", null, "N",
-        null, null, " ", (short) 0, null, "Y", null, null, "M", null, null, "U", "AaiU7IW0Rt",
-        (short) 0, (short) 0, "U", "N", "N", "U", "N", (short) 0, "U", null, " ", (short) 1313, "N",
-        "N", " ", "N", (short) 0, (short) 0, (short) 0, (short) 0, "N", "N", "N", "N", "O", " ",
-        " ", "N", "N", "U", "N");
-    clientDao.create(client);
+    Client vc = validClient();
+    Client pers = new Client(vc.getAdjudicatedDelinquentIndicator(), vc.getAdoptionStatusCode(),
+        vc.getAlienRegistrationNumber(), vc.getBirthCity(), vc.getBirthCountryCodeType(),
+        vc.getBirthDate(), vc.getBirthFacilityName(), vc.getBirthStateCodeType(),
+        vc.getBirthplaceVerifiedIndicator(), vc.getChildClientIndicatorVar(),
+        vc.getClientIndexNumber(), vc.getCommentDescription(), vc.getCommonFirstName(),
+        vc.getCommonLastName(), vc.getCommonMiddleName(), vc.getConfidentialityActionDate(),
+        vc.getConfidentialityInEffectIndicator(), vc.getCreationDate(),
+        vc.getCurrCaChildrenServIndicator(), vc.getCurrentlyOtherDescription(),
+        vc.getCurrentlyRegionalCenterIndicator(), vc.getDeathDate(),
+        vc.getDeathDateVerifiedIndicator(), vc.getDeathPlace(), vc.getDeathReasonText(),
+        vc.getDriverLicenseNumber(), vc.getDriverLicenseStateCodeType(), vc.getEmailAddress(),
+        vc.getEstimatedDobCode(), vc.getEthUnableToDetReasonCode(),
+        vc.getFatherParentalRightTermDate(), vc.getGenderCode(), vc.getHealthSummaryText(),
+        vc.getHispUnableToDetReasonCode(), vc.getHispanicOriginCode(), "AaiU7IW0Rt",
+        vc.getImmigrationCountryCodeType(), vc.getImmigrationStatusType(),
+        vc.getIncapacitatedParentCode(), vc.getIndividualHealthCarePlanIndicator(),
+        vc.getLimitationOnScpHealthIndicator(), vc.getLiterateCode(),
+        vc.getMaritalCohabitatnHstryIndicatorVar(), vc.getMaritalStatusType(),
+        vc.getMilitaryStatusCode(), vc.getMotherParentalRightTermDate(),
+        vc.getNamePrefixDescription(), vc.getNameType(), vc.getOutstandingWarrantIndicator(),
+        vc.getPrevCaChildrenServIndicator(), vc.getPrevOtherDescription(),
+        vc.getPrevRegionalCenterIndicator(), vc.getPrimaryEthnicityType(),
+        vc.getPrimaryLanguageType(), vc.getReligionType(), vc.getSecondaryLanguageType(),
+        vc.getSensitiveHlthInfoOnFileIndicator(), vc.getSensitivityIndicator(),
+        vc.getSoc158PlacementCode(), vc.getSoc158SealedClientIndicator(),
+        vc.getSocialSecurityNumChangedCode(), vc.getSocialSecurityNumber(),
+        vc.getSuffixTitleDescription(), vc.getTribalAncestryClientIndicatorVar(),
+        vc.getTribalMembrshpVerifctnIndicatorVar(), vc.getUnemployedParentCode(),
+        vc.getZippyCreatedIndicator());
+
+    clientDao.create(pers);
   }
 
   @Override
@@ -159,31 +230,83 @@ public class ClientDaoIT implements DaoTestTemplate {
   @Override
   @Test
   public void testUpdate() throws Exception {
-    Date birthDate = df.parse(birthDateString);
-    Date creationDate = df.parse(creationDateString);
-    Client client = new Client(null, "N", " ", " ", (short) 0, birthDate, "", (short) 0, "N", "N",
-        null, " ", "Tumbling", "Waters", " ", null, "N", creationDate, "N", " ", "N", null, "N",
-        null, null, " ", (short) 0, null, "Y", null, null, "M", null, null, "U", "AaiU7IW0Rt",
-        (short) 0, (short) 0, "U", "N", "N", "U", "N", (short) 0, "U", null, " ", (short) 1314, "N",
-        "N", " ", "N", (short) 0, (short) 0, (short) 0, (short) 0, "N", "N", "N", "N", "O", " ",
-        " ", "N", "N", "U", "N");
-    Client updated = clientDao.update(client);
-    assertThat(updated, is(client));
+    Client vc = validClient();
+    Client pers = new Client(vc.getAdjudicatedDelinquentIndicator(), vc.getAdoptionStatusCode(),
+        vc.getAlienRegistrationNumber(), vc.getBirthCity(), vc.getBirthCountryCodeType(),
+        vc.getBirthDate(), vc.getBirthFacilityName(), vc.getBirthStateCodeType(),
+        vc.getBirthplaceVerifiedIndicator(), vc.getChildClientIndicatorVar(),
+        vc.getClientIndexNumber(), vc.getCommentDescription(), vc.getCommonFirstName(),
+        vc.getCommonLastName(), vc.getCommonMiddleName(), vc.getConfidentialityActionDate(),
+        vc.getConfidentialityInEffectIndicator(), vc.getCreationDate(),
+        vc.getCurrCaChildrenServIndicator(), vc.getCurrentlyOtherDescription(),
+        vc.getCurrentlyRegionalCenterIndicator(), vc.getDeathDate(),
+        vc.getDeathDateVerifiedIndicator(), vc.getDeathPlace(), vc.getDeathReasonText(),
+        vc.getDriverLicenseNumber(), vc.getDriverLicenseStateCodeType(), vc.getEmailAddress(),
+        vc.getEstimatedDobCode(), vc.getEthUnableToDetReasonCode(),
+        vc.getFatherParentalRightTermDate(), vc.getGenderCode(), vc.getHealthSummaryText(),
+        vc.getHispUnableToDetReasonCode(), vc.getHispanicOriginCode(), "AaiU7IW0Rt",
+        vc.getImmigrationCountryCodeType(), vc.getImmigrationStatusType(),
+        vc.getIncapacitatedParentCode(), vc.getIndividualHealthCarePlanIndicator(),
+        vc.getLimitationOnScpHealthIndicator(), vc.getLiterateCode(),
+        vc.getMaritalCohabitatnHstryIndicatorVar(), vc.getMaritalStatusType(),
+        vc.getMilitaryStatusCode(), vc.getMotherParentalRightTermDate(),
+        vc.getNamePrefixDescription(), vc.getNameType(), vc.getOutstandingWarrantIndicator(),
+        vc.getPrevCaChildrenServIndicator(), vc.getPrevOtherDescription(),
+        vc.getPrevRegionalCenterIndicator(), vc.getPrimaryEthnicityType(),
+        vc.getPrimaryLanguageType(), vc.getReligionType(), vc.getSecondaryLanguageType(),
+        vc.getSensitiveHlthInfoOnFileIndicator(), vc.getSensitivityIndicator(),
+        vc.getSoc158PlacementCode(), vc.getSoc158SealedClientIndicator(),
+        vc.getSocialSecurityNumChangedCode(), vc.getSocialSecurityNumber(),
+        vc.getSuffixTitleDescription(), vc.getTribalAncestryClientIndicatorVar(),
+        vc.getTribalMembrshpVerifctnIndicatorVar(), vc.getUnemployedParentCode(),
+        vc.getZippyCreatedIndicator());
+    Client updated = clientDao.update(pers);
+    assertThat(updated, is(pers));
   }
 
   @Override
   @Test
   public void testUpdateEntityNotFoundException() throws Exception {
     thrown.expect(EntityNotFoundException.class);
-    Date birthDate = df.parse(birthDateString);
-    Date creationDate = df.parse(creationDateString);
-    Client client = new Client(null, "N", " ", " ", (short) 0, birthDate, "", (short) 0, "N", "N",
-        null, " ", "Tumbling", "Waters", " ", null, "N", creationDate, "N", " ", "N", null, "N",
-        null, null, " ", (short) 0, null, "Y", null, null, "M", null, null, "U", "AasRx3r0Ha",
-        (short) 0, (short) 0, "U", "N", "N", "U", "N", (short) 0, "U", null, " ", (short) 1313, "N",
-        "N", " ", "N", (short) 0, (short) 0, (short) 0, (short) 0, "N", "N", "N", "N", "O", " ",
-        " ", "N", "N", "U", "N");
-    clientDao.update(client);
+    Client vc = validClient();
+    Client pers = new Client(vc.getAdjudicatedDelinquentIndicator(), vc.getAdoptionStatusCode(),
+        vc.getAlienRegistrationNumber(), vc.getBirthCity(), vc.getBirthCountryCodeType(),
+        vc.getBirthDate(), vc.getBirthFacilityName(), vc.getBirthStateCodeType(),
+        vc.getBirthplaceVerifiedIndicator(), vc.getChildClientIndicatorVar(),
+        vc.getClientIndexNumber(), vc.getCommentDescription(), vc.getCommonFirstName(),
+        vc.getCommonLastName(), vc.getCommonMiddleName(), vc.getConfidentialityActionDate(),
+        vc.getConfidentialityInEffectIndicator(), vc.getCreationDate(),
+        vc.getCurrCaChildrenServIndicator(), vc.getCurrentlyOtherDescription(),
+        vc.getCurrentlyRegionalCenterIndicator(), vc.getDeathDate(),
+        vc.getDeathDateVerifiedIndicator(), vc.getDeathPlace(), vc.getDeathReasonText(),
+        vc.getDriverLicenseNumber(), vc.getDriverLicenseStateCodeType(), vc.getEmailAddress(),
+        vc.getEstimatedDobCode(), vc.getEthUnableToDetReasonCode(),
+        vc.getFatherParentalRightTermDate(), vc.getGenderCode(), vc.getHealthSummaryText(),
+        vc.getHispUnableToDetReasonCode(), vc.getHispanicOriginCode(), "AasRx3r0Ha",
+        vc.getImmigrationCountryCodeType(), vc.getImmigrationStatusType(),
+        vc.getIncapacitatedParentCode(), vc.getIndividualHealthCarePlanIndicator(),
+        vc.getLimitationOnScpHealthIndicator(), vc.getLiterateCode(),
+        vc.getMaritalCohabitatnHstryIndicatorVar(), vc.getMaritalStatusType(),
+        vc.getMilitaryStatusCode(), vc.getMotherParentalRightTermDate(),
+        vc.getNamePrefixDescription(), vc.getNameType(), vc.getOutstandingWarrantIndicator(),
+        vc.getPrevCaChildrenServIndicator(), vc.getPrevOtherDescription(),
+        vc.getPrevRegionalCenterIndicator(), vc.getPrimaryEthnicityType(),
+        vc.getPrimaryLanguageType(), vc.getReligionType(), vc.getSecondaryLanguageType(),
+        vc.getSensitiveHlthInfoOnFileIndicator(), vc.getSensitivityIndicator(),
+        vc.getSoc158PlacementCode(), vc.getSoc158SealedClientIndicator(),
+        vc.getSocialSecurityNumChangedCode(), vc.getSocialSecurityNumber(),
+        vc.getSuffixTitleDescription(), vc.getTribalAncestryClientIndicatorVar(),
+        vc.getTribalMembrshpVerifctnIndicatorVar(), vc.getUnemployedParentCode(),
+        vc.getZippyCreatedIndicator());
+
+    clientDao.update(pers);
+
+  }
+
+  private Client validClient() throws JsonParseException, JsonMappingException, IOException {
+    Client validClient =
+        MAPPER.readValue(fixture("fixtures/persistence/Client/valid/valid.json"), Client.class);
+    return validClient;
   }
 
 }

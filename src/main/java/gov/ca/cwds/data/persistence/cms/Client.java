@@ -41,9 +41,10 @@ import gov.ca.cwds.rest.api.domain.DomainChef;
  * @author CWDS API Team
  */
 @NamedQueries({
-    @NamedQuery(name = "gov.ca.cwds.data.persistence.cms.Client.findAll", query = "FROM Client"),
+    @NamedQuery(name = "gov.ca.cwds.data.persistence.cms.Client.findAll",
+        query = "FROM Client WHERE sensitivityIndicator = 'N' AND soc158SealedClientIndicator = 'N' AND soc158SealedClientIndicator = 'N'"),
     @NamedQuery(name = "gov.ca.cwds.data.persistence.cms.Client.findAllUpdatedAfter",
-        query = "FROM Client WHERE lastUpdatedTime > :after")})
+        query = "FROM Client WHERE sensitivityIndicator = 'N' AND soc158SealedClientIndicator = 'N' AND soc158SealedClientIndicator = 'N' AND lastUpdatedTime > :after")})
 @NamedNativeQueries({
     @NamedNativeQuery(name = "gov.ca.cwds.data.persistence.cms.Client.findAllByBucket",
         query = "select z.IDENTIFIER, z.ADPTN_STCD, z.ALN_REG_NO, z.BIRTH_DT, z.BR_FAC_NM, z.B_STATE_C, "
