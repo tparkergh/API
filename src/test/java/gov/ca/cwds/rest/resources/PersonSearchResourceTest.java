@@ -16,7 +16,6 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.mockito.Mockito;
 
-import gov.ca.cwds.rest.api.domain.Address;
 import gov.ca.cwds.rest.api.domain.es.ESPerson;
 import gov.ca.cwds.rest.api.domain.es.ESPersonSearchRequest;
 import gov.ca.cwds.rest.services.PersonService;

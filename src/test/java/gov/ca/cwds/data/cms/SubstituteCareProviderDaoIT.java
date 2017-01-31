@@ -84,7 +84,7 @@ public class SubstituteCareProviderDaoIT implements DaoTestTemplate {
   public void testFindAllReturnsCorrectList() {
     Query query =
         session.getNamedQuery("gov.ca.cwds.data.persistence.cms.SubstituteCareProvider.findAll");
-    assertThat(query.list().size(), is(2));
+    assertThat(query.list().size(), is(1));
   }
 
   @SuppressWarnings("javadoc")
@@ -102,7 +102,7 @@ public class SubstituteCareProviderDaoIT implements DaoTestTemplate {
         .getNamedQuery(
             "gov.ca.cwds.data.persistence.cms.SubstituteCareProvider.findAllUpdatedAfter")
         .setDate("after", TIMESTAMP_FORMAT.parse("1900-01-01 00:00:00"));
-    assertThat(query.list().size(), is(2));
+    assertThat(query.list().size(), is(1));
   }
 
   @Override

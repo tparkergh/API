@@ -70,7 +70,7 @@ public class AddressService implements CrudsService {
 
     Address address = (Address) request;
     gov.ca.cwds.data.persistence.ns.Address managed =
-        new gov.ca.cwds.data.persistence.ns.Address(address, null);
+        new gov.ca.cwds.data.persistence.ns.Address(address, null, null);
 
     managed = addressDao.create(managed);
     return new PostedAddress(managed);

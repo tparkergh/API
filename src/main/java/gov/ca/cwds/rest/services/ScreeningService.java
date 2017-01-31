@@ -38,8 +38,8 @@ public class ScreeningService implements CrudsService {
 
   /**
    * 
-   * @param screeningDao The {@link Dao} handling
-   *        {@link gov.ca.cwds.data.persistence.ns.Screening} objects.
+   * @param screeningDao The {@link Dao} handling {@link gov.ca.cwds.data.persistence.ns.Screening}
+   *        objects.
    * @param personService The person service
    */
   @Inject
@@ -113,13 +113,13 @@ public class ScreeningService implements CrudsService {
         LOGGER.warn(msg);
         throw new ServiceException(new EntityNotFoundException(msg));
       }
-      participants.add(new gov.ca.cwds.data.persistence.ns.Person(person, null));
+      participants.add(new gov.ca.cwds.data.persistence.ns.Person(person, null, null));
     }
 
-    Address address = new Address(screeningRequest.getAddress(), null);
+    Address address = new Address(screeningRequest.getAddress(), null, null);
     gov.ca.cwds.data.persistence.ns.Screening screening =
-        new gov.ca.cwds.data.persistence.ns.Screening((Long) primaryKey, screeningRequest,
-            address, participants, null);
+        new gov.ca.cwds.data.persistence.ns.Screening((Long) primaryKey, screeningRequest, address,
+            participants, null, null);
 
     screening = screeningDao.update(screening);
     return new ScreeningResponse(screening, screening.getParticipants());

@@ -71,8 +71,9 @@ public class Address extends NsPersistentObject {
    * @param address The domain object to construct this object from
    * @param lastUpdatedId the id of the last person to update this object
    */
-  public Address(gov.ca.cwds.rest.api.domain.Address address, Long lastUpdatedId) {
-    super(lastUpdatedId);
+  public Address(gov.ca.cwds.rest.api.domain.Address address, String lastUpdatedId,
+      String createId) {
+    super(lastUpdatedId, createId);
     this.streetAddress = address.getStreet_address();
     this.city = address.getCity();
     this.state = address.getState();

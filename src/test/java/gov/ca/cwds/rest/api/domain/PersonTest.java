@@ -99,7 +99,7 @@ public class PersonTest {
     Person domain = this.validPerson();
 
     gov.ca.cwds.data.persistence.ns.Person persistent =
-        new gov.ca.cwds.data.persistence.ns.Person(domain, (long) 1234565);
+        new gov.ca.cwds.data.persistence.ns.Person(domain, "12345", "12345");
 
     Person totest = new Person(persistent);
     assertThat(totest.getBirthDate(),
@@ -144,4 +144,3 @@ public class PersonTest {
     }
   }
 }
-

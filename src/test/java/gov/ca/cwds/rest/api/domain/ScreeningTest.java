@@ -89,14 +89,16 @@ public class ScreeningTest {
 
     gov.ca.cwds.data.persistence.ns.Person person = this.validPerson();
     final Long id = (long) 1234567;
-    final Long lastUpdateId = (long) 234567;
+    final String lastUpdateId = "234567";
+    final String createId = "234567";
 
     Set<gov.ca.cwds.data.persistence.ns.Person> persons =
         new HashSet<gov.ca.cwds.data.persistence.ns.Person>();
     persons.add(person);
 
     gov.ca.cwds.data.persistence.ns.Screening persistent =
-        new gov.ca.cwds.data.persistence.ns.Screening(id, domain, address, persons, lastUpdateId);
+        new gov.ca.cwds.data.persistence.ns.Screening(id, domain, address, persons, lastUpdateId,
+            createId);
 
     Screening totest = new Screening(persistent);
     assertThat(totest.getReference(), is(equalTo(persistent.getReference())));

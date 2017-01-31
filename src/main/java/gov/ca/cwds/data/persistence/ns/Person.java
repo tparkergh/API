@@ -100,14 +100,14 @@ public class Person extends NsPersistentObject implements IPersonAware, IAddress
    * @param person The domain object to construct this object from
    * @param lastUpdatedId the id of the last person to update this object
    */
-  public Person(gov.ca.cwds.rest.api.domain.Person person, Long lastUpdatedId) {
-    super(lastUpdatedId);
+  public Person(gov.ca.cwds.rest.api.domain.Person person, String lastUpdatedId, String createId) {
+    super(lastUpdatedId, createId);
     this.firstName = person.getFirstName();
     this.lastName = person.getLastName();
     this.gender = person.getGender();
     this.dateOfBirth = DomainChef.uncookDateString(person.getBirthDate());
     this.ssn = person.getSsn();
-    this.address = new Address(person.getAddress(), null);
+    this.address = new Address(person.getAddress(), null, null);
   }
 
   /**
@@ -165,6 +165,8 @@ public class Person extends NsPersistentObject implements IPersonAware, IAddress
   public String getSsn() {
     return ssn;
   }
+
+
 
   /**
    * @return the address

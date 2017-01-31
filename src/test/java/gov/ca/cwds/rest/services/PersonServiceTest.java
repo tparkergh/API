@@ -61,7 +61,7 @@ public class PersonServiceTest {
     Person expected = new Person("Bart", "Simpson", "M", "2016-10-31", "1234556789", address);
 
     gov.ca.cwds.data.persistence.ns.Person person =
-        new gov.ca.cwds.data.persistence.ns.Person(expected, null);
+        new gov.ca.cwds.data.persistence.ns.Person(expected, null, null);
 
     when(personDao.find(123L)).thenReturn(person);
     Person found = personService.find(123L);

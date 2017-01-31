@@ -4,18 +4,18 @@ import static io.dropwizard.testing.FixtureHelpers.fixture;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.is;
-import io.dropwizard.jackson.Jackson;
 
 import java.io.IOException;
-
-import nl.jqno.equalsverifier.EqualsVerifier;
-import nl.jqno.equalsverifier.Warning;
 
 import org.junit.Test;
 
 import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+
+import io.dropwizard.jackson.Jackson;
+import nl.jqno.equalsverifier.EqualsVerifier;
+import nl.jqno.equalsverifier.Warning;
 
 public class AddressTest {
 
@@ -33,9 +33,8 @@ public class AddressTest {
   public void serializesToJSON() throws Exception {
     String expected = MAPPER.writeValueAsString(new Address("123 Main", "Sacramento", "CA", 95757));
 
-    String serialized =
-        MAPPER.writeValueAsString(MAPPER.readValue(
-            fixture("fixtures/domain/address/valid/valid.json"), Address.class));
+    String serialized = MAPPER.writeValueAsString(
+        MAPPER.readValue(fixture("fixtures/domain/address/valid/valid.json"), Address.class));
 
     assertThat(serialized, is(expected));
   }
@@ -58,7 +57,7 @@ public class AddressTest {
     Address domain = this.validAddress();
 
     gov.ca.cwds.data.persistence.ns.Address persistent =
-        new gov.ca.cwds.data.persistence.ns.Address(domain, (long) 1234565);
+        new gov.ca.cwds.data.persistence.ns.Address(domain, "12345", "12345");
 
     Address totest = new Address(persistent);
     assertThat(totest.getCity(), is(equalTo(persistent.getCity())));

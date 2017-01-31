@@ -83,7 +83,7 @@ public class EducationProviderContactDaoIT implements DaoTestTemplate {
   public void testFindAllReturnsCorrectList() throws Exception {
     Query query =
         session.getNamedQuery("gov.ca.cwds.data.persistence.cms.EducationProviderContact.findAll");
-    assertThat(query.list().size(), is(2));
+    assertThat(query.list().size(), is(4));
   }
 
   @SuppressWarnings("javadoc")
@@ -101,7 +101,7 @@ public class EducationProviderContactDaoIT implements DaoTestTemplate {
         .getNamedQuery(
             "gov.ca.cwds.data.persistence.cms.EducationProviderContact.findAllUpdatedAfter")
         .setDate("after", TIMESTAMP_FORMAT.parse("2000-11-02 00:00:00"));
-    assertThat(query.list().size(), is(2));
+    assertThat(query.list().size(), is(4));
   }
 
   @Override

@@ -67,8 +67,8 @@ public class ScreeningServiceTest {
     Date date = DomainChef.uncookDateString("2016-10-31");
     ImmutableSet.Builder<gov.ca.cwds.data.persistence.ns.Person> persistentPersonSetBuilder =
         ImmutableSet.builder();
-    persistentPersonSetBuilder.add(new gov.ca.cwds.data.persistence.ns.Person(bart, null))
-        .add(new gov.ca.cwds.data.persistence.ns.Person(maggie, null));
+    persistentPersonSetBuilder.add(new gov.ca.cwds.data.persistence.ns.Person(bart, null, null))
+        .add(new gov.ca.cwds.data.persistence.ns.Person(maggie, null, null));
 
     Screening screening = new Screening("X5HNJK", date, "Amador", date, "Home", "email",
         "First screening", "accept_for_investigation", date, "first narrative", address,
@@ -233,7 +233,7 @@ public class ScreeningServiceTest {
     Person maggie = new Person("Maggie", "Simpson", "M", "2016-10-31", "123456789", domainAddress);
     gov.ca.cwds.data.persistence.ns.Screening screening =
         new gov.ca.cwds.data.persistence.ns.Screening(1L, screeningRequest,
-            new Address(domainAddress, null), null, null);
+            new Address(domainAddress, null, null), null, null, null);
 
     when(screeningDao.find(new Long(123))).thenReturn(screening);
     when(personService.find(1L)).thenReturn(bart);
@@ -260,11 +260,11 @@ public class ScreeningServiceTest {
     Person bart = new Person("Bart", "Simpson", "M", "2016-10-31", "123456789", domainAddress);
     Person maggie = new Person("Maggie", "Simpson", "M", "2016-10-31", "123456789", domainAddress);
     ImmutableSet<gov.ca.cwds.data.persistence.ns.Person> people =
-        peopleListBuilder.add(new gov.ca.cwds.data.persistence.ns.Person(bart, null))
-            .add(new gov.ca.cwds.data.persistence.ns.Person(maggie, null)).build();
+        peopleListBuilder.add(new gov.ca.cwds.data.persistence.ns.Person(bart, null, null))
+            .add(new gov.ca.cwds.data.persistence.ns.Person(maggie, null, null)).build();
     gov.ca.cwds.data.persistence.ns.Screening screening =
         new gov.ca.cwds.data.persistence.ns.Screening(1L, screeningRequest,
-            new Address(domainAddress, null), people, null);
+            new Address(domainAddress, null, null), people, null, null);
 
     when(screeningDao.find(new Long(123))).thenReturn(screening);
     when(personService.find(1L)).thenReturn(bart);
@@ -293,7 +293,7 @@ public class ScreeningServiceTest {
 
     gov.ca.cwds.data.persistence.ns.Screening screening =
         new gov.ca.cwds.data.persistence.ns.Screening(1L, screeningRequest,
-            new Address(domainAddress, null), null, null);
+            new Address(domainAddress, null, null), null, null, null);
 
     when(screeningDao.find(new Long(123))).thenReturn(screening);
     when(personService.find(11L)).thenReturn(null);

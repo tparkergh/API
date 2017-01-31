@@ -76,7 +76,7 @@ public class PersonService implements CrudsService {
     assert (request instanceof Person);
     Person person = (Person) request;
     gov.ca.cwds.data.persistence.ns.Person managed =
-        new gov.ca.cwds.data.persistence.ns.Person(person, null);
+        new gov.ca.cwds.data.persistence.ns.Person(person, null, null);
 
     managed = personDao.create(managed);
     PostedPerson postedPerson = new PostedPerson(managed);

@@ -75,7 +75,7 @@ public class ClientDaoIT implements DaoTestTemplate {
   @Test
   public void testFindAllReturnsCorrectList() {
     Query query = session.getNamedQuery("gov.ca.cwds.data.persistence.cms.Client.findAll");
-    assertThat(query.list().size(), is(12));
+    assertThat(query.list().size(), is(2));
   }
 
   @SuppressWarnings("javadoc")
@@ -92,7 +92,7 @@ public class ClientDaoIT implements DaoTestTemplate {
     Query query =
         session.getNamedQuery("gov.ca.cwds.data.persistence.cms.Client.findAllUpdatedAfter")
             .setDate("after", TIMESTAMP_FORMAT.parse("2000-11-02 00:00:00"));
-    assertThat(query.list().size(), is(7));
+    assertThat(query.list().size(), is(1));
   }
 
   @Override
