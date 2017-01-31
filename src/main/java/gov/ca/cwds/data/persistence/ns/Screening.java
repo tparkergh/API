@@ -147,11 +147,11 @@ public class Screening extends NsPersistentObject {
    * @param address The address
    * @param participants The set of participants
    * @param lastUpdatedId the id of the last person to update this object
-   * @param createId id of legacy source record
+   * @param createUserId the id of the person created the record
    */
   public Screening(Long id, gov.ca.cwds.rest.api.domain.Screening screening, Address address,
-      Set<Person> participants, String lastUpdatedId, String createId) {
-    super(lastUpdatedId, createId);
+      Set<Person> participants, String lastUpdatedId, String createUserId) {
+    super(lastUpdatedId, createUserId);
 
     this.id = id;
     this.reference = screening.getReference();

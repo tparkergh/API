@@ -99,10 +99,11 @@ public class Person extends NsPersistentObject implements IPersonAware, IAddress
    * 
    * @param person The domain object to construct this object from
    * @param lastUpdatedId the id of the last person to update this object
-   * @param createId id of legacy source record
+   * @param createUserId the id of the person created the record
    */
-  public Person(gov.ca.cwds.rest.api.domain.Person person, String lastUpdatedId, String createId) {
-    super(lastUpdatedId, createId);
+  public Person(gov.ca.cwds.rest.api.domain.Person person, String lastUpdatedId,
+      String createUserId) {
+    super(lastUpdatedId, createUserId);
     this.firstName = person.getFirstName();
     this.lastName = person.getLastName();
     this.gender = person.getGender();

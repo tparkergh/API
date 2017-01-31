@@ -75,7 +75,7 @@ public class ClientDaoIT implements DaoTestTemplate {
   @Test
   public void testFindAllReturnsCorrectList() {
     Query query = session.getNamedQuery("gov.ca.cwds.data.persistence.cms.Client.findAll");
-    assertThat(query.list().size(), is(2));
+    assertThat(query.list().size(), is(3));
   }
 
   @SuppressWarnings("javadoc")
