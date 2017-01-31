@@ -147,6 +147,7 @@ public class Screening extends NsPersistentObject {
    * @param address The address
    * @param participants The set of participants
    * @param lastUpdatedId the id of the last person to update this object
+   * @param createId id of legacy source record
    */
   public Screening(Long id, gov.ca.cwds.rest.api.domain.Screening screening, Address address,
       Set<Person> participants, String lastUpdatedId, String createId) {
