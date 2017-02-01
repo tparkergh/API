@@ -42,26 +42,26 @@ import gov.ca.cwds.rest.api.domain.DomainChef;
  */
 @NamedQueries({
     @NamedQuery(name = "gov.ca.cwds.data.persistence.cms.Client.findAll",
-        query = "FROM Client WHERE sensitivityIndicator = 'N' AND soc158SealedClientIndicator = 'N' AND soc158SealedClientIndicator = 'N'"),
+        query = "FROM Client WHERE sensitivityIndicator = 'N' AND soc158SealedClientIndicator = 'N'"),
     @NamedQuery(name = "gov.ca.cwds.data.persistence.cms.Client.findAllUpdatedAfter",
-        query = "FROM Client WHERE sensitivityIndicator = 'N' AND soc158SealedClientIndicator = 'N' AND soc158SealedClientIndicator = 'N' AND lastUpdatedTime > :after")})
-@NamedNativeQueries({
-    @NamedNativeQuery(name = "gov.ca.cwds.data.persistence.cms.Client.findAllByBucket",
-        query = "select z.IDENTIFIER, z.ADPTN_STCD, z.ALN_REG_NO, z.BIRTH_DT, z.BR_FAC_NM, z.B_STATE_C, "
-            + "z.B_CNTRY_C, z.CHLD_CLT_B, z.COM_FST_NM, z.COM_LST_NM, z.COM_MID_NM, z.CONF_EFIND, z.CONF_ACTDT, "
-            + "z.CREATN_DT, z.DEATH_DT, z.DTH_RN_TXT, z.DRV_LIC_NO, z.D_STATE_C, z.GENDER_CD, z.I_CNTRY_C, "
-            + "z.IMGT_STC, z.INCAPC_CD, z.LITRATE_CD, z.MAR_HIST_B, z.MRTL_STC, z.MILT_STACD, z.NMPRFX_DSC, "
-            + "z.NAME_TPC, z.OUTWRT_IND, z.P_ETHNCTYC, z.P_LANG_TPC, z.RLGN_TPC, z.S_LANG_TC, z.SENSTV_IND, "
-            + "z.SNTV_HLIND, z.SS_NO, z.SSN_CHG_CD, z.SUFX_TLDSC, z.UNEMPLY_CD, z.LST_UPD_ID, z.LST_UPD_TS, "
-            + "z.COMMNT_DSC, z.EST_DOB_CD, z.BP_VER_IND, z.HISP_CD, z.CURRCA_IND, z.CURREG_IND, z.COTH_DESC, "
-            + "z.PREVCA_IND, z.PREREG_IND, z.POTH_DESC, z.HCARE_IND, z.LIMIT_IND, z.BIRTH_CITY, z.HEALTH_TXT, "
-            + "z.MTERM_DT, z.FTERM_DT, z.ZIPPY_IND, z.DEATH_PLC, z.TR_MBVRT_B, z.TRBA_CLT_B, z.SOC158_IND, "
-            + "z.DTH_DT_IND, z.EMAIL_ADDR, z.ADJDEL_IND, z.ETH_UD_CD, z.HISP_UD_CD, z.SOCPLC_CD, z.CL_INDX_NO "
-            + "from ( select mod(y.rn, :total_buckets) + 1 as bucket, y.* "
-            + "  from ( select row_number() over (order by 1) as rn, x.* "
-            + "    from ( select c.* from cwsint.client_t c ) x ) y ) z "
-            + "where z.bucket = :bucket_num for read only",
-        resultClass = Client.class)})
+        query = "FROM Client WHERE sensitivityIndicator = 'N' AND soc158SealedClientIndicator = 'N' AND lastUpdatedTime > :after")})
+@NamedNativeQueries({@NamedNativeQuery(
+    name = "gov.ca.cwds.data.persistence.cms.Client.findAllByBucket",
+    query = "select z.IDENTIFIER, z.ADPTN_STCD, z.ALN_REG_NO, z.BIRTH_DT, z.BR_FAC_NM, z.B_STATE_C, "
+        + "z.B_CNTRY_C, z.CHLD_CLT_B, z.COM_FST_NM, z.COM_LST_NM, z.COM_MID_NM, z.CONF_EFIND, z.CONF_ACTDT, "
+        + "z.CREATN_DT, z.DEATH_DT, z.DTH_RN_TXT, z.DRV_LIC_NO, z.D_STATE_C, z.GENDER_CD, z.I_CNTRY_C, "
+        + "z.IMGT_STC, z.INCAPC_CD, z.LITRATE_CD, z.MAR_HIST_B, z.MRTL_STC, z.MILT_STACD, z.NMPRFX_DSC, "
+        + "z.NAME_TPC, z.OUTWRT_IND, z.P_ETHNCTYC, z.P_LANG_TPC, z.RLGN_TPC, z.S_LANG_TC, z.SENSTV_IND, "
+        + "z.SNTV_HLIND, z.SS_NO, z.SSN_CHG_CD, z.SUFX_TLDSC, z.UNEMPLY_CD, z.LST_UPD_ID, z.LST_UPD_TS, "
+        + "z.COMMNT_DSC, z.EST_DOB_CD, z.BP_VER_IND, z.HISP_CD, z.CURRCA_IND, z.CURREG_IND, z.COTH_DESC, "
+        + "z.PREVCA_IND, z.PREREG_IND, z.POTH_DESC, z.HCARE_IND, z.LIMIT_IND, z.BIRTH_CITY, z.HEALTH_TXT, "
+        + "z.MTERM_DT, z.FTERM_DT, z.ZIPPY_IND, z.DEATH_PLC, z.TR_MBVRT_B, z.TRBA_CLT_B, z.SOC158_IND, "
+        + "z.DTH_DT_IND, z.EMAIL_ADDR, z.ADJDEL_IND, z.ETH_UD_CD, z.HISP_UD_CD, z.SOCPLC_CD, z.CL_INDX_NO "
+        + "from ( select mod(y.rn, :total_buckets) + 1 as bucket, y.* "
+        + "from ( select row_number() over (order by 1) as rn, x.* "
+        + "from ( select c.* from cwsint.client_t c where c.SOC158_IND ='N' and c.SENSTV_IND = 'N' "
+        + ") x ) y ) z where z.bucket = :bucket_num for read only",
+    resultClass = Client.class)})
 @Entity
 @Table(name = "CLIENT_T")
 @JsonPropertyOrder(alphabetic = true)

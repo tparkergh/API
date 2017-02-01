@@ -94,7 +94,6 @@ public class PersonSearchResourceTest {
         .accept(MediaType.APPLICATION_JSON).get().getStatus();
     int expectedStatus = 404;
     assertThat(receivedStatus, is(expectedStatus));
-
   }
 
   @Test
