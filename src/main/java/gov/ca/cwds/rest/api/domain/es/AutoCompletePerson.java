@@ -491,6 +491,10 @@ public class AutoCompletePerson
 
   }
 
+  /**
+   * 
+   * @author CWDS API Team
+   */
   @JsonFormat(shape = JsonFormat.Shape.OBJECT)
   public enum AutoCompletePersonAddressType {
     Home, School, Work, Placement, Homeless, Other
@@ -1104,13 +1108,28 @@ public class AutoCompletePerson
     return EqualsBuilder.reflectionEquals(this, obj, false);
   }
 
+  /**
+   * Getter for CMS syscode cache.
+   * 
+   * @return reference to CMS syscode cache
+   */
   public static ISystemCodeCache getSystemCodes() {
     return systemCodes;
   }
 
+  /**
+   * Store a reference to the singleton CMS syscode cache for quick convenient access.
+   * 
+   * @param systemCodes CMS syscode cache
+   */
   @Inject
   public static void setSystemCodes(@SystemCodeCache ISystemCodeCache systemCodes) {
     AutoCompletePerson.systemCodes = systemCodes;
+  }
+
+  @Override
+  public Serializable getPrimaryKey() {
+    return this.getId();
   }
 
 }
