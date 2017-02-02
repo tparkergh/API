@@ -69,7 +69,7 @@ public class OtherClientNameTest implements PersistentTestTemplate {
     }
 
     final String json = baos.toString(java.nio.charset.StandardCharsets.UTF_8.name());
-    System.out.println(json);
+    // System.out.println(json);
     final OtherClientName actual = MAPPER.readValue(json, OtherClientName.class);
     assertThat(actual, is(equalTo(validBean())));
   }
