@@ -42,5 +42,7 @@ This test creates a load against the DB2 database. The data created as part of t
 CLIENT_T
 REPTR_T
 COLTRL_T
-
+OTH_KIDT
+EDPRVCNT
+OTH_ADLT
 
