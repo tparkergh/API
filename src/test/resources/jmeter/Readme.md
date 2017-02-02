@@ -2,7 +2,7 @@
 
 JMeter Tests are part of the API project as jmx files eg. *API/src/test/resources/jmeter/CmsReferralLegacyNSComparison.jmx*
 
-The JMeter Tests are executed as part of Jenkins Continuous Integration after each build of the API project
+Some JMeter Tests are executed as part of Jenkins Continuous Integration after each build of the API project
 
 The User Properties for JMeter are part of the api-deploy project
 
@@ -14,7 +14,7 @@ The intent is that a referral created via the API New System should be identical
 
 ### Tests for individual resources
 
-These test the REST calls against the resource
+These test REST calls against the resource
 
 _allegations.jmx
 _cmsreferrals.jmx
@@ -29,7 +29,16 @@ people_search.jmx
 
 ### CmsDb2LoadTestIncludingSetUpAndTearDown.jmx
 
-This test creates a load against the DB2 database. The tables covered include
+For this test The following properties are added to JMeter user.properties
+
+load.test.number.of.users
+load.test.loops
+load.test.tabledata
+load.test.db2.url
+load.test.db2.user
+load.test.db2.password
+
+This test creates a load against the DB2 database. The data created as part of the test is cleared up when the test is complete. The tables covered include
 CLIENT_T
 REPTR_T
 COLTRL_T
