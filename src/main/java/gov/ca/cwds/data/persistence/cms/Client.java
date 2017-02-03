@@ -59,7 +59,8 @@ import gov.ca.cwds.rest.api.domain.DomainChef;
         + "z.DTH_DT_IND, z.EMAIL_ADDR, z.ADJDEL_IND, z.ETH_UD_CD, z.HISP_UD_CD, z.SOCPLC_CD, z.CL_INDX_NO "
         + "from ( select mod(y.rn, :total_buckets) + 1 as bucket, y.* "
         + "from ( select row_number() over (order by 1) as rn, x.* "
-        + "from ( select c.* from cwsint.client_t c where c.SOC158_IND ='N' and c.SENSTV_IND = 'N' "
+        + "from ( select c.* from cwsint.client_t c where "
+        + "c.SOC158_IND ='N' and c.SENSTV_IND = 'N' "
         + ") x ) y ) z where z.bucket = :bucket_num for read only",
     resultClass = Client.class)})
 @Entity

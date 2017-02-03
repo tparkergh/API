@@ -9,6 +9,8 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 
 import org.apache.commons.lang3.StringUtils;
+import org.hibernate.annotations.NamedNativeQueries;
+import org.hibernate.annotations.NamedNativeQuery;
 import org.hibernate.annotations.NamedQueries;
 import org.hibernate.annotations.NamedQuery;
 import org.hibernate.annotations.Type;
@@ -18,6 +20,7 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 
 import gov.ca.cwds.data.CmsSystemCodeDeserializer;
+import gov.ca.cwds.data.IPersonAware;
 import gov.ca.cwds.data.SystemCodeSerializer;
 import gov.ca.cwds.data.persistence.PersistentObject;
 
@@ -33,11 +36,26 @@ import gov.ca.cwds.data.persistence.PersistentObject;
     @NamedQuery(
         name = "gov.ca.cwds.data.persistence.cms.SubstituteCareProvider.findAllUpdatedAfter",
         query = "FROM SubstituteCareProvider WHERE lastUpdatedTime > :after")})
+@NamedNativeQueries({@NamedNativeQuery(
+    name = "gov.ca.cwds.data.persistence.cms.SubstituteCareProvider.findAllByBucket",
+    query = "select z.IDENTIFIER, z.ADD_TEL_NO, z.ADD_EXT_NO, z.YR_INC_AMT, "
+        + "z.BIRTH_DT, z.CA_DLIC_NO, z.CITY_NM, z.EDUCATION, z.EMAIL_ADDR, "
+        + "z.EMPLYR_NM, z.EMPL_STAT, z.ETH_UD_CD, z.FIRST_NM, z.FRG_ADRT_B, "
+        + "z.GENDER_IND, z.HISP_UD_CD, z.HISP_CD, z.IND_TRBC, z.LAST_NM, "
+        + "z.LISOWNIND, z.LIS_PER_ID, z.MRTL_STC, z.MID_INI_NM, z.NMPRFX_DSC, "
+        + "z.PASSBC_CD, z.PRIM_INC, z.RESOST_IND, z.SEC_INC, z.SS_NO, "
+        + "z.STATE_C, z.STREET_NM, z.STREET_NO, z.SUFX_TLDSC, z.ZIP_NO, "
+        + "z.ZIP_SFX_NO, z.LST_UPD_ID, z.LST_UPD_TS "
+        + "from ( select mod(y.rn, :total_buckets) + 1 as bucket, y.* "
+        + "from ( select row_number() over (order by 1) as rn, x.* "
+        + "from ( select c.* from cwsint.SB_PVDRT c "
+        + ") x ) y ) z where z.bucket = :bucket_num for read only",
+    resultClass = SubstituteCareProvider.class)})
 @Entity
-@Table(schema = "CWSINT", name = "SB_PVDRT")
+@Table(name = "SB_PVDRT")
 @JsonPropertyOrder(alphabetic = true)
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class SubstituteCareProvider extends CmsPersistentObject {
+public class SubstituteCareProvider extends CmsPersistentObject implements IPersonAware {
 
   /**
    * Base serialization version. Increment per change.
@@ -311,6 +329,7 @@ public class SubstituteCareProvider extends CmsPersistentObject {
   /**
    * @return the birthDate
    */
+  @Override
   public Date getBirthDate() {
     return birthDate;
   }
@@ -367,6 +386,7 @@ public class SubstituteCareProvider extends CmsPersistentObject {
   /**
    * @return the firstName
    */
+  @Override
   public String getFirstName() {
     return StringUtils.trimToEmpty(firstName);
   }
@@ -409,6 +429,7 @@ public class SubstituteCareProvider extends CmsPersistentObject {
   /**
    * @return the lastName
    */
+  @Override
   public String getLastName() {
     return StringUtils.trimToEmpty(lastName);
   }
@@ -588,6 +609,26 @@ public class SubstituteCareProvider extends CmsPersistentObject {
     result = prime * result
         + ((super.getLastUpdatedTime() == null) ? 0 : super.getLastUpdatedTime().hashCode());
     return result;
+  }
+
+  @Override
+  public String getMiddleName() {
+    return this.getMiddleInitialName();
+  }
+
+  @Override
+  public String getGender() {
+    return this.getGenderIndicator();
+  }
+
+  @Override
+  public String getSsn() {
+    return this.getSocialSecurityNumber();
+  }
+
+  @Override
+  public String getNameSuffix() {
+    return this.getSuffixTitleDescription();
   }
 
   /**

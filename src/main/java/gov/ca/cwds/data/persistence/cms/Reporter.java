@@ -12,6 +12,8 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 
+import org.hibernate.annotations.NamedNativeQueries;
+import org.hibernate.annotations.NamedNativeQuery;
 import org.hibernate.annotations.NamedQueries;
 import org.hibernate.annotations.NamedQuery;
 import org.hibernate.annotations.Type;
@@ -43,12 +45,25 @@ import gov.ca.cwds.rest.api.domain.DomainChef;
         query = "FROM Reporter"),
     @NamedQuery(name = "gov.ca.cwds.data.persistence.cms.Reporter.findAllUpdatedAfter",
         query = "FROM Reporter WHERE lastUpdatedTime > :after")})
+@NamedNativeQueries({@NamedNativeQuery(
+    name = "gov.ca.cwds.data.persistence.cms.Reporter.findAllByBucket",
+    query = "select z.RPTR_BDGNO, z.RPTR_CTYNM, z.COL_RELC, z.CMM_MTHC, z.CNFWVR_IND, "
+        + "z.FDBACK_DOC, z.RPTR_EMPNM, z.FEEDBCK_DT, z.FB_RQR_IND, z.RPTR_FSTNM, "
+        + "z.RPTR_LSTNM, z.MNRPTR_IND, z.MSG_EXT_NO, z.MSG_TEL_NO, z.MID_INI_NM, "
+        + "z.NMPRFX_DSC, z.PRM_TEL_NO, z.PRM_EXT_NO, z.STATE_C, z.RPTR_ST_NM, "
+        + "z.RPTR_ST_NO, z.SUFX_TLDSC, z.RPTR_ZIPNO, z.LST_UPD_ID, z.LST_UPD_TS, "
+        + "z.FKREFERL_T, z.FKLAW_ENFT, z.ZIP_SFX_NO, z.CNTY_SPFCD "
+        + "from ( select mod(y.rn, :total_buckets) + 1 as bucket, y.* "
+        + "from ( select row_number() over (order by 1) as rn, x.* "
+        + "from ( select c.* from cwsint.REPTR_T c "
+        + ") x ) y ) z where z.bucket = :bucket_num for read only",
+    resultClass = Reporter.class)})
 @SuppressWarnings("serial")
 @Entity
 @Table(name = "REPTR_T")
 @JsonPropertyOrder(alphabetic = true)
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class Reporter extends CmsPersistentObject
+public final class Reporter extends CmsPersistentObject
     implements IPersonAware, IAddressAware, IMultiplePhonesAware {
 
   private static final Logger LOGGER = LoggerFactory.getLogger(Reporter.class);
