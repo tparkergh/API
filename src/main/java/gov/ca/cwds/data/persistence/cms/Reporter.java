@@ -549,7 +549,7 @@ public class Reporter extends CmsPersistentObject
   @Override
   @Transient
   public String getState() {
-    return this.stateCodeType != null ? this.stateCodeType.toString() : null;
+    return this.getStateCodeType() != null ? this.getStateCodeType().toString() : null;
   }
 
   @JsonIgnore
@@ -560,6 +560,9 @@ public class Reporter extends CmsPersistentObject
 
     if (this.zipNumber != null) {
       buf.append(zipNumber);
+    }
+    if (this.getZipSuffixNumber() != null) {
+      buf.append('-').append(getZipSuffixNumber());
     }
 
     return buf.toString();

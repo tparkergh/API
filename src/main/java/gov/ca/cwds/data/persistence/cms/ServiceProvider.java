@@ -1,6 +1,7 @@
 package gov.ca.cwds.data.persistence.cms;
 
 import java.math.BigDecimal;
+import java.util.Date;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -8,15 +9,21 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 
 import org.apache.commons.lang3.StringUtils;
+import org.hibernate.annotations.NamedNativeQueries;
+import org.hibernate.annotations.NamedNativeQuery;
 import org.hibernate.annotations.NamedQueries;
 import org.hibernate.annotations.NamedQuery;
 import org.hibernate.annotations.Type;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 
 import gov.ca.cwds.data.CmsSystemCodeDeserializer;
+import gov.ca.cwds.data.IAddressAware;
+import gov.ca.cwds.data.IPersonAware;
+import gov.ca.cwds.data.IPhoneAware;
 import gov.ca.cwds.data.SystemCodeSerializer;
 import gov.ca.cwds.data.persistence.PersistentObject;
 
@@ -31,13 +38,23 @@ import gov.ca.cwds.data.persistence.PersistentObject;
         query = "FROM ServiceProvider"),
     @NamedQuery(name = "gov.ca.cwds.rest.api.persistence.cms.ServiceProvider.findAllUpdatedAfter",
         query = "FROM ServiceProvider WHERE lastUpdatedTime > :after")})
+@NamedNativeQueries({
+    @NamedNativeQuery(name = "gov.ca.cwds.data.persistence.cms.ServiceProvider.findAllByBucket",
+        query = "select z.IDENTIFIER, z.AGENCY_NM, z.CITY_NM, z.FAX_NO, z.FIRST_NM, z.LAST_NM, "
+            + "z.NMPRFX_DSC, z.PHONE_NO, z.TEL_EXT_NO, z.PSTITL_DSC, z.SVCPVDRC, z.STATE_C, "
+            + "z.STREET_NM, z.STREET_NO, z.SUFX_TLDSC, z.ZIP_NM, z.LST_UPD_ID, z.LST_UPD_TS, "
+            + "z.ZIP_SFX_NO, z.ARCASS_IND, z.EMAIL_ADDR "
+            + "from ( select mod(y.rn, :total_buckets) + 1 as bucket, y.* "
+            + "from ( select row_number() over (order by 1) as rn, x.* "
+            + "from ( select c.* from cwsint.SVC_PVRT c "
+            + ") x ) y ) z where z.bucket = :bucket_num for read only",
+        resultClass = ServiceProvider.class)})
 @Entity
-@Table(schema = "CWSINT", name = "SVC_PVRT")
+@Table(name = "SVC_PVRT")
 @JsonPropertyOrder(alphabetic = true)
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class ServiceProvider extends CmsPersistentObject {
-
-  // CREATE TABLE SVC_PVRT (FAX_NO DECIMAL(10:0) NOT NULL,PHONE_NO DECIMAL(10:0) NOT NULL);
+public class ServiceProvider extends CmsPersistentObject
+    implements IPersonAware, IAddressAware, IPhoneAware {
 
   /**
    * Base serialization value. Increment by class version.
@@ -213,6 +230,7 @@ public class ServiceProvider extends CmsPersistentObject {
   /**
    * @return the firstName
    */
+  @Override
   public String getFirstName() {
     return StringUtils.trimToEmpty(firstName);
   }
@@ -227,6 +245,7 @@ public class ServiceProvider extends CmsPersistentObject {
   /**
    * @return the lastName
    */
+  @Override
   public String getLastName() {
     return StringUtils.trimToEmpty(lastName);
   }
@@ -248,8 +267,16 @@ public class ServiceProvider extends CmsPersistentObject {
   /**
    * @return the phoneNumber
    */
-  public BigDecimal getPhoneNumber() {
+  public BigDecimal getPhoneNumberAsDecimal() {
     return phoneNumber;
+  }
+
+  /**
+   * @return the phoneNumber
+   */
+  @Override
+  public String getPhoneNumber() {
+    return phoneNumber != null ? phoneNumber.toPlainString() : null;
   }
 
   /**
@@ -306,6 +333,88 @@ public class ServiceProvider extends CmsPersistentObject {
    */
   public Short getZipSuffixNumber() {
     return zipSuffixNumber;
+  }
+
+  @JsonIgnore
+  @Override
+  public String getStreetAddress() {
+    return this.getStreetNumber() + " " + this.getStreetName();
+  }
+
+  @JsonIgnore
+  @Override
+  public String getCity() {
+    return this.getCityName();
+  }
+
+  @JsonIgnore
+  @Override
+  public String getState() {
+    return this.getStateCodeType() != null ? this.getStateCodeType().toString() : null;
+  }
+
+  @JsonIgnore
+  @Override
+  public String getZip() {
+    StringBuilder buf = new StringBuilder();
+
+    if (this.getZipNumber() != null) {
+      buf.append(getZipNumber());
+    }
+    if (this.getZipSuffixNumber() != null) {
+      buf.append('-').append(getZipSuffixNumber());
+    }
+
+    return buf.toString();
+  }
+
+  @JsonIgnore
+  @Override
+  public String getCounty() {
+    return null;
+  }
+
+  @JsonIgnore
+  @Override
+  public String getMiddleName() {
+    return null;
+  }
+
+  @JsonIgnore
+  @Override
+  public String getGender() {
+    return null;
+  }
+
+  @JsonIgnore
+  @Override
+  public Date getBirthDate() {
+    return null;
+  }
+
+  @JsonIgnore
+  @Override
+  public String getSsn() {
+    return null;
+  }
+
+  @JsonIgnore
+  @Override
+  public String getNameSuffix() {
+    return null;
+  }
+
+  @JsonIgnore
+  @Override
+  public String getPhoneNumberExtension() {
+    return this.getPhoneExtensionNumber() != null ? this.getPhoneExtensionNumber().toString()
+        : null;
+  }
+
+  @JsonIgnore
+  @Override
+  public PhoneType getPhoneType() {
+    return null;
   }
 
   /**

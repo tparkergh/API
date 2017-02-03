@@ -50,10 +50,11 @@ public class ServiceProviderTest {
     ServiceProvider pers = new ServiceProvider(vsprv.getAgencyName(),
         vsprv.getArchiveAssociationIndicator(), vsprv.getCityName(), vsprv.getEmailAddress(),
         vsprv.getFaxNumber(), vsprv.getFirstName(), vsprv.getId(), vsprv.getLastName(),
-        vsprv.getNamePrefixDescription(), vsprv.getPhoneExtensionNumber(), vsprv.getPhoneNumber(),
-        vsprv.getPositionTitleDescription(), vsprv.getServiceProviderType(),
-        vsprv.getStateCodeType(), vsprv.getStreetName(), vsprv.getStreetNumber(),
-        vsprv.getSuffixTitleDescription(), vsprv.getZipNumber(), vsprv.getZipSuffixNumber());
+        vsprv.getNamePrefixDescription(), vsprv.getPhoneExtensionNumber(),
+        vsprv.getPhoneNumberAsDecimal(), vsprv.getPositionTitleDescription(),
+        vsprv.getServiceProviderType(), vsprv.getStateCodeType(), vsprv.getStreetName(),
+        vsprv.getStreetNumber(), vsprv.getSuffixTitleDescription(), vsprv.getZipNumber(),
+        vsprv.getZipSuffixNumber());
 
     assertThat(pers.getAgencyName(), is(equalTo(vsprv.getAgencyName())));
     assertThat(pers.getArchiveAssociationIndicator(),
@@ -86,10 +87,11 @@ public class ServiceProviderTest {
     ServiceProvider pers = new ServiceProvider(vsprv.getAgencyName(),
         vsprv.getArchiveAssociationIndicator(), vsprv.getCityName(), vsprv.getEmailAddress(),
         vsprv.getFaxNumber(), vsprv.getFirstName(), vsprv.getId(), vsprv.getLastName(),
-        vsprv.getNamePrefixDescription(), vsprv.getPhoneExtensionNumber(), vsprv.getPhoneNumber(),
-        vsprv.getPositionTitleDescription(), vsprv.getServiceProviderType(),
-        vsprv.getStateCodeType(), vsprv.getStreetName(), vsprv.getStreetNumber(),
-        vsprv.getSuffixTitleDescription(), vsprv.getZipNumber(), vsprv.getZipSuffixNumber());
+        vsprv.getNamePrefixDescription(), vsprv.getPhoneExtensionNumber(),
+        vsprv.getPhoneNumberAsDecimal(), vsprv.getPositionTitleDescription(),
+        vsprv.getServiceProviderType(), vsprv.getStateCodeType(), vsprv.getStreetName(),
+        vsprv.getStreetNumber(), vsprv.getSuffixTitleDescription(), vsprv.getZipNumber(),
+        vsprv.getZipSuffixNumber());
 
     final String expected = MAPPER.writeValueAsString((MAPPER.readValue(
         fixture("fixtures/persistent/ServiceProvider/valid/validWithSysCodes.json"),
