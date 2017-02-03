@@ -8,10 +8,17 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 
 import org.apache.commons.lang3.StringUtils;
+import org.hibernate.annotations.NamedNativeQueries;
+import org.hibernate.annotations.NamedNativeQuery;
 import org.hibernate.annotations.NamedQueries;
 import org.hibernate.annotations.NamedQuery;
 import org.hibernate.annotations.Type;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonPropertyOrder;
+
+import gov.ca.cwds.data.IPersonAware;
 import gov.ca.cwds.data.persistence.PersistentObject;
 
 
@@ -26,12 +33,24 @@ import gov.ca.cwds.data.persistence.PersistentObject;
     @NamedQuery(
         name = "gov.ca.cwds.data.persistence.cms.OtherAdultInPlacemtHome.findAllUpdatedAfter",
         query = "FROM OtherAdultInPlacemtHome WHERE lastUpdatedTime > :after")})
+@NamedNativeQueries({@NamedNativeQuery(
+    name = "gov.ca.cwds.data.persistence.cms.OtherAdultInPlacemtHome.findAllByBucket",
+    query = "select z.IDENTIFIER, z.BIRTH_DT, z.END_DT, z.GENDER_CD, z.OTH_ADLTNM, "
+        + "z.START_DT, z.LST_UPD_ID, z.LST_UPD_TS, z.FKPLC_HM_T, z.COMNT_DSC, "
+        + "z.OTH_ADL_CD, z.IDENTFD_DT, z.RESOST_IND, z.PASSBC_CD "
+        + "from ( select mod(y.rn, :total_buckets) + 1 as bucket, y.* "
+        + "from ( select row_number() over (order by 1) as rn, x.* "
+        + "from ( select c.* from cwsint.OTH_ADLT c "
+        + ") x ) y ) z where z.bucket = :bucket_num for read only",
+    resultClass = OtherAdultInPlacemtHome.class)})
 @Entity
-@Table(schema = "CWSINT", name = "OTH_ADLT")
-public class OtherAdultInPlacemtHome extends CmsPersistentObject {
+@Table(name = "OTH_ADLT")
+@JsonPropertyOrder(alphabetic = true)
+@JsonIgnoreProperties(ignoreUnknown = true)
+public class OtherAdultInPlacemtHome extends CmsPersistentObject implements IPersonAware {
 
   /**
-   * 
+   * Base serialization version. Increment by class version.
    */
   private static final long serialVersionUID = 1L;
 
@@ -131,6 +150,7 @@ public class OtherAdultInPlacemtHome extends CmsPersistentObject {
   /**
    * @return the birthDate
    */
+  @Override
   public Date getBirthDate() {
     return birthDate;
   }
@@ -212,6 +232,41 @@ public class OtherAdultInPlacemtHome extends CmsPersistentObject {
     return startDate;
   }
 
+  @JsonIgnore
+  @Override
+  public String getFirstName() {
+    return null;
+  }
+
+  @JsonIgnore
+  @Override
+  public String getMiddleName() {
+    return null;
+  }
+
+  @JsonIgnore
+  @Override
+  public String getLastName() {
+    return this.getName();
+  }
+
+  @JsonIgnore
+  @Override
+  public String getGender() {
+    return this.getGenderCode();
+  }
+
+  @JsonIgnore
+  @Override
+  public String getSsn() {
+    return null;
+  }
+
+  @JsonIgnore
+  @Override
+  public String getNameSuffix() {
+    return null;
+  }
 
   /**
    * {@inheritDoc}
