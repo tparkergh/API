@@ -63,7 +63,7 @@ import gov.ca.cwds.rest.api.domain.DomainChef;
 @Table(name = "REPTR_T")
 @JsonPropertyOrder(alphabetic = true)
 @JsonIgnoreProperties(ignoreUnknown = true)
-public final class Reporter extends CmsPersistentObject
+public class Reporter extends CmsPersistentObject
     implements IPersonAware, IAddressAware, IMultiplePhonesAware {
 
   private static final Logger LOGGER = LoggerFactory.getLogger(Reporter.class);
