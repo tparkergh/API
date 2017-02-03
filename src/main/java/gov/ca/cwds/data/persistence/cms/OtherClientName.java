@@ -11,6 +11,8 @@ import javax.persistence.Table;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.hibernate.annotations.NamedNativeQueries;
+import org.hibernate.annotations.NamedNativeQuery;
 import org.hibernate.annotations.NamedQueries;
 import org.hibernate.annotations.NamedQuery;
 import org.hibernate.annotations.Type;
@@ -28,7 +30,7 @@ import gov.ca.cwds.data.persistence.PersistentObject;
 
 
 /**
- * {@link PersistentObject} representing an OtherClientName
+ * {@link PersistentObject} representing an OtherClientName.
  * 
  * @author CWDS API Team
  */
@@ -38,6 +40,15 @@ import gov.ca.cwds.data.persistence.PersistentObject;
         query = "FROM OtherClientName WHERE clientId IN (SELECT id FROM Client WHERE sensitivityIndicator = 'N' AND soc158SealedClientIndicator = 'N')"),
     @NamedQuery(name = "gov.ca.cwds.data.persistence.cms.OtherClientName.findAllUpdatedAfter",
         query = "FROM OtherClientName WHERE lastUpdatedTime > :after AND clientId IN (SELECT id FROM Client WHERE sensitivityIndicator = 'N' AND soc158SealedClientIndicator = 'N')")})
+@NamedNativeQueries({
+    @NamedNativeQuery(name = "gov.ca.cwds.data.persistence.cms.OtherClientName.findAllByBucket",
+        query = "select z.THIRD_ID, z.FIRST_NM, z.LAST_NM, z.MIDDLE_NM, z.NMPRFX_DSC, "
+            + "z.NAME_TPC, z.SUFX_TLDSC, z.LST_UPD_ID, z.LST_UPD_TS, z.FKCLIENT_T "
+            + "from ( select mod(y.rn, :total_buckets) + 1 as bucket, y.* "
+            + "from ( select row_number() over (order by 1) as rn, x.* "
+            + "from ( select c.* from cwsint.OCL_NM_T c "
+            + ") x ) y ) z where z.bucket = :bucket_num for read only",
+        resultClass = OtherClientName.class)})
 @Entity
 @Table(name = "OCL_NM_T")
 @JsonPropertyOrder(alphabetic = true)
@@ -47,6 +58,7 @@ public class OtherClientName extends CmsPersistentObject implements IPersonAware
   @Column(name = "FIRST_NM")
   private String firstName;
 
+  @Id
   @Column(name = "FKCLIENT_T", length = CMS_ID_LEN)
   private String clientId;
 
@@ -188,7 +200,6 @@ public class OtherClientName extends CmsPersistentObject implements IPersonAware
    */
   @JsonProperty(value = "thirdId")
   public void setThirdId(String thirdId) {
-    // id.setId2(thirdId);
     this.thirdId = thirdId;
   }
 
@@ -266,10 +277,6 @@ public class OtherClientName extends CmsPersistentObject implements IPersonAware
   public String getNameSuffix() {
     return this.suffixTitleDescription;
   }
-
-  // public void setNameType(Short nameType) {
-  // this.nameType = nameType;
-  // }
 
   @Override
   public String toString() {
