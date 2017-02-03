@@ -547,6 +547,55 @@ VALUES (&apos;${subCareProviderId}&apos;, 5305295841, 0, NULL, &apos;        &ap
             </ResultCollector>
             <hashTree/>
           </hashTree>
+          <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="Add To Referral" enabled="true">
+            <stringProp name="dataSource">docker</stringProp>
+            <stringProp name="queryType">Update Statement</stringProp>
+            <stringProp name="query">INSERT INTO cwsInt.REFERL_T(IDENTIFIER, ADD_INF_CD, ANRPTR_IND, PETAPL_IND, APRVL_NO, APV_STC, CR_PERP_CD, REFCLSR_DT, CMM_MTHC, CHILOC_TXT, ALGDSC_DOC, ER_REF_DOC, INVSTG_DOC, XRPT_LWIND, FMY_AW_IND, GVR_ENTC, LGL_DEF_CD, LGLRGT_IND, LMT_ACSSCD, XRPT_RCVDT, REFERRL_NM, ADQT_CS_CD, REF_RCV_DT, REF_RCV_TM, RFR_RSPC, RFRD_RSC, RSP_DTR_DT, RSP_DTR_TM, RSP_RTNTXT, SCN_NT_TXT, SP_INCL_CD, SFC_INF_CD, UNFD_SR_CD, LST_UPD_ID, LST_UPD_TS, FKREFERL_T, FKADDRS_T, FKSTFPERS0, FKSTFPERST, CNTY_SPFCD, SPRJRF_IND, ZIPPY_IND, HOMLES_IND, FAMREF_IND, FIRST_EODT, RSP_AGY_CD, L_GVR_ENTC, LMT_ACS_DT, LMT_ACSDSC, ORIGCLS_DT) 
+VALUES (&apos;${referralId}&apos;, &apos; &apos;, &apos;N&apos;, &apos;N&apos;, &apos;D5YRVOm0Hj&apos;, 122, &apos; &apos;, &apos;2000-03-03&apos;, 409, null, null, &apos;L3H7sSC0Hj&apos;, null, &apos;N&apos;, &apos;N&apos;, 1118, &apos; &apos;, &apos;N&apos;, &apos;N&apos;, null, &apos;Verification (R3)                  &apos;, &apos; &apos;, &apos;2000-01-31&apos;, &apos;14:44:00&apos;, 1520, 0, &apos;2000-01-31&apos;, &apos;14:46:00&apos;, null, null, &apos; &apos;, &apos; &apos;, &apos; &apos;, &apos;0Hj&apos;, &apos;2000-03-03 09:59:40.009312&apos;, null, null, &apos;0Hj&apos;, &apos;0Hj&apos;, &apos;51&apos;, &apos;N&apos;, &apos;N&apos;, &apos;N&apos;, &apos;N&apos;, null, &apos;C&apos;, null, null, null, &apos;2000-03-03&apos;)
+ </stringProp>
+            <stringProp name="queryArguments"></stringProp>
+            <stringProp name="queryArgumentsTypes"></stringProp>
+            <stringProp name="variableNames"></stringProp>
+            <stringProp name="resultVariable"></stringProp>
+            <stringProp name="queryTimeout"></stringProp>
+            <stringProp name="resultSetHandler">Store as String</stringProp>
+          </JDBCSampler>
+          <hashTree>
+            <ResultCollector guiclass="ViewResultsFullVisualizer" testclass="ResultCollector" testname="View Results Tree" enabled="true">
+              <boolProp name="ResultCollector.error_logging">false</boolProp>
+              <objProp>
+                <name>saveConfig</name>
+                <value class="SampleSaveConfiguration">
+                  <time>true</time>
+                  <latency>true</latency>
+                  <timestamp>true</timestamp>
+                  <success>true</success>
+                  <label>true</label>
+                  <code>true</code>
+                  <message>true</message>
+                  <threadName>true</threadName>
+                  <dataType>true</dataType>
+                  <encoding>false</encoding>
+                  <assertions>true</assertions>
+                  <subresults>true</subresults>
+                  <responseData>false</responseData>
+                  <samplerData>false</samplerData>
+                  <xml>false</xml>
+                  <fieldNames>true</fieldNames>
+                  <responseHeaders>false</responseHeaders>
+                  <requestHeaders>false</requestHeaders>
+                  <responseDataOnError>false</responseDataOnError>
+                  <saveAssertionResultsFailureMessage>true</saveAssertionResultsFailureMessage>
+                  <assertionsResultsToSave>0</assertionsResultsToSave>
+                  <bytes>true</bytes>
+                  <threadCounts>true</threadCounts>
+                  <idleTime>true</idleTime>
+                </value>
+              </objProp>
+              <stringProp name="filename"></stringProp>
+            </ResultCollector>
+            <hashTree/>
+          </hashTree>
         </hashTree>
       </hashTree>
       <ThreadGroup guiclass="ThreadGroupGui" testclass="ThreadGroup" testname="JDBC Users" enabled="true">
@@ -2481,6 +2530,197 @@ where IDENTIFIER=&apos;${serviceProviderId}&apos;
           </ResultCollector>
           <hashTree/>
         </hashTree>
+        <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="Referral Table Controller" enabled="true"/>
+        <hashTree>
+          <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="Insert Into Referral Table" enabled="true">
+            <stringProp name="dataSource">docker</stringProp>
+            <stringProp name="queryType">Update Statement</stringProp>
+            <stringProp name="query">INSERT INTO cwsInt.REFERL_T(IDENTIFIER, ADD_INF_CD, ANRPTR_IND, PETAPL_IND, APRVL_NO, APV_STC, CR_PERP_CD, REFCLSR_DT, CMM_MTHC, CHILOC_TXT, ALGDSC_DOC, ER_REF_DOC, INVSTG_DOC, XRPT_LWIND, FMY_AW_IND, GVR_ENTC, LGL_DEF_CD, LGLRGT_IND, LMT_ACSSCD, XRPT_RCVDT, REFERRL_NM, ADQT_CS_CD, REF_RCV_DT, REF_RCV_TM, RFR_RSPC, RFRD_RSC, RSP_DTR_DT, RSP_DTR_TM, RSP_RTNTXT, SCN_NT_TXT, SP_INCL_CD, SFC_INF_CD, UNFD_SR_CD, LST_UPD_ID, LST_UPD_TS, FKREFERL_T, FKADDRS_T, FKSTFPERS0, FKSTFPERST, CNTY_SPFCD, SPRJRF_IND, ZIPPY_IND, HOMLES_IND, FAMREF_IND, FIRST_EODT, RSP_AGY_CD, L_GVR_ENTC, LMT_ACS_DT, LMT_ACSDSC, ORIGCLS_DT) 
+VALUES (&apos;${randomId}&apos;, &apos; &apos;, &apos;N&apos;, &apos;N&apos;, &apos;D5YRVOm0Hj&apos;, 122, &apos; &apos;, &apos;2000-03-03&apos;, 409, null, null, &apos;L3H7sSC0Hj&apos;, null, &apos;N&apos;, &apos;N&apos;, 1118, &apos; &apos;, &apos;N&apos;, &apos;N&apos;, null, &apos;${name}&apos;, &apos; &apos;, &apos;2000-01-31&apos;, &apos;14:44:00&apos;, 1520, 0, &apos;2000-01-31&apos;, &apos;14:46:00&apos;, null, null, &apos; &apos;, &apos; &apos;, &apos; &apos;, &apos;0Hj&apos;, &apos;2000-03-03 09:59:40.009312&apos;, null, null, &apos;0Hj&apos;, &apos;0Hj&apos;, &apos;51&apos;, &apos;N&apos;, &apos;N&apos;, &apos;N&apos;, &apos;N&apos;, null, &apos;C&apos;, null, null, null, &apos;2000-03-03&apos;) </stringProp>
+            <stringProp name="queryArguments"></stringProp>
+            <stringProp name="queryArgumentsTypes"></stringProp>
+            <stringProp name="variableNames"></stringProp>
+            <stringProp name="resultVariable"></stringProp>
+            <stringProp name="queryTimeout"></stringProp>
+            <stringProp name="resultSetHandler">Store as String</stringProp>
+          </JDBCSampler>
+          <hashTree>
+            <ResultCollector guiclass="ViewResultsFullVisualizer" testclass="ResultCollector" testname="View Results Tree" enabled="true">
+              <boolProp name="ResultCollector.error_logging">false</boolProp>
+              <objProp>
+                <name>saveConfig</name>
+                <value class="SampleSaveConfiguration">
+                  <time>true</time>
+                  <latency>true</latency>
+                  <timestamp>true</timestamp>
+                  <success>true</success>
+                  <label>true</label>
+                  <code>true</code>
+                  <message>true</message>
+                  <threadName>true</threadName>
+                  <dataType>true</dataType>
+                  <encoding>false</encoding>
+                  <assertions>true</assertions>
+                  <subresults>true</subresults>
+                  <responseData>false</responseData>
+                  <samplerData>false</samplerData>
+                  <xml>false</xml>
+                  <fieldNames>true</fieldNames>
+                  <responseHeaders>false</responseHeaders>
+                  <requestHeaders>false</requestHeaders>
+                  <responseDataOnError>false</responseDataOnError>
+                  <saveAssertionResultsFailureMessage>true</saveAssertionResultsFailureMessage>
+                  <assertionsResultsToSave>0</assertionsResultsToSave>
+                  <bytes>true</bytes>
+                  <threadCounts>true</threadCounts>
+                  <idleTime>true</idleTime>
+                </value>
+              </objProp>
+              <stringProp name="filename"></stringProp>
+            </ResultCollector>
+            <hashTree/>
+            <BeanShellPreProcessor guiclass="TestBeanGUI" testclass="BeanShellPreProcessor" testname="BeanShell PreProcessor" enabled="true">
+              <boolProp name="resetInterpreter">false</boolProp>
+              <stringProp name="parameters"></stringProp>
+              <stringProp name="filename"></stringProp>
+              <stringProp name="script">String myIdentifier = &quot;retest&quot;+&quot;${__RandomString(4, abcdefghijklmnop1098765432)}&quot;;
+vars.put(&quot;randomId&quot;, myIdentifier);</stringProp>
+            </BeanShellPreProcessor>
+            <hashTree/>
+          </hashTree>
+          <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="Delete From Referral Table" enabled="true">
+            <stringProp name="dataSource">docker</stringProp>
+            <stringProp name="queryType">Update Statement</stringProp>
+            <stringProp name="query">DELETE FROM CWSINT.REFERL_T WHERE IDENTIFIER=&apos;${referralDeleteId}&apos;</stringProp>
+            <stringProp name="queryArguments"></stringProp>
+            <stringProp name="queryArgumentsTypes"></stringProp>
+            <stringProp name="variableNames"></stringProp>
+            <stringProp name="resultVariable"></stringProp>
+            <stringProp name="queryTimeout"></stringProp>
+            <stringProp name="resultSetHandler">Store as String</stringProp>
+          </JDBCSampler>
+          <hashTree>
+            <ResultCollector guiclass="ViewResultsFullVisualizer" testclass="ResultCollector" testname="View Results Tree" enabled="true">
+              <boolProp name="ResultCollector.error_logging">false</boolProp>
+              <objProp>
+                <name>saveConfig</name>
+                <value class="SampleSaveConfiguration">
+                  <time>true</time>
+                  <latency>true</latency>
+                  <timestamp>true</timestamp>
+                  <success>true</success>
+                  <label>true</label>
+                  <code>true</code>
+                  <message>true</message>
+                  <threadName>true</threadName>
+                  <dataType>true</dataType>
+                  <encoding>false</encoding>
+                  <assertions>true</assertions>
+                  <subresults>true</subresults>
+                  <responseData>false</responseData>
+                  <samplerData>false</samplerData>
+                  <xml>false</xml>
+                  <fieldNames>true</fieldNames>
+                  <responseHeaders>false</responseHeaders>
+                  <requestHeaders>false</requestHeaders>
+                  <responseDataOnError>false</responseDataOnError>
+                  <saveAssertionResultsFailureMessage>true</saveAssertionResultsFailureMessage>
+                  <assertionsResultsToSave>0</assertionsResultsToSave>
+                  <bytes>true</bytes>
+                  <threadCounts>true</threadCounts>
+                  <idleTime>true</idleTime>
+                </value>
+              </objProp>
+              <stringProp name="filename"></stringProp>
+            </ResultCollector>
+            <hashTree/>
+          </hashTree>
+          <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="Update Referral Table" enabled="true">
+            <stringProp name="dataSource">docker</stringProp>
+            <stringProp name="queryType">Update Statement</stringProp>
+            <stringProp name="query">update CWSINT.REFERL_T
+set REFERRL_NM=&apos;${name}&apos;
+where IDENTIFIER=&apos;${referralId}&apos;
+</stringProp>
+            <stringProp name="queryArguments"></stringProp>
+            <stringProp name="queryArgumentsTypes"></stringProp>
+            <stringProp name="variableNames"></stringProp>
+            <stringProp name="resultVariable"></stringProp>
+            <stringProp name="queryTimeout"></stringProp>
+            <stringProp name="resultSetHandler">Store as String</stringProp>
+          </JDBCSampler>
+          <hashTree>
+            <ResultCollector guiclass="ViewResultsFullVisualizer" testclass="ResultCollector" testname="View Results Tree" enabled="true">
+              <boolProp name="ResultCollector.error_logging">false</boolProp>
+              <objProp>
+                <name>saveConfig</name>
+                <value class="SampleSaveConfiguration">
+                  <time>true</time>
+                  <latency>true</latency>
+                  <timestamp>true</timestamp>
+                  <success>true</success>
+                  <label>true</label>
+                  <code>true</code>
+                  <message>true</message>
+                  <threadName>true</threadName>
+                  <dataType>true</dataType>
+                  <encoding>false</encoding>
+                  <assertions>true</assertions>
+                  <subresults>true</subresults>
+                  <responseData>false</responseData>
+                  <samplerData>false</samplerData>
+                  <xml>false</xml>
+                  <fieldNames>true</fieldNames>
+                  <responseHeaders>false</responseHeaders>
+                  <requestHeaders>false</requestHeaders>
+                  <responseDataOnError>false</responseDataOnError>
+                  <saveAssertionResultsFailureMessage>true</saveAssertionResultsFailureMessage>
+                  <assertionsResultsToSave>0</assertionsResultsToSave>
+                  <bytes>true</bytes>
+                  <threadCounts>true</threadCounts>
+                  <idleTime>true</idleTime>
+                </value>
+              </objProp>
+              <stringProp name="filename"></stringProp>
+            </ResultCollector>
+            <hashTree/>
+          </hashTree>
+          <ResultCollector guiclass="RespTimeGraphVisualizer" testclass="ResultCollector" testname="Response Time Graph" enabled="true">
+            <boolProp name="ResultCollector.error_logging">false</boolProp>
+            <objProp>
+              <name>saveConfig</name>
+              <value class="SampleSaveConfiguration">
+                <time>true</time>
+                <latency>true</latency>
+                <timestamp>true</timestamp>
+                <success>true</success>
+                <label>true</label>
+                <code>true</code>
+                <message>true</message>
+                <threadName>true</threadName>
+                <dataType>true</dataType>
+                <encoding>false</encoding>
+                <assertions>true</assertions>
+                <subresults>true</subresults>
+                <responseData>false</responseData>
+                <samplerData>false</samplerData>
+                <xml>false</xml>
+                <fieldNames>true</fieldNames>
+                <responseHeaders>false</responseHeaders>
+                <requestHeaders>false</requestHeaders>
+                <responseDataOnError>false</responseDataOnError>
+                <saveAssertionResultsFailureMessage>true</saveAssertionResultsFailureMessage>
+                <assertionsResultsToSave>0</assertionsResultsToSave>
+                <bytes>true</bytes>
+                <threadCounts>true</threadCounts>
+                <idleTime>true</idleTime>
+              </value>
+            </objProp>
+            <stringProp name="filename"></stringProp>
+            <stringProp name="RespTimeGraph.graphtitle">Test</stringProp>
+          </ResultCollector>
+          <hashTree/>
+        </hashTree>
       </hashTree>
       <ResultCollector guiclass="ViewResultsFullVisualizer" testclass="ResultCollector" testname="View Results Tree" enabled="true">
         <boolProp name="ResultCollector.error_logging">false</boolProp>
@@ -3118,6 +3358,61 @@ where IDENTIFIER=&apos;${serviceProviderId}&apos;
               <stringProp name="parameters"></stringProp>
               <stringProp name="filename"></stringProp>
               <stringProp name="script">log.info(&quot;removing test records from SVC_PVRT&quot;);
+</stringProp>
+            </BeanShellPreProcessor>
+            <hashTree/>
+          </hashTree>
+          <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="Remove From Referral Table" enabled="true">
+            <stringProp name="dataSource">docker</stringProp>
+            <stringProp name="queryType">Update Statement</stringProp>
+            <stringProp name="query">DELETE FROM CWSINT.REFERL_T WHERE IDENTIFIER like (&apos;retest%&apos;)</stringProp>
+            <stringProp name="queryArguments"></stringProp>
+            <stringProp name="queryArgumentsTypes"></stringProp>
+            <stringProp name="variableNames"></stringProp>
+            <stringProp name="resultVariable"></stringProp>
+            <stringProp name="queryTimeout"></stringProp>
+            <stringProp name="resultSetHandler">Store as String</stringProp>
+          </JDBCSampler>
+          <hashTree>
+            <ResultCollector guiclass="ViewResultsFullVisualizer" testclass="ResultCollector" testname="View Results Tree" enabled="true">
+              <boolProp name="ResultCollector.error_logging">false</boolProp>
+              <objProp>
+                <name>saveConfig</name>
+                <value class="SampleSaveConfiguration">
+                  <time>true</time>
+                  <latency>true</latency>
+                  <timestamp>true</timestamp>
+                  <success>true</success>
+                  <label>true</label>
+                  <code>true</code>
+                  <message>true</message>
+                  <threadName>true</threadName>
+                  <dataType>true</dataType>
+                  <encoding>false</encoding>
+                  <assertions>true</assertions>
+                  <subresults>true</subresults>
+                  <responseData>false</responseData>
+                  <samplerData>false</samplerData>
+                  <xml>false</xml>
+                  <fieldNames>true</fieldNames>
+                  <responseHeaders>false</responseHeaders>
+                  <requestHeaders>false</requestHeaders>
+                  <responseDataOnError>false</responseDataOnError>
+                  <saveAssertionResultsFailureMessage>true</saveAssertionResultsFailureMessage>
+                  <assertionsResultsToSave>0</assertionsResultsToSave>
+                  <bytes>true</bytes>
+                  <threadCounts>true</threadCounts>
+                  <idleTime>true</idleTime>
+                </value>
+              </objProp>
+              <stringProp name="filename"></stringProp>
+            </ResultCollector>
+            <hashTree/>
+            <BeanShellPreProcessor guiclass="TestBeanGUI" testclass="BeanShellPreProcessor" testname="BeanShell PreProcessor" enabled="true">
+              <boolProp name="resetInterpreter">false</boolProp>
+              <stringProp name="parameters"></stringProp>
+              <stringProp name="filename"></stringProp>
+              <stringProp name="script">log.info(&quot;removing test records from REFERL_T&quot;);
 </stringProp>
             </BeanShellPreProcessor>
             <hashTree/>
