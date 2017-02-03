@@ -21,7 +21,6 @@ import nl.jqno.equalsverifier.Warning;
 
 /**
  * @author CWDS API Team
- *
  */
 public class EducationProviderContactTest implements PersistentTestTemplate {
 
@@ -43,19 +42,16 @@ public class EducationProviderContactTest implements PersistentTestTemplate {
     assertThat(EducationProviderContact.class.newInstance(), is(notNullValue()));
   }
 
-
   @Override
   @Test
   public void testPersistentConstructor() throws Exception {
-
     EducationProviderContact epc = validEducationProviderContact();
-
-    EducationProviderContact pre =
-        new EducationProviderContact(epc.getdepartmentOfEducationIndicator(), epc.getEmailAddress(),
-            epc.getFaxNumber(), epc.getFirstName(), epc.getfKeyEducationProvider(), epc.getId(),
-            epc.getLastName(), epc.getMiddleName(), epc.getNamePrefixDescription(),
-            epc.getPhoneExtensionNumber(), epc.getPhoneNumber(), epc.getPrimaryContactIndicator(),
-            epc.getSuffixTitleDescription(), epc.getTitleDescription());
+    EducationProviderContact pre = new EducationProviderContact(
+        epc.getdepartmentOfEducationIndicator(), epc.getEmailAddress(), epc.getFaxNumber(),
+        epc.getFirstName(), epc.getfKeyEducationProvider(), epc.getId(), epc.getLastName(),
+        epc.getMiddleName(), epc.getNamePrefixDescription(), epc.getPhoneExtensionNumber(),
+        epc.getPhoneNumberAsDecimal(), epc.getPrimaryContactIndicator(),
+        epc.getSuffixTitleDescription(), epc.getTitleDescription());
 
     assertThat(pre.getdepartmentOfEducationIndicator(),
         is(equalTo(epc.getdepartmentOfEducationIndicator())));
@@ -68,11 +64,10 @@ public class EducationProviderContactTest implements PersistentTestTemplate {
     assertThat(pre.getMiddleName(), is(equalTo(epc.getMiddleName())));
     assertThat(pre.getNamePrefixDescription(), is(equalTo(epc.getNamePrefixDescription())));
     assertThat(pre.getPhoneExtensionNumber(), is(equalTo(epc.getPhoneExtensionNumber())));
-    assertThat(pre.getPhoneNumber(), is(equalTo(epc.getPhoneNumber())));
+    assertThat(pre.getPhoneNumberAsDecimal(), is(equalTo(epc.getPhoneNumberAsDecimal())));
     assertThat(pre.getPrimaryContactIndicator(), is(equalTo(epc.getPrimaryContactIndicator())));
     assertThat(pre.getSuffixTitleDescription(), is(equalTo(epc.getSuffixTitleDescription())));
     assertThat(pre.getTitleDescription(), is(equalTo(epc.getTitleDescription())));
-
   }
 
   private EducationProviderContact validEducationProviderContact()
@@ -85,11 +80,9 @@ public class EducationProviderContactTest implements PersistentTestTemplate {
     return validEducationProviderContact;
   }
 
-
   @Override
   public void testConstructorUsingDomain() throws Exception {
     // no domain class
-
   }
 
 }

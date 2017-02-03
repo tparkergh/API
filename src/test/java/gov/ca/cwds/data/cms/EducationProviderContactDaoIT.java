@@ -67,7 +67,6 @@ public class EducationProviderContactDaoIT implements DaoTestTemplate {
   @After
   public void teardown() throws Exception {
     session.getTransaction().rollback();
-
   }
 
   @Override
@@ -125,32 +124,29 @@ public class EducationProviderContactDaoIT implements DaoTestTemplate {
   public void testCreate() throws Exception {
     EducationProviderContact epc = validEducationProviderContact();
 
-    EducationProviderContact educationProviderContact =
-        new EducationProviderContact(epc.getdepartmentOfEducationIndicator(), epc.getEmailAddress(),
-            epc.getFaxNumber(), epc.getFirstName(), epc.getfKeyEducationProvider(), epc.getId(),
-            epc.getLastName(), epc.getMiddleName(), epc.getNamePrefixDescription(),
-            epc.getPhoneExtensionNumber(), epc.getPhoneNumber(), epc.getPrimaryContactIndicator(),
-            epc.getSuffixTitleDescription(), epc.getTitleDescription());
+    EducationProviderContact educationProviderContact = new EducationProviderContact(
+        epc.getdepartmentOfEducationIndicator(), epc.getEmailAddress(), epc.getFaxNumber(),
+        epc.getFirstName(), epc.getfKeyEducationProvider(), epc.getId(), epc.getLastName(),
+        epc.getMiddleName(), epc.getNamePrefixDescription(), epc.getPhoneExtensionNumber(),
+        epc.getPhoneNumberAsDecimal(), epc.getPrimaryContactIndicator(),
+        epc.getSuffixTitleDescription(), epc.getTitleDescription());
 
     EducationProviderContact created = educationProviderContactDao.create(educationProviderContact);
     assertThat(created, is(educationProviderContact));
-
   }
 
   @Override
   @Test
   public void testCreateExistingEntityException() throws Exception {
-
     thrown.expect(EntityExistsException.class);
-
     EducationProviderContact epc = validExistingEducationProviderContact();
 
-    EducationProviderContact educationProviderContact =
-        new EducationProviderContact(epc.getdepartmentOfEducationIndicator(), epc.getEmailAddress(),
-            epc.getFaxNumber(), epc.getFirstName(), epc.getfKeyEducationProvider(), epc.getId(),
-            epc.getLastName(), epc.getMiddleName(), epc.getNamePrefixDescription(),
-            epc.getPhoneExtensionNumber(), epc.getPhoneNumber(), epc.getPrimaryContactIndicator(),
-            epc.getSuffixTitleDescription(), epc.getTitleDescription());
+    EducationProviderContact educationProviderContact = new EducationProviderContact(
+        epc.getdepartmentOfEducationIndicator(), epc.getEmailAddress(), epc.getFaxNumber(),
+        epc.getFirstName(), epc.getfKeyEducationProvider(), epc.getId(), epc.getLastName(),
+        epc.getMiddleName(), epc.getNamePrefixDescription(), epc.getPhoneExtensionNumber(),
+        epc.getPhoneNumberAsDecimal(), epc.getPrimaryContactIndicator(),
+        epc.getSuffixTitleDescription(), epc.getTitleDescription());
 
     educationProviderContactDao.create(educationProviderContact);
   }
@@ -175,35 +171,30 @@ public class EducationProviderContactDaoIT implements DaoTestTemplate {
   @Override
   @Test
   public void testUpdate() throws Exception {
-
     EducationProviderContact epc = validExistingEducationProviderContact();
-
-    EducationProviderContact educationProviderContact =
-        new EducationProviderContact(epc.getdepartmentOfEducationIndicator(), epc.getEmailAddress(),
-            epc.getFaxNumber(), epc.getFirstName(), epc.getfKeyEducationProvider(), epc.getId(),
-            epc.getLastName(), epc.getMiddleName(), epc.getNamePrefixDescription(),
-            epc.getPhoneExtensionNumber(), epc.getPhoneNumber(), epc.getPrimaryContactIndicator(),
-            epc.getSuffixTitleDescription(), epc.getTitleDescription());
+    EducationProviderContact educationProviderContact = new EducationProviderContact(
+        epc.getdepartmentOfEducationIndicator(), epc.getEmailAddress(), epc.getFaxNumber(),
+        epc.getFirstName(), epc.getfKeyEducationProvider(), epc.getId(), epc.getLastName(),
+        epc.getMiddleName(), epc.getNamePrefixDescription(), epc.getPhoneExtensionNumber(),
+        epc.getPhoneNumberAsDecimal(), epc.getPrimaryContactIndicator(),
+        epc.getSuffixTitleDescription(), epc.getTitleDescription());
 
     EducationProviderContact updated = educationProviderContactDao.update(educationProviderContact);
     assertThat(updated, is(educationProviderContact));
-
   }
 
   @Override
   @Test
   public void testUpdateEntityNotFoundException() throws Exception {
-
     thrown.expect(EntityNotFoundException.class);
-
     EducationProviderContact epc = validEducationProviderContact();
 
-    EducationProviderContact educationProviderContact =
-        new EducationProviderContact(epc.getdepartmentOfEducationIndicator(), epc.getEmailAddress(),
-            epc.getFaxNumber(), epc.getFirstName(), epc.getfKeyEducationProvider(), epc.getId(),
-            epc.getLastName(), epc.getMiddleName(), epc.getNamePrefixDescription(),
-            epc.getPhoneExtensionNumber(), epc.getPhoneNumber(), epc.getPrimaryContactIndicator(),
-            epc.getSuffixTitleDescription(), epc.getTitleDescription());
+    EducationProviderContact educationProviderContact = new EducationProviderContact(
+        epc.getdepartmentOfEducationIndicator(), epc.getEmailAddress(), epc.getFaxNumber(),
+        epc.getFirstName(), epc.getfKeyEducationProvider(), epc.getId(), epc.getLastName(),
+        epc.getMiddleName(), epc.getNamePrefixDescription(), epc.getPhoneExtensionNumber(),
+        epc.getPhoneNumberAsDecimal(), epc.getPrimaryContactIndicator(),
+        epc.getSuffixTitleDescription(), epc.getTitleDescription());
 
     educationProviderContactDao.update(educationProviderContact);
   }

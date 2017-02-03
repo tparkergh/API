@@ -2,8 +2,11 @@ package gov.ca.cwds.data.cms;
 
 import org.hibernate.SessionFactory;
 
+import com.google.inject.Inject;
+
 import gov.ca.cwds.data.BaseDaoImpl;
 import gov.ca.cwds.data.persistence.cms.EducationProviderContact;
+import gov.ca.cwds.inject.CmsSessionFactory;
 
 /**
  * DAO for {@link EducationProviderContact}.
@@ -17,7 +20,8 @@ public class EducationProviderContactDao extends BaseDaoImpl<EducationProviderCo
    * 
    * @param sessionFactory The sessionFactory
    */
-  public EducationProviderContactDao(SessionFactory sessionFactory) {
+  @Inject
+  public EducationProviderContactDao(@CmsSessionFactory SessionFactory sessionFactory) {
     super(sessionFactory);
   }
 }

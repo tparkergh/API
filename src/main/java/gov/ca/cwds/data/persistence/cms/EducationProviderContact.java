@@ -1,16 +1,25 @@
 package gov.ca.cwds.data.persistence.cms;
 
 import java.math.BigDecimal;
+import java.util.Date;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
+import org.hibernate.annotations.NamedNativeQueries;
+import org.hibernate.annotations.NamedNativeQuery;
 import org.hibernate.annotations.NamedQueries;
 import org.hibernate.annotations.NamedQuery;
 import org.hibernate.annotations.Type;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonPropertyOrder;
+
+import gov.ca.cwds.data.IPersonAware;
+import gov.ca.cwds.data.IPhoneAware;
 import gov.ca.cwds.data.persistence.PersistentObject;
 
 
@@ -25,9 +34,23 @@ import gov.ca.cwds.data.persistence.PersistentObject;
     @NamedQuery(
         name = "gov.ca.cwds.data.persistence.cms.EducationProviderContact.findAllUpdatedAfter",
         query = "FROM EducationProviderContact WHERE lastUpdatedTime > :after")})
+@NamedNativeQueries({@NamedNativeQuery(
+    name = "gov.ca.cwds.data.persistence.cms.EducationProviderContact.findAllByBucket",
+    query = "select z.IDENTIFIER, z.PRICNTIND, z.PH_NUMBR, z.PH_EXTNO, "
+        + "z.FAX_NO, z.FIRST_NME, z.MIDDLE_NM, z.LAST_NME, z.NM_PREFIX, "
+        + "z.SUFFX_TITL, z.TITLDESC, z.EMAILADR, z.DOE_IND, z.LST_UPD_ID, "
+        + "z.LST_UPD_TS, z.FKED_PVDRT "
+        + "from ( select mod(y.rn, :total_buckets) + 1 as bucket, y.* "
+        + "from ( select row_number() over (order by 1) as rn, x.* "
+        + "from ( select c.* from cwsint.EDPRVCNT c "
+        + ") x ) y ) z where z.bucket = :bucket_num for read only",
+    resultClass = EducationProviderContact.class)})
 @Entity
 @Table(name = "EDPRVCNT")
-public class EducationProviderContact extends CmsPersistentObject {
+@JsonPropertyOrder(alphabetic = true)
+@JsonIgnoreProperties(ignoreUnknown = true)
+public class EducationProviderContact extends CmsPersistentObject
+    implements IPersonAware, IPhoneAware {
 
   /**
    * Base serialization value. Increment by class version.
@@ -151,6 +174,7 @@ public class EducationProviderContact extends CmsPersistentObject {
   /**
    * @return firstName
    */
+  @Override
   public String getFirstName() {
     return firstName;
   }
@@ -172,6 +196,7 @@ public class EducationProviderContact extends CmsPersistentObject {
   /**
    * @return lastName
    */
+  @Override
   public String getLastName() {
     return lastName;
   }
@@ -180,6 +205,7 @@ public class EducationProviderContact extends CmsPersistentObject {
   /**
    * @return middleName
    */
+  @Override
   public String getMiddleName() {
     return middleName;
   }
@@ -201,8 +227,16 @@ public class EducationProviderContact extends CmsPersistentObject {
   /**
    * @return phoneNumber
    */
-  public BigDecimal getPhoneNumber() {
+  public BigDecimal getPhoneNumberAsDecimal() {
     return phoneNumber;
+  }
+
+  /**
+   * @return phoneNumber
+   */
+  @Override
+  public String getPhoneNumber() {
+    return phoneNumber != null ? this.phoneNumber.toPlainString() : null;
   }
 
   /**
@@ -211,7 +245,6 @@ public class EducationProviderContact extends CmsPersistentObject {
   public String getPrimaryContactIndicator() {
     return primaryContactIndicator;
   }
-
 
   /**
    * @return suffixTitleDescription
@@ -237,6 +270,30 @@ public class EducationProviderContact extends CmsPersistentObject {
   @Override
   public String getPrimaryKey() {
     return getId();
+  }
+
+  @JsonIgnore
+  @Override
+  public String getGender() {
+    return null;
+  }
+
+  @JsonIgnore
+  @Override
+  public Date getBirthDate() {
+    return null;
+  }
+
+  @JsonIgnore
+  @Override
+  public String getSsn() {
+    return null;
+  }
+
+  @JsonIgnore
+  @Override
+  public String getNameSuffix() {
+    return this.getSuffixTitleDescription();
   }
 
   @Override
@@ -365,6 +422,18 @@ public class EducationProviderContact extends CmsPersistentObject {
       return false;
     }
     return true;
+  }
+
+  @Override
+  public String getPhoneNumberExtension() {
+    // TODO Auto-generated method stub
+    return null;
+  }
+
+  @Override
+  public PhoneType getPhoneType() {
+    // TODO Auto-generated method stub
+    return null;
   }
 
 }
