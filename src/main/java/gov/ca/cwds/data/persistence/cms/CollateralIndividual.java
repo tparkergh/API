@@ -9,15 +9,20 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
+import org.hibernate.annotations.NamedNativeQueries;
+import org.hibernate.annotations.NamedNativeQuery;
 import org.hibernate.annotations.NamedQueries;
 import org.hibernate.annotations.NamedQuery;
 import org.hibernate.annotations.Type;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 
 import gov.ca.cwds.data.CmsSystemCodeDeserializer;
+import gov.ca.cwds.data.IAddressAware;
+import gov.ca.cwds.data.IPersonAware;
 import gov.ca.cwds.data.SystemCodeSerializer;
 import gov.ca.cwds.data.persistence.PersistentObject;
 
@@ -32,11 +37,25 @@ import gov.ca.cwds.data.persistence.PersistentObject;
         query = "FROM CollateralIndividual"),
     @NamedQuery(name = "gov.ca.cwds.data.persistence.cms.CollateralIndividual.findAllUpdatedAfter",
         query = "FROM CollateralIndividual WHERE lastUpdatedTime > :after")})
+@NamedNativeQueries({@NamedNativeQuery(
+    name = "gov.ca.cwds.data.persistence.cms.CollateralIndividual.findAllByBucket",
+    query = "select z.IDENTIFIER, z.BADGE_NO, z.CITY_NM, z.EMPLYR_NM, z.FAX_NO, "
+        + "z.FIRST_NM, z.FRG_ADRT_B, z.LAST_NM, z.MID_INI_NM, z.NMPRFX_DSC, "
+        + "z.PRM_TEL_NO, z.PRM_EXT_NO, z.STATE_C, z.STREET_NM, z.STREET_NO, "
+        + "z.SUFX_TLDSC, z.ZIP_NO, z.LST_UPD_ID, z.LST_UPD_TS, z.ZIP_SFX_NO, "
+        + "z.COMNT_DSC, z.GENDER_CD, z.BIRTH_DT, z.MRTL_STC, z.EMAIL_ADDR, "
+        + "z.ESTBLSH_CD, z.ESTBLSH_ID, z.RESOST_IND "
+        + "from ( select mod(y.rn, :total_buckets) + 1 as bucket, y.* "
+        + "from ( select row_number() over (order by 1) as rn, x.* "
+        + "from ( select c.* from cwsint.COLTRL_T c "
+        + ") x ) y ) z where z.bucket = :bucket_num for read only",
+    resultClass = CollateralIndividual.class)})
 @Entity
 @Table(name = "COLTRL_T")
 @JsonPropertyOrder(alphabetic = true)
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class CollateralIndividual extends CmsPersistentObject {
+public class CollateralIndividual extends CmsPersistentObject
+    implements IPersonAware, IAddressAware {
 
   private static final long serialVersionUID = 1L;
 
@@ -200,7 +219,6 @@ public class CollateralIndividual extends CmsPersistentObject {
     this.zipSuffixNumber = zipSuffixNumber;
   }
 
-
   /**
    * @return serialVersionUID
    */
@@ -218,6 +236,7 @@ public class CollateralIndividual extends CmsPersistentObject {
   /**
    * @return birthDate
    */
+  @Override
   public Date getBirthDate() {
     return birthDate;
   }
@@ -267,6 +286,7 @@ public class CollateralIndividual extends CmsPersistentObject {
   /**
    * @return firstName
    */
+  @Override
   public String getFirstName() {
     return firstName;
   }
@@ -295,6 +315,7 @@ public class CollateralIndividual extends CmsPersistentObject {
   /**
    * @return lastName
    */
+  @Override
   public String getLastName() {
     return lastName;
   }
@@ -383,9 +404,64 @@ public class CollateralIndividual extends CmsPersistentObject {
     return zipSuffixNumber;
   }
 
+  @JsonIgnore
   @Override
   public String getPrimaryKey() {
     return getId();
+  }
+
+  @JsonIgnore
+  @Override
+  public String getMiddleName() {
+    return this.getMiddleInitialName();
+  }
+
+  @JsonIgnore
+  @Override
+  public String getGender() {
+    return this.getGenderCode();
+  }
+
+  @JsonIgnore
+  @Override
+  public String getSsn() {
+    return null;
+  }
+
+  @JsonIgnore
+  @Override
+  public String getNameSuffix() {
+    return this.getSuffixTitleDescription();
+  }
+
+  @JsonIgnore
+  @Override
+  public String getStreetAddress() {
+    return this.getStreetNumber() + " " + this.getStreetName();
+  }
+
+  @JsonIgnore
+  @Override
+  public String getCity() {
+    return this.getCityName();
+  }
+
+  @JsonIgnore
+  @Override
+  public String getState() {
+    return this.stateCode != null ? this.stateCode.toString() : null;
+  }
+
+  @JsonIgnore
+  @Override
+  public String getZip() {
+    return this.getZipNumber() != null ? this.getZipNumber().toString() : null;
+  }
+
+  @JsonIgnore
+  @Override
+  public String getCounty() {
+    return null;
   }
 
   @Override

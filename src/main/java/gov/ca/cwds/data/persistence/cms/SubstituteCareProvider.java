@@ -15,6 +15,7 @@ import org.hibernate.annotations.NamedQueries;
 import org.hibernate.annotations.NamedQuery;
 import org.hibernate.annotations.Type;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
@@ -611,21 +612,25 @@ public class SubstituteCareProvider extends CmsPersistentObject implements IPers
     return result;
   }
 
+  @JsonIgnore
   @Override
   public String getMiddleName() {
     return this.getMiddleInitialName();
   }
 
+  @JsonIgnore
   @Override
   public String getGender() {
     return this.getGenderIndicator();
   }
 
+  @JsonIgnore
   @Override
   public String getSsn() {
     return this.getSocialSecurityNumber();
   }
 
+  @JsonIgnore
   @Override
   public String getNameSuffix() {
     return this.getSuffixTitleDescription();
