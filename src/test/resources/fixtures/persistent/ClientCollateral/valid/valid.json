@@ -1,0 +1,8 @@
+{
+"activeIndicator": "Y",
+"collateralClientReporterRelationshipType": 600,
+"commentDescription": "test client collateral individual",
+"clientId": "1234567ABC",
+"collateralIndividualId": "2345678ABC",
+"thirdId": "3456789ABC"
+}

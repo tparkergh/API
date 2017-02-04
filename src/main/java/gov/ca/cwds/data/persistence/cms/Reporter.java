@@ -42,9 +42,11 @@ import gov.ca.cwds.rest.api.domain.DomainChef;
  */
 @NamedQueries({
     @NamedQuery(name = "gov.ca.cwds.data.persistence.cms.Reporter.findAll",
-        query = "FROM Reporter"),
+        query = "FROM Reporter  WHERE confidentialWaiverIndicator = 'Y' AND referralId IN "
+            + "(SELECT id FROM Referral WHERE limitedAccessCode = 'N')"),
     @NamedQuery(name = "gov.ca.cwds.data.persistence.cms.Reporter.findAllUpdatedAfter",
-        query = "FROM Reporter WHERE lastUpdatedTime > :after")})
+        query = "FROM Reporter WHERE lastUpdatedTime > :after AND confidentialWaiverIndicator = 'Y' AND referralId IN "
+            + "(SELECT id FROM Referral WHERE limitedAccessCode = 'N')")})
 @NamedNativeQueries({@NamedNativeQuery(
     name = "gov.ca.cwds.data.persistence.cms.Reporter.findAllByBucket",
     query = "select z.RPTR_BDGNO, z.RPTR_CTYNM, z.COL_RELC, z.CMM_MTHC, z.CNFWVR_IND, "

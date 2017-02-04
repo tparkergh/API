@@ -34,9 +34,13 @@ import gov.ca.cwds.data.persistence.PersistentObject;
  */
 @NamedQueries({
     @NamedQuery(name = "gov.ca.cwds.data.persistence.cms.CollateralIndividual.findAll",
-        query = "FROM CollateralIndividual"),
+        query = "FROM CollateralIndividual WHERE IDENTIFIER IN (SELECT collateralIndividualId from ClientCollateral "
+            + "WHERE activeIndicator = 'Y' AND clientId IN "
+            + "(SELECT id FROM Client WHERE sensitivityIndicator = 'N' AND soc158SealedClientIndicator = 'N'))"),
     @NamedQuery(name = "gov.ca.cwds.data.persistence.cms.CollateralIndividual.findAllUpdatedAfter",
-        query = "FROM CollateralIndividual WHERE lastUpdatedTime > :after")})
+        query = "FROM CollateralIndividual WHERE lastUpdatedTime > :after AND IDENTIFIER IN (SELECT collateralIndividualId from ClientCollateral "
+            + "WHERE activeIndicator = 'Y' AND clientId IN "
+            + "(SELECT id FROM Client WHERE sensitivityIndicator = 'N' AND soc158SealedClientIndicator = 'N'))")})
 @NamedNativeQueries({@NamedNativeQuery(
     name = "gov.ca.cwds.data.persistence.cms.CollateralIndividual.findAllByBucket",
     query = "select z.IDENTIFIER, z.BADGE_NO, z.CITY_NM, z.EMPLYR_NM, z.FAX_NO, "

@@ -30,7 +30,6 @@
 		<mapping class="gov.ca.cwds.data.persistence.cms.SubstituteCareProvider" />
 		<mapping class="gov.ca.cwds.data.persistence.cms.OtherChildInPlacemtHome" />
 		<mapping class="gov.ca.cwds.data.persistence.cms.CollateralIndividual" />
-		<mapping class="gov.ca.cwds.data.persistence.cms.CollateralIndividual" />
 		<mapping class="gov.ca.cwds.data.persistence.cms.EducationProviderContact" />
 		<mapping class="gov.ca.cwds.data.persistence.cms.CrossReport" />
 		<mapping class="gov.ca.cwds.data.persistence.cms.CmsDocument" />

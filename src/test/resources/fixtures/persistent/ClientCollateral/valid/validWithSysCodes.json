@@ -1,0 +1,15 @@
+{
+  "activeIndicator" : "Y",
+  "clientId" : "1234567ABC",
+  "collateralClientReporterRelationshipType" : {
+    "sys_id" : 600,
+    "short_description" : "Teacher",
+    "logical_id" : "0029"
+  },
+  "collateralIndividualId" : "2345678ABC",
+  "commentDescription" : "test client collateral individual",
+  "lastUpdatedId" : null,
+  "lastUpdatedTime" : null,
+  "primaryKey" : "3456789ABC",
+  "thirdId" : "3456789ABC"
+}
