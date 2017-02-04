@@ -68,7 +68,7 @@ public class SystemCode extends CmsPersistentObject {
   }
 
   /**
-   * @param systemCode - The System Id
+   * @param systemId - The System Id
    * @param categoryId - the category id
    * @param inactiveIndicator - inactive indicator
    * @param otherCd - other CD
