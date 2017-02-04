@@ -1,15 +1,21 @@
 package gov.ca.cwds.data.cms;
 
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.is;
+import static org.hamcrest.Matchers.notNullValue;
 import static org.hamcrest.Matchers.nullValue;
-import static org.hamcrest.core.Is.is;
-import static org.junit.Assert.assertThat;
 
 import java.math.BigDecimal;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.List;
 
 import javax.persistence.EntityExistsException;
 import javax.persistence.EntityNotFoundException;
 
 import org.hamcrest.junit.ExpectedException;
+import org.hibernate.Query;
+import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
 import org.junit.After;
@@ -20,9 +26,16 @@ import org.junit.Test;
 import gov.ca.cwds.data.junit.template.DaoTestTemplate;
 import gov.ca.cwds.data.persistence.cms.Reporter;
 
+/**
+ * @author CWDS API Team
+ *
+ */
 public class ReporterDaoIT implements DaoTestTemplate {
+  private static final DateFormat TIMESTAMP_FORMAT = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+
   private SessionFactory sessionFactory;
   private ReporterDao reporterDao;
+  private Session session;
 
   @Rule
   public ExpectedException thrown = ExpectedException.none();
@@ -33,11 +46,14 @@ public class ReporterDaoIT implements DaoTestTemplate {
     sessionFactory = new Configuration().configure().buildSessionFactory();
     sessionFactory.getCurrentSession().beginTransaction();
     reporterDao = new ReporterDao(sessionFactory);
+    session = sessionFactory.getCurrentSession();
+    session.beginTransaction();
   }
 
   @Override
   @After
   public void teardown() {
+    session.getTransaction().rollback();
     sessionFactory.close();
   }
 
@@ -121,14 +137,48 @@ public class ReporterDaoIT implements DaoTestTemplate {
   }
 
   @Override
+  @Test
   public void testFindAllNamedQueryExist() throws Exception {
-    // TODO Auto-generated method stub
+    Query query = session.getNamedQuery("gov.ca.cwds.data.persistence.cms.Reporter.findAll");
+    assertThat(query, is(notNullValue()));
 
   }
 
   @Override
+  @Test
   public void testFindAllReturnsCorrectList() throws Exception {
-    // TODO Auto-generated method stub
+    Query query = session.getNamedQuery("gov.ca.cwds.data.persistence.cms.Reporter.findAll");
+    @SuppressWarnings("unchecked")
+    final List<Reporter> list = query.list();
+    System.out.println("size of query list is: " + list.size());
+    for (Reporter c : list) {
+      System.out.println("id " + c.getPrimaryKey() + " " + c.getLastName());
+    }
+    assertThat(query.list().size(), is(1));
 
+  }
+
+  @SuppressWarnings("javadoc")
+  @Test
+  public void testFindAllUpdatedAfterNamedQueryExists() throws Exception {
+    Query query =
+        session.getNamedQuery("gov.ca.cwds.data.persistence.cms.Reporter.findAllUpdatedAfter");
+    assertThat(query, is(notNullValue()));
+  }
+
+  @SuppressWarnings("javadoc")
+  @Test
+  public void testFindAllUpdatedAfterReturnsCorrectList() throws Exception {
+    Query query =
+        session.getNamedQuery("gov.ca.cwds.data.persistence.cms.Reporter.findAllUpdatedAfter")
+            .setDate("after", TIMESTAMP_FORMAT.parse("2004-01-02 00:00:00"));
+
+    @SuppressWarnings("unchecked")
+    final List<Reporter> list = query.list();
+    System.out.println("size of query list is: " + list.size());
+    for (Reporter c : list) {
+      System.out.println("id " + c.getPrimaryKey() + " " + c.getLastName());
+    }
+    assertThat(query.list().size(), is(1));
   }
 }

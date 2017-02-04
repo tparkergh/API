@@ -40,6 +40,7 @@ import gov.ca.cwds.rest.api.domain.DomainChef;
  * 
  * @author CWDS API Team
  */
+
 @NamedQueries({
     @NamedQuery(name = "gov.ca.cwds.data.persistence.cms.Reporter.findAll",
         query = "FROM Reporter  WHERE confidentialWaiverIndicator = 'Y' AND referralId IN "

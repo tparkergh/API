@@ -495,6 +495,7 @@ public class AutoCompletePerson
    * 
    * @author CWDS API Team
    */
+  @SuppressWarnings("javadoc")
   @JsonFormat(shape = JsonFormat.Shape.OBJECT)
   public enum AutoCompletePersonAddressType {
     Home, School, Work, Placement, Homeless, Other
@@ -623,6 +624,7 @@ public class AutoCompletePerson
       return county != null ? county.getCountyCd() : null;
     }
 
+    @SuppressWarnings("javadoc")
     @JsonProperty("county")
     public String getCountyType() {
       return county != null ? county.getDescription() : null;
@@ -1127,7 +1129,7 @@ public class AutoCompletePerson
     AutoCompletePerson.systemCodes = systemCodes;
   }
 
-  @Override
+  @SuppressWarnings("javadoc")
   public Serializable getPrimaryKey() {
     return this.getId();
   }

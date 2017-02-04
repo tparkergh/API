@@ -273,7 +273,6 @@ public class Referral extends DomainObject implements Request, Response {
    * @param drmsErReferralDoc drms Er Referral Doc
    * @param drmsInvestigationDoc drms Investigation Doc
    * @param filedSuspectedChildAbuseReporttoLawEnforcementIndicator filed Suspected Child Abuse
-   *        Reportto Law Enforcement Indicator
    * @param familyAwarenessIndicator family Awareness Indicator
    * @param govtEntityType govt Entity Type
    * @param legalDefinitionCode legal Definition Code

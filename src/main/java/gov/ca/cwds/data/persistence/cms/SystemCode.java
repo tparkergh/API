@@ -30,7 +30,7 @@ public class SystemCode extends CmsPersistentObject {
 
   @Type(type = "short")
   @Column(name = "SYS_ID")
-  private Short systemCode;
+  private Short systemId;
 
   @Type(type = "short")
   @Column(name = "CATEGORYID")
@@ -68,7 +68,7 @@ public class SystemCode extends CmsPersistentObject {
   }
 
   /**
-   * @param systemCode - The System Code
+   * @param systemCode - The System Id
    * @param categoryId - the category id
    * @param inactiveIndicator - inactive indicator
    * @param otherCd - other CD
@@ -78,11 +78,11 @@ public class SystemCode extends CmsPersistentObject {
    * @param foreignKeyMetaTable - - foreign key to system meta table (S_META_T)
    * @param longDescription - long description
    */
-  public SystemCode(Short systemCode, Short categoryId, String inactiveIndicator, String otherCd,
+  public SystemCode(Short systemId, Short categoryId, String inactiveIndicator, String otherCd,
       String shortDescription, Short logicalId, String thirdId, String foreignKeyMetaTable,
       String longDescription) {
     super();
-    this.systemCode = systemCode;
+    this.systemId = systemId;
     this.categoryId = categoryId;
     this.inactiveIndicator = inactiveIndicator;
     this.otherCd = otherCd;
@@ -114,7 +114,7 @@ public class SystemCode extends CmsPersistentObject {
    * @return system code (unique)
    */
   public Short getSystemCode() {
-    return systemCode;
+    return systemId;
   }
 
   /**

@@ -38,6 +38,7 @@ import nl.jqno.equalsverifier.Warning;
  * @author CWDS API Team
  *
  */
+@SuppressWarnings("javadoc")
 public class CrossReportTest {
 
   private static final String ROOT_RESOURCE = "/" + Api.RESOURCE_CROSS_REPORT + "/";
@@ -53,7 +54,6 @@ public class CrossReportTest {
   private static final CrossReportResource mockedCrossReportResource =
       mock(CrossReportResource.class);
 
-  @SuppressWarnings("javadoc")
   @ClassRule
   public static final ResourceTestRule resources =
       ResourceTestRule.builder().addResource(mockedCrossReportResource).build();
@@ -85,7 +85,6 @@ public class CrossReportTest {
   private Boolean outStateLawEnforcementIndicator = Boolean.FALSE;
   private Boolean satisfyCrossReportIndicator = Boolean.TRUE;
 
-  @SuppressWarnings("javadoc")
   @Before
   public void setup() throws Exception {
     CrossReport validCrossReport = validCrossReport();
@@ -100,7 +99,6 @@ public class CrossReportTest {
   /*
    * Constructor Tests
    */
-  @SuppressWarnings("javadoc")
   @Test
   public void persistentObjectConstructorTest() throws Exception {
     CrossReport domain = new CrossReport(thirdId, crossReportMethodType, filedOutOfStateIndicator,
@@ -146,7 +144,6 @@ public class CrossReportTest {
         is(equalTo(DomainChef.uncookBooleanString(persistent.getSatisfyCrossReportIndicator()))));
   }
 
-  @SuppressWarnings("javadoc")
   @Test
   public void jsonCreatorConstructorTest() throws Exception {
     CrossReport domain = new CrossReport(thirdId, crossReportMethodType, filedOutOfStateIndicator,
@@ -182,13 +179,11 @@ public class CrossReportTest {
     assertThat(domain.getSatisfyCrossReportIndicator(), is(equalTo(satisfyCrossReportIndicator)));
   }
 
-  @SuppressWarnings("javadoc")
   @Test
   public void equalsHashCodeWork() {
     EqualsVerifier.forClass(CrossReport.class).suppress(Warning.NONFINAL_FIELDS).verify();
   }
 
-  @SuppressWarnings("javadoc")
   @Test
   public void serializesToJSON() throws Exception {
     final String expected = MAPPER.writeValueAsString(MAPPER.readValue(
@@ -197,7 +192,6 @@ public class CrossReportTest {
     assertThat(MAPPER.writeValueAsString(validCrossReport()), is(equalTo(expected)));
   }
 
-  @SuppressWarnings("javadoc")
   @Test
   public void deserializesFromJSON() throws Exception {
     assertThat(MAPPER.readValue(fixture("fixtures/domain/legacy/CrossReport/valid/valid.json"),
@@ -207,7 +201,6 @@ public class CrossReportTest {
   /*
    * Successful Tests
    */
-  @SuppressWarnings("javadoc")
   @Test
   public void successfulWithValid() throws Exception {
     CrossReport toCreate = MAPPER.readValue(
@@ -218,7 +211,6 @@ public class CrossReportTest {
         is(equalTo(204)));
   }
 
-  @SuppressWarnings("javadoc")
   @Test
   public void successfulWithOptionalsNotIncluded() throws Exception {
     CrossReport toCreate = MAPPER.readValue(
@@ -233,7 +225,6 @@ public class CrossReportTest {
   /*
    * thirdId Tests
    */
-  @SuppressWarnings("javadoc")
   @Test
   public void failsWhenThirdIdMissing() throws Exception {
     CrossReport toCreate =
@@ -247,7 +238,6 @@ public class CrossReportTest {
         is(greaterThanOrEqualTo(0)));
   }
 
-  @SuppressWarnings("javadoc")
   @Test
   public void failsWhenThirdIdNull() throws Exception {
     CrossReport toCreate = MAPPER.readValue(
@@ -260,7 +250,6 @@ public class CrossReportTest {
         is(greaterThanOrEqualTo(0)));
   }
 
-  @SuppressWarnings("javadoc")
   @Test
   public void failsWhenThirdIdEmpty() throws Exception {
     CrossReport toCreate = MAPPER.readValue(
@@ -275,7 +264,6 @@ public class CrossReportTest {
         is(greaterThanOrEqualTo(0)));
   }
 
-  @SuppressWarnings("javadoc")
   @Test
   public void failsWhenThirdIdTooLong() throws Exception {
     CrossReport toCreate =
@@ -292,7 +280,6 @@ public class CrossReportTest {
   /*
    * crossReportMethodType Tests
    */
-  @SuppressWarnings("javadoc")
   @Test
   public void failsWhenCrossReportMethodTypeMissing() throws Exception {
     CrossReport toCreate = MAPPER.readValue(
@@ -306,7 +293,6 @@ public class CrossReportTest {
         is(greaterThanOrEqualTo(0)));
   }
 
-  @SuppressWarnings("javadoc")
   @Test
   public void failsWhenCrossReportMethodTypeNull() throws Exception {
     CrossReport toCreate = MAPPER.readValue(
@@ -320,7 +306,6 @@ public class CrossReportTest {
         is(greaterThanOrEqualTo(0)));
   }
 
-  @SuppressWarnings("javadoc")
   @Test
   public void failsWhenCrossReportMethodTypeEmpty() throws Exception {
     CrossReport toCreate = MAPPER.readValue(
