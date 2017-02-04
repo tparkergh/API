@@ -58,7 +58,6 @@ public class OtherClientName extends CmsPersistentObject implements IPersonAware
   @Column(name = "FIRST_NM")
   private String firstName;
 
-  @Id
   @Column(name = "FKCLIENT_T", length = CMS_ID_LEN)
   private String clientId;
 
