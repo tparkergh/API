@@ -14,7 +14,6 @@ import gov.ca.cwds.rest.resources.AddressResource;
 import gov.ca.cwds.rest.resources.AddressValidationResource;
 import gov.ca.cwds.rest.resources.ApplicationResource;
 import gov.ca.cwds.rest.resources.PersonResource;
-import gov.ca.cwds.rest.resources.PersonSearchResource;
 import gov.ca.cwds.rest.resources.ResourceDelegate;
 import gov.ca.cwds.rest.resources.ScreeningResource;
 import gov.ca.cwds.rest.resources.ServiceBackedResourceDelegate;
@@ -75,7 +74,6 @@ public class ResourcesModule extends AbstractModule {
     bind(ReferralResource.class);
     bind(ReporterResource.class);
     bind(StaffPersonResource.class);
-    bind(PersonSearchResource.class);
     bind(AddressValidationResource.class);
   }
 

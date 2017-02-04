@@ -3,8 +3,6 @@ package gov.ca.cwds.rest.services;
 import java.io.Serializable;
 
 import org.apache.commons.lang3.NotImplementedException;
-import org.apache.commons.lang3.StringUtils;
-import org.elasticsearch.search.SearchHit;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -21,8 +19,6 @@ import gov.ca.cwds.rest.api.Response;
 import gov.ca.cwds.rest.api.domain.DomainChef;
 import gov.ca.cwds.rest.api.domain.Person;
 import gov.ca.cwds.rest.api.domain.PostedPerson;
-import gov.ca.cwds.rest.api.domain.es.ESPerson;
-import gov.ca.cwds.rest.api.domain.es.ESSearchRequest;
 
 /**
  * Business layer object to work on {@link Person} and
@@ -34,6 +30,9 @@ public class PersonService implements CrudsService {
 
   private static final Logger LOGGER = LoggerFactory.getLogger(PersonService.class);
   private static final ObjectMapper MAPPER = new ObjectMapper();
+
+  private static final String INDEX_PERSON = "people";
+  private static final String DOCUMENT_TYPE_PERSON = "person";
 
   private PersonDao personDao;
   private ElasticsearchDao elasticsearchDao;
@@ -88,7 +87,7 @@ public class PersonService implements CrudsService {
       String document = MAPPER.writeValueAsString(esPerson);
 
       // The ES Dao manages its own connections. No need to manually start or stop.
-      elasticsearchDao.index(document, esPerson.getId().toString());
+      elasticsearchDao.index(INDEX_PERSON, DOCUMENT_TYPE_PERSON, document, esPerson.getId());
     } catch (JsonProcessingException e) {
       throw new ApiException("Unable to convert Person to JSON to Index in ElasticSearch", e);
     } catch (Exception e) {
@@ -96,68 +95,6 @@ public class PersonService implements CrudsService {
       throw new ApiException("Unable to Index Person in ElasticSearch", e);
     }
     return postedPerson;
-  }
-
-  /**
-   * Returns all persons in ElasticSearch, up the default number of rows set in
-   * {@link ElasticsearchDao#fetchAllPerson()}.
-   * 
-   * @return array of {@link ESPerson}
-   * @throws Exception due to I/O error, unknown host, etc.
-   */
-  public ESPerson[] fetchAllPersons() throws Exception {
-    final SearchHit[] hits = this.elasticsearchDao.fetchAllPerson();
-
-    final ESPerson[] persons = new ESPerson[hits.length];
-    int counter = -1;
-    for (SearchHit hit : hits) {
-      persons[++counter] = ESPerson.makeESPerson(hit);
-    }
-
-    return persons;
-  }
-
-  /**
-   * Search on the first non-null, non-whitespace term.
-   * 
-   * @param firstName first name to search, if any
-   * @param lastName last name to search, if any
-   * @param birthDate birth date to search, if any
-   * @return array of matching {@link ESPerson}
-   * @throws Exception due to I/O error, unknown host, etc.
-   */
-  public ESPerson[] queryPersonOr(String firstName, String lastName, String birthDate)
-      throws Exception {
-
-    // Parse inputs.
-    ESSearchRequest req = new ESSearchRequest();
-    String field = "";
-    String value = "";
-    if (!StringUtils.isBlank(firstName)) {
-      field = ESPerson.ESColumn.FIRST_NAME.getCol();
-      value = firstName;
-    } else if (!StringUtils.isBlank(lastName)) {
-      field = ESPerson.ESColumn.LAST_NAME.getCol();
-      value = lastName;
-    } else if (!StringUtils.isBlank(birthDate)) {
-      field = ESPerson.ESColumn.BIRTH_DATE.getCol();
-      value = birthDate;
-    }
-
-    // Build search request.
-    req.getRoot().addElem(new ESSearchRequest.ESFieldSearchEntry(field, value));
-
-    // Search.
-    final SearchHit[] hits = this.elasticsearchDao.queryPersonOr(req);
-    final ESPerson[] ret = new ESPerson[hits.length];
-
-    // Prep results.
-    int ctr = -1;
-    for (SearchHit hit : hits) {
-      ret[++ctr] = ESPerson.makeESPerson(hit);
-    }
-
-    return ret;
   }
 
   // ===================

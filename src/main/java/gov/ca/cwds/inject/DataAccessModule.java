@@ -1,6 +1,14 @@
 package gov.ca.cwds.inject;
 
+import java.net.InetAddress;
+
+import org.elasticsearch.client.Client;
+import org.elasticsearch.client.transport.TransportClient;
+import org.elasticsearch.common.settings.Settings;
+import org.elasticsearch.common.transport.InetSocketTransportAddress;
 import org.hibernate.SessionFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.google.inject.AbstractModule;
 import com.google.inject.Provides;
@@ -38,6 +46,7 @@ import gov.ca.cwds.data.validation.SmartyStreetsDao;
 import gov.ca.cwds.rest.ApiConfiguration;
 import gov.ca.cwds.rest.ElasticsearchConfiguration;
 import gov.ca.cwds.rest.SmartyStreetsConfiguration;
+import gov.ca.cwds.rest.api.ApiException;
 import io.dropwizard.db.DataSourceFactory;
 import io.dropwizard.hibernate.HibernateBundle;
 import io.dropwizard.setup.Bootstrap;
@@ -48,6 +57,9 @@ import io.dropwizard.setup.Bootstrap;
  * @author CWDS API Team
  */
 public class DataAccessModule extends AbstractModule {
+
+  private static final Logger LOGGER = LoggerFactory.getLogger(DataAccessModule.class);
+
   private final HibernateBundle<ApiConfiguration> cmsHibernateBundle =
       new HibernateBundle<ApiConfiguration>(StaffPerson.class, Referral.class, Allegation.class,
           CrossReport.class, ReferralClient.class, Reporter.class, CmsDocument.class,
@@ -136,6 +148,23 @@ public class DataAccessModule extends AbstractModule {
   @Provides
   public SmartyStreetsConfiguration smartystreetsConfig(ApiConfiguration apiConfiguration) {
     return apiConfiguration.getSmartyStreetsConfiguration();
+  }
+
+  @Provides
+  public Client elasticsearchClient(ApiConfiguration apiConfiguration) {
+    ElasticsearchConfiguration config = apiConfiguration.getElasticsearchConfiguration();
+    Client client = null;
+    try {
+      Settings settings =
+          Settings.settingsBuilder().put("cluster.name", config.getElasticsearchCluster()).build();
+      client = TransportClient.builder().settings(settings).build().addTransportAddress(
+          new InetSocketTransportAddress(InetAddress.getByName(config.getElasticsearchHost()),
+              Integer.parseInt(config.getElasticsearchPort())));
+    } catch (Exception e) {
+      LOGGER.error("Error initializing Elasticsearch client: {}", e.getMessage(), e);
+      throw new ApiException("Error initializing Elasticsearch client: " + e.getMessage(), e);
+    }
+    return client;
   }
 
 }
