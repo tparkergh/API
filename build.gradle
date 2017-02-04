@@ -55,8 +55,7 @@ shadowJar {
 dependencies {
 	// Dropwizard-guice 1.0.0.2 conflicts with jersey-client 2.25.
 	// Exclude transitive dependencies.
-	// compile group: "gov.ca.cwds.api", name: "api-core", version: "0.15.65"
-	compile ('gov.ca.cwds.api:api-core:0.15.65') {
+	compile ('gov.ca.cwds.api:api-core:0.15.68') {
 	    exclude group: 'org.glassfish.jersey.core'
 	}    
 	
@@ -93,9 +92,6 @@ dependencies {
 	testCompile('org.glassfish.jersey.test-framework.providers:jersey-test-framework-provider-grizzly2:2.23.2') {
 		exclude group: 'javax.servlet', module: 'javax.servlet-api'
 		exclude group: 'junit', module: 'junit'
-	}
-	testCompile ('gov.ca.cwds.api:api-core:0.15.65') {
-	     exclude group: 'org.glassfish.jersey.core'
 	}
 	
 	// https://mvnrepository.com/artifact/nl.jqno.equalsverifier/equalsverifier
