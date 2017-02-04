@@ -1129,6 +1129,7 @@ public class AutoCompletePerson
     AutoCompletePerson.systemCodes = systemCodes;
   }
 
+  @Override
   @SuppressWarnings("javadoc")
   public Serializable getPrimaryKey() {
     return this.getId();
