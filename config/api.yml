@@ -60,8 +60,6 @@ elasticsearch:
   elasticsearch.cluster: ${ES_CLUSTER:-elasticsearch}
   elasticsearch.clientnode: ${ES_CLIENTNODE:-javaclient}
   elasticsearch.clientport: ${ES_CLIENTPORT:-10080}
-  peopleIndexName: people
-  peopleIndexType: person
   
 smartystreets:
   clientId: ${SS_ID:-8721f357-6381-1001-4633-5157e84b68cb}
