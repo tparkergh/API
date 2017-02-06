@@ -34,9 +34,9 @@ import gov.ca.cwds.data.persistence.PersistentObject;
  * @author CWDS API Team
  */
 @NamedQueries({
-    @NamedQuery(name = "gov.ca.cwds.rest.api.persistence.cms.ServiceProvider.findAll",
+    @NamedQuery(name = "gov.ca.cwds.data.persistence.cms.ServiceProvider.findAll",
         query = "FROM ServiceProvider"),
-    @NamedQuery(name = "gov.ca.cwds.rest.api.persistence.cms.ServiceProvider.findAllUpdatedAfter",
+    @NamedQuery(name = "gov.ca.cwds.data.persistence.cms.ServiceProvider.findAllUpdatedAfter",
         query = "FROM ServiceProvider WHERE lastUpdatedTime > :after")})
 @NamedNativeQueries({
     @NamedNativeQuery(name = "gov.ca.cwds.data.persistence.cms.ServiceProvider.findAllByBucket",

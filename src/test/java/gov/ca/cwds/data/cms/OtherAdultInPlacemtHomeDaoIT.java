@@ -8,6 +8,7 @@ import static org.hamcrest.Matchers.nullValue;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
 
 import javax.persistence.EntityExistsException;
 import javax.persistence.EntityNotFoundException;
@@ -103,6 +104,11 @@ public class OtherAdultInPlacemtHomeDaoIT implements DaoTestTemplate {
         .getNamedQuery(
             "gov.ca.cwds.data.persistence.cms.OtherAdultInPlacemtHome.findAllUpdatedAfter")
         .setDate("after", TIMESTAMP_FORMAT.parse("2002-10-02 00:00:00"));
+    final List<OtherAdultInPlacemtHome> list = query.list();
+    System.out.println("size of query list is: " + list.size());
+    for (OtherAdultInPlacemtHome c : list) {
+      System.out.println("id " + c.getPrimaryKey() + " " + c.getLastName());
+    }
     assertThat(query.list().size(), is(2));
   }
 

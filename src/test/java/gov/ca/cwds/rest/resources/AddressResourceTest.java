@@ -36,11 +36,13 @@ public class AddressResourceTest {
   private static final String FOUND_RESOURCE = "/addresses/1";
   private static final String NOT_FOUND_RESOURCE = "/addresses/X";
 
+  @SuppressWarnings("javadoc")
   @After
   public void ensureServiceLocatorPopulated() {
     JerseyGuiceUtils.reset();
   }
 
+  @SuppressWarnings("javadoc")
   @ClassRule
   public static JerseyGuiceRule rule = new JerseyGuiceRule();
 
@@ -175,6 +177,7 @@ public class AddressResourceTest {
 
 
 
+  @SuppressWarnings("javadoc")
   @Test
   public void testDeleteDelegatesToResource() throws Exception {
     // delete not implemented

@@ -42,11 +42,13 @@ public class AllegationTest {
   private static final String ROOT_RESOURCE = "/" + Api.RESOURCE_ALLEGATION + "/";
   private static final AllegationResource mockedAllegationResource = mock(AllegationResource.class);
 
+  @SuppressWarnings("javadoc")
   @After
   public void ensureServiceLocatorPopulated() {
     JerseyGuiceUtils.reset();
   }
 
+  @SuppressWarnings("javadoc")
   @ClassRule
   public static JerseyGuiceRule rule = new JerseyGuiceRule();
 
