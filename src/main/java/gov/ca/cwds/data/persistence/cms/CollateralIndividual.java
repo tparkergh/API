@@ -11,8 +11,6 @@ import javax.persistence.Table;
 
 import org.hibernate.annotations.NamedNativeQueries;
 import org.hibernate.annotations.NamedNativeQuery;
-import org.hibernate.annotations.NamedQueries;
-import org.hibernate.annotations.NamedQuery;
 import org.hibernate.annotations.Type;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -32,15 +30,19 @@ import gov.ca.cwds.data.persistence.PersistentObject;
  * 
  * @author CWDS API Team
  */
-@NamedQueries({
-    @NamedQuery(name = "gov.ca.cwds.data.persistence.cms.CollateralIndividual.findAll",
-        query = "FROM CollateralIndividual WHERE IDENTIFIER IN (SELECT collateralIndividualId from ClientCollateral "
-            + "WHERE activeIndicator = 'Y' AND clientId IN "
-            + "(SELECT id FROM Client WHERE sensitivityIndicator = 'N' AND soc158SealedClientIndicator = 'N'))"),
-    @NamedQuery(name = "gov.ca.cwds.data.persistence.cms.CollateralIndividual.findAllUpdatedAfter",
-        query = "FROM CollateralIndividual WHERE lastUpdatedTime > :after AND IDENTIFIER IN (SELECT collateralIndividualId from ClientCollateral "
-            + "WHERE activeIndicator = 'Y' AND clientId IN "
-            + "(SELECT id FROM Client WHERE sensitivityIndicator = 'N' AND soc158SealedClientIndicator = 'N'))")})
+// @NamedQueries({
+// @NamedQuery(name = "gov.ca.cwds.data.persistence.cms.CollateralIndividual.findAll",
+// query = "FROM CollateralIndividual WHERE IDENTIFIER IN (SELECT collateralIndividualId from
+// ClientCollateral "
+// + "WHERE activeIndicator = 'Y' AND clientId IN "
+// + "(SELECT id FROM Client WHERE sensitivityIndicator = 'N' AND soc158SealedClientIndicator =
+// 'N'))"),
+// @NamedQuery(name = "gov.ca.cwds.data.persistence.cms.CollateralIndividual.findAllUpdatedAfter",
+// query = "FROM CollateralIndividual WHERE lastUpdatedTime > :after AND IDENTIFIER IN (SELECT
+// collateralIndividualId from ClientCollateral "
+// + "WHERE activeIndicator = 'Y' AND clientId IN "
+// + "(SELECT id FROM Client WHERE sensitivityIndicator = 'N' AND soc158SealedClientIndicator =
+// 'N'))")})
 @NamedNativeQueries({@NamedNativeQuery(
     name = "gov.ca.cwds.data.persistence.cms.CollateralIndividual.findAllByBucket",
     query = "select z.IDENTIFIER, z.BADGE_NO, z.CITY_NM, z.EMPLYR_NM, z.FAX_NO, "
