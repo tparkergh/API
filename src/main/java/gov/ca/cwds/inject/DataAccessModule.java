@@ -29,15 +29,23 @@ import gov.ca.cwds.data.ns.AddressDao;
 import gov.ca.cwds.data.ns.PersonDao;
 import gov.ca.cwds.data.ns.ScreeningDao;
 import gov.ca.cwds.data.persistence.cms.Allegation;
+import gov.ca.cwds.data.persistence.cms.ClientCollateral;
 import gov.ca.cwds.data.persistence.cms.CmsDocReferralClient;
 import gov.ca.cwds.data.persistence.cms.CmsDocument;
 import gov.ca.cwds.data.persistence.cms.CmsDocumentBlobSegment;
+import gov.ca.cwds.data.persistence.cms.CollateralIndividual;
 import gov.ca.cwds.data.persistence.cms.CrossReport;
+import gov.ca.cwds.data.persistence.cms.EducationProviderContact;
 import gov.ca.cwds.data.persistence.cms.ISystemCodeDao;
+import gov.ca.cwds.data.persistence.cms.OtherAdultInPlacemtHome;
+import gov.ca.cwds.data.persistence.cms.OtherChildInPlacemtHome;
+import gov.ca.cwds.data.persistence.cms.OtherClientName;
 import gov.ca.cwds.data.persistence.cms.Referral;
 import gov.ca.cwds.data.persistence.cms.ReferralClient;
 import gov.ca.cwds.data.persistence.cms.Reporter;
+import gov.ca.cwds.data.persistence.cms.ServiceProvider;
 import gov.ca.cwds.data.persistence.cms.StaffPerson;
+import gov.ca.cwds.data.persistence.cms.SubstituteCareProvider;
 import gov.ca.cwds.data.persistence.cms.SystemCodeDaoFileImpl;
 import gov.ca.cwds.data.persistence.ns.Address;
 import gov.ca.cwds.data.persistence.ns.Person;
@@ -64,9 +72,12 @@ public class DataAccessModule extends AbstractModule {
   private Client client;
 
   private final HibernateBundle<ApiConfiguration> cmsHibernateBundle =
-      new HibernateBundle<ApiConfiguration>(StaffPerson.class, Referral.class, Allegation.class,
-          CrossReport.class, ReferralClient.class, Reporter.class, CmsDocument.class,
-          CmsDocumentBlobSegment.class, CmsDocReferralClient.class) {
+      new HibernateBundle<ApiConfiguration>(Allegation.class, ClientCollateral.class,
+          CmsDocReferralClient.class, CmsDocument.class, CmsDocumentBlobSegment.class,
+          CollateralIndividual.class, CrossReport.class, EducationProviderContact.class,
+          OtherAdultInPlacemtHome.class, OtherChildInPlacemtHome.class, OtherClientName.class,
+          Referral.class, ReferralClient.class, Reporter.class, ServiceProvider.class,
+          StaffPerson.class, SubstituteCareProvider.class) {
         @Override
         public DataSourceFactory getDataSourceFactory(ApiConfiguration configuration) {
           return configuration.getCmsDataSourceFactory();
