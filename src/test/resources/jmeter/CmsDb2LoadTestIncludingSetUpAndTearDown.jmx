@@ -716,7 +716,7 @@ values ( &apos;${randomId}&apos;,	 &apos;N&apos;,	 &apos;            &apos;,	 &a
               <boolProp name="resetInterpreter">false</boolProp>
               <stringProp name="parameters"></stringProp>
               <stringProp name="filename"></stringProp>
-              <stringProp name="script">String myIdentifier = &quot;aatest&quot;+&quot;${__RandomString(4, abcdefghijklmnop1098765432)}&quot;;
+              <stringProp name="script">String myIdentifier = &quot;aatest&quot;+&quot;${__RandomString(4, abcdefghijklmnopqr98765432)}&quot;;
 vars.put(&quot;randomId&quot;, myIdentifier);</stringProp>
             </BeanShellPreProcessor>
             <hashTree/>
@@ -910,7 +910,7 @@ VALUES
               <boolProp name="resetInterpreter">false</boolProp>
               <stringProp name="parameters"></stringProp>
               <stringProp name="filename"></stringProp>
-              <stringProp name="script">String myIdentifier = &quot;bbtest&quot;+&quot;${__RandomString(4, abcdefghijklmnop1098765432)}&quot;;
+              <stringProp name="script">String myIdentifier = &quot;bbtest&quot;+&quot;${__RandomString(4, abcdefghijklmnopqr98765432)}&quot;;
 vars.put(&quot;randomId&quot;, myIdentifier);
 </stringProp>
             </BeanShellPreProcessor>
@@ -1101,7 +1101,7 @@ where FKREFERL_T=&apos;${reporterId}&apos;
               <boolProp name="resetInterpreter">false</boolProp>
               <stringProp name="parameters"></stringProp>
               <stringProp name="filename"></stringProp>
-              <stringProp name="script">String myIdentifier = &quot;cctest&quot;+&quot;${__RandomString(4, abcdefghijklmnop1098765432)}&quot;;
+              <stringProp name="script">String myIdentifier = &quot;cctest&quot;+&quot;${__RandomString(4, abcdefghijklmnopqr98765432)}&quot;;
 vars.put(&quot;randomId&quot;, myIdentifier);</stringProp>
             </BeanShellPreProcessor>
             <hashTree/>
@@ -1294,7 +1294,7 @@ VALUES (&apos;${randomId}&apos;, &apos;1999-02-08&apos;, &apos;F&apos;, &apos;${
               <boolProp name="resetInterpreter">false</boolProp>
               <stringProp name="parameters"></stringProp>
               <stringProp name="filename"></stringProp>
-              <stringProp name="script">String myIdentifier = &quot;ddtest&quot;+&quot;${__RandomString(4, abcdefghijklmnop1098765432)}&quot;;
+              <stringProp name="script">String myIdentifier = &quot;ddtest&quot;+&quot;${__RandomString(4, abcdefghijklmnopqr98765432)}&quot;;
 vars.put(&quot;randomId&quot;, myIdentifier);</stringProp>
             </BeanShellPreProcessor>
             <hashTree/>
@@ -1486,7 +1486,7 @@ VALUES (&apos;${randomId}&apos;, &apos;Y&apos;, 5620000637, null, 5626953805, &a
               <boolProp name="resetInterpreter">false</boolProp>
               <stringProp name="parameters"></stringProp>
               <stringProp name="filename"></stringProp>
-              <stringProp name="script">String myIdentifier = &quot;eetest&quot;+&quot;${__RandomString(4, abcdefghijklmnop1098765432)}&quot;;
+              <stringProp name="script">String myIdentifier = &quot;eetest&quot;+&quot;${__RandomString(4, abcdefghijklmnopqrst98765432)}&quot;;
 vars.put(&quot;randomId&quot;, myIdentifier);</stringProp>
             </BeanShellPreProcessor>
             <hashTree/>
@@ -1679,7 +1679,7 @@ VALUES (&apos;${randomId}&apos;, &apos;1929-09-09&apos;, &apos;1999-06-05&apos;,
               <boolProp name="resetInterpreter">false</boolProp>
               <stringProp name="parameters"></stringProp>
               <stringProp name="filename"></stringProp>
-              <stringProp name="script">String myIdentifier = &quot;fftest&quot;+&quot;${__RandomString(4, abcdefghijklmnop1098765432)}&quot;;
+              <stringProp name="script">String myIdentifier = &quot;fftest&quot;+&quot;${__RandomString(4, abcdefghijklmnopqrst98765432)}&quot;;
 vars.put(&quot;randomId&quot;, myIdentifier);</stringProp>
             </BeanShellPreProcessor>
             <hashTree/>
@@ -1869,7 +1869,7 @@ where IDENTIFIER=&apos;${otherAdultsplacementHomeId}&apos;</stringProp>
               <boolProp name="resetInterpreter">false</boolProp>
               <stringProp name="parameters"></stringProp>
               <stringProp name="filename"></stringProp>
-              <stringProp name="script">String myIdentifier = &quot;attest&quot;+&quot;${__RandomString(4, abcdefghijklmnop1098765432)}&quot;;
+              <stringProp name="script">String myIdentifier = &quot;attest&quot;+&quot;${__RandomString(4, abcdefghijklmnopqrst98765432)}&quot;;
 vars.put(&quot;randomId&quot;, myIdentifier);</stringProp>
             </BeanShellPreProcessor>
             <hashTree/>
@@ -2058,7 +2058,7 @@ values ( &apos;${randomId}&apos;,	&apos;${name}&apos;,	&apos;Lastname&apos;,	&ap
               <boolProp name="resetInterpreter">false</boolProp>
               <stringProp name="parameters"></stringProp>
               <stringProp name="filename"></stringProp>
-              <stringProp name="script">String myIdentifier = &quot;ggtest&quot;+&quot;${__RandomString(4, abcdefghijklmnop1098765432)}&quot;;
+              <stringProp name="script">String myIdentifier = &quot;ggtest&quot;+&quot;${__RandomString(4, abcdefghijklmnopqrst98765432)}&quot;;
 vars.put(&quot;randomId&quot;, myIdentifier);</stringProp>
             </BeanShellPreProcessor>
             <hashTree/>
@@ -2249,7 +2249,7 @@ VALUES (&apos;${randomId}&apos;, 5305295841, 0, NULL, &apos;        &apos;,	 &ap
               <boolProp name="resetInterpreter">false</boolProp>
               <stringProp name="parameters"></stringProp>
               <stringProp name="filename"></stringProp>
-              <stringProp name="script">String myIdentifier = &quot;sctest&quot;+&quot;${__RandomString(4, abcdefghijklmnop1098765432)}&quot;;
+              <stringProp name="script">String myIdentifier = &quot;sctest&quot;+&quot;${__RandomString(4, abcdefghijklmnopqrst98765432)}&quot;;
 vars.put(&quot;randomId&quot;, myIdentifier);</stringProp>
             </BeanShellPreProcessor>
             <hashTree/>
@@ -2441,7 +2441,7 @@ where IDENTIFIER=&apos;${subCareProviderId}&apos;
               <boolProp name="resetInterpreter">false</boolProp>
               <stringProp name="parameters"></stringProp>
               <stringProp name="filename"></stringProp>
-              <stringProp name="script">String myIdentifier = &quot;sptest&quot;+&quot;${__RandomString(4, abcdefghijklmnop1098765432)}&quot;;
+              <stringProp name="script">String myIdentifier = &quot;sptest&quot;+&quot;${__RandomString(4, abcdefghijklmnopqrst98765432)}&quot;;
 vars.put(&quot;randomId&quot;, myIdentifier);</stringProp>
             </BeanShellPreProcessor>
             <hashTree/>
@@ -2632,7 +2632,7 @@ VALUES (&apos;${randomId}&apos;, &apos; &apos;, &apos;N&apos;, &apos;N&apos;, &a
               <boolProp name="resetInterpreter">false</boolProp>
               <stringProp name="parameters"></stringProp>
               <stringProp name="filename"></stringProp>
-              <stringProp name="script">String myIdentifier = &quot;retest&quot;+&quot;${__RandomString(4, abcdefghijklmnop1098765432)}&quot;;
+              <stringProp name="script">String myIdentifier = &quot;retest&quot;+&quot;${__RandomString(4, abcdefghijklmnopqrst98765432)}&quot;;
 vars.put(&quot;randomId&quot;, myIdentifier);</stringProp>
             </BeanShellPreProcessor>
             <hashTree/>
@@ -2824,8 +2824,8 @@ VALUES (&apos;Y&apos;, 580, &apos;${name}&apos;, &apos;00b&apos;, &apos;1997-12-
               <boolProp name="resetInterpreter">false</boolProp>
               <stringProp name="parameters"></stringProp>
               <stringProp name="filename"></stringProp>
-              <stringProp name="script">String myIdentifier = &quot;cttest&quot;+&quot;${__RandomString(4, abcdefghijklmnop1098765432)}&quot;;
-String fkColleretal = &quot;cotest&quot;+&quot;${__RandomString(4, abcdefghijklmnop1098765432)}&quot;;
+              <stringProp name="script">String myIdentifier = &quot;cttest&quot;+&quot;${__RandomString(4, abcdefghijklmnopqrst98765432)}&quot;;
+String fkColleretal = &quot;cotest&quot;+&quot;${__RandomString(4, abcdefghijklmnopqrst98765432)}&quot;;
 vars.put(&quot;randomThirdId&quot;, myIdentifier);
 vars.put(&quot;randonFkColleretalId&quot;, fkColleretal);</stringProp>
             </BeanShellPreProcessor>
@@ -2964,7 +2964,7 @@ where THIRD_ID=&apos;${ClientCollateralThirdId}&apos;</stringProp>
         </hashTree>
       </hashTree>
       <ResultCollector guiclass="ViewResultsFullVisualizer" testclass="ResultCollector" testname="View Results Tree" enabled="true">
-        <boolProp name="ResultCollector.error_logging">false</boolProp>
+        <boolProp name="ResultCollector.error_logging">true</boolProp>
         <objProp>
           <name>saveConfig</name>
           <value class="SampleSaveConfiguration">
@@ -2995,7 +2995,6 @@ where THIRD_ID=&apos;${ClientCollateralThirdId}&apos;</stringProp>
           </value>
         </objProp>
         <stringProp name="filename"></stringProp>
-        <boolProp name="ResultCollector.success_only_logging">true</boolProp>
       </ResultCollector>
       <hashTree/>
       <ResultCollector guiclass="SummaryReport" testclass="ResultCollector" testname="Summary Report" enabled="true">

@@ -169,7 +169,7 @@
  &quot;cityName&quot; : &quot;Freson&quot;,&#xd;
  &quot;colltrClientRptrReltnshpType&quot; : 0,&#xd;
  &quot;communicationMethodType&quot; : 0,&#xd;
- &quot;confidentialWaiverIndicator&quot; : false,&#xd;
+ &quot;confidentialWaiverIndicator&quot; : true,&#xd;
  &quot;drmsMandatedRprtrFeedback&quot; : null,&#xd;
  &quot;employerName&quot; : &quot;&quot;,&#xd;
  &quot;feedbackDate&quot; : &quot;2016-10-31&quot;,&#xd;
