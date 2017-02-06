@@ -73,11 +73,12 @@ public class DataAccessModule extends AbstractModule {
 
   private final HibernateBundle<ApiConfiguration> cmsHibernateBundle =
       new HibernateBundle<ApiConfiguration>(Allegation.class, ClientCollateral.class,
-          CmsDocReferralClient.class, CmsDocument.class, CmsDocumentBlobSegment.class,
-          CollateralIndividual.class, CrossReport.class, EducationProviderContact.class,
-          OtherAdultInPlacemtHome.class, OtherChildInPlacemtHome.class, OtherClientName.class,
-          Referral.class, ReferralClient.class, Reporter.class, ServiceProvider.class,
-          StaffPerson.class, SubstituteCareProvider.class) {
+          gov.ca.cwds.data.persistence.cms.Client.class, CmsDocReferralClient.class,
+          CmsDocument.class, CmsDocumentBlobSegment.class, CollateralIndividual.class,
+          CrossReport.class, EducationProviderContact.class, OtherAdultInPlacemtHome.class,
+          OtherChildInPlacemtHome.class, OtherClientName.class, Referral.class,
+          ReferralClient.class, Reporter.class, ServiceProvider.class, StaffPerson.class,
+          SubstituteCareProvider.class) {
         @Override
         public DataSourceFactory getDataSourceFactory(ApiConfiguration configuration) {
           return configuration.getCmsDataSourceFactory();
