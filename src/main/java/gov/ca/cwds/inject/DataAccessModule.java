@@ -60,6 +60,9 @@ public class DataAccessModule extends AbstractModule {
 
   private static final Logger LOGGER = LoggerFactory.getLogger(DataAccessModule.class);
 
+
+  private Client client;
+
   private final HibernateBundle<ApiConfiguration> cmsHibernateBundle =
       new HibernateBundle<ApiConfiguration>(StaffPerson.class, Referral.class, Allegation.class,
           CrossReport.class, ReferralClient.class, Reporter.class, CmsDocument.class,
@@ -152,19 +155,22 @@ public class DataAccessModule extends AbstractModule {
 
   @Provides
   public Client elasticsearchClient(ApiConfiguration apiConfiguration) {
-    ElasticsearchConfiguration config = apiConfiguration.getElasticsearchConfiguration();
-    Client client = null;
-    try {
-      Settings settings =
-          Settings.settingsBuilder().put("cluster.name", config.getElasticsearchCluster()).build();
-      client = TransportClient.builder().settings(settings).build().addTransportAddress(
-          new InetSocketTransportAddress(InetAddress.getByName(config.getElasticsearchHost()),
-              Integer.parseInt(config.getElasticsearchPort())));
-    } catch (Exception e) {
-      LOGGER.error("Error initializing Elasticsearch client: {}", e.getMessage(), e);
-      throw new ApiException("Error initializing Elasticsearch client: " + e.getMessage(), e);
+    if (client == null) {
+      ElasticsearchConfiguration config = apiConfiguration.getElasticsearchConfiguration();
+      try {
+        Settings settings = Settings.settingsBuilder()
+            .put("cluster.name", config.getElasticsearchCluster()).build();
+        client = TransportClient.builder().settings(settings).build().addTransportAddress(
+            new InetSocketTransportAddress(InetAddress.getByName(config.getElasticsearchHost()),
+                Integer.parseInt(config.getElasticsearchPort())));
+      } catch (Exception e) {
+        LOGGER.error("Error initializing Elasticsearch client: {}", e.getMessage(), e);
+        throw new ApiException("Error initializing Elasticsearch client: " + e.getMessage(), e);
+      }
     }
+
     return client;
+
   }
 
 }
