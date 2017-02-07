@@ -1,17 +1,18 @@
 package gov.ca.cwds.rest.services;
 
+import java.io.Serializable;
+
+import org.apache.commons.lang3.NotImplementedException;
+
+import com.google.inject.Inject;
+
 import gov.ca.cwds.data.validation.SmartyStreetsDao;
 import gov.ca.cwds.rest.api.Request;
 import gov.ca.cwds.rest.api.Response;
 import gov.ca.cwds.rest.api.domain.Address;
 import gov.ca.cwds.rest.api.domain.ValidatedAddress;
 import gov.ca.cwds.rest.validation.SmartyStreet;
-
-import java.io.Serializable;
-
-import org.apache.commons.lang3.NotImplementedException;
-
-import com.google.inject.Inject;
+import gov.ca.cwds.rest.validation.ValidationException;
 
 /**
  * Business layer object to work on {@link ValidatedAddress}
@@ -32,16 +33,17 @@ public class AddressValidationService implements CrudsService {
    * 
    * @param address The address to validate
    * @return array of {@link ValidatedAddress}
-   * @throws Exception due to SmartyStreets error, I/O error, etc.
+   * @throws ValidationException due to SmartyStreets error, I/O error, etc.
    */
-  public ValidatedAddress[] fetchValidatedAddresses(Address address) throws Exception {
+  public ValidatedAddress[] fetchValidatedAddresses(Address address) throws ValidationException {
     ValidatedAddress[] addresses = null;
-
-    SmartyStreet smartyStreet = new SmartyStreet(smartyStreetsDao);
-    addresses =
-        smartyStreet.usStreetSingleAddress(address.getStreet_address(), address.getCity(),
-            address.getState(), address.getZip());
-
+    try {
+      SmartyStreet smartyStreet = new SmartyStreet(smartyStreetsDao);
+      addresses = smartyStreet.usStreetSingleAddress(address.getStreet_address(), address.getCity(),
+          address.getState(), address.getZip());
+    } catch (Exception e) {
+      throw new ValidationException("ERROR calling usStreetSingleAddress in SmartyStreet", e);
+    }
     return addresses;
 
   }
