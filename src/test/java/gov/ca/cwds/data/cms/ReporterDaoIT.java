@@ -150,7 +150,7 @@ public class ReporterDaoIT implements DaoTestTemplate {
     for (Reporter c : list) {
       System.out.println("id " + c.getPrimaryKey() + " " + c.getLastName());
     }
-    // assertThat(query.list().size(), is(1));
+    assertThat(query.list().size(), is(1));
   }
 
   @SuppressWarnings("javadoc")
@@ -166,7 +166,7 @@ public class ReporterDaoIT implements DaoTestTemplate {
   public void testFindAllUpdatedAfterReturnsCorrectList() throws Exception {
     Query query =
         session.getNamedQuery("gov.ca.cwds.data.persistence.cms.Reporter.findAllUpdatedAfter")
-            .setDate("after", TIMESTAMP_FORMAT.parse("2004-01-02 00:00:00"));
+            .setDate("after", TIMESTAMP_FORMAT.parse("1997-01-02 00:00:00"));
 
     @SuppressWarnings("unchecked")
     final List<Reporter> list = query.list();
@@ -174,7 +174,7 @@ public class ReporterDaoIT implements DaoTestTemplate {
     for (Reporter c : list) {
       System.out.println("id " + c.getPrimaryKey() + " " + c.getLastName());
     }
-    // assertThat(query.list().size(), is(1));
+    assertThat(query.list().size(), is(1));
   }
 
 }

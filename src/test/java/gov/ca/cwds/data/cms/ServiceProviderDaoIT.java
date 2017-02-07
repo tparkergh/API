@@ -72,16 +72,14 @@ public class ServiceProviderDaoIT implements DaoTestTemplate {
   @Override
   @Test
   public void testFindAllNamedQueryExist() throws Exception {
-    Query query =
-        session.getNamedQuery("gov.ca.cwds.rest.api.persistence.cms.ServiceProvider.findAll");
+    Query query = session.getNamedQuery("gov.ca.cwds.data.persistence.cms.ServiceProvider.findAll");
     assertThat(query, is(notNullValue()));
   }
 
   @Override
   @Test
   public void testFindAllReturnsCorrectList() throws Exception {
-    Query query =
-        session.getNamedQuery("gov.ca.cwds.rest.api.persistence.cms.ServiceProvider.findAll");
+    Query query = session.getNamedQuery("gov.ca.cwds.data.persistence.cms.ServiceProvider.findAll");
     assertThat(query.list().size(), is(3));
   }
 
@@ -89,7 +87,7 @@ public class ServiceProviderDaoIT implements DaoTestTemplate {
   @Test
   public void testfindAllUpdatedAfterNamedQueryExists() throws Exception {
     Query query = session
-        .getNamedQuery("gov.ca.cwds.rest.api.persistence.cms.ServiceProvider.findAllUpdatedAfter");
+        .getNamedQuery("gov.ca.cwds.data.persistence.cms.ServiceProvider.findAllUpdatedAfter");
     assertThat(query, is(notNullValue()));
   }
 
@@ -97,7 +95,7 @@ public class ServiceProviderDaoIT implements DaoTestTemplate {
   @Test
   public void testfindAllUpdatedAfterReturnsCorrectList() throws Exception {
     Query query = session
-        .getNamedQuery("gov.ca.cwds.rest.api.persistence.cms.ServiceProvider.findAllUpdatedAfter")
+        .getNamedQuery("gov.ca.cwds.data.persistence.cms.ServiceProvider.findAllUpdatedAfter")
         .setDate("after", TIMESTAMP_FORMAT.parse("2000-11-02 00:00:00"));
     assertThat(query.list().size(), is(3));
   }
