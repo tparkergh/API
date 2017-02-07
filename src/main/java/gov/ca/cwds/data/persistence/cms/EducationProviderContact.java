@@ -426,13 +426,11 @@ public class EducationProviderContact extends CmsPersistentObject
 
   @Override
   public String getPhoneNumberExtension() {
-    // TODO Auto-generated method stub
     return null;
   }
 
   @Override
   public PhoneType getPhoneType() {
-    // TODO Auto-generated method stub
     return null;
   }
 
