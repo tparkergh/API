@@ -284,7 +284,7 @@ public class ESPerson extends Person {
   private String sourceType;
 
   /**
-   * Raw, nested, child document (typically inherited from {@link @Person} in JSON from object
+   * Raw, nested, child document (typically inherited from {@link Person} in JSON from object
    * {@link #sourceType} and stored in ES document.
    * 
    * <p>
