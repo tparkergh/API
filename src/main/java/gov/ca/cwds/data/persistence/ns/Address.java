@@ -75,7 +75,7 @@ public class Address extends NsPersistentObject {
   public Address(gov.ca.cwds.rest.api.domain.Address address, String lastUpdatedId,
       String createUserId) {
     super(lastUpdatedId, createUserId);
-    this.streetAddress = address.getStreet_address();
+    this.streetAddress = address.getStreetAddress();
     this.city = address.getCity();
     this.state = address.getState();
     this.zip = address.getZip();

@@ -67,7 +67,7 @@ public class AddressTest {
     Address totest = new Address(persistent);
     assertThat(totest.getCity(), is(equalTo(persistent.getCity())));
     assertThat(totest.getState(), is(equalTo(persistent.getState())));
-    assertThat(totest.getStreet_address(), is(equalTo(persistent.getStreetAddress())));
+    assertThat(totest.getStreetAddress(), is(equalTo(persistent.getStreetAddress())));
     assertThat(totest.getZip(), is(equalTo(persistent.getZip())));
   }
 
@@ -77,7 +77,7 @@ public class AddressTest {
 
     assertThat(domain.getCity(), is(equalTo(city)));
     assertThat(domain.getState(), is(equalTo(state)));
-    assertThat(domain.getStreet_address(), is(equalTo(street_name)));
+    assertThat(domain.getStreetAddress(), is(equalTo(street_name)));
     assertThat(domain.getZip(), is(equalTo(zip)));
   }
 

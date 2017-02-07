@@ -2,7 +2,7 @@ package gov.ca.cwds.rest.api.domain;
 
 import gov.ca.cwds.rest.api.Request;
 import gov.ca.cwds.rest.api.Response;
-import io.swagger.annotations.ApiModel;
+import io.dropwizard.jackson.JsonSnakeCase;
 import io.swagger.annotations.ApiModelProperty;
 
 import javax.validation.constraints.Size;
@@ -15,13 +15,13 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  * 
  * @author CWDS API Team
  */
-@ApiModel
+@JsonSnakeCase
 public class Address extends DomainObject implements Request, Response {
 
   @JsonProperty("street_address")
   @ApiModelProperty(example = "742 Evergreen Terrace")
   @Size(max = 50)
-  private String street_address;
+  private String streetAddress;
 
   @JsonProperty("city")
   @ApiModelProperty(example = "Springfield")
@@ -40,17 +40,17 @@ public class Address extends DomainObject implements Request, Response {
   /**
    * Constructor
    * 
-   * @param street_address The street address
+   * @param streetAddress The street address
    * @param city The city
    * @param state The state
    * @param zip The zip
    */
   @JsonCreator
-  public Address(@JsonProperty("street_address") String street_address,
+  public Address(@JsonProperty("street_address") String streetAddress,
       @JsonProperty("city") String city, @JsonProperty("state") String state,
       @JsonProperty("zip") Integer zip) {
     super();
-    this.street_address = street_address;
+    this.streetAddress = streetAddress;
     this.city = city;
     this.state = state;
     this.zip = zip;
@@ -62,7 +62,7 @@ public class Address extends DomainObject implements Request, Response {
    * @param address persistence level address object
    */
   public Address(gov.ca.cwds.data.persistence.ns.Address address) {
-    this.street_address = address.getStreetAddress();
+    this.streetAddress = address.getStreetAddress();
     this.city = address.getCity();
     this.state = address.getState();
     this.zip = address.getZip();
@@ -71,8 +71,8 @@ public class Address extends DomainObject implements Request, Response {
   /**
    * @return the street_address
    */
-  public String getStreet_address() {
-    return street_address;
+  public String getStreetAddress() {
+    return streetAddress;
   }
 
   /**
@@ -107,7 +107,7 @@ public class Address extends DomainObject implements Request, Response {
     int result = 1;
     result = prime * result + ((city == null) ? 0 : city.hashCode());
     result = prime * result + ((state == null) ? 0 : state.hashCode());
-    result = prime * result + ((street_address == null) ? 0 : street_address.hashCode());
+    result = prime * result + ((streetAddress == null) ? 0 : streetAddress.hashCode());
     result = prime * result + ((zip == null) ? 0 : zip.hashCode());
     return result;
   }
@@ -136,10 +136,10 @@ public class Address extends DomainObject implements Request, Response {
         return false;
     } else if (!state.equals(other.state))
       return false;
-    if (street_address == null) {
-      if (other.street_address != null)
+    if (streetAddress == null) {
+      if (other.streetAddress != null)
         return false;
-    } else if (!street_address.equals(other.street_address))
+    } else if (!streetAddress.equals(other.streetAddress))
       return false;
     if (zip == null) {
       if (other.zip != null)

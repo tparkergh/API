@@ -39,7 +39,7 @@ public class AddressValidationService implements CrudsService {
     ValidatedAddress[] addresses = null;
     try {
       SmartyStreet smartyStreet = new SmartyStreet(smartyStreetsDao);
-      addresses = smartyStreet.usStreetSingleAddress(address.getStreet_address(), address.getCity(),
+      addresses = smartyStreet.usStreetSingleAddress(address.getStreetAddress(), address.getCity(),
           address.getState(), address.getZip());
     } catch (Exception e) {
       throw new ValidationException("ERROR calling usStreetSingleAddress in SmartyStreet", e);

@@ -18,24 +18,25 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @JsonSnakeCase
 public class ValidatedAddress extends DomainObject implements Request, Response {
 
-  @JsonProperty("street_address")
-  @ApiModelProperty(example = "9500 Kiefer Blvd")
-  @Size(max = 50)
-  private String streetAddress;
+  @JsonProperty("zip")
+  @ApiModelProperty(example = "95827")
+  private Integer zip;
 
   @JsonProperty("city")
   @ApiModelProperty(example = "Sacramento")
   @Size(max = 50)
   private String city;
 
+  @JsonProperty("street_address")
+  @ApiModelProperty(example = "9500 Kiefer Blvd")
+  @Size(max = 50)
+  private String streetAddress;
+
+
   @JsonProperty("state")
   @ApiModelProperty(example = "CA")
   @Size(max = 50)
   private String state;
-
-  @JsonProperty("zip")
-  @ApiModelProperty(example = "95827")
-  private Integer zip;
 
   @JsonProperty("longitude")
   @ApiModelProperty(example = "-121.34332")
