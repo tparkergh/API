@@ -50,7 +50,7 @@ public class CmsDocReferralClientService implements CrudsService {
    */
   @Override
   public CmsDocReferralClient find(Serializable primaryKey) {
-    assert (primaryKey instanceof String);
+    assert primaryKey instanceof String;
 
     CmsDocReferralClient retval = null;
 

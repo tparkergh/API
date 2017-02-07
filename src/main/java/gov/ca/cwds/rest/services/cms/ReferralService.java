@@ -48,7 +48,7 @@ public class ReferralService implements CrudsService {
    */
   @Override
   public gov.ca.cwds.rest.api.domain.cms.Referral find(Serializable primaryKey) {
-    assert (primaryKey instanceof String);
+    assert primaryKey instanceof String;
 
     gov.ca.cwds.data.persistence.cms.Referral persistedReferral = referralDao.find(primaryKey);
     if (persistedReferral != null) {
@@ -64,7 +64,7 @@ public class ReferralService implements CrudsService {
    */
   @Override
   public gov.ca.cwds.rest.api.domain.cms.Referral delete(Serializable primaryKey) {
-    assert (primaryKey instanceof String);
+    assert primaryKey instanceof String;
     gov.ca.cwds.data.persistence.cms.Referral persistedReferral = referralDao.delete(primaryKey);
     if (persistedReferral != null) {
       return new gov.ca.cwds.rest.api.domain.cms.Referral(persistedReferral);
@@ -79,7 +79,7 @@ public class ReferralService implements CrudsService {
    */
   @Override
   public PostedReferral create(Request request) {
-    assert (request instanceof gov.ca.cwds.rest.api.domain.cms.Referral);
+    assert request instanceof gov.ca.cwds.rest.api.domain.cms.Referral;
 
     gov.ca.cwds.rest.api.domain.cms.Referral referral =
         (gov.ca.cwds.rest.api.domain.cms.Referral) request;

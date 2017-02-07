@@ -71,7 +71,7 @@ public class ScreeningService implements CrudsService {
    */
   @Override
   public Response delete(Serializable primaryKey) {
-    assert (primaryKey instanceof Long);
+    assert primaryKey instanceof Long;
     throw new NotImplementedException("Delete is not implemented");
   }
 

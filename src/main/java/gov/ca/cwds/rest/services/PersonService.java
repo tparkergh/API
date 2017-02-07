@@ -72,7 +72,7 @@ public class PersonService implements CrudsService {
    */
   @Override
   public PostedPerson create(Request request) {
-    assert (request instanceof Person);
+    assert request instanceof Person;
     Person person = (Person) request;
     gov.ca.cwds.data.persistence.ns.Person managed =
         new gov.ca.cwds.data.persistence.ns.Person(person, null, null);

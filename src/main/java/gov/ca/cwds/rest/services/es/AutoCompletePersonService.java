@@ -30,6 +30,7 @@ public class AutoCompletePersonService
   private static final Logger LOGGER = LoggerFactory.getLogger(AutoCompletePersonService.class);
 
   private ElasticsearchDao elasticsearchDao;
+  @SuppressWarnings("unused")
   private ISystemCodeCache sysCodeCache;
 
   /**
