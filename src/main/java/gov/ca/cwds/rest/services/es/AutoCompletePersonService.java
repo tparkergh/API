@@ -52,7 +52,7 @@ public class AutoCompletePersonService
    * @return complete domain object
    */
   protected AutoCompletePersonResponse callDao(final String searchTerm) {
-    final ElasticSearchPerson[] hits = this.elasticsearchDao.autoCompletePerson(searchTerm);
+    final ElasticSearchPerson[] hits = this.elasticsearchDao.searchPerson(searchTerm);
     final int len = hits != null ? hits.length : 0;
     List<AutoCompletePerson> list = new ArrayList<>(len);
 

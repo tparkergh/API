@@ -58,7 +58,7 @@ import gov.ca.cwds.rest.api.domain.DomainChef;
         + "z.FKREFERL_T, z.FKLAW_ENFT, z.ZIP_SFX_NO, z.CNTY_SPFCD "
         + "from ( select mod(y.rn, :total_buckets) + 1 as bucket, y.* "
         + "from ( select row_number() over (order by 1) as rn, x.* "
-        + "from ( select c.* from cwsint.REPTR_T c "
+        + "from ( select c.* from {h-schema}REPTR_T c "
         + ") x ) y ) z where z.bucket = :bucket_num for read only",
     resultClass = Reporter.class)})
 @SuppressWarnings("serial")

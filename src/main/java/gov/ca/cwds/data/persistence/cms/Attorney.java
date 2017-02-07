@@ -52,7 +52,7 @@ import gov.ca.cwds.data.persistence.PersistentObject;
         + "z.LST_UPD_TS, z.BUSNSS_NM, z.ZIP_SFX_NO, z.END_DT, z.ARCASS_IND, z.EMAIL_ADDR "
         + "from ( select mod(y.rn, :total_buckets) + 1 as bucket, y.* "
         + "from ( select row_number() over (order by 1) as rn, x.* "
-        + "from ( select c.* from cwsint.ATTRNY_T c "
+        + "from ( select c.* from {h-schema}ATTRNY_T c "
         + ") x ) y ) z where z.bucket = :bucket_num for read only",
     resultClass = Attorney.class)})
 @Entity

@@ -18,9 +18,9 @@ import gov.ca.cwds.data.persistence.PersistentObject;
  * @author CWDS API Team
  */
 @NamedQuery(name = "gov.ca.cwds.data.persistence.cms.SystemCode.findAll",
-    query = "FROM SystemCode  WHERE inactiveIndicator = 'N' AND  foreignKeyMetaTable = :metaTable")
+    query = "FROM SystemCode WHERE inactiveIndicator = 'N' AND foreignKeyMetaTable = :metaTable")
 @Entity
-@Table(schema = "CWSINT", name = "SYS_CD_C")
+@Table(name = "SYS_CD_C")
 public class SystemCode extends CmsPersistentObject {
 
   /**

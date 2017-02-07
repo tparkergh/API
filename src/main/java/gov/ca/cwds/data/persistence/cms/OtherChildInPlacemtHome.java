@@ -40,7 +40,7 @@ import gov.ca.cwds.data.persistence.PersistentObject;
         + "z.LST_UPD_ID, z.LST_UPD_TS, z.FKPLC_HM_T, z.YR_INC_AMT "
         + "from ( select mod(y.rn, :total_buckets) + 1 as bucket, y.* "
         + "from ( select row_number() over (order by 1) as rn, x.* "
-        + "from ( select c.* from cwsint.OTH_KIDT c "
+        + "from ( select c.* from {h-schema}OTH_KIDT c "
         + ") x ) y ) z where z.bucket = :bucket_num for read only",
     resultClass = OtherChildInPlacemtHome.class)})
 @Entity

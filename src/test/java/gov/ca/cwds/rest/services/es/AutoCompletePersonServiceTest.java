@@ -109,7 +109,7 @@ public class AutoCompletePersonServiceTest {
   public void testFind_Args$String_Found() throws Exception {
     final String findThis = "nuttin";
     final ElasticSearchPerson[] empty = new ElasticSearchPerson[0];
-    when(dao.autoCompletePerson(findThis)).thenReturn(empty);
+    when(dao.searchPerson(findThis)).thenReturn(empty);
     AutoCompletePersonResponse actual = target.handleFind(findThis);
     AutoCompletePersonResponse expected =
         new AutoCompletePersonResponse(new ArrayList<AutoCompletePerson>());

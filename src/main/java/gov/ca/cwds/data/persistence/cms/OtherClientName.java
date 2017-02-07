@@ -46,7 +46,7 @@ import gov.ca.cwds.data.persistence.PersistentObject;
             + "z.NAME_TPC, z.SUFX_TLDSC, z.LST_UPD_ID, z.LST_UPD_TS, z.FKCLIENT_T "
             + "from ( select mod(y.rn, :total_buckets) + 1 as bucket, y.* "
             + "from ( select row_number() over (order by 1) as rn, x.* "
-            + "from ( select c.* from cwsint.OCL_NM_T c "
+            + "from ( select c.* from {h-schema}OCL_NM_T c "
             + ") x ) y ) z where z.bucket = :bucket_num for read only",
         resultClass = OtherClientName.class)})
 @Entity
