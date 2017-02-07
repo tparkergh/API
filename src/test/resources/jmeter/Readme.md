@@ -33,24 +33,25 @@ people_search.jmx
 
 For this test The following properties are added to JMeter user.properties
 
-load.test.number.of.users
-load.test.loops
-load.test.tabledata
-load.test.db2.url
-load.test.db2.user
-load.test.db2.password
+load.test.number.of.users<br>
+load.test.loops<br>
+load.test.tabledata<br>
+load.test.db2.url<br>
+load.test.db2.user<br>
+load.test.db2.password<br>
 
-This test creates a load against the DB2 database. The data created as part of the test is cleared up when the test is complete. The tables covered include
-CLIENT_T
-REPTR_T
-COLTRL_T
-OTH_KIDT
-EDPRVCNT
-OTH_ADLT
-ATTRNY_T
-OCL_NM_T
-SB_PVDRT
-SVC_PVRT
-REFERL_T
-CLN_COLT
+This test creates a load against the DB2 database. The data created as part of the test is cleared up when the test is complete. The tables covered include:
+
+CLIENT_T<br>
+REPTR_T<br>
+COLTRL_T<br>
+OTH_KIDT<br>
+EDPRVCNT<br>
+OTH_ADLT<br>
+ATTRNY_T<br>
+OCL_NM_T<br>
+SB_PVDRT<br>
+SVC_PVRT<br>
+REFERL_T<br>
+CLN_COLT<br>
 

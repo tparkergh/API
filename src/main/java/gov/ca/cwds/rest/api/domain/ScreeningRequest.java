@@ -1,13 +1,13 @@
 package gov.ca.cwds.rest.api.domain;
 
+import gov.ca.cwds.rest.api.Request;
+import io.dropwizard.jackson.JsonSnakeCase;
+
 import java.util.Arrays;
 import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
-
-import gov.ca.cwds.rest.api.Request;
-import io.dropwizard.jackson.JsonSnakeCase;
 
 /**
  * {@link DomainObject} representing a screening request.
@@ -34,7 +34,7 @@ public class ScreeningRequest extends Screening implements Request {
    * @param name The name
    * @param responseTime The response time
    * @param screeningDecision The screening decision
-   * @param started_at The started at
+   * @param startedAt The started at
    * @param narrative The narrative
    * @param address The {@link Address}
    * @param participantIds The {@link List}
@@ -48,11 +48,11 @@ public class ScreeningRequest extends Screening implements Request {
       @JsonProperty("communication_method") String communicationMethod,
       @JsonProperty("name") String name, @JsonProperty("response_time") String responseTime,
       @JsonProperty("screening_decision") String screeningDecision,
-      @JsonProperty("started_at") String started_at, @JsonProperty("narrative") String narrative,
+      @JsonProperty("started_at") String startedAt, @JsonProperty("narrative") String narrative,
       @JsonProperty("address") Address address,
       @JsonProperty("participant_ids") List<Long> participantIds) {
-    super(reference, endedAt, incidentCounty, incidentDate, locationType, communicationMethod, name,
-        responseTime, screeningDecision, started_at, narrative);
+    super(reference, endedAt, incidentCounty, incidentDate, locationType, communicationMethod,
+        name, responseTime, screeningDecision, startedAt, narrative);
     this.address = address;
     this.participantIds = participantIds;
   }
@@ -67,7 +67,7 @@ public class ScreeningRequest extends Screening implements Request {
   /**
    * @return the participant_ids
    */
-  public List<Long> getParticipant_ids() {
+  public List<Long> getParticipantIds() {
     return participantIds;
   }
 
@@ -107,8 +107,6 @@ public class ScreeningRequest extends Screening implements Request {
     if (participantIds == null) {
       if (other.participantIds != null)
         return false;
-    } else if (other.participantIds == null) {
-      return false;
     } else if (!Arrays.equals(participantIds.toArray(), other.participantIds.toArray())) {
       return false;
     }

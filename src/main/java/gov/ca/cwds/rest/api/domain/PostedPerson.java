@@ -15,9 +15,9 @@ public class PostedPerson extends Person {
   private long id;
 
   @SuppressWarnings("javadoc")
-  public PostedPerson(long id, String firstName, String last_name, String gender,
+  public PostedPerson(long id, String firstName, String lastName, String gender,
       String dateOfBirth, String ssn, Address address) {
-    super(firstName, last_name, gender, dateOfBirth, ssn, address);
+    super(firstName, lastName, gender, dateOfBirth, ssn, address);
     this.id = id;
   }
 

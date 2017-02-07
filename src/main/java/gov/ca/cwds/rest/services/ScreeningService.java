@@ -106,7 +106,7 @@ public class ScreeningService implements CrudsService {
     ScreeningRequest screeningRequest = (ScreeningRequest) request;
 
     Set<gov.ca.cwds.data.persistence.ns.Person> participants = new HashSet<>();
-    for (Long participantId : screeningRequest.getParticipant_ids()) {
+    for (Long participantId : screeningRequest.getParticipantIds()) {
       Person person = personService.find(participantId);
       if (person == null) {
         String msg = MessageFormat.format("Unable to find participant with id={0}", participantId);
