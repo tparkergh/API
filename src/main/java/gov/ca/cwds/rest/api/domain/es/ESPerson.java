@@ -3,8 +3,6 @@ package gov.ca.cwds.rest.api.domain.es;
 import java.io.Serializable;
 import java.util.Map;
 
-import javax.persistence.Transient;
-
 import org.apache.commons.lang3.StringUtils;
 import org.elasticsearch.search.SearchHit;
 import org.slf4j.Logger;
@@ -303,8 +301,7 @@ public class ESPerson extends Person {
    * Class type {@link #sourceType}.
    */
   @JsonProperty("source_object")
-  @Transient
-  private Object sourceObj;
+  private transient Object sourceObj;
 
   /**
    * Overload constructor.
