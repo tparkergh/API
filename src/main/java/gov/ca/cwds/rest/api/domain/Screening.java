@@ -1,19 +1,21 @@
 package gov.ca.cwds.rest.api.domain;
 
+import gov.ca.cwds.rest.api.Request;
+import gov.ca.cwds.rest.validation.Date;
+import io.dropwizard.jackson.JsonSnakeCase;
+import io.swagger.annotations.ApiModelProperty;
+
 import javax.validation.constraints.Size;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
-
-import gov.ca.cwds.rest.api.Request;
-import gov.ca.cwds.rest.validation.Date;
-import io.swagger.annotations.ApiModelProperty;
 
 /**
  * {@link DomainObject} representing a screening
  * 
  * @author CWDS API Team
  */
+@JsonSnakeCase
 public class Screening extends DomainObject implements Request {
   @JsonProperty("reference")
   @ApiModelProperty(example = "WXTSKD")
@@ -23,27 +25,27 @@ public class Screening extends DomainObject implements Request {
   @Date
   @JsonProperty("ended_at")
   @ApiModelProperty(example = "12/01/2015")
-  private String ended_at;
+  private String endedAt;
 
   @JsonProperty("incident_county")
   @ApiModelProperty(example = "Sacramento")
   @Size(max = 50)
-  private String incident_county;
+  private String incidentCounty;
 
   @Date
   @JsonProperty("incident_date")
   @ApiModelProperty(example = "11/01/2015")
-  private String incident_date;
+  private String incidentDate;
 
   @JsonProperty("location_type")
   @ApiModelProperty(example = "home")
   @Size(max = 50)
-  private String location_type;
+  private String locationType;
 
   @JsonProperty("communication_method")
   @ApiModelProperty(example = "email")
   @Size(max = 50)
-  private String communication_method;
+  private String communicationMethod;
 
   @JsonProperty("name")
   @ApiModelProperty(example = "Some Screening name")
@@ -52,17 +54,17 @@ public class Screening extends DomainObject implements Request {
 
   @JsonProperty("response_time")
   @ApiModelProperty(example = "FYI : We aren't storing this???")
-  private String response_time;
+  private String responseTime;
 
   @JsonProperty("screening_decision")
   @ApiModelProperty(example = "Decision")
   @Size(max = 50)
-  private String screening_decision;
+  private String screeningDecision;
 
   @Date
   @JsonProperty("started_at")
   @ApiModelProperty(example = "10/01/2015")
-  private String started_at;
+  private String startedAt;
 
   @JsonProperty("narrative")
   @ApiModelProperty(example = "On the evening of...")
@@ -80,38 +82,38 @@ public class Screening extends DomainObject implements Request {
    * Constructor
    * 
    * @param reference The reference
-   * @param ended_at The ended at
-   * @param incident_county The incident county
-   * @param incident_date The incident date
-   * @param location_type The location type
-   * @param communication_method The communication method
+   * @param endedAt The ended at
+   * @param incidentCounty The incident county
+   * @param incidentDate The incident date
+   * @param locationType The location type
+   * @param communicationMethod The communication method
    * @param name The name
-   * @param response_time The response time
-   * @param screening_decision The screening decision
-   * @param started_at The started at
+   * @param responseTime The response time
+   * @param screeningDecision The screening decision
+   * @param startedAt The started at
    * @param narrative The narrative
    */
   @JsonCreator
   public Screening(@JsonProperty("reference") String reference,
-      @JsonProperty("ended_at") String ended_at,
-      @JsonProperty("incident_county") String incident_county,
-      @JsonProperty("incident_date") String incident_date,
-      @JsonProperty("location_type") String location_type,
-      @JsonProperty("communication_method") String communication_method,
-      @JsonProperty("name") String name, @JsonProperty("response_time") String response_time,
-      @JsonProperty("screening_decision") String screening_decision,
-      @JsonProperty("started_at") String started_at, @JsonProperty("narrative") String narrative) {
+      @JsonProperty("ended_at") String endedAt,
+      @JsonProperty("incident_county") String incidentCounty,
+      @JsonProperty("incident_date") String incidentDate,
+      @JsonProperty("location_type") String locationType,
+      @JsonProperty("communication_method") String communicationMethod,
+      @JsonProperty("name") String name, @JsonProperty("response_time") String responseTime,
+      @JsonProperty("screening_decision") String screeningDecision,
+      @JsonProperty("started_at") String startedAt, @JsonProperty("narrative") String narrative) {
     super();
     this.reference = reference;
-    this.ended_at = ended_at;
-    this.incident_county = incident_county;
-    this.incident_date = incident_date;
-    this.location_type = location_type;
-    this.communication_method = communication_method;
+    this.endedAt = endedAt;
+    this.incidentCounty = incidentCounty;
+    this.incidentDate = incidentDate;
+    this.locationType = locationType;
+    this.communicationMethod = communicationMethod;
     this.name = name;
-    this.response_time = response_time;
-    this.screening_decision = screening_decision;
-    this.started_at = started_at;
+    this.responseTime = responseTime;
+    this.screeningDecision = screeningDecision;
+    this.startedAt = startedAt;
     this.narrative = narrative;
   }
 
@@ -132,14 +134,14 @@ public class Screening extends DomainObject implements Request {
    */
   public Screening(gov.ca.cwds.data.persistence.ns.Screening screening) {
     this.reference = screening.getReference();
-    this.ended_at = DomainChef.cookDate(screening.getEndedAt());
-    this.incident_county = screening.getIncidentCounty();
-    this.incident_date = DomainChef.cookDate(screening.getIncidentDate());
-    this.location_type = screening.getLocationType();
-    this.communication_method = screening.getCommunicationMethod();
+    this.endedAt = DomainChef.cookDate(screening.getEndedAt());
+    this.incidentCounty = screening.getIncidentCounty();
+    this.incidentDate = DomainChef.cookDate(screening.getIncidentDate());
+    this.locationType = screening.getLocationType();
+    this.communicationMethod = screening.getCommunicationMethod();
     this.name = screening.getName();
-    this.screening_decision = screening.getScreeningDecision();
-    this.started_at = DomainChef.cookDate(screening.getStartedAt());
+    this.screeningDecision = screening.getScreeningDecision();
+    this.startedAt = DomainChef.cookDate(screening.getStartedAt());
     this.narrative = screening.getNarrative();
   }
 
@@ -153,36 +155,36 @@ public class Screening extends DomainObject implements Request {
   /**
    * @return the ended_at
    */
-  public String getEnded_at() {
-    return ended_at;
+  public String getEndedAt() {
+    return endedAt;
   }
 
   /**
    * @return the incident_county
    */
-  public String getIncident_county() {
-    return incident_county;
+  public String getIncidentCounty() {
+    return incidentCounty;
   }
 
   /**
    * @return the incident_date
    */
-  public String getIncident_date() {
-    return incident_date;
+  public String getIncidentDate() {
+    return incidentDate;
   }
 
   /**
    * @return the location_type
    */
-  public String getLocation_type() {
-    return location_type;
+  public String getLocationType() {
+    return locationType;
   }
 
   /**
    * @return the communication_method
    */
-  public String getCommunication_method() {
-    return communication_method;
+  public String getCommunicationMethod() {
+    return communicationMethod;
   }
 
   /**
@@ -195,22 +197,22 @@ public class Screening extends DomainObject implements Request {
   /**
    * @return the response_time
    */
-  public String getResponse_time() {
-    return response_time;
+  public String getResponseTime() {
+    return responseTime;
   }
 
   /**
    * @return the screening_decision
    */
-  public String getScreening_decision() {
-    return screening_decision;
+  public String getScreeningDecision() {
+    return screeningDecision;
   }
 
   /**
    * @return the started_at
    */
-  public String getStarted_at() {
-    return started_at;
+  public String getStartedAt() {
+    return startedAt;
   }
 
   /**
@@ -229,18 +231,17 @@ public class Screening extends DomainObject implements Request {
   public int hashCode() {
     final int prime = 31;
     int result = 1;
-    result =
-        prime * result + ((communication_method == null) ? 0 : communication_method.hashCode());
-    result = prime * result + ((ended_at == null) ? 0 : ended_at.hashCode());
-    result = prime * result + ((incident_county == null) ? 0 : incident_county.hashCode());
-    result = prime * result + ((incident_date == null) ? 0 : incident_date.hashCode());
-    result = prime * result + ((location_type == null) ? 0 : location_type.hashCode());
+    result = prime * result + ((communicationMethod == null) ? 0 : communicationMethod.hashCode());
+    result = prime * result + ((endedAt == null) ? 0 : endedAt.hashCode());
+    result = prime * result + ((incidentCounty == null) ? 0 : incidentCounty.hashCode());
+    result = prime * result + ((incidentDate == null) ? 0 : incidentDate.hashCode());
+    result = prime * result + ((locationType == null) ? 0 : locationType.hashCode());
     result = prime * result + ((name == null) ? 0 : name.hashCode());
     result = prime * result + ((narrative == null) ? 0 : narrative.hashCode());
     result = prime * result + ((reference == null) ? 0 : reference.hashCode());
-    result = prime * result + ((response_time == null) ? 0 : response_time.hashCode());
-    result = prime * result + ((screening_decision == null) ? 0 : screening_decision.hashCode());
-    result = prime * result + ((started_at == null) ? 0 : started_at.hashCode());
+    result = prime * result + ((responseTime == null) ? 0 : responseTime.hashCode());
+    result = prime * result + ((screeningDecision == null) ? 0 : screeningDecision.hashCode());
+    result = prime * result + ((startedAt == null) ? 0 : startedAt.hashCode());
     return result;
   }
 
@@ -262,30 +263,30 @@ public class Screening extends DomainObject implements Request {
     }
 
     Screening other = (Screening) obj;
-    if (communication_method == null) {
-      if (other.communication_method != null)
+    if (communicationMethod == null) {
+      if (other.communicationMethod != null)
         return false;
-    } else if (!communication_method.equals(other.communication_method))
+    } else if (!communicationMethod.equals(other.communicationMethod))
       return false;
-    if (ended_at == null) {
-      if (other.ended_at != null)
+    if (endedAt == null) {
+      if (other.endedAt != null)
         return false;
-    } else if (!ended_at.equals(other.ended_at))
+    } else if (!endedAt.equals(other.endedAt))
       return false;
-    if (incident_county == null) {
-      if (other.incident_county != null)
+    if (incidentCounty == null) {
+      if (other.incidentCounty != null)
         return false;
-    } else if (!incident_county.equals(other.incident_county))
+    } else if (!incidentCounty.equals(other.incidentCounty))
       return false;
-    if (incident_date == null) {
-      if (other.incident_date != null)
+    if (incidentDate == null) {
+      if (other.incidentDate != null)
         return false;
-    } else if (!incident_date.equals(other.incident_date))
+    } else if (!incidentDate.equals(other.incidentDate))
       return false;
-    if (location_type == null) {
-      if (other.location_type != null)
+    if (locationType == null) {
+      if (other.locationType != null)
         return false;
-    } else if (!location_type.equals(other.location_type))
+    } else if (!locationType.equals(other.locationType))
       return false;
     if (name == null) {
       if (other.name != null)
@@ -302,20 +303,20 @@ public class Screening extends DomainObject implements Request {
         return false;
     } else if (!reference.equals(other.reference))
       return false;
-    if (response_time == null) {
-      if (other.response_time != null)
+    if (responseTime == null) {
+      if (other.responseTime != null)
         return false;
-    } else if (!response_time.equals(other.response_time))
+    } else if (!responseTime.equals(other.responseTime))
       return false;
-    if (screening_decision == null) {
-      if (other.screening_decision != null)
+    if (screeningDecision == null) {
+      if (other.screeningDecision != null)
         return false;
-    } else if (!screening_decision.equals(other.screening_decision))
+    } else if (!screeningDecision.equals(other.screeningDecision))
       return false;
-    if (started_at == null) {
-      if (other.started_at != null)
+    if (startedAt == null) {
+      if (other.startedAt != null)
         return false;
-    } else if (!started_at.equals(other.started_at))
+    } else if (!startedAt.equals(other.startedAt))
       return false;
     return true;
   }

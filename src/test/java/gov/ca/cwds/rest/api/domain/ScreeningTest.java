@@ -102,15 +102,15 @@ public class ScreeningTest {
 
     Screening totest = new Screening(persistent);
     assertThat(totest.getReference(), is(equalTo(persistent.getReference())));
-    assertThat(totest.getEnded_at(), is(equalTo(DomainChef.cookDate(persistent.getEndedAt()))));
-    assertThat(totest.getIncident_county(), is(equalTo(persistent.getIncidentCounty())));
-    assertThat(totest.getIncident_date(),
+    assertThat(totest.getEndedAt(), is(equalTo(DomainChef.cookDate(persistent.getEndedAt()))));
+    assertThat(totest.getIncidentCounty(), is(equalTo(persistent.getIncidentCounty())));
+    assertThat(totest.getIncidentDate(),
         is(equalTo(DomainChef.cookDate(persistent.getIncidentDate()))));
-    assertThat(totest.getLocation_type(), is(equalTo(persistent.getLocationType())));
-    assertThat(totest.getCommunication_method(), is(equalTo(persistent.getCommunicationMethod())));
+    assertThat(totest.getLocationType(), is(equalTo(persistent.getLocationType())));
+    assertThat(totest.getCommunicationMethod(), is(equalTo(persistent.getCommunicationMethod())));
     assertThat(totest.getName(), is(equalTo(persistent.getName())));
-    assertThat(totest.getScreening_decision(), is(equalTo(persistent.getScreeningDecision())));
-    assertThat(totest.getStarted_at(), is(equalTo(DomainChef.cookDate(persistent.getStartedAt()))));
+    assertThat(totest.getScreeningDecision(), is(equalTo(persistent.getScreeningDecision())));
+    assertThat(totest.getStartedAt(), is(equalTo(DomainChef.cookDate(persistent.getStartedAt()))));
     assertThat(totest.getNarrative(), is(equalTo(persistent.getNarrative())));
 
   }
@@ -120,20 +120,20 @@ public class ScreeningTest {
 
     Screening sc = this.validScreening();
 
-    Screening domain = new Screening(sc.getReference(), sc.getEnded_at(), sc.getIncident_county(),
-        sc.getIncident_date(), sc.getLocation_type(), sc.getCommunication_method(), sc.getName(),
-        sc.getResponse_time(), sc.getScreening_decision(), sc.getStarted_at(), sc.getNarrative());
+    Screening domain = new Screening(sc.getReference(), sc.getEndedAt(), sc.getIncidentCounty(),
+        sc.getIncidentDate(), sc.getLocationType(), sc.getCommunicationMethod(), sc.getName(),
+        sc.getResponseTime(), sc.getScreeningDecision(), sc.getStartedAt(), sc.getNarrative());
 
     assertThat(domain.getReference(), is(equalTo(sc.getReference())));
-    assertThat(domain.getEnded_at(), is(equalTo(sc.getEnded_at())));
-    assertThat(domain.getIncident_county(), is(equalTo(sc.getIncident_county())));
-    assertThat(domain.getIncident_date(), is(equalTo(sc.getIncident_date())));
-    assertThat(domain.getLocation_type(), is(equalTo(sc.getLocation_type())));
-    assertThat(domain.getCommunication_method(), is(equalTo(sc.getCommunication_method())));
+    assertThat(domain.getEndedAt(), is(equalTo(sc.getEndedAt())));
+    assertThat(domain.getIncidentCounty(), is(equalTo(sc.getIncidentCounty())));
+    assertThat(domain.getIncidentDate(), is(equalTo(sc.getIncidentDate())));
+    assertThat(domain.getLocationType(), is(equalTo(sc.getLocationType())));
+    assertThat(domain.getCommunicationMethod(), is(equalTo(sc.getCommunicationMethod())));
     assertThat(domain.getName(), is(equalTo(sc.getName())));
-    assertThat(domain.getResponse_time(), is(equalTo(sc.getResponse_time())));
-    assertThat(domain.getScreening_decision(), is(equalTo(sc.getScreening_decision())));
-    assertThat(domain.getStarted_at(), is(equalTo(sc.getStarted_at())));
+    assertThat(domain.getResponseTime(), is(equalTo(sc.getResponseTime())));
+    assertThat(domain.getScreeningDecision(), is(equalTo(sc.getScreeningDecision())));
+    assertThat(domain.getStartedAt(), is(equalTo(sc.getStartedAt())));
     assertThat(domain.getNarrative(), is(equalTo(sc.getNarrative())));
   }
 

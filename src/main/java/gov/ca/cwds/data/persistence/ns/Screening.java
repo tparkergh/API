@@ -155,14 +155,14 @@ public class Screening extends NsPersistentObject {
 
     this.id = id;
     this.reference = screening.getReference();
-    this.endedAt = DomainChef.uncookDateString(screening.getEnded_at());
-    this.incidentCounty = screening.getIncident_county();
-    this.incidentDate = DomainChef.uncookDateString(screening.getIncident_date());
-    this.locationType = screening.getLocation_type();
-    this.communicationMethod = screening.getCommunication_method();
+    this.endedAt = DomainChef.uncookDateString(screening.getEndedAt());
+    this.incidentCounty = screening.getIncidentCounty();
+    this.incidentDate = DomainChef.uncookDateString(screening.getIncidentDate());
+    this.locationType = screening.getLocationType();
+    this.communicationMethod = screening.getCommunicationMethod();
     this.name = screening.getName();
-    this.screeningDecision = screening.getScreening_decision();
-    this.startedAt = DomainChef.uncookDateString(screening.getStarted_at());
+    this.screeningDecision = screening.getScreeningDecision();
+    this.startedAt = DomainChef.uncookDateString(screening.getStartedAt());
     this.narrative = screening.getNarrative();
     this.contactAddress = address;
     if (participants != null) {
