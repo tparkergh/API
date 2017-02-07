@@ -10,7 +10,9 @@ The User Properties for JMeter are part of the api-deploy project
 
 This test compares a Referral created via the API New System to a Baseline Referral from the CMS Legacy System
 
-The intent is that a referral created via the API New System should be identical to one with the same data created via the Legacy System.
+The intent is that a referral created via the API New System should be identical to one with the same data created via the Legacy System
+
+A baseline legacy sql is added to ci-seeds to provide a Baseline Referral to test against when this test is executed as part of Jenkins Continuous Integration
 
 ### Tests for individual resources
 
