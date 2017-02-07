@@ -130,13 +130,11 @@ public class ReferralDaoIT implements DaoTestTemplate {
 
   @Override
   public void testFindAllNamedQueryExist() throws Exception {
-    // TODO Auto-generated method stub
 
   }
 
   @Override
   public void testFindAllReturnsCorrectList() throws Exception {
-    // TODO Auto-generated method stub
 
   }
 

@@ -140,13 +140,11 @@ public class AddressServiceTest implements ServiceTestTemplate {
 
   @Override
   public void testCreateEmptyIDError() throws Exception {
-    // TODO Auto-generated method stub
 
   }
 
   @Override
   public void testCreateThrowsNotImplementedException() throws Exception {
-    // TODO Auto-generated method stub
 
   }
 
@@ -190,7 +188,6 @@ public class AddressServiceTest implements ServiceTestTemplate {
 
   @Override
   public void testDeleteReturnsClass() throws Exception {
-    // TODO Auto-generated method stub
 
   }
 
@@ -235,19 +232,16 @@ public class AddressServiceTest implements ServiceTestTemplate {
 
   @Override
   public void testUpdateReturnsDomain() throws Exception {
-    // TODO Auto-generated method stub
 
   }
 
   @Override
   public void testUpdateReturnsCorrectEntity() throws Exception {
-    // TODO Auto-generated method stub
 
   }
 
   @Override
   public void testUpdateThrowsServiceException() throws Exception {
-    // TODO Auto-generated method stub
 
   }
 

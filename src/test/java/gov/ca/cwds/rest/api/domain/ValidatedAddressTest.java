@@ -47,13 +47,11 @@ public class ValidatedAddressTest implements DomainTestTemplate {
 
   @Override
   public void setup() throws Exception {
-    // TODO Auto-generated method stub
 
   }
 
   @Override
   public void teardown() throws Exception {
-    // TODO Auto-generated method stub
 
   }
 

@@ -196,19 +196,16 @@ public class ReferralServiceTest implements ServiceTestTemplate {
 
   @Override
   public void testFindThrowsNotImplementedException() throws Exception {
-    // TODO Auto-generated method stub
 
   }
 
   @Override
   public void testUpdateReturnsCorrectEntity() throws Exception {
-    // TODO Auto-generated method stub
 
   }
 
   @Override
   public void testUpdateThrowsNotImplementedException() throws Exception {
-    // TODO Auto-generated method stub
 
   }
 
@@ -341,7 +338,6 @@ public class ReferralServiceTest implements ServiceTestTemplate {
 
   @Override
   public void testCreateThrowsNotImplementedException() throws Exception {
-    // TODO Auto-generated method stub
 
   }
 

@@ -26,19 +26,16 @@ public class ParticipantService implements CrudsService {
 
   @Override
   public Response delete(Serializable arg0) {
-    // TODO Auto-generated method stub
     return null;
   }
 
   @Override
   public Response find(Serializable arg0) {
-    // TODO Auto-generated method stub
     return null;
   }
 
   @Override
   public Response update(Serializable arg0, Request arg1) {
-    // TODO Auto-generated method stub
     return null;
   }
 

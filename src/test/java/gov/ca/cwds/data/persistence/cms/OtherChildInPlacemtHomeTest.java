@@ -76,7 +76,6 @@ public class OtherChildInPlacemtHomeTest implements PersistentTestTemplate {
 
   @Override
   public void testConstructorUsingDomain() throws Exception {
-    // TODO Auto-generated method stub
 
   }
 }
