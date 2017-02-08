@@ -1,5 +1,14 @@
 package gov.ca.cwds.rest.api.domain.cms;
 
+import gov.ca.cwds.rest.api.Request;
+import gov.ca.cwds.rest.api.Response;
+import gov.ca.cwds.rest.api.domain.DomainChef;
+import gov.ca.cwds.rest.api.domain.DomainObject;
+import gov.ca.cwds.rest.core.Api;
+import gov.ca.cwds.rest.services.cms.CmsDocumentService;
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
+
 import java.io.Serializable;
 import java.util.LinkedHashSet;
 import java.util.List;
@@ -17,15 +26,6 @@ import org.hibernate.validator.constraints.NotEmpty;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonProperty;
-
-import gov.ca.cwds.rest.api.Request;
-import gov.ca.cwds.rest.api.Response;
-import gov.ca.cwds.rest.api.domain.DomainChef;
-import gov.ca.cwds.rest.api.domain.DomainObject;
-import gov.ca.cwds.rest.core.Api;
-import gov.ca.cwds.rest.services.cms.CmsDocumentService;
-import io.swagger.annotations.ApiModel;
-import io.swagger.annotations.ApiModelProperty;
 
 /**
  * {@link DomainObject} represents a CMS Document.
@@ -79,7 +79,13 @@ public class CmsDocReferralClient extends DomainObject implements Request, Respo
     @JsonProperty("address_type")
     private String addressType;
 
-    public CmsDocReferralClientDetail() {}
+    /**
+     * Default Constructor
+     */
+    public CmsDocReferralClientDetail() {
+      // required to construct CmsDocReferralClient from List of persistence layer referral/client
+      // document records
+    }
 
     @JsonCreator
     public CmsDocReferralClientDetail(@JsonProperty("referral_id") String referlId,
@@ -461,7 +467,8 @@ public class CmsDocReferralClient extends DomainObject implements Request, Respo
 
   @JsonCreator
   public CmsDocReferralClient(@JsonProperty("id") String docHandle,
-      @JsonProperty("doc_name") String docName, @JsonProperty("doc_added_date") String docAddedDate,
+      @JsonProperty("doc_name") String docName,
+      @JsonProperty("doc_added_date") String docAddedDate,
       @JsonProperty("cms_document") CmsDocReferralClientDocument cmsDocument,
       @JsonProperty("details") Set<CmsDocReferralClientDetail> details) {
     super();

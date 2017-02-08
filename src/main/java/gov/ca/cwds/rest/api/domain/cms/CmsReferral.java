@@ -1,15 +1,15 @@
 package gov.ca.cwds.rest.api.domain.cms;
 
+import gov.ca.cwds.rest.api.Request;
+import gov.ca.cwds.rest.api.Response;
+import gov.ca.cwds.rest.api.domain.DomainObject;
+import io.swagger.annotations.ApiModelProperty;
+
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
-
-import gov.ca.cwds.rest.api.Request;
-import gov.ca.cwds.rest.api.Response;
-import gov.ca.cwds.rest.api.domain.DomainObject;
-import io.swagger.annotations.ApiModelProperty;
 
 /**
  * Logical representation of a CmsReferral
@@ -133,8 +133,6 @@ public class CmsReferral extends DomainObject implements Request, Response {
     if (!(obj instanceof CmsReferral)) {
       return false;
     }
-    // if (getClass() != obj.getClass())
-    // return false;
     CmsReferral other = (CmsReferral) obj;
     if (allegation == null) {
       if (other.allegation != null)

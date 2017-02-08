@@ -33,25 +33,25 @@ public class ScreeningResponse extends Screening implements Response {
    * Constructor
    * 
    * @param reference The reference
-   * @param ended_at The ended at
-   * @param incident_county The incident county
-   * @param incident_date The incident date
-   * @param location_type The location type
-   * @param communication_method The communication method
+   * @param endedAt The ended at
+   * @param incidentCounty The incident county
+   * @param incidentDate The incident date
+   * @param locationType The location type
+   * @param communicationMethod The communication method
    * @param name The name
-   * @param response_time The response time
-   * @param screening_decision The screening decision
-   * @param started_at The started at
+   * @param responseTime The response time
+   * @param screeningDecision The screening decision
+   * @param startedAt The started at
    * @param narrative The narrative
    * @param address The {@link Address}
    * @param participants The {@link Set}
    */
-  public ScreeningResponse(String reference, String ended_at, String incident_county,
-      String incident_date, String location_type, String communication_method, String name,
-      String response_time, String screening_decision, String started_at, String narrative,
+  public ScreeningResponse(String reference, String endedAt, String incidentCounty,
+      String incidentDate, String locationType, String communicationMethod, String name,
+      String responseTime, String screeningDecision, String startedAt, String narrative,
       Address address, Set<Person> participants) {
-    super(reference, ended_at, incident_county, incident_date, location_type, communication_method,
-        name, response_time, screening_decision, started_at, narrative);
+    super(reference, endedAt, incidentCounty, incidentDate, locationType, communicationMethod,
+        name, responseTime, screeningDecision, startedAt, narrative);
     this.address = address;
     this.participants = participants;
   }
