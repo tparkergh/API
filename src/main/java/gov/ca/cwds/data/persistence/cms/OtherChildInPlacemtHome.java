@@ -9,6 +9,8 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 
 import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.hibernate.annotations.NamedNativeQueries;
 import org.hibernate.annotations.NamedNativeQuery;
 import org.hibernate.annotations.NamedQueries;
@@ -74,6 +76,35 @@ public class OtherChildInPlacemtHome extends CmsPersistentObject implements IPer
   @Column(name = "OTHCHLD_NM")
   private String name;
 
+  /**
+   * Default constructor
+   * 
+   * Required for Hibernate
+   */
+  public OtherChildInPlacemtHome() {
+    super();
+  }
+
+  /**
+   * @param annualUnearnedIncomeAmount The annualUnearnedIncomeAmount
+   * @param birthDate The birthDate
+   * @param fkplcHmT The fkplcHmT
+   * @param genderCode The genderCode
+   * @param id The id
+   * @param name The name
+   */
+  public OtherChildInPlacemtHome(BigDecimal annualUnearnedIncomeAmount, Date birthDate,
+      String fkplcHmT, String genderCode, String id, String name) {
+    super();
+    this.annualUnearnedIncomeAmount = annualUnearnedIncomeAmount;
+    this.birthDate = birthDate;
+    this.fkplcHmT = fkplcHmT;
+    this.genderCode = genderCode;
+    this.id = id;
+    this.name = name;
+  }
+
+
   @JsonIgnore
   @Override
   public String getFirstName() {
@@ -108,34 +139,6 @@ public class OtherChildInPlacemtHome extends CmsPersistentObject implements IPer
   @Override
   public String getNameSuffix() {
     return null;
-  }
-
-  /**
-   * Default constructor
-   * 
-   * Required for Hibernate
-   */
-  public OtherChildInPlacemtHome() {
-    super();
-  }
-
-  /**
-   * @param annualUnearnedIncomeAmount The annualUnearnedIncomeAmount
-   * @param birthDate The birthDate
-   * @param fkplcHmT The fkplcHmT
-   * @param genderCode The genderCode
-   * @param id The id
-   * @param name The name
-   */
-  public OtherChildInPlacemtHome(BigDecimal annualUnearnedIncomeAmount, Date birthDate,
-      String fkplcHmT, String genderCode, String id, String name) {
-    super();
-    this.annualUnearnedIncomeAmount = annualUnearnedIncomeAmount;
-    this.birthDate = birthDate;
-    this.fkplcHmT = fkplcHmT;
-    this.genderCode = genderCode;
-    this.id = id;
-    this.name = name;
   }
 
   /**
@@ -193,101 +196,22 @@ public class OtherChildInPlacemtHome extends CmsPersistentObject implements IPer
 
   /**
    * {@inheritDoc}
-   * 
+   *
    * @see java.lang.Object#hashCode()
    */
   @Override
   public final int hashCode() {
-    final int prime = 31;
-    int result = 1;
-    result = prime * result
-        + ((annualUnearnedIncomeAmount == null) ? 0 : annualUnearnedIncomeAmount.hashCode());
-    result = prime * result + ((birthDate == null) ? 0 : birthDate.hashCode());
-    result = prime * result + ((fkplcHmT == null) ? 0 : fkplcHmT.hashCode());
-    result = prime * result + ((genderCode == null) ? 0 : genderCode.hashCode());
-    result = prime * result + ((id == null) ? 0 : id.hashCode());
-    result = prime * result + ((name == null) ? 0 : name.hashCode());
-    result = prime * result
-        + ((super.getLastUpdatedId() == null) ? 0 : super.getLastUpdatedId().hashCode());
-    result = prime * result
-        + ((super.getLastUpdatedTime() == null) ? 0 : super.getLastUpdatedTime().hashCode());
-    return result;
+    return HashCodeBuilder.reflectionHashCode(this, false);
   }
 
   /**
    * {@inheritDoc}
-   * 
+   *
    * @see java.lang.Object#equals(java.lang.Object)
    */
   @Override
   public final boolean equals(Object obj) {
-    if (this == obj) {
-      return true;
-    }
-    if (obj == null) {
-      return false;
-    }
-    if (!(obj instanceof OtherChildInPlacemtHome)) {
-      return false;
-    }
-    OtherChildInPlacemtHome other = (OtherChildInPlacemtHome) obj;
-    if (annualUnearnedIncomeAmount == null) {
-      if (other.annualUnearnedIncomeAmount != null) {
-        return false;
-      }
-    } else if (!annualUnearnedIncomeAmount.equals(other.annualUnearnedIncomeAmount)) {
-      return false;
-    }
-    if (birthDate == null) {
-      if (other.birthDate != null) {
-        return false;
-      }
-    } else if (!birthDate.equals(other.birthDate)) {
-      return false;
-    }
-    if (fkplcHmT == null) {
-      if (other.fkplcHmT != null) {
-        return false;
-      }
-    } else if (!fkplcHmT.equals(other.fkplcHmT)) {
-      return false;
-    }
-    if (genderCode == null) {
-      if (other.genderCode != null) {
-        return false;
-      }
-    } else if (!genderCode.equals(other.genderCode)) {
-      return false;
-    }
-    if (id == null) {
-      if (other.id != null) {
-        return false;
-      }
-    } else if (!id.equals(other.id)) {
-      return false;
-    }
-    if (name == null) {
-      if (other.name != null) {
-        return false;
-      }
-    } else if (!name.equals(other.name)) {
-      return false;
-    }
-    if (super.getLastUpdatedId() == null) {
-      if (other.getLastUpdatedId() != null) {
-        return false;
-      }
-    } else if (!super.getLastUpdatedId().equals(other.getLastUpdatedId())) {
-      return false;
-    }
-    if (super.getLastUpdatedTime() == null) {
-      if (other.getLastUpdatedTime() != null) {
-        return false;
-      }
-    } else if (!super.getLastUpdatedTime().equals(other.getLastUpdatedTime())) {
-      return false;
-    }
-    return true;
+    return EqualsBuilder.reflectionEquals(this, obj, false);
   }
 
 }
