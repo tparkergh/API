@@ -1,13 +1,13 @@
 package gov.ca.cwds.rest.api.domain;
 
-import gov.ca.cwds.rest.api.Request;
-import io.dropwizard.jackson.JsonSnakeCase;
-
 import java.util.Arrays;
 import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
+
+import gov.ca.cwds.rest.api.Request;
+import io.dropwizard.jackson.JsonSnakeCase;
 
 /**
  * {@link DomainObject} representing a screening request.
@@ -51,8 +51,8 @@ public class ScreeningRequest extends Screening implements Request {
       @JsonProperty("started_at") String startedAt, @JsonProperty("narrative") String narrative,
       @JsonProperty("address") Address address,
       @JsonProperty("participant_ids") List<Long> participantIds) {
-    super(reference, endedAt, incidentCounty, incidentDate, locationType, communicationMethod,
-        name, responseTime, screeningDecision, startedAt, narrative);
+    super(reference, endedAt, incidentCounty, incidentDate, locationType, communicationMethod, name,
+        responseTime, screeningDecision, startedAt, narrative);
     this.address = address;
     this.participantIds = participantIds;
   }

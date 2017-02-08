@@ -17,6 +17,11 @@ import io.swagger.annotations.ApiModelProperty;
  */
 public class Person extends DomainObject implements Request, Response {
 
+  /**
+   * Defalut
+   */
+  private static final long serialVersionUID = 1L;
+
   @JsonProperty("first_name")
   @ApiModelProperty(example = "bart")
   @Size(max = 50)
