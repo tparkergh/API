@@ -76,7 +76,7 @@ public class LZWEncoder {
 
   private static final Logger LOGGER = LoggerFactory.getLogger(LZWEncoder.class);
 
-  private static final boolean classLoaded = loadLibs();
+  private static final boolean IS_CLASS_LOADED = loadLibs();
 
   /**
    * Load native library at runtime, when the classloader loads this class. Native libraries follow
@@ -106,7 +106,6 @@ public class LZWEncoder {
       retval = true;
     } catch (UnsatisfiedLinkError e) {
       retval = false;
-      // e.printStackTrace();
       LOGGER.error("Failed to load LZW library", e);
     }
 
@@ -149,7 +148,7 @@ public class LZWEncoder {
    * @return whether dependent native libraries loaded correctly
    */
   public static boolean isClassloaded() {
-    return classLoaded;
+    return IS_CLASS_LOADED;
   }
 
 }
