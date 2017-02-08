@@ -12,6 +12,11 @@ import gov.ca.cwds.data.persistence.cms.CmsKeyIdGenerator;
  * @see CmsKeyIdGenerator
  */
 public class IdGenerator {
+
+  private IdGenerator() {
+    // Default no-op
+  }
+
   static final String AB = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
   static SecureRandom rnd = new SecureRandom();
 

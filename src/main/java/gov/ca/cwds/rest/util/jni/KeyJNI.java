@@ -88,10 +88,10 @@ public final class KeyJNI {
    */
   @SuppressWarnings("javadoc")
   public static final class KeyDetail {
-    public String key;
-    public String staffId;
-    public String UITimestamp;
-    public String PTimestamp;
+    public String key; // NOSONAR
+    public String staffId; // NOSONAR
+    public String UITimestamp; // NOSONAR
+    public String PTimestamp; // NOSONAR
   }
 
   /**

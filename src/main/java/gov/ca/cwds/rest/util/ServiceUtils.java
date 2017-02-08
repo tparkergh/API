@@ -6,8 +6,17 @@ import java.util.Map;
 
 import gov.ca.cwds.rest.services.ServiceException;
 
+/**
+ * @author CWDS API
+ *
+ */
 public class ServiceUtils {
 
+  private ServiceUtils() {
+    // Default no-op
+  }
+
+  @SuppressWarnings("javadoc")
   public static Map<String, String> extractKeyValuePairs(Serializable nameValuePairsSerializable) {
     Map<String, String> keyValuePairs = new HashMap<>();
     if (!(nameValuePairsSerializable instanceof String)) {
