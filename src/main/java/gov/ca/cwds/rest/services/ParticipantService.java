@@ -19,9 +19,8 @@ public class ParticipantService implements CrudsService {
 
     assert request instanceof Participant;
 
-    Participant participant = (Participant) request;
+    return (Participant) request;
 
-    return participant;
   }
 
   @Override

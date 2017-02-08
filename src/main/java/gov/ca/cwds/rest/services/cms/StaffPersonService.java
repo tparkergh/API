@@ -65,7 +65,7 @@ public class StaffPersonService implements CrudsService {
    */
   @Override
   public gov.ca.cwds.rest.api.domain.cms.StaffPerson delete(Serializable primaryKey) {
-    assert (primaryKey instanceof String);
+    assert primaryKey instanceof String;
     gov.ca.cwds.data.persistence.cms.StaffPerson persistedStaffPerson =
         staffPersonDao.delete(primaryKey);
     if (persistedStaffPerson != null) {

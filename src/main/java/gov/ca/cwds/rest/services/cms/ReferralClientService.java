@@ -116,7 +116,7 @@ public class ReferralClientService implements CrudsService {
     }
   }
 
-  private ReferralClient.PrimaryKey extractPrimaryKey(Serializable primaryKey) {
+  private static ReferralClient.PrimaryKey extractPrimaryKey(Serializable primaryKey) {
     Map<String, String> nameValuePairs = ServiceUtils.extractKeyValuePairs(primaryKey);
     String referralId = nameValuePairs.get(KEY_REFERRAL_ID);
     String clientId = nameValuePairs.get(KEY_CLIENT_ID);

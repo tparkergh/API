@@ -12,7 +12,6 @@ import gov.ca.cwds.rest.api.Response;
 import gov.ca.cwds.rest.api.domain.Address;
 import gov.ca.cwds.rest.api.domain.ValidatedAddress;
 import gov.ca.cwds.rest.validation.SmartyStreet;
-import gov.ca.cwds.rest.validation.ValidationException;
 
 /**
  * Business layer object to work on {@link ValidatedAddress}
@@ -33,16 +32,16 @@ public class AddressValidationService implements CrudsService {
    * 
    * @param address The address to validate
    * @return array of {@link ValidatedAddress}
-   * @throws ValidationException due to SmartyStreets error, I/O error, etc.
+   * @throws ServiceException due to SmartyStreets error, I/O error, etc.
    */
-  public ValidatedAddress[] fetchValidatedAddresses(Address address) throws ValidationException {
+  public ValidatedAddress[] fetchValidatedAddresses(Address address) throws ServiceException {
     ValidatedAddress[] addresses = null;
     try {
       SmartyStreet smartyStreet = new SmartyStreet(smartyStreetsDao);
       addresses = smartyStreet.usStreetSingleAddress(address.getStreetAddress(), address.getCity(),
           address.getState(), address.getZip());
     } catch (Exception e) {
-      throw new ValidationException("ERROR calling usStreetSingleAddress in SmartyStreet", e);
+      throw new ServiceException("ERROR calling usStreetSingleAddress in SmartyStreet", e);
     }
     return addresses;
 

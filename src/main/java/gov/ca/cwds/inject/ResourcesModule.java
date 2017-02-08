@@ -128,8 +128,7 @@ public class ResourcesModule extends AbstractModule {
   @Provides
   @CmsDocumentBackedResource
   public TypedResourceDelegate<String, CmsDocument> cmsDocumentBackedResource(Injector injector) {
-    return new TypedServiceBackedResourceDelegate<String, CmsDocument, CmsDocument>(
-        injector.getInstance(CmsDocumentService.class));
+    return new TypedServiceBackedResourceDelegate<>(injector.getInstance(CmsDocumentService.class));
   }
 
   @Provides

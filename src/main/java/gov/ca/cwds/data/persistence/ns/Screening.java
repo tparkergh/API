@@ -81,7 +81,7 @@ public class Screening extends NsPersistentObject {
   @JoinTable(name = "hotline_contact_participant",
       joinColumns = {@JoinColumn(name = "hotline_contact_id", nullable = false, updatable = false)},
       inverseJoinColumns = {@JoinColumn(name = "person_id", nullable = false, updatable = false)})
-  private Set<Person> participants = new HashSet<Person>(0);
+  private Set<Person> participants = new HashSet<>(0);
 
   /**
    * Default constructor
