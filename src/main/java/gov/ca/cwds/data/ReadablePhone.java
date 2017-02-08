@@ -32,6 +32,11 @@ public final class ReadablePhone implements IPhoneAware, Serializable {
   }
 
   @Override
+  public PhoneType getPhoneType() {
+    return this.phoneType;
+  }
+
+  @Override
   public String getPhoneNumber() {
     return this.phoneNumber;
   }
@@ -41,10 +46,7 @@ public final class ReadablePhone implements IPhoneAware, Serializable {
     return this.phoneNumberExtension;
   }
 
-  @Override
-  public PhoneType getPhoneType() {
-    return this.phoneType;
-  }
+
 
   @Override
   public int hashCode() {

@@ -18,6 +18,12 @@ import gov.ca.cwds.data.validation.SmartyStreetsDao;
 import gov.ca.cwds.rest.api.ApiException;
 import gov.ca.cwds.rest.api.domain.ValidatedAddress;
 
+/**
+ * Validates the address by calling the SmartyStreets API
+ * 
+ * 
+ * @author CWDS API Team
+ */
 public class SmartyStreet {
   private static final Logger LOGGER = LoggerFactory.getLogger(SmartyStreet.class);
   String streetAddress;
@@ -30,11 +36,17 @@ public class SmartyStreet {
   private SmartyStreetsDao smartyStreetsDao;
 
 
+  /**
+   * 
+   */
   @Inject
   public SmartyStreet() {
     // default constructor
   }
 
+  /**
+   * @param smartyStreetsDao to set the smartyStreetsDao
+   */
   @Inject
   public SmartyStreet(SmartyStreetsDao smartyStreetsDao) {
     this.smartyStreetsDao = smartyStreetsDao;
@@ -42,13 +54,20 @@ public class SmartyStreet {
 
 
   /**
-   * @param smartyStreetsDao the smartyStreetsDao to set
+   * @param smartyStreetsDao the smartyStreetsDao to set the smartyStreetsDao
    */
   @Inject
   public void setSmartyStreetsDao(SmartyStreetsDao smartyStreetsDao) {
     this.smartyStreetsDao = smartyStreetsDao;
   }
 
+  /**
+   * @param street incoming street address
+   * @param city incoming city name
+   * @param state incoming state
+   * @param zipCode incoming zip code
+   * @return returns a validated address back
+   */
   public ValidatedAddress[] usStreetSingleAddress(String street, String city, String state,
       Integer zipCode) {
 
@@ -93,6 +112,13 @@ public class SmartyStreet {
     return returnValidatedAddresses.toArray(new ValidatedAddress[returnValidatedAddresses.size()]);
   }
 
+  /**
+   * @param street incoming street address
+   * @param city incoming city name
+   * @param state incoming state
+   * @param zipCode incoming zip code
+   * @return returns a address back
+   */
   public List<Candidate> getSmartyStreetsCandidates(String street, String city, String state,
       Integer zipCode) {
 
@@ -114,6 +140,13 @@ public class SmartyStreet {
     return lookup.getResult();
   }
 
+  /**
+   * @param street incoming street address
+   * @param city incoming city name
+   * @param state incoming state
+   * @param zipCode incoming zip code
+   * @return returns lookup
+   */
   public Lookup createSmartyStreetsLookup(String street, String city, String state,
       Integer zipCode) {
     Lookup lookup = new Lookup();

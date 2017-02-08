@@ -21,6 +21,10 @@ public class MaskString {
   private static final Pattern patternHyphen = Pattern.compile(SSN_WITH_HYPHEN);
   private static final Pattern patternNoHyphen = Pattern.compile(SSN_WITHOUT_HYPHEN);
 
+  /**
+   * @param ssn incoming ssn
+   * @return return validation
+   */
   public String maskSsn(String ssn) {
     String returnSsn;
 

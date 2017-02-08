@@ -498,7 +498,7 @@ public class AutoCompletePerson
   @SuppressWarnings("javadoc")
   @JsonFormat(shape = JsonFormat.Shape.OBJECT)
   public enum AutoCompletePersonAddressType {
-    Home, School, Work, Placement, Homeless, Other
+    Home, School, Work, Placement, Homeless, Other // NOSONAR
   }
 
   /**
@@ -821,7 +821,7 @@ public class AutoCompletePerson
   public AutoCompletePerson(ElasticSearchPerson esp) {
     this.setId(esp.getId());
 
-    // TODO: #136570057: mask results, not data in Elasticsearch.
+    // TODO: #136570057: mask results, not data in Elastic search.
 
     // Minimal system code translation to meet contract interface.
     if (esp.getSourceObj() != null) {
