@@ -1,5 +1,12 @@
 package gov.ca.cwds.rest.api.domain.cms;
 
+import gov.ca.cwds.rest.api.Request;
+import gov.ca.cwds.rest.api.Response;
+import gov.ca.cwds.rest.api.domain.DomainChef;
+import gov.ca.cwds.rest.api.domain.DomainObject;
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
+
 import java.math.BigDecimal;
 
 import javax.validation.constraints.NotNull;
@@ -10,13 +17,6 @@ import org.hibernate.validator.constraints.NotEmpty;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonProperty;
-
-import gov.ca.cwds.rest.api.Request;
-import gov.ca.cwds.rest.api.Response;
-import gov.ca.cwds.rest.api.domain.DomainChef;
-import gov.ca.cwds.rest.api.domain.DomainObject;
-import io.swagger.annotations.ApiModel;
-import io.swagger.annotations.ApiModelProperty;
 
 /**
  * {@link DomainObject} representing a StaffPerson
@@ -82,7 +82,6 @@ public class StaffPerson extends DomainObject implements Request, Response {
   @Size(min = 10, max = 10)
   @ApiModelProperty(required = true, readOnly = false, value = "IDENTIFIER of CWS_OFFT",
       example = "1234567def")
-  // TODO Add Foreign Key Validation after CWS_OFFICE table is added to source code.
   private String cwsOffice;
 
   @NotNull
@@ -108,13 +107,11 @@ public class StaffPerson extends DomainObject implements Request, Response {
   @Size(min = 10, max = 10)
   @ApiModelProperty(required = true, readOnly = false, value = "IDENTIFIER of CWSADDRT",
       example = "1234567ghi")
-  // TODO Add Foreign Key Validation after CWS_OFFICE_ADDRESS table is added to source code.
   private String cwsOfficeAddress;
 
   @Size(max = 50)
   @ApiModelProperty(required = false, readOnly = false, value = "",
       example = "john.q.smith@somedomain.com")
-  // @Email
   private String emailAddress;
 
   /**
@@ -140,13 +137,16 @@ public class StaffPerson extends DomainObject implements Request, Response {
    * @param emailAddress The emailAddress
    */
   @JsonCreator
-  public StaffPerson(@JsonProperty("endDate") String endDate,
-      @JsonProperty("firstName") String firstName, @JsonProperty("jobTitle") String jobTitle,
+  public StaffPerson(
+      @JsonProperty("endDate") String endDate,
+      @JsonProperty("firstName") String firstName,
+      @JsonProperty("jobTitle") String jobTitle,
       @JsonProperty("lastName") String lastName,
       @JsonProperty("middleInitial") String middleInitial,
       @JsonProperty("namePrefix") String namePrefix,
       @JsonProperty("phoneNumber") BigDecimal phoneNumber,
-      @JsonProperty("phoneExt") Integer phoneExt, @JsonProperty("startDate") String startDate,
+      @JsonProperty("phoneExt") Integer phoneExt,
+      @JsonProperty("startDate") String startDate,
       @JsonProperty("nameSuffix") String nameSuffix,
       @JsonProperty("telecommuterIndicator") Boolean telecommuterIndicator,
       @JsonProperty("cwsOffice") String cwsOffice,
@@ -336,8 +336,11 @@ public class StaffPerson extends DomainObject implements Request, Response {
   public final int hashCode() {
     final int prime = 31;
     int result = 1;
-    result = prime * result + ((availabilityAndLocationDescription == null) ? 0
-        : availabilityAndLocationDescription.hashCode());
+    result =
+        prime
+            * result
+            + ((availabilityAndLocationDescription == null) ? 0
+                : availabilityAndLocationDescription.hashCode());
     result = prime * result + ((countyCode == null) ? 0 : countyCode.hashCode());
     result = prime * result + ((cwsOffice == null) ? 0 : cwsOffice.hashCode());
     result = prime * result + ((cwsOfficeAddress == null) ? 0 : cwsOfficeAddress.hashCode());
@@ -381,8 +384,7 @@ public class StaffPerson extends DomainObject implements Request, Response {
       if (other.availabilityAndLocationDescription != null) {
         return false;
       }
-    } else if (!availabilityAndLocationDescription
-        .equals(other.availabilityAndLocationDescription)) {
+    } else if (!availabilityAndLocationDescription.equals(other.availabilityAndLocationDescription)) {
       return false;
     }
     if (countyCode == null) {
