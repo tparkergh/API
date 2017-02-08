@@ -45,6 +45,7 @@ import nl.jqno.equalsverifier.Warning;
  * @author CWDS API Team
  *
  */
+@SuppressWarnings("javadoc")
 public class ReferralClientTest {
 
   private static final String ROOT_RESOURCE = "/" + Api.RESOURCE_REFERRAL_CLIENT + "/";
@@ -60,7 +61,6 @@ public class ReferralClientTest {
   @ClassRule
   public static JerseyGuiceRule rule = new JerseyGuiceRule();
 
-  @SuppressWarnings("javadoc")
   @ClassRule
   public static final ResourceTestRule resources =
       ResourceTestRule.builder().addResource(mockedReferralClientResource).build();
@@ -85,10 +85,8 @@ public class ReferralClientTest {
   private Boolean alcoholIndicator = null;
   private Boolean drugIndicator = Boolean.FALSE;
 
-  @SuppressWarnings("javadoc")
   public ReferralClientTest() throws ParseException {}
 
-  @SuppressWarnings("javadoc")
   @Before
   public void setup() throws Exception {
     @SuppressWarnings("rawtypes")
@@ -103,7 +101,6 @@ public class ReferralClientTest {
 
   }
 
-  @SuppressWarnings("javadoc")
   @Test
   public void serializesToJSON() throws Exception {
     final String expected = MAPPER.writeValueAsString(MAPPER.readValue(
@@ -112,7 +109,6 @@ public class ReferralClientTest {
     assertThat(MAPPER.writeValueAsString(validReferralClient()), is(equalTo(expected)));
   }
 
-  @SuppressWarnings("javadoc")
   @Test
   public void deserializesFromJSON() throws Exception {
     assertThat(MAPPER.readValue(fixture("fixtures/domain/legacy/ReferralClient/valid/valid.json"),
@@ -122,7 +118,6 @@ public class ReferralClientTest {
   /*
    * Constructor Tests
    */
-  @SuppressWarnings("javadoc")
   @Test
   public void persistentObjectConstructorTest() throws Exception {
     ReferralClient domain =
@@ -159,7 +154,6 @@ public class ReferralClientTest {
         is(equalTo(DomainChef.uncookBooleanString(persistent.getDrugIndicator()))));
   }
 
-  @SuppressWarnings("javadoc")
   @Test
   public void jsonCreatorConstructorTest() throws Exception {
     ReferralClient referralClient =
@@ -188,7 +182,6 @@ public class ReferralClientTest {
     assertThat(referralClient.getDrugIndicator(), is(equalTo(Boolean.FALSE)));
   }
 
-  @SuppressWarnings("javadoc")
   @Test
   public void equalsHashCodeWork() {
     EqualsVerifier.forClass(ReferralClient.class).suppress(Warning.NONFINAL_FIELDS).verify();
@@ -197,7 +190,6 @@ public class ReferralClientTest {
   /*
    * Successful Tests
    */
-  @SuppressWarnings("javadoc")
   @Test
   public void successfulWithValid() throws Exception {
     Response response =
@@ -206,7 +198,6 @@ public class ReferralClientTest {
     assertThat(response.getStatus(), is(equalTo(204)));
   }
 
-  @SuppressWarnings("javadoc")
   @Test
   public void successfulWithOptionalsNotIncluded() throws Exception {
     ReferralClient toCreate = MAPPER.readValue(
@@ -221,7 +212,6 @@ public class ReferralClientTest {
   /*
    * approvalNumber Tests
    */
-  @SuppressWarnings("javadoc")
   @Test
   public void successWhenApprovalNumberEmpty() throws Exception {
     ReferralClient toCreate = MAPPER.readValue(
@@ -233,7 +223,6 @@ public class ReferralClientTest {
     assertThat(response.getStatus(), is(equalTo(204)));
   }
 
-  @SuppressWarnings("javadoc")
   @Test
   public void successWhenApprovalNumberNull() throws Exception {
     ReferralClient toCreate = MAPPER.readValue(
@@ -245,7 +234,6 @@ public class ReferralClientTest {
     assertThat(response.getStatus(), is(equalTo(204)));
   }
 
-  @SuppressWarnings("javadoc")
   @Test
   public void failsWhenApprovalNumberTooLong() throws Exception {
     ReferralClient toCreate = MAPPER.readValue(
@@ -263,7 +251,6 @@ public class ReferralClientTest {
   /*
    * dispositionClosureReasonType Tests
    */
-  @SuppressWarnings("javadoc")
   @Test
   public void failsWhenDispositionClosureReasonTypeMissing() throws Exception {
     ReferralClient toCreate = MAPPER.readValue(
@@ -279,7 +266,6 @@ public class ReferralClientTest {
         is(greaterThanOrEqualTo(0)));
   }
 
-  @SuppressWarnings("javadoc")
   @Test
   public void failsWhenDispositionClosureReasonTypeNull() throws Exception {
     ReferralClient toCreate = MAPPER.readValue(
@@ -295,7 +281,6 @@ public class ReferralClientTest {
         is(greaterThanOrEqualTo(0)));
   }
 
-  @SuppressWarnings("javadoc")
   @Test
   public void failsWhenDispositionClosureReasonTypeAllWhiteSpace() throws Exception {
     ReferralClient toCreate = MAPPER.readValue(

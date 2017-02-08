@@ -2,7 +2,7 @@
   {
   "ageNumber" : 12,
   "agePeriodCode" : "M",
-  "alcoholIndicator" : "N",
+  "alcoholIndicator" : null,
   "approvalNumber" : "A123",
   "approvalStatusType" : {
     "sys_id" : 123,

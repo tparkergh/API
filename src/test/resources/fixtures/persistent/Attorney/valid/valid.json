@@ -1,5 +1,5 @@
 {
-	"archiveAssociationIndicator": "N",
+	"archiveAssociationIndicator": false,
 	"businessName": "businessName",
 	"cityName": "Sacramento",
 	"cwsAttorneyIndicator": "Y",

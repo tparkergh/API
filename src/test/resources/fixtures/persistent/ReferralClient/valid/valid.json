@@ -1,7 +1,7 @@
 {
   "ageNumber" : 12,
   "agePeriodCode" : "M",
-  "alcoholIndicator" : "N",
+  "alcoholIndicator" : null,
   "approvalNumber" : "A123",
   "approvalStatusType" : 123,
   "clientId" : "ABC1234567",

@@ -8,8 +8,6 @@ import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.notNullValue;
 
 import java.io.IOException;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 
 import org.junit.Test;
 
@@ -26,7 +24,6 @@ import gov.ca.cwds.rest.api.domain.DomainChef;
  */
 public class ReporterTest implements PersistentTestTemplate {
   private static final ObjectMapper MAPPER = SystemCodeTestHarness.MAPPER;
-  private final static DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
   private String lastUpdatedId = "0XA";
 
   /*
@@ -57,7 +54,8 @@ public class ReporterTest implements PersistentTestTemplate {
     assertThat(pers.getDrmsMandatedRprtrFeedback(),
         is(equalTo(domain.getDrmsMandatedRprtrFeedback())));
     assertThat(pers.getEmployerName(), is(equalTo(domain.getEmployerName())));
-    assertThat(pers.getFeedbackDate(), is(equalTo(df.parse(domain.getFeedbackDate()))));
+    assertThat(pers.getFeedbackDate(),
+        is(equalTo(DomainChef.uncookDateString(domain.getFeedbackDate()))));
     assertThat(pers.getFeedbackRequiredIndicator(),
         is(equalTo(DomainChef.cookBoolean(domain.getFeedbackRequiredIndicator()))));
     assertThat(pers.getFirstName(), is(equalTo(domain.getFirstName())));

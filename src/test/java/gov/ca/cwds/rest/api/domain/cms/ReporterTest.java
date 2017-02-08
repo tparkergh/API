@@ -59,7 +59,6 @@ public class ReporterTest {
   @ClassRule
   public static JerseyGuiceRule rule = new JerseyGuiceRule();
 
-  @SuppressWarnings("javadoc")
   @ClassRule
   public static final ResourceTestRule resources =
       ResourceTestRule.builder().addResource(mockedReporterResource).build();
@@ -75,7 +74,7 @@ public class ReporterTest {
   private Boolean confidentialWaiverIndicator = Boolean.FALSE;
   private String drmsMandatedRprtrFeedback = "ABC123";
   private String employerName = "";
-  private String feedbackDate = "12010-01-31";
+  private String feedbackDate = "1210-01-31";
   private Boolean feedbackRequiredIndicator = Boolean.FALSE;
   private String firstName = "John";
   private String lastName = "Smith";
