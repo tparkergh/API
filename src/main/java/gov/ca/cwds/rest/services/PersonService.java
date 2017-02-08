@@ -31,8 +31,8 @@ public class PersonService implements CrudsService {
   private static final Logger LOGGER = LoggerFactory.getLogger(PersonService.class);
   private static final ObjectMapper MAPPER = new ObjectMapper();
 
-  private static final String INDEX_PERSON = "people";
-  private static final String DOCUMENT_TYPE_PERSON = "person";
+  private static final String INDEX_PERSON = ElasticsearchDao.DEFAULT_PERSON_IDX_NM;
+  private static final String DOCUMENT_TYPE_PERSON = ElasticsearchDao.DEFAULT_PERSON_DOC_TYPE;
 
   private PersonDao personDao;
   private ElasticsearchDao elasticsearchDao;
@@ -80,11 +80,15 @@ public class PersonService implements CrudsService {
     managed = personDao.create(managed);
     PostedPerson postedPerson = new PostedPerson(managed);
     try {
-      gov.ca.cwds.rest.api.domain.es.Person esPerson = new gov.ca.cwds.rest.api.domain.es.Person(
-          managed.getId().toString(), managed.getFirstName(), managed.getLastName(),
-          managed.getSsn(), managed.getGender(), DomainChef.cookDate(managed.getDateOfBirth()),
-          managed.getClass().getName(), MAPPER.writeValueAsString(managed));
-      String document = MAPPER.writeValueAsString(esPerson);
+      final gov.ca.cwds.rest.api.domain.es.Person esPerson =
+          new gov.ca.cwds.rest.api.domain.es.Person(managed.getId().toString(),
+              managed.getFirstName(), managed.getLastName(), managed.getSsn(), managed.getGender(),
+              DomainChef.cookDate(managed.getDateOfBirth()), managed.getClass().getName(),
+              MAPPER.writeValueAsString(managed));
+      final String document = MAPPER.writeValueAsString(esPerson);
+
+      // If the people index is missing, create it.
+      elasticsearchDao.createIndexIfNeeded(INDEX_PERSON);
 
       // The ES Dao manages its own connections. No need to manually start or stop.
       elasticsearchDao.index(INDEX_PERSON, DOCUMENT_TYPE_PERSON, document, esPerson.getId());
@@ -107,7 +111,7 @@ public class PersonService implements CrudsService {
    * @see gov.ca.cwds.rest.services.CrudsService#delete(java.io.Serializable)
    */
   @Override
-  public Response delete(Serializable primaryKey) {
+  public Response delete(final Serializable primaryKey) {
     assert primaryKey instanceof Long;
     throw new NotImplementedException("Delete is not implemented");
   }
@@ -119,7 +123,7 @@ public class PersonService implements CrudsService {
    *      gov.ca.cwds.rest.api.Request)
    */
   @Override
-  public Response update(Serializable primaryKey, Request request) {
+  public Response update(final Serializable primaryKey, Request request) {
     assert primaryKey instanceof Long;
     throw new NotImplementedException("Update is not implemented");
   }
