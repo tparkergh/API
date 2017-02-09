@@ -32,7 +32,7 @@
   "linkToPrimaryReferralId" : "",
   "mandatedCrossReportReceivedDate" : 676191600000,
   "openAdequateCaseCode" : "Y",
-  "originalClosureDate" : 676191600000,
+  "originalClosureDate" : null,
   "primaryContactStaffPersonId" : "0XA",
   "primaryKey" : "1234567ABC",
   "receivedDate" : 676191600000,
