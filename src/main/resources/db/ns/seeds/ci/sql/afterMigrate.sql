@@ -1,4 +1,4 @@
-﻿truncate table hotline_contact, hotline_contact_participant, person, address;
+truncate table hotline_contact, hotline_contact_participant, person, address, person_address, person_language, person_phone, phone_number, language;
 
 INSERT INTO address (address_id, street_address, city, state, zip, create_user_id, create_datetime, update_user_id, update_datetime) VALUES (1, '742 Evergreen Terrace', 'Springfield', 'WA', '6525', NULL, NULL, NULL, '2016-11-14 16:18:34.262');
 INSERT INTO address (address_id, street_address, city, state, zip, create_user_id, create_datetime, update_user_id, update_datetime) VALUES (2, '742 Evergreen Terrace', 'Springfield', 'WA', '6525', NULL, NULL, NULL, '2016-11-18 15:22:55.315');
