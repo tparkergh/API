@@ -20,7 +20,6 @@ import org.mockito.Mockito;
 import com.squarespace.jersey2.guice.JerseyGuiceUtils;
 
 import gov.ca.cwds.rest.api.domain.Address;
-import gov.ca.cwds.rest.api.domain.ValidatedAddress;
 import gov.ca.cwds.rest.resources.cms.JerseyGuiceRule;
 import io.dropwizard.testing.junit.ResourceTestRule;
 
@@ -93,13 +92,13 @@ public class AddressValidationResourceTest {
   @Test
   public void createDelegatesToResourceDelegate() throws Exception {
     Address address = new Address("742 Evergreen Terrace", "Springfield", "WA", 98700, "Home");
-    ValidatedAddress[] validatedaddress = new ValidatedAddress[1];
-    validatedaddress[0] = new ValidatedAddress(null, null, null, null, null, null, false);
+    // ValidatedAddress[] validatedaddress = new ValidatedAddress[1];
+    // validatedaddress[0] = new ValidatedAddress(null, null, null, null, null, null, false);
     int status =
         inMemoryResource.client().target(ROOT_RESOURCE).request().accept(MediaType.APPLICATION_JSON)
             .post(Entity.entity(address, MediaType.APPLICATION_JSON)).getStatus();
     System.out.println("Status = " + status);
-    // System.out.println("resource del " + resourceDelegate.create(address));
+    System.out.println("resource del " + resourceDelegate.create(address));
     verify(resourceDelegate).create(eq(address));
   }
 
