@@ -31,7 +31,6 @@ import gov.ca.cwds.rest.services.junit.template.ServiceTestTemplate;
  *
  */
 public class ReferralServiceTest implements ServiceTestTemplate {
-  // private static final ObjectMapper MAPPER = Jackson.newObjectMapper();
   private ReferralService referralService;
   private ReferralDao referralDao;
 
@@ -47,7 +46,6 @@ public class ReferralServiceTest implements ServiceTestTemplate {
   }
 
   // find test
-  // TODO: Story #136701343: Tech debt: exception handling in service layer.
   @Override
   @Test
   public void testFindThrowsAssertionError() {
@@ -271,6 +269,7 @@ public class ReferralServiceTest implements ServiceTestTemplate {
       when(referralDao.create(any(gov.ca.cwds.data.persistence.cms.Referral.class)))
           .thenReturn(toCreate);
 
+      @SuppressWarnings("unused")
       PostedReferral returned = referralService.create(request);
 
     } catch (ServiceException e) {
@@ -279,7 +278,6 @@ public class ReferralServiceTest implements ServiceTestTemplate {
   }
 
   @Override
-  @SuppressWarnings("javadoc")
   @Test
   public void testCreateNullIDError() throws Exception {
     try {
@@ -291,6 +289,7 @@ public class ReferralServiceTest implements ServiceTestTemplate {
       when(referralDao.create(any(gov.ca.cwds.data.persistence.cms.Referral.class)))
           .thenReturn(toCreate);
 
+      @SuppressWarnings("unused")
       PostedReferral expected = new PostedReferral(toCreate);
 
     } catch (ServiceException e) {
@@ -299,7 +298,6 @@ public class ReferralServiceTest implements ServiceTestTemplate {
   }
 
   @Override
-  @SuppressWarnings("javadoc")
   @Test
   public void testCreateBlankIDError() throws Exception {
     try {
@@ -311,6 +309,7 @@ public class ReferralServiceTest implements ServiceTestTemplate {
       when(referralDao.create(any(gov.ca.cwds.data.persistence.cms.Referral.class)))
           .thenReturn(toCreate);
 
+      @SuppressWarnings("unused")
       PostedReferral expected = new PostedReferral(toCreate);
 
     } catch (ServiceException e) {
