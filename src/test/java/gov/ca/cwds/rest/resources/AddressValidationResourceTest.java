@@ -30,6 +30,7 @@ import io.dropwizard.testing.junit.ResourceTestRule;
  * 
  * @author CWDS API Team
  */
+@SuppressWarnings("javadoc")
 public class AddressValidationResourceTest {
 
   private static final String ROOT_RESOURCE = "/address_validation/";
@@ -91,12 +92,14 @@ public class AddressValidationResourceTest {
    */
   @Test
   public void createDelegatesToResourceDelegate() throws Exception {
-    Address address = new Address("742 Evergreen Terrace", "Springfield", "WA", 98700);
+    Address address = new Address("742 Evergreen Terrace", "Springfield", "WA", 98700, "Home");
     ValidatedAddress[] validatedaddress = new ValidatedAddress[1];
     validatedaddress[0] = new ValidatedAddress(null, null, null, null, null, null, false);
-    inMemoryResource.client().target(ROOT_RESOURCE).request().accept(MediaType.APPLICATION_JSON)
-        .post(Entity.entity(address, MediaType.APPLICATION_JSON)).getStatus();
-    System.out.println("resource del " + resourceDelegate.create(address));
+    int status =
+        inMemoryResource.client().target(ROOT_RESOURCE).request().accept(MediaType.APPLICATION_JSON)
+            .post(Entity.entity(address, MediaType.APPLICATION_JSON)).getStatus();
+    System.out.println("Status = " + status);
+    // System.out.println("resource del " + resourceDelegate.create(address));
     verify(resourceDelegate).create(eq(address));
   }
 

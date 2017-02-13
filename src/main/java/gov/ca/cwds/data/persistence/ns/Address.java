@@ -38,6 +38,9 @@ public class Address extends NsPersistentObject {
   @Column(name = "zip")
   private Integer zip;
 
+  @Column(name = "type")
+  private String type;
+
   /**
    * Default constructor
    * 
@@ -50,19 +53,22 @@ public class Address extends NsPersistentObject {
   /**
    * Constructor
    * 
-   * @param id The id
-   * @param streetAddress The street address
-   * @param city The city
-   * @param state The state
-   * @param zip The zip
+   * @param id - unique id
+   * @param streetAddress - street address
+   * @param city - city
+   * @param state - state
+   * @param zip - zip code
+   * @param type - address type
    */
-  public Address(Long id, String streetAddress, String city, String state, Integer zip) {
+  public Address(Long id, String streetAddress, String city, String state, Integer zip,
+      String type) {
     super();
     this.id = id;
     this.streetAddress = streetAddress;
     this.city = city;
     this.state = state;
     this.zip = zip;
+    this.type = type;
   }
 
   /**
@@ -79,6 +85,7 @@ public class Address extends NsPersistentObject {
     this.city = address.getCity();
     this.state = address.getState();
     this.zip = address.getZip();
+    this.type = address.getType();
   }
 
   /**
@@ -124,6 +131,13 @@ public class Address extends NsPersistentObject {
    */
   public Integer getZip() {
     return zip;
+  }
+
+  /**
+   * @return the address type
+   */
+  public String getType() {
+    return type;
   }
 
 }

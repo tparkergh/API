@@ -122,7 +122,7 @@ public class PersonDaoIT implements DaoTestTemplate {
   @Override
   @Test
   public void testCreate() {
-    Address address = new Address(null, "123 Main Street", "SAC", "CA", 95757);
+    Address address = new Address(null, "123 Main Street", "SAC", "CA", 95757, "Home");
     Person person = new Person(null, "John", "Doe", "Male", new Date(), "111-11-1111", address);
     Person created = personDao.create(person);
     assertThat(created, is(person));
@@ -132,7 +132,7 @@ public class PersonDaoIT implements DaoTestTemplate {
   @Test
   public void testCreateExistingEntityException() {
     thrown.expect(EntityExistsException.class);
-    Address address = new Address(1L, "123 Main Street", "SAC", "CA", 95757);
+    Address address = new Address(1L, "123 Main Street", "SAC", "CA", 95757, "Home");
     Person person = new Person(1L, "John", "Doe", "Male", new Date(), "111-11-1111", address);
     personDao.create(person);
   }
@@ -155,7 +155,7 @@ public class PersonDaoIT implements DaoTestTemplate {
   @Override
   @Test
   public void testUpdate() {
-    Address address = new Address(1L, "123 Main Street", "SAC", "CA", 95757);
+    Address address = new Address(1L, "123 Main Street", "SAC", "CA", 95757, "Home");
     Person person = new Person(1L, "John", "Doe", "Male", new Date(), "111-11-1111", address);
     Person updated = personDao.update(person);
     assertThat(updated, is(person));
@@ -165,7 +165,7 @@ public class PersonDaoIT implements DaoTestTemplate {
   @Test
   public void testUpdateEntityNotFoundException() {
     thrown.expect(EntityNotFoundException.class);
-    Address address = new Address(111L, "123 Main Street", "SAC", "CA", 95757);
+    Address address = new Address(111L, "123 Main Street", "SAC", "CA", 95757, "Home");
     Person person = new Person(1111L, "John", "Doe", "Male", new Date(), "111-11-1111", address);
     personDao.update(person);
   }

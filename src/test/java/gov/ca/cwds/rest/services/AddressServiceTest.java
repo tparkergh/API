@@ -58,9 +58,9 @@ public class AddressServiceTest implements ServiceTestTemplate {
   @Test
   public void testFindReturnsCorrectEntity() throws Exception {
     when(addressDao.find(new Long(1))).thenReturn(new gov.ca.cwds.data.persistence.ns.Address(1L,
-        "742 Evergreen Terrace", "Springfield", "WA", new Integer(98700)));
+        "742 Evergreen Terrace", "Springfield", "WA", new Integer(98700), "Home"));
 
-    Address expected = new Address("742 Evergreen Terrace", "Springfield", "WA", 98700);
+    Address expected = new Address("742 Evergreen Terrace", "Springfield", "WA", 98700, "Home");
 
     Address found = addressService.find(new Long(1));
 
@@ -90,6 +90,7 @@ public class AddressServiceTest implements ServiceTestTemplate {
   public void testCreateThrowsAssertionError() throws Exception {
     thrown.expect(AssertionError.class);
     try {
+      @SuppressWarnings("unused")
       PostedAddress postedAddress = addressService.create(null);
     } catch (AssertionError e) {
       assertEquals("Expected AssertionError", e.getMessage());
@@ -100,7 +101,7 @@ public class AddressServiceTest implements ServiceTestTemplate {
   @Test
   public void testCreateReturnsPostedClass() throws Exception {
     gov.ca.cwds.data.persistence.ns.Address toCreate = new gov.ca.cwds.data.persistence.ns.Address(
-        1L, "742 Evergreen Terrace", "Springfield", "WA", new Integer(98700));
+        1L, "742 Evergreen Terrace", "Springfield", "WA", new Integer(98700), "Home");
     Address request = new Address(toCreate);
 
     when(addressDao.create(any(gov.ca.cwds.data.persistence.ns.Address.class)))
@@ -114,14 +115,14 @@ public class AddressServiceTest implements ServiceTestTemplate {
   @Test
   public void testCreateReturnsCorrectEntity() throws Exception {
     gov.ca.cwds.data.persistence.ns.Address toCreate = new gov.ca.cwds.data.persistence.ns.Address(
-        10L, "742 Evergreen Terrace", "Springfield", "WA", new Integer(98700));
+        10L, "742 Evergreen Terrace", "Springfield", "WA", new Integer(98700), "Home");
     Address request = new Address(toCreate);
 
     when(addressDao.create(any(gov.ca.cwds.data.persistence.ns.Address.class)))
         .thenReturn(toCreate);
 
-    PostedAddress expected =
-        new PostedAddress(10, "742 Evergreen Terrace", "Springfield", "WA", new Integer(98700));
+    PostedAddress expected = new PostedAddress(10, "742 Evergreen Terrace", "Springfield", "WA",
+        new Integer(98700), "Home");
     PostedAddress returned = addressService.create(request);
 
     assertThat(returned, is(expected));
@@ -132,6 +133,7 @@ public class AddressServiceTest implements ServiceTestTemplate {
   public void testCreateNullIDError() throws Exception {
     thrown.expect(AssertionError.class);
     try {
+      @SuppressWarnings("unused")
       PostedAddress postedAddress = addressService.create(null);
     } catch (AssertionError e) {
       assertEquals("Expected AssertionError", e.getMessage());
@@ -158,14 +160,14 @@ public class AddressServiceTest implements ServiceTestTemplate {
   public void testCreateExistsError() throws Exception {
 
     gov.ca.cwds.data.persistence.ns.Address toCreate = new gov.ca.cwds.data.persistence.ns.Address(
-        (long) 1, "742 Evergreen Terrace", "Springfield", "WA", new Integer(98700));
+        (long) 1, "742 Evergreen Terrace", "Springfield", "WA", new Integer(98700), "Home");
     Address request = new Address(toCreate);
 
     when(addressDao.create(any(gov.ca.cwds.data.persistence.ns.Address.class)))
         .thenReturn(toCreate);
 
-    PostedAddress expected =
-        new PostedAddress(1, "742 Evergreen Terrace", "Springfield", "WA", new Integer(98700));
+    PostedAddress expected = new PostedAddress(1, "742 Evergreen Terrace", "Springfield", "WA",
+        new Integer(98700), "Home");
     PostedAddress returned = addressService.create(request);
 
     assertThat(returned, is(expected));
@@ -216,7 +218,7 @@ public class AddressServiceTest implements ServiceTestTemplate {
   public void testUpdateThrowsAssertionError() throws Exception {
     thrown.expect(AssertionError.class);
     try {
-      addressService.update(null, new Address("street", "city", "state", 95555));
+      addressService.update(null, new Address("street", "city", "state", 95555, "Home"));
     } catch (AssertionError e) {
       assertEquals("Expected AssertionError", e.getMessage());
     }
@@ -227,7 +229,7 @@ public class AddressServiceTest implements ServiceTestTemplate {
   public void testUpdateThrowsNotImplementedException() throws Exception {
     thrown.expect(NotImplementedException.class);
 
-    addressService.update(1L, new Address("street", "city", "state", 95555));
+    addressService.update(1L, new Address("street", "city", "state", 95555, "Home"));
   }
 
   @Override

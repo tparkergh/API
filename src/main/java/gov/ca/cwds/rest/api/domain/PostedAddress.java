@@ -24,9 +24,11 @@ public class PostedAddress extends Address {
    * @param city The city
    * @param state The state
    * @param zip The zip
+   * @param type - address type
    */
-  public PostedAddress(long id, String streetAddress, String city, String state, Integer zip) {
-    super(streetAddress, city, state, zip);
+  public PostedAddress(long id, String streetAddress, String city, String state, Integer zip,
+      String type) {
+    super(streetAddress, city, state, zip, type);
     this.id = id;
   }
 

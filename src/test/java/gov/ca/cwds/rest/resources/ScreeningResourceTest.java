@@ -86,7 +86,7 @@ public class ScreeningResourceTest {
    */
   @Test
   public void udpateDelegatesToResourceDelegate() throws Exception {
-    Address address = new Address("10 main st", "Sacramento", "CA", 95814);
+    Address address = new Address("10 main st", "Sacramento", "CA", 95814, "Home");
     ImmutableList.Builder<Long> builder = ImmutableList.builder();
     ImmutableList<Long> ids = builder.add(new Long(123)).add(new Long(345)).build();
     ScreeningRequest screeningRequest = new ScreeningRequest("X5HNJK", "11/22/1973", "Amador",

@@ -2,5 +2,6 @@
   "street_address": "123 Main",
   "city": "Sacramento",
   "state": "CA",
-  "zip": 95757
+  "zip": 95757,
+  "type": "Home"
 }

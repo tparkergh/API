@@ -25,11 +25,16 @@ import gov.ca.cwds.rest.api.domain.Person;
 import gov.ca.cwds.rest.api.domain.PostedPerson;
 
 
+/**
+ * @author CWDS API Team
+ *
+ */
 // TODO: #136527227: review:
 // 1) Test conditions in PersonService.queryPersonOr().
 // 2) Review possible conditions in ElasticsearchDao.queryPersonOr(), such as wildcards ("*" or
 // "?").
 
+@SuppressWarnings("javadoc")
 public class PersonServiceTest {
 
   private PersonService personService;
@@ -51,7 +56,7 @@ public class PersonServiceTest {
    */
   @Test
   public void findReturnsCorrectPersonWhenFoundWhenFound() throws Exception {
-    Address address = new Address("742 Evergreen Terrace", "Springfield", "WA", 98700);
+    Address address = new Address("742 Evergreen Terrace", "Springfield", "WA", 98700, "Home");
     Person expected = new Person("Bart", "Simpson", "M", "2016-10-31", "1234556789", address);
 
     gov.ca.cwds.data.persistence.ns.Person person =
@@ -86,7 +91,7 @@ public class PersonServiceTest {
   public void createReturnsPostedPerson() throws Exception {
     gov.ca.cwds.data.persistence.ns.Address toCreateAddress =
         new gov.ca.cwds.data.persistence.ns.Address(1L, "742 Evergreen Terrace", "Springfield",
-            "WA", new Integer(98700));
+            "WA", new Integer(98700), "Home");
     gov.ca.cwds.data.persistence.ns.Person toCreate =
         new gov.ca.cwds.data.persistence.ns.Person(2L, "Bart", "Simpson", "M",
             DomainChef.uncookDateString("2013-10-31"), "1234556789", toCreateAddress);
@@ -101,7 +106,7 @@ public class PersonServiceTest {
   public void createReturnsNonNull() throws Exception {
     gov.ca.cwds.data.persistence.ns.Address toCreateAddress =
         new gov.ca.cwds.data.persistence.ns.Address(1L, "742 Evergreen Terrace", "Springfield",
-            "WA", new Integer(98700));
+            "WA", new Integer(98700), "Home");
     gov.ca.cwds.data.persistence.ns.Person toCreate =
         new gov.ca.cwds.data.persistence.ns.Person(2L, "Bart", "Simpson", "M",
             DomainChef.uncookDateString("2016-10-31"), "1234556789", toCreateAddress);
@@ -116,14 +121,14 @@ public class PersonServiceTest {
   public void createReturnsCorrectPostedPerson() throws Exception {
     gov.ca.cwds.data.persistence.ns.Address toCreateAddress =
         new gov.ca.cwds.data.persistence.ns.Address(1L, "742 Evergreen Terrace", "Springfield",
-            "WA", new Integer(98700));
+            "WA", new Integer(98700), "Home");
     gov.ca.cwds.data.persistence.ns.Person toCreate =
         new gov.ca.cwds.data.persistence.ns.Person(2L, "Bart", "Simpson", "M",
             DomainChef.uncookDateString("2016-10-31"), "1234556789", toCreateAddress);
     Person request = new Person(toCreate);
     when(personDao.create(any(gov.ca.cwds.data.persistence.ns.Person.class))).thenReturn(toCreate);
 
-    Address address = new Address("742 Evergreen Terrace", "Springfield", "WA", 98700);
+    Address address = new Address("742 Evergreen Terrace", "Springfield", "WA", 98700, "Home");
     PostedPerson expected =
         new PostedPerson(2L, "Bart", "Simpson", "M", "2016-10-31", "1234556789", address);
 
@@ -135,6 +140,7 @@ public class PersonServiceTest {
   public void createThrowsAssertionError() throws Exception {
     thrown.expect(AssertionError.class);
     try {
+      @SuppressWarnings("unused")
       PostedPerson postedPerson = personService.create(null);
     } catch (AssertionError e) {
       assertEquals("Expected AssertionError", e.getMessage());
@@ -167,7 +173,7 @@ public class PersonServiceTest {
   public void updateThrowsNotImplementedException() throws Exception {
     thrown.expect(NotImplementedException.class);
 
-    Address address = new Address("742 Evergreen Terrace", "Springfield", "WA", 98700);
+    Address address = new Address("742 Evergreen Terrace", "Springfield", "WA", 98700, "Home");
     Person toUpdate = new Person("Bart", "Simpson", "M", "04/01/1990", "1234556789", address);
     personService.update(1L, toUpdate);
   }

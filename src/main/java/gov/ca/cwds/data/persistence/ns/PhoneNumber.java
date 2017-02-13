@@ -54,6 +54,14 @@ public class PhoneNumber extends NsPersistentObject {
     this.type = type;
   }
 
+  @SuppressWarnings("javadoc")
+  public PhoneNumber(gov.ca.cwds.rest.api.domain.PhoneNumber domain, String lastUpdatedId,
+      String createUserId) {
+    super(lastUpdatedId, createUserId);
+    this.number = domain.getPhoneNumber();
+    this.type = domain.getPhoneType();
+  }
+
   /**
    * {@inheritDoc}
    * 

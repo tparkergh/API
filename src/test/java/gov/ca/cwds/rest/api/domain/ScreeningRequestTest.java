@@ -19,9 +19,10 @@ import io.dropwizard.jackson.Jackson;
 import io.dropwizard.testing.junit.ResourceTestRule;
 
 /**
- * @author Tabpcenc1
+ * @author CWDS API Team
  *
  */
+@SuppressWarnings("javadoc")
 public class ScreeningRequestTest {
 
   private static final ObjectMapper MAPPER = Jackson.newObjectMapper();
@@ -36,7 +37,6 @@ public class ScreeningRequestTest {
   @ClassRule
   public static JerseyGuiceRule rule = new JerseyGuiceRule();
 
-  @SuppressWarnings("javadoc")
   @ClassRule
   public static final ResourceTestRule resources =
       ResourceTestRule.builder().addResource(resource).build();
@@ -49,7 +49,7 @@ public class ScreeningRequestTest {
    */
   @Test
   public void serializesToJSON() throws Exception {
-    Address address = new Address("10 main st", "Sacramento", "CA", 95814);
+    Address address = new Address("10 main st", "Sacramento", "CA", 95814, "Home");
     ImmutableList.Builder<Long> builder = ImmutableList.builder();
     ImmutableList<Long> ids = builder.add(new Long(123)).add(new Long(345)).build();
     ScreeningRequest screeningRequest = new ScreeningRequest("X5HNJK", "11/22/1973", "Amador",
@@ -68,7 +68,7 @@ public class ScreeningRequestTest {
    */
   @Test
   public void deserializesFromJSON() throws Exception {
-    Address address = new Address("10 main st", "Sacramento", "CA", 95814);
+    Address address = new Address("10 main st", "Sacramento", "CA", 95814, "Home");
     ImmutableList.Builder<Long> builder = ImmutableList.builder();
     ImmutableList<Long> ids = builder.add(new Long(123)).add(new Long(345)).build();
     ScreeningRequest expected = new ScreeningRequest("X5HNJK", "11/22/1973", "Amador", "11/22/1973",

@@ -28,6 +28,7 @@ public class AddressTest {
   private String city = "Sacramento";
   private String state = "CA";
   private Integer zip = 95757;
+  private String type = "Home";
 
   private static final ObjectMapper MAPPER = Jackson.newObjectMapper();
 
@@ -36,7 +37,8 @@ public class AddressTest {
    */
   @Test
   public void serializesToJSON() throws Exception {
-    String expected = MAPPER.writeValueAsString(new Address("123 Main", "Sacramento", "CA", 95757));
+    String expected =
+        MAPPER.writeValueAsString(new Address("123 Main", "Sacramento", "CA", 95757, "Home"));
 
     String serialized = MAPPER.writeValueAsString(
         MAPPER.readValue(fixture("fixtures/domain/address/valid/valid.json"), Address.class));
@@ -45,11 +47,13 @@ public class AddressTest {
   }
 
   @Test
-  public void deserializesFromJSON() throws Exception {
-    Address expected = new Address("123 Main", "Sacramento", "CA", 95757);
+  public void testDeserializesFromJSON() throws Exception {
+    Address expected = new Address("123 Main", "Sacramento", "CA", 95757, "Home");
+
     Address serialized =
         MAPPER.readValue(fixture("fixtures/domain/address/valid/valid.json"), Address.class);
     assertThat(serialized, is(expected));
+
   }
 
   @Test
@@ -69,18 +73,20 @@ public class AddressTest {
     assertThat(totest.getState(), is(equalTo(persistent.getState())));
     assertThat(totest.getStreetAddress(), is(equalTo(persistent.getStreetAddress())));
     assertThat(totest.getZip(), is(equalTo(persistent.getZip())));
+    assertThat(totest.getType(), is(equalTo(persistent.getType())));
   }
 
   @Test
-  public void jsonCreatorConstructorTest() throws Exception {
-    Address domain = new Address(street_name, city, state, zip);
+  public void testJSONConstructorTest() throws Exception {
+    Address domain = new Address(street_name, city, state, zip, type);
 
     assertThat(domain.getCity(), is(equalTo(city)));
     assertThat(domain.getState(), is(equalTo(state)));
     assertThat(domain.getStreetAddress(), is(equalTo(street_name)));
     assertThat(domain.getZip(), is(equalTo(zip)));
-  }
+    assertThat(domain.getType(), is(equalTo(type)));
 
+  }
 
   private Address validAddress() {
 

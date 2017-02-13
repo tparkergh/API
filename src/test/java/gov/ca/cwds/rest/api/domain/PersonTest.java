@@ -29,6 +29,11 @@ import io.dropwizard.testing.junit.ResourceTestRule;
 import nl.jqno.equalsverifier.EqualsVerifier;
 import nl.jqno.equalsverifier.Warning;
 
+/**
+ * @author CWDS API Team
+ *
+ */
+@SuppressWarnings("javadoc")
 public class PersonTest {
 
   private String firstName = "firstname";
@@ -36,7 +41,7 @@ public class PersonTest {
   private String gender = "M";
   private String birthDate = "2001-09-01";
   private String ssn = "123456789";
-  private Address address = new Address("123 Main", "Sacramento", "CA", 95757);
+  private Address address = new Address("123 Main", "Sacramento", "CA", 95757, "Home");
 
   private static final ObjectMapper MAPPER = Jackson.newObjectMapper();
 

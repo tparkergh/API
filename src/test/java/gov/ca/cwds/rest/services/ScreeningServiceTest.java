@@ -59,11 +59,11 @@ public class ScreeningServiceTest {
   @Test
   public void findReturnsCorrectScreeningWhenFoundAndParticipantListIsNotNull() throws Exception {
     gov.ca.cwds.rest.api.domain.Address domainAddress = new gov.ca.cwds.rest.api.domain.Address(
-        "742 Evergreen Terrace", "Springfield", "WA", 98700);
+        "742 Evergreen Terrace", "Springfield", "WA", 98700, "Home");
     Person bart = new Person("Bart", "Simpson", "M", "2016-10-31", "123456789", domainAddress);
     Person maggie = new Person("Maggie", "Simpson", "M", "2016-10-31", "123456789", domainAddress);
 
-    Address address = new Address(1L, "742 Evergreen Terrace", "Springfield", "WA", 98700);
+    Address address = new Address(1L, "742 Evergreen Terrace", "Springfield", "WA", 98700, "Home");
     Date date = DomainChef.uncookDateString("2016-10-31");
     ImmutableSet.Builder<gov.ca.cwds.data.persistence.ns.Person> persistentPersonSetBuilder =
         ImmutableSet.builder();
@@ -92,13 +92,13 @@ public class ScreeningServiceTest {
 
   @Test
   public void findReturnsCorrectScreeningWhenFoundAndParticipantListIsNull() throws Exception {
-    Address address = new Address(1L, "742 Evergreen Terrace", "Springfield", "WA", 98700);
+    Address address = new Address(1L, "742 Evergreen Terrace", "Springfield", "WA", 98700, "Home");
     Date date = DomainChef.uncookDateString("2016-10-31");
     Screening screening = new Screening("X5HNJK", date, "Amador", date, "Home", "email",
         "First screening", "accept_for_investigation", date, "first narrative", address, null);
 
     gov.ca.cwds.rest.api.domain.Address domainAddress = new gov.ca.cwds.rest.api.domain.Address(
-        "742 Evergreen Terrace", "Springfield", "WA", 98700);
+        "742 Evergreen Terrace", "Springfield", "WA", 98700, "Home");
 
     when(screeningDao.find(new Long(123))).thenReturn(screening);
 
@@ -221,7 +221,7 @@ public class ScreeningServiceTest {
   @Test
   public void updateReturnsScreeningResponseOnSuccess() throws Exception {
     gov.ca.cwds.rest.api.domain.Address domainAddress = new gov.ca.cwds.rest.api.domain.Address(
-        "742 Evergreen Terrace", "Springfield", "WA", 98700);
+        "742 Evergreen Terrace", "Springfield", "WA", 98700, "Home");
     ImmutableList.Builder<Long> peopleIdListBuilder = ImmutableList.builder();
     ImmutableList<Long> peopleIds = peopleIdListBuilder.add(1L).add(2L).build();
 
@@ -247,7 +247,7 @@ public class ScreeningServiceTest {
   @Test
   public void updateReturnsCorrectScreeningResponseOnSuccess() throws Exception {
     gov.ca.cwds.rest.api.domain.Address domainAddress = new gov.ca.cwds.rest.api.domain.Address(
-        "742 Evergreen Terrace", "Springfield", "WA", 98700);
+        "742 Evergreen Terrace", "Springfield", "WA", 98700, "Home");
     ImmutableList.Builder<Long> peopleIdListBuilder = ImmutableList.builder();
     ImmutableList<Long> peopleIds = peopleIdListBuilder.add(1L).add(2L).build();
 
@@ -283,7 +283,7 @@ public class ScreeningServiceTest {
     thrown.expectMessage(contains("Unable to find participant"));
 
     gov.ca.cwds.rest.api.domain.Address domainAddress = new gov.ca.cwds.rest.api.domain.Address(
-        "742 Evergreen Terrace", "Springfield", "WA", 98700);
+        "742 Evergreen Terrace", "Springfield", "WA", 98700, "Home");
     ImmutableList.Builder<Long> peopleIdListBuilder = ImmutableList.builder();
     ImmutableList<Long> peopleIds = peopleIdListBuilder.add(11L).build();
 

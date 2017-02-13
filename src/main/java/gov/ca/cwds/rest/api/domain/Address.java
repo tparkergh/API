@@ -73,6 +73,7 @@ public class Address extends DomainObject implements Request, Response {
     this.state = address.getState();
     this.zip = address.getZip();
     this.type = address.getType();
+
   }
 
   /**
