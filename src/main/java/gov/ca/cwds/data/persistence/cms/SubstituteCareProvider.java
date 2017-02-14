@@ -47,7 +47,7 @@ import gov.ca.cwds.data.persistence.PersistentObject;
         + "z.PASSBC_CD, z.PRIM_INC, z.RESOST_IND, z.SEC_INC, z.SS_NO, "
         + "z.STATE_C, z.STREET_NM, z.STREET_NO, z.SUFX_TLDSC, z.ZIP_NO, "
         + "z.ZIP_SFX_NO, z.LST_UPD_ID, z.LST_UPD_TS "
-        + "from ( select mod(y.rn, :total_buckets) + 1 as bucket, y.* "
+        + "from ( select mod(y.rn, CAST(:total_buckets AS INTEGER))) + 1 as bucket, y.* "
         + "from ( select row_number() over (order by 1) as rn, x.* "
         + "from ( select c.* from {h-schema}SB_PVDRT c "
         + ") x ) y ) z where z.bucket = :bucket_num for read only",

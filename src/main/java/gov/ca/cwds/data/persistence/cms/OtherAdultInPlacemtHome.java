@@ -38,7 +38,7 @@ import gov.ca.cwds.data.persistence.PersistentObject;
     query = "select z.IDENTIFIER, z.BIRTH_DT, z.END_DT, z.GENDER_CD, z.OTH_ADLTNM, "
         + "z.START_DT, z.LST_UPD_ID, z.LST_UPD_TS, z.FKPLC_HM_T, z.COMNT_DSC, "
         + "z.OTH_ADL_CD, z.IDENTFD_DT, z.RESOST_IND, z.PASSBC_CD "
-        + "from ( select mod(y.rn, :total_buckets) + 1 as bucket, y.* "
+        + "from ( select mod(y.rn, CAST(:total_buckets AS INTEGER))) + 1 as bucket, y.* "
         + "from ( select row_number() over (order by 1) as rn, x.* "
         + "from ( select c.* from {h-schema}OTH_ADLT c "
         + ") x ) y ) z where z.bucket = :bucket_num for read only",

@@ -57,9 +57,10 @@ import gov.ca.cwds.rest.api.domain.DomainChef;
         + "z.PREVCA_IND, z.PREREG_IND, z.POTH_DESC, z.HCARE_IND, z.LIMIT_IND, z.BIRTH_CITY, z.HEALTH_TXT, "
         + "z.MTERM_DT, z.FTERM_DT, z.ZIPPY_IND, z.DEATH_PLC, z.TR_MBVRT_B, z.TRBA_CLT_B, z.SOC158_IND, "
         + "z.DTH_DT_IND, z.EMAIL_ADDR, z.ADJDEL_IND, z.ETH_UD_CD, z.HISP_UD_CD, z.SOCPLC_CD, z.CL_INDX_NO "
-        + "from ( select mod(y.rn, :total_buckets) + 1 as bucket, y.* "
+        + "from ( select mod(y.rn, CAST(:total_buckets AS INTEGER)) + 1 as bucket, y.* "
         + "from ( select row_number() over (order by 1) as rn, x.* "
-        + "from ( select c.* from {h-schema}client_t c where c.SOC158_IND ='N' and c.SENSTV_IND = 'N' "
+        + "from ( select c.* from {h-schema}client_t c "
+        + "where c.SOC158_IND ='N' and c.SENSTV_IND = 'N' "
         + ") x ) y ) z where z.bucket = :bucket_num for read only",
     resultClass = Client.class)})
 @Entity
