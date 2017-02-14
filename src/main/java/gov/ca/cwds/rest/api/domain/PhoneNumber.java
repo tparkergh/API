@@ -20,7 +20,7 @@ public class PhoneNumber {
   @Size(max = 50)
   String phoneNumber;
 
-  @JsonProperty("phone_type")
+  @JsonProperty("phone_number_type_id")
   @ApiModelProperty(example = "Cell")
   @Size(max = 50)
   String phoneType;
@@ -41,7 +41,7 @@ public class PhoneNumber {
    * @param phoneType - phone number type
    */
   public PhoneNumber(@JsonProperty("number") String phoneNumber,
-      @JsonProperty("type") String phoneType) {
+      @JsonProperty("phone_number_type_id") String phoneType) {
     super();
     this.phoneNumber = phoneNumber;
     this.phoneType = phoneType;

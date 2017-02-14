@@ -37,9 +37,9 @@ public class Address extends DomainObject implements Request, Response {
   @ApiModelProperty(example = "6525")
   private Integer zip;
 
-  @JsonProperty("type")
+  @JsonProperty("address_type_id")
   @ApiModelProperty(example = "Home")
-  private String type;
+  private String addressTypeId;
 
   /**
    * Constructor
@@ -48,18 +48,18 @@ public class Address extends DomainObject implements Request, Response {
    * @param city - city
    * @param state - state
    * @param zip - zip code
-   * @param type the address type
+   * @param address_type_id the address type
    */
   @JsonCreator
   public Address(@JsonProperty("street_address") String streetAddress,
       @JsonProperty("city") String city, @JsonProperty("state") String state,
-      @JsonProperty("zip") Integer zip, @JsonProperty("type") String type) {
+      @JsonProperty("zip") Integer zip, @JsonProperty("type") String address_type_id) {
     super();
     this.streetAddress = streetAddress;
     this.city = city;
     this.state = state;
     this.zip = zip;
-    this.type = type;
+    this.addressTypeId = address_type_id;
   }
 
   /**
@@ -72,7 +72,7 @@ public class Address extends DomainObject implements Request, Response {
     this.city = address.getCity();
     this.state = address.getState();
     this.zip = address.getZip();
-    this.type = address.getType();
+    this.addressTypeId = address.getType();
 
   }
 
@@ -108,7 +108,7 @@ public class Address extends DomainObject implements Request, Response {
    * @return address type
    */
   public String getType() {
-    return type;
+    return addressTypeId;
   }
 
   /**
@@ -124,7 +124,7 @@ public class Address extends DomainObject implements Request, Response {
     result = prime * result + ((state == null) ? 0 : state.hashCode());
     result = prime * result + ((streetAddress == null) ? 0 : streetAddress.hashCode());
     result = prime * result + ((zip == null) ? 0 : zip.hashCode());
-    result = prime * result + ((type == null) ? 0 : type.hashCode());
+    result = prime * result + ((addressTypeId == null) ? 0 : addressTypeId.hashCode());
     return result;
   }
 
@@ -162,10 +162,10 @@ public class Address extends DomainObject implements Request, Response {
         return false;
     } else if (!zip.equals(other.zip))
       return false;
-    if (type == null) {
-      if (other.type != null)
+    if (addressTypeId == null) {
+      if (other.addressTypeId != null)
         return false;
-    } else if (!type.equals(other.type))
+    } else if (!addressTypeId.equals(other.addressTypeId))
       return false;
     return true;
   }

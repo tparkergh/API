@@ -33,6 +33,7 @@ import io.dropwizard.testing.junit.ResourceTestRule;
  * 
  * @author CWDS API Team
  */
+@SuppressWarnings("javadoc")
 public class AllegationResourceTest {
 
   private static final String ROOT_RESOURCE = "/_allegations/";

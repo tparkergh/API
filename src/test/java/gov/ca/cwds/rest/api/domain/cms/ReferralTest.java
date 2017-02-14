@@ -35,6 +35,11 @@ import io.dropwizard.testing.junit.ResourceTestRule;
 import nl.jqno.equalsverifier.EqualsVerifier;
 import nl.jqno.equalsverifier.Warning;
 
+/**
+ * @author CWDS API Team
+ *
+ */
+@SuppressWarnings("javadoc")
 public class ReferralTest {
 
   private static final String ROOT_RESOURCE = "/" + Api.RESOURCE_REFERRAL + "/";;
@@ -46,6 +51,7 @@ public class ReferralTest {
     JerseyGuiceUtils.reset();
   }
 
+  @SuppressWarnings("javadoc")
   @ClassRule
   public static JerseyGuiceRule rule = new JerseyGuiceRule();
 
