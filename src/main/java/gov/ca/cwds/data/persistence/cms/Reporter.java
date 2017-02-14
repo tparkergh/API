@@ -56,7 +56,7 @@ import gov.ca.cwds.rest.api.domain.DomainChef;
         + "z.NMPRFX_DSC, z.PRM_TEL_NO, z.PRM_EXT_NO, z.STATE_C, z.RPTR_ST_NM, "
         + "z.RPTR_ST_NO, z.SUFX_TLDSC, z.RPTR_ZIPNO, z.LST_UPD_ID, z.LST_UPD_TS, "
         + "z.FKREFERL_T, z.FKLAW_ENFT, z.ZIP_SFX_NO, z.CNTY_SPFCD "
-        + "from ( select mod(y.rn, :total_buckets) + 1 as bucket, y.* "
+        + "from ( select mod(y.rn, CAST(:total_buckets AS INTEGER)) + 1 as bucket, y.* "
         + "from ( select row_number() over (order by 1) as rn, x.* "
         + "from ( select c.* from {h-schema}REPTR_T c "
         + ") x ) y ) z where z.bucket = :bucket_num for read only",
@@ -592,7 +592,6 @@ public class Reporter extends CmsPersistentObject
     }
 
     if (this.messagePhoneNumber != null && !BigDecimal.ZERO.equals(this.messagePhoneNumber)) {
-      LOGGER.debug("add message phone");
       phones
           .add(new ReadablePhone(
               this.messagePhoneNumber.toPlainString(), this.messagePhoneExtensionNumber != null
