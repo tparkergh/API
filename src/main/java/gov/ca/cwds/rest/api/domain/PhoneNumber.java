@@ -4,6 +4,8 @@ import javax.validation.constraints.Size;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+import gov.ca.cwds.rest.api.Request;
+import gov.ca.cwds.rest.api.Response;
 import io.dropwizard.jackson.JsonSnakeCase;
 import io.swagger.annotations.ApiModelProperty;
 
@@ -13,17 +15,17 @@ import io.swagger.annotations.ApiModelProperty;
  * @author CWDS API Team
  */
 @JsonSnakeCase
-public class PhoneNumber {
+public class PhoneNumber extends DomainObject implements Request, Response {
 
-  @JsonProperty("phone_number")
+  @JsonProperty("number")
   @ApiModelProperty(example = "(408) 345-5678")
   @Size(max = 50)
-  String phoneNumber;
+  String number;
 
-  @JsonProperty("phone_number_type_id")
+  @JsonProperty("type")
   @ApiModelProperty(example = "Cell")
   @Size(max = 50)
-  String phoneType;
+  String type;
 
   /**
    * Construct from persistence class
@@ -31,10 +33,9 @@ public class PhoneNumber {
    * @param phoneNumber persistence level address object
    */
   public PhoneNumber(gov.ca.cwds.data.persistence.ns.PhoneNumber phoneNumber) {
-    this.phoneNumber = phoneNumber.getNumber();
-    this.phoneType = phoneNumber.getType();
+    this.number = phoneNumber.getNumber();
+    this.type = phoneNumber.getType();
   }
-
 
   /**
    * @param phoneNumber - phone number
@@ -43,30 +44,30 @@ public class PhoneNumber {
   public PhoneNumber(@JsonProperty("number") String phoneNumber,
       @JsonProperty("phone_number_type_id") String phoneType) {
     super();
-    this.phoneNumber = phoneNumber;
-    this.phoneType = phoneType;
+    this.number = phoneNumber;
+    this.type = phoneType;
   }
 
   /**
    * @return - phone number
    */
   public String getPhoneNumber() {
-    return phoneNumber;
+    return number;
   }
 
   /**
    * @return - phone type
    */
   public String getPhoneType() {
-    return phoneType;
+    return type;
   }
 
   @Override
   public final int hashCode() {
     final int prime = 31;
     int result = 1;
-    result = prime * result + ((phoneNumber == null) ? 0 : phoneNumber.hashCode());
-    result = prime * result + ((phoneType == null) ? 0 : phoneType.hashCode());
+    result = prime * result + ((number == null) ? 0 : number.hashCode());
+    result = prime * result + ((type == null) ? 0 : type.hashCode());
     return result;
   }
 
@@ -79,15 +80,15 @@ public class PhoneNumber {
     if (getClass() != obj.getClass())
       return false;
     PhoneNumber other = (PhoneNumber) obj;
-    if (phoneNumber == null) {
-      if (other.phoneNumber != null)
+    if (number == null) {
+      if (other.number != null)
         return false;
-    } else if (!phoneNumber.equals(other.phoneNumber))
+    } else if (!number.equals(other.number))
       return false;
-    if (phoneType == null) {
-      if (other.phoneType != null)
+    if (type == null) {
+      if (other.type != null)
         return false;
-    } else if (!phoneType.equals(other.phoneType))
+    } else if (!type.equals(other.type))
       return false;
     return true;
   }
