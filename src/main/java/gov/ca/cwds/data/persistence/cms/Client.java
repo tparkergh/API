@@ -70,8 +70,7 @@ import gov.ca.cwds.rest.api.domain.DomainChef;
 @Table(name = "CLIENT_T")
 @JsonPropertyOrder(alphabetic = true)
 @JsonIgnoreProperties(ignoreUnknown = true)
-public final class Client extends CmsPersistentObject
-    implements IPersonAware, IMultipleLanguagesAware {
+public class Client extends CmsPersistentObject implements IPersonAware, IMultipleLanguagesAware {
 
   /**
    * Base serialization version. Increment by class version.
