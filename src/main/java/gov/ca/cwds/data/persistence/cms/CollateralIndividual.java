@@ -9,6 +9,9 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
+import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.hibernate.annotations.NamedNativeQueries;
 import org.hibernate.annotations.NamedNativeQuery;
 import org.hibernate.annotations.NamedQueries;
@@ -235,7 +238,7 @@ public class CollateralIndividual extends CmsPersistentObject
    * @return badgeNumber
    */
   public String getBadgeNumber() {
-    return badgeNumber;
+    return StringUtils.trimToEmpty(badgeNumber);
   }
 
   /**
@@ -250,35 +253,35 @@ public class CollateralIndividual extends CmsPersistentObject
    * @return cityName
    */
   public String getCityName() {
-    return cityName;
+    return StringUtils.trimToEmpty(cityName);
   }
 
   /**
    * @return commentDescription
    */
   public String getCommentDescription() {
-    return commentDescription;
+    return StringUtils.trimToEmpty(commentDescription);
   }
 
   /**
    * @return emailAddress
    */
   public String getEmailAddress() {
-    return emailAddress;
+    return StringUtils.trimToEmpty(emailAddress);
   }
 
   /**
    * @return employerName
    */
   public String getEmployerName() {
-    return employerName;
+    return StringUtils.trimToEmpty(employerName);
   }
 
   /**
    * @return establishedForCode
    */
   public String getEstablishedForCode() {
-    return establishedForCode;
+    return StringUtils.trimToEmpty(establishedForCode);
   }
 
   /**
@@ -293,7 +296,7 @@ public class CollateralIndividual extends CmsPersistentObject
    */
   @Override
   public String getFirstName() {
-    return firstName;
+    return StringUtils.trimToEmpty(firstName);
   }
 
   /**
@@ -307,7 +310,7 @@ public class CollateralIndividual extends CmsPersistentObject
    * @return genderCode
    */
   public String getGenderCode() {
-    return genderCode;
+    return StringUtils.trimToEmpty(genderCode);
   }
 
   /**
@@ -322,7 +325,7 @@ public class CollateralIndividual extends CmsPersistentObject
    */
   @Override
   public String getLastName() {
-    return lastName;
+    return StringUtils.trimToEmpty(lastName);
   }
 
   /**
@@ -336,14 +339,14 @@ public class CollateralIndividual extends CmsPersistentObject
    * @return maritalStatus
    */
   public String getMiddleInitialName() {
-    return middleInitialName;
+    return StringUtils.trimToEmpty(middleInitialName);
   }
 
   /**
    * @return namePrefixDescription
    */
   public String getNamePrefixDescription() {
-    return namePrefixDescription;
+    return StringUtils.trimToEmpty(namePrefixDescription);
   }
 
   /**
@@ -378,21 +381,21 @@ public class CollateralIndividual extends CmsPersistentObject
    * @return streetName
    */
   public String getStreetName() {
-    return streetName;
+    return StringUtils.trimToEmpty(streetName);
   }
 
   /**
    * @return streetNumber
    */
   public String getStreetNumber() {
-    return streetNumber;
+    return StringUtils.trimToEmpty(streetNumber);
   }
 
   /**
    * @return suffixTitleDescription
    */
   public String getSuffixTitleDescription() {
-    return suffixTitleDescription;
+    return StringUtils.trimToEmpty(suffixTitleDescription);
   }
 
   /**
@@ -471,195 +474,12 @@ public class CollateralIndividual extends CmsPersistentObject
 
   @Override
   public final int hashCode() {
-    final int prime = 31;
-    int result = 1;
-    result = prime * result + ((badgeNumber == null) ? 0 : badgeNumber.hashCode());
-    result = prime * result + ((birthDate == null) ? 0 : birthDate.hashCode());
-    result = prime * result + ((cityName == null) ? 0 : cityName.hashCode());
-    result = prime * result + ((commentDescription == null) ? 0 : commentDescription.hashCode());
-    result = prime * result + ((emailAddress == null) ? 0 : emailAddress.hashCode());
-    result = prime * result + ((employerName == null) ? 0 : employerName.hashCode());
-    result = prime * result + ((establishedForCode == null) ? 0 : establishedForCode.hashCode());
-    result = prime * result + ((faxNumber == null) ? 0 : faxNumber.hashCode());
-    result = prime * result + ((firstName == null) ? 0 : firstName.hashCode());
-    result = prime * result + ((foreignAddressIndicatorVariable == null) ? 0
-        : foreignAddressIndicatorVariable.hashCode());
-    result = prime * result + ((genderCode == null) ? 0 : genderCode.hashCode());
-    result = prime * result + ((id == null) ? 0 : id.hashCode());
-    result = prime * result + ((lastName == null) ? 0 : lastName.hashCode());
-    result = prime * result + ((maritalStatusType == null) ? 0 : maritalStatusType.hashCode());
-    result = prime * result + ((middleInitialName == null) ? 0 : middleInitialName.hashCode());
-    result =
-        prime * result + ((namePrefixDescription == null) ? 0 : namePrefixDescription.hashCode());
-    result =
-        prime * result + ((primaryExtensionNumber == null) ? 0 : primaryExtensionNumber.hashCode());
-    result = prime * result + ((primaryPhoneNo == null) ? 0 : primaryPhoneNo.hashCode());
-    result = prime * result
-        + ((residedOutOfStateIndicator == null) ? 0 : residedOutOfStateIndicator.hashCode());
-    result = prime * result + ((stateCode == null) ? 0 : stateCode.hashCode());
-    result = prime * result + ((streetName == null) ? 0 : streetName.hashCode());
-    result = prime * result + ((streetNumber == null) ? 0 : streetNumber.hashCode());
-    result =
-        prime * result + ((suffixTitleDescription == null) ? 0 : suffixTitleDescription.hashCode());
-    result = prime * result + ((zipNumber == null) ? 0 : zipNumber.hashCode());
-    result = prime * result + ((zipSuffixNumber == null) ? 0 : zipSuffixNumber.hashCode());
-    result = prime * result
-        + ((super.getLastUpdatedId() == null) ? 0 : super.getLastUpdatedId().hashCode());
-    result = prime * result
-        + ((super.getLastUpdatedTime() == null) ? 0 : super.getLastUpdatedTime().hashCode());
-    return result;
+    return HashCodeBuilder.reflectionHashCode(this, false);
   }
 
   @Override
   public final boolean equals(Object obj) {
-    if (this == obj)
-      return true;
-    if (obj == null)
-      return false;
-    if (!(obj instanceof CollateralIndividual)) {
-      return false;
-    }
-    CollateralIndividual other = (CollateralIndividual) obj;
-    if (badgeNumber == null) {
-      if (other.badgeNumber != null)
-        return false;
-    } else if (!badgeNumber.equals(other.badgeNumber))
-      return false;
-    if (birthDate == null) {
-      if (other.birthDate != null)
-        return false;
-    } else if (!birthDate.equals(other.birthDate))
-      return false;
-    if (cityName == null) {
-      if (other.cityName != null)
-        return false;
-    } else if (!cityName.equals(other.cityName))
-      return false;
-    if (commentDescription == null) {
-      if (other.commentDescription != null)
-        return false;
-    } else if (!commentDescription.equals(other.commentDescription))
-      return false;
-    if (emailAddress == null) {
-      if (other.emailAddress != null)
-        return false;
-    } else if (!emailAddress.equals(other.emailAddress))
-      return false;
-    if (employerName == null) {
-      if (other.employerName != null)
-        return false;
-    } else if (!employerName.equals(other.employerName))
-      return false;
-    if (establishedForCode == null) {
-      if (other.establishedForCode != null)
-        return false;
-    } else if (!establishedForCode.equals(other.establishedForCode))
-      return false;
-    if (faxNumber == null) {
-      if (other.faxNumber != null)
-        return false;
-    } else if (!faxNumber.equals(other.faxNumber))
-      return false;
-    if (firstName == null) {
-      if (other.firstName != null)
-        return false;
-    } else if (!firstName.equals(other.firstName))
-      return false;
-    if (foreignAddressIndicatorVariable == null) {
-      if (other.foreignAddressIndicatorVariable != null)
-        return false;
-    } else if (!foreignAddressIndicatorVariable.equals(other.foreignAddressIndicatorVariable))
-      return false;
-    if (genderCode == null) {
-      if (other.genderCode != null)
-        return false;
-    } else if (!genderCode.equals(other.genderCode))
-      return false;
-    if (id == null) {
-      if (other.id != null)
-        return false;
-    } else if (!id.equals(other.id))
-      return false;
-    if (lastName == null) {
-      if (other.lastName != null)
-        return false;
-    } else if (!lastName.equals(other.lastName))
-      return false;
-    if (maritalStatusType == null) {
-      if (other.maritalStatusType != null)
-        return false;
-    } else if (!maritalStatusType.equals(other.maritalStatusType))
-      return false;
-    if (middleInitialName == null) {
-      if (other.middleInitialName != null)
-        return false;
-    } else if (!middleInitialName.equals(other.middleInitialName))
-      return false;
-    if (namePrefixDescription == null) {
-      if (other.namePrefixDescription != null)
-        return false;
-    } else if (!namePrefixDescription.equals(other.namePrefixDescription))
-      return false;
-    if (primaryExtensionNumber == null) {
-      if (other.primaryExtensionNumber != null)
-        return false;
-    } else if (!primaryExtensionNumber.equals(other.primaryExtensionNumber))
-      return false;
-    if (primaryPhoneNo == null) {
-      if (other.primaryPhoneNo != null)
-        return false;
-    } else if (!primaryPhoneNo.equals(other.primaryPhoneNo))
-      return false;
-    if (residedOutOfStateIndicator == null) {
-      if (other.residedOutOfStateIndicator != null)
-        return false;
-    } else if (!residedOutOfStateIndicator.equals(other.residedOutOfStateIndicator))
-      return false;
-    if (stateCode == null) {
-      if (other.stateCode != null)
-        return false;
-    } else if (!stateCode.equals(other.stateCode))
-      return false;
-    if (streetName == null) {
-      if (other.streetName != null)
-        return false;
-    } else if (!streetName.equals(other.streetName))
-      return false;
-    if (streetNumber == null) {
-      if (other.streetNumber != null)
-        return false;
-    } else if (!streetNumber.equals(other.streetNumber))
-      return false;
-    if (suffixTitleDescription == null) {
-      if (other.suffixTitleDescription != null)
-        return false;
-    } else if (!suffixTitleDescription.equals(other.suffixTitleDescription))
-      return false;
-    if (zipNumber == null) {
-      if (other.zipNumber != null)
-        return false;
-    } else if (!zipNumber.equals(other.zipNumber))
-      return false;
-    if (zipSuffixNumber == null) {
-      if (other.zipSuffixNumber != null)
-        return false;
-    } else if (!zipSuffixNumber.equals(other.zipSuffixNumber))
-      return false;
-    if (super.getLastUpdatedId() == null) {
-      if (other.getLastUpdatedId() != null) {
-        return false;
-      }
-    } else if (!super.getLastUpdatedId().equals(other.getLastUpdatedId())) {
-      return false;
-    }
-    if (super.getLastUpdatedTime() == null) {
-      if (other.getLastUpdatedTime() != null) {
-        return false;
-      }
-    } else if (!super.getLastUpdatedTime().equals(other.getLastUpdatedTime())) {
-      return false;
-    }
-    return true;
+    return EqualsBuilder.reflectionEquals(this, obj, false);
   }
 
 }

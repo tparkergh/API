@@ -14,6 +14,7 @@ import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 
+import org.apache.commons.lang3.StringUtils;
 import org.hibernate.annotations.NamedNativeQueries;
 import org.hibernate.annotations.NamedNativeQuery;
 import org.hibernate.annotations.Type;
@@ -50,11 +51,12 @@ import gov.ca.cwds.rest.api.domain.DomainChef;
             + "(SELECT id FROM Referral WHERE limitedAccessCode = 'N')")})
 @NamedNativeQueries({@NamedNativeQuery(
     name = "gov.ca.cwds.data.persistence.cms.Reporter.findAllByBucket",
-    query = "select z.RPTR_BDGNO, z.RPTR_CTYNM, z.COL_RELC, z.CMM_MTHC, z.CNFWVR_IND, "
+    query = "select trim(z.RPTR_BDGNO) as RPTR_BDGNO, trim(z.RPTR_CTYNM) as RPTR_CTYNM, "
+        + "z.COL_RELC, z.CMM_MTHC, z.CNFWVR_IND, "
         + "z.FDBACK_DOC, z.RPTR_EMPNM, z.FEEDBCK_DT, z.FB_RQR_IND, z.RPTR_FSTNM, "
-        + "z.RPTR_LSTNM, z.MNRPTR_IND, z.MSG_EXT_NO, z.MSG_TEL_NO, z.MID_INI_NM, "
-        + "z.NMPRFX_DSC, z.PRM_TEL_NO, z.PRM_EXT_NO, z.STATE_C, z.RPTR_ST_NM, "
-        + "z.RPTR_ST_NO, z.SUFX_TLDSC, z.RPTR_ZIPNO, z.LST_UPD_ID, z.LST_UPD_TS, "
+        + "trim(z.RPTR_LSTNM) as RPTR_LSTNM, z.MNRPTR_IND, z.MSG_EXT_NO, z.MSG_TEL_NO, trim(z.MID_INI_NM) as MID_INI_NM, "
+        + "trim(z.NMPRFX_DSC) as NMPRFX_DSC, z.PRM_TEL_NO, z.PRM_EXT_NO, z.STATE_C, trim(z.RPTR_ST_NM) as RPTR_ST_NM, "
+        + "trim(z.RPTR_ST_NO) as RPTR_ST_NO, trim(z.SUFX_TLDSC) as SUFX_TLDSC, z.RPTR_ZIPNO, z.LST_UPD_ID, z.LST_UPD_TS, "
         + "z.FKREFERL_T, z.FKLAW_ENFT, z.ZIP_SFX_NO, z.CNTY_SPFCD "
         + "from ( select mod(y.rn, CAST(:total_buckets AS INTEGER)) + 1 as bucket, y.* "
         + "from ( select row_number() over (order by 1) as rn, x.* "
@@ -308,14 +310,14 @@ public class Reporter extends CmsPersistentObject
    * @return the badgeNumber
    */
   public String getBadgeNumber() {
-    return badgeNumber;
+    return StringUtils.trimToEmpty(badgeNumber);
   }
 
   /**
    * @return the cityName
    */
   public String getCityName() {
-    return cityName;
+    return StringUtils.trimToEmpty(cityName);
   }
 
   /**
@@ -343,14 +345,14 @@ public class Reporter extends CmsPersistentObject
    * @return the drmsMandatedRprtrFeedback
    */
   public String getDrmsMandatedRprtrFeedback() {
-    return drmsMandatedRprtrFeedback;
+    return StringUtils.trimToEmpty(drmsMandatedRprtrFeedback);
   }
 
   /**
    * @return the employerName
    */
   public String getEmployerName() {
-    return employerName;
+    return StringUtils.trimToEmpty(employerName);
   }
 
   /**
@@ -372,7 +374,7 @@ public class Reporter extends CmsPersistentObject
    */
   @Override
   public String getFirstName() {
-    return firstName;
+    return StringUtils.trimToEmpty(firstName);
   }
 
   /**
@@ -380,7 +382,7 @@ public class Reporter extends CmsPersistentObject
    */
   @Override
   public String getLastName() {
-    return lastName;
+    return StringUtils.trimToEmpty(lastName);
   }
 
   /**
@@ -408,14 +410,14 @@ public class Reporter extends CmsPersistentObject
    * @return the middleInitialName
    */
   public String getMiddleInitialName() {
-    return middleInitialName;
+    return StringUtils.trimToEmpty(middleInitialName);
   }
 
   /**
    * @return the namePrefixDescription
    */
   public String getNamePrefixDescription() {
-    return namePrefixDescription;
+    return StringUtils.trimToEmpty(namePrefixDescription);
   }
 
   /**
@@ -443,21 +445,21 @@ public class Reporter extends CmsPersistentObject
    * @return the streetName
    */
   public String getStreetName() {
-    return streetName;
+    return StringUtils.trimToEmpty(streetName);
   }
 
   /**
    * @return the streetNumber
    */
   public String getStreetNumber() {
-    return streetNumber;
+    return StringUtils.trimToEmpty(streetNumber);
   }
 
   /**
    * @return the suffixTitleDescription
    */
   public String getSuffixTitleDescription() {
-    return suffixTitleDescription;
+    return StringUtils.trimToEmpty(suffixTitleDescription);
   }
 
   /**
@@ -527,7 +529,7 @@ public class Reporter extends CmsPersistentObject
   @Override
   @Transient
   public String getNameSuffix() {
-    return this.suffixTitleDescription;
+    return StringUtils.trimToEmpty(this.suffixTitleDescription);
   }
 
   // ==================
@@ -538,14 +540,15 @@ public class Reporter extends CmsPersistentObject
   @Override
   @Transient
   public String getStreetAddress() {
-    return this.streetNumber + " " + this.streetName;
+    return StringUtils.trimToEmpty(this.streetNumber) + " "
+        + StringUtils.trimToEmpty(this.streetName);
   }
 
   @JsonIgnore
   @Override
   @Transient
   public String getCity() {
-    return this.cityName;
+    return StringUtils.trimToEmpty(this.cityName);
   }
 
   @JsonIgnore
