@@ -35,6 +35,11 @@ import io.swagger.annotations.ApiModelProperty;
     @IfThen(ifProperty = "streetName", thenProperty = "cityName", required = false)})
 public class Reporter extends DomainObject implements Request, Response {
 
+  /**
+   * Serialization version.
+   */
+  private static final long serialVersionUID = 1L;
+
   @NotEmpty
   @Size(min = 10, max = 10)
   @ApiModelProperty(required = true, readOnly = false, value = "Referral ID",
