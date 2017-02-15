@@ -83,6 +83,16 @@ public class Participant extends DomainObject implements Request, Response {
     this.ssn = ssn;
   }
 
+  /**
+   * Construct from persistence class
+   * 
+   * @param participant persistence level participant object
+   */
+  public Participant(gov.ca.cwds.data.persistence.ns.Participant participant) {
+    this.personId = participant.getPersonId();
+    this.screeningId = participant.getHotlineContactId();
+  }
+
 
   /**
    * @return the person_id

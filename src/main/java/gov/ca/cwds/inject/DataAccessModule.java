@@ -26,7 +26,9 @@ import gov.ca.cwds.data.cms.ReporterDao;
 import gov.ca.cwds.data.cms.StaffPersonDao;
 import gov.ca.cwds.data.es.ElasticsearchDao;
 import gov.ca.cwds.data.ns.AddressDao;
+import gov.ca.cwds.data.ns.ParticipantDao;
 import gov.ca.cwds.data.ns.PersonDao;
+import gov.ca.cwds.data.ns.PhoneNumberDao;
 import gov.ca.cwds.data.ns.ScreeningDao;
 import gov.ca.cwds.data.persistence.cms.Allegation;
 import gov.ca.cwds.data.persistence.cms.ClientCollateral;
@@ -48,7 +50,9 @@ import gov.ca.cwds.data.persistence.cms.StaffPerson;
 import gov.ca.cwds.data.persistence.cms.SubstituteCareProvider;
 import gov.ca.cwds.data.persistence.cms.SystemCodeDaoFileImpl;
 import gov.ca.cwds.data.persistence.ns.Address;
+import gov.ca.cwds.data.persistence.ns.Participant;
 import gov.ca.cwds.data.persistence.ns.Person;
+import gov.ca.cwds.data.persistence.ns.PhoneNumber;
 import gov.ca.cwds.data.persistence.ns.Screening;
 import gov.ca.cwds.data.validation.SmartyStreetsDao;
 import gov.ca.cwds.rest.ApiConfiguration;
@@ -91,7 +95,8 @@ public class DataAccessModule extends AbstractModule {
       };
 
   private final HibernateBundle<ApiConfiguration> nsHibernateBundle =
-      new HibernateBundle<ApiConfiguration>(Person.class, Address.class, Screening.class) {
+      new HibernateBundle<ApiConfiguration>(Person.class, Address.class, Screening.class,
+          Participant.class, PhoneNumber.class) {
         @Override
         public DataSourceFactory getDataSourceFactory(ApiConfiguration configuration) {
           return configuration.getNsDataSourceFactory();
@@ -134,6 +139,8 @@ public class DataAccessModule extends AbstractModule {
     bind(AddressDao.class);
     bind(PersonDao.class);
     bind(ScreeningDao.class);
+    bind(ParticipantDao.class);
+    bind(PhoneNumberDao.class);
     bind(CrossReportDao.class);
 
     bind(ElasticsearchDao.class);

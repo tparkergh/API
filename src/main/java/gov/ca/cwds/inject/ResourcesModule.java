@@ -13,6 +13,7 @@ import gov.ca.cwds.rest.api.domain.es.AutoCompletePersonResponse;
 import gov.ca.cwds.rest.resources.AddressResource;
 import gov.ca.cwds.rest.resources.AddressValidationResource;
 import gov.ca.cwds.rest.resources.ApplicationResource;
+import gov.ca.cwds.rest.resources.ParticipantResource;
 import gov.ca.cwds.rest.resources.PersonResource;
 import gov.ca.cwds.rest.resources.ResourceDelegate;
 import gov.ca.cwds.rest.resources.ScreeningResource;
@@ -31,6 +32,7 @@ import gov.ca.cwds.rest.resources.cms.ReporterResource;
 import gov.ca.cwds.rest.resources.cms.StaffPersonResource;
 import gov.ca.cwds.rest.services.AddressService;
 import gov.ca.cwds.rest.services.AddressValidationService;
+import gov.ca.cwds.rest.services.ParticipantService;
 import gov.ca.cwds.rest.services.PersonService;
 import gov.ca.cwds.rest.services.ScreeningService;
 import gov.ca.cwds.rest.services.cms.AllegationService;
@@ -64,6 +66,7 @@ public class ResourcesModule extends AbstractModule {
     bind(ApplicationResource.class);
     bind(SwaggerResource.class);
     bind(AddressResource.class);
+    bind(ParticipantResource.class);
     bind(PersonResource.class);
     bind(ScreeningResource.class);
     bind(AllegationResource.class);
@@ -171,6 +174,12 @@ public class ResourcesModule extends AbstractModule {
   @CrossReportServiceBackedResource
   public ResourceDelegate crossReportServiceBackedResource(Injector injector) {
     return new ServiceBackedResourceDelegate(injector.getInstance(CrossReportService.class));
+  }
+
+  @Provides
+  @ParticipantServiceBackedResource
+  public ResourceDelegate participantServiceBackedResource(Injector injector) {
+    return new ServiceBackedResourceDelegate(injector.getInstance(ParticipantService.class));
   }
 
   @Provides
