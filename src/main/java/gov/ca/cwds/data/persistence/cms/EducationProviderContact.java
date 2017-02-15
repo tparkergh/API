@@ -42,7 +42,7 @@ import gov.ca.cwds.data.persistence.PersistentObject;
         + "z.LST_UPD_TS, z.FKED_PVDRT "
         + "from ( select mod(y.rn, CAST(:total_buckets AS INTEGER)) + 1 as bucket, y.* "
         + "from ( select row_number() over (order by 1) as rn, x.* "
-        + "from ( select c.* from cwsint.EDPRVCNT c "
+        + "from ( select c.* from {h-schema}EDPRVCNT c "
         + ") x ) y ) z where z.bucket = :bucket_num for read only",
     resultClass = EducationProviderContact.class)})
 @Entity
