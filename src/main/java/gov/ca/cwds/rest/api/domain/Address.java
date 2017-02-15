@@ -37,7 +37,7 @@ public class Address extends DomainObject implements Request, Response {
   @ApiModelProperty(example = "6525")
   private Integer zip;
 
-  @JsonProperty("address_type_id")
+  @JsonProperty("type")
   @ApiModelProperty(example = "Home")
   private String type;
 

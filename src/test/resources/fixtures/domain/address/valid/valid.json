@@ -3,5 +3,5 @@
   "city": "Sacramento",
   "state": "CA",
   "zip": 95757,
-  "address_type_id": "Home"
+  "type": "Home"
 }
