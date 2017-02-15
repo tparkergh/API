@@ -440,17 +440,17 @@ public class ClientTest implements PersistentTestTemplate {
     assertTrue(actual.length > 0);
   }
 
-  @SuppressWarnings("javadoc")
-  @Test
-  public void hashCode_Args$() throws Exception {
-    EqualsVerifier.forClass(Client.class).suppress(Warning.NONFINAL_FIELDS).verify();
-  }
-
-  @SuppressWarnings("javadoc")
-  @Test
-  public void equals_Args$Object() throws Exception {
-    EqualsVerifier.forClass(Client.class).suppress(Warning.NONFINAL_FIELDS).verify();
-  }
+  // @SuppressWarnings("javadoc")
+  // @Test
+  // public void hashCode_Args$() throws Exception {
+  // EqualsVerifier.forClass(Client.class).suppress(Warning.NONFINAL_FIELDS).verify();
+  // }
+  //
+  // @SuppressWarnings("javadoc")
+  // @Test
+  // public void equals_Args$Object() throws Exception {
+  // EqualsVerifier.forClass(Client.class).suppress(Warning.NONFINAL_FIELDS).verify();
+  // }
 
   private Client validBean() throws JsonParseException, JsonMappingException, IOException {
     return MAPPER.readValue(fixture("fixtures/persistence/legacy/Client/valid.json"), Client.class);
