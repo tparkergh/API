@@ -33,7 +33,7 @@ CREATE INDEX IXFK_phone_number_person_phone ON public.phone_number (phone_number
 ;
 
 ALTER TABLE public.address 
- ADD COLUMN address_type_id varchar(50) NOT NULL  -- FK to address_type LOV table.  Currently the UI will pass an address type string value (e.g., residence, mailing) from a UI dropdown.  The API must find the PK id and store it here. 
+ ADD COLUMN address_type_id varchar(50) NULL  -- FK to address_type LOV table.  Currently the UI will pass an address type string value (e.g., residence, mailing) from a UI dropdown.  The API must find the PK id and store it here. 
 ;
 
 ALTER TABLE hotline_contact 
