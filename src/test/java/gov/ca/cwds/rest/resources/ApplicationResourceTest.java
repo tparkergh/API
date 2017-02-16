@@ -17,6 +17,11 @@ import com.squarespace.jersey2.guice.JerseyGuiceUtils;
 import gov.ca.cwds.rest.resources.cms.JerseyGuiceRule;
 import io.dropwizard.testing.junit.ResourceTestRule;
 
+/**
+ * @author CWDS API Team
+ *
+ */
+@SuppressWarnings("javadoc")
 public class ApplicationResourceTest {
   private static final String APP_NAME = "my app";
   private static final String VERSION = "1.0.0";

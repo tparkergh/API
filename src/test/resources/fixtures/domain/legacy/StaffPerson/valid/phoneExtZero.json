@@ -1,15 +1,15 @@
 {
-
-  "endDate": "07/08/2016",
-  "firstName": "John",
-  "jobTitle": "CEO",
-  "lastName": "Doe",
-  "middleInitial": "C",
+  
+  "endDate": "2016-07-01",
+  "firstName": "firstname",
+  "jobTitle": "Staff job title",
+  "lastName": "lastname",
+  "middleInitial": "A",
   "namePrefix": "Mr",
-  "phoneNumber": 9165551212,
-  "phoneExt": 22,
-  "startDate": "07/08/2016",
-  "nameSuffix": null,
+  "phoneNumber": 4086987654,
+  "phoneExt": 0,
+  "startDate": "2016-01-31",
+  "nameSuffix": "sufx",
   "telecommuterIndicator": true,
   "cwsOffice": "MIZN02k11B",
   "availabilityAndLocationDescription": "abc",
@@ -19,3 +19,4 @@
   "cwsOfficeAddress": "3XPCP92b24",
   "emailAddress": "john.doe@anyco.com"
 }
+S

@@ -34,6 +34,7 @@ import io.dropwizard.testing.junit.ResourceTestRule;
 import nl.jqno.equalsverifier.EqualsVerifier;
 import nl.jqno.equalsverifier.Warning;
 
+@SuppressWarnings("javadoc")
 public class StaffPersonTest {
 
   private static final String ROOT_RESOURCE = "/" + Api.RESOURCE_STAFF_PERSON + "/";
@@ -87,7 +88,6 @@ public class StaffPersonTest {
   /*
    * Constructor Tests
    */
-  @SuppressWarnings("javadoc")
   @Test
   public void persistentObjectConstructorTest() throws Exception {
     StaffPerson domain = new StaffPerson(endDate, firstName, jobTitle, lastName, middleInitial,
@@ -121,7 +121,6 @@ public class StaffPersonTest {
     assertThat(domain.getEmailAddress(), is(equalTo(persistent.getEmailAddress())));
   }
 
-  @SuppressWarnings("javadoc")
   @Test
   public void jsonCreatorConstructorTest() throws Exception {
     StaffPerson domain = new StaffPerson(endDate, firstName, jobTitle, lastName, middleInitial,
@@ -267,7 +266,6 @@ public class StaffPersonTest {
   /*
    * jobTitle Tests
    */
-  @SuppressWarnings("javadoc")
   @Test
   public void successWhenJobTitleMissing() throws Exception {
     StaffPerson toCreate =
@@ -279,7 +277,6 @@ public class StaffPersonTest {
     assertThat(response.getStatus(), is(equalTo(204)));
   }
 
-  @SuppressWarnings("javadoc")
   @Test
   public void successWhenJobTitleNull() throws Exception {
     StaffPerson toCreate = MAPPER.readValue(
@@ -290,7 +287,6 @@ public class StaffPersonTest {
     assertThat(response.getStatus(), is(equalTo(204)));
   }
 
-  @SuppressWarnings("javadoc")
   @Test
   public void failsWhenJobTitleTooLong() throws Exception {
     StaffPerson toCreate =
@@ -332,7 +328,6 @@ public class StaffPersonTest {
         is(greaterThanOrEqualTo(0)));
   }
 
-  @SuppressWarnings("javadoc")
   @Test
   public void failsWhenLastNameEmpty() throws Exception {
     StaffPerson toCreate =
@@ -375,7 +370,6 @@ public class StaffPersonTest {
   // is(greaterThanOrEqualTo(0)));
   // }
 
-  @SuppressWarnings("javadoc")
   @Test
   public void failsWhenMiddleInitialNull() throws Exception {
     StaffPerson toCreate =
@@ -387,7 +381,6 @@ public class StaffPersonTest {
     assertThat(response.getStatus(), is(equalTo(204)));
   }
 
-  @SuppressWarnings("javadoc")
   @Test
   public void SuccessWhenMiddleInitialEmpty() throws Exception {
     StaffPerson toCreate = MAPPER.readValue(
@@ -415,7 +408,6 @@ public class StaffPersonTest {
   /*
    * namePrefix Tests
    */
-  @SuppressWarnings("javadoc")
   @Test
   public void successWhenNamePrefixMissing() throws Exception {
     StaffPerson toCreate =
@@ -427,7 +419,6 @@ public class StaffPersonTest {
     assertThat(response.getStatus(), is(equalTo(204)));
   }
 
-  @SuppressWarnings("javadoc")
   @Test
   public void successWhenNamePrefixNull() throws Exception {
     StaffPerson toCreate = MAPPER.readValue(
@@ -438,7 +429,6 @@ public class StaffPersonTest {
     assertThat(response.getStatus(), is(equalTo(204)));
   }
 
-  @SuppressWarnings("javadoc")
   @Test
   public void successWhenNamePrefixEmpty() throws Exception {
     StaffPerson toCreate =
@@ -450,7 +440,6 @@ public class StaffPersonTest {
     assertThat(response.getStatus(), is(equalTo(204)));
   }
 
-  @SuppressWarnings("javadoc")
   @Test
   public void failsWhenNamePrefixTooLong() throws Exception {
     StaffPerson toCreate = MAPPER.readValue(
@@ -509,56 +498,55 @@ public class StaffPersonTest {
   /*
    * phoneExt Tests
    */
-  // @Test
-  // public void failsWhenPhoneExtMissing() throws Exception {
-  // StaffPerson toCreate = MAPPER.readValue(
-  // fixture("fixtures/domain/legacy/StaffPerson/invalid/phoneExt/missing.json"),
-  // StaffPerson.class);
-  // Response response =
-  // resources.client().target(ROOT_RESOURCE).request().accept(MediaType.APPLICATION_JSON)
-  // .post(Entity.entity(toCreate, MediaType.APPLICATION_JSON));
-  // assertThat(response.getStatus(), is(equalTo(422)));
-  // assertThat(response.readEntity(String.class).indexOf("phoneExt may not be null"),
-  // is(greaterThanOrEqualTo(0)));
-  // }
-  //
-  // @Test
-  // public void failsWhenPhoneExtNull() throws Exception {
-  // StaffPerson toCreate = MAPPER.readValue(
-  // fixture("fixtures/domain/legacy/StaffPerson/invalid/phoneExt/null.json"), StaffPerson.class);
-  // Response response =
-  // resources.client().target(ROOT_RESOURCE).request().accept(MediaType.APPLICATION_JSON)
-  // .post(Entity.entity(toCreate, MediaType.APPLICATION_JSON));
-  // assertThat(response.getStatus(), is(equalTo(422)));
-  // assertThat(response.readEntity(String.class).indexOf("phoneExt may not be null"),
-  // is(greaterThanOrEqualTo(0)));
-  // }
-  //
-  // @Test
-  // public void failsWhenPhoneExtEmpty() throws Exception {
-  // StaffPerson toCreate = MAPPER.readValue(
-  // fixture("fixtures/domain/legacy/StaffPerson/invalid/phoneExt/empty.json"), StaffPerson.class);
-  // Response response =
-  // resources.client().target(ROOT_RESOURCE).request().accept(MediaType.APPLICATION_JSON)
-  // .post(Entity.entity(toCreate, MediaType.APPLICATION_JSON));
-  // assertThat(response.getStatus(), is(equalTo(422)));
-  // assertThat(response.readEntity(String.class).indexOf("phoneExt may not be null"),
-  // is(greaterThanOrEqualTo(0)));
-  // }
+  @Test
+  public void testWhenPhoneExtMissingFails() throws Exception {
+    StaffPerson toCreate =
+        MAPPER.readValue(fixture("fixtures/domain/legacy/StaffPerson/invalid/phoneExtMissing.json"),
+            StaffPerson.class);
+    Response response =
+        resources.client().target(ROOT_RESOURCE).request().accept(MediaType.APPLICATION_JSON)
+            .post(Entity.entity(toCreate, MediaType.APPLICATION_JSON));
+    assertThat(response.getStatus(), is(equalTo(422)));
+    assertThat(response.readEntity(String.class).indexOf("phoneExt may not be empty"),
+        is(greaterThanOrEqualTo(0)));
+  }
 
-  // @Test
-  // public void failsWhenPhoneExtTooLong() throws Exception {
-  // StaffPerson toCreate =
-  // MAPPER.readValue(fixture("fixtures/domain/legacy/StaffPerson/invalid/phoneExtEmpty.json"),
-  // StaffPerson.class);
-  // Response response =
-  // resources.client().target(ROOT_RESOURCE).request().accept(MediaType.APPLICATION_JSON)
-  // .post(Entity.entity(toCreate, MediaType.APPLICATION_JSON));
-  // assertThat(response.getStatus(), is(equalTo(422)));
-  // assertThat(response.readEntity(String.class).indexOf("phoneExt may not be null"),
-  // is(greaterThanOrEqualTo(0)));
-  //
-  // }
+  @Test
+  public void failsWhenPhoneExtNull() throws Exception {
+    StaffPerson toCreate = MAPPER.readValue(
+        fixture("fixtures/domain/legacy/StaffPerson/invalid/phoneExtNull.json"), StaffPerson.class);
+    Response response =
+        resources.client().target(ROOT_RESOURCE).request().accept(MediaType.APPLICATION_JSON)
+            .post(Entity.entity(toCreate, MediaType.APPLICATION_JSON));
+    assertThat(response.getStatus(), is(equalTo(422)));
+    assertThat(response.readEntity(String.class).indexOf("phoneExt may not be empty"),
+        is(greaterThanOrEqualTo(0)));
+  }
+
+  @Test
+  public void failsWhenPhoneExtTooLong() throws Exception {
+    StaffPerson toCreate =
+        MAPPER.readValue(fixture("fixtures/domain/legacy/StaffPerson/invalid/phoneExtEmpty.json"),
+            StaffPerson.class);
+    Response response =
+        resources.client().target(ROOT_RESOURCE).request().accept(MediaType.APPLICATION_JSON)
+            .post(Entity.entity(toCreate, MediaType.APPLICATION_JSON));
+    assertThat(response.getStatus(), is(equalTo(422)));
+    assertThat(response.readEntity(String.class).indexOf("phoneExt may not be empty"),
+        is(greaterThanOrEqualTo(0)));
+
+  }
+
+  @Test
+  public void testWhenPhoneExtZeroSucess() throws Exception {
+    StaffPerson toCreate = MAPPER.readValue(
+        fixture("fixtures/domain/legacy/StaffPerson/valid/phoneExtZero.json"), StaffPerson.class);
+    Response response =
+        resources.client().target(ROOT_RESOURCE).request().accept(MediaType.APPLICATION_JSON)
+            .post(Entity.entity(toCreate, MediaType.APPLICATION_JSON));
+    // System.out.println("message = " + response.readEntity(String.class));
+    assertThat(response.getStatus(), is(equalTo(204)));
+  }
 
   /*
    * startDate Tests
@@ -618,46 +606,37 @@ public class StaffPersonTest {
   // /*
   // * nameSuffix Tests
   // */
-  // @Test
-  // public void failsWhenNameSuffixMissing() throws Exception {
-  // StaffPerson toCreate = MAPPER.readValue(
-  // fixture("fixtures/domain/legacy/StaffPerson/invalid/nameSuffixMissing.json"),
-  // StaffPerson.class);
-  // Response response =
-  // resources.client().target(ROOT_RESOURCE).request().accept(MediaType.APPLICATION_JSON)
-  // .post(Entity.entity(toCreate, MediaType.APPLICATION_JSON));
-  // String message = response.readEntity(String.class);
-  // System.out.print(message);
-  // assertThat(response.getStatus(), is(equalTo(422)));
-  // assertThat(response.readEntity(String.class).indexOf("nameSuffix may not be empty"),
-  // is(greaterThanOrEqualTo(0)));
-  // }
+  @Test
+  public void testNameSuffixMissingSuccess() throws Exception {
+    StaffPerson toCreate =
+        MAPPER.readValue(fixture("fixtures/domain/legacy/StaffPerson/valid/nameSuffixMissing.json"),
+            StaffPerson.class);
+    Response response =
+        resources.client().target(ROOT_RESOURCE).request().accept(MediaType.APPLICATION_JSON)
+            .post(Entity.entity(toCreate, MediaType.APPLICATION_JSON));
+    assertThat(response.getStatus(), is(equalTo(204)));
+  }
 
-  // @Test
-  // public void failsWhenNameSuffixNull() throws Exception {
-  // StaffPerson toCreate =
-  // MAPPER.readValue(fixture("fixtures/domain/legacy/StaffPerson/invalid/nameSuffixNull.json"),
-  // StaffPerson.class);
-  // Response response =
-  // resources.client().target(ROOT_RESOURCE).request().accept(MediaType.APPLICATION_JSON)
-  // .post(Entity.entity(toCreate, MediaType.APPLICATION_JSON));
-  // assertThat(response.getStatus(), is(equalTo(422)));
-  // assertThat(response.readEntity(String.class).indexOf("nameSuffix may not be empty"),
-  // is(greaterThanOrEqualTo(0)));
-  // }
+  @Test
+  public void testNameSuffixNullSuccess() throws Exception {
+    StaffPerson toCreate = MAPPER.readValue(
+        fixture("fixtures/domain/legacy/StaffPerson/valid/nameSuffixNull.json"), StaffPerson.class);
+    Response response =
+        resources.client().target(ROOT_RESOURCE).request().accept(MediaType.APPLICATION_JSON)
+            .post(Entity.entity(toCreate, MediaType.APPLICATION_JSON));
+    assertThat(response.getStatus(), is(equalTo(204)));
+  }
 
-  // @Test
-  // public void failsWhenNameSuffixEmpty() throws Exception {
-  // StaffPerson toCreate = MAPPER.readValue(
-  // fixture("fixtures/domain/legacy/StaffPerson/invalid/nameSuffix/empty.json"),
-  // StaffPerson.class);
-  // Response response =
-  // resources.client().target(ROOT_RESOURCE).request().accept(MediaType.APPLICATION_JSON)
-  // .post(Entity.entity(toCreate, MediaType.APPLICATION_JSON));
-  // assertThat(response.getStatus(), is(equalTo(422)));
-  // assertThat(response.readEntity(String.class).indexOf("nameSuffix may not be empty"),
-  // is(greaterThanOrEqualTo(0)));
-  // }
+  @Test
+  public void testNameSuffixEmptySuccess() throws Exception {
+    StaffPerson toCreate =
+        MAPPER.readValue(fixture("fixtures/domain/legacy/StaffPerson/valid/nameSuffixEmpty.json"),
+            StaffPerson.class);
+    Response response =
+        resources.client().target(ROOT_RESOURCE).request().accept(MediaType.APPLICATION_JSON)
+            .post(Entity.entity(toCreate, MediaType.APPLICATION_JSON));
+    assertThat(response.getStatus(), is(equalTo(204)));
+  }
 
   @Test
   public void failsWhenNameSuffixTooLong() throws Exception {
@@ -701,18 +680,18 @@ public class StaffPersonTest {
         is(greaterThanOrEqualTo(0)));
   }
 
-  // @Test
-  // public void failsWhenTelecommuterIndicatorEmpty() throws Exception {
-  // StaffPerson toCreate = MAPPER.readValue(
-  // fixture("fixtures/domain/legacy/StaffPerson/invalid/telecommuterIndicator/empty.json"),
-  // StaffPerson.class);
-  // Response response =
-  // resources.client().target(ROOT_RESOURCE).request().accept(MediaType.APPLICATION_JSON)
-  // .post(Entity.entity(toCreate, MediaType.APPLICATION_JSON));
-  // assertThat(response.getStatus(), is(equalTo(422)));
-  // assertThat(response.readEntity(String.class).indexOf("telecommuterIndicator may not be null"),
-  // is(greaterThanOrEqualTo(0)));
-  // }
+  @Test
+  public void failsWhenTelecommuterIndicatorEmpty() throws Exception {
+    StaffPerson toCreate = MAPPER.readValue(
+        fixture("fixtures/domain/legacy/StaffPerson/invalid/telecommuterIndicatorEmpty.json"),
+        StaffPerson.class);
+    Response response =
+        resources.client().target(ROOT_RESOURCE).request().accept(MediaType.APPLICATION_JSON)
+            .post(Entity.entity(toCreate, MediaType.APPLICATION_JSON));
+    assertThat(response.getStatus(), is(equalTo(422)));
+    assertThat(response.readEntity(String.class).indexOf("telecommuterIndicator may not be null"),
+        is(greaterThanOrEqualTo(0)));
+  }
 
   @Test
   public void failsWhenTelecommuterIndicatorAllWhitespace() throws Exception {
@@ -813,19 +792,17 @@ public class StaffPersonTest {
         "availabilityAndLocationDescription may not be null"), is(greaterThanOrEqualTo(0)));
   }
 
-  // @Test
-  // public void failsWhenAvailabilityAndLocationDescriptionEmpty() throws Exception {
-  // StaffPerson toCreate = MAPPER.readValue(
-  // fixture(
-  // "fixtures/domain/legacy/StaffPerson/invalid/availabilityAndLocationDescription/empty.json"),
-  // StaffPerson.class);
-  // Response response =
-  // resources.client().target(ROOT_RESOURCE).request().accept(MediaType.APPLICATION_JSON)
-  // .post(Entity.entity(toCreate, MediaType.APPLICATION_JSON));
-  // assertThat(response.getStatus(), is(equalTo(422)));
-  // assertThat(response.readEntity(String.class).indexOf(
-  // "availabilityAndLocationDescription may not be empty"), is(greaterThanOrEqualTo(0)));
-  // }
+  @Test
+  public void testAvailabilityAndLocationDescriptionEmptySuccess() throws Exception {
+    StaffPerson toCreate = MAPPER.readValue(
+        fixture(
+            "fixtures/domain/legacy/StaffPerson/valid/availabilityAndLocationDescriptionEmpty.json"),
+        StaffPerson.class);
+    Response response =
+        resources.client().target(ROOT_RESOURCE).request().accept(MediaType.APPLICATION_JSON)
+            .post(Entity.entity(toCreate, MediaType.APPLICATION_JSON));
+    assertThat(response.getStatus(), is(equalTo(204)));
+  }
 
   @Test
   public void failsWhenAvailabilityAndLocationDescriptionNull() throws Exception {
@@ -840,22 +817,6 @@ public class StaffPersonTest {
     assertThat(response.readEntity(String.class).indexOf(
         "availabilityAndLocationDescription may not be null"), is(greaterThanOrEqualTo(0)));
   }
-
-  // @Test
-  // public void failsWhenAvailabilityAndLocationDescriptionTooLong() throws Exception {
-  // StaffPerson toCreate = MAPPER.readValue(
-  // fixture(
-  // "fixtures/domain/legacy/StaffPerson/invalid/availabilityAndLocationDescriptionTooLong.json"),
-  // StaffPerson.class);
-  // Response response =
-  // resources.client().target(ROOT_RESOURCE).request().accept(MediaType.APPLICATION_JSON)
-  // .post(Entity.entity(toCreate, MediaType.APPLICATION_JSON));
-  // assertThat(response.getStatus(), is(equalTo(422)));
-  // assertThat(
-  // response.readEntity(String.class)
-  // .indexOf("availabilityAndLocationDescription size must be between 1 and 160"),
-  // is(greaterThanOrEqualTo(0)));
-  // }
 
   /*
    * ssrsLicensingWorkerId Tests
@@ -886,19 +847,17 @@ public class StaffPersonTest {
         is(greaterThanOrEqualTo(0)));
   }
 
-  // @Test
-  // public void failsWhenSsrsLicensingWorkerIdEmpty() throws Exception {
-  // StaffPerson toCreate = MAPPER.readValue(
-  // fixture("fixtures/domain/legacy/StaffPerson/invalid/ssrsLicensingWorkerId/empty.json"),
-  // StaffPerson.class);
-  // Response response =
-  // resources.client().target(ROOT_RESOURCE).request().accept(MediaType.APPLICATION_JSON)
-  // .post(Entity.entity(toCreate, MediaType.APPLICATION_JSON));
-  // assertThat(response.getStatus(), is(equalTo(422)));
-  // assertThat(response.readEntity(String.class).indexOf("ssrsLicensingWorkerId may not be empty"),
-  // is(greaterThanOrEqualTo(0)));
-  // }
-  //
+  @Test
+  public void testSsrsLicensingWorkerIdEmptySuccess() throws Exception {
+    StaffPerson toCreate = MAPPER.readValue(
+        fixture("fixtures/domain/legacy/StaffPerson/valid/ssrsLicensingWorkerIdEmpty.json"),
+        StaffPerson.class);
+    Response response =
+        resources.client().target(ROOT_RESOURCE).request().accept(MediaType.APPLICATION_JSON)
+            .post(Entity.entity(toCreate, MediaType.APPLICATION_JSON));
+    assertThat(response.getStatus(), is(equalTo(204)));
+  }
+
   @Test
   public void failsWhenSsrsLicensingWorkerIdTooLong() throws Exception {
     StaffPerson toCreate = MAPPER.readValue(
@@ -983,7 +942,6 @@ public class StaffPersonTest {
         is(greaterThanOrEqualTo(0)));
   }
 
-  @SuppressWarnings("javadoc")
   @Test
   public void failsWhenDutyWorkerIndicatorNull() throws Exception {
     StaffPerson toCreate = MAPPER.readValue(
@@ -997,7 +955,6 @@ public class StaffPersonTest {
         is(greaterThanOrEqualTo(0)));
   }
 
-  @SuppressWarnings("javadoc")
   @Test
   public void failsWhenDutyWorkerIndicatorEmpty() throws Exception {
     StaffPerson toCreate = MAPPER.readValue(
@@ -1011,7 +968,6 @@ public class StaffPersonTest {
         is(greaterThanOrEqualTo(0)));
   }
 
-  @SuppressWarnings("javadoc")
   @Test
   public void failsWhenDutyWorkerIndicatorAllWhitespace() throws Exception {
     StaffPerson toCreate = MAPPER.readValue(
@@ -1096,7 +1052,6 @@ public class StaffPersonTest {
   /*
    * emailAddress Tests
    */
-  @SuppressWarnings("javadoc")
   @Test
   public void successWhenEmailAddressEmpty() throws Exception {
     StaffPerson toCreate =
@@ -1108,7 +1063,6 @@ public class StaffPersonTest {
     assertThat(response.getStatus(), is(equalTo(204)));
   }
 
-  @SuppressWarnings("javadoc")
   @Test
   public void successWhenEmailAddressNull() throws Exception {
     StaffPerson toCreate =
@@ -1120,7 +1074,6 @@ public class StaffPersonTest {
     assertThat(response.getStatus(), is(equalTo(204)));
   }
 
-  @SuppressWarnings("javadoc")
   @Test
   public void successWhenEmailAddressMissing() throws Exception {
     StaffPerson toCreate = MAPPER.readValue(
@@ -1132,7 +1085,6 @@ public class StaffPersonTest {
     assertThat(response.getStatus(), is(equalTo(204)));
   }
 
-  @SuppressWarnings("javadoc")
   @Test
   public void failsWhenEmailAddressTooLong() throws Exception {
     StaffPerson toCreate = MAPPER.readValue(
