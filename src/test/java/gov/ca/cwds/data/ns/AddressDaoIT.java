@@ -3,9 +3,13 @@ package gov.ca.cwds.data.ns;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.notNullValue;
+import static org.hamcrest.Matchers.nullValue;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+
+import javax.persistence.EntityExistsException;
+import javax.persistence.EntityNotFoundException;
 
 import org.hibernate.Query;
 import org.hibernate.Session;
@@ -73,10 +77,10 @@ public class AddressDaoIT implements DaoTestTemplate {
   }
 
   @Override
-  // @Test
+  @Test
   public void testFindAllReturnsCorrectList() {
-    // Query query = session.getNamedQuery("gov.ca.cwds.rest.api.persistence.ns.Address.findAll");
-    // assertThat(query.list().size(), is(2));
+    Query query = session.getNamedQuery("gov.ca.cwds.rest.api.persistence.ns.Address.findAll");
+    assertThat(query.list().size(), is(2));
   }
 
   @SuppressWarnings("javadoc")
@@ -88,28 +92,28 @@ public class AddressDaoIT implements DaoTestTemplate {
   }
 
   @SuppressWarnings("javadoc")
-  // @Test
+  @Test
   public void testfindAllUpdatedAfterReturnsCorrectList() throws Exception {
-    // Query query =
-    // session.getNamedQuery("gov.ca.cwds.rest.api.persistence.ns.Address.findAllUpdatedAfter")
-    // .setDate("after", TIMESTAMP_FORMAT.parse("2016-11-02 00:00:00"));
-    // assertThat(query.list().size(), is(1));
+    Query query =
+        session.getNamedQuery("gov.ca.cwds.rest.api.persistence.ns.Address.findAllUpdatedAfter")
+            .setDate("after", TIMESTAMP_FORMAT.parse("2016-11-02 00:00:00"));
+    assertThat(query.list().size(), is(2));
   }
 
   @Override
-  // @Test
+  @Test
   public void testFind() {
-    // long id = 1;
-    // Address found = addressDao.find(id);
-    // assertThat(found.getId(), is(id));
+    long id = 1;
+    Address found = addressDao.find(id);
+    assertThat(found.getId(), is(id));
   }
 
   @Override
-  // @Test
+  @Test
   public void testFindEntityNotFoundException() throws Exception {
-    // long id = 99;
-    // Address found = addressDao.find(id);
-    // assertThat(found, is(nullValue()));
+    long id = 99;
+    Address found = addressDao.find(id);
+    assertThat(found, is(nullValue()));
   }
 
   @Override
@@ -121,42 +125,42 @@ public class AddressDaoIT implements DaoTestTemplate {
   }
 
   @Override
-  // @Test
+  @Test
   public void testCreateExistingEntityException() {
-    // thrown.expect(EntityExistsException.class);
-    // Address address = new Address(1L, "123 Main Street", "SAC", "CA", 95757, "Home");
-    // addressDao.create(address);
+    thrown.expect(EntityExistsException.class);
+    Address address = new Address(1L, "123 Main Street", "SAC", "CA", 95757, "Home");
+    addressDao.create(address);
   }
 
   @Override
-  // @Test
+  @Test
   public void testDelete() {
-    // long id = 1;
-    // Address deleted = addressDao.delete(id);
-    // assertThat(deleted.getId(), is(id));
+    long id = 1;
+    Address deleted = addressDao.delete(id);
+    assertThat(deleted.getId(), is(id));
   }
 
   @Override
-  // @Test
+  @Test
   public void testDeleteEntityNotFoundException() throws Exception {
-    // Address updated = addressDao.delete((long) 99);
-    // assertThat(updated, is(nullValue()));
+    Address updated = addressDao.delete((long) 99);
+    assertThat(updated, is(nullValue()));
   }
 
   @Override
-  // @Test
+  @Test
   public void testUpdate() {
-    // Address address = new Address(1L, "123 Main Street", "SAC", "CA", 95757, "Home");
-    // Address updated = addressDao.update(address);
-    // assertThat(updated, is(address));
+    Address address = new Address(1L, "123 Main Street", "SAC", "CA", 95757, "Home");
+    Address updated = addressDao.update(address);
+    assertThat(updated, is(address));
   }
 
   @Override
-  // @Test
+  @Test
   public void testUpdateEntityNotFoundException() {
-    // thrown.expect(EntityNotFoundException.class);
-    // Address address = new Address(111L, "123 Main Street", "SAC", "CA", 95757, "Home");
-    // addressDao.update(address);
+    thrown.expect(EntityNotFoundException.class);
+    Address address = new Address(111L, "123 Main Street", "SAC", "CA", 95757, "Home");
+    addressDao.update(address);
   }
 
 }

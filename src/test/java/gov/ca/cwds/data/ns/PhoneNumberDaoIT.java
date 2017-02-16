@@ -8,6 +8,7 @@ import static org.hamcrest.Matchers.nullValue;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 
+import javax.persistence.EntityExistsException;
 import javax.persistence.EntityNotFoundException;
 
 import org.hibernate.Query;
@@ -76,36 +77,35 @@ public class PhoneNumberDaoIT implements DaoTestTemplate {
   }
 
   @Override
-  // @Test
+  @Test
   public void testFindAllReturnsCorrectList() {
-    // Query query =
-    // session.getNamedQuery("gov.ca.cwds.rest.api.persistence.ns.PhoneNumber.findAll");
-    // assertThat(query.list().size(), is(2));
+    Query query = session.getNamedQuery("gov.ca.cwds.rest.api.persistence.ns.PhoneNumber.findAll");
+    assertThat(query.list().size(), is(2));
   }
 
-  // @SuppressWarnings("javadoc")
-  // @Test
-  // public void testfindAllUpdatedAfterNamedQueryExists() throws Exception {
-  // Query query = session
-  // .getNamedQuery("gov.ca.cwds.rest.api.persistence.ns.PhoneNumber.findAllUpdatedAfter");
-  // assertThat(query, is(notNullValue()));
-  // }
+  @SuppressWarnings("javadoc")
+  @Test
+  public void testfindAllUpdatedAfterNamedQueryExists() throws Exception {
+    Query query = session
+        .getNamedQuery("gov.ca.cwds.rest.api.persistence.ns.PhoneNumber.findAllUpdatedAfter");
+    assertThat(query, is(notNullValue()));
+  }
 
-  // @SuppressWarnings("javadoc")
-  // @Test
-  // public void testfindAllUpdatedAfterReturnsCorrectList() throws Exception {
-  // Query query =
-  // session.getNamedQuery("gov.ca.cwds.rest.api.persistence.ns.PhoneNumber.findAllUpdatedAfter")
-  // .setDate("after", TIMESTAMP_FORMAT.parse("2016-11-02 00:00:00"));
-  // assertThat(query.list().size(), is(1));
-  // }
+  @SuppressWarnings("javadoc")
+  @Test
+  public void testfindAllUpdatedAfterReturnsCorrectList() throws Exception {
+    Query query =
+        session.getNamedQuery("gov.ca.cwds.rest.api.persistence.ns.PhoneNumber.findAllUpdatedAfter")
+            .setDate("after", TIMESTAMP_FORMAT.parse("2016-11-02 00:00:00"));
+    assertThat(query.list().size(), is(2));
+  }
 
   @Override
-  // @Test
+  @Test
   public void testFind() {
-    // long id = 1;
-    // PhoneNumber found = phoneDao.find(id);
-    // assertThat(found.getId(), is(id));
+    long id = 1;
+    PhoneNumber found = phoneDao.find(id);
+    assertThat(found.getId(), is(id));
   }
 
   @Override
@@ -125,19 +125,19 @@ public class PhoneNumberDaoIT implements DaoTestTemplate {
   }
 
   @Override
-  // @Test
+  @Test
   public void testCreateExistingEntityException() {
-    // thrown.expect(EntityExistsException.class);
-    // PhoneNumber phone = new PhoneNumber(1L, "408 123-4567", "Work");
-    // phoneDao.create(phone);
+    thrown.expect(EntityExistsException.class);
+    PhoneNumber phone = new PhoneNumber(1L, "408 123-4567", "Work");
+    phoneDao.create(phone);
   }
 
   @Override
-  // @Test
+  @Test
   public void testDelete() {
-    // long id = 1;
-    // PhoneNumber deleted = phoneDao.delete(id);
-    // assertThat(deleted.getId(), is(id));
+    long id = 1;
+    PhoneNumber deleted = phoneDao.delete(id);
+    assertThat(deleted.getId(), is(id));
   }
 
   @Override
@@ -148,11 +148,11 @@ public class PhoneNumberDaoIT implements DaoTestTemplate {
   }
 
   @Override
-  // @Test
+  @Test
   public void testUpdate() {
-    // PhoneNumber phone = new PhoneNumber(1L, "690 987-6754", "Work");
-    // PhoneNumber updated = phoneDao.update(phone);
-    // assertThat(updated, is(phone));
+    PhoneNumber phone = new PhoneNumber(1L, "690 987-6754", "Work");
+    PhoneNumber updated = phoneDao.update(phone);
+    assertThat(updated, is(phone));
   }
 
   @Override
