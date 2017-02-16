@@ -46,7 +46,7 @@ import gov.ca.cwds.data.persistence.PersistentObject;
             + "WHERE activeIndicator = 'Y' AND clientId IN "
             + "(SELECT id FROM Client WHERE sensitivityIndicator = 'N' AND soc158SealedClientIndicator = 'N'))")})
 @NamedNativeQueries({@NamedNativeQuery(
-    name = "gov.ca.cwds.data.persistence.cms.CollateralIndividual.findAllByBucket",
+    name = "gov.ca.cwds.data.persistence.cms.CollateralIndividual.findPartitionedBuckets",
     query = "select z.IDENTIFIER, z.BADGE_NO, z.CITY_NM, z.EMPLYR_NM, z.FAX_NO, "
         + "z.FIRST_NM, z.FRG_ADRT_B, z.LAST_NM, z.MID_INI_NM, z.NMPRFX_DSC, "
         + "z.PRM_TEL_NO, z.PRM_EXT_NO, z.STATE_C, z.STREET_NM, z.STREET_NO, "
@@ -56,6 +56,7 @@ import gov.ca.cwds.data.persistence.PersistentObject;
         + "from ( select mod(y.rn, CAST(:total_buckets AS INTEGER)) + 1 as bucket, y.* "
         + "from ( select row_number() over (order by 1) as rn, x.* "
         + "from ( select c.* from {h-schema}COLTRL_T c "
+        + "WHERE c.IDENTIFIER >= :min_id and c.IDENTIFIER < :max_id "
         + ") x ) y ) z where z.bucket = :bucket_num for read only",
     resultClass = CollateralIndividual.class)})
 @Entity

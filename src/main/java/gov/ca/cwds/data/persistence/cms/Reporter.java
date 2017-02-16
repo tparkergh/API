@@ -50,7 +50,7 @@ import gov.ca.cwds.rest.api.domain.DomainChef;
         query = "FROM Reporter WHERE lastUpdatedTime > :after AND confidentialWaiverIndicator = 'Y' AND referralId IN "
             + "(SELECT id FROM Referral WHERE limitedAccessCode = 'N')")})
 @NamedNativeQueries({@NamedNativeQuery(
-    name = "gov.ca.cwds.data.persistence.cms.Reporter.findAllByBucket",
+    name = "gov.ca.cwds.data.persistence.cms.Reporter.findPartitionedBuckets",
     query = "select trim(z.RPTR_BDGNO) as RPTR_BDGNO, trim(z.RPTR_CTYNM) as RPTR_CTYNM, "
         + "z.COL_RELC, z.CMM_MTHC, z.CNFWVR_IND, "
         + "z.FDBACK_DOC, z.RPTR_EMPNM, z.FEEDBCK_DT, z.FB_RQR_IND, z.RPTR_FSTNM, "
@@ -61,6 +61,7 @@ import gov.ca.cwds.rest.api.domain.DomainChef;
         + "from ( select mod(y.rn, CAST(:total_buckets AS INTEGER)) + 1 as bucket, y.* "
         + "from ( select row_number() over (order by 1) as rn, x.* "
         + "from ( select c.* from {h-schema}REPTR_T c "
+        + "WHERE c.IDENTIFIER >= :min_id and c.IDENTIFIER < :max_id "
         + ") x ) y ) z where z.bucket = :bucket_num for read only",
     resultClass = Reporter.class)})
 @SuppressWarnings("serial")

@@ -35,7 +35,7 @@ import gov.ca.cwds.data.persistence.PersistentObject;
         name = "gov.ca.cwds.data.persistence.cms.EducationProviderContact.findAllUpdatedAfter",
         query = "FROM EducationProviderContact WHERE lastUpdatedTime > :after")})
 @NamedNativeQueries({@NamedNativeQuery(
-    name = "gov.ca.cwds.data.persistence.cms.EducationProviderContact.findAllByBucket",
+    name = "gov.ca.cwds.data.persistence.cms.EducationProviderContact.findPartitionedBuckets",
     query = "select z.IDENTIFIER, z.PRICNTIND, z.PH_NUMBR, z.PH_EXTNO, "
         + "z.FAX_NO, z.FIRST_NME, z.MIDDLE_NM, z.LAST_NME, z.NM_PREFIX, "
         + "z.SUFFX_TITL, z.TITLDESC, z.EMAILADR, z.DOE_IND, z.LST_UPD_ID, "
@@ -43,6 +43,7 @@ import gov.ca.cwds.data.persistence.PersistentObject;
         + "from ( select mod(y.rn, CAST(:total_buckets AS INTEGER)) + 1 as bucket, y.* "
         + "from ( select row_number() over (order by 1) as rn, x.* "
         + "from ( select c.* from {h-schema}EDPRVCNT c "
+        + "WHERE c.IDENTIFIER >= :min_id and c.IDENTIFIER < :max_id "
         + ") x ) y ) z where z.bucket = :bucket_num for read only",
     resultClass = EducationProviderContact.class)})
 @Entity
