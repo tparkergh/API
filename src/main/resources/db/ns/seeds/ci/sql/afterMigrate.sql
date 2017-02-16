@@ -8,3 +8,5 @@ INSERT INTO person (person_id, first_name, last_name, gender, date_of_birth, ssn
 INSERT INTO person (person_id, first_name, last_name, gender, date_of_birth, ssn, person_address_id, create_user_id, create_datetime, update_user_id, update_datetime) VALUES (2, 'Maggie', 'Simpson', 'Male', '1997-04-01', '999551111', 2, NULL, NULL, NULL, '2016-11-02 21:41:20.767');
 
 
+INSERT INTO phone_number(phone_number_id, phone_type_id, phone_number_value) VALUES (1, "408 987-6543", "Home");
+INSERT INTO phone_number(phone_number_id, phone_type_id, phone_number_value) VALUES (1, "690 123-4567", "Other");

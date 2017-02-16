@@ -35,10 +35,10 @@ public class PhoneNumber extends NsPersistentObject {
   @Column(name = "phone_number_id")
   private Long id;
 
-  @Column(name = "number")
+  @Column(name = "phone_number_value")
   private String number;
 
-  @Column(name = "type")
+  @Column(name = "phone_type_id")
   private String type;
 
   /**
