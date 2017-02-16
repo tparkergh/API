@@ -46,7 +46,7 @@ import gov.ca.cwds.rest.api.domain.DomainChef;
     @NamedQuery(name = "gov.ca.cwds.data.persistence.cms.Client.findAllUpdatedAfter",
         query = "FROM Client WHERE sensitivityIndicator = 'N' AND soc158SealedClientIndicator = 'N' AND lastUpdatedTime > :after")})
 @NamedNativeQueries({@NamedNativeQuery(
-    name = "gov.ca.cwds.data.persistence.cms.Client.findAllByBucket",
+    name = "gov.ca.cwds.data.persistence.cms.Client.findPartitionedBuckets",
     query = "select z.IDENTIFIER, z.ADPTN_STCD, z.ALN_REG_NO, z.BIRTH_DT, trim(z.BR_FAC_NM) as BR_FAC_NM, z.B_STATE_C, "
         + "z.B_CNTRY_C, z.CHLD_CLT_B, trim(z.COM_FST_NM) as COM_FST_NM, trim(z.COM_LST_NM) as COM_LST_NM, "
         + "trim(z.COM_MID_NM) as COM_MID_NM, z.CONF_EFIND, z.CONF_ACTDT, z.CREATN_DT, "
@@ -64,6 +64,7 @@ import gov.ca.cwds.rest.api.domain.DomainChef;
         + "from ( select row_number() over (order by 1) as rn, x.* "
         + "from ( select c.* from {h-schema}client_t c "
         + "where c.SOC158_IND ='N' and c.SENSTV_IND = 'N' "
+        + "c.IDENTIFIER >= :min_id and c.IDENTIFIER < :max_id "
         + ") x ) y ) z where z.bucket = :bucket_num for read only",
     resultClass = Client.class)})
 @Entity

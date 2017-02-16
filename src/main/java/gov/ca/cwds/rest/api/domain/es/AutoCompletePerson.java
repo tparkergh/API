@@ -218,7 +218,6 @@ public class AutoCompletePerson
 
   }
 
-
   /**
    * State.
    * 
