@@ -174,6 +174,7 @@ public class StaffPerson extends DomainObject implements Request, Response {
     this.emailAddress = emailAddress;
   }
 
+  @SuppressWarnings("javadoc")
   public StaffPerson(gov.ca.cwds.data.persistence.cms.StaffPerson persistedStaffPerson) {
     this.endDate = DomainChef.cookDate(persistedStaffPerson.getEndDate());
     this.firstName = persistedStaffPerson.getFirstName();
