@@ -507,7 +507,7 @@ public class StaffPersonTest {
         resources.client().target(ROOT_RESOURCE).request().accept(MediaType.APPLICATION_JSON)
             .post(Entity.entity(toCreate, MediaType.APPLICATION_JSON));
     assertThat(response.getStatus(), is(equalTo(422)));
-    assertThat(response.readEntity(String.class).indexOf("phoneExt may not be empty"),
+    assertThat(response.readEntity(String.class).indexOf("phoneExt may not be null"),
         is(greaterThanOrEqualTo(0)));
   }
 
@@ -519,7 +519,7 @@ public class StaffPersonTest {
         resources.client().target(ROOT_RESOURCE).request().accept(MediaType.APPLICATION_JSON)
             .post(Entity.entity(toCreate, MediaType.APPLICATION_JSON));
     assertThat(response.getStatus(), is(equalTo(422)));
-    assertThat(response.readEntity(String.class).indexOf("phoneExt may not be empty"),
+    assertThat(response.readEntity(String.class).indexOf("phoneExt may not be null"),
         is(greaterThanOrEqualTo(0)));
   }
 
@@ -532,7 +532,7 @@ public class StaffPersonTest {
         resources.client().target(ROOT_RESOURCE).request().accept(MediaType.APPLICATION_JSON)
             .post(Entity.entity(toCreate, MediaType.APPLICATION_JSON));
     assertThat(response.getStatus(), is(equalTo(422)));
-    assertThat(response.readEntity(String.class).indexOf("phoneExt may not be empty"),
+    assertThat(response.readEntity(String.class).indexOf("phoneExt may not be null"),
         is(greaterThanOrEqualTo(0)));
 
   }
