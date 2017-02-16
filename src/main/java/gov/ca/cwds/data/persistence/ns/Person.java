@@ -17,8 +17,6 @@ import org.hibernate.annotations.NamedQueries;
 import org.hibernate.annotations.NamedQuery;
 import org.hibernate.annotations.Type;
 
-import gov.ca.cwds.data.IAddressAware;
-import gov.ca.cwds.data.IPersonAware;
 import gov.ca.cwds.data.ns.NsPersistentObject;
 import gov.ca.cwds.rest.api.domain.DomainChef;
 
@@ -34,7 +32,9 @@ import gov.ca.cwds.rest.api.domain.DomainChef;
         query = "FROM Person WHERE lastUpdatedTime > :after")})
 @Entity
 @Table(name = "person")
-public class Person extends NsPersistentObject implements IPersonAware, IAddressAware {
+public class Person extends NsPersistentObject
+// implements IPersonAware, IAddressAware
+{
 
   @Id
   @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "seq_person_id")
@@ -132,7 +132,7 @@ public class Person extends NsPersistentObject implements IPersonAware, IAddress
   /**
    * @return the firstName
    */
-  @Override
+  // @Override
   public String getFirstName() {
     return firstName;
   }
@@ -140,7 +140,7 @@ public class Person extends NsPersistentObject implements IPersonAware, IAddress
   /**
    * @return the lastName
    */
-  @Override
+  // @Override
   public String getLastName() {
     return lastName;
   }
@@ -148,7 +148,7 @@ public class Person extends NsPersistentObject implements IPersonAware, IAddress
   /**
    * @return the gender
    */
-  @Override
+  // @Override
   public String getGender() {
     return gender;
   }
@@ -163,12 +163,10 @@ public class Person extends NsPersistentObject implements IPersonAware, IAddress
   /**
    * @return the ssn
    */
-  @Override
+  // @Override
   public String getSsn() {
     return ssn;
   }
-
-
 
   /**
    * @return the address
@@ -181,46 +179,46 @@ public class Person extends NsPersistentObject implements IPersonAware, IAddress
   // IPersonAware
   // ================
 
-  @Override
+  // @Override
   public String getMiddleName() {
     return null;
   }
 
-  @Override
+  // @Override
   public Date getBirthDate() {
     return this.getDateOfBirth();
   }
 
-  @Override
+  // @Override
   public String getNameSuffix() {
     return null;
   }
 
-  @Override
+  // @Override
   public String getStreetAddress() {
     return this.getAddress() != null && this.getAddress().getStreetAddress() != null
         ? this.getAddress().getStreetAddress() : null;
   }
 
-  @Override
+  // @Override
   public String getCity() {
     return this.getAddress() != null && this.getAddress().getCity() != null
         ? this.getAddress().getCity() : null;
   }
 
-  @Override
+  // @Override
   public String getState() {
     return this.getAddress() != null && this.getAddress().getState() != null
         ? this.getAddress().getState() : null;
   }
 
-  @Override
+  // @Override
   public String getZip() {
     return this.getAddress() != null && this.getAddress().getZip() != null
         ? this.getAddress().getZip().toString() : null;
   }
 
-  @Override
+  // @Override
   public String getCounty() {
     return null;
   }
