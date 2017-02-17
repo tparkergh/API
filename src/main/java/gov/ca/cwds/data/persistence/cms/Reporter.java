@@ -61,7 +61,7 @@ import gov.ca.cwds.rest.api.domain.DomainChef;
         + "from ( select mod(y.rn, CAST(:total_buckets AS INTEGER)) + 1 as bucket, y.* "
         + "from ( select row_number() over (order by 1) as rn, x.* "
         + "from ( select c.* from {h-schema}REPTR_T c "
-        + "WHERE c.IDENTIFIER >= :min_id and c.IDENTIFIER < :max_id "
+        + "WHERE c.FKREFERL_T >= :min_id and c.FKREFERL_T < :max_id "
         + ") x ) y ) z where z.bucket = :bucket_num for read only",
     resultClass = Reporter.class)})
 @SuppressWarnings("serial")
