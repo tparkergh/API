@@ -127,7 +127,6 @@ public class OtherClientNameDaoIT implements DaoTestTemplate {
     final String thirdId = "ZZZZZZZ999";
     OtherClientName found = otherClientNameDao.find(thirdId);
     assertThat(found, is(nullValue()));
-
   }
 
   @Override
@@ -182,4 +181,5 @@ public class OtherClientNameDaoIT implements DaoTestTemplate {
         "1", (short) 1, "1", "ZZZZZZZ999");
     otherClientNameDao.update(otherClientName);
   }
+
 }
