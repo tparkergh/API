@@ -2,6 +2,9 @@ package gov.ca.cwds.data;
 
 import java.io.Serializable;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 /**
  * Simple, concrete implementation of interface {@link IPhoneAware}.
  * 
@@ -18,6 +21,7 @@ public final class ReadablePhone implements IPhoneAware, Serializable {
   private final String phoneNumberExtension;
   private final PhoneType phoneType;
 
+
   /**
    * Construct a readable phone from all required values.
    * 
@@ -25,7 +29,10 @@ public final class ReadablePhone implements IPhoneAware, Serializable {
    * @param phoneNumberExtension phone extension
    * @param phoneType phone type
    */
-  public ReadablePhone(String phoneNumber, String phoneNumberExtension, PhoneType phoneType) {
+  @JsonCreator
+  public ReadablePhone(@JsonProperty("phoneNumber") String phoneNumber,
+      @JsonProperty("phoneNumberExtension") String phoneNumberExtension,
+      @JsonProperty("phoneType") PhoneType phoneType) {
     this.phoneNumber = phoneNumber;
     this.phoneNumberExtension = phoneNumberExtension;
     this.phoneType = phoneType;
