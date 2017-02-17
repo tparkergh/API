@@ -1,14 +1,14 @@
 package gov.ca.cwds.rest.api.domain;
 
-import javax.validation.constraints.Size;
-
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonProperty;
-
 import gov.ca.cwds.rest.api.Request;
 import gov.ca.cwds.rest.validation.Date;
 import io.dropwizard.jackson.JsonSnakeCase;
 import io.swagger.annotations.ApiModelProperty;
+
+import javax.validation.constraints.Size;
+
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
  * {@link DomainObject} representing a screening
@@ -24,7 +24,7 @@ public class Screening extends DomainObject implements Request {
 
   @Date
   @JsonProperty("ended_at")
-  @ApiModelProperty(example = "12/01/2015")
+  @ApiModelProperty(example = "2015-12-14")
   private String endedAt;
 
   @JsonProperty("incident_county")
@@ -34,7 +34,7 @@ public class Screening extends DomainObject implements Request {
 
   @Date
   @JsonProperty("incident_date")
-  @ApiModelProperty(example = "11/01/2015")
+  @ApiModelProperty(example = "2015-01-13")
   private String incidentDate;
 
   @JsonProperty("location_type")
@@ -63,7 +63,7 @@ public class Screening extends DomainObject implements Request {
 
   @Date
   @JsonProperty("started_at")
-  @ApiModelProperty(example = "10/01/2015")
+  @ApiModelProperty(example = "2015-11-15")
   private String startedAt;
 
   @JsonProperty("narrative")

@@ -1,26 +1,27 @@
 package gov.ca.cwds.rest.api.domain;
 
-import java.util.Arrays;
-import java.util.List;
+import gov.ca.cwds.rest.api.Request;
+import io.dropwizard.jackson.JsonSnakeCase;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
-
-import gov.ca.cwds.rest.api.Request;
-import io.dropwizard.jackson.JsonSnakeCase;
 
 /**
  * {@link DomainObject} representing a screening request.
  * 
  * @author CWDS API Team
  */
+
 @JsonSnakeCase
 public class ScreeningRequest extends Screening implements Request {
+
+  /**
+   * Default
+   */
+  private static final long serialVersionUID = 1L;
+
   @JsonProperty("address")
   private Address address;
-
-  @JsonProperty("participant_ids")
-  private List<Long> participantIds;
 
   /**
    * Constructor
@@ -37,7 +38,6 @@ public class ScreeningRequest extends Screening implements Request {
    * @param startedAt The started at
    * @param narrative The narrative
    * @param address The {@link Address}
-   * @param participantIds The {@link List}
    */
   @JsonCreator
   public ScreeningRequest(@JsonProperty("reference") String reference,
@@ -49,12 +49,10 @@ public class ScreeningRequest extends Screening implements Request {
       @JsonProperty("name") String name, @JsonProperty("response_time") String responseTime,
       @JsonProperty("screening_decision") String screeningDecision,
       @JsonProperty("started_at") String startedAt, @JsonProperty("narrative") String narrative,
-      @JsonProperty("address") Address address,
-      @JsonProperty("participant_ids") List<Long> participantIds) {
-    super(reference, endedAt, incidentCounty, incidentDate, locationType, communicationMethod, name,
-        responseTime, screeningDecision, startedAt, narrative);
+      @JsonProperty("address") Address address) {
+    super(reference, endedAt, incidentCounty, incidentDate, locationType, communicationMethod,
+        name, responseTime, screeningDecision, startedAt, narrative);
     this.address = address;
-    this.participantIds = participantIds;
   }
 
   /**
@@ -62,13 +60,6 @@ public class ScreeningRequest extends Screening implements Request {
    */
   public Address getAddress() {
     return address;
-  }
-
-  /**
-   * @return the participant_ids
-   */
-  public List<Long> getParticipantIds() {
-    return participantIds;
   }
 
   /**
@@ -81,7 +72,6 @@ public class ScreeningRequest extends Screening implements Request {
     final int prime = 31;
     int result = 1;
     result = prime * result + ((address == null) ? 0 : address.hashCode());
-    result = prime * result + ((participantIds == null) ? 0 : participantIds.hashCode());
     return result;
   }
 
@@ -104,13 +94,6 @@ public class ScreeningRequest extends Screening implements Request {
         return false;
     } else if (!address.equals(other.address))
       return false;
-    if (participantIds == null) {
-      if (other.participantIds != null)
-        return false;
-    } else if (!Arrays.equals(participantIds.toArray(), other.participantIds.toArray())) {
-      return false;
-    }
-
     return true;
   }
 }

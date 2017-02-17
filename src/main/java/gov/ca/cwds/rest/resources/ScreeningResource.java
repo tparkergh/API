@@ -14,6 +14,8 @@ import io.swagger.annotations.ApiParam;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 
+import java.text.MessageFormat;
+
 import javax.validation.Valid;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
@@ -24,6 +26,7 @@ import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
+import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
@@ -74,6 +77,28 @@ public class ScreeningResource {
   public Response get(@PathParam("id") @ApiParam(required = true, name = "id",
       value = "The id of the Screening to find") long id) {
     return resourceDelegate.get(id);
+  }
+
+  /*
+   * (non-Javadoc)
+   * 
+   * @see gov.ca.cwds.rest.resources.CrudsResource#get(java.lang.String, java.lang.String)
+   */
+  @UnitOfWork(value = "ns")
+  @GET
+  @Path("/*")
+  @ApiResponses(value = {@ApiResponse(code = 404, message = "Not found"),
+      @ApiResponse(code = 406, message = "Accept Header not supported")})
+  @ApiOperation(value = "Find Screening", response = ScreeningResponse.class)
+  @Consumes(value = MediaType.TEXT_PLAIN)
+  public Response get(@QueryParam("response_times") @ApiParam(required = false,
+      value = "The response times", example = "Immediate") String responseTimes,
+      @QueryParam("screening_decisions") @ApiParam(required = true,
+          value = "The screening decisions", example = "Decision") String screeningDecisions) {
+    String pk =
+        MessageFormat.format("responseTimes={0},screeningDecisions={1}", responseTimes,
+            screeningDecisions);
+    return resourceDelegate.get(pk);
   }
 
   /**

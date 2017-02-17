@@ -1,15 +1,15 @@
 package gov.ca.cwds.rest.api.domain;
 
-import javax.validation.constraints.Size;
-
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonProperty;
-
 import gov.ca.cwds.rest.api.Request;
 import gov.ca.cwds.rest.api.Response;
 import gov.ca.cwds.rest.validation.Date;
 import io.dropwizard.jackson.JsonSnakeCase;
 import io.swagger.annotations.ApiModelProperty;
+
+import javax.validation.constraints.Size;
+
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
  * {@link DomainObject} representing a Participant
@@ -36,7 +36,7 @@ public class Participant extends DomainObject implements Request, Response {
   private String lastName;
 
   @JsonProperty("gender")
-  @ApiModelProperty(example = "Male", allowableValues = "Male, Female")
+  @ApiModelProperty(example = "Male", allowableValues = "M, Male, Female")
   private String gender;
 
   @Date

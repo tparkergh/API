@@ -1,5 +1,8 @@
 package gov.ca.cwds.data.persistence.ns;
 
+import gov.ca.cwds.data.ns.NsPersistentObject;
+import gov.ca.cwds.rest.api.domain.DomainChef;
+
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
@@ -12,16 +15,12 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
+import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
 import org.hibernate.annotations.Type;
-
-import gov.ca.cwds.data.ns.NsPersistentObject;
-import gov.ca.cwds.rest.api.domain.DomainChef;
 
 /**
  * {@link NsPersistentObject} representing a Person
@@ -77,11 +76,8 @@ public class Screening extends NsPersistentObject {
   @JoinColumn(name = "contact_address_id")
   private Address contactAddress;
 
-  @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-  @JoinTable(name = "hotline_contact_participant",
-      joinColumns = {@JoinColumn(name = "hotline_contact_id", nullable = false, updatable = false)},
-      inverseJoinColumns = {@JoinColumn(name = "person_id", nullable = false, updatable = false)})
-  private Set<Person> participants = new HashSet<>(0);
+  @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL, mappedBy = "screening")
+  private Set<Participant> participants = new HashSet<>(0);
 
   /**
    * Default constructor
@@ -119,7 +115,7 @@ public class Screening extends NsPersistentObject {
    */
   public Screening(String reference, Date endedAt, String incidentCounty, Date incidentDate,
       String locationType, String communicationMethod, String name, String screeningDecision,
-      Date startedAt, String narrative, Address contactAddress, Set<Person> participants) {
+      Date startedAt, String narrative, Address contactAddress, Set<Participant> participants) {
     super();
     this.reference = reference;
     this.endedAt = endedAt;
@@ -150,7 +146,7 @@ public class Screening extends NsPersistentObject {
    * @param createUserId the id of the person created the record
    */
   public Screening(Long id, gov.ca.cwds.rest.api.domain.Screening screening, Address address,
-      Set<Person> participants, String lastUpdatedId, String createUserId) {
+      Set<Participant> participants, String lastUpdatedId, String createUserId) {
     super(lastUpdatedId, createUserId);
 
     this.id = id;
@@ -267,7 +263,7 @@ public class Screening extends NsPersistentObject {
   /**
    * @return the participants
    */
-  public Set<Person> getParticipants() {
+  public Set<Participant> getParticipants() {
     return participants;
   }
 

@@ -1,13 +1,13 @@
 package gov.ca.cwds.rest.api.domain;
 
+import gov.ca.cwds.rest.api.Response;
+
 import java.util.Set;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.google.common.collect.ImmutableSet;
-
-import gov.ca.cwds.rest.api.Response;
 
 /**
  * {@link DomainObject} representing a screening response
@@ -20,7 +20,7 @@ public class ScreeningResponse extends Screening implements Response {
   private Address address;
 
   @JsonProperty("participants")
-  private Set<Person> participants;
+  private Set<Participant> participants;
 
   /**
    * 
@@ -49,7 +49,7 @@ public class ScreeningResponse extends Screening implements Response {
   public ScreeningResponse(String reference, String endedAt, String incidentCounty,
       String incidentDate, String locationType, String communicationMethod, String name,
       String responseTime, String screeningDecision, String startedAt, String narrative,
-      Address address, Set<Person> participants) {
+      Address address, Set<Participant> participants) {
     super(reference, endedAt, incidentCounty, incidentDate, locationType, communicationMethod,
         name, responseTime, screeningDecision, startedAt, narrative);
     this.address = address;
@@ -63,15 +63,15 @@ public class ScreeningResponse extends Screening implements Response {
    * @param participants The list of participants for this screening
    */
   public ScreeningResponse(gov.ca.cwds.data.persistence.ns.Screening screening,
-      Set<gov.ca.cwds.data.persistence.ns.Person> participants) {
+      Set<gov.ca.cwds.data.persistence.ns.Participant> participants) {
     super(screening);
     if (screening.getContactAddress() != null) {
       this.address = new Address(screening.getContactAddress());
     }
-    ImmutableSet.Builder<Person> participantSetBuilder = ImmutableSet.builder();
+    ImmutableSet.Builder<Participant> participantSetBuilder = ImmutableSet.builder();
     if (participants != null) {
-      for (gov.ca.cwds.data.persistence.ns.Person person : participants) {
-        participantSetBuilder.add(new Person(person));
+      for (gov.ca.cwds.data.persistence.ns.Participant participant : participants) {
+        participantSetBuilder.add(new Participant(participant));
       }
     }
     this.participants = participantSetBuilder.build();
@@ -96,7 +96,7 @@ public class ScreeningResponse extends Screening implements Response {
   /**
    * @return the participants
    */
-  public Set<Person> getParticipants() {
+  public Set<Participant> getParticipants() {
     return participants;
   }
 

@@ -5,6 +5,10 @@ import static org.hamcrest.Matchers.is;
 import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
+import gov.ca.cwds.rest.api.domain.Address;
+import gov.ca.cwds.rest.api.domain.ScreeningReference;
+import gov.ca.cwds.rest.api.domain.ScreeningRequest;
+import io.dropwizard.testing.junit.ResourceTestRule;
 
 import javax.ws.rs.client.Entity;
 import javax.ws.rs.core.MediaType;
@@ -17,11 +21,6 @@ import org.junit.Test;
 import org.mockito.Mockito;
 
 import com.google.common.collect.ImmutableList;
-
-import gov.ca.cwds.rest.api.domain.Address;
-import gov.ca.cwds.rest.api.domain.ScreeningReference;
-import gov.ca.cwds.rest.api.domain.ScreeningRequest;
-import io.dropwizard.testing.junit.ResourceTestRule;
 
 /**
  * NOTE : The CWDS API Team has taken the pattern of delegating Resource functions to
@@ -39,8 +38,8 @@ public class ScreeningResourceTest {
   private static ResourceDelegate resourceDelegate = mock(ResourceDelegate.class);
 
   @ClassRule
-  public static final ResourceTestRule inMemoryResource =
-      ResourceTestRule.builder().addResource(new ScreeningResource(resourceDelegate)).build();
+  public static final ResourceTestRule inMemoryResource = ResourceTestRule.builder()
+      .addResource(new ScreeningResource(resourceDelegate)).build();
 
   @SuppressWarnings("javadoc")
   @Before
@@ -75,8 +74,9 @@ public class ScreeningResourceTest {
    */
   @Test
   public void deleteReturns501() throws Exception {
-    int receivedStatus = inMemoryResource.client().target(FOUND_RESOURCE).request()
-        .accept(MediaType.APPLICATION_JSON).delete().getStatus();
+    int receivedStatus =
+        inMemoryResource.client().target(FOUND_RESOURCE).request()
+            .accept(MediaType.APPLICATION_JSON).delete().getStatus();
     int expectedStatus = 501;
     assertThat(receivedStatus, is(expectedStatus));
   }
@@ -86,12 +86,12 @@ public class ScreeningResourceTest {
    */
   @Test
   public void udpateDelegatesToResourceDelegate() throws Exception {
-    Address address = new Address("10 main st", "Sacramento", "CA", 95814, "Home");
+    Address address = new Address("10 main st", "Sacramento", "CA", 95814, "home");
     ImmutableList.Builder<Long> builder = ImmutableList.builder();
-    ImmutableList<Long> ids = builder.add(new Long(123)).add(new Long(345)).build();
-    ScreeningRequest screeningRequest = new ScreeningRequest("X5HNJK", "11/22/1973", "Amador",
-        "11/22/1973", "Home", "email", "First screening", "immediate", "accept_for_investigation",
-        "10/11/2016", "first narrative", address, ids);
+    ScreeningRequest screeningRequest =
+        new ScreeningRequest("X5HNJK", "1973-11-22", "Amador", "1973-11-22", "Home", "email",
+            "First screening", "immediate", "accept_for_investigation", "2016-10-11",
+            "first narrative", address);
     inMemoryResource.client().target(FOUND_RESOURCE).request().accept(MediaType.APPLICATION_JSON)
         .put(Entity.entity(screeningRequest, MediaType.APPLICATION_JSON));
     verify(resourceDelegate).update(eq(new Long(1)), eq(screeningRequest));

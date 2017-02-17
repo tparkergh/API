@@ -6,18 +6,24 @@ import static org.hamcrest.Matchers.notNullValue;
 import static org.hamcrest.Matchers.nullValue;
 import static org.junit.Assert.assertEquals;
 import static org.mockito.Matchers.any;
-import static org.mockito.Matchers.contains;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
+import gov.ca.cwds.data.ns.ScreeningDao;
+import gov.ca.cwds.data.persistence.ns.Address;
+import gov.ca.cwds.data.persistence.ns.Screening;
+import gov.ca.cwds.rest.api.Request;
+import gov.ca.cwds.rest.api.Response;
+import gov.ca.cwds.rest.api.domain.DomainChef;
+import gov.ca.cwds.rest.api.domain.Participant;
+import gov.ca.cwds.rest.api.domain.PostedScreening;
+import gov.ca.cwds.rest.api.domain.ScreeningReference;
+import gov.ca.cwds.rest.api.domain.ScreeningRequest;
+import gov.ca.cwds.rest.api.domain.ScreeningResponse;
 
 import java.util.Date;
 import java.util.Objects;
 
-import javax.persistence.EntityNotFoundException;
-
 import org.apache.commons.lang3.NotImplementedException;
-import org.hamcrest.core.Is;
-import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
@@ -26,22 +32,11 @@ import org.junit.rules.ExpectedException;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableSet;
 
-import gov.ca.cwds.data.ns.ScreeningDao;
-import gov.ca.cwds.data.persistence.ns.Address;
-import gov.ca.cwds.data.persistence.ns.Screening;
-import gov.ca.cwds.rest.api.Request;
-import gov.ca.cwds.rest.api.Response;
-import gov.ca.cwds.rest.api.domain.DomainChef;
-import gov.ca.cwds.rest.api.domain.Person;
-import gov.ca.cwds.rest.api.domain.PostedScreening;
-import gov.ca.cwds.rest.api.domain.ScreeningReference;
-import gov.ca.cwds.rest.api.domain.ScreeningRequest;
-import gov.ca.cwds.rest.api.domain.ScreeningResponse;
-
 public class ScreeningServiceTest {
   private ScreeningService screeningService;
   private ScreeningDao screeningDao;
   private PersonService personService;
+  private ParticipantService participantService;
 
   @Rule
   public ExpectedException thrown = ExpectedException.none();
@@ -50,6 +45,7 @@ public class ScreeningServiceTest {
   public void setup() throws Exception {
     screeningDao = mock(ScreeningDao.class);
     personService = mock(PersonService.class);
+    participantService = mock(ParticipantService.class);
     screeningService = new ScreeningService(screeningDao, personService);
   }
 
@@ -57,55 +53,24 @@ public class ScreeningServiceTest {
    * find tests
    */
   @Test
-  public void findReturnsCorrectScreeningWhenFoundAndParticipantListIsNotNull() throws Exception {
-    gov.ca.cwds.rest.api.domain.Address domainAddress = new gov.ca.cwds.rest.api.domain.Address(
-        "742 Evergreen Terrace", "Springfield", "WA", 98700, "Home");
-    Person bart = new Person("Bart", "Simpson", "M", "2016-10-31", "123456789", domainAddress);
-    Person maggie = new Person("Maggie", "Simpson", "M", "2016-10-31", "123456789", domainAddress);
-
-    Address address = new Address(1L, "742 Evergreen Terrace", "Springfield", "WA", 98700, "Home");
-    Date date = DomainChef.uncookDateString("2016-10-31");
-    ImmutableSet.Builder<gov.ca.cwds.data.persistence.ns.Person> persistentPersonSetBuilder =
-        ImmutableSet.builder();
-    persistentPersonSetBuilder.add(new gov.ca.cwds.data.persistence.ns.Person(bart, null, null))
-        .add(new gov.ca.cwds.data.persistence.ns.Person(maggie, null, null));
-
-    Screening screening = new Screening("X5HNJK", date, "Amador", date, "Home", "email",
-        "First screening", "accept_for_investigation", date, "first narrative", address,
-        persistentPersonSetBuilder.build());
-
-    ImmutableSet.Builder<Person> domainPersonSetBuilder = ImmutableSet.builder();
-    domainPersonSetBuilder.add(bart).add(maggie);
-
-    when(screeningDao.find(new Long(123))).thenReturn(screening);
-    when(personService.find(1L)).thenReturn(bart);
-    when(personService.find(2L)).thenReturn(maggie);
-
-    ScreeningResponse expected = new ScreeningResponse("X5HNJK", "2016-10-13", "Amador",
-        "2016-10-13", "Home", "email", "First screening", "immediate", "accept_for_investigation",
-        "10/11/2016", "first narrative", domainAddress, domainPersonSetBuilder.build());
-
-    Response found = screeningService.find(123L);
-    assertThat(found.getClass(), is(ScreeningResponse.class));
-    assertThat(found, is(expected));
-  }
-
-  @Test
   public void findReturnsCorrectScreeningWhenFoundAndParticipantListIsNull() throws Exception {
-    Address address = new Address(1L, "742 Evergreen Terrace", "Springfield", "WA", 98700, "Home");
+    Address address = new Address(1L, "742 Evergreen Terrace", "Springfield", "WA", 98700, "home");
     Date date = DomainChef.uncookDateString("2016-10-31");
-    Screening screening = new Screening("X5HNJK", date, "Amador", date, "Home", "email",
-        "First screening", "accept_for_investigation", date, "first narrative", address, null);
+    Screening screening =
+        new Screening("X5HNJK", date, "Amador", date, "Home", "email", "First screening",
+            "accept_for_investigation", date, "first narrative", address, null);
 
-    gov.ca.cwds.rest.api.domain.Address domainAddress = new gov.ca.cwds.rest.api.domain.Address(
-        "742 Evergreen Terrace", "Springfield", "WA", 98700, "Home");
+    gov.ca.cwds.rest.api.domain.Address domainAddress =
+        new gov.ca.cwds.rest.api.domain.Address("742 Evergreen Terrace", "Springfield", "WA",
+            98700, "home");
 
     when(screeningDao.find(new Long(123))).thenReturn(screening);
 
-    ImmutableSet.Builder<Person> setbuilder = ImmutableSet.builder();
-    ScreeningResponse expected = new ScreeningResponse("X5HNJK", "10/13/2016", "Amador",
-        "10/13/2016", "Home", "email", "First screening", null, "accept_for_investigation",
-        "10/13/2016", "first narrative", domainAddress, setbuilder.build());
+    ImmutableSet.Builder<Participant> setbuilder = ImmutableSet.builder();
+    ScreeningResponse expected =
+        new ScreeningResponse("X5HNJK", "10/13/2016", "Amador", "10/13/2016", "Home", "email",
+            "First screening", null, "accept_for_investigation", "10/13/2016", "first narrative",
+            domainAddress, setbuilder.build());
 
     Response found = screeningService.find(123L);
     assertThat(found.getClass(), is(ScreeningResponse.class));
@@ -118,18 +83,6 @@ public class ScreeningServiceTest {
     assertThat(found, is(nullValue()));
   }
 
-
-  @Test
-  public void findThrowsAssertionError() throws Exception {
-    thrown.expect(AssertionError.class);
-    try {
-      screeningService.find("nonLong");
-    } catch (AssertionError e) {
-      assertEquals("Expected AssertionError", e.getMessage());
-    }
-  }
-
-
   /*
    * create tests
    */
@@ -140,8 +93,8 @@ public class ScreeningServiceTest {
     when(screeningMock.getId()).thenReturn(1L);
     ScreeningReference request = new ScreeningReference("some_reference");
 
-    when(screeningDao.create(any(gov.ca.cwds.data.persistence.ns.Screening.class)))
-        .thenReturn(screeningMock);
+    when(screeningDao.create(any(gov.ca.cwds.data.persistence.ns.Screening.class))).thenReturn(
+        screeningMock);
 
     PostedScreening postedScreening = screeningService.create(request);
     assertThat(postedScreening.getClass(), is(PostedScreening.class));
@@ -154,8 +107,8 @@ public class ScreeningServiceTest {
     when(screeningMock.getId()).thenReturn(1L);
     ScreeningReference request = new ScreeningReference("some_reference");
 
-    when(screeningDao.create(any(gov.ca.cwds.data.persistence.ns.Screening.class)))
-        .thenReturn(screeningMock);
+    when(screeningDao.create(any(gov.ca.cwds.data.persistence.ns.Screening.class))).thenReturn(
+        screeningMock);
 
     PostedScreening postedScreening = screeningService.create(request);
     assertThat(postedScreening, is(notNullValue()));
@@ -168,22 +121,12 @@ public class ScreeningServiceTest {
     when(screeningMock.getId()).thenReturn(1L);
     ScreeningReference request = new ScreeningReference("some_reference");
 
-    when(screeningDao.create(any(gov.ca.cwds.data.persistence.ns.Screening.class)))
-        .thenReturn(screeningMock);
+    when(screeningDao.create(any(gov.ca.cwds.data.persistence.ns.Screening.class))).thenReturn(
+        screeningMock);
 
     PostedScreening expected = new PostedScreening(1L, "some_reference");
     PostedScreening returned = screeningService.create(request);
     assertThat(returned, is(expected));
-  }
-
-  @Test
-  public void createThrowsAssertionError() throws Exception {
-    thrown.expect(AssertionError.class);
-    try {
-      screeningService.create(null);
-    } catch (AssertionError e) {
-      assertEquals("Expected AssertionError", e.getMessage());
-    }
   }
 
   /*
@@ -196,48 +139,20 @@ public class ScreeningServiceTest {
   }
 
   @Test
-  public void deleteThrowsAssertionError() throws Exception {
-    thrown.expect(AssertionError.class);
-    try {
-      screeningService.delete("nonLong");
-    } catch (AssertionError e) {
-      assertEquals("Expected AssertionError", e.getMessage());
-    }
-  }
-
-  /*
-   * update tests
-   */
-  @Test
-  public void updateThrowsAssertionError() throws Exception {
-    thrown.expect(AssertionError.class);
-    try {
-      screeningService.update("wrong", null);
-    } catch (AssertionError e) {
-      assertEquals("Expected AssertionError", e.getMessage());
-    }
-  }
-
-  @Test
   public void updateReturnsScreeningResponseOnSuccess() throws Exception {
-    gov.ca.cwds.rest.api.domain.Address domainAddress = new gov.ca.cwds.rest.api.domain.Address(
-        "742 Evergreen Terrace", "Springfield", "WA", 98700, "Home");
-    ImmutableList.Builder<Long> peopleIdListBuilder = ImmutableList.builder();
-    ImmutableList<Long> peopleIds = peopleIdListBuilder.add(1L).add(2L).build();
+    gov.ca.cwds.rest.api.domain.Address domainAddress =
+        new gov.ca.cwds.rest.api.domain.Address("742 Evergreen Terrace", "Springfield", "WA",
+            98700, "home");
 
     ScreeningRequest screeningRequest =
-        new ScreeningRequest("ref", "2016-10-31", "Sac", "2016-10-31", "loc", "comm", "name", "now",
-            "sure", "2016-10-31", "narrative", domainAddress, peopleIds);
+        new ScreeningRequest("ref", "2016-10-31", "Sac", "2016-10-31", "loc", "comm", "name",
+            "now", "sure", "2016-10-31", "narrative", domainAddress);
 
-    Person bart = new Person("Bart", "Simpson", "M", "2016-10-31", "123456789", domainAddress);
-    Person maggie = new Person("Maggie", "Simpson", "M", "2016-10-31", "123456789", domainAddress);
     gov.ca.cwds.data.persistence.ns.Screening screening =
-        new gov.ca.cwds.data.persistence.ns.Screening(1L, screeningRequest,
-            new Address(domainAddress, null, null), null, null, null);
+        new gov.ca.cwds.data.persistence.ns.Screening(1L, screeningRequest, new Address(
+            domainAddress, null, null), null, null, null);
 
     when(screeningDao.find(new Long(123))).thenReturn(screening);
-    when(personService.find(1L)).thenReturn(bart);
-    when(personService.find(2L)).thenReturn(maggie);
     when(screeningDao.update(any())).thenReturn(screening);
 
     Object retval = screeningService.update(1L, screeningRequest);
@@ -246,72 +161,36 @@ public class ScreeningServiceTest {
 
   @Test
   public void updateReturnsCorrectScreeningResponseOnSuccess() throws Exception {
-    gov.ca.cwds.rest.api.domain.Address domainAddress = new gov.ca.cwds.rest.api.domain.Address(
-        "742 Evergreen Terrace", "Springfield", "WA", 98700, "Home");
+    gov.ca.cwds.rest.api.domain.Address domainAddress =
+        new gov.ca.cwds.rest.api.domain.Address("742 Evergreen Terrace", "Springfield", "WA",
+            98700, "home");
     ImmutableList.Builder<Long> peopleIdListBuilder = ImmutableList.builder();
     ImmutableList<Long> peopleIds = peopleIdListBuilder.add(1L).add(2L).build();
 
     ScreeningRequest screeningRequest =
-        new ScreeningRequest("ref", "2016-10-31", "Sac", "2016-10-31", "loc", "comm", "name", "now",
-            "sure", "2016-10-31", "narrative", domainAddress, peopleIds);
+        new ScreeningRequest("ref", "2016-10-31", "Sac", "2016-10-31", "loc", "comm", "name",
+            "now", "sure", "2016-10-31", "narrative", domainAddress);
 
-    ImmutableSet.Builder<gov.ca.cwds.data.persistence.ns.Person> peopleListBuilder =
+    Participant bart = new Participant(1, 123, "Bart", "Simpson", "M", "2016-10-31", "123456789");
+    Participant maggie = new Participant(2, 1, "Maggie", "Simpson", "M", "2016-10-31", "123456789");
+
+    Date date = DomainChef.uncookDateString("2016-10-31");
+    ImmutableSet.Builder<gov.ca.cwds.data.persistence.ns.Participant> peopleListBuilder =
         ImmutableSet.builder();
-    Person bart = new Person("Bart", "Simpson", "M", "2016-10-31", "123456789", domainAddress);
-    Person maggie = new Person("Maggie", "Simpson", "M", "2016-10-31", "123456789", domainAddress);
-    ImmutableSet<gov.ca.cwds.data.persistence.ns.Person> people =
-        peopleListBuilder.add(new gov.ca.cwds.data.persistence.ns.Person(bart, null, null))
-            .add(new gov.ca.cwds.data.persistence.ns.Person(maggie, null, null)).build();
+    ImmutableSet<gov.ca.cwds.data.persistence.ns.Participant> people =
+        peopleListBuilder.add(new gov.ca.cwds.data.persistence.ns.Participant(bart, null, null))
+            .add(new gov.ca.cwds.data.persistence.ns.Participant(maggie, null, null)).build();
+
     gov.ca.cwds.data.persistence.ns.Screening screening =
-        new gov.ca.cwds.data.persistence.ns.Screening(1L, screeningRequest,
-            new Address(domainAddress, null, null), people, null, null);
+        new gov.ca.cwds.data.persistence.ns.Screening(1L, screeningRequest, new Address(
+            domainAddress, null, null), people, null, null);
 
     when(screeningDao.find(new Long(123))).thenReturn(screening);
-    when(personService.find(1L)).thenReturn(bart);
-    when(personService.find(2L)).thenReturn(maggie);
     when(screeningDao.update(any())).thenReturn(screening);
 
     ScreeningResponse expected = new ScreeningResponse(screening, people);
     ScreeningResponse updated = screeningService.update(1L, screeningRequest);
     assertThat(updated, is(expected));
-  }
-
-  @Test
-  public void updateThrowsExceptionWhenParticipantNotFound() throws Exception {
-    thrown.expect(ServiceException.class);
-    thrown.expectCause(Is.isA(EntityNotFoundException.class));
-    thrown.expectMessage(contains("Unable to find participant"));
-
-    gov.ca.cwds.rest.api.domain.Address domainAddress = new gov.ca.cwds.rest.api.domain.Address(
-        "742 Evergreen Terrace", "Springfield", "WA", 98700, "Home");
-    ImmutableList.Builder<Long> peopleIdListBuilder = ImmutableList.builder();
-    ImmutableList<Long> peopleIds = peopleIdListBuilder.add(11L).build();
-
-    ScreeningRequest screeningRequest =
-        new ScreeningRequest("ref", "2016-10-31", "Sac", "2016-10-31", "loc", "comm", "name", "now",
-            "sure", "2016-10-31", "narrative", domainAddress, peopleIds);
-
-    gov.ca.cwds.data.persistence.ns.Screening screening =
-        new gov.ca.cwds.data.persistence.ns.Screening(1L, screeningRequest,
-            new Address(domainAddress, null, null), null, null, null);
-
-    when(screeningDao.find(new Long(123))).thenReturn(screening);
-    when(personService.find(11L)).thenReturn(null);
-    when(screeningDao.update(any())).thenReturn(screening);
-
-    screeningService.update(123L, screeningRequest);
-  }
-
-  @Test
-  public void updateThrowsAssertionErrorOnWrongIdType() throws Exception {
-    // TODO : thrown.expect not working on AssertionError???? WHY???
-    // thrown.expect(AssertionError.class);
-    try {
-      screeningService.update("nonLong", new ScreeningRequest("ref", "10/1/2016", "Sac",
-          "10/1/2016", "loc", "comm", "name", "now", "sure", "1/1/2015", "narrative", null, null));
-      Assert.fail("Expected AssertionError");
-    } catch (AssertionError e) {
-    }
   }
 
   @Test

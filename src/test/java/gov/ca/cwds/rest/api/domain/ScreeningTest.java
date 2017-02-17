@@ -5,10 +5,17 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.is;
 import static org.mockito.Mockito.mock;
+import gov.ca.cwds.rest.resources.ScreeningResource;
+import gov.ca.cwds.rest.resources.cms.JerseyGuiceRule;
+import io.dropwizard.jackson.Jackson;
+import io.dropwizard.testing.junit.ResourceTestRule;
 
 import java.io.IOException;
 import java.util.HashSet;
 import java.util.Set;
+
+import nl.jqno.equalsverifier.EqualsVerifier;
+import nl.jqno.equalsverifier.Warning;
 
 import org.junit.After;
 import org.junit.ClassRule;
@@ -18,13 +25,6 @@ import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.squarespace.jersey2.guice.JerseyGuiceUtils;
-
-import gov.ca.cwds.rest.resources.ScreeningResource;
-import gov.ca.cwds.rest.resources.cms.JerseyGuiceRule;
-import io.dropwizard.jackson.Jackson;
-import io.dropwizard.testing.junit.ResourceTestRule;
-import nl.jqno.equalsverifier.EqualsVerifier;
-import nl.jqno.equalsverifier.Warning;
 
 public class ScreeningTest {
 
@@ -41,8 +41,8 @@ public class ScreeningTest {
   public static JerseyGuiceRule rule = new JerseyGuiceRule();
 
   @ClassRule
-  public static final ResourceTestRule resources =
-      ResourceTestRule.builder().addResource(mockedScreeningResource).build();
+  public static final ResourceTestRule resources = ResourceTestRule.builder()
+      .addResource(mockedScreeningResource).build();
 
   /*
    * Serialization and deserialization
@@ -50,20 +50,23 @@ public class ScreeningTest {
   @Test
   public void serializesToJSON() throws Exception {
 
-    String expected = MAPPER.writeValueAsString(new Screening("screening reference", "2016-10-31",
-        "Santa Clara", "2016-10-31", "school", "phone", "screening name", "24 hour",
-        "accept_for_investigation", "2016-10-05", "test the narrative"));
-    String serialized = MAPPER.writeValueAsString(
-        MAPPER.readValue(fixture("fixtures/domain/screening/valid/valid.json"), Screening.class));
+    String expected =
+        MAPPER.writeValueAsString(new Screening("screening reference", "2016-10-31", "Santa Clara",
+            "2016-10-31", "school", "phone", "screening name", "24 hour",
+            "accept_for_investigation", "2016-10-05", "test the narrative"));
+    String serialized =
+        MAPPER.writeValueAsString(MAPPER.readValue(
+            fixture("fixtures/domain/screening/valid/valid.json"), Screening.class));
 
     assertThat(serialized, is(expected));
   }
 
   @Test
   public void deserializesFromJSON() throws Exception {
-    Screening expected = new Screening("screening reference", "2016-10-31", "Santa Clara",
-        "2016-10-31", "school", "phone", "screening name", "24 hour", "accept_for_investigation",
-        "2016-10-05", "test the narrative");
+    Screening expected =
+        new Screening("screening reference", "2016-10-31", "Santa Clara", "2016-10-31", "school",
+            "phone", "screening name", "24 hour", "accept_for_investigation", "2016-10-05",
+            "test the narrative");
     Screening serialized =
         MAPPER.readValue(fixture("fixtures/domain/screening/valid/valid.json"), Screening.class);
     assertThat(serialized, is(expected));
@@ -87,18 +90,18 @@ public class ScreeningTest {
     Screening domain = this.validScreening();
     gov.ca.cwds.data.persistence.ns.Address address = this.validAddress();
 
-    gov.ca.cwds.data.persistence.ns.Person person = this.validPerson();
+    gov.ca.cwds.data.persistence.ns.Participant participant = this.validParticipant();
     final Long id = (long) 1234567;
     final String lastUpdateId = "234567";
     final String createId = "234567";
 
-    Set<gov.ca.cwds.data.persistence.ns.Person> persons =
-        new HashSet<gov.ca.cwds.data.persistence.ns.Person>();
-    persons.add(person);
+    Set<gov.ca.cwds.data.persistence.ns.Participant> participants =
+        new HashSet<gov.ca.cwds.data.persistence.ns.Participant>();
+    participants.add(participant);
 
     gov.ca.cwds.data.persistence.ns.Screening persistent =
-        new gov.ca.cwds.data.persistence.ns.Screening(id, domain, address, persons, lastUpdateId,
-            createId);
+        new gov.ca.cwds.data.persistence.ns.Screening(id, domain, address, participants,
+            lastUpdateId, createId);
 
     Screening totest = new Screening(persistent);
     assertThat(totest.getReference(), is(equalTo(persistent.getReference())));
@@ -120,9 +123,10 @@ public class ScreeningTest {
 
     Screening sc = this.validScreening();
 
-    Screening domain = new Screening(sc.getReference(), sc.getEndedAt(), sc.getIncidentCounty(),
-        sc.getIncidentDate(), sc.getLocationType(), sc.getCommunicationMethod(), sc.getName(),
-        sc.getResponseTime(), sc.getScreeningDecision(), sc.getStartedAt(), sc.getNarrative());
+    Screening domain =
+        new Screening(sc.getReference(), sc.getEndedAt(), sc.getIncidentCounty(),
+            sc.getIncidentDate(), sc.getLocationType(), sc.getCommunicationMethod(), sc.getName(),
+            sc.getResponseTime(), sc.getScreeningDecision(), sc.getStartedAt(), sc.getNarrative());
 
     assertThat(domain.getReference(), is(equalTo(sc.getReference())));
     assertThat(domain.getEndedAt(), is(equalTo(sc.getEndedAt())));
@@ -189,14 +193,14 @@ public class ScreeningTest {
    * 
    * @Person
    */
-  private gov.ca.cwds.data.persistence.ns.Person validPerson() {
+  private gov.ca.cwds.data.persistence.ns.Participant validParticipant() {
 
     try {
-      gov.ca.cwds.data.persistence.ns.Person validPerson =
-          MAPPER.readValue(fixture("fixtures/persistence/ns/Person/validPersistentPerson.json"),
-              gov.ca.cwds.data.persistence.ns.Person.class);
+      gov.ca.cwds.data.persistence.ns.Participant validParticipant =
+          MAPPER.readValue(fixture("fixtures/persistence/ns/participant/valid/valid.json"),
+              gov.ca.cwds.data.persistence.ns.Participant.class);
 
-      return validPerson;
+      return validParticipant;
 
     } catch (JsonParseException e) {
       e.printStackTrace();

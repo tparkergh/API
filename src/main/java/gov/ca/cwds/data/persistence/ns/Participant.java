@@ -1,14 +1,18 @@
 package gov.ca.cwds.data.persistence.ns;
 
+import gov.ca.cwds.data.ns.NsPersistentObject;
+
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
-
-import gov.ca.cwds.data.ns.NsPersistentObject;
 
 /**
  * {@link NsPersistentObject} representing an Address
@@ -37,8 +41,9 @@ public class Participant extends NsPersistentObject {
   @Column(name = "hotline_contact_participant_type")
   private String hotelineContactParticipantType;
 
-  @Column(name = "hotline_contact_person_id")
-  private int hotelineContactPersonId;
+  @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+  @JoinColumn(name = "hotline_contact_id", nullable = false, insertable = false, updatable = false)
+  private Screening screening;
 
   /**
    * @param person - personId
@@ -105,10 +110,4 @@ public class Participant extends NsPersistentObject {
     return hotelineContactParticipantType;
   }
 
-  /**
-   * @return the hotelineContactPersonId
-   */
-  public int getHotelineContactPersonId() {
-    return hotelineContactPersonId;
-  }
 }

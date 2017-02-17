@@ -1,0 +1,9 @@
+{
+  "person_id": 12345,
+  "screening_id": 12345,
+  "first_name": "john",
+  "last_name": "smith",
+  "gender": "male",
+  "date_of_birth": "2001-09-13",
+  "ssn": "123456789"
+}
