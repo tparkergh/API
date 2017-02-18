@@ -63,7 +63,7 @@ public class OtherClientName extends CmsPersistentObject implements IPersonAware
   @Column(name = "FIRST_NM")
   private String firstName;
 
-  // TODO: correct unit test and enable the composite key.
+  // TODO: correct unit test and enable the composite key on FKCLIENT_T and THIRD_ID.
   // @Id
   @Column(name = "FKCLIENT_T", length = CMS_ID_LEN)
   private String clientId;
