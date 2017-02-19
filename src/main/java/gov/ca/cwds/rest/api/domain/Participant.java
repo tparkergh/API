@@ -91,6 +91,33 @@ public class Participant extends DomainObject implements Request, Response {
   public Participant(gov.ca.cwds.data.persistence.ns.Participant participant) {
     this.personId = participant.getPersonId();
     this.screeningId = participant.getHotlineContactId();
+    if (participant.getPerson() != null) {
+      this.firstName = participant.getPerson().getFirstName();
+      this.lastName = participant.getPerson().getLastName();
+      this.gender = participant.getPerson().getGender();
+      this.dateOfBirth = DomainChef.cookDate(participant.getPerson().getDateOfBirth());
+      this.ssn = participant.getPerson().getSsn();
+    }
+  }
+
+  /**
+   * Construct from persistence class and person
+   * 
+   * @param participant persistence level participant object
+   * @param person domain person object
+   * 
+   */
+  public Participant(gov.ca.cwds.data.persistence.ns.Participant participant, Person person) {
+    this.personId = participant.getPersonId();
+    this.screeningId = participant.getHotlineContactId();
+    System.out.println("person " + person);
+    if (person != null) {
+      this.firstName = person.getFirstName();
+      this.lastName = person.getLastName();
+      this.gender = person.getGender();
+      this.dateOfBirth = person.getBirthDate();
+      this.ssn = person.getSsn();
+    }
   }
 
 

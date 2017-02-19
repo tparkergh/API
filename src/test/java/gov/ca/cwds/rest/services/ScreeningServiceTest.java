@@ -58,7 +58,7 @@ public class ScreeningServiceTest {
     Date date = DomainChef.uncookDateString("2016-10-31");
     Screening screening =
         new Screening("X5HNJK", date, "Amador", date, "Home", "email", "First screening",
-            "accept_for_investigation", date, "first narrative", address, null);
+            "accept_for_investigation", null, date, "first narrative", address, null);
 
     gov.ca.cwds.rest.api.domain.Address domainAddress =
         new gov.ca.cwds.rest.api.domain.Address("742 Evergreen Terrace", "Springfield", "WA",

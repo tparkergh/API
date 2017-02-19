@@ -53,7 +53,7 @@ public class Screening extends DomainObject implements Request {
   private String name;
 
   @JsonProperty("response_time")
-  @ApiModelProperty(example = "FYI : We aren't storing this???")
+  @ApiModelProperty(example = "immediate")
   private String responseTime;
 
   @JsonProperty("screening_decision")
@@ -140,6 +140,7 @@ public class Screening extends DomainObject implements Request {
     this.locationType = screening.getLocationType();
     this.communicationMethod = screening.getCommunicationMethod();
     this.name = screening.getName();
+    this.responseTime = screening.getResponseTime();
     this.screeningDecision = screening.getScreeningDecision();
     this.startedAt = DomainChef.cookDate(screening.getStartedAt());
     this.narrative = screening.getNarrative();

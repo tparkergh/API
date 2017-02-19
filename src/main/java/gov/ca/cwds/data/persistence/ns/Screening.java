@@ -62,6 +62,9 @@ public class Screening extends NsPersistentObject {
   @Column(name = "hotline_contact_name")
   private String name;
 
+  @Column(name = "response_time")
+  private String responseTime;
+
   @Column(name = "screening_result")
   private String screeningDecision;
 
@@ -107,6 +110,7 @@ public class Screening extends NsPersistentObject {
    * @param locationType The location type
    * @param communicationMethod The communication method
    * @param name The name of the screening
+   * @param responseTime The response time
    * @param screeningDecision The screening decision
    * @param startedAt The started at date
    * @param narrative The narrative
@@ -114,8 +118,9 @@ public class Screening extends NsPersistentObject {
    * @param participants The list of participants
    */
   public Screening(String reference, Date endedAt, String incidentCounty, Date incidentDate,
-      String locationType, String communicationMethod, String name, String screeningDecision,
-      Date startedAt, String narrative, Address contactAddress, Set<Participant> participants) {
+      String locationType, String communicationMethod, String name, String responseTime,
+      String screeningDecision, Date startedAt, String narrative, Address contactAddress,
+      Set<Participant> participants) {
     super();
     this.reference = reference;
     this.endedAt = endedAt;
@@ -124,6 +129,7 @@ public class Screening extends NsPersistentObject {
     this.locationType = locationType;
     this.communicationMethod = communicationMethod;
     this.name = name;
+    this.responseTime = responseTime;
     this.screeningDecision = screeningDecision;
     this.startedAt = startedAt;
     this.narrative = narrative;
@@ -157,6 +163,7 @@ public class Screening extends NsPersistentObject {
     this.locationType = screening.getLocationType();
     this.communicationMethod = screening.getCommunicationMethod();
     this.name = screening.getName();
+    this.responseTime = screening.getResponseTime();
     this.screeningDecision = screening.getScreeningDecision();
     this.startedAt = DomainChef.uncookDateString(screening.getStartedAt());
     this.narrative = screening.getNarrative();
@@ -230,6 +237,13 @@ public class Screening extends NsPersistentObject {
    */
   public String getName() {
     return name;
+  }
+
+  /**
+   * @return the responseTime
+   */
+  public String getResponseTime() {
+    return responseTime;
   }
 
   /**

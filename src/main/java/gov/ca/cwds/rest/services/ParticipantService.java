@@ -1,15 +1,16 @@
 package gov.ca.cwds.rest.services;
 
-import java.io.Serializable;
-
-import com.google.inject.Inject;
-
 import gov.ca.cwds.data.Dao;
 import gov.ca.cwds.data.ns.ParticipantDao;
 import gov.ca.cwds.rest.api.Request;
 import gov.ca.cwds.rest.api.Response;
 import gov.ca.cwds.rest.api.domain.Address;
 import gov.ca.cwds.rest.api.domain.Participant;
+import gov.ca.cwds.rest.api.domain.Person;
+
+import java.io.Serializable;
+
+import com.google.inject.Inject;
 
 /**
  * Business layer object to work on {@link Address}
@@ -19,6 +20,8 @@ import gov.ca.cwds.rest.api.domain.Participant;
 public class ParticipantService implements CrudsService {
 
   private ParticipantDao participantDao;
+  @Inject
+  private PersonService personService;
 
   /**
    * Constructor
@@ -42,8 +45,9 @@ public class ParticipantService implements CrudsService {
     Participant participant = (Participant) request;
     gov.ca.cwds.data.persistence.ns.Participant managed =
         new gov.ca.cwds.data.persistence.ns.Participant(participant, null, null);
+    Person person = personService.find(managed.getPersonId());
     managed = participantDao.create(managed);
-    return new Participant(managed);
+    return new Participant(managed, person);
   }
 
   @Override

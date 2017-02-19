@@ -1,6 +1,14 @@
 package gov.ca.cwds.rest.resources;
 
 import static gov.ca.cwds.rest.core.Api.RESOURCE_PARTICIPANTS;
+import gov.ca.cwds.inject.ParticipantServiceBackedResource;
+import gov.ca.cwds.rest.api.domain.Participant;
+import io.dropwizard.hibernate.UnitOfWork;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
+import io.swagger.annotations.ApiResponse;
+import io.swagger.annotations.ApiResponses;
 
 import javax.validation.Valid;
 import javax.ws.rs.Consumes;
@@ -14,21 +22,12 @@ import org.apache.http.HttpStatus;
 
 import com.google.inject.Inject;
 
-import gov.ca.cwds.inject.ParticipantServiceBackedResource;
-import gov.ca.cwds.rest.api.domain.Participant;
-import io.dropwizard.hibernate.UnitOfWork;
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
-import io.swagger.annotations.ApiParam;
-import io.swagger.annotations.ApiResponse;
-import io.swagger.annotations.ApiResponses;
-
 /**
  * A resource providing a RESTful interface for {@link Participant}. It delegates functions to
- * {@link ResourceDelegate}. It decorates the {@link ResourceDelegate} not in functionality but
- * with @see <a href= "https://github.com/swagger-api/swagger-core/wiki/Annotations-1.5.X">Swagger
- * Annotations</a> and
- * <a href="https://jersey.java.net/documentation/latest/user-guide.html#jaxrs-resources">Jersey
+ * {@link ResourceDelegate}. It decorates the {@link ResourceDelegate} not in functionality but with @see
+ * <a href= "https://github.com/swagger-api/swagger-core/wiki/Annotations-1.5.X">Swagger
+ * Annotations</a> and <a
+ * href="https://jersey.java.net/documentation/latest/user-guide.html#jaxrs-resources">Jersey
  * Annotations</a>
  * 
  * @author CWDS API Team
@@ -37,7 +36,6 @@ import io.swagger.annotations.ApiResponses;
 @Path(value = RESOURCE_PARTICIPANTS)
 @Produces(MediaType.APPLICATION_JSON)
 @Consumes(MediaType.APPLICATION_JSON)
-
 public class ParticipantResource {
 
   private ResourceDelegate resourceDelegate;
@@ -57,8 +55,8 @@ public class ParticipantResource {
    * 
    * @param id the id
    * 
-   * @return the response /** <strong>NOT IMPLEMENTED! REQUIRED BY
-   *         {@link ResourceDelegate}.</strong>
+   * @return the response /** <strong>NOT IMPLEMENTED! REQUIRED BY {@link ResourceDelegate}
+   *         .</strong>
    *
    */
   public Response get(long id) {
@@ -92,8 +90,7 @@ public class ParticipantResource {
   @Consumes(value = MediaType.APPLICATION_JSON)
   @ApiOperation(value = "Create Participant", code = HttpStatus.SC_CREATED,
       response = Participant.class)
-  public Response create(
-      @Valid @ApiParam(hidden = false, required = true) Participant participant) {
+  public Response create(@Valid @ApiParam(hidden = false, required = true) Participant participant) {
     return resourceDelegate.create(participant);
   }
 
@@ -102,8 +99,8 @@ public class ParticipantResource {
    * 
    * @param id the id
    * @param participant {@link Participant}
-   * @return The {@link Response} /** <strong>NOT IMPLEMENTED! REQUIRED BY
-   *         {@link ResourceDelegate}.</strong>
+   * @return The {@link Response} /** <strong>NOT IMPLEMENTED! REQUIRED BY {@link ResourceDelegate}
+   *         .</strong>
    *
    */
 

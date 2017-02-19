@@ -11,6 +11,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
@@ -44,6 +45,12 @@ public class Participant extends NsPersistentObject {
   @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
   @JoinColumn(name = "hotline_contact_id", nullable = false, insertable = false, updatable = false)
   private Screening screening;
+
+  @OneToOne(cascade = CascadeType.ALL)
+  @JoinColumn(name = "person_id", insertable = false, updatable = false)
+  private Person person;
+
+
 
   /**
    * @param person - personId
@@ -109,5 +116,13 @@ public class Participant extends NsPersistentObject {
   public String getHotelineContactParticipantType() {
     return hotelineContactParticipantType;
   }
+
+  /**
+   * @return the person
+   */
+  public Person getPerson() {
+    return person;
+  }
+
 
 }
