@@ -24,9 +24,9 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 
 import gov.ca.cwds.data.CmsSystemCodeDeserializer;
-import gov.ca.cwds.data.IPersonAware;
 import gov.ca.cwds.data.SystemCodeSerializer;
 import gov.ca.cwds.data.persistence.PersistentObject;
+import gov.ca.cwds.data.std.ApiPersonAware;
 
 
 /**
@@ -41,8 +41,7 @@ import gov.ca.cwds.data.persistence.PersistentObject;
     @NamedNativeQuery(name = "gov.ca.cwds.data.persistence.cms.OtherClientName.findAllUpdatedAfter",
         query = "select x.THIRD_ID, x.FIRST_NM, x.LAST_NM, x.MIDDLE_NM, x.NMPRFX_DSC, "
             + "x.NAME_TPC, x.SUFX_TLDSC, x.LST_UPD_ID, x.LST_UPD_TS, x.FKCLIENT_T "
-            + "select x.* from {h-schema}OCL_NM_T x WHERE x.IBMSNAP_LOGMARKER >= :after "
-            + "for read only",
+            + "from {h-schema}OCL_NM_T x WHERE x.IBMSNAP_LOGMARKER >= :after for read only",
         resultClass = OtherClientName.class),
     @NamedNativeQuery(
         name = "gov.ca.cwds.data.persistence.cms.OtherClientName.findPartitionedBuckets",
@@ -58,7 +57,7 @@ import gov.ca.cwds.data.persistence.PersistentObject;
 @Table(name = "OCL_NM_T")
 @JsonPropertyOrder(alphabetic = true)
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class OtherClientName extends CmsPersistentObject implements IPersonAware {
+public class OtherClientName extends CmsPersistentObject implements ApiPersonAware {
 
   @Column(name = "FIRST_NM")
   private String firstName;

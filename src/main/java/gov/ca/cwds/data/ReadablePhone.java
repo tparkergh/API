@@ -5,12 +5,14 @@ import java.io.Serializable;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+import gov.ca.cwds.data.std.ApiPhoneAware;
+
 /**
- * Simple, concrete implementation of interface {@link IPhoneAware}.
+ * Simple, concrete implementation of interface {@link ApiPhoneAware}.
  * 
  * @author CWDS API Team
  */
-public final class ReadablePhone implements IPhoneAware, Serializable {
+public final class ReadablePhone implements ApiPhoneAware, Serializable {
 
   /**
    * Base serialization version. Increment by class version.

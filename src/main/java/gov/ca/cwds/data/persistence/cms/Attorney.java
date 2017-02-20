@@ -28,12 +28,12 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 
 import gov.ca.cwds.data.CmsSystemCodeDeserializer;
-import gov.ca.cwds.data.IMultiplePhonesAware;
-import gov.ca.cwds.data.IPersonAware;
-import gov.ca.cwds.data.IPhoneAware;
 import gov.ca.cwds.data.ReadablePhone;
 import gov.ca.cwds.data.SystemCodeSerializer;
 import gov.ca.cwds.data.persistence.PersistentObject;
+import gov.ca.cwds.data.std.ApiMultiplePhonesAware;
+import gov.ca.cwds.data.std.ApiPersonAware;
+import gov.ca.cwds.data.std.ApiPhoneAware;
 
 /**
  * {@link PersistentObject} representing a Attorney
@@ -61,7 +61,7 @@ import gov.ca.cwds.data.persistence.PersistentObject;
 @Table(name = "ATTRNY_T")
 @JsonPropertyOrder(alphabetic = true)
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class Attorney extends CmsPersistentObject implements IPersonAware, IMultiplePhonesAware {
+public class Attorney extends CmsPersistentObject implements ApiPersonAware, ApiMultiplePhonesAware {
 
   private static final Logger LOGGER = LoggerFactory.getLogger(Attorney.class);
 
@@ -483,9 +483,9 @@ public class Attorney extends CmsPersistentObject implements IPersonAware, IMult
   @JsonIgnore
   @Override
   @Transient
-  public IPhoneAware[] getPhones() {
+  public ApiPhoneAware[] getPhones() {
 
-    List<IPhoneAware> phones = new ArrayList<>();
+    List<ApiPhoneAware> phones = new ArrayList<>();
     if (this.primaryPhoneNumber != null && !BigDecimal.ZERO.equals(this.primaryPhoneNumber)) {
       phones.add(new ReadablePhone(this.primaryPhoneNumber.toPlainString(),
           this.primaryPhoneExtensionNumber != null ? this.primaryPhoneExtensionNumber.toString()
@@ -499,10 +499,10 @@ public class Attorney extends CmsPersistentObject implements IPersonAware, IMult
           .add(new ReadablePhone(
               this.messagePhoneNumber.toPlainString(), this.messagePhoneExtensionNumber != null
                   ? this.messagePhoneExtensionNumber.toString() : null,
-              IPhoneAware.PhoneType.Cell));
+              ApiPhoneAware.PhoneType.Cell));
     }
 
-    return phones.toArray(new IPhoneAware[0]);
+    return phones.toArray(new ApiPhoneAware[0]);
   }
 
 }

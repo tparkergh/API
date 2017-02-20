@@ -9,7 +9,7 @@ import org.junit.Test;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import gov.ca.cwds.data.IPhoneAware.PhoneType;
+import gov.ca.cwds.data.std.ApiPhoneAware.PhoneType;
 import io.dropwizard.jackson.Jackson;
 import nl.jqno.equalsverifier.EqualsVerifier;
 import nl.jqno.equalsverifier.Warning;

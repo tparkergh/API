@@ -27,11 +27,11 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 
 import gov.ca.cwds.data.CmsSystemCodeDeserializer;
-import gov.ca.cwds.data.ILanguageAware;
-import gov.ca.cwds.data.IMultipleLanguagesAware;
-import gov.ca.cwds.data.IPersonAware;
 import gov.ca.cwds.data.SystemCodeSerializer;
 import gov.ca.cwds.data.persistence.PersistentObject;
+import gov.ca.cwds.data.std.ApiLanguageAware;
+import gov.ca.cwds.data.std.ApiMultipleLanguagesAware;
+import gov.ca.cwds.data.std.ApiPersonAware;
 import gov.ca.cwds.rest.api.ApiException;
 import gov.ca.cwds.rest.api.domain.DomainChef;
 
@@ -61,8 +61,8 @@ import gov.ca.cwds.rest.api.domain.DomainChef;
             + "z.MTERM_DT, z.FTERM_DT, z.ZIPPY_IND, trim(z.DEATH_PLC) as DEATH_PLC, "
             + "z.TR_MBVRT_B, z.TRBA_CLT_B, z.SOC158_IND, z.DTH_DT_IND, "
             + "trim(z.EMAIL_ADDR) as EMAIL_ADDR, z.ADJDEL_IND, z.ETH_UD_CD, "
-            + "z.HISP_UD_CD, z.SOCPLC_CD, z.CL_INDX_NO "
-            + "from {h-schema}CLIENT_T z WHERE z.IBMSNAP_LOGMARKER >= :after " + "for read only",
+            + "z.HISP_UD_CD, z.SOCPLC_CD, z.CL_INDX_NO, z.IBMSNAP_OPERATION "
+            + "from {h-schema}CLIENT_T z WHERE z.IBMSNAP_LOGMARKER >= :after FOR READ ONLY",
         resultClass = Client.class),
     @NamedNativeQuery(name = "gov.ca.cwds.data.persistence.cms.Client.findPartitionedBuckets",
         query = "select z.IDENTIFIER, z.ADPTN_STCD, z.ALN_REG_NO, z.BIRTH_DT, "
@@ -94,7 +94,8 @@ import gov.ca.cwds.rest.api.domain.DomainChef;
 @Table(name = "CLIENT_T")
 @JsonPropertyOrder(alphabetic = true)
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class Client extends CmsPersistentObject implements IPersonAware, IMultipleLanguagesAware {
+public class Client extends CmsPersistentObject
+    implements ApiPersonAware, ApiMultipleLanguagesAware {
 
   /**
    * Base serialization version. Increment by class version.
@@ -1147,11 +1148,11 @@ public class Client extends CmsPersistentObject implements IPersonAware, IMultip
 
   @Override
   @JsonIgnore
-  public ILanguageAware[] getLanguages() {
+  public ApiLanguageAware[] getLanguages() {
 
-    List<ILanguageAware> languages = new ArrayList<>();
+    List<ApiLanguageAware> languages = new ArrayList<>();
     if (this.primaryLanguageType != null && this.primaryLanguageType != 0) {
-      languages.add(new ILanguageAware() {
+      languages.add(new ApiLanguageAware() {
         @Override
         public Integer getLanguageSysId() {
           return primaryLanguageType.intValue();
@@ -1161,7 +1162,7 @@ public class Client extends CmsPersistentObject implements IPersonAware, IMultip
 
     if (this.secondaryLanguageType != null && this.secondaryLanguageType != 0) {
       LOGGER.info("secondaryLanguageType={}", secondaryLanguageType);
-      languages.add(new ILanguageAware() {
+      languages.add(new ApiLanguageAware() {
         @Override
         public Integer getLanguageSysId() {
           return secondaryLanguageType.intValue();
@@ -1169,7 +1170,7 @@ public class Client extends CmsPersistentObject implements IPersonAware, IMultip
       });
     }
 
-    return languages.toArray(new ILanguageAware[0]);
+    return languages.toArray(new ApiLanguageAware[0]);
   }
 
   @Override

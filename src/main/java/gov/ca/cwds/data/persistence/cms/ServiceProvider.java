@@ -21,11 +21,11 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 
 import gov.ca.cwds.data.CmsSystemCodeDeserializer;
-import gov.ca.cwds.data.IAddressAware;
-import gov.ca.cwds.data.IPersonAware;
-import gov.ca.cwds.data.IPhoneAware;
 import gov.ca.cwds.data.SystemCodeSerializer;
 import gov.ca.cwds.data.persistence.PersistentObject;
+import gov.ca.cwds.data.std.ApiAddressAware;
+import gov.ca.cwds.data.std.ApiPersonAware;
+import gov.ca.cwds.data.std.ApiPhoneAware;
 
 
 /**
@@ -56,7 +56,7 @@ import gov.ca.cwds.data.persistence.PersistentObject;
 @JsonPropertyOrder(alphabetic = true)
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class ServiceProvider extends CmsPersistentObject
-    implements IPersonAware, IAddressAware, IPhoneAware {
+    implements ApiPersonAware, ApiAddressAware, ApiPhoneAware {
 
   /**
    * Base serialization value. Increment by class version.

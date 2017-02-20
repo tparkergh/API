@@ -18,9 +18,9 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
-import gov.ca.cwds.data.IPersonAware;
-import gov.ca.cwds.data.IPhoneAware;
 import gov.ca.cwds.data.persistence.PersistentObject;
+import gov.ca.cwds.data.std.ApiPersonAware;
+import gov.ca.cwds.data.std.ApiPhoneAware;
 
 
 /**
@@ -51,7 +51,7 @@ import gov.ca.cwds.data.persistence.PersistentObject;
 @JsonPropertyOrder(alphabetic = true)
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class EducationProviderContact extends CmsPersistentObject
-    implements IPersonAware, IPhoneAware {
+    implements ApiPersonAware, ApiPhoneAware {
 
   /**
    * Base serialization value. Increment by class version.

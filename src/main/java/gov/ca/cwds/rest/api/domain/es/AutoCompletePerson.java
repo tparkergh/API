@@ -21,19 +21,19 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonValue;
 import com.google.inject.Inject;
 
-import gov.ca.cwds.data.IAddressAware;
-import gov.ca.cwds.data.IAddressAwareWritable;
-import gov.ca.cwds.data.ILanguageAware;
-import gov.ca.cwds.data.IMultipleLanguagesAware;
-import gov.ca.cwds.data.IMultiplePhonesAware;
-import gov.ca.cwds.data.IPersonAware;
-import gov.ca.cwds.data.IPersonAwareWritable;
-import gov.ca.cwds.data.IPhoneAware;
-import gov.ca.cwds.data.IPhoneAwareWritable;
 import gov.ca.cwds.data.ISysCodeAware;
 import gov.ca.cwds.data.ITypedIdentifier;
 import gov.ca.cwds.data.es.ElasticSearchPerson;
 import gov.ca.cwds.data.persistence.cms.ISystemCodeCache;
+import gov.ca.cwds.data.std.ApiAddressAware;
+import gov.ca.cwds.data.std.ApiAddressAwareWritable;
+import gov.ca.cwds.data.std.ApiLanguageAware;
+import gov.ca.cwds.data.std.ApiMultipleLanguagesAware;
+import gov.ca.cwds.data.std.ApiMultiplePhonesAware;
+import gov.ca.cwds.data.std.ApiPersonAware;
+import gov.ca.cwds.data.std.ApiPersonAwareWritable;
+import gov.ca.cwds.data.std.ApiPhoneAware;
+import gov.ca.cwds.data.std.ApiPhoneAwareWritable;
 import gov.ca.cwds.inject.SystemCodeCache;
 import gov.ca.cwds.rest.api.Request;
 import gov.ca.cwds.rest.api.domain.DomainChef;
@@ -61,7 +61,7 @@ import io.dropwizard.jackson.JsonSnakeCase;
 @JsonSnakeCase
 @JsonInclude(JsonInclude.Include.ALWAYS)
 public class AutoCompletePerson
-    implements Serializable, IPersonAwareWritable, ITypedIdentifier<String> {
+    implements Serializable, ApiPersonAwareWritable, ITypedIdentifier<String> {
 
   /**
    * Base serialization version. Increment by class version.
@@ -506,7 +506,7 @@ public class AutoCompletePerson
    * @author CWDS API Team
    */
   public static final class AutoCompletePersonAddress
-      implements Serializable, ITypedIdentifier<Long>, IAddressAwareWritable {
+      implements Serializable, ITypedIdentifier<Long>, ApiAddressAwareWritable {
 
     /**
      * Base serialization version. Increment by class version.
@@ -546,7 +546,7 @@ public class AutoCompletePerson
      * 
      * @param addr incoming address object
      */
-    public AutoCompletePersonAddress(IAddressAware addr) {
+    public AutoCompletePersonAddress(ApiAddressAware addr) {
       if (StringUtils.isNotBlank(addr.getCity())) {
         this.setCity(addr.getCity());
       }
@@ -680,7 +680,7 @@ public class AutoCompletePerson
    * @author CWDS API Team
    */
   public static final class AutoCompletePersonPhone
-      implements Serializable, ITypedIdentifier<Long>, IPhoneAwareWritable {
+      implements Serializable, ITypedIdentifier<Long>, ApiPhoneAwareWritable {
 
     /**
      * Base serialization version. Increment by class version.
@@ -702,7 +702,7 @@ public class AutoCompletePerson
 
     @JsonProperty("type")
     @JsonInclude(JsonInclude.Include.ALWAYS)
-    private IPhoneAware.PhoneType phoneType;
+    private ApiPhoneAware.PhoneType phoneType;
 
     /**
      * Default constructor.
@@ -716,7 +716,7 @@ public class AutoCompletePerson
      * 
      * @param other another phone object
      */
-    public AutoCompletePersonPhone(IPhoneAware other) {
+    public AutoCompletePersonPhone(ApiPhoneAware other) {
       if (other != null) {
         setPhoneNumber(other.getPhoneNumber());
         setPhoneType(other.getPhoneType());
@@ -825,9 +825,9 @@ public class AutoCompletePerson
     // Minimal system code translation to meet contract interface.
     if (esp.getSourceObj() != null) {
 
-      if (esp.getSourceObj() instanceof IPersonAware) {
+      if (esp.getSourceObj() instanceof ApiPersonAware) {
         LOGGER.debug("IPersonAware!");
-        final IPersonAware personAware = (IPersonAware) esp.getSourceObj();
+        final ApiPersonAware personAware = (ApiPersonAware) esp.getSourceObj();
 
         if (StringUtils.isNotBlank(personAware.getFirstName())) {
           this.setFirstName(personAware.getFirstName());
@@ -861,22 +861,22 @@ public class AutoCompletePerson
       }
 
       // Address.
-      if (esp.getSourceObj() instanceof IAddressAware) {
-        addAddress(new AutoCompletePersonAddress((IAddressAware) esp.getSourceObj()));
+      if (esp.getSourceObj() instanceof ApiAddressAware) {
+        addAddress(new AutoCompletePersonAddress((ApiAddressAware) esp.getSourceObj()));
       }
 
       // Phone.
-      if (esp.getSourceObj() instanceof IMultiplePhonesAware) {
-        final IMultiplePhonesAware thePhones = (IMultiplePhonesAware) esp.getSourceObj();
-        for (IPhoneAware phone : thePhones.getPhones()) {
+      if (esp.getSourceObj() instanceof ApiMultiplePhonesAware) {
+        final ApiMultiplePhonesAware thePhones = (ApiMultiplePhonesAware) esp.getSourceObj();
+        for (ApiPhoneAware phone : thePhones.getPhones()) {
           addPhone(new AutoCompletePersonPhone(phone));
         }
       }
 
       // Language
-      if (esp.getSourceObj() instanceof IMultipleLanguagesAware) {
-        final IMultipleLanguagesAware langs = (IMultipleLanguagesAware) esp.getSourceObj();
-        for (ILanguageAware lang : langs.getLanguages()) {
+      if (esp.getSourceObj() instanceof ApiMultipleLanguagesAware) {
+        final ApiMultipleLanguagesAware langs = (ApiMultipleLanguagesAware) esp.getSourceObj();
+        for (ApiLanguageAware lang : langs.getLanguages()) {
           addLanguage(AutoCompleteLanguage.findBySysId(lang.getLanguageSysId()));
         }
       }

@@ -21,9 +21,9 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 
 import gov.ca.cwds.data.CmsSystemCodeDeserializer;
-import gov.ca.cwds.data.IPersonAware;
 import gov.ca.cwds.data.SystemCodeSerializer;
 import gov.ca.cwds.data.persistence.PersistentObject;
+import gov.ca.cwds.data.std.ApiPersonAware;
 
 
 /**
@@ -56,7 +56,7 @@ import gov.ca.cwds.data.persistence.PersistentObject;
 @Table(name = "SB_PVDRT")
 @JsonPropertyOrder(alphabetic = true)
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class SubstituteCareProvider extends CmsPersistentObject implements IPersonAware {
+public class SubstituteCareProvider extends CmsPersistentObject implements ApiPersonAware {
 
   /**
    * Base serialization version. Increment per change.

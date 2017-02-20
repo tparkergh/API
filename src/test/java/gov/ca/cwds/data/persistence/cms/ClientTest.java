@@ -18,8 +18,8 @@ import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import gov.ca.cwds.data.ILanguageAware;
 import gov.ca.cwds.data.persistence.junit.template.PersistentTestTemplate;
+import gov.ca.cwds.data.std.ApiLanguageAware;
 import gov.ca.cwds.rest.api.domain.DomainChef;
 import nl.jqno.equalsverifier.EqualsVerifier;
 import nl.jqno.equalsverifier.Warning;
@@ -436,7 +436,7 @@ public class ClientTest implements PersistentTestTemplate {
   @Test
   public void getLanguages_Args$() throws Exception {
     final Client target = validBean();
-    final ILanguageAware[] actual = target.getLanguages();
+    final ApiLanguageAware[] actual = target.getLanguages();
     assertTrue(actual.length > 0);
   }
 

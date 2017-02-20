@@ -27,50 +27,61 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 
 import gov.ca.cwds.data.CmsSystemCodeDeserializer;
-import gov.ca.cwds.data.IAddressAware;
-import gov.ca.cwds.data.IMultiplePhonesAware;
-import gov.ca.cwds.data.IPersonAware;
-import gov.ca.cwds.data.IPhoneAware;
 import gov.ca.cwds.data.ReadablePhone;
 import gov.ca.cwds.data.SystemCodeSerializer;
 import gov.ca.cwds.data.ns.NsPersistentObject;
+import gov.ca.cwds.data.std.ApiAddressAware;
+import gov.ca.cwds.data.std.ApiMultiplePhonesAware;
+import gov.ca.cwds.data.std.ApiPersonAware;
+import gov.ca.cwds.data.std.ApiPhoneAware;
 import gov.ca.cwds.rest.api.domain.DomainChef;
 
 /**
- * {@link NsPersistentObject} representing a Reporter
+ * {@link NsPersistentObject} representing a Reporter.
  * 
  * @author CWDS API Team
  */
-
 @NamedQueries({
     @NamedQuery(name = "gov.ca.cwds.data.persistence.cms.Reporter.findAll",
         query = "FROM Reporter WHERE confidentialWaiverIndicator = 'Y' AND referralId IN "
             + "(SELECT id FROM Referral WHERE limitedAccessCode = 'N')"),
-    @NamedQuery(name = "gov.ca.cwds.data.persistence.cms.Reporter.findAllUpdatedAfter",
+    @NamedQuery(name = "gov.ca.cwds.data.persistence.cms.Reporter.findAllUpdatedAfterOLD",
         query = "FROM Reporter WHERE lastUpdatedTime > :after AND confidentialWaiverIndicator = 'Y' AND referralId IN "
             + "(SELECT id FROM Referral WHERE limitedAccessCode = 'N')")})
-@NamedNativeQueries({@NamedNativeQuery(
-    name = "gov.ca.cwds.data.persistence.cms.Reporter.findPartitionedBuckets",
-    query = "select trim(z.RPTR_BDGNO) as RPTR_BDGNO, trim(z.RPTR_CTYNM) as RPTR_CTYNM, "
-        + "z.COL_RELC, z.CMM_MTHC, z.CNFWVR_IND, "
-        + "z.FDBACK_DOC, z.RPTR_EMPNM, z.FEEDBCK_DT, z.FB_RQR_IND, z.RPTR_FSTNM, "
-        + "trim(z.RPTR_LSTNM) as RPTR_LSTNM, z.MNRPTR_IND, z.MSG_EXT_NO, z.MSG_TEL_NO, trim(z.MID_INI_NM) as MID_INI_NM, "
-        + "trim(z.NMPRFX_DSC) as NMPRFX_DSC, z.PRM_TEL_NO, z.PRM_EXT_NO, z.STATE_C, trim(z.RPTR_ST_NM) as RPTR_ST_NM, "
-        + "trim(z.RPTR_ST_NO) as RPTR_ST_NO, trim(z.SUFX_TLDSC) as SUFX_TLDSC, z.RPTR_ZIPNO, z.LST_UPD_ID, z.LST_UPD_TS, "
-        + "z.FKREFERL_T, z.FKLAW_ENFT, z.ZIP_SFX_NO, z.CNTY_SPFCD "
-        + "from ( select mod(y.rn, CAST(:total_buckets AS INTEGER)) + 1 as bucket, y.* "
-        + "from ( select row_number() over (order by 1) as rn, x.* "
-        + "from ( select c.* from {h-schema}REPTR_T c "
-        + "WHERE c.FKREFERL_T >= :min_id and c.FKREFERL_T < :max_id "
-        + ") x ) y ) z where z.bucket = :bucket_num for read only",
-    resultClass = Reporter.class)})
+@NamedNativeQueries({
+    @NamedNativeQuery(name = "gov.ca.cwds.data.persistence.cms.Reporter.findAllUpdatedAfter",
+        query = "select trim(z.RPTR_BDGNO) as RPTR_BDGNO, trim(z.RPTR_CTYNM) as RPTR_CTYNM, "
+            + "z.COL_RELC, z.CMM_MTHC, z.CNFWVR_IND, z.FDBACK_DOC, z.RPTR_EMPNM, "
+            + "z.FEEDBCK_DT, z.FB_RQR_IND, z.RPTR_FSTNM, trim(z.RPTR_LSTNM) as RPTR_LSTNM, "
+            + "z.MNRPTR_IND, z.MSG_EXT_NO, z.MSG_TEL_NO, trim(z.MID_INI_NM) as MID_INI_NM, "
+            + "trim(z.NMPRFX_DSC) as NMPRFX_DSC, z.PRM_TEL_NO, z.PRM_EXT_NO, z.STATE_C, "
+            + "trim(z.RPTR_ST_NM) as RPTR_ST_NM, trim(z.RPTR_ST_NO) as RPTR_ST_NO, "
+            + "trim(z.SUFX_TLDSC) as SUFX_TLDSC, z.RPTR_ZIPNO, z.LST_UPD_ID, z.LST_UPD_TS, "
+            + "z.FKREFERL_T, z.FKLAW_ENFT, z.ZIP_SFX_NO, z.CNTY_SPFCD "
+            + "from {h-schema}REPTR_T z WHERE z.IBMSNAP_LOGMARKER >= :after for read only ",
+        resultClass = Reporter.class),
+    @NamedNativeQuery(name = "gov.ca.cwds.data.persistence.cms.Reporter.findPartitionedBuckets",
+        query = "select trim(z.RPTR_BDGNO) as RPTR_BDGNO, trim(z.RPTR_CTYNM) as RPTR_CTYNM, "
+            + "z.COL_RELC, z.CMM_MTHC, z.CNFWVR_IND, z.FDBACK_DOC, z.RPTR_EMPNM, "
+            + "z.FEEDBCK_DT, z.FB_RQR_IND, z.RPTR_FSTNM, trim(z.RPTR_LSTNM) as RPTR_LSTNM, "
+            + "z.MNRPTR_IND, z.MSG_EXT_NO, z.MSG_TEL_NO, trim(z.MID_INI_NM) as MID_INI_NM, "
+            + "trim(z.NMPRFX_DSC) as NMPRFX_DSC, z.PRM_TEL_NO, z.PRM_EXT_NO, z.STATE_C, "
+            + "trim(z.RPTR_ST_NM) as RPTR_ST_NM, trim(z.RPTR_ST_NO) as RPTR_ST_NO, "
+            + "trim(z.SUFX_TLDSC) as SUFX_TLDSC, z.RPTR_ZIPNO, z.LST_UPD_ID, z.LST_UPD_TS, "
+            + "z.FKREFERL_T, z.FKLAW_ENFT, z.ZIP_SFX_NO, z.CNTY_SPFCD "
+            + "from ( select mod(y.rn, CAST(:total_buckets AS INTEGER)) + 1 as bucket, y.* "
+            + "from ( select row_number() over (order by 1) as rn, x.* "
+            + "from ( select c.* from {h-schema}REPTR_T c "
+            + "WHERE c.FKREFERL_T >= :min_id and c.FKREFERL_T < :max_id "
+            + ") x ) y ) z where z.bucket = :bucket_num for read only",
+        resultClass = Reporter.class)})
 @SuppressWarnings("serial")
 @Entity
 @Table(name = "REPTR_T")
 @JsonPropertyOrder(alphabetic = true)
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class Reporter extends CmsPersistentObject
-    implements IPersonAware, IAddressAware, IMultiplePhonesAware {
+    implements ApiPersonAware, ApiAddressAware, ApiMultiplePhonesAware {
 
   private static final Logger LOGGER = LoggerFactory.getLogger(Reporter.class);
 
@@ -585,9 +596,8 @@ public class Reporter extends CmsPersistentObject
   // =======================
 
   @Override
-  public IPhoneAware[] getPhones() {
-
-    List<IPhoneAware> phones = new ArrayList<>();
+  public ApiPhoneAware[] getPhones() {
+    List<ApiPhoneAware> phones = new ArrayList<>();
     if (this.primaryPhoneNumber != null && !BigDecimal.ZERO.equals(this.primaryPhoneNumber)) {
       phones.add(new ReadablePhone(this.primaryPhoneNumber.toPlainString(),
           this.primaryPhoneExtensionNumber != null ? this.primaryPhoneExtensionNumber.toString()
@@ -600,10 +610,10 @@ public class Reporter extends CmsPersistentObject
           .add(new ReadablePhone(
               this.messagePhoneNumber.toPlainString(), this.messagePhoneExtensionNumber != null
                   ? this.messagePhoneExtensionNumber.toString() : null,
-              IPhoneAware.PhoneType.Cell));
+              ApiPhoneAware.PhoneType.Cell));
     }
 
-    return phones.toArray(new IPhoneAware[0]);
+    return phones.toArray(new ApiPhoneAware[0]);
   }
 
 }

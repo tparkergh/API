@@ -17,8 +17,8 @@ import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import gov.ca.cwds.data.IPhoneAware;
 import gov.ca.cwds.data.persistence.junit.template.PersistentTestTemplate;
+import gov.ca.cwds.data.std.ApiPhoneAware;
 import nl.jqno.equalsverifier.EqualsVerifier;
 import nl.jqno.equalsverifier.Warning;
 
@@ -229,7 +229,7 @@ public class AttorneyTest implements PersistentTestTemplate {
   @Test
   public void getPhones_Args$() throws Exception {
     final Attorney target = validAttorney();
-    final IPhoneAware[] actual = target.getPhones();
+    final ApiPhoneAware[] actual = target.getPhones();
     assertTrue(actual.length > 1);
   }
 

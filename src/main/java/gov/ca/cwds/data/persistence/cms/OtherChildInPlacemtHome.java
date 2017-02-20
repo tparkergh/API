@@ -21,8 +21,8 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
-import gov.ca.cwds.data.IPersonAware;
 import gov.ca.cwds.data.persistence.PersistentObject;
+import gov.ca.cwds.data.std.ApiPersonAware;
 
 
 /**
@@ -49,7 +49,7 @@ import gov.ca.cwds.data.persistence.PersistentObject;
 @Table(name = "OTH_KIDT")
 @JsonPropertyOrder(alphabetic = true)
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class OtherChildInPlacemtHome extends CmsPersistentObject implements IPersonAware {
+public class OtherChildInPlacemtHome extends CmsPersistentObject implements ApiPersonAware {
 
   /**
   * 
