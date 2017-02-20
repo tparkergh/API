@@ -153,13 +153,14 @@ public class ReporterDaoIT implements DaoTestTemplate {
     assertThat(query.list().size(), is(1));
   }
 
-  @SuppressWarnings("javadoc")
-  @Test
-  public void testFindAllUpdatedAfterNamedQueryExists() throws Exception {
-    Query query =
-        session.getNamedQuery("gov.ca.cwds.data.persistence.cms.Reporter.findAllUpdatedAfter");
-    assertThat(query, is(notNullValue()));
-  }
+  // TODO: #138438305: move to jobs project.
+  // @SuppressWarnings("javadoc")
+  // @Test
+  // public void testFindAllUpdatedAfterNamedQueryExists() throws Exception {
+  // Query query =
+  // session.getNamedQuery("gov.ca.cwds.data.persistence.cms.Reporter.findAllUpdatedAfter");
+  // assertThat(query, is(notNullValue()));
+  // }
 
   // TODO: #138438305: move to jobs project.
   // @SuppressWarnings("javadoc")
