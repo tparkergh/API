@@ -161,20 +161,21 @@ public class ReporterDaoIT implements DaoTestTemplate {
     assertThat(query, is(notNullValue()));
   }
 
-  @SuppressWarnings("javadoc")
-  @Test
-  public void testFindAllUpdatedAfterReturnsCorrectList() throws Exception {
-    Query query =
-        session.getNamedQuery("gov.ca.cwds.data.persistence.cms.Reporter.findAllUpdatedAfter")
-            .setDate("after", TIMESTAMP_FORMAT.parse("1997-01-02 00:00:00"));
-
-    @SuppressWarnings("unchecked")
-    final List<Reporter> list = query.list();
-    System.out.println("size of query list is: " + list.size());
-    for (Reporter c : list) {
-      System.out.println("id " + c.getPrimaryKey() + " " + c.getLastName());
-    }
-    assertThat(query.list().size(), is(1));
-  }
+  // TODO: #138438305: move to jobs project.
+  // @SuppressWarnings("javadoc")
+  // @Test
+  // public void testFindAllUpdatedAfterReturnsCorrectList() throws Exception {
+  // Query query =
+  // session.getNamedQuery("gov.ca.cwds.data.persistence.cms.Reporter.findAllUpdatedAfter")
+  // .setDate("after", TIMESTAMP_FORMAT.parse("1997-01-02 00:00:00"));
+  //
+  // @SuppressWarnings("unchecked")
+  // final List<Reporter> list = query.list();
+  // System.out.println("size of query list is: " + list.size());
+  // for (Reporter c : list) {
+  // System.out.println("id " + c.getPrimaryKey() + " " + c.getLastName());
+  // }
+  // assertThat(query.list().size(), is(1));
+  // }
 
 }
