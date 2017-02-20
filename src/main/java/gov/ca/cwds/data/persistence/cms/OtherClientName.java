@@ -41,7 +41,7 @@ import gov.ca.cwds.data.persistence.PersistentObject;
     @NamedNativeQuery(name = "gov.ca.cwds.data.persistence.cms.OtherClientName.findAllUpdatedAfter",
         query = "select x.THIRD_ID, x.FIRST_NM, x.LAST_NM, x.MIDDLE_NM, x.NMPRFX_DSC, "
             + "x.NAME_TPC, x.SUFX_TLDSC, x.LST_UPD_ID, x.LST_UPD_TS, x.FKCLIENT_T "
-            + "select c.* from {h-schema}OCL_NM_T x WHERE c.IBMSNAP_LOGMARKER >= :after "
+            + "select x.* from {h-schema}OCL_NM_T x WHERE x.IBMSNAP_LOGMARKER >= :after "
             + "for read only",
         resultClass = OtherClientName.class),
     @NamedNativeQuery(
