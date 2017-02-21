@@ -6,31 +6,21 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.Id;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
-import javax.validation.constraints.NotNull;
 
 import org.apache.commons.lang3.StringUtils;
 import org.hibernate.annotations.NamedNativeQueries;
 import org.hibernate.annotations.NamedNativeQuery;
-import org.hibernate.annotations.Type;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 
-import gov.ca.cwds.data.CmsSystemCodeDeserializer;
 import gov.ca.cwds.data.ReadablePhone;
-import gov.ca.cwds.data.SystemCodeSerializer;
 import gov.ca.cwds.data.ns.NsPersistentObject;
-import gov.ca.cwds.data.std.ApiAddressAware;
-import gov.ca.cwds.data.std.ApiMultiplePhonesAware;
-import gov.ca.cwds.data.std.ApiPersonAware;
 import gov.ca.cwds.data.std.ApiPhoneAware;
 import gov.ca.cwds.rest.api.domain.DomainChef;
 
@@ -67,107 +57,7 @@ import gov.ca.cwds.rest.api.domain.DomainChef;
 @Table(name = "REPTR_T")
 @JsonPropertyOrder(alphabetic = true)
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class Reporter extends CmsPersistentObject
-    implements ApiPersonAware, ApiAddressAware, ApiMultiplePhonesAware {
-
-  @Id
-  @NotNull
-  @Column(name = "FKREFERL_T", length = CMS_ID_LEN)
-  private String referralId;
-
-  @Column(name = "RPTR_BDGNO")
-  private String badgeNumber;
-
-  @Column(name = "RPTR_CTYNM")
-  private String cityName;
-
-  @SystemCodeSerializer(logical = true, description = true)
-  @JsonDeserialize(using = CmsSystemCodeDeserializer.class)
-  @Type(type = "short")
-  @Column(name = "COL_RELC")
-  private Short colltrClientRptrReltnshpType;
-
-  @SystemCodeSerializer(logical = true, description = true)
-  @JsonDeserialize(using = CmsSystemCodeDeserializer.class)
-  @Type(type = "short")
-  @Column(name = "CMM_MTHC")
-  private Short communicationMethodType;
-
-  @Column(name = "CNFWVR_IND")
-  private String confidentialWaiverIndicator;
-
-  @Column(name = "FDBACK_DOC")
-  private String drmsMandatedRprtrFeedback;
-
-  @Column(name = "RPTR_EMPNM")
-  private String employerName;
-
-  @Type(type = "date")
-  @Column(name = "FEEDBCK_DT")
-  private Date feedbackDate;
-
-  @Column(name = "FB_RQR_IND")
-  private String feedbackRequiredIndicator;
-
-  @Column(name = "RPTR_FSTNM")
-  private String firstName;
-
-  @Column(name = "RPTR_LSTNM")
-  private String lastName;
-
-  @NotNull
-  @Column(name = "MNRPTR_IND")
-  private String mandatedReporterIndicator;
-
-  @Type(type = "integer")
-  @Column(name = "MSG_EXT_NO")
-  private Integer messagePhoneExtensionNumber;
-
-  @Column(name = "MSG_TEL_NO")
-  private BigDecimal messagePhoneNumber;
-
-  @Column(name = "MID_INI_NM")
-  private String middleInitialName;
-
-  @Column(name = "NMPRFX_DSC")
-  private String namePrefixDescription;
-
-  @Column(name = "PRM_TEL_NO")
-  private BigDecimal primaryPhoneNumber;
-
-  @Type(type = "integer")
-  @Column(name = "PRM_EXT_NO")
-  private Integer primaryPhoneExtensionNumber;
-
-  @SystemCodeSerializer(logical = true, description = true)
-  @JsonDeserialize(using = CmsSystemCodeDeserializer.class)
-  @Type(type = "short")
-  @Column(name = "STATE_C")
-  private Short stateCodeType;
-
-  @Column(name = "RPTR_ST_NM")
-  private String streetName;
-
-  @Column(name = "RPTR_ST_NO")
-  private String streetNumber;
-
-  @Column(name = "SUFX_TLDSC")
-  private String suffixTitleDescription;
-
-  @Type(type = "integer")
-  @Column(name = "RPTR_ZIPNO")
-  private Integer zipNumber;
-
-  @Column(name = "FKLAW_ENFT", length = 10)
-  private String lawEnforcementId;
-
-  @Type(type = "short")
-  @Column(name = "ZIP_SFX_NO")
-  private Short zipSuffixNumber;
-
-  @Column(name = "CNTY_SPFCD")
-  private String countySpecificCode;
-
+public class Reporter extends BaseReporter {
   /**
    * Default constructor
    * 
@@ -299,6 +189,7 @@ public class Reporter extends CmsPersistentObject
   /**
    * @return the referralId
    */
+  @Override
   public String getReferralId() {
     return referralId;
   }
@@ -306,6 +197,7 @@ public class Reporter extends CmsPersistentObject
   /**
    * @return the badgeNumber
    */
+  @Override
   public String getBadgeNumber() {
     return StringUtils.trimToEmpty(badgeNumber);
   }
@@ -313,6 +205,7 @@ public class Reporter extends CmsPersistentObject
   /**
    * @return the cityName
    */
+  @Override
   public String getCityName() {
     return StringUtils.trimToEmpty(cityName);
   }
@@ -320,6 +213,7 @@ public class Reporter extends CmsPersistentObject
   /**
    * @return the colltrClientRptrReltnshpType
    */
+  @Override
   public Short getColltrClientRptrReltnshpType() {
     return colltrClientRptrReltnshpType;
   }
@@ -327,6 +221,7 @@ public class Reporter extends CmsPersistentObject
   /**
    * @return the communicationMethodType
    */
+  @Override
   public Short getCommunicationMethodType() {
     return communicationMethodType;
   }
@@ -334,6 +229,7 @@ public class Reporter extends CmsPersistentObject
   /**
    * @return the confidentialWaiverIndicator
    */
+  @Override
   public String getConfidentialWaiverIndicator() {
     return confidentialWaiverIndicator;
   }
@@ -341,6 +237,7 @@ public class Reporter extends CmsPersistentObject
   /**
    * @return the drmsMandatedRprtrFeedback
    */
+  @Override
   public String getDrmsMandatedRprtrFeedback() {
     return StringUtils.trimToEmpty(drmsMandatedRprtrFeedback);
   }
@@ -348,6 +245,7 @@ public class Reporter extends CmsPersistentObject
   /**
    * @return the employerName
    */
+  @Override
   public String getEmployerName() {
     return StringUtils.trimToEmpty(employerName);
   }
@@ -355,6 +253,7 @@ public class Reporter extends CmsPersistentObject
   /**
    * @return the feedbackDate
    */
+  @Override
   public Date getFeedbackDate() {
     return feedbackDate;
   }
@@ -362,6 +261,7 @@ public class Reporter extends CmsPersistentObject
   /**
    * @return the feedbackRequiredIndicator
    */
+  @Override
   public String getFeedbackRequiredIndicator() {
     return feedbackRequiredIndicator;
   }
@@ -385,6 +285,7 @@ public class Reporter extends CmsPersistentObject
   /**
    * @return the mandatedReporterIndicator
    */
+  @Override
   public String getMandatedReporterIndicator() {
     return mandatedReporterIndicator;
   }
@@ -392,6 +293,7 @@ public class Reporter extends CmsPersistentObject
   /**
    * @return the messagePhoneExtensionNumber
    */
+  @Override
   public Integer getMessagePhoneExtensionNumber() {
     return messagePhoneExtensionNumber;
   }
@@ -399,6 +301,7 @@ public class Reporter extends CmsPersistentObject
   /**
    * @return the messagePhoneNumber
    */
+  @Override
   public BigDecimal getMessagePhoneNumber() {
     return messagePhoneNumber;
   }
@@ -406,6 +309,7 @@ public class Reporter extends CmsPersistentObject
   /**
    * @return the middleInitialName
    */
+  @Override
   public String getMiddleInitialName() {
     return StringUtils.trimToEmpty(middleInitialName);
   }
@@ -413,6 +317,7 @@ public class Reporter extends CmsPersistentObject
   /**
    * @return the namePrefixDescription
    */
+  @Override
   public String getNamePrefixDescription() {
     return StringUtils.trimToEmpty(namePrefixDescription);
   }
@@ -420,6 +325,7 @@ public class Reporter extends CmsPersistentObject
   /**
    * @return the primaryPhoneNumber
    */
+  @Override
   public BigDecimal getPrimaryPhoneNumber() {
     return primaryPhoneNumber;
   }
@@ -427,6 +333,7 @@ public class Reporter extends CmsPersistentObject
   /**
    * @return the primaryPhoneExtensionNumber
    */
+  @Override
   public Integer getPrimaryPhoneExtensionNumber() {
     return primaryPhoneExtensionNumber;
   }
@@ -434,6 +341,7 @@ public class Reporter extends CmsPersistentObject
   /**
    * @return the stateCodeType
    */
+  @Override
   public Short getStateCodeType() {
     return stateCodeType;
   }
@@ -441,6 +349,7 @@ public class Reporter extends CmsPersistentObject
   /**
    * @return the streetName
    */
+  @Override
   public String getStreetName() {
     return StringUtils.trimToEmpty(streetName);
   }
@@ -448,6 +357,7 @@ public class Reporter extends CmsPersistentObject
   /**
    * @return the streetNumber
    */
+  @Override
   public String getStreetNumber() {
     return StringUtils.trimToEmpty(streetNumber);
   }
@@ -455,6 +365,7 @@ public class Reporter extends CmsPersistentObject
   /**
    * @return the suffixTitleDescription
    */
+  @Override
   public String getSuffixTitleDescription() {
     return StringUtils.trimToEmpty(suffixTitleDescription);
   }
@@ -462,6 +373,7 @@ public class Reporter extends CmsPersistentObject
   /**
    * @return the zipNumber
    */
+  @Override
   public Integer getZipNumber() {
     return zipNumber;
   }
@@ -469,6 +381,7 @@ public class Reporter extends CmsPersistentObject
   /**
    * @return the lawEnforcementId
    */
+  @Override
   public String getLawEnforcementId() {
     return lawEnforcementId;
   }
@@ -476,6 +389,7 @@ public class Reporter extends CmsPersistentObject
   /**
    * @return the zipSuffixNumber
    */
+  @Override
   public Short getZipSuffixNumber() {
     return zipSuffixNumber;
   }
@@ -483,6 +397,7 @@ public class Reporter extends CmsPersistentObject
   /**
    * @return the countySpecificCode
    */
+  @Override
   public String getCountySpecificCode() {
     return countySpecificCode;
   }

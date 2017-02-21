@@ -217,6 +217,14 @@ public class Person extends NsPersistentObject
     return personPhone;
   }
 
+  public void setPersonAddress(Set<PersonAddress> personAddress) {
+    this.personAddress = personAddress;
+  }
+
+  public void setPersonPhone(Set<PersonPhone> personPhone) {
+    this.personPhone = personPhone;
+  }
+
   // ================
   // IPersonAware
   // ================
