@@ -6,6 +6,7 @@ import java.util.Date;
 
 import javax.persistence.Column;
 import javax.persistence.Id;
+import javax.persistence.MappedSuperclass;
 
 import org.apache.commons.lang3.StringUtils;
 import org.hibernate.annotations.Type;
@@ -18,6 +19,7 @@ import gov.ca.cwds.data.SystemCodeSerializer;
 import gov.ca.cwds.data.std.ApiAddressAware;
 import gov.ca.cwds.data.std.ApiPersonAware;
 
+@MappedSuperclass
 public abstract class BaseCollateralIndividual extends CmsPersistentObject
     implements ApiPersonAware, ApiAddressAware {
 
