@@ -58,6 +58,7 @@ import gov.ca.cwds.rest.api.domain.DomainChef;
 @JsonPropertyOrder(alphabetic = true)
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class Reporter extends BaseReporter {
+
   /**
    * Default constructor
    * 
@@ -74,7 +75,7 @@ public class Reporter extends BaseReporter {
    * @param colltrClientRptrReltnshpType - client/reporter relationship type
    * @param communicationMethodType - communication method type
    * @param confidentialWaiverIndicator - confidential waiver indicator
-   * @param drmsMandatedRprtrFeedback = drms mandated reporter
+   * @param drmsMandatedRprtrFeedback = DRMS mandated reporter
    * @param employerName - name
    * @param feedbackDate - date
    * @param feedbackRequiredIndicator - feedback

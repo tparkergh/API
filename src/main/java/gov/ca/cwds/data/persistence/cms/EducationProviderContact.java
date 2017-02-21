@@ -1,30 +1,22 @@
 package gov.ca.cwds.data.persistence.cms;
 
 import java.math.BigDecimal;
-import java.util.Date;
 
-import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.Id;
 import javax.persistence.Table;
 
 import org.hibernate.annotations.NamedNativeQueries;
 import org.hibernate.annotations.NamedNativeQuery;
 import org.hibernate.annotations.NamedQueries;
 import org.hibernate.annotations.NamedQuery;
-import org.hibernate.annotations.Type;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
 import gov.ca.cwds.data.persistence.PersistentObject;
-import gov.ca.cwds.data.std.ApiPersonAware;
-import gov.ca.cwds.data.std.ApiPhoneAware;
-
 
 /**
- * {@link PersistentObject} representing a EducationProviderContact
+ * {@link PersistentObject} representing a EducationProviderContact.
  * 
  * @author CWDS API Team
  */
@@ -50,57 +42,12 @@ import gov.ca.cwds.data.std.ApiPhoneAware;
 @Table(name = "EDPRVCNT")
 @JsonPropertyOrder(alphabetic = true)
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class EducationProviderContact extends CmsPersistentObject
-    implements ApiPersonAware, ApiPhoneAware {
+public class EducationProviderContact extends BaseEducationProviderContact {
 
   /**
-   * Base serialization value. Increment by class version.
+   * 
    */
   private static final long serialVersionUID = 1L;
-
-  @Column(name = "DOE_IND")
-  private String departmentOfEducationIndicator;
-
-  @Column(name = "EMAILADR")
-  private String emailAddress;
-
-  @Column(name = "FAX_NO")
-  private BigDecimal faxNumber;
-
-  @Column(name = "FIRST_NME")
-  private String firstName;
-
-  @Column(name = "FKED_PVDRT")
-  private String fKeyEducationProvider;
-
-  @Id
-  @Column(name = "IDENTIFIER", length = CMS_ID_LEN)
-  private String id;
-
-  @Column(name = "LAST_NME")
-  private String lastName;
-
-  @Column(name = "MIDDLE_NM")
-  private String middleName;
-
-  @Column(name = "NM_PREFIX")
-  private String namePrefixDescription;
-
-  @Type(type = "integer")
-  @Column(name = "PH_EXTNO")
-  private Integer phoneExtensionNumber;
-
-  @Column(name = "PH_NUMBR")
-  private BigDecimal phoneNumber;
-
-  @Column(name = "PRICNTIND")
-  private String primaryContactIndicator;
-
-  @Column(name = "SUFFX_TITL")
-  private String suffixTitleDescription;
-
-  @Column(name = "TITLDESC")
-  private String titleDescription;
 
   /**
    * Default constructor
@@ -149,152 +96,6 @@ public class EducationProviderContact extends CmsPersistentObject
     this.primaryContactIndicator = primaryContactIndicator;
     this.suffixTitleDescription = suffixTitleDescription;
     this.titleDescription = titleDescription;
-  }
-
-  /**
-   * @return departmentOfEducationIndicator
-   */
-  public String getdepartmentOfEducationIndicator() {
-    return departmentOfEducationIndicator;
-  }
-
-  /**
-   * @return emailAddress
-   */
-  public String getEmailAddress() {
-    return emailAddress;
-  }
-
-  /**
-   * @return faxNumber
-   */
-  public BigDecimal getFaxNumber() {
-    return faxNumber;
-  }
-
-  /**
-   * @return firstName
-   */
-  @Override
-  public String getFirstName() {
-    return firstName;
-  }
-
-  /**
-   * @return fKeyEducationProvider
-   */
-  public String getfKeyEducationProvider() {
-    return fKeyEducationProvider;
-  }
-
-  /**
-   * @return id
-   */
-  public String getId() {
-    return id;
-  }
-
-  /**
-   * @return lastName
-   */
-  @Override
-  public String getLastName() {
-    return lastName;
-  }
-
-
-  /**
-   * @return middleName
-   */
-  @Override
-  public String getMiddleName() {
-    return middleName;
-  }
-
-  /**
-   * @return namePrefixDescription
-   */
-  public String getNamePrefixDescription() {
-    return namePrefixDescription;
-  }
-
-  /**
-   * @return phoneExtensionNumber
-   */
-  public Integer getPhoneExtensionNumber() {
-    return phoneExtensionNumber;
-  }
-
-  /**
-   * @return phoneNumber
-   */
-  public BigDecimal getPhoneNumberAsDecimal() {
-    return phoneNumber;
-  }
-
-  /**
-   * @return phoneNumber
-   */
-  @Override
-  public String getPhoneNumber() {
-    return phoneNumber != null ? this.phoneNumber.toPlainString() : null;
-  }
-
-  /**
-   * @return primaryContactIndicator
-   */
-  public String getPrimaryContactIndicator() {
-    return primaryContactIndicator;
-  }
-
-  /**
-   * @return suffixTitleDescription
-   */
-  public String getSuffixTitleDescription() {
-    return suffixTitleDescription;
-  }
-
-  /**
-   * @return titleDescription
-   */
-  public String getTitleDescription() {
-    return titleDescription;
-  }
-
-  /**
-   * @return serialVersionUID
-   */
-  public static long getSerialversionuid() {
-    return serialVersionUID;
-  }
-
-  @Override
-  public String getPrimaryKey() {
-    return getId();
-  }
-
-  @JsonIgnore
-  @Override
-  public String getGender() {
-    return null;
-  }
-
-  @JsonIgnore
-  @Override
-  public Date getBirthDate() {
-    return null;
-  }
-
-  @JsonIgnore
-  @Override
-  public String getSsn() {
-    return null;
-  }
-
-  @JsonIgnore
-  @Override
-  public String getNameSuffix() {
-    return this.getSuffixTitleDescription();
   }
 
   @Override
@@ -423,16 +224,6 @@ public class EducationProviderContact extends CmsPersistentObject
       return false;
     }
     return true;
-  }
-
-  @Override
-  public String getPhoneNumberExtension() {
-    return null;
-  }
-
-  @Override
-  public PhoneType getPhoneType() {
-    return null;
   }
 
 }
