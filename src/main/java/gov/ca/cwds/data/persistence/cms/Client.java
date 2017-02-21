@@ -32,6 +32,11 @@ import gov.ca.cwds.rest.api.domain.DomainChef;
 public class Client extends BaseClient {
 
   /**
+   * 
+   */
+  private static final long serialVersionUID = 1L;
+
+  /**
    * Default constructor
    * 
    * Required for Hibernate

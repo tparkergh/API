@@ -1,33 +1,18 @@
 package gov.ca.cwds.data.persistence.cms;
 
-import java.beans.Transient;
-import java.io.Serializable;
-import java.util.Date;
-
-import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.Id;
 import javax.persistence.Table;
 
-import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.hibernate.annotations.NamedNativeQueries;
 import org.hibernate.annotations.NamedNativeQuery;
 import org.hibernate.annotations.NamedQueries;
 import org.hibernate.annotations.NamedQuery;
-import org.hibernate.annotations.Type;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 
-import gov.ca.cwds.data.CmsSystemCodeDeserializer;
-import gov.ca.cwds.data.SystemCodeSerializer;
 import gov.ca.cwds.data.persistence.PersistentObject;
-import gov.ca.cwds.data.std.ApiPersonAware;
-
 
 /**
  * {@link PersistentObject} representing an OtherClientName.
@@ -57,37 +42,7 @@ import gov.ca.cwds.data.std.ApiPersonAware;
 @Table(name = "OCL_NM_T")
 @JsonPropertyOrder(alphabetic = true)
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class OtherClientName extends CmsPersistentObject implements ApiPersonAware {
-
-  @Column(name = "FIRST_NM")
-  private String firstName;
-
-  // TODO: correct unit test and enable the composite key on FKCLIENT_T and THIRD_ID.
-  // @Id
-  @Column(name = "FKCLIENT_T", length = CMS_ID_LEN)
-  private String clientId;
-
-  @Column(name = "LAST_NM")
-  private String lastName;
-
-  @Column(name = "MIDDLE_NM")
-  private String middleName;
-
-  @Column(name = "NMPRFX_DSC")
-  private String namePrefixDescription;
-
-  @SystemCodeSerializer(logical = true, description = true)
-  @JsonDeserialize(using = CmsSystemCodeDeserializer.class)
-  @Type(type = "short")
-  @Column(name = "NAME_TPC")
-  private Short nameType;
-
-  @Column(name = "SUFX_TLDSC")
-  private String suffixTitleDescription;
-
-  @Id
-  @Column(name = "THIRD_ID", length = CMS_ID_LEN)
-  private String thirdId;
+public class OtherClientName extends BaseOtherClientName {
 
   /**
    * Default constructor
@@ -121,90 +76,6 @@ public class OtherClientName extends CmsPersistentObject implements ApiPersonAwa
     this.namePrefixDescription = namePrefixDescription;
     this.nameType = nameType;
     this.suffixTitleDescription = suffixTitleDescription;
-    this.thirdId = thirdId;
-  }
-
-  /**
-   * {@inheritDoc}
-   * 
-   * @see gov.ca.cwds.data.persistence.PersistentObject#getPrimaryKey()
-   */
-  /**
-   * @return the firstName
-   */
-  @Override
-  public String getFirstName() {
-    return StringUtils.trimToEmpty(firstName);
-  }
-
-  /**
-   * @return the lastName
-   */
-  @Override
-  public String getLastName() {
-    return StringUtils.trimToEmpty(lastName);
-  }
-
-  /**
-   * @return the middleName
-   */
-  @Override
-  public String getMiddleName() {
-    return StringUtils.trimToEmpty(middleName);
-  }
-
-  /**
-   * @return the namePrefixDescription
-   */
-  public String getNamePrefixDescription() {
-    return StringUtils.trimToEmpty(namePrefixDescription);
-  }
-
-  /**
-   * @return the nameType
-   */
-  public Short getNameType() {
-    return nameType;
-  }
-
-  /**
-   * @return the suffixTitleDescription
-   */
-  public String getSuffixTitleDescription() {
-    return StringUtils.trimToEmpty(suffixTitleDescription);
-  }
-
-  /**
-   * @return the clientId
-   */
-  @JsonProperty(value = "clientId")
-  public String getClientId() {
-    return StringUtils.trimToEmpty(clientId);
-  }
-
-  /**
-   * @return the "thirdId"
-   */
-  @JsonProperty(value = "thirdId")
-  public String getThirdId() {
-    return StringUtils.trimToEmpty(thirdId);
-  }
-
-  /**
-   * 
-   * @param clientId the clientId
-   */
-  @JsonProperty(value = "clientId")
-  public void setClientId(String clientId) {
-    this.clientId = clientId;
-  }
-
-  /**
-   * 
-   * @param thirdId the "thirdId"
-   */
-  @JsonProperty(value = "thirdId")
-  public void setThirdId(String thirdId) {
     this.thirdId = thirdId;
   }
 
@@ -246,54 +117,6 @@ public class OtherClientName extends CmsPersistentObject implements ApiPersonAwa
       return false;
 
     return true;
-  }
-
-  // ==================
-  // IPersonAware:
-  // ==================
-
-  @JsonIgnore
-  @Override
-  @Transient
-  public String getGender() {
-    // Does not apply
-    return null;
-  }
-
-  @JsonIgnore
-  @Override
-  @Transient
-  public Date getBirthDate() {
-    // Does not apply
-    return null;
-  }
-
-  @JsonIgnore
-  @Override
-  @Transient
-  public String getSsn() {
-    // Does not apply
-    return null;
-  }
-
-  @JsonIgnore
-  @Override
-  @Transient
-  public String getNameSuffix() {
-    return this.suffixTitleDescription;
-  }
-
-  @Override
-  public String toString() {
-    return "OtherClientName [id=" + clientId + ", firstName=" + firstName + ", lastName=" + lastName
-        + ", middleName=" + middleName + ", namePrefixDescription=" + namePrefixDescription
-        + ", nameType=" + nameType + ", suffixTitleDescription=" + suffixTitleDescription
-        + ", thirdId=" + thirdId + "]";
-  }
-
-  @Override
-  public Serializable getPrimaryKey() {
-    return this.thirdId;
   }
 
 }

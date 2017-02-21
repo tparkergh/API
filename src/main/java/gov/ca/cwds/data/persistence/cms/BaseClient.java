@@ -1,7 +1,5 @@
 package gov.ca.cwds.data.persistence.cms;
 
-
-
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -32,179 +30,247 @@ public abstract class BaseClient extends CmsPersistentObject
    * Base serialization version. Increment by class version.
    */
   private static final long serialVersionUID = 1L;
+
   private static final Logger LOGGER = LoggerFactory.getLogger(Client.class);
+
   @Column(name = "ADJDEL_IND")
   protected String adjudicatedDelinquentIndicator;
+
   @Column(name = "ADPTN_STCD")
   protected String adoptionStatusCode;
+
   @Column(name = "ALN_REG_NO")
   protected String alienRegistrationNumber;
+
   @Column(name = "BIRTH_CITY")
   protected String birthCity;
+
   @SystemCodeSerializer(logical = true, description = true)
   @JsonDeserialize(using = CmsSystemCodeDeserializer.class)
   @Type(type = "short")
   @Column(name = "B_CNTRY_C")
   protected Short birthCountryCodeType;
+
   @Type(type = "date")
   @Column(name = "BIRTH_DT")
   protected Date birthDate;
+
   @Column(name = "BR_FAC_NM")
   protected String birthFacilityName;
+
   @SystemCodeSerializer(logical = true, description = true)
   @JsonDeserialize(using = CmsSystemCodeDeserializer.class)
   @Type(type = "short")
   @Column(name = "B_STATE_C")
   protected Short birthStateCodeType;
+
   @Column(name = "BP_VER_IND")
   protected String birthplaceVerifiedIndicator;
+
   @Column(name = "CHLD_CLT_B")
   protected String childClientIndicatorVar;
+
   @Column(name = "CL_INDX_NO")
   protected String clientIndexNumber;
+
   @Column(name = "COMMNT_DSC")
   protected String commentDescription;
+
   @Column(name = "COM_FST_NM")
   protected String commonFirstName;
+
   @Column(name = "COM_LST_NM")
   protected String commonLastName;
+
   @Column(name = "COM_MID_NM")
   protected String commonMiddleName;
+
   @Type(type = "date")
   @Column(name = "CONF_ACTDT")
   protected Date confidentialityActionDate;
+
   @Column(name = "CONF_EFIND")
   protected String confidentialityInEffectIndicator;
+
   @Type(type = "date")
   @Column(name = "CREATN_DT")
   protected Date creationDate;
+
   @Column(name = "CURRCA_IND")
   protected String currCaChildrenServIndicator;
+
   @Column(name = "COTH_DESC")
   protected String currentlyOtherDescription;
+
   @Column(name = "CURREG_IND")
   protected String currentlyRegionalCenterIndicator;
+
   @Type(type = "date")
   @Column(name = "DEATH_DT")
   protected Date deathDate;
+
   @Column(name = "DTH_DT_IND")
   protected String deathDateVerifiedIndicator;
+
   @Column(name = "DEATH_PLC")
   protected String deathPlace;
+
   @Column(name = "DTH_RN_TXT")
   protected String deathReasonText;
+
   @Column(name = "DRV_LIC_NO")
   protected String driverLicenseNumber;
+
   @SystemCodeSerializer(logical = true, description = true)
   @JsonDeserialize(using = CmsSystemCodeDeserializer.class)
   @Type(type = "short")
   @Column(name = "D_STATE_C")
   protected Short driverLicenseStateCodeType;
+
   @Column(name = "EMAIL_ADDR")
   protected String emailAddress;
+
   @Column(name = "EST_DOB_CD")
   protected String estimatedDobCode;
+
   @Column(name = "ETH_UD_CD")
   protected String ethUnableToDetReasonCode;
+
   @Type(type = "date")
   @Column(name = "FTERM_DT")
   protected Date fatherParentalRightTermDate;
+
   @Column(name = "GENDER_CD")
   protected String genderCode;
+
   @Column(name = "HEALTH_TXT")
   protected String healthSummaryText;
+
   @Column(name = "HISP_UD_CD")
   protected String hispUnableToDetReasonCode;
+
   @Column(name = "HISP_CD")
   protected String hispanicOriginCode;
+
   @Id
   @Column(name = "IDENTIFIER", length = CMS_ID_LEN)
   protected String id;
+
   @SystemCodeSerializer(logical = true, description = true)
   @JsonDeserialize(using = CmsSystemCodeDeserializer.class)
   @Type(type = "short")
   @Column(name = "I_CNTRY_C")
   protected Short immigrationCountryCodeType;
+
   @SystemCodeSerializer(logical = true, description = true)
   @JsonDeserialize(using = CmsSystemCodeDeserializer.class)
   @Type(type = "short")
   @Column(name = "IMGT_STC")
   protected Short immigrationStatusType;
+
   @Column(name = "INCAPC_CD")
   protected String incapacitatedParentCode;
+
   @Column(name = "HCARE_IND")
   protected String individualHealthCarePlanIndicator;
+
   @Column(name = "LIMIT_IND")
   protected String limitationOnScpHealthIndicator;
+
   @Column(name = "LITRATE_CD")
   protected String literateCode;
+
   @Column(name = "MAR_HIST_B")
   protected String maritalCohabitatnHstryIndicatorVar;
+
   @SystemCodeSerializer(logical = true, description = true)
   @JsonDeserialize(using = CmsSystemCodeDeserializer.class)
   @Type(type = "short")
   @Column(name = "MRTL_STC")
   protected Short maritalStatusType;
+
   @Column(name = "MILT_STACD")
   protected String militaryStatusCode;
+
   @Type(type = "date")
   @Column(name = "MTERM_DT")
   protected Date motherParentalRightTermDate;
+
   @Column(name = "NMPRFX_DSC")
   protected String namePrefixDescription;
+
   @SystemCodeSerializer(logical = true, description = true)
   @JsonDeserialize(using = CmsSystemCodeDeserializer.class)
   @Type(type = "short")
   @Column(name = "NAME_TPC")
   protected Short nameType;
+
   @Column(name = "OUTWRT_IND")
   protected String outstandingWarrantIndicator;
+
   @Column(name = "PREVCA_IND")
   protected String prevCaChildrenServIndicator;
+
   @Column(name = "POTH_DESC")
   protected String prevOtherDescription;
+
   @Column(name = "PREREG_IND")
   protected String prevRegionalCenterIndicator;
+
   @SystemCodeSerializer(logical = true, description = true)
   @JsonDeserialize(using = CmsSystemCodeDeserializer.class)
   @Type(type = "short")
   @Column(name = "P_ETHNCTYC")
   protected Short primaryEthnicityType;
+
   @SystemCodeSerializer(logical = true, description = true)
   @JsonDeserialize(using = CmsSystemCodeDeserializer.class)
   @Type(type = "short")
   @Column(name = "P_LANG_TPC")
   protected Short primaryLanguageType;
+
   @SystemCodeSerializer(logical = true, description = true)
   @JsonDeserialize(using = CmsSystemCodeDeserializer.class)
   @Type(type = "short")
   @Column(name = "RLGN_TPC")
   protected Short religionType;
+
   @SystemCodeSerializer(logical = true, description = true)
   @JsonDeserialize(using = CmsSystemCodeDeserializer.class)
   @Type(type = "short")
   @Column(name = "S_LANG_TC")
   protected Short secondaryLanguageType;
+
   @Column(name = "SNTV_HLIND")
   protected String sensitiveHlthInfoOnFileIndicator;
+
   @Column(name = "SENSTV_IND")
   protected String sensitivityIndicator;
+
   @Column(name = "SOCPLC_CD")
   protected String soc158PlacementCode;
+
   @Column(name = "SOC158_IND")
   protected String soc158SealedClientIndicator;
+
   @Column(name = "SSN_CHG_CD")
   protected String socialSecurityNumChangedCode;
+
   @Column(name = "SS_NO")
   protected String socialSecurityNumber;
+
   @Column(name = "SUFX_TLDSC")
   protected String suffixTitleDescription;
+
   @Column(name = "TRBA_CLT_B")
   protected String tribalAncestryClientIndicatorVar;
+
   @Column(name = "TR_MBVRT_B")
   protected String tribalMembrshpVerifctnIndicatorVar;
+
   @Column(name = "UNEMPLY_CD")
   protected String unemployedParentCode;
+
   @Column(name = "ZIPPY_IND")
   protected String zippyCreatedIndicator;
 

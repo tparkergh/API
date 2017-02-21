@@ -15,7 +15,6 @@ import gov.ca.cwds.data.CmsSystemCodeDeserializer;
 import gov.ca.cwds.data.SystemCodeSerializer;
 import gov.ca.cwds.data.persistence.PersistentObject;
 
-
 /**
  * {@link PersistentObject} representing a ClientCollateral
  * 
@@ -71,7 +70,6 @@ public class ClientCollateral extends CmsPersistentObject {
    * @param clientId - foreign key Client table
    * @param collateralIndividualId - foreign key to CollateralIndividual table
    * @param thirdId - Unique key
-   * 
    */
   public ClientCollateral(String activeIndicator, Short collateralClientReporterRelationshipType,
       String commentDescription, String clientId, String collateralIndividualId, String thirdId) {

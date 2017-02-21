@@ -31,8 +31,6 @@ import gov.ca.cwds.data.CmsSystemCodeDeserializer;
 import gov.ca.cwds.data.ReadablePhone;
 import gov.ca.cwds.data.SystemCodeSerializer;
 import gov.ca.cwds.data.persistence.PersistentObject;
-import gov.ca.cwds.data.std.ApiMultiplePhonesAware;
-import gov.ca.cwds.data.std.ApiPersonAware;
 import gov.ca.cwds.data.std.ApiPhoneAware;
 
 /**
@@ -61,7 +59,7 @@ import gov.ca.cwds.data.std.ApiPhoneAware;
 @Table(name = "ATTRNY_T")
 @JsonPropertyOrder(alphabetic = true)
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class Attorney extends CmsPersistentObject implements ApiPersonAware, ApiMultiplePhonesAware {
+public class Attorney extends BaseAttorney {
 
   private static final Logger LOGGER = LoggerFactory.getLogger(Attorney.class);
 
@@ -484,7 +482,6 @@ public class Attorney extends CmsPersistentObject implements ApiPersonAware, Api
   @Override
   @Transient
   public ApiPhoneAware[] getPhones() {
-
     List<ApiPhoneAware> phones = new ArrayList<>();
     if (this.primaryPhoneNumber != null && !BigDecimal.ZERO.equals(this.primaryPhoneNumber)) {
       phones.add(new ReadablePhone(this.primaryPhoneNumber.toPlainString(),
