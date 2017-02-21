@@ -49,6 +49,11 @@ public class PhoneNumber extends NsPersistentObject {
   @OneToMany(fetch = FetchType.LAZY, mappedBy = "personPhoneId.phoneNumber")
   private Set<PersonPhone> personPhone = new HashSet<>();
 
+  @SuppressWarnings("javadoc")
+  public PhoneNumber() {
+    super();
+  }
+
   /**
    * @param id - unique id
    * @param number - the phone number
