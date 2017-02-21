@@ -65,6 +65,10 @@ public class Person extends NsPersistentObject
   @OneToMany(fetch = FetchType.EAGER, mappedBy = "personPhoneId.person")
   private Set<PersonPhone> personPhone = new HashSet<>();
 
+  @OneToMany(fetch = FetchType.EAGER, mappedBy = "personLanguageId.person")
+  private Set<PersonLanguage> personLanguage = new HashSet<>();
+
+
 
   /**
    * Default constructor
@@ -86,9 +90,11 @@ public class Person extends NsPersistentObject
    * @param ssn The SSN
    * @param personAddress The address of this person
    * @param personPhone The phoneNumber of this person
+   * @param personLanguage The language of this person
    */
   public Person(Long id, String firstName, String lastName, String gender, Date dateOfBirth,
-      String ssn, Set<PersonAddress> personAddress, Set<PersonPhone> personPhone) {
+      String ssn, Set<PersonAddress> personAddress, Set<PersonPhone> personPhone,
+      Set<PersonLanguage> personLanguage) {
     super();
     this.id = id;
     this.firstName = firstName;
@@ -98,6 +104,7 @@ public class Person extends NsPersistentObject
     this.ssn = ssn;
     this.personAddress = personAddress;
     this.personPhone = personPhone;
+    this.personLanguage = personLanguage;
   }
 
 
@@ -113,6 +120,13 @@ public class Person extends NsPersistentObject
    */
   public void addPersonPhone(PersonPhone personPhone) {
     this.personPhone.add(personPhone);
+  }
+
+  /**
+   * @param personLanguage - The person language
+   */
+  public void addPersonLanguage(PersonLanguage personLanguage) {
+    this.personLanguage.add(personLanguage);
   }
 
   /**
@@ -142,6 +156,13 @@ public class Person extends NsPersistentObject
       for (gov.ca.cwds.rest.api.domain.PhoneNumber phoneNumbers : phoneNumber) {
         this.addPersonPhone(
             new PersonPhone(this, new PhoneNumber(phoneNumbers, lastUpdatedId, createUserId)));
+      }
+    }
+    Set<gov.ca.cwds.rest.api.domain.Language> language = person.getLanguage();
+    if (language != null && !language.isEmpty()) {
+      for (gov.ca.cwds.rest.api.domain.Language languages : language) {
+        this.addPersonLanguage(
+            new PersonLanguage(this, new Language(languages, lastUpdatedId, createUserId)));
       }
     }
 
@@ -217,6 +238,13 @@ public class Person extends NsPersistentObject
     return personPhone;
   }
 
+  /**
+   * @return the personLanguage
+   */
+  public Set<PersonLanguage> getPersonLanguage() {
+    return personLanguage;
+  }
+
   public void setPersonAddress(Set<PersonAddress> personAddress) {
     this.personAddress = personAddress;
   }
@@ -224,6 +252,12 @@ public class Person extends NsPersistentObject
   public void setPersonPhone(Set<PersonPhone> personPhone) {
     this.personPhone = personPhone;
   }
+
+  public void setPersonLanguage(Set<PersonLanguage> personLanguage) {
+    this.personLanguage = personLanguage;
+  }
+
+
 
   // ================
   // IPersonAware

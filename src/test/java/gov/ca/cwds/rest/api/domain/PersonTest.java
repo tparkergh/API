@@ -47,6 +47,8 @@ public class PersonTest {
   private Set<Address> addresses = new HashSet<>();
   private PhoneNumber phoneNumber = new PhoneNumber("408-641-0287", "cell");
   private Set<PhoneNumber> phoneNumbers = new HashSet<>();
+  private Language language = new Language("English");
+  private Set<Language> languages = new HashSet<>();
 
   private static final ObjectMapper MAPPER = Jackson.newObjectMapper();
 
@@ -125,8 +127,9 @@ public class PersonTest {
 
     addresses.add(address);
     phoneNumbers.add(phoneNumber);
+    languages.add(language);
     Person domain =
-        new Person(firstName, lastName, gender, birthDate, ssn, addresses, phoneNumbers);
+        new Person(firstName, lastName, gender, birthDate, ssn, addresses, phoneNumbers, languages);
 
     assertThat(domain.getAddress(), is(equalTo(addresses)));
     assertThat(domain.getPhoneNumber(), is(equalTo(phoneNumbers)));

@@ -26,9 +26,11 @@ import gov.ca.cwds.data.cms.ReporterDao;
 import gov.ca.cwds.data.cms.StaffPersonDao;
 import gov.ca.cwds.data.es.ElasticsearchDao;
 import gov.ca.cwds.data.ns.AddressDao;
+import gov.ca.cwds.data.ns.LanguageDao;
 import gov.ca.cwds.data.ns.ParticipantDao;
 import gov.ca.cwds.data.ns.PersonAddressDao;
 import gov.ca.cwds.data.ns.PersonDao;
+import gov.ca.cwds.data.ns.PersonLanguageDao;
 import gov.ca.cwds.data.ns.PersonPhoneDao;
 import gov.ca.cwds.data.ns.PhoneNumberDao;
 import gov.ca.cwds.data.ns.ScreeningDao;
@@ -52,10 +54,13 @@ import gov.ca.cwds.data.persistence.cms.StaffPerson;
 import gov.ca.cwds.data.persistence.cms.SubstituteCareProvider;
 import gov.ca.cwds.data.persistence.cms.SystemCodeDaoFileImpl;
 import gov.ca.cwds.data.persistence.ns.Address;
+import gov.ca.cwds.data.persistence.ns.Language;
 import gov.ca.cwds.data.persistence.ns.Participant;
 import gov.ca.cwds.data.persistence.ns.Person;
 import gov.ca.cwds.data.persistence.ns.PersonAddress;
 import gov.ca.cwds.data.persistence.ns.PersonAddressId;
+import gov.ca.cwds.data.persistence.ns.PersonLanguage;
+import gov.ca.cwds.data.persistence.ns.PersonLanguageId;
 import gov.ca.cwds.data.persistence.ns.PersonPhone;
 import gov.ca.cwds.data.persistence.ns.PersonPhoneId;
 import gov.ca.cwds.data.persistence.ns.PhoneNumber;
@@ -103,7 +108,8 @@ public class DataAccessModule extends AbstractModule {
   private final HibernateBundle<ApiConfiguration> nsHibernateBundle =
       new HibernateBundle<ApiConfiguration>(Person.class, Address.class, Screening.class,
           Participant.class, PersonAddressId.class, PersonAddress.class, PersonPhoneId.class,
-          PhoneNumber.class, PersonPhone.class) {
+          PhoneNumber.class, PersonPhone.class, PersonLanguageId.class, Language.class,
+          PersonLanguage.class) {
         @Override
         public DataSourceFactory getDataSourceFactory(ApiConfiguration configuration) {
           return configuration.getNsDataSourceFactory();
@@ -148,9 +154,11 @@ public class DataAccessModule extends AbstractModule {
     bind(ScreeningDao.class);
     bind(ParticipantDao.class);
     bind(PhoneNumberDao.class);
+    bind(LanguageDao.class);
     bind(CrossReportDao.class);
     bind(PersonAddressDao.class);
     bind(PersonPhoneDao.class);
+    bind(PersonLanguageDao.class);
 
     bind(ElasticsearchDao.class);
     bind(SmartyStreetsDao.class);

@@ -64,7 +64,8 @@ public class PersonResourceTest {
    */
   @Test
   public void createDelegatesToCrudsResource() throws Exception {
-    Person person = new Person("firstname", "last", "M", "1990-11-22", "000000000", null, null);
+    Person person =
+        new Person("firstname", "last", "M", "1990-11-22", "000000000", null, null, null);
     inMemoryResource.client().target(ROOT_RESOURCE).request().accept(MediaType.APPLICATION_JSON)
         .post(Entity.entity(person, MediaType.APPLICATION_JSON));
     verify(resourceDelegate, atLeastOnce()).create(eq(person));
@@ -90,7 +91,8 @@ public class PersonResourceTest {
    */
   @Test
   public void udpateReturns501() throws Exception {
-    Person person = new Person("firstname", "last", "M", "1973-11-22", "000000000", null, null);
+    Person person =
+        new Person("firstname", "last", "M", "1973-11-22", "000000000", null, null, null);
     int status =
         inMemoryResource.client().target(ROOT_RESOURCE).request().accept(MediaType.APPLICATION_JSON)
             .put(Entity.entity(person, MediaType.APPLICATION_JSON)).getStatus();

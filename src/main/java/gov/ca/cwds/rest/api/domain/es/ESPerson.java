@@ -17,6 +17,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import gov.ca.cwds.data.persistence.cms.OtherClientName;
 import gov.ca.cwds.data.persistence.cms.Reporter;
 import gov.ca.cwds.rest.api.domain.Address;
+import gov.ca.cwds.rest.api.domain.Language;
 import gov.ca.cwds.rest.api.domain.Person;
 import gov.ca.cwds.rest.api.domain.PhoneNumber;
 import gov.ca.cwds.rest.services.ServiceException;
@@ -33,6 +34,11 @@ public class ESPerson extends Person {
   // =========================
   // PRIVATE STATIC:
   // =========================
+
+  /**
+   * 
+   */
+  private static final long serialVersionUID = 1L;
 
   private static final Logger LOGGER = LoggerFactory.getLogger(ESPerson.class);
 
@@ -188,7 +194,7 @@ public class ESPerson extends Person {
         ESPerson.<String>pullCol(m, ESColumn.GENDER),
         ESPerson.<String>pullCol(m, ESColumn.BIRTH_DATE), ESPerson.<String>pullCol(m, ESColumn.SSN),
         ESPerson.<String>pullCol(m, ESColumn.TYPE), ESPerson.<String>pullCol(m, ESColumn.SOURCE),
-        null, null);
+        null, null, null);
 
     if (!StringUtils.isBlank(ret.getSourceType()) && !StringUtils.isBlank(ret.getSourceJson())) {
       try {
@@ -316,11 +322,12 @@ public class ESPerson extends Person {
    * @param ssn Social Security Number
    * @param address The address, if any
    * @param phoneNumber The phoneNumber, if any
+   * @param language The language, if any
    */
   public ESPerson(String id, String firstName, String lastName, String gender, String birthDate,
-      String ssn, Set<Address> address, Set<PhoneNumber> phoneNumber) {
+      String ssn, Set<Address> address, Set<PhoneNumber> phoneNumber, Set<Language> language) {
     super(trim(firstName), trim(lastName), trim(gender), trim(birthDate), trim(ssn), address,
-        phoneNumber);
+        phoneNumber, language);
     this.id = id;
   }
 
@@ -338,12 +345,13 @@ public class ESPerson extends Person {
    * @param sourceJson raw, nested child document as JSON
    * @param address address, if any
    * @param phoneNumber PhoneNumber, if any
+   * @param language languages, if any
    */
   public ESPerson(String id, String firstName, String lastName, String gender, String birthDate,
       String ssn, String sourceType, String sourceJson, Set<Address> address,
-      Set<PhoneNumber> phoneNumber) {
+      Set<PhoneNumber> phoneNumber, Set<Language> language) {
     super(trim(firstName), trim(lastName), trim(gender), trim(birthDate), trim(ssn), address,
-        phoneNumber);
+        phoneNumber, language);
     this.id = id;
     this.sourceType = sourceType;
     this.sourceJson = sourceJson;

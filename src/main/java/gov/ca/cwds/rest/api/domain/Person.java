@@ -9,6 +9,7 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import gov.ca.cwds.data.persistence.ns.PersonAddress;
+import gov.ca.cwds.data.persistence.ns.PersonLanguage;
 import gov.ca.cwds.data.persistence.ns.PersonPhone;
 import gov.ca.cwds.rest.api.Request;
 import gov.ca.cwds.rest.api.Response;
@@ -60,6 +61,10 @@ public class Person extends DomainObject implements Request, Response {
   @JsonProperty("phone")
   private Set<PhoneNumber> phoneNumber;
 
+  @JsonProperty("language")
+  private Set<Language> language;
+
+
   /**
    * Constructor
    * 
@@ -70,13 +75,15 @@ public class Person extends DomainObject implements Request, Response {
    * @param ssn The ssn
    * @param address The address
    * @param phoneNumber The phoneNumber
+   * @param language The language
    */
   @JsonCreator
   public Person(@JsonProperty("first_name") String firstName,
       @JsonProperty("last_name") String lastName, @JsonProperty("gender") String gender,
       @JsonProperty("birth_date") String birthDate, @JsonProperty("ssn") String ssn,
       @JsonProperty("address") Set<Address> address,
-      @JsonProperty("phone") Set<PhoneNumber> phoneNumber) {
+      @JsonProperty("phone") Set<PhoneNumber> phoneNumber,
+      @JsonProperty("language") Set<Language> language) {
     super();
     this.firstName = firstName;
     this.lastName = lastName;
@@ -85,6 +92,7 @@ public class Person extends DomainObject implements Request, Response {
     this.ssn = ssn;
     this.address = address;
     this.phoneNumber = phoneNumber;
+    this.language = language;
   }
 
   /**
@@ -108,6 +116,12 @@ public class Person extends DomainObject implements Request, Response {
       for (PersonPhone personPhone : person.getPersonPhone()) {
         this.phoneNumber = new HashSet<>();
         this.phoneNumber.add(new PhoneNumber(personPhone.getPhoneNumber()));
+      }
+    }
+    if (person.getPersonLanguage() != null && !person.getPersonLanguage().isEmpty()) {
+      for (PersonLanguage personLanguage : person.getPersonLanguage()) {
+        this.language = new HashSet<>();
+        this.language.add(new Language(personLanguage.getLanguage()));
       }
     }
   }
@@ -162,6 +176,13 @@ public class Person extends DomainObject implements Request, Response {
   }
 
   /**
+   * @return the language
+   */
+  public Set<Language> getLanguage() {
+    return language;
+  }
+
+  /**
    * {@inheritDoc}
    * 
    * @see java.lang.Object#hashCode()
@@ -172,6 +193,7 @@ public class Person extends DomainObject implements Request, Response {
     int result = 1;
     result = prime * result + ((address == null) ? 0 : address.hashCode());
     result = prime * result + ((phoneNumber == null) ? 0 : phoneNumber.hashCode());
+    result = prime * result + ((language == null) ? 0 : language.hashCode());
     result = prime * result + ((birthDate == null) ? 0 : birthDate.hashCode());
     result = prime * result + ((firstName == null) ? 0 : firstName.hashCode());
     result = prime * result + ((gender == null) ? 0 : gender.hashCode());
@@ -203,6 +225,11 @@ public class Person extends DomainObject implements Request, Response {
       if (other.phoneNumber != null)
         return false;
     } else if (!phoneNumber.equals(other.phoneNumber))
+      return false;
+    if (language == null) {
+      if (other.language != null)
+        return false;
+    } else if (!language.equals(other.language))
       return false;
     if (birthDate == null) {
       if (other.birthDate != null)

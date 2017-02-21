@@ -12,16 +12,20 @@ import com.google.inject.Inject;
 import gov.ca.cwds.data.Dao;
 import gov.ca.cwds.data.es.ElasticsearchDao;
 import gov.ca.cwds.data.ns.AddressDao;
+import gov.ca.cwds.data.ns.LanguageDao;
 import gov.ca.cwds.data.ns.PersonAddressDao;
 import gov.ca.cwds.data.ns.PersonDao;
+import gov.ca.cwds.data.ns.PersonLanguageDao;
 import gov.ca.cwds.data.ns.PersonPhoneDao;
 import gov.ca.cwds.data.ns.PhoneNumberDao;
 import gov.ca.cwds.data.persistence.ns.PersonAddress;
+import gov.ca.cwds.data.persistence.ns.PersonLanguage;
 import gov.ca.cwds.data.persistence.ns.PersonPhone;
 import gov.ca.cwds.rest.api.ApiException;
 import gov.ca.cwds.rest.api.Request;
 import gov.ca.cwds.rest.api.Response;
 import gov.ca.cwds.rest.api.domain.Address;
+import gov.ca.cwds.rest.api.domain.Language;
 import gov.ca.cwds.rest.api.domain.Person;
 import gov.ca.cwds.rest.api.domain.PhoneNumber;
 import gov.ca.cwds.rest.api.domain.PostedPerson;
@@ -46,6 +50,8 @@ public class PersonService implements CrudsService {
   private AddressDao addressDao;
   private PhoneNumberDao phoneNumberDao;
   private PersonPhoneDao personPhoneDao;
+  private LanguageDao languageDao;
+  private PersonLanguageDao personLanguageDao;
 
   /**
    * Constructor
@@ -60,17 +66,24 @@ public class PersonService implements CrudsService {
    *        {@link gov.ca.cwds.data.persistence.ns.PersonPhone}
    * @param phoneNumberDao The {@link Dao} handling
    *        {@link gov.ca.cwds.data.persistence.ns.PhoneNumber}
+   * @param personLanguageDao The {@link Dao} handling
+   *        {@link gov.ca.cwds.data.persistence.ns.PersonLanguage}
+   * @param languageDao The {@link Dao} handling {@link gov.ca.cwds.data.persistence.ns.Language}
+   * 
+   * 
    */
   @Inject
   public PersonService(PersonDao personDao, ElasticsearchDao elasticsearchDao,
       PersonAddressDao personAddressDao, AddressDao addressDao, PersonPhoneDao personPhoneDao,
-      PhoneNumberDao phoneNumberDao) {
+      PhoneNumberDao phoneNumberDao, PersonLanguageDao personLanguageDao, LanguageDao languageDao) {
     this.personDao = personDao;
     this.elasticsearchDao = elasticsearchDao;
     this.personAddressDao = personAddressDao;
     this.addressDao = addressDao;
     this.personPhoneDao = personPhoneDao;
     this.phoneNumberDao = phoneNumberDao;
+    this.personLanguageDao = personLanguageDao;
+    this.languageDao = languageDao;
   }
 
   /**
@@ -118,6 +131,16 @@ public class PersonService implements CrudsService {
         managedPerson.addPersonPhone(personPhone);
         phoneNumberDao.create(managedPhoneNumber);
         personPhoneDao.create(personPhone);
+      }
+    }
+    if (person.getLanguage() != null && person.getLanguage().size() > 0) {
+      for (Language language : person.getLanguage()) {
+        gov.ca.cwds.data.persistence.ns.Language managedLanguage =
+            new gov.ca.cwds.data.persistence.ns.Language(language, null, null);
+        PersonLanguage personLanguage = new PersonLanguage(managedPerson, managedLanguage);
+        managedPerson.addPersonLanguage(personLanguage);
+        languageDao.create(managedLanguage);
+        personLanguageDao.create(personLanguage);
       }
     }
     managedPerson = personDao.find(managedPerson.getId());

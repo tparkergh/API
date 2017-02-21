@@ -18,8 +18,8 @@ public class PostedPerson extends Person {
 
   @SuppressWarnings("javadoc")
   public PostedPerson(long id, String firstName, String lastName, String gender, String dateOfBirth,
-      String ssn, Set<Address> address, Set<PhoneNumber> phoneNumber) {
-    super(firstName, lastName, gender, dateOfBirth, ssn, address, phoneNumber);
+      String ssn, Set<Address> address, Set<PhoneNumber> phoneNumber, Set<Language> language) {
+    super(firstName, lastName, gender, dateOfBirth, ssn, address, phoneNumber, language);
     this.id = id;
   }
 
