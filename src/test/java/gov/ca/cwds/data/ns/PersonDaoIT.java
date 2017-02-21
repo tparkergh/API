@@ -7,6 +7,8 @@ import static org.hamcrest.Matchers.notNullValue;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.HashSet;
+import java.util.Set;
 
 import org.hibernate.Query;
 import org.hibernate.Session;
@@ -21,8 +23,8 @@ import org.junit.Test;
 import org.junit.rules.ExpectedException;
 
 import gov.ca.cwds.data.junit.template.DaoTestTemplate;
-import gov.ca.cwds.data.persistence.ns.Address;
 import gov.ca.cwds.data.persistence.ns.Person;
+import gov.ca.cwds.data.persistence.ns.PersonAddress;
 
 /**
  * 
@@ -120,8 +122,16 @@ public class PersonDaoIT implements DaoTestTemplate {
   @Override
   @Test
   public void testCreate() {
-    Address address = new Address(null, "123 Main Street", "SAC", "CA", 95757, "Home");
-    Person person = new Person(null, "John", "Doe", "Male", new Date(), "111-11-1111", address);
+    gov.ca.cwds.data.persistence.ns.Address toCreateAddress =
+        new gov.ca.cwds.data.persistence.ns.Address(1L, "742 Evergreen Terrace", "Springfield",
+            "WA", new Integer(98700), "Home");
+    Set<PersonAddress> personAddresses = new HashSet<>();
+
+    PersonAddress personAddress = new PersonAddress();
+    personAddress.setAddress(toCreateAddress);
+    personAddresses.add(personAddress);
+    Person person =
+        new Person(null, "John", "Doe", "Male", new Date(), "111-11-1111", personAddresses, null);
     Person created = personDao.create(person);
     assertThat(created, is(person));
   }

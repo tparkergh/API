@@ -1,10 +1,15 @@
 package gov.ca.cwds.rest.api.domain;
 
+import java.util.HashSet;
+import java.util.Set;
+
 import javax.validation.constraints.Size;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+import gov.ca.cwds.data.persistence.ns.PersonAddress;
+import gov.ca.cwds.data.persistence.ns.PersonPhone;
 import gov.ca.cwds.rest.api.Request;
 import gov.ca.cwds.rest.api.Response;
 import gov.ca.cwds.rest.validation.Date;
@@ -50,7 +55,10 @@ public class Person extends DomainObject implements Request, Response {
   private String ssn;
 
   @JsonProperty("address")
-  private Address address;
+  private Set<Address> address;
+
+  @JsonProperty("phone")
+  private Set<PhoneNumber> phoneNumber;
 
   /**
    * Constructor
@@ -61,12 +69,14 @@ public class Person extends DomainObject implements Request, Response {
    * @param birthDate The date of birth
    * @param ssn The ssn
    * @param address The address
+   * @param phoneNumber The phoneNumber
    */
   @JsonCreator
   public Person(@JsonProperty("first_name") String firstName,
       @JsonProperty("last_name") String lastName, @JsonProperty("gender") String gender,
       @JsonProperty("birth_date") String birthDate, @JsonProperty("ssn") String ssn,
-      @JsonProperty("address") Address address) {
+      @JsonProperty("address") Set<Address> address,
+      @JsonProperty("phone") Set<PhoneNumber> phoneNumber) {
     super();
     this.firstName = firstName;
     this.lastName = lastName;
@@ -74,6 +84,7 @@ public class Person extends DomainObject implements Request, Response {
     this.birthDate = birthDate;
     this.ssn = ssn;
     this.address = address;
+    this.phoneNumber = phoneNumber;
   }
 
   /**
@@ -87,8 +98,17 @@ public class Person extends DomainObject implements Request, Response {
     this.gender = person.getGender();
     this.birthDate = DomainChef.cookDate(person.getDateOfBirth());
     this.ssn = person.getSsn();
-    if (person.getAddress() != null) {
-      this.address = new Address(person.getAddress());
+    if (person.getPersonAddress() != null && !person.getPersonAddress().isEmpty()) {
+      for (PersonAddress personAddress : person.getPersonAddress()) {
+        this.address = new HashSet<>();
+        this.address.add(new Address(personAddress.getAddress()));
+      }
+    }
+    if (person.getPersonPhone() != null && !person.getPersonPhone().isEmpty()) {
+      for (PersonPhone personPhone : person.getPersonPhone()) {
+        this.phoneNumber = new HashSet<>();
+        this.phoneNumber.add(new PhoneNumber(personPhone.getPhoneNumber()));
+      }
     }
   }
 
@@ -130,8 +150,15 @@ public class Person extends DomainObject implements Request, Response {
   /**
    * @return the address
    */
-  public Address getAddress() {
+  public Set<Address> getAddress() {
     return address;
+  }
+
+  /**
+   * @return the phoneNumber
+   */
+  public Set<PhoneNumber> getPhoneNumber() {
+    return phoneNumber;
   }
 
   /**
@@ -144,6 +171,7 @@ public class Person extends DomainObject implements Request, Response {
     final int prime = 31;
     int result = 1;
     result = prime * result + ((address == null) ? 0 : address.hashCode());
+    result = prime * result + ((phoneNumber == null) ? 0 : phoneNumber.hashCode());
     result = prime * result + ((birthDate == null) ? 0 : birthDate.hashCode());
     result = prime * result + ((firstName == null) ? 0 : firstName.hashCode());
     result = prime * result + ((gender == null) ? 0 : gender.hashCode());
@@ -170,6 +198,11 @@ public class Person extends DomainObject implements Request, Response {
       if (other.address != null)
         return false;
     } else if (!address.equals(other.address))
+      return false;
+    if (phoneNumber == null) {
+      if (other.phoneNumber != null)
+        return false;
+    } else if (!phoneNumber.equals(other.phoneNumber))
       return false;
     if (birthDate == null) {
       if (other.birthDate != null)

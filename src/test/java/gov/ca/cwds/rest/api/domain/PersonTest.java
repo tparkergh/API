@@ -9,6 +9,8 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 import java.io.IOException;
+import java.util.HashSet;
+import java.util.Set;
 
 import javax.ws.rs.core.Response;
 
@@ -42,6 +44,9 @@ public class PersonTest {
   private String birthDate = "2001-09-01";
   private String ssn = "123456789";
   private Address address = new Address("123 Main", "Sacramento", "CA", 95757, "Home");
+  private Set<Address> addresses = new HashSet<>();
+  private PhoneNumber phoneNumber = new PhoneNumber("408-641-0287", "cell");
+  private Set<PhoneNumber> phoneNumbers = new HashSet<>();
 
   private static final ObjectMapper MAPPER = Jackson.newObjectMapper();
 
@@ -118,9 +123,13 @@ public class PersonTest {
   @Test
   public void jsonCreatorConstructorTest() throws Exception {
 
-    Person domain = new Person(firstName, lastName, gender, birthDate, ssn, address);
+    addresses.add(address);
+    phoneNumbers.add(phoneNumber);
+    Person domain =
+        new Person(firstName, lastName, gender, birthDate, ssn, addresses, phoneNumbers);
 
-    assertThat(domain.getAddress(), is(equalTo(address)));
+    assertThat(domain.getAddress(), is(equalTo(addresses)));
+    assertThat(domain.getPhoneNumber(), is(equalTo(phoneNumbers)));
     assertThat(domain.getBirthDate(), is(equalTo(birthDate)));
     assertThat(domain.getFirstName(), is(equalTo(firstName)));
     assertThat(domain.getGender(), is(equalTo(gender)));

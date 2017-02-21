@@ -1,15 +1,16 @@
 package gov.ca.cwds.data.persistence.ns;
 
 import java.util.Date;
+import java.util.HashSet;
+import java.util.Set;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.OneToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
@@ -58,9 +59,12 @@ public class Person extends NsPersistentObject
   @Column(name = "ssn")
   private String ssn;
 
-  @OneToOne(cascade = CascadeType.ALL)
-  @JoinColumn(name = "person_address_id")
-  private Address address;
+  @OneToMany(fetch = FetchType.EAGER, mappedBy = "personAddressId.person")
+  private Set<PersonAddress> personAddress = new HashSet<>();
+
+  @OneToMany(fetch = FetchType.EAGER, mappedBy = "personPhoneId.person")
+  private Set<PersonPhone> personPhone = new HashSet<>();
+
 
   /**
    * Default constructor
@@ -80,10 +84,11 @@ public class Person extends NsPersistentObject
    * @param gender The gender
    * @param dateOfBirth The date op birth
    * @param ssn The SSN
-   * @param address The address of this person
+   * @param personAddress The address of this person
+   * @param personPhone The phoneNumber of this person
    */
   public Person(Long id, String firstName, String lastName, String gender, Date dateOfBirth,
-      String ssn, Address address) {
+      String ssn, Set<PersonAddress> personAddress, Set<PersonPhone> personPhone) {
     super();
     this.id = id;
     this.firstName = firstName;
@@ -91,7 +96,23 @@ public class Person extends NsPersistentObject
     this.gender = gender;
     this.dateOfBirth = dateOfBirth;
     this.ssn = ssn;
-    this.address = address;
+    this.personAddress = personAddress;
+    this.personPhone = personPhone;
+  }
+
+
+  /**
+   * @param personAddress - The personAddress
+   */
+  public void addPersonAddress(PersonAddress personAddress) {
+    this.personAddress.add(personAddress);
+  }
+
+  /**
+   * @param personPhone - The personPhone
+   */
+  public void addPersonPhone(PersonPhone personPhone) {
+    this.personPhone.add(personPhone);
   }
 
   /**
@@ -109,7 +130,21 @@ public class Person extends NsPersistentObject
     this.gender = person.getGender();
     this.dateOfBirth = DomainChef.uncookDateString(person.getBirthDate());
     this.ssn = person.getSsn();
-    this.address = new Address(person.getAddress(), null, null);
+    Set<gov.ca.cwds.rest.api.domain.Address> address = person.getAddress();
+    if (address != null && !address.isEmpty()) {
+      for (gov.ca.cwds.rest.api.domain.Address addresses : address) {
+        this.addPersonAddress(
+            new PersonAddress(this, new Address(addresses, lastUpdatedId, createUserId)));
+      }
+    }
+    Set<gov.ca.cwds.rest.api.domain.PhoneNumber> phoneNumber = person.getPhoneNumber();
+    if (phoneNumber != null && !phoneNumber.isEmpty()) {
+      for (gov.ca.cwds.rest.api.domain.PhoneNumber phoneNumbers : phoneNumber) {
+        this.addPersonPhone(
+            new PersonPhone(this, new PhoneNumber(phoneNumbers, lastUpdatedId, createUserId)));
+      }
+    }
+
   }
 
   /**
@@ -171,56 +206,20 @@ public class Person extends NsPersistentObject
   /**
    * @return the address
    */
-  public Address getAddress() {
-    return address;
+  public Set<PersonAddress> getPersonAddress() {
+    return personAddress;
+  }
+
+  /**
+   * @return the Phone
+   */
+  public Set<PersonPhone> getPersonPhone() {
+    return personPhone;
   }
 
   // ================
   // IPersonAware
   // ================
 
-  // @Override
-  public String getMiddleName() {
-    return null;
-  }
-
-  // @Override
-  public Date getBirthDate() {
-    return this.getDateOfBirth();
-  }
-
-  // @Override
-  public String getNameSuffix() {
-    return null;
-  }
-
-  // @Override
-  public String getStreetAddress() {
-    return this.getAddress() != null && this.getAddress().getStreetAddress() != null
-        ? this.getAddress().getStreetAddress() : null;
-  }
-
-  // @Override
-  public String getCity() {
-    return this.getAddress() != null && this.getAddress().getCity() != null
-        ? this.getAddress().getCity() : null;
-  }
-
-  // @Override
-  public String getState() {
-    return this.getAddress() != null && this.getAddress().getState() != null
-        ? this.getAddress().getState() : null;
-  }
-
-  // @Override
-  public String getZip() {
-    return this.getAddress() != null && this.getAddress().getZip() != null
-        ? this.getAddress().getZip().toString() : null;
-  }
-
-  // @Override
-  public String getCounty() {
-    return null;
-  }
 
 }

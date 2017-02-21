@@ -9,6 +9,9 @@ import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
+import java.util.HashSet;
+import java.util.Set;
+
 import org.apache.commons.lang3.NotImplementedException;
 import org.junit.Assert;
 import org.junit.Before;
@@ -17,11 +20,17 @@ import org.junit.Test;
 import org.junit.rules.ExpectedException;
 
 import gov.ca.cwds.data.es.ElasticsearchDao;
+import gov.ca.cwds.data.ns.AddressDao;
+import gov.ca.cwds.data.ns.PersonAddressDao;
 import gov.ca.cwds.data.ns.PersonDao;
+import gov.ca.cwds.data.ns.PersonPhoneDao;
+import gov.ca.cwds.data.ns.PhoneNumberDao;
+import gov.ca.cwds.data.persistence.ns.PersonAddress;
 import gov.ca.cwds.rest.api.Response;
 import gov.ca.cwds.rest.api.domain.Address;
 import gov.ca.cwds.rest.api.domain.DomainChef;
 import gov.ca.cwds.rest.api.domain.Person;
+import gov.ca.cwds.rest.api.domain.PhoneNumber;
 import gov.ca.cwds.rest.api.domain.PostedPerson;
 
 
@@ -40,6 +49,10 @@ public class PersonServiceTest {
   private PersonService personService;
   private PersonDao personDao;
   ElasticsearchDao elasticsearchDao;
+  private PersonAddressDao personAddressDao;
+  private AddressDao addressDao;
+  private PhoneNumberDao phoneNumberDao;
+  private PersonPhoneDao personPhoneDao;
 
   @Rule
   public ExpectedException thrown = ExpectedException.none();
@@ -48,7 +61,12 @@ public class PersonServiceTest {
   public void setup() throws Exception {
     personDao = mock(PersonDao.class);
     elasticsearchDao = mock(ElasticsearchDao.class);
-    personService = new PersonService(personDao, elasticsearchDao);
+    addressDao = mock(AddressDao.class);
+    personAddressDao = mock(PersonAddressDao.class);
+    phoneNumberDao = mock(PhoneNumberDao.class);
+    personPhoneDao = mock(PersonPhoneDao.class);
+    personService = new PersonService(personDao, elasticsearchDao, personAddressDao, addressDao,
+        personPhoneDao, phoneNumberDao);
   }
 
   /*
@@ -57,7 +75,13 @@ public class PersonServiceTest {
   @Test
   public void findReturnsCorrectPersonWhenFoundWhenFound() throws Exception {
     Address address = new Address("742 Evergreen Terrace", "Springfield", "WA", 98700, "Home");
-    Person expected = new Person("Bart", "Simpson", "M", "2016-10-31", "1234556789", address);
+    PhoneNumber phoneNumber = new PhoneNumber("408-277-4778", "cell");
+    Set<Address> addresses = new HashSet<Address>();
+    addresses.add(address);
+    Set<PhoneNumber> phoneNumbers = new HashSet<PhoneNumber>();
+    phoneNumbers.add(phoneNumber);
+    Person expected =
+        new Person("Bart", "Simpson", "M", "2016-10-31", "1234556789", addresses, phoneNumbers);
 
     gov.ca.cwds.data.persistence.ns.Person person =
         new gov.ca.cwds.data.persistence.ns.Person(expected, null, null);
@@ -92,12 +116,18 @@ public class PersonServiceTest {
     gov.ca.cwds.data.persistence.ns.Address toCreateAddress =
         new gov.ca.cwds.data.persistence.ns.Address(1L, "742 Evergreen Terrace", "Springfield",
             "WA", new Integer(98700), "Home");
+    Set<PersonAddress> personAddresses = new HashSet<>();
+
+    PersonAddress personAddress = new PersonAddress();
+    personAddress.setAddress(toCreateAddress);
+    personAddresses.add(personAddress);
     gov.ca.cwds.data.persistence.ns.Person toCreate =
         new gov.ca.cwds.data.persistence.ns.Person(2L, "Bart", "Simpson", "M",
-            DomainChef.uncookDateString("2013-10-31"), "1234556789", toCreateAddress);
+            DomainChef.uncookDateString("2013-10-31"), "1234556789", personAddresses, null);
+
     Person request = new Person(toCreate);
     when(personDao.create(any(gov.ca.cwds.data.persistence.ns.Person.class))).thenReturn(toCreate);
-
+    when(personDao.find(any(gov.ca.cwds.data.persistence.ns.Person.class))).thenReturn(toCreate);
     Response response = personService.create(request);
     assertThat(response.getClass(), is(PostedPerson.class));
   }
@@ -107,11 +137,17 @@ public class PersonServiceTest {
     gov.ca.cwds.data.persistence.ns.Address toCreateAddress =
         new gov.ca.cwds.data.persistence.ns.Address(1L, "742 Evergreen Terrace", "Springfield",
             "WA", new Integer(98700), "Home");
+    Set<PersonAddress> personAddresses = new HashSet<>();
+
+    PersonAddress personAddress = new PersonAddress();
+    personAddress.setAddress(toCreateAddress);
+    personAddresses.add(personAddress);
     gov.ca.cwds.data.persistence.ns.Person toCreate =
         new gov.ca.cwds.data.persistence.ns.Person(2L, "Bart", "Simpson", "M",
-            DomainChef.uncookDateString("2016-10-31"), "1234556789", toCreateAddress);
+            DomainChef.uncookDateString("2016-10-31"), "1234556789", personAddresses, null);
     Person request = new Person(toCreate);
     when(personDao.create(any(gov.ca.cwds.data.persistence.ns.Person.class))).thenReturn(toCreate);
+    when(personDao.find(any(gov.ca.cwds.data.persistence.ns.Person.class))).thenReturn(toCreate);
 
     PostedPerson postedPerson = personService.create(request);
     assertThat(postedPerson, is(notNullValue()));
@@ -122,15 +158,23 @@ public class PersonServiceTest {
     gov.ca.cwds.data.persistence.ns.Address toCreateAddress =
         new gov.ca.cwds.data.persistence.ns.Address(1L, "742 Evergreen Terrace", "Springfield",
             "WA", new Integer(98700), "Home");
+    Set<PersonAddress> personAddresses = new HashSet<>();
+
+    PersonAddress personAddress = new PersonAddress();
+    personAddress.setAddress(toCreateAddress);
+    personAddresses.add(personAddress);
     gov.ca.cwds.data.persistence.ns.Person toCreate =
         new gov.ca.cwds.data.persistence.ns.Person(2L, "Bart", "Simpson", "M",
-            DomainChef.uncookDateString("2016-10-31"), "1234556789", toCreateAddress);
+            DomainChef.uncookDateString("2016-10-31"), "1234556789", personAddresses, null);
     Person request = new Person(toCreate);
     when(personDao.create(any(gov.ca.cwds.data.persistence.ns.Person.class))).thenReturn(toCreate);
+    when(personDao.find(any(gov.ca.cwds.data.persistence.ns.Person.class))).thenReturn(toCreate);
 
     Address address = new Address("742 Evergreen Terrace", "Springfield", "WA", 98700, "Home");
+    Set<Address> addresses = new HashSet<>();
+    addresses.add(address);
     PostedPerson expected =
-        new PostedPerson(2L, "Bart", "Simpson", "M", "2016-10-31", "1234556789", address);
+        new PostedPerson(2L, "Bart", "Simpson", "M", "2016-10-31", "1234556789", addresses, null);
 
     PostedPerson returned = personService.create(request);
     assertThat(returned, is(expected));
@@ -174,7 +218,10 @@ public class PersonServiceTest {
     thrown.expect(NotImplementedException.class);
 
     Address address = new Address("742 Evergreen Terrace", "Springfield", "WA", 98700, "Home");
-    Person toUpdate = new Person("Bart", "Simpson", "M", "04/01/1990", "1234556789", address);
+    Set<Address> addresses = new HashSet<>();
+    addresses.add(address);
+    Person toUpdate =
+        new Person("Bart", "Simpson", "M", "04/01/1990", "1234556789", addresses, null);
     personService.update(1L, toUpdate);
   }
 

@@ -1,5 +1,7 @@
 package gov.ca.cwds.rest.api.domain;
 
+import java.util.Set;
+
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import gov.ca.cwds.rest.api.Response;
@@ -16,8 +18,8 @@ public class PostedPerson extends Person {
 
   @SuppressWarnings("javadoc")
   public PostedPerson(long id, String firstName, String lastName, String gender, String dateOfBirth,
-      String ssn, Address address) {
-    super(firstName, lastName, gender, dateOfBirth, ssn, address);
+      String ssn, Set<Address> address, Set<PhoneNumber> phoneNumber) {
+    super(firstName, lastName, gender, dateOfBirth, ssn, address, phoneNumber);
     this.id = id;
   }
 

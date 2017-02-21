@@ -1,10 +1,15 @@
 package gov.ca.cwds.data.persistence.ns;
 
+import java.util.HashSet;
+import java.util.Set;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
@@ -48,6 +53,9 @@ public class Address extends NsPersistentObject {
 
   @Column(name = "address_type_id")
   private String type;
+
+  @OneToMany(fetch = FetchType.LAZY, mappedBy = "personAddressId.address")
+  private Set<PersonAddress> personAddress = new HashSet<>();
 
   /**
    * Default constructor
@@ -146,6 +154,13 @@ public class Address extends NsPersistentObject {
    */
   public String getType() {
     return type;
+  }
+
+  /**
+   * @return the personAddress
+   */
+  public Set<PersonAddress> getPersonAddress() {
+    return personAddress;
   }
 
 }

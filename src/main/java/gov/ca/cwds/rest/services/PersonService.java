@@ -6,18 +6,24 @@ import org.apache.commons.lang3.NotImplementedException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.inject.Inject;
 
 import gov.ca.cwds.data.Dao;
 import gov.ca.cwds.data.es.ElasticsearchDao;
+import gov.ca.cwds.data.ns.AddressDao;
+import gov.ca.cwds.data.ns.PersonAddressDao;
 import gov.ca.cwds.data.ns.PersonDao;
+import gov.ca.cwds.data.ns.PersonPhoneDao;
+import gov.ca.cwds.data.ns.PhoneNumberDao;
+import gov.ca.cwds.data.persistence.ns.PersonAddress;
+import gov.ca.cwds.data.persistence.ns.PersonPhone;
 import gov.ca.cwds.rest.api.ApiException;
 import gov.ca.cwds.rest.api.Request;
 import gov.ca.cwds.rest.api.Response;
-import gov.ca.cwds.rest.api.domain.DomainChef;
+import gov.ca.cwds.rest.api.domain.Address;
 import gov.ca.cwds.rest.api.domain.Person;
+import gov.ca.cwds.rest.api.domain.PhoneNumber;
 import gov.ca.cwds.rest.api.domain.PostedPerson;
 
 /**
@@ -36,18 +42,35 @@ public class PersonService implements CrudsService {
 
   private PersonDao personDao;
   private ElasticsearchDao elasticsearchDao;
+  private PersonAddressDao personAddressDao;
+  private AddressDao addressDao;
+  private PhoneNumberDao phoneNumberDao;
+  private PersonPhoneDao personPhoneDao;
 
   /**
    * Constructor
    * 
    * @param personDao The {@link Dao} handling {@link gov.ca.cwds.data.persistence.ns.Person}
    *        objects.
-   * @param elasticsearchDao the ElasticSearch DAO
+   * @param elasticsearchDao The ElasticSearch DAO
+   * @param personAddressDao The {@link Dao} handling
+   *        {@link gov.ca.cwds.data.persistence.ns.PersonAddress}
+   * @param addressDao The {@link Dao} handling {@link gov.ca.cwds.data.persistence.ns.Address}
+   * @param personPhoneDao The {@link Dao} handling
+   *        {@link gov.ca.cwds.data.persistence.ns.PersonPhone}
+   * @param phoneNumberDao The {@link Dao} handling
+   *        {@link gov.ca.cwds.data.persistence.ns.PhoneNumber}
    */
   @Inject
-  public PersonService(PersonDao personDao, ElasticsearchDao elasticsearchDao) {
+  public PersonService(PersonDao personDao, ElasticsearchDao elasticsearchDao,
+      PersonAddressDao personAddressDao, AddressDao addressDao, PersonPhoneDao personPhoneDao,
+      PhoneNumberDao phoneNumberDao) {
     this.personDao = personDao;
     this.elasticsearchDao = elasticsearchDao;
+    this.personAddressDao = personAddressDao;
+    this.addressDao = addressDao;
+    this.personPhoneDao = personPhoneDao;
+    this.phoneNumberDao = phoneNumberDao;
   }
 
   /**
@@ -74,26 +97,44 @@ public class PersonService implements CrudsService {
   public PostedPerson create(Request request) {
     assert request instanceof Person;
     Person person = (Person) request;
-    gov.ca.cwds.data.persistence.ns.Person managed =
+    gov.ca.cwds.data.persistence.ns.Person managedPerson =
         new gov.ca.cwds.data.persistence.ns.Person(person, null, null);
-
-    managed = personDao.create(managed);
-    PostedPerson postedPerson = new PostedPerson(managed);
+    managedPerson = personDao.create(managedPerson);
+    if (person.getAddress() != null && person.getAddress().size() > 0) {
+      for (Address address : person.getAddress()) {
+        gov.ca.cwds.data.persistence.ns.Address managedAddress =
+            new gov.ca.cwds.data.persistence.ns.Address(address, null, null);
+        PersonAddress personAddress = new PersonAddress(managedPerson, managedAddress);
+        managedPerson.addPersonAddress(personAddress);
+        addressDao.create(managedAddress);
+        personAddressDao.create(personAddress);
+      }
+    }
+    if (person.getPhoneNumber() != null && person.getPhoneNumber().size() > 0) {
+      for (PhoneNumber phoneNumber : person.getPhoneNumber()) {
+        gov.ca.cwds.data.persistence.ns.PhoneNumber managedPhoneNumber =
+            new gov.ca.cwds.data.persistence.ns.PhoneNumber(phoneNumber, null, null);
+        PersonPhone personPhone = new PersonPhone(managedPerson, managedPhoneNumber);
+        managedPerson.addPersonPhone(personPhone);
+        phoneNumberDao.create(managedPhoneNumber);
+        personPhoneDao.create(personPhone);
+      }
+    }
+    managedPerson = personDao.find(managedPerson.getId());
+    PostedPerson postedPerson = new PostedPerson(managedPerson);
     try {
-      final gov.ca.cwds.rest.api.domain.es.Person esPerson =
-          new gov.ca.cwds.rest.api.domain.es.Person(managed.getId().toString(),
-              managed.getFirstName(), managed.getLastName(), managed.getSsn(), managed.getGender(),
-              DomainChef.cookDate(managed.getDateOfBirth()), managed.getClass().getName(),
-              MAPPER.writeValueAsString(managed));
-      final String document = MAPPER.writeValueAsString(esPerson);
+      // final gov.ca.cwds.rest.api.domain.es.Person esPerson =
+      // new gov.ca.cwds.rest.api.domain.es.Person(managedPerson.getId().toString(),
+      // managedPerson.getFirstName(), managedPerson.getLastName(), managedPerson.getSsn(),
+      // managedPerson.getGender(), DomainChef.cookDate(managedPerson.getDateOfBirth()),
+      // managedPerson.getClass().getName(), MAPPER.writeValueAsString(managedPerson));
+      // // final String document = MAPPER.writeValueAsString(esPerson);
 
       // If the people index is missing, create it.
-      elasticsearchDao.createIndexIfNeeded(INDEX_PERSON);
+      // elasticsearchDao.createIndexIfNeeded(INDEX_PERSON);
 
       // The ES Dao manages its own connections. No need to manually start or stop.
-      elasticsearchDao.index(INDEX_PERSON, DOCUMENT_TYPE_PERSON, document, esPerson.getId());
-    } catch (JsonProcessingException e) {
-      throw new ApiException("Unable to convert Person to JSON to Index in ElasticSearch", e);
+      // elasticsearchDao.index(INDEX_PERSON, DOCUMENT_TYPE_PERSON, document, esPerson.getId());
     } catch (Exception e) {
       LOGGER.error("Unable to Index Person in ElasticSearch", e);
       throw new ApiException("Unable to Index Person in ElasticSearch", e);

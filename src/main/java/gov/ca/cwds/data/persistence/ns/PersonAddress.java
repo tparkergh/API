@@ -1,27 +1,33 @@
 package gov.ca.cwds.data.persistence.ns;
 
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
+import javax.persistence.AssociationOverride;
+import javax.persistence.AssociationOverrides;
+import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
-import javax.persistence.ManyToMany;
-import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 import gov.ca.cwds.data.ns.NsPersistentObject;
+import gov.ca.cwds.data.persistence.PersistentObject;
 
+/**
+ * {@link NsPersistentObject} representing a PersonAddress
+ * 
+ * @author CWDS API Team
+ */
 @SuppressWarnings("serial")
 @Entity
 @Table(name = "person_address")
-public class PersonAddress extends NsPersistentObject {
+@AssociationOverrides({
+    @AssociationOverride(name = "personAddressId.person",
+        joinColumns = @JoinColumn(name = "person_id")),
+    @AssociationOverride(name = "personAddressId.address",
+        joinColumns = @JoinColumn(name = "address_id"))})
+public class PersonAddress implements PersistentObject {
 
-  @ManyToMany(cascade = CascadeType.ALL)
-  @JoinColumn(name = "person_id")
-  private Person person;
-
-  @OneToMany
-  @Column(name = "address_id")
-  private Address address;
+  @EmbeddedId
+  private PersonAddressId personAddressId = new PersonAddressId();
 
   /**
    * Default constructor
@@ -38,27 +44,49 @@ public class PersonAddress extends NsPersistentObject {
    */
   public PersonAddress(Person person, Address address) {
     super();
-    this.person = person;
-    this.address = address;
+    personAddressId.setPerson(person);
+    personAddressId.setAddress(address);
   }
 
   @Override
-  public Person getPrimaryKey() {
-    return getPerson();
+  public PersonAddressId getPrimaryKey() {
+    return personAddressId;
+  }
+
+  @SuppressWarnings("unused")
+  private void setPk(PersonAddressId pk) {
+    this.personAddressId = pk;
+  }
+
+  /**
+   * @param person - The person
+   */
+  public void setPerson(Person person) {
+    getPrimaryKey().setPerson(person);
+  }
+
+  /**
+   * @param address - The address
+   */
+  public void setAddress(Address address) {
+    getPrimaryKey().setAddress(address);
   }
 
   /**
    * @return the person
    */
+
+  @Transient
   public Person getPerson() {
-    return person;
+    return personAddressId.getPerson();
   }
 
   /**
    * @return the address
    */
-  public Address address() {
-    return address;
+  @Transient
+  public Address getAddress() {
+    return personAddressId.getAddress();
   }
 
 }

@@ -2,6 +2,7 @@ package gov.ca.cwds.rest.api.domain.es;
 
 import java.io.Serializable;
 import java.util.Map;
+import java.util.Set;
 
 import org.apache.commons.lang3.StringUtils;
 import org.elasticsearch.search.SearchHit;
@@ -17,6 +18,7 @@ import gov.ca.cwds.data.persistence.cms.OtherClientName;
 import gov.ca.cwds.data.persistence.cms.Reporter;
 import gov.ca.cwds.rest.api.domain.Address;
 import gov.ca.cwds.rest.api.domain.Person;
+import gov.ca.cwds.rest.api.domain.PhoneNumber;
 import gov.ca.cwds.rest.services.ServiceException;
 
 /**
@@ -186,7 +188,7 @@ public class ESPerson extends Person {
         ESPerson.<String>pullCol(m, ESColumn.GENDER),
         ESPerson.<String>pullCol(m, ESColumn.BIRTH_DATE), ESPerson.<String>pullCol(m, ESColumn.SSN),
         ESPerson.<String>pullCol(m, ESColumn.TYPE), ESPerson.<String>pullCol(m, ESColumn.SOURCE),
-        null);
+        null, null);
 
     if (!StringUtils.isBlank(ret.getSourceType()) && !StringUtils.isBlank(ret.getSourceJson())) {
       try {
@@ -313,10 +315,12 @@ public class ESPerson extends Person {
    * @param birthDate The date of birth
    * @param ssn Social Security Number
    * @param address The address, if any
+   * @param phoneNumber The phoneNumber, if any
    */
   public ESPerson(String id, String firstName, String lastName, String gender, String birthDate,
-      String ssn, Address address) {
-    super(trim(firstName), trim(lastName), trim(gender), trim(birthDate), trim(ssn), address);
+      String ssn, Set<Address> address, Set<PhoneNumber> phoneNumber) {
+    super(trim(firstName), trim(lastName), trim(gender), trim(birthDate), trim(ssn), address,
+        phoneNumber);
     this.id = id;
   }
 
@@ -333,10 +337,13 @@ public class ESPerson extends Person {
    * @param sourceType fully-qualified, persistence-level source class
    * @param sourceJson raw, nested child document as JSON
    * @param address address, if any
+   * @param phoneNumber PhoneNumber, if any
    */
   public ESPerson(String id, String firstName, String lastName, String gender, String birthDate,
-      String ssn, String sourceType, String sourceJson, Address address) {
-    super(trim(firstName), trim(lastName), trim(gender), trim(birthDate), trim(ssn), address);
+      String ssn, String sourceType, String sourceJson, Set<Address> address,
+      Set<PhoneNumber> phoneNumber) {
+    super(trim(firstName), trim(lastName), trim(gender), trim(birthDate), trim(ssn), address,
+        phoneNumber);
     this.id = id;
     this.sourceType = sourceType;
     this.sourceJson = sourceJson;

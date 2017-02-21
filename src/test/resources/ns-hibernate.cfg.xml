@@ -19,5 +19,7 @@
 		<mapping class="gov.ca.cwds.data.persistence.ns.Person" />
 		<mapping class="gov.ca.cwds.data.persistence.ns.Address" />
 		<mapping class="gov.ca.cwds.data.persistence.ns.PhoneNumber" />
+		<mapping class="gov.ca.cwds.data.persistence.ns.PersonPhone" />
+		<mapping class="gov.ca.cwds.data.persistence.ns.PersonAddress" />
 	</session-factory>
 </hibernate-configuration>

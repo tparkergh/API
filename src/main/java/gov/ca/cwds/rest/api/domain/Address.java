@@ -18,6 +18,11 @@ import io.swagger.annotations.ApiModelProperty;
 @JsonSnakeCase
 public class Address extends DomainObject implements Request, Response {
 
+  /**
+   * 
+   */
+  private static final long serialVersionUID = 1L;
+
   @JsonProperty("street_address")
   @ApiModelProperty(example = "742 Evergreen Terrace")
   @Size(max = 50)
