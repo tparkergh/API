@@ -56,7 +56,7 @@ public class StaffPersonResource {
   }
 
   /**
-   * Finds an staffperson by id.
+   * Finds an staff person by id.
    * 
    * @param id the id
    * 
@@ -74,7 +74,7 @@ public class StaffPersonResource {
   }
 
   /**
-   * Delete an staffperson by id.
+   * Delete an staff person by id.
    * 
    * @param id The id of the {@link StaffPerson}
    * 
