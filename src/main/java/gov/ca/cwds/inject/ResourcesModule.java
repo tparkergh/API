@@ -52,6 +52,7 @@ import gov.ca.cwds.rest.services.es.AutoCompletePersonService;
  * 
  * @author CWDS API Team
  */
+@SuppressWarnings("javadoc")
 public class ResourcesModule extends AbstractModule {
 
   /**

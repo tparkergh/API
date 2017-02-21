@@ -25,6 +25,11 @@ import gov.ca.cwds.rest.api.domain.es.AutoCompletePersonRequest;
 import gov.ca.cwds.rest.api.domain.es.AutoCompletePersonResponse;
 import gov.ca.cwds.rest.services.ServiceException;
 
+/**
+ * @author CWDS API Team
+ *
+ */
+@SuppressWarnings("javadoc")
 public class AutoCompletePersonServiceTest {
 
   @Rule

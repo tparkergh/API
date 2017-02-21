@@ -50,15 +50,6 @@ public class PhoneNumber extends NsPersistentObject {
   private Set<PersonPhone> personPhone = new HashSet<>();
 
   /**
-   * Default constructor
-   * 
-   * Required for Hibernate
-   */
-  public PhoneNumber() {
-    super();
-  }
-
-  /**
    * @param id - unique id
    * @param number - the phone number
    * @param type - the phone number type

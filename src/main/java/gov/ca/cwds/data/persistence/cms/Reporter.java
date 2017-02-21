@@ -18,8 +18,6 @@ import org.apache.commons.lang3.StringUtils;
 import org.hibernate.annotations.NamedNativeQueries;
 import org.hibernate.annotations.NamedNativeQuery;
 import org.hibernate.annotations.Type;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
@@ -71,8 +69,6 @@ import gov.ca.cwds.rest.api.domain.DomainChef;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class Reporter extends CmsPersistentObject
     implements ApiPersonAware, ApiAddressAware, ApiMultiplePhonesAware {
-
-  private static final Logger LOGGER = LoggerFactory.getLogger(Reporter.class);
 
   @Id
   @NotNull

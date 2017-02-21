@@ -1129,7 +1129,6 @@ public class AutoCompletePerson
   }
 
   @Override
-  @SuppressWarnings("javadoc")
   public Serializable getPrimaryKey() {
     return this.getId();
   }

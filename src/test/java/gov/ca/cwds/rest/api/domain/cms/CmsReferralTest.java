@@ -36,9 +36,10 @@ import nl.jqno.equalsverifier.EqualsVerifier;
 import nl.jqno.equalsverifier.Warning;
 
 /**
- * @author Tabpcenc1
+ * @author CWDS API Team
  *
  */
+@SuppressWarnings("javadoc")
 public class CmsReferralTest {
 
   private static final String ROOT_RESOURCE = "/" + Api.RESOURCE_CMSREFERRAL + "/";;
@@ -54,7 +55,6 @@ public class CmsReferralTest {
   @ClassRule
   public static JerseyGuiceRule rule = new JerseyGuiceRule();
 
-  @SuppressWarnings("javadoc")
   @ClassRule
   public static final ResourceTestRule resources =
       ResourceTestRule.builder().addResource(mockedCmsReferralResource).build();
@@ -62,7 +62,6 @@ public class CmsReferralTest {
   private static final ObjectMapper MAPPER = Jackson.newObjectMapper();
   private CmsReferral validCmsReferral = validCmsReferral();
 
-  @SuppressWarnings("javadoc")
   @Before
   public void setup() {
     @SuppressWarnings("rawtypes")

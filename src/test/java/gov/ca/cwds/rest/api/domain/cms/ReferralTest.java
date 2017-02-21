@@ -51,7 +51,6 @@ public class ReferralTest {
     JerseyGuiceUtils.reset();
   }
 
-  @SuppressWarnings("javadoc")
   @ClassRule
   public static JerseyGuiceRule rule = new JerseyGuiceRule();
 
@@ -115,7 +114,6 @@ public class ReferralTest {
   private String limitedAccessDesc = "x";
   private String originalClosureDate = "1946-02-09";
 
-  @SuppressWarnings("javadoc")
   @Before
   public void setup() {
     @SuppressWarnings("rawtypes")
@@ -129,7 +127,6 @@ public class ReferralTest {
   /*
    * Constructor Tests
    */
-  @SuppressWarnings("javadoc")
   @Test
   public void persistentObjectConstructorTest() throws Exception {
     Referral domain = new Referral(additionalInfoIncludedCode, anonymousReporterIndicator,
@@ -353,7 +350,6 @@ public class ReferralTest {
   /*
    * additionalInfoIncludedCode Tests
    */
-  @SuppressWarnings("javadoc")
   @Test
   public void failsWhenAdditionalInfoIncludedCodeNull() throws Exception {
     Referral toCreate = MAPPER.readValue(

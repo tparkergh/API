@@ -63,6 +63,11 @@ public class ReferralClientResource {
    * 
    * @see gov.ca.cwds.rest.resources.CrudsResource#get(java.lang.String, java.lang.String)
    */
+  /**
+   * @param referralId - referral ID
+   * @param clientId - client ID
+   * @return - the ReferralClient row
+   */
   @UnitOfWork(value = "cms")
   @GET
   @Path("/referralId={referralId},clientId={clientId}")
@@ -79,6 +84,11 @@ public class ReferralClientResource {
     return resourceDelegate.get(pk);
   }
 
+  /**
+   * @param referralId
+   * @param clientId
+   * @return - the deleted ReferralClient row
+   */
   /*
    * (non-Javadoc)
    * 
@@ -98,6 +108,10 @@ public class ReferralClientResource {
     return resourceDelegate.delete(pk);
   }
 
+  /**
+   * @param referralClient
+   * @return - updated ReferralClient row
+   */
   /*
    * (non-Javadoc)
    * 
@@ -118,6 +132,10 @@ public class ReferralClientResource {
     return resourceDelegate.update(null, referralClient);
   }
 
+  /**
+   * @param referral
+   * @return - created ReferralClient row
+   */
   /*
    * (non-Javadoc)
    * 

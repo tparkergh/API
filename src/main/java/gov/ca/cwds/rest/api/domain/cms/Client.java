@@ -26,6 +26,11 @@ import io.swagger.annotations.ApiModelProperty;
 @ApiModel
 public class Client extends DomainObject implements Request, Response {
 
+  /**
+   * 
+   */
+  private static final long serialVersionUID = 1L;
+
   @ApiModelProperty(required = false, readOnly = false)
   private Boolean adjudicatedDelinquentIndicator;
 
@@ -348,6 +353,75 @@ public class Client extends DomainObject implements Request, Response {
   @ApiModelProperty(required = true, readOnly = false)
   private Boolean zippyCreatedIndicator;
 
+  /**
+   * @param adjudicatedDelinquentIndicator - adjudicatedDelinquentIndicator
+   * @param adoptionStatusCode - adoptionStatusCode
+   * @param alienRegistrationNumber - alienRegistrationNumber
+   * @param birthCity - birthCity
+   * @param birthCountryCodeType - birthCountryCodeType
+   * @param birthDate - birthDate
+   * @param birthFacilityName - birthFacilityName
+   * @param birthStateCodeType - birthStateCodeType
+   * @param birthplaceVerifiedIndicator - birthplaceVerifiedIndicator
+   * @param childClientIndicatorVar - childClientIndicatorVar
+   * @param clientIndexNumber - clientIndexNumber
+   * @param commentDescription - commentDescription
+   * @param commonFirstName - commonFirstName
+   * @param commonLastName - commonLastName
+   * @param commonMiddleName - commonMiddleName
+   * @param confidentialityActionDate - confidentialityActionDate
+   * @param confidentialityInEffectIndicator - confidentialityInEffectIndicator
+   * @param creationDate - creationDate
+   * @param currCaChildrenServIndicator - currCaChildrenServIndicator
+   * @param currentlyOtherDescription - currentlyOtherDescription
+   * @param currentlyRegionalCenterIndicator - currentlyRegionalCenterIndicator
+   * @param deathDate - deathDate
+   * @param deathDateVerifiedIndicator - deathDateVerifiedIndicator
+   * @param deathPlace - deathPlace
+   * @param deathReasonText - deathReasonText
+   * @param driverLicenseNumber - driverLicenseNumber
+   * @param driverLicenseStateCodeType - driverLicenseStateCodeType
+   * @param emailAddress - emailAddress
+   * @param estimatedDobCode - estimatedDobCode
+   * @param ethUnableToDetReasonCode - ethUnableToDetReasonCode
+   * @param fatherParentalRightTermDate - fatherParentalRightTermDate
+   * @param genderCode - genderCode
+   * @param healthSummaryText - healthSummaryText
+   * @param hispUnableToDetReasonCode - hispUnableToDetReasonCode
+   * @param hispanicOriginCode - hispanicOriginCode
+   * @param id - id
+   * @param immigrationCountryCodeType - immigrationCountryCodeType
+   * @param immigrationStatusType - immigrationStatusType
+   * @param incapacitatedParentCode - incapacitatedParentCode
+   * @param individualHealthCarePlanIndicator - individualHealthCarePlanIndicator
+   * @param limitationOnScpHealthIndicator - limitationOnScpHealthIndicator
+   * @param literateCode - literateCode
+   * @param maritalCohabitatnHstryIndicatorVar - maritalCohabitatnHstryIndicatorVar
+   * @param maritalStatusType - maritalStatusType
+   * @param militaryStatusCode - militaryStatusCode
+   * @param motherParentalRightTermDate - motherParentalRightTermDate
+   * @param namePrefixDescription - namePrefixDescription
+   * @param nameType - nameType
+   * @param outstandingWarrantIndicator - outstandingWarrantIndicator
+   * @param prevCaChildrenServIndicator - prevCaChildrenServIndicator
+   * @param prevOtherDescription - prevOtherDescription
+   * @param prevRegionalCenterIndicator - prevRegionalCenterIndicator
+   * @param primaryEthnicityType - primaryEthnicityType
+   * @param primaryLanguageType - primaryLanguageType
+   * @param religionType - religionType
+   * @param secondaryLanguageType - secondaryLanguageType
+   * @param sensitiveHlthInfoOnFileIndicator - sensitiveHlthInfoOnFileIndicator
+   * @param sensitivityIndicator - sensitivityIndicator
+   * @param soc158PlacementCode - soc158PlacementCode
+   * @param soc158SealedClientIndicator - soc158SealedClientIndicator
+   * @param socialSecurityNumChangedCode - socialSecurityNumChangedCode
+   * @param socialSecurityNumber - socialSecurityNumber
+   * @param suffixTitleDescription - suffixTitleDescription
+   * @param tribalAncestryClientIndicatorVar - tribalAncestryClientIndicatorVar
+   * @param tribalMembrshpVerifctnIndicatorVar - tribalMembrshpVerifctnIndicatorVar
+   * @param unemployedParentCode - unemployedParentCode
+   * @param zippyCreatedIndicator - zippyCreatedIndicator
+   */
   @JsonCreator
   public Client(
       @JsonProperty("adjudicatedDelinquentIndicator") Boolean adjudicatedDelinquentIndicator,
@@ -486,6 +560,9 @@ public class Client extends DomainObject implements Request, Response {
     this.zippyCreatedIndicator = zippyCreatedIndicator;
   }
 
+  /**
+   * @param persistedClient - persistedClient object
+   */
   public Client(gov.ca.cwds.data.persistence.cms.Client persistedClient) {
     this.adjudicatedDelinquentIndicator =
         DomainChef.uncookBooleanString(persistedClient.getAdjudicatedDelinquentIndicator());

@@ -18,6 +18,11 @@ import com.smartystreets.api.us_street.Metadata;
 
 import gov.ca.cwds.rest.api.domain.ValidatedAddress;
 
+/**
+ * @author CWDS API Team
+ *
+ */
+@SuppressWarnings("javadoc")
 public class SmartyStreetTest {
 
   private static final SmartyStreet spySmartyStreet = spy(new SmartyStreet());

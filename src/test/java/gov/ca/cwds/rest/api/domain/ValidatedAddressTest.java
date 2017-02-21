@@ -25,6 +25,7 @@ import nl.jqno.equalsverifier.Warning;
  * @author CWDS API Team
  *
  */
+@SuppressWarnings("javadoc")
 public class ValidatedAddressTest implements DomainTestTemplate {
 
   private static final ObjectMapper MAPPER = Jackson.newObjectMapper();
@@ -40,7 +41,6 @@ public class ValidatedAddressTest implements DomainTestTemplate {
   @ClassRule
   public static JerseyGuiceRule rule = new JerseyGuiceRule();
 
-  @SuppressWarnings("javadoc")
   @ClassRule
   public static final ResourceTestRule resources =
       ResourceTestRule.builder().addResource(mockedAddressValidationResource).build();
@@ -85,7 +85,6 @@ public class ValidatedAddressTest implements DomainTestTemplate {
     EqualsVerifier.forClass(ValidatedAddress.class).suppress(Warning.NONFINAL_FIELDS).verify();
   }
 
-  @SuppressWarnings("javadoc")
   @Test
   public void TestDomainConstructor() throws Exception {
     ValidatedAddress domain = new ValidatedAddress("9500 Kiefer Blvd", "Sacramento", "CA", 95827,
