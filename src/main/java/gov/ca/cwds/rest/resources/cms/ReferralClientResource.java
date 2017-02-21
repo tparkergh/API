@@ -85,8 +85,8 @@ public class ReferralClientResource {
   }
 
   /**
-   * @param referralId
-   * @param clientId
+   * @param referralId FK to referral
+   * @param clientId FK to client
    * @return - the deleted ReferralClient row
    */
   /*
@@ -109,7 +109,7 @@ public class ReferralClientResource {
   }
 
   /**
-   * @param referralClient
+   * @param referralClient incoming referral client JSON
    * @return - updated ReferralClient row
    */
   /*
@@ -133,7 +133,7 @@ public class ReferralClientResource {
   }
 
   /**
-   * @param referral
+   * @param referral incoming referral client JSON
    * @return - created ReferralClient row
    */
   /*
