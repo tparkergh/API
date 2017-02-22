@@ -37,8 +37,7 @@ public class CrossReportTest implements PersistentTestTemplate {
   @Override
   @Test
   public void testEqualsHashCodeWorks() throws Exception {
-    EqualsVerifier.forClass(Attorney.class).suppress(Warning.NONFINAL_FIELDS).verify();
-
+    EqualsVerifier.forClass(CrossReport.class).suppress(Warning.NONFINAL_FIELDS).verify();
   }
 
   /*
@@ -89,7 +88,6 @@ public class CrossReportTest implements PersistentTestTemplate {
     assertThat(persistent.getSatisfyCrossReportIndicator(),
         is(equalTo(DomainChef.cookBoolean(domain.getSatisfyCrossReportIndicator()))));
     assertThat(persistent.getLastUpdatedId(), is(equalTo(lastUpdatedId)));
-
   }
 
   @Override
@@ -97,7 +95,6 @@ public class CrossReportTest implements PersistentTestTemplate {
   public void testPersistentConstructor() throws Exception {
 
     CrossReport vcp = validCrossReport();
-
     CrossReport persistent = new CrossReport(vcp.getReferralId(), vcp.getThirdId(),
         vcp.getCrossReportMethodType(), vcp.getFiledOutOfStateIndicator(),
         vcp.getGovernmentOrgCrossRptIndicatorVar(), vcp.getInformTime(),
@@ -144,7 +141,6 @@ public class CrossReportTest implements PersistentTestTemplate {
   public void testSerializeAndDeserialize() throws Exception {
 
     CrossReport vcp = validCrossReport();
-
     CrossReport persistent = new CrossReport(vcp.getReferralId(), vcp.getThirdId(),
         vcp.getCrossReportMethodType(), vcp.getFiledOutOfStateIndicator(),
         vcp.getGovernmentOrgCrossRptIndicatorVar(), vcp.getInformTime(),
@@ -175,7 +171,6 @@ public class CrossReportTest implements PersistentTestTemplate {
         MAPPER.readValue(fixture("fixtures/domain/legacy/CrossReport/valid/valid.json"),
             gov.ca.cwds.rest.api.domain.cms.CrossReport.class);
     return validCrossReport;
-
   }
 
 }

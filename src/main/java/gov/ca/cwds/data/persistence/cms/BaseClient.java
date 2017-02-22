@@ -9,6 +9,8 @@ import javax.persistence.Id;
 import javax.persistence.MappedSuperclass;
 
 import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.hibernate.annotations.Type;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -31,7 +33,7 @@ public abstract class BaseClient extends CmsPersistentObject
    */
   private static final long serialVersionUID = 1L;
 
-  private static final Logger LOGGER = LoggerFactory.getLogger(Client.class);
+  private static final Logger LOGGER = LoggerFactory.getLogger(BaseClient.class);
 
   @Column(name = "ADJDEL_IND")
   protected String adjudicatedDelinquentIndicator;
@@ -823,6 +825,16 @@ public abstract class BaseClient extends CmsPersistentObject
     }
 
     return languages.toArray(new ApiLanguageAware[0]);
+  }
+
+  @Override
+  public int hashCode() {
+    return HashCodeBuilder.reflectionHashCode(this, false);
+  }
+
+  @Override
+  public boolean equals(Object obj) {
+    return EqualsBuilder.reflectionEquals(this, obj, false);
   }
 
 }

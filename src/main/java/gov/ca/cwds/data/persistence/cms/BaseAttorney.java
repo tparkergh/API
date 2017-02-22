@@ -324,26 +324,6 @@ public abstract class BaseAttorney extends CmsPersistentObject
     return zipSuffixNumber;
   }
 
-  /**
-   * {@inheritDoc}
-   * 
-   * @see java.lang.Object#hashCode()
-   */
-  @Override
-  public final int hashCode() {
-    return HashCodeBuilder.reflectionHashCode(this, false);
-  }
-
-  /**
-   * {@inheritDoc}
-   * 
-   * @see java.lang.Object#equals(java.lang.Object)
-   */
-  @Override
-  public final boolean equals(Object obj) {
-    return EqualsBuilder.reflectionEquals(this, obj, false);
-  }
-
   @JsonIgnore
   @Override
   @Transient
@@ -404,6 +384,26 @@ public abstract class BaseAttorney extends CmsPersistentObject
     }
 
     return phones.toArray(new ApiPhoneAware[0]);
+  }
+
+  /**
+   * {@inheritDoc}
+   * 
+   * @see java.lang.Object#hashCode()
+   */
+  @Override
+  public int hashCode() {
+    return HashCodeBuilder.reflectionHashCode(this, false);
+  }
+
+  /**
+   * {@inheritDoc}
+   * 
+   * @see java.lang.Object#equals(java.lang.Object)
+   */
+  @Override
+  public boolean equals(Object obj) {
+    return EqualsBuilder.reflectionEquals(this, obj, false);
   }
 
 }
