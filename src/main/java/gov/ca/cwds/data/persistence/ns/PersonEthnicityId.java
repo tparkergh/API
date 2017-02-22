@@ -12,6 +12,7 @@ import javax.persistence.ManyToOne;
  */
 @Embeddable
 public class PersonEthnicityId implements Serializable {
+
   /**
    * Base serialization value. Increment by version
    */

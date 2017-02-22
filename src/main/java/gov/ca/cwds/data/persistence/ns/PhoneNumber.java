@@ -25,9 +25,9 @@ import gov.ca.cwds.data.ns.NsPersistentObject;
  */
 @NamedQueries({
     @NamedQuery(name = "gov.ca.cwds.rest.api.persistence.ns.PhoneNumber.findAll",
-        query = "FROM Address"),
+        query = "FROM PhoneNumber"),
     @NamedQuery(name = "gov.ca.cwds.rest.api.persistence.ns.PhoneNumber.findAllUpdatedAfter",
-        query = "FROM Address WHERE lastUpdatedTime > :after")})
+        query = "FROM PhoneNumber WHERE lastUpdatedTime > :after")})
 @SuppressWarnings("serial")
 @Entity
 @Table(name = "phone_number")

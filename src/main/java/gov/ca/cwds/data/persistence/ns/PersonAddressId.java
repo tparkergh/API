@@ -16,7 +16,7 @@ import javax.persistence.ManyToOne;
 public class PersonAddressId implements Serializable {
 
   /**
-   * 
+   * Base serialization value. Increment by version
    */
   private static final long serialVersionUID = 1L;
 
