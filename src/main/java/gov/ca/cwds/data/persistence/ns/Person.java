@@ -71,7 +71,7 @@ public class Person extends NsPersistentObject
   @OneToMany(fetch = FetchType.EAGER, mappedBy = "personRaceId.person")
   private Set<PersonRace> personRace = new HashSet<>();
 
-  @OneToMany(fetch = FetchType.EAGER, mappedBy = "personEthnicityId.ethnicity")
+  @OneToMany(fetch = FetchType.EAGER, mappedBy = "personEthnicityId.person")
   private Set<PersonEthnicity> personEthnicity = new HashSet<>();
 
   /**
