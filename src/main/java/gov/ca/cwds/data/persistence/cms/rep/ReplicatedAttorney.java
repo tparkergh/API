@@ -16,7 +16,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
 import gov.ca.cwds.data.persistence.PersistentObject;
-import gov.ca.cwds.data.persistence.cms.Attorney;
+import gov.ca.cwds.data.persistence.cms.BaseAttorney;
 
 /**
  * {@link PersistentObject} representing an Attorney as a {@link CmsReplicatedEntity}.
@@ -37,7 +37,7 @@ import gov.ca.cwds.data.persistence.cms.Attorney;
 @Table(name = "ATTRNY_T")
 @JsonPropertyOrder(alphabetic = true)
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class ReplicatedAttorney extends Attorney implements CmsReplicatedEntity {
+public class ReplicatedAttorney extends BaseAttorney implements CmsReplicatedEntity {
 
   /**
    * 
