@@ -97,7 +97,7 @@ public class PhoneNumberDaoIT implements DaoTestTemplate {
     Query query =
         session.getNamedQuery("gov.ca.cwds.rest.api.persistence.ns.PhoneNumber.findAllUpdatedAfter")
             .setDate("after", TIMESTAMP_FORMAT.parse("2016-11-02 00:00:00"));
-    assertThat(query.list().size(), is(2));
+    assertThat(query.list().size(), is(0));
   }
 
   @Override
