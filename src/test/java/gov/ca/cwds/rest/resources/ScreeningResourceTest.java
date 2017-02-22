@@ -53,8 +53,8 @@ public class ScreeningResourceTest {
 
   @Test
   public void getDelegatesToResourceDelegate() throws Exception {
-    inMemoryResource.client().target(FOUND_RESOURCE).request().accept(MediaType.APPLICATION_JSON)
-        .get().getStatus();
+    inMemoryResource.client().target("/screenings/fetch/1").request()
+        .accept(MediaType.APPLICATION_JSON).get().getStatus();
     verify(resourceDelegate).get(1L);
   }
 
@@ -85,7 +85,7 @@ public class ScreeningResourceTest {
    * Update Tests
    */
   @Test
-  public void udpateDelegatesToResourceDelegate() throws Exception {
+  public void updateDelegatesToResourceDelegate() throws Exception {
     Address address = new Address("10 main st", "Sacramento", "CA", 95814, "home");
     ImmutableList.Builder<Long> builder = ImmutableList.builder();
     ScreeningRequest screeningRequest =

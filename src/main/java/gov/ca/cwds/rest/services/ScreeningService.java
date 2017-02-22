@@ -20,8 +20,10 @@ import java.util.Map;
 import java.util.Set;
 
 import org.apache.commons.lang3.NotImplementedException;
+import org.hibernate.Criteria;
 import org.hibernate.Session;
 import org.hibernate.criterion.Restrictions;
+import org.jadira.usertype.spi.utils.lang.StringUtils;
 
 import com.google.common.collect.ImmutableSet;
 import com.google.inject.Inject;
@@ -64,11 +66,9 @@ public class ScreeningService implements CrudsService {
     } else {
       List<gov.ca.cwds.data.persistence.ns.Screening> screenings = findByCriteria(primaryKey);
       ImmutableSet.Builder<ScreeningResponse> builder = ImmutableSet.builder();
-      // Set<ScreeningResponse> screeningResponses = new HashSet<ScreeningResponse>();
       for (gov.ca.cwds.data.persistence.ns.Screening screening : screenings) {
         if (screening != null) {
           builder.add(new ScreeningResponse(screening, screening.getParticipants()));
-          // screeningResponses.add(new ScreeningResponse(screening, screening.getParticipants()));
         }
 
       }
@@ -137,10 +137,15 @@ public class ScreeningService implements CrudsService {
     String responseTimes = nameValuePairs.get("responseTimes");
     String screeningDecisions = nameValuePairs.get("screeningDecisions");
     Session session = screeningDao.getSessionFactory().getCurrentSession();
-    List<gov.ca.cwds.data.persistence.ns.Screening> screenings =
-        session.createCriteria(gov.ca.cwds.data.persistence.ns.Screening.class)
-        // .add(Restrictions.like("responseTimes", "%" + responseTimes + "%"))
-            .add(Restrictions.like("screeningDecision", screeningDecisions)).list();
-    return screenings;
+
+    Criteria criteria = session.createCriteria(gov.ca.cwds.data.persistence.ns.Screening.class);
+    if (StringUtils.isNotEmpty(responseTimes) && !responseTimes.equals("null")) {
+      criteria.add(Restrictions.like("responseTime", responseTimes));
+    }
+    if (StringUtils.isNotEmpty(screeningDecisions) && !screeningDecisions.equals("null")) {
+      criteria.add(Restrictions.like("screeningDecision", screeningDecisions));
+    }
+
+    return criteria.list();
   }
 }

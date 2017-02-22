@@ -70,7 +70,7 @@ public class ScreeningResource {
    */
   @UnitOfWork(value = "ns")
   @GET
-  @Path("/{id}")
+  @Path("/fetch/{id}")
   @ApiResponses(value = {@ApiResponse(code = 404, message = "Not found"),
       @ApiResponse(code = 406, message = "Accept Header not supported")})
   @ApiOperation(value = "Find Screening by id", response = ScreeningResponse.class)
@@ -86,14 +86,14 @@ public class ScreeningResource {
    */
   @UnitOfWork(value = "ns")
   @GET
-  @Path("/*")
+  @Path("/fetch")
   @ApiResponses(value = {@ApiResponse(code = 404, message = "Not found"),
       @ApiResponse(code = 406, message = "Accept Header not supported")})
   @ApiOperation(value = "Find Screening", response = ScreeningResponse.class)
   @Consumes(value = MediaType.TEXT_PLAIN)
   public Response get(@QueryParam("response_times") @ApiParam(required = false,
-      value = "The response times", example = "Immediate") String responseTimes,
-      @QueryParam("screening_decisions") @ApiParam(required = true,
+      value = "The response times", example = "immediate") String responseTimes,
+      @QueryParam("screening_decisions") @ApiParam(required = false,
           value = "The screening decisions", example = "Decision") String screeningDecisions) {
     String pk =
         MessageFormat.format("responseTimes={0},screeningDecisions={1}", responseTimes,
