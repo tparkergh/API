@@ -9,8 +9,10 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import gov.ca.cwds.data.persistence.ns.PersonAddress;
+import gov.ca.cwds.data.persistence.ns.PersonEthnicity;
 import gov.ca.cwds.data.persistence.ns.PersonLanguage;
 import gov.ca.cwds.data.persistence.ns.PersonPhone;
+import gov.ca.cwds.data.persistence.ns.PersonRace;
 import gov.ca.cwds.rest.api.Request;
 import gov.ca.cwds.rest.api.Response;
 import gov.ca.cwds.rest.validation.Date;
@@ -64,6 +66,12 @@ public class Person extends DomainObject implements Request, Response {
   @JsonProperty("language")
   private Set<Language> language;
 
+  @JsonProperty("race")
+  private Set<Race> race;
+
+  @JsonProperty("ethnicity")
+  private Set<Ethnicity> ethnicity;
+
 
   /**
    * Constructor
@@ -76,6 +84,8 @@ public class Person extends DomainObject implements Request, Response {
    * @param address The address
    * @param phoneNumber The phoneNumber
    * @param language The language
+   * @param race The race
+   * @param ethnicity The ethnicity
    */
   @JsonCreator
   public Person(@JsonProperty("first_name") String firstName,
@@ -83,7 +93,8 @@ public class Person extends DomainObject implements Request, Response {
       @JsonProperty("birth_date") String birthDate, @JsonProperty("ssn") String ssn,
       @JsonProperty("address") Set<Address> address,
       @JsonProperty("phone") Set<PhoneNumber> phoneNumber,
-      @JsonProperty("language") Set<Language> language) {
+      @JsonProperty("language") Set<Language> language, @JsonProperty("race") Set<Race> race,
+      @JsonProperty("ethnicity") Set<Ethnicity> ethnicity) {
     super();
     this.firstName = firstName;
     this.lastName = lastName;
@@ -93,6 +104,8 @@ public class Person extends DomainObject implements Request, Response {
     this.address = address;
     this.phoneNumber = phoneNumber;
     this.language = language;
+    this.ethnicity = ethnicity;
+    this.race = race;
   }
 
   /**
@@ -109,6 +122,8 @@ public class Person extends DomainObject implements Request, Response {
     this.address = new HashSet<>();
     this.phoneNumber = new HashSet<>();
     this.language = new HashSet<>();
+    this.ethnicity = new HashSet<>();
+    this.race = new HashSet<>();
     if (person.getPersonAddress() != null && !person.getPersonAddress().isEmpty()) {
       for (PersonAddress personAddress : person.getPersonAddress()) {
         this.address.add(new Address(personAddress.getAddress()));
@@ -122,6 +137,16 @@ public class Person extends DomainObject implements Request, Response {
     if (person.getPersonLanguage() != null && !person.getPersonLanguage().isEmpty()) {
       for (PersonLanguage personLanguage : person.getPersonLanguage()) {
         this.language.add(new Language(personLanguage.getLanguage()));
+      }
+      if (person.getPersonRace() != null && !person.getPersonRace().isEmpty()) {
+        for (PersonRace personRace : person.getPersonRace()) {
+          this.race.add(new Race(personRace.getRace()));
+        }
+      }
+    }
+    if (person.getPersonEthnicity() != null && !person.getPersonEthnicity().isEmpty()) {
+      for (PersonEthnicity personEthnicity : person.getPersonEthnicity()) {
+        this.ethnicity.add(new Ethnicity(personEthnicity.getEthnicity()));
       }
     }
   }
@@ -183,6 +208,20 @@ public class Person extends DomainObject implements Request, Response {
   }
 
   /**
+   * @return the race
+   */
+  public Set<Race> getRace() {
+    return race;
+  }
+
+  /**
+   * @return the ethnicity
+   */
+  public Set<Ethnicity> getEthnicity() {
+    return ethnicity;
+  }
+
+  /**
    * {@inheritDoc}
    * 
    * @see java.lang.Object#hashCode()
@@ -194,6 +233,8 @@ public class Person extends DomainObject implements Request, Response {
     result = prime * result + ((address == null) ? 0 : address.hashCode());
     result = prime * result + ((phoneNumber == null) ? 0 : phoneNumber.hashCode());
     result = prime * result + ((language == null) ? 0 : language.hashCode());
+    result = prime * result + ((ethnicity == null) ? 0 : ethnicity.hashCode());
+    result = prime * result + ((race == null) ? 0 : race.hashCode());
     result = prime * result + ((birthDate == null) ? 0 : birthDate.hashCode());
     result = prime * result + ((firstName == null) ? 0 : firstName.hashCode());
     result = prime * result + ((gender == null) ? 0 : gender.hashCode());
@@ -230,6 +271,16 @@ public class Person extends DomainObject implements Request, Response {
       if (other.language != null)
         return false;
     } else if (!language.equals(other.language))
+      return false;
+    if (race == null) {
+      if (other.race != null)
+        return false;
+    } else if (!race.equals(other.race))
+      return false;
+    if (ethnicity == null) {
+      if (other.ethnicity != null)
+        return false;
+    } else if (!ethnicity.equals(other.ethnicity))
       return false;
     if (birthDate == null) {
       if (other.birthDate != null)

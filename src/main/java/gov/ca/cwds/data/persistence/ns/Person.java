@@ -68,7 +68,11 @@ public class Person extends NsPersistentObject
   @OneToMany(fetch = FetchType.EAGER, mappedBy = "personLanguageId.person")
   private Set<PersonLanguage> personLanguage = new HashSet<>();
 
+  @OneToMany(fetch = FetchType.EAGER, mappedBy = "personRaceId.person")
+  private Set<PersonRace> personRace = new HashSet<>();
 
+  @OneToMany(fetch = FetchType.EAGER, mappedBy = "personEthnicityId.ethnicity")
+  private Set<PersonEthnicity> personEthnicity = new HashSet<>();
 
   /**
    * Default constructor
@@ -91,10 +95,13 @@ public class Person extends NsPersistentObject
    * @param personAddress The address of this person
    * @param personPhone The phoneNumber of this person
    * @param personLanguage The language of this person
+   * @param personRace The race of this person
+   * @param personEthnicity the ethnicity of this person
    */
   public Person(Long id, String firstName, String lastName, String gender, Date dateOfBirth,
       String ssn, Set<PersonAddress> personAddress, Set<PersonPhone> personPhone,
-      Set<PersonLanguage> personLanguage) {
+      Set<PersonLanguage> personLanguage, Set<PersonRace> personRace,
+      Set<PersonEthnicity> personEthnicity) {
     super();
     this.id = id;
     this.firstName = firstName;
@@ -105,6 +112,8 @@ public class Person extends NsPersistentObject
     this.personAddress = personAddress;
     this.personPhone = personPhone;
     this.personLanguage = personLanguage;
+    this.personRace = personRace;
+    this.personEthnicity = personEthnicity;
   }
 
 
@@ -127,6 +136,21 @@ public class Person extends NsPersistentObject
    */
   public void addPersonLanguage(PersonLanguage personLanguage) {
     this.personLanguage.add(personLanguage);
+  }
+
+  /**
+   * 
+   * @param personEthnicity - The person Ethnicity
+   */
+  public void addPersonEthnicity(PersonEthnicity personEthnicity) {
+    this.personEthnicity.add(personEthnicity);
+  }
+
+  /**
+   * @param personRace - The person race
+   */
+  public void addPersonRace(PersonRace personRace) {
+    this.personRace.add(personRace);
   }
 
   /**
@@ -165,7 +189,19 @@ public class Person extends NsPersistentObject
             new PersonLanguage(this, new Language(languages, lastUpdatedId, createUserId)));
       }
     }
-
+    Set<gov.ca.cwds.rest.api.domain.Ethnicity> ethnicity = person.getEthnicity();
+    if (ethnicity != null && !ethnicity.isEmpty()) {
+      for (gov.ca.cwds.rest.api.domain.Ethnicity ethnicities : ethnicity) {
+        this.addPersonEthnicity(
+            new PersonEthnicity(this, new Ethnicity(ethnicities, lastUpdatedId, createUserId)));
+      }
+    }
+    Set<gov.ca.cwds.rest.api.domain.Race> race = person.getRace();
+    if (race != null && !race.isEmpty()) {
+      for (gov.ca.cwds.rest.api.domain.Race races : race) {
+        this.addPersonRace(new PersonRace(this, new Race(races, lastUpdatedId, createUserId)));
+      }
+    }
   }
 
   /**
@@ -245,6 +281,20 @@ public class Person extends NsPersistentObject
     return personLanguage;
   }
 
+  /**
+   * @return the race
+   */
+  public Set<PersonRace> getPersonRace() {
+    return personRace;
+  }
+
+  /**
+   * @return the PersonEthnicity
+   */
+  public Set<PersonEthnicity> getPersonEthnicity() {
+    return personEthnicity;
+  }
+
   public void setPersonAddress(Set<PersonAddress> personAddress) {
     this.personAddress = personAddress;
   }
@@ -255,6 +305,14 @@ public class Person extends NsPersistentObject
 
   public void setPersonLanguage(Set<PersonLanguage> personLanguage) {
     this.personLanguage = personLanguage;
+  }
+
+  public void setPersonRace(Set<PersonRace> personRace) {
+    this.personRace = personRace;
+  }
+
+  public void setPersonEthnicity(Set<PersonEthnicity> personEthnicity) {
+    this.personEthnicity = personEthnicity;
   }
 
 

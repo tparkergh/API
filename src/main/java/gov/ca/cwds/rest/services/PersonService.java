@@ -12,23 +12,31 @@ import com.google.inject.Inject;
 import gov.ca.cwds.data.Dao;
 import gov.ca.cwds.data.es.ElasticsearchDao;
 import gov.ca.cwds.data.ns.AddressDao;
+import gov.ca.cwds.data.ns.EthnicityDao;
 import gov.ca.cwds.data.ns.LanguageDao;
 import gov.ca.cwds.data.ns.PersonAddressDao;
 import gov.ca.cwds.data.ns.PersonDao;
+import gov.ca.cwds.data.ns.PersonEthnicityDao;
 import gov.ca.cwds.data.ns.PersonLanguageDao;
 import gov.ca.cwds.data.ns.PersonPhoneDao;
+import gov.ca.cwds.data.ns.PersonRaceDao;
 import gov.ca.cwds.data.ns.PhoneNumberDao;
+import gov.ca.cwds.data.ns.RaceDao;
 import gov.ca.cwds.data.persistence.ns.PersonAddress;
+import gov.ca.cwds.data.persistence.ns.PersonEthnicity;
 import gov.ca.cwds.data.persistence.ns.PersonLanguage;
 import gov.ca.cwds.data.persistence.ns.PersonPhone;
+import gov.ca.cwds.data.persistence.ns.PersonRace;
 import gov.ca.cwds.rest.api.ApiException;
 import gov.ca.cwds.rest.api.Request;
 import gov.ca.cwds.rest.api.Response;
 import gov.ca.cwds.rest.api.domain.Address;
+import gov.ca.cwds.rest.api.domain.Ethnicity;
 import gov.ca.cwds.rest.api.domain.Language;
 import gov.ca.cwds.rest.api.domain.Person;
 import gov.ca.cwds.rest.api.domain.PhoneNumber;
 import gov.ca.cwds.rest.api.domain.PostedPerson;
+import gov.ca.cwds.rest.api.domain.Race;
 
 /**
  * Business layer object to work on {@link Person} and
@@ -52,6 +60,10 @@ public class PersonService implements CrudsService {
   private PersonPhoneDao personPhoneDao;
   private LanguageDao languageDao;
   private PersonLanguageDao personLanguageDao;
+  private RaceDao raceDao;
+  private PersonRaceDao personRaceDao;
+  private EthnicityDao ethnicityDao;
+  private PersonEthnicityDao personEthnicityDao;
 
   /**
    * Constructor
@@ -69,13 +81,20 @@ public class PersonService implements CrudsService {
    * @param personLanguageDao The {@link Dao} handling
    *        {@link gov.ca.cwds.data.persistence.ns.PersonLanguage}
    * @param languageDao The {@link Dao} handling {@link gov.ca.cwds.data.persistence.ns.Language}
-   * 
+   * @param personRaceDao The {@link Dao} handling
+   *        {@link gov.ca.cwds.data.persistence.ns.PersonRace}
+   * @param raceDao The {@link Dao} handling {@link gov.ca.cwds.data.persistence.ns.Race}
+   * @param personEthnicityDao The {@link Dao} handling
+   *        {@link gov.ca.cwds.data.persistence.ns.PersonEthnicity}
+   * @param ethnicityDao The {@link Dao} handling {@link gov.ca.cwds.data.persistence.ns.Ethnicity}
    * 
    */
   @Inject
   public PersonService(PersonDao personDao, ElasticsearchDao elasticsearchDao,
       PersonAddressDao personAddressDao, AddressDao addressDao, PersonPhoneDao personPhoneDao,
-      PhoneNumberDao phoneNumberDao, PersonLanguageDao personLanguageDao, LanguageDao languageDao) {
+      PhoneNumberDao phoneNumberDao, PersonLanguageDao personLanguageDao, LanguageDao languageDao,
+      PersonRaceDao personRaceDao, RaceDao raceDao, PersonEthnicityDao personEthnicityDao,
+      EthnicityDao ethnicityDao) {
     this.personDao = personDao;
     this.elasticsearchDao = elasticsearchDao;
     this.personAddressDao = personAddressDao;
@@ -84,6 +103,10 @@ public class PersonService implements CrudsService {
     this.phoneNumberDao = phoneNumberDao;
     this.personLanguageDao = personLanguageDao;
     this.languageDao = languageDao;
+    this.personRaceDao = personRaceDao;
+    this.raceDao = raceDao;
+    this.personEthnicityDao = personEthnicityDao;
+    this.ethnicityDao = ethnicityDao;
   }
 
   /**
@@ -141,6 +164,26 @@ public class PersonService implements CrudsService {
         managedPerson.addPersonLanguage(personLanguage);
         languageDao.create(managedLanguage);
         personLanguageDao.create(personLanguage);
+      }
+    }
+    if (person.getRace() != null && person.getRace().size() > 0) {
+      for (Race race : person.getRace()) {
+        gov.ca.cwds.data.persistence.ns.Race managedRace =
+            new gov.ca.cwds.data.persistence.ns.Race(race, null, null);
+        PersonRace personRace = new PersonRace(managedPerson, managedRace);
+        managedPerson.addPersonRace(personRace);
+        raceDao.create(managedRace);
+        personRaceDao.create(personRace);
+      }
+    }
+    if (person.getEthnicity() != null && person.getEthnicity().size() > 0) {
+      for (Ethnicity ethnicity : person.getEthnicity()) {
+        gov.ca.cwds.data.persistence.ns.Ethnicity managedEthnicity =
+            new gov.ca.cwds.data.persistence.ns.Ethnicity(ethnicity, null, null);
+        PersonEthnicity personEthnicity = new PersonEthnicity(managedPerson, managedEthnicity);
+        managedPerson.addPersonEthnicity(personEthnicity);
+        ethnicityDao.create(managedEthnicity);
+        personEthnicityDao.create(personEthnicity);
       }
     }
     managedPerson = personDao.find(managedPerson.getId());

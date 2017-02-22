@@ -26,13 +26,17 @@ import gov.ca.cwds.data.cms.ReporterDao;
 import gov.ca.cwds.data.cms.StaffPersonDao;
 import gov.ca.cwds.data.es.ElasticsearchDao;
 import gov.ca.cwds.data.ns.AddressDao;
+import gov.ca.cwds.data.ns.EthnicityDao;
 import gov.ca.cwds.data.ns.LanguageDao;
 import gov.ca.cwds.data.ns.ParticipantDao;
 import gov.ca.cwds.data.ns.PersonAddressDao;
 import gov.ca.cwds.data.ns.PersonDao;
+import gov.ca.cwds.data.ns.PersonEthnicityDao;
 import gov.ca.cwds.data.ns.PersonLanguageDao;
 import gov.ca.cwds.data.ns.PersonPhoneDao;
+import gov.ca.cwds.data.ns.PersonRaceDao;
 import gov.ca.cwds.data.ns.PhoneNumberDao;
+import gov.ca.cwds.data.ns.RaceDao;
 import gov.ca.cwds.data.ns.ScreeningDao;
 import gov.ca.cwds.data.persistence.cms.Allegation;
 import gov.ca.cwds.data.persistence.cms.ClientCollateral;
@@ -54,16 +58,22 @@ import gov.ca.cwds.data.persistence.cms.StaffPerson;
 import gov.ca.cwds.data.persistence.cms.SubstituteCareProvider;
 import gov.ca.cwds.data.persistence.cms.SystemCodeDaoFileImpl;
 import gov.ca.cwds.data.persistence.ns.Address;
+import gov.ca.cwds.data.persistence.ns.Ethnicity;
 import gov.ca.cwds.data.persistence.ns.Language;
 import gov.ca.cwds.data.persistence.ns.Participant;
 import gov.ca.cwds.data.persistence.ns.Person;
 import gov.ca.cwds.data.persistence.ns.PersonAddress;
 import gov.ca.cwds.data.persistence.ns.PersonAddressId;
+import gov.ca.cwds.data.persistence.ns.PersonEthnicity;
+import gov.ca.cwds.data.persistence.ns.PersonEthnicityId;
 import gov.ca.cwds.data.persistence.ns.PersonLanguage;
 import gov.ca.cwds.data.persistence.ns.PersonLanguageId;
 import gov.ca.cwds.data.persistence.ns.PersonPhone;
 import gov.ca.cwds.data.persistence.ns.PersonPhoneId;
+import gov.ca.cwds.data.persistence.ns.PersonRace;
+import gov.ca.cwds.data.persistence.ns.PersonRaceId;
 import gov.ca.cwds.data.persistence.ns.PhoneNumber;
+import gov.ca.cwds.data.persistence.ns.Race;
 import gov.ca.cwds.data.persistence.ns.Screening;
 import gov.ca.cwds.data.validation.SmartyStreetsDao;
 import gov.ca.cwds.rest.ApiConfiguration;
@@ -109,7 +119,8 @@ public class DataAccessModule extends AbstractModule {
       new HibernateBundle<ApiConfiguration>(Person.class, Address.class, Screening.class,
           Participant.class, PersonAddressId.class, PersonAddress.class, PersonPhoneId.class,
           PhoneNumber.class, PersonPhone.class, PersonLanguageId.class, Language.class,
-          PersonLanguage.class) {
+          PersonLanguage.class, PersonEthnicityId.class, PersonEthnicity.class, Ethnicity.class,
+          PersonRaceId.class, PersonRace.class, Race.class) {
         @Override
         public DataSourceFactory getDataSourceFactory(ApiConfiguration configuration) {
           return configuration.getNsDataSourceFactory();
@@ -159,6 +170,10 @@ public class DataAccessModule extends AbstractModule {
     bind(PersonAddressDao.class);
     bind(PersonPhoneDao.class);
     bind(PersonLanguageDao.class);
+    bind(PersonEthnicityDao.class);
+    bind(EthnicityDao.class);
+    bind(PersonRaceDao.class);
+    bind(RaceDao.class);
 
     bind(ElasticsearchDao.class);
     bind(SmartyStreetsDao.class);

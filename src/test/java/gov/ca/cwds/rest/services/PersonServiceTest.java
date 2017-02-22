@@ -21,20 +21,26 @@ import org.junit.rules.ExpectedException;
 
 import gov.ca.cwds.data.es.ElasticsearchDao;
 import gov.ca.cwds.data.ns.AddressDao;
+import gov.ca.cwds.data.ns.EthnicityDao;
 import gov.ca.cwds.data.ns.LanguageDao;
 import gov.ca.cwds.data.ns.PersonAddressDao;
 import gov.ca.cwds.data.ns.PersonDao;
+import gov.ca.cwds.data.ns.PersonEthnicityDao;
 import gov.ca.cwds.data.ns.PersonLanguageDao;
 import gov.ca.cwds.data.ns.PersonPhoneDao;
+import gov.ca.cwds.data.ns.PersonRaceDao;
 import gov.ca.cwds.data.ns.PhoneNumberDao;
+import gov.ca.cwds.data.ns.RaceDao;
 import gov.ca.cwds.data.persistence.ns.PersonAddress;
 import gov.ca.cwds.rest.api.Response;
 import gov.ca.cwds.rest.api.domain.Address;
 import gov.ca.cwds.rest.api.domain.DomainChef;
+import gov.ca.cwds.rest.api.domain.Ethnicity;
 import gov.ca.cwds.rest.api.domain.Language;
 import gov.ca.cwds.rest.api.domain.Person;
 import gov.ca.cwds.rest.api.domain.PhoneNumber;
 import gov.ca.cwds.rest.api.domain.PostedPerson;
+import gov.ca.cwds.rest.api.domain.Race;
 
 
 /**
@@ -58,6 +64,10 @@ public class PersonServiceTest {
   private PersonPhoneDao personPhoneDao;
   private LanguageDao languageDao;
   private PersonLanguageDao personLanguageDao;
+  private RaceDao raceDao;
+  private PersonRaceDao personRaceDao;
+  private EthnicityDao ethinictyDao;
+  private PersonEthnicityDao personEthnicityDao;
 
   @Rule
   public ExpectedException thrown = ExpectedException.none();
@@ -72,8 +82,13 @@ public class PersonServiceTest {
     personPhoneDao = mock(PersonPhoneDao.class);
     languageDao = mock(LanguageDao.class);
     personLanguageDao = mock(PersonLanguageDao.class);
+    raceDao = mock(RaceDao.class);
+    personRaceDao = mock(PersonRaceDao.class);
+    ethinictyDao = mock(EthnicityDao.class);
+    personEthnicityDao = mock(PersonEthnicityDao.class);
     personService = new PersonService(personDao, elasticsearchDao, personAddressDao, addressDao,
-        personPhoneDao, phoneNumberDao, personLanguageDao, languageDao);
+        personPhoneDao, phoneNumberDao, personLanguageDao, languageDao, personRaceDao, raceDao,
+        personEthnicityDao, ethinictyDao);
   }
 
   /*
@@ -84,14 +99,20 @@ public class PersonServiceTest {
     Address address = new Address("742 Evergreen Terrace", "Springfield", "WA", 98700, "Home");
     PhoneNumber phoneNumber = new PhoneNumber("408-277-4778", "cell");
     Language language = new Language("English");
+    Race race = new Race("White", "European");
+    Ethnicity ethnicity = new Ethnicity("Unknown", "South American");
     Set<Address> addresses = new HashSet<Address>();
     addresses.add(address);
     Set<PhoneNumber> phoneNumbers = new HashSet<PhoneNumber>();
     phoneNumbers.add(phoneNumber);
     Set<Language> languages = new HashSet<Language>();
     languages.add(language);
+    Set<Race> races = new HashSet<Race>();
+    races.add(race);
+    Set<Ethnicity> ethnicities = new HashSet<Ethnicity>();
+    ethnicities.add(ethnicity);
     Person expected = new Person("Bart", "Simpson", "M", "2016-10-31", "1234556789", addresses,
-        phoneNumbers, languages);
+        phoneNumbers, languages, races, ethnicities);
 
     gov.ca.cwds.data.persistence.ns.Person person =
         new gov.ca.cwds.data.persistence.ns.Person(expected, null, null);
@@ -131,9 +152,9 @@ public class PersonServiceTest {
     PersonAddress personAddress = new PersonAddress();
     personAddress.setAddress(toCreateAddress);
     personAddresses.add(personAddress);
-    gov.ca.cwds.data.persistence.ns.Person toCreate =
-        new gov.ca.cwds.data.persistence.ns.Person(2L, "Bart", "Simpson", "M",
-            DomainChef.uncookDateString("2013-10-31"), "1234556789", personAddresses, null, null);
+    gov.ca.cwds.data.persistence.ns.Person toCreate = new gov.ca.cwds.data.persistence.ns.Person(2L,
+        "Bart", "Simpson", "M", DomainChef.uncookDateString("2013-10-31"), "1234556789",
+        personAddresses, null, null, null, null);
 
     Person request = new Person(toCreate);
     when(personDao.create(any(gov.ca.cwds.data.persistence.ns.Person.class))).thenReturn(toCreate);
@@ -152,9 +173,9 @@ public class PersonServiceTest {
     PersonAddress personAddress = new PersonAddress();
     personAddress.setAddress(toCreateAddress);
     personAddresses.add(personAddress);
-    gov.ca.cwds.data.persistence.ns.Person toCreate =
-        new gov.ca.cwds.data.persistence.ns.Person(2L, "Bart", "Simpson", "M",
-            DomainChef.uncookDateString("2016-10-31"), "1234556789", personAddresses, null, null);
+    gov.ca.cwds.data.persistence.ns.Person toCreate = new gov.ca.cwds.data.persistence.ns.Person(2L,
+        "Bart", "Simpson", "M", DomainChef.uncookDateString("2016-10-31"), "1234556789",
+        personAddresses, null, null, null, null);
     Person request = new Person(toCreate);
     when(personDao.create(any(gov.ca.cwds.data.persistence.ns.Person.class))).thenReturn(toCreate);
     when(personDao.find(any(gov.ca.cwds.data.persistence.ns.Person.class))).thenReturn(toCreate);
@@ -203,8 +224,8 @@ public class PersonServiceTest {
     Address address = new Address("742 Evergreen Terrace", "Springfield", "WA", 98700, "Home");
     Set<Address> addresses = new HashSet<>();
     addresses.add(address);
-    Person toUpdate =
-        new Person("Bart", "Simpson", "M", "04/01/1990", "1234556789", addresses, null, null);
+    Person toUpdate = new Person("Bart", "Simpson", "M", "04/01/1990", "1234556789", addresses,
+        null, null, null, null);
     personService.update(1L, toUpdate);
   }
 

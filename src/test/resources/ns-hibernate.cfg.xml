@@ -23,5 +23,9 @@
 		<mapping class="gov.ca.cwds.data.persistence.ns.PersonAddress" />
 		<mapping class="gov.ca.cwds.data.persistence.ns.Language" />
 		<mapping class="gov.ca.cwds.data.persistence.ns.PersonLanguage" />
+		<mapping class="gov.ca.cwds.data.persistence.ns.Race" />
+		<mapping class="gov.ca.cwds.data.persistence.ns.PersonRace" />
+		<mapping class="gov.ca.cwds.data.persistence.ns.Ethnicity" />
+		<mapping class="gov.ca.cwds.data.persistence.ns.PersonEthnicity" />
 	</session-factory>
 </hibernate-configuration>

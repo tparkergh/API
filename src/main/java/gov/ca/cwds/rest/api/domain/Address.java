@@ -19,7 +19,7 @@ import io.swagger.annotations.ApiModelProperty;
 public class Address extends DomainObject implements Request, Response {
 
   /**
-   * 
+   * Base serialization value. Increment by version
    */
   private static final long serialVersionUID = 1L;
 

@@ -23,5 +23,17 @@
     {
       "language": "English"
     }
+  ],
+  "race": [
+    {
+      "race": "White",
+      "subrace": "European"
+    }
+  ],
+   "ethnicity": [
+    {
+      "ethnicityType": "American",
+      "subEthnicity": "White"
+    }
   ]
 }

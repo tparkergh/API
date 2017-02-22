@@ -4,16 +4,16 @@ import org.hibernate.SessionFactory;
 
 import com.google.inject.Inject;
 
-import gov.ca.cwds.data.CrudsDaoImpl;
-import gov.ca.cwds.data.persistence.ns.PersonLanguage;
+import gov.ca.cwds.data.BaseDaoImpl;
+import gov.ca.cwds.data.persistence.ns.PersonRace;
 import gov.ca.cwds.inject.NsSessionFactory;
 
 /**
- * Person Language DAO
+ * PersonRace DAO
  * 
  * @author CWDS API Team
  */
-public class PersonLanguageDao extends CrudsDaoImpl<PersonLanguage> {
+public class PersonRaceDao extends BaseDaoImpl<PersonRace> {
 
   /**
    * Constructor
@@ -21,7 +21,9 @@ public class PersonLanguageDao extends CrudsDaoImpl<PersonLanguage> {
    * @param sessionFactory The session factory
    */
   @Inject
-  public PersonLanguageDao(@NsSessionFactory SessionFactory sessionFactory) {
+  public PersonRaceDao(@NsSessionFactory SessionFactory sessionFactory) {
     super(sessionFactory);
   }
+
 }
+
