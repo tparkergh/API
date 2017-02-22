@@ -5,17 +5,9 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.is;
 import static org.mockito.Mockito.mock;
-import gov.ca.cwds.rest.resources.ScreeningResource;
-import gov.ca.cwds.rest.resources.cms.JerseyGuiceRule;
-import io.dropwizard.jackson.Jackson;
-import io.dropwizard.testing.junit.ResourceTestRule;
 
 import java.io.IOException;
-import java.util.HashSet;
 import java.util.Set;
-
-import nl.jqno.equalsverifier.EqualsVerifier;
-import nl.jqno.equalsverifier.Warning;
 
 import org.junit.After;
 import org.junit.ClassRule;
@@ -24,8 +16,21 @@ import org.junit.Test;
 import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.google.common.collect.ImmutableSet;
 import com.squarespace.jersey2.guice.JerseyGuiceUtils;
 
+import gov.ca.cwds.rest.resources.ScreeningResource;
+import gov.ca.cwds.rest.resources.cms.JerseyGuiceRule;
+import io.dropwizard.jackson.Jackson;
+import io.dropwizard.testing.junit.ResourceTestRule;
+import nl.jqno.equalsverifier.EqualsVerifier;
+import nl.jqno.equalsverifier.Warning;
+
+/**
+ * @author CWDS API Team
+ *
+ */
+@SuppressWarnings("javadoc")
 public class ScreeningTest {
 
   private static final ObjectMapper MAPPER = Jackson.newObjectMapper();
@@ -41,8 +46,8 @@ public class ScreeningTest {
   public static JerseyGuiceRule rule = new JerseyGuiceRule();
 
   @ClassRule
-  public static final ResourceTestRule resources = ResourceTestRule.builder()
-      .addResource(mockedScreeningResource).build();
+  public static final ResourceTestRule resources =
+      ResourceTestRule.builder().addResource(mockedScreeningResource).build();
 
   /*
    * Serialization and deserialization
@@ -50,23 +55,20 @@ public class ScreeningTest {
   @Test
   public void serializesToJSON() throws Exception {
 
-    String expected =
-        MAPPER.writeValueAsString(new Screening("screening reference", "2016-10-31", "Santa Clara",
-            "2016-10-31", "school", "phone", "screening name", "24 hour",
-            "accept_for_investigation", "2016-10-05", "test the narrative"));
-    String serialized =
-        MAPPER.writeValueAsString(MAPPER.readValue(
-            fixture("fixtures/domain/screening/valid/valid.json"), Screening.class));
+    String expected = MAPPER.writeValueAsString(new Screening("screening reference", "2016-10-31",
+        "Santa Clara", "2016-10-31", "school", "phone", "screening name", "24 hour",
+        "accept_for_investigation", "2016-10-05", "test the narrative"));
+    String serialized = MAPPER.writeValueAsString(
+        MAPPER.readValue(fixture("fixtures/domain/screening/valid/valid.json"), Screening.class));
 
     assertThat(serialized, is(expected));
   }
 
   @Test
   public void deserializesFromJSON() throws Exception {
-    Screening expected =
-        new Screening("screening reference", "2016-10-31", "Santa Clara", "2016-10-31", "school",
-            "phone", "screening name", "24 hour", "accept_for_investigation", "2016-10-05",
-            "test the narrative");
+    Screening expected = new Screening("screening reference", "2016-10-31", "Santa Clara",
+        "2016-10-31", "school", "phone", "screening name", "24 hour", "accept_for_investigation",
+        "2016-10-05", "test the narrative");
     Screening serialized =
         MAPPER.readValue(fixture("fixtures/domain/screening/valid/valid.json"), Screening.class);
     assertThat(serialized, is(expected));
@@ -89,14 +91,22 @@ public class ScreeningTest {
     Screening domain = this.validScreening();
     gov.ca.cwds.data.persistence.ns.Address address = this.validAddress();
 
-    gov.ca.cwds.data.persistence.ns.Participant participant = this.validParticipant();
     final Long id = (long) 1234567;
     final String lastUpdateId = "234567";
     final String createId = "234567";
 
-    Set<gov.ca.cwds.data.persistence.ns.Participant> participants =
-        new HashSet<gov.ca.cwds.data.persistence.ns.Participant>();
-    participants.add(participant);
+    Participant dp = this.validParticipant();
+    gov.ca.cwds.data.persistence.ns.Participant participant =
+        new gov.ca.cwds.data.persistence.ns.Participant(dp, lastUpdateId, createId);
+    ImmutableSet.Builder<gov.ca.cwds.data.persistence.ns.Participant> participantSetBuilder =
+        ImmutableSet.builder();
+    participantSetBuilder.add(participant);
+    Set<gov.ca.cwds.data.persistence.ns.Participant> participants;
+    participants = participantSetBuilder.build();
+
+    // Set<gov.ca.cwds.data.persistence.ns.Participant> participants =
+    // new HashSet<gov.ca.cwds.data.persistence.ns.Participant>();
+    // participants.add(participant);
 
     gov.ca.cwds.data.persistence.ns.Screening persistent =
         new gov.ca.cwds.data.persistence.ns.Screening(id, domain, address, participants,
@@ -122,10 +132,9 @@ public class ScreeningTest {
 
     Screening sc = this.validScreening();
 
-    Screening domain =
-        new Screening(sc.getReference(), sc.getEndedAt(), sc.getIncidentCounty(),
-            sc.getIncidentDate(), sc.getLocationType(), sc.getCommunicationMethod(), sc.getName(),
-            sc.getResponseTime(), sc.getScreeningDecision(), sc.getStartedAt(), sc.getNarrative());
+    Screening domain = new Screening(sc.getReference(), sc.getEndedAt(), sc.getIncidentCounty(),
+        sc.getIncidentDate(), sc.getLocationType(), sc.getCommunicationMethod(), sc.getName(),
+        sc.getResponseTime(), sc.getScreeningDecision(), sc.getStartedAt(), sc.getNarrative());
 
     assertThat(domain.getReference(), is(equalTo(sc.getReference())));
     assertThat(domain.getEndedAt(), is(equalTo(sc.getEndedAt())));
@@ -187,17 +196,11 @@ public class ScreeningTest {
     }
   }
 
-  /**
-   * persistence Person object
-   * 
-   * @Person
-   */
-  private gov.ca.cwds.data.persistence.ns.Participant validParticipant() {
+  private Participant validParticipant() {
 
     try {
-      gov.ca.cwds.data.persistence.ns.Participant validParticipant =
-          MAPPER.readValue(fixture("fixtures/persistence/ns/participant/valid/valid.json"),
-              gov.ca.cwds.data.persistence.ns.Participant.class);
+      Participant validParticipant = MAPPER
+          .readValue(fixture("fixtures/domain/participant/valid/valid.json"), Participant.class);
 
       return validParticipant;
 
@@ -212,4 +215,5 @@ public class ScreeningTest {
       return null;
     }
   }
+
 }
