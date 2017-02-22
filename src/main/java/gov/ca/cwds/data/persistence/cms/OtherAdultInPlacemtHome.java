@@ -2,25 +2,18 @@ package gov.ca.cwds.data.persistence.cms;
 
 import java.util.Date;
 
-import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.Id;
 import javax.persistence.Table;
 
-import org.apache.commons.lang3.StringUtils;
 import org.hibernate.annotations.NamedNativeQueries;
 import org.hibernate.annotations.NamedNativeQuery;
 import org.hibernate.annotations.NamedQueries;
 import org.hibernate.annotations.NamedQuery;
-import org.hibernate.annotations.Type;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
 import gov.ca.cwds.data.persistence.PersistentObject;
-import gov.ca.cwds.data.std.ApiPersonAware;
-
 
 /**
  * {@link PersistentObject} representing a OtherAdultInPlacemtHome
@@ -47,53 +40,12 @@ import gov.ca.cwds.data.std.ApiPersonAware;
 @Table(name = "OTH_ADLT")
 @JsonPropertyOrder(alphabetic = true)
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class OtherAdultInPlacemtHome extends CmsPersistentObject implements ApiPersonAware {
+public class OtherAdultInPlacemtHome extends BaseOtherAdultInPlacemtHome {
 
   /**
-   * Base serialization version. Increment by class version.
+   * 
    */
   private static final long serialVersionUID = 1L;
-
-  @Type(type = "date")
-  @Column(name = "BIRTH_DT")
-  private Date birthDate;
-
-  @Column(name = "COMNT_DSC")
-  private String commentDescription;
-
-  @Type(type = "date")
-  @Column(name = "END_DT")
-  private Date endDate;
-
-  @Column(name = "FKPLC_HM_T", length = CMS_ID_LEN)
-  private String fkplcHmT;
-
-  @Column(name = "GENDER_CD")
-  private String genderCode;
-
-  @Id
-  @Column(name = "IDENTIFIER", length = CMS_ID_LEN)
-  private String id;
-
-  @Type(type = "date")
-  @Column(name = "IDENTFD_DT")
-  private Date identifiedDate;
-
-  @Column(name = "OTH_ADLTNM")
-  private String name;
-
-  @Column(name = "OTH_ADL_CD")
-  private String otherAdultCode;
-
-  @Column(name = "PASSBC_CD")
-  private String passedBackgroundCheckCode;
-
-  @Column(name = "RESOST_IND")
-  private String residedOutOfStateIndicator;
-
-  @Type(type = "date")
-  @Column(name = "START_DT")
-  private Date startDate;
 
   /**
    * Default constructor
@@ -135,137 +87,6 @@ public class OtherAdultInPlacemtHome extends CmsPersistentObject implements ApiP
     this.passedBackgroundCheckCode = passedBackgroundCheckCode;
     this.residedOutOfStateIndicator = residedOutOfStateIndicator;
     this.startDate = startDate;
-  }
-
-  /**
-   * {@inheritDoc}
-   * 
-   * @see gov.ca.cwds.data.persistence.PersistentObject#getPrimaryKey()
-   */
-  @Override
-  public String getPrimaryKey() {
-    return getId();
-  }
-
-  /**
-   * @return the birthDate
-   */
-  @Override
-  public Date getBirthDate() {
-    return birthDate;
-  }
-
-  /**
-   * @return the commentDescription
-   */
-  public String getCommentDescription() {
-    return StringUtils.trimToEmpty(commentDescription);
-  }
-
-  /**
-   * @return the endDate
-   */
-  public Date getEndDate() {
-    return endDate;
-  }
-
-  /**
-   * @return the fkplcHmT
-   */
-  public String getFkplcHmT() {
-    return StringUtils.trimToEmpty(fkplcHmT);
-  }
-
-  /**
-   * @return the genderCode
-   */
-  public String getGenderCode() {
-    return StringUtils.trimToEmpty(genderCode);
-  }
-
-  /**
-   * @return the id
-   */
-  public String getId() {
-    return StringUtils.trimToEmpty(id);
-  }
-
-  /**
-   * @return the identifiedDate
-   */
-  public Date getIdentifiedDate() {
-    return identifiedDate;
-  }
-
-  /**
-   * @return the name
-   */
-  public String getName() {
-    return StringUtils.trimToEmpty(name);
-  }
-
-  /**
-   * @return the otherAdultCode
-   */
-  public String getOtherAdultCode() {
-    return StringUtils.trimToEmpty(otherAdultCode);
-  }
-
-  /**
-   * @return the passedBackgroundCheckCode
-   */
-  public String getPassedBackgroundCheckCode() {
-    return StringUtils.trimToEmpty(passedBackgroundCheckCode);
-  }
-
-  /**
-   * @return the residedOutOfStateIndicator
-   */
-  public String getResidedOutOfStateIndicator() {
-    return StringUtils.trimToEmpty(residedOutOfStateIndicator);
-  }
-
-  /**
-   * @return the startDate
-   */
-  public Date getStartDate() {
-    return startDate;
-  }
-
-  @JsonIgnore
-  @Override
-  public String getFirstName() {
-    return null;
-  }
-
-  @JsonIgnore
-  @Override
-  public String getMiddleName() {
-    return null;
-  }
-
-  @JsonIgnore
-  @Override
-  public String getLastName() {
-    return this.getName();
-  }
-
-  @JsonIgnore
-  @Override
-  public String getGender() {
-    return this.getGenderCode();
-  }
-
-  @JsonIgnore
-  @Override
-  public String getSsn() {
-    return null;
-  }
-
-  @JsonIgnore
-  @Override
-  public String getNameSuffix() {
-    return null;
   }
 
   /**
