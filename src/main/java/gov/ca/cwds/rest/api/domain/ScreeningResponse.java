@@ -16,6 +16,12 @@ import com.google.common.collect.ImmutableSet;
  */
 @JsonInclude(Include.ALWAYS)
 public class ScreeningResponse extends Screening implements Response {
+
+  /**
+   * Default
+   */
+  private static final long serialVersionUID = 1L;
+
   @JsonProperty("address")
   private Address address;
 

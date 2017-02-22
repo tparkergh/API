@@ -75,6 +75,20 @@ public class Participant extends NsPersistentObject {
   }
 
   /**
+   * @param participant The domain object to construct this object from
+   * @param lastUpdatedId the id of the last person to update this object
+   * @param createUserId the id of the person created the record
+   * @param person the Person that matches the personId
+   */
+  public Participant(gov.ca.cwds.rest.api.domain.Participant participant, String lastUpdatedId,
+      String createUserId, Person person) {
+    super(lastUpdatedId, createUserId);
+    this.personId = participant.getPersonId();
+    this.screeningId = participant.getScreeningId();
+    this.person = person;
+  }
+
+  /**
    * Default constructor
    * 
    * Required for Hibernate

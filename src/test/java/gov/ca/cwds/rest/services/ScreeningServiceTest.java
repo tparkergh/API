@@ -15,13 +15,13 @@ import gov.ca.cwds.rest.api.Request;
 import gov.ca.cwds.rest.api.Response;
 import gov.ca.cwds.rest.api.domain.DomainChef;
 import gov.ca.cwds.rest.api.domain.Participant;
+import gov.ca.cwds.rest.api.domain.Person;
 import gov.ca.cwds.rest.api.domain.PostedScreening;
 import gov.ca.cwds.rest.api.domain.ScreeningReference;
 import gov.ca.cwds.rest.api.domain.ScreeningRequest;
 import gov.ca.cwds.rest.api.domain.ScreeningResponse;
 
 import java.util.Date;
-import java.util.Objects;
 
 import org.apache.commons.lang3.NotImplementedException;
 import org.junit.Before;
@@ -29,14 +29,12 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
 
-import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableSet;
 
 public class ScreeningServiceTest {
   private ScreeningService screeningService;
   private ScreeningDao screeningDao;
   private PersonService personService;
-  private ParticipantService participantService;
 
   @Rule
   public ExpectedException thrown = ExpectedException.none();
@@ -45,7 +43,6 @@ public class ScreeningServiceTest {
   public void setup() throws Exception {
     screeningDao = mock(ScreeningDao.class);
     personService = mock(PersonService.class);
-    participantService = mock(ParticipantService.class);
     screeningService = new ScreeningService(screeningDao, personService);
   }
 
@@ -53,12 +50,53 @@ public class ScreeningServiceTest {
    * find tests
    */
   @Test
+  public void findReturnsCorrectScreeningWhenFoundAndParticipantListIsNotNull() throws Exception {
+    gov.ca.cwds.rest.api.domain.Address domainAddress =
+        new gov.ca.cwds.rest.api.domain.Address("742 Evergreen Terrace", "Springfield", "WA",
+            98700, "home");
+    Participant bart = new Participant(1, 123, "Bart", "Simpson", "M", "2016-10-31", "123456789");
+    Participant maggie =
+        new Participant(2, 123, "Maggie", "Simpson", "M", "2016-10-31", "123456789");
+
+    Address address = new Address(1L, "742 Evergreen Terrace", "Springfield", "WA", 98700, "home");
+    Date date = DomainChef.uncookDateString("2016-10-31");
+    ImmutableSet.Builder<gov.ca.cwds.data.persistence.ns.Participant> persistentPersonSetBuilder =
+        ImmutableSet.builder();
+    persistentPersonSetBuilder.add(
+        new gov.ca.cwds.data.persistence.ns.Participant(bart, null, null,
+            new gov.ca.cwds.data.persistence.ns.Person(new Person("Bart", "Simpson", "M",
+                "2016-10-31", "123456789", null, null, null), null, null))).add(
+        new gov.ca.cwds.data.persistence.ns.Participant(maggie, null, null,
+            new gov.ca.cwds.data.persistence.ns.Person(new Person("Maggie", "Simpson", "M",
+                "2016-10-31", "123456789", null, null, null), null, null)));
+
+    Screening screening =
+        new Screening("X5HNJK", date, "Amador", date, "Home", "email", "First screening",
+            "immediate", "accept_for_investigation", date, "first narrative", address,
+            persistentPersonSetBuilder.build());
+
+    ImmutableSet.Builder<Participant> domainParticipantSetBuilder = ImmutableSet.builder();
+    domainParticipantSetBuilder.add(bart).add(maggie);
+
+    when(screeningDao.find(new Long(123))).thenReturn(screening);
+
+    ScreeningResponse expected =
+        new ScreeningResponse("X5HNJK", "2016-10-31", "Amador", "2016-10-31", "Home", "email",
+            "First screening", "immediate", "accept_for_investigation", "2016-10-31",
+            "first narrative", domainAddress, domainParticipantSetBuilder.build());
+
+    Response found = screeningService.find(123L);
+    assertThat(found.getClass(), is(ScreeningResponse.class));
+    assertThat(found, is(expected));
+  }
+
+  @Test
   public void findReturnsCorrectScreeningWhenFoundAndParticipantListIsNull() throws Exception {
     Address address = new Address(1L, "742 Evergreen Terrace", "Springfield", "WA", 98700, "home");
     Date date = DomainChef.uncookDateString("2016-10-31");
     Screening screening =
         new Screening("X5HNJK", date, "Amador", date, "Home", "email", "First screening",
-            "accept_for_investigation", null, date, "first narrative", address, null);
+            "accept_for_investigation", "immediate", date, "first narrative", address, null);
 
     gov.ca.cwds.rest.api.domain.Address domainAddress =
         new gov.ca.cwds.rest.api.domain.Address("742 Evergreen Terrace", "Springfield", "WA",
@@ -86,6 +124,16 @@ public class ScreeningServiceTest {
   /*
    * create tests
    */
+  @Test
+  public void createThrowsAssertionError() throws Exception {
+    thrown.expect(AssertionError.class);
+    try {
+      screeningService.create(null);
+    } catch (AssertionError e) {
+      assertEquals("Expected AssertionError", e.getMessage());
+    }
+  }
+
   @Test
   public void createReturnsPostedScreeningClass() throws Exception {
     Screening screeningMock = mock(Screening.class);
@@ -139,15 +187,36 @@ public class ScreeningServiceTest {
   }
 
   @Test
+  public void deleteThrowsAssertionError() throws Exception {
+    thrown.expect(AssertionError.class);
+    try {
+      screeningService.delete("nonLong");
+    } catch (AssertionError e) {
+      assertEquals("Expected AssertionError", e.getMessage());
+    }
+  }
+
+  /*
+   * update tests
+   */
+  @Test
+  public void updateThrowsAssertionError() throws Exception {
+    thrown.expect(AssertionError.class);
+    try {
+      screeningService.update("wrong", null);
+    } catch (AssertionError e) {
+      assertEquals("Expected AssertionError", e.getMessage());
+    }
+  }
+
+  @Test
   public void updateReturnsScreeningResponseOnSuccess() throws Exception {
     gov.ca.cwds.rest.api.domain.Address domainAddress =
         new gov.ca.cwds.rest.api.domain.Address("742 Evergreen Terrace", "Springfield", "WA",
             98700, "home");
-
     ScreeningRequest screeningRequest =
         new ScreeningRequest("ref", "2016-10-31", "Sac", "2016-10-31", "loc", "comm", "name",
             "now", "sure", "2016-10-31", "narrative", domainAddress);
-
     gov.ca.cwds.data.persistence.ns.Screening screening =
         new gov.ca.cwds.data.persistence.ns.Screening(1L, screeningRequest, new Address(
             domainAddress, null, null), null, null, null);
@@ -164,9 +233,6 @@ public class ScreeningServiceTest {
     gov.ca.cwds.rest.api.domain.Address domainAddress =
         new gov.ca.cwds.rest.api.domain.Address("742 Evergreen Terrace", "Springfield", "WA",
             98700, "home");
-    ImmutableList.Builder<Long> peopleIdListBuilder = ImmutableList.builder();
-    ImmutableList<Long> peopleIds = peopleIdListBuilder.add(1L).add(2L).build();
-
     ScreeningRequest screeningRequest =
         new ScreeningRequest("ref", "2016-10-31", "Sac", "2016-10-31", "loc", "comm", "name",
             "now", "sure", "2016-10-31", "narrative", domainAddress);
@@ -174,7 +240,6 @@ public class ScreeningServiceTest {
     Participant bart = new Participant(1, 123, "Bart", "Simpson", "M", "2016-10-31", "123456789");
     Participant maggie = new Participant(2, 1, "Maggie", "Simpson", "M", "2016-10-31", "123456789");
 
-    Date date = DomainChef.uncookDateString("2016-10-31");
     ImmutableSet.Builder<gov.ca.cwds.data.persistence.ns.Participant> peopleListBuilder =
         ImmutableSet.builder();
     ImmutableSet<gov.ca.cwds.data.persistence.ns.Participant> people =
@@ -201,58 +266,6 @@ public class ScreeningServiceTest {
     } catch (AssertionError e) {
       assertEquals("Expected AssertionError", e.getMessage());
     }
-  }
-
-  @Test
-  public void equalsHashCodeWork() {
-    // Trivial objects.
-    ScreeningResponse one = new ScreeningResponse();
-    ScreeningResponse two = new ScreeningResponse();
-    gov.ca.cwds.rest.api.domain.Screening parent = new gov.ca.cwds.rest.api.domain.Screening();
-    gov.ca.cwds.rest.api.domain.PostedScreening sibling =
-        new gov.ca.cwds.rest.api.domain.PostedScreening();
-
-    System.out.println("equals: " + one.equals(two));
-    System.out.println("Objects.equals: one=>two: " + Objects.equals(one, two));
-    System.out.println("Objects.equals: one=>sibling: " + Objects.equals(one, parent));
-    System.out.println("Objects.equals: one=>child: " + Objects.equals(one, sibling));
-
-    System.out.println("hash: one: " + one.hashCode() + ", two: " + two.hashCode());
-
-    // Questions.
-    // EqualsVerifier claims that a trivial superclass equals this class, but java.util.Objects
-    // disproves that claim.
-    // That assertion *could be valid*, if a parent class' key *also* defines a child class's key,
-    // but for domain classes, inheritance just reduces duplication of columns.
-    //
-    // In other words, if you stored different class variations of in a single collection, then yes,
-    // these tests would matter, but doesn't always apply to API. For instance, you would *never*
-    // mix and match domain classes for the same resource or ever mix persistence classes in the
-    // same collection.
-
-    // "does not equal superclass instance".
-    // Um, it better not!!
-    // EqualsVerifier.forClass(ScreeningResponse.class).suppress(Warning.NONFINAL_FIELDS).verify();
-
-    // Subclass: object is not equal to an instance of a trivial subclass with equal fields:
-    // Consider making the class final.
-
-    // EqualsVerifier.forClass(ScreeningResponse.class).suppress(Warning.NONFINAL_FIELDS)
-    // .withRedefinedSuperclass().verify();
-
-    // EqualsVerifier.forClass(ScreeningResponse.class).withRedefinedSuperclass()
-    // .suppress(Warning.TRANSIENT_FIELDS).verify();
-
-    // EqualsVerifier.forClass(ScreeningResponse.class).suppress(Warning.NONFINAL_FIELDS,
-    // Warning.NULL_FIELDS, Warning.ANNOTATION, Warning.STRICT_INHERITANCE).verify();
-
-    // EqualsVerifier.forClass(ScreeningResponse.class)
-    // .suppress(Warning.NONFINAL_FIELDS, Warning.NULL_FIELDS, Warning.STRICT_INHERITANCE)
-    // .withRedefinedSuperclass().withRedefinedSubclass(ScreeningResponse.class).verify();
-
-    // EqualsVerifier.forClass(ScreeningResponse.class)
-    // .suppress(Warning.NONFINAL_FIELDS, Warning.NULL_FIELDS).withRedefinedSuperclass()
-    // .verify();
   }
 
 }
