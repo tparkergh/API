@@ -1,14 +1,15 @@
 package gov.ca.cwds.data.persistence.ns;
 
+import java.io.Serializable;
+
 import javax.persistence.AssociationOverride;
 import javax.persistence.AssociationOverrides;
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
 import javax.persistence.Table;
-import javax.persistence.Transient;
 
-import gov.ca.cwds.data.persistence.PersistentObject;
+import gov.ca.cwds.data.ns.NsPersistentObject;
 
 /**
  * @author CWS-NS2
@@ -22,7 +23,7 @@ import gov.ca.cwds.data.persistence.PersistentObject;
         joinColumns = @JoinColumn(name = "person_id")),
     @AssociationOverride(name = "personLanguageId.language",
         joinColumns = @JoinColumn(name = "language_id"))})
-public class PersonLanguage implements PersistentObject {
+public class PersonLanguage extends NsPersistentObject implements Serializable {
 
   @EmbeddedId
   private PersonLanguageId personLanguageId = new PersonLanguageId();
@@ -41,7 +42,7 @@ public class PersonLanguage implements PersistentObject {
    * @param language parent language
    */
   public PersonLanguage(Person person, Language language) {
-    super();
+    super(null, null);
     personLanguageId.setPerson(person);
     personLanguageId.setLanguage(language);
   }
@@ -73,7 +74,6 @@ public class PersonLanguage implements PersistentObject {
   /**
    * @return the person
    */
-  @Transient
   public Person getPerson() {
     return personLanguageId.getPerson();
   }
@@ -81,9 +81,33 @@ public class PersonLanguage implements PersistentObject {
   /**
    * @return the language
    */
-  @Transient
   public Language getLanguage() {
     return personLanguageId.getLanguage();
+  }
+
+  @Override
+  public int hashCode() {
+    final int prime = 31;
+    int result = 1;
+    result = prime * result + ((personLanguageId == null) ? 0 : personLanguageId.hashCode());
+    return result;
+  }
+
+  @Override
+  public boolean equals(Object obj) {
+    if (this == obj)
+      return true;
+    if (obj == null)
+      return false;
+    if (getClass() != obj.getClass())
+      return false;
+    PersonLanguage other = (PersonLanguage) obj;
+    if (personLanguageId == null) {
+      if (other.personLanguageId != null)
+        return false;
+    } else if (!personLanguageId.equals(other.personLanguageId))
+      return false;
+    return true;
   }
 
 }

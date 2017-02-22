@@ -5,8 +5,6 @@ import java.io.Serializable;
 import javax.persistence.Embeddable;
 import javax.persistence.ManyToOne;
 
-import gov.ca.cwds.data.ns.NsPersistentObject;
-
 /**
  * @author CWDS API Team
  * 
@@ -14,7 +12,7 @@ import gov.ca.cwds.data.ns.NsPersistentObject;
  *
  */
 @Embeddable
-public class PersonLanguageId extends NsPersistentObject implements Serializable {
+public class PersonLanguageId implements Serializable {
 
   /**
    * constructor
@@ -25,7 +23,7 @@ public class PersonLanguageId extends NsPersistentObject implements Serializable
    * constructor
    */
   public PersonLanguageId() {
-    super(null, null);
+    super();
   }
 
   @ManyToOne
@@ -63,9 +61,40 @@ public class PersonLanguageId extends NsPersistentObject implements Serializable
     this.language = language;
   }
 
-  @Override
+  @SuppressWarnings("javadoc")
   public Serializable getPrimaryKey() {
     return null;
+  }
+
+  @Override
+  public int hashCode() {
+    final int prime = 31;
+    int result = 1;
+    result = prime * result + ((language == null) ? 0 : language.hashCode());
+    result = prime * result + ((person == null) ? 0 : person.hashCode());
+    return result;
+  }
+
+  @Override
+  public boolean equals(Object obj) {
+    if (this == obj)
+      return true;
+    if (obj == null)
+      return false;
+    if (getClass() != obj.getClass())
+      return false;
+    PersonLanguageId other = (PersonLanguageId) obj;
+    if (language == null) {
+      if (other.language != null)
+        return false;
+    } else if (!language.equals(other.language))
+      return false;
+    if (person == null) {
+      if (other.person != null)
+        return false;
+    } else if (!person.equals(other.person))
+      return false;
+    return true;
   }
 
 }

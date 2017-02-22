@@ -54,7 +54,7 @@ public class Address extends NsPersistentObject {
   @Column(name = "address_type_id")
   private String type;
 
-  @OneToMany(fetch = FetchType.LAZY, mappedBy = "personAddressId.address")
+  @OneToMany(fetch = FetchType.EAGER, mappedBy = "personAddressId.address")
   private Set<PersonAddress> personAddress = new HashSet<>();
 
   /**

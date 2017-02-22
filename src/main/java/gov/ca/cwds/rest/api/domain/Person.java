@@ -106,21 +106,21 @@ public class Person extends DomainObject implements Request, Response {
     this.gender = person.getGender();
     this.birthDate = DomainChef.cookDate(person.getDateOfBirth());
     this.ssn = person.getSsn();
+    this.address = new HashSet<>();
+    this.phoneNumber = new HashSet<>();
+    this.language = new HashSet<>();
     if (person.getPersonAddress() != null && !person.getPersonAddress().isEmpty()) {
       for (PersonAddress personAddress : person.getPersonAddress()) {
-        this.address = new HashSet<>();
         this.address.add(new Address(personAddress.getAddress()));
       }
     }
     if (person.getPersonPhone() != null && !person.getPersonPhone().isEmpty()) {
       for (PersonPhone personPhone : person.getPersonPhone()) {
-        this.phoneNumber = new HashSet<>();
         this.phoneNumber.add(new PhoneNumber(personPhone.getPhoneNumber()));
       }
     }
     if (person.getPersonLanguage() != null && !person.getPersonLanguage().isEmpty()) {
       for (PersonLanguage personLanguage : person.getPersonLanguage()) {
-        this.language = new HashSet<>();
         this.language.add(new Language(personLanguage.getLanguage()));
       }
     }

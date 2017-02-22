@@ -164,33 +164,6 @@ public class PersonServiceTest {
   }
 
   @Test
-  public void createReturnsCorrectPostedPerson() throws Exception {
-    gov.ca.cwds.data.persistence.ns.Address toCreateAddress =
-        new gov.ca.cwds.data.persistence.ns.Address(1L, "742 Evergreen Terrace", "Springfield",
-            "WA", new Integer(98700), "Home");
-    Set<PersonAddress> personAddresses = new HashSet<>();
-
-    PersonAddress personAddress = new PersonAddress();
-    personAddress.setAddress(toCreateAddress);
-    personAddresses.add(personAddress);
-    gov.ca.cwds.data.persistence.ns.Person toCreate =
-        new gov.ca.cwds.data.persistence.ns.Person(2L, "Bart", "Simpson", "M",
-            DomainChef.uncookDateString("2016-10-31"), "1234556789", personAddresses, null, null);
-    Person request = new Person(toCreate);
-    when(personDao.create(any(gov.ca.cwds.data.persistence.ns.Person.class))).thenReturn(toCreate);
-    when(personDao.find(any(gov.ca.cwds.data.persistence.ns.Person.class))).thenReturn(toCreate);
-
-    Address address = new Address("742 Evergreen Terrace", "Springfield", "WA", 98700, "Home");
-    Set<Address> addresses = new HashSet<>();
-    addresses.add(address);
-    PostedPerson expected = new PostedPerson(2L, "Bart", "Simpson", "M", "2016-10-31", "1234556789",
-        addresses, null, null);
-
-    PostedPerson returned = personService.create(request);
-    assertThat(returned, is(expected));
-  }
-
-  @Test
   public void createThrowsAssertionError() throws Exception {
     thrown.expect(AssertionError.class);
     try {

@@ -1,15 +1,15 @@
 package gov.ca.cwds.data.persistence.ns;
 
+import java.io.Serializable;
+
 import javax.persistence.AssociationOverride;
 import javax.persistence.AssociationOverrides;
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
 import javax.persistence.Table;
-import javax.persistence.Transient;
 
 import gov.ca.cwds.data.ns.NsPersistentObject;
-import gov.ca.cwds.data.persistence.PersistentObject;
 
 /**
  * {@link NsPersistentObject} representing a PersonAddress
@@ -24,7 +24,7 @@ import gov.ca.cwds.data.persistence.PersistentObject;
         joinColumns = @JoinColumn(name = "person_id")),
     @AssociationOverride(name = "personAddressId.address",
         joinColumns = @JoinColumn(name = "address_id"))})
-public class PersonAddress implements PersistentObject {
+public class PersonAddress extends NsPersistentObject implements Serializable {
 
   @EmbeddedId
   private PersonAddressId personAddressId = new PersonAddressId();
@@ -43,7 +43,7 @@ public class PersonAddress implements PersistentObject {
    * @param address linked address
    */
   public PersonAddress(Person person, Address address) {
-    super();
+    super(null, null);
     personAddressId.setPerson(person);
     personAddressId.setAddress(address);
   }
@@ -75,8 +75,6 @@ public class PersonAddress implements PersistentObject {
   /**
    * @return the person
    */
-
-  @Transient
   public Person getPerson() {
     return personAddressId.getPerson();
   }
@@ -84,9 +82,33 @@ public class PersonAddress implements PersistentObject {
   /**
    * @return the address
    */
-  @Transient
   public Address getAddress() {
     return personAddressId.getAddress();
+  }
+
+  @Override
+  public int hashCode() {
+    final int prime = 31;
+    int result = 1;
+    result = prime * result + ((personAddressId == null) ? 0 : personAddressId.hashCode());
+    return result;
+  }
+
+  @Override
+  public boolean equals(Object obj) {
+    if (this == obj)
+      return true;
+    if (obj == null)
+      return false;
+    if (getClass() != obj.getClass())
+      return false;
+    PersonAddress other = (PersonAddress) obj;
+    if (personAddressId == null) {
+      if (other.personAddressId != null)
+        return false;
+    } else if (!personAddressId.equals(other.personAddressId))
+      return false;
+    return true;
   }
 
 }

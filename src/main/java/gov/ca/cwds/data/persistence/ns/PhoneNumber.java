@@ -46,7 +46,7 @@ public class PhoneNumber extends NsPersistentObject {
   @Column(name = "phone_type_id")
   private String type;
 
-  @OneToMany(fetch = FetchType.LAZY, mappedBy = "personPhoneId.phoneNumber")
+  @OneToMany(fetch = FetchType.EAGER, mappedBy = "personPhoneId.phoneNumber")
   private Set<PersonPhone> personPhone = new HashSet<>();
 
   @SuppressWarnings("javadoc")
