@@ -27,7 +27,6 @@ import com.squarespace.jersey2.guice.JerseyGuiceUtils;
 import gov.ca.cwds.data.CrudsDao;
 import gov.ca.cwds.rest.api.domain.junit.template.DomainTestTemplate;
 import gov.ca.cwds.rest.core.Api;
-import gov.ca.cwds.rest.resources.cms.ClientResource;
 import gov.ca.cwds.rest.resources.cms.JerseyGuiceRule;
 import io.dropwizard.jackson.Jackson;
 import io.dropwizard.testing.junit.ResourceTestRule;
@@ -40,8 +39,6 @@ import io.dropwizard.testing.junit.ResourceTestRule;
 public class ClientTest implements DomainTestTemplate {
 
   private static final String ROOT_RESOURCE = "/" + Api.RESOURCE_CLIENT + "/";;
-
-  private static final ClientResource mockedClientResource = mock(ClientResource.class);
 
   @After
   public void ensureSerivceLocatorPopulate() {
@@ -97,12 +94,12 @@ public class ClientTest implements DomainTestTemplate {
   private String id = "1234567ABC";
   private Short immigrationCountryCodeType = 0;
   private Short immigrationStatusType = 1199;
-  private String incapcitatedParentCode = "NA";
-  private Boolean individualHealthCarePlanIndicator = Boolean.TRUE;
+  private String incapcitatedParentCode = "N";
+  private Boolean individualHealthCarePlanIndicator = Boolean.FALSE;
   private Boolean limitationOnScpHealthIndicator = Boolean.FALSE;
   private String literateCode = "Y";
   private Boolean maritalCohabitatnHstryIndicatorVar = Boolean.FALSE;
-  private Short maritalStatusType = 1309;
+  private Short maritalStatusType = 1308;
   private String militaryStatusCode = "NA";
   private String motherParentalRightTermDate = null;
   private String namePrefixDescription = "";
