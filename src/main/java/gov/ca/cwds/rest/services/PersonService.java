@@ -136,6 +136,66 @@ public class PersonService implements CrudsService {
     gov.ca.cwds.data.persistence.ns.Person managedPerson =
         new gov.ca.cwds.data.persistence.ns.Person(person, null, null);
     managedPerson = personDao.create(managedPerson);
+    PopulatePersonDetails(person, managedPerson);
+    managedPerson = personDao.find(managedPerson.getId());
+    PostedPerson postedPerson = new PostedPerson(managedPerson);
+    try {
+      // final gov.ca.cwds.rest.api.domain.es.Person esPerson =
+      // new gov.ca.cwds.rest.api.domain.es.Person(managedPerson.getId().toString(),
+      // managedPerson.getFirstName(), managedPerson.getLastName(), managedPerson.getSsn(),
+      // managedPerson.getGender(), DomainChef.cookDate(managedPerson.getDateOfBirth()),
+      // managedPerson.getClass().getName(), MAPPER.writeValueAsString(managedPerson));
+      // // final String document = MAPPER.writeValueAsString(esPerson);
+
+      // If the people index is missing, create it.
+      // elasticsearchDao.createIndexIfNeeded(INDEX_PERSON);
+
+      // The ES Dao manages its own connections. No need to manually start or stop.
+      // elasticsearchDao.index(INDEX_PERSON, DOCUMENT_TYPE_PERSON, document, esPerson.getId());
+    } catch (Exception e) {
+      LOGGER.error("Unable to Index Person in ElasticSearch", e);
+      throw new ApiException("Unable to Index Person in ElasticSearch", e);
+    }
+    return postedPerson;
+  }
+
+  // ===================
+  // NOT IMPLEMENTED:
+  // ===================
+
+  /**
+   * <strong>NOT IMPLEMENTED! REQUIRED BY {@link CrudsService}!</strong> {@inheritDoc}
+   * 
+   * @see gov.ca.cwds.rest.services.CrudsService#delete(java.io.Serializable)
+   */
+  @Override
+  public Response delete(final Serializable primaryKey) {
+    assert primaryKey instanceof Long;
+    throw new NotImplementedException("Delete is not implemented");
+  }
+
+  /**
+   * <strong>NOT IMPLEMENTED! REQUIRED BY {@link CrudsService}!</strong> {@inheritDoc}
+   * 
+   * @see gov.ca.cwds.rest.services.CrudsService#update(java.io.Serializable,
+   *      gov.ca.cwds.rest.api.Request)
+   */
+  @Override
+  public Response update(final Serializable primaryKey, Request request) {
+    assert primaryKey instanceof Long;
+    assert request instanceof Person;
+    Person person = (Person) request;
+    gov.ca.cwds.data.persistence.ns.Person managedPerson =
+        new gov.ca.cwds.data.persistence.ns.Person(person, null, null);
+    managedPerson = personDao.update(managedPerson);
+    PopulatePersonDetails(person, managedPerson);
+    managedPerson = personDao.find(managedPerson.getId());
+    PostedPerson postedPerson = new PostedPerson(managedPerson);
+    return postedPerson;
+  }
+
+  private void PopulatePersonDetails(Person person,
+      gov.ca.cwds.data.persistence.ns.Person managedPerson) {
     if (person.getAddress() != null && person.getAddress().size() > 0) {
       for (Address address : person.getAddress()) {
         gov.ca.cwds.data.persistence.ns.Address managedAddress =
@@ -186,53 +246,6 @@ public class PersonService implements CrudsService {
         personEthnicityDao.create(personEthnicity);
       }
     }
-    managedPerson = personDao.find(managedPerson.getId());
-    PostedPerson postedPerson = new PostedPerson(managedPerson);
-    try {
-      // final gov.ca.cwds.rest.api.domain.es.Person esPerson =
-      // new gov.ca.cwds.rest.api.domain.es.Person(managedPerson.getId().toString(),
-      // managedPerson.getFirstName(), managedPerson.getLastName(), managedPerson.getSsn(),
-      // managedPerson.getGender(), DomainChef.cookDate(managedPerson.getDateOfBirth()),
-      // managedPerson.getClass().getName(), MAPPER.writeValueAsString(managedPerson));
-      // // final String document = MAPPER.writeValueAsString(esPerson);
-
-      // If the people index is missing, create it.
-      // elasticsearchDao.createIndexIfNeeded(INDEX_PERSON);
-
-      // The ES Dao manages its own connections. No need to manually start or stop.
-      // elasticsearchDao.index(INDEX_PERSON, DOCUMENT_TYPE_PERSON, document, esPerson.getId());
-    } catch (Exception e) {
-      LOGGER.error("Unable to Index Person in ElasticSearch", e);
-      throw new ApiException("Unable to Index Person in ElasticSearch", e);
-    }
-    return postedPerson;
-  }
-
-  // ===================
-  // NOT IMPLEMENTED:
-  // ===================
-
-  /**
-   * <strong>NOT IMPLEMENTED! REQUIRED BY {@link CrudsService}!</strong> {@inheritDoc}
-   * 
-   * @see gov.ca.cwds.rest.services.CrudsService#delete(java.io.Serializable)
-   */
-  @Override
-  public Response delete(final Serializable primaryKey) {
-    assert primaryKey instanceof Long;
-    throw new NotImplementedException("Delete is not implemented");
-  }
-
-  /**
-   * <strong>NOT IMPLEMENTED! REQUIRED BY {@link CrudsService}!</strong> {@inheritDoc}
-   * 
-   * @see gov.ca.cwds.rest.services.CrudsService#update(java.io.Serializable,
-   *      gov.ca.cwds.rest.api.Request)
-   */
-  @Override
-  public Response update(final Serializable primaryKey, Request request) {
-    assert primaryKey instanceof Long;
-    throw new NotImplementedException("Update is not implemented");
   }
 
 }
