@@ -93,9 +93,9 @@ public class PersonResourceTest {
   public void udpateReturns501() throws Exception {
     Person person = new Person("firstname", "last", "M", "1973-11-22", "000000000", null, null,
         null, null, null);
-    int status =
-        inMemoryResource.client().target(ROOT_RESOURCE).request().accept(MediaType.APPLICATION_JSON)
-            .put(Entity.entity(person, MediaType.APPLICATION_JSON)).getStatus();
+    int status = inMemoryResource.client().target(FOUND_RESOURCE).request()
+        .accept(MediaType.APPLICATION_JSON).put(Entity.entity(person, MediaType.APPLICATION_JSON))
+        .getStatus();
     assertThat(status, is(501));
   }
 }

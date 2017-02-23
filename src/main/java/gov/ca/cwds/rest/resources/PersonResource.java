@@ -6,7 +6,6 @@ import javax.validation.Valid;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
-import javax.ws.rs.HeaderParam;
 import javax.ws.rs.POST;
 import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
@@ -119,18 +118,18 @@ public class PersonResource {
    */
   @UnitOfWork(value = "ns")
   @PUT
+  @Path("/{id}")
   @ApiResponses(value = {@ApiResponse(code = 400, message = "Unable to process JSON"),
       @ApiResponse(code = 404, message = "not found"),
       @ApiResponse(code = 406, message = "Accept Header not supported"),
       @ApiResponse(code = 422, message = "Unable to validate Person")})
   @Consumes(value = MediaType.APPLICATION_JSON)
-  @ApiOperation(hidden = true, value = "Update Person", code = HttpStatus.SC_NO_CONTENT,
-      response = Object.class)
+  @ApiOperation(value = "Update Person", code = HttpStatus.SC_OK, response = Person.class)
   public Response update(
       @PathParam("id") @ApiParam(required = true, name = "id",
-          value = "The id of the Person to update") long id,
-      @ApiParam(hidden = true) Person person,
-      @HeaderParam("Accept") @ApiParam(hidden = true) String acceptHeader) {
+          value = "The id of the person to update") long id,
+      @ApiParam(required = true, name = "personRequest",
+          value = "The person request") Person person) {
     return Response.status(Response.Status.NOT_IMPLEMENTED).entity(null).build();
   }
 }

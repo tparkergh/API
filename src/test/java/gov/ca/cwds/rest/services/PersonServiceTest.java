@@ -218,13 +218,13 @@ public class PersonServiceTest {
    * update tests
    */
   @Test
-  public void updateThrowsNotImplementedException() throws Exception {
-    thrown.expect(NotImplementedException.class);
+  public void updateThrowsNullPointerException() throws Exception {
+    thrown.expect(NullPointerException.class);
 
     Address address = new Address("742 Evergreen Terrace", "Springfield", "WA", 98700, "Home");
     Set<Address> addresses = new HashSet<>();
     addresses.add(address);
-    Person toUpdate = new Person("Bart", "Simpson", "M", "04/01/1990", "1234556789", addresses,
+    Person toUpdate = new Person("Bart", "Simpson", "M", "2013-10-31", "1234556789", addresses,
         null, null, null, null);
     personService.update(1L, toUpdate);
   }
