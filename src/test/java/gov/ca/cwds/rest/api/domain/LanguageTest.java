@@ -22,10 +22,9 @@ import nl.jqno.equalsverifier.Warning;
  *
  */
 @SuppressWarnings("javadoc")
-public class PhoneNumberTest {
-  String number = "408 672-5583";
-  String type = "Home";
+public class LanguageTest {
 
+  private String language = "English";
 
   private static final ObjectMapper MAPPER = Jackson.newObjectMapper();
 
@@ -34,57 +33,55 @@ public class PhoneNumberTest {
    */
   @Test
   public void serializesToJSON() throws Exception {
-    String expected = MAPPER.writeValueAsString(new PhoneNumber("408 690-1234", "Cell"));
+    String expected = MAPPER.writeValueAsString(new Language("English"));
 
-    String serialized = MAPPER.writeValueAsString(MAPPER
-        .readValue(fixture("fixtures/domain/phoneNumber/valid/valid.json"), PhoneNumber.class));
+    String serialized = MAPPER.writeValueAsString(
+        MAPPER.readValue(fixture("fixtures/domain/language/valid/valid.json"), Language.class));
 
     assertThat(serialized, is(expected));
   }
 
   @Test
   public void testDeserializesFromJSON() throws Exception {
-    PhoneNumber expected = new PhoneNumber("408 690-1234", "Cell");
+    Language expected = new Language("English");
 
-    PhoneNumber serialized = MAPPER
-        .readValue(fixture("fixtures/domain/phoneNumber/valid/valid.json"), PhoneNumber.class);
+    Language serialized =
+        MAPPER.readValue(fixture("fixtures/domain/language/valid/valid.json"), Language.class);
     assertThat(serialized, is(expected));
 
   }
 
   @Test
   public void equalsHashCodeWork() throws Exception {
-    EqualsVerifier.forClass(PhoneNumber.class).suppress(Warning.NONFINAL_FIELDS).verify();
+    EqualsVerifier.forClass(Language.class).suppress(Warning.NONFINAL_FIELDS).verify();
   }
 
   @Test
   public void persistentObjectConstructorTest() throws Exception {
-    PhoneNumber domain = this.validPhoneNumber();
+    Language domain = this.validLanguage();
 
-    gov.ca.cwds.data.persistence.ns.PhoneNumber persistent =
-        new gov.ca.cwds.data.persistence.ns.PhoneNumber(domain, "LastUpdateId", "CreatedId");
+    gov.ca.cwds.data.persistence.ns.Language persistent =
+        new gov.ca.cwds.data.persistence.ns.Language(domain, "lastUpdatedId", "createUserId");
 
-    PhoneNumber totest = new PhoneNumber(persistent);
+    Language totest = new Language(persistent);
 
-    assertThat(totest.getPhoneNumber(), is(equalTo(persistent.getNumber())));
-    assertThat(totest.getPhoneType(), is(equalTo(persistent.getType())));
+    assertThat(totest.getLanguage(), is(equalTo(persistent.getLanguageCodeId())));
   }
 
   @Test
   public void testJSONConstructorTest() throws Exception {
-    PhoneNumber domain = new PhoneNumber(number, type);
+    Language domain = new Language(language);
 
-    assertThat(domain.getPhoneNumber(), is(equalTo(number)));
-    assertThat(domain.getPhoneType(), is(equalTo(type)));
+    assertThat(domain.getLanguage(), is(equalTo(language)));
   }
 
-  private PhoneNumber validPhoneNumber() {
+  private Language validLanguage() {
 
     try {
-      PhoneNumber validPhoneNumber = MAPPER
-          .readValue(fixture("fixtures/domain/phoneNumber/valid/valid.json"), PhoneNumber.class);
+      Language validLanguage =
+          MAPPER.readValue(fixture("fixtures/domain/language/valid/valid.json"), Language.class);
 
-      return validPhoneNumber;
+      return validLanguage;
 
     } catch (JsonParseException e) {
       e.printStackTrace();
@@ -97,4 +94,5 @@ public class PhoneNumberTest {
       return null;
     }
   }
+
 }

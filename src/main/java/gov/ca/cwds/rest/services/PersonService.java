@@ -194,6 +194,11 @@ public class PersonService implements CrudsService {
     return postedPerson;
   }
 
+  /**
+   * 
+   * @param person - The person
+   * @param managedPerson - The managedPerson
+   */
   private void PopulatePersonDetails(Person person,
       gov.ca.cwds.data.persistence.ns.Person managedPerson) {
     if (person.getAddress() != null && person.getAddress().size() > 0) {

@@ -22,10 +22,10 @@ import nl.jqno.equalsverifier.Warning;
  *
  */
 @SuppressWarnings("javadoc")
-public class PhoneNumberTest {
-  String number = "408 672-5583";
-  String type = "Home";
+public class RaceTest {
 
+  private String race = "White";
+  private String subrace = "American";
 
   private static final ObjectMapper MAPPER = Jackson.newObjectMapper();
 
@@ -34,57 +34,56 @@ public class PhoneNumberTest {
    */
   @Test
   public void serializesToJSON() throws Exception {
-    String expected = MAPPER.writeValueAsString(new PhoneNumber("408 690-1234", "Cell"));
+    String expected = MAPPER.writeValueAsString(new Race("White", "American"));
 
-    String serialized = MAPPER.writeValueAsString(MAPPER
-        .readValue(fixture("fixtures/domain/phoneNumber/valid/valid.json"), PhoneNumber.class));
+    String serialized = MAPPER.writeValueAsString(
+        MAPPER.readValue(fixture("fixtures/domain/race/valid/valid.json"), Race.class));
 
     assertThat(serialized, is(expected));
   }
 
   @Test
   public void testDeserializesFromJSON() throws Exception {
-    PhoneNumber expected = new PhoneNumber("408 690-1234", "Cell");
+    Race expected = new Race("White", "American");
 
-    PhoneNumber serialized = MAPPER
-        .readValue(fixture("fixtures/domain/phoneNumber/valid/valid.json"), PhoneNumber.class);
+    Race serialized =
+        MAPPER.readValue(fixture("fixtures/domain/race/valid/valid.json"), Race.class);
     assertThat(serialized, is(expected));
 
   }
 
   @Test
   public void equalsHashCodeWork() throws Exception {
-    EqualsVerifier.forClass(PhoneNumber.class).suppress(Warning.NONFINAL_FIELDS).verify();
+    EqualsVerifier.forClass(Race.class).suppress(Warning.NONFINAL_FIELDS).verify();
   }
 
   @Test
   public void persistentObjectConstructorTest() throws Exception {
-    PhoneNumber domain = this.validPhoneNumber();
+    Race domain = this.validRace();
 
-    gov.ca.cwds.data.persistence.ns.PhoneNumber persistent =
-        new gov.ca.cwds.data.persistence.ns.PhoneNumber(domain, "LastUpdateId", "CreatedId");
+    gov.ca.cwds.data.persistence.ns.Race persistent =
+        new gov.ca.cwds.data.persistence.ns.Race(domain, "12345", "12345");
 
-    PhoneNumber totest = new PhoneNumber(persistent);
-
-    assertThat(totest.getPhoneNumber(), is(equalTo(persistent.getNumber())));
-    assertThat(totest.getPhoneType(), is(equalTo(persistent.getType())));
+    Race totest = new Race(persistent);
+    assertThat(totest.getRace(), is(equalTo(persistent.getRace())));
+    assertThat(totest.getSubrace(), is(equalTo(persistent.getSubrace())));
   }
 
   @Test
   public void testJSONConstructorTest() throws Exception {
-    PhoneNumber domain = new PhoneNumber(number, type);
+    Race domain = new Race(race, subrace);
 
-    assertThat(domain.getPhoneNumber(), is(equalTo(number)));
-    assertThat(domain.getPhoneType(), is(equalTo(type)));
+    assertThat(domain.getRace(), is(equalTo(race)));
+    assertThat(domain.getSubrace(), is(equalTo(subrace)));
   }
 
-  private PhoneNumber validPhoneNumber() {
+  private Race validRace() {
 
     try {
-      PhoneNumber validPhoneNumber = MAPPER
-          .readValue(fixture("fixtures/domain/phoneNumber/valid/valid.json"), PhoneNumber.class);
+      Race validRace =
+          MAPPER.readValue(fixture("fixtures/domain/race/valid/valid.json"), Race.class);
 
-      return validPhoneNumber;
+      return validRace;
 
     } catch (JsonParseException e) {
       e.printStackTrace();

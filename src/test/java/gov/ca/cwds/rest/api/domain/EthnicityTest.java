@@ -22,10 +22,10 @@ import nl.jqno.equalsverifier.Warning;
  *
  */
 @SuppressWarnings("javadoc")
-public class PhoneNumberTest {
-  String number = "408 672-5583";
-  String type = "Home";
+public class EthnicityTest {
 
+  private String ethnicityType = "Unknown";
+  private String subEthnicity = "South American";
 
   private static final ObjectMapper MAPPER = Jackson.newObjectMapper();
 
@@ -34,57 +34,57 @@ public class PhoneNumberTest {
    */
   @Test
   public void serializesToJSON() throws Exception {
-    String expected = MAPPER.writeValueAsString(new PhoneNumber("408 690-1234", "Cell"));
+    String expected = MAPPER.writeValueAsString(new Ethnicity("Unknown", "South American"));
 
-    String serialized = MAPPER.writeValueAsString(MAPPER
-        .readValue(fixture("fixtures/domain/phoneNumber/valid/valid.json"), PhoneNumber.class));
+    String serialized = MAPPER.writeValueAsString(
+        MAPPER.readValue(fixture("fixtures/domain/ethnicity/valid/valid.json"), Ethnicity.class));
 
     assertThat(serialized, is(expected));
   }
 
   @Test
   public void testDeserializesFromJSON() throws Exception {
-    PhoneNumber expected = new PhoneNumber("408 690-1234", "Cell");
+    Ethnicity expected = new Ethnicity("Unknown", "South American");
 
-    PhoneNumber serialized = MAPPER
-        .readValue(fixture("fixtures/domain/phoneNumber/valid/valid.json"), PhoneNumber.class);
+    Ethnicity serialized =
+        MAPPER.readValue(fixture("fixtures/domain/ethnicity/valid/valid.json"), Ethnicity.class);
     assertThat(serialized, is(expected));
 
   }
 
   @Test
   public void equalsHashCodeWork() throws Exception {
-    EqualsVerifier.forClass(PhoneNumber.class).suppress(Warning.NONFINAL_FIELDS).verify();
+    EqualsVerifier.forClass(Ethnicity.class).suppress(Warning.NONFINAL_FIELDS).verify();
   }
 
   @Test
   public void persistentObjectConstructorTest() throws Exception {
-    PhoneNumber domain = this.validPhoneNumber();
+    Ethnicity domain = this.validEthnicity();
 
-    gov.ca.cwds.data.persistence.ns.PhoneNumber persistent =
-        new gov.ca.cwds.data.persistence.ns.PhoneNumber(domain, "LastUpdateId", "CreatedId");
+    gov.ca.cwds.data.persistence.ns.Ethnicity persistent =
+        new gov.ca.cwds.data.persistence.ns.Ethnicity(domain, "lastUpdatedId", "createUserId");
 
-    PhoneNumber totest = new PhoneNumber(persistent);
+    Ethnicity totest = new Ethnicity(persistent);
 
-    assertThat(totest.getPhoneNumber(), is(equalTo(persistent.getNumber())));
-    assertThat(totest.getPhoneType(), is(equalTo(persistent.getType())));
+    assertThat(totest.getEthnicityType(), is(equalTo(persistent.getEthnicityType())));
+    assertThat(totest.getSubEthnicity(), is(equalTo(persistent.getSubEthnicity())));
   }
 
   @Test
   public void testJSONConstructorTest() throws Exception {
-    PhoneNumber domain = new PhoneNumber(number, type);
+    Ethnicity domain = new Ethnicity(ethnicityType, subEthnicity);
 
-    assertThat(domain.getPhoneNumber(), is(equalTo(number)));
-    assertThat(domain.getPhoneType(), is(equalTo(type)));
+    assertThat(domain.getEthnicityType(), is(equalTo(ethnicityType)));
+    assertThat(domain.getSubEthnicity(), is(equalTo(subEthnicity)));
   }
 
-  private PhoneNumber validPhoneNumber() {
+  private Ethnicity validEthnicity() {
 
     try {
-      PhoneNumber validPhoneNumber = MAPPER
-          .readValue(fixture("fixtures/domain/phoneNumber/valid/valid.json"), PhoneNumber.class);
+      Ethnicity validEthnicity =
+          MAPPER.readValue(fixture("fixtures/domain/ethnicity/valid/valid.json"), Ethnicity.class);
 
-      return validPhoneNumber;
+      return validEthnicity;
 
     } catch (JsonParseException e) {
       e.printStackTrace();
@@ -97,4 +97,6 @@ public class PhoneNumberTest {
       return null;
     }
   }
+
+
 }

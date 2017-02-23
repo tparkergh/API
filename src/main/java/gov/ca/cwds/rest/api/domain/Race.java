@@ -86,7 +86,7 @@ public class Race extends DomainObject implements Request, Response {
    * @see java.lang.Object#hashCode()
    */
   @Override
-  public int hashCode() {
+  public final int hashCode() {
     final int prime = 31;
     int result = 1;
     result = prime * result + ((race == null) ? 0 : race.hashCode());
@@ -100,14 +100,14 @@ public class Race extends DomainObject implements Request, Response {
    * @see java.lang.Object#equals(java.lang.Object)
    */
   @Override
-  public boolean equals(Object obj) {
+  public final boolean equals(Object obj) {
     if (this == obj) {
       return true;
     }
     if (obj == null) {
       return false;
     }
-    if (getClass() != obj.getClass()) {
+    if (!(getClass().isInstance(obj))) {
       return false;
     }
     Race other = (Race) obj;
