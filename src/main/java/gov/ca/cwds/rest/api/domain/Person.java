@@ -122,8 +122,8 @@ public class Person extends DomainObject implements Request, Response {
     this.address = new HashSet<>();
     this.phoneNumber = new HashSet<>();
     this.language = new HashSet<>();
-    this.ethnicity = new HashSet<>();
     this.race = new HashSet<>();
+    this.ethnicity = new HashSet<>();
     if (person.getPersonAddress() != null && !person.getPersonAddress().isEmpty()) {
       for (PersonAddress personAddress : person.getPersonAddress()) {
         this.address.add(new Address(personAddress.getAddress()));

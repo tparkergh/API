@@ -10,3 +10,13 @@ INSERT INTO person (person_id, first_name, last_name, gender, date_of_birth, ssn
 
 INSERT INTO phone_number(phone_number_id, phone_type_id, phone_number_value) VALUES (1, '408 987-6543', 'Home');
 INSERT INTO phone_number(phone_number_id, phone_type_id, phone_number_value) VALUES (2, '690 123-4567', 'Other');
+
+INSERT INTO language(language_id, language_code_id, update_datetime) VALUES (1, 'English', '2017-02-22 13:52:27.801');
+INSERT INTO language(language_id, language_code_id, update_datetime) VALUES (2, 'Telugu', '2017-02-22 13:52:27.801');
+
+
+INSERT INTO race(race_id, race_type_id, subrace_type_id, update_datetime) VALUES (1, 'white', 'American', '2017-02-22 13:52:27.801');
+INSERT INTO race(race_id, race_type_id, subrace_type_id, update_datetime) VALUES (2, 'Brown', 'European', '2017-02-22 13:52:27.801');
+
+INSERT INTO ethnicity(ethnicity_id, ethnicity_type_id, sub_ethnicity_id, update_datetime) VALUES (1, 'Unknown', 'North American', '2017-02-22 13:52:27.801');
+INSERT INTO ethnicity(ethnicity_id, ethnicity_type_id, sub_ethnicity_id, update_datetime) VALUES (2, 'Unknown', 'South American', '2017-02-22 13:52:27.801');
