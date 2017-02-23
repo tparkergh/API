@@ -19,7 +19,7 @@ import gov.ca.cwds.data.persistence.PersistentObject;
 import gov.ca.cwds.data.persistence.cms.BaseServiceProvider;
 
 /**
- * {@link PersistentObject} representing a Reporter as a {@link CmsReplicatedEntity}.
+ * {@link PersistentObject} representing a Service Provider as a {@link CmsReplicatedEntity}.
  * 
  * @author CWDS API Team
  */

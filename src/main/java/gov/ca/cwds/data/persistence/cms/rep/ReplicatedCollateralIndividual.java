@@ -19,7 +19,7 @@ import gov.ca.cwds.data.persistence.PersistentObject;
 import gov.ca.cwds.data.persistence.cms.BaseCollateralIndividual;
 
 /**
- * {@link PersistentObject} representing an Attorney as a {@link CmsReplicatedEntity}.
+ * {@link PersistentObject} representing a Collateral Individual as a {@link CmsReplicatedEntity}.
  * 
  * @author CWDS API Team
  */

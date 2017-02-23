@@ -19,7 +19,7 @@ import gov.ca.cwds.data.persistence.PersistentObject;
 import gov.ca.cwds.data.persistence.cms.BaseOtherAdultInPlacemtHome;
 
 /**
- * {@link PersistentObject} representing an Education Provider Contact as a
+ * {@link PersistentObject} representing an Other Adult In Placement Home as a
  * {@link CmsReplicatedEntity}.
  * 
  * @author CWDS API Team
