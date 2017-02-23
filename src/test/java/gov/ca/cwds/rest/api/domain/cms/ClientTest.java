@@ -36,6 +36,7 @@ import io.dropwizard.testing.junit.ResourceTestRule;
  * @author CWDS API Team
  *
  */
+@SuppressWarnings("unused")
 public class ClientTest implements DomainTestTemplate {
 
   private static final String ROOT_RESOURCE = "/" + Api.RESOURCE_CLIENT + "/";;
@@ -207,10 +208,82 @@ public class ClientTest implements DomainTestTemplate {
     assertThat(domain.getBirthDate(), is(equalTo(vc.getBirthDate())));
     assertThat(domain.getBirthFacilityName(), is(equalTo(vc.getBirthFacilityName())));
     assertThat(domain.getBirthStateCodeType(), is(equalTo(vc.getBirthStateCodeType())));
-
-
-    assertThat(domain.getAdjudicatedDelinquentIndicator(),
-        is(equalTo(adjudicatedDelinquentIndicator)));
+    assertThat(domain.getBirthplaceVerifiedIndicator(),
+        is(equalTo(vc.getBirthplaceVerifiedIndicator())));
+    assertThat(domain.getChildClientIndicatorVar(), is(equalTo(vc.getChildClientIndicatorVar())));
+    assertThat(domain.getClientIndexNumber(), is(equalTo(vc.getClientIndexNumber())));
+    assertThat(domain.getCommentDescription(), is(equalTo(vc.getCommentDescription())));
+    assertThat(domain.getCommonFirstName(), is(equalTo(vc.getCommonFirstName())));
+    assertThat(domain.getCommonLastName(), is(equalTo(vc.getCommonLastName())));
+    assertThat(domain.getCommonMiddleName(), is(equalTo(vc.getCommonMiddleName())));
+    assertThat(domain.getConfidentialityActionDate(),
+        is(equalTo(vc.getConfidentialityActionDate())));
+    assertThat(domain.getConfidentialityInEffectIndicator(),
+        is(equalTo(vc.getConfidentialityInEffectIndicator())));
+    assertThat(domain.getCreationDate(), is(equalTo(vc.getCreationDate())));
+    assertThat(domain.getCurrCaChildrenServIndicator(),
+        is(equalTo(vc.getCurrCaChildrenServIndicator())));
+    assertThat(domain.getCurrentlyOtherDescription(),
+        is(equalTo(vc.getCurrentlyOtherDescription())));
+    assertThat(domain.getCurrentlyRegionalCenterIndicator(),
+        is(equalTo(vc.getCurrentlyRegionalCenterIndicator())));
+    assertThat(domain.getDeathDate(), is(equalTo(vc.getDeathDate())));
+    assertThat(domain.getDeathDateVerifiedIndicator(),
+        is(equalTo(vc.getDeathDateVerifiedIndicator())));
+    assertThat(domain.getDeathReasonText(), is(equalTo(vc.getDeathReasonText())));
+    assertThat(domain.getDriverLicenseNumber(), is(equalTo(vc.getDriverLicenseNumber())));
+    assertThat(domain.getDriverLicenseStateCodeType(),
+        is(equalTo(vc.getDriverLicenseStateCodeType())));
+    assertThat(domain.getEmailAddress(), is(equalTo(vc.getEmailAddress())));
+    assertThat(domain.getEstimatedDobCode(), is(equalTo(vc.getEstimatedDobCode())));
+    assertThat(domain.getEthUnableToDetReasonCode(), is(equalTo(vc.getEthUnableToDetReasonCode())));
+    assertThat(domain.getFatherParentalRightTermDate(),
+        is(equalTo(vc.getFatherParentalRightTermDate())));
+    assertThat(domain.getGenderCode(), is(equalTo(vc.getGenderCode())));
+    assertThat(domain.getHealthSummaryText(), is(equalTo(vc.getHealthSummaryText())));
+    assertThat(domain.getHispUnableToDetReasonCode(),
+        is(equalTo(vc.getHispUnableToDetReasonCode())));
+    assertThat(domain.getHispanicOriginCode(), is(equalTo(vc.getHispanicOriginCode())));
+    assertThat(domain.getId(), is(equalTo(vc.getId())));
+    assertThat(domain.getImmigrationCountryCodeType(),
+        is(equalTo(vc.getImmigrationCountryCodeType())));
+    assertThat(domain.getIncapacitatedParentCode(), is(equalTo(vc.getIncapacitatedParentCode())));
+    assertThat(domain.getIndividualHealthCarePlanIndicator(),
+        is(equalTo(vc.getIndividualHealthCarePlanIndicator())));
+    assertThat(domain.getLimitationOnScpHealthIndicator(),
+        is(equalTo(vc.getLimitationOnScpHealthIndicator())));
+    assertThat(domain.getLiterateCode(), is(equalTo(vc.getLiterateCode())));
+    assertThat(domain.getMaritalCohabitatnHstryIndicatorVar(),
+        is(equalTo(vc.getMaritalCohabitatnHstryIndicatorVar())));
+    assertThat(domain.getMaritalStatusType(), is(equalTo(vc.getMaritalStatusType())));
+    assertThat(domain.getMilitaryStatusCode(), is(equalTo(vc.getMilitaryStatusCode())));
+    assertThat(domain.getMotherParentalRightTermDate(),
+        is(equalTo(vc.getMotherParentalRightTermDate())));
+    assertThat(domain.getNamePrefixDescription(), is(equalTo(vc.getNamePrefixDescription())));
+    assertThat(domain.getNameType(), is(equalTo(vc.getNameType())));
+    assertThat(domain.getOutstandingWarrantIndicator(),
+        is(equalTo(vc.getOutstandingWarrantIndicator())));
+    assertThat(domain.getPrevCaChildrenServIndicator(),
+        is(equalTo(vc.getPrevCaChildrenServIndicator())));
+    assertThat(domain.getPrevOtherDescription(), is(equalTo(vc.getPrevOtherDescription())));
+    assertThat(domain.getPrimaryEthnicityType(), is(equalTo(vc.getPrimaryEthnicityType())));
+    assertThat(domain.getPrimaryLanguageType(), is(equalTo(vc.getPrimaryLanguageType())));
+    assertThat(domain.getReligionType(), is(equalTo(vc.getReligionType())));
+    assertThat(domain.getSecondaryLanguageType(), is(equalTo(vc.getSecondaryLanguageType())));
+    assertThat(domain.getSensitiveHlthInfoOnFileIndicator(),
+        is(equalTo(vc.getSensitiveHlthInfoOnFileIndicator())));
+    assertThat(domain.getSensitivityIndicator(), is(equalTo(vc.getSensitivityIndicator())));
+    assertThat(domain.getSoc158PlacementCode(), is(equalTo(vc.getSoc158PlacementCode())));
+    assertThat(domain.getSoc158SealedClientIndicator(),
+        is(equalTo(vc.getSoc158SealedClientIndicator())));
+    assertThat(domain.getSocialSecurityNumChangedCode(),
+        is(equalTo(vc.getSocialSecurityNumChangedCode())));
+    assertThat(domain.getSocialSecurityNumber(), is(equalTo(vc.getSocialSecurityNumber())));
+    assertThat(domain.getSuffixTitleDescription(), is(equalTo(vc.getSuffixTitleDescription())));
+    assertThat(domain.getTribalAncestryClientIndicatorVar(),
+        is(equalTo(vc.getTribalAncestryClientIndicatorVar())));
+    assertThat(domain.getUnemployedParentCode(), is(equalTo(vc.getUnemployedParentCode())));
+    assertThat(domain.getZippyCreatedIndicator(), is(equalTo(vc.getZippyCreatedIndicator())));
 
   }
 
