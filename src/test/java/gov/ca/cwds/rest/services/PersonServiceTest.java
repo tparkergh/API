@@ -218,7 +218,7 @@ public class PersonServiceTest {
    * update tests
    */
   @Test
-  public void updateThrowsNullPointerException() throws Exception {
+  public void updateThrowsNullPointeException() throws Exception {
     thrown.expect(NullPointerException.class);
 
     Address address = new Address("742 Evergreen Terrace", "Springfield", "WA", 98700, "Home");
