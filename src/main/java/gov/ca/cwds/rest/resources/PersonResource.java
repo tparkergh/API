@@ -112,7 +112,6 @@ public class PersonResource {
    * 
    * @param id the id
    * @param person {@link Person}
-   * @param acceptHeader The accept header.
    *
    * @return The {@link Response}
    */
