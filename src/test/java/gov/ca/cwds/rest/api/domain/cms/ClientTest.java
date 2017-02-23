@@ -103,7 +103,7 @@ public class ClientTest implements DomainTestTemplate {
   private String literateCode = "Y";
   private Boolean maritalCohabitatnHstryIndicatorVar = Boolean.FALSE;
   private Short maritalStatusType = 1309;
-  private String militaryStatusCode = "N";
+  private String militaryStatusCode = "NA";
   private String motherParentalRightTermDate = null;
   private String namePrefixDescription = "";
   private Short nameType = 0;
