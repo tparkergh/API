@@ -27,6 +27,7 @@ import com.squarespace.jersey2.guice.JerseyGuiceUtils;
 import gov.ca.cwds.data.CrudsDao;
 import gov.ca.cwds.rest.api.domain.junit.template.DomainTestTemplate;
 import gov.ca.cwds.rest.core.Api;
+import gov.ca.cwds.rest.resources.cms.ClientResource;
 import gov.ca.cwds.rest.resources.cms.JerseyGuiceRule;
 import io.dropwizard.jackson.Jackson;
 import io.dropwizard.testing.junit.ResourceTestRule;
@@ -39,6 +40,8 @@ import io.dropwizard.testing.junit.ResourceTestRule;
 public class ClientTest implements DomainTestTemplate {
 
   private static final String ROOT_RESOURCE = "/" + Api.RESOURCE_CLIENT + "/";;
+
+  private static final ClientResource mockedClientResource = mock(ClientResource.class);
 
   @After
   public void ensureSerivceLocatorPopulate() {
