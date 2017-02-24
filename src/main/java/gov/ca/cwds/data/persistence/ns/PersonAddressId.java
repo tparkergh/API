@@ -29,6 +29,7 @@ public class PersonAddressId implements Serializable {
     super();
   }
 
+  @JsonIgnore
   @ManyToOne(cascade = CascadeType.ALL)
   private Person person; // NOSONAR
 

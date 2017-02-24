@@ -143,8 +143,8 @@ public class PersonService implements CrudsService {
     try {
       final gov.ca.cwds.rest.api.domain.es.Person esPerson =
           new gov.ca.cwds.rest.api.domain.es.Person(managedPerson.getId().toString(),
-              managedPerson.getFirstName(), managedPerson.getLastName(), managedPerson.getGender(),
-              DomainChef.cookDate(managedPerson.getDateOfBirth()), managedPerson.getSsn(),
+              managedPerson.getFirstName(), managedPerson.getLastName(), managedPerson.getSsn(),
+              managedPerson.getGender(), DomainChef.cookDate(managedPerson.getDateOfBirth()),
               managedPerson.getClass().getName(), MAPPER.writeValueAsString(managedPerson));
       final String document = MAPPER.writeValueAsString(esPerson);
 

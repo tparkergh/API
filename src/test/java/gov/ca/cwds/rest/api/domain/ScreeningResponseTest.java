@@ -112,21 +112,15 @@ public class ScreeningResponseTest {
 
   // TODO : "equals" seems to work but the test is failing. Need to figure out the message.
   // TODO : verify 'STRICT_INHERITENCE' is appropriate here - reference pvitoltracker #136527227
-  /**
-   * 
-   */
   // @Test
   // public void equalsHashCodeWork() {
   // EqualsVerifier.forClass(ScreeningResponse.class)
   // .suppress(Warning.NONFINAL_FIELDS, Warning.STRICT_INHERITANCE).suppress().verify();
   // }
 
-  /*
-   * Serialization and deserialization
-   */
-  /**
-   * @throws Exception
-   */
+
+  // Serialization and deserialization
+
   @Test
   public void serializesToJSON() throws Exception {
 
@@ -150,9 +144,6 @@ public class ScreeningResponseTest {
     assertThat(serialized, is(expected));
   }
 
-  /**
-   * @throws Exception
-   */
   @Test
   public void deserializesFromJSON() throws Exception {
     Address address = new Address("123 Main", "Sacramento", "CA", 95757, "Home");
