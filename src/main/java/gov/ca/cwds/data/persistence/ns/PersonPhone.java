@@ -9,6 +9,8 @@ import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import gov.ca.cwds.data.ns.NsPersistentObject;
 
 /**
@@ -75,7 +77,7 @@ public class PersonPhone extends NsPersistentObject implements Serializable {
   /**
    * @return the person
    */
-  // @Transient
+  @JsonIgnore
   public Person getPerson() {
     return personPhoneId.getPerson();
   }
@@ -83,7 +85,6 @@ public class PersonPhone extends NsPersistentObject implements Serializable {
   /**
    * @return the address
    */
-  // @Transient
   public PhoneNumber getPhoneNumber() {
     return personPhoneId.getPhoneNumber();
   }

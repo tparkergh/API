@@ -9,6 +9,8 @@ import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import gov.ca.cwds.data.ns.NsPersistentObject;
 
 /**
@@ -74,6 +76,7 @@ public class PersonLanguage extends NsPersistentObject implements Serializable {
   /**
    * @return the person
    */
+  @JsonIgnore
   public Person getPerson() {
     return personLanguageId.getPerson();
   }

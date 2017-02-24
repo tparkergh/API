@@ -6,6 +6,8 @@ import javax.persistence.CascadeType;
 import javax.persistence.Embeddable;
 import javax.persistence.ManyToOne;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 /**
  * @author CWS-NS2
  *
@@ -34,6 +36,7 @@ public class PersonEthnicityId implements Serializable {
   /**
    * @return the person
    */
+  @JsonIgnore
   public Person getPerson() {
     return person;
   }

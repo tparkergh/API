@@ -5,6 +5,8 @@ import java.io.Serializable;
 import javax.persistence.Embeddable;
 import javax.persistence.ManyToOne;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 /**
  * @author CWDS API Team
  * 
@@ -36,6 +38,7 @@ public class PersonLanguageId implements Serializable {
   /**
    * @return the person
    */
+  @JsonIgnore
   public Person getPerson() {
     return person;
   }

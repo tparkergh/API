@@ -31,6 +31,7 @@ import gov.ca.cwds.rest.api.ApiException;
 import gov.ca.cwds.rest.api.Request;
 import gov.ca.cwds.rest.api.Response;
 import gov.ca.cwds.rest.api.domain.Address;
+import gov.ca.cwds.rest.api.domain.DomainChef;
 import gov.ca.cwds.rest.api.domain.Ethnicity;
 import gov.ca.cwds.rest.api.domain.Language;
 import gov.ca.cwds.rest.api.domain.Person;
@@ -140,18 +141,18 @@ public class PersonService implements CrudsService {
     managedPerson = personDao.find(managedPerson.getId());
     PostedPerson postedPerson = new PostedPerson(managedPerson);
     try {
-      // final gov.ca.cwds.rest.api.domain.es.Person esPerson =
-      // new gov.ca.cwds.rest.api.domain.es.Person(managedPerson.getId().toString(),
-      // managedPerson.getFirstName(), managedPerson.getLastName(), managedPerson.getSsn(),
-      // managedPerson.getGender(), DomainChef.cookDate(managedPerson.getDateOfBirth()),
-      // managedPerson.getClass().getName(), MAPPER.writeValueAsString(managedPerson));
-      // // final String document = MAPPER.writeValueAsString(esPerson);
+      final gov.ca.cwds.rest.api.domain.es.Person esPerson =
+          new gov.ca.cwds.rest.api.domain.es.Person(managedPerson.getId().toString(),
+              managedPerson.getFirstName(), managedPerson.getLastName(), managedPerson.getGender(),
+              DomainChef.cookDate(managedPerson.getDateOfBirth()), managedPerson.getSsn(),
+              managedPerson.getClass().getName(), MAPPER.writeValueAsString(managedPerson));
+      final String document = MAPPER.writeValueAsString(esPerson);
 
       // If the people index is missing, create it.
-      // elasticsearchDao.createIndexIfNeeded(INDEX_PERSON);
+      elasticsearchDao.createIndexIfNeeded(INDEX_PERSON);
 
       // The ES Dao manages its own connections. No need to manually start or stop.
-      // elasticsearchDao.index(INDEX_PERSON, DOCUMENT_TYPE_PERSON, document, esPerson.getId());
+      elasticsearchDao.index(INDEX_PERSON, DOCUMENT_TYPE_PERSON, document, esPerson.getId());
     } catch (Exception e) {
       LOGGER.error("Unable to Index Person in ElasticSearch", e);
       throw new ApiException("Unable to Index Person in ElasticSearch", e);
