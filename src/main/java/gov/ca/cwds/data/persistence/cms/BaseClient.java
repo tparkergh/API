@@ -764,6 +764,10 @@ public abstract class BaseClient extends CmsPersistentObject
     return StringUtils.trimToEmpty(zippyCreatedIndicator);
   }
 
+  // =============================
+  // ApiPersonAware:
+  // =============================
+
   @JsonIgnore
   @Override
   public String getMiddleName() {
@@ -799,6 +803,10 @@ public abstract class BaseClient extends CmsPersistentObject
   public String getNameSuffix() {
     return this.suffixTitleDescription;
   }
+
+  // =============================
+  // ApiMultipleLanguagesAware:
+  // =============================
 
   @Override
   @JsonIgnore

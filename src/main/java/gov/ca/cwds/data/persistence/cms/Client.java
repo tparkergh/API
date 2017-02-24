@@ -17,7 +17,7 @@ import gov.ca.cwds.rest.api.ApiException;
 import gov.ca.cwds.rest.api.domain.DomainChef;
 
 /**
- * {@link PersistentObject} representing a Client
+ * {@link PersistentObject} representing a Client.
  * 
  * @author CWDS API Team
  */
@@ -310,18 +310,6 @@ public class Client extends BaseClient {
       throw new PersistenceException(e);
     }
   }
-
-
-
-  // ==================
-  // IPersonAware:
-  // ==================
-
-
-
-  // =========================
-  // IMultipleLanguagesAware:
-  // =========================
 
   @Override
   public String toString() {
