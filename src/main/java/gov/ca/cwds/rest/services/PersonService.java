@@ -143,8 +143,8 @@ public class PersonService implements CrudsService {
     try {
       final gov.ca.cwds.rest.api.domain.es.Person esPerson =
           new gov.ca.cwds.rest.api.domain.es.Person(managedPerson.getId().toString(),
-              managedPerson.getFirstName(), managedPerson.getLastName(), managedPerson.getSsn(),
-              managedPerson.getGender(), DomainChef.cookDate(managedPerson.getDateOfBirth()),
+              managedPerson.getFirstName(), managedPerson.getLastName(), managedPerson.getGender(),
+              DomainChef.cookDate(managedPerson.getDateOfBirth()), managedPerson.getSsn(),
               managedPerson.getClass().getName(), MAPPER.writeValueAsString(managedPerson));
       final String document = MAPPER.writeValueAsString(esPerson);
 
@@ -157,6 +157,7 @@ public class PersonService implements CrudsService {
       LOGGER.error("Unable to Index Person in ElasticSearch", e);
       throw new ApiException("Unable to Index Person in ElasticSearch", e);
     }
+
     return postedPerson;
   }
 
