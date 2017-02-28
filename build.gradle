@@ -55,9 +55,9 @@ shadowJar {
 dependencies {
 	// Dropwizard-guice 1.0.0.2 conflicts with jersey-client 2.25.
 	// Exclude transitive dependencies.
-	compile ('gov.ca.cwds.api:api-core:0.16.89') {
+	compile ('gov.ca.cwds.api:api-core:0.17.91') {
 	    exclude group: 'org.glassfish.jersey.core'
-	}    
+	}
 	
 	compile group: "io.dropwizard", name: "dropwizard-client", version: dropwizardVersion
 	compile group: "io.dropwizard", name: "dropwizard-hibernate", version: dropwizardVersion
