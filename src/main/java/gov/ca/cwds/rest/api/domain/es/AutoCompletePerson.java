@@ -847,6 +847,7 @@ public class AutoCompletePerson
               this.setGender("Female");
               break;
             case "U":
+            default:
               this.setGender("Unknown");
               break;
           }

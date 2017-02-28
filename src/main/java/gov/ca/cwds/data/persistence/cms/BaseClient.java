@@ -55,6 +55,8 @@ public abstract class BaseClient extends CmsPersistentObject
 
   @Type(type = "date")
   @Column(name = "BIRTH_DT")
+  // @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd",
+  // timezone = "America/Los Angeles")
   protected Date birthDate;
 
   @Column(name = "BR_FAC_NM")
