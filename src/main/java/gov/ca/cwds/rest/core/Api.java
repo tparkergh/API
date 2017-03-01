@@ -40,7 +40,7 @@ public interface Api {
   /**
    * A {@code String} constant representing {@value #RESOURCE_CLIENT} API..
    */
-  public static final String RESOURCE_CLIENT = "_client";
+  public static final String RESOURCE_CLIENT = "_clients";
 
   /**
    * A {@code String} constant representing {@value #RESOURCE_CROSS_REPORT} API.

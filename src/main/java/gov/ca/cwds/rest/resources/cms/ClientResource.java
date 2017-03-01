@@ -64,7 +64,7 @@ public class ClientResource {
 
 
   /**
-   * Finds an client by id.
+   * Finds client by id.
    * 
    * @param id the id
    * 
@@ -82,9 +82,9 @@ public class ClientResource {
   }
 
   /**
-   * Delete an client by id.
+   * Delete client by id.
    * 
-   * @param id The id of the {@link Client}
+   * @param id - id of the {@link Client}
    * 
    * @return {@link Client}
    */
@@ -100,7 +100,7 @@ public class ClientResource {
   /**
    * Create an {@link Client}
    * 
-   * @param client The {@link Client}
+   * @param client - The {@link Client} to create
    * 
    * @return The {@link Response}
    */
@@ -117,9 +117,9 @@ public class ClientResource {
   }
 
   /**
-   * Update an {@link Client}
+   * Update {@link Client}
    * 
-   * @param id the id
+   * @param id - id of Client to update
    * @param client {@link Client}
    *
    * @return The {@link Response}

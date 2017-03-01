@@ -13,6 +13,8 @@ import java.io.IOException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 
+import javax.ws.rs.client.Entity;
+import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
 import org.junit.After;
@@ -25,18 +27,21 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.squarespace.jersey2.guice.JerseyGuiceUtils;
 
 import gov.ca.cwds.data.CrudsDao;
+import gov.ca.cwds.rest.api.domain.DomainChef;
 import gov.ca.cwds.rest.api.domain.junit.template.DomainTestTemplate;
 import gov.ca.cwds.rest.core.Api;
 import gov.ca.cwds.rest.resources.cms.ClientResource;
 import gov.ca.cwds.rest.resources.cms.JerseyGuiceRule;
 import io.dropwizard.jackson.Jackson;
 import io.dropwizard.testing.junit.ResourceTestRule;
+import nl.jqno.equalsverifier.EqualsVerifier;
+import nl.jqno.equalsverifier.Warning;
 
 /**
  * @author CWDS API Team
  *
  */
-@SuppressWarnings("unused")
+@SuppressWarnings("javadoc")
 public class ClientTest implements DomainTestTemplate {
 
   private static final String ROOT_RESOURCE = "/" + Api.RESOURCE_CLIENT + "/";;
@@ -73,7 +78,7 @@ public class ClientTest implements DomainTestTemplate {
   private String commentDescription = "client description";
   private String commonFirstName = "fname";
   private String commonLastName = "lname";
-  private String commentMiddleName = "mname";
+  private String commonMiddleName = "mname";
   private String confidentialityActionDate = null;
   private Boolean confidentialityInEffectIndicator = Boolean.FALSE;
   private String creationDate = "2016-10-31";
@@ -91,7 +96,7 @@ public class ClientTest implements DomainTestTemplate {
   private String ethUnableToDetReasonCode = "K";
   private String fatherParentalRightTermDate = "";
   private String genderCode = "M";
-  private String healthSummaryText = "good health";
+  private String healthSummaryText = "good";
   private String hispUnableToDetReasonCode = "";
   private String hispanicOriginCode = "X";
   private String id = "1234567ABC";
@@ -103,7 +108,7 @@ public class ClientTest implements DomainTestTemplate {
   private String literateCode = "Y";
   private Boolean maritalCohabitatnHstryIndicatorVar = Boolean.FALSE;
   private Short maritalStatusType = 1308;
-  private String militaryStatusCode = "NA";
+  private String militaryStatusCode = "N";
   private String motherParentalRightTermDate = null;
   private String namePrefixDescription = "";
   private Short nameType = 0;
@@ -121,7 +126,7 @@ public class ClientTest implements DomainTestTemplate {
   private Boolean soc158SealedClientIndicator = Boolean.FALSE;
   private String socialSecurityNumChangedCode = "N";
   private String socialSecurityNumber = "111122333";
-  private String suffixTitleDescription = "suffix title";
+  private String suffixTitleDescription = "MR";
   private Boolean tribalAncestryClientIndicatorVar = Boolean.FALSE;
   private Boolean tribalMembrshpVerifctnIndicatorVar = Boolean.FALSE;
   private String unemployedParentCode = "N";
@@ -142,17 +147,17 @@ public class ClientTest implements DomainTestTemplate {
 
   @Override
   public void teardown() throws Exception {
-    // TODO Auto-generated method stub
 
   }
 
+  @Override
   @Test
-  public void persistentObjectConstructorTest() throws Exception {
+  public void testPersistentConstructor() throws Exception {
 
     Client domain = new Client(adjudicatedDelinquentIndicator, adoptionStatusCode,
         alienRegistrationNumber, birthCity, birthCountryCodeType, birthDate, birthFacilityName,
         birthStateCodeType, birthplaceVerifiedIndicator, childClientIndicatorVar, clientIndexNumber,
-        commentDescription, commonFirstName, commonLastName, commentMiddleName,
+        commentDescription, commonFirstName, commonLastName, commonMiddleName,
         confidentialityActionDate, confidentialityInEffectIndicator, creationDate,
         currCaChildrenServIndicator, currentlyOtherDescription, currentlyRegionalCenterIndicator,
         deathDate, deathDateVerified, deathPlace, deathReasonText, driversLicenseNumber,
@@ -172,17 +177,103 @@ public class ClientTest implements DomainTestTemplate {
     gov.ca.cwds.data.persistence.cms.Client persistent =
         new gov.ca.cwds.data.persistence.cms.Client(domain, "2017-02-21");
 
+    assertThat(persistent.getAdjudicatedDelinquentIndicator(),
+        is(equalTo(DomainChef.cookBoolean(adjudicatedDelinquentIndicator))));
+    assertThat(persistent.getAdoptionStatusCode(), is(equalTo(adoptionStatusCode)));
+    assertThat(persistent.getAlienRegistrationNumber(), is(equalTo(alienRegistrationNumber)));
+    assertThat(persistent.getBirthCity(), is(equalTo(birthCity)));
+    assertThat(persistent.getBirthCountryCodeType(), is(equalTo(birthCountryCodeType)));
+    assertThat(persistent.getBirthDate(), is(equalTo(DomainChef.uncookDateString(birthDate))));
+    assertThat(persistent.getBirthFacilityName(), is(equalTo(birthFacilityName)));
+    assertThat(persistent.getBirthStateCodeType(), is(equalTo(birthStateCodeType)));
+    assertThat(persistent.getBirthplaceVerifiedIndicator(),
+        is(equalTo(DomainChef.cookBoolean(birthplaceVerifiedIndicator))));
+    assertThat(persistent.getChildClientIndicatorVar(),
+        is(equalTo(DomainChef.cookBoolean(childClientIndicatorVar))));
+    assertThat(persistent.getClientIndexNumber(), is(equalTo(clientIndexNumber)));
+    assertThat(persistent.getCommentDescription(), is(equalTo(commentDescription)));
+    assertThat(persistent.getCommonFirstName(), is(equalTo(commonFirstName)));
+    assertThat(persistent.getCommonLastName(), is(equalTo(commonLastName)));
+    assertThat(persistent.getCommonMiddleName(), is(equalTo(commonMiddleName)));
+    assertThat(persistent.getConfidentialityActionDate(), is(equalTo(confidentialityActionDate)));
+    assertThat(persistent.getConfidentialityInEffectIndicator(),
+        is(equalTo(DomainChef.cookBoolean(confidentialityInEffectIndicator))));
+    assertThat(persistent.getCreationDate(),
+        is(equalTo(DomainChef.uncookDateString(creationDate))));
+    assertThat(persistent.getCurrCaChildrenServIndicator(),
+        is(equalTo(DomainChef.cookBoolean(currCaChildrenServIndicator))));
+    assertThat(persistent.getCurrentlyOtherDescription(), is(equalTo(currentlyOtherDescription)));
+    assertThat(persistent.getCurrentlyRegionalCenterIndicator(),
+        is(equalTo(DomainChef.cookBoolean(currentlyRegionalCenterIndicator))));
+    assertThat(persistent.getDeathDate(), is(equalTo(DomainChef.uncookDateString(deathDate))));
+    assertThat(persistent.getDeathDateVerifiedIndicator(),
+        is(equalTo(DomainChef.cookBoolean(deathDateVerified))));
+    assertThat(persistent.getDeathReasonText(), is(equalTo(deathReasonText)));
+    assertThat(persistent.getDriverLicenseNumber(), is(equalTo(driversLicenseNumber)));
+    assertThat(persistent.getDriverLicenseStateCodeType(),
+        is(equalTo(driversLicenseStateCodeType)));
+    assertThat(persistent.getEmailAddress(), is(equalTo(emailAddress)));
+    assertThat(persistent.getEstimatedDobCode(), is(equalTo(estimatedDateOfBirthCode)));
+    assertThat(persistent.getEthUnableToDetReasonCode(), is(equalTo(ethUnableToDetReasonCode)));
+    assertThat(persistent.getFatherParentalRightTermDate(),
+        is(equalTo(DomainChef.uncookDateString(fatherParentalRightTermDate))));
+    assertThat(persistent.getGenderCode(), is(equalTo(genderCode)));
+    assertThat(persistent.getHealthSummaryText(), is(equalTo(healthSummaryText)));
+    assertThat(persistent.getHispUnableToDetReasonCode(), is(equalTo(hispUnableToDetReasonCode)));
+    assertThat(persistent.getHispanicOriginCode(), is(equalTo(hispanicOriginCode)));
+    assertThat(persistent.getId(), is(equalTo(id)));
+    assertThat(persistent.getImmigrationCountryCodeType(), is(equalTo(immigrationCountryCodeType)));
+    assertThat(persistent.getIncapacitatedParentCode(), is(equalTo(incapcitatedParentCode)));
+    assertThat(persistent.getIndividualHealthCarePlanIndicator(),
+        is(equalTo(DomainChef.cookBoolean(individualHealthCarePlanIndicator))));
+    assertThat(persistent.getLimitationOnScpHealthIndicator(),
+        is(equalTo(DomainChef.cookBoolean(limitationOnScpHealthIndicator))));
+    assertThat(persistent.getLiterateCode(), is(equalTo(literateCode)));
+    assertThat(persistent.getMaritalCohabitatnHstryIndicatorVar(),
+        is(equalTo(DomainChef.cookBoolean(maritalCohabitatnHstryIndicatorVar))));
+    assertThat(persistent.getMaritalStatusType(), is(equalTo(maritalStatusType)));
+    assertThat(persistent.getMilitaryStatusCode(), is(equalTo(militaryStatusCode)));
+    assertThat(persistent.getMotherParentalRightTermDate(),
+        is(equalTo(DomainChef.uncookDateString(motherParentalRightTermDate))));
+    assertThat(persistent.getNamePrefixDescription(), is(equalTo(namePrefixDescription)));
+    assertThat(persistent.getNameType(), is(equalTo(nameType)));
+    assertThat(persistent.getOutstandingWarrantIndicator(),
+        is(equalTo(DomainChef.cookBoolean(outstandingWarrantIndicator))));
+    assertThat(persistent.getPrevCaChildrenServIndicator(),
+        is(equalTo(DomainChef.cookBoolean(prevCaChildrenServIndicator))));
+    assertThat(persistent.getPrevOtherDescription(), is(equalTo(prevOtherDescription)));
+    assertThat(persistent.getPrimaryEthnicityType(), is(equalTo(primaryEthnicityType)));
+    assertThat(persistent.getPrimaryLanguageType(), is(equalTo(primaryLanguageType)));
+    assertThat(persistent.getReligionType(), is(equalTo(religionType)));
+    assertThat(persistent.getSecondaryLanguageType(), is(equalTo(secondaryLanguageType)));
+    assertThat(persistent.getSensitiveHlthInfoOnFileIndicator(),
+        is(equalTo(DomainChef.cookBoolean(sensitiveHlthInfoOnFileIndicator))));
+    assertThat(persistent.getSensitivityIndicator(), is(equalTo(sensitivityIndicator)));
+    assertThat(persistent.getSoc158PlacementCode(), is(equalTo(soc158PlacementCode)));
+    assertThat(persistent.getSoc158SealedClientIndicator(),
+        is(equalTo(DomainChef.cookBoolean(soc158SealedClientIndicator))));
+    assertThat(persistent.getSocialSecurityNumChangedCode(),
+        is(equalTo(socialSecurityNumChangedCode)));
+    assertThat(persistent.getSocialSecurityNumber(), is(equalTo(socialSecurityNumber)));
+    assertThat(persistent.getSuffixTitleDescription(), is(equalTo(suffixTitleDescription)));
+    assertThat(persistent.getTribalAncestryClientIndicatorVar(),
+        is(equalTo(DomainChef.cookBoolean(tribalAncestryClientIndicatorVar))));
+    assertThat(persistent.getUnemployedParentCode(), is(equalTo(unemployedParentCode)));
+    assertThat(persistent.getZippyCreatedIndicator(),
+        is(equalTo(DomainChef.cookBoolean(zippyCreatedIndicator))));
+
   }
 
+  @Override
   @Test
-  public void jsonCreatorConstructorTest() throws Exception {
+  public void testJSONCreatorConstructor() throws Exception {
 
     Client vc = validClient();
 
     Client domain = new Client(adjudicatedDelinquentIndicator, adoptionStatusCode,
         alienRegistrationNumber, birthCity, birthCountryCodeType, birthDate, birthFacilityName,
         birthStateCodeType, birthplaceVerifiedIndicator, childClientIndicatorVar, clientIndexNumber,
-        commentDescription, commonFirstName, commonLastName, commentMiddleName,
+        commentDescription, commonFirstName, commonLastName, commonMiddleName,
         confidentialityActionDate, confidentialityInEffectIndicator, creationDate,
         currCaChildrenServIndicator, currentlyOtherDescription, currentlyRegionalCenterIndicator,
         deathDate, deathDateVerified, deathPlace, deathReasonText, driversLicenseNumber,
@@ -288,50 +379,314 @@ public class ClientTest implements DomainTestTemplate {
   }
 
   @Override
+  @Test
   public void testEqualsHashCodeWorks() throws Exception {
-    // TODO Auto-generated method stub
+    EqualsVerifier.forClass(Client.class).suppress(Warning.NONFINAL_FIELDS).verify();
 
   }
 
   @Override
+  @Test
   public void testSerializesToJSON() throws Exception {
-    // TODO Auto-generated method stub
+    Client validClient = validDomainClient();
+    final String expected = MAPPER.writeValueAsString(
+        MAPPER.readValue(fixture("fixtures/domain/legacy/Client/valid/valid.json"), Client.class));
 
+    assertThat(MAPPER.writeValueAsString(validClient), is(equalTo(expected)));
   }
 
   @Override
+  @Test
   public void testDeserializesFromJSON() throws Exception {
-    // TODO Auto-generated method stub
+    Client validClient = validDomainClient();
+    assertThat(
+        MAPPER.readValue(fixture("fixtures/domain/legacy/Client/valid/valid.json"), Client.class),
+        is(equalTo(validClient)));
 
   }
 
-  @Override
-  public void testPersistentConstructor() throws Exception {
-    // TODO Auto-generated method stub
-
-  }
 
   @Override
-  public void testJSONCreatorConstructor() throws Exception {
-    // TODO Auto-generated method stub
-
-  }
-
-  @Override
+  @Test
   public void testSuccessWithValid() throws Exception {
-    // TODO Auto-generated method stub
+    Client validClient = validClient();
+    Response response =
+        resources.client().target(ROOT_RESOURCE).request().accept(MediaType.APPLICATION_JSON)
+            .post(Entity.entity(validClient, MediaType.APPLICATION_JSON));
+    // System.out.println(response.readEntity(String.class));
+    assertThat(response.getStatus(), is(equalTo(204)));
 
   }
 
   @Override
+  @Test
   public void testSuccessWithOptionalsNotIncluded() throws Exception {
-    // TODO Auto-generated method stub
+
+    Client validClient = MAPPER.readValue(
+        fixture("fixtures/domain/legacy/Client/valid/optionalsNotIncluded.json"), Client.class);
+
+    Response response =
+        resources.client().target(ROOT_RESOURCE).request().accept(MediaType.APPLICATION_JSON)
+            .post(Entity.entity(validClient, MediaType.APPLICATION_JSON));
+
+    assertThat(response.getStatus(), is(equalTo(204)));
+  }
+
+
+  /*
+   * adoption status code test
+   */
+  @Test
+  public void testFailAdoptionStatusCodeEmpty() throws Exception {
+
+    Client validClient = MAPPER.readValue(
+        fixture("fixtures/domain/legacy/Client/invalid/adoptionStatusCodeEmpty.json"),
+        Client.class);
+
+    Response response =
+        resources.client().target(ROOT_RESOURCE).request().accept(MediaType.APPLICATION_JSON)
+            .post(Entity.entity(validClient, MediaType.APPLICATION_JSON));
+
+    assertThat(response.getStatus(), is(equalTo(422)));
+  }
+
+  @Test
+  public void testFailAdoptionStatusCodeInvalid() throws Exception {
+
+    Client validClient = MAPPER.readValue(
+        fixture("fixtures/domain/legacy/Client/invalid/adoptionStatusCodeInvalid.json"),
+        Client.class);
+
+    Response response =
+        resources.client().target(ROOT_RESOURCE).request().accept(MediaType.APPLICATION_JSON)
+            .post(Entity.entity(validClient, MediaType.APPLICATION_JSON));
+
+    assertThat(response.getStatus(), is(equalTo(422)));
+  }
+
+  @Test
+  public void testFailAdoptionStatusCodeNull() throws Exception {
+
+    Client validClient = MAPPER.readValue(
+        fixture("fixtures/domain/legacy/Client/invalid/adoptionStatusCodeNull.json"), Client.class);
+
+    Response response =
+        resources.client().target(ROOT_RESOURCE).request().accept(MediaType.APPLICATION_JSON)
+            .post(Entity.entity(validClient, MediaType.APPLICATION_JSON));
+
+    assertThat(response.getStatus(), is(equalTo(422)));
+  }
+
+  @Test
+  public void testFailAdoptionStatusCodeWhiteSpace() throws Exception {
+
+    Client validClient = MAPPER.readValue(
+        fixture("fixtures/domain/legacy/Client/invalid/adoptionStatusWhiteSpace.json"),
+        Client.class);
+
+    Response response =
+        resources.client().target(ROOT_RESOURCE).request().accept(MediaType.APPLICATION_JSON)
+            .post(Entity.entity(validClient, MediaType.APPLICATION_JSON));
+
+    assertThat(response.getStatus(), is(equalTo(422)));
+  }
+
+  @Test
+  public void testSuccessAdoptionStatusCodeA() throws Exception {
+
+    Client validClient = MAPPER.readValue(
+        fixture("fixtures/domain/legacy/Client/valid/adoptionStatusCodeA.json"), Client.class);
+
+    Response response =
+        resources.client().target(ROOT_RESOURCE).request().accept(MediaType.APPLICATION_JSON)
+            .post(Entity.entity(validClient, MediaType.APPLICATION_JSON));
+
+    assertThat(response.getStatus(), is(equalTo(204)));
 
   }
+
+  @Test
+  public void testSuccessAdoptionStatusCodeN() throws Exception {
+
+    Client validClient = MAPPER.readValue(
+        fixture("fixtures/domain/legacy/Client/valid/adoptionStatusCodeN.json"), Client.class);
+
+    Response response =
+        resources.client().target(ROOT_RESOURCE).request().accept(MediaType.APPLICATION_JSON)
+            .post(Entity.entity(validClient, MediaType.APPLICATION_JSON));
+
+    assertThat(response.getStatus(), is(equalTo(204)));
+
+  }
+
+  @Test
+  public void testSuccessAdoptionStatusCodeP() throws Exception {
+
+    Client validClient = MAPPER.readValue(
+        fixture("fixtures/domain/legacy/Client/valid/adoptionStatusCodeP.json"), Client.class);
+
+    Response response =
+        resources.client().target(ROOT_RESOURCE).request().accept(MediaType.APPLICATION_JSON)
+            .post(Entity.entity(validClient, MediaType.APPLICATION_JSON));
+
+    assertThat(response.getStatus(), is(equalTo(204)));
+
+  }
+
+  @Test
+  public void testSuccessAdoptionStatusCodeT() throws Exception {
+
+    Client validClient = MAPPER.readValue(
+        fixture("fixtures/domain/legacy/Client/valid/adoptionStatusCodeT.json"), Client.class);
+
+    Response response =
+        resources.client().target(ROOT_RESOURCE).request().accept(MediaType.APPLICATION_JSON)
+            .post(Entity.entity(validClient, MediaType.APPLICATION_JSON));
+
+    assertThat(response.getStatus(), is(equalTo(204)));
+
+  }
+
+  /*
+   * alienRegistrationNumber test
+   */
+  @Test
+  public void testSuccessAlienRegistrationNumberEmpty() throws Exception {
+
+    Client validClient = MAPPER.readValue(
+        fixture("fixtures/domain/legacy/Client/valid/alienRegistrationNumberEmpty.json"),
+        Client.class);
+
+    Response response =
+        resources.client().target(ROOT_RESOURCE).request().accept(MediaType.APPLICATION_JSON)
+            .post(Entity.entity(validClient, MediaType.APPLICATION_JSON));
+
+    assertThat(response.getStatus(), is(equalTo(204)));
+
+  }
+
+  @Test
+  public void testFailAlienRegistrationNumberNull() throws Exception {
+
+    Client validClient = MAPPER.readValue(
+        fixture("fixtures/domain/legacy/Client/invalid/alienRegistrationNumberNull.json"),
+        Client.class);
+
+    Response response =
+        resources.client().target(ROOT_RESOURCE).request().accept(MediaType.APPLICATION_JSON)
+            .post(Entity.entity(validClient, MediaType.APPLICATION_JSON));
+
+    assertThat(response.getStatus(), is(equalTo(422)));
+
+  }
+
+  @Test
+  public void testFailAlienRegistrationNumberTooLong() throws Exception {
+
+    Client validClient = MAPPER.readValue(
+        fixture("fixtures/domain/legacy/Client/invalid/alienRegistrationNumberTooLong.json"),
+        Client.class);
+
+    Response response =
+        resources.client().target(ROOT_RESOURCE).request().accept(MediaType.APPLICATION_JSON)
+            .post(Entity.entity(validClient, MediaType.APPLICATION_JSON));
+
+    assertThat(response.getStatus(), is(equalTo(422)));
+
+  }
+
+  /*
+   * birth city test
+   * 
+   */
+  @Test
+  public void testSuccessBirthCityEmpty() throws Exception {
+
+    Client validClient = MAPPER.readValue(
+        fixture("fixtures/domain/legacy/Client/valid/birthCityEmpty.json"), Client.class);
+
+    Response response =
+        resources.client().target(ROOT_RESOURCE).request().accept(MediaType.APPLICATION_JSON)
+            .post(Entity.entity(validClient, MediaType.APPLICATION_JSON));
+
+    assertThat(response.getStatus(), is(equalTo(204)));
+
+  }
+
+  @Test
+  public void testFailBirthCityNull() throws Exception {
+
+    Client validClient = MAPPER.readValue(
+        fixture("fixtures/domain/legacy/Client/invalid/birthCityNull.json"), Client.class);
+
+    Response response =
+        resources.client().target(ROOT_RESOURCE).request().accept(MediaType.APPLICATION_JSON)
+            .post(Entity.entity(validClient, MediaType.APPLICATION_JSON));
+
+    assertThat(response.getStatus(), is(equalTo(422)));
+
+  }
+
+  @Test
+  public void testFailBirthCityTooLong() throws Exception {
+
+    Client validClient = MAPPER.readValue(
+        fixture("fixtures/domain/legacy/Client/invalid/birthCityTooLong.json"), Client.class);
+
+    Response response =
+        resources.client().target(ROOT_RESOURCE).request().accept(MediaType.APPLICATION_JSON)
+            .post(Entity.entity(validClient, MediaType.APPLICATION_JSON));
+
+    assertThat(response.getStatus(), is(equalTo(422)));
+
+  }
+
+  /*
+   * birthCountryCode test
+   */
+  @Test
+  public void testSuccessBirthCountryCodeValid() throws Exception {
+
+    Client validClient = MAPPER.readValue(
+        fixture("fixtures/domain/legacy/Client/valid/birthCountryCodeValid.json"), Client.class);
+
+    Response response =
+        resources.client().target(ROOT_RESOURCE).request().accept(MediaType.APPLICATION_JSON)
+            .post(Entity.entity(validClient, MediaType.APPLICATION_JSON));
+
+    assertThat(response.getStatus(), is(equalTo(204)));
+
+  }
+
 
   private Client validClient() throws JsonParseException, JsonMappingException, IOException {
     Client vc =
         MAPPER.readValue(fixture("fixtures/domain/legacy/Client/valid/valid.json"), Client.class);
     return vc;
+  }
+
+  private Client validDomainClient() {
+    Client domain = new Client(adjudicatedDelinquentIndicator, adoptionStatusCode,
+        alienRegistrationNumber, birthCity, birthCountryCodeType, birthDate, birthFacilityName,
+        birthStateCodeType, birthplaceVerifiedIndicator, childClientIndicatorVar, clientIndexNumber,
+        commentDescription, commonFirstName, commonLastName, commonMiddleName,
+        confidentialityActionDate, confidentialityInEffectIndicator, creationDate,
+        currCaChildrenServIndicator, currentlyOtherDescription, currentlyRegionalCenterIndicator,
+        deathDate, deathDateVerified, deathPlace, deathReasonText, driversLicenseNumber,
+        driversLicenseStateCodeType, emailAddress, estimatedDateOfBirthCode,
+        ethUnableToDetReasonCode, fatherParentalRightTermDate, genderCode, healthSummaryText,
+        hispUnableToDetReasonCode, hispanicOriginCode, id, immigrationCountryCodeType,
+        immigrationStatusType, incapcitatedParentCode, individualHealthCarePlanIndicator,
+        limitationOnScpHealthIndicator, literateCode, maritalCohabitatnHstryIndicatorVar,
+        maritalStatusType, militaryStatusCode, motherParentalRightTermDate, namePrefixDescription,
+        nameType, outstandingWarrantIndicator, prevCaChildrenServIndicator, prevOtherDescription,
+        prevRegionalCenterIndicator, primaryEthnicityType, primaryLanguageType, religionType,
+        secondaryLanguageType, sensitiveHlthInfoOnFileIndicator, sensitivityIndicator,
+        soc158PlacementCode, soc158SealedClientIndicator, socialSecurityNumChangedCode,
+        socialSecurityNumber, suffixTitleDescription, tribalAncestryClientIndicatorVar,
+        tribalMembrshpVerifctnIndicatorVar, unemployedParentCode, zippyCreatedIndicator);
+
+    return domain;
+
   }
 }
