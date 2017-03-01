@@ -21,12 +21,8 @@ import gov.ca.cwds.data.persistence.PersistentObject;
  * 
  * @author CWDS API Team
  */
-@NamedQueries({
-    @NamedQuery(name = "gov.ca.cwds.data.persistence.cms.SubstituteCareProvider.findAll",
-        query = "FROM SubstituteCareProvider"),
-    @NamedQuery(
-        name = "gov.ca.cwds.data.persistence.cms.SubstituteCareProvider.findAllUpdatedAfter",
-        query = "FROM SubstituteCareProvider WHERE lastUpdatedTime > :after")})
+@NamedQueries({@NamedQuery(name = "gov.ca.cwds.data.persistence.cms.SubstituteCareProvider.findAll",
+    query = "FROM SubstituteCareProvider")})
 @NamedNativeQueries({@NamedNativeQuery(
     name = "gov.ca.cwds.data.persistence.cms.SubstituteCareProvider.findAllByBucket",
     query = "select z.IDENTIFIER, z.ADD_TEL_NO, z.ADD_EXT_NO, z.YR_INC_AMT, "
@@ -38,9 +34,8 @@ import gov.ca.cwds.data.persistence.PersistentObject;
         + "z.STATE_C, z.STREET_NM, z.STREET_NO, z.SUFX_TLDSC, z.ZIP_NO, "
         + "z.ZIP_SFX_NO, z.LST_UPD_ID, z.LST_UPD_TS "
         + "from ( select mod(y.rn, CAST(:total_buckets AS INTEGER)) + 1 as bucket, y.* "
-        + "from ( select row_number() over (order by 1) as rn, x.* "
-        + "from ( select c.* from {h-schema}SB_PVDRT c "
-        + ") x ) y ) z where z.bucket = :bucket_num for read only",
+        + "from ( select row_number() over (order by 1) as rn, x.* from {h-schema}SB_PVDRT x "
+        + " ) y ) z where z.bucket = :bucket_num for read only",
     resultClass = SubstituteCareProvider.class)})
 @Entity
 @Table(name = "SB_PVDRT")

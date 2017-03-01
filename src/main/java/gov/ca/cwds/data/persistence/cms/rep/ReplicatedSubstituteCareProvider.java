@@ -37,7 +37,7 @@ import gov.ca.cwds.data.persistence.cms.BaseSubstituteCareProvider;
             + "z.ZIP_SFX_NO, z.LST_UPD_ID, z.LST_UPD_TS "
             + ", z.IBMSNAP_OPERATION, z.IBMSNAP_LOGMARKER "
             + "from {h-schema}SB_PVDRT z WHERE z.IBMSNAP_LOGMARKER >= :after for read only ",
-        resultClass = ReplicatedReporter.class),
+        resultClass = ReplicatedSubstituteCareProvider.class),
     @NamedNativeQuery(
         name = "gov.ca.cwds.data.persistence.cms.rep.ReplicatedSubstituteCareProvider.findAllByBucket",
         query = "select z.IDENTIFIER, z.ADD_TEL_NO, z.ADD_EXT_NO, z.YR_INC_AMT, "
