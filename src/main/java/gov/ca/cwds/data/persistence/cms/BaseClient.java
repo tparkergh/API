@@ -283,7 +283,7 @@ public abstract class BaseClient extends CmsPersistentObject
   @Column(name = "ZIPPY_IND")
   protected String zippyCreatedIndicator;
 
-  @OneToMany(fetch = FetchType.LAZY)
+  @OneToMany(fetch = FetchType.EAGER)
   @JoinColumns({@JoinColumn(name = "FKCLIENT_T", referencedColumnName = "IDENTIFIER")})
   @OrderBy("EFF_STRTDT")
   private Set<ClientAddress> clientAddresses = new LinkedHashSet<>();

@@ -48,7 +48,7 @@ public abstract class BaseAddress extends CmsPersistentObject {
   @JsonDeserialize(using = CmsSystemCodeDeserializer.class)
   @Type(type = "short")
   @Column(name = "GVR_ENTC", nullable = false)
-  protected String governmentEntityCd;
+  protected Short governmentEntityCd;
 
   @Column(name = "MSG_TEL_NO", nullable = false)
   protected BigDecimal messageNumber;
@@ -182,14 +182,6 @@ public abstract class BaseAddress extends CmsPersistentObject {
     FRG_ADRT_B = fRG_ADRT_B;
   }
 
-  public String getGovernmentEntityCd() {
-    return governmentEntityCd;
-  }
-
-  public void setGovernmentEntityCd(String governmentEntityCd) {
-    this.governmentEntityCd = governmentEntityCd;
-  }
-
   public BigDecimal getMessageNumber() {
     return messageNumber;
   }
@@ -316,6 +308,14 @@ public abstract class BaseAddress extends CmsPersistentObject {
 
   public void setUnitNumber(String unitNumber) {
     this.unitNumber = unitNumber;
+  }
+
+  public Short getGovernmentEntityCd() {
+    return governmentEntityCd;
+  }
+
+  public void setGovernmentEntityCd(Short governmentEntityCd) {
+    this.governmentEntityCd = governmentEntityCd;
   }
 
 }

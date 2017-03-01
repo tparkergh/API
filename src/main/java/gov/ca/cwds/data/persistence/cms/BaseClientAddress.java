@@ -66,8 +66,8 @@ public abstract class BaseClientAddress extends CmsPersistentObject {
   @Column(name = "FKREFERL_T", nullable = true, length = CMS_ID_LEN)
   protected String fkReferral;
 
-  @OneToMany(fetch = FetchType.LAZY)
-  @JoinColumns({@JoinColumn(name = "FKADDRS_T", referencedColumnName = "IDENTIFIER")})
+  @OneToMany(fetch = FetchType.EAGER)
+  @JoinColumns({@JoinColumn(name = "IDENTIFIER", referencedColumnName = "FKADDRS_T")})
   // @OrderBy("EFF_STRTDT")
   private Set<Address> addresses = new LinkedHashSet<>();
 
