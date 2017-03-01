@@ -7,6 +7,7 @@ import com.google.inject.name.Named;
 
 import gov.ca.cwds.rest.ApiConfiguration;
 import gov.ca.cwds.rest.SwaggerConfiguration;
+import gov.ca.cwds.rest.api.domain.cms.Client;
 import gov.ca.cwds.rest.api.domain.cms.CmsDocument;
 import gov.ca.cwds.rest.api.domain.es.AutoCompletePersonRequest;
 import gov.ca.cwds.rest.api.domain.es.AutoCompletePersonResponse;
@@ -36,6 +37,7 @@ import gov.ca.cwds.rest.services.ParticipantService;
 import gov.ca.cwds.rest.services.PersonService;
 import gov.ca.cwds.rest.services.ScreeningService;
 import gov.ca.cwds.rest.services.cms.AllegationService;
+import gov.ca.cwds.rest.services.cms.ClientService;
 import gov.ca.cwds.rest.services.cms.CmsDocReferralClientService;
 import gov.ca.cwds.rest.services.cms.CmsDocumentService;
 import gov.ca.cwds.rest.services.cms.CmsReferralService;
@@ -133,6 +135,12 @@ public class ResourcesModule extends AbstractModule {
   @CmsDocumentBackedResource
   public TypedResourceDelegate<String, CmsDocument> cmsDocumentBackedResource(Injector injector) {
     return new TypedServiceBackedResourceDelegate<>(injector.getInstance(CmsDocumentService.class));
+  }
+
+  @Provides
+  @ClientServiceBackedResource
+  public TypedResourceDelegate<String, Client> clientBackedResource(Injector injector) {
+    return new TypedServiceBackedResourceDelegate<>(injector.getInstance(ClientService.class));
   }
 
   @Provides

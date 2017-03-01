@@ -38,7 +38,7 @@ import io.swagger.annotations.ApiResponses;
  * 
  * @author CWDS API Team
  */
-@Api(value = RESOURCE_CROSS_REPORT)
+@Api(value = RESOURCE_CROSS_REPORT, tags = RESOURCE_CROSS_REPORT)
 @Path(value = RESOURCE_CROSS_REPORT)
 @Produces(MediaType.APPLICATION_JSON)
 @Consumes(MediaType.APPLICATION_JSON)
@@ -57,7 +57,7 @@ public class CrossReportResource {
   }
 
   /**
-   * Finds an crossreport by referral id and third id.
+   * Finds a Cross Report by referral id and third id.
    * 
    * @param thirdId the thirdId is unique key for CrossReport
    * 
@@ -76,7 +76,7 @@ public class CrossReportResource {
   }
 
   /**
-   * Delete an crossreport by referral id and third id.
+   * Delete a Cross Report by referral id and third id.
    * 
    * @param thirdId the thirdId is unique key for CrossReport
    * 

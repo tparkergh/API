@@ -39,6 +39,7 @@ import gov.ca.cwds.data.ns.PhoneNumberDao;
 import gov.ca.cwds.data.ns.RaceDao;
 import gov.ca.cwds.data.ns.ScreeningDao;
 import gov.ca.cwds.data.persistence.cms.Allegation;
+import gov.ca.cwds.data.persistence.cms.ClientAddress;
 import gov.ca.cwds.data.persistence.cms.ClientCollateral;
 import gov.ca.cwds.data.persistence.cms.CmsDocReferralClient;
 import gov.ca.cwds.data.persistence.cms.CmsDocument;
@@ -103,7 +104,8 @@ public class DataAccessModule extends AbstractModule {
           CrossReport.class, EducationProviderContact.class, OtherAdultInPlacemtHome.class,
           OtherChildInPlacemtHome.class, OtherClientName.class, Referral.class,
           ReferralClient.class, Reporter.class, ServiceProvider.class, StaffPerson.class,
-          SubstituteCareProvider.class) {
+          SubstituteCareProvider.class, gov.ca.cwds.data.persistence.cms.Address.class,
+          ClientAddress.class) {
         @Override
         public DataSourceFactory getDataSourceFactory(ApiConfiguration configuration) {
           return configuration.getCmsDataSourceFactory();

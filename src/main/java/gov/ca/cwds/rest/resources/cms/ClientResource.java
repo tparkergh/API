@@ -21,7 +21,9 @@ import com.google.inject.Inject;
 import gov.ca.cwds.inject.ClientServiceBackedResource;
 import gov.ca.cwds.rest.api.domain.Person;
 import gov.ca.cwds.rest.api.domain.cms.Client;
+import gov.ca.cwds.rest.api.domain.cms.CmsDocument;
 import gov.ca.cwds.rest.resources.ResourceDelegate;
+import gov.ca.cwds.rest.resources.TypedResourceDelegate;
 import io.dropwizard.hibernate.UnitOfWork;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -44,7 +46,11 @@ import io.swagger.annotations.ApiResponses;
 @Produces(MediaType.APPLICATION_JSON)
 @Consumes(MediaType.APPLICATION_JSON)
 public class ClientResource {
-  private ResourceDelegate resourceDelegate;
+
+  /**
+   * key (K) = String, request (Q) = {@link CmsDocument}.
+   */
+  private TypedResourceDelegate<String, Client> resourceDelegate;
 
   /**
    * Constructor
@@ -52,7 +58,8 @@ public class ClientResource {
    * @param resourceDelegate The resourceDelegate to delegate to.
    */
   @Inject
-  public ClientResource(@ClientServiceBackedResource ResourceDelegate resourceDelegate) {
+  public ClientResource(
+      @ClientServiceBackedResource TypedResourceDelegate<String, Client> resourceDelegate) {
     this.resourceDelegate = resourceDelegate;
   }
 

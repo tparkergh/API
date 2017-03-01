@@ -23,7 +23,7 @@ import gov.ca.cwds.rest.api.ApiException;
 import gov.ca.cwds.rest.api.domain.DomainChef;
 
 /**
- * {@link CmsPersistentObject} representing a CrossReport
+ * {@link CmsPersistentObject} representing a CrossReport.
  * 
  * @author CWDS API Team
  */

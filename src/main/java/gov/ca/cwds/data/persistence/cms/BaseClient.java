@@ -2,11 +2,18 @@ package gov.ca.cwds.data.persistence.cms;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.LinkedHashSet;
 import java.util.List;
+import java.util.Set;
 
 import javax.persistence.Column;
+import javax.persistence.FetchType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinColumns;
 import javax.persistence.MappedSuperclass;
+import javax.persistence.OneToMany;
+import javax.persistence.OrderBy;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.builder.EqualsBuilder;
@@ -55,8 +62,6 @@ public abstract class BaseClient extends CmsPersistentObject
 
   @Type(type = "date")
   @Column(name = "BIRTH_DT")
-  // @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd",
-  // timezone = "America/Los Angeles")
   protected Date birthDate;
 
   @Column(name = "BR_FAC_NM")
@@ -278,6 +283,11 @@ public abstract class BaseClient extends CmsPersistentObject
   @Column(name = "ZIPPY_IND")
   protected String zippyCreatedIndicator;
 
+  @OneToMany(fetch = FetchType.LAZY)
+  @JoinColumns({@JoinColumn(name = "FKCLIENT_T", referencedColumnName = "IDENTIFIER")})
+  @OrderBy("EFF_STRTDT")
+  private Set<ClientAddress> clientAddresses = new LinkedHashSet<>();
+
   public BaseClient() {
     super();
   }
@@ -285,6 +295,10 @@ public abstract class BaseClient extends CmsPersistentObject
   public BaseClient(String lastUpdatedId) {
     super(lastUpdatedId);
   }
+
+  // ==================
+  // IDENTIFIERS:
+  // ==================
 
   /**
    * {@inheritDoc}
@@ -295,6 +309,20 @@ public abstract class BaseClient extends CmsPersistentObject
   public String getPrimaryKey() {
     return getId();
   }
+
+  @Override
+  public int hashCode() {
+    return HashCodeBuilder.reflectionHashCode(this, false);
+  }
+
+  @Override
+  public boolean equals(Object obj) {
+    return EqualsBuilder.reflectionEquals(this, obj, false);
+  }
+
+  // ==================
+  // ACCESSORS:
+  // ==================
 
   /**
    * @return the adjudicatedDelinquentIndicator
@@ -766,6 +794,18 @@ public abstract class BaseClient extends CmsPersistentObject
     return StringUtils.trimToEmpty(zippyCreatedIndicator);
   }
 
+  public Set<ClientAddress> getClientAddresses() {
+    return clientAddresses;
+  }
+
+  public void setClientAddresses(Set<ClientAddress> clientAddresses) {
+    this.clientAddresses = clientAddresses;
+  }
+
+  public void addClientAddress(ClientAddress clientAddress) {
+    this.clientAddresses.add(clientAddress);
+  }
+
   // =============================
   // ApiPersonAware:
   // =============================
@@ -835,16 +875,6 @@ public abstract class BaseClient extends CmsPersistentObject
     }
 
     return languages.toArray(new ApiLanguageAware[0]);
-  }
-
-  @Override
-  public int hashCode() {
-    return HashCodeBuilder.reflectionHashCode(this, false);
-  }
-
-  @Override
-  public boolean equals(Object obj) {
-    return EqualsBuilder.reflectionEquals(this, obj, false);
   }
 
 }
