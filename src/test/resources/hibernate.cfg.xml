@@ -36,6 +36,6 @@
 		<mapping class="gov.ca.cwds.data.persistence.cms.CmsDocument" />
 		<mapping class="gov.ca.cwds.data.persistence.cms.CmsDocReferralClient" />
 		<mapping class="gov.ca.cwds.data.persistence.cms.CmsDocumentBlobSegment"/>
-		
+ 		
 	</session-factory>
 </hibernate-configuration>
