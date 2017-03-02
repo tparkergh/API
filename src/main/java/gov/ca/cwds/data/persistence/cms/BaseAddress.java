@@ -8,6 +8,7 @@ import javax.persistence.MappedSuperclass;
 
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
+import org.hibernate.annotations.ColumnTransformer;
 import org.hibernate.annotations.Type;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -32,6 +33,7 @@ public abstract class BaseAddress extends CmsPersistentObject {
   protected String id;
 
   @Column(name = "CITY_NM", nullable = false)
+  @ColumnTransformer(read = "trim(CITY_NM)")
   protected String city;
 
   @Column(name = "EMRG_TELNO", nullable = false)
@@ -58,6 +60,7 @@ public abstract class BaseAddress extends CmsPersistentObject {
   protected Integer messageExtension;
 
   @Column(name = "HEADER_ADR", nullable = false)
+  @ColumnTransformer(read = "trim(HEADER_ADR)")
   protected String headerAddress;
 
   @Column(name = "PRM_TEL_NO", nullable = false)
@@ -74,15 +77,19 @@ public abstract class BaseAddress extends CmsPersistentObject {
   protected Short state;
 
   @Column(name = "STREET_NM", nullable = false)
+  @ColumnTransformer(read = "trim(STREET_NM)")
   protected String streetName;
 
   @Column(name = "STREET_NO", nullable = false)
+  @ColumnTransformer(read = "trim(STREET_NO)")
   protected String streetNumber;
 
   @Column(name = "ZIP_NO", nullable = false)
+  @ColumnTransformer(read = "trim(ZIP_NO)")
   protected String zip;
 
   @Column(name = "ADDR_DSC", nullable = false)
+  @ColumnTransformer(read = "trim(ADDR_DSC)")
   protected String addressDescription;
 
   @Type(type = "short")
@@ -90,9 +97,11 @@ public abstract class BaseAddress extends CmsPersistentObject {
   protected Short zip5;
 
   @Column(name = "POSTDIR_CD", nullable = false)
+  @ColumnTransformer(read = "trim(POSTDIR_CD)")
   protected String postDirCd;
 
   @Column(name = "PREDIR_CD", nullable = false)
+  @ColumnTransformer(read = "trim(PREDIR_CD)")
   protected String preDirCd;
 
   @SystemCodeSerializer(logical = true, description = true)
@@ -108,6 +117,7 @@ public abstract class BaseAddress extends CmsPersistentObject {
   protected Short unitDesignationCd;
 
   @Column(name = "UNIT_NO", nullable = false)
+  @ColumnTransformer(read = "trim(UNIT_NO)")
   protected String unitNumber;
 
   public BaseAddress() {

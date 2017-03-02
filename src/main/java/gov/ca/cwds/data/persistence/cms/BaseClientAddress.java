@@ -68,7 +68,6 @@ public abstract class BaseClientAddress extends CmsPersistentObject {
 
   @OneToMany(fetch = FetchType.EAGER)
   @JoinColumns({@JoinColumn(name = "IDENTIFIER", referencedColumnName = "FKADDRS_T")})
-  // @OrderBy("EFF_STRTDT")
   private Set<Address> addresses = new LinkedHashSet<>();
 
   public BaseClientAddress() {
