@@ -59,7 +59,6 @@ public class ReferralDaoIT implements DaoTestTemplate {
     String id = "ZZZZZZ999";
     Referral found = referralDao.find(id);
     assertThat(found, is(nullValue()));
-
   }
 
   @Override
@@ -72,7 +71,6 @@ public class ReferralDaoIT implements DaoTestTemplate {
         "N", (Date) null, "C", (short) 0, (Date) null, "", (Date) null);
     Referral created = referralDao.create(referral);
     assertThat(created, is(referral));
-
   }
 
   @Override
@@ -101,7 +99,6 @@ public class ReferralDaoIT implements DaoTestTemplate {
     String id = "ZZZZZZZ999";
     Referral deleted = referralDao.delete(id);
     assertThat(deleted, is(nullValue()));
-
   }
 
   @Override

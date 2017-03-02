@@ -178,4 +178,12 @@ public abstract class BaseClientAddress extends CmsPersistentObject {
     this.effStartDt = effStartDt;
   }
 
+  public Set<Address> getAddresses() {
+    return addresses;
+  }
+
+  public void setAddresses(Set<Address> addresses) {
+    this.addresses = addresses;
+  }
+
 }

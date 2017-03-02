@@ -27,13 +27,15 @@ import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 
 import gov.ca.cwds.data.CmsSystemCodeDeserializer;
 import gov.ca.cwds.data.SystemCodeSerializer;
+import gov.ca.cwds.data.std.ApiAddressAware;
 import gov.ca.cwds.data.std.ApiLanguageAware;
+import gov.ca.cwds.data.std.ApiMultipleAddressesAware;
 import gov.ca.cwds.data.std.ApiMultipleLanguagesAware;
 import gov.ca.cwds.data.std.ApiPersonAware;
 
 @MappedSuperclass
 public abstract class BaseClient extends CmsPersistentObject
-    implements ApiPersonAware, ApiMultipleLanguagesAware {
+    implements ApiPersonAware, ApiMultipleLanguagesAware, ApiMultipleAddressesAware {
 
   /**
    * Base serialization version. Increment by class version.
@@ -794,14 +796,29 @@ public abstract class BaseClient extends CmsPersistentObject
     return StringUtils.trimToEmpty(zippyCreatedIndicator);
   }
 
+  /**
+   * Get client address linkages.
+   * 
+   * @return client addresses
+   */
   public Set<ClientAddress> getClientAddresses() {
     return clientAddresses;
   }
 
+  /**
+   * Set the client address linkages.
+   * 
+   * @param clientAddresses Set of client address linkages
+   */
   public void setClientAddresses(Set<ClientAddress> clientAddresses) {
     this.clientAddresses = clientAddresses;
   }
 
+  /**
+   * Add a client address linkage.
+   * 
+   * @param clientAddress client address
+   */
   public void addClientAddress(ClientAddress clientAddress) {
     this.clientAddresses.add(clientAddress);
   }
@@ -854,9 +871,9 @@ public abstract class BaseClient extends CmsPersistentObject
   @JsonIgnore
   public ApiLanguageAware[] getLanguages() {
 
-    List<ApiLanguageAware> languages = new ArrayList<>();
+    List<ApiLanguageAware> ret = new ArrayList<>();
     if (this.primaryLanguageType != null && this.primaryLanguageType != 0) {
-      languages.add(new ApiLanguageAware() {
+      ret.add(new ApiLanguageAware() {
         @Override
         public Integer getLanguageSysId() {
           return primaryLanguageType.intValue();
@@ -866,7 +883,7 @@ public abstract class BaseClient extends CmsPersistentObject
 
     if (this.secondaryLanguageType != null && this.secondaryLanguageType != 0) {
       LOGGER.info("secondaryLanguageType={}", secondaryLanguageType);
-      languages.add(new ApiLanguageAware() {
+      ret.add(new ApiLanguageAware() {
         @Override
         public Integer getLanguageSysId() {
           return secondaryLanguageType.intValue();
@@ -874,7 +891,28 @@ public abstract class BaseClient extends CmsPersistentObject
       });
     }
 
-    return languages.toArray(new ApiLanguageAware[0]);
+    return ret.toArray(new ApiLanguageAware[0]);
+  }
+
+  // =============================
+  // ApiMultipleAddressesAware:
+  // =============================
+
+  @Override
+  public ApiAddressAware[] getAddresses() {
+    List<ApiAddressAware> ret = new ArrayList<>();
+
+    if (this.clientAddresses != null && !this.clientAddresses.isEmpty()) {
+      for (final ClientAddress ca : this.clientAddresses) {
+        if (ca.getAddresses() != null && !ca.getAddresses().isEmpty()) {
+          for (final Address addr : ca.getAddresses()) {
+            ret.add(addr);
+          }
+        }
+      }
+    }
+
+    return ret.toArray(new ApiAddressAware[0]);
   }
 
 }

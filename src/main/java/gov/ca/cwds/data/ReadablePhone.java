@@ -23,7 +23,6 @@ public final class ReadablePhone implements ApiPhoneAware, Serializable {
   private final String phoneNumberExtension;
   private final PhoneType phoneType;
 
-
   /**
    * Construct a readable phone from all required values.
    * 
@@ -54,8 +53,6 @@ public final class ReadablePhone implements ApiPhoneAware, Serializable {
   public String getPhoneNumberExtension() {
     return this.phoneNumberExtension;
   }
-
-
 
   @Override
   public int hashCode() {

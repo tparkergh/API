@@ -13,13 +13,15 @@ import org.hibernate.annotations.Type;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 
 import gov.ca.cwds.data.CmsSystemCodeDeserializer;
 import gov.ca.cwds.data.SystemCodeSerializer;
+import gov.ca.cwds.data.std.ApiAddressAware;
 
 @MappedSuperclass
-public abstract class BaseAddress extends CmsPersistentObject {
+public abstract class BaseAddress extends CmsPersistentObject implements ApiAddressAware {
 
   /**
    * Base serialization version. Increment by class version.
@@ -160,6 +162,7 @@ public abstract class BaseAddress extends CmsPersistentObject {
     this.id = id;
   }
 
+  @Override
   public String getCity() {
     return city;
   }
@@ -232,11 +235,17 @@ public abstract class BaseAddress extends CmsPersistentObject {
     this.primaryExtension = primaryExtension;
   }
 
-  public Short getState() {
+  @JsonIgnore
+  @Override
+  public String getState() {
+    return this.state != null ? this.state.toString() : null;
+  }
+
+  public Short getStateCd() {
     return state;
   }
 
-  public void setState(Short state) {
+  public void setStateCd(Short state) {
     this.state = state;
   }
 
@@ -256,6 +265,7 @@ public abstract class BaseAddress extends CmsPersistentObject {
     this.streetNumber = streetNumber;
   }
 
+  @Override
   public String getZip() {
     return zip;
   }
@@ -326,6 +336,18 @@ public abstract class BaseAddress extends CmsPersistentObject {
 
   public void setGovernmentEntityCd(Short governmentEntityCd) {
     this.governmentEntityCd = governmentEntityCd;
+  }
+
+  @Override
+  public String getStreetAddress() {
+    // TODO Auto-generated method stub
+    return null;
+  }
+
+  @Override
+  public String getCounty() {
+    // TODO Auto-generated method stub
+    return null;
   }
 
 }
