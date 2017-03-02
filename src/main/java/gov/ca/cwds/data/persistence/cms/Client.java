@@ -1,8 +1,17 @@
 package gov.ca.cwds.data.persistence.cms;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.LinkedHashSet;
+import java.util.List;
+import java.util.Set;
 
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinColumns;
+import javax.persistence.OneToMany;
+import javax.persistence.OrderBy;
 import javax.persistence.PersistenceException;
 import javax.persistence.Table;
 
@@ -13,6 +22,8 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
 import gov.ca.cwds.data.persistence.PersistentObject;
+import gov.ca.cwds.data.std.ApiAddressAware;
+import gov.ca.cwds.data.std.ApiMultipleAddressesAware;
 import gov.ca.cwds.rest.api.ApiException;
 import gov.ca.cwds.rest.api.domain.DomainChef;
 
@@ -27,12 +38,17 @@ import gov.ca.cwds.rest.api.domain.DomainChef;
 @Table(name = "CLIENT_T")
 @JsonPropertyOrder(alphabetic = true)
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class Client extends BaseClient {
+public final class Client extends BaseClient implements ApiMultipleAddressesAware {
 
   /**
    * 
    */
   private static final long serialVersionUID = 1L;
+
+  @OneToMany(fetch = FetchType.EAGER)
+  @JoinColumns({@JoinColumn(name = "FKCLIENT_T", referencedColumnName = "IDENTIFIER")})
+  @OrderBy("EFF_STRTDT")
+  private Set<ClientAddress> clientAddresses = new LinkedHashSet<>();
 
   /**
    * Default constructor
@@ -358,6 +374,52 @@ public class Client extends BaseClient {
         + ", tribalMembrshpVerifctnIndicatorVar=" + tribalMembrshpVerifctnIndicatorVar
         + ", unemployedParentCode=" + unemployedParentCode + ", zippyCreatedIndicator="
         + zippyCreatedIndicator + "]";
+  }
+
+  /**
+   * Get client address linkages.
+   * 
+   * @return client addresses
+   */
+  public Set<ClientAddress> getClientAddresses() {
+    return clientAddresses;
+  }
+
+  /**
+   * Set the client address linkages.
+   * 
+   * @param clientAddresses Set of client address linkages
+   */
+  public void setClientAddresses(Set<ClientAddress> clientAddresses) {
+    this.clientAddresses = clientAddresses;
+  }
+
+  /**
+   * Add a client address linkage.
+   * 
+   * @param clientAddress client address
+   */
+  public void addClientAddress(ClientAddress clientAddress) {
+    this.clientAddresses.add(clientAddress);
+  }
+
+  // =============================
+  // ApiMultipleAddressesAware:
+  // =============================
+
+  @Override
+  public ApiAddressAware[] getAddresses() {
+    List<ApiAddressAware> ret = new ArrayList<>();
+
+    if (this.clientAddresses != null && !this.clientAddresses.isEmpty()) {
+      for (final ClientAddress ca : this.clientAddresses) {
+        if (ca.getAddresses() != null && !ca.getAddresses().isEmpty()) {
+          ret.addAll(ca.getAddresses());
+        }
+      }
+    }
+
+    return ret.toArray(new ApiAddressAware[0]);
   }
 
 }

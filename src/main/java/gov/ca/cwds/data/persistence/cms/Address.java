@@ -16,7 +16,7 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 @Table(name = "ADDRS_T")
 @JsonPropertyOrder(alphabetic = true)
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class Address extends BaseAddress {
+public final class Address extends BaseAddress {
 
   public Address() {
     super();

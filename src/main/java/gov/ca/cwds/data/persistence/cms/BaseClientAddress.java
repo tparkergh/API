@@ -1,16 +1,10 @@
 package gov.ca.cwds.data.persistence.cms;
 
 import java.util.Date;
-import java.util.LinkedHashSet;
-import java.util.Set;
 
 import javax.persistence.Column;
-import javax.persistence.FetchType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinColumns;
 import javax.persistence.MappedSuperclass;
-import javax.persistence.OneToMany;
 
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
@@ -65,10 +59,6 @@ public abstract class BaseClientAddress extends CmsPersistentObject {
 
   @Column(name = "FKREFERL_T", nullable = true, length = CMS_ID_LEN)
   protected String fkReferral;
-
-  @OneToMany(fetch = FetchType.EAGER)
-  @JoinColumns({@JoinColumn(name = "IDENTIFIER", referencedColumnName = "FKADDRS_T")})
-  private Set<Address> addresses = new LinkedHashSet<>();
 
   public BaseClientAddress() {
     super();
@@ -176,14 +166,6 @@ public abstract class BaseClientAddress extends CmsPersistentObject {
 
   public void setEffStartDt(Date effStartDt) {
     this.effStartDt = effStartDt;
-  }
-
-  public Set<Address> getAddresses() {
-    return addresses;
-  }
-
-  public void setAddresses(Set<Address> addresses) {
-    this.addresses = addresses;
   }
 
 }
