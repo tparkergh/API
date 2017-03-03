@@ -812,6 +812,10 @@ public class AutoCompletePerson
   @JsonInclude(JsonInclude.Include.ALWAYS)
   private List<AutoCompleteLanguage> languages;
 
+  @JsonProperty("highlight")
+  @JsonInclude(JsonInclude.Include.ALWAYS)
+  private String highlight;
+
   /**
    * Construct from incoming ElasticSearchPerson.
    * 
@@ -823,7 +827,11 @@ public class AutoCompletePerson
     // TODO: #136570057: mask results, not data in Elastic search.
 
     // Minimal system code translation to meet contract interface.
+
+    System.out.println("esp class name = " + esp.getClass());
+
     if (esp.getSourceObj() != null) {
+
 
       if (esp.getSourceObj() instanceof ApiPersonAware) {
         LOGGER.debug("IPersonAware!");
@@ -859,6 +867,10 @@ public class AutoCompletePerson
           this.setSsn(personAware.getSsn());
         }
 
+      }
+      // Elasticsearch highlights
+      if (StringUtils.isNotBlank(esp.getHighlightFields())) {
+        this.setHighlight(esp.getHighlightFields());
       }
 
       // Address.
@@ -1098,6 +1110,26 @@ public class AutoCompletePerson
    */
   public void setLanguages(List<AutoCompleteLanguage> languages) {
     this.languages = languages;
+  }
+
+  /**
+   * Getter for highlight
+   * 
+   * @return hightlight from Elasticsearch
+   * 
+   */
+  public String getHighlight() {
+    return this.highlight;
+  }
+
+  /**
+   * Setter for highlight
+   * 
+   * @param highlight from Elasticsearch
+   * 
+   */
+  public void setHighlight(String highlight) {
+    this.highlight = highlight;
   }
 
   @Override
