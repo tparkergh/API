@@ -46,7 +46,7 @@ public abstract class BaseAddress extends CmsPersistentObject implements ApiAddr
   protected Integer emergencyExtension;
 
   @Column(name = "FRG_ADRT_B", nullable = false)
-  protected String FRG_ADRT_B;
+  protected String frgAdrtB;
 
   @SystemCodeSerializer(logical = true, description = true)
   @JsonDeserialize(using = CmsSystemCodeDeserializer.class)
@@ -185,14 +185,6 @@ public abstract class BaseAddress extends CmsPersistentObject implements ApiAddr
 
   public void setEmergencyExtension(Integer emergencyExtension) {
     this.emergencyExtension = emergencyExtension;
-  }
-
-  public String getFRG_ADRT_B() {
-    return FRG_ADRT_B;
-  }
-
-  public void setFRG_ADRT_B(String fRG_ADRT_B) {
-    FRG_ADRT_B = fRG_ADRT_B;
   }
 
   public BigDecimal getMessageNumber() {
@@ -348,6 +340,18 @@ public abstract class BaseAddress extends CmsPersistentObject implements ApiAddr
   public String getCounty() {
     // TODO Auto-generated method stub
     return null;
+  }
+
+  public String getFrgAdrtB() {
+    return frgAdrtB;
+  }
+
+  public void setFrgAdrtB(String frgAdrtB) {
+    this.frgAdrtB = frgAdrtB;
+  }
+
+  public void setState(Short state) {
+    this.state = state;
   }
 
 }
