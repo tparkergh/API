@@ -20,7 +20,7 @@ import gov.ca.cwds.data.persistence.PersistentObject;
 
 
 /**
- * {@link PersistentObject} representing a OtherChildInPlacemtHome.
+ * {@link PersistentObject} representing an OtherChildInPlacemtHome.
  * 
  * @author CWDS API Team
  */
