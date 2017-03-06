@@ -6,9 +6,17 @@ import static org.hamcrest.CoreMatchers.notNullValue;
 import static org.junit.Assert.assertThat;
 
 import org.hamcrest.junit.ExpectedException;
+import org.junit.After;
+import org.junit.Before;
+import org.junit.ClassRule;
 import org.junit.Rule;
 import org.junit.Test;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.squarespace.jersey2.guice.JerseyGuiceUtils;
+
+import gov.ca.cwds.rest.resources.cms.JerseyGuiceRule;
+import io.dropwizard.jackson.Jackson;
 import nl.jqno.equalsverifier.EqualsVerifier;
 import nl.jqno.equalsverifier.Warning;
 
@@ -25,9 +33,22 @@ import nl.jqno.equalsverifier.Warning;
 @SuppressWarnings("javadoc")
 public class AutoCompletePersonRequestTest {
 
+  private static final ObjectMapper MAPPER = Jackson.newObjectMapper();
+
   @Rule
   public ExpectedException thrown = ExpectedException.none();
 
+
+  @After
+  public void ensureServiceLocatorPopulated() {
+    JerseyGuiceUtils.reset();
+  }
+
+  @ClassRule
+  public static JerseyGuiceRule rule = new JerseyGuiceRule();
+
+  @Before
+  public void setup() {}
 
   @Test
   public void type() throws Exception {
@@ -38,6 +59,11 @@ public class AutoCompletePersonRequestTest {
   public void instantiation() throws Exception {
     AutoCompletePersonRequest target = produce(null);
     assertThat(target, notNullValue());
+  }
+
+  @Test
+  void testConstructorSuccess() throws Exception {
+
   }
 
   @Test
