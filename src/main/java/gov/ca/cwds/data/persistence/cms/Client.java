@@ -413,9 +413,9 @@ public final class Client extends BaseClient implements ApiMultipleAddressesAwar
 
     if (this.clientAddresses != null && !this.clientAddresses.isEmpty()) {
       for (final ClientAddress ca : this.clientAddresses) {
-        if (ca.getAddress() != null) {
-          ret.add(ca.getAddress());
-        }
+        // if (ca.getAddress() != null) {
+        // ret.add(ca.getAddress());
+        // }
       }
     }
 

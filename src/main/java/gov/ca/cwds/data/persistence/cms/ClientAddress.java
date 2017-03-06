@@ -1,10 +1,6 @@
 package gov.ca.cwds.data.persistence.cms;
 
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinColumns;
-import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
@@ -28,10 +24,9 @@ public final class ClientAddress extends BaseClientAddress {
    */
   private static final long serialVersionUID = 1L;
 
-  // @Transient
-  @OneToOne(fetch = FetchType.EAGER)
-  @JoinColumns({@JoinColumn(name = "IDENTIFIER", referencedColumnName = "FKADDRS_T")})
-  private Address address;
+  // @OneToOne(fetch = FetchType.LAZY)
+  // @JoinColumns({@JoinColumn(name = "IDENTIFIER", referencedColumnName = "FKADDRS_T")})
+  // private Address address;
 
   /**
    * Default constructor
@@ -42,12 +37,12 @@ public final class ClientAddress extends BaseClientAddress {
     super();
   }
 
-  public Address getAddress() {
-    return address;
-  }
-
-  public void setAddress(Address address) {
-    this.address = address;
-  }
+  // public Address getAddress() {
+  // return address;
+  // }
+  //
+  // public void setAddress(Address address) {
+  // this.address = address;
+  // }
 
 }
