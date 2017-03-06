@@ -21,7 +21,6 @@ import com.google.inject.Inject;
 import gov.ca.cwds.inject.ClientServiceBackedResource;
 import gov.ca.cwds.rest.api.domain.Person;
 import gov.ca.cwds.rest.api.domain.cms.Client;
-import gov.ca.cwds.rest.api.domain.cms.CmsDocument;
 import gov.ca.cwds.rest.resources.ResourceDelegate;
 import gov.ca.cwds.rest.resources.TypedResourceDelegate;
 import io.dropwizard.hibernate.UnitOfWork;
@@ -48,7 +47,7 @@ import io.swagger.annotations.ApiResponses;
 public class ClientResource {
 
   /**
-   * key (K) = String, request (Q) = {@link CmsDocument}.
+   * key (K) = String, request (Q) = {@link Client}.
    */
   private TypedResourceDelegate<String, Client> resourceDelegate;
 
@@ -62,6 +61,7 @@ public class ClientResource {
       @ClientServiceBackedResource TypedResourceDelegate<String, Client> resourceDelegate) {
     this.resourceDelegate = resourceDelegate;
   }
+
 
   /**
    * Finds an client by id.
