@@ -61,10 +61,10 @@ public class AutoCompletePersonRequestTest {
     assertThat(target, notNullValue());
   }
 
-  @Test
-  void testConstructorSuccess() throws Exception {
-
-  }
+  // @Test
+  // void testConstructorSuccess() throws Exception {
+  //
+  // }
 
   @Test
   public void equalsHashCodeWork() throws Exception {
