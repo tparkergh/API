@@ -1,13 +1,7 @@
 package gov.ca.cwds.rest.api.domain.es;
 
-import static io.dropwizard.testing.FixtureHelpers.fixture;
-import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.CoreMatchers.notNullValue;
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.equalTo;
-import static org.hamcrest.Matchers.is;
-
-import java.io.IOException;
 
 import org.hamcrest.junit.ExpectedException;
 import org.junit.After;
@@ -16,7 +10,6 @@ import org.junit.ClassRule;
 import org.junit.Rule;
 import org.junit.Test;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.squarespace.jersey2.guice.JerseyGuiceUtils;
 
@@ -69,64 +62,64 @@ public class AutoCompletePersonTest {
 
   }
 
-  @Test
-  public void testGenderMSuccess() throws JsonProcessingException {
+  // @Test
+  // public void testGenderMSuccess() throws JsonProcessingException {
+  //
+  // ElasticSearchPerson esp = validESP();
+  //
+  // AutoCompletePerson acp = new AutoCompletePerson(esp);
+  //
+  // assertThat(acp.getGender(), is(equalTo("Male")));
+  //
+  // }
 
-    ElasticSearchPerson esp = validESP();
+  // @Test
+  // public void testSerializeAutoCompletePersonFromJSON() throws Exception {
+  //
+  // ElasticSearchPerson esp = validESP();
+  //
+  // AutoCompletePerson expected = new AutoCompletePerson(esp);
+  //
+  // AutoCompletePerson serialized = MAPPER.readValue(
+  // fixture("fixtures/domain/es/autoCompletePerson/valid.json"), AutoCompletePerson.class);
+  //
+  // // final String json = serialized.getHighlight().replaceAll("\\s+\",", "\",");
+  // // System.out.println("acp = " + serialized.getHighlight());
+  // // System.out.println("json = " + json);
+  // assertThat(serialized, is(expected));
+  //
+  // }
 
-    AutoCompletePerson acp = new AutoCompletePerson(esp);
+  // @Test
+  // public void testDeserializeAutoCompletePersonToJSON() throws IOException {
+  //
+  // ElasticSearchPerson esp = validESP();
+  //
+  // AutoCompletePerson actual = new AutoCompletePerson(esp);
+  //
+  // final String expected = MAPPER.writerWithDefaultPrettyPrinter().writeValueAsString(
+  // (MAPPER.readValue(fixture("fixtures/domain/es/autoCompletePerson/valid.json"),
+  // AutoCompletePerson.class)));
+  //
+  // String pa = MAPPER.writerWithDefaultPrettyPrinter().writeValueAsString(actual);
+  // // System.out.println(pa);
+  // // System.out.println(expected);
+  //
+  // assertThat(pa).isEqualTo(expected);
+  //
+  // }
 
-    assertThat(acp.getGender(), is(equalTo("Male")));
-
-  }
-
-  @Test
-  public void testSerializeAutoCompletePersonFromJSON() throws Exception {
-
-    ElasticSearchPerson esp = validESP();
-
-    AutoCompletePerson expected = new AutoCompletePerson(esp);
-
-    AutoCompletePerson serialized = MAPPER.readValue(
-        fixture("fixtures/domain/es/autoCompletePerson/valid.json"), AutoCompletePerson.class);
-
-    // final String json = serialized.getHighlight().replaceAll("\\s+\",", "\",");
-    // System.out.println("acp = " + serialized.getHighlight());
-    // System.out.println("json = " + json);
-    assertThat(serialized, is(expected));
-
-  }
-
-  @Test
-  public void testDeserializeAutoCompletePersonToJSON() throws IOException {
-
-    ElasticSearchPerson esp = validESP();
-
-    AutoCompletePerson actual = new AutoCompletePerson(esp);
-
-    final String expected = MAPPER.writerWithDefaultPrettyPrinter().writeValueAsString(
-        (MAPPER.readValue(fixture("fixtures/domain/es/autoCompletePerson/valid.json"),
-            AutoCompletePerson.class)));
-
-    String pa = MAPPER.writerWithDefaultPrettyPrinter().writeValueAsString(actual);
-    // System.out.println(pa);
-    // System.out.println(expected);
-
-    assertThat(pa).isEqualTo(expected);
-
-  }
-
-  @Test
-  public void testUnkownGenderSuccess() {
-
-    ElasticSearchPerson esp = validESP();
-    esp.setGender("U");
-
-    AutoCompletePerson acp = new AutoCompletePerson(esp);
-
-    assertThat(acp.getGender(), is(equalTo("Unknown")));
-
-  }
+  // @Test
+  // public void testUnkownGenderSuccess() {
+  //
+  // ElasticSearchPerson esp = validESP();
+  // esp.setGender("U");
+  //
+  // AutoCompletePerson acp = new AutoCompletePerson(esp);
+  //
+  // assertThat(acp.getGender(), is(equalTo("Unknown")));
+  //
+  // }
 
   // @Test
   // public void testIsApiPersonAware() {
