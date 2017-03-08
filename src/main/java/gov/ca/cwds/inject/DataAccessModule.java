@@ -104,7 +104,7 @@ public class DataAccessModule extends AbstractModule {
           CrossReport.class, EducationProviderContact.class, OtherAdultInPlacemtHome.class,
           OtherChildInPlacemtHome.class, OtherClientName.class, Referral.class,
           ReferralClient.class, Reporter.class, ServiceProvider.class, StaffPerson.class,
-          SubstituteCareProvider.class, gov.ca.cwds.data.persistence.cms.Address.class,
+          SubstituteCareProvider.class, gov.ca.cwds.data.persistence.cms.ReplicatedAddress.class,
           ReplicatedClientAddress.class) {
         @Override
         public DataSourceFactory getDataSourceFactory(ApiConfiguration configuration) {

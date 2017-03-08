@@ -1,8 +1,6 @@
 package gov.ca.cwds.data.persistence.cms;
 
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
@@ -18,21 +16,10 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 @Table(name = "ADDRS_T")
 @JsonPropertyOrder(alphabetic = true)
 @JsonIgnoreProperties(ignoreUnknown = true)
-public final class Address extends BaseAddress {
+public final class ReplicatedAddress extends BaseAddress {
 
-  @OneToOne(fetch = FetchType.EAGER, mappedBy = "address")
-  private ReplicatedClientAddress clientAddress;
-
-  public Address() {
+  public ReplicatedAddress() {
     super();
-  }
-
-  public ReplicatedClientAddress getClientAddress() {
-    return clientAddress;
-  }
-
-  public void setClientAddress(ReplicatedClientAddress clientAddress) {
-    this.clientAddress = clientAddress;
   }
 
 }

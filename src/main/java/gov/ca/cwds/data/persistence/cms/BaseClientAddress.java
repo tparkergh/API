@@ -6,8 +6,6 @@ import javax.persistence.Column;
 import javax.persistence.Id;
 import javax.persistence.MappedSuperclass;
 
-import org.apache.commons.lang3.builder.EqualsBuilder;
-import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.hibernate.annotations.Type;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -82,15 +80,15 @@ public abstract class BaseClientAddress extends CmsPersistentObject {
     return getId();
   }
 
-  @Override
-  public int hashCode() {
-    return HashCodeBuilder.reflectionHashCode(this, false);
-  }
-
-  @Override
-  public boolean equals(Object obj) {
-    return EqualsBuilder.reflectionEquals(this, obj, false);
-  }
+  // @Override
+  // public int hashCode() {
+  // return HashCodeBuilder.reflectionHashCode(this, false);
+  // }
+  //
+  // @Override
+  // public boolean equals(Object obj) {
+  // return EqualsBuilder.reflectionEquals(this, obj, false);
+  // }
 
   // ==================
   // ACCESSORS:

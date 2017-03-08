@@ -1,9 +1,12 @@
 package gov.ca.cwds.data.persistence.cms;
 
+import java.util.LinkedHashSet;
+import java.util.Set;
+
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
-import javax.persistence.OneToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
@@ -23,10 +26,10 @@ import gov.ca.cwds.data.persistence.PersistentObject;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public final class ReplicatedClientAddress extends BaseClientAddress {
 
-  @OneToOne(fetch = FetchType.EAGER)
-  @JoinColumn(name = "FKADDRS_T", referencedColumnName = "IDENTIFIER", insertable = false,
-      updatable = false)
-  protected Address address;
+  @OneToMany(fetch = FetchType.EAGER)
+  @JoinColumn(name = "IDENTIFIER", referencedColumnName = "FKADDRS_T", insertable = false,
+      updatable = false, unique = false)
+  protected Set<ReplicatedAddress> addresses = new LinkedHashSet<>();
 
   /**
    * Default constructor
@@ -37,12 +40,16 @@ public final class ReplicatedClientAddress extends BaseClientAddress {
     super();
   }
 
-  public Address getAddress() {
-    return address;
+  public Set<ReplicatedAddress> getAddresses() {
+    return addresses;
   }
 
-  public void setAddress(Address address) {
-    this.address = address;
+  public void setAddresses(Set<ReplicatedAddress> addresses) {
+    this.addresses = addresses;
+  }
+
+  public void addAddress(ReplicatedAddress address) {
+    addresses.add(address);
   }
 
 }
