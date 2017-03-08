@@ -834,45 +834,45 @@ public class AutoCompletePerson
 
     if (esp.getSourceObj() != null) {
 
-      // if (esp.getSourceObj() instanceof ApiPersonAware) {
-      LOGGER.debug("IPersonAware!");
-      final ApiPersonAware personAware = (ApiPersonAware) esp.getSourceObj();
+      if (esp.getSourceObj() instanceof ApiPersonAware) {
+        LOGGER.debug("IPersonAware!");
+        final ApiPersonAware personAware = (ApiPersonAware) esp.getSourceObj();
 
-      if (StringUtils.isNotBlank(personAware.getFirstName())) {
-        this.setFirstName(personAware.getFirstName());
-      }
-      if (StringUtils.isNotBlank(personAware.getMiddleName())) {
-        this.setMiddleName(personAware.getMiddleName());
-      }
-      if (StringUtils.isNotBlank(personAware.getLastName())) {
-        this.setLastName(personAware.getLastName());
-      }
-      if (StringUtils.isNotBlank(personAware.getGender())) {
-        switch (personAware.getGender()) {
-          case "M":
-            this.setGender("Male");
-            break;
-          case "F":
-            this.setGender("Female");
-            break;
-          case "U":
-          default:
-            this.setGender("Unknown");
-            break;
+        if (StringUtils.isNotBlank(personAware.getFirstName())) {
+          this.setFirstName(personAware.getFirstName());
+        }
+        if (StringUtils.isNotBlank(personAware.getMiddleName())) {
+          this.setMiddleName(personAware.getMiddleName());
+        }
+        if (StringUtils.isNotBlank(personAware.getLastName())) {
+          this.setLastName(personAware.getLastName());
+        }
+        if (StringUtils.isNotBlank(personAware.getGender())) {
+          switch (personAware.getGender()) {
+            case "M":
+              this.setGender("Male");
+              break;
+            case "F":
+              this.setGender("Female");
+              break;
+            case "U":
+            default:
+              this.setGender("Unknown");
+              break;
+          }
+        }
+        if (personAware.getBirthDate() != null) {
+          this.setBirthDate(personAware.getBirthDate());
+        }
+        if (StringUtils.isNotBlank(personAware.getSsn())) {
+          this.setSsn(personAware.getSsn());
+        }
+
+        // Elasticsearch highlights
+        if (StringUtils.isNotBlank(esp.getHighlightFields())) {
+          this.setHighlight(esp.getHighlightFields());
         }
       }
-      if (personAware.getBirthDate() != null) {
-        this.setBirthDate(personAware.getBirthDate());
-      }
-      if (StringUtils.isNotBlank(personAware.getSsn())) {
-        this.setSsn(personAware.getSsn());
-      }
-
-      // Elasticsearch highlights
-      if (StringUtils.isNotBlank(esp.getHighlightFields())) {
-        this.setHighlight(esp.getHighlightFields());
-      }
-      // }
       // Address.
       if (esp.getSourceObj() instanceof ApiAddressAware) {
         addAddress(new AutoCompletePersonAddress((ApiAddressAware) esp.getSourceObj()));
@@ -1120,7 +1120,7 @@ public class AutoCompletePerson
    */
   public String getHighlight() {
 
-    return this.highlight;
+    return this.highlight.replaceAll("\\s+\",", "\",");
 
   }
 
