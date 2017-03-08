@@ -90,6 +90,9 @@ public class AutoCompletePersonTest {
     AutoCompletePerson serialized = MAPPER.readValue(
         fixture("fixtures/domain/es/autoCompletePerson/valid.json"), AutoCompletePerson.class);
 
+    // final String json = serialized.getHighlight().replaceAll("\\s+\",", "\",");
+    // System.out.println("acp = " + serialized.getHighlight());
+    // System.out.println("json = " + json);
     assertThat(serialized, is(expected));
 
   }
@@ -125,11 +128,31 @@ public class AutoCompletePersonTest {
 
   }
 
+  // @Test
+  // public void testIsApiPersonAware() {
+  //
+  // ElasticSearchPerson esp = validESP();
+  //
+  // Object sourceObj = esp.getSourceObj();
+  //
+  // if (esp.getSourceObj() instanceof ApiPersonAware) {
+  // System.out.println("is person aware" + sourceObj.getClass().getName());
+  // } else {
+  // System.out.println("is NOT person aware" + sourceObj.getClass().getName());
+  // }
+  //
+  // }
+
   private ElasticSearchPerson validESP() {
 
     ElasticSearchPerson esp = new ElasticSearchPerson(id, firstName, lastName, gender, birthDate,
         ssn, sourceType, sourceJson, highlight);
 
+    final String json = esp.getHighlightFields().replaceAll("\\s+\",", "\",");
+    //
+    // System.out.println("highlight = " + esp.getHighlightFields());
+    // System.out.println("json = " + json);
+    //
     return esp;
   }
 }
