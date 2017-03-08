@@ -21,7 +21,7 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
 import gov.ca.cwds.data.persistence.PersistentObject;
 import gov.ca.cwds.data.persistence.cms.BaseClient;
-import gov.ca.cwds.data.persistence.cms.ClientAddress;
+import gov.ca.cwds.data.persistence.cms.ReplicatedClientAddress;
 import gov.ca.cwds.data.std.ApiMultipleLanguagesAware;
 import gov.ca.cwds.data.std.ApiPersonAware;
 
@@ -166,12 +166,14 @@ import gov.ca.cwds.data.std.ApiPersonAware;
         resultClass = ReplicatedClient.class),
     @NamedNativeQuery(
         name = "gov.ca.cwds.data.persistence.cms.rep.ReplicatedClient.findPartitionedBuckets",
-        query = "select {a.*}, {b.*} "
+        query = "select {a.*}, {b.*}, {c.*}  "
             + "from ( select mod(y.rn, CAST(:total_buckets AS INTEGER)) + 1 as bucket, y.* "
             + "from ( select row_number() over (order by 1) as rn, x.* "
-            + "from {h-schema}CLIENT_T x where x.SOC158_IND ='N' and x.SENSTV_IND = 'N' and x.identifier = 'Bv2EOym04O' "
+            + "from {h-schema}CLIENT_T x where x.SOC158_IND ='N' and x.SENSTV_IND = 'N' "
+            + "and x.identifier = '3YLLYNZ0LL' "
             + "AND x.IDENTIFIER >= :min_id and x.IDENTIFIER < :max_id ) y ) a "
             + "LEFT OUTER JOIN {h-schema}CL_ADDRT b ON a.IDENTIFIER = b.FKCLIENT_T and b.EFF_END_DT is null "
+            + "LEFT OUTER JOIN {h-schema}ADDRS_T c ON b.FKADDRS_T = c.IDENTIFIER "
             + "where a.bucket = :bucket_num for read only",
         resultClass = ReplicatedClient.class)
     // query = "select z.IDENTIFIER, z.ADPTN_STCD, z.ALN_REG_NO, z.BIRTH_DT, "
@@ -271,15 +273,14 @@ public class ReplicatedClient extends BaseClient
   private Date replicationDate;
 
   @OneToMany(fetch = FetchType.EAGER, mappedBy = "fkClient")
-  // @OrderBy("EFF_STRTDT")
-  protected Set<ClientAddress> clientAddresses = new LinkedHashSet<>();
+  protected Set<ReplicatedClientAddress> clientAddresses = new LinkedHashSet<>();
 
   /**
    * Get client address linkages.
    *
    * @return client addresses
    */
-  public Set<ClientAddress> getClientAddresses() {
+  public Set<ReplicatedClientAddress> getClientAddresses() {
     return clientAddresses;
   }
 
@@ -288,7 +289,7 @@ public class ReplicatedClient extends BaseClient
    *
    * @param clientAddresses Set of client address linkages
    */
-  public void setClientAddresses(Set<ClientAddress> clientAddresses) {
+  public void setClientAddresses(Set<ReplicatedClientAddress> clientAddresses) {
     this.clientAddresses = clientAddresses;
   }
 
@@ -297,7 +298,7 @@ public class ReplicatedClient extends BaseClient
    *
    * @param clientAddress client address
    */
-  public void addClientAddress(ClientAddress clientAddress) {
+  public void addClientAddress(ReplicatedClientAddress clientAddress) {
     this.clientAddresses.add(clientAddress);
   }
 
