@@ -82,7 +82,7 @@ public abstract class BaseClientAddress extends CmsPersistentObject {
 
   // @Override
   // public int hashCode() {
-  // return HashCodeBuilder.reflectionHashCode(this, false);
+  // return HashCodeBuilder.reflectionHashCode(this, "effEndDt");
   // }
   //
   // @Override
@@ -164,6 +164,79 @@ public abstract class BaseClientAddress extends CmsPersistentObject {
 
   public void setEffStartDt(Date effStartDt) {
     this.effStartDt = effStartDt;
+  }
+
+  @Override
+  public int hashCode() {
+    final int prime = 31;
+    int result = 1;
+    result = prime * result + ((addressType == null) ? 0 : addressType.hashCode());
+    result = prime * result + ((bkInmtId == null) ? 0 : bkInmtId.hashCode());
+    result = prime * result + ((effEndDt == null) ? 0 : effEndDt.hashCode());
+    result = prime * result + ((effStartDt == null) ? 0 : effStartDt.hashCode());
+    result = prime * result + ((fkAddress == null) ? 0 : fkAddress.hashCode());
+    result = prime * result + ((fkClient == null) ? 0 : fkClient.hashCode());
+    result = prime * result + ((fkReferral == null) ? 0 : fkReferral.hashCode());
+    result = prime * result + ((homelessInd == null) ? 0 : homelessInd.hashCode());
+    result = prime * result + ((id == null) ? 0 : id.hashCode());
+    return result;
+  }
+
+  @Override
+  public boolean equals(Object obj) {
+    if (this == obj)
+      return true;
+    if (obj == null)
+      return false;
+    if (getClass() != obj.getClass())
+      return false;
+    BaseClientAddress other = (BaseClientAddress) obj;
+    if (addressType == null) {
+      if (other.addressType != null)
+        return false;
+    } else if (!addressType.equals(other.addressType))
+      return false;
+    if (bkInmtId == null) {
+      if (other.bkInmtId != null)
+        return false;
+    } else if (!bkInmtId.equals(other.bkInmtId))
+      return false;
+    if (effEndDt == null) {
+      if (other.effEndDt != null)
+        return false;
+    } else if (!effEndDt.equals(other.effEndDt))
+      return false;
+    if (effStartDt == null) {
+      if (other.effStartDt != null)
+        return false;
+    } else if (!effStartDt.equals(other.effStartDt))
+      return false;
+    if (fkAddress == null) {
+      if (other.fkAddress != null)
+        return false;
+    } else if (!fkAddress.equals(other.fkAddress))
+      return false;
+    if (fkClient == null) {
+      if (other.fkClient != null)
+        return false;
+    } else if (!fkClient.equals(other.fkClient))
+      return false;
+    if (fkReferral == null) {
+      if (other.fkReferral != null)
+        return false;
+    } else if (!fkReferral.equals(other.fkReferral))
+      return false;
+    if (homelessInd == null) {
+      if (other.homelessInd != null)
+        return false;
+    } else if (!homelessInd.equals(other.homelessInd))
+      return false;
+    if (id == null) {
+      if (other.id != null)
+        return false;
+    } else if (!id.equals(other.id))
+      return false;
+    return true;
   }
 
 }

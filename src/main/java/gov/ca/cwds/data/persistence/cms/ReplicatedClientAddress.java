@@ -45,11 +45,27 @@ public final class ReplicatedClientAddress extends BaseClientAddress {
   }
 
   public void setAddresses(Set<ReplicatedAddress> addresses) {
-    this.addresses = addresses;
+    if (addresses != null) {
+      this.addresses = addresses;
+    } else {
+      addresses = new LinkedHashSet<>();
+    }
   }
 
   public void addAddress(ReplicatedAddress address) {
-    addresses.add(address);
+    if (address != null) {
+      addresses.add(address);
+    }
   }
+
+  // @Override
+  // public int hashCode() {
+  // return HashCodeBuilder.reflectionHashCode(this, false);
+  // }
+  //
+  // @Override
+  // public boolean equals(Object obj) {
+  // return EqualsBuilder.reflectionEquals(this, obj, false);
+  // }
 
 }
