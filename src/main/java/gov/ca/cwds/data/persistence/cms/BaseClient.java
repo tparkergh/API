@@ -24,6 +24,10 @@ import gov.ca.cwds.data.std.ApiLanguageAware;
 import gov.ca.cwds.data.std.ApiMultipleLanguagesAware;
 import gov.ca.cwds.data.std.ApiPersonAware;
 
+/**
+ * @author CDWS API Team
+ *
+ */
 @MappedSuperclass
 public abstract class BaseClient extends CmsPersistentObject
     implements ApiPersonAware, ApiMultipleLanguagesAware {
@@ -276,10 +280,16 @@ public abstract class BaseClient extends CmsPersistentObject
   @Column(name = "ZIPPY_IND")
   protected String zippyCreatedIndicator;
 
+  /**
+   * Default constructor
+   */
   public BaseClient() {
     super();
   }
 
+  /**
+   * @param lastUpdatedId the last updated Id
+   */
   public BaseClient(String lastUpdatedId) {
     super(lastUpdatedId);
   }

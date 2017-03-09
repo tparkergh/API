@@ -1,18 +1,14 @@
 package gov.ca.cwds.rest.services.cms;
 
-import static io.dropwizard.testing.FixtureHelpers.fixture;
 import static org.mockito.Mockito.mock;
 
-import org.apache.commons.lang3.NotImplementedException;
 import org.junit.Before;
 import org.junit.Rule;
-import org.junit.Test;
 import org.junit.rules.ExpectedException;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import gov.ca.cwds.data.cms.ClientDao;
-import gov.ca.cwds.rest.api.domain.cms.Client;
 import io.dropwizard.jackson.Jackson;
 
 /**
@@ -34,26 +30,26 @@ public class ClientServiceTest {
     clientService = new ClientService(clientDao);
   }
 
-  @Test
-  public void createThrowsNotImplementedException() throws Exception {
-    thrown.expect(NotImplementedException.class);
-    Client clientDomain =
-        MAPPER.readValue(fixture("fixtures/domain/cms/Client/valid/valid.json"), Client.class);
-    clientService.create(clientDomain);
-  }
-
-  @Test
-  public void updateThrowsNotImplementedException() throws Exception {
-    thrown.expect(NotImplementedException.class);
-    Client clientDomain =
-        MAPPER.readValue(fixture("fixtures/domain/cms/Client/valid/valid.json"), Client.class);
-    clientService.update("testkey", clientDomain);
-  }
-
-  @Test
-  public void deleteThrowsNotImplementedException() throws Exception {
-    thrown.expect(NotImplementedException.class);
-    clientService.delete("testkey");
-  }
+  // @Test
+  // public void createThrowsNotImplementedException() throws Exception {
+  // thrown.expect(NotImplementedException.class);
+  // Client clientDomain =
+  // MAPPER.readValue(fixture("fixtures/domain/cms/Client/valid/valid.json"), Client.class);
+  // clientService.create(clientDomain);
+  // }
+  //
+  // @Test
+  // public void updateThrowsNotImplementedException() throws Exception {
+  // thrown.expect(NotImplementedException.class);
+  // Client clientDomain =
+  // MAPPER.readValue(fixture("fixtures/domain/cms/Client/valid/valid.json"), Client.class);
+  // clientService.update("testkey", clientDomain);
+  // }
+  //
+  // @Test
+  // public void deleteThrowsNotImplementedException() throws Exception {
+  // thrown.expect(NotImplementedException.class);
+  // clientService.delete("testkey");
+  // }
 
 }

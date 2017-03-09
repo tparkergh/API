@@ -28,6 +28,9 @@ import gov.ca.cwds.rest.api.domain.DomainChef;
  */
 public class ClientTest implements PersistentTestTemplate {
 
+  private String id = "1234567ABC";
+  private String lastUpdatedId = "0X5";
+
   private static final ObjectMapper MAPPER = SystemCodeTestHarness.MAPPER;
 
   /*
@@ -163,8 +166,9 @@ public class ClientTest implements PersistentTestTemplate {
   @Test
   public void testConstructorUsingDomain() throws Exception {
     gov.ca.cwds.rest.api.domain.cms.Client vc = validDomainClient();
-    Client pers = new Client(vc, "0XA");
+    Client pers = new Client(id, vc, lastUpdatedId);
 
+    assertThat(pers.getId(), is(equalTo(id)));
     assertThat((pers.getAdjudicatedDelinquentIndicator()),
         is(equalTo(DomainChef.cookBoolean(vc.getAdjudicatedDelinquentIndicator()))));
     assertThat(pers.getAdoptionStatusCode(), is(equalTo(vc.getAdoptionStatusCode())));
@@ -209,7 +213,6 @@ public class ClientTest implements PersistentTestTemplate {
     assertThat(pers.getHealthSummaryText(), is(equalTo(vc.getHealthSummaryText())));
     assertThat(pers.getHispUnableToDetReasonCode(), is(equalTo(vc.getHispUnableToDetReasonCode())));
     assertThat(pers.getHispanicOriginCode(), is(equalTo(vc.getHispanicOriginCode())));
-    assertThat(pers.getId(), is(equalTo(vc.getId())));
     assertThat(pers.getImmigrationCountryCodeType(),
         is(equalTo(vc.getImmigrationCountryCodeType())));
     assertThat(pers.getImmigrationStatusType(), is(equalTo(vc.getImmigrationStatusType())));

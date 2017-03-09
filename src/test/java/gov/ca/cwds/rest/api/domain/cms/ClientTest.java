@@ -61,7 +61,7 @@ public class ClientTest implements DomainTestTemplate {
       ResourceTestRule.builder().addResource(mockedClientResource).build();
 
   private static final ObjectMapper MAPPER = Jackson.newObjectMapper();
-
+  private String lastUpdatedId = "0X5";
   private final static DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
 
   private Boolean adjudicatedDelinquentIndicator = Boolean.FALSE;
@@ -163,7 +163,7 @@ public class ClientTest implements DomainTestTemplate {
         deathDate, deathDateVerified, deathPlace, deathReasonText, driversLicenseNumber,
         driversLicenseStateCodeType, emailAddress, estimatedDateOfBirthCode,
         ethUnableToDetReasonCode, fatherParentalRightTermDate, genderCode, healthSummaryText,
-        hispUnableToDetReasonCode, hispanicOriginCode, id, immigrationCountryCodeType,
+        hispUnableToDetReasonCode, hispanicOriginCode, immigrationCountryCodeType,
         immigrationStatusType, incapcitatedParentCode, individualHealthCarePlanIndicator,
         limitationOnScpHealthIndicator, literateCode, maritalCohabitatnHstryIndicatorVar,
         maritalStatusType, militaryStatusCode, motherParentalRightTermDate, namePrefixDescription,
@@ -175,7 +175,7 @@ public class ClientTest implements DomainTestTemplate {
         tribalMembrshpVerifctnIndicatorVar, unemployedParentCode, zippyCreatedIndicator);
 
     gov.ca.cwds.data.persistence.cms.Client persistent =
-        new gov.ca.cwds.data.persistence.cms.Client(domain, "2017-02-21");
+        new gov.ca.cwds.data.persistence.cms.Client(id, domain, lastUpdatedId);
 
     assertThat(persistent.getAdjudicatedDelinquentIndicator(),
         is(equalTo(DomainChef.cookBoolean(adjudicatedDelinquentIndicator))));
@@ -279,7 +279,7 @@ public class ClientTest implements DomainTestTemplate {
         deathDate, deathDateVerified, deathPlace, deathReasonText, driversLicenseNumber,
         driversLicenseStateCodeType, emailAddress, estimatedDateOfBirthCode,
         ethUnableToDetReasonCode, fatherParentalRightTermDate, genderCode, healthSummaryText,
-        hispUnableToDetReasonCode, hispanicOriginCode, id, immigrationCountryCodeType,
+        hispUnableToDetReasonCode, hispanicOriginCode, immigrationCountryCodeType,
         immigrationStatusType, incapcitatedParentCode, individualHealthCarePlanIndicator,
         limitationOnScpHealthIndicator, literateCode, maritalCohabitatnHstryIndicatorVar,
         maritalStatusType, militaryStatusCode, motherParentalRightTermDate, namePrefixDescription,
@@ -335,7 +335,6 @@ public class ClientTest implements DomainTestTemplate {
     assertThat(domain.getHispUnableToDetReasonCode(),
         is(equalTo(vc.getHispUnableToDetReasonCode())));
     assertThat(domain.getHispanicOriginCode(), is(equalTo(vc.getHispanicOriginCode())));
-    assertThat(domain.getId(), is(equalTo(vc.getId())));
     assertThat(domain.getImmigrationCountryCodeType(),
         is(equalTo(vc.getImmigrationCountryCodeType())));
     assertThat(domain.getIncapacitatedParentCode(), is(equalTo(vc.getIncapacitatedParentCode())));
@@ -675,7 +674,7 @@ public class ClientTest implements DomainTestTemplate {
         deathDate, deathDateVerified, deathPlace, deathReasonText, driversLicenseNumber,
         driversLicenseStateCodeType, emailAddress, estimatedDateOfBirthCode,
         ethUnableToDetReasonCode, fatherParentalRightTermDate, genderCode, healthSummaryText,
-        hispUnableToDetReasonCode, hispanicOriginCode, id, immigrationCountryCodeType,
+        hispUnableToDetReasonCode, hispanicOriginCode, immigrationCountryCodeType,
         immigrationStatusType, incapcitatedParentCode, individualHealthCarePlanIndicator,
         limitationOnScpHealthIndicator, literateCode, maritalCohabitatnHstryIndicatorVar,
         maritalStatusType, militaryStatusCode, motherParentalRightTermDate, namePrefixDescription,

@@ -203,11 +203,6 @@ public class Client extends DomainObject implements Request, Response {
   @ApiModelProperty(required = true, readOnly = false, value = "", example = "X")
   private String hispanicOriginCode;
 
-  @NotEmpty
-  @Size(min = 10, max = 10)
-  @ApiModelProperty(required = true, readOnly = false, value = "", example = "ABC1234567")
-  private String id;
-
   @SystemCodeSerializer(logical = true, description = true)
   @NotNull
   @ApiModelProperty(required = false, readOnly = false, example = "1234")
@@ -389,7 +384,6 @@ public class Client extends DomainObject implements Request, Response {
    * @param healthSummaryText - healthSummaryText
    * @param hispUnableToDetReasonCode - hispUnableToDetReasonCode
    * @param hispanicOriginCode - hispanicOriginCode
-   * @param id - id
    * @param immigrationCountryCodeType - immigrationCountryCodeType
    * @param immigrationStatusType - immigrationStatusType
    * @param incapacitatedParentCode - incapacitatedParentCode
@@ -458,7 +452,7 @@ public class Client extends DomainObject implements Request, Response {
       @JsonProperty("genderCode") String genderCode,
       @JsonProperty("healthSummaryText") String healthSummaryText,
       @JsonProperty("hispUnableToDetReasonCode") String hispUnableToDetReasonCode,
-      @JsonProperty("hispanicOriginCode") String hispanicOriginCode, @JsonProperty("id") String id,
+      @JsonProperty("hispanicOriginCode") String hispanicOriginCode,
       @JsonProperty("immigrationCountryCodeType") Short immigrationCountryCodeType,
       @JsonProperty("immigrationStatusType") Short immigrationStatusType,
       @JsonProperty("incapacitatedParentCode") String incapacitatedParentCode,
@@ -526,7 +520,6 @@ public class Client extends DomainObject implements Request, Response {
     this.healthSummaryText = healthSummaryText;
     this.hispUnableToDetReasonCode = hispUnableToDetReasonCode;
     this.hispanicOriginCode = hispanicOriginCode;
-    this.id = id;
     this.immigrationCountryCodeType = immigrationCountryCodeType;
     this.immigrationStatusType = immigrationStatusType;
     this.incapacitatedParentCode = incapacitatedParentCode;
@@ -608,7 +601,6 @@ public class Client extends DomainObject implements Request, Response {
     this.healthSummaryText = persistedClient.getHealthSummaryText();
     this.hispUnableToDetReasonCode = persistedClient.getHispUnableToDetReasonCode();
     this.hispanicOriginCode = persistedClient.getHispanicOriginCode();
-    this.id = persistedClient.getId();
     this.immigrationCountryCodeType = persistedClient.getImmigrationCountryCodeType();
     this.immigrationStatusType = persistedClient.getImmigrationStatusType();
     this.incapacitatedParentCode = persistedClient.getIncapacitatedParentCode();
@@ -900,13 +892,6 @@ public class Client extends DomainObject implements Request, Response {
   }
 
   /**
-   * @return the id
-   */
-  public String getId() {
-    return id;
-  }
-
-  /**
    * @return the immigrationCountryCodeType
    */
   public Short getImmigrationCountryCodeType() {
@@ -1177,7 +1162,6 @@ public class Client extends DomainObject implements Request, Response {
     result = prime * result
         + ((hispUnableToDetReasonCode == null) ? 0 : hispUnableToDetReasonCode.hashCode());
     result = prime * result + ((hispanicOriginCode == null) ? 0 : hispanicOriginCode.hashCode());
-    result = prime * result + ((id == null) ? 0 : id.hashCode());
     result = prime * result
         + ((immigrationCountryCodeType == null) ? 0 : immigrationCountryCodeType.hashCode());
     result =
@@ -1420,11 +1404,6 @@ public class Client extends DomainObject implements Request, Response {
       if (other.hispanicOriginCode != null)
         return false;
     } else if (!hispanicOriginCode.equals(other.hispanicOriginCode))
-      return false;
-    if (id == null) {
-      if (other.id != null)
-        return false;
-    } else if (!id.equals(other.id))
       return false;
     if (immigrationCountryCodeType == null) {
       if (other.immigrationCountryCodeType != null)

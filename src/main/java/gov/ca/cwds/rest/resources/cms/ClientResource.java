@@ -19,10 +19,8 @@ import org.apache.http.HttpStatus;
 import com.google.inject.Inject;
 
 import gov.ca.cwds.inject.ClientServiceBackedResource;
-import gov.ca.cwds.rest.api.domain.Person;
 import gov.ca.cwds.rest.api.domain.cms.Client;
 import gov.ca.cwds.rest.resources.ResourceDelegate;
-import gov.ca.cwds.rest.resources.TypedResourceDelegate;
 import io.dropwizard.hibernate.UnitOfWork;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -31,7 +29,7 @@ import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 
 /**
- * A resource providing a RESTful interface for {@link Person}. It delegates functions to
+ * A resource providing a RESTful interface for {@link Client}. It delegates functions to
  * {@link ResourceDelegate}. It decorates the {@link ResourceDelegate} not in functionality but
  * with @see <a href= "https://github.com/swagger-api/swagger-core/wiki/Annotations-1.5.X">Swagger
  * Annotations</a> and
@@ -40,16 +38,13 @@ import io.swagger.annotations.ApiResponses;
  * 
  * @author CWDS API Team
  */
-@Api(value = RESOURCE_CLIENT, tags = RESOURCE_CLIENT)
+@Api(value = RESOURCE_CLIENT)
 @Path(value = RESOURCE_CLIENT)
 @Produces(MediaType.APPLICATION_JSON)
 @Consumes(MediaType.APPLICATION_JSON)
 public class ClientResource {
 
-  /**
-   * key (K) = String, request (Q) = {@link Client}.
-   */
-  private TypedResourceDelegate<String, Client> resourceDelegate;
+  private ResourceDelegate resourceDelegate;
 
   /**
    * Constructor
@@ -57,11 +52,9 @@ public class ClientResource {
    * @param resourceDelegate The resourceDelegate to delegate to.
    */
   @Inject
-  public ClientResource(
-      @ClientServiceBackedResource TypedResourceDelegate<String, Client> resourceDelegate) {
+  public ClientResource(@ClientServiceBackedResource ResourceDelegate resourceDelegate) {
     this.resourceDelegate = resourceDelegate;
   }
-
 
   /**
    * Finds client by id.
@@ -86,19 +79,19 @@ public class ClientResource {
    * 
    * @param id - id of the {@link Client}
    * 
-   * @return {@link Client}
+   * @return {@link Response}
    */
   @UnitOfWork(value = "cms")
   @DELETE
   @Path("/{id}")
   @ApiOperation(value = "Delete Client", code = HttpStatus.SC_OK, response = Object.class)
   public Response delete(
-      @PathParam("id") @ApiParam(required = true, value = "The id of Client to delete") String id) {
+      @PathParam("id") @ApiParam(required = true, value = "id of Client to delete") String id) {
     return resourceDelegate.delete(id);
   }
 
   /**
-   * Create an {@link Client}
+   * Create an {@link Client}.
    * 
    * @param client - The {@link Client} to create
    * 
@@ -136,8 +129,7 @@ public class ClientResource {
   public Response update(
       @PathParam("id") @ApiParam(required = true, name = "id",
           value = "The id of the Client to update") String id,
-      @Valid @ApiParam(hidden = false, required = true) Client client) {
+      @Valid @ApiParam(hidden = false) Client client) {
     return resourceDelegate.update(id, client);
   }
-
 }

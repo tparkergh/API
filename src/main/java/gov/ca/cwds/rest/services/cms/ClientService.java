@@ -1,6 +1,10 @@
 package gov.ca.cwds.rest.services.cms;
 
-import org.apache.commons.lang3.NotImplementedException;
+import java.io.Serializable;
+
+import javax.persistence.EntityExistsException;
+import javax.persistence.EntityNotFoundException;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -8,28 +12,32 @@ import com.google.inject.Inject;
 
 import gov.ca.cwds.data.Dao;
 import gov.ca.cwds.data.cms.ClientDao;
-import gov.ca.cwds.rest.api.domain.cms.Client;
-import gov.ca.cwds.rest.services.TypedCrudsService;
+import gov.ca.cwds.data.persistence.cms.Client;
+import gov.ca.cwds.rest.api.Request;
+import gov.ca.cwds.rest.api.domain.cms.PostedClient;
+import gov.ca.cwds.rest.services.CrudsService;
+import gov.ca.cwds.rest.services.ServiceException;
+import gov.ca.cwds.rest.util.IdGenerator;
 
 /**
- * Business layer object to work on {@link Client}.
+ * Business layer object to work on {@link Client}
  * 
  * @author CWDS API Team
  */
-public class ClientService implements TypedCrudsService<String, Client, Client> {
-
+public class ClientService implements CrudsService {
   private static final Logger LOGGER = LoggerFactory.getLogger(ClientService.class);
 
-  private ClientDao dao;
+  private ClientDao clientDao;
 
   /**
-   * Constructor.
+   * Constructor
    * 
-   * @param dao The {@link Dao} handling {@link ClientDao} objects.
+   * @param clientDao The {@link Dao} handling {@link gov.ca.cwds.data.persistence.cms.Client}
+   *        objects.
    */
   @Inject
-  public ClientService(ClientDao dao) {
-    this.dao = dao;
+  public ClientService(ClientDao clientDao) {
+    this.clientDao = clientDao;
   }
 
   /**
@@ -38,15 +46,14 @@ public class ClientService implements TypedCrudsService<String, Client, Client> 
    * @see gov.ca.cwds.rest.services.CrudsService#find(java.io.Serializable)
    */
   @Override
-  public Client find(String primaryKey) {
-    LOGGER.info("primaryKey=" + primaryKey);
+  public gov.ca.cwds.rest.api.domain.cms.Client find(Serializable primaryKey) {
+    assert primaryKey instanceof String;
 
-    Client retval = null;
-    gov.ca.cwds.data.persistence.cms.Client persisted = dao.find(primaryKey);
-    if (persisted != null) {
-      retval = new Client(persisted);
+    gov.ca.cwds.data.persistence.cms.Client persistedClient = clientDao.find(primaryKey);
+    if (persistedClient != null) {
+      return new gov.ca.cwds.rest.api.domain.cms.Client(persistedClient);
     }
-    return retval;
+    return null;
   }
 
   /**
@@ -55,35 +62,58 @@ public class ClientService implements TypedCrudsService<String, Client, Client> 
    * @see gov.ca.cwds.rest.services.CrudsService#delete(java.io.Serializable)
    */
   @Override
-  public Client delete(String primaryKey) {
-    throw new NotImplementedException("DELETE NOT IMPLEMENTED!");
+  public gov.ca.cwds.rest.api.domain.cms.Client delete(Serializable primaryKey) {
+    assert primaryKey instanceof String;
+    gov.ca.cwds.data.persistence.cms.Client persistedClient = clientDao.delete(primaryKey);
+    if (persistedClient != null) {
+      return new gov.ca.cwds.rest.api.domain.cms.Client(persistedClient);
+    }
+    return null;
   }
 
   /**
-   * <p>
-   * <strong>NOT YET IMPLEMENTED!</strong>
-   * </p>
    * {@inheritDoc}
    * 
    * @see gov.ca.cwds.rest.services.CrudsService#create(gov.ca.cwds.rest.api.Request)
    */
   @Override
-  public Client create(Client request) {
-    throw new NotImplementedException("CREATE NOT IMPLEMENTED!");
+  public PostedClient create(Request request) {
+    assert request instanceof gov.ca.cwds.rest.api.domain.cms.Client;
+
+    gov.ca.cwds.rest.api.domain.cms.Client client =
+        (gov.ca.cwds.rest.api.domain.cms.Client) request;
+
+    try {
+      Client managed = new Client(IdGenerator.randomString(10), client, "q1p");
+      managed = clientDao.create(managed);
+      return new PostedClient(managed);
+    } catch (EntityExistsException e) {
+      LOGGER.info("Client already exists : {}", client);
+      throw new ServiceException(e);
+    }
   }
 
   /**
-   * <p>
-   * <strong>NOT YET IMPLEMENTED!</strong>
-   * </p>
    * {@inheritDoc}
    * 
    * @see gov.ca.cwds.rest.services.CrudsService#update(java.io.Serializable,
    *      gov.ca.cwds.rest.api.Request)
    */
   @Override
-  public Client update(String primaryKey, Client request) {
-    throw new NotImplementedException("UPDATE NOT IMPLEMENTED!");
+  public gov.ca.cwds.rest.api.domain.cms.Client update(Serializable primaryKey, Request request) {
+    assert primaryKey instanceof String;
+    assert request instanceof gov.ca.cwds.rest.api.domain.cms.Client;
+    gov.ca.cwds.rest.api.domain.cms.Client client =
+        (gov.ca.cwds.rest.api.domain.cms.Client) request;
+
+    try {
+      Client managed = new Client((String) primaryKey, client, "q1p");
+      managed = clientDao.update(managed);
+      return new gov.ca.cwds.rest.api.domain.cms.Client(managed);
+    } catch (EntityNotFoundException e) {
+      LOGGER.info("Client not found : {}", client);
+      throw new ServiceException(e);
+    }
   }
 
 }

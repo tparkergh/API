@@ -7,7 +7,6 @@ import com.google.inject.name.Named;
 
 import gov.ca.cwds.rest.ApiConfiguration;
 import gov.ca.cwds.rest.SwaggerConfiguration;
-import gov.ca.cwds.rest.api.domain.cms.Client;
 import gov.ca.cwds.rest.api.domain.cms.CmsDocument;
 import gov.ca.cwds.rest.api.domain.es.AutoCompletePersonRequest;
 import gov.ca.cwds.rest.api.domain.es.AutoCompletePersonResponse;
@@ -24,6 +23,7 @@ import gov.ca.cwds.rest.resources.SwaggerResource;
 import gov.ca.cwds.rest.resources.TypedResourceDelegate;
 import gov.ca.cwds.rest.resources.TypedServiceBackedResourceDelegate;
 import gov.ca.cwds.rest.resources.cms.AllegationResource;
+import gov.ca.cwds.rest.resources.cms.ClientResource;
 import gov.ca.cwds.rest.resources.cms.CmsDocReferralClientResource;
 import gov.ca.cwds.rest.resources.cms.CmsDocumentResource;
 import gov.ca.cwds.rest.resources.cms.CmsReferralResource;
@@ -73,6 +73,7 @@ public class ResourcesModule extends AbstractModule {
     bind(PersonResource.class);
     bind(ScreeningResource.class);
     bind(AllegationResource.class);
+    bind(ClientResource.class);
     bind(CmsDocReferralClientResource.class);
     bind(CmsDocumentResource.class);
     bind(CmsReferralResource.class);
@@ -139,8 +140,8 @@ public class ResourcesModule extends AbstractModule {
 
   @Provides
   @ClientServiceBackedResource
-  public TypedResourceDelegate<String, Client> clientBackedResource(Injector injector) {
-    return new TypedServiceBackedResourceDelegate<>(injector.getInstance(ClientService.class));
+  public ResourceDelegate clientServiceBackedResource(Injector injector) {
+    return new ServiceBackedResourceDelegate(injector.getInstance(ClientService.class));
   }
 
   @Provides

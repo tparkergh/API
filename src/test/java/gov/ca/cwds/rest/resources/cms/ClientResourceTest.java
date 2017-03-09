@@ -2,11 +2,6 @@ package gov.ca.cwds.rest.resources.cms;
 
 import static org.hamcrest.CoreMatchers.notNullValue;
 import static org.junit.Assert.assertThat;
-import static org.junit.Assert.assertTrue;
-import static org.mockito.Matchers.any;
-import static org.mockito.Mockito.when;
-
-import javax.ws.rs.core.Response;
 
 import org.hamcrest.junit.ExpectedException;
 import org.junit.Before;
@@ -68,13 +63,5 @@ public class ClientResourceTest {
     assertThat(target, notNullValue());
   }
 
-  @Test
-  public void get_A$String() throws Exception {
-    final String id = "1234";
-    when(resourceDelegate.get(any())).thenReturn(null);
-    Response actual = target.get(id);
-    Response expected = null;
-    assertTrue(actual == null);
-  }
 
 }
