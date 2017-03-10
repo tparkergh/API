@@ -1,21 +1,31 @@
 package gov.ca.cwds.rest.resources.cms;
 
-import static org.hamcrest.CoreMatchers.notNullValue;
-import static org.junit.Assert.assertThat;
+import static io.dropwizard.testing.FixtureHelpers.fixture;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.is;
+import static org.mockito.Matchers.eq;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
+
+import javax.ws.rs.client.Entity;
+import javax.ws.rs.core.MediaType;
 
 import org.hamcrest.junit.ExpectedException;
+import org.junit.After;
 import org.junit.Before;
+import org.junit.ClassRule;
 import org.junit.Rule;
 import org.junit.Test;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
-import org.mockito.Spy;
+import org.mockito.Mockito;
+
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.squarespace.jersey2.guice.JerseyGuiceUtils;
 
 import gov.ca.cwds.rest.api.domain.cms.Client;
+import gov.ca.cwds.rest.resources.ResourceDelegate;
 import gov.ca.cwds.rest.resources.ServiceBackedResourceDelegate;
-import gov.ca.cwds.rest.resources.TypedResourceDelegate;
-import gov.ca.cwds.rest.services.cms.ClientService;
+import io.dropwizard.jackson.Jackson;
+import io.dropwizard.testing.junit.ResourceTestRule;
 
 /**
  * NOTE : The CWDS API Team has taken the pattern of delegating Resource functions to
@@ -23,45 +33,101 @@ import gov.ca.cwds.rest.services.cms.ClientService;
  * 
  * @author CWDS API Team
  */
+@SuppressWarnings("javadoc")
 public class ClientResourceTest {
 
-  private static final String FOUND_RESOURCE = "/_client/abc";
+  private static final String ROOT_RESOURCE = "/_clients/";
+  private static final String FOUND_RESOURCE = "/_clients/AaiU7IW0Rt";
+
+  private static final ObjectMapper MAPPER = Jackson.newObjectMapper();
+
+  @After
+  public void ensureServiceLocatorPopulated() {
+    JerseyGuiceUtils.reset();
+  }
+
+  @ClassRule
+  public static JerseyGuiceRule rule = new JerseyGuiceRule();
 
   @Rule
   public ExpectedException thrown = ExpectedException.none();
 
-  @Mock
-  private ClientService service;
+  private final static ResourceDelegate resourceDelegate = mock(ResourceDelegate.class);
 
-  @Mock
-  // private gov.ca.cwds.data.persistence.cms.Client persClient;
-  private gov.ca.cwds.data.std.ApiMultipleAddressesAware persClient;
-
-
-  @Mock
-  private Client domainClient;
-
-  @Mock
-  private TypedResourceDelegate<String, Client> resourceDelegate;
-
-  @InjectMocks
-  @Spy
-  private ClientResource target; // "Class Under Test"
+  @ClassRule
+  public final static ResourceTestRule inMemoryResource =
+      ResourceTestRule.builder().addResource(new ClientResource(resourceDelegate)).build();
 
   @Before
-  public void initMocks() {
-    MockitoAnnotations.initMocks(this);
+  public void setup() throws Exception {
+    Mockito.reset(resourceDelegate);
+  }
+
+  /*
+   * Get Tests
+   */
+  @Test
+  public void getDelegatesToResourceDelegate() throws Exception {
+    inMemoryResource.client().target(FOUND_RESOURCE).request().accept(MediaType.APPLICATION_JSON)
+        .get();
+    verify(resourceDelegate).get("AaiU7IW0Rt");
+  }
+
+  /*
+   * Create Tests
+   */
+  @Test
+  public void createDelegatesToResourceDelegate() throws Exception {
+    Client serialized =
+        MAPPER.readValue(fixture("fixtures/domain/legacy/Client/valid/valid.json"), Client.class);
+
+    inMemoryResource.client().target(ROOT_RESOURCE).request().accept(MediaType.APPLICATION_JSON)
+        .post(Entity.entity(serialized, MediaType.APPLICATION_JSON));
+    verify(resourceDelegate).create(eq(serialized));
   }
 
   @Test
-  public void type() throws Exception {
-    assertThat(ClientResource.class, notNullValue());
+  public void createValidatesEntity() throws Exception {
+    Client serialized = MAPPER.readValue(
+        fixture("fixtures/domain/legacy/Client/invalid/birthDateInvalidFormat.json"), Client.class);
+
+    int status =
+        inMemoryResource.client().target(ROOT_RESOURCE).request().accept(MediaType.APPLICATION_JSON)
+            .post(Entity.entity(serialized, MediaType.APPLICATION_JSON)).getStatus();
+    assertThat(status, is(422));
+  }
+
+  /*
+   * Delete Tests
+   */
+  @Test
+  public void deleteDelegatesToResourceDelegate() throws Exception {
+    inMemoryResource.client().target(FOUND_RESOURCE).request().accept(MediaType.APPLICATION_JSON)
+        .delete();
+    verify(resourceDelegate).delete("AaiU7IW0Rt");
+  }
+
+  /*
+   * Update Tests
+   */
+  @Test
+  public void udpateDelegatesToResourceDelegate() throws Exception {
+    Client serialized =
+        MAPPER.readValue(fixture("fixtures/domain/legacy/Client/valid/valid.json"), Client.class);
+
+    inMemoryResource.client().target(FOUND_RESOURCE).request().accept(MediaType.APPLICATION_JSON)
+        .put(Entity.entity(serialized, MediaType.APPLICATION_JSON));
+    verify(resourceDelegate).update(eq("AaiU7IW0Rt"), eq(serialized));
   }
 
   @Test
-  public void instantiation() throws Exception {
-    assertThat(target, notNullValue());
+  public void udpateValidatesEntity() throws Exception {
+    Client serialized = MAPPER.readValue(
+        fixture("fixtures/domain/legacy/Client/invalid/birthDateInvalidFormat.json"), Client.class);
+
+    int status = inMemoryResource.client().target(FOUND_RESOURCE).request()
+        .accept(MediaType.APPLICATION_JSON)
+        .put(Entity.entity(serialized, MediaType.APPLICATION_JSON)).getStatus();
+    assertThat(status, is(422));
   }
-
-
 }
