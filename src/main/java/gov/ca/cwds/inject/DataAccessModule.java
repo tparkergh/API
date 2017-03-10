@@ -39,7 +39,6 @@ import gov.ca.cwds.data.ns.PhoneNumberDao;
 import gov.ca.cwds.data.ns.RaceDao;
 import gov.ca.cwds.data.ns.ScreeningDao;
 import gov.ca.cwds.data.persistence.cms.Allegation;
-import gov.ca.cwds.data.persistence.cms.ReplicatedClientAddress;
 import gov.ca.cwds.data.persistence.cms.ClientCollateral;
 import gov.ca.cwds.data.persistence.cms.CmsDocReferralClient;
 import gov.ca.cwds.data.persistence.cms.CmsDocument;
@@ -94,7 +93,6 @@ public class DataAccessModule extends AbstractModule {
 
   private static final Logger LOGGER = LoggerFactory.getLogger(DataAccessModule.class);
 
-
   private Client client;
 
   private final HibernateBundle<ApiConfiguration> cmsHibernateBundle =
@@ -104,8 +102,7 @@ public class DataAccessModule extends AbstractModule {
           CrossReport.class, EducationProviderContact.class, OtherAdultInPlacemtHome.class,
           OtherChildInPlacemtHome.class, OtherClientName.class, Referral.class,
           ReferralClient.class, Reporter.class, ServiceProvider.class, StaffPerson.class,
-          SubstituteCareProvider.class, gov.ca.cwds.data.persistence.cms.ReplicatedAddress.class,
-          ReplicatedClientAddress.class) {
+          SubstituteCareProvider.class) {
         @Override
         public DataSourceFactory getDataSourceFactory(ApiConfiguration configuration) {
           return configuration.getCmsDataSourceFactory();

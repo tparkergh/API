@@ -23,8 +23,6 @@
 		<mapping class="gov.ca.cwds.data.persistence.cms.Referral" />
 		<mapping class="gov.ca.cwds.data.persistence.cms.Reporter" />
 		<mapping class="gov.ca.cwds.data.persistence.cms.Client" />
-		<mapping class="gov.ca.cwds.data.persistence.cms.ClientAddress" />
-		<mapping class="gov.ca.cwds.data.persistence.cms.Address" />
 		<mapping class="gov.ca.cwds.data.persistence.cms.OtherClientName" />
 		<mapping class="gov.ca.cwds.data.persistence.cms.Attorney" />
 		<mapping class="gov.ca.cwds.data.persistence.cms.ServiceProvider" />

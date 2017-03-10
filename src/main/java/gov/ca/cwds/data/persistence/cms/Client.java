@@ -220,12 +220,15 @@ public final class Client extends BaseClient
   /**
    * Constructor. Construct from counterpart domain class.
    * 
+   * @param id primary key
    * @param client The domain object to construct this object from
    * @param lastUpdatedId the id of the last person to update this object
    */
-  public Client(gov.ca.cwds.rest.api.domain.cms.Client client, String lastUpdatedId) {
+  public Client(String id, gov.ca.cwds.rest.api.domain.cms.Client client, String lastUpdatedId) {
     super(lastUpdatedId);
     try {
+      this.id = id;
+
       this.adjudicatedDelinquentIndicator =
           DomainChef.cookBoolean(client.getAdjudicatedDelinquentIndicator());
       this.adoptionStatusCode = client.getAdoptionStatusCode();
@@ -269,7 +272,6 @@ public final class Client extends BaseClient
       this.healthSummaryText = client.getHealthSummaryText();
       this.hispUnableToDetReasonCode = client.getHispUnableToDetReasonCode();
       this.hispanicOriginCode = client.getHispanicOriginCode();
-      this.id = client.getId();
       this.immigrationCountryCodeType = client.getImmigrationCountryCodeType();
       this.immigrationStatusType = client.getImmigrationStatusType();
       this.incapacitatedParentCode = client.getIncapacitatedParentCode();
