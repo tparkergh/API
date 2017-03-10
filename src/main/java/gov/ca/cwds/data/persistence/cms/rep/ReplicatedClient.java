@@ -64,7 +64,9 @@ import gov.ca.cwds.data.std.ApiPersonAware;
             + "from ( select mod(y.rn, CAST(:total_buckets AS INTEGER)) + 1 as bucket, y.* "
             + "from ( select row_number() over (order by 1) as rn, x.* "
             + "from {h-schema}CLIENT_T x where x.SOC158_IND ='N' and x.SENSTV_IND = 'N' "
-            + "and x.identifier in ( '3YLLYNZ0LL','Dn9HBTC0Mu','CBES7RV0Ki','FjmWxQD0FT','8ZeEiX70Ki' ) "
+            // TESTING ONLY:
+            // + "and x.identifier in (
+            // '3YLLYNZ0LL','Dn9HBTC0Mu','CBES7RV0Ki','FjmWxQD0FT','8ZeEiX70Ki' ) "
             + "AND x.IDENTIFIER >= :min_id and x.IDENTIFIER < :max_id ) y ) a "
             + "LEFT OUTER JOIN {h-schema}CL_ADDRT b ON a.IDENTIFIER = b.FKCLIENT_T and b.EFF_END_DT is null "
             + "LEFT OUTER JOIN {h-schema}ADDRS_T c ON b.FKADDRS_T = c.IDENTIFIER "

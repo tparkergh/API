@@ -525,7 +525,8 @@ public class AutoCompletePerson
     @JsonProperty("state")
     private AutoCompleteState stateType = AutoCompleteState.NONE;
 
-    // @JsonProperty("county")
+    // Bug #141508231: county not in Intake API swagger.yml. Intake JSON parsing error.
+    @JsonIgnore
     private AutoCompleteCounty county;
 
     @JsonInclude(JsonInclude.Include.ALWAYS)
@@ -625,6 +626,7 @@ public class AutoCompletePerson
 
     @SuppressWarnings("javadoc")
     @JsonProperty("county")
+    @JsonIgnore
     public String getCountyType() {
       return county != null ? county.getDescription() : null;
     }
@@ -812,8 +814,10 @@ public class AutoCompletePerson
   @JsonInclude(JsonInclude.Include.ALWAYS)
   private List<AutoCompleteLanguage> languages;
 
-  @JsonProperty("highlight")
-  @JsonInclude(JsonInclude.Include.ALWAYS)
+  // For R1 bug #141508231 only:
+  @JsonIgnore
+  // @JsonProperty("highlight")
+  // @JsonInclude(JsonInclude.Include.ALWAYS)
   private String highlight;
 
   public AutoCompletePerson() {
@@ -1113,22 +1117,23 @@ public class AutoCompletePerson
   }
 
   /**
-   * Getter for highlight
+   * Getter for highlight.
    * 
-   * @return hightlight from Elasticsearch
+   * <p>
+   * For R1 bug #141508231 only: omit this field from results.
+   * </p>
    * 
+   * @return highlight from Elasticsearch
    */
+  @JsonIgnore
   public String getHighlight() {
-
     return this.highlight.replaceAll("\\s+\",", "\",");
-
   }
 
   /**
    * Setter for highlight
    * 
    * @param highlight from Elasticsearch
-   * 
    */
   public void setHighlight(String highlight) {
     this.highlight = highlight;
