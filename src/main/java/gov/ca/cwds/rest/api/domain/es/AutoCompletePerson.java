@@ -7,6 +7,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.persistence.Transient;
+
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
@@ -814,14 +816,22 @@ public class AutoCompletePerson
   @JsonInclude(JsonInclude.Include.ALWAYS)
   private List<AutoCompleteLanguage> languages;
 
-  // For R1 bug #141508231 only:
-  @JsonIgnore
+  // R1: bug #141508231:
+  // @JsonIgnore
+  // R2:
   // @JsonProperty("highlight")
   // @JsonInclude(JsonInclude.Include.ALWAYS)
-  private String highlight;
+  // @JsonFormat(shape = Shape.OBJECT)
+  // private String highlight;
 
+  @Transient
+  private Map<String, String> highlight;
+
+  /**
+   * Default constructor.
+   */
   public AutoCompletePerson() {
-
+    // default, no-op.
   }
 
   /**
@@ -832,8 +842,7 @@ public class AutoCompletePerson
   public AutoCompletePerson(ElasticSearchPerson esp) {
     this.setId(esp.getId());
 
-    // TODO: #136570057: mask results, not data in Elastic search.
-
+    // #136570057: mask results, not data in Elastic search.
     // Minimal system code translation to meet contract interface.
 
     if (esp.getSourceObj() != null) {
@@ -873,8 +882,11 @@ public class AutoCompletePerson
         }
 
         // Elasticsearch highlights
-        if (StringUtils.isNotBlank(esp.getHighlightFields())) {
-          this.setHighlight(esp.getHighlightFields());
+        // if (StringUtils.isNotBlank(esp.getHighlightFields())) {
+        // this.setHighlight(esp.getHighlightFields());
+        // }
+        if (esp.getHighlights() != null && !esp.getHighlights().isEmpty()) {
+          this.setHighlight(esp.getHighlights());
         }
       }
       // Address.
@@ -1116,26 +1128,48 @@ public class AutoCompletePerson
     this.languages = languages;
   }
 
+  // /**
+  // * Getter for highlight.
+  // *
+  // * <p>
+  // * R1: bug #141508231: omit this field from results.
+  // * </p>
+  // *
+  // * @return highlight from Elasticsearch
+  // */
+  // // R1: bug #141508231:
+  // @JsonIgnore
+  // public String getHighlight() {
+  // return this.highlight;
+  // }
+
+  // /**
+  // * Setter for highlight
+  // *
+  // * @param highlight from Elasticsearch
+  // */
+  // public void setHighlight(String highlight) {
+  // if (!StringUtils.isBlank(highlight)) {
+  // // "{"firstName":"<em>John</em> ","lastName":"<em>Doe</em>.1209D "}"
+  // this.highlight = highlight.replaceAll("\"\\{", "{").replaceAll("\"\\}", "}");
+  // }
+  // }
+
   /**
-   * Getter for highlight.
+   * Getter for highlights. Key = field name, Value = match with mark-up.
    * 
-   * <p>
-   * For R1 bug #141508231 only: omit this field from results.
-   * </p>
-   * 
-   * @return highlight from Elasticsearch
+   * @return Map of highlights
    */
-  @JsonIgnore
-  public String getHighlight() {
-    return this.highlight.replaceAll("\\s+\",", "\",");
+  public Map<String, String> getHighlight() {
+    return highlight;
   }
 
   /**
-   * Setter for highlight
+   * Setter for highlights.
    * 
-   * @param highlight from Elasticsearch
+   * @param highlight Key = field name, Value = match with mark-up.
    */
-  public void setHighlight(String highlight) {
+  public void setHighlight(Map<String, String> highlight) {
     this.highlight = highlight;
   }
 
