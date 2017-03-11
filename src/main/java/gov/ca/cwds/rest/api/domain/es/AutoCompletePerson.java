@@ -7,8 +7,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import javax.persistence.Transient;
-
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
@@ -824,7 +822,7 @@ public class AutoCompletePerson
   // @JsonFormat(shape = Shape.OBJECT)
   // private String highlight;
 
-  @Transient
+  // @Transient
   private Map<String, String> highlight;
 
   /**
@@ -1128,33 +1126,6 @@ public class AutoCompletePerson
     this.languages = languages;
   }
 
-  // /**
-  // * Getter for highlight.
-  // *
-  // * <p>
-  // * R1: bug #141508231: omit this field from results.
-  // * </p>
-  // *
-  // * @return highlight from Elasticsearch
-  // */
-  // // R1: bug #141508231:
-  // @JsonIgnore
-  // public String getHighlight() {
-  // return this.highlight;
-  // }
-
-  // /**
-  // * Setter for highlight
-  // *
-  // * @param highlight from Elasticsearch
-  // */
-  // public void setHighlight(String highlight) {
-  // if (!StringUtils.isBlank(highlight)) {
-  // // "{"firstName":"<em>John</em> ","lastName":"<em>Doe</em>.1209D "}"
-  // this.highlight = highlight.replaceAll("\"\\{", "{").replaceAll("\"\\}", "}");
-  // }
-  // }
-
   /**
    * Getter for highlights. Key = field name, Value = match with mark-up.
    * 
@@ -1170,7 +1141,11 @@ public class AutoCompletePerson
    * @param highlight Key = field name, Value = match with mark-up.
    */
   public void setHighlight(Map<String, String> highlight) {
-    this.highlight = highlight;
+    if (highlight != null) {
+      this.highlight = highlight;
+    } else {
+      this.highlight.clear();
+    }
   }
 
   @Override
