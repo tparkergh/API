@@ -1,15 +1,17 @@
 package gov.ca.cwds.rest.api.domain.cms;
 
-import gov.ca.cwds.rest.api.Request;
-import gov.ca.cwds.rest.api.Response;
-import gov.ca.cwds.rest.api.domain.DomainObject;
-import io.swagger.annotations.ApiModelProperty;
+import java.util.Set;
 
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
+
+import gov.ca.cwds.rest.api.Request;
+import gov.ca.cwds.rest.api.Response;
+import gov.ca.cwds.rest.api.domain.DomainObject;
+import io.swagger.annotations.ApiModelProperty;
 
 /**
  * Logical representation of a CmsReferral
@@ -42,6 +44,11 @@ public class CmsReferral extends DomainObject implements Request, Response {
   @Valid
   private Reporter reporter;
 
+  @NotNull
+  @ApiModelProperty(required = true, readOnly = false)
+  @Valid
+  private Set<Client> client;
+
   /**
    * Construct from JSON.
    * 
@@ -50,19 +57,21 @@ public class CmsReferral extends DomainObject implements Request, Response {
    * @param crossReport - CrossReport object
    * @param referralClient - ReferralClient object
    * @param reporter - Reporter object
+   * @param client - Client object
    */
   @JsonCreator
   public CmsReferral(@JsonProperty("referral") Referral referral,
       @JsonProperty("allegation") Allegation allegation,
       @JsonProperty("crossReport") CrossReport crossReport,
       @JsonProperty("referralClient") ReferralClient referralClient,
-      @JsonProperty("reporter") Reporter reporter) {
+      @JsonProperty("reporter") Reporter reporter, @JsonProperty("client") Set<Client> client) {
     super();
     this.referral = referral;
     this.allegation = allegation;
     this.crossReport = crossReport;
     this.referralClient = referralClient;
     this.reporter = reporter;
+    this.client = client;
   }
 
   /**
@@ -101,6 +110,13 @@ public class CmsReferral extends DomainObject implements Request, Response {
   }
 
   /**
+   * @return the client
+   */
+  public Set<Client> getClient() {
+    return client;
+  }
+
+  /**
    * {@inheritDoc}
    * 
    * @see java.lang.Object#hashCode()
@@ -114,6 +130,7 @@ public class CmsReferral extends DomainObject implements Request, Response {
     result = prime * result + ((referral == null) ? 0 : referral.hashCode());
     result = prime * result + ((referralClient == null) ? 0 : referralClient.hashCode());
     result = prime * result + ((reporter == null) ? 0 : reporter.hashCode());
+    result = prime * result + ((client == null) ? 0 : client.hashCode());
     return result;
   }
 
@@ -158,6 +175,11 @@ public class CmsReferral extends DomainObject implements Request, Response {
       if (other.reporter != null)
         return false;
     } else if (!reporter.equals(other.reporter))
+      return false;
+    if (client == null) {
+      if (other.client != null)
+        return false;
+    } else if (!client.equals(other.client))
       return false;
     return true;
   }

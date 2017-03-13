@@ -1,6 +1,7 @@
 package gov.ca.cwds.data.persistence.cms;
 
 import java.util.Date;
+import java.util.Set;
 
 import javax.persistence.Entity;
 import javax.persistence.PersistenceException;
@@ -215,6 +216,112 @@ public final class Client extends BaseClient
     this.tribalMembrshpVerifctnIndicatorVar = tribalMembrshpVerifctnIndicatorVar;
     this.unemployedParentCode = unemployedParentCode;
     this.zippyCreatedIndicator = zippyCreatedIndicator;
+  }
+
+
+  /**
+   * Constructor. constrct the collectionObject for cmsreferral client
+   * 
+   * @param id primary key
+   * @param clientSet The domain object to construct this object from
+   * @param lastUpdatedId the id of the last person to update this object
+   */
+  public Client(String id, Set<gov.ca.cwds.rest.api.domain.cms.Client> clientSet,
+      String lastUpdatedId) {
+    super(lastUpdatedId);
+    try {
+      this.id = id;
+      for (gov.ca.cwds.rest.api.domain.cms.Client client : clientSet) {
+
+        this.adjudicatedDelinquentIndicator =
+            DomainChef.cookBoolean(client.getAdjudicatedDelinquentIndicator());
+        this.adoptionStatusCode = client.getAdoptionStatusCode();
+        this.alienRegistrationNumber = client.getAlienRegistrationNumber();
+        this.birthCity = client.getBirthCity();
+        this.birthCountryCodeType = client.getBirthCountryCodeType();
+        this.birthDate = DomainChef.uncookDateString(client.getBirthDate());
+        this.birthFacilityName = client.getBirthFacilityName();
+        this.birthStateCodeType = client.getBirthStateCodeType();
+        this.birthplaceVerifiedIndicator =
+            DomainChef.cookBoolean(client.getBirthplaceVerifiedIndicator());
+        this.childClientIndicatorVar = DomainChef.cookBoolean(client.getChildClientIndicatorVar());
+        this.clientIndexNumber = client.getClientIndexNumber();
+        this.commentDescription = client.getCommentDescription();
+        this.commonFirstName = client.getCommonFirstName();
+        this.commonLastName = client.getCommonLastName();
+        this.commonMiddleName = client.getCommonMiddleName();
+        this.confidentialityActionDate =
+            DomainChef.uncookDateString(client.getConfidentialityActionDate());
+        this.confidentialityInEffectIndicator =
+            DomainChef.cookBoolean(client.getConfidentialityInEffectIndicator());
+        this.creationDate = DomainChef.uncookDateString(client.getCreationDate());
+        this.currCaChildrenServIndicator =
+            DomainChef.cookBoolean(client.getCurrCaChildrenServIndicator());
+        this.currentlyOtherDescription = client.getCurrentlyOtherDescription();
+        this.currentlyRegionalCenterIndicator =
+            DomainChef.cookBoolean(client.getCurrentlyRegionalCenterIndicator());
+        this.deathDate = DomainChef.uncookDateString(client.getDeathDate());
+        this.deathDateVerifiedIndicator =
+            DomainChef.cookBoolean(client.getDeathDateVerifiedIndicator());
+        this.deathPlace = client.getDeathPlace();
+        this.deathReasonText = client.getDeathReasonText();
+        this.driverLicenseNumber = client.getDriverLicenseNumber();
+        this.driverLicenseStateCodeType = client.getDriverLicenseStateCodeType();
+        this.emailAddress = client.getEmailAddress();
+        this.estimatedDobCode = client.getEstimatedDobCode();
+        this.ethUnableToDetReasonCode = client.getEthUnableToDetReasonCode();
+        this.fatherParentalRightTermDate =
+            DomainChef.uncookDateString(client.getFatherParentalRightTermDate());
+        this.genderCode = client.getGenderCode();
+        this.healthSummaryText = client.getHealthSummaryText();
+        this.hispUnableToDetReasonCode = client.getHispUnableToDetReasonCode();
+        this.hispanicOriginCode = client.getHispanicOriginCode();
+        this.immigrationCountryCodeType = client.getImmigrationCountryCodeType();
+        this.immigrationStatusType = client.getImmigrationStatusType();
+        this.incapacitatedParentCode = client.getIncapacitatedParentCode();
+        this.individualHealthCarePlanIndicator =
+            DomainChef.cookBoolean(client.getIndividualHealthCarePlanIndicator());
+        this.limitationOnScpHealthIndicator =
+            DomainChef.cookBoolean(client.getLimitationOnScpHealthIndicator());
+        this.literateCode = client.getLiterateCode();
+        this.maritalCohabitatnHstryIndicatorVar =
+            DomainChef.cookBoolean(client.getMaritalCohabitatnHstryIndicatorVar());
+        this.maritalStatusType = client.getMaritalStatusType();
+        this.militaryStatusCode = client.getMilitaryStatusCode();
+        this.motherParentalRightTermDate =
+            DomainChef.uncookDateString(client.getMotherParentalRightTermDate());
+        this.namePrefixDescription = client.getNamePrefixDescription();
+        this.nameType = client.getNameType();
+        this.outstandingWarrantIndicator =
+            DomainChef.cookBoolean(client.getOutstandingWarrantIndicator());
+        this.prevCaChildrenServIndicator =
+            DomainChef.cookBoolean(client.getPrevCaChildrenServIndicator());
+        this.prevOtherDescription = client.getPrevOtherDescription();
+        this.prevRegionalCenterIndicator =
+            DomainChef.cookBoolean(client.getPrevRegionalCenterIndicator());
+        this.primaryEthnicityType = client.getPrimaryEthnicityType();
+        this.primaryLanguageType = client.getPrimaryLanguageType();
+        this.religionType = client.getReligionType();
+        this.secondaryLanguageType = client.getSecondaryLanguageType();
+        this.sensitiveHlthInfoOnFileIndicator =
+            DomainChef.cookBoolean(client.getSensitiveHlthInfoOnFileIndicator());
+        this.sensitivityIndicator = client.getSensitivityIndicator();
+        this.soc158PlacementCode = client.getSoc158PlacementCode();
+        this.soc158SealedClientIndicator =
+            DomainChef.cookBoolean(client.getSoc158SealedClientIndicator());
+        this.socialSecurityNumChangedCode = client.getSocialSecurityNumChangedCode();
+        this.socialSecurityNumber = client.getSocialSecurityNumber();
+        this.suffixTitleDescription = client.getSuffixTitleDescription();
+        this.tribalAncestryClientIndicatorVar =
+            DomainChef.cookBoolean(client.getTribalAncestryClientIndicatorVar());
+        this.tribalMembrshpVerifctnIndicatorVar =
+            DomainChef.cookBoolean(client.getTribalMembrshpVerifctnIndicatorVar());
+        this.unemployedParentCode = client.getUnemployedParentCode();
+        this.zippyCreatedIndicator = DomainChef.cookBoolean(client.getZippyCreatedIndicator());
+      }
+    } catch (ApiException e) {
+      throw new PersistenceException(e);
+    }
   }
 
   /**

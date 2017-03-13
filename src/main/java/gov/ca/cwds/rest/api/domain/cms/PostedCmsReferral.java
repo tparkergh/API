@@ -1,5 +1,8 @@
 package gov.ca.cwds.rest.api.domain.cms;
 
+import java.util.HashSet;
+import java.util.Set;
+
 import gov.ca.cwds.rest.api.Response;
 import gov.ca.cwds.rest.api.domain.DomainObject;
 
@@ -9,11 +12,16 @@ import gov.ca.cwds.rest.api.domain.DomainObject;
  * @author CWDS API Team
  */
 public class PostedCmsReferral extends DomainObject implements Response {
+  /**
+   * 
+   */
+  private static final long serialVersionUID = 1L;
   private Referral referral;
   private Allegation allegation;
   private CrossReport crossReport;
   private ReferralClient referralClient;
   private Reporter reporter;
+  private Set<Client> client;
 
   /**
    * @param referral - PostedReferral
@@ -21,15 +29,20 @@ public class PostedCmsReferral extends DomainObject implements Response {
    * @param crossReport - CrossReport
    * @param referralClient - ReferralClient
    * @param reporter - PostedReporter
+   * @param client - PostedClient
    */
   public PostedCmsReferral(PostedReferral referral, PostedAllegation allegation,
-      CrossReport crossReport, ReferralClient referralClient, PostedReporter reporter) {
+      CrossReport crossReport, ReferralClient referralClient, PostedReporter reporter,
+      Set<PostedClient> client) {
     super();
     this.referral = referral;
     this.allegation = allegation;
     this.crossReport = crossReport;
     this.referralClient = referralClient;
     this.reporter = reporter;
+    this.client = new HashSet<>();
+    for (PostedClient resultClient : client)
+      this.client.add(resultClient);
   }
 
   /**
@@ -67,6 +80,13 @@ public class PostedCmsReferral extends DomainObject implements Response {
     return reporter;
   }
 
+  /**
+   * @return the client
+   */
+  public Set<Client> getClient() {
+    return client;
+  }
+
   @Override
   public int hashCode() {
     final int prime = 31;
@@ -76,6 +96,7 @@ public class PostedCmsReferral extends DomainObject implements Response {
     result = prime * result + ((referral == null) ? 0 : referral.hashCode());
     result = prime * result + ((referralClient == null) ? 0 : referralClient.hashCode());
     result = prime * result + ((reporter == null) ? 0 : reporter.hashCode());
+    result = prime * result + ((client == null) ? 0 : client.hashCode());
     return result;
   }
 
@@ -112,6 +133,11 @@ public class PostedCmsReferral extends DomainObject implements Response {
       if (other.reporter != null)
         return false;
     } else if (!reporter.equals(other.reporter))
+      return false;
+    if (client == null) {
+      if (other.client != null)
+        return false;
+    } else if (!client.equals(other.client))
       return false;
     return true;
   }

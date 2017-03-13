@@ -10,6 +10,7 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 import java.io.IOException;
+import java.util.Set;
 
 import javax.ws.rs.client.Entity;
 import javax.ws.rs.core.MediaType;
@@ -21,6 +22,7 @@ import org.junit.ClassRule;
 import org.junit.Test;
 
 import com.fasterxml.jackson.core.JsonParseException;
+import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.squarespace.jersey2.guice.JerseyGuiceUtils;
@@ -100,15 +102,19 @@ public class CmsReferralTest {
     Allegation allegation = MAPPER.readValue(
         fixture("fixtures/domain/cms/CmsReferral/valid/allegationCmsReferral.json"),
         Allegation.class);
+    Set<Client> client =
+        MAPPER.readValue(fixture("fixtures/domain/cms/CmsReferral/valid/clientCmsReferral.json"),
+            new TypeReference<Set<Client>>() {});
 
     CmsReferral cmsReferral =
-        new CmsReferral(referral, allegation, crossReport, referralClient, reporter);
+        new CmsReferral(referral, allegation, crossReport, referralClient, reporter, client);
 
     assertThat(cmsReferral.getReferral(), is(equalTo(referral)));
     assertThat(cmsReferral.getAllegation(), is(equalTo(allegation)));
     assertThat(cmsReferral.getCrossReport(), is(equalTo(crossReport)));
     assertThat(cmsReferral.getReferralClient(), is(equalTo(referralClient)));
     assertThat(cmsReferral.getReporter(), is(equalTo(reporter)));
+    assertThat(cmsReferral.getClient(), is(equalTo(client)));
   }
 
   @Test
@@ -195,6 +201,49 @@ public class CmsReferralTest {
 
     assertThat(response.getStatus(), is(equalTo(422)));
 
+  }
+
+  /*
+   * failure when Client is null, missing, or invalid
+   */
+  @Test
+  public void failureWhenClientNull() throws Exception {
+
+    CmsReferral toCreate = MAPPER.readValue(
+        fixture("fixtures/domain/cms/CmsReferral/invalid/cmsReferralNullClient.json"),
+        CmsReferral.class);
+
+    Response response =
+        resources.client().target(ROOT_RESOURCE).request().accept(MediaType.APPLICATION_JSON)
+            .post(Entity.entity(toCreate, MediaType.APPLICATION_JSON));
+    assertThat(response.getStatus(), is(equalTo(422)));
+  }
+
+  @Test
+  public void failureWhenClientIsEmpty() throws Exception {
+
+    CmsReferral toCreate = MAPPER.readValue(
+        fixture("fixtures/domain/cms/CmsReferral/invalid/cmsReferralWhenClientEmpty.json"),
+        CmsReferral.class);
+
+    Response response =
+        resources.client().target(ROOT_RESOURCE).request().accept(MediaType.APPLICATION_JSON)
+            .post(Entity.entity(toCreate, MediaType.APPLICATION_JSON));
+
+    assertThat(response.getStatus(), is(equalTo(422)));
+  }
+
+  @Test
+  public void failureWhenClientIsInvalid() throws Exception {
+
+    CmsReferral toCreate = MAPPER.readValue(
+        fixture("fixtures/domain/cms/CmsReferral/invalid/cmsReferralInvalidClient.json"),
+        CmsReferral.class);
+
+    Response response =
+        resources.client().target(ROOT_RESOURCE).request().accept(MediaType.APPLICATION_JSON)
+            .post(Entity.entity(toCreate, MediaType.APPLICATION_JSON));
+    assertThat(response.getStatus(), is(equalTo(422)));
   }
 
   /*
@@ -459,6 +508,18 @@ public class CmsReferralTest {
   }
 
   @Test
+  public void SucessWhenCmsReferralAndEmptyClient() throws Exception {
+    CmsReferral validCmsReferral = this.validCmsReferral();
+
+    CmsReferral invalidCmsReferral = MAPPER.readValue(
+        fixture("fixtures/domain/cms/CmsReferral/invalid/cmsReferralWhenClientEmpty.json"),
+        CmsReferral.class);
+
+    assertThat(validCmsReferral.equals(invalidCmsReferral), is(equalTo(Boolean.FALSE)));
+
+  }
+
+  @Test
   public void SucessWhenCmsReferralAndNullAllegation() throws Exception {
     CmsReferral validCmsReferral = this.validCmsReferral();
     CmsReferral invalidCmsReferral = MAPPER.readValue(
@@ -505,7 +566,11 @@ public class CmsReferralTest {
       Allegation allegation = MAPPER.readValue(
           fixture("fixtures/domain/cms/CmsReferral/valid/allegationCmsReferral.json"),
           Allegation.class);
-      return new CmsReferral(referral, allegation, crossReport, referralClient, reporter);
+      Set<Client> client =
+          MAPPER.readValue(fixture("fixtures/domain/cms/CmsReferral/valid/clientCmsReferral.json"),
+              new TypeReference<Set<Client>>() {});
+
+      return new CmsReferral(referral, allegation, crossReport, referralClient, reporter, client);
 
     } catch (JsonParseException e) {
       e.printStackTrace();
