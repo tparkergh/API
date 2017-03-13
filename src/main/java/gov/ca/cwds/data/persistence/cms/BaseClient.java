@@ -30,9 +30,7 @@ import gov.ca.cwds.data.std.ApiPersonAware;
  */
 @MappedSuperclass
 public abstract class BaseClient extends CmsPersistentObject
-    implements ApiPersonAware, ApiMultipleLanguagesAware
-// , ApiMultiplePhonesAware
-{
+    implements ApiPersonAware, ApiMultipleLanguagesAware {
 
   /**
    * Base serialization version. Increment by class version.

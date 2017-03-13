@@ -364,4 +364,10 @@ public abstract class BaseCollateralIndividual extends CmsPersistentObject
     return null;
   }
 
+  @JsonIgnore
+  @Override
+  public String getAddressId() {
+    return null;
+  }
+
 }

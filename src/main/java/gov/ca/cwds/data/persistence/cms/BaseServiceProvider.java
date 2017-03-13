@@ -334,4 +334,15 @@ public abstract class BaseServiceProvider extends CmsPersistentObject
     return null;
   }
 
+  @Override
+  @JsonIgnore
+  public String getPhoneId() {
+    return null;
+  }
+
+  @Override
+  public String getAddressId() {
+    return null;
+  }
+
 }

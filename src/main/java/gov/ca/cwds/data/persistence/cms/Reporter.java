@@ -500,7 +500,7 @@ public class Reporter extends BaseReporter {
   public ApiPhoneAware[] getPhones() {
     List<ApiPhoneAware> phones = new ArrayList<>();
     if (this.primaryPhoneNumber != null && !BigDecimal.ZERO.equals(this.primaryPhoneNumber)) {
-      phones.add(new ReadablePhone(this.primaryPhoneNumber.toPlainString(),
+      phones.add(new ReadablePhone(null, this.primaryPhoneNumber.toPlainString(),
           this.primaryPhoneExtensionNumber != null ? this.primaryPhoneExtensionNumber.toString()
               : null,
           null));
@@ -508,7 +508,7 @@ public class Reporter extends BaseReporter {
 
     if (this.messagePhoneNumber != null && !BigDecimal.ZERO.equals(this.messagePhoneNumber)) {
       phones
-          .add(new ReadablePhone(
+          .add(new ReadablePhone(null,
               this.messagePhoneNumber.toPlainString(), this.messagePhoneExtensionNumber != null
                   ? this.messagePhoneExtensionNumber.toString() : null,
               ApiPhoneAware.PhoneType.Cell));

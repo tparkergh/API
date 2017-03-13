@@ -230,4 +230,9 @@ public abstract class BaseEducationProviderContact extends CmsPersistentObject
     return null;
   }
 
+  @Override
+  public String getPhoneId() {
+    return null;
+  }
+
 }

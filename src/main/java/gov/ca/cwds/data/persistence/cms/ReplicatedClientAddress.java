@@ -48,7 +48,7 @@ public final class ReplicatedClientAddress extends BaseClientAddress {
     if (addresses != null) {
       this.addresses = addresses;
     } else {
-      addresses = new LinkedHashSet<>();
+      this.addresses = new LinkedHashSet<>();
     }
   }
 

@@ -1,11 +1,15 @@
 package gov.ca.cwds.data.persistence.cms;
 
+import java.beans.Transient;
 import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Id;
 import javax.persistence.MappedSuperclass;
 
+import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.hibernate.annotations.ColumnTransformer;
@@ -17,11 +21,15 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 
 import gov.ca.cwds.data.CmsSystemCodeDeserializer;
+import gov.ca.cwds.data.ReadablePhone;
 import gov.ca.cwds.data.SystemCodeSerializer;
 import gov.ca.cwds.data.std.ApiAddressAware;
+import gov.ca.cwds.data.std.ApiMultiplePhonesAware;
+import gov.ca.cwds.data.std.ApiPhoneAware;
 
 @MappedSuperclass
-public abstract class BaseAddress extends CmsPersistentObject implements ApiAddressAware {
+public abstract class BaseAddress extends CmsPersistentObject
+    implements ApiAddressAware, ApiMultiplePhonesAware {
 
   /**
    * Base serialization version. Increment by class version.
@@ -330,18 +338,6 @@ public abstract class BaseAddress extends CmsPersistentObject implements ApiAddr
     this.governmentEntityCd = governmentEntityCd;
   }
 
-  @Override
-  public String getStreetAddress() {
-    // TODO Auto-generated method stub
-    return null;
-  }
-
-  @Override
-  public String getCounty() {
-    // TODO Auto-generated method stub
-    return null;
-  }
-
   public String getFrgAdrtB() {
     return frgAdrtB;
   }
@@ -352,6 +348,56 @@ public abstract class BaseAddress extends CmsPersistentObject implements ApiAddr
 
   public void setState(Short state) {
     this.state = state;
+  }
+
+  // =======================
+  // ApiMultiplePhonesAware:
+  // =======================
+
+  @JsonIgnore
+  @Override
+  @Transient
+  public ApiPhoneAware[] getPhones() {
+    List<ApiPhoneAware> phones = new ArrayList<>();
+    if (this.primaryNumber != null && !BigDecimal.ZERO.equals(this.primaryNumber)) {
+      phones.add(new ReadablePhone(null, this.primaryNumber.toPlainString(),
+          this.primaryExtension != null ? this.primaryExtension.toString() : null, null));
+    }
+
+    if (this.messageNumber != null && !BigDecimal.ZERO.equals(this.messageNumber)) {
+      phones.add(new ReadablePhone(null, this.messageNumber.toPlainString(),
+          this.messageExtension != null ? this.messageExtension.toString() : null,
+          ApiPhoneAware.PhoneType.Cell));
+    }
+
+    if (this.emergencyNumber != null && !BigDecimal.ZERO.equals(this.emergencyNumber)) {
+      phones.add(new ReadablePhone(null, this.emergencyNumber.toPlainString(),
+          this.emergencyNumber != null ? this.emergencyNumber.toString() : null,
+          ApiPhoneAware.PhoneType.Other));
+    }
+
+    return phones.toArray(new ApiPhoneAware[0]);
+  }
+
+  @Override
+  public String getStreetAddress() {
+    StringBuilder buf = new StringBuilder();
+    buf.append(this.streetNumber).append(" ").append(this.streetName);
+    if (StringUtils.isNotBlank(this.unitNumber)) {
+      buf.append(" ").append(this.unitNumber);
+    }
+    return buf.toString();
+  }
+
+  @Override
+  public String getCounty() {
+    return null;
+  }
+
+  @JsonIgnore
+  @Override
+  public String getAddressId() {
+    return this.id;
   }
 
 }

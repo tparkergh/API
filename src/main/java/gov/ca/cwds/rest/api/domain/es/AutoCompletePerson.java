@@ -28,6 +28,7 @@ import gov.ca.cwds.data.persistence.cms.ISystemCodeCache;
 import gov.ca.cwds.data.std.ApiAddressAware;
 import gov.ca.cwds.data.std.ApiAddressAwareWritable;
 import gov.ca.cwds.data.std.ApiLanguageAware;
+import gov.ca.cwds.data.std.ApiMultipleAddressesAware;
 import gov.ca.cwds.data.std.ApiMultipleLanguagesAware;
 import gov.ca.cwds.data.std.ApiMultiplePhonesAware;
 import gov.ca.cwds.data.std.ApiPersonAware;
@@ -506,14 +507,14 @@ public class AutoCompletePerson
    * @author CWDS API Team
    */
   public static final class AutoCompletePersonAddress
-      implements Serializable, ITypedIdentifier<Long>, ApiAddressAwareWritable {
+      implements Serializable, ITypedIdentifier<String>, ApiAddressAwareWritable {
 
     /**
      * Base serialization version. Increment by class version.
      */
     private static final long serialVersionUID = 1L;
 
-    private Long id;
+    private String id;
 
     @JsonProperty("street_address")
     @JsonInclude(JsonInclude.Include.ALWAYS)
@@ -548,6 +549,9 @@ public class AutoCompletePerson
      * @param addr incoming address object
      */
     public AutoCompletePersonAddress(ApiAddressAware addr) {
+      if (StringUtils.isNotBlank(addr.getAddressId())) {
+        this.setId(addr.getAddressId());
+      }
       if (StringUtils.isNotBlank(addr.getCity())) {
         this.setCity(addr.getCity());
       }
@@ -566,12 +570,12 @@ public class AutoCompletePerson
     }
 
     @Override
-    public Long getId() {
+    public String getId() {
       return id;
     }
 
     @Override
-    public void setId(Long id) {
+    public void setId(String id) {
       this.id = id;
     }
 
@@ -674,6 +678,12 @@ public class AutoCompletePerson
       this.stateType = stateType;
     }
 
+    @JsonIgnore
+    @Override
+    public String getAddressId() {
+      return this.id;
+    }
+
   }
 
   /**
@@ -682,15 +692,14 @@ public class AutoCompletePerson
    * @author CWDS API Team
    */
   public static final class AutoCompletePersonPhone
-      implements Serializable, ITypedIdentifier<Long>, ApiPhoneAwareWritable {
+      implements Serializable, ITypedIdentifier<String>, ApiPhoneAwareWritable {
 
     /**
      * Base serialization version. Increment by class version.
      */
     private static final long serialVersionUID = 1L;
 
-    @JsonInclude(JsonInclude.Include.ALWAYS)
-    private Long id;
+    private String id;
 
     @JsonProperty("number")
     @JsonInclude(JsonInclude.Include.ALWAYS)
@@ -725,13 +734,14 @@ public class AutoCompletePerson
       }
     }
 
+    @JsonIgnore
     @Override
-    public Long getId() {
+    public String getId() {
       return id;
     }
 
     @Override
-    public void setId(Long id) {
+    public void setId(String id) {
       this.id = id;
     }
 
@@ -758,6 +768,7 @@ public class AutoCompletePerson
       this.phoneNumber = phoneNumber;
     }
 
+    @JsonIgnore
     @Override
     public void getPhoneNumberExtension(String phoneNumberExtension) {
       this.phoneNumberExtension = phoneNumberExtension;
@@ -766,6 +777,12 @@ public class AutoCompletePerson
     @Override
     public void setPhoneType(PhoneType phoneType) {
       this.phoneType = phoneType;
+    }
+
+    @JsonIgnore
+    @Override
+    public String getPhoneId() {
+      return this.id;
     }
 
   }
@@ -817,15 +834,6 @@ public class AutoCompletePerson
   @JsonInclude(JsonInclude.Include.ALWAYS)
   private List<AutoCompleteLanguage> languages;
 
-  // R1: bug #141508231:
-  // @JsonIgnore
-  // R2:
-  // @JsonProperty("highlight")
-  // @JsonInclude(JsonInclude.Include.ALWAYS)
-  // @JsonFormat(shape = Shape.OBJECT)
-  // private String highlight;
-
-  // @Transient
   private Map<String, String> highlight;
 
   /**
@@ -882,17 +890,23 @@ public class AutoCompletePerson
           this.setSsn(personAware.getSsn());
         }
 
-        // Elasticsearch highlights
-        // if (StringUtils.isNotBlank(esp.getHighlightFields())) {
-        // this.setHighlight(esp.getHighlightFields());
-        // }
+        // Highlights.
         if (esp.getHighlights() != null && !esp.getHighlights().isEmpty()) {
           this.setHighlight(esp.getHighlights());
         }
       }
+
       // Address.
       if (esp.getSourceObj() instanceof ApiAddressAware) {
         addAddress(new AutoCompletePersonAddress((ApiAddressAware) esp.getSourceObj()));
+      }
+
+      if (esp.getSourceObj() instanceof ApiMultipleAddressesAware) {
+        final ApiMultipleAddressesAware theAddresses =
+            (ApiMultipleAddressesAware) esp.getSourceObj();
+        for (ApiAddressAware phone : theAddresses.getAddresses()) {
+          addAddress(new AutoCompletePersonAddress(phone));
+        }
       }
 
       // Phone.
@@ -901,9 +915,12 @@ public class AutoCompletePerson
         for (ApiPhoneAware phone : thePhones.getPhones()) {
           addPhone(new AutoCompletePersonPhone(phone));
         }
+      } else if (esp.getSourceObj() instanceof ApiPhoneAware) {
+        final ApiPhoneAware phone = (ApiPhoneAware) esp.getSourceObj();
+        addPhone(new AutoCompletePersonPhone(phone));
       }
 
-      // Language
+      // Language.
       if (esp.getSourceObj() instanceof ApiMultipleLanguagesAware) {
         final ApiMultipleLanguagesAware langs = (ApiMultipleLanguagesAware) esp.getSourceObj();
         for (ApiLanguageAware lang : langs.getLanguages()) {

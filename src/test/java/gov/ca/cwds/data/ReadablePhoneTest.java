@@ -32,7 +32,7 @@ public class ReadablePhoneTest {
   @Test
   public void testConstructor() {
 
-    ReadablePhone rp = new ReadablePhone(phoneNumber, phoneNumberExtension, pt);
+    ReadablePhone rp = new ReadablePhone(null, phoneNumber, phoneNumberExtension, pt);
     assertThat(rp.getPhoneNumber(), is(equalTo(phoneNumber)));
     assertThat(rp.getPhoneNumberExtension(), is(equalTo(phoneNumberExtension)));
     assertThat(rp.getPhoneType(), is(equalTo(pt)));
@@ -60,7 +60,6 @@ public class ReadablePhoneTest {
   }
 
   private ReadablePhone validReadablePhone() {
-    ReadablePhone rp = new ReadablePhone("408 690-1234", "987", PhoneType.Cell);
-    return rp;
+    return new ReadablePhone(null, "408 690-1234", "987", PhoneType.Cell);
   }
 }

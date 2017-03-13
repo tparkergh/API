@@ -359,7 +359,7 @@ public abstract class BaseAttorney extends CmsPersistentObject
   }
 
   // =======================
-  // IMultiplePhonesAware:
+  // ApiMultiplePhonesAware:
   // =======================
 
   @JsonIgnore
@@ -368,7 +368,7 @@ public abstract class BaseAttorney extends CmsPersistentObject
   public ApiPhoneAware[] getPhones() {
     List<ApiPhoneAware> phones = new ArrayList<>();
     if (this.primaryPhoneNumber != null && !BigDecimal.ZERO.equals(this.primaryPhoneNumber)) {
-      phones.add(new ReadablePhone(this.primaryPhoneNumber.toPlainString(),
+      phones.add(new ReadablePhone(null, this.primaryPhoneNumber.toPlainString(),
           this.primaryPhoneExtensionNumber != null ? this.primaryPhoneExtensionNumber.toString()
               : null,
           null));
@@ -377,7 +377,7 @@ public abstract class BaseAttorney extends CmsPersistentObject
     if (this.messagePhoneNumber != null && !BigDecimal.ZERO.equals(this.messagePhoneNumber)) {
       LOGGER.debug("add message phone");
       phones
-          .add(new ReadablePhone(
+          .add(new ReadablePhone(null,
               this.messagePhoneNumber.toPlainString(), this.messagePhoneExtensionNumber != null
                   ? this.messagePhoneExtensionNumber.toString() : null,
               ApiPhoneAware.PhoneType.Cell));

@@ -437,7 +437,7 @@ public abstract class BaseReporter extends CmsPersistentObject
   public ApiPhoneAware[] getPhones() {
     List<ApiPhoneAware> phones = new ArrayList<>();
     if (this.primaryPhoneNumber != null && !BigDecimal.ZERO.equals(this.primaryPhoneNumber)) {
-      phones.add(new ReadablePhone(this.primaryPhoneNumber.toPlainString(),
+      phones.add(new ReadablePhone(null, this.primaryPhoneNumber.toPlainString(),
           this.primaryPhoneExtensionNumber != null ? this.primaryPhoneExtensionNumber.toString()
               : null,
           null));
@@ -445,13 +445,18 @@ public abstract class BaseReporter extends CmsPersistentObject
 
     if (this.messagePhoneNumber != null && !BigDecimal.ZERO.equals(this.messagePhoneNumber)) {
       phones
-          .add(new ReadablePhone(
+          .add(new ReadablePhone(null,
               this.messagePhoneNumber.toPlainString(), this.messagePhoneExtensionNumber != null
                   ? this.messagePhoneExtensionNumber.toString() : null,
               ApiPhoneAware.PhoneType.Cell));
     }
 
     return phones.toArray(new ApiPhoneAware[0]);
+  }
+
+  @Override
+  public String getAddressId() {
+    return null;
   }
 
 }

@@ -1,7 +1,9 @@
 package gov.ca.cwds.data.persistence.cms.rep;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.LinkedHashSet;
+import java.util.List;
 import java.util.Set;
 
 import javax.persistence.Column;
@@ -20,14 +22,20 @@ import org.hibernate.annotations.NamedNativeQueries;
 import org.hibernate.annotations.NamedNativeQuery;
 import org.hibernate.annotations.Type;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
 import gov.ca.cwds.data.persistence.PersistentObject;
 import gov.ca.cwds.data.persistence.cms.BaseClient;
+import gov.ca.cwds.data.persistence.cms.ReplicatedAddress;
 import gov.ca.cwds.data.persistence.cms.ReplicatedClientAddress;
+import gov.ca.cwds.data.std.ApiAddressAware;
+import gov.ca.cwds.data.std.ApiMultipleAddressesAware;
 import gov.ca.cwds.data.std.ApiMultipleLanguagesAware;
+import gov.ca.cwds.data.std.ApiMultiplePhonesAware;
 import gov.ca.cwds.data.std.ApiPersonAware;
+import gov.ca.cwds.data.std.ApiPhoneAware;
 
 /**
  * {@link PersistentObject} representing a Client as a {@link CmsReplicatedEntity}.
@@ -78,7 +86,8 @@ import gov.ca.cwds.data.std.ApiPersonAware;
 @JsonPropertyOrder(alphabetic = true)
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class ReplicatedClient extends BaseClient
-    implements ApiPersonAware, ApiMultipleLanguagesAware, CmsReplicatedEntity {
+    implements ApiPersonAware, ApiMultipleLanguagesAware, ApiMultipleAddressesAware,
+    ApiMultiplePhonesAware, CmsReplicatedEntity {
 
   /**
    * Base serialization version. Increment by class version.
@@ -127,6 +136,46 @@ public class ReplicatedClient extends BaseClient
     if (clientAddress != null) {
       this.clientAddresses.add(clientAddress);
     }
+  }
+
+  // ============================
+  // ApiMultipleAddressesAware:
+  // ============================
+
+  @JsonIgnore
+  @Override
+  public ApiAddressAware[] getAddresses() {
+    List<ApiAddressAware> ret = new ArrayList<>();
+    if (this.clientAddresses != null && !this.clientAddresses.isEmpty()) {
+      for (ReplicatedClientAddress clAddr : this.clientAddresses) {
+        for (ReplicatedAddress addr : clAddr.getAddresses()) {
+          ret.add(addr);
+        }
+      }
+    }
+
+    return ret.toArray(new ApiAddressAware[0]);
+  }
+
+  // ============================
+  // ApiMultiplePhonesAware:
+  // ============================
+
+  @JsonIgnore
+  @Override
+  public ApiPhoneAware[] getPhones() {
+    List<ApiPhoneAware> phones = new ArrayList<>();
+    if (this.clientAddresses != null && !this.clientAddresses.isEmpty()) {
+      for (ReplicatedClientAddress clAddr : this.clientAddresses) {
+        for (ReplicatedAddress addr : clAddr.getAddresses()) {
+          for (ApiPhoneAware phone : addr.getPhones()) {
+            phones.add(phone);
+          }
+        }
+      }
+    }
+
+    return phones.toArray(new ApiPhoneAware[0]);
   }
 
   @Override

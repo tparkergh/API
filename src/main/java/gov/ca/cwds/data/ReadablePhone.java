@@ -19,6 +19,7 @@ public final class ReadablePhone implements ApiPhoneAware, Serializable {
    */
   private static final long serialVersionUID = 1L;
 
+  private final String phoneId;
   private final String phoneNumber;
   private final String phoneNumberExtension;
   private final PhoneType phoneType;
@@ -26,17 +27,25 @@ public final class ReadablePhone implements ApiPhoneAware, Serializable {
   /**
    * Construct a readable phone from all required values.
    * 
-   * @param phoneNumber concatenated phone number. not atomic.
+   * @param phoneId phone identifier (primary key), if any
+   * @param phoneNumber concatenated phone number. Not atomic fields.
    * @param phoneNumberExtension phone extension
    * @param phoneType phone type
    */
   @JsonCreator
-  public ReadablePhone(@JsonProperty("phoneNumber") String phoneNumber,
+  public ReadablePhone(@JsonProperty("phoneId") String phoneId,
+      @JsonProperty("phoneNumber") String phoneNumber,
       @JsonProperty("phoneNumberExtension") String phoneNumberExtension,
       @JsonProperty("phoneType") PhoneType phoneType) {
+    this.phoneId = phoneId;
     this.phoneNumber = phoneNumber;
     this.phoneNumberExtension = phoneNumberExtension;
     this.phoneType = phoneType;
+  }
+
+  @Override
+  public String getPhoneId() {
+    return phoneId;
   }
 
   @Override
