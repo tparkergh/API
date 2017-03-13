@@ -530,7 +530,8 @@ public class AutoCompletePerson
     @JsonIgnore
     private AutoCompleteCounty county;
 
-    @JsonInclude(JsonInclude.Include.ALWAYS)
+    // @JsonInclude(JsonInclude.Include.ALWAYS)
+    @JsonIgnore
     private String zip;
 
     @JsonProperty("type")
@@ -612,9 +613,10 @@ public class AutoCompletePerson
       }
     }
 
+    @JsonProperty("zip")
     @Override
     public String getZip() {
-      return zip;
+      return StringUtils.isNotBlank(this.zip) && !"0".equals(this.zip) ? this.zip : null;
     }
 
     @Override
