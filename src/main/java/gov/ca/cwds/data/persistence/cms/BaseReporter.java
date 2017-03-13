@@ -131,10 +131,18 @@ public abstract class BaseReporter extends CmsPersistentObject
   @Column(name = "CNTY_SPFCD")
   protected String countySpecificCode;
 
+  /**
+   * Default constructor.
+   */
   public BaseReporter() {
     super();
   }
 
+  /**
+   * Alternative constructor.
+   * 
+   * @param lastUpdatedId last updated id
+   */
   public BaseReporter(String lastUpdatedId) {
     super(lastUpdatedId);
   }
@@ -416,12 +424,16 @@ public abstract class BaseReporter extends CmsPersistentObject
     return buf.toString();
   }
 
+  @JsonIgnore
   @Override
+  @Transient
   public String getCounty() {
     return this.countySpecificCode;
   }
 
+  @JsonIgnore
   @Override
+  @Transient
   public ApiPhoneAware[] getPhones() {
     List<ApiPhoneAware> phones = new ArrayList<>();
     if (this.primaryPhoneNumber != null && !BigDecimal.ZERO.equals(this.primaryPhoneNumber)) {

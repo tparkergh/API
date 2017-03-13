@@ -369,24 +369,4 @@ public final class Client extends BaseClient
         + zippyCreatedIndicator + "]";
   }
 
-
-  // =============================
-  // ApiMultipleAddressesAware:
-  // =============================
-
-  // @Override
-  // public ApiAddressAware[] getAddresses() {
-  // List<ApiAddressAware> ret = new ArrayList<>();
-  //
-  // if (this.clientAddresses != null && !this.clientAddresses.isEmpty()) {
-  // for (final ReplicatedClientAddress ca : this.clientAddresses) {
-  // // if (ca.getAddress() != null) {
-  // // ret.add(ca.getAddress());
-  // // }
-  // }
-  // }
-  //
-  // return ret.toArray(new ApiAddressAware[0]);
-  // }
-
 }

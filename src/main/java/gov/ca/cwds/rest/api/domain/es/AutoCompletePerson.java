@@ -692,7 +692,7 @@ public class AutoCompletePerson
     @JsonInclude(JsonInclude.Include.ALWAYS)
     private Long id;
 
-    @JsonProperty("phone_number")
+    @JsonProperty("number")
     @JsonInclude(JsonInclude.Include.ALWAYS)
     private String phoneNumber;
 
@@ -736,16 +736,19 @@ public class AutoCompletePerson
     }
 
     @Override
+    @JsonIgnore
     public String getPhoneNumber() {
       return this.phoneNumber;
     }
 
     @Override
+    @JsonIgnore
     public String getPhoneNumberExtension() {
       return this.phoneNumberExtension;
     }
 
     @Override
+    @JsonIgnore
     public PhoneType getPhoneType() {
       return this.phoneType;
     }
