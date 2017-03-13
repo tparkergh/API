@@ -31,7 +31,6 @@ public class ReadablePhoneTest {
 
   @Test
   public void testConstructor() {
-
     ReadablePhone rp = new ReadablePhone(null, phoneNumber, phoneNumberExtension, pt);
     assertThat(rp.getPhoneNumber(), is(equalTo(phoneNumber)));
     assertThat(rp.getPhoneNumberExtension(), is(equalTo(phoneNumberExtension)));

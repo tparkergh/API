@@ -67,6 +67,7 @@ public final class ReadablePhone implements ApiPhoneAware, Serializable {
   public int hashCode() {
     final int prime = 31;
     int result = 1;
+    result = prime * result + ((phoneId == null) ? 0 : phoneId.hashCode());
     result = prime * result + ((phoneNumber == null) ? 0 : phoneNumber.hashCode());
     result =
         prime * result + ((phoneNumberExtension == null) ? 0 : phoneNumberExtension.hashCode());
@@ -83,18 +84,28 @@ public final class ReadablePhone implements ApiPhoneAware, Serializable {
     if (getClass() != obj.getClass())
       return false;
     ReadablePhone other = (ReadablePhone) obj;
+
+    if (phoneId == null) {
+      if (other.phoneId != null)
+        return false;
+    } else if (!phoneId.equals(other.phoneId))
+      return false;
+
     if (phoneNumber == null) {
       if (other.phoneNumber != null)
         return false;
     } else if (!phoneNumber.equals(other.phoneNumber))
       return false;
+
     if (phoneNumberExtension == null) {
       if (other.phoneNumberExtension != null)
         return false;
     } else if (!phoneNumberExtension.equals(other.phoneNumberExtension))
       return false;
+
     if (phoneType != other.phoneType)
       return false;
+
     return true;
   }
 
