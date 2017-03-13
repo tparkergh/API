@@ -1,6 +1,6 @@
 package gov.ca.cwds.rest.api.domain.cms;
 
-import java.util.HashSet;
+import java.util.LinkedHashSet;
 import java.util.Set;
 
 import gov.ca.cwds.rest.api.Response;
@@ -40,7 +40,7 @@ public class PostedCmsReferral extends DomainObject implements Response {
     this.crossReport = crossReport;
     this.referralClient = referralClient;
     this.reporter = reporter;
-    this.client = new HashSet<>();
+    this.client = new LinkedHashSet<>();
     for (PostedClient resultClient : client)
       this.client.add(resultClient);
   }

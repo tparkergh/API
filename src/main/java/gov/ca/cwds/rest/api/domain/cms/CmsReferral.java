@@ -20,6 +20,11 @@ import io.swagger.annotations.ApiModelProperty;
  */
 public class CmsReferral extends DomainObject implements Request, Response {
 
+  /**
+   * 
+   */
+  private static final long serialVersionUID = 1L;
+
   @NotNull
   @ApiModelProperty(required = true, readOnly = false)
   @Valid

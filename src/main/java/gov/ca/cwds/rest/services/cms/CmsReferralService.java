@@ -1,7 +1,7 @@
 package gov.ca.cwds.rest.services.cms;
 
 import java.io.Serializable;
-import java.util.HashSet;
+import java.util.LinkedHashSet;
 import java.util.Set;
 
 import org.apache.commons.lang3.NotImplementedException;
@@ -142,7 +142,7 @@ public class CmsReferralService implements CrudsService {
         incomingReporter.getZipSuffixNumber(), incomingReporter.getCountySpecificCode());
     PostedReporter postedreporter = this.reporterService.create(reporter);
 
-    Set<PostedClient> postedClients = new HashSet<>();
+    Set<PostedClient> postedClients = new LinkedHashSet<>();
     if (cmsReferral.getClient() != null && !cmsReferral.getClient().isEmpty()) {
       for (Client incomingClient : cmsReferral.getClient()) {
         Client client = new Client(incomingClient.getAdjudicatedDelinquentIndicator(),
