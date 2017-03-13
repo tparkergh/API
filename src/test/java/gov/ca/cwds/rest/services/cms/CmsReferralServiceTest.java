@@ -124,7 +124,8 @@ public class CmsReferralServiceTest {
         MAPPER.readValue(fixture("fixtures/domain/cms/CmsReferral/valid/clientCmsReferral.json"),
             new TypeReference<Set<Client>>() {});
     gov.ca.cwds.data.persistence.cms.Client clientToCreate =
-        new gov.ca.cwds.data.persistence.cms.Client("ABC1234567", clientDomain, "2016-10-31");
+        new gov.ca.cwds.data.persistence.cms.Client("ABC1234567",
+            (Client) clientDomain.toArray()[0], "2016-10-31");
 
     Referral referralRequest = new Referral(referralToCreate);
     ReferralClient referralClientRequest = new ReferralClient(referralClientToCreate);
@@ -213,7 +214,8 @@ public class CmsReferralServiceTest {
         MAPPER.readValue(fixture("fixtures/domain/cms/CmsReferral/valid/clientCmsReferral.json"),
             new TypeReference<Set<Client>>() {});
     gov.ca.cwds.data.persistence.cms.Client clientToCreate =
-        new gov.ca.cwds.data.persistence.cms.Client("ABC1234567", clientDomain, "2016-10-31");
+        new gov.ca.cwds.data.persistence.cms.Client("ABC1234567",
+            (Client) clientDomain.toArray()[0], "2016-10-31");
 
     Referral referralRequest = new Referral(referralToCreate);
     ReferralClient referralClientRequest = new ReferralClient(referralClientToCreate);
@@ -287,7 +289,8 @@ public class CmsReferralServiceTest {
         MAPPER.readValue(fixture("fixtures/domain/cms/CmsReferral/valid/clientCmsReferral.json"),
             new TypeReference<Set<Client>>() {});
     gov.ca.cwds.data.persistence.cms.Client clientToCreate =
-        new gov.ca.cwds.data.persistence.cms.Client("ABC1234567", clientDomain, "2016-10-31");
+        new gov.ca.cwds.data.persistence.cms.Client("ABC1234567",
+            (Client) clientDomain.toArray()[0], "2016-10-31");
 
     Referral referralRequest = new Referral(referralToCreate);
     ReferralClient referralClientRequest = new ReferralClient(referralClientToCreate);
