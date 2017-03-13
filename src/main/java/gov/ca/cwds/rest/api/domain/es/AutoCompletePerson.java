@@ -530,7 +530,6 @@ public class AutoCompletePerson
     @JsonIgnore
     private AutoCompleteCounty county;
 
-    // @JsonInclude(JsonInclude.Include.ALWAYS)
     @JsonIgnore
     private String zip;
 
