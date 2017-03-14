@@ -496,7 +496,7 @@ public class AutoCompletePerson
    * @author CWDS API Team
    */
   @SuppressWarnings("javadoc")
-  @JsonFormat(shape = JsonFormat.Shape.OBJECT)
+  @JsonFormat(shape = JsonFormat.Shape.STRING)
   public enum AutoCompletePersonAddressType {
     Home, School, Work, Placement, Homeless, Other // NOSONAR
   }
@@ -713,7 +713,7 @@ public class AutoCompletePerson
     private String phoneNumberExtension;
 
     @JsonProperty("type")
-    @JsonInclude(JsonInclude.Include.ALWAYS)
+    @JsonFormat(shape = JsonFormat.Shape.STRING)
     private ApiPhoneAware.PhoneType phoneType;
 
     /**
@@ -809,7 +809,7 @@ public class AutoCompletePerson
   private String lastName;
 
   @JsonProperty("name_suffix")
-  @JsonInclude(JsonInclude.Include.ALWAYS)
+  // @JsonInclude(JsonInclude.Include.ALWAYS)
   private String nameSuffix;
 
   @JsonProperty("gender")

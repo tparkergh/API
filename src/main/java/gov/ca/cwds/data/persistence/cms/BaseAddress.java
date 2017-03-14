@@ -104,7 +104,7 @@ public abstract class BaseAddress extends CmsPersistentObject
 
   @Type(type = "short")
   @Column(name = "ZIP_SFX_NO", nullable = false)
-  protected Short zip5;
+  protected Short zip4;
 
   @Column(name = "POSTDIR_CD", nullable = false)
   @ColumnTransformer(read = "trim(POSTDIR_CD)")
@@ -282,12 +282,12 @@ public abstract class BaseAddress extends CmsPersistentObject
     this.addressDescription = addressDescription;
   }
 
-  public Short getZip5() {
-    return zip5;
+  public Short getZip4() {
+    return zip4;
   }
 
-  public void setZip5(Short zip5) {
-    this.zip5 = zip5;
+  public void setZip4(Short zip4) {
+    this.zip4 = zip4;
   }
 
   public String getPostDirCd() {
