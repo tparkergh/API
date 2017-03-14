@@ -530,6 +530,7 @@ public class AutoCompletePerson
     @JsonIgnore
     private AutoCompleteCounty county;
 
+    // Getter displays JSON.
     @JsonIgnore
     private String zip;
 
