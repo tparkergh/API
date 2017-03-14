@@ -48,8 +48,7 @@
                 <elementProp name="" elementType="HTTPArgument">
                   <boolProp name="HTTPArgument.always_encode">false</boolProp>
                   <stringProp name="Argument.value">{&#xd;
-&quot;referral&quot;: &#xd;
-{&#xd;
+  &quot;referral&quot;: {&#xd;
  &quot;additionalInfoIncludedCode&quot; : false,&#xd;
  &quot;anonymousReporterIndicator&quot; : false,&#xd;
  &quot;applicationForPetitionIndicator&quot; : false,&#xd;
@@ -98,8 +97,8 @@
  &quot;limitedAccessDesc&quot; : null,&#xd;
  &quot;originalClosureDate&quot; : null&#xd;
 },&#xd;
-&quot;allegation&quot;: &#xd;
-{&#xd;
+  &quot;allegation&quot;: [&#xd;
+    {&#xd;
  &quot;abuseEndDate&quot; : null,&#xd;
  &quot;abuseFrequency&quot; : 1234,&#xd;
  &quot;abuseFrequencyPeriodCode&quot; : &quot;D&quot;,&#xd;
@@ -118,9 +117,10 @@
  &quot;countySpecificCode&quot; : &quot;20&quot;,&#xd;
  &quot;zippyCreatedIndicator&quot; : false,&#xd;
  &quot;placementFacilityType&quot; : 1417&#xd;
-},&#xd;
-&quot;crossReport&quot;:  &#xd;
-{&#xd;
+}&#xd;
+  ],&#xd;
+  &quot;crossReport&quot;: [&#xd;
+    {&#xd;
  &quot;thirdId&quot; : &quot;LbZSuBw0X5&quot;,&#xd;
  &quot;crossReportMethodType&quot; : 2097,&#xd;
  &quot;filedOutOfStateIndicator&quot; : false,&#xd;
@@ -142,9 +142,10 @@
  &quot;lawEnforcementIndicator&quot; : false,&#xd;
  &quot;outStateLawEnforcementIndicator&quot; : false,&#xd;
  &quot;satisfyCrossReportIndicator&quot; : false&#xd;
-},&#xd;
-&quot;referralClient&quot;:  &#xd;
-{&#xd;
+}&#xd;
+  ],&#xd;
+  &quot;referralClient&quot;: [&#xd;
+    {&#xd;
  &quot;approvalNumber&quot; : null,&#xd;
  &quot;approvalStatusType&quot; : 118,&#xd;
  &quot;dispositionClosureReasonType&quot; : 0,&#xd;
@@ -161,15 +162,15 @@
  &quot;mentalHealthIssuesIndicator&quot; : null,&#xd;
  &quot;alcoholIndicator&quot; : null,&#xd;
  &quot;drugIndicator&quot; : null&#xd;
-},&#xd;
-&quot;reporter&quot;:  &#xd;
-{&#xd;
+}&#xd;
+  ],&#xd;
+  &quot;reporter&quot;: {&#xd;
  &quot;referralId&quot; : &quot;5Y3vKVs0X5&quot;,&#xd;
  &quot;badgeNumber&quot; : &quot; &quot;,&#xd;
  &quot;cityName&quot; : &quot;Freson&quot;,&#xd;
  &quot;colltrClientRptrReltnshpType&quot; : 0,&#xd;
  &quot;communicationMethodType&quot; : 0,&#xd;
- &quot;confidentialWaiverIndicator&quot; : true,&#xd;
+ &quot;confidentialWaiverIndicator&quot; : false,&#xd;
  &quot;drmsMandatedRprtrFeedback&quot; : null,&#xd;
  &quot;employerName&quot; : &quot;&quot;,&#xd;
  &quot;feedbackDate&quot; : &quot;2016-10-31&quot;,&#xd;
@@ -191,7 +192,77 @@
  &quot;lawEnforcementId&quot; : &quot;ABC1234567&quot;,&#xd;
  &quot;zipSuffixNumber&quot; : 0,&#xd;
  &quot;countySpecificCode&quot; : &quot;99&quot;&#xd;
+},&#xd;
+  &quot;client&quot;: [&#xd;
+    {&#xd;
+  &quot;adjudicatedDelinquentIndicator&quot;: false,&#xd;
+  &quot;adoptionStatusCode&quot;: &quot;N&quot;,&#xd;
+  &quot;alienRegistrationNumber&quot;: &quot;          &quot;,&#xd;
+  &quot;birthCity&quot;: &quot; &quot;,&#xd;
+  &quot;birthCountryCodeType&quot;: 0,&#xd;
+  &quot;birthDate&quot;: &quot;1977-09-01&quot;,&#xd;
+  &quot;birthFacilityName&quot;: &quot; &quot;,&#xd;
+  &quot;birthStateCodeType&quot;: 0,&#xd;
+  &quot;birthplaceVerifiedIndicator&quot;: false,&#xd;
+  &quot;childClientIndicatorVar&quot;: false,&#xd;
+  &quot;clientIndexNumber&quot;: null,&#xd;
+  &quot;commentDescription&quot;: &quot;                                                                                                                      &quot;,&#xd;
+  &quot;commonFirstName&quot;: &quot;joey               &quot;,&#xd;
+  &quot;commonLastName&quot;: &quot;money                   &quot;,&#xd;
+  &quot;commonMiddleName&quot;: &quot;r                  &quot;,&#xd;
+  &quot;confidentialityActionDate&quot;: null,&#xd;
+  &quot;confidentialityInEffectIndicator&quot;: false,&#xd;
+  &quot;creationDate&quot;: &quot;2016-09-30&quot;,&#xd;
+  &quot;currCaChildrenServIndicator&quot;: false,&#xd;
+  &quot;currentlyOtherDescription&quot;: &quot;                       &quot;,&#xd;
+  &quot;currentlyRegionalCenterIndicator&quot;: false,&#xd;
+  &quot;deathDate&quot;: null,&#xd;
+  &quot;deathDateVerifiedIndicator&quot;: false,&#xd;
+  &quot;deathPlace&quot;: null,&#xd;
+  &quot;deathReasonText&quot;: null,&#xd;
+  &quot;driverLicenseNumber&quot;: &quot;N333000444         &quot;,&#xd;
+  &quot;driverLicenseStateCodeType&quot;: 1828,&#xd;
+  &quot;emailAddress&quot;: null,&#xd;
+  &quot;estimatedDobCode&quot;: &quot;N&quot;,&#xd;
+  &quot;ethUnableToDetReasonCode&quot;: null,&#xd;
+  &quot;fatherParentalRightTermDate&quot;: null,&#xd;
+  &quot;genderCode&quot;: &quot;M&quot;,&#xd;
+  &quot;healthSummaryText&quot;: null,&#xd;
+  &quot;hispUnableToDetReasonCode&quot;: &quot;K&quot;,&#xd;
+  &quot;hispanicOriginCode&quot;: &quot;Z&quot;,&#xd;
+  &quot;immigrationCountryCodeType&quot;: 0,&#xd;
+  &quot;immigrationStatusType&quot;: 0,&#xd;
+  &quot;incapacitatedParentCode&quot;: &quot;U&quot;,&#xd;
+  &quot;individualHealthCarePlanIndicator&quot;: false,&#xd;
+  &quot;limitationOnScpHealthIndicator&quot;: false,&#xd;
+  &quot;literateCode&quot;: &quot;Y&quot;,&#xd;
+  &quot;maritalCohabitatnHstryIndicatorVar&quot;: false,&#xd;
+  &quot;maritalStatusType&quot;: 0,&#xd;
+  &quot;militaryStatusCode&quot;: &quot;U&quot;,&#xd;
+  &quot;motherParentalRightTermDate&quot;: null,&#xd;
+  &quot;namePrefixDescription&quot;: &quot;      &quot;,&#xd;
+  &quot;nameType&quot;: 1313,&#xd;
+  &quot;outstandingWarrantIndicator&quot;: false,&#xd;
+  &quot;prevCaChildrenServIndicator&quot;: false,&#xd;
+  &quot;prevOtherDescription&quot;: &quot; &quot;,&#xd;
+  &quot;prevRegionalCenterIndicator&quot;: false,&#xd;
+  &quot;primaryEthnicityType&quot;: 6352,&#xd;
+  &quot;primaryLanguageType&quot;: 1253,&#xd;
+  &quot;religionType&quot;: 0,&#xd;
+  &quot;secondaryLanguageType&quot;: 0,&#xd;
+  &quot;sensitiveHlthInfoOnFileIndicator&quot;: false,&#xd;
+  &quot;sensitivityIndicator&quot;: &quot;N&quot;,&#xd;
+  &quot;soc158PlacementCode&quot;: &quot;N&quot;,&#xd;
+  &quot;soc158SealedClientIndicator&quot;: false,&#xd;
+  &quot;socialSecurityNumChangedCode&quot;: &quot;N&quot;,&#xd;
+  &quot;socialSecurityNumber&quot;: &quot;222333555&quot;,&#xd;
+  &quot;suffixTitleDescription&quot;: &quot; &quot;,&#xd;
+  &quot;tribalAncestryClientIndicatorVar&quot;: false,&#xd;
+  &quot;tribalMembrshpVerifctnIndicatorVar&quot;: false,&#xd;
+  &quot;unemployedParentCode&quot;: &quot;U&quot;,&#xd;
+  &quot;zippyCreatedIndicator&quot;: false&#xd;
 }&#xd;
+]&#xd;
 }</stringProp>
                   <stringProp name="Argument.metadata">=</stringProp>
                 </elementProp>
@@ -215,10 +286,10 @@
           </HTTPSamplerProxy>
           <hashTree>
             <JSONPostProcessor guiclass="JSONPostProcessorGui" testclass="JSONPostProcessor" testname="extract from json referralId" enabled="true">
-              <stringProp name="JSONPostProcessor.referenceNames">referralId; allegationId; crossReportThirdId</stringProp>
-              <stringProp name="JSONPostProcessor.jsonPathExprs">referral.id; allegation.id; crossReport.thirdId</stringProp>
+              <stringProp name="JSONPostProcessor.referenceNames">referralId; allegationId; crossReportThirdId; clientId</stringProp>
+              <stringProp name="JSONPostProcessor.jsonPathExprs">referral.id; allegation.id; $..crossReport[0].thirdId; $..client[0].id</stringProp>
               <stringProp name="JSONPostProcessor.match_numbers"></stringProp>
-              <stringProp name="JSONPostProcessor.defaultValues">referralId; allegationId; thirdId</stringProp>
+              <stringProp name="JSONPostProcessor.defaultValues">referralId; allegationId; thirdId; clientId</stringProp>
             </JSONPostProcessor>
             <hashTree/>
             <ResultCollector guiclass="ViewResultsFullVisualizer" testclass="ResultCollector" testname="View Results Tree" enabled="true">
@@ -360,6 +431,18 @@ if(!success){
             <stringProp name="queryArgumentsTypes"></stringProp>
             <stringProp name="variableNames">IDENTIFIER</stringProp>
             <stringProp name="resultVariable">nsReporter</stringProp>
+            <stringProp name="queryTimeout"></stringProp>
+            <stringProp name="resultSetHandler">Store as String</stringProp>
+          </JDBCSampler>
+          <hashTree/>
+          <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="NS Client JDBC Request" enabled="true">
+            <stringProp name="dataSource">docker</stringProp>
+            <stringProp name="queryType">Select Statement</stringProp>
+            <stringProp name="query">select * from CWSINT.CLIENT_T where IDENTIFIER = &apos;${clientId}&apos;</stringProp>
+            <stringProp name="queryArguments"></stringProp>
+            <stringProp name="queryArgumentsTypes"></stringProp>
+            <stringProp name="variableNames">IDENTIFIER</stringProp>
+            <stringProp name="resultVariable">nsClient</stringProp>
             <stringProp name="queryTimeout"></stringProp>
             <stringProp name="resultSetHandler">Store as String</stringProp>
           </JDBCSampler>
@@ -648,7 +731,7 @@ if(success){
           <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="Legacy CrossReport JDBC Request" enabled="true">
             <stringProp name="dataSource">taborda</stringProp>
             <stringProp name="queryType">Select Statement</stringProp>
-            <stringProp name="query">select * from CWSINT.CRSS_RPT where THIRD_ID = &apos;${__P(legacy.baseline.crossreport.thirdid)}&apos;</stringProp>
+            <stringProp name="query">select * from CWSINT.CRSS_RPT where THIRD_ID = &apos;${__P(legacy.baseline.$..crossReport[0].thirdId)}&apos;</stringProp>
             <stringProp name="queryArguments"></stringProp>
             <stringProp name="queryArgumentsTypes"></stringProp>
             <stringProp name="variableNames">IDENTIFIER</stringProp>
@@ -894,6 +977,102 @@ if(success){
      log.error(errormsg);
      prev.setStopTestNow(true);
 }
+</stringProp>
+            </BeanShellPostProcessor>
+            <hashTree/>
+            <ResultCollector guiclass="ViewResultsFullVisualizer" testclass="ResultCollector" testname="View Results Tree" enabled="true">
+              <boolProp name="ResultCollector.error_logging">false</boolProp>
+              <objProp>
+                <name>saveConfig</name>
+                <value class="SampleSaveConfiguration">
+                  <time>true</time>
+                  <latency>true</latency>
+                  <timestamp>true</timestamp>
+                  <success>true</success>
+                  <label>true</label>
+                  <code>true</code>
+                  <message>true</message>
+                  <threadName>true</threadName>
+                  <dataType>true</dataType>
+                  <encoding>false</encoding>
+                  <assertions>true</assertions>
+                  <subresults>true</subresults>
+                  <responseData>false</responseData>
+                  <samplerData>false</samplerData>
+                  <xml>false</xml>
+                  <fieldNames>true</fieldNames>
+                  <responseHeaders>false</responseHeaders>
+                  <requestHeaders>false</requestHeaders>
+                  <responseDataOnError>false</responseDataOnError>
+                  <saveAssertionResultsFailureMessage>true</saveAssertionResultsFailureMessage>
+                  <assertionsResultsToSave>0</assertionsResultsToSave>
+                  <bytes>true</bytes>
+                  <threadCounts>true</threadCounts>
+                  <idleTime>true</idleTime>
+                </value>
+              </objProp>
+              <stringProp name="filename"></stringProp>
+            </ResultCollector>
+            <hashTree/>
+          </hashTree>
+          <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="Legacy Client JDBC Request" enabled="true">
+            <stringProp name="dataSource">taborda</stringProp>
+            <stringProp name="queryType">Select Statement</stringProp>
+            <stringProp name="query">select * from CWSINT.CLIENT_T where IDENTIFIER = &apos;${__P(legacy.baseline.$..client[0].id)}&apos;</stringProp>
+            <stringProp name="queryArguments"></stringProp>
+            <stringProp name="queryArgumentsTypes"></stringProp>
+            <stringProp name="variableNames">IDENTIFIER</stringProp>
+            <stringProp name="resultVariable">legacyClient</stringProp>
+            <stringProp name="queryTimeout"></stringProp>
+            <stringProp name="resultSetHandler">Store as String</stringProp>
+          </JDBCSampler>
+          <hashTree>
+            <BeanShellPostProcessor guiclass="TestBeanGUI" testclass="BeanShellPostProcessor" testname="BeanShell PostProcessor" enabled="true">
+              <boolProp name="resetInterpreter">false</boolProp>
+              <stringProp name="parameters">IDENTIFIER ADPTN_STCD ALN_REG_NO BIRTH_DT BR_FAC_NM B_STATE_C B_CNTRY_C CHLD_CLT_B COM_FST_NM COM_LST_NM COM_MID_NM CONF_EFIND CONF_ACTDT CREATN_DT DEATH_DT DTH_RN_TXT DRV_LIC_NO D_STATE_C GENDER_CD I_CNTRY_C IMGT_STC INCAPC_CD LITRATE_CD MAR_HIST_B MRTL_STC MILT_STACD NMPRFX_DSC NAME_TPC OUTWRT_IND P_ETHNCTYC P_LANG_TPC RLGN_TPC S_LANG_TC SENSTV_IND SNTV_HLIND SS_NO SSN_CHG_CD SUFX_TLDSC UNEMPLY_CD LST_UPD_ID LST_UPD_TS COMMNT_DSC EST_DOB_CD BP_VER_IND HISP_CD CURRCA_IND CURREG_IND COTH_DESC PREVCA_IND PREREG_IND POTH_DESC HCARE_IND LIMIT_IND BIRTH_CITY HEALTH_TXT MTERM_DT FTERM_DT ZIPPY_IND DEATH_PLC TR_MBVRT_B TRBA_CLT_B SOC158_IND DTH_DT_IND EMAIL_ADDR ADJDEL_IND ETH_UD_CD HISP_UD_CD SOCPLC_CD CL_INDX_NO</stringProp>
+              <stringProp name="filename"></stringProp>
+              <stringProp name="script">if(vars.getObject(&quot;nsClient&quot;).size()==0){
+	prev.setSuccessful(false);
+     String errormsg = &quot;the nsClient is empty&quot;;
+     prev.setResponseMessage(errormsg);
+     log.error(errormsg);
+     prev.setStopTestNow(true);
+}
+if(vars.getObject(&quot;legacyClient&quot;).size()==0){
+	prev.setSuccessful(false);
+     String errormsg = &quot;the legacyClient is empty&quot;;
+     prev.setResponseMessage(errormsg);
+     log.error(errormsg);
+     prev.setStopTestNow(true);
+}
+HashMap nsClient = vars.getObject(&quot;nsClient&quot;).get(0);
+HashMap legacyClient = vars.getObject(&quot;legacyClient&quot;).get(0);
+
+boolean success = true;
+for(String arg: bsh.args){
+    Object nsValue = nsClient.get(arg);
+    Object legacyValue = legacyClient.get(arg);
+    Boolean isNotMatching = !(nsValue!=null &amp;&amp; legacyValue!=null &amp;&amp; nsValue.equals(legacyValue) ) &amp;&amp; !(nsValue == null &amp;&amp; legacyValue == null);
+
+    if( !arg.equals(&quot;IDENTIFIER&quot;) &amp;&amp; !arg.equals(&quot;LST_UPD_TS&quot;) &amp;&amp; !arg.equals(&quot;LST_UP_ID&quot;)){
+      if (isNotMatching) {
+    	   success = false;
+    	   log.info(&quot;not matching &quot;+arg + &quot; = &quot;+nsValue+ &quot; &quot;+legacyValue);
+      }	
+  }
+}
+if(success){
+	log.info(&quot;CLIENT comparison between CMS and NS was successful &quot;);
+} else {
+	String errormsg = &quot;the CMS and NS clients do not match&quot;;
+	Failure = !success;
+	FailureMessage = errormsg;
+	prev.setSuccessful(false);
+     prev.setResponseMessage(errormsg);
+     log.error(errormsg);
+     prev.setStopTestNow(true);
+}
+
 </stringProp>
             </BeanShellPostProcessor>
             <hashTree/>
