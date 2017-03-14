@@ -76,53 +76,79 @@ public class CmsReferralService implements CrudsService {
     CmsReferral cmsReferral = (CmsReferral) request;
     PostedReferral referral = this.referralService.create(cmsReferral.getReferral());
     String referralId = referral.getId();
-    Allegation incomingAllegation = cmsReferral.getAllegation();
-    Allegation allegation = new Allegation(incomingAllegation.getAbuseEndDate(),
-        incomingAllegation.getAbuseFrequency(), incomingAllegation.getAbuseFrequencyPeriodCode(),
-        incomingAllegation.getAbuseLocationDescription(), incomingAllegation.getAbuseStartDate(),
-        incomingAllegation.getAllegationDispositionType(), incomingAllegation.getAllegationType(),
-        incomingAllegation.getDispositionDescription(), incomingAllegation.getDispositionDate(),
-        incomingAllegation.getInjuryHarmDetailIndicator(),
-        incomingAllegation.getNonProtectingParentCode(),
-        incomingAllegation.getStaffPersonAddedIndicator(), incomingAllegation.getVictimClientId(),
-        incomingAllegation.getPerpetratorClientId(), referralId,
-        incomingAllegation.getCountySpecificCode(), incomingAllegation.getZippyCreatedIndicator(),
-        incomingAllegation.getPlacementFacilityType());
-    PostedAllegation postedallegation = this.allegationService.create(allegation);
+    // Allegation incomingAllegation = cmsReferral.getAllegation();
+    Set<PostedAllegation> resultAllegation = new LinkedHashSet<>();
+    if (cmsReferral.getAllegation() != null && !cmsReferral.getAllegation().isEmpty()) {
+      for (Allegation incomingAllegation : cmsReferral.getAllegation()) {
+        Allegation allegation = new Allegation(incomingAllegation.getAbuseEndDate(),
+            incomingAllegation.getAbuseFrequency(),
+            incomingAllegation.getAbuseFrequencyPeriodCode(),
+            incomingAllegation.getAbuseLocationDescription(),
+            incomingAllegation.getAbuseStartDate(),
+            incomingAllegation.getAllegationDispositionType(),
+            incomingAllegation.getAllegationType(), incomingAllegation.getDispositionDescription(),
+            incomingAllegation.getDispositionDate(),
+            incomingAllegation.getInjuryHarmDetailIndicator(),
+            incomingAllegation.getNonProtectingParentCode(),
+            incomingAllegation.getStaffPersonAddedIndicator(),
+            incomingAllegation.getVictimClientId(), incomingAllegation.getPerpetratorClientId(),
+            referralId, incomingAllegation.getCountySpecificCode(),
+            incomingAllegation.getZippyCreatedIndicator(),
+            incomingAllegation.getPlacementFacilityType());
+        PostedAllegation postedallegation = this.allegationService.create(allegation);
+        resultAllegation.add(postedallegation);
+      }
+    }
 
-    CrossReport incomingCrossReport = cmsReferral.getCrossReport();
-    CrossReport crossReport = new CrossReport(incomingCrossReport.getThirdId(),
-        incomingCrossReport.getCrossReportMethodType(),
-        incomingCrossReport.getFiledOutOfStateIndicator(),
-        incomingCrossReport.getGovernmentOrgCrossRptIndicatorVar(),
-        incomingCrossReport.getInformTime(), incomingCrossReport.getRecipientBadgeNumber(),
-        incomingCrossReport.getRecipientPhoneExtensionNumber(),
-        incomingCrossReport.getRecipientPhoneNumber(), incomingCrossReport.getInformDate(),
-        incomingCrossReport.getRecipientPositionTitleDesc(),
-        incomingCrossReport.getReferenceNumber(), referralId,
-        incomingCrossReport.getLawEnforcementId(), incomingCrossReport.getStaffPersonId(),
-        incomingCrossReport.getDescription(), incomingCrossReport.getRecipientName(),
-        incomingCrossReport.getOutStateLawEnforcementAddr(),
-        incomingCrossReport.getCountySpecificCode(),
-        incomingCrossReport.getLawEnforcementIndicator(),
-        incomingCrossReport.getOutStateLawEnforcementIndicator(),
-        incomingCrossReport.getSatisfyCrossReportIndicator());
-    crossReport = this.crossReportService.create(crossReport);
+    // CrossReport incomingCrossReport = cmsReferral.getCrossReport();
+    Set<CrossReport> resultCrossReport = new LinkedHashSet<>();
+    if (cmsReferral.getCrossReport() != null && !cmsReferral.getCrossReport().isEmpty()) {
+      for (CrossReport incomingCrossReport : cmsReferral.getCrossReport()) {
+        CrossReport crossReport = new CrossReport(incomingCrossReport.getThirdId(),
+            incomingCrossReport.getCrossReportMethodType(),
+            incomingCrossReport.getFiledOutOfStateIndicator(),
+            incomingCrossReport.getGovernmentOrgCrossRptIndicatorVar(),
+            incomingCrossReport.getInformTime(), incomingCrossReport.getRecipientBadgeNumber(),
+            incomingCrossReport.getRecipientPhoneExtensionNumber(),
+            incomingCrossReport.getRecipientPhoneNumber(), incomingCrossReport.getInformDate(),
+            incomingCrossReport.getRecipientPositionTitleDesc(),
+            incomingCrossReport.getReferenceNumber(), referralId,
+            incomingCrossReport.getLawEnforcementId(), incomingCrossReport.getStaffPersonId(),
+            incomingCrossReport.getDescription(), incomingCrossReport.getRecipientName(),
+            incomingCrossReport.getOutStateLawEnforcementAddr(),
+            incomingCrossReport.getCountySpecificCode(),
+            incomingCrossReport.getLawEnforcementIndicator(),
+            incomingCrossReport.getOutStateLawEnforcementIndicator(),
+            incomingCrossReport.getSatisfyCrossReportIndicator());
+        crossReport = this.crossReportService.create(crossReport);
+        resultCrossReport.add(crossReport);
+      }
+    }
 
-    ReferralClient incomingReferralClient = cmsReferral.getReferralClient();
-    ReferralClient referralClient = new ReferralClient(incomingReferralClient.getApprovalNumber(),
-        incomingReferralClient.getApprovalStatusType(),
-        incomingReferralClient.getDispositionClosureReasonType(),
-        incomingReferralClient.getDispositionCode(), incomingReferralClient.getDispositionDate(),
-        incomingReferralClient.getSelfReportedIndicator(),
-        incomingReferralClient.getStaffPersonAddedIndicator(), referralId,
-        incomingReferralClient.getClientId(),
-        incomingReferralClient.getDispositionClosureDescription(),
-        incomingReferralClient.getAgeNumber(), incomingReferralClient.getAgePeriodCode(),
-        incomingReferralClient.getCountySpecificCode(),
-        incomingReferralClient.getMentalHealthIssuesIndicator(),
-        incomingReferralClient.getAlcoholIndicator(), incomingReferralClient.getDrugIndicator());
-    referralClient = this.referralClientService.create(referralClient);
+
+    // ReferralClient incomingReferralClient = cmsReferral.getReferralClient();
+    Set<ReferralClient> resultReferralClient = new LinkedHashSet<>();
+    if (cmsReferral.getReferralClient() != null && !cmsReferral.getReferralClient().isEmpty()) {
+      for (ReferralClient incomingReferralClient : cmsReferral.getReferralClient()) {
+        ReferralClient referralClient =
+            new ReferralClient(incomingReferralClient.getApprovalNumber(),
+                incomingReferralClient.getApprovalStatusType(),
+                incomingReferralClient.getDispositionClosureReasonType(),
+                incomingReferralClient.getDispositionCode(),
+                incomingReferralClient.getDispositionDate(),
+                incomingReferralClient.getSelfReportedIndicator(),
+                incomingReferralClient.getStaffPersonAddedIndicator(), referralId,
+                incomingReferralClient.getClientId(),
+                incomingReferralClient.getDispositionClosureDescription(),
+                incomingReferralClient.getAgeNumber(), incomingReferralClient.getAgePeriodCode(),
+                incomingReferralClient.getCountySpecificCode(),
+                incomingReferralClient.getMentalHealthIssuesIndicator(),
+                incomingReferralClient.getAlcoholIndicator(),
+                incomingReferralClient.getDrugIndicator());
+        referralClient = this.referralClientService.create(referralClient);
+        resultReferralClient.add(referralClient);
+      }
+    }
 
     Reporter incomingReporter = cmsReferral.getReporter();
     Reporter reporter = new Reporter(incomingReporter.getBadgeNumber(),
@@ -190,8 +216,11 @@ public class CmsReferralService implements CrudsService {
         postedClients.add(postedclient);
       }
     }
-    return new PostedCmsReferral(referral, postedallegation, crossReport, referralClient,
-        postedreporter, postedClients);
+    return new PostedCmsReferral(referral, resultAllegation, resultCrossReport,
+        resultReferralClient, postedreporter, postedClients);
+    // return new PostedCmsReferral(referral, resultAllegation, resultCrossReport,
+    // resultReferralClient, postedreporter);
+
   }
 
   /**

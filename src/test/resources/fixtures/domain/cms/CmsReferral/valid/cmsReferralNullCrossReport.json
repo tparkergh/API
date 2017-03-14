@@ -48,7 +48,7 @@
     "limitedAccessDesc": "ABC123",
     "originalClosureDate": "2000-01-01"
   },
-  "allegation": {
+  "allegation": [{
     "abuseEndDate": "2016-11-30",
     "abuseFrequency": 1234,
     "abuseFrequencyPeriodCode": "D",
@@ -67,8 +67,10 @@
     "countySpecificCode": "A1",
     "zippyCreatedIndicator": false,
     "placementFacilityType": 1234
-  },
-  "referralClient": {
+  }
+  ],
+  "referralClient": [
+  {
     "approvalNumber": "ABC1234567",
     "approvalStatusType": 123,
     "dispositionClosureReasonType": 234,
@@ -85,7 +87,8 @@
     "mentalHealthIssuesIndicator": false,
     "alcoholIndicator": false,
     "drugIndicator": false
-  },
+  }
+  ],
   "reporter": {
     "badgeNumber": "",
     "cityName": "San Jose",

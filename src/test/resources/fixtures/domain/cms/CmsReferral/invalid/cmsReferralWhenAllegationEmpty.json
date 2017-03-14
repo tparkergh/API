@@ -48,9 +48,12 @@
   "limitedAccessDesc": "thjkl",
   "originalClosureDate": "2000-05-05"
   },
-  "allegation": {
-  },
-  "crossReport": {
+  "allegation": [
+  {
+  }
+  ],
+  "crossReport": [
+  {
     "thirdId": "1234ABC123",
     "crossReportMethodType": 1234,
     "filedOutOfStateIndicator": false,
@@ -72,8 +75,10 @@
     "lawEnforcementIndicator": false,
     "outStateLawEnforcementIndicator": false,
     "satisfyCrossReportIndicator": false
-  },
-  "referralClient": {
+  }
+  ],
+  "referralClient": [
+  {
     "approvalNumber": "ABC1234567",
     "approvalStatusType": 123,
     "dispositionClosureReasonType": 234,
@@ -90,7 +95,8 @@
     "mentalHealthIssuesIndicator": false,
     "alcoholIndicator": false,
     "drugIndicator": false
-  },
+  }
+  ],
   "reporter": {
     "badgeNumber": "",
     "cityName": "San Jose",

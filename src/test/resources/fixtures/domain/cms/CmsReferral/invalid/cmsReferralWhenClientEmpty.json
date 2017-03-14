@@ -48,7 +48,8 @@
   "limitedAccessDesc": "thjkl",
   "originalClosureDate": "2000-05-05"
   },
-  "allegation": {
+  "allegation": [
+  {
     "abuseEndDate": "2016-11-30",
     "abuseFrequency": 1234,
     "abuseFrequencyPeriodCode": "D",
@@ -67,8 +68,10 @@
     "countySpecificCode": "A1",
     "zippyCreatedIndicator": false,
     "placementFacilityType": 1234
-  },
-  "crossReport": {
+  }
+  ],
+  "crossReport": [
+  {
     "thirdId": "1234ABC123",
     "crossReportMethodType": 1234,
     "filedOutOfStateIndicator": false,
@@ -90,8 +93,10 @@
     "lawEnforcementIndicator": false,
     "outStateLawEnforcementIndicator": false,
     "satisfyCrossReportIndicator": false
-  },
-  "referralClient": {
+  }
+  ],
+  "referralClient": [
+  {
     "approvalNumber": "ABC1234567",
     "approvalStatusType": 123,
     "dispositionClosureReasonType": 234,
@@ -108,7 +113,8 @@
     "mentalHealthIssuesIndicator": false,
     "alcoholIndicator": false,
     "drugIndicator": false
-  },
+  }
+  ],
   "reporter": {
     "badgeNumber": "",
     "cityName": "San Jose",
@@ -138,7 +144,7 @@
     "zipSuffixNumber": 1234,
     "countySpecificCode": "99"
   },
-  "client": [ 
+  "client": [
   {
   }
 ]

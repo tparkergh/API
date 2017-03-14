@@ -93,15 +93,15 @@ public class CmsReferralTest {
         fixture("fixtures/domain/cms/CmsReferral/valid/referralCmsReferral.json"), Referral.class);
     Reporter reporter = MAPPER.readValue(
         fixture("fixtures/domain/cms/CmsReferral/valid/reporterCmsReferral.json"), Reporter.class);
-    ReferralClient referralClient = MAPPER.readValue(
+    Set<ReferralClient> referralClient = MAPPER.readValue(
         fixture("fixtures/domain/cms/CmsReferral/valid/referralClientCmsReferral.json"),
-        ReferralClient.class);
-    CrossReport crossReport = MAPPER.readValue(
+        new TypeReference<Set<ReferralClient>>() {});
+    Set<CrossReport> crossReport = MAPPER.readValue(
         fixture("fixtures/domain/cms/CmsReferral/valid/crossReportCmsReferral.json"),
-        CrossReport.class);
-    Allegation allegation = MAPPER.readValue(
+        new TypeReference<Set<CrossReport>>() {});
+    Set<Allegation> allegation = MAPPER.readValue(
         fixture("fixtures/domain/cms/CmsReferral/valid/allegationCmsReferral.json"),
-        Allegation.class);
+        new TypeReference<Set<Allegation>>() {});
     Set<Client> client =
         MAPPER.readValue(fixture("fixtures/domain/cms/CmsReferral/valid/clientCmsReferral.json"),
             new TypeReference<Set<Client>>() {});
@@ -557,15 +557,15 @@ public class CmsReferralTest {
       Reporter reporter = MAPPER.readValue(
           fixture("fixtures/domain/cms/CmsReferral/valid/reporterCmsReferral.json"),
           Reporter.class);
-      ReferralClient referralClient = MAPPER.readValue(
+      Set<ReferralClient> referralClient = MAPPER.readValue(
           fixture("fixtures/domain/cms/CmsReferral/valid/referralClientCmsReferral.json"),
-          ReferralClient.class);
-      CrossReport crossReport = MAPPER.readValue(
+          new TypeReference<Set<ReferralClient>>() {});
+      Set<CrossReport> crossReport = MAPPER.readValue(
           fixture("fixtures/domain/cms/CmsReferral/valid/crossReportCmsReferral.json"),
-          CrossReport.class);
-      Allegation allegation = MAPPER.readValue(
+          new TypeReference<Set<CrossReport>>() {});
+      Set<Allegation> allegation = MAPPER.readValue(
           fixture("fixtures/domain/cms/CmsReferral/valid/allegationCmsReferral.json"),
-          Allegation.class);
+          new TypeReference<Set<Allegation>>() {});
       Set<Client> client =
           MAPPER.readValue(fixture("fixtures/domain/cms/CmsReferral/valid/clientCmsReferral.json"),
               new TypeReference<Set<Client>>() {});

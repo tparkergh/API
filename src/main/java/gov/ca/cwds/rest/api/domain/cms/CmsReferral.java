@@ -33,16 +33,16 @@ public class CmsReferral extends DomainObject implements Request, Response {
   @NotNull
   @ApiModelProperty(required = true, readOnly = false)
   @Valid
-  private Allegation allegation;
+  private Set<Allegation> allegation;
 
   @ApiModelProperty(required = true, readOnly = false)
   @Valid
-  private CrossReport crossReport;
+  private Set<CrossReport> crossReport;
 
   @NotNull
   @ApiModelProperty(required = false, readOnly = false)
   @Valid
-  private ReferralClient referralClient;
+  private Set<ReferralClient> referralClient;
 
   @NotNull
   @ApiModelProperty(required = true, readOnly = false)
@@ -66,9 +66,9 @@ public class CmsReferral extends DomainObject implements Request, Response {
    */
   @JsonCreator
   public CmsReferral(@JsonProperty("referral") Referral referral,
-      @JsonProperty("allegation") Allegation allegation,
-      @JsonProperty("crossReport") CrossReport crossReport,
-      @JsonProperty("referralClient") ReferralClient referralClient,
+      @JsonProperty("allegation") Set<Allegation> allegation,
+      @JsonProperty("crossReport") Set<CrossReport> crossReport,
+      @JsonProperty("referralClient") Set<ReferralClient> referralClient,
       @JsonProperty("reporter") Reporter reporter, @JsonProperty("client") Set<Client> client) {
     super();
     this.referral = referral;
@@ -79,6 +79,7 @@ public class CmsReferral extends DomainObject implements Request, Response {
     this.client = client;
   }
 
+
   /**
    * @return the referral
    */
@@ -86,26 +87,30 @@ public class CmsReferral extends DomainObject implements Request, Response {
     return referral;
   }
 
+
   /**
    * @return the allegation
    */
-  public Allegation getAllegation() {
+  public Set<Allegation> getAllegation() {
     return allegation;
   }
+
 
   /**
    * @return the crossReport
    */
-  public CrossReport getCrossReport() {
+  public Set<CrossReport> getCrossReport() {
     return crossReport;
   }
+
 
   /**
    * @return the referralClient
    */
-  public ReferralClient getReferralClient() {
+  public Set<ReferralClient> getReferralClient() {
     return referralClient;
   }
+
 
   /**
    * @return the reporter
@@ -113,6 +118,7 @@ public class CmsReferral extends DomainObject implements Request, Response {
   public Reporter getReporter() {
     return reporter;
   }
+
 
   /**
    * @return the client
@@ -139,6 +145,7 @@ public class CmsReferral extends DomainObject implements Request, Response {
     return result;
   }
 
+
   /**
    * {@inheritDoc}
    * 
@@ -157,30 +164,40 @@ public class CmsReferral extends DomainObject implements Request, Response {
     }
     CmsReferral other = (CmsReferral) obj;
     if (allegation == null) {
-      if (other.allegation != null)
+      if (other.allegation != null) {
         return false;
-    } else if (!allegation.equals(other.allegation))
+      }
+    } else if (!allegation.equals(other.allegation)) {
       return false;
+    }
     if (crossReport == null) {
-      if (other.crossReport != null)
+      if (other.crossReport != null) {
         return false;
-    } else if (!crossReport.equals(other.crossReport))
+      }
+    } else if (!crossReport.equals(other.crossReport)) {
       return false;
+    }
     if (referral == null) {
-      if (other.referral != null)
+      if (other.referral != null) {
         return false;
-    } else if (!referral.equals(other.referral))
+      }
+    } else if (!referral.equals(other.referral)) {
       return false;
+    }
     if (referralClient == null) {
-      if (other.referralClient != null)
+      if (other.referralClient != null) {
         return false;
-    } else if (!referralClient.equals(other.referralClient))
+      }
+    } else if (!referralClient.equals(other.referralClient)) {
       return false;
+    }
     if (reporter == null) {
-      if (other.reporter != null)
+      if (other.reporter != null) {
         return false;
-    } else if (!reporter.equals(other.reporter))
+      }
+    } else if (!reporter.equals(other.reporter)) {
       return false;
+    }
     if (client == null) {
       if (other.client != null)
         return false;
@@ -188,4 +205,6 @@ public class CmsReferral extends DomainObject implements Request, Response {
       return false;
     return true;
   }
+
+
 }

@@ -48,7 +48,8 @@
     "limitedAccessDesc": "ABC123",
     "originalClosureDate": "2000-01-01"
   },
-  "allegation": {
+  "allegation": [
+  {
     "abuseEndDate": "2016-11-30",
     "abuseFrequency": 1234,
     "abuseFrequencyPeriodCode": "D",
@@ -67,8 +68,10 @@
     "countySpecificCode": "A1",
     "zippyCreatedIndicator": false,
     "placementFacilityType": 1234
-  },
-  "crossReport": {
+  }
+  ],
+  "crossReport": [
+  {
     "thirdId": "1234ABC123",
     "crossReportMethodType": 1234,
     "filedOutOfStateIndicator": false,
@@ -90,7 +93,8 @@
     "lawEnforcementIndicator": false,
     "outStateLawEnforcementIndicator": false,
     "satisfyCrossReportIndicator": false
-  },
+  }
+  ],
   "reporter": {
     "badgeNumber": "",
     "cityName": "San Jose",

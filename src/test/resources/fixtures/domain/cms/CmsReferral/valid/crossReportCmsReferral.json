@@ -1,3 +1,4 @@
+[
 {
     "thirdId": "1234ABC123",
     "crossReportMethodType": 1234,
@@ -21,4 +22,4 @@
     "outStateLawEnforcementIndicator": false,
     "satisfyCrossReportIndicator": false
   }
- 
+]

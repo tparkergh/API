@@ -17,9 +17,9 @@ public class PostedCmsReferral extends DomainObject implements Response {
    */
   private static final long serialVersionUID = 1L;
   private Referral referral;
-  private Allegation allegation;
-  private CrossReport crossReport;
-  private ReferralClient referralClient;
+  private Set<Allegation> allegation;
+  private Set<CrossReport> crossReport;
+  private Set<ReferralClient> referralClient;
   private Reporter reporter;
   private Set<Client> client;
 
@@ -31,12 +31,15 @@ public class PostedCmsReferral extends DomainObject implements Response {
    * @param reporter - PostedReporter
    * @param client - PostedClient
    */
-  public PostedCmsReferral(PostedReferral referral, PostedAllegation allegation,
-      CrossReport crossReport, ReferralClient referralClient, PostedReporter reporter,
+  public PostedCmsReferral(PostedReferral referral, Set<PostedAllegation> allegation,
+      Set<CrossReport> crossReport, Set<ReferralClient> referralClient, PostedReporter reporter,
       Set<PostedClient> client) {
+
     super();
     this.referral = referral;
-    this.allegation = allegation;
+    this.allegation = new LinkedHashSet<>();
+    for (PostedAllegation resultAllegation : allegation)
+      this.allegation.add(resultAllegation);
     this.crossReport = crossReport;
     this.referralClient = referralClient;
     this.reporter = reporter;
@@ -45,6 +48,7 @@ public class PostedCmsReferral extends DomainObject implements Response {
       this.client.add(resultClient);
   }
 
+
   /**
    * @return the referral
    */
@@ -52,26 +56,34 @@ public class PostedCmsReferral extends DomainObject implements Response {
     return referral;
   }
 
+
+
   /**
    * @return the allegation
    */
-  public Allegation getAllegation() {
+  public Set<Allegation> getAllegation() {
     return allegation;
   }
+
+
 
   /**
    * @return the crossReport
    */
-  public CrossReport getCrossReport() {
+  public Set<CrossReport> getCrossReport() {
     return crossReport;
   }
+
+
 
   /**
    * @return the referralClient
    */
-  public ReferralClient getReferralClient() {
+  public Set<ReferralClient> getReferralClient() {
     return referralClient;
   }
+
+
 
   /**
    * @return the reporter
@@ -87,6 +99,13 @@ public class PostedCmsReferral extends DomainObject implements Response {
     return client;
   }
 
+
+  /*
+   * (non-Javadoc)
+   * 
+   * @see java.lang.Object#hashCode()
+   */
+
   @Override
   public int hashCode() {
     final int prime = 31;
@@ -100,40 +119,59 @@ public class PostedCmsReferral extends DomainObject implements Response {
     return result;
   }
 
+
+  /*
+   * (non-Javadoc)
+   * 
+   * @see java.lang.Object#equals(java.lang.Object)
+   */
   @Override
   public boolean equals(Object obj) {
-    if (this == obj)
+    if (this == obj) {
       return true;
-    if (obj == null)
+    }
+    if (obj == null) {
       return false;
-    if (getClass() != obj.getClass())
+    }
+    if (getClass() != obj.getClass()) {
       return false;
+    }
     PostedCmsReferral other = (PostedCmsReferral) obj;
     if (allegation == null) {
-      if (other.allegation != null)
+      if (other.allegation != null) {
         return false;
-    } else if (!allegation.equals(other.allegation))
+      }
+    } else if (!allegation.equals(other.allegation)) {
       return false;
+    }
     if (crossReport == null) {
-      if (other.crossReport != null)
+      if (other.crossReport != null) {
         return false;
-    } else if (!crossReport.equals(other.crossReport))
+      }
+    } else if (!crossReport.equals(other.crossReport)) {
       return false;
+    }
     if (referral == null) {
-      if (other.referral != null)
+      if (other.referral != null) {
         return false;
-    } else if (!referral.equals(other.referral))
+      }
+    } else if (!referral.equals(other.referral)) {
       return false;
+    }
     if (referralClient == null) {
-      if (other.referralClient != null)
+      if (other.referralClient != null) {
         return false;
-    } else if (!referralClient.equals(other.referralClient))
+      }
+    } else if (!referralClient.equals(other.referralClient)) {
       return false;
+    }
     if (reporter == null) {
-      if (other.reporter != null)
+      if (other.reporter != null) {
         return false;
-    } else if (!reporter.equals(other.reporter))
+      }
+    } else if (!reporter.equals(other.reporter)) {
       return false;
+    }
     if (client == null) {
       if (other.client != null)
         return false;
@@ -141,4 +179,7 @@ public class PostedCmsReferral extends DomainObject implements Response {
       return false;
     return true;
   }
+
+
+
 }
