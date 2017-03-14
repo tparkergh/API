@@ -33,10 +33,11 @@ import gov.ca.cwds.data.junit.template.DaoTestTemplate;
 import gov.ca.cwds.data.persistence.cms.Client;
 
 /**
+ * 
  * @author CWDS API Team
- *
  */
 public class ClientDaoIT implements DaoTestTemplate {
+
   private static final DateFormat TIMESTAMP_FORMAT = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 
   @SuppressWarnings("javadoc")
@@ -91,7 +92,7 @@ public class ClientDaoIT implements DaoTestTemplate {
       System.out.println("id " + c.getId() + " " + c.getSensitivityIndicator() + " "
           + c.getSoc158SealedClientIndicator() + " " + c.getLastUpdatedTime());
     }
-    assertThat(query.list().size(), is(2));
+    assertThat(query.list().size(), is(3));
   }
 
   // TODO: #138438305: move to jobs project.
