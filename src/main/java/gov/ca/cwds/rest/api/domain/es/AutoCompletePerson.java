@@ -891,9 +891,12 @@ public class AutoCompletePerson
         if (StringUtils.isNotBlank(personAware.getSsn())) {
           this.setSsn(personAware.getSsn());
         }
-        if (StringUtils.isNotBlank(personAware.getNameSuffix())) {
-          this.setNameSuffix(personAware.getNameSuffix().trim().toLowerCase());
-        }
+
+        // TODO: Legacy name suffix is free-form, whereas Intake is an enum.
+        // Implement AFTER R1 production release.
+        // if (StringUtils.isNotBlank(personAware.getNameSuffix())) {
+        // this.setNameSuffix(personAware.getNameSuffix().trim().toLowerCase());
+        // }
 
         // Highlights.
         if (esp.getHighlights() != null && !esp.getHighlights().isEmpty()) {
