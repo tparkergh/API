@@ -74,6 +74,84 @@ public class AutoCompletePerson
   private static ISystemCodeCache systemCodes;
 
   /**
+   * Name suffix.
+   * 
+   * @author CWDS API Team
+   */
+  @SuppressWarnings("javadoc")
+  public enum AutoCompleteNameSuffix {
+
+    ESQUIRE("esq", new String[] {"esq"}),
+
+    SECOND("ii", new String[] {"ii"}),
+
+    THIRD("iii", new String[] {"iii"}),
+
+    FOURTH("iv", new String[] {"iv"}),
+
+    JR("jr", new String[] {"jr"}),
+
+    SR("sr", new String[] {"sr"}),
+
+    MD("md", new String[] {"md"}),
+
+    PHD("phd", new String[] {"phd"}),
+
+    JD("jd", new String[] {"jd"});
+
+    private final String intake;
+
+    private final String[] legacy;
+
+    // Key = legacy free-form value.
+    private static final Map<String, AutoCompleteNameSuffix> mapLegacy = new HashMap<>();
+
+    // Key = Intake value.
+    private static final Map<String, AutoCompleteNameSuffix> mapIntake = new HashMap<>();
+
+    private AutoCompleteNameSuffix(String intake, String[] legacy) {
+      this.intake = intake;
+      this.legacy = legacy;
+    }
+
+    @JsonValue
+    public String getIntake() {
+      return intake;
+    }
+
+    @JsonValue
+    public String[] getLegacy() {
+      return legacy;
+    }
+
+    public AutoCompleteNameSuffix lookupLegacy(String val) {
+      return AutoCompleteNameSuffix.findByLegacy(val);
+    }
+
+    public static AutoCompleteNameSuffix findByLegacy(String legacy) {
+      return mapLegacy.get(legacy);
+    }
+
+    public AutoCompleteNameSuffix lookupIntake(String val) {
+      return AutoCompleteNameSuffix.findByIntake(val);
+    }
+
+    public static AutoCompleteNameSuffix findByIntake(String legacy) {
+      return mapIntake.get(legacy);
+    }
+
+    static {
+      for (AutoCompleteNameSuffix e : AutoCompleteNameSuffix.values()) {
+        mapIntake.put(e.intake, e);
+        for (String leg : e.getLegacy()) {
+          mapLegacy.put(leg, e);
+        }
+      }
+    }
+
+  }
+
+  /**
    * County.
    * 
    * @author CWDS API Team
@@ -817,8 +895,9 @@ public class AutoCompletePerson
   @JsonInclude(JsonInclude.Include.ALWAYS)
   private String gender;
 
-  @JsonProperty("ssn")
-  @JsonInclude(JsonInclude.Include.ALWAYS)
+  @JsonIgnore
+  // @JsonProperty("ssn")
+  // @JsonInclude(JsonInclude.Include.ALWAYS)
   private String ssn;
 
   @JsonProperty("date_of_birth")
@@ -1010,7 +1089,7 @@ public class AutoCompletePerson
     this.gender = gender;
   }
 
-  @JsonIgnore
+  @JsonProperty("ssn")
   @Override
   public String getSsn() {
     MaskString mask = new MaskString();
