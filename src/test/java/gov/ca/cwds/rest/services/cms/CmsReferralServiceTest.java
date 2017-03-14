@@ -120,7 +120,7 @@ public class CmsReferralServiceTest {
     Reporter reporterDomain = MAPPER.readValue(
         fixture("fixtures/domain/cms/CmsReferral/valid/reporterCmsReferral.json"), Reporter.class);
     gov.ca.cwds.data.persistence.cms.Reporter reporterToCreate =
-        new gov.ca.cwds.data.persistence.cms.Reporter(reporterDomain, "2016-10-31");
+        new gov.ca.cwds.data.persistence.cms.Reporter(reporterDomain, "OXA");
 
     Set<Client> clientDomain =
         MAPPER.readValue(fixture("fixtures/domain/cms/CmsReferral/valid/clientCmsReferral.json"),
@@ -178,17 +178,20 @@ public class CmsReferralServiceTest {
     assertThat(response.getClass(), is(PostedCmsReferral.class));
   }
 
-  // @Test
-  // public void createReturnsPostedCmsReferralWithIdenticalReferralIds() throws Exception {
-  //
-  // Response response = cmsReferralServiceResponse();
-  // PostedCmsReferral postedCmsReferral = (PostedCmsReferral) response;
-  // String referralId = ((CrossReport) postedCmsReferral.getCrossReport()).getReferralId();
-  // assertThat(((ReferralClient) postedCmsReferral.getReferralClient()).getReferralId(),
-  // is(referralId));
-  // assertThat(postedCmsReferral.getReporter().getReferralId(), is(referralId));
-  // assertThat(((Allegation) postedCmsReferral.getAllegation()).getReferralId(), is(referralId));
-  // }
+  @Test
+  public void createReturnsPostedCmsReferralWithIdenticalReferralIds() throws Exception {
+
+    Response response = cmsReferralServiceResponse();
+    PostedCmsReferral postedCmsReferral = (PostedCmsReferral) response;
+    String referralId =
+        ((CrossReport) postedCmsReferral.getCrossReport().toArray()[0]).getReferralId();
+    assertThat(
+        ((ReferralClient) postedCmsReferral.getReferralClient().toArray()[0]).getReferralId(),
+        is(referralId));
+    assertThat(postedCmsReferral.getReporter().getReferralId(), is(referralId));
+    assertThat(((Allegation) postedCmsReferral.getAllegation().toArray()[0]).getReferralId(),
+        is(referralId));
+  }
 
   @Test
   public void createReturnsNonNull() throws Exception {

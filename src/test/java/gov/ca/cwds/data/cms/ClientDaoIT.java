@@ -92,7 +92,7 @@ public class ClientDaoIT implements DaoTestTemplate {
       System.out.println("id " + c.getId() + " " + c.getSensitivityIndicator() + " "
           + c.getSoc158SealedClientIndicator() + " " + c.getLastUpdatedTime());
     }
-    assertThat(query.list().size(), is(3));
+    assertThat(query.list().size(), is(4));
   }
 
   // TODO: #138438305: move to jobs project.

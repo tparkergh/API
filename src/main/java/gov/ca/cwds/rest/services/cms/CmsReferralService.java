@@ -76,7 +76,6 @@ public class CmsReferralService implements CrudsService {
     CmsReferral cmsReferral = (CmsReferral) request;
     PostedReferral referral = this.referralService.create(cmsReferral.getReferral());
     String referralId = referral.getId();
-    // Allegation incomingAllegation = cmsReferral.getAllegation();
     Set<PostedAllegation> resultAllegation = new LinkedHashSet<>();
     if (cmsReferral.getAllegation() != null && !cmsReferral.getAllegation().isEmpty()) {
       for (Allegation incomingAllegation : cmsReferral.getAllegation()) {
@@ -100,7 +99,7 @@ public class CmsReferralService implements CrudsService {
       }
     }
 
-    // CrossReport incomingCrossReport = cmsReferral.getCrossReport();
+
     Set<CrossReport> resultCrossReport = new LinkedHashSet<>();
     if (cmsReferral.getCrossReport() != null && !cmsReferral.getCrossReport().isEmpty()) {
       for (CrossReport incomingCrossReport : cmsReferral.getCrossReport()) {
@@ -126,7 +125,6 @@ public class CmsReferralService implements CrudsService {
     }
 
 
-    // ReferralClient incomingReferralClient = cmsReferral.getReferralClient();
     Set<ReferralClient> resultReferralClient = new LinkedHashSet<>();
     if (cmsReferral.getReferralClient() != null && !cmsReferral.getReferralClient().isEmpty()) {
       for (ReferralClient incomingReferralClient : cmsReferral.getReferralClient()) {
@@ -218,8 +216,6 @@ public class CmsReferralService implements CrudsService {
     }
     return new PostedCmsReferral(referral, resultAllegation, resultCrossReport,
         resultReferralClient, postedreporter, postedClients);
-    // return new PostedCmsReferral(referral, resultAllegation, resultCrossReport,
-    // resultReferralClient, postedreporter);
 
   }
 
