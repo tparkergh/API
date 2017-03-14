@@ -891,6 +891,9 @@ public class AutoCompletePerson
         if (StringUtils.isNotBlank(personAware.getSsn())) {
           this.setSsn(personAware.getSsn());
         }
+        if (StringUtils.isNotBlank(personAware.getNameSuffix())) {
+          this.setNameSuffix(personAware.getNameSuffix().trim().toLowerCase());
+        }
 
         // Highlights.
         if (esp.getHighlights() != null && !esp.getHighlights().isEmpty()) {
@@ -977,6 +980,7 @@ public class AutoCompletePerson
    * 
    * @return name suffix
    */
+  @JsonIgnore
   @Override
   public String getNameSuffix() {
     return nameSuffix;
@@ -992,6 +996,7 @@ public class AutoCompletePerson
     this.nameSuffix = nameSuffix;
   }
 
+  @JsonIgnore
   @Override
   public String getGender() {
     return gender;
@@ -1002,6 +1007,7 @@ public class AutoCompletePerson
     this.gender = gender;
   }
 
+  @JsonIgnore
   @Override
   public String getSsn() {
     MaskString mask = new MaskString();
@@ -1190,9 +1196,9 @@ public class AutoCompletePerson
   }
 
   /**
-   * Store a reference to the singleton CMS syscode cache for quick convenient access.
+   * Store a reference to the singleton CMS system code cache for quick convenient access.
    * 
-   * @param systemCodes CMS syscode cache
+   * @param systemCodes CMS system code cache
    */
   @Inject
   public static void setSystemCodes(@SystemCodeCache ISystemCodeCache systemCodes) {
