@@ -395,7 +395,7 @@ public class AutoCompletePerson
     }
 
     public static AutoCompleteState findByStateCd(final String stateCd) {
-      return mapBySysId.get(stateCd);
+      return mapByStateCd.get(stateCd);
     }
 
     static {

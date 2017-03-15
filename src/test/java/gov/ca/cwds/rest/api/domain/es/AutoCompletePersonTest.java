@@ -1,10 +1,16 @@
 package gov.ca.cwds.rest.api.domain.es;
 
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.equalTo;
+import static org.hamcrest.Matchers.is;
+import static org.hamcrest.Matchers.notNullValue;
+
 import org.hamcrest.junit.ExpectedException;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.ClassRule;
 import org.junit.Rule;
+import org.junit.Test;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.squarespace.jersey2.guice.JerseyGuiceUtils;
@@ -34,12 +40,18 @@ public class AutoCompletePersonTest {
   String highlight = "{\"firstName\":\"<em>mik</em>e\", \"lastName\":\"sm<em>ith</em>\"}";
 
   String city = "San Jose";
-  String county = "Santa Clara";
-  String state = "CA";
+  String countyCode = "43";
+  String countyName = "Santa Clara";
+  String state = "1828";
+  String stateCode = "CA";
   String address = "123 first street";
   String zip = "98765";
 
   String testGet = "test get";
+  String testGetCounty = "57";
+  String testCountyName = "Yolo";
+  String testGetStateCode = "NV";
+  String testGetStateType = "NEVADA";
 
 
   private static final ObjectMapper MAPPER = Jackson.newObjectMapper();
@@ -60,51 +72,56 @@ public class AutoCompletePersonTest {
   @Before
   public void setup() {}
 
-  // @Test
-  // public void testAutoCompletePersonAddressConstuctor() {
-  // ApiAddressAware add = new Address(city, county, state, address, zip);
-  //
-  // AutoCompletePerson.AutoCompletePersonAddress acpa =
-  // new AutoCompletePerson.AutoCompletePersonAddress(add);
-  // assertThat(acpa, notNullValue());
-  // }
-  //
-  // @Test
-  // public void testAutoCompletePersonAddressGetters() {
-  // ApiAddressAware add = new Address(city, county, state, address, zip);
-  //
-  // AutoCompletePerson.AutoCompletePersonAddress acpa =
-  // new AutoCompletePerson.AutoCompletePersonAddress(add);
-  //
-  // assertThat(acpa.getCity(), is(equalTo(city)));
-  // assertThat(acpa.getCounty(), is(equalTo(county)));
-  // assertThat(acpa.getState(), is(equalTo(state)));
-  // assertThat(acpa.getAddressType(), is(equalTo(address)));
-  // assertThat(acpa.getZip(), is(equalTo(zip)));
-  //
-  // }
-  //
-  // public void testAutoCompletePersonAddressSetters() {
-  // ApiAddressAware add = new Address(city, county, state, address, zip);
-  //
-  // AutoCompletePerson.AutoCompletePersonAddress acpa =
-  // new AutoCompletePerson.AutoCompletePersonAddress(add);
-  //
-  // acpa.setCity(testGet);
-  // assertThat(acpa.getCity(), is(equalTo(testGet)));
-  // acpa.setStreetAddress(testGet);
-  //
-  // }
-  // @Test
-  // public void testConstuctorSuccess() {
-  //
-  // ElasticSearchPerson esp = validESP();
-  //
-  // AutoCompletePerson acp = new AutoCompletePerson(esp);
-  // System.out.println(acp.getHighlight());
-  // assertThat(acp, notNullValue());
-  //
-  // }
+  @Test
+  public void testAutoCompletePersonAddressConstuctor() {
+    ApiAddressAware add = new Address(city, countyCode, state, address, zip);
+
+    AutoCompletePerson.AutoCompletePersonAddress acpa =
+        new AutoCompletePerson.AutoCompletePersonAddress(add);
+    assertThat(acpa, notNullValue());
+  }
+
+  @Test
+  public void testAutoCompletePersonAddressGetters() {
+    ApiAddressAware add = new Address(city, countyCode, state, address, zip);
+
+    AutoCompletePerson.AutoCompletePersonAddress acpa =
+        new AutoCompletePerson.AutoCompletePersonAddress(add);
+
+    assertThat(acpa.getCity(), is(equalTo(city)));
+    assertThat(acpa.getCountyType(), is(equalTo(countyName)));
+    assertThat(acpa.getState(), is(equalTo(stateCode)));
+    assertThat(acpa.getStreetAddress(), is(equalTo(address)));
+    assertThat(acpa.getZip(), is(equalTo(zip)));
+
+  }
+
+  @Test
+  public void testAutoCompletePersonAddressSetters() {
+    ApiAddressAware add = new Address(city, countyCode, state, address, zip);
+
+    AutoCompletePerson.AutoCompletePersonAddress acpa =
+        new AutoCompletePerson.AutoCompletePersonAddress(add);
+
+    acpa.setCity(testGet);
+    assertThat(acpa.getCity(), is(equalTo(testGet)));
+    acpa.setCounty(testGetCounty);
+    assertThat(acpa.getCountyType(), is(equalTo(testCountyName)));
+    acpa.setStreetAddress(testGet);
+    assertThat(acpa.getStreetAddress(), is(equalTo(testGet)));
+    acpa.setState(testGetStateCode);
+    assertThat(acpa.getState(), is(equalTo(testGetStateCode)));
+  }
+
+  @Test
+  public void testConstuctorSuccess() {
+
+    ElasticSearchPerson esp = validESP();
+
+    AutoCompletePerson acp = new AutoCompletePerson(esp);
+    assertThat(acp, notNullValue());
+
+  }
 
   // @Test
   // public void testGenderMSuccess() throws JsonProcessingException {
