@@ -17,11 +17,12 @@ public class PostedCmsReferral extends DomainObject implements Response {
    */
   private static final long serialVersionUID = 1L;
   private Referral referral;
+  private Set<Client> client;
   private Set<Allegation> allegation;
   private Set<CrossReport> crossReport;
   private Set<ReferralClient> referralClient;
   private Reporter reporter;
-  private Set<Client> client;
+
 
   /**
    * @param referral - PostedReferral
@@ -31,21 +32,21 @@ public class PostedCmsReferral extends DomainObject implements Response {
    * @param reporter - PostedReporter
    * @param client - PostedClient
    */
-  public PostedCmsReferral(PostedReferral referral, Set<PostedAllegation> allegation,
-      Set<CrossReport> crossReport, Set<ReferralClient> referralClient, PostedReporter reporter,
-      Set<PostedClient> client) {
+  public PostedCmsReferral(PostedReferral referral, Set<PostedClient> client,
+      Set<PostedAllegation> allegation, Set<CrossReport> crossReport,
+      Set<ReferralClient> referralClient, PostedReporter reporter) {
 
     super();
     this.referral = referral;
+    this.client = new LinkedHashSet<>();
+    for (PostedClient resultClient : client)
+      this.client.add(resultClient);
     this.allegation = new LinkedHashSet<>();
     for (PostedAllegation resultAllegation : allegation)
       this.allegation.add(resultAllegation);
     this.crossReport = crossReport;
     this.referralClient = referralClient;
     this.reporter = reporter;
-    this.client = new LinkedHashSet<>();
-    for (PostedClient resultClient : client)
-      this.client.add(resultClient);
   }
 
 
@@ -56,7 +57,12 @@ public class PostedCmsReferral extends DomainObject implements Response {
     return referral;
   }
 
-
+  /**
+   * @return the client
+   */
+  public Set<Client> getClient() {
+    return client;
+  }
 
   /**
    * @return the allegation
@@ -90,13 +96,6 @@ public class PostedCmsReferral extends DomainObject implements Response {
    */
   public Reporter getReporter() {
     return reporter;
-  }
-
-  /**
-   * @return the client
-   */
-  public Set<Client> getClient() {
-    return client;
   }
 
 

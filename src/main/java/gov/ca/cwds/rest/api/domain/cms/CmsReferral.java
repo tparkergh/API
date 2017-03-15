@@ -33,6 +33,11 @@ public class CmsReferral extends DomainObject implements Request, Response {
   @NotNull
   @ApiModelProperty(required = true, readOnly = false)
   @Valid
+  private Set<Client> client;
+
+  @NotNull
+  @ApiModelProperty(required = true, readOnly = false)
+  @Valid
   private Set<Allegation> allegation;
 
   @ApiModelProperty(required = true, readOnly = false)
@@ -49,11 +54,6 @@ public class CmsReferral extends DomainObject implements Request, Response {
   @Valid
   private Reporter reporter;
 
-  @NotNull
-  @ApiModelProperty(required = true, readOnly = false)
-  @Valid
-  private Set<Client> client;
-
   /**
    * Construct from JSON.
    * 
@@ -66,17 +66,18 @@ public class CmsReferral extends DomainObject implements Request, Response {
    */
   @JsonCreator
   public CmsReferral(@JsonProperty("referral") Referral referral,
+      @JsonProperty("client") Set<Client> client,
       @JsonProperty("allegation") Set<Allegation> allegation,
       @JsonProperty("crossReport") Set<CrossReport> crossReport,
       @JsonProperty("referralClient") Set<ReferralClient> referralClient,
-      @JsonProperty("reporter") Reporter reporter, @JsonProperty("client") Set<Client> client) {
+      @JsonProperty("reporter") Reporter reporter) {
     super();
     this.referral = referral;
+    this.client = client;
     this.allegation = allegation;
     this.crossReport = crossReport;
     this.referralClient = referralClient;
     this.reporter = reporter;
-    this.client = client;
   }
 
 
@@ -87,6 +88,12 @@ public class CmsReferral extends DomainObject implements Request, Response {
     return referral;
   }
 
+  /**
+   * @return the client
+   */
+  public Set<Client> getClient() {
+    return client;
+  }
 
   /**
    * @return the allegation
@@ -117,14 +124,6 @@ public class CmsReferral extends DomainObject implements Request, Response {
    */
   public Reporter getReporter() {
     return reporter;
-  }
-
-
-  /**
-   * @return the client
-   */
-  public Set<Client> getClient() {
-    return client;
   }
 
   /**

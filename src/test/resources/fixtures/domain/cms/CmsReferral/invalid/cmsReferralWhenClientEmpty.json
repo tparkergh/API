@@ -48,6 +48,10 @@
   "limitedAccessDesc": "thjkl",
   "originalClosureDate": "2000-05-05"
   },
+  "client": [
+  {  
+  }
+ ],
   "allegation": [
   {
     "abuseEndDate": "2016-11-30",
@@ -143,9 +147,5 @@
     "lawEnforcementId": "",
     "zipSuffixNumber": 1234,
     "countySpecificCode": "99"
-  },
-  "client": [
-  {
   }
-]
 }
