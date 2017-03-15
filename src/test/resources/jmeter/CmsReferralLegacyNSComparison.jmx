@@ -574,7 +574,7 @@ for(String arg: bsh.args){
     Object legacyValue = legacyReferral.get(arg);
     Boolean isNotMatching = !(nsValue!=null &amp;&amp; legacyValue!=null &amp;&amp; nsValue.equals(legacyValue) ) &amp;&amp; !(nsValue == null &amp;&amp; legacyValue == null);
 
-    if( !arg.equals(&quot;IDENTIFIER&quot;) &amp;&amp; !arg.equals(&quot;LST_UPD_TS&quot;) &amp;&amp; !arg.equals(&quot;LST_UP_ID&quot;)){
+    if( !arg.equals(&quot;IDENTIFIER&quot;) &amp;&amp; !arg.equals(&quot;LST_UPD_TS&quot;) &amp;&amp; !arg.equals(&quot;LST_UPD_ID&quot;)){
       if (isNotMatching) {
     	   success = false;
     	   log.info(&quot;not matching &quot;+arg + &quot; = &quot;+nsValue+ &quot; &quot;+legacyValue);
@@ -670,7 +670,7 @@ for(String arg: bsh.args){
     Object legacyValue = legacyAllegation.get(arg);
     Boolean isNotMatching = !(nsValue!=null &amp;&amp; legacyValue!=null &amp;&amp; nsValue.equals(legacyValue) ) &amp;&amp; !(nsValue == null &amp;&amp; legacyValue == null);
 
-    if( !arg.equals(&quot;FKREFERL_T&quot;) &amp;&amp; !arg.equals(&quot;IDENTIFIER&quot;) &amp;&amp; !arg.equals(&quot;LST_UPD_TS&quot;) &amp;&amp; !arg.equals(&quot;LST_UP_ID&quot;)){
+    if( !arg.equals(&quot;FKREFERL_T&quot;) &amp;&amp; !arg.equals(&quot;IDENTIFIER&quot;) &amp;&amp; !arg.equals(&quot;LST_UPD_TS&quot;) &amp;&amp; !arg.equals(&quot;LST_UPD_ID&quot;)){
       if (isNotMatching) {
     	   success = false;
     	   log.info(&quot;not matching &quot;+arg + &quot; = &quot;+nsValue+ &quot; &quot;+legacyValue);
@@ -767,7 +767,7 @@ for(String arg: bsh.args){
     Object legacyValue = legacyCrossReport.get(arg);
     Boolean isNotMatching = !(nsValue!=null &amp;&amp; legacyValue!=null &amp;&amp; nsValue.equals(legacyValue) ) &amp;&amp; !(nsValue == null &amp;&amp; legacyValue == null);
 
-    if( !arg.equals(&quot;FKREFERL_T&quot;) &amp;&amp;!arg.equals(&quot;THIRD_ID&quot;) &amp;&amp; !arg.equals(&quot;LST_UPD_TS&quot;) &amp;&amp; !arg.equals(&quot;LST_UP_ID&quot;)){
+    if( !arg.equals(&quot;FKREFERL_T&quot;) &amp;&amp;!arg.equals(&quot;THIRD_ID&quot;) &amp;&amp; !arg.equals(&quot;LST_UPD_TS&quot;) &amp;&amp; !arg.equals(&quot;LST_UPD_ID&quot;)){
       if (isNotMatching) {
     	   success = false;
     	   log.info(&quot;not matching &quot;+arg + &quot; = &quot;+nsValue+ &quot; &quot;+legacyValue);
@@ -863,7 +863,7 @@ for(String arg: bsh.args){
     Object legacyValue = legacyReferralClient.get(arg);
     Boolean isNotMatching = !(nsValue!=null &amp;&amp; legacyValue!=null &amp;&amp; nsValue.equals(legacyValue) ) &amp;&amp; !(nsValue == null &amp;&amp; legacyValue == null);
 
-    if( !arg.equals(&quot;FKREFERL_T&quot;) &amp;&amp; !arg.equals(&quot;LST_UPD_TS&quot;) &amp;&amp; !arg.equals(&quot;LST_UP_ID&quot;)){
+    if( !arg.equals(&quot;FKREFERL_T&quot;) &amp;&amp; !arg.equals(&quot;LST_UPD_TS&quot;) &amp;&amp; !arg.equals(&quot;LST_UPD_ID&quot;)){
       if (isNotMatching) {
     	   success = false;
     	   log.info(&quot;not matching &quot;+arg + &quot; = &quot;+nsValue+ &quot; &quot;+legacyValue);
@@ -959,7 +959,7 @@ for(String arg: bsh.args){
     Object legacyValue = legacyReporter.get(arg);
     Boolean isNotMatching = !(nsValue!=null &amp;&amp; legacyValue!=null &amp;&amp; nsValue.equals(legacyValue) ) &amp;&amp; !(nsValue == null &amp;&amp; legacyValue == null);
 
-    if( !arg.equals(&quot;FKREFERL_T&quot;) &amp;&amp; !arg.equals(&quot;LST_UPD_TS&quot;) &amp;&amp; !arg.equals(&quot;LST_UP_ID&quot;)){
+    if( !arg.equals(&quot;FKREFERL_T&quot;) &amp;&amp; !arg.equals(&quot;LST_UPD_TS&quot;) &amp;&amp; !arg.equals(&quot;LST_UPD_ID&quot;)){
       if (isNotMatching) {
     	   success = false;
     	   log.info(&quot;not matching &quot;+arg + &quot; = &quot;+nsValue+ &quot; &quot;+legacyValue);
@@ -1054,7 +1054,7 @@ for(String arg: bsh.args){
     Object legacyValue = legacyClient.get(arg);
     Boolean isNotMatching = !(nsValue!=null &amp;&amp; legacyValue!=null &amp;&amp; nsValue.equals(legacyValue) ) &amp;&amp; !(nsValue == null &amp;&amp; legacyValue == null);
 
-    if( !arg.equals(&quot;IDENTIFIER&quot;) &amp;&amp; !arg.equals(&quot;LST_UPD_TS&quot;) &amp;&amp; !arg.equals(&quot;LST_UP_ID&quot;)){
+    if( !arg.equals(&quot;IDENTIFIER&quot;) &amp;&amp; !arg.equals(&quot;LST_UPD_TS&quot;) &amp;&amp; !arg.equals(&quot;LST_UPD_ID&quot;)){
       if (isNotMatching) {
     	   success = false;
     	   log.info(&quot;not matching &quot;+arg + &quot; = &quot;+nsValue+ &quot; &quot;+legacyValue);

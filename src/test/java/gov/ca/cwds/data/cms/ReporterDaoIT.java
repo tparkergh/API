@@ -150,7 +150,7 @@ public class ReporterDaoIT implements DaoTestTemplate {
     for (Reporter c : list) {
       System.out.println("id " + c.getPrimaryKey() + " " + c.getLastName());
     }
-    assertThat(query.list().size(), is(1));
+    assertThat(query.list().size(), is(0));
   }
 
   // TODO: #138438305: move to jobs project.
