@@ -81,17 +81,17 @@ public class AutoCompletePerson
   @SuppressWarnings("javadoc")
   public enum AutoCompleteNameSuffix {
 
-    ESQUIRE("esq", new String[] {"esq"}),
+    ESQUIRE("esq", new String[] {"esq", "eq", "esqu"}),
 
-    SECOND("ii", new String[] {"ii"}),
+    SECOND("ii", new String[] {"ii", "2", "2nd", "second"}),
 
-    THIRD("iii", new String[] {"iii"}),
+    THIRD("iii", new String[] {"iii", "3", "3rd", "third"}),
 
-    FOURTH("iv", new String[] {"iv"}),
+    FOURTH("iv", new String[] {"iv", "4", "4th", "fourth"}),
 
-    JR("jr", new String[] {"jr"}),
+    JR("jr", new String[] {"jr", "junior", "jnr"}),
 
-    SR("sr", new String[] {"sr"}),
+    SR("sr", new String[] {"sr", "senior", "snr"}),
 
     MD("md", new String[] {"md"}),
 
