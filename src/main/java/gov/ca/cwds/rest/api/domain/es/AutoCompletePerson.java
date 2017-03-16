@@ -1093,8 +1093,7 @@ public class AutoCompletePerson
   @JsonProperty("ssn")
   @Override
   public String getSsn() {
-    ssn = new MaskString().maskSsn(ssn);
-    return ssn;
+    return new MaskString().maskSsn(ssn);
   }
 
   @Override
@@ -1107,7 +1106,6 @@ public class AutoCompletePerson
    * 
    * @return date of birth
    */
-  // @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = DomainObject.DATE_FORMAT)
   public String getDateOfBirth() {
     return dateOfBirth;
   }
