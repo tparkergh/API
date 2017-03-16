@@ -31,6 +31,10 @@ public class Client extends DomainObject implements Request, Response {
    */
   private static final long serialVersionUID = 1L;
 
+  @Size(max = 10)
+  @ApiModelProperty(required = false, readOnly = false, value = "", example = "ABC1234567")
+  private String existingClientId;
+
   @ApiModelProperty(required = false, readOnly = false)
   private Boolean adjudicatedDelinquentIndicator;
 
@@ -349,6 +353,7 @@ public class Client extends DomainObject implements Request, Response {
   private Boolean zippyCreatedIndicator;
 
   /**
+   * @param existingClientId - existingClientId
    * @param adjudicatedDelinquentIndicator - adjudicatedDelinquentIndicator
    * @param adoptionStatusCode - adoptionStatusCode
    * @param alienRegistrationNumber - alienRegistrationNumber
@@ -417,7 +422,7 @@ public class Client extends DomainObject implements Request, Response {
    * @param zippyCreatedIndicator - zippyCreatedIndicator
    */
   @JsonCreator
-  public Client(
+  public Client(@JsonProperty("existingClientId") String existingClientId,
       @JsonProperty("adjudicatedDelinquentIndicator") Boolean adjudicatedDelinquentIndicator,
       @JsonProperty("adoptionStatusCode") String adoptionStatusCode,
       @JsonProperty("alienRegistrationNumber") String alienRegistrationNumber,
@@ -485,6 +490,7 @@ public class Client extends DomainObject implements Request, Response {
       @JsonProperty("unemployedParentCode") String unemployedParentCode,
       @JsonProperty("zippyCreatedIndicator") Boolean zippyCreatedIndicator) {
     super();
+    this.existingClientId = existingClientId;
     this.adjudicatedDelinquentIndicator = adjudicatedDelinquentIndicator;
     this.adoptionStatusCode = adoptionStatusCode;
     this.alienRegistrationNumber = alienRegistrationNumber;
@@ -557,6 +563,7 @@ public class Client extends DomainObject implements Request, Response {
    * @param persistedClient - persistedClient object
    */
   public Client(gov.ca.cwds.data.persistence.cms.Client persistedClient) {
+    this.existingClientId = persistedClient.getId();
     this.adjudicatedDelinquentIndicator =
         DomainChef.uncookBooleanString(persistedClient.getAdjudicatedDelinquentIndicator());
     this.adoptionStatusCode = persistedClient.getAdoptionStatusCode();
@@ -644,6 +651,13 @@ public class Client extends DomainObject implements Request, Response {
     this.unemployedParentCode = persistedClient.getUnemployedParentCode();
     this.zippyCreatedIndicator =
         DomainChef.uncookBooleanString(persistedClient.getZippyCreatedIndicator());
+  }
+
+  /**
+   * @return the existingClientId
+   */
+  public String getExistingClientId() {
+    return existingClientId;
   }
 
   /**
@@ -1112,6 +1126,7 @@ public class Client extends DomainObject implements Request, Response {
   public final int hashCode() {
     final int prime = 31;
     int result = 1;
+    result = prime * result + ((existingClientId == null) ? 0 : existingClientId.hashCode());
     result = prime * result + ((adjudicatedDelinquentIndicator == null) ? 0
         : adjudicatedDelinquentIndicator.hashCode());
     result = prime * result + ((adoptionStatusCode == null) ? 0 : adoptionStatusCode.hashCode());
@@ -1230,6 +1245,11 @@ public class Client extends DomainObject implements Request, Response {
       return false;
     }
     Client other = (Client) obj;
+    if (existingClientId == null) {
+      if (other.existingClientId != null)
+        return false;
+    } else if (!existingClientId.equals(other.existingClientId))
+      return false;
     if (adjudicatedDelinquentIndicator == null) {
       if (other.adjudicatedDelinquentIndicator != null)
         return false;

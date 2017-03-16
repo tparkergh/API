@@ -85,54 +85,66 @@ public class CmsReferralService implements CrudsService {
     Set<PostedClient> postedClients = new LinkedHashSet<>();
     if (cmsReferral.getClient() != null && !cmsReferral.getClient().isEmpty()) {
       for (Client incomingClient : cmsReferral.getClient()) {
-        Client client = new Client(incomingClient.getAdjudicatedDelinquentIndicator(),
-            incomingClient.getAdoptionStatusCode(), incomingClient.getAlienRegistrationNumber(),
-            incomingClient.getBirthCity(), incomingClient.getBirthCountryCodeType(),
-            incomingClient.getBirthDate(), incomingClient.getBirthFacilityName(),
-            incomingClient.getBirthStateCodeType(), incomingClient.getBirthplaceVerifiedIndicator(),
-            incomingClient.getChildClientIndicatorVar(), incomingClient.getClientIndexNumber(),
-            incomingClient.getCommentDescription(), incomingClient.getCommonFirstName(),
-            incomingClient.getCommonLastName(), incomingClient.getCommonMiddleName(),
-            incomingClient.getConfidentialityActionDate(),
-            incomingClient.getConfidentialityInEffectIndicator(), incomingClient.getCreationDate(),
-            incomingClient.getCurrCaChildrenServIndicator(),
-            incomingClient.getCurrentlyOtherDescription(),
-            incomingClient.getCurrentlyRegionalCenterIndicator(), incomingClient.getDeathDate(),
-            incomingClient.getDeathDateVerifiedIndicator(), incomingClient.getDeathPlace(),
-            incomingClient.getDeathReasonText(), incomingClient.getDriverLicenseNumber(),
-            incomingClient.getDriverLicenseStateCodeType(), incomingClient.getEmailAddress(),
-            incomingClient.getEstimatedDobCode(), incomingClient.getEthUnableToDetReasonCode(),
-            incomingClient.getFatherParentalRightTermDate(), incomingClient.getGenderCode(),
-            incomingClient.getHealthSummaryText(), incomingClient.getHispUnableToDetReasonCode(),
-            incomingClient.getHispanicOriginCode(), incomingClient.getImmigrationCountryCodeType(),
-            incomingClient.getImmigrationStatusType(), incomingClient.getIncapacitatedParentCode(),
-            incomingClient.getIndividualHealthCarePlanIndicator(),
-            incomingClient.getLimitationOnScpHealthIndicator(), incomingClient.getLiterateCode(),
-            incomingClient.getMaritalCohabitatnHstryIndicatorVar(),
-            incomingClient.getMaritalStatusType(), incomingClient.getMilitaryStatusCode(),
-            incomingClient.getMotherParentalRightTermDate(),
-            incomingClient.getNamePrefixDescription(), incomingClient.getNameType(),
-            incomingClient.getOutstandingWarrantIndicator(),
-            incomingClient.getPrevCaChildrenServIndicator(),
-            incomingClient.getPrevOtherDescription(),
-            incomingClient.getPrevRegionalCenterIndicator(),
-            incomingClient.getPrimaryEthnicityType(), incomingClient.getPrimaryLanguageType(),
-            incomingClient.getReligionType(), incomingClient.getSecondaryLanguageType(),
-            incomingClient.getSensitiveHlthInfoOnFileIndicator(),
-            incomingClient.getSensitivityIndicator(), incomingClient.getSoc158PlacementCode(),
-            incomingClient.getSoc158SealedClientIndicator(),
-            incomingClient.getSocialSecurityNumChangedCode(),
-            incomingClient.getSocialSecurityNumber(), incomingClient.getSuffixTitleDescription(),
-            incomingClient.getTribalAncestryClientIndicatorVar(),
-            incomingClient.getTribalMembrshpVerifctnIndicatorVar(),
-            incomingClient.getUnemployedParentCode(), incomingClient.getZippyCreatedIndicator());
-        PostedClient postedclient = this.clientService.create(client);
-        postedClients.add(postedclient);
-        String clientId = postedclient.getId();
-        clientIds.add(clientId);
+        PostedClient savedClient = null;
+        if (incomingClient.getExistingClientId() != null) {
+          savedClient = clientService.findInboundId(incomingClient.getExistingClientId());
+        }
+
+        if (savedClient == null) {
+          Client client = new Client(incomingClient.getExistingClientId(),
+              incomingClient.getAdjudicatedDelinquentIndicator(),
+              incomingClient.getAdoptionStatusCode(), incomingClient.getAlienRegistrationNumber(),
+              incomingClient.getBirthCity(), incomingClient.getBirthCountryCodeType(),
+              incomingClient.getBirthDate(), incomingClient.getBirthFacilityName(),
+              incomingClient.getBirthStateCodeType(),
+              incomingClient.getBirthplaceVerifiedIndicator(),
+              incomingClient.getChildClientIndicatorVar(), incomingClient.getClientIndexNumber(),
+              incomingClient.getCommentDescription(), incomingClient.getCommonFirstName(),
+              incomingClient.getCommonLastName(), incomingClient.getCommonMiddleName(),
+              incomingClient.getConfidentialityActionDate(),
+              incomingClient.getConfidentialityInEffectIndicator(),
+              incomingClient.getCreationDate(), incomingClient.getCurrCaChildrenServIndicator(),
+              incomingClient.getCurrentlyOtherDescription(),
+              incomingClient.getCurrentlyRegionalCenterIndicator(), incomingClient.getDeathDate(),
+              incomingClient.getDeathDateVerifiedIndicator(), incomingClient.getDeathPlace(),
+              incomingClient.getDeathReasonText(), incomingClient.getDriverLicenseNumber(),
+              incomingClient.getDriverLicenseStateCodeType(), incomingClient.getEmailAddress(),
+              incomingClient.getEstimatedDobCode(), incomingClient.getEthUnableToDetReasonCode(),
+              incomingClient.getFatherParentalRightTermDate(), incomingClient.getGenderCode(),
+              incomingClient.getHealthSummaryText(), incomingClient.getHispUnableToDetReasonCode(),
+              incomingClient.getHispanicOriginCode(),
+              incomingClient.getImmigrationCountryCodeType(),
+              incomingClient.getImmigrationStatusType(),
+              incomingClient.getIncapacitatedParentCode(),
+              incomingClient.getIndividualHealthCarePlanIndicator(),
+              incomingClient.getLimitationOnScpHealthIndicator(), incomingClient.getLiterateCode(),
+              incomingClient.getMaritalCohabitatnHstryIndicatorVar(),
+              incomingClient.getMaritalStatusType(), incomingClient.getMilitaryStatusCode(),
+              incomingClient.getMotherParentalRightTermDate(),
+              incomingClient.getNamePrefixDescription(), incomingClient.getNameType(),
+              incomingClient.getOutstandingWarrantIndicator(),
+              incomingClient.getPrevCaChildrenServIndicator(),
+              incomingClient.getPrevOtherDescription(),
+              incomingClient.getPrevRegionalCenterIndicator(),
+              incomingClient.getPrimaryEthnicityType(), incomingClient.getPrimaryLanguageType(),
+              incomingClient.getReligionType(), incomingClient.getSecondaryLanguageType(),
+              incomingClient.getSensitiveHlthInfoOnFileIndicator(),
+              incomingClient.getSensitivityIndicator(), incomingClient.getSoc158PlacementCode(),
+              incomingClient.getSoc158SealedClientIndicator(),
+              incomingClient.getSocialSecurityNumChangedCode(),
+              incomingClient.getSocialSecurityNumber(), incomingClient.getSuffixTitleDescription(),
+              incomingClient.getTribalAncestryClientIndicatorVar(),
+              incomingClient.getTribalMembrshpVerifctnIndicatorVar(),
+              incomingClient.getUnemployedParentCode(), incomingClient.getZippyCreatedIndicator());
+          PostedClient postedclient = this.clientService.create(client);
+          postedClients.add(postedclient);
+          String clientId = postedclient.getId();
+          clientIds.add(clientId);
+        } else {
+          postedClients.add(savedClient);
+        }
       }
     }
-
 
     Set<PostedAllegation> resultAllegation = new LinkedHashSet<>();
     if (cmsReferral.getAllegation() != null && !cmsReferral.getAllegation().isEmpty()) {
@@ -157,7 +169,6 @@ public class CmsReferralService implements CrudsService {
       }
     }
 
-
     Set<CrossReport> resultCrossReport = new LinkedHashSet<>();
     if (cmsReferral.getCrossReport() != null && !cmsReferral.getCrossReport().isEmpty()) {
       for (CrossReport incomingCrossReport : cmsReferral.getCrossReport()) {
@@ -181,7 +192,6 @@ public class CmsReferralService implements CrudsService {
         resultCrossReport.add(crossReport);
       }
     }
-
 
     Set<ReferralClient> resultReferralClient = new LinkedHashSet<>();
     if (cmsReferral.getReferralClient() != null && !cmsReferral.getReferralClient().isEmpty()) {

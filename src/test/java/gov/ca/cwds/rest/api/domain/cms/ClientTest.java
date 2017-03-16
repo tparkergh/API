@@ -64,6 +64,7 @@ public class ClientTest implements DomainTestTemplate {
   private String lastUpdatedId = "0X5";
   private final static DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
 
+  private String existingClientId = "ABC1234567";
   private Boolean adjudicatedDelinquentIndicator = Boolean.FALSE;
   private String adoptionStatusCode = "A";
   private String alienRegistrationNumber = "";
@@ -154,7 +155,7 @@ public class ClientTest implements DomainTestTemplate {
   @Test
   public void testPersistentConstructor() throws Exception {
 
-    Client domain = new Client(adjudicatedDelinquentIndicator, adoptionStatusCode,
+    Client domain = new Client(existingClientId, adjudicatedDelinquentIndicator, adoptionStatusCode,
         alienRegistrationNumber, birthCity, birthCountryCodeType, birthDate, birthFacilityName,
         birthStateCodeType, birthplaceVerifiedIndicator, childClientIndicatorVar, clientIndexNumber,
         commentDescription, commonFirstName, commonLastName, commonMiddleName,
@@ -270,7 +271,7 @@ public class ClientTest implements DomainTestTemplate {
 
     Client vc = validClient();
 
-    Client domain = new Client(adjudicatedDelinquentIndicator, adoptionStatusCode,
+    Client domain = new Client(existingClientId, adjudicatedDelinquentIndicator, adoptionStatusCode,
         alienRegistrationNumber, birthCity, birthCountryCodeType, birthDate, birthFacilityName,
         birthStateCodeType, birthplaceVerifiedIndicator, childClientIndicatorVar, clientIndexNumber,
         commentDescription, commonFirstName, commonLastName, commonMiddleName,
@@ -665,7 +666,7 @@ public class ClientTest implements DomainTestTemplate {
   }
 
   private Client validDomainClient() {
-    Client domain = new Client(adjudicatedDelinquentIndicator, adoptionStatusCode,
+    Client domain = new Client(existingClientId, adjudicatedDelinquentIndicator, adoptionStatusCode,
         alienRegistrationNumber, birthCity, birthCountryCodeType, birthDate, birthFacilityName,
         birthStateCodeType, birthplaceVerifiedIndicator, childClientIndicatorVar, clientIndexNumber,
         commentDescription, commonFirstName, commonLastName, commonMiddleName,

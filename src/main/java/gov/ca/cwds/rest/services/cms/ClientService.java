@@ -56,6 +56,20 @@ public class ClientService implements CrudsService {
     return null;
   }
 
+  /*
+   * This method is the representation of postedCmsReferral
+   */
+  @SuppressWarnings("javadoc")
+  public PostedClient findInboundId(Serializable primaryKey) {
+    assert primaryKey instanceof String;
+
+    gov.ca.cwds.data.persistence.cms.Client persistedClient = clientDao.find(primaryKey);
+    if (persistedClient != null) {
+      return new PostedClient(persistedClient);
+    }
+    return null;
+  }
+
   /**
    * {@inheritDoc}
    * 
