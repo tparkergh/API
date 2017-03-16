@@ -17,6 +17,16 @@ public class PostedReporter extends Reporter {
   private String id;
 
   /**
+   * Default Constructor
+   */
+  public PostedReporter() {
+    /**
+     * default constructor
+     * 
+     */
+  }
+
+  /**
    * Constructor
    * 
    * @param reporter The persisted reporter

@@ -207,26 +207,31 @@ public class CmsReferralService implements CrudsService {
       }
     }
 
-    Reporter incomingReporter = cmsReferral.getReporter();
-    Reporter reporter = new Reporter(incomingReporter.getBadgeNumber(),
-        incomingReporter.getCityName(), incomingReporter.getColltrClientRptrReltnshpType(),
-        incomingReporter.getCommunicationMethodType(),
-        incomingReporter.getConfidentialWaiverIndicator(),
-        incomingReporter.getDrmsMandatedRprtrFeedback(), incomingReporter.getEmployerName(),
-        incomingReporter.getFeedbackDate(), incomingReporter.getFeedbackRequiredIndicator(),
-        incomingReporter.getFirstName(), incomingReporter.getLastName(),
-        incomingReporter.getMandatedReporterIndicator(),
-        incomingReporter.getMessagePhoneExtensionNumber(), incomingReporter.getMessagePhoneNumber(),
-        incomingReporter.getMiddleInitialName(), incomingReporter.getNamePrefixDescription(),
-        incomingReporter.getPrimaryPhoneNumber(), incomingReporter.getPrimaryPhoneExtensionNumber(),
-        incomingReporter.getStateCodeType(), incomingReporter.getStreetName(),
-        incomingReporter.getStreetNumber(), incomingReporter.getSuffixTitleDescription(),
-        incomingReporter.getZipcode(), referralId, incomingReporter.getLawEnforcementId(),
-        incomingReporter.getZipSuffixNumber(), incomingReporter.getCountySpecificCode());
-    PostedReporter postedreporter = this.reporterService.create(reporter);
+    PostedReporter savedreporter = new PostedReporter();
+    if (cmsReferral.getReporter() != null) {
+      Reporter incomingReporter = cmsReferral.getReporter();
+      Reporter reporter = new Reporter(incomingReporter.getBadgeNumber(),
+          incomingReporter.getCityName(), incomingReporter.getColltrClientRptrReltnshpType(),
+          incomingReporter.getCommunicationMethodType(),
+          incomingReporter.getConfidentialWaiverIndicator(),
+          incomingReporter.getDrmsMandatedRprtrFeedback(), incomingReporter.getEmployerName(),
+          incomingReporter.getFeedbackDate(), incomingReporter.getFeedbackRequiredIndicator(),
+          incomingReporter.getFirstName(), incomingReporter.getLastName(),
+          incomingReporter.getMandatedReporterIndicator(),
+          incomingReporter.getMessagePhoneExtensionNumber(),
+          incomingReporter.getMessagePhoneNumber(), incomingReporter.getMiddleInitialName(),
+          incomingReporter.getNamePrefixDescription(), incomingReporter.getPrimaryPhoneNumber(),
+          incomingReporter.getPrimaryPhoneExtensionNumber(), incomingReporter.getStateCodeType(),
+          incomingReporter.getStreetName(), incomingReporter.getStreetNumber(),
+          incomingReporter.getSuffixTitleDescription(), incomingReporter.getZipcode(), referralId,
+          incomingReporter.getLawEnforcementId(), incomingReporter.getZipSuffixNumber(),
+          incomingReporter.getCountySpecificCode());
+      PostedReporter postedreporter = this.reporterService.create(reporter);
+      savedreporter = postedreporter;
+    }
 
     return new PostedCmsReferral(referral, postedClients, resultAllegation, resultCrossReport,
-        resultReferralClient, postedreporter);
+        resultReferralClient, savedreporter);
 
   }
 

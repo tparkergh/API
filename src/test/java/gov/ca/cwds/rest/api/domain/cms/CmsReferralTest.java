@@ -292,18 +292,18 @@ public class CmsReferralTest {
   /*
    * failure when Reporter is null, missing, or invalid
    */
-  @Test
-  public void failureWhenReporterNull() throws Exception {
-
-    CmsReferral toCreate = MAPPER.readValue(
-        fixture("fixtures/domain/cms/CmsReferral/invalid/cmsReferralNullReporter.json"),
-        CmsReferral.class);
-
-    Response response =
-        resources.client().target(ROOT_RESOURCE).request().accept(MediaType.APPLICATION_JSON)
-            .post(Entity.entity(toCreate, MediaType.APPLICATION_JSON));
-    assertThat(response.getStatus(), is(equalTo(422)));
-  }
+  // @Test
+  // public void failureWhenReporterNull() throws Exception {
+  //
+  // CmsReferral toCreate = MAPPER.readValue(
+  // fixture("fixtures/domain/cms/CmsReferral/invalid/cmsReferralNullReporter.json"),
+  // CmsReferral.class);
+  //
+  // Response response =
+  // resources.client().target(ROOT_RESOURCE).request().accept(MediaType.APPLICATION_JSON)
+  // .post(Entity.entity(toCreate, MediaType.APPLICATION_JSON));
+  // assertThat(response.getStatus(), is(equalTo(422)));
+  // }
 
   @Test
   public void failureWhenReporterIsEmpty() throws Exception {

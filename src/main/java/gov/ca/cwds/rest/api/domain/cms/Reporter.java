@@ -174,6 +174,13 @@ public class Reporter extends DomainObject implements Request, Response {
   private String countySpecificCode;
 
   /**
+   * Default Constructor
+   */
+  public Reporter() {
+
+  }
+
+  /**
    * Construct from all fields.
    * 
    * @param badgeNumber badge number

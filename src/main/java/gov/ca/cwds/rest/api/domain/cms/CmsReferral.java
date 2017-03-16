@@ -49,7 +49,6 @@ public class CmsReferral extends DomainObject implements Request, Response {
   @Valid
   private Set<ReferralClient> referralClient;
 
-  @NotNull
   @ApiModelProperty(required = true, readOnly = false)
   @Valid
   private Reporter reporter;
