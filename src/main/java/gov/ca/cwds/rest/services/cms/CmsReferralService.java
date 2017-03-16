@@ -1,7 +1,9 @@
 package gov.ca.cwds.rest.services.cms;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.LinkedHashSet;
+import java.util.List;
 import java.util.Set;
 
 import org.apache.commons.lang3.NotImplementedException;
@@ -77,6 +79,8 @@ public class CmsReferralService implements CrudsService {
     CmsReferral cmsReferral = (CmsReferral) request;
     PostedReferral referral = this.referralService.create(cmsReferral.getReferral());
     String referralId = referral.getId();
+    List<String> clientIds = new ArrayList<>();
+    int clientInst = 0;
 
     Set<PostedClient> postedClients = new LinkedHashSet<>();
     if (cmsReferral.getClient() != null && !cmsReferral.getClient().isEmpty()) {
@@ -124,8 +128,11 @@ public class CmsReferralService implements CrudsService {
             incomingClient.getUnemployedParentCode(), incomingClient.getZippyCreatedIndicator());
         PostedClient postedclient = this.clientService.create(client);
         postedClients.add(postedclient);
+        String clientId = postedclient.getId();
+        clientIds.add(clientId);
       }
     }
+
 
     Set<PostedAllegation> resultAllegation = new LinkedHashSet<>();
     if (cmsReferral.getAllegation() != null && !cmsReferral.getAllegation().isEmpty()) {
@@ -187,7 +194,7 @@ public class CmsReferralService implements CrudsService {
                 incomingReferralClient.getDispositionDate(),
                 incomingReferralClient.getSelfReportedIndicator(),
                 incomingReferralClient.getStaffPersonAddedIndicator(), referralId,
-                incomingReferralClient.getClientId(),
+                (String) clientIds.toArray()[clientInst],
                 incomingReferralClient.getDispositionClosureDescription(),
                 incomingReferralClient.getAgeNumber(), incomingReferralClient.getAgePeriodCode(),
                 incomingReferralClient.getCountySpecificCode(),
@@ -196,6 +203,7 @@ public class CmsReferralService implements CrudsService {
                 incomingReferralClient.getDrugIndicator());
         referralClient = this.referralClientService.create(referralClient);
         resultReferralClient.add(referralClient);
+        clientInst += 1;
       }
     }
 
