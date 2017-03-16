@@ -8,8 +8,8 @@ import static org.mockito.Mockito.spy;
 import org.junit.Test;
 
 /**
+ * 
  * @author CWDS API Team
- *
  */
 public class MaskStringTest {
   String actualSsn;
@@ -81,6 +81,14 @@ public class MaskStringTest {
   public void maskWithHyphenInSsn() throws Exception {
     String ssn = "012-03-0456";
     expectedSsn = "0456";
+    actualSsn = spyMaskString.maskSsn(ssn);
+    assertThat(actualSsn, is(equalTo(expectedSsn)));
+  }
+
+  @Test
+  public void maskWithWhackSsn() throws Exception {
+    String ssn = "561002314";
+    expectedSsn = "";
     actualSsn = spyMaskString.maskSsn(ssn);
     assertThat(actualSsn, is(equalTo(expectedSsn)));
   }

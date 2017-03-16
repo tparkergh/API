@@ -895,9 +895,10 @@ public class AutoCompletePerson
   @JsonInclude(JsonInclude.Include.ALWAYS)
   private String gender;
 
+  /**
+   * Getter method {@link #getSsn()} masks outbound SSN.
+   */
   @JsonIgnore
-  // @JsonProperty("ssn")
-  // @JsonInclude(JsonInclude.Include.ALWAYS)
   private String ssn;
 
   @JsonProperty("date_of_birth")
@@ -1092,8 +1093,7 @@ public class AutoCompletePerson
   @JsonProperty("ssn")
   @Override
   public String getSsn() {
-    MaskString mask = new MaskString();
-    ssn = mask.maskSsn(ssn);
+    ssn = new MaskString().maskSsn(ssn);
     return ssn;
   }
 

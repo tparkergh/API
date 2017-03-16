@@ -10,6 +10,12 @@ import org.slf4j.LoggerFactory;
 /**
  * Masks the Social Security Number to the last 4 digits.
  * 
+ * <p>
+ * See <a href="https://en.wikipedia.org/wiki/Social_Security_number#Structure">Wiki SSN rules</a>
+ * and <a href=
+ * "http://stackoverflow.com/questions/1517026/how-can-i-validate-us-social-security-number">overview</a>.
+ * </p>
+ * 
  * @author CWDS API Team
  */
 public class MaskString {
@@ -43,7 +49,7 @@ public class MaskString {
       returnSsn = actualString.substring(startPos, length);
     } else {
       returnSsn = "";
-      LOGGER.error("Invalid SSN format or SSN is blank");
+      LOGGER.warn("Invalid SSN format or SSN is blank");
     }
 
     return returnSsn;
