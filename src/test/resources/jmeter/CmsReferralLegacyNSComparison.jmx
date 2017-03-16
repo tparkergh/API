@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<jmeterTestPlan version="1.2" properties="3.1" jmeter="3.1 r1770033">
+<jmeterTestPlan version="1.2" properties="2.9" jmeter="3.0 r1743807">
   <hashTree>
     <TestPlan guiclass="TestPlanGui" testclass="TestPlan" testname="Test Plan" enabled="true">
       <stringProp name="TestPlan.comments"></stringProp>
@@ -863,7 +863,7 @@ for(String arg: bsh.args){
     Object legacyValue = legacyReferralClient.get(arg);
     Boolean isNotMatching = !(nsValue!=null &amp;&amp; legacyValue!=null &amp;&amp; nsValue.equals(legacyValue) ) &amp;&amp; !(nsValue == null &amp;&amp; legacyValue == null);
 
-    if( !arg.equals(&quot;FKREFERL_T&quot;) &amp;&amp; !arg.equals(&quot;LST_UPD_TS&quot;) &amp;&amp; !arg.equals(&quot;LST_UPD_ID&quot;) &amp;&amp; !arg.equals(&quot;FKCLIENT_T&quot;)){
+    if( !arg.equals(&quot;FKREFERL_T&quot;) &amp;&amp; !arg.equals(&quot;LST_UPD_TS&quot;) &amp;&amp; !arg.equals(&quot;LST_UPD_ID&quot;) &amp;&amp; !arg.equals(&quot;FKCLIENT_T&quot;) ){
       if (isNotMatching) {
     	   success = false;
     	   log.info(&quot;not matching &quot;+arg + &quot; = &quot;+nsValue+ &quot; &quot;+legacyValue);
