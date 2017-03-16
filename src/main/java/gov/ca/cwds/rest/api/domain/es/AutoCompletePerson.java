@@ -1269,9 +1269,9 @@ public class AutoCompletePerson
   }
 
   /**
-   * Getter for CMS syscode cache.
+   * Getter for CMS system code cache.
    * 
-   * @return reference to CMS syscode cache
+   * @return reference to CMS system code cache
    */
   public static ISystemCodeCache getSystemCodes() {
     return systemCodes;
