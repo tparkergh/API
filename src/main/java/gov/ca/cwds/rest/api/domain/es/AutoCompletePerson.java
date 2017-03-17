@@ -93,9 +93,9 @@ public class AutoCompletePerson
 
     SR("sr", new String[] {"sr", "senior", "snr"}),
 
-    MD("md", new String[] {"md"}),
+    MD("md", new String[] {"md", "dr", "doc", "doctor"}),
 
-    PHD("phd", new String[] {"phd"}),
+    PHD("phd", new String[] {"phd", "professor", "prof"}),
 
     JD("jd", new String[] {"jd"});
 
