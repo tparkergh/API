@@ -256,5 +256,11 @@ public class AutoCompletePersonTest {
       return this.zip;
     }
 
+    @Override
+    public String getAddressId() {
+      // TODO Auto-generated method stub
+      return null;
+    }
+
   }
 }
