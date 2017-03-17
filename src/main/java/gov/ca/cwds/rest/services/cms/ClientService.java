@@ -51,7 +51,7 @@ public class ClientService implements CrudsService {
 
     gov.ca.cwds.data.persistence.cms.Client persistedClient = clientDao.find(primaryKey);
     if (persistedClient != null) {
-      return new gov.ca.cwds.rest.api.domain.cms.Client(persistedClient);
+      return new gov.ca.cwds.rest.api.domain.cms.Client(persistedClient, true);
     }
     return null;
   }
@@ -65,7 +65,7 @@ public class ClientService implements CrudsService {
 
     gov.ca.cwds.data.persistence.cms.Client persistedClient = clientDao.find(primaryKey);
     if (persistedClient != null) {
-      return new PostedClient(persistedClient);
+      return new PostedClient(persistedClient, true);
     }
     return null;
   }
@@ -80,7 +80,7 @@ public class ClientService implements CrudsService {
     assert primaryKey instanceof String;
     gov.ca.cwds.data.persistence.cms.Client persistedClient = clientDao.delete(primaryKey);
     if (persistedClient != null) {
-      return new gov.ca.cwds.rest.api.domain.cms.Client(persistedClient);
+      return new gov.ca.cwds.rest.api.domain.cms.Client(persistedClient, true);
     }
     return null;
   }
@@ -100,7 +100,7 @@ public class ClientService implements CrudsService {
     try {
       Client managed = new Client(IdGenerator.randomString(10), client, "q1p");
       managed = clientDao.create(managed);
-      return new PostedClient(managed);
+      return new PostedClient(managed, false);
     } catch (EntityExistsException e) {
       LOGGER.info("Client already exists : {}", client);
       throw new ServiceException(e);
@@ -123,7 +123,7 @@ public class ClientService implements CrudsService {
     try {
       Client managed = new Client((String) primaryKey, client, "q1p");
       managed = clientDao.update(managed);
-      return new gov.ca.cwds.rest.api.domain.cms.Client(managed);
+      return new gov.ca.cwds.rest.api.domain.cms.Client(managed, true);
     } catch (EntityNotFoundException e) {
       LOGGER.info("Client not found : {}", client);
       throw new ServiceException(e);

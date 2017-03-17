@@ -186,7 +186,7 @@ public class ClientServiceTest implements ServiceTestTemplate {
     gov.ca.cwds.data.persistence.cms.Client toCreate =
         new gov.ca.cwds.data.persistence.cms.Client(id, clientDomain, "ABC");
 
-    Client request = new Client(toCreate);
+    Client request = new Client(toCreate, false);
     when(clientDao.create(any(gov.ca.cwds.data.persistence.cms.Client.class))).thenReturn(toCreate);
 
     Response response = clientService.create(request);
@@ -202,7 +202,7 @@ public class ClientServiceTest implements ServiceTestTemplate {
     gov.ca.cwds.data.persistence.cms.Client toCreate =
         new gov.ca.cwds.data.persistence.cms.Client(id, clientDomain, "ABC");
 
-    Client request = new Client(toCreate);
+    Client request = new Client(toCreate, false);
     when(clientDao.create(any(gov.ca.cwds.data.persistence.cms.Client.class))).thenReturn(toCreate);
 
     PostedClient postedClient = clientService.create(request);
@@ -218,10 +218,10 @@ public class ClientServiceTest implements ServiceTestTemplate {
     gov.ca.cwds.data.persistence.cms.Client toCreate =
         new gov.ca.cwds.data.persistence.cms.Client(id, clientDomain, "ABC");
 
-    Client request = new Client(toCreate);
+    Client request = new Client(toCreate, false);
     when(clientDao.create(any(gov.ca.cwds.data.persistence.cms.Client.class))).thenReturn(toCreate);
 
-    PostedClient expected = new PostedClient(toCreate);
+    PostedClient expected = new PostedClient(toCreate, false);
     PostedClient returned = clientService.create(request);
     assertThat(returned, is(expected));
   }

@@ -141,6 +141,7 @@ public class CmsReferralService implements CrudsService {
           String clientId = postedclient.getId();
           clientIds.add(clientId);
         } else {
+          clientIds.add(savedClient.getId());
           postedClients.add(savedClient);
         }
       }

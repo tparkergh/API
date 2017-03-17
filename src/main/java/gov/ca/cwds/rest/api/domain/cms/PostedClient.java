@@ -24,10 +24,11 @@ public class PostedClient extends Client {
    * Constructor
    * 
    * @param client The persisted client
+   * @param isExist The inbound Client
    */
-  public PostedClient(gov.ca.cwds.data.persistence.cms.Client client) {
+  public PostedClient(gov.ca.cwds.data.persistence.cms.Client client, boolean isExist) {
 
-    super(client);
+    super(client, isExist);
 
     if (StringUtils.isBlank(client.getId())) {
       throw new ServiceException("Client ID cannot be empty");

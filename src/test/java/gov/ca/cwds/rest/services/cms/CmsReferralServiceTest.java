@@ -135,7 +135,7 @@ public class CmsReferralServiceTest {
     Set<ReferralClient> referralClientRequestSet = new LinkedHashSet<>();
     referralClientRequestSet.add(referralClientRequest);
 
-    Client clientRequest = new Client(clientToCreate);
+    Client clientRequest = new Client(clientToCreate, false);
     Set<Client> clientRequestSet = new LinkedHashSet<>();
     clientRequestSet.add(clientRequest);
 
@@ -239,7 +239,7 @@ public class CmsReferralServiceTest {
     Set<ReferralClient> referralClientRequestSet = new LinkedHashSet<>();
     referralClientRequestSet.add(referralClientRequest);
 
-    Client clientRequest = new Client(clientToCreate);
+    Client clientRequest = new Client(clientToCreate, false);
     Set<Client> clientRequestSet = new LinkedHashSet<>();
     clientRequestSet.add(clientRequest);
 
@@ -332,7 +332,7 @@ public class CmsReferralServiceTest {
     crossReportRequestSet.add(crossReportRequest);
 
     Reporter reporterRequest = new Reporter(reporterToCreate);
-    Client clientRequest = new Client(clientToCreate);
+    Client clientRequest = new Client(clientToCreate, false);
 
     Set<Client> clientRequestSet = new LinkedHashSet<>();
     clientRequestSet.add(clientRequest);
@@ -351,7 +351,7 @@ public class CmsReferralServiceTest {
     postedCrossReportSet.add(postedCrossReport);
 
     PostedReporter postedReporter = new PostedReporter(reporterToCreate);
-    PostedClient postedClient = new PostedClient(clientToCreate);
+    PostedClient postedClient = new PostedClient(clientToCreate, false);
 
     Set<PostedClient> postedClientSet = new LinkedHashSet<>();
     postedClientSet.add(postedClient);

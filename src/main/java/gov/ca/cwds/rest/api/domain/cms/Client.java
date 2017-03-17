@@ -561,9 +561,10 @@ public class Client extends DomainObject implements Request, Response {
 
   /**
    * @param persistedClient - persistedClient object
+   * @param isExist - ExistingId
    */
-  public Client(gov.ca.cwds.data.persistence.cms.Client persistedClient) {
-    this.existingClientId = persistedClient.getId();
+  public Client(gov.ca.cwds.data.persistence.cms.Client persistedClient, boolean isExist) {
+    this.existingClientId = isExist ? persistedClient.getId() : "";
     this.adjudicatedDelinquentIndicator =
         DomainChef.uncookBooleanString(persistedClient.getAdjudicatedDelinquentIndicator());
     this.adoptionStatusCode = persistedClient.getAdoptionStatusCode();
