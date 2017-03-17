@@ -83,11 +83,11 @@ public class AutoCompletePerson
 
     ESQUIRE("esq", new String[] {"esq", "eq", "esqu"}),
 
-    SECOND("ii", new String[] {"ii", "2", "2nd", "second"}),
+    SECOND("ii", new String[] {"ii", "2", "2nd", "second", "02"}),
 
-    THIRD("iii", new String[] {"iii", "3", "3rd", "third"}),
+    THIRD("iii", new String[] {"iii", "3", "3rd", "third", "03"}),
 
-    FOURTH("iv", new String[] {"iv", "4", "4th", "fourth"}),
+    FOURTH("iv", new String[] {"iv", "iiii", "4", "4th", "fourth", "04"}),
 
     JR("jr", new String[] {"jr", "junior", "jnr"}),
 
@@ -101,12 +101,15 @@ public class AutoCompletePerson
 
     private final String intake;
 
+    @JsonIgnore
     private final String[] legacy;
 
     // Key = legacy free-form value.
+    @JsonIgnore
     private static final Map<String, AutoCompleteNameSuffix> mapLegacy = new HashMap<>();
 
     // Key = Intake value.
+    @JsonIgnore
     private static final Map<String, AutoCompleteNameSuffix> mapIntake = new HashMap<>();
 
     private AutoCompleteNameSuffix(String intake, String[] legacy) {
@@ -119,7 +122,7 @@ public class AutoCompletePerson
       return intake;
     }
 
-    @JsonValue
+    @JsonIgnore
     public String[] getLegacy() {
       return legacy;
     }
@@ -501,24 +504,59 @@ public class AutoCompletePerson
 
     CANTONESE(1252, "Cantonese", 74),
 
-    FARSI(1254, "Farsi", 41), FILIPINO(3198, "Filipino", 49), FRENCH(1255, "French", 28),
+    FARSI(1254, "Farsi", 41),
 
-    GERMAN(1267, "German", 29), HAWAIIAN(1268, "Hawaiian", 99), HEBREW(1256, "Hebrew",
-        33), HMONG(1257, "Hmong", 35), ILACANO(1258, "Ilacano", 77),
+    FILIPINO(3198, "Filipino", 49),
 
-    INDOCHINESE(3199, "Indochinese", 99), ITALIAN(1259, "Italian", 42), JAPANESE(1260, "Japanese",
-        3), KOREAN(1261, "Korean", 4), LAO(1262, "Lao", 43),
+    FRENCH(1255, "French", 28),
 
-    MANDARIN(1263, "Mandarin", 75), MIEN(1264, "Mien", 76), OTHER_CHINESE(1265, "Other Chinese",
-        2), OTHER_NON_ENGLISH(1266, "Other Non-English", 99),
+    GERMAN(1267, "German", 29),
 
-    POLISH(1269, "Polish", 50), PORTUGUESE(1270, "Portuguese", 51), ROMANIAN(3200, "Romanian",
-        99), RUSSIAN(1271, "Russian", 54),
+    HAWAIIAN(1268, "Hawaiian", 99),
 
-    SAMOAN(1272, "Samoan", 55), SIGN_LANGUAGE_NOT_ASL(1273, "Sign Language (Not ASL)",
-        78), TAGALOG(1275, "Tagalog", 5),
+    HEBREW(1256, "Hebrew", 33),
 
-    THAI(1276, "Thai", 65), TURKISH(1277, "Turkish", 67), VIETNAMESE(1278, "Vietnamese", 69);
+    HMONG(1257, "Hmong", 35),
+
+    ILACANO(1258, "Ilacano", 77),
+
+    INDOCHINESE(3199, "Indochinese", 99),
+
+    ITALIAN(1259, "Italian", 42),
+
+    JAPANESE(1260, "Japanese", 3),
+
+    KOREAN(1261, "Korean", 4),
+
+    LAO(1262, "Lao", 43),
+
+    MANDARIN(1263, "Mandarin", 75),
+
+    MIEN(1264, "Mien", 76),
+
+    OTHER_CHINESE(1265, "Other Chinese", 2),
+
+    OTHER_NON_ENGLISH(1266, "Other Non-English", 99),
+
+    POLISH(1269, "Polish", 50),
+
+    PORTUGUESE(1270, "Portuguese", 51),
+
+    ROMANIAN(3200, "Romanian", 99),
+
+    RUSSIAN(1271, "Russian", 54),
+
+    SAMOAN(1272, "Samoan", 55),
+
+    SIGN_LANGUAGE_NOT_ASL(1273, "Sign Language (Not ASL)", 78),
+
+    TAGALOG(1275, "Tagalog", 5),
+
+    THAI(1276, "Thai", 65),
+
+    TURKISH(1277, "Turkish", 67),
+
+    VIETNAMESE(1278, "Vietnamese", 69);
 
     private final int sysId;
     private final String description;
@@ -889,7 +927,7 @@ public class AutoCompletePerson
 
   @JsonProperty("name_suffix")
   // @JsonInclude(JsonInclude.Include.ALWAYS)
-  private String nameSuffix;
+  private AutoCompleteNameSuffix nameSuffix;
 
   @JsonProperty("gender")
   @JsonInclude(JsonInclude.Include.ALWAYS)
@@ -972,11 +1010,11 @@ public class AutoCompletePerson
           this.setSsn(personAware.getSsn());
         }
 
-        // TODO: Legacy name suffix is free-form, whereas Intake is an enum.
+        // Legacy name suffix is free-form, whereas Intake is an enum.
         // Implement AFTER R1 production release.
-        // if (StringUtils.isNotBlank(personAware.getNameSuffix())) {
-        // this.setNameSuffix(personAware.getNameSuffix().trim().toLowerCase());
-        // }
+        if (StringUtils.isNotBlank(personAware.getNameSuffix())) {
+          this.setNameSuffix(personAware.getNameSuffix());
+        }
 
         // Highlights.
         if (esp.getHighlights() != null && !esp.getHighlights().isEmpty()) {
@@ -1066,7 +1104,7 @@ public class AutoCompletePerson
   @JsonIgnore
   @Override
   public String getNameSuffix() {
-    return nameSuffix;
+    return nameSuffix == null ? null : nameSuffix.intake;
   }
 
   /**
@@ -1076,7 +1114,8 @@ public class AutoCompletePerson
    */
   @Override
   public void setNameSuffix(String nameSuffix) {
-    this.nameSuffix = nameSuffix;
+    this.nameSuffix = AutoCompleteNameSuffix
+        .findByLegacy(nameSuffix.trim().toLowerCase().replaceAll("[^a-zA-Z0-9]", ""));
   }
 
   @JsonIgnore
