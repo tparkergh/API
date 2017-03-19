@@ -21,7 +21,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonValue;
 import com.google.inject.Inject;
 
-import gov.ca.cwds.data.ISysCodeAware;
+import gov.ca.cwds.data.ApiSysCodeAware;
 import gov.ca.cwds.data.ITypedIdentifier;
 import gov.ca.cwds.data.es.ElasticSearchPerson;
 import gov.ca.cwds.data.persistence.cms.ISystemCodeCache;
@@ -160,7 +160,7 @@ public class AutoCompletePerson
    * @author CWDS API Team
    */
   @SuppressWarnings("javadoc")
-  public enum AutoCompleteCounty implements ISysCodeAware {
+  public enum AutoCompleteCounty implements ApiSysCodeAware {
 
     NONE(0, "None", "0"),
 
@@ -274,7 +274,7 @@ public class AutoCompletePerson
     }
 
     @Override
-    public ISysCodeAware lookupBySysId(int sysId) {
+    public ApiSysCodeAware lookupBySysId(int sysId) {
       return AutoCompleteCounty.findBySysId(sysId);
     }
 
@@ -306,7 +306,7 @@ public class AutoCompletePerson
    * @author CWDS API Team
    */
   @SuppressWarnings("javadoc")
-  public enum AutoCompleteState implements ISysCodeAware {
+  public enum AutoCompleteState implements ApiSysCodeAware {
 
     NONE(0, "None", ""),
 
@@ -461,7 +461,7 @@ public class AutoCompletePerson
     }
 
     @Override
-    public ISysCodeAware lookupBySysId(int sysId) {
+    public ApiSysCodeAware lookupBySysId(int sysId) {
       return AutoCompleteState.findBySysId(sysId);
     }
 
@@ -488,7 +488,7 @@ public class AutoCompletePerson
    * @author CWDS API Team
    */
   @SuppressWarnings("javadoc")
-  public enum AutoCompleteLanguage implements ISysCodeAware {
+  public enum AutoCompleteLanguage implements ApiSysCodeAware {
 
     ENGLISH(1253, "English", 7),
 
@@ -591,7 +591,7 @@ public class AutoCompletePerson
     }
 
     @Override
-    public ISysCodeAware lookupBySysId(int sysId) {
+    public ApiSysCodeAware lookupBySysId(int sysId) {
       return AutoCompleteLanguage.findBySysId(sysId);
     }
 
