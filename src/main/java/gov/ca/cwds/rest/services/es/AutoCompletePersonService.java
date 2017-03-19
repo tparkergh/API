@@ -11,7 +11,7 @@ import com.google.inject.Inject;
 
 import gov.ca.cwds.data.es.ElasticSearchPerson;
 import gov.ca.cwds.data.es.ElasticsearchDao;
-import gov.ca.cwds.data.persistence.cms.ISystemCodeCache;
+import gov.ca.cwds.data.persistence.cms.ApiSystemCodeCache;
 import gov.ca.cwds.rest.api.domain.es.AutoCompletePerson;
 import gov.ca.cwds.rest.api.domain.es.AutoCompletePersonRequest;
 import gov.ca.cwds.rest.api.domain.es.AutoCompletePersonResponse;
@@ -31,7 +31,7 @@ public class AutoCompletePersonService
 
   private ElasticsearchDao elasticsearchDao;
   @SuppressWarnings("unused")
-  private ISystemCodeCache sysCodeCache;
+  private ApiSystemCodeCache sysCodeCache;
 
   /**
    * Constructor
@@ -41,7 +41,7 @@ public class AutoCompletePersonService
    */
   @Inject
   public AutoCompletePersonService(ElasticsearchDao elasticsearchDao,
-      ISystemCodeCache sysCodeCache) {
+      ApiSystemCodeCache sysCodeCache) {
     this.elasticsearchDao = elasticsearchDao;
     this.sysCodeCache = sysCodeCache;
   }

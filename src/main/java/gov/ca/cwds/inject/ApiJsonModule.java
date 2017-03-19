@@ -6,7 +6,7 @@ import com.google.inject.AbstractModule;
 import com.google.inject.Guice;
 
 import gov.ca.cwds.data.CmsSystemCodeSerializer;
-import gov.ca.cwds.data.persistence.cms.ISystemCodeCache;
+import gov.ca.cwds.data.persistence.cms.ApiSystemCodeCache;
 import gov.ca.cwds.rest.ApiConfiguration;
 import io.dropwizard.setup.Bootstrap;
 
@@ -35,7 +35,7 @@ public class ApiJsonModule extends AbstractModule {
     SimpleModule module =
         new SimpleModule("SystemCodeModule", new Version(0, 1, 0, "a", "alpha", ""));
     module.addSerializer(Short.class,
-        new CmsSystemCodeSerializer(Guice.createInjector().getInstance(ISystemCodeCache.class)));
+        new CmsSystemCodeSerializer(Guice.createInjector().getInstance(ApiSystemCodeCache.class)));
     // Guice.createInjector().getInstance(ObjectMapper.class).registerModule(module);
     bootstrap.getObjectMapper().registerModule(module);
   }

@@ -46,7 +46,7 @@ import gov.ca.cwds.data.persistence.cms.CmsDocumentBlobSegment;
 import gov.ca.cwds.data.persistence.cms.CollateralIndividual;
 import gov.ca.cwds.data.persistence.cms.CrossReport;
 import gov.ca.cwds.data.persistence.cms.EducationProviderContact;
-import gov.ca.cwds.data.persistence.cms.ISystemCodeDao;
+import gov.ca.cwds.data.persistence.cms.ApiSystemCodeDao;
 import gov.ca.cwds.data.persistence.cms.OtherAdultInPlacemtHome;
 import gov.ca.cwds.data.persistence.cms.OtherChildInPlacemtHome;
 import gov.ca.cwds.data.persistence.cms.OtherClientName;
@@ -178,7 +178,7 @@ public class DataAccessModule extends AbstractModule {
     bind(SmartyStreetsDao.class);
 
     // System code loader DAO.
-    bind(ISystemCodeDao.class).to(SystemCodeDaoFileImpl.class);
+    bind(ApiSystemCodeDao.class).to(SystemCodeDaoFileImpl.class);
   }
 
   @Provides

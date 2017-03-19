@@ -22,9 +22,9 @@ import com.fasterxml.jackson.annotation.JsonValue;
 import com.google.inject.Inject;
 
 import gov.ca.cwds.data.ApiSysCodeAware;
-import gov.ca.cwds.data.ITypedIdentifier;
+import gov.ca.cwds.data.ApiTypedIdentifier;
 import gov.ca.cwds.data.es.ElasticSearchPerson;
-import gov.ca.cwds.data.persistence.cms.ISystemCodeCache;
+import gov.ca.cwds.data.persistence.cms.ApiSystemCodeCache;
 import gov.ca.cwds.data.std.ApiAddressAware;
 import gov.ca.cwds.data.std.ApiAddressAwareWritable;
 import gov.ca.cwds.data.std.ApiLanguageAware;
@@ -62,7 +62,7 @@ import io.dropwizard.jackson.JsonSnakeCase;
 @JsonSnakeCase
 @JsonInclude(JsonInclude.Include.ALWAYS)
 public class AutoCompletePerson
-    implements Serializable, ApiPersonAwareWritable, ITypedIdentifier<String> {
+    implements Serializable, ApiPersonAwareWritable, ApiTypedIdentifier<String> {
 
   /**
    * Base serialization version. Increment by class version.
@@ -71,7 +71,7 @@ public class AutoCompletePerson
 
   private static final Logger LOGGER = LoggerFactory.getLogger(AutoCompletePerson.class);
 
-  private static ISystemCodeCache systemCodes;
+  private static ApiSystemCodeCache systemCodes;
 
   /**
    * Name suffix.
@@ -623,7 +623,7 @@ public class AutoCompletePerson
    * @author CWDS API Team
    */
   public static final class AutoCompletePersonAddress
-      implements Serializable, ITypedIdentifier<String>, ApiAddressAwareWritable {
+      implements Serializable, ApiTypedIdentifier<String>, ApiAddressAwareWritable {
 
     /**
      * Base serialization version. Increment by class version.
@@ -810,7 +810,7 @@ public class AutoCompletePerson
    * @author CWDS API Team
    */
   public static final class AutoCompletePersonPhone
-      implements Serializable, ITypedIdentifier<String>, ApiPhoneAwareWritable {
+      implements Serializable, ApiTypedIdentifier<String>, ApiPhoneAwareWritable {
 
     /**
      * Base serialization version. Increment by class version.
@@ -1310,7 +1310,7 @@ public class AutoCompletePerson
    * 
    * @return reference to CMS system code cache
    */
-  public static ISystemCodeCache getSystemCodes() {
+  public static ApiSystemCodeCache getSystemCodes() {
     return systemCodes;
   }
 
@@ -1320,7 +1320,7 @@ public class AutoCompletePerson
    * @param systemCodes CMS system code cache
    */
   @Inject
-  public static void setSystemCodes(@SystemCodeCache ISystemCodeCache systemCodes) {
+  public static void setSystemCodes(@SystemCodeCache ApiSystemCodeCache systemCodes) {
     AutoCompletePerson.systemCodes = systemCodes;
   }
 
