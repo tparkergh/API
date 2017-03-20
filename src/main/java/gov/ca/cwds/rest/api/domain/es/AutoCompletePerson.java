@@ -308,7 +308,7 @@ public class AutoCompletePerson
   @SuppressWarnings("javadoc")
   public enum AutoCompleteState implements ApiSysCodeAware {
 
-    NONE(0, "None", ""),
+    NONE(0, "None", null),
 
     ALABAMA(1824, "Alabama", "AL"),
 
@@ -918,7 +918,7 @@ public class AutoCompletePerson
   private String firstName;
 
   @JsonProperty("middle_name")
-  @JsonInclude(JsonInclude.Include.ALWAYS)
+  @JsonInclude(JsonInclude.Include.NON_EMPTY)
   private String middleName;
 
   @JsonProperty("last_name")
@@ -926,11 +926,11 @@ public class AutoCompletePerson
   private String lastName;
 
   @JsonProperty("name_suffix")
-  // @JsonInclude(JsonInclude.Include.ALWAYS)
+  @JsonInclude(JsonInclude.Include.NON_EMPTY)
   private AutoCompleteNameSuffix nameSuffix;
 
   @JsonProperty("gender")
-  @JsonInclude(JsonInclude.Include.ALWAYS)
+  @JsonInclude(JsonInclude.Include.NON_EMPTY)
   private String gender;
 
   /**
@@ -940,19 +940,18 @@ public class AutoCompletePerson
   private String ssn;
 
   @JsonProperty("date_of_birth")
-  @JsonInclude(JsonInclude.Include.ALWAYS)
+  @JsonInclude(JsonInclude.Include.NON_EMPTY)
   private String dateOfBirth;
 
-  @JsonProperty("addresses")
-  @JsonInclude(JsonInclude.Include.ALWAYS)
+  @JsonInclude(JsonInclude.Include.NON_EMPTY)
   private List<AutoCompletePersonAddress> addresses = new ArrayList<>();
 
   @JsonProperty("phone_numbers")
-  @JsonInclude(JsonInclude.Include.ALWAYS)
-  private List<AutoCompletePersonPhone> phoneNumbers;
+  @JsonInclude(JsonInclude.Include.NON_EMPTY)
+  private List<AutoCompletePersonPhone> phoneNumbers = new ArrayList<>();
 
-  @JsonInclude(JsonInclude.Include.ALWAYS)
-  private List<AutoCompleteLanguage> languages;
+  @JsonInclude(JsonInclude.Include.NON_EMPTY)
+  private List<AutoCompleteLanguage> languages = new ArrayList<>();
 
   private Map<String, String> highlight;
 
@@ -977,7 +976,6 @@ public class AutoCompletePerson
     if (esp.getSourceObj() != null) {
 
       if (esp.getSourceObj() instanceof ApiPersonAware) {
-        LOGGER.debug("IPersonAware!");
         final ApiPersonAware personAware = (ApiPersonAware) esp.getSourceObj();
 
         if (StringUtils.isNotBlank(personAware.getFirstName())) {
@@ -992,15 +990,15 @@ public class AutoCompletePerson
         if (StringUtils.isNotBlank(personAware.getGender())) {
           switch (personAware.getGender()) {
             case "M":
-              this.setGender("Male");
+              this.setGender("male");
               break;
             case "F":
-              this.setGender("Female");
+              this.setGender("female");
               break;
-            case "U":
-            default:
-              this.setGender("Unknown");
-              break;
+            // case "U":
+            // default:
+            // this.setGender("unknown");
+            // break;
           }
         }
         if (personAware.getBirthDate() != null) {
@@ -1126,7 +1124,7 @@ public class AutoCompletePerson
 
   @Override
   public void setGender(String gender) {
-    this.gender = gender;
+    this.gender = gender != null ? gender.trim().toLowerCase() : null;
   }
 
   @JsonProperty("ssn")
