@@ -1128,6 +1128,7 @@ public class AutoCompletePerson
   }
 
   @JsonProperty("ssn")
+  @JsonInclude(JsonInclude.Include.NON_EMPTY)
   @Override
   public String getSsn() {
     return new MaskString().maskSsn(ssn);
