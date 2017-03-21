@@ -203,7 +203,7 @@ public class PersonService implements CrudsService {
    */
   private void PopulatePersonDetails(Person person,
       gov.ca.cwds.data.persistence.ns.Person managedPerson) {
-    if (person.getAddress() != null && person.getAddress().size() > 0) {
+    if (person.getAddress() != null && !person.getAddress().isEmpty()) {
       for (Address address : person.getAddress()) {
         gov.ca.cwds.data.persistence.ns.Address managedAddress =
             new gov.ca.cwds.data.persistence.ns.Address(address, null, null);
@@ -213,7 +213,7 @@ public class PersonService implements CrudsService {
         personAddressDao.create(personAddress);
       }
     }
-    if (person.getPhoneNumber() != null && person.getPhoneNumber().size() > 0) {
+    if (person.getPhoneNumber() != null && !person.getPhoneNumber().isEmpty()) {
       for (PhoneNumber phoneNumber : person.getPhoneNumber()) {
         gov.ca.cwds.data.persistence.ns.PhoneNumber managedPhoneNumber =
             new gov.ca.cwds.data.persistence.ns.PhoneNumber(phoneNumber, null, null);
@@ -223,7 +223,7 @@ public class PersonService implements CrudsService {
         personPhoneDao.create(personPhone);
       }
     }
-    if (person.getLanguage() != null && person.getLanguage().size() > 0) {
+    if (person.getLanguage() != null && !person.getLanguage().isEmpty()) {
       for (Language language : person.getLanguage()) {
         gov.ca.cwds.data.persistence.ns.Language managedLanguage =
             new gov.ca.cwds.data.persistence.ns.Language(language, null, null);
@@ -233,7 +233,7 @@ public class PersonService implements CrudsService {
         personLanguageDao.create(personLanguage);
       }
     }
-    if (person.getRace() != null && person.getRace().size() > 0) {
+    if (person.getRace() != null && !person.getRace().isEmpty()) {
       for (Race race : person.getRace()) {
         gov.ca.cwds.data.persistence.ns.Race managedRace =
             new gov.ca.cwds.data.persistence.ns.Race(race, null, null);
@@ -243,7 +243,7 @@ public class PersonService implements CrudsService {
         personRaceDao.create(personRace);
       }
     }
-    if (person.getEthnicity() != null && person.getEthnicity().size() > 0) {
+    if (person.getEthnicity() != null && !person.getEthnicity().isEmpty()) {
       for (Ethnicity ethnicity : person.getEthnicity()) {
         gov.ca.cwds.data.persistence.ns.Ethnicity managedEthnicity =
             new gov.ca.cwds.data.persistence.ns.Ethnicity(ethnicity, null, null);

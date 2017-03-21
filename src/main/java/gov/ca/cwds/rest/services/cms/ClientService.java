@@ -57,7 +57,7 @@ public class ClientService implements CrudsService {
   }
 
   /*
-   * This method is the representation of postedCmsReferral
+   * This method is the representation of postedCmsReferral to find the existing client
    */
   @SuppressWarnings("javadoc")
   public PostedClient findInboundId(Serializable primaryKey) {
