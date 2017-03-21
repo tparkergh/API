@@ -25,9 +25,8 @@ import io.swagger.annotations.ApiModelProperty;
  */
 @ApiModel
 public class Client extends DomainObject implements Request, Response {
-
   /**
-   * 
+   * Serialization version
    */
   private static final long serialVersionUID = 1L;
 
