@@ -19,6 +19,7 @@ A baseline legacy sql is added to ci-seeds to provide a Baseline Referral to tes
 These test REST calls against the resource
 
 _allegations.jmx
+_clients.jmx
 _cmsreferrals.jmx
 _referralClients.jmx
 _referrals.jmx
