@@ -1071,7 +1071,9 @@ public class AutoCompletePerson
 
   @Override
   public void setFirstName(String firstName) {
-    this.firstName = firstName;
+    if (firstName != null && !firstName.isEmpty()) {
+      this.firstName = firstName.trim();
+    }
   }
 
   @Override
@@ -1081,7 +1083,9 @@ public class AutoCompletePerson
 
   @Override
   public void setMiddleName(String middleName) {
-    this.middleName = middleName;
+    if (middleName != null && !middleName.isEmpty()) {
+      this.middleName = middleName.trim();
+    }
   }
 
   @Override
@@ -1091,7 +1095,9 @@ public class AutoCompletePerson
 
   @Override
   public void setLastName(String lastName) {
-    this.lastName = lastName;
+    if (lastName != null && !lastName.isEmpty()) {
+      this.lastName = lastName.trim();
+    }
   }
 
   /**
@@ -1102,7 +1108,7 @@ public class AutoCompletePerson
   @JsonIgnore
   @Override
   public String getNameSuffix() {
-    return nameSuffix == null ? null : nameSuffix.intake;
+    return this.nameSuffix == null ? null : this.nameSuffix.intake;
   }
 
   /**

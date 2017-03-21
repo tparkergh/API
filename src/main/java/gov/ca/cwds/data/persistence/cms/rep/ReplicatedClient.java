@@ -6,10 +6,7 @@ import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
 
-import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
@@ -20,7 +17,6 @@ import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 import org.hibernate.annotations.NamedNativeQueries;
 import org.hibernate.annotations.NamedNativeQuery;
-import org.hibernate.annotations.Type;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
@@ -42,7 +38,6 @@ import gov.ca.cwds.data.std.ApiPhoneAware;
  * 
  * @author CWDS API Team
  */
-
 @NamedNativeQueries({
     @NamedNativeQuery(
         name = "gov.ca.cwds.data.persistence.cms.rep.ReplicatedClient.findAllUpdatedAfter",
@@ -66,19 +61,29 @@ import gov.ca.cwds.data.std.ApiPhoneAware;
             + "z.HISP_UD_CD, z.SOCPLC_CD, z.CL_INDX_NO, z.IBMSNAP_OPERATION, z.IBMSNAP_LOGMARKER "
             + "from {h-schema}CLIENT_T z WHERE z.IBMSNAP_LOGMARKER >= :after FOR READ ONLY",
         resultClass = ReplicatedClient.class),
+    // @NamedNativeQuery(
+    // name = "gov.ca.cwds.data.persistence.cms.rep.ReplicatedClient.findPartitionedBuckets",
+    // query = "select {a.*}, {b.*}, {c.*} "
+    // + "from ( select mod(y.rn, CAST(:total_buckets AS INTEGER)) + 1 as bucket, y.* "
+    // + "from ( select row_number() over (order by 1) as rn, x.* "
+    // + "from {h-schema}CLIENT_T x where x.SOC158_IND ='N' and x.SENSTV_IND = 'N' "
+    // // TESTING ONLY:
+    // // + "and x.identifier in (
+    // // '3YLLYNZ0LL','Dn9HBTC0Mu','CBES7RV0Ki','FjmWxQD0FT','8ZeEiX70Ki' ) "
+    // + "AND x.IDENTIFIER >= :min_id and x.IDENTIFIER < :max_id ) y ) a "
+    // + "LEFT OUTER JOIN {h-schema}CL_ADDRT b ON a.IDENTIFIER = b.FKCLIENT_T and b.EFF_END_DT is
+    // null "
+    // + "LEFT OUTER JOIN {h-schema}ADDRS_T c ON b.FKADDRS_T = c.IDENTIFIER "
+    // + "where a.bucket = :bucket_num for read only",
+    // resultClass = ReplicatedClient.class, readOnly = true,
+    // comment = "b,a.clientAddresses;c,b.addresses")
     @NamedNativeQuery(
         name = "gov.ca.cwds.data.persistence.cms.rep.ReplicatedClient.findPartitionedBuckets",
-        query = "select {a.*}, {b.*}, {c.*}  "
-            + "from ( select mod(y.rn, CAST(:total_buckets AS INTEGER)) + 1 as bucket, y.* "
-            + "from ( select row_number() over (order by 1) as rn, x.* "
-            + "from {h-schema}CLIENT_T x where x.SOC158_IND ='N' and x.SENSTV_IND = 'N' "
-            // TESTING ONLY:
-            // + "and x.identifier in (
-            // '3YLLYNZ0LL','Dn9HBTC0Mu','CBES7RV0Ki','FjmWxQD0FT','8ZeEiX70Ki' ) "
-            + "AND x.IDENTIFIER >= :min_id and x.IDENTIFIER < :max_id ) y ) a "
+        query = "select {a.*}, {b.*}, {c.*}  from {h-schema}CLIENT_T a "
             + "LEFT OUTER JOIN {h-schema}CL_ADDRT b ON a.IDENTIFIER = b.FKCLIENT_T and b.EFF_END_DT is null "
             + "LEFT OUTER JOIN {h-schema}ADDRS_T c ON b.FKADDRS_T = c.IDENTIFIER "
-            + "where a.bucket = :bucket_num for read only",
+            + "where a.SOC158_IND ='N' and a.SENSTV_IND = 'N' "
+            + "AND a.IDENTIFIER >= :min_id and a.IDENTIFIER < :max_id for read only",
         resultClass = ReplicatedClient.class, readOnly = true,
         comment = "b,a.clientAddresses;c,b.addresses")})
 @Entity
@@ -94,13 +99,13 @@ public class ReplicatedClient extends BaseClient
    */
   private static final long serialVersionUID = 1L;
 
-  @Enumerated(EnumType.STRING)
-  @Column(name = "IBMSNAP_OPERATION", updatable = false)
-  private CmsReplicationOperation replicationOperation;
-
-  @Type(type = "timestamp")
-  @Column(name = "IBMSNAP_LOGMARKER", updatable = false)
-  private Date replicationDate;
+  // @Enumerated(EnumType.STRING)
+  // @Column(name = "IBMSNAP_OPERATION", updatable = false)
+  // private CmsReplicationOperation replicationOperation;
+  //
+  // @Type(type = "timestamp")
+  // @Column(name = "IBMSNAP_LOGMARKER", updatable = false)
+  // private Date replicationDate;
 
   @OneToMany(fetch = FetchType.EAGER, mappedBy = "fkClient")
   protected Set<ReplicatedClientAddress> clientAddresses = new LinkedHashSet<>();
@@ -180,22 +185,24 @@ public class ReplicatedClient extends BaseClient
 
   @Override
   public CmsReplicationOperation getReplicationOperation() {
-    return replicationOperation;
+    // return replicationOperation;
+    return CmsReplicationOperation.U;
   }
 
   @Override
   public void setReplicationOperation(CmsReplicationOperation replicationOperation) {
-    this.replicationOperation = replicationOperation;
+    // this.replicationOperation = replicationOperation;
   }
 
   @Override
   public Date getReplicationDate() {
-    return replicationDate;
+    // return replicationDate;
+    return new Date();
   }
 
   @Override
   public void setReplicationDate(Date replicationDate) {
-    this.replicationDate = replicationDate;
+    // this.replicationDate = replicationDate;
   }
 
   // ==============
