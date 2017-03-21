@@ -20,9 +20,9 @@ nsDataSourceFactory:
   url: ${DB_NS_JDBC_URL}
   validationQuery: "/* MyService Health Check */ SELECT 1"
   logValidationErrors: true
-  initialSize: 2
-  minSize: 2
-  maxSize: 8
+  initialSize: ${DB_NS_CP_INITIAL_SIZE:-2}
+  minSize: ${DB_NS_CP_MIN_SIZE:-2}
+  maxSize: ${DB_NS_CP_MAX_SIZE:-8}
   minIdleTime: 1 minute
   properties:
       hibernate.dialect: org.hibernate.dialect.PostgreSQL82Dialect
@@ -37,9 +37,9 @@ cmsDataSourceFactory:
   url: ${DB_CMS_JDBC_URL}
   validationQuery: "/* MyService Health Check */ SELECT 1 FROM sysibm.sysdummy1 for read only"
   logValidationErrors: true
-  initialSize: 2
-  minSize: 2
-  maxSize: 8
+  initialSize: ${DB_CMS_CP_INITIAL_SIZE:-2}
+  minSize: ${DB_CMS_CP_MIN_SIZE:-2}
+  maxSize: ${DB_CMS_CP_MAX_SIZE:-8}
   minIdleTime: 1 minute
   properties:
       hibernate.dialect: org.hibernate.dialect.DB2Dialect
