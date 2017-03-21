@@ -13,7 +13,7 @@ import gov.ca.cwds.rest.api.domain.DomainObject;
  */
 public class PostedCmsReferral extends DomainObject implements Response {
   /**
-   * 
+   * Serialization version
    */
   private static final long serialVersionUID = 1L;
   private Referral referral;

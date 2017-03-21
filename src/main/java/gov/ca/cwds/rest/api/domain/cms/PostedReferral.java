@@ -13,6 +13,10 @@ import gov.ca.cwds.rest.services.ServiceException;
  * @author CWDS API Team
  */
 public class PostedReferral extends Referral {
+  /**
+   * 
+   */
+  private static final long serialVersionUID = 1L;
   @JsonProperty("id")
   private String id;
 
@@ -24,7 +28,7 @@ public class PostedReferral extends Referral {
   public PostedReferral(gov.ca.cwds.data.persistence.cms.Referral referral) {
 
     super(referral);
-    
+
     if (StringUtils.isBlank(referral.getId())) {
       throw new ServiceException("Referral ID cannot be empty");
     }

@@ -1,13 +1,5 @@
 package gov.ca.cwds.rest.api.domain.cms;
 
-import gov.ca.cwds.data.SystemCodeSerializer;
-import gov.ca.cwds.rest.api.Request;
-import gov.ca.cwds.rest.api.Response;
-import gov.ca.cwds.rest.api.domain.DomainChef;
-import gov.ca.cwds.rest.api.domain.DomainObject;
-import io.dropwizard.validation.OneOf;
-import io.swagger.annotations.ApiModelProperty;
-
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
@@ -18,12 +10,25 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+import gov.ca.cwds.data.SystemCodeSerializer;
+import gov.ca.cwds.rest.api.Request;
+import gov.ca.cwds.rest.api.Response;
+import gov.ca.cwds.rest.api.domain.DomainChef;
+import gov.ca.cwds.rest.api.domain.DomainObject;
+import io.dropwizard.validation.OneOf;
+import io.swagger.annotations.ApiModelProperty;
+
 /**
  * {@link DomainObject} representing a ReferralClient
  * 
  * @author CWDS API Team
  */
 public class ReferralClient extends DomainObject implements Request, Response {
+  /**
+   * Serialization version
+   */
+  private static final long serialVersionUID = 1L;
+
   @Size(max = 10)
   @ApiModelProperty(required = false, readOnly = false, value = "", example = "ABC1234567")
   private String approvalNumber;
@@ -41,9 +46,7 @@ public class ReferralClient extends DomainObject implements Request, Response {
   @NotEmpty
   @Size(min = 1, max = 1, message = "size must be 1")
   @OneOf(value = {"A", "I", "S", "X"}, ignoreCase = true, ignoreWhitespace = true)
-  @ApiModelProperty(
-      required = false,
-      readOnly = false,
+  @ApiModelProperty(required = false, readOnly = false,
       value = "A = Assesment, I = In Person Investigation, S = In Person Investigation and Services, X = Erroneously Added",
       example = "A")
   private String dispositionCode;
@@ -315,28 +318,21 @@ public class ReferralClient extends DomainObject implements Request, Response {
     result = prime * result + ((approvalNumber == null) ? 0 : approvalNumber.hashCode());
     result = prime * result + ((approvalStatusType == null) ? 0 : approvalStatusType.hashCode());
     result = prime * result + ((countySpecificCode == null) ? 0 : countySpecificCode.hashCode());
-    result =
-        prime
-            * result
-            + ((dispositionClosureDescription == null) ? 0 : dispositionClosureDescription
-                .hashCode());
-    result =
-        prime
-            * result
-            + ((dispositionClosureReasonType == null) ? 0 : dispositionClosureReasonType.hashCode());
+    result = prime * result
+        + ((dispositionClosureDescription == null) ? 0 : dispositionClosureDescription.hashCode());
+    result = prime * result
+        + ((dispositionClosureReasonType == null) ? 0 : dispositionClosureReasonType.hashCode());
     result = prime * result + ((dispositionCode == null) ? 0 : dispositionCode.hashCode());
     result = prime * result + ((dispositionDate == null) ? 0 : dispositionDate.hashCode());
     result = prime * result + ((drugIndicator == null) ? 0 : drugIndicator.hashCode());
     result = prime * result + ((clientId == null) ? 0 : clientId.hashCode());
     result = prime * result + ((referralId == null) ? 0 : referralId.hashCode());
-    result =
-        prime * result
-            + ((mentalHealthIssuesIndicator == null) ? 0 : mentalHealthIssuesIndicator.hashCode());
+    result = prime * result
+        + ((mentalHealthIssuesIndicator == null) ? 0 : mentalHealthIssuesIndicator.hashCode());
     result =
         prime * result + ((selfReportedIndicator == null) ? 0 : selfReportedIndicator.hashCode());
-    result =
-        prime * result
-            + ((staffPersonAddedIndicator == null) ? 0 : staffPersonAddedIndicator.hashCode());
+    result = prime * result
+        + ((staffPersonAddedIndicator == null) ? 0 : staffPersonAddedIndicator.hashCode());
     return result;
   }
 

@@ -13,6 +13,10 @@ import gov.ca.cwds.rest.services.ServiceException;
  * @author CWDS API Team
  */
 public class PostedStaffPerson extends StaffPerson {
+  /**
+   * Serialization version
+   */
+  private static final long serialVersionUID = 1L;
   @JsonProperty("id")
   private String id;
 

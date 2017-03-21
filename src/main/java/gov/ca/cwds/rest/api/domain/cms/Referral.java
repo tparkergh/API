@@ -26,6 +26,10 @@ import io.swagger.annotations.ApiModelProperty;
  */
 @ApiModel
 public class Referral extends DomainObject implements Request, Response {
+  /**
+   * Serialization version
+   */
+  private static final long serialVersionUID = 1L;
 
   @NotNull
   @ApiModelProperty(required = false, readOnly = false, value = "Y/N", example = "Y")

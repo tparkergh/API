@@ -25,6 +25,11 @@ import io.swagger.annotations.ApiModelProperty;
  */
 @ApiModel
 public class StaffPerson extends DomainObject implements Request, Response {
+  /**
+   * Serialization version
+   */
+  private static final long serialVersionUID = 1L;
+
   @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = DATE_FORMAT)
   @JsonProperty(value = "endDate")
   @gov.ca.cwds.rest.validation.Date(format = DATE_FORMAT, required = false)

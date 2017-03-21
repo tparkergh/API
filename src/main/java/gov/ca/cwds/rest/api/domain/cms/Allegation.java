@@ -1,14 +1,5 @@
 package gov.ca.cwds.rest.api.domain.cms;
 
-import gov.ca.cwds.data.SystemCodeSerializer;
-import gov.ca.cwds.rest.api.Request;
-import gov.ca.cwds.rest.api.Response;
-import gov.ca.cwds.rest.api.domain.DomainChef;
-import gov.ca.cwds.rest.api.domain.DomainObject;
-import io.dropwizard.validation.OneOf;
-import io.swagger.annotations.ApiModel;
-import io.swagger.annotations.ApiModelProperty;
-
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
@@ -18,6 +9,15 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+import gov.ca.cwds.data.SystemCodeSerializer;
+import gov.ca.cwds.rest.api.Request;
+import gov.ca.cwds.rest.api.Response;
+import gov.ca.cwds.rest.api.domain.DomainChef;
+import gov.ca.cwds.rest.api.domain.DomainObject;
+import io.dropwizard.validation.OneOf;
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
+
 /**
  * {@link DomainObject} representing an Allegation
  * 
@@ -25,6 +25,10 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  */
 @ApiModel
 public class Allegation extends DomainObject implements Request, Response {
+  /**
+   * Serialization version
+   */
+  private static final long serialVersionUID = 1L;
 
   @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = DATE_FORMAT)
   @JsonProperty(value = "abuseEndDate")
@@ -41,8 +45,8 @@ public class Allegation extends DomainObject implements Request, Response {
   @NotNull
   @Size(max = 1)
   @OneOf(value = {"D", "M", "W", "Y"}, ignoreCase = true, ignoreWhitespace = true)
-  @ApiModelProperty(required = false, readOnly = false, value = "frequency of abuse",
-      example = "D", allowableValues = "D, M, W, Y")
+  @ApiModelProperty(required = false, readOnly = false, value = "frequency of abuse", example = "D",
+      allowableValues = "D, M, W, Y")
   private String abuseFrequencyPeriodCode;
 
   @NotEmpty
@@ -353,16 +357,13 @@ public class Allegation extends DomainObject implements Request, Response {
     int result = 1;
     result = prime * result + ((abuseEndDate == null) ? 0 : abuseEndDate.hashCode());
     result = prime * result + ((abuseFrequency == null) ? 0 : abuseFrequency.hashCode());
-    result =
-        prime * result
-            + ((abuseFrequencyPeriodCode == null) ? 0 : abuseFrequencyPeriodCode.hashCode());
-    result =
-        prime * result
-            + ((abuseLocationDescription == null) ? 0 : abuseLocationDescription.hashCode());
+    result = prime * result
+        + ((abuseFrequencyPeriodCode == null) ? 0 : abuseFrequencyPeriodCode.hashCode());
+    result = prime * result
+        + ((abuseLocationDescription == null) ? 0 : abuseLocationDescription.hashCode());
     result = prime * result + ((abuseStartDate == null) ? 0 : abuseStartDate.hashCode());
-    result =
-        prime * result
-            + ((allegationDispositionType == null) ? 0 : allegationDispositionType.hashCode());
+    result = prime * result
+        + ((allegationDispositionType == null) ? 0 : allegationDispositionType.hashCode());
     result = prime * result + ((allegationType == null) ? 0 : allegationType.hashCode());
     result = prime * result + ((countySpecificCode == null) ? 0 : countySpecificCode.hashCode());
     result = prime * result + ((dispositionDate == null) ? 0 : dispositionDate.hashCode());
@@ -371,17 +372,14 @@ public class Allegation extends DomainObject implements Request, Response {
     result = prime * result + ((perpetratorClientId == null) ? 0 : perpetratorClientId.hashCode());
     result = prime * result + ((victimClientId == null) ? 0 : victimClientId.hashCode());
     result = prime * result + ((referralId == null) ? 0 : referralId.hashCode());
-    result =
-        prime * result
-            + ((injuryHarmDetailIndicator == null) ? 0 : injuryHarmDetailIndicator.hashCode());
-    result =
-        prime * result
-            + ((nonProtectingParentCode == null) ? 0 : nonProtectingParentCode.hashCode());
+    result = prime * result
+        + ((injuryHarmDetailIndicator == null) ? 0 : injuryHarmDetailIndicator.hashCode());
+    result = prime * result
+        + ((nonProtectingParentCode == null) ? 0 : nonProtectingParentCode.hashCode());
     result =
         prime * result + ((placementFacilityType == null) ? 0 : placementFacilityType.hashCode());
-    result =
-        prime * result
-            + ((staffPersonAddedIndicator == null) ? 0 : staffPersonAddedIndicator.hashCode());
+    result = prime * result
+        + ((staffPersonAddedIndicator == null) ? 0 : staffPersonAddedIndicator.hashCode());
     result =
         prime * result + ((zippyCreatedIndicator == null) ? 0 : zippyCreatedIndicator.hashCode());
     return result;

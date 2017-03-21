@@ -14,7 +14,7 @@ import gov.ca.cwds.rest.services.ServiceException;
  */
 public class PostedClient extends Client {
   /**
-   * 
+   * Serialization version
    */
   private static final long serialVersionUID = 1L;
   @JsonProperty("id")

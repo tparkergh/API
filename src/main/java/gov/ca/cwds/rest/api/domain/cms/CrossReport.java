@@ -26,6 +26,10 @@ import io.swagger.annotations.ApiModelProperty;
  */
 @ApiModel
 public class CrossReport extends DomainObject implements Request, Response {
+  /**
+   * Serialization version
+   */
+  private static final long serialVersionUID = 1L;
 
   @NotNull
   @Size(min = 10, max = 10)
