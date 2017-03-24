@@ -26,7 +26,7 @@ import io.swagger.annotations.ApiModelProperty;
 public class Person extends DomainObject implements Request, Response {
 
   /**
-   * Defalut
+   * Default
    */
   private static final long serialVersionUID = 1L;
 

@@ -31,6 +31,7 @@ nsDataSourceFactory:
 
 
 cmsDataSourceFactory:
+  autoCommitByDefault: false
   driverClass: com.ibm.db2.jcc.DB2Driver
   user: ${DB_CMS_USER}
   password: ${DB_CMS_PASSWORD}
@@ -45,6 +46,7 @@ cmsDataSourceFactory:
       hibernate.dialect: org.hibernate.dialect.DB2Dialect
       hibernate.show_sql: true
       hibernate.default_schema: ${DB_CMS_SCHEMA}
+      hibernate.connection.autocommit: false
 
 
 flywayFactory:
