@@ -1,5 +1,6 @@
 package gov.ca.cwds.rest.services.es;
 
+import static io.dropwizard.testing.FixtureHelpers.fixture;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.CoreMatchers.notNullValue;
@@ -18,12 +19,15 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.mockito.Spy;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+
 import gov.ca.cwds.data.es.ElasticSearchPerson;
 import gov.ca.cwds.data.es.ElasticsearchDao;
 import gov.ca.cwds.rest.api.domain.es.AutoCompletePerson;
 import gov.ca.cwds.rest.api.domain.es.AutoCompletePersonRequest;
 import gov.ca.cwds.rest.api.domain.es.AutoCompletePersonResponse;
 import gov.ca.cwds.rest.services.ServiceException;
+import io.dropwizard.jackson.Jackson;
 
 /**
  * @author CWDS API Team
@@ -31,6 +35,8 @@ import gov.ca.cwds.rest.services.ServiceException;
  */
 @SuppressWarnings("javadoc")
 public class AutoCompletePersonServiceTest {
+
+  private static final ObjectMapper MAPPER = Jackson.newObjectMapper();
 
   @Rule
   public ExpectedException thrown = ExpectedException.none();
@@ -119,6 +125,15 @@ public class AutoCompletePersonServiceTest {
     AutoCompletePersonResponse expected =
         new AutoCompletePersonResponse(new ArrayList<AutoCompletePerson>());
     assertThat(actual, is(equalTo(expected)));
+  }
+
+  @Test
+  public void testLoadFromJson() throws Exception {
+    final AutoCompletePerson[] results =
+        MAPPER.readValue(fixture("es/person_search/expected.json"), AutoCompletePerson[].class);
+    for (AutoCompletePerson p : results) {
+      System.out.println(p);
+    }
   }
 
 }
