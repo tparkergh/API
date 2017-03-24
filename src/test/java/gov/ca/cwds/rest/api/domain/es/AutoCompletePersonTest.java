@@ -136,8 +136,8 @@ public class AutoCompletePersonTest {
 
   private ElasticSearchPerson validESP() {
 
-    ElasticSearchPerson esp = new ElasticSearchPerson(id, firstName, lastName, gender, birthDate,
-        ssn, sourceType, sourceJson, highlight);
+    ElasticSearchPerson esp = new ElasticSearchPerson(id, firstName, lastName, null, null,
+        gender, birthDate, ssn, sourceType, sourceJson, highlight, null, null, null);
 
     final String json = esp.getHighlightFields().replaceAll("\\s+\",", "\",");
     //

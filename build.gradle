@@ -55,7 +55,7 @@ shadowJar {
 dependencies {
 	// Dropwizard-guice 1.0.0.2 conflicts with jersey-client 2.25.
 	// Exclude transitive dependencies.
-	compile ('gov.ca.cwds.api:api-core:0.18.110') {
+	compile ('gov.ca.cwds.api:api-core:0.19.114') {
 	    exclude group: 'org.glassfish.jersey.core'
 	}
 	
@@ -96,6 +96,7 @@ dependencies {
 	
 	// https://mvnrepository.com/artifact/nl.jqno.equalsverifier/equalsverifier
 	testCompile group: 'nl.jqno.equalsverifier', name: 'equalsverifier', version: '2.1.6'
+	testCompile group: "com.github.fge", name: "json-schema-validator", version: "2.2.6"
 }
 
 tasks.withType(Test) {
