@@ -1,6 +1,7 @@
 package gov.ca.cwds.rest.api.domain.es;
 
 import java.io.Serializable;
+import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -16,13 +17,16 @@ import org.slf4j.LoggerFactory;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonValue;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.google.inject.Inject;
 
 import gov.ca.cwds.data.ApiSysCodeAware;
 import gov.ca.cwds.data.ApiTypedIdentifier;
+import gov.ca.cwds.data.es.ApiElasticSearchException;
 import gov.ca.cwds.data.es.ElasticSearchPerson;
 import gov.ca.cwds.data.persistence.cms.ApiSystemCodeCache;
 import gov.ca.cwds.data.std.ApiAddressAware;
@@ -61,6 +65,7 @@ import io.dropwizard.jackson.JsonSnakeCase;
  */
 @JsonSnakeCase
 @JsonInclude(JsonInclude.Include.ALWAYS)
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class AutoCompletePerson
     implements Serializable, ApiPersonAwareWritable, ApiTypedIdentifier<String> {
 
@@ -608,6 +613,7 @@ public class AutoCompletePerson
   }
 
   /**
+   * Addresses types per Intake YAML.
    * 
    * @author CWDS API Team
    */
@@ -964,7 +970,7 @@ public class AutoCompletePerson
 
   /**
    * OLD SCHOOL: Construct from incoming ElasticSearchPerson by reading the underlying "source"
-   * data.
+   * data. NEW SCHOOL: Construct directly from consistently named fields in ES document.
    * 
    * @param esp incoming {@link ElasticSearchPerson}
    */
@@ -1334,6 +1340,24 @@ public class AutoCompletePerson
   @Override
   public Serializable getPrimaryKey() {
     return this.getId();
+  }
+
+  /**
+   * Write out JSON as shown on Person Search API.
+   */
+  @Override
+  public String toString() {
+    String ret = "";
+
+    try {
+      ret = ElasticSearchPerson.MAPPER.writerWithDefaultPrettyPrinter().writeValueAsString(this);
+    } catch (JsonProcessingException e) {
+      LOGGER.error("UNABLE TO READ FROM JSON!!", e);
+      final String msg = MessageFormat.format("UNABLE TO READ FROM JSON!! {}", e.getMessage());
+      throw new ApiElasticSearchException(msg, e);
+    }
+
+    return ret;
   }
 
 }

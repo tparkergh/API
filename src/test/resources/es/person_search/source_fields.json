@@ -15,7 +15,7 @@
 "birthDate":["ReplicatedOtherChildInPlacemtHome","ReplicatedClient","ReplicatedOtherAdultInPlacemtHome","ReplicatedSubstituteCareProvider","ReplicatedCollateralIndividual"],
 "birthFacilityName":["ReplicatedClient"],
 "birthplaceVerifiedIndicator":["ReplicatedClient"],
-"birthStateCodeType":["ReplicatedClient"]
+"birthStateCodeType":["ReplicatedClient"],
 "businessName":["ReplicatedAttorney"],
 "caDriverLicenseNumber":["ReplicatedSubstituteCareProvider"],
 "childClientIndicatorVar":["ReplicatedClient"],
@@ -150,5 +150,5 @@
 "unemployedParentCode":["ReplicatedClient"],
 "zipNumber":["ReplicatedAttorney","ReplicatedServiceProvider","ReplicatedReporter","ReplicatedSubstituteCareProvider","ReplicatedCollateralIndividual"],
 "zippyCreatedIndicator":["ReplicatedClient"],
-"zipSuffixNumber":["ReplicatedAttorney","ReplicatedServiceProvider","ReplicatedReporter","ReplicatedSubstituteCareProvider","ReplicatedCollateralIndividual"],
+"zipSuffixNumber":["ReplicatedAttorney","ReplicatedServiceProvider","ReplicatedReporter","ReplicatedSubstituteCareProvider","ReplicatedCollateralIndividual"]
 }
