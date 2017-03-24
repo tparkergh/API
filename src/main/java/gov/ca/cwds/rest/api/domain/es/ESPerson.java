@@ -209,7 +209,6 @@ public class ESPerson extends Person {
         }
 
         if (!StringUtils.isBlank(ret.getSourceJson())) {
-
           // Remove excess whitespace.
           // No job should store excess whitespace in ElasticSearch!
           final String json = ret.getSourceJson().replaceAll("\\s+\",", "\",");
@@ -312,6 +311,7 @@ public class ESPerson extends Person {
    */
   @JsonProperty("source_object")
   private transient Object sourceObj;
+
 
   /**
    * Overload constructor.

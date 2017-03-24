@@ -963,7 +963,8 @@ public class AutoCompletePerson
   }
 
   /**
-   * Construct from incoming ElasticSearchPerson.
+   * OLD SCHOOL: Construct from incoming ElasticSearchPerson by reading the underlying "source"
+   * data.
    * 
    * @param esp incoming {@link ElasticSearchPerson}
    */
