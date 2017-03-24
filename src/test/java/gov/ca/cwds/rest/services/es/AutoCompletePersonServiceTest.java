@@ -128,9 +128,18 @@ public class AutoCompletePersonServiceTest {
   }
 
   @Test
-  public void testLoadFromJson() throws Exception {
+  public void testLoadFromJson1() throws Exception {
     final AutoCompletePerson[] results =
         MAPPER.readValue(fixture("es/person_search/expected.json"), AutoCompletePerson[].class);
+    for (AutoCompletePerson p : results) {
+      System.out.println(p);
+    }
+  }
+
+  @Test
+  public void testLoadFromJson2() throws Exception {
+    final AutoCompletePerson[] results =
+        MAPPER.readValue(fixture("es/person_search/actual.json"), AutoCompletePerson[].class);
     for (AutoCompletePerson p : results) {
       System.out.println(p);
     }
