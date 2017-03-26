@@ -28,6 +28,7 @@ import gov.ca.cwds.data.ApiSysCodeAware;
 import gov.ca.cwds.data.ApiTypedIdentifier;
 import gov.ca.cwds.data.es.ApiElasticSearchException;
 import gov.ca.cwds.data.es.ElasticSearchPerson;
+import gov.ca.cwds.data.es.ElasticSearchPerson.ElasticSearchPersonAddress;
 import gov.ca.cwds.data.persistence.cms.ApiSystemCodeCache;
 import gov.ca.cwds.data.std.ApiAddressAware;
 import gov.ca.cwds.data.std.ApiAddressAwareWritable;
@@ -808,6 +809,11 @@ public class AutoCompletePerson
       return this.id;
     }
 
+    public ElasticSearchPerson.ElasticSearchPersonAddress toESPersonAddress() {
+      return new ElasticSearchPersonAddress(this.id, this.streetAddress, this.stateType.stateCd,
+          this.zip, this.addressType.name());
+    }
+
   }
 
   /**
@@ -853,6 +859,9 @@ public class AutoCompletePerson
      */
     public AutoCompletePersonPhone(ApiPhoneAware other) {
       if (other != null) {
+        if (StringUtils.isNotBlank(other.getPhoneId())) {
+          setId(other.getPhoneId());
+        }
         setPhoneNumber(other.getPhoneNumber());
         setPhoneType(other.getPhoneType());
       }
