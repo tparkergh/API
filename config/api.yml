@@ -11,6 +11,7 @@ swagger:
   title: CWDS API
   description: RESTful API definitions for the CWS New System.
   logo: images/CWDS-API-Logo-Horizontal.png
+  loginUrl: ${LOGIN_URL:-http://localhost:8090/authn/login}
  
  
 nsDataSourceFactory:
