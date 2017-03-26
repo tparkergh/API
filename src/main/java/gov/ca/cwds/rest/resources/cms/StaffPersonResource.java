@@ -84,6 +84,7 @@ public class StaffPersonResource {
   @UnitOfWork(value = "cms")
   @DELETE
   @Path("/{id}")
+  @ApiResponses(value = {@ApiResponse(code = 401, message = "Not Authorized")})
   @ApiOperation(value = "Delete StaffPerson", code = HttpStatus.SC_OK, response = Object.class)
   public Response delete(@PathParam("id") @ApiParam(required = true,
       value = "id of StaffPerson to delete") String id) {
