@@ -66,7 +66,8 @@ public class CrossReportResource {
   @UnitOfWork(value = "cms")
   @GET
   @Path("/thirdId={thirdId}")
-  @ApiResponses(value = {@ApiResponse(code = 404, message = "Not found"),
+  @ApiResponses(value = {@ApiResponse(code = 401, message = "Not Authorized"),
+      @ApiResponse(code = 404, message = "Not found"),
       @ApiResponse(code = 406, message = "Accept Header not supported")})
   @ApiOperation(value = "Find crossreport by referral id and third id",
       response = CrossReport.class, code = 200)
@@ -85,6 +86,7 @@ public class CrossReportResource {
   @UnitOfWork(value = "cms")
   @DELETE
   @Path("/thirdId={thirdId}")
+  @ApiResponses(value = {@ApiResponse(code = 401, message = "Not Authorized")})
   @ApiOperation(value = "Delete CrossReport", code = HttpStatus.SC_OK, response = Object.class)
   public Response delete(@PathParam("thirdId") @ApiParam(required = true, value = "The third id",
       example = "td89slaz98") String thirdId) {
@@ -101,6 +103,7 @@ public class CrossReportResource {
   @UnitOfWork(value = "cms")
   @POST
   @ApiResponses(value = {@ApiResponse(code = 400, message = "Unable to process JSON"),
+      @ApiResponse(code = 401, message = "Not Authorized"),
       @ApiResponse(code = 406, message = "Accept Header not supported"),
       @ApiResponse(code = 409, message = "Conflict - already exists"),
       @ApiResponse(code = 422, message = "Unable to validate CrossReport")})
@@ -122,6 +125,7 @@ public class CrossReportResource {
   @UnitOfWork(value = "cms")
   @PUT
   @ApiResponses(value = {@ApiResponse(code = 400, message = "Unable to process JSON"),
+      @ApiResponse(code = 401, message = "Not Authorized"),
       @ApiResponse(code = 404, message = "not found"),
       @ApiResponse(code = 406, message = "Accept Header not supported"),
       @ApiResponse(code = 422, message = "Unable to validate CrossReport")})

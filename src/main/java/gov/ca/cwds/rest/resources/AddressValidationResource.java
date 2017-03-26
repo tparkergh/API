@@ -1,16 +1,6 @@
 package gov.ca.cwds.rest.resources;
 
 import static gov.ca.cwds.rest.core.Api.RESOURCE_ADDRESS_VALIDATION;
-import gov.ca.cwds.inject.AddressValidationServiceBackedResource;
-import gov.ca.cwds.rest.api.ApiException;
-import gov.ca.cwds.rest.api.domain.Address;
-import gov.ca.cwds.rest.api.domain.ValidatedAddress;
-import gov.ca.cwds.rest.services.AddressValidationService;
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
-import io.swagger.annotations.ApiParam;
-import io.swagger.annotations.ApiResponse;
-import io.swagger.annotations.ApiResponses;
 
 import javax.validation.Valid;
 import javax.ws.rs.Consumes;
@@ -24,12 +14,23 @@ import org.apache.http.HttpStatus;
 
 import com.google.inject.Inject;
 
+import gov.ca.cwds.inject.AddressValidationServiceBackedResource;
+import gov.ca.cwds.rest.api.ApiException;
+import gov.ca.cwds.rest.api.domain.Address;
+import gov.ca.cwds.rest.api.domain.ValidatedAddress;
+import gov.ca.cwds.rest.services.AddressValidationService;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
+import io.swagger.annotations.ApiResponse;
+import io.swagger.annotations.ApiResponses;
+
 /**
  * A resource providing a RESTful interface for {@link ValidatedAddress}. It delegates functions to
- * {@link ResourceDelegate}. It decorates the {@link ResourceDelegate} not in functionality but with @see
- * <a href= "https://github.com/swagger-api/swagger-core/wiki/Annotations-1.5.X">Swagger
- * Annotations</a> and <a
- * href="https://jersey.java.net/documentation/latest/user-guide.html#jaxrs-resources">Jersey
+ * {@link ResourceDelegate}. It decorates the {@link ResourceDelegate} not in functionality but
+ * with @see <a href= "https://github.com/swagger-api/swagger-core/wiki/Annotations-1.5.X">Swagger
+ * Annotations</a> and
+ * <a href="https://jersey.java.net/documentation/latest/user-guide.html#jaxrs-resources">Jersey
  * Annotations</a>
  * 
  * @author CWDS API Team
@@ -61,6 +62,7 @@ public class AddressValidationResource {
    */
   @POST
   @ApiResponses(value = {@ApiResponse(code = 400, message = "Unable to process JSON"),
+      @ApiResponse(code = 401, message = "Not Authorized"),
       @ApiResponse(code = 406, message = "Accept Header not supported"),
       @ApiResponse(code = 422, message = "Unable to validate Address")})
   @Consumes(value = MediaType.APPLICATION_JSON)
@@ -69,9 +71,8 @@ public class AddressValidationResource {
   public Response create(@Valid @ApiParam(hidden = false, required = true) Address address) {
     ValidatedAddress[] addresses = null;
     try {
-      addresses =
-          ((AddressValidationService) ((ServiceBackedResourceDelegate) resourceDelegate)
-              .getService()).fetchValidatedAddresses(address);
+      addresses = ((AddressValidationService) ((ServiceBackedResourceDelegate) resourceDelegate)
+          .getService()).fetchValidatedAddresses(address);
     } catch (Exception e) {
       throw new ApiException("ERROR calling SmartyStreet to fetch Validated Addresses", e);
     }
