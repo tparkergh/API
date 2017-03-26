@@ -1,5 +1,13 @@
 package gov.ca.cwds.rest.services.cms;
 
+import gov.ca.cwds.data.Dao;
+import gov.ca.cwds.data.cms.CrossReportDao;
+import gov.ca.cwds.data.persistence.cms.CrossReport;
+import gov.ca.cwds.rest.api.Request;
+import gov.ca.cwds.rest.services.CrudsService;
+import gov.ca.cwds.rest.services.ServiceException;
+import gov.ca.cwds.rest.util.IdGenerator;
+
 import java.io.Serializable;
 
 import javax.persistence.EntityExistsException;
@@ -9,13 +17,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.google.inject.Inject;
-
-import gov.ca.cwds.data.Dao;
-import gov.ca.cwds.data.cms.CrossReportDao;
-import gov.ca.cwds.data.persistence.cms.CrossReport;
-import gov.ca.cwds.rest.api.Request;
-import gov.ca.cwds.rest.services.CrudsService;
-import gov.ca.cwds.rest.services.ServiceException;
 
 /**
  * Business layer object to work on {@link CrossReport}
@@ -88,8 +89,7 @@ public class CrossReportService implements CrudsService {
       // TODO : refactor to actually determine who is updating. 'q1p' for now - #136737071 - Tech
       // Debt: Legacy Service classes must use Staff ID for last update ID value
 
-      // CrossReport managed = new CrossReport(IdGenerator.randomString(10), crossReport, "q1p");
-      CrossReport managed = new CrossReport(crossReport.getThirdId(), crossReport, "q1p");
+      CrossReport managed = new CrossReport(IdGenerator.randomString(10), crossReport, "q1p");
       managed = crossReportDao.create(managed);
       return new gov.ca.cwds.rest.api.domain.cms.CrossReport(managed);
     } catch (EntityExistsException e) {
@@ -105,8 +105,7 @@ public class CrossReportService implements CrudsService {
    *      gov.ca.cwds.rest.api.Request)
    */
   @Override
-  public gov.ca.cwds.rest.api.domain.cms.CrossReport update(Serializable primaryKey,
-      Request request) {
+  public gov.ca.cwds.rest.api.domain.cms.CrossReport update(Serializable primaryKey, Request request) {
     assert request instanceof gov.ca.cwds.rest.api.domain.cms.CrossReport;
     gov.ca.cwds.rest.api.domain.cms.CrossReport crossReport =
         (gov.ca.cwds.rest.api.domain.cms.CrossReport) request;
