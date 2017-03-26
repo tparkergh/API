@@ -65,7 +65,8 @@ public class StaffPersonResource {
   @UnitOfWork(value = "cms")
   @GET
   @Path("/{id}")
-  @ApiResponses(value = {@ApiResponse(code = 404, message = "Not found"),
+  @ApiResponses(value = {@ApiResponse(code = 401, message = "Not Authorized"),
+      @ApiResponse(code = 404, message = "Not found"),
       @ApiResponse(code = 406, message = "Accept Header not supported")})
   @ApiOperation(value = "Find staffperson by id", response = StaffPerson.class, code = 200)
   public Response get(@PathParam("id") @ApiParam(required = true, name = "id",
@@ -99,6 +100,7 @@ public class StaffPersonResource {
   @UnitOfWork(value = "cms")
   @POST
   @ApiResponses(value = {@ApiResponse(code = 400, message = "Unable to process JSON"),
+      @ApiResponse(code = 401, message = "Not Authorized"),
       @ApiResponse(code = 406, message = "Accept Header not supported"),
       @ApiResponse(code = 409, message = "Conflict - already exists"),
       @ApiResponse(code = 422, message = "Unable to validate StaffPerson")})
@@ -122,6 +124,7 @@ public class StaffPersonResource {
   @PUT
   @Path("/{id}")
   @ApiResponses(value = {@ApiResponse(code = 400, message = "Unable to process JSON"),
+      @ApiResponse(code = 401, message = "Not Authorized"),
       @ApiResponse(code = 404, message = "not found"),
       @ApiResponse(code = 406, message = "Accept Header not supported"),
       @ApiResponse(code = 422, message = "Unable to validate StaffPerson")})

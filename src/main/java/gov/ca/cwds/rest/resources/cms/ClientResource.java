@@ -66,7 +66,8 @@ public class ClientResource {
   @UnitOfWork(value = "cms")
   @GET
   @Path("/{id}")
-  @ApiResponses(value = {@ApiResponse(code = 404, message = "Not found"),
+  @ApiResponses(value = {@ApiResponse(code = 401, message = "Not Authorized"),
+      @ApiResponse(code = 404, message = "Not found"),
       @ApiResponse(code = 406, message = "Accept Header not supported")})
   @ApiOperation(value = "Find client by id", response = Client.class, code = 200)
   public Response get(@PathParam("id") @ApiParam(required = true, name = "id",
@@ -84,6 +85,7 @@ public class ClientResource {
   @UnitOfWork(value = "cms")
   @DELETE
   @Path("/{id}")
+  @ApiResponses(value = {@ApiResponse(code = 401, message = "Not Authorized")})
   @ApiOperation(value = "Delete Client", code = HttpStatus.SC_OK, response = Object.class)
   public Response delete(
       @PathParam("id") @ApiParam(required = true, value = "id of Client to delete") String id) {
@@ -100,6 +102,7 @@ public class ClientResource {
   @UnitOfWork(value = "cms")
   @POST
   @ApiResponses(value = {@ApiResponse(code = 400, message = "Unable to process JSON"),
+      @ApiResponse(code = 401, message = "Not Authorized"),
       @ApiResponse(code = 406, message = "Accept Header not supported"),
       @ApiResponse(code = 409, message = "Conflict - already exists"),
       @ApiResponse(code = 422, message = "Unable to validate Client")})
@@ -121,6 +124,7 @@ public class ClientResource {
   @PUT
   @Path("/{id}")
   @ApiResponses(value = {@ApiResponse(code = 400, message = "Unable to process JSON"),
+      @ApiResponse(code = 401, message = "Not Authorized"),
       @ApiResponse(code = 404, message = "not found"),
       @ApiResponse(code = 406, message = "Accept Header not supported"),
       @ApiResponse(code = 422, message = "Unable to validate Client")})

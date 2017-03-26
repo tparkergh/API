@@ -68,7 +68,8 @@ public class CmsDocReferralClientResource {
   @UnitOfWork(value = "cms")
   @GET
   @Path("/{id}")
-  @ApiResponses(value = {@ApiResponse(code = 404, message = "Not found"),
+  @ApiResponses(value = {@ApiResponse(code = 401, message = "Not Authorized"),
+      @ApiResponse(code = 404, message = "Not found"),
       @ApiResponse(code = 406, message = "Accept Header not supported")})
   @ApiOperation(value = "Find document by id (doc_handle)", response = CmsDocReferralClient.class,
       code = 200)
@@ -86,6 +87,7 @@ public class CmsDocReferralClientResource {
    */
   @DELETE
   @Path("/{id}")
+  @ApiResponses(value = {@ApiResponse(code = 401, message = "Not Authorized")})
   @ApiOperation(hidden = true, value = "Delete Document - not currently implemented",
       code = HttpStatus.SC_OK, response = Object.class)
   public Response delete(
@@ -103,6 +105,7 @@ public class CmsDocReferralClientResource {
   @UnitOfWork(value = "cms")
   @POST
   @ApiResponses(value = {@ApiResponse(code = 400, message = "Unable to process JSON"),
+      @ApiResponse(code = 401, message = "Not Authorized"),
       @ApiResponse(code = 406, message = "Accept Header not supported"),
       @ApiResponse(code = 409, message = "Conflict - already exists"),
       @ApiResponse(code = 422, message = "Unable to validate Document")})
@@ -126,6 +129,7 @@ public class CmsDocReferralClientResource {
   @UnitOfWork(value = "cms")
   @PUT
   @ApiResponses(value = {@ApiResponse(code = 400, message = "Unable to process JSON"),
+      @ApiResponse(code = 401, message = "Not Authorized"),
       @ApiResponse(code = 404, message = "not found"),
       @ApiResponse(code = 406, message = "Accept Header not supported"),
       @ApiResponse(code = 422, message = "Unable to validate Document")})

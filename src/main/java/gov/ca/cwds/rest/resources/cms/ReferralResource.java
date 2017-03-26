@@ -65,7 +65,8 @@ public class ReferralResource {
   @UnitOfWork(value = "cms")
   @GET
   @Path("/{id}")
-  @ApiResponses(value = {@ApiResponse(code = 404, message = "Not found"),
+  @ApiResponses(value = {@ApiResponse(code = 401, message = "Not Authorized"),
+      @ApiResponse(code = 404, message = "Not found"),
       @ApiResponse(code = 406, message = "Accept Header not supported")})
   @ApiOperation(value = "Find referral by id", response = Referral.class, code = 200)
   public Response get(@PathParam("id") @ApiParam(required = true, name = "id",
@@ -83,6 +84,7 @@ public class ReferralResource {
   @UnitOfWork(value = "cms")
   @DELETE
   @Path("/{id}")
+  @ApiResponses(value = {@ApiResponse(code = 401, message = "Not Authorized")})
   @ApiOperation(value = "Delete Referral", code = HttpStatus.SC_OK, response = Object.class)
   public Response delete(@PathParam("id") @ApiParam(required = true,
       value = "The id of Referral to delete") String id) {
@@ -99,6 +101,7 @@ public class ReferralResource {
   @UnitOfWork(value = "cms")
   @POST
   @ApiResponses(value = {@ApiResponse(code = 400, message = "Unable to process JSON"),
+      @ApiResponse(code = 401, message = "Not Authorized"),
       @ApiResponse(code = 406, message = "Accept Header not supported"),
       @ApiResponse(code = 409, message = "Conflict - already exists"),
       @ApiResponse(code = 422, message = "Unable to validate Referral")})
@@ -120,6 +123,7 @@ public class ReferralResource {
   @PUT
   @Path("/{id}")
   @ApiResponses(value = {@ApiResponse(code = 400, message = "Unable to process JSON"),
+      @ApiResponse(code = 401, message = "Not Authorized"),
       @ApiResponse(code = 404, message = "not found"),
       @ApiResponse(code = 406, message = "Accept Header not supported"),
       @ApiResponse(code = 422, message = "Unable to validate Referral")})
