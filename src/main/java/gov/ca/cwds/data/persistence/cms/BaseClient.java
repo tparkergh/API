@@ -851,7 +851,6 @@ public abstract class BaseClient extends CmsPersistentObject
     }
 
     if (this.secondaryLanguageType != null && this.secondaryLanguageType != 0) {
-      // LOGGER.debug("secondaryLanguageType={}", secondaryLanguageType);
       ret.add(new ApiLanguageAware() {
         @Override
         public Integer getLanguageSysId() {

@@ -6,7 +6,10 @@ import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
@@ -17,6 +20,7 @@ import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 import org.hibernate.annotations.NamedNativeQueries;
 import org.hibernate.annotations.NamedNativeQuery;
+import org.hibernate.annotations.Type;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
@@ -99,13 +103,13 @@ public class ReplicatedClient extends BaseClient
    */
   private static final long serialVersionUID = 1L;
 
-  // @Enumerated(EnumType.STRING)
-  // @Column(name = "IBMSNAP_OPERATION", updatable = false)
-  // private CmsReplicationOperation replicationOperation;
-  //
-  // @Type(type = "timestamp")
-  // @Column(name = "IBMSNAP_LOGMARKER", updatable = false)
-  // private Date replicationDate;
+  @Enumerated(EnumType.STRING)
+  @Column(name = "IBMSNAP_OPERATION", updatable = false)
+  private CmsReplicationOperation replicationOperation;
+
+  @Type(type = "timestamp")
+  @Column(name = "IBMSNAP_LOGMARKER", updatable = false)
+  private Date replicationDate;
 
   @OneToMany(fetch = FetchType.EAGER, mappedBy = "fkClient")
   protected Set<ReplicatedClientAddress> clientAddresses = new LinkedHashSet<>();
@@ -185,24 +189,22 @@ public class ReplicatedClient extends BaseClient
 
   @Override
   public CmsReplicationOperation getReplicationOperation() {
-    // return replicationOperation;
-    return CmsReplicationOperation.U;
+    return replicationOperation;
   }
 
   @Override
   public void setReplicationOperation(CmsReplicationOperation replicationOperation) {
-    // this.replicationOperation = replicationOperation;
+    this.replicationOperation = replicationOperation;
   }
 
   @Override
   public Date getReplicationDate() {
-    // return replicationDate;
-    return new Date();
+    return replicationDate;
   }
 
   @Override
   public void setReplicationDate(Date replicationDate) {
-    // this.replicationDate = replicationDate;
+    this.replicationDate = replicationDate;
   }
 
   // ==============
