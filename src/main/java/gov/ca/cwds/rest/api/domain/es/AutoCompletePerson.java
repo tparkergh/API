@@ -810,8 +810,9 @@ public class AutoCompletePerson
     }
 
     public ElasticSearchPerson.ElasticSearchPersonAddress toESPersonAddress() {
-      return new ElasticSearchPersonAddress(this.id, this.streetAddress, this.stateType.stateCd,
-          this.zip, this.addressType.name());
+      return new ElasticSearchPersonAddress(this.id, this.streetAddress,
+          this.stateType != null ? this.stateType.stateCd : null, this.zip,
+          this.addressType != null ? this.addressType.name() : null);
     }
 
   }
