@@ -610,7 +610,9 @@ public class AutoCompletePerson
      */
     public ElasticSearchPerson.ElasticSearchPersonAddress toESPersonAddress() {
       return new ElasticSearchPersonAddress(this.id, this.streetAddress, this.city,
-          this.stateType != null ? this.stateType.stateCd : null, this.zip,
+          this.stateType != null ? this.stateType.stateCd : null,
+          StringUtils.isNotBlank(this.zip) && !"0".equals(this.zip)
+              ? StringUtils.leftPad(this.zip, 5, "0") : null,
           this.addressType != null ? this.addressType.name() : null);
     }
 
@@ -811,10 +813,6 @@ public class AutoCompletePerson
             case "F":
               this.setGender("female");
               break;
-            // case "U":
-            // default:
-            // this.setGender("unknown");
-            // break;
           }
         }
         if (personAware.getBirthDate() != null) {
@@ -864,7 +862,8 @@ public class AutoCompletePerson
       if (esp.getSourceObj() instanceof ApiMultipleLanguagesAware) {
         final ApiMultipleLanguagesAware langs = (ApiMultipleLanguagesAware) esp.getSourceObj();
         for (ApiLanguageAware lang : langs.getLanguages()) {
-          addLanguage(ElasticSearchPerson.ElasticSearchPersonLanguage.findBySysId(lang.getLanguageSysId()));
+          addLanguage(
+              ElasticSearchPerson.ElasticSearchPersonLanguage.findBySysId(lang.getLanguageSysId()));
         }
       }
     }
