@@ -408,131 +408,6 @@ public class AutoCompletePerson
   }
 
   /**
-   * Languages.
-   * 
-   * @author CWDS API Team
-   */
-  @SuppressWarnings("javadoc")
-  public enum AutoCompleteLanguage implements ApiSysCodeAware {
-
-    ENGLISH(1253, "English", 7),
-
-    SPANISH(1274, "Spanish", 1),
-
-    AMERICAN_SIGN_LANGUAGE(1248, "American Sign Language", 13),
-
-    ARABIC(1249, "Arabic", 14),
-
-    ARMENIAN(1250, "Armenian", 15),
-
-    CAMBODIAN(1251, "Cambodian", 19),
-
-    CANTONESE(1252, "Cantonese", 74),
-
-    FARSI(1254, "Farsi", 41),
-
-    FILIPINO(3198, "Filipino", 49),
-
-    FRENCH(1255, "French", 28),
-
-    GERMAN(1267, "German", 29),
-
-    HAWAIIAN(1268, "Hawaiian", 99),
-
-    HEBREW(1256, "Hebrew", 33),
-
-    HMONG(1257, "Hmong", 35),
-
-    ILACANO(1258, "Ilacano", 77),
-
-    INDOCHINESE(3199, "Indochinese", 99),
-
-    ITALIAN(1259, "Italian", 42),
-
-    JAPANESE(1260, "Japanese", 3),
-
-    KOREAN(1261, "Korean", 4),
-
-    LAO(1262, "Lao", 43),
-
-    MANDARIN(1263, "Mandarin", 75),
-
-    MIEN(1264, "Mien", 76),
-
-    OTHER_CHINESE(1265, "Other Chinese", 2),
-
-    OTHER_NON_ENGLISH(1266, "Other Non-English", 99),
-
-    POLISH(1269, "Polish", 50),
-
-    PORTUGUESE(1270, "Portuguese", 51),
-
-    ROMANIAN(3200, "Romanian", 99),
-
-    RUSSIAN(1271, "Russian", 54),
-
-    SAMOAN(1272, "Samoan", 55),
-
-    SIGN_LANGUAGE_NOT_ASL(1273, "Sign Language (Not ASL)", 78),
-
-    TAGALOG(1275, "Tagalog", 5),
-
-    THAI(1276, "Thai", 65),
-
-    TURKISH(1277, "Turkish", 67),
-
-    VIETNAMESE(1278, "Vietnamese", 69);
-
-    private final int sysId;
-    private final String description;
-    private final int displayOrder;
-
-    private static final Map<Integer, AutoCompleteLanguage> mapBySysId = new HashMap<>();
-
-    private AutoCompleteLanguage(int sysId, String description, int displayOrder) {
-      this.sysId = sysId;
-      this.description = description;
-      this.displayOrder = displayOrder;
-    }
-
-    /**
-     * Getter for SYS_ID in CMS table SYS_CD_C.
-     * 
-     * @return SYS_ID
-     */
-    @Override
-    public int getSysId() {
-      return sysId;
-    }
-
-    @Override
-    @JsonValue
-    public String getDescription() {
-      return description;
-    }
-
-    public int getDisplayOrder() {
-      return displayOrder;
-    }
-
-    @Override
-    public ApiSysCodeAware lookupBySysId(int sysId) {
-      return AutoCompleteLanguage.findBySysId(sysId);
-    }
-
-    public static AutoCompleteLanguage findBySysId(int sysId) {
-      return mapBySysId.get(sysId);
-    }
-
-    static {
-      for (AutoCompleteLanguage e : AutoCompleteLanguage.values()) {
-        mapBySysId.put(e.sysId, e);
-      }
-    }
-
-  }
-
-  /**
    * Addresses types per Intake YAML.
    * 
    * @author CWDS API Team
@@ -891,7 +766,7 @@ public class AutoCompletePerson
   private List<AutoCompletePersonPhone> phoneNumbers = new ArrayList<>();
 
   @JsonInclude(JsonInclude.Include.NON_EMPTY)
-  private List<AutoCompleteLanguage> languages = new ArrayList<>();
+  private List<ElasticSearchPerson.ElasticSearchPersonLanguage> languages = new ArrayList<>();
 
   private Map<String, String> highlight;
 
@@ -989,7 +864,7 @@ public class AutoCompletePerson
       if (esp.getSourceObj() instanceof ApiMultipleLanguagesAware) {
         final ApiMultipleLanguagesAware langs = (ApiMultipleLanguagesAware) esp.getSourceObj();
         for (ApiLanguageAware lang : langs.getLanguages()) {
-          addLanguage(AutoCompleteLanguage.findBySysId(lang.getLanguageSysId()));
+          addLanguage(ElasticSearchPerson.ElasticSearchPersonLanguage.findBySysId(lang.getLanguageSysId()));
         }
       }
     }
@@ -1173,7 +1048,7 @@ public class AutoCompletePerson
    * @param language language to add
    */
   @JsonIgnore
-  public void addLanguage(AutoCompleteLanguage language) {
+  public void addLanguage(ElasticSearchPerson.ElasticSearchPersonLanguage language) {
     if (this.languages == null) {
       this.languages = new ArrayList<>();
     }
@@ -1206,7 +1081,7 @@ public class AutoCompletePerson
    * 
    * @return languages
    */
-  public List<AutoCompleteLanguage> getLanguages() {
+  public List<ElasticSearchPerson.ElasticSearchPersonLanguage> getLanguages() {
     return languages;
   }
 
@@ -1215,7 +1090,7 @@ public class AutoCompletePerson
    * 
    * @param languages list of languages
    */
-  public void setLanguages(List<AutoCompleteLanguage> languages) {
+  public void setLanguages(List<ElasticSearchPerson.ElasticSearchPersonLanguage> languages) {
     this.languages = languages;
   }
 
