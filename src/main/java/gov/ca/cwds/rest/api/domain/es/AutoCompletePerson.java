@@ -80,87 +80,6 @@ public class AutoCompletePerson
   private static ApiSystemCodeCache systemCodes;
 
   /**
-   * Name suffix.
-   * 
-   * @author CWDS API Team
-   */
-  @SuppressWarnings("javadoc")
-  public enum AutoCompleteNameSuffix {
-
-    ESQUIRE("esq", new String[] {"esq", "eq", "esqu"}),
-
-    SECOND("ii", new String[] {"ii", "2", "2nd", "second", "02"}),
-
-    THIRD("iii", new String[] {"iii", "3", "3rd", "third", "03"}),
-
-    FOURTH("iv", new String[] {"iv", "iiii", "4", "4th", "fourth", "04"}),
-
-    JR("jr", new String[] {"jr", "junior", "jnr"}),
-
-    SR("sr", new String[] {"sr", "senior", "snr"}),
-
-    MD("md", new String[] {"md", "dr", "doc", "doctor"}),
-
-    PHD("phd", new String[] {"phd", "professor", "prof"}),
-
-    JD("jd", new String[] {"jd"});
-
-    private final String intake;
-
-    @JsonIgnore
-    private final String[] legacy;
-
-    // Key = legacy free-form value.
-    @JsonIgnore
-    private static final Map<String, AutoCompleteNameSuffix> mapLegacy = new HashMap<>();
-
-    // Key = Intake value.
-    @JsonIgnore
-    private static final Map<String, AutoCompleteNameSuffix> mapIntake = new HashMap<>();
-
-    private AutoCompleteNameSuffix(String intake, String[] legacy) {
-      this.intake = intake;
-      this.legacy = legacy;
-    }
-
-    @JsonValue
-    public String getIntake() {
-      return intake;
-    }
-
-    @JsonIgnore
-    public String[] getLegacy() {
-      return legacy;
-    }
-
-    public AutoCompleteNameSuffix lookupLegacy(String val) {
-      return AutoCompleteNameSuffix.findByLegacy(val);
-    }
-
-    public static AutoCompleteNameSuffix findByLegacy(String legacy) {
-      return mapLegacy.get(legacy);
-    }
-
-    public AutoCompleteNameSuffix lookupIntake(String val) {
-      return AutoCompleteNameSuffix.findByIntake(val);
-    }
-
-    public static AutoCompleteNameSuffix findByIntake(String legacy) {
-      return mapIntake.get(legacy);
-    }
-
-    static {
-      for (AutoCompleteNameSuffix e : AutoCompleteNameSuffix.values()) {
-        mapIntake.put(e.intake, e);
-        for (String leg : e.getLegacy()) {
-          mapLegacy.put(leg, e);
-        }
-      }
-    }
-
-  }
-
-  /**
    * County.
    * 
    * @author CWDS API Team
@@ -809,8 +728,13 @@ public class AutoCompletePerson
       return this.id;
     }
 
+    /**
+     * Build a simplified document, suitable for saving in Elasticsearch.
+     * 
+     * @return ES person document object
+     */
     public ElasticSearchPerson.ElasticSearchPersonAddress toESPersonAddress() {
-      return new ElasticSearchPersonAddress(this.id, this.streetAddress,
+      return new ElasticSearchPersonAddress(this.id, this.streetAddress, this.city,
           this.stateType != null ? this.stateType.stateCd : null, this.zip,
           this.addressType != null ? this.addressType.name() : null);
     }
@@ -943,7 +867,7 @@ public class AutoCompletePerson
 
   @JsonProperty("name_suffix")
   @JsonInclude(JsonInclude.Include.NON_EMPTY)
-  private AutoCompleteNameSuffix nameSuffix;
+  private ElasticSearchPerson.ElasticSearchPersonNameSuffix nameSuffix;
 
   @JsonProperty("gender")
   @JsonInclude(JsonInclude.Include.NON_EMPTY)
@@ -1135,8 +1059,8 @@ public class AutoCompletePerson
    */
   @Override
   public void setNameSuffix(String nameSuffix) {
-    this.nameSuffix = AutoCompleteNameSuffix
-        .findByLegacy(nameSuffix.trim().toLowerCase().replaceAll("[^a-zA-Z0-9]", ""));
+    this.nameSuffix =
+        ElasticSearchPerson.ElasticSearchPersonNameSuffix.translateNameSuffix(nameSuffix);
   }
 
   @JsonIgnore
