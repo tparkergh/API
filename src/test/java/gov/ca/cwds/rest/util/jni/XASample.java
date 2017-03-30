@@ -31,6 +31,29 @@ public class XASample {
     xat.runThis(args);
   }
 
+  private static DB2XADataSource buildDB2DataSource(String user, String password, String serverName,
+      int port, String databaseName) {
+    DB2XADataSource ds = new DB2XADataSource();
+    ds.setUser(user);
+    ds.setPassword(password);
+    ds.setServerName(serverName);
+    ds.setPortNumber(port);
+    ds.setDatabaseName(databaseName);
+    ds.setDriverType(4);
+
+    try {
+      ds.getProperties().setProperty(DB2XADataSource.propertyKey_serverName, serverName);
+      ds.getProperties().setProperty(DB2XADataSource.propertyKey_portNumber, String.valueOf(port));
+      ds.getProperties().setProperty(DB2XADataSource.propertyKey_databaseName, databaseName);
+      ds.getProperties().setProperty(DB2XADataSource.propertyKey_driverType, "4");
+    } catch (SQLException e) {
+      e.printStackTrace();
+      throw new ApiException("datasource property error", e);
+    }
+
+    return ds;
+  }
+
   private static void setupInitialContext() {
     try {
       NamingManager.setInitialContextFactoryBuilder(new InitialContextFactoryBuilder() {
@@ -50,62 +73,14 @@ public class XASample {
                 public Object lookup(String name) throws NamingException {
 
                   if (dataSources.isEmpty()) { // init datasources
-                    // DOCKER:
-                    // final String urlDocker = "jdbc:db2://localhost:50000/DB0TDEV";
-                    final String userDocker = System.getenv("DB2_DOCKER_USER");
-                    final String passwordDocker = System.getenv("DB2_DOCKER_PASSWORD");
 
-                    // MAINFRAME:
-                    // final String urlFrame =
-                    // "jdbc:db2://localhost:9000/DB0TSOC:retrieveMessagesFromServerOnGetMessage=true";
-                    final String userFrame = System.getenv("DB2_FRAME_USER");
-                    final String passwordFrame = System.getenv("DB2_FRAME_PASSWORD");
+                    dataSources.put("jdbc/frame",
+                        buildDB2DataSource(System.getenv("DB2_FRAME_USER"),
+                            System.getenv("DB2_FRAME_PASSWORD"), "localhost", 9000, "DBN1SOC"));
 
-                    DB2XADataSource ds1 = new DB2XADataSource();
-                    ds1.setUser(userFrame);
-                    ds1.setPassword(passwordFrame);
-                    ds1.setServerName("localhost");
-                    ds1.setPortNumber(9000);
-                    ds1.setDatabaseName("DBN1SOC");
-                    ds1.setDriverType(4);
-
-                    try {
-                      ds1.getProperties().setProperty(DB2XADataSource.propertyKey_serverName,
-                          "localhost");
-                      ds1.getProperties().setProperty(DB2XADataSource.propertyKey_portNumber,
-                          "9000");
-                      ds1.getProperties().setProperty(DB2XADataSource.propertyKey_databaseName,
-                          "DBN1SOC");
-                      ds1.getProperties().setProperty(DB2XADataSource.propertyKey_driverType, "4");
-                    } catch (SQLException e) {
-                      e.printStackTrace();
-                      throw new ApiException("datasource #1 property error", e);
-                    }
-
-                    dataSources.put("jdbc/ns1", ds1);
-
-                    DB2XADataSource ds2 = new DB2XADataSource();
-                    ds2.setUser(userDocker);
-                    ds2.setPassword(passwordDocker);
-                    ds1.setServerName("localhost");
-                    ds2.setPortNumber(50000);
-                    ds2.setDatabaseName("DB0TDEV");
-                    ds2.setDriverType(4);
-
-                    try {
-                      ds2.getProperties().setProperty(DB2XADataSource.propertyKey_serverName,
-                          "localhost");
-                      ds2.getProperties().setProperty(DB2XADataSource.propertyKey_portNumber,
-                          "50000");
-                      ds2.getProperties().setProperty(DB2XADataSource.propertyKey_databaseName,
-                          "DB0TDEV");
-                      ds2.getProperties().setProperty(DB2XADataSource.propertyKey_driverType, "4");
-                    } catch (SQLException e) {
-                      e.printStackTrace();
-                      throw new ApiException("datasource #2 property error", e);
-                    }
-
-                    dataSources.put("jdbc/ns2", ds2);
+                    dataSources.put("jdbc/docker",
+                        buildDB2DataSource(System.getenv("DB2_DOCKER_USER"),
+                            System.getenv("DB2_DOCKER_PASSWORD"), "localhost", 50000, "DB0TDEV"));
                   }
 
                   if (dataSources.containsKey(name)) {
@@ -144,15 +119,10 @@ public class XASample {
       Class.forName("com.ibm.db2.jcc.DB2Driver");
       setupInitialContext();
 
-      // DOCKER:
-      // final String urlDocker = "jdbc:db2://localhost:50000/DB0TDEV";
-      final String userDocker = System.getenv("DB2_DOCKER_USER");
-      final String passwordDocker = System.getenv("DB2_DOCKER_PASSWORD");
-
       // Note that javax.sql.XADataSource is used instead of a specific driver implementation such
       // as com.ibm.db2.jcc.DB2XADataSource.
-      xaDS1 = (javax.sql.XADataSource) InitialContext.doLookup("jdbc/ns1");
-      xaDS2 = (javax.sql.XADataSource) InitialContext.doLookup("jdbc/ns2");
+      xaDS1 = (javax.sql.XADataSource) InitialContext.doLookup("jdbc/frame");
+      xaDS2 = (javax.sql.XADataSource) InitialContext.doLookup("jdbc/docker");
 
       // The XADatasource contains the user ID and password.
       // Get the XAConnection object from each XADataSource
@@ -180,7 +150,16 @@ public class XASample {
 
       // TODO: ADD SQL HERE!
       // Run DML on connection 1.
+      conn1
+          .prepareStatement(
+              "update CWSNS1.CLIENT_T c set c.BR_FAC_NM = 'conn 1' where c.IDENTIFIER = 'AaiU7IW0Rt'")
+          .executeUpdate();
+
       // Run DML on connection 2.
+      conn2
+          .prepareStatement(
+              "update CWSINT.CLIENT_T c set c.BR_FAC_NM = 'conn 2' where c.IDENTIFIER = 'AaiU7IW0Rt'")
+          .executeUpdate();
 
       // Now end the distributed transaction on the two connections.
       xares1.end(xid1, javax.transaction.xa.XAResource.TMSUCCESS);
