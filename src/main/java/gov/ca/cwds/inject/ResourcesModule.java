@@ -1,10 +1,5 @@
 package gov.ca.cwds.inject;
 
-import com.google.inject.AbstractModule;
-import com.google.inject.Injector;
-import com.google.inject.Provides;
-import com.google.inject.name.Named;
-
 import gov.ca.cwds.rest.ApiConfiguration;
 import gov.ca.cwds.rest.SwaggerConfiguration;
 import gov.ca.cwds.rest.api.domain.cms.CmsDocument;
@@ -26,6 +21,7 @@ import gov.ca.cwds.rest.resources.cms.AllegationResource;
 import gov.ca.cwds.rest.resources.cms.ClientResource;
 import gov.ca.cwds.rest.resources.cms.CmsDocReferralClientResource;
 import gov.ca.cwds.rest.resources.cms.CmsDocumentResource;
+import gov.ca.cwds.rest.resources.cms.CmsNSReferralResource;
 import gov.ca.cwds.rest.resources.cms.CmsReferralResource;
 import gov.ca.cwds.rest.resources.cms.ReferralClientResource;
 import gov.ca.cwds.rest.resources.cms.ReferralResource;
@@ -40,6 +36,7 @@ import gov.ca.cwds.rest.services.cms.AllegationService;
 import gov.ca.cwds.rest.services.cms.ClientService;
 import gov.ca.cwds.rest.services.cms.CmsDocReferralClientService;
 import gov.ca.cwds.rest.services.cms.CmsDocumentService;
+import gov.ca.cwds.rest.services.cms.CmsNSReferralService;
 import gov.ca.cwds.rest.services.cms.CmsReferralService;
 import gov.ca.cwds.rest.services.cms.CrossReportService;
 import gov.ca.cwds.rest.services.cms.ReferralClientService;
@@ -47,6 +44,11 @@ import gov.ca.cwds.rest.services.cms.ReferralService;
 import gov.ca.cwds.rest.services.cms.ReporterService;
 import gov.ca.cwds.rest.services.cms.StaffPersonService;
 import gov.ca.cwds.rest.services.es.AutoCompletePersonService;
+
+import com.google.inject.AbstractModule;
+import com.google.inject.Injector;
+import com.google.inject.Provides;
+import com.google.inject.name.Named;
 
 
 /**
@@ -76,6 +78,7 @@ public class ResourcesModule extends AbstractModule {
     bind(ClientResource.class);
     bind(CmsDocReferralClientResource.class);
     bind(CmsDocumentResource.class);
+    bind(CmsNSReferralResource.class);
     bind(CmsReferralResource.class);
     bind(ReferralClientResource.class);
     bind(ReferralResource.class);
@@ -142,6 +145,12 @@ public class ResourcesModule extends AbstractModule {
   @ClientServiceBackedResource
   public ResourceDelegate clientServiceBackedResource(Injector injector) {
     return new ServiceBackedResourceDelegate(injector.getInstance(ClientService.class));
+  }
+
+  @Provides
+  @CmsNSReferralServiceBackedResource
+  public ResourceDelegate cmsNSReferralServiceBackedResource(Injector injector) {
+    return new ServiceBackedResourceDelegate(injector.getInstance(CmsNSReferralService.class));
   }
 
   @Provides

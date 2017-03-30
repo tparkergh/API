@@ -83,6 +83,11 @@ public interface Api {
   public static final String RESOURCE_CMSREFERRAL = "_cmsreferrals";
 
   /**
+   * A {@code String} constant representing {@value #RESOURCE_CMSNSREFERRAL} API.
+   */
+  public static final String RESOURCE_CMSNSREFERRAL = "cms_ns_referrals";
+
+  /**
    * A {@code String} constant representing {@value #RESOURCE_ADDRESS_VALIDATION} API.
    */
   public static final String RESOURCE_ADDRESS_VALIDATION = "address_validation";
