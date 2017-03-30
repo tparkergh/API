@@ -1,5 +1,6 @@
 package gov.ca.cwds.rest.util.jni;
 
+import java.sql.SQLException;
 import java.util.Hashtable;
 
 import javax.naming.Context;
@@ -11,6 +12,8 @@ import javax.naming.spi.NamingManager;
 import javax.sql.XADataSource;
 
 import com.ibm.db2.jcc.DB2XADataSource;
+
+import gov.ca.cwds.rest.api.ApiException;
 
 public class XASample {
 
@@ -47,9 +50,6 @@ public class XASample {
                 public Object lookup(String name) throws NamingException {
 
                   if (dataSources.isEmpty()) { // init datasources
-
-                    // MysqlConnectionPoolDataSource ds = new MysqlConnectionPoolDataSource();
-
                     // DOCKER:
                     // final String urlDocker = "jdbc:db2://localhost:50000/DB0TDEV";
                     final String userDocker = System.getenv("DB2_DOCKER_USER");
@@ -66,8 +66,22 @@ public class XASample {
                     ds1.setPassword(passwordFrame);
                     ds1.setServerName("localhost");
                     ds1.setPortNumber(9000);
-                    ds1.setDatabaseName("DB0TSOC");
+                    ds1.setDatabaseName("DBN1SOC");
                     ds1.setDriverType(4);
+
+                    try {
+                      ds1.getProperties().setProperty(DB2XADataSource.propertyKey_serverName,
+                          "localhost");
+                      ds1.getProperties().setProperty(DB2XADataSource.propertyKey_portNumber,
+                          "9000");
+                      ds1.getProperties().setProperty(DB2XADataSource.propertyKey_databaseName,
+                          "DBN1SOC");
+                      ds1.getProperties().setProperty(DB2XADataSource.propertyKey_driverType, "4");
+                    } catch (SQLException e) {
+                      e.printStackTrace();
+                      throw new ApiException("datasource #1 property error", e);
+                    }
+
                     dataSources.put("jdbc/ns1", ds1);
 
                     DB2XADataSource ds2 = new DB2XADataSource();
@@ -76,7 +90,21 @@ public class XASample {
                     ds1.setServerName("localhost");
                     ds2.setPortNumber(50000);
                     ds2.setDatabaseName("DB0TDEV");
-                    ds1.setDriverType(4);
+                    ds2.setDriverType(4);
+
+                    try {
+                      ds2.getProperties().setProperty(DB2XADataSource.propertyKey_serverName,
+                          "localhost");
+                      ds2.getProperties().setProperty(DB2XADataSource.propertyKey_portNumber,
+                          "50000");
+                      ds2.getProperties().setProperty(DB2XADataSource.propertyKey_databaseName,
+                          "DB0TDEV");
+                      ds2.getProperties().setProperty(DB2XADataSource.propertyKey_driverType, "4");
+                    } catch (SQLException e) {
+                      e.printStackTrace();
+                      throw new ApiException("datasource #2 property error", e);
+                    }
+
                     dataSources.put("jdbc/ns2", ds2);
                   }
 
