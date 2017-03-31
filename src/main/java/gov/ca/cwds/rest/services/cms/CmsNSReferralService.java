@@ -13,11 +13,11 @@ import gov.ca.cwds.rest.services.CrudsService;
 import gov.ca.cwds.rest.services.PersonService;
 
 import java.io.Serializable;
+import java.util.HashMap;
+import java.util.Map;
 
 import org.apache.commons.lang3.NotImplementedException;
 import org.hibernate.SessionFactory;
-import org.hibernate.Transaction;
-import org.hibernate.context.internal.ManagedSessionContext;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -67,49 +67,22 @@ public class CmsNSReferralService implements CrudsService {
    */
   @Override
   public Response create(Request request) {
+
     assert request instanceof CmsReferral;
     CmsNSReferral cmsReferral = (CmsNSReferral) request;
-    PostedReferral referral = null;
-    PostedPerson person;
 
-    org.hibernate.Session sessionCMS = cmsSessionFactory.openSession();
-    org.hibernate.Session sessionNS = nsSessionFactory.openSession();
-    try {
-      ManagedSessionContext.bind(sessionCMS);
-      Transaction transactionCMS = sessionCMS.beginTransaction();
-      try {
-        referral = this.referralService.create(cmsReferral.getReferral());
-        sessionCMS.flush();
-      } catch (Exception e) {
-        transactionCMS.rollback();
-        throw e;
-      }
+    CmsNSHelper helper = new CmsNSHelper(cmsSessionFactory, nsSessionFactory);
 
-      ManagedSessionContext.bind(sessionNS);
-      Transaction transactionNS = sessionNS.beginTransaction();
-      try {
-        person = this.personService.create(cmsReferral.getPerson());
-        sessionNS.flush();
-      } catch (Exception e) {
-        transactionNS.rollback();
-        transactionCMS.rollback();
-        throw e;
-      }
-      try {
-        transactionCMS.commit();
-        transactionNS.commit();
-      } catch (Exception e) {
-        throw e;
-      }
-    } finally {
-      sessionCMS.close();
-      sessionNS.close();
-      ManagedSessionContext.unbind(cmsSessionFactory);
-      ManagedSessionContext.unbind(nsSessionFactory);
+    Map<CrudsService, Request> cmsRequest = new HashMap<CrudsService, Request>();
+    Map<CrudsService, Request> nsRequest = new HashMap<CrudsService, Request>();
 
-    }
+    cmsRequest.put(referralService, cmsReferral.getReferral());
+    nsRequest.put(personService, cmsReferral.getPerson());
 
-    return new PostedCmsNSReferral(referral, person);
+    Map<String, Map<CrudsService, Response>> response =
+        helper.handleResponse(cmsRequest, nsRequest);
+    return new PostedCmsNSReferral((PostedReferral) response.get("cms").get(referralService),
+        (PostedPerson) response.get("ns").get(personService));
 
   }
 
