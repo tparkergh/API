@@ -39,6 +39,7 @@ import gov.ca.cwds.data.ns.PhoneNumberDao;
 import gov.ca.cwds.data.ns.RaceDao;
 import gov.ca.cwds.data.ns.ScreeningDao;
 import gov.ca.cwds.data.persistence.cms.Allegation;
+import gov.ca.cwds.data.persistence.cms.ApiSystemCodeDao;
 import gov.ca.cwds.data.persistence.cms.ClientCollateral;
 import gov.ca.cwds.data.persistence.cms.CmsDocReferralClient;
 import gov.ca.cwds.data.persistence.cms.CmsDocument;
@@ -46,7 +47,6 @@ import gov.ca.cwds.data.persistence.cms.CmsDocumentBlobSegment;
 import gov.ca.cwds.data.persistence.cms.CollateralIndividual;
 import gov.ca.cwds.data.persistence.cms.CrossReport;
 import gov.ca.cwds.data.persistence.cms.EducationProviderContact;
-import gov.ca.cwds.data.persistence.cms.ApiSystemCodeDao;
 import gov.ca.cwds.data.persistence.cms.OtherAdultInPlacemtHome;
 import gov.ca.cwds.data.persistence.cms.OtherChildInPlacemtHome;
 import gov.ca.cwds.data.persistence.cms.OtherClientName;
@@ -148,6 +148,8 @@ public class DataAccessModule extends AbstractModule {
    */
   @Override
   protected void configure() {
+
+    // CMS:
     bind(AllegationDao.class);
     bind(AttorneyDao.class);
     bind(ClientDao.class);
@@ -159,6 +161,7 @@ public class DataAccessModule extends AbstractModule {
     bind(ReporterDao.class);
     bind(StaffPersonDao.class);
 
+    // NS:
     bind(AddressDao.class);
     bind(PersonDao.class);
     bind(ScreeningDao.class);
@@ -174,11 +177,20 @@ public class DataAccessModule extends AbstractModule {
     bind(PersonRaceDao.class);
     bind(RaceDao.class);
 
+    // Miscellaneous:
     bind(ElasticsearchDao.class);
     bind(SmartyStreetsDao.class);
 
     // System code loader DAO.
     bind(ApiSystemCodeDao.class).to(SystemCodeDaoFileImpl.class);
+
+    // #136216413: atomic transaction for entire resource request.
+    // http://www.dropwizard.io/1.1.0/docs/manual/hibernate.html#transactional-resource-methods-outside-jersey-resources
+
+    // SessionDao dao = new SessionDao(hibernateBundle.getSessionFactory());
+    // ExampleAuthenticator exampleAuthenticator = new UnitOfWorkAwareProxyFactory(hibernateBundle)
+    // .create(ExampleAuthenticator.class, SessionDao.class, dao);
+
   }
 
   @Provides

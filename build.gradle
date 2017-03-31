@@ -24,7 +24,7 @@ applicationDefaultJvmArgs = ["-Djava.library.path=.:./lib:/var/lib/jenkins/works
 project.ext {
     apiVersion = 0.19
     configPath = "$rootProject.projectDir/config/"
-    dropwizardVersion = "1.0.5"
+    dropwizardVersion = "1.1.0"
     dropwizardFlywayVersion = "1.0.0-1"
     metricsVersion = "3.1.0"
     dropwizardSwaggerVersion = "1.0.0-1"
@@ -55,7 +55,7 @@ shadowJar {
 dependencies {
 	// Dropwizard-guice 1.0.0.2 conflicts with jersey-client 2.25.
 	// Exclude transitive dependencies.
-	compile ('gov.ca.cwds.api:api-core:0.19.124') {
+	compile ('gov.ca.cwds.api:api-core:0.19.125') {
 	    exclude group: 'org.glassfish.jersey.core'
 	}
 	
@@ -74,12 +74,12 @@ dependencies {
 	compile group: 'commons-beanutils', name: 'commons-beanutils', version: '1.8.3'
     compile group: 'org.elasticsearch', name: 'elasticsearch', version:  '2.3.5'
 	compile group: 'org.slf4j', name: 'slf4j-ext', version: '1.7.22'
-	compile group: 'org.glassfish.jersey.core', name: 'jersey-client', version: '2.25'
-	compile group: 'com.hubspot.dropwizard', name: 'dropwizard-guice', version: '1.0.0.2'
+	compile group: 'org.glassfish.jersey.core', name: 'jersey-client', version: '2.25.1'
+	compile group: 'com.hubspot.dropwizard', name: 'dropwizard-guice', version: '1.0.6.0'
 	compile 'com.fasterxml.jackson.module:jackson-module-guice:2.7.8'
 	compile group: "com.smartystreets.api", name: "smartystreets-java-sdk", version: "1.0.7"
 	compile group: 'org.secnod.dropwizard', name: 'dropwizard-shiro', version: '0.2.0'
-	
+
     compile fileTree(dir: 'lib', include: ['*.jar'])
     
 	compile group: 'io.swagger', name: 'swagger-jersey2-jaxrs', version: '1.5.9'
