@@ -55,7 +55,7 @@ shadowJar {
 dependencies {
 	// Dropwizard-guice 1.0.0.2 conflicts with jersey-client 2.25.
 	// Exclude transitive dependencies.
-	compile ('gov.ca.cwds.api:api-core:0.19.125') {
+	compile ('gov.ca.cwds.api:api-core:0.19.126') {
 	    exclude group: 'org.glassfish.jersey.core'
 	}
 	
@@ -67,16 +67,16 @@ dependencies {
 	compile group: "io.dropwizard", name: "dropwizard-testing", version: dropwizardVersion
 	compile group: "io.dropwizard.metrics", name: "metrics-core", version: metricsVersion
     compile group: "io.dropwizard.modules", name: "dropwizard-flyway", version: dropwizardFlywayVersion
-    
+
     compile group: "org.glassfish.jersey.ext", name: "jersey-declarative-linking", version: "2.23.2"
 	compile group: "javax.el", name: "javax.el-api", version: "2.2.4"
 	compile group: "org.glassfish.web", name: "javax.el", version: "2.2.4"
 	compile group: 'commons-beanutils', name: 'commons-beanutils', version: '1.8.3'
-    compile group: 'org.elasticsearch', name: 'elasticsearch', version:  '2.3.5'
+    compile group: 'org.elasticsearch', name: 'elasticsearch', version: '2.4.4'
 	compile group: 'org.slf4j', name: 'slf4j-ext', version: '1.7.22'
 	compile group: 'org.glassfish.jersey.core', name: 'jersey-client', version: '2.25.1'
 	compile group: 'com.hubspot.dropwizard', name: 'dropwizard-guice', version: '1.0.6.0'
-	compile 'com.fasterxml.jackson.module:jackson-module-guice:2.7.8'
+	compile 'com.fasterxml.jackson.module:jackson-module-guice:2.8.7'
 	compile group: "com.smartystreets.api", name: "smartystreets-java-sdk", version: "1.0.7"
 	compile group: 'org.secnod.dropwizard', name: 'dropwizard-shiro', version: '0.2.0'
 
