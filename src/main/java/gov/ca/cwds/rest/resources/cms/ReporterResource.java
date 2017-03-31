@@ -43,6 +43,7 @@ import io.swagger.annotations.ApiResponses;
 @Produces(MediaType.APPLICATION_JSON)
 @Consumes(MediaType.APPLICATION_JSON)
 public class ReporterResource {
+
   private ResourceDelegate resourceDelegate;
 
   /**

@@ -138,8 +138,7 @@ public class CmsReferralService implements CrudsService {
               incomingClient.getUnemployedParentCode(), incomingClient.getZippyCreatedIndicator());
           PostedClient postedclient = this.clientService.create(client);
           postedClients.add(postedclient);
-          String clientId = postedclient.getId();
-          clientIds.add(clientId);
+          clientIds.add(postedclient.getId());
         } else {
           clientIds.add(savedClient.getId());
           postedClients.add(savedClient);
@@ -214,7 +213,7 @@ public class CmsReferralService implements CrudsService {
                 incomingReferralClient.getDrugIndicator());
         referralClient = this.referralClientService.create(referralClient);
         resultReferralClient.add(referralClient);
-        clientInst += 1;
+        clientInst++;
       }
     }
 
@@ -243,7 +242,6 @@ public class CmsReferralService implements CrudsService {
 
     return new PostedCmsReferral(referral, postedClients, resultAllegation, resultCrossReport,
         resultReferralClient, savedreporter);
-
   }
 
   /**

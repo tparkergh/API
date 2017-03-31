@@ -44,7 +44,6 @@ public class ReporterDaoIT implements DaoTestTemplate {
   @Before
   public void setup() {
     sessionFactory = new Configuration().configure().buildSessionFactory();
-    sessionFactory.getCurrentSession().beginTransaction();
     reporterDao = new ReporterDao(sessionFactory);
     session = sessionFactory.getCurrentSession();
     session.beginTransaction();
