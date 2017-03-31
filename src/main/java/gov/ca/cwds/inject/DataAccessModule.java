@@ -191,6 +191,7 @@ public class DataAccessModule extends AbstractModule {
     // ExampleAuthenticator exampleAuthenticator = new UnitOfWorkAwareProxyFactory(hibernateBundle)
     // .create(ExampleAuthenticator.class, SessionDao.class, dao);
 
+    // new UnitOfWorkAwareProxyFactory(this.cmsHibernateBundle);
   }
 
   @Provides
