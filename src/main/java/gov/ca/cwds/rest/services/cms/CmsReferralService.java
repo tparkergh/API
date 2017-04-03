@@ -43,7 +43,6 @@ public class CmsReferralService implements CrudsService {
   private ReferralClientService referralClientService;
   private ReporterService reporterService;
 
-
   /**
    * Constructor
    * 
