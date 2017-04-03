@@ -38,6 +38,7 @@ import gov.ca.cwds.rest.api.domain.Person;
 import gov.ca.cwds.rest.api.domain.PhoneNumber;
 import gov.ca.cwds.rest.api.domain.PostedPerson;
 import gov.ca.cwds.rest.api.domain.Race;
+import io.dropwizard.hibernate.UnitOfWork;
 
 /**
  * Business layer object to work on {@link Person} and
@@ -131,6 +132,7 @@ public class PersonService implements CrudsService {
    * @see gov.ca.cwds.rest.services.CrudsService#create(gov.ca.cwds.rest.api.Request)
    */
   @Override
+  @UnitOfWork(value = "ns")
   public PostedPerson create(Request request) {
     assert request instanceof Person;
     Person person = (Person) request;
@@ -215,6 +217,9 @@ public class PersonService implements CrudsService {
     }
     if (person.getPhoneNumber() != null && !person.getPhoneNumber().isEmpty()) {
       for (PhoneNumber phoneNumber : person.getPhoneNumber()) {
+        if (phoneNumber.getPhoneNumber().length() > 10) {
+          throw new ServiceException();
+        }
         gov.ca.cwds.data.persistence.ns.PhoneNumber managedPhoneNumber =
             new gov.ca.cwds.data.persistence.ns.PhoneNumber(phoneNumber, null, null);
         PersonPhone personPhone = new PersonPhone(managedPerson, managedPhoneNumber);
