@@ -5,6 +5,7 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.is;
 
+import java.util.HashSet;
 import java.util.Set;
 
 import org.junit.Test;
@@ -23,6 +24,7 @@ public class PostedScreeningTest implements DomainTestTemplate {
 
   private static final ObjectMapper MAPPER = Jackson.newObjectMapper();
 
+  private long participantId = 1;
   private long personId = 12345;
   private long screeningId = 12345;
   private String firstName = "john";
@@ -30,6 +32,8 @@ public class PostedScreeningTest implements DomainTestTemplate {
   private String gender = "male";
   private String dateOfBirth = "2001-09-13";
   private String ssn = "123456789";
+  private Set<String> roles = new HashSet<String>();
+  private Set<Address> addresses = new HashSet<Address>();
   final Long id = (long) 1234567;
   final String lastUpdateId = "234567";
   final String createId = "234567";
@@ -48,11 +52,12 @@ public class PostedScreeningTest implements DomainTestTemplate {
   // TODO : verify 'STRICT_INHERITENCE' is appropriate here - reference pvitoltracker #136527227
   // @Override
   // @Test
+  // @Override
   @Override
   public void testEqualsHashCodeWorks() throws Exception {
     // EqualsVerifier.forClass(PostedScreening.class)
     // .suppress(Warning.NONFINAL_FIELDS, Warning.STRICT_INHERITANCE).suppress().verify();
-    //
+
   }
 
   @Override
@@ -60,9 +65,11 @@ public class PostedScreeningTest implements DomainTestTemplate {
   public void testSerializesToJSON() throws Exception {
 
     Address address = new Address("123 Main", "Sacramento", "CA", 95757, "Home");
+    addresses.add(address);
+    roles.add("victim");
 
-    Participant participant =
-        new Participant(personId, screeningId, firstName, lastName, gender, dateOfBirth, ssn);
+    Participant participant = new Participant(participantId, firstName, lastName, gender, ssn,
+        dateOfBirth, personId, screeningId, roles, addresses);
     ImmutableSet.Builder<Participant> participantSetBuilder = ImmutableSet.builder();
     participantSetBuilder.add(participant);
     Set<Participant> participants;
@@ -85,9 +92,11 @@ public class PostedScreeningTest implements DomainTestTemplate {
   public void testDeserializesFromJSON() throws Exception {
 
     Address address = new Address("123 Main", "Sacramento", "CA", 95757, "Home");
+    addresses.add(address);
+    roles.add("victim");
 
-    Participant participant =
-        new Participant(personId, screeningId, firstName, lastName, gender, dateOfBirth, ssn);
+    Participant participant = new Participant(participantId, firstName, lastName, gender, ssn,
+        dateOfBirth, personId, screeningId, roles, addresses);
     ImmutableSet.Builder<Participant> participantSetBuilder = ImmutableSet.builder();
     participantSetBuilder.add(participant);
     Set<Participant> participants;

@@ -95,7 +95,7 @@ public class PersonServiceTest {
    * find tests
    */
   @Test
-  public void findReturnsCorrectPersonWhenFoundWhenFound() throws Exception {
+  public void testFindReturnsCorrectPersonWhenFound() throws Exception {
     Address address = new Address("742 Evergreen Terrace", "Springfield", "WA", 98700, "Home");
     PhoneNumber phoneNumber = new PhoneNumber("408-277-4778", "cell");
     Language language = new Language("English");

@@ -58,7 +58,8 @@ public class AddressTest {
 
   @Test
   public void equalsHashCodeWork() throws Exception {
-    EqualsVerifier.forClass(Address.class).suppress(Warning.NONFINAL_FIELDS).verify();
+    EqualsVerifier.forClass(Address.class).suppress(Warning.NONFINAL_FIELDS, Warning.NULL_FIELDS)
+        .verify();
   }
 
   @Test

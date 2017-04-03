@@ -24,7 +24,7 @@
   "deathDate": null,
   "deathDateVerifiedIndicator": false,
   "deathPlace": "",
-  "deathReasonText": "",
+  "deathReasonText": "12345678901",
   "driverLicenseNumber": "C87634563",
   "driverLicenseStateCodeType": 1829,
   "emailAddress": "anyone@yahoo.com",

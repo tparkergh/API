@@ -3,6 +3,7 @@ package gov.ca.cwds.rest.api.domain.cms;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
+import org.hibernate.validator.constraints.NotBlank;
 import org.hibernate.validator.constraints.NotEmpty;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
@@ -93,12 +94,13 @@ public class Client extends DomainObject implements Request, Response {
   @ApiModelProperty(required = false, readOnly = false, value = "", example = "a description")
   private String commentDescription;
 
-  @NotEmpty
+  @NotBlank
   @Size(min = 1, max = 20)
-  @ApiModelProperty(required = true, readOnly = false, value = "", example = "first name")
+  @ApiModelProperty(required = true, readOnly = false, value = "first name of Client",
+      example = "first name")
   private String commonFirstName;
 
-  @NotEmpty
+  @NotBlank
   @Size(min = 1, max = 25)
   @ApiModelProperty(required = true, readOnly = false, value = "", example = "last name")
   private String commonLastName;
@@ -160,7 +162,8 @@ public class Client extends DomainObject implements Request, Response {
 
   @NotNull
   @Size(max = 20)
-  @ApiModelProperty(required = false, readOnly = false, value = "", example = "CA1234567891234567")
+  @ApiModelProperty(required = false, readOnly = false,
+      value = "driver license number of the CLIENT", example = "CA12345678901234567")
   private String driverLicenseNumber;
 
   @SystemCodeSerializer(logical = true, description = true)

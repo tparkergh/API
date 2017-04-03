@@ -9,6 +9,8 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 import java.io.IOException;
+import java.util.HashSet;
+import java.util.Set;
 
 import javax.ws.rs.core.Response;
 
@@ -36,13 +38,17 @@ import nl.jqno.equalsverifier.Warning;
  */
 public class ParticipantTest implements PersistentTestTemplate {
 
+  private long id = 5432;
   private long personId = 12345;
   private long screeningId = 12345;
-  private String firstName = "firstname";
-  private String lastName = "lastename";
+  private String firstName = "John";
+  private String lastName = "Smith";
   private String gender = "male";
-  private String dateOfBirth = "2001-09-13";
+  private String dateOfBirth = "2001-03-15";
   private String ssn = "123456789";
+  private Set<String> roles = new HashSet<String>();
+  private Set<Address> addresses = new HashSet<Address>();
+
 
   private static final ObjectMapper MAPPER = Jackson.newObjectMapper();
 
@@ -66,6 +72,10 @@ public class ParticipantTest implements PersistentTestTemplate {
   @Before
   public void setup() {
     Participant validParticipant = this.validParticipant();
+    roles.add("victim");
+    Address address = new Address("123 First St", "San Jose", "CA", 94321, "Home");
+    addresses.add(address);
+
 
     when(mockedParticipantResource.create(eq(validParticipant)))
         .thenReturn(Response.status(Response.Status.NO_CONTENT).entity(null).build());
@@ -121,9 +131,10 @@ public class ParticipantTest implements PersistentTestTemplate {
   @Test
   public void testConstructorUsingDomain() throws Exception {
 
-    Participant domain =
-        new Participant(personId, screeningId, firstName, lastName, gender, dateOfBirth, ssn);
+    Participant domain = new Participant(id, firstName, lastName, gender, ssn, dateOfBirth,
+        personId, screeningId, roles, addresses);
 
+    assertThat(domain.getId(), is(equalTo(id)));
     assertThat(domain.getPersonId(), is(equalTo(personId)));
     assertThat(domain.getScreeningId(), is(equalTo(screeningId)));
     assertThat(domain.getFirstName(), is(equalTo(firstName)));
@@ -131,6 +142,8 @@ public class ParticipantTest implements PersistentTestTemplate {
     assertThat(domain.getGender(), is(equalTo(gender)));
     assertThat(domain.getDateOfBirth(), is(equalTo(dateOfBirth)));
     assertThat(domain.getSsn(), is(equalTo(ssn)));
+    assertThat(domain.getRoles(), is(equalTo(roles)));
+    assertThat(domain.getAddresses(), is(equalTo(addresses)));
 
   }
 

@@ -116,8 +116,8 @@ public class Address extends DomainObject implements Request, Response {
     return type;
   }
 
-  /**
-   * {@inheritDoc}
+  /*
+   * (non-Javadoc)
    * 
    * @see java.lang.Object#hashCode()
    */
@@ -128,13 +128,13 @@ public class Address extends DomainObject implements Request, Response {
     result = prime * result + ((city == null) ? 0 : city.hashCode());
     result = prime * result + ((state == null) ? 0 : state.hashCode());
     result = prime * result + ((streetAddress == null) ? 0 : streetAddress.hashCode());
-    result = prime * result + ((zip == null) ? 0 : zip.hashCode());
     result = prime * result + ((type == null) ? 0 : type.hashCode());
+    result = prime * result + ((zip == null) ? 0 : zip.hashCode());
     return result;
   }
 
-  /**
-   * {@inheritDoc}
+  /*
+   * (non-Javadoc)
    * 
    * @see java.lang.Object#equals(java.lang.Object)
    */
@@ -144,8 +144,9 @@ public class Address extends DomainObject implements Request, Response {
       return true;
     if (obj == null)
       return false;
-    if (!(getClass().isInstance(obj)))
+    if (!(obj instanceof Address)) {
       return false;
+    }
     Address other = (Address) obj;
     if (city == null) {
       if (other.city != null)
@@ -162,17 +163,19 @@ public class Address extends DomainObject implements Request, Response {
         return false;
     } else if (!streetAddress.equals(other.streetAddress))
       return false;
-    if (zip == null) {
-      if (other.zip != null)
-        return false;
-    } else if (!zip.equals(other.zip))
-      return false;
     if (type == null) {
       if (other.type != null)
         return false;
     } else if (!type.equals(other.type))
       return false;
+    if (zip == null) {
+      if (other.zip != null)
+        return false;
+    } else if (!zip.equals(other.zip))
+      return false;
     return true;
   }
+
+
 
 }

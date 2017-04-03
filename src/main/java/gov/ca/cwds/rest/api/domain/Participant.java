@@ -1,15 +1,18 @@
 package gov.ca.cwds.rest.api.domain;
 
+import java.util.Set;
+
+import javax.validation.Valid;
+import javax.validation.constraints.Size;
+
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import gov.ca.cwds.rest.api.Request;
 import gov.ca.cwds.rest.api.Response;
 import gov.ca.cwds.rest.validation.Date;
 import io.dropwizard.jackson.JsonSnakeCase;
 import io.swagger.annotations.ApiModelProperty;
-
-import javax.validation.constraints.Size;
-
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
  * {@link DomainObject} representing a Participant
@@ -19,13 +22,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @JsonSnakeCase
 public class Participant extends DomainObject implements Request, Response {
 
-  @JsonProperty("person_id")
-  @ApiModelProperty(example = "12345")
-  private long personId;
-
-  @JsonProperty("screening_id")
-  @ApiModelProperty(example = "12345")
-  private long screeningId;
+  @JsonProperty("id")
+  @ApiModelProperty("12345")
+  private long id;
 
   @JsonProperty("first_name")
   @ApiModelProperty(example = "John")
@@ -39,16 +38,31 @@ public class Participant extends DomainObject implements Request, Response {
   @ApiModelProperty(example = "Male", allowableValues = "M, Male, Female")
   private String gender;
 
-  @Date
-  @JsonProperty("date_of_birth")
-  @ApiModelProperty(example = "2001-09-13")
-  private String dateOfBirth;
-
   @JsonProperty("ssn")
   @Size(min = 9, max = 9)
   @ApiModelProperty(example = "111223333")
   private String ssn;
 
+  @Date
+  @JsonProperty("date_of_birth")
+  @ApiModelProperty(example = "2001-09-13")
+  private String dateOfBirth;
+
+  @JsonProperty("person_id")
+  @ApiModelProperty(example = "12345")
+  private long personId;
+
+  @JsonProperty("screening_id")
+  @ApiModelProperty(example = "12345")
+  private long screeningId;
+
+  @Valid
+  @JsonProperty("roles")
+  private Set<String> roles;
+
+  @Valid
+  @JsonProperty("addresses")
+  private Set<Address> addresses;
 
   /**
    * empty constructor
@@ -60,6 +74,7 @@ public class Participant extends DomainObject implements Request, Response {
   /**
    * Constructor
    * 
+   * @param id The id of the Participant
    * @param personId The person Id
    * @param screeningId The screening Id
    * @param firstName The first Name
@@ -67,13 +82,17 @@ public class Participant extends DomainObject implements Request, Response {
    * @param gender The gender
    * @param dateOfBirth The date Of Birth
    * @param ssn The social security number
+   * @param roles The roles of the participant
+   * @param addresses The addresses of the participant
    */
   @JsonCreator
-  public Participant(@JsonProperty("person_id") long personId,
-      @JsonProperty("screening_id") long screeningId, @JsonProperty("first_name") String firstName,
+  public Participant(@JsonProperty("id") long id, @JsonProperty("first_name") String firstName,
       @JsonProperty("last_name") String lastName, @JsonProperty("gender") String gender,
-      @JsonProperty("date_of_birth") String dateOfBirth, @JsonProperty("ssn") String ssn) {
+      @JsonProperty("ssn") String ssn, @JsonProperty("date_of_birth") String dateOfBirth,
+      @JsonProperty("person_id") long personId, @JsonProperty("screening_id") long screeningId,
+      @JsonProperty("roles") Set<String> roles, @JsonProperty("addresses") Set<Address> addresses) {
     super();
+    this.id = id;
     this.personId = personId;
     this.screeningId = screeningId;
     this.firstName = firstName;
@@ -81,6 +100,8 @@ public class Participant extends DomainObject implements Request, Response {
     this.gender = gender;
     this.dateOfBirth = dateOfBirth;
     this.ssn = ssn;
+    this.roles = roles;
+    this.addresses = addresses;
   }
 
   /**
@@ -110,7 +131,6 @@ public class Participant extends DomainObject implements Request, Response {
   public Participant(gov.ca.cwds.data.persistence.ns.Participant participant, Person person) {
     this.personId = participant.getPersonId();
     this.screeningId = participant.getHotlineContactId();
-    System.out.println("person " + person);
     if (person != null) {
       this.firstName = person.getFirstName();
       this.lastName = person.getLastName();
@@ -122,17 +142,10 @@ public class Participant extends DomainObject implements Request, Response {
 
 
   /**
-   * @return the person_id
+   * @return id
    */
-  public long getPersonId() {
-    return personId;
-  }
-
-  /**
-   * @return the screeningId
-   */
-  public long getScreeningId() {
-    return screeningId;
+  public long getId() {
+    return id;
   }
 
   /**
@@ -157,6 +170,27 @@ public class Participant extends DomainObject implements Request, Response {
   }
 
   /**
+   * @return the person_id
+   */
+  public long getPersonId() {
+    return personId;
+  }
+
+  /**
+   * @return the screeningId
+   */
+  public long getScreeningId() {
+    return screeningId;
+  }
+
+  /**
+   * @return the roles
+   */
+  public Set<String> getRoles() {
+    return this.roles;
+  }
+
+  /**
    * @return the dateOfBirth
    */
   public String getDateOfBirth() {
@@ -170,6 +204,13 @@ public class Participant extends DomainObject implements Request, Response {
     return ssn;
   }
 
+  /**
+   * @return addresses
+   */
+  public Set<Address> getAddresses() {
+    return addresses;
+  }
+
   /*
    * (non-Javadoc)
    * 
@@ -179,6 +220,7 @@ public class Participant extends DomainObject implements Request, Response {
   public final int hashCode() {
     final int prime = 31;
     int result = 1;
+    result = prime * result + (int) (id ^ (id >>> 32));
     result = prime * result + ((dateOfBirth == null) ? 0 : dateOfBirth.hashCode());
     result = prime * result + ((firstName == null) ? 0 : firstName.hashCode());
     result = prime * result + ((gender == null) ? 0 : gender.hashCode());
@@ -186,6 +228,8 @@ public class Participant extends DomainObject implements Request, Response {
     result = prime * result + (int) (personId ^ (personId >>> 32));
     result = prime * result + (int) (screeningId ^ (screeningId >>> 32));
     result = prime * result + ((ssn == null) ? 0 : ssn.hashCode());
+    result = prime * result + ((roles == null) ? 0 : roles.hashCode());
+    result = prime * result + ((addresses == null) ? 0 : addresses.hashCode());
     return result;
   }
 
@@ -234,6 +278,9 @@ public class Participant extends DomainObject implements Request, Response {
     } else if (!lastName.equals(other.lastName)) {
       return false;
     }
+    if (id != other.id) {
+      return false;
+    }
     if (personId != other.personId) {
       return false;
     }
@@ -247,6 +294,21 @@ public class Participant extends DomainObject implements Request, Response {
     } else if (!ssn.equals(other.ssn)) {
       return false;
     }
+    if (roles == null) {
+      if (other.roles != null) {
+        return false;
+      }
+    } else if (!roles.equals(other.roles)) {
+      return false;
+    }
+    if (addresses == null) {
+      if (other.addresses != null) {
+        return false;
+      }
+    } else if (!addresses.equals(other.addresses)) {
+      return false;
+    }
+
     return true;
   }
 
