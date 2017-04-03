@@ -1,10 +1,15 @@
 package gov.ca.cwds.inject;
 
+import java.lang.reflect.InvocationTargetException;
+
 import com.google.inject.AbstractModule;
+import com.google.inject.Inject;
+import com.google.inject.matcher.Matchers;
 
 import gov.ca.cwds.data.CmsSystemCodeSerializer;
 import gov.ca.cwds.data.persistence.cms.ApiSystemCodeCache;
 import gov.ca.cwds.data.persistence.cms.CmsSystemCodeCacheService;
+import gov.ca.cwds.rest.ApiConfiguration;
 import gov.ca.cwds.rest.services.AddressService;
 import gov.ca.cwds.rest.services.AddressValidationService;
 import gov.ca.cwds.rest.services.PersonService;
@@ -20,6 +25,10 @@ import gov.ca.cwds.rest.services.cms.ReferralService;
 import gov.ca.cwds.rest.services.cms.ReporterService;
 import gov.ca.cwds.rest.services.cms.StaffPersonService;
 import gov.ca.cwds.rest.services.es.AutoCompletePersonService;
+import io.dropwizard.hibernate.HibernateBundle;
+import io.dropwizard.hibernate.UnitOfWork;
+import io.dropwizard.hibernate.UnitOfWorkAspect;
+import io.dropwizard.hibernate.UnitOfWorkAwareProxyFactory;
 
 /**
  * Identifies all CWDS API business layer (aka, service) classes available for dependency injection
@@ -28,6 +37,45 @@ import gov.ca.cwds.rest.services.es.AutoCompletePersonService;
  * @author CWDS API Team
  */
 public class ServicesModule extends AbstractModule {
+
+  /**
+   * @author CWDS API
+   */
+  public static class UnitOfWorkInterceptor implements org.aopalliance.intercept.MethodInterceptor {
+
+    @Inject
+    @CmsHibernateBundle
+    HibernateBundle<ApiConfiguration> cmsHibernateBundle;
+    UnitOfWorkAwareProxyFactory proxyFactory;
+
+    @Inject
+    @NsHibernateBundle
+    HibernateBundle<ApiConfiguration> nsHibernateBundle;
+
+    @SuppressWarnings("unchecked")
+    @Override
+    public Object invoke(org.aopalliance.intercept.MethodInvocation mi) throws Throwable {
+
+      proxyFactory =
+          UnitOfWorkModule.getUnitOfWorkProxyFactory(cmsHibernateBundle, nsHibernateBundle);
+      UnitOfWorkAspect aspect = proxyFactory.newAspect();
+      try {
+        aspect.beforeStart(mi.getMethod().getAnnotation(UnitOfWork.class));
+        Object result = mi.proceed();
+        aspect.afterEnd();
+        return result;
+      } catch (InvocationTargetException e) {
+        aspect.onError();
+        throw e.getCause();
+      } catch (Exception e) {
+        aspect.onError();
+        throw e;
+      } finally {
+        aspect.onFinish();
+      }
+    }
+
+  }
 
   /**
    * Default, no-op constructor.
@@ -53,12 +101,28 @@ public class ServicesModule extends AbstractModule {
     bind(AddressValidationService.class);
     bind(AutoCompletePersonService.class);
     bind(CrossReportService.class);
-
     bind(CmsNSReferralService.class);
 
     // Register CMS system code translator.
     bind(ApiSystemCodeCache.class).to(CmsSystemCodeCacheService.class).asEagerSingleton();
     bind(CmsSystemCodeSerializer.class).asEagerSingleton();
+
+    UnitOfWorkInterceptor interceptor = new UnitOfWorkInterceptor();
+    bindInterceptor(Matchers.any(), Matchers.annotatedWith(UnitOfWork.class), interceptor);
+    requestInjection(interceptor);
   }
+
+  // @SuppressWarnings("unchecked")
+  // public static final <T> T makeCmsServiceProxy(HibernateBundle<ApiConfiguration>
+  // hibernateBundle,
+  // Class<?> klass, Class<?>[] ctorParamTypes, Object[] ctorArgs) {
+  //
+  // // public <T> T create(Class<T> clazz, Class<?>[] constructorParamTypes, Object[]
+  // // constructorArguments) {
+  //
+  // return (T) new UnitOfWorkAwareProxyFactory(cmsHibernateBundle).create(klass,
+  // SessionFactory.class, cmsHibernateBundle.getSessionFactory());
+  // }
+
 
 }

@@ -82,7 +82,6 @@ import gov.ca.cwds.rest.SmartyStreetsConfiguration;
 import gov.ca.cwds.rest.api.ApiException;
 import io.dropwizard.db.DataSourceFactory;
 import io.dropwizard.hibernate.HibernateBundle;
-import io.dropwizard.hibernate.UnitOfWorkAwareProxyFactory;
 import io.dropwizard.setup.Bootstrap;
 
 /**
@@ -150,20 +149,23 @@ public class DataAccessModule extends AbstractModule {
   @Override
   protected void configure() {
 
+    // Method getSessionFactory() returns null at this point and fails method toInstance().
     // bind(SessionFactory.class).toInstance(cmsHibernateBundle.getSessionFactory());
 
     // CMS:
-    // bind(AllegationDao.class);
+    // CmsReferral participants:
+    bind(AllegationDao.class);
+    bind(ClientDao.class);
+    bind(ReferralClientDao.class);
+    bind(ReferralDao.class);
+    bind(ReporterDao.class);
+    bind(CrossReportDao.class);
+
     bind(AttorneyDao.class);
-    // bind(ClientDao.class);
     bind(CmsDocReferralClientDao.class);
     bind(CmsDocumentDao.class);
     bind(OtherClientNameDao.class);
-    // bind(ReferralClientDao.class);
-    // bind(ReferralDao.class);
-    // bind(ReporterDao.class);
     bind(StaffPersonDao.class);
-    // bind(CrossReportDao.class);
 
     // NS:
     bind(AddressDao.class);
@@ -205,55 +207,68 @@ public class DataAccessModule extends AbstractModule {
     return nsHibernateBundle.getSessionFactory();
   }
 
-  /**
-   * Story #136216413: atomic transaction for entire resource request.
-   * 
-   * <p>
-   * <a href=
-   * "http://www.dropwizard.io/1.1.0/docs/manual/hibernate.html#transactional-resource-methods-outside-jersey-resources">DropWizard
-   * UnitOfWorkAwareProxyFactory</a>.
-   * </p>
-   * 
-   * @param dam DataAccessModule
-   * @param klass DAO class to proxy
-   * @return UnitOfWorkAwareProxyFactory
-   * @see #proxyClientDao()
-   */
-  @SuppressWarnings("unchecked")
-  public static final <T> T makeCmsDaoProxy(DataAccessModule dam, Class<?> klass) {
-    return (T) new UnitOfWorkAwareProxyFactory(dam.cmsHibernateBundle).create(klass,
-        SessionFactory.class, dam.cmsHibernateBundle.getSessionFactory());
+  @Provides
+  @CmsHibernateBundle
+  HibernateBundle<ApiConfiguration> cmsHibernateBundle() {
+    return cmsHibernateBundle;
   }
 
   @Provides
-  ClientDao proxyClientDao() {
-    return makeCmsDaoProxy(this, ClientDao.class);
+  @NsHibernateBundle
+  HibernateBundle<ApiConfiguration> nsHibernateBundle() {
+    return nsHibernateBundle;
   }
 
-  @Provides
-  ReferralDao proxyReferralDao() {
-    return makeCmsDaoProxy(this, ReferralDao.class);
-  }
-
-  @Provides
-  CrossReportDao proxyCrossReportDao() {
-    return makeCmsDaoProxy(this, CrossReportDao.class);
-  }
-
-  @Provides
-  AllegationDao proxyAllegationDao() {
-    return makeCmsDaoProxy(this, AllegationDao.class);
-  }
-
-  @Provides
-  ReporterDao proxyReporterDao() {
-    return makeCmsDaoProxy(this, ReporterDao.class);
-  }
-
-  @Provides
-  ReferralClientDao proxyReferralClientDao() {
-    return makeCmsDaoProxy(this, ReferralClientDao.class);
-  }
+  // /**
+  // * Story #136216413: atomic transaction for entire resource request.
+  // *
+  // * <p>
+  // * <a href=
+  // *
+  // "http://www.dropwizard.io/1.1.0/docs/manual/hibernate.html#transactional-resource-methods-outside-jersey-resources">DropWizard
+  // * UnitOfWorkAwareProxyFactory</a>.
+  // * </p>
+  // *
+  // * @param dam DataAccessModule
+  // * @param klass DAO class to proxy
+  // * @return UnitOfWorkAwareProxyFactory
+  // * @see #proxyClientDao()
+  // */
+  // @SuppressWarnings("unchecked")
+  // public static final <T> T makeCmsDaoProxy(DataAccessModule dam, Class<?> klass) {
+  // return (T) new UnitOfWorkAwareProxyFactory(dam.cmsHibernateBundle).create(klass,
+  // SessionFactory.class, dam.cmsHibernateBundle.getSessionFactory());
+  // }
+  //
+  // @Provides
+  // ClientDao proxyClientDao() {
+  // return makeCmsDaoProxy(this, ClientDao.class);
+  // }
+  //
+  // @Provides
+  // ReferralDao proxyReferralDao() {
+  // return makeCmsDaoProxy(this, ReferralDao.class);
+  // }
+  //
+  // @Provides
+  // CrossReportDao proxyCrossReportDao() {
+  // return makeCmsDaoProxy(this, CrossReportDao.class);
+  // }
+  //
+  // @Provides
+  // AllegationDao proxyAllegationDao() {
+  // return makeCmsDaoProxy(this, AllegationDao.class);
+  // }
+  //
+  // @Provides
+  // ReporterDao proxyReporterDao() {
+  // return makeCmsDaoProxy(this, ReporterDao.class);
+  // }
+  //
+  // @Provides
+  // ReferralClientDao proxyReferralClientDao() {
+  // return makeCmsDaoProxy(this, ReferralClientDao.class);
+  // }
 
   @Provides
   public ElasticsearchConfiguration elasticSearchConfig(ApiConfiguration apiConfiguration) {
