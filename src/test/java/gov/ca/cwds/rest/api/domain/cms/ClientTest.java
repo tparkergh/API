@@ -1183,7 +1183,6 @@ public class ClientTest implements DomainTestTemplate {
         resources.client().target(ROOT_RESOURCE).request().accept(MediaType.APPLICATION_JSON)
             .post(Entity.entity(validClient, MediaType.APPLICATION_JSON));
 
-    System.out.println(response.readEntity(String.class));
     assertThat(response.getStatus(), is(equalTo(422)));
     assertThat(response.readEntity(String.class).indexOf("commonLastName may not be empty"),
         is(greaterThanOrEqualTo(0)));
