@@ -26,6 +26,7 @@ import gov.ca.cwds.rest.api.domain.cms.PostedReporter;
 import gov.ca.cwds.rest.api.domain.cms.ReferralClient;
 import gov.ca.cwds.rest.api.domain.cms.Reporter;
 import gov.ca.cwds.rest.services.CrudsService;
+import io.dropwizard.hibernate.UnitOfWork;
 
 /**
  * @author CWDS API Team
@@ -71,6 +72,7 @@ public class CmsReferralService implements CrudsService {
    * 
    * @see gov.ca.cwds.rest.services.CrudsService#create(gov.ca.cwds.rest.api.Request)
    */
+  @UnitOfWork(value = "cms")
   @Override
   public Response create(Request request) {
     assert request instanceof CmsReferral;
