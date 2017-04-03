@@ -82,6 +82,7 @@ import gov.ca.cwds.rest.SmartyStreetsConfiguration;
 import gov.ca.cwds.rest.api.ApiException;
 import io.dropwizard.db.DataSourceFactory;
 import io.dropwizard.hibernate.HibernateBundle;
+import io.dropwizard.hibernate.UnitOfWorkAwareProxyFactory;
 import io.dropwizard.setup.Bootstrap;
 
 /**
@@ -149,17 +150,20 @@ public class DataAccessModule extends AbstractModule {
   @Override
   protected void configure() {
 
+    // bind(SessionFactory.class).toInstance(cmsHibernateBundle.getSessionFactory());
+
     // CMS:
-    bind(AllegationDao.class);
+    // bind(AllegationDao.class);
     bind(AttorneyDao.class);
-    bind(ClientDao.class);
+    // bind(ClientDao.class);
     bind(CmsDocReferralClientDao.class);
     bind(CmsDocumentDao.class);
     bind(OtherClientNameDao.class);
-    bind(ReferralClientDao.class);
-    bind(ReferralDao.class);
-    bind(ReporterDao.class);
+    // bind(ReferralClientDao.class);
+    // bind(ReferralDao.class);
+    // bind(ReporterDao.class);
     bind(StaffPersonDao.class);
+    // bind(CrossReportDao.class);
 
     // NS:
     bind(AddressDao.class);
@@ -168,7 +172,6 @@ public class DataAccessModule extends AbstractModule {
     bind(ParticipantDao.class);
     bind(PhoneNumberDao.class);
     bind(LanguageDao.class);
-    bind(CrossReportDao.class);
     bind(PersonAddressDao.class);
     bind(PersonPhoneDao.class);
     bind(PersonLanguageDao.class);
@@ -184,14 +187,10 @@ public class DataAccessModule extends AbstractModule {
     // System code loader DAO.
     bind(ApiSystemCodeDao.class).to(SystemCodeDaoFileImpl.class);
 
-    // #136216413: atomic transaction for entire resource request.
-    // http://www.dropwizard.io/1.1.0/docs/manual/hibernate.html#transactional-resource-methods-outside-jersey-resources
-
-    // SessionDao dao = new SessionDao(hibernateBundle.getSessionFactory());
-    // ExampleAuthenticator exampleAuthenticator = new UnitOfWorkAwareProxyFactory(hibernateBundle)
-    // .create(ExampleAuthenticator.class, SessionDao.class, dao);
-
-    // new UnitOfWorkAwareProxyFactory(this.cmsHibernateBundle);
+    // DEPENDENCY CONTRADICTION: construction requires session factory, but session factory is not
+    // yet available. Use "provides" method instead.
+    // bind(ClientDao.class).toInstance(new UnitOfWorkAwareProxyFactory(cmsHibernateBundle)
+    // .create(ClientDao.class, SessionFactory.class, cmsHibernateBundle.getSessionFactory()));
   }
 
   @Provides
@@ -204,6 +203,56 @@ public class DataAccessModule extends AbstractModule {
   @NsSessionFactory
   SessionFactory nsSessionFactory() {
     return nsHibernateBundle.getSessionFactory();
+  }
+
+  /**
+   * Story #136216413: atomic transaction for entire resource request.
+   * 
+   * <p>
+   * <a href=
+   * "http://www.dropwizard.io/1.1.0/docs/manual/hibernate.html#transactional-resource-methods-outside-jersey-resources">DropWizard
+   * UnitOfWorkAwareProxyFactory</a>.
+   * </p>
+   * 
+   * @param dam DataAccessModule
+   * @param klass DAO class to proxy
+   * @return UnitOfWorkAwareProxyFactory
+   * @see #proxyClientDao()
+   */
+  @SuppressWarnings("unchecked")
+  public static final <T> T makeCmsDaoProxy(DataAccessModule dam, Class<?> klass) {
+    return (T) new UnitOfWorkAwareProxyFactory(dam.cmsHibernateBundle).create(klass,
+        SessionFactory.class, dam.cmsHibernateBundle.getSessionFactory());
+  }
+
+  @Provides
+  ClientDao proxyClientDao() {
+    return makeCmsDaoProxy(this, ClientDao.class);
+  }
+
+  @Provides
+  ReferralDao proxyReferralDao() {
+    return makeCmsDaoProxy(this, ReferralDao.class);
+  }
+
+  @Provides
+  CrossReportDao proxyCrossReportDao() {
+    return makeCmsDaoProxy(this, CrossReportDao.class);
+  }
+
+  @Provides
+  AllegationDao proxyAllegationDao() {
+    return makeCmsDaoProxy(this, AllegationDao.class);
+  }
+
+  @Provides
+  ReporterDao proxyReporterDao() {
+    return makeCmsDaoProxy(this, ReporterDao.class);
+  }
+
+  @Provides
+  ReferralClientDao proxyReferralClientDao() {
+    return makeCmsDaoProxy(this, ReferralClientDao.class);
   }
 
   @Provides
@@ -233,7 +282,6 @@ public class DataAccessModule extends AbstractModule {
     }
 
     return client;
-
   }
 
 }
