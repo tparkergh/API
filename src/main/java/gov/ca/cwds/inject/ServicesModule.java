@@ -39,7 +39,7 @@ import io.dropwizard.hibernate.UnitOfWorkAwareProxyFactory;
 public class ServicesModule extends AbstractModule {
 
   /**
-   * @author CWDS API
+   * @author CWDS API Team
    */
   public static class UnitOfWorkInterceptor implements org.aopalliance.intercept.MethodInterceptor {
 
@@ -111,18 +111,5 @@ public class ServicesModule extends AbstractModule {
     bindInterceptor(Matchers.any(), Matchers.annotatedWith(UnitOfWork.class), interceptor);
     requestInjection(interceptor);
   }
-
-  // @SuppressWarnings("unchecked")
-  // public static final <T> T makeCmsServiceProxy(HibernateBundle<ApiConfiguration>
-  // hibernateBundle,
-  // Class<?> klass, Class<?>[] ctorParamTypes, Object[] ctorArgs) {
-  //
-  // // public <T> T create(Class<T> clazz, Class<?>[] constructorParamTypes, Object[]
-  // // constructorArguments) {
-  //
-  // return (T) new UnitOfWorkAwareProxyFactory(cmsHibernateBundle).create(klass,
-  // SessionFactory.class, cmsHibernateBundle.getSessionFactory());
-  // }
-
 
 }

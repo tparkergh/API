@@ -219,57 +219,6 @@ public class DataAccessModule extends AbstractModule {
     return nsHibernateBundle;
   }
 
-  // /**
-  // * Story #136216413: atomic transaction for entire resource request.
-  // *
-  // * <p>
-  // * <a href=
-  // *
-  // "http://www.dropwizard.io/1.1.0/docs/manual/hibernate.html#transactional-resource-methods-outside-jersey-resources">DropWizard
-  // * UnitOfWorkAwareProxyFactory</a>.
-  // * </p>
-  // *
-  // * @param dam DataAccessModule
-  // * @param klass DAO class to proxy
-  // * @return UnitOfWorkAwareProxyFactory
-  // * @see #proxyClientDao()
-  // */
-  // @SuppressWarnings("unchecked")
-  // public static final <T> T makeCmsDaoProxy(DataAccessModule dam, Class<?> klass) {
-  // return (T) new UnitOfWorkAwareProxyFactory(dam.cmsHibernateBundle).create(klass,
-  // SessionFactory.class, dam.cmsHibernateBundle.getSessionFactory());
-  // }
-  //
-  // @Provides
-  // ClientDao proxyClientDao() {
-  // return makeCmsDaoProxy(this, ClientDao.class);
-  // }
-  //
-  // @Provides
-  // ReferralDao proxyReferralDao() {
-  // return makeCmsDaoProxy(this, ReferralDao.class);
-  // }
-  //
-  // @Provides
-  // CrossReportDao proxyCrossReportDao() {
-  // return makeCmsDaoProxy(this, CrossReportDao.class);
-  // }
-  //
-  // @Provides
-  // AllegationDao proxyAllegationDao() {
-  // return makeCmsDaoProxy(this, AllegationDao.class);
-  // }
-  //
-  // @Provides
-  // ReporterDao proxyReporterDao() {
-  // return makeCmsDaoProxy(this, ReporterDao.class);
-  // }
-  //
-  // @Provides
-  // ReferralClientDao proxyReferralClientDao() {
-  // return makeCmsDaoProxy(this, ReferralClientDao.class);
-  // }
-
   @Provides
   public ElasticsearchConfiguration elasticSearchConfig(ApiConfiguration apiConfiguration) {
     return apiConfiguration.getElasticsearchConfiguration();
