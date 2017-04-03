@@ -91,7 +91,7 @@ public class ClientTest implements DomainTestTemplate {
   private Boolean deathDateVerified = Boolean.FALSE;
   private String deathPlace = "";
   private String deathReasonText = "";
-  private String driversLicenseNumber = "";
+  private String driversLicenseNumber = "C87634563";
   private Short driversLicenseStateCodeType = 1829;
   private String emailAddress = "anyone@yahoo.com";
   private String estimatedDateOfBirthCode = "Y";
@@ -490,6 +490,9 @@ public class ClientTest implements DomainTestTemplate {
             .post(Entity.entity(validClient, MediaType.APPLICATION_JSON));
 
     assertThat(response.getStatus(), is(equalTo(422)));
+    assertThat(
+        response.readEntity(String.class).indexOf("adoptionStatusCode must be one of [T, P, N, A]"),
+        is(greaterThanOrEqualTo(0)));
   }
 
   @Test
@@ -1153,6 +1156,634 @@ public class ClientTest implements DomainTestTemplate {
         is(greaterThanOrEqualTo(0)));
 
   }
+
+  @Test
+  public void failWhenCommonFirstNameWhiteSpace() throws Exception {
+    Client validClient = MAPPER.readValue(
+        fixture("fixtures/domain/legacy/Client/invalid/commonFirstNameWhiteSpace.json"),
+        Client.class);
+
+    Response response =
+        resources.client().target(ROOT_RESOURCE).request().accept(MediaType.APPLICATION_JSON)
+            .post(Entity.entity(validClient, MediaType.APPLICATION_JSON));
+
+    // System.out.println(response.readEntity(String.class));
+    assertThat(response.getStatus(), is(equalTo(422)));
+    assertThat(response.readEntity(String.class).indexOf("commonFirstName may not be empty"),
+        is(greaterThanOrEqualTo(0)));
+
+  }
+
+  @Test
+  public void failWhenCommonLastNameNull() throws Exception {
+    Client validClient = MAPPER.readValue(
+        fixture("fixtures/domain/legacy/Client/invalid/commonLastNameNull.json"), Client.class);
+
+    Response response =
+        resources.client().target(ROOT_RESOURCE).request().accept(MediaType.APPLICATION_JSON)
+            .post(Entity.entity(validClient, MediaType.APPLICATION_JSON));
+
+    System.out.println(response.readEntity(String.class));
+    assertThat(response.getStatus(), is(equalTo(422)));
+    assertThat(response.readEntity(String.class).indexOf("commonLastName may not be empty"),
+        is(greaterThanOrEqualTo(0)));
+
+  }
+
+  @Test
+  public void failWhenCommonLastNameEmpty() throws Exception {
+    Client validClient = MAPPER.readValue(
+        fixture("fixtures/domain/legacy/Client/invalid/commonLastNameEmpty.json"), Client.class);
+
+    Response response =
+        resources.client().target(ROOT_RESOURCE).request().accept(MediaType.APPLICATION_JSON)
+            .post(Entity.entity(validClient, MediaType.APPLICATION_JSON));
+
+    // System.out.println(response.readEntity(String.class));
+    assertThat(response.getStatus(), is(equalTo(422)));
+    assertThat(
+        response.readEntity(String.class).indexOf("commonLastName size must be between 1 and 25"),
+        is(greaterThanOrEqualTo(0)));
+  }
+
+  @Test
+  public void failWhenCommonLastNameTooLong() throws Exception {
+    Client validClient = MAPPER.readValue(
+        fixture("fixtures/domain/legacy/Client/invalid/commonLastNameTooLong.json"), Client.class);
+
+    Response response =
+        resources.client().target(ROOT_RESOURCE).request().accept(MediaType.APPLICATION_JSON)
+            .post(Entity.entity(validClient, MediaType.APPLICATION_JSON));
+
+    // System.out.println(response.readEntity(String.class));
+    assertThat(response.getStatus(), is(equalTo(422)));
+    assertThat(
+        response.readEntity(String.class).indexOf("commonLastName size must be between 1 and 25"),
+        is(greaterThanOrEqualTo(0)));
+  }
+
+  @Test
+  public void failsWhenCommonLastNameWhiteSpace() throws Exception {
+    Client validClient = MAPPER.readValue(
+        fixture("fixtures/domain/legacy/Client/invalid/commonLastNameWhiteSpace.json"),
+        Client.class);
+
+    Response response =
+        resources.client().target(ROOT_RESOURCE).request().accept(MediaType.APPLICATION_JSON)
+            .post(Entity.entity(validClient, MediaType.APPLICATION_JSON));
+
+    // System.out.println(response.readEntity(String.class));
+    assertThat(response.getStatus(), is(equalTo(422)));
+    assertThat(response.readEntity(String.class).indexOf("commonLastName may not be empty"),
+        is(greaterThanOrEqualTo(0)));
+  }
+
+  @Test
+  public void successWhenCommonMiddleNameEmpty() throws Exception {
+    Client validClient = MAPPER.readValue(
+        fixture("fixtures/domain/legacy/Client/valid/commonMiddleNameEmpty.json"), Client.class);
+
+    Response response =
+        resources.client().target(ROOT_RESOURCE).request().accept(MediaType.APPLICATION_JSON)
+            .post(Entity.entity(validClient, MediaType.APPLICATION_JSON));
+
+    assertThat(response.getStatus(), is(equalTo(204)));
+  }
+
+  @Test
+  public void successWhenCommonMiddleNameWhiteSpace() throws Exception {
+    Client validClient = MAPPER.readValue(
+        fixture("fixtures/domain/legacy/Client/valid/commonMiddleNameWhiteSpace.json"),
+        Client.class);
+
+    Response response =
+        resources.client().target(ROOT_RESOURCE).request().accept(MediaType.APPLICATION_JSON)
+            .post(Entity.entity(validClient, MediaType.APPLICATION_JSON));
+
+    assertThat(response.getStatus(), is(equalTo(204)));
+
+  }
+
+  @Test
+  public void failWhenCommonMiddleNameTooLong() throws Exception {
+    Client validClient = MAPPER.readValue(
+        fixture("fixtures/domain/legacy/Client/invalid/commonMiddleNameTooLong.json"),
+        Client.class);
+
+    Response response =
+        resources.client().target(ROOT_RESOURCE).request().accept(MediaType.APPLICATION_JSON)
+            .post(Entity.entity(validClient, MediaType.APPLICATION_JSON));
+
+    // System.out.println(response.readEntity(String.class));
+    assertThat(response.getStatus(), is(equalTo(422)));
+    assertThat(
+        response.readEntity(String.class).indexOf("commonMiddleName size must be between 0 and 20"),
+        is(greaterThanOrEqualTo(0)));
+
+  }
+
+  @Test
+  public void failWhenCommonMiddleNameNull() throws Exception {
+    Client validClient = MAPPER.readValue(
+        fixture("fixtures/domain/legacy/Client/invalid/commonMiddleNameNull.json"), Client.class);
+
+    Response response =
+        resources.client().target(ROOT_RESOURCE).request().accept(MediaType.APPLICATION_JSON)
+            .post(Entity.entity(validClient, MediaType.APPLICATION_JSON));
+
+    // System.out.println(response.readEntity(String.class));
+    assertThat(response.getStatus(), is(equalTo(422)));
+    assertThat(response.readEntity(String.class).indexOf("commonMiddleName may not be null"),
+        is(greaterThanOrEqualTo(0)));
+
+  }
+
+  @Test
+  public void failWhenCommonMiddleNameMissing() throws Exception {
+    Client validClient = MAPPER.readValue(
+        fixture("fixtures/domain/legacy/Client/invalid/commonMiddleNameMissing.json"),
+        Client.class);
+
+    Response response =
+        resources.client().target(ROOT_RESOURCE).request().accept(MediaType.APPLICATION_JSON)
+            .post(Entity.entity(validClient, MediaType.APPLICATION_JSON));
+
+    // System.out.println(response.readEntity(String.class));
+    assertThat(response.getStatus(), is(equalTo(422)));
+    assertThat(response.readEntity(String.class).indexOf("commonMiddleName may not be null"),
+        is(greaterThanOrEqualTo(0)));
+
+  }
+
+  @Test
+  public void successWhenConfidentialityActionDateNull() throws Exception {
+    Client validClient = MAPPER.readValue(
+        fixture("fixtures/domain/legacy/Client/valid/confidentialityActionDateNull.json"),
+        Client.class);
+
+    Response response =
+        resources.client().target(ROOT_RESOURCE).request().accept(MediaType.APPLICATION_JSON)
+            .post(Entity.entity(validClient, MediaType.APPLICATION_JSON));
+
+    assertThat(response.getStatus(), is(equalTo(204)));
+
+  }
+
+  @Test
+  public void successWhenConfidentialityActionDateEmpty() throws Exception {
+    Client validClient = MAPPER.readValue(
+        fixture("fixtures/domain/legacy/Client/valid/confidentialityActionDateEmpty.json"),
+        Client.class);
+
+    Response response =
+        resources.client().target(ROOT_RESOURCE).request().accept(MediaType.APPLICATION_JSON)
+            .post(Entity.entity(validClient, MediaType.APPLICATION_JSON));
+
+    assertThat(response.getStatus(), is(equalTo(204)));
+
+  }
+
+  @Test
+  public void failWhenConfidentialityActionDateInvalid() throws Exception {
+    Client validClient = MAPPER.readValue(
+        fixture("fixtures/domain/legacy/Client/invalid/confidentialityActionDateInvalid.json"),
+        Client.class);
+
+    Response response =
+        resources.client().target(ROOT_RESOURCE).request().accept(MediaType.APPLICATION_JSON)
+            .post(Entity.entity(validClient, MediaType.APPLICATION_JSON));
+
+    // System.out.println(response.readEntity(String.class));
+    assertThat(response.getStatus(), is(equalTo(422)));
+    assertThat(
+        response.readEntity(String.class)
+            .indexOf("confidentialityActionDate must be in the format of yyyy-MM-dd"),
+        is(greaterThanOrEqualTo(0)));
+
+  }
+
+  @Test
+  public void failWhenConfidentialityInEffectIndEmpty() throws Exception {
+    Client validClient = MAPPER.readValue(
+        fixture("fixtures/domain/legacy/Client/invalid/confidentialityInEffectIndEmpty.json"),
+        Client.class);
+
+    Response response =
+        resources.client().target(ROOT_RESOURCE).request().accept(MediaType.APPLICATION_JSON)
+            .post(Entity.entity(validClient, MediaType.APPLICATION_JSON));
+
+    // System.out.println(response.readEntity(String.class));
+    assertThat(response.getStatus(), is(equalTo(422)));
+    assertThat(response.readEntity(String.class)
+        .indexOf("confidentialityInEffectIndicator may not be null"), is(greaterThanOrEqualTo(0)));
+  }
+
+  @Test
+  public void failWhenConfidentialityInEffectIndMissing() throws Exception {
+    Client validClient = MAPPER.readValue(
+        fixture("fixtures/domain/legacy/Client/invalid/confidentialityInEffectIndMissing.json"),
+        Client.class);
+
+    Response response =
+        resources.client().target(ROOT_RESOURCE).request().accept(MediaType.APPLICATION_JSON)
+            .post(Entity.entity(validClient, MediaType.APPLICATION_JSON));
+
+    // System.out.println(response.readEntity(String.class));
+    assertThat(response.getStatus(), is(equalTo(422)));
+    assertThat(response.readEntity(String.class)
+        .indexOf("confidentialityInEffectIndicator may not be null"), is(greaterThanOrEqualTo(0)));
+
+  }
+
+  @Test
+  public void failWhenConfidentialityInEffectIndNull() throws Exception {
+    Client validClient = MAPPER.readValue(
+        fixture("fixtures/domain/legacy/Client/invalid/confidentialityInEffectIndNull.json"),
+        Client.class);
+
+    Response response =
+        resources.client().target(ROOT_RESOURCE).request().accept(MediaType.APPLICATION_JSON)
+            .post(Entity.entity(validClient, MediaType.APPLICATION_JSON));
+
+    // System.out.println(response.readEntity(String.class));
+    assertThat(response.getStatus(), is(equalTo(422)));
+    assertThat(response.readEntity(String.class)
+        .indexOf("confidentialityInEffectIndicator may not be null"), is(greaterThanOrEqualTo(0)));
+
+  }
+
+  /*
+   * creationDate test
+   */
+  @Test
+  public void failWhenCreationDateNull() throws Exception {
+    Client validClient = MAPPER.readValue(
+        fixture("fixtures/domain/legacy/Client/invalid/creationDateNull.json"), Client.class);
+
+    Response response =
+        resources.client().target(ROOT_RESOURCE).request().accept(MediaType.APPLICATION_JSON)
+            .post(Entity.entity(validClient, MediaType.APPLICATION_JSON));
+
+    // System.out.println(response.readEntity(String.class));
+    assertThat(response.getStatus(), is(equalTo(422)));
+    assertThat(response.readEntity(String.class).indexOf("creationDate may not be null"),
+        is(greaterThanOrEqualTo(0)));
+
+  }
+
+  @Test
+  public void failWhenCreationDateEmpty() throws Exception {
+    Client validClient = MAPPER.readValue(
+        fixture("fixtures/domain/legacy/Client/invalid/creationDateEmpty.json"), Client.class);
+
+    Response response =
+        resources.client().target(ROOT_RESOURCE).request().accept(MediaType.APPLICATION_JSON)
+            .post(Entity.entity(validClient, MediaType.APPLICATION_JSON));
+
+    // System.out.println(response.readEntity(String.class));
+    assertThat(response.getStatus(), is(equalTo(422)));
+    assertThat(response.readEntity(String.class)
+        .indexOf("creationDate must be in the format of yyyy-MM-dd"), is(greaterThanOrEqualTo(0)));
+
+  }
+
+  @Test
+  public void failWhenCreationDateWhiteSpace() throws Exception {
+    Client validClient = MAPPER.readValue(
+        fixture("fixtures/domain/legacy/Client/invalid/creationDateWhiteSpace.json"), Client.class);
+
+    Response response =
+        resources.client().target(ROOT_RESOURCE).request().accept(MediaType.APPLICATION_JSON)
+            .post(Entity.entity(validClient, MediaType.APPLICATION_JSON));
+
+    // System.out.println(response.readEntity(String.class));
+    assertThat(response.getStatus(), is(equalTo(422)));
+    assertThat(response.readEntity(String.class)
+        .indexOf("creationDate must be in the format of yyyy-MM-dd"), is(greaterThanOrEqualTo(0)));
+
+  }
+
+  @Test
+  public void failWhenCreationDateInvalid() throws Exception {
+    Client validClient = MAPPER.readValue(
+        fixture("fixtures/domain/legacy/Client/invalid/creationDateWhiteInvalid.json"),
+        Client.class);
+
+    Response response =
+        resources.client().target(ROOT_RESOURCE).request().accept(MediaType.APPLICATION_JSON)
+            .post(Entity.entity(validClient, MediaType.APPLICATION_JSON));
+
+    // System.out.println(response.readEntity(String.class));
+    assertThat(response.getStatus(), is(equalTo(422)));
+    assertThat(response.readEntity(String.class)
+        .indexOf("creationDate must be in the format of yyyy-MM-dd"), is(greaterThanOrEqualTo(0)));
+
+  }
+
+  /*
+   * currCaChildrenServiceInd test
+   */
+  @Test
+  public void failWhenCurrCaChildrenServIndicatorNull() throws Exception {
+    Client validClient = MAPPER.readValue(
+        fixture("fixtures/domain/legacy/Client/invalid/currCaChildrenServIndicatorNull.json"),
+        Client.class);
+
+    Response response =
+        resources.client().target(ROOT_RESOURCE).request().accept(MediaType.APPLICATION_JSON)
+            .post(Entity.entity(validClient, MediaType.APPLICATION_JSON));
+
+    // System.out.println(response.readEntity(String.class));
+    assertThat(response.getStatus(), is(equalTo(422)));
+    assertThat(
+        response.readEntity(String.class).indexOf("currCaChildrenServIndicator may not be null"),
+        is(greaterThanOrEqualTo(0)));
+
+  }
+
+  @Test
+  public void failWhenCurrCaChildrenServIndicatorEmpty() throws Exception {
+    Client validClient = MAPPER.readValue(
+        fixture("fixtures/domain/legacy/Client/invalid/currCaChildrenServIndicatorEmpty.json"),
+        Client.class);
+
+    Response response =
+        resources.client().target(ROOT_RESOURCE).request().accept(MediaType.APPLICATION_JSON)
+            .post(Entity.entity(validClient, MediaType.APPLICATION_JSON));
+
+    // System.out.println(response.readEntity(String.class));
+    assertThat(response.getStatus(), is(equalTo(422)));
+    assertThat(
+        response.readEntity(String.class).indexOf("currCaChildrenServIndicator may not be null"),
+        is(greaterThanOrEqualTo(0)));
+
+  }
+
+  @Test
+  public void failWhenCurrCaChildrenServIndicatorMissing() throws Exception {
+    Client validClient = MAPPER.readValue(
+        fixture("fixtures/domain/legacy/Client/invalid/currCaChildrenServIndicatorMissing.json"),
+        Client.class);
+
+    Response response =
+        resources.client().target(ROOT_RESOURCE).request().accept(MediaType.APPLICATION_JSON)
+            .post(Entity.entity(validClient, MediaType.APPLICATION_JSON));
+
+    // System.out.println(response.readEntity(String.class));
+    assertThat(response.getStatus(), is(equalTo(422)));
+    assertThat(
+        response.readEntity(String.class).indexOf("currCaChildrenServIndicator may not be null"),
+        is(greaterThanOrEqualTo(0)));
+
+  }
+
+  /*
+   * currentlyOtherDescription test
+   */
+  @Test
+  public void successWhenCurrentlyOtherDescriptionEmpty() throws Exception {
+    Client validClient = MAPPER.readValue(
+        fixture("fixtures/domain/legacy/Client/valid/confidentialityActionDateEmpty.json"),
+        Client.class);
+
+    Response response =
+        resources.client().target(ROOT_RESOURCE).request().accept(MediaType.APPLICATION_JSON)
+            .post(Entity.entity(validClient, MediaType.APPLICATION_JSON));
+
+    assertThat(response.getStatus(), is(equalTo(204)));
+  }
+
+  @Test
+  public void failWhenCurrentlyOtherDescriptionNull() throws Exception {
+    Client validClient = MAPPER.readValue(
+        fixture("fixtures/domain/legacy/Client/invalid/currentlyOtherDescriptionNull.json"),
+        Client.class);
+
+    Response response =
+        resources.client().target(ROOT_RESOURCE).request().accept(MediaType.APPLICATION_JSON)
+            .post(Entity.entity(validClient, MediaType.APPLICATION_JSON));
+
+    assertThat(response.getStatus(), is(equalTo(422)));
+    assertThat(
+        response.readEntity(String.class).indexOf("currentlyOtherDescription may not be null"),
+        is(greaterThanOrEqualTo(0)));
+
+  }
+
+  @Test
+  public void failWhenCurrentlyOtherDescriptionTooLong() throws Exception {
+    Client validClient = MAPPER.readValue(
+        fixture("fixtures/domain/legacy/Client/invalid/currentlyOtherDescriptionTooLong.json"),
+        Client.class);
+
+    Response response =
+        resources.client().target(ROOT_RESOURCE).request().accept(MediaType.APPLICATION_JSON)
+            .post(Entity.entity(validClient, MediaType.APPLICATION_JSON));
+
+    // System.out.println(response.readEntity(String.class));
+    assertThat(response.getStatus(), is(equalTo(422)));
+    assertThat(
+        response.readEntity(String.class)
+            .indexOf("currentlyOtherDescription size must be between 0 and 25"),
+        is(greaterThanOrEqualTo(0)));
+
+  }
+
+  /*
+   * deathDate test
+   */
+  @Test
+  public void successWhenDeathDateNull() throws Exception {
+    Client validClient = MAPPER
+        .readValue(fixture("fixtures/domain/legacy/Client/valid/deathDateNull.json"), Client.class);
+
+    Response response =
+        resources.client().target(ROOT_RESOURCE).request().accept(MediaType.APPLICATION_JSON)
+            .post(Entity.entity(validClient, MediaType.APPLICATION_JSON));
+
+    assertThat(response.getStatus(), is(equalTo(204)));
+
+  }
+
+  @Test
+  public void failWhenDeathDateInvalid() throws Exception {
+    Client validClient = MAPPER.readValue(
+        fixture("fixtures/domain/legacy/Client/invalid/deathDateInvalid.json"), Client.class);
+
+    Response response =
+        resources.client().target(ROOT_RESOURCE).request().accept(MediaType.APPLICATION_JSON)
+            .post(Entity.entity(validClient, MediaType.APPLICATION_JSON));
+
+    // System.out.println(response.readEntity(String.class));
+    assertThat(response.getStatus(), is(equalTo(422)));
+    assertThat(
+        response.readEntity(String.class).indexOf("deathDate must be in the format of yyyy-MM-dd"),
+        is(greaterThanOrEqualTo(0)));
+
+  }
+
+  /*
+   * deathDateVerifiedIndicator test
+   */
+  @Test
+  public void failWhenDeathDateVerifiedNull() throws Exception {
+    Client validClient = MAPPER.readValue(
+        fixture("fixtures/domain/legacy/Client/invalid/deathDateVerifiedNull.json"), Client.class);
+
+    Response response =
+        resources.client().target(ROOT_RESOURCE).request().accept(MediaType.APPLICATION_JSON)
+            .post(Entity.entity(validClient, MediaType.APPLICATION_JSON));
+
+    // System.out.println(response.readEntity(String.class));
+    assertThat(response.getStatus(), is(equalTo(422)));
+    assertThat(
+        response.readEntity(String.class).indexOf("deathDateVerifiedIndicator may not be null"),
+        is(greaterThanOrEqualTo(0)));
+
+
+  }
+
+  @Test
+  public void failWhenDeathDateVerifiedEmpty() throws Exception {
+    Client validClient = MAPPER.readValue(
+        fixture("fixtures/domain/legacy/Client/invalid/deathDateVerifiedEmpty.json"), Client.class);
+
+    Response response =
+        resources.client().target(ROOT_RESOURCE).request().accept(MediaType.APPLICATION_JSON)
+            .post(Entity.entity(validClient, MediaType.APPLICATION_JSON));
+
+    assertThat(response.getStatus(), is(equalTo(422)));
+    assertThat(
+        response.readEntity(String.class).indexOf("deathDateVerifiedIndicator may not be null"),
+        is(greaterThanOrEqualTo(0)));
+
+  }
+
+  /*
+   * deathPlace test
+   */
+  @Test
+  public void successWhenDeathPlaceNull() throws Exception {
+    Client validClient = MAPPER.readValue(
+        fixture("fixtures/domain/legacy/Client/valid/deathPlaceNull.json"), Client.class);
+
+    Response response =
+        resources.client().target(ROOT_RESOURCE).request().accept(MediaType.APPLICATION_JSON)
+            .post(Entity.entity(validClient, MediaType.APPLICATION_JSON));
+
+    assertThat(response.getStatus(), is(equalTo(204)));
+
+  }
+
+  @Test
+  public void successWhenDeathPlaceEmpty() throws Exception {
+    Client validClient = MAPPER.readValue(
+        fixture("fixtures/domain/legacy/Client/valid/deathPlaceEmpty.json"), Client.class);
+
+    Response response =
+        resources.client().target(ROOT_RESOURCE).request().accept(MediaType.APPLICATION_JSON)
+            .post(Entity.entity(validClient, MediaType.APPLICATION_JSON));
+
+    assertThat(response.getStatus(), is(equalTo(204)));
+
+  }
+
+  @Test
+  public void failWhenDeathPlaceTooLong() throws Exception {
+    Client validClient = MAPPER.readValue(
+        fixture("fixtures/domain/legacy/Client/invalid/deathPlaceTooLong.json"), Client.class);
+
+    Response response =
+        resources.client().target(ROOT_RESOURCE).request().accept(MediaType.APPLICATION_JSON)
+            .post(Entity.entity(validClient, MediaType.APPLICATION_JSON));
+
+    // System.out.println(response.readEntity(String.class));
+    assertThat(response.getStatus(), is(equalTo(422)));
+    assertThat(
+        response.readEntity(String.class).indexOf("deathPlace size must be between 0 and 35"),
+        is(greaterThanOrEqualTo(0)));
+
+  }
+
+
+  /*
+   * deathReason test
+   */
+
+  @Test
+  public void successWhenDeathResonTextNull() throws Exception {
+    Client validClient = MAPPER.readValue(
+        fixture("fixtures/domain/legacy/Client/valid/deathReasonTextNull.json"), Client.class);
+
+    Response response =
+        resources.client().target(ROOT_RESOURCE).request().accept(MediaType.APPLICATION_JSON)
+            .post(Entity.entity(validClient, MediaType.APPLICATION_JSON));
+
+    assertThat(response.getStatus(), is(equalTo(204)));
+
+  }
+
+  @Test
+  public void successWhenDeathReasonTextEmpty() throws Exception {
+    Client validClient = MAPPER.readValue(
+        fixture("fixtures/domain/legacy/Client/valid/deathReasonTextEmpty.json"), Client.class);
+
+    Response response =
+        resources.client().target(ROOT_RESOURCE).request().accept(MediaType.APPLICATION_JSON)
+            .post(Entity.entity(validClient, MediaType.APPLICATION_JSON));
+
+    assertThat(response.getStatus(), is(equalTo(204)));
+
+  }
+
+  @Test
+  public void failWhenDeathReasonTooLong() throws Exception {
+    Client validClient = MAPPER.readValue(
+        fixture("fixtures/domain/legacy/Client/invalid/deathReasonTextTooLong.json"), Client.class);
+
+    Response response =
+        resources.client().target(ROOT_RESOURCE).request().accept(MediaType.APPLICATION_JSON)
+            .post(Entity.entity(validClient, MediaType.APPLICATION_JSON));
+
+    // System.out.println(response.readEntity(String.class));
+    assertThat(response.getStatus(), is(equalTo(422)));
+    assertThat(
+        response.readEntity(String.class).indexOf("deathReasonText size must be between 0 and 10"),
+        is(greaterThanOrEqualTo(0)));
+
+  }
+
+
+  /*
+   * driversLicenseNumber test
+   */
+
+  @Test
+  public void successWhenDriversLicenseNumberEmpty() throws Exception {
+    Client validClient = MAPPER.readValue(
+        fixture("fixtures/domain/legacy/Client/valid/driversLicenseNumberEmpty.json"),
+        Client.class);
+
+    Response response =
+        resources.client().target(ROOT_RESOURCE).request().accept(MediaType.APPLICATION_JSON)
+            .post(Entity.entity(validClient, MediaType.APPLICATION_JSON));
+
+    assertThat(response.getStatus(), is(equalTo(204)));
+
+  }
+
+  public void successWhenDriversLicenseNumberAllWhiteSpace() throws Exception {
+
+  }
+
+  public void failWhenDriversLicenseNumberNull() throws Exception {
+
+  }
+
+  public void failWhenDriversLicenseNumberTooLong() throws Exception {
+
+  }
+
 
   private Client validClient() throws JsonParseException, JsonMappingException, IOException {
     Client vc =

@@ -6,6 +6,9 @@ import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 
+import java.util.HashSet;
+import java.util.Set;
+
 import javax.ws.rs.client.Entity;
 import javax.ws.rs.core.MediaType;
 
@@ -16,6 +19,7 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.mockito.Mockito;
 
+import gov.ca.cwds.rest.api.domain.Address;
 import gov.ca.cwds.rest.api.domain.Participant;
 import gov.ca.cwds.rest.resource.junit.template.ResourceTestTemplate;
 import io.dropwizard.testing.junit.ResourceTestRule;
@@ -30,6 +34,8 @@ public class ParticipantResourceTest implements ResourceTestTemplate {
 
   private static final String ROOT_RESOURCE = "/participants/";
   private static final String FOUND_RESOURCE = "/participants/1";
+  private Set<String> roles = new HashSet<String>();
+  private Set<Address> addresses = new HashSet<Address>();
 
   @SuppressWarnings("javadoc")
   @Rule
@@ -75,8 +81,11 @@ public class ParticipantResourceTest implements ResourceTestTemplate {
   @Override
   @Test
   public void testPostDelegatesToResourceDelegate() throws Exception {
-    Participant participant =
-        new Participant(1, 1, "Marge", "Simpson", "Female", "2017-01-11", "111223333");
+    roles.add("victim");
+    Address address = new Address("123 First St", "San Jose", "CA", 94321, "Home");
+    addresses.add(address);
+    Participant participant = new Participant(1L, "Marge", "Simpson", "Female", "111223333",
+        "2017-01-11", 123, 456, roles, addresses);
     inMemoryResource.client().target(ROOT_RESOURCE).request().accept(MediaType.APPLICATION_JSON)
         .post(Entity.entity(participant, MediaType.APPLICATION_JSON)).getStatus();
     verify(resourceDelegate).create(eq(participant));
@@ -86,8 +95,11 @@ public class ParticipantResourceTest implements ResourceTestTemplate {
   @Override
   @Test
   public void testPostValidatesEntity() throws Exception {
-    Participant participant =
-        new Participant(1, 1, "Marge", "Simpson", "Female", "11-01-2017", "111223333");
+    roles.add("victim");
+    Address address = new Address("123 First St", "San Jose", "CA", 94321, "Home");
+    addresses.add(address);
+    Participant participant = new Participant(1, "Marge", "Simpson", "Female", "11122333",
+        "11-01-2017", 123, 456, roles, addresses);
 
     int status =
         inMemoryResource.client().target(ROOT_RESOURCE).request().accept(MediaType.APPLICATION_JSON)
@@ -130,8 +142,11 @@ public class ParticipantResourceTest implements ResourceTestTemplate {
   @Override
   @Test
   public void testDelete200ResourceSuccess() throws Exception {
-    Participant participant =
-        new Participant(1, 1, "Marge", "Simpson", "Female", "2017-01-23", "111223333");
+    roles.add("victim");
+    Address address = new Address("123 First St", "San Jose", "CA", 94321, "Home");
+    addresses.add(address);
+    Participant participant = new Participant(1, "Marge", "Simpson", "Female", "111223333",
+        "2017-01-23", 123, 456, roles, addresses);
 
     int status =
         inMemoryResource.client().target(ROOT_RESOURCE).request().accept(MediaType.APPLICATION_JSON)
@@ -181,8 +196,11 @@ public class ParticipantResourceTest implements ResourceTestTemplate {
   @Override
   @Test
   public void testUpdate404NotFoundError() throws Exception {
-    Participant participant =
-        new Participant(1, 1, "Marge", "Simpson", "Female", "2017-01-11", "111223333");
+    roles.add("victim");
+    Address address = new Address("123 First St", "San Jose", "CA", 94321, "Home");
+    addresses.add(address);
+    Participant participant = new Participant(1, "Marge", "Simpson", "Female", "111223333",
+        "2017-01-11", 123, 456, roles, addresses);
     int receivedStatus =
         inMemoryResource.client().target(ROOT_RESOURCE).request().accept(MediaType.APPLICATION_JSON)
             .put(Entity.entity(participant, MediaType.APPLICATION_JSON)).getStatus();

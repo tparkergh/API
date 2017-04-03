@@ -14,6 +14,7 @@
     "street_address": "10 main st",
     "city": "Sacramento",
     "state": "CA",
-    "zip": 95814
+    "zip": 95814,
+    "type": "Home"
   }
 }
