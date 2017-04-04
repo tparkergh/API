@@ -1,29 +1,25 @@
 {
-	"addresses": [
-		{
-			"id": "GPkGk1m04O",
-			"city": "Kings",
-			"zip": "95320",
-			"street_address": "567 Fiction Lane",
-			"state": "CA",
-			"type": null
-		}
-	],
-	"languages": ["English", "Spanish"],
-	"first_name": "Claire",
+	"id": "B7d6ly204O",
+	"first_name": "claire",
 	"middle_name": "",
-	"last_name": "Huxtable",
+	"last_name": "huxtable",
 	"name_suffix": null,
 	"date_of_birth": "1963-01-02",
 	"gender": "female",
 	"ssn": "555025555",
 	"type": "gov.ca.cwds.data.persistence.cms.rep.ReplicatedClient",
 	"source": "",
-	"phone_numbers": [
-		{
+	"languages": ["English", "Spanish"],
+	"phone_numbers": [{
 			"number": "5590009090",
 			"type": null
-		}
-	],
-	"id": "B7d6ly204O"
+	}],
+	"addresses": [{
+			"id": "GPkGk1m04O",
+			"city": "Kings",
+			"zip": "95320",
+			"street_address": "567 Fiction Lane",
+			"state": "CA",
+			"type": null
+	}]
 }

@@ -1,0 +1,32 @@
+{
+	"_all":       { "enabled": true },
+	"properties": {
+	  "id":            { "type": "string" },
+	  "first_name":    { "type": "string", "index" : "analyzed", "analyzer": "ngram" },
+	  "last_name":     { "type": "string" },
+	  "middle_name":   { "type": "string" },
+	  "date_of_birth": { "type": "date"},
+	  "ssn":           { "type": "string" },
+	  "gender":        { "type": "string" },
+	  "languages":     { "type": "string" },
+	  "type":          { "type": "string" },
+	  "source":        { "type": "string" },
+	  "addresses": {
+		"properties": {
+		  "id":             { "type": "string" },
+		  "city":           { "type": "string" },
+		  "state":          { "type": "string" },
+		  "street_address": { "type": "string" },
+		  "zip":            { "type": "string" },
+		  "type":           { "type": "string" }
+	  }},
+	  "phone_numbers": {
+		"properties": {
+		  "id":     { "type": "string" },
+		  "number": { "type": "string" },
+		  "type":   { "type": "string" }
+		}
+	  }
+	}
+  }
+}
