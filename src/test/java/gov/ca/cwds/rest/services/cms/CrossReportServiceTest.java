@@ -15,10 +15,13 @@ import static org.mockito.Mockito.when;
 
 import javax.persistence.EntityNotFoundException;
 
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
+import org.mockito.invocation.InvocationOnMock;
+import org.mockito.stubbing.Answer;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
@@ -220,5 +223,29 @@ public class CrossReportServiceTest {
     CrossReport expected = new CrossReport(toCreate);
     CrossReport returned = crossReportService.create(request);
     assertThat(returned, is(expected));
+  }
+
+  /*
+   * Test for checking the new thirdId Generated for crossReport
+   */
+  @SuppressWarnings("javadoc")
+  @Test
+  public void createReturnsGeneratedThirdId() throws Exception {
+    CrossReport crossReportDomain = MAPPER.readValue(
+        fixture("fixtures/domain/legacy/CrossReport/valid/valid.json"), CrossReport.class);
+    when(crossReportDao.create(any(gov.ca.cwds.data.persistence.cms.CrossReport.class)))
+        .thenAnswer(new Answer<gov.ca.cwds.data.persistence.cms.CrossReport>() {
+
+          @Override
+          public gov.ca.cwds.data.persistence.cms.CrossReport answer(InvocationOnMock invocation)
+              throws Throwable {
+            gov.ca.cwds.data.persistence.cms.CrossReport report =
+                (gov.ca.cwds.data.persistence.cms.CrossReport) invocation.getArguments()[0];
+            return report;
+          }
+        });
+
+    CrossReport returned = crossReportService.create(crossReportDomain);
+    Assert.assertNotEquals(returned.getThirdId(), crossReportDomain.getThirdId());
   }
 }

@@ -188,11 +188,6 @@ public class DataAccessModule extends AbstractModule {
 
     // System code loader DAO.
     bind(ApiSystemCodeDao.class).to(SystemCodeDaoFileImpl.class);
-
-    // DEPENDENCY CONTRADICTION: construction requires session factory, but session factory is not
-    // yet available. Use "provides" method instead.
-    // bind(ClientDao.class).toInstance(new UnitOfWorkAwareProxyFactory(cmsHibernateBundle)
-    // .create(ClientDao.class, SessionFactory.class, cmsHibernateBundle.getSessionFactory()));
   }
 
   @Provides
