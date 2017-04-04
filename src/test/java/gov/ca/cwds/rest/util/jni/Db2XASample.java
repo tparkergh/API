@@ -11,14 +11,11 @@ import javax.naming.spi.InitialContextFactoryBuilder;
 import javax.naming.spi.NamingManager;
 import javax.sql.XADataSource;
 
-import org.postgresql.PGProperty;
-import org.postgresql.xa.PGXADataSource;
-
 import com.ibm.db2.jcc.DB2XADataSource;
 
 import gov.ca.cwds.rest.api.ApiException;
 
-public class XASample {
+public class Db2XASample {
 
   javax.sql.XADataSource xaDS1;
   javax.sql.XADataSource xaDS2;
@@ -57,32 +54,6 @@ public class XASample {
     return ds;
   }
 
-  private static PGXADataSource buildPGDataSource(String user, String password, String serverName,
-      int port, String databaseName) {
-    PGXADataSource ds = new PGXADataSource();
-    ds.setUser(user);
-    ds.setPassword(password);
-    ds.setServerName(serverName);
-    ds.setPortNumber(port);
-    ds.setDatabaseName(databaseName);
-
-    // https://www.postgresql.org/docs/current/static/runtime-config-resource.html#GUC-MAX-PREPARED-TRANSACTIONS
-
-    try {
-      ds.setProperty("user", user);
-      ds.setProperty("password", password);
-      ds.setProperty(PGProperty.PG_DBNAME, databaseName);
-      ds.setProperty(PGProperty.PG_HOST, serverName);
-      ds.setProperty(PGProperty.PG_PORT, String.valueOf(port));
-    } catch (SQLException e) {
-      e.printStackTrace();
-      throw new ApiException("datasource property error", e);
-    }
-
-    System.out.println("pgxa data source");
-    return ds;
-  }
-
   private static void setupInitialContext() {
     try {
       NamingManager.setInitialContextFactoryBuilder(new InitialContextFactoryBuilder() {
@@ -102,9 +73,10 @@ public class XASample {
                 public Object lookup(String name) throws NamingException {
 
                   if (dataSources.isEmpty()) { // init datasources
-                    dataSources.put("jdbc/postgres",
-                        buildPGDataSource(System.getenv("NS_DOCKER_USER"),
-                            System.getenv("NS_DOCKER_PASSWORD"), "localhost", 5400, "postgres"));
+
+                    dataSources.put("jdbc/frame",
+                        buildDB2DataSource(System.getenv("DB2_FRAME_USER"),
+                            System.getenv("DB2_FRAME_PASSWORD"), "localhost", 9000, "DBN1SOC"));
 
                     dataSources.put("jdbc/docker",
                         buildDB2DataSource(System.getenv("DB2_DOCKER_USER"),
@@ -145,12 +117,11 @@ public class XASample {
 
     try {
       Class.forName("com.ibm.db2.jcc.DB2Driver");
-      Class.forName("org.postgresql.Driver");
       setupInitialContext();
-      System.out.println("setupInitialContext();");
+
       // Note that javax.sql.XADataSource is used instead of a specific driver implementation such
       // as com.ibm.db2.jcc.DB2XADataSource.
-      xaDS1 = (javax.sql.XADataSource) InitialContext.doLookup("jdbc/postgres");
+      xaDS1 = (javax.sql.XADataSource) InitialContext.doLookup("jdbc/frame");
       xaDS2 = (javax.sql.XADataSource) InitialContext.doLookup("jdbc/docker");
 
       // The XADatasource contains the user ID and password.
@@ -165,6 +136,7 @@ public class XASample {
       // Get the XAResource object from each XAConnection
       xares1 = xaconn1.getXAResource();
       xares2 = xaconn2.getXAResource();
+
       // Create the Xid object for this distributed transaction.
       // This example uses the com.ibm.db2.jcc.DB2Xid implementation of the Xid interface. This Xid
       // can be used with any JDBC driver that supports JTA.
@@ -180,62 +152,62 @@ public class XASample {
       // Run DML on connection 1.
       conn1
           .prepareStatement(
-              // "update CWSNS1.CLIENT_T c set c.BR_FAC_NM = 'conn 1' where c.IDENTIFIER =
-              // 'AaiU7IW0Rt'")
-              // "update CWSINT.ALLGTN_T c set c.LOC_DSC = 'test 1' where c.IDENTIFIER =
-              // 'AAABG3EMNL'")
-              // "update CWSINT.CLIENT_T c set c.BR_FAC_NM = 'conn 6' where c.IDENTIFIER =
-              // 'AaiU7IW0Rt'")
-              "UPDATE public.person SET first_name='bart201' WHERE person_id = '50'")
+              "update CWSNS1.CLIENT_T c set c.BR_FAC_NM = 'conn 1' where c.IDENTIFIER = 'AaiU7IW0Rt'")
           .executeUpdate();
 
       // Run DML on connection 2.
       conn2
           .prepareStatement(
-              // "update CWSINT.CLIENT_T c set c.BR_FAC_NM = 'conn 2' where c.IDENTIFIER =
-              // 'AaiU7IW0Rt'")
-              "update CWSINT.ALLGTN_T c set c.LOC_DSC = 'test 6' where c.IDENTIFIER = 'AAABG3EMNL'")
+              "update CWSINT.CLIENT_T c set c.BR_FAC_NM = 'conn 2' where c.IDENTIFIER = 'AaiU7IW0Rt'")
           .executeUpdate();
 
       // Now end the distributed transaction on the two connections.
       xares1.end(xid1, javax.transaction.xa.XAResource.TMSUCCESS);
       xares2.end(xid1, javax.transaction.xa.XAResource.TMSUCCESS);
 
-      // If connection 2 work had been done in another thread, a thread.join() call would be needed
-      // here to wait until the connection 2 work is done.
+      // If connection 2 work had been done in another thread,
+      // a thread.join() call would be needed here to wait until the
+      // connection 2 work is done.
 
-      try {
-        System.out.println("try");// Now prepare both branches of the distributed transaction.
-        // Both branches must prepare successfully before changes can be committed.
-        // If the distributed transaction fails, an XAException is thrown.
+      try { // Now prepare both branches of the distributed transaction.
+            // Both branches must prepare successfully before changes can be committed.
+            // If the distributed transaction fails, an XAException is thrown.
         rc1 = xares1.prepare(xid1);
-        if (rc1 == javax.transaction.xa.XAResource.XA_OK) {
-          // Prepare was successful. Prepare the second connection.
+        if (rc1 == javax.transaction.xa.XAResource.XA_OK) { // Prepare was successful. Prepare the
+                                                            // second connection.
           rc2 = xares2.prepare(xid1);
-
-          if (rc2 == javax.transaction.xa.XAResource.XA_OK) {
-            // Both connections prepared successfully and neither was read-only.
+          if (rc2 == javax.transaction.xa.XAResource.XA_OK) { // Both connections prepared
+                                                              // successfully and neither was
+                                                              // read-only.
             xares1.commit(xid1, false);
             xares2.commit(xid1, false);
-          } else if (rc2 == javax.transaction.xa.XAException.XA_RDONLY) {
-            // The second connection is read-only, so just commit the first connection.
+          } else if (rc2 == javax.transaction.xa.XAException.XA_RDONLY) { // The second connection
+                                                                          // is read-only, so just
+                                                                          // commit the
+                                                                          // first connection.
             xares1.commit(xid1, false);
           }
-        } else if (rc1 == javax.transaction.xa.XAException.XA_RDONLY) {
-          // SQL for the first connection is read-only (such as a SELECT).
-          // The prepare committed it. Prepare the second connection.
+        } else if (rc1 == javax.transaction.xa.XAException.XA_RDONLY) { // SQL for the first
+                                                                        // connection is read-only
+                                                                        // (such as a SELECT).
+                                                                        // The prepare committed it.
+                                                                        // Prepare the second
+                                                                        // connection.
           rc2 = xares2.prepare(xid1);
-          if (rc2 == javax.transaction.xa.XAResource.XA_OK) {
-            // The first connection is read-only but the second is not. Commit the second
-            // connection.
+          if (rc2 == javax.transaction.xa.XAResource.XA_OK) { // The first connection is read-only
+                                                              // but the second is not.
+                                                              // Commit the second connection.
             xares2.commit(xid1, false);
-          } else if (rc2 == javax.transaction.xa.XAException.XA_RDONLY) {
-            // Both connections are read-only, and both already committed, so there is nothing more
-            // to do.
+          } else if (rc2 == javax.transaction.xa.XAException.XA_RDONLY) { // Both connections are
+                                                                          // read-only, and both
+                                                                          // already committed,
+                                                                          // so there is nothing
+                                                                          // more to do.
           }
         }
-      } catch (javax.transaction.xa.XAException xae) {
-        // Distributed transaction failed, so roll it back. Report XAException on prepare/commit.
+      } catch (javax.transaction.xa.XAException xae) { // Distributed transaction failed, so roll it
+                                                       // back.
+                                                       // Report XAException on prepare/commit.
         System.out.println("Distributed transaction prepare/commit failed. " + "Rolling it back.");
         System.out.println("XAException error code = " + xae.errorCode);
         System.out.println("XAException message = " + xae.getMessage());
@@ -291,3 +263,4 @@ public class XASample {
   }
 
 }
+
