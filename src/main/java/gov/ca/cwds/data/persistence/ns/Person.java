@@ -14,7 +14,6 @@ import javax.persistence.OneToMany;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
-import org.hibernate.annotations.NamedQueries;
 import org.hibernate.annotations.NamedQuery;
 import org.hibernate.annotations.Type;
 
@@ -27,10 +26,9 @@ import gov.ca.cwds.rest.api.domain.DomainChef;
  * @author CWDS API Team
  */
 @SuppressWarnings({"serial", "javadoc"})
-@NamedQueries({
-    @NamedQuery(name = "gov.ca.cwds.rest.api.persistence.ns.Person.findAll", query = "FROM Person"),
-    @NamedQuery(name = "gov.ca.cwds.rest.api.persistence.ns.Person.findAllUpdatedAfter",
-        query = "FROM Person WHERE lastUpdatedTime > :after")})
+@NamedQuery(name = "gov.ca.cwds.rest.api.persistence.ns.Person.findAll", query = "FROM Person")
+@NamedQuery(name = "gov.ca.cwds.rest.api.persistence.ns.Person.findAllUpdatedAfter",
+    query = "FROM Person WHERE lastUpdatedTime > :after")
 @Entity
 @Table(name = "person")
 public class Person extends NsPersistentObject

@@ -217,9 +217,6 @@ public class PersonService implements CrudsService {
     }
     if (person.getPhoneNumber() != null && !person.getPhoneNumber().isEmpty()) {
       for (PhoneNumber phoneNumber : person.getPhoneNumber()) {
-        if (phoneNumber.getPhoneNumber().length() > 10) {
-          throw new ServiceException();
-        }
         gov.ca.cwds.data.persistence.ns.PhoneNumber managedPhoneNumber =
             new gov.ca.cwds.data.persistence.ns.PhoneNumber(phoneNumber, null, null);
         PersonPhone personPhone = new PersonPhone(managedPerson, managedPhoneNumber);
