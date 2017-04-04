@@ -1,9 +1,5 @@
 package gov.ca.cwds.rest.services.cms;
 
-import gov.ca.cwds.rest.api.Request;
-import gov.ca.cwds.rest.api.Response;
-import gov.ca.cwds.rest.services.CrudsService;
-
 import java.util.HashMap;
 import java.util.Map;
 
@@ -12,6 +8,10 @@ import org.hibernate.Transaction;
 import org.hibernate.context.internal.ManagedSessionContext;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import gov.ca.cwds.rest.api.Request;
+import gov.ca.cwds.rest.api.Response;
+import gov.ca.cwds.rest.services.CrudsService;
 
 /**
  * @author CWDS API Team
@@ -34,10 +34,9 @@ public class CmsNSHelper {
   public Map<String, Map<CrudsService, Response>> handleResponse(
       Map<CrudsService, Request> cmsRequests, Map<CrudsService, Request> nsRequests) {
 
-    Map<CrudsService, Response> cmsResponse = new HashMap<CrudsService, Response>();
-    Map<CrudsService, Response> nsResponse = new HashMap<CrudsService, Response>();
-    Map<String, Map<CrudsService, Response>> response =
-        new HashMap<String, Map<CrudsService, Response>>();
+    Map<CrudsService, Response> cmsResponse = new HashMap<>();
+    Map<CrudsService, Response> nsResponse = new HashMap<>();
+    Map<String, Map<CrudsService, Response>> response = new HashMap<>();
     Response referral = null;
     Response person;
 
@@ -89,7 +88,5 @@ public class CmsNSHelper {
     return response;
 
   }
-
-
 
 }
