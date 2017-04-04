@@ -2,7 +2,7 @@
 	"_all":       { "enabled": true },
 	"properties": {
 	  "id":            { "type": "string" },
-	  "first_name":    { "type": "string", "index" : "analyzed", "analyzer": "ngram" },
+	  "first_name":    { "type": "string", "analyzer": "index_ngram_analyzer", "search_analyzer": "search_ngram_analyzer" },
 	  "last_name":     { "type": "string" },
 	  "middle_name":   { "type": "string" },
 	  "date_of_birth": { "type": "date"},
