@@ -111,6 +111,9 @@ public class ReplicatedClient extends BaseClient
   @Column(name = "IBMSNAP_LOGMARKER", updatable = false)
   private Date replicationDate;
 
+  /**
+   * A client can have multiple active addresses, typically one active address per address type.
+   */
   @OneToMany(fetch = FetchType.EAGER, mappedBy = "fkClient")
   protected Set<ReplicatedClientAddress> clientAddresses = new LinkedHashSet<>();
 
