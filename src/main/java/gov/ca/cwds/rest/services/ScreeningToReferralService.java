@@ -57,20 +57,28 @@ public class ScreeningToReferralService implements CrudsService {
 
   private String genderCode;
   private Boolean lawEnforcementIndicator;
+  private Boolean reporterParticipant;
+  private String zipCode;
+  private Short zipSuffix;
+  private String streetName;
+  private String streetNumber;
+
   private final short defaultCode = 0;
   private final BigDecimal defaultBig = new BigDecimal(0);
   private final int defaultInt = 0;
+  private final String responsibleAgencyCode = "C";
 
-  // TODO: determine values of sys Codes
+  // TODO: determine values of sys Codes and apply
   private short communicationsMethodCode = 0;
   private short countySpecificCode = 0;
   private short referralResponseTypeCode = 0;
   private short crossReportMethodCode = 0;
   private short allegationTypeCode = 0;
   private short allegationCountyCode = 0;
+  private short addressStateCode = 0;
 
 
-  // TODO: County Codes - two character string or Short??
+  // TODO: County Codes - two character string
   private String countyCode = "99";
 
   // TODO: create the ID values
@@ -110,27 +118,24 @@ public class ScreeningToReferralService implements CrudsService {
 
     PostedReporter savedreporter = new PostedReporter();
 
-    // TODO: create the referral IDENTIFIER
-
     /*
      * CMS Referral
      */
     ScreeningToReferral screeningToReferral = (ScreeningToReferral) request;
 
+    // set the
     String[] received = screeningToReferral.getStartedAt().split("T");
-
-    // TODO : get system code values using the text passed in ScreeningToReferral
-    // default to 0 for now
 
     Referral referral = new Referral(false, false, false, "", defaultCode, false, "",
         communicationsMethodCode, "", "", "", "", false, false, defaultCode, "", false, "", "",
         screeningToReferral.getName(), "", received[0], received[1], referralResponseTypeCode,
-        defaultCode, "", "", "", "", "", "", "", "", "", "", "", "", false, false, false, false, "",
-        "", defaultCode, "", "", "");
+        defaultCode, "", "", "", screeningToReferral.getReportNarrative(), "", "", "", "", "", "",
+        "", "", false, false, false, false, "", responsibleAgencyCode, defaultCode, "", "", "");
+    // IDENTIFIER and LAST_UPD_ID are assigned in this create method
     PostedReferral postedReferral = this.referralService.create(referral);
 
     /*
-     * CMS Clients and Referral Clients - one for each Participant
+     * CMS Clients, Referral Clients, Client Addresses, and Reporter - one for each Participant
      */
 
     // TODO: create the Client IDENTIFIER
@@ -143,45 +148,79 @@ public class ScreeningToReferralService implements CrudsService {
 
       genderCode = incomingParticipant.getGender();
 
-      Client client = new Client("", false, "", "", "", defaultCode,
-          incomingParticipant.getDateOfBirth(), "", defaultCode, false, false, "", "",
-          incomingParticipant.getFirstName(), incomingParticipant.getLastName(), "", "", false, "",
-          false, "", false, "", false, "", "", "", defaultCode, "", "", "", "", "", genderCode, "",
-          "", defaultCode, defaultCode, "", false, false, "", false, defaultCode, "", "", "",
-          defaultCode, false, false, "", false, defaultCode, defaultCode, defaultCode, defaultCode,
-          false, "", "", false, incomingParticipant.getSsn(), "", "", false, false, "", false);
-      PostedClient postedclient = this.clientService.create(client);
-      postedClients.add(postedclient);
-
-      // TODO: set FKCLIENT_T and FKREFERL_T
-      ReferralClient referralClient = new ReferralClient("", defaultCode, defaultCode, "", "",
-          false, false, "", "", "", defaultCode, "", "", false, false, false);
-      gov.ca.cwds.rest.api.domain.cms.ReferralClient postedReferralClient =
-          this.referralClientService.create(referralClient);
-      resultReferralClients.add(postedReferralClient);
-
-      /*
-       * CMS Reporter - if role is 'mandated reporter' or 'non-mandated reporter'
-       * 
-       */
-      // TODO: what about self-reported - no role for this yet
       /**
        * process the roles of this participant
        */
+      reporterParticipant = false;
       Set<String> roles = new HashSet<String>(incomingParticipant.getRoles());
       for (String role : roles) {
         if (role.equalsIgnoreCase("mandated reporter") != role
             .equalsIgnoreCase("non-mandated reporter")) {
-
-          Reporter reporter = new Reporter("", "", defaultCode, defaultCode, false, "", "", "",
-              false, incomingParticipant.getFirstName(), incomingParticipant.getLastName(), false,
-              0, defaultBig, "", "", defaultBig, 0, defaultCode, "", "", "", "", "", "",
-              defaultCode, countyCode);
-          PostedReporter postedreporter = this.reporterService.create(reporter);
-          savedreporter = postedreporter;
+          reporterParticipant = true;
         }
       }
 
+      if (reporterParticipant) {
+        /*
+         * CMS Reporter - if role is 'mandated reporter' or 'non-mandated reporter'
+         */
+        // TODO: what about self-reported - no role for this yet
+
+        Reporter reporter = new Reporter("", "", defaultCode, defaultCode, false, "", "", "", false,
+            incomingParticipant.getFirstName(), incomingParticipant.getLastName(), false, 0,
+            defaultBig, "", "", defaultBig, 0, defaultCode, "", "", "", "", "", "", defaultCode,
+            countyCode);
+        PostedReporter postedreporter = this.reporterService.create(reporter);
+        savedreporter = postedreporter;
+      } else {
+
+        Client client =
+            new Client("", false, "", "", "", defaultCode, incomingParticipant.getDateOfBirth(), "",
+                defaultCode, false, false, "", "", incomingParticipant.getFirstName(),
+                incomingParticipant.getLastName(), "", "", false, "", false, "", false, "", false,
+                "", "", "", defaultCode, "", "", "", "", "", genderCode, "", "", defaultCode,
+                defaultCode, "", false, false, "", false, defaultCode, "", "", "", defaultCode,
+                false, false, "", false, defaultCode, defaultCode, defaultCode, defaultCode, false,
+                "", "", false, incomingParticipant.getSsn(), "", "", false, false, "", false);
+        PostedClient postedclient = this.clientService.create(client);
+        postedClients.add(postedclient);
+
+        // TODO: set FKCLIENT_T and FKREFERL_T
+        ReferralClient referralClient = new ReferralClient("", defaultCode, defaultCode, "", "",
+            false, false, "", "", "", defaultCode, "", "", false, false, false);
+        gov.ca.cwds.rest.api.domain.cms.ReferralClient postedReferralClient =
+            this.referralClientService.create(referralClient);
+        resultReferralClients.add(postedReferralClient);
+
+        /*
+         * CMS Address
+         */
+        Set<gov.ca.cwds.rest.api.domain.Address> addresses =
+            new HashSet<gov.ca.cwds.rest.api.domain.Address>(incomingParticipant.getAddresses());
+        for (gov.ca.cwds.rest.api.domain.Address address : addresses) {
+
+          zipCode = address.getZip().toString().substring(0, 4);
+          zipSuffix = Short.parseShort(address.getZip().toString().substring(5, 4));
+
+          String[] streetAddress = address.getStreetAddress().split(" ");
+          streetNumber = streetAddress[0];
+          streetName = streetAddress[1];
+
+          // TODO: include logic and processing to create/update ADDRESS rows in CWS/CMS database
+          gov.ca.cwds.rest.api.domain.cms.Address cmsAddress =
+              new gov.ca.cwds.rest.api.domain.cms.Address(address.getCity(), "", defaultInt,
+                  defaultBig, false, defaultCode, defaultInt, defaultBig, "", "", "", defaultInt,
+                  defaultBig, addressStateCode, streetNumber, streetName, defaultCode, defaultCode,
+                  "", zipCode, zipSuffix);
+
+
+          /*
+           * CMS Client Address
+           */
+
+        }
+
+      }
     }
 
     /*
@@ -189,6 +228,8 @@ public class ScreeningToReferralService implements CrudsService {
      */
     Set<gov.ca.cwds.rest.api.domain.cms.CrossReport> resultCrossReports = new LinkedHashSet<>();
     Set<CrossReport> crossReports = new LinkedHashSet<>();
+    crossReports = screeningToReferral.getCrossReports();
+
     crossReports = screeningToReferral.getCrossReports();
     for (CrossReport crossReport : crossReports) {
 

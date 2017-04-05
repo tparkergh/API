@@ -33,9 +33,9 @@ public interface Api {
   public static final String RESOURCE_SCREENINGS = "screenings";
 
   /**
-   * A {@code String} constant representing {@value #RESOURCE_SCREENING_TO_REFERRAL} API..
+   * A {@code String} constant representing {@value #RESOURCE_REFERRALS} API..
    */
-  public static final String RESOURCE_SCREENING_TO_REFERRAL = "screeningtoreferral";
+  public static final String RESOURCE_REFERRALS = "referrals";
 
   /**
    * A {@code String} constant representing {@value #RESOURCE_ALLEGATION} API..
