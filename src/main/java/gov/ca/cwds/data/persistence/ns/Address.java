@@ -13,6 +13,7 @@ import javax.persistence.OneToMany;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
+import org.hibernate.annotations.NamedQueries;
 import org.hibernate.annotations.NamedQuery;
 
 import gov.ca.cwds.data.ns.NsPersistentObject;
@@ -22,11 +23,11 @@ import gov.ca.cwds.data.ns.NsPersistentObject;
  * 
  * @author CWDS API Team
  */
-
-@NamedQuery(name = "gov.ca.cwds.rest.api.persistence.ns.Address.findAll", query = "FROM Address")
-@NamedQuery(name = "gov.ca.cwds.rest.api.persistence.ns.Address.findAllUpdatedAfter",
-    query = "FROM Address WHERE lastUpdatedTime > :after")
-
+@NamedQueries({
+    @NamedQuery(name = "gov.ca.cwds.rest.api.persistence.ns.Address.findAll",
+        query = "FROM Address"),
+    @NamedQuery(name = "gov.ca.cwds.rest.api.persistence.ns.Address.findAllUpdatedAfter",
+        query = "FROM Address WHERE lastUpdatedTime > :after")})
 @SuppressWarnings("serial")
 @Entity
 @Table(name = "address")
