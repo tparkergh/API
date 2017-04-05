@@ -1,6 +1,6 @@
 package gov.ca.cwds.rest.resources;
 
-import static gov.ca.cwds.rest.core.Api.RESOURCE_SCREENING_TO_REFERRAL;
+import static gov.ca.cwds.rest.core.Api.RESOURCE_REFERRALS;
 
 import javax.validation.Valid;
 import javax.ws.rs.Consumes;
@@ -35,8 +35,8 @@ import io.swagger.annotations.ApiResponses;
  * 
  * @author CWDS API Team
  */
-@Api(value = RESOURCE_SCREENING_TO_REFERRAL, tags = {RESOURCE_SCREENING_TO_REFERRAL})
-@Path(value = RESOURCE_SCREENING_TO_REFERRAL)
+@Api(value = RESOURCE_REFERRALS, tags = {RESOURCE_REFERRALS})
+@Path(value = RESOURCE_REFERRALS)
 @Produces(MediaType.APPLICATION_JSON)
 @Consumes(MediaType.APPLICATION_JSON)
 public class ScreeningToReferralResource {
