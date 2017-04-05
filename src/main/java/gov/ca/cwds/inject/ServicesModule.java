@@ -10,6 +10,7 @@ import gov.ca.cwds.data.CmsSystemCodeSerializer;
 import gov.ca.cwds.data.persistence.cms.ApiSystemCodeCache;
 import gov.ca.cwds.data.persistence.cms.CmsSystemCodeCacheService;
 import gov.ca.cwds.rest.ApiConfiguration;
+import gov.ca.cwds.rest.api.domain.ScreeningToReferral;
 import gov.ca.cwds.rest.services.AddressService;
 import gov.ca.cwds.rest.services.AddressValidationService;
 import gov.ca.cwds.rest.services.PersonService;
@@ -102,6 +103,7 @@ public class ServicesModule extends AbstractModule {
     bind(AutoCompletePersonService.class);
     bind(CrossReportService.class);
     bind(CmsNSReferralService.class);
+    bind(ScreeningToReferral.class);
 
     // Register CMS system code translator.
     bind(ApiSystemCodeCache.class).to(CmsSystemCodeCacheService.class).asEagerSingleton();
