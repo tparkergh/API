@@ -14,10 +14,13 @@ import static org.mockito.Mockito.when;
 
 import javax.persistence.EntityNotFoundException;
 
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
+import org.mockito.invocation.InvocationOnMock;
+import org.mockito.stubbing.Answer;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
@@ -270,6 +273,32 @@ public class AllegationServiceTest implements ServiceTestTemplate {
       assertEquals("Allegation ID cannot be blank", e.getMessage());
     }
 
+  }
+
+  /*
+   * Test for checking the new Allegation Id generated and lenght is 10
+   */
+  @SuppressWarnings("javadoc")
+  @Test
+  public void createReturnsGeneratedId() throws Exception {
+    Allegation allegationDomain = MAPPER
+        .readValue(fixture("fixtures/domain/legacy/Allegation/valid/valid.json"), Allegation.class);
+    when(allegationDao.create(any(gov.ca.cwds.data.persistence.cms.Allegation.class)))
+        .thenAnswer(new Answer<gov.ca.cwds.data.persistence.cms.Allegation>() {
+
+          @Override
+          public gov.ca.cwds.data.persistence.cms.Allegation answer(InvocationOnMock invocation)
+              throws Throwable {
+            gov.ca.cwds.data.persistence.cms.Allegation report =
+                (gov.ca.cwds.data.persistence.cms.Allegation) invocation.getArguments()[0];
+            return report;
+          }
+        });
+
+    PostedAllegation returned = allegationService.create(allegationDomain);
+    assertEquals(returned.getId().length(), 10);
+    PostedAllegation newReturned = allegationService.create(allegationDomain);
+    Assert.assertNotEquals(returned.getId(), newReturned.getId());
   }
 
   @Override

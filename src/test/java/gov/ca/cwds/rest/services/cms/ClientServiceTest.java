@@ -14,10 +14,13 @@ import static org.mockito.Mockito.when;
 
 import javax.persistence.EntityNotFoundException;
 
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
+import org.mockito.invocation.InvocationOnMock;
+import org.mockito.stubbing.Answer;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
@@ -262,6 +265,32 @@ public class ClientServiceTest implements ServiceTestTemplate {
     }
 
 
+  }
+
+  /*
+   * Test for checking the new Client Id generated and lenght is 10
+   */
+  @SuppressWarnings("javadoc")
+  @Test
+  public void createReturnsGeneratedId() throws Exception {
+    Client clientDomain = MAPPER
+        .readValue(fixture("fixtures/domain/legacy/Client/valid/serviceValid.json"), Client.class);
+    when(clientDao.create(any(gov.ca.cwds.data.persistence.cms.Client.class)))
+        .thenAnswer(new Answer<gov.ca.cwds.data.persistence.cms.Client>() {
+
+          @Override
+          public gov.ca.cwds.data.persistence.cms.Client answer(InvocationOnMock invocation)
+              throws Throwable {
+            gov.ca.cwds.data.persistence.cms.Client report =
+                (gov.ca.cwds.data.persistence.cms.Client) invocation.getArguments()[0];
+            return report;
+          }
+        });
+
+    PostedClient returned = clientService.create(clientDomain);
+    assertEquals(returned.getId().length(), 10);
+    PostedClient newReturned = clientService.create(clientDomain);
+    Assert.assertNotEquals(returned.getId(), newReturned.getId());
   }
 
   @Override

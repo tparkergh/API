@@ -18,6 +18,8 @@ import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
+import org.mockito.invocation.InvocationOnMock;
+import org.mockito.stubbing.Answer;
 
 import gov.ca.cwds.data.cms.ReferralDao;
 import gov.ca.cwds.rest.api.Response;
@@ -333,6 +335,32 @@ public class ReferralServiceTest implements ServiceTestTemplate {
     PostedReferral returned = referralService.create(request);
 
     assertThat(returned.getId(), is("1234567ABC"));
+  }
+
+  /*
+   * Test for checking the new Referral Id generated and lenght is 10
+   */
+  @SuppressWarnings("javadoc")
+  @Test
+  public void createReturnsGeneratedId() throws Exception {
+    Referral referralDomain = MAPPER
+        .readValue(fixture("fixtures/domain/legacy/Referral/valid/valid.json"), Referral.class);
+    when(referralDao.create(any(gov.ca.cwds.data.persistence.cms.Referral.class)))
+        .thenAnswer(new Answer<gov.ca.cwds.data.persistence.cms.Referral>() {
+
+          @Override
+          public gov.ca.cwds.data.persistence.cms.Referral answer(InvocationOnMock invocation)
+              throws Throwable {
+            gov.ca.cwds.data.persistence.cms.Referral report =
+                (gov.ca.cwds.data.persistence.cms.Referral) invocation.getArguments()[0];
+            return report;
+          }
+        });
+
+    PostedReferral returned = referralService.create(referralDomain);
+    assertEquals(returned.getId().length(), 10);
+    PostedReferral newReturned = referralService.create(referralDomain);
+    Assert.assertNotEquals(returned.getId(), newReturned.getId());
   }
 
   @Override
