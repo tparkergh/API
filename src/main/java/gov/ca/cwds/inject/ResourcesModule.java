@@ -1,5 +1,10 @@
 package gov.ca.cwds.inject;
 
+import com.google.inject.AbstractModule;
+import com.google.inject.Injector;
+import com.google.inject.Provides;
+import com.google.inject.name.Named;
+
 import gov.ca.cwds.rest.ApiConfiguration;
 import gov.ca.cwds.rest.SwaggerConfiguration;
 import gov.ca.cwds.rest.api.domain.cms.CmsDocument;
@@ -12,6 +17,7 @@ import gov.ca.cwds.rest.resources.ParticipantResource;
 import gov.ca.cwds.rest.resources.PersonResource;
 import gov.ca.cwds.rest.resources.ResourceDelegate;
 import gov.ca.cwds.rest.resources.ScreeningResource;
+import gov.ca.cwds.rest.resources.ScreeningToReferralResource;
 import gov.ca.cwds.rest.resources.ServiceBackedResourceDelegate;
 import gov.ca.cwds.rest.resources.SimpleResourceDelegate;
 import gov.ca.cwds.rest.resources.SwaggerResource;
@@ -32,6 +38,7 @@ import gov.ca.cwds.rest.services.AddressValidationService;
 import gov.ca.cwds.rest.services.ParticipantService;
 import gov.ca.cwds.rest.services.PersonService;
 import gov.ca.cwds.rest.services.ScreeningService;
+import gov.ca.cwds.rest.services.ScreeningToReferralService;
 import gov.ca.cwds.rest.services.cms.AllegationService;
 import gov.ca.cwds.rest.services.cms.ClientService;
 import gov.ca.cwds.rest.services.cms.CmsDocReferralClientService;
@@ -44,11 +51,6 @@ import gov.ca.cwds.rest.services.cms.ReferralService;
 import gov.ca.cwds.rest.services.cms.ReporterService;
 import gov.ca.cwds.rest.services.cms.StaffPersonService;
 import gov.ca.cwds.rest.services.es.AutoCompletePersonService;
-
-import com.google.inject.AbstractModule;
-import com.google.inject.Injector;
-import com.google.inject.Provides;
-import com.google.inject.name.Named;
 
 
 /**
@@ -85,6 +87,7 @@ public class ResourcesModule extends AbstractModule {
     bind(ReporterResource.class);
     bind(StaffPersonResource.class);
     bind(AddressValidationResource.class);
+    bind(ScreeningToReferralResource.class);
   }
 
   @Provides
@@ -157,6 +160,13 @@ public class ResourcesModule extends AbstractModule {
   @CmsReferralServiceBackedResource
   public ResourceDelegate cmsReferralServiceBackedResource(Injector injector) {
     return new ServiceBackedResourceDelegate(injector.getInstance(CmsReferralService.class));
+  }
+
+  @Provides
+  @ScreeningToReferralServiceBackedResource
+  public ResourceDelegate screeningToReferralBackedResource(Injector injector) {
+    return new ServiceBackedResourceDelegate(
+        injector.getInstance(ScreeningToReferralService.class));
   }
 
   @Provides
