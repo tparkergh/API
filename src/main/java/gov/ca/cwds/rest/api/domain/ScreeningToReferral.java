@@ -58,7 +58,7 @@ public class ScreeningToReferral extends DomainObject implements Request {
 
   @JsonProperty("name")
   @ApiModelProperty(example = "a referral name")
-  @Size(max = 50)
+  @Size(max = 35)
   private String name;
 
   @JsonProperty("report_narrative")
@@ -115,7 +115,6 @@ public class ScreeningToReferral extends DomainObject implements Request {
 
   @JsonProperty("allegations")
   private Set<Allegation> allegations;
-
 
   /**
    * @return the id
@@ -255,6 +254,13 @@ public class ScreeningToReferral extends DomainObject implements Request {
    */
   public Set<Allegation> getAllegations() {
     return allegations;
+  }
+
+  /**
+   * empty constructor
+   */
+  public ScreeningToReferral() {
+
   }
 
   /**
