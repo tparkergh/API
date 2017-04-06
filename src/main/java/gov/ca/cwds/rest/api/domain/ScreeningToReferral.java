@@ -260,7 +260,7 @@ public class ScreeningToReferral extends DomainObject implements Request {
    * empty constructor
    */
   public ScreeningToReferral() {
-
+    super();
   }
 
   /**

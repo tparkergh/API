@@ -259,13 +259,14 @@ public class ScreeningToReferralService implements CrudsService {
     Set<CrossReport> crossReports = new LinkedHashSet<>();
     crossReports = screeningToReferral.getCrossReports();
 
-    crossReports = screeningToReferral.getCrossReports();
     for (CrossReport crossReport : crossReports) {
 
       lawEnforcementIndicator = false;
       if (crossReport.getAgencyType().contains("Law Enforcement")) {
         lawEnforcementIndicator = true;
       }
+
+      // TODO: generate IDENTIFIER for CROSS_REPORT
       gov.ca.cwds.rest.api.domain.cms.CrossReport cmsCrossReport =
           new gov.ca.cwds.rest.api.domain.cms.CrossReport(crossReportId, crossReportMethodCode,
               false, false, "", "", defaultInt, defaultBig, crossReport.getInformDate(), "", "", "",

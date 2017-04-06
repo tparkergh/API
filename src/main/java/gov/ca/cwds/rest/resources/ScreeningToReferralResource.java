@@ -4,8 +4,13 @@ import static gov.ca.cwds.rest.core.Api.RESOURCE_REFERRALS;
 
 import javax.validation.Valid;
 import javax.ws.rs.Consumes;
+import javax.ws.rs.DELETE;
+import javax.ws.rs.GET;
+import javax.ws.rs.HeaderParam;
 import javax.ws.rs.POST;
+import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
@@ -14,7 +19,8 @@ import org.apache.http.HttpStatus;
 
 import com.google.inject.Inject;
 
-import gov.ca.cwds.inject.ScreeningServiceBackedResource;
+import gov.ca.cwds.inject.ScreeningToReferralServiceBackedResource;
+import gov.ca.cwds.rest.api.domain.Screening;
 import gov.ca.cwds.rest.api.domain.ScreeningToReferral;
 import gov.ca.cwds.rest.api.domain.cms.PostedCmsReferral;
 import io.dropwizard.hibernate.UnitOfWork;
@@ -49,7 +55,7 @@ public class ScreeningToReferralResource {
    */
   @Inject
   public ScreeningToReferralResource(
-      @ScreeningServiceBackedResource ResourceDelegate resourceDelegate) {
+      @ScreeningToReferralServiceBackedResource ResourceDelegate resourceDelegate) {
     this.resourceDelegate = resourceDelegate;
   }
 
@@ -72,6 +78,62 @@ public class ScreeningToReferralResource {
   public Response create(
       @Valid @ApiParam(hidden = false, required = true) ScreeningToReferral screeningToReferral) {
     return resourceDelegate.create(screeningToReferral);
+  }
+
+  /**
+   * Delete a {@link Screening}
+   * 
+   * @param id The id of the {@link Screening}
+   * @param acceptHeader The accept header.
+   * 
+   * @return {@link Response}
+   */
+  @DELETE
+  @Path("/{id}")
+  @ApiResponses(value = {@ApiResponse(code = 401, message = "Not Authorized")})
+  @ApiOperation(hidden = true, value = "Delete ScreeningToReferral - not currently implemented",
+      code = HttpStatus.SC_OK, response = Object.class)
+  public Response delete(
+      @PathParam("id") @ApiParam(required = true, value = "id of referral to delete") long id,
+      @HeaderParam("Accept") @ApiParam(hidden = true) String acceptHeader) {
+    return Response.status(Response.Status.NOT_IMPLEMENTED).entity(null).build();
+  }
+
+  /*
+   * (non-Javadoc)
+   * 
+   * @see gov.ca.cwds.rest.resources.CrudsResource#get(java.lang.String, java.lang.String)
+   */
+  @GET
+  @Path("/fetch")
+  @ApiResponses(value = {@ApiResponse(code = 401, message = "Not Authorized"),
+      @ApiResponse(code = 404, message = "Not found"),
+      @ApiResponse(code = 406, message = "Accept Header not supported")})
+  @ApiOperation(value = "Find ScreeingToReferral - not currently implmented",
+      response = Object.class)
+  public Response get() {
+    return Response.status(Response.Status.NOT_IMPLEMENTED).entity(null).build();
+  }
+
+  /**
+   * Update a {@link Screening}.
+   *
+   * @param id the id
+   * @param screeningRequest {@link Screening}
+   *
+   * @return The {@link Response}
+   */
+  @PUT
+  @Path("/{id}")
+  @ApiResponses(value = {@ApiResponse(code = 400, message = "Unable to process JSON"),
+      @ApiResponse(code = 401, message = "Not Authorized"),
+      @ApiResponse(code = 404, message = "not found"),
+      @ApiResponse(code = 406, message = "Accept Header not supported"),
+      @ApiResponse(code = 422, message = "Unable to validate Screening")})
+  @ApiOperation(value = "Update Screening to Referral - not currently implemented",
+      code = HttpStatus.SC_OK, response = Object.class)
+  public Response update() {
+    return Response.status(Response.Status.NOT_IMPLEMENTED).entity(null).build();
   }
 
 }
