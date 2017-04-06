@@ -55,10 +55,8 @@ public class ScreeningToReferralService implements CrudsService {
   private ReporterService reporterService;
   private PostedReporter savedreporter;
 
-
   private String genderCode;
   private Boolean lawEnforcementIndicator;
-  private Boolean reporterParticipant;
   private Boolean selfReported;
   private Boolean anonymousReporter;
   private String zipCode;
@@ -66,6 +64,7 @@ public class ScreeningToReferralService implements CrudsService {
   private String streetName;
   private String streetNumber;
 
+  // default values
   private final short defaultCode = 0;
   private final BigDecimal defaultBig = new BigDecimal(0);
   private final int defaultInt = 0;
@@ -80,7 +79,6 @@ public class ScreeningToReferralService implements CrudsService {
   private short allegationCountyCode = 0;
   private short addressStateCode = 0;
 
-
   // TODO: County Codes - two character string
   private String countyCode = "99";
 
@@ -88,7 +86,7 @@ public class ScreeningToReferralService implements CrudsService {
   private String referralId = "";
   private String clientId = "";
   private String crossReportId = "34567890123ABC";
-  private String allegationId = "4567890123ABC";
+  private String allegationId = "";
   private String reporterId = "5678901234ABC";
   private String victimClientId = "";
   private String perpatratorClientId = "";
@@ -160,7 +158,6 @@ public class ScreeningToReferralService implements CrudsService {
     for (Participant incomingParticipant : participants) {
 
       genderCode = incomingParticipant.getGender();
-      reporterParticipant = false;
       victimClient.clear();
       perpatratorClient.clear();
 
@@ -238,8 +235,6 @@ public class ScreeningToReferralService implements CrudsService {
               // defaultBig, false, defaultCode, defaultInt, defaultBig, "", "", "", defaultInt,
               // defaultBig, addressStateCode, streetNumber, streetName, defaultCode, defaultCode,
               // "", zipCode, zipSuffix);
-
-
 
               /*
                * CMS Client Address
