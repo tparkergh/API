@@ -118,9 +118,6 @@ public class ScreeningToReferralResource {
   /**
    * Update a {@link Screening}.
    *
-   * @param id the id
-   * @param screeningRequest {@link Screening}
-   *
    * @return The {@link Response}
    */
   @PUT
