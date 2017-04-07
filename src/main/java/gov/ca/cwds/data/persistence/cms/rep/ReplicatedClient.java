@@ -87,7 +87,7 @@ import gov.ca.cwds.data.std.ApiPhoneAware;
             + "LEFT OUTER JOIN {h-schema}CL_ADDRT b ON a.IDENTIFIER = b.FKCLIENT_T and b.EFF_END_DT is null "
             + "LEFT OUTER JOIN {h-schema}ADDRS_T c ON b.FKADDRS_T = c.IDENTIFIER "
             + "where a.SOC158_IND ='N' and a.SENSTV_IND = 'N' "
-            + "AND a.IDENTIFIER >= :min_id and a.IDENTIFIER < :max_id for read only",
+            + "AND a.IDENTIFIER BETWEEN :min_id and :max_id for read only",
         resultClass = ReplicatedClient.class, readOnly = true,
         comment = "b,a.clientAddresses;c,b.addresses")})
 @Entity
