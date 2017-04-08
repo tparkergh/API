@@ -862,6 +862,282 @@ public abstract class BaseClient extends CmsPersistentObject
     return ret.toArray(new ApiLanguageAware[0]);
   }
 
+  public static long getSerialversionuid() {
+    return serialVersionUID;
+  }
+
+  public static Logger getLogger() {
+    return LOGGER;
+  }
+
+  public void setAdjudicatedDelinquentIndicator(String adjudicatedDelinquentIndicator) {
+    this.adjudicatedDelinquentIndicator = adjudicatedDelinquentIndicator;
+  }
+
+  public void setAdoptionStatusCode(String adoptionStatusCode) {
+    this.adoptionStatusCode = adoptionStatusCode;
+  }
+
+  public void setAlienRegistrationNumber(String alienRegistrationNumber) {
+    this.alienRegistrationNumber = alienRegistrationNumber;
+  }
+
+  public void setBirthCity(String birthCity) {
+    this.birthCity = birthCity;
+  }
+
+  public void setBirthCountryCodeType(Short birthCountryCodeType) {
+    this.birthCountryCodeType = birthCountryCodeType;
+  }
+
+  public void setBirthDate(Date birthDate) {
+    this.birthDate = birthDate;
+  }
+
+  public void setBirthFacilityName(String birthFacilityName) {
+    this.birthFacilityName = birthFacilityName;
+  }
+
+  public void setBirthStateCodeType(Short birthStateCodeType) {
+    this.birthStateCodeType = birthStateCodeType;
+  }
+
+  public void setBirthplaceVerifiedIndicator(String birthplaceVerifiedIndicator) {
+    this.birthplaceVerifiedIndicator = birthplaceVerifiedIndicator;
+  }
+
+  public void setChildClientIndicatorVar(String childClientIndicatorVar) {
+    this.childClientIndicatorVar = childClientIndicatorVar;
+  }
+
+  public void setClientIndexNumber(String clientIndexNumber) {
+    this.clientIndexNumber = clientIndexNumber;
+  }
+
+  public void setCommentDescription(String commentDescription) {
+    this.commentDescription = commentDescription;
+  }
+
+  public void setCommonFirstName(String commonFirstName) {
+    this.commonFirstName = commonFirstName;
+  }
+
+  public void setCommonLastName(String commonLastName) {
+    this.commonLastName = commonLastName;
+  }
+
+  public void setCommonMiddleName(String commonMiddleName) {
+    this.commonMiddleName = commonMiddleName;
+  }
+
+  public void setConfidentialityActionDate(Date confidentialityActionDate) {
+    this.confidentialityActionDate = confidentialityActionDate;
+  }
+
+  public void setConfidentialityInEffectIndicator(String confidentialityInEffectIndicator) {
+    this.confidentialityInEffectIndicator = confidentialityInEffectIndicator;
+  }
+
+  public void setCreationDate(Date creationDate) {
+    this.creationDate = creationDate;
+  }
+
+  public void setCurrCaChildrenServIndicator(String currCaChildrenServIndicator) {
+    this.currCaChildrenServIndicator = currCaChildrenServIndicator;
+  }
+
+  public void setCurrentlyOtherDescription(String currentlyOtherDescription) {
+    this.currentlyOtherDescription = currentlyOtherDescription;
+  }
+
+  public void setCurrentlyRegionalCenterIndicator(String currentlyRegionalCenterIndicator) {
+    this.currentlyRegionalCenterIndicator = currentlyRegionalCenterIndicator;
+  }
+
+  public void setDeathDate(Date deathDate) {
+    this.deathDate = deathDate;
+  }
+
+  public void setDeathDateVerifiedIndicator(String deathDateVerifiedIndicator) {
+    this.deathDateVerifiedIndicator = deathDateVerifiedIndicator;
+  }
+
+  public void setDeathPlace(String deathPlace) {
+    this.deathPlace = deathPlace;
+  }
+
+  public void setDeathReasonText(String deathReasonText) {
+    this.deathReasonText = deathReasonText;
+  }
+
+  public void setDriverLicenseNumber(String driverLicenseNumber) {
+    this.driverLicenseNumber = driverLicenseNumber;
+  }
+
+  public void setDriverLicenseStateCodeType(Short driverLicenseStateCodeType) {
+    this.driverLicenseStateCodeType = driverLicenseStateCodeType;
+  }
+
+  public void setEmailAddress(String emailAddress) {
+    this.emailAddress = emailAddress;
+  }
+
+  public void setEstimatedDobCode(String estimatedDobCode) {
+    this.estimatedDobCode = estimatedDobCode;
+  }
+
+  public void setEthUnableToDetReasonCode(String ethUnableToDetReasonCode) {
+    this.ethUnableToDetReasonCode = ethUnableToDetReasonCode;
+  }
+
+  public void setFatherParentalRightTermDate(Date fatherParentalRightTermDate) {
+    this.fatherParentalRightTermDate = fatherParentalRightTermDate;
+  }
+
+  public void setGenderCode(String genderCode) {
+    this.genderCode = genderCode;
+  }
+
+  public void setHealthSummaryText(String healthSummaryText) {
+    this.healthSummaryText = healthSummaryText;
+  }
+
+  public void setHispUnableToDetReasonCode(String hispUnableToDetReasonCode) {
+    this.hispUnableToDetReasonCode = hispUnableToDetReasonCode;
+  }
+
+  public void setHispanicOriginCode(String hispanicOriginCode) {
+    this.hispanicOriginCode = hispanicOriginCode;
+  }
+
+  public void setId(String id) {
+    this.id = id;
+  }
+
+  public void setImmigrationCountryCodeType(Short immigrationCountryCodeType) {
+    this.immigrationCountryCodeType = immigrationCountryCodeType;
+  }
+
+  public void setImmigrationStatusType(Short immigrationStatusType) {
+    this.immigrationStatusType = immigrationStatusType;
+  }
+
+  public void setIncapacitatedParentCode(String incapacitatedParentCode) {
+    this.incapacitatedParentCode = incapacitatedParentCode;
+  }
+
+  public void setIndividualHealthCarePlanIndicator(String individualHealthCarePlanIndicator) {
+    this.individualHealthCarePlanIndicator = individualHealthCarePlanIndicator;
+  }
+
+  public void setLimitationOnScpHealthIndicator(String limitationOnScpHealthIndicator) {
+    this.limitationOnScpHealthIndicator = limitationOnScpHealthIndicator;
+  }
+
+  public void setLiterateCode(String literateCode) {
+    this.literateCode = literateCode;
+  }
+
+  public void setMaritalCohabitatnHstryIndicatorVar(String maritalCohabitatnHstryIndicatorVar) {
+    this.maritalCohabitatnHstryIndicatorVar = maritalCohabitatnHstryIndicatorVar;
+  }
+
+  public void setMaritalStatusType(Short maritalStatusType) {
+    this.maritalStatusType = maritalStatusType;
+  }
+
+  public void setMilitaryStatusCode(String militaryStatusCode) {
+    this.militaryStatusCode = militaryStatusCode;
+  }
+
+  public void setMotherParentalRightTermDate(Date motherParentalRightTermDate) {
+    this.motherParentalRightTermDate = motherParentalRightTermDate;
+  }
+
+  public void setNamePrefixDescription(String namePrefixDescription) {
+    this.namePrefixDescription = namePrefixDescription;
+  }
+
+  public void setNameType(Short nameType) {
+    this.nameType = nameType;
+  }
+
+  public void setOutstandingWarrantIndicator(String outstandingWarrantIndicator) {
+    this.outstandingWarrantIndicator = outstandingWarrantIndicator;
+  }
+
+  public void setPrevCaChildrenServIndicator(String prevCaChildrenServIndicator) {
+    this.prevCaChildrenServIndicator = prevCaChildrenServIndicator;
+  }
+
+  public void setPrevOtherDescription(String prevOtherDescription) {
+    this.prevOtherDescription = prevOtherDescription;
+  }
+
+  public void setPrevRegionalCenterIndicator(String prevRegionalCenterIndicator) {
+    this.prevRegionalCenterIndicator = prevRegionalCenterIndicator;
+  }
+
+  public void setPrimaryEthnicityType(Short primaryEthnicityType) {
+    this.primaryEthnicityType = primaryEthnicityType;
+  }
+
+  public void setPrimaryLanguageType(Short primaryLanguageType) {
+    this.primaryLanguageType = primaryLanguageType;
+  }
+
+  public void setReligionType(Short religionType) {
+    this.religionType = religionType;
+  }
+
+  public void setSecondaryLanguageType(Short secondaryLanguageType) {
+    this.secondaryLanguageType = secondaryLanguageType;
+  }
+
+  public void setSensitiveHlthInfoOnFileIndicator(String sensitiveHlthInfoOnFileIndicator) {
+    this.sensitiveHlthInfoOnFileIndicator = sensitiveHlthInfoOnFileIndicator;
+  }
+
+  public void setSensitivityIndicator(String sensitivityIndicator) {
+    this.sensitivityIndicator = sensitivityIndicator;
+  }
+
+  public void setSoc158PlacementCode(String soc158PlacementCode) {
+    this.soc158PlacementCode = soc158PlacementCode;
+  }
+
+  public void setSoc158SealedClientIndicator(String soc158SealedClientIndicator) {
+    this.soc158SealedClientIndicator = soc158SealedClientIndicator;
+  }
+
+  public void setSocialSecurityNumChangedCode(String socialSecurityNumChangedCode) {
+    this.socialSecurityNumChangedCode = socialSecurityNumChangedCode;
+  }
+
+  public void setSocialSecurityNumber(String socialSecurityNumber) {
+    this.socialSecurityNumber = socialSecurityNumber;
+  }
+
+  public void setSuffixTitleDescription(String suffixTitleDescription) {
+    this.suffixTitleDescription = suffixTitleDescription;
+  }
+
+  public void setTribalAncestryClientIndicatorVar(String tribalAncestryClientIndicatorVar) {
+    this.tribalAncestryClientIndicatorVar = tribalAncestryClientIndicatorVar;
+  }
+
+  public void setTribalMembrshpVerifctnIndicatorVar(String tribalMembrshpVerifctnIndicatorVar) {
+    this.tribalMembrshpVerifctnIndicatorVar = tribalMembrshpVerifctnIndicatorVar;
+  }
+
+  public void setUnemployedParentCode(String unemployedParentCode) {
+    this.unemployedParentCode = unemployedParentCode;
+  }
+
+  public void setZippyCreatedIndicator(String zippyCreatedIndicator) {
+    this.zippyCreatedIndicator = zippyCreatedIndicator;
+  }
+
   // @Override
   // public ApiPhoneAware[] getPhones() {
   // List<ApiPhoneAware> phones = new ArrayList<>();
