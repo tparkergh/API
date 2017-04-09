@@ -45,7 +45,12 @@ import gov.ca.cwds.data.persistence.cms.BaseAttorney;
             + "from ( select mod(y.rn, CAST(:total_buckets AS INTEGER)) + 1 as bucket, y.* "
             + "from ( select row_number() over (order by 1) as rn, x.* "
             + "from {h-schema}ATTRNY_T x ) y ) z where z.bucket = :bucket_num for read only",
-        resultClass = ReplicatedAttorney.class)})
+        resultClass = ReplicatedAttorney.class),
+    @NamedNativeQuery(
+        name = "gov.ca.cwds.data.persistence.cms.rep.ReplicatedAttorney.findBucketRange",
+        query = "SELECT x.* FROM {h-schema}ATTRNY_T x "
+            + "WHERE IDENTIFIER BETWEEN :min_id AND :max_id FOR READ ONLY",
+        resultClass = ReplicatedAttorney.class, readOnly = true)})
 @Entity
 @Table(name = "ATTRNY_T")
 @JsonPropertyOrder(alphabetic = true)
@@ -53,7 +58,7 @@ import gov.ca.cwds.data.persistence.cms.BaseAttorney;
 public class ReplicatedAttorney extends BaseAttorney implements CmsReplicatedEntity {
 
   /**
-   * 
+   * Generated version.
    */
   private static final long serialVersionUID = 6160989831851057517L;
 
