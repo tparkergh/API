@@ -130,6 +130,9 @@ public abstract class BaseAddress extends CmsPersistentObject
   @ColumnTransformer(read = "trim(UNIT_NO)")
   protected String unitNumber;
 
+  /**
+   * Default constructor.
+   */
   public BaseAddress() {
     super();
   }
