@@ -5,11 +5,6 @@ import java.util.Date;
 import javax.persistence.Entity;
 import javax.persistence.Table;
 
-import org.hibernate.annotations.NamedNativeQueries;
-import org.hibernate.annotations.NamedNativeQuery;
-import org.hibernate.annotations.NamedQueries;
-import org.hibernate.annotations.NamedQuery;
-
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
@@ -20,22 +15,12 @@ import gov.ca.cwds.data.persistence.PersistentObject;
  * 
  * @author CWDS API Team
  */
-@NamedQueries({
-    @NamedQuery(name = "gov.ca.cwds.data.persistence.cms.OtherAdultInPlacemtHome.findAll",
-        query = "FROM OtherAdultInPlacemtHome"),
-    @NamedQuery(
-        name = "gov.ca.cwds.data.persistence.cms.OtherAdultInPlacemtHome.findAllUpdatedAfter",
-        query = "FROM OtherAdultInPlacemtHome WHERE lastUpdatedTime > :after")})
-@NamedNativeQueries({@NamedNativeQuery(
-    name = "gov.ca.cwds.data.persistence.cms.OtherAdultInPlacemtHome.findAllByBucket",
-    query = "select z.IDENTIFIER, z.BIRTH_DT, z.END_DT, z.GENDER_CD, z.OTH_ADLTNM, "
-        + "z.START_DT, z.LST_UPD_ID, z.LST_UPD_TS, z.FKPLC_HM_T, z.COMNT_DSC, "
-        + "z.OTH_ADL_CD, z.IDENTFD_DT, z.RESOST_IND, z.PASSBC_CD "
-        + "from ( select mod(y.rn, CAST(:total_buckets AS INTEGER)) + 1 as bucket, y.* "
-        + "from ( select row_number() over (order by 1) as rn, x.* "
-        + "from ( select c.* from {h-schema}OTH_ADLT c "
-        + ") x ) y ) z where z.bucket = :bucket_num for read only",
-    resultClass = OtherAdultInPlacemtHome.class)})
+// @NamedQueries({
+// @NamedQuery(name = "gov.ca.cwds.data.persistence.cms.OtherAdultInPlacemtHome.findAll",
+// query = "FROM OtherAdultInPlacemtHome"),
+// @NamedQuery(
+// name = "gov.ca.cwds.data.persistence.cms.OtherAdultInPlacemtHome.findAllUpdatedAfter",
+// query = "FROM OtherAdultInPlacemtHome WHERE lastUpdatedTime > :after")})
 @Entity
 @Table(name = "OTH_ADLT")
 @JsonPropertyOrder(alphabetic = true)

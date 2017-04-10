@@ -32,25 +32,25 @@ import gov.ca.cwds.data.persistence.cms.BaseOtherAdultInPlacemtHome;
             + "x.OTH_ADL_CD, x.IDENTFD_DT, x.RESOST_IND, x.PASSBC_CD "
             + ", x.IBMSNAP_OPERATION, x.IBMSNAP_LOGMARKER FROM {h-schema}OTH_ADLT x "
             + "WHERE x.IDENTIFIER BETWEEN :min_id AND :max_id ORDER BY x.IDENTIFIER FOR READ ONLY",
-        resultClass = ReplicatedEducationProviderContact.class, readOnly = true),
+        resultClass = ReplicatedOtherAdultInPlacemtHome.class, readOnly = true),
     @NamedNativeQuery(
         name = "gov.ca.cwds.data.persistence.cms.rep.ReplicatedOtherAdultInPlacemtHome.findAllUpdatedAfter",
-        query = "select z.IDENTIFIER, z.BIRTH_DT, z.END_DT, z.GENDER_CD, z.OTH_ADLTNM, "
+        query = "SELECT z.IDENTIFIER, z.BIRTH_DT, z.END_DT, z.GENDER_CD, z.OTH_ADLTNM, "
             + "z.START_DT, z.LST_UPD_ID, z.LST_UPD_TS, z.FKPLC_HM_T, z.COMNT_DSC, "
             + "z.OTH_ADL_CD, z.IDENTFD_DT, z.RESOST_IND, z.PASSBC_CD "
             + ", z.IBMSNAP_OPERATION, z.IBMSNAP_LOGMARKER "
-            + "from {h-schema}OTH_ADLT z WHERE z.IBMSNAP_LOGMARKER >= :after for read only ",
-        resultClass = ReplicatedOtherAdultInPlacemtHome.class),
+            + "FROM {h-schema}OTH_ADLT z WHERE z.IBMSNAP_LOGMARKER >= :after FOR READ ONLY ",
+        resultClass = ReplicatedOtherAdultInPlacemtHome.class, readOnly = true),
     @NamedNativeQuery(
         name = "gov.ca.cwds.data.persistence.cms.rep.ReplicatedOtherAdultInPlacemtHome.findAllByBucket",
-        query = "select z.IDENTIFIER, z.BIRTH_DT, z.END_DT, z.GENDER_CD, z.OTH_ADLTNM, "
+        query = "SELECT z.IDENTIFIER, z.BIRTH_DT, z.END_DT, z.GENDER_CD, z.OTH_ADLTNM, "
             + "z.START_DT, z.LST_UPD_ID, z.LST_UPD_TS, z.FKPLC_HM_T, z.COMNT_DSC, "
             + "z.OTH_ADL_CD, z.IDENTFD_DT, z.RESOST_IND, z.PASSBC_CD "
-            + ", 'U' as IBMSNAP_OPERATION, z.LST_UPD_TS as IBMSNAP_LOGMARKER "
-            + "from ( select mod(y.rn, CAST(:total_buckets AS INTEGER)) + 1 as bucket, y.* "
-            + "from ( select row_number() over (order by 1) as rn, x.* "
-            + "from {h-schema}OTH_ADLT x ) y ) z where z.bucket = :bucket_num for read only",
-        resultClass = ReplicatedOtherAdultInPlacemtHome.class)})
+            + ", 'U' as IBMSNAP_OPERATION, z.LST_UPD_TS AS IBMSNAP_LOGMARKER "
+            + "FROM ( SELECT mod(y.rn, CAST(:total_buckets AS INTEGER)) + 1 as bucket, y.* "
+            + "FROM ( SELECT row_number() over (order by 1) AS rn, x.* "
+            + "FROM {h-schema}OTH_ADLT x ) y ) z WHERE z.bucket = :bucket_num FOR READ ONLY",
+        resultClass = ReplicatedOtherAdultInPlacemtHome.class, readOnly = true)})
 @Entity
 @Table(name = "OTH_ADLT")
 @JsonPropertyOrder(alphabetic = true)

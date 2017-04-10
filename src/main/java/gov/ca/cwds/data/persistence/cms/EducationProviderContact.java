@@ -5,11 +5,6 @@ import java.math.BigDecimal;
 import javax.persistence.Entity;
 import javax.persistence.Table;
 
-import org.hibernate.annotations.NamedNativeQueries;
-import org.hibernate.annotations.NamedNativeQuery;
-import org.hibernate.annotations.NamedQueries;
-import org.hibernate.annotations.NamedQuery;
-
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
@@ -20,24 +15,12 @@ import gov.ca.cwds.data.persistence.PersistentObject;
  * 
  * @author CWDS API Team
  */
-@NamedQueries({
-    @NamedQuery(name = "gov.ca.cwds.data.persistence.cms.EducationProviderContact.findAll",
-        query = "FROM EducationProviderContact"),
-    @NamedQuery(
-        name = "gov.ca.cwds.data.persistence.cms.EducationProviderContact.findAllUpdatedAfter",
-        query = "FROM EducationProviderContact WHERE lastUpdatedTime > :after")})
-@NamedNativeQueries({@NamedNativeQuery(
-    name = "gov.ca.cwds.data.persistence.cms.EducationProviderContact.findPartitionedBuckets",
-    query = "select z.IDENTIFIER, z.PRICNTIND, z.PH_NUMBR, z.PH_EXTNO, "
-        + "z.FAX_NO, z.FIRST_NME, z.MIDDLE_NM, z.LAST_NME, z.NM_PREFIX, "
-        + "z.SUFFX_TITL, z.TITLDESC, z.EMAILADR, z.DOE_IND, z.LST_UPD_ID, "
-        + "z.LST_UPD_TS, z.FKED_PVDRT "
-        + "from ( select mod(y.rn, CAST(:total_buckets AS INTEGER)) + 1 as bucket, y.* "
-        + "from ( select row_number() over (order by 1) as rn, x.* "
-        + "from ( select c.* from {h-schema}EDPRVCNT c "
-        + "WHERE c.IDENTIFIER >= :min_id and c.IDENTIFIER < :max_id "
-        + ") x ) y ) z where z.bucket = :bucket_num for read only",
-    resultClass = EducationProviderContact.class)})
+// @NamedQueries({
+// @NamedQuery(name = "gov.ca.cwds.data.persistence.cms.EducationProviderContact.findAll",
+// query = "FROM EducationProviderContact"),
+// @NamedQuery(
+// name = "gov.ca.cwds.data.persistence.cms.EducationProviderContact.findAllUpdatedAfter",
+// query = "FROM EducationProviderContact WHERE lastUpdatedTime > :after")})
 @Entity
 @Table(name = "EDPRVCNT")
 @JsonPropertyOrder(alphabetic = true)
