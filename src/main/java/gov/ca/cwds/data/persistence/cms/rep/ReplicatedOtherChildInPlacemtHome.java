@@ -56,7 +56,7 @@ public class ReplicatedOtherChildInPlacemtHome extends BaseOtherChildInPlacemtHo
     implements CmsReplicatedEntity {
 
   /**
-   * 
+   * Default.
    */
   private static final long serialVersionUID = 1L;
 
