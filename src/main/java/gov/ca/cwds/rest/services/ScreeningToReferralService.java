@@ -11,6 +11,8 @@ import org.apache.commons.lang3.NotImplementedException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializationFeature;
 import com.google.inject.Inject;
 
 import gov.ca.cwds.rest.api.Request;
@@ -36,6 +38,7 @@ import gov.ca.cwds.rest.services.cms.CrossReportService;
 import gov.ca.cwds.rest.services.cms.ReferralClientService;
 import gov.ca.cwds.rest.services.cms.ReferralService;
 import gov.ca.cwds.rest.services.cms.ReporterService;
+import io.dropwizard.jackson.Jackson;
 
 /**
  * Business layer object to work on {@link Screening}
@@ -43,6 +46,9 @@ import gov.ca.cwds.rest.services.cms.ReporterService;
  * @author CWDS API Team
  */
 public class ScreeningToReferralService implements CrudsService {
+
+  private static final ObjectMapper MAPPER = Jackson.newObjectMapper();
+
 
   @SuppressWarnings("unused")
   private static final Logger LOGGER = LoggerFactory.getLogger(CmsReferralService.class);
@@ -64,6 +70,7 @@ public class ScreeningToReferralService implements CrudsService {
   private String genderCode;
   private Boolean lawEnforcementIndicator;
   private Boolean anonymousReporter;
+  private Boolean mandatedReporterIndicator;
   private String zipCode;
   private Short zipSuffix;
   private String streetName;
@@ -77,7 +84,6 @@ public class ScreeningToReferralService implements CrudsService {
 
   // TODO: determine values of sys Codes and apply
   private short communicationsMethodCode = 0;
-  private short countySpecificCode = 0;
   private short referralResponseTypeCode = 0;
   private short crossReportMethodCode = 0;
   private short allegationTypeCode = 0;
@@ -113,6 +119,7 @@ public class ScreeningToReferralService implements CrudsService {
   public ScreeningToReferralService(ReferralService referralService, ClientService clientService,
       AllegationService allegationService, CrossReportService crossReportService,
       ReferralClientService referralClientService, ReporterService reporterService) {
+
     super();
     this.referralService = referralService;
     this.clientService = clientService;
@@ -125,16 +132,15 @@ public class ScreeningToReferralService implements CrudsService {
 
   @Override
   public Response create(Request request) {
+
+    MAPPER.configure(SerializationFeature.INDENT_OUTPUT, true);
+
     assert request instanceof ScreeningToReferral;
 
-    savedReporter = new PostedReporter();
-
-    /*
-     * CMS Referral
-     */
+    // savedReporter = new PostedReporter();
     ScreeningToReferral screeningToReferral = (ScreeningToReferral) request;
 
-    // set the
+    // TODO: date/time stamp parsing to date and time fields
     String[] receivedDateTime = screeningToReferral.getStartedAt().split("T");
 
     Referral referral = new Referral(false, anonymousReporter(screeningToReferral), false, "",
@@ -143,6 +149,7 @@ public class ScreeningToReferralService implements CrudsService {
         receivedDateTime[1], referralResponseTypeCode, defaultCode, "", "", "",
         screeningToReferral.getReportNarrative(), "", "", "", "", "", "", "", "", false, false,
         false, false, "", responsibleAgencyCode, defaultCode, "", "", "");
+
     // IDENTIFIER and LAST_UPD_ID are assigned in the create method
     PostedReferral postedReferral = this.referralService.create(referral);
     referralId = postedReferral.getId();
@@ -176,13 +183,19 @@ public class ScreeningToReferralService implements CrudsService {
            * anonymous reporter
            */
           if (savedReporter != null) {
+            LOGGER.error("ERROR - only one Reporter per Referral allowed", savedReporter);
             throw new ServiceException("ERROR - only one Reporter per Referral allowed");
           }
 
+          mandatedReporterIndicator = false;
+          if (role.equalsIgnoreCase(MANDATED_REPORTER_ROLE)) {
+            mandatedReporterIndicator = true;
+          }
+
           Reporter reporter = new Reporter("", "", defaultCode, defaultCode, false, "", "", "",
-              false, incomingParticipant.getFirstName(), incomingParticipant.getLastName(), false,
-              0, defaultBig, "", "", defaultBig, 0, defaultCode, "", "", "", "", "", "",
-              defaultCode, countyCode);
+              false, incomingParticipant.getFirstName(), incomingParticipant.getLastName(),
+              mandatedReporterIndicator, 0, defaultBig, "", "", defaultBig, 0, defaultCode, "", "",
+              "", "", "referralId", "", defaultCode, countyCode);
           PostedReporter postedreporter = this.reporterService.create(reporter);
           savedReporter = postedreporter;
         } else {
@@ -192,11 +205,19 @@ public class ScreeningToReferralService implements CrudsService {
             Client client = new Client("", false, "", "", "", defaultCode,
                 incomingParticipant.getDateOfBirth(), "", defaultCode, false, false, "", "",
                 incomingParticipant.getFirstName(), incomingParticipant.getLastName(), "", "",
-                false, "", false, "", false, "", false, "", "", "", defaultCode, "", "", "", "", "",
-                genderCode, "", "", defaultCode, defaultCode, "", false, false, "", false,
+                false, "", false, "", false, "", false, "", "", "", defaultCode, "", "", "", "",
+                genderCode, "", "", "", defaultCode, defaultCode, "", false, false, "", false,
                 defaultCode, "", "", "", defaultCode, false, false, "", false, defaultCode,
-                defaultCode, defaultCode, defaultCode, false, "", "", false,
-                incomingParticipant.getSsn(), "", "", false, false, "", false);
+                defaultCode, defaultCode, defaultCode, false, "", "", false, "",
+                incomingParticipant.getSsn(), "", false, false, "", false);
+            // try {
+            // final String domainClient = MAPPER.writeValueAsString(client);
+            // System.out.println(domainClient);
+            // } catch (JsonProcessingException e) {
+            // // TODO Auto-generated catch block
+            // e.printStackTrace();
+            // }
+
             PostedClient postedClient = this.clientService.create(client);
             postedClients.add(postedClient);
             clientId = postedClient.getId();
@@ -205,6 +226,15 @@ public class ScreeningToReferralService implements CrudsService {
             ReferralClient referralClient = new ReferralClient("", defaultCode, defaultCode, "", "",
                 role.equalsIgnoreCase(SELF_REPORTED_ROLE), false, referralId, clientId, "",
                 defaultCode, "", "", false, false, false);
+            // try {
+            // final String domainReferralClient = MAPPER.writeValueAsString(referralClient);
+            // System.out.println(domainReferralClient);
+            //
+            // } catch (JsonProcessingException e) {
+            // // TODO Auto-generated catch block
+            // e.printStackTrace();
+            // }
+
             gov.ca.cwds.rest.api.domain.cms.ReferralClient postedReferralClient =
                 this.referralClientService.create(referralClient);
             resultReferralClients.add(postedReferralClient);
@@ -219,7 +249,10 @@ public class ScreeningToReferralService implements CrudsService {
 
               // TODO: address parsing - requires standardizing in seperate class
               zipCode = address.getZip().toString().substring(0, 4);
-              zipSuffix = Short.parseShort(address.getZip().toString().substring(5, 4));
+              zipSuffix = null;
+              if (address.getZip().toString().length() > 5) {
+                zipSuffix = Short.parseShort(address.getZip().toString().substring(5));
+              }
               String[] streetAddress = address.getStreetAddress().split(" ");
               streetNumber = streetAddress[0];
               streetName = streetAddress[1];
@@ -269,9 +302,17 @@ public class ScreeningToReferralService implements CrudsService {
       // TODO: generate IDENTIFIER for CROSS_REPORT
       gov.ca.cwds.rest.api.domain.cms.CrossReport cmsCrossReport =
           new gov.ca.cwds.rest.api.domain.cms.CrossReport(crossReportId, crossReportMethodCode,
-              false, false, "", "", defaultInt, defaultBig, crossReport.getInformDate(), "", "", "",
-              referralId, "", crossReport.getAgencyName(), "", "", "", lawEnforcementIndicator,
+              false, false, "", "", defaultInt, defaultBig, crossReport.getInformDate(), "", "",
+              referralId, "", "", crossReport.getAgencyName(), "", "", "", lawEnforcementIndicator,
               false, false);
+      // try {
+      // final String domainReferralClient = MAPPER.writeValueAsString(cmsCrossReport);
+      // System.out.println(domainReferralClient);
+      //
+      // } catch (JsonProcessingException e) {
+      // // TODO Auto-generated catch block
+      // e.printStackTrace();
+      // }
       gov.ca.cwds.rest.api.domain.cms.CrossReport postedCrossReport =
           this.crossReportService.create(cmsCrossReport);
       resultCrossReports.add(postedCrossReport);
@@ -285,8 +326,13 @@ public class ScreeningToReferralService implements CrudsService {
     Set<Allegation> allegations = new LinkedHashSet<>();
     allegations = screeningToReferral.getAllegations();
     for (Allegation allegation : allegations) {
-      victimClientId = victimClient.get(allegation.getVictimPersonId());
-      perpatratorClientId = perpatratorClient.get(allegation.getPerpetratorPersonId());
+
+      if (victimClient.containsKey(allegation.getVictimPersonId())) {
+        victimClientId = victimClient.get(allegation.getVictimPersonId());
+      }
+      if (perpatratorClient.containsKey(allegation.getPerpetratorPersonId())) {
+        perpatratorClientId = perpatratorClient.get(allegation.getPerpetratorPersonId());
+      }
       if (victimClientId.isEmpty()) {
         throw new ServiceException("ERROR - victim could not be determined for an allegation");
       }
@@ -296,10 +342,22 @@ public class ScreeningToReferralService implements CrudsService {
               screeningToReferral.getLocationType(), "", defaultCode, allegationTypeCode,
               screeningToReferral.getReportNarrative(), "", false, "", false, victimClientId,
               perpatratorClientId, referralId, countyCode, false, defaultCode);
+      // try {
+      // final String domainReferralClient = MAPPER.writeValueAsString(cmsAllegation);
+      // System.out.println(domainReferralClient);
+      //
+      // } catch (JsonProcessingException e) {
+      // // TODO Auto-generated catch block
+      // e.printStackTrace();
+      // }
       PostedAllegation postedAllegation = this.allegationService.create(cmsAllegation);
       postedAllegations.add(postedAllegation);
       allegationId = postedAllegation.getId();
     }
+
+    PostedCmsReferral pcr = new PostedCmsReferral(postedReferral, postedClients, postedAllegations,
+        resultCrossReports, resultReferralClients, savedReporter);
+
 
     return new PostedCmsReferral(postedReferral, postedClients, postedAllegations,
         resultCrossReports, resultReferralClients, savedReporter);
