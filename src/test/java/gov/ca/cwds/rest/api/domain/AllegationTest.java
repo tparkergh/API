@@ -33,7 +33,7 @@ public class AllegationTest {
   @Test
   public void serializesToJSON() throws Exception {
     String expected =
-        MAPPER.writeValueAsString(new Allegation(1, 2, "physical abuse", "Sacramento"));
+        MAPPER.writeValueAsString(new Allegation(5432, 2, "physical abuse", "Sacramento"));
 
     String serialized = MAPPER.writeValueAsString(
         MAPPER.readValue(fixture("fixtures/domain/Allegation/valid/valid.json"), Allegation.class));
@@ -44,7 +44,7 @@ public class AllegationTest {
 
   @Test
   public void testDeserializesFromJSON() throws Exception {
-    Allegation expected = new Allegation(1, 2, "physical abuse", "Sacramento");
+    Allegation expected = new Allegation(5432, 2, "physical abuse", "Sacramento");
 
     Allegation serialized =
         MAPPER.readValue(fixture("fixtures/domain/Allegation/valid/valid.json"), Allegation.class);
