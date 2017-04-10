@@ -16,6 +16,7 @@ import org.junit.Test;
 import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializationFeature;
 import com.squarespace.jersey2.guice.JerseyGuiceUtils;
 
 import gov.ca.cwds.rest.resources.ScreeningResource;
@@ -71,15 +72,16 @@ public class ScreeningToReferralTest {
         "2016-08-03T01:00:00.000Z", "Michael Bastow", "", address, "Response time", "Detail",
         participants, crossReports, allegations));
 
-    String serialized = MAPPER.writeValueAsString(
-        MAPPER.readValue(fixture("fixtures/domain/ScreeningToReferral/valid/valid.json"),
-            ScreeningToReferral.class));
+    String serialized = MAPPER.writeValueAsString(MAPPER.readValue(
+        fixture("fixtures/domain/ScreeningToReferral/valid/validScreeningToReferral.json"),
+        ScreeningToReferral.class));
 
     assertThat(serialized, is(expected));
   }
 
   @Test
   public void deserializesFromJSON() throws Exception {
+    MAPPER.configure(SerializationFeature.INDENT_OUTPUT, true);
     Address address = validAddress();
     Participant participant = validParticipant();
     participants.add(participant);
@@ -94,8 +96,10 @@ public class ScreeningToReferralTest {
         "2016-08-03T01:00:00.000Z", "Michael Bastow", "", address, "Response time", "Detail",
         participants, crossReports, allegations);
 
+
     ScreeningToReferral serialized = MAPPER.readValue(
-        fixture("fixtures/domain/ScreeningToReferral/valid/valid.json"), ScreeningToReferral.class);
+        fixture("fixtures/domain/ScreeningToReferral/valid/validScreeningToReferral.json"),
+        ScreeningToReferral.class);
 
     assertThat(serialized, is(expected));
 
@@ -126,7 +130,6 @@ public class ScreeningToReferralTest {
     try {
       Participant validParticipant = MAPPER
           .readValue(fixture("fixtures/domain/participant/valid/valid.json"), Participant.class);
-
       return validParticipant;
 
     } catch (JsonParseException e) {
@@ -146,7 +149,6 @@ public class ScreeningToReferralTest {
     try {
       Allegation validAllegation = MAPPER
           .readValue(fixture("fixtures/domain/Allegation/valid/valid.json"), Allegation.class);
-
       return validAllegation;
 
     } catch (JsonParseException e) {

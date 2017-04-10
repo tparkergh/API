@@ -239,7 +239,7 @@ public class ReporterServiceTest {
       PostedReporter expected = new PostedReporter(toCreate);
       Assert.fail("Expected ServiceException was not thrown");
     } catch (ServiceException e) {
-      assertEquals("Reporter ID cannot be empty", e.getMessage());
+      assertEquals("Referral ID cannot be empty for Reporter", e.getMessage());
     }
 
   }

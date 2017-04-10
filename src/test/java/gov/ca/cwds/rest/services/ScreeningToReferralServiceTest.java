@@ -11,6 +11,7 @@ import static org.mockito.Mockito.when;
 import java.util.LinkedHashSet;
 import java.util.Set;
 
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
@@ -252,26 +253,10 @@ public class ScreeningToReferralServiceTest {
     // thrown.expectMessage("ERROR - only one Reporter per Referral allowed");
     try {
       Response response = screeningToReferralService.create(screeningToReferral);
+      Assert.fail("Expected ServiceException was not thrown");
     } catch (Exception e) {
-      System.out.println(e.getMessage());
       assertThat(e.getMessage().equals("ERROR - only one Reporter per Referral allowed"));
     }
   }
-
-  @Test
-  public void createReturnsPostedCmsReferralWithIdenticalReferralIds() throws Exception {
-
-    Response response = screeningToReferralServiceResponse();
-    PostedCmsReferral postedCmsReferral = (PostedCmsReferral) response;
-    String referralId =
-        ((CrossReport) postedCmsReferral.getCrossReport().toArray()[0]).getReferralId();
-    assertThat(
-        ((ReferralClient) postedCmsReferral.getReferralClient().toArray()[0]).getReferralId(),
-        is(referralId));
-    assertThat(postedCmsReferral.getReporter().getReferralId(), is(referralId));
-    assertThat(((Allegation) postedCmsReferral.getAllegation().toArray()[0]).getReferralId(),
-        is(referralId));
-  }
-
 
 }
