@@ -25,6 +25,11 @@ import gov.ca.cwds.data.persistence.cms.BaseCollateralIndividual;
  */
 @NamedNativeQueries({
     @NamedNativeQuery(
+        name = "gov.ca.cwds.data.persistence.cms.rep.ReplicatedCollateralIndividual.findBucketRange",
+        query = "SELECT x.* FROM {h-schema}COLTRL_T x "
+            + "WHERE x.IDENTIFIER BETWEEN :min_id AND :max_id ORDER BY IDENTIFIER FOR READ ONLY",
+        resultClass = ReplicatedCollateralIndividual.class, readOnly = true),
+    @NamedNativeQuery(
         name = "gov.ca.cwds.data.persistence.cms.rep.ReplicatedCollateralIndividual.findAllUpdatedAfter",
         query = "select z.IDENTIFIER, z.BADGE_NO, z.CITY_NM, z.EMPLYR_NM, z.FAX_NO, "
             + "z.FIRST_NM, z.FRG_ADRT_B, z.LAST_NM, z.MID_INI_NM, z.NMPRFX_DSC, "
@@ -50,14 +55,14 @@ import gov.ca.cwds.data.persistence.cms.BaseCollateralIndividual;
             + ") y ) z where z.bucket = :bucket_num for read only",
         resultClass = ReplicatedCollateralIndividual.class)})
 @Entity
-@Table(name = "REPTR_T")
+@Table(name = "COLTRL_T")
 @JsonPropertyOrder(alphabetic = true)
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class ReplicatedCollateralIndividual extends BaseCollateralIndividual
     implements CmsReplicatedEntity {
 
   /**
-   * 
+   * Default.
    */
   private static final long serialVersionUID = 1L;
 

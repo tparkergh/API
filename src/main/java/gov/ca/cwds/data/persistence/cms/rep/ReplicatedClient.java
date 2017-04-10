@@ -40,6 +40,11 @@ import gov.ca.cwds.data.std.ApiPhoneAware;
 /**
  * {@link PersistentObject} representing a Client as a {@link CmsReplicatedEntity}.
  * 
+ * <p>
+ * Entity class EsClientAddress for Materialized Query Table ES_CLIENT_ADDRESS now holds the named
+ * queries below. These are left here for tracking purposes and will be removed in the near future.
+ * </p>
+ * 
  * @author CWDS API Team
  */
 @NamedNativeQueries({
