@@ -50,14 +50,6 @@ cmsDataSourceFactory:
       hibernate.default_schema: ${DB_CMS_SCHEMA}
       hibernate.connection.autocommit: false
 
-
-flywayFactory:
-  sqlMigrationPrefix: v
-  locations:
-    - db/ns/migrations
-    - db/ns/seeds/${ENVIRONMENT:-dev}
-
-
 elasticsearch:
   elasticsearch.host: ${ES_HOST:-es.dev.cwds.tabordasolutions.net}
   elasticsearch.port: ${ES_PORT:-9300}
