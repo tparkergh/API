@@ -25,6 +25,11 @@ import gov.ca.cwds.data.persistence.cms.BaseAttorney;
  */
 @NamedNativeQueries({
     @NamedNativeQuery(
+        name = "gov.ca.cwds.data.persistence.cms.rep.ReplicatedAttorney.findBucketRange",
+        query = "SELECT x.* FROM {h-schema}ATTRNY_T x "
+            + "WHERE x.IDENTIFIER BETWEEN :min_id AND :max_id FOR READ ONLY",
+        resultClass = ReplicatedAttorney.class, readOnly = true),
+    @NamedNativeQuery(
         name = "gov.ca.cwds.data.persistence.cms.rep.ReplicatedAttorney.findAllUpdatedAfter",
         query = "select z.IDENTIFIER, z.CITY_NM, z.CWATRY_IND, z.FAX_NO, z.FIRST_NM, "
             + "z.GVR_ENTC, z.LANG_TPC, z.LAST_NM, z.MSG_EXT_NO, z.MSG_TEL_NO, "
@@ -45,12 +50,7 @@ import gov.ca.cwds.data.persistence.cms.BaseAttorney;
             + "from ( select mod(y.rn, CAST(:total_buckets AS INTEGER)) + 1 as bucket, y.* "
             + "from ( select row_number() over (order by 1) as rn, x.* "
             + "from {h-schema}ATTRNY_T x ) y ) z where z.bucket = :bucket_num for read only",
-        resultClass = ReplicatedAttorney.class),
-    @NamedNativeQuery(
-        name = "gov.ca.cwds.data.persistence.cms.rep.ReplicatedAttorney.findBucketRange",
-        query = "SELECT x.* FROM {h-schema}ATTRNY_T x "
-            + "WHERE IDENTIFIER BETWEEN :min_id AND :max_id FOR READ ONLY",
-        resultClass = ReplicatedAttorney.class, readOnly = true)})
+        resultClass = ReplicatedAttorney.class)})
 @Entity
 @Table(name = "ATTRNY_T")
 @JsonPropertyOrder(alphabetic = true)

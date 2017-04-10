@@ -26,6 +26,14 @@ import gov.ca.cwds.data.persistence.cms.BaseOtherAdultInPlacemtHome;
  */
 @NamedNativeQueries({
     @NamedNativeQuery(
+        name = "gov.ca.cwds.data.persistence.cms.rep.ReplicatedOtherAdultInPlacemtHome.findBucketRange",
+        query = "select x.IDENTIFIER, x.BIRTH_DT, x.END_DT, x.GENDER_CD, x.OTH_ADLTNM, "
+            + "x.START_DT, x.LST_UPD_ID, x.LST_UPD_TS, x.FKPLC_HM_T, x.COMNT_DSC, "
+            + "x.OTH_ADL_CD, x.IDENTFD_DT, x.RESOST_IND, x.PASSBC_CD "
+            + ", x.IBMSNAP_OPERATION, x.IBMSNAP_LOGMARKER FROM {h-schema}OTH_ADLT x "
+            + "WHERE x.IDENTIFIER BETWEEN :min_id AND :max_id ORDER BY x.IDENTIFIER FOR READ ONLY",
+        resultClass = ReplicatedEducationProviderContact.class, readOnly = true),
+    @NamedNativeQuery(
         name = "gov.ca.cwds.data.persistence.cms.rep.ReplicatedOtherAdultInPlacemtHome.findAllUpdatedAfter",
         query = "select z.IDENTIFIER, z.BIRTH_DT, z.END_DT, z.GENDER_CD, z.OTH_ADLTNM, "
             + "z.START_DT, z.LST_UPD_ID, z.LST_UPD_TS, z.FKPLC_HM_T, z.COMNT_DSC, "
@@ -51,7 +59,7 @@ public class ReplicatedOtherAdultInPlacemtHome extends BaseOtherAdultInPlacemtHo
     implements CmsReplicatedEntity {
 
   /**
-   * 
+   * Default.
    */
   private static final long serialVersionUID = 1L;
 
