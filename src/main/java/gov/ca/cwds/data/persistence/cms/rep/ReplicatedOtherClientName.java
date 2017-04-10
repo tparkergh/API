@@ -48,7 +48,7 @@ import gov.ca.cwds.data.persistence.cms.BaseOtherClientName;
 public class ReplicatedOtherClientName extends BaseOtherClientName implements CmsReplicatedEntity {
 
   /**
-   * 
+   * Default.
    */
   private static final long serialVersionUID = 1L;
 
