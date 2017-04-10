@@ -201,7 +201,7 @@ public class ESPerson extends Person {
     if (!StringUtils.isBlank(ret.getSourceType()) && !StringUtils.isBlank(ret.getSourceJson())) {
       try {
 
-        // TODO: STORY #137216799:
+        // STORY #137216799:
         // Tech debt: reverse compatibility with existing ElasticSearch documents.
         if (ret.getSourceType().startsWith("gov.ca.cwds.rest.api.")) {
           LOGGER.warn("LEGACY CLASS IN ELASTICSEARCH! class={}, id={}", ret.getSourceType(),
@@ -209,15 +209,14 @@ public class ESPerson extends Person {
         }
 
         if (!StringUtils.isBlank(ret.getSourceJson())) {
-          // Remove excess whitespace.
-          // No job should store excess whitespace in ElasticSearch!
+          // Remove excess whitespace. Don't store excess whitespace in ElasticSearch!
           final String json = ret.getSourceJson().replaceAll("\\s+\",", "\",");
 
           // Dynamically instantiate the domain class specified by "type" and load from JSON.
           // Note: When running in an application server, the app server's root classloader may not
           // know of our domain/persistence class, but the current thread's classloader should.
 
-          // TODO: STORY #137216799: again.
+          // STORY #137216799: again.
           final Object obj = MAPPER.readValue(json,
               Class.forName(
                   ret.getSourceType().replaceAll("gov\\.ca\\.cwds\\.rest\\.api\\.",
@@ -278,8 +277,8 @@ public class ESPerson extends Person {
    * generics, untyped Object, or collections with heterogenous types. For now,
    * 
    * <p>
-   * Java lacks a "union" construct (mutually exclusive child structures), polymorphic return types
-   * (though, technically, the JVM can...), and true typed templates.
+   * Java lacks a "union" construct (mutually exclusive child structures), and polymorphic return
+   * types (though, technically, the JVM could...), and typed templates (generics aren't the same).
    * </p>
    */
   @JsonProperty("id")
