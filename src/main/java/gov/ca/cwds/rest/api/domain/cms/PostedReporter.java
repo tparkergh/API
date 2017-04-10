@@ -38,7 +38,7 @@ public class PostedReporter extends Reporter {
   public PostedReporter(gov.ca.cwds.data.persistence.cms.Reporter reporter) {
     super(reporter);
     if (StringUtils.isBlank(reporter.getReferralId())) {
-      throw new ServiceException("Reporter ID cannot be empty");
+      throw new ServiceException("Referral ID cannot be empty for Reporter");
     }
 
     this.id = reporter.getReferralId();
