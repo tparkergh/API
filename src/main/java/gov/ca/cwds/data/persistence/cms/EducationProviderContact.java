@@ -3,6 +3,8 @@ package gov.ca.cwds.data.persistence.cms;
 import java.math.BigDecimal;
 
 import javax.persistence.Entity;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
@@ -15,12 +17,12 @@ import gov.ca.cwds.data.persistence.PersistentObject;
  * 
  * @author CWDS API Team
  */
-// @NamedQueries({
-// @NamedQuery(name = "gov.ca.cwds.data.persistence.cms.EducationProviderContact.findAll",
-// query = "FROM EducationProviderContact"),
-// @NamedQuery(
-// name = "gov.ca.cwds.data.persistence.cms.EducationProviderContact.findAllUpdatedAfter",
-// query = "FROM EducationProviderContact WHERE lastUpdatedTime > :after")})
+@NamedQueries({
+    @NamedQuery(name = "gov.ca.cwds.data.persistence.cms.EducationProviderContact.findAll",
+        query = "FROM EducationProviderContact"),
+    @NamedQuery(
+        name = "gov.ca.cwds.data.persistence.cms.EducationProviderContact.findAllUpdatedAfter",
+        query = "FROM EducationProviderContact WHERE lastUpdatedTime > :after")})
 @Entity
 @Table(name = "EDPRVCNT")
 @JsonPropertyOrder(alphabetic = true)
