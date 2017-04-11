@@ -86,23 +86,23 @@ public class OtherChildInPlacemtHomeDaoIT implements DaoTestTemplate {
     assertThat(query.list().size(), is(2));
   }
 
-  @SuppressWarnings("javadoc")
-  @Test
-  public void testfindAllUpdatedAfterNamedQueryExists() throws Exception {
-    Query query = session.getNamedQuery(
-        "gov.ca.cwds.data.persistence.cms.OtherChildInPlacemtHome.findAllUpdatedAfter");
-    assertThat(query, is(notNullValue()));
-  }
-
-  @SuppressWarnings("javadoc")
-  @Test
-  public void testfindAllUpdatedAfterReturnsCorrectList() throws Exception {
-    Query query = session
-        .getNamedQuery(
-            "gov.ca.cwds.data.persistence.cms.OtherChildInPlacemtHome.findAllUpdatedAfter")
-        .setDate("after", TIMESTAMP_FORMAT.parse("2001-01-01 00:00:00"));
-    assertThat(query.list().size(), is(2));
-  }
+  // @SuppressWarnings("javadoc")
+  // @Test
+  // public void testfindAllUpdatedAfterNamedQueryExists() throws Exception {
+  // Query query = session.getNamedQuery(
+  // "gov.ca.cwds.data.persistence.cms.OtherChildInPlacemtHome.findAllUpdatedAfter");
+  // assertThat(query, is(notNullValue()));
+  // }
+  //
+  // @SuppressWarnings("javadoc")
+  // @Test
+  // public void testfindAllUpdatedAfterReturnsCorrectList() throws Exception {
+  // Query query = session
+  // .getNamedQuery(
+  // "gov.ca.cwds.data.persistence.cms.OtherChildInPlacemtHome.findAllUpdatedAfter")
+  // .setDate("after", TIMESTAMP_FORMAT.parse("2001-01-01 00:00:00"));
+  // assertThat(query.list().size(), is(2));
+  // }
 
   @Override
   @Test
