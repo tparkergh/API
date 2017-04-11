@@ -19,6 +19,7 @@ import gov.ca.cwds.data.cms.ClientDao;
 import gov.ca.cwds.data.cms.CmsDocReferralClientDao;
 import gov.ca.cwds.data.cms.CmsDocumentDao;
 import gov.ca.cwds.data.cms.CrossReportDao;
+import gov.ca.cwds.data.cms.LongTextDao;
 import gov.ca.cwds.data.cms.OtherClientNameDao;
 import gov.ca.cwds.data.cms.ReferralClientDao;
 import gov.ca.cwds.data.cms.ReferralDao;
@@ -47,6 +48,7 @@ import gov.ca.cwds.data.persistence.cms.CmsDocumentBlobSegment;
 import gov.ca.cwds.data.persistence.cms.CollateralIndividual;
 import gov.ca.cwds.data.persistence.cms.CrossReport;
 import gov.ca.cwds.data.persistence.cms.EducationProviderContact;
+import gov.ca.cwds.data.persistence.cms.LongText;
 import gov.ca.cwds.data.persistence.cms.OtherAdultInPlacemtHome;
 import gov.ca.cwds.data.persistence.cms.OtherChildInPlacemtHome;
 import gov.ca.cwds.data.persistence.cms.OtherClientName;
@@ -102,7 +104,7 @@ public class DataAccessModule extends AbstractModule {
           CrossReport.class, EducationProviderContact.class, OtherAdultInPlacemtHome.class,
           OtherChildInPlacemtHome.class, OtherClientName.class, Referral.class,
           ReferralClient.class, Reporter.class, ServiceProvider.class, StaffPerson.class,
-          SubstituteCareProvider.class) {
+          SubstituteCareProvider.class, LongText.class) {
         @Override
         public DataSourceFactory getDataSourceFactory(ApiConfiguration configuration) {
           return configuration.getCmsDataSourceFactory();
@@ -166,6 +168,7 @@ public class DataAccessModule extends AbstractModule {
     bind(CmsDocumentDao.class);
     bind(OtherClientNameDao.class);
     bind(StaffPersonDao.class);
+    bind(LongTextDao.class);
 
     // NS:
     bind(AddressDao.class);

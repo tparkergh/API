@@ -102,4 +102,9 @@ public interface Api {
    */
   public static final String RESOURCE_AUTOCOMPLETE = "people_search";
 
+  /**
+   * A {@code String} constant representing {@value #RESOURCE_LONG_TEXT} API
+   */
+  public static final String RESOURCE_LONG_TEXT = "long_text";
+
 }
