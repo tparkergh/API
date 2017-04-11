@@ -105,6 +105,6 @@ public interface Api {
   /**
    * A {@code String} constant representing {@value #RESOURCE_LONG_TEXT} API
    */
-  public static final String RESOURCE_LONG_TEXT = "long_text";
+  public static final String RESOURCE_LONG_TEXT = "_longtext";
 
 }
