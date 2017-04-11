@@ -29,6 +29,7 @@ import gov.ca.cwds.rest.resources.cms.CmsDocReferralClientResource;
 import gov.ca.cwds.rest.resources.cms.CmsDocumentResource;
 import gov.ca.cwds.rest.resources.cms.CmsNSReferralResource;
 import gov.ca.cwds.rest.resources.cms.CmsReferralResource;
+import gov.ca.cwds.rest.resources.cms.LongTextResource;
 import gov.ca.cwds.rest.resources.cms.ReferralClientResource;
 import gov.ca.cwds.rest.resources.cms.ReferralResource;
 import gov.ca.cwds.rest.resources.cms.ReporterResource;
@@ -46,6 +47,7 @@ import gov.ca.cwds.rest.services.cms.CmsDocumentService;
 import gov.ca.cwds.rest.services.cms.CmsNSReferralService;
 import gov.ca.cwds.rest.services.cms.CmsReferralService;
 import gov.ca.cwds.rest.services.cms.CrossReportService;
+import gov.ca.cwds.rest.services.cms.LongTextService;
 import gov.ca.cwds.rest.services.cms.ReferralClientService;
 import gov.ca.cwds.rest.services.cms.ReferralService;
 import gov.ca.cwds.rest.services.cms.ReporterService;
@@ -88,6 +90,7 @@ public class ResourcesModule extends AbstractModule {
     bind(StaffPersonResource.class);
     bind(AddressValidationResource.class);
     bind(ScreeningToReferralResource.class);
+    bind(LongTextResource.class);
   }
 
   @Provides
@@ -129,6 +132,12 @@ public class ResourcesModule extends AbstractModule {
   @AllegationServieBackedResource
   public ResourceDelegate allegationServieBackedResource(Injector injector) {
     return new ServiceBackedResourceDelegate(injector.getInstance(AllegationService.class));
+  }
+
+  @Provides
+  @LongTextServiceBackedResource
+  public ResourceDelegate longTextServiceBackedResource(Injector injector) {
+    return new ServiceBackedResourceDelegate(injector.getInstance(LongTextService.class));
   }
 
   @Provides
