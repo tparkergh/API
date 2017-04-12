@@ -6,6 +6,7 @@ import gov.ca.cwds.rest.api.Request;
 import gov.ca.cwds.rest.api.Response;
 import gov.ca.cwds.rest.validation.Date;
 import io.dropwizard.jackson.JsonSnakeCase;
+import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 
 /**
@@ -15,6 +16,7 @@ import io.swagger.annotations.ApiModelProperty;
  */
 @SuppressWarnings("serial")
 @JsonSnakeCase
+@ApiModel("NsCrossReport")
 public class CrossReport extends DomainObject implements Request, Response {
 
   @JsonProperty("agency_type")
