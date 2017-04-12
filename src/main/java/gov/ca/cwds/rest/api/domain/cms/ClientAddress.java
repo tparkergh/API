@@ -64,8 +64,7 @@ public class ClientAddress extends DomainObject implements Request, Response {
   @Size(max = 10)
   private String homelessInd;
 
-
-  /*
+  /**
    * default constructor
    */
   public ClientAddress() {
@@ -77,10 +76,10 @@ public class ClientAddress extends DomainObject implements Request, Response {
    * @param bkInmtId The bkInmtId
    * @param effEndDt The effEndDt
    * @param effStartDt The effStartDt
-   * @param addressId The fkAddress
-   * @param clientId The fkClient
+   * @param fkAddress The fkAddress
+   * @param fkClient The fkClient
    * @param homelessInd The homelessInd
-   * @param referralId The fkReferral
+   * @param fkReferral THe fkReferral
    */
   public ClientAddress(Short addressType, String bkInmtId, String effEndDt, String effStartDt,
       String fkAddress, String fkClient, String homelessInd, String fkReferral) {
