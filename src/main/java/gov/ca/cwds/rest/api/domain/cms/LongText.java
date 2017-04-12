@@ -35,7 +35,6 @@ public class LongText extends DomainObject implements Request, Response {
       example = "Arrange for parents to have demonstrating home maker come to the home twice a week")
   private String textDescription;
 
-
   /**
    * @param countySpecificCode county specific code
    * @param textDescription text description
