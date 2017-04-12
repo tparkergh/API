@@ -3,10 +3,12 @@ package gov.ca.cwds.rest.api.domain.cms;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
+import org.hibernate.validator.constraints.NotEmpty;
+
 import gov.ca.cwds.rest.api.Request;
 import gov.ca.cwds.rest.api.Response;
+import gov.ca.cwds.rest.api.domain.DomainChef;
 import gov.ca.cwds.rest.api.domain.DomainObject;
-import io.dropwizard.jackson.JsonSnakeCase;
 import io.swagger.annotations.ApiModelProperty;
 
 /**
@@ -14,7 +16,6 @@ import io.swagger.annotations.ApiModelProperty;
  * 
  * @author CWDS API Team
  */
-@JsonSnakeCase
 public class ClientAddress extends DomainObject implements Request, Response {
 
   /**
@@ -22,66 +23,100 @@ public class ClientAddress extends DomainObject implements Request, Response {
    */
   private static final long serialVersionUID = 1L;
 
+  @Size(max = 10)
+  @ApiModelProperty(required = false, readOnly = false, value = "", example = "ABC1234567")
+  private String existingClientAddressId;
 
   @NotNull
   @ApiModelProperty(required = true, readOnly = false, example = "32")
   private Short addressType;
 
   @NotNull
-  @ApiModelProperty(required = false, readOnly = false, value = "", example = "1234567890")
+  @ApiModelProperty(required = false, readOnly = false, value = "", example = "123456ABC")
   @Size(max = 10)
-  private String bkInmtId;
+  private String bookingOrInmateId;
 
   @ApiModelProperty(required = false, readOnly = false, value = "yyyy-MM-dd",
       example = "2016-01-01")
-  private String effEndDt;
+  private String effectiveEndDate;
 
   @ApiModelProperty(required = false, readOnly = false, value = "yyyy-MM-dd",
       example = "2016-01-01")
-  private String effStartDt;
+  private String effectiveStartDate;
+
+  @NotEmpty
+  @Size(min = 10, max = 10)
+  @ApiModelProperty(required = true, readOnly = false, example = "1234567ABC")
+  private String addressId;
+
+  @NotEmpty
+  @Size(min = 10, max = 10)
+  @ApiModelProperty(required = true, readOnly = false, example = "1234567ABC")
+  private String clientId;
 
   @NotNull
-  @ApiModelProperty(required = true, readOnly = false, example = "1234567890")
+  @ApiModelProperty(required = false, readOnly = false, value = "", example = "1234567ABC")
   @Size(max = 10)
-  private String fkAddress;
+  private String referralId;
 
   @NotNull
-  @ApiModelProperty(required = true, readOnly = false, example = "1234567890")
+  @ApiModelProperty(required = false, readOnly = false, value = "", example = "1234567ABC")
   @Size(max = 10)
-  private String fkClient;
-
-
-  @NotNull
-  @ApiModelProperty(required = false, readOnly = false, value = "", example = "N")
-  @Size(max = 1)
   private String homelessInd;
 
-  @NotNull
-  @ApiModelProperty(required = false, readOnly = false, value = "", example = "1234567890")
-  @Size(max = 10)
-  private String fkReferral;
+
+  /*
+   * default constructor
+   */
+  public ClientAddress() {
+
+  }
 
   /**
    * @param addressType The addressType
    * @param bkInmtId The bkInmtId
    * @param effEndDt The effEndDt
    * @param effStartDt The effStartDt
-   * @param fkAddress The fkAddress
-   * @param fkClient The fkClient
+   * @param addressId The fkAddress
+   * @param clientId The fkClient
    * @param homelessInd The homelessInd
-   * @param fkReferral The fkReferral
+   * @param referralId The fkReferral
    */
   public ClientAddress(Short addressType, String bkInmtId, String effEndDt, String effStartDt,
       String fkAddress, String fkClient, String homelessInd, String fkReferral) {
     super();
     this.addressType = addressType;
-    this.bkInmtId = bkInmtId;
-    this.effEndDt = effEndDt;
-    this.effStartDt = effStartDt;
-    this.fkAddress = fkAddress;
-    this.fkClient = fkClient;
+    this.bookingOrInmateId = bkInmtId;
+    this.effectiveEndDate = effEndDt;
+    this.effectiveStartDate = effStartDt;
+    this.addressId = fkAddress;
+    this.clientId = fkClient;
     this.homelessInd = homelessInd;
-    this.fkReferral = fkReferral;
+    this.referralId = fkReferral;
+  }
+
+  /**
+   * @param persistedClientAddress - persisted ClientAddress object
+   * @param isExist - does the ClientAddress id exist
+   */
+  public ClientAddress(gov.ca.cwds.data.persistence.cms.ClientAddress persistedClientAddress,
+      boolean isExist) {
+    this.existingClientAddressId = isExist ? persistedClientAddress.getId() : "";
+    this.addressType = persistedClientAddress.getAddressType();
+    this.bookingOrInmateId = persistedClientAddress.getBkInmtId();
+    this.effectiveEndDate = DomainChef.cookDate(persistedClientAddress.getEffEndDt());
+    this.effectiveStartDate = DomainChef.cookDate(persistedClientAddress.getEffStartDt());
+    this.addressId = persistedClientAddress.getFkAddress();
+    this.clientId = persistedClientAddress.getFkClient();
+    this.homelessInd = persistedClientAddress.getHomelessInd();
+    this.referralId = persistedClientAddress.getFkReferral();
+  }
+
+  /**
+   * @return the clientAddressId
+   */
+  public String getClientAddressId() {
+    return existingClientAddressId;
   }
 
   /**
@@ -94,36 +129,36 @@ public class ClientAddress extends DomainObject implements Request, Response {
   /**
    * @return the bkInmtId
    */
-  public String getBkInmtId() {
-    return bkInmtId;
+  public String getBookingOrInmateId() {
+    return bookingOrInmateId;
   }
 
   /**
    * @return the effEndDt
    */
-  public String getEffEndDt() {
-    return effEndDt;
+  public String getEffectiveEndDate() {
+    return effectiveEndDate;
   }
 
   /**
    * @return the effStartDt
    */
-  public String getEffStartDt() {
-    return effStartDt;
+  public String getEffectiveStartDate() {
+    return effectiveStartDate;
   }
 
   /**
-   * @return the fkAddress
+   * @return the addressId
    */
-  public String getFkAddress() {
-    return fkAddress;
+  public String getAddressId() {
+    return addressId;
   }
 
   /**
-   * @return the fkClient
+   * @return the clientId
    */
-  public String getFkClient() {
-    return fkClient;
+  public String getClientId() {
+    return clientId;
   }
 
   /**
@@ -134,10 +169,10 @@ public class ClientAddress extends DomainObject implements Request, Response {
   }
 
   /**
-   * @return the fkReferral
+   * @return the referralId
    */
-  public String getFkReferral() {
-    return fkReferral;
+  public String getReferralId() {
+    return referralId;
   }
 
   /*
@@ -150,12 +185,12 @@ public class ClientAddress extends DomainObject implements Request, Response {
     final int prime = 31;
     int result = 1;
     result = prime * result + ((addressType == null) ? 0 : addressType.hashCode());
-    result = prime * result + ((bkInmtId == null) ? 0 : bkInmtId.hashCode());
-    result = prime * result + ((effEndDt == null) ? 0 : effEndDt.hashCode());
-    result = prime * result + ((effStartDt == null) ? 0 : effStartDt.hashCode());
-    result = prime * result + ((fkAddress == null) ? 0 : fkAddress.hashCode());
-    result = prime * result + ((fkClient == null) ? 0 : fkClient.hashCode());
-    result = prime * result + ((fkReferral == null) ? 0 : fkReferral.hashCode());
+    result = prime * result + ((bookingOrInmateId == null) ? 0 : bookingOrInmateId.hashCode());
+    result = prime * result + ((effectiveEndDate == null) ? 0 : effectiveEndDate.hashCode());
+    result = prime * result + ((effectiveStartDate == null) ? 0 : effectiveStartDate.hashCode());
+    result = prime * result + ((addressId == null) ? 0 : addressId.hashCode());
+    result = prime * result + ((clientId == null) ? 0 : clientId.hashCode());
+    result = prime * result + ((referralId == null) ? 0 : referralId.hashCode());
     result = prime * result + ((homelessInd == null) ? 0 : homelessInd.hashCode());
     return result;
   }
@@ -184,46 +219,46 @@ public class ClientAddress extends DomainObject implements Request, Response {
     } else if (!addressType.equals(other.addressType)) {
       return false;
     }
-    if (bkInmtId == null) {
-      if (other.bkInmtId != null) {
+    if (bookingOrInmateId == null) {
+      if (other.bookingOrInmateId != null) {
         return false;
       }
-    } else if (!bkInmtId.equals(other.bkInmtId)) {
+    } else if (!bookingOrInmateId.equals(other.bookingOrInmateId)) {
       return false;
     }
-    if (effEndDt == null) {
-      if (other.effEndDt != null) {
+    if (effectiveEndDate == null) {
+      if (other.effectiveEndDate != null) {
         return false;
       }
-    } else if (!effEndDt.equals(other.effEndDt)) {
+    } else if (!effectiveEndDate.equals(other.effectiveEndDate)) {
       return false;
     }
-    if (effStartDt == null) {
-      if (other.effStartDt != null) {
+    if (effectiveStartDate == null) {
+      if (other.effectiveStartDate != null) {
         return false;
       }
-    } else if (!effStartDt.equals(other.effStartDt)) {
+    } else if (!effectiveStartDate.equals(other.effectiveStartDate)) {
       return false;
     }
-    if (fkAddress == null) {
-      if (other.fkAddress != null) {
+    if (addressId == null) {
+      if (other.addressId != null) {
         return false;
       }
-    } else if (!fkAddress.equals(other.fkAddress)) {
+    } else if (!addressId.equals(other.addressId)) {
       return false;
     }
-    if (fkClient == null) {
-      if (other.fkClient != null) {
+    if (clientId == null) {
+      if (other.clientId != null) {
         return false;
       }
-    } else if (!fkClient.equals(other.fkClient)) {
+    } else if (!clientId.equals(other.clientId)) {
       return false;
     }
-    if (fkReferral == null) {
-      if (other.fkReferral != null) {
+    if (referralId == null) {
+      if (other.referralId != null) {
         return false;
       }
-    } else if (!fkReferral.equals(other.fkReferral)) {
+    } else if (!referralId.equals(other.referralId)) {
       return false;
     }
     if (homelessInd == null) {

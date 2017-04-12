@@ -3,6 +3,7 @@ package gov.ca.cwds.data.persistence.cms;
 import java.util.Date;
 
 import javax.persistence.Entity;
+import javax.persistence.PersistenceException;
 import javax.persistence.Table;
 
 import org.apache.commons.lang3.builder.EqualsBuilder;
@@ -14,6 +15,8 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
 import gov.ca.cwds.data.persistence.PersistentObject;
+import gov.ca.cwds.rest.api.ApiException;
+import gov.ca.cwds.rest.api.domain.DomainChef;
 
 /**
  * {@link PersistentObject} representing a Client Address
@@ -62,6 +65,31 @@ public class ClientAddress extends BaseClientAddress {
     this.fkReferral = fkReferral;
   }
 
+
+  /**
+   * @param id - ClientAddress Id
+   * @param clientAddress - domain ClientAddress object
+   * @param lastUpdateId - staff Id
+   */
+  public ClientAddress(String id, gov.ca.cwds.rest.api.domain.cms.ClientAddress clientAddress,
+      String lastUpdateId) {
+    super();
+    try {
+      this.id = id;
+
+      this.addressType = clientAddress.getAddressType();
+      this.bkInmtId = clientAddress.getBookingOrInmateId();
+      this.effEndDt = DomainChef.uncookDateString(clientAddress.getEffectiveEndDate());
+      this.effStartDt = DomainChef.uncookDateString(clientAddress.getEffectiveStartDate());
+      this.fkAddress = clientAddress.getAddressId();
+      this.fkClient = clientAddress.getClientId();
+      this.homelessInd = clientAddress.getHomelessInd();
+      this.fkReferral = clientAddress.getReferralId();
+    } catch (ApiException e) {
+      throw new PersistenceException(e);
+    }
+
+  }
 
   /**
    * {@inheritDoc}

@@ -62,6 +62,7 @@ public abstract class BaseAddress extends CmsPersistentObject
   @Column(name = "GVR_ENTC", nullable = false)
   protected Short governmentEntityCd;
 
+
   @Column(name = "MSG_TEL_NO", nullable = false)
   protected BigDecimal messageNumber;
 
@@ -94,6 +95,8 @@ public abstract class BaseAddress extends CmsPersistentObject
   @ColumnTransformer(read = "trim(STREET_NO)")
   protected String streetNumber;
 
+  // TODO: legacy database records a zip code as Integer type
+  // ApiAddressAware interface requires a String type
   @Column(name = "ZIP_NO", nullable = false)
   @ColumnTransformer(read = "trim(ZIP_NO)")
   protected String zip;

@@ -7,8 +7,8 @@ import javax.validation.constraints.Size;
 
 import gov.ca.cwds.rest.api.Request;
 import gov.ca.cwds.rest.api.Response;
+import gov.ca.cwds.rest.api.domain.DomainChef;
 import gov.ca.cwds.rest.api.domain.DomainObject;
-import io.dropwizard.jackson.JsonSnakeCase;
 import io.swagger.annotations.ApiModelProperty;
 
 /**
@@ -16,7 +16,6 @@ import io.swagger.annotations.ApiModelProperty;
  * 
  * @author CWDS API Team
  */
-@JsonSnakeCase
 public class Address extends DomainObject implements Request, Response {
 
   /**
@@ -24,14 +23,17 @@ public class Address extends DomainObject implements Request, Response {
    */
   private static final long serialVersionUID = 1L;
 
+  @Size(max = 10)
+  @ApiModelProperty(required = false, readOnly = false, value = "", example = "ABC1234567")
+  private String existingAddressId;
+
   @NotNull
   @ApiModelProperty(required = false, readOnly = false, value = "", example = "Springfield")
   @Size(max = 20)
   private String city;
 
   @NotNull
-  @ApiModelProperty(example = "1112223333")
-  @Size(max = 10)
+  @ApiModelProperty(required = false, readOnly = false, example = "1112223333")
   private BigDecimal emergencyNumber;
 
   @NotNull
@@ -103,6 +105,14 @@ public class Address extends DomainObject implements Request, Response {
   private String unitNumber;
 
   /**
+   * default constructor
+   */
+  public Address() {
+
+  }
+
+  /**
+   * @param existingAddressId = Address Id
    * @param city The city
    * @param emergencyNumber city emergencyNumber
    * @param emergencyExtension city emergencyExtension
@@ -125,13 +135,14 @@ public class Address extends DomainObject implements Request, Response {
    * @param unitDesignationCd city unitDesignationCd
    * @param unitNumber city unitNumber
    */
-  public Address(String city, BigDecimal emergencyNumber, Integer emergencyExtension,
-      Boolean frgAdrtB, Short governmentEntityCd, BigDecimal messageNumber,
-      Integer messageExtension, String headerAddress, BigDecimal primaryNumber,
-      Integer primaryExtension, Short state, String streetName, String streetNumber, Integer zip,
-      String addressDescription, Short zip4, String postDirCd, String preDirCd,
-      Short streetSuffixCd, Short unitDesignationCd, String unitNumber) {
+  public Address(String existingAddressId, String city, BigDecimal emergencyNumber,
+      Integer emergencyExtension, Boolean frgAdrtB, Short governmentEntityCd,
+      BigDecimal messageNumber, Integer messageExtension, String headerAddress,
+      BigDecimal primaryNumber, Integer primaryExtension, Short state, String streetName,
+      String streetNumber, Integer zip, String addressDescription, Short zip4, String postDirCd,
+      String preDirCd, Short streetSuffixCd, Short unitDesignationCd, String unitNumber) {
     super();
+    this.existingAddressId = existingAddressId;
     this.city = city;
     this.emergencyNumber = emergencyNumber;
     this.emergencyExtension = emergencyExtension;
@@ -155,6 +166,49 @@ public class Address extends DomainObject implements Request, Response {
     this.unitNumber = unitNumber;
   }
 
+  /**
+   * @param persistedAddress - persisted Address object
+   * @param isExist - does it exist
+   */
+  /*
+   * constuctor from persistent Address
+   */
+  public Address(gov.ca.cwds.data.persistence.cms.Address persistedAddress, boolean isExist) {
+    this.existingAddressId = isExist ? persistedAddress.getId() : "";
+    this.city = persistedAddress.getCity();
+    this.emergencyNumber = persistedAddress.getEmergencyNumber();
+    this.emergencyExtension = persistedAddress.getEmergencyExtension();
+    this.frgAdrtB = DomainChef.uncookBooleanString(persistedAddress.getFrgAdrtB());
+    this.governmentEntityCd = persistedAddress.getGovernmentEntityCd();
+    this.messageNumber = persistedAddress.getMessageNumber();
+    this.messageExtension = persistedAddress.getMessageExtension();
+    this.headerAddress = persistedAddress.getHeaderAddress();
+    this.primaryNumber = persistedAddress.getPrimaryNumber();
+    this.primaryExtension = persistedAddress.getPrimaryExtension();
+    this.state = persistedAddress.getStateCd();
+    this.streetName = persistedAddress.getStreetName();
+    this.streetNumber = persistedAddress.getStreetNumber();
+    try {
+      this.zip = Integer.parseInt(persistedAddress.getZip());
+
+    } catch (NumberFormatException e) {
+      throw e;
+    }
+    this.addressDescription = persistedAddress.getAddressDescription();
+    this.zip4 = persistedAddress.getZip4();
+    this.postDirCd = persistedAddress.getPostDirCd();
+    this.preDirCd = persistedAddress.getPreDirCd();
+    this.streetSuffixCd = persistedAddress.getStreetSuffixCd();
+    this.unitDesignationCd = persistedAddress.getUnitDesignationCd();
+    this.unitNumber = persistedAddress.getUnitNumber();
+  }
+
+  /**
+   * @return the existingClientId
+   */
+  public String getExistingAddressId() {
+    return existingAddressId;
+  }
 
   /**
    * @return the city
@@ -313,6 +367,7 @@ public class Address extends DomainObject implements Request, Response {
   public final int hashCode() {
     final int prime = 31;
     int result = 1;
+    result = prime * result + ((existingAddressId == null) ? 0 : existingAddressId.hashCode());
     result = prime * result + ((addressDescription == null) ? 0 : addressDescription.hashCode());
     result = prime * result + ((city == null) ? 0 : city.hashCode());
     result = prime * result + ((emergencyExtension == null) ? 0 : emergencyExtension.hashCode());
@@ -360,6 +415,13 @@ public class Address extends DomainObject implements Request, Response {
         return false;
       }
     } else if (!addressDescription.equals(other.addressDescription)) {
+      return false;
+    }
+    if (existingAddressId == null) {
+      if (other.existingAddressId != null) {
+        return false;
+      }
+    } else if (!existingAddressId.equals(other.existingAddressId)) {
       return false;
     }
     if (city == null) {
