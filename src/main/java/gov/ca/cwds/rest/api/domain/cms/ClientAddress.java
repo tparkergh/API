@@ -184,6 +184,8 @@ public class ClientAddress extends DomainObject implements Request, Response {
   public final int hashCode() {
     final int prime = 31;
     int result = 1;
+    result = prime * result
+        + ((existingClientAddressId == null) ? 0 : existingClientAddressId.hashCode());
     result = prime * result + ((addressType == null) ? 0 : addressType.hashCode());
     result = prime * result + ((bookingOrInmateId == null) ? 0 : bookingOrInmateId.hashCode());
     result = prime * result + ((effectiveEndDate == null) ? 0 : effectiveEndDate.hashCode());
@@ -217,6 +219,13 @@ public class ClientAddress extends DomainObject implements Request, Response {
         return false;
       }
     } else if (!addressType.equals(other.addressType)) {
+      return false;
+    }
+    if (existingClientAddressId == null) {
+      if (other.existingClientAddressId != null) {
+        return false;
+      }
+    } else if (!existingClientAddressId.equals(other.existingClientAddressId)) {
       return false;
     }
     if (bookingOrInmateId == null) {

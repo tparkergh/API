@@ -152,10 +152,22 @@ public class ScreeningToReferralServiceTest {
             // ((CrossReport) crossReportDomain).getThirdId(),
             (CrossReport) crossReportDomain.toArray()[0], "OXA");
 
+    Address addressDomain = MAPPER.readValue(
+        fixture("fixtures/domain/ScreeningToReferral/valid/validAddress.json"), Address.class);
+    gov.ca.cwds.data.persistence.cms.Address addressToCreate =
+        new gov.ca.cwds.data.persistence.cms.Address("345678ABC", addressDomain, "ABC");
+
+    ClientAddress clientAddressDomain = MAPPER.readValue(
+        fixture("fixtures/domain/ScreeningToReferral/valid/validClientAddress.json"),
+        ClientAddress.class);
+    gov.ca.cwds.data.persistence.cms.ClientAddress clientAddressToCreate =
+        new gov.ca.cwds.data.persistence.cms.ClientAddress("456789ABC", clientAddressDomain, "ABC");
+
     Reporter reporterDomain = MAPPER.readValue(
         fixture("fixtures/domain/ScreeningToReferral/valid/validReporter.json"), Reporter.class);
     gov.ca.cwds.data.persistence.cms.Reporter reporterToCreate =
         new gov.ca.cwds.data.persistence.cms.Reporter(reporterDomain, "ABC");
+    Reporter reporterRequest = new Reporter(reporterToCreate);
 
     Referral referralRequest = new Referral(referralToCreate);
 
@@ -175,8 +187,6 @@ public class ScreeningToReferralServiceTest {
     Set<CrossReport> crossReportRequestSet = new LinkedHashSet<>();
     crossReportRequestSet.add(crossReportRequest);
 
-    Reporter reporterRequest = new Reporter(reporterToCreate);
-
     when(referralDao.create(any(gov.ca.cwds.data.persistence.cms.Referral.class)))
         .thenReturn(referralToCreate);
     when(clientDao.create(any(gov.ca.cwds.data.persistence.cms.Client.class)))
@@ -189,6 +199,10 @@ public class ScreeningToReferralServiceTest {
         .thenReturn(crossReportToCreate);
     when(reporterDao.create(any(gov.ca.cwds.data.persistence.cms.Reporter.class)))
         .thenReturn(reporterToCreate);
+    when(addressDao.create(any(gov.ca.cwds.data.persistence.cms.Address.class)))
+        .thenReturn(addressToCreate);
+    when(clientAddressDao.create(any(gov.ca.cwds.data.persistence.cms.ClientAddress.class)))
+        .thenReturn(clientAddressToCreate);
 
     CmsReferral cmsReferral = new CmsReferral(referralRequest, clientRequestSet,
         allegationRequestSet, crossReportRequestSet, referralClientRequestSet, reporterRequest);
