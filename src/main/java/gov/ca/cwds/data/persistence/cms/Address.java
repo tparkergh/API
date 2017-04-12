@@ -3,6 +3,7 @@ package gov.ca.cwds.data.persistence.cms;
 import java.math.BigDecimal;
 
 import javax.persistence.Entity;
+import javax.persistence.PersistenceException;
 import javax.persistence.Table;
 
 import org.apache.commons.lang3.builder.EqualsBuilder;
@@ -14,6 +15,8 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
 import gov.ca.cwds.data.persistence.PersistentObject;
+import gov.ca.cwds.rest.api.ApiException;
+import gov.ca.cwds.rest.api.domain.DomainChef;
 
 /**
  * {@link PersistentObject} representing a Address
@@ -34,6 +37,7 @@ public class Address extends BaseAddress {
    * 
    */
   private static final long serialVersionUID = 1L;
+
 
   /**
    * @param id The identifier
@@ -91,12 +95,48 @@ public class Address extends BaseAddress {
   }
 
   /**
+   * @param id - Address identifier
+   * @param address - domain Address object
+   * @param lastUpdateId - staff person Id
+   */
+  public Address(String id, gov.ca.cwds.rest.api.domain.cms.Address address, String lastUpdateId) {
+    super();
+    try {
+      this.id = id;
+      this.city = address.getCity();
+      this.emergencyNumber = address.getEmergencyNumber();
+      this.emergencyExtension = address.getEmergencyExtension();
+      this.frgAdrtB = DomainChef.cookBoolean(address.getFrgAdrtB());
+      this.governmentEntityCd = address.getGovernmentEntityCd();
+      this.messageNumber = address.getMessageNumber();
+      this.messageExtension = address.getMessageExtension();
+      this.headerAddress = address.getHeaderAddress();
+      this.primaryNumber = address.getPrimaryNumber();
+      this.primaryExtension = address.getPrimaryExtension();
+      this.state = address.getState();
+      this.streetName = address.getStreetName();
+      this.streetNumber = address.getStreetNumber();
+      this.zip = address.getZip().toString();
+      this.zip4 = address.getZip4();
+      this.addressDescription = address.getAddressDescription();
+      this.postDirCd = address.getPostDirCd();
+      this.preDirCd = address.getPreDirCd();
+      this.streetSuffixCd = address.getStreetSuffixCd();
+      this.unitDesignationCd = address.getUnitDesignationCd();
+      this.unitNumber = address.getUnitNumber();
+
+    } catch (ApiException e) {
+      throw new PersistenceException(e);
+    }
+  }
+
+  /**
    * {@inheritDoc}
    * 
    * @see java.lang.Object#hashCode()
    */
   @Override
-  public int hashCode() {
+  public final int hashCode() {
     return HashCodeBuilder.reflectionHashCode(this, false);
   }
 
@@ -106,7 +146,7 @@ public class Address extends BaseAddress {
    * @see java.lang.Object#equals(java.lang.Object)
    */
   @Override
-  public boolean equals(Object obj) {
+  public final boolean equals(Object obj) {
     return EqualsBuilder.reflectionEquals(this, obj, false);
   }
 
