@@ -5,6 +5,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import gov.ca.cwds.rest.api.Request;
 import gov.ca.cwds.rest.api.Response;
 import io.dropwizard.jackson.JsonSnakeCase;
+import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 
 /**
@@ -13,6 +14,7 @@ import io.swagger.annotations.ApiModelProperty;
  * @author CWDS API Team
  */
 @JsonSnakeCase
+@ApiModel("nsAllegation")
 public class Allegation extends DomainObject implements Request, Response {
 
   @JsonProperty("victim_person_id")

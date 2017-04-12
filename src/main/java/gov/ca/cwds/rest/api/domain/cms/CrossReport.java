@@ -24,7 +24,7 @@ import io.swagger.annotations.ApiModelProperty;
  * 
  * @author CWDS API Team
  */
-@ApiModel
+@ApiModel("CmsCrossReport")
 public class CrossReport extends DomainObject implements Request, Response {
   /**
    * Serialization version

@@ -23,7 +23,7 @@ import io.swagger.annotations.ApiModelProperty;
  * 
  * @author CWDS API Team
  */
-@ApiModel
+@ApiModel("cmsAllegation")
 public class Allegation extends DomainObject implements Request, Response {
   /**
    * Serialization version
