@@ -282,7 +282,7 @@ public class LongTextServiceTest implements ServiceTestTemplate {
   @Test
   public void createReturnsGeneratedId() throws Exception {
     LongText longTextDomain = MAPPER
-        .readValue(fixture("fixtures/domain/legacy/LOngText/valid/valid.json"), LongText.class);
+        .readValue(fixture("fixtures/domain/legacy/LongText/valid/valid.json"), LongText.class);
     when(longTextDao.create(any(gov.ca.cwds.data.persistence.cms.LongText.class)))
         .thenAnswer(new Answer<gov.ca.cwds.data.persistence.cms.LongText>() {
 
