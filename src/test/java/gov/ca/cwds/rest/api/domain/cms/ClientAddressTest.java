@@ -26,6 +26,11 @@ import io.dropwizard.testing.junit.ResourceTestRule;
 import nl.jqno.equalsverifier.EqualsVerifier;
 import nl.jqno.equalsverifier.Warning;
 
+/**
+ * 
+ * @author CWDS API Team
+ * 
+ */
 public class ClientAddressTest {
 
   private static final ReporterResource mockedReporterResource = mock(ReporterResource.class);

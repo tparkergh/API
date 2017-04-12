@@ -14,7 +14,6 @@ import org.apache.commons.lang3.NotImplementedException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.google.inject.Inject;
@@ -278,12 +277,6 @@ public class ScreeningToReferralService implements CrudsService {
                   defaultInt, defaultStateCode, streetName, streetNumber, zipCode, "", zipSuffix,
                   "", "", defaultCode, defaultCode, "");
 
-              try {
-                final String domainAddressString = MAPPER.writeValueAsString(domainAddress);
-                System.out.println(domainAddressString);
-              } catch (JsonProcessingException e) {
-                e.printStackTrace();
-              }
               PostedAddress postedAddress =
                   (PostedAddress) this.addressService.create(domainAddress);
               addressId = postedAddress.getExistingAddressId();
@@ -296,12 +289,6 @@ public class ScreeningToReferralService implements CrudsService {
               ClientAddress postedClientAddress =
                   (ClientAddress) this.clientAddressService.create(clientAddress);
               clientAddressId = postedClientAddress.getClientAddressId();
-              try {
-                final String domainClientAddressString = MAPPER.writeValueAsString(clientAddress);
-                System.out.println(domainClientAddressString);
-              } catch (JsonProcessingException e) {
-                e.printStackTrace();
-              }
               /*
                * determine other participant attributes relating to CWS/CMS allegation
                */

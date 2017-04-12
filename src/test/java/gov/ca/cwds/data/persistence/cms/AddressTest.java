@@ -18,6 +18,10 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import gov.ca.cwds.data.persistence.junit.template.PersistentTestTemplate;
 import gov.ca.cwds.rest.api.domain.DomainChef;
 
+/**
+ * 
+ * @author CWDS API Team
+ */
 public class AddressTest implements PersistentTestTemplate {
 
   private String id = "1234567ABC";
