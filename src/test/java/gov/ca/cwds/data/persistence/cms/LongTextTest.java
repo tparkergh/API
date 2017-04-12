@@ -78,7 +78,7 @@ public class LongTextTest implements PersistentTestTemplate {
   private LongText validLongTest() throws JsonParseException, JsonMappingException, IOException {
 
     LongText validLongText =
-        MAPPER.readValue(fixture("fixtures/persistent/LOngText/valid/valid.json"), LongText.class);
+        MAPPER.readValue(fixture("fixtures/persistent/LongText/valid/valid.json"), LongText.class);
     return validLongText;
   }
 
