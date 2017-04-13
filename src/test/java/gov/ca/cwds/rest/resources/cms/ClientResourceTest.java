@@ -111,7 +111,7 @@ public class ClientResourceTest {
    * Update Tests
    */
   @Test
-  public void udpateDelegatesToResourceDelegate() throws Exception {
+  public void updateDelegatesToResourceDelegate() throws Exception {
     Client serialized =
         MAPPER.readValue(fixture("fixtures/domain/legacy/Client/valid/valid.json"), Client.class);
 
@@ -121,7 +121,7 @@ public class ClientResourceTest {
   }
 
   @Test
-  public void udpateValidatesEntity() throws Exception {
+  public void updateValidatesEntity() throws Exception {
     Client serialized = MAPPER.readValue(
         fixture("fixtures/domain/legacy/Client/invalid/birthDateInvalidFormat.json"), Client.class);
 

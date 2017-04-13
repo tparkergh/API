@@ -100,7 +100,7 @@ public class CrossReportResourceTest {
    * Update Tests
    */
   @Test
-  public void udpateDelegatesToResourceDelegate() throws Exception {
+  public void updateDelegatesToResourceDelegate() throws Exception {
     CrossReport serialized = MAPPER.readValue(
         fixture("fixtures/domain/legacy/CrossReport/valid/valid.json"), CrossReport.class);
 
@@ -110,7 +110,7 @@ public class CrossReportResourceTest {
   }
 
   @Test
-  public void udpateValidatesEntity() throws Exception {
+  public void updateValidatesEntity() throws Exception {
     CrossReport serialized = MAPPER.readValue(
         fixture("fixtures/domain/legacy/CrossReport/invalid/informDate/invalidFormat.json"),
         CrossReport.class);

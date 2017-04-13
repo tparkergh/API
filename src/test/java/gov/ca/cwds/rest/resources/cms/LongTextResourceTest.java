@@ -112,7 +112,7 @@ public class LongTextResourceTest {
    * Update Tests
    */
   @Test
-  public void udpateDelegatesToResourceDelegate() throws Exception {
+  public void updateDelegatesToResourceDelegate() throws Exception {
     LongText serialized = MAPPER
         .readValue(fixture("fixtures/domain/legacy/LongText/valid/valid.json"), LongText.class);
 
@@ -122,7 +122,7 @@ public class LongTextResourceTest {
   }
 
   @Test
-  public void udpateValidatesEntity() throws Exception {
+  public void updateValidatesEntity() throws Exception {
     LongText serialized = MAPPER.readValue(
         fixture("fixtures/domain/legacy/LongText/invalid/countySpecificCodeTooLong.json"),
         LongText.class);

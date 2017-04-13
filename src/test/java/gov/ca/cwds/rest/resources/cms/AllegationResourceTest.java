@@ -112,7 +112,7 @@ public class AllegationResourceTest {
    * Update Tests
    */
   @Test
-  public void udpateDelegatesToResourceDelegate() throws Exception {
+  public void updateDelegatesToResourceDelegate() throws Exception {
     Allegation serialized = MAPPER
         .readValue(fixture("fixtures/domain/legacy/Allegation/valid/valid.json"), Allegation.class);
 
@@ -122,7 +122,7 @@ public class AllegationResourceTest {
   }
 
   @Test
-  public void udpateValidatesEntity() throws Exception {
+  public void updateValidatesEntity() throws Exception {
     Allegation serialized = MAPPER.readValue(
         fixture("fixtures/domain/legacy/Allegation/invalid/abuseEndDateWrongFormat.json"),
         Allegation.class);
