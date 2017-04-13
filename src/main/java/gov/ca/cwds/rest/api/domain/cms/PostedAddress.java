@@ -25,8 +25,8 @@ public class PostedAddress extends Address {
    * Constuctor
    */
   /**
-   * @param address address to construct from
-   * @param isExist does it already exist
+   * @param address - persistent Address object
+   * @param isExist - ID already exist
    */
   public PostedAddress(gov.ca.cwds.data.persistence.cms.Address address, boolean isExist) {
 
