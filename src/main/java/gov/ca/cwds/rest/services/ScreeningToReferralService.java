@@ -128,7 +128,8 @@ public class ScreeningToReferralService implements CrudsService {
    * @param crossReportService the crossReportService
    * @param referralClientService the referralClientService
    * @param reporterService the reporterService
-   * @param addressService - cms address service
+   * @param addressService - CMS address service
+   * @param clientAddressService client address service
    */
   @Inject
   public ScreeningToReferralService(ReferralService referralService, ClientService clientService,
@@ -147,7 +148,6 @@ public class ScreeningToReferralService implements CrudsService {
     this.clientAddressService = clientAddressService;
   }
 
-
   @Override
   public Response create(Request request) {
     String referralId = "";
@@ -165,7 +165,6 @@ public class ScreeningToReferralService implements CrudsService {
 
     dateStarted = dateFormat.format(now);
     timeStarted = timeFormat.format(now);
-
 
     MAPPER.configure(SerializationFeature.INDENT_OUTPUT, true);
 
