@@ -1,6 +1,7 @@
 package gov.ca.cwds.data.persistence.cms.rep;
 
 import java.util.Date;
+import java.util.Map;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -17,6 +18,7 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
 import gov.ca.cwds.data.persistence.PersistentObject;
 import gov.ca.cwds.data.persistence.cms.BaseAttorney;
+import gov.ca.cwds.data.std.ApiGroupNormalizer;
 
 /**
  * {@link PersistentObject} representing an Attorney as a {@link CmsReplicatedEntity}.
@@ -55,7 +57,8 @@ import gov.ca.cwds.data.persistence.cms.BaseAttorney;
 @Table(name = "ATTRNY_T")
 @JsonPropertyOrder(alphabetic = true)
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class ReplicatedAttorney extends BaseAttorney implements CmsReplicatedEntity {
+public class ReplicatedAttorney extends BaseAttorney
+    implements CmsReplicatedEntity, ApiGroupNormalizer<ReplicatedAttorney> {
 
   /**
    * Generated version.
@@ -88,6 +91,22 @@ public class ReplicatedAttorney extends BaseAttorney implements CmsReplicatedEnt
   @Override
   public void setReplicationDate(Date replicationDate) {
     this.replicationDate = replicationDate;
+  }
+
+  @SuppressWarnings("unchecked")
+  @Override
+  public Class<ReplicatedAttorney> getReductionClass() {
+    return (Class<ReplicatedAttorney>) this.getClass();
+  }
+
+  @Override
+  public void reduce(Map<Object, ReplicatedAttorney> map) {
+    // No op.
+  }
+
+  @Override
+  public Object getGroupKey() {
+    return this.getId();
   }
 
 }
