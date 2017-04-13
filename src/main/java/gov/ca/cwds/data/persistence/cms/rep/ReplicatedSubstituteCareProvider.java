@@ -1,6 +1,7 @@
 package gov.ca.cwds.data.persistence.cms.rep;
 
 import java.util.Date;
+import java.util.Map;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -17,6 +18,7 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
 import gov.ca.cwds.data.persistence.PersistentObject;
 import gov.ca.cwds.data.persistence.cms.BaseSubstituteCareProvider;
+import gov.ca.cwds.data.std.ApiGroupNormalizer;
 
 /**
  * {@link PersistentObject} representing a Substitute Care Provider as a
@@ -25,6 +27,11 @@ import gov.ca.cwds.data.persistence.cms.BaseSubstituteCareProvider;
  * @author CWDS API Team
  */
 @NamedNativeQueries({
+    @NamedNativeQuery(
+        name = "gov.ca.cwds.data.persistence.cms.rep.ReplicatedSubstituteCareProvider.findBucketRange",
+        query = "SELECT x.* FROM {h-schema}SB_PVDRT x "
+            + "WHERE x.IDENTIFIER BETWEEN :min_id AND :max_id FOR READ ONLY",
+        resultClass = ReplicatedSubstituteCareProvider.class, readOnly = true),
     @NamedNativeQuery(
         name = "gov.ca.cwds.data.persistence.cms.rep.ReplicatedSubstituteCareProvider.findAllUpdatedAfter",
         query = "select z.IDENTIFIER, z.ADD_TEL_NO, z.ADD_EXT_NO, z.YR_INC_AMT, "
@@ -58,10 +65,10 @@ import gov.ca.cwds.data.persistence.cms.BaseSubstituteCareProvider;
 @JsonPropertyOrder(alphabetic = true)
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class ReplicatedSubstituteCareProvider extends BaseSubstituteCareProvider
-    implements CmsReplicatedEntity {
+    implements CmsReplicatedEntity, ApiGroupNormalizer<ReplicatedSubstituteCareProvider> {
 
   /**
-   * 
+   * Generated serialization version.
    */
   private static final long serialVersionUID = 6160989831851057517L;
 
@@ -72,6 +79,10 @@ public class ReplicatedSubstituteCareProvider extends BaseSubstituteCareProvider
   @Type(type = "timestamp")
   @Column(name = "IBMSNAP_LOGMARKER", updatable = false)
   private Date replicationDate;
+
+  // =======================
+  // CmsReplicatedEntity:
+  // =======================
 
   @Override
   public CmsReplicationOperation getReplicationOperation() {
@@ -91,6 +102,26 @@ public class ReplicatedSubstituteCareProvider extends BaseSubstituteCareProvider
   @Override
   public void setReplicationDate(Date replicationDate) {
     this.replicationDate = replicationDate;
+  }
+
+  // =======================
+  // ApiGroupNormalizer:
+  // =======================
+
+  @SuppressWarnings("unchecked")
+  @Override
+  public Class<ReplicatedSubstituteCareProvider> getReductionClass() {
+    return (Class<ReplicatedSubstituteCareProvider>) this.getClass();
+  }
+
+  @Override
+  public void reduce(Map<Object, ReplicatedSubstituteCareProvider> map) {
+    // No op.
+  }
+
+  @Override
+  public Object getGroupKey() {
+    return this.getId();
   }
 
 }

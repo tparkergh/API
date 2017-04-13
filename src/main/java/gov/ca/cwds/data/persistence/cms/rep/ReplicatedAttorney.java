@@ -73,6 +73,10 @@ public class ReplicatedAttorney extends BaseAttorney
   @Column(name = "IBMSNAP_LOGMARKER", updatable = false)
   private Date replicationDate;
 
+  // =======================
+  // CmsReplicatedEntity:
+  // =======================
+
   @Override
   public CmsReplicationOperation getReplicationOperation() {
     return replicationOperation;
@@ -92,6 +96,10 @@ public class ReplicatedAttorney extends BaseAttorney
   public void setReplicationDate(Date replicationDate) {
     this.replicationDate = replicationDate;
   }
+
+  // =======================
+  // ApiGroupNormalizer:
+  // =======================
 
   @SuppressWarnings("unchecked")
   @Override
