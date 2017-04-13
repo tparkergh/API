@@ -46,8 +46,11 @@ public class AddressService implements CrudsService {
       Address managed = new Address(IdGenerator.randomString(10), address, "q1p");
 
       managed = addressDao.create(managed);
+      if (managed.getId() == null) {
+        throw new ServiceException("Address ID cannot be null");
+      }
 
-      return new PostedAddress(managed, false);
+      return new PostedAddress(managed, true);
 
     } catch (EntityExistsException e) {
       LOGGER.info("Address already exists : ()", address);

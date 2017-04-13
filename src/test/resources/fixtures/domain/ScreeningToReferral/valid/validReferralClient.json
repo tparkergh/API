@@ -1,6 +1,6 @@
 [{
   "approvalNumber" : "",
-  "approvalStatusType" : 0,
+  "approvalStatusType" : 118,
   "dispositionClosureReasonType" : 0,
   "dispositionCode" : "",
   "dispositionDate" : "",
@@ -11,7 +11,7 @@
   "dispositionClosureDescription" : "",
   "ageNumber" : 0,
   "agePeriodCode" : "",
-  "countySpecificCode" : "",
+  "countySpecificCode" : "99",
   "mentalHealthIssuesIndicator" : false,
   "alcoholIndicator" : false,
   "drugIndicator" : false

@@ -211,7 +211,6 @@ public class ScreeningToReferralServiceTest {
         fixture("fixtures/domain/ScreeningToReferral/valid/valid.json"), ScreeningToReferral.class);
 
     Response response = screeningToReferralService.create(screeningToReferral);
-
     return response;
   }
 
@@ -219,12 +218,7 @@ public class ScreeningToReferralServiceTest {
   @SuppressWarnings("javadoc")
   @Test
   public void createReturnsPostedCmsReferral() throws Exception {
-
     Response response = screeningToReferralServiceResponse();
-    MAPPER.configure(SerializationFeature.INDENT_OUTPUT, true);
-
-    final String cmsReferralString = MAPPER.writeValueAsString(response);
-
     assertThat(response.getClass(), is(PostedCmsReferral.class));
   }
 
@@ -302,6 +296,10 @@ public class ScreeningToReferralServiceTest {
         fixture("fixtures/domain/ScreeningToReferral/valid/valid.json"), ScreeningToReferral.class);
 
     Response response = screeningToReferralService.create(screeningToReferral);
+    MAPPER.configure(SerializationFeature.INDENT_OUTPUT, true);
+
+    final String cmsReferralString = MAPPER.writeValueAsString(response);
+    System.out.println(cmsReferralString);
 
     assertThat(response.getClass(), is(PostedCmsReferral.class));
   }

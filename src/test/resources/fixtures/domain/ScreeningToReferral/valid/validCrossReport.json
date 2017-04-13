@@ -1,5 +1,5 @@
 [{
-  "thirdId" : "34567890123ABC",
+  "thirdId" : "",
   "crossReportMethodType" : 0,
   "filedOutOfStateIndicator" : false,
   "governmentOrgCrossRptIndicatorVar" : false,
@@ -16,7 +16,7 @@
   "description" : "Sacramento County Sheriff Deparment",
   "recipientName" : "",
   "outStateLawEnforcementAddr" : "",
-  "countySpecificCode" : "",
+  "countySpecificCode" : "99",
   "lawEnforcementIndicator" : false,
   "outStateLawEnforcementIndicator" : false,
   "satisfyCrossReportIndicator" : false

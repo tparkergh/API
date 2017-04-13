@@ -9,7 +9,7 @@
   "dispositionDescription" : "Narrative 123 test",
   "dispositionDate" : "",
   "injuryHarmDetailIndicator" : false,
-  "nonProtectingParentCode" : "",
+  "nonProtectingParentCode" : "U",
   "staffPersonAddedIndicator" : false,
   "victimClientId" : "1234567ABC",
   "perpetratorClientId" : "",
