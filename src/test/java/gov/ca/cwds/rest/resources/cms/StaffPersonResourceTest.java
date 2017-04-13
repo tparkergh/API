@@ -132,7 +132,7 @@ public class StaffPersonResourceTest {
    * @throws Exception required for test compilation
    */
   @Test
-  public void udpateDelegatesToResourceDelegate() throws Exception {
+  public void updateDelegatesToResourceDelegate() throws Exception {
     StaffPerson staffperson = new StaffPerson("1969-01-01", "Bart", "Student", "Simpson", "Q", "",
         new BigDecimal(9165551212L), 124, "1969-01-01", "", true, "abcdefghij", "description", "id",
         "03", false, "1234567890", "emailaddy");
@@ -142,7 +142,7 @@ public class StaffPersonResourceTest {
   }
 
   @Test
-  public void udpateValidatesEntity() throws Exception {
+  public void updateValidatesEntity() throws Exception {
     StaffPerson staffperson = new StaffPerson("1969-01-01", "Bart", "Student", "Simpson", "Q", "",
         new BigDecimal(9165551212L), 124, "1969-01-01", "", true, "abcdefghij", "description", "id",
         "WILL_NOT_VALIDATE", false, "1234567890", "emailaddy");
