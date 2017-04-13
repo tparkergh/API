@@ -28,7 +28,7 @@ public class AddressService implements CrudsService {
   private AddressDao addressDao;
 
   /**
-   * @param addressDao
+   * @param addressDao address DAO
    */
   @Inject
   public AddressService(AddressDao addressDao) {
