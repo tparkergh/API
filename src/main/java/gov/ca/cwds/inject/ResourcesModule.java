@@ -1,15 +1,11 @@
 package gov.ca.cwds.inject;
 
-import com.google.inject.AbstractModule;
-import com.google.inject.Injector;
-import com.google.inject.Provides;
-import com.google.inject.name.Named;
-
 import gov.ca.cwds.rest.ApiConfiguration;
 import gov.ca.cwds.rest.SwaggerConfiguration;
 import gov.ca.cwds.rest.api.domain.cms.CmsDocument;
 import gov.ca.cwds.rest.api.domain.es.AutoCompletePersonRequest;
 import gov.ca.cwds.rest.api.domain.es.AutoCompletePersonResponse;
+import gov.ca.cwds.rest.api.domain.es.PersonQueryRequest;
 import gov.ca.cwds.rest.resources.AddressResource;
 import gov.ca.cwds.rest.resources.AddressValidationResource;
 import gov.ca.cwds.rest.resources.ApplicationResource;
@@ -53,6 +49,12 @@ import gov.ca.cwds.rest.services.cms.ReferralService;
 import gov.ca.cwds.rest.services.cms.ReporterService;
 import gov.ca.cwds.rest.services.cms.StaffPersonService;
 import gov.ca.cwds.rest.services.es.AutoCompletePersonService;
+import gov.ca.cwds.rest.services.es.PersonQueryService;
+
+import com.google.inject.AbstractModule;
+import com.google.inject.Injector;
+import com.google.inject.Provides;
+import com.google.inject.name.Named;
 
 
 /**
@@ -226,5 +228,13 @@ public class ResourcesModule extends AbstractModule {
       Injector injector) {
     return new SimpleResourceDelegate<>(injector.getInstance(AutoCompletePersonService.class));
   }
+
+  @Provides
+  @IntakePersonQueryServiceResource
+  public SimpleResourceDelegate<String, PersonQueryRequest, gov.ca.cwds.rest.api.Response, PersonQueryService> intakePersonQueryResource(
+      Injector injector) {
+    return new SimpleResourceDelegate<>(injector.getInstance(PersonQueryService.class));
+  }
+
 
 }
