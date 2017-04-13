@@ -27,9 +27,9 @@ import gov.ca.cwds.data.std.ApiGroupNormalizer;
  */
 @NamedNativeQueries({
     @NamedNativeQuery(
-        name = "gov.ca.cwds.data.persistence.cms.rep.ReplicatedAttorney.findBucketRange",
+        name = "gov.ca.cwds.data.persistence.cms.rep.ReplicatedOtherClientName.findBucketRange",
         query = "SELECT x.* FROM {h-schema}OCL_NM_T x "
-            + "WHERE x.IDENTIFIER BETWEEN :min_id AND :max_id FOR READ ONLY",
+            + "WHERE x.THIRD_ID BETWEEN :min_id AND :max_id FOR READ ONLY",
         resultClass = ReplicatedOtherClientName.class, readOnly = true),
     @NamedNativeQuery(
         name = "gov.ca.cwds.data.persistence.cms.rep.ReplicatedOtherClientName.findAllUpdatedAfter",
