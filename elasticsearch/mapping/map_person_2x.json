@@ -1,32 +1,214 @@
 {
-	"_all":       { "enabled": true },
-	"properties": {
-	  "id":            { "type": "string" },
-	  "first_name":    { "type": "string", "analyzer": "index_ngram_analyzer", "search_analyzer": "search_ngram_analyzer" },
-	  "last_name":     { "type": "string" },
-	  "middle_name":   { "type": "string" },
-	  "date_of_birth": { "type": "date"},
-	  "ssn":           { "type": "string" },
-	  "gender":        { "type": "string" },
-	  "languages":     { "type": "string" },
-	  "type":          { "type": "string" },
-	  "source":        { "type": "string" },
-	  "addresses": {
-		"properties": {
-		  "id":             { "type": "string" },
-		  "city":           { "type": "string" },
-		  "state":          { "type": "string" },
-		  "street_address": { "type": "string" },
-		  "zip":            { "type": "string" },
-		  "type":           { "type": "string" }
-	  }},
-	  "phone_numbers": {
-		"properties": {
-		  "id":     { "type": "string" },
-		  "number": { "type": "string" },
-		  "type":   { "type": "string" }
-		}
-	  }
-	}
-  }
+	"_all": {
+		"enabled": true
+	},
+    "properties": {
+        "id": {
+            "type": "string", 
+            "store" : true
+        },
+        "firstName": {
+            "type": "string", 
+            "store" : true
+        },
+        "lastName": {
+            "type": "string", 
+            "store" : true
+        },
+        "middleName": {
+            "type": "string", 
+            "store" : true
+        },
+        "nameSuffix": {
+            "type": "string", 
+            "store" : true
+        },
+        "gender": {
+            "type": "string", 
+            "store" : true
+        },
+        "dateOfBirth": {
+            "format": "strict_date_optional_time||epoch_millis",
+            "type": "date", 
+            "store" : true
+        },
+        "ssn": {
+            "type": "string", 
+            "store" : true
+        },
+        "source": {
+            "type": "string", 
+            "store" : true
+        },
+        "type": {
+            "type": "string", 
+            "store" : true
+        },
+		"addresses":{
+			"properties": {
+			    "id": {
+			    	"type": "string",
+			    	"store": true
+			    }, 
+			    "streetAddress": {
+			    	"type": "string",
+			    	"store": true
+			    }, 
+			    "city": {
+			    	"type": "string",
+			    	"store": true
+			    },
+			    "state": {
+			    	"type": "string",
+			    	"store": true
+			    }, 
+			    "zip": {
+			    	"type": "string",
+			    	"store": true
+			    }, 
+			    "type": {
+			    	"type": "string",
+			    	"store": true
+			    }
+			}
+		},
+	    "phoneNumbers":{
+	        "properties": {
+	            "id": {
+			    	"type": "string",
+			    	"store": true
+			    }, 
+	            "number": {
+			    	"type": "string",
+			    	"store": true
+			    },
+	  	        "type": {
+	  	            "type": "string", 
+	  	            "store" : true
+	  	        }
+	        }
+	    },
+	    "languages":{
+	      	"properties": {
+	      		"language":  {
+			    	"type": "string",
+			    	"store": true
+			    }
+	      	}
+	    },
+	    "races":{
+	        "properties": {
+	        	"race": {
+			    	"type": "string",
+			    	"store": true
+			    }, 
+	            "raceDetail": {
+			    	"type": "string",
+			    	"store": true
+			    }
+	        }
+	    },
+	    "ethnicity":{
+	      	"properties": {
+		         "hispanicLatinoOrigin": {
+			    	"type": "string",
+			    	"store": true
+			    }, 
+		         "ethnicityDetail": {
+			    	"type": "string",
+			    	"store": true
+			    }
+		    }
+	    },
+    	"referrals": {
+    		"properties": {
+        		"id": {
+        			"type": "string", 
+        			"store" : true
+        		},
+        		"startDate": {
+		            "format": "strict_date_optional_time||epoch_millis",
+		            "type": "date", 
+		            "store" : true
+        		},
+        		"endDate": {
+		            "format": "strict_date_optional_time||epoch_millis",
+		            "type": "date", 
+		            "store" : true
+        		},
+        		"countyName": {
+        			"type": "string", 
+        			"store" : true
+        		},
+        		"reporter": {
+    				"properties": {
+                		"firstName": {
+                			"type": "string", 
+                			"store" : true
+                		},
+                		"lastName": {
+                			"type": "string", 
+                			"store" : true
+                		},
+				        "id": {
+				            "type": "string", 
+				            "store" : true
+				        }
+    				}
+        		},
+        		"assignedSocialWorker": {
+    				"properties": {
+                		"firstName": {
+                			"type": "string", 
+                			"store" : true
+                		},
+                		"lastName": {
+                			"type": "string", 
+                			"store" : true
+                		},
+				        "id": {
+				            "type": "string", 
+				            "store" : true
+				        }
+    				}
+        		},
+    			"allegations": {
+    				"properties": {
+                		"victimFirstName": {
+                			"type": "string", 
+                			"store" : true
+                		},
+                		"victimLastName": {
+                			"type": "string", 
+                			"store" : true
+                		},
+				        "victimId": {
+				            "type": "string", 
+				            "store" : true
+				        },
+                		"perpetratorFirstName": {
+                			"type": "string", 
+                			"store" : true
+                		},
+                		"perpetratorLastName": {
+                			"type": "string", 
+                			"store" : true
+                		},
+				        "perpetratorId": {
+				            "type": "string", 
+				            "store" : true
+				        },
+                		"allegationDescription": {
+                			"type": "string", 
+                			"store" : true
+                		},
+                		"dispositionDescription": {
+                			"type": "string", 
+                			"store" : true
+                		}
+    				}
+    			}
+    		}
+    	}
+    }
 }
