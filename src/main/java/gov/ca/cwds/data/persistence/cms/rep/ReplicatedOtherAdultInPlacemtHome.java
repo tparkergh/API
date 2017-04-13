@@ -1,6 +1,7 @@
 package gov.ca.cwds.data.persistence.cms.rep;
 
 import java.util.Date;
+import java.util.Map;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -17,6 +18,7 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
 import gov.ca.cwds.data.persistence.PersistentObject;
 import gov.ca.cwds.data.persistence.cms.BaseOtherAdultInPlacemtHome;
+import gov.ca.cwds.data.std.ApiGroupNormalizer;
 
 /**
  * {@link PersistentObject} representing an Other Adult In Placement Home as a
@@ -56,7 +58,7 @@ import gov.ca.cwds.data.persistence.cms.BaseOtherAdultInPlacemtHome;
 @JsonPropertyOrder(alphabetic = true)
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class ReplicatedOtherAdultInPlacemtHome extends BaseOtherAdultInPlacemtHome
-    implements CmsReplicatedEntity {
+    implements CmsReplicatedEntity, ApiGroupNormalizer<ReplicatedOtherAdultInPlacemtHome> {
 
   /**
    * Default.
@@ -70,6 +72,10 @@ public class ReplicatedOtherAdultInPlacemtHome extends BaseOtherAdultInPlacemtHo
   @Type(type = "timestamp")
   @Column(name = "IBMSNAP_LOGMARKER", updatable = false)
   private Date replicationDate;
+
+  // =======================
+  // CmsReplicatedEntity:
+  // =======================
 
   @Override
   public CmsReplicationOperation getReplicationOperation() {
@@ -89,6 +95,26 @@ public class ReplicatedOtherAdultInPlacemtHome extends BaseOtherAdultInPlacemtHo
   @Override
   public void setReplicationDate(Date replicationDate) {
     this.replicationDate = replicationDate;
+  }
+
+  // =======================
+  // ApiGroupNormalizer:
+  // =======================
+
+  @SuppressWarnings("unchecked")
+  @Override
+  public Class<ReplicatedOtherAdultInPlacemtHome> getReductionClass() {
+    return (Class<ReplicatedOtherAdultInPlacemtHome>) this.getClass();
+  }
+
+  @Override
+  public void reduce(Map<Object, ReplicatedOtherAdultInPlacemtHome> map) {
+    // No op.
+  }
+
+  @Override
+  public Object getGroupKey() {
+    return this.getId();
   }
 
 }

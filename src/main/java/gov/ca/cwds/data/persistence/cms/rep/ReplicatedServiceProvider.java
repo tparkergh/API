@@ -1,6 +1,7 @@
 package gov.ca.cwds.data.persistence.cms.rep;
 
 import java.util.Date;
+import java.util.Map;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -17,6 +18,7 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
 import gov.ca.cwds.data.persistence.PersistentObject;
 import gov.ca.cwds.data.persistence.cms.BaseServiceProvider;
+import gov.ca.cwds.data.std.ApiGroupNormalizer;
 
 /**
  * {@link PersistentObject} representing a Service Provider as a {@link CmsReplicatedEntity}.
@@ -24,6 +26,11 @@ import gov.ca.cwds.data.persistence.cms.BaseServiceProvider;
  * @author CWDS API Team
  */
 @NamedNativeQueries({
+    @NamedNativeQuery(
+        name = "gov.ca.cwds.data.persistence.cms.rep.ReplicatedServiceProvider.findBucketRange",
+        query = "SELECT x.* FROM {h-schema}SVC_PVRT x "
+            + "WHERE x.IDENTIFIER BETWEEN :min_id AND :max_id FOR READ ONLY",
+        resultClass = ReplicatedServiceProvider.class, readOnly = true),
     @NamedNativeQuery(
         name = "gov.ca.cwds.data.persistence.cms.rep.ReplicatedServiceProvider.findAllUpdatedAfter",
         query = "select z.IDENTIFIER, z.AGENCY_NM, z.CITY_NM, z.FAX_NO, z.FIRST_NM, z.LAST_NM, "
@@ -51,10 +58,11 @@ import gov.ca.cwds.data.persistence.cms.BaseServiceProvider;
 @Table(name = "SVC_PVRT")
 @JsonPropertyOrder(alphabetic = true)
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class ReplicatedServiceProvider extends BaseServiceProvider implements CmsReplicatedEntity {
+public class ReplicatedServiceProvider extends BaseServiceProvider
+    implements CmsReplicatedEntity, ApiGroupNormalizer<ReplicatedServiceProvider> {
 
   /**
-   * 
+   * Default.
    */
   private static final long serialVersionUID = 1L;
 
@@ -65,6 +73,10 @@ public class ReplicatedServiceProvider extends BaseServiceProvider implements Cm
   @Type(type = "timestamp")
   @Column(name = "IBMSNAP_LOGMARKER", updatable = false)
   private Date replicationDate;
+
+  // =======================
+  // CmsReplicatedEntity:
+  // =======================
 
   @Override
   public CmsReplicationOperation getReplicationOperation() {
@@ -84,6 +96,26 @@ public class ReplicatedServiceProvider extends BaseServiceProvider implements Cm
   @Override
   public void setReplicationDate(Date replicationDate) {
     this.replicationDate = replicationDate;
+  }
+
+  // =======================
+  // ApiGroupNormalizer:
+  // =======================
+
+  @SuppressWarnings("unchecked")
+  @Override
+  public Class<ReplicatedServiceProvider> getReductionClass() {
+    return (Class<ReplicatedServiceProvider>) this.getClass();
+  }
+
+  @Override
+  public void reduce(Map<Object, ReplicatedServiceProvider> map) {
+    // No op.
+  }
+
+  @Override
+  public Object getGroupKey() {
+    return this.getId();
   }
 
 }

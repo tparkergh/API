@@ -195,6 +195,10 @@ public class ReplicatedClient extends BaseClient
     return phones.toArray(new ApiPhoneAware[0]);
   }
 
+  // =======================
+  // CmsReplicatedEntity:
+  // =======================
+
   @Override
   public CmsReplicationOperation getReplicationOperation() {
     return replicationOperation;

@@ -1,6 +1,7 @@
 package gov.ca.cwds.data.persistence.cms.rep;
 
 import java.util.Date;
+import java.util.Map;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -17,6 +18,7 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
 import gov.ca.cwds.data.persistence.PersistentObject;
 import gov.ca.cwds.data.persistence.cms.BaseReporter;
+import gov.ca.cwds.data.std.ApiGroupNormalizer;
 
 /**
  * {@link PersistentObject} representing a Reporter as a {@link CmsReplicatedEntity}.
@@ -24,6 +26,11 @@ import gov.ca.cwds.data.persistence.cms.BaseReporter;
  * @author CWDS API Team
  */
 @NamedNativeQueries({
+    @NamedNativeQuery(
+        name = "gov.ca.cwds.data.persistence.cms.rep.ReplicatedReporter.findBucketRange",
+        query = "SELECT x.* FROM {h-schema}REPTR_T x "
+            + "WHERE x.FKREFERL_T BETWEEN :min_id AND :max_id FOR READ ONLY",
+        resultClass = ReplicatedAttorney.class, readOnly = true),
     @NamedNativeQuery(
         name = "gov.ca.cwds.data.persistence.cms.rep.ReplicatedReporter.findAllUpdatedAfter",
         query = "select trim(z.RPTR_BDGNO) as RPTR_BDGNO, trim(z.RPTR_CTYNM) as RPTR_CTYNM, "
@@ -57,10 +64,11 @@ import gov.ca.cwds.data.persistence.cms.BaseReporter;
 @Table(name = "REPTR_T")
 @JsonPropertyOrder(alphabetic = true)
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class ReplicatedReporter extends BaseReporter implements CmsReplicatedEntity {
+public class ReplicatedReporter extends BaseReporter
+    implements CmsReplicatedEntity, ApiGroupNormalizer<ReplicatedReporter> {
 
   /**
-   * 
+   * Default.
    */
   private static final long serialVersionUID = 1L;
 
@@ -71,6 +79,10 @@ public class ReplicatedReporter extends BaseReporter implements CmsReplicatedEnt
   @Type(type = "timestamp")
   @Column(name = "IBMSNAP_LOGMARKER", updatable = false)
   private Date replicationDate;
+
+  // =======================
+  // CmsReplicatedEntity:
+  // =======================
 
   @Override
   public CmsReplicationOperation getReplicationOperation() {
@@ -90,6 +102,26 @@ public class ReplicatedReporter extends BaseReporter implements CmsReplicatedEnt
   @Override
   public void setReplicationDate(Date replicationDate) {
     this.replicationDate = replicationDate;
+  }
+
+  // =======================
+  // ApiGroupNormalizer:
+  // =======================
+
+  @SuppressWarnings("unchecked")
+  @Override
+  public Class<ReplicatedReporter> getReductionClass() {
+    return (Class<ReplicatedReporter>) this.getClass();
+  }
+
+  @Override
+  public void reduce(Map<Object, ReplicatedReporter> map) {
+    // No op.
+  }
+
+  @Override
+  public Object getGroupKey() {
+    return this.getPrimaryKey();
   }
 
 }

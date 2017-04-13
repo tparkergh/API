@@ -1,6 +1,7 @@
 package gov.ca.cwds.data.persistence.cms.rep;
 
 import java.util.Date;
+import java.util.Map;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -17,6 +18,7 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
 import gov.ca.cwds.data.persistence.PersistentObject;
 import gov.ca.cwds.data.persistence.cms.BaseOtherClientName;
+import gov.ca.cwds.data.std.ApiGroupNormalizer;
 
 /**
  * {@link PersistentObject} representing an Other Client Name as a {@link CmsReplicatedEntity}.
@@ -24,6 +26,11 @@ import gov.ca.cwds.data.persistence.cms.BaseOtherClientName;
  * @author CWDS API Team
  */
 @NamedNativeQueries({
+    @NamedNativeQuery(
+        name = "gov.ca.cwds.data.persistence.cms.rep.ReplicatedAttorney.findBucketRange",
+        query = "SELECT x.* FROM {h-schema}OCL_NM_T x "
+            + "WHERE x.IDENTIFIER BETWEEN :min_id AND :max_id FOR READ ONLY",
+        resultClass = ReplicatedOtherClientName.class, readOnly = true),
     @NamedNativeQuery(
         name = "gov.ca.cwds.data.persistence.cms.rep.ReplicatedOtherClientName.findAllUpdatedAfter",
         query = "select z.THIRD_ID, z.FIRST_NM, z.LAST_NM, z.MIDDLE_NM, z.NMPRFX_DSC, "
@@ -45,7 +52,8 @@ import gov.ca.cwds.data.persistence.cms.BaseOtherClientName;
 @Table(name = "OCL_NM_T")
 @JsonPropertyOrder(alphabetic = true)
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class ReplicatedOtherClientName extends BaseOtherClientName implements CmsReplicatedEntity {
+public class ReplicatedOtherClientName extends BaseOtherClientName
+    implements CmsReplicatedEntity, ApiGroupNormalizer<ReplicatedOtherClientName> {
 
   /**
    * Default.
@@ -59,6 +67,10 @@ public class ReplicatedOtherClientName extends BaseOtherClientName implements Cm
   @Type(type = "timestamp")
   @Column(name = "IBMSNAP_LOGMARKER", updatable = false)
   private Date replicationDate;
+
+  // =======================
+  // CmsReplicatedEntity:
+  // =======================
 
   @Override
   public CmsReplicationOperation getReplicationOperation() {
@@ -78,6 +90,26 @@ public class ReplicatedOtherClientName extends BaseOtherClientName implements Cm
   @Override
   public void setReplicationDate(Date replicationDate) {
     this.replicationDate = replicationDate;
+  }
+
+  // =======================
+  // ApiGroupNormalizer:
+  // =======================
+
+  @SuppressWarnings("unchecked")
+  @Override
+  public Class<ReplicatedOtherClientName> getReductionClass() {
+    return (Class<ReplicatedOtherClientName>) this.getClass();
+  }
+
+  @Override
+  public void reduce(Map<Object, ReplicatedOtherClientName> map) {
+    // No op.
+  }
+
+  @Override
+  public Object getGroupKey() {
+    return this.getPrimaryKey();
   }
 
 }

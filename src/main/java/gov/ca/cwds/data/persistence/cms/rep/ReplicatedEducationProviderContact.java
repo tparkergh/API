@@ -1,6 +1,7 @@
 package gov.ca.cwds.data.persistence.cms.rep;
 
 import java.util.Date;
+import java.util.Map;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -17,6 +18,7 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
 import gov.ca.cwds.data.persistence.PersistentObject;
 import gov.ca.cwds.data.persistence.cms.BaseEducationProviderContact;
+import gov.ca.cwds.data.std.ApiGroupNormalizer;
 
 /**
  * {@link PersistentObject} representing an Education Provider Contact as a
@@ -53,7 +55,7 @@ import gov.ca.cwds.data.persistence.cms.BaseEducationProviderContact;
 @JsonPropertyOrder(alphabetic = true)
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class ReplicatedEducationProviderContact extends BaseEducationProviderContact
-    implements CmsReplicatedEntity {
+    implements CmsReplicatedEntity, ApiGroupNormalizer<ReplicatedEducationProviderContact> {
 
   /**
    * Default.
@@ -67,6 +69,10 @@ public class ReplicatedEducationProviderContact extends BaseEducationProviderCon
   @Type(type = "timestamp")
   @Column(name = "IBMSNAP_LOGMARKER", updatable = false)
   private Date replicationDate;
+
+  // =======================
+  // CmsReplicatedEntity:
+  // =======================
 
   @Override
   public CmsReplicationOperation getReplicationOperation() {
@@ -86,6 +92,26 @@ public class ReplicatedEducationProviderContact extends BaseEducationProviderCon
   @Override
   public void setReplicationDate(Date replicationDate) {
     this.replicationDate = replicationDate;
+  }
+
+  // =======================
+  // ApiGroupNormalizer:
+  // =======================
+
+  @SuppressWarnings("unchecked")
+  @Override
+  public Class<ReplicatedEducationProviderContact> getReductionClass() {
+    return (Class<ReplicatedEducationProviderContact>) this.getClass();
+  }
+
+  @Override
+  public void reduce(Map<Object, ReplicatedEducationProviderContact> map) {
+    // No op.
+  }
+
+  @Override
+  public Object getGroupKey() {
+    return this.getId();
   }
 
 }

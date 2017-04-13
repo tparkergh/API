@@ -1,6 +1,7 @@
 package gov.ca.cwds.data.persistence.cms.rep;
 
 import java.util.Date;
+import java.util.Map;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -17,6 +18,7 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
 import gov.ca.cwds.data.persistence.PersistentObject;
 import gov.ca.cwds.data.persistence.cms.BaseCollateralIndividual;
+import gov.ca.cwds.data.std.ApiGroupNormalizer;
 
 /**
  * {@link PersistentObject} representing a Collateral Individual as a {@link CmsReplicatedEntity}.
@@ -59,7 +61,7 @@ import gov.ca.cwds.data.persistence.cms.BaseCollateralIndividual;
 @JsonPropertyOrder(alphabetic = true)
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class ReplicatedCollateralIndividual extends BaseCollateralIndividual
-    implements CmsReplicatedEntity {
+    implements CmsReplicatedEntity, ApiGroupNormalizer<ReplicatedCollateralIndividual> {
 
   /**
    * Default.
@@ -73,6 +75,10 @@ public class ReplicatedCollateralIndividual extends BaseCollateralIndividual
   @Type(type = "timestamp")
   @Column(name = "IBMSNAP_LOGMARKER", updatable = false)
   private Date replicationDate;
+
+  // =======================
+  // CmsReplicatedEntity:
+  // =======================
 
   @Override
   public CmsReplicationOperation getReplicationOperation() {
@@ -92,6 +98,26 @@ public class ReplicatedCollateralIndividual extends BaseCollateralIndividual
   @Override
   public void setReplicationDate(Date replicationDate) {
     this.replicationDate = replicationDate;
+  }
+
+  // =======================
+  // ApiGroupNormalizer:
+  // =======================
+
+  @SuppressWarnings("unchecked")
+  @Override
+  public Class<ReplicatedCollateralIndividual> getReductionClass() {
+    return (Class<ReplicatedCollateralIndividual>) this.getClass();
+  }
+
+  @Override
+  public void reduce(Map<Object, ReplicatedCollateralIndividual> map) {
+    // No op.
+  }
+
+  @Override
+  public Object getGroupKey() {
+    return this.getId();
   }
 
 }
