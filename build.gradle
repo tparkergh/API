@@ -55,7 +55,7 @@ shadowJar {
 dependencies {
 	// Dropwizard-guice 1.0.0.2 conflicts with jersey-client 2.25.
 	// Exclude transitive dependencies.
-	compile ('gov.ca.cwds.api:api-core:0.20.134') {
+	compile ('gov.ca.cwds.api:api-core:0.20.135') {
 	    exclude group: 'org.glassfish.jersey.core'
 	}
 	
@@ -88,6 +88,8 @@ dependencies {
 	compile group: 'io.swagger', name: 'swagger-annotations', version: '1.5.9'
     compile group: "org.postgresql", name: "postgresql", version: "9.4.1208.jre7"
 
+    compile group: 'org.json', name: 'json', version: '20090211'
+    
 	// testCompile 'org.glassfish.jersey.core:jersey-client:2.26-b01'
     testCompile 'org.mockito:mockito-core:2.0.54-beta'
  	testCompile group: 'org.hamcrest', name: 'hamcrest-junit', version: '2.0.0.0'
