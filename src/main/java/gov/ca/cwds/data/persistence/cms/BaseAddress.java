@@ -62,7 +62,6 @@ public abstract class BaseAddress extends CmsPersistentObject
   @Column(name = "GVR_ENTC", nullable = false)
   protected Short governmentEntityCd;
 
-
   @Column(name = "MSG_TEL_NO", nullable = false)
   protected BigDecimal messageNumber;
 
