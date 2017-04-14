@@ -12,12 +12,12 @@ import com.google.inject.Inject;
 
 import gov.ca.cwds.data.cms.AddressDao;
 import gov.ca.cwds.data.persistence.cms.Address;
+import gov.ca.cwds.data.persistence.cms.CmsKeyIdGenerator;
 import gov.ca.cwds.rest.api.Request;
 import gov.ca.cwds.rest.api.Response;
 import gov.ca.cwds.rest.api.domain.cms.PostedAddress;
 import gov.ca.cwds.rest.services.CrudsService;
 import gov.ca.cwds.rest.services.ServiceException;
-import gov.ca.cwds.rest.util.IdGenerator;
 
 /**
  * @author CWDS API Team
@@ -43,7 +43,7 @@ public class AddressService implements CrudsService {
         (gov.ca.cwds.rest.api.domain.cms.Address) request;
 
     try {
-      Address managed = new Address(IdGenerator.randomString(10), address, "q1p");
+      Address managed = new Address(CmsKeyIdGenerator.cmsIdGenertor(null), address, "q1p");
 
       managed = addressDao.create(managed);
       if (managed.getId() == null) {
