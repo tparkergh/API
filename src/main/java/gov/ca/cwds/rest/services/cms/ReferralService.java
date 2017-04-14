@@ -12,12 +12,12 @@ import com.google.inject.Inject;
 
 import gov.ca.cwds.data.Dao;
 import gov.ca.cwds.data.cms.ReferralDao;
+import gov.ca.cwds.data.persistence.cms.CmsKeyIdGenerator;
 import gov.ca.cwds.data.persistence.cms.Referral;
 import gov.ca.cwds.rest.api.Request;
 import gov.ca.cwds.rest.api.domain.cms.PostedReferral;
 import gov.ca.cwds.rest.services.CrudsService;
 import gov.ca.cwds.rest.services.ServiceException;
-import gov.ca.cwds.rest.util.IdGenerator;
 
 /**
  * Business layer object to work on {@link Referral}
@@ -88,7 +88,7 @@ public class ReferralService implements CrudsService {
       // TODO : refactor to actually determine who is updating. 'q1p' for now - see user story
       // #136737071 - Tech Debt: Legacy Service classes must use Staff ID for last update ID value
 
-      Referral managed = new Referral(IdGenerator.randomString(10), referral, "q1p");
+      Referral managed = new Referral(CmsKeyIdGenerator.cmsIdGenertor(null), referral, "q1p");
       managed = referralDao.create(managed);
       if (managed.getId() == null) {
         throw new ServiceException("Referral ID cannot be null");

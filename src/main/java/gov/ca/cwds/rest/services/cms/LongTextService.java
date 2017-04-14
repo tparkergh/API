@@ -12,12 +12,12 @@ import com.google.inject.Inject;
 
 import gov.ca.cwds.data.Dao;
 import gov.ca.cwds.data.cms.LongTextDao;
+import gov.ca.cwds.data.persistence.cms.CmsKeyIdGenerator;
 import gov.ca.cwds.data.persistence.cms.LongText;
 import gov.ca.cwds.rest.api.Request;
 import gov.ca.cwds.rest.api.domain.cms.PostedLongText;
 import gov.ca.cwds.rest.services.CrudsService;
 import gov.ca.cwds.rest.services.ServiceException;
-import gov.ca.cwds.rest.util.IdGenerator;
 
 /**
  * Business layer object to work on {@link LongText}
@@ -89,7 +89,7 @@ public class LongTextService implements CrudsService {
       // TODO : refactor to actually determine who is updating. 'q1p' for now - #136737071 - Tech
       // Debt: Legacy Service classes must use Staff ID for last update ID value
 
-      LongText managed = new LongText(IdGenerator.randomString(10), longText, "q1p");
+      LongText managed = new LongText(CmsKeyIdGenerator.cmsIdGenertor(null), longText, "q1p");
       managed = longTextDao.create(managed);
       return new PostedLongText(managed);
     } catch (EntityExistsException e) {

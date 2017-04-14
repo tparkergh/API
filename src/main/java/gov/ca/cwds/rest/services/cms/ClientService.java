@@ -13,11 +13,11 @@ import com.google.inject.Inject;
 import gov.ca.cwds.data.Dao;
 import gov.ca.cwds.data.cms.ClientDao;
 import gov.ca.cwds.data.persistence.cms.Client;
+import gov.ca.cwds.data.persistence.cms.CmsKeyIdGenerator;
 import gov.ca.cwds.rest.api.Request;
 import gov.ca.cwds.rest.api.domain.cms.PostedClient;
 import gov.ca.cwds.rest.services.CrudsService;
 import gov.ca.cwds.rest.services.ServiceException;
-import gov.ca.cwds.rest.util.IdGenerator;
 
 /**
  * Business layer object to work on {@link Client}
@@ -98,7 +98,7 @@ public class ClientService implements CrudsService {
         (gov.ca.cwds.rest.api.domain.cms.Client) request;
 
     try {
-      Client managed = new Client(IdGenerator.randomString(10), client, "q1p");
+      Client managed = new Client(CmsKeyIdGenerator.cmsIdGenertor(null), client, "q1p");
       managed = clientDao.create(managed);
       return new PostedClient(managed, false);
     } catch (EntityExistsException e) {
