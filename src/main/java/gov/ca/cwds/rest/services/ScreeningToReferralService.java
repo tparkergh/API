@@ -209,8 +209,6 @@ public class ScreeningToReferralService implements CrudsService {
       if (!incomingParticipant.getGender().isEmpty()) {
         genderCode = incomingParticipant.getGender().toUpperCase().substring(0, 1);
       }
-      System.out.println("gender code = " + genderCode);
-
       victimClient.clear();
       perpatratorClient.clear();
 

@@ -1,5 +1,10 @@
 package gov.ca.cwds.rest.api.domain;
 
+import javax.validation.constraints.Size;
+
+import org.hibernate.validator.constraints.NotEmpty;
+
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import gov.ca.cwds.rest.api.Request;
@@ -20,20 +25,25 @@ import io.swagger.annotations.ApiModelProperty;
 public class CrossReport extends DomainObject implements Request, Response {
 
   @JsonProperty("agency_type")
-  @ApiModelProperty("Law Enforcement")
+  @ApiModelProperty(required = true, value = "Cross Report to", example = "Law Enforcement")
+  @NotEmpty
   private String agencyType;
 
   @JsonProperty("agency_name")
-  @ApiModelProperty("Sheriff Department")
+  @ApiModelProperty(required = true, value = "Agency Name", example = "Sheriff Department")
+  @Size(max = 120)
+  @NotEmpty
   private String agencyName;
 
   @JsonProperty("method")
-  @ApiModelProperty("e-mail")
+  @ApiModelProperty(required = true, value = "communication method", example = "phone")
+  @NotEmpty
   private String method;
 
+  @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = DATE_FORMAT)
   @Date
   @JsonProperty("inform_date")
-  @ApiModelProperty(example = "2001-09-13")
+  @ApiModelProperty(required = true, value = "yyyy-MM-dd", example = "2001-09-13")
   private String informDate;
 
 

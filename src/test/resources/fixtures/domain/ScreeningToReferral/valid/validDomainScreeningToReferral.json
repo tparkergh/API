@@ -19,7 +19,7 @@
 	  "state": "CA",
 	  "zip": 95757,
 	  "type": "Home"
-	},
+  },
    "screening_decision":"Response time",
    "screening_decision_detail":"Detail",
    "participants":[
@@ -38,6 +38,50 @@
 	  	"addresses" : [
 	  		{
 	  			"street_address" : "123 First St",
+	  			"state" : "CA",
+	  			"city" : "San Jose",
+	  			"zip" : "94321",
+	  			"type" : "Home"
+	  		}
+	  	]
+	},
+	{
+	  "id" : "1234",
+	  "first_name": "Bart",
+	  "last_name": "Simpson",
+	  "gender": "male",
+	  "date_of_birth": "2000-03-15",
+	  "ssn": "234567890",
+	  "person_id": 12345,
+	  "screening_id": 12345,
+	  "roles" : [
+	  	"mandated reporter"
+	  	],
+	  	"addresses" : [
+	  		{
+	  			"street_address" : "234 Second St",
+	  			"state" : "CA",
+	  			"city" : "San Jose",
+	  			"zip" : "94321",
+	  			"type" : "Home"
+	  		}
+	  	]
+	},
+	{
+	  "id" : "1234",
+	  "first_name": "Maggie",
+	  "last_name": "Simpson",
+	  "gender": "male",
+	  "date_of_birth": "2000-03-15",
+	  "ssn": "234567890",
+	  "person_id": 12345,
+	  "screening_id": 12345,
+	  "roles" : [
+	  	"perpatrator"
+	  	],
+	  	"addresses" : [
+	  		{
+	  			"street_address" : "345 Third St",
 	  			"state" : "CA",
 	  			"city" : "San Jose",
 	  			"zip" : "94321",

@@ -14,12 +14,12 @@
    "assignee":"Michael Bastow",
    "additional_info_included":"",
    "address":{
-  "street_address": "123 Main",
-  "city": "Sacramento",
-  "state": "CA",
-  "zip": 95757,
-  "type": "Home"
-},
+	  "street_address": "123 Main",
+	  "city": "Sacramento",
+	  "state": "CA",
+	  "zip": 95757,
+	  "type": "Home"
+  },
    "screening_decision":"Response time",
    "screening_decision_detail":"Detail",
    "participants":[

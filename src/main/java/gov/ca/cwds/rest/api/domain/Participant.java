@@ -35,7 +35,7 @@ public class Participant extends DomainObject implements Request, Response {
   private String lastName;
 
   @JsonProperty("gender")
-  @ApiModelProperty(example = "Male", allowableValues = "M, Male, Female")
+  @ApiModelProperty(example = "Male", allowableValues = "M, Male, F, Female")
   private String gender;
 
   @JsonProperty("ssn")

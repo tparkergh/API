@@ -2,14 +2,22 @@ package gov.ca.cwds.rest.api.domain;
 
 import static io.dropwizard.testing.FixtureHelpers.fixture;
 import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.is;
+import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
 import java.io.IOException;
 import java.util.HashSet;
 import java.util.Set;
 
+import javax.ws.rs.client.Entity;
+import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
+
 import org.junit.After;
+import org.junit.Before;
 import org.junit.ClassRule;
 import org.junit.Test;
 
@@ -19,16 +27,20 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.squarespace.jersey2.guice.JerseyGuiceUtils;
 
-import gov.ca.cwds.rest.resources.ScreeningResource;
+import gov.ca.cwds.rest.core.Api;
+import gov.ca.cwds.rest.resources.ScreeningToReferralResource;
 import gov.ca.cwds.rest.resources.cms.JerseyGuiceRule;
 import io.dropwizard.jackson.Jackson;
 import io.dropwizard.testing.junit.ResourceTestRule;
 
+@SuppressWarnings("javadoc")
 public class ScreeningToReferralTest {
 
+  private static final String ROOT_RESOURCE = "/" + Api.RESOURCE_REFERRALS + "/";;
   private static final ObjectMapper MAPPER = Jackson.newObjectMapper();
 
-  private static final ScreeningResource mockedScreeningResource = mock(ScreeningResource.class);
+  private static final ScreeningToReferralResource mockedScreeningToReferralResource =
+      mock(ScreeningToReferralResource.class);
 
   private String agencyType = "Law enforcement";
   private String agencyName = "Sacramento County Sheriff Deparment";
@@ -49,7 +61,15 @@ public class ScreeningToReferralTest {
 
   @ClassRule
   public static final ResourceTestRule resources =
-      ResourceTestRule.builder().addResource(mockedScreeningResource).build();
+      ResourceTestRule.builder().addResource(mockedScreeningToReferralResource).build();
+
+  private ScreeningToReferral validScreeningToReferral = validScreeningToReferral();
+
+  @Before
+  public void setup() {
+    when(mockedScreeningToReferralResource.create(eq(validScreeningToReferral)))
+        .thenReturn(Response.status(Response.Status.NO_CONTENT).entity(null).build());
+  }
 
   /*
    * Serialization and deserialization
@@ -103,6 +123,108 @@ public class ScreeningToReferralTest {
 
     assertThat(serialized, is(expected));
 
+  }
+
+  @Test
+  public void testWithValidSuccess() throws Exception {
+    ScreeningToReferral toCreate = MAPPER.readValue(
+        fixture("fixtures/domain/ScreeningToReferral/valid/validDomainScreeningToReferral.json"),
+        ScreeningToReferral.class);
+    Response response =
+        resources.client().target(ROOT_RESOURCE).request().accept(MediaType.APPLICATION_JSON)
+            .post(Entity.entity(toCreate, MediaType.APPLICATION_JSON));
+    assertThat(response.getStatus(), is(equalTo(204)));
+
+  }
+
+  @Test
+  public void testWithNullParticipantsFail() throws Exception {
+
+    ScreeningToReferral toCreate = MAPPER.readValue(
+        fixture("fixtures/domain/ScreeningToReferral/invalid/nullParticipants.json"),
+        ScreeningToReferral.class);
+    Response response =
+        resources.client().target(ROOT_RESOURCE).request().accept(MediaType.APPLICATION_JSON)
+            .post(Entity.entity(toCreate, MediaType.APPLICATION_JSON));
+    assertThat(response.getStatus(), is(equalTo(422)));
+  }
+
+  @Test
+  public void testWithEmptyParticipantsFail() throws Exception {
+    ScreeningToReferral toCreate = MAPPER.readValue(
+        fixture("fixtures/domain/ScreeningToReferral/invalid/emptyParticipants.json"),
+        ScreeningToReferral.class);
+    Response response =
+        resources.client().target(ROOT_RESOURCE).request().accept(MediaType.APPLICATION_JSON)
+            .post(Entity.entity(toCreate, MediaType.APPLICATION_JSON));
+    assertThat(response.getStatus(), is(equalTo(422)));
+
+  }
+
+  @Test
+  public void testWithNullAllegationsFail() throws Exception {
+    ScreeningToReferral toCreate = MAPPER.readValue(
+        fixture("fixtures/domain/ScreeningToReferral/invalid/nullAllegations.json"),
+        ScreeningToReferral.class);
+    Response response =
+        resources.client().target(ROOT_RESOURCE).request().accept(MediaType.APPLICATION_JSON)
+            .post(Entity.entity(toCreate, MediaType.APPLICATION_JSON));
+    assertThat(response.getStatus(), is(equalTo(422)));
+
+  }
+
+  @Test
+  public void testWithEmptyAllegationsFail() throws Exception {
+    ScreeningToReferral toCreate = MAPPER.readValue(
+        fixture("fixtures/domain/ScreeningToReferral/invalid/emptyAllegations.json"),
+        ScreeningToReferral.class);
+    Response response =
+        resources.client().target(ROOT_RESOURCE).request().accept(MediaType.APPLICATION_JSON)
+            .post(Entity.entity(toCreate, MediaType.APPLICATION_JSON));
+    assertThat(response.getStatus(), is(equalTo(422)));
+
+  }
+
+  @Test
+  public void testWithEmptyCrossReportSuccess() throws Exception {
+    ScreeningToReferral toCreate =
+        MAPPER.readValue(fixture("fixtures/domain/ScreeningToReferral/valid/emptyCrossReport.json"),
+            ScreeningToReferral.class);
+    Response response =
+        resources.client().target(ROOT_RESOURCE).request().accept(MediaType.APPLICATION_JSON)
+            .post(Entity.entity(toCreate, MediaType.APPLICATION_JSON));
+    assertThat(response.getStatus(), is(equalTo(204)));
+
+  }
+
+  @Test
+  public void testWithNullCrossReportSuccess() throws Exception {
+    ScreeningToReferral toCreate =
+        MAPPER.readValue(fixture("fixtures/domain/ScreeningToReferral/valid/nullCrossReport.json"),
+            ScreeningToReferral.class);
+    Response response =
+        resources.client().target(ROOT_RESOURCE).request().accept(MediaType.APPLICATION_JSON)
+            .post(Entity.entity(toCreate, MediaType.APPLICATION_JSON));
+    assertThat(response.getStatus(), is(equalTo(204)));
+
+  }
+
+  private ScreeningToReferral validScreeningToReferral() {
+    ScreeningToReferral str = null;
+    try {
+      str = MAPPER.readValue(
+          fixture("fixtures/domain/ScreeningToReferral/valid/validDomainScreeningToReferral.json"),
+          ScreeningToReferral.class);
+    } catch (JsonParseException e) {
+      e.printStackTrace();
+      return null;
+    } catch (JsonMappingException e) {
+      e.printStackTrace();
+      return null;
+    } catch (IOException e) {
+      e.printStackTrace();
+    }
+    return str;
   }
 
   private Address validAddress() {
@@ -162,5 +284,4 @@ public class ScreeningToReferralTest {
       return null;
     }
   }
-
 }
