@@ -6,6 +6,7 @@ import gov.ca.cwds.rest.api.domain.cms.CmsDocument;
 import gov.ca.cwds.rest.api.domain.es.AutoCompletePersonRequest;
 import gov.ca.cwds.rest.api.domain.es.AutoCompletePersonResponse;
 import gov.ca.cwds.rest.api.domain.es.PersonQueryRequest;
+import gov.ca.cwds.rest.api.domain.es.PersonQueryResponse;
 import gov.ca.cwds.rest.resources.AddressResource;
 import gov.ca.cwds.rest.resources.AddressValidationResource;
 import gov.ca.cwds.rest.resources.ApplicationResource;
@@ -176,8 +177,7 @@ public class ResourcesModule extends AbstractModule {
   @Provides
   @ScreeningToReferralServiceBackedResource
   public ResourceDelegate screeningToReferralBackedResource(Injector injector) {
-    return new ServiceBackedResourceDelegate(
-        injector.getInstance(ScreeningToReferralService.class));
+    return new ServiceBackedResourceDelegate(injector.getInstance(ScreeningToReferralService.class));
   }
 
   @Provides
@@ -231,7 +231,7 @@ public class ResourcesModule extends AbstractModule {
 
   @Provides
   @IntakePersonQueryServiceResource
-  public SimpleResourceDelegate<String, PersonQueryRequest, gov.ca.cwds.rest.api.Response, PersonQueryService> intakePersonQueryResource(
+  public SimpleResourceDelegate<String, PersonQueryRequest, PersonQueryResponse, PersonQueryService> intakePersonQueryResource(
       Injector injector) {
     return new SimpleResourceDelegate<>(injector.getInstance(PersonQueryService.class));
   }

@@ -5,6 +5,7 @@ import gov.ca.cwds.inject.IntakePersonQueryServiceResource;
 import gov.ca.cwds.rest.api.ApiException;
 import gov.ca.cwds.rest.api.domain.es.ESPersons;
 import gov.ca.cwds.rest.api.domain.es.PersonQueryRequest;
+import gov.ca.cwds.rest.api.domain.es.PersonQueryResponse;
 import gov.ca.cwds.rest.services.es.PersonQueryService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -49,7 +50,7 @@ public class PersonQueryResource {
   private static final Logger LOGGER = LoggerFactory.getLogger(PersonQueryResource.class);
 
 
-  private SimpleResourceDelegate<String, PersonQueryRequest, gov.ca.cwds.rest.api.Response, PersonQueryService> resourceDelegate;
+  private SimpleResourceDelegate<String, PersonQueryRequest, PersonQueryResponse, PersonQueryService> resourceDelegate;
 
   /**
    * Constructor
@@ -58,7 +59,7 @@ public class PersonQueryResource {
    */
   @Inject
   public PersonQueryResource(
-      @IntakePersonQueryServiceResource SimpleResourceDelegate<String, PersonQueryRequest, gov.ca.cwds.rest.api.Response, PersonQueryService> resourceDelegate) {
+      @IntakePersonQueryServiceResource SimpleResourceDelegate<String, PersonQueryRequest, PersonQueryResponse, PersonQueryService> resourceDelegate) {
     this.resourceDelegate = resourceDelegate;
   }
 
@@ -75,11 +76,13 @@ public class PersonQueryResource {
   @ApiOperation(value = "Query ElasticSearch Persons on given search terms",
       code = HttpStatus.SC_OK, response = JSONObject.class)
   @Consumes(value = MediaType.APPLICATION_JSON)
-  public Response searchPerson(
-      @Valid @ApiParam(hidden = false, required = true) PersonQueryRequest req) {
+  public Response searchPerson(@Valid @ApiParam(hidden = false, required = true) Object req) {
     Response ret;
     try {
-      ret = resourceDelegate.handle(req);
+      PersonQueryRequest personQueryRequest = new PersonQueryRequest(req);
+      PersonQueryResponse personQueryResponse =
+          (PersonQueryResponse) resourceDelegate.handle(personQueryRequest).getEntity();
+      ret = Response.status(Response.Status.OK).entity(personQueryResponse.getPersons()).build();
     } catch (Exception e) {
       LOGGER.error("Intake Person Query ERROR: {}", e.getMessage(), e);
       throw new ApiException("Intake Person Query ERROR. " + e.getMessage(), e);
