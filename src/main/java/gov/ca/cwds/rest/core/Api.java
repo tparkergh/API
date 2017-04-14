@@ -110,7 +110,7 @@ public interface Api {
   /**
    * A {@code String} constant representing {@value #RESOURCE_PERSON_QUERY} API.
    */
-  public static final String RESOURCE_PERSON_QUERY = "people_search_v2";
+  public static final String RESOURCE_PERSON_QUERY = "_search";
 
 
 }

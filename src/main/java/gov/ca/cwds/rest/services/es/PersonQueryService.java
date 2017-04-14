@@ -2,7 +2,6 @@ package gov.ca.cwds.rest.services.es;
 
 import gov.ca.cwds.data.es.ElasticsearchDao;
 import gov.ca.cwds.data.persistence.cms.ApiSystemCodeCache;
-import gov.ca.cwds.rest.api.Response;
 import gov.ca.cwds.rest.api.domain.es.PersonQueryRequest;
 import gov.ca.cwds.rest.api.domain.es.PersonQueryResponse;
 import gov.ca.cwds.rest.resources.SimpleResourceService;
@@ -24,7 +23,7 @@ import com.google.inject.Inject;
  * @author CWDS API Team
  */
 public class PersonQueryService extends
-    SimpleResourceService<String, PersonQueryRequest, gov.ca.cwds.rest.api.Response> {
+    SimpleResourceService<String, PersonQueryRequest, PersonQueryResponse> {
 
   private static final Logger LOGGER = LoggerFactory.getLogger(PersonQueryService.class);
 
@@ -56,7 +55,8 @@ public class PersonQueryService extends
   }
 
   @Override
-  protected Response handleRequest(PersonQueryRequest req) {
+  protected PersonQueryResponse handleRequest(PersonQueryRequest req) {
+    @SuppressWarnings("unchecked")
     String query = new JSONObject((Map<String, String>) req.getQuery()).toString();
     if (StringUtils.isBlank(query)) {
       throw new ServiceException("query cannot be null.");
@@ -65,7 +65,7 @@ public class PersonQueryService extends
   }
 
   @Override
-  protected Response handleFind(String searchForThis) {
+  protected PersonQueryResponse handleFind(String searchForThis) {
     try {
       return new PersonQueryResponse(callDao(searchForThis.trim()));
     } catch (Exception e) {
