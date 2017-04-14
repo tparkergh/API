@@ -1,5 +1,7 @@
 package gov.ca.cwds.rest.api.domain;
 
+import org.hibernate.validator.constraints.NotEmpty;
+
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import gov.ca.cwds.rest.api.Request;
@@ -17,16 +19,22 @@ import io.swagger.annotations.ApiModelProperty;
 @ApiModel("nsAllegation")
 public class Allegation extends DomainObject implements Request, Response {
 
+  /**
+   * 
+   */
+  private static final long serialVersionUID = 1L;
+
   @JsonProperty("victim_person_id")
-  @ApiModelProperty("12345")
+  @ApiModelProperty(required = true, value = "id of victim", example = "12345")
   private long victimPersonId;
 
   @JsonProperty("perpetrator_person_id")
-  @ApiModelProperty("12345")
+  @ApiModelProperty(required = true, value = "id of perpatrator", example = "12345")
   private long perpetratorPersonId;
 
   @JsonProperty("type")
-  @ApiModelProperty(example = "mental abuse")
+  @ApiModelProperty(required = true, value = "type of allegation", example = "mental abuse")
+  @NotEmpty
   private String type;
 
   @JsonProperty("county")

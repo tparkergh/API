@@ -52,13 +52,5 @@
          "agency_name":"Sacramento County Sheriff Deparment",
          "method":"electronic report",
          "inform_date":"2017-03-15"
-      }   ],
-   "allegations":[
-      {
-         "victim_person_id":"5432",
-         "perpetrator_person_id":"2",
-         "type":"physical abuse",
-         "county":"Sacramento"
-      }
-   ]
+      }   ]
 }
