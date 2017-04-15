@@ -1,5 +1,10 @@
 package gov.ca.cwds.inject;
 
+import com.google.inject.AbstractModule;
+import com.google.inject.Injector;
+import com.google.inject.Provides;
+import com.google.inject.name.Named;
+
 import gov.ca.cwds.rest.ApiConfiguration;
 import gov.ca.cwds.rest.SwaggerConfiguration;
 import gov.ca.cwds.rest.api.domain.cms.CmsDocument;
@@ -20,6 +25,7 @@ import gov.ca.cwds.rest.resources.SimpleResourceDelegate;
 import gov.ca.cwds.rest.resources.SwaggerResource;
 import gov.ca.cwds.rest.resources.TypedResourceDelegate;
 import gov.ca.cwds.rest.resources.TypedServiceBackedResourceDelegate;
+import gov.ca.cwds.rest.resources.cms.AllegationPerpetratorHistoryResource;
 import gov.ca.cwds.rest.resources.cms.AllegationResource;
 import gov.ca.cwds.rest.resources.cms.ClientResource;
 import gov.ca.cwds.rest.resources.cms.CmsDocReferralClientResource;
@@ -37,6 +43,7 @@ import gov.ca.cwds.rest.services.ParticipantService;
 import gov.ca.cwds.rest.services.PersonService;
 import gov.ca.cwds.rest.services.ScreeningService;
 import gov.ca.cwds.rest.services.ScreeningToReferralService;
+import gov.ca.cwds.rest.services.cms.AllegationPerpetratorHistoryService;
 import gov.ca.cwds.rest.services.cms.AllegationService;
 import gov.ca.cwds.rest.services.cms.ClientService;
 import gov.ca.cwds.rest.services.cms.CmsDocReferralClientService;
@@ -51,11 +58,6 @@ import gov.ca.cwds.rest.services.cms.ReporterService;
 import gov.ca.cwds.rest.services.cms.StaffPersonService;
 import gov.ca.cwds.rest.services.es.AutoCompletePersonService;
 import gov.ca.cwds.rest.services.es.PersonQueryService;
-
-import com.google.inject.AbstractModule;
-import com.google.inject.Injector;
-import com.google.inject.Provides;
-import com.google.inject.name.Named;
 
 
 /**
@@ -94,6 +96,7 @@ public class ResourcesModule extends AbstractModule {
     bind(AddressValidationResource.class);
     bind(ScreeningToReferralResource.class);
     bind(LongTextResource.class);
+    bind(AllegationPerpetratorHistoryResource.class);
   }
 
   @Provides
@@ -144,6 +147,13 @@ public class ResourcesModule extends AbstractModule {
   }
 
   @Provides
+  @AllegationPerpetratorHistoryServiceBackedResource
+  public ResourceDelegate allegationPerpetratorHistoryServiceBackedResource(Injector injector) {
+    return new ServiceBackedResourceDelegate(
+        injector.getInstance(AllegationPerpetratorHistoryService.class));
+  }
+
+  @Provides
   @CmsDocumentReferralClientServiceBackedResource
   public ResourceDelegate cmsDocumentReferralClientServiceBackedResource(Injector injector) {
     return new ServiceBackedResourceDelegate(
@@ -177,7 +187,8 @@ public class ResourcesModule extends AbstractModule {
   @Provides
   @ScreeningToReferralServiceBackedResource
   public ResourceDelegate screeningToReferralBackedResource(Injector injector) {
-    return new ServiceBackedResourceDelegate(injector.getInstance(ScreeningToReferralService.class));
+    return new ServiceBackedResourceDelegate(
+        injector.getInstance(ScreeningToReferralService.class));
   }
 
   @Provides
