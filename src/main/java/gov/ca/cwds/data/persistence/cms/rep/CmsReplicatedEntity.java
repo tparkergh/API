@@ -4,7 +4,7 @@ import java.io.Serializable;
 import java.util.Date;
 
 /**
- * Entity interface adds common CMS replication columns for Hibernate.
+ * Replicated entity interface adds common CMS replication columns to Hibernate entity classes.
  * 
  * @author CWDS API Team
  */

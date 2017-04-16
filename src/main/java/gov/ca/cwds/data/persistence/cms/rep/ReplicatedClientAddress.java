@@ -1,4 +1,4 @@
-package gov.ca.cwds.data.persistence.cms;
+package gov.ca.cwds.data.persistence.cms.rep;
 
 import java.util.LinkedHashSet;
 import java.util.Set;
@@ -13,9 +13,10 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
 import gov.ca.cwds.data.persistence.PersistentObject;
+import gov.ca.cwds.data.persistence.cms.BaseClientAddress;
 
 /**
- * {@link PersistentObject} representing a Client Address.
+ * {@link PersistentObject} representing a Client Address in the replicated schema.
  * 
  * @author CWDS API Team
  */
@@ -40,10 +41,20 @@ public final class ReplicatedClientAddress extends BaseClientAddress {
     super();
   }
 
+  /**
+   * Getter for addresses. Returns underlying member, not a deep copy.
+   * 
+   * @return Set of addresses
+   */
   public Set<ReplicatedAddress> getAddresses() {
     return addresses;
   }
 
+  /**
+   * Setter for addresses.
+   * 
+   * @param addresses addresses to set
+   */
   public void setAddresses(Set<ReplicatedAddress> addresses) {
     if (addresses != null) {
       this.addresses = addresses;
@@ -52,6 +63,11 @@ public final class ReplicatedClientAddress extends BaseClientAddress {
     }
   }
 
+  /**
+   * Add an address.
+   * 
+   * @param address to add
+   */
   public void addAddress(ReplicatedAddress address) {
     if (address != null) {
       addresses.add(address);
