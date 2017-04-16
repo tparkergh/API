@@ -34,7 +34,7 @@ import gov.ca.cwds.rest.api.domain.DomainChef;
 public class Address extends BaseAddress {
 
   /**
-   * 
+   * Default serialization version.
    */
   private static final long serialVersionUID = 1L;
 
