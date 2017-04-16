@@ -2,8 +2,12 @@ package gov.ca.cwds.rest.resources.cms;
 
 import javax.validation.Valid;
 import javax.ws.rs.Consumes;
+import javax.ws.rs.DELETE;
+import javax.ws.rs.GET;
 import javax.ws.rs.POST;
+import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
@@ -53,6 +57,44 @@ public class AllegationPerpetratorHistoryResource {
   }
 
   /**
+   * Finds an allegationPerpetratorHistory by id.
+   * 
+   * @param id the id
+   * 
+   * @return the response
+   */
+  @UnitOfWork(value = "cms")
+  @GET
+  @Path("/{id}")
+  @ApiResponses(value = {@ApiResponse(code = 401, message = "Not Authorized"),
+      @ApiResponse(code = 404, message = "Not found"),
+      @ApiResponse(code = 406, message = "Accept Header not supported")})
+  @ApiOperation(value = "Find allegationPerpetratorHistory by id",
+      response = AllegationPerpetratorHistory.class, code = 200)
+  public Response get(@PathParam("id") @ApiParam(required = true, name = "id",
+      value = "The id of the AllegationPerpetratorHistory to find") String id) {
+    return resourceDelegate.get(id);
+  }
+
+  /**
+   * Delete an allegationPerpetratorHistory by id.
+   * 
+   * @param id The id of the {@link AllegationPerpetratorHistory}
+   * 
+   * @return {@link Response}
+   */
+  @UnitOfWork(value = "cms")
+  @DELETE
+  @Path("/{id}")
+  @ApiResponses(value = {@ApiResponse(code = 401, message = "Not Authorized")})
+  @ApiOperation(value = "Delete AllegationPerpetratorHistory", code = HttpStatus.SC_OK,
+      response = Object.class)
+  public Response delete(@PathParam("id") @ApiParam(required = true,
+      value = "id of AllegationPerpetratorHistory to delete") String id) {
+    return resourceDelegate.delete(id);
+  }
+
+  /**
    * Create an {@link AllegationPerpetratorHistory}.
    * 
    * @param allegationPerpetratorHistory The {@link AllegationPerpetratorHistory}
@@ -65,7 +107,7 @@ public class AllegationPerpetratorHistoryResource {
       @ApiResponse(code = 401, message = "Not Authorized"),
       @ApiResponse(code = 406, message = "Accept Header not supported"),
       @ApiResponse(code = 409, message = "Conflict - already exists"),
-      @ApiResponse(code = 422, message = "Unable to validate Allegation")})
+      @ApiResponse(code = 422, message = "Unable to validate AllegationPerpetratorHistory")})
   @Consumes(value = MediaType.APPLICATION_JSON)
   @ApiOperation(value = "Create AllegationPerpetratorHistory", code = HttpStatus.SC_CREATED,
       response = AllegationPerpetratorHistory.class)
@@ -74,4 +116,29 @@ public class AllegationPerpetratorHistoryResource {
     return resourceDelegate.create(allegationPerpetratorHistory);
   }
 
+  /**
+   * Update an {@link AllegationPerpetratorHistory}.
+   * 
+   * @param id the id
+   * @param allegationPerpetratorHistory {@link AllegationPerpetratorHistory}
+   *
+   * @return The {@link Response}
+   */
+  @UnitOfWork(value = "cms")
+  @PUT
+  @Path("/{id}")
+  @ApiResponses(value = {@ApiResponse(code = 400, message = "Unable to process JSON"),
+      @ApiResponse(code = 401, message = "Not Authorized"),
+      @ApiResponse(code = 404, message = "not found"),
+      @ApiResponse(code = 406, message = "Accept Header not supported"),
+      @ApiResponse(code = 422, message = "Unable to validate AllegationPerpetratorHistory")})
+  @Consumes(value = MediaType.APPLICATION_JSON)
+  @ApiOperation(value = "Update AllegationPerpetratorHistory", code = HttpStatus.SC_NO_CONTENT,
+      response = Object.class)
+  public Response update(
+      @PathParam("id") @ApiParam(required = true, name = "id",
+          value = "The id of the AllegationPerpetratorHistory to update") String id,
+      @Valid @ApiParam(hidden = false) AllegationPerpetratorHistory allegationPerpetratorHistory) {
+    return resourceDelegate.update(id, allegationPerpetratorHistory);
+  }
 }
