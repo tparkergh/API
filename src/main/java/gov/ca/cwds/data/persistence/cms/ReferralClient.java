@@ -23,7 +23,7 @@ import gov.ca.cwds.rest.api.ApiException;
 import gov.ca.cwds.rest.api.domain.DomainChef;
 
 /**
- * {@link CmsPersistentObject} representing a ReferralClient.
+ * {@link CmsPersistentObject} representing a ReferralClient in the replicated schema.
  * 
  * @author CWDS API Team
  */
@@ -52,14 +52,14 @@ public class ReferralClient extends CmsPersistentObject {
     private String clientId;
 
     /**
-     * Default ctor.
+     * Default constructor.
      */
     public PrimaryKey() {
       // Default values.
     }
 
     /**
-     * Construct from args.
+     * Construct from foreign keys.
      * 
      * @param referralId referral Id
      * @param clientId client Id

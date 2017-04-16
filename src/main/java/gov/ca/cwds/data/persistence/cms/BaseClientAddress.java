@@ -58,6 +58,9 @@ public abstract class BaseClientAddress extends CmsPersistentObject {
   @Column(name = "FKREFERL_T", nullable = true, length = CMS_ID_LEN)
   protected String fkReferral;
 
+  /**
+   * Default constructor.
+   */
   public BaseClientAddress() {
     super();
   }

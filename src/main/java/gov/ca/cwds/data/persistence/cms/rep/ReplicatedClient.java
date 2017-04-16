@@ -28,8 +28,6 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
 import gov.ca.cwds.data.persistence.PersistentObject;
 import gov.ca.cwds.data.persistence.cms.BaseClient;
-import gov.ca.cwds.data.persistence.cms.ReplicatedAddress;
-import gov.ca.cwds.data.persistence.cms.ReplicatedClientAddress;
 import gov.ca.cwds.data.std.ApiAddressAware;
 import gov.ca.cwds.data.std.ApiMultipleAddressesAware;
 import gov.ca.cwds.data.std.ApiMultipleLanguagesAware;
@@ -38,7 +36,8 @@ import gov.ca.cwds.data.std.ApiPersonAware;
 import gov.ca.cwds.data.std.ApiPhoneAware;
 
 /**
- * {@link PersistentObject} representing a Client as a {@link CmsReplicatedEntity}.
+ * {@link PersistentObject} representing a Client as a {@link CmsReplicatedEntity} in the replicated
+ * schema.
  * 
  * <p>
  * Entity class EsClientAddress for Materialized Query Table ES_CLIENT_ADDRESS now holds the named
@@ -104,7 +103,7 @@ public class ReplicatedClient extends BaseClient
     ApiMultiplePhonesAware, CmsReplicatedEntity {
 
   /**
-   * Base serialization version. Increment by class version.
+   * Default serialization version. Increment by class version.
    */
   private static final long serialVersionUID = 1L;
 

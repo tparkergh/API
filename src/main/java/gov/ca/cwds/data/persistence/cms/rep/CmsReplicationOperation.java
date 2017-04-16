@@ -1,7 +1,7 @@
 package gov.ca.cwds.data.persistence.cms.rep;
 
 /**
- * CRUD operations on replication column IBMSNAP_OPERATION.
+ * CRUD operations on replication column, IBMSNAP_OPERATION.
  * 
  * <ul>
  * <li>I: Insert</li>

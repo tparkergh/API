@@ -14,8 +14,6 @@ import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.hibernate.annotations.ColumnTransformer;
 import org.hibernate.annotations.Type;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
@@ -35,8 +33,6 @@ public abstract class BaseAddress extends CmsPersistentObject
    * Base serialization version. Increment by class version.
    */
   private static final long serialVersionUID = 1L;
-
-  private static final Logger LOGGER = LoggerFactory.getLogger(BaseAddress.class);
 
   @Id
   @Column(name = "IDENTIFIER", nullable = false, length = CMS_ID_LEN)
@@ -94,7 +90,7 @@ public abstract class BaseAddress extends CmsPersistentObject
   @ColumnTransformer(read = "trim(STREET_NO)")
   protected String streetNumber;
 
-  // TODO: legacy database records a zip code as Integer type
+  // TODO: legacy database stores zip code as an Integer.
   // ApiAddressAware interface requires a String type
   @Column(name = "ZIP_NO", nullable = false)
   @ColumnTransformer(read = "trim(ZIP_NO)")

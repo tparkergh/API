@@ -21,7 +21,8 @@ import gov.ca.cwds.data.persistence.cms.BaseAttorney;
 import gov.ca.cwds.data.std.ApiGroupNormalizer;
 
 /**
- * {@link PersistentObject} representing an Attorney as a {@link CmsReplicatedEntity}.
+ * {@link PersistentObject} representing an Attorney as a {@link CmsReplicatedEntity} in the
+ * replicated schema.
  * 
  * @author CWDS API Team
  */
