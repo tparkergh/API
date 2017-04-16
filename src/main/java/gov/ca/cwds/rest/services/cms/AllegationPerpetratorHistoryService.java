@@ -3,6 +3,7 @@ package gov.ca.cwds.rest.services.cms;
 import java.io.Serializable;
 
 import javax.persistence.EntityExistsException;
+import javax.persistence.EntityNotFoundException;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -14,7 +15,6 @@ import gov.ca.cwds.data.cms.AllegationPerpetratorHistoryDao;
 import gov.ca.cwds.data.persistence.cms.AllegationPerpetratorHistory;
 import gov.ca.cwds.data.persistence.cms.CmsKeyIdGenerator;
 import gov.ca.cwds.rest.api.Request;
-import gov.ca.cwds.rest.api.Response;
 import gov.ca.cwds.rest.api.domain.cms.PoastedAllegationPerpetratorHistory;
 import gov.ca.cwds.rest.services.CrudsService;
 import gov.ca.cwds.rest.services.ServiceException;
@@ -46,6 +46,43 @@ public class AllegationPerpetratorHistoryService implements CrudsService {
   /**
    * {@inheritDoc}
    * 
+   * @see gov.ca.cwds.rest.services.CrudsService#find(java.io.Serializable)
+   */
+  @Override
+  public gov.ca.cwds.rest.api.domain.cms.AllegationPerpetratorHistory find(
+      Serializable primaryKey) {
+    assert primaryKey instanceof String;
+
+    gov.ca.cwds.data.persistence.cms.AllegationPerpetratorHistory persistedAllegationPerpetratorHistory =
+        allegationPerpetratorHistoryDao.find(primaryKey);
+    if (persistedAllegationPerpetratorHistory != null) {
+      return new gov.ca.cwds.rest.api.domain.cms.AllegationPerpetratorHistory(
+          persistedAllegationPerpetratorHistory);
+    }
+    return null;
+  }
+
+  /**
+   * {@inheritDoc}
+   * 
+   * @see gov.ca.cwds.rest.services.CrudsService#delete(java.io.Serializable)
+   */
+  @Override
+  public gov.ca.cwds.rest.api.domain.cms.AllegationPerpetratorHistory delete(
+      Serializable primaryKey) {
+    assert primaryKey instanceof String;
+    gov.ca.cwds.data.persistence.cms.AllegationPerpetratorHistory persistedAllegationPerpetratorHistory =
+        allegationPerpetratorHistoryDao.delete(primaryKey);
+    if (persistedAllegationPerpetratorHistory != null) {
+      return new gov.ca.cwds.rest.api.domain.cms.AllegationPerpetratorHistory(
+          persistedAllegationPerpetratorHistory);
+    }
+    return null;
+  }
+
+  /**
+   * {@inheritDoc}
+   * 
    * @see gov.ca.cwds.rest.services.CrudsService#create(gov.ca.cwds.rest.api.Request)
    */
   @Override
@@ -68,19 +105,29 @@ public class AllegationPerpetratorHistoryService implements CrudsService {
     }
   }
 
+  /**
+   * {@inheritDoc}
+   * 
+   * @see gov.ca.cwds.rest.services.CrudsService#update(java.io.Serializable,
+   *      gov.ca.cwds.rest.api.Request)
+   */
   @Override
-  public Response delete(Serializable arg0) {
-    return null;
-  }
+  public gov.ca.cwds.rest.api.domain.cms.AllegationPerpetratorHistory update(
+      Serializable primaryKey, Request request) {
+    assert primaryKey instanceof String;
+    assert request instanceof gov.ca.cwds.rest.api.domain.cms.AllegationPerpetratorHistory;
+    gov.ca.cwds.rest.api.domain.cms.AllegationPerpetratorHistory allegationPerpetratorHistory =
+        (gov.ca.cwds.rest.api.domain.cms.AllegationPerpetratorHistory) request;
 
-  @Override
-  public Response find(Serializable arg0) {
-    return null;
-  }
-
-  @Override
-  public Response update(Serializable arg0, Request arg1) {
-    return null;
+    try {
+      AllegationPerpetratorHistory managed = new AllegationPerpetratorHistory((String) primaryKey,
+          allegationPerpetratorHistory, "q1p");
+      managed = allegationPerpetratorHistoryDao.update(managed);
+      return new gov.ca.cwds.rest.api.domain.cms.AllegationPerpetratorHistory(managed);
+    } catch (EntityNotFoundException e) {
+      LOGGER.info("AllegationPerpetratorHistory not found : {}", allegationPerpetratorHistory);
+      throw new ServiceException(e);
+    }
   }
 
 }
