@@ -32,6 +32,7 @@ import gov.ca.cwds.rest.resources.cms.CmsDocReferralClientResource;
 import gov.ca.cwds.rest.resources.cms.CmsDocumentResource;
 import gov.ca.cwds.rest.resources.cms.CmsNSReferralResource;
 import gov.ca.cwds.rest.resources.cms.CmsReferralResource;
+import gov.ca.cwds.rest.resources.cms.CrossReportResource;
 import gov.ca.cwds.rest.resources.cms.LongTextResource;
 import gov.ca.cwds.rest.resources.cms.ReferralClientResource;
 import gov.ca.cwds.rest.resources.cms.ReferralResource;
@@ -97,6 +98,7 @@ public class ResourcesModule extends AbstractModule {
     bind(ScreeningToReferralResource.class);
     bind(LongTextResource.class);
     bind(AllegationPerpetratorHistoryResource.class);
+    bind(CrossReportResource.class);
   }
 
   @Provides
