@@ -17,6 +17,7 @@ import gov.ca.cwds.data.cms.AllegationDao;
 import gov.ca.cwds.data.cms.AllegationPerpetratorHistoryDao;
 import gov.ca.cwds.data.cms.AttorneyDao;
 import gov.ca.cwds.data.cms.ClientDao;
+import gov.ca.cwds.data.cms.ClientUcDao;
 import gov.ca.cwds.data.cms.CmsDocReferralClientDao;
 import gov.ca.cwds.data.cms.CmsDocumentDao;
 import gov.ca.cwds.data.cms.CrossReportDao;
@@ -44,6 +45,7 @@ import gov.ca.cwds.data.persistence.cms.Allegation;
 import gov.ca.cwds.data.persistence.cms.AllegationPerpetratorHistory;
 import gov.ca.cwds.data.persistence.cms.ApiSystemCodeDao;
 import gov.ca.cwds.data.persistence.cms.ClientCollateral;
+import gov.ca.cwds.data.persistence.cms.ClientUc;
 import gov.ca.cwds.data.persistence.cms.CmsDocReferralClient;
 import gov.ca.cwds.data.persistence.cms.CmsDocument;
 import gov.ca.cwds.data.persistence.cms.CmsDocumentBlobSegment;
@@ -106,7 +108,8 @@ public class DataAccessModule extends AbstractModule {
           CrossReport.class, EducationProviderContact.class, OtherAdultInPlacemtHome.class,
           OtherChildInPlacemtHome.class, OtherClientName.class, Referral.class,
           ReferralClient.class, Reporter.class, ServiceProvider.class, StaffPerson.class,
-          SubstituteCareProvider.class, LongText.class, AllegationPerpetratorHistory.class) {
+          SubstituteCareProvider.class, LongText.class, AllegationPerpetratorHistory.class,
+          ClientUc.class) {
         @Override
         public DataSourceFactory getDataSourceFactory(ApiConfiguration configuration) {
           return configuration.getCmsDataSourceFactory();
@@ -172,6 +175,7 @@ public class DataAccessModule extends AbstractModule {
     bind(StaffPersonDao.class);
     bind(LongTextDao.class);
     bind(AllegationPerpetratorHistoryDao.class);
+    bind(ClientUcDao.class);
 
     // NS:
     bind(AddressDao.class);
