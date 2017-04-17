@@ -266,7 +266,7 @@ public abstract class BaseAddress extends CmsPersistentObject
   }
 
   public void setStateCd(Short state) {
-    this.state = state;
+    // this.state = state;
   }
 
   @Override
