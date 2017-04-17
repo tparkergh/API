@@ -95,7 +95,7 @@ public abstract class BaseAddress extends CmsPersistentObject
   @ColumnTransformer(read = "trim(STREET_NO)")
   protected String streetNumber;
 
-  // TODO: legacy database stores zip code as an Integer.
+  // TODO: #143810605 legacy database stores zip code as an Integer.
   // ApiAddressAware interface requires a String type
   @Column(name = "ZIP_NO", nullable = false)
   @ColumnTransformer(read = "trim(ZIP_NO)")

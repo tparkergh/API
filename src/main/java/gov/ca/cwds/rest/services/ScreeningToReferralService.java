@@ -57,13 +57,12 @@ public class ScreeningToReferralService implements CrudsService {
   private static final ObjectMapper MAPPER = Jackson.newObjectMapper();
 
   private static final Logger LOGGER = LoggerFactory.getLogger(ScreeningToReferral.class);
-  private static final String PERPATRATOR_ROLE = "perpatrator";
+  private static final String PERPETRATOR_ROLE = "perpetrator";
   private static final String MANDATED_REPORTER_ROLE = "mandated reporter";
   private static final String NON_MANDATED_REPORTER_ROLE = "non-mandated reporter";
   private static final String ANONYMOUS_REPORTER_ROLE = "anonymous reporter";
   private static final String VICTIM_ROLE = "victim";
   private static final String SELF_REPORTED_ROLE = "self reported";
-
 
   final DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
   final DateFormat timeFormat = new SimpleDateFormat("HH:MM:SS");
@@ -149,12 +148,10 @@ public class ScreeningToReferralService implements CrudsService {
   public Response create(Request request) {
     String referralId = "";
     String clientId = "";
-    String dateStarted;
-    String timeStarted;
     final Date now = new Date();
 
-    dateStarted = dateFormat.format(now);
-    timeStarted = timeFormat.format(now);
+    String dateStarted = new String(dateFormat.format(now));
+    String timeStarted = new String(timeFormat.format(now));
 
     MAPPER.configure(SerializationFeature.INDENT_OUTPUT, true);
 
@@ -183,6 +180,9 @@ public class ScreeningToReferralService implements CrudsService {
         new LinkedHashSet<>();
     Set<PostedClient> postedClients = new LinkedHashSet<>();
     Set<Participant> participants = new LinkedHashSet<>();
+    victimClient.clear();
+    perpatratorClient.clear();
+
     participants = screeningToReferral.getParticipants();
     for (Participant incomingParticipant : participants) {
 
@@ -190,9 +190,6 @@ public class ScreeningToReferralService implements CrudsService {
       if (!incomingParticipant.getGender().isEmpty()) {
         genderCode = incomingParticipant.getGender().toUpperCase().substring(0, 1);
       }
-      victimClient.clear();
-      perpatratorClient.clear();
-
       Set<String> roles = new HashSet<String>(incomingParticipant.getRoles());
       /**
        * process the roles of this participant
@@ -211,7 +208,7 @@ public class ScreeningToReferralService implements CrudsService {
             throw new ServiceException("ERROR - only one Reporter per Referral allowed");
           }
           try {
-            PostedReporter savedReporter = processReporter(incomingParticipant, role, referralId);
+            savedReporter = processReporter(incomingParticipant, role, referralId);
           } catch (Exception e) {
             LOGGER.error("ERROR - creating Reporter" + e.getMessage());
             throw new ServiceException(e);
@@ -253,7 +250,7 @@ public class ScreeningToReferralService implements CrudsService {
             if (role.equalsIgnoreCase(VICTIM_ROLE) || role.equalsIgnoreCase(SELF_REPORTED_ROLE)) {
               victimClient.put(incomingParticipant.getId(), postedClient.getId());
             }
-            if (role.equalsIgnoreCase(PERPATRATOR_ROLE)) {
+            if (role.equalsIgnoreCase(PERPETRATOR_ROLE)) {
               perpatratorClient.put(incomingParticipant.getId(), postedClient.getId());
             }
             try {
