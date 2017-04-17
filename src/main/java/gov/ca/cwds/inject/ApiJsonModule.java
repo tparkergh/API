@@ -36,7 +36,6 @@ public class ApiJsonModule extends AbstractModule {
         new SimpleModule("SystemCodeModule", new Version(0, 1, 0, "a", "alpha", ""));
     module.addSerializer(Short.class,
         new CmsSystemCodeSerializer(Guice.createInjector().getInstance(ApiSystemCodeCache.class)));
-    // Guice.createInjector().getInstance(ObjectMapper.class).registerModule(module);
     bootstrap.getObjectMapper().registerModule(module);
   }
 
