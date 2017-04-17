@@ -22,6 +22,7 @@ import gov.ca.cwds.data.CmsSystemCodeDeserializer;
 import gov.ca.cwds.data.ReadablePhone;
 import gov.ca.cwds.data.SystemCodeSerializer;
 import gov.ca.cwds.data.std.ApiAddressAware;
+import gov.ca.cwds.data.std.ApiAddressUtils;
 import gov.ca.cwds.data.std.ApiMultiplePhonesAware;
 import gov.ca.cwds.data.std.ApiPhoneAware;
 
@@ -33,6 +34,10 @@ public abstract class BaseAddress extends CmsPersistentObject
    * Base serialization version. Increment by class version.
    */
   private static final long serialVersionUID = 1L;
+
+  // ====================
+  // COLUMNS:
+  // ====================
 
   @Id
   @Column(name = "IDENTIFIER", nullable = false, length = CMS_ID_LEN)
@@ -127,6 +132,19 @@ public abstract class BaseAddress extends CmsPersistentObject
   @Column(name = "UNIT_NO", nullable = false)
   @ColumnTransformer(read = "trim(UNIT_NO)")
   protected String unitNumber;
+
+  // ====================
+  // CONTEXT:
+  // ====================
+
+  /**
+   * The type of address from the perspective of the owning client or other entity.
+   */
+  protected transient Short contextAddressType;
+
+  // ====================
+  // CONSTRUCTORS:
+  // ====================
 
   /**
    * Default constructor.
@@ -242,6 +260,7 @@ public abstract class BaseAddress extends CmsPersistentObject
     return this.state != null ? this.state.toString() : null;
   }
 
+  @Override
   public Short getStateCd() {
     return state;
   }
@@ -250,6 +269,7 @@ public abstract class BaseAddress extends CmsPersistentObject
     this.state = state;
   }
 
+  @Override
   public String getStreetName() {
     return streetName;
   }
@@ -258,6 +278,7 @@ public abstract class BaseAddress extends CmsPersistentObject
     this.streetName = streetName;
   }
 
+  @Override
   public String getStreetNumber() {
     return streetNumber;
   }
@@ -385,7 +406,7 @@ public abstract class BaseAddress extends CmsPersistentObject
     StringBuilder buf = new StringBuilder();
     buf.append(this.streetNumber).append(" ").append(this.streetName);
     if (StringUtils.isNotBlank(this.unitNumber)) {
-      buf.append(" ").append(this.unitNumber);
+      buf.append(" #").append(this.unitNumber);
     }
     return buf.toString();
   }
@@ -399,6 +420,46 @@ public abstract class BaseAddress extends CmsPersistentObject
   @Override
   public String getAddressId() {
     return this.id;
+  }
+
+  @Override
+  public String getApiAdrZip4() {
+    return ApiAddressUtils.formatZip4(zip4);
+  }
+
+  @Override
+  public String getApiAdrUnitNumber() {
+    return this.unitNumber;
+  }
+
+  /**
+   * NOTE: Parent class, {@link BaseClientAddress}, holds the address type.
+   * 
+   * <p>
+   * In the legacy CMS data model, addresses are assigned one or more uses as a "type", depending on
+   * the relation. For example, a unique address could serve as someone's primary residence for a
+   * time or as a child's foster home for a different time period. It depends on a client's
+   * perspective, not the physical address itself.
+   * </p>
+   * 
+   * @see #getContextAddressType()
+   */
+  @Override
+  public Short getApiAdrAddressType() {
+    return null;
+  }
+
+  @Override
+  public Short getApiAdrUnitType() {
+    return this.unitDesignationCd;
+  }
+
+  public Short getContextAddressType() {
+    return contextAddressType;
+  }
+
+  public void setContextAddressType(Short contextAddressType) {
+    this.contextAddressType = contextAddressType;
   }
 
 }

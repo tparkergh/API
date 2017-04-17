@@ -616,6 +616,11 @@ public class AutoCompletePerson
           this.addressType != null ? this.addressType.name() : null);
     }
 
+    @Override
+    public Short getStateCd() {
+      return (short) stateType.sysId;
+    }
+
   }
 
   /**

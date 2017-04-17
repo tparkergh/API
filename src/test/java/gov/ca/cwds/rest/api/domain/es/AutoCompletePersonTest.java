@@ -199,8 +199,8 @@ public class AutoCompletePersonTest {
 
   private ElasticSearchPerson validESP() {
 
-    ElasticSearchPerson esp = new ElasticSearchPerson(id, firstName, lastName, null, null,
-        gender, birthDate, ssn, sourceType, sourceJson, highlight, null, null, null);
+    ElasticSearchPerson esp = new ElasticSearchPerson(id, firstName, lastName, null, null, gender,
+        birthDate, ssn, sourceType, sourceJson, highlight, null, null, null);
 
     final String json = esp.getHighlightFields().replaceAll("\\s+\",", "\",");
     //
@@ -258,6 +258,12 @@ public class AutoCompletePersonTest {
 
     @Override
     public String getAddressId() {
+      // TODO Auto-generated method stub
+      return null;
+    }
+
+    @Override
+    public Short getStateCd() {
       // TODO Auto-generated method stub
       return null;
     }

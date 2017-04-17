@@ -272,6 +272,7 @@ public abstract class BaseCollateralIndividual extends CmsPersistentObject
   /**
    * @return streetName
    */
+  @Override
   public String getStreetName() {
     return StringUtils.trimToEmpty(streetName);
   }
@@ -279,6 +280,7 @@ public abstract class BaseCollateralIndividual extends CmsPersistentObject
   /**
    * @return streetNumber
    */
+  @Override
   public String getStreetNumber() {
     return StringUtils.trimToEmpty(streetNumber);
   }
@@ -368,6 +370,11 @@ public abstract class BaseCollateralIndividual extends CmsPersistentObject
   @Override
   public String getAddressId() {
     return null;
+  }
+
+  @Override
+  public Short getStateCd() {
+    return this.stateCode;
   }
 
 }
