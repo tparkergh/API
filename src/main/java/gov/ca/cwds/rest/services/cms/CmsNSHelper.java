@@ -26,11 +26,13 @@ public class CmsNSHelper {
 
   private SessionFactory nsSessionFactory;
 
+  @SuppressWarnings("javadoc")
   public CmsNSHelper(SessionFactory sessionFactory, SessionFactory nsSessionFactory) {
     this.cmsSessionFactory = sessionFactory;
     this.nsSessionFactory = nsSessionFactory;
   }
 
+  @SuppressWarnings("javadoc")
   public Map<String, Map<CrudsService, Response>> handleResponse(
       Map<CrudsService, Request> cmsRequests, Map<CrudsService, Request> nsRequests) {
 
