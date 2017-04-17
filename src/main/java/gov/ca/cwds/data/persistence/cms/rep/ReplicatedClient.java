@@ -119,7 +119,7 @@ public class ReplicatedClient extends BaseClient
    * A client can have multiple active addresses, typically one active address per address type.
    */
   @OneToMany(fetch = FetchType.EAGER, mappedBy = "fkClient")
-  protected Set<ReplicatedClientAddress> clientAddresses = new LinkedHashSet<>();
+  protected transient Set<ReplicatedClientAddress> clientAddresses = new LinkedHashSet<>();
 
   /**
    * Get client address linkages.
