@@ -41,7 +41,6 @@ import gov.ca.cwds.rest.services.cms.AddressService;
 import gov.ca.cwds.rest.services.cms.AllegationService;
 import gov.ca.cwds.rest.services.cms.ClientAddressService;
 import gov.ca.cwds.rest.services.cms.ClientService;
-import gov.ca.cwds.rest.services.cms.CmsReferralService;
 import gov.ca.cwds.rest.services.cms.CrossReportService;
 import gov.ca.cwds.rest.services.cms.ReferralClientService;
 import gov.ca.cwds.rest.services.cms.ReferralService;
@@ -57,7 +56,7 @@ public class ScreeningToReferralService implements CrudsService {
 
   private static final ObjectMapper MAPPER = Jackson.newObjectMapper();
 
-  private static final Logger LOGGER = LoggerFactory.getLogger(CmsReferralService.class);
+  private static final Logger LOGGER = LoggerFactory.getLogger(ScreeningToReferral.class);
   private static final String PERPATRATOR_ROLE = "perpatrator";
   private static final String MANDATED_REPORTER_ROLE = "mandated reporter";
   private static final String NON_MANDATED_REPORTER_ROLE = "non-mandated reporter";
@@ -106,28 +105,16 @@ public class ScreeningToReferralService implements CrudsService {
   private static final String defaultAdoptionStatusCode = "N";
   private static final String defaultNonProtectingParentCode = "U";
   private static final short defaultAddressType = 32; // residence
-  // TODO: County Codes - two character string
-  private static String defaultCountyCode = "99";
+  private static String defaultCountySpecificCode = "99";
 
   // TODO: #142337489 Develop List of Value service to support Pi2 Save Referral to CWS/CMS
   private short communicationsMethodCode = 409; // default to telephone until #142337489 complete
   private short referralResponseTypeCode = 0;
   private short crossReportMethodCode = 0;
   private short allegationTypeCode = 0;
-  private short addressTypeCode = 0;
 
-
-  // IDENTIFIERS created by ADD
-  private String crossReportId = "34567890123ABC";
-  private String allegationId = "";
-  private String reporterId = "5678901234ABC";
-  private String victimClientId = "";
-  private String perpatratorClientId = "";
-  private String addressId;
-  private String clientAddressId;
-
-  HashMap<Long, String> victimClient = new HashMap();
-  HashMap<Long, String> perpatratorClient = new HashMap();
+  HashMap<Long, String> victimClient = new HashMap<Long, String>();
+  HashMap<Long, String> perpatratorClient = new HashMap<Long, String>();
 
   /**
    * Constructor
@@ -162,13 +149,6 @@ public class ScreeningToReferralService implements CrudsService {
   public Response create(Request request) {
     String referralId = "";
     String clientId = "";
-    String crossReportId = "";
-    String allegationId = "";
-    String reporterId = "";
-    String victimClientId = "";
-    String perpatratorClientId = "";
-    String addressId;
-    String clientAddressId;
     String dateStarted;
     String timeStarted;
     final Date now = new Date();
@@ -190,8 +170,9 @@ public class ScreeningToReferralService implements CrudsService {
         defaultApprovalStatusType, false, "", communicationsMethodCode, "", "", "", "", false,
         false, defaultCode, "", false, defaultLimitedAccessCode, "", screeningToReferral.getName(),
         "", dateStarted, timeStarted, referralResponseTypeCode, defaultCode, "", "", "",
-        screeningToReferral.getReportNarrative(), "", "", "", "", "", "", "", defaultCountyCode,
-        false, false, false, false, "", defaultResponsibleAgencyCode, defaultCode, "", "", "");
+        screeningToReferral.getReportNarrative(), "", "", "", "", "", "", "",
+        defaultCountySpecificCode, false, false, false, false, "", defaultResponsibleAgencyCode,
+        defaultCode, "", "", "");
     PostedReferral postedReferral = this.referralService.create(referral);
     referralId = postedReferral.getId();
     /*
@@ -229,25 +210,18 @@ public class ScreeningToReferralService implements CrudsService {
             LOGGER.error("ERROR - only one Reporter per Referral allowed", savedReporter);
             throw new ServiceException("ERROR - only one Reporter per Referral allowed");
           }
-
-          mandatedReporterIndicator = false;
-          if (role.equalsIgnoreCase(MANDATED_REPORTER_ROLE)) {
-            mandatedReporterIndicator = true;
+          try {
+            PostedReporter savedReporter = processReporter(incomingParticipant, role, referralId);
+          } catch (Exception e) {
+            LOGGER.error("ERROR - creating Reporter" + e.getMessage());
+            throw new ServiceException(e);
           }
-
-          // TODO: map the address fields on REPORTER
-          Reporter reporter = new Reporter("", "", defaultCode, defaultCode, false, "", "", "",
-              false, incomingParticipant.getFirstName(), incomingParticipant.getLastName(),
-              mandatedReporterIndicator, 0, defaultBig, "", "", defaultBig, 0, defaultStateCode, "",
-              "", "", "", referralId, "", defaultCode, defaultCountyCode);
-
-          PostedReporter postedreporter = this.reporterService.create(reporter);
-          savedReporter = postedreporter;
 
         } else {
 
           // not a reporter participant - make a CLIENT and REFERRAL_CLIENT
           if (!anonymousReporter(screeningToReferral)) {
+
             // not an anonymous reporter participant - create client
             Client client = new Client("", false, defaultAdoptionStatusCode, "", "", defaultCode,
                 incomingParticipant.getDateOfBirth(), "", defaultCode, false,
@@ -268,127 +242,46 @@ public class ScreeningToReferralService implements CrudsService {
             // CMS Referral Client
             ReferralClient referralClient = new ReferralClient("", defaultApprovalStatusType,
                 defaultCode, "", "", role.equalsIgnoreCase(SELF_REPORTED_ROLE), false, referralId,
-                clientId, "", defaultCode, "", defaultCountyCode, false, false, false);
+                clientId, "", defaultCode, "", defaultCountySpecificCode, false, false, false);
             gov.ca.cwds.rest.api.domain.cms.ReferralClient postedReferralClient =
                 this.referralClientService.create(referralClient);
             resultReferralClients.add(postedReferralClient);
 
             /*
-             * CMS Address - create ADDRESS and CLIENT_ADDRESS for each address of the participant
+             * determine other participant attributes relating to CWS/CMS allegation
              */
-            Set<gov.ca.cwds.rest.api.domain.Address> addresses =
-                new HashSet<gov.ca.cwds.rest.api.domain.Address>(
-                    incomingParticipant.getAddresses());
-            for (gov.ca.cwds.rest.api.domain.Address address : addresses) {
-
-              // TODO: address parsing - requires standardizing in seperate class
-              zipCode = address.getZip();
-              zipSuffix = null;
-              if (address.getZip().toString().length() > 5) {
-                zipSuffix = Short.parseShort(address.getZip().toString().substring(5));
-              }
-              String[] streetAddress = address.getStreetAddress().split(" ");
-              streetNumber = streetAddress[0];
-              streetName = streetAddress[1];
-
-              Address domainAddress = new Address("", address.getCity(), defaultBig, defaultInt,
-                  false, defaultCode, defaultBig, defaultInt, address.getType(), defaultBig,
-                  defaultInt, defaultStateCode, streetName, streetNumber, zipCode, "", zipSuffix,
-                  "", "", defaultCode, defaultCode, "");
-
-              PostedAddress postedAddress =
-                  (PostedAddress) this.addressService.create(domainAddress);
-              addressId = postedAddress.getExistingAddressId();
-
-              /*
-               * CMS Client Address
-               */
-              if (addressId.isEmpty()) {
-                LOGGER.error("ERROR - ADDRESS/IDENTIFIER is required for CLIENT_ADDRESS ",
-                    postedAddress);
-                throw new ServiceException(
-                    "ERROR - ADDRESS/IDENTIFIER is required for CLIENT_ADDRESS");
-              }
-              if (clientId.isEmpty()) {
-                LOGGER.error("ERROR - CLIENT/IDENTIFIER is required for CLIENT_ADDRESS ",
-                    postedAddress);
-                throw new ServiceException(
-                    "ERROR - CLIENT/IDENTIFIER is required for CLIENT_ADDRESS");
-              }
-
-              ClientAddress clientAddress = new ClientAddress(defaultAddressType, "", "", "",
-                  addressId, clientId, "", referralId);
-              ClientAddress postedClientAddress =
-                  (ClientAddress) this.clientAddressService.create(clientAddress);
-              clientAddressId = postedClientAddress.getClientAddressId();
-              /*
-               * determine other participant attributes relating to CWS/CMS allegation
-               */
-              if (role.equalsIgnoreCase(VICTIM_ROLE) || role.equalsIgnoreCase(SELF_REPORTED_ROLE)) {
-                victimClient.put(incomingParticipant.getId(), postedClient.getId());
-              }
-              if (role.equalsIgnoreCase(PERPATRATOR_ROLE)) {
-                perpatratorClient.put(incomingParticipant.getId(), postedClient.getId());
-              }
+            if (role.equalsIgnoreCase(VICTIM_ROLE) || role.equalsIgnoreCase(SELF_REPORTED_ROLE)) {
+              victimClient.put(incomingParticipant.getId(), postedClient.getId());
+            }
+            if (role.equalsIgnoreCase(PERPATRATOR_ROLE)) {
+              perpatratorClient.put(incomingParticipant.getId(), postedClient.getId());
+            }
+            try {
+              processAddress(incomingParticipant, referralId, clientId);
+            } catch (Exception e) {
+              LOGGER.error("ERROR - creating Addresses" + e.getMessage());
+              throw new ServiceException(e);
             }
           }
         }
       }
     }
 
-    /*
-     * CMS Cross Report - one for each cross_report
-     */
-    Set<gov.ca.cwds.rest.api.domain.cms.CrossReport> resultCrossReports = new LinkedHashSet<>();
-    Set<CrossReport> crossReports = new LinkedHashSet<>();
-    crossReports = screeningToReferral.getCrossReports();
-
-    for (CrossReport crossReport : crossReports) {
-
-      lawEnforcementIndicator = false;
-      if (crossReport.getAgencyType().contains("Law Enforcement")) {
-        lawEnforcementIndicator = true;
-      }
-      gov.ca.cwds.rest.api.domain.cms.CrossReport cmsCrossReport =
-          new gov.ca.cwds.rest.api.domain.cms.CrossReport(crossReportId, crossReportMethodCode,
-              false, false, "", "", defaultInt, defaultBig, crossReport.getInformDate(), "", "",
-              referralId, "", "", crossReport.getAgencyName(), "", "", defaultCountyCode,
-              lawEnforcementIndicator, false, false);
-      gov.ca.cwds.rest.api.domain.cms.CrossReport postedCrossReport =
-          this.crossReportService.create(cmsCrossReport);
-      resultCrossReports.add(postedCrossReport);
+    Set<gov.ca.cwds.rest.api.domain.cms.CrossReport> resultCrossReports;
+    try {
+      resultCrossReports = processCrossReports(screeningToReferral, referralId);
+    } catch (Exception e) {
+      LOGGER.error("ERROR - creating CrossReport" + e.getMessage());
+      throw new ServiceException(e);
     }
 
-    /*
-     * CMS Allegation - one for each allegation
-     */
-    // TODO: #143616481 create CMS CHILD_CLIENT for the victim
-    Set<PostedAllegation> postedAllegations = new LinkedHashSet<>();
-    Set<Allegation> allegations = new LinkedHashSet<>();
-    allegations = screeningToReferral.getAllegations();
-    for (Allegation allegation : allegations) {
 
-      if (victimClient.containsKey(allegation.getVictimPersonId())) {
-        victimClientId = victimClient.get(allegation.getVictimPersonId());
-      }
-      if (perpatratorClient.containsKey(allegation.getPerpetratorPersonId())) {
-        perpatratorClientId = perpatratorClient.get(allegation.getPerpetratorPersonId());
-      }
-      if (victimClientId.isEmpty()) {
-        throw new ServiceException("ERROR - victim could not be determined for an allegation");
-      }
-
-      // create an allegation in CMS legacy database
-      gov.ca.cwds.rest.api.domain.cms.Allegation cmsAllegation =
-          new gov.ca.cwds.rest.api.domain.cms.Allegation("", defaultCode, "",
-              screeningToReferral.getLocationType(), "", defaultCode, allegationTypeCode,
-              screeningToReferral.getReportNarrative(), "", false, defaultNonProtectingParentCode,
-              false, victimClientId, perpatratorClientId, referralId, defaultCountyCode, false,
-              defaultCode);
-      PostedAllegation postedAllegation = this.allegationService.create(cmsAllegation);
-      postedAllegations.add(postedAllegation);
-      allegationId = postedAllegation.getId();
-
+    Set<PostedAllegation> postedAllegations;
+    try {
+      postedAllegations = processAllegations(screeningToReferral, referralId);
+    } catch (Exception e) {
+      LOGGER.error("ERROR - creating Allegations" + e.getMessage());
+      throw new ServiceException(e);
     }
 
     return new PostedCmsReferral(postedReferral, postedClients, postedAllegations,
@@ -436,4 +329,146 @@ public class ScreeningToReferralService implements CrudsService {
     return false;
   }
 
+  /*
+   * CMS Cross Report
+   */
+  private Set<gov.ca.cwds.rest.api.domain.cms.CrossReport> processCrossReports(
+      ScreeningToReferral scr, String referralId) throws Exception {
+
+    String crossReportId = "";
+    Set<gov.ca.cwds.rest.api.domain.cms.CrossReport> resultCrossReports = new LinkedHashSet<>();
+    Set<CrossReport> crossReports = new LinkedHashSet<>();
+    crossReports = scr.getCrossReports();
+
+    for (CrossReport crossReport : crossReports) {
+
+      lawEnforcementIndicator = false;
+      if (crossReport.getAgencyType().contains("Law Enforcement")) {
+        lawEnforcementIndicator = true;
+      }
+      // create the cross report
+
+      gov.ca.cwds.rest.api.domain.cms.CrossReport cmsCrossReport =
+          new gov.ca.cwds.rest.api.domain.cms.CrossReport(crossReportId, crossReportMethodCode,
+              false, false, "", "", defaultInt, defaultBig, crossReport.getInformDate(), "", "",
+              referralId, "", "", crossReport.getAgencyName(), "", "", defaultCountySpecificCode,
+              lawEnforcementIndicator, false, false);
+      gov.ca.cwds.rest.api.domain.cms.CrossReport postedCrossReport =
+          this.crossReportService.create(cmsCrossReport);
+      resultCrossReports.add(postedCrossReport);
+    }
+    return resultCrossReports;
+
+  }
+
+  /*
+   * CMS Allegation - one for each allegation
+   */
+  private Set<PostedAllegation> processAllegations(ScreeningToReferral scr, String referralId)
+      throws Exception {
+
+
+    // TODO: #143616481 create CMS CHILD_CLIENT for the victim
+    Set<PostedAllegation> postedAllegations = new LinkedHashSet<>();
+    Set<Allegation> allegations = new LinkedHashSet<>();
+    String victimClientId = "";
+    String perpatratorClientId = "";
+
+    allegations = scr.getAllegations();
+    for (Allegation allegation : allegations) {
+
+      if (victimClient.containsKey(allegation.getVictimPersonId())) {
+        victimClientId = victimClient.get(allegation.getVictimPersonId());
+      }
+      if (perpatratorClient.containsKey(allegation.getPerpetratorPersonId())) {
+        perpatratorClientId = perpatratorClient.get(allegation.getPerpetratorPersonId());
+      }
+      if (victimClientId.isEmpty()) {
+        throw new ServiceException("ERROR - victim could not be determined for an allegation");
+      }
+
+      // create an allegation in CMS legacy database
+      gov.ca.cwds.rest.api.domain.cms.Allegation cmsAllegation =
+          new gov.ca.cwds.rest.api.domain.cms.Allegation("", defaultCode, "", scr.getLocationType(),
+              "", defaultCode, allegationTypeCode, scr.getReportNarrative(), "", false,
+              defaultNonProtectingParentCode, false, victimClientId, perpatratorClientId,
+              referralId, defaultCountySpecificCode, false, defaultCode);
+      PostedAllegation postedAllegation = this.allegationService.create(cmsAllegation);
+      postedAllegations.add(postedAllegation);
+
+    }
+    return postedAllegations;
+  }
+
+  /*
+   * CMS Address - create ADDRESS and CLIENT_ADDRESS for each address of the participant
+   */
+  private void processAddress(Participant incomingParticipant, String referralId, String clientId)
+      throws Exception {
+
+    Set<gov.ca.cwds.rest.api.domain.Address> addresses =
+        new HashSet<gov.ca.cwds.rest.api.domain.Address>(incomingParticipant.getAddresses());
+
+    for (gov.ca.cwds.rest.api.domain.Address address : addresses) {
+
+      String addressId = "";
+
+      // TODO: address parsing - requires standardizing in seperate class
+      zipCode = address.getZip();
+      zipSuffix = null;
+      if (address.getZip().toString().length() > 5) {
+        zipSuffix = Short.parseShort(address.getZip().toString().substring(5));
+      }
+      String[] streetAddress = address.getStreetAddress().split(" ");
+      streetNumber = streetAddress[0];
+      streetName = streetAddress[1];
+
+      Address domainAddress =
+          new Address("", address.getCity(), defaultBig, defaultInt, false, defaultCode, defaultBig,
+              defaultInt, address.getType(), defaultBig, defaultInt, defaultStateCode, streetName,
+              streetNumber, zipCode, "", zipSuffix, "", "", defaultCode, defaultCode, "");
+
+      PostedAddress postedAddress = (PostedAddress) this.addressService.create(domainAddress);
+      addressId = postedAddress.getExistingAddressId();
+
+      /*
+       * CMS Client Address
+       */
+      if (addressId.isEmpty()) {
+        LOGGER.error("ERROR - ADDRESS/IDENTIFIER is required for CLIENT_ADDRESS ", postedAddress);
+        throw new ServiceException("ERROR - ADDRESS/IDENTIFIER is required for CLIENT_ADDRESS");
+      }
+      if (clientId.isEmpty()) {
+        LOGGER.error("ERROR - CLIENT/IDENTIFIER is required for CLIENT_ADDRESS ", postedAddress);
+        throw new ServiceException("ERROR - CLIENT/IDENTIFIER is required for CLIENT_ADDRESS");
+      }
+
+      ClientAddress clientAddress =
+          new ClientAddress(defaultAddressType, "", "", "", addressId, clientId, "", referralId);
+      ClientAddress postedClientAddress =
+          (ClientAddress) this.clientAddressService.create(clientAddress);
+    }
+  }
+
+
+
+  private PostedReporter processReporter(Participant ip, String role, String referralId)
+      throws Exception {
+
+    mandatedReporterIndicator = false;
+    if (role.equalsIgnoreCase(MANDATED_REPORTER_ROLE)) {
+      mandatedReporterIndicator = true;
+    }
+
+    // TODO: map the address fields on REPORTER
+    Reporter reporter = new Reporter("", "", defaultCode, defaultCode, false, "", "", "", false,
+        ip.getFirstName(), ip.getLastName(), mandatedReporterIndicator, 0, defaultBig, "", "",
+        defaultBig, 0, defaultStateCode, "", "", "", "", referralId, "", defaultCode,
+        defaultCountySpecificCode);
+
+    PostedReporter postedreporter = this.reporterService.create(reporter);
+    return postedreporter;
+
+  }
 }
+
