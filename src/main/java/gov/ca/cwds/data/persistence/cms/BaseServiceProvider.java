@@ -220,6 +220,7 @@ public abstract class BaseServiceProvider extends CmsPersistentObject
   /**
    * @return the streetName
    */
+  @Override
   public String getStreetName() {
     return StringUtils.trimToEmpty(streetName);
   }
@@ -227,6 +228,7 @@ public abstract class BaseServiceProvider extends CmsPersistentObject
   /**
    * @return the streetNumber
    */
+  @Override
   public String getStreetNumber() {
     return StringUtils.trimToEmpty(streetNumber);
   }
@@ -343,6 +345,11 @@ public abstract class BaseServiceProvider extends CmsPersistentObject
   @Override
   public String getAddressId() {
     return null;
+  }
+
+  @Override
+  public Short getStateCd() {
+    return this.stateCodeType;
   }
 
 }

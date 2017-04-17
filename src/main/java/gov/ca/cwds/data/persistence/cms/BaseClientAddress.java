@@ -7,8 +7,6 @@ import javax.persistence.Id;
 import javax.persistence.MappedSuperclass;
 
 import org.hibernate.annotations.Type;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 
@@ -22,8 +20,6 @@ public abstract class BaseClientAddress extends CmsPersistentObject {
    * Base serialization version. Increment by class version.
    */
   private static final long serialVersionUID = 1L;
-
-  private static final Logger LOGGER = LoggerFactory.getLogger(BaseClientAddress.class);
 
   @Id
   @Column(name = "IDENTIFIER", nullable = false, length = CMS_ID_LEN)
@@ -65,6 +61,11 @@ public abstract class BaseClientAddress extends CmsPersistentObject {
     super();
   }
 
+  /**
+   * Parent constructor.
+   * 
+   * @param lastUpdatedId staff id who last updated this record
+   */
   public BaseClientAddress(String lastUpdatedId) {
     super(lastUpdatedId);
   }
@@ -82,16 +83,6 @@ public abstract class BaseClientAddress extends CmsPersistentObject {
   public String getPrimaryKey() {
     return getId();
   }
-
-  // @Override
-  // public int hashCode() {
-  // return HashCodeBuilder.reflectionHashCode(this, "effEndDt");
-  // }
-  //
-  // @Override
-  // public boolean equals(Object obj) {
-  // return EqualsBuilder.reflectionEquals(this, obj, false);
-  // }
 
   // ==================
   // ACCESSORS:
