@@ -74,14 +74,4 @@ public final class ReplicatedClientAddress extends BaseClientAddress {
     }
   }
 
-  // @Override
-  // public int hashCode() {
-  // return HashCodeBuilder.reflectionHashCode(this, false);
-  // }
-  //
-  // @Override
-  // public boolean equals(Object obj) {
-  // return EqualsBuilder.reflectionEquals(this, obj, false);
-  // }
-
 }
