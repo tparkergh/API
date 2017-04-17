@@ -1,9 +1,5 @@
 package gov.ca.cwds.rest.api.domain.es;
 
-import gov.ca.cwds.rest.api.Request;
-import io.swagger.annotations.ApiModel;
-import io.swagger.annotations.ApiModelProperty;
-
 import java.io.Serializable;
 
 import javax.validation.Valid;
@@ -14,6 +10,10 @@ import org.apache.commons.lang3.builder.HashCodeBuilder;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
+
+import gov.ca.cwds.rest.api.Request;
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
 
 /**
  * A domain API {@link Request} for Intake Person Query feature to Elasticsearch.
@@ -35,7 +35,7 @@ public class PersonQueryRequest implements Serializable, Request {
 
   @ApiModelProperty(required = true, readOnly = false, example = "a valid elasticsearch query json")
   @JsonProperty("query")
-  private Object query;
+  private transient Object query;
 
   /**
    * JSON DropWizard Constructor. Takes query.
