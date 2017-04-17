@@ -15,7 +15,7 @@ import gov.ca.cwds.data.cms.AllegationPerpetratorHistoryDao;
 import gov.ca.cwds.data.persistence.cms.AllegationPerpetratorHistory;
 import gov.ca.cwds.data.persistence.cms.CmsKeyIdGenerator;
 import gov.ca.cwds.rest.api.Request;
-import gov.ca.cwds.rest.api.domain.cms.PoastedAllegationPerpetratorHistory;
+import gov.ca.cwds.rest.api.domain.cms.PostedAllegationPerpetratorHistory;
 import gov.ca.cwds.rest.services.CrudsService;
 import gov.ca.cwds.rest.services.ServiceException;
 
@@ -86,7 +86,7 @@ public class AllegationPerpetratorHistoryService implements CrudsService {
    * @see gov.ca.cwds.rest.services.CrudsService#create(gov.ca.cwds.rest.api.Request)
    */
   @Override
-  public PoastedAllegationPerpetratorHistory create(Request request) {
+  public PostedAllegationPerpetratorHistory create(Request request) {
     assert request instanceof gov.ca.cwds.rest.api.domain.cms.AllegationPerpetratorHistory;
 
     gov.ca.cwds.rest.api.domain.cms.AllegationPerpetratorHistory allegationPerpetratorHistory =
@@ -98,7 +98,7 @@ public class AllegationPerpetratorHistoryService implements CrudsService {
       AllegationPerpetratorHistory managed = new AllegationPerpetratorHistory(
           CmsKeyIdGenerator.cmsIdGenertor(null), allegationPerpetratorHistory, "q1p");
       managed = allegationPerpetratorHistoryDao.create(managed);
-      return new PoastedAllegationPerpetratorHistory(managed);
+      return new PostedAllegationPerpetratorHistory(managed);
     } catch (EntityExistsException e) {
       LOGGER.info("AllegationPerpetratorHistory already exists : {}", allegationPerpetratorHistory);
       throw new ServiceException(e);
