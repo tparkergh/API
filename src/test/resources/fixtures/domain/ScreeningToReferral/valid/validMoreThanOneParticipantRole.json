@@ -65,7 +65,14 @@
 	  			"city" : "San Jose",
 	  			"zip" : "94321",
 	  			"type" : "Home"
-	  		}
+	  		},
+	  		{
+	  			"street_address" : "7466 Campbell St",
+	  			"state" : "CA",
+	  			"city" : "Cambell",
+	  			"zip" : "95128",
+	  			"type" : "School"
+	  		}	  		
 	  	]
 	}
    ],
