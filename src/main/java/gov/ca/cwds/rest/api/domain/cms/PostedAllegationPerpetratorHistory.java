@@ -12,7 +12,7 @@ import gov.ca.cwds.rest.services.ServiceException;
  * 
  * @author CWDS API Team
  */
-public class PoastedAllegationPerpetratorHistory extends AllegationPerpetratorHistory {
+public class PostedAllegationPerpetratorHistory extends AllegationPerpetratorHistory {
   /**
    * Serialization version
    */
@@ -25,7 +25,7 @@ public class PoastedAllegationPerpetratorHistory extends AllegationPerpetratorHi
    * 
    * @param allegationPerpetratorHistory The persisted allegationPerpetratorHistory
    */
-  public PoastedAllegationPerpetratorHistory(
+  public PostedAllegationPerpetratorHistory(
       gov.ca.cwds.data.persistence.cms.AllegationPerpetratorHistory allegationPerpetratorHistory) {
     super(allegationPerpetratorHistory);
     if (StringUtils.isBlank(allegationPerpetratorHistory.getId())) {
