@@ -16,6 +16,7 @@ import gov.ca.cwds.rest.api.Request;
 import gov.ca.cwds.rest.api.Response;
 import gov.ca.cwds.rest.api.domain.cms.Allegation;
 import gov.ca.cwds.rest.api.domain.cms.Client;
+import gov.ca.cwds.rest.api.domain.cms.ClientUc;
 import gov.ca.cwds.rest.api.domain.cms.CmsReferral;
 import gov.ca.cwds.rest.api.domain.cms.CrossReport;
 import gov.ca.cwds.rest.api.domain.cms.PostedAllegation;
@@ -43,6 +44,7 @@ public class CmsReferralService implements CrudsService {
   private CrossReportService crossReportService;
   private ReferralClientService referralClientService;
   private ReporterService reporterService;
+  private ClientUcService clientUcService;
 
   /**
    * Constructor
@@ -53,11 +55,13 @@ public class CmsReferralService implements CrudsService {
    * @param referralClientService the referralClientService
    * @param reporterService the reporterService
    * @param clientService the clientServiec
+   * @param clientUcService the clientUcServiec
    */
   @Inject
   public CmsReferralService(ReferralService referralService, ClientService clientService,
       AllegationService allegationService, CrossReportService crossReportService,
-      ReferralClientService referralClientService, ReporterService reporterService) {
+      ReferralClientService referralClientService, ReporterService reporterService,
+      ClientUcService clientUcService) {
     super();
     this.referralService = referralService;
     this.clientService = clientService;
@@ -65,6 +69,7 @@ public class CmsReferralService implements CrudsService {
     this.crossReportService = crossReportService;
     this.referralClientService = referralClientService;
     this.reporterService = reporterService;
+    this.clientUcService = clientUcService;
   }
 
   /**
@@ -82,7 +87,9 @@ public class CmsReferralService implements CrudsService {
     String referralId = referral.getId();
     List<String> clientIds = new ArrayList<>();
     int clientInst = 0;
+    String sourceTableCode = "C";
 
+    Set<ClientUc> resultClientUc = new LinkedHashSet<>();
     Set<PostedClient> postedClients = new LinkedHashSet<>();
     if (cmsReferral.getClient() != null && !cmsReferral.getClient().isEmpty()) {
       for (Client incomingClient : cmsReferral.getClient()) {
@@ -140,6 +147,15 @@ public class CmsReferralService implements CrudsService {
           PostedClient postedclient = this.clientService.create(client);
           postedClients.add(postedclient);
           clientIds.add(postedclient.getId());
+          // if (postedclient.getCommonFirstName() != null) {
+          // ClientUc clientUc = new ClientUc(postedclient.getId(), sourceTableCode,
+          // postedclient.getCommonFirstName().toUpperCase(),
+          // postedclient.getCommonLastName().toUpperCase(),
+          // postedclient.getCommonMiddleName().toUpperCase());
+          // clientUc = this.clientUcService.create(clientUc);
+          // resultClientUc.add(clientUc);
+
+          // }
         } else {
           clientIds.add(savedClient.getId());
           postedClients.add(savedClient);

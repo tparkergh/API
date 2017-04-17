@@ -21,6 +21,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import gov.ca.cwds.data.cms.AllegationDao;
 import gov.ca.cwds.data.cms.ClientDao;
+import gov.ca.cwds.data.cms.ClientUcDao;
 import gov.ca.cwds.data.cms.CrossReportDao;
 import gov.ca.cwds.data.cms.ReferralClientDao;
 import gov.ca.cwds.data.cms.ReferralDao;
@@ -50,6 +51,7 @@ public class CmsReferralServiceTest {
   private AllegationService allegationService;
   private CrossReportService crossReportService;
   private ReporterService reporterService;
+  private ClientUcService clientUcService;
 
   private ReferralDao referralDao;
   private ClientDao clientDao;
@@ -57,6 +59,8 @@ public class CmsReferralServiceTest {
   private AllegationDao allegationDao;
   private CrossReportDao crossReportDao;
   private ReporterDao reporterDao;
+  private ClientUcDao clientUcDao;
+
 
   @Rule
   public ExpectedException thrown = ExpectedException.none();
@@ -82,9 +86,12 @@ public class CmsReferralServiceTest {
     reporterDao = mock(ReporterDao.class);
     reporterService = new ReporterService(reporterDao);
 
+    clientUcDao = mock(ClientUcDao.class);
+    clientUcService = new ClientUcService(clientUcDao);
+
     // cmsReferralDao = mock(CmsReferral.class);
     cmsReferralService = new CmsReferralService(referralService, clientService, allegationService,
-        crossReportService, referralClientService, reporterService);
+        crossReportService, referralClientService, reporterService, clientUcService);
 
   }
 
@@ -129,6 +136,11 @@ public class CmsReferralServiceTest {
     gov.ca.cwds.data.persistence.cms.Reporter reporterToCreate =
         new gov.ca.cwds.data.persistence.cms.Reporter(reporterDomain, "OXA");
 
+    // ClientUc clientUcDomain = MAPPER.readValue(
+    // fixture("fixtures/domain/cms/CmsReferral/valid/clientUcCmsReferral.json"), ClientUc.class);
+    // gov.ca.cwds.data.persistence.cms.ClientUc clientUcToCreate =
+    // new gov.ca.cwds.data.persistence.cms.ClientUc(clientUcDomain, "OXA");
+
     Referral referralRequest = new Referral(referralToCreate);
 
     ReferralClient referralClientRequest = new ReferralClient(referralClientToCreate);
@@ -147,6 +159,10 @@ public class CmsReferralServiceTest {
     Set<CrossReport> crossReportRequestSet = new LinkedHashSet<>();
     crossReportRequestSet.add(crossReportRequest);
 
+    // ClientUc clientUcRequest = new ClientUc(clientUcToCreate);
+    // Set<ClientUc> clientUcRequestSet = new LinkedHashSet<>();
+    // clientUcRequestSet.add(clientUcRequest);
+
     Reporter reporterRequest = new Reporter(reporterToCreate);
 
     when(referralDao.create(any(gov.ca.cwds.data.persistence.cms.Referral.class)))
@@ -161,6 +177,8 @@ public class CmsReferralServiceTest {
         .thenReturn(crossReportToCreate);
     when(reporterDao.create(any(gov.ca.cwds.data.persistence.cms.Reporter.class)))
         .thenReturn(reporterToCreate);
+    // when(clientUcDao.create(any(gov.ca.cwds.data.persistence.cms.ClientUc.class)))
+    // .thenReturn(clientUcToCreate);
 
     CmsReferral cmsReferral = new CmsReferral(referralRequest, clientRequestSet,
         allegationRequestSet, crossReportRequestSet, referralClientRequestSet, reporterRequest);
@@ -269,8 +287,9 @@ public class CmsReferralServiceTest {
     when(reporterDao.create(any(gov.ca.cwds.data.persistence.cms.Reporter.class)))
         .thenReturn(reporterToCreate);
 
-    CmsReferralService cmsReferralRequest = new CmsReferralService(referralService, clientService,
-        allegationService, crossReportService, referralClientService, reporterService);
+    CmsReferralService cmsReferralRequest =
+        new CmsReferralService(referralService, clientService, allegationService,
+            crossReportService, referralClientService, reporterService, clientUcService);
 
     PostedCmsReferral returned = (PostedCmsReferral) cmsReferralRequest.create(cmsReferralToCreate);
 
@@ -372,8 +391,9 @@ public class CmsReferralServiceTest {
     CmsReferral cmsReferralToCreate = new CmsReferral(referralRequest, clientRequestSet,
         allegationRequestSet, crossReportRequestSet, referralClientRequestSet, reporterRequest);
 
-    CmsReferralService cmsReferralRequest = new CmsReferralService(referralService, clientService,
-        allegationService, crossReportService, referralClientService, reporterService);
+    CmsReferralService cmsReferralRequest =
+        new CmsReferralService(referralService, clientService, allegationService,
+            crossReportService, referralClientService, reporterService, clientUcService);
 
     PostedCmsReferral expected = new PostedCmsReferral(postedReferral, postedClientSet,
         postedAllegationSet, postedCrossReportSet, postedReferralClientSet, postedReporter);
