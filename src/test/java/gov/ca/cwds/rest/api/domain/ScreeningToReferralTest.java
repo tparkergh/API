@@ -63,10 +63,9 @@ public class ScreeningToReferralTest {
   public static final ResourceTestRule resources =
       ResourceTestRule.builder().addResource(mockedScreeningToReferralResource).build();
 
-  private ScreeningToReferral validScreeningToReferral = validScreeningToReferral();
-
   @Before
   public void setup() {
+    ScreeningToReferral validScreeningToReferral = validScreeningToReferral();
     when(mockedScreeningToReferralResource.create(eq(validScreeningToReferral)))
         .thenReturn(Response.status(Response.Status.NO_CONTENT).entity(null).build());
   }
@@ -207,6 +206,29 @@ public class ScreeningToReferralTest {
             .post(Entity.entity(toCreate, MediaType.APPLICATION_JSON));
     assertThat(response.getStatus(), is(equalTo(204)));
 
+  }
+
+  @Test
+  public void testWithMultipleCrossReportsSuccess() throws Exception {
+    ScreeningToReferral toCreate = MAPPER.readValue(
+        fixture("fixtures/domain/ScreeningToReferral/valid/validMultipleCrossReports.json"),
+        ScreeningToReferral.class);
+    Response response =
+        resources.client().target(ROOT_RESOURCE).request().accept(MediaType.APPLICATION_JSON)
+            .post(Entity.entity(toCreate, MediaType.APPLICATION_JSON));
+    assertThat(response.getStatus(), is(equalTo(204)));
+
+  }
+
+  @Test
+  public void testWithAgencyTypeMissingFail() throws Exception {
+    ScreeningToReferral toCreate = MAPPER.readValue(
+        fixture("fixtures/domain/ScreeningToReferral/invalid/missingAgencyType.json"),
+        ScreeningToReferral.class);
+    Response response =
+        resources.client().target(ROOT_RESOURCE).request().accept(MediaType.APPLICATION_JSON)
+            .post(Entity.entity(toCreate, MediaType.APPLICATION_JSON));
+    assertThat(response.getStatus(), is(equalTo(422)));
   }
 
   private ScreeningToReferral validScreeningToReferral() {
