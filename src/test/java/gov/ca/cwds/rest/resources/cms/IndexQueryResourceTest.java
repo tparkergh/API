@@ -6,13 +6,13 @@ import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.atLeastOnce;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
-import gov.ca.cwds.rest.api.domain.es.PersonQueryRequest;
-import gov.ca.cwds.rest.api.domain.es.PersonQueryResponse;
+import gov.ca.cwds.rest.api.domain.es.IndexQueryRequest;
+import gov.ca.cwds.rest.api.domain.es.IndexQueryResponse;
 import gov.ca.cwds.rest.core.Api;
-import gov.ca.cwds.rest.resources.PersonQueryResource;
+import gov.ca.cwds.rest.resources.IndexQueryResource;
 import gov.ca.cwds.rest.resources.ServiceBackedResourceDelegate;
 import gov.ca.cwds.rest.resources.SimpleResourceDelegate;
-import gov.ca.cwds.rest.services.es.PersonQueryService;
+import gov.ca.cwds.rest.services.es.IndexQueryService;
 import io.dropwizard.testing.junit.ResourceTestRule;
 
 import java.util.HashMap;
@@ -37,19 +37,19 @@ import com.squarespace.jersey2.guice.JerseyGuiceUtils;
  * 
  * @author CWDS API Team
  */
-public class PersonQueryResourceTest {
+public class IndexQueryResourceTest {
 
   private static final String FOUND_RESOURCE = "/" + Api.RESOURCE_ELASTICSEARCH_INDEX_QUERY + "/people/_search";
 
   @Rule
   public ExpectedException thrown = ExpectedException.none();
 
-  private static final PersonQueryService svc = mock(PersonQueryService.class);
+  private static final IndexQueryService svc = mock(IndexQueryService.class);
 
-  private static final SimpleResourceDelegate<String, PersonQueryRequest, PersonQueryResponse, PersonQueryService> delegate =
+  private static final SimpleResourceDelegate<String, IndexQueryRequest, IndexQueryResponse, IndexQueryService> delegate =
       new SimpleResourceDelegate<>(svc);
 
-  private final static SimpleResourceDelegate<String, PersonQueryRequest, PersonQueryResponse, PersonQueryService> resourceDelegate =
+  private final static SimpleResourceDelegate<String, IndexQueryRequest, IndexQueryResponse, IndexQueryService> resourceDelegate =
       mock(delegate.getClass());
 
   @After
@@ -62,7 +62,7 @@ public class PersonQueryResourceTest {
 
   @ClassRule
   public final static ResourceTestRule inMemoryResource = ResourceTestRule.builder()
-      .addResource(new PersonQueryResource(resourceDelegate)).build();
+      .addResource(new IndexQueryResource(resourceDelegate)).build();
 
   @Before
   public void setup() throws Exception {

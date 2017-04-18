@@ -6,8 +6,8 @@ import static org.hamcrest.CoreMatchers.notNullValue;
 import static org.junit.Assert.assertThat;
 import static org.mockito.Mockito.when;
 import gov.ca.cwds.data.es.ElasticsearchDao;
-import gov.ca.cwds.rest.api.domain.es.PersonQueryRequest;
-import gov.ca.cwds.rest.api.domain.es.PersonQueryResponse;
+import gov.ca.cwds.rest.api.domain.es.IndexQueryRequest;
+import gov.ca.cwds.rest.api.domain.es.IndexQueryResponse;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -28,7 +28,7 @@ import org.mockito.Spy;
  *
  */
 @SuppressWarnings("javadoc")
-public class PersonQueryServiceTest {
+public class IndexQueryServiceTest {
 
   @Rule
   public ExpectedException thrown = ExpectedException.none();
@@ -40,11 +40,11 @@ public class PersonQueryServiceTest {
   private SearchHits hits;
 
   @Mock
-  private PersonQueryRequest req;
+  private IndexQueryRequest req;
 
   @Spy
   @InjectMocks
-  private PersonQueryService target; // "Class Under Test"
+  private IndexQueryService target; // "Class Under Test"
 
   @Before
   public void initMocks() {
@@ -53,7 +53,7 @@ public class PersonQueryServiceTest {
 
   @Test
   public void type() throws Exception {
-    assertThat(PersonQueryService.class, notNullValue());
+    assertThat(IndexQueryService.class, notNullValue());
   }
 
   @Test
@@ -65,11 +65,11 @@ public class PersonQueryServiceTest {
   public void testHandleRequest() throws Exception {
     Map<String, String> test = new HashMap<String, String>();
     test.put("a", "value");
-    req = new PersonQueryRequest("index", test);
+    req = new IndexQueryRequest("index", test);
     String query = new JSONObject(test).toString();
     when(target.callDao("index", query)).thenReturn(("fred"));
-    final PersonQueryResponse actual = target.handleRequest(req);
-    PersonQueryResponse expected = new PersonQueryResponse("fred");
+    final IndexQueryResponse actual = target.handleRequest(req);
+    IndexQueryResponse expected = new IndexQueryResponse("fred");
     assertThat(actual, is(equalTo(expected)));
   }
 

@@ -1,12 +1,11 @@
 package gov.ca.cwds.rest.resources;
 
 import static gov.ca.cwds.rest.core.Api.RESOURCE_ELASTICSEARCH_INDEX_QUERY;
-import gov.ca.cwds.inject.IntakePersonQueryServiceResource;
+import gov.ca.cwds.inject.IntakeIndexQueryServiceResource;
 import gov.ca.cwds.rest.api.ApiException;
-import gov.ca.cwds.rest.api.domain.es.ESPersons;
-import gov.ca.cwds.rest.api.domain.es.PersonQueryRequest;
-import gov.ca.cwds.rest.api.domain.es.PersonQueryResponse;
-import gov.ca.cwds.rest.services.es.PersonQueryService;
+import gov.ca.cwds.rest.api.domain.es.IndexQueryRequest;
+import gov.ca.cwds.rest.api.domain.es.IndexQueryResponse;
+import gov.ca.cwds.rest.services.es.IndexQueryService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
@@ -30,7 +29,7 @@ import org.slf4j.LoggerFactory;
 import com.google.inject.Inject;
 
 /**
- * A resource providing a RESTful interface for {@link ESPersons}. It delegates functions to
+ * A resource providing a RESTful interface for Elasticsearch Query. It delegates functions to
  * {@link SimpleResourceDelegate}. It decorates the {@link SimpleResourceService} not in
  * functionality but with @see <a href=
  * "https://github.com/swagger-api/swagger-core/wiki/Annotations-1.5.X">Swagger Annotations</a> and
@@ -43,15 +42,15 @@ import com.google.inject.Inject;
 @Path(value = RESOURCE_ELASTICSEARCH_INDEX_QUERY)
 @Produces(MediaType.APPLICATION_JSON)
 @Consumes(MediaType.APPLICATION_JSON)
-public class PersonQueryResource {
+public class IndexQueryResource {
 
   /**
    * Logger for this class.
    */
-  private static final Logger LOGGER = LoggerFactory.getLogger(PersonQueryResource.class);
+  private static final Logger LOGGER = LoggerFactory.getLogger(IndexQueryResource.class);
 
 
-  private SimpleResourceDelegate<String, PersonQueryRequest, PersonQueryResponse, PersonQueryService> resourceDelegate;
+  private SimpleResourceDelegate<String, IndexQueryRequest, IndexQueryResponse, IndexQueryService> resourceDelegate;
 
   /**
    * Constructor
@@ -59,16 +58,16 @@ public class PersonQueryResource {
    * @param resourceDelegate The resourceDelegate to delegate to.
    */
   @Inject
-  public PersonQueryResource(
-      @IntakePersonQueryServiceResource SimpleResourceDelegate<String, PersonQueryRequest, PersonQueryResponse, PersonQueryService> resourceDelegate) {
+  public IndexQueryResource(
+      @IntakeIndexQueryServiceResource SimpleResourceDelegate<String, IndexQueryRequest, IndexQueryResponse, IndexQueryService> resourceDelegate) {
     this.resourceDelegate = resourceDelegate;
   }
 
   /**
    * Endpoint for Intake Person Query Search.
    * 
-   * @param index {@link PersonQueryRequest}
-   * @param req JSON {@link PersonQueryRequest}
+   * @param index {@link IndexQueryRequest}
+   * @param req JSON {@link IndexQueryRequest}
    * @return web service response
    */
   @POST
@@ -84,9 +83,9 @@ public class PersonQueryResource {
       required = true) Object req) {
     Response ret;
     try {
-      PersonQueryRequest personQueryRequest = new PersonQueryRequest(index, req);
-      PersonQueryResponse personQueryResponse =
-          (PersonQueryResponse) resourceDelegate.handle(personQueryRequest).getEntity();
+      IndexQueryRequest personQueryRequest = new IndexQueryRequest(index, req);
+      IndexQueryResponse personQueryResponse =
+          (IndexQueryResponse) resourceDelegate.handle(personQueryRequest).getEntity();
       if (personQueryResponse != null) {
         ret = Response.status(Response.Status.OK).entity(personQueryResponse.getPersons()).build();
       } else {

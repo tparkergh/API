@@ -20,7 +20,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.squarespace.jersey2.guice.JerseyGuiceUtils;
 
 /**
- * Test domain request class, {@link PersonQueryRequest}.
+ * Test domain request class, {@link IndexQueryResponse}.
  * 
  * <p>
  * NOTE: Mockito cannot mock up or spy on final classes, like String, and thereby that framework
@@ -30,7 +30,7 @@ import com.squarespace.jersey2.guice.JerseyGuiceUtils;
  * @author CWDS API Team
  */
 @SuppressWarnings("javadoc")
-public class PersonQueryRequestTest {
+public class IndexQueryResponseTest {
 
   private static final ObjectMapper MAPPER = Jackson.newObjectMapper();
 
@@ -51,31 +51,32 @@ public class PersonQueryRequestTest {
 
   @Test
   public void type() throws Exception {
-    assertThat(PersonQueryRequest.class, notNullValue());
+    assertThat(IndexQueryResponse.class, notNullValue());
   }
 
   @Test
   public void instantiation() throws Exception {
-    PersonQueryRequest target = produce("index", null);
+    IndexQueryResponse target = produce(null);
     assertThat(target, notNullValue());
   }
 
   @Test
   public void equalsHashCodeWork() throws Exception {
-    EqualsVerifier.forClass(PersonQueryRequest.class).suppress(Warning.NONFINAL_FIELDS).verify();
+    EqualsVerifier.forClass(IndexQueryResponse.class)// .suppress(Warning.NONFINAL_FIELDS).verify();
+        .suppress(Warning.NONFINAL_FIELDS, Warning.STRICT_INHERITANCE).suppress().verify();
   }
 
   @Test
   public void equals_Args$Object() throws Exception {
-    PersonQueryRequest target = produce("index", null);
+    IndexQueryResponse target = produce(null);
     Object obj = null;
     final boolean actual = target.equals(obj);
     boolean expected = false;
     assertThat(actual, is(equalTo(expected)));
   }
 
-  protected PersonQueryRequest produce(String index, String s) {
-    return new PersonQueryRequest(index, s);
+  protected IndexQueryResponse produce(String s) {
+    return new IndexQueryResponse(s);
   }
 
 }

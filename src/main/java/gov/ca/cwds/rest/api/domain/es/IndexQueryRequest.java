@@ -16,17 +16,17 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
- * A domain API {@link Request} for Intake Person Query feature to Elasticsearch.
+ * A domain API {@link Request} for Intake Index Query feature to Elasticsearch.
  * 
  * <p>
- * The Intake Person Query for Person takes a single json as string, which is used to query
- * Elasticsearch Person documents by ALL relevant fields that are specified in the query.
+ * The Intake Index Query for an Index takes an index name and a json as string, which is used to
+ * query the Elasticsearch Index documents by ALL relevant fields that are specified in the query.
  * </p>
  *
  * @author CWDS API Team
  */
 @ApiModel
-public class PersonQueryRequest implements Serializable, Request {
+public class IndexQueryRequest implements Serializable, Request {
 
   /**
    * Base serialization version. Increment by class version.
@@ -48,7 +48,7 @@ public class PersonQueryRequest implements Serializable, Request {
    * @param query the elasticsearch query
    */
   @JsonCreator
-  public PersonQueryRequest(@NotNull @JsonProperty("index") String index,
+  public IndexQueryRequest(@NotNull @JsonProperty("index") String index,
       @Valid @NotNull @JsonProperty("query") Object query) {
     this.index = index;
     this.query = query;
