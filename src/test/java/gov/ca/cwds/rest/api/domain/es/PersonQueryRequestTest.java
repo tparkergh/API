@@ -56,7 +56,7 @@ public class PersonQueryRequestTest {
 
   @Test
   public void instantiation() throws Exception {
-    PersonQueryRequest target = produce(null);
+    PersonQueryRequest target = produce("index", null);
     assertThat(target, notNullValue());
   }
 
@@ -67,15 +67,15 @@ public class PersonQueryRequestTest {
 
   @Test
   public void equals_Args$Object() throws Exception {
-    PersonQueryRequest target = produce(null);
+    PersonQueryRequest target = produce("index", null);
     Object obj = null;
     final boolean actual = target.equals(obj);
     boolean expected = false;
     assertThat(actual, is(equalTo(expected)));
   }
 
-  protected PersonQueryRequest produce(String s) {
-    return new PersonQueryRequest(s);
+  protected PersonQueryRequest produce(String index, String s) {
+    return new PersonQueryRequest(index, s);
   }
 
 }

@@ -1,6 +1,6 @@
 package gov.ca.cwds.rest.resources;
 
-import static gov.ca.cwds.rest.core.Api.RESOURCE_PERSON_QUERY;
+import static gov.ca.cwds.rest.core.Api.RESOURCE_ELASTICSEARCH_INDEX_QUERY;
 import gov.ca.cwds.inject.IntakePersonQueryServiceResource;
 import gov.ca.cwds.rest.api.ApiException;
 import gov.ca.cwds.rest.api.domain.es.ESPersons;
@@ -17,6 +17,7 @@ import javax.validation.Valid;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
@@ -38,8 +39,8 @@ import com.google.inject.Inject;
  * 
  * @author CWDS API Team
  */
-@Api(value = RESOURCE_PERSON_QUERY, tags = {RESOURCE_PERSON_QUERY})
-@Path(value = RESOURCE_PERSON_QUERY)
+@Api(value = RESOURCE_ELASTICSEARCH_INDEX_QUERY, tags = {RESOURCE_ELASTICSEARCH_INDEX_QUERY})
+@Path(value = RESOURCE_ELASTICSEARCH_INDEX_QUERY)
 @Produces(MediaType.APPLICATION_JSON)
 @Consumes(MediaType.APPLICATION_JSON)
 public class PersonQueryResource {
@@ -66,23 +67,31 @@ public class PersonQueryResource {
   /**
    * Endpoint for Intake Person Query Search.
    * 
+   * @param index {@link PersonQueryRequest}
    * @param req JSON {@link PersonQueryRequest}
    * @return web service response
    */
   @POST
+  @Path("/{index}/_search")
   @ApiResponses(value = {@ApiResponse(code = 400, message = "Unable to process JSON"),
       @ApiResponse(code = 401, message = "Not Authorized"),
       @ApiResponse(code = 406, message = "Accept Header not supported")})
   @ApiOperation(value = "Query ElasticSearch Persons on given search terms",
       code = HttpStatus.SC_OK, response = JSONObject.class)
   @Consumes(value = MediaType.APPLICATION_JSON)
-  public Response searchPerson(@Valid @ApiParam(hidden = false, required = true) Object req) {
+  public Response searchPerson(@PathParam("index") @ApiParam(required = true, name = "index",
+      value = "The index of the search") String index, @Valid @ApiParam(hidden = false,
+      required = true) Object req) {
     Response ret;
     try {
-      PersonQueryRequest personQueryRequest = new PersonQueryRequest(req);
+      PersonQueryRequest personQueryRequest = new PersonQueryRequest(index, req);
       PersonQueryResponse personQueryResponse =
           (PersonQueryResponse) resourceDelegate.handle(personQueryRequest).getEntity();
-      ret = Response.status(Response.Status.OK).entity(personQueryResponse.getPersons()).build();
+      if (personQueryResponse != null) {
+        ret = Response.status(Response.Status.OK).entity(personQueryResponse.getPersons()).build();
+      } else {
+        ret = null;
+      }
     } catch (Exception e) {
       LOGGER.error("Intake Person Query ERROR: {}", e.getMessage(), e);
       throw new ApiException("Intake Person Query ERROR. " + e.getMessage(), e);

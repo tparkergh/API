@@ -1,5 +1,6 @@
 package gov.ca.cwds.rest.services.es;
 
+import static com.google.common.base.Preconditions.checkArgument;
 import gov.ca.cwds.data.es.ElasticsearchDao;
 import gov.ca.cwds.data.persistence.cms.ApiSystemCodeCache;
 import gov.ca.cwds.rest.api.domain.es.PersonQueryRequest;
@@ -46,28 +47,31 @@ public class PersonQueryService extends
   /**
    * Consolidate calls to Elasticsearch DAO in one place.
    * 
-   * @param query search term(s)
+   * @param index the name of index to search
+   * @param query the elasticsearch query
    * @return complete domain object
    */
-  protected String callDao(final String query) {
+  protected String callDao(final String index, final String query) {
 
-    return this.elasticsearchDao.searchPersonQuery(query);
+    return this.elasticsearchDao.searchIndexByQuery(index, query);
   }
 
   @Override
   protected PersonQueryResponse handleRequest(PersonQueryRequest req) {
+    checkArgument(req != null, "query cannot be Null or empty");
     @SuppressWarnings("unchecked")
     String query = new JSONObject((Map<String, String>) req.getQuery()).toString();
     if (StringUtils.isBlank(query)) {
       throw new ServiceException("query cannot be null.");
     }
-    return new PersonQueryResponse(callDao(query));
+    return new PersonQueryResponse(callDao(req.getIndex(), query));
   }
 
   @Override
   protected PersonQueryResponse handleFind(String searchForThis) {
     try {
-      return new PersonQueryResponse(callDao(searchForThis.trim()));
+      return new PersonQueryResponse(callDao(
+          gov.ca.cwds.data.es.ElasticsearchDao.DEFAULT_PERSON_IDX_NM, searchForThis.trim()));
     } catch (Exception e) {
       throw new ServiceException("Something went wrong ...", e);
     }

@@ -1,5 +1,9 @@
 package gov.ca.cwds.rest.api.domain.es;
 
+import gov.ca.cwds.rest.api.Request;
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
+
 import java.io.Serializable;
 
 import javax.validation.Valid;
@@ -10,10 +14,6 @@ import org.apache.commons.lang3.builder.HashCodeBuilder;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
-
-import gov.ca.cwds.rest.api.Request;
-import io.swagger.annotations.ApiModel;
-import io.swagger.annotations.ApiModelProperty;
 
 /**
  * A domain API {@link Request} for Intake Person Query feature to Elasticsearch.
@@ -37,13 +37,20 @@ public class PersonQueryRequest implements Serializable, Request {
   @JsonProperty("query")
   private transient Object query;
 
+  @ApiModelProperty(required = true, readOnly = false, example = "a valid elasticsearch index name")
+  @JsonProperty("index")
+  private String index;
+
   /**
    * JSON DropWizard Constructor. Takes query.
    * 
+   * @param index the name of the elasticsearch index to search
    * @param query the elasticsearch query
    */
   @JsonCreator
-  public PersonQueryRequest(@Valid @NotNull @JsonProperty("query") Object query) {
+  public PersonQueryRequest(@NotNull @JsonProperty("index") String index,
+      @Valid @NotNull @JsonProperty("query") Object query) {
+    this.index = index;
     this.query = query;
   }
 
@@ -63,6 +70,22 @@ public class PersonQueryRequest implements Serializable, Request {
    */
   public void setQuery(Object query) {
     this.query = query;
+  }
+
+
+
+  /**
+   * @return the index
+   */
+  public String getIndex() {
+    return index;
+  }
+
+  /**
+   * @param index the index to set
+   */
+  public void setIndex(String index) {
+    this.index = index;
   }
 
   @Override
