@@ -536,7 +536,8 @@ public class ScreeningToReferralServiceTest {
       this.screeningToReferralService.create(screeningToReferral);
       Assert.fail("Expected ServiceException was not thrown");
     } catch (Exception e) {
-      assertThat(e.getMessage().equals("ERROR - only one Reporter per Referral allowed"));
+
+      assertThat(e.getMessage(), is(equalTo("ERROR - only one Reporter per Referral allowed")));
     }
   }
 
@@ -619,10 +620,7 @@ public class ScreeningToReferralServiceTest {
       assertThat(response.getClass(), is(PostedCmsReferral.class));
     } catch (Exception e) {
       System.out.println("error = " + e.getMessage());
-
       assertThat(e.getMessage(), is(equalTo(ServiceException.class)));
-      // assertThat(e.getClass().equals(ServiceException.class));
-      // assertThat(e.getMessage().equals("ERROR - only one Reporter per Referral allowed"));
     }
   }
 
