@@ -3,6 +3,7 @@ package gov.ca.cwds.rest.services;
 import static io.dropwizard.testing.FixtureHelpers.fixture;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.is;
 import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.mock;
@@ -618,7 +619,9 @@ public class ScreeningToReferralServiceTest {
       assertThat(response.getClass(), is(PostedCmsReferral.class));
     } catch (Exception e) {
       System.out.println("error = " + e.getMessage());
-      assertThat(e.getClass().equals(ServiceException.class));
+
+      assertThat(e.getMessage(), is(equalTo(ServiceException.class)));
+      // assertThat(e.getClass().equals(ServiceException.class));
       // assertThat(e.getMessage().equals("ERROR - only one Reporter per Referral allowed"));
     }
   }
