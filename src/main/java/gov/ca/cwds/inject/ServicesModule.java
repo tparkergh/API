@@ -1,7 +1,5 @@
 package gov.ca.cwds.inject;
 
-import java.lang.reflect.InvocationTargetException;
-
 import com.google.inject.AbstractModule;
 import com.google.inject.Inject;
 import com.google.inject.matcher.Matchers;
@@ -67,9 +65,6 @@ public class ServicesModule extends AbstractModule {
         Object result = mi.proceed();
         aspect.afterEnd();
         return result;
-      } catch (InvocationTargetException e) {
-        aspect.onError();
-        throw e.getCause();
       } catch (Exception e) {
         aspect.onError();
         throw e;

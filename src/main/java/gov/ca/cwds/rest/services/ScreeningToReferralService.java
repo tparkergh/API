@@ -112,8 +112,8 @@ public class ScreeningToReferralService implements CrudsService {
   private short crossReportMethodCode = 0;
   private short allegationTypeCode = 0;
 
-  HashMap<Long, String> victimClient = new HashMap<Long, String>();
-  HashMap<Long, String> perpatratorClient = new HashMap<Long, String>();
+  HashMap<Long, String> victimClient = new HashMap<>();
+  HashMap<Long, String> perpatratorClient = new HashMap<>();
 
   /**
    * Constructor
@@ -190,7 +190,7 @@ public class ScreeningToReferralService implements CrudsService {
       if (!incomingParticipant.getGender().isEmpty()) {
         genderCode = incomingParticipant.getGender().toUpperCase().substring(0, 1);
       }
-      Set<String> roles = new HashSet<String>(incomingParticipant.getRoles());
+      Set<String> roles = new HashSet<>(incomingParticipant.getRoles());
       /**
        * process the roles of this participant
        */
@@ -312,7 +312,7 @@ public class ScreeningToReferralService implements CrudsService {
     Set<Participant> participants = new HashSet<>();
     participants = str.getParticipants();
     for (Participant incomingParticipant : participants) {
-      Set<String> roles = new HashSet<String>(incomingParticipant.getRoles());
+      Set<String> roles = new HashSet<>(incomingParticipant.getRoles());
       /**
        * process the roles of this participant
        */
@@ -403,7 +403,7 @@ public class ScreeningToReferralService implements CrudsService {
       throws Exception {
 
     Set<gov.ca.cwds.rest.api.domain.Address> addresses =
-        new HashSet<gov.ca.cwds.rest.api.domain.Address>(incomingParticipant.getAddresses());
+        new HashSet<>(incomingParticipant.getAddresses());
 
     for (gov.ca.cwds.rest.api.domain.Address address : addresses) {
 
