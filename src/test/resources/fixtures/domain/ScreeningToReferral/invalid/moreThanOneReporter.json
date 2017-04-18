@@ -1,6 +1,5 @@
 {
    "id":"2",
-   "decision_rationale":"I have great reasons",
    "ended_at":"2016-08-03T01:00:00.000Z",
    "incident_county":"sacramento",
    "incident_date":"2016-08-02",
@@ -12,16 +11,16 @@
    "response_time":"immediate",
    "started_at":"2016-08-03T01:00:00.000Z",
    "assignee":"Michael Bastow",
-   "additional_info_included":"",
-   "address":{
-  "street_address": "123 Main",
-  "city": "Sacramento",
-  "state": "CA",
-  "zip": 95757,
-  "type": "Home"
-},
+   "additional_information" : "addtional information",
    "screening_decision":"Response time",
    "screening_decision_detail":"Detail",
+   "address":{
+	  "street_address": "123 Main",
+	  "city": "Sacramento",
+	  "state": "CA",
+	  "zip": 95757,
+	  "type": "Home"
+},
    "participants":[
 	{
 	  "id" : "5432",

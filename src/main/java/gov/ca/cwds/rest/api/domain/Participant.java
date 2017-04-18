@@ -23,42 +23,46 @@ import io.swagger.annotations.ApiModelProperty;
 public class Participant extends DomainObject implements Request, Response {
 
   @JsonProperty("id")
-  @ApiModelProperty("12345")
+  @ApiModelProperty(required = true, readOnly = false, value = "Participant Id", example = "12345")
   private long id;
 
   @JsonProperty("first_name")
-  @ApiModelProperty(example = "John")
+  @ApiModelProperty(required = false, readOnly = false, value = "First Name", example = "John")
   private String firstName;
 
   @JsonProperty("last_name")
-  @ApiModelProperty(example = "Smith")
+  @ApiModelProperty(required = false, readOnly = false, value = "Last name", example = "Smith")
   private String lastName;
 
   @JsonProperty("gender")
-  @ApiModelProperty(example = "Male", allowableValues = "M, Male, F, Female")
+  @ApiModelProperty(required = false, readOnly = false, value = "Gender", example = "Male",
+      allowableValues = "M, Male, F, Female")
   private String gender;
 
   @JsonProperty("ssn")
   @Size(min = 9, max = 9)
-  @ApiModelProperty(example = "111223333")
+  @ApiModelProperty(required = true, readOnly = false, value = "Social Security Number",
+      example = "111223333")
   private String ssn;
 
   @Date
   @JsonProperty("date_of_birth")
-  @ApiModelProperty(example = "2001-09-13")
+  @ApiModelProperty(required = false, readOnly = false, value = "Date of Birth",
+      example = "2001-09-13")
   private String dateOfBirth;
 
   @JsonProperty("person_id")
-  @ApiModelProperty(example = "12345")
+  @ApiModelProperty(required = false, readOnly = false, value = "Person Id", example = "12345")
   private long personId;
 
   @JsonProperty("screening_id")
-  @ApiModelProperty(example = "12345")
+  @ApiModelProperty(required = false, readOnly = false, value = "Screening Id", example = "12345")
   private long screeningId;
 
   @Valid
   @JsonProperty("roles")
-  @ApiModelProperty(example = "victim")
+  @ApiModelProperty(required = true, readOnly = false, value = "Role of participant",
+      example = "victim")
   private Set<String> roles;
 
   @Valid

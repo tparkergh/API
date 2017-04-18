@@ -3,10 +3,12 @@ package gov.ca.cwds.rest.api.domain;
 import java.util.Set;
 
 import javax.validation.Valid;
+import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
 import org.hibernate.validator.constraints.NotEmpty;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import gov.ca.cwds.rest.api.Request;
@@ -27,24 +29,23 @@ public class ScreeningToReferral extends DomainObject implements Request {
   @ApiModelProperty(required = true, readOnly = false, value = "Screening ID", example = "12345")
   private long id;
 
-  @JsonProperty("decision_rationale")
-  @ApiModelProperty(example = "WXTSKD")
-  @Size(max = 50)
-  private String decisionRational;
-
+  @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = DATE_FORMAT)
   @Date
   @JsonProperty("ended_at")
-  @ApiModelProperty(example = "2015-12-14")
+  @ApiModelProperty(required = false, readOnly = false, value = "Screening end date",
+      example = "2015-12-14")
   private String endedAt;
 
   @JsonProperty("incident_county")
-  @ApiModelProperty(example = "Sacramento")
+  @ApiModelProperty(required = true, readOnly = false, value = "County where incident occurred",
+      example = "Sacramento")
   @Size(max = 50)
   private String incidentCounty;
 
   @Date
+  @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = DATE_FORMAT)
   @JsonProperty("incident_date")
-  @ApiModelProperty(required = true, readOnly = false, value = "incident date",
+  @ApiModelProperty(required = true, readOnly = false, value = "Incident date",
       example = "2015-01-13")
   private String incidentDate;
 
@@ -68,50 +69,58 @@ public class ScreeningToReferral extends DomainObject implements Request {
   private String name;
 
   @JsonProperty("report_narrative")
-  @ApiModelProperty(value = "Report Narrative", example = "On the evening of...")
+  @ApiModelProperty(required = false, readOnly = false, value = "Report Narrative",
+      example = "On the evening of...")
   @Size(max = 254)
   private String reportNarrative;
 
   @JsonProperty("reference")
-  @ApiModelProperty(example = "reference WXTSKD")
+  @ApiModelProperty(required = false, readOnly = false, value = "Referrence",
+      example = "reference WXTSKD")
   @Size(max = 50)
   private String reference;
 
   @JsonProperty("response_time")
-  @ApiModelProperty(required = true, readOnly = false, value = "response time",
+  @ApiModelProperty(required = true, readOnly = false, value = "Response time",
       example = "immediate")
   @Size(max = 50)
   private String responseTime;
 
+  @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = DATE_FORMAT)
   @Date
   @JsonProperty("started_at")
-  @ApiModelProperty(example = "2015-11-15")
+  @ApiModelProperty(required = true, readOnly = false, value = "Date incident started",
+      example = "2015-11-15")
   private String startedAt;
 
   @JsonProperty("assignee")
-  @ApiModelProperty(required = true, readOnly = false, value = "assigned social worker",
+  @ApiModelProperty(required = true, readOnly = false, value = "Assigned social worker",
       example = "Mich Bastow")
   @Size(max = 50)
   private String assignee;
 
-  @JsonProperty("additional_info_included")
-  @ApiModelProperty(example = "")
+  @JsonProperty("additional_information")
+  @ApiModelProperty(required = false, readOnly = false, value = "Additional Information",
+      example = "more information about this referral")
   @Size(max = 50)
-  private String additionalInfoIncluded;
-
-  @ApiModelProperty(required = true, readOnly = false)
-  @Valid
-  private Address address;
+  private String additionalInformation;
 
   @JsonProperty("screening_decision")
-  @ApiModelProperty(value = "Screening Decision", example = "Response time")
+  @ApiModelProperty(required = true, readOnly = false, value = "Screening Decision",
+      example = "Response time")
   @Size(max = 50)
   private String screeningDecision;
 
   @JsonProperty("screening_decision_detail")
-  @ApiModelProperty(example = "decision detail")
+  @ApiModelProperty(required = false, readOnly = false, value = "Screening decision detail",
+      example = "decision detail")
   @Size(max = 1500)
   private String screeningDecisionDetail;
+
+  @NotNull
+  @ApiModelProperty(required = true, readOnly = false)
+  @Valid
+  private Address address;
 
   @NotEmpty
   @ApiModelProperty(required = true, readOnly = false)
@@ -129,196 +138,41 @@ public class ScreeningToReferral extends DomainObject implements Request {
   @Valid
   private Set<Allegation> allegations;
 
-  /**
-   * @return the id
-   */
-  public long getId() {
-    return id;
-  }
-
-  /**
-   * @return the decisionRational
-   */
-  public String getDecisionRational() {
-    return decisionRational;
-  }
-
-  /**
-   * @return the endedAt
-   */
-  public String getEndedAt() {
-    return endedAt;
-  }
-
-  /**
-   * @return the incidentCounty
-   */
-  public String getIncidentCounty() {
-    return incidentCounty;
-  }
-
-  /**
-   * @return the incidentDate
-   */
-  public String getIncidentDate() {
-    return incidentDate;
-  }
-
-  /**
-   * @return the locationType
-   */
-  public String getLocationType() {
-    return locationType;
-  }
-
-  /**
-   * @return the communicationMethod
-   */
-  public String getCommunicationMethod() {
-    return communicationMethod;
-  }
-
-  /**
-   * @return the name
-   */
-  public String getName() {
-    return name;
-  }
-
-  /**
-   * @return the report_narrative
-   */
-  public String getReportNarrative() {
-    return reportNarrative;
-  }
-
-  /**
-   * @return the reference
-   */
-  public String getReference() {
-    return reference;
-  }
-
-  /**
-   * @return the responseTime
-   */
-  public String getResponseTime() {
-    return responseTime;
-  }
-
-  /**
-   * @return the startedAt
-   */
-  public String getStartedAt() {
-    return startedAt;
-  }
-
-  /**
-   * @return the assignee
-   */
-  public String getAssignee() {
-    return assignee;
-  }
-
-  /**
-   * @return the additionalInfoIncluded
-   */
-  public String getAdditionalInfoIncluded() {
-    return additionalInfoIncluded;
-  }
-
-  /**
-   * @return the address
-   */
-  public Address getAddress() {
-    return address;
-  }
-
-  /**
-   * @return the screeningDecision
-   */
-  public String getScreeningDecision() {
-    return screeningDecision;
-  }
-
-  /**
-   * @return the screeningDecisionDetail
-   */
-  public String getScreeningDecisionDetail() {
-    return screeningDecisionDetail;
-  }
-
-  /**
-   * @return the participants
-   */
-  public Set<Participant> getParticipants() {
-    return participants;
-  }
-
-  /**
-   * @return the crossReports
-   */
-  public Set<CrossReport> getCrossReports() {
-    return crossReports;
-  }
-
-  /**
-   * @return the allegations
-   */
-  public Set<Allegation> getAllegations() {
-    return allegations;
-  }
-
-  /**
-   * empty constructor
-   */
+  @SuppressWarnings("javadoc")
   public ScreeningToReferral() {
     super();
+
   }
 
   /**
-   * @param id The id of the Screening
-   * @param decisionRational Decision Rational
-   * @param endedAt Ended At Date/time
-   * @param incidentCounty County
-   * @param incidentDate Date of incident
-   * @param locationType location type
-   * @param communicationMethod communication method
-   * @param name name of screening
-   * @param reportNarrative narrative
-   * @param reference screening reference
-   * @param responseTime screening repsonse time
-   * @param startedAt started at
-   * @param assignee assignee
-   * @param additionalInfoIncluded additional iformation included
-   * @param address address of incident
-   * @param screeningDecision screening decision
-   * @param screeningDecisionDetail screening decision detail
-   * @param participants participants of screening
-   * @param crossReports cross reports of screening
-   * @param allegations allegations of screening
+   * @param id - the screening Id
+   * @param endedAt - screening ended at date
+   * @param incidentCounty - county of incident
+   * @param incidentDate - date of incident
+   * @param locationType - location type
+   * @param communicationMethod - communication method
+   * @param name - screening name
+   * @param reportNarrative - narrative
+   * @param reference - referrence
+   * @param responseTime - response time
+   * @param startedAt - response started at time
+   * @param assignee - staff person assigned
+   * @param additionalInformation = additional information
+   * @param screeningDecision - screening decesion
+   * @param screeningDecisionDetail - screening decision detail
+   * @param address - address associated with participants
+   * @param participants - participants associcated with this scree.
+   * @param crossReports - Cross Reort
+   * @param allegations - Allegtions
    */
-  public ScreeningToReferral(@JsonProperty("id") long id,
-      @JsonProperty("decision_rational") String decisionRational,
-      @JsonProperty("ended_at") String endedAt,
-      @JsonProperty("incident_county") String incidentCounty,
-      @JsonProperty("incident_date") String incidentDate,
-      @JsonProperty("location_type") String locationType,
-      @JsonProperty("communication_method") String communicationMethod,
-      @JsonProperty("name") String name, @JsonProperty("report_narrative") String reportNarrative,
-      @JsonProperty("reference") String reference,
-      @JsonProperty("response_time") String responseTime,
-      @JsonProperty("started_at") String startedAt, @JsonProperty("assignee") String assignee,
-      @JsonProperty("additional_info_included") String additionalInfoIncluded,
-      @JsonProperty("address") Address address,
-      @JsonProperty("screening_decision") String screeningDecision,
-      @JsonProperty("screening_decision_detail") String screeningDecisionDetail,
-      @JsonProperty("participants") Set<Participant> participants,
-      @JsonProperty("cross_reports") Set<CrossReport> crossReports,
-      @JsonProperty("allegations") Set<Allegation> allegations) {
+  public ScreeningToReferral(long id, @Date String endedAt, String incidentCounty,
+      @Date String incidentDate, String locationType, String communicationMethod, String name,
+      String reportNarrative, String reference, String responseTime, @Date String startedAt,
+      String assignee, String additionalInformation, String screeningDecision,
+      String screeningDecisionDetail, Address address, Set<Participant> participants,
+      Set<CrossReport> crossReports, Set<Allegation> allegations) {
     super();
     this.id = id;
-    this.decisionRational = decisionRational;
     this.endedAt = endedAt;
     this.incidentCounty = incidentCounty;
     this.incidentDate = incidentDate;
@@ -330,20 +184,168 @@ public class ScreeningToReferral extends DomainObject implements Request {
     this.responseTime = responseTime;
     this.startedAt = startedAt;
     this.assignee = assignee;
-    this.additionalInfoIncluded = additionalInfoIncluded;
-    this.address = address;
+    this.additionalInformation = additionalInformation;
     this.screeningDecision = screeningDecision;
     this.screeningDecisionDetail = screeningDecisionDetail;
+    this.address = address;
     this.participants = participants;
     this.crossReports = crossReports;
     this.allegations = allegations;
   }
 
-  /*
-   * (non-Javadoc)
-   * 
-   * @see java.lang.Object#equals(java.lang.Object)
+  /**
+   * @return id
    */
+  public long getId() {
+    return id;
+  }
+
+  /**
+   * @return ended date
+   */
+  public String getEndedAt() {
+    return endedAt;
+  }
+
+  /**
+   * @return incident county
+   */
+  public String getIncidentCounty() {
+    return incidentCounty;
+  }
+
+  /**
+   * @return incident Date
+   */
+  public String getIncidentDate() {
+    return incidentDate;
+  }
+
+  /**
+   * @return location type
+   */
+  public String getLocationType() {
+    return locationType;
+  }
+
+  /**
+   * @return communicaion method
+   */
+  public String getCommunicationMethod() {
+    return communicationMethod;
+  }
+
+  /**
+   * @return name
+   */
+  public String getName() {
+    return name;
+  }
+
+  /**
+   * @return report narrative
+   */
+  public String getReportNarrative() {
+    return reportNarrative;
+  }
+
+  /**
+   * @return referrence
+   */
+  public String getReference() {
+    return reference;
+  }
+
+  /**
+   * @return response time
+   */
+  public String getResponseTime() {
+    return responseTime;
+  }
+
+  /**
+   * @return = started at
+   */
+  public String getStartedAt() {
+    return startedAt;
+  }
+
+  /**
+   * @return assignee
+   */
+  public String getAssignee() {
+    return assignee;
+  }
+
+  /**
+   * @return addtional infoma
+   */
+  public String getAdditionalInformation() {
+    return additionalInformation;
+  }
+
+  /**
+   * @return - screening decio
+   */
+  public String getScreeningDecision() {
+    return screeningDecision;
+  }
+
+  /**
+   * @return screening decision detail
+   */
+  public String getScreeningDecisionDetail() {
+    return screeningDecisionDetail;
+  }
+
+  @SuppressWarnings("javadoc")
+  public Address getAddress() {
+    return address;
+  }
+
+  @SuppressWarnings("javadoc")
+  public Set<Participant> getParticipants() {
+    return participants;
+  }
+
+  @SuppressWarnings("javadoc")
+  public Set<Allegation> getAllegations() {
+    return allegations;
+  }
+
+  @SuppressWarnings("javadoc")
+  public Set<CrossReport> getCrossReports() {
+    return crossReports;
+  }
+
+  @Override
+  public int hashCode() {
+    final int prime = 31;
+    int result = 1;
+    result =
+        prime * result + ((additionalInformation == null) ? 0 : additionalInformation.hashCode());
+    result = prime * result + ((address == null) ? 0 : address.hashCode());
+    result = prime * result + ((allegations == null) ? 0 : allegations.hashCode());
+    result = prime * result + ((assignee == null) ? 0 : assignee.hashCode());
+    result = prime * result + ((communicationMethod == null) ? 0 : communicationMethod.hashCode());
+    result = prime * result + ((crossReports == null) ? 0 : crossReports.hashCode());
+    result = prime * result + ((endedAt == null) ? 0 : endedAt.hashCode());
+    result = prime * result + (int) (id ^ (id >>> 32));
+    result = prime * result + ((incidentCounty == null) ? 0 : incidentCounty.hashCode());
+    result = prime * result + ((incidentDate == null) ? 0 : incidentDate.hashCode());
+    result = prime * result + ((locationType == null) ? 0 : locationType.hashCode());
+    result = prime * result + ((name == null) ? 0 : name.hashCode());
+    result = prime * result + ((participants == null) ? 0 : participants.hashCode());
+    result = prime * result + ((reference == null) ? 0 : reference.hashCode());
+    result = prime * result + ((reportNarrative == null) ? 0 : reportNarrative.hashCode());
+    result = prime * result + ((responseTime == null) ? 0 : responseTime.hashCode());
+    result = prime * result + ((screeningDecision == null) ? 0 : screeningDecision.hashCode());
+    result = prime * result
+        + ((screeningDecisionDetail == null) ? 0 : screeningDecisionDetail.hashCode());
+    result = prime * result + ((startedAt == null) ? 0 : startedAt.hashCode());
+    return result;
+  }
+
   @Override
   public boolean equals(Object obj) {
     if (this == obj)
@@ -353,10 +355,10 @@ public class ScreeningToReferral extends DomainObject implements Request {
     if (getClass() != obj.getClass())
       return false;
     ScreeningToReferral other = (ScreeningToReferral) obj;
-    if (additionalInfoIncluded == null) {
-      if (other.additionalInfoIncluded != null)
+    if (additionalInformation == null) {
+      if (other.additionalInformation != null)
         return false;
-    } else if (!additionalInfoIncluded.equals(other.additionalInfoIncluded))
+    } else if (!additionalInformation.equals(other.additionalInformation))
       return false;
     if (address == null) {
       if (other.address != null)
@@ -382,11 +384,6 @@ public class ScreeningToReferral extends DomainObject implements Request {
       if (other.crossReports != null)
         return false;
     } else if (!crossReports.equals(other.crossReports))
-      return false;
-    if (decisionRational == null) {
-      if (other.decisionRational != null)
-        return false;
-    } else if (!decisionRational.equals(other.decisionRational))
       return false;
     if (endedAt == null) {
       if (other.endedAt != null)
@@ -453,38 +450,5 @@ public class ScreeningToReferral extends DomainObject implements Request {
     return true;
   }
 
-  /*
-   * (non-Javadoc)
-   * 
-   * @see java.lang.Object#hashCode()
-   */
-  @Override
-  public int hashCode() {
-    final int prime = 31;
-    int result = 1;
-    result =
-        prime * result + ((additionalInfoIncluded == null) ? 0 : additionalInfoIncluded.hashCode());
-    result = prime * result + ((address == null) ? 0 : address.hashCode());
-    result = prime * result + ((allegations == null) ? 0 : allegations.hashCode());
-    result = prime * result + ((assignee == null) ? 0 : assignee.hashCode());
-    result = prime * result + ((communicationMethod == null) ? 0 : communicationMethod.hashCode());
-    result = prime * result + ((crossReports == null) ? 0 : crossReports.hashCode());
-    result = prime * result + ((decisionRational == null) ? 0 : decisionRational.hashCode());
-    result = prime * result + ((endedAt == null) ? 0 : endedAt.hashCode());
-    result = prime * result + (int) (id ^ (id >>> 32));
-    result = prime * result + ((incidentCounty == null) ? 0 : incidentCounty.hashCode());
-    result = prime * result + ((incidentDate == null) ? 0 : incidentDate.hashCode());
-    result = prime * result + ((locationType == null) ? 0 : locationType.hashCode());
-    result = prime * result + ((name == null) ? 0 : name.hashCode());
-    result = prime * result + ((participants == null) ? 0 : participants.hashCode());
-    result = prime * result + ((reference == null) ? 0 : reference.hashCode());
-    result = prime * result + ((reportNarrative == null) ? 0 : reportNarrative.hashCode());
-    result = prime * result + ((responseTime == null) ? 0 : responseTime.hashCode());
-    result = prime * result + ((screeningDecision == null) ? 0 : screeningDecision.hashCode());
-    result = prime * result
-        + ((screeningDecisionDetail == null) ? 0 : screeningDecisionDetail.hashCode());
-    result = prime * result + ((startedAt == null) ? 0 : startedAt.hashCode());
-    return result;
-  }
 
 }
