@@ -341,7 +341,7 @@ public class ScreeningToReferralService implements CrudsService {
    * CMS Cross Report
    */
   private Set<gov.ca.cwds.rest.api.domain.cms.CrossReport> processCrossReports(
-      ScreeningToReferral scr, String referralId) throws Exception {
+      ScreeningToReferral scr, String referralId) throws ServiceException {
 
     String crossReportId = "";
     Set<gov.ca.cwds.rest.api.domain.cms.CrossReport> resultCrossReports = new LinkedHashSet<>();
@@ -373,7 +373,7 @@ public class ScreeningToReferralService implements CrudsService {
    * CMS Allegation - one for each allegation
    */
   private Set<PostedAllegation> processAllegations(ScreeningToReferral scr, String referralId)
-      throws Exception {
+      throws ServiceException {
 
     // TODO: #143899869 Add CHILD_CLIENT processing to 'referrals' service
     Set<PostedAllegation> postedAllegations = new LinkedHashSet<>();
@@ -411,7 +411,7 @@ public class ScreeningToReferralService implements CrudsService {
    * CMS Address - create ADDRESS and CLIENT_ADDRESS for each address of the participant
    */
   private void processClientAddress(Participant incomingParticipant, String referralId,
-      String clientId) throws Exception {
+      String clientId) throws ServiceException {
 
     Set<gov.ca.cwds.rest.api.domain.Address> addresses =
         new HashSet<>(incomingParticipant.getAddresses());
@@ -456,7 +456,7 @@ public class ScreeningToReferralService implements CrudsService {
     }
   }
 
-  private String processReferralAddress(ScreeningToReferral scr) throws Exception {
+  private String processReferralAddress(ScreeningToReferral scr) throws ServiceException {
     gov.ca.cwds.rest.api.domain.Address address = scr.getAddress();
 
     Integer zipCode = address.getZip();
@@ -480,7 +480,7 @@ public class ScreeningToReferralService implements CrudsService {
   }
 
   private PostedReporter processReporter(Participant ip, String role, String referralId)
-      throws Exception {
+      throws ServiceException {
 
     Boolean mandatedReporterIndicator = false;
     if (role.equalsIgnoreCase(MANDATED_REPORTER_ROLE)) {
