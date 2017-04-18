@@ -108,9 +108,9 @@ public interface Api {
   public static final String RESOURCE_LONG_TEXT = "_longText";
 
   /**
-   * A {@code String} constant representing {@value #RESOURCE_PERSON_QUERY} API.
+   * A {@code String} constant representing {@value #RESOURCE_ELASTICSEARCH_INDEX_QUERY} API.
    */
-  public static final String RESOURCE_PERSON_QUERY = "_search";
+  public static final String RESOURCE_ELASTICSEARCH_INDEX_QUERY = "dora";
 
 
 }
