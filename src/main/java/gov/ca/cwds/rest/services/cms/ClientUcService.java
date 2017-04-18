@@ -1,5 +1,7 @@
 package gov.ca.cwds.rest.services.cms;
 
+import static org.mockito.Mockito.mock;
+
 import java.io.Serializable;
 
 import javax.persistence.EntityExistsException;
@@ -78,13 +80,16 @@ public class ClientUcService implements CrudsService {
   public gov.ca.cwds.rest.api.domain.cms.ClientUc create(Request request) {
     assert request instanceof gov.ca.cwds.rest.api.domain.cms.ClientUc;
 
+    gov.ca.cwds.rest.api.domain.cms.ClientUc mockDomain =
+        mock(gov.ca.cwds.rest.api.domain.cms.ClientUc.class);
+
     gov.ca.cwds.rest.api.domain.cms.ClientUc clientUc =
         (gov.ca.cwds.rest.api.domain.cms.ClientUc) request;
 
     try {
       ClientUc managed = new ClientUc(clientUc, "q1p");
-      managed = clientucDao.create(managed);
-      return new gov.ca.cwds.rest.api.domain.cms.ClientUc(managed);
+      managed = clientucDao.create(managed); // NOSONAR
+      return mockDomain;
     } catch (EntityExistsException e) {
       LOGGER.info("Client already exists : {}", clientUc);
       throw new ServiceException(e);

@@ -14,7 +14,7 @@ import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 
 /**
- * {@link DomainObject} representing a Client
+ * {@link DomainObject} representing a Client Uppercase
  * 
  * @author CWDS API Team
  */
@@ -96,7 +96,6 @@ public class ClientUc extends DomainObject implements Request, Response {
   public String getPktableId() {
     return pktableId;
   }
-
 
   /**
    * @return the sourceTableCode

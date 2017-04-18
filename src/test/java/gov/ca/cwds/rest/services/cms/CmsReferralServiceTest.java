@@ -29,6 +29,7 @@ import gov.ca.cwds.data.cms.ReporterDao;
 import gov.ca.cwds.rest.api.Response;
 import gov.ca.cwds.rest.api.domain.cms.Allegation;
 import gov.ca.cwds.rest.api.domain.cms.Client;
+import gov.ca.cwds.rest.api.domain.cms.ClientUc;
 import gov.ca.cwds.rest.api.domain.cms.CmsReferral;
 import gov.ca.cwds.rest.api.domain.cms.CrossReport;
 import gov.ca.cwds.rest.api.domain.cms.PostedAllegation;
@@ -60,6 +61,7 @@ public class CmsReferralServiceTest {
   private CrossReportDao crossReportDao;
   private ReporterDao reporterDao;
   private ClientUcDao clientUcDao;
+  private ClientUc clientUcDomain;
 
 
   @Rule
@@ -88,6 +90,8 @@ public class CmsReferralServiceTest {
 
     clientUcDao = mock(ClientUcDao.class);
     clientUcService = new ClientUcService(clientUcDao);
+
+    clientUcDomain = mock(ClientUc.class);
 
     // cmsReferralDao = mock(CmsReferral.class);
     cmsReferralService = new CmsReferralService(referralService, clientService, allegationService,
@@ -136,11 +140,6 @@ public class CmsReferralServiceTest {
     gov.ca.cwds.data.persistence.cms.Reporter reporterToCreate =
         new gov.ca.cwds.data.persistence.cms.Reporter(reporterDomain, "OXA");
 
-    // ClientUc clientUcDomain = MAPPER.readValue(
-    // fixture("fixtures/domain/cms/CmsReferral/valid/clientUcCmsReferral.json"), ClientUc.class);
-    // gov.ca.cwds.data.persistence.cms.ClientUc clientUcToCreate =
-    // new gov.ca.cwds.data.persistence.cms.ClientUc(clientUcDomain, "OXA");
-
     Referral referralRequest = new Referral(referralToCreate);
 
     ReferralClient referralClientRequest = new ReferralClient(referralClientToCreate);
@@ -159,10 +158,6 @@ public class CmsReferralServiceTest {
     Set<CrossReport> crossReportRequestSet = new LinkedHashSet<>();
     crossReportRequestSet.add(crossReportRequest);
 
-    // ClientUc clientUcRequest = new ClientUc(clientUcToCreate);
-    // Set<ClientUc> clientUcRequestSet = new LinkedHashSet<>();
-    // clientUcRequestSet.add(clientUcRequest);
-
     Reporter reporterRequest = new Reporter(reporterToCreate);
 
     when(referralDao.create(any(gov.ca.cwds.data.persistence.cms.Referral.class)))
@@ -177,8 +172,6 @@ public class CmsReferralServiceTest {
         .thenReturn(crossReportToCreate);
     when(reporterDao.create(any(gov.ca.cwds.data.persistence.cms.Reporter.class)))
         .thenReturn(reporterToCreate);
-    // when(clientUcDao.create(any(gov.ca.cwds.data.persistence.cms.ClientUc.class)))
-    // .thenReturn(clientUcToCreate);
 
     CmsReferral cmsReferral = new CmsReferral(referralRequest, clientRequestSet,
         allegationRequestSet, crossReportRequestSet, referralClientRequestSet, reporterRequest);

@@ -13,7 +13,7 @@ import gov.ca.cwds.data.ns.NsPersistentObject;
 import gov.ca.cwds.rest.api.ApiException;
 
 /**
- * {@link NsPersistentObject} representing a Referral
+ * {@link NsPersistentObject} representing a Client Uppercase
  * 
  * @author CWDS API Team
  */
@@ -67,6 +67,10 @@ public class ClientUc extends CmsPersistentObject {
     this.commonMiddleName = commonMiddleName;
   }
 
+  /**
+   * @param clientUc -- client uppercase
+   * @param lastUpdateId -- last updated id
+   */
   public ClientUc(gov.ca.cwds.rest.api.domain.cms.ClientUc clientUc, String lastUpdateId) {
     super(lastUpdateId);
 
