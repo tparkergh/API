@@ -189,7 +189,7 @@ public class ScreeningToReferralService implements CrudsService {
     Set<gov.ca.cwds.rest.api.domain.cms.ReferralClient> resultReferralClients =
         new LinkedHashSet<>();
     Set<PostedClient> postedClients = new LinkedHashSet<>();
-    Set<Participant> participants = new LinkedHashSet<>();
+    Set<Participant> participants;
     victimClient.clear();
     perpatratorClient.clear();
 
