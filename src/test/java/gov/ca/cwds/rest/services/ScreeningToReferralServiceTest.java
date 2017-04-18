@@ -1,7 +1,6 @@
 package gov.ca.cwds.rest.services;
 
 import static io.dropwizard.testing.FixtureHelpers.fixture;
-import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.is;
@@ -785,7 +784,8 @@ public class ScreeningToReferralServiceTest {
       this.screeningToReferralService.create(screeningToReferral);
       Assert.fail("Expected ServiceException was not thrown");
     } catch (Exception e) {
-      assertThat(e.getMessage().concat("Unparseable date"));
+      assertThat(e.getMessage().concat("Unparseable date"), is(equalTo(
+          "ERROR - parsing Start Date/Time Unparseable date: \"08/2016/03T01:00:00.000Z\"Unparseable date")));
     }
   }
 }
