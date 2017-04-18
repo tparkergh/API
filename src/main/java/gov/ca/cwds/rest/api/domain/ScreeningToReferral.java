@@ -10,6 +10,7 @@ import org.hibernate.validator.constraints.NotEmpty;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
 import gov.ca.cwds.rest.api.Request;
 import gov.ca.cwds.rest.validation.Date;
@@ -23,6 +24,10 @@ import io.swagger.annotations.ApiModelProperty;
  */
 @SuppressWarnings("serial")
 @JsonSnakeCase
+@JsonPropertyOrder({"id", "endedAt", "incidentCounty", "incidentDate", "locationType",
+    "communicationMethod", "email", "name", "reportNarrative", "reference", "responseTime",
+    "startedAt", "assignee", "additionalInformation", "screeningDecision",
+    "screeningDecisionDetail", "address", "participants", "crossReports", "allegations"})
 public class ScreeningToReferral extends DomainObject implements Request {
 
   @JsonProperty("id")
