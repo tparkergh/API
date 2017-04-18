@@ -147,15 +147,14 @@ public class CmsReferralService implements CrudsService {
           PostedClient postedclient = this.clientService.create(client);
           postedClients.add(postedclient);
           clientIds.add(postedclient.getId());
-          // if (postedclient.getCommonFirstName() != null) {
-          // ClientUc clientUc = new ClientUc(postedclient.getId(), sourceTableCode,
-          // postedclient.getCommonFirstName().toUpperCase(),
-          // postedclient.getCommonLastName().toUpperCase(),
-          // postedclient.getCommonMiddleName().toUpperCase());
-          // clientUc = this.clientUcService.create(clientUc);
-          // resultClientUc.add(clientUc);
-
-          // }
+          if (postedclient.getCommonFirstName() != null) {
+            ClientUc clientUc = new ClientUc(postedclient.getId(), sourceTableCode,
+                postedclient.getCommonFirstName().toUpperCase(),
+                postedclient.getCommonLastName().toUpperCase(),
+                postedclient.getCommonMiddleName().toUpperCase());
+            clientUc = this.clientUcService.create(clientUc);
+            resultClientUc.add(clientUc);
+          }
         } else {
           clientIds.add(savedClient.getId());
           postedClients.add(savedClient);
