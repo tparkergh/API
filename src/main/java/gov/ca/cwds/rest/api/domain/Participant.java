@@ -62,7 +62,7 @@ public class Participant extends DomainObject implements Request, Response {
   @Valid
   @JsonProperty("roles")
   @ApiModelProperty(required = true, readOnly = false, value = "Role of participant",
-      example = "victim")
+      example = "[victim]")
   private Set<String> roles;
 
   @Valid
