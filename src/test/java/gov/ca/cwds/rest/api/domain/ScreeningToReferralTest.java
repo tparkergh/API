@@ -237,6 +237,17 @@ public class ScreeningToReferralTest {
     assertThat(response.getStatus(), is(equalTo(422)));
   }
 
+  @Test
+  public void testWithInvalidIncidentDateFormatFail() throws Exception {
+    ScreeningToReferral toCreate = MAPPER.readValue(
+        fixture("fixtures/domain/ScreeningToReferral/invalid/invalidIncidentDateFormat.json"),
+        ScreeningToReferral.class);
+    Response response =
+        resources.client().target(ROOT_RESOURCE).request().accept(MediaType.APPLICATION_JSON)
+            .post(Entity.entity(toCreate, MediaType.APPLICATION_JSON));
+    assertThat(response.getStatus(), is(equalTo(422)));
+  }
+
   private ScreeningToReferral validScreeningToReferral() {
     ScreeningToReferral str = null;
     try {

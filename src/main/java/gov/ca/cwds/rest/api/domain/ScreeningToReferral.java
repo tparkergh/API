@@ -34,11 +34,9 @@ public class ScreeningToReferral extends DomainObject implements Request {
   @ApiModelProperty(required = true, readOnly = false, value = "Screening ID", example = "12345")
   private long id;
 
-  @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = DATE_FORMAT)
-  @Date
   @JsonProperty("ended_at")
-  @ApiModelProperty(required = false, readOnly = false, value = "Screening end date",
-      example = "2015-12-14")
+  @ApiModelProperty(required = false, readOnly = false, value = "Screening end date/time",
+      example = "2016-08-03T01:00:00.000Z")
   private String endedAt;
 
   @JsonProperty("incident_county")
@@ -91,11 +89,9 @@ public class ScreeningToReferral extends DomainObject implements Request {
   @Size(max = 50)
   private String responseTime;
 
-  @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = DATE_FORMAT)
-  @Date
   @JsonProperty("started_at")
-  @ApiModelProperty(required = true, readOnly = false, value = "Date incident started",
-      example = "2015-11-15")
+  @ApiModelProperty(required = true, readOnly = false, value = "Date/time incident started",
+      example = "2016-08-03T01:00:00.000Z")
   private String startedAt;
 
   @JsonProperty("assignee")
