@@ -10,8 +10,8 @@ import gov.ca.cwds.rest.SwaggerConfiguration;
 import gov.ca.cwds.rest.api.domain.cms.CmsDocument;
 import gov.ca.cwds.rest.api.domain.es.AutoCompletePersonRequest;
 import gov.ca.cwds.rest.api.domain.es.AutoCompletePersonResponse;
-import gov.ca.cwds.rest.api.domain.es.PersonQueryRequest;
-import gov.ca.cwds.rest.api.domain.es.PersonQueryResponse;
+import gov.ca.cwds.rest.api.domain.es.IndexQueryRequest;
+import gov.ca.cwds.rest.api.domain.es.IndexQueryResponse;
 import gov.ca.cwds.rest.resources.AddressResource;
 import gov.ca.cwds.rest.resources.AddressValidationResource;
 import gov.ca.cwds.rest.resources.ApplicationResource;
@@ -58,7 +58,7 @@ import gov.ca.cwds.rest.services.cms.ReferralService;
 import gov.ca.cwds.rest.services.cms.ReporterService;
 import gov.ca.cwds.rest.services.cms.StaffPersonService;
 import gov.ca.cwds.rest.services.es.AutoCompletePersonService;
-import gov.ca.cwds.rest.services.es.PersonQueryService;
+import gov.ca.cwds.rest.services.es.IndexQueryService;
 
 
 /**
@@ -243,10 +243,10 @@ public class ResourcesModule extends AbstractModule {
   }
 
   @Provides
-  @IntakePersonQueryServiceResource
-  public SimpleResourceDelegate<String, PersonQueryRequest, PersonQueryResponse, PersonQueryService> intakePersonQueryResource(
+  @IntakeIndexQueryServiceResource
+  public SimpleResourceDelegate<String, IndexQueryRequest, IndexQueryResponse, IndexQueryService> intakeIndexQueryResource(
       Injector injector) {
-    return new SimpleResourceDelegate<>(injector.getInstance(PersonQueryService.class));
+    return new SimpleResourceDelegate<>(injector.getInstance(IndexQueryService.class));
   }
 
 

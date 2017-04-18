@@ -13,18 +13,19 @@ import org.apache.commons.lang3.builder.HashCodeBuilder;
 import com.fasterxml.jackson.annotation.JsonRawValue;
 
 /**
- * A domain API {@link Request} for Intake Person Query feature to Elasticsearch.
+ * A domain API {@link Request} for Intake Index Query feature to Elasticsearch.
  * 
  * <p>
- * The Intake Person Query for Person takes a single query as json string, which is used to query
- * Elasticsearch Person documents by ALL relevant fields that are specified in the query.
+ * The Intake Index Query for an Index takes an Elasticsearch Index name and single query as json
+ * string, which is used to query the Elasticsearch Index documents by ALL relevant fields that are
+ * specified in the query.
  * </p>
  * 
  * @author CWDS API Team
  */
 @ApiModel
 @JsonSnakeCase
-public class PersonQueryResponse implements Serializable, Response {
+public class IndexQueryResponse implements Serializable, Response {
 
   /**
    * Base serialization version. Increment by class version.
@@ -38,7 +39,7 @@ public class PersonQueryResponse implements Serializable, Response {
    * Disallow use of default constructor.
    */
   @SuppressWarnings("unused")
-  private PersonQueryResponse() {
+  private IndexQueryResponse() {
     // Default, no-op.
   }
 
@@ -47,7 +48,7 @@ public class PersonQueryResponse implements Serializable, Response {
    * 
    * @param persons the json response from Elasticsearch
    */
-  public PersonQueryResponse(String persons) {
+  public IndexQueryResponse(String persons) {
     this.persons = persons;
   }
 

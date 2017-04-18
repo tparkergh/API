@@ -25,7 +25,7 @@ import gov.ca.cwds.rest.services.cms.ReferralService;
 import gov.ca.cwds.rest.services.cms.ReporterService;
 import gov.ca.cwds.rest.services.cms.StaffPersonService;
 import gov.ca.cwds.rest.services.es.AutoCompletePersonService;
-import gov.ca.cwds.rest.services.es.PersonQueryService;
+import gov.ca.cwds.rest.services.es.IndexQueryService;
 import io.dropwizard.hibernate.HibernateBundle;
 import io.dropwizard.hibernate.UnitOfWork;
 import io.dropwizard.hibernate.UnitOfWorkAspect;
@@ -101,7 +101,7 @@ public class ServicesModule extends AbstractModule {
     bind(CrossReportService.class);
     bind(CmsNSReferralService.class);
     bind(ScreeningToReferral.class);
-    bind(PersonQueryService.class);
+    bind(IndexQueryService.class);
     bind(ClientUcService.class);
 
     // Register CMS system code translator.
