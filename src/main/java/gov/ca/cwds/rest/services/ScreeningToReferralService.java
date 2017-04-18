@@ -482,16 +482,41 @@ public class ScreeningToReferralService implements CrudsService {
   private PostedReporter processReporter(Participant ip, String role, String referralId)
       throws ServiceException {
 
+    String[] streetAddress;
+    String streetNumber = null;
+    String streetName = null;
+    String zipCodeString = null;
+
+    Set<gov.ca.cwds.rest.api.domain.Address> addresses = new HashSet<>(ip.getAddresses());
+
+
+    // use the first address node only
+    for (gov.ca.cwds.rest.api.domain.Address address : addresses) {
+
+      String addressId;
+
+      // TODO: address parsing - requires standardizing in seperate class
+      zipCodeString = address.getZip().toString();
+      zipSuffix = null;
+      if (address.getZip().toString().length() > 5) {
+        zipSuffix = Short.parseShort(address.getZip().toString().substring(5));
+      }
+      streetAddress = address.getStreetAddress().split(" ");
+      streetNumber = streetAddress[0];
+      streetName = streetAddress[1];
+
+      break;
+    }
+
     Boolean mandatedReporterIndicator = false;
     if (role.equalsIgnoreCase(MANDATED_REPORTER_ROLE)) {
       mandatedReporterIndicator = true;
     }
 
-    // TODO: map the address fields on REPORTER
     Reporter reporter = new Reporter("", "", DEFAULT_CODE, DEFAULT_CODE, false, "", "", "", false,
         ip.getFirstName(), ip.getLastName(), mandatedReporterIndicator, 0, DEFAULT_DECIMAL, "", "",
-        DEFAULT_DECIMAL, 0, DEFAULT_STATE_CODE, "", "", "", "", referralId, "", DEFAULT_CODE,
-        DEFAULT_COUNTY_SPECIFIC_CODE);
+        DEFAULT_DECIMAL, 0, DEFAULT_STATE_CODE, streetName, streetNumber, "", zipCodeString,
+        referralId, "", DEFAULT_CODE, DEFAULT_COUNTY_SPECIFIC_CODE);
 
     return this.reporterService.create(reporter);
 
