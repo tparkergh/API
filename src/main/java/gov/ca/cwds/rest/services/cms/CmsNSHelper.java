@@ -45,7 +45,7 @@ public class CmsNSHelper {
     org.hibernate.Session sessionCMS = cmsSessionFactory.openSession();
     org.hibernate.Session sessionNS = nsSessionFactory.openSession();
     try {
-      ManagedSessionContext.bind(sessionCMS);
+      ManagedSessionContext.bind(sessionCMS); // NOSONAR
       Transaction transactionCMS = sessionCMS.beginTransaction();
       for (CrudsService service : cmsRequests.keySet()) {
         try {
@@ -58,7 +58,7 @@ public class CmsNSHelper {
         }
       }
 
-      ManagedSessionContext.bind(sessionNS);
+      ManagedSessionContext.bind(sessionNS); // NOSONAR
       Transaction transactionNS = sessionNS.beginTransaction();
       for (CrudsService service : nsRequests.keySet()) {
         try {
@@ -80,8 +80,8 @@ public class CmsNSHelper {
     } finally {
       sessionCMS.close();
       sessionNS.close();
-      ManagedSessionContext.unbind(cmsSessionFactory);
-      ManagedSessionContext.unbind(nsSessionFactory);
+      ManagedSessionContext.unbind(cmsSessionFactory); // NOSONAR
+      ManagedSessionContext.unbind(nsSessionFactory); // NOSONAR
 
     }
     response.put("cms", cmsResponse);

@@ -77,34 +77,28 @@ public class ScreeningToReferralService implements CrudsService {
   private AddressService addressService;
   private ClientAddressService clientAddressService;
 
-  private String genderCode;
-  private Boolean lawEnforcementIndicator;
-  private Boolean mandatedReporterIndicator;
-  private int zipCode;
   private Short zipSuffix;
-  private String streetName;
-  private String streetNumber;
 
   // default values
-  private static final short defaultCode = 0;
-  private static final BigDecimal defaultBig = new BigDecimal(0);
-  private static final int defaultInt = 0;
-  private static final String defaultResponsibleAgencyCode = "C";
-  private static final short defaultStateCode = 1828; // california
-  private static final String defaultLimitedAccessCode = "N";
-  private static final short defaultApprovalStatusType = 118;
-  private static final String defaultSensitivityIndicator = "N";
-  private static final short defaultSecondaryLanguageType = 1253; // english
-  private static final String defaultSoc158PlacementCode = "N";
-  private static final String defaultSocialSecurityNumChangedCode = "N";
-  private static final short defaultNameType = 1313;
-  private static final String defaultLiterateCode = "U";
-  private static final String defaultEstimateDobCode = "N";
-  private static final Boolean defaultChildClientIndicator = false;
-  private static final String defaultAdoptionStatusCode = "N";
-  private static final String defaultNonProtectingParentCode = "U";
-  private static final short defaultAddressType = 32; // residence
-  private static String defaultCountySpecificCode = "99";
+  private static final short DEFAULT_CODE = 0;
+  private static final BigDecimal DEFAULT_BIG = new BigDecimal(0);
+  private static final int DEFAULT_INT = 0;
+  private static final String DEFAULT_RESPONSIBLE_AGENCY_CODE = "C";
+  private static final short DEFAULT_STATE_CODE = 1828; // california
+  private static final String DEFAULT_LIMITED_ACCESS_CODE = "N";
+  private static final short DEFAULT_APPROVAL_STATUS_TYPE = 118;
+  private static final String DEFAULT_SENSITIVITY_INDICATOR = "N";
+  private static final short DEFAULT_SECONDARY_LANGUAGE_TYPE = 1253; // english
+  private static final String DEFAULT_SOC158_PLACEMENT_CODE = "N";
+  private static final String DEFAULT_SOCIALSECURITY_NUMBER_CHANGED_CODE = "N";
+  private static final short DEFAULT_NAME_TYPE = 1313;
+  private static final String DEFAULT_LITERATE_CODE = "U";
+  private static final String DEFAULT_ESTIMATE_DOB_CODE = "N";
+  private static final Boolean DEFAULT_CHILD_CLIENT_INDICATOR = false;
+  private static final String DEFAULT_ADOPTION_STATUS_CODE = "N";
+  private static final String DEFAULT_NONPROTECTING_PARENT_CODE = "U";
+  private static final short DEFAULT_ADDRESS_TYPE = 32; // residence
+  private static String DEFAULT_COUNTY_SPECIFIC_CODE = "99";
 
   // TODO: #142337489 Develop List of Value service to support Pi2 Save Referral to CWS/CMS
   private short communicationsMethodCode = 409; // default to telephone until #142337489 complete
@@ -146,8 +140,8 @@ public class ScreeningToReferralService implements CrudsService {
 
   @Override
   public Response create(Request request) {
-    String referralId = "";
-    String clientId = "";
+    String referralId = ""; // NOSONAR
+    String clientId = ""; // NOSONAR
     final Date now = new Date();
 
     String dateStarted = new String(dateFormat.format(now));
@@ -164,12 +158,12 @@ public class ScreeningToReferralService implements CrudsService {
     // for date started and time stared.
     // create a CMS Referral
     Referral referral = new Referral(false, anonymousReporter(screeningToReferral), false, "",
-        defaultApprovalStatusType, false, "", communicationsMethodCode, "", "", "", "", false,
-        false, defaultCode, "", false, defaultLimitedAccessCode, "", screeningToReferral.getName(),
-        "", dateStarted, timeStarted, referralResponseTypeCode, defaultCode, "", "", "",
-        screeningToReferral.getReportNarrative(), "", "", "", "", "", "", "",
-        defaultCountySpecificCode, false, false, false, false, "", defaultResponsibleAgencyCode,
-        defaultCode, "", "", "");
+        DEFAULT_APPROVAL_STATUS_TYPE, false, "", communicationsMethodCode, "", "", "", "", false,
+        false, DEFAULT_CODE, "", false, DEFAULT_LIMITED_ACCESS_CODE, "",
+        screeningToReferral.getName(), "", dateStarted, timeStarted, referralResponseTypeCode,
+        DEFAULT_CODE, "", "", "", screeningToReferral.getReportNarrative(), "", "", "", "", "", "",
+        "", DEFAULT_COUNTY_SPECIFIC_CODE, false, false, false, false, "",
+        DEFAULT_RESPONSIBLE_AGENCY_CODE, DEFAULT_CODE, "", "", "");
     PostedReferral postedReferral = this.referralService.create(referral);
     referralId = postedReferral.getId();
     /*
@@ -186,7 +180,7 @@ public class ScreeningToReferralService implements CrudsService {
     participants = screeningToReferral.getParticipants();
     for (Participant incomingParticipant : participants) {
 
-      genderCode = "";
+      String genderCode = "";
       if (!incomingParticipant.getGender().isEmpty()) {
         genderCode = incomingParticipant.getGender().toUpperCase().substring(0, 1);
       }
@@ -220,26 +214,26 @@ public class ScreeningToReferralService implements CrudsService {
           if (!anonymousReporter(screeningToReferral)) {
 
             // not an anonymous reporter participant - create client
-            Client client = new Client("", false, defaultAdoptionStatusCode, "", "", defaultCode,
-                incomingParticipant.getDateOfBirth(), "", defaultCode, false,
-                defaultChildClientIndicator, "", "", incomingParticipant.getFirstName(),
+            Client client = new Client("", false, DEFAULT_ADOPTION_STATUS_CODE, "", "",
+                DEFAULT_CODE, incomingParticipant.getDateOfBirth(), "", DEFAULT_CODE, false,
+                DEFAULT_CHILD_CLIENT_INDICATOR, "", "", incomingParticipant.getFirstName(),
                 incomingParticipant.getLastName(), "", "", false, dateStarted, false, "", false, "",
-                false, "", "", "", defaultCode, "", defaultEstimateDobCode, "", "", genderCode, "",
-                "", "", defaultCode, defaultCode, "", false, false, defaultLiterateCode, false,
-                defaultCode, "", "", "", defaultNameType, false, false, "", false, defaultCode,
-                defaultCode, defaultCode, defaultSecondaryLanguageType, false,
-                defaultSensitivityIndicator, defaultSoc158PlacementCode, false,
-                defaultSocialSecurityNumChangedCode, incomingParticipant.getSsn(), "", false, false,
-                "", false);
+                false, "", "", "", DEFAULT_CODE, "", DEFAULT_ESTIMATE_DOB_CODE, "", "", genderCode,
+                "", "", "", DEFAULT_CODE, DEFAULT_CODE, "", false, false, DEFAULT_LITERATE_CODE,
+                false, DEFAULT_CODE, "", "", "", DEFAULT_NAME_TYPE, false, false, "", false,
+                DEFAULT_CODE, DEFAULT_CODE, DEFAULT_CODE, DEFAULT_SECONDARY_LANGUAGE_TYPE, false,
+                DEFAULT_SENSITIVITY_INDICATOR, DEFAULT_SOC158_PLACEMENT_CODE, false,
+                DEFAULT_SOCIALSECURITY_NUMBER_CHANGED_CODE, incomingParticipant.getSsn(), "", false,
+                false, "", false);
 
             PostedClient postedClient = this.clientService.create(client);
             postedClients.add(postedClient);
             clientId = postedClient.getId();
 
             // CMS Referral Client
-            ReferralClient referralClient = new ReferralClient("", defaultApprovalStatusType,
-                defaultCode, "", "", role.equalsIgnoreCase(SELF_REPORTED_ROLE), false, referralId,
-                clientId, "", defaultCode, "", defaultCountySpecificCode, false, false, false);
+            ReferralClient referralClient = new ReferralClient("", DEFAULT_APPROVAL_STATUS_TYPE,
+                DEFAULT_CODE, "", "", role.equalsIgnoreCase(SELF_REPORTED_ROLE), false, referralId,
+                clientId, "", DEFAULT_CODE, "", DEFAULT_COUNTY_SPECIFIC_CODE, false, false, false);
             gov.ca.cwds.rest.api.domain.cms.ReferralClient postedReferralClient =
                 this.referralClientService.create(referralClient);
             resultReferralClients.add(postedReferralClient);
@@ -334,12 +328,12 @@ public class ScreeningToReferralService implements CrudsService {
 
     String crossReportId = "";
     Set<gov.ca.cwds.rest.api.domain.cms.CrossReport> resultCrossReports = new LinkedHashSet<>();
-    Set<CrossReport> crossReports = new LinkedHashSet<>();
+    Set<CrossReport> crossReports;
     crossReports = scr.getCrossReports();
 
     for (CrossReport crossReport : crossReports) {
 
-      lawEnforcementIndicator = false;
+      Boolean lawEnforcementIndicator = false;
       if (crossReport.getAgencyType().contains("Law Enforcement")) {
         lawEnforcementIndicator = true;
       }
@@ -347,8 +341,8 @@ public class ScreeningToReferralService implements CrudsService {
 
       gov.ca.cwds.rest.api.domain.cms.CrossReport cmsCrossReport =
           new gov.ca.cwds.rest.api.domain.cms.CrossReport(crossReportId, crossReportMethodCode,
-              false, false, "", "", defaultInt, defaultBig, crossReport.getInformDate(), "", "",
-              referralId, "", "", crossReport.getAgencyName(), "", "", defaultCountySpecificCode,
+              false, false, "", "", DEFAULT_INT, DEFAULT_BIG, crossReport.getInformDate(), "", "",
+              referralId, "", "", crossReport.getAgencyName(), "", "", DEFAULT_COUNTY_SPECIFIC_CODE,
               lawEnforcementIndicator, false, false);
       gov.ca.cwds.rest.api.domain.cms.CrossReport postedCrossReport =
           this.crossReportService.create(cmsCrossReport);
@@ -366,7 +360,7 @@ public class ScreeningToReferralService implements CrudsService {
 
     // TODO: #143616481 create CMS CHILD_CLIENT for the victim
     Set<PostedAllegation> postedAllegations = new LinkedHashSet<>();
-    Set<Allegation> allegations = new LinkedHashSet<>();
+    Set<Allegation> allegations;
     String victimClientId = "";
     String perpatratorClientId = "";
 
@@ -385,10 +379,10 @@ public class ScreeningToReferralService implements CrudsService {
 
       // create an allegation in CMS legacy database
       gov.ca.cwds.rest.api.domain.cms.Allegation cmsAllegation =
-          new gov.ca.cwds.rest.api.domain.cms.Allegation("", defaultCode, "", scr.getLocationType(),
-              "", defaultCode, allegationTypeCode, scr.getReportNarrative(), "", false,
-              defaultNonProtectingParentCode, false, victimClientId, perpatratorClientId,
-              referralId, defaultCountySpecificCode, false, defaultCode);
+          new gov.ca.cwds.rest.api.domain.cms.Allegation("", DEFAULT_CODE, "",
+              scr.getLocationType(), "", DEFAULT_CODE, allegationTypeCode, scr.getReportNarrative(),
+              "", false, DEFAULT_NONPROTECTING_PARENT_CODE, false, victimClientId,
+              perpatratorClientId, referralId, DEFAULT_COUNTY_SPECIFIC_CODE, false, DEFAULT_CODE);
       PostedAllegation postedAllegation = this.allegationService.create(cmsAllegation);
       postedAllegations.add(postedAllegation);
 
@@ -407,22 +401,22 @@ public class ScreeningToReferralService implements CrudsService {
 
     for (gov.ca.cwds.rest.api.domain.Address address : addresses) {
 
-      String addressId = "";
+      String addressId = ""; // NOSONAR
 
       // TODO: address parsing - requires standardizing in seperate class
-      zipCode = address.getZip();
+      int zipCode = address.getZip();
       zipSuffix = null;
       if (address.getZip().toString().length() > 5) {
         zipSuffix = Short.parseShort(address.getZip().toString().substring(5));
       }
       String[] streetAddress = address.getStreetAddress().split(" ");
-      streetNumber = streetAddress[0];
-      streetName = streetAddress[1];
+      String streetNumber = streetAddress[0];
+      String streetName = streetAddress[1];
 
-      Address domainAddress =
-          new Address("", address.getCity(), defaultBig, defaultInt, false, defaultCode, defaultBig,
-              defaultInt, address.getType(), defaultBig, defaultInt, defaultStateCode, streetName,
-              streetNumber, zipCode, "", zipSuffix, "", "", defaultCode, defaultCode, "");
+      Address domainAddress = new Address("", address.getCity(), DEFAULT_BIG, DEFAULT_INT, false,
+          DEFAULT_CODE, DEFAULT_BIG, DEFAULT_INT, address.getType(), DEFAULT_BIG, DEFAULT_INT,
+          DEFAULT_STATE_CODE, streetName, streetNumber, zipCode, "", zipSuffix, "", "",
+          DEFAULT_CODE, DEFAULT_CODE, "");
 
       PostedAddress postedAddress = (PostedAddress) this.addressService.create(domainAddress);
       addressId = postedAddress.getExistingAddressId();
@@ -440,7 +434,7 @@ public class ScreeningToReferralService implements CrudsService {
       }
 
       ClientAddress clientAddress =
-          new ClientAddress(defaultAddressType, "", "", "", addressId, clientId, "", referralId);
+          new ClientAddress(DEFAULT_ADDRESS_TYPE, "", "", "", addressId, clientId, "", referralId);
       ClientAddress postedClientAddress =
           (ClientAddress) this.clientAddressService.create(clientAddress);
     }
@@ -451,16 +445,16 @@ public class ScreeningToReferralService implements CrudsService {
   private PostedReporter processReporter(Participant ip, String role, String referralId)
       throws Exception {
 
-    mandatedReporterIndicator = false;
+    Boolean mandatedReporterIndicator = false;
     if (role.equalsIgnoreCase(MANDATED_REPORTER_ROLE)) {
       mandatedReporterIndicator = true;
     }
 
     // TODO: map the address fields on REPORTER
-    Reporter reporter = new Reporter("", "", defaultCode, defaultCode, false, "", "", "", false,
-        ip.getFirstName(), ip.getLastName(), mandatedReporterIndicator, 0, defaultBig, "", "",
-        defaultBig, 0, defaultStateCode, "", "", "", "", referralId, "", defaultCode,
-        defaultCountySpecificCode);
+    Reporter reporter = new Reporter("", "", DEFAULT_CODE, DEFAULT_CODE, false, "", "", "", false,
+        ip.getFirstName(), ip.getLastName(), mandatedReporterIndicator, 0, DEFAULT_BIG, "", "",
+        DEFAULT_BIG, 0, DEFAULT_STATE_CODE, "", "", "", "", referralId, "", DEFAULT_CODE,
+        DEFAULT_COUNTY_SPECIFIC_CODE);
 
     PostedReporter postedreporter = this.reporterService.create(reporter);
     return postedreporter;
