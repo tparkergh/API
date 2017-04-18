@@ -1,7 +1,5 @@
 package gov.ca.cwds.rest.services.cms;
 
-import static org.mockito.Mockito.mock;
-
 import java.io.Serializable;
 
 import javax.persistence.EntityExistsException;
@@ -27,6 +25,7 @@ public class ClientUcService implements CrudsService {
   private static final Logger LOGGER = LoggerFactory.getLogger(ClientUcService.class);
 
   private ClientUcDao clientucDao;
+  private gov.ca.cwds.rest.api.domain.cms.ClientUc mockDomain;
 
   /**
    * Constructor
@@ -79,9 +78,6 @@ public class ClientUcService implements CrudsService {
   @Override
   public gov.ca.cwds.rest.api.domain.cms.ClientUc create(Request request) {
     assert request instanceof gov.ca.cwds.rest.api.domain.cms.ClientUc;
-
-    gov.ca.cwds.rest.api.domain.cms.ClientUc mockDomain =
-        mock(gov.ca.cwds.rest.api.domain.cms.ClientUc.class);
 
     gov.ca.cwds.rest.api.domain.cms.ClientUc clientUc =
         (gov.ca.cwds.rest.api.domain.cms.ClientUc) request;
