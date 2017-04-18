@@ -364,7 +364,6 @@ public class ScreeningToReferralService implements CrudsService {
   private Set<PostedAllegation> processAllegations(ScreeningToReferral scr, String referralId)
       throws Exception {
 
-
     // TODO: #143616481 create CMS CHILD_CLIENT for the victim
     Set<PostedAllegation> postedAllegations = new LinkedHashSet<>();
     Set<Allegation> allegations = new LinkedHashSet<>();

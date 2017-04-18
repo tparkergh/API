@@ -68,6 +68,7 @@ public class ScreeningToReferralTest {
     ScreeningToReferral validScreeningToReferral = validScreeningToReferral();
     when(mockedScreeningToReferralResource.create(eq(validScreeningToReferral)))
         .thenReturn(Response.status(Response.Status.NO_CONTENT).entity(null).build());
+    MAPPER.configure(SerializationFeature.INDENT_OUTPUT, true);
   }
 
   /*
@@ -85,16 +86,16 @@ public class ScreeningToReferralTest {
     allegations.add(allegation);
 
 
-    String expected = MAPPER.writeValueAsString(new ScreeningToReferral(id, "I have great reasons",
-        "2016-08-03T01:00:00.000Z", "sacramento", "2016-08-02", "Foster Home", "Phone",
-        "The Rocky Horror Show", "Narrative 123 test", "123ABC", "immediate",
-        "2016-08-03T01:00:00.000Z", "Michael Bastow", "", address, "Response time", "Detail",
-        participants, crossReports, allegations));
+    String expected = MAPPER.writeValueAsString(
+        new ScreeningToReferral(id, "2016-08-03T01:00:00.000Z", "sacramento", "2016-08-02",
+            "Foster Home", "Phone", "The Rocky Horror Show", "Narrative 123 test", "123ABC",
+            "immediate", "2016-08-03T01:00:00.000Z", "Michael Bastow", "addtional information",
+            "Response time", "Detail", address, participants, crossReports, allegations));
 
     String serialized = MAPPER.writeValueAsString(MAPPER.readValue(
         fixture("fixtures/domain/ScreeningToReferral/valid/validScreeningToReferral.json"),
         ScreeningToReferral.class));
-
+    // System.out.println(serialized);
     assertThat(serialized, is(expected));
   }
 
@@ -109,11 +110,11 @@ public class ScreeningToReferralTest {
     Allegation allegation = validAllegation();
     allegations.add(allegation);
 
-    ScreeningToReferral expected = new ScreeningToReferral(id, "I have great reasons",
-        "2016-08-03T01:00:00.000Z", "sacramento", "2016-08-02", "Foster Home", "Phone",
-        "The Rocky Horror Show", "Narrative 123 test", "123ABC", "immediate",
-        "2016-08-03T01:00:00.000Z", "Michael Bastow", "", address, "Response time", "Detail",
-        participants, crossReports, allegations);
+    ScreeningToReferral expected =
+        new ScreeningToReferral(id, "2016-08-03T01:00:00.000Z", "sacramento", "2016-08-02",
+            "Foster Home", "Phone", "The Rocky Horror Show", "Narrative 123 test", "123ABC",
+            "immediate", "2016-08-03T01:00:00.000Z", "Michael Bastow", "addtional information",
+            "Response time", "Detail", address, participants, crossReports, allegations);
 
 
     ScreeningToReferral serialized = MAPPER.readValue(
@@ -129,6 +130,11 @@ public class ScreeningToReferralTest {
     ScreeningToReferral toCreate = MAPPER.readValue(
         fixture("fixtures/domain/ScreeningToReferral/valid/validDomainScreeningToReferral.json"),
         ScreeningToReferral.class);
+    // String str = MAPPER.writeValueAsString(MAPPER.readValue(
+    // fixture("fixtures/domain/ScreeningToReferral/valid/validDomainScreeningToReferral.json"),
+    // ScreeningToReferral.class));
+    // System.out.println(str);
+
     Response response =
         resources.client().target(ROOT_RESOURCE).request().accept(MediaType.APPLICATION_JSON)
             .post(Entity.entity(toCreate, MediaType.APPLICATION_JSON));

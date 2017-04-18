@@ -78,9 +78,11 @@ public class ScreeningToReferralServiceTest {
   private AddressDao addressDao;
   private ClientAddressDao clientAddressDao;
 
+  @SuppressWarnings("javadoc")
   @Rule
   public ExpectedException thrown = ExpectedException.none();
 
+  @SuppressWarnings("javadoc")
   @Before
   public void setup() throws Exception {
 
@@ -291,19 +293,13 @@ public class ScreeningToReferralServiceTest {
     when(clientAddressDao.create(any(gov.ca.cwds.data.persistence.cms.ClientAddress.class)))
         .thenReturn(clientAddressToCreate);
 
-
     ScreeningToReferral screeningToReferral = MAPPER.readValue(
         fixture("fixtures/domain/ScreeningToReferral/valid/valid.json"), ScreeningToReferral.class);
 
     Response response = screeningToReferralService.create(screeningToReferral);
-    // MAPPER.configure(SerializationFeature.INDENT_OUTPUT, true);
-    //
-    // final String cmsReferralString = MAPPER.writeValueAsString(response);
-    // System.out.println(cmsReferralString);
 
     assertThat(response.getClass(), is(PostedCmsReferral.class));
   }
-
 
   @SuppressWarnings("javadoc")
   @Test
@@ -379,10 +375,6 @@ public class ScreeningToReferralServiceTest {
         ScreeningToReferral.class);
 
     Response response = screeningToReferralService.create(screeningToReferral);
-    // MAPPER.configure(SerializationFeature.INDENT_OUTPUT, true);
-
-    // final String cmsReferralString = MAPPER.writeValueAsString(response);
-    // System.out.println(cmsReferralString);
 
     assertThat(response.getClass(), is(PostedCmsReferral.class));
   }
@@ -461,12 +453,6 @@ public class ScreeningToReferralServiceTest {
         ScreeningToReferral.class);
 
     Response response = screeningToReferralService.create(screeningToReferral);
-
-    // System.out.println("status " + response.toString());
-    // MAPPER.configure(SerializationFeature.INDENT_OUTPUT, true);
-
-    // final String cmsReferralString = MAPPER.writeValueAsString(response);
-    // System.out.println(cmsReferralString);
 
     assertThat(response.getClass(), is(PostedCmsReferral.class));
   }
@@ -717,8 +703,6 @@ public class ScreeningToReferralServiceTest {
       assertThat(response.getClass(), is(PostedCmsReferral.class));
     } catch (Exception e) {
       System.out.println("error = " + e.getMessage());
-      assertThat(e.getClass().equals(ServiceException.class));
-      // assertThat(e.getMessage().equals("ERROR - only one Reporter per Referral allowed"));
     }
   }
 }

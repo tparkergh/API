@@ -1,6 +1,5 @@
 {
    "id":"2",
-   "decision_rationale":"I have great reasons",
    "ended_at":"2016-08-03T01:00:00.000Z",
    "incident_county":"sacramento",
    "incident_date":"2016-08-02",
@@ -12,7 +11,9 @@
    "response_time":"immediate",
    "started_at":"2016-08-03T01:00:00.000Z",
    "assignee":"Michael Bastow",
-   "additional_info_included":"",
+   "additional_information" : "addtional information",
+   "screening_decision":"Response time",
+   "screening_decision_detail":"Detail",
    "address":{
 	  "street_address": "123 Main",
 	  "city": "Sacramento",
@@ -20,8 +21,6 @@
 	  "zip": 95757,
 	  "type": "Home"
   },
-   "screening_decision":"Response time",
-   "screening_decision_detail":"Detail",
    "participants":[
 	{
 	  "id" : "5432",
@@ -68,7 +67,7 @@
 	  	]
 	},
 	{
-	  "id" : "1234",
+	  "id" : "2345",
 	  "first_name": "Maggie",
 	  "last_name": "Simpson",
 	  "gender": "male",
@@ -100,7 +99,7 @@
    "allegations":[
       {
          "victim_person_id":"5432",
-         "perpetrator_person_id":"2",
+         "perpetrator_person_id":"2345",
          "type":"physical abuse",
          "county":"Sacramento"
       }
