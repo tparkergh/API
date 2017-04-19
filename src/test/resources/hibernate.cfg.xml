@@ -38,6 +38,7 @@
 		<mapping class="gov.ca.cwds.data.persistence.cms.CmsDocumentBlobSegment"/>
 		<mapping class="gov.ca.cwds.data.persistence.cms.LongText"/>
 		<mapping class="gov.ca.cwds.data.persistence.cms.AllegationPerpetratorHistory"/>
+		<mapping class="gov.ca.cwds.data.persistence.cms.ClientUc"/>
  		
 	</session-factory>
 </hibernate-configuration>
