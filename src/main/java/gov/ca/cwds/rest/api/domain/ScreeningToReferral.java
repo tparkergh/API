@@ -142,7 +142,6 @@ public class ScreeningToReferral extends DomainObject implements Request {
   @SuppressWarnings("javadoc")
   public ScreeningToReferral() {
     super();
-
   }
 
   /**
