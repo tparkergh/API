@@ -6,6 +6,9 @@ import javax.validation.constraints.Size;
 import org.hibernate.validator.constraints.NotBlank;
 import org.hibernate.validator.constraints.NotEmpty;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import gov.ca.cwds.rest.api.Request;
 import gov.ca.cwds.rest.api.Response;
 import gov.ca.cwds.rest.api.domain.DomainObject;
@@ -43,17 +46,17 @@ public class ClientUc extends DomainObject implements Request, Response {
   @NotBlank
   @Size(min = 1, max = 20)
   @ApiModelProperty(required = true, readOnly = false, value = "first name of Client",
-      example = "first name")
+      example = "BORIS")
   private String commonFirstName;
 
   @NotBlank
   @Size(min = 1, max = 25)
-  @ApiModelProperty(required = true, readOnly = false, value = "", example = "last name")
+  @ApiModelProperty(required = true, readOnly = false, value = "", example = "MACKAY")
   private String commonLastName;
 
   @NotNull
   @Size(max = 20)
-  @ApiModelProperty(required = false, readOnly = false, value = "", example = "middle name")
+  @ApiModelProperty(required = false, readOnly = false, value = "", example = "HOWARD")
   private String commonMiddleName;
 
 
@@ -65,9 +68,13 @@ public class ClientUc extends DomainObject implements Request, Response {
    * @param commonLastName The common last name
    * @param commonMiddleName The common middle name
    */
-  public ClientUc(String pktableId,
-      @OneOf(value = {"C", "N"}, ignoreCase = true, ignoreWhitespace = true) String sourceTableCode,
-      String commonFirstName, String commonLastName, String commonMiddleName) {
+  @JsonCreator
+  public ClientUc(@JsonProperty("pktableId") String pktableId,
+      @JsonProperty("sourceTableCode") @OneOf(value = {"C", "N"}, ignoreCase = true,
+          ignoreWhitespace = true) String sourceTableCode,
+      @JsonProperty("commonFirstName") String commonFirstName,
+      @JsonProperty("commonLastName") String commonLastName,
+      @JsonProperty("commonMiddleName") String commonMiddleName) {
     super();
     this.pktableId = pktableId;
     this.sourceTableCode = sourceTableCode;
