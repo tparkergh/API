@@ -248,6 +248,19 @@ public class ScreeningToReferralTest {
     assertThat(response.getStatus(), is(equalTo(422)));
   }
 
+  @Test
+  public void testParticipantSsnTooLongFail() throws Exception {
+    ScreeningToReferral toCreate = MAPPER.readValue(
+        fixture("fixtures/domain/ScreeningToReferral/invalid/participantWithSsnTooLong.json"),
+        ScreeningToReferral.class);
+    Response response =
+        resources.client().target(ROOT_RESOURCE).request().accept(MediaType.APPLICATION_JSON)
+            .post(Entity.entity(toCreate, MediaType.APPLICATION_JSON));
+    // System.out.println(response.readEntity(String.class));
+    assertThat(response.getStatus(), is(equalTo(422)));
+
+  }
+
   private ScreeningToReferral validScreeningToReferral() {
     ScreeningToReferral str = null;
     try {

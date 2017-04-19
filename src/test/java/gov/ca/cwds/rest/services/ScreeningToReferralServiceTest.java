@@ -303,7 +303,7 @@ public class ScreeningToReferralServiceTest {
 
   @SuppressWarnings("javadoc")
   @Test
-  public void testScreeningToReferralParticipantWithBlankRoles() throws Exception {
+  public void testScreeningToReferralParticipantWithBlankRolesSuccess() throws Exception {
     Referral referralDomain = MAPPER.readValue(
         fixture("fixtures/domain/ScreeningToReferral/valid/validReferral.json"), Referral.class);
     gov.ca.cwds.data.persistence.cms.Referral referralToCreate =
@@ -790,8 +790,7 @@ public class ScreeningToReferralServiceTest {
       this.screeningToReferralService.create(screeningToReferral);
       Assert.fail("Expected ServiceException was not thrown");
     } catch (Exception e) {
-      assertThat(e.getMessage().concat("Unparseable date"), is(equalTo(
-          "ERROR - parsing Start Date/Time Unparseable date: \"08/2016/03T01:00:00.000Z\"Unparseable date")));
+      assertThat(e.getMessage().contains("Unparseable date"), is(equalTo(true)));
     }
   }
 
@@ -870,17 +869,17 @@ public class ScreeningToReferralServiceTest {
         ScreeningToReferral.class);
 
     try {
-      Response response = screeningToReferralService.create(screeningToReferral);
+      this.screeningToReferralService.create(screeningToReferral);
       Assert.fail("Expected ServiceException was not thrown");
     } catch (Exception e) {
-      assertThat(e.getMessage().concat("processing Address associated with the Referral"));
-      // System.out.println(e.getMessage());
+      assertThat(e.getMessage().contains("processing Address associated with the Referral"),
+          is(equalTo(true)));
     }
   }
 
   @SuppressWarnings("javadoc")
   @Test
-  public void testEmptyAddressOnScreeningSuccess() throws Exception {
+  public void testEmptyAddressOnScreeningFail() throws Exception {
     Referral referralDomain = MAPPER.readValue(
         fixture("fixtures/domain/ScreeningToReferral/valid/validReferral.json"), Referral.class);
     gov.ca.cwds.data.persistence.cms.Referral referralToCreate =
@@ -949,15 +948,15 @@ public class ScreeningToReferralServiceTest {
         .thenReturn(clientAddressToCreate);
 
     ScreeningToReferral screeningToReferral = MAPPER.readValue(
-        fixture("fixtures/domain/ScreeningToReferral/valid/validEmptyAddressOnScreening.json"),
+        fixture("fixtures/domain/ScreeningToReferral/invalid/emptyAddressOnScreening.json"),
         ScreeningToReferral.class);
 
     try {
-      Response response = screeningToReferralService.create(screeningToReferral);
+      this.screeningToReferralService.create(screeningToReferral);
       Assert.fail("Expected ServiceException was not thrown");
     } catch (Exception e) {
-      assertThat(e.getMessage().concat("processing Address associated with the Referral"));
-      // System.out.println(e.getMessage());
+      assertThat(e.getMessage().contains("processing Address associated with the Referral"),
+          is(equalTo(true)));
     }
   }
 }
