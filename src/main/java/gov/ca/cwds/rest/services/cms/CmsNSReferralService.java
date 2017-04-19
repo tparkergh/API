@@ -1,5 +1,16 @@
 package gov.ca.cwds.rest.services.cms;
 
+import java.io.Serializable;
+import java.util.HashMap;
+import java.util.Map;
+
+import org.apache.commons.lang3.NotImplementedException;
+import org.hibernate.SessionFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import com.google.inject.Inject;
+
 import gov.ca.cwds.inject.CmsSessionFactory;
 import gov.ca.cwds.inject.NsSessionFactory;
 import gov.ca.cwds.rest.api.Request;
@@ -11,17 +22,6 @@ import gov.ca.cwds.rest.api.domain.cms.PostedCmsNSReferral;
 import gov.ca.cwds.rest.api.domain.cms.PostedReferral;
 import gov.ca.cwds.rest.services.CrudsService;
 import gov.ca.cwds.rest.services.PersonService;
-
-import java.io.Serializable;
-import java.util.HashMap;
-import java.util.Map;
-
-import org.apache.commons.lang3.NotImplementedException;
-import org.hibernate.SessionFactory;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import com.google.inject.Inject;
 
 /**
  * @author CWDS API Team
@@ -73,8 +73,8 @@ public class CmsNSReferralService implements CrudsService {
 
     CmsNSHelper helper = new CmsNSHelper(cmsSessionFactory, nsSessionFactory);
 
-    Map<CrudsService, Request> cmsRequest = new HashMap<CrudsService, Request>();
-    Map<CrudsService, Request> nsRequest = new HashMap<CrudsService, Request>();
+    Map<CrudsService, Request> cmsRequest = new HashMap<>();
+    Map<CrudsService, Request> nsRequest = new HashMap<>();
 
     cmsRequest.put(referralService, cmsReferral.getReferral());
     nsRequest.put(personService, cmsReferral.getPerson());
