@@ -169,7 +169,7 @@ public class ScreeningToReferralService implements CrudsService {
     } catch (Exception e1) {
       LOGGER.error("ERROR - processing Address associated with the Referral ", e1.getMessage());
       throw new ServiceException(
-          "ERROR - processing Address associated with the Referral " + e1.getMessage());
+          "ERROR - processing Address associated with the Referral " + e1.getMessage(), e1);
     }
 
     // create a CMS Referral
