@@ -43,7 +43,6 @@ public class ClientUc extends CmsPersistentObject {
   @Column(name = "COM_MID_NM")
   private String commonMiddleName;
 
-
   /**
    * Default constructor
    * 
@@ -78,7 +77,6 @@ public class ClientUc extends CmsPersistentObject {
     super(lastUpdateId);
 
     try {
-
       this.pktableId = clientUc.getPktableId();
       this.sourceTableCode = clientUc.getSourceTableCode();
       this.commonFirstName = clientUc.getCommonFirstName();
