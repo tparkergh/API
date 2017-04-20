@@ -1,14 +1,14 @@
 package gov.ca.cwds.rest.api.domain;
 
-import gov.ca.cwds.rest.api.Request;
-import gov.ca.cwds.rest.validation.Date;
-import io.dropwizard.jackson.JsonSnakeCase;
-import io.swagger.annotations.ApiModelProperty;
-
 import javax.validation.constraints.Size;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
+
+import gov.ca.cwds.rest.api.Request;
+import gov.ca.cwds.rest.validation.Date;
+import io.dropwizard.jackson.JsonSnakeCase;
+import io.swagger.annotations.ApiModelProperty;
 
 /**
  * {@link DomainObject} representing a screening
@@ -17,6 +17,11 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  */
 @JsonSnakeCase
 public class Screening extends DomainObject implements Request {
+  /**
+   * Serialization version
+   */
+  private static final long serialVersionUID = 1L;
+
   @JsonProperty("reference")
   @ApiModelProperty(example = "WXTSKD")
   @Size(max = 50)

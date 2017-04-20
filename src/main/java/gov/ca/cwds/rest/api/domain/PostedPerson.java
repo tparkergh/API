@@ -12,7 +12,10 @@ import gov.ca.cwds.rest.api.Response;
  * @author CWDS API Team
  */
 public class PostedPerson extends Person {
-
+  /**
+   * Serialization version
+   */
+  private static final long serialVersionUID = 1L;
   @JsonProperty("id")
   private long id;
 

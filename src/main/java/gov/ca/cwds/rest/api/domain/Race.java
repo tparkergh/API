@@ -2,6 +2,9 @@ package gov.ca.cwds.rest.api.domain;
 
 import javax.validation.constraints.Size;
 
+import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
+
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import gov.ca.cwds.rest.api.Request;
@@ -18,7 +21,7 @@ import io.swagger.annotations.ApiModelProperty;
 public class Race extends DomainObject implements Request, Response {
 
   /**
-   * Base serialization value. Increment by version
+   * Serialization version
    */
   private static final long serialVersionUID = 1L;
 
@@ -80,52 +83,24 @@ public class Race extends DomainObject implements Request, Response {
     this.subrace = subrace;
   }
 
-  /*
-   * (non-Javadoc)
-   * 
+  /**
+   * {@inheritDoc}
+   *
    * @see java.lang.Object#hashCode()
    */
   @Override
   public final int hashCode() {
-    final int prime = 31;
-    int result = 1;
-    result = prime * result + ((race == null) ? 0 : race.hashCode());
-    result = prime * result + ((subrace == null) ? 0 : subrace.hashCode());
-    return result;
+    return HashCodeBuilder.reflectionHashCode(this, false);
   }
 
-  /*
-   * (non-Javadoc)
-   * 
+  /**
+   * {@inheritDoc}
+   *
    * @see java.lang.Object#equals(java.lang.Object)
    */
   @Override
   public final boolean equals(Object obj) {
-    if (this == obj) {
-      return true;
-    }
-    if (obj == null) {
-      return false;
-    }
-    if (!(getClass().isInstance(obj))) {
-      return false;
-    }
-    Race other = (Race) obj;
-    if (race == null) {
-      if (other.race != null) {
-        return false;
-      }
-    } else if (!race.equals(other.race)) {
-      return false;
-    }
-    if (subrace == null) {
-      if (other.subrace != null) {
-        return false;
-      }
-    } else if (!subrace.equals(other.subrace)) {
-      return false;
-    }
-    return true;
+    return EqualsBuilder.reflectionEquals(this, obj, false);
   }
 
 }

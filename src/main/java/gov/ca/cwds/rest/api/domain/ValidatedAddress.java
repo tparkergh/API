@@ -1,14 +1,14 @@
 package gov.ca.cwds.rest.api.domain;
 
-import gov.ca.cwds.rest.api.Request;
-import gov.ca.cwds.rest.api.Response;
-import io.dropwizard.jackson.JsonSnakeCase;
-import io.swagger.annotations.ApiModelProperty;
-
 import javax.validation.constraints.Size;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
+
+import gov.ca.cwds.rest.api.Request;
+import gov.ca.cwds.rest.api.Response;
+import io.dropwizard.jackson.JsonSnakeCase;
+import io.swagger.annotations.ApiModelProperty;
 
 /**
  * {@link DomainObject} representing an address that is validated or standardized via SmartyStreets
@@ -17,6 +17,10 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  */
 @JsonSnakeCase
 public class ValidatedAddress extends DomainObject implements Request, Response {
+  /**
+   * Serialization version
+   */
+  private static final long serialVersionUID = 1L;
 
   @JsonProperty("zip")
   @ApiModelProperty(example = "95827")

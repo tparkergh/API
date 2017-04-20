@@ -1,10 +1,10 @@
 package gov.ca.cwds.rest.api.domain;
 
-import gov.ca.cwds.rest.api.Request;
-import io.dropwizard.jackson.JsonSnakeCase;
-
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
+
+import gov.ca.cwds.rest.api.Request;
+import io.dropwizard.jackson.JsonSnakeCase;
 
 /**
  * {@link DomainObject} representing a screening request.
@@ -16,7 +16,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 public class ScreeningRequest extends Screening implements Request {
 
   /**
-   * Default
+   * Serialization version
    */
   private static final long serialVersionUID = 1L;
 
@@ -50,8 +50,8 @@ public class ScreeningRequest extends Screening implements Request {
       @JsonProperty("screening_decision") String screeningDecision,
       @JsonProperty("started_at") String startedAt, @JsonProperty("narrative") String narrative,
       @JsonProperty("address") Address address) {
-    super(reference, endedAt, incidentCounty, incidentDate, locationType, communicationMethod,
-        name, responseTime, screeningDecision, startedAt, narrative);
+    super(reference, endedAt, incidentCounty, incidentDate, locationType, communicationMethod, name,
+        responseTime, screeningDecision, startedAt, narrative);
     this.address = address;
   }
 
