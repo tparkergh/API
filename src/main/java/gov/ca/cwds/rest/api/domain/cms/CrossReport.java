@@ -31,6 +31,7 @@ public class CrossReport extends DomainObject implements Request, Response {
    */
   private static final long serialVersionUID = 1L;
 
+  // TODO: remove the unique key from the domain class
   @NotNull
   @Size(min = 10, max = 10)
   @ApiModelProperty(required = true, readOnly = true, value = "", example = "1234ABC123")
@@ -55,9 +56,10 @@ public class CrossReport extends DomainObject implements Request, Response {
   @ApiModelProperty(required = false, readOnly = false, example = "16:41:49")
   private String informTime;
 
-  @NotEmpty
-  @Size(min = 1, max = 6)
-  @ApiModelProperty(required = true, readOnly = false, value = "", example = "ABC123")
+  @NotNull
+  @Size(max = 6)
+  @ApiModelProperty(required = false, readOnly = false, value = "Recipent badge number",
+      example = "ABC123")
   private String recipientBadgeNumber;
 
   @NotNull
@@ -75,25 +77,30 @@ public class CrossReport extends DomainObject implements Request, Response {
   @ApiModelProperty(required = true, readOnly = false, value = "yyyy-MM-dd", example = "2000-01-01")
   private String informDate;
 
-  @NotEmpty
-  @Size(min = 1, max = 30)
-  @ApiModelProperty(required = true, readOnly = false, value = "", example = "title")
+  @NotNull
+  @Size(max = 30)
+  @ApiModelProperty(required = true, readOnly = false, value = "Recipient position title",
+      example = "title")
   private String recipientPositionTitleDesc;
 
-  @NotEmpty
-  @Size(min = 1, max = 10)
-  @ApiModelProperty(required = true, readOnly = false, value = "", example = "ABC123")
+  @NotNull
+  @Size(max = 10)
+  @ApiModelProperty(required = true, readOnly = false, value = "Referrence number",
+      example = "ABC123")
   private String referenceNumber;
 
   @NotNull
   @Size(min = 10, max = 10)
-  @ApiModelProperty(required = true, readOnly = true, value = "", example = "ABC1234567")
+  @ApiModelProperty(required = true, readOnly = true, value = "Referral IDENTIFIER",
+      example = "ABC1234567")
   private String referralId;
 
   @Size(max = 10)
-  @ApiModelProperty(required = false, readOnly = true, value = "", example = "ABC1234567")
+  @ApiModelProperty(required = false, readOnly = true, value = "Law enforcement ID",
+      example = "ABC1234567")
   private String lawEnforcementId;
 
+  // TODO: remove the unique key from the domain class
   @NotEmpty
   @Size(min = 3, max = 3)
   @ApiModelProperty(required = true, readOnly = false, value = "", example = "ABC")
@@ -104,14 +111,15 @@ public class CrossReport extends DomainObject implements Request, Response {
   @ApiModelProperty(required = false, readOnly = false, value = "", example = "ABC123")
   private String description;
 
-  @NotEmpty
-  @Size(min = 1, max = 40)
+  @NotNull
+  @Size(max = 40)
   @ApiModelProperty(required = false, readOnly = false, value = "", example = "recipient name")
   private String recipientName;
 
-  @NotEmpty
-  @Size(min = 1, max = 254)
-  @ApiModelProperty(required = true, readOnly = false, value = "", example = "law address")
+  @NotNull
+  @Size(max = 254)
+  @ApiModelProperty(required = true, readOnly = false,
+      value = "out of state law enforcement address", example = "law address")
   private String outStateLawEnforcementAddr;
 
   @NotEmpty

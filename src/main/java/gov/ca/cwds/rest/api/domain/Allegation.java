@@ -1,5 +1,7 @@
 package gov.ca.cwds.rest.api.domain;
 
+import javax.validation.constraints.Size;
+
 import org.hibernate.validator.constraints.NotEmpty;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -35,6 +37,7 @@ public class Allegation extends DomainObject implements Request, Response {
   @JsonProperty("type")
   @ApiModelProperty(required = true, value = "type of allegation", example = "mental abuse")
   @NotEmpty
+  @Size(max = 75)
   private String type;
 
   @JsonProperty("county")

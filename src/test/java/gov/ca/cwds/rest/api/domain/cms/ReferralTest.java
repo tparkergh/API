@@ -509,7 +509,7 @@ public class ReferralTest {
             .post(Entity.entity(toCreate, MediaType.APPLICATION_JSON));
     assertThat(response.getStatus(), is(equalTo(422)));
     assertThat(
-        response.readEntity(String.class).indexOf("approvalNumber size must be between 10 and 10"),
+        response.readEntity(String.class).indexOf("approvalNumber size must be between 0 and 10"),
         is(greaterThanOrEqualTo(0)));
   }
 

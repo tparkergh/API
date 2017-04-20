@@ -12,6 +12,7 @@ import gov.ca.cwds.rest.api.Request;
 import gov.ca.cwds.rest.api.Response;
 import gov.ca.cwds.rest.validation.Date;
 import io.dropwizard.jackson.JsonSnakeCase;
+import io.dropwizard.validation.OneOf;
 import io.swagger.annotations.ApiModelProperty;
 
 /**
@@ -34,14 +35,16 @@ public class Participant extends DomainObject implements Request, Response {
   @ApiModelProperty(required = false, readOnly = false, value = "Last name", example = "Smith")
   private String lastName;
 
+  @OneOf(value = {"M", "Male", "F", "Female", "O", "Other"}, ignoreCase = true,
+      ignoreWhitespace = true)
   @JsonProperty("gender")
   @ApiModelProperty(required = false, readOnly = false, value = "Gender", example = "Male",
-      allowableValues = "M, Male, F, Female")
+      allowableValues = "M, Male, F, Female, O, Other")
   private String gender;
 
   @JsonProperty("ssn")
-  @Size(min = 9, max = 9)
-  @ApiModelProperty(required = true, readOnly = false, value = "Social Security Number",
+  @Size(max = 9)
+  @ApiModelProperty(required = false, readOnly = false, value = "Social Security Number",
       example = "111223333")
   private String ssn;
 

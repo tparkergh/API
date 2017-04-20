@@ -53,8 +53,7 @@ public class Reporter extends DomainObject implements Request, Response {
 
   @NotNull
   @Size(max = 20, message = "size must be less than or equal to 20")
-  @ApiModelProperty(required = false, readOnly = false, value = "required if streetName provided",
-      example = "San Jose")
+  @ApiModelProperty(required = false, readOnly = false, value = "City name", example = "San Jose")
   private String cityName;
 
   @SystemCodeSerializer(logical = true, description = true)
@@ -94,12 +93,12 @@ public class Reporter extends DomainObject implements Request, Response {
 
   @NotEmpty
   @Size(min = 1, max = 20)
-  @ApiModelProperty(required = false, readOnly = false, value = "", example = "George")
+  @ApiModelProperty(required = false, readOnly = false, value = "First name", example = "George")
   private String firstName;
 
   @NotEmpty
   @Size(min = 1, max = 25)
-  @ApiModelProperty(required = false, readOnly = false, value = "", example = "Jones")
+  @ApiModelProperty(required = false, readOnly = false, value = "Last name", example = "Jones")
   private String lastName;
 
   @NotNull
@@ -114,14 +113,14 @@ public class Reporter extends DomainObject implements Request, Response {
   @ApiModelProperty(required = false, readOnly = false, example = "1234678")
   private BigDecimal messagePhoneNumber;
 
-  @NotEmpty
-  @Size(min = 1, max = 1, message = "size must be 1")
-  @ApiModelProperty(required = false, readOnly = false, value = "", example = "A")
+  @NotNull
+  @Size(max = 1)
+  @ApiModelProperty(required = false, readOnly = false, value = "Middle name", example = "A")
   private String middleInitialName;
 
-  @NotEmpty
-  @Size(min = 1, max = 6)
-  @ApiModelProperty(required = false, readOnly = false, value = "", example = "ABC123")
+  @NotNull
+  @Size(max = 6)
+  @ApiModelProperty(required = false, readOnly = false, value = "Name prefix", example = "ABC123")
   private String namePrefixDescription;
 
   @NotNull
@@ -145,7 +144,7 @@ public class Reporter extends DomainObject implements Request, Response {
 
   @NotNull
   @Size(max = 10, message = "size must be less than or equal to 10")
-  @ApiModelProperty(required = false, readOnly = false, value = "", example = "123")
+  @ApiModelProperty(required = false, readOnly = false, value = "Street number", example = "123")
   private String streetNumber;
 
   @NotNull
@@ -170,7 +169,8 @@ public class Reporter extends DomainObject implements Request, Response {
 
   @NotEmpty
   @Size(min = 1, max = 2)
-  @ApiModelProperty(required = true, readOnly = false, value = "", example = "99")
+  @ApiModelProperty(required = true, readOnly = false, value = "County specific code",
+      example = "99")
   private String countySpecificCode;
 
   /**

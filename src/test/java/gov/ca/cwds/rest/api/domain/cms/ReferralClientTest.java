@@ -759,20 +759,6 @@ public class ReferralClientTest {
   /*
    * dispositionClosureDescription Tests
    */
-  @Test
-  public void failsWhenDispositionClosureDescriptionMissing() throws Exception {
-    ReferralClient toCreate = MAPPER.readValue(
-        fixture(
-            "fixtures/domain/legacy/ReferralClient/invalid/dispositionClosureDescriptionMissing.json"),
-        ReferralClient.class);
-    Response response =
-        resources.client().target(ROOT_RESOURCE).request().accept(MediaType.APPLICATION_JSON)
-            .post(Entity.entity(toCreate, MediaType.APPLICATION_JSON));
-    assertThat(response.getStatus(), is(equalTo(422)));
-    assertThat(
-        response.readEntity(String.class).indexOf("dispositionClosureDescription may not be empty"),
-        is(greaterThanOrEqualTo(0)));
-  }
 
   @Test
   public void failsWhenDispositionClosureDescriptionNull() throws Exception {
@@ -785,23 +771,20 @@ public class ReferralClientTest {
             .post(Entity.entity(toCreate, MediaType.APPLICATION_JSON));
     assertThat(response.getStatus(), is(equalTo(422)));
     assertThat(
-        response.readEntity(String.class).indexOf("dispositionClosureDescription may not be empty"),
+        response.readEntity(String.class).indexOf("dispositionClosureDescription may not be null"),
         is(greaterThanOrEqualTo(0)));
   }
 
   @Test
-  public void failsWhenDispositionClosureDescriptionEmpty() throws Exception {
+  public void successWhenDispositionClosureDescriptionEmpty() throws Exception {
     ReferralClient toCreate = MAPPER.readValue(
         fixture(
-            "fixtures/domain/legacy/ReferralClient/invalid/dispositionClosureDescriptionEmpty.json"),
+            "fixtures/domain/legacy/ReferralClient/valid/dispositionClosureDescriptionEmpty.json"),
         ReferralClient.class);
     Response response =
         resources.client().target(ROOT_RESOURCE).request().accept(MediaType.APPLICATION_JSON)
             .post(Entity.entity(toCreate, MediaType.APPLICATION_JSON));
-    assertThat(response.getStatus(), is(equalTo(422)));
-    assertThat(
-        response.readEntity(String.class).indexOf("dispositionClosureDescription may not be empty"),
-        is(greaterThanOrEqualTo(0)));
+    assertThat(response.getStatus(), is(equalTo(204)));
   }
 
   /*
@@ -845,7 +828,7 @@ public class ReferralClientTest {
         resources.client().target(ROOT_RESOURCE).request().accept(MediaType.APPLICATION_JSON)
             .post(Entity.entity(toCreate, MediaType.APPLICATION_JSON));
     assertThat(response.getStatus(), is(equalTo(422)));
-    assertThat(response.readEntity(String.class).indexOf("agePeriodCode may not be empty"),
+    assertThat(response.readEntity(String.class).indexOf("agePeriodCode may not be null"),
         is(greaterThanOrEqualTo(0)));
   }
 
@@ -858,21 +841,19 @@ public class ReferralClientTest {
         resources.client().target(ROOT_RESOURCE).request().accept(MediaType.APPLICATION_JSON)
             .post(Entity.entity(toCreate, MediaType.APPLICATION_JSON));
     assertThat(response.getStatus(), is(equalTo(422)));
-    assertThat(response.readEntity(String.class).indexOf("agePeriodCode may not be empty"),
+    assertThat(response.readEntity(String.class).indexOf("agePeriodCode may not be null"),
         is(greaterThanOrEqualTo(0)));
   }
 
   @Test
-  public void failsWhenAgePeriodCodeEmpty() throws Exception {
+  public void successWhenAgePeriodCodeEmpty() throws Exception {
     ReferralClient toCreate = MAPPER.readValue(
-        fixture("fixtures/domain/legacy/ReferralClient/invalid/agePeriodCodeEmpty.json"),
+        fixture("fixtures/domain/legacy/ReferralClient/valid/agePeriodCodeEmpty.json"),
         ReferralClient.class);
     Response response =
         resources.client().target(ROOT_RESOURCE).request().accept(MediaType.APPLICATION_JSON)
             .post(Entity.entity(toCreate, MediaType.APPLICATION_JSON));
-    assertThat(response.getStatus(), is(equalTo(422)));
-    assertThat(response.readEntity(String.class).indexOf("agePeriodCode may not be empty"),
-        is(greaterThanOrEqualTo(0)));
+    assertThat(response.getStatus(), is(equalTo(204)));
   }
 
   @Test

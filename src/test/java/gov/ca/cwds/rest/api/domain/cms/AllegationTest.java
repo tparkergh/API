@@ -361,16 +361,14 @@ public class AllegationTest {
    * 
    */
   @Test
-  public void failsWhenAbuseFrequencyPeriodCodeEmpty() throws Exception {
+  public void successWhenAbuseFrequencyPeriodCodeEmpty() throws Exception {
     Allegation toCreate = MAPPER.readValue(
-        fixture("fixtures/domain/legacy/Allegation/invalid/abuseFrequencyPeriodCodeEmpty.json"),
+        fixture("fixtures/domain/legacy/Allegation/valid/abuseFrequencyPeriodCodeEmpty.json"),
         Allegation.class);
     Response response =
         resources.client().target(ROOT_RESOURCE).request().accept(MediaType.APPLICATION_JSON)
             .post(Entity.entity(toCreate, MediaType.APPLICATION_JSON));
-    assertThat(response.getStatus(), is(equalTo(422)));
-    assertThat(response.readEntity(String.class).indexOf(
-        "abuseFrequencyPeriodCode must be one of [D, M, W, Y]"), is(greaterThanOrEqualTo(0)));
+    assertThat(response.getStatus(), is(equalTo(204)));
   }
 
   /**
@@ -387,7 +385,7 @@ public class AllegationTest {
             .post(Entity.entity(toCreate, MediaType.APPLICATION_JSON));
     assertThat(response.getStatus(), is(equalTo(422)));
     assertThat(response.readEntity(String.class).indexOf(
-        "abuseFrequencyPeriodCode must be one of [D, M, W, Y]"), is(greaterThanOrEqualTo(0)));
+        "abuseFrequencyPeriodCode size must be between 0 and 1"), is(greaterThanOrEqualTo(0)));
   }
 
   /**
@@ -405,7 +403,7 @@ public class AllegationTest {
             .post(Entity.entity(toCreate, MediaType.APPLICATION_JSON));
     assertThat(response.getStatus(), is(equalTo(422)));
     assertThat(response.readEntity(String.class).indexOf(
-        "abuseFrequencyPeriodCode must be one of [D, M, W, Y]"), is(greaterThanOrEqualTo(0)));
+        "abuseFrequencyPeriodCode must be one of [D, M, W, Y, ]"), is(greaterThanOrEqualTo(0)));
   }
 
   /**

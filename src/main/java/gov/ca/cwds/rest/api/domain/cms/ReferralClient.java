@@ -80,8 +80,8 @@ public class ReferralClient extends DomainObject implements Request, Response {
       example = "ABC1234567")
   private String clientId;
 
-  @NotEmpty
-  @Size(min = 1, max = 254)
+  @NotNull
+  @Size(max = 254)
   @ApiModelProperty(required = false, readOnly = false, value = "", example = "Some Description")
   private String dispositionClosureDescription;
 
@@ -89,8 +89,8 @@ public class ReferralClient extends DomainObject implements Request, Response {
   @ApiModelProperty(required = false, readOnly = false, example = "12")
   private Short ageNumber;
 
-  @NotEmpty
-  @Size(min = 1, max = 1, message = "size must be 1")
+  @NotNull
+  @Size(max = 1, message = "size must be 1")
   @ApiModelProperty(required = true, readOnly = false, value = "unit of measure for age",
       example = "D")
   private String agePeriodCode;

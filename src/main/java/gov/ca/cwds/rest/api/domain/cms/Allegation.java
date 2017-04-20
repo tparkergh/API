@@ -44,9 +44,8 @@ public class Allegation extends DomainObject implements Request, Response {
 
   @NotNull
   @Size(max = 1)
-  @OneOf(value = {"D", "M", "W", "Y"}, ignoreCase = true, ignoreWhitespace = true)
-  @ApiModelProperty(required = false, readOnly = false, value = "frequency of abuse", example = "D",
-      allowableValues = "D, M, W, Y")
+  @OneOf(value = {"D", "M", "W", "Y", ""}, ignoreCase = true, ignoreWhitespace = true)
+  @ApiModelProperty(required = false, readOnly = false, value = "frequency of abuse", example = "D")
   private String abuseFrequencyPeriodCode;
 
   @NotEmpty

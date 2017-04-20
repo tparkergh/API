@@ -103,6 +103,13 @@ public class ScreeningToReferralService implements CrudsService {
   private static final short DEFAULT_ADDRESS_TYPE = 32; // residence
   private static String DEFAULT_COUNTY_SPECIFIC_CODE = "99";
   private static final short DEFAULT_GOVERNMENT_ENTITY_TYPE = 1126;
+  private static final String DEFAULT_NO = "N";
+  private static final String DEFAULT_STAFF_PERSON_ID = "0X5";
+  private static final String DEFAULT_SCREENER_NOTE_TEXT = "";
+  private static final String DEFAULT_UNEMPLOYED_PARENT_CODE = "U";
+  private static final String DEFAULT_INCAPCITATED_PARENT_CODE = "U";
+  private static final String DEFAULT_HISPANIC_ORIGIN_CODE = "X";
+  private static final String DEFAULT_MILITARY_STATUS_CODE = "U";
 
   // TODO: #142337489 Develop List of Value service to support Pi2 Save Referral to CWS/CMS
   private short communicationsMethodCode = 409; // default to telephone until #142337489 complete
@@ -173,13 +180,16 @@ public class ScreeningToReferralService implements CrudsService {
     }
 
     // create a CMS Referral
+    // TODO: map screening/additional_information to row in LONG_TEXT and set indentifier in
+    // SCREENER_NOTE_TEXT column of REFERRAL
     Referral referral = new Referral(false, anonymousReporter(screeningToReferral), false, "",
         DEFAULT_APPROVAL_STATUS_CODE, false, "", communicationsMethodCode, "", "", "", "", false,
-        false, DEFAULT_CODE, "", false, DEFAULT_LIMITIED_ACCESS_CODE, "",
+        false, DEFAULT_CODE, DEFAULT_NO, false, DEFAULT_LIMITIED_ACCESS_CODE, "",
         screeningToReferral.getName(), "", dateStarted, timeStarted, referralResponseTypeCode,
-        DEFAULT_CODE, "", "", "", screeningToReferral.getReportNarrative(), "", "", "", "",
-        referralAddressId, "", "", DEFAULT_COUNTY_SPECIFIC_CODE, false, false, false, false, "",
-        DEFAULT_RESPONSIBLE_AGENCY_CODE, DEFAULT_CODE, "", "", "");
+        DEFAULT_CODE, "", "", "", DEFAULT_SCREENER_NOTE_TEXT, DEFAULT_NO, DEFAULT_NO, DEFAULT_NO,
+        DEFAULT_NO, "", "", DEFAULT_STAFF_PERSON_ID, DEFAULT_COUNTY_SPECIFIC_CODE, false, false,
+        false, false, "", DEFAULT_RESPONSIBLE_AGENCY_CODE, DEFAULT_CODE, "", "", "");
+
     PostedReferral postedReferral = this.referralService.create(referral);
     referralId = postedReferral.getId();
     /*
@@ -235,18 +245,21 @@ public class ScreeningToReferralService implements CrudsService {
                 DEFAULT_CHILD_CLIENT_INDICATOR, "", "", incomingParticipant.getFirstName(),
                 incomingParticipant.getLastName(), "", "", false, dateStarted, false, "", false, "",
                 false, "", "", "", DEFAULT_CODE, "", DEFAULT_ESTIMATED_DOB_CODE, "", "", genderCode,
-                "", "", "", DEFAULT_CODE, DEFAULT_CODE, "", false, false, DEFAULT_LITERATE_CODE,
-                false, DEFAULT_CODE, "", "", "", DEFAULT_NAME_TYPE, false, false, "", false,
-                DEFAULT_CODE, DEFAULT_CODE, DEFAULT_CODE, DEFAULT_SECONDARY_LANGUAGE_TYPE, false,
-                DEFAULT_SENSITIVITY_INDICATOR, DEFAULT_SOC158_PLACEMENT_CODE, false,
-                DEFAULT_SOCIAL_SECURITY_NUM_CHANGE_CODE, incomingParticipant.getSsn(), "", false,
-                false, "", false);
+                "", "", DEFAULT_HISPANIC_ORIGIN_CODE, DEFAULT_CODE, DEFAULT_CODE,
+                DEFAULT_INCAPCITATED_PARENT_CODE, false, false, DEFAULT_LITERATE_CODE, false,
+                DEFAULT_CODE, DEFAULT_MILITARY_STATUS_CODE, "", "", DEFAULT_NAME_TYPE, false, false,
+                "", false, DEFAULT_CODE, DEFAULT_CODE, DEFAULT_CODE,
+                DEFAULT_SECONDARY_LANGUAGE_TYPE, false, DEFAULT_SENSITIVITY_INDICATOR,
+                DEFAULT_SOC158_PLACEMENT_CODE, false, DEFAULT_SOCIAL_SECURITY_NUM_CHANGE_CODE,
+                incomingParticipant.getSsn(), "", false, false, DEFAULT_UNEMPLOYED_PARENT_CODE,
+                false);
 
             PostedClient postedClient = this.clientService.create(client);
             postedClients.add(postedClient);
             clientId = postedClient.getId();
 
             // CMS Referral Client
+            // TODO: map the DISPOSITION_CODE accroding to rules of CWS/CMS
             ReferralClient referralClient = new ReferralClient("", DEFAULT_APPROVAL_STATUS_CODE,
                 DEFAULT_CODE, "", "", role.equalsIgnoreCase(SELF_REPORTED_ROLE), false, referralId,
                 clientId, "", DEFAULT_CODE, "", DEFAULT_COUNTY_SPECIFIC_CODE, false, false, false);
