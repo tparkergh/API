@@ -1121,7 +1121,7 @@ public class ReporterTest {
         resources.client().target(ROOT_RESOURCE).request().accept(MediaType.APPLICATION_JSON)
             .post(Entity.entity(toCreate, MediaType.APPLICATION_JSON));
     assertThat(response.getStatus(), is(equalTo(422)));
-    assertThat(response.readEntity(String.class).indexOf("middleInitialName may not be empty"),
+    assertThat(response.readEntity(String.class).indexOf("middleInitialName may not be null"),
         is(greaterThanOrEqualTo(0)));
   }
 
@@ -1134,21 +1134,19 @@ public class ReporterTest {
         resources.client().target(ROOT_RESOURCE).request().accept(MediaType.APPLICATION_JSON)
             .post(Entity.entity(toCreate, MediaType.APPLICATION_JSON));
     assertThat(response.getStatus(), is(equalTo(422)));
-    assertThat(response.readEntity(String.class).indexOf("middleInitialName may not be empty"),
+    assertThat(response.readEntity(String.class).indexOf("middleInitialName may not be null"),
         is(greaterThanOrEqualTo(0)));
   }
 
   @Test
-  public void failsWhenMiddleInitialNameEmpty() throws Exception {
+  public void successWhenMiddleInitialNameEmpty() throws Exception {
     Reporter toCreate = MAPPER.readValue(
-        fixture("fixtures/domain/legacy/Reporter/invalid/middleInitialNameEmpty.json"),
+        fixture("fixtures/domain/legacy/Reporter/valid/middleInitialNameEmpty.json"),
         Reporter.class);
     Response response =
         resources.client().target(ROOT_RESOURCE).request().accept(MediaType.APPLICATION_JSON)
             .post(Entity.entity(toCreate, MediaType.APPLICATION_JSON));
-    assertThat(response.getStatus(), is(equalTo(422)));
-    assertThat(response.readEntity(String.class).indexOf("middleInitialName may not be empty"),
-        is(greaterThanOrEqualTo(0)));
+    assertThat(response.getStatus(), is(equalTo(204)));
   }
 
   @Test
@@ -1160,7 +1158,8 @@ public class ReporterTest {
         resources.client().target(ROOT_RESOURCE).request().accept(MediaType.APPLICATION_JSON)
             .post(Entity.entity(toCreate, MediaType.APPLICATION_JSON));
     assertThat(response.getStatus(), is(equalTo(422)));
-    assertThat(response.readEntity(String.class).indexOf("middleInitialName size must be 1"),
+    assertThat(
+        response.readEntity(String.class).indexOf("middleInitialName size must be between 0 and 1"),
         is(greaterThanOrEqualTo(0)));
   }
 
@@ -1187,7 +1186,7 @@ public class ReporterTest {
         resources.client().target(ROOT_RESOURCE).request().accept(MediaType.APPLICATION_JSON)
             .post(Entity.entity(toCreate, MediaType.APPLICATION_JSON));
     assertThat(response.getStatus(), is(equalTo(422)));
-    assertThat(response.readEntity(String.class).indexOf("namePrefixDescription may not be empty"),
+    assertThat(response.readEntity(String.class).indexOf("namePrefixDescription may not be null"),
         is(greaterThanOrEqualTo(0)));
   }
 
@@ -1200,21 +1199,19 @@ public class ReporterTest {
         resources.client().target(ROOT_RESOURCE).request().accept(MediaType.APPLICATION_JSON)
             .post(Entity.entity(toCreate, MediaType.APPLICATION_JSON));
     assertThat(response.getStatus(), is(equalTo(422)));
-    assertThat(response.readEntity(String.class).indexOf("namePrefixDescription may not be empty"),
+    assertThat(response.readEntity(String.class).indexOf("namePrefixDescription may not be null"),
         is(greaterThanOrEqualTo(0)));
   }
 
   @Test
-  public void failsWhenNamePrefixDescriptionEmpty() throws Exception {
+  public void successWhenNamePrefixDescriptionEmpty() throws Exception {
     Reporter toCreate = MAPPER.readValue(
-        fixture("fixtures/domain/legacy/Reporter/invalid/namePrefixDescriptionEmpty.json"),
+        fixture("fixtures/domain/legacy/Reporter/valid/namePrefixDescriptionEmpty.json"),
         Reporter.class);
     Response response =
         resources.client().target(ROOT_RESOURCE).request().accept(MediaType.APPLICATION_JSON)
             .post(Entity.entity(toCreate, MediaType.APPLICATION_JSON));
-    assertThat(response.getStatus(), is(equalTo(422)));
-    assertThat(response.readEntity(String.class).indexOf("namePrefixDescription may not be empty"),
-        is(greaterThanOrEqualTo(0)));
+    assertThat(response.getStatus(), is(equalTo(204)));
   }
 
   @Test
@@ -1227,7 +1224,7 @@ public class ReporterTest {
             .post(Entity.entity(toCreate, MediaType.APPLICATION_JSON));
     assertThat(response.getStatus(), is(equalTo(422)));
     assertThat(response.readEntity(String.class).indexOf(
-        "namePrefixDescription size must be between 1 and 6"), is(greaterThanOrEqualTo(0)));
+        "namePrefixDescription size must be between 0 and 6"), is(greaterThanOrEqualTo(0)));
   }
 
   /*

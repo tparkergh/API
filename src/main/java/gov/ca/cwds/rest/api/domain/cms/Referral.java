@@ -43,8 +43,9 @@ public class Referral extends DomainObject implements Request, Response {
   @ApiModelProperty(required = true, readOnly = false, value = "N", example = "N")
   private Boolean applicationForPetitionIndicator;
 
-  @Size(min = 10, max = 10)
-  @ApiModelProperty(required = false, readOnly = false, value = "", example = "ABC1234567")
+  @Size(max = 10)
+  @ApiModelProperty(required = false, readOnly = false, value = "Approval Number",
+      example = "ABC1234567")
   private String approvalNumber;
 
   @NotNull

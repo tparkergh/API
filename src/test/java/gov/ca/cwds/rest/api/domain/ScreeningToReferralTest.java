@@ -261,6 +261,32 @@ public class ScreeningToReferralTest {
 
   }
 
+  @Test
+  public void testParticipantOtherGenderValidSuccess() throws Exception {
+    ScreeningToReferral toCreate =
+        MAPPER.readValue(fixture("fixtures/domain/ScreeningToReferral/valid/validGenderOther.json"),
+            ScreeningToReferral.class);
+    Response response =
+        resources.client().target(ROOT_RESOURCE).request().accept(MediaType.APPLICATION_JSON)
+            .post(Entity.entity(toCreate, MediaType.APPLICATION_JSON));
+    System.out.println(response.readEntity(String.class));
+    assertThat(response.getStatus(), is(equalTo(204)));
+
+  }
+
+  @Test
+  public void testParticipantGenderInvalidFail() throws Exception {
+    ScreeningToReferral toCreate =
+        MAPPER.readValue(fixture("fixtures/domain/ScreeningToReferral/invalid/invalidGender.json"),
+            ScreeningToReferral.class);
+    Response response =
+        resources.client().target(ROOT_RESOURCE).request().accept(MediaType.APPLICATION_JSON)
+            .post(Entity.entity(toCreate, MediaType.APPLICATION_JSON));
+    System.out.println(response.readEntity(String.class));
+    assertThat(response.getStatus(), is(equalTo(422)));
+
+  }
+
   private ScreeningToReferral validScreeningToReferral() {
     ScreeningToReferral str = null;
     try {

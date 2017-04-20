@@ -276,9 +276,10 @@ public class Client extends DomainObject implements Request, Response {
   @ApiModelProperty(required = true, readOnly = false)
   private Boolean prevCaChildrenServIndicator;
 
-  @NotEmpty
+  @NotNull
   @Size(max = 25)
-  @ApiModelProperty(required = false, readOnly = false, value = "", example = "other description")
+  @ApiModelProperty(required = false, readOnly = false, value = "Previously Receiving Care",
+      example = "some other care")
   private String prevOtherDescription;
 
   @NotNull
@@ -332,9 +333,10 @@ public class Client extends DomainObject implements Request, Response {
   @ApiModelProperty(required = false, readOnly = false, value = "", example = "123456789")
   private String socialSecurityNumber;
 
-  @NotEmpty
+  @NotNull
   @Size(max = 4)
-  @ApiModelProperty(required = false, readOnly = false, value = "", example = "A1")
+  @ApiModelProperty(required = false, readOnly = false, value = "Suffix Title Description",
+      example = "MS")
   private String suffixTitleDescription;
 
   @NotNull

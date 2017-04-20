@@ -489,7 +489,7 @@ public class CrossReportTest {
         resources.client().target(ROOT_RESOURCE).request().accept(MediaType.APPLICATION_JSON)
             .post(Entity.entity(toCreate, MediaType.APPLICATION_JSON));
     assertThat(response.getStatus(), is(equalTo(422)));
-    assertThat(response.readEntity(String.class).indexOf("recipientBadgeNumber may not be empty"),
+    assertThat(response.readEntity(String.class).indexOf("recipientBadgeNumber may not be null"),
         is(greaterThanOrEqualTo(0)));
   }
 
@@ -502,21 +502,19 @@ public class CrossReportTest {
         resources.client().target(ROOT_RESOURCE).request().accept(MediaType.APPLICATION_JSON)
             .post(Entity.entity(toCreate, MediaType.APPLICATION_JSON));
     assertThat(response.getStatus(), is(equalTo(422)));
-    assertThat(response.readEntity(String.class).indexOf("recipientBadgeNumber may not be empty"),
+    assertThat(response.readEntity(String.class).indexOf("recipientBadgeNumber may not be null"),
         is(greaterThanOrEqualTo(0)));
   }
 
   @Test
-  public void failsWhenRecipientBadgeNumberEmpty() throws Exception {
+  public void successWhenRecipientBadgeNumberEmpty() throws Exception {
     CrossReport toCreate = MAPPER.readValue(
-        fixture("fixtures/domain/legacy/CrossReport/invalid/recipientBadgeNumberEmpty.json"),
+        fixture("fixtures/domain/legacy/CrossReport/valid/recipientBadgeNumberEmpty.json"),
         CrossReport.class);
     Response response =
         resources.client().target(ROOT_RESOURCE).request().accept(MediaType.APPLICATION_JSON)
             .post(Entity.entity(toCreate, MediaType.APPLICATION_JSON));
-    assertThat(response.getStatus(), is(equalTo(422)));
-    assertThat(response.readEntity(String.class).indexOf("recipientBadgeNumber may not be empty"),
-        is(greaterThanOrEqualTo(0)));
+    assertThat(response.getStatus(), is(equalTo(204)));
   }
 
   @Test
@@ -529,7 +527,7 @@ public class CrossReportTest {
             .post(Entity.entity(toCreate, MediaType.APPLICATION_JSON));
     assertThat(response.getStatus(), is(equalTo(422)));
     assertThat(response.readEntity(String.class)
-        .indexOf("recipientBadgeNumber size must be between 1 and 6"), is(greaterThanOrEqualTo(0)));
+        .indexOf("recipientBadgeNumber size must be between 0 and 6"), is(greaterThanOrEqualTo(0)));
   }
 
   /*
@@ -680,7 +678,7 @@ public class CrossReportTest {
             .post(Entity.entity(toCreate, MediaType.APPLICATION_JSON));
     assertThat(response.getStatus(), is(equalTo(422)));
     assertThat(
-        response.readEntity(String.class).indexOf("recipientPositionTitleDesc may not be empty"),
+        response.readEntity(String.class).indexOf("recipientPositionTitleDesc may not be null"),
         is(greaterThanOrEqualTo(0)));
   }
 
@@ -694,22 +692,19 @@ public class CrossReportTest {
             .post(Entity.entity(toCreate, MediaType.APPLICATION_JSON));
     assertThat(response.getStatus(), is(equalTo(422)));
     assertThat(
-        response.readEntity(String.class).indexOf("recipientPositionTitleDesc may not be empty"),
+        response.readEntity(String.class).indexOf("recipientPositionTitleDesc may not be null"),
         is(greaterThanOrEqualTo(0)));
   }
 
   @Test
-  public void failsWhenRecipientPositionTitleDescEmpty() throws Exception {
+  public void successWhenRecipientPositionTitleDescEmpty() throws Exception {
     CrossReport toCreate = MAPPER.readValue(
-        fixture("fixtures/domain/legacy/CrossReport/invalid/recipientPositionTitleDescEmpty.json"),
+        fixture("fixtures/domain/legacy/CrossReport/valid/recipientPositionTitleDescEmpty.json"),
         CrossReport.class);
     Response response =
         resources.client().target(ROOT_RESOURCE).request().accept(MediaType.APPLICATION_JSON)
             .post(Entity.entity(toCreate, MediaType.APPLICATION_JSON));
-    assertThat(response.getStatus(), is(equalTo(422)));
-    assertThat(
-        response.readEntity(String.class).indexOf("recipientPositionTitleDesc may not be empty"),
-        is(greaterThanOrEqualTo(0)));
+    assertThat(response.getStatus(), is(equalTo(204)));
   }
 
   @Test
@@ -724,7 +719,7 @@ public class CrossReportTest {
     assertThat(response.getStatus(), is(equalTo(422)));
     assertThat(
         response.readEntity(String.class)
-            .indexOf("recipientPositionTitleDesc size must be between 1 and 30"),
+            .indexOf("recipientPositionTitleDesc size must be between 0 and 30"),
         is(greaterThanOrEqualTo(0)));
   }
 
@@ -740,7 +735,7 @@ public class CrossReportTest {
         resources.client().target(ROOT_RESOURCE).request().accept(MediaType.APPLICATION_JSON)
             .post(Entity.entity(toCreate, MediaType.APPLICATION_JSON));
     assertThat(response.getStatus(), is(equalTo(422)));
-    assertThat(response.readEntity(String.class).indexOf("referenceNumber may not be empty"),
+    assertThat(response.readEntity(String.class).indexOf("referenceNumber may not be null"),
         is(greaterThanOrEqualTo(0)));
   }
 
@@ -753,21 +748,19 @@ public class CrossReportTest {
         resources.client().target(ROOT_RESOURCE).request().accept(MediaType.APPLICATION_JSON)
             .post(Entity.entity(toCreate, MediaType.APPLICATION_JSON));
     assertThat(response.getStatus(), is(equalTo(422)));
-    assertThat(response.readEntity(String.class).indexOf("referenceNumber may not be empty"),
+    assertThat(response.readEntity(String.class).indexOf("referenceNumber may not be null"),
         is(greaterThanOrEqualTo(0)));
   }
 
   @Test
-  public void failsWhenReferenceNumberEmpty() throws Exception {
+  public void successWhenReferenceNumberEmpty() throws Exception {
     CrossReport toCreate = MAPPER.readValue(
-        fixture("fixtures/domain/legacy/CrossReport/invalid/referenceNumberEmpty.json"),
+        fixture("fixtures/domain/legacy/CrossReport/valid/referenceNumberEmpty.json"),
         CrossReport.class);
     Response response =
         resources.client().target(ROOT_RESOURCE).request().accept(MediaType.APPLICATION_JSON)
             .post(Entity.entity(toCreate, MediaType.APPLICATION_JSON));
-    assertThat(response.getStatus(), is(equalTo(422)));
-    assertThat(response.readEntity(String.class).indexOf("referenceNumber may not be empty"),
-        is(greaterThanOrEqualTo(0)));
+    assertThat(response.getStatus(), is(equalTo(204)));
   }
 
   @Test
@@ -780,7 +773,7 @@ public class CrossReportTest {
             .post(Entity.entity(toCreate, MediaType.APPLICATION_JSON));
     assertThat(response.getStatus(), is(equalTo(422)));
     assertThat(
-        response.readEntity(String.class).indexOf("referenceNumber size must be between 1 and 10"),
+        response.readEntity(String.class).indexOf("referenceNumber size must be between 0 and 10"),
         is(greaterThanOrEqualTo(0)));
   }
 
@@ -1018,7 +1011,7 @@ public class CrossReportTest {
         resources.client().target(ROOT_RESOURCE).request().accept(MediaType.APPLICATION_JSON)
             .post(Entity.entity(toCreate, MediaType.APPLICATION_JSON));
     assertThat(response.getStatus(), is(equalTo(422)));
-    assertThat(response.readEntity(String.class).indexOf("recipientName may not be empty"),
+    assertThat(response.readEntity(String.class).indexOf("recipientName may not be null"),
         is(greaterThanOrEqualTo(0)));
   }
 
@@ -1031,21 +1024,19 @@ public class CrossReportTest {
         resources.client().target(ROOT_RESOURCE).request().accept(MediaType.APPLICATION_JSON)
             .post(Entity.entity(toCreate, MediaType.APPLICATION_JSON));
     assertThat(response.getStatus(), is(equalTo(422)));
-    assertThat(response.readEntity(String.class).indexOf("recipientName may not be empty"),
+    assertThat(response.readEntity(String.class).indexOf("recipientName may not be null"),
         is(greaterThanOrEqualTo(0)));
   }
 
   @Test
-  public void failsWhenRecipientNameEmpty() throws Exception {
+  public void successWhenRecipientNameEmpty() throws Exception {
     CrossReport toCreate = MAPPER.readValue(
-        fixture("fixtures/domain/legacy/CrossReport/invalid/recipientNameEmpty.json"),
+        fixture("fixtures/domain/legacy/CrossReport/valid/recipientNameEmpty.json"),
         CrossReport.class);
     Response response =
         resources.client().target(ROOT_RESOURCE).request().accept(MediaType.APPLICATION_JSON)
             .post(Entity.entity(toCreate, MediaType.APPLICATION_JSON));
-    assertThat(response.getStatus(), is(equalTo(422)));
-    assertThat(response.readEntity(String.class).indexOf("recipientName may not be empty"),
-        is(greaterThanOrEqualTo(0)));
+    assertThat(response.getStatus(), is(equalTo(204)));
   }
 
   @Test
@@ -1058,7 +1049,7 @@ public class CrossReportTest {
             .post(Entity.entity(toCreate, MediaType.APPLICATION_JSON));
     assertThat(response.getStatus(), is(equalTo(422)));
     assertThat(
-        response.readEntity(String.class).indexOf("recipientName size must be between 1 and 40"),
+        response.readEntity(String.class).indexOf("recipientName size must be between 0 and 40"),
         is(greaterThanOrEqualTo(0)));
   }
 
@@ -1076,7 +1067,7 @@ public class CrossReportTest {
             .post(Entity.entity(toCreate, MediaType.APPLICATION_JSON));
     assertThat(response.getStatus(), is(equalTo(422)));
     assertThat(
-        response.readEntity(String.class).indexOf("outStateLawEnforcementAddr may not be empty"),
+        response.readEntity(String.class).indexOf("outStateLawEnforcementAddr may not be null"),
         is(greaterThanOrEqualTo(0)));
   }
 
@@ -1090,22 +1081,19 @@ public class CrossReportTest {
             .post(Entity.entity(toCreate, MediaType.APPLICATION_JSON));
     assertThat(response.getStatus(), is(equalTo(422)));
     assertThat(
-        response.readEntity(String.class).indexOf("outStateLawEnforcementAddr may not be empty"),
+        response.readEntity(String.class).indexOf("outStateLawEnforcementAddr may not be null"),
         is(greaterThanOrEqualTo(0)));
   }
 
   @Test
-  public void failsWhenOutstateLawEnforcementAddrEmpty() throws Exception {
+  public void successWhenOutstateLawEnforcementAddrEmpty() throws Exception {
     CrossReport toCreate = MAPPER.readValue(
-        fixture("fixtures/domain/legacy/CrossReport/invalid/outStateLawEnforcementAddrEmpty.json"),
+        fixture("fixtures/domain/legacy/CrossReport/valid/outStateLawEnforcementAddrEmpty.json"),
         CrossReport.class);
     Response response =
         resources.client().target(ROOT_RESOURCE).request().accept(MediaType.APPLICATION_JSON)
             .post(Entity.entity(toCreate, MediaType.APPLICATION_JSON));
-    assertThat(response.getStatus(), is(equalTo(422)));
-    assertThat(
-        response.readEntity(String.class).indexOf("outStateLawEnforcementAddr may not be empty"),
-        is(greaterThanOrEqualTo(0)));
+    assertThat(response.getStatus(), is(equalTo(204)));
   }
 
   @Test
@@ -1262,19 +1250,6 @@ public class CrossReportTest {
         .indexOf("outStateLawEnforcementIndicator may not be null"), is(greaterThanOrEqualTo(0)));
   }
 
-  @Test
-  public void failsWhenOutStateLawEnforcementIndicatorEmpty() throws Exception {
-    CrossReport toCreate = MAPPER.readValue(
-        fixture(
-            "fixtures/domain/legacy/CrossReport/invalid/outStateLawEnforcementIndicatorEmpty.json"),
-        CrossReport.class);
-    Response response =
-        resources.client().target(ROOT_RESOURCE).request().accept(MediaType.APPLICATION_JSON)
-            .post(Entity.entity(toCreate, MediaType.APPLICATION_JSON));
-    assertThat(response.getStatus(), is(equalTo(422)));
-    assertThat(response.readEntity(String.class)
-        .indexOf("outStateLawEnforcementIndicator may not be null"), is(greaterThanOrEqualTo(0)));
-  }
 
   @Test
   public void failsWhenOutStateLawEnforcementIndicatorAllWhitespace() throws Exception {
