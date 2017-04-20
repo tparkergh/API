@@ -107,6 +107,9 @@ dependencies {
 	// https://mvnrepository.com/artifact/nl.jqno.equalsverifier/equalsverifier
 	testCompile group: 'nl.jqno.equalsverifier', name: 'equalsverifier', version: '2.1.6'
 	testCompile group: "com.github.fge", name: "json-schema-validator", version: "2.2.6"
+	
+	// https://mvnrepository.com/artifact/com.google.errorprone/error_prone_annotations
+	testCompile group: 'com.google.errorprone', name: 'error_prone_annotations', version: '2.0.19'
 }
 
 tasks.withType(Test) {
