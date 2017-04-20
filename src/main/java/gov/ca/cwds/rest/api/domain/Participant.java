@@ -22,6 +22,10 @@ import io.swagger.annotations.ApiModelProperty;
  */
 @JsonSnakeCase
 public class Participant extends DomainObject implements Request, Response {
+  /**
+   * Serialization version
+   */
+  private static final long serialVersionUID = 1L;
 
   @JsonProperty("id")
   @ApiModelProperty(required = true, readOnly = false, value = "Participant Id", example = "12345")

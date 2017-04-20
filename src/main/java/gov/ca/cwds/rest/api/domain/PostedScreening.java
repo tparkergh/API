@@ -1,13 +1,13 @@
 package gov.ca.cwds.rest.api.domain;
 
-import gov.ca.cwds.rest.api.Response;
-import io.dropwizard.jackson.JsonSnakeCase;
-
 import java.util.Set;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import com.fasterxml.jackson.annotation.JsonProperty;
+
+import gov.ca.cwds.rest.api.Response;
+import io.dropwizard.jackson.JsonSnakeCase;
 
 /**
  * {@link Response} adding an id to the {@link ScreeningResponse}
@@ -17,7 +17,10 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @JsonSnakeCase
 @JsonInclude(Include.ALWAYS)
 public class PostedScreening extends ScreeningResponse {
-
+  /**
+   * Serialization version
+   */
+  private static final long serialVersionUID = 1L;
   @JsonProperty("id")
   private long id;
 
@@ -50,8 +53,8 @@ public class PostedScreening extends ScreeningResponse {
       String incidentDate, String locationType, String communicationMethod, String name,
       String responseTime, String screeningDecision, String startedAt, String narrative,
       Address address, Set<Participant> participants) {
-    super(reference, endedAt, incidentCounty, incidentDate, locationType, communicationMethod,
-        name, responseTime, screeningDecision, startedAt, narrative, address, participants);
+    super(reference, endedAt, incidentCounty, incidentDate, locationType, communicationMethod, name,
+        responseTime, screeningDecision, startedAt, narrative, address, participants);
     this.id = id;
   }
 

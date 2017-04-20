@@ -22,7 +22,7 @@ import io.swagger.annotations.ApiModelProperty;
 public class Allegation extends DomainObject implements Request, Response {
 
   /**
-   * 
+   * Serialization version
    */
   private static final long serialVersionUID = 1L;
 

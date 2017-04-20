@@ -13,6 +13,10 @@ import io.dropwizard.jackson.JsonSnakeCase;
  */
 @JsonSnakeCase
 public class ScreeningReference extends DomainObject implements Request {
+  /**
+   * Serialization version
+   */
+  private static final long serialVersionUID = 1L;
   private String reference;
 
   /**

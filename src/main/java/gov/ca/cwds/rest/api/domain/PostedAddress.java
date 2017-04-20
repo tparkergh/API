@@ -12,7 +12,10 @@ import io.dropwizard.jackson.JsonSnakeCase;
  */
 @JsonSnakeCase
 public class PostedAddress extends Address {
-
+  /**
+   * Serialization version
+   */
+  private static final long serialVersionUID = 1L;
   @JsonProperty("id")
   private long id;
 

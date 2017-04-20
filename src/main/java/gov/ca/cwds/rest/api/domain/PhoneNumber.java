@@ -2,6 +2,9 @@ package gov.ca.cwds.rest.api.domain;
 
 import javax.validation.constraints.Size;
 
+import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
+
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import gov.ca.cwds.rest.api.Request;
@@ -16,6 +19,10 @@ import io.swagger.annotations.ApiModelProperty;
  */
 @JsonSnakeCase
 public class PhoneNumber extends DomainObject implements Request, Response {
+  /**
+   * Serialization version
+   */
+  private static final long serialVersionUID = 1L;
 
   @JsonProperty("number")
   @ApiModelProperty(example = "(408) 345-5678")
@@ -62,34 +69,24 @@ public class PhoneNumber extends DomainObject implements Request, Response {
     return type;
   }
 
+  /**
+   * {@inheritDoc}
+   *
+   * @see java.lang.Object#hashCode()
+   */
   @Override
   public final int hashCode() {
-    final int prime = 31;
-    int result = 1;
-    result = prime * result + ((number == null) ? 0 : number.hashCode());
-    result = prime * result + ((type == null) ? 0 : type.hashCode());
-    return result;
+    return HashCodeBuilder.reflectionHashCode(this, false);
   }
 
+  /**
+   * {@inheritDoc}
+   *
+   * @see java.lang.Object#equals(java.lang.Object)
+   */
   @Override
   public final boolean equals(Object obj) {
-    if (this == obj)
-      return true;
-    if (obj == null)
-      return false;
-    if (!(getClass().isInstance(obj)))
-      return false;
-    PhoneNumber other = (PhoneNumber) obj;
-    if (number == null) {
-      if (other.number != null)
-        return false;
-    } else if (!number.equals(other.number))
-      return false;
-    if (type == null) {
-      if (other.type != null)
-        return false;
-    } else if (!type.equals(other.type))
-      return false;
-    return true;
+    return EqualsBuilder.reflectionEquals(this, obj, false);
   }
+
 }

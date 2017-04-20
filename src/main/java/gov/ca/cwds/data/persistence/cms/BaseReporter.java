@@ -27,9 +27,17 @@ import gov.ca.cwds.data.std.ApiMultiplePhonesAware;
 import gov.ca.cwds.data.std.ApiPersonAware;
 import gov.ca.cwds.data.std.ApiPhoneAware;
 
+/**
+ * @author CWDS API Team
+ *
+ */
 @MappedSuperclass
 public abstract class BaseReporter extends CmsPersistentObject
     implements ApiPersonAware, ApiAddressAware, ApiMultiplePhonesAware {
+  /**
+   * serialization version
+   */
+  private static final long serialVersionUID = 1L;
 
   private static final Logger LOGGER = LoggerFactory.getLogger(Reporter.class);
 
