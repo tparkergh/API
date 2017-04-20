@@ -3,7 +3,6 @@ package gov.ca.cwds.data.persistence.cms;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
-import javax.persistence.PersistenceException;
 import javax.persistence.Table;
 
 import org.apache.commons.lang3.builder.EqualsBuilder;
@@ -13,7 +12,6 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
 import gov.ca.cwds.data.ns.NsPersistentObject;
-import gov.ca.cwds.rest.api.ApiException;
 
 /**
  * {@link NsPersistentObject} representing a Client Uppercase
@@ -76,16 +74,11 @@ public class ClientUc extends CmsPersistentObject {
   public ClientUc(gov.ca.cwds.rest.api.domain.cms.ClientUc clientUc, String lastUpdateId) {
     super(lastUpdateId);
 
-    try {
-      this.pktableId = clientUc.getPktableId();
-      this.sourceTableCode = clientUc.getSourceTableCode();
-      this.commonFirstName = clientUc.getCommonFirstName();
-      this.commonLastName = clientUc.getCommonLastName();
-      this.commonMiddleName = clientUc.getCommonMiddleName();
-    } catch (ApiException e) {
-      throw new PersistenceException(e);
-    }
-
+    this.pktableId = clientUc.getPktableId();
+    this.sourceTableCode = clientUc.getSourceTableCode();
+    this.commonFirstName = clientUc.getCommonFirstName();
+    this.commonLastName = clientUc.getCommonLastName();
+    this.commonMiddleName = clientUc.getCommonMiddleName();
   }
 
   /**
