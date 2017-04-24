@@ -36,7 +36,7 @@ import io.dropwizard.jackson.Jackson;
  * @author CWDS API Team
  *
  */
-public class AllegationPerpetratorHistoryServiceText implements ServiceTestTemplate {
+public class AllegationPerpetratorHistoryServiceTest implements ServiceTestTemplate {
   private static final ObjectMapper MAPPER = Jackson.newObjectMapper();
   private AllegationPerpetratorHistoryService allegationPerpetratorHistoryService;
   private AllegationPerpetratorHistoryDao allegationPerpetratorHistoryDao;
@@ -316,10 +316,10 @@ public class AllegationPerpetratorHistoryServiceText implements ServiceTestTempl
                   @Override
                   public gov.ca.cwds.data.persistence.cms.AllegationPerpetratorHistory answer(
                       InvocationOnMock invocation) throws Throwable {
-                    gov.ca.cwds.data.persistence.cms.AllegationPerpetratorHistory report =
+                    gov.ca.cwds.data.persistence.cms.AllegationPerpetratorHistory allegationPerpetratorHistory =
                         (gov.ca.cwds.data.persistence.cms.AllegationPerpetratorHistory) invocation
                             .getArguments()[0];
-                    return report;
+                    return allegationPerpetratorHistory;
                   }
                 });
 

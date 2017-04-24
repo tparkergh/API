@@ -268,7 +268,6 @@ public class ChildClient extends DomainObject implements Request, Response {
       @JsonProperty("currentCaseId") String currentCaseId,
       @JsonProperty("deathCircumstancesType") Short deathCircumstancesType,
       @JsonProperty("tribalCustomaryAdoptionDate") String tribalCustomaryAdoptionDate,
-      @JsonProperty("disabilityDiagnosedCode") String disabilityDiagnosedCode,
       @JsonProperty("drmsHePassportDocOld") String drmsHePassportDocOld,
       @JsonProperty("drmsHealthEducPassportDoc") String drmsHealthEducPassportDoc,
       @JsonProperty("drmsVoluntaryPlcmntAgrmntDoc") String drmsVoluntaryPlcmntAgrmntDoc,
@@ -292,6 +291,7 @@ public class ChildClient extends DomainObject implements Request, Response {
       @JsonProperty("siiNextScreeningDueDate") String siiNextScreeningDueDate,
       @JsonProperty("ssiSspApplicationIndicator") Boolean ssiSspApplicationIndicator,
       @JsonProperty("tribalAncestryNotifctnIndicatorVar") Boolean tribalAncestryNotifctnIndicatorVar,
+      @JsonProperty("disabilityDiagnosedCode") String disabilityDiagnosedCode,
       @JsonProperty("tribalCustomaryAdoptionIndicator") Boolean tribalCustomaryAdoptionIndicator) {
     super();
     this.victimClientId = victimClientId;
@@ -308,7 +308,6 @@ public class ChildClient extends DomainObject implements Request, Response {
     this.collegeIndicator = collegeIndicator;
     this.currentCaseId = currentCaseId;
     this.deathCircumstancesType = deathCircumstancesType;
-    this.tribalCustomaryAdoptionDate = tribalCustomaryAdoptionDate;
     this.disabilityDiagnosedCode = disabilityDiagnosedCode;
     this.drmsHePassportDocOld = drmsHePassportDocOld;
     this.drmsHealthEducPassportDoc = drmsHealthEducPassportDoc;
@@ -333,6 +332,7 @@ public class ChildClient extends DomainObject implements Request, Response {
     this.siiNextScreeningDueDate = siiNextScreeningDueDate;
     this.ssiSspApplicationIndicator = ssiSspApplicationIndicator;
     this.tribalAncestryNotifctnIndicatorVar = tribalAncestryNotifctnIndicatorVar;
+    this.tribalCustomaryAdoptionDate = tribalCustomaryAdoptionDate;
     this.tribalCustomaryAdoptionIndicator = tribalCustomaryAdoptionIndicator;
   }
 
@@ -362,8 +362,6 @@ public class ChildClient extends DomainObject implements Request, Response {
         DomainChef.uncookBooleanString(persistedChildClient.getCollegeIndicator());
     this.currentCaseId = persistedChildClient.getCurrentCaseId();
     this.deathCircumstancesType = persistedChildClient.getDeathCircumstancesType();
-    this.tribalCustomaryAdoptionDate =
-        DomainChef.cookDate(persistedChildClient.getTribalCustomaryAdoptionDate());
     this.disabilityDiagnosedCode = persistedChildClient.getDisabilityDiagnosedCode();
     this.drmsHePassportDocOld = persistedChildClient.getDrmsHePassportDocOld();
     this.drmsHealthEducPassportDoc = persistedChildClient.getDrmsHealthEducPassportDoc();
@@ -405,6 +403,8 @@ public class ChildClient extends DomainObject implements Request, Response {
         DomainChef.uncookBooleanString(persistedChildClient.getSsiSspApplicationIndicator());
     this.tribalAncestryNotifctnIndicatorVar = DomainChef
         .uncookBooleanString(persistedChildClient.getTribalAncestryNotifctnIndicatorVar());
+    this.tribalCustomaryAdoptionDate =
+        DomainChef.cookDate(persistedChildClient.getTribalCustomaryAdoptionDate());
     this.tribalCustomaryAdoptionIndicator =
         DomainChef.uncookBooleanString(persistedChildClient.getTribalCustomaryAdoptionIndicator());
   }
@@ -506,13 +506,6 @@ public class ChildClient extends DomainObject implements Request, Response {
    */
   public Short getDeathCircumstancesType() {
     return deathCircumstancesType;
-  }
-
-  /**
-   * @return the tribalCustomaryAdoptionDate
-   */
-  public String getTribalCustomaryAdoptionDate() {
-    return tribalCustomaryAdoptionDate;
   }
 
   /**
@@ -681,6 +674,13 @@ public class ChildClient extends DomainObject implements Request, Response {
    */
   public Boolean getTribalAncestryNotifctnIndicatorVar() {
     return tribalAncestryNotifctnIndicatorVar;
+  }
+
+  /**
+   * @return the tribalCustomaryAdoptionDate
+   */
+  public String getTribalCustomaryAdoptionDate() {
+    return tribalCustomaryAdoptionDate;
   }
 
   /**
