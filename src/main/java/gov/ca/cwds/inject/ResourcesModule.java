@@ -27,6 +27,7 @@ import gov.ca.cwds.rest.resources.TypedResourceDelegate;
 import gov.ca.cwds.rest.resources.TypedServiceBackedResourceDelegate;
 import gov.ca.cwds.rest.resources.cms.AllegationPerpetratorHistoryResource;
 import gov.ca.cwds.rest.resources.cms.AllegationResource;
+import gov.ca.cwds.rest.resources.cms.ChildClientResource;
 import gov.ca.cwds.rest.resources.cms.ClientResource;
 import gov.ca.cwds.rest.resources.cms.CmsDocReferralClientResource;
 import gov.ca.cwds.rest.resources.cms.CmsDocumentResource;
@@ -46,6 +47,7 @@ import gov.ca.cwds.rest.services.ScreeningService;
 import gov.ca.cwds.rest.services.ScreeningToReferralService;
 import gov.ca.cwds.rest.services.cms.AllegationPerpetratorHistoryService;
 import gov.ca.cwds.rest.services.cms.AllegationService;
+import gov.ca.cwds.rest.services.cms.ChildClientService;
 import gov.ca.cwds.rest.services.cms.ClientService;
 import gov.ca.cwds.rest.services.cms.CmsDocReferralClientService;
 import gov.ca.cwds.rest.services.cms.CmsDocumentService;
@@ -99,6 +101,7 @@ public class ResourcesModule extends AbstractModule {
     bind(LongTextResource.class);
     bind(AllegationPerpetratorHistoryResource.class);
     bind(CrossReportResource.class);
+    bind(ChildClientResource.class);
   }
 
   @Provides
@@ -146,6 +149,12 @@ public class ResourcesModule extends AbstractModule {
   @LongTextServiceBackedResource
   public ResourceDelegate longTextServiceBackedResource(Injector injector) {
     return new ServiceBackedResourceDelegate(injector.getInstance(LongTextService.class));
+  }
+
+  @Provides
+  @ChildClientServiceBackedResource
+  public ResourceDelegate ChildClientServiceBackedResource(Injector injector) {
+    return new ServiceBackedResourceDelegate(injector.getInstance(ChildClientService.class));
   }
 
   @Provides
