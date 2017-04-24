@@ -11,6 +11,7 @@ import javax.ws.rs.client.Entity;
 import javax.ws.rs.core.MediaType;
 
 import org.hamcrest.junit.ExpectedException;
+import org.junit.After;
 import org.junit.Before;
 import org.junit.ClassRule;
 import org.junit.Rule;
@@ -18,25 +19,35 @@ import org.junit.Test;
 import org.mockito.Mockito;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.squarespace.jersey2.guice.JerseyGuiceUtils;
 
-import gov.ca.cwds.rest.api.domain.cms.CrossReport;
+import gov.ca.cwds.rest.api.domain.cms.ChildClient;
 import gov.ca.cwds.rest.resources.ResourceDelegate;
 import gov.ca.cwds.rest.resources.ServiceBackedResourceDelegate;
 import io.dropwizard.jackson.Jackson;
 import io.dropwizard.testing.junit.ResourceTestRule;
 
 /**
+ * NOTE : The CWDS API Team has taken the pattern of delegating Resource functions to
  * {@link ServiceBackedResourceDelegate}. As such the tests in here reflect that assumption.
  * 
  * @author CWDS API Team
  */
 @SuppressWarnings("javadoc")
-public class CrossReportResourceTest {
+public class ChildClientResourceTest {
 
-  private static final String ROOT_RESOURCE = "/_crossReports/";
-  private static final String FOUND_RESOURCE = "/_crossReports/thirdId=ABC1234567";
+  private static final String ROOT_RESOURCE = "/_childClients/";
+  private static final String FOUND_RESOURCE = "/_childClients/victimId=AbiOD9Y0Hj";
 
   private static final ObjectMapper MAPPER = Jackson.newObjectMapper();
+
+  @After
+  public void ensureServiceLocatorPopulated() {
+    JerseyGuiceUtils.reset();
+  }
+
+  @ClassRule
+  public static JerseyGuiceRule rule = new JerseyGuiceRule();
 
   @Rule
   public ExpectedException thrown = ExpectedException.none();
@@ -45,7 +56,7 @@ public class CrossReportResourceTest {
 
   @ClassRule
   public final static ResourceTestRule inMemoryResource =
-      ResourceTestRule.builder().addResource(new CrossReportResource(resourceDelegate)).build();
+      ResourceTestRule.builder().addResource(new ChildClientResource(resourceDelegate)).build();
 
   @Before
   public void setup() throws Exception {
@@ -59,7 +70,7 @@ public class CrossReportResourceTest {
   public void getDelegatesToResourceDelegate() throws Exception {
     inMemoryResource.client().target(FOUND_RESOURCE).request().accept(MediaType.APPLICATION_JSON)
         .get();
-    verify(resourceDelegate).get("ABC1234567");
+    verify(resourceDelegate).get("AbiOD9Y0Hj");
   }
 
   /*
@@ -67,8 +78,8 @@ public class CrossReportResourceTest {
    */
   @Test
   public void createDelegatesToResourceDelegate() throws Exception {
-    CrossReport serialized = MAPPER.readValue(
-        fixture("fixtures/domain/legacy/CrossReport/valid/valid.json"), CrossReport.class);
+    ChildClient serialized = MAPPER.readValue(
+        fixture("fixtures/domain/legacy/ChildClient/valid/valid.json"), ChildClient.class);
 
     inMemoryResource.client().target(ROOT_RESOURCE).request().accept(MediaType.APPLICATION_JSON)
         .post(Entity.entity(serialized, MediaType.APPLICATION_JSON));
@@ -77,9 +88,10 @@ public class CrossReportResourceTest {
 
   @Test
   public void createValidatesEntity() throws Exception {
-    CrossReport serialized = MAPPER.readValue(
-        fixture("fixtures/domain/legacy/CrossReport/invalid/informDate/invalidFormat.json"),
-        CrossReport.class);
+    ChildClient serialized = MAPPER.readValue(
+        fixture(
+            "fixtures/domain/legacy/ChildClient/invalid/tribalCustomaryAdoptionDate/invalidFormat.json"),
+        ChildClient.class);
 
     int status =
         inMemoryResource.client().target(ROOT_RESOURCE).request().accept(MediaType.APPLICATION_JSON)
@@ -94,7 +106,7 @@ public class CrossReportResourceTest {
   public void deleteDelegatesToResourceDelegate() throws Exception {
     inMemoryResource.client().target(FOUND_RESOURCE).request().accept(MediaType.APPLICATION_JSON)
         .delete();
-    verify(resourceDelegate).delete("ABC1234567");
+    verify(resourceDelegate).delete("AbiOD9Y0Hj");
   }
 
   /*
@@ -102,8 +114,8 @@ public class CrossReportResourceTest {
    */
   @Test
   public void updateDelegatesToResourceDelegate() throws Exception {
-    CrossReport serialized = MAPPER.readValue(
-        fixture("fixtures/domain/legacy/CrossReport/valid/valid.json"), CrossReport.class);
+    ChildClient serialized = MAPPER.readValue(
+        fixture("fixtures/domain/legacy/ChildClient/valid/valid.json"), ChildClient.class);
 
     inMemoryResource.client().target(ROOT_RESOURCE).request().accept(MediaType.APPLICATION_JSON)
         .put(Entity.entity(serialized, MediaType.APPLICATION_JSON));
@@ -112,13 +124,15 @@ public class CrossReportResourceTest {
 
   @Test
   public void updateValidatesEntity() throws Exception {
-    CrossReport serialized = MAPPER.readValue(
-        fixture("fixtures/domain/legacy/CrossReport/invalid/informDate/invalidFormat.json"),
-        CrossReport.class);
+    ChildClient serialized = MAPPER.readValue(
+        fixture(
+            "fixtures/domain/legacy/ChildClient/invalid/tribalCustomaryAdoptionDate/invalidFormat.json"),
+        ChildClient.class);
 
     int status =
         inMemoryResource.client().target(ROOT_RESOURCE).request().accept(MediaType.APPLICATION_JSON)
             .put(Entity.entity(serialized, MediaType.APPLICATION_JSON)).getStatus();
     assertThat(status, is(422));
   }
+
 }

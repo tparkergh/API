@@ -461,13 +461,6 @@ public class ChildClient extends CmsPersistentObject {
   }
 
   /**
-   * @return the tribalCustomaryAdoptionDate
-   */
-  public Date getTribalCustomaryAdoptionDate() {
-    return tribalCustomaryAdoptionDate;
-  }
-
-  /**
    * @return the disabilityDiagnosedCode
    */
   public String getDisabilityDiagnosedCode() {
@@ -633,6 +626,13 @@ public class ChildClient extends CmsPersistentObject {
    */
   public String getTribalAncestryNotifctnIndicatorVar() {
     return tribalAncestryNotifctnIndicatorVar;
+  }
+
+  /**
+   * @return the tribalCustomaryAdoptionDate
+   */
+  public Date getTribalCustomaryAdoptionDate() {
+    return tribalCustomaryAdoptionDate;
   }
 
   /**
