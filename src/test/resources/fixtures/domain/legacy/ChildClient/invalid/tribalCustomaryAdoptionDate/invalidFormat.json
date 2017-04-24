@@ -13,7 +13,6 @@
   "collegeIndicator": false,
   "currentCaseId": "ABC1234567",
   "deathCircumstancesType": 1234,
-  "tribalCustomaryAdoptionDate": "2000-01-01",
   "disabilityDiagnosedCode": "N",
   "drmsHePassportDocOld": "Old",
   "drmsHealthEducPassportDoc": "Document",
@@ -38,5 +37,6 @@
   "siiNextScreeningDueDate": "2000-01-01",
   "ssiSspApplicationIndicator": false,
   "tribalAncestryNotifctnIndicatorVar": false,
+  "tribalCustomaryAdoptionDate": "2000-01-01",
   "tribalCustomaryAdoptionIndicator": false
 }

@@ -225,7 +225,6 @@ public class ChildClient extends DomainObject implements Request, Response {
    * @param collegeIndicator college indicator
    * @param currentCaseId current case Id
    * @param deathCircumstancesType death circumstances type
-   * @param tribalCustomaryAdoptionDate tribal customary adoption date
    * @param disabilityDiagnosedCode disability diagnosed code
    * @param drmsHePassportDocOld drms he passport doc old
    * @param drmsHealthEducPassportDoc drms health edu passport doc
@@ -250,6 +249,7 @@ public class ChildClient extends DomainObject implements Request, Response {
    * @param siiNextScreeningDueDate sii next screening date
    * @param ssiSspApplicationIndicator ssi ssp application indicator
    * @param tribalAncestryNotifctnIndicatorVar tribal ancestry notication indicator car
+   * @param tribalCustomaryAdoptionDate tribal customary adoption date
    * @param tribalCustomaryAdoptionIndicator tribal customary adoption indicator
    */
   @JsonCreator
@@ -267,7 +267,7 @@ public class ChildClient extends DomainObject implements Request, Response {
       @JsonProperty("collegeIndicator") Boolean collegeIndicator,
       @JsonProperty("currentCaseId") String currentCaseId,
       @JsonProperty("deathCircumstancesType") Short deathCircumstancesType,
-      @JsonProperty("tribalCustomaryAdoptionDate") String tribalCustomaryAdoptionDate,
+      @JsonProperty("disabilityDiagnosedCode") String disabilityDiagnosedCode,
       @JsonProperty("drmsHePassportDocOld") String drmsHePassportDocOld,
       @JsonProperty("drmsHealthEducPassportDoc") String drmsHealthEducPassportDoc,
       @JsonProperty("drmsVoluntaryPlcmntAgrmntDoc") String drmsVoluntaryPlcmntAgrmntDoc,
@@ -291,7 +291,7 @@ public class ChildClient extends DomainObject implements Request, Response {
       @JsonProperty("siiNextScreeningDueDate") String siiNextScreeningDueDate,
       @JsonProperty("ssiSspApplicationIndicator") Boolean ssiSspApplicationIndicator,
       @JsonProperty("tribalAncestryNotifctnIndicatorVar") Boolean tribalAncestryNotifctnIndicatorVar,
-      @JsonProperty("disabilityDiagnosedCode") String disabilityDiagnosedCode,
+      @JsonProperty("tribalCustomaryAdoptionDate") String tribalCustomaryAdoptionDate,
       @JsonProperty("tribalCustomaryAdoptionIndicator") Boolean tribalCustomaryAdoptionIndicator) {
     super();
     this.victimClientId = victimClientId;
