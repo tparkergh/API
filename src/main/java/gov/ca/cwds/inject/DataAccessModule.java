@@ -16,6 +16,7 @@ import com.google.inject.Provides;
 import gov.ca.cwds.data.cms.AllegationDao;
 import gov.ca.cwds.data.cms.AllegationPerpetratorHistoryDao;
 import gov.ca.cwds.data.cms.AttorneyDao;
+import gov.ca.cwds.data.cms.ChildClientDao;
 import gov.ca.cwds.data.cms.ClientDao;
 import gov.ca.cwds.data.cms.ClientUcDao;
 import gov.ca.cwds.data.cms.CmsDocReferralClientDao;
@@ -44,6 +45,7 @@ import gov.ca.cwds.data.ns.ScreeningDao;
 import gov.ca.cwds.data.persistence.cms.Allegation;
 import gov.ca.cwds.data.persistence.cms.AllegationPerpetratorHistory;
 import gov.ca.cwds.data.persistence.cms.ApiSystemCodeDao;
+import gov.ca.cwds.data.persistence.cms.ChildClient;
 import gov.ca.cwds.data.persistence.cms.ClientCollateral;
 import gov.ca.cwds.data.persistence.cms.ClientUc;
 import gov.ca.cwds.data.persistence.cms.CmsDocReferralClient;
@@ -109,7 +111,7 @@ public class DataAccessModule extends AbstractModule {
           OtherChildInPlacemtHome.class, OtherClientName.class, Referral.class,
           ReferralClient.class, Reporter.class, ServiceProvider.class, StaffPerson.class,
           SubstituteCareProvider.class, LongText.class, AllegationPerpetratorHistory.class,
-          ClientUc.class) {
+          ClientUc.class, ChildClient.class) {
         @Override
         public DataSourceFactory getDataSourceFactory(ApiConfiguration configuration) {
           return configuration.getCmsDataSourceFactory();
@@ -176,6 +178,7 @@ public class DataAccessModule extends AbstractModule {
     bind(LongTextDao.class);
     bind(AllegationPerpetratorHistoryDao.class);
     bind(ClientUcDao.class);
+    bind(ChildClientDao.class);
 
     // NS:
     bind(AddressDao.class);

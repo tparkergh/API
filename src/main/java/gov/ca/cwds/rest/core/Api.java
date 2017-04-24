@@ -112,5 +112,10 @@ public interface Api {
    */
   public static final String RESOURCE_ELASTICSEARCH_INDEX_QUERY = "dora";
 
+  /**
+   * A {@code String} constant representing {@value #RESOURCE_CHILDCLIENT} API..
+   */
+  public static final String RESOURCE_CHILDCLIENT = "_childClient";
+
 
 }
