@@ -15,6 +15,7 @@ import gov.ca.cwds.rest.api.Request;
 import gov.ca.cwds.rest.api.Response;
 import gov.ca.cwds.rest.api.domain.DomainChef;
 import gov.ca.cwds.rest.api.domain.DomainObject;
+import io.dropwizard.validation.OneOf;
 import io.swagger.annotations.ApiModelProperty;
 
 /**
@@ -35,8 +36,9 @@ public class ChildClient extends DomainObject implements Request, Response {
       example = "ABC1234567")
   private String victimClientId;
 
-  @NotNull
+  @NotEmpty
   @Size(min = 1, max = 2)
+  @OneOf(value = {"N", "Y", "NA"}, ignoreCase = true, ignoreWhitespace = true)
   @ApiModelProperty(required = true, readOnly = false, value = "", example = "N")
   private String adoptableCode;
 
@@ -67,7 +69,7 @@ public class ChildClient extends DomainObject implements Request, Response {
   private String attemptToAcquireHlthInfoDesc;
 
   @NotNull
-  @Size(min = 1, max = 1)
+  @Size(min = 1, max = 1, message = "size must be 1")
   @ApiModelProperty(required = true, readOnly = false, value = "", example = "N")
   private String awolAbductedCode;
 
@@ -82,8 +84,7 @@ public class ChildClient extends DomainObject implements Request, Response {
   @ApiModelProperty(required = false, readOnly = false)
   private Boolean collegeIndicator;
 
-  @NotEmpty
-  @Size(min = 1, max = 10)
+  @Size(max = 10)
   @ApiModelProperty(required = false, readOnly = false, value = "", example = "ABC1234567")
   private String currentCaseId;
 
@@ -92,6 +93,7 @@ public class ChildClient extends DomainObject implements Request, Response {
   private Short deathCircumstancesType;
 
   @Size(min = 1, max = 1)
+  @OneOf(value = {"N", "Y", "D"}, ignoreCase = true, ignoreWhitespace = true)
   @ApiModelProperty(required = false, readOnly = false, value = "", example = "N")
   private String disabilityDiagnosedCode;
 
@@ -113,7 +115,7 @@ public class ChildClient extends DomainObject implements Request, Response {
 
   @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = DATE_FORMAT)
   @JsonProperty(value = "foodStampsApplicationDate")
-  @gov.ca.cwds.rest.validation.Date(format = DATE_FORMAT, required = true)
+  @gov.ca.cwds.rest.validation.Date(format = DATE_FORMAT, required = false)
   @ApiModelProperty(required = false, readOnly = false, value = "yyyy-MM-dd",
       example = "2000-01-01")
   private String foodStampsApplicationDate;
@@ -177,14 +179,14 @@ public class ChildClient extends DomainObject implements Request, Response {
 
   @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = DATE_FORMAT)
   @JsonProperty(value = "sijsScheduledInterviewDate")
-  @gov.ca.cwds.rest.validation.Date(format = DATE_FORMAT, required = true)
+  @gov.ca.cwds.rest.validation.Date(format = DATE_FORMAT, required = false)
   @ApiModelProperty(required = false, readOnly = false, value = "yyyy-MM-dd",
       example = "2000-01-01")
   private String sijsScheduledInterviewDate;
 
   @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = DATE_FORMAT)
   @JsonProperty(value = "siiNextScreeningDueDate")
-  @gov.ca.cwds.rest.validation.Date(format = DATE_FORMAT, required = true)
+  @gov.ca.cwds.rest.validation.Date(format = DATE_FORMAT, required = false)
   @ApiModelProperty(required = false, readOnly = false, value = "yyyy-MM-dd",
       example = "2000-01-01")
   private String siiNextScreeningDueDate;
@@ -199,7 +201,7 @@ public class ChildClient extends DomainObject implements Request, Response {
 
   @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = DATE_FORMAT)
   @JsonProperty(value = "tribalCustomaryAdoptionDate")
-  @gov.ca.cwds.rest.validation.Date(format = DATE_FORMAT, required = true)
+  @gov.ca.cwds.rest.validation.Date(format = DATE_FORMAT, required = false)
   @ApiModelProperty(required = false, readOnly = false, value = "yyyy-MM-dd",
       example = "2000-01-01")
   private String tribalCustomaryAdoptionDate;
