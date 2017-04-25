@@ -97,15 +97,15 @@ public class ChildClient extends DomainObject implements Request, Response {
   @ApiModelProperty(required = false, readOnly = false, value = "", example = "N")
   private String disabilityDiagnosedCode;
 
-  @Size(min = 1, max = 10)
+  @Size(max = 10)
   @ApiModelProperty(required = false, readOnly = false, value = "", example = "Old")
   private String drmsHePassportDocOld;
 
-  @Size(min = 1, max = 10)
+  @Size(max = 10)
   @ApiModelProperty(required = false, readOnly = false, value = "", example = "Document")
   private String drmsHealthEducPassportDoc;
 
-  @Size(min = 1, max = 10)
+  @Size(max = 10)
   @ApiModelProperty(required = false, readOnly = false, value = "", example = "Agreement")
   private String drmsVoluntaryPlcmntAgrmntDoc;
 
@@ -125,7 +125,8 @@ public class ChildClient extends DomainObject implements Request, Response {
   private Boolean foodStampsApplicationIndicator;
 
   @NotEmpty
-  @Size(min = 1, max = 1)
+  @Size(min = 1, max = 1, message = "size must be 1")
+  @OneOf(value = {"Y", "N", "U", "P"}, ignoreCase = true, ignoreWhitespace = true)
   @ApiModelProperty(required = true, readOnly = false, value = "", example = "N")
   private String icwaEligibilityCode;
 

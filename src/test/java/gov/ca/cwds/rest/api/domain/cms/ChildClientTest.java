@@ -1132,6 +1132,500 @@ public class ChildClientTest implements DomainTestTemplate {
 
   }
 
+  @Test
+  public void testFailDisabilityDiagnosedCodeWhiteSpace() throws Exception {
+
+    ChildClient validChildClient = MAPPER.readValue(
+        fixture(
+            "fixtures/domain/legacy/ChildClient/invalid/disabilityDiagnosedCodeWhiteSpace.json"),
+        ChildClient.class);
+
+    Response response =
+        resources.client().target(ROOT_RESOURCE).request().accept(MediaType.APPLICATION_JSON)
+            .post(Entity.entity(validChildClient, MediaType.APPLICATION_JSON));
+
+    assertThat(response.getStatus(), is(equalTo(422)));
+    assertThat(response.readEntity(String.class)
+        .indexOf("disabilityDiagnosedCode must be one of [N, Y, D]"), is(greaterThanOrEqualTo(0)));
+  }
+
+  @Test
+  public void testSuccessDisabilityDiagnosedCodeN() throws Exception {
+
+    ChildClient validChildClient = MAPPER.readValue(
+        fixture("fixtures/domain/legacy/ChildClient/valid/disabilityDiagnosedCodeN.json"),
+        ChildClient.class);
+
+    Response response =
+        resources.client().target(ROOT_RESOURCE).request().accept(MediaType.APPLICATION_JSON)
+            .post(Entity.entity(validChildClient, MediaType.APPLICATION_JSON));
+
+    assertThat(response.getStatus(), is(equalTo(204)));
+
+  }
+
+  @Test
+  public void testSuccessDisabilityDiagnosedCodeY() throws Exception {
+
+    ChildClient validChildClient = MAPPER.readValue(
+        fixture("fixtures/domain/legacy/ChildClient/valid/disabilityDiagnosedCodeY.json"),
+        ChildClient.class);
+
+    Response response =
+        resources.client().target(ROOT_RESOURCE).request().accept(MediaType.APPLICATION_JSON)
+            .post(Entity.entity(validChildClient, MediaType.APPLICATION_JSON));
+
+    assertThat(response.getStatus(), is(equalTo(204)));
+
+  }
+
+  @Test
+  public void testSuccessDisabilityDiagnosedCodeD() throws Exception {
+
+    ChildClient validChildClient = MAPPER.readValue(
+        fixture("fixtures/domain/legacy/ChildClient/valid/disabilityDiagnosedCodeD.json"),
+        ChildClient.class);
+
+    Response response =
+        resources.client().target(ROOT_RESOURCE).request().accept(MediaType.APPLICATION_JSON)
+            .post(Entity.entity(validChildClient, MediaType.APPLICATION_JSON));
+
+    assertThat(response.getStatus(), is(equalTo(204)));
+
+  }
+
+  /*
+   * drmsHePassportDocOld test
+   */
+  @Test
+  public void testSuccessDrmsHePassportDocOldMissing() throws Exception {
+
+    ChildClient validChildClient = MAPPER.readValue(
+        fixture("fixtures/domain/legacy/ChildClient/valid/drmsHePassportDocOldMissing.json"),
+        ChildClient.class);
+
+    Response response =
+        resources.client().target(ROOT_RESOURCE).request().accept(MediaType.APPLICATION_JSON)
+            .post(Entity.entity(validChildClient, MediaType.APPLICATION_JSON));
+
+    assertThat(response.getStatus(), is(equalTo(204)));
+
+  }
+
+  @Test
+  public void testSuccessDrmsHePassportDocOldNull() throws Exception {
+
+    ChildClient validChildClient = MAPPER.readValue(
+        fixture("fixtures/domain/legacy/ChildClient/valid/drmsHePassportDocOldNull.json"),
+        ChildClient.class);
+
+    Response response =
+        resources.client().target(ROOT_RESOURCE).request().accept(MediaType.APPLICATION_JSON)
+            .post(Entity.entity(validChildClient, MediaType.APPLICATION_JSON));
+
+    assertThat(response.getStatus(), is(equalTo(204)));
+
+  }
+
+  @Test
+  public void testSuccessDrmsHePassportDocOldEmpty() throws Exception {
+
+    ChildClient validChildClient = MAPPER.readValue(
+        fixture("fixtures/domain/legacy/ChildClient/valid/drmsHePassportDocOldEmpty.json"),
+        ChildClient.class);
+
+    Response response =
+        resources.client().target(ROOT_RESOURCE).request().accept(MediaType.APPLICATION_JSON)
+            .post(Entity.entity(validChildClient, MediaType.APPLICATION_JSON));
+
+    assertThat(response.getStatus(), is(equalTo(204)));
+
+  }
+
+  /*
+   * drmsHealthEducPassportDoc test
+   */
+  @Test
+  public void testSuccessDrmsHealthEducPassportDocMissing() throws Exception {
+
+    ChildClient validChildClient = MAPPER.readValue(
+        fixture("fixtures/domain/legacy/ChildClient/valid/drmsHealthEducPassportDocMissing.json"),
+        ChildClient.class);
+
+    Response response =
+        resources.client().target(ROOT_RESOURCE).request().accept(MediaType.APPLICATION_JSON)
+            .post(Entity.entity(validChildClient, MediaType.APPLICATION_JSON));
+
+    assertThat(response.getStatus(), is(equalTo(204)));
+
+  }
+
+  @Test
+  public void testSuccessDrmsHealthEducPassportDocNull() throws Exception {
+
+    ChildClient validChildClient = MAPPER.readValue(
+        fixture("fixtures/domain/legacy/ChildClient/valid/drmsHealthEducPassportDocNull.json"),
+        ChildClient.class);
+
+    Response response =
+        resources.client().target(ROOT_RESOURCE).request().accept(MediaType.APPLICATION_JSON)
+            .post(Entity.entity(validChildClient, MediaType.APPLICATION_JSON));
+
+    assertThat(response.getStatus(), is(equalTo(204)));
+
+  }
+
+  @Test
+  public void testSuccessDrmsHealthEducPassportDocEmpty() throws Exception {
+
+    ChildClient validChildClient = MAPPER.readValue(
+        fixture("fixtures/domain/legacy/ChildClient/valid/drmsHealthEducPassportDocEmpty.json"),
+        ChildClient.class);
+
+    Response response =
+        resources.client().target(ROOT_RESOURCE).request().accept(MediaType.APPLICATION_JSON)
+            .post(Entity.entity(validChildClient, MediaType.APPLICATION_JSON));
+
+    assertThat(response.getStatus(), is(equalTo(204)));
+
+  }
+
+  /*
+   * drmsVoluntaryPlcmntAgrmntDoc test
+   */
+  @Test
+  public void testSuccessDrmsVoluntaryPlcmntAgrmntDocMissing() throws Exception {
+
+    ChildClient validChildClient = MAPPER.readValue(
+        fixture(
+            "fixtures/domain/legacy/ChildClient/valid/drmsVoluntaryPlcmntAgrmntDocMissing.json"),
+        ChildClient.class);
+
+    Response response =
+        resources.client().target(ROOT_RESOURCE).request().accept(MediaType.APPLICATION_JSON)
+            .post(Entity.entity(validChildClient, MediaType.APPLICATION_JSON));
+
+    assertThat(response.getStatus(), is(equalTo(204)));
+
+  }
+
+  @Test
+  public void testSuccessDrmsVoluntaryPlcmntAgrmntDocNull() throws Exception {
+
+    ChildClient validChildClient = MAPPER.readValue(
+        fixture("fixtures/domain/legacy/ChildClient/valid/drmsVoluntaryPlcmntAgrmntDocNull.json"),
+        ChildClient.class);
+
+    Response response =
+        resources.client().target(ROOT_RESOURCE).request().accept(MediaType.APPLICATION_JSON)
+            .post(Entity.entity(validChildClient, MediaType.APPLICATION_JSON));
+
+    assertThat(response.getStatus(), is(equalTo(204)));
+
+  }
+
+  @Test
+  public void testSuccessDrmsVoluntaryPlcmntAgrmntDocEmpty() throws Exception {
+
+    ChildClient validChildClient = MAPPER.readValue(
+        fixture("fixtures/domain/legacy/ChildClient/valid/drmsVoluntaryPlcmntAgrmntDocEmpty.json"),
+        ChildClient.class);
+
+    Response response =
+        resources.client().target(ROOT_RESOURCE).request().accept(MediaType.APPLICATION_JSON)
+            .post(Entity.entity(validChildClient, MediaType.APPLICATION_JSON));
+
+    assertThat(response.getStatus(), is(equalTo(204)));
+
+  }
+
+  /*
+   * fc2EligApplicationIndicatorVar test
+   */
+  @Test
+  public void failWhenFc2EligApplicationIndicatorVarNull() throws Exception {
+    ChildClient validChildClient = MAPPER.readValue(
+        fixture(
+            "fixtures/domain/legacy/ChildClient/invalid/fc2EligApplicationIndicatorVarNull.json"),
+        ChildClient.class);
+
+    Response response =
+        resources.client().target(ROOT_RESOURCE).request().accept(MediaType.APPLICATION_JSON)
+            .post(Entity.entity(validChildClient, MediaType.APPLICATION_JSON));
+
+    assertThat(response.getStatus(), is(equalTo(422)));
+    assertThat(
+        response.readEntity(String.class).indexOf("fc2EligApplicationIndicatorVar may not be null"),
+        is(greaterThanOrEqualTo(0)));
+
+  }
+
+  @Test
+  public void failWhenFc2EligApplicationIndicatorVarEmpty() throws Exception {
+    ChildClient validChildClient = MAPPER.readValue(
+        fixture(
+            "fixtures/domain/legacy/ChildClient/invalid/fc2EligApplicationIndicatorVarEmpty.json"),
+        ChildClient.class);
+
+    Response response =
+        resources.client().target(ROOT_RESOURCE).request().accept(MediaType.APPLICATION_JSON)
+            .post(Entity.entity(validChildClient, MediaType.APPLICATION_JSON));
+
+    assertThat(response.getStatus(), is(equalTo(422)));
+    assertThat(
+        response.readEntity(String.class).indexOf("fc2EligApplicationIndicatorVar may not be null"),
+        is(greaterThanOrEqualTo(0)));
+
+  }
+
+  @Test
+  public void failWhenFc2EligApplicationIndicatorVarMissing() throws Exception {
+    ChildClient validChildClient = MAPPER.readValue(
+        fixture(
+            "fixtures/domain/legacy/ChildClient/invalid/fc2EligApplicationIndicatorVarMissing.json"),
+        ChildClient.class);
+
+    Response response =
+        resources.client().target(ROOT_RESOURCE).request().accept(MediaType.APPLICATION_JSON)
+            .post(Entity.entity(validChildClient, MediaType.APPLICATION_JSON));
+
+    assertThat(response.getStatus(), is(equalTo(422)));
+    assertThat(
+        response.readEntity(String.class).indexOf("fc2EligApplicationIndicatorVar may not be null"),
+        is(greaterThanOrEqualTo(0)));
+
+  }
+
+  /*
+   * foodStampsApplicationDate test
+   */
+  @Test
+  public void failWhenFoodStampsApplicationDateInvalid() throws Exception {
+    ChildClient validChildClient = MAPPER.readValue(
+        fixture("fixtures/domain/legacy/ChildClient/invalid/foodStampsApplicationDateInvalid.json"),
+        ChildClient.class);
+
+    Response response =
+        resources.client().target(ROOT_RESOURCE).request().accept(MediaType.APPLICATION_JSON)
+            .post(Entity.entity(validChildClient, MediaType.APPLICATION_JSON));
+
+    assertThat(response.getStatus(), is(equalTo(422)));
+    assertThat(
+        response.readEntity(String.class)
+            .indexOf("foodStampsApplicationDate must be in the format of yyyy-MM-dd"),
+        is(greaterThanOrEqualTo(0)));
+
+  }
+
+  @Test
+  public void testSuccessFoodStampsApplicationDateMissing() throws Exception {
+
+    ChildClient validChildClient = MAPPER.readValue(
+        fixture("fixtures/domain/legacy/ChildClient/valid/foodStampsApplicationDateMissing.json"),
+        ChildClient.class);
+
+    Response response =
+        resources.client().target(ROOT_RESOURCE).request().accept(MediaType.APPLICATION_JSON)
+            .post(Entity.entity(validChildClient, MediaType.APPLICATION_JSON));
+
+    assertThat(response.getStatus(), is(equalTo(204)));
+
+  }
+
+  /*
+   * foodStampsApplicationIndicator test
+   */
+  @Test
+  public void failWhenFoodStampsApplicationIndicatorNull() throws Exception {
+    ChildClient validChildClient = MAPPER.readValue(
+        fixture(
+            "fixtures/domain/legacy/ChildClient/invalid/foodStampsApplicationIndicatorNull.json"),
+        ChildClient.class);
+
+    Response response =
+        resources.client().target(ROOT_RESOURCE).request().accept(MediaType.APPLICATION_JSON)
+            .post(Entity.entity(validChildClient, MediaType.APPLICATION_JSON));
+
+    assertThat(response.getStatus(), is(equalTo(422)));
+    assertThat(
+        response.readEntity(String.class).indexOf("foodStampsApplicationIndicator may not be null"),
+        is(greaterThanOrEqualTo(0)));
+
+  }
+
+  @Test
+  public void failWhenFoodStampsApplicationIndicatorEmpty() throws Exception {
+    ChildClient validChildClient = MAPPER.readValue(
+        fixture(
+            "fixtures/domain/legacy/ChildClient/invalid/foodStampsApplicationIndicatorEmpty.json"),
+        ChildClient.class);
+
+    Response response =
+        resources.client().target(ROOT_RESOURCE).request().accept(MediaType.APPLICATION_JSON)
+            .post(Entity.entity(validChildClient, MediaType.APPLICATION_JSON));
+
+    assertThat(response.getStatus(), is(equalTo(422)));
+    assertThat(
+        response.readEntity(String.class).indexOf("foodStampsApplicationIndicator may not be null"),
+        is(greaterThanOrEqualTo(0)));
+
+  }
+
+  @Test
+  public void failWhenFoodStampsApplicationIndicatorMissing() throws Exception {
+    ChildClient validChildClient = MAPPER.readValue(
+        fixture(
+            "fixtures/domain/legacy/ChildClient/invalid/foodStampsApplicationIndicatorMissing.json"),
+        ChildClient.class);
+
+    Response response =
+        resources.client().target(ROOT_RESOURCE).request().accept(MediaType.APPLICATION_JSON)
+            .post(Entity.entity(validChildClient, MediaType.APPLICATION_JSON));
+
+    assertThat(response.getStatus(), is(equalTo(422)));
+    assertThat(
+        response.readEntity(String.class).indexOf("foodStampsApplicationIndicator may not be null"),
+        is(greaterThanOrEqualTo(0)));
+
+  }
+
+  /*
+   * icwaEligibilityCode test
+   */
+  @Test
+  public void testFailIcwaEligibilityCodeInvalid() throws Exception {
+
+    ChildClient validChildClient = MAPPER.readValue(
+        fixture("fixtures/domain/legacy/ChildClient/invalid/icwaEligibilityCodeInvalid.json"),
+        ChildClient.class);
+
+    Response response =
+        resources.client().target(ROOT_RESOURCE).request().accept(MediaType.APPLICATION_JSON)
+            .post(Entity.entity(validChildClient, MediaType.APPLICATION_JSON));
+
+    assertThat(response.getStatus(), is(equalTo(422)));
+  }
+
+  @Test
+  public void testFailIcwaEligibilityCodeEmpty() throws Exception {
+
+    ChildClient validChildClient = MAPPER.readValue(
+        fixture("fixtures/domain/legacy/ChildClient/invalid/icwaEligibilityCodeEmpty.json"),
+        ChildClient.class);
+
+    Response response =
+        resources.client().target(ROOT_RESOURCE).request().accept(MediaType.APPLICATION_JSON)
+            .post(Entity.entity(validChildClient, MediaType.APPLICATION_JSON));
+
+    assertThat(response.getStatus(), is(equalTo(422)));
+  }
+
+  @Test
+  public void testFailIcwaEligibilityCodeMissing() throws Exception {
+
+    ChildClient validChildClient = MAPPER.readValue(
+        fixture("fixtures/domain/legacy/ChildClient/invalid/icwaEligibilityCodeMissing.json"),
+        ChildClient.class);
+
+    Response response =
+        resources.client().target(ROOT_RESOURCE).request().accept(MediaType.APPLICATION_JSON)
+            .post(Entity.entity(validChildClient, MediaType.APPLICATION_JSON));
+
+    assertThat(response.getStatus(), is(equalTo(422)));
+
+  }
+
+  @Test
+  public void testFailIcwaEligibilityCodeNull() throws Exception {
+
+    ChildClient validChildClient = MAPPER.readValue(
+        fixture("fixtures/domain/legacy/ChildClient/invalid/icwaEligibilityCodeNull.json"),
+        ChildClient.class);
+
+    Response response =
+        resources.client().target(ROOT_RESOURCE).request().accept(MediaType.APPLICATION_JSON)
+            .post(Entity.entity(validChildClient, MediaType.APPLICATION_JSON));
+
+    assertThat(response.getStatus(), is(equalTo(422)));
+
+  }
+
+  @Test
+  public void testFailIcwaEligibilityCodeWhiteSpace() throws Exception {
+
+    ChildClient validChildClient = MAPPER.readValue(
+        fixture("fixtures/domain/legacy/ChildClient/invalid/icwaEligibilityCodeWhiteSpace.json"),
+        ChildClient.class);
+
+    Response response =
+        resources.client().target(ROOT_RESOURCE).request().accept(MediaType.APPLICATION_JSON)
+            .post(Entity.entity(validChildClient, MediaType.APPLICATION_JSON));
+
+    assertThat(response.getStatus(), is(equalTo(422)));
+    assertThat(response.readEntity(String.class)
+        .indexOf("icwaEligibilityCode must be one of [Y, N, U, P]"), is(greaterThanOrEqualTo(0)));
+  }
+
+  @Test
+  public void testSuccessIcwaEligibilityCodeY() throws Exception {
+
+    ChildClient validChildClient = MAPPER.readValue(
+        fixture("fixtures/domain/legacy/ChildClient/valid/icwaEligibilityCodeY.json"),
+        ChildClient.class);
+
+    Response response =
+        resources.client().target(ROOT_RESOURCE).request().accept(MediaType.APPLICATION_JSON)
+            .post(Entity.entity(validChildClient, MediaType.APPLICATION_JSON));
+
+    assertThat(response.getStatus(), is(equalTo(204)));
+
+  }
+
+  @Test
+  public void testSuccessIcwaEligibilityCodeN() throws Exception {
+
+    ChildClient validChildClient = MAPPER.readValue(
+        fixture("fixtures/domain/legacy/ChildClient/valid/icwaEligibilityCodeN.json"),
+        ChildClient.class);
+
+    Response response =
+        resources.client().target(ROOT_RESOURCE).request().accept(MediaType.APPLICATION_JSON)
+            .post(Entity.entity(validChildClient, MediaType.APPLICATION_JSON));
+
+    assertThat(response.getStatus(), is(equalTo(204)));
+
+  }
+
+  @Test
+  public void testSuccessIcwaEligibilityCodeU() throws Exception {
+
+    ChildClient validChildClient = MAPPER.readValue(
+        fixture("fixtures/domain/legacy/ChildClient/valid/icwaEligibilityCodeU.json"),
+        ChildClient.class);
+
+    Response response =
+        resources.client().target(ROOT_RESOURCE).request().accept(MediaType.APPLICATION_JSON)
+            .post(Entity.entity(validChildClient, MediaType.APPLICATION_JSON));
+
+    assertThat(response.getStatus(), is(equalTo(204)));
+
+  }
+
+  @Test
+  public void testSuccessIcwaEligibilityCodeP() throws Exception {
+
+    ChildClient validChildClient = MAPPER.readValue(
+        fixture("fixtures/domain/legacy/ChildClient/valid/icwaEligibilityCodeP.json"),
+        ChildClient.class);
+
+    Response response =
+        resources.client().target(ROOT_RESOURCE).request().accept(MediaType.APPLICATION_JSON)
+            .post(Entity.entity(validChildClient, MediaType.APPLICATION_JSON));
+
+    assertThat(response.getStatus(), is(equalTo(204)));
+
+  }
+
 
   private ChildClient validChildClient()
       throws JsonParseException, JsonMappingException, IOException {
