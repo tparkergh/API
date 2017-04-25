@@ -49,11 +49,12 @@ public class Referral extends DomainObject implements Request, Response {
   private String approvalNumber;
 
   @NotNull
-  @ApiModelProperty(required = true, readOnly = false, value = "118", example = "1234")
+  @ApiModelProperty(required = true, readOnly = false, value = "Approval Status", example = "1234")
   private Short approvalStatusType;
 
   @NotNull
-  @ApiModelProperty(required = false, readOnly = false, value = "", example = "Y")
+  @ApiModelProperty(required = false, readOnly = false, value = "Caretakers Perpetrator Code",
+      example = "Y")
   private Boolean caretakersPerpetratorCode;
 
   @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = DATE_FORMAT)
@@ -64,12 +65,14 @@ public class Referral extends DomainObject implements Request, Response {
   private String closureDate;
 
   @NotNull
-  @ApiModelProperty(required = true, readOnly = false, example = "444")
+  @ApiModelProperty(required = true, readOnly = false, value = "Communication Method",
+      example = "444")
   private Short communicationMethodType;
 
   @NotEmpty
   @Size(min = 1, max = 2)
-  @ApiModelProperty(required = true, readOnly = false, value = "99", example = "99")
+  @ApiModelProperty(required = true, readOnly = false, value = "County Specific Code",
+      example = "99")
   private String countySpecificCode;
 
   @Size(max = 10)
