@@ -162,7 +162,8 @@ public class ChildClient extends DomainObject implements Request, Response {
   private Boolean postsecVocIndicator;
 
   @NotEmpty
-  @Size(min = 1, max = 1)
+  @Size(min = 1, max = 1, message = "size must be 1")
+  @OneOf(value = {"Y", "N", "U", "X"}, ignoreCase = true, ignoreWhitespace = true)
   @ApiModelProperty(required = true, readOnly = false, value = "", example = "N")
   private String previouslyAdoptedCode;
 
