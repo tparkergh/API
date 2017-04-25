@@ -136,6 +136,7 @@ public class ScreeningToReferralService implements CrudsService {
    * @param reporterService the reporterService
    * @param addressService - cms address service
    * @param clientAddressService - cms ClientAddress service
+   * @param longTextService - cms LongText service
    */
   @Inject
   public ScreeningToReferralService(ReferralService referralService, ClientService clientService,
