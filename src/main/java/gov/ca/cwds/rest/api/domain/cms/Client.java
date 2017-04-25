@@ -32,8 +32,8 @@ public class Client extends DomainObject implements Request, Response {
   private static final long serialVersionUID = 1L;
 
   @Size(max = 10)
-  @ApiModelProperty(required = false, readOnly = false, value = "", example = "ABC1234567")
-  private String existingClientId;
+  @ApiModelProperty(required = false, readOnly = false, value = "Client Id", example = "ABC1234567")
+  private String clientId;
 
   @ApiModelProperty(required = false, readOnly = false)
   private Boolean adjudicatedDelinquentIndicator;
@@ -86,8 +86,7 @@ public class Client extends DomainObject implements Request, Response {
   private Boolean childClientIndicatorVar;
 
   @Size(max = 12)
-  @ApiModelProperty(required = false, readOnly = false, value = "Client Index Number",
-      example = "client index number")
+  @ApiModelProperty(required = false, readOnly = false, value = "Client Index Number", example = "")
   private String clientIndexNumber;
 
   @NotNull
@@ -498,7 +497,7 @@ public class Client extends DomainObject implements Request, Response {
       @JsonProperty("unemployedParentCode") String unemployedParentCode,
       @JsonProperty("zippyCreatedIndicator") Boolean zippyCreatedIndicator) {
     super();
-    this.existingClientId = existingClientId;
+    this.clientId = existingClientId;
     this.adjudicatedDelinquentIndicator = adjudicatedDelinquentIndicator;
     this.adoptionStatusCode = adoptionStatusCode;
     this.alienRegistrationNumber = alienRegistrationNumber;
@@ -572,7 +571,7 @@ public class Client extends DomainObject implements Request, Response {
    * @param isExist - ExistingId
    */
   public Client(gov.ca.cwds.data.persistence.cms.Client persistedClient, boolean isExist) {
-    this.existingClientId = isExist ? persistedClient.getId() : "";
+    this.clientId = isExist ? persistedClient.getId() : "";
     this.adjudicatedDelinquentIndicator =
         DomainChef.uncookBooleanString(persistedClient.getAdjudicatedDelinquentIndicator());
     this.adoptionStatusCode = persistedClient.getAdoptionStatusCode();
@@ -666,7 +665,7 @@ public class Client extends DomainObject implements Request, Response {
    * @return the existingClientId
    */
   public String getExistingClientId() {
-    return existingClientId;
+    return clientId;
   }
 
   /**
@@ -1135,7 +1134,7 @@ public class Client extends DomainObject implements Request, Response {
   public final int hashCode() {
     final int prime = 31;
     int result = 1;
-    result = prime * result + ((existingClientId == null) ? 0 : existingClientId.hashCode());
+    result = prime * result + ((clientId == null) ? 0 : clientId.hashCode());
     result = prime * result + ((adjudicatedDelinquentIndicator == null) ? 0
         : adjudicatedDelinquentIndicator.hashCode());
     result = prime * result + ((adoptionStatusCode == null) ? 0 : adoptionStatusCode.hashCode());
@@ -1254,10 +1253,10 @@ public class Client extends DomainObject implements Request, Response {
       return false;
     }
     Client other = (Client) obj;
-    if (existingClientId == null) {
-      if (other.existingClientId != null)
+    if (clientId == null) {
+      if (other.clientId != null)
         return false;
-    } else if (!existingClientId.equals(other.existingClientId))
+    } else if (!clientId.equals(other.clientId))
       return false;
     if (adjudicatedDelinquentIndicator == null) {
       if (other.adjudicatedDelinquentIndicator != null)

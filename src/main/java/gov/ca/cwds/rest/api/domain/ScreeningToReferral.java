@@ -30,6 +30,11 @@ import io.swagger.annotations.ApiModelProperty;
     "screeningDecisionDetail", "address", "participants", "crossReports", "allegations"})
 public class ScreeningToReferral extends DomainObject implements Request {
 
+  /**
+   * Serialization version
+   */
+  private static final long serialVersionUID = 1L;
+
   @JsonProperty("id")
   @ApiModelProperty(required = true, readOnly = false, value = "Screening ID", example = "12345")
   private long id;
