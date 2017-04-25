@@ -233,9 +233,7 @@ public class ScreeningToReferralService implements CrudsService {
             LOGGER.error("ERROR - creating Reporter" + e.getMessage());
             throw new ServiceException(e);
           }
-
         } else {
-
           // not a reporter participant - make a CLIENT and REFERRAL_CLIENT
           if (!anonymousReporter(screeningToReferral)) {
 
@@ -499,14 +497,12 @@ public class ScreeningToReferralService implements CrudsService {
     String streetNumber = null;
     String streetName = null;
     String zipCodeString = null;
+    String city = null;
 
     Set<gov.ca.cwds.rest.api.domain.Address> addresses = new HashSet<>(ip.getAddresses());
 
-
     // use the first address node only
     for (gov.ca.cwds.rest.api.domain.Address address : addresses) {
-
-      String addressId;
 
       // TODO: address parsing - requires standardizing in seperate class
       zipCodeString = address.getZip().toString();
@@ -517,6 +513,7 @@ public class ScreeningToReferralService implements CrudsService {
       streetAddress = address.getStreetAddress().split(" ");
       streetNumber = streetAddress[0];
       streetName = streetAddress[1];
+      city = address.getCity();
 
       break;
     }
@@ -526,7 +523,7 @@ public class ScreeningToReferralService implements CrudsService {
       mandatedReporterIndicator = true;
     }
 
-    Reporter reporter = new Reporter("", "", DEFAULT_CODE, DEFAULT_CODE, false, "", "", "", false,
+    Reporter reporter = new Reporter("", city, DEFAULT_CODE, DEFAULT_CODE, false, "", "", "", false,
         ip.getFirstName(), ip.getLastName(), mandatedReporterIndicator, 0, DEFAULT_DECIMAL, "", "",
         DEFAULT_DECIMAL, 0, DEFAULT_STATE_CODE, streetName, streetNumber, "", zipCodeString,
         referralId, "", DEFAULT_CODE, DEFAULT_COUNTY_SPECIFIC_CODE);
