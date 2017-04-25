@@ -77,7 +77,7 @@ public class Reporter extends DomainObject implements Request, Response {
   @NotNull
   @Size(max = 35, message = "size must be less than or equal to 35")
   @ApiModelProperty(required = true, readOnly = false,
-      value = "cannot be set if lawEnforcementId provided", example = "")
+      value = "cannot be set if lawEnforcementId provided", example = "employer name")
   private String employerName;
 
   @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = DATE_FORMAT)
