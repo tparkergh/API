@@ -16,7 +16,11 @@ public class UnitOfWorkModule {
 
   }
 
-  @SuppressWarnings({"javadoc", "unchecked"})
+  /**
+   * @param bundles the hibernate bundle
+   * @return the proxyFactory
+   */
+  @SuppressWarnings("unchecked")
   public static UnitOfWorkAwareProxyFactory getUnitOfWorkProxyFactory(
       HibernateBundle<ApiConfiguration>... bundles) {
     if (proxyFactory == null) {
