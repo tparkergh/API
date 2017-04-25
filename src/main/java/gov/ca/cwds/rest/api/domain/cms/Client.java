@@ -86,7 +86,8 @@ public class Client extends DomainObject implements Request, Response {
   private Boolean childClientIndicatorVar;
 
   @Size(max = 12)
-  @ApiModelProperty(required = false, readOnly = false, value = "", example = "client index number")
+  @ApiModelProperty(required = false, readOnly = false, value = "Client Index Number",
+      example = "client index number")
   private String clientIndexNumber;
 
   @NotNull
@@ -157,7 +158,8 @@ public class Client extends DomainObject implements Request, Response {
   private String deathPlace;
 
   @Size(max = 10)
-  @ApiModelProperty(required = false, readOnly = false, value = "", example = "reason text")
+  @ApiModelProperty(required = false, readOnly = false, value = "Death Reason Text",
+      example = "0123456ABC")
   private String deathReasonText;
 
   @NotNull
@@ -172,7 +174,8 @@ public class Client extends DomainObject implements Request, Response {
   private Short driverLicenseStateCodeType;
 
   @Size(max = 50)
-  @ApiModelProperty(required = false, readOnly = false, value = "", example = "abc@def.com")
+  @ApiModelProperty(required = false, readOnly = false, value = "Email Address",
+      example = "abc@def.com")
   private String emailAddress;
 
   @NotEmpty
@@ -197,7 +200,8 @@ public class Client extends DomainObject implements Request, Response {
   private String genderCode;
 
   @Size(max = 10)
-  @ApiModelProperty(required = false, readOnly = false, value = "", example = "summary text")
+  @ApiModelProperty(required = false, readOnly = false, value = "Health Summary Text",
+      example = "0123456ABC")
   private String healthSummaryText;
 
   @Size(max = 1)
