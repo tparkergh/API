@@ -17,6 +17,10 @@ import io.dropwizard.jackson.Jackson;
 import nl.jqno.equalsverifier.EqualsVerifier;
 import nl.jqno.equalsverifier.Warning;
 
+/**
+ * @author CWDS API Team
+ */
+@SuppressWarnings("javadoc")
 public class AllegationTest {
 
   private long victimPersonId = 1;
@@ -68,8 +72,8 @@ public class AllegationTest {
     assertThat(domain.getCounty(), is(equalTo(county)));
   }
 
+  @SuppressWarnings("unused")
   private Allegation validAllegation() {
-
     try {
       Allegation validAllegation = MAPPER
           .readValue(fixture("fixtures/domain/Allegation/valid/valid.json"), Allegation.class);
