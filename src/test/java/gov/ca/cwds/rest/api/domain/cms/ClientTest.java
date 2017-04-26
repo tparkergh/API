@@ -1756,9 +1756,8 @@ public class ClientTest implements DomainTestTemplate {
   /*
    * driversLicenseNumber test
    */
-
   @Test
-  public void successWhenDriversLicenseNumberEmpty() throws Exception {
+  public void successWhenDriverLicenseNumberEmpty() throws Exception {
     Client validClient = MAPPER.readValue(
         fixture("fixtures/domain/legacy/Client/valid/driversLicenseNumberEmpty.json"),
         Client.class);
@@ -1771,18 +1770,544 @@ public class ClientTest implements DomainTestTemplate {
 
   }
 
-  public void successWhenDriversLicenseNumberAllWhiteSpace() throws Exception {
+  @Test
+  public void successWhenDriverLicenseNumberAllWhiteSpace() throws Exception {
+    Client validClient = MAPPER.readValue(
+        fixture("fixtures/domain/legacy/Client/valid/driversLicenseNumberAllWhiteSpace.json"),
+        Client.class);
+
+    Response response =
+        resources.client().target(ROOT_RESOURCE).request().accept(MediaType.APPLICATION_JSON)
+            .post(Entity.entity(validClient, MediaType.APPLICATION_JSON));
+
+    assertThat(response.getStatus(), is(equalTo(204)));
+
 
   }
 
-  public void failWhenDriversLicenseNumberNull() throws Exception {
+  @Test
+  public void failWhenDriverLicenseNumberNull() throws Exception {
+    Client validClient = MAPPER.readValue(
+        fixture("fixtures/domain/legacy/Client/invalid/driverLicenseNumberNull.json"),
+        Client.class);
+
+    Response response =
+        resources.client().target(ROOT_RESOURCE).request().accept(MediaType.APPLICATION_JSON)
+            .post(Entity.entity(validClient, MediaType.APPLICATION_JSON));
+
+    assertThat(response.getStatus(), is(equalTo(422)));
+    assertThat(response.readEntity(String.class).indexOf("driverLicenseNumber may not be null"),
+        is(greaterThanOrEqualTo(0)));
+
 
   }
 
-  public void failWhenDriversLicenseNumberTooLong() throws Exception {
+  @Test
+  public void failWhenDriverLicenseNumberTooLong() throws Exception {
+    Client validClient = MAPPER.readValue(
+        fixture("fixtures/domain/legacy/Client/invalid/driverLicenseNumberTooLong.json"),
+        Client.class);
+
+    Response response =
+        resources.client().target(ROOT_RESOURCE).request().accept(MediaType.APPLICATION_JSON)
+            .post(Entity.entity(validClient, MediaType.APPLICATION_JSON));
+
+    assertThat(response.getStatus(), is(equalTo(422)));
+    assertThat(response.readEntity(String.class)
+        .indexOf("driverLicenseNumber size must be between 0 and 20"), is(greaterThanOrEqualTo(0)));
 
   }
 
+  /*
+   * driverLicenseStateCodeType test
+   */
+  @Test
+  public void failWhenDriverLicenseStateCodeTypeNull() throws Exception {
+    Client validClient = MAPPER.readValue(
+        fixture("fixtures/domain/legacy/Client/invalid/driverLicenseStateCodeTypeNull.json"),
+        Client.class);
+
+    Response response =
+        resources.client().target(ROOT_RESOURCE).request().accept(MediaType.APPLICATION_JSON)
+            .post(Entity.entity(validClient, MediaType.APPLICATION_JSON));
+
+    assertThat(response.getStatus(), is(equalTo(422)));
+    assertThat(
+        response.readEntity(String.class).indexOf("driverLicenseStateCodeType may not be null"),
+        is(greaterThanOrEqualTo(0)));
+
+  }
+
+  @Test
+  public void failWhenDriverLicenseStateCodeTypeMissing() throws Exception {
+    Client validClient = MAPPER.readValue(
+        fixture("fixtures/domain/legacy/Client/invalid/driverLicenseStateCodeTypeMissing.json"),
+        Client.class);
+
+    Response response =
+        resources.client().target(ROOT_RESOURCE).request().accept(MediaType.APPLICATION_JSON)
+            .post(Entity.entity(validClient, MediaType.APPLICATION_JSON));
+
+    assertThat(response.getStatus(), is(equalTo(422)));
+    assertThat(
+        response.readEntity(String.class).indexOf("driverLicenseStateCodeType may not be null"),
+        is(greaterThanOrEqualTo(0)));
+
+  }
+
+  @Test
+  public void failWhenDriverLicenseStateCodeTypeEmpty() throws Exception {
+    Client validClient = MAPPER.readValue(
+        fixture("fixtures/domain/legacy/Client/invalid/driverLicenseStateCodeTypeEmpty.json"),
+        Client.class);
+
+    Response response =
+        resources.client().target(ROOT_RESOURCE).request().accept(MediaType.APPLICATION_JSON)
+            .post(Entity.entity(validClient, MediaType.APPLICATION_JSON));
+
+    assertThat(response.getStatus(), is(equalTo(422)));
+    assertThat(
+        response.readEntity(String.class).indexOf("driverLicenseStateCodeType may not be null"),
+        is(greaterThanOrEqualTo(0)));
+
+  }
+
+  /*
+   * emailAddress test
+   */
+  @Test
+  public void testSuccessEmailAddressEmpty() throws Exception {
+
+    Client validClient = MAPPER.readValue(
+        fixture("fixtures/domain/legacy/Client/valid/emailAddressEmpty.json"), Client.class);
+
+    Response response =
+        resources.client().target(ROOT_RESOURCE).request().accept(MediaType.APPLICATION_JSON)
+            .post(Entity.entity(validClient, MediaType.APPLICATION_JSON));
+
+    assertThat(response.getStatus(), is(equalTo(204)));
+
+  }
+
+  @Test
+  public void testSuccssEmailAddressMissing() throws Exception {
+
+    Client validClient = MAPPER.readValue(
+        fixture("fixtures/domain/legacy/Client/valid/emailAddressMissing.json"), Client.class);
+
+    Response response =
+        resources.client().target(ROOT_RESOURCE).request().accept(MediaType.APPLICATION_JSON)
+            .post(Entity.entity(validClient, MediaType.APPLICATION_JSON));
+
+    assertThat(response.getStatus(), is(equalTo(204)));
+
+  }
+
+  @Test
+  public void testSuccessEmailAddressNull() throws Exception {
+
+    Client validClient = MAPPER.readValue(
+        fixture("fixtures/domain/legacy/Client/valid/emailAddressNull.json"), Client.class);
+
+    Response response =
+        resources.client().target(ROOT_RESOURCE).request().accept(MediaType.APPLICATION_JSON)
+            .post(Entity.entity(validClient, MediaType.APPLICATION_JSON));
+
+    assertThat(response.getStatus(), is(equalTo(204)));
+
+  }
+
+  @Test
+  public void failWhenEmailAddressTooLong() throws Exception {
+    Client validClient = MAPPER.readValue(
+        fixture("fixtures/domain/legacy/Client/invalid/emailAddressTooLong.json"), Client.class);
+
+    Response response =
+        resources.client().target(ROOT_RESOURCE).request().accept(MediaType.APPLICATION_JSON)
+            .post(Entity.entity(validClient, MediaType.APPLICATION_JSON));
+
+    assertThat(response.getStatus(), is(equalTo(422)));
+    assertThat(
+        response.readEntity(String.class).indexOf("emailAddress size must be between 0 and 50"),
+        is(greaterThanOrEqualTo(0)));
+
+  }
+
+  /*
+   * estimatedDobCode test
+   */
+  @Test
+  public void testFailEstimatedDobCodeInvalid() throws Exception {
+
+    Client validClient = MAPPER.readValue(
+        fixture("fixtures/domain/legacy/Client/invalid/estimatedDobCodeInvalid.json"),
+        Client.class);
+
+    Response response =
+        resources.client().target(ROOT_RESOURCE).request().accept(MediaType.APPLICATION_JSON)
+            .post(Entity.entity(validClient, MediaType.APPLICATION_JSON));
+
+    assertThat(response.getStatus(), is(equalTo(422)));
+  }
+
+  @Test
+  public void testFailEstimatedDobCodeEmpty() throws Exception {
+
+    Client validClient = MAPPER.readValue(
+        fixture("fixtures/domain/legacy/Client/invalid/estimatedDobCodeEmpty.json"), Client.class);
+
+    Response response =
+        resources.client().target(ROOT_RESOURCE).request().accept(MediaType.APPLICATION_JSON)
+            .post(Entity.entity(validClient, MediaType.APPLICATION_JSON));
+
+    assertThat(response.getStatus(), is(equalTo(422)));
+  }
+
+  @Test
+  public void testFailEstimatedDobCodeMissing() throws Exception {
+
+    Client validClient = MAPPER.readValue(
+        fixture("fixtures/domain/legacy/Client/invalid/estimatedDobCodeMissing.json"),
+        Client.class);
+
+    Response response =
+        resources.client().target(ROOT_RESOURCE).request().accept(MediaType.APPLICATION_JSON)
+            .post(Entity.entity(validClient, MediaType.APPLICATION_JSON));
+
+    assertThat(response.getStatus(), is(equalTo(422)));
+
+  }
+
+  @Test
+  public void testFailEstimatedDobCodeNull() throws Exception {
+
+    Client validClient = MAPPER.readValue(
+        fixture("fixtures/domain/legacy/Client/invalid/estimatedDobCodeNull.json"), Client.class);
+
+    Response response =
+        resources.client().target(ROOT_RESOURCE).request().accept(MediaType.APPLICATION_JSON)
+            .post(Entity.entity(validClient, MediaType.APPLICATION_JSON));
+
+    assertThat(response.getStatus(), is(equalTo(422)));
+
+  }
+
+  @Test
+  public void testFailEstimatedDobCodeWhiteSpace() throws Exception {
+
+    Client validClient = MAPPER.readValue(
+        fixture("fixtures/domain/legacy/Client/invalid/estimatedDobCodeWhiteSpace.json"),
+        Client.class);
+
+    Response response =
+        resources.client().target(ROOT_RESOURCE).request().accept(MediaType.APPLICATION_JSON)
+            .post(Entity.entity(validClient, MediaType.APPLICATION_JSON));
+
+    assertThat(response.getStatus(), is(equalTo(422)));
+    assertThat(
+        response.readEntity(String.class).indexOf("estimatedDobCode must be one of [Y, N, U]"),
+        is(greaterThanOrEqualTo(0)));
+  }
+
+  @Test
+  public void testSuccessEstimatedDobCodeY() throws Exception {
+
+    Client validClient = MAPPER.readValue(
+        fixture("fixtures/domain/legacy/Client/valid/estimatedDobCodeY.json"), Client.class);
+
+    Response response =
+        resources.client().target(ROOT_RESOURCE).request().accept(MediaType.APPLICATION_JSON)
+            .post(Entity.entity(validClient, MediaType.APPLICATION_JSON));
+
+    assertThat(response.getStatus(), is(equalTo(204)));
+
+  }
+
+  @Test
+  public void testSuccessEstimatedDobCodeN() throws Exception {
+
+    Client validClient = MAPPER.readValue(
+        fixture("fixtures/domain/legacy/Client/valid/estimatedDobCodeN.json"), Client.class);
+
+    Response response =
+        resources.client().target(ROOT_RESOURCE).request().accept(MediaType.APPLICATION_JSON)
+            .post(Entity.entity(validClient, MediaType.APPLICATION_JSON));
+
+    assertThat(response.getStatus(), is(equalTo(204)));
+
+  }
+
+  @Test
+  public void testSuccessEstimatedDobCodeU() throws Exception {
+
+    Client validClient = MAPPER.readValue(
+        fixture("fixtures/domain/legacy/Client/valid/estimatedDobCodeU.json"), Client.class);
+
+    Response response =
+        resources.client().target(ROOT_RESOURCE).request().accept(MediaType.APPLICATION_JSON)
+            .post(Entity.entity(validClient, MediaType.APPLICATION_JSON));
+
+    assertThat(response.getStatus(), is(equalTo(204)));
+
+  }
+
+  /*
+   * ethUnableToDetReasonCode test
+   */
+  @Test
+  public void testFailEthUnableToDetReasonCodeInvalid() throws Exception {
+
+    Client validClient = MAPPER.readValue(
+        fixture("fixtures/domain/legacy/Client/invalid/ethUnableToDetReasonCodeInvalid.json"),
+        Client.class);
+
+    Response response =
+        resources.client().target(ROOT_RESOURCE).request().accept(MediaType.APPLICATION_JSON)
+            .post(Entity.entity(validClient, MediaType.APPLICATION_JSON));
+
+    assertThat(response.getStatus(), is(equalTo(422)));
+  }
+
+  @Test
+  public void testSuccessEthUnableToDetReasonCodeNull() throws Exception {
+
+    Client validClient = MAPPER.readValue(
+        fixture("fixtures/domain/legacy/Client/valid/ethUnableToDetReasonCodeNull.json"),
+        Client.class);
+
+    Response response =
+        resources.client().target(ROOT_RESOURCE).request().accept(MediaType.APPLICATION_JSON)
+            .post(Entity.entity(validClient, MediaType.APPLICATION_JSON));
+
+    assertThat(response.getStatus(), is(equalTo(204)));
+
+  }
+
+  @Test
+  public void testSuccessEthUnableToDetReasonCodeMissing() throws Exception {
+
+    Client validClient = MAPPER.readValue(
+        fixture("fixtures/domain/legacy/Client/valid/ethUnableToDetReasonCodeMissing.json"),
+        Client.class);
+
+    Response response =
+        resources.client().target(ROOT_RESOURCE).request().accept(MediaType.APPLICATION_JSON)
+            .post(Entity.entity(validClient, MediaType.APPLICATION_JSON));
+
+    assertThat(response.getStatus(), is(equalTo(204)));
+
+  }
+
+  @Test
+  public void testFailEthUnableToDetReasonCodeWhiteSpace() throws Exception {
+
+    Client validClient = MAPPER.readValue(
+        fixture("fixtures/domain/legacy/Client/invalid/ethUnableToDetReasonCodeWhiteSpace.json"),
+        Client.class);
+
+    Response response =
+        resources.client().target(ROOT_RESOURCE).request().accept(MediaType.APPLICATION_JSON)
+            .post(Entity.entity(validClient, MediaType.APPLICATION_JSON));
+
+    assertThat(response.getStatus(), is(equalTo(422)));
+    assertThat(response.readEntity(String.class)
+        .indexOf("ethUnableToDetReasonCode must be one of [A, I, K]"), is(greaterThanOrEqualTo(0)));
+  }
+
+  @Test
+  public void testSuccessEthUnableToDetReasonCodeA() throws Exception {
+
+    Client validClient = MAPPER.readValue(
+        fixture("fixtures/domain/legacy/Client/valid/ethUnableToDetReasonCodeA.json"),
+        Client.class);
+
+    Response response =
+        resources.client().target(ROOT_RESOURCE).request().accept(MediaType.APPLICATION_JSON)
+            .post(Entity.entity(validClient, MediaType.APPLICATION_JSON));
+
+    assertThat(response.getStatus(), is(equalTo(204)));
+
+  }
+
+  @Test
+  public void testSuccessEthUnableToDetReasonCodeI() throws Exception {
+
+    Client validClient = MAPPER.readValue(
+        fixture("fixtures/domain/legacy/Client/valid/ethUnableToDetReasonCodeI.json"),
+        Client.class);
+
+    Response response =
+        resources.client().target(ROOT_RESOURCE).request().accept(MediaType.APPLICATION_JSON)
+            .post(Entity.entity(validClient, MediaType.APPLICATION_JSON));
+
+    assertThat(response.getStatus(), is(equalTo(204)));
+
+  }
+
+  @Test
+  public void testSuccessEthUnableToDetReasonCodeK() throws Exception {
+
+    Client validClient = MAPPER.readValue(
+        fixture("fixtures/domain/legacy/Client/valid/ethUnableToDetReasonCodeI.json"),
+        Client.class);
+
+    Response response =
+        resources.client().target(ROOT_RESOURCE).request().accept(MediaType.APPLICATION_JSON)
+            .post(Entity.entity(validClient, MediaType.APPLICATION_JSON));
+
+    assertThat(response.getStatus(), is(equalTo(204)));
+
+  }
+
+  /*
+   * fatherParentalRightTermDate test
+   */
+  @Test
+  public void failWhenFatherParentalRightTermDateInvalid() throws Exception {
+    Client validClient = MAPPER.readValue(
+        fixture("fixtures/domain/legacy/Client/invalid/fatherParentalRightTermDateInvalid.json"),
+        Client.class);
+
+    Response response =
+        resources.client().target(ROOT_RESOURCE).request().accept(MediaType.APPLICATION_JSON)
+            .post(Entity.entity(validClient, MediaType.APPLICATION_JSON));
+
+    assertThat(response.getStatus(), is(equalTo(422)));
+    assertThat(
+        response.readEntity(String.class)
+            .indexOf("fatherParentalRightTermDate must be in the format of yyyy-MM-dd"),
+        is(greaterThanOrEqualTo(0)));
+
+  }
+
+  @Test
+  public void testSuccessFatherParentalRightTermDateMissing() throws Exception {
+
+    Client validClient = MAPPER.readValue(
+        fixture("fixtures/domain/legacy/Client/valid/fatherParentalRightTermDateMissing.json"),
+        Client.class);
+
+    Response response =
+        resources.client().target(ROOT_RESOURCE).request().accept(MediaType.APPLICATION_JSON)
+            .post(Entity.entity(validClient, MediaType.APPLICATION_JSON));
+
+    assertThat(response.getStatus(), is(equalTo(204)));
+
+  }
+
+  /*
+   * genderCode test
+   */
+  @Test
+  public void testFailGenderCodeInvalid() throws Exception {
+
+    Client validClient = MAPPER.readValue(
+        fixture("fixtures/domain/legacy/Client/invalid/genderCodeInvalid.json"), Client.class);
+
+    Response response =
+        resources.client().target(ROOT_RESOURCE).request().accept(MediaType.APPLICATION_JSON)
+            .post(Entity.entity(validClient, MediaType.APPLICATION_JSON));
+
+    assertThat(response.getStatus(), is(equalTo(422)));
+  }
+
+  @Test
+  public void testFailGenderCodeEmpty() throws Exception {
+
+    Client validClient = MAPPER.readValue(
+        fixture("fixtures/domain/legacy/Client/invalid/genderCodeEmpty.json"), Client.class);
+
+    Response response =
+        resources.client().target(ROOT_RESOURCE).request().accept(MediaType.APPLICATION_JSON)
+            .post(Entity.entity(validClient, MediaType.APPLICATION_JSON));
+
+    assertThat(response.getStatus(), is(equalTo(422)));
+  }
+
+  @Test
+  public void testFailGenderCodeMissing() throws Exception {
+
+    Client validClient = MAPPER.readValue(
+        fixture("fixtures/domain/legacy/Client/invalid/genderCodeMissing.json"), Client.class);
+
+    Response response =
+        resources.client().target(ROOT_RESOURCE).request().accept(MediaType.APPLICATION_JSON)
+            .post(Entity.entity(validClient, MediaType.APPLICATION_JSON));
+
+    assertThat(response.getStatus(), is(equalTo(422)));
+
+  }
+
+  @Test
+  public void testFailGenderCodeNull() throws Exception {
+
+    Client validClient = MAPPER.readValue(
+        fixture("fixtures/domain/legacy/Client/invalid/genderCodeNull.json"), Client.class);
+
+    Response response =
+        resources.client().target(ROOT_RESOURCE).request().accept(MediaType.APPLICATION_JSON)
+            .post(Entity.entity(validClient, MediaType.APPLICATION_JSON));
+
+    assertThat(response.getStatus(), is(equalTo(422)));
+
+  }
+
+  @Test
+  public void testFailGenderCodeWhiteSpace() throws Exception {
+
+    Client validClient = MAPPER.readValue(
+        fixture("fixtures/domain/legacy/Client/invalid/genderCodeWhiteSpace.json"), Client.class);
+
+    Response response =
+        resources.client().target(ROOT_RESOURCE).request().accept(MediaType.APPLICATION_JSON)
+            .post(Entity.entity(validClient, MediaType.APPLICATION_JSON));
+
+    assertThat(response.getStatus(), is(equalTo(422)));
+    assertThat(response.readEntity(String.class).indexOf("genderCode must be one of [M, F, U]"),
+        is(greaterThanOrEqualTo(0)));
+  }
+
+  @Test
+  public void testSuccessGenderCodeM() throws Exception {
+
+    Client validClient = MAPPER
+        .readValue(fixture("fixtures/domain/legacy/Client/valid/genderCodeM.json"), Client.class);
+
+    Response response =
+        resources.client().target(ROOT_RESOURCE).request().accept(MediaType.APPLICATION_JSON)
+            .post(Entity.entity(validClient, MediaType.APPLICATION_JSON));
+
+    assertThat(response.getStatus(), is(equalTo(204)));
+
+  }
+
+  @Test
+  public void testSuccessGenderCodeF() throws Exception {
+
+    Client validClient = MAPPER
+        .readValue(fixture("fixtures/domain/legacy/Client/valid/genderCodeF.json"), Client.class);
+
+    Response response =
+        resources.client().target(ROOT_RESOURCE).request().accept(MediaType.APPLICATION_JSON)
+            .post(Entity.entity(validClient, MediaType.APPLICATION_JSON));
+
+    assertThat(response.getStatus(), is(equalTo(204)));
+
+  }
+
+  @Test
+  public void testSuccessGenderCodeU() throws Exception {
+
+    Client validClient = MAPPER
+        .readValue(fixture("fixtures/domain/legacy/Client/valid/genderCodeU.json"), Client.class);
+
+    Response response =
+        resources.client().target(ROOT_RESOURCE).request().accept(MediaType.APPLICATION_JSON)
+            .post(Entity.entity(validClient, MediaType.APPLICATION_JSON));
+
+    assertThat(response.getStatus(), is(equalTo(204)));
+
+  }
 
   private Client validClient() throws JsonParseException, JsonMappingException, IOException {
     Client vc =
