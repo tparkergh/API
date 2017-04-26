@@ -158,6 +158,7 @@ public class DataAccessModule extends AbstractModule {
   @Override
   protected void configure() {
 
+    // Fails here. Call later.
     // Method getSessionFactory() returns null at this point and fails method toInstance().
     // bind(SessionFactory.class).toInstance(cmsHibernateBundle.getSessionFactory());
 

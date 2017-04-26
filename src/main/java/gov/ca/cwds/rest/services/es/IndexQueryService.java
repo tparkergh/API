@@ -53,7 +53,6 @@ public class IndexQueryService
    * @return complete domain object
    */
   protected String callDao(final String index, final String query) {
-
     return this.elasticsearchDao.searchIndexByQuery(index, query);
   }
 
