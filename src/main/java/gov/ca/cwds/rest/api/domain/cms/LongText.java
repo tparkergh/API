@@ -2,6 +2,8 @@ package gov.ca.cwds.rest.api.domain.cms;
 
 import javax.validation.constraints.Size;
 
+import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.hibernate.validator.constraints.NotEmpty;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
@@ -73,50 +75,22 @@ public class LongText extends DomainObject implements Request, Response {
 
   /**
    * {@inheritDoc}
-   * 
+   *
    * @see java.lang.Object#hashCode()
    */
   @Override
   public final int hashCode() {
-    final int prime = 31;
-    int result = 1;
-    result = prime * result + ((countySpecificCode == null) ? 0 : countySpecificCode.hashCode());
-    result = prime * result + ((textDescription == null) ? 0 : textDescription.hashCode());
-    return result;
+    return HashCodeBuilder.reflectionHashCode(this, false);
   }
 
   /**
    * {@inheritDoc}
-   * 
+   *
    * @see java.lang.Object#equals(java.lang.Object)
    */
   @Override
   public final boolean equals(Object obj) {
-    if (this == obj) {
-      return true;
-    }
-    if (obj == null) {
-      return false;
-    }
-    if (!(obj instanceof LongText)) {
-      return false;
-    }
-    LongText other = (LongText) obj;
-    if (countySpecificCode == null) {
-      if (other.countySpecificCode != null) {
-        return false;
-      }
-    } else if (!countySpecificCode.equals(other.countySpecificCode)) {
-      return false;
-    }
-    if (textDescription == null) {
-      if (other.textDescription != null) {
-        return false;
-      }
-    } else if (!textDescription.equals(other.textDescription)) {
-      return false;
-    }
-    return true;
+    return EqualsBuilder.reflectionEquals(this, obj, false);
   }
 
 }
