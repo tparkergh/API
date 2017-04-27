@@ -92,7 +92,7 @@
   &quot;literateCode&quot;: &quot;Y&quot;,&#xd;
   &quot;maritalCohabitatnHstryIndicatorVar&quot;: false,&#xd;
   &quot;maritalStatusType&quot;: 0,&#xd;
-  &quot;militaryStatusCode&quot;: &quot;U&quot;,&#xd;
+  &quot;militaryStatusCode&quot;: &quot;D&quot;,&#xd;
   &quot;motherParentalRightTermDate&quot;: null,&#xd;
   &quot;namePrefixDescription&quot;: &quot;      &quot;,&#xd;
   &quot;nameType&quot;: 1313,&#xd;
@@ -115,7 +115,8 @@
   &quot;tribalMembrshpVerifctnIndicatorVar&quot;: false,&#xd;
   &quot;unemployedParentCode&quot;: &quot;U&quot;,&#xd;
   &quot;zippyCreatedIndicator&quot;: false&#xd;
-}</stringProp>
+}&#xd;
+</stringProp>
                   <stringProp name="Argument.metadata">=</stringProp>
                 </elementProp>
               </collectionProp>
@@ -328,7 +329,7 @@ log.info(&quot;variable port &quot;+&quot;${__P(api.host)}&quot;);</stringProp>
   &quot;literateCode&quot;: &quot;Y&quot;,&#xd;
   &quot;maritalCohabitatnHstryIndicatorVar&quot;: false,&#xd;
   &quot;maritalStatusType&quot;: 0,&#xd;
-  &quot;militaryStatusCode&quot;: &quot;U&quot;,&#xd;
+  &quot;militaryStatusCode&quot;: &quot;D&quot;,&#xd;
   &quot;motherParentalRightTermDate&quot;: null,&#xd;
   &quot;namePrefixDescription&quot;: &quot;      &quot;,&#xd;
   &quot;nameType&quot;: 1313,&#xd;
@@ -351,7 +352,8 @@ log.info(&quot;variable port &quot;+&quot;${__P(api.host)}&quot;);</stringProp>
   &quot;tribalMembrshpVerifctnIndicatorVar&quot;: false,&#xd;
   &quot;unemployedParentCode&quot;: &quot;U&quot;,&#xd;
   &quot;zippyCreatedIndicator&quot;: false&#xd;
-}</stringProp>
+}&#xd;
+</stringProp>
                   <stringProp name="Argument.metadata">=</stringProp>
                 </elementProp>
               </collectionProp>
