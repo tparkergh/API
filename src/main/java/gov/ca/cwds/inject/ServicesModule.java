@@ -87,6 +87,7 @@ public class ServicesModule extends AbstractModule {
     bind(AddressService.class);
     bind(PersonService.class);
     bind(ScreeningService.class);
+    bind(gov.ca.cwds.rest.services.cms.AddressService.class);
 
     bind(AllegationService.class);
     bind(CmsDocReferralClientService.class);
