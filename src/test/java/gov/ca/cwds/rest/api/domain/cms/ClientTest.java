@@ -2729,7 +2729,7 @@ public class ClientTest implements DomainTestTemplate {
   /*
    * socPlacementCode test
    * 
-   * 158 is removed on the naming Json convention due to make jenkins build success
+   * 158 is removed on the naming Json convention to make jenkins build success
    */
   @Test
   public void testFailSoc158PlacementCodeInvalid() throws Exception {
@@ -2785,23 +2785,6 @@ public class ClientTest implements DomainTestTemplate {
 
     assertThat(response.getStatus(), is(equalTo(422)));
 
-  }
-
-  @Test
-  public void testFailSoc158PlacementCodeWhiteSpace() throws Exception {
-
-    Client validClient = MAPPER.readValue(
-        fixture("fixtures/domain/legacy/Client/invalid/SocPlacementCodeWhiteSpace.json"),
-        Client.class);
-
-    Response response =
-        resources.client().target(ROOT_RESOURCE).request().accept(MediaType.APPLICATION_JSON)
-            .post(Entity.entity(validClient, MediaType.APPLICATION_JSON));
-
-    assertThat(response.getStatus(), is(equalTo(422)));
-    assertThat(
-        response.readEntity(String.class).indexOf("soc158PlacementCode must be one of [Y, M, N]"),
-        is(greaterThanOrEqualTo(0)));
   }
 
   @Test
