@@ -229,6 +229,7 @@ public class Client extends DomainObject implements Request, Response {
 
   @NotEmpty
   @Size(min = 1, max = 2)
+  @OneOf(value = {"N", "NA", "U", "Y"}, ignoreCase = true, ignoreWhitespace = true)
   @ApiModelProperty(required = true, readOnly = false, value = "", example = "U")
   private String incapacitatedParentCode;
 
@@ -242,6 +243,7 @@ public class Client extends DomainObject implements Request, Response {
 
   @NotEmpty
   @Size(min = 1, max = 1, message = "size must be 1")
+  @OneOf(value = {"Y", "N", "U", "D"}, ignoreCase = true, ignoreWhitespace = true)
   @ApiModelProperty(required = true, readOnly = false, value = "", example = "U")
   private String literateCode;
 
@@ -256,6 +258,7 @@ public class Client extends DomainObject implements Request, Response {
 
   @NotEmpty
   @Size(min = 1, max = 1, message = "size must be 1")
+  @OneOf(value = {"D", "A", "V", "N"}, ignoreCase = true, ignoreWhitespace = true)
   @ApiModelProperty(required = true, readOnly = false, value = "", example = "N")
   private String militaryStatusCode;
 
@@ -325,6 +328,7 @@ public class Client extends DomainObject implements Request, Response {
 
   @NotEmpty
   @Size(min = 1, max = 1, message = "size must be 1")
+  @OneOf(value = {"Y", "M", "N"}, ignoreCase = true, ignoreWhitespace = true)
   @ApiModelProperty(required = true, readOnly = false, value = "", example = "N")
   private String soc158PlacementCode;
 
@@ -333,6 +337,8 @@ public class Client extends DomainObject implements Request, Response {
   private Boolean soc158SealedClientIndicator;
 
   @NotNull
+  @Size(min = 1, max = 1, message = "size must be 1")
+  @OneOf(value = {"Y", "N"}, ignoreCase = true, ignoreWhitespace = true)
   @ApiModelProperty(required = true, readOnly = false)
   private String socialSecurityNumChangedCode;
 
@@ -357,6 +363,7 @@ public class Client extends DomainObject implements Request, Response {
 
   @NotEmpty
   @Size(min = 1, max = 2)
+  @OneOf(value = {"N", "NA", "U", "Y"}, ignoreCase = true, ignoreWhitespace = true)
   @ApiModelProperty(required = true, readOnly = false, value = "", example = "U")
   private String unemployedParentCode;
 
