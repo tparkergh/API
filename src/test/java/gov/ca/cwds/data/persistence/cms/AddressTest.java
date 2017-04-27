@@ -103,6 +103,7 @@ public class AddressTest implements PersistentTestTemplate {
         new gov.ca.cwds.data.persistence.cms.Address(id, da, lastUpdatedId);
 
     assertThat(pa.getId(), is(equalTo(id)));
+    assertThat(pa.getLastUpdatedId(), is(equalTo(lastUpdatedId)));
     assertThat(pa.getAddressDescription(), is(equalTo(da.getAddressDescription())));
     assertThat(pa.getCity(), is(equalTo(da.getCity())));
     assertThat(pa.getEmergencyExtension(), is(equalTo(da.getEmergencyExtension())));

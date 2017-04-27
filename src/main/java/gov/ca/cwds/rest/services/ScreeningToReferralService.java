@@ -164,7 +164,7 @@ public class ScreeningToReferralService implements CrudsService {
     String clientId;
     String dateStarted = null;
     String timeStarted = null;
-    String longTextId = null;
+    String longTextId;
 
     MAPPER.configure(SerializationFeature.INDENT_OUTPUT, true);
 
@@ -197,7 +197,9 @@ public class ScreeningToReferralService implements CrudsService {
         longTextId = createLongText(DEFAULT_COUNTY_SPECIFIC_CODE,
             screeningToReferral.getAdditionalInformation());
       } catch (ServiceException e) {
-        throw e;
+        LOGGER.error("ERROR - processing LongText associated with the Referral ", e.getMessage());
+        throw new ServiceException(
+            "ERROR - processing LongText associated with the Referral " + e.getMessage(), e);
       }
     }
 

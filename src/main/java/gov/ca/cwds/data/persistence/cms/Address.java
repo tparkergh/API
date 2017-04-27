@@ -100,7 +100,7 @@ public class Address extends BaseAddress {
    * @param lastUpdateId - staff person Id
    */
   public Address(String id, gov.ca.cwds.rest.api.domain.cms.Address address, String lastUpdateId) {
-    super();
+    super(lastUpdateId);
     try {
       this.id = id;
       this.city = address.getCity();
