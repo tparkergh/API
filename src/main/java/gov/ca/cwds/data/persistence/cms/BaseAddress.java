@@ -159,7 +159,7 @@ public abstract class BaseAddress extends CmsPersistentObject
   }
 
   /**
-   * @param lastUpdateId
+   * @param lastUpdateId user id of last update
    */
   public BaseAddress(String lastUpdateId) {
     super(lastUpdateId);
