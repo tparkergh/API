@@ -98,6 +98,8 @@ public class ClientService implements CrudsService {
         (gov.ca.cwds.rest.api.domain.cms.Client) request;
 
     try {
+      // TODO : refactor to actually determine who is updating. 'q1p' for now - see user story
+      // #136737071 - Tech Debt: Legacy Service classes must use Staff ID for last update ID value
       Client managed = new Client(CmsKeyIdGenerator.cmsIdGenertor(null), client, "q1p");
       managed = clientDao.create(managed);
       return new PostedClient(managed, false);

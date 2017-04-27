@@ -43,6 +43,8 @@ public class AddressService implements CrudsService {
         (gov.ca.cwds.rest.api.domain.cms.Address) request;
 
     try {
+      // TODO : refactor to actually determine who is updating. 'q1p' for now - see user story
+      // #136737071 - Tech Debt: Legacy Service classes must use Staff ID for last update ID value
       Address managed = new Address(CmsKeyIdGenerator.cmsIdGenertor(null), address, "q1p");
 
       managed = addressDao.create(managed);
