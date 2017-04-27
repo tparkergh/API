@@ -169,6 +169,7 @@ public class ClientTest implements PersistentTestTemplate {
     Client pers = new Client(id, vc, lastUpdatedId);
 
     assertThat(pers.getId(), is(equalTo(id)));
+    assertThat(pers.getLastUpdatedId(), is(equalTo(lastUpdatedId)));
     assertThat((pers.getAdjudicatedDelinquentIndicator()),
         is(equalTo(DomainChef.cookBoolean(vc.getAdjudicatedDelinquentIndicator()))));
     assertThat(pers.getAdoptionStatusCode(), is(equalTo(vc.getAdoptionStatusCode())));
