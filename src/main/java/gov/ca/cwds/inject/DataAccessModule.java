@@ -1,18 +1,5 @@
 package gov.ca.cwds.inject;
 
-import java.net.InetAddress;
-
-import org.elasticsearch.client.Client;
-import org.elasticsearch.client.transport.TransportClient;
-import org.elasticsearch.common.settings.Settings;
-import org.elasticsearch.common.transport.InetSocketTransportAddress;
-import org.hibernate.SessionFactory;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import com.google.inject.AbstractModule;
-import com.google.inject.Provides;
-
 import gov.ca.cwds.data.cms.AllegationDao;
 import gov.ca.cwds.data.cms.AllegationPerpetratorHistoryDao;
 import gov.ca.cwds.data.cms.AttorneyDao;
@@ -89,6 +76,21 @@ import gov.ca.cwds.rest.api.ApiException;
 import io.dropwizard.db.DataSourceFactory;
 import io.dropwizard.hibernate.HibernateBundle;
 import io.dropwizard.setup.Bootstrap;
+
+import java.net.InetAddress;
+
+import org.elasticsearch.client.Client;
+import org.elasticsearch.common.settings.Settings;
+import org.elasticsearch.common.transport.InetSocketTransportAddress;
+import org.elasticsearch.transport.client.PreBuiltTransportClient;
+import org.hibernate.SessionFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import com.google.inject.AbstractModule;
+import com.google.inject.Provides;
+
+// import org.elasticsearch.transport.client.PreBuiltTransportClient;
 
 /**
  * DI (dependency injection) setup for data access objects (DAO).
@@ -234,16 +236,19 @@ public class DataAccessModule extends AbstractModule {
     return apiConfiguration.getSmartyStreetsConfiguration();
   }
 
+  @SuppressWarnings("resource")
   @Provides
   public Client elasticsearchClient(ApiConfiguration apiConfiguration) {
     if (client == null) {
       ElasticsearchConfiguration config = apiConfiguration.getElasticsearchConfiguration();
       try {
-        Settings settings = Settings.settingsBuilder()
-            .put("cluster.name", config.getElasticsearchCluster()).build();
-        client = TransportClient.builder().settings(settings).build().addTransportAddress(
-            new InetSocketTransportAddress(InetAddress.getByName(config.getElasticsearchHost()),
-                Integer.parseInt(config.getElasticsearchPort())));
+        Settings settings =
+            Settings.builder().put("cluster.name", config.getElasticsearchCluster()).build();
+
+        client =
+            new PreBuiltTransportClient(settings)
+                .addTransportAddress(new InetSocketTransportAddress(InetAddress.getByName(config
+                    .getElasticsearchHost()), Integer.parseInt(config.getElasticsearchPort())));
       } catch (Exception e) {
         LOGGER.error("Error initializing Elasticsearch client: {}", e.getMessage(), e);
         throw new ApiException("Error initializing Elasticsearch client: " + e.getMessage(), e);

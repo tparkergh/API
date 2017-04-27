@@ -78,7 +78,7 @@ public class IndexQueryResource {
   @ApiOperation(value = "Query ElasticSearch Persons on given search terms",
       code = HttpStatus.SC_OK, response = JSONObject.class)
   @Consumes(value = MediaType.APPLICATION_JSON)
-  public Response searchPerson(@PathParam("index") @ApiParam(required = true, name = "index",
+  public Response searchIndex(@PathParam("index") @ApiParam(required = true, name = "index",
       value = "The index of the search") String index, @Valid @ApiParam(hidden = false,
       required = true) Object req) {
     Response ret;
