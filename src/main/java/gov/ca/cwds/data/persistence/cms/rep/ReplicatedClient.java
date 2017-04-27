@@ -69,22 +69,6 @@ import gov.ca.cwds.data.std.ApiPhoneAware;
             + "z.HISP_UD_CD, z.SOCPLC_CD, z.CL_INDX_NO, z.IBMSNAP_OPERATION, z.IBMSNAP_LOGMARKER "
             + "from {h-schema}CLIENT_T z WHERE z.IBMSNAP_LOGMARKER >= :after FOR READ ONLY",
         resultClass = ReplicatedClient.class),
-    // @NamedNativeQuery(
-    // name = "gov.ca.cwds.data.persistence.cms.rep.ReplicatedClient.findPartitionedBuckets",
-    // query = "select {a.*}, {b.*}, {c.*} "
-    // + "from ( select mod(y.rn, CAST(:total_buckets AS INTEGER)) + 1 as bucket, y.* "
-    // + "from ( select row_number() over (order by 1) as rn, x.* "
-    // + "from {h-schema}CLIENT_T x where x.SOC158_IND ='N' and x.SENSTV_IND = 'N' "
-    // // TESTING ONLY:
-    // // + "and x.identifier in (
-    // // '3YLLYNZ0LL','Dn9HBTC0Mu','CBES7RV0Ki','FjmWxQD0FT','8ZeEiX70Ki' ) "
-    // + "AND x.IDENTIFIER >= :min_id and x.IDENTIFIER < :max_id ) y ) a "
-    // + "LEFT OUTER JOIN {h-schema}CL_ADDRT b ON a.IDENTIFIER = b.FKCLIENT_T and b.EFF_END_DT is
-    // null "
-    // + "LEFT OUTER JOIN {h-schema}ADDRS_T c ON b.FKADDRS_T = c.IDENTIFIER "
-    // + "where a.bucket = :bucket_num for read only",
-    // resultClass = ReplicatedClient.class, readOnly = true,
-    // comment = "b,a.clientAddresses;c,b.addresses")
     @NamedNativeQuery(
         name = "gov.ca.cwds.data.persistence.cms.rep.ReplicatedClient.findPartitionedBuckets",
         query = "select {a.*}, {b.*}, {c.*} from {h-schema}CLIENT_T a "

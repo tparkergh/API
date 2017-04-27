@@ -38,7 +38,7 @@ import gov.ca.cwds.data.std.ApiGroupNormalizer;
             + "z.FKREFERL_T, z.FKLAW_ENFT, z.ZIP_SFX_NO, z.CNTY_SPFCD "
             + ", z.IBMSNAP_OPERATION, z.IBMSNAP_LOGMARKER FROM {h-schema}REPTR_T z "
             + "WHERE z.FKREFERL_T BETWEEN :min_id AND :max_id FOR READ ONLY",
-        resultClass = ReplicatedAttorney.class, readOnly = true),
+        resultClass = ReplicatedReporter.class, readOnly = true),
     @NamedNativeQuery(
         name = "gov.ca.cwds.data.persistence.cms.rep.ReplicatedReporter.findAllUpdatedAfter",
         query = "SELECT trim(z.RPTR_BDGNO) as RPTR_BDGNO, trim(z.RPTR_CTYNM) as RPTR_CTYNM, "
