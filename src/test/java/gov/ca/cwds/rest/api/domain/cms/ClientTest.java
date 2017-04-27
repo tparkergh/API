@@ -2309,6 +2309,785 @@ public class ClientTest implements DomainTestTemplate {
 
   }
 
+  /*
+   * incapacitatedParentCode test
+   */
+  @Test
+  public void testFailIncapacitatedParentCodeInvalid() throws Exception {
+
+    Client validClient = MAPPER.readValue(
+        fixture("fixtures/domain/legacy/Client/invalid/incapacitatedParentCodeInvalid.json"),
+        Client.class);
+
+    Response response =
+        resources.client().target(ROOT_RESOURCE).request().accept(MediaType.APPLICATION_JSON)
+            .post(Entity.entity(validClient, MediaType.APPLICATION_JSON));
+
+    assertThat(response.getStatus(), is(equalTo(422)));
+  }
+
+  @Test
+  public void testFailIncapacitatedParentCodeEmpty() throws Exception {
+
+    Client validClient = MAPPER.readValue(
+        fixture("fixtures/domain/legacy/Client/invalid/incapacitatedParentCodeEmpty.json"),
+        Client.class);
+
+    Response response =
+        resources.client().target(ROOT_RESOURCE).request().accept(MediaType.APPLICATION_JSON)
+            .post(Entity.entity(validClient, MediaType.APPLICATION_JSON));
+
+    assertThat(response.getStatus(), is(equalTo(422)));
+  }
+
+  @Test
+  public void testFailIncapacitatedParentCodeMissing() throws Exception {
+
+    Client validClient = MAPPER.readValue(
+        fixture("fixtures/domain/legacy/Client/invalid/incapacitatedParentCodeMissing.json"),
+        Client.class);
+
+    Response response =
+        resources.client().target(ROOT_RESOURCE).request().accept(MediaType.APPLICATION_JSON)
+            .post(Entity.entity(validClient, MediaType.APPLICATION_JSON));
+
+    assertThat(response.getStatus(), is(equalTo(422)));
+
+  }
+
+  @Test
+  public void testFailIncapacitatedParentCodeNull() throws Exception {
+
+    Client validClient = MAPPER.readValue(
+        fixture("fixtures/domain/legacy/Client/invalid/incapacitatedParentCodeNull.json"),
+        Client.class);
+
+    Response response =
+        resources.client().target(ROOT_RESOURCE).request().accept(MediaType.APPLICATION_JSON)
+            .post(Entity.entity(validClient, MediaType.APPLICATION_JSON));
+
+    assertThat(response.getStatus(), is(equalTo(422)));
+
+  }
+
+  @Test
+  public void testFailIncapacitatedParentCodeWhiteSpace() throws Exception {
+
+    Client validClient = MAPPER.readValue(
+        fixture("fixtures/domain/legacy/Client/invalid/incapacitatedParentCodeWhiteSpace.json"),
+        Client.class);
+
+    Response response =
+        resources.client().target(ROOT_RESOURCE).request().accept(MediaType.APPLICATION_JSON)
+            .post(Entity.entity(validClient, MediaType.APPLICATION_JSON));
+
+    assertThat(response.getStatus(), is(equalTo(422)));
+    assertThat(response.readEntity(String.class).indexOf(
+        "incapacitatedParentCode must be one of [N, NA, U, Y]"), is(greaterThanOrEqualTo(0)));
+  }
+
+  @Test
+  public void testSuccessIncapacitatedParentCodeN() throws Exception {
+
+    Client validClient = MAPPER.readValue(
+        fixture("fixtures/domain/legacy/Client/valid/incapacitatedParentCodeN.json"), Client.class);
+
+    Response response =
+        resources.client().target(ROOT_RESOURCE).request().accept(MediaType.APPLICATION_JSON)
+            .post(Entity.entity(validClient, MediaType.APPLICATION_JSON));
+
+    assertThat(response.getStatus(), is(equalTo(204)));
+
+  }
+
+  @Test
+  public void testSuccessIncapacitatedParentCodeNA() throws Exception {
+
+    Client validClient = MAPPER.readValue(
+        fixture("fixtures/domain/legacy/Client/valid/incapacitatedParentCodeNA.json"),
+        Client.class);
+
+    Response response =
+        resources.client().target(ROOT_RESOURCE).request().accept(MediaType.APPLICATION_JSON)
+            .post(Entity.entity(validClient, MediaType.APPLICATION_JSON));
+
+    assertThat(response.getStatus(), is(equalTo(204)));
+
+  }
+
+  @Test
+  public void testSuccessIncapacitatedParentCodeU() throws Exception {
+
+    Client validClient = MAPPER.readValue(
+        fixture("fixtures/domain/legacy/Client/valid/incapacitatedParentCodeU.json"), Client.class);
+
+    Response response =
+        resources.client().target(ROOT_RESOURCE).request().accept(MediaType.APPLICATION_JSON)
+            .post(Entity.entity(validClient, MediaType.APPLICATION_JSON));
+
+    assertThat(response.getStatus(), is(equalTo(204)));
+
+  }
+
+  @Test
+  public void testSuccessIncapacitatedParentCodeY() throws Exception {
+
+    Client validClient = MAPPER.readValue(
+        fixture("fixtures/domain/legacy/Client/valid/incapacitatedParentCodeY.json"), Client.class);
+
+    Response response =
+        resources.client().target(ROOT_RESOURCE).request().accept(MediaType.APPLICATION_JSON)
+            .post(Entity.entity(validClient, MediaType.APPLICATION_JSON));
+
+    assertThat(response.getStatus(), is(equalTo(204)));
+
+  }
+
+  /*
+   * motherParentalRightTermDate test
+   */
+  @Test
+  public void failWhenMotherParentalRightTermDateInvalid() throws Exception {
+    Client validClient = MAPPER.readValue(
+        fixture("fixtures/domain/legacy/Client/invalid/motherParentalRightTermDateInvalid.json"),
+        Client.class);
+
+    Response response =
+        resources.client().target(ROOT_RESOURCE).request().accept(MediaType.APPLICATION_JSON)
+            .post(Entity.entity(validClient, MediaType.APPLICATION_JSON));
+
+    assertThat(response.getStatus(), is(equalTo(422)));
+    assertThat(
+        response.readEntity(String.class)
+            .indexOf("motherParentalRightTermDate must be in the format of yyyy-MM-dd"),
+        is(greaterThanOrEqualTo(0)));
+
+  }
+
+  /*
+   * literateCode test
+   */
+  @Test
+  public void testFailLiterateCodeInvalid() throws Exception {
+
+    Client validClient = MAPPER.readValue(
+        fixture("fixtures/domain/legacy/Client/invalid/literateCodeInvalid.json"), Client.class);
+
+    Response response =
+        resources.client().target(ROOT_RESOURCE).request().accept(MediaType.APPLICATION_JSON)
+            .post(Entity.entity(validClient, MediaType.APPLICATION_JSON));
+
+    assertThat(response.getStatus(), is(equalTo(422)));
+  }
+
+  @Test
+  public void testFailLiterateCodeEmpty() throws Exception {
+
+    Client validClient = MAPPER.readValue(
+        fixture("fixtures/domain/legacy/Client/invalid/literateCodeEmpty.json"), Client.class);
+
+    Response response =
+        resources.client().target(ROOT_RESOURCE).request().accept(MediaType.APPLICATION_JSON)
+            .post(Entity.entity(validClient, MediaType.APPLICATION_JSON));
+
+    assertThat(response.getStatus(), is(equalTo(422)));
+  }
+
+  @Test
+  public void testFailLiterateCodeMissing() throws Exception {
+
+    Client validClient = MAPPER.readValue(
+        fixture("fixtures/domain/legacy/Client/invalid/literateCodeMissing.json"), Client.class);
+
+    Response response =
+        resources.client().target(ROOT_RESOURCE).request().accept(MediaType.APPLICATION_JSON)
+            .post(Entity.entity(validClient, MediaType.APPLICATION_JSON));
+
+    assertThat(response.getStatus(), is(equalTo(422)));
+
+  }
+
+  @Test
+  public void testFailLiterateCodeNull() throws Exception {
+
+    Client validClient = MAPPER.readValue(
+        fixture("fixtures/domain/legacy/Client/invalid/literateCodeNull.json"), Client.class);
+
+    Response response =
+        resources.client().target(ROOT_RESOURCE).request().accept(MediaType.APPLICATION_JSON)
+            .post(Entity.entity(validClient, MediaType.APPLICATION_JSON));
+
+    assertThat(response.getStatus(), is(equalTo(422)));
+
+  }
+
+  @Test
+  public void testFailLiterateCodeWhiteSpace() throws Exception {
+
+    Client validClient = MAPPER.readValue(
+        fixture("fixtures/domain/legacy/Client/invalid/literateCodeWhiteSpace.json"), Client.class);
+
+    Response response =
+        resources.client().target(ROOT_RESOURCE).request().accept(MediaType.APPLICATION_JSON)
+            .post(Entity.entity(validClient, MediaType.APPLICATION_JSON));
+
+    assertThat(response.getStatus(), is(equalTo(422)));
+    assertThat(
+        response.readEntity(String.class).indexOf("literateCode must be one of [Y, N, U, D]"),
+        is(greaterThanOrEqualTo(0)));
+  }
+
+  @Test
+  public void testSuccessLiterateCodeY() throws Exception {
+
+    Client validClient = MAPPER
+        .readValue(fixture("fixtures/domain/legacy/Client/valid/literateCodeY.json"), Client.class);
+
+    Response response =
+        resources.client().target(ROOT_RESOURCE).request().accept(MediaType.APPLICATION_JSON)
+            .post(Entity.entity(validClient, MediaType.APPLICATION_JSON));
+
+    assertThat(response.getStatus(), is(equalTo(204)));
+
+  }
+
+  @Test
+  public void testSuccessLiterateCodeN() throws Exception {
+
+    Client validClient = MAPPER
+        .readValue(fixture("fixtures/domain/legacy/Client/valid/literateCodeN.json"), Client.class);
+
+    Response response =
+        resources.client().target(ROOT_RESOURCE).request().accept(MediaType.APPLICATION_JSON)
+            .post(Entity.entity(validClient, MediaType.APPLICATION_JSON));
+
+    assertThat(response.getStatus(), is(equalTo(204)));
+
+  }
+
+  @Test
+  public void testSuccessLiterateCodeU() throws Exception {
+
+    Client validClient = MAPPER
+        .readValue(fixture("fixtures/domain/legacy/Client/valid/literateCodeU.json"), Client.class);
+
+    Response response =
+        resources.client().target(ROOT_RESOURCE).request().accept(MediaType.APPLICATION_JSON)
+            .post(Entity.entity(validClient, MediaType.APPLICATION_JSON));
+
+    assertThat(response.getStatus(), is(equalTo(204)));
+
+  }
+
+  @Test
+  public void testSuccessLiterateCodeD() throws Exception {
+
+    Client validClient = MAPPER
+        .readValue(fixture("fixtures/domain/legacy/Client/valid/literateCodeD.json"), Client.class);
+
+    Response response =
+        resources.client().target(ROOT_RESOURCE).request().accept(MediaType.APPLICATION_JSON)
+            .post(Entity.entity(validClient, MediaType.APPLICATION_JSON));
+
+    assertThat(response.getStatus(), is(equalTo(204)));
+
+  }
+
+  /*
+   * militaryStatusCode test
+   */
+  @Test
+  public void testFailMilitaryStatusCodeInvalid() throws Exception {
+
+    Client validClient = MAPPER.readValue(
+        fixture("fixtures/domain/legacy/Client/invalid/militaryStatusCodeInvalid.json"),
+        Client.class);
+
+    Response response =
+        resources.client().target(ROOT_RESOURCE).request().accept(MediaType.APPLICATION_JSON)
+            .post(Entity.entity(validClient, MediaType.APPLICATION_JSON));
+
+    assertThat(response.getStatus(), is(equalTo(422)));
+  }
+
+  @Test
+  public void testFailMilitaryStatusCodeEmpty() throws Exception {
+
+    Client validClient = MAPPER.readValue(
+        fixture("fixtures/domain/legacy/Client/invalid/militaryStatusCodeEmpty.json"),
+        Client.class);
+
+    Response response =
+        resources.client().target(ROOT_RESOURCE).request().accept(MediaType.APPLICATION_JSON)
+            .post(Entity.entity(validClient, MediaType.APPLICATION_JSON));
+
+    assertThat(response.getStatus(), is(equalTo(422)));
+  }
+
+  @Test
+  public void testFailMilitaryStatusCodeMissing() throws Exception {
+
+    Client validClient = MAPPER.readValue(
+        fixture("fixtures/domain/legacy/Client/invalid/militaryStatusCodeMissing.json"),
+        Client.class);
+
+    Response response =
+        resources.client().target(ROOT_RESOURCE).request().accept(MediaType.APPLICATION_JSON)
+            .post(Entity.entity(validClient, MediaType.APPLICATION_JSON));
+
+    assertThat(response.getStatus(), is(equalTo(422)));
+
+  }
+
+  @Test
+  public void testFailMilitaryStatusCodeNull() throws Exception {
+
+    Client validClient = MAPPER.readValue(
+        fixture("fixtures/domain/legacy/Client/invalid/militaryStatusCodeNull.json"), Client.class);
+
+    Response response =
+        resources.client().target(ROOT_RESOURCE).request().accept(MediaType.APPLICATION_JSON)
+            .post(Entity.entity(validClient, MediaType.APPLICATION_JSON));
+
+    assertThat(response.getStatus(), is(equalTo(422)));
+
+  }
+
+  @Test
+  public void testFailMilitaryStatusCodeWhiteSpace() throws Exception {
+
+    Client validClient = MAPPER.readValue(
+        fixture("fixtures/domain/legacy/Client/invalid/militaryStatusCodeWhiteSpace.json"),
+        Client.class);
+
+    Response response =
+        resources.client().target(ROOT_RESOURCE).request().accept(MediaType.APPLICATION_JSON)
+            .post(Entity.entity(validClient, MediaType.APPLICATION_JSON));
+
+    assertThat(response.getStatus(), is(equalTo(422)));
+    assertThat(
+        response.readEntity(String.class).indexOf("militaryStatusCode must be one of [D, A, V, N]"),
+        is(greaterThanOrEqualTo(0)));
+  }
+
+  @Test
+  public void testSuccessMilitaryStatusCodeD() throws Exception {
+
+    Client validClient = MAPPER.readValue(
+        fixture("fixtures/domain/legacy/Client/valid/militaryStatusCodeD.json"), Client.class);
+
+    Response response =
+        resources.client().target(ROOT_RESOURCE).request().accept(MediaType.APPLICATION_JSON)
+            .post(Entity.entity(validClient, MediaType.APPLICATION_JSON));
+
+    assertThat(response.getStatus(), is(equalTo(204)));
+
+  }
+
+  @Test
+  public void testSuccessMilitaryStatusCodeA() throws Exception {
+
+    Client validClient = MAPPER.readValue(
+        fixture("fixtures/domain/legacy/Client/valid/militaryStatusCodeA.json"), Client.class);
+
+    Response response =
+        resources.client().target(ROOT_RESOURCE).request().accept(MediaType.APPLICATION_JSON)
+            .post(Entity.entity(validClient, MediaType.APPLICATION_JSON));
+
+    assertThat(response.getStatus(), is(equalTo(204)));
+
+  }
+
+  @Test
+  public void testSuccessMilitaryStatusCodeV() throws Exception {
+
+    Client validClient = MAPPER.readValue(
+        fixture("fixtures/domain/legacy/Client/valid/militaryStatusCodeV.json"), Client.class);
+
+    Response response =
+        resources.client().target(ROOT_RESOURCE).request().accept(MediaType.APPLICATION_JSON)
+            .post(Entity.entity(validClient, MediaType.APPLICATION_JSON));
+
+    assertThat(response.getStatus(), is(equalTo(204)));
+
+  }
+
+  @Test
+  public void testSuccessMilitaryStatusCodeN() throws Exception {
+
+    Client validClient = MAPPER.readValue(
+        fixture("fixtures/domain/legacy/Client/valid/militaryStatusCodeN.json"), Client.class);
+
+    Response response =
+        resources.client().target(ROOT_RESOURCE).request().accept(MediaType.APPLICATION_JSON)
+            .post(Entity.entity(validClient, MediaType.APPLICATION_JSON));
+
+    assertThat(response.getStatus(), is(equalTo(204)));
+
+  }
+
+  /*
+   * soc158PlacementCode test
+   */
+  @Test
+  public void testFailSoc158PlacementCodeInvalid() throws Exception {
+
+    Client validClient = MAPPER.readValue(
+        fixture("fixtures/domain/legacy/Client/invalid/soc158PlacementCodeInvalid.json"),
+        Client.class);
+
+    Response response =
+        resources.client().target(ROOT_RESOURCE).request().accept(MediaType.APPLICATION_JSON)
+            .post(Entity.entity(validClient, MediaType.APPLICATION_JSON));
+
+    assertThat(response.getStatus(), is(equalTo(422)));
+  }
+
+  @Test
+  public void testFailSoc158PlacementCodeEmpty() throws Exception {
+
+    Client validClient = MAPPER.readValue(
+        fixture("fixtures/domain/legacy/Client/invalid/soc158PlacementCodeEmpty.json"),
+        Client.class);
+
+    Response response =
+        resources.client().target(ROOT_RESOURCE).request().accept(MediaType.APPLICATION_JSON)
+            .post(Entity.entity(validClient, MediaType.APPLICATION_JSON));
+
+    assertThat(response.getStatus(), is(equalTo(422)));
+  }
+
+  @Test
+  public void testFailSoc158PlacementCodeMissing() throws Exception {
+
+    Client validClient = MAPPER.readValue(
+        fixture("fixtures/domain/legacy/Client/invalid/soc158PlacementCodeMissing.json"),
+        Client.class);
+
+    Response response =
+        resources.client().target(ROOT_RESOURCE).request().accept(MediaType.APPLICATION_JSON)
+            .post(Entity.entity(validClient, MediaType.APPLICATION_JSON));
+
+    assertThat(response.getStatus(), is(equalTo(422)));
+
+  }
+
+  @Test
+  public void testFailSoc158PlacementCodeNull() throws Exception {
+
+    Client validClient = MAPPER.readValue(
+        fixture("fixtures/domain/legacy/Client/invalid/soc158PlacementCodeNull.json"),
+        Client.class);
+
+    Response response =
+        resources.client().target(ROOT_RESOURCE).request().accept(MediaType.APPLICATION_JSON)
+            .post(Entity.entity(validClient, MediaType.APPLICATION_JSON));
+
+    assertThat(response.getStatus(), is(equalTo(422)));
+
+  }
+
+  @Test
+  public void testFailSoc158PlacementCodeWhiteSpace() throws Exception {
+
+    Client validClient = MAPPER.readValue(
+        fixture("fixtures/domain/legacy/Client/invalid/Soc158PlacementCodeWhiteSpace.json"),
+        Client.class);
+
+    Response response =
+        resources.client().target(ROOT_RESOURCE).request().accept(MediaType.APPLICATION_JSON)
+            .post(Entity.entity(validClient, MediaType.APPLICATION_JSON));
+
+    assertThat(response.getStatus(), is(equalTo(422)));
+    assertThat(
+        response.readEntity(String.class).indexOf("soc158PlacementCode must be one of [Y, M, N]"),
+        is(greaterThanOrEqualTo(0)));
+  }
+
+  @Test
+  public void testSuccessSoc158PlacementCodeY() throws Exception {
+
+    Client validClient = MAPPER.readValue(
+        fixture("fixtures/domain/legacy/Client/valid/soc158PlacementCodeY.json"), Client.class);
+
+    Response response =
+        resources.client().target(ROOT_RESOURCE).request().accept(MediaType.APPLICATION_JSON)
+            .post(Entity.entity(validClient, MediaType.APPLICATION_JSON));
+
+    assertThat(response.getStatus(), is(equalTo(204)));
+
+  }
+
+  @Test
+  public void testSuccessSoc158PlacementCodeM() throws Exception {
+
+    Client validClient = MAPPER.readValue(
+        fixture("fixtures/domain/legacy/Client/valid/soc158PlacementCodeM.json"), Client.class);
+
+    Response response =
+        resources.client().target(ROOT_RESOURCE).request().accept(MediaType.APPLICATION_JSON)
+            .post(Entity.entity(validClient, MediaType.APPLICATION_JSON));
+
+    assertThat(response.getStatus(), is(equalTo(204)));
+
+  }
+
+  @Test
+  public void testSuccessSoc158PlacementCodeN() throws Exception {
+
+    Client validClient = MAPPER.readValue(
+        fixture("fixtures/domain/legacy/Client/valid/soc158PlacementCodeN.json"), Client.class);
+
+    Response response =
+        resources.client().target(ROOT_RESOURCE).request().accept(MediaType.APPLICATION_JSON)
+            .post(Entity.entity(validClient, MediaType.APPLICATION_JSON));
+
+    assertThat(response.getStatus(), is(equalTo(204)));
+
+  }
+
+  /*
+   * socialSecurityNumChangedCode test
+   */
+  @Test
+  public void testFailSocialSecurityNumChangedCodeInvalid() throws Exception {
+
+    Client validClient = MAPPER.readValue(
+        fixture("fixtures/domain/legacy/Client/invalid/socialSecurityNumChangedCodeInvalid.json"),
+        Client.class);
+
+    Response response =
+        resources.client().target(ROOT_RESOURCE).request().accept(MediaType.APPLICATION_JSON)
+            .post(Entity.entity(validClient, MediaType.APPLICATION_JSON));
+
+    assertThat(response.getStatus(), is(equalTo(422)));
+  }
+
+  @Test
+  public void testFailSocialSecurityNumChangedCodeeEmpty() throws Exception {
+
+    Client validClient = MAPPER.readValue(
+        fixture("fixtures/domain/legacy/Client/invalid/socialSecurityNumChangedCodeEmpty.json"),
+        Client.class);
+
+    Response response =
+        resources.client().target(ROOT_RESOURCE).request().accept(MediaType.APPLICATION_JSON)
+            .post(Entity.entity(validClient, MediaType.APPLICATION_JSON));
+
+    assertThat(response.getStatus(), is(equalTo(422)));
+  }
+
+  @Test
+  public void testFailSocialSecurityNumChangedCodeMissing() throws Exception {
+
+    Client validClient = MAPPER.readValue(
+        fixture("fixtures/domain/legacy/Client/invalid/socialSecurityNumChangedCodeMissing.json"),
+        Client.class);
+
+    Response response =
+        resources.client().target(ROOT_RESOURCE).request().accept(MediaType.APPLICATION_JSON)
+            .post(Entity.entity(validClient, MediaType.APPLICATION_JSON));
+
+    assertThat(response.getStatus(), is(equalTo(422)));
+
+  }
+
+  @Test
+  public void testFailSocialSecurityNumChangedCodeNull() throws Exception {
+
+    Client validClient = MAPPER.readValue(
+        fixture("fixtures/domain/legacy/Client/invalid/socialSecurityNumChangedCodeNull.json"),
+        Client.class);
+
+    Response response =
+        resources.client().target(ROOT_RESOURCE).request().accept(MediaType.APPLICATION_JSON)
+            .post(Entity.entity(validClient, MediaType.APPLICATION_JSON));
+
+    assertThat(response.getStatus(), is(equalTo(422)));
+
+  }
+
+  @Test
+  public void testFailSocialSecurityNumChangedCodeWhiteSpace() throws Exception {
+
+    Client validClient = MAPPER.readValue(
+        fixture(
+            "fixtures/domain/legacy/Client/invalid/socialSecurityNumChangedCodeWhiteSpace.json"),
+        Client.class);
+
+    Response response =
+        resources.client().target(ROOT_RESOURCE).request().accept(MediaType.APPLICATION_JSON)
+            .post(Entity.entity(validClient, MediaType.APPLICATION_JSON));
+
+    assertThat(response.getStatus(), is(equalTo(422)));
+    assertThat(response.readEntity(String.class).indexOf(
+        "socialSecurityNumChangedCode must be one of [Y, N]"), is(greaterThanOrEqualTo(0)));
+  }
+
+  @Test
+  public void testSuccessSocialSecurityNumChangedCodeY() throws Exception {
+
+    Client validClient = MAPPER.readValue(
+        fixture("fixtures/domain/legacy/Client/valid/socialSecurityNumChangedCodeY.json"),
+        Client.class);
+
+    Response response =
+        resources.client().target(ROOT_RESOURCE).request().accept(MediaType.APPLICATION_JSON)
+            .post(Entity.entity(validClient, MediaType.APPLICATION_JSON));
+
+    assertThat(response.getStatus(), is(equalTo(204)));
+
+  }
+
+  @Test
+  public void testSuccesSocialSecurityNumChangedCodeN() throws Exception {
+
+    Client validClient = MAPPER.readValue(
+        fixture("fixtures/domain/legacy/Client/valid/socialSecurityNumChangedCodeN.json"),
+        Client.class);
+
+    Response response =
+        resources.client().target(ROOT_RESOURCE).request().accept(MediaType.APPLICATION_JSON)
+            .post(Entity.entity(validClient, MediaType.APPLICATION_JSON));
+
+    assertThat(response.getStatus(), is(equalTo(204)));
+
+  }
+
+  /*
+   * unemployedParentCode test
+   */
+  @Test
+  public void testFailUnemployedParentCodeInvalid() throws Exception {
+
+    Client validClient = MAPPER.readValue(
+        fixture("fixtures/domain/legacy/Client/invalid/unemployedParentCodeInvalid.json"),
+        Client.class);
+
+    Response response =
+        resources.client().target(ROOT_RESOURCE).request().accept(MediaType.APPLICATION_JSON)
+            .post(Entity.entity(validClient, MediaType.APPLICATION_JSON));
+
+    assertThat(response.getStatus(), is(equalTo(422)));
+  }
+
+  @Test
+  public void testFailUnemployedParentCodeEmpty() throws Exception {
+
+    Client validClient = MAPPER.readValue(
+        fixture("fixtures/domain/legacy/Client/invalid/unemployedParentCodeEmpty.json"),
+        Client.class);
+
+    Response response =
+        resources.client().target(ROOT_RESOURCE).request().accept(MediaType.APPLICATION_JSON)
+            .post(Entity.entity(validClient, MediaType.APPLICATION_JSON));
+
+    assertThat(response.getStatus(), is(equalTo(422)));
+  }
+
+  @Test
+  public void testFailUnemployedParentCodeMissing() throws Exception {
+
+    Client validClient = MAPPER.readValue(
+        fixture("fixtures/domain/legacy/Client/invalid/unemployedParentCodeMissing.json"),
+        Client.class);
+
+    Response response =
+        resources.client().target(ROOT_RESOURCE).request().accept(MediaType.APPLICATION_JSON)
+            .post(Entity.entity(validClient, MediaType.APPLICATION_JSON));
+
+    assertThat(response.getStatus(), is(equalTo(422)));
+
+  }
+
+  @Test
+  public void testFailUnemployedParentCodeNull() throws Exception {
+
+    Client validClient = MAPPER.readValue(
+        fixture("fixtures/domain/legacy/Client/invalid/unemployedParentCodeNull.json"),
+        Client.class);
+
+    Response response =
+        resources.client().target(ROOT_RESOURCE).request().accept(MediaType.APPLICATION_JSON)
+            .post(Entity.entity(validClient, MediaType.APPLICATION_JSON));
+
+    assertThat(response.getStatus(), is(equalTo(422)));
+
+  }
+
+  @Test
+  public void testFailUnemployedParentCodeWhiteSpace() throws Exception {
+
+    Client validClient = MAPPER.readValue(
+        fixture("fixtures/domain/legacy/Client/invalid/unemployedParentCodeWhiteSpace.json"),
+        Client.class);
+
+    Response response =
+        resources.client().target(ROOT_RESOURCE).request().accept(MediaType.APPLICATION_JSON)
+            .post(Entity.entity(validClient, MediaType.APPLICATION_JSON));
+
+    assertThat(response.getStatus(), is(equalTo(422)));
+    assertThat(response.readEntity(String.class)
+        .indexOf("unemployedParentCode must be one of [N, NA, U, Y]"), is(greaterThanOrEqualTo(0)));
+  }
+
+  @Test
+  public void testSuccessUnemployedParentCodeN() throws Exception {
+
+    Client validClient = MAPPER.readValue(
+        fixture("fixtures/domain/legacy/Client/valid/unemployedParentCodeN.json"), Client.class);
+
+    Response response =
+        resources.client().target(ROOT_RESOURCE).request().accept(MediaType.APPLICATION_JSON)
+            .post(Entity.entity(validClient, MediaType.APPLICATION_JSON));
+
+    assertThat(response.getStatus(), is(equalTo(204)));
+
+  }
+
+  @Test
+  public void testSuccessUnemployedParentCodeNA() throws Exception {
+
+    Client validClient = MAPPER.readValue(
+        fixture("fixtures/domain/legacy/Client/valid/unemployedParentCodeNA.json"), Client.class);
+
+    Response response =
+        resources.client().target(ROOT_RESOURCE).request().accept(MediaType.APPLICATION_JSON)
+            .post(Entity.entity(validClient, MediaType.APPLICATION_JSON));
+
+    assertThat(response.getStatus(), is(equalTo(204)));
+
+  }
+
+  @Test
+  public void testSuccessUnemployedParentCodeU() throws Exception {
+
+    Client validClient = MAPPER.readValue(
+        fixture("fixtures/domain/legacy/Client/valid/unemployedParentCodeU.json"), Client.class);
+
+    Response response =
+        resources.client().target(ROOT_RESOURCE).request().accept(MediaType.APPLICATION_JSON)
+            .post(Entity.entity(validClient, MediaType.APPLICATION_JSON));
+
+    assertThat(response.getStatus(), is(equalTo(204)));
+
+  }
+
+  @Test
+  public void testSuccessUnemployedParentCodeY() throws Exception {
+
+    Client validClient = MAPPER.readValue(
+        fixture("fixtures/domain/legacy/Client/valid/unemployedParentCodeY.json"), Client.class);
+
+    Response response =
+        resources.client().target(ROOT_RESOURCE).request().accept(MediaType.APPLICATION_JSON)
+            .post(Entity.entity(validClient, MediaType.APPLICATION_JSON));
+
+    assertThat(response.getStatus(), is(equalTo(204)));
+
+  }
+
+
   private Client validClient() throws JsonParseException, JsonMappingException, IOException {
     Client vc =
         MAPPER.readValue(fixture("fixtures/domain/legacy/Client/valid/valid.json"), Client.class);
