@@ -46,6 +46,7 @@ import gov.ca.cwds.data.persistence.cms.Allegation;
 import gov.ca.cwds.data.persistence.cms.AllegationPerpetratorHistory;
 import gov.ca.cwds.data.persistence.cms.ApiSystemCodeDao;
 import gov.ca.cwds.data.persistence.cms.ChildClient;
+import gov.ca.cwds.data.persistence.cms.ClientAddress;
 import gov.ca.cwds.data.persistence.cms.ClientCollateral;
 import gov.ca.cwds.data.persistence.cms.ClientUc;
 import gov.ca.cwds.data.persistence.cms.CmsDocReferralClient;
@@ -111,7 +112,8 @@ public class DataAccessModule extends AbstractModule {
           OtherChildInPlacemtHome.class, OtherClientName.class, Referral.class,
           ReferralClient.class, Reporter.class, ServiceProvider.class, StaffPerson.class,
           SubstituteCareProvider.class, LongText.class, AllegationPerpetratorHistory.class,
-          ClientUc.class, ChildClient.class) {
+          ClientUc.class, ChildClient.class, gov.ca.cwds.data.persistence.cms.Address.class,
+          ClientAddress.class) {
         @Override
         public DataSourceFactory getDataSourceFactory(ApiConfiguration configuration) {
           return configuration.getCmsDataSourceFactory();
