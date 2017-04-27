@@ -2727,13 +2727,15 @@ public class ClientTest implements DomainTestTemplate {
   }
 
   /*
-   * soc158PlacementCode test
+   * socPlacementCode test
+   * 
+   * 158 is removed on the naming Json convention due to make jenkins build success
    */
   @Test
   public void testFailSoc158PlacementCodeInvalid() throws Exception {
 
     Client validClient = MAPPER.readValue(
-        fixture("fixtures/domain/legacy/Client/invalid/soc158PlacementCodeInvalid.json"),
+        fixture("fixtures/domain/legacy/Client/invalid/socPlacementCodeInvalid.json"),
         Client.class);
 
     Response response =
@@ -2747,8 +2749,7 @@ public class ClientTest implements DomainTestTemplate {
   public void testFailSoc158PlacementCodeEmpty() throws Exception {
 
     Client validClient = MAPPER.readValue(
-        fixture("fixtures/domain/legacy/Client/invalid/soc158PlacementCodeEmpty.json"),
-        Client.class);
+        fixture("fixtures/domain/legacy/Client/invalid/socPlacementCodeEmpty.json"), Client.class);
 
     Response response =
         resources.client().target(ROOT_RESOURCE).request().accept(MediaType.APPLICATION_JSON)
@@ -2761,7 +2762,7 @@ public class ClientTest implements DomainTestTemplate {
   public void testFailSoc158PlacementCodeMissing() throws Exception {
 
     Client validClient = MAPPER.readValue(
-        fixture("fixtures/domain/legacy/Client/invalid/soc158PlacementCodeMissing.json"),
+        fixture("fixtures/domain/legacy/Client/invalid/socPlacementCodeMissing.json"),
         Client.class);
 
     Response response =
@@ -2776,8 +2777,7 @@ public class ClientTest implements DomainTestTemplate {
   public void testFailSoc158PlacementCodeNull() throws Exception {
 
     Client validClient = MAPPER.readValue(
-        fixture("fixtures/domain/legacy/Client/invalid/soc158PlacementCodeNull.json"),
-        Client.class);
+        fixture("fixtures/domain/legacy/Client/invalid/socPlacementCodeNull.json"), Client.class);
 
     Response response =
         resources.client().target(ROOT_RESOURCE).request().accept(MediaType.APPLICATION_JSON)
@@ -2791,7 +2791,7 @@ public class ClientTest implements DomainTestTemplate {
   public void testFailSoc158PlacementCodeWhiteSpace() throws Exception {
 
     Client validClient = MAPPER.readValue(
-        fixture("fixtures/domain/legacy/Client/invalid/Soc158PlacementCodeWhiteSpace.json"),
+        fixture("fixtures/domain/legacy/Client/invalid/SocPlacementCodeWhiteSpace.json"),
         Client.class);
 
     Response response =
@@ -2808,7 +2808,7 @@ public class ClientTest implements DomainTestTemplate {
   public void testSuccessSoc158PlacementCodeY() throws Exception {
 
     Client validClient = MAPPER.readValue(
-        fixture("fixtures/domain/legacy/Client/valid/soc158PlacementCodeY.json"), Client.class);
+        fixture("fixtures/domain/legacy/Client/valid/socPlacementCodeY.json"), Client.class);
 
     Response response =
         resources.client().target(ROOT_RESOURCE).request().accept(MediaType.APPLICATION_JSON)
@@ -2822,7 +2822,7 @@ public class ClientTest implements DomainTestTemplate {
   public void testSuccessSoc158PlacementCodeM() throws Exception {
 
     Client validClient = MAPPER.readValue(
-        fixture("fixtures/domain/legacy/Client/valid/soc158PlacementCodeM.json"), Client.class);
+        fixture("fixtures/domain/legacy/Client/valid/socPlacementCodeM.json"), Client.class);
 
     Response response =
         resources.client().target(ROOT_RESOURCE).request().accept(MediaType.APPLICATION_JSON)
@@ -2836,7 +2836,7 @@ public class ClientTest implements DomainTestTemplate {
   public void testSuccessSoc158PlacementCodeN() throws Exception {
 
     Client validClient = MAPPER.readValue(
-        fixture("fixtures/domain/legacy/Client/valid/soc158PlacementCodeN.json"), Client.class);
+        fixture("fixtures/domain/legacy/Client/valid/socPlacementCodeN.json"), Client.class);
 
     Response response =
         resources.client().target(ROOT_RESOURCE).request().accept(MediaType.APPLICATION_JSON)
