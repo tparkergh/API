@@ -153,6 +153,13 @@ public abstract class BaseAddress extends CmsPersistentObject
     super();
   }
 
+  /**
+   * @param lastUpdateId
+   */
+  public BaseAddress(String lastUpdateId) {
+    super(lastUpdateId);
+  }
+
   // ==================
   // IDENTIFIERS:
   // ==================
