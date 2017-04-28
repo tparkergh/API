@@ -51,8 +51,8 @@ public class PersonService implements CrudsService {
   private static final Logger LOGGER = LoggerFactory.getLogger(PersonService.class);
   private static final ObjectMapper MAPPER = new ObjectMapper();
 
-  private static final String INDEX_PERSON = ElasticsearchDao.DEFAULT_PERSON_IDX_NM;
-  private static final String DOCUMENT_TYPE_PERSON = ElasticsearchDao.DEFAULT_PERSON_DOC_TYPE;
+  // private static final String INDEX_PERSON = ElasticsearchDao.DEFAULT_PERSON_IDX_NM;
+  // private static final String DOCUMENT_TYPE_PERSON = ElasticsearchDao.DEFAULT_PERSON_DOC_TYPE;
 
   private PersonDao personDao;
   private ElasticsearchDao elasticsearchDao;
@@ -151,10 +151,11 @@ public class PersonService implements CrudsService {
       final String document = MAPPER.writeValueAsString(esPerson);
 
       // If the people index is missing, create it.
-      elasticsearchDao.createIndexIfNeeded(INDEX_PERSON);
+      elasticsearchDao.createIndexIfNeeded(elasticsearchDao.getDefaultAlias());
 
       // The ES Dao manages its own connections. No need to manually start or stop.
-      elasticsearchDao.index(INDEX_PERSON, DOCUMENT_TYPE_PERSON, document, esPerson.getId());
+      elasticsearchDao.index(elasticsearchDao.getDefaultAlias(),
+          elasticsearchDao.getDefaultDocType(), document, esPerson.getId());
     } catch (Exception e) {
       LOGGER.error("Unable to Index Person in ElasticSearch", e);
       throw new ApiException("Unable to Index Person in ElasticSearch", e);
