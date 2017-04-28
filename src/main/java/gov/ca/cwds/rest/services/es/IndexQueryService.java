@@ -71,8 +71,8 @@ public class IndexQueryService
   @Override
   protected IndexQueryResponse handleFind(String searchForThis) {
     try {
-      return new IndexQueryResponse(callDao(
-          gov.ca.cwds.data.es.ElasticsearchDao.DEFAULT_PERSON_IDX_NM, searchForThis.trim()));
+      return new IndexQueryResponse(
+          callDao(elasticsearchDao.getDefaultAlias(), searchForThis.trim()));
     } catch (Exception e) {
       LOGGER.error("Something went wrong ...", e.getMessage());
       throw new ServiceException("Something went wrong ...", e);
