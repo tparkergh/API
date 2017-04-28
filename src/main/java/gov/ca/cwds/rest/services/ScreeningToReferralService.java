@@ -117,7 +117,7 @@ public class ScreeningToReferralService implements CrudsService {
   private static final String DEFAULT_ADOPTION_STATUS_CODE = "N";
   private static final String DEFAULT_NON_PROTECTING_PARENT_CODE = "U";
   private static final short DEFAULT_ADDRESS_TYPE = 32; // residence
-  private static String DEFAULT_COUNTY_SPECIFIC_CODE = "99";
+  private static final String DEFAULT_COUNTY_SPECIFIC_CODE = "99";
   private static final short DEFAULT_GOVERNMENT_ENTITY_TYPE = 1126;
   private static final String DEFAULT_NO = "N";
   private static final String DEFAULT_STAFF_PERSON_ID = "0X5";
@@ -526,10 +526,10 @@ public class ScreeningToReferralService implements CrudsService {
       String streetNumber = streetAddress[0];
       String streetName = streetAddress[1];
 
-      Address domainAddress = new Address("", address.getCity(), DEFAULT_DECIMAL, DEFAULT_INT,
-          false, DEFAULT_CODE, DEFAULT_DECIMAL, DEFAULT_INT, "", DEFAULT_DECIMAL, DEFAULT_INT,
-          DEFAULT_STATE_CODE, streetName, streetNumber, zipCode, address.getType(), zipSuffix, "",
-          "", DEFAULT_CODE, DEFAULT_CODE, "");
+      Address domainAddress = new Address(" ", address.getCity(), DEFAULT_DECIMAL, DEFAULT_INT,
+          false, DEFAULT_CODE, DEFAULT_DECIMAL, DEFAULT_INT, " ", DEFAULT_DECIMAL, DEFAULT_INT,
+          DEFAULT_STATE_CODE, streetName, streetNumber, zipCode, address.getType(), zipSuffix, " ",
+          " ", DEFAULT_CODE, DEFAULT_CODE, " ");
 
       PostedAddress postedAddress = (PostedAddress) this.addressService.create(domainAddress);
       addressId = postedAddress.getExistingAddressId();
@@ -568,11 +568,11 @@ public class ScreeningToReferralService implements CrudsService {
     String streetNumber = streetAddress[0];
     String streetName = streetAddress[1];
 
-    Address domainAddress = new Address("", address.getCity(), DEFAULT_DECIMAL, DEFAULT_INT, false,
+    Address domainAddress = new Address(" ", address.getCity(), DEFAULT_DECIMAL, DEFAULT_INT, false,
         DEFAULT_CODE, DEFAULT_DECIMAL, DEFAULT_INT, "", DEFAULT_DECIMAL, DEFAULT_INT,
-        DEFAULT_STATE_CODE, streetName, streetNumber, zipCode, address.getType(), zipSuffix, "", "",
-        DEFAULT_CODE, DEFAULT_CODE, "");
-    // buildErrors(messages, validator.validate(domainAddress));
+        DEFAULT_STATE_CODE, streetName, streetNumber, zipCode, address.getType(), zipSuffix, " ",
+        " ", DEFAULT_CODE, DEFAULT_CODE, " ");
+    // buildErrors(messages, validator,validate(domainAddress))
 
     PostedAddress postedAddress = (PostedAddress) this.addressService.create(domainAddress);
 

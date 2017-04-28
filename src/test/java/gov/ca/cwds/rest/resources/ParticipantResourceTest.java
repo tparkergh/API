@@ -84,8 +84,8 @@ public class ParticipantResourceTest implements ResourceTestTemplate {
     roles.add("victim");
     Address address = new Address("123 First St", "San Jose", "CA", 94321, "Home");
     addresses.add(address);
-    Participant participant = new Participant(1L, "Marge", "Simpson", "Female", "111223333",
-        "2017-01-11", 123, 456, roles, addresses);
+    Participant participant = new Participant(1L, "0123456ABC", "Marge", "Simpson", "Female",
+        "111223333", "2017-01-11", 123, 456, roles, addresses);
     inMemoryResource.client().target(ROOT_RESOURCE).request().accept(MediaType.APPLICATION_JSON)
         .post(Entity.entity(participant, MediaType.APPLICATION_JSON)).getStatus();
     verify(resourceDelegate).create(eq(participant));
@@ -98,8 +98,8 @@ public class ParticipantResourceTest implements ResourceTestTemplate {
     roles.add("victim");
     Address address = new Address("123 First St", "San Jose", "CA", 94321, "Home");
     addresses.add(address);
-    Participant participant = new Participant(1, "Marge", "Simpson", "Female", "11122333",
-        "11-01-2017", 123, 456, roles, addresses);
+    Participant participant = new Participant(1, "0123456ABC", "Marge", "Simpson", "Female",
+        "11122333", "11-01-2017", 123, 456, roles, addresses);
 
     int status =
         inMemoryResource.client().target(ROOT_RESOURCE).request().accept(MediaType.APPLICATION_JSON)
@@ -145,8 +145,8 @@ public class ParticipantResourceTest implements ResourceTestTemplate {
     roles.add("victim");
     Address address = new Address("123 First St", "San Jose", "CA", 94321, "Home");
     addresses.add(address);
-    Participant participant = new Participant(1, "Marge", "Simpson", "Female", "111223333",
-        "2017-01-23", 123, 456, roles, addresses);
+    Participant participant = new Participant(1, "0123456ABC", "Marge", "Simpson", "Female",
+        "111223333", "2017-01-23", 123, 456, roles, addresses);
 
     int status =
         inMemoryResource.client().target(ROOT_RESOURCE).request().accept(MediaType.APPLICATION_JSON)
@@ -199,8 +199,8 @@ public class ParticipantResourceTest implements ResourceTestTemplate {
     roles.add("victim");
     Address address = new Address("123 First St", "San Jose", "CA", 94321, "Home");
     addresses.add(address);
-    Participant participant = new Participant(1, "Marge", "Simpson", "Female", "111223333",
-        "2017-01-11", 123, 456, roles, addresses);
+    Participant participant = new Participant(1, "0123456ABC", "Marge", "Simpson", "Female",
+        "111223333", "2017-01-11", 123, 456, roles, addresses);
     int receivedStatus =
         inMemoryResource.client().target(ROOT_RESOURCE).request().accept(MediaType.APPLICATION_JSON)
             .put(Entity.entity(participant, MediaType.APPLICATION_JSON)).getStatus();

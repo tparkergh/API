@@ -39,6 +39,7 @@ import nl.jqno.equalsverifier.Warning;
 public class ParticipantTest implements PersistentTestTemplate {
 
   private long id = 5432;
+  private String clientId = "0123456ABC";
   private long personId = 12345;
   private long screeningId = 12345;
   private String firstName = "John";
@@ -109,10 +110,8 @@ public class ParticipantTest implements PersistentTestTemplate {
   @Override
   @Test
   public void testEqualsHashCodeWorks() {
-    EqualsVerifier.forClass(Participant.class)
-            .suppress(Warning.NONFINAL_FIELDS)
-            .withIgnoredFields("messages")
-            .verify();
+    EqualsVerifier.forClass(Participant.class).suppress(Warning.NONFINAL_FIELDS)
+        .withIgnoredFields("messages").verify();
   }
 
 
@@ -134,8 +133,8 @@ public class ParticipantTest implements PersistentTestTemplate {
   @Test
   public void testConstructorUsingDomain() throws Exception {
 
-    Participant domain = new Participant(id, firstName, lastName, gender, ssn, dateOfBirth,
-        personId, screeningId, roles, addresses);
+    Participant domain = new Participant(id, clientId, firstName, lastName, gender, ssn,
+        dateOfBirth, personId, screeningId, roles, addresses);
 
     assertThat(domain.getId(), is(equalTo(id)));
     assertThat(domain.getPersonId(), is(equalTo(personId)));
