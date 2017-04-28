@@ -455,7 +455,7 @@ public class ScreeningToReferralService implements CrudsService {
       // TODO: 41511573 address parsing - Smarty Streets Free Form display requires standardizing
       // parsing to fields in CMS
       int zipCode = address.getZip();
-      zipSuffix = null;
+      zipSuffix = 0;
       if (address.getZip().toString().length() > 5) {
         zipSuffix = Short.parseShort(address.getZip().toString().substring(5));
       }
@@ -493,7 +493,7 @@ public class ScreeningToReferralService implements CrudsService {
     gov.ca.cwds.rest.api.domain.Address address = scr.getAddress();
 
     Integer zipCode = address.getZip();
-    zipSuffix = null;
+    zipSuffix = 0;
     if (address.getZip().toString().length() > 5) {
       zipSuffix = Short.parseShort(address.getZip().toString().substring(5));
     }
