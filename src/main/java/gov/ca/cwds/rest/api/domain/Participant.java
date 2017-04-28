@@ -31,6 +31,12 @@ public class Participant extends ReportingDomain implements Request, Response {
   @ApiModelProperty(required = true, readOnly = false, value = "Participant Id", example = "12345")
   private long id;
 
+  @JsonProperty("legacy_client_id")
+  @ApiModelProperty(required = true, readOnly = false, value = "Legacy Client Id",
+      example = "1234567ABC")
+  @Size(max = 10)
+  private String clientId;
+
   @JsonProperty("first_name")
   @ApiModelProperty(required = false, readOnly = false, value = "First Name", example = "John")
   private String firstName;
@@ -86,6 +92,7 @@ public class Participant extends ReportingDomain implements Request, Response {
    * Constructor
    * 
    * @param id The id of the Participant
+   * @param clientId - the legacy clientId
    * @param personId The person Id
    * @param screeningId The screening Id
    * @param firstName The first Name
@@ -97,13 +104,15 @@ public class Participant extends ReportingDomain implements Request, Response {
    * @param addresses The addresses of the participant
    */
   @JsonCreator
-  public Participant(@JsonProperty("id") long id, @JsonProperty("first_name") String firstName,
-      @JsonProperty("last_name") String lastName, @JsonProperty("gender") String gender,
-      @JsonProperty("ssn") String ssn, @JsonProperty("date_of_birth") String dateOfBirth,
-      @JsonProperty("person_id") long personId, @JsonProperty("screening_id") long screeningId,
-      @JsonProperty("roles") Set<String> roles, @JsonProperty("addresses") Set<Address> addresses) {
+  public Participant(@JsonProperty("id") long id, @JsonProperty("legacy_client_id") String clientId,
+      @JsonProperty("first_name") String firstName, @JsonProperty("last_name") String lastName,
+      @JsonProperty("gender") String gender, @JsonProperty("ssn") String ssn,
+      @JsonProperty("date_of_birth") String dateOfBirth, @JsonProperty("person_id") long personId,
+      @JsonProperty("screening_id") long screeningId, @JsonProperty("roles") Set<String> roles,
+      @JsonProperty("addresses") Set<Address> addresses) {
     super();
     this.id = id;
+    this.clientId = clientId;
     this.personId = personId;
     this.screeningId = screeningId;
     this.firstName = firstName;
@@ -157,6 +166,13 @@ public class Participant extends ReportingDomain implements Request, Response {
    */
   public long getId() {
     return id;
+  }
+
+  /**
+   * @return the legacy clientId
+   */
+  public String getClientId() {
+    return clientId;
   }
 
   /**
@@ -241,6 +257,7 @@ public class Participant extends ReportingDomain implements Request, Response {
     result = prime * result + ((ssn == null) ? 0 : ssn.hashCode());
     result = prime * result + ((roles == null) ? 0 : roles.hashCode());
     result = prime * result + ((addresses == null) ? 0 : addresses.hashCode());
+    result = prime * result + ((clientId == null) ? 0 : clientId.hashCode());
     return result;
   }
 
@@ -290,6 +307,13 @@ public class Participant extends ReportingDomain implements Request, Response {
       return false;
     }
     if (id != other.id) {
+      return false;
+    }
+    if (clientId == null) {
+      if (other.clientId != null) {
+        return false;
+      }
+    } else if (!clientId.equals(other.clientId)) {
       return false;
     }
     if (personId != other.personId) {

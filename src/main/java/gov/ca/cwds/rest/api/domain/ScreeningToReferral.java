@@ -19,8 +19,6 @@ import io.dropwizard.jackson.JsonSnakeCase;
 import io.swagger.annotations.ApiModelProperty;
 
 /**
- * {@link DomainObject} representing a screening
- * 
  * @author CWDS API Team
  */
 @JsonSnakeCase
@@ -40,6 +38,12 @@ public class ScreeningToReferral extends ReportingDomain implements Request {
   @NotNull
   @ApiModelProperty(required = true, readOnly = false, value = "Screening ID", example = "12345")
   private long id;
+
+  @JsonProperty("legacy_referral_id")
+  @ApiModelProperty(required = true, readOnly = false, value = "Legacy Referral Id",
+      example = "2345678ABC")
+  @Size(max = 10)
+  private String referralId;
 
   @JsonProperty("ended_at")
   @ApiModelProperty(required = false, readOnly = false, value = "Screening end date/time",
@@ -161,6 +165,7 @@ public class ScreeningToReferral extends ReportingDomain implements Request {
 
   /**
    * @param id - the screening Id
+   * @param referralId - the referral Id
    * @param endedAt - screening ended at date
    * @param incidentCounty - county of incident
    * @param incidentDate - date of incident
@@ -176,18 +181,19 @@ public class ScreeningToReferral extends ReportingDomain implements Request {
    * @param screeningDecision - screening decesion
    * @param screeningDecisionDetail - screening decision detail
    * @param address - address associated with participants
-   * @param participants - participants associcated with this scree.
+   * @param participants - participants associcated with this screening
    * @param crossReports - Cross Reort
    * @param allegations - Allegtions
    */
-  public ScreeningToReferral(long id, @Date String endedAt, String incidentCounty,
-      @Date String incidentDate, String locationType, String communicationMethod, String name,
-      String reportNarrative, String reference, String responseTime, @Date String startedAt,
-      String assignee, String additionalInformation, String screeningDecision,
-      String screeningDecisionDetail, Address address, Set<Participant> participants,
-      Set<CrossReport> crossReports, Set<Allegation> allegations) {
+  public ScreeningToReferral(long id, String referralId, @Date String endedAt,
+      String incidentCounty, @Date String incidentDate, String locationType,
+      String communicationMethod, String name, String reportNarrative, String reference,
+      String responseTime, @Date String startedAt, String assignee, String additionalInformation,
+      String screeningDecision, String screeningDecisionDetail, Address address,
+      Set<Participant> participants, Set<CrossReport> crossReports, Set<Allegation> allegations) {
     super();
     this.id = id;
+    this.referralId = referralId;
     this.endedAt = endedAt;
     this.incidentCounty = incidentCounty;
     this.incidentDate = incidentDate;
@@ -213,6 +219,13 @@ public class ScreeningToReferral extends ReportingDomain implements Request {
    */
   public long getId() {
     return id;
+  }
+
+  /**
+   * @return referralId
+   */
+  public String getReferralId() {
+    return referralId;
   }
 
   /**
@@ -352,6 +365,7 @@ public class ScreeningToReferral extends ReportingDomain implements Request {
     result = prime * result + ((name == null) ? 0 : name.hashCode());
     result = prime * result + ((participants == null) ? 0 : participants.hashCode());
     result = prime * result + ((reference == null) ? 0 : reference.hashCode());
+    result = prime * result + ((referralId == null) ? 0 : referralId.hashCode());
     result = prime * result + ((reportNarrative == null) ? 0 : reportNarrative.hashCode());
     result = prime * result + ((responseTime == null) ? 0 : responseTime.hashCode());
     result = prime * result + ((screeningDecision == null) ? 0 : screeningDecision.hashCode());
@@ -437,6 +451,11 @@ public class ScreeningToReferral extends ReportingDomain implements Request {
         return false;
     } else if (!reference.equals(other.reference))
       return false;
+    if (referralId == null) {
+      if (other.referralId != null)
+        return false;
+    } else if (!referralId.equals(other.referralId))
+      return false;
     if (reportNarrative == null) {
       if (other.reportNarrative != null)
         return false;
@@ -464,6 +483,4 @@ public class ScreeningToReferral extends ReportingDomain implements Request {
       return false;
     return true;
   }
-
-
 }
