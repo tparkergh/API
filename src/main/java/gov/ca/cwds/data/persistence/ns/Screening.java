@@ -1,8 +1,5 @@
 package gov.ca.cwds.data.persistence.ns;
 
-import gov.ca.cwds.data.ns.NsPersistentObject;
-import gov.ca.cwds.rest.api.domain.DomainChef;
-
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
@@ -22,8 +19,11 @@ import javax.persistence.Table;
 
 import org.hibernate.annotations.Type;
 
+import gov.ca.cwds.data.ns.NsPersistentObject;
+import gov.ca.cwds.rest.api.domain.DomainChef;
+
 /**
- * {@link NsPersistentObject} representing a Person
+ * {@link NsPersistentObject} representing a Person.
  * 
  * @author CWDS API Team
  */
@@ -134,12 +134,11 @@ public class Screening extends NsPersistentObject {
     this.startedAt = startedAt;
     this.narrative = narrative;
     this.contactAddress = contactAddress;
-    if (participants != null) {
+
+    if (participants != null && !participants.isEmpty()) {
       this.participants.addAll(participants);
     }
   }
-
-
 
   /**
    * Constructor
@@ -173,8 +172,8 @@ public class Screening extends NsPersistentObject {
     }
   }
 
-  /*
-   * (non-Javadoc)
+  /**
+   * {@inheritDoc}
    * 
    * @see gov.ca.cwds.data.persistence.PersistentObject#getPrimaryKey()
    */
@@ -280,7 +279,5 @@ public class Screening extends NsPersistentObject {
   public Set<Participant> getParticipants() {
     return participants;
   }
-
-
 
 }
