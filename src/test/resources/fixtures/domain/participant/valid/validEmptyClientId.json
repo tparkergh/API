@@ -1,6 +1,6 @@
 {
   "id" : "5432",
-  "legacy_client_id" : "1234567ABC", 
+  "legacy_client_id" : "", 
   "first_name": "John",
   "last_name": "Smith",
   "gender": "male",

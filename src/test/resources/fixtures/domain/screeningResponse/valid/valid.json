@@ -19,6 +19,7 @@
 	},
 	"participants": [{
 	"id" : "1",
+	"legacy_client_id" : "1234567ABC",
 	  "first_name": "john",
 	  "last_name": "smith",
 	  "gender": "male",

@@ -22,7 +22,7 @@ import io.swagger.annotations.ApiModelProperty;
  * @author CWDS API Team
  */
 @JsonSnakeCase
-@JsonPropertyOrder({"id", "endedAt", "incidentCounty", "incidentDate", "locationType",
+@JsonPropertyOrder({"id", "referralId", "endedAt", "incidentCounty", "incidentDate", "locationType",
     "communicationMethod", "email", "name", "reportNarrative", "reference", "responseTime",
     "startedAt", "assignee", "additionalInformation", "screeningDecision",
     "screeningDecisionDetail", "address", "participants", "crossReports", "allegations"})
@@ -43,6 +43,7 @@ public class ScreeningToReferral extends ReportingDomain implements Request {
   @ApiModelProperty(required = true, readOnly = false, value = "Legacy Referral Id",
       example = "2345678ABC")
   @Size(max = 10)
+  @NotNull
   private String referralId;
 
   @JsonProperty("ended_at")
