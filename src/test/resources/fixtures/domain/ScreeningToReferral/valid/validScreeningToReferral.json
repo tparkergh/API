@@ -43,6 +43,28 @@
 	  			"type" : "Home"
 	  		}
 	  	]
+	},
+		{
+	  "id" : "1234",
+	  "first_name": "Bart",
+	  "last_name": "Simpson",
+	  "gender": "male",
+	  "date_of_birth": "2000-03-15",
+	  "ssn": "234567890",
+	  "person_id": 12345,
+	  "screening_id": 12345,
+	  "roles" : [
+	  	"mandated reporter"
+	  	],
+	  	"addresses" : [
+	  		{
+	  			"street_address" : "234 Second St",
+	  			"state" : "CA",
+	  			"city" : "San Jose",
+	  			"zip" : "94321",
+	  			"type" : "Home"
+	  		}
+	  	]
 	}
    ],
    "cross_reports":[
@@ -55,7 +77,7 @@
    "allegations":[
       {
          "victim_person_id":"5432",
-         "perpetrator_person_id":"2",
+         "perpetrator_person_id":"1234",
          "type":"physical abuse",
          "county":"Sacramento"
       }

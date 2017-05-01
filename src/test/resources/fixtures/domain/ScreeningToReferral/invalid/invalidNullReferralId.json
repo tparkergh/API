@@ -1,6 +1,6 @@
 {
    "id":"2",
-   "legacy_referral_id" : "1234567ABC",
+   "legacy_referral_id" : null,
    "ended_at":"2016-08-03T01:00:00.000Z",
    "incident_county":"sacramento",
    "incident_date":"2016-08-02",
@@ -45,6 +45,29 @@
 	  			"type" : "Home"
 	  		}
 	  	]
+	},
+		{
+	  "id" : "1234",
+	  "legacy_client_id" : "3456789ABC",
+	  "first_name": "Bart",
+	  "last_name": "Simpson",
+	  "gender": "male",
+	  "date_of_birth": "2000-03-15",
+	  "ssn": "234567890",
+	  "person_id": 12345,
+	  "screening_id": 12345,
+	  "roles" : [
+	  	"mandated reporter"
+	  	],
+	  	"addresses" : [
+	  		{
+	  			"street_address" : "234 Second St",
+	  			"state" : "CA",
+	  			"city" : "San Jose",
+	  			"zip" : "94321",
+	  			"type" : "Home"
+	  		}
+	  	]
 	}
    ],
    "cross_reports":[
@@ -53,5 +76,13 @@
          "agency_name":"Sacramento County Sheriff Deparment",
          "method":"electronic report",
          "inform_date":"2017-03-15"
-      }   ]
+      }   ],
+   "allegations":[
+      {
+         "victim_person_id":"5432",
+         "perpetrator_person_id":"1234",
+         "type":"physical abuse",
+         "county":"Sacramento"
+      }
+   ]
 }

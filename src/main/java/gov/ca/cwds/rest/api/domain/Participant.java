@@ -3,6 +3,7 @@ package gov.ca.cwds.rest.api.domain;
 import java.util.Set;
 
 import javax.validation.Valid;
+import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
@@ -35,6 +36,7 @@ public class Participant extends ReportingDomain implements Request, Response {
   @ApiModelProperty(required = true, readOnly = false, value = "Legacy Client Id",
       example = "1234567ABC")
   @Size(max = 10)
+  @NotNull
   private String clientId;
 
   @JsonProperty("first_name")

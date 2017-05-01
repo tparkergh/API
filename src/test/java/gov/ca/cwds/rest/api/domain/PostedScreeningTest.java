@@ -25,6 +25,7 @@ public class PostedScreeningTest implements DomainTestTemplate {
   private static final ObjectMapper MAPPER = Jackson.newObjectMapper();
 
   private long participantId = 1;
+  private String clientId = "1234567ABC";
   private long personId = 12345;
   private long screeningId = 12345;
   private String firstName = "john";
@@ -68,8 +69,8 @@ public class PostedScreeningTest implements DomainTestTemplate {
     addresses.add(address);
     roles.add("victim");
 
-    Participant participant = new Participant(participantId, firstName, lastName, gender, ssn,
-        dateOfBirth, personId, screeningId, roles, addresses);
+    Participant participant = new Participant(participantId, clientId, firstName, lastName, gender,
+        ssn, dateOfBirth, personId, screeningId, roles, addresses);
     ImmutableSet.Builder<Participant> participantSetBuilder = ImmutableSet.builder();
     participantSetBuilder.add(participant);
     Set<Participant> participants;
@@ -95,8 +96,8 @@ public class PostedScreeningTest implements DomainTestTemplate {
     addresses.add(address);
     roles.add("victim");
 
-    Participant participant = new Participant(participantId, firstName, lastName, gender, ssn,
-        dateOfBirth, personId, screeningId, roles, addresses);
+    Participant participant = new Participant(participantId, clientId, firstName, lastName, gender,
+        ssn, dateOfBirth, personId, screeningId, roles, addresses);
     ImmutableSet.Builder<Participant> participantSetBuilder = ImmutableSet.builder();
     participantSetBuilder.add(participant);
     Set<Participant> participants;

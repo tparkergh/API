@@ -1,5 +1,6 @@
 {
    "id":"2",
+   "legacy_referral_id" : "1234567ABC",
    "ended_at":"2016-08-03T01:00:00.000Z",
    "incident_county":"sacramento",
    "incident_date":"2016-08-02",
@@ -24,6 +25,7 @@
    "participants":[
 	{
 	  "id" : "5432",
+	  "legacy_client_id" : "2345678ABC",
 	  "first_name": "John",
 	  "last_name": "Smith",
 	  "gender": "male",
@@ -46,6 +48,7 @@
 	},
 	{
 	  "id" : "1234",
+	  "legacy_client_id" : "3456789ABC",
 	  "first_name": "Bart",
 	  "last_name": "Simpson",
 	  "gender": "male",
@@ -68,6 +71,7 @@
 	},
 	{
 	  "id" : "2345",
+	  "legacy_client_id" : "4567890ABC",
 	  "first_name": "Maggie",
 	  "last_name": "Simpson",
 	  "gender": "male",
