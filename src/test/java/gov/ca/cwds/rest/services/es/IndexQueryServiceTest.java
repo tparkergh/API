@@ -65,9 +65,9 @@ public class IndexQueryServiceTest {
   public void testHandleRequest() throws Exception {
     Map<String, String> test = new HashMap<String, String>();
     test.put("a", "value");
-    req = new IndexQueryRequest("index", test);
+    req = new IndexQueryRequest("auth", "index", test);
     String query = new JSONObject(test).toString();
-    when(target.callDao("index", query)).thenReturn(("fred"));
+    when(target.callDao("auth", "index", query)).thenReturn(("fred"));
     final IndexQueryResponse actual = target.handleRequest(req);
     IndexQueryResponse expected = new IndexQueryResponse("fred");
     assertThat(actual, is(equalTo(expected)));

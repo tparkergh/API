@@ -56,7 +56,7 @@ public class IndexQueryRequestTest {
 
   @Test
   public void instantiation() throws Exception {
-    IndexQueryRequest target = produce("index", null);
+    IndexQueryRequest target = produce("auth", "index", null);
     assertThat(target, notNullValue());
   }
 
@@ -67,15 +67,15 @@ public class IndexQueryRequestTest {
 
   @Test
   public void equals_Args$Object() throws Exception {
-    IndexQueryRequest target = produce("index", null);
+    IndexQueryRequest target = produce("auth", "index", null);
     Object obj = null;
     final boolean actual = target.equals(obj);
     boolean expected = false;
     assertThat(actual, is(equalTo(expected)));
   }
 
-  protected IndexQueryRequest produce(String index, String s) {
-    return new IndexQueryRequest(index, s);
+  protected IndexQueryRequest produce(String auth, String index, String s) {
+    return new IndexQueryRequest(auth, index, s);
   }
 
 }

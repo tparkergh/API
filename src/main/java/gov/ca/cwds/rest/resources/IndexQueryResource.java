@@ -71,19 +71,20 @@ public class IndexQueryResource {
    * @return web service response
    */
   @POST
-  @Path("/{index}/_search")
+  @Path("/{auth}/{index}/_search")
   @ApiResponses(value = {@ApiResponse(code = 400, message = "Unable to process JSON"),
       @ApiResponse(code = 401, message = "Not Authorized"),
       @ApiResponse(code = 406, message = "Accept Header not supported")})
   @ApiOperation(value = "Query ElasticSearch Persons on given search terms",
       code = HttpStatus.SC_OK, response = JSONObject.class)
   @Consumes(value = MediaType.APPLICATION_JSON)
-  public Response searchIndex(@PathParam("index") @ApiParam(required = true, name = "index",
-      value = "The index of the search") String index, @Valid @ApiParam(hidden = false,
-      required = true) Object req) {
+  public Response searchIndex(@PathParam("auth") @ApiParam(required = true, name = "auth",
+      value = "The authorization") String auth, @PathParam("index") @ApiParam(required = true,
+      name = "index", value = "The index of the search") String index, @Valid @ApiParam(
+      hidden = false, required = true) Object req) {
     Response ret;
     try {
-      IndexQueryRequest personQueryRequest = new IndexQueryRequest(index, req);
+      IndexQueryRequest personQueryRequest = new IndexQueryRequest(auth, index, req);
       IndexQueryResponse personQueryResponse =
           (IndexQueryResponse) resourceDelegate.handle(personQueryRequest).getEntity();
       if (personQueryResponse != null) {

@@ -41,6 +41,10 @@ public class IndexQueryRequest implements Serializable, Request {
   @JsonProperty("index")
   private String index;
 
+  @ApiModelProperty(required = true, readOnly = false, example = "a valid auth")
+  @JsonProperty("auth")
+  private String auth;
+
   /**
    * JSON DropWizard Constructor. Takes query.
    * 
@@ -48,8 +52,10 @@ public class IndexQueryRequest implements Serializable, Request {
    * @param query the elasticsearch query
    */
   @JsonCreator
-  public IndexQueryRequest(@NotNull @JsonProperty("index") String index,
+  public IndexQueryRequest(@NotNull @JsonProperty("auth") String auth,
+      @NotNull @JsonProperty("index") String index,
       @Valid @NotNull @JsonProperty("query") Object query) {
+    this.auth = auth;
     this.index = index;
     this.query = query;
   }
@@ -86,6 +92,20 @@ public class IndexQueryRequest implements Serializable, Request {
    */
   public void setIndex(String index) {
     this.index = index;
+  }
+
+  /**
+   * @return the auth
+   */
+  public String getAuth() {
+    return auth;
+  }
+
+  /**
+   * @param auth the auth to set
+   */
+  public void setAuth(String auth) {
+    this.auth = auth;
   }
 
   @Override
