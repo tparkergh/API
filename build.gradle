@@ -62,7 +62,7 @@ shadowJar {
 dependencies {
 	// Dropwizard-guice 1.0.0.2 conflicts with jersey-client 2.25.
 	// Exclude transitive dependencies.
-	compile ('gov.ca.cwds.api:api-core:0.20.185') {
+	compile ('gov.ca.cwds.api:api-core:0.20.190') {
 	    exclude group: 'org.glassfish.jersey.core'
 	}
 	
@@ -154,7 +154,7 @@ cobertura {
 	coverageFormats = ['xml', 'html']
 	coverageIgnoreTrivial = true
 	
-	coverageExcludes = ['org.slf4j.Logger.*', '.*gov\\.ca\\.cwds\\.data\\.persistence\\.cms\\..*SystemCodeCache.*', '.*gov\\.ca\\.cwds\\.data\\..*BatchBucket.*', '.*gov\\.ca\\.cwds\\.data\\..*ApiAddressAware.*']
+	coverageExcludes = ['org.slf4j.Logger.*', '.*gov\\.ca\\.cwds\\.data\\.persistence\\.cms\\..*SystemCodeCache.*', '.*gov\\.ca\\.cwds\\.data\\..*BatchBucket.*', '.*gov\\.ca\\.cwds\\.data\\..*ApiAddressAware.*', '.*gov\\.ca\\.cwds\\.rest\\.api\\..*Response.*']
 	coverageIgnores   = ['org.slf4j.Logger.*', '.*gov\\.ca\\.cwds\\.data\\.persistence\\.cms\\..*SystemCodeCache.*']
 	coverageReportDir = new File("$buildDir/reports/cobertura")
 }

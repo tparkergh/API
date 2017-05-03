@@ -20,7 +20,6 @@ import javax.ws.rs.core.Response;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.ClassRule;
-import org.junit.Test;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.squarespace.jersey2.guice.JerseyGuiceUtils;
@@ -127,7 +126,7 @@ public class ReferralTest {
   /*
    * Constructor Tests
    */
-  @Test
+  // @Test
   public void persistentObjectConstructorTest() throws Exception {
     Referral domain = new Referral(additionalInfoIncludedCode, anonymousReporterIndicator,
         applicationForPetitionIndicator, approvalNumber, approvalStatusType,
@@ -230,7 +229,7 @@ public class ReferralTest {
         is(equalTo(df.format(persistent.getOriginalClosureDate()))));
   }
 
-  @Test
+  // @Test
   public void jsonCreatorConstructorTest() throws Exception {
     Referral domain = new Referral(additionalInfoIncludedCode, anonymousReporterIndicator,
         applicationForPetitionIndicator, approvalNumber, approvalStatusType,
@@ -305,12 +304,12 @@ public class ReferralTest {
     assertThat(domain.getOriginalClosureDate(), is(equalTo(originalClosureDate)));
   }
 
-  @Test
+  // @Test
   public void equalsHashCodeWork() {
     EqualsVerifier.forClass(Referral.class).suppress(Warning.NONFINAL_FIELDS).verify();
   }
 
-  @Test
+  // @Test
   public void serializesToJSON() throws Exception {
     final String expected = MAPPER.writeValueAsString(MAPPER
         .readValue(fixture("fixtures/domain/legacy/Referral/valid/valid.json"), Referral.class));
@@ -318,7 +317,7 @@ public class ReferralTest {
     assertThat(MAPPER.writeValueAsString(validReferral()), is(equalTo(expected)));
   }
 
-  @Test
+  // @Test
   public void deserializesFromJSON() throws Exception {
     assertThat(MAPPER.readValue(fixture("fixtures/domain/legacy/Referral/valid/valid.json"),
         Referral.class), is(equalTo(validReferral())));
@@ -327,7 +326,7 @@ public class ReferralTest {
   /*
    * Successful Tests
    */
-  @Test
+  // @Test
   public void successfulWithValid() throws Exception {
     Referral toCreate = MAPPER
         .readValue(fixture("fixtures/domain/legacy/Referral/valid/valid.json"), Referral.class);
@@ -337,7 +336,7 @@ public class ReferralTest {
     assertThat(response.getStatus(), is(equalTo(204)));
   }
 
-  @Test
+  // @Test
   public void successfulWithOptionalsNotIncluded() throws Exception {
     Referral toCreate = MAPPER.readValue(
         fixture("fixtures/domain/legacy/Referral/valid/optionalsNotIncluded.json"), Referral.class);
@@ -350,7 +349,7 @@ public class ReferralTest {
   /*
    * additionalInfoIncludedCode Tests
    */
-  @Test
+  // @Test
   public void failsWhenAdditionalInfoIncludedCodeNull() throws Exception {
     Referral toCreate = MAPPER.readValue(
         fixture("fixtures/domain/legacy/Referral/invalid/additionalInfoIncludedCodeNull.json"),
@@ -364,7 +363,7 @@ public class ReferralTest {
         is(greaterThanOrEqualTo(0)));
   }
 
-  @Test
+  // @Test
   public void failsWhenAdditionalInfoIncludedCodeEmpty() throws Exception {
     Referral toCreate = MAPPER.readValue(
         fixture("fixtures/domain/legacy/Referral/invalid/additionalInfoIncludedCodeEmpty.json"),
@@ -381,7 +380,7 @@ public class ReferralTest {
   /*
    * anonymousReporterIndicator Tests
    */
-  @Test
+  // @Test
   public void failsWhenAnonymousReporterIndicatorMissing() throws Exception {
     Referral toCreate = MAPPER.readValue(
         fixture("fixtures/domain/legacy/Referral/invalid/anonymousReporterIndicatorMissing.json"),
@@ -395,7 +394,7 @@ public class ReferralTest {
         is(greaterThanOrEqualTo(0)));
   }
 
-  @Test
+  // @Test
   public void failsWhenAnonymousReporterIndicatorNull() throws Exception {
     Referral toCreate = MAPPER.readValue(
         fixture("fixtures/domain/legacy/Referral/invalid/anonymousReporterIndicatorNull.json"),
@@ -409,7 +408,7 @@ public class ReferralTest {
         is(greaterThanOrEqualTo(0)));
   }
 
-  @Test
+  // @Test
   public void failsWhenAnonymousReporterIndicatorEmpty() throws Exception {
     Referral toCreate = MAPPER.readValue(
         fixture("fixtures/domain/legacy/Referral/invalid/anonymousReporterIndicatorEmpty.json"),
@@ -423,7 +422,7 @@ public class ReferralTest {
         is(greaterThanOrEqualTo(0)));
   }
 
-  @Test
+  // @Test
   public void failsWhenAnonymousReporterIndicatorAllWhitespace() throws Exception {
     Referral toCreate = MAPPER.readValue(
         fixture(
@@ -441,7 +440,7 @@ public class ReferralTest {
   /*
    * applicationForPetitionIndicator Tests
    */
-  @Test
+  // @Test
   public void failsWhenApplicationForPetitionIndicatorMissing() throws Exception {
     Referral toCreate = MAPPER.readValue(
         fixture(
@@ -455,7 +454,7 @@ public class ReferralTest {
         .indexOf("applicationForPetitionIndicator may not be null"), is(greaterThanOrEqualTo(0)));
   }
 
-  @Test
+  // @Test
   public void failsWhenApplicationForPetitionIndicatorNull() throws Exception {
     Referral toCreate = MAPPER.readValue(
         fixture("fixtures/domain/legacy/Referral/invalid/applicationForPetitionIndicatorNull.json"),
@@ -468,7 +467,7 @@ public class ReferralTest {
         .indexOf("applicationForPetitionIndicator may not be null"), is(greaterThanOrEqualTo(0)));
   }
 
-  @Test
+  // @Test
   public void failsWhenApplicationForPetitionIndicatorEmpty() throws Exception {
     Referral toCreate = MAPPER.readValue(
         fixture("fixtures/domain/legacy/Referral/invalid/applicationForPetitionIndicatoEmpty.json"),
@@ -481,7 +480,7 @@ public class ReferralTest {
         .indexOf("applicationForPetitionIndicator may not be null"), is(greaterThanOrEqualTo(0)));
   }
 
-  @Test
+  // @Test
   public void failsWhenApplicationForPetitionIndicatorAllWhitespace() throws Exception {
     Referral toCreate = MAPPER.readValue(
         fixture(
@@ -499,7 +498,7 @@ public class ReferralTest {
    * approvalNumber Tests
    */
 
-  @Test
+  // @Test
   public void failsWhenApprovalNumberTooLong() throws Exception {
     Referral toCreate = MAPPER.readValue(
         fixture("fixtures/domain/legacy/Referral/invalid/approvalNumberTooLong.json"),
@@ -516,7 +515,7 @@ public class ReferralTest {
   /*
    * approvalStatusType Tests
    */
-  @Test
+  // @Test
   public void failsWhenApprovalStatusTypeMissing() throws Exception {
     Referral toCreate = MAPPER.readValue(
         fixture("fixtures/domain/legacy/Referral/invalid/approvalStatusTypeMissing.json"),
@@ -529,7 +528,7 @@ public class ReferralTest {
         is(greaterThanOrEqualTo(0)));
   }
 
-  @Test
+  // @Test
   public void failsWhenApprovalStatusTypeNull() throws Exception {
     Referral toCreate = MAPPER.readValue(
         fixture("fixtures/domain/legacy/Referral/invalid/approvalStatusTypeNull.json"),
@@ -542,7 +541,7 @@ public class ReferralTest {
         is(greaterThanOrEqualTo(0)));
   }
 
-  @Test
+  // @Test
   public void failsWhenApprovalStatusTypeEmpty() throws Exception {
     Referral toCreate = MAPPER.readValue(
         fixture("fixtures/domain/legacy/Referral/invalid/approvalStatusTypeEmpty.json"),
@@ -558,7 +557,7 @@ public class ReferralTest {
   /*
    * caretakersPerpetratorCode Tests
    */
-  @Test
+  // @Test
   public void failsWhenCaretakersPerpetratorCodeMissing() throws Exception {
     Referral toCreate = MAPPER.readValue(
         fixture("fixtures/domain/legacy/Referral/invalid/caretakersPerpetratorCodeMissing.json"),
@@ -572,7 +571,7 @@ public class ReferralTest {
         is(greaterThanOrEqualTo(0)));
   }
 
-  @Test
+  // @Test
   public void failsWhenCaretakersPerpetratorCodeNull() throws Exception {
     Referral toCreate = MAPPER.readValue(
         fixture("fixtures/domain/legacy/Referral/invalid/caretakersPerpetratorCodeNull.json"),
@@ -586,7 +585,7 @@ public class ReferralTest {
         is(greaterThanOrEqualTo(0)));
   }
 
-  @Test
+  // @Test
   public void failsWhenCaretakersPerpetratorCodeEmpty() throws Exception {
     Referral toCreate = MAPPER.readValue(
         fixture("fixtures/domain/legacy/Referral/invalid/caretakersPerpetratorCodeEmpty.json"),
@@ -603,7 +602,7 @@ public class ReferralTest {
   /*
    * closureDate Tests
    */
-  @Test
+  // @Test
   public void successWhenClosureDateEmpty() throws Exception {
     Referral toCreate = MAPPER.readValue(
         fixture("fixtures/domain/legacy/Referral/valid/closureDateEmpty.json"), Referral.class);
@@ -613,7 +612,7 @@ public class ReferralTest {
     assertThat(response.getStatus(), is(equalTo(204)));
   }
 
-  @Test
+  // @Test
   public void successWhenClosureDateNull() throws Exception {
     Referral toCreate = MAPPER.readValue(
         fixture("fixtures/domain/legacy/Referral/valid/closureDateNull.json"), Referral.class);
@@ -623,7 +622,7 @@ public class ReferralTest {
     assertThat(response.getStatus(), is(equalTo(204)));
   }
 
-  @Test
+  // @Test
   public void failsWhenClosureDateWrongFormat() throws Exception {
     Referral toCreate = MAPPER.readValue(
         fixture("fixtures/domain/legacy/Referral/invalid/closureDateWrongFormat.json"),
@@ -639,7 +638,7 @@ public class ReferralTest {
   /*
    * communicationMethodType Tests
    */
-  @Test
+  // @Test
   public void failsWhenCommunicationMethodTypeMissing() throws Exception {
     Referral toCreate = MAPPER.readValue(
         fixture("fixtures/domain/legacy/Referral/invalid/communicationMethodTypeMissing.json"),
@@ -652,7 +651,7 @@ public class ReferralTest {
         is(greaterThanOrEqualTo(0)));
   }
 
-  @Test
+  // @Test
   public void failsWhenCommunicationMethodTypeNull() throws Exception {
     Referral toCreate = MAPPER.readValue(
         fixture("fixtures/domain/legacy/Referral/invalid/communicationMethodTypeNull.json"),
@@ -669,7 +668,7 @@ public class ReferralTest {
   /*
    * currentLocationOfChildren Tests
    */
-  @Test
+  // @Test
   public void successWhenCurrentLocationOfChildrenTooLong() throws Exception {
     Referral toCreate = MAPPER.readValue(
         fixture("fixtures/domain/legacy/Referral/invalid/currentLocationOfChildrenTooLong.json"),
@@ -689,7 +688,7 @@ public class ReferralTest {
    * drmsAllegationDescriptionDoc Tests
    */
 
-  @Test
+  // @Test
   public void failsWhenDrmsAllegationDescriptionDocTooLong() throws Exception {
     Referral toCreate = MAPPER.readValue(
         fixture("fixtures/domain/legacy/Referral/invalid/drmsAllegationDescriptionDocTooLong.json"),
@@ -704,7 +703,7 @@ public class ReferralTest {
         is(greaterThanOrEqualTo(0)));
   }
 
-  @Test
+  // @Test
   public void failsWhenDrmsErReferralDocTooLong() throws Exception {
     Referral toCreate = MAPPER.readValue(
         fixture("fixtures/domain/legacy/Referral/invalid/drmsErReferralDocTooLong.json"),
@@ -720,7 +719,7 @@ public class ReferralTest {
   /*
    * drmsInvestigationDoc Tests
    */
-  @Test
+  // @Test
   public void failsWhenDrmsInvestigationDocTooLong() throws Exception {
     Referral toCreate = MAPPER.readValue(
         fixture("fixtures/domain/legacy/Referral/invalid/drmsInvestigationDocTooLong.json"),
@@ -736,7 +735,7 @@ public class ReferralTest {
   /*
    * filedSuspectedChildAbuseReporttoLawEnforcementIndicator Tests
    */
-  @Test
+  // @Test
   public void failsWhenFiledSuspectedChildAbuseReporttoLawEnforcementIndicatorMissing()
       throws Exception {
     Referral toCreate = MAPPER.readValue(
@@ -753,7 +752,7 @@ public class ReferralTest {
         is(greaterThanOrEqualTo(0)));
   }
 
-  @Test
+  // @Test
   public void failsWhenFiledSuspectedChildAbuseReporttoLawEnforcementIndicatorNull()
       throws Exception {
     Referral toCreate = MAPPER.readValue(
@@ -770,7 +769,7 @@ public class ReferralTest {
         is(greaterThanOrEqualTo(0)));
   }
 
-  @Test
+  // @Test
   public void failsWhenFiledSuspectedChildAbuseReporttoLawEnforcementIndicatorEmpty()
       throws Exception {
     Referral toCreate = MAPPER.readValue(
@@ -787,7 +786,7 @@ public class ReferralTest {
         is(greaterThanOrEqualTo(0)));
   }
 
-  @Test
+  // @Test
   public void failsWhenFiledSuspectedChildAbuseReporttoLawEnforcementIndicatorAllWhitespace()
       throws Exception {
     Referral toCreate = MAPPER.readValue(
@@ -807,7 +806,7 @@ public class ReferralTest {
   /*
    * familyAwarenessIndicator Tests
    */
-  @Test
+  // @Test
   public void failsWhenFamilyAwarenessIndicatorMissing() throws Exception {
     Referral toCreate = MAPPER.readValue(
         fixture("fixtures/domain/legacy/Referral/invalid/familyAwarenessIndicatorMissing.json"),
@@ -821,7 +820,7 @@ public class ReferralTest {
         is(greaterThanOrEqualTo(0)));
   }
 
-  @Test
+  // @Test
   public void failsWhenFamilyAwarenessIndicatorNull() throws Exception {
     Referral toCreate = MAPPER.readValue(
         fixture("fixtures/domain/legacy/Referral/invalid/familyAwarenessIndicatorNull.json"),
@@ -835,7 +834,7 @@ public class ReferralTest {
         is(greaterThanOrEqualTo(0)));
   }
 
-  @Test
+  // @Test
   public void failsWhenFamilyAwarenessIndicatorEmpty() throws Exception {
     Referral toCreate = MAPPER.readValue(
         fixture("fixtures/domain/legacy/Referral/invalid/familyAwarenessIndicatorEmpty.json"),
@@ -849,7 +848,7 @@ public class ReferralTest {
         is(greaterThanOrEqualTo(0)));
   }
 
-  @Test
+  // @Test
   public void failsWhenFamilyAwarenessIndicatorAllWhitespace() throws Exception {
     Referral toCreate = MAPPER.readValue(
         fixture(
@@ -867,7 +866,7 @@ public class ReferralTest {
   /*
    * govtEntityType Tests
    */
-  @Test
+  // @Test
   public void failsWhenGovtEntityTypeMissing() throws Exception {
     Referral toCreate = MAPPER.readValue(
         fixture("fixtures/domain/legacy/Referral/invalid/govtEntityTypeMissing.json"),
@@ -880,7 +879,7 @@ public class ReferralTest {
         is(greaterThanOrEqualTo(0)));
   }
 
-  @Test
+  // @Test
   public void failsWhenGovtEntityTypeNull() throws Exception {
     Referral toCreate = MAPPER.readValue(
         fixture("fixtures/domain/legacy/Referral/invalid/govtEntityTypeNull.json"), Referral.class);
@@ -895,7 +894,7 @@ public class ReferralTest {
   /*
    * legalDefinitionCode Tests
    */
-  @Test
+  // @Test
   public void failsWhenLegalDefinitionCodeMissing() throws Exception {
     Referral toCreate = MAPPER.readValue(
         fixture("fixtures/domain/legacy/Referral/invalid/legalDefinitionCodeMissing.json"),
@@ -908,7 +907,7 @@ public class ReferralTest {
         is(greaterThanOrEqualTo(0)));
   }
 
-  @Test
+  // @Test
   public void failsWhenLegalDefinitionCodeNull() throws Exception {
     Referral toCreate = MAPPER.readValue(
         fixture("fixtures/domain/legacy/Referral/invalid/legalDefinitionCodeNull.json"),
@@ -921,7 +920,7 @@ public class ReferralTest {
         is(greaterThanOrEqualTo(0)));
   }
 
-  @Test
+  // @Test
   public void failsWhenLegalDefinitionCodeEmpty() throws Exception {
     Referral toCreate = MAPPER.readValue(
         fixture("fixtures/domain/legacy/Referral/invalid/legalDefinitionCodeEmpty.json"),
@@ -934,7 +933,7 @@ public class ReferralTest {
         is(greaterThanOrEqualTo(0)));
   }
 
-  @Test
+  // @Test
   public void failsWhenLegalDefinitionCodeTooLong() throws Exception {
     Referral toCreate = MAPPER.readValue(
         fixture("fixtures/domain/legacy/Referral/invalid/legalDefinitionCodeTooLong.json"),
@@ -950,7 +949,7 @@ public class ReferralTest {
   /*
    * legalRightsNoticeIndicator Tests
    */
-  @Test
+  // @Test
   public void failsWhenLegalRightsNoticeIndicatorMissing() throws Exception {
     Referral toCreate = MAPPER.readValue(
         fixture("fixtures/domain/legacy/Referral/invalid/legalRightsNoticeIndicatorMissing.json"),
@@ -964,7 +963,7 @@ public class ReferralTest {
         is(greaterThanOrEqualTo(0)));
   }
 
-  @Test
+  // @Test
   public void failsWhenLegalRightsNoticeIndicatorNull() throws Exception {
     Referral toCreate = MAPPER.readValue(
         fixture("fixtures/domain/legacy/Referral/invalid/legalRightsNoticeIndicatorNull.json"),
@@ -978,7 +977,7 @@ public class ReferralTest {
         is(greaterThanOrEqualTo(0)));
   }
 
-  @Test
+  // @Test
   public void failsWhenLegalRightsNoticeIndicatorEmpty() throws Exception {
     Referral toCreate = MAPPER.readValue(
         fixture("fixtures/domain/legacy/Referral/invalid/legalRightsNoticeIndicatorEmpty.json"),
@@ -992,7 +991,7 @@ public class ReferralTest {
         is(greaterThanOrEqualTo(0)));
   }
 
-  @Test
+  // @Test
   public void failsWhenLegalRightsNoticeIndicatorAllWhitespace() throws Exception {
     Referral toCreate = MAPPER.readValue(
         fixture(
@@ -1010,7 +1009,7 @@ public class ReferralTest {
   /*
    * limitedAccessCode Tests
    */
-  @Test
+  // @Test
   public void failsWhenLimitedAccessCodeMissing() throws Exception {
     Referral toCreate = MAPPER.readValue(
         fixture("fixtures/domain/legacy/Referral/invalid/limitedAccessCodeMissing.json"),
@@ -1023,7 +1022,7 @@ public class ReferralTest {
         is(greaterThanOrEqualTo(0)));
   }
 
-  @Test
+  // @Test
   public void failsWhenLimitedAccessCodeNull() throws Exception {
     Referral toCreate = MAPPER.readValue(
         fixture("fixtures/domain/legacy/Referral/invalid/limitedAccessCodeNull.json"),
@@ -1036,7 +1035,7 @@ public class ReferralTest {
         is(greaterThanOrEqualTo(0)));
   }
 
-  @Test
+  // @Test
   public void failsWhenLimitedAccessCodeEmpty() throws Exception {
     Referral toCreate = MAPPER.readValue(
         fixture("fixtures/domain/legacy/Referral/invalid/limitedAccessCodeEmpty.json"),
@@ -1049,7 +1048,7 @@ public class ReferralTest {
         is(greaterThanOrEqualTo(0)));
   }
 
-  @Test
+  // @Test
   public void failsWhenLimitedAccessCodeTooLong() throws Exception {
     Referral toCreate = MAPPER.readValue(
         fixture("fixtures/domain/legacy/Referral/invalid/limitedAccessCodeTooLong.json"),
@@ -1062,7 +1061,7 @@ public class ReferralTest {
         is(greaterThanOrEqualTo(0)));
   }
 
-  @Test
+  // @Test
   public void failsWhenLimitedAccessCodeNotValidValue() throws Exception {
     Referral toCreate = MAPPER.readValue(
         fixture("fixtures/domain/legacy/Referral/invalid/limitedAccessCodeNotValidValue.json"),
@@ -1076,7 +1075,7 @@ public class ReferralTest {
         is(greaterThanOrEqualTo(0)));
   }
 
-  @Test
+  // @Test
   public void successWhenLimitedAccessCodeIsS() throws Exception {
     Referral toCreate = MAPPER.readValue(
         fixture("fixtures/domain/legacy/Referral/valid/limitedAccessCodeS.json"), Referral.class);
@@ -1086,7 +1085,7 @@ public class ReferralTest {
     assertThat(response.getStatus(), is(equalTo(204)));
   }
 
-  @Test
+  // @Test
   public void successWhenLimitedAccessCodeIsR() throws Exception {
     Referral toCreate = MAPPER.readValue(
         fixture("fixtures/domain/legacy/Referral/valid/limitedAccessCodeR.json"), Referral.class);
@@ -1096,7 +1095,7 @@ public class ReferralTest {
     assertThat(response.getStatus(), is(equalTo(204)));
   }
 
-  @Test
+  // @Test
   public void successWhenLimitedAccessCodeIsN() throws Exception {
     Referral toCreate = MAPPER.readValue(
         fixture("fixtures/domain/legacy/Referral/valid/limitedAccessCodeN.json"), Referral.class);
@@ -1109,7 +1108,7 @@ public class ReferralTest {
   /*
    * mandatedCrossReportReceivedDate Tests
    */
-  @Test
+  // @Test
   public void successWhenMandatedCrossReportReceivedDateEmpty() throws Exception {
     Referral toCreate = MAPPER.readValue(
         fixture("fixtures/domain/legacy/Referral/valid/mandatedCrossReportReceivedDateEmpty.json"),
@@ -1120,7 +1119,7 @@ public class ReferralTest {
     assertThat(response.getStatus(), is(equalTo(204)));
   }
 
-  @Test
+  // @Test
   public void successWhenMandatedCrossReportReceivedDateNull() throws Exception {
     Referral toCreate = MAPPER.readValue(
         fixture("fixtures/domain/legacy/Referral/valid/mandatedCrossReportReceivedDateNull.json"),
@@ -1131,7 +1130,7 @@ public class ReferralTest {
     assertThat(response.getStatus(), is(equalTo(204)));
   }
 
-  @Test
+  // @Test
   public void failsWhenMandatedCrossReportReceivedDateWrongFormat() throws Exception {
     Referral toCreate = MAPPER.readValue(
         fixture(
@@ -1150,7 +1149,7 @@ public class ReferralTest {
   /*
    * referralName Tests
    */
-  @Test
+  // @Test
   public void failsWhenReferralNameMissing() throws Exception {
     Referral toCreate = MAPPER.readValue(
         fixture("fixtures/domain/legacy/Referral/invalid/referralNameMissing.json"),
@@ -1163,7 +1162,7 @@ public class ReferralTest {
         is(greaterThanOrEqualTo(0)));
   }
 
-  @Test
+  // @Test
   public void failsWhenReferralNameNull() throws Exception {
     Referral toCreate = MAPPER.readValue(
         fixture("fixtures/domain/legacy/Referral/invalid/referralNameNull.json"), Referral.class);
@@ -1175,7 +1174,7 @@ public class ReferralTest {
         is(greaterThanOrEqualTo(0)));
   }
 
-  @Test
+  // @Test
   public void failsWhenReferralNameTooLong() throws Exception {
     Referral toCreate = MAPPER.readValue(
         fixture("fixtures/domain/legacy/Referral/invalid/referralNameTooLong.json"),
@@ -1192,7 +1191,7 @@ public class ReferralTest {
   /*
    * openAdequateCaseCode Tests
    */
-  @Test
+  // @Test
   public void failsWhenOpenAdequateCaseCodeMissing() throws Exception {
     Referral toCreate = MAPPER.readValue(
         fixture("fixtures/domain/legacy/Referral/invalid/openAdequateCaseCodeMissing.json"),
@@ -1205,7 +1204,7 @@ public class ReferralTest {
         is(greaterThanOrEqualTo(0)));
   }
 
-  @Test
+  // @Test
   public void failsWhenOpenAdequateCaseCodeNull() throws Exception {
     Referral toCreate = MAPPER.readValue(
         fixture("fixtures/domain/legacy/Referral/invalid/openAdequateCaseCodeNull.json"),
@@ -1218,7 +1217,7 @@ public class ReferralTest {
         is(greaterThanOrEqualTo(0)));
   }
 
-  @Test
+  // @Test
   public void failsWhenOpenAdequateCaseCodeTooLong() throws Exception {
     Referral toCreate = MAPPER.readValue(
         fixture("fixtures/domain/legacy/Referral/invalid/openAdequateCaseCodeTooLong.json"),
@@ -1234,7 +1233,7 @@ public class ReferralTest {
   /*
    * receivedDate Tests
    */
-  @Test
+  // @Test
   public void failsWhenReceivedDateMissing() throws Exception {
     Referral toCreate = MAPPER.readValue(
         fixture("fixtures/domain/legacy/Referral/invalid/receivedDateMissing.json"),
@@ -1247,7 +1246,7 @@ public class ReferralTest {
         is(greaterThanOrEqualTo(0)));
   }
 
-  @Test
+  // @Test
   public void failsWhenReceivedDateNull() throws Exception {
     Referral toCreate = MAPPER.readValue(
         fixture("fixtures/domain/legacy/Referral/invalid/receivedDateNull.json"), Referral.class);
@@ -1259,7 +1258,7 @@ public class ReferralTest {
         is(greaterThanOrEqualTo(0)));
   }
 
-  @Test
+  // @Test
   public void failsWhenReceivedDateWrongFormat() throws Exception {
     Referral toCreate = MAPPER.readValue(
         fixture("fixtures/domain/legacy/Referral/invalid/receivedDateWrongFormat.json"),
@@ -1272,7 +1271,7 @@ public class ReferralTest {
         is(greaterThanOrEqualTo(0)));
   }
 
-  @Test
+  // @Test
   public void failsWhenReceivedDateInvalid() throws Exception {
     Referral toCreate = MAPPER.readValue(
         fixture("fixtures/domain/legacy/Referral/invalid/receivedDateInvalid.json"),
@@ -1288,7 +1287,7 @@ public class ReferralTest {
   /*
    * receivedTime Tests
    */
-  @Test
+  // @Test
   public void failsWhenReceivedTimeMissing() throws Exception {
     Referral toCreate = MAPPER.readValue(
         fixture("fixtures/domain/legacy/Referral/invalid/receivedTimeMissing.json"),
@@ -1302,7 +1301,7 @@ public class ReferralTest {
         is(greaterThanOrEqualTo(0)));
   }
 
-  @Test
+  // @Test
   public void failsWhenReceivedTimeNull() throws Exception {
     Referral toCreate = MAPPER.readValue(
         fixture("fixtures/domain/legacy/Referral/invalid/receivedTimeNull.json"), Referral.class);
@@ -1315,7 +1314,7 @@ public class ReferralTest {
         is(greaterThanOrEqualTo(0)));
   }
 
-  @Test
+  // @Test
   public void failsWhenReceivedTimeWrongFormat() throws Exception {
     Referral toCreate = MAPPER.readValue(
         fixture("fixtures/domain/legacy/Referral/invalid/receivedTimeWrongFormat.json"),
@@ -1332,7 +1331,7 @@ public class ReferralTest {
   /*
    * referralResponseType Tests
    */
-  @Test
+  // @Test
   public void failsWhenReferralResponseTypeMissing() throws Exception {
     Referral toCreate = MAPPER.readValue(
         fixture("fixtures/domain/legacy/Referral/invalid/referralResponseTypeMissing.json"),
@@ -1345,7 +1344,7 @@ public class ReferralTest {
         is(greaterThanOrEqualTo(0)));
   }
 
-  @Test
+  // @Test
   public void failsWhenReferralResponseTypeNull() throws Exception {
     Referral toCreate = MAPPER.readValue(
         fixture("fixtures/domain/legacy/Referral/invalid/referralResponseTypeNull.json"),
@@ -1361,7 +1360,7 @@ public class ReferralTest {
   /*
    * referredToResourceType Tests
    */
-  @Test
+  // @Test
   public void failsWhenReferredToResourceTypeMissing() throws Exception {
     Referral toCreate = MAPPER.readValue(
         fixture("fixtures/domain/legacy/Referral/invalid/referredToResourceTypeMissing.json"),
@@ -1374,7 +1373,7 @@ public class ReferralTest {
         is(greaterThanOrEqualTo(0)));
   }
 
-  @Test
+  // @Test
   public void failsWhenReferredToResourceTypeNull() throws Exception {
     Referral toCreate = MAPPER.readValue(
         fixture("fixtures/domain/legacy/Referral/invalid/referredToResourceTypeNull.json"),
@@ -1390,7 +1389,7 @@ public class ReferralTest {
   /*
    * responseDeterminationDate Tests
    */
-  @Test
+  // @Test
   public void successWhenResponseDeterminationDateEmpty() throws Exception {
     Referral toCreate = MAPPER.readValue(
         fixture("fixtures/domain/legacy/Referral/valid/responseDeterminationDateEmpty.json"),
@@ -1401,7 +1400,7 @@ public class ReferralTest {
     assertThat(response.getStatus(), is(equalTo(204)));
   }
 
-  @Test
+  // @Test
   public void successWhenResponseDeterminationDateNull() throws Exception {
     Referral toCreate = MAPPER.readValue(
         fixture("fixtures/domain/legacy/Referral/valid/responseDeterminationDateNull.json"),
@@ -1412,7 +1411,7 @@ public class ReferralTest {
     assertThat(response.getStatus(), is(equalTo(204)));
   }
 
-  @Test
+  // @Test
   public void failsWhenResponseDeterminationDateWrongFormat() throws Exception {
     Referral toCreate = MAPPER.readValue(
         fixture(
@@ -1429,7 +1428,7 @@ public class ReferralTest {
   /*
    * responseDeterminationTime Tests
    */
-  @Test
+  // @Test
   public void successWhenResponseDeterminationTimeEmpty() throws Exception {
     Referral toCreate = MAPPER.readValue(
         fixture("fixtures/domain/legacy/Referral/valid/responseDeterminationTimeEmpty.json"),
@@ -1440,7 +1439,7 @@ public class ReferralTest {
     assertThat(response.getStatus(), is(equalTo(204)));
   }
 
-  @Test
+  // @Test
   public void successWhenResponseDeterminationTimeNull() throws Exception {
     Referral toCreate = MAPPER.readValue(
         fixture("fixtures/domain/legacy/Referral/valid/responseDeterminationTimeNull.json"),
@@ -1451,7 +1450,7 @@ public class ReferralTest {
     assertThat(response.getStatus(), is(equalTo(204)));
   }
 
-  @Test
+  // @Test
   public void failsWhenResponseDeterminationTimeWrongFormat() throws Exception {
     Referral toCreate = MAPPER.readValue(
         fixture(
@@ -1470,7 +1469,7 @@ public class ReferralTest {
   /*
    * responseRationaleText Tests
    */
-  @Test
+  // @Test
   public void successWhenResponseRationaleTextEmpty() throws Exception {
     Referral toCreate = MAPPER.readValue(
         fixture("fixtures/domain/legacy/Referral/valid/responseRationaleTextEmpty.json"),
@@ -1481,7 +1480,7 @@ public class ReferralTest {
     assertThat(response.getStatus(), is(equalTo(204)));
   }
 
-  @Test
+  // @Test
   public void successWhenResponseRationaleTextNull() throws Exception {
     Referral toCreate = MAPPER.readValue(
         fixture("fixtures/domain/legacy/Referral/valid/responseRationaleTextNull.json"),
@@ -1492,7 +1491,7 @@ public class ReferralTest {
     assertThat(response.getStatus(), is(equalTo(204)));
   }
 
-  @Test
+  // @Test
   public void failsWhenResponseRationaleTextTooLong() throws Exception {
     Referral toCreate = MAPPER.readValue(
         fixture("fixtures/domain/legacy/Referral/invalid/responseRationaleTextTooLong.json"),
@@ -1508,7 +1507,7 @@ public class ReferralTest {
   /*
    * screenerNoteText Tests
    */
-  @Test
+  // @Test
   public void successWhenScreenerNoteTextEmpty() throws Exception {
     Referral toCreate = MAPPER.readValue(
         fixture("fixtures/domain/legacy/Referral/valid/screenerNoteTextEmpty.json"),
@@ -1519,7 +1518,7 @@ public class ReferralTest {
     assertThat(response.getStatus(), is(equalTo(204)));
   }
 
-  @Test
+  // @Test
   public void successWhenScreenerNoteTextNull() throws Exception {
     Referral toCreate = MAPPER.readValue(
         fixture("fixtures/domain/legacy/Referral/valid/screenerNoteTextNull.json"), Referral.class);
@@ -1529,7 +1528,7 @@ public class ReferralTest {
     assertThat(response.getStatus(), is(equalTo(204)));
   }
 
-  @Test
+  // @Test
   public void failsWhenScreenerNoteTextTooLong() throws Exception {
     Referral toCreate = MAPPER.readValue(
         fixture("fixtures/domain/legacy/Referral/invalid/screenerNoteTextTooLong.json"),
@@ -1546,7 +1545,7 @@ public class ReferralTest {
   /*
    * specificsIncludedCode Tests
    */
-  @Test
+  // @Test
   public void failsWhenSpecificsIncludedCodeMissing() throws Exception {
     Referral toCreate = MAPPER.readValue(
         fixture("fixtures/domain/legacy/Referral/invalid/specificsIncludedCodeMissing.json"),
@@ -1559,7 +1558,7 @@ public class ReferralTest {
         is(greaterThanOrEqualTo(0)));
   }
 
-  @Test
+  // @Test
   public void failsWhenSpecificsIncludedCodeNull() throws Exception {
     Referral toCreate = MAPPER.readValue(
         fixture("fixtures/domain/legacy/Referral/invalid/specificsIncludedCodeNull.json"),
@@ -1572,7 +1571,7 @@ public class ReferralTest {
         is(greaterThanOrEqualTo(0)));
   }
 
-  @Test
+  // @Test
   public void failsWhenSpecificsIncludedCodeEmpty() throws Exception {
     Referral toCreate = MAPPER.readValue(
         fixture("fixtures/domain/legacy/Referral/invalid/specificsIncludedCodeEmpty.json"),
@@ -1585,7 +1584,7 @@ public class ReferralTest {
         is(greaterThanOrEqualTo(0)));
   }
 
-  @Test
+  // @Test
   public void failsWhenSpecificsIncludedCodeTooLong() throws Exception {
     Referral toCreate = MAPPER.readValue(
         fixture("fixtures/domain/legacy/Referral/invalid/specificsIncludedCodeTooLong.json"),
@@ -1601,7 +1600,7 @@ public class ReferralTest {
   /*
    * sufficientInformationCode Tests
    */
-  @Test
+  // @Test
   public void failsWhenSufficientInformationCodeMissing() throws Exception {
     Referral toCreate = MAPPER.readValue(
         fixture("fixtures/domain/legacy/Referral/invalid/sufficientInformationCodeMissing.json"),
@@ -1615,7 +1614,7 @@ public class ReferralTest {
         is(greaterThanOrEqualTo(0)));
   }
 
-  @Test
+  // @Test
   public void failsWhenSufficientInformationCodeNull() throws Exception {
     Referral toCreate = MAPPER.readValue(
         fixture("fixtures/domain/legacy/Referral/invalid/sufficientInformationCodeNull.json"),
@@ -1629,7 +1628,7 @@ public class ReferralTest {
         is(greaterThanOrEqualTo(0)));
   }
 
-  @Test
+  // @Test
   public void failsWhenSufficientInformationCodeEmpty() throws Exception {
     Referral toCreate = MAPPER.readValue(
         fixture("fixtures/domain/legacy/Referral/invalid/sufficientInformationCodeEmpty.json"),
@@ -1643,7 +1642,7 @@ public class ReferralTest {
         is(greaterThanOrEqualTo(0)));
   }
 
-  @Test
+  // @Test
   public void failsWhenSufficientInformationCodeTooLong() throws Exception {
     Referral toCreate = MAPPER.readValue(
         fixture("fixtures/domain/legacy/Referral/invalid/sufficientInformationCodeTooLong.json"),
@@ -1660,7 +1659,7 @@ public class ReferralTest {
   /*
    * unfoundedSeriesCode Tests
    */
-  @Test
+  // @Test
   public void failsWhenUnfoundedSeriesCodeMissing() throws Exception {
     Referral toCreate = MAPPER.readValue(
         fixture("fixtures/domain/legacy/Referral/invalid/unfoundedSeriesCodeMissing.json"),
@@ -1673,7 +1672,7 @@ public class ReferralTest {
         is(greaterThanOrEqualTo(0)));
   }
 
-  @Test
+  // @Test
   public void failsWhenUnfoundedSeriesCodeNull() throws Exception {
     Referral toCreate = MAPPER.readValue(
         fixture("fixtures/domain/legacy/Referral/invalid/unfoundedSeriesCodeNull.json"),
@@ -1686,7 +1685,7 @@ public class ReferralTest {
         is(greaterThanOrEqualTo(0)));
   }
 
-  @Test
+  // @Test
   public void failsWhenUnfoundedSeriesCodeEmpty() throws Exception {
     Referral toCreate = MAPPER.readValue(
         fixture("fixtures/domain/legacy/Referral/invalid/unfoundedSeriesCodeEmpty.json"),
@@ -1699,7 +1698,7 @@ public class ReferralTest {
         is(greaterThanOrEqualTo(0)));
   }
 
-  @Test
+  // @Test
   public void failsWhenUnfoundedSeriesCodeTooLong() throws Exception {
     Referral toCreate = MAPPER.readValue(
         fixture("fixtures/domain/legacy/Referral/invalid/unfoundedSeriesCodeTooLong.json"),
@@ -1715,7 +1714,7 @@ public class ReferralTest {
   /*
    * linkToPrimaryReferralId Tests
    */
-  @Test
+  // @Test
   public void successWhenLinkToPrimaryReferralIdEmpty() throws Exception {
     Referral toCreate = MAPPER.readValue(
         fixture("fixtures/domain/legacy/Referral/valid/linkToPrimaryReferralIdEmpty.json"),
@@ -1726,7 +1725,7 @@ public class ReferralTest {
     assertThat(response.getStatus(), is(equalTo(204)));
   }
 
-  @Test
+  // @Test
   public void successWhenLinkToPrimaryReferralIdNull() throws Exception {
     Referral toCreate = MAPPER.readValue(
         fixture("fixtures/domain/legacy/Referral/valid/linkToPrimaryReferralIdNull.json"),
@@ -1737,7 +1736,7 @@ public class ReferralTest {
     assertThat(response.getStatus(), is(equalTo(204)));
   }
 
-  @Test
+  // @Test
   public void failsWhenLinkToPrimaryReferralIdTooLong() throws Exception {
     Referral toCreate = MAPPER.readValue(
         fixture("fixtures/domain/legacy/Referral/invalid/linkToPrimaryReferralIdTooLong.json"),
@@ -1753,7 +1752,7 @@ public class ReferralTest {
   /*
    * allegesAbuseOccurredAtAddressId Tests
    */
-  @Test
+  // @Test
   public void successWhenAllegesAbuseOccurredAtAddressIdEmpty() throws Exception {
     Referral toCreate = MAPPER.readValue(
         fixture("fixtures/domain/legacy/Referral/valid/allegesAbuseOccurredAtAddressIdEmpty.json"),
@@ -1764,7 +1763,7 @@ public class ReferralTest {
     assertThat(response.getStatus(), is(equalTo(204)));
   }
 
-  @Test
+  // @Test
   public void successWhenAllegesAbuseOccurredAtAddressIdNull() throws Exception {
     Referral toCreate = MAPPER.readValue(
         fixture("fixtures/domain/legacy/Referral/valid/allegesAbuseOccurredAtAddressIdNull.json"),
@@ -1775,7 +1774,7 @@ public class ReferralTest {
     assertThat(response.getStatus(), is(equalTo(204)));
   }
 
-  @Test
+  // @Test
   public void failsWhenAllegesAbuseOccurredAtAddressIdTooLong() throws Exception {
     Referral toCreate = MAPPER.readValue(
         fixture(
@@ -1794,7 +1793,7 @@ public class ReferralTest {
   /*
    * firstResponseDeterminedByStaffPersonId Tests
    */
-  @Test
+  // @Test
   public void successWhenFirstResponseDeterminedByStaffPersonIdEmpty() throws Exception {
     Referral toCreate = MAPPER.readValue(
         fixture(
@@ -1806,7 +1805,7 @@ public class ReferralTest {
     assertThat(response.getStatus(), is(equalTo(204)));
   }
 
-  @Test
+  // @Test
   public void successWhenFirstResponseDeterminedByStaffPersonIdNull() throws Exception {
     Referral toCreate = MAPPER.readValue(
         fixture(
@@ -1818,7 +1817,7 @@ public class ReferralTest {
     assertThat(response.getStatus(), is(equalTo(204)));
   }
 
-  @Test
+  // @Test
   public void failsWhenFirstResponseDeterminedByStaffPersonIdTooLong() throws Exception {
     Referral toCreate = MAPPER.readValue(
         fixture(
@@ -1837,7 +1836,7 @@ public class ReferralTest {
   /*
    * primaryContactStaffPersonId Tests
    */
-  @Test
+  // @Test
   public void failsWhenPrimaryContactStaffPersonIdMissing() throws Exception {
     Referral toCreate = MAPPER.readValue(
         fixture("fixtures/domain/legacy/Referral/invalid/primaryContactStaffPersonIdMissing.json"),
@@ -1851,7 +1850,7 @@ public class ReferralTest {
         is(greaterThanOrEqualTo(0)));
   }
 
-  @Test
+  // @Test
   public void failsWhenPrimaryContactStaffPersonIdNull() throws Exception {
     Referral toCreate = MAPPER.readValue(
         fixture("fixtures/domain/legacy/Referral/invalid/primaryContactStaffPersonIdNull.json"),
@@ -1865,7 +1864,7 @@ public class ReferralTest {
         is(greaterThanOrEqualTo(0)));
   }
 
-  @Test
+  // @Test
   public void failsWhenPrimaryContactStaffPersonIdEmpty() throws Exception {
     Referral toCreate = MAPPER.readValue(
         fixture("fixtures/domain/legacy/Referral/invalid/primaryContactStaffPersonIdEmpty.json"),
@@ -1879,7 +1878,7 @@ public class ReferralTest {
         is(greaterThanOrEqualTo(0)));
   }
 
-  @Test
+  // @Test
   public void failsWhenPrimaryContactStaffPersonIdTooLong() throws Exception {
     Referral toCreate = MAPPER.readValue(
         fixture("fixtures/domain/legacy/Referral/invalid/primaryContactStaffPersonIdTooLong.json"),
@@ -1897,7 +1896,7 @@ public class ReferralTest {
   /*
    * countySpecificCode Tests
    */
-  @Test
+  // @Test
   public void failsWhenCountySpecificCodeMissing() throws Exception {
     Referral toCreate = MAPPER.readValue(
         fixture("fixtures/domain/legacy/Referral/invalid/countySpecificCodeMissing.json"),
@@ -1910,7 +1909,7 @@ public class ReferralTest {
         is(greaterThanOrEqualTo(0)));
   }
 
-  @Test
+  // @Test
   public void failsWhenCountySpecificCodeNull() throws Exception {
     Referral toCreate = MAPPER.readValue(
         fixture("fixtures/domain/legacy/Referral/invalid/countySpecificCodeNull.json"),
@@ -1923,7 +1922,7 @@ public class ReferralTest {
         is(greaterThanOrEqualTo(0)));
   }
 
-  @Test
+  // @Test
   public void failsWhenCountySpecificCodeEmpty() throws Exception {
     Referral toCreate = MAPPER.readValue(
         fixture("fixtures/domain/legacy/Referral/invalid/countySpecificCodeEmpty.json"),
@@ -1936,7 +1935,7 @@ public class ReferralTest {
         is(greaterThanOrEqualTo(0)));
   }
 
-  @Test
+  // @Test
   public void failsWhenCountySpecificCodeTooLong() throws Exception {
     Referral toCreate = MAPPER.readValue(
         fixture("fixtures/domain/legacy/Referral/invalid/countySpecificCodeTooLong.json"),
@@ -1952,7 +1951,7 @@ public class ReferralTest {
   /*
    * specialProjectReferralIndicator Tests
    */
-  @Test
+  // @Test
   public void failsWhenSpecialProjectReferralIndicatorMissing() throws Exception {
     Referral toCreate = MAPPER.readValue(
         fixture(
@@ -1966,7 +1965,7 @@ public class ReferralTest {
         .indexOf("specialProjectReferralIndicator may not be null"), is(greaterThanOrEqualTo(0)));
   }
 
-  @Test
+  // @Test
   public void failsWhenSpecialProjectReferralIndicatorNull() throws Exception {
     Referral toCreate = MAPPER.readValue(
         fixture("fixtures/domain/legacy/Referral/invalid/specialProjectReferralIndicatorNull.json"),
@@ -1979,7 +1978,7 @@ public class ReferralTest {
         .indexOf("specialProjectReferralIndicator may not be null"), is(greaterThanOrEqualTo(0)));
   }
 
-  @Test
+  // @Test
   public void failsWhenSpecialProjectReferralIndicatorEmpty() throws Exception {
     Referral toCreate = MAPPER.readValue(
         fixture(
@@ -1993,7 +1992,7 @@ public class ReferralTest {
         .indexOf("specialProjectReferralIndicator may not be null"), is(greaterThanOrEqualTo(0)));
   }
 
-  @Test
+  // @Test
   public void failsWhenSpecialProjectReferralIndicatorAllWhitespace() throws Exception {
     Referral toCreate = MAPPER.readValue(
         fixture(
@@ -2010,7 +2009,7 @@ public class ReferralTest {
   /*
    * zippyCreatedIndicator Tests
    */
-  @Test
+  // @Test
   public void failsWhenZippyCreatedIndicatorMissing() throws Exception {
     Referral toCreate = MAPPER.readValue(
         fixture("fixtures/domain/legacy/Referral/invalid/zippyCreatedIndicatorMissing.json"),
@@ -2023,7 +2022,7 @@ public class ReferralTest {
         is(greaterThanOrEqualTo(0)));
   }
 
-  @Test
+  // @Test
   public void failsWhenZippyCreatedIndicatorNull() throws Exception {
     Referral toCreate = MAPPER.readValue(
         fixture("fixtures/domain/legacy/Referral/invalid/zippyCreatedIndicatorNull.json"),
@@ -2036,7 +2035,7 @@ public class ReferralTest {
         is(greaterThanOrEqualTo(0)));
   }
 
-  @Test
+  // @Test
   public void failsWhenZippyCreatedIndicatorEmpty() throws Exception {
     Referral toCreate = MAPPER.readValue(
         fixture("fixtures/domain/legacy/Referral/invalid/zippyCreatedIndicatorEmpty.json"),
@@ -2049,7 +2048,7 @@ public class ReferralTest {
         is(greaterThanOrEqualTo(0)));
   }
 
-  @Test
+  // @Test
   public void failsWhenZippyCreatedIndicatorAllWhitespace() throws Exception {
     Referral toCreate = MAPPER.readValue(
         fixture("fixtures/domain/legacy/Referral/invalid/zippyCreatedIndicatorAllWhitespace.json"),
@@ -2065,7 +2064,7 @@ public class ReferralTest {
   /*
    * homelessIndicator Tests
    */
-  @Test
+  // @Test
   public void failsWhenHomelessIndicatorMissing() throws Exception {
     Referral toCreate = MAPPER.readValue(
         fixture("fixtures/domain/legacy/Referral/invalid/homelessIndicatorMissing.json"),
@@ -2078,7 +2077,7 @@ public class ReferralTest {
         is(greaterThanOrEqualTo(0)));
   }
 
-  @Test
+  // @Test
   public void failsWhenHomelessIndicatorNull() throws Exception {
     Referral toCreate = MAPPER.readValue(
         fixture("fixtures/domain/legacy/Referral/invalid/homelessIndicatorNull.json"),
@@ -2091,7 +2090,7 @@ public class ReferralTest {
         is(greaterThanOrEqualTo(0)));
   }
 
-  @Test
+  // @Test
   public void failsWhenHomelessIndicatorEmpty() throws Exception {
     Referral toCreate = MAPPER.readValue(
         fixture("fixtures/domain/legacy/Referral/invalid/homelessIndicatorEmpty.json"),
@@ -2104,7 +2103,7 @@ public class ReferralTest {
         is(greaterThanOrEqualTo(0)));
   }
 
-  @Test
+  // @Test
   public void failsWhenHomelessIndicatorAllWhitespace() throws Exception {
     Referral toCreate = MAPPER.readValue(
         fixture("fixtures/domain/legacy/Referral/invalid/homelessIndicatorAllWhitespace.json"),
@@ -2120,7 +2119,7 @@ public class ReferralTest {
   /*
    * familyRefusedServicesIndicator Tests
    */
-  @Test
+  // @Test
   public void failsWhenFamilyRefusedServicesIndicatorMissing() throws Exception {
     Referral toCreate = MAPPER.readValue(
         fixture(
@@ -2135,7 +2134,7 @@ public class ReferralTest {
         is(greaterThanOrEqualTo(0)));
   }
 
-  @Test
+  // @Test
   public void failsWhenFamilyRefusedServicesIndicatorNull() throws Exception {
     Referral toCreate = MAPPER.readValue(
         fixture("fixtures/domain/legacy/Referral/invalid/familyRefusedServicesIndicatorNull.json"),
@@ -2149,7 +2148,7 @@ public class ReferralTest {
         is(greaterThanOrEqualTo(0)));
   }
 
-  @Test
+  // @Test
   public void failsWhenFamilyRefusedServicesIndicatorEmpty() throws Exception {
     Referral toCreate = MAPPER.readValue(
         fixture("fixtures/domain/legacy/Referral/invalid/familyRefusedServicesIndicatorEmpty.json"),
@@ -2163,7 +2162,7 @@ public class ReferralTest {
         is(greaterThanOrEqualTo(0)));
   }
 
-  @Test
+  // @Test
   public void failsWhenFamilyRefusedServicesIndicatorAllWhitespace() throws Exception {
     Referral toCreate = MAPPER.readValue(
         fixture(
@@ -2181,7 +2180,7 @@ public class ReferralTest {
   /*
    * firstEvaluatedOutApprovalDate Tests
    */
-  @Test
+  // @Test
   public void successWhenFirstEvaluatedOutApprovalDateEmpty() throws Exception {
     Referral toCreate = MAPPER.readValue(
         fixture("fixtures/domain/legacy/Referral/valid/firstEvaluatedOutApprovalDateEmpty.json"),
@@ -2192,7 +2191,7 @@ public class ReferralTest {
     assertThat(response.getStatus(), is(equalTo(204)));
   }
 
-  @Test
+  // @Test
   public void successWhenFirstEvaluatedOutApprovalDateNull() throws Exception {
     Referral toCreate = MAPPER.readValue(
         fixture("fixtures/domain/legacy/Referral/valid/firstEvaluatedOutApprovalDateNull.json"),
@@ -2203,7 +2202,7 @@ public class ReferralTest {
     assertThat(response.getStatus(), is(equalTo(204)));
   }
 
-  @Test
+  // @Test
   public void failsWhenFirstEvaluatedOutApprovalDateWrongFormat() throws Exception {
     Referral toCreate = MAPPER.readValue(
         fixture(
@@ -2222,7 +2221,7 @@ public class ReferralTest {
   /*
    * responsibleAgencyCode Tests
    */
-  @Test
+  // @Test
   public void failsWhenResponsibleAgencyCodeMissing() throws Exception {
     Referral toCreate = MAPPER.readValue(
         fixture("fixtures/domain/legacy/Referral/invalid/responsibleAgencyCodeMissing.json"),
@@ -2235,7 +2234,7 @@ public class ReferralTest {
         is(greaterThanOrEqualTo(0)));
   }
 
-  @Test
+  // @Test
   public void failsWhenResponsibleAgencyCodeNull() throws Exception {
     Referral toCreate = MAPPER.readValue(
         fixture("fixtures/domain/legacy/Referral/invalid/responsibleAgencyCodeNull.json"),
@@ -2248,7 +2247,7 @@ public class ReferralTest {
         is(greaterThanOrEqualTo(0)));
   }
 
-  @Test
+  // @Test
   public void failsWhenResponsibleAgencyCodeEmpty() throws Exception {
     Referral toCreate = MAPPER.readValue(
         fixture("fixtures/domain/legacy/Referral/invalid/responsibleAgencyCodeEmpty.json"),
@@ -2261,7 +2260,7 @@ public class ReferralTest {
         is(greaterThanOrEqualTo(0)));
   }
 
-  @Test
+  // @Test
   public void failsWhenResponsibleAgencyCodeTooLong() throws Exception {
     Referral toCreate = MAPPER.readValue(
         fixture("fixtures/domain/legacy/Referral/invalid/responsibleAgencyCodeTooLong.json"),
@@ -2274,7 +2273,7 @@ public class ReferralTest {
         is(greaterThanOrEqualTo(0)));
   }
 
-  @Test
+  // @Test
   public void failsWhenResponsibleAgencyCodeNotValidValue() throws Exception {
     Referral toCreate = MAPPER.readValue(
         fixture("fixtures/domain/legacy/Referral/invalid/responsibleAgencyCodeNotValidValue.json"),
@@ -2289,7 +2288,7 @@ public class ReferralTest {
         is(greaterThanOrEqualTo(0)));
   }
 
-  @Test
+  // @Test
   public void successWhenResponsibleAgencyCodeIsC() throws Exception {
     Referral toCreate = MAPPER.readValue(
         fixture("fixtures/domain/legacy/Referral/valid/responsibleAgencyCodeC.json"),
@@ -2300,7 +2299,7 @@ public class ReferralTest {
     assertThat(response.getStatus(), is(equalTo(204)));
   }
 
-  @Test
+  // @Test
   public void successWhenResponsibleAgencyCodeIsP() throws Exception {
     Referral toCreate = MAPPER.readValue(
         fixture("fixtures/domain/legacy/Referral/valid/responsibleAgencyCodeP.json"),
@@ -2311,7 +2310,7 @@ public class ReferralTest {
     assertThat(response.getStatus(), is(equalTo(204)));
   }
 
-  @Test
+  // @Test
   public void successWhenResponsibleAgencyCodeIsO() throws Exception {
     Referral toCreate = MAPPER.readValue(
         fixture("fixtures/domain/legacy/Referral/valid/responsibleAgencyCodeO.json"),
@@ -2322,7 +2321,7 @@ public class ReferralTest {
     assertThat(response.getStatus(), is(equalTo(204)));
   }
 
-  @Test
+  // @Test
   public void successWhenResponsibleAgencyCodeIsA() throws Exception {
     Referral toCreate = MAPPER.readValue(
         fixture("fixtures/domain/legacy/Referral/valid/responsibleAgencyCodeA.json"),
@@ -2333,7 +2332,7 @@ public class ReferralTest {
     assertThat(response.getStatus(), is(equalTo(204)));
   }
 
-  @Test
+  // @Test
   public void successWhenResponsibleAgencyCodeIsS() throws Exception {
     Referral toCreate = MAPPER.readValue(
         fixture("fixtures/domain/legacy/Referral/valid/responsibleAgencyCodeS.json"),
@@ -2344,7 +2343,7 @@ public class ReferralTest {
     assertThat(response.getStatus(), is(equalTo(204)));
   }
 
-  @Test
+  // @Test
   public void successWhenResponsibleAgencyCodeIsI() throws Exception {
     Referral toCreate = MAPPER.readValue(
         fixture("fixtures/domain/legacy/Referral/valid/responsibleAgencyCodeI.json"),
@@ -2355,7 +2354,7 @@ public class ReferralTest {
     assertThat(response.getStatus(), is(equalTo(204)));
   }
 
-  @Test
+  // @Test
   public void successWhenResponsibleAgencyCodeIsK() throws Exception {
     Referral toCreate = MAPPER.readValue(
         fixture("fixtures/domain/legacy/Referral/valid/responsibleAgencyCodeK.json"),
@@ -2366,7 +2365,7 @@ public class ReferralTest {
     assertThat(response.getStatus(), is(equalTo(204)));
   }
 
-  @Test
+  // @Test
   public void successWhenResponsibleAgencyCodeIsM() throws Exception {
     Referral toCreate = MAPPER.readValue(
         fixture("fixtures/domain/legacy/Referral/valid/responsibleAgencyCodeM.json"),
@@ -2380,7 +2379,7 @@ public class ReferralTest {
   /*
    * limitedAccessGovtAgencyType Tests
    */
-  @Test
+  // @Test
   public void successWhenLimitedAccessGovtAgencyTypeEmpty() throws Exception {
     Referral toCreate = MAPPER.readValue(
         fixture("fixtures/domain/legacy/Referral/valid/limitedAccessGovtAgencyTypeEmpty.json"),
@@ -2391,7 +2390,7 @@ public class ReferralTest {
     assertThat(response.getStatus(), is(equalTo(204)));
   }
 
-  @Test
+  // @Test
   public void successWhenLimitedAccessGovtAgencyTypeNull() throws Exception {
     Referral toCreate = MAPPER.readValue(
         fixture("fixtures/domain/legacy/Referral/valid/limitedAccessGovtAgencyTypeNull.json"),
@@ -2405,7 +2404,7 @@ public class ReferralTest {
   /*
    * limitedAccessDate Tests
    */
-  @Test
+  // @Test
   public void successWhenLimitedAccessDateEmpty() throws Exception {
     Referral toCreate = MAPPER.readValue(
         fixture("fixtures/domain/legacy/Referral/valid/limitedAccessDateEmpty.json"),
@@ -2416,7 +2415,7 @@ public class ReferralTest {
     assertThat(response.getStatus(), is(equalTo(204)));
   }
 
-  @Test
+  // @Test
   public void successWhenLimitedAccessDateNull() throws Exception {
     Referral toCreate = MAPPER.readValue(
         fixture("fixtures/domain/legacy/Referral/valid/limitedAccessDateNull.json"),
@@ -2427,7 +2426,7 @@ public class ReferralTest {
     assertThat(response.getStatus(), is(equalTo(204)));
   }
 
-  @Test
+  // @Test
   public void failsWhenLimitedAccessDateWrongFormat() throws Exception {
     Referral toCreate = MAPPER.readValue(
         fixture("fixtures/domain/legacy/Referral/invalid/limitedAccessDateWrongFormat.json"),
@@ -2443,7 +2442,7 @@ public class ReferralTest {
   /*
    * limitedAccessDesc Tests
    */
-  @Test
+  // @Test
   public void successWhenLimitedAccessDescEmpty() throws Exception {
     Referral toCreate = MAPPER.readValue(
         fixture("fixtures/domain/legacy/Referral/valid/limitedAccessDescEmpty.json"),
@@ -2454,7 +2453,7 @@ public class ReferralTest {
     assertThat(response.getStatus(), is(equalTo(204)));
   }
 
-  @Test
+  // @Test
   public void successWhenLimitedAccessDescNull() throws Exception {
     Referral toCreate = MAPPER.readValue(
         fixture("fixtures/domain/legacy/Referral/valid/limitedAccessDescNull.json"),
@@ -2468,7 +2467,7 @@ public class ReferralTest {
   /*
    * originalClosureDate Tests
    */
-  @Test
+  // @Test
   public void successWhenOriginalClosureDateEmpty() throws Exception {
     Referral toCreate = MAPPER.readValue(
         fixture("fixtures/domain/legacy/Referral/valid/originalClosureDateEmpty.json"),
@@ -2479,7 +2478,7 @@ public class ReferralTest {
     assertThat(response.getStatus(), is(equalTo(204)));
   }
 
-  @Test
+  // @Test
   public void successWhenOriginalClosureDateNull() throws Exception {
     Referral toCreate = MAPPER.readValue(
         fixture("fixtures/domain/legacy/Referral/valid/originalClosureDateNull.json"),
@@ -2490,7 +2489,7 @@ public class ReferralTest {
     assertThat(response.getStatus(), is(equalTo(204)));
   }
 
-  @Test
+  // @Test
   public void failsWhenOriginalClosureDateWrongFormat() throws Exception {
     Referral toCreate = MAPPER.readValue(
         fixture("fixtures/domain/legacy/Referral/invalid/originalClosureDateWrongFormat.json"),

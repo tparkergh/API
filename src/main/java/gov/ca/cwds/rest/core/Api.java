@@ -117,5 +117,4 @@ public interface Api {
    */
   public static final String RESOURCE_CHILDCLIENT = "_childClients";
 
-
 }
