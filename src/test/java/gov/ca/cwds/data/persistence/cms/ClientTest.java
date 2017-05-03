@@ -73,7 +73,7 @@ public class ClientTest implements PersistentTestTemplate {
         vc.getSocialSecurityNumChangedCode(), vc.getSocialSecurityNumber(),
         vc.getSuffixTitleDescription(), vc.getTribalAncestryClientIndicatorVar(),
         vc.getTribalMembrshpVerifctnIndicatorVar(), vc.getUnemployedParentCode(),
-        vc.getZippyCreatedIndicator());
+        vc.getZippyCreatedIndicator(), null);
 
     assertThat(pers.getAdjudicatedDelinquentIndicator(),
         is(equalTo(vc.getAdjudicatedDelinquentIndicator())));
@@ -295,7 +295,7 @@ public class ClientTest implements PersistentTestTemplate {
         vc.getSocialSecurityNumChangedCode(), vc.getSocialSecurityNumber(),
         vc.getSuffixTitleDescription(), vc.getTribalAncestryClientIndicatorVar(),
         vc.getTribalMembrshpVerifctnIndicatorVar(), vc.getUnemployedParentCode(),
-        vc.getZippyCreatedIndicator());
+        vc.getZippyCreatedIndicator(), null);
 
     final String expected = MAPPER.writeValueAsString((MAPPER.readValue(
         fixture("fixtures/persistence/Client/valid/validWithSysCodes.json"), Client.class)));

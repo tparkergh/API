@@ -103,7 +103,8 @@ public class AllegationDaoIT implements DaoTestTemplate {
             vda.getNonProtectingParentCode(),
             DomainChef.cookBoolean(vda.getStaffPersonAddedIndicator()), vda.getVictimClientId(),
             vda.getPerpetratorClientId(), vda.getReferralId(), vda.getCountySpecificCode(),
-            DomainChef.cookBoolean(vda.getZippyCreatedIndicator()), vda.getPlacementFacilityType());
+            DomainChef.cookBoolean(vda.getZippyCreatedIndicator()), vda.getPlacementFacilityType(),
+            null, null);
 
     Allegation create = allegationDao.create(allegation);
     assertThat(allegation, is(create));
@@ -126,7 +127,8 @@ public class AllegationDaoIT implements DaoTestTemplate {
         vda.getNonProtectingParentCode(),
         DomainChef.cookBoolean(vda.getStaffPersonAddedIndicator()), vda.getVictimClientId(),
         vda.getPerpetratorClientId(), vda.getReferralId(), vda.getCountySpecificCode(),
-        DomainChef.cookBoolean(vda.getZippyCreatedIndicator()), vda.getPlacementFacilityType());
+        DomainChef.cookBoolean(vda.getZippyCreatedIndicator()), vda.getPlacementFacilityType(),
+        null, null);
 
     allegationDao.create(allegation);
   }
@@ -163,7 +165,8 @@ public class AllegationDaoIT implements DaoTestTemplate {
         vda.getNonProtectingParentCode(),
         DomainChef.cookBoolean(vda.getStaffPersonAddedIndicator()), vda.getVictimClientId(),
         vda.getPerpetratorClientId(), vda.getReferralId(), vda.getCountySpecificCode(),
-        DomainChef.cookBoolean(vda.getZippyCreatedIndicator()), vda.getPlacementFacilityType());
+        DomainChef.cookBoolean(vda.getZippyCreatedIndicator()), vda.getPlacementFacilityType(),
+        null, null);
 
     Allegation updated = allegationDao.update(allegation);
 
@@ -189,7 +192,8 @@ public class AllegationDaoIT implements DaoTestTemplate {
             vda.getNonProtectingParentCode(),
             DomainChef.cookBoolean(vda.getStaffPersonAddedIndicator()), vda.getVictimClientId(),
             vda.getPerpetratorClientId(), vda.getReferralId(), vda.getCountySpecificCode(),
-            DomainChef.cookBoolean(vda.getZippyCreatedIndicator()), vda.getPlacementFacilityType());
+            DomainChef.cookBoolean(vda.getZippyCreatedIndicator()), vda.getPlacementFacilityType(),
+            null, null);
 
     allegationDao.update(allegation);
   }
