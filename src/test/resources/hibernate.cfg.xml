@@ -40,6 +40,8 @@
 		<mapping class="gov.ca.cwds.data.persistence.cms.AllegationPerpetratorHistory"/>
 		<mapping class="gov.ca.cwds.data.persistence.cms.ClientUc"/>
 		<mapping class="gov.ca.cwds.data.persistence.cms.ChildClient"/>
+		<mapping class="gov.ca.cwds.data.persistence.cms.ClientAddress"/>
+		<mapping class="gov.ca.cwds.data.persistence.cms.Address"/>
  		
 	</session-factory>
 </hibernate-configuration>

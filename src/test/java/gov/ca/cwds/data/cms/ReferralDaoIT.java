@@ -68,7 +68,7 @@ public class ReferralDaoIT implements DaoTestTemplate {
         (Date) null, (short) 409, "", "", "L3H7sSC0Ht", "", "N", "N", (short) 1118, " ", "N", "N",
         (Date) null, "Verification (R3)", " ", (Date) null, (Date) null, (short) 1520, (short) 0,
         (Date) null, (Date) null, "", "", " ", " ", " ", "", "", "0Ht", "0Ht", "51", "N", "N", "N",
-        "N", (Date) null, "C", (short) 0, (Date) null, "", (Date) null);
+        "N", (Date) null, "C", (short) 0, (Date) null, "", (Date) null, null, null, null, null);
     Referral created = referralDao.create(referral);
     assertThat(created, is(referral));
   }
@@ -81,7 +81,7 @@ public class ReferralDaoIT implements DaoTestTemplate {
         (Date) null, (short) 409, "", "", "L3H7sSC0Ht", "", "N", "N", (short) 1118, " ", "N", "N",
         (Date) null, "Verification (R3)", " ", (Date) null, (Date) null, (short) 1520, (short) 0,
         (Date) null, (Date) null, "", "", " ", " ", " ", "", "", "0Ht", "0Ht", "51", "N", "N", "N",
-        "N", (Date) null, "C", (short) 0, (Date) null, "", (Date) null);
+        "N", (Date) null, "C", (short) 0, (Date) null, "", (Date) null, null, null, null, null);
     referralDao.create(referral);
   }
 
@@ -108,7 +108,7 @@ public class ReferralDaoIT implements DaoTestTemplate {
         (Date) null, (short) 409, "", "", "L3H7sSC0Ht", "", "N", "N", (short) 1118, " ", "N", "N",
         (Date) null, "Verification (R3)", " ", (Date) null, (Date) null, (short) 1520, (short) 0,
         (Date) null, (Date) null, "", "", " ", " ", " ", "", "", "0Ht", "0Ht", "51", "N", "N", "N",
-        "N", (Date) null, "C", (short) 0, (Date) null, "", (Date) null);
+        "N", (Date) null, "C", (short) 0, (Date) null, "", (Date) null, null, null, null, null);
     Referral updated = referralDao.update(referral);
     assertThat(updated, is(referral));
   }
@@ -121,7 +121,7 @@ public class ReferralDaoIT implements DaoTestTemplate {
         (Date) null, (short) 409, "", "", "L3H7sSC0Ht", "", "N", "N", (short) 1118, " ", "N", "N",
         (Date) null, "Verification (R3)", " ", (Date) null, (Date) null, (short) 1520, (short) 0,
         (Date) null, (Date) null, "", "", " ", " ", " ", "", "", "0Ht", "0Ht", "51", "N", "N", "N",
-        "N", (Date) null, "C", (short) 0, (Date) null, "", (Date) null);
+        "N", (Date) null, "C", (short) 0, (Date) null, "", (Date) null, null, null, null, null);
     referralDao.update(referral);
   }
 

@@ -172,7 +172,7 @@ public class ClientDaoIT implements DaoTestTemplate {
         vc.getSocialSecurityNumChangedCode(), vc.getSocialSecurityNumber(),
         vc.getSuffixTitleDescription(), vc.getTribalAncestryClientIndicatorVar(),
         vc.getTribalMembrshpVerifctnIndicatorVar(), vc.getUnemployedParentCode(),
-        vc.getZippyCreatedIndicator());
+        vc.getZippyCreatedIndicator(), null);
     Client created = clientDao.create(pers);
     assertThat(created, is(pers));
   }
@@ -210,7 +210,7 @@ public class ClientDaoIT implements DaoTestTemplate {
         vc.getSocialSecurityNumChangedCode(), vc.getSocialSecurityNumber(),
         vc.getSuffixTitleDescription(), vc.getTribalAncestryClientIndicatorVar(),
         vc.getTribalMembrshpVerifctnIndicatorVar(), vc.getUnemployedParentCode(),
-        vc.getZippyCreatedIndicator());
+        vc.getZippyCreatedIndicator(), null);
 
     clientDao.create(pers);
   }
@@ -262,7 +262,7 @@ public class ClientDaoIT implements DaoTestTemplate {
         vc.getSocialSecurityNumChangedCode(), vc.getSocialSecurityNumber(),
         vc.getSuffixTitleDescription(), vc.getTribalAncestryClientIndicatorVar(),
         vc.getTribalMembrshpVerifctnIndicatorVar(), vc.getUnemployedParentCode(),
-        vc.getZippyCreatedIndicator());
+        vc.getZippyCreatedIndicator(), null);
     Client updated = clientDao.update(pers);
     assertThat(updated, is(pers));
   }
@@ -300,7 +300,7 @@ public class ClientDaoIT implements DaoTestTemplate {
         vc.getSocialSecurityNumChangedCode(), vc.getSocialSecurityNumber(),
         vc.getSuffixTitleDescription(), vc.getTribalAncestryClientIndicatorVar(),
         vc.getTribalMembrshpVerifctnIndicatorVar(), vc.getUnemployedParentCode(),
-        vc.getZippyCreatedIndicator());
+        vc.getZippyCreatedIndicator(), null);
 
     clientDao.update(pers);
 
