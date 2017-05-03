@@ -54,7 +54,7 @@ public class AllegationTest implements PersistentTestTemplate {
             vp.getInjuryHarmDetailIndicator(), vp.getNonProtectingParentCode(),
             vp.getStaffPersonAddedIndicator(), vp.getVictimClientId(), vp.getPerpetratorClientId(),
             vp.getReferralId(), vp.getCountySpecificCode(), vp.getZippyCreatedIndicator(),
-            vp.getPlacementFacilityType());
+            vp.getPlacementFacilityType(), null, null);
 
     assertThat(persistent.getId(), is(equalTo(id)));
     assertThat(persistent.getAbuseEndDate(), is(equalTo(vp.getAbuseEndDate())));
@@ -191,7 +191,7 @@ public class AllegationTest implements PersistentTestTemplate {
             vp.getInjuryHarmDetailIndicator(), vp.getNonProtectingParentCode(),
             vp.getStaffPersonAddedIndicator(), vp.getVictimClientId(), vp.getPerpetratorClientId(),
             vp.getReferralId(), vp.getCountySpecificCode(), vp.getZippyCreatedIndicator(),
-            vp.getPlacementFacilityType());
+            vp.getPlacementFacilityType(), null, null);
 
 
     final String expected = MAPPER.writeValueAsString((MAPPER.readValue(

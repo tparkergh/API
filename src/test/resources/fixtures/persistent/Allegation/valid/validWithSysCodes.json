@@ -28,5 +28,7 @@
   "referralId" : "AbiQCgu0Hj",
   "staffPersonAddedIndicator" : "false",
   "victimClientId" : "AHooKwN0F4",
-  "zippyCreatedIndicator" : "false"
+  "zippyCreatedIndicator" : "false",
+    "victimClients" : null,
+  "perpetratorClients" : null
 }

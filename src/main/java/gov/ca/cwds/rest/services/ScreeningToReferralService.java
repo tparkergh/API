@@ -223,7 +223,8 @@ public class ScreeningToReferralService implements CrudsService {
         screeningToReferral.getName(), "", dateStarted, timeStarted, referralResponseTypeCode,
         DEFAULT_CODE, "", "", "", longTextId, DEFAULT_NO, DEFAULT_NO, DEFAULT_NO, DEFAULT_NO, "",
         "", DEFAULT_STAFF_PERSON_ID, DEFAULT_COUNTY_SPECIFIC_CODE, false, false, false, false, "",
-        DEFAULT_RESPONSIBLE_AGENCY_CODE, DEFAULT_CODE, "", "", "");
+        DEFAULT_RESPONSIBLE_AGENCY_CODE, DEFAULT_CODE, "", "", "", null, null, null, null, null,
+        null);
 
     buildErrors(messages, validator.validate(referral));
 
