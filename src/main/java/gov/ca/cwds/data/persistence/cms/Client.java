@@ -32,14 +32,9 @@ public final class Client extends BaseClient
 {
 
   /**
-   * 
+   * Default.
    */
   private static final long serialVersionUID = 1L;
-
-  // @OneToMany(fetch = FetchType.EAGER)
-  // @JoinColumns({@JoinColumn(name = "FKCLIENT_T", referencedColumnName = "IDENTIFIER")})
-  // @OrderBy("EFF_STRTDT")
-  // protected Set<ReplicatedClientAddress> clientAddresses = new LinkedHashSet<>();
 
   /**
    * Default constructor
