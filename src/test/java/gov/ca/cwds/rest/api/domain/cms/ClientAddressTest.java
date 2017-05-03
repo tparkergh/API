@@ -97,6 +97,7 @@ public class ClientAddressTest {
     assertThat(dca.getBookingOrInmateId(), is(equalTo(pca.getBkInmtId())));
     assertThat(dca.getClientId(), is(equalTo(pca.getFkClient())));
     assertThat(dca.getAddressId(), is(equalTo(pca.getFkAddress())));
+    assertThat("OX5", is(equalTo(pca.getLastUpdatedId())));
 
   }
 

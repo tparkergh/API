@@ -73,7 +73,7 @@ public class ClientAddress extends BaseClientAddress {
    */
   public ClientAddress(String id, gov.ca.cwds.rest.api.domain.cms.ClientAddress clientAddress,
       String lastUpdateId) {
-    super();
+    super(lastUpdateId);
     try {
       this.id = id;
 
