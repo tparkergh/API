@@ -3,6 +3,7 @@ package gov.ca.cwds.rest.api.domain;
 import java.util.Set;
 
 import javax.validation.Valid;
+import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
@@ -28,7 +29,7 @@ import io.swagger.annotations.ApiModelProperty;
     "communicationMethod", "email", "name", "reportNarrative", "reference", "responseTime",
     "startedAt", "assignee", "additionalInformation", "screeningDecision",
     "screeningDecisionDetail", "address", "participants", "crossReports", "allegations"})
-public class ScreeningToReferral extends DomainObject implements Request {
+public class ScreeningToReferral extends ReportingDomain implements Request {
 
   /**
    * Serialization version
@@ -36,6 +37,8 @@ public class ScreeningToReferral extends DomainObject implements Request {
   private static final long serialVersionUID = 1L;
 
   @JsonProperty("id")
+  @Min(1)
+  @NotNull
   @ApiModelProperty(required = true, readOnly = false, value = "Screening ID", example = "12345")
   private long id;
 
@@ -45,6 +48,7 @@ public class ScreeningToReferral extends DomainObject implements Request {
   private String endedAt;
 
   @JsonProperty("incident_county")
+  @NotEmpty
   @ApiModelProperty(required = true, readOnly = false, value = "County where incident occurred",
       example = "Sacramento")
   @Size(max = 50)
@@ -53,24 +57,27 @@ public class ScreeningToReferral extends DomainObject implements Request {
   @Date
   @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = DATE_FORMAT)
   @JsonProperty("incident_date")
+  @NotEmpty
   @ApiModelProperty(required = true, readOnly = false, value = "Incident date",
       example = "2015-01-13")
   private String incidentDate;
 
   @JsonProperty("location_type")
+  @NotEmpty
   @ApiModelProperty(required = true, readOnly = false, value = "Location Type",
       example = "foster home")
   @Size(max = 75)
   private String locationType;
 
   @JsonProperty("communication_method")
+  @NotEmpty
   @ApiModelProperty(required = true, readOnly = false, value = "Communication Method",
       example = "email")
-  @NotEmpty
   @Size(max = 50)
   private String communicationMethod;
 
   @JsonProperty("name")
+  @NotEmpty
   @ApiModelProperty(required = true, readOnly = false, value = "Title/Name of referral",
       example = "a referral name")
   @Size(max = 35)
@@ -89,17 +96,20 @@ public class ScreeningToReferral extends DomainObject implements Request {
   private String reference;
 
   @JsonProperty("response_time")
+  @NotEmpty
   @ApiModelProperty(required = true, readOnly = false, value = "Response time",
       example = "immediate")
   @Size(max = 50)
   private String responseTime;
 
   @JsonProperty("started_at")
+  @NotEmpty
   @ApiModelProperty(required = true, readOnly = false, value = "Date/time incident started",
       example = "2016-08-03T01:00:00.000Z")
   private String startedAt;
 
   @JsonProperty("assignee")
+  @NotEmpty
   @ApiModelProperty(required = true, readOnly = false, value = "Assigned social worker",
       example = "Mich Bastow")
   @Size(max = 50)
@@ -112,6 +122,7 @@ public class ScreeningToReferral extends DomainObject implements Request {
   private String additionalInformation;
 
   @JsonProperty("screening_decision")
+  @NotEmpty
   @ApiModelProperty(required = true, readOnly = false, value = "Screening Decision",
       example = "Response time")
   @Size(max = 50)

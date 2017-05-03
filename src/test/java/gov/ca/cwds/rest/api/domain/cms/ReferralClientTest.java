@@ -184,7 +184,10 @@ public class ReferralClientTest {
 
   @Test
   public void equalsHashCodeWork() {
-    EqualsVerifier.forClass(ReferralClient.class).suppress(Warning.NONFINAL_FIELDS).verify();
+    EqualsVerifier.forClass(ReferralClient.class)
+            .suppress(Warning.NONFINAL_FIELDS)
+            .withIgnoredFields("messages")
+            .verify();
   }
 
   /*

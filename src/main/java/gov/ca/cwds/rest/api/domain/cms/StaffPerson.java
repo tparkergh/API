@@ -5,6 +5,7 @@ import java.math.BigDecimal;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
+import gov.ca.cwds.rest.api.domain.ReportingDomain;
 import org.hibernate.validator.constraints.NotEmpty;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
@@ -24,7 +25,7 @@ import io.swagger.annotations.ApiModelProperty;
  * @author CWDS API Team
  */
 @ApiModel
-public class StaffPerson extends DomainObject implements Request, Response {
+public class StaffPerson extends ReportingDomain implements Request, Response {
   /**
    * Serialization version
    */

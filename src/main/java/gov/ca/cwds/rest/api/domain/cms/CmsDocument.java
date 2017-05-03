@@ -5,6 +5,7 @@ import java.io.Serializable;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
+import gov.ca.cwds.rest.api.domain.ReportingDomain;
 import org.glassfish.jersey.linking.Binding;
 import org.glassfish.jersey.linking.InjectLink;
 import org.glassfish.jersey.linking.InjectLink.Style;
@@ -32,7 +33,7 @@ import io.swagger.annotations.ApiModelProperty;
 @InjectLinks({@InjectLink(value = "/{resource}/{id}", rel = "self", style = Style.ABSOLUTE,
     bindings = {@Binding(name = "id", value = "${instance.id}"),
         @Binding(name = "resource", value = Api.RESOURCE_CMS_DOCUMENT)})})
-public class CmsDocument extends DomainObject implements Request, Response, Serializable {
+public class CmsDocument extends ReportingDomain implements Request, Response, Serializable {
 
   private static final long serialVersionUID = -9133158600820834189L;
 

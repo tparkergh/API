@@ -5,6 +5,7 @@ import java.math.BigDecimal;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
+import gov.ca.cwds.rest.api.domain.ReportingDomain;
 import org.hibernate.validator.constraints.NotEmpty;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
@@ -33,7 +34,7 @@ import io.swagger.annotations.ApiModelProperty;
 @OnlyIf(property = "badgeNumber", ifProperty = "lawEnforcementId")
 @IfThen.List({@IfThen(ifProperty = "streetNumber", thenProperty = "streetName", required = false),
     @IfThen(ifProperty = "streetName", thenProperty = "cityName", required = false)})
-public class Reporter extends DomainObject implements Request, Response {
+public class Reporter extends ReportingDomain implements Request, Response {
 
   /**
    * Serialization version.

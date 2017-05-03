@@ -12,7 +12,7 @@ import io.dropwizard.jackson.JsonSnakeCase;
  * @author CWDS API Team
  */
 @JsonSnakeCase
-public class ScreeningReference extends DomainObject implements Request {
+public class ScreeningReference extends ReportingDomain implements Request {
   /**
    * Serialization version
    */

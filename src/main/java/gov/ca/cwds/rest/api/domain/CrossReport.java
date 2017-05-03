@@ -22,7 +22,7 @@ import io.swagger.annotations.ApiModelProperty;
 @SuppressWarnings("serial")
 @JsonSnakeCase
 @ApiModel("NsCrossReport")
-public class CrossReport extends DomainObject implements Request, Response {
+public class CrossReport extends ReportingDomain implements Request, Response {
 
   @JsonProperty("agency_type")
   @ApiModelProperty(required = true, value = "Cross Report to", example = "Law Enforcement")

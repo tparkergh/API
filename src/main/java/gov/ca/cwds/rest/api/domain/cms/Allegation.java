@@ -3,6 +3,7 @@ package gov.ca.cwds.rest.api.domain.cms;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
+import gov.ca.cwds.rest.api.domain.ReportingDomain;
 import org.hibernate.validator.constraints.NotEmpty;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
@@ -24,7 +25,7 @@ import io.swagger.annotations.ApiModelProperty;
  * @author CWDS API Team
  */
 @ApiModel("cmsAllegation")
-public class Allegation extends DomainObject implements Request, Response {
+public class Allegation extends ReportingDomain implements Request, Response {
   /**
    * Serialization version
    */

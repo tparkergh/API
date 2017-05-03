@@ -18,7 +18,7 @@ import io.swagger.annotations.ApiModelProperty;
  * @author CWDS API Team
  */
 @JsonSnakeCase
-public class Race extends DomainObject implements Request, Response {
+public class Race extends ReportingDomain implements Request, Response {
 
   /**
    * Serialization version

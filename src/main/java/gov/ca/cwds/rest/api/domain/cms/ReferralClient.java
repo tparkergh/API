@@ -3,6 +3,7 @@ package gov.ca.cwds.rest.api.domain.cms;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
+import gov.ca.cwds.rest.api.domain.ReportingDomain;
 import org.hibernate.validator.constraints.NotBlank;
 import org.hibernate.validator.constraints.NotEmpty;
 
@@ -23,7 +24,7 @@ import io.swagger.annotations.ApiModelProperty;
  * 
  * @author CWDS API Team
  */
-public class ReferralClient extends DomainObject implements Request, Response {
+public class ReferralClient extends ReportingDomain implements Request, Response {
   /**
    * Serialization version
    */

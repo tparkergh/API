@@ -19,7 +19,7 @@ import io.swagger.annotations.ApiModelProperty;
  */
 @JsonSnakeCase
 @ApiModel("nsAllegation")
-public class Allegation extends DomainObject implements Request, Response {
+public class Allegation extends ReportingDomain implements Request, Response {
 
   /**
    * Serialization version

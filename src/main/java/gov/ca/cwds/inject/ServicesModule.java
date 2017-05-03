@@ -2,6 +2,7 @@ package gov.ca.cwds.inject;
 
 import com.google.inject.AbstractModule;
 import com.google.inject.Inject;
+import com.google.inject.Provides;
 import com.google.inject.matcher.Matchers;
 
 import gov.ca.cwds.data.CmsSystemCodeSerializer;
@@ -30,6 +31,10 @@ import io.dropwizard.hibernate.HibernateBundle;
 import io.dropwizard.hibernate.UnitOfWork;
 import io.dropwizard.hibernate.UnitOfWorkAspect;
 import io.dropwizard.hibernate.UnitOfWorkAwareProxyFactory;
+
+import javax.validation.Validation;
+import javax.validation.Validator;
+import javax.validation.ValidatorFactory;
 
 /**
  * Identifies all CWDS API business layer (aka, service) classes available for dependency injection
@@ -114,4 +119,8 @@ public class ServicesModule extends AbstractModule {
     requestInjection(interceptor);
   }
 
+  @Provides
+  Validator provideValidator(){
+    return Validation.buildDefaultValidatorFactory().getValidator();
+  }
 }

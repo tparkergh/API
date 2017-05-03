@@ -16,7 +16,7 @@ import io.swagger.annotations.ApiModelProperty;
  * @author CWDS API Team
  */
 @JsonSnakeCase
-public class Screening extends DomainObject implements Request {
+public class Screening extends ReportingDomain implements Request {
   /**
    * Serialization version
    */

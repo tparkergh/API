@@ -167,7 +167,10 @@ public class AddressTest {
 
   @Test
   public void equalsHashCodeWork() {
-    EqualsVerifier.forClass(Address.class).suppress(Warning.NONFINAL_FIELDS).verify();
+    EqualsVerifier.forClass(Address.class)
+            .suppress(Warning.NONFINAL_FIELDS)
+            .withIgnoredFields("messages")
+            .verify();
   }
 
   /*

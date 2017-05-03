@@ -3,6 +3,7 @@ package gov.ca.cwds.rest.api.domain.cms;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
+import gov.ca.cwds.rest.api.domain.ReportingDomain;
 import org.hibernate.validator.constraints.NotEmpty;
 
 import gov.ca.cwds.rest.api.Request;
@@ -16,7 +17,7 @@ import io.swagger.annotations.ApiModelProperty;
  * 
  * @author CWDS API Team
  */
-public class ClientAddress extends DomainObject implements Request, Response {
+public class ClientAddress extends ReportingDomain implements Request, Response {
 
   /**
    * Base serialization value. Increment by version
