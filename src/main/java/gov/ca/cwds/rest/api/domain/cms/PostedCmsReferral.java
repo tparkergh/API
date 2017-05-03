@@ -1,20 +1,23 @@
 package gov.ca.cwds.rest.api.domain.cms;
 
+import java.util.Collection;
 import java.util.LinkedHashSet;
 import java.util.Set;
 
 import gov.ca.cwds.rest.api.Response;
 import gov.ca.cwds.rest.api.domain.DomainObject;
+import gov.ca.cwds.rest.api.domain.ReportingDomain;
 
 /**
  * Logical representation of a Referral
  * 
  * @author CWDS API Team
  */
-public class PostedCmsReferral extends DomainObject implements Response {
+public class PostedCmsReferral extends ReportingDomain {
   /**
    * Serialization version
    */
+
   private static final long serialVersionUID = 1L;
   private Referral referral;
   private Set<Client> client;
@@ -49,6 +52,19 @@ public class PostedCmsReferral extends DomainObject implements Response {
     this.reporter = reporter;
   }
 
+  /**
+   * @param referral - PostedReferral
+   * @param allegation = PostedAllegation
+   * @param crossReport - CrossReport
+   * @param referralClient - ReferralClient
+   * @param reporter - PostedReporter
+   * @param client - PostedClient
+   */
+  public PostedCmsReferral(PostedReferral referral, Set<PostedClient> client,
+                           Set<PostedAllegation> allegation, Set<CrossReport> crossReport,
+                           Set<ReferralClient> referralClient, PostedReporter reporter, Collection errors) {
+       this(referral,client,allegation, crossReport,referralClient, reporter);
+  }
 
   /**
    * @return the referral
