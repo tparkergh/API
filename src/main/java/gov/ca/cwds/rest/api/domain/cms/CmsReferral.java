@@ -11,6 +11,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import gov.ca.cwds.rest.api.Request;
 import gov.ca.cwds.rest.api.Response;
 import gov.ca.cwds.rest.api.domain.DomainObject;
+import gov.ca.cwds.rest.api.domain.ReportingDomain;
 import io.swagger.annotations.ApiModelProperty;
 
 /**
@@ -18,7 +19,7 @@ import io.swagger.annotations.ApiModelProperty;
  * 
  * @author CWDS API Team
  */
-public class CmsReferral extends DomainObject implements Request, Response {
+public class CmsReferral extends ReportingDomain implements Request, Response {
 
   /**
    * Serialization version

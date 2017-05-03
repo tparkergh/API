@@ -23,7 +23,7 @@ import io.swagger.annotations.ApiModelProperty;
  * 
  * @author CWDS API Team
  */
-public class Person extends DomainObject implements Request, Response {
+public class Person extends ReportingDomain implements Request, Response {
 
   /**
    * Default

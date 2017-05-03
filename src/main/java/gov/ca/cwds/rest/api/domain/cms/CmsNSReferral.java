@@ -4,6 +4,7 @@ import gov.ca.cwds.rest.api.Request;
 import gov.ca.cwds.rest.api.Response;
 import gov.ca.cwds.rest.api.domain.DomainObject;
 import gov.ca.cwds.rest.api.domain.Person;
+import gov.ca.cwds.rest.api.domain.ReportingDomain;
 import io.swagger.annotations.ApiModelProperty;
 
 import javax.validation.Valid;
@@ -17,7 +18,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  * 
  * @author CWDS API Team
  */
-public class CmsNSReferral extends DomainObject implements Request, Response {
+public class CmsNSReferral extends ReportingDomain implements Request, Response {
 
   /**
    * Serialization version

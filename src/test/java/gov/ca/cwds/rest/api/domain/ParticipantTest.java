@@ -109,7 +109,10 @@ public class ParticipantTest implements PersistentTestTemplate {
   @Override
   @Test
   public void testEqualsHashCodeWorks() {
-    EqualsVerifier.forClass(Participant.class).suppress(Warning.NONFINAL_FIELDS).verify();
+    EqualsVerifier.forClass(Participant.class)
+            .suppress(Warning.NONFINAL_FIELDS)
+            .withIgnoredFields("messages")
+            .verify();
   }
 
 

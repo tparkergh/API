@@ -49,8 +49,10 @@ public class CrossReportTest {
 
   @Test
   public void equalsHashCodeWork() throws Exception {
-    EqualsVerifier.forClass(CrossReport.class)
-        .suppress(Warning.NONFINAL_FIELDS, Warning.NULL_FIELDS).verify();
+      EqualsVerifier.forClass(CrossReport.class)
+          .suppress(Warning.NONFINAL_FIELDS, Warning.NULL_FIELDS)
+          .withIgnoredFields("messages")
+          .verify();
   }
 
   @Test

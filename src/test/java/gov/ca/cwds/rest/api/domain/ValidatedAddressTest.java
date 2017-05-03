@@ -82,7 +82,10 @@ public class ValidatedAddressTest implements DomainTestTemplate {
   @Override
   @Test
   public void testEqualsHashCodeWorks() throws Exception {
-    EqualsVerifier.forClass(ValidatedAddress.class).suppress(Warning.NONFINAL_FIELDS).verify();
+    EqualsVerifier.forClass(ValidatedAddress.class)
+            .suppress(Warning.NONFINAL_FIELDS)
+            .withIgnoredFields("messages")
+            .verify();
   }
 
   @Test

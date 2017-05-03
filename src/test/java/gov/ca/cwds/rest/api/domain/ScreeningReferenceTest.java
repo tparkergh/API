@@ -67,6 +67,9 @@ public class ScreeningReferenceTest {
   @SuppressWarnings("javadoc")
   @Test
   public void equalsHashCodeWork() {
-    EqualsVerifier.forClass(ScreeningReference.class).suppress(Warning.NONFINAL_FIELDS).verify();
+    EqualsVerifier.forClass(ScreeningReference.class)
+            .suppress(Warning.NONFINAL_FIELDS)
+            .withIgnoredFields("messages")
+            .verify();
   }
 }

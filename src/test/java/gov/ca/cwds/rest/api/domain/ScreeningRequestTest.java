@@ -103,6 +103,8 @@ public class ScreeningRequestTest {
   @Test
   public void equalsHashCodeWork() {
     EqualsVerifier.forClass(Screening.class).suppress(Warning.NONFINAL_FIELDS)
-        .suppress(Warning.STRICT_INHERITANCE).verify();
+            .suppress(Warning.STRICT_INHERITANCE)
+            .withIgnoredFields("messages")
+            .verify();
   }
 }

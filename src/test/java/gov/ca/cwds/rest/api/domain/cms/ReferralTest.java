@@ -306,7 +306,10 @@ public class ReferralTest {
 
   // @Test
   public void equalsHashCodeWork() {
-    EqualsVerifier.forClass(Referral.class).suppress(Warning.NONFINAL_FIELDS).verify();
+    EqualsVerifier.forClass(Referral.class)
+            .suppress(Warning.NONFINAL_FIELDS)
+             .withIgnoredFields("messages")
+            .verify();
   }
 
   // @Test

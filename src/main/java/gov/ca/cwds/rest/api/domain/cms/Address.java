@@ -9,6 +9,7 @@ import gov.ca.cwds.rest.api.Request;
 import gov.ca.cwds.rest.api.Response;
 import gov.ca.cwds.rest.api.domain.DomainChef;
 import gov.ca.cwds.rest.api.domain.DomainObject;
+import gov.ca.cwds.rest.api.domain.ReportingDomain;
 import io.swagger.annotations.ApiModelProperty;
 
 /**
@@ -16,7 +17,7 @@ import io.swagger.annotations.ApiModelProperty;
  * 
  * @author CWDS API Team
  */
-public class Address extends DomainObject implements Request, Response {
+public class Address extends ReportingDomain implements Request, Response {
 
   /**
    * Base serialization value. Increment by version
@@ -76,7 +77,7 @@ public class Address extends DomainObject implements Request, Response {
   @Size(max = 10)
   private String streetNumber;
 
-  @ApiModelProperty(example = "6525")
+  @ApiModelProperty(example = "65258")
   private Integer zip;
 
   @ApiModelProperty(example = "Third Street on the left")

@@ -103,7 +103,10 @@ public class PersonTest {
 
   @Test
   public void equalsHashCodeWork() {
-    EqualsVerifier.forClass(Person.class).suppress(Warning.NONFINAL_FIELDS).verify();
+    EqualsVerifier.forClass(Person.class)
+            .suppress(Warning.NONFINAL_FIELDS)
+            .withIgnoredFields("messages")
+            .verify();
   }
 
   /*

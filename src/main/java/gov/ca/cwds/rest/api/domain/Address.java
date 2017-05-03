@@ -16,7 +16,7 @@ import io.swagger.annotations.ApiModelProperty;
  * @author CWDS API Team
  */
 @JsonSnakeCase
-public class Address extends DomainObject implements Request, Response {
+public class Address extends ReportingDomain implements Request, Response {
 
   /**
    * Base serialization value. Increment by version

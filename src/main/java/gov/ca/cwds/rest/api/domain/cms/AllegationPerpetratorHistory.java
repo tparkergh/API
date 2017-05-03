@@ -10,6 +10,7 @@ import gov.ca.cwds.rest.api.Request;
 import gov.ca.cwds.rest.api.Response;
 import gov.ca.cwds.rest.api.domain.DomainChef;
 import gov.ca.cwds.rest.api.domain.DomainObject;
+import gov.ca.cwds.rest.api.domain.ReportingDomain;
 import io.swagger.annotations.ApiModelProperty;
 
 /**
@@ -17,7 +18,7 @@ import io.swagger.annotations.ApiModelProperty;
  * 
  * @author CWDS API Team
  */
-public class AllegationPerpetratorHistory extends DomainObject implements Request, Response {
+public class AllegationPerpetratorHistory extends ReportingDomain implements Request, Response {
   /**
    * 
    */

@@ -77,7 +77,9 @@ public class ScreeningTest {
   @Test
   public void equalsHashCodeWork() {
     EqualsVerifier.forClass(Screening.class)
-        .suppress(Warning.STRICT_INHERITANCE, Warning.NONFINAL_FIELDS).verify();
+            .suppress(Warning.STRICT_INHERITANCE, Warning.NONFINAL_FIELDS)
+            .withIgnoredFields("messages")
+            .verify();
   }
 
   /*
