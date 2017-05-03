@@ -54,6 +54,8 @@ import gov.ca.cwds.rest.services.cms.ReferralService;
 import gov.ca.cwds.rest.services.cms.ReporterService;
 import io.dropwizard.jackson.Jackson;
 
+import javax.validation.Validation;
+
 /**
  * 
  * @author CWDS API Team
@@ -118,9 +120,10 @@ public class ScreeningToReferralServiceTest {
     longTextDao = mock(LongTextDao.class);
     longTextService = new LongTextService(longTextDao);
 
+
     screeningToReferralService = new ScreeningToReferralService(referralService, clientService,
         allegationService, crossReportService, referralClientService, reporterService,
-        addressService, clientAddressService, longTextService);
+        addressService, clientAddressService, longTextService,Validation.buildDefaultValidatorFactory().getValidator());
   }
 
   @SuppressWarnings("javadoc")
@@ -761,13 +764,8 @@ public class ScreeningToReferralServiceTest {
             "fixtures/domain/ScreeningToReferral/valid/validMultipleAddressPerParticipant.json"),
         ScreeningToReferral.class);
 
-    try {
-      Response response = screeningToReferralService.create(screeningToReferral);
-      assertThat(response.getClass(), is(PostedCmsReferral.class));
-    } catch (Exception e) {
-      System.out.println("error = " + e.getMessage());
-      Assert.fail("Unexpected ServiceException was thrown" + e.getMessage());
-    }
+    Response response = screeningToReferralService.create(screeningToReferral);
+    assertThat(response.getClass(), is(PostedCmsReferral.class));
   }
 
   @SuppressWarnings("javadoc")
@@ -855,7 +853,7 @@ public class ScreeningToReferralServiceTest {
       this.screeningToReferralService.create(screeningToReferral);
       Assert.fail("Expected ServiceException was not thrown");
     } catch (Exception e) {
-      assertThat(e.getMessage().contains("Unparseable date"), is(equalTo(true)));
+      assertThat(e.getMessage().contains("ERROR - parsing Start Date/Time"), is(equalTo(true)));
     }
   }
 
