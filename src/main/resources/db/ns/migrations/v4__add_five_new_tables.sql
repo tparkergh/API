@@ -1,6 +1,27 @@
-ALTER TABLE public.hotline_contact_participant 
+/* ALTER TABLE public.hotline_contact_participant 
  ADD COLUMN hotline_contact_person_id integer NULL    -- FK to the hotline_contact_person_table
 ;
+ */
+ 
+ 
+/* Drop Tables */
+
+DROP TABLE IF EXISTS public.language CASCADE
+;
+
+DROP TABLE IF EXISTS public.person_address CASCADE
+;
+
+DROP TABLE IF EXISTS public.person_language CASCADE
+;
+
+DROP TABLE IF EXISTS public.person_phone CASCADE
+;
+
+DROP TABLE IF EXISTS public.phone_number CASCADE
+;
+
+
 
 CREATE TABLE public.language
 (
@@ -58,6 +79,12 @@ CREATE TABLE public.phone_number
 	update_datetime timestamp NULL,    -- The date and time that the update_user updated the record.
 	person_id integer NULL
 )
+;
+
+DROP SEQUENCE IF EXISTS public.seq_language
+;
+
+DROP SEQUENCE IF EXISTS public.seq_phone_number
 ;
 
 CREATE SEQUENCE public.seq_language INCREMENT 1 START 1

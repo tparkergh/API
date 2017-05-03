@@ -2,6 +2,23 @@ ALTER TABLE public.hotline_contact
  DROP COLUMN IF EXISTS hotline_contact_participant_array
 ;
 
+/* Drop Tables */
+
+DROP TABLE IF EXISTS public.hotline_contact_participant CASCADE
+;
+
+DROP SEQUENCE IF EXISTS public.seq_hotline_contact_id
+;
+
+DROP TABLE IF EXISTS public.seq_hotline_contact_id CASCADE
+;
+
+DROP SEQUENCE IF EXISTS public.seq_hotline_contact_participant_contact_id CASCADE
+;
+
+DROP SEQUENCE IF EXISTS public.seq_hotline_contact_participant_id CASCADE
+;
+
 CREATE TABLE public.hotline_contact_participant
 (
 	hotline_contact_participant_id integer NOT NULL   DEFAULT NEXTVAL(('seq_hotline_contact_participant_id'::text)::regclass),    -- Unique, sequential primary key of the table.
