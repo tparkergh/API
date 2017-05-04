@@ -3,8 +3,6 @@ package gov.ca.cwds.rest.api.domain.cms;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
-import org.apache.commons.lang3.builder.EqualsBuilder;
-import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.hibernate.validator.constraints.NotEmpty;
 
 import gov.ca.cwds.rest.api.Request;
@@ -179,23 +177,83 @@ public class ClientAddress extends ReportingDomain implements Request, Response 
     return referralId;
   }
 
-  /**
-   * {@inheritDoc}
-   *
-   * @see java.lang.Object#hashCode()
-   */
   @Override
   public final int hashCode() {
-    return HashCodeBuilder.reflectionHashCode(this, false);
+    final int prime = 31;
+    int result = 1;
+    result = prime * result + ((addressId == null) ? 0 : addressId.hashCode());
+    result = prime * result + ((addressType == null) ? 0 : addressType.hashCode());
+    result = prime * result + ((bookingOrInmateId == null) ? 0 : bookingOrInmateId.hashCode());
+    result = prime * result + ((clientId == null) ? 0 : clientId.hashCode());
+    result = prime * result + ((effectiveEndDate == null) ? 0 : effectiveEndDate.hashCode());
+    result = prime * result + ((effectiveStartDate == null) ? 0 : effectiveStartDate.hashCode());
+    result = prime * result
+        + ((existingClientAddressId == null) ? 0 : existingClientAddressId.hashCode());
+    result = prime * result + ((homelessInd == null) ? 0 : homelessInd.hashCode());
+    result = prime * result + ((referralId == null) ? 0 : referralId.hashCode());
+    return result;
   }
 
-  /**
-   * {@inheritDoc}
-   *
-   * @see java.lang.Object#equals(java.lang.Object)
-   */
   @Override
   public final boolean equals(Object obj) {
-    return EqualsBuilder.reflectionEquals(this, obj, false);
+    if (this == obj) {
+      return true;
+    }
+    if (obj == null) {
+      return false;
+    }
+    if (!(obj instanceof ClientAddress)) {
+      return false;
+    }
+    ClientAddress other = (ClientAddress) obj;
+    if (addressId == null) {
+      if (other.addressId != null)
+        return false;
+    } else if (!addressId.equals(other.addressId))
+      return false;
+    if (addressType == null) {
+      if (other.addressType != null)
+        return false;
+    } else if (!addressType.equals(other.addressType))
+      return false;
+    if (bookingOrInmateId == null) {
+      if (other.bookingOrInmateId != null)
+        return false;
+    } else if (!bookingOrInmateId.equals(other.bookingOrInmateId))
+      return false;
+    if (clientId == null) {
+      if (other.clientId != null)
+        return false;
+    } else if (!clientId.equals(other.clientId))
+      return false;
+    if (effectiveEndDate == null) {
+      if (other.effectiveEndDate != null)
+        return false;
+    } else if (!effectiveEndDate.equals(other.effectiveEndDate))
+      return false;
+    if (effectiveStartDate == null) {
+      if (other.effectiveStartDate != null)
+        return false;
+    } else if (!effectiveStartDate.equals(other.effectiveStartDate))
+      return false;
+    if (existingClientAddressId == null) {
+      if (other.existingClientAddressId != null)
+        return false;
+    } else if (!existingClientAddressId.equals(other.existingClientAddressId))
+      return false;
+    if (homelessInd == null) {
+      if (other.homelessInd != null)
+        return false;
+    } else if (!homelessInd.equals(other.homelessInd))
+      return false;
+    if (referralId == null) {
+      if (other.referralId != null)
+        return false;
+    } else if (!referralId.equals(other.referralId))
+      return false;
+    return true;
   }
+
+
+
 }
