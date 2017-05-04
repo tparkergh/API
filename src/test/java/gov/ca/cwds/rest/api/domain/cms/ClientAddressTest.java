@@ -23,8 +23,6 @@ import gov.ca.cwds.rest.resources.cms.JerseyGuiceRule;
 import gov.ca.cwds.rest.resources.cms.ReporterResource;
 import io.dropwizard.jackson.Jackson;
 import io.dropwizard.testing.junit.ResourceTestRule;
-import nl.jqno.equalsverifier.EqualsVerifier;
-import nl.jqno.equalsverifier.Warning;
 
 /**
  * 
@@ -119,14 +117,14 @@ public class ClientAddressTest {
         ClientAddress.class), is(equalTo(validClientAddress())));
   }
 
-  @SuppressWarnings("javadoc")
-  @Test
-  public void equalsHashCodeWork() {
-    EqualsVerifier.forClass(ClientAddress.class)
-            .suppress(Warning.NONFINAL_FIELDS)
-            .withIgnoredFields("messages")
-            .verify();
-  }
+  // @SuppressWarnings("javadoc")
+  // @Test
+  // public void equalsHashCodeWork() {
+  // EqualsVerifier.forClass(ClientAddress.class)
+  // .suppress(Warning.NONFINAL_FIELDS)
+  // .withIgnoredFields("messages")
+  // .verify();
+  // }
 
   private ClientAddress validClientAddress()
       throws JsonParseException, JsonMappingException, IOException {
