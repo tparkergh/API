@@ -46,5 +46,11 @@
   "limitedAccessGovtAgencyType": 1234,
   "limitedAccessDate": "2000-05-05",
   "limitedAccessDesc": "thjkl",
-  "originalClosureDate": "2000-05-05"
+  "originalClosureDate": "2000-05-05",
+  "addresses": [],
+  "reporter": [],
+  "crossReports": [],
+  "allegation": [],
+  "victimClients": [],
+  "perpetratorClients": []
 }

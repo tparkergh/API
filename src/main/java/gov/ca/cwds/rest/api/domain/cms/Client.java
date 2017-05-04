@@ -343,7 +343,7 @@ public class Client extends ReportingDomain implements Request, Response {
   @NotNull
   @Size(min = 1, max = 1, message = "size must be 1")
   @OneOf(value = {"Y", "N"}, ignoreCase = true, ignoreWhitespace = true)
-  @ApiModelProperty(required = true, readOnly = false)
+  @ApiModelProperty(required = true, readOnly = false, value = "", example = "N")
   private String socialSecurityNumChangedCode;
 
   @NotEmpty

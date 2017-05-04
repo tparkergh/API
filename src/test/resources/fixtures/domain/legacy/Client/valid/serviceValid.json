@@ -60,6 +60,7 @@
   "tribalAncestryClientIndicatorVar": false,
   "tribalMembrshpVerifctnIndicatorVar": false,
   "unemployedParentCode": "U",
-  "zippyCreatedIndicator": false
+  "zippyCreatedIndicator": false,
+  "address": []
   
 }
