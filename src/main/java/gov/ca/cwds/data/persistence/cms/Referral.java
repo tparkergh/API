@@ -1,10 +1,15 @@
 package gov.ca.cwds.data.persistence.cms;
 
 import java.util.Date;
+import java.util.HashSet;
+import java.util.Set;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToMany;
 import javax.persistence.PersistenceException;
 import javax.persistence.Table;
 
@@ -204,6 +209,22 @@ public class Referral extends CmsPersistentObject {
   @Column(name = "ORIGCLS_DT")
   private Date originalClosureDate;
 
+  @OneToMany(cascade = CascadeType.ALL)
+  @JoinColumn(name = "IDENTIFIER", referencedColumnName = "FKADDRS_T")
+  private Set<Address> addresses = new HashSet<>();
+
+  @OneToMany(cascade = CascadeType.ALL)
+  @JoinColumn(name = "FKREFERL_T", referencedColumnName = "IDENTIFIER")
+  private Set<Allegation> allegations = new HashSet<>();
+
+  @OneToMany(cascade = CascadeType.ALL)
+  @JoinColumn(name = "FKREFERL_T", referencedColumnName = "IDENTIFIER")
+  private Set<CrossReport> crossReports = new HashSet<>();
+
+  @OneToMany(cascade = CascadeType.ALL)
+  @JoinColumn(name = "FKREFERL_T", referencedColumnName = "IDENTIFIER")
+  private Set<Reporter> reporters = new HashSet<>();
+
   /**
    * Default constructor
    * 
@@ -287,7 +308,8 @@ public class Referral extends CmsPersistentObject {
       String homelessIndicator, String familyRefusedServicesIndicator,
       Date firstEvaluatedOutApprovalDate, String responsibleAgencyCode,
       Short limitedAccessGovtAgencyType, Date limitedAccessDate, String limitedAccessDesc,
-      Date originalClosureDate) {
+      Date originalClosureDate, Set<Address> addresses, Set<Allegation> allegations,
+      Set<CrossReport> crossReports, Set<Reporter> reporters) {
     super();
     this.id = id;
     this.additionalInfoIncludedCode = additionalInfoIncludedCode;
@@ -338,6 +360,10 @@ public class Referral extends CmsPersistentObject {
     this.limitedAccessDate = limitedAccessDate;
     this.limitedAccessDesc = limitedAccessDesc;
     this.originalClosureDate = originalClosureDate;
+    this.addresses = addresses;
+    this.allegations = allegations;
+    this.crossReports = crossReports;
+    this.reporters = reporters;
   }
 
   /**
@@ -763,5 +789,33 @@ public class Referral extends CmsPersistentObject {
    */
   public Date getOriginalClosureDate() {
     return originalClosureDate;
+  }
+
+  /**
+   * @return the address
+   */
+  public Set<Address> getAddresses() {
+    return addresses;
+  }
+
+  /**
+   * @return the allegations
+   */
+  public Set<Allegation> getAllegations() {
+    return allegations;
+  }
+
+  /**
+   * @return the crossReport
+   */
+  public Set<CrossReport> getCrossReports() {
+    return crossReports;
+  }
+
+  /**
+   * @return the reporter
+   */
+  public Set<Reporter> getReporters() {
+    return reporters;
   }
 }

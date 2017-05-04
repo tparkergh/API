@@ -41,6 +41,16 @@ public class ClientAddress extends BaseClientAddress {
 
 
   /**
+   * Default constructor
+   * 
+   * Required for Hibernate
+   */
+  public ClientAddress() {
+    super();
+  }
+
+
+  /**
    * @param id The identifier
    * @param addressType The addressType
    * @param bkInmtId The bkInmtId

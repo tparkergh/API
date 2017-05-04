@@ -1,8 +1,13 @@
 package gov.ca.cwds.data.persistence.cms;
 
 import java.util.Date;
+import java.util.HashSet;
+import java.util.Set;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToMany;
 import javax.persistence.PersistenceException;
 import javax.persistence.Table;
 
@@ -35,6 +40,10 @@ public final class Client extends BaseClient
    * Default.
    */
   private static final long serialVersionUID = 1L;
+
+  @OneToMany(cascade = CascadeType.ALL)
+  @JoinColumn(name = "FKCLIENT_T", referencedColumnName = "IDENTIFIER")
+  private Set<ClientAddress> clientAddress = new HashSet<>();
 
   /**
    * Default constructor
@@ -141,7 +150,7 @@ public final class Client extends BaseClient
       String socialSecurityNumChangedCode, String socialSecurityNumber,
       String suffixTitleDescription, String tribalAncestryClientIndicatorVar,
       String tribalMembrshpVerifctnIndicatorVar, String unemployedParentCode,
-      String zippyCreatedIndicator) {
+      String zippyCreatedIndicator, Set<ClientAddress> clientAddress) {
     super();
     this.adjudicatedDelinquentIndicator = adjudicatedDelinquentIndicator;
     this.adoptionStatusCode = adoptionStatusCode;
@@ -210,6 +219,7 @@ public final class Client extends BaseClient
     this.tribalMembrshpVerifctnIndicatorVar = tribalMembrshpVerifctnIndicatorVar;
     this.unemployedParentCode = unemployedParentCode;
     this.zippyCreatedIndicator = zippyCreatedIndicator;
+    this.clientAddress = clientAddress;
   }
 
   /**
@@ -312,6 +322,12 @@ public final class Client extends BaseClient
     } catch (ApiException e) {
       throw new PersistenceException(e);
     }
+  }
+
+
+
+  public Set<ClientAddress> getClientAddress() {
+    return clientAddress;
   }
 
   @Override

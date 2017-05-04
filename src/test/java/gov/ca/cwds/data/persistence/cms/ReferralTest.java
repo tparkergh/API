@@ -180,7 +180,7 @@ public class ReferralTest implements PersistentTestTemplate {
         vr.getHomelessIndicator(), vr.getFamilyRefusedServicesIndicator(),
         vr.getFirstEvaluatedOutApprovalDate(), vr.getResponsibleAgencyCode(),
         vr.getLimitedAccessGovtAgencyType(), vr.getLimitedAccessDate(), vr.getLimitedAccessDesc(),
-        vr.getOriginalClosureDate());
+        vr.getOriginalClosureDate(), null, null, null, null);
 
     assertThat(pr.getId(), is(equalTo(vr.getId())));
     assertThat(pr.getAdditionalInfoIncludedCode(), is(equalTo(vr.getAdditionalInfoIncludedCode())));
@@ -272,7 +272,7 @@ public class ReferralTest implements PersistentTestTemplate {
         vr.getHomelessIndicator(), vr.getFamilyRefusedServicesIndicator(),
         vr.getFirstEvaluatedOutApprovalDate(), vr.getResponsibleAgencyCode(),
         vr.getLimitedAccessGovtAgencyType(), vr.getLimitedAccessDate(), vr.getLimitedAccessDesc(),
-        vr.getOriginalClosureDate());
+        vr.getOriginalClosureDate(), null, null, null, null);
 
     final String expected = MAPPER.writeValueAsString((MAPPER.readValue(
         fixture("fixtures/persistent/Referral/valid/validWithSysCodes.json"), Referral.class)));

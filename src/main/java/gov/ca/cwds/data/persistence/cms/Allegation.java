@@ -1,10 +1,15 @@
 package gov.ca.cwds.data.persistence.cms;
 
 import java.util.Date;
+import java.util.HashSet;
+import java.util.Set;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import org.apache.commons.lang3.builder.EqualsBuilder;
@@ -104,6 +109,14 @@ public class Allegation extends CmsPersistentObject {
   @Column(name = "PLC_FCLC")
   private Short placementFacilityType;
 
+  @OneToMany(cascade = CascadeType.ALL)
+  @JoinColumn(name = "IDENTIFIER", referencedColumnName = "FKCLIENT_T")
+  private Set<Client> victimClients = new HashSet<>();
+
+  @OneToMany(cascade = CascadeType.ALL)
+  @JoinColumn(name = "IDENTIFIER", referencedColumnName = "FKCLIENT_0")
+  private Set<Client> perpetratorClients = new HashSet<>();
+
   /**
    * Default constructor
    * 
@@ -142,7 +155,7 @@ public class Allegation extends CmsPersistentObject {
       Date dispositionDate, String injuryHarmDetailIndicator, String nonProtectingParentCode,
       String staffPersonAddedIndicator, String victimClientId, String perpetratorClientId,
       String referralId, String countySpecificCode, String zippyCreatedIndicator,
-      Short placementFacilityType) {
+      Short placementFacilityType, Set<Client> victimClients, Set<Client> perpetratorClients) {
     super();
 
     this.id = id;
@@ -164,6 +177,8 @@ public class Allegation extends CmsPersistentObject {
     this.countySpecificCode = countySpecificCode;
     this.zippyCreatedIndicator = zippyCreatedIndicator;
     this.placementFacilityType = placementFacilityType;
+    this.victimClients = victimClients;
+    this.perpetratorClients = perpetratorClients;
   }
 
   /**
@@ -342,6 +357,20 @@ public class Allegation extends CmsPersistentObject {
    */
   public Short getPlacementFacilityType() {
     return placementFacilityType;
+  }
+
+  /**
+   * @return the victimClient
+   */
+  public Set<Client> getVictimClients() {
+    return victimClients;
+  }
+
+  /**
+   * @return teh perpetratorClient
+   */
+  public Set<Client> getPerpetratorClients() {
+    return perpetratorClients;
   }
 
   /**
