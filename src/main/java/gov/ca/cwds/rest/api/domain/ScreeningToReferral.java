@@ -23,7 +23,6 @@ import io.swagger.annotations.ApiModelProperty;
  * 
  * @author CWDS API Team
  */
-@SuppressWarnings("serial")
 @JsonSnakeCase
 @JsonPropertyOrder({"id", "endedAt", "incidentCounty", "incidentDate", "locationType",
     "communicationMethod", "email", "name", "reportNarrative", "reference", "responseTime",
