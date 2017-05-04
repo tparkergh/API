@@ -5,11 +5,16 @@ import java.math.BigDecimal;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.*;
-import java.util.stream.Collectors;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.LinkedHashSet;
+import java.util.Locale;
+import java.util.Set;
 
-import gov.ca.cwds.rest.api.domain.*;
-import gov.ca.cwds.rest.api.domain.error.ErrorMessage;
+import javax.validation.ConstraintViolation;
+import javax.validation.Validator;
+
 import org.apache.commons.lang3.NotImplementedException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -20,6 +25,12 @@ import com.google.inject.Inject;
 
 import gov.ca.cwds.rest.api.Request;
 import gov.ca.cwds.rest.api.Response;
+import gov.ca.cwds.rest.api.domain.Allegation;
+import gov.ca.cwds.rest.api.domain.CrossReport;
+import gov.ca.cwds.rest.api.domain.DomainObject;
+import gov.ca.cwds.rest.api.domain.Participant;
+import gov.ca.cwds.rest.api.domain.Screening;
+import gov.ca.cwds.rest.api.domain.ScreeningToReferral;
 import gov.ca.cwds.rest.api.domain.cms.Address;
 import gov.ca.cwds.rest.api.domain.cms.Client;
 import gov.ca.cwds.rest.api.domain.cms.ClientAddress;
@@ -34,6 +45,7 @@ import gov.ca.cwds.rest.api.domain.cms.PostedReporter;
 import gov.ca.cwds.rest.api.domain.cms.Referral;
 import gov.ca.cwds.rest.api.domain.cms.ReferralClient;
 import gov.ca.cwds.rest.api.domain.cms.Reporter;
+import gov.ca.cwds.rest.api.domain.error.ErrorMessage;
 import gov.ca.cwds.rest.services.cms.AddressService;
 import gov.ca.cwds.rest.services.cms.AllegationService;
 import gov.ca.cwds.rest.services.cms.ClientAddressService;
@@ -45,12 +57,6 @@ import gov.ca.cwds.rest.services.cms.ReferralService;
 import gov.ca.cwds.rest.services.cms.ReporterService;
 import io.dropwizard.hibernate.UnitOfWork;
 import io.dropwizard.jackson.Jackson;
-
-import javax.validation.ConstraintViolation;
-import javax.validation.Validation;
-import javax.validation.Validator;
-import javax.validation.ValidatorFactory;
-import javax.ws.rs.WebApplicationException;
 
 /**
  * Business layer object to work on {@link Screening}
@@ -142,6 +148,7 @@ public class ScreeningToReferralService implements CrudsService {
    * @param addressService - cms address service
    * @param clientAddressService - cms ClientAddress service
    * @param longTextService - cms LongText service
+   * @param validator - the validator
    */
   @Inject
   public ScreeningToReferralService(ReferralService referralService, ClientService clientService,
@@ -273,12 +280,12 @@ public class ScreeningToReferralService implements CrudsService {
                 DEFAULT_CODE, incomingParticipant.getDateOfBirth(), "", DEFAULT_CODE, false,
                 DEFAULT_CHILD_CLIENT_INDICATOR, "", "", incomingParticipant.getFirstName(),
                 incomingParticipant.getLastName(), "", "", false, dateStarted, false, "", false, "",
-                false, "", "", "", DEFAULT_CODE, "", DEFAULT_ESTIMATED_DOB_CODE, DEFAULT_UNABLE_TO_DETAIN_CODE, "", genderCode,
-                "", "", DEFAULT_HISPANIC_ORIGIN_CODE, DEFAULT_CODE, DEFAULT_CODE,
-                DEFAULT_INCAPCITATED_PARENT_CODE, false, false, DEFAULT_LITERATE_CODE, false,
-                DEFAULT_CODE, DEFAULT_MILITARY_STATUS_CODE, "", "", DEFAULT_NAME_TYPE, false, false,
-                "", false, DEFAULT_CODE, DEFAULT_CODE, DEFAULT_CODE,
-                DEFAULT_SECONDARY_LANGUAGE_TYPE, false, DEFAULT_SENSITIVITY_INDICATOR,
+                false, "", "", "", DEFAULT_CODE, "", DEFAULT_ESTIMATED_DOB_CODE,
+                DEFAULT_UNABLE_TO_DETAIN_CODE, "", genderCode, "", "", DEFAULT_HISPANIC_ORIGIN_CODE,
+                DEFAULT_CODE, DEFAULT_CODE, DEFAULT_INCAPCITATED_PARENT_CODE, false, false,
+                DEFAULT_LITERATE_CODE, false, DEFAULT_CODE, DEFAULT_MILITARY_STATUS_CODE, "", "",
+                DEFAULT_NAME_TYPE, false, false, "", false, DEFAULT_CODE, DEFAULT_CODE,
+                DEFAULT_CODE, DEFAULT_SECONDARY_LANGUAGE_TYPE, false, DEFAULT_SENSITIVITY_INDICATOR,
                 DEFAULT_SOC158_PLACEMENT_CODE, false, DEFAULT_SOCIAL_SECURITY_NUM_CHANGE_CODE,
                 incomingParticipant.getSsn(), "", false, false, DEFAULT_UNEMPLOYED_PARENT_CODE,
                 false);
@@ -292,8 +299,9 @@ public class ScreeningToReferralService implements CrudsService {
             // CMS Referral Client
             // TODO: map the DISPOSITION_CODE accroding to rules of CWS/CMS
             ReferralClient referralClient = new ReferralClient("", DEFAULT_APPROVAL_STATUS_CODE,
-                DEFAULT_CODE, DEFAULT_DISPOSITION_CODE, "", role.equalsIgnoreCase(SELF_REPORTED_ROLE), false, referralId,
-                clientId, "", DEFAULT_CODE, "", DEFAULT_COUNTY_SPECIFIC_CODE, false, false, false);
+                DEFAULT_CODE, DEFAULT_DISPOSITION_CODE, "",
+                role.equalsIgnoreCase(SELF_REPORTED_ROLE), false, referralId, clientId, "",
+                DEFAULT_CODE, "", DEFAULT_COUNTY_SPECIFIC_CODE, false, false, false);
             gov.ca.cwds.rest.api.domain.cms.ReferralClient postedReferralClient =
                 this.referralClientService.create(referralClient);
             resultReferralClients.add(postedReferralClient);
@@ -338,20 +346,22 @@ public class ScreeningToReferralService implements CrudsService {
       throw new ServiceException(e);
     }
 
-    PostedCmsReferral cmsReferral = new PostedCmsReferral(postedReferral, postedClients, postedAllegations,
-        resultCrossReports, resultReferralClients, savedReporter);
+    PostedCmsReferral cmsReferral = new PostedCmsReferral(postedReferral, postedClients,
+        postedAllegations, resultCrossReports, resultReferralClients, savedReporter);
     cmsReferral.setMessages(messages);
     return cmsReferral;
   }
 
-  private void logError(String message, Exception exception, Set<ErrorMessage> messages){
+  private void logError(String message, Exception exception, Set<ErrorMessage> messages) {
     messages.add(new ErrorMessage(ErrorMessage.ErrorType.VALIDATION, message, ""));
-    LOGGER.error(message,exception.getMessage());
+    LOGGER.error(message, exception.getMessage());
     throw new ServiceException(message);
 
   }
-  private void buildErrors(Set<ErrorMessage> messages,Set<ConstraintViolation<DomainObject>> errors) {
-    if (! errors.isEmpty()){
+
+  private void buildErrors(Set<ErrorMessage> messages,
+      Set<ConstraintViolation<DomainObject>> errors) {
+    if (!errors.isEmpty()) {
       errors.forEach(error -> {
         final String message = error.getPropertyPath() + " " + error.getMessage();
         messages.add(new ErrorMessage(ErrorMessage.ErrorType.VALIDATION, message, ""));
@@ -404,7 +414,8 @@ public class ScreeningToReferralService implements CrudsService {
    * CMS Cross Report
    */
   private Set<gov.ca.cwds.rest.api.domain.cms.CrossReport> processCrossReports(
-      ScreeningToReferral scr, String referralId, Set<ErrorMessage>  messages) throws ServiceException {
+      ScreeningToReferral scr, String referralId, Set<ErrorMessage> messages)
+      throws ServiceException {
 
     String crossReportId = DEFAULT_THIRD_ID;
     Set<gov.ca.cwds.rest.api.domain.cms.CrossReport> resultCrossReports = new LinkedHashSet<>();
@@ -437,8 +448,8 @@ public class ScreeningToReferralService implements CrudsService {
   /*
    * CMS Allegation - one for each allegation
    */
-  private Set<PostedAllegation> processAllegations(ScreeningToReferral scr, String referralId, Set<ErrorMessage> messages)
-      throws ServiceException {
+  private Set<PostedAllegation> processAllegations(ScreeningToReferral scr, String referralId,
+      Set<ErrorMessage> messages) throws ServiceException {
 
     // TODO: #143899869 Add CHILD_CLIENT processing to 'referrals' service
     Set<PostedAllegation> postedAllegations = new LinkedHashSet<>();
@@ -456,7 +467,8 @@ public class ScreeningToReferralService implements CrudsService {
         perpatratorClientId = perpatratorClient.get(allegation.getPerpetratorPersonId());
       }
       if (victimClientId.isEmpty()) {
-        ServiceException exception = new ServiceException("ERROR - victim could not be determined for an allegation");
+        ServiceException exception =
+            new ServiceException("ERROR - victim could not be determined for an allegation");
         String message = "ERROR - creating Reporter" + exception.getMessage();
         logError(message, exception, messages);
         throw exception;
@@ -529,7 +541,8 @@ public class ScreeningToReferralService implements CrudsService {
     }
   }
 
-  private String processReferralAddress(ScreeningToReferral scr, Set<ErrorMessage> messages) throws ServiceException {
+  private String processReferralAddress(ScreeningToReferral scr, Set<ErrorMessage> messages)
+      throws ServiceException {
     gov.ca.cwds.rest.api.domain.Address address = scr.getAddress();
 
     Integer zipCode = address.getZip();
@@ -547,7 +560,7 @@ public class ScreeningToReferralService implements CrudsService {
         DEFAULT_CODE, DEFAULT_DECIMAL, DEFAULT_INT, "", DEFAULT_DECIMAL, DEFAULT_INT,
         DEFAULT_STATE_CODE, streetName, streetNumber, zipCode, address.getType(), zipSuffix, "", "",
         DEFAULT_CODE, DEFAULT_CODE, "");
-//    buildErrors(messages, validator.validate(domainAddress));
+    // buildErrors(messages, validator.validate(domainAddress));
 
     PostedAddress postedAddress = (PostedAddress) this.addressService.create(domainAddress);
 
@@ -555,8 +568,8 @@ public class ScreeningToReferralService implements CrudsService {
 
   }
 
-  private PostedReporter processReporter(Participant ip, String role, String referralId, Set<ErrorMessage> messages)
-      throws ServiceException {
+  private PostedReporter processReporter(Participant ip, String role, String referralId,
+      Set<ErrorMessage> messages) throws ServiceException {
 
     String[] streetAddress;
     String streetNumber = null;
