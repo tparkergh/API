@@ -339,6 +339,12 @@ public class Referral extends ReportingDomain implements Request, Response {
    * @param limitedAccessDate limited Access Date
    * @param limitedAccessDesc limited Access Desc
    * @param originalClosureDate original Closure Date
+   * @param address address
+   * @param reporter reporter
+   * @param crossReport crossReport
+   * @param allegation allegation
+   * @param victimClient victimClient
+   * @param perpetratorClient perpetratorClient
    */
   @JsonCreator
   public Referral(@JsonProperty("additionalInfoIncludedCode") Boolean additionalInfoIncludedCode,

@@ -173,7 +173,7 @@ public class ClientTest implements DomainTestTemplate {
         secondaryLanguageType, sensitiveHlthInfoOnFileIndicator, sensitivityIndicator,
         soc158PlacementCode, soc158SealedClientIndicator, socialSecurityNumChangedCode,
         socialSecurityNumber, suffixTitleDescription, tribalAncestryClientIndicatorVar,
-        tribalMembrshpVerifctnIndicatorVar, unemployedParentCode, zippyCreatedIndicator);
+        tribalMembrshpVerifctnIndicatorVar, unemployedParentCode, zippyCreatedIndicator, null);
 
     gov.ca.cwds.data.persistence.cms.Client persistent =
         new gov.ca.cwds.data.persistence.cms.Client(id, domain, lastUpdatedId);
@@ -289,7 +289,7 @@ public class ClientTest implements DomainTestTemplate {
         secondaryLanguageType, sensitiveHlthInfoOnFileIndicator, sensitivityIndicator,
         soc158PlacementCode, soc158SealedClientIndicator, socialSecurityNumChangedCode,
         socialSecurityNumber, suffixTitleDescription, tribalAncestryClientIndicatorVar,
-        tribalMembrshpVerifctnIndicatorVar, unemployedParentCode, zippyCreatedIndicator);
+        tribalMembrshpVerifctnIndicatorVar, unemployedParentCode, zippyCreatedIndicator, null);
 
     assertThat(domain.getAdjudicatedDelinquentIndicator(),
         is(equalTo(vc.getAdjudicatedDelinquentIndicator())));
@@ -3096,7 +3096,7 @@ public class ClientTest implements DomainTestTemplate {
         secondaryLanguageType, sensitiveHlthInfoOnFileIndicator, sensitivityIndicator,
         soc158PlacementCode, soc158SealedClientIndicator, socialSecurityNumChangedCode,
         socialSecurityNumber, suffixTitleDescription, tribalAncestryClientIndicatorVar,
-        tribalMembrshpVerifctnIndicatorVar, unemployedParentCode, zippyCreatedIndicator);
+        tribalMembrshpVerifctnIndicatorVar, unemployedParentCode, zippyCreatedIndicator, null);
 
     return domain;
 

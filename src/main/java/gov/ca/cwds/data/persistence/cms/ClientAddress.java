@@ -2,7 +2,10 @@ package gov.ca.cwds.data.persistence.cms;
 
 import java.util.Date;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToOne;
 import javax.persistence.PersistenceException;
 import javax.persistence.Table;
 
@@ -39,6 +42,10 @@ public class ClientAddress extends BaseClientAddress {
    */
   private static final long serialVersionUID = 1L;
 
+  @OneToOne(cascade = CascadeType.ALL)
+  @JoinColumn(name = "FKADDRS_T", insertable = false, updatable = false)
+  private Address addresses;
+
 
   /**
    * Default constructor
@@ -60,9 +67,11 @@ public class ClientAddress extends BaseClientAddress {
    * @param fkClient The fkClient
    * @param homelessInd The homelessInd
    * @param fkReferral The fkReferral
+   * @param addresses The addresses
    */
   public ClientAddress(String id, Short addressType, String bkInmtId, Date effEndDt,
-      Date effStartDt, String fkAddress, String fkClient, String homelessInd, String fkReferral) {
+      Date effStartDt, String fkAddress, String fkClient, String homelessInd, String fkReferral,
+      Address addresses) {
     super();
     this.id = id;
     this.addressType = addressType;
@@ -73,6 +82,7 @@ public class ClientAddress extends BaseClientAddress {
     this.fkClient = fkClient;
     this.homelessInd = homelessInd;
     this.fkReferral = fkReferral;
+    this.addresses = addresses;
   }
 
 
@@ -100,6 +110,14 @@ public class ClientAddress extends BaseClientAddress {
     }
 
   }
+
+  /**
+   * @return the address
+   */
+  public Address getAddresses() {
+    return addresses;
+  }
+
 
   /**
    * {@inheritDoc}

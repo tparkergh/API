@@ -375,8 +375,8 @@ public class Client extends ReportingDomain implements Request, Response {
   @ApiModelProperty(required = true, readOnly = false)
   private Boolean zippyCreatedIndicator;
 
-  @JsonProperty("clientAddress")
-  private Set<ClientAddress> clientAddress;
+  @JsonProperty("address")
+  private Set<Address> address;
 
   /**
    * @param existingClientId - existingClientId
@@ -446,6 +446,7 @@ public class Client extends ReportingDomain implements Request, Response {
    * @param tribalMembrshpVerifctnIndicatorVar - tribalMembrshpVerifctnIndicatorVar
    * @param unemployedParentCode - unemployedParentCode
    * @param zippyCreatedIndicator - zippyCreatedIndicator
+   * @param address - address
    */
   @JsonCreator
   public Client(@JsonProperty("existingClientId") String existingClientId,
@@ -515,7 +516,7 @@ public class Client extends ReportingDomain implements Request, Response {
       @JsonProperty("tribalMembrshpVerifctnIndicatorVar") Boolean tribalMembrshpVerifctnIndicatorVar,
       @JsonProperty("unemployedParentCode") String unemployedParentCode,
       @JsonProperty("zippyCreatedIndicator") Boolean zippyCreatedIndicator,
-      @JsonProperty("clientAddress") Set<ClientAddress> clientAddress) {
+      @JsonProperty("address") Set<Address> address) {
     super();
     this.clientId = existingClientId;
     this.adjudicatedDelinquentIndicator = adjudicatedDelinquentIndicator;
@@ -584,7 +585,7 @@ public class Client extends ReportingDomain implements Request, Response {
     this.tribalMembrshpVerifctnIndicatorVar = tribalMembrshpVerifctnIndicatorVar;
     this.unemployedParentCode = unemployedParentCode;
     this.zippyCreatedIndicator = zippyCreatedIndicator;
-    this.clientAddress = clientAddress;
+    this.address = address;
   }
 
   /**
@@ -680,14 +681,15 @@ public class Client extends ReportingDomain implements Request, Response {
     this.unemployedParentCode = persistedClient.getUnemployedParentCode();
     this.zippyCreatedIndicator =
         DomainChef.uncookBooleanString(persistedClient.getZippyCreatedIndicator());
-    this.clientAddress = new HashSet<>();
+    this.address = new HashSet<>();
     if (persistedClient.getClientAddress() != null
         && !persistedClient.getClientAddress().isEmpty()) {
       for (gov.ca.cwds.data.persistence.cms.ClientAddress persistedClientAddress : persistedClient
           .getClientAddress()) {
-        this.clientAddress.add(new ClientAddress(persistedClientAddress, true));
+        this.address.add(new Address(persistedClientAddress.getAddresses(), true));
       }
     }
+
   }
 
   /**
@@ -1159,10 +1161,11 @@ public class Client extends ReportingDomain implements Request, Response {
     return zippyCreatedIndicator;
   }
 
-
-
-  public Set<ClientAddress> getClientAddress() {
-    return clientAddress;
+  /**
+   * @return the address
+   */
+  public Set<Address> getAddress() {
+    return address;
   }
 
   /**

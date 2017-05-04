@@ -148,6 +148,8 @@ public class Allegation extends CmsPersistentObject {
    * @param countySpecificCode county code
    * @param zippyCreatedIndicator created by Zippy
    * @param placementFacilityType type of placement facility
+   * @param victimClients victimClient
+   * @param perpetratorClients perpetratorClient
    */
   public Allegation(String id, Date abuseEndDate, Date abuseStartDate, Short abuseFrequency, // NOSONAR
       String abuseFrequencyPeriodCode, String abuseLocationDescription,

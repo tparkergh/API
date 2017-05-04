@@ -143,7 +143,8 @@ public class CmsReferralService implements CrudsService {
               incomingClient.getSocialSecurityNumber(), incomingClient.getSuffixTitleDescription(),
               incomingClient.getTribalAncestryClientIndicatorVar(),
               incomingClient.getTribalMembrshpVerifctnIndicatorVar(),
-              incomingClient.getUnemployedParentCode(), incomingClient.getZippyCreatedIndicator());
+              incomingClient.getUnemployedParentCode(), incomingClient.getZippyCreatedIndicator(),
+              null);
           PostedClient postedclient = this.clientService.create(client);
           postedClients.add(postedclient);
           clientIds.add(postedclient.getId());
