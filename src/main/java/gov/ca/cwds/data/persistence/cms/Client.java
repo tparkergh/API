@@ -124,6 +124,7 @@ public final class Client extends BaseClient
    * @param tribalMembrshpVerifctnIndicatorVar The tribalMembrshpVerifctnIndicatorVar
    * @param unemployedParentCode The unemployedParentCode
    * @param zippyCreatedIndicator The zippyCreatedIndicator
+   * @param clientAddress The ClientAddres
    */
   public Client(String adjudicatedDelinquentIndicator, String adoptionStatusCode,
       String alienRegistrationNumber, String birthCity, Short birthCountryCodeType, Date birthDate,
@@ -324,8 +325,9 @@ public final class Client extends BaseClient
     }
   }
 
-
-
+  /**
+   * @return the ClientAddress
+   */
   public Set<ClientAddress> getClientAddress() {
     return clientAddress;
   }

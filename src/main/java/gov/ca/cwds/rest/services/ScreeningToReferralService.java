@@ -289,7 +289,7 @@ public class ScreeningToReferralService implements CrudsService {
                 DEFAULT_CODE, DEFAULT_SECONDARY_LANGUAGE_TYPE, false, DEFAULT_SENSITIVITY_INDICATOR,
                 DEFAULT_SOC158_PLACEMENT_CODE, false, DEFAULT_SOCIAL_SECURITY_NUM_CHANGE_CODE,
                 incomingParticipant.getSsn(), "", false, false, DEFAULT_UNEMPLOYED_PARENT_CODE,
-                false);
+                false, null);
 
             buildErrors(messages, validator.validate(client));
 

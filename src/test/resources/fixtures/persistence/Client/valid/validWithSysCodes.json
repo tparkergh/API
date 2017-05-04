@@ -66,5 +66,5 @@
   "tribalMembrshpVerifctnIndicatorVar" : "N",
   "unemployedParentCode" : "NA",
   "zippyCreatedIndicator" : "N",
-  "victimClientAddress" : null
+  "clientAddress" : null
 }

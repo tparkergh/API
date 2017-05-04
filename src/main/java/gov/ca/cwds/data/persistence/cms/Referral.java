@@ -284,10 +284,10 @@ public class Referral extends CmsPersistentObject {
    * @param limitedAccessDate limited access date
    * @param limitedAccessDesc limited access desc
    * @param originalClosureDate original closure date
-   * @param addresses
-   * @param allegations
-   * @param crossReports
-   * @param reporters
+   * @param addresses addresses
+   * @param allegations allegations
+   * @param crossReports crossReports
+   * @param reporters reporters
    */
   public Referral(String id, String additionalInfoIncludedCode, String anonymousReporterIndicator,
       String applicationForPetitionIndicator, String approvalNumber, Short approvalStatusType,
