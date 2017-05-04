@@ -4,8 +4,6 @@ import java.util.Collection;
 import java.util.LinkedHashSet;
 import java.util.Set;
 
-import gov.ca.cwds.rest.api.Response;
-import gov.ca.cwds.rest.api.domain.DomainObject;
 import gov.ca.cwds.rest.api.domain.ReportingDomain;
 
 /**
@@ -59,11 +57,12 @@ public class PostedCmsReferral extends ReportingDomain {
    * @param referralClient - ReferralClient
    * @param reporter - PostedReporter
    * @param client - PostedClient
+   * @param errors - error messages
    */
   public PostedCmsReferral(PostedReferral referral, Set<PostedClient> client,
-                           Set<PostedAllegation> allegation, Set<CrossReport> crossReport,
-                           Set<ReferralClient> referralClient, PostedReporter reporter, Collection errors) {
-       this(referral,client,allegation, crossReport,referralClient, reporter);
+      Set<PostedAllegation> allegation, Set<CrossReport> crossReport,
+      Set<ReferralClient> referralClient, PostedReporter reporter, Collection errors) {
+    this(referral, client, allegation, crossReport, referralClient, reporter);
   }
 
   /**
