@@ -38,6 +38,14 @@ public class Address extends BaseAddress {
    */
   private static final long serialVersionUID = 1L;
 
+  /**
+   * Default constructor
+   * 
+   * Required for Hibernate
+   */
+  public Address() {
+    super();
+  }
 
   /**
    * @param id The identifier

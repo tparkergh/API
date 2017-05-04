@@ -69,5 +69,9 @@
   "specificsIncludedCode" : "N",
   "sufficientInformationCode" : "N",
   "unfoundedSeriesCode" : "N",
-  "zippyCreatedIndicator" : "N"
+  "zippyCreatedIndicator" : "N",
+  "addresses" : null,
+  "allegations" : null,
+  "crossReports" : null,
+  "reporters" : null
 }

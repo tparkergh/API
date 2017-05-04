@@ -1,9 +1,11 @@
 package gov.ca.cwds.rest.api.domain.cms;
 
+import java.util.HashSet;
+import java.util.Set;
+
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
-import gov.ca.cwds.rest.api.domain.ReportingDomain;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.hibernate.validator.constraints.NotBlank;
@@ -18,6 +20,7 @@ import gov.ca.cwds.rest.api.Request;
 import gov.ca.cwds.rest.api.Response;
 import gov.ca.cwds.rest.api.domain.DomainChef;
 import gov.ca.cwds.rest.api.domain.DomainObject;
+import gov.ca.cwds.rest.api.domain.ReportingDomain;
 import io.dropwizard.validation.OneOf;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
@@ -372,6 +375,9 @@ public class Client extends ReportingDomain implements Request, Response {
   @ApiModelProperty(required = true, readOnly = false)
   private Boolean zippyCreatedIndicator;
 
+  @JsonProperty("clientAddress")
+  private Set<ClientAddress> clientAddress;
+
   /**
    * @param existingClientId - existingClientId
    * @param adjudicatedDelinquentIndicator - adjudicatedDelinquentIndicator
@@ -508,7 +514,8 @@ public class Client extends ReportingDomain implements Request, Response {
       @JsonProperty("tribalAncestryClientIndicatorVar") Boolean tribalAncestryClientIndicatorVar,
       @JsonProperty("tribalMembrshpVerifctnIndicatorVar") Boolean tribalMembrshpVerifctnIndicatorVar,
       @JsonProperty("unemployedParentCode") String unemployedParentCode,
-      @JsonProperty("zippyCreatedIndicator") Boolean zippyCreatedIndicator) {
+      @JsonProperty("zippyCreatedIndicator") Boolean zippyCreatedIndicator,
+      @JsonProperty("clientAddress") Set<ClientAddress> clientAddress) {
     super();
     this.clientId = existingClientId;
     this.adjudicatedDelinquentIndicator = adjudicatedDelinquentIndicator;
@@ -577,6 +584,7 @@ public class Client extends ReportingDomain implements Request, Response {
     this.tribalMembrshpVerifctnIndicatorVar = tribalMembrshpVerifctnIndicatorVar;
     this.unemployedParentCode = unemployedParentCode;
     this.zippyCreatedIndicator = zippyCreatedIndicator;
+    this.clientAddress = clientAddress;
   }
 
   /**
@@ -672,6 +680,14 @@ public class Client extends ReportingDomain implements Request, Response {
     this.unemployedParentCode = persistedClient.getUnemployedParentCode();
     this.zippyCreatedIndicator =
         DomainChef.uncookBooleanString(persistedClient.getZippyCreatedIndicator());
+    this.clientAddress = new HashSet<>();
+    if (persistedClient.getClientAddress() != null
+        && !persistedClient.getClientAddress().isEmpty()) {
+      for (gov.ca.cwds.data.persistence.cms.ClientAddress persistedClientAddress : persistedClient
+          .getClientAddress()) {
+        this.clientAddress.add(new ClientAddress(persistedClientAddress, true));
+      }
+    }
   }
 
   /**
@@ -1141,6 +1157,12 @@ public class Client extends ReportingDomain implements Request, Response {
    */
   public Boolean getZippyCreatedIndicator() {
     return zippyCreatedIndicator;
+  }
+
+
+
+  public Set<ClientAddress> getClientAddress() {
+    return clientAddress;
   }
 
   /**
