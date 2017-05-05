@@ -555,10 +555,15 @@ public class Referral extends ReportingDomain implements Request, Response {
           .getAllegations()) {
         this.allegation.add(new Allegation(persistedAllegation));
 
-        for (gov.ca.cwds.data.persistence.cms.Client persistentClient : persistedAllegation
-            .getVictimClients()) {
-          this.victimClient.add(new Client(persistentClient, true));
-
+        if (persistedAllegation.getVictimClients() != null
+            && !persistedAllegation.getVictimClients().isEmpty()) {
+          for (gov.ca.cwds.data.persistence.cms.Client persistentClient : persistedAllegation
+              .getVictimClients()) {
+            this.victimClient.add(new Client(persistentClient, true));
+          }
+        }
+        if (persistedAllegation.getPerpetratorClients() != null
+            && !persistedAllegation.getPerpetratorClients().isEmpty()) {
           for (gov.ca.cwds.data.persistence.cms.Client persistentPerpetratorClient : persistedAllegation
               .getPerpetratorClients()) {
             this.perpetratorClient.add(new Client(persistentPerpetratorClient, true));
