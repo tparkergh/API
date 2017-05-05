@@ -313,18 +313,20 @@ public class ReferralTest {
         .withIgnoredFields("messages").verify();
   }
 
-  // @Test
+  @Test
   public void serializesToJSON() throws Exception {
-    final String expected = MAPPER.writeValueAsString(MAPPER
-        .readValue(fixture("fixtures/domain/legacy/Referral/valid/valid.json"), Referral.class));
+    final String expected = MAPPER.writeValueAsString(MAPPER.readValue(
+        fixture("fixtures/domain/legacy/Referral/valid/SerializeJsonValid.json"), Referral.class));
 
     assertThat(MAPPER.writeValueAsString(validReferral()), is(equalTo(expected)));
   }
 
-  // @Test
+  @Test
   public void deserializesFromJSON() throws Exception {
-    assertThat(MAPPER.readValue(fixture("fixtures/domain/legacy/Referral/valid/valid.json"),
-        Referral.class), is(equalTo(validReferral())));
+    assertThat(
+        MAPPER.readValue(fixture("fixtures/domain/legacy/Referral/valid/deserializeJsonValid.json"),
+            Referral.class),
+        is(equalTo(validReferral())));
   }
 
   /*
