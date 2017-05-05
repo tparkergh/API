@@ -118,7 +118,6 @@ public class ClientAddress extends BaseClientAddress {
     return addresses;
   }
 
-
   /**
    * {@inheritDoc}
    * 

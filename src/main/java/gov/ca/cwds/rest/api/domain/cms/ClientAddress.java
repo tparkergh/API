@@ -177,6 +177,11 @@ public class ClientAddress extends ReportingDomain implements Request, Response 
     return referralId;
   }
 
+  /**
+   * {@inheritDoc}
+   * 
+   * @see java.lang.Object#hashCode()
+   */
   @Override
   public final int hashCode() {
     final int prime = 31;
@@ -194,6 +199,11 @@ public class ClientAddress extends ReportingDomain implements Request, Response 
     return result;
   }
 
+  /**
+   * {@inheritDoc}
+   * 
+   * @see java.lang.Object#equals(java.lang.Object)
+   */
   @Override
   public final boolean equals(Object obj) {
     if (this == obj) {
