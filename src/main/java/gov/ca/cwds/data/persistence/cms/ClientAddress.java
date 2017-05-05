@@ -5,7 +5,7 @@ import java.util.Date;
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
-import javax.persistence.OneToOne;
+import javax.persistence.ManyToOne;
 import javax.persistence.PersistenceException;
 import javax.persistence.Table;
 
@@ -42,7 +42,7 @@ public class ClientAddress extends BaseClientAddress {
    */
   private static final long serialVersionUID = 1L;
 
-  @OneToOne(cascade = CascadeType.ALL)
+  @ManyToOne(cascade = CascadeType.ALL)
   @JoinColumn(name = "FKADDRS_T", insertable = false, updatable = false)
   private Address addresses;
 
