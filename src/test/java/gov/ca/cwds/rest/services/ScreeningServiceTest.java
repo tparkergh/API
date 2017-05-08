@@ -31,11 +31,6 @@ import gov.ca.cwds.rest.api.domain.ScreeningReference;
 import gov.ca.cwds.rest.api.domain.ScreeningRequest;
 import gov.ca.cwds.rest.api.domain.ScreeningResponse;
 
-/**
- * @author CWDS API Team
- *
- */
-@SuppressWarnings("javadoc")
 public class ScreeningServiceTest {
   private ScreeningService screeningService;
   private ScreeningDao screeningDao;
@@ -218,8 +213,8 @@ public class ScreeningServiceTest {
 
   @Test
   public void updateReturnsScreeningResponseOnSuccess() throws Exception {
-    gov.ca.cwds.rest.api.domain.Address domainAddress = new gov.ca.cwds.rest.api.domain.Address(
-        "742 Evergreen Terrace", "Springfield", "WA", 98700, "home");
+    gov.ca.cwds.rest.api.domain.Address domainAddress = new gov.ca.cwds.rest.api.domain.Address("",
+        "", "742 Evergreen Terrace", "Springfield", "WA", 98700, "home");
     ScreeningRequest screeningRequest =
         new ScreeningRequest("ref", "2016-10-31", "Sac", "2016-10-31", "loc", "comm", "name", "now",
             "sure", "2016-10-31", "narrative", domainAddress);
@@ -237,17 +232,17 @@ public class ScreeningServiceTest {
   @Test
   public void updateReturnsCorrectScreeningResponseOnSuccess() throws Exception {
     roles.add("victim");
-    gov.ca.cwds.rest.api.domain.Address domainAddress = new gov.ca.cwds.rest.api.domain.Address(
-        "742 Evergreen Terrace", "Springfield", "WA", 98700, "home");
+    gov.ca.cwds.rest.api.domain.Address domainAddress = new gov.ca.cwds.rest.api.domain.Address("",
+        "", "742 Evergreen Terrace", "Springfield", "WA", 98700, "home");
     addresses.add(domainAddress);
     ScreeningRequest screeningRequest =
         new ScreeningRequest("ref", "2016-10-31", "Sac", "2016-10-31", "loc", "comm", "name", "now",
             "sure", "2016-10-31", "narrative", domainAddress);
 
-    Participant bart = new Participant(1, "2345678ABC", "Bart", "Simpson", "male", "123456789",
+    Participant bart = new Participant(1, "", "", "Bart", "Simpson", "male", "123456789",
         "2016-10-31", 1234, 1234, roles, addresses);
-    Participant maggie = new Participant(2, "1234567ABC", "Maggie", "Simpson", "female",
-        "123456789", "2016-10-31", 1234, 1234, roles, addresses);
+    Participant maggie = new Participant(2, "", "", "Maggie", "Simpson", "female", "123456789",
+        "2016-10-31", 1234, 1234, roles, addresses);
     // Participant bart = new Participant(1, 123, "Bart", "Simpson", "M", "2016-10-31",
     // "123456789");
     // Participant maggie = new Participant(2, 1, "Maggie", "Simpson", "M", "2016-10-31",

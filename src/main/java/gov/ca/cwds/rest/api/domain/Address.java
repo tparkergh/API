@@ -1,5 +1,6 @@
 package gov.ca.cwds.rest.api.domain;
 
+import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
@@ -22,6 +23,18 @@ public class Address extends ReportingDomain implements Request, Response {
    * Base serialization value. Increment by version
    */
   private static final long serialVersionUID = 1L;
+
+  @JsonProperty("legacy_source_table")
+  @ApiModelProperty(required = true, readOnly = false, value = "Legacy Source Table",
+      example = "ADDRS_T")
+  @NotNull
+  private String legacySourceTable;
+
+  @JsonProperty("legacy_id")
+  @ApiModelProperty(required = true, readOnly = false, value = "Legacy Id", example = "1234567ABC")
+  @NotNull
+  @Size(max = 10)
+  private String addressId;
 
   @JsonProperty("street_address")
   @ApiModelProperty(example = "742 Evergreen Terrace")
@@ -49,6 +62,8 @@ public class Address extends ReportingDomain implements Request, Response {
   /**
    * Constructor
    * 
+   * @param legacySourceTable - the legacy source table name
+   * @param addressId - legacy Id
    * @param streetAddress - street address
    * @param city - city
    * @param state - state
@@ -56,10 +71,14 @@ public class Address extends ReportingDomain implements Request, Response {
    * @param type the address type
    */
   @JsonCreator
-  public Address(@JsonProperty("street_address") String streetAddress,
-      @JsonProperty("city") String city, @JsonProperty("state") String state,
-      @JsonProperty("zip") Integer zip, @JsonProperty("type") String type) {
+  public Address(@JsonProperty("legacy_source_table") String legacySourceTable,
+      @JsonProperty("legacy_id") String addressId,
+      @JsonProperty("street_address") String streetAddress, @JsonProperty("city") String city,
+      @JsonProperty("state") String state, @JsonProperty("zip") Integer zip,
+      @JsonProperty("type") String type) {
     super();
+    this.legacySourceTable = legacySourceTable;
+    this.addressId = addressId;
     this.streetAddress = streetAddress;
     this.city = city;
     this.state = state;
@@ -73,12 +92,42 @@ public class Address extends ReportingDomain implements Request, Response {
    * @param address persistence level address object
    */
   public Address(gov.ca.cwds.data.persistence.ns.Address address) {
+    this.legacySourceTable = "";
+    this.addressId = "";
     this.streetAddress = address.getStreetAddress();
     this.city = address.getCity();
     this.state = address.getState();
     this.zip = address.getZip();
     this.type = address.getType();
 
+  }
+
+  /**
+   * @return legacy source table
+   */
+  public String getLegacySourceTable() {
+    return legacySourceTable;
+  }
+
+  /**
+   * @param legacySourceTable - the legacy source table name
+   */
+  public void setLegacySourceTable(String legacySourceTable) {
+    this.legacySourceTable = legacySourceTable;
+  }
+
+  /**
+   * @return addressId
+   */
+  public String getaddressId() {
+    return addressId;
+  }
+
+  /**
+   * @param addressId - the legacy Id
+   */
+  public void setAddressId(String addressId) {
+    this.addressId = addressId;
   }
 
   /**
@@ -125,6 +174,8 @@ public class Address extends ReportingDomain implements Request, Response {
   public final int hashCode() {
     final int prime = 31;
     int result = 1;
+    result = prime * result + ((legacySourceTable == null) ? 0 : legacySourceTable.hashCode());
+    result = prime * result + ((addressId == null) ? 0 : addressId.hashCode());
     result = prime * result + ((city == null) ? 0 : city.hashCode());
     result = prime * result + ((state == null) ? 0 : state.hashCode());
     result = prime * result + ((streetAddress == null) ? 0 : streetAddress.hashCode());
@@ -173,7 +224,18 @@ public class Address extends ReportingDomain implements Request, Response {
         return false;
     } else if (!zip.equals(other.zip))
       return false;
+    if (legacySourceTable == null) {
+      if (other.legacySourceTable != null)
+        return false;
+    } else if (!legacySourceTable.equals(other.legacySourceTable))
+      return false;
+    if (addressId == null) {
+      if (other.addressId != null)
+        return false;
+    } else if (!addressId.equals(other.addressId))
+      return false;
     return true;
+
   }
 
 

@@ -11,6 +11,8 @@
   "started_at": "2016-10-11",
   "narrative": "first narrative",
   "address": {
+	  "legacy_source_table" : "",
+	  "legacy_id" : "",
     "street_address": "10 main st",
     "city": "Sacramento",
     "state": "CA",

@@ -8,6 +8,7 @@ import javax.validation.constraints.Size;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
 import gov.ca.cwds.rest.api.Request;
 import gov.ca.cwds.rest.api.Response;
@@ -22,6 +23,8 @@ import io.swagger.annotations.ApiModelProperty;
  * @author CWDS API Team
  */
 @JsonSnakeCase
+@JsonPropertyOrder({"id", "legacySourceTable", "clientId", "firstName", "lastName", "gender", "ssn",
+    "dateOfBirth", "roles", "addresses"})
 public class Participant extends ReportingDomain implements Request, Response {
   /**
    * Serialization version
@@ -32,7 +35,13 @@ public class Participant extends ReportingDomain implements Request, Response {
   @ApiModelProperty(required = true, readOnly = false, value = "Participant Id", example = "12345")
   private long id;
 
-  @JsonProperty("legacy_client_id")
+  @JsonProperty("legacy_source_table")
+  @ApiModelProperty(required = true, readOnly = false, value = "Legacy Source Table",
+      example = "CLIENT_T")
+  @NotNull
+  private String legacySourceTable;
+
+  @JsonProperty("legacy_id")
   @ApiModelProperty(required = true, readOnly = false, value = "Legacy Client Id",
       example = "1234567ABC")
   @Size(max = 10)
@@ -94,6 +103,7 @@ public class Participant extends ReportingDomain implements Request, Response {
    * Constructor
    * 
    * @param id The id of the Participant
+   * @param legacySourceTable - legacy source table name
    * @param clientId - the legacy clientId
    * @param personId The person Id
    * @param screeningId The screening Id
@@ -106,7 +116,9 @@ public class Participant extends ReportingDomain implements Request, Response {
    * @param addresses The addresses of the participant
    */
   @JsonCreator
-  public Participant(@JsonProperty("id") long id, @JsonProperty("legacy_client_id") String clientId,
+  public Participant(@JsonProperty("id") long id,
+      @JsonProperty("legacy_source_table") String legacySourceTable,
+      @JsonProperty("legacy_client_id") String clientId,
       @JsonProperty("first_name") String firstName, @JsonProperty("last_name") String lastName,
       @JsonProperty("gender") String gender, @JsonProperty("ssn") String ssn,
       @JsonProperty("date_of_birth") String dateOfBirth, @JsonProperty("person_id") long personId,
@@ -114,6 +126,7 @@ public class Participant extends ReportingDomain implements Request, Response {
       @JsonProperty("addresses") Set<Address> addresses) {
     super();
     this.id = id;
+    this.legacySourceTable = legacySourceTable;
     this.clientId = clientId;
     this.personId = personId;
     this.screeningId = screeningId;
@@ -171,10 +184,31 @@ public class Participant extends ReportingDomain implements Request, Response {
   }
 
   /**
+   * @return the legacy source table name
+   */
+  public String getLegacySourceTable() {
+    return legacySourceTable;
+  }
+
+  /**
+   * @param legacySourceTable - the legacy source table name
+   */
+  public void setLegacySourceTable(String legacySourceTable) {
+    this.legacySourceTable = legacySourceTable;
+  }
+
+  /**
    * @return the legacy clientId
    */
   public String getClientId() {
     return clientId;
+  }
+
+  /**
+   * @param clientId - the legacy Id
+   */
+  public void setClientId(String clientId) {
+    this.clientId = clientId;
   }
 
   /**
@@ -240,6 +274,14 @@ public class Participant extends ReportingDomain implements Request, Response {
     return addresses;
   }
 
+
+  /**
+   * @param addresses - domain addresses
+   */
+  public void setAddresses(Set<Address> addresses) {
+    this.addresses = addresses;
+  }
+
   /*
    * (non-Javadoc)
    * 
@@ -259,6 +301,7 @@ public class Participant extends ReportingDomain implements Request, Response {
     result = prime * result + ((ssn == null) ? 0 : ssn.hashCode());
     result = prime * result + ((roles == null) ? 0 : roles.hashCode());
     result = prime * result + ((addresses == null) ? 0 : addresses.hashCode());
+    result = prime * result + ((legacySourceTable == null) ? 0 : legacySourceTable.hashCode());
     result = prime * result + ((clientId == null) ? 0 : clientId.hashCode());
     return result;
   }
@@ -309,6 +352,13 @@ public class Participant extends ReportingDomain implements Request, Response {
       return false;
     }
     if (id != other.id) {
+      return false;
+    }
+    if (legacySourceTable == null) {
+      if (other.legacySourceTable != null) {
+        return false;
+      }
+    } else if (!legacySourceTable.equals(other.legacySourceTable)) {
       return false;
     }
     if (clientId == null) {

@@ -43,7 +43,7 @@ public class PersonTest {
   private String gender = "M";
   private String birthDate = "2001-09-01";
   private String ssn = "123456789";
-  private Address address = new Address("123 Main", "Sacramento", "CA", 95757, "Home");
+  private Address address = new Address("", "", "123 Main", "Sacramento", "CA", 95757, "Home");
   private Set<Address> addresses = new HashSet<>();
   private PhoneNumber phoneNumber = new PhoneNumber("408-641-0287", "cell");
   private Set<PhoneNumber> phoneNumbers = new HashSet<>();
@@ -103,10 +103,8 @@ public class PersonTest {
 
   @Test
   public void equalsHashCodeWork() {
-    EqualsVerifier.forClass(Person.class)
-            .suppress(Warning.NONFINAL_FIELDS)
-            .withIgnoredFields("messages")
-            .verify();
+    EqualsVerifier.forClass(Person.class).suppress(Warning.NONFINAL_FIELDS)
+        .withIgnoredFields("messages").verify();
   }
 
   /*

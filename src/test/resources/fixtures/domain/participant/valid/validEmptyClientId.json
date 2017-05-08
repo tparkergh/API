@@ -1,6 +1,7 @@
 {
   "id" : "5432",
-  "legacy_client_id" : "", 
+   "legacy_source_table" : "",
+   "legacy_id" : "",
   "first_name": "John",
   "last_name": "Smith",
   "gender": "male",
@@ -13,6 +14,8 @@
   	],
   	"addresses" : [
   		{
+   "legacy_source_table" : "",
+   "legacy_id" : "",
   			"street_address" : "123 First St",
   			"state" : "CA",
   			"city" : "San Jose",

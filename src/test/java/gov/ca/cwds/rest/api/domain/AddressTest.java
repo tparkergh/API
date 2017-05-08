@@ -37,8 +37,8 @@ public class AddressTest {
    */
   @Test
   public void serializesToJSON() throws Exception {
-    String expected =
-        MAPPER.writeValueAsString(new Address("123 Main", "Sacramento", "CA", 95757, "Home"));
+    String expected = MAPPER
+        .writeValueAsString(new Address("", "", "123 Main", "Sacramento", "CA", 95757, "Home"));
 
     String serialized = MAPPER.writeValueAsString(
         MAPPER.readValue(fixture("fixtures/domain/address/valid/valid.json"), Address.class));
@@ -48,7 +48,7 @@ public class AddressTest {
 
   @Test
   public void testDeserializesFromJSON() throws Exception {
-    Address expected = new Address("123 Main", "Sacramento", "CA", 95757, "Home");
+    Address expected = new Address("", "", "123 Main", "Sacramento", "CA", 95757, "Home");
 
     Address serialized =
         MAPPER.readValue(fixture("fixtures/domain/address/valid/valid.json"), Address.class);
@@ -58,10 +58,8 @@ public class AddressTest {
 
   @Test
   public void equalsHashCodeWork() throws Exception {
-    EqualsVerifier.forClass(Address.class)
-            .suppress(Warning.NONFINAL_FIELDS, Warning.NULL_FIELDS)
-            .withIgnoredFields("messages")
-            .verify();
+    EqualsVerifier.forClass(Address.class).suppress(Warning.NONFINAL_FIELDS, Warning.NULL_FIELDS)
+        .withIgnoredFields("messages").verify();
   }
 
   @Test
@@ -81,7 +79,7 @@ public class AddressTest {
 
   @Test
   public void testJSONConstructorTest() throws Exception {
-    Address domain = new Address(street_name, city, state, zip, type);
+    Address domain = new Address("", "", street_name, city, state, zip, type);
 
     assertThat(domain.getCity(), is(equalTo(city)));
     assertThat(domain.getState(), is(equalTo(state)));

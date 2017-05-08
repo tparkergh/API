@@ -80,17 +80,17 @@ public class ScreeningToReferralTest {
     Address address = validAddress();
     Participant participant = validParticipant();
     participants.add(participant);
-    CrossReport crossReport = new CrossReport(agencyType, agencyName, method, informDate);
+    CrossReport crossReport = new CrossReport("", "", agencyType, agencyName, method, informDate);
     crossReports.add(crossReport);
     Allegation allegation = validAllegation();
     allegations.add(allegation);
 
 
-    String expected = MAPPER.writeValueAsString(new ScreeningToReferral(id, "1234567ABC",
-        "2016-08-03T01:00:00.000Z", "sacramento", "2016-08-02", "Foster Home", "Phone",
-        "The Rocky Horror Show", "Narrative 123 test", "123ABC", "immediate",
-        "2016-08-03T01:00:00.000Z", "Michael Bastow", "addtional information", "Response time",
-        "Detail", address, participants, crossReports, allegations));
+    String expected = MAPPER.writeValueAsString(
+        new ScreeningToReferral(id, "", "", "2016-08-03T01:00:00.000Z", "sacramento", "2016-08-02",
+            "Foster Home", "Phone", "The Rocky Horror Show", "Narrative 123 test", "123ABC",
+            "immediate", "2016-08-03T01:00:00.000Z", "Michael Bastow", "addtional information",
+            "Response time", "Detail", address, participants, crossReports, allegations));
 
     // System.out.println(expected);
     String serialized = MAPPER.writeValueAsString(
@@ -105,16 +105,16 @@ public class ScreeningToReferralTest {
     Address address = validAddress();
     Participant participant = validParticipant();
     participants.add(participant);
-    CrossReport crossReport = new CrossReport(agencyType, agencyName, method, informDate);
+    CrossReport crossReport = new CrossReport("", "", agencyType, agencyName, method, informDate);
     crossReports.add(crossReport);
     Allegation allegation = validAllegation();
     allegations.add(allegation);
 
-    ScreeningToReferral expected = new ScreeningToReferral(id, "1234567ABC",
-        "2016-08-03T01:00:00.000Z", "sacramento", "2016-08-02", "Foster Home", "Phone",
-        "The Rocky Horror Show", "Narrative 123 test", "123ABC", "immediate",
-        "2016-08-03T01:00:00.000Z", "Michael Bastow", "addtional information", "Response time",
-        "Detail", address, participants, crossReports, allegations);
+    ScreeningToReferral expected =
+        new ScreeningToReferral(id, "", "", "2016-08-03T01:00:00.000Z", "sacramento", "2016-08-02",
+            "Foster Home", "Phone", "The Rocky Horror Show", "Narrative 123 test", "123ABC",
+            "immediate", "2016-08-03T01:00:00.000Z", "Michael Bastow", "addtional information",
+            "Response time", "Detail", address, participants, crossReports, allegations);
 
 
     ScreeningToReferral serialized =
@@ -134,7 +134,6 @@ public class ScreeningToReferralTest {
     Response response =
         resources.client().target(ROOT_RESOURCE).request().accept(MediaType.APPLICATION_JSON)
             .post(Entity.entity(toCreate, MediaType.APPLICATION_JSON));
-    // System.out.println(response.readEntity(String.class));
     assertThat(response.getStatus(), is(equalTo(204)));
 
   }
@@ -207,6 +206,7 @@ public class ScreeningToReferralTest {
     Response response =
         resources.client().target(ROOT_RESOURCE).request().accept(MediaType.APPLICATION_JSON)
             .post(Entity.entity(toCreate, MediaType.APPLICATION_JSON));
+    System.out.println(response.readEntity(String.class));
     assertThat(response.getStatus(), is(equalTo(204)));
 
   }
@@ -291,7 +291,7 @@ public class ScreeningToReferralTest {
     Response response =
         resources.client().target(ROOT_RESOURCE).request().accept(MediaType.APPLICATION_JSON)
             .post(Entity.entity(toCreate, MediaType.APPLICATION_JSON));
-    System.out.println(response.readEntity(String.class));
+    // System.out.println(response.readEntity(String.class));
     assertThat(response.getStatus(), is(equalTo(204)));
 
   }
@@ -304,7 +304,7 @@ public class ScreeningToReferralTest {
     Response response =
         resources.client().target(ROOT_RESOURCE).request().accept(MediaType.APPLICATION_JSON)
             .post(Entity.entity(toCreate, MediaType.APPLICATION_JSON));
-    System.out.println(response.readEntity(String.class));
+    // System.out.println(response.readEntity(String.class));
     assertThat(response.getStatus(), is(equalTo(422)));
 
   }

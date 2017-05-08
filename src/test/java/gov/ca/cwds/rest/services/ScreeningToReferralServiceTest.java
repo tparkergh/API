@@ -33,6 +33,7 @@ import gov.ca.cwds.data.cms.ReferralClientDao;
 import gov.ca.cwds.data.cms.ReferralDao;
 import gov.ca.cwds.data.cms.ReporterDao;
 import gov.ca.cwds.rest.api.Response;
+import gov.ca.cwds.rest.api.domain.PostedScreeningToReferral;
 import gov.ca.cwds.rest.api.domain.ScreeningToReferral;
 import gov.ca.cwds.rest.api.domain.cms.Address;
 import gov.ca.cwds.rest.api.domain.cms.Allegation;
@@ -41,7 +42,6 @@ import gov.ca.cwds.rest.api.domain.cms.ClientAddress;
 import gov.ca.cwds.rest.api.domain.cms.CmsReferral;
 import gov.ca.cwds.rest.api.domain.cms.CrossReport;
 import gov.ca.cwds.rest.api.domain.cms.LongText;
-import gov.ca.cwds.rest.api.domain.cms.PostedCmsReferral;
 import gov.ca.cwds.rest.api.domain.cms.Referral;
 import gov.ca.cwds.rest.api.domain.cms.ReferralClient;
 import gov.ca.cwds.rest.api.domain.cms.Reporter;
@@ -241,7 +241,7 @@ public class ScreeningToReferralServiceTest {
   @Test
   public void createReturnsPostedCmsReferral() throws Exception {
     Response response = screeningToReferralServiceResponse();
-    assertThat(response.getClass(), is(PostedCmsReferral.class));
+    assertThat(response.getClass(), is(PostedScreeningToReferral.class));
   }
 
   @SuppressWarnings("javadoc")
@@ -325,7 +325,7 @@ public class ScreeningToReferralServiceTest {
 
     Response response = screeningToReferralService.create(screeningToReferral);
 
-    assertThat(response.getClass(), is(PostedCmsReferral.class));
+    assertThat(response.getClass(), is(PostedScreeningToReferral.class));
   }
 
   @SuppressWarnings("javadoc")
@@ -410,7 +410,7 @@ public class ScreeningToReferralServiceTest {
 
     Response response = screeningToReferralService.create(screeningToReferral);
 
-    assertThat(response.getClass(), is(PostedCmsReferral.class));
+    assertThat(response.getClass(), is(PostedScreeningToReferral.class));
   }
 
   @SuppressWarnings("javadoc")
@@ -495,7 +495,7 @@ public class ScreeningToReferralServiceTest {
 
     try {
       Response response = screeningToReferralService.create(screeningToReferral);
-      assertThat(response.getClass(), is(PostedCmsReferral.class));
+      assertThat(response.getClass(), is(PostedScreeningToReferral.class));
     } catch (Exception e) {
       System.out.println("error = " + e.getMessage());
       Assert.fail("Unexpected ServiceException was thrown" + e.getMessage());
@@ -676,7 +676,7 @@ public class ScreeningToReferralServiceTest {
 
     try {
       Response response = screeningToReferralService.create(screeningToReferral);
-      assertThat(response.getClass(), is(PostedCmsReferral.class));
+      assertThat(response.getClass(), is(PostedScreeningToReferral.class));
     } catch (Exception e) {
       System.out.println("error = " + e.getMessage());
       Assert.fail("Unexpected ServiceException was thrown" + e.getMessage());
@@ -766,7 +766,7 @@ public class ScreeningToReferralServiceTest {
         ScreeningToReferral.class);
 
     Response response = screeningToReferralService.create(screeningToReferral);
-    assertThat(response.getClass(), is(PostedCmsReferral.class));
+    assertThat(response.getClass(), is(PostedScreeningToReferral.class));
   }
 
   @SuppressWarnings("javadoc")
@@ -935,7 +935,7 @@ public class ScreeningToReferralServiceTest {
         .thenReturn(longTextToCreate);
 
     ScreeningToReferral screeningToReferral = MAPPER.readValue(
-        fixture("fixtures/domain/ScreeningToReferral/invalid/validNullAddressOnScreening.json"),
+        fixture("fixtures/domain/ScreeningToReferral/invalid/nullAddressOnScreening.json"),
         ScreeningToReferral.class);
 
     try {
@@ -1119,7 +1119,7 @@ public class ScreeningToReferralServiceTest {
 
     Response response = screeningToReferralService.create(screeningToReferral);
 
-    assertThat(response.getClass(), is(PostedCmsReferral.class));
+    assertThat(response.getClass(), is(PostedScreeningToReferral.class));
   }
 
   @SuppressWarnings("javadoc")
@@ -1204,6 +1204,6 @@ public class ScreeningToReferralServiceTest {
 
     Response response = screeningToReferralService.create(screeningToReferral);
 
-    assertThat(response.getClass(), is(PostedCmsReferral.class));
+    assertThat(response.getClass(), is(PostedScreeningToReferral.class));
   }
 }

@@ -31,6 +31,7 @@ import gov.ca.cwds.rest.api.domain.Allegation;
 import gov.ca.cwds.rest.api.domain.CrossReport;
 import gov.ca.cwds.rest.api.domain.DomainObject;
 import gov.ca.cwds.rest.api.domain.Participant;
+import gov.ca.cwds.rest.api.domain.PostedScreeningToReferral;
 import gov.ca.cwds.rest.api.domain.Screening;
 import gov.ca.cwds.rest.api.domain.ScreeningToReferral;
 import gov.ca.cwds.rest.api.domain.cms.Address;
@@ -40,7 +41,6 @@ import gov.ca.cwds.rest.api.domain.cms.LongText;
 import gov.ca.cwds.rest.api.domain.cms.PostedAddress;
 import gov.ca.cwds.rest.api.domain.cms.PostedAllegation;
 import gov.ca.cwds.rest.api.domain.cms.PostedClient;
-import gov.ca.cwds.rest.api.domain.cms.PostedCmsReferral;
 import gov.ca.cwds.rest.api.domain.cms.PostedLongText;
 import gov.ca.cwds.rest.api.domain.cms.PostedReferral;
 import gov.ca.cwds.rest.api.domain.cms.PostedReporter;
@@ -76,6 +76,8 @@ public class ScreeningToReferralService implements CrudsService {
   private static final String ANONYMOUS_REPORTER_ROLE = "anonymous reporter";
   private static final String VICTIM_ROLE = "victim";
   private static final String SELF_REPORTED_ROLE = "self reported";
+
+  private static final String CLIENT_TABLE_NAME = "CLIENT_T";
 
   final DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
   final DateFormat timeFormat = new SimpleDateFormat("HH:MM:SS");
@@ -183,9 +185,12 @@ public class ScreeningToReferralService implements CrudsService {
   public Response create(Request request) {
     String referralId;
     String clientId;
+    String addressId;
     String dateStarted = null;
     String timeStarted = null;
     String longTextId = null;
+    gov.ca.cwds.rest.api.domain.Address referralAddress = null;
+    gov.ca.cwds.rest.api.domain.Participant resultParticipant = null;
 
     Set<ErrorMessage> messages = new HashSet();
     MAPPER.configure(SerializationFeature.INDENT_OUTPUT, true);
@@ -204,7 +209,7 @@ public class ScreeningToReferralService implements CrudsService {
     }
 
     try {
-      processReferralAddress(screeningToReferral, messages);
+      referralAddress = processReferralAddress(screeningToReferral, messages);
     } catch (Exception e1) {
       String message = "ERROR - processing Address associated with the Referral ";
       logError(message, e1, messages);
@@ -237,6 +242,9 @@ public class ScreeningToReferralService implements CrudsService {
 
     PostedReferral postedReferral = this.referralService.create(referral);
     referralId = postedReferral.getId();
+
+    screeningToReferral.setAddress(referralAddress);
+
     /*
      * CWS/CMS Clients and Reporter
      */
@@ -245,8 +253,11 @@ public class ScreeningToReferralService implements CrudsService {
         new LinkedHashSet<>();
     Set<PostedClient> postedClients = new LinkedHashSet<>();
     Set<Participant> participants;
+    Set<Participant> resultParticipants = new HashSet<>();
+
     victimClient.clear();
     perpatratorClient.clear();
+    resultParticipants.clear();
 
     participants = screeningToReferral.getParticipants();
     for (Participant incomingParticipant : participants) {
@@ -303,6 +314,8 @@ public class ScreeningToReferralService implements CrudsService {
             PostedClient postedClient = this.clientService.create(client);
             postedClients.add(postedClient);
             clientId = postedClient.getId();
+            incomingParticipant.setClientId(clientId);
+            incomingParticipant.setLegacySourceTable(CLIENT_TABLE_NAME);
 
             // CMS Referral Client
             // TODO: map the DISPOSITION_CODE accroding to rules of CWS/CMS
@@ -327,17 +340,19 @@ public class ScreeningToReferralService implements CrudsService {
             }
             try {
               // addresses associated with a client
-              processClientAddress(incomingParticipant, referralId, clientId, messages);
+              resultParticipant =
+                  processClientAddress(incomingParticipant, referralId, clientId, messages);
             } catch (Exception e) {
-              LOGGER.error("ERROR - creating Addresses" + e.getMessage());
+              LOGGER.error("ERROR - creating Addresses - " + e.getMessage());
               throw new ServiceException(e);
             }
+            resultParticipants.add(incomingParticipant);
           }
         }
       }
     }
 
-    Set<gov.ca.cwds.rest.api.domain.cms.CrossReport> resultCrossReports;
+    Set<gov.ca.cwds.rest.api.domain.CrossReport> resultCrossReports;
     try {
       resultCrossReports = processCrossReports(screeningToReferral, referralId, messages);
     } catch (Exception e) {
@@ -346,18 +361,24 @@ public class ScreeningToReferralService implements CrudsService {
     }
 
 
-    Set<PostedAllegation> postedAllegations;
+    Set<gov.ca.cwds.rest.api.domain.Allegation> resultAllegations;
     try {
-      postedAllegations = processAllegations(screeningToReferral, referralId, messages);
+      resultAllegations = processAllegations(screeningToReferral, referralId, messages);
     } catch (Exception e) {
       LOGGER.error("ERROR - creating Allegations" + e.getMessage());
       throw new ServiceException(e);
     }
 
-    PostedCmsReferral cmsReferral = new PostedCmsReferral(postedReferral, postedClients,
-        postedAllegations, resultCrossReports, resultReferralClients, savedReporter);
-    cmsReferral.setMessages(messages);
-    return cmsReferral;
+    return new PostedScreeningToReferral(screeningToReferral.getId(), referralId, "REFERL_T",
+        screeningToReferral.getEndedAt(), screeningToReferral.getIncidentCounty(),
+        screeningToReferral.getIncidentDate(), screeningToReferral.getLocationType(),
+        screeningToReferral.getCommunicationMethod(), screeningToReferral.getName(),
+        screeningToReferral.getReportNarrative(), screeningToReferral.getReference(),
+        screeningToReferral.getResponseTime(), screeningToReferral.getStartedAt(),
+        screeningToReferral.getAssignee(), screeningToReferral.getAdditionalInformation(),
+        screeningToReferral.getScreeningDecision(),
+        screeningToReferral.getScreeningDecisionDetail(), screeningToReferral.getAddress(),
+        resultParticipants, resultCrossReports, resultAllegations);
   }
 
   private void logError(String message, Exception exception, Set<ErrorMessage> messages) {
@@ -425,12 +446,11 @@ public class ScreeningToReferralService implements CrudsService {
   /*
    * CMS Cross Report
    */
-  private Set<gov.ca.cwds.rest.api.domain.cms.CrossReport> processCrossReports(
-      ScreeningToReferral scr, String referralId, Set<ErrorMessage> messages)
-      throws ServiceException {
+  private Set<gov.ca.cwds.rest.api.domain.CrossReport> processCrossReports(ScreeningToReferral scr,
+      String referralId, Set<ErrorMessage> messages) throws ServiceException {
 
     String crossReportId = DEFAULT_THIRD_ID;
-    Set<gov.ca.cwds.rest.api.domain.cms.CrossReport> resultCrossReports = new LinkedHashSet<>();
+    Set<gov.ca.cwds.rest.api.domain.CrossReport> resultCrossReports = new HashSet<>();
     Set<CrossReport> crossReports;
     crossReports = scr.getCrossReports();
 
@@ -451,8 +471,13 @@ public class ScreeningToReferralService implements CrudsService {
 
       gov.ca.cwds.rest.api.domain.cms.CrossReport postedCrossReport =
           this.crossReportService.create(cmsCrossReport);
-      resultCrossReports.add(postedCrossReport);
+
+      crossReport.setLegacyId(postedCrossReport.getThirdId());
+      crossReport.setLegacySourceTable("CRSS_RPT");
+      resultCrossReports.add(crossReport);
+
     }
+
     return resultCrossReports;
 
   }
@@ -460,11 +485,11 @@ public class ScreeningToReferralService implements CrudsService {
   /*
    * CMS Allegation - one for each allegation
    */
-  private Set<PostedAllegation> processAllegations(ScreeningToReferral scr, String referralId,
+  private Set<Allegation> processAllegations(ScreeningToReferral scr, String referralId,
       Set<ErrorMessage> messages) throws ServiceException {
 
     // TODO: #143899869 Add CHILD_CLIENT processing to 'referrals' service
-    Set<PostedAllegation> postedAllegations = new LinkedHashSet<>();
+    Set<Allegation> processedAllegations = new HashSet<>();
     Set<Allegation> allegations;
     String victimClientId = "";
     String perpatratorClientId = "";
@@ -496,20 +521,24 @@ public class ScreeningToReferralService implements CrudsService {
       buildErrors(messages, validator.validate(cmsAllegation));
 
       PostedAllegation postedAllegation = this.allegationService.create(cmsAllegation);
-      postedAllegations.add(postedAllegation);
+      allegation.setLegacyId(postedAllegation.getId());
+      allegation.setLegacySourceTable("ALLGTN_T");
+      processedAllegations.add(allegation);
 
     }
-    return postedAllegations;
+    return processedAllegations;
   }
 
   /*
    * CMS Address - create ADDRESS and CLIENT_ADDRESS for each address of the participant
    */
-  private void processClientAddress(Participant incomingParticipant, String referralId,
+  private Participant processClientAddress(Participant clientParticipant, String referralId,
       String clientId, Set<ErrorMessage> messages) throws ServiceException {
 
     Set<gov.ca.cwds.rest.api.domain.Address> addresses =
-        new HashSet<>(incomingParticipant.getAddresses());
+        new HashSet<>(clientParticipant.getAddresses());
+
+    Set<gov.ca.cwds.rest.api.domain.Address> newAddresses = new HashSet();
 
     for (gov.ca.cwds.rest.api.domain.Address address : addresses) {
 
@@ -539,22 +568,33 @@ public class ScreeningToReferralService implements CrudsService {
        */
       if (addressId.isEmpty()) {
         LOGGER.error("ERROR - ADDRESS/IDENTIFIER is required for CLIENT_ADDRESS ", postedAddress);
-        throw new ServiceException("ERROR - ADDRESS/IDENTIFIER is required for CLIENT_ADDRESS");
+        throw new ServiceException(
+            "ERROR - ADDRESS/IDENTIFIER is required for CLIENT_ADDRESS table");
       }
       if (clientId.isEmpty()) {
         LOGGER.error("ERROR - CLIENT/IDENTIFIER is required for CLIENT_ADDRESS ", postedAddress);
-        throw new ServiceException("ERROR - CLIENT/IDENTIFIER is required for CLIENT_ADDRESS");
+        throw new ServiceException(
+            "ERROR - CLIENT/IDENTIFIER is required for CLIENT_ADDRESS table");
       }
 
       ClientAddress clientAddress =
           new ClientAddress(DEFAULT_ADDRESS_TYPE, "", "", "", addressId, clientId, "", referralId);
       buildErrors(messages, validator.validate(clientAddress));
       this.clientAddressService.create(clientAddress);
+
+      // update the addresses of the participant
+      address.setLegacySourceTable("ADDRS_T");
+      address.setAddressId(addressId);
+      newAddresses.add(address);
     }
+
+    clientParticipant.setAddresses(newAddresses);
+
+    return clientParticipant;
   }
 
-  private String processReferralAddress(ScreeningToReferral scr, Set<ErrorMessage> messages)
-      throws ServiceException {
+  private gov.ca.cwds.rest.api.domain.Address processReferralAddress(ScreeningToReferral scr,
+      Set<ErrorMessage> messages) throws ServiceException {
     gov.ca.cwds.rest.api.domain.Address address = scr.getAddress();
 
     Integer zipCode = address.getZip();
@@ -576,7 +616,10 @@ public class ScreeningToReferralService implements CrudsService {
 
     PostedAddress postedAddress = (PostedAddress) this.addressService.create(domainAddress);
 
-    return postedAddress.getExistingAddressId();
+    address.setAddressId(postedAddress.getExistingAddressId());
+    address.setLegacySourceTable("ADDRS_T");
+
+    return address;
 
   }
 

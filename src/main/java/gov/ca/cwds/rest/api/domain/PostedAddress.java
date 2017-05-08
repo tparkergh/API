@@ -23,15 +23,17 @@ public class PostedAddress extends Address {
    * Constructor
    * 
    * @param id The id
+   * @param legacySourceTable - legacy source table name
+   * @param legacyId - legacy Id
    * @param streetAddress The street address
    * @param city The city
    * @param state The state
    * @param zip The zip
    * @param type - address type
    */
-  public PostedAddress(long id, String streetAddress, String city, String state, Integer zip,
-      String type) {
-    super(streetAddress, city, state, zip, type);
+  public PostedAddress(long id, String legacySourceTable, String legacyId, String streetAddress,
+      String city, String state, Integer zip, String type) {
+    super(legacySourceTable, legacyId, streetAddress, city, state, zip, type);
     this.id = id;
   }
 
