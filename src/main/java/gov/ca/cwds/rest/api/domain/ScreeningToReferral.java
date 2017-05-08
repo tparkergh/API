@@ -22,10 +22,11 @@ import io.swagger.annotations.ApiModelProperty;
  * @author CWDS API Team
  */
 @JsonSnakeCase
-@JsonPropertyOrder({"id", "referralId", "endedAt", "incidentCounty", "incidentDate", "locationType",
-    "communicationMethod", "email", "name", "reportNarrative", "reference", "responseTime",
-    "startedAt", "assignee", "additionalInformation", "screeningDecision",
-    "screeningDecisionDetail", "address", "participants", "crossReports", "allegations"})
+@JsonPropertyOrder({"id", "legacySourceTable", "referralId", "endedAt", "incidentCounty",
+    "incidentDate", "locationType", "communicationMethod", "email", "name", "reportNarrative",
+    "reference", "responseTime", "startedAt", "assignee", "additionalInformation",
+    "screeningDecision", "screeningDecisionDetail", "address", "participants", "crossReports",
+    "allegations"})
 public class ScreeningToReferral extends ReportingDomain implements Request {
 
   /**
@@ -39,7 +40,12 @@ public class ScreeningToReferral extends ReportingDomain implements Request {
   @ApiModelProperty(required = true, readOnly = false, value = "Screening ID", example = "12345")
   private long id;
 
-  @JsonProperty("legacy_referral_id")
+  @JsonProperty("legacy_source_table")
+  @ApiModelProperty(required = false, readOnly = false, value = "Legacy Table", example = "REFERL")
+  @NotNull
+  private String legacySourceTable;
+
+  @JsonProperty("legacy_id")
   @ApiModelProperty(required = true, readOnly = false, value = "Legacy Referral Id",
       example = "2345678ABC")
   @Size(max = 10)
@@ -166,6 +172,7 @@ public class ScreeningToReferral extends ReportingDomain implements Request {
 
   /**
    * @param id - the screening Id
+   * @param legacySourceTable - legacy source table
    * @param referralId - the referral Id
    * @param endedAt - screening ended at date
    * @param incidentCounty - county of incident
@@ -186,8 +193,8 @@ public class ScreeningToReferral extends ReportingDomain implements Request {
    * @param crossReports - Cross Reort
    * @param allegations - Allegtions
    */
-  public ScreeningToReferral(long id, String referralId, @Date String endedAt,
-      String incidentCounty, @Date String incidentDate, String locationType,
+  public ScreeningToReferral(long id, String legacySourceTable, String referralId,
+      @Date String endedAt, String incidentCounty, @Date String incidentDate, String locationType,
       String communicationMethod, String name, String reportNarrative, String reference,
       String responseTime, @Date String startedAt, String assignee, String additionalInformation,
       String screeningDecision, String screeningDecisionDetail, Address address,
@@ -195,6 +202,7 @@ public class ScreeningToReferral extends ReportingDomain implements Request {
     super();
     this.id = id;
     this.referralId = referralId;
+    this.legacySourceTable = legacySourceTable;
     this.endedAt = endedAt;
     this.incidentCounty = incidentCounty;
     this.incidentDate = incidentDate;
@@ -220,6 +228,13 @@ public class ScreeningToReferral extends ReportingDomain implements Request {
    */
   public long getId() {
     return id;
+  }
+
+  /**
+   * @return legacySourceTable
+   */
+  public String getLegacySourceTable() {
+    return legacySourceTable;
   }
 
   /**
@@ -332,6 +347,13 @@ public class ScreeningToReferral extends ReportingDomain implements Request {
     return address;
   }
 
+  /**
+   * @param address - domain address
+   */
+  public void setAddress(Address address) {
+    this.address = address;
+  }
+
   @SuppressWarnings("javadoc")
   public Set<Participant> getParticipants() {
     return participants;
@@ -366,6 +388,7 @@ public class ScreeningToReferral extends ReportingDomain implements Request {
     result = prime * result + ((name == null) ? 0 : name.hashCode());
     result = prime * result + ((participants == null) ? 0 : participants.hashCode());
     result = prime * result + ((reference == null) ? 0 : reference.hashCode());
+    result = prime * result + ((legacySourceTable == null) ? 0 : legacySourceTable.hashCode());
     result = prime * result + ((referralId == null) ? 0 : referralId.hashCode());
     result = prime * result + ((reportNarrative == null) ? 0 : reportNarrative.hashCode());
     result = prime * result + ((responseTime == null) ? 0 : responseTime.hashCode());
@@ -451,6 +474,11 @@ public class ScreeningToReferral extends ReportingDomain implements Request {
       if (other.reference != null)
         return false;
     } else if (!reference.equals(other.reference))
+      return false;
+    if (legacySourceTable == null) {
+      if (other.legacySourceTable != null)
+        return false;
+    } else if (!legacySourceTable.equals(other.legacySourceTable))
       return false;
     if (referralId == null) {
       if (other.referralId != null)

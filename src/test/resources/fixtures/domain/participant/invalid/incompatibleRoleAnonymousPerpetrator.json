@@ -1,5 +1,7 @@
 {
   "id" : "5432",
+   "legacy_source_table" : "",
+   "legacy_id" : "",
   "first_name": "John",
   "last_name": "Smith",
   "gender": "male",
@@ -8,7 +10,7 @@
   "person_id": 12345,
   "screening_id": 12345,
   "roles" : [
-  	"victim"
+  	"Anonymous Reporter", "Perpetrator"
   	],
   	"addresses" : [
   		{

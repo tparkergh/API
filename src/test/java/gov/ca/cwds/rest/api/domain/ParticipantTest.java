@@ -51,7 +51,6 @@ public class ParticipantTest implements PersistentTestTemplate {
   private Set<String> roles = new HashSet<String>();
   private Set<Address> addresses = new HashSet<Address>();
 
-
   private static final String ROOT_RESOURCE = "/" + Api.RESOURCE_PARTICIPANTS + "/";;
   private static final ObjectMapper MAPPER = Jackson.newObjectMapper();
 
@@ -74,7 +73,7 @@ public class ParticipantTest implements PersistentTestTemplate {
   public void setup() {
     Participant validParticipant = this.validParticipant();
     roles.add("victim");
-    Address address = new Address("123 First St", "San Jose", "CA", 94321, "Home");
+    Address address = new Address("", "", "123 First St", "San Jose", "CA", 94321, "Home");
     addresses.add(address);
 
 
@@ -131,7 +130,7 @@ public class ParticipantTest implements PersistentTestTemplate {
   @Test
   public void testConstructorUsingDomain() throws Exception {
 
-    Participant domain = new Participant(id, clientId, firstName, lastName, gender, ssn,
+    Participant domain = new Participant(id, "", clientId, firstName, lastName, gender, ssn,
         dateOfBirth, personId, screeningId, roles, addresses);
 
     assertThat(domain.getId(), is(equalTo(id)));
@@ -182,7 +181,7 @@ public class ParticipantTest implements PersistentTestTemplate {
   }
 
   private Participant validParticipant() {
-    Participant validParticipant = new Participant(id, clientId, firstName, lastName, gender, ssn,
+    Participant validParticipant = new Participant(id, "", "", firstName, lastName, gender, ssn,
         dateOfBirth, personId, screeningId, roles, addresses);
     return validParticipant;
   }

@@ -96,7 +96,8 @@ public class PersonServiceTest {
    */
   @Test
   public void testFindReturnsCorrectPersonWhenFound() throws Exception {
-    Address address = new Address("742 Evergreen Terrace", "Springfield", "WA", 98700, "Home");
+    Address address =
+        new Address("", "", "742 Evergreen Terrace", "Springfield", "WA", 98700, "Home");
     PhoneNumber phoneNumber = new PhoneNumber("408-277-4778", "cell");
     Language language = new Language("English");
     Race race = new Race("White", "European");
@@ -221,7 +222,8 @@ public class PersonServiceTest {
   public void updateThrowsNullPointeException() throws Exception {
     thrown.expect(NullPointerException.class);
 
-    Address address = new Address("742 Evergreen Terrace", "Springfield", "WA", 98700, "Home");
+    Address address =
+        new Address("", "", "742 Evergreen Terrace", "Springfield", "WA", 98700, "Home");
     Set<Address> addresses = new HashSet<>();
     addresses.add(address);
     Person toUpdate = new Person("Bart", "Simpson", "M", "2013-10-31", "1234556789", addresses,

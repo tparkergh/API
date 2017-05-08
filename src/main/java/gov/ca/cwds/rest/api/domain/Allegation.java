@@ -1,5 +1,6 @@
 package gov.ca.cwds.rest.api.domain;
 
+import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
 import org.hibernate.validator.constraints.NotEmpty;
@@ -26,6 +27,17 @@ public class Allegation extends ReportingDomain implements Request, Response {
    */
   private static final long serialVersionUID = 1L;
 
+  @JsonProperty("legacy_source_table")
+  @ApiModelProperty(required = true, value = "Legacy Source Table", example = "ALLGTN_T")
+  @NotNull
+  private String legacySourceTable;
+
+  @JsonProperty("legacy_id")
+  @ApiModelProperty(required = true, value = "Legacy Id", example = "1234567ABC")
+  @NotNull
+  @Size(max = 10)
+  private String legacyId;
+
   @JsonProperty("victim_person_id")
   @ApiModelProperty(required = true, value = "id of victim", example = "12345")
   private long victimPersonId;
@@ -45,19 +57,53 @@ public class Allegation extends ReportingDomain implements Request, Response {
   private String county;
 
   /**
+   * @param legacySourceTable - legacy source table
+   * @param legacyId - legacy Id
    * @param victimPersonId - Person Id of victim
    * @param perpetratorPersonId - Person Id of perpetrator
    * @param type - Injury Harm type
    * @param county = County
    */
-  public Allegation(@JsonProperty("victim_person_id") long victimPersonId,
+  public Allegation(@JsonProperty("legacy_source_table") String legacySourceTable,
+      @JsonProperty("legacy_id") String legacyId,
+      @JsonProperty("victim_person_id") long victimPersonId,
       @JsonProperty("perpetrator_person_id") long perpetratorPersonId,
       @JsonProperty("type") String type, @JsonProperty("county") String county) {
     super();
+    this.legacySourceTable = legacySourceTable;
+    this.legacyId = legacyId;
     this.victimPersonId = victimPersonId;
     this.perpetratorPersonId = perpetratorPersonId;
     this.type = type;
     this.county = county;
+  }
+
+  /**
+   * @return legacy source table
+   */
+  public String getLegacySourceTable() {
+    return legacySourceTable;
+  }
+
+  /**
+   * @param legacySourceTable - the legacy source table name
+   */
+  public void setLegacySourceTable(String legacySourceTable) {
+    this.legacySourceTable = legacySourceTable;
+  }
+
+  /**
+   * @return legacy id - the CWS/CMS database table name
+   */
+  public String getLegacyId() {
+    return legacyId;
+  }
+
+  /**
+   * @param legacyId - the idetifier from CWS/CMS database
+   */
+  public void setLegacyId(String legacyId) {
+    this.legacyId = legacyId;
   }
 
   /**
@@ -95,6 +141,8 @@ public class Allegation extends ReportingDomain implements Request, Response {
     result = prime * result + ((county == null) ? 0 : county.hashCode());
     result = prime * result + (int) (perpetratorPersonId ^ (perpetratorPersonId >>> 32));
     result = prime * result + ((type == null) ? 0 : type.hashCode());
+    result = prime * result + ((legacySourceTable == null) ? 0 : legacySourceTable.hashCode());
+    result = prime * result + ((legacyId == null) ? 0 : legacyId.hashCode());
     result = prime * result + (int) (victimPersonId ^ (victimPersonId >>> 32));
     return result;
   }
@@ -119,6 +167,16 @@ public class Allegation extends ReportingDomain implements Request, Response {
       if (other.type != null)
         return false;
     } else if (!type.equals(other.type))
+      return false;
+    if (legacySourceTable == null) {
+      if (other.legacySourceTable != null)
+        return false;
+    } else if (!legacySourceTable.equals(other.legacySourceTable))
+      return false;
+    if (legacyId == null) {
+      if (other.legacyId != null)
+        return false;
+    } else if (!legacyId.equals(other.legacyId))
       return false;
     if (victimPersonId != other.victimPersonId)
       return false;

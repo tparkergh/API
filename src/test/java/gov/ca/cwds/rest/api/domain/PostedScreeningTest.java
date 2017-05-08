@@ -65,11 +65,11 @@ public class PostedScreeningTest implements DomainTestTemplate {
   @Test
   public void testSerializesToJSON() throws Exception {
 
-    Address address = new Address("123 Main", "Sacramento", "CA", 95757, "Home");
+    Address address = new Address("", "", "123 Main", "Sacramento", "CA", 95757, "Home");
     addresses.add(address);
     roles.add("victim");
 
-    Participant participant = new Participant(participantId, clientId, firstName, lastName, gender,
+    Participant participant = new Participant(participantId, "", "", firstName, lastName, gender,
         ssn, dateOfBirth, personId, screeningId, roles, addresses);
     ImmutableSet.Builder<Participant> participantSetBuilder = ImmutableSet.builder();
     participantSetBuilder.add(participant);
@@ -92,11 +92,11 @@ public class PostedScreeningTest implements DomainTestTemplate {
   @Test
   public void testDeserializesFromJSON() throws Exception {
 
-    Address address = new Address("123 Main", "Sacramento", "CA", 95757, "Home");
+    Address address = new Address("", "", "123 Main", "Sacramento", "CA", 95757, "Home");
     addresses.add(address);
     roles.add("victim");
 
-    Participant participant = new Participant(participantId, clientId, firstName, lastName, gender,
+    Participant participant = new Participant(participantId, "", "", firstName, lastName, gender,
         ssn, dateOfBirth, personId, screeningId, roles, addresses);
     ImmutableSet.Builder<Participant> participantSetBuilder = ImmutableSet.builder();
     participantSetBuilder.add(participant);

@@ -27,7 +27,8 @@ public class AllegationTest {
   private long perpetratorPersonId = 2;
   private String type = "physical abuse";
   private String county = "Sacramento";
-
+  private String legacySourceTable = "ALLGTN_T";
+  private String legacyId = "1234567ABC";
 
   private static final ObjectMapper MAPPER = Jackson.newObjectMapper();
 
@@ -37,7 +38,7 @@ public class AllegationTest {
   @Test
   public void serializesToJSON() throws Exception {
     String expected =
-        MAPPER.writeValueAsString(new Allegation(5432, 2, "physical abuse", "Sacramento"));
+        MAPPER.writeValueAsString(new Allegation("", "", 5432, 2, "physical abuse", "Sacramento"));
 
     String serialized = MAPPER.writeValueAsString(
         MAPPER.readValue(fixture("fixtures/domain/Allegation/valid/valid.json"), Allegation.class));
@@ -48,7 +49,7 @@ public class AllegationTest {
 
   @Test
   public void testDeserializesFromJSON() throws Exception {
-    Allegation expected = new Allegation(5432, 2, "physical abuse", "Sacramento");
+    Allegation expected = new Allegation("", "", 5432, 2, "physical abuse", "Sacramento");
 
     Allegation serialized =
         MAPPER.readValue(fixture("fixtures/domain/Allegation/valid/valid.json"), Allegation.class);
@@ -58,20 +59,21 @@ public class AllegationTest {
 
   @Test
   public void equalsHashCodeWork() throws Exception {
-    EqualsVerifier.forClass(Address.class)
-            .suppress(Warning.NONFINAL_FIELDS, Warning.NULL_FIELDS)
-            .withIgnoredFields("messages")
-            .verify();
+    EqualsVerifier.forClass(Address.class).suppress(Warning.NONFINAL_FIELDS, Warning.NULL_FIELDS)
+        .withIgnoredFields("messages").verify();
   }
 
   @Test
   public void testDomainConstructorTest() throws Exception {
-    Allegation domain = new Allegation(victimPersonId, perpetratorPersonId, type, county);
+    Allegation domain = new Allegation(legacySourceTable, legacyId, victimPersonId,
+        perpetratorPersonId, type, county);
 
     assertThat(domain.getVictimPersonId(), is(equalTo(victimPersonId)));
     assertThat(domain.getPerpetratorPersonId(), is(equalTo(perpetratorPersonId)));
     assertThat(domain.getType(), is(equalTo(type)));
     assertThat(domain.getCounty(), is(equalTo(county)));
+    assertThat(domain.getLegacyId(), is(equalTo(legacyId)));
+    assertThat(domain.getLegacySourceTable(), is(equalTo(legacySourceTable)));
   }
 
   @SuppressWarnings("unused")

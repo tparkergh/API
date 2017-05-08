@@ -12,6 +12,8 @@
 	"started_at": "2016-10-05",
 	"narrative": "test the narrative",
 	"address": {
+	  "legacy_source_table" : "",
+	  "legacy_id" : "",
 		"street_address": "123 Main",
 		"city": "Sacramento",
 		"state": "CA",
@@ -20,7 +22,8 @@
 	},
 	"participants": [{
 	  "id" : "1",
-	  "legacy_client_id" : "1234567ABC",
+	  "legacy_source_table" : "",
+	  "legacy_id" : "",
 	  "first_name": "john",
 	  "last_name": "smith",
 	  "gender": "male",
@@ -33,6 +36,8 @@
 	  	],
          "addresses":[
             {
+ 	  "legacy_source_table" : "",
+	  "legacy_id" : "",
                "street_address":"123 Main",
                "state":"CA",
                "city":"Sacramento",

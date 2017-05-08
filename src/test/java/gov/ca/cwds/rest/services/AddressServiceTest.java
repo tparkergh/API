@@ -14,10 +14,14 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializationFeature;
+
 import gov.ca.cwds.data.ns.AddressDao;
 import gov.ca.cwds.rest.api.domain.Address;
 import gov.ca.cwds.rest.api.domain.PostedAddress;
 import gov.ca.cwds.rest.services.junit.template.ServiceTestTemplate;
+import io.dropwizard.jackson.Jackson;
 
 /**
  * @author CWDS API Team
@@ -27,6 +31,7 @@ public class AddressServiceTest implements ServiceTestTemplate {
   private AddressService addressService;
 
   private AddressDao addressDao;
+  private static final ObjectMapper MAPPER = Jackson.newObjectMapper();
 
   @SuppressWarnings("javadoc")
   @Rule
@@ -37,6 +42,7 @@ public class AddressServiceTest implements ServiceTestTemplate {
   public void setup() throws Exception {
     addressDao = mock(AddressDao.class);
     addressService = new AddressService(addressDao);
+    MAPPER.configure(SerializationFeature.INDENT_OUTPUT, true);
   }
 
   /*
@@ -60,7 +66,8 @@ public class AddressServiceTest implements ServiceTestTemplate {
     when(addressDao.find(new Long(1))).thenReturn(new gov.ca.cwds.data.persistence.ns.Address(1L,
         "742 Evergreen Terrace", "Springfield", "WA", new Integer(98700), "Home"));
 
-    Address expected = new Address("742 Evergreen Terrace", "Springfield", "WA", 98700, "Home");
+    Address expected =
+        new Address("", "", "742 Evergreen Terrace", "Springfield", "WA", 98700, "Home");
 
     Address found = addressService.find(new Long(1));
 
@@ -121,8 +128,8 @@ public class AddressServiceTest implements ServiceTestTemplate {
     when(addressDao.create(any(gov.ca.cwds.data.persistence.ns.Address.class)))
         .thenReturn(toCreate);
 
-    PostedAddress expected = new PostedAddress(10, "742 Evergreen Terrace", "Springfield", "WA",
-        new Integer(98700), "Home");
+    PostedAddress expected = new PostedAddress(10, "", "", "742 Evergreen Terrace", "Springfield",
+        "WA", new Integer(98700), "Home");
     PostedAddress returned = addressService.create(request);
 
     assertThat(returned, is(expected));
@@ -166,9 +173,15 @@ public class AddressServiceTest implements ServiceTestTemplate {
     when(addressDao.create(any(gov.ca.cwds.data.persistence.ns.Address.class)))
         .thenReturn(toCreate);
 
-    PostedAddress expected = new PostedAddress(1, "742 Evergreen Terrace", "Springfield", "WA",
-        new Integer(98700), "Home");
+    PostedAddress expected = new PostedAddress(1, "", "", "742 Evergreen Terrace", "Springfield",
+        "WA", new Integer(98700), "Home");
+
     PostedAddress returned = addressService.create(request);
+
+    // String e = MAPPER.writeValueAsString(expected);
+    // System.out.println(e);
+    // String r = MAPPER.writeValueAsString(returned);
+    // System.out.println(r);
 
     assertThat(returned, is(expected));
 
@@ -218,7 +231,7 @@ public class AddressServiceTest implements ServiceTestTemplate {
   public void testUpdateThrowsAssertionError() throws Exception {
     thrown.expect(AssertionError.class);
     try {
-      addressService.update(null, new Address("street", "city", "state", 95555, "Home"));
+      addressService.update(null, new Address("", "", "street", "city", "state", 95555, "Home"));
     } catch (AssertionError e) {
       assertEquals("Expected AssertionError", e.getMessage());
     }
@@ -229,7 +242,7 @@ public class AddressServiceTest implements ServiceTestTemplate {
   public void testUpdateThrowsNotImplementedException() throws Exception {
     thrown.expect(NotImplementedException.class);
 
-    addressService.update(1L, new Address("street", "city", "state", 95555, "Home"));
+    addressService.update(1L, new Address("", "", "street", "city", "state", 95555, "Home"));
   }
 
   @Override

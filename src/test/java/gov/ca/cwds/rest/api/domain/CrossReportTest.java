@@ -19,6 +19,8 @@ public class CrossReportTest {
   private String agencyName = "Sacramento County Sheriff Deparment";
   private String method = "electronic report";
   private String informDate = "2017-03-15";
+  private String legacySourceTable = "CRSS_RPT";
+  private String legacyId = "1234567ABC";
 
   private static final ObjectMapper MAPPER = Jackson.newObjectMapper();
 
@@ -27,7 +29,7 @@ public class CrossReportTest {
    */
   @Test
   public void serializesToJSON() throws Exception {
-    String expected = MAPPER.writeValueAsString(new CrossReport("Law enforcement",
+    String expected = MAPPER.writeValueAsString(new CrossReport("", "", "Law enforcement",
         "Sacramento County Sheriff Deparment", "electronic report", "2017-03-15"));
 
     String serialized = MAPPER.writeValueAsString(MAPPER
@@ -38,8 +40,8 @@ public class CrossReportTest {
 
   @Test
   public void testDeserializesFromJSON() throws Exception {
-    CrossReport expected = new CrossReport("Law enforcement", "Sacramento County Sheriff Deparment",
-        "electronic report", "2017-03-15");
+    CrossReport expected = new CrossReport("", "", "Law enforcement",
+        "Sacramento County Sheriff Deparment", "electronic report", "2017-03-15");
 
     CrossReport serialized = MAPPER
         .readValue(fixture("fixtures/domain/CrossReport/valid/valid.json"), CrossReport.class);
@@ -49,20 +51,22 @@ public class CrossReportTest {
 
   @Test
   public void equalsHashCodeWork() throws Exception {
-      EqualsVerifier.forClass(CrossReport.class)
-          .suppress(Warning.NONFINAL_FIELDS, Warning.NULL_FIELDS)
-          .withIgnoredFields("messages")
-          .verify();
+    EqualsVerifier.forClass(CrossReport.class)
+        .suppress(Warning.NONFINAL_FIELDS, Warning.NULL_FIELDS).withIgnoredFields("messages")
+        .verify();
   }
 
   @Test
   public void testDomainConstructorTest() throws Exception {
-    CrossReport domain = new CrossReport(agencyType, agencyName, method, informDate);
+    CrossReport domain =
+        new CrossReport(legacySourceTable, legacyId, agencyType, agencyName, method, informDate);
 
     assertThat(domain.getAgencyType(), is(equalTo(agencyType)));
     assertThat(domain.getAgencyName(), is(equalTo(agencyName)));
     assertThat(domain.getMethod(), is(equalTo(method)));
     assertThat(domain.getInformDate(), is(equalTo(informDate)));
+    assertThat(domain.getLegacySourceTable(), is(equalTo(legacySourceTable)));
+    assertThat(domain.getLegacyId(), is(equalTo(legacyId)));
 
   }
 }
