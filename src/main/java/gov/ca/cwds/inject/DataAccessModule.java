@@ -2,6 +2,7 @@ package gov.ca.cwds.inject;
 
 import java.net.InetAddress;
 
+import gov.ca.cwds.data.persistence.cms.*;
 import org.elasticsearch.client.Client;
 import org.elasticsearch.client.transport.TransportClient;
 import org.elasticsearch.common.settings.Settings;
@@ -105,7 +106,7 @@ public class DataAccessModule extends AbstractModule {
   private Client client;
 
   private final HibernateBundle<ApiConfiguration> cmsHibernateBundle =
-      new HibernateBundle<ApiConfiguration>(Allegation.class, ClientCollateral.class,
+      new HibernateBundle<ApiConfiguration>(gov.ca.cwds.data.persistence.cms.Address.class, Allegation.class, ClientAddress.class,ClientCollateral.class,
           gov.ca.cwds.data.persistence.cms.Client.class, CmsDocReferralClient.class,
           CmsDocument.class, CmsDocumentBlobSegment.class, CollateralIndividual.class,
           CrossReport.class, EducationProviderContact.class, OtherAdultInPlacemtHome.class,
