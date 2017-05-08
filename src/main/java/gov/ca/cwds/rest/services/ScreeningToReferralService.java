@@ -23,6 +23,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.google.inject.Inject;
 
+import gov.ca.cwds.data.Dao;
 import gov.ca.cwds.data.cms.ReferralDao;
 import gov.ca.cwds.rest.api.Request;
 import gov.ca.cwds.rest.api.Response;
@@ -152,7 +153,8 @@ public class ScreeningToReferralService implements CrudsService {
    * @param clientAddressService - cms ClientAddress service
    * @param longTextService - cms LongText service
    * @param validator - the validator
-   * @param referralDao
+   * @param referralDao - The {@link Dao} handling {@link gov.ca.cwds.data.persistence.cms.Referral}
+   *        objects.
    */
   @Inject
   public ScreeningToReferralService(ReferralService referralService, ClientService clientService,
