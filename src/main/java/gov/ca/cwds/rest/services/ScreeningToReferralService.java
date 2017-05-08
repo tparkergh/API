@@ -23,6 +23,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.google.inject.Inject;
 
+import gov.ca.cwds.data.cms.ReferralDao;
 import gov.ca.cwds.rest.api.Request;
 import gov.ca.cwds.rest.api.Response;
 import gov.ca.cwds.rest.api.domain.Allegation;
@@ -92,6 +93,8 @@ public class ScreeningToReferralService implements CrudsService {
   private ClientAddressService clientAddressService;
   private LongTextService longTextService;
 
+  private ReferralDao referralDao;
+
   private Short zipSuffix;
 
   // default values
@@ -149,13 +152,14 @@ public class ScreeningToReferralService implements CrudsService {
    * @param clientAddressService - cms ClientAddress service
    * @param longTextService - cms LongText service
    * @param validator - the validator
+   * @param referralDao
    */
   @Inject
   public ScreeningToReferralService(ReferralService referralService, ClientService clientService,
       AllegationService allegationService, CrossReportService crossReportService,
       ReferralClientService referralClientService, ReporterService reporterService,
       AddressService addressService, ClientAddressService clientAddressService,
-      LongTextService longTextService, Validator validator) {
+      LongTextService longTextService, Validator validator, ReferralDao referralDao) {
 
     super();
     this.referralService = referralService;
@@ -168,6 +172,7 @@ public class ScreeningToReferralService implements CrudsService {
     this.clientAddressService = clientAddressService;
     this.longTextService = longTextService;
     this.validator = validator;
+    this.referralDao = referralDao;
 
   }
 
@@ -382,9 +387,13 @@ public class ScreeningToReferralService implements CrudsService {
   }
 
   @Override
-  public Response find(Serializable primaryKey) {
+  public gov.ca.cwds.rest.api.domain.cms.Referral find(Serializable primaryKey) {
     assert primaryKey instanceof String;
-    throw new NotImplementedException("Find is not implemented");
+    gov.ca.cwds.data.persistence.cms.Referral persistedReferral = referralDao.find(primaryKey);
+    if (persistedReferral != null) {
+      return new gov.ca.cwds.rest.api.domain.cms.Referral(persistedReferral);
+    }
+    return null;
   }
 
   @Override

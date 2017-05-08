@@ -4,8 +4,10 @@ import static gov.ca.cwds.rest.core.Api.RESOURCE_REFERRALS;
 
 import javax.validation.Valid;
 import javax.ws.rs.Consumes;
+import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
@@ -17,6 +19,7 @@ import com.google.inject.Inject;
 import gov.ca.cwds.inject.ScreeningToReferralServiceBackedResource;
 import gov.ca.cwds.rest.api.domain.ScreeningToReferral;
 import gov.ca.cwds.rest.api.domain.cms.PostedCmsReferral;
+import gov.ca.cwds.rest.api.domain.cms.Referral;
 import io.dropwizard.hibernate.UnitOfWork;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -51,6 +54,25 @@ public class ScreeningToReferralResource {
   public ScreeningToReferralResource(
       @ScreeningToReferralServiceBackedResource ResourceDelegate resourceDelegate) {
     this.resourceDelegate = resourceDelegate;
+  }
+
+  /**
+   * Finds an referral by id.
+   * 
+   * @param id the id
+   * 
+   * @return the response
+   */
+  @UnitOfWork(value = "cms")
+  @GET
+  @Path("/{id}")
+  @ApiResponses(value = {@ApiResponse(code = 401, message = "Not Authorized"),
+      @ApiResponse(code = 404, message = "Not found"),
+      @ApiResponse(code = 406, message = "Accept Header not supported")})
+  @ApiOperation(value = "Find referral by id", response = Referral.class, code = 200)
+  public Response get(@PathParam("id") @ApiParam(required = true, name = "id",
+      value = "The id of the Referral to find") String id) {
+    return resourceDelegate.get(id);
   }
 
   /**

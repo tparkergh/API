@@ -11,6 +11,8 @@ import static org.mockito.Mockito.when;
 import java.util.LinkedHashSet;
 import java.util.Set;
 
+import javax.validation.Validation;
+
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Rule;
@@ -53,8 +55,6 @@ import gov.ca.cwds.rest.services.cms.ReferralClientService;
 import gov.ca.cwds.rest.services.cms.ReferralService;
 import gov.ca.cwds.rest.services.cms.ReporterService;
 import io.dropwizard.jackson.Jackson;
-
-import javax.validation.Validation;
 
 /**
  * 
@@ -123,7 +123,8 @@ public class ScreeningToReferralServiceTest {
 
     screeningToReferralService = new ScreeningToReferralService(referralService, clientService,
         allegationService, crossReportService, referralClientService, reporterService,
-        addressService, clientAddressService, longTextService,Validation.buildDefaultValidatorFactory().getValidator());
+        addressService, clientAddressService, longTextService,
+        Validation.buildDefaultValidatorFactory().getValidator(), referralDao);
   }
 
   @SuppressWarnings("javadoc")
