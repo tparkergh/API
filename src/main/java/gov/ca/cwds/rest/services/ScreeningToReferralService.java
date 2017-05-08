@@ -124,7 +124,7 @@ public class ScreeningToReferralService implements CrudsService {
   private static final String DEFAULT_MILITARY_STATUS_CODE = "N";
   private static final String DEFAULT_UNABLE_TO_DETAIN_CODE = "K";
   private static final String DEFAULT_DISPOSITION_CODE = "A";
-  private static final String DEFAULT_THIRD_ID = "1234ABC123X";
+  private static final String DEFAULT_THIRD_ID = "1234ABC123";
 
   // TODO: #142337489 Develop List of Value service to support Pi2 Save Referral to CWS/CMS
   private short communicationsMethodCode = 409; // default to telephone until #142337489 complete
