@@ -38,7 +38,7 @@
 	  "person_id": 12345,
 	  "screening_id": 12345,
 	  "roles" : [
-	  	"victim"
+	  	"Victim"
 	  	],
 	  	"addresses" : [
 	  		{
@@ -64,7 +64,7 @@
 	  "person_id": 12345,
 	  "screening_id": 12345,
 	  "roles" : [
-	  	"mandated reporter"
+	  	"Mandated Reporter"
 	  	],
 	  	"addresses" : [
 	  		{
@@ -90,12 +90,12 @@
 	  "person_id": 12345,
 	  "screening_id": 12345,
 	  "roles" : [
-	  	"non-mandated reporter"
+	  	"Non-mandated Reporter"
 	  	],
 	  	"addresses" : [
 	  		{
-   "legacy_source_table" : "",
-   "legacy_id" : "",
+                "legacy_source_table" : "",
+                "legacy_id" : "",
 	  			"street_address" : "234 Second St",
 	  			"state" : "CA",
 	  			"city" : "San Jose",
@@ -107,8 +107,8 @@
    ],
    "cross_reports":[
       {
-   "legacy_source_table" : "",
-   "legacy_id" : "",
+         "legacy_source_table" : "",
+         "legacy_id" : "",
          "agency_type":"Law enforcement",
          "agency_name":"Sacramento County Sheriff Deparment",
          "method":"electronic report",
@@ -116,8 +116,8 @@
       }   ],
    "allegations":[
       {
-   "legacy_source_table" : "",
-   "legacy_id" : "",
+        "legacy_source_table" : "",
+        "legacy_id" : "",
          "victim_person_id":"5432",
          "perpetrator_person_id":"1234",
          "type":"physical abuse",

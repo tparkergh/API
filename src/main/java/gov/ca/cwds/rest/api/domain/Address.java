@@ -25,13 +25,12 @@ public class Address extends ReportingDomain implements Request, Response {
   private static final long serialVersionUID = 1L;
 
   @JsonProperty("legacy_source_table")
-  @ApiModelProperty(required = true, readOnly = false, value = "Legacy Source Table",
-      example = "ADDRS_T")
+  @ApiModelProperty(required = true, readOnly = false, value = "Legacy Source Table")
   @NotNull
   private String legacySourceTable;
 
   @JsonProperty("legacy_id")
-  @ApiModelProperty(required = true, readOnly = false, value = "Legacy Id", example = "1234567ABC")
+  @ApiModelProperty(required = true, readOnly = false, value = "Legacy Id")
   @NotNull
   @Size(max = 10)
   private String addressId;
@@ -119,7 +118,7 @@ public class Address extends ReportingDomain implements Request, Response {
   /**
    * @return addressId
    */
-  public String getaddressId() {
+  public String getAddressId() {
     return addressId;
   }
 

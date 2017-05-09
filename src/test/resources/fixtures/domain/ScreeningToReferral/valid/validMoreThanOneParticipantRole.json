@@ -1,5 +1,7 @@
 {
    "id":"2",
+   "legacy_source_table" : "",
+   "legacy_id" : "",
    "ended_at":"2016-08-03T01:00:00.000Z",
    "incident_county":"sacramento",
    "incident_date":"2016-08-02",
@@ -15,6 +17,8 @@
    "screening_decision":"Response time",
    "screening_decision_detail":"Detail",
    "address":{
+      "legacy_source_table" : "",
+      "legacy_id" : "",
 	  "street_address": "123 Main",
 	  "city": "Sacramento",
 	  "state": "CA",
@@ -24,6 +28,8 @@
    "participants":[
 	{
 	  "id" : "5432",
+      "legacy_source_table" : "",
+      "legacy_id" : "",
 	  "first_name": "John",
 	  "last_name": "Smith",
 	  "gender": "male",
@@ -32,11 +38,13 @@
 	  "person_id": 12345,
 	  "screening_id": 12345,
 	  "roles" : [
-	  	"victim",
-	  	"non-mandated reporter"
+	  	"Victim",
+	  	"Non-mandated Reporter"
 	  	],
 	  	"addresses" : [
 	  		{
+                "legacy_source_table" : "",
+                "legacy_id" : "",
 	  			"street_address" : "123 First St",
 	  			"state" : "CA",
 	  			"city" : "San Jose",
@@ -47,6 +55,8 @@
 	},
 	{
 	  "id" : "1234",
+      "legacy_source_table" : "",
+      "legacy_id" : "",
 	  "first_name": "Bart",
 	  "last_name": "Simpson",
 	  "gender": "male",
@@ -55,10 +65,12 @@
 	  "person_id": 12345,
 	  "screening_id": 12345,
 	  "roles" : [
-	  	"perpetrator"
+	  	"Perpetrator"
 	  	],
 	  	"addresses" : [
 	  		{
+                "legacy_source_table" : "",
+                "legacy_id" : "",
 	  			"street_address" : "234 Second St",
 	  			"state" : "CA",
 	  			"city" : "San Jose",
@@ -66,6 +78,8 @@
 	  			"type" : "Home"
 	  		},
 	  		{
+                "legacy_source_table" : "",
+                "legacy_id" : "",
 	  			"street_address" : "7466 Campbell St",
 	  			"state" : "CA",
 	  			"city" : "Cambell",
@@ -77,6 +91,8 @@
    ],
    "cross_reports":[
       {
+         "legacy_source_table" : "",
+         "legacy_id" : "",
          "agency_type":"Law enforcement",
          "agency_name":"Sacramento County Sheriff Deparment",
          "method":"electronic report",
@@ -84,6 +100,8 @@
       }   ],
    "allegations":[
       {
+         "legacy_source_table" : "",
+         "legacy_id" : "",
          "victim_person_id":"5432",
          "perpetrator_person_id":"1234",
          "type":"physical abuse",

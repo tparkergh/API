@@ -38,8 +38,8 @@
 	  "person_id": 12345,
 	  "screening_id": 12345,
 	  "roles" : [
-	  	"victim",
-	  	"non-mandated reporter"
+	  	"Victim",
+	  	"Non-mandated Reporter"
 	  	],
 	  	"addresses" : [
 	  		{
@@ -74,7 +74,7 @@
 	  "person_id": 12345,
 	  "screening_id": 12345,
 	  "roles" : [
-	  	"perpetrator"
+	  	"Perpetrator"
 	  	],
 	  	"addresses" : [
 	  		{
