@@ -8,10 +8,11 @@ import javax.validation.constraints.Size;
 import gov.ca.cwds.rest.api.Request;
 import gov.ca.cwds.rest.api.Response;
 import gov.ca.cwds.rest.api.domain.DomainChef;
-import gov.ca.cwds.rest.api.domain.DomainObject;
 import gov.ca.cwds.rest.api.domain.ReportingDomain;
+import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 
+@ApiModel
 /**
  * {@link DomainObject} representing an address
  * 
@@ -49,7 +50,6 @@ public class Address extends ReportingDomain implements Request, Response {
   private Short governmentEntityCd;
 
   @ApiModelProperty(example = "1112223333")
-  @Size(max = 10)
   private BigDecimal messageNumber;
 
   @ApiModelProperty(example = "1112")
@@ -60,7 +60,6 @@ public class Address extends ReportingDomain implements Request, Response {
   private String headerAddress;
 
   @ApiModelProperty(example = "1112223333")
-  @Size(max = 10)
   private BigDecimal primaryNumber;
 
   @ApiModelProperty(example = "1112")
