@@ -10,19 +10,20 @@ import gov.ca.cwds.rest.validation.Date;
 import io.dropwizard.jackson.JsonSnakeCase;
 
 /**
+ * 
  * @author CWDS API Team
- *
  */
 @JsonSnakeCase
 @JsonInclude(Include.ALWAYS)
 public class PostedScreeningToReferral extends ScreeningToReferral implements Response {
+
   /**
    * Serialization version
    */
   private static final long serialVersionUID = 1L;
 
   /**
-   * Default no-op constructor
+   * Default, no-op constructor.
    */
   public PostedScreeningToReferral() {
     super();
@@ -61,7 +62,6 @@ public class PostedScreeningToReferral extends ScreeningToReferral implements Re
         communicationMethod, name, reportNarrative, reference, responseTime, startedAt, assignee,
         additionalInformation, screeningDecision, screeningDecisionDetail, address, participants,
         crossReports, allegations);
-
   }
 
 }
