@@ -192,7 +192,7 @@ public class ScreeningToReferralService implements CrudsService {
     gov.ca.cwds.rest.api.domain.Address referralAddress = null;
     gov.ca.cwds.rest.api.domain.Participant resultParticipant = null;
 
-    Set<ErrorMessage> messages = new HashSet();
+    Set<ErrorMessage> messages = new HashSet<ErrorMessage>();
     MAPPER.configure(SerializationFeature.INDENT_OUTPUT, true);
 
     assert request instanceof ScreeningToReferral;
@@ -221,7 +221,7 @@ public class ScreeningToReferralService implements CrudsService {
     } else {
       try {
         longTextId = createLongText(DEFAULT_COUNTY_SPECIFIC_CODE,
-            screeningToReferral.getAdditionalInformation());
+            screeningToReferral.getAdditionalInformation(), messages);
       } catch (ServiceException e) {
         String message = "ERROR - processing LongText associated with the Referral ";
         logError(message, e, messages);
@@ -325,9 +325,9 @@ public class ScreeningToReferralService implements CrudsService {
                 DEFAULT_CODE, "", DEFAULT_COUNTY_SPECIFIC_CODE, false, false, false);
             gov.ca.cwds.rest.api.domain.cms.ReferralClient postedReferralClient =
                 this.referralClientService.create(referralClient);
-            resultReferralClients.add(postedReferralClient);
-
             buildErrors(messages, validator.validate(referralClient));
+
+            resultReferralClients.add(postedReferralClient);
 
             /*
              * determine other participant/roles attributes relating to CWS/CMS allegation
@@ -449,7 +449,7 @@ public class ScreeningToReferralService implements CrudsService {
   private Set<gov.ca.cwds.rest.api.domain.CrossReport> processCrossReports(ScreeningToReferral scr,
       String referralId, Set<ErrorMessage> messages) throws ServiceException {
 
-    String crossReportId = DEFAULT_THIRD_ID;
+    String crossReportId = "";
     Set<gov.ca.cwds.rest.api.domain.CrossReport> resultCrossReports = new HashSet<>();
     Set<CrossReport> crossReports;
     crossReports = scr.getCrossReports();
@@ -560,6 +560,8 @@ public class ScreeningToReferralService implements CrudsService {
           DEFAULT_STATE_CODE, streetName, streetNumber, zipCode, address.getType(), zipSuffix, " ",
           " ", DEFAULT_CODE, DEFAULT_CODE, " ");
 
+      buildErrors(messages, validator.validate(domainAddress));
+
       PostedAddress postedAddress = (PostedAddress) this.addressService.create(domainAddress);
       addressId = postedAddress.getExistingAddressId();
 
@@ -567,20 +569,28 @@ public class ScreeningToReferralService implements CrudsService {
        * CMS Client Address
        */
       if (addressId.isEmpty()) {
-        LOGGER.error("ERROR - ADDRESS/IDENTIFIER is required for CLIENT_ADDRESS ", postedAddress);
-        throw new ServiceException(
-            "ERROR - ADDRESS/IDENTIFIER is required for CLIENT_ADDRESS table");
+        ServiceException exception =
+            new ServiceException("ERROR - ADDRESS/IDENTIFIER is required for CLIENT_ADDRESS table");
+        String message = "ERROR - ADDRESS/IDENTIFIER is required for CLIENT_ADDRESS table"
+            + exception.getMessage();
+        logError(message, exception, messages);
+        throw new ServiceException(exception);
       }
       if (clientId.isEmpty()) {
-        LOGGER.error("ERROR - CLIENT/IDENTIFIER is required for CLIENT_ADDRESS ", postedAddress);
-        throw new ServiceException(
-            "ERROR - CLIENT/IDENTIFIER is required for CLIENT_ADDRESS table");
+        ServiceException exception =
+            new ServiceException("ERROR - CLIENT/IDENTIFIER is required for CLIENT_ADDRESS ");
+        String message =
+            "ERROR - CLIENT/IDENTIFIER is required for CLIENT_ADDRESS " + exception.getMessage();
+        logError(message, exception, messages);
+        throw new ServiceException(exception);
       }
 
       ClientAddress clientAddress =
           new ClientAddress(DEFAULT_ADDRESS_TYPE, "", "", "", addressId, clientId, "", referralId);
       buildErrors(messages, validator.validate(clientAddress));
       this.clientAddressService.create(clientAddress);
+
+      buildErrors(messages, validator.validate(clientAddress));
 
       // update the addresses of the participant
       address.setLegacySourceTable("ADDRS_T");
@@ -613,6 +623,8 @@ public class ScreeningToReferralService implements CrudsService {
         DEFAULT_STATE_CODE, streetName, streetNumber, zipCode, address.getType(), zipSuffix, " ",
         " ", DEFAULT_CODE, DEFAULT_CODE, " ");
     // buildErrors(messages, validator,validate(domainAddress))
+
+    buildErrors(messages, validator.validate(domainAddress));
 
     PostedAddress postedAddress = (PostedAddress) this.addressService.create(domainAddress);
 
@@ -661,17 +673,21 @@ public class ScreeningToReferralService implements CrudsService {
         ip.getFirstName(), ip.getLastName(), mandatedReporterIndicator, 0, DEFAULT_DECIMAL, "", "",
         DEFAULT_DECIMAL, 0, DEFAULT_STATE_CODE, streetName, streetNumber, "", zipCodeString,
         referralId, "", DEFAULT_CODE, DEFAULT_COUNTY_SPECIFIC_CODE);
+
     buildErrors(messages, validator.validate(reporter));
 
     return this.reporterService.create(reporter);
 
   }
 
-  private String createLongText(String countySpecificCode, String textDescription)
-      throws ServiceException {
+  private String createLongText(String countySpecificCode, String textDescription,
+      Set<ErrorMessage> messages) throws ServiceException {
 
     LongText longText = new LongText(countySpecificCode, textDescription);
     PostedLongText postedLongText = longTextService.create(longText);
+
+    buildErrors(messages, validator.validate(longText));
+
     return postedLongText.getId();
 
   }
