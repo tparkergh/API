@@ -36,14 +36,12 @@ public class Participant extends ReportingDomain implements Request, Response {
   private long id;
 
   @JsonProperty("legacy_source_table")
-  @ApiModelProperty(required = true, readOnly = false, value = "Legacy Source Table",
-      example = "CLIENT_T")
+  @ApiModelProperty(required = true, readOnly = false, value = "Legacy Source Table")
   @NotNull
   private String legacySourceTable;
 
   @JsonProperty("legacy_id")
-  @ApiModelProperty(required = true, readOnly = false, value = "Legacy Client Id",
-      example = "1234567ABC")
+  @ApiModelProperty(required = true, readOnly = false, value = "Legacy Client Id")
   @Size(max = 10)
   @NotNull
   private String clientId;

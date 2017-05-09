@@ -2,7 +2,7 @@
    "id":"2",
    "legacy_source_table" : "",
    "legacy_id" : "",
-   "ended_at":"2016/08/03T01:00:00.000Z",
+   "ended_at":"2016-08-03T01:00:00.000Z",
    "incident_county":"sacramento",
    "incident_date":"2016-08-02",
    "location_type":"Foster Home",
@@ -11,7 +11,7 @@
    "report_narrative":"Narrative 123 test",
    "reference":"123ABC",
    "response_time":"immediate",
-   "started_at":"08/2016/03T01:00:00.000Z",
+   "started_at":"2016-08-03T01:00:00.000Z",
    "assignee":"Michael Bastow",
    "additional_information":"additional information about the referral",
    "screening_decision":"Response time",
@@ -38,7 +38,7 @@
 	  "person_id": 12345,
 	  "screening_id": 12345,
 	  "roles" : [
-	  	"Victim"
+	  	"Victim", "Non-mandated Reporter"
 	  	],
 	  	"addresses" : [
 	  		{
@@ -64,7 +64,7 @@
 	  "person_id": 12345,
 	  "screening_id": 12345,
 	  "roles" : [
-	  	"Mandated Reporter"
+	  	"Perpetrator"
 	  	],
 	  	"addresses" : [
 	  		{
@@ -90,7 +90,7 @@
       }   ],
    "allegations":[
       {
-   "legacy_source_table" : "",
+    "legacy_source_table" : "",
    "legacy_id" : "",
          "victim_person_id":"5432",
          "perpetrator_person_id":"1234",

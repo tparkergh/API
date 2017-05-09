@@ -70,12 +70,12 @@ public class ScreeningToReferralService implements CrudsService {
   private static final ObjectMapper MAPPER = Jackson.newObjectMapper();
 
   private static final Logger LOGGER = LoggerFactory.getLogger(ScreeningToReferral.class);
-  private static final String PERPETRATOR_ROLE = "perpetrator";
-  private static final String MANDATED_REPORTER_ROLE = "mandated reporter";
-  private static final String NON_MANDATED_REPORTER_ROLE = "non-mandated reporter";
-  private static final String ANONYMOUS_REPORTER_ROLE = "anonymous reporter";
-  private static final String VICTIM_ROLE = "victim";
-  private static final String SELF_REPORTED_ROLE = "self reported";
+  private static final String PERPETRATOR_ROLE = "Perpetrator";
+  private static final String MANDATED_REPORTER_ROLE = "Mandated Reporter";
+  private static final String NON_MANDATED_REPORTER_ROLE = "Non-mandated Reporter";
+  private static final String ANONYMOUS_REPORTER_ROLE = "Anonymous Reporter";
+  private static final String VICTIM_ROLE = "Victim";
+  private static final String SELF_REPORTED_ROLE = "Self Reported";
 
   private static final String CLIENT_TABLE_NAME = "CLIENT_T";
 
@@ -199,6 +199,12 @@ public class ScreeningToReferralService implements CrudsService {
 
     ScreeningToReferral screeningToReferral = (ScreeningToReferral) request;
 
+    if (!hasValidParticipants(screeningToReferral)) {
+      String message = "ERROR - Incompatiable participants include in request";
+      ServiceException exception = new ServiceException(message);
+      logError(message, exception, messages);
+    }
+
     try {
       Date dateTime = dateTimeFormat.parse(screeningToReferral.getStartedAt());
       dateStarted = dateFormat.format(dateTime);
@@ -248,7 +254,6 @@ public class ScreeningToReferralService implements CrudsService {
     /*
      * CWS/CMS Clients and Reporter
      */
-    // TODO: what about self-reported - for now - create CLIENT and REFERRAL_CLIENT
     Set<gov.ca.cwds.rest.api.domain.cms.ReferralClient> resultReferralClients =
         new LinkedHashSet<>();
     Set<PostedClient> postedClients = new LinkedHashSet<>();
@@ -261,6 +266,12 @@ public class ScreeningToReferralService implements CrudsService {
 
     participants = screeningToReferral.getParticipants();
     for (Participant incomingParticipant : participants) {
+
+      if (!hasValidRoles(incomingParticipant)) {
+        String message = "ERROR - Participant contains incompatiable roles ";
+        ServiceException exception = new ServiceException(message);
+        logError(message, exception, messages);
+      }
 
       String genderCode = "";
       if (!incomingParticipant.getGender().isEmpty()) {
@@ -291,7 +302,8 @@ public class ScreeningToReferralService implements CrudsService {
             logError(message, e, messages);
           }
         } else {
-          // not a reporter participant - make a CLIENT and REFERRAL_CLIENT
+          // not a reporter participant - make a CLIENT and REFERRAL_CLIENT unless anonymous
+          // reporter
           if (!anonymousReporter(screeningToReferral)) {
 
             // not an anonymous reporter participant - create client
@@ -320,11 +332,12 @@ public class ScreeningToReferralService implements CrudsService {
             // CMS Referral Client
             // TODO: map the DISPOSITION_CODE accroding to rules of CWS/CMS
             ReferralClient referralClient = new ReferralClient("", DEFAULT_APPROVAL_STATUS_CODE,
-                DEFAULT_CODE, DEFAULT_DISPOSITION_CODE, "",
-                role.equalsIgnoreCase(SELF_REPORTED_ROLE), false, referralId, clientId, "",
-                DEFAULT_CODE, "", DEFAULT_COUNTY_SPECIFIC_CODE, false, false, false);
+                DEFAULT_CODE, DEFAULT_DISPOSITION_CODE, "", selfReported(incomingParticipant),
+                false, referralId, clientId, "", DEFAULT_CODE, "", DEFAULT_COUNTY_SPECIFIC_CODE,
+                false, false, false);
             gov.ca.cwds.rest.api.domain.cms.ReferralClient postedReferralClient =
                 this.referralClientService.create(referralClient);
+            // validate referral client
             buildErrors(messages, validator.validate(referralClient));
 
             resultReferralClients.add(postedReferralClient);
@@ -342,9 +355,9 @@ public class ScreeningToReferralService implements CrudsService {
               // addresses associated with a client
               resultParticipant =
                   processClientAddress(incomingParticipant, referralId, clientId, messages);
-            } catch (Exception e) {
-              LOGGER.error("ERROR - creating Addresses - " + e.getMessage());
-              throw new ServiceException(e);
+            } catch (ServiceException e) {
+              String message = "ERROR - creating Address ";
+              logError(message, e, messages);
             }
             resultParticipants.add(incomingParticipant);
           }
@@ -352,21 +365,21 @@ public class ScreeningToReferralService implements CrudsService {
       }
     }
 
-    Set<gov.ca.cwds.rest.api.domain.CrossReport> resultCrossReports;
+
+    Set<gov.ca.cwds.rest.api.domain.CrossReport> resultCrossReports = null;
     try {
       resultCrossReports = processCrossReports(screeningToReferral, referralId, messages);
     } catch (Exception e) {
-      LOGGER.error("ERROR - creating CrossReport" + e.getMessage());
-      throw new ServiceException(e);
+      String message = "ERROR - creating CrossReport ";
+      logError(message, e, messages);
     }
 
-
-    Set<gov.ca.cwds.rest.api.domain.Allegation> resultAllegations;
+    Set<gov.ca.cwds.rest.api.domain.Allegation> resultAllegations = null;
     try {
       resultAllegations = processAllegations(screeningToReferral, referralId, messages);
     } catch (Exception e) {
-      LOGGER.error("ERROR - creating Allegations" + e.getMessage());
-      throw new ServiceException(e);
+      String message = "ERROR - creating Allegations ";
+      logError(message, e, messages);
     }
 
     return new PostedScreeningToReferral(screeningToReferral.getId(), referralId, "REFERL_T",
@@ -425,19 +438,126 @@ public class ScreeningToReferralService implements CrudsService {
     throw new NotImplementedException("Update is not implemented");
   }
 
+  // is there an anonymous reporter participant on this screening to referral?
   private Boolean anonymousReporter(ScreeningToReferral str) {
     Set<Participant> participants;
     participants = str.getParticipants();
-    for (Participant incomingParticipant : participants) {
-      Set<String> roles = new HashSet<>(incomingParticipant.getRoles());
-      /**
-       * process the roles of this participant
-       */
+    if (participants != null) {
+      for (Participant incomingParticipant : participants) {
+        Set<String> roles = new HashSet<>(incomingParticipant.getRoles());
+        if (roles != null) {
+          if (roles.contains(ANONYMOUS_REPORTER_ROLE)) {
+            return true;
+          }
+        }
+      }
+    }
+
+    return false;
+  }
+
+  private Boolean hasValidParticipants(ScreeningToReferral scr) throws ServiceException {
+
+    int reporterCount = 0;
+    int victimCount = 0;
+
+    Set<Participant> participants = scr.getParticipants();
+    if (participants != null) {
+      for (Participant participant : participants) {
+        if (isReporterType(participant)) {
+          reporterCount++;
+        }
+        if (hasVictimRole(participant)) {
+          victimCount++;
+        }
+      }
+    }
+    // R - 00851 Reporter Creation
+    // R - 00836 Self Rep Ind Limit
+    // only one reporter is allowed on a referral
+    if (reporterCount > 1) {
+      return false;
+    }
+    // R - 00851 Reporter Creation
+    // only one victim is allowed on a referral
+    if (victimCount != 1) {
+      return false;
+    }
+
+    return true;
+  }
+
+  private Boolean isReporterType(Participant participant) throws ServiceException {
+
+    Set<String> roles = participant.getRoles();
+    if (roles != null) {
+      if (roles.contains(ANONYMOUS_REPORTER_ROLE)) {
+        return true;
+      }
+      if (roles.contains(MANDATED_REPORTER_ROLE)) {
+        return true;
+      }
+      if (roles.contains(NON_MANDATED_REPORTER_ROLE)) {
+        return true;
+      }
+      if (roles.contains(SELF_REPORTED_ROLE)) {
+        return true;
+      }
+      if (roles.contains(VICTIM_ROLE) && roles.contains(NON_MANDATED_REPORTER_ROLE)) {
+        return true;
+      }
+    }
+    return false;
+  }
+
+  private Boolean hasVictimRole(Participant participant) throws ServiceException {
+    Set<String> roles = participant.getRoles();
+    if (roles != null) {
+      if (roles.contains(VICTIM_ROLE)) {
+        return true;
+      }
+    }
+    return false;
+  }
+
+  // check for incompatiable roles for this participant
+  private Boolean hasValidRoles(Participant participant) throws ServiceException {
+
+    Set<String> roles = participant.getRoles();
+    if (roles != null) {
+      // R - 00831
+      if (roles.contains(ANONYMOUS_REPORTER_ROLE) && roles.contains(SELF_REPORTED_ROLE)) {
+        return false;
+      }
+      if (roles.contains(ANONYMOUS_REPORTER_ROLE) && roles.contains(VICTIM_ROLE)) {
+        return false;
+      }
+      if (roles.contains(ANONYMOUS_REPORTER_ROLE) && (roles.contains(MANDATED_REPORTER_ROLE)
+          || roles.contains(NON_MANDATED_REPORTER_ROLE))) {
+        return false;
+      }
+      if (roles.contains(VICTIM_ROLE) && roles.contains(PERPETRATOR_ROLE)) {
+        return false;
+      }
+      if (roles.contains(MANDATED_REPORTER_ROLE) && roles.contains(NON_MANDATED_REPORTER_ROLE)) {
+        return false;
+      }
       for (String role : roles) {
 
-        if (role.equalsIgnoreCase(ANONYMOUS_REPORTER_ROLE)) {
-          return true;
-        }
+      }
+    }
+    return true;
+  }
+
+  // check for self-reported participant
+  private Boolean selfReported(Participant participant) throws ServiceException {
+    Set<String> roles = participant.getRoles();
+    if (roles != null) {
+      if (roles.contains(VICTIM_ROLE) && roles.contains(NON_MANDATED_REPORTER_ROLE)) {
+        return true;
+      }
+      if (roles.contains(SELF_REPORTED_ROLE)) {
+        return true;
       }
     }
     return false;
@@ -475,11 +595,9 @@ public class ScreeningToReferralService implements CrudsService {
       crossReport.setLegacyId(postedCrossReport.getThirdId());
       crossReport.setLegacySourceTable("CRSS_RPT");
       resultCrossReports.add(crossReport);
-
     }
 
     return resultCrossReports;
-
   }
 
   /*
@@ -508,7 +626,6 @@ public class ScreeningToReferralService implements CrudsService {
             new ServiceException("ERROR - victim could not be determined for an allegation");
         String message = "ERROR - creating Reporter" + exception.getMessage();
         logError(message, exception, messages);
-        throw exception;
       }
 
       // create an allegation in CMS legacy database
@@ -524,7 +641,6 @@ public class ScreeningToReferralService implements CrudsService {
       allegation.setLegacyId(postedAllegation.getId());
       allegation.setLegacySourceTable("ALLGTN_T");
       processedAllegations.add(allegation);
-
     }
     return processedAllegations;
   }
@@ -574,7 +690,6 @@ public class ScreeningToReferralService implements CrudsService {
         String message = "ERROR - ADDRESS/IDENTIFIER is required for CLIENT_ADDRESS table"
             + exception.getMessage();
         logError(message, exception, messages);
-        throw new ServiceException(exception);
       }
       if (clientId.isEmpty()) {
         ServiceException exception =
@@ -582,7 +697,6 @@ public class ScreeningToReferralService implements CrudsService {
         String message =
             "ERROR - CLIENT/IDENTIFIER is required for CLIENT_ADDRESS " + exception.getMessage();
         logError(message, exception, messages);
-        throw new ServiceException(exception);
       }
 
       ClientAddress clientAddress =

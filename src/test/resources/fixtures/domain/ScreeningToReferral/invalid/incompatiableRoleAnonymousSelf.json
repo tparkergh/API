@@ -2,7 +2,7 @@
    "id":"2",
    "legacy_source_table" : "",
    "legacy_id" : "",
-   "ended_at":"2016/08/03T01:00:00.000Z",
+   "ended_at":"2016-08-03T01:00:00.000Z",
    "incident_county":"sacramento",
    "incident_date":"2016-08-02",
    "location_type":"Foster Home",
@@ -11,9 +11,9 @@
    "report_narrative":"Narrative 123 test",
    "reference":"123ABC",
    "response_time":"immediate",
-   "started_at":"08/2016/03T01:00:00.000Z",
+   "started_at":"2016-08-03T01:00:00.000Z",
    "assignee":"Michael Bastow",
-   "additional_information":"additional information about the referral",
+   "additional_information" : "addtional information",
    "screening_decision":"Response time",
    "screening_decision_detail":"Detail",
    "address":{
@@ -24,7 +24,7 @@
 	  "state": "CA",
 	  "zip": 95757,
 	  "type": "Home"
-  },
+},
    "participants":[
 	{
 	  "id" : "5432",
@@ -42,8 +42,8 @@
 	  	],
 	  	"addresses" : [
 	  		{
-   "legacy_source_table" : "",
-   "legacy_id" : "",
+                "legacy_source_table" : "",
+                "legacy_id" : "",
 	  			"street_address" : "123 First St",
 	  			"state" : "CA",
 	  			"city" : "San Jose",
@@ -64,12 +64,12 @@
 	  "person_id": 12345,
 	  "screening_id": 12345,
 	  "roles" : [
-	  	"Mandated Reporter"
+	  	"Anonymous Reporter", "Self Reported"
 	  	],
 	  	"addresses" : [
 	  		{
-   "legacy_source_table" : "",
-   "legacy_id" : "",
+                "legacy_source_table" : "",
+                "legacy_id" : "",
 	  			"street_address" : "234 Second St",
 	  			"state" : "CA",
 	  			"city" : "San Jose",
@@ -78,11 +78,11 @@
 	  		}
 	  	]
 	}
-   ],
+	   ],
    "cross_reports":[
       {
-   "legacy_source_table" : "",
-   "legacy_id" : "",
+         "legacy_source_table" : "",
+         "legacy_id" : "",
          "agency_type":"Law enforcement",
          "agency_name":"Sacramento County Sheriff Deparment",
          "method":"electronic report",
@@ -90,8 +90,8 @@
       }   ],
    "allegations":[
       {
-   "legacy_source_table" : "",
-   "legacy_id" : "",
+        "legacy_source_table" : "",
+        "legacy_id" : "",
          "victim_person_id":"5432",
          "perpetrator_person_id":"1234",
          "type":"physical abuse",

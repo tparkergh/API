@@ -29,7 +29,7 @@
 	  "person_id": 12345,
 	  "screening_id": 12345,
 	  "roles" : [
-	  	"victim"
+	  	"Victim"
 	  	],
 	  	"addresses" : [
 	  		{
@@ -55,7 +55,7 @@
 	  "person_id": 12345,
 	  "screening_id": 12345,
 	  "roles" : [
-	  	"mandated reporter"
+	  	"Mandated Reporter"
 	  	],
 	  	"addresses" : [
 	  		{
