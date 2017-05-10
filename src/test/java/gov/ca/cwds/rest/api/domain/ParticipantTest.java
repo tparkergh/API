@@ -1,6 +1,8 @@
 package gov.ca.cwds.rest.api.domain;
 
 import static io.dropwizard.testing.FixtureHelpers.fixture;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.assertFalse;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.is;
@@ -8,6 +10,8 @@ import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
+import java.io.IOException;
+import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -108,9 +112,8 @@ public class ParticipantTest implements PersistentTestTemplate {
   @Test
   public void testEqualsHashCodeWorks() {
     EqualsVerifier.forClass(Participant.class).suppress(Warning.NONFINAL_FIELDS)
-        .withIgnoredFields("messages").verify();
+        .withIgnoredFields("messages", "victim", "reporter", "perpetrator").verify();
   }
-
 
   @Override
   @Test
@@ -180,10 +183,60 @@ public class ParticipantTest implements PersistentTestTemplate {
 
   }
 
+  @Test
+  public void testIsVictim() throws IOException {
+    Set roles = new HashSet(Arrays.asList("victim"));
+    Participant participant = createParticipantWithRoles(roles);
+    assertTrue("Expected participant with a victim role to be a victim", participant.isVictim());
+  }
+
+  @Test
+  public void testParticipantIsNotAVictimWhenVictimIsNotInRole() throws IOException {
+    Set roles = new HashSet();
+    Participant participant = createParticipantWithRoles(roles);
+    assertFalse("Expected participant with out a victim role not to be a victim", participant.isVictim());
+  }
+
+  @Test
+  public void testIsReporter() throws IOException {
+    Set roles = new HashSet(Arrays.asList("reporter"));
+    Participant participant = createParticipantWithRoles(roles);
+    assertTrue("Expected participant with a reporter role to be a reporter", participant.isReporter());
+  }
+
+  @Test
+  public void testParticipantIsNotAReporterWhenReportersNotInRole() throws IOException {
+    Set roles = new HashSet();
+    Participant participant = createParticipantWithRoles(roles);
+    assertFalse("Expected participant with out a reporter role not to be a reporter", participant.isReporter());
+  }
+
+  @Test
+  public void testIsPerpetrator() throws IOException {
+    Set roles = new HashSet(Arrays.asList("perpetrator"));
+    Participant participant = createParticipantWithRoles(roles);
+    assertTrue("Expected participant with a perpetrator role to be a perpetrator", participant.isPerpetrator());
+  }
+
+  @Test
+  public void testParticipantIsNotAReporterWhenPerpetratorNotInRole() throws IOException {
+    Set roles = new HashSet();
+    Participant participant = createParticipantWithRoles(roles);
+    assertFalse("Expected participant with out a perpetrator role not to be a perpetrator", participant.isPerpetrator());
+  }
+
+  private Participant createParticipantWithRoles(Set<String> roles) {
+    return createParticipant(roles);
+
+  }
   private Participant validParticipant() {
+    return createParticipant(roles);
+  }
+  private Participant createParticipant(Set<String> roles ){
     Participant validParticipant = new Participant(id, "", "", firstName, lastName, gender, ssn,
-        dateOfBirth, personId, screeningId, roles, addresses);
+            dateOfBirth, personId, screeningId, roles, addresses);
     return validParticipant;
+
   }
 }
 

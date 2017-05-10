@@ -7,6 +7,7 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
@@ -90,6 +91,17 @@ public class Participant extends ReportingDomain implements Request, Response {
   @JsonProperty("addresses")
   private Set<Address> addresses;
 
+
+
+  @JsonIgnore
+  private boolean perpetrator;
+
+  @JsonIgnore
+  private boolean victim;
+
+  @JsonIgnore
+  private boolean reporter;
+
   /**
    * empty constructor
    */
@@ -135,6 +147,12 @@ public class Participant extends ReportingDomain implements Request, Response {
     this.ssn = ssn;
     this.roles = roles;
     this.addresses = addresses;
+
+    roles.forEach(role ->{
+      if (role.toLowerCase().contains("victim")) { victim = true; }
+      if (role.toLowerCase().contains("reporter")) { reporter = true; }
+      if (role.toLowerCase().contains("perpetrator")) { perpetrator = true; }
+    });
   }
 
   /**
@@ -278,6 +296,18 @@ public class Participant extends ReportingDomain implements Request, Response {
    */
   public void setAddresses(Set<Address> addresses) {
     this.addresses = addresses;
+  }
+
+  public boolean isPerpetrator() {
+    return perpetrator;
+  }
+
+  public boolean isVictim() {
+    return victim;
+  }
+
+  public boolean isReporter() {
+    return reporter;
   }
 
   /*

@@ -187,19 +187,19 @@ public class ScreeningToReferralTest {
   }
 
   @Test
-  public void testWithEmptyCrossReportSuccess() throws Exception {
+  public void testWithEmptyCrossReportFails() throws Exception {
     ScreeningToReferral toCreate =
         MAPPER.readValue(fixture("fixtures/domain/ScreeningToReferral/valid/emptyCrossReport.json"),
             ScreeningToReferral.class);
     Response response =
         resources.client().target(ROOT_RESOURCE).request().accept(MediaType.APPLICATION_JSON)
             .post(Entity.entity(toCreate, MediaType.APPLICATION_JSON));
-    assertThat(response.getStatus(), is(equalTo(204)));
+    assertThat(response.getStatus(), is(equalTo(422)));
 
   }
 
   @Test
-  public void testWithNullCrossReportSuccess() throws Exception {
+  public void testWithNullCrossReportFails() throws Exception {
     ScreeningToReferral toCreate =
         MAPPER.readValue(fixture("fixtures/domain/ScreeningToReferral/valid/nullCrossReport.json"),
             ScreeningToReferral.class);
@@ -207,7 +207,7 @@ public class ScreeningToReferralTest {
         resources.client().target(ROOT_RESOURCE).request().accept(MediaType.APPLICATION_JSON)
             .post(Entity.entity(toCreate, MediaType.APPLICATION_JSON));
     System.out.println(response.readEntity(String.class));
-    assertThat(response.getStatus(), is(equalTo(204)));
+    assertThat(response.getStatus(), is(equalTo(422)));
 
   }
 

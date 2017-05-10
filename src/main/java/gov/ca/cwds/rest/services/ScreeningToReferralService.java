@@ -359,9 +359,9 @@ public class ScreeningToReferralService implements CrudsService {
               String message = "ERROR - creating Address ";
               logError(message, e, messages);
             }
-            resultParticipants.add(incomingParticipant);
           }
         }
+        resultParticipants.add(incomingParticipant);
       }
     }
 
