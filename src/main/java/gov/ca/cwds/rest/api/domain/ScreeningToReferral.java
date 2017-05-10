@@ -7,6 +7,8 @@ import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import io.dropwizard.validation.ValidationMethod;
 import org.hibernate.validator.constraints.NotEmpty;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
@@ -154,7 +156,8 @@ public class ScreeningToReferral extends ReportingDomain implements Request {
   private Set<Participant> participants;
 
   @JsonProperty("cross_reports")
-  @ApiModelProperty(required = false, readOnly = false)
+  @ApiModelProperty(required = true, readOnly = false)
+  @NotEmpty
   @Valid
   private Set<CrossReport> crossReports;
 
@@ -366,6 +369,26 @@ public class ScreeningToReferral extends ReportingDomain implements Request {
   @SuppressWarnings("javadoc")
   public Set<CrossReport> getCrossReports() {
     return crossReports;
+  }
+
+
+  @ValidationMethod(message="must contain a Victim, Perpetrator, and Reporter")
+  @JsonIgnore
+  public boolean isValidParticipants(){
+    boolean perp = false;
+    boolean victim = false;
+    boolean reporter = false;
+
+    if (participants != null) {
+        for (Participant participant : participants){
+          perp = perp || participant.isPerpetrator();
+          victim = victim || participant.isReporter();
+          reporter = reporter || participant.isVictim();
+
+        }
+    }
+
+    return perp && victim && reporter;
   }
 
   @Override
