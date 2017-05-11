@@ -26,13 +26,11 @@ import io.swagger.annotations.ApiModelProperty;
 public class CrossReport extends ReportingDomain implements Request, Response {
 
   @JsonProperty("legacy_source_table")
-  @ApiModelProperty(required = true, value = "Legacy Source Table", example = "")
-  @NotNull
+  @ApiModelProperty(required = false, value = "Legacy Source Table", example = "")
   private String legacySourceTable;
 
   @JsonProperty("legacy_id")
-  @ApiModelProperty(required = true, value = "legacy Id", example = "")
-  @NotNull
+  @ApiModelProperty(required = false, value = "legacy Id", example = "")
   @Size(max = 10)
   private String legacyId;
 
