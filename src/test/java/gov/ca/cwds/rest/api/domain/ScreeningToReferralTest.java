@@ -8,6 +8,7 @@ import static org.junit.Assert.assertEquals;
 import static org.mockito.Mockito.mock;
 
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
@@ -129,23 +130,27 @@ public class ScreeningToReferralTest {
     Set<ConstraintViolation<ScreeningToReferral>> constraintViolations =
         validator.validate(toValidate);
     assertEquals(2, constraintViolations.size());
-    String[] expectedMessages = { "must contain a Victim, Perpetrator, and Reporter", "may not be empty"};
+    String[] expectedMessages = { "may not be empty", "must contain a Victim, Perpetrator, and Reporter"};
     Iterator itr = constraintViolations.iterator();
     String[] actualMessages = {((ConstraintViolation)itr.next()).getMessage(),((ConstraintViolation)itr.next()).getMessage()};
+    Arrays.sort(expectedMessages);
+    Arrays.sort(actualMessages);
     assertArrayEquals(expectedMessages,actualMessages);
   }
 
   @Test
   public void testWithEmptyParticipantsFail() throws Exception {
     ScreeningToReferral toValidate = MAPPER.readValue(
-        fixture("fixtures/domain/ScreeningToReferral/invalid/emptyParticipants.json"),
+        fixture("fixtures/domain/screeningToReferral/invalid/emptyParticipants.json"),
         ScreeningToReferral.class);
     Set<ConstraintViolation<ScreeningToReferral>> constraintViolations =
         validator.validate(toValidate);
     assertEquals(2, constraintViolations.size());
-    String[] expectedMessages = { "must contain a Victim, Perpetrator, and Reporter", "may not be empty"};
+    String[] expectedMessages = { "may not be empty", "must contain a Victim, Perpetrator, and Reporter"};
     Iterator itr = constraintViolations.iterator();
     String[] actualMessages = {((ConstraintViolation)itr.next()).getMessage(),((ConstraintViolation)itr.next()).getMessage()};
+    Arrays.sort(expectedMessages);
+    Arrays.sort(actualMessages);
     assertArrayEquals(expectedMessages,actualMessages);
   }
 
