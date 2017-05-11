@@ -8,6 +8,9 @@ import javax.persistence.PrePersist;
 import javax.persistence.PreRemove;
 import javax.persistence.PreUpdate;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.google.inject.Inject;
 
 import gov.ca.cwds.data.persistence.cms.Client;
@@ -19,14 +22,16 @@ import gov.ca.cwds.rest.services.cms.CountyOwnershipService;
  * @author CWDS API Team
  *
  */
-public class EventListener {
+public class ApiJpaEventListener {
+
+  private static final Logger LOGGER = LoggerFactory.getLogger(ApiJpaEventListener.class);
 
   private CountyOwnershipService countyService;
 
   /**
    * default constructor
    */
-  public EventListener() {
+  public ApiJpaEventListener() {
     super();
   }
 
@@ -34,7 +39,7 @@ public class EventListener {
    * @param countyService - countyService
    */
   @Inject
-  public EventListener(CountyOwnershipService countyService) {
+  public ApiJpaEventListener(CountyOwnershipService countyService) {
     this.countyService = countyService;
   }
 
@@ -46,7 +51,7 @@ public class EventListener {
   @PrePersist
   public void userPrePersist(Object ob) {
     if (ob instanceof ReferralClient) {
-      System.out.println("Listening User Pre Persist : " + ((ReferralClient) ob).getClientId());
+      LOGGER.info("Listening User Pre Persist : " + ((ReferralClient) ob).getClientId());
     }
 
   }
@@ -58,12 +63,12 @@ public class EventListener {
    */
   @PostPersist
   public void userPostPersist(Object ob) {
-    System.out.println("Listening User Post Persist : " + ((Client) ob).getId());
+    LOGGER.info("Listening User Post Persist : " + ((Client) ob).getId());
     // countyService = Listner.getCountyService();
     if (ob != null) {
       if (ob instanceof Client) {
         Client client = (Client) ob;
-        System.out.println("aaaaaaaaaaaaaaa" + client);
+        LOGGER.info("aaaaaaaaaaaaaaa" + client);
         countyService.createCountyFromClient(client);
       }
 
@@ -76,7 +81,7 @@ public class EventListener {
    */
   @PostLoad
   public void userPostLoad(Object ob) {
-    System.out.println("Listening User Post Load Adarsh : " + ((ReferralClient) ob).getClientId());
+    LOGGER.info("Listening User Post Load Adarsh : " + ((ReferralClient) ob).getClientId());
   }
 
   /**
@@ -84,7 +89,7 @@ public class EventListener {
    */
   @PreUpdate
   public void userPreUpdate(ReferralClient ob) {
-    System.out.println("Listening User Pre Update : " + ob.getClientId());
+    LOGGER.info("Listening User Pre Update : " + ob.getClientId());
   }
 
   /**
@@ -92,7 +97,7 @@ public class EventListener {
    */
   @PostUpdate
   public void userPostUpdate(ReferralClient ob) {
-    System.out.println("Listening User Post Update : " + ob.getClientId());
+    LOGGER.info("Listening User Post Update : " + ob.getClientId());
   }
 
   /**
@@ -100,7 +105,7 @@ public class EventListener {
    */
   @PreRemove
   public void userPreRemove(ReferralClient ob) {
-    System.out.println("Listening User Pre Remove : " + ob.getClientId());
+    LOGGER.info("Listening User Pre Remove : " + ob.getClientId());
   }
 
   /**
@@ -108,6 +113,6 @@ public class EventListener {
    */
   @PostRemove
   public void userPostRemove(ReferralClient ob) {
-    System.out.println("Listening User Post Remove : " + ob.getClientId());
+    LOGGER.info("Listening User Post Remove : " + ob.getClientId());
   }
 }
