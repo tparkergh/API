@@ -83,7 +83,7 @@ public class ClientDaoIT implements DaoTestTemplate {
 
   @SuppressWarnings("unchecked")
   @Override
-  // @Test
+  @Test
   public void testFindAllReturnsCorrectList() {
     Query query = session.getNamedQuery("gov.ca.cwds.data.persistence.cms.Client.findAll");
     final List<Client> list = query.list();
@@ -124,7 +124,7 @@ public class ClientDaoIT implements DaoTestTemplate {
   // }
 
   @Override
-  // @Test
+  @Test
   public void testFind() {
     String id = "AaiU7IW0Rt";
     Client found = clientDao.find(id);
@@ -132,7 +132,7 @@ public class ClientDaoIT implements DaoTestTemplate {
   }
 
   @Override
-  // @Test
+  @Test
   public void testFindEntityNotFoundException() throws Exception {
     String id = "9999999ZZZ";
     Client found = clientDao.find(id);
@@ -140,7 +140,7 @@ public class ClientDaoIT implements DaoTestTemplate {
   }
 
   @Override
-  // @Test
+  @Test
   public void testCreate() throws Exception {
 
     Client vc = validClient();
@@ -178,7 +178,7 @@ public class ClientDaoIT implements DaoTestTemplate {
   }
 
   @Override
-  // @Test
+  @Test
   public void testCreateExistingEntityException() throws Exception {
     thrown.expect(EntityExistsException.class);
     Client vc = validClient();
@@ -216,7 +216,7 @@ public class ClientDaoIT implements DaoTestTemplate {
   }
 
   @Override
-  // @Test
+  @Test
   public void testDelete() {
     String id = "AaiU7IW0Rt";
     Client deleted = clientDao.delete(id);
@@ -231,7 +231,7 @@ public class ClientDaoIT implements DaoTestTemplate {
   }
 
   @Override
-  // @Test
+  @Test
   public void testUpdate() throws Exception {
     Client vc = validClient();
     Client pers = new Client(vc.getAdjudicatedDelinquentIndicator(), vc.getAdoptionStatusCode(),
@@ -268,7 +268,7 @@ public class ClientDaoIT implements DaoTestTemplate {
   }
 
   @Override
-  // @Test
+  @Test
   public void testUpdateEntityNotFoundException() throws Exception {
     thrown.expect(EntityNotFoundException.class);
     Client vc = validClient();
