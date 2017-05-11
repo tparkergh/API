@@ -58,7 +58,7 @@ public class PostedScreeningToReferral extends ScreeningToReferral implements Re
       String responseTime, @Date String startedAt, String assignee, String additionalInformation,
       String screeningDecision, String screeningDecisionDetail, Address address,
       Set<Participant> participants, Set<CrossReport> crossReports, Set<Allegation> allegations) {
-    super(id, referralId, legacySourceTable, endedAt, incidentCounty, incidentDate, locationType,
+    super(id, legacySourceTable, referralId, endedAt, incidentCounty, incidentDate, locationType,
         communicationMethod, name, reportNarrative, reference, responseTime, startedAt, assignee,
         additionalInformation, screeningDecision, screeningDecisionDetail, address, participants,
         crossReports, allegations);
