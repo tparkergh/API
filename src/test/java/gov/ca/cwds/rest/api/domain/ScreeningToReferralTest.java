@@ -141,7 +141,7 @@ public class ScreeningToReferralTest {
   @Test
   public void testWithEmptyParticipantsFail() throws Exception {
     ScreeningToReferral toValidate = MAPPER.readValue(
-        fixture("fixtures/domain/screeningToReferral/invalid/emptyParticipants.json"),
+        fixture("fixtures/domain/ScreeningToReferral/invalid/emptyParticipants.json"),
         ScreeningToReferral.class);
     Set<ConstraintViolation<ScreeningToReferral>> constraintViolations =
         validator.validate(toValidate);
@@ -233,7 +233,7 @@ public class ScreeningToReferralTest {
   @Test
   public void testBlankLegacySourceTableSuccess() throws Exception {
     ScreeningToReferral toValidate = MAPPER.readValue(
-        fixture("fixtures/domain/screeningToReferral/valid/blankLegacySourceTable.json"),
+        fixture("fixtures/domain/ScreeningToReferral/valid/blankLegacySourceTable.json"),
         ScreeningToReferral.class);
 
     Set<ConstraintViolation<ScreeningToReferral>> constraintViolations =
@@ -295,7 +295,7 @@ public class ScreeningToReferralTest {
   @Test
   public void testLegacyIdTooLongFail() throws Exception {
     ScreeningToReferral toValidate = MAPPER.readValue(
-        fixture("fixtures/domain/screeningToReferral/invalid/legacyIdTooLong.json"),
+        fixture("fixtures/domain/ScreeningToReferral/invalid/legacyIdTooLong.json"),
         ScreeningToReferral.class);
     Set<ConstraintViolation<ScreeningToReferral>> constraintViolations =
         validator.validate(toValidate);
