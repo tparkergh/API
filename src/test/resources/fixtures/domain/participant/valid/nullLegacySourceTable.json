@@ -1,6 +1,6 @@
 {
   "id" : "5432",
-  "legacy_source_table" : "CLIENT_T",
+  "legacy_source_table" : null,
   "legacy_id" : "1234567ABC",
   "first_name": "John",
   "last_name": "Smith",

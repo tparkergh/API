@@ -1,6 +1,6 @@
 package gov.ca.cwds.rest.api.domain;
 
-import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Max;
 import javax.validation.constraints.Size;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
@@ -25,13 +25,11 @@ public class Address extends ReportingDomain implements Request, Response {
   private static final long serialVersionUID = 1L;
 
   @JsonProperty("legacy_source_table")
-  @ApiModelProperty(required = true, readOnly = false, value = "Legacy Source Table")
-  @NotNull
+  @ApiModelProperty(required = true, readOnly = false, value = "Legacy Source Table", example = "")
   private String legacySourceTable;
 
   @JsonProperty("legacy_id")
-  @ApiModelProperty(required = true, readOnly = false, value = "Legacy Id")
-  @NotNull
+  @ApiModelProperty(required = true, readOnly = false, value = "Legacy Id", example = "")
   @Size(max = 10)
   private String addressId;
 
@@ -41,17 +39,18 @@ public class Address extends ReportingDomain implements Request, Response {
   private String streetAddress;
 
   @JsonProperty("city")
-  @ApiModelProperty(example = "Springfield")
+  @ApiModelProperty(value = "City", example = "Springfield")
   @Size(max = 50)
   private String city;
 
   @JsonProperty("state")
-  @ApiModelProperty(example = "WA")
+  @ApiModelProperty(value = "State Code", example = "California")
   @Size(max = 50)
   private String state;
 
   @JsonProperty("zip")
-  @ApiModelProperty(example = "6525")
+  @ApiModelProperty(value = "Zip", example = "6525")
+  @Max(99999)
   private Integer zip;
 
   @JsonProperty("type")

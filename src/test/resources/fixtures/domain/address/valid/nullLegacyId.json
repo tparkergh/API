@@ -1,6 +1,6 @@
 {
-  "legacy_source_table" : "",
-  "legacy_id" : "",
+  "legacy_source_table" : "CLIENT_T",
+  "legacy_id" : null,
   "street_address": "123 Main",
   "city": "Sacramento",
   "state": "CA",

@@ -1,7 +1,7 @@
 {
    "id":"2",
-   "legacy_source_table" : "REFERL_T",
-   "legacy_id" : "1234567ABC",
+   "legacy_source_table" : "",
+   "legacy_id" : "",
    "ended_at":"2016-08-03T01:00:00.000Z",
    "incident_county":"sacramento",
    "incident_date":"2016-08-02",
@@ -13,18 +13,18 @@
    "response_time":"immediate",
    "started_at":"2016-08-03T01:00:00.000Z",
    "assignee":"Michael Bastow",
-   "additional_information":"additional information about the referral",
+   "additional_information" : "addtional information",
    "screening_decision":"Response time",
    "screening_decision_detail":"Detail",
    "address":{
-   "legacy_source_table" : "",
-   "legacy_id" : "",
+      "legacy_source_table" : "",
+      "legacy_id" : "",
 	  "street_address": "123 Main",
 	  "city": "Sacramento",
 	  "state": "CA",
 	  "zip": 95757,
 	  "type": "Home"
-  },
+},
    "participants":[
 	{
 	  "id" : "5432",
@@ -38,7 +38,7 @@
 	  "person_id": 12345,
 	  "screening_id": 12345,
 	  "roles" : [
-	  	"Victim"
+	  	"Victim", "Non-mandated Reporter"
 	  	],
 	  	"addresses" : [
 	  		{
@@ -64,7 +64,7 @@
 	  "person_id": 12345,
 	  "screening_id": 12345,
 	  "roles" : [
-	  	"Perpetrator"
+	  	"Victim", "Non-mandated Reporter"
 	  	],
 	  	"addresses" : [
 	  		{
@@ -90,8 +90,8 @@
       }   ],
    "allegations":[
       {
-         "legacy_source_table" : "",
-          "legacy_id" : "",
+        "legacy_source_table" : "",
+        "legacy_id" : "",
          "victim_person_id":"5432",
          "perpetrator_person_id":"1234",
          "type":"physical abuse",

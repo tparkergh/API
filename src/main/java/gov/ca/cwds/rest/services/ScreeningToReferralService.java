@@ -200,7 +200,7 @@ public class ScreeningToReferralService implements CrudsService {
     ScreeningToReferral screeningToReferral = (ScreeningToReferral) request;
 
     if (!hasValidParticipants(screeningToReferral)) {
-      String message = "ERROR - Incompatiable participants include in request";
+      String message = "ERROR - Incompatiable participants included in request";
       ServiceException exception = new ServiceException(message);
       logError(message, exception, messages);
     }

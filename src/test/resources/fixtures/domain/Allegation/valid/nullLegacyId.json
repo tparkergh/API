@@ -1,6 +1,6 @@
       {
          "legacy_source_table" : "ALLGTN_T",
-         "legacy_id" : "1234567ABC",
+         "legacy_id" : null,
          "victim_person_id":"5432",
          "perpetrator_person_id":"2",
          "type":"physical abuse",

@@ -1,7 +1,7 @@
 {
    "id":"2",
-   "legacy_source_table" : "",
-   "legacy_id" : "",
+   "legacy_source_table" : null,
+   "legacy_id" : "1234567ABC",
    "ended_at":"2016-08-03T01:00:00.000Z",
    "incident_county":"sacramento",
    "incident_date":"2016-08-02",
@@ -28,8 +28,8 @@
    "participants":[
 	{
 	  "id" : "5432",
-   "legacy_source_table" : "",
-   "legacy_id" : "",
+      "legacy_source_table" : "",
+      "legacy_id" : "",
 	  "first_name": "John",
 	  "last_name": "Smith",
 	  "gender": "male",
@@ -38,12 +38,12 @@
 	  "person_id": 12345,
 	  "screening_id": 12345,
 	  "roles" : [
-	  	"victim"
+	  	"Victim"
 	  	],
 	  	"addresses" : [
 	  		{
-   "legacy_source_table" : "",
-   "legacy_id" : "",
+                "legacy_source_table" : "",
+                "legacy_id" : "",
 	  			"street_address" : "123 First St",
 	  			"state" : "CA",
 	  			"city" : "San Jose",
@@ -54,22 +54,22 @@
 	},
 	{
 	  "id" : "1234",
-   "legacy_source_table" : "",
-   "legacy_id" : "",
+      "legacy_source_table" : "",
+      "legacy_id" : "",
 	  "first_name": "Bart",
 	  "last_name": "Simpson",
-	  "gender": "Other",
+	  "gender": "male",
 	  "date_of_birth": "2000-03-15",
 	  "ssn": "234567890",
 	  "person_id": 12345,
 	  "screening_id": 12345,
 	  "roles" : [
-	  	"mandated reporter"
+	  	"Perpetrator"
 	  	],
 	  	"addresses" : [
 	  		{
-   "legacy_source_table" : "",
-   "legacy_id" : "",
+                "legacy_source_table" : "",
+                "legacy_id" : "",
 	  			"street_address" : "234 Second St",
 	  			"state" : "CA",
 	  			"city" : "San Jose",
@@ -77,30 +77,12 @@
 	  			"type" : "Home"
 	  		}
 	  	]
-	},
-     {
-        "date_of_birth":"2017-05-10",
-        "first_name":"Test",
-        "gender":"male",
-        "id":"1",
-        "last_name":"Perp",
-        "legacy_id":"",
-        "legacy_source_table":"",
-        "person_id":"",
-        "roles":[
-           "Perpetrator"
-        ],
-        "screening_id":"1",
-        "ssn":"111223333",
-        "addresses":[
-
-        ]
-     }
+	}
    ],
    "cross_reports":[
       {
-    "legacy_source_table" : "",
-   "legacy_id" : "",
+         "legacy_source_table" : "",
+         "legacy_id" : "",
          "agency_type":"Law enforcement",
          "agency_name":"Sacramento County Sheriff Deparment",
          "method":"electronic report",
@@ -108,8 +90,8 @@
       }   ],
    "allegations":[
       {
-   "legacy_source_table" : "",
-   "legacy_id" : "",
+         "legacy_source_table" : "",
+          "legacy_id" : "",
          "victim_person_id":"5432",
          "perpetrator_person_id":"1234",
          "type":"physical abuse",

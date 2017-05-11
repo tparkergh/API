@@ -2,42 +2,38 @@ package gov.ca.cwds.rest.api.domain;
 
 import static io.dropwizard.testing.FixtureHelpers.fixture;
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.is;
-import static org.mockito.Matchers.eq;
+import static org.junit.Assert.assertEquals;
 import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
 
 import java.io.IOException;
 import java.util.HashSet;
 import java.util.Set;
 
-import javax.ws.rs.client.Entity;
-import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.Response;
+import javax.validation.ConstraintViolation;
+import javax.validation.Validation;
+import javax.validation.Validator;
+import javax.validation.ValidatorFactory;
 
-import org.junit.After;
 import org.junit.Before;
-import org.junit.ClassRule;
 import org.junit.Test;
 
 import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
-import com.squarespace.jersey2.guice.JerseyGuiceUtils;
 
 import gov.ca.cwds.rest.core.Api;
 import gov.ca.cwds.rest.resources.ScreeningToReferralResource;
-import gov.ca.cwds.rest.resources.cms.JerseyGuiceRule;
 import io.dropwizard.jackson.Jackson;
-import io.dropwizard.testing.junit.ResourceTestRule;
 
 @SuppressWarnings("javadoc")
 public class ScreeningToReferralTest {
 
   private static final String ROOT_RESOURCE = "/" + Api.RESOURCE_REFERRALS + "/";;
   private static final ObjectMapper MAPPER = Jackson.newObjectMapper();
+  private Validator validator;
+
 
   private static final ScreeningToReferralResource mockedScreeningToReferralResource =
       mock(ScreeningToReferralResource.class);
@@ -51,24 +47,11 @@ public class ScreeningToReferralTest {
   private Set<Allegation> allegations = new HashSet<Allegation>();
   private long id = 2;
 
-  @After
-  public void ensureServiceLocatorPopulated() {
-    JerseyGuiceUtils.reset();
-  }
-
-  @ClassRule
-  public static JerseyGuiceRule rule = new JerseyGuiceRule();
-
-  @ClassRule
-  public static final ResourceTestRule resources =
-      ResourceTestRule.builder().addResource(mockedScreeningToReferralResource).build();
-
   @Before
   public void setup() {
-    ScreeningToReferral validScreeningToReferral = validScreeningToReferral();
-    when(mockedScreeningToReferralResource.create(eq(validScreeningToReferral)))
-        .thenReturn(Response.status(Response.Status.NO_CONTENT).entity(null).build());
     MAPPER.configure(SerializationFeature.INDENT_OUTPUT, true);
+    ValidatorFactory factory = Validation.buildDefaultValidatorFactory();
+    validator = factory.getValidator();
   }
 
   /*
@@ -127,186 +110,186 @@ public class ScreeningToReferralTest {
 
   @Test
   public void testWithValidSuccess() throws Exception {
-    ScreeningToReferral toCreate = MAPPER.readValue(
+    ScreeningToReferral toValidate = MAPPER.readValue(
         fixture("fixtures/domain/ScreeningToReferral/valid/validDomainScreeningToReferral.json"),
         ScreeningToReferral.class);
-
-    Response response =
-        resources.client().target(ROOT_RESOURCE).request().accept(MediaType.APPLICATION_JSON)
-            .post(Entity.entity(toCreate, MediaType.APPLICATION_JSON));
-    assertThat(response.getStatus(), is(equalTo(204)));
-
+    Set<ConstraintViolation<ScreeningToReferral>> constraintViolations =
+        validator.validate(toValidate);
+    assertEquals(0, constraintViolations.size());
   }
 
   @Test
   public void testWithNullParticipantsFail() throws Exception {
 
-    ScreeningToReferral toCreate = MAPPER.readValue(
+    ScreeningToReferral toValidate = MAPPER.readValue(
         fixture("fixtures/domain/ScreeningToReferral/invalid/nullParticipants.json"),
         ScreeningToReferral.class);
-    Response response =
-        resources.client().target(ROOT_RESOURCE).request().accept(MediaType.APPLICATION_JSON)
-            .post(Entity.entity(toCreate, MediaType.APPLICATION_JSON));
-    assertThat(response.getStatus(), is(equalTo(422)));
+    Set<ConstraintViolation<ScreeningToReferral>> constraintViolations =
+        validator.validate(toValidate);
+    // System.out.println(constraintViolations.iterator().next().getMessage());
+    assertEquals(1, constraintViolations.size());
+    assertEquals("may not be empty", constraintViolations.iterator().next().getMessage());
   }
 
   @Test
   public void testWithEmptyParticipantsFail() throws Exception {
-    ScreeningToReferral toCreate = MAPPER.readValue(
+    ScreeningToReferral toValidate = MAPPER.readValue(
         fixture("fixtures/domain/ScreeningToReferral/invalid/emptyParticipants.json"),
         ScreeningToReferral.class);
-    Response response =
-        resources.client().target(ROOT_RESOURCE).request().accept(MediaType.APPLICATION_JSON)
-            .post(Entity.entity(toCreate, MediaType.APPLICATION_JSON));
-    assertThat(response.getStatus(), is(equalTo(422)));
-
+    Set<ConstraintViolation<ScreeningToReferral>> constraintViolations =
+        validator.validate(toValidate);
+    assertEquals(1, constraintViolations.size());
+    assertEquals("may not be empty", constraintViolations.iterator().next().getMessage());
   }
 
   @Test
   public void testWithNullAllegationsFail() throws Exception {
-    ScreeningToReferral toCreate = MAPPER.readValue(
+    ScreeningToReferral toValidate = MAPPER.readValue(
         fixture("fixtures/domain/ScreeningToReferral/invalid/nullAllegations.json"),
         ScreeningToReferral.class);
-    Response response =
-        resources.client().target(ROOT_RESOURCE).request().accept(MediaType.APPLICATION_JSON)
-            .post(Entity.entity(toCreate, MediaType.APPLICATION_JSON));
-    assertThat(response.getStatus(), is(equalTo(422)));
-
+    Set<ConstraintViolation<ScreeningToReferral>> constraintViolations =
+        validator.validate(toValidate);
+    assertEquals(1, constraintViolations.size());
+    assertEquals("may not be empty", constraintViolations.iterator().next().getMessage());
   }
 
   @Test
   public void testWithEmptyAllegationsFail() throws Exception {
-    ScreeningToReferral toCreate = MAPPER.readValue(
+    ScreeningToReferral toValidate = MAPPER.readValue(
         fixture("fixtures/domain/ScreeningToReferral/invalid/emptyAllegations.json"),
         ScreeningToReferral.class);
-    Response response =
-        resources.client().target(ROOT_RESOURCE).request().accept(MediaType.APPLICATION_JSON)
-            .post(Entity.entity(toCreate, MediaType.APPLICATION_JSON));
-    assertThat(response.getStatus(), is(equalTo(422)));
-
+    Set<ConstraintViolation<ScreeningToReferral>> constraintViolations =
+        validator.validate(toValidate);
+    assertEquals(1, constraintViolations.size());
+    assertEquals("may not be empty", constraintViolations.iterator().next().getMessage());
   }
 
   @Test
-  public void testWithEmptyCrossReportFails() throws Exception {
-    ScreeningToReferral toCreate =
+  public void testWithEmptyCrossReportSuccess() throws Exception {
+    ScreeningToReferral toValidate =
         MAPPER.readValue(fixture("fixtures/domain/ScreeningToReferral/valid/emptyCrossReport.json"),
             ScreeningToReferral.class);
-    Response response =
-        resources.client().target(ROOT_RESOURCE).request().accept(MediaType.APPLICATION_JSON)
-            .post(Entity.entity(toCreate, MediaType.APPLICATION_JSON));
-    assertThat(response.getStatus(), is(equalTo(422)));
-
+    Set<ConstraintViolation<ScreeningToReferral>> constraintViolations =
+        validator.validate(toValidate);
+    assertEquals(0, constraintViolations.size());
   }
 
   @Test
-  public void testWithNullCrossReportFails() throws Exception {
-    ScreeningToReferral toCreate =
+  public void testWithNullCrossReportSuccess() throws Exception {
+    ScreeningToReferral toValidate =
         MAPPER.readValue(fixture("fixtures/domain/ScreeningToReferral/valid/nullCrossReport.json"),
             ScreeningToReferral.class);
-    Response response =
-        resources.client().target(ROOT_RESOURCE).request().accept(MediaType.APPLICATION_JSON)
-            .post(Entity.entity(toCreate, MediaType.APPLICATION_JSON));
-    System.out.println(response.readEntity(String.class));
-    assertThat(response.getStatus(), is(equalTo(422)));
-
+    Set<ConstraintViolation<ScreeningToReferral>> constraintViolations =
+        validator.validate(toValidate);
+    assertEquals(0, constraintViolations.size());
   }
 
   @Test
   public void testWithMultipleCrossReportsSuccess() throws Exception {
-    ScreeningToReferral toCreate = MAPPER.readValue(
+    ScreeningToReferral toValidate = MAPPER.readValue(
         fixture("fixtures/domain/ScreeningToReferral/valid/validMultipleCrossReports.json"),
         ScreeningToReferral.class);
-    Response response =
-        resources.client().target(ROOT_RESOURCE).request().accept(MediaType.APPLICATION_JSON)
-            .post(Entity.entity(toCreate, MediaType.APPLICATION_JSON));
-    assertThat(response.getStatus(), is(equalTo(204)));
+    Set<ConstraintViolation<ScreeningToReferral>> constraintViolations =
+        validator.validate(toValidate);
+    assertEquals(0, constraintViolations.size());
 
   }
 
   @Test
   public void testWithAgencyTypeMissingFail() throws Exception {
-    ScreeningToReferral toCreate = MAPPER.readValue(
+    ScreeningToReferral toValidate = MAPPER.readValue(
         fixture("fixtures/domain/ScreeningToReferral/invalid/missingAgencyType.json"),
         ScreeningToReferral.class);
-    Response response =
-        resources.client().target(ROOT_RESOURCE).request().accept(MediaType.APPLICATION_JSON)
-            .post(Entity.entity(toCreate, MediaType.APPLICATION_JSON));
-    assertThat(response.getStatus(), is(equalTo(422)));
+    Set<ConstraintViolation<ScreeningToReferral>> constraintViolations =
+        validator.validate(toValidate);
+    assertEquals(1, constraintViolations.size());
+    assertEquals("may not be empty", constraintViolations.iterator().next().getMessage());
   }
 
   @Test
   public void testWithInvalidIncidentDateFormatFail() throws Exception {
-    ScreeningToReferral toCreate = MAPPER.readValue(
+    ScreeningToReferral toValidate = MAPPER.readValue(
         fixture("fixtures/domain/ScreeningToReferral/invalid/invalidIncidentDateFormat.json"),
         ScreeningToReferral.class);
-    Response response =
-        resources.client().target(ROOT_RESOURCE).request().accept(MediaType.APPLICATION_JSON)
-            .post(Entity.entity(toCreate, MediaType.APPLICATION_JSON));
-    assertThat(response.getStatus(), is(equalTo(422)));
+    Set<ConstraintViolation<ScreeningToReferral>> constraintViolations =
+        validator.validate(toValidate);
+    assertEquals(1, constraintViolations.size());
+    assertEquals("must be in the format of yyyy-MM-dd",
+        constraintViolations.iterator().next().getMessage());
   }
 
   @Test
-  public void testParticipantSsnTooLongFail() throws Exception {
-    ScreeningToReferral toCreate = MAPPER.readValue(
-        fixture("fixtures/domain/ScreeningToReferral/invalid/participantWithSsnTooLong.json"),
+  public void testBlankLegacySourceTableSuccess() throws Exception {
+    ScreeningToReferral toValidate = MAPPER.readValue(
+        fixture("fixtures/domain/screeningToReferral/valid/blankLegacySourceTable.json"),
         ScreeningToReferral.class);
-    Response response =
-        resources.client().target(ROOT_RESOURCE).request().accept(MediaType.APPLICATION_JSON)
-            .post(Entity.entity(toCreate, MediaType.APPLICATION_JSON));
-    assertThat(response.getStatus(), is(equalTo(422)));
 
+    Set<ConstraintViolation<ScreeningToReferral>> constraintViolations =
+        validator.validate(toValidate);
+    assertEquals(0, constraintViolations.size());
   }
 
   @Test
-  public void testParticipantOtherGenderValidSuccess() throws Exception {
-    ScreeningToReferral toCreate =
-        MAPPER.readValue(fixture("fixtures/domain/ScreeningToReferral/valid/validGenderOther.json"),
-            ScreeningToReferral.class);
-    Response response =
-        resources.client().target(ROOT_RESOURCE).request().accept(MediaType.APPLICATION_JSON)
-            .post(Entity.entity(toCreate, MediaType.APPLICATION_JSON));
-    System.out.println(response.readEntity(String.class));
-    assertThat(response.getStatus(), is(equalTo(204)));
+  public void testNullLegacySourceTableSuccess() throws Exception {
+    ScreeningToReferral toValidate = MAPPER.readValue(
+        fixture("fixtures/domain/ScreeningToReferral/valid/nullLegacySourceTable.json"),
+        ScreeningToReferral.class);
 
+    Set<ConstraintViolation<ScreeningToReferral>> constraintViolations =
+        validator.validate(toValidate);
+    assertEquals(0, constraintViolations.size());
   }
 
   @Test
-  public void testParticipantGenderInvalidFail() throws Exception {
-    ScreeningToReferral toCreate =
-        MAPPER.readValue(fixture("fixtures/domain/ScreeningToReferral/invalid/invalidGender.json"),
-            ScreeningToReferral.class);
-    Response response =
-        resources.client().target(ROOT_RESOURCE).request().accept(MediaType.APPLICATION_JSON)
-            .post(Entity.entity(toCreate, MediaType.APPLICATION_JSON));
-    // System.out.println(response.readEntity(String.class));
-    assertThat(response.getStatus(), is(equalTo(422)));
-
+  public void testMissingLegacySourceTableSuccess() throws Exception {
+    ScreeningToReferral toValidate = MAPPER.readValue(
+        fixture("fixtures/domain/ScreeningToReferral/valid/missingLegacySourceTable.json"),
+        ScreeningToReferral.class);
+    Set<ConstraintViolation<ScreeningToReferral>> constraintViolations =
+        validator.validate(toValidate);
+    assertEquals(0, constraintViolations.size());
   }
 
   @Test
   public void testWithEmptyLegacyReferralIdSuccess() throws Exception {
-    ScreeningToReferral toCreate = MAPPER.readValue(
-        fixture("fixtures/domain/ScreeningToReferral/valid/validEmptyReferralId.json"),
-        ScreeningToReferral.class);
-    Response response =
-        resources.client().target(ROOT_RESOURCE).request().accept(MediaType.APPLICATION_JSON)
-            .post(Entity.entity(toCreate, MediaType.APPLICATION_JSON));
-    // System.out.println(response.readEntity(String.class));
-    assertThat(response.getStatus(), is(equalTo(204)));
-
+    ScreeningToReferral toValidate =
+        MAPPER.readValue(fixture("fixtures/domain/ScreeningToReferral/valid/emptyReferralId.json"),
+            ScreeningToReferral.class);
+    Set<ConstraintViolation<ScreeningToReferral>> constraintViolations =
+        validator.validate(toValidate);
+    assertEquals(0, constraintViolations.size());
   }
 
   @Test
-  public void testWithNullLegacyReferralIdFail() throws Exception {
-    ScreeningToReferral toCreate = MAPPER.readValue(
-        fixture("fixtures/domain/ScreeningToReferral/invalid/invalidNullReferralId.json"),
-        ScreeningToReferral.class);
-    Response response =
-        resources.client().target(ROOT_RESOURCE).request().accept(MediaType.APPLICATION_JSON)
-            .post(Entity.entity(toCreate, MediaType.APPLICATION_JSON));
-    // System.out.println(response.readEntity(String.class));
-    assertThat(response.getStatus(), is(equalTo(422)));
+  public void testWithNullLegacyReferralIdSuccess() throws Exception {
+    ScreeningToReferral toValidate =
+        MAPPER.readValue(fixture("fixtures/domain/ScreeningToReferral/valid/nullReferralId.json"),
+            ScreeningToReferral.class);
+    Set<ConstraintViolation<ScreeningToReferral>> constraintViolations =
+        validator.validate(toValidate);
+    assertEquals(0, constraintViolations.size());
+  }
 
+  @Test
+  public void testWithMissingLegacyReferralIdSuccess() throws Exception {
+    ScreeningToReferral toValidate = MAPPER.readValue(
+        fixture("fixtures/domain/ScreeningToReferral/valid/missingReferralId.json"),
+        ScreeningToReferral.class);
+    Set<ConstraintViolation<ScreeningToReferral>> constraintViolations =
+        validator.validate(toValidate);
+    assertEquals(0, constraintViolations.size());
+  }
+
+  @Test
+  public void testLegacyIdTooLongFail() throws Exception {
+    ScreeningToReferral toValidate = MAPPER.readValue(
+        fixture("fixtures/domain/screeningToReferral/invalid/legacyIdTooLong.json"),
+        ScreeningToReferral.class);
+    Set<ConstraintViolation<ScreeningToReferral>> constraintViolations =
+        validator.validate(toValidate);
+    assertEquals(1, constraintViolations.size());
+    assertEquals("size must be between 0 and 10",
+        constraintViolations.iterator().next().getMessage());
   }
 
   private ScreeningToReferral validScreeningToReferral() {

@@ -54,8 +54,8 @@
 	},
 	{
 	  "id" : "1234",
-   "legacy_source_table" : "",
-   "legacy_id" : "",
+      "legacy_source_table" : "",
+      "legacy_id" : "",
 	  "first_name": "Bart",
 	  "last_name": "Simpson",
 	  "gender": "male",
