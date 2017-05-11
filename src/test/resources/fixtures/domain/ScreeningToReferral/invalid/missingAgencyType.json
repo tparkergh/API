@@ -77,6 +77,32 @@
 	  			"type" : "Home"
 	  		}
 	  	]
+	},
+  {
+	  "id" : "1234",
+      "legacy_source_table" : "",
+      "legacy_id" : "",
+	  "first_name": "Bart",
+	  "last_name": "Simpson",
+	  "gender": "male",
+	  "date_of_birth": "2000-03-15",
+	  "ssn": "234567890",
+	  "person_id": 12345,
+	  "screening_id": 12345,
+	  "roles" : [
+	  	"Perpetrator"
+	  	],
+	  	"addresses" : [
+	  		{
+                "legacy_source_table" : "",
+                "legacy_id" : "",
+	  			"street_address" : "234 Second St",
+	  			"state" : "CA",
+	  			"city" : "San Jose",
+	  			"zip" : "94321",
+	  			"type" : "Home"
+	  		}
+	  	]
 	}
    ],
    "cross_reports":[

@@ -26,6 +26,32 @@
 	  "type": "Home"
 	},
    "participants":[
+  {
+    "date_of_birth":"2017-05-12",
+    "first_name":"Robert",
+    "gender":"male",
+    "id":"3",
+    "last_name":"Reporter",
+    "legacy_id":"",
+    "legacy_source_table":"",
+    "person_id":"",
+    "roles":[
+       "Mandated Reporter"
+    ],
+    "screening_id":"1",
+    "ssn":"111556666",
+    "addresses":[
+       {
+          "city":"Rollin Heights",
+          "legacy_id":"",
+          "legacy_source_table":"",
+          "state":"AK",
+          "street_address":"123 Fake St",
+          "type":"Home",
+          "zip":"11222"
+       }
+    ]
+  },
 	{
 	  "id" : "5432",
    "legacy_source_table" : "",
@@ -51,7 +77,24 @@
 	  			"type" : "Home"
 	  		}
 	  	]
-	}
+	},
+  {
+   "date_of_birth":"2017-05-10",
+    "first_name":"Test",
+    "gender":"male",
+    "id":"1",
+    "last_name":"Perp",
+    "legacy_id":"",
+    "legacy_source_table":"",
+    "person_id":"",
+    "roles":[
+       "Perpetrator"
+     ],
+    "screening_id":"1",
+    "ssn":"111223333",
+    "addresses":[
+    ]
+   }
    ],
    "cross_reports":[
       {
