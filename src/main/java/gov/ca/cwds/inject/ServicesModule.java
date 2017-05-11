@@ -1,5 +1,8 @@
 package gov.ca.cwds.inject;
 
+import javax.validation.Validation;
+import javax.validation.Validator;
+
 import com.google.inject.AbstractModule;
 import com.google.inject.Inject;
 import com.google.inject.Provides;
@@ -20,6 +23,7 @@ import gov.ca.cwds.rest.services.cms.CmsDocReferralClientService;
 import gov.ca.cwds.rest.services.cms.CmsDocumentService;
 import gov.ca.cwds.rest.services.cms.CmsNSReferralService;
 import gov.ca.cwds.rest.services.cms.CmsReferralService;
+import gov.ca.cwds.rest.services.cms.CountyOwnershipService;
 import gov.ca.cwds.rest.services.cms.CrossReportService;
 import gov.ca.cwds.rest.services.cms.ReferralClientService;
 import gov.ca.cwds.rest.services.cms.ReferralService;
@@ -31,10 +35,6 @@ import io.dropwizard.hibernate.HibernateBundle;
 import io.dropwizard.hibernate.UnitOfWork;
 import io.dropwizard.hibernate.UnitOfWorkAspect;
 import io.dropwizard.hibernate.UnitOfWorkAwareProxyFactory;
-
-import javax.validation.Validation;
-import javax.validation.Validator;
-import javax.validation.ValidatorFactory;
 
 /**
  * Identifies all CWDS API business layer (aka, service) classes available for dependency injection
@@ -109,6 +109,7 @@ public class ServicesModule extends AbstractModule {
     bind(ScreeningToReferral.class);
     bind(IndexQueryService.class);
     bind(ClientUcService.class);
+    bind(CountyOwnershipService.class);
 
     // Register CMS system code translator.
     bind(ApiSystemCodeCache.class).to(CmsSystemCodeCacheService.class).asEagerSingleton();
@@ -120,7 +121,7 @@ public class ServicesModule extends AbstractModule {
   }
 
   @Provides
-  Validator provideValidator(){
+  Validator provideValidator() {
     return Validation.buildDefaultValidatorFactory().getValidator();
   }
 }

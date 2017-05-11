@@ -2,7 +2,6 @@ package gov.ca.cwds.inject;
 
 import java.net.InetAddress;
 
-import gov.ca.cwds.data.persistence.cms.*;
 import org.elasticsearch.client.Client;
 import org.elasticsearch.client.transport.TransportClient;
 import org.elasticsearch.common.settings.Settings;
@@ -22,6 +21,7 @@ import gov.ca.cwds.data.cms.ClientDao;
 import gov.ca.cwds.data.cms.ClientUcDao;
 import gov.ca.cwds.data.cms.CmsDocReferralClientDao;
 import gov.ca.cwds.data.cms.CmsDocumentDao;
+import gov.ca.cwds.data.cms.CountyOwnershipDao;
 import gov.ca.cwds.data.cms.CrossReportDao;
 import gov.ca.cwds.data.cms.LongTextDao;
 import gov.ca.cwds.data.cms.OtherClientNameDao;
@@ -54,6 +54,7 @@ import gov.ca.cwds.data.persistence.cms.CmsDocReferralClient;
 import gov.ca.cwds.data.persistence.cms.CmsDocument;
 import gov.ca.cwds.data.persistence.cms.CmsDocumentBlobSegment;
 import gov.ca.cwds.data.persistence.cms.CollateralIndividual;
+import gov.ca.cwds.data.persistence.cms.CountyOwnership;
 import gov.ca.cwds.data.persistence.cms.CrossReport;
 import gov.ca.cwds.data.persistence.cms.EducationProviderContact;
 import gov.ca.cwds.data.persistence.cms.LongText;
@@ -106,7 +107,8 @@ public class DataAccessModule extends AbstractModule {
   private Client client;
 
   private final HibernateBundle<ApiConfiguration> cmsHibernateBundle =
-      new HibernateBundle<ApiConfiguration>(gov.ca.cwds.data.persistence.cms.Address.class, Allegation.class, ClientAddress.class,ClientCollateral.class,
+      new HibernateBundle<ApiConfiguration>(gov.ca.cwds.data.persistence.cms.Address.class,
+          Allegation.class, ClientAddress.class, ClientCollateral.class,
           gov.ca.cwds.data.persistence.cms.Client.class, CmsDocReferralClient.class,
           CmsDocument.class, CmsDocumentBlobSegment.class, CollateralIndividual.class,
           CrossReport.class, EducationProviderContact.class, OtherAdultInPlacemtHome.class,
@@ -114,7 +116,7 @@ public class DataAccessModule extends AbstractModule {
           ReferralClient.class, Reporter.class, ServiceProvider.class, StaffPerson.class,
           SubstituteCareProvider.class, LongText.class, AllegationPerpetratorHistory.class,
           ClientUc.class, ChildClient.class, gov.ca.cwds.data.persistence.cms.Address.class,
-          ClientAddress.class) {
+          ClientAddress.class, CountyOwnership.class) {
         @Override
         public DataSourceFactory getDataSourceFactory(ApiConfiguration configuration) {
           return configuration.getCmsDataSourceFactory();
@@ -198,6 +200,9 @@ public class DataAccessModule extends AbstractModule {
     bind(EthnicityDao.class);
     bind(PersonRaceDao.class);
     bind(RaceDao.class);
+    bind(CountyOwnershipDao.class);
+    // bind(Listner.class);
+    bind(EventListener.class);
 
     // Miscellaneous:
     bind(ElasticsearchDao.class);

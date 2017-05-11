@@ -38,6 +38,7 @@ public class ClientService implements CrudsService {
   @Inject
   public ClientService(ClientDao clientDao) {
     this.clientDao = clientDao;
+    System.out.println("came to Client**************************");
   }
 
   /**
