@@ -1,11 +1,12 @@
 package gov.ca.cwds.rest.api.domain;
 
 import static io.dropwizard.testing.FixtureHelpers.fixture;
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.assertFalse;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.is;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
@@ -15,8 +16,10 @@ import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
 
-import javax.ws.rs.client.Entity;
-import javax.ws.rs.core.MediaType;
+import javax.validation.ConstraintViolation;
+import javax.validation.Validation;
+import javax.validation.Validator;
+import javax.validation.ValidatorFactory;
 import javax.ws.rs.core.Response;
 
 import org.junit.After;
@@ -25,6 +28,7 @@ import org.junit.ClassRule;
 import org.junit.Test;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializationFeature;
 import com.squarespace.jersey2.guice.JerseyGuiceUtils;
 
 import gov.ca.cwds.data.persistence.junit.template.PersistentTestTemplate;
@@ -44,6 +48,7 @@ import nl.jqno.equalsverifier.Warning;
 public class ParticipantTest implements PersistentTestTemplate {
 
   private long id = 5432;
+  private String legacySourceTable = "CLIENT_T";
   private String clientId = "1234567ABC";
   private long personId = 12345;
   private long screeningId = 12345;
@@ -57,6 +62,7 @@ public class ParticipantTest implements PersistentTestTemplate {
 
   private static final String ROOT_RESOURCE = "/" + Api.RESOURCE_PARTICIPANTS + "/";;
   private static final ObjectMapper MAPPER = Jackson.newObjectMapper();
+  private Validator validator;
 
   private static final ParticipantResource mockedParticipantResource =
       mock(ParticipantResource.class);
@@ -75,11 +81,14 @@ public class ParticipantTest implements PersistentTestTemplate {
 
   @Before
   public void setup() {
+    ValidatorFactory factory = Validation.buildDefaultValidatorFactory();
+    validator = factory.getValidator();
+    MAPPER.configure(SerializationFeature.INDENT_OUTPUT, true);
     Participant validParticipant = this.validParticipant();
-    roles.add("victim");
+    roles.add("Victim");
     Address address = new Address("", "", "123 First St", "San Jose", "CA", 94321, "Home");
     addresses.add(address);
-
+    MAPPER.configure(SerializationFeature.INDENT_OUTPUT, true);
 
     when(mockedParticipantResource.create(eq(validParticipant)))
         .thenReturn(Response.status(Response.Status.NO_CONTENT).entity(null).build());
@@ -133,10 +142,11 @@ public class ParticipantTest implements PersistentTestTemplate {
   @Test
   public void testConstructorUsingDomain() throws Exception {
 
-    Participant domain = new Participant(id, "", clientId, firstName, lastName, gender, ssn,
-        dateOfBirth, personId, screeningId, roles, addresses);
+    Participant domain = new Participant(id, legacySourceTable, clientId, firstName, lastName,
+        gender, ssn, dateOfBirth, personId, screeningId, roles, addresses);
 
     assertThat(domain.getId(), is(equalTo(id)));
+    assertThat(domain.getLegacySourceTable(), is(equalTo(legacySourceTable)));
     assertThat(domain.getClientId(), is(equalTo(clientId)));
     assertThat(domain.getPersonId(), is(equalTo(personId)));
     assertThat(domain.getScreeningId(), is(equalTo(screeningId)));
@@ -150,42 +160,83 @@ public class ParticipantTest implements PersistentTestTemplate {
   }
 
   @Test
+  public void testBlankLegacySourceTableSuccess() throws Exception {
+    Participant toValidate =
+        MAPPER.readValue(fixture("fixtures/domain/participant/valid/blankLegacySourceTable.json"),
+            Participant.class);
+
+    Set<ConstraintViolation<Participant>> constraintViolations = validator.validate(toValidate);
+    assertEquals(0, constraintViolations.size());
+  }
+
+  @Test
+  public void testNullLegacySourceTableSuccess() throws Exception {
+    Participant toValidate = MAPPER.readValue(
+        fixture("fixtures/domain/participant/valid/nullLegacySourceTable.json"), Participant.class);
+
+    Set<ConstraintViolation<Participant>> constraintViolations = validator.validate(toValidate);
+    assertEquals(0, constraintViolations.size());
+  }
+
+  @Test
+  public void testMissingLegacySourceTableSuccess() throws Exception {
+    Participant toValidate =
+        MAPPER.readValue(fixture("fixtures/domain/participant/valid/missingLegacySourceTable.json"),
+            Participant.class);
+    Set<ConstraintViolation<Participant>> constraintViolations = validator.validate(toValidate);
+    assertEquals(0, constraintViolations.size());
+  }
+
+  @Test
   public void testWithEmptyClientIdSuccess() throws Exception {
 
-    Participant toCreate = MAPPER.readValue(
+    Participant toValidate = MAPPER.readValue(
         fixture("fixtures/domain/participant/valid/validEmptyClientId.json"), Participant.class);
-    Response response =
-        resources.client().target(ROOT_RESOURCE).request().accept(MediaType.APPLICATION_JSON)
-            .post(Entity.entity(toCreate, MediaType.APPLICATION_JSON));
-    assertThat(response.getStatus(), is(equalTo(204)));
-
+    Set<ConstraintViolation<Participant>> constraintViolations = validator.validate(toValidate);
+    assertEquals(0, constraintViolations.size());
   }
 
   @Test
-  public void testWithNullClientIdFail() throws Exception {
-    Participant toCreate = MAPPER.readValue(
-        fixture("fixtures/domain/participant/invalid/nullClientId.json"), Participant.class);
-    Response response =
-        resources.client().target(ROOT_RESOURCE).request().accept(MediaType.APPLICATION_JSON)
-            .post(Entity.entity(toCreate, MediaType.APPLICATION_JSON));
-    assertThat(response.getStatus(), is(equalTo(422)));
-
+  public void testWithNullClientIdSuccess() throws Exception {
+    Participant toValidate = MAPPER.readValue(
+        fixture("fixtures/domain/participant/valid/nullClientId.json"), Participant.class);
+    Set<ConstraintViolation<Participant>> constraintViolations = validator.validate(toValidate);
+    assertEquals(0, constraintViolations.size());
   }
 
   @Test
-  public void testWithMissingClientIdFail() throws Exception {
-    Participant toCreate = MAPPER.readValue(
-        fixture("fixtures/domain/participant/invalid/missingClientId.json"), Participant.class);
-    Response response =
-        resources.client().target(ROOT_RESOURCE).request().accept(MediaType.APPLICATION_JSON)
-            .post(Entity.entity(toCreate, MediaType.APPLICATION_JSON));
-    assertThat(response.getStatus(), is(equalTo(422)));
+  public void testWithMissingClientIdSuccess() throws Exception {
+    Participant toValidate = MAPPER.readValue(
+        fixture("fixtures/domain/participant/valid/missingClientId.json"), Participant.class);
+    Set<ConstraintViolation<Participant>> constraintViolations = validator.validate(toValidate);
+    assertEquals(0, constraintViolations.size());
+  }
+
+  @Test
+  public void testLegacyIdTooLongFail() throws Exception {
+    Participant toValidate = MAPPER.readValue(
+        fixture("fixtures/domain/participant/invalid/legacyIdTooLong.json"), Participant.class);
+    Set<ConstraintViolation<Participant>> constraintViolations = validator.validate(toValidate);
+    assertEquals(1, constraintViolations.size());
+    assertEquals("size must be between 0 and 10",
+        constraintViolations.iterator().next().getMessage());
+    // System.out.println(constraintViolations.iterator().next().getMessage());
+  }
+
+  @Test
+  public void testParticipantSsnTooLongFail() throws Exception {
+    Participant toValidate = MAPPER.readValue(
+        fixture("fixtures/domain/participant/invalid/ssnTooLong.json"), Participant.class);
+    Set<ConstraintViolation<Participant>> constraintViolations = validator.validate(toValidate);
+    assertEquals(1, constraintViolations.size());
+    assertEquals("size must be between 0 and 9",
+        constraintViolations.iterator().next().getMessage());
 
   }
 
   @Test
   public void testIsVictim() throws IOException {
-    Set roles = new HashSet(Arrays.asList("victim"));
+    Set roles = new HashSet(Arrays.asList("Victim"));
     Participant participant = createParticipantWithRoles(roles);
     assertTrue("Expected participant with a victim role to be a victim", participant.isVictim());
   }
@@ -194,47 +245,73 @@ public class ParticipantTest implements PersistentTestTemplate {
   public void testParticipantIsNotAVictimWhenVictimIsNotInRole() throws IOException {
     Set roles = new HashSet();
     Participant participant = createParticipantWithRoles(roles);
-    assertFalse("Expected participant with out a victim role not to be a victim", participant.isVictim());
+    assertFalse("Expected participant with out a victim role not to be a victim",
+        participant.isVictim());
   }
 
   @Test
   public void testIsReporter() throws IOException {
-    Set roles = new HashSet(Arrays.asList("reporter"));
+    Set roles = new HashSet(Arrays.asList("Mandated Reporter"));
     Participant participant = createParticipantWithRoles(roles);
-    assertTrue("Expected participant with a reporter role to be a reporter", participant.isReporter());
+    assertTrue("Expected participant with a reporter role to be a reporter",
+        participant.isReporter());
   }
 
   @Test
   public void testParticipantIsNotAReporterWhenReportersNotInRole() throws IOException {
     Set roles = new HashSet();
     Participant participant = createParticipantWithRoles(roles);
-    assertFalse("Expected participant with out a reporter role not to be a reporter", participant.isReporter());
+    assertFalse("Expected participant with out a reporter role not to be a reporter",
+        participant.isReporter());
   }
 
   @Test
   public void testIsPerpetrator() throws IOException {
-    Set roles = new HashSet(Arrays.asList("perpetrator"));
+    Set roles = new HashSet(Arrays.asList("Perpetrator"));
     Participant participant = createParticipantWithRoles(roles);
-    assertTrue("Expected participant with a perpetrator role to be a perpetrator", participant.isPerpetrator());
+    assertTrue("Expected participant with a perpetrator role to be a perpetrator",
+        participant.isPerpetrator());
   }
 
   @Test
   public void testParticipantIsNotAReporterWhenPerpetratorNotInRole() throws IOException {
     Set roles = new HashSet();
     Participant participant = createParticipantWithRoles(roles);
-    assertFalse("Expected participant with out a perpetrator role not to be a perpetrator", participant.isPerpetrator());
+    assertFalse("Expected participant with out a perpetrator role not to be a perpetrator",
+        participant.isPerpetrator());
+  }
+
+  public void testParticipantDateOfBirthInvalidFail() throws Exception {
+    Participant toValidate = MAPPER.readValue(
+        fixture("fixtures/domain/participant/invalid/dateOfBirthInvalid.json"), Participant.class);
+    Set<ConstraintViolation<Participant>> constraintViolations = validator.validate(toValidate);
+    assertEquals(1, constraintViolations.size());
+    assertEquals("must be in the format of yyyy-MM-dd",
+        constraintViolations.iterator().next().getMessage());
+  }
+
+  @Test
+  public void testGenderInvalidFail() throws Exception {
+    Participant toValidate = MAPPER.readValue(
+        fixture("fixtures/domain/participant/invalid/genderInvalid.json"), Participant.class);
+    Set<ConstraintViolation<Participant>> constraintViolations = validator.validate(toValidate);
+    assertEquals(1, constraintViolations.size());
+    assertEquals("must be one of [M, Male, F, Female, O, Other]",
+        constraintViolations.iterator().next().getMessage());
   }
 
   private Participant createParticipantWithRoles(Set<String> roles) {
     return createParticipant(roles);
 
   }
+
   private Participant validParticipant() {
     return createParticipant(roles);
   }
-  private Participant createParticipant(Set<String> roles ){
-    Participant validParticipant = new Participant(id, "", "", firstName, lastName, gender, ssn,
-            dateOfBirth, personId, screeningId, roles, addresses);
+
+  private Participant createParticipant(Set<String> roles) {
+    Participant validParticipant = new Participant(id, legacySourceTable, clientId, firstName,
+        lastName, gender, ssn, dateOfBirth, personId, screeningId, roles, addresses);
     return validParticipant;
 
   }

@@ -43,14 +43,12 @@ public class ScreeningToReferral extends ReportingDomain implements Request {
   private long id;
 
   @JsonProperty("legacy_source_table")
-  @ApiModelProperty(required = false, readOnly = false, value = "Legacy Table")
-  @NotNull
+  @ApiModelProperty(required = false, readOnly = false, value = "Legacy Table", example = "")
   private String legacySourceTable;
 
   @JsonProperty("legacy_id")
-  @ApiModelProperty(required = true, readOnly = false, value = "Legacy Referral Id")
+  @ApiModelProperty(required = true, readOnly = false, value = "Legacy Referral Id", example = "")
   @Size(max = 10)
-  @NotNull
   private String referralId;
 
   @JsonProperty("ended_at")

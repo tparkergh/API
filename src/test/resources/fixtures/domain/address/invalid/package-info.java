@@ -5,4 +5,4 @@
  * @author Tabpcenc1
  *
  */
-package fixtures.domain.Allegation.valid;
+package fixtures.domain.address.invalid;

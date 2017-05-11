@@ -1,5 +1,5 @@
 {
-  "legacy_source_table" : "",
+  "legacy_source_table" : "CLIENT_T",
   "legacy_id" : "",
   "street_address": "123 Main",
   "city": "Sacramento",

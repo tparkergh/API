@@ -1,7 +1,7 @@
 {
   "id" : 2,
-   "legacy_source_table" : "",
-   "legacy_id" : "",
+  "legacy_source_table" : "",
+  "legacy_id" : "",
   "ended_at" : "2016-08-03T01:00:00.000Z",
   "incident_county" : "sacramento",
   "incident_date" : "2016-08-02",
@@ -17,7 +17,7 @@
   "screening_decision" : "Response time",
   "screening_decision_detail" : "Detail",
   "address" : {
-    "legacy_source_table" : "",
+   "legacy_source_table" : "",
    "legacy_id" : "",
     "street_address" : "123 Main",
     "city" : "Sacramento",
@@ -27,8 +27,8 @@
   },
   "participants" : [ {
     "id" : 5432,
-   "legacy_source_table" : "",
-   "legacy_id" : "",
+    "legacy_source_table" : "CLIENT_T",
+    "legacy_id" : "1234567ABC",
     "first_name" : "John",
     "last_name" : "Smith",
     "gender" : "male",
@@ -36,10 +36,10 @@
     "date_of_birth" : "2001-03-15",
     "person_id" : 12345,
     "screening_id" : 12345,
-    "roles" : [ "victim" ],
+    "roles" : [ "Victim" ],
     "addresses" : [ {
-   "legacy_source_table" : "",
-   "legacy_id" : "",
+      "legacy_source_table" : "",
+      "legacy_id" : "",
       "street_address" : "123 First St",
       "city" : "San Jose",
       "state" : "CA",
@@ -48,16 +48,16 @@
     } ]
   } ],
   "cross_reports" : [ {
-   "legacy_source_table" : "",
-   "legacy_id" : "",
+    "legacy_source_table" : "",
+    "legacy_id" : "",
     "agency_type" : "Law enforcement",
     "agency_name" : "Sacramento County Sheriff Deparment",
     "method" : "electronic report",
     "inform_date" : "2017-03-15"
   } ],
   "allegations" : [ {
-   "legacy_source_table" : "",
-   "legacy_id" : "",
+    "legacy_source_table" : "ALLGTN_T",
+    "legacy_id" : "1234567ABC",
     "victim_person_id" : 5432,
     "perpetrator_person_id" : 2,
     "type" : "physical abuse",

@@ -3,7 +3,6 @@ package gov.ca.cwds.rest.api.domain;
 import java.util.Set;
 
 import javax.validation.Valid;
-import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
@@ -37,14 +36,12 @@ public class Participant extends ReportingDomain implements Request, Response {
   private long id;
 
   @JsonProperty("legacy_source_table")
-  @ApiModelProperty(required = true, readOnly = false, value = "Legacy Source Table")
-  @NotNull
+  @ApiModelProperty(required = true, readOnly = false, value = "Legacy Source Table", example = "")
   private String legacySourceTable;
 
   @JsonProperty("legacy_id")
-  @ApiModelProperty(required = true, readOnly = false, value = "Legacy Client Id")
+  @ApiModelProperty(required = true, readOnly = false, value = "Legacy Client Id", example = "")
   @Size(max = 10)
-  @NotNull
   private String clientId;
 
   @JsonProperty("first_name")
@@ -84,7 +81,7 @@ public class Participant extends ReportingDomain implements Request, Response {
 
   @Valid
   @JsonProperty("roles")
-  @ApiModelProperty(required = true, readOnly = false, value = "Role of participant")
+  @ApiModelProperty(required = true, readOnly = false, value = "Role of participant", example = "")
   private Set<String> roles;
 
   @Valid
@@ -148,10 +145,16 @@ public class Participant extends ReportingDomain implements Request, Response {
     this.roles = roles;
     this.addresses = addresses;
 
-    roles.forEach(role ->{
-      if (role.toLowerCase().contains("victim")) { victim = true; }
-      if (role.toLowerCase().contains("reporter")) { reporter = true; }
-      if (role.toLowerCase().contains("perpetrator")) { perpetrator = true; }
+    roles.forEach(role -> {
+      if (role.toLowerCase().contains("victim")) {
+        victim = true;
+      }
+      if (role.toLowerCase().contains("reporter")) {
+        reporter = true;
+      }
+      if (role.toLowerCase().contains("perpetrator")) {
+        perpetrator = true;
+      }
     });
   }
 
@@ -298,14 +301,23 @@ public class Participant extends ReportingDomain implements Request, Response {
     this.addresses = addresses;
   }
 
+  /**
+   * @return boolean
+   */
   public boolean isPerpetrator() {
     return perpetrator;
   }
 
+  /**
+   * @return boolean
+   */
   public boolean isVictim() {
     return victim;
   }
 
+  /**
+   * @return boolean
+   */
   public boolean isReporter() {
     return reporter;
   }

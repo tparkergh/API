@@ -1,6 +1,5 @@
 package gov.ca.cwds.rest.api.domain;
 
-import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
 import org.hibernate.validator.constraints.NotEmpty;
@@ -28,13 +27,11 @@ public class Allegation extends ReportingDomain implements Request, Response {
   private static final long serialVersionUID = 1L;
 
   @JsonProperty("legacy_source_table")
-  @ApiModelProperty(required = true, value = "Legacy Source Table", example = "ALLGTN_T")
-  @NotNull
+  @ApiModelProperty(required = true, value = "Legacy Source Table", example = "")
   private String legacySourceTable;
 
   @JsonProperty("legacy_id")
-  @ApiModelProperty(required = true, value = "Legacy Id", example = "1234567ABC")
-  @NotNull
+  @ApiModelProperty(required = true, value = "Legacy Id", example = "")
   @Size(max = 10)
   private String legacyId;
 
@@ -153,8 +150,9 @@ public class Allegation extends ReportingDomain implements Request, Response {
       return true;
     if (obj == null)
       return false;
-    if (getClass() != obj.getClass())
+    if (!(obj instanceof Allegation)) {
       return false;
+    }
     Allegation other = (Allegation) obj;
     if (county == null) {
       if (other.county != null)

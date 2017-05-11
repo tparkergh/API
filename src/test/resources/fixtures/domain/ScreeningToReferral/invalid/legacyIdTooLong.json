@@ -1,7 +1,7 @@
 {
    "id":"2",
-   "legacy_source_table" : "REFERL_T",
-   "legacy_id" : "1234567ABC",
+   "legacy_source_table" : "",
+   "legacy_id" : "12345678ABC",
    "ended_at":"2016-08-03T01:00:00.000Z",
    "incident_county":"sacramento",
    "incident_date":"2016-08-02",
