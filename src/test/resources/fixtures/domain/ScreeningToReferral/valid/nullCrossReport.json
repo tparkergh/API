@@ -95,6 +95,24 @@
         "addresses":[
 
         ]
+     },
+     {
+        "date_of_birth":"2017-05-02",
+        "first_name":"Vikki",
+        "gender":"female",
+        "id":"2",
+        "last_name":"Victim",
+        "legacy_id":"",
+        "legacy_source_table":"",
+        "person_id":"",
+        "roles":[
+           "Victim"
+        ],
+        "screening_id":"1",
+        "ssn":"222334444",
+        "addresses":[
+
+        ]
      }
    ],
    "allegations":[

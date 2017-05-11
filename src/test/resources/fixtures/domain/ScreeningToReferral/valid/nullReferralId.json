@@ -77,7 +77,24 @@
 	  			"type" : "Home"
 	  		}
 	  	]
-	}
+	},
+   {
+     "date_of_birth":"2017-05-10",
+      "first_name":"Test",
+      "gender":"male",
+      "id":"1",
+      "last_name":"Perp",
+      "legacy_id":"",
+      "legacy_source_table":"",
+      "person_id":"",
+      "roles":[
+         "Perpetrator"
+       ],
+      "screening_id":"1",
+      "ssn":"111223333",
+      "addresses":[
+      ]
+   }
    ],
    "cross_reports":[
       {
