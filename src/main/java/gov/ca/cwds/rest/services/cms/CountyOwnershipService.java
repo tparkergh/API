@@ -14,6 +14,7 @@ import gov.ca.cwds.data.persistence.cms.CountyOwnership;
 import gov.ca.cwds.rest.api.Request;
 import gov.ca.cwds.rest.api.Response;
 import gov.ca.cwds.rest.services.CrudsService;
+import io.dropwizard.hibernate.UnitOfWork;
 
 /**
  * Business layer object to work on {@link CountyOwnershipService}
@@ -35,15 +36,13 @@ public class CountyOwnershipService implements CrudsService {
   @Inject
   public CountyOwnershipService(CountyOwnershipDao countyOwnershipDao) {
     this.countyOwnershipDao = countyOwnershipDao;
-
-    System.out.println("***************adarsh");
-
   }
 
   /**
    * @param client - client
    * @return the client
    */
+  @UnitOfWork(value = "cms")
   public boolean createCountyFromClient(Client client) {
     CountyOwnership county = new CountyOwnership();
     county.setEntityId(client.getId());

@@ -29,7 +29,6 @@ import gov.ca.cwds.rest.api.domain.DomainChef;
 @NamedQueries({@NamedQuery(name = "gov.ca.cwds.data.persistence.cms.Client.findAll",
     query = "FROM Client WHERE sensitivityIndicator = 'N' AND soc158SealedClientIndicator = 'N'")})
 @Entity
-// @EntityListeners(ApiJpaEventListenerFactory.class)
 @Table(name = "CLIENT_T")
 @JsonPropertyOrder(alphabetic = true)
 @JsonIgnoreProperties(ignoreUnknown = true)
