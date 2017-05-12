@@ -201,7 +201,6 @@ public class DataAccessModule extends AbstractModule {
     bind(PersonRaceDao.class);
     bind(RaceDao.class);
     bind(CountyOwnershipDao.class);
-    bind(ApiJpaEventListener.class);
 
     // Miscellaneous:
     bind(ElasticsearchDao.class);
