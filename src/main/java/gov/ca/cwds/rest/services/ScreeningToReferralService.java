@@ -185,7 +185,6 @@ public class ScreeningToReferralService implements CrudsService {
   public Response create(Request request) {
     String referralId;
     String clientId;
-    String addressId;
     String dateStarted = null;
     String timeStarted = null;
     String longTextId = null;
@@ -375,12 +374,7 @@ public class ScreeningToReferralService implements CrudsService {
     }
 
     Set<gov.ca.cwds.rest.api.domain.Allegation> resultAllegations = null;
-    try {
-      resultAllegations = processAllegations(screeningToReferral, referralId, messages);
-    } catch (Exception e) {
-      String message = "ERROR - creating Allegations ";
-      logError(message, e, messages);
-    }
+    resultAllegations = processAllegations(screeningToReferral, referralId, messages);
 
     return new PostedScreeningToReferral(screeningToReferral.getId(), referralId, "REFERL_T",
         screeningToReferral.getEndedAt(), screeningToReferral.getIncidentCounty(),
@@ -542,9 +536,6 @@ public class ScreeningToReferralService implements CrudsService {
       if (roles.contains(MANDATED_REPORTER_ROLE) && roles.contains(NON_MANDATED_REPORTER_ROLE)) {
         return false;
       }
-      for (String role : roles) {
-
-      }
     }
     return true;
   }
@@ -574,27 +565,30 @@ public class ScreeningToReferralService implements CrudsService {
     Set<CrossReport> crossReports;
     crossReports = scr.getCrossReports();
 
-    for (CrossReport crossReport : crossReports) {
+    if (crossReports != null) {
 
-      Boolean lawEnforcementIndicator = false;
-      if (crossReport.getAgencyType().contains("Law Enforcement")) {
-        lawEnforcementIndicator = true;
+      for (CrossReport crossReport : crossReports) {
+
+        Boolean lawEnforcementIndicator = false;
+        if (crossReport.getAgencyType().contains("Law Enforcement")) {
+          lawEnforcementIndicator = true;
+        }
+        // create the cross report
+        gov.ca.cwds.rest.api.domain.cms.CrossReport cmsCrossReport =
+            new gov.ca.cwds.rest.api.domain.cms.CrossReport(crossReportId, crossReportMethodCode,
+                false, false, "", "", DEFAULT_INT, DEFAULT_DECIMAL, crossReport.getInformDate(), "",
+                "", referralId, "", DEFAULT_STAFF_PERSON_ID, crossReport.getAgencyName(), "", "",
+                DEFAULT_COUNTY_SPECIFIC_CODE, lawEnforcementIndicator, false, false);
+
+        buildErrors(messages, validator.validate(cmsCrossReport));
+
+        gov.ca.cwds.rest.api.domain.cms.CrossReport postedCrossReport =
+            this.crossReportService.create(cmsCrossReport);
+
+        crossReport.setLegacyId(postedCrossReport.getThirdId());
+        crossReport.setLegacySourceTable("CRSS_RPT");
+        resultCrossReports.add(crossReport);
       }
-      // create the cross report
-      gov.ca.cwds.rest.api.domain.cms.CrossReport cmsCrossReport =
-          new gov.ca.cwds.rest.api.domain.cms.CrossReport(crossReportId, crossReportMethodCode,
-              false, false, "", "", DEFAULT_INT, DEFAULT_DECIMAL, crossReport.getInformDate(), "",
-              "", referralId, "", DEFAULT_STAFF_PERSON_ID, crossReport.getAgencyName(), "", "",
-              DEFAULT_COUNTY_SPECIFIC_CODE, lawEnforcementIndicator, false, false);
-
-      buildErrors(messages, validator.validate(cmsCrossReport));
-
-      gov.ca.cwds.rest.api.domain.cms.CrossReport postedCrossReport =
-          this.crossReportService.create(cmsCrossReport);
-
-      crossReport.setLegacyId(postedCrossReport.getThirdId());
-      crossReport.setLegacySourceTable("CRSS_RPT");
-      resultCrossReports.add(crossReport);
     }
 
     return resultCrossReports;
@@ -613,6 +607,11 @@ public class ScreeningToReferralService implements CrudsService {
     String perpatratorClientId = "";
 
     allegations = scr.getAllegations();
+    if (allegations == null || allegations.isEmpty()) {
+      String message = "ERROR - Referral must have at least one Allegation";
+      ServiceException exception = new ServiceException(message);
+      logError(message, exception, messages);
+    }
     for (Allegation allegation : allegations) {
 
       if (victimClient.containsKey(allegation.getVictimPersonId())) {
@@ -624,7 +623,8 @@ public class ScreeningToReferralService implements CrudsService {
       if (victimClientId.isEmpty()) {
         ServiceException exception =
             new ServiceException("ERROR - victim could not be determined for an allegation");
-        String message = "ERROR - creating Reporter" + exception.getMessage();
+        String message =
+            "ERROR - victim could not be determined for an allegation" + exception.getMessage();
         logError(message, exception, messages);
       }
 
@@ -651,14 +651,16 @@ public class ScreeningToReferralService implements CrudsService {
   private Participant processClientAddress(Participant clientParticipant, String referralId,
       String clientId, Set<ErrorMessage> messages) throws ServiceException {
 
-    Set<gov.ca.cwds.rest.api.domain.Address> addresses =
-        new HashSet<>(clientParticipant.getAddresses());
-
+    String addressId = new String("");
+    Set<gov.ca.cwds.rest.api.domain.Address> addresses;
+    addresses = clientParticipant.getAddresses();
     Set<gov.ca.cwds.rest.api.domain.Address> newAddresses = new HashSet();
 
-    for (gov.ca.cwds.rest.api.domain.Address address : addresses) {
+    if (addresses == null) {
+      return null;
+    }
 
-      String addressId;
+    for (gov.ca.cwds.rest.api.domain.Address address : addresses) {
 
       // TODO: 41511573 address parsing - Smarty Streets Free Form display requires standardizing
       // parsing to fields in CMS
