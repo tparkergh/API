@@ -26,7 +26,7 @@ public class ApiJpaEventListener {
 
   private static final Logger LOGGER = LoggerFactory.getLogger(ApiJpaEventListener.class);
 
-  private CountyOwnershipService countyService;
+  private CountyOwnershipService countyOwnershipService;
 
   /**
    * default constructor
@@ -36,11 +36,11 @@ public class ApiJpaEventListener {
   }
 
   /**
-   * @param countyService - countyService
+   * @param countyOwnershipService - countyOwnershipService
    */
   @Inject
-  public ApiJpaEventListener(CountyOwnershipService countyService) {
-    this.countyService = countyService;
+  public ApiJpaEventListener(CountyOwnershipService countyOwnershipService) {
+    this.countyOwnershipService = countyOwnershipService;
   }
 
   /**
@@ -64,14 +64,11 @@ public class ApiJpaEventListener {
   @PostPersist
   public void userPostPersist(Object ob) {
     LOGGER.info("Listening User Post Persist : " + ((Client) ob).getId());
-    // countyService = Listner.getCountyService();
     if (ob != null) {
       if (ob instanceof Client) {
         Client client = (Client) ob;
-        LOGGER.info("aaaaaaaaaaaaaaa" + client);
-        countyService.createCountyFromClient(client);
+        countyOwnershipService.createCountyFromClient(client);
       }
-
     }
 
   }
@@ -88,31 +85,31 @@ public class ApiJpaEventListener {
    * @param ob object instance
    */
   @PreUpdate
-  public void userPreUpdate(ReferralClient ob) {
-    LOGGER.info("Listening User Pre Update : " + ob.getClientId());
+  public void userPreUpdate(Object ob) {
+    LOGGER.info("Listening User Pre Update : " + ob);
   }
 
   /**
    * @param ob object instance
    */
   @PostUpdate
-  public void userPostUpdate(ReferralClient ob) {
-    LOGGER.info("Listening User Post Update : " + ob.getClientId());
+  public void userPostUpdate(Object ob) {
+    LOGGER.info("Listening User Post Update : " + ob);
   }
 
   /**
    * @param ob object instance
    */
   @PreRemove
-  public void userPreRemove(ReferralClient ob) {
-    LOGGER.info("Listening User Pre Remove : " + ob.getClientId());
+  public void userPreRemove(Object ob) {
+    LOGGER.info("Listening User Pre Remove : " + ob);
   }
 
   /**
    * @param ob object instance
    */
   @PostRemove
-  public void userPostRemove(ReferralClient ob) {
-    LOGGER.info("Listening User Post Remove : " + ob.getClientId());
+  public void userPostRemove(Object ob) {
+    LOGGER.info("Listening User Post Remove : " + ob);
   }
 }

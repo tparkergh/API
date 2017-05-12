@@ -19,6 +19,11 @@ import gov.ca.cwds.rest.services.CrudsService;
 import gov.ca.cwds.rest.services.ServiceException;
 import gov.ca.cwds.rest.util.IdGenerator;
 
+/**
+ * Business layer object to work on {@link ClientAddress}
+ * 
+ * @author CWDS API Team
+ */
 public class ClientAddressService implements CrudsService {
   private static final Logger LOGGER = LoggerFactory.getLogger(ClientService.class);
 

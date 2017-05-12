@@ -11,9 +11,13 @@ import javax.persistence.PreUpdate;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import gov.ca.cwds.data.persistence.cms.ReferralClient;
+import gov.ca.cwds.data.persistence.cms.Client;
 import gov.ca.cwds.rest.BaseApiApplication;
 
+/**
+ * @author CWDS API Team
+ *
+ */
 public class ApiJpaEventListenerFactory {
 
   private static final Logger LOGGER = LoggerFactory.getLogger(ApiJpaEventListenerFactory.class);
@@ -28,6 +32,9 @@ public class ApiJpaEventListenerFactory {
     return listener;
   }
 
+  /**
+   * default constructor
+   */
   public ApiJpaEventListenerFactory() {
     // Default, no-op. Wait till runtime to initialize the event listener.
   }
@@ -49,6 +56,7 @@ public class ApiJpaEventListenerFactory {
    */
   @PostPersist
   public void userPostPersist(Object ob) {
+    System.out.println("Listening User Post Persist : " + ((Client) ob).getId());
     initListener().userPostPersist(ob);
   }
 
@@ -64,7 +72,7 @@ public class ApiJpaEventListenerFactory {
    * @param ob object instance
    */
   @PreUpdate
-  public void userPreUpdate(ReferralClient ob) {
+  public void userPreUpdate(Object ob) {
     initListener().userPreUpdate(ob);
   }
 
@@ -72,7 +80,7 @@ public class ApiJpaEventListenerFactory {
    * @param ob object instance
    */
   @PostUpdate
-  public void userPostUpdate(ReferralClient ob) {
+  public void userPostUpdate(Object ob) {
     initListener().userPostUpdate(ob);
   }
 
@@ -80,7 +88,7 @@ public class ApiJpaEventListenerFactory {
    * @param ob object instance
    */
   @PreRemove
-  public void userPreRemove(ReferralClient ob) {
+  public void userPreRemove(Object ob) {
     initListener().userPreRemove(ob);
   }
 
@@ -88,7 +96,7 @@ public class ApiJpaEventListenerFactory {
    * @param ob object instance
    */
   @PostRemove
-  public void userPostRemove(ReferralClient ob) {
+  public void userPostRemove(Object ob) {
     initListener().userPostRemove(ob);
   }
 
