@@ -3,14 +3,11 @@ package gov.ca.cwds.rest.api.domain;
 import static io.dropwizard.testing.FixtureHelpers.fixture;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
-import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertEquals;
 import static org.mockito.Mockito.mock;
 
 import java.io.IOException;
-import java.util.Arrays;
 import java.util.HashSet;
-import java.util.Iterator;
 import java.util.Set;
 
 import javax.validation.ConstraintViolation;
@@ -129,13 +126,16 @@ public class ScreeningToReferralTest {
         ScreeningToReferral.class);
     Set<ConstraintViolation<ScreeningToReferral>> constraintViolations =
         validator.validate(toValidate);
-    assertEquals(2, constraintViolations.size());
-    String[] expectedMessages = { "may not be empty", "must contain a Victim, Perpetrator, and Reporter"};
-    Iterator itr = constraintViolations.iterator();
-    String[] actualMessages = {((ConstraintViolation)itr.next()).getMessage(),((ConstraintViolation)itr.next()).getMessage()};
-    Arrays.sort(expectedMessages);
-    Arrays.sort(actualMessages);
-    assertArrayEquals(expectedMessages,actualMessages);
+    assertEquals(1, constraintViolations.size());
+    assertEquals("may not be empty", constraintViolations.iterator().next().getMessage());
+    // String[] expectedMessages =
+    // {"may not be empty", "must contain a Victim, Perpetrator, and Reporter"};
+    // Iterator itr = constraintViolations.iterator();
+    // String[] actualMessages = {((ConstraintViolation) itr.next()).getMessage(),
+    // ((ConstraintViolation) itr.next()).getMessage()};
+    // Arrays.sort(expectedMessages);
+    // Arrays.sort(actualMessages);
+    // assertArrayEquals(expectedMessages, actualMessages);
   }
 
   @Test
@@ -145,13 +145,15 @@ public class ScreeningToReferralTest {
         ScreeningToReferral.class);
     Set<ConstraintViolation<ScreeningToReferral>> constraintViolations =
         validator.validate(toValidate);
-    assertEquals(2, constraintViolations.size());
-    String[] expectedMessages = { "may not be empty", "must contain a Victim, Perpetrator, and Reporter"};
-    Iterator itr = constraintViolations.iterator();
-    String[] actualMessages = {((ConstraintViolation)itr.next()).getMessage(),((ConstraintViolation)itr.next()).getMessage()};
-    Arrays.sort(expectedMessages);
-    Arrays.sort(actualMessages);
-    assertArrayEquals(expectedMessages,actualMessages);
+    assertEquals(1, constraintViolations.size());
+    assertEquals("may not be empty", constraintViolations.iterator().next().getMessage());
+    // String[] expectedMessages = {"may not be empty"};
+    // Iterator itr = constraintViolations.iterator();
+    // String[] actualMessages = {((ConstraintViolation) itr.next()).getMessage(),
+    // ((ConstraintViolation) itr.next()).getMessage()};
+    // Arrays.sort(expectedMessages);
+    // Arrays.sort(actualMessages);
+    // assertArrayEquals(expectedMessages, actualMessages);
   }
 
   @Test
@@ -177,23 +179,25 @@ public class ScreeningToReferralTest {
   }
 
   @Test
-  public void testWithEmptyCrossReportFails() throws Exception {
+  public void testWithEmptyCrossReportFail() throws Exception {
     ScreeningToReferral toValidate =
         MAPPER.readValue(fixture("fixtures/domain/ScreeningToReferral/valid/emptyCrossReport.json"),
             ScreeningToReferral.class);
     Set<ConstraintViolation<ScreeningToReferral>> constraintViolations =
         validator.validate(toValidate);
     assertEquals(1, constraintViolations.size());
+    assertEquals("may not be empty", constraintViolations.iterator().next().getMessage());
   }
 
   @Test
-  public void testWithNullCrossReportFails() throws Exception {
+  public void testWithNullCrossReportFail() throws Exception {
     ScreeningToReferral toValidate =
         MAPPER.readValue(fixture("fixtures/domain/ScreeningToReferral/valid/nullCrossReport.json"),
             ScreeningToReferral.class);
     Set<ConstraintViolation<ScreeningToReferral>> constraintViolations =
         validator.validate(toValidate);
     assertEquals(1, constraintViolations.size());
+    assertEquals("may not be empty", constraintViolations.iterator().next().getMessage());
   }
 
   @Test
@@ -302,6 +306,17 @@ public class ScreeningToReferralTest {
     assertEquals(1, constraintViolations.size());
     assertEquals("size must be between 0 and 10",
         constraintViolations.iterator().next().getMessage());
+  }
+
+  @Test
+  public void testWithoutPerpetratorParticipantSuccess() throws Exception {
+    ScreeningToReferral toValidate = MAPPER.readValue(
+        fixture("fixtures/domain/ScreeningToReferral/valid/withoutPerpetratorParticipant.json"),
+        ScreeningToReferral.class);
+    Set<ConstraintViolation<ScreeningToReferral>> constraintViolations =
+        validator.validate(toValidate);
+    // System.out.println(constraintViolations.iterator().next().getMessage());
+    assertEquals(0, constraintViolations.size());
   }
 
   private ScreeningToReferral validScreeningToReferral() {
