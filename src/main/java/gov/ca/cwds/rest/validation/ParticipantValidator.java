@@ -27,9 +27,9 @@ public class ParticipantValidator {
   }
 
   /**
-   * @param scr
-   * @return Boolean
-   * @throws Exception
+   * @param scr - ScreeningToReferral object
+   * @return Boolean - has valid participants
+   * @throws Exception - throw and errors
    */
   public static Boolean hasValidParticipants(ScreeningToReferral scr) throws Exception {
 
@@ -63,9 +63,9 @@ public class ParticipantValidator {
   }
 
   /**
-   * @param str
-   * @return Boolean
-   * @throws Exception
+   * @param str - ScreeningToReferral object
+   * @return Boolean - is an anonymous reporter
+   * @throws Exception - throw any exception
    */
   // is there an anonymous reporter participant on this screening to referral?
   public static Boolean anonymousReporter(ScreeningToReferral str) throws Exception {
@@ -119,9 +119,9 @@ public class ParticipantValidator {
   }
 
   /**
-   * @param participant
-   * @return Boolean
-   * @throws Exception
+   * @param participant - Participant object
+   * @return Boolean - has valid roles
+   * @throws Exception - throw any exception
    */
   // check for incompatiable roles for this participant
   public static Boolean hasValidRoles(Participant participant) throws Exception {
@@ -151,9 +151,9 @@ public class ParticipantValidator {
 
   // check for self-reported participant
   /**
-   * @param participant
-   * @return Boolean
-   * @throws Exception
+   * @param participant - Participant object
+   * @return Boolean - is a self reported participant
+   * @throws Exception - throw any exception
    */
   public static Boolean selfReported(Participant participant) throws Exception {
     Set<String> roles = participant.getRoles();
