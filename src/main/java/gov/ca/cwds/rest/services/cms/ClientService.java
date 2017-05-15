@@ -14,6 +14,7 @@ import gov.ca.cwds.data.Dao;
 import gov.ca.cwds.data.cms.ClientDao;
 import gov.ca.cwds.data.persistence.cms.Client;
 import gov.ca.cwds.data.persistence.cms.CmsKeyIdGenerator;
+import gov.ca.cwds.data.persistence.cms.CountyOwnership;
 import gov.ca.cwds.rest.api.Request;
 import gov.ca.cwds.rest.api.domain.cms.PostedClient;
 import gov.ca.cwds.rest.services.CrudsService;
@@ -100,7 +101,11 @@ public class ClientService implements CrudsService {
     try {
       // TODO : refactor to actually determine who is updating. 'q1p' for now - see user story
       // #136737071 - Tech Debt: Legacy Service classes must use Staff ID for last update ID value
-      Client managed = new Client(CmsKeyIdGenerator.cmsIdGenertor(null), client, "q1p");
+      CountyOwnership countyOwnership = new CountyOwnership();
+      countyOwnership.setEntityCode("C");
+      Client managed =
+          new Client(CmsKeyIdGenerator.cmsIdGenertor(null), client, countyOwnership, "q1p");
+      countyOwnership.setClient(managed);
       managed = clientDao.create(managed);
       return new PostedClient(managed, false);
     } catch (EntityExistsException e) {
@@ -123,7 +128,7 @@ public class ClientService implements CrudsService {
         (gov.ca.cwds.rest.api.domain.cms.Client) request;
 
     try {
-      Client managed = new Client((String) primaryKey, client, "q1p");
+      Client managed = new Client((String) primaryKey, client, null, "q1p");
       managed = clientDao.update(managed);
       return new gov.ca.cwds.rest.api.domain.cms.Client(managed, true);
     } catch (EntityNotFoundException e) {
