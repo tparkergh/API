@@ -3,19 +3,27 @@ package gov.ca.cwds.data.persistence.cms;
 import java.io.Serializable;
 import java.util.Date;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.OneToOne;
+import javax.persistence.PrimaryKeyJoinColumn;
 import javax.persistence.Table;
 import javax.validation.constraints.Size;
 
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
+import org.hibernate.annotations.GenericGenerator;
+import org.hibernate.annotations.Parameter;
 import org.hibernate.annotations.Type;
 import org.hibernate.validator.constraints.NotEmpty;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
+
+import gov.ca.cwds.data.persistence.PersistentObject;
 
 /**
  * Class representing an CountyOwnership.
@@ -27,16 +35,19 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 @JsonPropertyOrder(alphabetic = true)
 @JsonIgnoreProperties(ignoreUnknown = true)
 @SuppressWarnings("javadoc")
-public class CountyOwnership extends CmsPersistentObject {
+public class CountyOwnership implements PersistentObject, Serializable {
 
   /**
    * 
    */
   private static final long serialVersionUID = 1L;
-
+  protected static final int CMS_ID_LEN = 10;
   protected static final String DATE_FORMAT = "yyyy-MM-dd";
 
+  @GenericGenerator(name = "generator", strategy = "foreign",
+      parameters = @Parameter(name = "property", value = "client"))
   @Id
+  @GeneratedValue(generator = "generator")
   @Column(name = "ENTITY_ID", length = CMS_ID_LEN)
   private String entityId;
 
@@ -374,6 +385,10 @@ public class CountyOwnership extends CmsPersistentObject {
   @Column(name = "DELETE_DT")
   private Date deleteDate;
 
+  @OneToOne(cascade = CascadeType.ALL)
+  @PrimaryKeyJoinColumn(name = "ENTITY_ID")
+  private Client client;
+
   /**
    * 
    */
@@ -468,7 +483,8 @@ public class CountyOwnership extends CmsPersistentObject {
       String county49Flag, String county50Flag, String county51Flag, String county52Flag,
       String county53Flag, String county54Flag, String county55Flag, String county56Flag,
       String county57Flag, String county58Flag, String county59Flag, String county60Flag,
-      String county61Flag, String county62Flag, String county63Flag, Date deleteDate) {
+      String county61Flag, String county62Flag, String county63Flag, Date deleteDate,
+      Client client) {
     super();
     this.entityId = entityId;
     this.entityCode = entityCode;
@@ -538,6 +554,12 @@ public class CountyOwnership extends CmsPersistentObject {
     this.county62Flag = county62Flag;
     this.county63Flag = county63Flag;
     this.deleteDate = deleteDate;
+    this.client = client;
+  }
+
+  public CountyOwnership(Client client) {
+    this.client = client;
+    this.entityCode = "C";
   }
 
   /**
@@ -1016,6 +1038,17 @@ public class CountyOwnership extends CmsPersistentObject {
     return deleteDate;
   }
 
+  /**
+   * @return the client
+   */
+  public Client getClient() {
+    return client;
+  }
+
+  public void setClient(Client client) {
+    this.client = client;
+  }
+
   public void setEntityId(String entityId) {
     this.entityId = entityId;
   }
@@ -1308,6 +1341,11 @@ public class CountyOwnership extends CmsPersistentObject {
     return EqualsBuilder.reflectionEquals(this, obj, false);
   }
 
+  /**
+   * {@inheritDoc}
+   * 
+   * @see gov.ca.cwds.data.persistence.PersistentObject#getPrimaryKey()
+   */
   @Override
   public Serializable getPrimaryKey() {
     return entityId;

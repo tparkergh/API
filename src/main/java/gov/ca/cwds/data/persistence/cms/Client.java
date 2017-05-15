@@ -8,6 +8,7 @@ import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.PersistenceException;
 import javax.persistence.Table;
 
@@ -44,6 +45,9 @@ public final class Client extends BaseClient
   @OneToMany(cascade = CascadeType.ALL)
   @JoinColumn(name = "FKCLIENT_T", referencedColumnName = "IDENTIFIER")
   private Set<ClientAddress> clientAddress = new HashSet<>();
+
+  @OneToOne(cascade = CascadeType.ALL, mappedBy = "client")
+  private CountyOwnership countyOwnership;
 
   /**
    * Default constructor
@@ -228,9 +232,11 @@ public final class Client extends BaseClient
    * 
    * @param id primary key
    * @param client The domain object to construct this object from
+   * @param countyOwnership
    * @param lastUpdatedId the id of the last person to update this object
    */
-  public Client(String id, gov.ca.cwds.rest.api.domain.cms.Client client, String lastUpdatedId) {
+  public Client(String id, gov.ca.cwds.rest.api.domain.cms.Client client,
+      CountyOwnership countyOwnership, String lastUpdatedId) {
     super(lastUpdatedId);
     try {
       this.id = id;
@@ -319,6 +325,7 @@ public final class Client extends BaseClient
           DomainChef.cookBoolean(client.getTribalMembrshpVerifctnIndicatorVar());
       this.unemployedParentCode = client.getUnemployedParentCode();
       this.zippyCreatedIndicator = DomainChef.cookBoolean(client.getZippyCreatedIndicator());
+      this.countyOwnership = countyOwnership;
 
     } catch (ApiException e) {
       throw new PersistenceException(e);
@@ -330,6 +337,13 @@ public final class Client extends BaseClient
    */
   public Set<ClientAddress> getClientAddress() {
     return clientAddress;
+  }
+
+  /**
+   * @return the CountyOwnership
+   */
+  public CountyOwnership getCountyOwnership() {
+    return countyOwnership;
   }
 
   @Override
