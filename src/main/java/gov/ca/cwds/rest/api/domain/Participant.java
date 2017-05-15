@@ -13,6 +13,7 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import gov.ca.cwds.rest.api.Request;
 import gov.ca.cwds.rest.api.Response;
 import gov.ca.cwds.rest.validation.Date;
+import gov.ca.cwds.rest.validation.ParticipantValidator;
 import io.dropwizard.jackson.JsonSnakeCase;
 import io.dropwizard.validation.OneOf;
 import io.swagger.annotations.ApiModelProperty;
@@ -121,6 +122,7 @@ public class Participant extends ReportingDomain implements Request, Response {
    * @param ssn The social security number
    * @param roles The roles of the participant
    * @param addresses The addresses of the participant
+   * @throws Exception
    */
   @JsonCreator
   public Participant(@JsonProperty("id") long id,
@@ -130,7 +132,7 @@ public class Participant extends ReportingDomain implements Request, Response {
       @JsonProperty("gender") String gender, @JsonProperty("ssn") String ssn,
       @JsonProperty("date_of_birth") String dateOfBirth, @JsonProperty("person_id") long personId,
       @JsonProperty("screening_id") long screeningId, @JsonProperty("roles") Set<String> roles,
-      @JsonProperty("addresses") Set<Address> addresses) {
+      @JsonProperty("addresses") Set<Address> addresses) throws Exception {
     super();
     this.id = id;
     this.legacySourceTable = legacySourceTable;
@@ -145,17 +147,13 @@ public class Participant extends ReportingDomain implements Request, Response {
     this.roles = roles;
     this.addresses = addresses;
 
-    roles.forEach(role -> {
-      if (role.toLowerCase().contains("victim")) {
-        victim = true;
-      }
-      if (role.toLowerCase().contains("reporter")) {
-        reporter = true;
-      }
-      if (role.toLowerCase().contains("perpetrator")) {
-        perpetrator = true;
-      }
-    });
+    try {
+      victim = ParticipantValidator.hasVictimRole(this);
+      reporter = ParticipantValidator.isReporterType(this);
+      perpetrator = ParticipantValidator.isPerpatrator(this);
+    } catch (Exception e) {
+      throw e;
+    }
   }
 
   /**

@@ -5,7 +5,6 @@ import java.util.Set;
 
 import gov.ca.cwds.rest.api.domain.Participant;
 import gov.ca.cwds.rest.api.domain.ScreeningToReferral;
-import gov.ca.cwds.rest.services.ServiceException;
 
 /**
  * @author CWDS API Team
@@ -85,7 +84,12 @@ public class ParticipantValidator {
     return false;
   }
 
-  private static Boolean isReporterType(Participant participant) {
+  /**
+   * @param participant - Participant
+   * @return - Boolean true if Participant has reporter type role
+   * @throws Exception - throw all Exceptions
+   */
+  public static Boolean isReporterType(Participant participant) throws Exception {
 
     Set<String> roles = participant.getRoles();
     if (roles != null) {
@@ -108,7 +112,27 @@ public class ParticipantValidator {
     return false;
   }
 
-  private static Boolean hasVictimRole(Participant participant) throws ServiceException {
+  /**
+   * @param participant - Participant
+   * @return - Boolean true if Participant has perpetrator role
+   * @throws Exception - throws all Exceptions
+   */
+  public static Boolean isPerpatrator(Participant participant) throws Exception {
+    Set<String> roles = participant.getRoles();
+    if (roles != null) {
+      if (roles.contains(PERPETRATOR_ROLE)) {
+        return true;
+      }
+    }
+    return false;
+  }
+
+  /**
+   * @param participant - Participant
+   * @return Boolean - true if victim role found in participant
+   * @throws Exception - throw any exception
+   */
+  public static Boolean hasVictimRole(Participant participant) throws Exception {
     Set<String> roles = participant.getRoles();
     if (roles != null) {
       if (roles.contains(VICTIM_ROLE)) {
@@ -167,4 +191,5 @@ public class ParticipantValidator {
     }
     return false;
   }
+
 }

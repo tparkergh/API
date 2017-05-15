@@ -44,7 +44,7 @@ import nl.jqno.equalsverifier.Warning;
  * @author CWDS API Team
  *
  */
-@SuppressWarnings("javadoc")
+@SuppressWarnings({"javadoc"})
 public class ParticipantTest implements PersistentTestTemplate {
 
   private long id = 5432;
@@ -236,14 +236,14 @@ public class ParticipantTest implements PersistentTestTemplate {
 
   @Test
   public void testIsVictim() throws IOException {
-    Set roles = new HashSet(Arrays.asList("Victim"));
+    Set<String> roles = new HashSet<String>(Arrays.asList("Victim"));
     Participant participant = createParticipantWithRoles(roles);
     assertTrue("Expected participant with a victim role to be a victim", participant.isVictim());
   }
 
   @Test
   public void testParticipantIsNotAVictimWhenVictimIsNotInRole() throws IOException {
-    Set roles = new HashSet();
+    Set<String> roles = new HashSet<String>();
     Participant participant = createParticipantWithRoles(roles);
     assertFalse("Expected participant with out a victim role not to be a victim",
         participant.isVictim());
@@ -251,7 +251,7 @@ public class ParticipantTest implements PersistentTestTemplate {
 
   @Test
   public void testIsReporter() throws IOException {
-    Set roles = new HashSet(Arrays.asList("Mandated Reporter"));
+    Set<String> roles = new HashSet<String>(Arrays.asList("Mandated Reporter"));
     Participant participant = createParticipantWithRoles(roles);
     assertTrue("Expected participant with a reporter role to be a reporter",
         participant.isReporter());
@@ -259,7 +259,7 @@ public class ParticipantTest implements PersistentTestTemplate {
 
   @Test
   public void testParticipantIsNotAReporterWhenReportersNotInRole() throws IOException {
-    Set roles = new HashSet();
+    Set<String> roles = new HashSet<String>();
     Participant participant = createParticipantWithRoles(roles);
     assertFalse("Expected participant with out a reporter role not to be a reporter",
         participant.isReporter());
@@ -267,7 +267,7 @@ public class ParticipantTest implements PersistentTestTemplate {
 
   @Test
   public void testIsPerpetrator() throws IOException {
-    Set roles = new HashSet(Arrays.asList("Perpetrator"));
+    Set<String> roles = new HashSet<String>(Arrays.asList("Perpetrator"));
     Participant participant = createParticipantWithRoles(roles);
     assertTrue("Expected participant with a perpetrator role to be a perpetrator",
         participant.isPerpetrator());
@@ -275,7 +275,7 @@ public class ParticipantTest implements PersistentTestTemplate {
 
   @Test
   public void testParticipantIsNotAReporterWhenPerpetratorNotInRole() throws IOException {
-    Set roles = new HashSet();
+    Set<String> roles = new HashSet<String>();
     Participant participant = createParticipantWithRoles(roles);
     assertFalse("Expected participant with out a perpetrator role not to be a perpetrator",
         participant.isPerpetrator());
@@ -310,8 +310,13 @@ public class ParticipantTest implements PersistentTestTemplate {
   }
 
   private Participant createParticipant(Set<String> roles) {
-    Participant validParticipant = new Participant(id, legacySourceTable, clientId, firstName,
-        lastName, gender, ssn, dateOfBirth, personId, screeningId, roles, addresses);
+    Participant validParticipant = null;
+    try {
+      validParticipant = new Participant(id, legacySourceTable, clientId, firstName, lastName,
+          gender, ssn, dateOfBirth, personId, screeningId, roles, addresses);
+    } catch (Exception e) {
+      e.printStackTrace();
+    }
     return validParticipant;
 
   }
