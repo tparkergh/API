@@ -11,8 +11,6 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 import java.io.IOException;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 
 import javax.ws.rs.client.Entity;
 import javax.ws.rs.core.MediaType;
@@ -63,7 +61,6 @@ public class ClientTest implements DomainTestTemplate {
 
   private static final ObjectMapper MAPPER = Jackson.newObjectMapper();
   private String lastUpdatedId = "0X5";
-  private final static DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
 
   private String existingClientId = "ABC1234567";
   private Boolean adjudicatedDelinquentIndicator = Boolean.FALSE;

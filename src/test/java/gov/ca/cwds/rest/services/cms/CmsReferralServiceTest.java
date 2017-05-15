@@ -42,6 +42,7 @@ import gov.ca.cwds.rest.api.domain.cms.ReferralClient;
 import gov.ca.cwds.rest.api.domain.cms.Reporter;
 import io.dropwizard.jackson.Jackson;
 
+@SuppressWarnings("javadoc")
 public class CmsReferralServiceTest {
   private static final ObjectMapper MAPPER = Jackson.newObjectMapper();
   private CmsReferralService cmsReferralService;

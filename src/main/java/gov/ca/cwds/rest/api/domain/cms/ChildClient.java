@@ -3,7 +3,6 @@ package gov.ca.cwds.rest.api.domain.cms;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
-import gov.ca.cwds.rest.api.domain.ReportingDomain;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.hibernate.validator.constraints.NotEmpty;
@@ -16,6 +15,7 @@ import gov.ca.cwds.rest.api.Request;
 import gov.ca.cwds.rest.api.Response;
 import gov.ca.cwds.rest.api.domain.DomainChef;
 import gov.ca.cwds.rest.api.domain.DomainObject;
+import gov.ca.cwds.rest.api.domain.ReportingDomain;
 import io.dropwizard.validation.OneOf;
 import io.swagger.annotations.ApiModelProperty;
 
@@ -40,11 +40,11 @@ public class ChildClient extends ReportingDomain implements Request, Response {
   @NotEmpty
   @Size(min = 1, max = 2)
   @OneOf(value = {"N", "Y", "NA"}, ignoreCase = true, ignoreWhitespace = true)
-  @ApiModelProperty(required = true, readOnly = false, value = "", example = "N")
+  @ApiModelProperty(required = true, readOnly = false, value = "Adoptable Code", example = "N")
   private String adoptableCode;
 
   @NotNull
-  @ApiModelProperty(required = false, readOnly = false, example = "1234")
+  @ApiModelProperty(required = false, readOnly = false, value = "Adpoted Age", example = "1234")
   private Short adoptedAge;
 
   @NotNull
@@ -95,11 +95,12 @@ public class ChildClient extends ReportingDomain implements Request, Response {
 
   @Size(min = 1, max = 1)
   @OneOf(value = {"N", "Y", "D"}, ignoreCase = true, ignoreWhitespace = true)
-  @ApiModelProperty(required = false, readOnly = false, value = "", example = "N")
+  @ApiModelProperty(required = false, readOnly = false, value = "Disablility Diagnosed",
+      example = "N")
   private String disabilityDiagnosedCode;
 
   @Size(max = 10)
-  @ApiModelProperty(required = false, readOnly = false, value = "", example = "Old")
+  @ApiModelProperty(required = false, readOnly = false, value = "", example = "")
   private String drmsHePassportDocOld;
 
   @Size(max = 10)

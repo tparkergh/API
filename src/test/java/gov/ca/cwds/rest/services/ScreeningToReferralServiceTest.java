@@ -25,6 +25,7 @@ import com.fasterxml.jackson.databind.SerializationFeature;
 
 import gov.ca.cwds.data.cms.AddressDao;
 import gov.ca.cwds.data.cms.AllegationDao;
+import gov.ca.cwds.data.cms.ChildClientDao;
 import gov.ca.cwds.data.cms.ClientAddressDao;
 import gov.ca.cwds.data.cms.ClientDao;
 import gov.ca.cwds.data.cms.CrossReportDao;
@@ -47,6 +48,7 @@ import gov.ca.cwds.rest.api.domain.cms.ReferralClient;
 import gov.ca.cwds.rest.api.domain.cms.Reporter;
 import gov.ca.cwds.rest.services.cms.AddressService;
 import gov.ca.cwds.rest.services.cms.AllegationService;
+import gov.ca.cwds.rest.services.cms.ChildClientService;
 import gov.ca.cwds.rest.services.cms.ClientAddressService;
 import gov.ca.cwds.rest.services.cms.ClientService;
 import gov.ca.cwds.rest.services.cms.CrossReportService;
@@ -73,6 +75,7 @@ public class ScreeningToReferralServiceTest {
   private ReporterService reporterService;
   private AddressService addressService;
   private ClientAddressService clientAddressService;
+  private ChildClientService childClientService;
   private LongTextService longTextService;
 
   private ReferralDao referralDao;
@@ -83,6 +86,7 @@ public class ScreeningToReferralServiceTest {
   private ReporterDao reporterDao;
   private AddressDao addressDao;
   private ClientAddressDao clientAddressDao;
+  private ChildClientDao childClientDao;
   private LongTextDao longTextDao;
 
   @SuppressWarnings("javadoc")
@@ -120,10 +124,12 @@ public class ScreeningToReferralServiceTest {
     longTextDao = mock(LongTextDao.class);
     longTextService = new LongTextService(longTextDao);
 
+    childClientDao = mock(ChildClientDao.class);
+    childClientService = new ChildClientService(childClientDao);
 
     screeningToReferralService = new ScreeningToReferralService(referralService, clientService,
         allegationService, crossReportService, referralClientService, reporterService,
-        addressService, clientAddressService, longTextService,
+        addressService, clientAddressService, longTextService, childClientService,
         Validation.buildDefaultValidatorFactory().getValidator(), referralDao);
   }
 

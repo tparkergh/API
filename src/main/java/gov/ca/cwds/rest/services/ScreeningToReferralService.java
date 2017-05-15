@@ -35,6 +35,7 @@ import gov.ca.cwds.rest.api.domain.PostedScreeningToReferral;
 import gov.ca.cwds.rest.api.domain.Screening;
 import gov.ca.cwds.rest.api.domain.ScreeningToReferral;
 import gov.ca.cwds.rest.api.domain.cms.Address;
+import gov.ca.cwds.rest.api.domain.cms.ChildClient;
 import gov.ca.cwds.rest.api.domain.cms.Client;
 import gov.ca.cwds.rest.api.domain.cms.ClientAddress;
 import gov.ca.cwds.rest.api.domain.cms.LongText;
@@ -50,6 +51,7 @@ import gov.ca.cwds.rest.api.domain.cms.Reporter;
 import gov.ca.cwds.rest.api.domain.error.ErrorMessage;
 import gov.ca.cwds.rest.services.cms.AddressService;
 import gov.ca.cwds.rest.services.cms.AllegationService;
+import gov.ca.cwds.rest.services.cms.ChildClientService;
 import gov.ca.cwds.rest.services.cms.ClientAddressService;
 import gov.ca.cwds.rest.services.cms.ClientService;
 import gov.ca.cwds.rest.services.cms.CrossReportService;
@@ -96,6 +98,7 @@ public class ScreeningToReferralService implements CrudsService {
   private AddressService addressService;
   private ClientAddressService clientAddressService;
   private LongTextService longTextService;
+  private ChildClientService childClientService;
 
   private ReferralDao referralDao;
 
@@ -123,6 +126,7 @@ public class ScreeningToReferralService implements CrudsService {
   private static final String DEFAULT_COUNTY_SPECIFIC_CODE = "99";
   private static final short DEFAULT_GOVERNMENT_ENTITY_TYPE = 1126;
   private static final String DEFAULT_NO = "N";
+  private static final String DEFAULT_NA = "NA";
   private static final String DEFAULT_STAFF_PERSON_ID = "0X5";
   private static final String DEFAULT_SCREENER_NOTE_TEXT = "";
   private static final String DEFAULT_UNEMPLOYED_PARENT_CODE = "U";
@@ -155,6 +159,7 @@ public class ScreeningToReferralService implements CrudsService {
    * @param addressService - cms address service
    * @param clientAddressService - cms ClientAddress service
    * @param longTextService - cms LongText service
+   * @param childClientService - cms ChildClient service
    * @param validator - the validator
    * @param referralDao - The {@link Dao} handling {@link gov.ca.cwds.data.persistence.cms.Referral}
    *        objects.
@@ -164,7 +169,8 @@ public class ScreeningToReferralService implements CrudsService {
       AllegationService allegationService, CrossReportService crossReportService,
       ReferralClientService referralClientService, ReporterService reporterService,
       AddressService addressService, ClientAddressService clientAddressService,
-      LongTextService longTextService, Validator validator, ReferralDao referralDao) {
+      LongTextService longTextService, ChildClientService childClientService, Validator validator,
+      ReferralDao referralDao) {
 
     super();
     this.referralService = referralService;
@@ -176,6 +182,7 @@ public class ScreeningToReferralService implements CrudsService {
     this.addressService = addressService;
     this.clientAddressService = clientAddressService;
     this.longTextService = longTextService;
+    this.childClientService = childClientService;
     this.validator = validator;
     this.referralDao = referralDao;
 
@@ -222,7 +229,7 @@ public class ScreeningToReferralService implements CrudsService {
 
     try {
       referralAddress = processReferralAddress(screeningToReferral, messages);
-    } catch (Exception e1) {
+    } catch (ServiceException e1) {
       String message = "ERROR - processing Address associated with the Referral ";
       logError(message, e1, messages);
     }
@@ -366,6 +373,13 @@ public class ScreeningToReferralService implements CrudsService {
                */
               if (role.equalsIgnoreCase(VICTIM_ROLE) || role.equalsIgnoreCase(SELF_REPORTED_ROLE)) {
                 victimClient.put(incomingParticipant.getId(), postedClient.getId());
+                // since this is the victim - process the ChildClient
+                try {
+                  this.processChildClient(incomingParticipant, postedClient.getId(), messages);
+                } catch (ServiceException e) {
+                  String message = "ERROR - creating ChildClient";
+                  logError(message, e, messages);
+                }
               }
               if (role.equalsIgnoreCase(PERPETRATOR_ROLE)) {
                 perpatratorClient.put(incomingParticipant.getId(), postedClient.getId());
@@ -398,7 +412,12 @@ public class ScreeningToReferralService implements CrudsService {
     }
 
     Set<gov.ca.cwds.rest.api.domain.Allegation> resultAllegations = null;
-    resultAllegations = processAllegations(screeningToReferral, referralId, messages);
+    try {
+      resultAllegations = processAllegations(screeningToReferral, referralId, messages);
+    } catch (ServiceException e) {
+      String message = "ERROR - creating Allegation";
+      logError(message, e, messages);
+    }
 
     return new PostedScreeningToReferral(screeningToReferral.getId(), referralId, "REFERL_T",
         screeningToReferral.getEndedAt(), screeningToReferral.getIncidentCounty(),
@@ -502,7 +521,6 @@ public class ScreeningToReferralService implements CrudsService {
   private Set<Allegation> processAllegations(ScreeningToReferral scr, String referralId,
       Set<ErrorMessage> messages) throws ServiceException {
 
-    // TODO: #143899869 Add CHILD_CLIENT processing to 'referrals' service
     Set<Allegation> processedAllegations = new HashSet<>();
     Set<Allegation> allegations;
     String victimClientId = "";
@@ -516,18 +534,18 @@ public class ScreeningToReferralService implements CrudsService {
     }
     for (Allegation allegation : allegations) {
 
-      if (victimClient.containsKey(allegation.getVictimPersonId())) {
-        victimClientId = victimClient.get(allegation.getVictimPersonId());
-      }
-      if (perpatratorClient.containsKey(allegation.getPerpetratorPersonId())) {
-        perpatratorClientId = perpatratorClient.get(allegation.getPerpetratorPersonId());
-      }
       if (victimClientId.isEmpty()) {
         ServiceException exception =
             new ServiceException("ERROR - victim could not be determined for an allegation");
         String message =
             "ERROR - victim could not be determined for an allegation" + exception.getMessage();
         logError(message, exception, messages);
+      }
+      if (victimClient.containsKey(allegation.getVictimPersonId())) {
+        victimClientId = victimClient.get(allegation.getVictimPersonId());
+      }
+      if (perpatratorClient.containsKey(allegation.getPerpetratorPersonId())) {
+        perpatratorClientId = perpatratorClient.get(allegation.getPerpetratorPersonId());
       }
 
       // create an allegation in CMS legacy database
@@ -707,6 +725,20 @@ public class ScreeningToReferralService implements CrudsService {
     buildErrors(messages, validator.validate(longText));
 
     return postedLongText.getId();
+
+  }
+
+  private ChildClient processChildClient(Participant id, String clientId,
+      Set<ErrorMessage> messages) throws ServiceException {
+
+    ChildClient childClient = new ChildClient(clientId, "", DEFAULT_CODE, false, false, false, "",
+        "", "", false, false, false, "", DEFAULT_CODE, "", "", "", "", false, "", false, "", false,
+        false, false, false, false, false, false, false, "", false, false, DEFAULT_INT, "", "",
+        false, false, "", false);
+
+    buildErrors(messages, validator.validate(childClient));
+
+    return this.childClientService.create(childClient);
 
   }
 }
