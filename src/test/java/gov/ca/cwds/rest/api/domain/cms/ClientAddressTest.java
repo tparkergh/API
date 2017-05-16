@@ -35,14 +35,17 @@ public class ClientAddressTest {
 
   private static final ReporterResource mockedReporterResource = mock(ReporterResource.class);
 
+  @SuppressWarnings("javadoc")
   @After
   public void ensureServiceLocatorPopulated() {
     JerseyGuiceUtils.reset();
   }
 
+  @SuppressWarnings("javadoc")
   @ClassRule
   public static JerseyGuiceRule rule = new JerseyGuiceRule();
 
+  @SuppressWarnings("javadoc")
   @ClassRule
   public static final ResourceTestRule resources =
       ResourceTestRule.builder().addResource(mockedReporterResource).build();
@@ -58,6 +61,7 @@ public class ClientAddressTest {
   private String referralId = "";
   private String homelessIndicator = "";
 
+  @SuppressWarnings("javadoc")
   @Before
   public void setup() throws Exception {}
 

@@ -37,6 +37,7 @@ public class ChildClientServiceTest {
   private ChildClientService childClientService;
   private ChildClientDao childClientDao;
 
+  @SuppressWarnings("javadoc")
   @Rule
   public ExpectedException thrown = ExpectedException.none();
 
