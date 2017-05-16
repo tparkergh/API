@@ -123,7 +123,7 @@ public class ScreeningToReferralService implements CrudsService {
   private static final String DEFAULT_ADOPTION_STATUS_CODE = "N";
   private static final String DEFAULT_NON_PROTECTING_PARENT_CODE = "U";
   private static final short DEFAULT_ADDRESS_TYPE = 32; // residence
-  private static final String DEFAULT_COUNTY_SPECIFIC_CODE = "99";
+  private static final String DEFAULT_COUNTY_SPECIFIC_CODE = "62";
   private static final short DEFAULT_GOVERNMENT_ENTITY_TYPE = 1126;
   private static final String DEFAULT_NO = "N";
   private static final String DEFAULT_NA = "NA";

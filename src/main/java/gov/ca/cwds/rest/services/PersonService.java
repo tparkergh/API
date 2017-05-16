@@ -139,7 +139,7 @@ public class PersonService implements CrudsService {
     gov.ca.cwds.data.persistence.ns.Person managedPerson =
         new gov.ca.cwds.data.persistence.ns.Person(person, null, null);
     managedPerson = personDao.create(managedPerson);
-    PopulatePersonDetails(person, managedPerson);
+    populatePersonDetails(person, managedPerson);
     managedPerson = personDao.find(managedPerson.getId());
     PostedPerson postedPerson = new PostedPerson(managedPerson);
     try {
@@ -193,7 +193,7 @@ public class PersonService implements CrudsService {
     gov.ca.cwds.data.persistence.ns.Person managedPerson =
         new gov.ca.cwds.data.persistence.ns.Person(person, null, null);
     managedPerson = personDao.update(managedPerson);
-    PopulatePersonDetails(person, managedPerson);
+    populatePersonDetails(person, managedPerson);
     managedPerson = personDao.find(managedPerson.getId());
     PostedPerson postedPerson = new PostedPerson(managedPerson);
     return postedPerson;
@@ -204,7 +204,7 @@ public class PersonService implements CrudsService {
    * @param person - The person
    * @param managedPerson - The managedPerson
    */
-  private void PopulatePersonDetails(Person person,
+  private void populatePersonDetails(Person person,
       gov.ca.cwds.data.persistence.ns.Person managedPerson) {
     if (person.getAddress() != null && !person.getAddress().isEmpty()) {
       for (Address address : person.getAddress()) {

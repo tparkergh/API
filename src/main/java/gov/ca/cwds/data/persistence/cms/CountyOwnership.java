@@ -6,10 +6,10 @@ import java.util.Date;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.MapsId;
 import javax.persistence.OneToOne;
-import javax.persistence.PrimaryKeyJoinColumn;
 import javax.persistence.Table;
 import javax.validation.constraints.Size;
 
@@ -41,13 +41,13 @@ public class CountyOwnership implements PersistentObject, Serializable {
    * 
    */
   private static final long serialVersionUID = 1L;
+
   protected static final int CMS_ID_LEN = 10;
   protected static final String DATE_FORMAT = "yyyy-MM-dd";
 
   @GenericGenerator(name = "generator", strategy = "foreign",
       parameters = @Parameter(name = "property", value = "client"))
   @Id
-  @GeneratedValue(generator = "generator")
   @Column(name = "ENTITY_ID", length = CMS_ID_LEN)
   private String entityId;
 
@@ -386,7 +386,8 @@ public class CountyOwnership implements PersistentObject, Serializable {
   private Date deleteDate;
 
   @OneToOne(cascade = CascadeType.ALL)
-  @PrimaryKeyJoinColumn(name = "ENTITY_ID")
+  @JoinColumn(name = "ENTITY_ID")
+  @MapsId
   private Client client;
 
   /**

@@ -235,8 +235,7 @@ public final class Client extends BaseClient
    * @param countyOwnership
    * @param lastUpdatedId the id of the last person to update this object
    */
-  public Client(String id, gov.ca.cwds.rest.api.domain.cms.Client client,
-      CountyOwnership countyOwnership, String lastUpdatedId) {
+  public Client(String id, gov.ca.cwds.rest.api.domain.cms.Client client, String lastUpdatedId) {
     super(lastUpdatedId);
     try {
       this.id = id;
@@ -325,7 +324,6 @@ public final class Client extends BaseClient
           DomainChef.cookBoolean(client.getTribalMembrshpVerifctnIndicatorVar());
       this.unemployedParentCode = client.getUnemployedParentCode();
       this.zippyCreatedIndicator = DomainChef.cookBoolean(client.getZippyCreatedIndicator());
-      this.countyOwnership = countyOwnership;
 
     } catch (ApiException e) {
       throw new PersistenceException(e);
@@ -344,6 +342,13 @@ public final class Client extends BaseClient
    */
   public CountyOwnership getCountyOwnership() {
     return countyOwnership;
+  }
+
+  /**
+   * @param countyOwnership - countyOwnership
+   */
+  public void setCountyOwnership(CountyOwnership countyOwnership) {
+    this.countyOwnership = countyOwnership;
   }
 
   @Override
