@@ -13,7 +13,6 @@ import com.google.inject.Inject;
 import gov.ca.cwds.data.Dao;
 import gov.ca.cwds.data.cms.ChildClientDao;
 import gov.ca.cwds.data.persistence.cms.ChildClient;
-import gov.ca.cwds.data.persistence.cms.CmsKeyIdGenerator;
 import gov.ca.cwds.rest.api.Request;
 import gov.ca.cwds.rest.services.CrudsService;
 import gov.ca.cwds.rest.services.ServiceException;
@@ -52,11 +51,15 @@ public class ChildClientService implements CrudsService {
     gov.ca.cwds.rest.api.domain.cms.ChildClient childClient =
         (gov.ca.cwds.rest.api.domain.cms.ChildClient) request;
 
+    if (childClient.getVictimClientId() == null) {
+      LOGGER.info("ChildClient cannot be created with null or empty VictimClientId");
+      throw new ServiceException("ChildClient cannot be created with null or empty VictimClientId");
+    }
+
     try {
       // TODO : refactor to actually determine who is updating. 'q1p' for now - #136737071 - Tech
       // Debt: Legacy Service classes must use Staff ID for last update ID value
-      ChildClient managed =
-          new ChildClient(CmsKeyIdGenerator.cmsIdGenertor(null), childClient, "q1p");
+      ChildClient managed = new ChildClient(childClient.getVictimClientId(), childClient, "q1p");
       managed = childClientDao.create(managed);
       return new gov.ca.cwds.rest.api.domain.cms.ChildClient(managed);
     } catch (EntityExistsException e) {
