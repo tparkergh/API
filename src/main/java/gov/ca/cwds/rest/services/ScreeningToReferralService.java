@@ -361,17 +361,19 @@ public class ScreeningToReferralService implements CrudsService {
                   ParticipantValidator.selfReported(incomingParticipant), false, referralId,
                   clientId, "", DEFAULT_CODE, "", DEFAULT_COUNTY_SPECIFIC_CODE, false, false,
                   false);
-              gov.ca.cwds.rest.api.domain.cms.ReferralClient postedReferralClient =
-                  this.referralClientService.create(referralClient);
+
               // validate referral client
               buildErrors(messages, validator.validate(referralClient));
+
+              gov.ca.cwds.rest.api.domain.cms.ReferralClient postedReferralClient =
+                  this.referralClientService.create(referralClient);
 
               resultReferralClients.add(postedReferralClient);
 
               /*
                * determine other participant/roles attributes relating to CWS/CMS allegation
                */
-              if (role.equalsIgnoreCase(VICTIM_ROLE) || role.equalsIgnoreCase(SELF_REPORTED_ROLE)) {
+              if (role.equalsIgnoreCase(VICTIM_ROLE)) {
                 victimClient.put(incomingParticipant.getId(), postedClient.getId());
                 // since this is the victim - process the ChildClient
                 try {
@@ -534,16 +536,34 @@ public class ScreeningToReferralService implements CrudsService {
     }
     for (Allegation allegation : allegations) {
 
+      try {
+        if (!ParticipantValidator.isVictimParticipant(scr, allegation.getVictimPersonId())) {
+          throw new ServiceException(
+              "Error - Allegation/Victim Person Id does not contain a Participant with a role of Victim ");
+        }
+      } catch (Exception e) {
+        throw new ServiceException(e);
+      }
       if (victimClient.containsKey(allegation.getVictimPersonId())) {
         victimClientId = victimClient.get(allegation.getVictimPersonId());
+      }
+
+      if (allegation.getPerpetratorPersonId() != 0) {
+        try {
+          if (!ParticipantValidator.isPerpetratorParticipant(scr,
+              allegation.getPerpetratorPersonId())) {
+            throw new ServiceException(
+                "Error - Allegation/Perpetrator Person Id does not contain a Participant with a role of Perpetrator ");
+          }
+        } catch (Exception e) {
+          throw new ServiceException(e);
+        }
       }
       if (perpatratorClient.containsKey(allegation.getPerpetratorPersonId())) {
         perpatratorClientId = perpatratorClient.get(allegation.getPerpetratorPersonId());
       }
       if (victimClientId.isEmpty()) {
-        String message = "ERROR - victim could not be determined for an allegation  ";
-        ServiceException exception = new ServiceException(message);
-        throw exception;
+        throw new ServiceException("ERROR - victim could not be determined for an allegation  ");
       }
 
       // create an allegation in CMS legacy database
@@ -680,29 +700,36 @@ public class ScreeningToReferralService implements CrudsService {
       Set<ErrorMessage> messages) throws ServiceException {
 
     String[] streetAddress;
-    String streetNumber = null;
-    String streetName = null;
-    String zipCodeString = null;
-    String city = null;
+    String streetNumber = "";
+    String streetName = "";
+    String zipCodeString = "";
+    String city = "";
 
-    Set<gov.ca.cwds.rest.api.domain.Address> addresses = new HashSet<>(ip.getAddresses());
+    if (ip.getAddresses() != null) {
+      Set<gov.ca.cwds.rest.api.domain.Address> addresses = new HashSet<>(ip.getAddresses());
 
-    // use the first address node only
-    for (gov.ca.cwds.rest.api.domain.Address address : addresses) {
+      // use the first address node only
+      for (gov.ca.cwds.rest.api.domain.Address address : addresses) {
 
-      // TODO: #141511573 address parsing - Smarty Streets Free Form display requires standardizing
-      // parsing to fields in CMS
-      zipCodeString = address.getZip().toString();
-      zipSuffix = null;
-      if (address.getZip().toString().length() > 5) {
-        zipSuffix = Short.parseShort(address.getZip().toString().substring(5));
+        // TODO: #141511573 address parsing - Smarty Streets Free Form display requires
+        // standardizing
+        // parsing to fields in CMS
+        if (address == null) {
+          // no address information for this reporter
+          break;
+        }
+        zipCodeString = address.getZip().toString();
+        zipSuffix = null;
+        if (address.getZip().toString().length() > 5) {
+          zipSuffix = Short.parseShort(address.getZip().toString().substring(5));
+        }
+        streetAddress = address.getStreetAddress().split(" ");
+        streetNumber = streetAddress[0];
+        streetName = streetAddress[1];
+        city = address.getCity();
+
+        break;
       }
-      streetAddress = address.getStreetAddress().split(" ");
-      streetNumber = streetAddress[0];
-      streetName = streetAddress[1];
-      city = address.getCity();
-
-      break;
     }
 
     Boolean mandatedReporterIndicator = false;
@@ -746,5 +773,6 @@ public class ScreeningToReferralService implements CrudsService {
     return this.childClientService.create(childClient);
 
   }
+
 }
 

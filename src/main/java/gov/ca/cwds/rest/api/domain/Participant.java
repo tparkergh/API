@@ -150,7 +150,7 @@ public class Participant extends ReportingDomain implements Request, Response {
     try {
       victim = ParticipantValidator.hasVictimRole(this);
       reporter = ParticipantValidator.isReporterType(this);
-      perpetrator = ParticipantValidator.isPerpatrator(this);
+      perpetrator = ParticipantValidator.isPerpetrator(this);
     } catch (Exception e) {
       throw e;
     }
