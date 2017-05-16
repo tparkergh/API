@@ -22,10 +22,12 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import gov.ca.cwds.data.cms.AllegationDao;
 import gov.ca.cwds.data.cms.ClientDao;
 import gov.ca.cwds.data.cms.ClientUcDao;
+import gov.ca.cwds.data.cms.CountyOwnershipDao;
 import gov.ca.cwds.data.cms.CrossReportDao;
 import gov.ca.cwds.data.cms.ReferralClientDao;
 import gov.ca.cwds.data.cms.ReferralDao;
 import gov.ca.cwds.data.cms.ReporterDao;
+import gov.ca.cwds.data.cms.StaffPersonDao;
 import gov.ca.cwds.rest.api.Response;
 import gov.ca.cwds.rest.api.domain.cms.Allegation;
 import gov.ca.cwds.rest.api.domain.cms.Client;
@@ -63,6 +65,8 @@ public class CmsReferralServiceTest {
   private ReporterDao reporterDao;
   private ClientUcDao clientUcDao;
   private ClientUc clientUcDomain;
+  private StaffPersonDao staffpersonDao;
+  private CountyOwnershipDao countyOwnershipDao;
 
 
   @Rule
@@ -75,10 +79,14 @@ public class CmsReferralServiceTest {
     referralService = new ReferralService(referralDao);
 
     clientDao = mock(ClientDao.class);
-    clientService = new ClientService(clientDao);
+    staffpersonDao = mock(StaffPersonDao.class);
+    clientService = new ClientService(clientDao, staffpersonDao);
 
     referralClientDao = mock(ReferralClientDao.class);
-    referralClientService = new ReferralClientService(referralClientDao);
+    countyOwnershipDao = mock(CountyOwnershipDao.class);
+    staffpersonDao = mock(StaffPersonDao.class);
+    referralClientService =
+        new ReferralClientService(referralClientDao, countyOwnershipDao, staffpersonDao);
 
     allegationDao = mock(AllegationDao.class);
     allegationService = new AllegationService(allegationDao);

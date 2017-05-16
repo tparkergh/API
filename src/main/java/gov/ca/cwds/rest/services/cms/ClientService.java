@@ -38,7 +38,8 @@ public class ClientService implements CrudsService {
    * 
    * @param clientDao The {@link Dao} handling {@link gov.ca.cwds.data.persistence.cms.Client}
    *        objects.
-   * @param staffpersonDao
+   * @param staffpersonDao The {@link Dao} handling
+   *        {@link gov.ca.cwds.data.persistence.cms.StaffPerson} objects
    */
   @Inject
   public ClientService(ClientDao clientDao, StaffPersonDao staffpersonDao) {
@@ -108,7 +109,7 @@ public class ClientService implements CrudsService {
       // #136737071 - Tech Debt: Legacy Service classes must use Staff ID for last update ID value
       CountyOwnership countyOwnership = new CountyOwnership();
       countyOwnership.setEntityCode("C");
-      Client managed = new Client(CmsKeyIdGenerator.cmsIdGenertor(null), client, "BTr");
+      Client managed = new Client(CmsKeyIdGenerator.cmsIdGenertor(null), client, "q1p");
       StaffPerson staffperson = staffpersonDao.find(managed.getLastUpdatedId());
       if (staffperson != null && !("19".equals(staffperson.getCountyCode()))) {
         managed.setCountyOwnership(countyOwnership);

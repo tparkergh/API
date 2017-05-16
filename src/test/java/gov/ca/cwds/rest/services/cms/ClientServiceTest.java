@@ -25,6 +25,7 @@ import org.mockito.stubbing.Answer;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import gov.ca.cwds.data.cms.ClientDao;
+import gov.ca.cwds.data.cms.StaffPersonDao;
 import gov.ca.cwds.rest.api.Response;
 import gov.ca.cwds.rest.api.domain.cms.Client;
 import gov.ca.cwds.rest.api.domain.cms.PostedClient;
@@ -40,6 +41,7 @@ public class ClientServiceTest implements ServiceTestTemplate {
   private static final ObjectMapper MAPPER = Jackson.newObjectMapper();
   private ClientService clientService;
   private ClientDao clientDao;
+  private StaffPersonDao staffpersonDao;
 
   @SuppressWarnings("javadoc")
   @Rule
@@ -49,7 +51,8 @@ public class ClientServiceTest implements ServiceTestTemplate {
   @Before
   public void setup() throws Exception {
     clientDao = mock(ClientDao.class);
-    clientService = new ClientService(clientDao);
+    staffpersonDao = mock(StaffPersonDao.class);
+    clientService = new ClientService(clientDao, staffpersonDao);
   }
 
   // find test

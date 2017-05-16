@@ -467,6 +467,7 @@ public class CountyOwnership implements PersistentObject, Serializable {
    * @param county62Flag - county62Flag
    * @param county63Flag - county63Flag
    * @param deleteDate - deleteDate
+   * @param client - client
    */
   public CountyOwnership(String entityId, String entityCode, String multiFlag, String county00Flag,
       String county01Flag, String county02Flag, String county03Flag, String county04Flag,
@@ -561,6 +562,16 @@ public class CountyOwnership implements PersistentObject, Serializable {
   public CountyOwnership(Client client) {
     this.client = client;
     this.entityCode = "C";
+  }
+
+  /**
+   * {@inheritDoc}
+   * 
+   * @see gov.ca.cwds.data.persistence.PersistentObject#getPrimaryKey()
+   */
+  @Override
+  public Serializable getPrimaryKey() {
+    return entityId;
   }
 
   /**
@@ -1340,16 +1351,6 @@ public class CountyOwnership implements PersistentObject, Serializable {
   @Override
   public final boolean equals(Object obj) {
     return EqualsBuilder.reflectionEquals(this, obj, false);
-  }
-
-  /**
-   * {@inheritDoc}
-   * 
-   * @see gov.ca.cwds.data.persistence.PersistentObject#getPrimaryKey()
-   */
-  @Override
-  public Serializable getPrimaryKey() {
-    return entityId;
   }
 
 }

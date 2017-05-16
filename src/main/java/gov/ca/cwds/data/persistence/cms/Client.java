@@ -232,7 +232,6 @@ public final class Client extends BaseClient
    * 
    * @param id primary key
    * @param client The domain object to construct this object from
-   * @param countyOwnership
    * @param lastUpdatedId the id of the last person to update this object
    */
   public Client(String id, gov.ca.cwds.rest.api.domain.cms.Client client, String lastUpdatedId) {

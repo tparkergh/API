@@ -48,7 +48,7 @@ public class ReferralClientService implements CrudsService {
    *        {@link gov.ca.cwds.data.persistence.cms.ReferralClient} objects.
    * @param countyOwnershipDao countyOwenshipDao The {@link Dao} handling {@link CountyOwnership}
    *        objects
-   * @param staffpersonDao
+   * @param staffpersonDao staffpersonDao The {@link Dao} handling {@link StaffPerson} objects
    */
   @Inject
   public ReferralClientService(ReferralClientDao referralClientDao,
@@ -104,7 +104,7 @@ public class ReferralClientService implements CrudsService {
       // Debt: Legacy Service classes must use Staff ID for last update ID value
 
       ReferralClient managed = new ReferralClient(referralClient, "q1p");
-      createAndUpdateCoutyOwnership(managed);
+      // createAndUpdateCoutyOwnership(managed);
       managed = referralClientDao.create(managed);
       return new gov.ca.cwds.rest.api.domain.cms.ReferralClient(managed);
     } catch (EntityExistsException e) {
@@ -121,7 +121,7 @@ public class ReferralClientService implements CrudsService {
         (gov.ca.cwds.rest.api.domain.cms.ReferralClient) request;
 
     try {
-      ReferralClient managed = new ReferralClient(referralClient, "BTr");
+      ReferralClient managed = new ReferralClient(referralClient, "q1p");
       createAndUpdateCoutyOwnership(managed);
       return new gov.ca.cwds.rest.api.domain.cms.ReferralClient(managed);
     } catch (EntityNotFoundException e) {
@@ -138,8 +138,13 @@ public class ReferralClientService implements CrudsService {
     return new ReferralClient.PrimaryKey(referralId, clientId);
   }
 
+  /**
+   * 
+   * @param managed referralClient This method triggers the CountyOwnership table with the
+   *        associated User
+   * 
+   */
   private void createAndUpdateCoutyOwnership(ReferralClient managed) {
-
     StaffPerson staffperson = staffpersonDao.find(managed.getLastUpdatedId());
     if (staffperson != null && !("19".equals(staffperson.getCountyCode()))) {
       CountyOwnership countyOwnership = countyOwnershipDao.find(managed.getClientId());
@@ -153,8 +158,9 @@ public class ReferralClientService implements CrudsService {
       try {
         method = countyOwnership.getClass().getMethod(methodName, String.class);
         method.invoke(countyOwnership, "Y");
-      } catch (EntityNotFoundException | NoSuchMethodException | SecurityException
-          | IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
+      } catch (NoSuchMethodException | SecurityException | IllegalAccessException
+          | IllegalArgumentException | InvocationTargetException e) {
+        LOGGER.info("CountyOwnership Unable to Trigger : {}", countyOwnership);
         LOGGER.error(e.getMessage(), e);
         throw new ServiceException(e);
       }
@@ -162,6 +168,6 @@ public class ReferralClientService implements CrudsService {
       countyOwnershipDao.update(countyOwnership);
 
     }
-
   }
+
 }
