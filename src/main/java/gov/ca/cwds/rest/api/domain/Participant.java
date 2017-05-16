@@ -122,7 +122,7 @@ public class Participant extends ReportingDomain implements Request, Response {
    * @param ssn The social security number
    * @param roles The roles of the participant
    * @param addresses The addresses of the participant
-   * @throws Exception
+   * @throws Exception throw any exception
    */
   @JsonCreator
   public Participant(@JsonProperty("id") long id,
