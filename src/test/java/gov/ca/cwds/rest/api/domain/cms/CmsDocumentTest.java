@@ -35,6 +35,7 @@ import io.dropwizard.testing.junit.ResourceTestRule;
 import nl.jqno.equalsverifier.EqualsVerifier;
 import nl.jqno.equalsverifier.Warning;
 
+@SuppressWarnings("javadoc")
 public class CmsDocumentTest {
   private static final String ROOT_RESOURCE = "/" + Api.RESOURCE_CMS_DOCUMENT + "/";
 
@@ -99,10 +100,8 @@ public class CmsDocumentTest {
 
   @Test
   public void equalsHashCodeWork() {
-    EqualsVerifier.forClass(CmsDocument.class)
-            .suppress(Warning.NONFINAL_FIELDS)
-            .withIgnoredFields("messages")
-            .verify();
+    EqualsVerifier.forClass(CmsDocument.class).suppress(Warning.NONFINAL_FIELDS)
+        .withIgnoredFields("messages").verify();
   }
 
   // constructor test

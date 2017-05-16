@@ -38,7 +38,7 @@
 	  "person_id": 12345,
 	  "screening_id": 12345,
 	  "roles" : [
-	  	"Victim", "Non-mandated Reporter"
+	  	"Non-mandated Reporter"
 	  	],
 	  	"addresses" : [
 	  		{
@@ -77,6 +77,32 @@
 	  			"type" : "Home"
 	  		}
 	  	]
+	},
+		{
+	  "id" : "3456",
+      "legacy_source_table" : "",
+      "legacy_id" : "",
+	  "first_name": "Lisa",
+	  "last_name": "Simpson",
+	  "gender": "female",
+	  "date_of_birth": "2000-03-15",
+	  "ssn": "234567890",
+	  "person_id": 12345,
+	  "screening_id": 12345,
+	  "roles" : [
+	  	"Victim"
+	  	],
+	  	"addresses" : [
+	  		{
+                "legacy_source_table" : "",
+                "legacy_id" : "",
+	  			"street_address" : "234 Second St",
+	  			"state" : "CA",
+	  			"city" : "San Jose",
+	  			"zip" : "94321",
+	  			"type" : "Home"
+	  		}
+	  	]
 	}
    ],
    "cross_reports":[
@@ -92,7 +118,7 @@
       {
          "legacy_source_table" : "",
           "legacy_id" : "",
-         "victim_person_id":"5432",
+         "victim_person_id":"1234",
          "perpetrator_person_id":"1234",
          "type":"physical abuse",
          "county":"Sacramento"

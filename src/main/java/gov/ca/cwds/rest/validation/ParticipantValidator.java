@@ -49,7 +49,7 @@ public class ParticipantValidator {
     // R - 00851 Reporter Creation
     // R - 00836 Self Rep Ind Limit
     // only one reporter is allowed on a referral
-    if (reporterCount > 1) {
+    if (reporterCount != 1) {
       return false;
     }
     // R - 00851 Reporter Creation
@@ -117,7 +117,7 @@ public class ParticipantValidator {
    * @return - Boolean true if Participant has perpetrator role
    * @throws Exception - throws all Exceptions
    */
-  public static Boolean isPerpatrator(Participant participant) throws Exception {
+  public static Boolean isPerpetrator(Participant participant) throws Exception {
     Set<String> roles = participant.getRoles();
     if (roles != null) {
       if (roles.contains(PERPETRATOR_ROLE)) {
@@ -192,4 +192,48 @@ public class ParticipantValidator {
     return false;
   }
 
+  /**
+   * @param str - ScreeningToReferral object
+   * @param victimPersonId - Person Id of victim
+   * @return - True if participant has a role of Victim
+   * @throws Exception - throw any exception
+   */
+  public static Boolean isVictimParticipant(ScreeningToReferral str, long victimPersonId)
+      throws Exception {
+
+    if (str.getParticipants() != null) {
+      Set<Participant> participants = str.getParticipants();
+      for (Participant participant : participants) {
+        if (participant.getId() == victimPersonId) {
+          if (hasVictimRole(participant)) {
+            return true;
+          }
+        }
+      }
+    }
+
+    return false;
+  }
+
+  /**
+   * @param str - ScreeningToReferral object
+   * @param perpetratorPersonId - Person Id of perpetrator
+   * @return - True if participant has a role of Perpetrator
+   * @throws Exception - throw and exception
+   */
+  public static Boolean isPerpetratorParticipant(ScreeningToReferral str, long perpetratorPersonId)
+      throws Exception {
+
+    if (str.getParticipants() != null) {
+      Set<Participant> participants = str.getParticipants();
+      for (Participant participant : participants) {
+        if (participant.getId() == perpetratorPersonId) {
+          if (isPerpetrator(participant)) {
+            return true;
+          }
+        }
+      }
+    }
+    return false;
+  }
 }

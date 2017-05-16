@@ -42,8 +42,8 @@
 	  	],
 	  	"addresses" : [
 	  		{
-	  "legacy_source_table" : "",
-	  "legacy_id" : "",
+	            "legacy_source_table" : "",
+	            "legacy_id" : "",
 	  			"street_address" : "123 First St",
 	  			"state" : "CA",
 	  			"city" : "San Jose",
@@ -68,8 +68,8 @@
 	  	],
 	  	"addresses" : [
 	  		{
-	  "legacy_source_table" : "",
-	  "legacy_id" : "",
+	            "legacy_source_table" : "",
+	            "legacy_id" : "",
 	  			"street_address" : "234 Second St",
 	  			"state" : "CA",
 	  			"city" : "San Jose",
@@ -97,16 +97,16 @@
    ],
    "cross_reports":[
       {
-   "legacy_source_table" : "",
-   "legacy_id" : "",
+         "legacy_source_table" : "",
+         "legacy_id" : "",
          "agency_type":"Law enforcement",
          "agency_name":"Sacramento County Sheriff Deparment",
          "method":"electronic report",
          "inform_date":"2017-03-15"
       },
       {
-   "legacy_source_table" : "",
-   "legacy_id" : "",
+         "legacy_source_table" : "",
+         "legacy_id" : "",
          "agency_type":"District attorney",
          "agency_name":"Sacramento District Attorney",
          "method":"electronic report",
@@ -115,10 +115,10 @@
       ],
    "allegations":[
       {
-   "legacy_source_table" : "",
-   "legacy_id" : "",
+         "legacy_source_table" : "",
+         "legacy_id" : "",
          "victim_person_id":"5432",
-         "perpetrator_person_id":"1234",
+         "perpetrator_person_id":"1",
          "type":"physical abuse",
          "county":"Sacramento"
       }

@@ -24,7 +24,7 @@
 	  "state": "CA",
 	  "zip": 95757,
 	  "type": "Home"
-  },
+   },
    "participants":[
 	{
 	  "id" : "5432",
@@ -38,8 +38,20 @@
 	  "person_id": 12345,
 	  "screening_id": 12345,
 	  "roles" : [
-	  	"Victim"
+	  	"Victim", "Non-mandated Reporter"
+	  	],
+	  		  	"addresses" : [
+	  		{
+                "legacy_source_table" : "",
+                "legacy_id" : "",
+	  			"street_address" : "234 Second St",
+	  			"state" : "CA",
+	  			"city" : "San Jose",
+	  			"zip" : "94321",
+	  			"type" : "Home"
+	  		}
 	  	]
+	  	
 	},
 	{
 	  "id" : "1234",
@@ -54,17 +66,6 @@
 	  "screening_id": 12345,
 	  "roles" : [
 	  	"Perpetrator"
-	  	],
-	  	"addresses" : [
-	  		{
-                "legacy_source_table" : "",
-                "legacy_id" : "",
-	  			"street_address" : "234 Second St",
-	  			"state" : "CA",
-	  			"city" : "San Jose",
-	  			"zip" : "94321",
-	  			"type" : "Home"
-	  		}
 	  	]
 	}
    ],
