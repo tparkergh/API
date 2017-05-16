@@ -230,7 +230,7 @@ public class ScreeningToReferralService implements CrudsService {
     try {
       referralAddress = processReferralAddress(screeningToReferral, messages);
     } catch (ServiceException e1) {
-      String message = "ERROR - processing Address associated with the Referral ";
+      String message = e1.getMessage();
       logError(message, e1, messages);
     }
 
@@ -242,7 +242,7 @@ public class ScreeningToReferralService implements CrudsService {
         longTextId = createLongText(DEFAULT_COUNTY_SPECIFIC_CODE,
             screeningToReferral.getAdditionalInformation(), messages);
       } catch (ServiceException e) {
-        String message = "ERROR - processing LongText associated with the Referral ";
+        String message = e.getMessage();
         logError(message, e, messages);
       }
     }
@@ -321,8 +321,8 @@ public class ScreeningToReferralService implements CrudsService {
             }
             try {
               savedReporter = processReporter(incomingParticipant, role, referralId, messages);
-            } catch (Exception e) {
-              String message = "ERROR - creating Reporter" + e.getMessage();
+            } catch (ServiceException e) {
+              String message = e.getMessage();
               logError(message, e, messages);
             }
           } else {
@@ -377,7 +377,7 @@ public class ScreeningToReferralService implements CrudsService {
                 try {
                   this.processChildClient(incomingParticipant, postedClient.getId(), messages);
                 } catch (ServiceException e) {
-                  String message = "ERROR - creating ChildClient";
+                  String message = e.getMessage();
                   logError(message, e, messages);
                 }
               }
@@ -389,7 +389,7 @@ public class ScreeningToReferralService implements CrudsService {
                 resultParticipant =
                     processClientAddress(incomingParticipant, referralId, clientId, messages);
               } catch (ServiceException e) {
-                String message = "ERROR - creating Address ";
+                String message = e.getMessage();
                 logError(message, e, messages);
               }
             }
@@ -406,8 +406,8 @@ public class ScreeningToReferralService implements CrudsService {
     Set<gov.ca.cwds.rest.api.domain.CrossReport> resultCrossReports = null;
     try {
       resultCrossReports = processCrossReports(screeningToReferral, referralId, messages);
-    } catch (Exception e) {
-      String message = "ERROR - creating CrossReport ";
+    } catch (ServiceException e) {
+      String message = e.getMessage();
       logError(message, e, messages);
     }
 
@@ -415,7 +415,7 @@ public class ScreeningToReferralService implements CrudsService {
     try {
       resultAllegations = processAllegations(screeningToReferral, referralId, messages);
     } catch (ServiceException e) {
-      String message = "ERROR - creating Allegation";
+      String message = e.getMessage();
       logError(message, e, messages);
     }
 
@@ -534,18 +534,16 @@ public class ScreeningToReferralService implements CrudsService {
     }
     for (Allegation allegation : allegations) {
 
-      if (victimClientId.isEmpty()) {
-        ServiceException exception =
-            new ServiceException("ERROR - victim could not be determined for an allegation");
-        String message =
-            "ERROR - victim could not be determined for an allegation" + exception.getMessage();
-        logError(message, exception, messages);
-      }
       if (victimClient.containsKey(allegation.getVictimPersonId())) {
         victimClientId = victimClient.get(allegation.getVictimPersonId());
       }
       if (perpatratorClient.containsKey(allegation.getPerpetratorPersonId())) {
         perpatratorClientId = perpatratorClient.get(allegation.getPerpetratorPersonId());
+      }
+      if (victimClientId.isEmpty()) {
+        String message = "ERROR - victim could not be determined for an allegation  ";
+        ServiceException exception = new ServiceException(message);
+        throw exception;
       }
 
       // create an allegation in CMS legacy database
@@ -607,18 +605,14 @@ public class ScreeningToReferralService implements CrudsService {
        * CMS Client Address
        */
       if (addressId.isEmpty()) {
-        ServiceException exception =
-            new ServiceException("ERROR - ADDRESS/IDENTIFIER is required for CLIENT_ADDRESS table");
-        String message = "ERROR - ADDRESS/IDENTIFIER is required for CLIENT_ADDRESS table"
-            + exception.getMessage();
-        logError(message, exception, messages);
+        String message = "ERROR - ADDRESS/IDENTIFIER is required for CLIENT_ADDRESS table ";
+        ServiceException exception = new ServiceException(message);
+        throw exception;
       }
       if (clientId.isEmpty()) {
-        ServiceException exception =
-            new ServiceException("ERROR - CLIENT/IDENTIFIER is required for CLIENT_ADDRESS ");
-        String message =
-            "ERROR - CLIENT/IDENTIFIER is required for CLIENT_ADDRESS " + exception.getMessage();
-        logError(message, exception, messages);
+        String message = "ERROR - CLIENT/IDENTIFIER is required for CLIENT_ADDRESS ";
+        ServiceException exception = new ServiceException(message);
+        throw exception;
       }
 
       ClientAddress clientAddress =
@@ -642,30 +636,41 @@ public class ScreeningToReferralService implements CrudsService {
   private gov.ca.cwds.rest.api.domain.Address processReferralAddress(ScreeningToReferral scr,
       Set<ErrorMessage> messages) throws ServiceException {
     gov.ca.cwds.rest.api.domain.Address address = scr.getAddress();
-
-    Integer zipCode = address.getZip();
-    zipSuffix = 0;
-    if (address.getZip().toString().length() > 5) {
-      zipSuffix = Short.parseShort(address.getZip().toString().substring(5));
+    if (address == null) {
+      String message = "ERROR - Referral Address is null or empty";
+      ServiceException se = new ServiceException(message);
+      throw se;
     }
-    // TODO: 41511573 address parsing - Smarty Streets Free Form display requires standardizing
-    // parsing to fields in CMS
-    String[] streetAddress = address.getStreetAddress().split(" ");
-    String streetNumber = streetAddress[0];
-    String streetName = streetAddress[1];
 
-    Address domainAddress = new Address(" ", address.getCity(), DEFAULT_DECIMAL, DEFAULT_INT, false,
-        DEFAULT_CODE, DEFAULT_DECIMAL, DEFAULT_INT, "", DEFAULT_DECIMAL, DEFAULT_INT,
-        DEFAULT_STATE_CODE, streetName, streetNumber, zipCode, address.getType(), zipSuffix, " ",
-        " ", DEFAULT_CODE, DEFAULT_CODE, " ");
-    // buildErrors(messages, validator,validate(domainAddress))
+    try {
+      Integer zipCode = address.getZip();
+      zipSuffix = 0;
+      if (address.getZip().toString().length() > 5) {
+        zipSuffix = Short.parseShort(address.getZip().toString().substring(5));
+      }
+      // TODO: 41511573 address parsing - Smarty Streets Free Form display requires standardizing
+      // parsing to fields in CMS
+      String[] streetAddress = address.getStreetAddress().split(" ");
+      String streetNumber = streetAddress[0];
+      String streetName = streetAddress[1];
 
-    buildErrors(messages, validator.validate(domainAddress));
+      Address domainAddress = new Address(" ", address.getCity(), DEFAULT_DECIMAL, DEFAULT_INT,
+          false, DEFAULT_CODE, DEFAULT_DECIMAL, DEFAULT_INT, "", DEFAULT_DECIMAL, DEFAULT_INT,
+          DEFAULT_STATE_CODE, streetName, streetNumber, zipCode, address.getType(), zipSuffix, " ",
+          " ", DEFAULT_CODE, DEFAULT_CODE, " ");
+      // buildErrors(messages, validator,validate(domainAddress))
 
-    PostedAddress postedAddress = (PostedAddress) this.addressService.create(domainAddress);
+      buildErrors(messages, validator.validate(domainAddress));
 
-    address.setAddressId(postedAddress.getExistingAddressId());
-    address.setLegacySourceTable("ADDRS_T");
+      PostedAddress postedAddress = (PostedAddress) this.addressService.create(domainAddress);
+
+      address.setAddressId(postedAddress.getExistingAddressId());
+      address.setLegacySourceTable("ADDRS_T");
+    } catch (Exception e) {
+      String message = "Error - Referral Address is null or empty";
+      ServiceException se = new ServiceException(message);
+      throw se;
+    }
 
     return address;
 

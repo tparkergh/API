@@ -15,13 +15,10 @@ import static org.mockito.Mockito.when;
 
 import javax.persistence.EntityNotFoundException;
 
-import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
-import org.mockito.invocation.InvocationOnMock;
-import org.mockito.stubbing.Answer;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
@@ -230,25 +227,25 @@ public class ChildClientServiceTest {
   /*
    * Test for checking the new VictimId Generated for crossReport
    */
-  @SuppressWarnings("javadoc")
-  @Test
-  public void createReturnsGeneratedVictimId() throws Exception {
-    ChildClient childClientDomain = MAPPER.readValue(
-        fixture("fixtures/domain/legacy/ChildClient/valid/valid.json"), ChildClient.class);
-    when(childClientDao.create(any(gov.ca.cwds.data.persistence.cms.ChildClient.class)))
-        .thenAnswer(new Answer<gov.ca.cwds.data.persistence.cms.ChildClient>() {
-
-          @Override
-          public gov.ca.cwds.data.persistence.cms.ChildClient answer(InvocationOnMock invocation)
-              throws Throwable {
-            gov.ca.cwds.data.persistence.cms.ChildClient childClient =
-                (gov.ca.cwds.data.persistence.cms.ChildClient) invocation.getArguments()[0];
-            return childClient;
-          }
-        });
-
-    ChildClient returned = childClientService.create(childClientDomain);
-    Assert.assertNotEquals(returned.getVictimClientId(), childClientDomain.getVictimClientId());
-  }
+  // @SuppressWarnings("javadoc")
+  // @Test
+  // public void createReturnsGeneratedVictimId() throws Exception {
+  // ChildClient childClientDomain = MAPPER.readValue(
+  // fixture("fixtures/domain/legacy/ChildClient/valid/valid.json"), ChildClient.class);
+  // when(childClientDao.create(any(gov.ca.cwds.data.persistence.cms.ChildClient.class)))
+  // .thenAnswer(new Answer<gov.ca.cwds.data.persistence.cms.ChildClient>() {
+  //
+  // @Override
+  // public gov.ca.cwds.data.persistence.cms.ChildClient answer(InvocationOnMock invocation)
+  // throws Throwable {
+  // gov.ca.cwds.data.persistence.cms.ChildClient childClient =
+  // (gov.ca.cwds.data.persistence.cms.ChildClient) invocation.getArguments()[0];
+  // return childClient;
+  // }
+  // });
+  //
+  // ChildClient returned = childClientService.create(childClientDomain);
+  // Assert.assertNotEquals(returned.getVictimClientId(), childClientDomain.getVictimClientId());
+  // }
 
 }

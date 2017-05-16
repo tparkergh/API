@@ -33,8 +33,8 @@
 	  	],
 	  	"addresses" : [
 	  		{
-   "legacy_source_table" : "",
-   "legacy_id" : "",
+                "legacy_source_table" : "",
+                "legacy_id" : "",
 	  			"street_address" : "123 First St",
 	  			"state" : "CA",
 	  			"city" : "San Jose",
@@ -45,8 +45,8 @@
 	},
 	{
 	  "id" : "1234",
-   "legacy_source_table" : "",
-   "legacy_id" : "",
+      "legacy_source_table" : "",
+      "legacy_id" : "",
 	  "first_name": "Bart",
 	  "last_name": "Simpson",
 	  "gender": "male",
@@ -59,8 +59,8 @@
 	  	],
 	  	"addresses" : [
 	  		{
-   "legacy_source_table" : "",
-   "legacy_id" : "",
+                "legacy_source_table" : "",
+                "legacy_id" : "",
 	  			"street_address" : "234 Second St",
 	  			"state" : "CA",
 	  			"city" : "San Jose",
@@ -81,8 +81,8 @@
       }   ],
    "allegations":[
       {
-   "legacy_source_table" : "",
-   "legacy_id" : "",
+          "legacy_source_table" : "",
+          "legacy_id" : "",
          "victim_person_id":"5432",
          "perpetrator_person_id":"2",
          "type":"physical abuse",
