@@ -16,8 +16,10 @@ import com.google.inject.Inject;
 import gov.ca.cwds.data.Dao;
 import gov.ca.cwds.data.cms.CountyOwnershipDao;
 import gov.ca.cwds.data.cms.ReferralClientDao;
+import gov.ca.cwds.data.cms.StaffPersonDao;
 import gov.ca.cwds.data.persistence.cms.CountyOwnership;
 import gov.ca.cwds.data.persistence.cms.ReferralClient;
+import gov.ca.cwds.data.persistence.cms.StaffPerson;
 import gov.ca.cwds.rest.api.Request;
 import gov.ca.cwds.rest.services.CrudsService;
 import gov.ca.cwds.rest.services.ServiceException;
@@ -37,6 +39,7 @@ public class ReferralClientService implements CrudsService {
 
   private ReferralClientDao referralClientDao;
   private CountyOwnershipDao countyOwnershipDao;
+  private StaffPersonDao staffpersonDao;
 
   /**
    * Constructor
@@ -45,12 +48,14 @@ public class ReferralClientService implements CrudsService {
    *        {@link gov.ca.cwds.data.persistence.cms.ReferralClient} objects.
    * @param countyOwnershipDao countyOwenshipDao The {@link Dao} handling {@link CountyOwnership}
    *        objects
+   * @param staffpersonDao
    */
   @Inject
   public ReferralClientService(ReferralClientDao referralClientDao,
-      CountyOwnershipDao countyOwnershipDao) {
+      CountyOwnershipDao countyOwnershipDao, StaffPersonDao staffpersonDao) {
     this.referralClientDao = referralClientDao;
     this.countyOwnershipDao = countyOwnershipDao;
+    this.staffpersonDao = staffpersonDao;
   }
 
   /**
@@ -99,18 +104,7 @@ public class ReferralClientService implements CrudsService {
       // Debt: Legacy Service classes must use Staff ID for last update ID value
 
       ReferralClient managed = new ReferralClient(referralClient, "q1p");
-      CountyOwnership countyOwnership = countyOwnershipDao.find(managed.getClientId());
-      String methodName = "setCounty" + managed.getCountySpecificCode() + "Flag";
-      Method method = null;
-      try {
-        method = countyOwnership.getClass().getMethod(methodName, String.class);
-        method.invoke(countyOwnership, "Y");
-      } catch (EntityNotFoundException | NoSuchMethodException | SecurityException
-          | IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
-        LOGGER.error(e.getMessage(), e);
-      }
-      countyOwnershipDao.update(countyOwnership);
-
+      createAndUpdateCoutyOwnership(managed);
       managed = referralClientDao.create(managed);
       return new gov.ca.cwds.rest.api.domain.cms.ReferralClient(managed);
     } catch (EntityExistsException e) {
@@ -127,19 +121,11 @@ public class ReferralClientService implements CrudsService {
         (gov.ca.cwds.rest.api.domain.cms.ReferralClient) request;
 
     try {
-      ReferralClient managed = new ReferralClient(referralClient, "q1p");
-      CountyOwnership countyOwnership = countyOwnershipDao.find(managed.getClientId());
-      String methodName = "setCounty" + managed.getCountySpecificCode() + "Flag";
-      Method method;
-
-      method = countyOwnership.getClass().getMethod(methodName, String.class);
-      method.invoke(countyOwnership, "Y");
-
-      managed = referralClientDao.update(managed);
+      ReferralClient managed = new ReferralClient(referralClient, "BTr");
+      createAndUpdateCoutyOwnership(managed);
       return new gov.ca.cwds.rest.api.domain.cms.ReferralClient(managed);
-    } catch (EntityNotFoundException | NoSuchMethodException | SecurityException
-        | IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
-      LOGGER.info("Referral not found or CountyOwenship exception : {}", referralClient);
+    } catch (EntityNotFoundException e) {
+      LOGGER.info("Referral not found : {}", referralClient);
       LOGGER.error(e.getMessage(), e);
       throw new ServiceException(e);
     }
@@ -150,5 +136,32 @@ public class ReferralClientService implements CrudsService {
     String referralId = nameValuePairs.get(KEY_REFERRAL_ID);
     String clientId = nameValuePairs.get(KEY_CLIENT_ID);
     return new ReferralClient.PrimaryKey(referralId, clientId);
+  }
+
+  private void createAndUpdateCoutyOwnership(ReferralClient managed) {
+
+    StaffPerson staffperson = staffpersonDao.find(managed.getLastUpdatedId());
+    if (staffperson != null && !("19".equals(staffperson.getCountyCode()))) {
+      CountyOwnership countyOwnership = countyOwnershipDao.find(managed.getClientId());
+      if (countyOwnership == null) {
+        countyOwnership = new CountyOwnership();
+        countyOwnership.setEntityId(managed.getClientId());
+        countyOwnership.setEntityCode("C");
+      }
+      String methodName = "setCounty" + managed.getCountySpecificCode() + "Flag";
+      Method method = null;
+      try {
+        method = countyOwnership.getClass().getMethod(methodName, String.class);
+        method.invoke(countyOwnership, "Y");
+      } catch (EntityNotFoundException | NoSuchMethodException | SecurityException
+          | IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
+        LOGGER.error(e.getMessage(), e);
+        throw new ServiceException(e);
+      }
+
+      countyOwnershipDao.update(countyOwnership);
+
+    }
+
   }
 }

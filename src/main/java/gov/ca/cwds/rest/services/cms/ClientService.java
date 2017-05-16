@@ -12,9 +12,11 @@ import com.google.inject.Inject;
 
 import gov.ca.cwds.data.Dao;
 import gov.ca.cwds.data.cms.ClientDao;
+import gov.ca.cwds.data.cms.StaffPersonDao;
 import gov.ca.cwds.data.persistence.cms.Client;
 import gov.ca.cwds.data.persistence.cms.CmsKeyIdGenerator;
 import gov.ca.cwds.data.persistence.cms.CountyOwnership;
+import gov.ca.cwds.data.persistence.cms.StaffPerson;
 import gov.ca.cwds.rest.api.Request;
 import gov.ca.cwds.rest.api.domain.cms.PostedClient;
 import gov.ca.cwds.rest.services.CrudsService;
@@ -29,16 +31,19 @@ public class ClientService implements CrudsService {
   private static final Logger LOGGER = LoggerFactory.getLogger(ClientService.class);
 
   private ClientDao clientDao;
+  private StaffPersonDao staffpersonDao;
 
   /**
    * Constructor
    * 
    * @param clientDao The {@link Dao} handling {@link gov.ca.cwds.data.persistence.cms.Client}
    *        objects.
+   * @param staffpersonDao
    */
   @Inject
-  public ClientService(ClientDao clientDao) {
+  public ClientService(ClientDao clientDao, StaffPersonDao staffpersonDao) {
     this.clientDao = clientDao;
+    this.staffpersonDao = staffpersonDao;
   }
 
   /**
@@ -103,9 +108,12 @@ public class ClientService implements CrudsService {
       // #136737071 - Tech Debt: Legacy Service classes must use Staff ID for last update ID value
       CountyOwnership countyOwnership = new CountyOwnership();
       countyOwnership.setEntityCode("C");
-      Client managed =
-          new Client(CmsKeyIdGenerator.cmsIdGenertor(null), client, countyOwnership, "q1p");
-      countyOwnership.setClient(managed);
+      Client managed = new Client(CmsKeyIdGenerator.cmsIdGenertor(null), client, "BTr");
+      StaffPerson staffperson = staffpersonDao.find(managed.getLastUpdatedId());
+      if (staffperson != null && !("19".equals(staffperson.getCountyCode()))) {
+        managed.setCountyOwnership(countyOwnership);
+        countyOwnership.setClient(managed);
+      }
       managed = clientDao.create(managed);
       return new PostedClient(managed, false);
     } catch (EntityExistsException e) {
@@ -128,7 +136,7 @@ public class ClientService implements CrudsService {
         (gov.ca.cwds.rest.api.domain.cms.Client) request;
 
     try {
-      Client managed = new Client((String) primaryKey, client, null, "q1p");
+      Client managed = new Client((String) primaryKey, client, "q1p");
       managed = clientDao.update(managed);
       return new gov.ca.cwds.rest.api.domain.cms.Client(managed, true);
     } catch (EntityNotFoundException e) {
