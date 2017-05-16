@@ -19,7 +19,9 @@ import org.junit.rules.ExpectedException;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import gov.ca.cwds.data.cms.CountyOwnershipDao;
 import gov.ca.cwds.data.cms.ReferralClientDao;
+import gov.ca.cwds.data.cms.StaffPersonDao;
 import gov.ca.cwds.rest.api.Response;
 import gov.ca.cwds.rest.api.domain.cms.ReferralClient;
 import gov.ca.cwds.rest.services.ServiceException;
@@ -37,6 +39,8 @@ public class ReferralClientServiceTest {
   // Unit under test:
   private ReferralClientService referralClientService;
   private ReferralClientDao referralClientDao;
+  private StaffPersonDao staffpersonDao;
+  private CountyOwnershipDao countyOwnershipDao;
 
   @Rule
   public ExpectedException thrown = ExpectedException.none();
@@ -45,7 +49,10 @@ public class ReferralClientServiceTest {
   @Before
   public void setup() throws Exception {
     referralClientDao = mock(ReferralClientDao.class);
-    referralClientService = new ReferralClientService(referralClientDao);
+    countyOwnershipDao = mock(CountyOwnershipDao.class);
+    staffpersonDao = mock(StaffPersonDao.class);
+    referralClientService =
+        new ReferralClientService(referralClientDao, countyOwnershipDao, staffpersonDao);
   }
 
   // find test
