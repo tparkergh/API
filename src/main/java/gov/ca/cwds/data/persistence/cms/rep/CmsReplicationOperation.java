@@ -11,7 +11,31 @@ package gov.ca.cwds.data.persistence.cms.rep;
  * 
  * @author CWDS API Team
  */
-@SuppressWarnings("javadoc")
 public enum CmsReplicationOperation {
-  I, U, D;
+
+  /**
+   * Insert.
+   */
+  I,
+
+  /**
+   * Update.
+   */
+  U,
+
+  /**
+   * Delete.
+   */
+  D;
+
+  /**
+   * Convert IBM replication operation to enum.
+   * 
+   * @param op replication operation, IUD
+   * @return enumerated type
+   */
+  public static CmsReplicationOperation strToRepOp(String op) {
+    return op != null ? CmsReplicationOperation.valueOf(op) : null;
+  }
+
 }
