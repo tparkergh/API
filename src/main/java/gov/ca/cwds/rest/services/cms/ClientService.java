@@ -108,14 +108,17 @@ public class ClientService implements CrudsService {
       // TODO : refactor to actually determine who is updating. 'q1p' for now - see user story
       // #136737071 - Tech Debt: Legacy Service classes must use Staff ID for last update ID value
       CountyOwnership countyOwnership = new CountyOwnership();
-      countyOwnership.setEntityCode("C");
-      Client managed = new Client(CmsKeyIdGenerator.cmsIdGenertor(null), client, "q1p");
+
+      Client managed = new Client(CmsKeyIdGenerator.cmsIdGenertor(null), client, "BTr");
+      managed = clientDao.create(managed);
+
       StaffPerson staffperson = staffpersonDao.find(managed.getLastUpdatedId());
       if (staffperson != null && !("19".equals(staffperson.getCountyCode()))) {
         managed.setCountyOwnership(countyOwnership);
-        countyOwnership.setClient(managed);
+        countyOwnership.setEntityId(managed.getPrimaryKey());
+        countyOwnership.setEntityCode("C");
       }
-      managed = clientDao.create(managed);
+      // clientDao.update(managed);
       return new PostedClient(managed, false);
     } catch (EntityExistsException e) {
       LOGGER.info("Client already exists : {}", client);
