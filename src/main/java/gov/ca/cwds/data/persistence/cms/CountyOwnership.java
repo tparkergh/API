@@ -389,7 +389,7 @@ public class CountyOwnership implements PersistentObject, Serializable {
   private Client client;
 
   /**
-   * 
+   * Default Constructor
    */
   public CountyOwnership() {
     super();
