@@ -141,7 +141,7 @@ public class ReferralClientService implements CrudsService {
   /**
    * 
    * @param managed referralClient This method triggers the CountyOwnership table with the
-   *        associated User
+   *        associated lastUpdatedId
    * 
    */
   private void createAndUpdateCoutyOwnership(ReferralClient managed) {
