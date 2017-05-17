@@ -1,10 +1,5 @@
 package gov.ca.cwds.inject;
 
-import com.google.inject.AbstractModule;
-import com.google.inject.Injector;
-import com.google.inject.Provides;
-import com.google.inject.name.Named;
-
 import gov.ca.cwds.rest.ApiConfiguration;
 import gov.ca.cwds.rest.SwaggerConfiguration;
 import gov.ca.cwds.rest.api.domain.cms.CmsDocument;
@@ -39,6 +34,7 @@ import gov.ca.cwds.rest.resources.cms.ReferralClientResource;
 import gov.ca.cwds.rest.resources.cms.ReferralResource;
 import gov.ca.cwds.rest.resources.cms.ReporterResource;
 import gov.ca.cwds.rest.resources.cms.StaffPersonResource;
+import gov.ca.cwds.rest.resources.cms.SystemCodeResource;
 import gov.ca.cwds.rest.services.AddressService;
 import gov.ca.cwds.rest.services.AddressValidationService;
 import gov.ca.cwds.rest.services.ParticipantService;
@@ -59,8 +55,14 @@ import gov.ca.cwds.rest.services.cms.ReferralClientService;
 import gov.ca.cwds.rest.services.cms.ReferralService;
 import gov.ca.cwds.rest.services.cms.ReporterService;
 import gov.ca.cwds.rest.services.cms.StaffPersonService;
+import gov.ca.cwds.rest.services.cms.SystemCodeService;
 import gov.ca.cwds.rest.services.es.AutoCompletePersonService;
 import gov.ca.cwds.rest.services.es.IndexQueryService;
+
+import com.google.inject.AbstractModule;
+import com.google.inject.Injector;
+import com.google.inject.Provides;
+import com.google.inject.name.Named;
 
 
 /**
@@ -102,6 +104,7 @@ public class ResourcesModule extends AbstractModule {
     bind(AllegationPerpetratorHistoryResource.class);
     bind(CrossReportResource.class);
     bind(ChildClientResource.class);
+    bind(SystemCodeResource.class);
   }
 
   @Provides
@@ -198,8 +201,7 @@ public class ResourcesModule extends AbstractModule {
   @Provides
   @ScreeningToReferralServiceBackedResource
   public ResourceDelegate screeningToReferralBackedResource(Injector injector) {
-    return new ServiceBackedResourceDelegate(
-        injector.getInstance(ScreeningToReferralService.class));
+    return new ServiceBackedResourceDelegate(injector.getInstance(ScreeningToReferralService.class));
   }
 
   @Provides
@@ -224,6 +226,12 @@ public class ResourcesModule extends AbstractModule {
   @StaffPersonServiceBackedResource
   public ResourceDelegate staffPersonServiceBackedResource(Injector injector) {
     return new ServiceBackedResourceDelegate(injector.getInstance(StaffPersonService.class));
+  }
+
+  @Provides
+  @SystemCodeServiceBackedResource
+  public ResourceDelegate systemCodeServiceBackedResource(Injector injector) {
+    return new ServiceBackedResourceDelegate(injector.getInstance(SystemCodeService.class));
   }
 
   @Provides

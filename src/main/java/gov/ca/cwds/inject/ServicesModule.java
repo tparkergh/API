@@ -29,6 +29,7 @@ import gov.ca.cwds.rest.services.cms.ReferralClientService;
 import gov.ca.cwds.rest.services.cms.ReferralService;
 import gov.ca.cwds.rest.services.cms.ReporterService;
 import gov.ca.cwds.rest.services.cms.StaffPersonService;
+import gov.ca.cwds.rest.services.cms.SystemCodeService;
 import gov.ca.cwds.rest.services.es.AutoCompletePersonService;
 import gov.ca.cwds.rest.services.es.IndexQueryService;
 import io.dropwizard.hibernate.HibernateBundle;
@@ -110,6 +111,7 @@ public class ServicesModule extends AbstractModule {
     bind(IndexQueryService.class);
     bind(ClientUcService.class);
     bind(CountyOwnershipService.class);
+    bind(SystemCodeService.class);
 
     // Register CMS system code translator.
     bind(ApiSystemCodeCache.class).to(CmsSystemCodeCacheService.class).asEagerSingleton();
