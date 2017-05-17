@@ -8,7 +8,6 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.MapsId;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.validation.constraints.Size;
@@ -387,7 +386,6 @@ public class CountyOwnership implements PersistentObject, Serializable {
 
   @OneToOne(cascade = CascadeType.ALL)
   @JoinColumn(name = "ENTITY_ID")
-  @MapsId
   private Client client;
 
   /**

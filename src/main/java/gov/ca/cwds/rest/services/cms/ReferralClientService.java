@@ -103,7 +103,7 @@ public class ReferralClientService implements CrudsService {
       // TODO : refactor to actually determine who is updating. 'q1p' for now - #136737071 - Tech
       // Debt: Legacy Service classes must use Staff ID for last update ID value
 
-      ReferralClient managed = new ReferralClient(referralClient, "BTr");
+      ReferralClient managed = new ReferralClient(referralClient, "q1p");
       createAndUpdateCoutyOwnership(managed);
       managed = referralClientDao.create(managed);
       return new gov.ca.cwds.rest.api.domain.cms.ReferralClient(managed);
@@ -145,10 +145,12 @@ public class ReferralClientService implements CrudsService {
    * 
    */
   private void createAndUpdateCoutyOwnership(ReferralClient managed) {
+    Boolean countyExists = true;
     StaffPerson staffperson = staffpersonDao.find(managed.getLastUpdatedId());
     if (staffperson != null && !("19".equals(staffperson.getCountyCode()))) {
       CountyOwnership countyOwnership = countyOwnershipDao.find(managed.getClientId());
       if (countyOwnership == null) {
+        countyExists = false;
         countyOwnership = new CountyOwnership();
         countyOwnership.setEntityId(managed.getClientId());
         countyOwnership.setEntityCode("C");
@@ -165,7 +167,11 @@ public class ReferralClientService implements CrudsService {
         throw new ServiceException(e);
       }
 
-      countyOwnershipDao.update(countyOwnership);
+      if (countyExists) {
+        countyOwnershipDao.update(countyOwnership);
+      } else {
+        countyOwnershipDao.create(countyOwnership);
+      }
 
     }
   }
