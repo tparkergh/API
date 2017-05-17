@@ -1,7 +1,10 @@
 package gov.ca.cwds.data.persistence.cms;
 
+import gov.ca.cwds.data.persistence.PersistentObject;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.Id;
 import javax.persistence.Table;
 
 import org.apache.commons.lang3.builder.EqualsBuilder;
@@ -9,16 +12,15 @@ import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.hibernate.annotations.NamedQuery;
 import org.hibernate.annotations.Type;
 
-import gov.ca.cwds.data.persistence.PersistentObject;
-
 
 /**
  * {@link PersistentObject} representing a SystemCode
  * 
  * @author CWDS API Team
  */
-@NamedQuery(name = "gov.ca.cwds.data.persistence.cms.SystemCode.findAll",
-    query = "FROM SystemCode WHERE inactiveIndicator = 'N' AND foreignKeyMetaTable = :metaTable")
+@NamedQuery(
+    name = "gov.ca.cwds.data.persistence.cms.SystemCode.findByForeignKeyMetaTable",
+    query = "FROM SystemCode WHERE inactiveIndicator = 'N' AND foreignKeyMetaTable = :foreignKeyMetaTable")
 @Entity
 @Table(name = "SYS_CD_C")
 public class SystemCode extends CmsPersistentObject {
@@ -28,6 +30,7 @@ public class SystemCode extends CmsPersistentObject {
    */
   private static final long serialVersionUID = 1L;
 
+  @Id
   @Type(type = "short")
   @Column(name = "SYS_ID")
   private Short systemId;
@@ -45,12 +48,11 @@ public class SystemCode extends CmsPersistentObject {
   @Column(name = "SHORT_DSC")
   private String shortDescription;
 
-  @Type(type = "short")
   @Column(name = "LGC_ID")
-  private Short logicalId;
+  private String logicalId;
 
   @Column(name = "THIRD_ID")
-  private String thridId;
+  private String thirdId;
 
   @Column(name = "FKS_META_T")
   private String foreignKeyMetaTable;
@@ -79,7 +81,7 @@ public class SystemCode extends CmsPersistentObject {
    * @param longDescription - long description
    */
   public SystemCode(Short systemId, Short categoryId, String inactiveIndicator, String otherCd,
-      String shortDescription, Short logicalId, String thirdId, String foreignKeyMetaTable,
+      String shortDescription, String logicalId, String thirdId, String foreignKeyMetaTable,
       String longDescription) {
     super();
     this.systemId = systemId;
@@ -88,7 +90,7 @@ public class SystemCode extends CmsPersistentObject {
     this.otherCd = otherCd;
     this.shortDescription = shortDescription;
     this.logicalId = logicalId;
-    this.thridId = thirdId;
+    this.thirdId = thirdId;
     this.foreignKeyMetaTable = foreignKeyMetaTable;
     this.longDescription = longDescription;
   }
@@ -99,8 +101,8 @@ public class SystemCode extends CmsPersistentObject {
    * @see gov.ca.cwds.data.persistence.PersistentObject#getPrimaryKey()
    */
   @Override
-  public Short getPrimaryKey() {
-    return getSystemCode();
+  public String getPrimaryKey() {
+    return getSystemCode().toString();
   }
 
   /**
@@ -148,15 +150,15 @@ public class SystemCode extends CmsPersistentObject {
   /**
    * @return logical ID
    */
-  public Short getLogicalId() {
+  public String getLogicalId() {
     return logicalId;
   }
 
   /**
    * @return third ID (not used in legacy DB)
    */
-  public String getThridId() {
-    return thridId;
+  public String getThirdId() {
+    return thirdId;
   }
 
   /**

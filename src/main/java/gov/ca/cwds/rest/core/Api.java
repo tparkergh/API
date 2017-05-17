@@ -117,4 +117,10 @@ public interface Api {
    */
   public static final String RESOURCE_CHILDCLIENT = "_childClients";
 
+  /**
+   * A {@code String} constant representing {@value #RESOURCE_LOV} API..
+   */
+  public static final String RESOURCE_LOV = "lov";
+
+
 }

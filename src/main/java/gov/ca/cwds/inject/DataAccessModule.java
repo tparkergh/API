@@ -1,18 +1,5 @@
 package gov.ca.cwds.inject;
 
-import java.net.InetAddress;
-
-import org.elasticsearch.client.Client;
-import org.elasticsearch.client.transport.TransportClient;
-import org.elasticsearch.common.settings.Settings;
-import org.elasticsearch.common.transport.InetSocketTransportAddress;
-import org.hibernate.SessionFactory;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import com.google.inject.AbstractModule;
-import com.google.inject.Provides;
-
 import gov.ca.cwds.data.cms.AllegationDao;
 import gov.ca.cwds.data.cms.AllegationPerpetratorHistoryDao;
 import gov.ca.cwds.data.cms.AttorneyDao;
@@ -29,6 +16,8 @@ import gov.ca.cwds.data.cms.ReferralClientDao;
 import gov.ca.cwds.data.cms.ReferralDao;
 import gov.ca.cwds.data.cms.ReporterDao;
 import gov.ca.cwds.data.cms.StaffPersonDao;
+import gov.ca.cwds.data.cms.SystemCodeDao;
+import gov.ca.cwds.data.cms.SystemMetaDao;
 import gov.ca.cwds.data.es.ElasticsearchDao;
 import gov.ca.cwds.data.ns.AddressDao;
 import gov.ca.cwds.data.ns.EthnicityDao;
@@ -67,7 +56,9 @@ import gov.ca.cwds.data.persistence.cms.Reporter;
 import gov.ca.cwds.data.persistence.cms.ServiceProvider;
 import gov.ca.cwds.data.persistence.cms.StaffPerson;
 import gov.ca.cwds.data.persistence.cms.SubstituteCareProvider;
+import gov.ca.cwds.data.persistence.cms.SystemCode;
 import gov.ca.cwds.data.persistence.cms.SystemCodeDaoFileImpl;
+import gov.ca.cwds.data.persistence.cms.SystemMeta;
 import gov.ca.cwds.data.persistence.ns.Address;
 import gov.ca.cwds.data.persistence.ns.Ethnicity;
 import gov.ca.cwds.data.persistence.ns.Language;
@@ -95,6 +86,19 @@ import io.dropwizard.db.DataSourceFactory;
 import io.dropwizard.hibernate.HibernateBundle;
 import io.dropwizard.setup.Bootstrap;
 
+import java.net.InetAddress;
+
+import org.elasticsearch.client.Client;
+import org.elasticsearch.client.transport.TransportClient;
+import org.elasticsearch.common.settings.Settings;
+import org.elasticsearch.common.transport.InetSocketTransportAddress;
+import org.hibernate.SessionFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import com.google.inject.AbstractModule;
+import com.google.inject.Provides;
+
 /**
  * DI (dependency injection) setup for data access objects (DAO).
  * 
@@ -116,7 +120,7 @@ public class DataAccessModule extends AbstractModule {
           ReferralClient.class, Reporter.class, ServiceProvider.class, StaffPerson.class,
           SubstituteCareProvider.class, LongText.class, AllegationPerpetratorHistory.class,
           ClientUc.class, ChildClient.class, gov.ca.cwds.data.persistence.cms.Address.class,
-          ClientAddress.class, CountyOwnership.class) {
+          ClientAddress.class, CountyOwnership.class, SystemCode.class, SystemMeta.class) {
         @Override
         public DataSourceFactory getDataSourceFactory(ApiConfiguration configuration) {
           return configuration.getCmsDataSourceFactory();
@@ -185,6 +189,8 @@ public class DataAccessModule extends AbstractModule {
     bind(AllegationPerpetratorHistoryDao.class);
     bind(ClientUcDao.class);
     bind(ChildClientDao.class);
+    bind(SystemCodeDao.class);
+    bind(SystemMetaDao.class);
 
     // NS:
     bind(AddressDao.class);
@@ -249,11 +255,17 @@ public class DataAccessModule extends AbstractModule {
     if (client == null) {
       ElasticsearchConfiguration config = apiConfiguration.getElasticsearchConfiguration();
       try {
-        Settings settings = Settings.settingsBuilder()
-            .put("cluster.name", config.getElasticsearchCluster()).build();
-        client = TransportClient.builder().settings(settings).build().addTransportAddress(
-            new InetSocketTransportAddress(InetAddress.getByName(config.getElasticsearchHost()),
-                Integer.parseInt(config.getElasticsearchPort())));
+        Settings settings =
+            Settings.settingsBuilder().put("cluster.name", config.getElasticsearchCluster())
+                .build();
+        client =
+            TransportClient
+                .builder()
+                .settings(settings)
+                .build()
+                .addTransportAddress(
+                    new InetSocketTransportAddress(InetAddress.getByName(config
+                        .getElasticsearchHost()), Integer.parseInt(config.getElasticsearchPort())));
       } catch (Exception e) {
         LOGGER.error("Error initializing Elasticsearch client: {}", e.getMessage(), e);
         throw new ApiException("Error initializing Elasticsearch client: " + e.getMessage(), e);
