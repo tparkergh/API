@@ -77,6 +77,32 @@
 	  			"type" : "Home"
 	  		}
 	  	]
+	},
+		{
+	  "id" : "2345",
+      "legacy_source_table" : "",
+      "legacy_id" : "",
+	  "first_name": "Lisa",
+	  "last_name": "Simpson",
+	  "gender": "female",
+	  "date_of_birth": "2002-03-25",
+	  "ssn": "234567890",
+	  "person_id": 12345,
+	  "screening_id": 12345,
+	  "roles" : [
+	  	"Non-mandated Reporter"
+	  	],
+	  	"addresses" : [
+	  		{
+                "legacy_source_table" : "",
+                "legacy_id" : "",
+	  			"street_address" : "234 Second St",
+	  			"state" : "CA",
+	  			"city" : "San Jose",
+	  			"zip" : "94321",
+	  			"type" : "Home"
+	  		}
+	  	]
 	}
    ],
    "cross_reports":[
