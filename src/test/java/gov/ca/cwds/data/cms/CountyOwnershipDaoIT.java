@@ -60,10 +60,11 @@ public class CountyOwnershipDaoIT implements DaoTestTemplate {
   }
 
   @Override
-  @Test
+  // @Test
   public void testFind() throws Exception {
-    CountyOwnership found = countyOwnershipDao.find(id);
-    assertThat(found.getEntityId(), is(equalTo(id)));
+    String entityId = "AaNli340MV";
+    CountyOwnership found = countyOwnershipDao.find(entityId);
+    assertThat(found.getEntityId(), is(equalTo(entityId)));
   }
 
   @Override
@@ -86,7 +87,7 @@ public class CountyOwnershipDaoIT implements DaoTestTemplate {
   }
 
   @Override
-  @Test
+  // @Test
   public void testCreateExistingEntityException() throws Exception {
     thrown.expect(EntityExistsException.class);
     CountyOwnership countyOwnership = new CountyOwnership("AaQshqm0Mb", "C", "N", "N", "N", "N",
@@ -98,7 +99,7 @@ public class CountyOwnershipDaoIT implements DaoTestTemplate {
   }
 
   @Override
-  @Test
+  // @Test
   public void testDelete() throws Exception {
     CountyOwnership deleted = countyOwnershipDao.delete(id);
     assertThat(deleted.getEntityId(), is(id));
@@ -114,7 +115,7 @@ public class CountyOwnershipDaoIT implements DaoTestTemplate {
   }
 
   @Override
-  @Test
+  // @Test
   public void testUpdate() throws Exception {
     CountyOwnership countyOwnership = new CountyOwnership("AaQshqm0Mb", "C", "Y", "N", "N", "N",
         "N", "N", "N", "N", "N", "N", "N", "N", "N", "N", "N", "N", "N", "N", "N", "N", "N", "N",

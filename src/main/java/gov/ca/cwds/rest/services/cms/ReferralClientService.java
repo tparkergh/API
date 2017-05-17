@@ -103,8 +103,8 @@ public class ReferralClientService implements CrudsService {
       // TODO : refactor to actually determine who is updating. 'q1p' for now - #136737071 - Tech
       // Debt: Legacy Service classes must use Staff ID for last update ID value
 
-      ReferralClient managed = new ReferralClient(referralClient, "q1p");
-      // createAndUpdateCoutyOwnership(managed);
+      ReferralClient managed = new ReferralClient(referralClient, "BTr");
+      createAndUpdateCoutyOwnership(managed);
       managed = referralClientDao.create(managed);
       return new gov.ca.cwds.rest.api.domain.cms.ReferralClient(managed);
     } catch (EntityExistsException e) {
