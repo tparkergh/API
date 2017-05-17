@@ -77,4 +77,31 @@ public class ParticipantValidatorTest {
     assertThat(ParticipantValidator.hasValidParticipants(toValidate), equalTo(false));
   }
 
+  @Test
+  public void testAllegationVictimPersonIdNotParticipantVictimFail() throws Exception {
+    ScreeningToReferral toValidate = MAPPER.readValue(
+        fixture("fixtures/domain/ScreeningToReferral/valid/valid.json"), ScreeningToReferral.class);
+    assertThat(ParticipantValidator.isVictimParticipant(toValidate, 9999), equalTo(false));
+  }
+
+  @Test
+  public void testAllegationVictimPersonIdIsParticipantVictimSuccess() throws Exception {
+    ScreeningToReferral toValidate = MAPPER.readValue(
+        fixture("fixtures/domain/ScreeningToReferral/valid/valid.json"), ScreeningToReferral.class);
+    assertThat(ParticipantValidator.isVictimParticipant(toValidate, 5432), equalTo(true));
+  }
+
+  @Test
+  public void testAllegationPerpetratorPersonIdNotParticipantPerpetratorFail() throws Exception {
+    ScreeningToReferral toValidate = MAPPER.readValue(
+        fixture("fixtures/domain/ScreeningToReferral/valid/valid.json"), ScreeningToReferral.class);
+    assertThat(ParticipantValidator.isPerpetratorParticipant(toValidate, 9999), equalTo(false));
+  }
+
+  @Test
+  public void testAllegationPerpetratorPersonIdIsParticipantPerpetratorSuccess() throws Exception {
+    ScreeningToReferral toValidate = MAPPER.readValue(
+        fixture("fixtures/domain/ScreeningToReferral/valid/valid.json"), ScreeningToReferral.class);
+    assertThat(ParticipantValidator.isPerpetratorParticipant(toValidate, 1234), equalTo(true));
+  }
 }
