@@ -236,4 +236,73 @@ public class ParticipantValidator {
     }
     return false;
   }
+
+  /**
+   * @param role - String role
+   * @return - Boolean true if mandated or non mandated
+   * 
+   *         Do Not include Anonymous Reporter (special case of reporter)
+   */
+  public static Boolean roleIsReporterType(String role) {
+    if (role != null) {
+      if ((role.equalsIgnoreCase(MANDATED_REPORTER_ROLE)
+          || role.equalsIgnoreCase(NON_MANDATED_REPORTER_ROLE))) {
+        return true;
+      }
+    }
+
+    return false;
+  }
+
+  /**
+   * @param role - String role
+   * @return - Boolean true if Victim
+   */
+  public static Boolean roleIsVictim(String role) {
+    if (role != null) {
+      if (role.equalsIgnoreCase(VICTIM_ROLE)) {
+        return true;
+      }
+    }
+    return false;
+  }
+
+  /**
+   * @param role - String role
+   * @return - Boolean true if perpetrator
+   */
+  public static Boolean roleIsPerpetrator(String role) {
+    if (role != null) {
+      if (role.equalsIgnoreCase(PERPETRATOR_ROLE)) {
+        return true;
+      }
+    }
+    return false;
+  }
+
+  /**
+   * @param role - String role
+   * @return - Boolean true if anonymouse reporter
+   */
+  public static Boolean roleIsAnonymousReporter(String role) {
+    if (role != null) {
+      if (role.equalsIgnoreCase(ANONYMOUS_REPORTER_ROLE)) {
+        return true;
+      }
+    }
+    return false;
+  }
+
+  /**
+   * @param role - String role
+   * @return - Boolean true if mandated reporter
+   */
+  public static Boolean roleIsMandatedReporter(String role) {
+    if (role != null) {
+      if (role.equalsIgnoreCase(MANDATED_REPORTER_ROLE)) {
+        return true;
+      }
+    }
+    return false;
+  }
 }

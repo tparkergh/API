@@ -104,4 +104,85 @@ public class ParticipantValidatorTest {
         fixture("fixtures/domain/ScreeningToReferral/valid/valid.json"), ScreeningToReferral.class);
     assertThat(ParticipantValidator.isPerpetratorParticipant(toValidate, 1234), equalTo(true));
   }
+
+  @Test
+  public void testRoleIsVictimSuccess() throws Exception {
+    assertThat(ParticipantValidator.roleIsVictim("Victim"), equalTo(true));
+  }
+
+  @Test
+  public void testRoleIsNotVictimSuccess() throws Exception {
+    assertThat(ParticipantValidator.roleIsVictim("Perpetrator"), equalTo(false));
+  }
+
+  @Test
+  public void testRoleIsNotVictimWhenNullSuccess() throws Exception {
+    assertThat(ParticipantValidator.roleIsVictim(null), equalTo(false));
+  }
+
+  @Test
+  public void testRoleIsPerpetratorSuccess() throws Exception {
+    assertThat(ParticipantValidator.roleIsPerpetrator("Perpetrator"), equalTo(true));
+  }
+
+  @Test
+  public void testRoleIsNotPerpetratorSuccess() throws Exception {
+    assertThat(ParticipantValidator.roleIsPerpetrator("Victim"), equalTo(false));
+  }
+
+  @Test
+  public void testRoleIsNotPerpetratorWhenNullSuccess() throws Exception {
+    assertThat(ParticipantValidator.roleIsPerpetrator(null), equalTo(false));
+  }
+
+  @Test
+  public void testRoleIsAnonymousReporterSuccess() throws Exception {
+    assertThat(ParticipantValidator.roleIsAnonymousReporter("Anonymous Reporter"), equalTo(true));
+  }
+
+  @Test
+  public void testRoleIsNotAnonymousReporterSuccess() throws Exception {
+    assertThat(ParticipantValidator.roleIsAnonymousReporter("Perpetrator"), equalTo(false));
+  }
+
+  @Test
+  public void testRoleIsNotAnonymousReporterWhenNullSuccess() throws Exception {
+    assertThat(ParticipantValidator.roleIsAnonymousReporter(null), equalTo(false));
+  }
+
+  @Test
+  public void testRoleIsReporterTypeWhenMandatedReporterSuccess() throws Exception {
+    assertThat(ParticipantValidator.roleIsReporterType("Mandated Reporter"), equalTo(true));
+  }
+
+  @Test
+  public void testRoleIsReporterTypeWhenNonMandatedReporterSuccess() throws Exception {
+    assertThat(ParticipantValidator.roleIsReporterType("Non-mandated Reporter"), equalTo(true));
+  }
+
+  @Test
+  public void testRoleIsNotReporterTypeSuccess() throws Exception {
+    assertThat(ParticipantValidator.roleIsReporterType("Anonymous Reporter"), equalTo(false));
+  }
+
+  @Test
+  public void testRoleIsNotReporterTypeWhenNullSuccess() throws Exception {
+    assertThat(ParticipantValidator.roleIsReporterType(null), equalTo(false));
+  }
+
+  @Test
+  public void testRoleIsMandatedReporterSuccess() throws Exception {
+    assertThat(ParticipantValidator.roleIsMandatedReporter("Mandated Reporter"), equalTo(true));
+  }
+
+  @Test
+  public void testRoleIsNotMandatedReporterSuccess() throws Exception {
+    assertThat(ParticipantValidator.roleIsMandatedReporter("Perpetrator"), equalTo(false));
+  }
+
+  @Test
+  public void testRoleIsNotMandatedReporterWhenNullSuccess() throws Exception {
+    assertThat(ParticipantValidator.roleIsMandatedReporter(null), equalTo(false));
+  }
+
 }
