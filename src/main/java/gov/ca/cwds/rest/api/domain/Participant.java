@@ -12,6 +12,7 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
 import gov.ca.cwds.rest.api.Request;
 import gov.ca.cwds.rest.api.Response;
+import gov.ca.cwds.rest.services.ServiceException;
 import gov.ca.cwds.rest.validation.Date;
 import gov.ca.cwds.rest.validation.ParticipantValidator;
 import io.dropwizard.jackson.JsonSnakeCase;
@@ -122,7 +123,7 @@ public class Participant extends ReportingDomain implements Request, Response {
    * @param ssn The social security number
    * @param roles The roles of the participant
    * @param addresses The addresses of the participant
-   * @throws Exception throw any exception
+   * @throws ServiceException throw any exception
    */
   @JsonCreator
   public Participant(@JsonProperty("id") long id,
@@ -132,7 +133,7 @@ public class Participant extends ReportingDomain implements Request, Response {
       @JsonProperty("gender") String gender, @JsonProperty("ssn") String ssn,
       @JsonProperty("date_of_birth") String dateOfBirth, @JsonProperty("person_id") long personId,
       @JsonProperty("screening_id") long screeningId, @JsonProperty("roles") Set<String> roles,
-      @JsonProperty("addresses") Set<Address> addresses) throws Exception {
+      @JsonProperty("addresses") Set<Address> addresses) throws ServiceException {
     super();
     this.id = id;
     this.legacySourceTable = legacySourceTable;
