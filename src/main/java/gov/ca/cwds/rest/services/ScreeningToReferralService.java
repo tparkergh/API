@@ -763,10 +763,10 @@ public class ScreeningToReferralService implements CrudsService {
   private ChildClient processChildClient(Participant id, String clientId,
       Set<ErrorMessage> messages) throws ServiceException {
 
-    ChildClient childClient = new ChildClient(clientId, "", DEFAULT_CODE, false, false, false, "",
-        "", "", false, false, false, "", DEFAULT_CODE, "", "", "", "", false, "", false, "", false,
-        false, false, false, false, false, false, false, "", false, false, DEFAULT_INT, "", "",
-        false, false, "", false);
+    ChildClient childClient = new ChildClient(clientId, "NA", DEFAULT_CODE, false, false, false, "",
+        "", "", false, false, false, "", DEFAULT_CODE, "D", "U", "", "", false, "", false, "U",
+        false, false, false, false, false, false, false, false, "X", false, false, DEFAULT_INT, "",
+        "", false, false, "", false);
 
     buildErrors(messages, validator.validate(childClient));
 

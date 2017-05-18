@@ -46,7 +46,7 @@ public class ClientAddress extends ReportingDomain implements Request, Response 
   private String effectiveStartDate;
 
   @NotEmpty
-  @Size(min = 10, max = 10)
+  @Size(max = 10)
   @ApiModelProperty(required = true, readOnly = false, example = "1234567ABC")
   private String addressId;
 
