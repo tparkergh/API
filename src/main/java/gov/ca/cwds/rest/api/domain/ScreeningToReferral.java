@@ -368,24 +368,6 @@ public class ScreeningToReferral extends ReportingDomain implements Request {
   }
 
 
-  // @ValidationMethod(message="must contain a Victim, Perpetrator, and Reporter")
-  // @JsonIgnore
-  // public boolean isValidParticipants(){
-  // boolean perp = false;
-  // boolean victim = false;
-  // boolean reporter = false;
-  //
-  // if (participants != null) {
-  // for (Participant participant : participants){
-  // perp = perp || participant.isPerpetrator();
-  // victim = victim || participant.isReporter();
-  // reporter = reporter || participant.isVictim();
-  //
-  // }
-  // }
-  //
-  // return perp && victim && reporter;
-  // }
 
   @Override
   public int hashCode() {

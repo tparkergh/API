@@ -147,10 +147,15 @@ public class ScreeningToReferralTest {
         validator.validate(toValidate);
     assertEquals(1, constraintViolations.size());
     assertEquals("may not be empty", constraintViolations.iterator().next().getMessage());
+    // String[]actualMessages = null;
     // String[] expectedMessages = {"may not be empty"};
     // Iterator itr = constraintViolations.iterator();
-    // String[] actualMessages = {((ConstraintViolation) itr.next()).getMessage(),
-    // ((ConstraintViolation) itr.next()).getMessage()};
+    // if (itr.hasNext()){
+    // actualMessages = {
+    // ((ConstraintViolation) itr.next()).getMessage(),
+    // ((ConstraintViolation) itr.next()).getMessage()
+    // };
+    // }
     // Arrays.sort(expectedMessages);
     // Arrays.sort(actualMessages);
     // assertArrayEquals(expectedMessages, actualMessages);

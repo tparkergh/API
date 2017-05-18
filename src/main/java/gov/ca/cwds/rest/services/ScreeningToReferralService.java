@@ -73,12 +73,6 @@ public class ScreeningToReferralService implements CrudsService {
   private static final ObjectMapper MAPPER = Jackson.newObjectMapper();
 
   private static final Logger LOGGER = LoggerFactory.getLogger(ScreeningToReferral.class);
-  private static final String PERPETRATOR_ROLE = "Perpetrator";
-  private static final String MANDATED_REPORTER_ROLE = "Mandated Reporter";
-  private static final String NON_MANDATED_REPORTER_ROLE = "Non-mandated Reporter";
-  private static final String ANONYMOUS_REPORTER_ROLE = "Anonymous Reporter";
-  private static final String VICTIM_ROLE = "Victim";
-  private static final String SELF_REPORTED_ROLE = "Self Reported";
 
   private static final String CLIENT_TABLE_NAME = "CLIENT_T";
 
@@ -307,9 +301,8 @@ public class ScreeningToReferralService implements CrudsService {
       for (String role : roles) {
 
         try {
-          if ((role.equalsIgnoreCase(MANDATED_REPORTER_ROLE)
-              || role.equalsIgnoreCase(NON_MANDATED_REPORTER_ROLE))
-              && !ParticipantValidator.anonymousReporter(screeningToReferral)) {
+          if (ParticipantValidator.roleIsReporterType(role)
+              && !ParticipantValidator.roleIsAnonymousReporter(role)) {
             /*
              * CMS Reporter - if role is 'mandated reporter' or 'non-mandated reporter' and not
              * anonymous reporter
@@ -328,7 +321,7 @@ public class ScreeningToReferralService implements CrudsService {
           } else {
             // not a reporter participant - make a CLIENT and REFERRAL_CLIENT unless anonymous
             // reporter
-            if (!ParticipantValidator.anonymousReporter(screeningToReferral)) {
+            if (!ParticipantValidator.roleIsAnonymousReporter(role)) {
 
               // not an anonymous reporter participant - create client
               Client client = new Client("", false, DEFAULT_ADOPTION_STATUS_CODE, "", "",
@@ -373,7 +366,7 @@ public class ScreeningToReferralService implements CrudsService {
               /*
                * determine other participant/roles attributes relating to CWS/CMS allegation
                */
-              if (role.equalsIgnoreCase(VICTIM_ROLE)) {
+              if (ParticipantValidator.roleIsVictim(role)) {
                 victimClient.put(incomingParticipant.getId(), postedClient.getId());
                 // since this is the victim - process the ChildClient
                 try {
@@ -383,7 +376,7 @@ public class ScreeningToReferralService implements CrudsService {
                   logError(message, e, messages);
                 }
               }
-              if (role.equalsIgnoreCase(PERPETRATOR_ROLE)) {
+              if (ParticipantValidator.roleIsPerpetrator(role)) {
                 perpatratorClient.put(incomingParticipant.getId(), postedClient.getId());
               }
               try {
@@ -732,10 +725,7 @@ public class ScreeningToReferralService implements CrudsService {
       }
     }
 
-    Boolean mandatedReporterIndicator = false;
-    if (role.equalsIgnoreCase(MANDATED_REPORTER_ROLE)) {
-      mandatedReporterIndicator = true;
-    }
+    Boolean mandatedReporterIndicator = ParticipantValidator.roleIsMandatedReporter(role);
 
     Reporter reporter = new Reporter("", city, DEFAULT_CODE, DEFAULT_CODE, false, "", "", "", false,
         ip.getFirstName(), ip.getLastName(), mandatedReporterIndicator, 0, DEFAULT_DECIMAL, "", "",
