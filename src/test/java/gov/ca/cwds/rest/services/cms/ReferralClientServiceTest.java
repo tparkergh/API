@@ -276,31 +276,6 @@ public class ReferralClientServiceTest {
 
   @SuppressWarnings("javadoc")
   @Test
-  public void createReturnsNoSuchMethodException() throws Exception {
-    thrown.expect(ServiceException.class);
-    ReferralClient referralClientDomain =
-        MAPPER.readValue(fixture("fixtures/domain/legacy/ReferralClient/invalid/invalid.json"),
-            ReferralClient.class);
-    gov.ca.cwds.data.persistence.cms.ReferralClient toCreate =
-        new gov.ca.cwds.data.persistence.cms.ReferralClient(referralClientDomain, "ABC");
-
-    ReferralClient request = new ReferralClient(toCreate);
-
-    when(referralClientDao.create(any(gov.ca.cwds.data.persistence.cms.ReferralClient.class)))
-        .thenReturn(toCreate);
-    StaffPerson staffPerson = new StaffPerson("q1p", null, "External Interface",
-        "external interface", "SCXCIN7", " ", "", BigDecimal.valueOf(9165672100L), 0, null, "    ",
-        "N", "MIZN02k00E", "  ", "    ", "99", "N", "3XPCP92q38", null);
-    when(staffpersonDao.find("q1p")).thenReturn(staffPerson);
-    when(countyOwnershipDao.create(any(gov.ca.cwds.data.persistence.cms.CountyOwnership.class)))
-        .thenReturn(null);
-
-    referralClientService.create(request);
-
-  }
-
-  @SuppressWarnings("javadoc")
-  @Test
   public void createReturnsUpdatedCountyOwnership() throws Exception {
     ReferralClient referralClientDomain = MAPPER.readValue(
         fixture("fixtures/domain/legacy/ReferralClient/valid/valid.json"), ReferralClient.class);
@@ -328,7 +303,6 @@ public class ReferralClientServiceTest {
         });
     referralClientService.create(request);
     assertThat(countyOwnership.getCounty62Flag(), is("Y"));
-
 
   }
 
@@ -363,7 +337,6 @@ public class ReferralClientServiceTest {
         });
     referralClientService.create(request);
     assertThat(created, is(true));
-
 
   }
 
