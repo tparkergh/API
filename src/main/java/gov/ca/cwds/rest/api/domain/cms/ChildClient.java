@@ -60,17 +60,17 @@ public class ChildClient extends ReportingDomain implements Request, Response {
   private Boolean allHealthInfoOnFileIndicator;
 
   @NotNull
-  @Size(min = 1, max = 254)
+  @Size(max = 254)
   @ApiModelProperty(required = false, readOnly = false, value = "", example = "Eucation")
   private String attemptToAcquireEducInfoDesc;
 
   @NotNull
-  @Size(min = 1, max = 254)
+  @Size(max = 254)
   @ApiModelProperty(required = false, readOnly = false, value = "", example = "Health")
   private String attemptToAcquireHlthInfoDesc;
 
   @NotNull
-  @Size(min = 1, max = 1, message = "size must be 1")
+  @Size(max = 1, message = "size must be 1")
   @ApiModelProperty(required = true, readOnly = false, value = "", example = "N")
   private String awolAbductedCode;
 

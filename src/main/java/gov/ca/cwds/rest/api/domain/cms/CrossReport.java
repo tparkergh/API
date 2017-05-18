@@ -5,7 +5,6 @@ import java.math.BigDecimal;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
-import gov.ca.cwds.rest.api.domain.ReportingDomain;
 import org.hibernate.validator.constraints.NotEmpty;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
@@ -17,6 +16,7 @@ import gov.ca.cwds.rest.api.Request;
 import gov.ca.cwds.rest.api.Response;
 import gov.ca.cwds.rest.api.domain.DomainChef;
 import gov.ca.cwds.rest.api.domain.DomainObject;
+import gov.ca.cwds.rest.api.domain.ReportingDomain;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 
@@ -34,7 +34,7 @@ public class CrossReport extends ReportingDomain implements Request, Response {
 
   // TODO: remove the unique key from the domain class
   @NotNull
-  @Size(min = 10, max = 10)
+  @Size(max = 10)
   @ApiModelProperty(required = true, readOnly = true, value = "", example = "1234ABC123")
   private String thirdId;
 
