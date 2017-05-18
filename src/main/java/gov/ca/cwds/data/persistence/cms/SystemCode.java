@@ -102,7 +102,7 @@ public class SystemCode extends CmsPersistentObject {
    */
   @Override
   public String getPrimaryKey() {
-    return getSystemCode().toString();
+    return getSystemId().toString();
   }
 
   /**
@@ -115,7 +115,7 @@ public class SystemCode extends CmsPersistentObject {
   /**
    * @return system code (unique)
    */
-  public Short getSystemCode() {
+  public Short getSystemId() {
     return systemId;
   }
 
