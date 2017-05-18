@@ -181,10 +181,8 @@ public class CrossReportTest {
 
   @Test
   public void equalsHashCodeWork() {
-    EqualsVerifier.forClass(CrossReport.class)
-            .suppress(Warning.NONFINAL_FIELDS)
-            .withIgnoredFields("messages")
-            .verify();
+    EqualsVerifier.forClass(CrossReport.class).suppress(Warning.NONFINAL_FIELDS)
+        .withIgnoredFields("messages").verify();
   }
 
   @Test
@@ -253,19 +251,6 @@ public class CrossReportTest {
         is(greaterThanOrEqualTo(0)));
   }
 
-  @Test
-  public void failsWhenThirdIdEmpty() throws Exception {
-    CrossReport toCreate = MAPPER.readValue(
-        fixture("fixtures/domain/legacy/CrossReport/invalid/thirdIdEmpty.json"), CrossReport.class);
-    Response response =
-        resources.client().target(ROOT_RESOURCE).request().accept(MediaType.APPLICATION_JSON)
-            .post(Entity.entity(toCreate, MediaType.APPLICATION_JSON));
-    // String message = response.readEntity(String.class);
-    // System.out.print(message);
-    assertThat(response.getStatus(), is(equalTo(422)));
-    assertThat(response.readEntity(String.class).indexOf("thirdId size must be between 10 and 10"),
-        is(greaterThanOrEqualTo(0)));
-  }
 
   @Test
   public void failsWhenThirdIdTooLong() throws Exception {
@@ -276,7 +261,7 @@ public class CrossReportTest {
         resources.client().target(ROOT_RESOURCE).request().accept(MediaType.APPLICATION_JSON)
             .post(Entity.entity(toCreate, MediaType.APPLICATION_JSON));
     assertThat(response.getStatus(), is(equalTo(422)));
-    assertThat(response.readEntity(String.class).indexOf("thirdId size must be between 10 and 10"),
+    assertThat(response.readEntity(String.class).indexOf("thirdId size must be between 0 and 10"),
         is(greaterThanOrEqualTo(0)));
   }
 
