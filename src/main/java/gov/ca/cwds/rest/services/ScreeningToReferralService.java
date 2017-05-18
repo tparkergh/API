@@ -681,8 +681,8 @@ public class ScreeningToReferralService implements CrudsService {
       address.setLegacySourceTable("ADDRS_T");
     } catch (Exception e) {
       String message = "Error - Referral Address is null or empty";
-      ServiceException se = new ServiceException(message);
-      throw se;
+      LOGGER.error(e.getMessage(), e);
+      throw new ServiceException(message);
     }
 
     return address;
