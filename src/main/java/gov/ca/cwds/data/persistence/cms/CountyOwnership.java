@@ -37,7 +37,7 @@ import gov.ca.cwds.data.persistence.PersistentObject;
 public class CountyOwnership implements PersistentObject, Serializable {
 
   /**
-   * 
+   * Serialization version
    */
   private static final long serialVersionUID = 1L;
 
