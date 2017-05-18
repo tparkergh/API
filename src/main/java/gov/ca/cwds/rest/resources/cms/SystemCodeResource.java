@@ -96,7 +96,7 @@ public class SystemCodeResource {
       value = "Find all the System Meta Table records, the value of logical_table_dsd_name may be used to retrieve System Codes for a matching foreign_key_meta_table",
       response = SystemMetaListResponse.class)
   public Response get() {
-    return resourceDelegate.get("lov");
+    return resourceDelegate.get("");
   }
 
   /**

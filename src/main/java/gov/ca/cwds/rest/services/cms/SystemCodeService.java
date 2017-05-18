@@ -51,7 +51,7 @@ public class SystemCodeService implements CrudsService {
   @Override
   public Response find(Serializable primaryKey) {
     assert primaryKey instanceof String;
-    if (("lov").equals(primaryKey)) {
+    if (("").equals(primaryKey)) {
       SystemMeta[] sysMeta = systemMetaDao.findAll();
       ImmutableSet.Builder<gov.ca.cwds.rest.api.domain.cms.SystemMeta> builder =
           ImmutableSet.builder();
@@ -59,11 +59,10 @@ public class SystemCodeService implements CrudsService {
         if (s != null) {
           builder.add(new gov.ca.cwds.rest.api.domain.cms.SystemMeta(s));
         }
-
       }
       return new SystemMetaListResponse(builder.build());
     } else {
-      gov.ca.cwds.data.persistence.cms.SystemCode[] systemCodes = findByCriteria1(primaryKey);
+      gov.ca.cwds.data.persistence.cms.SystemCode[] systemCodes = findByCriteria(primaryKey);
       ImmutableSet.Builder<SystemCode> builder = ImmutableSet.builder();
       for (gov.ca.cwds.data.persistence.cms.SystemCode systemCode : systemCodes) {
         if (systemCode != null) {
@@ -79,7 +78,7 @@ public class SystemCodeService implements CrudsService {
   }
 
   @SuppressWarnings("unchecked")
-  public gov.ca.cwds.data.persistence.cms.SystemCode[] findByCriteria1(Serializable id) {
+  public gov.ca.cwds.data.persistence.cms.SystemCode[] findByCriteria(Serializable id) {
     String foreignKeyMetaTable = id.toString();
 
     if (StringUtils.isNotEmpty(foreignKeyMetaTable)) {
@@ -110,7 +109,7 @@ public class SystemCodeService implements CrudsService {
   public SystemCode create(Request request) {
     assert request instanceof SystemCode;
 
-    throw new NotImplementedException("Delete is not implemented");
+    throw new NotImplementedException("Create is not implemented");
   }
 
   /**
@@ -124,19 +123,7 @@ public class SystemCodeService implements CrudsService {
     assert primaryKey instanceof Long;
     assert request instanceof SystemCode;
 
-    throw new NotImplementedException("Delete is not implemented");
+    throw new NotImplementedException("Update is not implemented");
   }
 
-  // @SuppressWarnings("unchecked")
-  // public List<gov.ca.cwds.data.persistence.cms.SystemCode> findByCriteria(Serializable keys) {
-  //
-  // Session session = systemCodeDao.getSessionFactory().getCurrentSession();
-  //
-  // Criteria criteria = session.createCriteria(gov.ca.cwds.data.persistence.cms.SystemCode.class);
-  // if (StringUtils.isNotEmpty((String) keys) && !keys.equals("null")) {
-  // criteria.add(Restrictions.like("foreignKeyMetaTable", keys));
-  // }
-  //
-  // return criteria.list();
-  // }
 }
