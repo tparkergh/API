@@ -12,16 +12,22 @@ import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
+import java.math.BigDecimal;
+
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
+import org.mockito.invocation.InvocationOnMock;
+import org.mockito.stubbing.Answer;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import gov.ca.cwds.data.cms.CountyOwnershipDao;
 import gov.ca.cwds.data.cms.ReferralClientDao;
 import gov.ca.cwds.data.cms.StaffPersonDao;
+import gov.ca.cwds.data.persistence.cms.CountyOwnership;
+import gov.ca.cwds.data.persistence.cms.StaffPerson;
 import gov.ca.cwds.rest.api.Response;
 import gov.ca.cwds.rest.api.domain.cms.ReferralClient;
 import gov.ca.cwds.rest.services.ServiceException;
@@ -41,6 +47,8 @@ public class ReferralClientServiceTest {
   private ReferralClientDao referralClientDao;
   private StaffPersonDao staffpersonDao;
   private CountyOwnershipDao countyOwnershipDao;
+
+  private boolean created = false;
 
   @Rule
   public ExpectedException thrown = ExpectedException.none();
@@ -265,4 +273,98 @@ public class ReferralClientServiceTest {
     ReferralClient returned = referralClientService.create(request);
     assertThat(returned, is(expected));
   }
+
+  @SuppressWarnings("javadoc")
+  @Test
+  public void createReturnsNoSuchMethodException() throws Exception {
+    thrown.expect(ServiceException.class);
+    ReferralClient referralClientDomain =
+        MAPPER.readValue(fixture("fixtures/domain/legacy/ReferralClient/invalid/invalid.json"),
+            ReferralClient.class);
+    gov.ca.cwds.data.persistence.cms.ReferralClient toCreate =
+        new gov.ca.cwds.data.persistence.cms.ReferralClient(referralClientDomain, "ABC");
+
+    ReferralClient request = new ReferralClient(toCreate);
+
+    when(referralClientDao.create(any(gov.ca.cwds.data.persistence.cms.ReferralClient.class)))
+        .thenReturn(toCreate);
+    StaffPerson staffPerson = new StaffPerson("q1p", null, "External Interface",
+        "external interface", "SCXCIN7", " ", "", BigDecimal.valueOf(9165672100L), 0, null, "    ",
+        "N", "MIZN02k00E", "  ", "    ", "99", "N", "3XPCP92q38", null);
+    when(staffpersonDao.find("q1p")).thenReturn(staffPerson);
+    when(countyOwnershipDao.create(any(gov.ca.cwds.data.persistence.cms.CountyOwnership.class)))
+        .thenReturn(null);
+
+    referralClientService.create(request);
+
+  }
+
+  @SuppressWarnings("javadoc")
+  @Test
+  public void createReturnsUpdatedCountyOwnership() throws Exception {
+    ReferralClient referralClientDomain = MAPPER.readValue(
+        fixture("fixtures/domain/legacy/ReferralClient/valid/valid.json"), ReferralClient.class);
+    gov.ca.cwds.data.persistence.cms.ReferralClient toCreate =
+        new gov.ca.cwds.data.persistence.cms.ReferralClient(referralClientDomain, "ABC");
+
+    ReferralClient request = new ReferralClient(toCreate);
+
+    when(referralClientDao.create(any(gov.ca.cwds.data.persistence.cms.ReferralClient.class)))
+        .thenReturn(toCreate);
+    StaffPerson staffPerson = new StaffPerson("q1p", null, "External Interface",
+        "external interface", "SCXCIN7", " ", "", BigDecimal.valueOf(9165672100L), 0, null, "    ",
+        "N", "MIZN02k00E", "  ", "    ", "99", "N", "3XPCP92q38", null);
+    when(staffpersonDao.find("q1p")).thenReturn(staffPerson);
+    CountyOwnership countyOwnership = new CountyOwnership();
+    when(countyOwnershipDao.find(any(String.class))).thenReturn(countyOwnership);
+    when(countyOwnershipDao.update(any(CountyOwnership.class)))
+        .thenAnswer(new Answer<CountyOwnership>() {
+
+          @Override
+          public CountyOwnership answer(InvocationOnMock invocation) throws Throwable {
+            CountyOwnership report = (CountyOwnership) invocation.getArguments()[0];
+            return report;
+          }
+        });
+    referralClientService.create(request);
+    assertThat(countyOwnership.getCounty62Flag(), is("Y"));
+
+
+  }
+
+  @SuppressWarnings("javadoc")
+  @Test
+  public void resultsCheckCreatedCountyOwnership() throws Exception {
+    ReferralClient referralClientDomain = MAPPER.readValue(
+        fixture("fixtures/domain/legacy/ReferralClient/valid/valid.json"), ReferralClient.class);
+    gov.ca.cwds.data.persistence.cms.ReferralClient toCreate =
+        new gov.ca.cwds.data.persistence.cms.ReferralClient(referralClientDomain, "ABC");
+
+    ReferralClient request = new ReferralClient(toCreate);
+
+    when(referralClientDao.create(any(gov.ca.cwds.data.persistence.cms.ReferralClient.class)))
+        .thenReturn(toCreate);
+    StaffPerson staffPerson = new StaffPerson("q1p", null, "External Interface",
+        "external interface", "SCXCIN7", " ", "", BigDecimal.valueOf(9165672100L), 0, null, "    ",
+        "N", "MIZN02k00E", "  ", "    ", "99", "N", "3XPCP92q38", null);
+
+    when(staffpersonDao.find("q1p")).thenReturn(staffPerson);
+
+    when(countyOwnershipDao.find(any(String.class))).thenReturn(null);
+    when(countyOwnershipDao.create(any(CountyOwnership.class)))
+        .thenAnswer(new Answer<CountyOwnership>() {
+
+          @Override
+          public CountyOwnership answer(InvocationOnMock invocation) throws Throwable {
+            created = true;
+            CountyOwnership report = (CountyOwnership) invocation.getArguments()[0];
+            return report;
+          }
+        });
+    referralClientService.create(request);
+    assertThat(created, is(true));
+
+
+  }
+
 }
