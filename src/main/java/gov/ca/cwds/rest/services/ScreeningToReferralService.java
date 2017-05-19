@@ -19,8 +19,6 @@ import org.apache.commons.lang3.NotImplementedException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.SerializationFeature;
 import com.google.inject.Inject;
 
 import gov.ca.cwds.data.Dao;
@@ -61,7 +59,6 @@ import gov.ca.cwds.rest.services.cms.ReferralService;
 import gov.ca.cwds.rest.services.cms.ReporterService;
 import gov.ca.cwds.rest.validation.ParticipantValidator;
 import io.dropwizard.hibernate.UnitOfWork;
-import io.dropwizard.jackson.Jackson;
 
 /**
  * Business layer object to work on {@link Screening}
@@ -69,8 +66,6 @@ import io.dropwizard.jackson.Jackson;
  * @author CWDS API Team
  */
 public class ScreeningToReferralService implements CrudsService {
-
-  private static final ObjectMapper MAPPER = Jackson.newObjectMapper();
 
   private static final Logger LOGGER = LoggerFactory.getLogger(ScreeningToReferral.class);
 
@@ -138,8 +133,6 @@ public class ScreeningToReferralService implements CrudsService {
   private short allegationTypeCode = 0;
 
 
-  HashMap<Long, String> victimClient = new HashMap<>();
-  HashMap<Long, String> perpatratorClient = new HashMap<>();
 
   /**
    * Constructor
@@ -179,104 +172,77 @@ public class ScreeningToReferralService implements CrudsService {
     this.childClientService = childClientService;
     this.validator = validator;
     this.referralDao = referralDao;
-
   }
 
   @UnitOfWork(value = "cms")
   @Override
   public Response create(Request request) {
-    String referralId;
-    String clientId;
-    String dateStarted = null;
-    String timeStarted = null;
-    String longTextId = null;
-    gov.ca.cwds.rest.api.domain.Address referralAddress = null;
-    gov.ca.cwds.rest.api.domain.Participant resultParticipant = null;
-    Referral referral = null;
-
-    Set<ErrorMessage> messages = new HashSet<ErrorMessage>();
-    MAPPER.configure(SerializationFeature.INDENT_OUTPUT, true);
-
-    assert request instanceof ScreeningToReferral;
-
     ScreeningToReferral screeningToReferral = (ScreeningToReferral) request;
 
-    try {
-      if (!ParticipantValidator.hasValidParticipants(screeningToReferral)) {
-        String message = "ERROR - Incompatiable participants included in request";
-        ServiceException exception = new ServiceException(message);
-        logError(message, exception, messages);
-      }
-    } catch (Exception e2) {
-      String message = e2.getMessage();
-      logError(message, e2, messages);
-    }
+    Set<ErrorMessage> messages = new HashSet<ErrorMessage>();
 
-    try {
-      Date dateTime = dateTimeFormat.parse(screeningToReferral.getStartedAt());
-      dateStarted = dateFormat.format(dateTime);
-      timeStarted = timeFormat.format(dateTime);
-    } catch (ParseException e1) {
-      String message = "ERROR - parsing Start Date/Time ";
-      logError(message, e1, messages);
-    }
+    verifyReferralHasValidParticipants(screeningToReferral, messages);
 
-    try {
-      referralAddress = processReferralAddress(screeningToReferral, messages);
-    } catch (ServiceException e1) {
-      String message = e1.getMessage();
-      logError(message, e1, messages);
-    }
+    String dateStarted = extractStartDate(screeningToReferral, messages);
+    String timeStarted = extractStartTime(screeningToReferral, messages);
+    String referralId = createCmsReferral(screeningToReferral, messages, dateStarted, timeStarted);
+    createReferralAddress(screeningToReferral, messages);
 
-    if (screeningToReferral.getAdditionalInformation() == null
-        || screeningToReferral.getAdditionalInformation().isEmpty()) {
-      longTextId = null;
-    } else {
-      try {
-        longTextId = createLongText(DEFAULT_COUNTY_SPECIFIC_CODE,
-            screeningToReferral.getAdditionalInformation(), messages);
-      } catch (ServiceException e) {
-        String message = e.getMessage();
-        logError(message, e, messages);
-      }
-    }
-
-    // create a CMS Referral
-    try {
-      referral = new Referral(false, ParticipantValidator.anonymousReporter(screeningToReferral),
-          false, "", DEFAULT_APPROVAL_STATUS_CODE, false, "", communicationsMethodCode, "", "", "",
-          "", false, false, DEFAULT_CODE, DEFAULT_NO, false, DEFAULT_LIMITIED_ACCESS_CODE, "",
-          screeningToReferral.getName(), "", dateStarted, timeStarted, referralResponseTypeCode,
-          DEFAULT_CODE, "", "", "", longTextId, DEFAULT_NO, DEFAULT_NO, DEFAULT_NO, DEFAULT_NO, "",
-          "", DEFAULT_STAFF_PERSON_ID, DEFAULT_COUNTY_SPECIFIC_CODE, false, false, false, false, "",
-          DEFAULT_RESPONSIBLE_AGENCY_CODE, DEFAULT_CODE, "", "", "", null, null, null, null, null,
-          null);
-    } catch (Exception e1) {
-      String message = e1.getMessage();
-      logError(message, e1, messages);
-    }
-
-    buildErrors(messages, validator.validate(referral));
-
-    PostedReferral postedReferral = this.referralService.create(referral);
-    referralId = postedReferral.getId();
-
-    screeningToReferral.setAddress(referralAddress);
-
-    /*
-     * CWS/CMS Clients and Reporter
-     */
-    Set<gov.ca.cwds.rest.api.domain.cms.ReferralClient> resultReferralClients =
-        new LinkedHashSet<>();
-    Set<PostedClient> postedClients = new LinkedHashSet<>();
-    Set<Participant> participants;
     Set<Participant> resultParticipants = new HashSet<>();
+    HashMap<Long, String> victimClient = new HashMap<>();
+    HashMap<Long, String> perpatratorClient = new HashMap<>();
 
-    victimClient.clear();
-    perpatratorClient.clear();
-    resultParticipants.clear();
+    createParticipants(screeningToReferral, messages, dateStarted, referralId, resultParticipants,
+        victimClient, perpatratorClient);
 
-    participants = screeningToReferral.getParticipants();
+    Set<CrossReport> resultCrossReports = createCrossReports(screeningToReferral, messages,
+        referralId);
+
+    Set<Allegation> resultAllegations = createAllegations(screeningToReferral, messages, referralId,
+        victimClient, perpatratorClient);
+
+    return new PostedScreeningToReferral(screeningToReferral.getId(), referralId, "REFERL_T",
+        screeningToReferral.getEndedAt(), screeningToReferral.getIncidentCounty(),
+        screeningToReferral.getIncidentDate(), screeningToReferral.getLocationType(),
+        screeningToReferral.getCommunicationMethod(), screeningToReferral.getName(),
+        screeningToReferral.getReportNarrative(), screeningToReferral.getReference(),
+        screeningToReferral.getResponseTime(), screeningToReferral.getStartedAt(),
+        screeningToReferral.getAssignee(), screeningToReferral.getAdditionalInformation(),
+        screeningToReferral.getScreeningDecision(),
+        screeningToReferral.getScreeningDecisionDetail(), screeningToReferral.getAddress(),
+        resultParticipants, resultCrossReports, resultAllegations);
+  }
+
+  private Set<Allegation> createAllegations(ScreeningToReferral screeningToReferral,
+      Set<ErrorMessage> messages, String referralId, HashMap<Long, String> victimClient,
+      HashMap<Long, String> perpatratorClient) {
+    Set<Allegation> resultAllegations = null;
+    try {
+      resultAllegations = processAllegations(screeningToReferral, referralId, perpatratorClient, victimClient, messages);
+    } catch (ServiceException e) {
+      String message = e.getMessage();
+      logError(message, e, messages);
+    }
+    return resultAllegations;
+  }
+
+  private Set<CrossReport> createCrossReports(ScreeningToReferral screeningToReferral,
+      Set<ErrorMessage> messages, String referralId) {
+    Set<CrossReport> resultCrossReports = null;
+    try {
+      resultCrossReports = processCrossReports(screeningToReferral, referralId, messages);
+    } catch (ServiceException e) {
+      String message = e.getMessage();
+      logError(message, e, messages);
+    }
+    return resultCrossReports;
+  }
+
+  private void createParticipants(ScreeningToReferral screeningToReferral,
+      Set<ErrorMessage> messages, String dateStarted, String referralId,
+      Set<Participant> resultParticipants, HashMap<Long, String> victimClient,
+      HashMap<Long, String> perpatratorClient) {
+    Set<Participant> participants = screeningToReferral.getParticipants();
     for (Participant incomingParticipant : participants) {
 
       try {
@@ -342,8 +308,7 @@ public class ScreeningToReferralService implements CrudsService {
               buildErrors(messages, validator.validate(client));
 
               PostedClient postedClient = this.clientService.create(client);
-              postedClients.add(postedClient);
-              clientId = postedClient.getId();
+              String clientId = postedClient.getId();
               incomingParticipant.setClientId(clientId);
               incomingParticipant.setLegacySourceTable(CLIENT_TABLE_NAME);
 
@@ -360,9 +325,6 @@ public class ScreeningToReferralService implements CrudsService {
 
               gov.ca.cwds.rest.api.domain.cms.ReferralClient postedReferralClient =
                   this.referralClientService.create(referralClient);
-
-              resultReferralClients.add(postedReferralClient);
-
               /*
                * determine other participant/roles attributes relating to CWS/CMS allegation
                */
@@ -381,7 +343,7 @@ public class ScreeningToReferralService implements CrudsService {
               }
               try {
                 // addresses associated with a client
-                resultParticipant =
+                Participant resultParticipant =
                     processClientAddress(incomingParticipant, referralId, clientId, messages);
               } catch (ServiceException e) {
                 String message = e.getMessage();
@@ -396,34 +358,100 @@ public class ScreeningToReferralService implements CrudsService {
         resultParticipants.add(incomingParticipant);
       }
     }
+  }
 
-
-    Set<gov.ca.cwds.rest.api.domain.CrossReport> resultCrossReports = null;
+  private String extractStartTime(ScreeningToReferral screeningToReferral,
+      Set<ErrorMessage> messages) {
+    String timeStarted = null;
     try {
-      resultCrossReports = processCrossReports(screeningToReferral, referralId, messages);
-    } catch (ServiceException e) {
+      Date dateTime = dateTimeFormat.parse(screeningToReferral.getStartedAt());
+      timeStarted = timeFormat.format(dateTime);
+    } catch (ParseException e) {
+      String message = "ERROR - parsing Start Date/Time ";
+      logError(message, e, messages);
+    }
+    return timeStarted;
+  }
+
+  private String extractStartDate(ScreeningToReferral screeningToReferral,
+      Set<ErrorMessage> messages) {
+    String dateStarted = null;
+    try {
+      Date dateTime = dateTimeFormat.parse(screeningToReferral.getStartedAt());
+      dateStarted = dateFormat.format(dateTime);
+    } catch (ParseException e) {
+      String message = "ERROR - parsing Start Date/Time ";
+      logError(message, e, messages);
+    }
+    return dateStarted;
+  }
+
+  private void createReferralAddress(ScreeningToReferral screeningToReferral,
+      Set<ErrorMessage> messages) {
+    try {
+      gov.ca.cwds.rest.api.domain.Address referralAddress = processReferralAddress(screeningToReferral, messages);
+      screeningToReferral.setAddress(referralAddress);
+    } catch (ServiceException e1) {
+      String message = e1.getMessage();
+      logError(message, e1, messages);
+    }
+  }
+
+  private String createCmsReferral(ScreeningToReferral screeningToReferral,
+      Set<ErrorMessage> messages, String dateStarted, String timeStarted) {
+    String longTextId = generateLongTextId(screeningToReferral, messages);
+    // create a CMS Referral
+    Referral referral = null;
+    try {
+      referral = new Referral(false, ParticipantValidator.anonymousReporter(screeningToReferral),
+          false, "", DEFAULT_APPROVAL_STATUS_CODE, false, "", communicationsMethodCode, "", "", "",
+          "", false, false, DEFAULT_CODE, DEFAULT_NO, false, DEFAULT_LIMITIED_ACCESS_CODE, "",
+          screeningToReferral.getName(), "", dateStarted, timeStarted, referralResponseTypeCode,
+          DEFAULT_CODE, "", "", "", longTextId, DEFAULT_NO, DEFAULT_NO, DEFAULT_NO, DEFAULT_NO, "",
+          "", DEFAULT_STAFF_PERSON_ID, DEFAULT_COUNTY_SPECIFIC_CODE, false, false, false, false, "",
+          DEFAULT_RESPONSIBLE_AGENCY_CODE, DEFAULT_CODE, "", "", "", null, null, null, null, null,
+          null);
+    } catch (Exception e1) {
+      String message = e1.getMessage();
+      logError(message, e1, messages);
+    }
+
+    buildErrors(messages, validator.validate(referral));
+
+    PostedReferral postedReferral = this.referralService.create(referral);
+    return postedReferral.getId();
+  }
+
+  private String generateLongTextId(ScreeningToReferral screeningToReferral,
+      Set<ErrorMessage> messages) {
+    String longTextId = null;
+    if (screeningToReferral.getAdditionalInformation() == null
+        || screeningToReferral.getAdditionalInformation().isEmpty()) {
+      longTextId = null;
+    } else {
+      try {
+        longTextId = createLongText(DEFAULT_COUNTY_SPECIFIC_CODE,
+            screeningToReferral.getAdditionalInformation(), messages);
+      } catch (ServiceException e) {
+        String message = e.getMessage();
+        logError(message, e, messages);
+      }
+    }
+    return longTextId;
+  }
+
+  private void verifyReferralHasValidParticipants(ScreeningToReferral screeningToReferral,
+      Set<ErrorMessage> messages) {
+    try {
+      if (!ParticipantValidator.hasValidParticipants(screeningToReferral)) {
+        String message = "ERROR - Incompatiable participants included in request";
+        ServiceException exception = new ServiceException(message);
+        logError(message, exception, messages);
+      }
+    } catch (Exception e) {
       String message = e.getMessage();
       logError(message, e, messages);
     }
-
-    Set<gov.ca.cwds.rest.api.domain.Allegation> resultAllegations = null;
-    try {
-      resultAllegations = processAllegations(screeningToReferral, referralId, messages);
-    } catch (ServiceException e) {
-      String message = e.getMessage();
-      logError(message, e, messages);
-    }
-
-    return new PostedScreeningToReferral(screeningToReferral.getId(), referralId, "REFERL_T",
-        screeningToReferral.getEndedAt(), screeningToReferral.getIncidentCounty(),
-        screeningToReferral.getIncidentDate(), screeningToReferral.getLocationType(),
-        screeningToReferral.getCommunicationMethod(), screeningToReferral.getName(),
-        screeningToReferral.getReportNarrative(), screeningToReferral.getReference(),
-        screeningToReferral.getResponseTime(), screeningToReferral.getStartedAt(),
-        screeningToReferral.getAssignee(), screeningToReferral.getAdditionalInformation(),
-        screeningToReferral.getScreeningDecision(),
-        screeningToReferral.getScreeningDecisionDetail(), screeningToReferral.getAddress(),
-        resultParticipants, resultCrossReports, resultAllegations);
   }
 
   private void logError(String message, Exception exception, Set<ErrorMessage> messages) {
@@ -437,7 +465,7 @@ public class ScreeningToReferralService implements CrudsService {
       Set<ConstraintViolation<DomainObject>> errors) {
     if (!errors.isEmpty()) {
       errors.forEach(error -> {
-        final String message = error.getPropertyPath() + " " + error.getMessage();
+        final String message = " getRootBean: " + error.getRootBean() + " getLeafBean: "  + error.getLeafBean() + " getConstraintDescriptor: " + error.getConstraintDescriptor() + " ERROR PROP PATH: " + error.getPropertyPath() + " " + error.getMessage();
         messages.add(new ErrorMessage(ErrorMessage.ErrorType.VALIDATION, message, ""));
       });
     }
@@ -513,7 +541,7 @@ public class ScreeningToReferralService implements CrudsService {
   /*
    * CMS Allegation - one for each allegation
    */
-  private Set<Allegation> processAllegations(ScreeningToReferral scr, String referralId,
+  private Set<Allegation> processAllegations(ScreeningToReferral scr, String referralId,HashMap<Long, String> perpatratorClient, HashMap<Long, String> victimClient,
       Set<ErrorMessage> messages) throws ServiceException {
 
     Set<Allegation> processedAllegations = new HashSet<>();
@@ -552,6 +580,7 @@ public class ScreeningToReferralService implements CrudsService {
           throw new ServiceException(e);
         }
       }
+
       if (perpatratorClient.containsKey(allegation.getPerpetratorPersonId())) {
         perpatratorClientId = perpatratorClient.get(allegation.getPerpetratorPersonId());
       }
