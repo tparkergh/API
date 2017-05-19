@@ -12,12 +12,17 @@ import gov.ca.cwds.rest.services.ServiceException;
  *
  */
 public class ParticipantValidator {
+
   private static final String PERPETRATOR_ROLE = "Perpetrator";
   private static final String MANDATED_REPORTER_ROLE = "Mandated Reporter";
   private static final String NON_MANDATED_REPORTER_ROLE = "Non-mandated Reporter";
   private static final String ANONYMOUS_REPORTER_ROLE = "Anonymous Reporter";
   private static final String VICTIM_ROLE = "Victim";
   private static final String SELF_REPORTED_ROLE = "Self Reported";
+  public static final int ALLOWED_NUMBER_OF_REPORTERS = 1;
+  public static final int ALLOWED_NUMBER_OF_VICTIMS = 1;
+  public static final boolean INVALID_PARTICIPANTS = false;
+  public static final boolean VALID_PARTICIPANTS = true;
 
   /**
    * default constructor
@@ -51,17 +56,18 @@ public class ParticipantValidator {
     // R - 00851 Reporter Creation
     // R - 00836 Self Rep Ind Limit
     // only one reporter is allowed on a referral
-    if (reporterCount != 1) {
-      return false;
+    if (reporterCount != ALLOWED_NUMBER_OF_REPORTERS) {
+      return INVALID_PARTICIPANTS;
     }
     // R - 00851 Reporter Creation
     // one and only one victim is allowed on a referral
-    if (victimCount != 1) {
-      return false;
+    if (victimCount != ALLOWED_NUMBER_OF_VICTIMS) {
+      return INVALID_PARTICIPANTS;
     }
 
-    return true;
+    return VALID_PARTICIPANTS;
   }
+
 
   /**
    * @param str - ScreeningToReferral object
