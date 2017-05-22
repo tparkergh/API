@@ -19,9 +19,17 @@ public class ParticipantValidator {
   private static final String ANONYMOUS_REPORTER_ROLE = "Anonymous Reporter";
   private static final String VICTIM_ROLE = "Victim";
   private static final String SELF_REPORTED_ROLE = "Self Reported";
+  /**
+   * CWS/CMS Referral must have on reporter
+   */
   public static final int ALLOWED_NUMBER_OF_REPORTERS = 1;
+  /**
+   * CWS/CMS Referral must have at least one victim
+   */
   public static final int MINIMUM_NUMBER_OF_VICTIMS = 1;
+  @SuppressWarnings("javadoc")
   public static final boolean INVALID_PARTICIPANTS = false;
+  @SuppressWarnings("javadoc")
   public static final boolean VALID_PARTICIPANTS = true;
 
   /**

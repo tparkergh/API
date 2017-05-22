@@ -38,11 +38,11 @@ public class ParticipantValidatorTest {
   }
 
   @Test
-  public void testHasMultipleVictimsFail() throws Exception {
+  public void testHasMultipleVictimsSuccess() throws Exception {
     ScreeningToReferral toValidate = MAPPER.readValue(
-        fixture("fixtures/domain/ScreeningToReferral/invalid/moreThanOneVictim.json"),
+        fixture("fixtures/domain/ScreeningToReferral/valid/moreThanOneVictim.json"),
         ScreeningToReferral.class);
-    assertThat(ParticipantValidator.hasValidParticipants(toValidate), equalTo(false));
+    assertThat(ParticipantValidator.hasValidParticipants(toValidate), equalTo(true));
   }
 
   @Test
