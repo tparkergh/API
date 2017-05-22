@@ -192,7 +192,7 @@ public class ScreeningToReferralService implements CrudsService {
     HashMap<Long, String> victimClient = new HashMap<>();
     HashMap<Long, String> perpatratorClient = new HashMap<>();
 
-    createParticipants(screeningToReferral, messages, dateStarted, referralId, resultParticipants,
+    processParticipants(screeningToReferral, messages, dateStarted, referralId, resultParticipants,
         victimClient, perpatratorClient);
 
     Set<CrossReport> resultCrossReports =
@@ -239,7 +239,7 @@ public class ScreeningToReferralService implements CrudsService {
     return resultCrossReports;
   }
 
-  private void createParticipants(ScreeningToReferral screeningToReferral,
+  private void processParticipants(ScreeningToReferral screeningToReferral,
       Set<ErrorMessage> messages, String dateStarted, String referralId,
       Set<Participant> resultParticipants, HashMap<Long, String> victimClient,
       HashMap<Long, String> perpatratorClient) {
@@ -274,11 +274,6 @@ public class ScreeningToReferralService implements CrudsService {
              * CMS Reporter - if role is 'mandated reporter' or 'non-mandated reporter' and not
              * anonymous reporter
              */
-            if (savedReporter != null) {
-              String message = "ERROR - only one Reporter per Referral allowed";
-              ServiceException exception = new ServiceException(message);
-              logError(message, exception, messages);
-            }
             try {
               savedReporter = processReporter(incomingParticipant, role, referralId, messages);
             } catch (ServiceException e) {
@@ -289,29 +284,44 @@ public class ScreeningToReferralService implements CrudsService {
             // not a reporter participant - make a CLIENT and REFERRAL_CLIENT unless anonymous
             // reporter
             if (!ParticipantValidator.roleIsAnonymousReporter(role)) {
+              String clientId;
 
-              // not an anonymous reporter participant - create client
-              Client client = new Client("", false, DEFAULT_ADOPTION_STATUS_CODE, "", "",
-                  DEFAULT_CODE, incomingParticipant.getDateOfBirth(), "", DEFAULT_CODE, false,
-                  DEFAULT_CHILD_CLIENT_INDICATOR, "", "", incomingParticipant.getFirstName(),
-                  incomingParticipant.getLastName(), "", "", false, dateStarted, false, "", false,
-                  "", false, "", "", "", DEFAULT_CODE, "", DEFAULT_ESTIMATED_DOB_CODE,
-                  DEFAULT_UNABLE_TO_DETAIN_CODE, "", genderCode, "", "",
-                  DEFAULT_HISPANIC_ORIGIN_CODE, DEFAULT_CODE, DEFAULT_CODE,
-                  DEFAULT_INCAPCITATED_PARENT_CODE, false, false, DEFAULT_LITERATE_CODE, false,
-                  DEFAULT_CODE, DEFAULT_MILITARY_STATUS_CODE, "", "", DEFAULT_NAME_TYPE, false,
-                  false, "", false, DEFAULT_CODE, DEFAULT_CODE, DEFAULT_CODE,
-                  DEFAULT_SECONDARY_LANGUAGE_TYPE, false, DEFAULT_SENSITIVITY_INDICATOR,
-                  DEFAULT_SOC158_PLACEMENT_CODE, false, DEFAULT_SOCIAL_SECURITY_NUM_CHANGE_CODE,
-                  incomingParticipant.getSsn(), "", false, false, DEFAULT_UNEMPLOYED_PARENT_CODE,
-                  false, null);
+              if (incomingParticipant.getLegacyId().isEmpty()
+                  || incomingParticipant.getLegacyId() == null) {
+                // legacy Id not set - create a CLIENT row
+                PostedClient postedClient;
+                // not an anonymous reporter participant - create client
+                Client client = new Client("", false, DEFAULT_ADOPTION_STATUS_CODE, "", "",
+                    DEFAULT_CODE, incomingParticipant.getDateOfBirth(), "", DEFAULT_CODE, false,
+                    DEFAULT_CHILD_CLIENT_INDICATOR, "", "", incomingParticipant.getFirstName(),
+                    incomingParticipant.getLastName(), "", "", false, dateStarted, false, "", false,
+                    "", false, "", "", "", DEFAULT_CODE, "", DEFAULT_ESTIMATED_DOB_CODE,
+                    DEFAULT_UNABLE_TO_DETAIN_CODE, "", genderCode, "", "",
+                    DEFAULT_HISPANIC_ORIGIN_CODE, DEFAULT_CODE, DEFAULT_CODE,
+                    DEFAULT_INCAPCITATED_PARENT_CODE, false, false, DEFAULT_LITERATE_CODE, false,
+                    DEFAULT_CODE, DEFAULT_MILITARY_STATUS_CODE, "", "", DEFAULT_NAME_TYPE, false,
+                    false, "", false, DEFAULT_CODE, DEFAULT_CODE, DEFAULT_CODE,
+                    DEFAULT_SECONDARY_LANGUAGE_TYPE, false, DEFAULT_SENSITIVITY_INDICATOR,
+                    DEFAULT_SOC158_PLACEMENT_CODE, false, DEFAULT_SOCIAL_SECURITY_NUM_CHANGE_CODE,
+                    incomingParticipant.getSsn(), "", false, false, DEFAULT_UNEMPLOYED_PARENT_CODE,
+                    false, null);
 
-              buildErrors(messages, validator.validate(client));
+                buildErrors(messages, validator.validate(client));
 
-              PostedClient postedClient = this.clientService.create(client);
-              String clientId = postedClient.getId();
-              incomingParticipant.setClientId(clientId);
-              incomingParticipant.setLegacySourceTable(CLIENT_TABLE_NAME);
+                postedClient = this.clientService.create(client);
+                clientId = postedClient.getId();
+                incomingParticipant.setLegacyId(clientId);
+                incomingParticipant.setLegacySourceTable(CLIENT_TABLE_NAME);
+              } else {
+                // legacy Id passed - check for existenct in CWS/CMS - no update yet
+                clientId = incomingParticipant.getLegacyId();
+                Client foundClient = this.clientService.find(clientId);
+                if (foundClient == null) {
+                  String message = " Client Id does not correspond to an existing Client ";
+                  ServiceException se = new ServiceException(message);
+                  logError(message, se, messages);
+                }
+              }
 
               // CMS Referral Client
               // TODO: map the DISPOSITION_CODE accroding to rules of CWS/CMS
@@ -330,17 +340,17 @@ public class ScreeningToReferralService implements CrudsService {
                * determine other participant/roles attributes relating to CWS/CMS allegation
                */
               if (ParticipantValidator.roleIsVictim(role)) {
-                victimClient.put(incomingParticipant.getId(), postedClient.getId());
+                victimClient.put(incomingParticipant.getId(), clientId);
                 // since this is the victim - process the ChildClient
                 try {
-                  this.processChildClient(incomingParticipant, postedClient.getId(), messages);
+                  this.processChildClient(incomingParticipant, clientId, messages);
                 } catch (ServiceException e) {
                   String message = e.getMessage();
                   logError(message, e, messages);
                 }
               }
               if (ParticipantValidator.roleIsPerpetrator(role)) {
-                perpatratorClient.put(incomingParticipant.getId(), postedClient.getId());
+                perpatratorClient.put(incomingParticipant.getId(), clientId);
               }
               try {
                 // addresses associated with a client
@@ -405,7 +415,7 @@ public class ScreeningToReferralService implements CrudsService {
 
     if (screeningToReferral.getReferralId().isEmpty()
         || screeningToReferral.getReferralId() == null) {
-
+      // the legacy id is not set - create the referral
       String longTextId = generateLongTextId(screeningToReferral, messages);
       // create a CMS Referral
       Referral referral = null;

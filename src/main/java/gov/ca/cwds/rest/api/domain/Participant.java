@@ -44,7 +44,7 @@ public class Participant extends ReportingDomain implements Request, Response {
   @JsonProperty("legacy_id")
   @ApiModelProperty(required = true, readOnly = false, value = "Legacy Client Id", example = "")
   @Size(max = 10)
-  private String clientId;
+  private String legacyId;
 
   @JsonProperty("first_name")
   @ApiModelProperty(required = false, readOnly = false, value = "First Name", example = "John")
@@ -137,7 +137,7 @@ public class Participant extends ReportingDomain implements Request, Response {
     super();
     this.id = id;
     this.legacySourceTable = legacySourceTable;
-    this.clientId = clientId;
+    this.legacyId = clientId;
     this.personId = personId;
     this.screeningId = screeningId;
     this.firstName = firstName;
@@ -218,15 +218,15 @@ public class Participant extends ReportingDomain implements Request, Response {
   /**
    * @return the legacy clientId
    */
-  public String getClientId() {
-    return clientId;
+  public String getLegacyId() {
+    return legacyId;
   }
 
   /**
    * @param clientId - the legacy Id
    */
-  public void setClientId(String clientId) {
-    this.clientId = clientId;
+  public void setLegacyId(String clientId) {
+    this.legacyId = clientId;
   }
 
   /**
@@ -341,7 +341,7 @@ public class Participant extends ReportingDomain implements Request, Response {
     result = prime * result + ((roles == null) ? 0 : roles.hashCode());
     result = prime * result + ((addresses == null) ? 0 : addresses.hashCode());
     result = prime * result + ((legacySourceTable == null) ? 0 : legacySourceTable.hashCode());
-    result = prime * result + ((clientId == null) ? 0 : clientId.hashCode());
+    result = prime * result + ((legacyId == null) ? 0 : legacyId.hashCode());
     return result;
   }
 
@@ -400,11 +400,11 @@ public class Participant extends ReportingDomain implements Request, Response {
     } else if (!legacySourceTable.equals(other.legacySourceTable)) {
       return false;
     }
-    if (clientId == null) {
-      if (other.clientId != null) {
+    if (legacyId == null) {
+      if (other.legacyId != null) {
         return false;
       }
-    } else if (!clientId.equals(other.clientId)) {
+    } else if (!legacyId.equals(other.legacyId)) {
       return false;
     }
     if (personId != other.personId) {

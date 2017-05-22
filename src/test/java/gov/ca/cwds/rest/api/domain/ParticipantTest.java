@@ -147,7 +147,7 @@ public class ParticipantTest implements PersistentTestTemplate {
 
     assertThat(domain.getId(), is(equalTo(id)));
     assertThat(domain.getLegacySourceTable(), is(equalTo(legacySourceTable)));
-    assertThat(domain.getClientId(), is(equalTo(clientId)));
+    assertThat(domain.getLegacyId(), is(equalTo(clientId)));
     assertThat(domain.getPersonId(), is(equalTo(personId)));
     assertThat(domain.getScreeningId(), is(equalTo(screeningId)));
     assertThat(domain.getFirstName(), is(equalTo(firstName)));
