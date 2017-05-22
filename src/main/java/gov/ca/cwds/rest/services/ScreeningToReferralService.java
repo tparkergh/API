@@ -8,7 +8,6 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.LinkedHashSet;
 import java.util.Locale;
 import java.util.Set;
 
@@ -70,6 +69,7 @@ public class ScreeningToReferralService implements CrudsService {
   private static final Logger LOGGER = LoggerFactory.getLogger(ScreeningToReferral.class);
 
   private static final String CLIENT_TABLE_NAME = "CLIENT_T";
+  private static final String REFERRAL_TABLE_NAME = "REFERL_T";
 
   final DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
   final DateFormat timeFormat = new SimpleDateFormat("HH:MM:SS");
@@ -195,8 +195,8 @@ public class ScreeningToReferralService implements CrudsService {
     createParticipants(screeningToReferral, messages, dateStarted, referralId, resultParticipants,
         victimClient, perpatratorClient);
 
-    Set<CrossReport> resultCrossReports = createCrossReports(screeningToReferral, messages,
-        referralId);
+    Set<CrossReport> resultCrossReports =
+        createCrossReports(screeningToReferral, messages, referralId);
 
     Set<Allegation> resultAllegations = createAllegations(screeningToReferral, messages, referralId,
         victimClient, perpatratorClient);
@@ -218,7 +218,8 @@ public class ScreeningToReferralService implements CrudsService {
       HashMap<Long, String> perpatratorClient) {
     Set<Allegation> resultAllegations = null;
     try {
-      resultAllegations = processAllegations(screeningToReferral, referralId, perpatratorClient, victimClient, messages);
+      resultAllegations = processAllegations(screeningToReferral, referralId, perpatratorClient,
+          victimClient, messages);
     } catch (ServiceException e) {
       String message = e.getMessage();
       logError(message, e, messages);
@@ -389,7 +390,8 @@ public class ScreeningToReferralService implements CrudsService {
   private void createReferralAddress(ScreeningToReferral screeningToReferral,
       Set<ErrorMessage> messages) {
     try {
-      gov.ca.cwds.rest.api.domain.Address referralAddress = processReferralAddress(screeningToReferral, messages);
+      gov.ca.cwds.rest.api.domain.Address referralAddress =
+          processReferralAddress(screeningToReferral, messages);
       screeningToReferral.setAddress(referralAddress);
     } catch (ServiceException e1) {
       String message = e1.getMessage();
@@ -465,7 +467,9 @@ public class ScreeningToReferralService implements CrudsService {
       Set<ConstraintViolation<DomainObject>> errors) {
     if (!errors.isEmpty()) {
       errors.forEach(error -> {
-        final String message = " getRootBean: " + error.getRootBean() + " getLeafBean: "  + error.getLeafBean() + " getConstraintDescriptor: " + error.getConstraintDescriptor() + " ERROR PROP PATH: " + error.getPropertyPath() + " " + error.getMessage();
+        final String message = " getRootBean: " + error.getRootBean() + " getLeafBean: "
+            + error.getLeafBean() + " getConstraintDescriptor: " + error.getConstraintDescriptor()
+            + " ERROR PROP PATH: " + error.getPropertyPath() + " " + error.getMessage();
         messages.add(new ErrorMessage(ErrorMessage.ErrorType.VALIDATION, message, ""));
       });
     }
@@ -541,7 +545,8 @@ public class ScreeningToReferralService implements CrudsService {
   /*
    * CMS Allegation - one for each allegation
    */
-  private Set<Allegation> processAllegations(ScreeningToReferral scr, String referralId,HashMap<Long, String> perpatratorClient, HashMap<Long, String> victimClient,
+  private Set<Allegation> processAllegations(ScreeningToReferral scr, String referralId,
+      HashMap<Long, String> perpatratorClient, HashMap<Long, String> victimClient,
       Set<ErrorMessage> messages) throws ServiceException {
 
     Set<Allegation> processedAllegations = new HashSet<>();
@@ -690,7 +695,7 @@ public class ScreeningToReferralService implements CrudsService {
       if (address.getZip().toString().length() > 5) {
         zipSuffix = Short.parseShort(address.getZip().toString().substring(5));
       }
-      // TODO: 41511573 address parsing - Smarty Streets Free Form display requires standardizing
+      // TODO: 141511573 address parsing - Smarty Streets Free Form display requires standardizing
       // parsing to fields in CMS
       String[] streetAddress = address.getStreetAddress().split(" ");
       String streetNumber = streetAddress[0];
@@ -700,7 +705,6 @@ public class ScreeningToReferralService implements CrudsService {
           false, DEFAULT_CODE, DEFAULT_DECIMAL, DEFAULT_INT, "", DEFAULT_DECIMAL, DEFAULT_INT,
           DEFAULT_STATE_CODE, streetName, streetNumber, zipCode, address.getType(), zipSuffix, " ",
           " ", DEFAULT_CODE, DEFAULT_CODE, " ");
-      // buildErrors(messages, validator,validate(domainAddress))
 
       buildErrors(messages, validator.validate(domainAddress));
 
