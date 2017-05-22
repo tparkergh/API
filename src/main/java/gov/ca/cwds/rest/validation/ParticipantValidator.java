@@ -20,7 +20,7 @@ public class ParticipantValidator {
   private static final String VICTIM_ROLE = "Victim";
   private static final String SELF_REPORTED_ROLE = "Self Reported";
   public static final int ALLOWED_NUMBER_OF_REPORTERS = 1;
-  public static final int ALLOWED_NUMBER_OF_VICTIMS = 1;
+  public static final int MINIMUM_NUMBER_OF_VICTIMS = 1;
   public static final boolean INVALID_PARTICIPANTS = false;
   public static final boolean VALID_PARTICIPANTS = true;
 
@@ -60,8 +60,8 @@ public class ParticipantValidator {
       return INVALID_PARTICIPANTS;
     }
     // R - 00851 Reporter Creation
-    // one and only one victim is allowed on a referral
-    if (victimCount != ALLOWED_NUMBER_OF_VICTIMS) {
+    // one victim is required for a referral
+    if (victimCount < MINIMUM_NUMBER_OF_VICTIMS) {
       return INVALID_PARTICIPANTS;
     }
 

@@ -358,6 +358,195 @@ public class ScreeningToReferralServiceTest {
 
   @SuppressWarnings("javadoc")
   @Test
+  public void testWithReferralExistSuccess() throws Exception {
+    Referral referralDomain = MAPPER.readValue(
+        fixture("fixtures/domain/ScreeningToReferral/valid/validReferral.json"), Referral.class);
+    gov.ca.cwds.data.persistence.cms.Referral referralToCreate =
+        new gov.ca.cwds.data.persistence.cms.Referral("0123456ABC", referralDomain, "2016-10-31");
+    when(referralDao.create(any(gov.ca.cwds.data.persistence.cms.Referral.class)))
+        .thenReturn(referralToCreate);
+    when(referralDao.find("0123456ABC")).thenReturn(referralToCreate);
+
+    ChildClient childClient = MAPPER.readValue(
+        fixture("fixtures/domain/ScreeningToReferral/valid/childClient.json"), ChildClient.class);
+    gov.ca.cwds.data.persistence.cms.ChildClient childClientToCreate =
+        new gov.ca.cwds.data.persistence.cms.ChildClient("1234567ABC", childClient, "0XA");
+    when(childClientDao.create(any(gov.ca.cwds.data.persistence.cms.ChildClient.class)))
+        .thenReturn(childClientToCreate);
+    Set<Client> clientDomain =
+        MAPPER.readValue(fixture("fixtures/domain/ScreeningToReferral/valid/validClient.json"),
+            new TypeReference<Set<Client>>() {});
+    gov.ca.cwds.data.persistence.cms.Client clientToCreate =
+        new gov.ca.cwds.data.persistence.cms.Client("1234567ABC",
+            (Client) clientDomain.toArray()[0], "2016-10-31");
+    when(clientDao.create(any(gov.ca.cwds.data.persistence.cms.Client.class)))
+        .thenReturn(clientToCreate);
+
+    Set<ReferralClient> referralClientDomain = MAPPER.readValue(
+        fixture("fixtures/domain/ScreeningToReferral/valid/validReferralClient.json"),
+        new TypeReference<Set<ReferralClient>>() {});
+    gov.ca.cwds.data.persistence.cms.ReferralClient referralClientToCreate =
+        new gov.ca.cwds.data.persistence.cms.ReferralClient(
+            (ReferralClient) referralClientDomain.toArray()[0], "2016-10-31");
+    when(referralClientDao.create(any(gov.ca.cwds.data.persistence.cms.ReferralClient.class)))
+        .thenReturn(referralClientToCreate);
+
+    Set<Allegation> allegationDomain =
+        MAPPER.readValue(fixture("fixtures/domain/ScreeningToReferral/valid/validAllegation.json"),
+            new TypeReference<Set<Allegation>>() {});
+    gov.ca.cwds.data.persistence.cms.Allegation allegationToCreate =
+        new gov.ca.cwds.data.persistence.cms.Allegation("2345678ABC",
+            (Allegation) allegationDomain.toArray()[0], "2016-10-31");
+    when(allegationDao.create(any(gov.ca.cwds.data.persistence.cms.Allegation.class)))
+        .thenReturn(allegationToCreate);
+
+    Set<CrossReport> crossReportDomain =
+        MAPPER.readValue(fixture("fixtures/domain/ScreeningToReferral/valid/validCrossReport.json"),
+            new TypeReference<Set<CrossReport>>() {});
+    gov.ca.cwds.data.persistence.cms.CrossReport crossReportToCreate =
+        new gov.ca.cwds.data.persistence.cms.CrossReport("3456789ABC",
+            // ((CrossReport) crossReportDomain).getThirdId(),
+            (CrossReport) crossReportDomain.toArray()[0], "OXA");
+    when(crossReportDao.create(any(gov.ca.cwds.data.persistence.cms.CrossReport.class)))
+        .thenReturn(crossReportToCreate);
+
+    Reporter reporterDomain = MAPPER.readValue(
+        fixture("fixtures/domain/ScreeningToReferral/valid/validReporter.json"), Reporter.class);
+    gov.ca.cwds.data.persistence.cms.Reporter reporterToCreate =
+        new gov.ca.cwds.data.persistence.cms.Reporter(reporterDomain, "ABC");
+    when(reporterDao.create(any(gov.ca.cwds.data.persistence.cms.Reporter.class)))
+        .thenReturn(reporterToCreate);
+
+    Address addressDomain = MAPPER.readValue(
+        fixture("fixtures/domain/ScreeningToReferral/valid/validAddress.json"), Address.class);
+    gov.ca.cwds.data.persistence.cms.Address addressToCreate =
+        new gov.ca.cwds.data.persistence.cms.Address("345678ABC", addressDomain, "ABC");
+    when(addressDao.create(any(gov.ca.cwds.data.persistence.cms.Address.class)))
+        .thenReturn(addressToCreate);
+
+    ClientAddress clientAddressDomain = MAPPER.readValue(
+        fixture("fixtures/domain/ScreeningToReferral/valid/validClientAddress.json"),
+        ClientAddress.class);
+    gov.ca.cwds.data.persistence.cms.ClientAddress clientAddressToCreate =
+        new gov.ca.cwds.data.persistence.cms.ClientAddress("456789ABC", clientAddressDomain, "ABC");
+    when(clientAddressDao.create(any(gov.ca.cwds.data.persistence.cms.ClientAddress.class)))
+        .thenReturn(clientAddressToCreate);
+
+    LongText longTextDomain = MAPPER.readValue(
+        fixture("fixtures/domain/ScreeningToReferral/valid/validLongText.json"), LongText.class);
+    gov.ca.cwds.data.persistence.cms.LongText longTextToCreate =
+        new gov.ca.cwds.data.persistence.cms.LongText("567890ABC", longTextDomain, "ABC");
+    when(longTextDao.create(any(gov.ca.cwds.data.persistence.cms.LongText.class)))
+        .thenReturn(longTextToCreate);
+
+    ScreeningToReferral screeningToReferral =
+        MAPPER.readValue(fixture("fixtures/domain/ScreeningToReferral/valid/withReferralId.json"),
+            ScreeningToReferral.class);
+
+    Response response = screeningToReferralService.create(screeningToReferral);
+
+    assertThat(response.getClass(), is(PostedScreeningToReferral.class));
+  }
+
+  @SuppressWarnings("javadoc")
+  @Test
+  public void testWithReferralDoesNotExistFail() throws Exception {
+    Referral referralDomain = MAPPER.readValue(
+        fixture("fixtures/domain/ScreeningToReferral/valid/validReferral.json"), Referral.class);
+    gov.ca.cwds.data.persistence.cms.Referral referralToCreate =
+        new gov.ca.cwds.data.persistence.cms.Referral("0123456ABC", referralDomain, "2016-10-31");
+    when(referralDao.create(any(gov.ca.cwds.data.persistence.cms.Referral.class)))
+        .thenReturn(referralToCreate);
+    when(referralDao.find("0123456ABC")).thenReturn(referralToCreate);
+
+    ChildClient childClient = MAPPER.readValue(
+        fixture("fixtures/domain/ScreeningToReferral/valid/childClient.json"), ChildClient.class);
+    gov.ca.cwds.data.persistence.cms.ChildClient childClientToCreate =
+        new gov.ca.cwds.data.persistence.cms.ChildClient("1234567ABC", childClient, "0XA");
+    when(childClientDao.create(any(gov.ca.cwds.data.persistence.cms.ChildClient.class)))
+        .thenReturn(childClientToCreate);
+    Set<Client> clientDomain =
+        MAPPER.readValue(fixture("fixtures/domain/ScreeningToReferral/valid/validClient.json"),
+            new TypeReference<Set<Client>>() {});
+    gov.ca.cwds.data.persistence.cms.Client clientToCreate =
+        new gov.ca.cwds.data.persistence.cms.Client("1234567ABC",
+            (Client) clientDomain.toArray()[0], "2016-10-31");
+    when(clientDao.create(any(gov.ca.cwds.data.persistence.cms.Client.class)))
+        .thenReturn(clientToCreate);
+
+    Set<ReferralClient> referralClientDomain = MAPPER.readValue(
+        fixture("fixtures/domain/ScreeningToReferral/valid/validReferralClient.json"),
+        new TypeReference<Set<ReferralClient>>() {});
+    gov.ca.cwds.data.persistence.cms.ReferralClient referralClientToCreate =
+        new gov.ca.cwds.data.persistence.cms.ReferralClient(
+            (ReferralClient) referralClientDomain.toArray()[0], "2016-10-31");
+    when(referralClientDao.create(any(gov.ca.cwds.data.persistence.cms.ReferralClient.class)))
+        .thenReturn(referralClientToCreate);
+
+    Set<Allegation> allegationDomain =
+        MAPPER.readValue(fixture("fixtures/domain/ScreeningToReferral/valid/validAllegation.json"),
+            new TypeReference<Set<Allegation>>() {});
+    gov.ca.cwds.data.persistence.cms.Allegation allegationToCreate =
+        new gov.ca.cwds.data.persistence.cms.Allegation("2345678ABC",
+            (Allegation) allegationDomain.toArray()[0], "2016-10-31");
+    when(allegationDao.create(any(gov.ca.cwds.data.persistence.cms.Allegation.class)))
+        .thenReturn(allegationToCreate);
+
+    Set<CrossReport> crossReportDomain =
+        MAPPER.readValue(fixture("fixtures/domain/ScreeningToReferral/valid/validCrossReport.json"),
+            new TypeReference<Set<CrossReport>>() {});
+    gov.ca.cwds.data.persistence.cms.CrossReport crossReportToCreate =
+        new gov.ca.cwds.data.persistence.cms.CrossReport("3456789ABC",
+            // ((CrossReport) crossReportDomain).getThirdId(),
+            (CrossReport) crossReportDomain.toArray()[0], "OXA");
+    when(crossReportDao.create(any(gov.ca.cwds.data.persistence.cms.CrossReport.class)))
+        .thenReturn(crossReportToCreate);
+
+    Reporter reporterDomain = MAPPER.readValue(
+        fixture("fixtures/domain/ScreeningToReferral/valid/validReporter.json"), Reporter.class);
+    gov.ca.cwds.data.persistence.cms.Reporter reporterToCreate =
+        new gov.ca.cwds.data.persistence.cms.Reporter(reporterDomain, "ABC");
+    when(reporterDao.create(any(gov.ca.cwds.data.persistence.cms.Reporter.class)))
+        .thenReturn(reporterToCreate);
+
+    Address addressDomain = MAPPER.readValue(
+        fixture("fixtures/domain/ScreeningToReferral/valid/validAddress.json"), Address.class);
+    gov.ca.cwds.data.persistence.cms.Address addressToCreate =
+        new gov.ca.cwds.data.persistence.cms.Address("345678ABC", addressDomain, "ABC");
+    when(addressDao.create(any(gov.ca.cwds.data.persistence.cms.Address.class)))
+        .thenReturn(addressToCreate);
+
+    ClientAddress clientAddressDomain = MAPPER.readValue(
+        fixture("fixtures/domain/ScreeningToReferral/valid/validClientAddress.json"),
+        ClientAddress.class);
+    gov.ca.cwds.data.persistence.cms.ClientAddress clientAddressToCreate =
+        new gov.ca.cwds.data.persistence.cms.ClientAddress("456789ABC", clientAddressDomain, "ABC");
+    when(clientAddressDao.create(any(gov.ca.cwds.data.persistence.cms.ClientAddress.class)))
+        .thenReturn(clientAddressToCreate);
+
+    LongText longTextDomain = MAPPER.readValue(
+        fixture("fixtures/domain/ScreeningToReferral/valid/validLongText.json"), LongText.class);
+    gov.ca.cwds.data.persistence.cms.LongText longTextToCreate =
+        new gov.ca.cwds.data.persistence.cms.LongText("567890ABC", longTextDomain, "ABC");
+    when(longTextDao.create(any(gov.ca.cwds.data.persistence.cms.LongText.class)))
+        .thenReturn(longTextToCreate);
+
+    ScreeningToReferral screeningToReferral = MAPPER.readValue(
+        fixture("fixtures/domain/ScreeningToReferral/invalid/withReferralIdNotExist.json"),
+        ScreeningToReferral.class);
+
+    try {
+      this.screeningToReferralService.create(screeningToReferral);
+      Assert.fail("Expected ServiceException was not thrown");
+    } catch (Exception e) {
+
+      assertThat(e.getMessage(),
+          is(equalTo("Referral Id does not correspond to an exiting Referral")));
+    }
+  }
+
+  @SuppressWarnings("javadoc")
+  @Test
   public void testScreeningToReferralParticipantWithBlankRolesSuccess() throws Exception {
     Referral referralDomain = MAPPER.readValue(
         fixture("fixtures/domain/ScreeningToReferral/valid/validReferral.json"), Referral.class);
@@ -440,7 +629,7 @@ public class ScreeningToReferralServiceTest {
         .thenReturn(longTextToCreate);
 
     ScreeningToReferral screeningToReferral = MAPPER.readValue(
-        fixture("fixtures/domain/ScreeningToReferral/invalid/participantWithBlankRole.json"),
+        fixture("fixtures/domain/ScreeningToReferral/valid/participantWithBlankRole.json"),
         ScreeningToReferral.class);
 
     Response response = screeningToReferralService.create(screeningToReferral);
@@ -539,7 +728,7 @@ public class ScreeningToReferralServiceTest {
       Response response = screeningToReferralService.create(screeningToReferral);
       assertThat(response.getClass(), is(PostedScreeningToReferral.class));
     } catch (Exception e) {
-      System.out.println("error = " + e.getMessage());
+      // System.out.println("error = " + e.getMessage());
       Assert.fail("Unexpected ServiceException was thrown" + e.getMessage());
     }
 
@@ -636,7 +825,7 @@ public class ScreeningToReferralServiceTest {
       Response response = screeningToReferralService.create(screeningToReferral);
       assertThat(response.getClass(), is(PostedScreeningToReferral.class));
     } catch (Exception e) {
-      System.out.println("error = " + e.getMessage());
+      // System.out.println("error = " + e.getMessage());
       Assert.fail("Unexpected ServiceException was thrown" + e.getMessage());
     }
 
@@ -739,7 +928,6 @@ public class ScreeningToReferralServiceTest {
       assertThat(e.getMessage(),
           is(equalTo("ERROR - Incompatiable participants included in request")));
     }
-
   }
 
   @SuppressWarnings("javadoc")
@@ -842,7 +1030,7 @@ public class ScreeningToReferralServiceTest {
 
   @SuppressWarnings("javadoc")
   @Test
-  public void testMoreThanOneVictimFail() throws Exception {
+  public void testMoreThanOneVictimSuccess() throws Exception {
     Referral referralDomain = MAPPER.readValue(
         fixture("fixtures/domain/ScreeningToReferral/valid/validReferral.json"), Referral.class);
     gov.ca.cwds.data.persistence.cms.Referral referralToCreate =
@@ -925,16 +1113,15 @@ public class ScreeningToReferralServiceTest {
         .thenReturn(longTextToCreate);
 
     ScreeningToReferral screeningToReferral = MAPPER.readValue(
-        fixture("fixtures/domain/ScreeningToReferral/invalid/moreThanOneVictim.json"),
+        fixture("fixtures/domain/ScreeningToReferral/valid/moreThanOneVictim.json"),
         ScreeningToReferral.class);
 
     try {
-      this.screeningToReferralService.create(screeningToReferral);
-      Assert.fail("Expected ServiceException was not thrown");
+      Response response = screeningToReferralService.create(screeningToReferral);
+      assertThat(response.getClass(), is(PostedScreeningToReferral.class));
     } catch (Exception e) {
-
-      assertThat(e.getMessage(),
-          is(equalTo("ERROR - Incompatiable participants included in request")));
+      // System.out.println("error = " + e.getMessage());
+      Assert.fail("Unexpected ServiceException was thrown" + e.getMessage());
     }
   }
 
@@ -1617,7 +1804,7 @@ public class ScreeningToReferralServiceTest {
       Response response = screeningToReferralService.create(screeningToReferral);
       assertThat(response.getClass(), is(PostedScreeningToReferral.class));
     } catch (Exception e) {
-      System.out.println("error = " + e.getMessage());
+      // System.out.println("error = " + e.getMessage());
       Assert.fail("Unexpected ServiceException was thrown" + e.getMessage());
     }
   }
@@ -1715,8 +1902,7 @@ public class ScreeningToReferralServiceTest {
       Response response = screeningToReferralService.create(screeningToReferral);
       assertThat(response.getClass(), is(PostedScreeningToReferral.class));
     } catch (Exception e) {
-      // TODO Auto-generated catch block
-      e.printStackTrace();
+      Assert.fail("Unexpected ServiceException was thrown" + e.getMessage());
     }
   }
 
@@ -1812,7 +1998,7 @@ public class ScreeningToReferralServiceTest {
       Response response = screeningToReferralService.create(screeningToReferral);
       assertThat(response.getClass(), is(PostedScreeningToReferral.class));
     } catch (Exception e) {
-      System.out.println("error = " + e.getMessage());
+      // System.out.println("error = " + e.getMessage());
       Assert.fail("Unexpected ServiceException was thrown" + e.getMessage());
     }
   }
@@ -1909,7 +2095,7 @@ public class ScreeningToReferralServiceTest {
       Response response = screeningToReferralService.create(screeningToReferral);
       assertThat(response.getClass(), is(PostedScreeningToReferral.class));
     } catch (Exception e) {
-      System.out.println("error = " + e.getMessage());
+      // System.out.println("error = " + e.getMessage());
       Assert.fail("Unexpected ServiceException was thrown" + e.getMessage());
     }
 
@@ -2198,7 +2384,7 @@ public class ScreeningToReferralServiceTest {
       this.screeningToReferralService.create(screeningToReferral);
       Assert.fail("Expected ServiceException was not thrown");
     } catch (Exception e) {
-      System.out.println(e.getMessage());
+      // System.out.println(e.getMessage());
       assertThat(e.getMessage().contains("Referral Address is null or empty"), is(equalTo(true)));
     }
   }
@@ -2493,6 +2679,7 @@ public class ScreeningToReferralServiceTest {
         new gov.ca.cwds.data.persistence.cms.Referral("0123456ABC", referralDomain, "2016-10-31");
     when(referralDao.create(any(gov.ca.cwds.data.persistence.cms.Referral.class)))
         .thenReturn(referralToCreate);
+    when(referralDao.find("0123456ABC")).thenReturn(referralToCreate);
 
     ChildClient childClient = MAPPER.readValue(
         fixture("fixtures/domain/ScreeningToReferral/valid/childClient.json"), ChildClient.class);
@@ -2575,7 +2762,6 @@ public class ScreeningToReferralServiceTest {
       Response response = screeningToReferralService.create(screeningToReferral);
       assertThat(response.getClass(), is(PostedScreeningToReferral.class));
     } catch (Exception e) {
-      System.out.println("error = " + e.getMessage());
       Assert.fail("Unexpected ServiceException was thrown" + e.getMessage());
     }
   }
@@ -2671,6 +2857,7 @@ public class ScreeningToReferralServiceTest {
       this.screeningToReferralService.create(screeningToReferral);
       Assert.fail("Expected ServiceException was not thrown");
     } catch (Exception e) {
+      // System.out.println("error = " + e.getMessage());
       assertThat(
           e.getMessage().contains(
               "Allegation/Victim Person Id does not contain a Participant with a role of Victim"),

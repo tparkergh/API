@@ -201,14 +201,14 @@ public class ScreeningToReferralService implements CrudsService {
     Set<Allegation> resultAllegations = createAllegations(screeningToReferral, messages, referralId,
         victimClient, perpatratorClient);
 
-    return new PostedScreeningToReferral(screeningToReferral.getId(), referralId, "REFERL_T",
-        screeningToReferral.getEndedAt(), screeningToReferral.getIncidentCounty(),
-        screeningToReferral.getIncidentDate(), screeningToReferral.getLocationType(),
-        screeningToReferral.getCommunicationMethod(), screeningToReferral.getName(),
-        screeningToReferral.getReportNarrative(), screeningToReferral.getReference(),
-        screeningToReferral.getResponseTime(), screeningToReferral.getStartedAt(),
-        screeningToReferral.getAssignee(), screeningToReferral.getAdditionalInformation(),
-        screeningToReferral.getScreeningDecision(),
+    return new PostedScreeningToReferral(screeningToReferral.getId(), referralId,
+        REFERRAL_TABLE_NAME, screeningToReferral.getEndedAt(),
+        screeningToReferral.getIncidentCounty(), screeningToReferral.getIncidentDate(),
+        screeningToReferral.getLocationType(), screeningToReferral.getCommunicationMethod(),
+        screeningToReferral.getName(), screeningToReferral.getReportNarrative(),
+        screeningToReferral.getReference(), screeningToReferral.getResponseTime(),
+        screeningToReferral.getStartedAt(), screeningToReferral.getAssignee(),
+        screeningToReferral.getAdditionalInformation(), screeningToReferral.getScreeningDecision(),
         screeningToReferral.getScreeningDecisionDetail(), screeningToReferral.getAddress(),
         resultParticipants, resultCrossReports, resultAllegations);
   }
@@ -401,27 +401,44 @@ public class ScreeningToReferralService implements CrudsService {
 
   private String createCmsReferral(ScreeningToReferral screeningToReferral,
       Set<ErrorMessage> messages, String dateStarted, String timeStarted) {
-    String longTextId = generateLongTextId(screeningToReferral, messages);
-    // create a CMS Referral
-    Referral referral = null;
-    try {
-      referral = new Referral(false, ParticipantValidator.anonymousReporter(screeningToReferral),
-          false, "", DEFAULT_APPROVAL_STATUS_CODE, false, "", communicationsMethodCode, "", "", "",
-          "", false, false, DEFAULT_CODE, DEFAULT_NO, false, DEFAULT_LIMITIED_ACCESS_CODE, "",
-          screeningToReferral.getName(), "", dateStarted, timeStarted, referralResponseTypeCode,
-          DEFAULT_CODE, "", "", "", longTextId, DEFAULT_NO, DEFAULT_NO, DEFAULT_NO, DEFAULT_NO, "",
-          "", DEFAULT_STAFF_PERSON_ID, DEFAULT_COUNTY_SPECIFIC_CODE, false, false, false, false, "",
-          DEFAULT_RESPONSIBLE_AGENCY_CODE, DEFAULT_CODE, "", "", "", null, null, null, null, null,
-          null);
-    } catch (Exception e1) {
-      String message = e1.getMessage();
-      logError(message, e1, messages);
+    String referralId = null;
+
+    if (screeningToReferral.getReferralId().isEmpty()
+        || screeningToReferral.getReferralId() == null) {
+
+      String longTextId = generateLongTextId(screeningToReferral, messages);
+      // create a CMS Referral
+      Referral referral = null;
+      try {
+        referral = new Referral(false, ParticipantValidator.anonymousReporter(screeningToReferral),
+            false, "", DEFAULT_APPROVAL_STATUS_CODE, false, "", communicationsMethodCode, "", "",
+            "", "", false, false, DEFAULT_CODE, DEFAULT_NO, false, DEFAULT_LIMITIED_ACCESS_CODE, "",
+            screeningToReferral.getName(), "", dateStarted, timeStarted, referralResponseTypeCode,
+            DEFAULT_CODE, "", "", "", longTextId, DEFAULT_NO, DEFAULT_NO, DEFAULT_NO, DEFAULT_NO,
+            "", "", DEFAULT_STAFF_PERSON_ID, DEFAULT_COUNTY_SPECIFIC_CODE, false, false, false,
+            false, "", DEFAULT_RESPONSIBLE_AGENCY_CODE, DEFAULT_CODE, "", "", "", null, null, null,
+            null, null, null);
+      } catch (Exception e1) {
+        String message = e1.getMessage();
+        logError(message, e1, messages);
+      }
+
+      buildErrors(messages, validator.validate(referral));
+
+      PostedReferral postedReferral = this.referralService.create(referral);
+      referralId = postedReferral.getId();
+
+    } else {
+      // Referral ID passed - validate that Referral exist in CWS/CMS - no update for now
+      referralId = screeningToReferral.getReferralId();
+      Referral foundReferral = this.referralService.find(referralId);
+      if (foundReferral == null) {
+        String message = "Referral Id does not correspond to an exiting Referral";
+        ServiceException se = new ServiceException(message);
+        logError(message, se, messages);
+      }
     }
-
-    buildErrors(messages, validator.validate(referral));
-
-    PostedReferral postedReferral = this.referralService.create(referral);
-    return postedReferral.getId();
+    return referralId;
   }
 
   private String generateLongTextId(ScreeningToReferral screeningToReferral,
@@ -565,7 +582,7 @@ public class ScreeningToReferralService implements CrudsService {
       try {
         if (!ParticipantValidator.isVictimParticipant(scr, allegation.getVictimPersonId())) {
           throw new ServiceException(
-              "Error - Allegation/Victim Person Id does not contain a Participant with a role of Victim ");
+              "Allegation/Victim Person Id does not contain a Participant with a role of Victim ");
         }
       } catch (Exception e) {
         throw new ServiceException(e);
@@ -579,7 +596,7 @@ public class ScreeningToReferralService implements CrudsService {
           if (!ParticipantValidator.isPerpetratorParticipant(scr,
               allegation.getPerpetratorPersonId())) {
             throw new ServiceException(
-                "Error - Allegation/Perpetrator Person Id does not contain a Participant with a role of Perpetrator ");
+                "Allegation/Perpetrator Person Id does not contain a Participant with a role of Perpetrator ");
           }
         } catch (Exception e) {
           throw new ServiceException(e);
@@ -590,7 +607,7 @@ public class ScreeningToReferralService implements CrudsService {
         perpatratorClientId = perpatratorClient.get(allegation.getPerpetratorPersonId());
       }
       if (victimClientId.isEmpty()) {
-        throw new ServiceException("ERROR - victim could not be determined for an allegation  ");
+        throw new ServiceException("Victim could not be determined for an allegation  ");
       }
 
       // create an allegation in CMS legacy database
