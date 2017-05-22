@@ -62,7 +62,7 @@ shadowJar {
 dependencies {
 	// Dropwizard-guice 1.0.0.2 conflicts with jersey-client 2.25.
 	// Exclude transitive dependencies.
-	compile ('gov.ca.cwds.api:api-core:0.22.234') {
+	compile ('gov.ca.cwds.api:api-core:0.22.235') {
 	    exclude group: 'org.glassfish.jersey.core'
 	}
 	
