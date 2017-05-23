@@ -16,6 +16,8 @@ import gov.ca.cwds.data.persistence.cms.CmsKeyIdGenerator;
 import gov.ca.cwds.data.persistence.cms.Referral;
 import gov.ca.cwds.rest.api.Request;
 import gov.ca.cwds.rest.api.domain.cms.PostedReferral;
+import gov.ca.cwds.rest.business.rules.LACountyTrigger;
+import gov.ca.cwds.rest.business.rules.NonLACountyTriggers;
 import gov.ca.cwds.rest.services.CrudsService;
 import gov.ca.cwds.rest.services.ServiceException;
 
@@ -29,16 +31,25 @@ public class ReferralService implements CrudsService {
   private static final Logger LOGGER = LoggerFactory.getLogger(ReferralService.class);
 
   private ReferralDao referralDao;
+  private NonLACountyTriggers nonLaTriggers;
+  private LACountyTrigger laCountyTrigger;
 
   /**
    * Constructor
    * 
    * @param referralDao The {@link Dao} handling {@link gov.ca.cwds.data.persistence.cms.Referral}
    *        objects.
+   * @param nonLaTriggers The {@link Dao} handling
+   *        {@link gov.ca.cwds.rest.business.rules.NonLACountyTriggers} objects
+   * @param laCountyTrigger The {@link Dao} handling
+   *        {@link gov.ca.cwds.rest.business.rules.LACountyTrigger} objects
    */
   @Inject
-  public ReferralService(final ReferralDao referralDao) {
+  public ReferralService(final ReferralDao referralDao, NonLACountyTriggers nonLaTriggers,
+      LACountyTrigger laCountyTrigger) {
     this.referralDao = referralDao;
+    this.nonLaTriggers = nonLaTriggers;
+    this.laCountyTrigger = laCountyTrigger;
   }
 
   /**
@@ -88,11 +99,13 @@ public class ReferralService implements CrudsService {
       // TODO : refactor to actually determine who is updating. 'q1p' for now - see user story
       // #136737071 - Tech Debt: Legacy Service classes must use Staff ID for last update ID value
 
-      Referral managed = new Referral(CmsKeyIdGenerator.cmsIdGenertor(null), referral, "q1p");
+      Referral managed = new Referral(CmsKeyIdGenerator.cmsIdGenertor(null), referral, "BTr");
       managed = referralDao.create(managed);
       if (managed.getId() == null) {
         throw new ServiceException("Referral ID cannot be null");
       }
+      // Trigger County specific code.
+      laCountyTrigger.createCountyTrigger(managed);
       return new PostedReferral(managed);
     } catch (EntityExistsException e) {
       LOGGER.info("Referral already exists : {}", referral);
@@ -116,8 +129,10 @@ public class ReferralService implements CrudsService {
     try {
       // TODO : refactor to actually determine who is updating. 'q1p' for now - see user story
       // #136737071 - Tech Debt: Legacy Service classes must use Staff ID for last update ID value
-      Referral managed = new Referral((String) primaryKey, referral, "q1p");
+      Referral managed = new Referral((String) primaryKey, referral, "BTr");
       managed = referralDao.update(managed);
+      // Trigger County specific code.
+      laCountyTrigger.createCountyTrigger(managed);
       return new gov.ca.cwds.rest.api.domain.cms.Referral(managed);
     } catch (EntityNotFoundException e) {
       final String msg = "Referral not found : " + referral;

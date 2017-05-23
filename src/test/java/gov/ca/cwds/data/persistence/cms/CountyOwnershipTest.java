@@ -134,7 +134,8 @@ public class CountyOwnershipTest implements PersistentTestTemplate {
   @Override
   @Test
   public void testEqualsHashCodeWorks() {
-    // EqualsVerifier.forClass(CountyOwnership.class).suppress(Warning.NONFINAL_FIELDS).verify();
+    // EqualsVerifier.forClass(CountyOwnership.class).withPrefabValues(Client.class, new Client(),
+    // new Client()).suppress(Warning.NONFINAL_FIELDS).verify();
 
   }
 

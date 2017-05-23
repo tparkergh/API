@@ -755,8 +755,7 @@ public class ScreeningToReferralService implements CrudsService {
     gov.ca.cwds.rest.api.domain.Address address = scr.getAddress();
     if (address == null) {
       String message = "ERROR - Referral Address is null or empty";
-      ServiceException se = new ServiceException(message);
-      throw se;
+      throw new ServiceException(message);
     }
 
     try {
