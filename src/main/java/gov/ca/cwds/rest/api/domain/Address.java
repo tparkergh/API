@@ -31,7 +31,7 @@ public class Address extends ReportingDomain implements Request, Response {
   @JsonProperty("legacy_id")
   @ApiModelProperty(required = true, readOnly = false, value = "Legacy Id", example = "")
   @Size(max = 10)
-  private String addressId;
+  private String legacyId;
 
   @JsonProperty("street_address")
   @ApiModelProperty(example = "742 Evergreen Terrace")
@@ -76,7 +76,7 @@ public class Address extends ReportingDomain implements Request, Response {
       @JsonProperty("type") String type) {
     super();
     this.legacySourceTable = legacySourceTable;
-    this.addressId = addressId;
+    this.legacyId = addressId;
     this.streetAddress = streetAddress;
     this.city = city;
     this.state = state;
@@ -91,7 +91,7 @@ public class Address extends ReportingDomain implements Request, Response {
    */
   public Address(gov.ca.cwds.data.persistence.ns.Address address) {
     this.legacySourceTable = "";
-    this.addressId = "";
+    this.legacyId = "";
     this.streetAddress = address.getStreetAddress();
     this.city = address.getCity();
     this.state = address.getState();
@@ -117,15 +117,15 @@ public class Address extends ReportingDomain implements Request, Response {
   /**
    * @return addressId
    */
-  public String getAddressId() {
-    return addressId;
+  public String getLegacyId() {
+    return legacyId;
   }
 
   /**
    * @param addressId - the legacy Id
    */
-  public void setAddressId(String addressId) {
-    this.addressId = addressId;
+  public void setLegacyId(String addressId) {
+    this.legacyId = addressId;
   }
 
   /**
@@ -173,7 +173,7 @@ public class Address extends ReportingDomain implements Request, Response {
     final int prime = 31;
     int result = 1;
     result = prime * result + ((legacySourceTable == null) ? 0 : legacySourceTable.hashCode());
-    result = prime * result + ((addressId == null) ? 0 : addressId.hashCode());
+    result = prime * result + ((legacyId == null) ? 0 : legacyId.hashCode());
     result = prime * result + ((city == null) ? 0 : city.hashCode());
     result = prime * result + ((state == null) ? 0 : state.hashCode());
     result = prime * result + ((streetAddress == null) ? 0 : streetAddress.hashCode());
@@ -227,10 +227,10 @@ public class Address extends ReportingDomain implements Request, Response {
         return false;
     } else if (!legacySourceTable.equals(other.legacySourceTable))
       return false;
-    if (addressId == null) {
-      if (other.addressId != null)
+    if (legacyId == null) {
+      if (other.legacyId != null)
         return false;
-    } else if (!addressId.equals(other.addressId))
+    } else if (!legacyId.equals(other.legacyId))
       return false;
     return true;
 

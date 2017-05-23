@@ -108,7 +108,7 @@ public class AddressTest {
     assertThat(domain.getZip(), is(equalTo(zip)));
     assertThat(domain.getType(), is(equalTo(type)));
     assertThat(domain.getLegacySourceTable(), is(equalTo(legacySourceTable)));
-    assertThat(domain.getAddressId(), is(equalTo(legacyId)));
+    assertThat(domain.getLegacyId(), is(equalTo(legacyId)));
   }
 
   @Test
