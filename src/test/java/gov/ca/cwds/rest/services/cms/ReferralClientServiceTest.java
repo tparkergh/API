@@ -20,6 +20,8 @@ import org.junit.rules.ExpectedException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import gov.ca.cwds.data.cms.ReferralClientDao;
+import gov.ca.cwds.data.cms.StaffPersonDao;
+import gov.ca.cwds.data.rules.TriggerTablesDao;
 import gov.ca.cwds.rest.api.Response;
 import gov.ca.cwds.rest.api.domain.cms.ReferralClient;
 import gov.ca.cwds.rest.business.rules.LACountyTrigger;
@@ -41,6 +43,8 @@ public class ReferralClientServiceTest {
   private ReferralClientDao referralClientDao;
   private NonLACountyTriggers nonLACountyTriggers;
   private LACountyTrigger laCountyTrigger;
+  private StaffPersonDao staffpersonDao;
+  private TriggerTablesDao triggerTablesDao;
 
   @SuppressWarnings("javadoc")
   @Rule
@@ -52,8 +56,10 @@ public class ReferralClientServiceTest {
     referralClientDao = mock(ReferralClientDao.class);
     nonLACountyTriggers = mock(NonLACountyTriggers.class);
     laCountyTrigger = mock(LACountyTrigger.class);
-    referralClientService =
-        new ReferralClientService(referralClientDao, nonLACountyTriggers, laCountyTrigger);
+    triggerTablesDao = mock(TriggerTablesDao.class);
+    staffpersonDao = mock(StaffPersonDao.class);
+    referralClientService = new ReferralClientService(referralClientDao, nonLACountyTriggers,
+        laCountyTrigger, triggerTablesDao, staffpersonDao);
   }
 
   // find test
