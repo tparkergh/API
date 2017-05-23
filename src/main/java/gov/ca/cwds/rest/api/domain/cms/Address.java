@@ -204,7 +204,7 @@ public class Address extends ReportingDomain implements Request, Response {
   }
 
   /**
-   * @return the existingClientId
+   * @return the existingAddressId
    */
   public String getExistingAddressId() {
     return existingAddressId;

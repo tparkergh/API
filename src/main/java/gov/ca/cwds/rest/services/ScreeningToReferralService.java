@@ -250,7 +250,7 @@ public class ScreeningToReferralService implements CrudsService {
 
       try {
         if (!ParticipantValidator.hasValidRoles(incomingParticipant)) {
-          String message = "ERROR - Participant contains incompatiable roles ";
+          String message = " Participant contains incompatiable roles ";
           ServiceException exception = new ServiceException(message);
           logError(message, exception, messages);
         }
@@ -713,6 +713,7 @@ public class ScreeningToReferralService implements CrudsService {
           ServiceException se = new ServiceException(message);
           logError(message, se, messages);
         }
+        addressId = foundAddress.getExistingAddressId();
       }
 
 
@@ -720,12 +721,12 @@ public class ScreeningToReferralService implements CrudsService {
        * CMS Client Address
        */
       if (addressId.isEmpty()) {
-        String message = "ERROR - ADDRESS/IDENTIFIER is required for CLIENT_ADDRESS table ";
+        String message = " ADDRESS/IDENTIFIER is required for CLIENT_ADDRESS table ";
         ServiceException exception = new ServiceException(message);
         throw exception;
       }
       if (clientId.isEmpty()) {
-        String message = "ERROR - CLIENT/IDENTIFIER is required for CLIENT_ADDRESS ";
+        String message = " CLIENT/IDENTIFIER is required for CLIENT_ADDRESS ";
         ServiceException exception = new ServiceException(message);
         throw exception;
       }
