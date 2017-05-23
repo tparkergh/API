@@ -539,9 +539,9 @@ public class ScreeningToReferralServiceTest {
       this.screeningToReferralService.create(screeningToReferral);
       Assert.fail("Expected ServiceException was not thrown");
     } catch (Exception e) {
-
-      assertThat(e.getMessage(),
-          is(equalTo("Referral Id does not correspond to an exiting Referral")));
+      assertThat(
+          e.getMessage().contains("Legacy Id does not correspond to an existing CMS/CWS Referral"),
+          is(equalTo(true)));
     }
   }
 
@@ -924,9 +924,8 @@ public class ScreeningToReferralServiceTest {
       this.screeningToReferralService.create(screeningToReferral);
       Assert.fail("Expected ServiceException was not thrown");
     } catch (Exception e) {
-
-      assertThat(e.getMessage(),
-          is(equalTo("ERROR - Incompatiable participants included in request")));
+      assertThat(e.getMessage().contains("Incompatiable participants included in request"),
+          is(equalTo(true)));
     }
   }
 
@@ -1022,9 +1021,8 @@ public class ScreeningToReferralServiceTest {
       this.screeningToReferralService.create(screeningToReferral);
       Assert.fail("Expected ServiceException was not thrown");
     } catch (Exception e) {
-
-      assertThat(e.getMessage(),
-          is(equalTo("ERROR - Incompatiable participants included in request")));
+      assertThat(e.getMessage().contains("Incompatiable participants included in request"),
+          is(equalTo(true)));
     }
   }
 
@@ -1210,9 +1208,8 @@ public class ScreeningToReferralServiceTest {
       this.screeningToReferralService.create(screeningToReferral);
       Assert.fail("Expected ServiceException was not thrown");
     } catch (Exception e) {
-
-      assertThat(e.getMessage(),
-          is(equalTo("ERROR - Incompatiable participants included in request")));
+      assertThat(e.getMessage().contains("Incompatiable participants included in request"),
+          is(equalTo(true)));
     }
 
   }
@@ -1310,8 +1307,8 @@ public class ScreeningToReferralServiceTest {
       this.screeningToReferralService.create(screeningToReferral);
       Assert.fail("Expected ServiceException was not thrown");
     } catch (Exception e) {
-
-      assertThat(e.getMessage(), is(equalTo("ERROR - Participant contains incompatiable roles ")));
+      assertThat(e.getMessage().contains("Participant contains incompatiable roles"),
+          is(equalTo(true)));
     }
 
   }
@@ -1409,8 +1406,8 @@ public class ScreeningToReferralServiceTest {
       this.screeningToReferralService.create(screeningToReferral);
       Assert.fail("Expected ServiceException was not thrown");
     } catch (Exception e) {
-
-      assertThat(e.getMessage(), is(equalTo("ERROR - Participant contains incompatiable roles ")));
+      assertThat(e.getMessage().contains("Participant contains incompatiable roles"),
+          is(equalTo(true)));
     }
 
   }
@@ -1509,7 +1506,8 @@ public class ScreeningToReferralServiceTest {
       Assert.fail("Expected ServiceException was not thrown");
     } catch (Exception e) {
 
-      assertThat(e.getMessage(), is(equalTo("ERROR - Participant contains incompatiable roles ")));
+      assertThat(e.getMessage().contains("Participant contains incompatiable roles"),
+          is(equalTo(true)));
     }
 
   }
@@ -1607,8 +1605,8 @@ public class ScreeningToReferralServiceTest {
       this.screeningToReferralService.create(screeningToReferral);
       Assert.fail("Expected ServiceException was not thrown");
     } catch (Exception e) {
-
-      assertThat(e.getMessage(), is(equalTo("ERROR - Participant contains incompatiable roles ")));
+      assertThat(e.getMessage().contains("Participant contains incompatiable roles"),
+          is(equalTo(true)));
     }
 
   }
@@ -1706,8 +1704,8 @@ public class ScreeningToReferralServiceTest {
       this.screeningToReferralService.create(screeningToReferral);
       Assert.fail("Expected ServiceException was not thrown");
     } catch (Exception e) {
-
-      assertThat(e.getMessage(), is(equalTo("ERROR - Participant contains incompatiable roles ")));
+      assertThat(e.getMessage().contains("Participant contains incompatiable roles"),
+          is(equalTo(true)));
     }
 
   }
@@ -2193,7 +2191,7 @@ public class ScreeningToReferralServiceTest {
       this.screeningToReferralService.create(screeningToReferral);
       Assert.fail("Expected ServiceException was not thrown");
     } catch (Exception e) {
-      assertThat(e.getMessage().contains("ERROR - parsing Start Date/Time"), is(equalTo(true)));
+      assertThat(e.getMessage().contains("parsing Start Date/Time"), is(equalTo(true)));
     }
   }
 
@@ -3156,7 +3154,9 @@ public class ScreeningToReferralServiceTest {
       this.screeningToReferralService.create(screeningToReferral);
       Assert.fail("Expected ServiceException was not thrown");
     } catch (Exception e) {
-      assertThat(e.getMessage().contains("Client Id does not correspond to an existing Client"),
+      assertThat(
+          e.getMessage().contains(
+              "Legacy Id of Participant does not correspond to an existing CWS/CMS Client"),
           is(equalTo(true)));
     }
   }
