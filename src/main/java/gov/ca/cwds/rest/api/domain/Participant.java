@@ -27,7 +27,7 @@ import io.swagger.annotations.ApiModelProperty;
  * @author CWDS API Team
  */
 @JsonSnakeCase
-@JsonPropertyOrder({"id", "legacySourceTable", "clientId", "firstName", "lastName", "gender", "ssn",
+@JsonPropertyOrder({"id", "legacySourceTable", "legacyId", "firstName", "lastName", "gender", "ssn",
     "dateOfBirth", "roles", "addresses"})
 public class Participant extends ReportingDomain implements Request, Response {
 
