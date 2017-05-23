@@ -1,8 +1,6 @@
 package gov.ca.cwds.rest.services.cms;
 
 import java.io.Serializable;
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
 import java.util.Map;
 
 import javax.persistence.EntityExistsException;
@@ -14,13 +12,11 @@ import org.slf4j.LoggerFactory;
 import com.google.inject.Inject;
 
 import gov.ca.cwds.data.Dao;
-import gov.ca.cwds.data.cms.CountyOwnershipDao;
 import gov.ca.cwds.data.cms.ReferralClientDao;
-import gov.ca.cwds.data.cms.StaffPersonDao;
-import gov.ca.cwds.data.persistence.cms.CountyOwnership;
 import gov.ca.cwds.data.persistence.cms.ReferralClient;
-import gov.ca.cwds.data.persistence.cms.StaffPerson;
 import gov.ca.cwds.rest.api.Request;
+import gov.ca.cwds.rest.business.rules.LACountyTrigger;
+import gov.ca.cwds.rest.business.rules.NonLACountyTriggers;
 import gov.ca.cwds.rest.services.CrudsService;
 import gov.ca.cwds.rest.services.ServiceException;
 import gov.ca.cwds.rest.util.ServiceUtils;
@@ -38,24 +34,25 @@ public class ReferralClientService implements CrudsService {
   private static final String KEY_CLIENT_ID = "clientId";
 
   private ReferralClientDao referralClientDao;
-  private CountyOwnershipDao countyOwnershipDao;
-  private StaffPersonDao staffpersonDao;
+  private NonLACountyTriggers nonLaTriggers;
+  private LACountyTrigger laCountyTrigger;
 
   /**
    * Constructor
    * 
    * @param referralClientDao The {@link Dao} handling
    *        {@link gov.ca.cwds.data.persistence.cms.ReferralClient} objects.
-   * @param countyOwnershipDao countyOwenshipDao The {@link Dao} handling {@link CountyOwnership}
-   *        objects
-   * @param staffpersonDao staffpersonDao The {@link Dao} handling {@link StaffPerson} objects
+   * @param nonLaTriggers The {@link Dao} handling
+   *        {@link gov.ca.cwds.rest.business.rules.NonLACountyTriggers} objects
+   * @param laCountyTrigger The {@link Dao} handling
+   *        {@link gov.ca.cwds.rest.business.rules.LACountyTrigger} objects
    */
   @Inject
   public ReferralClientService(ReferralClientDao referralClientDao,
-      CountyOwnershipDao countyOwnershipDao, StaffPersonDao staffpersonDao) {
+      NonLACountyTriggers nonLaTriggers, LACountyTrigger laCountyTrigger) {
     this.referralClientDao = referralClientDao;
-    this.countyOwnershipDao = countyOwnershipDao;
-    this.staffpersonDao = staffpersonDao;
+    this.nonLaTriggers = nonLaTriggers;
+    this.laCountyTrigger = laCountyTrigger;
   }
 
   /**
@@ -103,9 +100,11 @@ public class ReferralClientService implements CrudsService {
       // TODO : refactor to actually determine who is updating. 'q1p' for now - #136737071 - Tech
       // Debt: Legacy Service classes must use Staff ID for last update ID value
 
-      ReferralClient managed = new ReferralClient(referralClient, "q1p");
-      createAndUpdateCoutyOwnership(managed);
+      ReferralClient managed = new ReferralClient(referralClient, "BTr");
+      // createAndUpdateCoutyOwnership(managed);
       managed = referralClientDao.create(managed);
+      // Trigger County specific code.
+      laCountyTrigger.createCountyTrigger(managed);
       return new gov.ca.cwds.rest.api.domain.cms.ReferralClient(managed);
     } catch (EntityExistsException e) {
       LOGGER.info("Referral Client already exists : {}", referralClient);
@@ -121,8 +120,10 @@ public class ReferralClientService implements CrudsService {
         (gov.ca.cwds.rest.api.domain.cms.ReferralClient) request;
 
     try {
-      ReferralClient managed = new ReferralClient(referralClient, "q1p");
-      createAndUpdateCoutyOwnership(managed);
+      ReferralClient managed = new ReferralClient(referralClient, "BTr");
+      // createAndUpdateCoutyOwnership(managed);
+      // Trigger County specific code.
+      laCountyTrigger.createCountyTrigger(managed);
       return new gov.ca.cwds.rest.api.domain.cms.ReferralClient(managed);
     } catch (EntityNotFoundException e) {
       LOGGER.info("Referral not found : {}", referralClient);
@@ -136,44 +137,6 @@ public class ReferralClientService implements CrudsService {
     String referralId = nameValuePairs.get(KEY_REFERRAL_ID);
     String clientId = nameValuePairs.get(KEY_CLIENT_ID);
     return new ReferralClient.PrimaryKey(referralId, clientId);
-  }
-
-  /**
-   * 
-   * @param managed referralClient This method triggers the CountyOwnership table with the
-   *        associated lastUpdatedId
-   * 
-   */
-  private void createAndUpdateCoutyOwnership(ReferralClient managed) {
-    Boolean countyExists = true;
-    StaffPerson staffperson = staffpersonDao.find(managed.getLastUpdatedId());
-    if (staffperson != null && !("19".equals(staffperson.getCountyCode()))) {
-      CountyOwnership countyOwnership = countyOwnershipDao.find(managed.getClientId());
-      if (countyOwnership == null) {
-        countyExists = false;
-        countyOwnership = new CountyOwnership();
-        countyOwnership.setEntityId(managed.getClientId());
-        countyOwnership.setEntityCode("C");
-      }
-      String methodName = "setCounty" + managed.getCountySpecificCode() + "Flag";
-      Method method = null;
-      try {
-        method = countyOwnership.getClass().getMethod(methodName, String.class);
-        method.invoke(countyOwnership, "Y");
-      } catch (NoSuchMethodException | SecurityException | IllegalAccessException
-          | IllegalArgumentException | InvocationTargetException e) {
-        LOGGER.info("CountyOwnership Unable to Trigger : {}", countyOwnership);
-        LOGGER.error(e.getMessage(), e);
-        throw new ServiceException(e);
-      }
-
-      if (countyExists) {
-        countyOwnershipDao.update(countyOwnership);
-      } else {
-        countyOwnershipDao.create(countyOwnership);
-      }
-
-    }
   }
 
 }

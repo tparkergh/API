@@ -25,6 +25,8 @@ import gov.ca.cwds.data.cms.ReferralDao;
 import gov.ca.cwds.rest.api.Response;
 import gov.ca.cwds.rest.api.domain.cms.PostedReferral;
 import gov.ca.cwds.rest.api.domain.cms.Referral;
+import gov.ca.cwds.rest.business.rules.LACountyTrigger;
+import gov.ca.cwds.rest.business.rules.NonLACountyTriggers;
 import gov.ca.cwds.rest.services.ServiceException;
 import gov.ca.cwds.rest.services.junit.template.ServiceTestTemplate;
 
@@ -35,6 +37,8 @@ import gov.ca.cwds.rest.services.junit.template.ServiceTestTemplate;
 public class ReferralServiceTest implements ServiceTestTemplate {
   private ReferralService referralService;
   private ReferralDao referralDao;
+  private NonLACountyTriggers nonLACountyTriggers;
+  private LACountyTrigger laCountyTrigger;
 
   @SuppressWarnings("javadoc")
   @Rule
@@ -44,7 +48,9 @@ public class ReferralServiceTest implements ServiceTestTemplate {
   @Before
   public void setup() throws Exception {
     referralDao = mock(ReferralDao.class);
-    referralService = new ReferralService(referralDao);
+    nonLACountyTriggers = mock(NonLACountyTriggers.class);
+    laCountyTrigger = mock(LACountyTrigger.class);
+    referralService = new ReferralService(referralDao, nonLACountyTriggers, laCountyTrigger);
   }
 
   // find test

@@ -61,6 +61,9 @@ smartystreets:
   clientId: ${SS_ID:-8721f357-6381-1001-4633-5157e84b68cb}
   token: ${SS_TOKEN:-Q62NxpgzuBEUq3IalqVx}
   maxCandidates: ${SS_MAX:-10}
+  
+triggertables:
+  laCountySpecificCode: 19
  
 server:
   applicationConnectors:

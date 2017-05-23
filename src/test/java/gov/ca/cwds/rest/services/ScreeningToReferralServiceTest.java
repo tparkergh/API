@@ -28,7 +28,6 @@ import gov.ca.cwds.data.cms.AllegationDao;
 import gov.ca.cwds.data.cms.ChildClientDao;
 import gov.ca.cwds.data.cms.ClientAddressDao;
 import gov.ca.cwds.data.cms.ClientDao;
-import gov.ca.cwds.data.cms.CountyOwnershipDao;
 import gov.ca.cwds.data.cms.CrossReportDao;
 import gov.ca.cwds.data.cms.LongTextDao;
 import gov.ca.cwds.data.cms.ReferralClientDao;
@@ -49,6 +48,8 @@ import gov.ca.cwds.rest.api.domain.cms.LongText;
 import gov.ca.cwds.rest.api.domain.cms.Referral;
 import gov.ca.cwds.rest.api.domain.cms.ReferralClient;
 import gov.ca.cwds.rest.api.domain.cms.Reporter;
+import gov.ca.cwds.rest.business.rules.LACountyTrigger;
+import gov.ca.cwds.rest.business.rules.NonLACountyTriggers;
 import gov.ca.cwds.rest.services.cms.AddressService;
 import gov.ca.cwds.rest.services.cms.AllegationService;
 import gov.ca.cwds.rest.services.cms.ChildClientService;
@@ -92,7 +93,8 @@ public class ScreeningToReferralServiceTest {
   private ChildClientDao childClientDao;
   private LongTextDao longTextDao;
   private StaffPersonDao staffpersonDao;
-  private CountyOwnershipDao countyOwnershipDao;
+  private NonLACountyTriggers nonLACountyTriggers;
+  private LACountyTrigger laCountyTrigger;
 
   @SuppressWarnings("javadoc")
   @Rule
@@ -103,17 +105,19 @@ public class ScreeningToReferralServiceTest {
   public void setup() throws Exception {
 
     referralDao = mock(ReferralDao.class);
-    referralService = new ReferralService(referralDao);
+    nonLACountyTriggers = mock(NonLACountyTriggers.class);
+    laCountyTrigger = mock(LACountyTrigger.class);
+    referralService = new ReferralService(referralDao, nonLACountyTriggers, laCountyTrigger);
 
     clientDao = mock(ClientDao.class);
     staffpersonDao = mock(StaffPersonDao.class);
     clientService = new ClientService(clientDao, staffpersonDao);
 
     referralClientDao = mock(ReferralClientDao.class);
-    countyOwnershipDao = mock(CountyOwnershipDao.class);
-    staffpersonDao = mock(StaffPersonDao.class);
+    nonLACountyTriggers = mock(NonLACountyTriggers.class);
+    laCountyTrigger = mock(LACountyTrigger.class);
     referralClientService =
-        new ReferralClientService(referralClientDao, countyOwnershipDao, staffpersonDao);
+        new ReferralClientService(referralClientDao, nonLACountyTriggers, laCountyTrigger);
 
     allegationDao = mock(AllegationDao.class);
     allegationService = new AllegationService(allegationDao);

@@ -23,7 +23,6 @@ import gov.ca.cwds.rest.services.cms.CmsDocReferralClientService;
 import gov.ca.cwds.rest.services.cms.CmsDocumentService;
 import gov.ca.cwds.rest.services.cms.CmsNSReferralService;
 import gov.ca.cwds.rest.services.cms.CmsReferralService;
-import gov.ca.cwds.rest.services.cms.CountyOwnershipService;
 import gov.ca.cwds.rest.services.cms.CrossReportService;
 import gov.ca.cwds.rest.services.cms.ReferralClientService;
 import gov.ca.cwds.rest.services.cms.ReferralService;
@@ -110,7 +109,6 @@ public class ServicesModule extends AbstractModule {
     bind(ScreeningToReferral.class);
     bind(IndexQueryService.class);
     bind(ClientUcService.class);
-    bind(CountyOwnershipService.class);
     bind(SystemCodeService.class);
 
     // Register CMS system code translator.

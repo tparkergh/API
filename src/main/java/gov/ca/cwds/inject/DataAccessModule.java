@@ -1,5 +1,18 @@
 package gov.ca.cwds.inject;
 
+import java.net.InetAddress;
+
+import org.elasticsearch.client.Client;
+import org.elasticsearch.client.transport.TransportClient;
+import org.elasticsearch.common.settings.Settings;
+import org.elasticsearch.common.transport.InetSocketTransportAddress;
+import org.hibernate.SessionFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import com.google.inject.AbstractModule;
+import com.google.inject.Provides;
+
 import gov.ca.cwds.data.cms.AllegationDao;
 import gov.ca.cwds.data.cms.AllegationPerpetratorHistoryDao;
 import gov.ca.cwds.data.cms.AttorneyDao;
@@ -9,6 +22,7 @@ import gov.ca.cwds.data.cms.ClientUcDao;
 import gov.ca.cwds.data.cms.CmsDocReferralClientDao;
 import gov.ca.cwds.data.cms.CmsDocumentDao;
 import gov.ca.cwds.data.cms.CountyOwnershipDao;
+import gov.ca.cwds.data.cms.CountyTriggerDao;
 import gov.ca.cwds.data.cms.CrossReportDao;
 import gov.ca.cwds.data.cms.LongTextDao;
 import gov.ca.cwds.data.cms.OtherClientNameDao;
@@ -44,6 +58,7 @@ import gov.ca.cwds.data.persistence.cms.CmsDocument;
 import gov.ca.cwds.data.persistence.cms.CmsDocumentBlobSegment;
 import gov.ca.cwds.data.persistence.cms.CollateralIndividual;
 import gov.ca.cwds.data.persistence.cms.CountyOwnership;
+import gov.ca.cwds.data.persistence.cms.CountyTrigger;
 import gov.ca.cwds.data.persistence.cms.CrossReport;
 import gov.ca.cwds.data.persistence.cms.EducationProviderContact;
 import gov.ca.cwds.data.persistence.cms.LongText;
@@ -77,27 +92,18 @@ import gov.ca.cwds.data.persistence.ns.PersonRaceId;
 import gov.ca.cwds.data.persistence.ns.PhoneNumber;
 import gov.ca.cwds.data.persistence.ns.Race;
 import gov.ca.cwds.data.persistence.ns.Screening;
+import gov.ca.cwds.data.rules.TriggerTablesDao;
 import gov.ca.cwds.data.validation.SmartyStreetsDao;
 import gov.ca.cwds.rest.ApiConfiguration;
 import gov.ca.cwds.rest.ElasticsearchConfiguration;
 import gov.ca.cwds.rest.SmartyStreetsConfiguration;
+import gov.ca.cwds.rest.TriggerTablesConfiguration;
 import gov.ca.cwds.rest.api.ApiException;
+import gov.ca.cwds.rest.business.rules.LACountyTrigger;
+import gov.ca.cwds.rest.business.rules.NonLACountyTriggers;
 import io.dropwizard.db.DataSourceFactory;
 import io.dropwizard.hibernate.HibernateBundle;
 import io.dropwizard.setup.Bootstrap;
-
-import java.net.InetAddress;
-
-import org.elasticsearch.client.Client;
-import org.elasticsearch.client.transport.TransportClient;
-import org.elasticsearch.common.settings.Settings;
-import org.elasticsearch.common.transport.InetSocketTransportAddress;
-import org.hibernate.SessionFactory;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import com.google.inject.AbstractModule;
-import com.google.inject.Provides;
 
 /**
  * DI (dependency injection) setup for data access objects (DAO).
@@ -120,7 +126,8 @@ public class DataAccessModule extends AbstractModule {
           ReferralClient.class, Reporter.class, ServiceProvider.class, StaffPerson.class,
           SubstituteCareProvider.class, LongText.class, AllegationPerpetratorHistory.class,
           ClientUc.class, ChildClient.class, gov.ca.cwds.data.persistence.cms.Address.class,
-          ClientAddress.class, CountyOwnership.class, SystemCode.class, SystemMeta.class) {
+          ClientAddress.class, CountyOwnership.class, CountyTrigger.class, SystemCode.class,
+          SystemMeta.class) {
         @Override
         public DataSourceFactory getDataSourceFactory(ApiConfiguration configuration) {
           return configuration.getCmsDataSourceFactory();
@@ -206,7 +213,13 @@ public class DataAccessModule extends AbstractModule {
     bind(EthnicityDao.class);
     bind(PersonRaceDao.class);
     bind(RaceDao.class);
+
+    // Trigger Tables
     bind(CountyOwnershipDao.class);
+    bind(CountyTriggerDao.class);
+    bind(NonLACountyTriggers.class);
+    bind(LACountyTrigger.class);
+    bind(TriggerTablesDao.class);
 
     // Miscellaneous:
     bind(ElasticsearchDao.class);
@@ -251,21 +264,20 @@ public class DataAccessModule extends AbstractModule {
   }
 
   @Provides
+  public TriggerTablesConfiguration triggerTablesConfiguration(ApiConfiguration apiConfiguration) {
+    return apiConfiguration.getTriggerTablesConfiguration();
+  }
+
+  @Provides
   public Client elasticsearchClient(ApiConfiguration apiConfiguration) {
     if (client == null) {
       ElasticsearchConfiguration config = apiConfiguration.getElasticsearchConfiguration();
       try {
-        Settings settings =
-            Settings.settingsBuilder().put("cluster.name", config.getElasticsearchCluster())
-                .build();
-        client =
-            TransportClient
-                .builder()
-                .settings(settings)
-                .build()
-                .addTransportAddress(
-                    new InetSocketTransportAddress(InetAddress.getByName(config
-                        .getElasticsearchHost()), Integer.parseInt(config.getElasticsearchPort())));
+        Settings settings = Settings.settingsBuilder()
+            .put("cluster.name", config.getElasticsearchCluster()).build();
+        client = TransportClient.builder().settings(settings).build().addTransportAddress(
+            new InetSocketTransportAddress(InetAddress.getByName(config.getElasticsearchHost()),
+                Integer.parseInt(config.getElasticsearchPort())));
       } catch (Exception e) {
         LOGGER.error("Error initializing Elasticsearch client: {}", e.getMessage(), e);
         throw new ApiException("Error initializing Elasticsearch client: " + e.getMessage(), e);
