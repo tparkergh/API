@@ -26,6 +26,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import gov.ca.cwds.data.cms.ClientDao;
 import gov.ca.cwds.data.cms.StaffPersonDao;
+import gov.ca.cwds.data.rules.TriggerTablesDao;
 import gov.ca.cwds.rest.api.Response;
 import gov.ca.cwds.rest.api.domain.cms.Client;
 import gov.ca.cwds.rest.api.domain.cms.PostedClient;
@@ -42,6 +43,7 @@ public class ClientServiceTest implements ServiceTestTemplate {
   private ClientService clientService;
   private ClientDao clientDao;
   private StaffPersonDao staffpersonDao;
+  private TriggerTablesDao triggerTablesDao;
 
   @SuppressWarnings("javadoc")
   @Rule
@@ -52,7 +54,8 @@ public class ClientServiceTest implements ServiceTestTemplate {
   public void setup() throws Exception {
     clientDao = mock(ClientDao.class);
     staffpersonDao = mock(StaffPersonDao.class);
-    clientService = new ClientService(clientDao, staffpersonDao);
+    triggerTablesDao = mock(TriggerTablesDao.class);
+    clientService = new ClientService(clientDao, staffpersonDao, triggerTablesDao);
   }
 
   // find test

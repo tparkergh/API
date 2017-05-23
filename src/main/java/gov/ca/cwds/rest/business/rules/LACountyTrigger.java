@@ -8,12 +8,9 @@ import org.slf4j.LoggerFactory;
 import com.google.inject.Inject;
 
 import gov.ca.cwds.data.cms.CountyTriggerDao;
-import gov.ca.cwds.data.cms.StaffPersonDao;
 import gov.ca.cwds.data.persistence.cms.CountyTrigger;
 import gov.ca.cwds.data.persistence.cms.Referral;
 import gov.ca.cwds.data.persistence.cms.ReferralClient;
-import gov.ca.cwds.data.persistence.cms.StaffPerson;
-import gov.ca.cwds.data.rules.TriggerTablesDao;
 
 /**
  * Business layer object to work on LA Trigger
@@ -28,23 +25,15 @@ public class LACountyTrigger {
 
   private static final Logger LOGGER = LoggerFactory.getLogger(LACountyTrigger.class);
 
-  private StaffPersonDao staffpersonDao;
   private CountyTriggerDao countyTriggerDao;
-  private TriggerTablesDao triggerTablesDao;
 
   /**
-   * @param staffpersonDao - staffpersonDao
    * @param countyTriggerDao - countyTriggerDao
-   * @param triggerTablesDao - triggerTablesDao
    */
   @Inject
-  public LACountyTrigger(StaffPersonDao staffpersonDao, CountyTriggerDao countyTriggerDao,
-      TriggerTablesDao triggerTablesDao) {
-    this.staffpersonDao = staffpersonDao;
+  public LACountyTrigger(CountyTriggerDao countyTriggerDao) {
     this.countyTriggerDao = countyTriggerDao;
-    this.triggerTablesDao = triggerTablesDao;
   }
-
 
   /**
    * @param object The object
@@ -61,22 +50,18 @@ public class LACountyTrigger {
         countyTriggerExist = true;
       }
 
-      StaffPerson staffperson = staffpersonDao.find(referral.getLastUpdatedId());
-      if (staffperson != null
-          && (triggerTablesDao.getLaCountySpecificCode().equals(staffperson.getCountyCode()))) {
-
-        if (referral.getAllegesAbuseOccurredAtAddressId() != ""
-            && referral.getAllegesAbuseOccurredAtAddressId() != null) {
-          CountyTrigger countyTrigger =
-              new CountyTrigger(referral.getAllegesAbuseOccurredAtAddressId(),
-                  referral.getCountySpecificCode(), ADDRESS_COUNTYOWNERSHIP, null,
-                  Referral.class.getDeclaredAnnotation(Table.class).name());
-          if (countyTriggerExist) {
-            countyTriggerDao.update(countyTrigger);
-          } else {
-            countyTriggerDao.create(countyTrigger);
-          }
+      if (referral.getAllegesAbuseOccurredAtAddressId() != ""
+          && referral.getAllegesAbuseOccurredAtAddressId() != null) {
+        CountyTrigger countyTrigger =
+            new CountyTrigger(referral.getAllegesAbuseOccurredAtAddressId(),
+                referral.getCountySpecificCode(), ADDRESS_COUNTYOWNERSHIP, null,
+                Referral.class.getDeclaredAnnotation(Table.class).name());
+        if (countyTriggerExist) {
+          countyTriggerDao.update(countyTrigger);
+        } else {
+          countyTriggerDao.create(countyTrigger);
         }
+        LOGGER.info("referral LA county table triggered");
       }
     }
 
@@ -88,20 +73,16 @@ public class LACountyTrigger {
         countyTriggerExist = true;
       }
 
-      StaffPerson staffperson = staffpersonDao.find(referralClient.getLastUpdatedId());
-      if (staffperson != null
-          && (triggerTablesDao.getLaCountySpecificCode().equals(staffperson.getCountyCode()))) {
-
-        if (referralClient.getClientId() != "" && referralClient.getClientId() != null) {
-          CountyTrigger countyTrigger = new CountyTrigger(referralClient.getClientId(),
-              referralClient.getCountySpecificCode(), CLIENT_COUNTYOWNERSHIP, null,
-              ReferralClient.class.getDeclaredAnnotation(Table.class).name());
-          if (countyTriggerExist) {
-            countyTriggerDao.update(countyTrigger);
-          } else {
-            countyTriggerDao.create(countyTrigger);
-          }
+      if (referralClient.getClientId() != "" && referralClient.getClientId() != null) {
+        CountyTrigger countyTrigger = new CountyTrigger(referralClient.getClientId(),
+            referralClient.getCountySpecificCode(), CLIENT_COUNTYOWNERSHIP, null,
+            ReferralClient.class.getDeclaredAnnotation(Table.class).name());
+        if (countyTriggerExist) {
+          countyTriggerDao.update(countyTrigger);
+        } else {
+          countyTriggerDao.create(countyTrigger);
         }
+        LOGGER.info("referralClient LA county table triggered");
       }
     }
 

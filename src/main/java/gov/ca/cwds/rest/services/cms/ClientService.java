@@ -17,6 +17,7 @@ import gov.ca.cwds.data.persistence.cms.Client;
 import gov.ca.cwds.data.persistence.cms.CmsKeyIdGenerator;
 import gov.ca.cwds.data.persistence.cms.CountyOwnership;
 import gov.ca.cwds.data.persistence.cms.StaffPerson;
+import gov.ca.cwds.data.rules.TriggerTablesDao;
 import gov.ca.cwds.rest.api.Request;
 import gov.ca.cwds.rest.api.domain.cms.PostedClient;
 import gov.ca.cwds.rest.services.CrudsService;
@@ -32,6 +33,7 @@ public class ClientService implements CrudsService {
 
   private ClientDao clientDao;
   private StaffPersonDao staffpersonDao;
+  private TriggerTablesDao triggerTablesDao;
 
   /**
    * Constructor
@@ -40,11 +42,15 @@ public class ClientService implements CrudsService {
    *        objects.
    * @param staffpersonDao The {@link Dao} handling
    *        {@link gov.ca.cwds.data.persistence.cms.StaffPerson} objects
+   * @param triggerTablesDao The {@link Dao} handling
+   *        {@link gov.ca.cwds.data.rules.TriggerTablesDao} objects
    */
   @Inject
-  public ClientService(ClientDao clientDao, StaffPersonDao staffpersonDao) {
+  public ClientService(ClientDao clientDao, StaffPersonDao staffpersonDao,
+      TriggerTablesDao triggerTablesDao) {
     this.clientDao = clientDao;
     this.staffpersonDao = staffpersonDao;
+    this.triggerTablesDao = triggerTablesDao;
   }
 
   /**
@@ -118,7 +124,6 @@ public class ClientService implements CrudsService {
         countyOwnership.setEntityId(managed.getPrimaryKey());
         countyOwnership.setEntityCode("C");
       }
-      // clientDao.update(managed);
       return new PostedClient(managed, false);
     } catch (EntityExistsException e) {
       LOGGER.info("Client already exists : {}", client);

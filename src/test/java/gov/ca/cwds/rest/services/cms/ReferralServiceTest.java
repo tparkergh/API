@@ -22,6 +22,8 @@ import org.mockito.invocation.InvocationOnMock;
 import org.mockito.stubbing.Answer;
 
 import gov.ca.cwds.data.cms.ReferralDao;
+import gov.ca.cwds.data.cms.StaffPersonDao;
+import gov.ca.cwds.data.rules.TriggerTablesDao;
 import gov.ca.cwds.rest.api.Response;
 import gov.ca.cwds.rest.api.domain.cms.PostedReferral;
 import gov.ca.cwds.rest.api.domain.cms.Referral;
@@ -39,6 +41,8 @@ public class ReferralServiceTest implements ServiceTestTemplate {
   private ReferralDao referralDao;
   private NonLACountyTriggers nonLACountyTriggers;
   private LACountyTrigger laCountyTrigger;
+  private TriggerTablesDao triggerTablesDao;
+  private StaffPersonDao staffpersonDao;
 
   @SuppressWarnings("javadoc")
   @Rule
@@ -50,7 +54,10 @@ public class ReferralServiceTest implements ServiceTestTemplate {
     referralDao = mock(ReferralDao.class);
     nonLACountyTriggers = mock(NonLACountyTriggers.class);
     laCountyTrigger = mock(LACountyTrigger.class);
-    referralService = new ReferralService(referralDao, nonLACountyTriggers, laCountyTrigger);
+    triggerTablesDao = mock(TriggerTablesDao.class);
+    staffpersonDao = mock(StaffPersonDao.class);
+    referralService = new ReferralService(referralDao, nonLACountyTriggers, laCountyTrigger,
+        triggerTablesDao, staffpersonDao);
   }
 
   // find test
