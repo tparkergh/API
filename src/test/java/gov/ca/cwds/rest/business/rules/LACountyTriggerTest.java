@@ -44,7 +44,7 @@ public class LACountyTriggerTest {
   public ExpectedException thrown = ExpectedException.none();
 
   /**
-   * @throws Exception
+   * @throws Exception on initialization error
    */
   @Before
   public void setup() throws Exception {

@@ -6,6 +6,7 @@ import org.elasticsearch.client.Client;
 import org.elasticsearch.client.transport.TransportClient;
 import org.elasticsearch.common.settings.Settings;
 import org.elasticsearch.common.transport.InetSocketTransportAddress;
+import org.elasticsearch.transport.client.PreBuiltTransportClient;
 import org.hibernate.SessionFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -268,16 +269,24 @@ public class DataAccessModule extends AbstractModule {
     return apiConfiguration.getTriggerTablesConfiguration();
   }
 
+  // @Singleton
   @Provides
-  public Client elasticsearchClient(ApiConfiguration apiConfiguration) {
+  public synchronized Client elasticsearchClient(ApiConfiguration apiConfiguration) {
     if (client == null) {
       ElasticsearchConfiguration config = apiConfiguration.getElasticsearchConfiguration();
       try {
-        Settings settings = Settings.settingsBuilder()
-            .put("cluster.name", config.getElasticsearchCluster()).build();
-        client = TransportClient.builder().settings(settings).build().addTransportAddress(
+        // Settings settings = Settings.settingsBuilder()
+        // .put("cluster.name", config.getElasticsearchCluster()).build();
+        // client = TransportClient.builder().settings(settings).build().addTransportAddress(
+        // new InetSocketTransportAddress(InetAddress.getByName(config.getElasticsearchHost()),
+        // Integer.parseInt(config.getElasticsearchPort())));
+
+        TransportClient ret = new PreBuiltTransportClient(
+            Settings.builder().put("cluster.name", config.getElasticsearchCluster()).build());
+        ret.addTransportAddress(
             new InetSocketTransportAddress(InetAddress.getByName(config.getElasticsearchHost()),
                 Integer.parseInt(config.getElasticsearchPort())));
+        client = ret;
       } catch (Exception e) {
         LOGGER.error("Error initializing Elasticsearch client: {}", e.getMessage(), e);
         throw new ApiException("Error initializing Elasticsearch client: " + e.getMessage(), e);
