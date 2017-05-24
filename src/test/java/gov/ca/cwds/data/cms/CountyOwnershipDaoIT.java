@@ -99,7 +99,7 @@ public class CountyOwnershipDaoIT implements DaoTestTemplate {
   }
 
   @Override
-  // @Test
+  @Test
   public void testDelete() throws Exception {
     CountyOwnership deleted = countyOwnershipDao.delete(id);
     assertThat(deleted.getEntityId(), is(id));
