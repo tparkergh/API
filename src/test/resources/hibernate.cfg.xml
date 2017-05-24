@@ -43,6 +43,7 @@
 		<mapping class="gov.ca.cwds.data.persistence.cms.ClientAddress"/>
 		<mapping class="gov.ca.cwds.data.persistence.cms.Address"/>
 		<mapping class="gov.ca.cwds.data.persistence.cms.CountyOwnership"/>
+		<mapping class="gov.ca.cwds.data.persistence.cms.CountyTrigger"/>
  		
 	</session-factory>
 </hibernate-configuration>
