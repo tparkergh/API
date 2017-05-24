@@ -154,8 +154,8 @@ public class PersonService implements CrudsService {
       elasticsearchDao.createIndexIfNeeded(elasticsearchDao.getDefaultAlias());
 
       // The ES Dao manages its own connections. No need to manually start or stop.
-      elasticsearchDao.index(elasticsearchDao.getDefaultAlias(),
-          elasticsearchDao.getDefaultDocType(), document, esPerson.getId());
+      // elasticsearchDao.index(elasticsearchDao.getDefaultAlias(),
+      // elasticsearchDao.getDefaultDocType(), document, esPerson.getId());
     } catch (Exception e) {
       LOGGER.error("Unable to Index Person in ElasticSearch", e);
       throw new ApiException("Unable to Index Person in ElasticSearch", e);
