@@ -36,6 +36,8 @@ project.ext {
     metricsVersion = "3.1.0"
     dropwizardSwaggerVersion = "1.0.0-1"
     mainclass = "gov.ca.cwds.rest.ApiApplication" 
+    elasticsearchVersion = "5.4.0"
+    log4jVersion = "2.8.2"
 }
 
 def dockerTag = apiVersion + ((System.properties.getProperty('build') != null ) ? '.' + System.properties.getProperty('build') : '')
@@ -61,12 +63,6 @@ shadowJar {
 }
 
 dependencies {
-	// Dropwizard-guice 1.0.0.2 conflicts with jersey-client 2.25.
-	// Exclude transitive dependencies.
-	compile ('gov.ca.cwds.api:api-core:0.22.240') {
-	    exclude group: 'org.glassfish.jersey.core'
-	}
-	
 	compile group: "io.dropwizard", name: "dropwizard-client", version: dropwizardVersion
 	compile group: "io.dropwizard", name: "dropwizard-hibernate", version: dropwizardVersion
 	compile group: "io.dropwizard", name: "dropwizard-views", version: dropwizardVersion
@@ -80,8 +76,24 @@ dependencies {
 	compile group: "javax.el", name: "javax.el-api", version: "2.2.4"
 	compile group: "org.glassfish.web", name: "javax.el", version: "2.2.4"
 	compile group: 'commons-beanutils', name: 'commons-beanutils', version: '1.8.3'
-    compile group: 'org.elasticsearch', name: 'elasticsearch', version: '2.4.4'
-	compile group: 'org.slf4j', name: 'slf4j-ext', version: '1.7.22'
+	
+    // ES 5.x:
+    compile group: 'org.elasticsearch', name: 'elasticsearch', version: elasticsearchVersion
+    compile group: 'org.elasticsearch.client', name: 'transport', version: elasticsearchVersion
+
+	// Dropwizard-guice 1.0.0.2 conflicts with jersey-client 2.25.
+	// Exclude transitive dependencies.
+	compile ('gov.ca.cwds.api:api-core:0.22.245') {
+	    exclude group: 'org.glassfish.jersey.core'
+	}
+
+	// LOGGING:	
+	compile group: 'org.apache.logging.log4j', name: 'log4j-api', version: log4jVersion
+  	compile group: 'org.apache.logging.log4j', name: 'log4j-core', version: log4jVersion
+	compile group: 'org.apache.logging.log4j', name: 'log4j-to-slf4j', version: log4jVersion
+	compile group: 'ch.qos.logback', name: 'logback-classic', version: '1.2.1'
+	compile group: 'org.slf4j', name: 'slf4j-ext', version: '1.7.25'
+	compile group: 'org.slf4j', name: 'slf4j-simple', version: '1.7.25'
 
 	compile group: 'org.glassfish.jersey.core', name: 'jersey-client', version: '2.25.1'
 	compile group: 'com.hubspot.dropwizard', name: 'dropwizard-guice', version: '1.0.6.0'
