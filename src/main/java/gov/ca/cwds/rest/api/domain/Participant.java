@@ -1,5 +1,7 @@
 package gov.ca.cwds.rest.api.domain;
 
+import static gov.ca.cwds.data.persistence.cms.CmsPersistentObject.CMS_ID_LEN;
+
 import java.util.Set;
 
 import javax.validation.Valid;
@@ -20,7 +22,7 @@ import io.dropwizard.validation.OneOf;
 import io.swagger.annotations.ApiModelProperty;
 
 /**
- * {@link DomainObject} representing a Participant
+ * {@link DomainObject} representing a Participant.
  * 
  * @author CWDS API Team
  */
@@ -28,6 +30,7 @@ import io.swagger.annotations.ApiModelProperty;
 @JsonPropertyOrder({"id", "legacySourceTable", "clientId", "firstName", "lastName", "gender", "ssn",
     "dateOfBirth", "roles", "addresses"})
 public class Participant extends ReportingDomain implements Request, Response {
+
   /**
    * Serialization version
    */
@@ -43,7 +46,7 @@ public class Participant extends ReportingDomain implements Request, Response {
 
   @JsonProperty("legacy_id")
   @ApiModelProperty(required = true, readOnly = false, value = "Legacy Client Id", example = "")
-  @Size(max = 10)
+  @Size(max = CMS_ID_LEN)
   private String legacyId;
 
   @JsonProperty("first_name")

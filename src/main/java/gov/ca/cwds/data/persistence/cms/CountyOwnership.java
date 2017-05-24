@@ -41,7 +41,7 @@ public class CountyOwnership implements PersistentObject, Serializable {
    */
   private static final long serialVersionUID = 1L;
 
-  protected static final int CMS_ID_LEN = 10;
+  protected static final int CMS_ID_LEN = CmsPersistentObject.CMS_ID_LEN;
   protected static final String DATE_FORMAT = "yyyy-MM-dd";
 
   @GenericGenerator(name = "generator", strategy = "foreign",

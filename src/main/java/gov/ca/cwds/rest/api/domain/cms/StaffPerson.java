@@ -1,11 +1,12 @@
 package gov.ca.cwds.rest.api.domain.cms;
 
+import static gov.ca.cwds.data.persistence.cms.CmsPersistentObject.CMS_ID_LEN;
+
 import java.math.BigDecimal;
 
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
-import gov.ca.cwds.rest.api.domain.ReportingDomain;
 import org.hibernate.validator.constraints.NotEmpty;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
@@ -16,6 +17,7 @@ import gov.ca.cwds.rest.api.Request;
 import gov.ca.cwds.rest.api.Response;
 import gov.ca.cwds.rest.api.domain.DomainChef;
 import gov.ca.cwds.rest.api.domain.DomainObject;
+import gov.ca.cwds.rest.api.domain.ReportingDomain;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 
@@ -85,7 +87,7 @@ public class StaffPerson extends ReportingDomain implements Request, Response {
   private Boolean telecommuterIndicator;
 
   @NotEmpty
-  @Size(min = 10, max = 10)
+  @Size(min = CMS_ID_LEN, max = CMS_ID_LEN)
   @ApiModelProperty(required = true, readOnly = false, value = "IDENTIFIER of CWS_OFFT",
       example = "1234567def")
   private String cwsOffice;
@@ -110,7 +112,7 @@ public class StaffPerson extends ReportingDomain implements Request, Response {
   private Boolean dutyWorkerIndicator;
 
   @NotEmpty
-  @Size(min = 10, max = 10)
+  @Size(min = CMS_ID_LEN, max = CMS_ID_LEN)
   @ApiModelProperty(required = true, readOnly = false, value = "IDENTIFIER of CWSADDRT",
       example = "1234567ghi")
   private String cwsOfficeAddress;

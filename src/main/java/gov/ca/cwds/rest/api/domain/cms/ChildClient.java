@@ -1,5 +1,7 @@
 package gov.ca.cwds.rest.api.domain.cms;
 
+import static gov.ca.cwds.data.persistence.cms.CmsPersistentObject.CMS_ID_LEN;
+
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
@@ -32,7 +34,7 @@ public class ChildClient extends ReportingDomain implements Request, Response {
   private static final long serialVersionUID = 1L;
 
   @NotNull
-  @Size(min = 10, max = 10)
+  @Size(min = CMS_ID_LEN, max = CMS_ID_LEN)
   @ApiModelProperty(required = true, readOnly = true, value = "CLIENT ID of victim",
       example = "ABC1234567")
   private String victimClientId;
@@ -85,7 +87,7 @@ public class ChildClient extends ReportingDomain implements Request, Response {
   @ApiModelProperty(required = false, readOnly = false)
   private Boolean collegeIndicator;
 
-  @Size(max = 10)
+  @Size(max = CMS_ID_LEN)
   @ApiModelProperty(required = false, readOnly = false, value = "", example = "ABC1234567")
   private String currentCaseId;
 
@@ -99,15 +101,15 @@ public class ChildClient extends ReportingDomain implements Request, Response {
       example = "N")
   private String disabilityDiagnosedCode;
 
-  @Size(max = 10)
+  @Size(max = CMS_ID_LEN)
   @ApiModelProperty(required = false, readOnly = false, value = "", example = "")
   private String drmsHePassportDocOld;
 
-  @Size(max = 10)
+  @Size(max = CMS_ID_LEN)
   @ApiModelProperty(required = false, readOnly = false, value = "", example = "Document")
   private String drmsHealthEducPassportDoc;
 
-  @Size(max = 10)
+  @Size(max = CMS_ID_LEN)
   @ApiModelProperty(required = false, readOnly = false, value = "", example = "Agreement")
   private String drmsVoluntaryPlcmntAgrmntDoc;
 

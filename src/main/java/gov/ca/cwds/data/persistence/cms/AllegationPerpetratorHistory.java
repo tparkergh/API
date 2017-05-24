@@ -45,7 +45,7 @@ public class AllegationPerpetratorHistory extends CmsPersistentObject {
   private String victimClientId;
 
   @NotEmpty
-  @Size(min = 10, max = 10)
+  @Size(min = CMS_ID_LEN, max = CMS_ID_LEN)
   @Column(name = "FKALLGTN_T", length = CMS_ID_LEN)
   private String allegationId;
 

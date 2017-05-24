@@ -1,11 +1,12 @@
 package gov.ca.cwds.rest.api.domain.cms;
 
+import static gov.ca.cwds.data.persistence.cms.CmsPersistentObject.CMS_ID_LEN;
+
 import java.math.BigDecimal;
 
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
-import gov.ca.cwds.rest.api.domain.ReportingDomain;
 import org.hibernate.validator.constraints.NotEmpty;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
@@ -17,6 +18,7 @@ import gov.ca.cwds.rest.api.Request;
 import gov.ca.cwds.rest.api.Response;
 import gov.ca.cwds.rest.api.domain.DomainChef;
 import gov.ca.cwds.rest.api.domain.DomainObject;
+import gov.ca.cwds.rest.api.domain.ReportingDomain;
 import gov.ca.cwds.rest.validation.IfThen;
 import gov.ca.cwds.rest.validation.MutuallyExclusive;
 import gov.ca.cwds.rest.validation.OnlyIf;
@@ -42,7 +44,7 @@ public class Reporter extends ReportingDomain implements Request, Response {
   private static final long serialVersionUID = 1L;
 
   @NotEmpty
-  @Size(min = 10, max = 10)
+  @Size(min = CMS_ID_LEN, max = CMS_ID_LEN)
   @ApiModelProperty(required = true, readOnly = false, value = "Referral ID",
       example = "ABC1234567")
   private String referralId;
@@ -159,7 +161,7 @@ public class Reporter extends ReportingDomain implements Request, Response {
   // @Zipcode(required=false)
   private String zipcode;
 
-  @Size(max = 10, message = "size must be 10")
+  @Size(max = CMS_ID_LEN, message = "size must be 10")
   @ApiModelProperty(required = false, readOnly = false,
       value = "cannot be set if employerName provided", example = "ABC1236789")
   private String lawEnforcementId;
@@ -178,7 +180,7 @@ public class Reporter extends ReportingDomain implements Request, Response {
    * Default Constructor
    */
   public Reporter() {
-
+    // Default, no-op.
   }
 
   /**

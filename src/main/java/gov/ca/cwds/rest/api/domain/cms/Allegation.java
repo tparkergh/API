@@ -1,9 +1,10 @@
 package gov.ca.cwds.rest.api.domain.cms;
 
+import static gov.ca.cwds.data.persistence.cms.CmsPersistentObject.CMS_ID_LEN;
+
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
-import gov.ca.cwds.rest.api.domain.ReportingDomain;
 import org.hibernate.validator.constraints.NotEmpty;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
@@ -15,6 +16,7 @@ import gov.ca.cwds.rest.api.Request;
 import gov.ca.cwds.rest.api.Response;
 import gov.ca.cwds.rest.api.domain.DomainChef;
 import gov.ca.cwds.rest.api.domain.DomainObject;
+import gov.ca.cwds.rest.api.domain.ReportingDomain;
 import io.dropwizard.validation.OneOf;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
@@ -101,18 +103,18 @@ public class Allegation extends ReportingDomain implements Request, Response {
   private Boolean staffPersonAddedIndicator;
 
   @NotEmpty
-  @Size(min = 10, max = 10)
+  @Size(min = CMS_ID_LEN, max = CMS_ID_LEN)
   @ApiModelProperty(required = true, readOnly = false, value = "CLIENT ID of victim",
       example = "ABC1234567")
   private String victimClientId;
 
-  @Size(max = 10)
+  @Size(max = CMS_ID_LEN)
   @ApiModelProperty(required = false, readOnly = false, value = "CLIENT ID of perpetrator",
       example = "ABC1234567")
   private String perpetratorClientId;
 
   @NotEmpty
-  @Size(min = 10, max = 10)
+  @Size(min = CMS_ID_LEN, max = CMS_ID_LEN)
   @ApiModelProperty(required = true, readOnly = false, value = "", example = "ABC1234567")
   private String referralId;
 

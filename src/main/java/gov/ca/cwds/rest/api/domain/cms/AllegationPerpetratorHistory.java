@@ -1,5 +1,7 @@
 package gov.ca.cwds.rest.api.domain.cms;
 
+import static gov.ca.cwds.data.persistence.cms.CmsPersistentObject.CMS_ID_LEN;
+
 import javax.validation.constraints.Size;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
@@ -9,7 +11,6 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import gov.ca.cwds.rest.api.Request;
 import gov.ca.cwds.rest.api.Response;
 import gov.ca.cwds.rest.api.domain.DomainChef;
-import gov.ca.cwds.rest.api.domain.DomainObject;
 import gov.ca.cwds.rest.api.domain.ReportingDomain;
 import io.swagger.annotations.ApiModelProperty;
 
@@ -19,15 +20,16 @@ import io.swagger.annotations.ApiModelProperty;
  * @author CWDS API Team
  */
 public class AllegationPerpetratorHistory extends ReportingDomain implements Request, Response {
+
   /**
-   * 
+   * Default serialization.
    */
   private static final long serialVersionUID = 1L;
 
   @ApiModelProperty(required = true, readOnly = false, value = "County code", example = "99")
   private String countySpecificCode;
 
-  @Size(min = 10, max = 10)
+  @Size(min = CMS_ID_LEN, max = CMS_ID_LEN)
   @ApiModelProperty(required = false, readOnly = false, value = "CLIENT ID of victim",
       example = "ABC1234568")
   private String victimClientId;

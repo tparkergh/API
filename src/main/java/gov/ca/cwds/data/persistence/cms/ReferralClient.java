@@ -129,7 +129,7 @@ public class ReferralClient extends CmsPersistentObject {
   @Column(name = "FKCLIENT_T", length = CMS_ID_LEN)
   private String clientId;
 
-  @Column(name = "APRVL_NO", length = 10)
+  @Column(name = "APRVL_NO", length = CMS_ID_LEN)
   private String approvalNumber;
 
   @SystemCodeSerializer(logical = true, description = true)

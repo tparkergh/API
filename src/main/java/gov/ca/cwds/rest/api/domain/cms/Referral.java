@@ -1,5 +1,7 @@
 package gov.ca.cwds.rest.api.domain.cms;
 
+import static gov.ca.cwds.data.persistence.cms.CmsPersistentObject.CMS_ID_LEN;
+
 import java.util.HashSet;
 import java.util.Set;
 
@@ -20,7 +22,6 @@ import gov.ca.cwds.rest.api.domain.ReportingDomain;
 import io.dropwizard.validation.OneOf;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
-
 
 /**
  * {@link DomainObject} as a direct representation of the physical representation of a Referral in
@@ -199,11 +200,11 @@ public class Referral extends ReportingDomain implements Request, Response {
   @ApiModelProperty(required = false, readOnly = false, value = "", example = "N")
   private String unfoundedSeriesCode;
 
-  @Size(max = 10)
+  @Size(max = CMS_ID_LEN)
   @ApiModelProperty(required = false, readOnly = false, value = "", example = "ABC1234567")
   private String linkToPrimaryReferralId;
 
-  @Size(max = 10)
+  @Size(max = CMS_ID_LEN)
   @ApiModelProperty(required = false, readOnly = false, value = "alleged abuse occurred at address",
       example = "ABC1234567")
   private String allegesAbuseOccurredAtAddressId;

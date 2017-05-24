@@ -35,7 +35,7 @@ public class CountyTrigger implements PersistentObject, Serializable {
    */
   private static final long serialVersionUID = 1L;
 
-  protected static final int CMS_ID_LEN = 10;
+  protected static final int CMS_ID_LEN = CmsPersistentObject.CMS_ID_LEN;
 
   @Id
   @Column(name = "FKCNTY_OWNT", length = CMS_ID_LEN)
