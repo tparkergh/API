@@ -1,5 +1,7 @@
 package gov.ca.cwds.rest.api.domain.cms;
 
+import static gov.ca.cwds.data.persistence.cms.CmsPersistentObject.CMS_ID_LEN;
+
 import java.util.HashSet;
 import java.util.Set;
 
@@ -37,7 +39,7 @@ public class Client extends ReportingDomain implements Request, Response {
    */
   private static final long serialVersionUID = 1L;
 
-  @Size(max = 10)
+  @Size(max = CMS_ID_LEN)
   @ApiModelProperty(required = false, readOnly = false, value = "Client Id", example = "ABC1234567")
   private String clientId;
 

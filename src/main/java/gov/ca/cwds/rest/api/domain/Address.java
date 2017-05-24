@@ -1,5 +1,7 @@
 package gov.ca.cwds.rest.api.domain;
 
+import static gov.ca.cwds.data.persistence.cms.CmsPersistentObject.CMS_ID_LEN;
+
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Size;
 
@@ -30,7 +32,7 @@ public class Address extends ReportingDomain implements Request, Response {
 
   @JsonProperty("legacy_id")
   @ApiModelProperty(required = true, readOnly = false, value = "Legacy Id", example = "")
-  @Size(max = 10)
+  @Size(max = CMS_ID_LEN)
   private String legacyId;
 
   @JsonProperty("street_address")

@@ -1,9 +1,10 @@
 package gov.ca.cwds.rest.api.domain.cms;
 
+import static gov.ca.cwds.data.persistence.cms.CmsPersistentObject.CMS_ID_LEN;
+
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
-import gov.ca.cwds.rest.api.domain.ReportingDomain;
 import org.hibernate.validator.constraints.NotBlank;
 import org.hibernate.validator.constraints.NotEmpty;
 
@@ -13,6 +14,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import gov.ca.cwds.rest.api.Request;
 import gov.ca.cwds.rest.api.Response;
 import gov.ca.cwds.rest.api.domain.DomainObject;
+import gov.ca.cwds.rest.api.domain.ReportingDomain;
 import io.dropwizard.validation.OneOf;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
@@ -24,15 +26,15 @@ import io.swagger.annotations.ApiModelProperty;
  */
 @ApiModel
 public class ClientUc extends ReportingDomain implements Request, Response {
+
   /**
    * Serialization version
    */
   private static final long serialVersionUID = 1L;
 
-
   @NotEmpty
   @NotBlank
-  @Size(min = 10, max = 10)
+  @Size(min = CMS_ID_LEN, max = CMS_ID_LEN)
   @ApiModelProperty(required = true, readOnly = false, value = "identifies a client",
       example = "ABC1234567")
   private String pktableId;

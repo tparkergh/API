@@ -1,5 +1,7 @@
 package gov.ca.cwds.rest.api.domain.cms;
 
+import static gov.ca.cwds.data.persistence.cms.CmsPersistentObject.CMS_ID_LEN;
+
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
@@ -24,7 +26,7 @@ public class ClientAddress extends ReportingDomain implements Request, Response 
    */
   private static final long serialVersionUID = 1L;
 
-  @Size(max = 10)
+  @Size(max = CMS_ID_LEN)
   @ApiModelProperty(required = false, readOnly = false, value = "", example = "ABC1234567")
   private String existingClientAddressId;
 
@@ -34,7 +36,7 @@ public class ClientAddress extends ReportingDomain implements Request, Response 
 
   @NotNull
   @ApiModelProperty(required = false, readOnly = false, value = "", example = "123456ABC")
-  @Size(max = 10)
+  @Size(max = CMS_ID_LEN)
   private String bookingOrInmateId;
 
   @ApiModelProperty(required = false, readOnly = false, value = "yyyy-MM-dd",
@@ -46,18 +48,18 @@ public class ClientAddress extends ReportingDomain implements Request, Response 
   private String effectiveStartDate;
 
   @NotEmpty
-  @Size(max = 10)
+  @Size(max = CMS_ID_LEN)
   @ApiModelProperty(required = true, readOnly = false, example = "1234567ABC")
   private String addressId;
 
   @NotEmpty
-  @Size(min = 10, max = 10)
+  @Size(min = CMS_ID_LEN, max = CMS_ID_LEN)
   @ApiModelProperty(required = true, readOnly = false, example = "1234567ABC")
   private String clientId;
 
   @NotNull
   @ApiModelProperty(required = false, readOnly = false, value = "", example = "1234567ABC")
-  @Size(max = 10)
+  @Size(max = CMS_ID_LEN)
   private String referralId;
 
   @NotNull
@@ -69,7 +71,7 @@ public class ClientAddress extends ReportingDomain implements Request, Response 
    * default constructor
    */
   public ClientAddress() {
-
+    // Default, no-op.
   }
 
   /**

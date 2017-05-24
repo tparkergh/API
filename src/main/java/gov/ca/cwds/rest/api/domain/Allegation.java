@@ -1,5 +1,7 @@
 package gov.ca.cwds.rest.api.domain;
 
+import static gov.ca.cwds.data.persistence.cms.CmsPersistentObject.CMS_ID_LEN;
+
 import javax.validation.constraints.Size;
 
 import org.hibernate.validator.constraints.NotEmpty;
@@ -32,7 +34,7 @@ public class Allegation extends ReportingDomain implements Request, Response {
 
   @JsonProperty("legacy_id")
   @ApiModelProperty(required = true, value = "Legacy Id", example = "")
-  @Size(max = 10)
+  @Size(max = CMS_ID_LEN)
   private String legacyId;
 
   @JsonProperty("victim_person_id")

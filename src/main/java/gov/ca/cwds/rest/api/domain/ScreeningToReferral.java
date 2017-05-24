@@ -1,5 +1,7 @@
 package gov.ca.cwds.rest.api.domain;
 
+import static gov.ca.cwds.data.persistence.cms.CmsPersistentObject.CMS_ID_LEN;
+
 import java.util.Set;
 
 import javax.validation.Valid;
@@ -46,7 +48,7 @@ public class ScreeningToReferral extends ReportingDomain implements Request {
 
   @JsonProperty("legacy_id")
   @ApiModelProperty(required = true, readOnly = false, value = "Legacy Referral Id", example = "")
-  @Size(max = 10)
+  @Size(max = CMS_ID_LEN)
   private String referralId;
 
   @JsonProperty("ended_at")

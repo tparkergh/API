@@ -1,5 +1,7 @@
 package gov.ca.cwds.rest.api.domain.cms;
 
+import static gov.ca.cwds.data.persistence.cms.CmsPersistentObject.CMS_ID_LEN;
+
 import java.math.BigDecimal;
 
 import javax.validation.constraints.NotNull;
@@ -34,7 +36,7 @@ public class CrossReport extends ReportingDomain implements Request, Response {
 
   // TODO: remove the unique key from the domain class
   @NotNull
-  @Size(max = 10)
+  @Size(max = CMS_ID_LEN)
   @ApiModelProperty(required = true, readOnly = true, value = "", example = "1234ABC123")
   private String thirdId;
 
@@ -91,12 +93,12 @@ public class CrossReport extends ReportingDomain implements Request, Response {
   private String referenceNumber;
 
   @NotNull
-  @Size(min = 10, max = 10)
+  @Size(min = CMS_ID_LEN, max = CMS_ID_LEN)
   @ApiModelProperty(required = true, readOnly = true, value = "Referral IDENTIFIER",
       example = "ABC1234567")
   private String referralId;
 
-  @Size(max = 10)
+  @Size(max = CMS_ID_LEN)
   @ApiModelProperty(required = false, readOnly = true, value = "Law enforcement ID",
       example = "ABC1234567")
   private String lawEnforcementId;

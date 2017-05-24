@@ -5,19 +5,21 @@ import java.math.BigDecimal;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
+import gov.ca.cwds.data.persistence.cms.CmsPersistentObject;
 import gov.ca.cwds.rest.api.Request;
 import gov.ca.cwds.rest.api.Response;
 import gov.ca.cwds.rest.api.domain.DomainChef;
+import gov.ca.cwds.rest.api.domain.DomainObject;
 import gov.ca.cwds.rest.api.domain.ReportingDomain;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 
-@ApiModel
 /**
  * {@link DomainObject} representing an address
  * 
  * @author CWDS API Team
  */
+@ApiModel
 public class Address extends ReportingDomain implements Request, Response {
 
   /**
@@ -25,7 +27,7 @@ public class Address extends ReportingDomain implements Request, Response {
    */
   private static final long serialVersionUID = 1L;
 
-  @Size(max = 10)
+  @Size(max = CmsPersistentObject.CMS_ID_LEN)
   @ApiModelProperty(required = false, readOnly = false, value = "", example = "ABC1234567")
   private String existingAddressId;
 
@@ -73,7 +75,7 @@ public class Address extends ReportingDomain implements Request, Response {
   private String streetName;
 
   @ApiModelProperty(example = "450A")
-  @Size(max = 10)
+  @Size(max = CmsPersistentObject.CMS_ID_LEN)
   private String streetNumber;
 
   @ApiModelProperty(example = "65258")
