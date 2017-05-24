@@ -11,6 +11,8 @@ import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
+import java.math.BigDecimal;
+
 import javax.persistence.EntityNotFoundException;
 
 import org.junit.Assert;
@@ -23,6 +25,7 @@ import org.mockito.stubbing.Answer;
 
 import gov.ca.cwds.data.cms.ReferralDao;
 import gov.ca.cwds.data.cms.StaffPersonDao;
+import gov.ca.cwds.data.persistence.cms.StaffPerson;
 import gov.ca.cwds.data.rules.TriggerTablesDao;
 import gov.ca.cwds.rest.api.Response;
 import gov.ca.cwds.rest.api.domain.cms.PostedReferral;
@@ -43,6 +46,8 @@ public class ReferralServiceTest implements ServiceTestTemplate {
   private LACountyTrigger laCountyTrigger;
   private TriggerTablesDao triggerTablesDao;
   private StaffPersonDao staffpersonDao;
+
+  private static Boolean isLaCountyTrigger = false;
 
   @SuppressWarnings("javadoc")
   @Rule
@@ -378,6 +383,44 @@ public class ReferralServiceTest implements ServiceTestTemplate {
 
   @Override
   public void testCreateThrowsNotImplementedException() throws Exception {
+
+  }
+
+  /*
+   * Test for checking the staffperson county Code
+   */
+  @SuppressWarnings("javadoc")
+  @Test
+  public void createCountyTriggerForLACounty() throws Exception {
+    Referral referralDomain = MAPPER
+        .readValue(fixture("fixtures/domain/legacy/Referral/valid/valid.json"), Referral.class);
+    gov.ca.cwds.data.persistence.cms.Referral toCreate =
+        new gov.ca.cwds.data.persistence.cms.Referral("1234567ABC", referralDomain, "BTr");
+
+    Referral request = new Referral(toCreate);
+
+    when(triggerTablesDao.getLaCountySpecificCode()).thenReturn("19");
+
+    StaffPerson staffPerson = new StaffPerson("BTr", null, "External Interface",
+        "external interface", "SCXCIN7", " ", "", BigDecimal.valueOf(9165672100L), 0, null, "    ",
+        "N", "MIZN02k00E", "  ", "    ", "19", "N", "3XPCP92q38", null);
+
+    when(staffpersonDao.find(any(String.class))).thenReturn(staffPerson);
+    when(referralDao.create(any(gov.ca.cwds.data.persistence.cms.Referral.class)))
+        .thenReturn(toCreate);
+
+    when(laCountyTrigger.createCountyTrigger(any(gov.ca.cwds.data.persistence.cms.Referral.class)))
+        .thenAnswer(new Answer<Boolean>() {
+
+          @Override
+          public Boolean answer(InvocationOnMock invocation) throws Throwable {
+            isLaCountyTrigger = true;
+            return true;
+          }
+        });
+
+    referralService.create(request);
+    assertThat(isLaCountyTrigger, is(true));
 
   }
 

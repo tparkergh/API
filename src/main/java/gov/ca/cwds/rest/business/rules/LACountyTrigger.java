@@ -13,7 +13,7 @@ import gov.ca.cwds.data.persistence.cms.Referral;
 import gov.ca.cwds.data.persistence.cms.ReferralClient;
 
 /**
- * Business layer object to work on LA Trigger
+ * Business layer object to work on LA County Trigger
  *
  * @author CWDS API Team
  */
@@ -61,7 +61,7 @@ public class LACountyTrigger {
         } else {
           countyTriggerDao.create(countyTrigger);
         }
-        LOGGER.info("referral LA county table triggered");
+        LOGGER.info("LA county referral address triggered");
       }
     }
 
@@ -82,7 +82,7 @@ public class LACountyTrigger {
         } else {
           countyTriggerDao.create(countyTrigger);
         }
-        LOGGER.info("referralClient LA county table triggered");
+        LOGGER.info("LA county referralClient triggered");
       }
     }
 

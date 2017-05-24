@@ -119,7 +119,8 @@ public class ClientService implements CrudsService {
       managed = clientDao.create(managed);
 
       StaffPerson staffperson = staffpersonDao.find(managed.getLastUpdatedId());
-      if (staffperson != null && !("19".equals(staffperson.getCountyCode()))) {
+      if (staffperson != null
+          && !(triggerTablesDao.getLaCountySpecificCode().equals(staffperson.getCountyCode()))) {
         managed.setCountyOwnership(countyOwnership);
         countyOwnership.setEntityId(managed.getPrimaryKey());
         countyOwnership.setEntityCode("C");
