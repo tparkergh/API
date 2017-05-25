@@ -770,12 +770,8 @@ public class ScreeningToReferralService implements CrudsService {
       Set<ErrorMessage> messages) throws ServiceException {
     gov.ca.cwds.rest.api.domain.Address address = scr.getAddress();
     if (address == null) {
-<<<<<<< HEAD
-      String message = "ERROR - Referral Address is null or empty";
+      String message = " Screening address is null or empty";
       throw new ServiceException(message);
-=======
-      throw new ServiceException(" Screening Address is null or empty ");
->>>>>>> #145707347 - Verify the /referrals POST data was saved in Legacy DB2 by seeing the data in **INT01** using the **Legacy Client** application
     }
 
     try {
