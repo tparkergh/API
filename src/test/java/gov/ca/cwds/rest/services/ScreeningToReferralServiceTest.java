@@ -2330,7 +2330,7 @@ public class ScreeningToReferralServiceTest {
       Assert.fail("Expected ServiceException was not thrown");
     } catch (Exception e) {
       System.out.println(e.getMessage());
-      assertThat(e.getMessage().contains("Screening Address is null or empty"), is(equalTo(true)));
+      assertThat(e.getMessage().contains("Screening address is null or empty"), is(equalTo(true)));
     }
   }
 
