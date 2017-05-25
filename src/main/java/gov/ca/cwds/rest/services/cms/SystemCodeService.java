@@ -52,32 +52,51 @@ public class SystemCodeService implements CrudsService {
   public Response find(Serializable primaryKey) {
     assert primaryKey instanceof String;
     if (("").equals(primaryKey)) {
-      SystemMeta[] sysMeta = systemMetaDao.findAll();
-      ImmutableSet.Builder<gov.ca.cwds.rest.api.domain.cms.SystemMeta> builder =
-          ImmutableSet.builder();
-      for (SystemMeta s : sysMeta) {
-        if (s != null) {
-          builder.add(new gov.ca.cwds.rest.api.domain.cms.SystemMeta(s));
-        }
-      }
-      return new SystemMetaListResponse(builder.build());
+      return listOfSystemMetas();
     } else {
-      gov.ca.cwds.data.persistence.cms.SystemCode[] systemCodes = findByCriteria(primaryKey);
-      ImmutableSet.Builder<SystemCode> builder = ImmutableSet.builder();
-      for (gov.ca.cwds.data.persistence.cms.SystemCode systemCode : systemCodes) {
-        if (systemCode != null) {
-          builder.add(new gov.ca.cwds.rest.api.domain.cms.SystemCode(systemCode));
-        }
-
-      }
-      Set<SystemCode> sysCodes = builder.build();
-
-      return new SystemCodeListResponse(sysCodes);
+      return listOfSystemCodes(primaryKey);
     }
-
   }
 
-  @SuppressWarnings("unchecked")
+  /**
+   * 
+   * @param foreignKeyMetaTable the foreignKey to System Meta Table
+   * @return the response containing List of Values from System Code Table that map to the
+   *         primaryKey
+   */
+  private Response listOfSystemCodes(Serializable foreignKeyMetaTable) {
+    gov.ca.cwds.data.persistence.cms.SystemCode[] systemCodes = findByCriteria(foreignKeyMetaTable);
+    ImmutableSet.Builder<SystemCode> builder = ImmutableSet.builder();
+    for (gov.ca.cwds.data.persistence.cms.SystemCode systemCode : systemCodes) {
+      if (systemCode != null) {
+        builder.add(new gov.ca.cwds.rest.api.domain.cms.SystemCode(systemCode));
+      }
+    }
+    Set<SystemCode> sysCodes = builder.build();
+    return new SystemCodeListResponse(sysCodes);
+  }
+
+  /**
+   * 
+   * @return the response containing List of Values from System Meta Table
+   */
+  private Response listOfSystemMetas() {
+    SystemMeta[] sysMeta = systemMetaDao.findAll();
+    ImmutableSet.Builder<gov.ca.cwds.rest.api.domain.cms.SystemMeta> builder =
+        ImmutableSet.builder();
+    for (SystemMeta s : sysMeta) {
+      if (s != null) {
+        builder.add(new gov.ca.cwds.rest.api.domain.cms.SystemMeta(s));
+      }
+    }
+    return new SystemMetaListResponse(builder.build());
+  }
+
+  /**
+   * 
+   * @param id the foreignKeyMetaTable the foreignKey to System Meta Table
+   * @return the List of Values from System Code Table that map to id
+   */
   public gov.ca.cwds.data.persistence.cms.SystemCode[] findByCriteria(Serializable id) {
     String foreignKeyMetaTable = id.toString();
 
