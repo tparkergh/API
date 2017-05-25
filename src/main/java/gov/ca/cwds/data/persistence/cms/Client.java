@@ -8,7 +8,6 @@ import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
 import javax.persistence.PersistenceException;
 import javax.persistence.Table;
 
@@ -45,9 +44,6 @@ public final class Client extends BaseClient
   @OneToMany(cascade = CascadeType.ALL)
   @JoinColumn(name = "FKCLIENT_T", referencedColumnName = "IDENTIFIER")
   private Set<ClientAddress> clientAddress = new HashSet<>();
-
-  @OneToOne(cascade = CascadeType.ALL, mappedBy = "client")
-  private CountyOwnership countyOwnership;
 
   /**
    * Default constructor
@@ -334,20 +330,6 @@ public final class Client extends BaseClient
    */
   public Set<ClientAddress> getClientAddress() {
     return clientAddress;
-  }
-
-  /**
-   * @return the CountyOwnership
-   */
-  public CountyOwnership getCountyOwnership() {
-    return countyOwnership;
-  }
-
-  /**
-   * @param countyOwnership - countyOwnership
-   */
-  public void setCountyOwnership(CountyOwnership countyOwnership) {
-    this.countyOwnership = countyOwnership;
   }
 
   @Override

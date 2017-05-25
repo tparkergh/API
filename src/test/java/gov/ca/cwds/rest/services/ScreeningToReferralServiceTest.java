@@ -117,7 +117,9 @@ public class ScreeningToReferralServiceTest {
     clientDao = mock(ClientDao.class);
     staffpersonDao = mock(StaffPersonDao.class);
     triggerTablesDao = mock(TriggerTablesDao.class);
-    clientService = new ClientService(clientDao, staffpersonDao, triggerTablesDao);
+    nonLACountyTriggers = mock(NonLACountyTriggers.class);
+    clientService =
+        new ClientService(clientDao, staffpersonDao, triggerTablesDao, nonLACountyTriggers);
 
     referralClientDao = mock(ReferralClientDao.class);
     nonLACountyTriggers = mock(NonLACountyTriggers.class);

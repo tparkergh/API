@@ -81,7 +81,7 @@ public class CountyOwnershipDaoIT implements DaoTestTemplate {
         "N", "N", "N", "N", "N", "N", "N", "N", "N", "N", "N", "N", "N", "N", "N", "N", "N", "N",
         "N", "N", "N", "N", "N", "N", "N", "N", "N", "N", "N", "N", "N", "N", "N", "N", "N", "N",
         "N", "N", "N", "N", "N", "N", "N", "N", "N", "N", "N", "N", "N", "N", "N", "N", "N", "N",
-        "N", "N", "N", "N", "N", "N", "N", null, null);
+        "N", "N", "N", "N", "N", "N", "N", null);
     CountyOwnership created = countyOwnershipDao.create(countyOwnership);
     assertThat(created, is(countyOwnership));
   }
@@ -94,7 +94,7 @@ public class CountyOwnershipDaoIT implements DaoTestTemplate {
         "N", "N", "N", "N", "N", "N", "N", "N", "N", "N", "N", "N", "N", "N", "N", "N", "N", "N",
         "N", "N", "N", "N", "N", "N", "N", "N", "N", "N", "N", "N", "N", "N", "N", "N", "N", "N",
         "N", "N", "N", "N", "N", "N", "N", "N", "N", "N", "N", "N", "N", "N", "N", "N", "N", "N",
-        "N", "N", "N", "N", "N", "N", "N", null, null);
+        "N", "N", "N", "N", "N", "N", "N", null);
     countyOwnershipDao.create(countyOwnership);
   }
 
@@ -121,7 +121,7 @@ public class CountyOwnershipDaoIT implements DaoTestTemplate {
         "N", "N", "N", "N", "N", "N", "N", "N", "N", "N", "N", "N", "N", "N", "N", "N", "N", "N",
         "N", "N", "N", "N", "N", "N", "N", "N", "N", "N", "N", "N", "N", "N", "N", "N", "N", "N",
         "N", "N", "N", "N", "N", "N", "N", "N", "N", "N", "N", "N", "N", "N", "N", "N", "N", "N",
-        "N", "N", "N", "N", "N", "N", "N", null, null);
+        "N", "N", "N", "N", "N", "N", "N", null);
     CountyOwnership updated = countyOwnershipDao.update(countyOwnership);
     assertThat(updated, is(countyOwnership));
   }
@@ -134,7 +134,7 @@ public class CountyOwnershipDaoIT implements DaoTestTemplate {
         "N", "N", "N", "N", "N", "N", "N", "N", "N", "N", "N", "N", "N", "N", "N", "N", "N", "N",
         "N", "N", "N", "N", "N", "N", "N", "N", "N", "N", "N", "N", "N", "N", "N", "N", "N", "N",
         "N", "N", "N", "N", "N", "N", "N", "N", "N", "N", "N", "N", "N", "N", "N", "N", "N", "N",
-        "N", "N", "N", "N", "N", "N", "N", null, null);
+        "N", "N", "N", "N", "N", "N", "N", null);
     countyOwnershipDao.update(countyOwnership);
   }
 

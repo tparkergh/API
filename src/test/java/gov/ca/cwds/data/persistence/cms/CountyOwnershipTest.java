@@ -15,6 +15,8 @@ import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import gov.ca.cwds.data.persistence.junit.template.PersistentTestTemplate;
+import nl.jqno.equalsverifier.EqualsVerifier;
+import nl.jqno.equalsverifier.Warning;
 
 /**
  * @author CWDS API Team
@@ -59,7 +61,7 @@ public class CountyOwnershipTest implements PersistentTestTemplate {
             vc.getCounty51Flag(), vc.getCounty52Flag(), vc.getCounty53Flag(), vc.getCounty54Flag(),
             vc.getCounty55Flag(), vc.getCounty56Flag(), vc.getCounty57Flag(), vc.getCounty58Flag(),
             vc.getCounty59Flag(), vc.getCounty60Flag(), vc.getCounty61Flag(), vc.getCounty62Flag(),
-            vc.getCounty63Flag(), vc.getDeleteDate(), vc.getClient());
+            vc.getCounty63Flag(), vc.getDeleteDate());
 
     assertThat(persistent.getEntityId(), is(equalTo(entityId)));
     assertThat(persistent.getEntityCode(), is(equalTo(vc.getEntityCode())));
@@ -128,14 +130,12 @@ public class CountyOwnershipTest implements PersistentTestTemplate {
     assertThat(persistent.getCounty62Flag(), is(equalTo(vc.getCounty62Flag())));
     assertThat(persistent.getCounty63Flag(), is(equalTo(vc.getCounty63Flag())));
     assertThat(persistent.getDeleteDate(), is(equalTo(vc.getDeleteDate())));
-    assertThat(persistent.getClient(), is(equalTo(vc.getClient())));
   }
 
   @Override
   @Test
   public void testEqualsHashCodeWorks() {
-    // EqualsVerifier.forClass(CountyOwnership.class).withPrefabValues(Client.class, new Client(),
-    // new Client()).suppress(Warning.NONFINAL_FIELDS).verify();
+    EqualsVerifier.forClass(CountyOwnership.class).suppress(Warning.NONFINAL_FIELDS).verify();
 
   }
 
