@@ -24,6 +24,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import gov.ca.cwds.data.cms.CountyTriggerDao;
 import gov.ca.cwds.data.persistence.cms.CountyTrigger;
 import gov.ca.cwds.data.persistence.cms.Referral;
+import gov.ca.cwds.data.persistence.cms.ReferralClient;
 import gov.ca.cwds.data.persistence.cms.SystemCodeTestHarness;
 
 /**
@@ -54,7 +55,7 @@ public class LACountyTriggerTest {
   }
 
   /*
-   * Test for checking the referral county trigger updated for the existing FKAddress_T
+   * Test for checking the referral county trigger updated with the existing FKAddress_T
    */
   @SuppressWarnings("javadoc")
   @Test
@@ -141,6 +142,66 @@ public class LACountyTriggerTest {
     Referral referral = new Referral("ABC1234567", validDomainReferral, "BTr");
     laCountyTrigger.createCountyTrigger(referral);
     assertThat(countyTrigger, is(equalTo(null)));
+
+  }
+
+  /*
+   * Test for checking the referralClient county trigger updated with the existing FKClient_T
+   */
+  @SuppressWarnings("javadoc")
+  @Test
+  public void updateReferralClientCountyTriggerTest()
+      throws JsonParseException, JsonMappingException, IOException {
+
+    when(countyTriggerDao.find(any(String.class))).thenReturn(new CountyTrigger());
+
+    gov.ca.cwds.rest.api.domain.cms.ReferralClient validDomainReferralClient = MAPPER.readValue(
+        fixture("fixtures/legacy/business/rules/laCountyTrigger/validReferralClient.json"),
+        gov.ca.cwds.rest.api.domain.cms.ReferralClient.class);
+
+    when(countyTriggerDao.update(any(CountyTrigger.class))).thenAnswer(new Answer<CountyTrigger>() {
+
+      @Override
+      public CountyTrigger answer(InvocationOnMock invocation) throws Throwable {
+        CountyTrigger report = (CountyTrigger) invocation.getArguments()[0];
+        countyTrigger = report;
+        return report;
+      }
+    });
+
+    ReferralClient referral = new ReferralClient(validDomainReferralClient, "BTr");
+    laCountyTrigger.createCountyTrigger(referral);
+    assertThat(countyTrigger.getCountyOwnershipT(), is(equalTo("ABC1234567")));
+
+  }
+
+  /*
+   * Test for checking the referralClient county trigger created with the FKClient_T
+   */
+  @SuppressWarnings("javadoc")
+  @Test
+  public void createReferralClientCountyTriggerTest()
+      throws JsonParseException, JsonMappingException, IOException {
+
+    when(countyTriggerDao.find(any(String.class))).thenReturn(null);
+
+    gov.ca.cwds.rest.api.domain.cms.ReferralClient validDomainReferralClient = MAPPER.readValue(
+        fixture("fixtures/legacy/business/rules/laCountyTrigger/validReferralClient.json"),
+        gov.ca.cwds.rest.api.domain.cms.ReferralClient.class);
+
+    when(countyTriggerDao.create(any(CountyTrigger.class))).thenAnswer(new Answer<CountyTrigger>() {
+
+      @Override
+      public CountyTrigger answer(InvocationOnMock invocation) throws Throwable {
+        CountyTrigger report = (CountyTrigger) invocation.getArguments()[0];
+        countyTrigger = report;
+        return report;
+      }
+    });
+
+    ReferralClient referral = new ReferralClient(validDomainReferralClient, "BTr");
+    laCountyTrigger.createCountyTrigger(referral);
+    assertThat(countyTrigger.getCountyOwnershipT(), is(equalTo("ABC1234567")));
 
   }
 

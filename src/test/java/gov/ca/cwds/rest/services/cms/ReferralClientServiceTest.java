@@ -12,15 +12,20 @@ import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
+import java.math.BigDecimal;
+
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
+import org.mockito.invocation.InvocationOnMock;
+import org.mockito.stubbing.Answer;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import gov.ca.cwds.data.cms.ReferralClientDao;
 import gov.ca.cwds.data.cms.StaffPersonDao;
+import gov.ca.cwds.data.persistence.cms.StaffPerson;
 import gov.ca.cwds.data.rules.TriggerTablesDao;
 import gov.ca.cwds.rest.api.Response;
 import gov.ca.cwds.rest.api.domain.cms.ReferralClient;
@@ -45,6 +50,9 @@ public class ReferralClientServiceTest {
   private LACountyTrigger laCountyTrigger;
   private StaffPersonDao staffpersonDao;
   private TriggerTablesDao triggerTablesDao;
+
+  private static Boolean isLaCountyTrigger = false;
+  private static Boolean isNonLaCountyTrigger = false;
 
   @SuppressWarnings("javadoc")
   @Rule
@@ -271,6 +279,45 @@ public class ReferralClientServiceTest {
     ReferralClient expected = new ReferralClient(toCreate);
     ReferralClient returned = referralClientService.create(request);
     assertThat(returned, is(expected));
+  }
+
+  /*
+   * Test for checking the staffperson county Code
+   */
+  @SuppressWarnings("javadoc")
+  @Test
+  public void createCountyTriggerForLACounty() throws Exception {
+    ReferralClient referralClientDomain = MAPPER.readValue(
+        fixture("fixtures/domain/legacy/ReferralClient/valid/valid.json"), ReferralClient.class);
+    gov.ca.cwds.data.persistence.cms.ReferralClient toCreate =
+        new gov.ca.cwds.data.persistence.cms.ReferralClient(referralClientDomain, "BTr");
+
+    ReferralClient request = new ReferralClient(toCreate);
+
+    when(triggerTablesDao.getLaCountySpecificCode()).thenReturn("19");
+
+    StaffPerson staffPerson = new StaffPerson("BTr", null, "External Interface",
+        "external interface", "SCXCIN7", " ", "", BigDecimal.valueOf(9165672100L), 0, null, "    ",
+        "N", "MIZN02k00E", "  ", "    ", "19", "N", "3XPCP92q38", null);
+
+    when(staffpersonDao.find(any(String.class))).thenReturn(staffPerson);
+    when(referralClientDao.create(any(gov.ca.cwds.data.persistence.cms.ReferralClient.class)))
+        .thenReturn(toCreate);
+
+    when(laCountyTrigger
+        .createCountyTrigger(any(gov.ca.cwds.data.persistence.cms.ReferralClient.class)))
+            .thenAnswer(new Answer<Boolean>() {
+
+              @Override
+              public Boolean answer(InvocationOnMock invocation) throws Throwable {
+                isLaCountyTrigger = true;
+                return true;
+              }
+            });
+
+    referralClientService.create(request);
+    assertThat(isLaCountyTrigger, is(true));
+
   }
 
 }
