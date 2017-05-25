@@ -41,7 +41,6 @@ import gov.ca.cwds.rest.api.domain.cms.PostedAllegation;
 import gov.ca.cwds.rest.api.domain.cms.PostedClient;
 import gov.ca.cwds.rest.api.domain.cms.PostedLongText;
 import gov.ca.cwds.rest.api.domain.cms.PostedReferral;
-import gov.ca.cwds.rest.api.domain.cms.PostedReporter;
 import gov.ca.cwds.rest.api.domain.cms.Referral;
 import gov.ca.cwds.rest.api.domain.cms.ReferralClient;
 import gov.ca.cwds.rest.api.domain.cms.Reporter;
@@ -72,6 +71,8 @@ public class ScreeningToReferralService implements CrudsService {
   private static final String REFERRAL_TABLE_NAME = "REFERL_T";
   private static final String ALLEGATION_TABLE_NAME = "ALLGTN_T";
   private static final String CROSS_REPORT_TABLE_NAME = "CRSS_RPT";
+  private static final String CLIENT_ADDRESS_TABLE_NAME = "ADDRS_T";
+  private static final String REPORTER_TABLE_NAME = "REPTR_T";
 
   final DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
   final DateFormat timeFormat = new SimpleDateFormat("HH:MM:SS");
@@ -85,7 +86,7 @@ public class ScreeningToReferralService implements CrudsService {
   private CrossReportService crossReportService;
   private ReferralClientService referralClientService;
   private ReporterService reporterService;
-  private PostedReporter savedReporter;
+  private Reporter savedReporter;
   private AddressService addressService;
   private ClientAddressService clientAddressService;
   private LongTextService longTextService;
@@ -271,13 +272,16 @@ public class ScreeningToReferralService implements CrudsService {
 
         try {
           if (ParticipantValidator.roleIsReporterType(role)
-              && !ParticipantValidator.roleIsAnonymousReporter(role)) {
+              && (!ParticipantValidator.roleIsAnonymousReporter(role)
+                  && !ParticipantValidator.selfReported(incomingParticipant))) {
             /*
              * CMS Reporter - if role is 'mandated reporter' or 'non-mandated reporter' and not
-             * anonymous reporter
+             * anonymous reporter or self-reported
              */
             try {
               savedReporter = processReporter(incomingParticipant, role, referralId, messages);
+              incomingParticipant.setLegacyId(savedReporter.getReferralId());
+              incomingParticipant.setLegacySourceTable(REPORTER_TABLE_NAME);
             } catch (ServiceException e) {
               String message = e.getMessage();
               logError(message, e, messages);
@@ -476,7 +480,7 @@ public class ScreeningToReferralService implements CrudsService {
       Set<ErrorMessage> messages) {
     try {
       if (!ParticipantValidator.hasValidParticipants(screeningToReferral)) {
-        String message = "ERROR - Incompatiable participants included in request";
+        String message = " Incompatiable participants included in request";
         ServiceException exception = new ServiceException(message);
         logError(message, exception, messages);
       }
@@ -695,7 +699,7 @@ public class ScreeningToReferralService implements CrudsService {
       String streetName = streetAddress[1];
 
       if (address.getLegacyId().isEmpty() || address.getLegacyId() == null) {
-
+        // add the Address row
         Address domainAddress = new Address(" ", address.getCity(), DEFAULT_DECIMAL, DEFAULT_INT,
             false, DEFAULT_CODE, DEFAULT_DECIMAL, DEFAULT_INT, " ", DEFAULT_DECIMAL, DEFAULT_INT,
             DEFAULT_STATE_CODE, streetName, streetNumber, zipCode, address.getType(), zipSuffix,
@@ -706,6 +710,7 @@ public class ScreeningToReferralService implements CrudsService {
         PostedAddress postedAddress = (PostedAddress) this.addressService.create(domainAddress);
         addressId = postedAddress.getExistingAddressId();
       } else {
+        // verify that Address row exist - no update for now
         Address foundAddress = (Address) this.addressService.find(address.getLegacyId());
         if (foundAddress == null) {
           String message =
@@ -715,7 +720,6 @@ public class ScreeningToReferralService implements CrudsService {
         }
         addressId = foundAddress.getExistingAddressId();
       }
-
 
       /*
        * CMS Client Address
@@ -731,31 +735,47 @@ public class ScreeningToReferralService implements CrudsService {
         throw exception;
       }
 
-      ClientAddress clientAddress =
-          new ClientAddress(DEFAULT_ADDRESS_TYPE, "", "", "", addressId, clientId, "", referralId);
-      buildErrors(messages, validator.validate(clientAddress));
-      this.clientAddressService.create(clientAddress);
+      if (address.getLegacyId().isEmpty() || address.getLegacyId() == null) {
 
-      buildErrors(messages, validator.validate(clientAddress));
+        ClientAddress clientAddress = new ClientAddress(DEFAULT_ADDRESS_TYPE, "", "", "", addressId,
+            clientId, "", referralId);
+        buildErrors(messages, validator.validate(clientAddress));
+        this.clientAddressService.create(clientAddress);
 
-      // update the addresses of the participant
-      address.setLegacySourceTable("ADDRS_T");
-      address.setLegacyId(addressId);
-      newAddresses.add(address);
+        buildErrors(messages, validator.validate(clientAddress));
+
+        // update the addresses of the participant
+        address.setLegacySourceTable(CLIENT_ADDRESS_TABLE_NAME);
+        address.setLegacyId(addressId);
+        newAddresses.add(address);
+      } else {
+        // verify that ClientAddress exists - no update for now
+        ClientAddress foundClientAddress =
+            (ClientAddress) this.clientAddressService.find(address.getLegacyId());
+        if (foundClientAddress == null) {
+          String message =
+              " Legacy Id on Address does not correspond to an existing CMS/CWS Client Address ";
+          ServiceException se = new ServiceException(message);
+          logError(message, se, messages);
+        }
+      }
     }
 
     clientParticipant.setAddresses(newAddresses);
 
     return clientParticipant;
-
   }
 
   private gov.ca.cwds.rest.api.domain.Address processReferralAddress(ScreeningToReferral scr,
       Set<ErrorMessage> messages) throws ServiceException {
     gov.ca.cwds.rest.api.domain.Address address = scr.getAddress();
     if (address == null) {
+<<<<<<< HEAD
       String message = "ERROR - Referral Address is null or empty";
       throw new ServiceException(message);
+=======
+      throw new ServiceException(" Screening Address is null or empty ");
+>>>>>>> #145707347 - Verify the /referrals POST data was saved in Legacy DB2 by seeing the data in **INT01** using the **Legacy Client** application
     }
 
     try {
@@ -782,7 +802,7 @@ public class ScreeningToReferralService implements CrudsService {
       address.setLegacyId(postedAddress.getExistingAddressId());
       address.setLegacySourceTable("ADDRS_T");
     } catch (Exception e) {
-      String message = "Error - Referral Address is null or empty";
+      String message = " Referral Address is null or empty";
       LOGGER.error(e.getMessage(), e);
       throw new ServiceException(message);
     }
@@ -791,7 +811,7 @@ public class ScreeningToReferralService implements CrudsService {
 
   }
 
-  private PostedReporter processReporter(Participant ip, String role, String referralId,
+  private Reporter processReporter(Participant ip, String role, String referralId,
       Set<ErrorMessage> messages) throws ServiceException {
 
     String[] streetAddress;
@@ -828,16 +848,29 @@ public class ScreeningToReferralService implements CrudsService {
     }
 
     Boolean mandatedReporterIndicator = ParticipantValidator.roleIsMandatedReporter(role);
+    Reporter theReporter = null;
 
-    Reporter reporter = new Reporter("", city, DEFAULT_CODE, DEFAULT_CODE, false, "", "", "", false,
-        ip.getFirstName(), ip.getLastName(), mandatedReporterIndicator, 0, DEFAULT_DECIMAL, "", "",
-        DEFAULT_DECIMAL, 0, DEFAULT_STATE_CODE, streetName, streetNumber, "", zipCodeString,
-        referralId, "", DEFAULT_CODE, DEFAULT_COUNTY_SPECIFIC_CODE);
+    if (ip.getLegacyId().isEmpty() || ip.getLegacyId() == null) {
+      // create the Reporter in CWS/CMS
+      Reporter reporter = new Reporter("", city, DEFAULT_CODE, DEFAULT_CODE, false, "", "", "",
+          false, ip.getFirstName(), ip.getLastName(), mandatedReporterIndicator, 0, DEFAULT_DECIMAL,
+          "", "", DEFAULT_DECIMAL, 0, DEFAULT_STATE_CODE, streetName, streetNumber, "",
+          zipCodeString, referralId, "", DEFAULT_CODE, DEFAULT_COUNTY_SPECIFIC_CODE);
 
-    buildErrors(messages, validator.validate(reporter));
+      buildErrors(messages, validator.validate(reporter));
+      theReporter = reporterService.create(reporter);
+    } else {
+      // verify that Reporter exist in CWS/CMS - no update yet
+      theReporter = reporterService.find(ip.getLegacyId());
+      if (theReporter == null) {
+        String message =
+            " Legacy Id on participant does not correspond to an existing CMS/CWS Reporter ";
+        ServiceException se = new ServiceException(message);
+        logError(message, se, messages);
 
-    return this.reporterService.create(reporter);
-
+      }
+    }
+    return theReporter;
   }
 
   private String createLongText(String countySpecificCode, String textDescription,
