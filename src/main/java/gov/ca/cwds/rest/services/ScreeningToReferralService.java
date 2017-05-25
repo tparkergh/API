@@ -420,8 +420,8 @@ public class ScreeningToReferralService implements CrudsService {
       Set<ErrorMessage> messages, String dateStarted, String timeStarted) {
     String referralId = null;
 
-    if (screeningToReferral.getReferralId().isEmpty()
-        || screeningToReferral.getReferralId() == null) {
+    if (screeningToReferral.getReferralId() == null
+        || screeningToReferral.getReferralId().isEmpty() ) {
       // the legacy id is not set - create the referral
       String longTextId = generateLongTextId(screeningToReferral, messages);
       // create a CMS Referral
