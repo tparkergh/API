@@ -3,12 +3,9 @@ package gov.ca.cwds.data.persistence.cms;
 import java.io.Serializable;
 import java.util.Date;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.validation.constraints.Size;
 
@@ -384,10 +381,6 @@ public class CountyOwnership implements PersistentObject, Serializable {
   @Column(name = "DELETE_DT")
   private Date deleteDate;
 
-  @OneToOne(cascade = CascadeType.ALL)
-  @JoinColumn(name = "ENTITY_ID")
-  private Client client;
-
   /**
    * Default Constructor
    */
@@ -465,7 +458,6 @@ public class CountyOwnership implements PersistentObject, Serializable {
    * @param county62Flag - county62Flag
    * @param county63Flag - county63Flag
    * @param deleteDate - deleteDate
-   * @param client - client
    */
   public CountyOwnership(String entityId, String entityCode, String multiFlag, String county00Flag,
       String county01Flag, String county02Flag, String county03Flag, String county04Flag,
@@ -483,8 +475,7 @@ public class CountyOwnership implements PersistentObject, Serializable {
       String county49Flag, String county50Flag, String county51Flag, String county52Flag,
       String county53Flag, String county54Flag, String county55Flag, String county56Flag,
       String county57Flag, String county58Flag, String county59Flag, String county60Flag,
-      String county61Flag, String county62Flag, String county63Flag, Date deleteDate,
-      Client client) {
+      String county61Flag, String county62Flag, String county63Flag, Date deleteDate) {
     super();
     this.entityId = entityId;
     this.entityCode = entityCode;
@@ -554,11 +545,9 @@ public class CountyOwnership implements PersistentObject, Serializable {
     this.county62Flag = county62Flag;
     this.county63Flag = county63Flag;
     this.deleteDate = deleteDate;
-    this.client = client;
   }
 
   public CountyOwnership(Client client) {
-    this.client = client;
     this.entityCode = "C";
   }
 
@@ -1046,17 +1035,6 @@ public class CountyOwnership implements PersistentObject, Serializable {
    */
   public Date getDeleteDate() {
     return deleteDate;
-  }
-
-  /**
-   * @return the client
-   */
-  public Client getClient() {
-    return client;
-  }
-
-  public void setClient(Client client) {
-    this.client = client;
   }
 
   public void setEntityId(String entityId) {

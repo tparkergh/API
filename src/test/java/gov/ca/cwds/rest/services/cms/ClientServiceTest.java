@@ -30,6 +30,7 @@ import gov.ca.cwds.data.rules.TriggerTablesDao;
 import gov.ca.cwds.rest.api.Response;
 import gov.ca.cwds.rest.api.domain.cms.Client;
 import gov.ca.cwds.rest.api.domain.cms.PostedClient;
+import gov.ca.cwds.rest.business.rules.NonLACountyTriggers;
 import gov.ca.cwds.rest.services.ServiceException;
 import gov.ca.cwds.rest.services.junit.template.ServiceTestTemplate;
 import io.dropwizard.jackson.Jackson;
@@ -44,6 +45,7 @@ public class ClientServiceTest implements ServiceTestTemplate {
   private ClientDao clientDao;
   private StaffPersonDao staffpersonDao;
   private TriggerTablesDao triggerTablesDao;
+  private NonLACountyTriggers nonLaCountyTriggers;
 
   @SuppressWarnings("javadoc")
   @Rule
@@ -55,7 +57,9 @@ public class ClientServiceTest implements ServiceTestTemplate {
     clientDao = mock(ClientDao.class);
     staffpersonDao = mock(StaffPersonDao.class);
     triggerTablesDao = mock(TriggerTablesDao.class);
-    clientService = new ClientService(clientDao, staffpersonDao, triggerTablesDao);
+    nonLaCountyTriggers = mock(NonLACountyTriggers.class);
+    clientService =
+        new ClientService(clientDao, staffpersonDao, triggerTablesDao, nonLaCountyTriggers);
   }
 
   // find test
@@ -193,7 +197,7 @@ public class ClientServiceTest implements ServiceTestTemplate {
     Client clientDomain = MAPPER
         .readValue(fixture("fixtures/domain/legacy/Client/valid/serviceValid.json"), Client.class);
     gov.ca.cwds.data.persistence.cms.Client toCreate =
-        new gov.ca.cwds.data.persistence.cms.Client(id, clientDomain, "ABC");
+        new gov.ca.cwds.data.persistence.cms.Client(id, clientDomain, "q1p");
 
     Client request = new Client(toCreate, false);
     when(clientDao.create(any(gov.ca.cwds.data.persistence.cms.Client.class))).thenReturn(toCreate);
@@ -209,7 +213,7 @@ public class ClientServiceTest implements ServiceTestTemplate {
     Client clientDomain = MAPPER
         .readValue(fixture("fixtures/domain/legacy/Client/valid/serviceValid.json"), Client.class);
     gov.ca.cwds.data.persistence.cms.Client toCreate =
-        new gov.ca.cwds.data.persistence.cms.Client(id, clientDomain, "ABC");
+        new gov.ca.cwds.data.persistence.cms.Client(id, clientDomain, "q1p");
 
     Client request = new Client(toCreate, false);
     when(clientDao.create(any(gov.ca.cwds.data.persistence.cms.Client.class))).thenReturn(toCreate);
@@ -225,7 +229,7 @@ public class ClientServiceTest implements ServiceTestTemplate {
     Client clientDomain = MAPPER
         .readValue(fixture("fixtures/domain/legacy/Client/valid/serviceValid.json"), Client.class);
     gov.ca.cwds.data.persistence.cms.Client toCreate =
-        new gov.ca.cwds.data.persistence.cms.Client(id, clientDomain, "ABC");
+        new gov.ca.cwds.data.persistence.cms.Client(id, clientDomain, "q1p");
 
     Client request = new Client(toCreate, false);
     when(clientDao.create(any(gov.ca.cwds.data.persistence.cms.Client.class))).thenReturn(toCreate);

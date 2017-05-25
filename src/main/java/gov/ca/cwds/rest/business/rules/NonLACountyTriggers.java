@@ -9,14 +9,18 @@ import org.slf4j.LoggerFactory;
 import com.google.inject.Inject;
 
 import gov.ca.cwds.data.cms.CountyOwnershipDao;
-import gov.ca.cwds.data.cms.StaffPersonDao;
+import gov.ca.cwds.data.persistence.cms.Client;
 import gov.ca.cwds.data.persistence.cms.CountyOwnership;
 import gov.ca.cwds.data.persistence.cms.ReferralClient;
-import gov.ca.cwds.data.persistence.cms.StaffPerson;
-import gov.ca.cwds.rest.services.ServiceException;
+import gov.ca.cwds.data.rules.TriggerTableException;
 
 /**
  * Business layer object to work on Non LA Triggers
+ * 
+ * <p>
+ * If the staffPerson is from the LA County, it will trigger the countyOwnership table with the
+ * associated foreign key and updates the trigger table if the record is existing
+ * <p>
  *
  * @author CWDS API Team
  */
@@ -29,55 +33,58 @@ public class NonLACountyTriggers {
 
   private static final Logger LOGGER = LoggerFactory.getLogger(NonLACountyTriggers.class);
 
-  private StaffPersonDao staffpersonDao;
   private CountyOwnershipDao countyOwnershipDao;
 
   /**
-   * @param staffpersonDao - staffpersonDao
    * @param countyOwnershipDao - countyOwnershipDao
    */
   @Inject
-  public NonLACountyTriggers(StaffPersonDao staffpersonDao, CountyOwnershipDao countyOwnershipDao) {
-    this.staffpersonDao = staffpersonDao;
+  public NonLACountyTriggers(CountyOwnershipDao countyOwnershipDao) {
     this.countyOwnershipDao = countyOwnershipDao;
   }
 
   /**
-   * 
-   * @param managed referralClient This method triggers the CountyOwnership table with the
-   *        associated lastUpdatedId
-   * 
+   * @param managed Client creates the countyOwnership with the associated staffPerson
    */
-  public void createAndUpdateCoutyOwnership(ReferralClient managed) {
+  public void createClientCountyTrigger(Client managed) {
+    CountyOwnership countyOwnership = new CountyOwnership();
+    countyOwnership.setEntityId(managed.getPrimaryKey());
+    countyOwnership.setEntityCode(CLIENT_ENTITY_CODE);
+    countyOwnershipDao.create(countyOwnership);
+
+  }
+
+  /**
+   * @param managed referralClient creates or updates the countyOwnership with the associated
+   *        staffPerson
+   */
+  public void createAndUpdateReferralClientCoutyOwnership(ReferralClient managed) {
     Boolean countyExists = true;
-    StaffPerson staffperson = staffpersonDao.find(managed.getLastUpdatedId());
-    if (staffperson != null && !("19".equals(staffperson.getCountyCode()))) {
-      CountyOwnership countyOwnership = countyOwnershipDao.find(managed.getClientId());
-      if (countyOwnership == null) {
-        countyExists = false;
-        countyOwnership = new CountyOwnership();
-        countyOwnership.setEntityId(managed.getClientId());
-        countyOwnership.setEntityCode(CLIENT_ENTITY_CODE);
-      }
-      String methodName = SET_COUNTY + managed.getCountySpecificCode() + FLAG;
-      Method method = null;
-      try {
-        method = countyOwnership.getClass().getMethod(methodName, String.class);
-        method.invoke(countyOwnership, SET_FLAG);
-      } catch (NoSuchMethodException | SecurityException | IllegalAccessException
-          | IllegalArgumentException | InvocationTargetException e) {
-        LOGGER.info("CountyOwnership Unable to Trigger : {}", countyOwnership);
-        LOGGER.error(e.getMessage(), e);
-        throw new ServiceException(e);
-      }
-
-      if (countyExists) {
-        countyOwnershipDao.update(countyOwnership);
-      } else {
-        countyOwnershipDao.create(countyOwnership);
-      }
-
+    CountyOwnership countyOwnership = countyOwnershipDao.find(managed.getClientId());
+    if (countyOwnership == null) {
+      countyExists = false;
+      countyOwnership = new CountyOwnership();
+      countyOwnership.setEntityId(managed.getClientId());
+      countyOwnership.setEntityCode(CLIENT_ENTITY_CODE);
     }
+    String methodName = SET_COUNTY + managed.getCountySpecificCode() + FLAG;
+    Method method = null;
+    try {
+      method = countyOwnership.getClass().getMethod(methodName, String.class);
+      method.invoke(countyOwnership, SET_FLAG);
+    } catch (NoSuchMethodException | SecurityException | IllegalAccessException
+        | IllegalArgumentException | InvocationTargetException e) {
+      LOGGER.info("CountyOwnership Unable to Trigger : {}", countyOwnership);
+      LOGGER.error(e.getMessage(), e);
+      throw new TriggerTableException();
+    }
+
+    if (countyExists) {
+      countyOwnershipDao.update(countyOwnership);
+    } else {
+      countyOwnershipDao.create(countyOwnership);
+    }
+
   }
 
 }

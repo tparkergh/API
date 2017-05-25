@@ -119,6 +119,8 @@ public class ReferralClientService implements CrudsService {
       if (staffperson != null
           && (triggerTablesDao.getLaCountySpecificCode().equals(staffperson.getCountyCode()))) {
         laCountyTrigger.createCountyTrigger(managed);
+      } else {
+        nonLaTriggers.createAndUpdateReferralClientCoutyOwnership(managed);
       }
       return new gov.ca.cwds.rest.api.domain.cms.ReferralClient(managed);
     } catch (EntityExistsException e) {
@@ -141,6 +143,8 @@ public class ReferralClientService implements CrudsService {
       if (staffperson != null
           && (triggerTablesDao.getLaCountySpecificCode().equals(staffperson.getCountyCode()))) {
         laCountyTrigger.createCountyTrigger(managed);
+      } else {
+        nonLaTriggers.createAndUpdateReferralClientCoutyOwnership(managed);
       }
       return new gov.ca.cwds.rest.api.domain.cms.ReferralClient(managed);
     } catch (EntityNotFoundException e) {

@@ -15,11 +15,11 @@ import gov.ca.cwds.data.cms.ClientDao;
 import gov.ca.cwds.data.cms.StaffPersonDao;
 import gov.ca.cwds.data.persistence.cms.Client;
 import gov.ca.cwds.data.persistence.cms.CmsKeyIdGenerator;
-import gov.ca.cwds.data.persistence.cms.CountyOwnership;
 import gov.ca.cwds.data.persistence.cms.StaffPerson;
 import gov.ca.cwds.data.rules.TriggerTablesDao;
 import gov.ca.cwds.rest.api.Request;
 import gov.ca.cwds.rest.api.domain.cms.PostedClient;
+import gov.ca.cwds.rest.business.rules.NonLACountyTriggers;
 import gov.ca.cwds.rest.services.CrudsService;
 import gov.ca.cwds.rest.services.ServiceException;
 
@@ -34,6 +34,7 @@ public class ClientService implements CrudsService {
   private ClientDao clientDao;
   private StaffPersonDao staffpersonDao;
   private TriggerTablesDao triggerTablesDao;
+  private NonLACountyTriggers nonLaCountyTriggers;
 
   /**
    * Constructor
@@ -44,13 +45,16 @@ public class ClientService implements CrudsService {
    *        {@link gov.ca.cwds.data.persistence.cms.StaffPerson} objects
    * @param triggerTablesDao The {@link Dao} handling
    *        {@link gov.ca.cwds.data.rules.TriggerTablesDao} objects
+   * @param nonLaCountyTriggers The {@link Dao} handling
+   *        {@link gov.ca.cwds.rest.business.rules.NonLACountyTriggers} objects
    */
   @Inject
   public ClientService(ClientDao clientDao, StaffPersonDao staffpersonDao,
-      TriggerTablesDao triggerTablesDao) {
+      TriggerTablesDao triggerTablesDao, NonLACountyTriggers nonLaCountyTriggers) {
     this.clientDao = clientDao;
     this.staffpersonDao = staffpersonDao;
     this.triggerTablesDao = triggerTablesDao;
+    this.nonLaCountyTriggers = nonLaCountyTriggers;
   }
 
   /**
@@ -113,17 +117,14 @@ public class ClientService implements CrudsService {
     try {
       // TODO : refactor to actually determine who is updating. 'q1p' for now - see user story
       // #136737071 - Tech Debt: Legacy Service classes must use Staff ID for last update ID value
-      CountyOwnership countyOwnership = new CountyOwnership();
 
-      Client managed = new Client(CmsKeyIdGenerator.cmsIdGenertor(null), client, "BTr");
+      Client managed = new Client(CmsKeyIdGenerator.cmsIdGenertor(null), client, "q1p");
       managed = clientDao.create(managed);
-
+      // checking the staffPerson county code
       StaffPerson staffperson = staffpersonDao.find(managed.getLastUpdatedId());
       if (staffperson != null
           && !(triggerTablesDao.getLaCountySpecificCode().equals(staffperson.getCountyCode()))) {
-        managed.setCountyOwnership(countyOwnership);
-        countyOwnership.setEntityId(managed.getPrimaryKey());
-        countyOwnership.setEntityCode("C");
+        nonLaCountyTriggers.createClientCountyTrigger(managed);
       }
       return new PostedClient(managed, false);
     } catch (EntityExistsException e) {

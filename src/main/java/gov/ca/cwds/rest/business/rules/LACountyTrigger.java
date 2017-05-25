@@ -14,7 +14,12 @@ import gov.ca.cwds.data.persistence.cms.ReferralClient;
 
 /**
  * Business layer object to work on LA County Trigger
- *
+ * 
+ * <p>
+ * If the staffPerson is from the LA County, it will trigger the countyTrigger table with the
+ * associated foreign key and updates the trigger table if the record is existing
+ * <p>
+ * 
  * @author CWDS API Team
  */
 public class LACountyTrigger {
