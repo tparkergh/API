@@ -101,7 +101,9 @@ public class ParticipantValidatorTest {
   @Test
   public void testAllegationPerpetratorPersonIdIsParticipantPerpetratorSuccess() throws Exception {
     ScreeningToReferral toValidate = MAPPER.readValue(
-        fixture("fixtures/domain/ScreeningToReferral/valid/valid.json"), ScreeningToReferral.class);
+        fixture(
+            "fixtures/domain/ScreeningToReferral/valid/allegationPerpetratorIsParticipantPerpetrator.json"),
+        ScreeningToReferral.class);
     assertThat(ParticipantValidator.isPerpetratorParticipant(toValidate, 1234), equalTo(true));
   }
 
