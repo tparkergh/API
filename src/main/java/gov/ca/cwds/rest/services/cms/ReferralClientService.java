@@ -112,7 +112,7 @@ public class ReferralClientService implements CrudsService {
       // TODO : refactor to actually determine who is updating. 'q1p' for now - #136737071 - Tech
       // Debt: Legacy Service classes must use Staff ID for last update ID value
 
-      ReferralClient managed = new ReferralClient(referralClient, "BTr");
+      ReferralClient managed = new ReferralClient(referralClient, "q1p");
       managed = referralClientDao.create(managed);
       // checking the staffPerson county code
       StaffPerson staffperson = staffpersonDao.find(managed.getLastUpdatedId());

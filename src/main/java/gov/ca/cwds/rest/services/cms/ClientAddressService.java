@@ -12,9 +12,13 @@ import com.google.inject.Inject;
 
 import gov.ca.cwds.data.Dao;
 import gov.ca.cwds.data.cms.ClientAddressDao;
+import gov.ca.cwds.data.cms.StaffPersonDao;
 import gov.ca.cwds.data.persistence.cms.ClientAddress;
+import gov.ca.cwds.data.persistence.cms.StaffPerson;
+import gov.ca.cwds.data.rules.TriggerTablesDao;
 import gov.ca.cwds.rest.api.Request;
 import gov.ca.cwds.rest.api.Response;
+import gov.ca.cwds.rest.business.rules.LACountyTrigger;
 import gov.ca.cwds.rest.services.CrudsService;
 import gov.ca.cwds.rest.services.ServiceException;
 import gov.ca.cwds.rest.util.IdGenerator;
@@ -28,16 +32,29 @@ public class ClientAddressService implements CrudsService {
   private static final Logger LOGGER = LoggerFactory.getLogger(ClientService.class);
 
   private ClientAddressDao clientAddressDao;
+  private StaffPersonDao staffpersonDao;
+  private TriggerTablesDao triggerTablesDao;
+  private LACountyTrigger laCountyTrigger;
 
   /**
    * Constructor
    * 
    * @param clientAddressDao The {@link Dao} handling
    *        {@link gov.ca.cwds.data.persistence.cms.ClientAddress} objects.
+   * @param laCountyTrigger The {@link Dao} handling
+   *        {@link gov.ca.cwds.rest.business.rules.LACountyTrigger} objects
+   * @param triggerTablesDao The {@link Dao} handling
+   *        {@link gov.ca.cwds.data.rules.TriggerTablesDao} objects
+   * @param staffpersonDao The {@link Dao} handling
+   *        {@link gov.ca.cwds.data.persistence.cms.StaffPerson} objects
    */
   @Inject
-  public ClientAddressService(ClientAddressDao clientAddressDao) {
+  public ClientAddressService(ClientAddressDao clientAddressDao, StaffPersonDao staffpersonDao,
+      TriggerTablesDao triggerTablesDao, LACountyTrigger laCountyTrigger) {
     this.clientAddressDao = clientAddressDao;
+    this.staffpersonDao = staffpersonDao;
+    this.triggerTablesDao = triggerTablesDao;
+    this.laCountyTrigger = laCountyTrigger;
   }
 
   @Override
@@ -72,7 +89,12 @@ public class ClientAddressService implements CrudsService {
 
     try {
       ClientAddress managedClientAddress =
-          new ClientAddress(IdGenerator.randomString(10), clientAddress, "q1p");
+          new ClientAddress(IdGenerator.randomString(10), clientAddress, "BTr");
+      StaffPerson staffperson = staffpersonDao.find(managedClientAddress.getLastUpdatedId());
+      if (staffperson != null
+          && (triggerTablesDao.getLaCountySpecificCode().equals(staffperson.getCountyCode()))) {
+        laCountyTrigger.createClientAddressCountyTrigger(managedClientAddress);
+      }
       managedClientAddress = clientAddressDao.create(managedClientAddress);
       return new gov.ca.cwds.rest.api.domain.cms.ClientAddress(managedClientAddress, false);
     } catch (EntityExistsException e) {
