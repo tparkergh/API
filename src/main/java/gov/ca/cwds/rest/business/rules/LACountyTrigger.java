@@ -98,8 +98,8 @@ public class LACountyTrigger {
   }
 
   /**
-   * @param object
-   * @return
+   * @param object The object
+   * @return the CountyTrigger
    */
   public boolean createClientAddressCountyTrigger(Object object) {
     ClientAddress clientAddress;
