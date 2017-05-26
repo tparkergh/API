@@ -142,7 +142,11 @@ public class ScreeningToReferralServiceTest {
     addressService = new AddressService(addressDao);
 
     clientAddressDao = mock(ClientAddressDao.class);
-    clientAddressService = new ClientAddressService(clientAddressDao);
+    laCountyTrigger = mock(LACountyTrigger.class);
+    triggerTablesDao = mock(TriggerTablesDao.class);
+    staffpersonDao = mock(StaffPersonDao.class);
+    clientAddressService = new ClientAddressService(clientAddressDao, staffpersonDao,
+        triggerTablesDao, laCountyTrigger);
 
     longTextDao = mock(LongTextDao.class);
     longTextService = new LongTextService(longTextDao);
