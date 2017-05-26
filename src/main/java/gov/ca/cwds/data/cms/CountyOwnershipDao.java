@@ -30,10 +30,11 @@ public class CountyOwnershipDao extends CrudsDaoImpl<CountyOwnership> {
   }
 
   /**
-   * <p>
+   * CountyOwnership Dao
+   * 
    * Overriding the existing update for triggers and using the own update for countyOwnership
    * Trigger
-   * <p>
+   * 
    */
   @Override
   public CountyOwnership update(CountyOwnership object) {
