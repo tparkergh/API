@@ -8,6 +8,7 @@ import org.slf4j.LoggerFactory;
 import com.google.inject.Inject;
 
 import gov.ca.cwds.data.cms.CountyTriggerDao;
+import gov.ca.cwds.data.persistence.cms.ClientAddress;
 import gov.ca.cwds.data.persistence.cms.CountyTrigger;
 import gov.ca.cwds.data.persistence.cms.Referral;
 import gov.ca.cwds.data.persistence.cms.ReferralClient;
@@ -23,6 +24,8 @@ import gov.ca.cwds.data.persistence.cms.ReferralClient;
  * @author CWDS API Team
  */
 public class LACountyTrigger {
+
+  private static final String LA_COUNTY_SPECIFIC_CODE = "19";
 
   private static final String CLIENT_COUNTYOWNERSHIP = "C";
 
@@ -91,6 +94,42 @@ public class LACountyTrigger {
       }
     }
 
+    return true;
+  }
+
+  /**
+   * @param object
+   * @return
+   */
+  public boolean createClientAddressCountyTrigger(Object object) {
+    ClientAddress clientAddress;
+
+    if (object instanceof ClientAddress) {
+      clientAddress = (ClientAddress) object;
+
+      boolean countyTriggerExist = false;
+      if (countyTriggerDao.find(clientAddress.getFkClient()) != null) {
+        countyTriggerExist = true;
+      }
+
+      if (clientAddress.getFkClient() != "" && clientAddress.getFkClient() != null) {
+        CountyTrigger countyTrigger1 = new CountyTrigger(clientAddress.getFkClient(),
+            LA_COUNTY_SPECIFIC_CODE, CLIENT_COUNTYOWNERSHIP, null,
+            ClientAddress.class.getDeclaredAnnotation(Table.class).name());
+
+        CountyTrigger countyTrigger2 = new CountyTrigger(clientAddress.getFkAddress(),
+            LA_COUNTY_SPECIFIC_CODE, ADDRESS_COUNTYOWNERSHIP, null,
+            ClientAddress.class.getDeclaredAnnotation(Table.class).name());
+        if (countyTriggerExist) {
+          countyTriggerDao.update(countyTrigger1);
+          countyTriggerDao.update(countyTrigger2);
+        } else {
+          countyTriggerDao.create(countyTrigger1);
+          countyTriggerDao.create(countyTrigger2);
+        }
+
+      }
+    }
     return true;
   }
 
