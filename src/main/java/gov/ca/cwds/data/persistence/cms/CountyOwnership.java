@@ -11,8 +11,6 @@ import javax.validation.constraints.Size;
 
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
-import org.hibernate.annotations.GenericGenerator;
-import org.hibernate.annotations.Parameter;
 import org.hibernate.annotations.Type;
 import org.hibernate.validator.constraints.NotEmpty;
 
@@ -41,8 +39,6 @@ public class CountyOwnership implements PersistentObject, Serializable {
   protected static final int CMS_ID_LEN = CmsPersistentObject.CMS_ID_LEN;
   protected static final String DATE_FORMAT = "yyyy-MM-dd";
 
-  @GenericGenerator(name = "generator", strategy = "foreign",
-      parameters = @Parameter(name = "property", value = "client"))
   @Id
   @Column(name = "ENTITY_ID", length = CMS_ID_LEN)
   private String entityId;
@@ -545,10 +541,6 @@ public class CountyOwnership implements PersistentObject, Serializable {
     this.county62Flag = county62Flag;
     this.county63Flag = county63Flag;
     this.deleteDate = deleteDate;
-  }
-
-  public CountyOwnership(Client client) {
-    this.entityCode = "C";
   }
 
   /**
