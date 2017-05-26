@@ -292,8 +292,7 @@ public class ScreeningToReferralService implements CrudsService {
             if (!ParticipantValidator.roleIsAnonymousReporter(role)) {
               String clientId;
 
-              if (incomingParticipant.getLegacyId().isEmpty()
-                  || incomingParticipant.getLegacyId() == null) {
+              if (incomingParticipant.getLegacyId() == null || incomingParticipant.getLegacyId().isEmpty() ) {
                 // legacy Id not set - create a CLIENT row
                 PostedClient postedClient;
                 // not an anonymous reporter participant - create client
@@ -555,7 +554,7 @@ public class ScreeningToReferralService implements CrudsService {
         if (crossReport.getAgencyType().contains("Law Enforcement")) {
           lawEnforcementIndicator = true;
         }
-        if (crossReport.getLegacyId().isEmpty() || crossReport.getLegacyId() == null) {
+        if (crossReport.getLegacyId() == null || crossReport.getLegacyId().isEmpty()) {
 
           // create the cross report
           gov.ca.cwds.rest.api.domain.cms.CrossReport cmsCrossReport =
@@ -640,7 +639,7 @@ public class ScreeningToReferralService implements CrudsService {
         throw new ServiceException(" Victim could not be determined for an allegation ");
       }
 
-      if (allegation.getLegacyId().isEmpty() || allegation.getLegacyId() == null) {
+      if (allegation.getLegacyId() == null || allegation.getLegacyId().isEmpty() ) {
 
         // create an allegation in CMS legacy database
         gov.ca.cwds.rest.api.domain.cms.Allegation cmsAllegation =
@@ -698,7 +697,7 @@ public class ScreeningToReferralService implements CrudsService {
       String streetNumber = streetAddress[0];
       String streetName = streetAddress[1];
 
-      if (address.getLegacyId().isEmpty() || address.getLegacyId() == null) {
+      if ( address.getLegacyId() == null || address.getLegacyId().isEmpty()) {
         // add the Address row
         Address domainAddress = new Address(" ", address.getCity(), DEFAULT_DECIMAL, DEFAULT_INT,
             false, DEFAULT_CODE, DEFAULT_DECIMAL, DEFAULT_INT, " ", DEFAULT_DECIMAL, DEFAULT_INT,
@@ -735,7 +734,7 @@ public class ScreeningToReferralService implements CrudsService {
         throw exception;
       }
 
-      if (address.getLegacyId().isEmpty() || address.getLegacyId() == null) {
+      if (address.getLegacyId() == null || address.getLegacyId().isEmpty()) {
 
         ClientAddress clientAddress = new ClientAddress(DEFAULT_ADDRESS_TYPE, "", "", "", addressId,
             clientId, "", referralId);
@@ -845,8 +844,7 @@ public class ScreeningToReferralService implements CrudsService {
 
     Boolean mandatedReporterIndicator = ParticipantValidator.roleIsMandatedReporter(role);
     Reporter theReporter = null;
-
-    if (ip.getLegacyId().isEmpty() || ip.getLegacyId() == null) {
+    if (ip.getLegacyId() == null || ip.getLegacyId().isEmpty()) {
       // create the Reporter in CWS/CMS
       Reporter reporter = new Reporter("", city, DEFAULT_CODE, DEFAULT_CODE, false, "", "", "",
           false, ip.getFirstName(), ip.getLastName(), mandatedReporterIndicator, 0, DEFAULT_DECIMAL,
