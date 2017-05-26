@@ -1,5 +1,9 @@
 package gov.ca.cwds.data.cms;
 
+import java.text.MessageFormat;
+
+import javax.persistence.EntityNotFoundException;
+
 import org.hibernate.SessionFactory;
 
 import com.google.inject.Inject;
@@ -23,6 +27,23 @@ public class CountyOwnershipDao extends CrudsDaoImpl<CountyOwnership> {
   @Inject
   public CountyOwnershipDao(@CmsSessionFactory SessionFactory sessionFactory) {
     super(sessionFactory);
+  }
+
+  /**
+   * <p>
+   * Overriding the existing update for triggers and using the own update for countyOwnership
+   * Trigger
+   * <p>
+   */
+  @Override
+  public CountyOwnership update(CountyOwnership object) {
+    CountyOwnership databaseObject = find(object.getPrimaryKey());
+    if (databaseObject == null) {
+      String msg =
+          MessageFormat.format("Unable to find entity with id={0}", object.getPrimaryKey());
+      throw new EntityNotFoundException(msg);
+    }
+    return persist(object);
   }
 
 }
