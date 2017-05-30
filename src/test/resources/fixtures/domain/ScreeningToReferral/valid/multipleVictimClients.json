@@ -1,7 +1,7 @@
 {
    "id":"2",
-   "legacy_source_table" : "REFERL_T",
-   "legacy_id" : "0123456ABC",
+   "legacy_source_table" : "",
+   "legacy_id" : "",
    "ended_at":"2016-08-03T01:00:00.000Z",
    "incident_county":"sacramento",
    "incident_date":"2016-08-02",
@@ -17,8 +17,8 @@
    "screening_decision":"Response time",
    "screening_decision_detail":"Detail",
    "address":{
-   "legacy_source_table" : "",
-   "legacy_id" : "",
+      "legacy_source_table" : "",
+      "legacy_id" : "",
 	  "street_address": "123 Main",
 	  "city": "Sacramento",
 	  "state": "CA",
@@ -33,12 +33,64 @@
 	  "first_name": "John",
 	  "last_name": "Smith",
 	  "gender": "male",
-	  "date_of_birth": "2001-03-15",
+	  "date_of_birth": "2010-03-15",
 	  "ssn": "123456789",
 	  "person_id": 12345,
 	  "screening_id": 12345,
 	  "roles" : [
 	  	"Victim"
+	  	],
+	  	"addresses" : [
+	  		{
+                "legacy_source_table" : "",
+                "legacy_id" : "",
+	  			"street_address" : "123 First St",
+	  			"state" : "CA",
+	  			"city" : "San Jose",
+	  			"zip" : "94321",
+	  			"type" : "Home"
+	  		}
+	  	]
+	},
+	{
+	  "id" : "6789",
+      "legacy_source_table" : "",
+      "legacy_id" : "",
+	  "first_name": "Joan",
+	  "last_name": "Smith",
+	  "gender": "male",
+	  "date_of_birth": "2008-03-13",
+	  "ssn": "123456789",
+	  "person_id": 12345,
+	  "screening_id": 12345,
+	  "roles" : [
+	  	"Victim"
+	  	],
+	  	"addresses" : [
+	  		{
+                "legacy_source_table" : "",
+                "legacy_id" : "",
+	  			"street_address" : "123 First St",
+	  			"state" : "CA",
+	  			"city" : "San Jose",
+	  			"zip" : "94321",
+	  			"type" : "Home"
+	  		}
+	  	]
+	},
+	{
+	  "id" : "7890",
+      "legacy_source_table" : "",
+      "legacy_id" : "",
+	  "first_name": "Marge",
+	  "last_name": "Simpson",
+	  "gender": "female",
+	  "date_of_birth": "1999-07-15",
+	  "ssn": "123456789",
+	  "person_id": 12345,
+	  "screening_id": 12345,
+	  "roles" : [
+	  	"Mandated Reporter"
 	  	],
 	  	"addresses" : [
 	  		{
@@ -59,64 +111,12 @@
 	  "first_name": "Bart",
 	  "last_name": "Simpson",
 	  "gender": "male",
-	  "date_of_birth": "1997-05-15",
+	  "date_of_birth": "2000-03-15",
 	  "ssn": "234567890",
 	  "person_id": 12345,
 	  "screening_id": 12345,
 	  "roles" : [
 	  	"Perpetrator"
-	  	],
-	  	"addresses" : [
-	  		{
-                "legacy_source_table" : "",
-                "legacy_id" : "",
-	  			"street_address" : "234 Second St",
-	  			"state" : "CA",
-	  			"city" : "San Jose",
-	  			"zip" : "94321",
-	  			"type" : "Home"
-	  		}
-	  	]
-	},
-	{
-	  "id" : "2345",
-      "legacy_source_table" : "",
-      "legacy_id" : "",
-	  "first_name": "Homer",
-	  "last_name": "Simpson",
-	  "gender": "male",
-	  "date_of_birth": "1980-03-15",
-	  "ssn": "234567890",
-	  "person_id": 12345,
-	  "screening_id": 12345,
-	  "roles" : [
-	  	"Perpetrator"
-	  	],
-	  	"addresses" : [
-	  		{
-                "legacy_source_table" : "",
-                "legacy_id" : "",
-	  			"street_address" : "234 Second St",
-	  			"state" : "CA",
-	  			"city" : "San Jose",
-	  			"zip" : "94321",
-	  			"type" : "Home"
-	  		}
-	  	]
-	},
-		{
-	  "id" : "3456",
-      "legacy_source_table" : "",
-      "legacy_id" : "",
-	  "first_name": "Sally",
-	  "last_name": "Simpson",
-	  "gender": "female",
-	  "date_of_birth": "1993-03-15",
-	  "ssn": "234567890",
-	  "person_id": 12345,
-	  "screening_id": 12345,
-	  "roles" : [
-	  	"Non-mandated Reporter"
 	  	],
 	  	"addresses" : [
 	  		{
@@ -130,7 +130,6 @@
 	  		}
 	  	]
 	}
-	
    ],
    "cross_reports":[
       {
@@ -144,7 +143,7 @@
    "allegations":[
       {
          "legacy_source_table" : "",
-         "legacy_id" : "1234",
+          "legacy_id" : "",
          "victim_person_id":"5432",
          "perpetrator_person_id":"1234",
          "type":"physical abuse",
@@ -152,9 +151,9 @@
       },
       {
          "legacy_source_table" : "",
-         "legacy_id" : "",
-         "victim_person_id":"5432",
-         "perpetrator_person_id":"2345",
+          "legacy_id" : "",
+         "victim_person_id":"6789",
+         "perpetrator_person_id":"1234",
          "type":"mental abuse",
          "county":"Sacramento"
       }
