@@ -135,8 +135,6 @@ public class ScreeningToReferralService implements CrudsService {
   private short crossReportMethodCode = 0;
   private short allegationTypeCode = 0;
 
-
-
   /**
    * Constructor
    * 
@@ -292,7 +290,8 @@ public class ScreeningToReferralService implements CrudsService {
             if (!ParticipantValidator.roleIsAnonymousReporter(role)) {
               String clientId;
 
-              if (incomingParticipant.getLegacyId() == null || incomingParticipant.getLegacyId().isEmpty() ) {
+              if (incomingParticipant.getLegacyId() == null
+                  || incomingParticipant.getLegacyId().isEmpty()) {
                 // legacy Id not set - create a CLIENT row
                 PostedClient postedClient;
                 // not an anonymous reporter participant - create client
@@ -420,7 +419,7 @@ public class ScreeningToReferralService implements CrudsService {
     String referralId = null;
 
     if (screeningToReferral.getReferralId() == null
-        || screeningToReferral.getReferralId().isEmpty() ) {
+        || screeningToReferral.getReferralId().isEmpty()) {
       // the legacy id is not set - create the referral
       String longTextId = generateLongTextId(screeningToReferral, messages);
       // create a CMS Referral
@@ -639,7 +638,7 @@ public class ScreeningToReferralService implements CrudsService {
         throw new ServiceException(" Victim could not be determined for an allegation ");
       }
 
-      if (allegation.getLegacyId() == null || allegation.getLegacyId().isEmpty() ) {
+      if (allegation.getLegacyId() == null || allegation.getLegacyId().isEmpty()) {
 
         // create an allegation in CMS legacy database
         gov.ca.cwds.rest.api.domain.cms.Allegation cmsAllegation =
@@ -697,7 +696,7 @@ public class ScreeningToReferralService implements CrudsService {
       String streetNumber = streetAddress[0];
       String streetName = streetAddress[1];
 
-      if ( address.getLegacyId() == null || address.getLegacyId().isEmpty()) {
+      if (address.getLegacyId() == null || address.getLegacyId().isEmpty()) {
         // add the Address row
         Address domainAddress = new Address(" ", address.getCity(), DEFAULT_DECIMAL, DEFAULT_INT,
             false, DEFAULT_CODE, DEFAULT_DECIMAL, DEFAULT_INT, " ", DEFAULT_DECIMAL, DEFAULT_INT,
