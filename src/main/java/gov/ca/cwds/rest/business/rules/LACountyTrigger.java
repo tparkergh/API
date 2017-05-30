@@ -107,12 +107,8 @@ public class LACountyTrigger {
     if (object instanceof ClientAddress) {
       clientAddress = (ClientAddress) object;
 
-      boolean countyTriggerExist = false;
-      if (countyTriggerDao.find(clientAddress.getFkClient()) != null) {
-        countyTriggerExist = true;
-      }
-
-      if (clientAddress.getFkClient() != "" && clientAddress.getFkClient() != null) {
+      if (clientAddress.getFkClient() != "" && clientAddress.getFkClient() != null
+          && clientAddress.getFkAddress() != "" && clientAddress.getFkAddress() != null) {
         CountyTrigger countyTrigger1 = new CountyTrigger(clientAddress.getFkClient(),
             LA_COUNTY_SPECIFIC_CODE, CLIENT_COUNTYOWNERSHIP, null,
             ClientAddress.class.getDeclaredAnnotation(Table.class).name());
@@ -120,15 +116,11 @@ public class LACountyTrigger {
         CountyTrigger countyTrigger2 = new CountyTrigger(clientAddress.getFkAddress(),
             LA_COUNTY_SPECIFIC_CODE, ADDRESS_COUNTYOWNERSHIP, null,
             ClientAddress.class.getDeclaredAnnotation(Table.class).name());
-        if (countyTriggerExist) {
-          countyTriggerDao.update(countyTrigger1);
-          countyTriggerDao.update(countyTrigger2);
-        } else {
-          countyTriggerDao.create(countyTrigger1);
-          countyTriggerDao.create(countyTrigger2);
-        }
 
+        countyTriggerDao.create(countyTrigger1);
+        countyTriggerDao.create(countyTrigger2);
       }
+      LOGGER.info("LA county clientAddress triggered");
     }
     return true;
   }

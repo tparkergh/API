@@ -90,6 +90,7 @@ public class ClientAddressService implements CrudsService {
     try {
       ClientAddress managedClientAddress =
           new ClientAddress(IdGenerator.randomString(10), clientAddress, "BTr");
+      // checking the staffPerson county code
       StaffPerson staffperson = staffpersonDao.find(managedClientAddress.getLastUpdatedId());
       if (staffperson != null
           && (triggerTablesDao.getLaCountySpecificCode().equals(staffperson.getCountyCode()))) {
@@ -112,6 +113,12 @@ public class ClientAddressService implements CrudsService {
 
     try {
       ClientAddress managed = new ClientAddress((String) primaryKey, clientAddress, "q1p");
+      // checking the staffPerson county code
+      StaffPerson staffperson = staffpersonDao.find(managed.getLastUpdatedId());
+      if (staffperson != null
+          && (triggerTablesDao.getLaCountySpecificCode().equals(staffperson.getCountyCode()))) {
+        laCountyTrigger.createClientAddressCountyTrigger(managed);
+      }
       managed = clientAddressDao.update(managed);
       return new gov.ca.cwds.rest.api.domain.cms.ClientAddress(managed, true);
     } catch (EntityNotFoundException e) {
