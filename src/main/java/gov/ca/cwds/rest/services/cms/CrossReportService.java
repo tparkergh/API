@@ -28,16 +28,20 @@ public class CrossReportService implements CrudsService {
   private static final Logger LOGGER = LoggerFactory.getLogger(CrossReportService.class);
 
   private CrossReportDao crossReportDao;
+  private StaffPersonIdRetriever staffPersonIdRetriever;
 
   /**
    * Constructor
    * 
    * @param crossReportDao The {@link Dao} handling
    *        {@link gov.ca.cwds.data.persistence.cms.CrossReport} objects.
+   * @param staffPersonIdRetriever the staffPersonIdRetriever
    */
   @Inject
-  public CrossReportService(CrossReportDao crossReportDao) {
+  public CrossReportService(CrossReportDao crossReportDao,
+      StaffPersonIdRetriever staffPersonIdRetriever) {
     this.crossReportDao = crossReportDao;
+    this.staffPersonIdRetriever = staffPersonIdRetriever;
   }
 
   /**
@@ -86,7 +90,7 @@ public class CrossReportService implements CrudsService {
         (gov.ca.cwds.rest.api.domain.cms.CrossReport) request;
 
     try {
-      String lastUpdatedId = new StaffPersonIdRetriever().getStaffPersonId();
+      String lastUpdatedId = staffPersonIdRetriever.getStaffPersonId();
       CrossReport managed =
           new CrossReport(CmsKeyIdGenerator.cmsIdGenertor(lastUpdatedId), crossReport,
               lastUpdatedId);
@@ -111,7 +115,7 @@ public class CrossReportService implements CrudsService {
         (gov.ca.cwds.rest.api.domain.cms.CrossReport) request;
 
     try {
-      String lastUpdatedId = new StaffPersonIdRetriever().getStaffPersonId();
+      String lastUpdatedId = staffPersonIdRetriever.getStaffPersonId();
       CrossReport managed = new CrossReport(crossReport.getThirdId(), crossReport, lastUpdatedId);
       managed = crossReportDao.update(managed);
       return new gov.ca.cwds.rest.api.domain.cms.CrossReport(managed);

@@ -30,17 +30,23 @@ public class AllegationPerpetratorHistoryService implements CrudsService {
       .getLogger(AllegationPerpetratorHistoryService.class);
 
   private AllegationPerpetratorHistoryDao allegationPerpetratorHistoryDao;
+  private StaffPersonIdRetriever staffPersonIdRetriever;
+
 
   /**
    * Constructor
    * 
    * @param allegationPerpetratorHistoryDao The {@link Dao} handling
    *        {@link gov.ca.cwds.data.persistence.cms.AllegationPerpetratorHistory} objects.
+   * @param staffPersonIdRetriever the staffPersonIdRetriever
    */
   @Inject
   public AllegationPerpetratorHistoryService(
-      AllegationPerpetratorHistoryDao allegationPerpetratorHistoryDao) {
+      AllegationPerpetratorHistoryDao allegationPerpetratorHistoryDao,
+      StaffPersonIdRetriever staffPersonIdRetriever) {
     this.allegationPerpetratorHistoryDao = allegationPerpetratorHistoryDao;
+    this.staffPersonIdRetriever = staffPersonIdRetriever;
+
   }
 
   /**
@@ -91,7 +97,7 @@ public class AllegationPerpetratorHistoryService implements CrudsService {
         (gov.ca.cwds.rest.api.domain.cms.AllegationPerpetratorHistory) request;
 
     try {
-      String lastUpdatedId = new StaffPersonIdRetriever().getStaffPersonId();
+      String lastUpdatedId = staffPersonIdRetriever.getStaffPersonId();
       AllegationPerpetratorHistory managed =
           new AllegationPerpetratorHistory(CmsKeyIdGenerator.cmsIdGenertor(lastUpdatedId),
               allegationPerpetratorHistory, lastUpdatedId);
@@ -118,7 +124,7 @@ public class AllegationPerpetratorHistoryService implements CrudsService {
         (gov.ca.cwds.rest.api.domain.cms.AllegationPerpetratorHistory) request;
 
     try {
-      String lastUpdatedId = new StaffPersonIdRetriever().getStaffPersonId();
+      String lastUpdatedId = staffPersonIdRetriever.getStaffPersonId();
       AllegationPerpetratorHistory managed =
           new AllegationPerpetratorHistory((String) primaryKey, allegationPerpetratorHistory,
               lastUpdatedId);

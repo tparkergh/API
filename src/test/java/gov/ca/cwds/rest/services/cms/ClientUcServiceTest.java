@@ -10,6 +10,12 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
+import gov.ca.cwds.data.cms.ClientUcDao;
+import gov.ca.cwds.rest.api.Response;
+import gov.ca.cwds.rest.api.domain.cms.ClientUc;
+import gov.ca.cwds.rest.services.ServiceException;
+import gov.ca.cwds.rest.services.junit.template.ServiceTestTemplate;
+import io.dropwizard.jackson.Jackson;
 
 import javax.persistence.EntityNotFoundException;
 
@@ -20,13 +26,6 @@ import org.junit.rules.ExpectedException;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import gov.ca.cwds.data.cms.ClientUcDao;
-import gov.ca.cwds.rest.api.Response;
-import gov.ca.cwds.rest.api.domain.cms.ClientUc;
-import gov.ca.cwds.rest.services.ServiceException;
-import gov.ca.cwds.rest.services.junit.template.ServiceTestTemplate;
-import io.dropwizard.jackson.Jackson;
-
 /**
  * @author CWDS API Team
  *
@@ -35,6 +34,7 @@ public class ClientUcServiceTest implements ServiceTestTemplate {
   private static final ObjectMapper MAPPER = Jackson.newObjectMapper();
   private ClientUcService clientUcService;
   private ClientUcDao clientUcDao;
+  private StaffPersonIdRetriever staffPersonIdRetriever;
 
   @SuppressWarnings("javadoc")
   @Rule
@@ -44,7 +44,8 @@ public class ClientUcServiceTest implements ServiceTestTemplate {
   @Before
   public void setup() throws Exception {
     clientUcDao = mock(ClientUcDao.class);
-    clientUcService = new ClientUcService(clientUcDao);
+    staffPersonIdRetriever = mock(StaffPersonIdRetriever.class);
+    clientUcService = new ClientUcService(clientUcDao, staffPersonIdRetriever);
   }
 
   // find test
@@ -64,8 +65,9 @@ public class ClientUcServiceTest implements ServiceTestTemplate {
   @Test
   public void testFindReturnsCorrectEntity() throws Exception {
     String id = "KFXgqgo0JG";
-    ClientUc expected = MAPPER
-        .readValue(fixture("fixtures/domain/legacy/ClientUc/valid/valid.json"), ClientUc.class);
+    ClientUc expected =
+        MAPPER.readValue(fixture("fixtures/domain/legacy/ClientUc/valid/valid.json"),
+            ClientUc.class);
     gov.ca.cwds.data.persistence.cms.ClientUc clientUc =
         new gov.ca.cwds.data.persistence.cms.ClientUc(expected, "q27");
 
@@ -136,8 +138,9 @@ public class ClientUcServiceTest implements ServiceTestTemplate {
   @Test
   public void testUpdateReturnsCorrectEntity() throws Exception {
     String id = "AaoDyiJq27";
-    ClientUc expected = MAPPER
-        .readValue(fixture("fixtures/domain/legacy/ClientUc/valid/valid.json"), ClientUc.class);
+    ClientUc expected =
+        MAPPER.readValue(fixture("fixtures/domain/legacy/ClientUc/valid/valid.json"),
+            ClientUc.class);
 
     gov.ca.cwds.data.persistence.cms.ClientUc clientUc =
         new gov.ca.cwds.data.persistence.cms.ClientUc(expected, "q27");
@@ -153,8 +156,9 @@ public class ClientUcServiceTest implements ServiceTestTemplate {
   @Test
   public void testUpdateThrowsExceptionWhenNotFound() throws Exception {
     try {
-      ClientUc clientUcRquest = MAPPER
-          .readValue(fixture("fixtures/domain/legacy/ClientUc/valid/valid.json"), ClientUc.class);
+      ClientUc clientUcRquest =
+          MAPPER.readValue(fixture("fixtures/domain/legacy/ClientUc/valid/valid.json"),
+              ClientUc.class);
 
       when(clientUcDao.update(any())).thenThrow(EntityNotFoundException.class);
 
@@ -194,13 +198,14 @@ public class ClientUcServiceTest implements ServiceTestTemplate {
   @Test
   public void testCreateNullIDError() throws Exception {
     try {
-      ClientUc clientUcDomain = MAPPER
-          .readValue(fixture("fixtures/domain/legacy/ClientUc/valid/valid.json"), ClientUc.class);
+      ClientUc clientUcDomain =
+          MAPPER.readValue(fixture("fixtures/domain/legacy/ClientUc/valid/valid.json"),
+              ClientUc.class);
       gov.ca.cwds.data.persistence.cms.ClientUc toCreate =
           new gov.ca.cwds.data.persistence.cms.ClientUc(clientUcDomain, "q27");
 
-      when(clientUcDao.create(any(gov.ca.cwds.data.persistence.cms.ClientUc.class)))
-          .thenReturn(toCreate);
+      when(clientUcDao.create(any(gov.ca.cwds.data.persistence.cms.ClientUc.class))).thenReturn(
+          toCreate);
 
       ClientUc expected = new ClientUc(toCreate);
     } catch (ServiceException e) {
@@ -213,13 +218,14 @@ public class ClientUcServiceTest implements ServiceTestTemplate {
   @Test
   public void testCreateBlankIDError() throws Exception {
     try {
-      ClientUc clientUcDomain = MAPPER
-          .readValue(fixture("fixtures/domain/legacy/ClientUc/valid/valid.json"), ClientUc.class);
+      ClientUc clientUcDomain =
+          MAPPER.readValue(fixture("fixtures/domain/legacy/ClientUc/valid/valid.json"),
+              ClientUc.class);
       gov.ca.cwds.data.persistence.cms.ClientUc toCreate =
           new gov.ca.cwds.data.persistence.cms.ClientUc(clientUcDomain, "q27");
 
-      when(clientUcDao.create(any(gov.ca.cwds.data.persistence.cms.ClientUc.class)))
-          .thenReturn(toCreate);
+      when(clientUcDao.create(any(gov.ca.cwds.data.persistence.cms.ClientUc.class))).thenReturn(
+          toCreate);
 
       ClientUc expected = new ClientUc(toCreate);
     } catch (ServiceException e) {

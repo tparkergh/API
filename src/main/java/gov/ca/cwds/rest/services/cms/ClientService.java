@@ -35,6 +35,7 @@ public class ClientService implements CrudsService {
   private StaffPersonDao staffpersonDao;
   private TriggerTablesDao triggerTablesDao;
   private NonLACountyTriggers nonLaCountyTriggers;
+  private StaffPersonIdRetriever staffPersonIdRetriever;
 
   /**
    * Constructor
@@ -47,14 +48,17 @@ public class ClientService implements CrudsService {
    *        {@link gov.ca.cwds.data.rules.TriggerTablesDao} objects
    * @param nonLaCountyTriggers The {@link Dao} handling
    *        {@link gov.ca.cwds.rest.business.rules.NonLACountyTriggers} objects
+   * @param staffPersonIdRetriever the staffPersonIdRetriever
    */
   @Inject
   public ClientService(ClientDao clientDao, StaffPersonDao staffpersonDao,
-      TriggerTablesDao triggerTablesDao, NonLACountyTriggers nonLaCountyTriggers) {
+      TriggerTablesDao triggerTablesDao, NonLACountyTriggers nonLaCountyTriggers,
+      StaffPersonIdRetriever staffPersonIdRetriever) {
     this.clientDao = clientDao;
     this.staffpersonDao = staffpersonDao;
     this.triggerTablesDao = triggerTablesDao;
     this.nonLaCountyTriggers = nonLaCountyTriggers;
+    this.staffPersonIdRetriever = staffPersonIdRetriever;
   }
 
   /**
@@ -115,7 +119,7 @@ public class ClientService implements CrudsService {
         (gov.ca.cwds.rest.api.domain.cms.Client) request;
 
     try {
-      String lastUpdatedId = new StaffPersonIdRetriever().getStaffPersonId();
+      String lastUpdatedId = staffPersonIdRetriever.getStaffPersonId();
       Client managed =
           new Client(CmsKeyIdGenerator.cmsIdGenertor(lastUpdatedId), client, lastUpdatedId);
       managed = clientDao.create(managed);
@@ -146,7 +150,7 @@ public class ClientService implements CrudsService {
         (gov.ca.cwds.rest.api.domain.cms.Client) request;
 
     try {
-      String lastUpdatedId = new StaffPersonIdRetriever().getStaffPersonId();
+      String lastUpdatedId = staffPersonIdRetriever.getStaffPersonId();
       Client managed = new Client((String) primaryKey, client, lastUpdatedId);
       managed = clientDao.update(managed);
       return new gov.ca.cwds.rest.api.domain.cms.Client(managed, true);

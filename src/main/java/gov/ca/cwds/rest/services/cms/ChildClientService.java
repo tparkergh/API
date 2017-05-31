@@ -27,16 +27,20 @@ public class ChildClientService implements CrudsService {
   private static final Logger LOGGER = LoggerFactory.getLogger(ChildClientService.class);
 
   private ChildClientDao childClientDao;
+  private StaffPersonIdRetriever staffPersonIdRetriever;
 
   /**
    * Constructor
    * 
    * @param childClientDao The {@link Dao} handling
    *        {@link gov.ca.cwds.data.persistence.cms.ChildClient} objects.
+   * @param staffPersonIdRetriever the staffPersonIdRetriever
    */
   @Inject
-  public ChildClientService(ChildClientDao childClientDao) {
+  public ChildClientService(ChildClientDao childClientDao,
+      StaffPersonIdRetriever staffPersonIdRetriever) {
     this.childClientDao = childClientDao;
+    this.staffPersonIdRetriever = staffPersonIdRetriever;
   }
 
   /**
@@ -57,7 +61,7 @@ public class ChildClientService implements CrudsService {
     }
 
     try {
-      String lastUpdatedId = new StaffPersonIdRetriever().getStaffPersonId();
+      String lastUpdatedId = staffPersonIdRetriever.getStaffPersonId();
       ChildClient managed =
           new ChildClient(childClient.getVictimClientId(), childClient, lastUpdatedId);
       managed = childClientDao.create(managed);
@@ -114,7 +118,7 @@ public class ChildClientService implements CrudsService {
         (gov.ca.cwds.rest.api.domain.cms.ChildClient) request;
 
     try {
-      String lastUpdatedId = new StaffPersonIdRetriever().getStaffPersonId();
+      String lastUpdatedId = staffPersonIdRetriever.getStaffPersonId();
       ChildClient managed =
           new ChildClient(childClient.getVictimClientId(), childClient, lastUpdatedId);
       managed = childClientDao.update(managed);

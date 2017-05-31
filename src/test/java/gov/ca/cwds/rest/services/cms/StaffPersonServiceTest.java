@@ -11,6 +11,12 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
+import gov.ca.cwds.data.cms.StaffPersonDao;
+import gov.ca.cwds.rest.api.Response;
+import gov.ca.cwds.rest.api.domain.cms.PostedStaffPerson;
+import gov.ca.cwds.rest.api.domain.cms.StaffPerson;
+import gov.ca.cwds.rest.services.ServiceException;
+import io.dropwizard.jackson.Jackson;
 
 import javax.persistence.EntityNotFoundException;
 
@@ -22,13 +28,6 @@ import org.junit.rules.ExpectedException;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import gov.ca.cwds.data.cms.StaffPersonDao;
-import gov.ca.cwds.rest.api.Response;
-import gov.ca.cwds.rest.api.domain.cms.PostedStaffPerson;
-import gov.ca.cwds.rest.api.domain.cms.StaffPerson;
-import gov.ca.cwds.rest.services.ServiceException;
-import io.dropwizard.jackson.Jackson;
-
 /**
  * @author CWDS API Team
  *
@@ -37,6 +36,7 @@ public class StaffPersonServiceTest {
   private static final ObjectMapper MAPPER = Jackson.newObjectMapper();
   private StaffPersonService staffPersonService;
   private StaffPersonDao staffPersonDao;
+  private StaffPersonIdRetriever staffPersonIdRetriever;
 
   @Rule
   public ExpectedException thrown = ExpectedException.none();
@@ -45,8 +45,9 @@ public class StaffPersonServiceTest {
   @Before
   public void setup() throws Exception {
     staffPersonDao = mock(StaffPersonDao.class);
+    staffPersonIdRetriever = mock(StaffPersonIdRetriever.class);
 
-    staffPersonService = new StaffPersonService(staffPersonDao);
+    staffPersonService = new StaffPersonService(staffPersonDao, staffPersonIdRetriever);
 
   }
 
@@ -66,8 +67,9 @@ public class StaffPersonServiceTest {
   @Test
   public void findReturnsCorrectStaffPersonWhenFound() throws Exception {
     String id = "ABC";
-    StaffPerson expected = MAPPER.readValue(
-        fixture("fixtures/domain/legacy/StaffPerson/valid/valid.json"), StaffPerson.class);
+    StaffPerson expected =
+        MAPPER.readValue(fixture("fixtures/domain/legacy/StaffPerson/valid/valid.json"),
+            StaffPerson.class);
 
     gov.ca.cwds.data.persistence.cms.StaffPerson staffPerson =
         new gov.ca.cwds.data.persistence.cms.StaffPerson(id, expected, "2017-01-07");
@@ -128,8 +130,9 @@ public class StaffPersonServiceTest {
   @Test
   public void updateReturnsStaffPersonResponseOnSuccess() throws Exception {
     String id = "ABC";
-    StaffPerson expected = MAPPER.readValue(
-        fixture("fixtures/domain/legacy/StaffPerson/valid/valid.json"), StaffPerson.class);
+    StaffPerson expected =
+        MAPPER.readValue(fixture("fixtures/domain/legacy/StaffPerson/valid/valid.json"),
+            StaffPerson.class);
 
     gov.ca.cwds.data.persistence.cms.StaffPerson staffPerson =
         new gov.ca.cwds.data.persistence.cms.StaffPerson(id, expected, "2017-01-07");
@@ -145,8 +148,9 @@ public class StaffPersonServiceTest {
   @Test
   public void updateReturnsCorrectStaffPersonOnSuccess() throws Exception {
     String id = "ABC";
-    StaffPerson staffPersonRequest = MAPPER.readValue(
-        fixture("fixtures/domain/legacy/StaffPerson/valid/valid.json"), StaffPerson.class);
+    StaffPerson staffPersonRequest =
+        MAPPER.readValue(fixture("fixtures/domain/legacy/StaffPerson/valid/valid.json"),
+            StaffPerson.class);
 
     gov.ca.cwds.data.persistence.cms.StaffPerson staffPerson =
         new gov.ca.cwds.data.persistence.cms.StaffPerson(id, staffPersonRequest, "2017-01-07");
@@ -166,8 +170,9 @@ public class StaffPersonServiceTest {
   public void updateThrowsExceptionWhenStaffPersonNotFound() throws Exception {
     try {
       String id = "ABC";
-      StaffPerson staffPersonRequest = MAPPER.readValue(
-          fixture("fixtures/domain/legacy/StaffPerson/valid/valid.json"), StaffPerson.class);
+      StaffPerson staffPersonRequest =
+          MAPPER.readValue(fixture("fixtures/domain/legacy/StaffPerson/valid/valid.json"),
+              StaffPerson.class);
 
       when(staffPersonDao.update(any())).thenThrow(EntityNotFoundException.class);
 
@@ -195,8 +200,9 @@ public class StaffPersonServiceTest {
   @Test
   public void createReturnsPostedStaffPersonClass() throws Exception {
     String id = "ABC";
-    StaffPerson staffPersonDomain = MAPPER.readValue(
-        fixture("fixtures/domain/legacy/StaffPerson/valid/valid.json"), StaffPerson.class);
+    StaffPerson staffPersonDomain =
+        MAPPER.readValue(fixture("fixtures/domain/legacy/StaffPerson/valid/valid.json"),
+            StaffPerson.class);
     gov.ca.cwds.data.persistence.cms.StaffPerson toCreate =
         new gov.ca.cwds.data.persistence.cms.StaffPerson(id, staffPersonDomain, "2017-01-07");
 
@@ -214,8 +220,9 @@ public class StaffPersonServiceTest {
   @Test
   public void createReturnsNonNull() throws Exception {
     String id = "ABC";
-    StaffPerson staffPersonDomain = MAPPER.readValue(
-        fixture("fixtures/domain/legacy/StaffPerson/valid/valid.json"), StaffPerson.class);
+    StaffPerson staffPersonDomain =
+        MAPPER.readValue(fixture("fixtures/domain/legacy/StaffPerson/valid/valid.json"),
+            StaffPerson.class);
     gov.ca.cwds.data.persistence.cms.StaffPerson toCreate =
         new gov.ca.cwds.data.persistence.cms.StaffPerson(id, staffPersonDomain, "2017-01-07");
 
@@ -233,8 +240,9 @@ public class StaffPersonServiceTest {
   @Test
   public void createReturnsCorrectPostedPerson() throws Exception {
     String id = "ABC";
-    StaffPerson staffPersonDomain = MAPPER.readValue(
-        fixture("fixtures/domain/legacy/StaffPerson/valid/valid.json"), StaffPerson.class);
+    StaffPerson staffPersonDomain =
+        MAPPER.readValue(fixture("fixtures/domain/legacy/StaffPerson/valid/valid.json"),
+            StaffPerson.class);
     gov.ca.cwds.data.persistence.cms.StaffPerson toCreate =
         new gov.ca.cwds.data.persistence.cms.StaffPerson(id, staffPersonDomain, "2017-01-07");
 
@@ -254,8 +262,9 @@ public class StaffPersonServiceTest {
   @Test
   public void failsWhenPostedStaffPersonIdBlank() throws Exception {
     try {
-      StaffPerson staffPersonDomain = MAPPER.readValue(
-          fixture("fixtures/domain/legacy/StaffPerson/valid/valid.json"), StaffPerson.class);
+      StaffPerson staffPersonDomain =
+          MAPPER.readValue(fixture("fixtures/domain/legacy/StaffPerson/valid/valid.json"),
+              StaffPerson.class);
       gov.ca.cwds.data.persistence.cms.StaffPerson toCreate =
           new gov.ca.cwds.data.persistence.cms.StaffPerson("   ", staffPersonDomain, "2017-01-07");
 
@@ -274,8 +283,9 @@ public class StaffPersonServiceTest {
   @Test
   public void failsWhenPostedStaffPersonIdNull() throws Exception {
     try {
-      StaffPerson staffPersonDomain = MAPPER.readValue(
-          fixture("fixtures/domain/legacy/StaffPerson/valid/valid.json"), StaffPerson.class);
+      StaffPerson staffPersonDomain =
+          MAPPER.readValue(fixture("fixtures/domain/legacy/StaffPerson/valid/valid.json"),
+              StaffPerson.class);
       gov.ca.cwds.data.persistence.cms.StaffPerson toCreate =
           new gov.ca.cwds.data.persistence.cms.StaffPerson(null, staffPersonDomain, "2017-01-07");
 
@@ -294,8 +304,9 @@ public class StaffPersonServiceTest {
   @Test
   public void failsWhenPostedStaffPersonIdEmmpty() throws Exception {
     try {
-      StaffPerson staffPersonDomain = MAPPER.readValue(
-          fixture("fixtures/domain/legacy/StaffPerson/valid/valid.json"), StaffPerson.class);
+      StaffPerson staffPersonDomain =
+          MAPPER.readValue(fixture("fixtures/domain/legacy/StaffPerson/valid/valid.json"),
+              StaffPerson.class);
       gov.ca.cwds.data.persistence.cms.StaffPerson toCreate =
           new gov.ca.cwds.data.persistence.cms.StaffPerson("", staffPersonDomain, "2017-01-07");
 

@@ -41,6 +41,8 @@ public class ReferralClientService implements CrudsService {
   private LACountyTrigger laCountyTrigger;
   private TriggerTablesDao triggerTablesDao;
   private StaffPersonDao staffpersonDao;
+  private StaffPersonIdRetriever staffPersonIdRetriever;
+
 
   /**
    * Constructor
@@ -55,16 +57,19 @@ public class ReferralClientService implements CrudsService {
    *        {@link gov.ca.cwds.data.rules.TriggerTablesDao} objects
    * @param staffpersonDao The {@link Dao} handling
    *        {@link gov.ca.cwds.data.persistence.cms.StaffPerson} objects
+   * @param staffPersonIdRetriever the staffPersonIdRetriever
    */
   @Inject
   public ReferralClientService(ReferralClientDao referralClientDao,
       NonLACountyTriggers nonLaTriggers, LACountyTrigger laCountyTrigger,
-      TriggerTablesDao triggerTablesDao, StaffPersonDao staffpersonDao) {
+      TriggerTablesDao triggerTablesDao, StaffPersonDao staffpersonDao,
+      StaffPersonIdRetriever staffPersonIdRetriever) {
     this.referralClientDao = referralClientDao;
     this.nonLaTriggers = nonLaTriggers;
     this.laCountyTrigger = laCountyTrigger;
     this.triggerTablesDao = triggerTablesDao;
     this.staffpersonDao = staffpersonDao;
+    this.staffPersonIdRetriever = staffPersonIdRetriever;
   }
 
   /**
@@ -109,7 +114,7 @@ public class ReferralClientService implements CrudsService {
         (gov.ca.cwds.rest.api.domain.cms.ReferralClient) request;
 
     try {
-      String lastUpdatedId = new StaffPersonIdRetriever().getStaffPersonId();
+      String lastUpdatedId = staffPersonIdRetriever.getStaffPersonId();
       ReferralClient managed = new ReferralClient(referralClient, lastUpdatedId);
       managed = referralClientDao.create(managed);
       // checking the staffPerson county code

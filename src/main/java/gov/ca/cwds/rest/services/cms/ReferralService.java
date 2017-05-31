@@ -38,6 +38,7 @@ public class ReferralService implements CrudsService {
   private LACountyTrigger laCountyTrigger;
   private TriggerTablesDao triggerTablesDao;
   private StaffPersonDao staffpersonDao;
+  private StaffPersonIdRetriever staffPersonIdRetriever;
 
   /**
    * Constructor
@@ -52,16 +53,18 @@ public class ReferralService implements CrudsService {
    *        {@link gov.ca.cwds.data.rules.TriggerTablesDao} objects
    * @param staffpersonDao The {@link Dao} handling
    *        {@link gov.ca.cwds.data.persistence.cms.StaffPerson} objects
+   * @param staffPersonIdRetriever the staffPersonIdRetriever
    */
   @Inject
   public ReferralService(final ReferralDao referralDao, NonLACountyTriggers nonLaTriggers,
       LACountyTrigger laCountyTrigger, TriggerTablesDao triggerTablesDao,
-      StaffPersonDao staffpersonDao) {
+      StaffPersonDao staffpersonDao, StaffPersonIdRetriever staffPersonIdRetriever) {
     this.referralDao = referralDao;
     this.nonLaTriggers = nonLaTriggers;
     this.laCountyTrigger = laCountyTrigger;
     this.triggerTablesDao = triggerTablesDao;
     this.staffpersonDao = staffpersonDao;
+    this.staffPersonIdRetriever = staffPersonIdRetriever;
   }
 
   /**
@@ -108,7 +111,7 @@ public class ReferralService implements CrudsService {
         (gov.ca.cwds.rest.api.domain.cms.Referral) request;
 
     try {
-      String lastUpdatedId = new StaffPersonIdRetriever().getStaffPersonId();
+      String lastUpdatedId = staffPersonIdRetriever.getStaffPersonId();
       Referral managed =
           new Referral(CmsKeyIdGenerator.cmsIdGenertor(lastUpdatedId), referral, lastUpdatedId);
       managed = referralDao.create(managed);
@@ -142,7 +145,7 @@ public class ReferralService implements CrudsService {
         (gov.ca.cwds.rest.api.domain.cms.Referral) request;
 
     try {
-      String lastUpdatedId = new StaffPersonIdRetriever().getStaffPersonId();
+      String lastUpdatedId = staffPersonIdRetriever.getStaffPersonId();
       Referral managed = new Referral((String) primaryKey, referral, lastUpdatedId);
       managed = referralDao.update(managed);
       // checking the staffPerson county code

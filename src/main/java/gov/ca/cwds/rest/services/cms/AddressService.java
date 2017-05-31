@@ -26,13 +26,17 @@ public class AddressService implements CrudsService {
   private static final Logger LOGGER = LoggerFactory.getLogger(ClientService.class);
 
   private AddressDao addressDao;
+  private StaffPersonIdRetriever staffPersonIdRetriever;
 
   /**
-   * @param addressDao address DAO
+   * 
+   * @param addressDao the address DAO
+   * @param staffPersonIdRetriever the staffPersonIdRetriever
    */
   @Inject
-  public AddressService(AddressDao addressDao) {
+  public AddressService(AddressDao addressDao, StaffPersonIdRetriever staffPersonIdRetriever) {
     this.addressDao = addressDao;
+    this.staffPersonIdRetriever = staffPersonIdRetriever;
   }
 
   @Override
@@ -43,7 +47,7 @@ public class AddressService implements CrudsService {
         (gov.ca.cwds.rest.api.domain.cms.Address) request;
 
     try {
-      String lastUpdatedId = new StaffPersonIdRetriever().getStaffPersonId();
+      String lastUpdatedId = staffPersonIdRetriever.getStaffPersonId();
       Address managed =
           new Address(CmsKeyIdGenerator.cmsIdGenertor(lastUpdatedId), address, lastUpdatedId);
       managed = addressDao.create(managed);
@@ -86,7 +90,7 @@ public class AddressService implements CrudsService {
         (gov.ca.cwds.rest.api.domain.cms.Address) request;
 
     try {
-      String lastUpdatedId = new StaffPersonIdRetriever().getStaffPersonId();
+      String lastUpdatedId = staffPersonIdRetriever.getStaffPersonId();
       Address managed = new Address((String) primaryKey, address, lastUpdatedId);
       managed = addressDao.update(managed);
       return new gov.ca.cwds.rest.api.domain.cms.Address(managed, true);
