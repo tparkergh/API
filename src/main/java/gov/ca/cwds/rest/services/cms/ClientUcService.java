@@ -1,5 +1,12 @@
 package gov.ca.cwds.rest.services.cms;
 
+import gov.ca.cwds.data.Dao;
+import gov.ca.cwds.data.cms.ClientUcDao;
+import gov.ca.cwds.data.persistence.cms.ClientUc;
+import gov.ca.cwds.rest.api.Request;
+import gov.ca.cwds.rest.services.CrudsService;
+import gov.ca.cwds.rest.services.ServiceException;
+
 import java.io.Serializable;
 
 import javax.persistence.EntityExistsException;
@@ -9,13 +16,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.google.inject.Inject;
-
-import gov.ca.cwds.data.Dao;
-import gov.ca.cwds.data.cms.ClientUcDao;
-import gov.ca.cwds.data.persistence.cms.ClientUc;
-import gov.ca.cwds.rest.api.Request;
-import gov.ca.cwds.rest.services.CrudsService;
-import gov.ca.cwds.rest.services.ServiceException;
 
 /**
  * 
@@ -83,7 +83,8 @@ public class ClientUcService implements CrudsService {
         (gov.ca.cwds.rest.api.domain.cms.ClientUc) request;
 
     try {
-      ClientUc managed = new ClientUc(clientUc, "q1p");
+      String lastUpdatedId = new StaffPersonIdRetriever().getStaffPersonId();
+      ClientUc managed = new ClientUc(clientUc, lastUpdatedId);
       managed = clientucDao.create(managed); // NOSONAR
       return mockDomain;
     } catch (EntityExistsException e) {
@@ -105,7 +106,8 @@ public class ClientUcService implements CrudsService {
         (gov.ca.cwds.rest.api.domain.cms.ClientUc) request;
 
     try {
-      ClientUc managed = new ClientUc(clientUc, "q1p");
+      String lastUpdatedId = new StaffPersonIdRetriever().getStaffPersonId();
+      ClientUc managed = new ClientUc(clientUc, lastUpdatedId);
       managed = clientucDao.update(managed);
       return new gov.ca.cwds.rest.api.domain.cms.ClientUc(managed);
     } catch (EntityNotFoundException e) {

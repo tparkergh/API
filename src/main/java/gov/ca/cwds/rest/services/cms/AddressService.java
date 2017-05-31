@@ -1,5 +1,14 @@
 package gov.ca.cwds.rest.services.cms;
 
+import gov.ca.cwds.data.cms.AddressDao;
+import gov.ca.cwds.data.persistence.cms.Address;
+import gov.ca.cwds.data.persistence.cms.CmsKeyIdGenerator;
+import gov.ca.cwds.rest.api.Request;
+import gov.ca.cwds.rest.api.Response;
+import gov.ca.cwds.rest.api.domain.cms.PostedAddress;
+import gov.ca.cwds.rest.services.CrudsService;
+import gov.ca.cwds.rest.services.ServiceException;
+
 import java.io.Serializable;
 
 import javax.persistence.EntityExistsException;
@@ -9,15 +18,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.google.inject.Inject;
-
-import gov.ca.cwds.data.cms.AddressDao;
-import gov.ca.cwds.data.persistence.cms.Address;
-import gov.ca.cwds.data.persistence.cms.CmsKeyIdGenerator;
-import gov.ca.cwds.rest.api.Request;
-import gov.ca.cwds.rest.api.Response;
-import gov.ca.cwds.rest.api.domain.cms.PostedAddress;
-import gov.ca.cwds.rest.services.CrudsService;
-import gov.ca.cwds.rest.services.ServiceException;
 
 /**
  * @author CWDS API Team
@@ -43,22 +43,18 @@ public class AddressService implements CrudsService {
         (gov.ca.cwds.rest.api.domain.cms.Address) request;
 
     try {
-      // TODO : refactor to actually determine who is updating. 'q1p' for now - see user story
-      // #136737071 - Tech Debt: Legacy Service classes must use Staff ID for last update ID value
-      Address managed = new Address(CmsKeyIdGenerator.cmsIdGenertor(null), address, "q1p");
-
+      String lastUpdatedId = new StaffPersonIdRetriever().getStaffPersonId();
+      Address managed =
+          new Address(CmsKeyIdGenerator.cmsIdGenertor(lastUpdatedId), address, lastUpdatedId);
       managed = addressDao.create(managed);
       if (managed.getId() == null) {
         throw new ServiceException("Address ID cannot be null");
       }
-
       return new PostedAddress(managed, true);
-
     } catch (EntityExistsException e) {
       LOGGER.info("Address already exists : ()", address);
       throw new ServiceException(e);
     }
-
   }
 
   @Override
@@ -90,7 +86,8 @@ public class AddressService implements CrudsService {
         (gov.ca.cwds.rest.api.domain.cms.Address) request;
 
     try {
-      Address managed = new Address((String) primaryKey, address, "q1p");
+      String lastUpdatedId = new StaffPersonIdRetriever().getStaffPersonId();
+      Address managed = new Address((String) primaryKey, address, lastUpdatedId);
       managed = addressDao.update(managed);
       return new gov.ca.cwds.rest.api.domain.cms.Address(managed, true);
     } catch (EntityNotFoundException e) {
@@ -98,4 +95,5 @@ public class AddressService implements CrudsService {
       throw new ServiceException(e);
     }
   }
+
 }

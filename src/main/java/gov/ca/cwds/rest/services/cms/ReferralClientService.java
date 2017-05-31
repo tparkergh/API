@@ -1,16 +1,5 @@
 package gov.ca.cwds.rest.services.cms;
 
-import java.io.Serializable;
-import java.util.Map;
-
-import javax.persistence.EntityExistsException;
-import javax.persistence.EntityNotFoundException;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import com.google.inject.Inject;
-
 import gov.ca.cwds.data.Dao;
 import gov.ca.cwds.data.cms.ReferralClientDao;
 import gov.ca.cwds.data.cms.StaffPersonDao;
@@ -23,6 +12,17 @@ import gov.ca.cwds.rest.business.rules.NonLACountyTriggers;
 import gov.ca.cwds.rest.services.CrudsService;
 import gov.ca.cwds.rest.services.ServiceException;
 import gov.ca.cwds.rest.util.ServiceUtils;
+
+import java.io.Serializable;
+import java.util.Map;
+
+import javax.persistence.EntityExistsException;
+import javax.persistence.EntityNotFoundException;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import com.google.inject.Inject;
 
 /**
  * Business layer object to work on {@link ReferralClient}
@@ -109,10 +109,8 @@ public class ReferralClientService implements CrudsService {
         (gov.ca.cwds.rest.api.domain.cms.ReferralClient) request;
 
     try {
-      // TODO : refactor to actually determine who is updating. 'q1p' for now - #136737071 - Tech
-      // Debt: Legacy Service classes must use Staff ID for last update ID value
-
-      ReferralClient managed = new ReferralClient(referralClient, "q1p");
+      String lastUpdatedId = new StaffPersonIdRetriever().getStaffPersonId();
+      ReferralClient managed = new ReferralClient(referralClient, lastUpdatedId);
       managed = referralClientDao.create(managed);
       // checking the staffPerson county code
       StaffPerson staffperson = staffpersonDao.find(managed.getLastUpdatedId());
