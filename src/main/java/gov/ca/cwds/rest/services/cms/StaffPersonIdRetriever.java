@@ -9,7 +9,7 @@ public class StaffPersonIdRetriever {
   /**
    * Retrieves the Staff Person Id of the current user
    * 
-   * @return the last updated id, Staff Person Id of the current user
+   * @return the last updated id for persistence, this is the Staff Person Id of the current user
    */
   public String getStaffPersonId() {
     String staffPersonId = "0X5";

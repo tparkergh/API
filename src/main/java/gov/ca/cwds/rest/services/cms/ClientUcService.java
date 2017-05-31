@@ -25,6 +25,7 @@ public class ClientUcService implements CrudsService {
   private static final Logger LOGGER = LoggerFactory.getLogger(ClientUcService.class);
 
   private ClientUcDao clientucDao;
+  private StaffPersonIdRetriever staffPersonIdRetriever;
   private gov.ca.cwds.rest.api.domain.cms.ClientUc mockDomain;
 
   /**
@@ -32,10 +33,13 @@ public class ClientUcService implements CrudsService {
    * 
    * @param clientucDao The {@link Dao} handling {@link gov.ca.cwds.data.persistence.cms.ClientUc}
    *        objects.
+   * @param staffPersonIdRetriever the staffPersonIdRetriever
+   * 
    */
   @Inject
-  public ClientUcService(ClientUcDao clientucDao) {
+  public ClientUcService(ClientUcDao clientucDao, StaffPersonIdRetriever staffPersonIdRetriever) {
     this.clientucDao = clientucDao;
+    this.staffPersonIdRetriever = staffPersonIdRetriever;
   }
 
   /**
@@ -83,7 +87,7 @@ public class ClientUcService implements CrudsService {
         (gov.ca.cwds.rest.api.domain.cms.ClientUc) request;
 
     try {
-      String lastUpdatedId = new StaffPersonIdRetriever().getStaffPersonId();
+      String lastUpdatedId = staffPersonIdRetriever.getStaffPersonId();
       ClientUc managed = new ClientUc(clientUc, lastUpdatedId);
       managed = clientucDao.create(managed); // NOSONAR
       return mockDomain;
@@ -106,7 +110,7 @@ public class ClientUcService implements CrudsService {
         (gov.ca.cwds.rest.api.domain.cms.ClientUc) request;
 
     try {
-      String lastUpdatedId = new StaffPersonIdRetriever().getStaffPersonId();
+      String lastUpdatedId = staffPersonIdRetriever.getStaffPersonId();
       ClientUc managed = new ClientUc(clientUc, lastUpdatedId);
       managed = clientucDao.update(managed);
       return new gov.ca.cwds.rest.api.domain.cms.ClientUc(managed);

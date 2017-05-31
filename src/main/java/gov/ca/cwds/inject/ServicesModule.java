@@ -1,13 +1,5 @@
 package gov.ca.cwds.inject;
 
-import javax.validation.Validation;
-import javax.validation.Validator;
-
-import com.google.inject.AbstractModule;
-import com.google.inject.Inject;
-import com.google.inject.Provides;
-import com.google.inject.matcher.Matchers;
-
 import gov.ca.cwds.data.CmsSystemCodeSerializer;
 import gov.ca.cwds.data.persistence.cms.ApiSystemCodeCache;
 import gov.ca.cwds.data.persistence.cms.CmsSystemCodeCacheService;
@@ -27,6 +19,7 @@ import gov.ca.cwds.rest.services.cms.CrossReportService;
 import gov.ca.cwds.rest.services.cms.ReferralClientService;
 import gov.ca.cwds.rest.services.cms.ReferralService;
 import gov.ca.cwds.rest.services.cms.ReporterService;
+import gov.ca.cwds.rest.services.cms.StaffPersonIdRetriever;
 import gov.ca.cwds.rest.services.cms.StaffPersonService;
 import gov.ca.cwds.rest.services.cms.SystemCodeService;
 import gov.ca.cwds.rest.services.es.AutoCompletePersonService;
@@ -35,6 +28,14 @@ import io.dropwizard.hibernate.HibernateBundle;
 import io.dropwizard.hibernate.UnitOfWork;
 import io.dropwizard.hibernate.UnitOfWorkAspect;
 import io.dropwizard.hibernate.UnitOfWorkAwareProxyFactory;
+
+import javax.validation.Validation;
+import javax.validation.Validator;
+
+import com.google.inject.AbstractModule;
+import com.google.inject.Inject;
+import com.google.inject.Provides;
+import com.google.inject.matcher.Matchers;
 
 /**
  * Identifies all CWDS API business layer (aka, service) classes available for dependency injection
@@ -110,6 +111,7 @@ public class ServicesModule extends AbstractModule {
     bind(IndexQueryService.class);
     bind(ClientUcService.class);
     bind(SystemCodeService.class);
+    bind(StaffPersonIdRetriever.class);
 
     // Register CMS system code translator.
     bind(ApiSystemCodeCache.class).to(CmsSystemCodeCacheService.class).asEagerSingleton();

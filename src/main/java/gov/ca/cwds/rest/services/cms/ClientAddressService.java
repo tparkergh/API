@@ -35,6 +35,7 @@ public class ClientAddressService implements CrudsService {
   private StaffPersonDao staffpersonDao;
   private TriggerTablesDao triggerTablesDao;
   private LACountyTrigger laCountyTrigger;
+  private StaffPersonIdRetriever staffPersonIdRetriever;
 
   /**
    * Constructor
@@ -47,14 +48,17 @@ public class ClientAddressService implements CrudsService {
    *        {@link gov.ca.cwds.data.rules.TriggerTablesDao} objects
    * @param staffpersonDao The {@link Dao} handling
    *        {@link gov.ca.cwds.data.persistence.cms.StaffPerson} objects
+   * @param staffPersonIdRetriever the staffPersonIdRetriever
    */
   @Inject
   public ClientAddressService(ClientAddressDao clientAddressDao, StaffPersonDao staffpersonDao,
-      TriggerTablesDao triggerTablesDao, LACountyTrigger laCountyTrigger) {
+      TriggerTablesDao triggerTablesDao, LACountyTrigger laCountyTrigger,
+      StaffPersonIdRetriever staffPersonIdRetriever) {
     this.clientAddressDao = clientAddressDao;
     this.staffpersonDao = staffpersonDao;
     this.triggerTablesDao = triggerTablesDao;
     this.laCountyTrigger = laCountyTrigger;
+    this.staffPersonIdRetriever = staffPersonIdRetriever;
   }
 
   @Override
@@ -112,7 +116,7 @@ public class ClientAddressService implements CrudsService {
         (gov.ca.cwds.rest.api.domain.cms.ClientAddress) request;
 
     try {
-      String lastUpdatedId = new StaffPersonIdRetriever().getStaffPersonId();
+      String lastUpdatedId = staffPersonIdRetriever.getStaffPersonId();
       ClientAddress managed = new ClientAddress((String) primaryKey, clientAddress, lastUpdatedId);
       // checking the staffPerson county code
       StaffPerson staffperson = staffpersonDao.find(managed.getLastUpdatedId());

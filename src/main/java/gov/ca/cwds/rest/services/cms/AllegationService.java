@@ -29,16 +29,20 @@ public class AllegationService implements CrudsService {
   private static final Logger LOGGER = LoggerFactory.getLogger(AllegationService.class);
 
   private AllegationDao allegationDao;
+  private StaffPersonIdRetriever staffPersonIdRetriever;
 
   /**
    * Constructor
    * 
    * @param allegationDao The {@link Dao} handling
    *        {@link gov.ca.cwds.data.persistence.cms.Allegation} objects.
+   * @param staffPersonIdRetriever the staffPersonIdRetriever
    */
   @Inject
-  public AllegationService(AllegationDao allegationDao) {
+  public AllegationService(AllegationDao allegationDao,
+      StaffPersonIdRetriever staffPersonIdRetriever) {
     this.allegationDao = allegationDao;
+    this.staffPersonIdRetriever = staffPersonIdRetriever;
   }
 
   /**
@@ -87,7 +91,7 @@ public class AllegationService implements CrudsService {
         (gov.ca.cwds.rest.api.domain.cms.Allegation) request;
 
     try {
-      String lastUpdatedId = new StaffPersonIdRetriever().getStaffPersonId();
+      String lastUpdatedId = staffPersonIdRetriever.getStaffPersonId();
       Allegation managed =
           new Allegation(CmsKeyIdGenerator.cmsIdGenertor(lastUpdatedId), allegation, lastUpdatedId);
       managed = allegationDao.create(managed);
@@ -112,7 +116,7 @@ public class AllegationService implements CrudsService {
         (gov.ca.cwds.rest.api.domain.cms.Allegation) request;
 
     try {
-      String lastUpdatedId = new StaffPersonIdRetriever().getStaffPersonId();
+      String lastUpdatedId = staffPersonIdRetriever.getStaffPersonId();
       Allegation managed = new Allegation((String) primaryKey, allegation, lastUpdatedId);
       managed = allegationDao.update(managed);
       return new gov.ca.cwds.rest.api.domain.cms.Allegation(managed);

@@ -7,18 +7,6 @@ import static org.hamcrest.Matchers.notNullValue;
 import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
-
-import java.util.LinkedHashSet;
-import java.util.Set;
-
-import org.junit.Before;
-import org.junit.Rule;
-import org.junit.Test;
-import org.junit.rules.ExpectedException;
-
-import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.ObjectMapper;
-
 import gov.ca.cwds.data.cms.AllegationDao;
 import gov.ca.cwds.data.cms.ClientDao;
 import gov.ca.cwds.data.cms.ClientUcDao;
@@ -46,6 +34,17 @@ import gov.ca.cwds.rest.business.rules.LACountyTrigger;
 import gov.ca.cwds.rest.business.rules.NonLACountyTriggers;
 import io.dropwizard.jackson.Jackson;
 
+import java.util.LinkedHashSet;
+import java.util.Set;
+
+import org.junit.Before;
+import org.junit.Rule;
+import org.junit.Test;
+import org.junit.rules.ExpectedException;
+
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
 @SuppressWarnings("javadoc")
 public class CmsReferralServiceTest {
   private static final ObjectMapper MAPPER = Jackson.newObjectMapper();
@@ -71,6 +70,7 @@ public class CmsReferralServiceTest {
   private NonLACountyTriggers nonLACountyTriggers;
   private LACountyTrigger laCountyTrigger;
   private TriggerTablesDao triggerTablesDao;
+  private StaffPersonIdRetriever staffPersonIdRetriever;
 
 
   @Rule
@@ -84,48 +84,54 @@ public class CmsReferralServiceTest {
     laCountyTrigger = mock(LACountyTrigger.class);
     triggerTablesDao = mock(TriggerTablesDao.class);
     staffpersonDao = mock(StaffPersonDao.class);
-    referralService = new ReferralService(referralDao, nonLACountyTriggers, laCountyTrigger,
-        triggerTablesDao, staffpersonDao);
+    staffPersonIdRetriever = mock(StaffPersonIdRetriever.class);
+    referralService =
+        new ReferralService(referralDao, nonLACountyTriggers, laCountyTrigger, triggerTablesDao,
+            staffpersonDao, staffPersonIdRetriever);
 
     clientDao = mock(ClientDao.class);
     staffpersonDao = mock(StaffPersonDao.class);
     triggerTablesDao = mock(TriggerTablesDao.class);
     nonLACountyTriggers = mock(NonLACountyTriggers.class);
     clientService =
-        new ClientService(clientDao, staffpersonDao, triggerTablesDao, nonLACountyTriggers);
+        new ClientService(clientDao, staffpersonDao, triggerTablesDao, nonLACountyTriggers,
+            staffPersonIdRetriever);
 
     referralClientDao = mock(ReferralClientDao.class);
     nonLACountyTriggers = mock(NonLACountyTriggers.class);
     laCountyTrigger = mock(LACountyTrigger.class);
     triggerTablesDao = mock(TriggerTablesDao.class);
     staffpersonDao = mock(StaffPersonDao.class);
-    referralClientService = new ReferralClientService(referralClientDao, nonLACountyTriggers,
-        laCountyTrigger, triggerTablesDao, staffpersonDao);
+    referralClientService =
+        new ReferralClientService(referralClientDao, nonLACountyTriggers, laCountyTrigger,
+            triggerTablesDao, staffpersonDao, staffPersonIdRetriever);
 
     allegationDao = mock(AllegationDao.class);
-    allegationService = new AllegationService(allegationDao);
+    allegationService = new AllegationService(allegationDao, staffPersonIdRetriever);
 
     crossReportDao = mock(CrossReportDao.class);
-    crossReportService = new CrossReportService(crossReportDao);
+    crossReportService = new CrossReportService(crossReportDao, staffPersonIdRetriever);
 
     reporterDao = mock(ReporterDao.class);
-    reporterService = new ReporterService(reporterDao);
+    reporterService = new ReporterService(reporterDao, staffPersonIdRetriever);
 
     clientUcDao = mock(ClientUcDao.class);
-    clientUcService = new ClientUcService(clientUcDao);
+    clientUcService = new ClientUcService(clientUcDao, staffPersonIdRetriever);
 
     clientUcDomain = mock(ClientUc.class);
 
     // cmsReferralDao = mock(CmsReferral.class);
-    cmsReferralService = new CmsReferralService(referralService, clientService, allegationService,
-        crossReportService, referralClientService, reporterService, clientUcService);
+    cmsReferralService =
+        new CmsReferralService(referralService, clientService, allegationService,
+            crossReportService, referralClientService, reporterService, clientUcService);
 
   }
 
   public Response cmsReferralServiceResponse() throws Exception {
 
-    Referral referralDomain = MAPPER.readValue(
-        fixture("fixtures/domain/cms/CmsReferral/valid/referralCmsReferral.json"), Referral.class);
+    Referral referralDomain =
+        MAPPER.readValue(fixture("fixtures/domain/cms/CmsReferral/valid/referralCmsReferral.json"),
+            Referral.class);
     gov.ca.cwds.data.persistence.cms.Referral referralToCreate =
         new gov.ca.cwds.data.persistence.cms.Referral("ABC1234567", referralDomain, "2016-10-31");
 
@@ -136,30 +142,34 @@ public class CmsReferralServiceTest {
         new gov.ca.cwds.data.persistence.cms.Client("ABC1234567",
             (Client) clientDomain.toArray()[0], "2016-10-31");
 
-    Set<ReferralClient> referralClientDomain = MAPPER.readValue(
-        fixture("fixtures/domain/cms/CmsReferral/valid/referralClientCmsReferral.json"),
-        new TypeReference<Set<ReferralClient>>() {});
+    Set<ReferralClient> referralClientDomain =
+        MAPPER.readValue(
+            fixture("fixtures/domain/cms/CmsReferral/valid/referralClientCmsReferral.json"),
+            new TypeReference<Set<ReferralClient>>() {});
     gov.ca.cwds.data.persistence.cms.ReferralClient referralClientToCreate =
         new gov.ca.cwds.data.persistence.cms.ReferralClient(
             (ReferralClient) referralClientDomain.toArray()[0], "2016-10-31");
 
-    Set<Allegation> allegationDomain = MAPPER.readValue(
-        fixture("fixtures/domain/cms/CmsReferral/valid/allegationCmsReferral.json"),
-        new TypeReference<Set<Allegation>>() {});
+    Set<Allegation> allegationDomain =
+        MAPPER.readValue(
+            fixture("fixtures/domain/cms/CmsReferral/valid/allegationCmsReferral.json"),
+            new TypeReference<Set<Allegation>>() {});
     gov.ca.cwds.data.persistence.cms.Allegation allegationToCreate =
         new gov.ca.cwds.data.persistence.cms.Allegation("ABC1234567",
             (Allegation) allegationDomain.toArray()[0], "2016-10-31");
 
-    Set<CrossReport> crossReportDomain = MAPPER.readValue(
-        fixture("fixtures/domain/cms/CmsReferral/valid/crossReportCmsReferral.json"),
-        new TypeReference<Set<CrossReport>>() {});
+    Set<CrossReport> crossReportDomain =
+        MAPPER.readValue(
+            fixture("fixtures/domain/cms/CmsReferral/valid/crossReportCmsReferral.json"),
+            new TypeReference<Set<CrossReport>>() {});
     gov.ca.cwds.data.persistence.cms.CrossReport crossReportToCreate =
         new gov.ca.cwds.data.persistence.cms.CrossReport("1234ABC123",
-            // ((CrossReport) crossReportDomain).getThirdId(),
+        // ((CrossReport) crossReportDomain).getThirdId(),
             (CrossReport) crossReportDomain.toArray()[0], "OXA");
 
-    Reporter reporterDomain = MAPPER.readValue(
-        fixture("fixtures/domain/cms/CmsReferral/valid/reporterCmsReferral.json"), Reporter.class);
+    Reporter reporterDomain =
+        MAPPER.readValue(fixture("fixtures/domain/cms/CmsReferral/valid/reporterCmsReferral.json"),
+            Reporter.class);
     gov.ca.cwds.data.persistence.cms.Reporter reporterToCreate =
         new gov.ca.cwds.data.persistence.cms.Reporter(reporterDomain, "OXA");
 
@@ -183,21 +193,22 @@ public class CmsReferralServiceTest {
 
     Reporter reporterRequest = new Reporter(reporterToCreate);
 
-    when(referralDao.create(any(gov.ca.cwds.data.persistence.cms.Referral.class)))
-        .thenReturn(referralToCreate);
-    when(clientDao.create(any(gov.ca.cwds.data.persistence.cms.Client.class)))
-        .thenReturn(clientToCreate);
+    when(referralDao.create(any(gov.ca.cwds.data.persistence.cms.Referral.class))).thenReturn(
+        referralToCreate);
+    when(clientDao.create(any(gov.ca.cwds.data.persistence.cms.Client.class))).thenReturn(
+        clientToCreate);
     when(referralClientDao.create(any(gov.ca.cwds.data.persistence.cms.ReferralClient.class)))
         .thenReturn(referralClientToCreate);
-    when(allegationDao.create(any(gov.ca.cwds.data.persistence.cms.Allegation.class)))
-        .thenReturn(allegationToCreate);
+    when(allegationDao.create(any(gov.ca.cwds.data.persistence.cms.Allegation.class))).thenReturn(
+        allegationToCreate);
     when(crossReportDao.create(any(gov.ca.cwds.data.persistence.cms.CrossReport.class)))
         .thenReturn(crossReportToCreate);
-    when(reporterDao.create(any(gov.ca.cwds.data.persistence.cms.Reporter.class)))
-        .thenReturn(reporterToCreate);
+    when(reporterDao.create(any(gov.ca.cwds.data.persistence.cms.Reporter.class))).thenReturn(
+        reporterToCreate);
 
-    CmsReferral cmsReferral = new CmsReferral(referralRequest, clientRequestSet,
-        allegationRequestSet, crossReportRequestSet, referralClientRequestSet, reporterRequest);
+    CmsReferral cmsReferral =
+        new CmsReferral(referralRequest, clientRequestSet, allegationRequestSet,
+            crossReportRequestSet, referralClientRequestSet, reporterRequest);
 
     Response response = cmsReferralService.create(cmsReferral);
 
@@ -230,8 +241,9 @@ public class CmsReferralServiceTest {
   @Test
   public void createReturnsNonNull() throws Exception {
 
-    Referral referralDomain = MAPPER.readValue(
-        fixture("fixtures/domain/cms/CmsReferral/valid/referralCmsReferral.json"), Referral.class);
+    Referral referralDomain =
+        MAPPER.readValue(fixture("fixtures/domain/cms/CmsReferral/valid/referralCmsReferral.json"),
+            Referral.class);
     gov.ca.cwds.data.persistence.cms.Referral referralToCreate =
         new gov.ca.cwds.data.persistence.cms.Referral("ABC1234567", referralDomain, "2016-10-31");
 
@@ -242,29 +254,33 @@ public class CmsReferralServiceTest {
         new gov.ca.cwds.data.persistence.cms.Client("ABC1234567",
             (Client) clientDomain.toArray()[0], "2016-10-31");
 
-    Set<ReferralClient> referralClientDomain = MAPPER.readValue(
-        fixture("fixtures/domain/cms/CmsReferral/valid/referralClientCmsReferral.json"),
-        new TypeReference<Set<ReferralClient>>() {});
+    Set<ReferralClient> referralClientDomain =
+        MAPPER.readValue(
+            fixture("fixtures/domain/cms/CmsReferral/valid/referralClientCmsReferral.json"),
+            new TypeReference<Set<ReferralClient>>() {});
     gov.ca.cwds.data.persistence.cms.ReferralClient referralClientToCreate =
         new gov.ca.cwds.data.persistence.cms.ReferralClient(
             (ReferralClient) referralClientDomain.toArray()[0], "2016-10-31");
 
-    Set<Allegation> allegationDomain = MAPPER.readValue(
-        fixture("fixtures/domain/cms/CmsReferral/valid/allegationCmsReferral.json"),
-        new TypeReference<Set<Allegation>>() {});
+    Set<Allegation> allegationDomain =
+        MAPPER.readValue(
+            fixture("fixtures/domain/cms/CmsReferral/valid/allegationCmsReferral.json"),
+            new TypeReference<Set<Allegation>>() {});
     gov.ca.cwds.data.persistence.cms.Allegation allegationToCreate =
         new gov.ca.cwds.data.persistence.cms.Allegation("ABC1234567",
             (Allegation) allegationDomain.toArray()[0], "2016-10-31");
 
-    Set<CrossReport> crossReportDomain = MAPPER.readValue(
-        fixture("fixtures/domain/cms/CmsReferral/valid/crossReportCmsReferral.json"),
-        new TypeReference<Set<CrossReport>>() {});
+    Set<CrossReport> crossReportDomain =
+        MAPPER.readValue(
+            fixture("fixtures/domain/cms/CmsReferral/valid/crossReportCmsReferral.json"),
+            new TypeReference<Set<CrossReport>>() {});
     gov.ca.cwds.data.persistence.cms.CrossReport crossReportToCreate =
         new gov.ca.cwds.data.persistence.cms.CrossReport("1234ABC123",
             (CrossReport) crossReportDomain.toArray()[0], "2016-10-31");
 
-    Reporter reporterDomain = MAPPER.readValue(
-        fixture("fixtures/domain/cms/CmsReferral/valid/reporterCmsReferral.json"), Reporter.class);
+    Reporter reporterDomain =
+        MAPPER.readValue(fixture("fixtures/domain/cms/CmsReferral/valid/reporterCmsReferral.json"),
+            Reporter.class);
     gov.ca.cwds.data.persistence.cms.Reporter reporterToCreate =
         new gov.ca.cwds.data.persistence.cms.Reporter(reporterDomain, "2016-10-31");
 
@@ -287,21 +303,22 @@ public class CmsReferralServiceTest {
 
     Reporter reporterRequest = new Reporter(reporterToCreate);
 
-    CmsReferral cmsReferralToCreate = new CmsReferral(referralRequest, clientRequestSet,
-        allegationRequestSet, crossReportRequestSet, referralClientRequestSet, reporterRequest);
+    CmsReferral cmsReferralToCreate =
+        new CmsReferral(referralRequest, clientRequestSet, allegationRequestSet,
+            crossReportRequestSet, referralClientRequestSet, reporterRequest);
 
-    when(referralDao.create(any(gov.ca.cwds.data.persistence.cms.Referral.class)))
-        .thenReturn(referralToCreate);
-    when(clientDao.create(any(gov.ca.cwds.data.persistence.cms.Client.class)))
-        .thenReturn(clientToCreate);
+    when(referralDao.create(any(gov.ca.cwds.data.persistence.cms.Referral.class))).thenReturn(
+        referralToCreate);
+    when(clientDao.create(any(gov.ca.cwds.data.persistence.cms.Client.class))).thenReturn(
+        clientToCreate);
     when(referralClientDao.create(any(gov.ca.cwds.data.persistence.cms.ReferralClient.class)))
         .thenReturn(referralClientToCreate);
-    when(allegationDao.create(any(gov.ca.cwds.data.persistence.cms.Allegation.class)))
-        .thenReturn(allegationToCreate);
+    when(allegationDao.create(any(gov.ca.cwds.data.persistence.cms.Allegation.class))).thenReturn(
+        allegationToCreate);
     when(crossReportDao.create(any(gov.ca.cwds.data.persistence.cms.CrossReport.class)))
         .thenReturn(crossReportToCreate);
-    when(reporterDao.create(any(gov.ca.cwds.data.persistence.cms.Reporter.class)))
-        .thenReturn(reporterToCreate);
+    when(reporterDao.create(any(gov.ca.cwds.data.persistence.cms.Reporter.class))).thenReturn(
+        reporterToCreate);
 
     CmsReferralService cmsReferralRequest =
         new CmsReferralService(referralService, clientService, allegationService,
@@ -315,34 +332,39 @@ public class CmsReferralServiceTest {
   @Test
   public void createReturnsCorrectPostedCmsReferral() throws Exception {
 
-    Referral referralDomain = MAPPER.readValue(
-        fixture("fixtures/domain/cms/CmsReferral/valid/referralCmsReferral.json"), Referral.class);
+    Referral referralDomain =
+        MAPPER.readValue(fixture("fixtures/domain/cms/CmsReferral/valid/referralCmsReferral.json"),
+            Referral.class);
     gov.ca.cwds.data.persistence.cms.Referral referralToCreate =
         new gov.ca.cwds.data.persistence.cms.Referral("ABC1234567", referralDomain, "2016-10-31");
 
-    Set<ReferralClient> referralClientDomain = MAPPER.readValue(
-        fixture("fixtures/domain/cms/CmsReferral/valid/referralClientCmsReferral.json"),
-        new TypeReference<Set<ReferralClient>>() {});
+    Set<ReferralClient> referralClientDomain =
+        MAPPER.readValue(
+            fixture("fixtures/domain/cms/CmsReferral/valid/referralClientCmsReferral.json"),
+            new TypeReference<Set<ReferralClient>>() {});
     gov.ca.cwds.data.persistence.cms.ReferralClient referralClientToCreate =
         new gov.ca.cwds.data.persistence.cms.ReferralClient(
             (ReferralClient) referralClientDomain.toArray()[0], "2016-10-31");
 
-    Set<Allegation> allegationDomain = MAPPER.readValue(
-        fixture("fixtures/domain/cms/CmsReferral/valid/allegationCmsReferral.json"),
-        new TypeReference<Set<Allegation>>() {});
+    Set<Allegation> allegationDomain =
+        MAPPER.readValue(
+            fixture("fixtures/domain/cms/CmsReferral/valid/allegationCmsReferral.json"),
+            new TypeReference<Set<Allegation>>() {});
     gov.ca.cwds.data.persistence.cms.Allegation allegationToCreate =
         new gov.ca.cwds.data.persistence.cms.Allegation("ABC1234567",
             (Allegation) allegationDomain.toArray()[0], "2016-10-31");
 
-    Set<CrossReport> crossReportDomain = MAPPER.readValue(
-        fixture("fixtures/domain/cms/CmsReferral/valid/crossReportCmsReferral.json"),
-        new TypeReference<Set<CrossReport>>() {});
+    Set<CrossReport> crossReportDomain =
+        MAPPER.readValue(
+            fixture("fixtures/domain/cms/CmsReferral/valid/crossReportCmsReferral.json"),
+            new TypeReference<Set<CrossReport>>() {});
     gov.ca.cwds.data.persistence.cms.CrossReport crossReportToCreate =
         new gov.ca.cwds.data.persistence.cms.CrossReport("1234567ABC",
             (CrossReport) crossReportDomain.toArray()[0], "2016-10-31");
 
-    Reporter reporterDomain = MAPPER.readValue(
-        fixture("fixtures/domain/cms/CmsReferral/valid/reporterCmsReferral.json"), Reporter.class);
+    Reporter reporterDomain =
+        MAPPER.readValue(fixture("fixtures/domain/cms/CmsReferral/valid/reporterCmsReferral.json"),
+            Reporter.class);
     gov.ca.cwds.data.persistence.cms.Reporter reporterToCreate =
         new gov.ca.cwds.data.persistence.cms.Reporter(reporterDomain, "2016-10-31");
 
@@ -391,28 +413,30 @@ public class CmsReferralServiceTest {
     Set<PostedClient> postedClientSet = new LinkedHashSet<>();
     postedClientSet.add(postedClient);
 
-    when(referralDao.create(any(gov.ca.cwds.data.persistence.cms.Referral.class)))
-        .thenReturn(referralToCreate);
+    when(referralDao.create(any(gov.ca.cwds.data.persistence.cms.Referral.class))).thenReturn(
+        referralToCreate);
     when(referralClientDao.create(any(gov.ca.cwds.data.persistence.cms.ReferralClient.class)))
         .thenReturn(referralClientToCreate);
-    when(allegationDao.create(any(gov.ca.cwds.data.persistence.cms.Allegation.class)))
-        .thenReturn(allegationToCreate);
+    when(allegationDao.create(any(gov.ca.cwds.data.persistence.cms.Allegation.class))).thenReturn(
+        allegationToCreate);
     when(crossReportDao.create(any(gov.ca.cwds.data.persistence.cms.CrossReport.class)))
         .thenReturn(crossReportToCreate);
-    when(reporterDao.create(any(gov.ca.cwds.data.persistence.cms.Reporter.class)))
-        .thenReturn(reporterToCreate);
-    when(clientDao.create(any(gov.ca.cwds.data.persistence.cms.Client.class)))
-        .thenReturn(clientToCreate);
+    when(reporterDao.create(any(gov.ca.cwds.data.persistence.cms.Reporter.class))).thenReturn(
+        reporterToCreate);
+    when(clientDao.create(any(gov.ca.cwds.data.persistence.cms.Client.class))).thenReturn(
+        clientToCreate);
 
-    CmsReferral cmsReferralToCreate = new CmsReferral(referralRequest, clientRequestSet,
-        allegationRequestSet, crossReportRequestSet, referralClientRequestSet, reporterRequest);
+    CmsReferral cmsReferralToCreate =
+        new CmsReferral(referralRequest, clientRequestSet, allegationRequestSet,
+            crossReportRequestSet, referralClientRequestSet, reporterRequest);
 
     CmsReferralService cmsReferralRequest =
         new CmsReferralService(referralService, clientService, allegationService,
             crossReportService, referralClientService, reporterService, clientUcService);
 
-    PostedCmsReferral expected = new PostedCmsReferral(postedReferral, postedClientSet,
-        postedAllegationSet, postedCrossReportSet, postedReferralClientSet, postedReporter);
+    PostedCmsReferral expected =
+        new PostedCmsReferral(postedReferral, postedClientSet, postedAllegationSet,
+            postedCrossReportSet, postedReferralClientSet, postedReporter);
 
     PostedCmsReferral returned = (PostedCmsReferral) cmsReferralRequest.create(cmsReferralToCreate);
 

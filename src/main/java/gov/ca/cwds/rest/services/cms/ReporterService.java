@@ -27,16 +27,19 @@ public class ReporterService implements CrudsService {
   private static final Logger LOGGER = LoggerFactory.getLogger(ReporterService.class);
 
   private ReporterDao reporterDao;
+  private StaffPersonIdRetriever staffPersonIdRetriever;
 
   /**
    * Constructor
    * 
    * @param reporterDao The {@link Dao} handling {@link gov.ca.cwds.data.persistence.cms.Reporter}
    *        objects.
+   * @param staffPersonIdRetriever the staffPersonIdRetriever
    */
   @Inject
-  public ReporterService(ReporterDao reporterDao) {
+  public ReporterService(ReporterDao reporterDao, StaffPersonIdRetriever staffPersonIdRetriever) {
     this.reporterDao = reporterDao;
+    this.staffPersonIdRetriever = staffPersonIdRetriever;
   }
 
   /**
@@ -83,7 +86,7 @@ public class ReporterService implements CrudsService {
         (gov.ca.cwds.rest.api.domain.cms.Reporter) request;
 
     try {
-      String lastUpdatedId = new StaffPersonIdRetriever().getStaffPersonId();
+      String lastUpdatedId = staffPersonIdRetriever.getStaffPersonId();
       Reporter managed = new Reporter(reporter, lastUpdatedId);
       managed = reporterDao.create(managed);
       return new PostedReporter(managed);
@@ -107,7 +110,7 @@ public class ReporterService implements CrudsService {
         (gov.ca.cwds.rest.api.domain.cms.Reporter) request;
 
     try {
-      String lastUpdatedId = new StaffPersonIdRetriever().getStaffPersonId();
+      String lastUpdatedId = staffPersonIdRetriever.getStaffPersonId();
       Reporter managed = new Reporter(reporter, lastUpdatedId);
       managed = reporterDao.update(managed);
       return new gov.ca.cwds.rest.api.domain.cms.Reporter(managed);

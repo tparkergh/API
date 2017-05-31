@@ -11,6 +11,16 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
+import gov.ca.cwds.data.cms.ClientDao;
+import gov.ca.cwds.data.cms.StaffPersonDao;
+import gov.ca.cwds.data.rules.TriggerTablesDao;
+import gov.ca.cwds.rest.api.Response;
+import gov.ca.cwds.rest.api.domain.cms.Client;
+import gov.ca.cwds.rest.api.domain.cms.PostedClient;
+import gov.ca.cwds.rest.business.rules.NonLACountyTriggers;
+import gov.ca.cwds.rest.services.ServiceException;
+import gov.ca.cwds.rest.services.junit.template.ServiceTestTemplate;
+import io.dropwizard.jackson.Jackson;
 
 import javax.persistence.EntityNotFoundException;
 
@@ -24,17 +34,6 @@ import org.mockito.stubbing.Answer;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import gov.ca.cwds.data.cms.ClientDao;
-import gov.ca.cwds.data.cms.StaffPersonDao;
-import gov.ca.cwds.data.rules.TriggerTablesDao;
-import gov.ca.cwds.rest.api.Response;
-import gov.ca.cwds.rest.api.domain.cms.Client;
-import gov.ca.cwds.rest.api.domain.cms.PostedClient;
-import gov.ca.cwds.rest.business.rules.NonLACountyTriggers;
-import gov.ca.cwds.rest.services.ServiceException;
-import gov.ca.cwds.rest.services.junit.template.ServiceTestTemplate;
-import io.dropwizard.jackson.Jackson;
-
 /**
  * @author CWDS API Team
  *
@@ -46,6 +45,7 @@ public class ClientServiceTest implements ServiceTestTemplate {
   private StaffPersonDao staffpersonDao;
   private TriggerTablesDao triggerTablesDao;
   private NonLACountyTriggers nonLaCountyTriggers;
+  private StaffPersonIdRetriever staffPersonIdRetriever;
 
   @SuppressWarnings("javadoc")
   @Rule
@@ -58,8 +58,10 @@ public class ClientServiceTest implements ServiceTestTemplate {
     staffpersonDao = mock(StaffPersonDao.class);
     triggerTablesDao = mock(TriggerTablesDao.class);
     nonLaCountyTriggers = mock(NonLACountyTriggers.class);
+    staffPersonIdRetriever = mock(StaffPersonIdRetriever.class);
     clientService =
-        new ClientService(clientDao, staffpersonDao, triggerTablesDao, nonLaCountyTriggers);
+        new ClientService(clientDao, staffpersonDao, triggerTablesDao, nonLaCountyTriggers,
+            staffPersonIdRetriever);
   }
 
   // find test
@@ -79,8 +81,9 @@ public class ClientServiceTest implements ServiceTestTemplate {
   @Test
   public void testFindReturnsCorrectEntity() throws Exception {
     String id = "AaiU7IW0Rt";
-    Client expected = MAPPER
-        .readValue(fixture("fixtures/domain/legacy/Client/valid/serviceValid.json"), Client.class);
+    Client expected =
+        MAPPER.readValue(fixture("fixtures/domain/legacy/Client/valid/serviceValid.json"),
+            Client.class);
     gov.ca.cwds.data.persistence.cms.Client client =
         new gov.ca.cwds.data.persistence.cms.Client(id, expected, "04Z");
 
@@ -146,8 +149,9 @@ public class ClientServiceTest implements ServiceTestTemplate {
   @Test
   public void testUpdateReturnsCorrectEntity() throws Exception {
     String id = "Aaeae9r0F4";
-    Client expected = MAPPER
-        .readValue(fixture("fixtures/domain/legacy/Client/valid/serviceValid.json"), Client.class);
+    Client expected =
+        MAPPER.readValue(fixture("fixtures/domain/legacy/Client/valid/serviceValid.json"),
+            Client.class);
 
     gov.ca.cwds.data.persistence.cms.Client client =
         new gov.ca.cwds.data.persistence.cms.Client(id, expected, "ABC");
@@ -163,8 +167,9 @@ public class ClientServiceTest implements ServiceTestTemplate {
   @Test
   public void testUpdateThrowsExceptionWhenNotFound() throws Exception {
     try {
-      Client clientRequest = MAPPER.readValue(
-          fixture("fixtures/domain/legacy/Client/valid/serviceValid.json"), Client.class);
+      Client clientRequest =
+          MAPPER.readValue(fixture("fixtures/domain/legacy/Client/valid/serviceValid.json"),
+              Client.class);
 
       when(clientDao.update(any())).thenThrow(EntityNotFoundException.class);
 
@@ -194,8 +199,9 @@ public class ClientServiceTest implements ServiceTestTemplate {
   @Test
   public void testCreateReturnsPostedClass() throws Exception {
     String id = "Aaeae9r0F4";
-    Client clientDomain = MAPPER
-        .readValue(fixture("fixtures/domain/legacy/Client/valid/serviceValid.json"), Client.class);
+    Client clientDomain =
+        MAPPER.readValue(fixture("fixtures/domain/legacy/Client/valid/serviceValid.json"),
+            Client.class);
     gov.ca.cwds.data.persistence.cms.Client toCreate =
         new gov.ca.cwds.data.persistence.cms.Client(id, clientDomain, "q1p");
 
@@ -210,8 +216,9 @@ public class ClientServiceTest implements ServiceTestTemplate {
   @Test
   public void testCreateReturnsNonNull() throws Exception {
     String id = "Aaeae9r0F4";
-    Client clientDomain = MAPPER
-        .readValue(fixture("fixtures/domain/legacy/Client/valid/serviceValid.json"), Client.class);
+    Client clientDomain =
+        MAPPER.readValue(fixture("fixtures/domain/legacy/Client/valid/serviceValid.json"),
+            Client.class);
     gov.ca.cwds.data.persistence.cms.Client toCreate =
         new gov.ca.cwds.data.persistence.cms.Client(id, clientDomain, "q1p");
 
@@ -226,8 +233,9 @@ public class ClientServiceTest implements ServiceTestTemplate {
   @Test
   public void testCreateReturnsCorrectEntity() throws Exception {
     String id = "Aaeae9r0F4";
-    Client clientDomain = MAPPER
-        .readValue(fixture("fixtures/domain/legacy/Client/valid/serviceValid.json"), Client.class);
+    Client clientDomain =
+        MAPPER.readValue(fixture("fixtures/domain/legacy/Client/valid/serviceValid.json"),
+            Client.class);
     gov.ca.cwds.data.persistence.cms.Client toCreate =
         new gov.ca.cwds.data.persistence.cms.Client(id, clientDomain, "q1p");
 
@@ -243,13 +251,14 @@ public class ClientServiceTest implements ServiceTestTemplate {
   @Test
   public void testCreateNullIDError() throws Exception {
     try {
-      Client clientDomain = MAPPER.readValue(
-          fixture("fixtures/domain/legacy/Client/valid/serviceValid.json"), Client.class);
+      Client clientDomain =
+          MAPPER.readValue(fixture("fixtures/domain/legacy/Client/valid/serviceValid.json"),
+              Client.class);
       gov.ca.cwds.data.persistence.cms.Client toCreate =
           new gov.ca.cwds.data.persistence.cms.Client(null, clientDomain, "ABC");
 
-      when(clientDao.create(any(gov.ca.cwds.data.persistence.cms.Client.class)))
-          .thenReturn(toCreate);
+      when(clientDao.create(any(gov.ca.cwds.data.persistence.cms.Client.class))).thenReturn(
+          toCreate);
 
     } catch (ServiceException e) {
       assertEquals("Client ID cannot be empty", e.getMessage());
@@ -262,13 +271,14 @@ public class ClientServiceTest implements ServiceTestTemplate {
   public void testCreateEmptyIDError() throws Exception {
 
     try {
-      Client clientDomain = MAPPER.readValue(
-          fixture("fixtures/domain/legacy/Client/valid/serviceValid.json"), Client.class);
+      Client clientDomain =
+          MAPPER.readValue(fixture("fixtures/domain/legacy/Client/valid/serviceValid.json"),
+              Client.class);
       gov.ca.cwds.data.persistence.cms.Client toCreate =
           new gov.ca.cwds.data.persistence.cms.Client("    ", clientDomain, "ABC");
 
-      when(clientDao.create(any(gov.ca.cwds.data.persistence.cms.Client.class)))
-          .thenReturn(toCreate);
+      when(clientDao.create(any(gov.ca.cwds.data.persistence.cms.Client.class))).thenReturn(
+          toCreate);
 
     } catch (ServiceException e) {
       assertEquals("Client ID cannot be empty", e.getMessage());
@@ -283,10 +293,11 @@ public class ClientServiceTest implements ServiceTestTemplate {
   @SuppressWarnings("javadoc")
   @Test
   public void createReturnsGeneratedId() throws Exception {
-    Client clientDomain = MAPPER
-        .readValue(fixture("fixtures/domain/legacy/Client/valid/serviceValid.json"), Client.class);
-    when(clientDao.create(any(gov.ca.cwds.data.persistence.cms.Client.class)))
-        .thenAnswer(new Answer<gov.ca.cwds.data.persistence.cms.Client>() {
+    Client clientDomain =
+        MAPPER.readValue(fixture("fixtures/domain/legacy/Client/valid/serviceValid.json"),
+            Client.class);
+    when(clientDao.create(any(gov.ca.cwds.data.persistence.cms.Client.class))).thenAnswer(
+        new Answer<gov.ca.cwds.data.persistence.cms.Client>() {
 
           @Override
           public gov.ca.cwds.data.persistence.cms.Client answer(InvocationOnMock invocation)

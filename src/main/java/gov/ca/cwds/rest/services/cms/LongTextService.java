@@ -29,17 +29,20 @@ public class LongTextService implements CrudsService {
   private static final Logger LOGGER = LoggerFactory.getLogger(LongTextService.class);
 
   private LongTextDao longTextDao;
+  private StaffPersonIdRetriever staffPersonIdRetriever;
 
   /**
    * Constructor
    * 
    * @param longTextDao {@link Dao} handling {@link gov.ca.cwds.data.persistence.cms.LongText}
    *        objects
+   * @param staffPersonIdRetriever the staffPersonIdRetriever
    */
   @Inject
-  public LongTextService(LongTextDao longTextDao) {
+  public LongTextService(LongTextDao longTextDao, StaffPersonIdRetriever staffPersonIdRetriever) {
     super();
     this.longTextDao = longTextDao;
+    this.staffPersonIdRetriever = staffPersonIdRetriever;
   }
 
   /**
@@ -86,7 +89,7 @@ public class LongTextService implements CrudsService {
         (gov.ca.cwds.rest.api.domain.cms.LongText) request;
 
     try {
-      String lastUpdatedId = new StaffPersonIdRetriever().getStaffPersonId();
+      String lastUpdatedId = staffPersonIdRetriever.getStaffPersonId();
       LongText managed =
           new LongText(CmsKeyIdGenerator.cmsIdGenertor(lastUpdatedId), longText, lastUpdatedId);
       managed = longTextDao.create(managed);
@@ -111,7 +114,7 @@ public class LongTextService implements CrudsService {
         (gov.ca.cwds.rest.api.domain.cms.LongText) request;
 
     try {
-      String lastUpdatedId = new StaffPersonIdRetriever().getStaffPersonId();
+      String lastUpdatedId = staffPersonIdRetriever.getStaffPersonId();
       LongText managed = new LongText((String) primaryKey, longText, lastUpdatedId);
       managed = longTextDao.update(managed);
       return new gov.ca.cwds.rest.api.domain.cms.LongText(managed);
