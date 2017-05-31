@@ -20,7 +20,7 @@ import gov.ca.cwds.data.persistence.cms.ReferralClient;
  * 
  * <p>
  * If the staffPerson is from the LA County, it will trigger the countyTrigger table with the
- * associated foreign key and updates the trigger table if the record is existing
+ * associated foreign key and the table will be cleared after the batch jobs run.
  * <p>
  * 
  * @author CWDS API Team
@@ -46,8 +46,8 @@ public class LACountyTrigger {
   }
 
   /**
-   * @param object The object
-   * @return the countyTrigger
+   * @param object The object creates the county Trigger for the Referral and referralClient
+   * @return the countyTrigger created
    */
   public boolean createCountyTrigger(Object object) {
     Referral referral;
@@ -84,8 +84,8 @@ public class LACountyTrigger {
   }
 
   /**
-   * @param object The object
-   * @return the CountyTrigger
+   * @param object The object creates the county Trigger for the clientAddress
+   * @return the CountyTrigger created
    */
   public boolean createClientAddressCountyTrigger(Object object) {
     ClientAddress clientAddress;
