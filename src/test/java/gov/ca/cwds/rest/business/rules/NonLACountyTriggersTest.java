@@ -42,14 +42,13 @@ public class NonLACountyTriggersTest {
   public ExpectedException thrown = ExpectedException.none();
 
   /**
-   * @throws Exception
+   * @throws Exception general test error
    */
   @Before
   public void setup() throws Exception {
     countyOwnershipDao = mock(CountyOwnershipDao.class);
     nonLaCountyTriggers = new NonLACountyTriggers(countyOwnershipDao);
     countyOwnership = null;
-
   }
 
   /*
