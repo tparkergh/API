@@ -5,6 +5,8 @@ import static org.hamcrest.core.Is.is;
 import static org.hamcrest.core.IsEqual.equalTo;
 import static org.junit.Assert.assertThat;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import javax.persistence.EntityExistsException;
@@ -20,7 +22,12 @@ import org.junit.Test;
 
 import gov.ca.cwds.data.junit.template.DaoTestTemplate;
 import gov.ca.cwds.data.persistence.cms.CountyTrigger;
+import gov.ca.cwds.data.persistence.cms.CountyTriggerEmbeddable;
 
+/**
+ * @author CWDS API Team
+ *
+ */
 public class CountyTriggerDaoIT implements DaoTestTemplate {
 
   private SessionFactory sessionFactory;
@@ -60,14 +67,23 @@ public class CountyTriggerDaoIT implements DaoTestTemplate {
   @Override
   @Test
   public void testFind() throws Exception {
-    CountyTrigger found = countyTriggerDao.find(countyOwnershipT);
-    assertThat(found.getCountyOwnershipT(), is(equalTo(countyOwnershipT)));
+    String timestamp = "2017-05-23 19:53:50.505";
+    CountyTriggerEmbeddable countyTriggerEmbeddable =
+        new CountyTriggerEmbeddable(countyOwnershipT, null);
+    DateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS");
+    Date date = formatter.parse(timestamp);
+    countyTriggerEmbeddable.setIntegratorTimeStamp(date);
+    CountyTrigger found = countyTriggerDao.find(countyTriggerEmbeddable);
+    assertThat(found.getCountyTriggerEmbeddable().getCountyOwnershipT(),
+        is(equalTo(countyOwnershipT)));
   }
 
   @Override
   @Test
   public void testFindEntityNotFoundException() throws Exception {
-    CountyTrigger found = countyTriggerDao.find("9999999KKK");
+    CountyTriggerEmbeddable countyTriggerEmbeddable =
+        new CountyTriggerEmbeddable("9999999KKK", null);
+    CountyTrigger found = countyTriggerDao.find(countyTriggerEmbeddable);
     assertThat(found, is(nullValue()));
   }
 
@@ -84,31 +100,46 @@ public class CountyTriggerDaoIT implements DaoTestTemplate {
   @Test
   public void testCreateExistingEntityException() throws Exception {
     thrown.expect(EntityExistsException.class);
-    CountyTrigger countyTrigger =
-        new CountyTrigger("Hzfdiu90X5", "62", "C", (Date) null, "REFR_CLT");
+    String timestamp = "2017-05-23 19:53:50.597";
+    DateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS");
+    Date date = formatter.parse(timestamp);
+    CountyTrigger countyTrigger = new CountyTrigger("Hzfdiu90X5", "62", "C", null, "REFR_CLT");
+    countyTrigger.getPrimaryKey().setIntegratorTimeStamp(date);
     countyTriggerDao.create(countyTrigger);
   }
 
   @Override
   @Test
   public void testDelete() throws Exception {
-    CountyTrigger deleted = countyTriggerDao.delete(countyOwnershipT);
-    assertThat(deleted.getCountyOwnershipT(), is(countyOwnershipT));
+    String timestamp = "2017-05-23 19:53:50.505";
+    CountyTriggerEmbeddable countyTriggerEmbeddable =
+        new CountyTriggerEmbeddable(countyOwnershipT, null);
+    DateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS");
+    Date date = formatter.parse(timestamp);
+    countyTriggerEmbeddable.setIntegratorTimeStamp(date);
+    CountyTrigger deleted = countyTriggerDao.delete(countyTriggerEmbeddable);
+    assertThat(deleted.getCountyTriggerEmbeddable().getCountyOwnershipT(), is(countyOwnershipT));
   }
 
   @Override
   @Test
   public void testDeleteEntityNotFoundException() throws Exception {
-    String countyOwnershipT = "ABC1234568";
-    CountyTrigger deleted = countyTriggerDao.delete(countyOwnershipT);
+    CountyTriggerEmbeddable countyTriggerEmbeddable =
+        new CountyTriggerEmbeddable("ABC1234568", null);
+    CountyTrigger deleted = countyTriggerDao.delete(countyTriggerEmbeddable);
     assertThat(deleted, is(nullValue()));
   }
 
   @Override
   @Test
   public void testUpdate() throws Exception {
-    CountyTrigger countyTrigger =
-        new CountyTrigger(countyOwnershipT, "61", "C", (Date) null, "REFR_CLT");
+    String timestamp = "2017-05-23 19:53:50.505";
+    CountyTriggerEmbeddable countyTriggerEmbeddable =
+        new CountyTriggerEmbeddable(countyOwnershipT, null);
+    DateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS");
+    Date date = formatter.parse(timestamp);
+    CountyTrigger countyTrigger = new CountyTrigger(countyOwnershipT, "61", "C", null, "REFR_CLT");
+    countyTrigger.getPrimaryKey().setIntegratorTimeStamp(date);
     CountyTrigger updated = countyTriggerDao.update(countyTrigger);
     assertThat(updated, is(countyTrigger));
   }

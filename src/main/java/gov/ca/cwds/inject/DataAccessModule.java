@@ -60,6 +60,7 @@ import gov.ca.cwds.data.persistence.cms.CmsDocumentBlobSegment;
 import gov.ca.cwds.data.persistence.cms.CollateralIndividual;
 import gov.ca.cwds.data.persistence.cms.CountyOwnership;
 import gov.ca.cwds.data.persistence.cms.CountyTrigger;
+import gov.ca.cwds.data.persistence.cms.CountyTriggerEmbeddable;
 import gov.ca.cwds.data.persistence.cms.CrossReport;
 import gov.ca.cwds.data.persistence.cms.EducationProviderContact;
 import gov.ca.cwds.data.persistence.cms.LongText;
@@ -127,8 +128,8 @@ public class DataAccessModule extends AbstractModule {
           ReferralClient.class, Reporter.class, ServiceProvider.class, StaffPerson.class,
           SubstituteCareProvider.class, LongText.class, AllegationPerpetratorHistory.class,
           ClientUc.class, ChildClient.class, gov.ca.cwds.data.persistence.cms.Address.class,
-          ClientAddress.class, CountyOwnership.class, CountyTrigger.class, SystemCode.class,
-          SystemMeta.class) {
+          ClientAddress.class, CountyOwnership.class, CountyTrigger.class,
+          CountyTriggerEmbeddable.class, SystemCode.class, SystemMeta.class) {
         @Override
         public DataSourceFactory getDataSourceFactory(ApiConfiguration configuration) {
           return configuration.getCmsDataSourceFactory();
@@ -221,6 +222,7 @@ public class DataAccessModule extends AbstractModule {
     bind(NonLACountyTriggers.class);
     bind(LACountyTrigger.class);
     bind(TriggerTablesDao.class);
+    bind(CountyTriggerEmbeddable.class);
 
     // Miscellaneous:
     bind(ElasticsearchDao.class);
