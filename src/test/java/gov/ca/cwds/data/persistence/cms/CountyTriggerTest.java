@@ -1,6 +1,5 @@
 package gov.ca.cwds.data.persistence.cms;
 
-import static io.dropwizard.testing.FixtureHelpers.fixture;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.is;
@@ -44,9 +43,8 @@ public class CountyTriggerTest implements PersistentTestTemplate {
     CountyTrigger vct = validCountyTrigger();
 
     CountyTrigger persistent = new CountyTrigger(countyOwnershipT, vct.getLogicId(),
-        vct.getCountyOwnership0(), vct.getIntegratorTimeStamp(), vct.getIntegratorEntity());
+        vct.getCountyOwnership0(), null, vct.getIntegratorEntity());
 
-    assertThat(persistent.getCountyOwnershipT(), is(equalTo(countyOwnershipT)));
     assertThat(persistent.getLogicId(), is(equalTo(vct.getLogicId())));
     assertThat(persistent.getCountyOwnership0(), is(equalTo(vct.getCountyOwnership0())));
     assertThat(persistent.getIntegratorEntity(), is(equalTo(vct.getIntegratorEntity())));
@@ -63,8 +61,8 @@ public class CountyTriggerTest implements PersistentTestTemplate {
   private CountyTrigger validCountyTrigger()
       throws JsonParseException, JsonMappingException, IOException {
 
-    CountyTrigger validCountyTrigger = MAPPER.readValue(
-        fixture("fixtures/persistent/CountyOwnership/valid/valid.json"), CountyTrigger.class);
+    CountyTrigger validCountyTrigger =
+        new CountyTrigger(countyOwnershipT, "99", "C", null, "REFR_CLT");
     return validCountyTrigger;
 
   }
