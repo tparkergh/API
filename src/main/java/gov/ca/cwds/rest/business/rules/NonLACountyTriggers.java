@@ -18,8 +18,9 @@ import gov.ca.cwds.data.rules.TriggerTableException;
  * Business layer object to work on Non LA Triggers
  * 
  * <p>
- * If the staffPerson is from the LA County, it will trigger the countyOwnership table with the
- * associated foreign key and updates the trigger table if the record is existing
+ * If the staffPerson is from the Non-LA County, it will trigger the countyOwnership table with the
+ * associated foreign key and updates the trigger table if the record is existing. This
+ * countyOwnerhip table helps to check how many county useres can access a single record.
  * <p>
  *
  * @author CWDS API Team
@@ -44,7 +45,7 @@ public class NonLACountyTriggers {
   }
 
   /**
-   * @param managed Client creates the countyOwnership with the associated staffPerson
+   * @param managed Client creates the countyOwnership with the client foreign key
    */
   public void createClientCountyTrigger(Client managed) {
     CountyOwnership countyOwnership = new CountyOwnership();
@@ -55,8 +56,8 @@ public class NonLACountyTriggers {
   }
 
   /**
-   * @param managed referralClient creates or updates the countyOwnership with the associated
-   *        staffPerson
+   * @param managed referralClient creates or updates the countyOwnership with the client foreign
+   *        key
    */
   public void createAndUpdateReferralClientCoutyOwnership(ReferralClient managed) {
     Boolean countyExists = true;
