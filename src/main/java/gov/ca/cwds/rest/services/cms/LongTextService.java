@@ -1,5 +1,14 @@
 package gov.ca.cwds.rest.services.cms;
 
+import gov.ca.cwds.data.Dao;
+import gov.ca.cwds.data.cms.LongTextDao;
+import gov.ca.cwds.data.persistence.cms.CmsKeyIdGenerator;
+import gov.ca.cwds.data.persistence.cms.LongText;
+import gov.ca.cwds.rest.api.Request;
+import gov.ca.cwds.rest.api.domain.cms.PostedLongText;
+import gov.ca.cwds.rest.services.CrudsService;
+import gov.ca.cwds.rest.services.ServiceException;
+
 import java.io.Serializable;
 
 import javax.persistence.EntityExistsException;
@@ -9,15 +18,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.google.inject.Inject;
-
-import gov.ca.cwds.data.Dao;
-import gov.ca.cwds.data.cms.LongTextDao;
-import gov.ca.cwds.data.persistence.cms.CmsKeyIdGenerator;
-import gov.ca.cwds.data.persistence.cms.LongText;
-import gov.ca.cwds.rest.api.Request;
-import gov.ca.cwds.rest.api.domain.cms.PostedLongText;
-import gov.ca.cwds.rest.services.CrudsService;
-import gov.ca.cwds.rest.services.ServiceException;
 
 /**
  * Business layer object to work on {@link LongText}
@@ -86,10 +86,9 @@ public class LongTextService implements CrudsService {
         (gov.ca.cwds.rest.api.domain.cms.LongText) request;
 
     try {
-      // TODO : refactor to actually determine who is updating. 'q1p' for now - #136737071 - Tech
-      // Debt: Legacy Service classes must use Staff ID for last update ID value
-
-      LongText managed = new LongText(CmsKeyIdGenerator.cmsIdGenertor(null), longText, "q1p");
+      String lastUpdatedId = new StaffPersonIdRetriever().getStaffPersonId();
+      LongText managed =
+          new LongText(CmsKeyIdGenerator.cmsIdGenertor(lastUpdatedId), longText, lastUpdatedId);
       managed = longTextDao.create(managed);
       return new PostedLongText(managed);
     } catch (EntityExistsException e) {
@@ -112,7 +111,8 @@ public class LongTextService implements CrudsService {
         (gov.ca.cwds.rest.api.domain.cms.LongText) request;
 
     try {
-      LongText managed = new LongText((String) primaryKey, longText, "q1p");
+      String lastUpdatedId = new StaffPersonIdRetriever().getStaffPersonId();
+      LongText managed = new LongText((String) primaryKey, longText, lastUpdatedId);
       managed = longTextDao.update(managed);
       return new gov.ca.cwds.rest.api.domain.cms.LongText(managed);
     } catch (EntityNotFoundException e) {

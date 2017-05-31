@@ -1,15 +1,5 @@
 package gov.ca.cwds.rest.services.cms;
 
-import java.io.Serializable;
-
-import javax.persistence.EntityExistsException;
-import javax.persistence.EntityNotFoundException;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import com.google.inject.Inject;
-
 import gov.ca.cwds.data.Dao;
 import gov.ca.cwds.data.cms.ReferralDao;
 import gov.ca.cwds.data.cms.StaffPersonDao;
@@ -23,6 +13,16 @@ import gov.ca.cwds.rest.business.rules.LACountyTrigger;
 import gov.ca.cwds.rest.business.rules.NonLACountyTriggers;
 import gov.ca.cwds.rest.services.CrudsService;
 import gov.ca.cwds.rest.services.ServiceException;
+
+import java.io.Serializable;
+
+import javax.persistence.EntityExistsException;
+import javax.persistence.EntityNotFoundException;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import com.google.inject.Inject;
 
 /**
  * Business layer object to work on {@link Referral}
@@ -108,10 +108,9 @@ public class ReferralService implements CrudsService {
         (gov.ca.cwds.rest.api.domain.cms.Referral) request;
 
     try {
-      // TODO : refactor to actually determine who is updating. 'q1p' for now - see user story
-      // #136737071 - Tech Debt: Legacy Service classes must use Staff ID for last update ID value
-
-      Referral managed = new Referral(CmsKeyIdGenerator.cmsIdGenertor(null), referral, "BTr");
+      String lastUpdatedId = new StaffPersonIdRetriever().getStaffPersonId();
+      Referral managed =
+          new Referral(CmsKeyIdGenerator.cmsIdGenertor(lastUpdatedId), referral, lastUpdatedId);
       managed = referralDao.create(managed);
       if (managed.getId() == null) {
         throw new ServiceException("Referral ID cannot be null");
@@ -143,9 +142,8 @@ public class ReferralService implements CrudsService {
         (gov.ca.cwds.rest.api.domain.cms.Referral) request;
 
     try {
-      // TODO : refactor to actually determine who is updating. 'q1p' for now - see user story
-      // #136737071 - Tech Debt: Legacy Service classes must use Staff ID for last update ID value
-      Referral managed = new Referral((String) primaryKey, referral, "BTr");
+      String lastUpdatedId = new StaffPersonIdRetriever().getStaffPersonId();
+      Referral managed = new Referral((String) primaryKey, referral, lastUpdatedId);
       managed = referralDao.update(managed);
       // checking the staffPerson county code
       StaffPerson staffperson = staffpersonDao.find(managed.getLastUpdatedId());
@@ -162,4 +160,3 @@ public class ReferralService implements CrudsService {
   }
 
 }
-

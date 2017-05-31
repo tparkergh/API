@@ -1,5 +1,14 @@
 package gov.ca.cwds.rest.services.cms;
 
+import gov.ca.cwds.data.Dao;
+import gov.ca.cwds.data.cms.AllegationDao;
+import gov.ca.cwds.data.persistence.cms.Allegation;
+import gov.ca.cwds.data.persistence.cms.CmsKeyIdGenerator;
+import gov.ca.cwds.rest.api.Request;
+import gov.ca.cwds.rest.api.domain.cms.PostedAllegation;
+import gov.ca.cwds.rest.services.CrudsService;
+import gov.ca.cwds.rest.services.ServiceException;
+
 import java.io.Serializable;
 
 import javax.persistence.EntityExistsException;
@@ -9,15 +18,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.google.inject.Inject;
-
-import gov.ca.cwds.data.Dao;
-import gov.ca.cwds.data.cms.AllegationDao;
-import gov.ca.cwds.data.persistence.cms.Allegation;
-import gov.ca.cwds.data.persistence.cms.CmsKeyIdGenerator;
-import gov.ca.cwds.rest.api.Request;
-import gov.ca.cwds.rest.api.domain.cms.PostedAllegation;
-import gov.ca.cwds.rest.services.CrudsService;
-import gov.ca.cwds.rest.services.ServiceException;
 
 /**
  * Business layer object to work on {@link Allegation}
@@ -87,10 +87,9 @@ public class AllegationService implements CrudsService {
         (gov.ca.cwds.rest.api.domain.cms.Allegation) request;
 
     try {
-      // TODO : refactor to actually determine who is updating. 'q1p' for now - #136737071 - Tech
-      // Debt: Legacy Service classes must use Staff ID for last update ID value
-
-      Allegation managed = new Allegation(CmsKeyIdGenerator.cmsIdGenertor(null), allegation, "q1p");
+      String lastUpdatedId = new StaffPersonIdRetriever().getStaffPersonId();
+      Allegation managed =
+          new Allegation(CmsKeyIdGenerator.cmsIdGenertor(lastUpdatedId), allegation, lastUpdatedId);
       managed = allegationDao.create(managed);
       return new PostedAllegation(managed);
     } catch (EntityExistsException e) {
@@ -106,15 +105,15 @@ public class AllegationService implements CrudsService {
    *      gov.ca.cwds.rest.api.Request)
    */
   @Override
-  public gov.ca.cwds.rest.api.domain.cms.Allegation update(Serializable primaryKey,
-      Request request) {
+  public gov.ca.cwds.rest.api.domain.cms.Allegation update(Serializable primaryKey, Request request) {
     assert primaryKey instanceof String;
     assert request instanceof gov.ca.cwds.rest.api.domain.cms.Allegation;
     gov.ca.cwds.rest.api.domain.cms.Allegation allegation =
         (gov.ca.cwds.rest.api.domain.cms.Allegation) request;
 
     try {
-      Allegation managed = new Allegation((String) primaryKey, allegation, "q1p");
+      String lastUpdatedId = new StaffPersonIdRetriever().getStaffPersonId();
+      Allegation managed = new Allegation((String) primaryKey, allegation, lastUpdatedId);
       managed = allegationDao.update(managed);
       return new gov.ca.cwds.rest.api.domain.cms.Allegation(managed);
     } catch (EntityNotFoundException e) {
@@ -123,5 +122,5 @@ public class AllegationService implements CrudsService {
     }
   }
 
-}
 
+}
