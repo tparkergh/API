@@ -19,7 +19,7 @@ import gov.ca.cwds.rest.api.ApiException;
 import gov.ca.cwds.rest.api.domain.DomainChef;
 
 /**
- * Class representing an ChildClient.
+ * {@link CmsPersistentObject} Class representing an ChildClient.
  * 
  * @author CWDS API Team
  */

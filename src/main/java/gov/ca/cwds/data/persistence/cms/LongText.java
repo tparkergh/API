@@ -12,7 +12,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
 /**
- * Class representing an LongText.
+ * {@link CmsPersistentObject} Class representing an LongText.
  * 
  * @author CWDS API Team
  */
