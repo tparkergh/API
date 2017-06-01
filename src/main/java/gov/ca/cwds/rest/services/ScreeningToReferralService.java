@@ -73,6 +73,7 @@ public class ScreeningToReferralService implements CrudsService {
   private static final String CROSS_REPORT_TABLE_NAME = "CRSS_RPT";
   private static final String CLIENT_ADDRESS_TABLE_NAME = "ADDRS_T";
   private static final String REPORTER_TABLE_NAME = "REPTR_T";
+  private static final String ADDRESS_TABLE_NAME = "ADDRS_T";
 
   final DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
   final DateFormat timeFormat = new SimpleDateFormat("HH:MM:SS");
@@ -837,7 +838,7 @@ public class ScreeningToReferralService implements CrudsService {
       PostedAddress postedAddress = (PostedAddress) this.addressService.create(domainAddress);
 
       address.setLegacyId(postedAddress.getExistingAddressId());
-      address.setLegacySourceTable("ADDRS_T");
+      address.setLegacySourceTable(ADDRESS_TABLE_NAME);
     } catch (Exception e) {
       logError(e.getMessage(), e, messages);
     }
