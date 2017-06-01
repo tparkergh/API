@@ -26,6 +26,11 @@ import io.swagger.annotations.ApiModelProperty;
 @ApiModel("NsCrossReport")
 public class CrossReport extends ReportingDomain implements Request, Response {
 
+
+  @JsonProperty("id")
+  @ApiModelProperty(required = false, value = "", example = "1234")
+  private String id;
+
   @JsonProperty("legacy_source_table")
   @ApiModelProperty(required = false, value = "Legacy Source Table", example = "")
   private String legacySourceTable;
@@ -65,11 +70,16 @@ public class CrossReport extends ReportingDomain implements Request, Response {
    * @param method - reporting method
    * @param informDate - reported date
    */
-  public CrossReport(@JsonProperty("legacy_source_table") String legacySourceTable,
-      @JsonProperty("legacy_id") String legacyId, @JsonProperty("agency_type") String agencyType,
-      @JsonProperty("agency_name") String agencyName, @JsonProperty("method") String method,
+  public CrossReport(
+      @JsonProperty("id") String id,
+      @JsonProperty("legacy_source_table") String legacySourceTable,
+      @JsonProperty("legacy_id") String legacyId,
+      @JsonProperty("agency_type") String agencyType,
+      @JsonProperty("agency_name") String agencyName,
+      @JsonProperty("method") String method,
       @JsonProperty("inform_date") String informDate) {
     super();
+    this.id = id;
     this.legacySourceTable = legacySourceTable;
     this.legacyId = legacyId;
     this.agencyType = agencyType;
@@ -107,8 +117,22 @@ public class CrossReport extends ReportingDomain implements Request, Response {
   }
 
   /**
-   * @return agencyType
+   * @return id
    */
+  public String getId() {
+    return id;
+  }
+
+  /**
+   * @param id - the id
+   */
+  public void setId(String id) {
+    this.id = id;
+  }
+
+    /**
+     * @return agencyType
+     */
   public String getAgencyType() {
     return agencyType;
   }
@@ -148,56 +172,43 @@ public class CrossReport extends ReportingDomain implements Request, Response {
     result = prime * result + ((informDate == null) ? 0 : informDate.hashCode());
     result = prime * result + ((legacySourceTable == null) ? 0 : legacySourceTable.hashCode());
     result = prime * result + ((legacyId == null) ? 0 : legacyId.hashCode());
+    result = prime * result + ((id == null) ? 0 : id.hashCode());
     result = prime * result + ((method == null) ? 0 : method.hashCode());
     return result;
   }
 
-  /*
-   * (non-Javadoc)
-   * 
-   * @see java.lang.Object#equals(java.lang.Object)
-   */
   @Override
-  public final boolean equals(Object obj) {
-    if (this == obj)
+  public final boolean equals(Object o) {
+    if (this == o) {
       return true;
-    if (obj == null)
-      return false;
-    if (!(obj instanceof CrossReport)) {
+    }
+
+    if(!(o instanceof CrossReport) ){
       return false;
     }
-    CrossReport other = (CrossReport) obj;
-    if (agencyName == null) {
-      if (other.agencyName != null)
-        return false;
-    } else if (!agencyName.equals(other.agencyName))
-      return false;
-    if (agencyType == null) {
-      if (other.agencyType != null)
-        return false;
-    } else if (!agencyType.equals(other.agencyType))
-      return false;
-    if (informDate == null) {
-      if (other.informDate != null)
-        return false;
-    } else if (!informDate.equals(other.informDate))
-      return false;
-    if (method == null) {
-      if (other.method != null)
-        return false;
-    } else if (!method.equals(other.method))
-      return false;
-    if (legacySourceTable == null) {
-      if (other.legacySourceTable != null)
-        return false;
-    } else if (!legacySourceTable.equals(other.legacySourceTable))
-      return false;
-    if (legacyId == null) {
-      if (other.legacyId != null)
-        return false;
-    } else if (!legacyId.equals(other.legacyId))
-      return false;
-    return true;
-  }
 
+    CrossReport that = (CrossReport) o;
+
+    if (id != null ? !id.equals(that.id) : that.id != null) {
+      return false;
+    }
+    if (legacySourceTable != null ? !legacySourceTable.equals(that.legacySourceTable)
+        : that.legacySourceTable != null) {
+      return false;
+    }
+    if (legacyId != null ? !legacyId.equals(that.legacyId) : that.legacyId != null) {
+      return false;
+    }
+    if (agencyType != null ? !agencyType.equals(that.agencyType) : that.agencyType != null) {
+      return false;
+    }
+    if (agencyName != null ? !agencyName.equals(that.agencyName) : that.agencyName != null) {
+      return false;
+    }
+    if (method != null ? !method.equals(that.method) : that.method != null) {
+      return false;
+    }
+    return !(informDate != null ? !informDate.equals(that.informDate) : that.informDate != null);
+
+  }
 }
