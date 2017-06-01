@@ -350,8 +350,12 @@ public class ScreeningToReferralService implements CrudsService {
               // validate referral client
               buildErrors(messages, validator.validate(referralClient));
 
-              gov.ca.cwds.rest.api.domain.cms.ReferralClient postedReferralClient =
-                  this.referralClientService.create(referralClient);
+              try {
+                gov.ca.cwds.rest.api.domain.cms.ReferralClient postedReferralClient =
+                    this.referralClientService.create(referralClient);
+              } catch (ServiceException se) {
+                logError(se.getMessage(), se, messages);
+              }
               /*
                * determine other participant/roles attributes relating to CWS/CMS allegation
                */
@@ -803,7 +807,8 @@ public class ScreeningToReferralService implements CrudsService {
   private gov.ca.cwds.rest.api.domain.Address processReferralAddress(ScreeningToReferral scr,
       Set<ErrorMessage> messages) throws ServiceException {
     gov.ca.cwds.rest.api.domain.Address address = scr.getAddress();
-    if (address == null) {
+    if (address == null || address.getZip() == null || address.getStreetAddress() == null
+        || address.getType() == null) {
       String message = " Screening address is null or empty";
       ServiceException se = new ServiceException(message);
       logError(message, se, messages);
