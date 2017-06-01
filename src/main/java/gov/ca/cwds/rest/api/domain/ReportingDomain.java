@@ -27,7 +27,7 @@ public abstract class ReportingDomain extends DomainObject implements Request, R
   }
 
   /**
-   * @param errorMessage
+   * @param errorMessage - the error message
    */
   public void addMessage(ErrorMessage errorMessage) {
     if (messages == null) {
@@ -37,7 +37,7 @@ public abstract class ReportingDomain extends DomainObject implements Request, R
   }
 
   /**
-   * @param messages
+   * @param messages - the error message set
    */
   public void setMessages(Set<ErrorMessage> messages) {
     this.messages = messages;
