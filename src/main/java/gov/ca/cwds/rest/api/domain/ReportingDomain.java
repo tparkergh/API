@@ -26,6 +26,9 @@ public abstract class ReportingDomain extends DomainObject implements Request, R
     return messages;
   }
 
+  /**
+   * @param errorMessage
+   */
   public void addMessage(ErrorMessage errorMessage) {
     if (messages == null) {
       messages = new HashSet<>();
@@ -33,6 +36,9 @@ public abstract class ReportingDomain extends DomainObject implements Request, R
     messages.add(errorMessage);
   }
 
+  /**
+   * @param messages
+   */
   public void setMessages(Set<ErrorMessage> messages) {
     this.messages = messages;
   }
