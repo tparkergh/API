@@ -2499,6 +2499,7 @@ public class ScreeningToReferralServiceTest {
     when(reporterDao.create(any(gov.ca.cwds.data.persistence.cms.Reporter.class)))
         .thenReturn(reporterToCreate);
 
+
     Address addressDomain = MAPPER.readValue(
         fixture("fixtures/domain/ScreeningToReferral/valid/validAddress.json"), Address.class);
     gov.ca.cwds.data.persistence.cms.Address addressToCreate =
@@ -2525,31 +2526,30 @@ public class ScreeningToReferralServiceTest {
         fixture("fixtures/domain/ScreeningToReferral/invalid/emptyAddressOnScreening.json"),
         ScreeningToReferral.class);
 
-    // TODO: #144880523: Jim to correct.
-    // Boolean theErrorDetected = false;
-    // Response response = screeningToReferralService.create(screeningToReferral);
-    // if (response.hasMessages()) {
-    // Set<ErrorMessage> messages = response.getMessages();
-    // for (ErrorMessage message : messages) {
-    // if (message != null) {
-    // if (message.getMessage().contains("Referral Address is null or empty")) {
-    // theErrorDetected = true;
-    // }
-    // }
-    // }
-    // assertThat(theErrorDetected, is(equalTo(true)));
-    // } else {
-    // Assert.fail("Expected error messages were not thrown");
-    // }
+    Boolean theErrorDetected = false;
+    Response response = screeningToReferralService.create(screeningToReferral);
+    if (response.hasMessages()) {
+      Set<ErrorMessage> messages = response.getMessages();
+      for (ErrorMessage message : messages) {
+        System.out.println(message.getMessage());
+        if (message.getMessage() != null) {
+          if (message.getMessage().contains("Screening address is null or empty")) {
+            theErrorDetected = true;
+          }
+        }
+      }
+      assertThat(theErrorDetected, is(equalTo(true)));
+    } else {
+      Assert.fail("Expected error messages were not thrown");
+    }
 
     // try {
-    // this.screeningToReferralService.create(screeningToReferral);
-    // Assert.fail("Expected ServiceException was not thrown");
+    // Response response = screeningToReferralService.create(screeningToReferral);
+    // assertThat(response.getClass(), is(PostedScreeningToReferral.class));
+    // assertThat(response.hasMessages(), is(equalTo(false)));
     // } catch (Exception e) {
-    // // System.out.println(e.getMessage());
-    // assertThat(e.getMessage().contains("Referral Address is null or empty"), is(equalTo(true)));
+    // Assert.fail("Unexpected ServiceException was thrown" + e.getMessage());
     // }
-
   }
 
   @SuppressWarnings("javadoc")

@@ -9,7 +9,6 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Locale;
-import java.util.Map;
 import java.util.Set;
 
 import javax.validation.ConstraintViolation;
@@ -181,7 +180,8 @@ public class ScreeningToReferralService implements CrudsService {
   public Response create(Request request) {
     ScreeningToReferral screeningToReferral = (ScreeningToReferral) request;
 
-    final Set<ErrorMessage> messages = new HashSet<>();
+    Set<ErrorMessage> messages = new HashSet<ErrorMessage>();
+
     verifyReferralHasValidParticipants(screeningToReferral, messages);
 
     String dateStarted = extractStartDate(screeningToReferral, messages);
@@ -189,18 +189,18 @@ public class ScreeningToReferralService implements CrudsService {
     String referralId = createCmsReferral(screeningToReferral, messages, dateStarted, timeStarted);
     createReferralAddress(screeningToReferral, messages);
 
-    final Set<Participant> resultParticipants = new HashSet<>();
-    final Map<Long, String> victimClient = new HashMap<>();
-    final Map<Long, String> perpClient = new HashMap<>();
+    Set<Participant> resultParticipants = new HashSet<>();
+    HashMap<Long, String> victimClient = new HashMap<>();
+    HashMap<Long, String> perpatratorClient = new HashMap<>();
 
     processParticipants(screeningToReferral, messages, dateStarted, referralId, resultParticipants,
-        victimClient, perpClient);
+        victimClient, perpatratorClient);
 
     Set<CrossReport> resultCrossReports =
         createCrossReports(screeningToReferral, messages, referralId);
 
-    Set<Allegation> resultAllegations =
-        createAllegations(screeningToReferral, messages, referralId, victimClient, perpClient);
+    Set<Allegation> resultAllegations = createAllegations(screeningToReferral, messages, referralId,
+        victimClient, perpatratorClient);
 
     PostedScreeningToReferral pstr = new PostedScreeningToReferral(screeningToReferral.getId(),
         referralId, REFERRAL_TABLE_NAME, screeningToReferral.getEndedAt(),
@@ -218,8 +218,8 @@ public class ScreeningToReferralService implements CrudsService {
   }
 
   private Set<Allegation> createAllegations(ScreeningToReferral screeningToReferral,
-      Set<ErrorMessage> messages, String referralId, Map<Long, String> victimClient,
-      Map<Long, String> perpatratorClient) {
+      Set<ErrorMessage> messages, String referralId, HashMap<Long, String> victimClient,
+      HashMap<Long, String> perpatratorClient) {
     Set<Allegation> resultAllegations = null;
     try {
       resultAllegations = processAllegations(screeningToReferral, referralId, perpatratorClient,
@@ -245,8 +245,8 @@ public class ScreeningToReferralService implements CrudsService {
 
   private void processParticipants(ScreeningToReferral screeningToReferral,
       Set<ErrorMessage> messages, String dateStarted, String referralId,
-      Set<Participant> resultParticipants, Map<Long, String> victimClient,
-      Map<Long, String> perpatratorClient) {
+      Set<Participant> resultParticipants, HashMap<Long, String> victimClient,
+      HashMap<Long, String> perpatratorClient) {
     Set<Participant> participants = screeningToReferral.getParticipants();
     for (Participant incomingParticipant : participants) {
 
@@ -350,9 +350,12 @@ public class ScreeningToReferralService implements CrudsService {
               // validate referral client
               buildErrors(messages, validator.validate(referralClient));
 
-              gov.ca.cwds.rest.api.domain.cms.ReferralClient postedReferralClient =
-                  this.referralClientService.create(referralClient);
-
+              try {
+                gov.ca.cwds.rest.api.domain.cms.ReferralClient postedReferralClient =
+                    this.referralClientService.create(referralClient);
+              } catch (ServiceException se) {
+                logError(se.getMessage(), se, messages);
+              }
               /*
                * determine other participant/roles attributes relating to CWS/CMS allegation
                */
@@ -368,11 +371,9 @@ public class ScreeningToReferralService implements CrudsService {
                   continue;
                 }
               }
-
               if (ParticipantValidator.roleIsPerpetrator(role)) {
                 perpatratorClient.put(incomingParticipant.getId(), clientId);
               }
-
               try {
                 // addresses associated with a client
                 Participant resultParticipant =
@@ -550,7 +551,7 @@ public class ScreeningToReferralService implements CrudsService {
     throw new NotImplementedException("Update is not implemented");
   }
 
-  /**
+  /*
    * CMS Cross Report
    */
   private Set<gov.ca.cwds.rest.api.domain.CrossReport> processCrossReports(ScreeningToReferral scr,
@@ -602,11 +603,11 @@ public class ScreeningToReferralService implements CrudsService {
     return resultCrossReports;
   }
 
-  /**
+  /*
    * CMS Allegation - one for each allegation
    */
   private Set<Allegation> processAllegations(ScreeningToReferral scr, String referralId,
-      Map<Long, String> perpatratorClient, Map<Long, String> victimClient,
+      HashMap<Long, String> perpatratorClient, HashMap<Long, String> victimClient,
       Set<ErrorMessage> messages) throws ServiceException {
 
     Set<Allegation> processedAllegations = new HashSet<>();
@@ -621,7 +622,6 @@ public class ScreeningToReferralService implements CrudsService {
       logError(message, exception, messages);
       return processedAllegations;
     }
-
     for (Allegation allegation : allegations) {
 
       try {
@@ -636,7 +636,6 @@ public class ScreeningToReferralService implements CrudsService {
         // next allegation
         continue;
       }
-
       if (victimClient.containsKey(allegation.getVictimPersonId())) {
         // this is the legacy Id (CLIENT) of the victime
         victimClientId = victimClient.get(allegation.getVictimPersonId());
@@ -808,7 +807,8 @@ public class ScreeningToReferralService implements CrudsService {
   private gov.ca.cwds.rest.api.domain.Address processReferralAddress(ScreeningToReferral scr,
       Set<ErrorMessage> messages) throws ServiceException {
     gov.ca.cwds.rest.api.domain.Address address = scr.getAddress();
-    if (address == null) {
+    if (address == null || address.getZip() == null || address.getStreetAddress() == null
+        || address.getType() == null) {
       String message = " Screening address is null or empty";
       ServiceException se = new ServiceException(message);
       logError(message, se, messages);
