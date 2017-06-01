@@ -19,7 +19,7 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import gov.ca.cwds.data.persistence.PersistentObject;
 
 /**
- * Class representing an CountyTrigger.
+ * {@link PersistentObject} Class representing an CountyTrigger.
  * 
  * @author CWDS API Team
  */

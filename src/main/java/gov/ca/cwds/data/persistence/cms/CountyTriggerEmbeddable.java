@@ -10,9 +10,19 @@ import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.hibernate.annotations.Type;
 
+import gov.ca.cwds.data.persistence.PersistentObject;
+
 /**
+ * {@link PersistentObject} representing an County Trigger Embeddable
+ * 
+ * <p>
+ * CountyTriggerEmbeddable is the primaryKey representation of countyTrigger and making the two
+ * columns(countyOwnershipT and integratorTimeStamp) as composite keys in the trigger table values,
+ * as the primary can be repeatable.
+ * <p>
+ * 
  * @author CWDS API Team
- *
+ * 
  */
 @Embeddable
 public class CountyTriggerEmbeddable implements Serializable {

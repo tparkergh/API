@@ -24,9 +24,8 @@ import gov.ca.cwds.data.CmsSystemCodeDeserializer;
 import gov.ca.cwds.data.SystemCodeSerializer;
 import gov.ca.cwds.rest.api.domain.DomainChef;
 
-
 /**
- * Class representing an Allegation.
+ * {@link CmsPersistentObject} Class representing an Allegation.
  * 
  * @author CWDS API Team
  */
