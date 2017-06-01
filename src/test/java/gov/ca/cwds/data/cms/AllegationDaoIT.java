@@ -35,7 +35,7 @@ public class AllegationDaoIT implements DaoTestTemplate {
   private SessionFactory sessionFactory;
   private AllegationDao allegationDao;
 
-  /*
+  /**
    * id matches src/main/resources/db.cms/ci-seeds.sql
    */
   private String id = "Aaeae9r0F4";
@@ -46,13 +46,13 @@ public class AllegationDaoIT implements DaoTestTemplate {
   @Rule
   public ExpectedException thrown = ExpectedException.none();
 
-
   /**
    * 
    */
   @Override
   @Before
   public void setup() {
+    // TODO: Don't open a pool of connections for each test case!
     sessionFactory = new Configuration().configure().buildSessionFactory();
     sessionFactory.getCurrentSession().beginTransaction();
     allegationDao = new AllegationDao(sessionFactory);
@@ -115,7 +115,6 @@ public class AllegationDaoIT implements DaoTestTemplate {
   public void testCreateExistingEntityException() throws Exception {
 
     thrown.expect(EntityExistsException.class);
-
     gov.ca.cwds.rest.api.domain.cms.Allegation vda = validDomainAllegation();
 
     Allegation allegation = new Allegation(id, DomainChef.uncookDateString(vda.getAbuseEndDate()),
@@ -169,9 +168,7 @@ public class AllegationDaoIT implements DaoTestTemplate {
         null, null);
 
     Allegation updated = allegationDao.update(allegation);
-
     assertThat(allegation, is(updated));
-
   }
 
   @Override
@@ -179,7 +176,6 @@ public class AllegationDaoIT implements DaoTestTemplate {
   public void testUpdateEntityNotFoundException() throws Exception {
 
     thrown.expect(EntityNotFoundException.class);
-
     gov.ca.cwds.rest.api.domain.cms.Allegation vda = validDomainAllegation();
 
     Allegation allegation =
@@ -219,6 +215,5 @@ public class AllegationDaoIT implements DaoTestTemplate {
             gov.ca.cwds.rest.api.domain.cms.Allegation.class);
     return validDomainAllegation;
   }
-
 
 }
