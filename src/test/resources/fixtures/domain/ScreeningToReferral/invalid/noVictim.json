@@ -81,6 +81,7 @@
    ],
    "cross_reports":[
       {
+        "id":"",
          "legacy_source_table" : "",
          "legacy_id" : "",
          "agency_type":"Law enforcement",
