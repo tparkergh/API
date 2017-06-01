@@ -2526,13 +2526,30 @@ public class ScreeningToReferralServiceTest {
         fixture("fixtures/domain/ScreeningToReferral/invalid/emptyAddressOnScreening.json"),
         ScreeningToReferral.class);
 
-    try {
-      this.screeningToReferralService.create(screeningToReferral);
-      Assert.fail("Expected ServiceException was not thrown");
-    } catch (Exception e) {
-      // System.out.println(e.getMessage());
-      assertThat(e.getMessage().contains("Referral Address is null or empty"), is(equalTo(true)));
+    Boolean theErrorDetected = false;
+    Response response = screeningToReferralService.create(screeningToReferral);
+    if (response.hasMessages()) {
+      Set<ErrorMessage> messages = response.getMessages();
+      for (ErrorMessage message : messages) {
+        System.out.println(message.getMessage());
+        if (message.getMessage() != null) {
+          if (message.getMessage().contains("Screening address is null or empty")) {
+            theErrorDetected = true;
+          }
+        }
+      }
+      assertThat(theErrorDetected, is(equalTo(true)));
+    } else {
+      Assert.fail("Expected error messages were not thrown");
     }
+
+    // try {
+    // Response response = screeningToReferralService.create(screeningToReferral);
+    // assertThat(response.getClass(), is(PostedScreeningToReferral.class));
+    // assertThat(response.hasMessages(), is(equalTo(false)));
+    // } catch (Exception e) {
+    // Assert.fail("Unexpected ServiceException was thrown" + e.getMessage());
+    // }
   }
 
   @SuppressWarnings("javadoc")
