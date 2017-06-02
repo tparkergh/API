@@ -72,7 +72,7 @@ public final class KeyJNI {
       LOGGER.error("KeyJNI library failed to load!", e);
     }
 
-    if (!retval && forceLoad) {
+    if (!retval && forceLoad) { // NOSONAR
       retval = true;
     }
 
@@ -95,6 +95,15 @@ public final class KeyJNI {
   }
 
   /**
+   * Tells whether the JVM successfully loaded the shared library for the target platform.
+   * 
+   * @return whether the JNI shared library loaded successfully
+   */
+  public static final boolean isClassloaded() {
+    return IS_CLASS_LOADED;
+  }
+
+  /**
    * Generates a unique key for use within CWDS, derived from a staff person id.
    * 
    * @param staffId the {@link StaffPerson}
@@ -110,12 +119,4 @@ public final class KeyJNI {
    */
   public native void decomposeKey(String key, KeyDetail kd);
 
-  /**
-   * Tells whether the JVM successfully loaded the shared library for the target platform.
-   * 
-   * @return whether the JNI shared library loaded successfully
-   */
-  public static final boolean isClassloaded() {
-    return IS_CLASS_LOADED;
-  }
 }
