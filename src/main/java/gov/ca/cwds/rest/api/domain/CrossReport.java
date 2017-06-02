@@ -26,7 +26,6 @@ import io.swagger.annotations.ApiModelProperty;
 @ApiModel("NsCrossReport")
 public class CrossReport extends ReportingDomain implements Request, Response {
 
-
   @JsonProperty("id")
   @ApiModelProperty(required = false, value = "", example = "1234")
   private String id;
@@ -63,6 +62,9 @@ public class CrossReport extends ReportingDomain implements Request, Response {
   private String informDate;
 
   /**
+   * Construct from all fields.
+   * 
+   * @param id primary key identifier
    * @param legacySourceTable - legacy source table name
    * @param legacyId - legacy Id
    * @param agencyType - Agency Type
@@ -70,13 +72,10 @@ public class CrossReport extends ReportingDomain implements Request, Response {
    * @param method - reporting method
    * @param informDate - reported date
    */
-  public CrossReport(
-      @JsonProperty("id") String id,
+  public CrossReport(@JsonProperty("id") String id,
       @JsonProperty("legacy_source_table") String legacySourceTable,
-      @JsonProperty("legacy_id") String legacyId,
-      @JsonProperty("agency_type") String agencyType,
-      @JsonProperty("agency_name") String agencyName,
-      @JsonProperty("method") String method,
+      @JsonProperty("legacy_id") String legacyId, @JsonProperty("agency_type") String agencyType,
+      @JsonProperty("agency_name") String agencyName, @JsonProperty("method") String method,
       @JsonProperty("inform_date") String informDate) {
     super();
     this.id = id;
@@ -130,9 +129,9 @@ public class CrossReport extends ReportingDomain implements Request, Response {
     this.id = id;
   }
 
-    /**
-     * @return agencyType
-     */
+  /**
+   * @return agencyType
+   */
   public String getAgencyType() {
     return agencyType;
   }
@@ -158,11 +157,6 @@ public class CrossReport extends ReportingDomain implements Request, Response {
     return informDate;
   }
 
-  /*
-   * (non-Javadoc)
-   * 
-   * @see java.lang.Object#hashCode()
-   */
   @Override
   public final int hashCode() {
     final int prime = 31;
@@ -183,7 +177,7 @@ public class CrossReport extends ReportingDomain implements Request, Response {
       return true;
     }
 
-    if(!(o instanceof CrossReport) ){
+    if (!(o instanceof CrossReport)) {
       return false;
     }
 
@@ -209,6 +203,6 @@ public class CrossReport extends ReportingDomain implements Request, Response {
       return false;
     }
     return !(informDate != null ? !informDate.equals(that.informDate) : that.informDate != null);
-
   }
+
 }
