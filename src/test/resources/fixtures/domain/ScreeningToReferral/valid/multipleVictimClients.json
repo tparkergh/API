@@ -29,7 +29,7 @@
 	{
 	  "id" : "5432",
       "legacy_source_table" : "",
-      "legacy_id" : "",
+      "legacy_id" : "2345678ABC",
 	  "first_name": "John",
 	  "last_name": "Smith",
 	  "gender": "male",
