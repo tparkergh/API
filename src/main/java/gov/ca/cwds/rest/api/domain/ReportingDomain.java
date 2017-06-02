@@ -11,13 +11,14 @@ import gov.ca.cwds.rest.api.domain.error.ErrorMessage;
 
 /**
  * @author CWDS API Team
- *
  */
 public abstract class ReportingDomain extends DomainObject implements Request, Response {
+
   /**
    * Serialization version
    */
   private static final long serialVersionUID = 1L;
+
   @JsonIgnore
   private Set<ErrorMessage> messages = new HashSet<>();
 
@@ -27,7 +28,7 @@ public abstract class ReportingDomain extends DomainObject implements Request, R
   }
 
   /**
-   * @param errorMessage - the error message
+   * @param errorMessage message to add
    */
   public void addMessage(ErrorMessage errorMessage) {
     if (messages == null) {
@@ -37,7 +38,7 @@ public abstract class ReportingDomain extends DomainObject implements Request, R
   }
 
   /**
-   * @param messages - the error message set
+   * @param messages Set of messages
    */
   public void setMessages(Set<ErrorMessage> messages) {
     this.messages = messages;
