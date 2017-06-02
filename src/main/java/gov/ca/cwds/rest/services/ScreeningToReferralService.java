@@ -883,26 +883,17 @@ public class ScreeningToReferralService implements CrudsService {
       }
     }
 
+    // the unique key to REPORTER is the referralId - check if it already exist for this referral
+    // if found - no updates for now
     Boolean mandatedReporterIndicator = ParticipantValidator.roleIsMandatedReporter(role);
-    Reporter theReporter = null;
-    if (ip.getLegacyId() == null || ip.getLegacyId().isEmpty()) {
-      // create the Reporter in CWS/CMS
+    Reporter theReporter = reporterService.find(referralId);
+    if (theReporter == null) {
       Reporter reporter = new Reporter("", city, DEFAULT_CODE, DEFAULT_CODE, false, "", "", "",
           false, ip.getFirstName(), ip.getLastName(), mandatedReporterIndicator, 0, DEFAULT_DECIMAL,
           "", "", DEFAULT_DECIMAL, 0, DEFAULT_STATE_CODE, streetName, streetNumber, "",
           zipCodeString, referralId, "", DEFAULT_CODE, DEFAULT_COUNTY_SPECIFIC_CODE);
-
       buildErrors(messages, validator.validate(reporter));
       theReporter = reporterService.create(reporter);
-    } else {
-      // verify that Reporter exist in CWS/CMS - no update yet
-      theReporter = reporterService.find(ip.getLegacyId());
-      if (theReporter == null) {
-        String message =
-            " Legacy Id on participant does not correspond to an existing CMS/CWS Reporter ";
-        ServiceException se = new ServiceException(message);
-        logError(message, se, messages);
-      }
     }
     return theReporter;
   }
