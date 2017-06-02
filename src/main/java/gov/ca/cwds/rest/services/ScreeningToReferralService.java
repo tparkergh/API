@@ -364,7 +364,7 @@ public class ScreeningToReferralService implements CrudsService {
                 victimClient.put(incomingParticipant.getId(), clientId);
                 // since this is the victim - process the ChildClient
                 try {
-                  this.processChildClient(incomingParticipant, clientId, messages);
+                  this.processChildClient(clientId, messages);
                 } catch (ServiceException e) {
                   String message = e.getMessage();
                   logError(message, e, messages);
@@ -919,18 +919,22 @@ public class ScreeningToReferralService implements CrudsService {
 
   }
 
-  private ChildClient processChildClient(Participant id, String clientId,
-      Set<ErrorMessage> messages) throws ServiceException {
+  private ChildClient processChildClient(String clientId, Set<ErrorMessage> messages)
+      throws ServiceException {
 
-    ChildClient childClient = new ChildClient(clientId, "NA", DEFAULT_CODE, false, false, false, "",
-        "", "", false, false, false, "", DEFAULT_CODE, "D", "U", "", "", false, "", false, "U",
-        false, false, false, false, false, false, false, false, "X", false, false, DEFAULT_INT, "",
-        "", false, false, "", false);
+    ChildClient theChildClient = childClientService.find(clientId);
+    if (theChildClient == null) {
+      ChildClient childClient = new ChildClient(clientId, "NA", DEFAULT_CODE, false, false, false,
+          "", "", "", false, false, false, "", DEFAULT_CODE, "D", "U", "", "", false, "", false,
+          "U", false, false, false, false, false, false, false, false, "X", false, false,
+          DEFAULT_INT, "", "", false, false, "", false);
 
-    buildErrors(messages, validator.validate(childClient));
+      buildErrors(messages, validator.validate(childClient));
 
-    return this.childClientService.create(childClient);
+      theChildClient = childClientService.create(childClient);
 
+    }
+    return theChildClient;
   }
 
 }

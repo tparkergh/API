@@ -402,6 +402,7 @@ public class ScreeningToReferralServiceTest {
         new gov.ca.cwds.data.persistence.cms.ChildClient("1234567ABC", childClient, "0XA");
     when(childClientDao.create(any(gov.ca.cwds.data.persistence.cms.ChildClient.class)))
         .thenReturn(childClientToCreate);
+
     Set<Client> clientDomain =
         MAPPER.readValue(fixture("fixtures/domain/ScreeningToReferral/valid/validClient.json"),
             new TypeReference<Set<Client>>() {});
@@ -473,12 +474,12 @@ public class ScreeningToReferralServiceTest {
             ScreeningToReferral.class);
 
     Response response = screeningToReferralService.create(screeningToReferral);
-    if (response.hasMessages()) {
-      Set<ErrorMessage> messages = response.getMessages();
-      for (ErrorMessage message : messages) {
-        System.out.println(message.getMessage());
-      }
-    }
+    // if (response.hasMessages()) {
+    // Set<ErrorMessage> messages = response.getMessages();
+    // for (ErrorMessage message : messages) {
+    // System.out.println(message.getMessage());
+    // }
+    // }
 
     assertThat(response.getClass(), is(PostedScreeningToReferral.class));
     assertThat(response.hasMessages(), is(equalTo(false)));
@@ -4454,21 +4455,24 @@ public class ScreeningToReferralServiceTest {
         new gov.ca.cwds.data.persistence.cms.ChildClient("1234567ABC", childClient, "0XA");
     when(childClientDao.create(any(gov.ca.cwds.data.persistence.cms.ChildClient.class)))
         .thenReturn(childClientToCreate);
+    // when(childClientDao.find("1234567ABC")).thenReturn(childClientToCreate);
 
     ChildClient childClient2 = MAPPER.readValue(
         fixture("fixtures/domain/ScreeningToReferral/valid/childClient.json"), ChildClient.class);
     gov.ca.cwds.data.persistence.cms.ChildClient childClientToCreate2 =
-        new gov.ca.cwds.data.persistence.cms.ChildClient("2345678ABC", childClient, "0XA");
+        new gov.ca.cwds.data.persistence.cms.ChildClient("2345678ABC", childClient2, "0XA");
     when(childClientDao.create(any(gov.ca.cwds.data.persistence.cms.ChildClient.class)))
         .thenReturn(childClientToCreate2);
+    when(childClientDao.find("2345678ABC")).thenReturn(childClientToCreate2);
 
-    Set<ReferralClient> referralClientDomain = MAPPER.readValue(
-        fixture("fixtures/domain/ScreeningToReferral/valid/validReferralClient.json"),
-        new TypeReference<Set<ReferralClient>>() {});
+    ReferralClient referralClientDomain = MAPPER.readValue(
+        fixture("fixtures/domain/ScreeningToReferral/valid/validOneReferralClient.json"),
+        ReferralClient.class);
     gov.ca.cwds.data.persistence.cms.ReferralClient referralClientToCreate =
-        new gov.ca.cwds.data.persistence.cms.ReferralClient(
-            (ReferralClient) referralClientDomain.toArray()[0], "2016-10-31");
+        new gov.ca.cwds.data.persistence.cms.ReferralClient(referralClientDomain, "2016-10-31");
     when(referralClientDao.create(any(gov.ca.cwds.data.persistence.cms.ReferralClient.class)))
+        .thenReturn(referralClientToCreate);
+    when(referralClientDao.find(any(gov.ca.cwds.data.persistence.cms.ReferralClient.class)))
         .thenReturn(referralClientToCreate);
 
     Set<Allegation> allegationDomain =
