@@ -63,7 +63,7 @@ public class ScreeningToReferralTest {
     Address address = validAddress();
     Participant participant = validParticipant();
     participants.add(participant);
-    CrossReport crossReport = new CrossReport("", "", agencyType, agencyName, method, informDate);
+    CrossReport crossReport = new CrossReport("","", "", agencyType, agencyName, method, informDate);
     crossReports.add(crossReport);
     Allegation allegation = validAllegation();
     allegations.add(allegation);
@@ -88,7 +88,7 @@ public class ScreeningToReferralTest {
     Address address = validAddress();
     Participant participant = validParticipant();
     participants.add(participant);
-    CrossReport crossReport = new CrossReport("", "", agencyType, agencyName, method, informDate);
+    CrossReport crossReport = new CrossReport("", "", "", agencyType, agencyName, method, informDate);
     crossReports.add(crossReport);
     Allegation allegation = validAllegation();
     allegations.add(allegation);
