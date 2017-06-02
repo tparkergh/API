@@ -5,7 +5,9 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.is;
 
+import org.junit.Before;
 import org.junit.Test;
+import static org.junit.Assert.assertEquals;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
@@ -21,16 +23,24 @@ public class CrossReportTest {
   private String informDate = "2017-03-15";
   private String legacySourceTable = "CRSS_RPT";
   private String legacyId = "1234567ABC";
+  private String id = "1234567ABC";
 
   private static final ObjectMapper MAPPER = Jackson.newObjectMapper();
+  private CrossReport crossReport;
+
+  @Before
+  public void setup(){
+    crossReport = new CrossReport("","", "", "Law enforcement",
+        "Sacramento County Sheriff Deparment", "electronic report", "2017-03-15");
+
+  }
 
   /*
    * Serialization and de-serialization
    */
   @Test
   public void serializesToJSON() throws Exception {
-    String expected = MAPPER.writeValueAsString(new CrossReport("", "", "Law enforcement",
-        "Sacramento County Sheriff Deparment", "electronic report", "2017-03-15"));
+    String expected = MAPPER.writeValueAsString(crossReport);
 
     String serialized = MAPPER.writeValueAsString(MAPPER
         .readValue(fixture("fixtures/domain/CrossReport/valid/valid.json"), CrossReport.class));
@@ -40,8 +50,7 @@ public class CrossReportTest {
 
   @Test
   public void testDeserializesFromJSON() throws Exception {
-    CrossReport expected = new CrossReport("", "", "Law enforcement",
-        "Sacramento County Sheriff Deparment", "electronic report", "2017-03-15");
+    CrossReport expected = crossReport;
 
     CrossReport serialized = MAPPER
         .readValue(fixture("fixtures/domain/CrossReport/valid/valid.json"), CrossReport.class);
@@ -57,9 +66,19 @@ public class CrossReportTest {
   }
 
   @Test
+  public void testEquals() {
+    CrossReport thisCrossReport =
+        new CrossReport(id,legacySourceTable, legacyId, agencyType, agencyName, method, informDate);
+    CrossReport thatCrossReport =
+        new CrossReport(id, legacySourceTable, legacyId, agencyType, agencyName, method, informDate);
+    assertEquals("Should be equal", thisCrossReport, thatCrossReport);
+
+  }
+
+  @Test
   public void testDomainConstructorTest() throws Exception {
     CrossReport domain =
-        new CrossReport(legacySourceTable, legacyId, agencyType, agencyName, method, informDate);
+        new CrossReport(id, legacySourceTable, legacyId, agencyType, agencyName, method, informDate);
 
     assertThat(domain.getAgencyType(), is(equalTo(agencyType)));
     assertThat(domain.getAgencyName(), is(equalTo(agencyName)));
@@ -67,6 +86,7 @@ public class CrossReportTest {
     assertThat(domain.getInformDate(), is(equalTo(informDate)));
     assertThat(domain.getLegacySourceTable(), is(equalTo(legacySourceTable)));
     assertThat(domain.getLegacyId(), is(equalTo(legacyId)));
+    assertThat(domain.getId(), is(equalTo(id)));
 
   }
 }
