@@ -1,6 +1,7 @@
 package gov.ca.cwds.rest.api.domain.cms;
 
 import static io.dropwizard.testing.FixtureHelpers.fixture;
+import static org.junit.Assert.assertEquals;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.greaterThanOrEqualTo;
@@ -10,11 +11,13 @@ import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
+import gov.ca.cwds.rest.api.domain.Participant;
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 
+import java.util.HashSet;
 import javax.ws.rs.client.Entity;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
@@ -198,6 +201,149 @@ public class ReporterTest {
     assertThat(reporter.getLawEnforcementId(), is(equalTo(lawEnforcementId)));
     assertThat(reporter.getZipSuffixNumber(), is(equalTo(zipSuffixNumber)));
     assertThat(reporter.getCountySpecificCode(), is(equalTo(countySpecificCode)));
+  }
+
+  @Test
+  public void createWithDefaultsShouldInitializeWithPassedInValues(){
+
+    String streetNumber = "1";
+    String streetName = "main";
+    String streetAddress = streetNumber + " " + streetName;
+    String city = "sacramento";
+    String state = "ca";
+    Integer zipCode = 12345;
+    String type = "type";
+
+    gov.ca.cwds.rest.api.domain.Address address = new gov.ca.cwds.rest.api.domain.Address("legacy_source_table", "legacy_id",streetAddress, city, state, zipCode, type);
+
+    String referralId = "referralId";
+    boolean isMandatedReporter = true;
+    String firstName = "firstName";
+    String lastName = "lastName";
+    Participant participant = new Participant(5L, "legacy_source_table", "legacy_client_id",firstName, lastName, "gender", "ssn", "date_of_birth", 7L, 8L, new HashSet(),new HashSet());
+    String countyCode = "countyCode";
+    Short stateCode =  new Short("0");
+
+    Reporter reporter = Reporter.createWithDefaults(referralId, isMandatedReporter, address, participant, countyCode, stateCode);
+    assertEquals("Expected referralId field to have been initialized with value",referralId,reporter.getReferralId());
+    assertEquals("Expected isMandatedReporter field to have been initialized with value",isMandatedReporter,reporter.getMandatedReporterIndicator());
+    assertEquals("Expected streetNumer field to have been initialized with value",streetNumber,reporter.getStreetNumber());
+    assertEquals("Expected street name field to have been initialized with value",streetName,reporter.getStreetName());
+    assertEquals("Expected city field to have been initialized with value",city,reporter.getCityName());
+    assertEquals("Expected zipCode field to have been initialized with value",zipCode.toString(),reporter.getZipcode());
+    assertEquals("Expected firstName field to have been initialized with value",firstName,reporter.getFirstName());
+    assertEquals("Expected last name field to have been initialized with value",lastName,reporter.getLastName());
+    assertEquals("Expected countyCode field to have been initialized with value",countyCode,reporter.getCountySpecificCode());
+    assertEquals("Expected stateCode field to have been initialized with value",stateCode,reporter.getStateCodeType());
+  }
+
+  @Test
+  public void createWithDefaultsShouldInitializeWithDefaultValues(){
+
+    String streetNumber = "1";
+    String streetName = "main";
+    String streetAddress = streetNumber + " " + streetName;
+    String city = "sacramento";
+    String state = "ca";
+    Integer zipCode = 12345;
+    String type = "type";
+
+    gov.ca.cwds.rest.api.domain.Address address = new gov.ca.cwds.rest.api.domain.Address("legacy_source_table", "legacy_id",streetAddress, city, state, zipCode, type);
+
+    String referralId = "referralId";
+    boolean isMandatedReporter = true;
+    String firstName = "firstName";
+    String lastName = "lastName";
+    Participant participant = new Participant(5L, "legacy_source_table", "legacy_client_id",firstName, lastName, "gender", "ssn", "date_of_birth", 7L, 8L, new HashSet(),new HashSet());
+    String countyCode = "countyCode";
+    Short stateCode =  new Short("0");
+
+    Reporter reporter = Reporter.createWithDefaults(referralId, isMandatedReporter, address, participant, countyCode, stateCode);
+    assertEquals("Expected badgeNumber field to have been initialized with value", "",reporter.getBadgeNumber());
+    assertEquals("Expected colltrClientRptrReltnshpType field to have been initialized with value", new Short("0"),reporter.getColltrClientRptrReltnshpType());
+    assertEquals("Expected communicationMethodType field to have been initialized with value", new Short("0"),reporter.getCommunicationMethodType());
+    assertEquals("Expected confidentialWaiverIndicator field to have been initialized with value", false,reporter.getConfidentialWaiverIndicator());
+    assertEquals("Expected drmsMandatedRprtrFeedback field to have been initialized with value", "",reporter.getDrmsMandatedRprtrFeedback());
+    assertEquals("Expected employerName field to have been initialized with value", "",reporter.getEmployerName());
+    assertEquals("Expected feedbackDate field to have been initialized with value", "",reporter.getFeedbackDate());
+    assertEquals("Expected feedbackRequiredIndicator field to have been initialized with value", false,reporter.getFeedbackRequiredIndicator());
+    assertEquals("Expected messagePhoneExtensionNumber field to have been initialized with value",new Integer("0"),reporter.getMessagePhoneExtensionNumber());
+    assertEquals("Expected messagePhoneNumber field to have been initialized with value", new BigDecimal(0),reporter.getMessagePhoneNumber());
+    assertEquals("Expected middleInitialName field to have been initialized with value", "",reporter.getMiddleInitialName());
+    assertEquals("Expected namePrefixDescription field to have been initialized with value", "",reporter.getNamePrefixDescription());
+    assertEquals("Expected primaryPhoneNumber field to have been initialized with value", new BigDecimal(0),reporter.getPrimaryPhoneNumber());
+    assertEquals("Expected primaryPhoneExtensionNumber field to have been initialized with value", new Integer("0"),reporter.getPrimaryPhoneExtensionNumber());
+    assertEquals("Expected suffixTitleDescription field to have been initialized with value", "",reporter.getSuffixTitleDescription());
+    assertEquals("Expected lawEnforcementId field to have been initialized with value", "",reporter.getLawEnforcementId());
+    assertEquals("Expected zipSuffixNumber field to have been initialized with value", new Short("0"),reporter.getZipSuffixNumber());
+  }
+
+  @Test
+  public void streetNumberShouldBeParsedFromStreetAddress(){
+    String streetAddress = "1 main";
+
+    gov.ca.cwds.rest.api.domain.Address address = new gov.ca.cwds.rest.api.domain.Address("legacy_source_table", "legacy_id",streetAddress, "city", "state", 12345, "type");
+    Participant participant = new Participant(5L, "legacy_source_table", "legacy_client_id","firstName", "lastName", "gender", "ssn", "date_of_birth", 7L, 8L, new HashSet(),new HashSet());
+
+    Reporter reporter = Reporter.createWithDefaults("referralId", true, address, participant, "countyCode",  new Short("0"));
+
+    assertEquals("Street Number not parsed from street address", "1", reporter.getStreetNumber());
+  }
+
+  @Test
+  public void streetNameShouldBeParsedFromStreetAddress(){
+    String streetAddress = "1 main";
+
+    gov.ca.cwds.rest.api.domain.Address address = new gov.ca.cwds.rest.api.domain.Address("legacy_source_table", "legacy_id",streetAddress, "city", "state", 12345, "type");
+    Participant participant = new Participant(5L, "legacy_source_table", "legacy_client_id","firstName", "lastName", "gender", "ssn", "date_of_birth", 7L, 8L, new HashSet(),new HashSet());
+
+    Reporter reporter = Reporter.createWithDefaults("referralId", true, address, participant, "countyCode",  new Short("0"));
+
+    assertEquals("Street Number not parsed from street address", "main", reporter.getStreetName());
+  }
+
+  @Test
+  public void streetNameShouldNotIncludeTypeOfStreetsOrMultiPartStreetNames(){
+    String streetAddress = "1 San Andreas Blvd";
+
+    gov.ca.cwds.rest.api.domain.Address address = new gov.ca.cwds.rest.api.domain.Address("legacy_source_table", "legacy_id",streetAddress, "city", "state", 12345, "type");
+    Participant participant = new Participant(5L, "legacy_source_table", "legacy_client_id","firstName", "lastName", "gender", "ssn", "date_of_birth", 7L, 8L, new HashSet(),new HashSet());
+
+    Reporter reporter = Reporter.createWithDefaults("referralId", true, address, participant, "countyCode",  new Short("0"));
+
+    assertEquals("Street Number not parsed from street address", "San", reporter.getStreetName());
+  }
+
+  @Test(expected = ArrayIndexOutOfBoundsException.class)
+  public void streetNameShouldThrowExceptionWhenOnlyContaingOneWord(){
+    String streetAddress = "main";
+
+    gov.ca.cwds.rest.api.domain.Address address = new gov.ca.cwds.rest.api.domain.Address("legacy_source_table", "legacy_id",streetAddress, "city", "state", 12345, "type");
+    Participant participant = new Participant(5L, "legacy_source_table", "legacy_client_id","firstName", "lastName", "gender", "ssn", "date_of_birth", 7L, 8L, new HashSet(),new HashSet());
+
+    Reporter reporter = Reporter.createWithDefaults("referralId", true, address, participant, "countyCode",  new Short("0"));
+  }
+
+  @Test
+  public void streetNameShouldContainSecondWordWhenOnlyNoStreetNumberIsPresent(){
+    String streetAddress = "Main St";
+
+    gov.ca.cwds.rest.api.domain.Address address = new gov.ca.cwds.rest.api.domain.Address("legacy_source_table", "legacy_id",streetAddress, "city", "state", 12345, "type");
+    Participant participant = new Participant(5L, "legacy_source_table", "legacy_client_id","firstName", "lastName", "gender", "ssn", "date_of_birth", 7L, 8L, new HashSet(),new HashSet());
+
+    Reporter reporter = Reporter.createWithDefaults("referralId", true, address, participant, "countyCode",  new Short("0"));
+
+    assertEquals("Expected StreetName to contain second word as street name", "St", reporter.getStreetName());
+  }
+
+  @Test
+  public void streetNumberShouldContainFirstWordWhenEvenWhenNoNumbersArePresent(){
+    String streetAddress = "Main St";
+
+    gov.ca.cwds.rest.api.domain.Address nsAddress = new gov.ca.cwds.rest.api.domain.Address("legacy_source_table", "legacy_id",streetAddress, "city", "state", 12345, "type");
+
+    Address address = Address.createWithDefaults(nsAddress, new Short("5"));
+    assertEquals("Expected StreetName to contain second word as street name", "Main", address.getStreetNumber());
   }
 
   @Test

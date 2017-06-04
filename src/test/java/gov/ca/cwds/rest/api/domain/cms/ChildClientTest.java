@@ -1,6 +1,7 @@
 package gov.ca.cwds.rest.api.domain.cms;
 
 import static io.dropwizard.testing.FixtureHelpers.fixture;
+import static org.junit.Assert.assertEquals;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.greaterThanOrEqualTo;
@@ -304,6 +305,59 @@ public class ChildClientTest implements DomainTestTemplate {
         is(equalTo(vchc.getTribalCustomaryAdoptionDate())));
     assertThat(domain.getTribalCustomaryAdoptionIndicator(),
         is(equalTo(vchc.getTribalCustomaryAdoptionIndicator())));
+  }
+
+  @Test
+  public void createWithDefaultsShouldInitializeWithPassedInValues(){
+    String clientId = "1";
+    ChildClient client = ChildClient.createWithDefaults(clientId);
+    assertEquals("Expected victim client id field to have been initialized with value",clientId, client.getVictimClientId());
+  }
+
+  @Test
+  public void createWithDefaultsShouldInitializeWithDefaultValues(){
+    String clientId = "1";
+    ChildClient client = ChildClient.createWithDefaults(clientId);
+    assertEquals("Expected adoptableCode field to have been initialized with default value", "NA", client.getAdoptableCode());
+    assertEquals("Expected adoptedAge field to have been initialized with default value", new Short("0"), client.getAdoptedAge());
+    assertEquals("Expected afdcFcEligibilityIndicatorVar field to have been initialized with default value", false, client.getAfdcFcEligibilityIndicatorVar());
+    assertEquals("Expected allEducationInfoOnFileIndicator field to have been initialized with default value", false, client.getAllEducationInfoOnFileIndicator());
+    assertEquals("Expected allHealthInfoOnFileIndicator field to have been initialized with default value", false, client.getAllHealthInfoOnFileIndicator());
+    assertEquals("Expected attemptToAcquireEducInfoDesc field to have been initialized with default value", "", client.getAttemptToAcquireEducInfoDesc());
+    assertEquals("Expected attemptToAcquireHlthInfoDesc field to have been initialized with default value", "", client.getAttemptToAcquireHlthInfoDesc());
+    assertEquals("Expected awolAbductedCode field to have been initialized with default value", "", client.getAwolAbductedCode());
+    assertEquals("Expected birthHistoryIndicatorVar field to have been initialized with default value", false, client.getBirthHistoryIndicatorVar());
+    assertEquals("Expected childIndianAncestryIndicator field to have been initialized with default value", false, client.getChildIndianAncestryIndicator());
+    assertEquals("Expected collegeIndicator field to have been initialized with default value", false, client.getCollegeIndicator());
+    assertEquals("Expected currentCaseId field to have been initialized with default value", "", client.getCurrentCaseId());
+    assertEquals("Expected deathCircumstancesType field to have been initialized with default value", new Short("0"), client.getDeathCircumstancesType());
+    assertEquals("Expected disabilityDiagnosedCode field to have been initialized with default value", "D", client.getDisabilityDiagnosedCode());
+    assertEquals("Expected drmsHePassportDocOld field to have been initialized with default value", "U", client.getDrmsHePassportDocOld());
+    assertEquals("Expected drmsHealthEducPassportDoc field to have been initialized with default value", "", client.getDrmsHealthEducPassportDoc());
+    assertEquals("Expected drmsVoluntaryPlcmntAgrmntDoc field to have been initialized with default value", "", client.getDrmsVoluntaryPlcmntAgrmntDoc());
+    assertEquals("Expected fc2EligApplicationIndicatorVar field to have been initialized with default value", false, client.getFc2EligApplicationIndicatorVar());
+    assertEquals("Expected foodStampsApplicationDate field to have been initialized with default value", "", client.getFoodStampsApplicationDate());
+    assertEquals("Expected foodStampsApplicationIndicator field to have been initialized with default value", false, client.getFoodStampsApplicationIndicator());
+    assertEquals("Expected icwaEligibilityCode field to have been initialized with default value", "U", client.getIcwaEligibilityCode());
+    assertEquals("Expected intercountryAdoptDisruptedIndicator field to have been initialized with default value", false, client.getIntercountryAdoptDisruptedIndicator());
+    assertEquals("Expected intercountryAdoptDissolvedIndicator field to have been initialized with default value", false, client.getIntercountryAdoptDissolvedIndicator());
+    assertEquals("Expected medEligibilityApplicationIndicatorVar field to have been initialized with default value", false, client.getMedEligibilityApplicationIndicatorVar());
+    assertEquals("Expected minorNmdParentIndicator field to have been initialized with default value", false, client.getMinorNmdParentIndicator());
+    assertEquals("Expected parentalRightsLimitedIndicator field to have been initialized with default value", false, client.getParentalRightsLimitedIndicator());
+    assertEquals("Expected parentalRightsTermintnIndicatorVar field to have been initialized with default value", false, client.getParentalRightsTermintnIndicatorVar());
+    assertEquals("Expected paternityIndividualIndicatorVar field to have been initialized with default value", false, client.getPaternityIndividualIndicatorVar());
+    assertEquals("Expected postsecVocIndicator field to have been initialized with default value", false, client.getPostsecVocIndicator());
+    assertEquals("Expected previouslyAdoptedCode field to have been initialized with default value", "X", client.getPreviouslyAdoptedCode());
+    assertEquals("Expected safelySurrendedBabiesIndicatorVar field to have been initialized with default value", false, client.getSaw1EligApplicationIndicatorVar());
+    assertEquals("Expected saw1EligApplicationIndicatorVar field to have been initialized with default value", false, client.getSaw1EligApplicationIndicatorVar());
+    assertEquals("Expected sawsCaseSerialNumber field to have been initialized with default value", new Integer(0), client.getSawsCaseSerialNumber());
+    assertEquals("Expected sijsScheduledInterviewDate field to have been initialized with default value", "", client.getSijsScheduledInterviewDate());
+    assertEquals("Expected siiNextScreeningDueDate field to have been initialized with default value", "", client.getSiiNextScreeningDueDate());
+    assertEquals("Expected ssiSspApplicationIndicator field to have been initialized with default value", false, client.getSsiSspApplicationIndicator());
+    assertEquals("Expected tribalAncestryNotifctnIndicatorVar field to have been initialized with default value", false, client.getTribalAncestryNotifctnIndicatorVar());
+    assertEquals("Expected tribalCustomaryAdoptionDate field to have been initialized with default value", "", client.getTribalCustomaryAdoptionDate());
+    assertEquals("Expected tribalCustomaryAdoptionIndicator field to have been initialized with default value", false, client.getTribalCustomaryAdoptionIndicator());
+
   }
 
   @Override

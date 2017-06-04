@@ -21,6 +21,10 @@ import io.swagger.annotations.ApiModelProperty;
  */
 @ApiModel
 public class Address extends ReportingDomain implements Request, Response {
+  private static final BigDecimal DEFAULT_DECIMAL = new BigDecimal(0);
+  private static final int DEFAULT_INT = 0;
+  private static final short DEFAULT_CODE = 0;
+
 
   /**
    * Base serialization value. Increment by version
@@ -204,7 +208,23 @@ public class Address extends ReportingDomain implements Request, Response {
     this.unitDesignationCd = persistedAddress.getUnitDesignationCd();
     this.unitNumber = persistedAddress.getUnitNumber();
   }
+  public static Address createWithDefaults(gov.ca.cwds.rest.api.domain.Address address, short stateCode){
+      // TODO: 41511573 address parsing - Smarty Streets Free Form display requires standardizing
+      // parsing to fields in CMS
+      int zipCode = address.getZip();
+      short zipSuffix = 0;
+      if (address.getZip().toString().length() > 5) {
+        zipSuffix = Short.parseShort(address.getZip().toString().substring(5));
+      }
+      String[] streetAddress = address.getStreetAddress().split(" ");
+      String streetNumber = streetAddress[0];
+      String streetName = streetAddress[1];
 
+    return new Address(" ", address.getCity(), DEFAULT_DECIMAL, DEFAULT_INT,
+            false, DEFAULT_CODE, DEFAULT_DECIMAL, DEFAULT_INT, " ", DEFAULT_DECIMAL, DEFAULT_INT,
+            stateCode, streetName, streetNumber, zipCode, address.getType(), zipSuffix,
+            " ", " ", DEFAULT_CODE, DEFAULT_CODE, " ");
+  }
   /**
    * @return the existingAddressId
    */
