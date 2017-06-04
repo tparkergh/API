@@ -2,6 +2,7 @@ package gov.ca.cwds.rest.api.domain.cms;
 
 import static gov.ca.cwds.data.persistence.cms.CmsPersistentObject.CMS_ID_LEN;
 
+import gov.ca.cwds.rest.validation.ParticipantValidator;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
@@ -27,6 +28,9 @@ import io.swagger.annotations.ApiModelProperty;
  * @author CWDS API Team
  */
 public class ReferralClient extends ReportingDomain implements Request, Response {
+  private static final short DEFAULT_CODE = 0;
+  private static final String DEFAULT_DISPOSITION_CODE = "A";
+
   /**
    * Serialization version
    */
@@ -192,6 +196,14 @@ public class ReferralClient extends ReportingDomain implements Request, Response
     this.alcoholIndicator =
         DomainChef.uncookBooleanString(persistedReferralClient.getAlcoholIndicator());
     this.drugIndicator = DomainChef.uncookBooleanString(persistedReferralClient.getDrugIndicator());
+  }
+
+  public static ReferralClient createWithDefault(Boolean selfReported, String referralId, String clientId, String countyCode, short approvalCode ){
+    return new ReferralClient("", approvalCode,
+                  DEFAULT_CODE, DEFAULT_DISPOSITION_CODE, "",
+                  selfReported, false, referralId,
+                  clientId, "", DEFAULT_CODE, "", countyCode, false, false,
+                  false);
   }
 
   /**

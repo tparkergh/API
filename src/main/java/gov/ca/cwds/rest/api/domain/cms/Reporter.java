@@ -2,6 +2,7 @@ package gov.ca.cwds.rest.api.domain.cms;
 
 import static gov.ca.cwds.data.persistence.cms.CmsPersistentObject.CMS_ID_LEN;
 
+import gov.ca.cwds.rest.api.domain.Participant;
 import java.math.BigDecimal;
 
 import javax.validation.constraints.NotNull;
@@ -37,6 +38,9 @@ import io.swagger.annotations.ApiModelProperty;
 @IfThen.List({@IfThen(ifProperty = "streetNumber", thenProperty = "streetName", required = false),
     @IfThen(ifProperty = "streetName", thenProperty = "cityName", required = false)})
 public class Reporter extends ReportingDomain implements Request, Response {
+  private static final short DEFAULT_CODE = 0;
+  private static final BigDecimal DEFAULT_DECIMAL = new BigDecimal(0);
+
 
   /**
    * Serialization version.
@@ -305,7 +309,21 @@ public class Reporter extends ReportingDomain implements Request, Response {
     this.zipSuffixNumber = persistedReporter.getZipSuffixNumber();
     this.countySpecificCode = persistedReporter.getCountySpecificCode();
   }
+  public static Reporter createWithDefaults(String referralId, boolean isMandatedReporter, gov.ca.cwds.rest.api.domain.Address address, Participant participant, String countyCode, Short stateCode){
+    // TODO: #141511573 address parsing - Smarty Streets Free Form display requires
+    // standardizing
+    // parsing to fields in CMS
+    String zipCodeString = address.getZip().toString();
+    String[] streetAddress = address.getStreetAddress().split(" ");
+    String streetNumber = streetAddress[0];
+    String streetName = streetAddress[1];
+    String city = address.getCity();
 
+    return new Reporter("", city, DEFAULT_CODE, DEFAULT_CODE, false, "", "", "",
+          false, participant.getFirstName(), participant.getLastName(), isMandatedReporter, 0, DEFAULT_DECIMAL,
+          "", "", DEFAULT_DECIMAL, 0, stateCode, streetName, streetNumber, "",
+          zipCodeString, referralId, "", DEFAULT_CODE, countyCode);
+  }
   /**
    * @return the badgeNumber
    */

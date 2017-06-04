@@ -22,6 +22,8 @@ public class PostedScreeningToReferral extends ScreeningToReferral implements Re
    */
   private static final long serialVersionUID = 1L;
 
+  private static final String REFERRAL_TABLE_NAME = "REFERL_T";
+
   /**
    * Default, no-op constructor.
    */
@@ -62,6 +64,22 @@ public class PostedScreeningToReferral extends ScreeningToReferral implements Re
         communicationMethod, name, reportNarrative, reference, responseTime, startedAt, assignee,
         additionalInformation, screeningDecision, screeningDecisionDetail, address, participants,
         crossReports, allegations);
+  }
+
+  public static PostedScreeningToReferral createWithDefaults(String id, ScreeningToReferral referral,
+      Set<Participant> resultParticipants, Set<CrossReport> resultCrossReports,Set<Allegation> resultAllegations){
+
+    return new PostedScreeningToReferral(referral.getId(),
+        id, REFERRAL_TABLE_NAME, referral.getEndedAt(),
+        referral.getIncidentCounty(), referral.getIncidentDate(),
+        referral.getLocationType(), referral.getCommunicationMethod(),
+        referral.getName(), referral.getReportNarrative(),
+        referral.getReference(), referral.getResponseTime(),
+        referral.getStartedAt(), referral.getAssignee(),
+        referral.getAdditionalInformation(), referral.getScreeningDecision(),
+        referral.getScreeningDecisionDetail(), referral.getAddress(),
+        resultParticipants, resultCrossReports, resultAllegations);
+
   }
 
 }

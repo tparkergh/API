@@ -2,6 +2,7 @@ package gov.ca.cwds.rest.api.domain.cms;
 
 import static gov.ca.cwds.data.persistence.cms.CmsPersistentObject.CMS_ID_LEN;
 
+import gov.ca.cwds.rest.api.domain.Participant;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -34,6 +35,22 @@ import io.swagger.annotations.ApiModelProperty;
  */
 @ApiModel
 public class Client extends ReportingDomain implements Request, Response {
+  private static final String DEFAULT_ADOPTION_STATUS_CODE = "N";
+  private static final short DEFAULT_CODE = 0;
+  private static final Boolean DEFAULT_CHILD_CLIENT_INDICATOR = false;
+  private static final String DEFAULT_ESTIMATED_DOB_CODE = "N";
+  private static final String DEFAULT_UNABLE_TO_DETAIN_CODE = "K";
+  private static final String DEFAULT_HISPANIC_ORIGIN_CODE = "X";
+  private static final String DEFAULT_INCAPCITATED_PARENT_CODE = "U";
+  private static final String DEFAULT_LITERATE_CODE = "U";
+  private static final String DEFAULT_MILITARY_STATUS_CODE = "N";
+  private static final short DEFAULT_NAME_TYPE = 1313;
+  private static final short DEFAULT_SECONDARY_LANGUAGE_TYPE = 1253; // english
+  private static final String DEFAULT_SENSITIVITY_INDICATOR = "N";
+  private static final String DEFAULT_SOC158_PLACEMENT_CODE = "N";
+  private static final String DEFAULT_SOCIAL_SECURITY_NUM_CHANGE_CODE = "N";
+  private static final String DEFAULT_UNEMPLOYED_PARENT_CODE = "U";
+
   /**
    * Serialization version
    */
@@ -692,6 +709,24 @@ public class Client extends ReportingDomain implements Request, Response {
       }
     }
 
+  }
+
+
+  public static Client createWithDefaults(Participant participant, String dateStarted,String genderCode){
+    return new Client("", false, DEFAULT_ADOPTION_STATUS_CODE, "", "",
+                    DEFAULT_CODE, participant.getDateOfBirth(), "", DEFAULT_CODE, false,
+                    DEFAULT_CHILD_CLIENT_INDICATOR, "", "", participant.getFirstName(),
+                    participant.getLastName(), "", "", false, dateStarted, false, "", false,
+                    "", false, "", "", "", DEFAULT_CODE, "", DEFAULT_ESTIMATED_DOB_CODE,
+                    DEFAULT_UNABLE_TO_DETAIN_CODE, "", genderCode, "", "",
+                    DEFAULT_HISPANIC_ORIGIN_CODE, DEFAULT_CODE, DEFAULT_CODE,
+                    DEFAULT_INCAPCITATED_PARENT_CODE, false, false, DEFAULT_LITERATE_CODE, false,
+                    DEFAULT_CODE, DEFAULT_MILITARY_STATUS_CODE, "", "", DEFAULT_NAME_TYPE, false,
+                    false, "", false, DEFAULT_CODE, DEFAULT_CODE, DEFAULT_CODE,
+                    DEFAULT_SECONDARY_LANGUAGE_TYPE, false, DEFAULT_SENSITIVITY_INDICATOR,
+                    DEFAULT_SOC158_PLACEMENT_CODE, false, DEFAULT_SOCIAL_SECURITY_NUM_CHANGE_CODE,
+                    participant.getSsn(), "", false, false, DEFAULT_UNEMPLOYED_PARENT_CODE,
+                    false, null);
   }
 
   /**
