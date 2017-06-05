@@ -54,6 +54,7 @@ import gov.ca.cwds.rest.services.cms.LongTextService;
 import gov.ca.cwds.rest.services.cms.ReferralClientService;
 import gov.ca.cwds.rest.services.cms.ReferralService;
 import gov.ca.cwds.rest.services.cms.ReporterService;
+import gov.ca.cwds.rest.services.cms.StaffPersonIdRetriever;
 import gov.ca.cwds.rest.validation.ParticipantValidator;
 import io.dropwizard.hibernate.UnitOfWork;
 
@@ -89,6 +90,7 @@ public class ScreeningToReferralService implements CrudsService {
   private ClientAddressService clientAddressService;
   private LongTextService longTextService;
   private ChildClientService childClientService;
+  private StaffPersonIdRetriever staffPersonIdRetriever;
 
   private ReferralDao referralDao;
 
@@ -124,6 +126,8 @@ public class ScreeningToReferralService implements CrudsService {
    * @param validator - the validator
    * @param referralDao - The {@link Dao} handling {@link gov.ca.cwds.data.persistence.cms.Referral}
    *        objects.
+   * @param staffPersonIdRetriever = The staffPersonId handling
+   *        {@link gov.ca.cwds.rest.services.cms.StaffPersonIdRetriever} objects.
    */
   @Inject
   public ScreeningToReferralService(ReferralService referralService, ClientService clientService,
@@ -131,7 +135,7 @@ public class ScreeningToReferralService implements CrudsService {
       ReferralClientService referralClientService, ReporterService reporterService,
       AddressService addressService, ClientAddressService clientAddressService,
       LongTextService longTextService, ChildClientService childClientService, Validator validator,
-      ReferralDao referralDao) {
+      ReferralDao referralDao, StaffPersonIdRetriever staffPersonIdRetriever) {
 
     super();
     this.referralService = referralService;
@@ -146,6 +150,7 @@ public class ScreeningToReferralService implements CrudsService {
     this.childClientService = childClientService;
     this.validator = validator;
     this.referralDao = referralDao;
+    this.staffPersonIdRetriever = staffPersonIdRetriever;
   }
 
   @UnitOfWork(value = "cms")
@@ -385,6 +390,12 @@ public class ScreeningToReferralService implements CrudsService {
       Set<ErrorMessage> messages, String dateStarted, String timeStarted) {
     String referralId = null;
 
+    /**
+     * R - 04537 firstResponseDeterminedByStaffPersonId updated with the staffPerson Id when first
+     * determined by the staffPerson.
+     */
+    String firstResponseDeterminedByStaffPersonId = staffPersonIdRetriever.getStaffPersonId();
+
     if (screeningToReferral.getReferralId() == null
         || screeningToReferral.getReferralId().isEmpty()) {
       // the legacy id is not set - create the referral
@@ -392,11 +403,11 @@ public class ScreeningToReferralService implements CrudsService {
       // create a CMS Referral
       Referral referral = null;
       try {
-        referral =
-            Referral.createWithDefaults(ParticipantValidator.anonymousReporter(screeningToReferral),
-                communicationsMethodCode, screeningToReferral.getName(), dateStarted, timeStarted,
-                referralResponseTypeCode, longTextId, DEFAULT_COUNTY_SPECIFIC_CODE,
-                DEFAULT_APPROVAL_STATUS_CODE, DEFAULT_STAFF_PERSON_ID);
+        referral = Referral.createWithDefaults(
+            ParticipantValidator.anonymousReporter(screeningToReferral), communicationsMethodCode,
+            screeningToReferral.getName(), dateStarted, timeStarted, referralResponseTypeCode,
+            firstResponseDeterminedByStaffPersonId, longTextId, DEFAULT_COUNTY_SPECIFIC_CODE,
+            DEFAULT_APPROVAL_STATUS_CODE, DEFAULT_STAFF_PERSON_ID);
       } catch (Exception e1) {
         String message = e1.getMessage();
         logError(message, e1, messages);

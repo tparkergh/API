@@ -2,7 +2,6 @@ package gov.ca.cwds.rest.api.domain.cms;
 
 import static gov.ca.cwds.data.persistence.cms.CmsPersistentObject.CMS_ID_LEN;
 
-import gov.ca.cwds.rest.validation.ParticipantValidator;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -578,19 +577,19 @@ public class Referral extends ReportingDomain implements Request, Response {
     }
   }
 
-  public static Referral createWithDefaults(Boolean anonymousReporter, short communicationsMethodCode,
-                                String referalName, String dateStarted, String timeStarted,
-                                short referralResponseTypeCode, String longTextId,
-                                String countyCode, short approvalCode, String staffId ){
-    return new Referral(false, anonymousReporter,
-            false, "", approvalCode, false, "", communicationsMethodCode, "", "",
-            "", "", false, false, DEFAULT_CODE, DEFAULT_NO, false, DEFAULT_LIMITIED_ACCESS_CODE, "",
-            referalName, "", dateStarted, timeStarted, referralResponseTypeCode,
-            DEFAULT_CODE, "", "", "", longTextId, DEFAULT_NO, DEFAULT_NO, DEFAULT_NO, "", "", "",
-            staffId, countyCode, false, false, false, false, "",
-            DEFAULT_RESPONSIBLE_AGENCY_CODE, DEFAULT_CODE, "", "", "", null, null, null, null, null,
-            null);
+  public static Referral createWithDefaults(Boolean anonymousReporter,
+      short communicationsMethodCode, String referalName, String dateStarted, String timeStarted,
+      short referralResponseTypeCode, String firstResponseDeterminedByStaffPersonId,
+      String longTextId, String countyCode, short approvalCode, String staffId) {
+    return new Referral(false, anonymousReporter, false, "", approvalCode, false, "",
+        communicationsMethodCode, "", "", "", "", false, false, DEFAULT_CODE, DEFAULT_NO, false,
+        DEFAULT_LIMITIED_ACCESS_CODE, "", referalName, "", dateStarted, timeStarted,
+        referralResponseTypeCode, DEFAULT_CODE, "", "", "", longTextId, DEFAULT_NO, DEFAULT_NO,
+        DEFAULT_NO, "", "", firstResponseDeterminedByStaffPersonId, staffId, countyCode, false,
+        false, false, false, "", DEFAULT_RESPONSIBLE_AGENCY_CODE, DEFAULT_CODE, "", "", "", null,
+        null, null, null, null, null);
   }
+
   /**
    * @return the additionalInfoIncludedCode
    */
