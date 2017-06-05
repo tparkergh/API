@@ -4273,10 +4273,10 @@ public class ScreeningToReferralServiceTest {
     Reporter reporterDomain = MAPPER.readValue(
         fixture("fixtures/domain/ScreeningToReferral/valid/validReporter.json"), Reporter.class);
     gov.ca.cwds.data.persistence.cms.Reporter reporterToCreate =
-        new gov.ca.cwds.data.persistence.cms.Reporter(reporterDomain, "1234567ABC");
+        new gov.ca.cwds.data.persistence.cms.Reporter(reporterDomain, "0123456ABC");
     when(reporterDao.create(any(gov.ca.cwds.data.persistence.cms.Reporter.class)))
         .thenReturn(reporterToCreate);
-    when(reporterDao.find("1234567ABC")).thenReturn(reporterToCreate);
+    when(reporterDao.find("0123456ABC")).thenReturn(reporterToCreate);
 
     Address addressDomain = MAPPER.readValue(
         fixture("fixtures/domain/ScreeningToReferral/valid/validAddress.json"), Address.class);
