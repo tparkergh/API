@@ -83,7 +83,6 @@ public class LACountyTriggerTest {
     laCountyTrigger.createCountyTrigger(referral);
     assertThat(countyTrigger.getCountyTriggerEmbeddable().getCountyOwnershipT(),
         is(equalTo("1234567ABC")));
-
   }
 
   /*
@@ -114,7 +113,6 @@ public class LACountyTriggerTest {
     Referral referral = new Referral("ABC1234567", validDomainReferral, "BTr");
     laCountyTrigger.createCountyTrigger(referral);
     assertThat(countyTrigger, is(equalTo(null)));
-
   }
 
   /*
@@ -145,7 +143,6 @@ public class LACountyTriggerTest {
     laCountyTrigger.createCountyTrigger(referralClient);
     assertThat(countyTrigger.getCountyTriggerEmbeddable().getCountyOwnershipT(),
         is(equalTo("ABC1234567")));
-
   }
 
   /*
@@ -176,9 +173,7 @@ public class LACountyTriggerTest {
     ReferralClient referralClient = new ReferralClient(validDomainReferralClient, "BTr");
     laCountyTrigger.createCountyTrigger(referralClient);
     assertThat(countyTrigger, is(equalTo(null)));
-
   }
-
 
   /*
    * Test for checking the clientAddress county trigger created with the CL_ADDRT
@@ -208,7 +203,6 @@ public class LACountyTriggerTest {
     laCountyTrigger.createClientAddressCountyTrigger(clientAddress);
     assertThat(countyTrigger.getCountyTriggerEmbeddable().getCountyOwnershipT(),
         is(equalTo("1234567ABC")));
-
   }
 
   /*
@@ -238,7 +232,6 @@ public class LACountyTriggerTest {
     ClientAddress clientAddress = new ClientAddress("ABC1234567", validDomainClientAddress, "BTr");
     laCountyTrigger.createClientAddressCountyTrigger(clientAddress);
     assertThat(countyTrigger, is(equalTo(null)));
-
   }
 
   /*
@@ -268,7 +261,6 @@ public class LACountyTriggerTest {
     ClientAddress clientAddress = new ClientAddress("ABC1234567", validDomainClientAddress, "BTr");
     laCountyTrigger.createClientAddressCountyTrigger(clientAddress);
     assertThat(countyTrigger, is(equalTo(null)));
-
   }
 
 }

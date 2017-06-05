@@ -49,7 +49,7 @@ public class AddressService implements CrudsService {
     try {
       String lastUpdatedId = staffPersonIdRetriever.getStaffPersonId();
       Address managed =
-          new Address(CmsKeyIdGenerator.cmsIdGenertor(lastUpdatedId), address, lastUpdatedId);
+          new Address(CmsKeyIdGenerator.generate(lastUpdatedId), address, lastUpdatedId);
       managed = addressDao.create(managed);
       if (managed.getId() == null) {
         throw new ServiceException("Address ID cannot be null");

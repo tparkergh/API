@@ -48,7 +48,6 @@ public class AddressTest implements PersistentTestTemplate {
   private String zip = "95666";
   private Short zipSuffix = 1234;
 
-
   private static final ObjectMapper MAPPER = SystemCodeTestHarness.MAPPER;
 
   /*

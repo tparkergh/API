@@ -121,7 +121,7 @@ public class ClientService implements CrudsService {
     try {
       String lastUpdatedId = staffPersonIdRetriever.getStaffPersonId();
       Client managed =
-          new Client(CmsKeyIdGenerator.cmsIdGenertor(lastUpdatedId), client, lastUpdatedId);
+          new Client(CmsKeyIdGenerator.generate(lastUpdatedId), client, lastUpdatedId);
       managed = clientDao.create(managed);
       // checking the staffPerson county code
       StaffPerson staffperson = staffpersonDao.find(managed.getLastUpdatedId());

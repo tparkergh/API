@@ -6,14 +6,6 @@ import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.atLeastOnce;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
-import gov.ca.cwds.rest.api.domain.es.IndexQueryRequest;
-import gov.ca.cwds.rest.api.domain.es.IndexQueryResponse;
-import gov.ca.cwds.rest.core.Api;
-import gov.ca.cwds.rest.resources.IndexQueryResource;
-import gov.ca.cwds.rest.resources.ServiceBackedResourceDelegate;
-import gov.ca.cwds.rest.resources.SimpleResourceDelegate;
-import gov.ca.cwds.rest.services.es.IndexQueryService;
-import io.dropwizard.testing.junit.ResourceTestRule;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -31,6 +23,15 @@ import org.mockito.Mockito;
 
 import com.squarespace.jersey2.guice.JerseyGuiceUtils;
 
+import gov.ca.cwds.rest.api.domain.es.IndexQueryRequest;
+import gov.ca.cwds.rest.api.domain.es.IndexQueryResponse;
+import gov.ca.cwds.rest.core.Api;
+import gov.ca.cwds.rest.resources.IndexQueryResource;
+import gov.ca.cwds.rest.resources.ServiceBackedResourceDelegate;
+import gov.ca.cwds.rest.resources.SimpleResourceDelegate;
+import gov.ca.cwds.rest.services.es.IndexQueryService;
+import io.dropwizard.testing.junit.ResourceTestRule;
+
 /**
  * NOTE : The CWDS API Team has taken the pattern of delegating Resource functions to
  * {@link ServiceBackedResourceDelegate}. As such the tests in here reflect that assumption.
@@ -39,7 +40,8 @@ import com.squarespace.jersey2.guice.JerseyGuiceUtils;
  */
 public class IndexQueryResourceTest {
 
-  private static final String FOUND_RESOURCE = "/" + Api.RESOURCE_ELASTICSEARCH_INDEX_QUERY + "/people/_search";
+  private static final String FOUND_RESOURCE =
+      "/" + Api.RESOURCE_ELASTICSEARCH_INDEX_QUERY + "/people/_search";
 
   @Rule
   public ExpectedException thrown = ExpectedException.none();
@@ -61,8 +63,8 @@ public class IndexQueryResourceTest {
   public static JerseyGuiceRule rule = new JerseyGuiceRule();
 
   @ClassRule
-  public final static ResourceTestRule inMemoryResource = ResourceTestRule.builder()
-      .addResource(new IndexQueryResource(resourceDelegate)).build();
+  public final static ResourceTestRule inMemoryResource =
+      ResourceTestRule.builder().addResource(new IndexQueryResource(resourceDelegate)).build();
 
   @Before
   public void setup() throws Exception {
@@ -81,23 +83,20 @@ public class IndexQueryResourceTest {
   @Test
   public void testPostNullGives400() throws Exception {
 
-    final int actual =
-        inMemoryResource.client().target(FOUND_RESOURCE).request()
-            .accept(MediaType.APPLICATION_JSON)
-            .post(Entity.entity("test", MediaType.APPLICATION_JSON)).getStatus();
+    final int actual = inMemoryResource.client().target(FOUND_RESOURCE).request()
+        .accept(MediaType.APPLICATION_JSON).post(Entity.entity("test", MediaType.APPLICATION_JSON))
+        .getStatus();
 
     int expected = 400;
     assertThat(actual, is(expected));
-
   }
 
   @Test
   public void testPostNonJsonGives400() throws Exception {
 
-    final int actual =
-        inMemoryResource.client().target(FOUND_RESOURCE).request()
-            .accept(MediaType.APPLICATION_JSON)
-            .post(Entity.entity("test", MediaType.APPLICATION_JSON)).getStatus();
+    final int actual = inMemoryResource.client().target(FOUND_RESOURCE).request()
+        .accept(MediaType.APPLICATION_JSON).post(Entity.entity("test", MediaType.APPLICATION_JSON))
+        .getStatus();
 
     int expected = 400;
     assertThat(actual, is(expected));

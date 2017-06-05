@@ -99,7 +99,7 @@ public class AllegationPerpetratorHistoryService implements CrudsService {
     try {
       String lastUpdatedId = staffPersonIdRetriever.getStaffPersonId();
       AllegationPerpetratorHistory managed =
-          new AllegationPerpetratorHistory(CmsKeyIdGenerator.cmsIdGenertor(lastUpdatedId),
+          new AllegationPerpetratorHistory(CmsKeyIdGenerator.generate(lastUpdatedId),
               allegationPerpetratorHistory, lastUpdatedId);
       managed = allegationPerpetratorHistoryDao.create(managed);
       return new PostedAllegationPerpetratorHistory(managed);
