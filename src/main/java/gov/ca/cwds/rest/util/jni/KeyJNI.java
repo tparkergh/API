@@ -83,7 +83,8 @@ public final class KeyJNI {
    * Utility struct class stores details of CWDS key decomposition.
    * 
    * <p>
-   * Intentionally simple structure for C++ results. <strong>DO NOT CHANGE!</strong>
+   * Intentionally oversimplified structure for C++ results. Must match function signature exported
+   * in shared library. <strong>DO NOT CHANGE!</strong>
    * </p>
    */
   @SuppressWarnings("javadoc")

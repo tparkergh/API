@@ -93,7 +93,7 @@ public class AllegationService implements CrudsService {
     try {
       String lastUpdatedId = staffPersonIdRetriever.getStaffPersonId();
       Allegation managed =
-          new Allegation(CmsKeyIdGenerator.cmsIdGenertor(lastUpdatedId), allegation, lastUpdatedId);
+          new Allegation(CmsKeyIdGenerator.generate(lastUpdatedId), allegation, lastUpdatedId);
       managed = allegationDao.create(managed);
       return new PostedAllegation(managed);
     } catch (EntityExistsException e) {

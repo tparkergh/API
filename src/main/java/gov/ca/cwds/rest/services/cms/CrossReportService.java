@@ -92,7 +92,7 @@ public class CrossReportService implements CrudsService {
     try {
       String lastUpdatedId = staffPersonIdRetriever.getStaffPersonId();
       CrossReport managed =
-          new CrossReport(CmsKeyIdGenerator.cmsIdGenertor(lastUpdatedId), crossReport,
+          new CrossReport(CmsKeyIdGenerator.generate(lastUpdatedId), crossReport,
               lastUpdatedId);
       managed = crossReportDao.create(managed);
       return new gov.ca.cwds.rest.api.domain.cms.CrossReport(managed);

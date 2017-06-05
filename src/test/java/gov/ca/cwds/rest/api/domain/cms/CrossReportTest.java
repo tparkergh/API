@@ -59,7 +59,6 @@ public class CrossReportTest {
   public static final ResourceTestRule resources =
       ResourceTestRule.builder().addResource(mockedCrossReportResource).build();
 
-
   private static final ObjectMapper MAPPER = Jackson.newObjectMapper();
 
   private final static DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
@@ -181,7 +180,7 @@ public class CrossReportTest {
   }
 
   @Test
-  public void testCreateWithDefaultCreatesWithValues(){
+  public void testCreateWithDefaultCreatesWithValues() {
     String id = "id";
     String referralId = "referralId";
     String staffId = "staffId";
@@ -190,21 +189,31 @@ public class CrossReportTest {
 
     String agencyName = "agencyName";
     String informDate = "informDate";
-    gov.ca.cwds.rest.api.domain.CrossReport nsCrossReport = new gov.ca.cwds.rest.api.domain.CrossReport(id, "legacy_source_table", "legacy_id","agency_type", agencyName,"method",informDate );
+    gov.ca.cwds.rest.api.domain.CrossReport nsCrossReport =
+        new gov.ca.cwds.rest.api.domain.CrossReport(id, "legacy_source_table", "legacy_id",
+            "agency_type", agencyName, "method", informDate);
 
-    CrossReport cmsCrossReport = CrossReport.createWithDefaults(id,nsCrossReport, referralId, staffId, countyCode, lawEnforcementIndicator );
-    assertEquals("Expected id field to be initialized with values", id, cmsCrossReport.getThirdId());
-    assertEquals("Expected InformDate field to be initialized with values", nsCrossReport.getInformDate(), cmsCrossReport.getInformDate());
-    assertEquals("Expected agencyName field to be initialized with values", nsCrossReport.getAgencyName(), cmsCrossReport.getDescription());
-    assertEquals("Expected referralId field to be initialized with values", referralId, cmsCrossReport.getReferralId());
-    assertEquals("Expected staffId field to be initialized with values", staffId, cmsCrossReport.getStaffPersonId());
-    assertEquals("Expected countyCode field to be initialized with values", countyCode, cmsCrossReport.getCountySpecificCode());
-    assertEquals("Expected lawEnforcementIndicator field to be initialized with values", lawEnforcementIndicator, cmsCrossReport.getLawEnforcementIndicator());
+    CrossReport cmsCrossReport = CrossReport.createWithDefaults(id, nsCrossReport, referralId,
+        staffId, countyCode, lawEnforcementIndicator);
+    assertEquals("Expected id field to be initialized with values", id,
+        cmsCrossReport.getThirdId());
+    assertEquals("Expected InformDate field to be initialized with values",
+        nsCrossReport.getInformDate(), cmsCrossReport.getInformDate());
+    assertEquals("Expected agencyName field to be initialized with values",
+        nsCrossReport.getAgencyName(), cmsCrossReport.getDescription());
+    assertEquals("Expected referralId field to be initialized with values", referralId,
+        cmsCrossReport.getReferralId());
+    assertEquals("Expected staffId field to be initialized with values", staffId,
+        cmsCrossReport.getStaffPersonId());
+    assertEquals("Expected countyCode field to be initialized with values", countyCode,
+        cmsCrossReport.getCountySpecificCode());
+    assertEquals("Expected lawEnforcementIndicator field to be initialized with values",
+        lawEnforcementIndicator, cmsCrossReport.getLawEnforcementIndicator());
 
   }
 
   @Test
-  public void testCreateWithDefaultCreatesWithDefaultValues(){
+  public void testCreateWithDefaultCreatesWithDefaultValues() {
     String id = "id";
     String referralId = "referralId";
     String staffId = "staffId";
@@ -213,23 +222,40 @@ public class CrossReportTest {
 
     String agencyName = "agencyName";
     String informDate = "informDate";
-    gov.ca.cwds.rest.api.domain.CrossReport nsCrossReport = new gov.ca.cwds.rest.api.domain.CrossReport(id, "legacy_source_table", "legacy_id","agency_type", agencyName,"method",informDate );
+    gov.ca.cwds.rest.api.domain.CrossReport nsCrossReport =
+        new gov.ca.cwds.rest.api.domain.CrossReport(id, "legacy_source_table", "legacy_id",
+            "agency_type", agencyName, "method", informDate);
 
-    CrossReport cmsCrossReport = CrossReport.createWithDefaults(id,nsCrossReport, referralId, staffId, countyCode, lawEnforcementIndicator );
-    assertEquals("Expected  field to be initialized with default values", new Short("0"), cmsCrossReport.getCrossReportMethodType());
-    assertEquals("Expected  field to be initialized with default values", false, cmsCrossReport.getFiledOutOfStateIndicator());
-    assertEquals("Expected  field to be initialized with default values", false, cmsCrossReport.getGovernmentOrgCrossRptIndicatorVar());
-    assertEquals("Expected  field to be initialized with default values", "", cmsCrossReport.getInformTime());
-    assertEquals("Expected  field to be initialized with default values", "", cmsCrossReport.getRecipientBadgeNumber());
-    assertEquals("Expected  field to be initialized with default values", new Integer(0), cmsCrossReport.getRecipientPhoneExtensionNumber());
-    assertEquals("Expected  field to be initialized with default values", new BigDecimal(0), cmsCrossReport.getRecipientPhoneNumber());
-    assertEquals("Expected  field to be initialized with default values", "", cmsCrossReport.getRecipientPositionTitleDesc());
-    assertEquals("Expected  field to be initialized with default values", "", cmsCrossReport.getReferenceNumber());
-    assertEquals("Expected  field to be initialized with default values", "", cmsCrossReport.getLawEnforcementId());
-    assertEquals("Expected  field to be initialized with default values", "", cmsCrossReport.getRecipientName());
-    assertEquals("Expected  field to be initialized with default values", "", cmsCrossReport.getOutStateLawEnforcementAddr());
-    assertEquals("Expected  field to be initialized with default values", false, cmsCrossReport.getOutStateLawEnforcementIndicator());
-    assertEquals("Expected  field to be initialized with default values", false, cmsCrossReport.getSatisfyCrossReportIndicator());
+    CrossReport cmsCrossReport = CrossReport.createWithDefaults(id, nsCrossReport, referralId,
+        staffId, countyCode, lawEnforcementIndicator);
+    assertEquals("Expected  field to be initialized with default values", new Short("0"),
+        cmsCrossReport.getCrossReportMethodType());
+    assertEquals("Expected  field to be initialized with default values", false,
+        cmsCrossReport.getFiledOutOfStateIndicator());
+    assertEquals("Expected  field to be initialized with default values", false,
+        cmsCrossReport.getGovernmentOrgCrossRptIndicatorVar());
+    assertEquals("Expected  field to be initialized with default values", "",
+        cmsCrossReport.getInformTime());
+    assertEquals("Expected  field to be initialized with default values", "",
+        cmsCrossReport.getRecipientBadgeNumber());
+    assertEquals("Expected  field to be initialized with default values", new Integer(0),
+        cmsCrossReport.getRecipientPhoneExtensionNumber());
+    assertEquals("Expected  field to be initialized with default values", new BigDecimal(0),
+        cmsCrossReport.getRecipientPhoneNumber());
+    assertEquals("Expected  field to be initialized with default values", "",
+        cmsCrossReport.getRecipientPositionTitleDesc());
+    assertEquals("Expected  field to be initialized with default values", "",
+        cmsCrossReport.getReferenceNumber());
+    assertEquals("Expected  field to be initialized with default values", "",
+        cmsCrossReport.getLawEnforcementId());
+    assertEquals("Expected  field to be initialized with default values", "",
+        cmsCrossReport.getRecipientName());
+    assertEquals("Expected  field to be initialized with default values", "",
+        cmsCrossReport.getOutStateLawEnforcementAddr());
+    assertEquals("Expected  field to be initialized with default values", false,
+        cmsCrossReport.getOutStateLawEnforcementIndicator());
+    assertEquals("Expected  field to be initialized with default values", false,
+        cmsCrossReport.getSatisfyCrossReportIndicator());
 
   }
 
@@ -304,7 +330,6 @@ public class CrossReportTest {
     assertThat(response.readEntity(String.class).indexOf("thirdId may not be null"),
         is(greaterThanOrEqualTo(0)));
   }
-
 
   @Test
   public void failsWhenThirdIdTooLong() throws Exception {

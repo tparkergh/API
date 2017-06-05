@@ -91,7 +91,7 @@ public class LongTextService implements CrudsService {
     try {
       String lastUpdatedId = staffPersonIdRetriever.getStaffPersonId();
       LongText managed =
-          new LongText(CmsKeyIdGenerator.cmsIdGenertor(lastUpdatedId), longText, lastUpdatedId);
+          new LongText(CmsKeyIdGenerator.generate(lastUpdatedId), longText, lastUpdatedId);
       managed = longTextDao.create(managed);
       return new PostedLongText(managed);
     } catch (EntityExistsException e) {

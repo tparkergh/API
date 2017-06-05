@@ -149,13 +149,11 @@ public class ReporterResourceTest implements ResourceTestTemplate {
         inMemoryResource.client().target(ROOT_RESOURCE).request().accept(MediaType.APPLICATION_JSON)
             .post(Entity.entity(serialized, MediaType.APPLICATION_JSON)).getStatus();
     assertThat(status, is(204));
-
   }
 
   @Override
   public void testPost501NotImplemented() throws Exception {
     //
-
   }
 
   /*
@@ -187,7 +185,6 @@ public class ReporterResourceTest implements ResourceTestTemplate {
   @Override
   public void testDelete501NotImplemented() throws Exception {
     //
-
   }
 
   /*

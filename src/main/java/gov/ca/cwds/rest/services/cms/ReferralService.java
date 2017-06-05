@@ -113,7 +113,7 @@ public class ReferralService implements CrudsService {
     try {
       String lastUpdatedId = staffPersonIdRetriever.getStaffPersonId();
       Referral managed =
-          new Referral(CmsKeyIdGenerator.cmsIdGenertor(lastUpdatedId), referral, lastUpdatedId);
+          new Referral(CmsKeyIdGenerator.generate(lastUpdatedId), referral, lastUpdatedId);
       managed = referralDao.create(managed);
       if (managed.getId() == null) {
         throw new ServiceException("Referral ID cannot be null");
