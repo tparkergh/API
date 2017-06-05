@@ -161,7 +161,8 @@ public class ScreeningToReferralServiceTest {
     screeningToReferralService = new ScreeningToReferralService(referralService, clientService,
         allegationService, crossReportService, referralClientService, reporterService,
         addressService, clientAddressService, longTextService, childClientService,
-        Validation.buildDefaultValidatorFactory().getValidator(), referralDao);
+        Validation.buildDefaultValidatorFactory().getValidator(), referralDao,
+        staffPersonIdRetriever);
   }
 
   @SuppressWarnings("javadoc")

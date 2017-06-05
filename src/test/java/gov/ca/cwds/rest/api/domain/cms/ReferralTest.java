@@ -13,9 +13,9 @@ import static org.mockito.Mockito.when;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
-
 import java.util.HashSet;
 import java.util.Set;
+
 import javax.ws.rs.client.Entity;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
@@ -235,47 +235,62 @@ public class ReferralTest {
   }
 
   @Test
-  public void testCreateWithDefaultsSetsValues(){
+  public void testCreateWithDefaultsSetsValues() {
     boolean anonReporter = true;
     Short communicationsMethodCode = 44;
     String referalName = "referralName";
     String dateStarted = "may 22";
     String timeStarted = "6 o'clock";
     Short referralResponseTypeCode = 4;
+    String firstResponseDeterminedByStaffPersonId = "0X5";
     String longTextId = "LongText";
     String countyCode = "sacramento";
     Short approvalCode = 4;
     String staffId = "098";
 
-    Referral referral = Referral.createWithDefaults(anonReporter,
-            communicationsMethodCode,referalName,dateStarted, timeStarted,
-            referralResponseTypeCode,longTextId, countyCode, approvalCode,staffId);
-    assertEquals("Expected anonReporter field to have presetValues",anonReporter, referral.getAnonymousReporterIndicator());
-    assertEquals("Expected communicationsMethodCode field to have presetValues",communicationsMethodCode, referral.getCommunicationMethodType());
-    assertEquals("Expected referalName field to have presetValues",referalName, referral.getReferralName());
-    assertEquals("Expected dateStarted field to have presetValues",dateStarted, referral.getReceivedDate());
-    assertEquals("Expected timeStarted field to have presetValues",timeStarted, referral.getReceivedTime());
-    assertEquals("Expected referralResponseTypeCode field to have presetValues",referralResponseTypeCode, referral.getReferralResponseType());
-    assertEquals("Expected longTextId field to have presetValues",longTextId, referral.getScreenerNoteText());
-    assertEquals("Expected countyCode field to have presetValues",countyCode, referral.getCountySpecificCode());
-    assertEquals("Expected approvalCode field to have presetValues",approvalCode, referral.getApprovalStatusType());
-    assertEquals("Expected staffId field to have presetValues",staffId, referral.getPrimaryContactStaffPersonId());
+    Referral referral = Referral.createWithDefaults(anonReporter, communicationsMethodCode,
+        referalName, dateStarted, timeStarted, referralResponseTypeCode,
+        firstResponseDeterminedByStaffPersonId, longTextId, countyCode, approvalCode, staffId);
+    assertEquals("Expected anonReporter field to have presetValues", anonReporter,
+        referral.getAnonymousReporterIndicator());
+    assertEquals("Expected communicationsMethodCode field to have presetValues",
+        communicationsMethodCode, referral.getCommunicationMethodType());
+    assertEquals("Expected referalName field to have presetValues", referalName,
+        referral.getReferralName());
+    assertEquals("Expected dateStarted field to have presetValues", dateStarted,
+        referral.getReceivedDate());
+    assertEquals("Expected timeStarted field to have presetValues", timeStarted,
+        referral.getReceivedTime());
+    assertEquals("Expected referralResponseTypeCode field to have presetValues",
+        referralResponseTypeCode, referral.getReferralResponseType());
+    assertEquals("Expected firstResponseDeterminedByStaffPersonId field to have presetValues",
+        firstResponseDeterminedByStaffPersonId,
+        referral.getFirstResponseDeterminedByStaffPersonId());
+    assertEquals("Expected longTextId field to have presetValues", longTextId,
+        referral.getScreenerNoteText());
+    assertEquals("Expected countyCode field to have presetValues", countyCode,
+        referral.getCountySpecificCode());
+    assertEquals("Expected approvalCode field to have presetValues", approvalCode,
+        referral.getApprovalStatusType());
+    assertEquals("Expected staffId field to have presetValues", staffId,
+        referral.getPrimaryContactStaffPersonId());
   }
 
-  public void testCreateWithDefaultsSetsDefaultsValues(){
+  public void testCreateWithDefaultsSetsDefaultsValues() {
     boolean anonReporter = true;
     short communicationsMethodCode = 44;
     String referalName = "referralName";
     String dateStarted = "may 22";
     String timeStarted = "6 o'clock";
     short referralResponseTypeCode = 4;
+    String firstResponseDeterminedByStaffPersonId = "0X5";
     String longTextId = "LongText";
     String countyCode = "sacramento";
     short approvalCode = 4;
     String staffId = "098";
 
     Boolean additionalInfoIncludedCode = true;
-    Boolean applicationForPetitionIndicator = true ;
+    Boolean applicationForPetitionIndicator = true;
     String approvalNumber = "approvalNumber";
     Boolean caretakersPerpetratorCode = true;
     String closureDate = "closureDate";
@@ -300,7 +315,6 @@ public class ReferralTest {
     String unfoundedSeriesCode = "unfoundedSeriesCod";
     String linkToPrimaryReferralId = "linkToPrimaryReferralId";
     String allegesAbuseOccurredAtAddressId = "allegesAbuseOccurredAtAddressId";
-    String firstResponseDeterminedByStaffPersonId = "firstResponseDeterminedByStaffPersonI";
     Boolean specialProjectReferralIndicator = true;
     Boolean zippyCreatedIndicator = true;
     Boolean homelessIndicator = true;
@@ -318,53 +332,98 @@ public class ReferralTest {
     Set<Client> victimClient = new HashSet();
     Set<Client> perpetratorClient = new HashSet();
 
-    Referral referral = Referral.createWithDefaults(anonReporter,
-        communicationsMethodCode,referalName,dateStarted, timeStarted,
-        referralResponseTypeCode,longTextId, countyCode, approvalCode,staffId);
-    assertEquals("Expected additionalInfoIncludedCode field to have presetValues",additionalInfoIncludedCode, referral.getAdditionalInfoIncludedCode());
-    assertEquals("Expected applicationForPetitionIndicator field to have presetValues",applicationForPetitionIndicator, referral.getApplicationForPetitionIndicator());
-    assertEquals("Expected approvalNumber field to have presetValues",approvalNumber, referral.getApprovalNumber());
-    assertEquals("Expected caretakersPerpetratorCode field to have presetValues",caretakersPerpetratorCode, referral.getCaretakersPerpetratorCode());
-    assertEquals("Expected closureDate field to have presetValues",closureDate, referral.getClosureDate());
-    assertEquals("Expected currentLocationOfChildren field to have presetValues",currentLocationOfChildren, referral.getCurrentLocationOfChildren());
-    assertEquals("Expected drmsAllegationDescriptionDoc field to have presetValues",drmsAllegationDescriptionDoc, referral.getDrmsAllegationDescriptionDoc());
-    assertEquals("Expected drmsErReferralDoc field to have presetValues",drmsErReferralDoc, referral.getDrmsErReferralDoc());
-    assertEquals("Expected drmsInvestigationDoc field to have presetValues",drmsInvestigationDoc, referral.getDrmsInvestigationDoc());
-    assertEquals("Expected filedSuspectedChildAbuseReporttoLawEnforcementIndicator field to have presetValues",filedSuspectedChildAbuseReporttoLawEnforcementIndicator, referral.getFiledSuspectedChildAbuseReporttoLawEnforcementIndicator());
-    assertEquals("Expected familyAwarenessIndicator field to have presetValues",familyAwarenessIndicator, referral.getFamilyAwarenessIndicator());
-    assertEquals("Expected govtEntityType field to have presetValues",govtEntityType, referral.getGovtEntityType());
-    assertEquals("Expected legalDefinitionCode field to have presetValues",legalDefinitionCode, referral.getLegalDefinitionCode());
-    assertEquals("Expected legalRightsNoticeIndicator field to have presetValues",legalRightsNoticeIndicator, referral.getLegalRightsNoticeIndicator());
-    assertEquals("Expected limitedAccessCode field to have presetValues",limitedAccessCode, referral.getLimitedAccessCode());
-    assertEquals("Expected mandatedCrossReportReceivedDate field to have presetValues",madatedCrossReportReceivedDate, referral.getMandatedCrossReportReceivedDate());
-    assertEquals("Expected openAdequateCaseCode field to have presetValues",openAdequateCaseCode, referral.getOpenAdequateCaseCode());
-    assertEquals("Expected referredToResourceType field to have presetValues",referredToResourceType, referral.getReferredToResourceType());
-    assertEquals("Expected responseDeterminationDate field to have presetValues",responseDeterminationDate, referral.getResponseDeterminationDate());
-    assertEquals("Expected responseDeterminationTime field to have presetValues",responseDeterminationTime, referral.getResponseDeterminationTime());
-    assertEquals("Expected responseRationaleText field to have presetValues",responseRationaleText, referral.getResponseRationaleText());
-    assertEquals("Expected specificsIncludedCode field to have presetValues",specificsIncludedCode, referral.getSpecificsIncludedCode());
-    assertEquals("Expected sufficientInformationCode field to have presetValues",sufficientInformationCode, referral.getSufficientInformationCode());
-    assertEquals("Expected unfoundedSeriesCode field to have presetValues",unfoundedSeriesCode, referral.getUnfoundedSeriesCode());
-    assertEquals("Expected linkToPrimaryReferralId field to have presetValues",linkToPrimaryReferralId, referral.getLinkToPrimaryReferralId());
-    assertEquals("Expected allegesAbuseOccurredAtAddressId field to have presetValues",allegesAbuseOccurredAtAddressId, referral.getAllegesAbuseOccurredAtAddressId());
-    assertEquals("Expected firstResponseDeterminedByStaffPersonId field to have presetValues",firstResponseDeterminedByStaffPersonId, referral.getFirstResponseDeterminedByStaffPersonId());
-    assertEquals("Expected specialProjectReferralIndicator field to have presetValues",specialProjectReferralIndicator, referral.getSpecialProjectReferralIndicator());
-    assertEquals("Expected zippyCreatedIndicator field to have presetValues",zippyCreatedIndicator, referral.getZippyCreatedIndicator());
-    assertEquals("Expected homelessIndicator field to have presetValues",homelessIndicator, referral.getHomelessIndicator());
-    assertEquals("Expected familyRefusedServicesIndicator field to have presetValues",familyRefusedServicesIndicator, referral.getFamilyRefusedServicesIndicator());
-    assertEquals("Expected firstEvaluatedOutApprovalDate field to have presetValues",firstEvaluatedOutApprovalDate, referral.getFirstEvaluatedOutApprovalDate());
-    assertEquals("Expected responsibleAgencyCode field to have presetValues",responsibleAgencyCode, referral.getResponsibleAgencyCode());
-    assertEquals("Expected limitedAccessGovtAgencyType field to have presetValues",limitedAccessGovtAgencyType, referral.getLimitedAccessGovtAgencyType());
-    assertEquals("Expected limitedAccessDate field to have presetValues",limitedAccessDate, referral.getLimitedAccessDate());
-    assertEquals("Expected limitedAccessDesc field to have presetValues",limitedAccessDesc, referral.getLimitedAccessDesc());
-    assertEquals("Expected originalClosureDate field to have presetValues",originalClosureDate, referral.getOriginalClosureDate());
-    assertEquals("Expected address field to have presetValues",address, referral.getAddress());
-    assertEquals("Expected reporter field to have presetValues",reporter, referral.getReporter());
-    assertEquals("Expected crossReport field to have presetValues",crossReport, referral.getCrossReport());
-    assertEquals("Expected allegation field to have presetValues",allegation, referral.getAllegation());
-    assertEquals("Expected victimClient field to have presetValues",victimClient, referral.getVictimClient());
-    assertEquals("Expected perpetratorClient field to have presetValues",perpetratorClient, referral.getPerpetratorClient());
+    Referral referral = Referral.createWithDefaults(anonReporter, communicationsMethodCode,
+        referalName, dateStarted, timeStarted, referralResponseTypeCode,
+        firstResponseDeterminedByStaffPersonId, longTextId, countyCode, approvalCode, staffId);
+    assertEquals("Expected additionalInfoIncludedCode field to have presetValues",
+        additionalInfoIncludedCode, referral.getAdditionalInfoIncludedCode());
+    assertEquals("Expected applicationForPetitionIndicator field to have presetValues",
+        applicationForPetitionIndicator, referral.getApplicationForPetitionIndicator());
+    assertEquals("Expected approvalNumber field to have presetValues", approvalNumber,
+        referral.getApprovalNumber());
+    assertEquals("Expected caretakersPerpetratorCode field to have presetValues",
+        caretakersPerpetratorCode, referral.getCaretakersPerpetratorCode());
+    assertEquals("Expected closureDate field to have presetValues", closureDate,
+        referral.getClosureDate());
+    assertEquals("Expected currentLocationOfChildren field to have presetValues",
+        currentLocationOfChildren, referral.getCurrentLocationOfChildren());
+    assertEquals("Expected drmsAllegationDescriptionDoc field to have presetValues",
+        drmsAllegationDescriptionDoc, referral.getDrmsAllegationDescriptionDoc());
+    assertEquals("Expected drmsErReferralDoc field to have presetValues", drmsErReferralDoc,
+        referral.getDrmsErReferralDoc());
+    assertEquals("Expected drmsInvestigationDoc field to have presetValues", drmsInvestigationDoc,
+        referral.getDrmsInvestigationDoc());
+    assertEquals(
+        "Expected filedSuspectedChildAbuseReporttoLawEnforcementIndicator field to have presetValues",
+        filedSuspectedChildAbuseReporttoLawEnforcementIndicator,
+        referral.getFiledSuspectedChildAbuseReporttoLawEnforcementIndicator());
+    assertEquals("Expected familyAwarenessIndicator field to have presetValues",
+        familyAwarenessIndicator, referral.getFamilyAwarenessIndicator());
+    assertEquals("Expected govtEntityType field to have presetValues", govtEntityType,
+        referral.getGovtEntityType());
+    assertEquals("Expected legalDefinitionCode field to have presetValues", legalDefinitionCode,
+        referral.getLegalDefinitionCode());
+    assertEquals("Expected legalRightsNoticeIndicator field to have presetValues",
+        legalRightsNoticeIndicator, referral.getLegalRightsNoticeIndicator());
+    assertEquals("Expected limitedAccessCode field to have presetValues", limitedAccessCode,
+        referral.getLimitedAccessCode());
+    assertEquals("Expected mandatedCrossReportReceivedDate field to have presetValues",
+        madatedCrossReportReceivedDate, referral.getMandatedCrossReportReceivedDate());
+    assertEquals("Expected openAdequateCaseCode field to have presetValues", openAdequateCaseCode,
+        referral.getOpenAdequateCaseCode());
+    assertEquals("Expected referredToResourceType field to have presetValues",
+        referredToResourceType, referral.getReferredToResourceType());
+    assertEquals("Expected responseDeterminationDate field to have presetValues",
+        responseDeterminationDate, referral.getResponseDeterminationDate());
+    assertEquals("Expected responseDeterminationTime field to have presetValues",
+        responseDeterminationTime, referral.getResponseDeterminationTime());
+    assertEquals("Expected responseRationaleText field to have presetValues", responseRationaleText,
+        referral.getResponseRationaleText());
+    assertEquals("Expected specificsIncludedCode field to have presetValues", specificsIncludedCode,
+        referral.getSpecificsIncludedCode());
+    assertEquals("Expected sufficientInformationCode field to have presetValues",
+        sufficientInformationCode, referral.getSufficientInformationCode());
+    assertEquals("Expected unfoundedSeriesCode field to have presetValues", unfoundedSeriesCode,
+        referral.getUnfoundedSeriesCode());
+    assertEquals("Expected linkToPrimaryReferralId field to have presetValues",
+        linkToPrimaryReferralId, referral.getLinkToPrimaryReferralId());
+    assertEquals("Expected allegesAbuseOccurredAtAddressId field to have presetValues",
+        allegesAbuseOccurredAtAddressId, referral.getAllegesAbuseOccurredAtAddressId());
+    assertEquals("Expected firstResponseDeterminedByStaffPersonId field to have presetValues",
+        firstResponseDeterminedByStaffPersonId,
+        referral.getFirstResponseDeterminedByStaffPersonId());
+    assertEquals("Expected specialProjectReferralIndicator field to have presetValues",
+        specialProjectReferralIndicator, referral.getSpecialProjectReferralIndicator());
+    assertEquals("Expected zippyCreatedIndicator field to have presetValues", zippyCreatedIndicator,
+        referral.getZippyCreatedIndicator());
+    assertEquals("Expected homelessIndicator field to have presetValues", homelessIndicator,
+        referral.getHomelessIndicator());
+    assertEquals("Expected familyRefusedServicesIndicator field to have presetValues",
+        familyRefusedServicesIndicator, referral.getFamilyRefusedServicesIndicator());
+    assertEquals("Expected firstEvaluatedOutApprovalDate field to have presetValues",
+        firstEvaluatedOutApprovalDate, referral.getFirstEvaluatedOutApprovalDate());
+    assertEquals("Expected responsibleAgencyCode field to have presetValues", responsibleAgencyCode,
+        referral.getResponsibleAgencyCode());
+    assertEquals("Expected limitedAccessGovtAgencyType field to have presetValues",
+        limitedAccessGovtAgencyType, referral.getLimitedAccessGovtAgencyType());
+    assertEquals("Expected limitedAccessDate field to have presetValues", limitedAccessDate,
+        referral.getLimitedAccessDate());
+    assertEquals("Expected limitedAccessDesc field to have presetValues", limitedAccessDesc,
+        referral.getLimitedAccessDesc());
+    assertEquals("Expected originalClosureDate field to have presetValues", originalClosureDate,
+        referral.getOriginalClosureDate());
+    assertEquals("Expected address field to have presetValues", address, referral.getAddress());
+    assertEquals("Expected reporter field to have presetValues", reporter, referral.getReporter());
+    assertEquals("Expected crossReport field to have presetValues", crossReport,
+        referral.getCrossReport());
+    assertEquals("Expected allegation field to have presetValues", allegation,
+        referral.getAllegation());
+    assertEquals("Expected victimClient field to have presetValues", victimClient,
+        referral.getVictimClient());
+    assertEquals("Expected perpetratorClient field to have presetValues", perpetratorClient,
+        referral.getPerpetratorClient());
   }
+
   @Test
   public void jsonCreatorConstructorTest() throws Exception {
     Referral domain = new Referral(additionalInfoIncludedCode, anonymousReporterIndicator,
