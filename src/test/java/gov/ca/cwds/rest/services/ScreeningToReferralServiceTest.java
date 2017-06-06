@@ -1,6 +1,7 @@
 package gov.ca.cwds.rest.services;
 
 import static io.dropwizard.testing.FixtureHelpers.fixture;
+import static org.junit.Assert.assertTrue;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.is;
@@ -8,6 +9,12 @@ import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
+import gov.ca.cwds.rest.api.domain.cms.PostedAddress;
+import gov.ca.cwds.rest.api.domain.cms.PostedAllegation;
+import gov.ca.cwds.rest.api.domain.cms.PostedClient;
+import gov.ca.cwds.rest.api.domain.cms.PostedLongText;
+import gov.ca.cwds.rest.api.domain.cms.PostedReferral;
+import gov.ca.cwds.rest.api.domain.cms.PostedReporter;
 import java.util.LinkedHashSet;
 import java.util.Set;
 
@@ -483,6 +490,90 @@ public class ScreeningToReferralServiceTest {
 
     assertThat(response.getClass(), is(PostedScreeningToReferral.class));
     assertThat(response.hasMessages(), is(equalTo(false)));
+  }
+
+
+  //TODO: move to before block after refactoring rest of code to use these mocks.
+  private void setupServiceMocks(){
+    referralService = mock(ReferralService.class);
+    PostedReferral postedReferral = mock(PostedReferral.class);
+    when(postedReferral.getId()).thenReturn("123");
+    when(referralService.create(any(Referral.class))).thenReturn(postedReferral);
+
+    clientService = mock(ClientService.class);
+    PostedClient postedClient = mock(PostedClient.class);
+    when(postedClient.getId()).thenReturn("234");
+    when(clientService.create(any(Client.class))).thenReturn(postedClient);
+
+    referralClientService  = mock(ReferralClientService.class);
+    ReferralClient referralClient = mock(ReferralClient.class);
+    when(referralClientService.create(any(ReferralClient.class))).thenReturn(referralClient);
+
+    allegationService =  mock(AllegationService.class);
+    PostedAllegation postedAllegation = mock(PostedAllegation.class);
+    when(postedAllegation.getId()).thenReturn("345");
+    when(allegationService.create(any(Allegation.class))).thenReturn(postedAllegation);
+
+    crossReportService =  mock(CrossReportService.class);
+    CrossReport postedCrossReport = mock(CrossReport.class);
+    when(postedCrossReport.getThirdId()).thenReturn("456");
+    when(crossReportService.create(any(CrossReport.class))).thenReturn(postedCrossReport);
+
+    reporterService =  mock(ReporterService.class);
+    Reporter reporter = mock(Reporter.class);
+    PostedReporter postedReporter = mock(PostedReporter.class);
+    when(postedReporter.getReferralId()).thenReturn("567");
+    when(reporterService.create(any(Reporter.class))).thenReturn(postedReporter);
+
+    addressService =  mock(AddressService.class);
+    PostedAddress postedAddress = mock(PostedAddress.class);
+    when(postedAddress.getExistingAddressId()).thenReturn("678");
+    when(addressService.create(any(Address.class))).thenReturn(postedAddress);
+
+    clientAddressService =  mock(ClientAddressService.class);
+    ClientAddress clientAddress = mock(ClientAddress.class);
+    when(clientAddressService.create(any(ClientAddress.class))).thenReturn(clientAddress);
+
+    longTextService =  mock(LongTextService.class);
+    PostedLongText postedLongText = mock(PostedLongText.class);
+    when(postedLongText.getId()).thenReturn("789");
+    when(longTextService.create(any(LongText.class))).thenReturn(postedLongText);
+
+    childClientService =  mock(ChildClientService.class);
+    ChildClient childClient = mock(ChildClient.class);
+    when(childClientService.create(any(ChildClient.class))).thenReturn(childClient);
+
+    screeningToReferralService = new ScreeningToReferralService(referralService, clientService,
+        allegationService, crossReportService, referralClientService, reporterService,
+        addressService, clientAddressService, longTextService, childClientService,
+        Validation.buildDefaultValidatorFactory().getValidator(), referralDao, staffPersonIdRetriever);
+  }
+
+  @SuppressWarnings("javadoc")
+  @Test
+  public void shouldFailWhenReferralDoesNotExist() throws Exception {
+
+    //TODO:remove after method is moved to before block
+    setupServiceMocks();
+
+    ScreeningToReferral screeningToReferral = MAPPER.readValue(
+        fixture("fixtures/domain/ScreeningToReferral/invalid/withReferralIdNotExist.json"),
+        ScreeningToReferral.class);
+
+    Response response = screeningToReferralService.create(screeningToReferral);
+    boolean hasErrorMessage = containsError(response, "Legacy Id does not correspond to an existing CMS/CWS Referral");
+    assertTrue("", hasErrorMessage);
+  }
+
+  private boolean containsError(Response response, String errorMessage ) {
+    if (response.hasMessages()) {
+      for (ErrorMessage message : response.getMessages()) {
+        if (message != null && message.getMessage().contains(errorMessage)) {
+          return true;
+        }
+      }
+    }
+    return false;
   }
 
   @SuppressWarnings("javadoc")
