@@ -156,6 +156,36 @@ public class ParticipantValidator {
   }
 
   /**
+   * @param participant - Participant
+   * @return Boolean - true if mandated reporter role found in participant
+   */
+  public static Boolean hasMandatedReporterRole(Participant participant) throws ServiceException {
+    Set<String> roles = participant.getRoles();
+    if (roles != null && roles.contains(MANDATED_REPORTER_ROLE)) {
+      return true;
+    }
+    return false;
+  }
+
+  /**
+   * @param participants - Participants
+   * @return Boolean - true if mandated reporter role found in any of the participant
+   */
+  public static Boolean hasMandatedReporterRole(Set<Participant> participants)
+      throws ServiceException {
+    boolean mandatedRepoter = false;
+    for (Participant p : participants) {
+      mandatedRepoter = hasMandatedReporterRole(p);
+      if (mandatedRepoter) {
+        break;
+      }
+    }
+    return mandatedRepoter;
+  }
+
+
+
+  /**
    * @param participant - Participant object
    * @return Boolean - has valid roles
    * @throws ServiceException - throw any exception

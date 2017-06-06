@@ -526,9 +526,27 @@ public class ScreeningToReferralService implements CrudsService {
       for (CrossReport crossReport : crossReports) {
 
         Boolean lawEnforcementIndicator = false;
-        if (crossReport.getAgencyType().contains("Law Enforcement")) {
+
+        /**
+         * <blockquote>
+         * 
+         * <pre>
+         * BUSINESS RULE: "R - 02535" - Do not report to In-State Law
+         * 
+         * IF    CrossReport agency type is 'Law Enforcement' 
+         * AND   Reporter is 'Mandated Reporter'
+         * THEN  Set lawEnforcementIndicator = false
+         * </blockquote>
+         * </pre>
+         */
+        boolean mandatedReporter =
+            ParticipantValidator.hasMandatedReporterRole(scr.getParticipants());
+        boolean lawEnforcementAgencyType = crossReport.getAgencyType().contains("Law Enforcement");
+
+        if (lawEnforcementAgencyType && !mandatedReporter) {
           lawEnforcementIndicator = true;
         }
+
         if (crossReport.getLegacyId() == null || crossReport.getLegacyId().isEmpty()) {
           // create the cross report
           gov.ca.cwds.rest.api.domain.cms.CrossReport cmsCrossReport =
