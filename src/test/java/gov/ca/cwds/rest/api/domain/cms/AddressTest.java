@@ -1,10 +1,10 @@
 package gov.ca.cwds.rest.api.domain.cms;
 
 import static io.dropwizard.testing.FixtureHelpers.fixture;
-import static org.junit.Assert.assertEquals;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.is;
+import static org.junit.Assert.assertEquals;
 import static org.mockito.Mockito.mock;
 
 import java.io.IOException;
@@ -152,7 +152,7 @@ public class AddressTest {
   }
 
   @Test
-  public void testCreateWithDefaultCreatesWithValues(){
+  public void testCreateWithDefaultCreatesWithValues() {
     String streetNumber = "1";
     String streetName = "main";
     String streetAddress = streetNumber + " " + streetName;
@@ -163,22 +163,27 @@ public class AddressTest {
     Integer zipCode = 123459876;
     String type = "type";
 
-    gov.ca.cwds.rest.api.domain.Address nsAddress = new gov.ca.cwds.rest.api.domain.Address("legacy_source_table", "legacy_id",streetAddress, city, state, zipCode, type);
+    gov.ca.cwds.rest.api.domain.Address nsAddress = new gov.ca.cwds.rest.api.domain.Address(
+        "legacy_source_table", "legacy_id", streetAddress, city, state, zipCode, type);
     Short stateCode = 5;
 
     Address cmsAddress = Address.createWithDefaults(nsAddress, stateCode);
     assertEquals("Expected  field to be initialized with values", city, cmsAddress.getCity());
     assertEquals("Expected  field to be initialized with values", stateCode, cmsAddress.getState());
-    assertEquals("Expected  field to be initialized with values", streetName, cmsAddress.getStreetName());
-    assertEquals("Expected  field to be initialized with values", streetNumber, cmsAddress.getStreetNumber());
+    assertEquals("Expected  field to be initialized with values", streetName,
+        cmsAddress.getStreetName());
+    assertEquals("Expected  field to be initialized with values", streetNumber,
+        cmsAddress.getStreetNumber());
     assertEquals("Expected  field to be initialized with values", zipCode, cmsAddress.getZip());
-    assertEquals("Expected  field to be initialized with values", zipExtension, cmsAddress.getZip4());
-    assertEquals("Expected  field to be initialized with values", type, cmsAddress.getAddressDescription());
+    assertEquals("Expected  field to be initialized with values", zipExtension,
+        cmsAddress.getZip4());
+    assertEquals("Expected  field to be initialized with values", type,
+        cmsAddress.getAddressDescription());
 
   }
 
   @Test
-  public void testCreateWithDefaultCreatesWithDefaultValues(){
+  public void testCreateWithDefaultCreatesWithDefaultValues() {
     String streetNumber = "1";
     String streetName = "main";
     String streetAddress = streetNumber + " " + streetName;
@@ -189,139 +194,175 @@ public class AddressTest {
     Integer zipCode = 123459876;
     String type = "type";
 
-    gov.ca.cwds.rest.api.domain.Address nsAddress = new gov.ca.cwds.rest.api.domain.Address("legacy_source_table", "legacy_id",streetAddress, city, state, zipCode, type);
+    gov.ca.cwds.rest.api.domain.Address nsAddress = new gov.ca.cwds.rest.api.domain.Address(
+        "legacy_source_table", "legacy_id", streetAddress, city, state, zipCode, type);
     Short stateCode = 5;
 
     Address cmsAddress = Address.createWithDefaults(nsAddress, stateCode);
     assertEquals("Expected  field to be initialized with values", city, cmsAddress.getCity());
     assertEquals("Expected  field to be initialized with values", stateCode, cmsAddress.getState());
-    assertEquals("Expected  field to be initialized with values", streetName, cmsAddress.getStreetName());
-    assertEquals("Expected  field to be initialized with values", streetNumber, cmsAddress.getStreetNumber());
+    assertEquals("Expected  field to be initialized with values", streetName,
+        cmsAddress.getStreetName());
+    assertEquals("Expected  field to be initialized with values", streetNumber,
+        cmsAddress.getStreetNumber());
     assertEquals("Expected  field to be initialized with values", zipCode, cmsAddress.getZip());
-    assertEquals("Expected  field to be initialized with values", zipExtension, cmsAddress.getZip4());
-    assertEquals("Expected  field to be initialized with values", type, cmsAddress.getAddressDescription());
+    assertEquals("Expected  field to be initialized with values", zipExtension,
+        cmsAddress.getZip4());
+    assertEquals("Expected  field to be initialized with values", type,
+        cmsAddress.getAddressDescription());
 
 
-    assertEquals("Expected existingAddressId field to be initialized with default values", " ", cmsAddress.getExistingAddressId());
-    assertEquals("Expected emergencyNumber field to be initialized with default values", new BigDecimal(0), cmsAddress.getEmergencyNumber());
-    assertEquals("Expected emergencyExtension field to be initialized with default values", new Integer(0), cmsAddress.getEmergencyExtension());
-    assertEquals("Expected frgAdrtB field to be initialized with default values", false, cmsAddress.getFrgAdrtB());
-    assertEquals("Expected governmentEntityCd field to be initialized with default values", new Short("0"), cmsAddress.getGovernmentEntityCd());
-    assertEquals("Expected messageNumber field to be initialized with default values", new BigDecimal(0), cmsAddress.getMessageNumber());
-    assertEquals("Expected messageExtension field to be initialized with default values", new Integer(0), cmsAddress.getMessageExtension());
-    assertEquals("Expected headerAddress field to be initialized with default values", " ", cmsAddress.getHeaderAddress());
-    assertEquals("Expected primaryNumber field to be initialized with default values", new BigDecimal(0), cmsAddress.getPrimaryNumber());
-    assertEquals("Expected primaryExtension field to be initialized with default values", new Integer(0), cmsAddress.getPrimaryExtension());
-    assertEquals("Expected postDirCd field to be initialized with default values", " ", cmsAddress.getPostDirCd());
-    assertEquals("Expected preDirCd field to be initialized with default values", " ", cmsAddress.getPreDirCd());
-    assertEquals("Expected streetSuffixCd field to be initialized with default values", new Short("0"), cmsAddress.getStreetSuffixCd());
-    assertEquals("Expected unitDesignationCd field to be initialized with default values", new Short("0"), cmsAddress.getUnitDesignationCd());
-    assertEquals("Expected unitNumber field to be initialized with default values", " ", cmsAddress.getUnitNumber());
+    assertEquals("Expected existingAddressId field to be initialized with default values", " ",
+        cmsAddress.getExistingAddressId());
+    assertEquals("Expected emergencyNumber field to be initialized with default values",
+        new BigDecimal(0), cmsAddress.getEmergencyNumber());
+    assertEquals("Expected emergencyExtension field to be initialized with default values",
+        new Integer(0), cmsAddress.getEmergencyExtension());
+    assertEquals("Expected frgAdrtB field to be initialized with default values", false,
+        cmsAddress.getFrgAdrtB());
+    assertEquals("Expected governmentEntityCd field to be initialized with default values",
+        new Short("0"), cmsAddress.getGovernmentEntityCd());
+    assertEquals("Expected messageNumber field to be initialized with default values",
+        new BigDecimal(0), cmsAddress.getMessageNumber());
+    assertEquals("Expected messageExtension field to be initialized with default values",
+        new Integer(0), cmsAddress.getMessageExtension());
+    assertEquals("Expected headerAddress field to be initialized with default values", " ",
+        cmsAddress.getHeaderAddress());
+    assertEquals("Expected primaryNumber field to be initialized with default values",
+        new BigDecimal(0), cmsAddress.getPrimaryNumber());
+    assertEquals("Expected primaryExtension field to be initialized with default values",
+        new Integer(0), cmsAddress.getPrimaryExtension());
+    assertEquals("Expected postDirCd field to be initialized with default values", " ",
+        cmsAddress.getPostDirCd());
+    assertEquals("Expected preDirCd field to be initialized with default values", " ",
+        cmsAddress.getPreDirCd());
+    assertEquals("Expected streetSuffixCd field to be initialized with default values",
+        new Short("0"), cmsAddress.getStreetSuffixCd());
+    assertEquals("Expected unitDesignationCd field to be initialized with default values",
+        new Short("0"), cmsAddress.getUnitDesignationCd());
+    assertEquals("Expected unitNumber field to be initialized with default values", " ",
+        cmsAddress.getUnitNumber());
 
   }
 
   @Test
-  public void zipExtensionShouldContainNoValueWhenZipIsOnly5Characters(){
+  public void zipExtensionShouldContainNoValueWhenZipIsOnly5Characters() {
     Short zipExtension = 0;
     Integer zipCode = 12345;
 
-    gov.ca.cwds.rest.api.domain.Address nsAddress = new gov.ca.cwds.rest.api.domain.Address("legacy_source_table", "legacy_id"," 1 main", "city", "state", zipCode, "type");
+    gov.ca.cwds.rest.api.domain.Address nsAddress = new gov.ca.cwds.rest.api.domain.Address(
+        "legacy_source_table", "legacy_id", " 1 main", "city", "state", zipCode, "type");
 
-    Address cmsAddress = Address.createWithDefaults(nsAddress,  new Short("5"));
+    Address cmsAddress = Address.createWithDefaults(nsAddress, new Short("5"));
     assertEquals("Expected zip field to contain 5 digits", zipCode, cmsAddress.getZip());
-    assertEquals("Expected zipExtension field to contain no digits", zipExtension, cmsAddress.getZip4());
+    assertEquals("Expected zipExtension field to contain no digits", zipExtension,
+        cmsAddress.getZip4());
   }
 
   @Test
-  public void zipExtensionShouldContainRemaingDigitsWhenZipIsGreaterThan5Characters(){
+  public void zipExtensionShouldContainRemaingDigitsWhenZipIsGreaterThan5Characters() {
     Short zipExtension = new Short("32767");
     Integer zipCode = 1234532767;
 
-    gov.ca.cwds.rest.api.domain.Address nsAddress = new gov.ca.cwds.rest.api.domain.Address("legacy_source_table", "legacy_id"," 1 main", "city", "state", zipCode, "type");
+    gov.ca.cwds.rest.api.domain.Address nsAddress = new gov.ca.cwds.rest.api.domain.Address(
+        "legacy_source_table", "legacy_id", " 1 main", "city", "state", zipCode, "type");
 
-    Address cmsAddress = Address.createWithDefaults(nsAddress,  new Short("5"));
-    assertEquals("Expected zipExtension field to contain no digits", zipExtension, cmsAddress.getZip4());
+    Address cmsAddress = Address.createWithDefaults(nsAddress, new Short("5"));
+    assertEquals("Expected zipExtension field to contain no digits", zipExtension,
+        cmsAddress.getZip4());
   }
 
   @Test
-  public void zipShouldContainAllDigitsWhenZipIsGreaterThan5Characters(){
+  public void zipShouldContainAllDigitsWhenZipIsGreaterThan5Characters() {
     Short zipExtension = new Short("32767");
     Integer zipCode = 1234532767;
 
-    gov.ca.cwds.rest.api.domain.Address nsAddress = new gov.ca.cwds.rest.api.domain.Address("legacy_source_table", "legacy_id"," 1 main", "city", "state", zipCode, "type");
+    gov.ca.cwds.rest.api.domain.Address nsAddress = new gov.ca.cwds.rest.api.domain.Address(
+        "legacy_source_table", "legacy_id", " 1 main", "city", "state", zipCode, "type");
 
-    Address cmsAddress = Address.createWithDefaults(nsAddress,  new Short("5"));
+    Address cmsAddress = Address.createWithDefaults(nsAddress, new Short("5"));
     assertEquals("Expected zip field to contain all the digits", zipCode, cmsAddress.getZip());
-    assertEquals("Expected zipExtension field to contain no digits", zipExtension, cmsAddress.getZip4());
+    assertEquals("Expected zipExtension field to contain no digits", zipExtension,
+        cmsAddress.getZip4());
   }
 
-  @Test(expected=NumberFormatException.class)
-  public void zipShouldThrowExceptionWhenZipIsTooLarge(){
+  @Test(expected = NumberFormatException.class)
+  public void zipShouldThrowExceptionWhenZipIsTooLarge() {
     Short zipExtension = new Short("32768");
     Integer zipCode = 1234532767;
 
-    gov.ca.cwds.rest.api.domain.Address nsAddress = new gov.ca.cwds.rest.api.domain.Address("legacy_source_table", "legacy_id","streetAddress", "city", "state", zipCode, "type");
+    gov.ca.cwds.rest.api.domain.Address nsAddress = new gov.ca.cwds.rest.api.domain.Address(
+        "legacy_source_table", "legacy_id", "streetAddress", "city", "state", zipCode, "type");
 
-    Address cmsAddress = Address.createWithDefaults(nsAddress,  new Short("5"));
+    Address cmsAddress = Address.createWithDefaults(nsAddress, new Short("5"));
   }
 
   @Test
-  public void streetNumberShouldBeParsedFromStreetAddress(){
+  public void streetNumberShouldBeParsedFromStreetAddress() {
     String streetAddress = "1 main";
 
-    gov.ca.cwds.rest.api.domain.Address nsAddress = new gov.ca.cwds.rest.api.domain.Address("legacy_source_table", "legacy_id",streetAddress, "city", "state", 12345, "type");
+    gov.ca.cwds.rest.api.domain.Address nsAddress = new gov.ca.cwds.rest.api.domain.Address(
+        "legacy_source_table", "legacy_id", streetAddress, "city", "state", 12345, "type");
 
     Address address = Address.createWithDefaults(nsAddress, new Short("5"));
     assertEquals("Street Number not parsed from street address", "1", address.getStreetNumber());
   }
 
   @Test
-  public void streetNameShouldBeParsedFromStreetAddress(){
+  public void streetNameShouldBeParsedFromStreetAddress() {
     String streetAddress = "1 main";
 
-    gov.ca.cwds.rest.api.domain.Address nsAddress = new gov.ca.cwds.rest.api.domain.Address("legacy_source_table", "legacy_id",streetAddress, "city", "state", 12345, "type");
+    gov.ca.cwds.rest.api.domain.Address nsAddress = new gov.ca.cwds.rest.api.domain.Address(
+        "legacy_source_table", "legacy_id", streetAddress, "city", "state", 12345, "type");
 
     Address address = Address.createWithDefaults(nsAddress, new Short("5"));
     assertEquals("Street Number not parsed from street address", "main", address.getStreetName());
   }
 
   @Test
-  public void streetNameShouldNotIncludeTypeOfStreetsOrMultiPartStreetNames(){
+  public void streetNameShouldNotIncludeTypeOfStreetsOrMultiPartStreetNames() {
     String streetAddress = "1 San Andreas Blvd";
 
-    gov.ca.cwds.rest.api.domain.Address nsAddress = new gov.ca.cwds.rest.api.domain.Address("legacy_source_table", "legacy_id",streetAddress, "city", "state", 12345, "type");
+    gov.ca.cwds.rest.api.domain.Address nsAddress = new gov.ca.cwds.rest.api.domain.Address(
+        "legacy_source_table", "legacy_id", streetAddress, "city", "state", 12345, "type");
 
     Address address = Address.createWithDefaults(nsAddress, new Short("5"));
-    assertEquals("Street Number not parsed from street address", "San", address.getStreetName());
+    assertEquals("Street Number not parsed from street address", "San Andreas Blvd",
+        address.getStreetName());
   }
 
   @Test(expected = ArrayIndexOutOfBoundsException.class)
-  public void streetNameShouldThrowExceptionWhenOnlyContaingOneWord(){
+  public void streetNameShouldThrowExceptionWhenOnlyContaingOneWord() {
     String streetAddress = "main";
 
-    gov.ca.cwds.rest.api.domain.Address nsAddress = new gov.ca.cwds.rest.api.domain.Address("legacy_source_table", "legacy_id",streetAddress, "city", "state", 12345, "type");
+    gov.ca.cwds.rest.api.domain.Address nsAddress = new gov.ca.cwds.rest.api.domain.Address(
+        "legacy_source_table", "legacy_id", streetAddress, "city", "state", 12345, "type");
 
     Address address = Address.createWithDefaults(nsAddress, new Short("5"));
   }
 
   @Test
-  public void streetNameShouldContainSecondWordWhenNotContainingNumbers(){
+  public void streetNameShouldContainSecondWordWhenNotContainingNumbers() {
     String streetAddress = "Main St";
 
-    gov.ca.cwds.rest.api.domain.Address nsAddress = new gov.ca.cwds.rest.api.domain.Address("legacy_source_table", "legacy_id",streetAddress, "city", "state", 12345, "type");
+    gov.ca.cwds.rest.api.domain.Address nsAddress = new gov.ca.cwds.rest.api.domain.Address(
+        "legacy_source_table", "legacy_id", streetAddress, "city", "state", 12345, "type");
 
     Address address = Address.createWithDefaults(nsAddress, new Short("5"));
-    assertEquals("Expected StreetName to contain second word as street name", "St", address.getStreetName());
+    assertEquals("Expected StreetName to contain second word as street name", "St",
+        address.getStreetName());
   }
 
   @Test
-  public void streetNumberShouldContainFirstWordWhenNoNumberIsPresent(){
+  public void streetNumberShouldContainFirstWordWhenNoNumberIsPresent() {
     String streetAddress = "Main St";
 
-    gov.ca.cwds.rest.api.domain.Address nsAddress = new gov.ca.cwds.rest.api.domain.Address("legacy_source_table", "legacy_id",streetAddress, "city", "state", 12345, "type");
+    gov.ca.cwds.rest.api.domain.Address nsAddress = new gov.ca.cwds.rest.api.domain.Address(
+        "legacy_source_table", "legacy_id", streetAddress, "city", "state", 12345, "type");
 
     Address address = Address.createWithDefaults(nsAddress, new Short("5"));
-    assertEquals("Expected StreetName to contain second word as street name", "Main", address.getStreetNumber());
+    assertEquals("Expected StreetName to contain second word as street name", "Main",
+        address.getStreetNumber());
   }
 
   @Test
@@ -341,10 +382,8 @@ public class AddressTest {
 
   @Test
   public void equalsHashCodeWork() {
-    EqualsVerifier.forClass(Address.class)
-            .suppress(Warning.NONFINAL_FIELDS)
-            .withIgnoredFields("messages")
-            .verify();
+    EqualsVerifier.forClass(Address.class).suppress(Warning.NONFINAL_FIELDS)
+        .withIgnoredFields("messages").verify();
   }
 
   /*

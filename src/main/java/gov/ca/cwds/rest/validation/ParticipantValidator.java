@@ -1,10 +1,19 @@
 package gov.ca.cwds.rest.validation;
 
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.HashSet;
+import java.util.Locale;
 import java.util.Set;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import gov.ca.cwds.rest.api.domain.Participant;
 import gov.ca.cwds.rest.api.domain.ScreeningToReferral;
+import gov.ca.cwds.rest.api.domain.error.ErrorMessage;
 import gov.ca.cwds.rest.services.ServiceException;
 
 /**
@@ -13,12 +22,20 @@ import gov.ca.cwds.rest.services.ServiceException;
  */
 public class ParticipantValidator {
 
+  private static final Logger LOGGER = LoggerFactory.getLogger(ParticipantValidator.class);
+
   private static final String PERPETRATOR_ROLE = "Perpetrator";
   private static final String MANDATED_REPORTER_ROLE = "Mandated Reporter";
   private static final String NON_MANDATED_REPORTER_ROLE = "Non-mandated Reporter";
   private static final String ANONYMOUS_REPORTER_ROLE = "Anonymous Reporter";
   private static final String VICTIM_ROLE = "Victim";
   private static final String SELF_REPORTED_ROLE = "Self Reported";
+
+  private static final DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+  private static final DateFormat timeFormat = new SimpleDateFormat("HH:MM:SS");
+  private static final DateFormat dateTimeFormat =
+      new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'", Locale.US);
+
   /**
    * CWS/CMS Referral must have on reporter
    */
@@ -183,7 +200,48 @@ public class ParticipantValidator {
     return mandatedRepoter;
   }
 
+  /**
+   * 
+   * @param screeningToReferral - screeningToReferral
+   * @param messages - logError messages
+   * @return - timeStarted
+   */
+  public static String extractStartTime(ScreeningToReferral screeningToReferral,
+      Set<ErrorMessage> messages) {
+    String timeStarted = null;
+    try {
+      Date dateTime = dateTimeFormat.parse(screeningToReferral.getStartedAt());
+      timeStarted = timeFormat.format(dateTime);
+    } catch (ParseException e) {
+      String message = " parsing Start Date/Time ";
+      logError(message, e, messages);
+    }
+    return timeStarted;
+  }
 
+  /**
+   * 
+   * @param screeningToReferral - screeningToReferral
+   * @param messages - logError messages
+   * @return dateStarted
+   */
+  public static String extractStartDate(ScreeningToReferral screeningToReferral,
+      Set<ErrorMessage> messages) {
+    String dateStarted = null;
+    try {
+      Date dateTime = dateTimeFormat.parse(screeningToReferral.getStartedAt());
+      dateStarted = dateFormat.format(dateTime);
+    } catch (ParseException e) {
+      String message = " parsing Start Date/Time ";
+      logError(message, e, messages);
+    }
+    return dateStarted;
+  }
+
+  private static void logError(String message, Exception exception, Set<ErrorMessage> messages) {
+    messages.add(new ErrorMessage(ErrorMessage.ErrorType.VALIDATION, message, ""));
+    LOGGER.error(message, exception.getMessage());
+  }
 
   /**
    * @param participant - Participant object

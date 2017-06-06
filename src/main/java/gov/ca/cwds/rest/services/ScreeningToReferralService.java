@@ -2,9 +2,7 @@ package gov.ca.cwds.rest.services;
 
 import java.io.Serializable;
 import java.text.DateFormat;
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Locale;
@@ -158,12 +156,23 @@ public class ScreeningToReferralService implements CrudsService {
   public Response create(Request request) {
     ScreeningToReferral screeningToReferral = (ScreeningToReferral) request;
 
-    Set<ErrorMessage> messages = new HashSet<ErrorMessage>();
+    Set<ErrorMessage> messages = new HashSet<>();
 
     verifyReferralHasValidParticipants(screeningToReferral, messages);
 
-    String dateStarted = extractStartDate(screeningToReferral, messages);
-    String timeStarted = extractStartTime(screeningToReferral, messages);
+    /**
+     * <blockquote>
+     * 
+     * <pre>
+     * BUSINESS RULE: "R - 05446" - Default dateStarted and timeStarted
+     * 
+     * Referral received date and received time need to set when referral was created 
+     * </blockquote>
+     * </pre>
+     */
+    String dateStarted = ParticipantValidator.extractStartDate(screeningToReferral, messages);
+    String timeStarted = ParticipantValidator.extractStartTime(screeningToReferral, messages);
+
     String referralId = createCmsReferral(screeningToReferral, messages, dateStarted, timeStarted);
     createReferralAddress(screeningToReferral, messages);
 
@@ -347,32 +356,6 @@ public class ScreeningToReferralService implements CrudsService {
     } // next participant
   }
 
-  private String extractStartTime(ScreeningToReferral screeningToReferral,
-      Set<ErrorMessage> messages) {
-    String timeStarted = null;
-    try {
-      Date dateTime = dateTimeFormat.parse(screeningToReferral.getStartedAt());
-      timeStarted = timeFormat.format(dateTime);
-    } catch (ParseException e) {
-      String message = " parsing Start Date/Time ";
-      logError(message, e, messages);
-    }
-    return timeStarted;
-  }
-
-  private String extractStartDate(ScreeningToReferral screeningToReferral,
-      Set<ErrorMessage> messages) {
-    String dateStarted = null;
-    try {
-      Date dateTime = dateTimeFormat.parse(screeningToReferral.getStartedAt());
-      dateStarted = dateFormat.format(dateTime);
-    } catch (ParseException e) {
-      String message = " parsing Start Date/Time ";
-      logError(message, e, messages);
-    }
-    return dateStarted;
-  }
-
   private void createReferralAddress(ScreeningToReferral screeningToReferral,
       Set<ErrorMessage> messages) {
     try {
@@ -390,8 +373,15 @@ public class ScreeningToReferralService implements CrudsService {
     String referralId = null;
 
     /**
-     * R - 04537 firstResponseDeterminedByStaffPersonId updated with the staffPerson Id when first
-     * determined by the staffPerson.
+     * <blockquote>
+     * 
+     * <pre>
+     * BUSINESS RULE: "R - 04537" - FKSTFPERS0 set when first referral determined
+     * 
+     * IF    referralResponseTypeCode is set to default
+     * THEN  firstResponseDeterminedByStaffPersonId is set to the staffpersonId
+     * </blockquote>
+     * </pre>
      */
     String firstResponseDeterminedByStaffPersonId = staffPersonIdRetriever.getStaffPersonId();
 
@@ -683,7 +673,7 @@ public class ScreeningToReferralService implements CrudsService {
 
     String addressId = new String("");
     Set<gov.ca.cwds.rest.api.domain.Address> addresses;
-    Set<gov.ca.cwds.rest.api.domain.Address> newAddresses = new HashSet();
+    Set<gov.ca.cwds.rest.api.domain.Address> newAddresses = new HashSet<>();
     addresses = clientParticipant.getAddresses();
 
     if (addresses == null) {
