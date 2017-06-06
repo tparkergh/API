@@ -288,8 +288,7 @@ public class ScreeningToReferralService implements CrudsService {
                 if (foundClient == null) {
                   String message =
                       " Legacy Id of Participant does not correspond to an existing CWS/CMS Client ";
-                  ServiceException se = new ServiceException(message);
-                  logError(message, se, messages);
+                  logError(message, messages);
                   // next role
                   continue;
                 }
@@ -454,13 +453,17 @@ public class ScreeningToReferralService implements CrudsService {
     try {
       if (!ParticipantValidator.hasValidParticipants(screeningToReferral)) {
         String message = " Incompatiable participants included in request";
-        ServiceException exception = new ServiceException(message);
-        logError(message, exception, messages);
+        logError(message, messages);
       }
     } catch (Exception e) {
       String message = e.getMessage();
       logError(message, e, messages);
     }
+  }
+
+  private void logError(String message, Set<ErrorMessage> messages) {
+    messages.add(new ErrorMessage(ErrorMessage.ErrorType.VALIDATION, message, ""));
+    LOGGER.error(message);
   }
 
   private void logError(String message, Exception exception, Set<ErrorMessage> messages) {
@@ -583,8 +586,7 @@ public class ScreeningToReferralService implements CrudsService {
         if (!ParticipantValidator.isVictimParticipant(scr, allegation.getVictimPersonId())) {
           String message =
               " Allegation/Victim Person Id does not contain a Participant with a role of Victim ";
-          ServiceException exception = new ServiceException(message);
-          logError(message, exception, messages);
+          logError(message, messages);
         }
       } catch (Exception e) {
         logError(e.getMessage(), e, messages);
@@ -617,7 +619,7 @@ public class ScreeningToReferralService implements CrudsService {
         perpatratorClientId = perpatratorClient.get(allegation.getPerpetratorPersonId());
       }
       if (victimClientId.isEmpty()) {
-        String message = " Victim could not be determined for an allegation ";
+        String message = "Victim could not be determined for an allegation ";
         ServiceException exception = new ServiceException(message);
         logError(message, exception, messages);
         // next allegation
@@ -751,8 +753,7 @@ public class ScreeningToReferralService implements CrudsService {
     if (address == null || address.getZip() == null || address.getStreetAddress() == null
         || address.getType() == null) {
       String message = " Screening address is null or empty";
-      ServiceException se = new ServiceException(message);
-      logError(message, se, messages);
+      logError(message, messages);
       return address;
     }
 
@@ -799,8 +800,7 @@ public class ScreeningToReferralService implements CrudsService {
     }
 
     Boolean mandatedReporterIndicator = ParticipantValidator.roleIsMandatedReporter(role);
-    Reporter theReporter = null;
-    theReporter = reporterService.find(referralId);
+    Reporter theReporter = reporterService.find(referralId);
     if (theReporter == null) {
       Reporter reporter = Reporter.createWithDefaults(referralId, mandatedReporterIndicator,
           reporterAddress, ip, DEFAULT_COUNTY_SPECIFIC_CODE, DEFAULT_STATE_CODE);
