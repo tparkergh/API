@@ -1,5 +1,9 @@
 package gov.ca.cwds.data.persistence.cms;
 
+import gov.ca.cwds.data.CmsSystemCodeDeserializer;
+import gov.ca.cwds.data.SystemCodeSerializer;
+import gov.ca.cwds.rest.api.domain.DomainChef;
+
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
@@ -14,21 +18,20 @@ import javax.persistence.Table;
 
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
+import org.hibernate.annotations.NamedQuery;
 import org.hibernate.annotations.Type;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 
-import gov.ca.cwds.data.CmsSystemCodeDeserializer;
-import gov.ca.cwds.data.SystemCodeSerializer;
-import gov.ca.cwds.rest.api.domain.DomainChef;
-
 /**
  * {@link CmsPersistentObject} Class representing an Allegation.
  * 
  * @author CWDS API Team
  */
+@NamedQuery(name = "gov.ca.cwds.data.persistence.cms.Allegation.findByReferral",
+    query = "FROM Allegation WHERE referralId = :referralId")
 @SuppressWarnings("serial")
 @Entity
 @Table(name = "ALLGTN_T")
@@ -150,7 +153,11 @@ public class Allegation extends CmsPersistentObject {
    * @param victimClients victimClient
    * @param perpetratorClients perpetratorClient
    */
-  public Allegation(String id, Date abuseEndDate, Date abuseStartDate, Short abuseFrequency, // NOSONAR
+  public Allegation(
+      String id,
+      Date abuseEndDate,
+      Date abuseStartDate,
+      Short abuseFrequency, // NOSONAR
       String abuseFrequencyPeriodCode, String abuseLocationDescription,
       Short allegationDispositionType, Short allegationType, String dispositionDescription,
       Date dispositionDate, String injuryHarmDetailIndicator, String nonProtectingParentCode,

@@ -1,5 +1,10 @@
 package gov.ca.cwds.data.persistence.cms;
 
+import gov.ca.cwds.data.CmsSystemCodeDeserializer;
+import gov.ca.cwds.data.SystemCodeSerializer;
+import gov.ca.cwds.rest.api.ApiException;
+import gov.ca.cwds.rest.api.domain.DomainChef;
+
 import java.io.Serializable;
 import java.util.Date;
 
@@ -10,6 +15,7 @@ import javax.persistence.IdClass;
 import javax.persistence.PersistenceException;
 import javax.persistence.Table;
 
+import org.hibernate.annotations.NamedQuery;
 import org.hibernate.annotations.Type;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -17,16 +23,16 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 
-import gov.ca.cwds.data.CmsSystemCodeDeserializer;
-import gov.ca.cwds.data.SystemCodeSerializer;
-import gov.ca.cwds.rest.api.ApiException;
-import gov.ca.cwds.rest.api.domain.DomainChef;
-
 /**
  * {@link CmsPersistentObject} representing a ReferralClient in the replicated schema.
  * 
  * @author CWDS API Team
  */
+
+@NamedQuery(name = "gov.ca.cwds.data.persistence.cms.ReferralClient.findByReferral",
+    query = "FROM ReferralClient WHERE referralId = :referralId")
+@NamedQuery(name = "gov.ca.cwds.data.persistence.cms.ReferralClient.findByClient",
+    query = "FROM ReferralClient WHERE clientId = :clientId")
 @SuppressWarnings("serial")
 @Entity
 @Table(name = "REFR_CLT")
