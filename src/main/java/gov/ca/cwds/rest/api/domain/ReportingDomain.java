@@ -1,5 +1,6 @@
 package gov.ca.cwds.rest.api.domain;
 
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -19,10 +20,10 @@ public abstract class ReportingDomain extends DomainObject implements Request, R
    */
   private static final long serialVersionUID = 1L;
   @JsonIgnore
-  private Set<ErrorMessage> messages = new HashSet<>();
+  private ArrayList<ErrorMessage> messages = new ArrayList<>();
 
   @Override
-  public Set<ErrorMessage> getMessages() {
+  public ArrayList<ErrorMessage> getMessages() {
     return messages;
   }
 
@@ -31,7 +32,7 @@ public abstract class ReportingDomain extends DomainObject implements Request, R
    */
   public void addMessage(ErrorMessage errorMessage) {
     if (messages == null) {
-      messages = new HashSet<>();
+      messages = new ArrayList<>();
     }
     messages.add(errorMessage);
   }
@@ -39,7 +40,7 @@ public abstract class ReportingDomain extends DomainObject implements Request, R
   /**
    * @param messages - the error message set
    */
-  public void setMessages(Set<ErrorMessage> messages) {
+  public void setMessages(ArrayList<ErrorMessage> messages) {
     this.messages = messages;
   }
 

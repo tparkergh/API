@@ -1,5 +1,6 @@
 package gov.ca.cwds.rest.validation;
 
+import gov.ca.cwds.rest.messages.MessageBuilder;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -205,18 +206,18 @@ public class ParticipantValidator {
   /**
    * 
    * @param screeningToReferral - screeningToReferral
-   * @param messages - logError messages
+   * @param builder - logError messages
    * @return - timeStarted
    */
   public static String extractStartTime(ScreeningToReferral screeningToReferral,
-      Set<ErrorMessage> messages) {
+      MessageBuilder builder) {
     String timeStarted = null;
     try {
       Date dateTime = dateTimeFormat.parse(screeningToReferral.getStartedAt());
       timeStarted = timeFormat.format(dateTime);
     } catch (ParseException e) {
       String message = " parsing Start Date/Time ";
-      logError(message, e, messages);
+      builder.addError(message);
     }
     return timeStarted;
   }
@@ -224,18 +225,16 @@ public class ParticipantValidator {
   /**
    * 
    * @param screeningToReferral - screeningToReferral
-   * @param messages - logError messages
    * @return dateStarted
    */
-  public static String extractStartDate(ScreeningToReferral screeningToReferral,
-      Set<ErrorMessage> messages) {
+  public static String extractStartDate(ScreeningToReferral screeningToReferral, MessageBuilder builder) {
     String dateStarted = null;
     try {
       Date dateTime = dateTimeFormat.parse(screeningToReferral.getStartedAt());
       dateStarted = dateFormat.format(dateTime);
     } catch (ParseException e) {
       String message = " parsing Start Date/Time ";
-      logError(message, e, messages);
+      builder.addError(message);
     }
     return dateStarted;
   }

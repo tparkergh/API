@@ -9,6 +9,8 @@ import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
+import gov.ca.cwds.rest.messages.MessageBuilder;
+import java.util.ArrayList;
 import java.util.LinkedHashSet;
 import java.util.Set;
 
@@ -169,7 +171,7 @@ public class ScreeningToReferralServiceTest {
         allegationService, crossReportService, referralClientService, reporterService,
         addressService, clientAddressService, longTextService, childClientService,
         Validation.buildDefaultValidatorFactory().getValidator(), referralDao,
-        staffPersonIdRetriever);
+        staffPersonIdRetriever, new MessageBuilder());
   }
 
   @SuppressWarnings("javadoc")
@@ -383,7 +385,7 @@ public class ScreeningToReferralServiceTest {
 
     Response response = screeningToReferralService.create(screeningToReferral);
     if (response.hasMessages()) {
-      Set<ErrorMessage> messages = response.getMessages();
+      ArrayList<ErrorMessage> messages = response.getMessages();
       for (ErrorMessage message : messages) {
         System.out.println(message.getMessage());
       }
@@ -482,7 +484,7 @@ public class ScreeningToReferralServiceTest {
 
     Response response = screeningToReferralService.create(screeningToReferral);
     if (response.hasMessages()) {
-      Set<ErrorMessage> messages = response.getMessages();
+      ArrayList<ErrorMessage> messages = response.getMessages();
       for (ErrorMessage message : messages) {
         System.out.println(message.getMessage());
       }
@@ -546,8 +548,7 @@ public class ScreeningToReferralServiceTest {
     screeningToReferralService = new ScreeningToReferralService(referralService, clientService,
         allegationService, crossReportService, referralClientService, reporterService,
         addressService, clientAddressService, longTextService, childClientService,
-        Validation.buildDefaultValidatorFactory().getValidator(), referralDao,
-        staffPersonIdRetriever);
+        Validation.buildDefaultValidatorFactory().getValidator(), referralDao, staffPersonIdRetriever, new MessageBuilder());
   }
 
   @SuppressWarnings("javadoc")
@@ -668,7 +669,7 @@ public class ScreeningToReferralServiceTest {
     Boolean theErrorDetected = false;
     Response response = screeningToReferralService.create(screeningToReferral);
     if (response.hasMessages()) {
-      Set<ErrorMessage> messages = response.getMessages();
+      ArrayList<ErrorMessage> messages = response.getMessages();
       for (ErrorMessage message : messages) {
         if (message != null) {
           if (message.getMessage()
@@ -1076,7 +1077,7 @@ public class ScreeningToReferralServiceTest {
     Boolean theErrorDetected = false;
     Response response = screeningToReferralService.create(screeningToReferral);
     if (response.hasMessages()) {
-      Set<ErrorMessage> messages = response.getMessages();
+      ArrayList<ErrorMessage> messages = response.getMessages();
       for (ErrorMessage message : messages) {
         if (message != null) {
           if (message.getMessage().contains("Incompatiable participants included in request")) {
@@ -1181,7 +1182,7 @@ public class ScreeningToReferralServiceTest {
     Boolean theErrorDetected = false;
     Response response = screeningToReferralService.create(screeningToReferral);
     if (response.hasMessages()) {
-      Set<ErrorMessage> messages = response.getMessages();
+      ArrayList<ErrorMessage> messages = response.getMessages();
       for (ErrorMessage message : messages) {
         if (message != null) {
           if (message.getMessage().contains("Incompatiable participants included in request")) {
@@ -1375,7 +1376,7 @@ public class ScreeningToReferralServiceTest {
     Boolean theErrorDetected = false;
     Response response = screeningToReferralService.create(screeningToReferral);
     if (response.hasMessages()) {
-      Set<ErrorMessage> messages = response.getMessages();
+      ArrayList<ErrorMessage> messages = response.getMessages();
       for (ErrorMessage message : messages) {
         if (message != null) {
           if (message.getMessage().contains("Incompatiable participants included in request")) {
@@ -1482,7 +1483,7 @@ public class ScreeningToReferralServiceTest {
     Boolean theErrorDetected = false;
     Response response = screeningToReferralService.create(screeningToReferral);
     if (response.hasMessages()) {
-      Set<ErrorMessage> messages = response.getMessages();
+      ArrayList<ErrorMessage> messages = response.getMessages();
       for (ErrorMessage message : messages) {
         if (message != null) {
           if (message.getMessage().contains("Participant contains incompatiable roles")) {
@@ -1588,7 +1589,7 @@ public class ScreeningToReferralServiceTest {
     Boolean theErrorDetected = false;
     Response response = screeningToReferralService.create(screeningToReferral);
     if (response.hasMessages()) {
-      Set<ErrorMessage> messages = response.getMessages();
+      ArrayList<ErrorMessage> messages = response.getMessages();
       for (ErrorMessage message : messages) {
         if (message != null) {
           if (message.getMessage().contains("Participant contains incompatiable roles")) {
@@ -1686,7 +1687,7 @@ public class ScreeningToReferralServiceTest {
     Boolean theErrorDetected = false;
     Response response = screeningToReferralService.create(screeningToReferral);
     if (response.hasMessages()) {
-      Set<ErrorMessage> messages = response.getMessages();
+      ArrayList<ErrorMessage> messages = response.getMessages();
       for (ErrorMessage message : messages) {
         if (message.getMessage() != null) {
           if (message.getMessage().contains("Participant contains incompatiable roles")) {
@@ -1792,7 +1793,7 @@ public class ScreeningToReferralServiceTest {
     Boolean theErrorDetected = false;
     Response response = screeningToReferralService.create(screeningToReferral);
     if (response.hasMessages()) {
-      Set<ErrorMessage> messages = response.getMessages();
+      ArrayList<ErrorMessage> messages = response.getMessages();
       for (ErrorMessage message : messages) {
         if (message.getMessage() != null) {
           if (message.getMessage().contains("Participant contains incompatiable roles")) {
@@ -1898,7 +1899,7 @@ public class ScreeningToReferralServiceTest {
     Boolean theErrorDetected = false;
     Response response = screeningToReferralService.create(screeningToReferral);
     if (response.hasMessages()) {
-      Set<ErrorMessage> messages = response.getMessages();
+      ArrayList<ErrorMessage> messages = response.getMessages();
       for (ErrorMessage message : messages) {
         if (message.getMessage() != null) {
           if (message.getMessage().contains("Participant contains incompatiable roles")) {
@@ -2413,7 +2414,7 @@ public class ScreeningToReferralServiceTest {
     Boolean theErrorDetected = false;
     Response response = screeningToReferralService.create(screeningToReferral);
     if (response.hasMessages()) {
-      Set<ErrorMessage> messages = response.getMessages();
+      ArrayList<ErrorMessage> messages = response.getMessages();
       for (ErrorMessage message : messages) {
         if (message.getMessage() != null) {
           if (message.getMessage().contains("parsing Start Date/Time")) {
@@ -2517,7 +2518,7 @@ public class ScreeningToReferralServiceTest {
     Boolean theErrorDetected = false;
     Response response = screeningToReferralService.create(screeningToReferral);
     if (response.hasMessages()) {
-      Set<ErrorMessage> messages = response.getMessages();
+      ArrayList<ErrorMessage> messages = response.getMessages();
       for (ErrorMessage message : messages) {
         if (message.getMessage() != null) {
           if (message.getMessage().contains("Screening address is null or empty")) {
@@ -2623,7 +2624,7 @@ public class ScreeningToReferralServiceTest {
     Boolean theErrorDetected = false;
     Response response = screeningToReferralService.create(screeningToReferral);
     if (response.hasMessages()) {
-      Set<ErrorMessage> messages = response.getMessages();
+      ArrayList<ErrorMessage> messages = response.getMessages();
       for (ErrorMessage message : messages) {
         System.out.println(message.getMessage());
         if (message.getMessage() != null) {
@@ -2927,7 +2928,7 @@ public class ScreeningToReferralServiceTest {
     Boolean theErrorDetected = false;
     Response response = screeningToReferralService.create(screeningToReferral);
     if (response.hasMessages()) {
-      Set<ErrorMessage> messages = response.getMessages();
+      ArrayList<ErrorMessage> messages = response.getMessages();
       for (ErrorMessage message : messages) {
         if (message.getMessage() != null) {
           if (message.getMessage().contains("Referral must have at least one Allegation")) {
@@ -3132,7 +3133,7 @@ public class ScreeningToReferralServiceTest {
     Boolean theErrorDetected = false;
     Response response = screeningToReferralService.create(screeningToReferral);
     if (response.hasMessages()) {
-      Set<ErrorMessage> messages = response.getMessages();
+      ArrayList<ErrorMessage> messages = response.getMessages();
       for (ErrorMessage message : messages) {
         if (message.getMessage() != null) {
           if (message.getMessage().contains(
@@ -3238,7 +3239,7 @@ public class ScreeningToReferralServiceTest {
     Boolean theErrorDetected = false;
     Response response = screeningToReferralService.create(screeningToReferral);
     if (response.hasMessages()) {
-      Set<ErrorMessage> messages = response.getMessages();
+      ArrayList<ErrorMessage> messages = response.getMessages();
       for (ErrorMessage message : messages) {
         if (message.getMessage() != null) {
           if (message.getMessage().contains(
@@ -3447,7 +3448,7 @@ public class ScreeningToReferralServiceTest {
     Boolean theErrorDetected = false;
     Response response = screeningToReferralService.create(screeningToReferral);
     if (response.hasMessages()) {
-      Set<ErrorMessage> messages = response.getMessages();
+      ArrayList<ErrorMessage> messages = response.getMessages();
       for (ErrorMessage message : messages) {
         if (message.getMessage() != null) {
           if (message.getMessage().contains(
@@ -3655,7 +3656,7 @@ public class ScreeningToReferralServiceTest {
     Boolean theErrorDetected = false;
     Response response = screeningToReferralService.create(screeningToReferral);
     if (response.hasMessages()) {
-      Set<ErrorMessage> messages = response.getMessages();
+      ArrayList<ErrorMessage> messages = response.getMessages();
       for (ErrorMessage message : messages) {
         if (message.getMessage() != null) {
           if (message.getMessage().contains(
@@ -3869,7 +3870,7 @@ public class ScreeningToReferralServiceTest {
     Boolean theErrorDetected = false;
     Response response = screeningToReferralService.create(screeningToReferral);
     if (response.hasMessages()) {
-      Set<ErrorMessage> messages = response.getMessages();
+      ArrayList<ErrorMessage> messages = response.getMessages();
       for (ErrorMessage message : messages) {
         if (message.getMessage() != null) {
           if (message.getMessage().contains(
@@ -4079,7 +4080,7 @@ public class ScreeningToReferralServiceTest {
     Boolean theErrorDetected = false;
     Response response = screeningToReferralService.create(screeningToReferral);
     if (response.hasMessages()) {
-      Set<ErrorMessage> messages = response.getMessages();
+      ArrayList<ErrorMessage> messages = response.getMessages();
       for (ErrorMessage message : messages) {
         if (message.getMessage() != null) {
           if (message.getMessage().contains(
@@ -4293,7 +4294,7 @@ public class ScreeningToReferralServiceTest {
     Boolean theErrorDetected = false;
     Response response = screeningToReferralService.create(screeningToReferral);
     if (response.hasMessages()) {
-      Set<ErrorMessage> messages = response.getMessages();
+      ArrayList<ErrorMessage> messages = response.getMessages();
       for (ErrorMessage message : messages) {
         if (message.getMessage() != null) {
           if (message.getMessage().contains(

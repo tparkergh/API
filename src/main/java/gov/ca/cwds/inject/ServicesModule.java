@@ -5,6 +5,7 @@ import gov.ca.cwds.data.persistence.cms.ApiSystemCodeCache;
 import gov.ca.cwds.data.persistence.cms.CmsSystemCodeCacheService;
 import gov.ca.cwds.rest.ApiConfiguration;
 import gov.ca.cwds.rest.api.domain.ScreeningToReferral;
+import gov.ca.cwds.rest.messages.MessageBuilder;
 import gov.ca.cwds.rest.services.AddressService;
 import gov.ca.cwds.rest.services.AddressValidationService;
 import gov.ca.cwds.rest.services.PersonService;
@@ -125,5 +126,10 @@ public class ServicesModule extends AbstractModule {
   @Provides
   Validator provideValidator() {
     return Validation.buildDefaultValidatorFactory().getValidator();
+  }
+
+  @Provides
+  MessageBuilder provideMessageBuilder() {
+    return new MessageBuilder();
   }
 }
