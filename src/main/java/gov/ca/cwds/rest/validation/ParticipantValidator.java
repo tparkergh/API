@@ -175,6 +175,7 @@ public class ParticipantValidator {
   /**
    * @param participant - Participant
    * @return Boolean - true if mandated reporter role found in participant
+   * @throws ServiceException on arbitrary error
    */
   public static Boolean hasMandatedReporterRole(Participant participant) throws ServiceException {
     Set<String> roles = participant.getRoles();
@@ -187,6 +188,7 @@ public class ParticipantValidator {
   /**
    * @param participants - Participants
    * @return Boolean - true if mandated reporter role found in any of the participant
+   * @throws ServiceException on arbitrary error
    */
   public static Boolean hasMandatedReporterRole(Set<Participant> participants)
       throws ServiceException {
