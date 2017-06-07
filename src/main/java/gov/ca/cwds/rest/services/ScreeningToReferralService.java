@@ -1,7 +1,5 @@
 package gov.ca.cwds.rest.services;
 
-import gov.ca.cwds.rest.messages.MessageBuilder;
-import gov.ca.cwds.rest.validation.ValidationException;
 import java.io.Serializable;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -10,7 +8,6 @@ import java.util.HashSet;
 import java.util.Locale;
 import java.util.Set;
 
-import javax.validation.ConstraintViolation;
 import javax.validation.Validator;
 
 import org.apache.commons.lang3.NotImplementedException;
@@ -25,7 +22,6 @@ import gov.ca.cwds.rest.api.Request;
 import gov.ca.cwds.rest.api.Response;
 import gov.ca.cwds.rest.api.domain.Allegation;
 import gov.ca.cwds.rest.api.domain.CrossReport;
-import gov.ca.cwds.rest.api.domain.DomainObject;
 import gov.ca.cwds.rest.api.domain.Participant;
 import gov.ca.cwds.rest.api.domain.PostedScreeningToReferral;
 import gov.ca.cwds.rest.api.domain.Screening;
@@ -44,6 +40,7 @@ import gov.ca.cwds.rest.api.domain.cms.Referral;
 import gov.ca.cwds.rest.api.domain.cms.ReferralClient;
 import gov.ca.cwds.rest.api.domain.cms.Reporter;
 import gov.ca.cwds.rest.api.domain.error.ErrorMessage;
+import gov.ca.cwds.rest.messages.MessageBuilder;
 import gov.ca.cwds.rest.services.cms.AddressService;
 import gov.ca.cwds.rest.services.cms.AllegationService;
 import gov.ca.cwds.rest.services.cms.ChildClientService;
@@ -130,6 +127,7 @@ public class ScreeningToReferralService implements CrudsService {
    *        objects.
    * @param staffPersonIdRetriever = The staffPersonId handling
    *        {@link gov.ca.cwds.rest.services.cms.StaffPersonIdRetriever} objects.
+   * @param messageBuilder log message
    */
   @Inject
   public ScreeningToReferralService(ReferralService referralService, ClientService clientService,
@@ -137,7 +135,8 @@ public class ScreeningToReferralService implements CrudsService {
       ReferralClientService referralClientService, ReporterService reporterService,
       AddressService addressService, ClientAddressService clientAddressService,
       LongTextService longTextService, ChildClientService childClientService, Validator validator,
-      ReferralDao referralDao, StaffPersonIdRetriever staffPersonIdRetriever, MessageBuilder messageBuilder) {
+      ReferralDao referralDao, StaffPersonIdRetriever staffPersonIdRetriever,
+      MessageBuilder messageBuilder) {
 
     super();
     this.referralService = referralService;
@@ -188,11 +187,10 @@ public class ScreeningToReferralService implements CrudsService {
     processParticipants(screeningToReferral, dateStarted, referralId, resultParticipants,
         victimClient, perpatratorClient);
 
-    Set<CrossReport> resultCrossReports =
-        createCrossReports(screeningToReferral, referralId);
+    Set<CrossReport> resultCrossReports = createCrossReports(screeningToReferral, referralId);
 
-    Set<Allegation> resultAllegations = createAllegations(screeningToReferral, referralId,
-        victimClient, perpatratorClient);
+    Set<Allegation> resultAllegations =
+        createAllegations(screeningToReferral, referralId, victimClient, perpatratorClient);
 
     PostedScreeningToReferral pstr = PostedScreeningToReferral.createWithDefaults(referralId,
         screeningToReferral, resultParticipants, resultCrossReports, resultAllegations);
@@ -205,8 +203,8 @@ public class ScreeningToReferralService implements CrudsService {
       HashMap<Long, String> perpatratorClient) {
     Set<Allegation> resultAllegations = null;
     try {
-      resultAllegations = processAllegations(screeningToReferral, referralId, perpatratorClient,
-          victimClient);
+      resultAllegations =
+          processAllegations(screeningToReferral, referralId, perpatratorClient, victimClient);
     } catch (ServiceException e) {
       String message = e.getMessage();
       logError(message, e);
@@ -215,7 +213,7 @@ public class ScreeningToReferralService implements CrudsService {
   }
 
   private Set<CrossReport> createCrossReports(ScreeningToReferral screeningToReferral,
-     String referralId) {
+      String referralId) {
     Set<CrossReport> resultCrossReports = null;
     try {
       resultCrossReports = processCrossReports(screeningToReferral, referralId);
@@ -225,9 +223,8 @@ public class ScreeningToReferralService implements CrudsService {
     return resultCrossReports;
   }
 
-  private void processParticipants(ScreeningToReferral screeningToReferral,
-       String dateStarted, String referralId,
-      Set<Participant> resultParticipants, HashMap<Long, String> victimClient,
+  private void processParticipants(ScreeningToReferral screeningToReferral, String dateStarted,
+      String referralId, Set<Participant> resultParticipants, HashMap<Long, String> victimClient,
       HashMap<Long, String> perpatratorClient) {
     Set<Participant> participants = screeningToReferral.getParticipants();
     for (Participant incomingParticipant : participants) {
@@ -371,8 +368,8 @@ public class ScreeningToReferralService implements CrudsService {
     }
   }
 
-  private String createCmsReferral(ScreeningToReferral screeningToReferral,
-      String dateStarted, String timeStarted) {
+  private String createCmsReferral(ScreeningToReferral screeningToReferral, String dateStarted,
+      String timeStarted) {
     String referralId = null;
 
     /**
@@ -423,7 +420,7 @@ public class ScreeningToReferralService implements CrudsService {
     return referralId;
   }
 
-  private String generateLongTextId(ScreeningToReferral screeningToReferral ) {
+  private String generateLongTextId(ScreeningToReferral screeningToReferral) {
     String longTextId = null;
     if (screeningToReferral.getAdditionalInformation() == null
         || screeningToReferral.getAdditionalInformation().isEmpty()) {
@@ -562,8 +559,8 @@ public class ScreeningToReferralService implements CrudsService {
    * CMS Allegation - one for each allegation
    */
   private Set<Allegation> processAllegations(ScreeningToReferral scr, String referralId,
-      HashMap<Long, String> perpatratorClient, HashMap<Long, String> victimClient
-      ) throws ServiceException {
+      HashMap<Long, String> perpatratorClient, HashMap<Long, String> victimClient)
+      throws ServiceException {
 
     Set<Allegation> processedAllegations = new HashSet<>();
     Set<Allegation> allegations;
@@ -745,7 +742,8 @@ public class ScreeningToReferralService implements CrudsService {
     return clientParticipant;
   }
 
-  private gov.ca.cwds.rest.api.domain.Address processReferralAddress(ScreeningToReferral scr ) throws ServiceException {
+  private gov.ca.cwds.rest.api.domain.Address processReferralAddress(ScreeningToReferral scr)
+      throws ServiceException {
     gov.ca.cwds.rest.api.domain.Address address = scr.getAddress();
     if (address == null || address.getZip() == null || address.getStreetAddress() == null
         || address.getType() == null) {
@@ -771,7 +769,8 @@ public class ScreeningToReferralService implements CrudsService {
 
   }
 
-  private Reporter processReporter(Participant ip, String role, String referralId) throws ServiceException {
+  private Reporter processReporter(Participant ip, String role, String referralId)
+      throws ServiceException {
 
     gov.ca.cwds.rest.api.domain.Address reporterAddress = null;
 
@@ -807,7 +806,8 @@ public class ScreeningToReferralService implements CrudsService {
     return theReporter;
   }
 
-  private String createLongText(String countySpecificCode, String textDescription) throws ServiceException {
+  private String createLongText(String countySpecificCode, String textDescription)
+      throws ServiceException {
 
     LongText longText = new LongText(countySpecificCode, textDescription);
     PostedLongText postedLongText = longTextService.create(longText);

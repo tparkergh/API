@@ -1,6 +1,5 @@
 package gov.ca.cwds.rest.validation;
 
-import gov.ca.cwds.rest.messages.MessageBuilder;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -15,6 +14,7 @@ import org.slf4j.LoggerFactory;
 import gov.ca.cwds.rest.api.domain.Participant;
 import gov.ca.cwds.rest.api.domain.ScreeningToReferral;
 import gov.ca.cwds.rest.api.domain.error.ErrorMessage;
+import gov.ca.cwds.rest.messages.MessageBuilder;
 import gov.ca.cwds.rest.services.ServiceException;
 
 /**
@@ -225,9 +225,11 @@ public class ParticipantValidator {
   /**
    * 
    * @param screeningToReferral - screeningToReferral
+   * @param builder - logError messages
    * @return dateStarted
    */
-  public static String extractStartDate(ScreeningToReferral screeningToReferral, MessageBuilder builder) {
+  public static String extractStartDate(ScreeningToReferral screeningToReferral,
+      MessageBuilder builder) {
     String dateStarted = null;
     try {
       Date dateTime = dateTimeFormat.parse(screeningToReferral.getStartedAt());
