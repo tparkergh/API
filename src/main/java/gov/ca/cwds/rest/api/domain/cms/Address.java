@@ -11,6 +11,7 @@ import gov.ca.cwds.rest.api.Response;
 import gov.ca.cwds.rest.api.domain.DomainChef;
 import gov.ca.cwds.rest.api.domain.DomainObject;
 import gov.ca.cwds.rest.api.domain.ReportingDomain;
+import gov.ca.cwds.rest.validation.IfThen;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 
@@ -20,6 +21,8 @@ import io.swagger.annotations.ApiModelProperty;
  * @author CWDS API Team
  */
 @ApiModel
+@IfThen.List({@IfThen(ifProperty = "streetName", thenProperty = "streetNumber", required = false),
+    @IfThen(ifProperty = "streetNumber", thenProperty = "streetName", required = false)})
 public class Address extends ReportingDomain implements Request, Response {
   private static final BigDecimal DEFAULT_DECIMAL = new BigDecimal(0);
   private static final int DEFAULT_INT = 0;
@@ -208,23 +211,53 @@ public class Address extends ReportingDomain implements Request, Response {
     this.unitDesignationCd = persistedAddress.getUnitDesignationCd();
     this.unitNumber = persistedAddress.getUnitNumber();
   }
-  public static Address createWithDefaults(gov.ca.cwds.rest.api.domain.Address address, short stateCode){
-      // TODO: 41511573 address parsing - Smarty Streets Free Form display requires standardizing
-      // parsing to fields in CMS
-      int zipCode = address.getZip();
-      short zipSuffix = 0;
-      if (address.getZip().toString().length() > 5) {
-        zipSuffix = Short.parseShort(address.getZip().toString().substring(5));
-      }
-      String[] streetAddress = address.getStreetAddress().split(" ");
-      String streetNumber = streetAddress[0];
-      String streetName = streetAddress[1];
 
-    return new Address(" ", address.getCity(), DEFAULT_DECIMAL, DEFAULT_INT,
-            false, DEFAULT_CODE, DEFAULT_DECIMAL, DEFAULT_INT, " ", DEFAULT_DECIMAL, DEFAULT_INT,
-            stateCode, streetName, streetNumber, zipCode, address.getType(), zipSuffix,
-            " ", " ", DEFAULT_CODE, DEFAULT_CODE, " ");
+  /**
+   * @param address - address
+   * @param stateCode - stateCode
+   * @return - postedAddress
+   */
+  public static Address createWithDefaults(gov.ca.cwds.rest.api.domain.Address address,
+      short stateCode) {
+    // TODO: 41511573 address parsing - Smarty Streets Free Form display requires standardizing
+    // parsing to fields in CMS
+    int zipCode = address.getZip();
+    short zipSuffix = 0;
+    if (address.getZip().toString().length() > 5) {
+      zipSuffix = Short.parseShort(address.getZip().toString().substring(5));
+    }
+
+    /**
+     * Split the StreetAddress into separate streetNumber and StreetName objects, updates the
+     * respective columns. If the streetAddress is entered only words, it will throw a validation
+     * exception to enter the streetNumber.
+     */
+    String streetNumber = null;
+    String streetName = null;
+    int index;
+    if ((index = address.getStreetAddress().indexOf(" ")) > 0) {
+      streetNumber = address.getStreetAddress().substring(0, index);
+      if (!streetNumber.chars().allMatch(Character::isDigit)) {
+        streetNumber = null;
+        streetName = address.getStreetAddress();
+      } else {
+        streetName =
+            address.getStreetAddress().substring(index + 1, address.getStreetAddress().length());
+      }
+    } else {
+      if (address.getStreetAddress().chars().allMatch(Character::isDigit)) {
+        streetNumber = address.getStreetAddress();
+      } else {
+        streetName = address.getStreetAddress();
+      }
+    }
+
+    return new Address(" ", address.getCity(), DEFAULT_DECIMAL, DEFAULT_INT, false, DEFAULT_CODE,
+        DEFAULT_DECIMAL, DEFAULT_INT, " ", DEFAULT_DECIMAL, DEFAULT_INT, stateCode, streetName,
+        streetNumber, zipCode, address.getType(), zipSuffix, " ", " ", DEFAULT_CODE, DEFAULT_CODE,
+        " ");
   }
+
   /**
    * @return the existingAddressId
    */

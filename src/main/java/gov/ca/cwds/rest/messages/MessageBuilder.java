@@ -44,7 +44,7 @@ public class MessageBuilder {
   public void addDomainValidationError(Set<ConstraintViolation<DomainObject>> errors) {
     if (!errors.isEmpty()) {
       errors.forEach(error -> {
-        final String message = error.getMessage();
+        final String message = error.getPropertyPath() + " " + error.getMessage();
         // " getRootBean: " + error.getRootBean() + " getLeafBean: "
         // + error.getLeafBean() + " getConstraintDescriptor: " + error.getConstraintDescriptor()
         // + " ERROR PROP PATH: " + error.getPropertyPath() + " " + error.getMessage();
