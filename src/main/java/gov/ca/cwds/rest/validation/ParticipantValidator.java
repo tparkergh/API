@@ -8,12 +8,8 @@ import java.util.HashSet;
 import java.util.Locale;
 import java.util.Set;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import gov.ca.cwds.rest.api.domain.Participant;
 import gov.ca.cwds.rest.api.domain.ScreeningToReferral;
-import gov.ca.cwds.rest.api.domain.error.ErrorMessage;
 import gov.ca.cwds.rest.messages.MessageBuilder;
 import gov.ca.cwds.rest.services.ServiceException;
 
@@ -22,8 +18,6 @@ import gov.ca.cwds.rest.services.ServiceException;
  *
  */
 public class ParticipantValidator {
-
-  private static final Logger LOGGER = LoggerFactory.getLogger(ParticipantValidator.class);
 
   private static final String PERPETRATOR_ROLE = "Perpetrator";
   private static final String MANDATED_REPORTER_ROLE = "Mandated Reporter";
@@ -239,11 +233,6 @@ public class ParticipantValidator {
       builder.addError(message);
     }
     return dateStarted;
-  }
-
-  private static void logError(String message, Exception exception, Set<ErrorMessage> messages) {
-    messages.add(new ErrorMessage(ErrorMessage.ErrorType.VALIDATION, message, ""));
-    LOGGER.error(message, exception.getMessage());
   }
 
   /**

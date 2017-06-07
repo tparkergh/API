@@ -327,7 +327,8 @@ public class AddressTest {
         "legacy_source_table", "legacy_id", streetAddress, "city", "state", 12345, "type");
 
     Address address = Address.createWithDefaults(nsAddress, new Short("5"));
-    assertEquals("Street Number not parsed from street address", "San", address.getStreetName());
+    assertEquals("Street Number not parsed from street address", "San Andreas Blvd",
+        address.getStreetName());
   }
 
   @Test(expected = ArrayIndexOutOfBoundsException.class)

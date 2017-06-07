@@ -53,6 +53,7 @@ import gov.ca.cwds.rest.services.cms.ReferralService;
 import gov.ca.cwds.rest.services.cms.ReporterService;
 import gov.ca.cwds.rest.services.cms.StaffPersonIdRetriever;
 import gov.ca.cwds.rest.validation.ParticipantValidator;
+import gov.ca.cwds.rest.validation.ValidationException;
 import io.dropwizard.hibernate.UnitOfWork;
 
 /**
@@ -160,8 +161,6 @@ public class ScreeningToReferralService implements CrudsService {
   public Response create(Request request) {
     ScreeningToReferral screeningToReferral = (ScreeningToReferral) request;
 
-    Set<ErrorMessage> messages = new HashSet<>();
-
     verifyReferralHasValidParticipants(screeningToReferral);
 
     /**
@@ -194,7 +193,14 @@ public class ScreeningToReferralService implements CrudsService {
 
     PostedScreeningToReferral pstr = PostedScreeningToReferral.createWithDefaults(referralId,
         screeningToReferral, resultParticipants, resultCrossReports, resultAllegations);
-    pstr.setMessages(messageBuilder.getMessages());
+
+    StringBuilder errorMessage = new StringBuilder();
+    if (!messageBuilder.getMessages().isEmpty()) {
+      for (ErrorMessage message : messageBuilder.getMessages()) {
+        errorMessage.append(message.getMessage());
+      }
+      throw new ServiceException(errorMessage.toString(), new ValidationException());
+    }
     return pstr;
   }
 
