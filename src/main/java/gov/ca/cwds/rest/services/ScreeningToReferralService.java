@@ -576,12 +576,28 @@ public class ScreeningToReferralService implements CrudsService {
     String perpatratorClientId = "";
 
     allegations = scr.getAllegations();
+
+    /**
+     * <blockquote>
+     * 
+     * <pre>
+     * BUSINESS RULE: "R - 03895"
+     * 
+     * There must be at least one allegation
+     * AND
+     * Allegation disposition type should be 0 (zero)
+     * </blockquote>
+     * </pre>
+     */
+    final Short allegationDispositionType = DEFAULT_CODE;
+
     if (allegations == null || allegations.isEmpty()) {
       String message = " Referral must have at least one Allegation ";
       ServiceException exception = new ServiceException(message);
       logError(message, exception);
       return processedAllegations;
     }
+
     for (Allegation allegation : allegations) {
 
       try {
@@ -632,7 +648,7 @@ public class ScreeningToReferralService implements CrudsService {
         // create an allegation in CMS legacy database
         gov.ca.cwds.rest.api.domain.cms.Allegation cmsAllegation =
             new gov.ca.cwds.rest.api.domain.cms.Allegation("", DEFAULT_CODE, "",
-                scr.getLocationType(), "", DEFAULT_CODE, allegationTypeCode,
+                scr.getLocationType(), "", allegationDispositionType, allegationTypeCode,
                 scr.getReportNarrative(), "", false, DEFAULT_NON_PROTECTING_PARENT_CODE, false,
                 victimClientId, perpatratorClientId, referralId, DEFAULT_COUNTY_SPECIFIC_CODE,
                 false, DEFAULT_CODE);
