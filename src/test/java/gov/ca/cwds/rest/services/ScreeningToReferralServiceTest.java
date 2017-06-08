@@ -1188,7 +1188,7 @@ public class ScreeningToReferralServiceTest {
   @SuppressWarnings("javadoc")
   @Test
   // 05360
-  public void testForAddressCityEmptyFailure() throws Exception {
+  public void testForReferralstreetNameEmptyFailure() throws Exception {
     Referral referralDomain = MAPPER.readValue(
         fixture("fixtures/domain/ScreeningToReferral/valid/validReferral.json"), Referral.class);
     gov.ca.cwds.data.persistence.cms.Referral referralToCreate =
@@ -1277,7 +1277,7 @@ public class ScreeningToReferralServiceTest {
     try {
       Response response = screeningToReferralService.create(screeningToReferral);
     } catch (Exception e) {
-      if (e.getMessage().contains("address.city is required since streetAddress is set")) {
+      if (e.getMessage().contains("city is required since streetName is set")) {
         theErrorDetected = true;
       }
       assertThat(theErrorDetected, is(equalTo(true)));
@@ -1376,8 +1376,7 @@ public class ScreeningToReferralServiceTest {
     try {
       Response response = screeningToReferralService.create(screeningToReferral);
     } catch (Exception e) {
-      if (e.getMessage()
-          .contains("participants[].addresses[].city is required since streetAddress is set")) {
+      if (e.getMessage().contains("city is required since streetName is set")) {
         theErrorDetected = true;
       }
       assertThat(theErrorDetected, is(equalTo(true)));

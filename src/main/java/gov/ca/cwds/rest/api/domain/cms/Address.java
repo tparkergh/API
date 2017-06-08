@@ -21,8 +21,23 @@ import io.swagger.annotations.ApiModelProperty;
  * @author CWDS API Team
  */
 @ApiModel
+/**
+ * <blockquote>
+ * 
+ * <pre>
+ * BUSINESS RULE: "R - 05360" - StreetName is set then City is required
+ * 
+ * IF  streetNumber is set
+ * THEN streetName is required
+ * 
+ * IF streetName is set
+ * THEN city is required
+ * </blockquote>
+ * </pre>
+ */
 @IfThen.List({@IfThen(ifProperty = "streetName", thenProperty = "streetNumber", required = false),
-    @IfThen(ifProperty = "streetNumber", thenProperty = "streetName", required = false)})
+    @IfThen(ifProperty = "streetNumber", thenProperty = "streetName", required = false),
+    @IfThen(ifProperty = "streetName", thenProperty = "city", required = false)})
 public class Address extends ReportingDomain implements Request, Response {
   private static final BigDecimal DEFAULT_DECIMAL = new BigDecimal(0);
   private static final int DEFAULT_INT = 0;

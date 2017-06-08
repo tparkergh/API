@@ -10,7 +10,6 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 import gov.ca.cwds.rest.api.Request;
 import gov.ca.cwds.rest.api.Response;
-import gov.ca.cwds.rest.validation.IfThen;
 import io.dropwizard.jackson.JsonSnakeCase;
 import io.swagger.annotations.ApiModelProperty;
 
@@ -20,18 +19,6 @@ import io.swagger.annotations.ApiModelProperty;
  * @author CWDS API Team
  */
 @JsonSnakeCase
-/**
- * <blockquote>
- * 
- * <pre>
- * BUSINESS RULE: "R - 05360" - StreetName is set then City is required
- * 
- * IF  StreetName or StreetAddress is set
- * THEN City is required
- * </blockquote>
- * </pre>
- */
-@IfThen(ifProperty = "streetAddress", thenProperty = "city", required = false)
 public class Address extends ReportingDomain implements Request, Response {
 
   /**
