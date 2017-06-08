@@ -2,7 +2,6 @@ package gov.ca.cwds.rest.api.domain.cms;
 
 import static gov.ca.cwds.data.persistence.cms.CmsPersistentObject.CMS_ID_LEN;
 
-import gov.ca.cwds.rest.api.domain.Participant;
 import java.math.BigDecimal;
 
 import javax.validation.constraints.NotNull;
@@ -19,6 +18,7 @@ import gov.ca.cwds.rest.api.Request;
 import gov.ca.cwds.rest.api.Response;
 import gov.ca.cwds.rest.api.domain.DomainChef;
 import gov.ca.cwds.rest.api.domain.DomainObject;
+import gov.ca.cwds.rest.api.domain.Participant;
 import gov.ca.cwds.rest.api.domain.ReportingDomain;
 import gov.ca.cwds.rest.validation.IfThen;
 import gov.ca.cwds.rest.validation.MutuallyExclusive;
@@ -309,21 +309,47 @@ public class Reporter extends ReportingDomain implements Request, Response {
     this.zipSuffixNumber = persistedReporter.getZipSuffixNumber();
     this.countySpecificCode = persistedReporter.getCountySpecificCode();
   }
-  public static Reporter createWithDefaults(String referralId, boolean isMandatedReporter, gov.ca.cwds.rest.api.domain.Address address, Participant participant, String countyCode, Short stateCode){
+
+  public static Reporter createWithDefaults(String referralId, boolean isMandatedReporter,
+      gov.ca.cwds.rest.api.domain.Address address, Participant participant, String countyCode,
+      Short stateCode) {
     // TODO: #141511573 address parsing - Smarty Streets Free Form display requires
     // standardizing
     // parsing to fields in CMS
     String zipCodeString = address.getZip().toString();
-    String[] streetAddress = address.getStreetAddress().split(" ");
-    String streetNumber = streetAddress[0];
-    String streetName = streetAddress[1];
+
+    /**
+     * Split the StreetAddress into separate streetNumber and StreetName objects, updates the
+     * respective columns. If the streetAddress is entered only words, it will throw a validation
+     * exception to enter the streetNumber.
+     */
+    String streetNumber = null;
+    String streetName = null;
+    int index;
+    if ((index = address.getStreetAddress().indexOf(" ")) > 0) {
+      streetNumber = address.getStreetAddress().substring(0, index);
+      if (!streetNumber.chars().allMatch(Character::isDigit)) {
+        streetNumber = null;
+        streetName = address.getStreetAddress();
+      } else {
+        streetName =
+            address.getStreetAddress().substring(index + 1, address.getStreetAddress().length());
+      }
+    } else {
+      if (address.getStreetAddress().chars().allMatch(Character::isDigit)) {
+        streetNumber = address.getStreetAddress();
+      } else {
+        streetName = address.getStreetAddress();
+      }
+    }
     String city = address.getCity();
 
-    return new Reporter("", city, DEFAULT_CODE, DEFAULT_CODE, false, "", "", "",
-          false, participant.getFirstName(), participant.getLastName(), isMandatedReporter, 0, DEFAULT_DECIMAL,
-          "", "", DEFAULT_DECIMAL, 0, stateCode, streetName, streetNumber, "",
-          zipCodeString, referralId, "", DEFAULT_CODE, countyCode);
+    return new Reporter("", city, DEFAULT_CODE, DEFAULT_CODE, false, "", "", "", false,
+        participant.getFirstName(), participant.getLastName(), isMandatedReporter, 0,
+        DEFAULT_DECIMAL, "", "", DEFAULT_DECIMAL, 0, stateCode, streetName, streetNumber, "",
+        zipCodeString, referralId, "", DEFAULT_CODE, countyCode);
   }
+
   /**
    * @return the badgeNumber
    */
