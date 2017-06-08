@@ -198,6 +198,7 @@ public class ScreeningToReferralService implements CrudsService {
     if (!messageBuilder.getMessages().isEmpty()) {
       for (ErrorMessage message : messageBuilder.getMessages()) {
         errorMessage.append(message.getMessage());
+        errorMessage.append("&&");
       }
       throw new ServiceException(errorMessage.toString(), new ValidationException());
     }
@@ -225,6 +226,7 @@ public class ScreeningToReferralService implements CrudsService {
       resultCrossReports = processCrossReports(screeningToReferral, referralId);
     } catch (ServiceException e) {
       String message = e.getMessage();
+      logError(message, e);
     }
     return resultCrossReports;
   }

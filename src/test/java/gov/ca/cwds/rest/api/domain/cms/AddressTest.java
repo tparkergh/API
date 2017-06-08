@@ -331,38 +331,26 @@ public class AddressTest {
         address.getStreetName());
   }
 
-  @Test(expected = ArrayIndexOutOfBoundsException.class)
-  public void streetNameShouldThrowExceptionWhenOnlyContaingOneWord() {
-    String streetAddress = "main";
-
-    gov.ca.cwds.rest.api.domain.Address nsAddress = new gov.ca.cwds.rest.api.domain.Address(
-        "legacy_source_table", "legacy_id", streetAddress, "city", "state", 12345, "type");
-
-    Address address = Address.createWithDefaults(nsAddress, new Short("5"));
-  }
-
   @Test
-  public void streetNameShouldContainSecondWordWhenNotContainingNumbers() {
+  public void testForStreetAddressContainOnlyWordWhereStreetNumberisNull() {
     String streetAddress = "Main St";
 
     gov.ca.cwds.rest.api.domain.Address nsAddress = new gov.ca.cwds.rest.api.domain.Address(
         "legacy_source_table", "legacy_id", streetAddress, "city", "state", 12345, "type");
 
     Address address = Address.createWithDefaults(nsAddress, new Short("5"));
-    assertEquals("Expected StreetName to contain second word as street name", "St",
-        address.getStreetName());
+    assertThat(address.getStreetNumber(), is(equalTo(null)));
   }
 
   @Test
-  public void streetNumberShouldContainFirstWordWhenNoNumberIsPresent() {
+  public void testForStreetAddressContainOnlyWordIsStreetName() {
     String streetAddress = "Main St";
 
     gov.ca.cwds.rest.api.domain.Address nsAddress = new gov.ca.cwds.rest.api.domain.Address(
         "legacy_source_table", "legacy_id", streetAddress, "city", "state", 12345, "type");
 
     Address address = Address.createWithDefaults(nsAddress, new Short("5"));
-    assertEquals("Expected StreetName to contain second word as street name", "Main",
-        address.getStreetNumber());
+    assertThat(address.getStreetName(), is(equalTo("Main St")));
   }
 
   @Test

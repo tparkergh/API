@@ -4,12 +4,10 @@ import static io.dropwizard.testing.FixtureHelpers.fixture;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.is;
-import static org.junit.Assert.assertTrue;
 import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
-import gov.ca.cwds.rest.messages.MessageBuilder;
 import java.util.ArrayList;
 import java.util.LinkedHashSet;
 import java.util.Set;
@@ -61,6 +59,7 @@ import gov.ca.cwds.rest.api.domain.cms.Reporter;
 import gov.ca.cwds.rest.api.domain.error.ErrorMessage;
 import gov.ca.cwds.rest.business.rules.LACountyTrigger;
 import gov.ca.cwds.rest.business.rules.NonLACountyTriggers;
+import gov.ca.cwds.rest.messages.MessageBuilder;
 import gov.ca.cwds.rest.services.cms.AddressService;
 import gov.ca.cwds.rest.services.cms.AllegationService;
 import gov.ca.cwds.rest.services.cms.ChildClientService;
@@ -78,6 +77,7 @@ import io.dropwizard.jackson.Jackson;
  * 
  * @author CWDS API Team
  */
+@SuppressWarnings("unused")
 public class ScreeningToReferralServiceTest {
 
   private ScreeningToReferralService screeningToReferralService;
@@ -548,7 +548,8 @@ public class ScreeningToReferralServiceTest {
     screeningToReferralService = new ScreeningToReferralService(referralService, clientService,
         allegationService, crossReportService, referralClientService, reporterService,
         addressService, clientAddressService, longTextService, childClientService,
-        Validation.buildDefaultValidatorFactory().getValidator(), referralDao, staffPersonIdRetriever, new MessageBuilder());
+        Validation.buildDefaultValidatorFactory().getValidator(), referralDao,
+        staffPersonIdRetriever, new MessageBuilder());
   }
 
   @SuppressWarnings("javadoc")
@@ -561,11 +562,17 @@ public class ScreeningToReferralServiceTest {
     ScreeningToReferral screeningToReferral = MAPPER.readValue(
         fixture("fixtures/domain/ScreeningToReferral/invalid/withReferralIdNotExist.json"),
         ScreeningToReferral.class);
+    Boolean hasErrorMessage = false;
 
-    Response response = screeningToReferralService.create(screeningToReferral);
-    boolean hasErrorMessage =
-        containsError(response, "Legacy Id does not correspond to an existing CMS/CWS Referral");
-    assertTrue("", hasErrorMessage);
+    try {
+      Response response = screeningToReferralService.create(screeningToReferral);
+    } catch (Exception e) {
+      if (e.getMessage()
+          .contains("Legacy Id does not correspond to an existing CMS/CWS Referral")) {
+        hasErrorMessage = true;
+      }
+      assertThat(hasErrorMessage, is(equalTo(true)));
+    }
   }
 
   private boolean containsError(Response response, String errorMessage) {
@@ -667,20 +674,14 @@ public class ScreeningToReferralServiceTest {
         ScreeningToReferral.class);
 
     Boolean theErrorDetected = false;
-    Response response = screeningToReferralService.create(screeningToReferral);
-    if (response.hasMessages()) {
-      ArrayList<ErrorMessage> messages = response.getMessages();
-      for (ErrorMessage message : messages) {
-        if (message != null) {
-          if (message.getMessage()
-              .contains("Legacy Id does not correspond to an existing CMS/CWS Referral")) {
-            theErrorDetected = true;
-          }
-        }
+    try {
+      Response response = screeningToReferralService.create(screeningToReferral);
+    } catch (Exception e) {
+      if (e.getMessage()
+          .contains("Legacy Id does not correspond to an existing CMS/CWS Referral")) {
+        theErrorDetected = true;
       }
       assertThat(theErrorDetected, is(equalTo(true)));
-    } else {
-      Assert.fail("Expected error messages were not thrown");
     }
   }
 
@@ -1075,19 +1076,13 @@ public class ScreeningToReferralServiceTest {
         ScreeningToReferral.class);
 
     Boolean theErrorDetected = false;
-    Response response = screeningToReferralService.create(screeningToReferral);
-    if (response.hasMessages()) {
-      ArrayList<ErrorMessage> messages = response.getMessages();
-      for (ErrorMessage message : messages) {
-        if (message != null) {
-          if (message.getMessage().contains("Incompatiable participants included in request")) {
-            theErrorDetected = true;
-          }
-        }
+    try {
+      Response response = screeningToReferralService.create(screeningToReferral);
+    } catch (Exception e) {
+      if (e.getMessage().contains("Incompatiable participants included in request")) {
+        theErrorDetected = true;
       }
       assertThat(theErrorDetected, is(equalTo(true)));
-    } else {
-      Assert.fail("Expected error messages were not thrown");
     }
   }
 
@@ -1180,19 +1175,13 @@ public class ScreeningToReferralServiceTest {
         ScreeningToReferral.class);
 
     Boolean theErrorDetected = false;
-    Response response = screeningToReferralService.create(screeningToReferral);
-    if (response.hasMessages()) {
-      ArrayList<ErrorMessage> messages = response.getMessages();
-      for (ErrorMessage message : messages) {
-        if (message != null) {
-          if (message.getMessage().contains("Incompatiable participants included in request")) {
-            theErrorDetected = true;
-          }
-        }
+    try {
+      Response response = screeningToReferralService.create(screeningToReferral);
+    } catch (Exception e) {
+      if (e.getMessage().contains("Incompatiable participants included in request")) {
+        theErrorDetected = true;
       }
       assertThat(theErrorDetected, is(equalTo(true)));
-    } else {
-      Assert.fail("Expected error messages were not thrown");
     }
   }
 
@@ -1374,21 +1363,14 @@ public class ScreeningToReferralServiceTest {
         MAPPER.readValue(fixture("fixtures/domain/ScreeningToReferral/invalid/noVictim.json"),
             ScreeningToReferral.class);
     Boolean theErrorDetected = false;
-    Response response = screeningToReferralService.create(screeningToReferral);
-    if (response.hasMessages()) {
-      ArrayList<ErrorMessage> messages = response.getMessages();
-      for (ErrorMessage message : messages) {
-        if (message != null) {
-          if (message.getMessage().contains("Incompatiable participants included in request")) {
-            theErrorDetected = true;
-          }
-        }
+    try {
+      Response response = screeningToReferralService.create(screeningToReferral);
+    } catch (Exception e) {
+      if (e.getMessage().contains("Incompatiable participants included in request")) {
+        theErrorDetected = true;
       }
       assertThat(theErrorDetected, is(equalTo(true)));
-    } else {
-      Assert.fail("Expected error messages were not thrown");
     }
-
   }
 
   @SuppressWarnings("javadoc")
@@ -1481,19 +1463,13 @@ public class ScreeningToReferralServiceTest {
         ScreeningToReferral.class);
 
     Boolean theErrorDetected = false;
-    Response response = screeningToReferralService.create(screeningToReferral);
-    if (response.hasMessages()) {
-      ArrayList<ErrorMessage> messages = response.getMessages();
-      for (ErrorMessage message : messages) {
-        if (message != null) {
-          if (message.getMessage().contains("Participant contains incompatiable roles")) {
-            theErrorDetected = true;
-          }
-        }
+    try {
+      Response response = screeningToReferralService.create(screeningToReferral);
+    } catch (Exception e) {
+      if (e.getMessage().contains("Participant contains incompatiable roles")) {
+        theErrorDetected = true;
       }
       assertThat(theErrorDetected, is(equalTo(true)));
-    } else {
-      Assert.fail("Expected error messages were not thrown");
     }
   }
 
@@ -1587,19 +1563,13 @@ public class ScreeningToReferralServiceTest {
         ScreeningToReferral.class);
 
     Boolean theErrorDetected = false;
-    Response response = screeningToReferralService.create(screeningToReferral);
-    if (response.hasMessages()) {
-      ArrayList<ErrorMessage> messages = response.getMessages();
-      for (ErrorMessage message : messages) {
-        if (message != null) {
-          if (message.getMessage().contains("Participant contains incompatiable roles")) {
-            theErrorDetected = true;
-          }
-        }
+    try {
+      Response response = screeningToReferralService.create(screeningToReferral);
+    } catch (Exception e) {
+      if (e.getMessage().contains("Participant contains incompatiable roles")) {
+        theErrorDetected = true;
       }
       assertThat(theErrorDetected, is(equalTo(true)));
-    } else {
-      Assert.fail("Expected error messages were not thrown");
     }
   }
 
@@ -1685,19 +1655,13 @@ public class ScreeningToReferralServiceTest {
         ScreeningToReferral.class);
 
     Boolean theErrorDetected = false;
-    Response response = screeningToReferralService.create(screeningToReferral);
-    if (response.hasMessages()) {
-      ArrayList<ErrorMessage> messages = response.getMessages();
-      for (ErrorMessage message : messages) {
-        if (message.getMessage() != null) {
-          if (message.getMessage().contains("Participant contains incompatiable roles")) {
-            theErrorDetected = true;
-          }
-        }
+    try {
+      Response response = screeningToReferralService.create(screeningToReferral);
+    } catch (Exception e) {
+      if (e.getMessage().contains("Participant contains incompatiable roles")) {
+        theErrorDetected = true;
       }
       assertThat(theErrorDetected, is(equalTo(true)));
-    } else {
-      Assert.fail("Expected error messages were not thrown");
     }
   }
 
@@ -1791,19 +1755,13 @@ public class ScreeningToReferralServiceTest {
         ScreeningToReferral.class);
 
     Boolean theErrorDetected = false;
-    Response response = screeningToReferralService.create(screeningToReferral);
-    if (response.hasMessages()) {
-      ArrayList<ErrorMessage> messages = response.getMessages();
-      for (ErrorMessage message : messages) {
-        if (message.getMessage() != null) {
-          if (message.getMessage().contains("Participant contains incompatiable roles")) {
-            theErrorDetected = true;
-          }
-        }
+    try {
+      Response response = screeningToReferralService.create(screeningToReferral);
+    } catch (Exception e) {
+      if (e.getMessage().contains("Participant contains incompatiable roles")) {
+        theErrorDetected = true;
       }
       assertThat(theErrorDetected, is(equalTo(true)));
-    } else {
-      Assert.fail("Expected error messages were not thrown");
     }
   }
 
@@ -1897,19 +1855,13 @@ public class ScreeningToReferralServiceTest {
         ScreeningToReferral.class);
 
     Boolean theErrorDetected = false;
-    Response response = screeningToReferralService.create(screeningToReferral);
-    if (response.hasMessages()) {
-      ArrayList<ErrorMessage> messages = response.getMessages();
-      for (ErrorMessage message : messages) {
-        if (message.getMessage() != null) {
-          if (message.getMessage().contains("Participant contains incompatiable roles")) {
-            theErrorDetected = true;
-          }
-        }
+    try {
+      Response response = screeningToReferralService.create(screeningToReferral);
+    } catch (Exception e) {
+      if (e.getMessage().contains("Participant contains incompatiable roles")) {
+        theErrorDetected = true;
       }
       assertThat(theErrorDetected, is(equalTo(true)));
-    } else {
-      Assert.fail("Expected error messages were not thrown");
     }
   }
 
@@ -2412,19 +2364,13 @@ public class ScreeningToReferralServiceTest {
         ScreeningToReferral.class);
 
     Boolean theErrorDetected = false;
-    Response response = screeningToReferralService.create(screeningToReferral);
-    if (response.hasMessages()) {
-      ArrayList<ErrorMessage> messages = response.getMessages();
-      for (ErrorMessage message : messages) {
-        if (message.getMessage() != null) {
-          if (message.getMessage().contains("parsing Start Date/Time")) {
-            theErrorDetected = true;
-          }
-        }
+    try {
+      Response response = screeningToReferralService.create(screeningToReferral);
+    } catch (Exception e) {
+      if (e.getMessage().contains("parsing Start Date/Time")) {
+        theErrorDetected = true;
       }
       assertThat(theErrorDetected, is(equalTo(true)));
-    } else {
-      Assert.fail("Expected error messages were not thrown");
     }
   }
 
@@ -2516,19 +2462,13 @@ public class ScreeningToReferralServiceTest {
         ScreeningToReferral.class);
 
     Boolean theErrorDetected = false;
-    Response response = screeningToReferralService.create(screeningToReferral);
-    if (response.hasMessages()) {
-      ArrayList<ErrorMessage> messages = response.getMessages();
-      for (ErrorMessage message : messages) {
-        if (message.getMessage() != null) {
-          if (message.getMessage().contains("Screening address is null or empty")) {
-            theErrorDetected = true;
-          }
-        }
+    try {
+      Response response = screeningToReferralService.create(screeningToReferral);
+    } catch (Exception e) {
+      if (e.getMessage().contains("Screening address is null or empty")) {
+        theErrorDetected = true;
       }
       assertThat(theErrorDetected, is(equalTo(true)));
-    } else {
-      Assert.fail("Expected error messages were not thrown");
     }
   }
 
@@ -2594,7 +2534,6 @@ public class ScreeningToReferralServiceTest {
     when(reporterDao.create(any(gov.ca.cwds.data.persistence.cms.Reporter.class)))
         .thenReturn(reporterToCreate);
 
-
     Address addressDomain = MAPPER.readValue(
         fixture("fixtures/domain/ScreeningToReferral/valid/validAddress.json"), Address.class);
     gov.ca.cwds.data.persistence.cms.Address addressToCreate =
@@ -2622,29 +2561,14 @@ public class ScreeningToReferralServiceTest {
         ScreeningToReferral.class);
 
     Boolean theErrorDetected = false;
-    Response response = screeningToReferralService.create(screeningToReferral);
-    if (response.hasMessages()) {
-      ArrayList<ErrorMessage> messages = response.getMessages();
-      for (ErrorMessage message : messages) {
-        System.out.println(message.getMessage());
-        if (message.getMessage() != null) {
-          if (message.getMessage().contains("Screening address is null or empty")) {
-            theErrorDetected = true;
-          }
-        }
+    try {
+      Response response = screeningToReferralService.create(screeningToReferral);
+    } catch (Exception e) {
+      if (e.getMessage().contains("Screening address is null or empty")) {
+        theErrorDetected = true;
       }
       assertThat(theErrorDetected, is(equalTo(true)));
-    } else {
-      Assert.fail("Expected error messages were not thrown");
     }
-
-    // try {
-    // Response response = screeningToReferralService.create(screeningToReferral);
-    // assertThat(response.getClass(), is(PostedScreeningToReferral.class));
-    // assertThat(response.hasMessages(), is(equalTo(false)));
-    // } catch (Exception e) {
-    // Assert.fail("Unexpected ServiceException was thrown" + e.getMessage());
-    // }
   }
 
   @SuppressWarnings("javadoc")
@@ -2926,19 +2850,13 @@ public class ScreeningToReferralServiceTest {
         ScreeningToReferral.class);
 
     Boolean theErrorDetected = false;
-    Response response = screeningToReferralService.create(screeningToReferral);
-    if (response.hasMessages()) {
-      ArrayList<ErrorMessage> messages = response.getMessages();
-      for (ErrorMessage message : messages) {
-        if (message.getMessage() != null) {
-          if (message.getMessage().contains("Referral must have at least one Allegation")) {
-            theErrorDetected = true;
-          }
-        }
+    try {
+      Response response = screeningToReferralService.create(screeningToReferral);
+    } catch (Exception e) {
+      if (e.getMessage().contains("Referral must have at least one Allegation")) {
+        theErrorDetected = true;
       }
       assertThat(theErrorDetected, is(equalTo(true)));
-    } else {
-      Assert.fail("Expected error was not detected");
     }
   }
 
@@ -3131,20 +3049,14 @@ public class ScreeningToReferralServiceTest {
         ScreeningToReferral.class);
 
     Boolean theErrorDetected = false;
-    Response response = screeningToReferralService.create(screeningToReferral);
-    if (response.hasMessages()) {
-      ArrayList<ErrorMessage> messages = response.getMessages();
-      for (ErrorMessage message : messages) {
-        if (message.getMessage() != null) {
-          if (message.getMessage().contains(
-              "Allegation/Victim Person Id does not contain a Participant with a role of Victim")) {
-            theErrorDetected = true;
-          }
-        }
+    try {
+      Response response = screeningToReferralService.create(screeningToReferral);
+    } catch (Exception e) {
+      if (e.getMessage().contains(
+          "Allegation/Victim Person Id does not contain a Participant with a role of Victim")) {
+        theErrorDetected = true;
       }
       assertThat(theErrorDetected, is(equalTo(true)));
-    } else {
-      Assert.fail("Expected error was not detected");
     }
   }
 
@@ -3237,20 +3149,14 @@ public class ScreeningToReferralServiceTest {
         ScreeningToReferral.class);
 
     Boolean theErrorDetected = false;
-    Response response = screeningToReferralService.create(screeningToReferral);
-    if (response.hasMessages()) {
-      ArrayList<ErrorMessage> messages = response.getMessages();
-      for (ErrorMessage message : messages) {
-        if (message.getMessage() != null) {
-          if (message.getMessage().contains(
-              "Allegation/Perpetrator Person Id does not contain a Participant with a role of Perpetrator")) {
-            theErrorDetected = true;
-          }
-        }
+    try {
+      Response response = screeningToReferralService.create(screeningToReferral);
+    } catch (Exception e) {
+      if (e.getMessage().contains(
+          "Allegation/Perpetrator Person Id does not contain a Participant with a role of Perpetrator")) {
+        theErrorDetected = true;
       }
       assertThat(theErrorDetected, is(equalTo(true)));
-    } else {
-      Assert.fail("Expected error was not detected");
     }
   }
 
@@ -3446,20 +3352,14 @@ public class ScreeningToReferralServiceTest {
         fixture("fixtures/domain/ScreeningToReferral/invalid/clientIdDoesNotExist.json"),
         ScreeningToReferral.class);
     Boolean theErrorDetected = false;
-    Response response = screeningToReferralService.create(screeningToReferral);
-    if (response.hasMessages()) {
-      ArrayList<ErrorMessage> messages = response.getMessages();
-      for (ErrorMessage message : messages) {
-        if (message.getMessage() != null) {
-          if (message.getMessage().contains(
-              "Legacy Id of Participant does not correspond to an existing CWS/CMS Client")) {
-            theErrorDetected = true;
-          }
-        }
+    try {
+      Response response = screeningToReferralService.create(screeningToReferral);
+    } catch (Exception e) {
+      if (e.getMessage()
+          .contains("Legacy Id of Participant does not correspond to an existing CWS/CMS Client")) {
+        theErrorDetected = true;
       }
       assertThat(theErrorDetected, is(equalTo(true)));
-    } else {
-      Assert.fail("Expected error was not detected");
     }
   }
 
@@ -3654,21 +3554,17 @@ public class ScreeningToReferralServiceTest {
         ScreeningToReferral.class);
 
     Boolean theErrorDetected = false;
-    Response response = screeningToReferralService.create(screeningToReferral);
-    if (response.hasMessages()) {
-      ArrayList<ErrorMessage> messages = response.getMessages();
-      for (ErrorMessage message : messages) {
-        if (message.getMessage() != null) {
-          if (message.getMessage().contains(
-              "Legacy Id on Allegation does not correspond to an existing CMS/CWS Allegation")) {
-            theErrorDetected = true;
-          }
-        }
+
+    try {
+      Response response = screeningToReferralService.create(screeningToReferral);
+    } catch (Exception e) {
+      if (e.getMessage().contains(
+          "Legacy Id on Allegation does not correspond to an existing CMS/CWS Allegation")) {
+        theErrorDetected = true;
       }
       assertThat(theErrorDetected, is(equalTo(true)));
-    } else {
-      Assert.fail("Expected error was not returned in messages");
     }
+
   }
 
   @SuppressWarnings("javadoc")
@@ -3776,7 +3672,7 @@ public class ScreeningToReferralServiceTest {
 
   @SuppressWarnings("javadoc")
   @Test
-  public void testCrossReportDoesNotExsitFail() throws Exception {
+  public void testCrossReportDoesNotExistFail() throws Exception {
     Referral referralDomain = MAPPER.readValue(
         fixture("fixtures/domain/ScreeningToReferral/valid/validReferral.json"), Referral.class);
     gov.ca.cwds.data.persistence.cms.Referral referralToCreate =
@@ -3868,20 +3764,14 @@ public class ScreeningToReferralServiceTest {
         ScreeningToReferral.class);
 
     Boolean theErrorDetected = false;
-    Response response = screeningToReferralService.create(screeningToReferral);
-    if (response.hasMessages()) {
-      ArrayList<ErrorMessage> messages = response.getMessages();
-      for (ErrorMessage message : messages) {
-        if (message.getMessage() != null) {
-          if (message.getMessage().contains(
-              "Legacy Id on Cross Report does not correspond to an existing CMS/CWS Cross Report")) {
-            theErrorDetected = true;
-          }
-        }
+    try {
+      Response response = screeningToReferralService.create(screeningToReferral);
+    } catch (Exception e) {
+      if (e.getMessage().contains(
+          "Legacy Id on Cross Report does not correspond to an existing CMS/CWS Cross Report")) {
+        theErrorDetected = true;
       }
       assertThat(theErrorDetected, is(equalTo(true)));
-    } else {
-      Assert.fail("Expected error was not returned in messages");
     }
   }
 
@@ -3990,7 +3880,7 @@ public class ScreeningToReferralServiceTest {
 
   @SuppressWarnings("javadoc")
   @Test
-  public void testAddressDoesNotExsitFail() throws Exception {
+  public void testAddressDoesNotExistFail() throws Exception {
     Referral referralDomain = MAPPER.readValue(
         fixture("fixtures/domain/ScreeningToReferral/valid/validReferral.json"), Referral.class);
     gov.ca.cwds.data.persistence.cms.Referral referralToCreate =
@@ -4078,27 +3968,20 @@ public class ScreeningToReferralServiceTest {
         ScreeningToReferral.class);
 
     Boolean theErrorDetected = false;
-    Response response = screeningToReferralService.create(screeningToReferral);
-    if (response.hasMessages()) {
-      ArrayList<ErrorMessage> messages = response.getMessages();
-      for (ErrorMessage message : messages) {
-        if (message.getMessage() != null) {
-          if (message.getMessage().contains(
-              "Legacy Id on Address does not correspond to an existing CMS/CWS Address")) {
-            theErrorDetected = true;
-          }
-        }
+    try {
+      Response response = screeningToReferralService.create(screeningToReferral);
+    } catch (Exception e) {
+      if (e.getMessage()
+          .contains("Legacy Id on Address does not correspond to an existing CMS/CWS Address")) {
+        theErrorDetected = true;
       }
       assertThat(theErrorDetected, is(equalTo(true)));
-    } else {
-      Assert.fail("Expected error was not returned in messages");
     }
-
   }
 
   @SuppressWarnings("javadoc")
   @Test
-  public void testClientAddressExsitSuccess() throws Exception {
+  public void testClientAddressExistSuccess() throws Exception {
     Referral referralDomain = MAPPER.readValue(
         fixture("fixtures/domain/ScreeningToReferral/valid/validReferral.json"), Referral.class);
     gov.ca.cwds.data.persistence.cms.Referral referralToCreate =
@@ -4292,20 +4175,14 @@ public class ScreeningToReferralServiceTest {
         ScreeningToReferral.class);
 
     Boolean theErrorDetected = false;
-    Response response = screeningToReferralService.create(screeningToReferral);
-    if (response.hasMessages()) {
-      ArrayList<ErrorMessage> messages = response.getMessages();
-      for (ErrorMessage message : messages) {
-        if (message.getMessage() != null) {
-          if (message.getMessage().contains(
-              "Legacy Id on Address does not correspond to an existing CMS/CWS Client Address")) {
-            theErrorDetected = true;
-          }
-        }
+    try {
+      Response response = screeningToReferralService.create(screeningToReferral);
+    } catch (Exception e) {
+      if (e.getMessage().contains(
+          "Legacy Id on Address does not correspond to an existing CMS/CWS Client Address")) {
+        theErrorDetected = true;
       }
       assertThat(theErrorDetected, is(equalTo(true)));
-    } else {
-      Assert.fail("Expected error was not returned in messages");
     }
   }
 

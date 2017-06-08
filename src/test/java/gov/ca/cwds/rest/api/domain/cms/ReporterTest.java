@@ -10,14 +10,6 @@ import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
-import gov.ca.cwds.data.CrudsDao;
-import gov.ca.cwds.rest.api.domain.DomainChef;
-import gov.ca.cwds.rest.api.domain.Participant;
-import gov.ca.cwds.rest.core.Api;
-import gov.ca.cwds.rest.resources.cms.JerseyGuiceRule;
-import gov.ca.cwds.rest.resources.cms.ReporterResource;
-import io.dropwizard.jackson.Jackson;
-import io.dropwizard.testing.junit.ResourceTestRule;
 
 import java.io.IOException;
 import java.math.BigDecimal;
@@ -29,9 +21,6 @@ import javax.ws.rs.client.Entity;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
-import nl.jqno.equalsverifier.EqualsVerifier;
-import nl.jqno.equalsverifier.Warning;
-
 import org.junit.After;
 import org.junit.Before;
 import org.junit.ClassRule;
@@ -41,6 +30,17 @@ import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.squarespace.jersey2.guice.JerseyGuiceUtils;
+
+import gov.ca.cwds.data.CrudsDao;
+import gov.ca.cwds.rest.api.domain.DomainChef;
+import gov.ca.cwds.rest.api.domain.Participant;
+import gov.ca.cwds.rest.core.Api;
+import gov.ca.cwds.rest.resources.cms.JerseyGuiceRule;
+import gov.ca.cwds.rest.resources.cms.ReporterResource;
+import io.dropwizard.jackson.Jackson;
+import io.dropwizard.testing.junit.ResourceTestRule;
+import nl.jqno.equalsverifier.EqualsVerifier;
+import nl.jqno.equalsverifier.Warning;
 
 /**
  * 
@@ -62,8 +62,8 @@ public class ReporterTest {
   public static JerseyGuiceRule rule = new JerseyGuiceRule();
 
   @ClassRule
-  public static final ResourceTestRule resources = ResourceTestRule.builder()
-      .addResource(mockedReporterResource).build();
+  public static final ResourceTestRule resources =
+      ResourceTestRule.builder().addResource(mockedReporterResource).build();
 
   private static final ObjectMapper MAPPER = Jackson.newObjectMapper();
   private final static DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
@@ -103,8 +103,8 @@ public class ReporterTest {
     when(crudsDao.find(any())).thenReturn(mock(gov.ca.cwds.data.persistence.cms.Reporter.class));
     Reporter validReporter = validReporter();
 
-    when(mockedReporterResource.create(eq(validReporter))).thenReturn(
-        Response.status(Response.Status.NO_CONTENT).entity(null).build());
+    when(mockedReporterResource.create(eq(validReporter)))
+        .thenReturn(Response.status(Response.Status.NO_CONTENT).entity(null).build());
   }
 
   /*
@@ -112,14 +112,13 @@ public class ReporterTest {
    */
   @Test
   public void persistentObjectConstructorTest() throws Exception {
-    Reporter domain =
-        new Reporter(badgeNumber, cityName, colltrClientRptrReltnshpType, communicationMethodType,
-            confidentialWaiverIndicator, drmsMandatedRprtrFeedback, employerName, feedbackDate,
-            feedbackRequiredIndicator, firstName, lastName, mandatedReporterIndicator,
-            messagePhoneExtensionNumber, messagePhoneNumber, middleInitialName,
-            namePrefixDescription, primaryPhoneNumber, primaryPhoneExtensionNumber, stateCodeType,
-            streetName, streetNumber, suffixTitleDescription, zipcode, referralId,
-            lawEnforcementId, zipSuffixNumber, countySpecificCode);
+    Reporter domain = new Reporter(badgeNumber, cityName, colltrClientRptrReltnshpType,
+        communicationMethodType, confidentialWaiverIndicator, drmsMandatedRprtrFeedback,
+        employerName, feedbackDate, feedbackRequiredIndicator, firstName, lastName,
+        mandatedReporterIndicator, messagePhoneExtensionNumber, messagePhoneNumber,
+        middleInitialName, namePrefixDescription, primaryPhoneNumber, primaryPhoneExtensionNumber,
+        stateCodeType, streetName, streetNumber, suffixTitleDescription, zipcode, referralId,
+        lawEnforcementId, zipSuffixNumber, countySpecificCode);
     gov.ca.cwds.data.persistence.cms.Reporter persistent =
         new gov.ca.cwds.data.persistence.cms.Reporter(domain, "lastUpdatedId");
 
@@ -166,14 +165,13 @@ public class ReporterTest {
 
   @Test
   public void jsonCreatorConstructorTest() throws Exception {
-    Reporter reporter =
-        new Reporter(badgeNumber, cityName, colltrClientRptrReltnshpType, communicationMethodType,
-            confidentialWaiverIndicator, drmsMandatedRprtrFeedback, employerName, feedbackDate,
-            feedbackRequiredIndicator, firstName, lastName, mandatedReporterIndicator,
-            messagePhoneExtensionNumber, messagePhoneNumber, middleInitialName,
-            namePrefixDescription, primaryPhoneNumber, primaryPhoneExtensionNumber, stateCodeType,
-            streetName, streetNumber, suffixTitleDescription, zipcode, referralId,
-            lawEnforcementId, zipSuffixNumber, countySpecificCode);
+    Reporter reporter = new Reporter(badgeNumber, cityName, colltrClientRptrReltnshpType,
+        communicationMethodType, confidentialWaiverIndicator, drmsMandatedRprtrFeedback,
+        employerName, feedbackDate, feedbackRequiredIndicator, firstName, lastName,
+        mandatedReporterIndicator, messagePhoneExtensionNumber, messagePhoneNumber,
+        middleInitialName, namePrefixDescription, primaryPhoneNumber, primaryPhoneExtensionNumber,
+        stateCodeType, streetName, streetNumber, suffixTitleDescription, zipcode, referralId,
+        lawEnforcementId, zipSuffixNumber, countySpecificCode);
 
     assertThat(reporter.getReferralId(), is(equalTo(referralId)));
     assertThat(reporter.getBadgeNumber(), is(equalTo(badgeNumber)));
@@ -216,9 +214,8 @@ public class ReporterTest {
     Integer zipCode = 12345;
     String type = "type";
 
-    gov.ca.cwds.rest.api.domain.Address address =
-        new gov.ca.cwds.rest.api.domain.Address("legacy_source_table", "legacy_id", streetAddress,
-            city, state, zipCode, type);
+    gov.ca.cwds.rest.api.domain.Address address = new gov.ca.cwds.rest.api.domain.Address(
+        "legacy_source_table", "legacy_id", streetAddress, city, state, zipCode, type);
 
     String referralId = "referralId";
     boolean isMandatedReporter = true;
@@ -226,13 +223,12 @@ public class ReporterTest {
     String lastName = "lastName";
     Participant participant =
         new Participant(5L, "legacy_source_table", "legacy_client_id", firstName, lastName,
-            "gender", "ssn", "date_of_birth", 7L, 8L, new HashSet(), new HashSet());
+            "gender", "ssn", "date_of_birth", 7L, 8L, new HashSet<>(), new HashSet<>());
     String countyCode = "countyCode";
     Short stateCode = new Short("0");
 
-    Reporter reporter =
-        Reporter.createWithDefaults(referralId, isMandatedReporter, address, participant,
-            countyCode, stateCode);
+    Reporter reporter = Reporter.createWithDefaults(referralId, isMandatedReporter, address,
+        participant, countyCode, stateCode);
     assertEquals("Expected referralId field to have been initialized with value", referralId,
         reporter.getReferralId());
     assertEquals("Expected isMandatedReporter field to have been initialized with value",
@@ -266,9 +262,8 @@ public class ReporterTest {
     Integer zipCode = 12345;
     String type = "type";
 
-    gov.ca.cwds.rest.api.domain.Address address =
-        new gov.ca.cwds.rest.api.domain.Address("legacy_source_table", "legacy_id", streetAddress,
-            city, state, zipCode, type);
+    gov.ca.cwds.rest.api.domain.Address address = new gov.ca.cwds.rest.api.domain.Address(
+        "legacy_source_table", "legacy_id", streetAddress, city, state, zipCode, type);
 
     String referralId = "referralId";
     boolean isMandatedReporter = true;
@@ -276,13 +271,12 @@ public class ReporterTest {
     String lastName = "lastName";
     Participant participant =
         new Participant(5L, "legacy_source_table", "legacy_client_id", firstName, lastName,
-            "gender", "ssn", "date_of_birth", 7L, 8L, new HashSet(), new HashSet());
+            "gender", "ssn", "date_of_birth", 7L, 8L, new HashSet<>(), new HashSet<>());
     String countyCode = "countyCode";
     Short stateCode = new Short("0");
 
-    Reporter reporter =
-        Reporter.createWithDefaults(referralId, isMandatedReporter, address, participant,
-            countyCode, stateCode);
+    Reporter reporter = Reporter.createWithDefaults(referralId, isMandatedReporter, address,
+        participant, countyCode, stateCode);
     assertEquals("Expected badgeNumber field to have been initialized with value", "",
         reporter.getBadgeNumber());
     assertEquals("Expected colltrClientRptrReltnshpType field to have been initialized with value",
@@ -291,8 +285,8 @@ public class ReporterTest {
         new Short("0"), reporter.getCommunicationMethodType());
     assertEquals("Expected confidentialWaiverIndicator field to have been initialized with value",
         false, reporter.getConfidentialWaiverIndicator());
-    assertEquals("Expected drmsMandatedRprtrFeedback field to have been initialized with value",
-        "", reporter.getDrmsMandatedRprtrFeedback());
+    assertEquals("Expected drmsMandatedRprtrFeedback field to have been initialized with value", "",
+        reporter.getDrmsMandatedRprtrFeedback());
     assertEquals("Expected employerName field to have been initialized with value", "",
         reporter.getEmployerName());
     assertEquals("Expected feedbackDate field to have been initialized with value", "",
@@ -315,24 +309,22 @@ public class ReporterTest {
         reporter.getSuffixTitleDescription());
     assertEquals("Expected lawEnforcementId field to have been initialized with value", "",
         reporter.getLawEnforcementId());
-    assertEquals("Expected zipSuffixNumber field to have been initialized with value", new Short(
-        "0"), reporter.getZipSuffixNumber());
+    assertEquals("Expected zipSuffixNumber field to have been initialized with value",
+        new Short("0"), reporter.getZipSuffixNumber());
   }
 
   @Test
   public void streetNumberShouldBeParsedFromStreetAddress() {
     String streetAddress = "1 main";
 
-    gov.ca.cwds.rest.api.domain.Address address =
-        new gov.ca.cwds.rest.api.domain.Address("legacy_source_table", "legacy_id", streetAddress,
-            "city", "state", 12345, "type");
+    gov.ca.cwds.rest.api.domain.Address address = new gov.ca.cwds.rest.api.domain.Address(
+        "legacy_source_table", "legacy_id", streetAddress, "city", "state", 12345, "type");
     Participant participant =
         new Participant(5L, "legacy_source_table", "legacy_client_id", "firstName", "lastName",
-            "gender", "ssn", "date_of_birth", 7L, 8L, new HashSet(), new HashSet());
+            "gender", "ssn", "date_of_birth", 7L, 8L, new HashSet<>(), new HashSet<>());
 
-    Reporter reporter =
-        Reporter.createWithDefaults("referralId", true, address, participant, "countyCode",
-            new Short("0"));
+    Reporter reporter = Reporter.createWithDefaults("referralId", true, address, participant,
+        "countyCode", new Short("0"));
 
     assertEquals("Street Number not parsed from street address", "1", reporter.getStreetNumber());
   }
@@ -341,16 +333,14 @@ public class ReporterTest {
   public void streetNameShouldBeParsedFromStreetAddress() {
     String streetAddress = "1 main";
 
-    gov.ca.cwds.rest.api.domain.Address address =
-        new gov.ca.cwds.rest.api.domain.Address("legacy_source_table", "legacy_id", streetAddress,
-            "city", "state", 12345, "type");
+    gov.ca.cwds.rest.api.domain.Address address = new gov.ca.cwds.rest.api.domain.Address(
+        "legacy_source_table", "legacy_id", streetAddress, "city", "state", 12345, "type");
     Participant participant =
         new Participant(5L, "legacy_source_table", "legacy_client_id", "firstName", "lastName",
-            "gender", "ssn", "date_of_birth", 7L, 8L, new HashSet(), new HashSet());
+            "gender", "ssn", "date_of_birth", 7L, 8L, new HashSet<>(), new HashSet<>());
 
-    Reporter reporter =
-        Reporter.createWithDefaults("referralId", true, address, participant, "countyCode",
-            new Short("0"));
+    Reporter reporter = Reporter.createWithDefaults("referralId", true, address, participant,
+        "countyCode", new Short("0"));
 
     assertEquals("Street Number not parsed from street address", "main", reporter.getStreetName());
   }
@@ -359,66 +349,45 @@ public class ReporterTest {
   public void streetNameShouldNotIncludeTypeOfStreetsOrMultiPartStreetNames() {
     String streetAddress = "1 San Andreas Blvd";
 
-    gov.ca.cwds.rest.api.domain.Address address =
-        new gov.ca.cwds.rest.api.domain.Address("legacy_source_table", "legacy_id", streetAddress,
-            "city", "state", 12345, "type");
+    gov.ca.cwds.rest.api.domain.Address address = new gov.ca.cwds.rest.api.domain.Address(
+        "legacy_source_table", "legacy_id", streetAddress, "city", "state", 12345, "type");
     Participant participant =
         new Participant(5L, "legacy_source_table", "legacy_client_id", "firstName", "lastName",
-            "gender", "ssn", "date_of_birth", 7L, 8L, new HashSet(), new HashSet());
+            "gender", "ssn", "date_of_birth", 7L, 8L, new HashSet<>(), new HashSet<>());
 
-    Reporter reporter =
-        Reporter.createWithDefaults("referralId", true, address, participant, "countyCode",
-            new Short("0"));
+    Reporter reporter = Reporter.createWithDefaults("referralId", true, address, participant,
+        "countyCode", new Short("0"));
 
-    assertEquals("Street Number not parsed from street address", "San", reporter.getStreetName());
-  }
-
-  @Test(expected = ArrayIndexOutOfBoundsException.class)
-  public void streetNameShouldThrowExceptionWhenOnlyContaingOneWord() {
-    String streetAddress = "main";
-
-    gov.ca.cwds.rest.api.domain.Address address =
-        new gov.ca.cwds.rest.api.domain.Address("legacy_source_table", "legacy_id", streetAddress,
-            "city", "state", 12345, "type");
-    Participant participant =
-        new Participant(5L, "legacy_source_table", "legacy_client_id", "firstName", "lastName",
-            "gender", "ssn", "date_of_birth", 7L, 8L, new HashSet(), new HashSet());
-
-    Reporter reporter =
-        Reporter.createWithDefaults("referralId", true, address, participant, "countyCode",
-            new Short("0"));
+    assertEquals("Street Number not parsed from street address", "San Andreas Blvd",
+        reporter.getStreetName());
   }
 
   @Test
   public void streetNameShouldContainSecondWordWhenOnlyNoStreetNumberIsPresent() {
     String streetAddress = "Main St";
 
-    gov.ca.cwds.rest.api.domain.Address address =
-        new gov.ca.cwds.rest.api.domain.Address("legacy_source_table", "legacy_id", streetAddress,
-            "city", "state", 12345, "type");
+    gov.ca.cwds.rest.api.domain.Address address = new gov.ca.cwds.rest.api.domain.Address(
+        "legacy_source_table", "legacy_id", streetAddress, "city", "state", 12345, "type");
     Participant participant =
         new Participant(5L, "legacy_source_table", "legacy_client_id", "firstName", "lastName",
-            "gender", "ssn", "date_of_birth", 7L, 8L, new HashSet(), new HashSet());
+            "gender", "ssn", "date_of_birth", 7L, 8L, new HashSet<>(), new HashSet<>());
 
-    Reporter reporter =
-        Reporter.createWithDefaults("referralId", true, address, participant, "countyCode",
-            new Short("0"));
+    Reporter reporter = Reporter.createWithDefaults("referralId", true, address, participant,
+        "countyCode", new Short("0"));
 
-    assertEquals("Expected StreetName to contain second word as street name", "St",
+    assertEquals("Expected StreetName to contain second word as street name", "Main St",
         reporter.getStreetName());
   }
 
   @Test
-  public void streetNumberShouldContainFirstWordWhenEvenWhenNoNumbersArePresent() {
+  public void testForStreetAddressContainOnlyWordWhereStreetNumberisNull() {
     String streetAddress = "Main St";
 
-    gov.ca.cwds.rest.api.domain.Address nsAddress =
-        new gov.ca.cwds.rest.api.domain.Address("legacy_source_table", "legacy_id", streetAddress,
-            "city", "state", 12345, "type");
+    gov.ca.cwds.rest.api.domain.Address nsAddress = new gov.ca.cwds.rest.api.domain.Address(
+        "legacy_source_table", "legacy_id", streetAddress, "city", "state", 12345, "type");
 
     Address address = Address.createWithDefaults(nsAddress, new Short("5"));
-    assertEquals("Expected StreetName to contain second word as street name", "Main",
-        address.getStreetNumber());
+    assertThat(address.getStreetNumber(), is(equalTo(null)));
   }
 
   @Test
@@ -429,9 +398,8 @@ public class ReporterTest {
 
   @Test
   public void serializesToJSON() throws Exception {
-    final String expected =
-        MAPPER.writeValueAsString(MAPPER.readValue(
-            fixture("fixtures/domain/legacy/Reporter/valid/valid.json"), Reporter.class));
+    final String expected = MAPPER.writeValueAsString(MAPPER
+        .readValue(fixture("fixtures/domain/legacy/Reporter/valid/valid.json"), Reporter.class));
 
     assertThat(MAPPER.writeValueAsString(validReporter()), is(equalTo(expected)));
   }
@@ -447,9 +415,8 @@ public class ReporterTest {
    */
   @Test
   public void successfulWithValid() throws Exception {
-    Reporter toCreate =
-        MAPPER.readValue(fixture("fixtures/domain/legacy/Reporter/valid/valid.json"),
-            Reporter.class);
+    Reporter toCreate = MAPPER
+        .readValue(fixture("fixtures/domain/legacy/Reporter/valid/valid.json"), Reporter.class);
     Response response =
         resources.client().target(ROOT_RESOURCE).request().accept(MediaType.APPLICATION_JSON)
             .post(Entity.entity(toCreate, MediaType.APPLICATION_JSON));
@@ -463,11 +430,10 @@ public class ReporterTest {
    */
   @Test
   public void testStreetNameNotCityNameFails() throws Exception {
-    Reporter toCreate =
-        MAPPER
-            .readValue(
-                fixture("fixtures/domain/legacy/Reporter/invalid/_classLevel/streetNameProvidedAndCityNameNot.json"),
-                Reporter.class);
+    Reporter toCreate = MAPPER.readValue(
+        fixture(
+            "fixtures/domain/legacy/Reporter/invalid/_classLevel/streetNameProvidedAndCityNameNot.json"),
+        Reporter.class);
     Response response =
         resources.client().target(ROOT_RESOURCE).request().accept(MediaType.APPLICATION_JSON)
             .post(Entity.entity(toCreate, MediaType.APPLICATION_JSON));
@@ -478,10 +444,9 @@ public class ReporterTest {
 
   @Test
   public void testStreetNameAndCityNameSuccess() throws Exception {
-    Reporter toCreate =
-        MAPPER.readValue(
-            fixture("fixtures/domain/legacy/Reporter/valid/streetNameAndCityName.json"),
-            Reporter.class);
+    Reporter toCreate = MAPPER.readValue(
+        fixture("fixtures/domain/legacy/Reporter/valid/streetNameAndCityName.json"),
+        Reporter.class);
     Response response =
         resources.client().target(ROOT_RESOURCE).request().accept(MediaType.APPLICATION_JSON)
             .post(Entity.entity(toCreate, MediaType.APPLICATION_JSON));
@@ -490,10 +455,9 @@ public class ReporterTest {
 
   @Test
   public void testNotStreetNameNotCityNameSuccess() throws Exception {
-    Reporter toCreate =
-        MAPPER.readValue(
-            fixture("fixtures/domain/legacy/Reporter/valid/notStreetNameNotCityName.json"),
-            Reporter.class);
+    Reporter toCreate = MAPPER.readValue(
+        fixture("fixtures/domain/legacy/Reporter/valid/notStreetNameNotCityName.json"),
+        Reporter.class);
     Response response =
         resources.client().target(ROOT_RESOURCE).request().accept(MediaType.APPLICATION_JSON)
             .post(Entity.entity(toCreate, MediaType.APPLICATION_JSON));
@@ -502,10 +466,9 @@ public class ReporterTest {
 
   @Test
   public void testNotStreetNameAndCityNameSuccess() throws Exception {
-    Reporter toCreate =
-        MAPPER.readValue(
-            fixture("fixtures/domain/legacy/Reporter/valid/NotStreetNameAndCityName.json"),
-            Reporter.class);
+    Reporter toCreate = MAPPER.readValue(
+        fixture("fixtures/domain/legacy/Reporter/valid/NotStreetNameAndCityName.json"),
+        Reporter.class);
     Response response =
         resources.client().target(ROOT_RESOURCE).request().accept(MediaType.APPLICATION_JSON)
             .post(Entity.entity(toCreate, MediaType.APPLICATION_JSON));
@@ -521,10 +484,9 @@ public class ReporterTest {
    */
   @Test
   public void testStreetNumberNotStreetNameFails() throws Exception {
-    Reporter toCreate =
-        MAPPER.readValue(
-            fixture("fixtures/domain/legacy/Reporter/invalid//streetNumberNotStreetName.json"),
-            Reporter.class);
+    Reporter toCreate = MAPPER.readValue(
+        fixture("fixtures/domain/legacy/Reporter/invalid//streetNumberNotStreetName.json"),
+        Reporter.class);
     Response response =
         resources.client().target(ROOT_RESOURCE).request().accept(MediaType.APPLICATION_JSON)
             .post(Entity.entity(toCreate, MediaType.APPLICATION_JSON));
@@ -535,10 +497,9 @@ public class ReporterTest {
 
   @Test
   public void testStreetNumberAndStreetNameSuccess() throws Exception {
-    Reporter toCreate =
-        MAPPER.readValue(
-            fixture("fixtures/domain/legacy/Reporter/valid/streetNumberAndStreetName.json"),
-            Reporter.class);
+    Reporter toCreate = MAPPER.readValue(
+        fixture("fixtures/domain/legacy/Reporter/valid/streetNumberAndStreetName.json"),
+        Reporter.class);
     Response response =
         resources.client().target(ROOT_RESOURCE).request().accept(MediaType.APPLICATION_JSON)
             .post(Entity.entity(toCreate, MediaType.APPLICATION_JSON));
@@ -547,10 +508,9 @@ public class ReporterTest {
 
   @Test
   public void testNotStreetNumberNotStreetNameSuccess() throws Exception {
-    Reporter toCreate =
-        MAPPER.readValue(
-            fixture("fixtures/domain/legacy/Reporter/valid/notStreetNumberNotStreetName.json"),
-            Reporter.class);
+    Reporter toCreate = MAPPER.readValue(
+        fixture("fixtures/domain/legacy/Reporter/valid/notStreetNumberNotStreetName.json"),
+        Reporter.class);
     Response response =
         resources.client().target(ROOT_RESOURCE).request().accept(MediaType.APPLICATION_JSON)
             .post(Entity.entity(toCreate, MediaType.APPLICATION_JSON));
@@ -559,10 +519,9 @@ public class ReporterTest {
 
   @Test
   public void testStreetNameNotStreetNumberSuccess() throws Exception {
-    Reporter toCreate =
-        MAPPER.readValue(
-            fixture("fixtures/domain/legacy/Reporter/valid/StreetNameNotStreetNumber.json"),
-            Reporter.class);
+    Reporter toCreate = MAPPER.readValue(
+        fixture("fixtures/domain/legacy/Reporter/valid/StreetNameNotStreetNumber.json"),
+        Reporter.class);
     Response response =
         resources.client().target(ROOT_RESOURCE).request().accept(MediaType.APPLICATION_JSON)
             .post(Entity.entity(toCreate, MediaType.APPLICATION_JSON));
@@ -579,27 +538,22 @@ public class ReporterTest {
    */
   @Test
   public void testLawEnforcementIdAndEmployerNameFails() throws Exception {
-    Reporter toCreate =
-        MAPPER
-            .readValue(
-                fixture("fixtures/domain/legacy/Reporter/invalid/LawEnforcementIdAndEmployerName.json"),
-                Reporter.class);
+    Reporter toCreate = MAPPER.readValue(
+        fixture("fixtures/domain/legacy/Reporter/invalid/LawEnforcementIdAndEmployerName.json"),
+        Reporter.class);
     Response response =
         resources.client().target(ROOT_RESOURCE).request().accept(MediaType.APPLICATION_JSON)
             .post(Entity.entity(toCreate, MediaType.APPLICATION_JSON));
     assertThat(response.getStatus(), is(equalTo(422)));
-    assertThat(
-        response.readEntity(String.class),
-        is(equalTo("{\"errors\":[\"Properties [employerName, lawEnforcementId] are mutually exclusive but multiple values are set\"]}")));
+    assertThat(response.readEntity(String.class), is(equalTo(
+        "{\"errors\":[\"Properties [employerName, lawEnforcementId] are mutually exclusive but multiple values are set\"]}")));
   }
 
   @Test
   public void testLawEnforcementIdNotEmployerNameNotSuccess() throws Exception {
-    Reporter toCreate =
-        MAPPER
-            .readValue(
-                fixture("fixtures/domain/legacy/Reporter/valid/notLawEnforcementIdNotEmployerName.json"),
-                Reporter.class);
+    Reporter toCreate = MAPPER.readValue(
+        fixture("fixtures/domain/legacy/Reporter/valid/notLawEnforcementIdNotEmployerName.json"),
+        Reporter.class);
     Response response =
         resources.client().target(ROOT_RESOURCE).request().accept(MediaType.APPLICATION_JSON)
             .post(Entity.entity(toCreate, MediaType.APPLICATION_JSON));
@@ -609,10 +563,9 @@ public class ReporterTest {
 
   @Test
   public void testLawEnforcementIdNullEmployerNameSuccess() throws Exception {
-    Reporter toCreate =
-        MAPPER.readValue(
-            fixture("fixtures/domain/legacy/Reporter/valid/lawEnforcementIdNullEmployerName.json"),
-            Reporter.class);
+    Reporter toCreate = MAPPER.readValue(
+        fixture("fixtures/domain/legacy/Reporter/valid/lawEnforcementIdNullEmployerName.json"),
+        Reporter.class);
     Response response =
         resources.client().target(ROOT_RESOURCE).request().accept(MediaType.APPLICATION_JSON)
             .post(Entity.entity(toCreate, MediaType.APPLICATION_JSON));
@@ -621,10 +574,9 @@ public class ReporterTest {
 
   @Test
   public void testLawEnforcementIdEmployerNameNotSuccess() throws Exception {
-    Reporter toCreate =
-        MAPPER.readValue(
-            fixture("fixtures/domain/legacy/Reporter/valid/lawEnforcementIdEmployerNameNot.json"),
-            Reporter.class);
+    Reporter toCreate = MAPPER.readValue(
+        fixture("fixtures/domain/legacy/Reporter/valid/lawEnforcementIdEmployerNameNot.json"),
+        Reporter.class);
     Response response =
         resources.client().target(ROOT_RESOURCE).request().accept(MediaType.APPLICATION_JSON)
             .post(Entity.entity(toCreate, MediaType.APPLICATION_JSON));
@@ -641,10 +593,8 @@ public class ReporterTest {
    */
   @Test
   public void testBadgeNumberTooLong() throws Exception {
-    Reporter toCreate =
-        MAPPER.readValue(
-            fixture("fixtures/domain/legacy/Reporter/invalid/badgeNumberTooLong.json"),
-            Reporter.class);
+    Reporter toCreate = MAPPER.readValue(
+        fixture("fixtures/domain/legacy/Reporter/invalid/badgeNumberTooLong.json"), Reporter.class);
     Response response =
         resources.client().target(ROOT_RESOURCE).request().accept(MediaType.APPLICATION_JSON)
             .post(Entity.entity(toCreate, MediaType.APPLICATION_JSON));
@@ -655,10 +605,9 @@ public class ReporterTest {
 
   @Test
   public void testBadgeNumberNotLawEnforcementIdFails() throws Exception {
-    Reporter toCreate =
-        MAPPER.readValue(
-            fixture("fixtures/domain/legacy/Reporter/invalid/badgeNumberNotLawEnforcementId.json"),
-            Reporter.class);
+    Reporter toCreate = MAPPER.readValue(
+        fixture("fixtures/domain/legacy/Reporter/invalid/badgeNumberNotLawEnforcementId.json"),
+        Reporter.class);
     Response response =
         resources.client().target(ROOT_RESOURCE).request().accept(MediaType.APPLICATION_JSON)
             .post(Entity.entity(toCreate, MediaType.APPLICATION_JSON));
@@ -669,11 +618,9 @@ public class ReporterTest {
 
   @Test
   public void testBadgeNumberEmptyLawEnforcementIdFails() throws Exception {
-    Reporter toCreate =
-        MAPPER
-            .readValue(
-                fixture("fixtures/domain/legacy/Reporter/invalid/badgeNumberEmptyLawEnforcementId.json"),
-                Reporter.class);
+    Reporter toCreate = MAPPER.readValue(
+        fixture("fixtures/domain/legacy/Reporter/invalid/badgeNumberEmptyLawEnforcementId.json"),
+        Reporter.class);
     Response response =
         resources.client().target(ROOT_RESOURCE).request().accept(MediaType.APPLICATION_JSON)
             .post(Entity.entity(toCreate, MediaType.APPLICATION_JSON));
@@ -682,9 +629,8 @@ public class ReporterTest {
 
   @Test
   public void testBadgeNumberEmptySuccess() throws Exception {
-    Reporter toCreate =
-        MAPPER.readValue(fixture("fixtures/domain/legacy/Reporter/valid/badgeNumberEmpty.json"),
-            Reporter.class);
+    Reporter toCreate = MAPPER.readValue(
+        fixture("fixtures/domain/legacy/Reporter/valid/badgeNumberEmpty.json"), Reporter.class);
     Response response =
         resources.client().target(ROOT_RESOURCE).request().accept(MediaType.APPLICATION_JSON)
             .post(Entity.entity(toCreate, MediaType.APPLICATION_JSON));
@@ -693,9 +639,8 @@ public class ReporterTest {
 
   @Test
   public void testBadgeNumberMissingSuccess() throws Exception {
-    Reporter toCreate =
-        MAPPER.readValue(fixture("fixtures/domain/legacy/Reporter/valid/badgeNumberMissing.json"),
-            Reporter.class);
+    Reporter toCreate = MAPPER.readValue(
+        fixture("fixtures/domain/legacy/Reporter/valid/badgeNumberMissing.json"), Reporter.class);
     Response response =
         resources.client().target(ROOT_RESOURCE).request().accept(MediaType.APPLICATION_JSON)
             .post(Entity.entity(toCreate, MediaType.APPLICATION_JSON));
@@ -704,9 +649,8 @@ public class ReporterTest {
 
   @Test
   public void testBadgeNumberNullSuccess() throws Exception {
-    Reporter toCreate =
-        MAPPER.readValue(fixture("fixtures/domain/legacy/Reporter/valid/badgeNumberNull.json"),
-            Reporter.class);
+    Reporter toCreate = MAPPER.readValue(
+        fixture("fixtures/domain/legacy/Reporter/valid/badgeNumberNull.json"), Reporter.class);
     Response response =
         resources.client().target(ROOT_RESOURCE).request().accept(MediaType.APPLICATION_JSON)
             .post(Entity.entity(toCreate, MediaType.APPLICATION_JSON));
@@ -718,9 +662,8 @@ public class ReporterTest {
    */
   @Test
   public void successWhenCityNameMissing() throws Exception {
-    Reporter toCreate =
-        MAPPER.readValue(fixture("fixtures/domain/legacy/Reporter/invalid/cityNameMissing.json"),
-            Reporter.class);
+    Reporter toCreate = MAPPER.readValue(
+        fixture("fixtures/domain/legacy/Reporter/invalid/cityNameMissing.json"), Reporter.class);
     Response response =
         resources.client().target(ROOT_RESOURCE).request().accept(MediaType.APPLICATION_JSON)
             .post(Entity.entity(toCreate, MediaType.APPLICATION_JSON));
@@ -731,9 +674,8 @@ public class ReporterTest {
 
   @Test
   public void successWhenCityNameNull() throws Exception {
-    Reporter toCreate =
-        MAPPER.readValue(fixture("fixtures/domain/legacy/Reporter/invalid/cityNameNull.json"),
-            Reporter.class);
+    Reporter toCreate = MAPPER.readValue(
+        fixture("fixtures/domain/legacy/Reporter/invalid/cityNameNull.json"), Reporter.class);
     Response response =
         resources.client().target(ROOT_RESOURCE).request().accept(MediaType.APPLICATION_JSON)
             .post(Entity.entity(toCreate, MediaType.APPLICATION_JSON));
@@ -744,9 +686,8 @@ public class ReporterTest {
 
   @Test
   public void successWhenCityNameEmpty() throws Exception {
-    Reporter toCreate =
-        MAPPER.readValue(fixture("fixtures/domain/legacy/Reporter/valid/cityNameEmpty.json"),
-            Reporter.class);
+    Reporter toCreate = MAPPER.readValue(
+        fixture("fixtures/domain/legacy/Reporter/valid/cityNameEmpty.json"), Reporter.class);
     Response response =
         resources.client().target(ROOT_RESOURCE).request().accept(MediaType.APPLICATION_JSON)
             .post(Entity.entity(toCreate, MediaType.APPLICATION_JSON));
@@ -755,9 +696,8 @@ public class ReporterTest {
 
   @Test
   public void failsWhenCityNameTooLong() throws Exception {
-    Reporter toCreate =
-        MAPPER.readValue(fixture("fixtures/domain/legacy/Reporter/invalid/cityNameTooLong.json"),
-            Reporter.class);
+    Reporter toCreate = MAPPER.readValue(
+        fixture("fixtures/domain/legacy/Reporter/invalid/cityNameTooLong.json"), Reporter.class);
     Response response =
         resources.client().target(ROOT_RESOURCE).request().accept(MediaType.APPLICATION_JSON)
             .post(Entity.entity(toCreate, MediaType.APPLICATION_JSON));
@@ -771,11 +711,9 @@ public class ReporterTest {
    */
   @Test
   public void failsWhenColltrClientRptrReltnshpTypeMissing() throws Exception {
-    Reporter toCreate =
-        MAPPER
-            .readValue(
-                fixture("fixtures/domain/legacy/Reporter/invalid/colltrClientRptrReltnshpTypemissing.json"),
-                Reporter.class);
+    Reporter toCreate = MAPPER.readValue(
+        fixture("fixtures/domain/legacy/Reporter/invalid/colltrClientRptrReltnshpTypemissing.json"),
+        Reporter.class);
     Response response =
         resources.client().target(ROOT_RESOURCE).request().accept(MediaType.APPLICATION_JSON)
             .post(Entity.entity(toCreate, MediaType.APPLICATION_JSON));
@@ -787,11 +725,9 @@ public class ReporterTest {
 
   @Test
   public void failsWhenColltrClientRptrReltnshpTypeNull() throws Exception {
-    Reporter toCreate =
-        MAPPER
-            .readValue(
-                fixture("fixtures/domain/legacy/Reporter/invalid/colltrClientRptrReltnshpTypeNull.json"),
-                Reporter.class);
+    Reporter toCreate = MAPPER.readValue(
+        fixture("fixtures/domain/legacy/Reporter/invalid/colltrClientRptrReltnshpTypeNull.json"),
+        Reporter.class);
     Response response =
         resources.client().target(ROOT_RESOURCE).request().accept(MediaType.APPLICATION_JSON)
             .post(Entity.entity(toCreate, MediaType.APPLICATION_JSON));
@@ -803,11 +739,10 @@ public class ReporterTest {
 
   @Test
   public void failsWhenColltrClientRptrReltnshpTypeAllWhiteSpace() throws Exception {
-    Reporter toCreate =
-        MAPPER
-            .readValue(
-                fixture("fixtures/domain/legacy/Reporter/invalid/colltrClientRptrReltnshpTypeAllWhiteSpace.json"),
-                Reporter.class);
+    Reporter toCreate = MAPPER.readValue(
+        fixture(
+            "fixtures/domain/legacy/Reporter/invalid/colltrClientRptrReltnshpTypeAllWhiteSpace.json"),
+        Reporter.class);
     Response response =
         resources.client().target(ROOT_RESOURCE).request().accept(MediaType.APPLICATION_JSON)
             .post(Entity.entity(toCreate, MediaType.APPLICATION_JSON));
@@ -822,47 +757,41 @@ public class ReporterTest {
    */
   @Test
   public void failsWhenCommunicationMethodTypeMissing() throws Exception {
-    Reporter toCreate =
-        MAPPER.readValue(
-            fixture("fixtures/domain/legacy/Reporter/invalid/communicationMethodTypeMissing.json"),
-            Reporter.class);
+    Reporter toCreate = MAPPER.readValue(
+        fixture("fixtures/domain/legacy/Reporter/invalid/communicationMethodTypeMissing.json"),
+        Reporter.class);
     Response response =
         resources.client().target(ROOT_RESOURCE).request().accept(MediaType.APPLICATION_JSON)
             .post(Entity.entity(toCreate, MediaType.APPLICATION_JSON));
     assertThat(response.getStatus(), is(equalTo(422)));
-    assertThat(
-        response.readEntity(String.class).indexOf("communicationMethodType may not be null"),
+    assertThat(response.readEntity(String.class).indexOf("communicationMethodType may not be null"),
         is(greaterThanOrEqualTo(0)));
   }
 
   @Test
   public void failsWhenCommunicationMethodTypeNull() throws Exception {
-    Reporter toCreate =
-        MAPPER.readValue(
-            fixture("fixtures/domain/legacy/Reporter/invalid/communicationMethodTypeNull.json"),
-            Reporter.class);
+    Reporter toCreate = MAPPER.readValue(
+        fixture("fixtures/domain/legacy/Reporter/invalid/communicationMethodTypeNull.json"),
+        Reporter.class);
     Response response =
         resources.client().target(ROOT_RESOURCE).request().accept(MediaType.APPLICATION_JSON)
             .post(Entity.entity(toCreate, MediaType.APPLICATION_JSON));
     assertThat(response.getStatus(), is(equalTo(422)));
-    assertThat(
-        response.readEntity(String.class).indexOf("communicationMethodType may not be null"),
+    assertThat(response.readEntity(String.class).indexOf("communicationMethodType may not be null"),
         is(greaterThanOrEqualTo(0)));
   }
 
   @Test
   public void failsWhenCommunicationMethodTypeAllWhiteSpace() throws Exception {
-    Reporter toCreate =
-        MAPPER
-            .readValue(
-                fixture("fixtures/domain/legacy/Reporter/invalid/communicationMethodTypeAllWhiteSpace.json"),
-                Reporter.class);
+    Reporter toCreate = MAPPER.readValue(
+        fixture(
+            "fixtures/domain/legacy/Reporter/invalid/communicationMethodTypeAllWhiteSpace.json"),
+        Reporter.class);
     Response response =
         resources.client().target(ROOT_RESOURCE).request().accept(MediaType.APPLICATION_JSON)
             .post(Entity.entity(toCreate, MediaType.APPLICATION_JSON));
     assertThat(response.getStatus(), is(equalTo(422)));
-    assertThat(
-        response.readEntity(String.class).indexOf("communicationMethodType may not be null"),
+    assertThat(response.readEntity(String.class).indexOf("communicationMethodType may not be null"),
         is(greaterThanOrEqualTo(0)));
   }
 
@@ -871,11 +800,9 @@ public class ReporterTest {
    */
   @Test
   public void failsWhenConfidentialWaiverIndicatorMissing() throws Exception {
-    Reporter toCreate =
-        MAPPER
-            .readValue(
-                fixture("fixtures/domain/legacy/Reporter/invalid/confidentialWaiverIndicatorMissing.json"),
-                Reporter.class);
+    Reporter toCreate = MAPPER.readValue(
+        fixture("fixtures/domain/legacy/Reporter/invalid/confidentialWaiverIndicatorMissing.json"),
+        Reporter.class);
     Response response =
         resources.client().target(ROOT_RESOURCE).request().accept(MediaType.APPLICATION_JSON)
             .post(Entity.entity(toCreate, MediaType.APPLICATION_JSON));
@@ -887,11 +814,9 @@ public class ReporterTest {
 
   @Test
   public void failsWhenConfidentialWaiverIndicatorNull() throws Exception {
-    Reporter toCreate =
-        MAPPER
-            .readValue(
-                fixture("fixtures/domain/legacy/Reporter/invalid/confidentialWaiverIndicatorNull.json"),
-                Reporter.class);
+    Reporter toCreate = MAPPER.readValue(
+        fixture("fixtures/domain/legacy/Reporter/invalid/confidentialWaiverIndicatorNull.json"),
+        Reporter.class);
     Response response =
         resources.client().target(ROOT_RESOURCE).request().accept(MediaType.APPLICATION_JSON)
             .post(Entity.entity(toCreate, MediaType.APPLICATION_JSON));
@@ -903,11 +828,9 @@ public class ReporterTest {
 
   @Test
   public void failsWhenConfidentialWaiverIndicatorEmpty() throws Exception {
-    Reporter toCreate =
-        MAPPER
-            .readValue(
-                fixture("fixtures/domain/legacy/Reporter/invalid/confidentialWaiverIndicatorEmpty.json"),
-                Reporter.class);
+    Reporter toCreate = MAPPER.readValue(
+        fixture("fixtures/domain/legacy/Reporter/invalid/confidentialWaiverIndicatorEmpty.json"),
+        Reporter.class);
     Response response =
         resources.client().target(ROOT_RESOURCE).request().accept(MediaType.APPLICATION_JSON)
             .post(Entity.entity(toCreate, MediaType.APPLICATION_JSON));
@@ -919,11 +842,10 @@ public class ReporterTest {
 
   @Test
   public void failsWhenConfidentialWaiverIndicatorAllWhitespace() throws Exception {
-    Reporter toCreate =
-        MAPPER
-            .readValue(
-                fixture("fixtures/domain/legacy/Reporter/invalid/confidentialWaiverIndicatorAllWhitespace.json"),
-                Reporter.class);
+    Reporter toCreate = MAPPER.readValue(
+        fixture(
+            "fixtures/domain/legacy/Reporter/invalid/confidentialWaiverIndicatorAllWhitespace.json"),
+        Reporter.class);
     Response response =
         resources.client().target(ROOT_RESOURCE).request().accept(MediaType.APPLICATION_JSON)
             .post(Entity.entity(toCreate, MediaType.APPLICATION_JSON));
@@ -938,10 +860,9 @@ public class ReporterTest {
    */
   @Test
   public void successWhenDrmsMandatedRprtrFeedbackEmpty() throws Exception {
-    Reporter toCreate =
-        MAPPER.readValue(
-            fixture("fixtures/domain/legacy/Reporter/valid/drmsMandatedRprtrFeedbackEmpty.json"),
-            Reporter.class);
+    Reporter toCreate = MAPPER.readValue(
+        fixture("fixtures/domain/legacy/Reporter/valid/drmsMandatedRprtrFeedbackEmpty.json"),
+        Reporter.class);
     Response response =
         resources.client().target(ROOT_RESOURCE).request().accept(MediaType.APPLICATION_JSON)
             .post(Entity.entity(toCreate, MediaType.APPLICATION_JSON));
@@ -950,10 +871,9 @@ public class ReporterTest {
 
   @Test
   public void successWhenDrmsMandatedRprtrFeedbackNull() throws Exception {
-    Reporter toCreate =
-        MAPPER.readValue(
-            fixture("fixtures/domain/legacy/Reporter/valid/drmsMandatedRprtrFeedbackNull.json"),
-            Reporter.class);
+    Reporter toCreate = MAPPER.readValue(
+        fixture("fixtures/domain/legacy/Reporter/valid/drmsMandatedRprtrFeedbackNull.json"),
+        Reporter.class);
     Response response =
         resources.client().target(ROOT_RESOURCE).request().accept(MediaType.APPLICATION_JSON)
             .post(Entity.entity(toCreate, MediaType.APPLICATION_JSON));
@@ -962,18 +882,17 @@ public class ReporterTest {
 
   @Test
   public void failsWhenDrmsMandatedRprtrFeedbackTooLong() throws Exception {
-    Reporter toCreate =
-        MAPPER
-            .readValue(
-                fixture("fixtures/domain/legacy/Reporter/invalid/drmsMandatedRprtrFeedbackTooLong.json"),
-                Reporter.class);
+    Reporter toCreate = MAPPER.readValue(
+        fixture("fixtures/domain/legacy/Reporter/invalid/drmsMandatedRprtrFeedbackTooLong.json"),
+        Reporter.class);
     Response response =
         resources.client().target(ROOT_RESOURCE).request().accept(MediaType.APPLICATION_JSON)
             .post(Entity.entity(toCreate, MediaType.APPLICATION_JSON));
     assertThat(response.getStatus(), is(equalTo(422)));
     assertThat(
-        response.readEntity(String.class).indexOf(
-            "drmsMandatedRprtrFeedback size must be between 0 and 10"), is(greaterThanOrEqualTo(0)));
+        response.readEntity(String.class)
+            .indexOf("drmsMandatedRprtrFeedback size must be between 0 and 10"),
+        is(greaterThanOrEqualTo(0)));
   }
 
   /*
@@ -981,9 +900,8 @@ public class ReporterTest {
    */
   @Test
   public void successWhenEmployerNameValid() throws Exception {
-    Reporter toCreate =
-        MAPPER.readValue(fixture("fixtures/domain/legacy/Reporter/valid/valid.json"),
-            Reporter.class);
+    Reporter toCreate = MAPPER
+        .readValue(fixture("fixtures/domain/legacy/Reporter/valid/valid.json"), Reporter.class);
     Response response =
         resources.client().target(ROOT_RESOURCE).request().accept(MediaType.APPLICATION_JSON)
             .post(Entity.entity(toCreate, MediaType.APPLICATION_JSON));
@@ -992,9 +910,8 @@ public class ReporterTest {
 
   @Test
   public void testEmployerNameNullFails() throws Exception {
-    Reporter toCreate =
-        MAPPER.readValue(fixture("fixtures/domain/legacy/Reporter/invalid/employerNameNull.json"),
-            Reporter.class);
+    Reporter toCreate = MAPPER.readValue(
+        fixture("fixtures/domain/legacy/Reporter/invalid/employerNameNull.json"), Reporter.class);
     Response response =
         resources.client().target(ROOT_RESOURCE).request().accept(MediaType.APPLICATION_JSON)
             .post(Entity.entity(toCreate, MediaType.APPLICATION_JSON));
@@ -1006,10 +923,9 @@ public class ReporterTest {
 
   @Test
   public void failsWhenEmployerNameTooLong() throws Exception {
-    Reporter toCreate =
-        MAPPER.readValue(
-            fixture("fixtures/domain/legacy/Reporter/invalid/employerNameTooLong.json"),
-            Reporter.class);
+    Reporter toCreate = MAPPER.readValue(
+        fixture("fixtures/domain/legacy/Reporter/invalid/employerNameTooLong.json"),
+        Reporter.class);
     Response response =
         resources.client().target(ROOT_RESOURCE).request().accept(MediaType.APPLICATION_JSON)
             .post(Entity.entity(toCreate, MediaType.APPLICATION_JSON));
@@ -1023,9 +939,8 @@ public class ReporterTest {
    */
   @Test
   public void successWhenFeedbackDateEmpty() throws Exception {
-    Reporter toCreate =
-        MAPPER.readValue(fixture("fixtures/domain/legacy/Reporter/valid/feedbackDateEmpty.json"),
-            Reporter.class);
+    Reporter toCreate = MAPPER.readValue(
+        fixture("fixtures/domain/legacy/Reporter/valid/feedbackDateEmpty.json"), Reporter.class);
     Response response =
         resources.client().target(ROOT_RESOURCE).request().accept(MediaType.APPLICATION_JSON)
             .post(Entity.entity(toCreate, MediaType.APPLICATION_JSON));
@@ -1034,9 +949,8 @@ public class ReporterTest {
 
   @Test
   public void successWhenFeedbackDateNull() throws Exception {
-    Reporter toCreate =
-        MAPPER.readValue(fixture("fixtures/domain/legacy/Reporter/valid/feedbackDateNull.json"),
-            Reporter.class);
+    Reporter toCreate = MAPPER.readValue(
+        fixture("fixtures/domain/legacy/Reporter/valid/feedbackDateNull.json"), Reporter.class);
     Response response =
         resources.client().target(ROOT_RESOURCE).request().accept(MediaType.APPLICATION_JSON)
             .post(Entity.entity(toCreate, MediaType.APPLICATION_JSON));
@@ -1045,17 +959,15 @@ public class ReporterTest {
 
   @Test
   public void failsWhenFeedbackDateWrongFormat() throws Exception {
-    Reporter toCreate =
-        MAPPER.readValue(
-            fixture("fixtures/domain/legacy/Reporter/invalid/feedbackDateWrongFormat.json"),
-            Reporter.class);
+    Reporter toCreate = MAPPER.readValue(
+        fixture("fixtures/domain/legacy/Reporter/invalid/feedbackDateWrongFormat.json"),
+        Reporter.class);
     Response response =
         resources.client().target(ROOT_RESOURCE).request().accept(MediaType.APPLICATION_JSON)
             .post(Entity.entity(toCreate, MediaType.APPLICATION_JSON));
     assertThat(response.getStatus(), is(equalTo(422)));
-    assertThat(
-        response.readEntity(String.class).indexOf(
-            "feedbackDate must be in the format of yyyy-MM-dd"), is(greaterThanOrEqualTo(0)));
+    assertThat(response.readEntity(String.class)
+        .indexOf("feedbackDate must be in the format of yyyy-MM-dd"), is(greaterThanOrEqualTo(0)));
   }
 
   /*
@@ -1063,11 +975,9 @@ public class ReporterTest {
    */
   @Test
   public void failsWhenFeedbackRequiredIndicatorMissing() throws Exception {
-    Reporter toCreate =
-        MAPPER
-            .readValue(
-                fixture("fixtures/domain/legacy/Reporter/invalid/feedbackRequiredIndicatorMissing.json"),
-                Reporter.class);
+    Reporter toCreate = MAPPER.readValue(
+        fixture("fixtures/domain/legacy/Reporter/invalid/feedbackRequiredIndicatorMissing.json"),
+        Reporter.class);
     Response response =
         resources.client().target(ROOT_RESOURCE).request().accept(MediaType.APPLICATION_JSON)
             .post(Entity.entity(toCreate, MediaType.APPLICATION_JSON));
@@ -1079,10 +989,9 @@ public class ReporterTest {
 
   @Test
   public void failsWhenFeedbackRequiredIndicatorNull() throws Exception {
-    Reporter toCreate =
-        MAPPER.readValue(
-            fixture("fixtures/domain/legacy/Reporter/invalid/feedbackRequiredIndicatorNull.json"),
-            Reporter.class);
+    Reporter toCreate = MAPPER.readValue(
+        fixture("fixtures/domain/legacy/Reporter/invalid/feedbackRequiredIndicatorNull.json"),
+        Reporter.class);
     Response response =
         resources.client().target(ROOT_RESOURCE).request().accept(MediaType.APPLICATION_JSON)
             .post(Entity.entity(toCreate, MediaType.APPLICATION_JSON));
@@ -1094,10 +1003,9 @@ public class ReporterTest {
 
   @Test
   public void failsWhenFeedbackRequiredIndicatorEmpty() throws Exception {
-    Reporter toCreate =
-        MAPPER.readValue(
-            fixture("fixtures/domain/legacy/Reporter/invalid/feedbackRequiredIndicatorEmpty.json"),
-            Reporter.class);
+    Reporter toCreate = MAPPER.readValue(
+        fixture("fixtures/domain/legacy/Reporter/invalid/feedbackRequiredIndicatorEmpty.json"),
+        Reporter.class);
     Response response =
         resources.client().target(ROOT_RESOURCE).request().accept(MediaType.APPLICATION_JSON)
             .post(Entity.entity(toCreate, MediaType.APPLICATION_JSON));
@@ -1109,11 +1017,10 @@ public class ReporterTest {
 
   @Test
   public void failsWhenFeedbackRequiredIndicatorAllWhitespace() throws Exception {
-    Reporter toCreate =
-        MAPPER
-            .readValue(
-                fixture("fixtures/domain/legacy/Reporter/invalid/feedbackRequiredIndicatorAllWhitespace.json"),
-                Reporter.class);
+    Reporter toCreate = MAPPER.readValue(
+        fixture(
+            "fixtures/domain/legacy/Reporter/invalid/feedbackRequiredIndicatorAllWhitespace.json"),
+        Reporter.class);
     Response response =
         resources.client().target(ROOT_RESOURCE).request().accept(MediaType.APPLICATION_JSON)
             .post(Entity.entity(toCreate, MediaType.APPLICATION_JSON));
@@ -1128,9 +1035,8 @@ public class ReporterTest {
    */
   @Test
   public void failsWhenFirstNameMissing() throws Exception {
-    Reporter toCreate =
-        MAPPER.readValue(fixture("fixtures/domain/legacy/Reporter/invalid/firstNameMissing.json"),
-            Reporter.class);
+    Reporter toCreate = MAPPER.readValue(
+        fixture("fixtures/domain/legacy/Reporter/invalid/firstNameMissing.json"), Reporter.class);
     Response response =
         resources.client().target(ROOT_RESOURCE).request().accept(MediaType.APPLICATION_JSON)
             .post(Entity.entity(toCreate, MediaType.APPLICATION_JSON));
@@ -1141,9 +1047,8 @@ public class ReporterTest {
 
   @Test
   public void failsWhenFirstNameNull() throws Exception {
-    Reporter toCreate =
-        MAPPER.readValue(fixture("fixtures/domain/legacy/Reporter/invalid/firstNameNull.json"),
-            Reporter.class);
+    Reporter toCreate = MAPPER.readValue(
+        fixture("fixtures/domain/legacy/Reporter/invalid/firstNameNull.json"), Reporter.class);
     Response response =
         resources.client().target(ROOT_RESOURCE).request().accept(MediaType.APPLICATION_JSON)
             .post(Entity.entity(toCreate, MediaType.APPLICATION_JSON));
@@ -1154,9 +1059,8 @@ public class ReporterTest {
 
   @Test
   public void failsWhenFirstNameEmpty() throws Exception {
-    Reporter toCreate =
-        MAPPER.readValue(fixture("fixtures/domain/legacy/Reporter/invalid/firstNameEmpty.json"),
-            Reporter.class);
+    Reporter toCreate = MAPPER.readValue(
+        fixture("fixtures/domain/legacy/Reporter/invalid/firstNameEmpty.json"), Reporter.class);
     Response response =
         resources.client().target(ROOT_RESOURCE).request().accept(MediaType.APPLICATION_JSON)
             .post(Entity.entity(toCreate, MediaType.APPLICATION_JSON));
@@ -1167,24 +1071,21 @@ public class ReporterTest {
 
   @Test
   public void failsWhenFirstNameTooLong() throws Exception {
-    Reporter toCreate =
-        MAPPER.readValue(fixture("fixtures/domain/legacy/Reporter/invalid/firstNameTooLong.json"),
-            Reporter.class);
+    Reporter toCreate = MAPPER.readValue(
+        fixture("fixtures/domain/legacy/Reporter/invalid/firstNameTooLong.json"), Reporter.class);
     Response response =
         resources.client().target(ROOT_RESOURCE).request().accept(MediaType.APPLICATION_JSON)
             .post(Entity.entity(toCreate, MediaType.APPLICATION_JSON));
     assertThat(response.getStatus(), is(equalTo(422)));
-    assertThat(
-        response.readEntity(String.class).indexOf("firstName size must be between 1 and 20"),
+    assertThat(response.readEntity(String.class).indexOf("firstName size must be between 1 and 20"),
         is(greaterThanOrEqualTo(0)));
   }
 
   @Test
   public void successWhenFirstNameAllWhiteSpace() throws Exception {
-    Reporter toCreate =
-        MAPPER.readValue(
-            fixture("fixtures/domain/legacy/Reporter/valid/firstNameAllWhiteSpace.json"),
-            Reporter.class);
+    Reporter toCreate = MAPPER.readValue(
+        fixture("fixtures/domain/legacy/Reporter/valid/firstNameAllWhiteSpace.json"),
+        Reporter.class);
     Response response =
         resources.client().target(ROOT_RESOURCE).request().accept(MediaType.APPLICATION_JSON)
             .post(Entity.entity(toCreate, MediaType.APPLICATION_JSON));
@@ -1196,9 +1097,8 @@ public class ReporterTest {
    */
   @Test
   public void failsWhenLastNameMissing() throws Exception {
-    Reporter toCreate =
-        MAPPER.readValue(fixture("fixtures/domain/legacy/Reporter/invalid/lastNameMissing.json"),
-            Reporter.class);
+    Reporter toCreate = MAPPER.readValue(
+        fixture("fixtures/domain/legacy/Reporter/invalid/lastNameMissing.json"), Reporter.class);
     Response response =
         resources.client().target(ROOT_RESOURCE).request().accept(MediaType.APPLICATION_JSON)
             .post(Entity.entity(toCreate, MediaType.APPLICATION_JSON));
@@ -1209,9 +1109,8 @@ public class ReporterTest {
 
   @Test
   public void failsWhenLastNameNull() throws Exception {
-    Reporter toCreate =
-        MAPPER.readValue(fixture("fixtures/domain/legacy/Reporter/invalid/lastNameNull.json"),
-            Reporter.class);
+    Reporter toCreate = MAPPER.readValue(
+        fixture("fixtures/domain/legacy/Reporter/invalid/lastNameNull.json"), Reporter.class);
     Response response =
         resources.client().target(ROOT_RESOURCE).request().accept(MediaType.APPLICATION_JSON)
             .post(Entity.entity(toCreate, MediaType.APPLICATION_JSON));
@@ -1222,9 +1121,8 @@ public class ReporterTest {
 
   @Test
   public void failsWhenLastNameEmpty() throws Exception {
-    Reporter toCreate =
-        MAPPER.readValue(fixture("fixtures/domain/legacy/Reporter/invalid/lastNameEmpty.json"),
-            Reporter.class);
+    Reporter toCreate = MAPPER.readValue(
+        fixture("fixtures/domain/legacy/Reporter/invalid/lastNameEmpty.json"), Reporter.class);
     Response response =
         resources.client().target(ROOT_RESOURCE).request().accept(MediaType.APPLICATION_JSON)
             .post(Entity.entity(toCreate, MediaType.APPLICATION_JSON));
@@ -1235,10 +1133,9 @@ public class ReporterTest {
 
   @Test
   public void successWhenLastNameAllWhiteSpace() throws Exception {
-    Reporter toCreate =
-        MAPPER.readValue(
-            fixture("fixtures/domain/legacy/Reporter/valid/lastNameAllWhiteSpace.json"),
-            Reporter.class);
+    Reporter toCreate = MAPPER.readValue(
+        fixture("fixtures/domain/legacy/Reporter/valid/lastNameAllWhiteSpace.json"),
+        Reporter.class);
     Response response =
         resources.client().target(ROOT_RESOURCE).request().accept(MediaType.APPLICATION_JSON)
             .post(Entity.entity(toCreate, MediaType.APPLICATION_JSON));
@@ -1247,9 +1144,8 @@ public class ReporterTest {
 
   @Test
   public void failsWhenLastNameTooLong() throws Exception {
-    Reporter toCreate =
-        MAPPER.readValue(fixture("fixtures/domain/legacy/Reporter/invalid/lastNameTooLong.json"),
-            Reporter.class);
+    Reporter toCreate = MAPPER.readValue(
+        fixture("fixtures/domain/legacy/Reporter/invalid/lastNameTooLong.json"), Reporter.class);
     Response response =
         resources.client().target(ROOT_RESOURCE).request().accept(MediaType.APPLICATION_JSON)
             .post(Entity.entity(toCreate, MediaType.APPLICATION_JSON));
@@ -1263,11 +1159,9 @@ public class ReporterTest {
    */
   @Test
   public void failsWhenMandatedReporterIndicatorMissing() throws Exception {
-    Reporter toCreate =
-        MAPPER
-            .readValue(
-                fixture("fixtures/domain/legacy/Reporter/invalid/mandatedReporterIndicatorMissing.json"),
-                Reporter.class);
+    Reporter toCreate = MAPPER.readValue(
+        fixture("fixtures/domain/legacy/Reporter/invalid/mandatedReporterIndicatorMissing.json"),
+        Reporter.class);
     Response response =
         resources.client().target(ROOT_RESOURCE).request().accept(MediaType.APPLICATION_JSON)
             .post(Entity.entity(toCreate, MediaType.APPLICATION_JSON));
@@ -1279,10 +1173,9 @@ public class ReporterTest {
 
   @Test
   public void failsWhenMandatedReporterIndicatorNull() throws Exception {
-    Reporter toCreate =
-        MAPPER.readValue(
-            fixture("fixtures/domain/legacy/Reporter/invalid/mandatedReporterIndicatorNull.json"),
-            Reporter.class);
+    Reporter toCreate = MAPPER.readValue(
+        fixture("fixtures/domain/legacy/Reporter/invalid/mandatedReporterIndicatorNull.json"),
+        Reporter.class);
     Response response =
         resources.client().target(ROOT_RESOURCE).request().accept(MediaType.APPLICATION_JSON)
             .post(Entity.entity(toCreate, MediaType.APPLICATION_JSON));
@@ -1294,10 +1187,9 @@ public class ReporterTest {
 
   @Test
   public void failsWhenMandatedReporterIndicatorEmpty() throws Exception {
-    Reporter toCreate =
-        MAPPER.readValue(
-            fixture("fixtures/domain/legacy/Reporter/invalid/mandatedReporterIndicatorEmpty.json"),
-            Reporter.class);
+    Reporter toCreate = MAPPER.readValue(
+        fixture("fixtures/domain/legacy/Reporter/invalid/mandatedReporterIndicatorEmpty.json"),
+        Reporter.class);
     Response response =
         resources.client().target(ROOT_RESOURCE).request().accept(MediaType.APPLICATION_JSON)
             .post(Entity.entity(toCreate, MediaType.APPLICATION_JSON));
@@ -1309,11 +1201,10 @@ public class ReporterTest {
 
   @Test
   public void failsWhenMandatedReporterIndicatorAllWhitespace() throws Exception {
-    Reporter toCreate =
-        MAPPER
-            .readValue(
-                fixture("fixtures/domain/legacy/Reporter/invalid/mandatedReporterIndicatorAllWhitespace.json"),
-                Reporter.class);
+    Reporter toCreate = MAPPER.readValue(
+        fixture(
+            "fixtures/domain/legacy/Reporter/invalid/mandatedReporterIndicatorAllWhitespace.json"),
+        Reporter.class);
     Response response =
         resources.client().target(ROOT_RESOURCE).request().accept(MediaType.APPLICATION_JSON)
             .post(Entity.entity(toCreate, MediaType.APPLICATION_JSON));
@@ -1328,11 +1219,9 @@ public class ReporterTest {
    */
   @Test
   public void failsWhenMessagePhoneExtensionNumberMissing() throws Exception {
-    Reporter toCreate =
-        MAPPER
-            .readValue(
-                fixture("fixtures/domain/legacy/Reporter/invalid/messagePhoneExtensionNumberMissing.json"),
-                Reporter.class);
+    Reporter toCreate = MAPPER.readValue(
+        fixture("fixtures/domain/legacy/Reporter/invalid/messagePhoneExtensionNumberMissing.json"),
+        Reporter.class);
     Response response =
         resources.client().target(ROOT_RESOURCE).request().accept(MediaType.APPLICATION_JSON)
             .post(Entity.entity(toCreate, MediaType.APPLICATION_JSON));
@@ -1344,11 +1233,9 @@ public class ReporterTest {
 
   @Test
   public void failsWhenMessagePhoneExtensionNumberNull() throws Exception {
-    Reporter toCreate =
-        MAPPER
-            .readValue(
-                fixture("fixtures/domain/legacy/Reporter/invalid/messagePhoneExtensionNumberNull.json"),
-                Reporter.class);
+    Reporter toCreate = MAPPER.readValue(
+        fixture("fixtures/domain/legacy/Reporter/invalid/messagePhoneExtensionNumberNull.json"),
+        Reporter.class);
     Response response =
         resources.client().target(ROOT_RESOURCE).request().accept(MediaType.APPLICATION_JSON)
             .post(Entity.entity(toCreate, MediaType.APPLICATION_JSON));
@@ -1360,11 +1247,10 @@ public class ReporterTest {
 
   @Test
   public void failWhenMessagePhoneExtensionNumberAllWhiteSpace() throws Exception {
-    Reporter toCreate =
-        MAPPER
-            .readValue(
-                fixture("fixtures/domain/legacy/Reporter/invalid/messagePhoneExtensionNumberAllWhiteSpace.json"),
-                Reporter.class);
+    Reporter toCreate = MAPPER.readValue(
+        fixture(
+            "fixtures/domain/legacy/Reporter/invalid/messagePhoneExtensionNumberAllWhiteSpace.json"),
+        Reporter.class);
     Response response =
         resources.client().target(ROOT_RESOURCE).request().accept(MediaType.APPLICATION_JSON)
             .post(Entity.entity(toCreate, MediaType.APPLICATION_JSON));
@@ -1379,10 +1265,9 @@ public class ReporterTest {
    */
   @Test
   public void failsWhenMessagePhoneNumberMissing() throws Exception {
-    Reporter toCreate =
-        MAPPER.readValue(
-            fixture("fixtures/domain/legacy/Reporter/invalid/messagePhoneNumberMissing.json"),
-            Reporter.class);
+    Reporter toCreate = MAPPER.readValue(
+        fixture("fixtures/domain/legacy/Reporter/invalid/messagePhoneNumberMissing.json"),
+        Reporter.class);
     Response response =
         resources.client().target(ROOT_RESOURCE).request().accept(MediaType.APPLICATION_JSON)
             .post(Entity.entity(toCreate, MediaType.APPLICATION_JSON));
@@ -1393,10 +1278,9 @@ public class ReporterTest {
 
   @Test
   public void failsWhenMessagePhoneNumberNull() throws Exception {
-    Reporter toCreate =
-        MAPPER.readValue(
-            fixture("fixtures/domain/legacy/Reporter/invalid/messagePhoneNumberNull.json"),
-            Reporter.class);
+    Reporter toCreate = MAPPER.readValue(
+        fixture("fixtures/domain/legacy/Reporter/invalid/messagePhoneNumberNull.json"),
+        Reporter.class);
     Response response =
         resources.client().target(ROOT_RESOURCE).request().accept(MediaType.APPLICATION_JSON)
             .post(Entity.entity(toCreate, MediaType.APPLICATION_JSON));
@@ -1407,10 +1291,9 @@ public class ReporterTest {
 
   @Test
   public void failsWhenMessagePhoneNumberEmpty() throws Exception {
-    Reporter toCreate =
-        MAPPER.readValue(
-            fixture("fixtures/domain/legacy/Reporter/invalid/messagePhoneNumberEmpty.json"),
-            Reporter.class);
+    Reporter toCreate = MAPPER.readValue(
+        fixture("fixtures/domain/legacy/Reporter/invalid/messagePhoneNumberEmpty.json"),
+        Reporter.class);
     Response response =
         resources.client().target(ROOT_RESOURCE).request().accept(MediaType.APPLICATION_JSON)
             .post(Entity.entity(toCreate, MediaType.APPLICATION_JSON));
@@ -1424,10 +1307,9 @@ public class ReporterTest {
    */
   @Test
   public void failsWhenMiddleInitialNameMissing() throws Exception {
-    Reporter toCreate =
-        MAPPER.readValue(
-            fixture("fixtures/domain/legacy/Reporter/invalid/middleInitialNameMissing.json"),
-            Reporter.class);
+    Reporter toCreate = MAPPER.readValue(
+        fixture("fixtures/domain/legacy/Reporter/invalid/middleInitialNameMissing.json"),
+        Reporter.class);
     Response response =
         resources.client().target(ROOT_RESOURCE).request().accept(MediaType.APPLICATION_JSON)
             .post(Entity.entity(toCreate, MediaType.APPLICATION_JSON));
@@ -1438,10 +1320,9 @@ public class ReporterTest {
 
   @Test
   public void failsWhenMiddleInitialNameNull() throws Exception {
-    Reporter toCreate =
-        MAPPER.readValue(
-            fixture("fixtures/domain/legacy/Reporter/invalid/middleInitialNameNull.json"),
-            Reporter.class);
+    Reporter toCreate = MAPPER.readValue(
+        fixture("fixtures/domain/legacy/Reporter/invalid/middleInitialNameNull.json"),
+        Reporter.class);
     Response response =
         resources.client().target(ROOT_RESOURCE).request().accept(MediaType.APPLICATION_JSON)
             .post(Entity.entity(toCreate, MediaType.APPLICATION_JSON));
@@ -1452,10 +1333,9 @@ public class ReporterTest {
 
   @Test
   public void successWhenMiddleInitialNameEmpty() throws Exception {
-    Reporter toCreate =
-        MAPPER.readValue(
-            fixture("fixtures/domain/legacy/Reporter/valid/middleInitialNameEmpty.json"),
-            Reporter.class);
+    Reporter toCreate = MAPPER.readValue(
+        fixture("fixtures/domain/legacy/Reporter/valid/middleInitialNameEmpty.json"),
+        Reporter.class);
     Response response =
         resources.client().target(ROOT_RESOURCE).request().accept(MediaType.APPLICATION_JSON)
             .post(Entity.entity(toCreate, MediaType.APPLICATION_JSON));
@@ -1464,10 +1344,9 @@ public class ReporterTest {
 
   @Test
   public void failsWhenMiddleInitialNameTooLong() throws Exception {
-    Reporter toCreate =
-        MAPPER.readValue(
-            fixture("fixtures/domain/legacy/Reporter/invalid/middleInitialNameTooLong.json"),
-            Reporter.class);
+    Reporter toCreate = MAPPER.readValue(
+        fixture("fixtures/domain/legacy/Reporter/invalid/middleInitialNameTooLong.json"),
+        Reporter.class);
     Response response =
         resources.client().target(ROOT_RESOURCE).request().accept(MediaType.APPLICATION_JSON)
             .post(Entity.entity(toCreate, MediaType.APPLICATION_JSON));
@@ -1479,10 +1358,9 @@ public class ReporterTest {
 
   @Test
   public void successWhenMiddleInitialNameAllWhiteSpace() throws Exception {
-    Reporter toCreate =
-        MAPPER.readValue(
-            fixture("fixtures/domain/legacy/Reporter/valid/middleInitialNameTAllWhiteSpace.json"),
-            Reporter.class);
+    Reporter toCreate = MAPPER.readValue(
+        fixture("fixtures/domain/legacy/Reporter/valid/middleInitialNameTAllWhiteSpace.json"),
+        Reporter.class);
     Response response =
         resources.client().target(ROOT_RESOURCE).request().accept(MediaType.APPLICATION_JSON)
             .post(Entity.entity(toCreate, MediaType.APPLICATION_JSON));
@@ -1494,10 +1372,9 @@ public class ReporterTest {
    */
   @Test
   public void failsWhenNamePrefixDescriptionMissing() throws Exception {
-    Reporter toCreate =
-        MAPPER.readValue(
-            fixture("fixtures/domain/legacy/Reporter/invalid/namePrefixDescriptionMissing.json"),
-            Reporter.class);
+    Reporter toCreate = MAPPER.readValue(
+        fixture("fixtures/domain/legacy/Reporter/invalid/namePrefixDescriptionMissing.json"),
+        Reporter.class);
     Response response =
         resources.client().target(ROOT_RESOURCE).request().accept(MediaType.APPLICATION_JSON)
             .post(Entity.entity(toCreate, MediaType.APPLICATION_JSON));
@@ -1508,10 +1385,9 @@ public class ReporterTest {
 
   @Test
   public void failsWhenNamePrefixDescriptionNull() throws Exception {
-    Reporter toCreate =
-        MAPPER.readValue(
-            fixture("fixtures/domain/legacy/Reporter/invalid/namePrefixDescriptionNull.json"),
-            Reporter.class);
+    Reporter toCreate = MAPPER.readValue(
+        fixture("fixtures/domain/legacy/Reporter/invalid/namePrefixDescriptionNull.json"),
+        Reporter.class);
     Response response =
         resources.client().target(ROOT_RESOURCE).request().accept(MediaType.APPLICATION_JSON)
             .post(Entity.entity(toCreate, MediaType.APPLICATION_JSON));
@@ -1522,10 +1398,9 @@ public class ReporterTest {
 
   @Test
   public void successWhenNamePrefixDescriptionEmpty() throws Exception {
-    Reporter toCreate =
-        MAPPER.readValue(
-            fixture("fixtures/domain/legacy/Reporter/valid/namePrefixDescriptionEmpty.json"),
-            Reporter.class);
+    Reporter toCreate = MAPPER.readValue(
+        fixture("fixtures/domain/legacy/Reporter/valid/namePrefixDescriptionEmpty.json"),
+        Reporter.class);
     Response response =
         resources.client().target(ROOT_RESOURCE).request().accept(MediaType.APPLICATION_JSON)
             .post(Entity.entity(toCreate, MediaType.APPLICATION_JSON));
@@ -1534,17 +1409,15 @@ public class ReporterTest {
 
   @Test
   public void failsWhenNamePrefixDescriptionTooLong() throws Exception {
-    Reporter toCreate =
-        MAPPER.readValue(
-            fixture("fixtures/domain/legacy/Reporter/invalid/namePrefixDescriptionTooLong.json"),
-            Reporter.class);
+    Reporter toCreate = MAPPER.readValue(
+        fixture("fixtures/domain/legacy/Reporter/invalid/namePrefixDescriptionTooLong.json"),
+        Reporter.class);
     Response response =
         resources.client().target(ROOT_RESOURCE).request().accept(MediaType.APPLICATION_JSON)
             .post(Entity.entity(toCreate, MediaType.APPLICATION_JSON));
     assertThat(response.getStatus(), is(equalTo(422)));
-    assertThat(
-        response.readEntity(String.class).indexOf(
-            "namePrefixDescription size must be between 0 and 6"), is(greaterThanOrEqualTo(0)));
+    assertThat(response.readEntity(String.class).indexOf(
+        "namePrefixDescription size must be between 0 and 6"), is(greaterThanOrEqualTo(0)));
   }
 
   /*
@@ -1552,10 +1425,9 @@ public class ReporterTest {
    */
   @Test
   public void failsWhenPrimaryPhoneNumberMissing() throws Exception {
-    Reporter toCreate =
-        MAPPER.readValue(
-            fixture("fixtures/domain/legacy/Reporter/invalid/primaryPhoneNumberMissing.json"),
-            Reporter.class);
+    Reporter toCreate = MAPPER.readValue(
+        fixture("fixtures/domain/legacy/Reporter/invalid/primaryPhoneNumberMissing.json"),
+        Reporter.class);
     Response response =
         resources.client().target(ROOT_RESOURCE).request().accept(MediaType.APPLICATION_JSON)
             .post(Entity.entity(toCreate, MediaType.APPLICATION_JSON));
@@ -1566,10 +1438,9 @@ public class ReporterTest {
 
   @Test
   public void failsWhenPrimaryPhoneNumberNull() throws Exception {
-    Reporter toCreate =
-        MAPPER.readValue(
-            fixture("fixtures/domain/legacy/Reporter/invalid/primaryPhoneNumberNull.json"),
-            Reporter.class);
+    Reporter toCreate = MAPPER.readValue(
+        fixture("fixtures/domain/legacy/Reporter/invalid/primaryPhoneNumberNull.json"),
+        Reporter.class);
     Response response =
         resources.client().target(ROOT_RESOURCE).request().accept(MediaType.APPLICATION_JSON)
             .post(Entity.entity(toCreate, MediaType.APPLICATION_JSON));
@@ -1583,11 +1454,9 @@ public class ReporterTest {
    */
   @Test
   public void failsWhenPrimaryPhoneExtensionNumberMissing() throws Exception {
-    Reporter toCreate =
-        MAPPER
-            .readValue(
-                fixture("fixtures/domain/legacy/Reporter/invalid/primaryPhoneExtensionNumberMissing.json"),
-                Reporter.class);
+    Reporter toCreate = MAPPER.readValue(
+        fixture("fixtures/domain/legacy/Reporter/invalid/primaryPhoneExtensionNumberMissing.json"),
+        Reporter.class);
     Response response =
         resources.client().target(ROOT_RESOURCE).request().accept(MediaType.APPLICATION_JSON)
             .post(Entity.entity(toCreate, MediaType.APPLICATION_JSON));
@@ -1599,11 +1468,9 @@ public class ReporterTest {
 
   @Test
   public void failsWhenPrimaryPhoneExtensionNumberNull() throws Exception {
-    Reporter toCreate =
-        MAPPER
-            .readValue(
-                fixture("fixtures/domain/legacy/Reporter/invalid/primaryPhoneExtensionNumberNull.json"),
-                Reporter.class);
+    Reporter toCreate = MAPPER.readValue(
+        fixture("fixtures/domain/legacy/Reporter/invalid/primaryPhoneExtensionNumberNull.json"),
+        Reporter.class);
     Response response =
         resources.client().target(ROOT_RESOURCE).request().accept(MediaType.APPLICATION_JSON)
             .post(Entity.entity(toCreate, MediaType.APPLICATION_JSON));
@@ -1618,10 +1485,9 @@ public class ReporterTest {
    */
   @Test
   public void failsWhenStateCodeTypeMissing() throws Exception {
-    Reporter toCreate =
-        MAPPER.readValue(
-            fixture("fixtures/domain/legacy/Reporter/invalid/stateCodeTypeMissing.json"),
-            Reporter.class);
+    Reporter toCreate = MAPPER.readValue(
+        fixture("fixtures/domain/legacy/Reporter/invalid/stateCodeTypeMissing.json"),
+        Reporter.class);
     Response response =
         resources.client().target(ROOT_RESOURCE).request().accept(MediaType.APPLICATION_JSON)
             .post(Entity.entity(toCreate, MediaType.APPLICATION_JSON));
@@ -1632,9 +1498,8 @@ public class ReporterTest {
 
   @Test
   public void failsWhenStateCodeTypeNull() throws Exception {
-    Reporter toCreate =
-        MAPPER.readValue(fixture("fixtures/domain/legacy/Reporter/invalid/stateCodeTypeNull.json"),
-            Reporter.class);
+    Reporter toCreate = MAPPER.readValue(
+        fixture("fixtures/domain/legacy/Reporter/invalid/stateCodeTypeNull.json"), Reporter.class);
     Response response =
         resources.client().target(ROOT_RESOURCE).request().accept(MediaType.APPLICATION_JSON)
             .post(Entity.entity(toCreate, MediaType.APPLICATION_JSON));
@@ -1648,9 +1513,8 @@ public class ReporterTest {
    */
   @Test
   public void failureWhenStreetNameMissing() throws Exception {
-    Reporter toCreate =
-        MAPPER.readValue(fixture("fixtures/domain/legacy/Reporter/invalid/streetNameMissing.json"),
-            Reporter.class);
+    Reporter toCreate = MAPPER.readValue(
+        fixture("fixtures/domain/legacy/Reporter/invalid/streetNameMissing.json"), Reporter.class);
     Response response =
         resources.client().target(ROOT_RESOURCE).request().accept(MediaType.APPLICATION_JSON)
             .post(Entity.entity(toCreate, MediaType.APPLICATION_JSON));
@@ -1661,9 +1525,8 @@ public class ReporterTest {
 
   @Test
   public void failureWhenStreetNameNull() throws Exception {
-    Reporter toCreate =
-        MAPPER.readValue(fixture("fixtures/domain/legacy/Reporter/invalid/streetNameNull.json"),
-            Reporter.class);
+    Reporter toCreate = MAPPER.readValue(
+        fixture("fixtures/domain/legacy/Reporter/invalid/streetNameNull.json"), Reporter.class);
     Response response =
         resources.client().target(ROOT_RESOURCE).request().accept(MediaType.APPLICATION_JSON)
             .post(Entity.entity(toCreate, MediaType.APPLICATION_JSON));
@@ -1674,9 +1537,8 @@ public class ReporterTest {
 
   @Test
   public void successWhenStreetNameEmpty() throws Exception {
-    Reporter toCreate =
-        MAPPER.readValue(fixture("fixtures/domain/legacy/Reporter/valid/streetNameEmpty.json"),
-            Reporter.class);
+    Reporter toCreate = MAPPER.readValue(
+        fixture("fixtures/domain/legacy/Reporter/valid/streetNameEmpty.json"), Reporter.class);
     Response response =
         resources.client().target(ROOT_RESOURCE).request().accept(MediaType.APPLICATION_JSON)
             .post(Entity.entity(toCreate, MediaType.APPLICATION_JSON));
@@ -1685,9 +1547,8 @@ public class ReporterTest {
 
   @Test
   public void failsWhenStreetNameTooLong() throws Exception {
-    Reporter toCreate =
-        MAPPER.readValue(fixture("fixtures/domain/legacy/Reporter/invalid/streetNameTooLong.json"),
-            Reporter.class);
+    Reporter toCreate = MAPPER.readValue(
+        fixture("fixtures/domain/legacy/Reporter/invalid/streetNameTooLong.json"), Reporter.class);
     Response response =
         resources.client().target(ROOT_RESOURCE).request().accept(MediaType.APPLICATION_JSON)
             .post(Entity.entity(toCreate, MediaType.APPLICATION_JSON));
@@ -1701,10 +1562,9 @@ public class ReporterTest {
    */
   @Test
   public void failWhenStreetNumberMissing() throws Exception {
-    Reporter toCreate =
-        MAPPER.readValue(
-            fixture("fixtures/domain/legacy/Reporter/invalid/streetNumberMissing.json"),
-            Reporter.class);
+    Reporter toCreate = MAPPER.readValue(
+        fixture("fixtures/domain/legacy/Reporter/invalid/streetNumberMissing.json"),
+        Reporter.class);
     Response response =
         resources.client().target(ROOT_RESOURCE).request().accept(MediaType.APPLICATION_JSON)
             .post(Entity.entity(toCreate, MediaType.APPLICATION_JSON));
@@ -1715,9 +1575,8 @@ public class ReporterTest {
 
   @Test
   public void failWhenStreetNumberNull() throws Exception {
-    Reporter toCreate =
-        MAPPER.readValue(fixture("fixtures/domain/legacy/Reporter/invalid/streetNumberNull.json"),
-            Reporter.class);
+    Reporter toCreate = MAPPER.readValue(
+        fixture("fixtures/domain/legacy/Reporter/invalid/streetNumberNull.json"), Reporter.class);
     Response response =
         resources.client().target(ROOT_RESOURCE).request().accept(MediaType.APPLICATION_JSON)
             .post(Entity.entity(toCreate, MediaType.APPLICATION_JSON));
@@ -1728,9 +1587,8 @@ public class ReporterTest {
 
   @Test
   public void successWhenStreetNumberEmpty() throws Exception {
-    Reporter toCreate =
-        MAPPER.readValue(fixture("fixtures/domain/legacy/Reporter/valid/streetNumberEmpty.json"),
-            Reporter.class);
+    Reporter toCreate = MAPPER.readValue(
+        fixture("fixtures/domain/legacy/Reporter/valid/streetNumberEmpty.json"), Reporter.class);
     Response response =
         resources.client().target(ROOT_RESOURCE).request().accept(MediaType.APPLICATION_JSON)
             .post(Entity.entity(toCreate, MediaType.APPLICATION_JSON));
@@ -1739,10 +1597,9 @@ public class ReporterTest {
 
   @Test
   public void failsWhenStreetNumberTooLong() throws Exception {
-    Reporter toCreate =
-        MAPPER.readValue(
-            fixture("fixtures/domain/legacy/Reporter/invalid/streetNumberTooLong.json"),
-            Reporter.class);
+    Reporter toCreate = MAPPER.readValue(
+        fixture("fixtures/domain/legacy/Reporter/invalid/streetNumberTooLong.json"),
+        Reporter.class);
     Response response =
         resources.client().target(ROOT_RESOURCE).request().accept(MediaType.APPLICATION_JSON)
             .post(Entity.entity(toCreate, MediaType.APPLICATION_JSON));
@@ -1756,10 +1613,9 @@ public class ReporterTest {
    */
   @Test
   public void failsWhenSuffixTitleDescriptionMissing() throws Exception {
-    Reporter toCreate =
-        MAPPER.readValue(
-            fixture("fixtures/domain/legacy/Reporter/invalid/suffixTitleDescriptionMissing.json"),
-            Reporter.class);
+    Reporter toCreate = MAPPER.readValue(
+        fixture("fixtures/domain/legacy/Reporter/invalid/suffixTitleDescriptionMissing.json"),
+        Reporter.class);
     Response response =
         resources.client().target(ROOT_RESOURCE).request().accept(MediaType.APPLICATION_JSON)
             .post(Entity.entity(toCreate, MediaType.APPLICATION_JSON));
@@ -1770,10 +1626,9 @@ public class ReporterTest {
 
   @Test
   public void failsWhenSuffixTitleDescriptionNull() throws Exception {
-    Reporter toCreate =
-        MAPPER.readValue(
-            fixture("fixtures/domain/legacy/Reporter/invalid/suffixTitleDescriptionNull.json"),
-            Reporter.class);
+    Reporter toCreate = MAPPER.readValue(
+        fixture("fixtures/domain/legacy/Reporter/invalid/suffixTitleDescriptionNull.json"),
+        Reporter.class);
     Response response =
         resources.client().target(ROOT_RESOURCE).request().accept(MediaType.APPLICATION_JSON)
             .post(Entity.entity(toCreate, MediaType.APPLICATION_JSON));
@@ -1784,10 +1639,9 @@ public class ReporterTest {
 
   @Test
   public void sucessWhenSuffixTitleDescriptionEmpty() throws Exception {
-    Reporter toCreate =
-        MAPPER.readValue(
-            fixture("fixtures/domain/legacy/Reporter/valid/suffixTitleDescriptionEmpty.json"),
-            Reporter.class);
+    Reporter toCreate = MAPPER.readValue(
+        fixture("fixtures/domain/legacy/Reporter/valid/suffixTitleDescriptionEmpty.json"),
+        Reporter.class);
     Response response =
         resources.client().target(ROOT_RESOURCE).request().accept(MediaType.APPLICATION_JSON)
             .post(Entity.entity(toCreate, MediaType.APPLICATION_JSON));
@@ -1796,17 +1650,15 @@ public class ReporterTest {
 
   @Test
   public void failsWhenSuffixTitleDescriptionTooLong() throws Exception {
-    Reporter toCreate =
-        MAPPER.readValue(
-            fixture("fixtures/domain/legacy/Reporter/invalid/suffixTitleDescriptionTooLong.json"),
-            Reporter.class);
+    Reporter toCreate = MAPPER.readValue(
+        fixture("fixtures/domain/legacy/Reporter/invalid/suffixTitleDescriptionTooLong.json"),
+        Reporter.class);
     Response response =
         resources.client().target(ROOT_RESOURCE).request().accept(MediaType.APPLICATION_JSON)
             .post(Entity.entity(toCreate, MediaType.APPLICATION_JSON));
     assertThat(response.getStatus(), is(equalTo(422)));
-    assertThat(
-        response.readEntity(String.class).indexOf(
-            "suffixTitleDescription size must be between 0 and 4"), is(greaterThanOrEqualTo(0)));
+    assertThat(response.readEntity(String.class).indexOf(
+        "suffixTitleDescription size must be between 0 and 4"), is(greaterThanOrEqualTo(0)));
   }
 
   /*
@@ -1814,9 +1666,8 @@ public class ReporterTest {
    */
   @Test
   public void failsWhenZipcodeMissing() throws Exception {
-    Reporter toCreate =
-        MAPPER.readValue(fixture("fixtures/domain/legacy/Reporter/invalid/zipcodeMissing.json"),
-            Reporter.class);
+    Reporter toCreate = MAPPER.readValue(
+        fixture("fixtures/domain/legacy/Reporter/invalid/zipcodeMissing.json"), Reporter.class);
     Response response =
         resources.client().target(ROOT_RESOURCE).request().accept(MediaType.APPLICATION_JSON)
             .post(Entity.entity(toCreate, MediaType.APPLICATION_JSON));
@@ -1827,9 +1678,8 @@ public class ReporterTest {
 
   @Test
   public void failsWhenZipcodeNull() throws Exception {
-    Reporter toCreate =
-        MAPPER.readValue(fixture("fixtures/domain/legacy/Reporter/invalid/zipcodeNull.json"),
-            Reporter.class);
+    Reporter toCreate = MAPPER.readValue(
+        fixture("fixtures/domain/legacy/Reporter/invalid/zipcodeNull.json"), Reporter.class);
     Response response =
         resources.client().target(ROOT_RESOURCE).request().accept(MediaType.APPLICATION_JSON)
             .post(Entity.entity(toCreate, MediaType.APPLICATION_JSON));
@@ -1840,9 +1690,8 @@ public class ReporterTest {
 
   @Test
   public void failsWhenZipcodeTooShort() throws Exception {
-    Reporter toCreate =
-        MAPPER.readValue(fixture("fixtures/domain/legacy/Reporter/invalid/zipcodeTooShort.json"),
-            Reporter.class);
+    Reporter toCreate = MAPPER.readValue(
+        fixture("fixtures/domain/legacy/Reporter/invalid/zipcodeTooShort.json"), Reporter.class);
     Response response =
         resources.client().target(ROOT_RESOURCE).request().accept(MediaType.APPLICATION_JSON)
             .post(Entity.entity(toCreate, MediaType.APPLICATION_JSON));
@@ -1853,9 +1702,8 @@ public class ReporterTest {
 
   @Test
   public void failsWhenZipcodeTooLong() throws Exception {
-    Reporter toCreate =
-        MAPPER.readValue(fixture("fixtures/domain/legacy/Reporter/invalid/zipcodeTooLong.json"),
-            Reporter.class);
+    Reporter toCreate = MAPPER.readValue(
+        fixture("fixtures/domain/legacy/Reporter/invalid/zipcodeTooLong.json"), Reporter.class);
     Response response =
         resources.client().target(ROOT_RESOURCE).request().accept(MediaType.APPLICATION_JSON)
             .post(Entity.entity(toCreate, MediaType.APPLICATION_JSON));
@@ -1893,9 +1741,8 @@ public class ReporterTest {
    */
   @Test
   public void failsWhenReferralIdMissing() throws Exception {
-    Reporter toCreate =
-        MAPPER.readValue(fixture("fixtures/domain/legacy/Reporter/invalid/referralIdMissing.json"),
-            Reporter.class);
+    Reporter toCreate = MAPPER.readValue(
+        fixture("fixtures/domain/legacy/Reporter/invalid/referralIdMissing.json"), Reporter.class);
     Response response =
         resources.client().target(ROOT_RESOURCE).request().accept(MediaType.APPLICATION_JSON)
             .post(Entity.entity(toCreate, MediaType.APPLICATION_JSON));
@@ -1906,9 +1753,8 @@ public class ReporterTest {
 
   @Test
   public void failsWhenReferralIdNull() throws Exception {
-    Reporter toCreate =
-        MAPPER.readValue(fixture("fixtures/domain/legacy/Reporter/invalid/referralIdNull.json"),
-            Reporter.class);
+    Reporter toCreate = MAPPER.readValue(
+        fixture("fixtures/domain/legacy/Reporter/invalid/referralIdNull.json"), Reporter.class);
     Response response =
         resources.client().target(ROOT_RESOURCE).request().accept(MediaType.APPLICATION_JSON)
             .post(Entity.entity(toCreate, MediaType.APPLICATION_JSON));
@@ -1919,9 +1765,8 @@ public class ReporterTest {
 
   @Test
   public void failsWhenReferralIdEmpty() throws Exception {
-    Reporter toCreate =
-        MAPPER.readValue(fixture("fixtures/domain/legacy/Reporter/invalid/referralIdEmpty.json"),
-            Reporter.class);
+    Reporter toCreate = MAPPER.readValue(
+        fixture("fixtures/domain/legacy/Reporter/invalid/referralIdEmpty.json"), Reporter.class);
     Response response =
         resources.client().target(ROOT_RESOURCE).request().accept(MediaType.APPLICATION_JSON)
             .post(Entity.entity(toCreate, MediaType.APPLICATION_JSON));
@@ -1932,9 +1777,8 @@ public class ReporterTest {
 
   @Test
   public void failsWhenReferralIdTooLong() throws Exception {
-    Reporter toCreate =
-        MAPPER.readValue(fixture("fixtures/domain/legacy/Reporter/invalid/referralIdTooLong.json"),
-            Reporter.class);
+    Reporter toCreate = MAPPER.readValue(
+        fixture("fixtures/domain/legacy/Reporter/invalid/referralIdTooLong.json"), Reporter.class);
     Response response =
         resources.client().target(ROOT_RESOURCE).request().accept(MediaType.APPLICATION_JSON)
             .post(Entity.entity(toCreate, MediaType.APPLICATION_JSON));
@@ -1949,9 +1793,8 @@ public class ReporterTest {
    */
   @Test
   public void successWhenLawEnforcementIdValid() throws Exception {
-    Reporter toCreate =
-        MAPPER.readValue(fixture("fixtures/domain/legacy/Reporter/valid/valid.json"),
-            Reporter.class);
+    Reporter toCreate = MAPPER
+        .readValue(fixture("fixtures/domain/legacy/Reporter/valid/valid.json"), Reporter.class);
     Response response =
         resources.client().target(ROOT_RESOURCE).request().accept(MediaType.APPLICATION_JSON)
             .post(Entity.entity(toCreate, MediaType.APPLICATION_JSON));
@@ -1962,11 +1805,9 @@ public class ReporterTest {
 
   @Test
   public void successWhenLawEnforcementNull() throws Exception {
-    Reporter toCreate =
-        MAPPER
-            .readValue(
-                fixture("fixtures/domain/legacy/Reporter/valid/lawEnforcementIdLawEnforcementNull.json"),
-                Reporter.class);
+    Reporter toCreate = MAPPER.readValue(
+        fixture("fixtures/domain/legacy/Reporter/valid/lawEnforcementIdLawEnforcementNull.json"),
+        Reporter.class);
     Response response =
         resources.client().target(ROOT_RESOURCE).request().accept(MediaType.APPLICATION_JSON)
             .post(Entity.entity(toCreate, MediaType.APPLICATION_JSON));
@@ -1975,10 +1816,9 @@ public class ReporterTest {
 
   @Test
   public void failsWhenLawEnforcementIdTooLong() throws Exception {
-    Reporter toCreate =
-        MAPPER.readValue(
-            fixture("fixtures/domain/legacy/Reporter/invalid/lawEnforcementIdTooLong.json"),
-            Reporter.class);
+    Reporter toCreate = MAPPER.readValue(
+        fixture("fixtures/domain/legacy/Reporter/invalid/lawEnforcementIdTooLong.json"),
+        Reporter.class);
     Response response =
         resources.client().target(ROOT_RESOURCE).request().accept(MediaType.APPLICATION_JSON)
             .post(Entity.entity(toCreate, MediaType.APPLICATION_JSON));
@@ -1992,10 +1832,9 @@ public class ReporterTest {
    */
   @Test
   public void failsWhenZipSuffixNumberMissing() throws Exception {
-    Reporter toCreate =
-        MAPPER.readValue(
-            fixture("fixtures/domain/legacy/Reporter/invalid/zipSuffixNumberMissing.json"),
-            Reporter.class);
+    Reporter toCreate = MAPPER.readValue(
+        fixture("fixtures/domain/legacy/Reporter/invalid/zipSuffixNumberMissing.json"),
+        Reporter.class);
     Response response =
         resources.client().target(ROOT_RESOURCE).request().accept(MediaType.APPLICATION_JSON)
             .post(Entity.entity(toCreate, MediaType.APPLICATION_JSON));
@@ -2006,10 +1845,9 @@ public class ReporterTest {
 
   @Test
   public void failsWhenZipSuffixNumberNull() throws Exception {
-    Reporter toCreate =
-        MAPPER.readValue(
-            fixture("fixtures/domain/legacy/Reporter/invalid/zipSuffixNumberNull.json"),
-            Reporter.class);
+    Reporter toCreate = MAPPER.readValue(
+        fixture("fixtures/domain/legacy/Reporter/invalid/zipSuffixNumberNull.json"),
+        Reporter.class);
     Response response =
         resources.client().target(ROOT_RESOURCE).request().accept(MediaType.APPLICATION_JSON)
             .post(Entity.entity(toCreate, MediaType.APPLICATION_JSON));
@@ -2023,10 +1861,9 @@ public class ReporterTest {
    */
   @Test
   public void failsWhenCountySpecificCodeMissing() throws Exception {
-    Reporter toCreate =
-        MAPPER.readValue(
-            fixture("fixtures/domain/legacy/Reporter/invalid/countySpecificCodeMissing.json"),
-            Reporter.class);
+    Reporter toCreate = MAPPER.readValue(
+        fixture("fixtures/domain/legacy/Reporter/invalid/countySpecificCodeMissing.json"),
+        Reporter.class);
     Response response =
         resources.client().target(ROOT_RESOURCE).request().accept(MediaType.APPLICATION_JSON)
             .post(Entity.entity(toCreate, MediaType.APPLICATION_JSON));
@@ -2037,10 +1874,9 @@ public class ReporterTest {
 
   @Test
   public void failsWhenCountySpecificCodeNull() throws Exception {
-    Reporter toCreate =
-        MAPPER.readValue(
-            fixture("fixtures/domain/legacy/Reporter/invalid/countySpecificCodeNull.json"),
-            Reporter.class);
+    Reporter toCreate = MAPPER.readValue(
+        fixture("fixtures/domain/legacy/Reporter/invalid/countySpecificCodeNull.json"),
+        Reporter.class);
     Response response =
         resources.client().target(ROOT_RESOURCE).request().accept(MediaType.APPLICATION_JSON)
             .post(Entity.entity(toCreate, MediaType.APPLICATION_JSON));
@@ -2051,10 +1887,9 @@ public class ReporterTest {
 
   @Test
   public void failsWhenCountySpecificCodeEmpty() throws Exception {
-    Reporter toCreate =
-        MAPPER.readValue(
-            fixture("fixtures/domain/legacy/Reporter/invalid/countySpecificCodeEmpty.json"),
-            Reporter.class);
+    Reporter toCreate = MAPPER.readValue(
+        fixture("fixtures/domain/legacy/Reporter/invalid/countySpecificCodeEmpty.json"),
+        Reporter.class);
     Response response =
         resources.client().target(ROOT_RESOURCE).request().accept(MediaType.APPLICATION_JSON)
             .post(Entity.entity(toCreate, MediaType.APPLICATION_JSON));
@@ -2065,18 +1900,15 @@ public class ReporterTest {
 
   @Test
   public void failsWhenCountySpecificCodeTooLong() throws Exception {
-    Reporter toCreate =
-        MAPPER.readValue(
-            fixture("fixtures/domain/legacy/Reporter/invalid/countySpecificCodeTooLong.json"),
-            Reporter.class);
+    Reporter toCreate = MAPPER.readValue(
+        fixture("fixtures/domain/legacy/Reporter/invalid/countySpecificCodeTooLong.json"),
+        Reporter.class);
     Response response =
         resources.client().target(ROOT_RESOURCE).request().accept(MediaType.APPLICATION_JSON)
             .post(Entity.entity(toCreate, MediaType.APPLICATION_JSON));
     assertThat(response.getStatus(), is(equalTo(422)));
-    assertThat(
-        response.readEntity(String.class)
-            .indexOf("countySpecificCode size must be between 1 and 2"),
-        is(greaterThanOrEqualTo(0)));
+    assertThat(response.readEntity(String.class)
+        .indexOf("countySpecificCode size must be between 1 and 2"), is(greaterThanOrEqualTo(0)));
   }
 
   /*
@@ -2084,9 +1916,8 @@ public class ReporterTest {
    */
   private Reporter validReporter() throws JsonParseException, JsonMappingException, IOException {
 
-    Reporter validReporter =
-        MAPPER.readValue(fixture("fixtures/domain/legacy/Reporter/valid/valid.json"),
-            Reporter.class);
+    Reporter validReporter = MAPPER
+        .readValue(fixture("fixtures/domain/legacy/Reporter/valid/valid.json"), Reporter.class);
     return validReporter;
 
   }
