@@ -771,7 +771,7 @@ public class ScreeningToReferralService implements CrudsService {
     gov.ca.cwds.rest.api.domain.Address address = scr.getAddress();
     if (address == null || address.getZip() == null || address.getStreetAddress() == null
         || address.getStreetAddress().equals("") || address.getType() == null) {
-      String message = " Screening address is null or empty";
+      String message = "Screening address is null or empty";
       logError(message);
       return address;
     }

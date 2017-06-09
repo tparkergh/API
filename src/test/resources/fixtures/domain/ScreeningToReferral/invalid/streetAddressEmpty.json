@@ -1,0 +1,101 @@
+{
+   "id":"2",
+   "legacy_source_table" : "",
+   "legacy_id" : "",
+   "ended_at":"2016-08-03T01:00:00.000Z",
+   "incident_county":"sacramento",
+   "incident_date":"2016-08-02",
+   "location_type":"Foster Home",
+   "communication_method":"Phone",
+   "name":"The Rocky Horror Show",
+   "report_narrative":"Narrative 123 test",
+   "reference":"123ABC",
+   "response_time":"immediate",
+   "started_at":"2016-08-03T01:00:00.000Z",
+   "assignee":"Michael Bastow",
+   "additional_information":"additional information about the referral",
+   "screening_decision":"Response time",
+   "screening_decision_detail":"Detail",
+   "address":{
+   "legacy_source_table" : "",
+   "legacy_id" : "",
+	  "street_address": "",
+	  "city": "Sacramento",
+	  "state": "CA",
+	  "zip": 95757,
+	  "type": "Home"
+  },
+   "participants":[
+	{
+	  "id" : "5432",
+      "legacy_source_table" : "",
+      "legacy_id" : "",
+	  "first_name": "John",
+	  "last_name": "Smith",
+	  "gender": "male",
+	  "date_of_birth": "2001-03-15",
+	  "ssn": "123456789",
+	  "person_id": 12345,
+	  "screening_id": 12345,
+	  "roles" : [
+	  	"Victim"
+	  	],
+	  	"addresses" : [
+	  		{
+                "legacy_source_table" : "",
+                "legacy_id" : "",
+	  			"street_address" : "123 First St",
+	  			"state" : "CA",
+	  			"city" : "San Jose",
+	  			"zip" : "94321",
+	  			"type" : "Home"
+	  		}
+	  	]
+	},
+	{
+	  "id" : "1234",
+      "legacy_source_table" : "",
+      "legacy_id" : "",
+	  "first_name": "Bart",
+	  "last_name": "Simpson",
+	  "gender": "male",
+	  "date_of_birth": "2000-03-15",
+	  "ssn": "234567890",
+	  "person_id": 12345,
+	  "screening_id": 12345,
+	  "roles" : [
+	  	"Mandated Reporter"
+	  	],
+	  	"addresses" : [
+	  		{
+                "legacy_source_table" : "",
+                "legacy_id" : "",
+	  			"street_address" : "234 second st",
+	  			"state" : "CA",
+	  			"city" : "San Jose",
+	  			"zip" : "94321",
+	  			"type" : "Home"
+	  		}
+	  	]
+	}
+   ],
+   "cross_reports":[
+      {
+         "legacy_source_table" : "",
+         "legacy_id" : "",
+         "agency_type":"Law enforcement",
+         "agency_name":"Sacramento County Sheriff Deparment",
+         "method":"electronic report",
+         "inform_date":"2017-03-15"
+      }   ],
+   "allegations":[
+      {
+         "legacy_source_table" : "",
+          "legacy_id" : "",
+         "victim_person_id":"5432",
+         "perpetrator_person_id":"",
+         "type":"physical abuse",
+         "county":"Sacramento"
+      }
+   ]
+}
