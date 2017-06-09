@@ -25,6 +25,7 @@ import gov.ca.cwds.data.cms.CmsDocumentDao;
 import gov.ca.cwds.data.cms.CountyOwnershipDao;
 import gov.ca.cwds.data.cms.CountyTriggerDao;
 import gov.ca.cwds.data.cms.CrossReportDao;
+import gov.ca.cwds.data.cms.DrmsDocumentDao;
 import gov.ca.cwds.data.cms.LongTextDao;
 import gov.ca.cwds.data.cms.OtherClientNameDao;
 import gov.ca.cwds.data.cms.ReferralClientDao;
@@ -62,6 +63,7 @@ import gov.ca.cwds.data.persistence.cms.CountyOwnership;
 import gov.ca.cwds.data.persistence.cms.CountyTrigger;
 import gov.ca.cwds.data.persistence.cms.CountyTriggerEmbeddable;
 import gov.ca.cwds.data.persistence.cms.CrossReport;
+import gov.ca.cwds.data.persistence.cms.DrmsDocument;
 import gov.ca.cwds.data.persistence.cms.EducationProviderContact;
 import gov.ca.cwds.data.persistence.cms.LongText;
 import gov.ca.cwds.data.persistence.cms.OtherAdultInPlacemtHome;
@@ -129,7 +131,7 @@ public class DataAccessModule extends AbstractModule {
           SubstituteCareProvider.class, LongText.class, AllegationPerpetratorHistory.class,
           ClientUc.class, ChildClient.class, gov.ca.cwds.data.persistence.cms.Address.class,
           ClientAddress.class, CountyOwnership.class, CountyTrigger.class,
-          CountyTriggerEmbeddable.class, SystemCode.class, SystemMeta.class) {
+          CountyTriggerEmbeddable.class, SystemCode.class, SystemMeta.class, DrmsDocument.class) {
         @Override
         public DataSourceFactory getDataSourceFactory(ApiConfiguration configuration) {
           return configuration.getCmsDataSourceFactory();
@@ -200,6 +202,7 @@ public class DataAccessModule extends AbstractModule {
     bind(ChildClientDao.class);
     bind(SystemCodeDao.class);
     bind(SystemMetaDao.class);
+    bind(DrmsDocumentDao.class);
 
     // NS:
     bind(AddressDao.class);
