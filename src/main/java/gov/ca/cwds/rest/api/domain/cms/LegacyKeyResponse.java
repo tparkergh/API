@@ -1,13 +1,10 @@
-package gov.ca.cwds.rest.api.domain.es;
-
-import java.util.ArrayList;
-import java.util.List;
+package gov.ca.cwds.rest.api.domain.cms;
 
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonValue;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 import gov.ca.cwds.rest.api.Request;
 import gov.ca.cwds.rest.api.Response;
@@ -29,7 +26,7 @@ import io.swagger.annotations.ApiModel;
  */
 @ApiModel
 @JsonSnakeCase
-public class AutoCompletePersonResponse implements Response {
+public class LegacyKeyResponse implements Response {
 
   /**
    * Base serialization version. Increment by class version.
@@ -37,42 +34,24 @@ public class AutoCompletePersonResponse implements Response {
   private static final long serialVersionUID = 1L;
 
   @JsonIgnore
-  private List<AutoCompletePerson> persons = new ArrayList<>();
+  @JsonProperty("ui_identifier")
+  private String uiIdentifier;
 
   /**
    * Disallow use of default constructor.
    */
   @SuppressWarnings("unused")
-  private AutoCompletePersonResponse() {
+  private LegacyKeyResponse() {
     // Default, no-op.
   }
 
   /**
-   * Preferred constructor. Build from person array.
+   * Preferred constructor. Build from UI identifier.
    * 
-   * @param persons array of {@link AutoCompletePerson}
+   * @param uiIdentifier String of UI identifier
    */
-  public AutoCompletePersonResponse(List<AutoCompletePerson> persons) {
-    this.persons = persons;
-  }
-
-  /**
-   * Getter for array of {@link AutoCompletePerson persons}
-   * 
-   * @return persons objects suitable for Intake Auto-complete
-   */
-  @JsonValue
-  public List<AutoCompletePerson> getPersons() {
-    return persons;
-  }
-
-  /**
-   * Setter for array of {@link AutoCompletePerson persons}
-   * 
-   * @param persons person objects suitable for Intake Auto-complete
-   */
-  public void setPersons(List<AutoCompletePerson> persons) {
-    this.persons = persons;
+  public LegacyKeyResponse(String uiIdentifier) {
+    this.uiIdentifier = uiIdentifier;
   }
 
   @Override
@@ -83,6 +62,24 @@ public class AutoCompletePersonResponse implements Response {
   @Override
   public boolean equals(Object obj) {
     return EqualsBuilder.reflectionEquals(this, obj, false);
+  }
+
+  /**
+   * Getter for UI identifier.
+   * 
+   * @return formatted UI identifier
+   */
+  public String getUiIdentifier() {
+    return uiIdentifier;
+  }
+
+  /**
+   * Setter for UI identifier.
+   * 
+   * @param uiIdentifier formatted UI identifier
+   */
+  public void setUiIdentifier(String uiIdentifier) {
+    this.uiIdentifier = uiIdentifier;
   }
 
 }

@@ -18,7 +18,6 @@ import gov.ca.cwds.rest.api.domain.es.AutoCompletePersonResponse;
 import gov.ca.cwds.rest.resources.SimpleResourceService;
 import gov.ca.cwds.rest.services.ServiceException;
 
-
 /**
  * Business service for Intake Person Auto-complete.
  * 
