@@ -19,6 +19,8 @@ import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
+import org.mockito.invocation.InvocationOnMock;
+import org.mockito.stubbing.Answer;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -109,6 +111,8 @@ public class ScreeningToReferralServiceTest {
   private LACountyTrigger laCountyTrigger;
   private TriggerTablesDao triggerTablesDao;
   private StaffPersonIdRetriever staffPersonIdRetriever;
+
+  private gov.ca.cwds.data.persistence.cms.Referral referral;
 
   @SuppressWarnings("javadoc")
   @Rule
@@ -1186,7 +1190,7 @@ public class ScreeningToReferralServiceTest {
 
   @SuppressWarnings("javadoc")
   @Test
-  // 05360
+  // 04537
   public void testForfirstResponseDeterminedByStaffPersonId() throws Exception {
     Referral referralDomain = MAPPER.readValue(
         fixture("fixtures/domain/ScreeningToReferral/valid/validReferral.json"), Referral.class);
@@ -1270,8 +1274,20 @@ public class ScreeningToReferralServiceTest {
 
     ScreeningToReferral screeningToReferral = MAPPER.readValue(
         fixture("fixtures/domain/ScreeningToReferral/valid/valid.json"), ScreeningToReferral.class);
+    when(staffPersonIdRetriever.getStaffPersonId()).thenReturn("0X5");
+    when(referralDao.create(any(gov.ca.cwds.data.persistence.cms.Referral.class)))
+        .thenAnswer(new Answer<gov.ca.cwds.data.persistence.cms.Referral>() {
 
+          @Override
+          public gov.ca.cwds.data.persistence.cms.Referral answer(InvocationOnMock invocation)
+              throws Throwable {
+            referral = (gov.ca.cwds.data.persistence.cms.Referral) invocation.getArguments()[0];
+            return referral;
+          }
+        });
 
+    screeningToReferralService.create(screeningToReferral);
+    assertThat(referral.getFirstResponseDeterminedByStaffPersonId(), is(equalTo("0X5")));
 
   }
 
