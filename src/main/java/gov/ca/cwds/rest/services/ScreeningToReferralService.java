@@ -770,7 +770,7 @@ public class ScreeningToReferralService implements CrudsService {
       throws ServiceException {
     gov.ca.cwds.rest.api.domain.Address address = scr.getAddress();
     if (address == null || address.getZip() == null || address.getStreetAddress() == null
-        || address.getStreetAddress().equals("") || address.getType() == null) {
+        || address.getStreetAddress().isEmpty() || address.getType() == null) {
       String message = "Screening address is null or empty";
       logError(message);
       return address;
