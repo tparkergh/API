@@ -18,12 +18,12 @@ import org.slf4j.LoggerFactory;
 
 import com.google.inject.Inject;
 
+import gov.ca.cwds.data.persistence.cms.CmsKeyIdGenerator;
 import gov.ca.cwds.inject.IntakePersonAutoCompleteServiceResource;
 import gov.ca.cwds.rest.api.ApiException;
 import gov.ca.cwds.rest.api.domain.cms.LegacyKeyRequest;
 import gov.ca.cwds.rest.api.domain.cms.LegacyKeyResponse;
 import gov.ca.cwds.rest.api.domain.es.AutoCompletePersonRequest;
-import gov.ca.cwds.rest.api.domain.es.ESPersons;
 import gov.ca.cwds.rest.services.cms.LegacyKeyService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -32,7 +32,7 @@ import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 
 /**
- * A resource providing a RESTful interface for {@link ESPersons}. It delegates functions to
+ * A resource providing a RESTful interface for {@link CmsKeyIdGenerator}. It delegates functions to
  * {@link SimpleResourceDelegate}. It decorates the {@link SimpleResourceService} not in
  * functionality but with @see
  * <a href= "https://github.com/swagger-api/swagger-core/wiki/Annotations-1.5.X">Swagger
@@ -49,7 +49,7 @@ import io.swagger.annotations.ApiResponses;
 public class LegacyKeyResource {
 
   /**
-   * Logger for this class.
+   * SLF4J logger for this resource class.
    */
   private static final Logger LOGGER = LoggerFactory.getLogger(LegacyKeyResource.class);
 
@@ -73,17 +73,17 @@ public class LegacyKeyResource {
    * <tr>
    * <td>Q</td>
    * <td>API Request</td>
-   * <td>AutoCompletePersonRequest</td>
+   * <td>LegacyKeyRequest</td>
    * </tr>
    * <tr>
    * <td>P</td>
    * <td>API Response</td>
-   * <td>AutoCompletePersonResponse</td>
+   * <td>LegacyKeyResponse</td>
    * </tr>
    * <tr>
    * <td>S</td>
    * <td>Service</td>
-   * <td>AutoCompletePersonService</td>
+   * <td>LegacyKeyService</td>
    * </tr>
    * </table>
    */
@@ -110,14 +110,12 @@ public class LegacyKeyResource {
   @Path("/")
   @ApiResponses(value = {@ApiResponse(code = 401, message = "Not Authorized"),
       @ApiResponse(code = 404, message = "Not found"),
-      @ApiResponse(code = 400, message = "Unable to parse parameters")
-      // @ApiResponse(code = 406, message = "Accept Header not supported")
-  })
+      @ApiResponse(code = 400, message = "Unable to parse parameters")})
   @ApiOperation(value = "Query ElasticSearch Persons on given search terms",
       code = HttpStatus.SC_OK, response = LegacyKeyResponse[].class)
   @Consumes(value = MediaType.TEXT_PLAIN)
   public Response searchPerson(@Valid @NotNull @QueryParam("search_term") @ApiParam(hidden = false,
-      required = true, example = "john") LegacyKeyRequest req) {
+      required = true, example = "U2Gaygg0Ki") LegacyKeyRequest req) {
     Response ret;
     try {
       ret = resourceDelegate.handle(req);
