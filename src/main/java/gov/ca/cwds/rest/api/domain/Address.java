@@ -31,7 +31,7 @@ public class Address extends ReportingDomain implements Request, Response {
   private String legacySourceTable;
 
   @JsonProperty("legacy_id")
-  @ApiModelProperty(required = true, readOnly = false, value = "Legacy Id", example = "")
+  @ApiModelProperty(required = true, readOnly = false, value = "Legacy Id", example = "ABC1234567")
   @Size(max = CMS_ID_LEN)
   private String legacyId;
 
@@ -46,12 +46,12 @@ public class Address extends ReportingDomain implements Request, Response {
   private String city;
 
   @JsonProperty("state")
-  @ApiModelProperty(value = "State Code", example = "California")
+  @ApiModelProperty(value = "State Code", example = "CA")
   @Size(max = 50)
   private String state;
 
   @JsonProperty("zip")
-  @ApiModelProperty(value = "Zip", example = "6525")
+  @ApiModelProperty(value = "Zip", example = "95757")
   @Max(99999)
   private Integer zip;
 
