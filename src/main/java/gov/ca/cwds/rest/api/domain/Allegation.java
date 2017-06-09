@@ -29,11 +29,11 @@ public class Allegation extends ReportingDomain implements Request, Response {
   private static final long serialVersionUID = 1L;
 
   @JsonProperty("legacy_source_table")
-  @ApiModelProperty(required = true, value = "Legacy Source Table", example = "")
+  @ApiModelProperty(required = true, value = "Legacy Source Table", example = "ALLGTN_T")
   private String legacySourceTable;
 
   @JsonProperty("legacy_id")
-  @ApiModelProperty(required = true, value = "Legacy Id", example = "")
+  @ApiModelProperty(required = true, value = "Legacy Id", example = "ABC1234567")
   @Size(max = CMS_ID_LEN)
   private String legacyId;
 
@@ -133,6 +133,11 @@ public class Allegation extends ReportingDomain implements Request, Response {
     return county;
   }
 
+  /**
+   * {@inheritDoc}
+   * 
+   * @see java.lang.Object#hashCode()
+   */
   @Override
   public final int hashCode() {
     final int prime = 31;
@@ -146,6 +151,11 @@ public class Allegation extends ReportingDomain implements Request, Response {
     return result;
   }
 
+  /**
+   * {@inheritDoc}
+   * 
+   * @see java.lang.Object#equals(java.lang.Object)
+   */
   @Override
   public final boolean equals(Object obj) {
     if (this == obj)

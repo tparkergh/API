@@ -31,11 +31,11 @@ public class CrossReport extends ReportingDomain implements Request, Response {
   private String id;
 
   @JsonProperty("legacy_source_table")
-  @ApiModelProperty(required = false, value = "Legacy Source Table", example = "")
+  @ApiModelProperty(required = false, value = "Legacy Source Table", example = "CRSS_RPT")
   private String legacySourceTable;
 
   @JsonProperty("legacy_id")
-  @ApiModelProperty(required = false, value = "legacy Id", example = "")
+  @ApiModelProperty(required = false, value = "legacy Id", example = "ABC1234567")
   @Size(max = CMS_ID_LEN)
   private String legacyId;
 

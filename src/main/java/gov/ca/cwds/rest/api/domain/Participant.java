@@ -41,11 +41,13 @@ public class Participant extends ReportingDomain implements Request, Response {
   private long id;
 
   @JsonProperty("legacy_source_table")
-  @ApiModelProperty(required = true, readOnly = false, value = "Legacy Source Table", example = "")
+  @ApiModelProperty(required = true, readOnly = false, value = "Legacy Source Table",
+      example = "CLIENT_T")
   private String legacySourceTable;
 
   @JsonProperty("legacy_id")
-  @ApiModelProperty(required = true, readOnly = false, value = "Legacy Client Id", example = "")
+  @ApiModelProperty(required = true, readOnly = false, value = "Legacy Client Id",
+      example = "ABC1234567")
   @Size(max = CMS_ID_LEN)
   private String legacyId;
 
@@ -86,14 +88,13 @@ public class Participant extends ReportingDomain implements Request, Response {
 
   @Valid
   @JsonProperty("roles")
-  @ApiModelProperty(required = true, readOnly = false, value = "Role of participant", example = "")
+  @ApiModelProperty(required = true, readOnly = false, value = "Role of participant",
+      example = "Victim")
   private Set<String> roles;
 
   @Valid
   @JsonProperty("addresses")
   private Set<Address> addresses;
-
-
 
   @JsonIgnore
   private boolean perpetrator;
@@ -324,8 +325,8 @@ public class Participant extends ReportingDomain implements Request, Response {
     return reporter;
   }
 
-  /*
-   * (non-Javadoc)
+  /**
+   * {@inheritDoc}
    * 
    * @see java.lang.Object#hashCode()
    */
@@ -333,113 +334,87 @@ public class Participant extends ReportingDomain implements Request, Response {
   public final int hashCode() {
     final int prime = 31;
     int result = 1;
-    result = prime * result + (int) (id ^ (id >>> 32));
+    result = prime * result + ((addresses == null) ? 0 : addresses.hashCode());
     result = prime * result + ((dateOfBirth == null) ? 0 : dateOfBirth.hashCode());
     result = prime * result + ((firstName == null) ? 0 : firstName.hashCode());
     result = prime * result + ((gender == null) ? 0 : gender.hashCode());
+    result = prime * result + (int) (id ^ (id >>> 32));
     result = prime * result + ((lastName == null) ? 0 : lastName.hashCode());
+    result = prime * result + ((legacyId == null) ? 0 : legacyId.hashCode());
+    result = prime * result + ((legacySourceTable == null) ? 0 : legacySourceTable.hashCode());
     result = prime * result + (int) (personId ^ (personId >>> 32));
+    result = prime * result + ((roles == null) ? 0 : roles.hashCode());
     result = prime * result + (int) (screeningId ^ (screeningId >>> 32));
     result = prime * result + ((ssn == null) ? 0 : ssn.hashCode());
-    result = prime * result + ((roles == null) ? 0 : roles.hashCode());
-    result = prime * result + ((addresses == null) ? 0 : addresses.hashCode());
-    result = prime * result + ((legacySourceTable == null) ? 0 : legacySourceTable.hashCode());
-    result = prime * result + ((legacyId == null) ? 0 : legacyId.hashCode());
     return result;
   }
 
-  /*
-   * (non-Javadoc)
+  /**
+   * {@inheritDoc}
    * 
    * @see java.lang.Object#equals(java.lang.Object)
    */
   @Override
   public final boolean equals(Object obj) {
-    if (this == obj) {
+    if (this == obj)
       return true;
-    }
-    if (obj == null) {
+    if (obj == null)
       return false;
-    }
-    if (!(getClass().isInstance(obj))) {
+    if (!(obj instanceof Participant))
       return false;
-    }
     Participant other = (Participant) obj;
-    if (dateOfBirth == null) {
-      if (other.dateOfBirth != null) {
-        return false;
-      }
-    } else if (!dateOfBirth.equals(other.dateOfBirth)) {
-      return false;
-    }
-    if (firstName == null) {
-      if (other.firstName != null) {
-        return false;
-      }
-    } else if (!firstName.equals(other.firstName)) {
-      return false;
-    }
-    if (gender == null) {
-      if (other.gender != null) {
-        return false;
-      }
-    } else if (!gender.equals(other.gender)) {
-      return false;
-    }
-    if (lastName == null) {
-      if (other.lastName != null) {
-        return false;
-      }
-    } else if (!lastName.equals(other.lastName)) {
-      return false;
-    }
-    if (id != other.id) {
-      return false;
-    }
-    if (legacySourceTable == null) {
-      if (other.legacySourceTable != null) {
-        return false;
-      }
-    } else if (!legacySourceTable.equals(other.legacySourceTable)) {
-      return false;
-    }
-    if (legacyId == null) {
-      if (other.legacyId != null) {
-        return false;
-      }
-    } else if (!legacyId.equals(other.legacyId)) {
-      return false;
-    }
-    if (personId != other.personId) {
-      return false;
-    }
-    if (screeningId != other.screeningId) {
-      return false;
-    }
-    if (ssn == null) {
-      if (other.ssn != null) {
-        return false;
-      }
-    } else if (!ssn.equals(other.ssn)) {
-      return false;
-    }
-    if (roles == null) {
-      if (other.roles != null) {
-        return false;
-      }
-    } else if (!roles.equals(other.roles)) {
-      return false;
-    }
     if (addresses == null) {
-      if (other.addresses != null) {
+      if (other.addresses != null)
         return false;
-      }
-    } else if (!addresses.equals(other.addresses)) {
+    } else if (!addresses.equals(other.addresses))
       return false;
-    }
-
+    if (dateOfBirth == null) {
+      if (other.dateOfBirth != null)
+        return false;
+    } else if (!dateOfBirth.equals(other.dateOfBirth))
+      return false;
+    if (firstName == null) {
+      if (other.firstName != null)
+        return false;
+    } else if (!firstName.equals(other.firstName))
+      return false;
+    if (gender == null) {
+      if (other.gender != null)
+        return false;
+    } else if (!gender.equals(other.gender))
+      return false;
+    if (id != other.id)
+      return false;
+    if (lastName == null) {
+      if (other.lastName != null)
+        return false;
+    } else if (!lastName.equals(other.lastName))
+      return false;
+    if (legacyId == null) {
+      if (other.legacyId != null)
+        return false;
+    } else if (!legacyId.equals(other.legacyId))
+      return false;
+    if (legacySourceTable == null) {
+      if (other.legacySourceTable != null)
+        return false;
+    } else if (!legacySourceTable.equals(other.legacySourceTable))
+      return false;
+    if (personId != other.personId)
+      return false;
+    if (roles == null) {
+      if (other.roles != null)
+        return false;
+    } else if (!roles.equals(other.roles))
+      return false;
+    if (screeningId != other.screeningId)
+      return false;
+    if (ssn == null) {
+      if (other.ssn != null)
+        return false;
+    } else if (!ssn.equals(other.ssn))
+      return false;
     return true;
   }
-
 
 }
