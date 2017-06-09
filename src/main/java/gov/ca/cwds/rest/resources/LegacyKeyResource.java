@@ -20,10 +20,11 @@ import com.google.inject.Inject;
 
 import gov.ca.cwds.inject.IntakePersonAutoCompleteServiceResource;
 import gov.ca.cwds.rest.api.ApiException;
+import gov.ca.cwds.rest.api.domain.cms.LegacyKeyRequest;
+import gov.ca.cwds.rest.api.domain.cms.LegacyKeyResponse;
 import gov.ca.cwds.rest.api.domain.es.AutoCompletePersonRequest;
-import gov.ca.cwds.rest.api.domain.es.AutoCompletePersonResponse;
 import gov.ca.cwds.rest.api.domain.es.ESPersons;
-import gov.ca.cwds.rest.services.es.AutoCompletePersonService;
+import gov.ca.cwds.rest.services.cms.LegacyKeyService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
@@ -86,7 +87,7 @@ public class LegacyKeyResource {
    * </tr>
    * </table>
    */
-  private SimpleResourceDelegate<String, AutoCompletePersonRequest, AutoCompletePersonResponse, AutoCompletePersonService> resourceDelegate;
+  private SimpleResourceDelegate<String, LegacyKeyRequest, LegacyKeyResponse, LegacyKeyService> resourceDelegate;
 
   /**
    * Constructor
@@ -95,7 +96,7 @@ public class LegacyKeyResource {
    */
   @Inject
   public LegacyKeyResource(
-      @IntakePersonAutoCompleteServiceResource SimpleResourceDelegate<String, AutoCompletePersonRequest, AutoCompletePersonResponse, AutoCompletePersonService> resourceDelegate) {
+      @IntakePersonAutoCompleteServiceResource SimpleResourceDelegate<String, LegacyKeyRequest, LegacyKeyResponse, LegacyKeyService> resourceDelegate) {
     this.resourceDelegate = resourceDelegate;
   }
 
@@ -113,10 +114,10 @@ public class LegacyKeyResource {
       // @ApiResponse(code = 406, message = "Accept Header not supported")
   })
   @ApiOperation(value = "Query ElasticSearch Persons on given search terms",
-      code = HttpStatus.SC_OK, response = AutoCompletePersonResponse[].class)
+      code = HttpStatus.SC_OK, response = LegacyKeyResponse[].class)
   @Consumes(value = MediaType.TEXT_PLAIN)
   public Response searchPerson(@Valid @NotNull @QueryParam("search_term") @ApiParam(hidden = false,
-      required = true, example = "john") AutoCompletePersonRequest req) {
+      required = true, example = "john") LegacyKeyRequest req) {
     Response ret;
     try {
       ret = resourceDelegate.handle(req);

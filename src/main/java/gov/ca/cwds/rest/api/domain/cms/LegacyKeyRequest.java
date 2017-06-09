@@ -40,17 +40,17 @@ public class LegacyKeyRequest implements Request {
   private static final long serialVersionUID = 1L;
 
   @ApiModelProperty(required = true, readOnly = false, example = "john")
-  @JsonProperty("search_term")
-  private String searchTerm;
+  @JsonProperty("key")
+  private String key;
 
   /**
    * JSON DropWizard Constructor. Takes solitary search term.
    * 
-   * @param searchTerm String search term.
+   * @param key String search term.
    */
   @JsonCreator
-  public LegacyKeyRequest(@Valid @NotNull @JsonProperty("search_term") String searchTerm) {
-    this.searchTerm = searchTerm;
+  public LegacyKeyRequest(@Valid @NotNull @JsonProperty("key") String key) {
+    this.key = key;
   }
 
   /**
@@ -59,7 +59,7 @@ public class LegacyKeyRequest implements Request {
    * @return search term
    */
   public String getSearchTerm() {
-    return searchTerm;
+    return key;
   }
 
   /**
@@ -68,7 +68,7 @@ public class LegacyKeyRequest implements Request {
    * @param searchTerm search term
    */
   public void setSearchTerm(String searchTerm) {
-    this.searchTerm = searchTerm;
+    this.key = searchTerm;
   }
 
   @Override
