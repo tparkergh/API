@@ -8,8 +8,8 @@ import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
-import java.util.ArrayList;
 import java.util.LinkedHashSet;
+import java.util.List;
 import java.util.Set;
 
 import javax.validation.Validation;
@@ -389,7 +389,7 @@ public class ScreeningToReferralServiceTest {
 
     Response response = screeningToReferralService.create(screeningToReferral);
     if (response.hasMessages()) {
-      ArrayList<ErrorMessage> messages = response.getMessages();
+      List<ErrorMessage> messages = response.getMessages();
       for (ErrorMessage message : messages) {
         System.out.println(message.getMessage());
       }
@@ -488,7 +488,7 @@ public class ScreeningToReferralServiceTest {
 
     Response response = screeningToReferralService.create(screeningToReferral);
     if (response.hasMessages()) {
-      ArrayList<ErrorMessage> messages = response.getMessages();
+      List<ErrorMessage> messages = response.getMessages();
       for (ErrorMessage message : messages) {
         System.out.println(message.getMessage());
       }
@@ -497,7 +497,6 @@ public class ScreeningToReferralServiceTest {
     assertThat(response.getClass(), is(PostedScreeningToReferral.class));
     assertThat(response.hasMessages(), is(equalTo(false)));
   }
-
 
   // TODO: move to before block after refactoring rest of code to use these mocks.
   private void setupServiceMocks() {

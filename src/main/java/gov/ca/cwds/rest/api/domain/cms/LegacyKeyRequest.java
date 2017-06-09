@@ -1,4 +1,4 @@
-package gov.ca.cwds.rest.api.domain.es;
+package gov.ca.cwds.rest.api.domain.cms;
 
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
@@ -32,7 +32,7 @@ import io.swagger.annotations.ApiModelProperty;
  */
 @ApiModel
 @JsonSnakeCase
-public class AutoCompletePersonRequest implements Request {
+public class LegacyKeyRequest implements Request {
 
   /**
    * Base serialization version. Increment by class version.
@@ -49,7 +49,7 @@ public class AutoCompletePersonRequest implements Request {
    * @param searchTerm String search term.
    */
   @JsonCreator
-  public AutoCompletePersonRequest(@Valid @NotNull @JsonProperty("search_term") String searchTerm) {
+  public LegacyKeyRequest(@Valid @NotNull @JsonProperty("search_term") String searchTerm) {
     this.searchTerm = searchTerm;
   }
 
