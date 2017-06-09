@@ -53,11 +53,11 @@ public class DrmsDocument extends ReportingDomain implements Request, Response {
   private String handleName;
 
   /**
-   * @param creationTimeStamp
-   * @param drmsDocumentTemplateId
-   * @param fingerprintStaffPerson
-   * @param staffPersonId
-   * @param handleName
+   * @param creationTimeStamp creation TimeStamp
+   * @param drmsDocumentTemplateId drms Document Template Id
+   * @param fingerprintStaffPerson finger print StaffPerson
+   * @param staffPersonId - staffPersonid
+   * @param handleName - handle Name
    */
   public DrmsDocument(@JsonProperty("creationTimeStamp") Date creationTimeStamp,
       @JsonProperty("drmsDocumentTemplateId") String drmsDocumentTemplateId,
@@ -75,7 +75,7 @@ public class DrmsDocument extends ReportingDomain implements Request, Response {
   /**
    * Construct from persistence layer CMS drmsDocument.
    * 
-   * @param persistedDrmsDocument
+   * @param persistedDrmsDocument persistence level drmsDocument
    */
   public DrmsDocument(gov.ca.cwds.data.persistence.cms.DrmsDocument persistedDrmsDocument) {
     super();

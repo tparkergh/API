@@ -47,19 +47,21 @@ public class DrmsDocument extends CmsPersistentObject {
   private String handleName;
 
   /**
+   * Default constructor
    * 
+   * Required for Hibernate
    */
   public DrmsDocument() {
     super();
   }
 
   /**
-   * @param id
-   * @param creationTimeStamp
-   * @param drmsDocumentTemplateId
-   * @param fingerprintStaffPerson
-   * @param staffPersonId
-   * @param handleName
+   * @param id - primary Key
+   * @param creationTimeStamp - creationTimeStamp
+   * @param drmsDocumentTemplateId - drmsDocumentTemplateId
+   * @param fingerprintStaffPerson - fingerprintStaffPerson
+   * @param staffPersonId - staffPersonId
+   * @param handleName - handleName
    */
   public DrmsDocument(String id, Date creationTimeStamp, String drmsDocumentTemplateId,
       String fingerprintStaffPerson, String staffPersonId, String handleName) {
@@ -75,9 +77,9 @@ public class DrmsDocument extends CmsPersistentObject {
   /**
    * Constructor using domain
    * 
-   * @param id
-   * @param persisedDrmsDocument
-   * @param lastUpdatedId
+   * @param id The id
+   * @param persisedDrmsDocument The domain object to construct this object from
+   * @param lastUpdatedId The id of the last person to update this object
    */
   public DrmsDocument(String id, gov.ca.cwds.rest.api.domain.cms.DrmsDocument persisedDrmsDocument,
       String lastUpdatedId) {

@@ -9,6 +9,7 @@ import org.slf4j.LoggerFactory;
 
 import com.google.inject.Inject;
 
+import gov.ca.cwds.data.Dao;
 import gov.ca.cwds.data.cms.DrmsDocumentDao;
 import gov.ca.cwds.data.persistence.cms.CmsKeyIdGenerator;
 import gov.ca.cwds.data.persistence.cms.DrmsDocument;
@@ -31,8 +32,9 @@ public class DrmsDocumentService implements CrudsService {
   private StaffPersonIdRetriever staffPersonIdRetriever;
 
   /**
-   * @param drmsDocumentDao
-   * @param staffPersonIdRetriever
+   * @param drmsDocumentDao {@link Dao} handling
+   *        {@link gov.ca.cwds.data.persistence.cms.DrmsDocument} objects
+   * @param staffPersonIdRetriever the staffPersonIdRetriever
    */
   @Inject
   public DrmsDocumentService(DrmsDocumentDao drmsDocumentDao,
