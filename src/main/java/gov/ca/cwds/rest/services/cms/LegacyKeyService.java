@@ -1,8 +1,5 @@
 package gov.ca.cwds.rest.services.cms;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import com.google.inject.Inject;
 
 import gov.ca.cwds.data.persistence.cms.CmsKeyIdGenerator;
@@ -11,14 +8,12 @@ import gov.ca.cwds.rest.api.domain.cms.LegacyKeyResponse;
 import gov.ca.cwds.rest.resources.SimpleResourceService;
 
 /**
- * Business service for Intake Person Auto-complete.
+ * Business service for for {@link CmsKeyIdGenerator}.
  * 
  * @author CWDS API Team
  */
 public class LegacyKeyService
     extends SimpleResourceService<String, LegacyKeyRequest, LegacyKeyResponse> {
-
-  private static final Logger LOGGER = LoggerFactory.getLogger(LegacyKeyService.class);
 
   /**
    * Constructor
