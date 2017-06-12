@@ -1189,7 +1189,7 @@ public class ScreeningToReferralServiceTest {
 
   @SuppressWarnings("javadoc")
   @Test
-  // 04537
+  // R - 04537
   public void testForfirstResponseDeterminedByStaffPersonId() throws Exception {
     Referral referralDomain = MAPPER.readValue(
         fixture("fixtures/domain/ScreeningToReferral/valid/validReferral.json"), Referral.class);
@@ -1274,6 +1274,7 @@ public class ScreeningToReferralServiceTest {
     ScreeningToReferral screeningToReferral = MAPPER.readValue(
         fixture("fixtures/domain/ScreeningToReferral/valid/valid.json"), ScreeningToReferral.class);
     when(staffPersonIdRetriever.getStaffPersonId()).thenReturn("0X5");
+
     when(referralDao.create(any(gov.ca.cwds.data.persistence.cms.Referral.class)))
         .thenAnswer(new Answer<gov.ca.cwds.data.persistence.cms.Referral>() {
 
@@ -1488,6 +1489,7 @@ public class ScreeningToReferralServiceTest {
 
   @SuppressWarnings("javadoc")
   @Test
+  // R - 06224
   public void testForStartedAtEmptyFailure() throws Exception {
     Referral referralDomain = MAPPER.readValue(
         fixture("fixtures/domain/ScreeningToReferral/valid/validReferral.json"), Referral.class);
@@ -1586,7 +1588,7 @@ public class ScreeningToReferralServiceTest {
 
   @SuppressWarnings("javadoc")
   @Test
-  // 05360
+  // R - 05360
   public void testForReferralstreetNameEmptyFailure() throws Exception {
     Referral referralDomain = MAPPER.readValue(
         fixture("fixtures/domain/ScreeningToReferral/valid/validReferral.json"), Referral.class);
@@ -1685,7 +1687,7 @@ public class ScreeningToReferralServiceTest {
 
   @SuppressWarnings("javadoc")
   @Test
-  // 05360
+  // R - 05360
   public void testForParticpantAddressCityEmptyFailure() throws Exception {
     Referral referralDomain = MAPPER.readValue(
         fixture("fixtures/domain/ScreeningToReferral/valid/validReferral.json"), Referral.class);
@@ -1784,7 +1786,7 @@ public class ScreeningToReferralServiceTest {
 
   @SuppressWarnings("javadoc")
   @Test
-  // 05360
+  // R - 05360
   public void testForAddressStreetNumberEmptyFailure() throws Exception {
     Referral referralDomain = MAPPER.readValue(
         fixture("fixtures/domain/ScreeningToReferral/valid/validReferral.json"), Referral.class);
@@ -1883,7 +1885,7 @@ public class ScreeningToReferralServiceTest {
 
   @SuppressWarnings("javadoc")
   @Test
-  // 05360
+  // R - 05360
   public void testForAddressStreetNameEmptyFailure() throws Exception {
     Referral referralDomain = MAPPER.readValue(
         fixture("fixtures/domain/ScreeningToReferral/valid/validReferral.json"), Referral.class);
@@ -1982,7 +1984,7 @@ public class ScreeningToReferralServiceTest {
 
   @SuppressWarnings("javadoc")
   @Test
-  // 05360
+  // R - 05360
   public void testForReporterAddressStreetNameEmptyFailure() throws Exception {
     Referral referralDomain = MAPPER.readValue(
         fixture("fixtures/domain/ScreeningToReferral/valid/validReferral.json"), Referral.class);
@@ -2081,7 +2083,7 @@ public class ScreeningToReferralServiceTest {
 
   @SuppressWarnings("javadoc")
   @Test
-  // 05360
+  // R - 05360
   public void testForReporterAddressStreetNumberEmptyFailure() throws Exception {
     Referral referralDomain = MAPPER.readValue(
         fixture("fixtures/domain/ScreeningToReferral/valid/validReferral.json"), Referral.class);
