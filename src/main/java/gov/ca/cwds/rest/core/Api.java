@@ -113,6 +113,11 @@ public interface Api {
   public static final String RESOURCE_ELASTICSEARCH_INDEX_QUERY = "dora";
 
   /**
+   * A {@code String} constant representing {@value #RESOURCE_DRMS_DOCUMENT} API.
+   */
+  public static final String RESOURCE_DRMS_DOCUMENT = "_drmsDocument";
+
+  /**
    * A {@code String} constant representing {@value #RESOURCE_CHILDCLIENT} API..
    */
   public static final String RESOURCE_CHILDCLIENT = "_childClients";
