@@ -577,6 +577,20 @@ public class Referral extends ReportingDomain implements Request, Response {
     }
   }
 
+  /**
+   * @param anonymousReporter - anonymousReporter
+   * @param communicationsMethodCode - communicationsMethodCode
+   * @param referalName - referalName
+   * @param dateStarted - dateStarted
+   * @param timeStarted - timeStarted
+   * @param referralResponseTypeCode - referralResponseTypeCode
+   * @param firstResponseDeterminedByStaffPersonId - firstResponseDeterminedByStaffPersonId
+   * @param longTextId - longTextId
+   * @param countyCode - countyCode
+   * @param approvalCode - approvalCode
+   * @param staffId - staffId
+   * @return the referral
+   */
   public static Referral createWithDefaults(Boolean anonymousReporter,
       short communicationsMethodCode, String referalName, String dateStarted, String timeStarted,
       short referralResponseTypeCode, String firstResponseDeterminedByStaffPersonId,

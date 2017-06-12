@@ -1,7 +1,5 @@
 package gov.ca.cwds.rest.api.domain.cms;
 
-import static gov.ca.cwds.data.persistence.cms.CmsPersistentObject.CMS_ID_LEN;
-
 import java.util.Date;
 
 import javax.validation.constraints.NotNull;
@@ -30,12 +28,13 @@ public class DrmsDocument extends ReportingDomain implements Request, Response {
    */
   private static final long serialVersionUID = 1L;
 
+  @NotNull
   @ApiModelProperty(required = true, readOnly = false, value = "2016-08-03T01:00:00.000",
       example = "")
   private Date creationTimeStamp;
 
   @NotNull
-  @Size(max = CMS_ID_LEN)
+  @Size(min = 1, max = 10)
   @ApiModelProperty(required = true, readOnly = false, value = "ABC1234567", example = "DUMMY")
   private String drmsDocumentTemplateId;
 

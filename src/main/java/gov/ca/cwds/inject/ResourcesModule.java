@@ -36,6 +36,7 @@ import gov.ca.cwds.rest.resources.cms.CmsDocumentResource;
 import gov.ca.cwds.rest.resources.cms.CmsNSReferralResource;
 import gov.ca.cwds.rest.resources.cms.CmsReferralResource;
 import gov.ca.cwds.rest.resources.cms.CrossReportResource;
+import gov.ca.cwds.rest.resources.cms.DrmsDocumentResource;
 import gov.ca.cwds.rest.resources.cms.LongTextResource;
 import gov.ca.cwds.rest.resources.cms.ReferralClientResource;
 import gov.ca.cwds.rest.resources.cms.ReferralResource;
@@ -57,6 +58,7 @@ import gov.ca.cwds.rest.services.cms.CmsDocumentService;
 import gov.ca.cwds.rest.services.cms.CmsNSReferralService;
 import gov.ca.cwds.rest.services.cms.CmsReferralService;
 import gov.ca.cwds.rest.services.cms.CrossReportService;
+import gov.ca.cwds.rest.services.cms.DrmsDocumentService;
 import gov.ca.cwds.rest.services.cms.LegacyKeyService;
 import gov.ca.cwds.rest.services.cms.LongTextService;
 import gov.ca.cwds.rest.services.cms.ReferralClientService;
@@ -108,6 +110,7 @@ public class ResourcesModule extends AbstractModule {
     bind(CrossReportResource.class);
     bind(ChildClientResource.class);
     bind(SystemCodeResource.class);
+    bind(DrmsDocumentResource.class);
   }
 
   @Provides
@@ -155,6 +158,12 @@ public class ResourcesModule extends AbstractModule {
   @LongTextServiceBackedResource
   public ResourceDelegate longTextServiceBackedResource(Injector injector) {
     return new ServiceBackedResourceDelegate(injector.getInstance(LongTextService.class));
+  }
+
+  @Provides
+  @DrmsDocumentServiceBackedResource
+  public ResourceDelegate drmsDocumentServiceBackedResource(Injector injector) {
+    return new ServiceBackedResourceDelegate(injector.getInstance(DrmsDocumentService.class));
   }
 
   @Provides
