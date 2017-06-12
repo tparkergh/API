@@ -50,6 +50,12 @@ public class ClientDao extends BaseDaoImpl<Client> {
   // '2017-03-22 18:32:21.198',
   // 'q1p',?,?);
 
+  /**
+   * Call DB2 stored procedure SPSSANAME3 to insert soundex records for client search. Story
+   * #146481759.
+   * 
+   * @return DB2 result code
+   */
   public String callStoredProc() {
     String ret = null;
     Session session = getSessionFactory().getCurrentSession();
@@ -57,7 +63,7 @@ public class ClientDao extends BaseDaoImpl<Client> {
     Transaction txn = null;
     try {
       // txn = session.beginTransaction();
-      txn = session.getTransaction();
+      txn = session.getTransaction(); // For JUnit.
       ProcedureCall q = session.createStoredProcedureCall("CWSNS4.SPSSANAME3");
 
       int pos = -1;
@@ -92,6 +98,7 @@ public class ClientDao extends BaseDaoImpl<Client> {
 
       final String resultCode = (String) q.getOutputParameterValue(11);
       final String resultMsg = (String) q.getOutputParameterValue(12);
+      ret = resultCode;
 
       LOGGER.debug("resultCode: {}, resultMsg: {}", resultCode, resultMsg);
 
