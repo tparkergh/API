@@ -43,7 +43,9 @@ public class DrmsDocumentResource {
   private ResourceDelegate resourceDelegate;
 
   /**
-   * @param resourceDelegate
+   * Constructor
+   * 
+   * @param resourceDelegate The resourceDelegate to delegate to.
    */
   @Inject
   public DrmsDocumentResource(
