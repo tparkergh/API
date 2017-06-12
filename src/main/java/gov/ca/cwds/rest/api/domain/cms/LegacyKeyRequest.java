@@ -58,17 +58,17 @@ public class LegacyKeyRequest implements Request {
    * 
    * @return search term
    */
-  public String getSearchTerm() {
+  public String getLegacyKey() {
     return key;
   }
 
   /**
    * Setter for auto-complete search term.
    * 
-   * @param searchTerm search term
+   * @param key legacy 10-char key
    */
-  public void setSearchTerm(String searchTerm) {
-    this.key = searchTerm;
+  public void setLegacyKey(String key) {
+    this.key = key;
   }
 
   @Override
