@@ -122,5 +122,10 @@ public interface Api {
    */
   public static final String RESOURCE_LOV = "lov";
 
+  /**
+   * A {@code String} constant representing {@value #RESOURCE_CMS_UI_IDENTIFIER} API..
+   */
+  public static final String RESOURCE_CMS_UI_IDENTIFIER = "cms_ui_id";
+
 
 }
