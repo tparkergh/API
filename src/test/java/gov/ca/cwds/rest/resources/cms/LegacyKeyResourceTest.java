@@ -1,16 +1,11 @@
 package gov.ca.cwds.rest.resources.cms;
 
-import static io.dropwizard.testing.FixtureHelpers.fixture;
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.is;
 import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 
-import javax.ws.rs.client.Entity;
-import javax.ws.rs.core.MediaType;
+import javax.ws.rs.BadRequestException;
 
-import org.apache.http.HttpStatus;
 import org.hamcrest.junit.ExpectedException;
 import org.junit.After;
 import org.junit.Before;
@@ -20,7 +15,6 @@ import org.junit.Test;
 import org.mockito.Mockito;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.exc.UnrecognizedPropertyException;
 import com.squarespace.jersey2.guice.JerseyGuiceUtils;
 
 import gov.ca.cwds.rest.api.domain.cms.LegacyKeyRequest;
@@ -83,22 +77,33 @@ public class LegacyKeyResourceTest {
     verify(resourceDelegate).handle(any());
   }
 
-  @Test
+  @Test(expected = BadRequestException.class)
   public void testSearch_blank() throws Exception {
     final LegacyKeyResponse actual = inMemoryResource.client().target(FOUND_RESOURCE + "?key=")
         .request().get(LegacyKeyResponse.class);
     verify(resourceDelegate).handle(any());
   }
 
-  @Test(expected = UnrecognizedPropertyException.class)
-  public void testSearch_invalid() throws Exception {
-    LegacyKeyRequest serialized = MAPPER.readValue(
-        fixture("fixtures/domain/elasticsearch/Intake/es_person.json"), LegacyKeyRequest.class);
+  @Test(expected = BadRequestException.class)
+  public void testSearch_short() throws Exception {
+    final LegacyKeyResponse actual = inMemoryResource.client().target(FOUND_RESOURCE + "?key=asf")
+        .request().get(LegacyKeyResponse.class);
+    verify(resourceDelegate).handle(any());
+  }
 
-    final int status = inMemoryResource.client().target(FOUND_RESOURCE).request()
-        .accept(MediaType.APPLICATION_JSON)
-        .post(Entity.entity(serialized, MediaType.APPLICATION_JSON)).getStatus();
-    assertThat(status, is(HttpStatus.SC_OK));
+  @Test(expected = BadRequestException.class)
+  public void testSearch_long() throws Exception {
+    final LegacyKeyResponse actual = inMemoryResource.client()
+        .target(FOUND_RESOURCE + "?key=asf38383kdhslakdnv").request().get(LegacyKeyResponse.class);
+    verify(resourceDelegate).handle(any());
+  }
+
+  @Test(expected = BadRequestException.class)
+  public void testSearch_bad_pattern() throws Exception {
+    final LegacyKeyResponse actual =
+        inMemoryResource.client().target(FOUND_RESOURCE + "?key=as_f3_8383_kdhslakdnv").request()
+            .get(LegacyKeyResponse.class);
+    verify(resourceDelegate).handle(any());
   }
 
 }
