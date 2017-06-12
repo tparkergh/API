@@ -127,5 +127,4 @@ public interface Api {
    */
   public static final String RESOURCE_CMS_UI_IDENTIFIER = "cms_ui_id";
 
-
 }
