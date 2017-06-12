@@ -10,19 +10,32 @@
 		<property name="hibernate.dialect">org.hibernate.dialect.DB2Dialect</property>
 		<property name="hibernate.temp.use_jdbc_metadata_defaults">false</property>
 		<property name="hibernate.connection.driver_class">com.ibm.db2.jcc.DB2Driver</property>
+		<property name="connection_pool_size">2</property>
+		<property name="show_sql">true</property>
+
+<!-- Taborda: -->
 		<property name="hibernate.connection.username">db2inst1</property>
 		<property name="hibernate.connection.password">jyN3Ec3DRHmk</property>
 		<property name="hibernate.connection.url">jdbc:db2://legacy.db.jenkins.cwds.tabordasolutions.net:50000/DB0TDEV</property>
 		<property name="hibernate.default_schema">CWSINT</property>
-		<property name="connection_pool_size">2</property>
-		<property name="show_sql">true</property>
+ 
+<!-- NS4: -->
+<!-- 
+		<property name="hibernate.connection.username">CWDSABC</property>
+		<property name="hibernate.connection.password">someultracrypticAES1024CBCencryptedstochasticallyrandompassword</property>
+		<property name="hibernate.connection.url">jdbc:db2://localhost:9000/DBN1SOC</property>
+		<property name="hibernate.default_schema">CWSNS4</property>
+ -->
+
+		<mapping class="gov.ca.cwds.data.persistence.cms.Client" />
+		<mapping class="gov.ca.cwds.data.persistence.cms.ClientAddress"/>
+		<mapping class="gov.ca.cwds.data.persistence.cms.Address"/>
 
 		<mapping class="gov.ca.cwds.data.persistence.cms.Allegation" />
 		<mapping class="gov.ca.cwds.data.persistence.cms.StaffPerson" />
 		<mapping class="gov.ca.cwds.data.persistence.cms.ReferralClient" />
 		<mapping class="gov.ca.cwds.data.persistence.cms.Referral" />
 		<mapping class="gov.ca.cwds.data.persistence.cms.Reporter" />
-		<mapping class="gov.ca.cwds.data.persistence.cms.Client" />
 		<mapping class="gov.ca.cwds.data.persistence.cms.OtherClientName" />
 		<mapping class="gov.ca.cwds.data.persistence.cms.Attorney" />
 		<mapping class="gov.ca.cwds.data.persistence.cms.ServiceProvider" />
@@ -40,10 +53,8 @@
 		<mapping class="gov.ca.cwds.data.persistence.cms.AllegationPerpetratorHistory"/>
 		<mapping class="gov.ca.cwds.data.persistence.cms.ClientUc"/>
 		<mapping class="gov.ca.cwds.data.persistence.cms.ChildClient"/>
-		<mapping class="gov.ca.cwds.data.persistence.cms.ClientAddress"/>
-		<mapping class="gov.ca.cwds.data.persistence.cms.Address"/>
 		<mapping class="gov.ca.cwds.data.persistence.cms.CountyOwnership"/>
 		<mapping class="gov.ca.cwds.data.persistence.cms.CountyTrigger"/>
- 		
+  		
 	</session-factory>
 </hibernate-configuration>
