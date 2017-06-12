@@ -20,6 +20,11 @@ import io.swagger.annotations.ApiModelProperty;
 @JsonSnakeCase
 public final class ESPersonSearchRequest extends DomainObject implements Request {
 
+  /**
+   * Default serialization.
+   */
+  private static final long serialVersionUID = 1L;
+
   @ApiModelProperty(example = "bart")
   @JsonProperty("first_name")
   private String firstName;

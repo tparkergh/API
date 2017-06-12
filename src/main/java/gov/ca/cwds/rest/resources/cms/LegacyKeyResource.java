@@ -1,4 +1,4 @@
-package gov.ca.cwds.rest.resources;
+package gov.ca.cwds.rest.resources.cms;
 
 import static gov.ca.cwds.rest.core.Api.RESOURCE_CMS_UI_IDENTIFIER;
 
@@ -24,6 +24,8 @@ import gov.ca.cwds.logging.ApiLogUtils;
 import gov.ca.cwds.rest.api.ApiException;
 import gov.ca.cwds.rest.api.domain.cms.LegacyKeyRequest;
 import gov.ca.cwds.rest.api.domain.cms.LegacyKeyResponse;
+import gov.ca.cwds.rest.resources.SimpleResourceDelegate;
+import gov.ca.cwds.rest.resources.SimpleResourceService;
 import gov.ca.cwds.rest.services.cms.LegacyKeyService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -101,7 +103,7 @@ public class LegacyKeyResource {
   }
 
   /**
-   * Endpoint for legacy 10-char id to 19-digit UI identifier.
+   * Endpoint to convert legacy 10-char id to 19-digit UI identifier.
    * 
    * @param req JSON {@link LegacyKeyRequest}
    * @return web service response

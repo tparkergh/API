@@ -2,9 +2,12 @@ package gov.ca.cwds.rest.api.domain.cms;
 
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Pattern;
+import javax.validation.constraints.Size;
 
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
+import org.hibernate.validator.constraints.NotEmpty;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -31,6 +34,9 @@ public class LegacyKeyRequest implements Request {
 
   @ApiModelProperty(required = true, readOnly = false, example = "JJaIiuJ0Fk")
   @JsonProperty("key")
+  @NotEmpty
+  @Size(min = 10, max = 10)
+  @Pattern(regexp = "[a-zA-Z0-9]{10}", message = "invalid legacy key")
   private String key;
 
   /**
