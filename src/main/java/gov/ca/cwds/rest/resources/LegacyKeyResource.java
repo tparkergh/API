@@ -20,6 +20,7 @@ import com.google.inject.Inject;
 
 import gov.ca.cwds.data.persistence.cms.CmsKeyIdGenerator;
 import gov.ca.cwds.inject.IntakePersonAutoCompleteServiceResource;
+import gov.ca.cwds.logging.ApiLogUtils;
 import gov.ca.cwds.rest.api.ApiException;
 import gov.ca.cwds.rest.api.domain.cms.LegacyKeyRequest;
 import gov.ca.cwds.rest.api.domain.cms.LegacyKeyResponse;
@@ -111,17 +112,17 @@ public class LegacyKeyResource {
   @ApiResponses(value = {@ApiResponse(code = 401, message = "Not Authorized"),
       @ApiResponse(code = 404, message = "Not found"),
       @ApiResponse(code = 400, message = "Unable to parse parameters")})
-  @ApiOperation(value = "Query ElasticSearch Persons on given search terms",
+  @ApiOperation(value = "Convert legacy 10-char key to 19-digit UI identifier",
       code = HttpStatus.SC_OK, response = LegacyKeyResponse[].class)
   @Consumes(value = MediaType.TEXT_PLAIN)
-  public Response searchPerson(@Valid @NotNull @QueryParam("search_term") @ApiParam(hidden = false,
-      required = true, example = "U2Gaygg0Ki") LegacyKeyRequest req) {
-    Response ret;
+  public Response legacyKeyToUIIdentifer(@Valid @NotNull @QueryParam("key") @ApiParam(
+      hidden = false, required = true, example = "U2Gaygg0Ki") LegacyKeyRequest req) {
+    Response ret = null;
     try {
       ret = resourceDelegate.handle(req);
     } catch (Exception e) {
-      LOGGER.error("Intake Person AutoComplete ERROR: {}", e.getMessage(), e);
-      throw new ApiException("Intake Person AutoComplete ERROR. " + e.getMessage(), e);
+      new ApiLogUtils<>(ApiException.class).raiseError(LOGGER, e, "ERROR handling legacy key: {}",
+          e.getMessage());
     }
 
     return ret;

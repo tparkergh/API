@@ -5,6 +5,7 @@ import org.slf4j.LoggerFactory;
 
 import com.google.inject.Inject;
 
+import gov.ca.cwds.data.persistence.cms.CmsKeyIdGenerator;
 import gov.ca.cwds.rest.api.domain.cms.LegacyKeyRequest;
 import gov.ca.cwds.rest.api.domain.cms.LegacyKeyResponse;
 import gov.ca.cwds.rest.resources.SimpleResourceService;
@@ -29,12 +30,12 @@ public class LegacyKeyService
 
   @Override
   protected LegacyKeyResponse handleRequest(LegacyKeyRequest req) {
-    return null;
+    return handleFind(req.getLegacyKey());
   }
 
   @Override
-  protected LegacyKeyResponse handleFind(String searchForThis) {
-    return null;
+  protected LegacyKeyResponse handleFind(String key) {
+    return new LegacyKeyResponse(CmsKeyIdGenerator.getUIIdentifierFromKey(key));
   }
 
 }
