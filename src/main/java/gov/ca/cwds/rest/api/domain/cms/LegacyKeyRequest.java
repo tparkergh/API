@@ -15,18 +15,8 @@ import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 
 /**
- * A domain API {@link Request} for Intake Person Auto-complete feature to Elasticsearch.
- * 
- * <p>
- * The Intake Auto-complete for Person takes a single search term, which is used to query
- * Elasticsearch Person documents by ALL relevant fields.
- * </p>
- * 
- * <p>
- * For example, search strings consisting of only digits could be phone numbers, social security
- * numbers, or street address numbers. Search strings consisting of only letters could be last name,
- * first name, city, state, language, and so forth.
- * </p>
+ * A domain API {@link Request} for converting a 10 character legacy key to a 19 digit UI
+ * identifier.
  * 
  * @author CWDS API Team
  */
@@ -39,7 +29,7 @@ public class LegacyKeyRequest implements Request {
    */
   private static final long serialVersionUID = 1L;
 
-  @ApiModelProperty(required = true, readOnly = false, example = "john")
+  @ApiModelProperty(required = true, readOnly = false, example = "JJaIiuJ0Fk")
   @JsonProperty("key")
   private String key;
 

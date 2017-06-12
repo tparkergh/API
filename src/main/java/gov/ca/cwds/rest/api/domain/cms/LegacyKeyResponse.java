@@ -14,14 +14,6 @@ import io.swagger.annotations.ApiModel;
 /**
  * A domain API {@link Request} for Intake Person Auto-complete feature to Elasticsearch.
  * 
- * <p>
- * The Intake Auto-complete for Person takes a single search term, which is used to query
- * Elasticsearch Person documents by ALL relevant fields. For example, search strings consisting of
- * only digits could be phone numbers, social security numbers, or street address numbers. Search
- * strings consisting only of letters could be last name, first name, city, state, language, and so
- * forth.
- * </p>
- * 
  * @author CWDS API Team
  */
 @ApiModel
@@ -54,16 +46,6 @@ public class LegacyKeyResponse implements Response {
     this.uiIdentifier = uiIdentifier;
   }
 
-  @Override
-  public int hashCode() {
-    return HashCodeBuilder.reflectionHashCode(this, false);
-  }
-
-  @Override
-  public boolean equals(Object obj) {
-    return EqualsBuilder.reflectionEquals(this, obj, false);
-  }
-
   /**
    * Getter for UI identifier.
    * 
@@ -80,6 +62,16 @@ public class LegacyKeyResponse implements Response {
    */
   public void setUiIdentifier(String uiIdentifier) {
     this.uiIdentifier = uiIdentifier;
+  }
+
+  @Override
+  public int hashCode() {
+    return HashCodeBuilder.reflectionHashCode(this, false);
+  }
+
+  @Override
+  public boolean equals(Object obj) {
+    return EqualsBuilder.reflectionEquals(this, obj, false);
   }
 
 }

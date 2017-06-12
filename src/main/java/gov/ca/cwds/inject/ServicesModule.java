@@ -26,6 +26,7 @@ import gov.ca.cwds.rest.services.cms.CmsNSReferralService;
 import gov.ca.cwds.rest.services.cms.CmsReferralService;
 import gov.ca.cwds.rest.services.cms.CrossReportService;
 import gov.ca.cwds.rest.services.cms.DrmsDocumentService;
+import gov.ca.cwds.rest.services.cms.LegacyKeyService;
 import gov.ca.cwds.rest.services.cms.ReferralClientService;
 import gov.ca.cwds.rest.services.cms.ReferralService;
 import gov.ca.cwds.rest.services.cms.ReporterService;
@@ -115,6 +116,7 @@ public class ServicesModule extends AbstractModule {
     bind(SystemCodeService.class);
     bind(StaffPersonIdRetriever.class);
     bind(DrmsDocumentService.class);
+    bind(LegacyKeyService.class);
 
     // Register CMS system code translator.
     bind(ApiSystemCodeCache.class).to(CmsSystemCodeCacheService.class).asEagerSingleton();

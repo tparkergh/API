@@ -1,6 +1,6 @@
 package gov.ca.cwds.rest.resources;
 
-import static gov.ca.cwds.rest.core.Api.RESOURCE_AUTOCOMPLETE;
+import static gov.ca.cwds.rest.core.Api.RESOURCE_CMS_UI_IDENTIFIER;
 
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
@@ -19,12 +19,11 @@ import org.slf4j.LoggerFactory;
 import com.google.inject.Inject;
 
 import gov.ca.cwds.data.persistence.cms.CmsKeyIdGenerator;
-import gov.ca.cwds.inject.IntakePersonAutoCompleteServiceResource;
+import gov.ca.cwds.inject.LegacyKeyServiceResource;
 import gov.ca.cwds.logging.ApiLogUtils;
 import gov.ca.cwds.rest.api.ApiException;
 import gov.ca.cwds.rest.api.domain.cms.LegacyKeyRequest;
 import gov.ca.cwds.rest.api.domain.cms.LegacyKeyResponse;
-import gov.ca.cwds.rest.api.domain.es.AutoCompletePersonRequest;
 import gov.ca.cwds.rest.services.cms.LegacyKeyService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -43,8 +42,8 @@ import io.swagger.annotations.ApiResponses;
  * 
  * @author CWDS API Team
  */
-@Api(value = RESOURCE_AUTOCOMPLETE, tags = {RESOURCE_AUTOCOMPLETE})
-@Path(value = RESOURCE_AUTOCOMPLETE)
+@Api(value = RESOURCE_CMS_UI_IDENTIFIER, tags = {RESOURCE_CMS_UI_IDENTIFIER})
+@Path(value = RESOURCE_CMS_UI_IDENTIFIER)
 @Produces(MediaType.APPLICATION_JSON)
 @Consumes(MediaType.TEXT_PLAIN)
 public class LegacyKeyResource {
@@ -97,23 +96,23 @@ public class LegacyKeyResource {
    */
   @Inject
   public LegacyKeyResource(
-      @IntakePersonAutoCompleteServiceResource SimpleResourceDelegate<String, LegacyKeyRequest, LegacyKeyResponse, LegacyKeyService> resourceDelegate) {
+      @LegacyKeyServiceResource SimpleResourceDelegate<String, LegacyKeyRequest, LegacyKeyResponse, LegacyKeyService> resourceDelegate) {
     this.resourceDelegate = resourceDelegate;
   }
 
   /**
-   * Endpoint for Intake Auto-complete Person Search.
+   * Endpoint for legacy 10-char id to 19-digit UI identifier.
    * 
-   * @param req JSON {@link AutoCompletePersonRequest}
+   * @param req JSON {@link LegacyKeyRequest}
    * @return web service response
    */
   @GET
-  @Path("/")
+  // @Path("/")
   @ApiResponses(value = {@ApiResponse(code = 401, message = "Not Authorized"),
       @ApiResponse(code = 404, message = "Not found"),
       @ApiResponse(code = 400, message = "Unable to parse parameters")})
   @ApiOperation(value = "Convert legacy 10-char key to 19-digit UI identifier",
-      code = HttpStatus.SC_OK, response = LegacyKeyResponse[].class)
+      code = HttpStatus.SC_OK, response = LegacyKeyResponse.class)
   @Consumes(value = MediaType.TEXT_PLAIN)
   public Response legacyKeyToUIIdentifer(@Valid @NotNull @QueryParam("key") @ApiParam(
       hidden = false, required = true, example = "U2Gaygg0Ki") LegacyKeyRequest req) {
