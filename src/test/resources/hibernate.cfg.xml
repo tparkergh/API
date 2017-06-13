@@ -55,6 +55,7 @@
 		<mapping class="gov.ca.cwds.data.persistence.cms.ChildClient"/>
 		<mapping class="gov.ca.cwds.data.persistence.cms.CountyOwnership"/>
 		<mapping class="gov.ca.cwds.data.persistence.cms.CountyTrigger"/>
+		<mapping class="gov.ca.cwds.data.persistence.cms.DrmsDocument"/>
   		
 	</session-factory>
 </hibernate-configuration>
