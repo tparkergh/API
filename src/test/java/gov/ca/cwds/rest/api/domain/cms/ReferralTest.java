@@ -147,7 +147,7 @@ public class ReferralTest {
         zippyCreatedIndicator, homelessIndicator, familyRefusedServicesIndicator,
         firstEvaluatedOutApprovalDate, responsibleAgencyCode, limitedAccessGovtAgencyType,
         limitedAccessDate, limitedAccessDesc, originalClosureDate, null, null, null, null, null,
-        null);
+        null, null);
 
     gov.ca.cwds.data.persistence.cms.Referral persistent =
         new gov.ca.cwds.data.persistence.cms.Referral(id, domain, "lastUpdatedId");
@@ -441,7 +441,7 @@ public class ReferralTest {
         zippyCreatedIndicator, homelessIndicator, familyRefusedServicesIndicator,
         firstEvaluatedOutApprovalDate, responsibleAgencyCode, limitedAccessGovtAgencyType,
         limitedAccessDate, limitedAccessDesc, originalClosureDate, null, null, null, null, null,
-        null);
+        null, null);
 
     assertThat(domain.getAdditionalInfoIncludedCode(), is(equalTo(additionalInfoIncludedCode)));
     assertThat(domain.getAnonymousReporterIndicator(), is(equalTo(anonymousReporterIndicator)));
@@ -2714,6 +2714,6 @@ public class ReferralTest {
         new Short((short) 1520), new Short((short) 0), "2000-01-31", "16:41:49", "1234567ABC",
         "1234567ABC", "A", "A", "A", "1234567ABC", "1234567ABC", "0Ab", "q1p", "51", false, false,
         false, false, "2000-05-05", "C", new Short((short) 1234), "2000-05-05", "thjkl",
-        "2000-05-05", null, null, null, null, null, null);
+        "2000-05-05", null, null, null, null, null, null, null);
   }
 }

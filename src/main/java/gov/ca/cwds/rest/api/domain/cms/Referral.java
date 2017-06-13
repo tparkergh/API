@@ -8,12 +8,14 @@ import java.util.Set;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
+import org.apache.commons.lang3.StringUtils;
 import org.hibernate.validator.constraints.NotEmpty;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+import gov.ca.cwds.data.persistence.cms.CmsKeyIdGenerator;
 import gov.ca.cwds.rest.api.Request;
 import gov.ca.cwds.rest.api.Response;
 import gov.ca.cwds.rest.api.domain.DomainChef;
@@ -277,6 +279,12 @@ public class Referral extends ReportingDomain implements Request, Response {
       example = "2000-01-01")
   private String originalClosureDate;
 
+  /**
+   * 19-digit, hyphen delimited key, the so-called UI Identifier.
+   */
+  @Size(min = 22, max = 22)
+  private String uiIdentifier;
+
   @JsonProperty("addresses")
   private Set<gov.ca.cwds.rest.api.domain.cms.Address> address;
 
@@ -343,6 +351,7 @@ public class Referral extends ReportingDomain implements Request, Response {
    * @param limitedAccessDate limited Access Date
    * @param limitedAccessDesc limited Access Desc
    * @param originalClosureDate original Closure Date
+   * @param uiIdentifier 19-digit, hyphen delimited UI identifier
    * @param address address
    * @param reporter reporter
    * @param crossReport crossReport
@@ -398,6 +407,7 @@ public class Referral extends ReportingDomain implements Request, Response {
       @JsonProperty("limitedAccessDate") String limitedAccessDate,
       @JsonProperty("limitedAccessDesc") String limitedAccessDesc,
       @JsonProperty("originalClosureDate") String originalClosureDate,
+      @JsonProperty("uiIdentifier") String uiIdentifier,
       @JsonProperty("addresses") Set<gov.ca.cwds.rest.api.domain.cms.Address> address,
       @JsonProperty("reporter") Set<Reporter> reporter,
       @JsonProperty("crossReports") Set<CrossReport> crossReport,
@@ -459,6 +469,7 @@ public class Referral extends ReportingDomain implements Request, Response {
     this.allegation = allegation;
     this.victimClient = victimClient;
     this.perpetratorClient = perpetratorClient;
+    this.uiIdentifier = uiIdentifier;
   }
 
   /**
@@ -528,6 +539,10 @@ public class Referral extends ReportingDomain implements Request, Response {
     this.limitedAccessDate = DomainChef.cookDate(persistedReferral.getLimitedAccessDate());
     this.limitedAccessDesc = persistedReferral.getLimitedAccessDesc();
     this.originalClosureDate = DomainChef.cookDate(persistedReferral.getOriginalClosureDate());
+
+    // #145948067: convert legacy id to UI identifier.
+    this.uiIdentifier = legacyIdToUIIdentifier(persistedReferral.getId());
+
     this.address = new HashSet<>();
     if (persistedReferral.getAddresses() != null && !persistedReferral.getAddresses().isEmpty()) {
       for (gov.ca.cwds.data.persistence.cms.Address persistenceAddress : persistedReferral
@@ -578,6 +593,8 @@ public class Referral extends ReportingDomain implements Request, Response {
   }
 
   /**
+   * Construct an empty, minimal Referral object.
+   * 
    * @param anonymousReporter - anonymousReporter
    * @param communicationsMethodCode - communicationsMethodCode
    * @param referalName - referalName
@@ -601,7 +618,22 @@ public class Referral extends ReportingDomain implements Request, Response {
         referralResponseTypeCode, DEFAULT_CODE, "", "", "", longTextId, DEFAULT_NO, DEFAULT_NO,
         DEFAULT_NO, "", "", firstResponseDeterminedByStaffPersonId, staffId, countyCode, false,
         false, false, false, "", DEFAULT_RESPONSIBLE_AGENCY_CODE, DEFAULT_CODE, "", "", "", null,
-        null, null, null, null, null);
+        null, null, null, null, null, null);
+  }
+
+  /**
+   * Story #145948067: convert legacy id to UI identifier.
+   * 
+   * @param key key to convert
+   * @return 19-digit, hyphen delimited UI identifier.
+   */
+  protected String legacyIdToUIIdentifier(String key) {
+    String ret = null;
+    if (StringUtils.isNotBlank(key)) {
+      ret = CmsKeyIdGenerator.getUIIdentifierFromKey(key.trim());
+    }
+
+    return ret;
   }
 
   /**
@@ -1355,6 +1387,14 @@ public class Referral extends ReportingDomain implements Request, Response {
     } else if (!zippyCreatedIndicator.equals(other.zippyCreatedIndicator))
       return false;
     return true;
+  }
+
+  public String getUiIdentifier() {
+    return uiIdentifier;
+  }
+
+  public void setUiIdentifier(String uiIdentifier) {
+    this.uiIdentifier = uiIdentifier;
   }
 
 }
