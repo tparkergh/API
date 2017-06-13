@@ -2700,7 +2700,7 @@ public class ScreeningToReferralServiceTest {
     try {
       Response response = screeningToReferralService.create(screeningToReferral);
     } catch (Exception e) {
-      if (e.getMessage().contains("The object to be validated must not be null")) {
+      if (e.getMessage().contains("Screening address is null or empty")) {
         theErrorDetected = true;
       }
       assertThat(theErrorDetected, is(equalTo(true)));
