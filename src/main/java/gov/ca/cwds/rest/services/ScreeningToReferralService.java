@@ -1,21 +1,5 @@
 package gov.ca.cwds.rest.services;
 
-import java.io.Serializable;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Locale;
-import java.util.Set;
-
-import javax.validation.Validator;
-
-import org.apache.commons.lang3.NotImplementedException;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import com.google.inject.Inject;
-
 import gov.ca.cwds.data.Dao;
 import gov.ca.cwds.data.cms.ReferralDao;
 import gov.ca.cwds.rest.api.Request;
@@ -55,6 +39,22 @@ import gov.ca.cwds.rest.services.cms.StaffPersonIdRetriever;
 import gov.ca.cwds.rest.validation.ParticipantValidator;
 import gov.ca.cwds.rest.validation.ValidationException;
 import io.dropwizard.hibernate.UnitOfWork;
+
+import java.io.Serializable;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Locale;
+import java.util.Set;
+
+import javax.validation.Validator;
+
+import org.apache.commons.lang3.NotImplementedException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import com.google.inject.Inject;
 
 /**
  * Business layer object to work on {@link Screening}
@@ -104,6 +104,7 @@ public class ScreeningToReferralService implements CrudsService {
   private static final short DEFAULT_ADDRESS_TYPE = 32; // residence
   private static final String DEFAULT_COUNTY_SPECIFIC_CODE = "62";
   private static final String DEFAULT_STAFF_PERSON_ID = "0X5";
+  private static final short APPROVAL_STATUS_CODE_NOT_SUBMITTED = 118;
 
   // TODO: #142337489 Develop List of Value service to support Pi2 Save Referral to CWS/CMS
   private short communicationsMethodCode = 409; // default to telephone until #142337489 complete
@@ -191,8 +192,9 @@ public class ScreeningToReferralService implements CrudsService {
     Set<Allegation> resultAllegations =
         createAllegations(screeningToReferral, referralId, victimClient, perpatratorClient);
 
-    PostedScreeningToReferral pstr = PostedScreeningToReferral.createWithDefaults(referralId,
-        screeningToReferral, resultParticipants, resultCrossReports, resultAllegations);
+    PostedScreeningToReferral pstr =
+        PostedScreeningToReferral.createWithDefaults(referralId, screeningToReferral,
+            resultParticipants, resultCrossReports, resultAllegations);
 
     StringBuilder errorMessage = new StringBuilder();
     if (!messageBuilder.getMessages().isEmpty()) {
@@ -206,8 +208,7 @@ public class ScreeningToReferralService implements CrudsService {
   }
 
   private Set<Allegation> createAllegations(ScreeningToReferral screeningToReferral,
-      String referralId, HashMap<Long, String> victimClient,
-      HashMap<Long, String> perpatratorClient) {
+      String referralId, HashMap<Long, String> victimClient, HashMap<Long, String> perpatratorClient) {
     Set<Allegation> resultAllegations = null;
     try {
       resultAllegations =
@@ -264,8 +265,8 @@ public class ScreeningToReferralService implements CrudsService {
 
         try {
           if (ParticipantValidator.roleIsReporterType(role)
-              && (!ParticipantValidator.roleIsAnonymousReporter(role)
-                  && !ParticipantValidator.selfReported(incomingParticipant))) {
+              && (!ParticipantValidator.roleIsAnonymousReporter(role) && !ParticipantValidator
+                  .selfReported(incomingParticipant))) {
             /*
              * CMS Reporter - if role is 'mandated reporter' or 'non-mandated reporter' and not
              * anonymous reporter or self-reported
@@ -313,9 +314,10 @@ public class ScreeningToReferralService implements CrudsService {
               }
 
               // CMS Referral Client
-              ReferralClient referralClient = ReferralClient.createWithDefault(
-                  ParticipantValidator.selfReported(incomingParticipant), referralId, clientId,
-                  DEFAULT_COUNTY_SPECIFIC_CODE, DEFAULT_APPROVAL_STATUS_CODE);
+              ReferralClient referralClient =
+                  ReferralClient.createWithDefault(
+                      ParticipantValidator.selfReported(incomingParticipant), referralId, clientId,
+                      DEFAULT_COUNTY_SPECIFIC_CODE, DEFAULT_APPROVAL_STATUS_CODE);
 
               // validate referral client
               messageBuilder.addDomainValidationError(validator.validate(referralClient));
@@ -380,31 +382,13 @@ public class ScreeningToReferralService implements CrudsService {
       String timeStarted) {
     String referralId = null;
 
-    /**
-     * <blockquote>
-     * 
-     * <pre>
-     * BUSINESS RULE: "R - 04537" - FKSTFPERS0 set when first referral determined
-     * 
-     * IF    referralResponseTypeCode is set to default
-     * THEN  firstResponseDeterminedByStaffPersonId is set to the staffpersonId
-     * </blockquote>
-     * </pre>
-     */
-    String firstResponseDeterminedByStaffPersonId = staffPersonIdRetriever.getStaffPersonId();
-
     if (screeningToReferral.getReferralId() == null
         || screeningToReferral.getReferralId().isEmpty()) {
       // the legacy id is not set - create the referral
-      String longTextId = generateLongTextId(screeningToReferral);
       // create a CMS Referral
       Referral referral = null;
       try {
-        referral = Referral.createWithDefaults(
-            ParticipantValidator.anonymousReporter(screeningToReferral), communicationsMethodCode,
-            screeningToReferral.getName(), dateStarted, timeStarted, referralResponseTypeCode,
-            firstResponseDeterminedByStaffPersonId, longTextId, DEFAULT_COUNTY_SPECIFIC_CODE,
-            DEFAULT_APPROVAL_STATUS_CODE, DEFAULT_STAFF_PERSON_ID);
+        referral = createReferralWithDefaults(screeningToReferral, dateStarted, timeStarted);
       } catch (Exception e1) {
         String message = e1.getMessage();
         logError(message, e1);
@@ -428,6 +412,54 @@ public class ScreeningToReferralService implements CrudsService {
     return referralId;
   }
 
+  public Referral createReferralWithDefaults(ScreeningToReferral screeningToReferral,
+      String dateStarted, String timeStarted) throws Exception {
+    short approvalStatusCode = approvalStatusCodeOnCreateSetToNotSubmitted();
+    String longTextId = generateLongTextId(screeningToReferral);
+    String firstResponseDeterminedByStaffPersonId = getFirstResponseDeterminedByStaffPersonId();
+
+    return Referral.createWithDefaults(ParticipantValidator.anonymousReporter(screeningToReferral),
+        communicationsMethodCode, screeningToReferral.getName(), dateStarted, timeStarted,
+        referralResponseTypeCode, firstResponseDeterminedByStaffPersonId, longTextId,
+        DEFAULT_COUNTY_SPECIFIC_CODE, approvalStatusCode, DEFAULT_STAFF_PERSON_ID);
+  }
+
+  /**
+   * <blockquote>
+   * 
+   * <pre>
+   * BUSINESS RULE: "R - 04537" - FKSTFPERS0 set when first referral determined
+   * 
+   * IF    referralResponseTypeCode is set to default
+   * THEN  firstResponseDeterminedByStaffPersonId is set to the staffpersonId
+   *
+   * </pre>
+   * 
+   * </blockquote>
+   */
+  private String getFirstResponseDeterminedByStaffPersonId() {
+    return staffPersonIdRetriever.getStaffPersonId();
+  }
+
+  /**
+   * <blockquote>
+   * 
+   * <pre>
+   * 
+   * BUSINESS RULE: "R - 05914" -  Do Not Update Approval Status Type
+   * 
+   * When creating the Referral entity, set the Approval Status Type = 'Request Not Submitted'. 
+   * When updating the Referral entity, update every attribute except Approval Status Type. 
+   * The Approval Status Type will be updated by the Host, not the workstation.
+   * </pre>
+   * 
+   * </blockquote>
+   */
+  private short approvalStatusCodeOnCreateSetToNotSubmitted() {
+    return APPROVAL_STATUS_CODE_NOT_SUBMITTED;
+  }
+
+
   private String generateLongTextId(ScreeningToReferral screeningToReferral) {
     String longTextId = null;
     if (screeningToReferral.getAdditionalInformation() == null
@@ -435,8 +467,9 @@ public class ScreeningToReferralService implements CrudsService {
       longTextId = null;
     } else {
       try {
-        longTextId = createLongText(DEFAULT_COUNTY_SPECIFIC_CODE,
-            screeningToReferral.getAdditionalInformation());
+        longTextId =
+            createLongText(DEFAULT_COUNTY_SPECIFIC_CODE,
+                screeningToReferral.getAdditionalInformation());
       } catch (ServiceException e) {
         String message = e.getMessage();
         logError(message, e);
@@ -471,6 +504,23 @@ public class ScreeningToReferralService implements CrudsService {
    * {@inheritDoc}
    * 
    * @see gov.ca.cwds.rest.services.CrudsService#delete(java.io.Serializable)
+   * 
+   *      <pre>
+   * 
+   * DocTool Rule R - 00796 
+   * 
+   * If the user had originally indicated that the call should be treated as a referral,
+   * and that referral had been committed to the database, that referral must be deleted from the
+   * system. Also deleted would be any referral clients associated with the referral, any clients
+   * associated to the referral if that referral had been their only interaction with the system,
+   * and all allegations associated with the referral. Do NOT delete the client if the client
+   * already exists on the Host and associated to other Case or Referral.
+   * 
+   * This rule involves deleting a referral and associated referral clients, clients and
+   * allegations. Since there is no business requirement at this time to delete a referral we will
+   * not be implementing this rule. A NO-OP delete method is provided that gives a Not
+   * Implemented Exception.
+   * </pre>
    */
   @Override
   public Response delete(Serializable primaryKey) {
@@ -734,8 +784,8 @@ public class ScreeningToReferralService implements CrudsService {
 
       if (address.getLegacyId() == null || address.getLegacyId().isEmpty()) {
 
-        ClientAddress clientAddress = new ClientAddress(DEFAULT_ADDRESS_TYPE, "", "", "", addressId,
-            clientId, "", referralId);
+        ClientAddress clientAddress =
+            new ClientAddress(DEFAULT_ADDRESS_TYPE, "", "", "", addressId, clientId, "", referralId);
 
         messageBuilder.addDomainValidationError(validator.validate(clientAddress));
         this.clientAddressService.create(clientAddress);
@@ -821,8 +871,9 @@ public class ScreeningToReferralService implements CrudsService {
     Boolean mandatedReporterIndicator = ParticipantValidator.roleIsMandatedReporter(role);
     Reporter theReporter = reporterService.find(referralId);
     if (theReporter == null) {
-      Reporter reporter = Reporter.createWithDefaults(referralId, mandatedReporterIndicator,
-          reporterAddress, ip, DEFAULT_COUNTY_SPECIFIC_CODE, DEFAULT_STATE_CODE);
+      Reporter reporter =
+          Reporter.createWithDefaults(referralId, mandatedReporterIndicator, reporterAddress, ip,
+              DEFAULT_COUNTY_SPECIFIC_CODE, DEFAULT_STATE_CODE);
 
       messageBuilder.addDomainValidationError(validator.validate(reporter));
       theReporter = reporterService.create(reporter);
@@ -849,4 +900,3 @@ public class ScreeningToReferralService implements CrudsService {
     return this.childClientService.create(childClient);
   }
 }
-
