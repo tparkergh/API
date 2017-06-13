@@ -21,6 +21,8 @@ import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
+import org.mockito.invocation.InvocationOnMock;
+import org.mockito.stubbing.Answer;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -2609,6 +2611,121 @@ public class ScreeningToReferralServiceTest {
     }
   }
 
+  /*
+   * test for the referral-AllegesAbuseOccurredAtAddressId(FKAddrs_T) is updated with the
+   * referralAddress id
+   */
+  @SuppressWarnings("javadoc")
+  @Test
+  public void testAllegesAbuseOccurredAtAddressId() throws Exception {
+    Referral referralDomain = MAPPER.readValue(
+        fixture("fixtures/domain/ScreeningToReferral/valid/validReferral.json"), Referral.class);
+    gov.ca.cwds.data.persistence.cms.Referral referralToCreate =
+        new gov.ca.cwds.data.persistence.cms.Referral("0123456ABC", referralDomain, "2016-10-31");
+    when(referralDao.create(any(gov.ca.cwds.data.persistence.cms.Referral.class)))
+        .thenReturn(referralToCreate);
+
+    when(referralDao.create(any(gov.ca.cwds.data.persistence.cms.Referral.class)))
+        .thenAnswer(new Answer<gov.ca.cwds.data.persistence.cms.Referral>() {
+
+          @Override
+          public gov.ca.cwds.data.persistence.cms.Referral answer(InvocationOnMock invocation)
+              throws Throwable {
+            gov.ca.cwds.data.persistence.cms.Referral report =
+                (gov.ca.cwds.data.persistence.cms.Referral) invocation.getArguments()[0];
+            createdReferal = report;
+            return referralToCreate;
+          }
+        });
+
+    ChildClient childClient = MAPPER.readValue(
+        fixture("fixtures/domain/ScreeningToReferral/valid/childClient.json"), ChildClient.class);
+    gov.ca.cwds.data.persistence.cms.ChildClient childClientToCreate =
+        new gov.ca.cwds.data.persistence.cms.ChildClient("1234567ABC", childClient, "0XA");
+    when(childClientDao.create(any(gov.ca.cwds.data.persistence.cms.ChildClient.class)))
+        .thenReturn(childClientToCreate);
+    Set<Client> clientDomain =
+        MAPPER.readValue(fixture("fixtures/domain/ScreeningToReferral/valid/validClient.json"),
+            new TypeReference<Set<Client>>() {});
+    gov.ca.cwds.data.persistence.cms.Client clientToCreate =
+        new gov.ca.cwds.data.persistence.cms.Client("1234567ABC",
+            (Client) clientDomain.toArray()[0], "2016-10-31");
+    when(clientDao.create(any(gov.ca.cwds.data.persistence.cms.Client.class)))
+        .thenReturn(clientToCreate);
+
+    Set<ReferralClient> referralClientDomain = MAPPER.readValue(
+        fixture("fixtures/domain/ScreeningToReferral/valid/validReferralClient.json"),
+        new TypeReference<Set<ReferralClient>>() {});
+    gov.ca.cwds.data.persistence.cms.ReferralClient referralClientToCreate =
+        new gov.ca.cwds.data.persistence.cms.ReferralClient(
+            (ReferralClient) referralClientDomain.toArray()[0], "2016-10-31");
+    when(referralClientDao.create(any(gov.ca.cwds.data.persistence.cms.ReferralClient.class)))
+        .thenReturn(referralClientToCreate);
+
+    Set<Allegation> allegationDomain =
+        MAPPER.readValue(fixture("fixtures/domain/ScreeningToReferral/valid/validAllegation.json"),
+            new TypeReference<Set<Allegation>>() {});
+    gov.ca.cwds.data.persistence.cms.Allegation allegationToCreate =
+        new gov.ca.cwds.data.persistence.cms.Allegation("2345678ABC",
+            (Allegation) allegationDomain.toArray()[0], "2016-10-31");
+    when(allegationDao.create(any(gov.ca.cwds.data.persistence.cms.Allegation.class)))
+        .thenReturn(allegationToCreate);
+
+    Set<CrossReport> crossReportDomain =
+        MAPPER.readValue(fixture("fixtures/domain/ScreeningToReferral/valid/validCrossReport.json"),
+            new TypeReference<Set<CrossReport>>() {});
+    gov.ca.cwds.data.persistence.cms.CrossReport crossReportToCreate =
+        new gov.ca.cwds.data.persistence.cms.CrossReport("3456789ABC",
+            // ((CrossReport) crossReportDomain).getThirdId(),
+            (CrossReport) crossReportDomain.toArray()[0], "OXA");
+    when(crossReportDao.create(any(gov.ca.cwds.data.persistence.cms.CrossReport.class)))
+        .thenReturn(crossReportToCreate);
+
+    Reporter reporterDomain = MAPPER.readValue(
+        fixture("fixtures/domain/ScreeningToReferral/valid/validReporter.json"), Reporter.class);
+    gov.ca.cwds.data.persistence.cms.Reporter reporterToCreate =
+        new gov.ca.cwds.data.persistence.cms.Reporter(reporterDomain, "ABC");
+    when(reporterDao.create(any(gov.ca.cwds.data.persistence.cms.Reporter.class)))
+        .thenReturn(reporterToCreate);
+
+    Address addressDomain = MAPPER.readValue(
+        fixture("fixtures/domain/ScreeningToReferral/valid/validAddress.json"), Address.class);
+    gov.ca.cwds.data.persistence.cms.Address addressToCreate =
+        new gov.ca.cwds.data.persistence.cms.Address("345678ABC", addressDomain, "ABC");
+    when(addressDao.create(any(gov.ca.cwds.data.persistence.cms.Address.class)))
+        .thenReturn(addressToCreate);
+
+    ClientAddress clientAddressDomain = MAPPER.readValue(
+        fixture("fixtures/domain/ScreeningToReferral/valid/validClientAddress.json"),
+        ClientAddress.class);
+    gov.ca.cwds.data.persistence.cms.ClientAddress clientAddressToCreate =
+        new gov.ca.cwds.data.persistence.cms.ClientAddress("456789ABC", clientAddressDomain, "ABC");
+    when(clientAddressDao.create(any(gov.ca.cwds.data.persistence.cms.ClientAddress.class)))
+        .thenReturn(clientAddressToCreate);
+
+    LongText longTextDomain = MAPPER.readValue(
+        fixture("fixtures/domain/ScreeningToReferral/valid/validLongText.json"), LongText.class);
+    gov.ca.cwds.data.persistence.cms.LongText longTextToCreate =
+        new gov.ca.cwds.data.persistence.cms.LongText("567890ABC", longTextDomain, "ABC");
+    when(longTextDao.create(any(gov.ca.cwds.data.persistence.cms.LongText.class)))
+        .thenReturn(longTextToCreate);
+
+    ScreeningToReferral screeningToReferral = MAPPER.readValue(
+        fixture("fixtures/domain/ScreeningToReferral/valid/valid.json"), ScreeningToReferral.class);
+
+    Response response = screeningToReferralService.create(screeningToReferral);
+    if (response.hasMessages()) {
+      List<ErrorMessage> messages = response.getMessages();
+      for (ErrorMessage message : messages) {
+        System.out.println(message.getMessage());
+      }
+    }
+
+    assertThat(response.getClass(), is(PostedScreeningToReferral.class));
+    assertThat(response.hasMessages(), is(equalTo(false)));
+    assertThat(createdReferal.getAllegesAbuseOccurredAtAddressId(), is(equalTo("345678ABC")));
+  }
+
   @SuppressWarnings("javadoc")
   @Test
   public void testNullAddressOnScreeningFail() throws Exception {
@@ -2700,7 +2817,7 @@ public class ScreeningToReferralServiceTest {
     try {
       Response response = screeningToReferralService.create(screeningToReferral);
     } catch (Exception e) {
-      if (e.getMessage().contains("Screening address is null or empty")) {
+      if (e.getMessage().contains("The object to be validated must not be null")) {
         theErrorDetected = true;
       }
       assertThat(theErrorDetected, is(equalTo(true)));

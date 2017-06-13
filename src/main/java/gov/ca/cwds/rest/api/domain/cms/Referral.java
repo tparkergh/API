@@ -601,6 +601,7 @@ public class Referral extends ReportingDomain implements Request, Response {
    * @param dateStarted - dateStarted
    * @param timeStarted - timeStarted
    * @param referralResponseTypeCode - referralResponseTypeCode
+   * @param allegesAbuseOccurredAtAddressId - allegesAbuseOccurredAtAddressId
    * @param firstResponseDeterminedByStaffPersonId - firstResponseDeterminedByStaffPersonId
    * @param longTextId - longTextId
    * @param countyCode - countyCode
@@ -610,15 +611,16 @@ public class Referral extends ReportingDomain implements Request, Response {
    */
   public static Referral createWithDefaults(Boolean anonymousReporter,
       short communicationsMethodCode, String referalName, String dateStarted, String timeStarted,
-      short referralResponseTypeCode, String firstResponseDeterminedByStaffPersonId,
-      String longTextId, String countyCode, short approvalCode, String staffId) {
+      short referralResponseTypeCode, String allegesAbuseOccurredAtAddressId,
+      String firstResponseDeterminedByStaffPersonId, String longTextId, String countyCode,
+      short approvalCode, String staffId) {
     return new Referral(false, anonymousReporter, false, "", approvalCode, false, "",
         communicationsMethodCode, "", "", "", "", false, false, DEFAULT_CODE, DEFAULT_NO, false,
         DEFAULT_LIMITIED_ACCESS_CODE, "", referalName, "", dateStarted, timeStarted,
         referralResponseTypeCode, DEFAULT_CODE, "", "", "", longTextId, DEFAULT_NO, DEFAULT_NO,
-        DEFAULT_NO, "", "", firstResponseDeterminedByStaffPersonId, staffId, countyCode, false,
-        false, false, false, "", DEFAULT_RESPONSIBLE_AGENCY_CODE, DEFAULT_CODE, "", "", "", null,
-        null, null, null, null, null, null);
+        DEFAULT_NO, "", allegesAbuseOccurredAtAddressId, firstResponseDeterminedByStaffPersonId,
+        staffId, countyCode, false, false, false, false, "", DEFAULT_RESPONSIBLE_AGENCY_CODE,
+        DEFAULT_CODE, "", "", "", null, null, null, null, null, null, null);
   }
 
   /**
