@@ -1099,6 +1099,7 @@ public class Referral extends ReportingDomain implements Request, Response {
     result = prime * result + ((victimClient == null) ? 0 : victimClient.hashCode());
     result =
         prime * result + ((zippyCreatedIndicator == null) ? 0 : zippyCreatedIndicator.hashCode());
+    result = prime * result + ((uiIdentifier == null) ? 0 : uiIdentifier.hashCode());
     return result;
   }
 
@@ -1381,11 +1382,19 @@ public class Referral extends ReportingDomain implements Request, Response {
         return false;
     } else if (!victimClient.equals(other.victimClient))
       return false;
+
     if (zippyCreatedIndicator == null) {
       if (other.zippyCreatedIndicator != null)
         return false;
     } else if (!zippyCreatedIndicator.equals(other.zippyCreatedIndicator))
       return false;
+
+    if (uiIdentifier == null) {
+      if (other.uiIdentifier != null)
+        return false;
+    } else if (!uiIdentifier.equals(other.uiIdentifier))
+      return false;
+
     return true;
   }
 

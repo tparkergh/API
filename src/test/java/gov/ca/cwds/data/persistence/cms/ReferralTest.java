@@ -38,7 +38,6 @@ public class ReferralTest implements PersistentTestTemplate {
   @Override
   public void testEqualsHashCodeWorks() throws Exception {
     // no equals() or hash() methods in persistent class.
-
   }
 
   /*
@@ -53,9 +52,7 @@ public class ReferralTest implements PersistentTestTemplate {
   @Override
   @Test
   public void testConstructorUsingDomain() throws Exception {
-
     gov.ca.cwds.rest.api.domain.cms.Referral domainReferral = validDomainReferral();
-
     Referral persistent = new Referral(id, domainReferral, "0X5");
 
     assertThat(persistent.getId(), is(equalTo(id)));
@@ -156,9 +153,7 @@ public class ReferralTest implements PersistentTestTemplate {
   @Override
   @Test
   public void testPersistentConstructor() throws Exception {
-
     Referral vr = validReferral();
-
     Referral pr = new Referral(vr.getId(), vr.getAdditionalInfoIncludedCode(),
         vr.getAnonymousReporterIndicator(), vr.getApplicationForPetitionIndicator(),
         vr.getApprovalNumber(), vr.getApprovalStatusType(), vr.getCaretakersPerpetratorCode(),
@@ -242,15 +237,12 @@ public class ReferralTest implements PersistentTestTemplate {
     assertThat(pr.getLimitedAccessGovtAgencyType(),
         is(equalTo(vr.getLimitedAccessGovtAgencyType())));
     assertThat(pr.getOriginalClosureDate(), is(equalTo(vr.getOriginalClosureDate())));
-
   }
 
   @SuppressWarnings("javadoc")
   @Test
   public void testSerializeAndDeserialize() throws Exception {
-
     Referral vr = validReferral();
-
     Referral pr = new Referral(vr.getId(), vr.getAdditionalInfoIncludedCode(),
         vr.getAnonymousReporterIndicator(), vr.getApplicationForPetitionIndicator(),
         vr.getApprovalNumber(), vr.getApprovalStatusType(), vr.getCaretakersPerpetratorCode(),
@@ -278,7 +270,6 @@ public class ReferralTest implements PersistentTestTemplate {
         fixture("fixtures/persistent/Referral/valid/validWithSysCodes.json"), Referral.class)));
 
     assertThat(MAPPER.writeValueAsString(pr)).isEqualTo(expected);
-
   }
 
   private Referral validReferral() throws JsonParseException, JsonMappingException, IOException {
@@ -289,12 +280,10 @@ public class ReferralTest implements PersistentTestTemplate {
 
   private gov.ca.cwds.rest.api.domain.cms.Referral validDomainReferral()
       throws JsonParseException, JsonMappingException, IOException {
-
     gov.ca.cwds.rest.api.domain.cms.Referral validDomainReferral =
         MAPPER.readValue(fixture("fixtures/domain/legacy/Referral/valid/valid.json"),
             gov.ca.cwds.rest.api.domain.cms.Referral.class);
     return validDomainReferral;
-
   }
 
 }
