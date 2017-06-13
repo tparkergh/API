@@ -1,5 +1,4 @@
 {
-
   "additionalInfoIncludedCode": false,
   "anonymousReporterIndicator": false,
   "applicationForPetitionIndicator": false,
@@ -19,7 +18,7 @@
   "legalRightsNoticeIndicator": false,
   "limitedAccessCode": "N",
   "mandatedCrossReportReceivedDate": "2000-01-31",
-  "referralName": "Verification (R3)                  ",
+  "referralName": "Verification (R3)",
   "openAdequateCaseCode": "A",
   "receivedDate": "2000-01-01",
   "receivedTime": "16:41:49",
@@ -47,6 +46,7 @@
   "limitedAccessDate": "2000-05-05",
   "limitedAccessDesc": "thjkl",
   "originalClosureDate": "2000-05-05",
+  "uiIdentifier": "0058-6778-0316-7039134",
   "addresses": [],
   "reporter": [],
   "crossReports": [],

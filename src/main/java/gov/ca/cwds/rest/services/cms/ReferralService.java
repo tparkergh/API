@@ -1,5 +1,15 @@
 package gov.ca.cwds.rest.services.cms;
 
+import java.io.Serializable;
+
+import javax.persistence.EntityExistsException;
+import javax.persistence.EntityNotFoundException;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import com.google.inject.Inject;
+
 import gov.ca.cwds.data.Dao;
 import gov.ca.cwds.data.cms.ReferralDao;
 import gov.ca.cwds.data.cms.StaffPersonDao;
@@ -13,16 +23,6 @@ import gov.ca.cwds.rest.business.rules.LACountyTrigger;
 import gov.ca.cwds.rest.business.rules.NonLACountyTriggers;
 import gov.ca.cwds.rest.services.CrudsService;
 import gov.ca.cwds.rest.services.ServiceException;
-
-import java.io.Serializable;
-
-import javax.persistence.EntityExistsException;
-import javax.persistence.EntityNotFoundException;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import com.google.inject.Inject;
 
 /**
  * Business layer object to work on {@link Referral}
