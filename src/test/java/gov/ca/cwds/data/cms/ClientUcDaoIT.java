@@ -12,10 +12,13 @@ import javax.persistence.EntityExistsException;
 import javax.persistence.EntityNotFoundException;
 
 import org.hamcrest.junit.ExpectedException;
+import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
 import org.junit.After;
+import org.junit.AfterClass;
 import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.Rule;
 import org.junit.Test;
 
@@ -31,8 +34,9 @@ import gov.ca.cwds.data.persistence.cms.ClientUc;
  */
 public class ClientUcDaoIT implements DaoTestTemplate {
 
-  private SessionFactory sessionFactory;
-  private ClientUcDao clientUcDao;
+  private static SessionFactory sessionFactory;
+  private static ClientUcDao clientUcDao;
+  private Session session;
 
   /*
    * pktableId matches src/main/resources/db.cms/ci-seeds.sql
@@ -48,21 +52,31 @@ public class ClientUcDaoIT implements DaoTestTemplate {
   /**
    * 
    */
-  @Override
-  @Before
-  public void setup() {
+  @BeforeClass
+  public static void beforeClass() {
     sessionFactory = new Configuration().configure().buildSessionFactory();
-    sessionFactory.getCurrentSession().beginTransaction();
     clientUcDao = new ClientUcDao(sessionFactory);
   }
 
   /**
    * 
    */
+  @AfterClass
+  public static void afterClass() {
+    sessionFactory.close();
+  }
+
+  @Override
+  @Before
+  public void setup() {
+    session = sessionFactory.getCurrentSession();
+    session.beginTransaction();
+  }
+
   @Override
   @After
   public void teardown() {
-    sessionFactory.close();
+    session.getTransaction().rollback();
   }
 
   @Override

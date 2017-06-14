@@ -19,7 +19,9 @@ import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
 import org.junit.After;
+import org.junit.AfterClass;
 import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.Rule;
 import org.junit.Test;
 
@@ -33,18 +35,33 @@ import gov.ca.cwds.data.persistence.cms.Reporter;
 public class ReporterDaoIT implements DaoTestTemplate {
   private static final DateFormat TIMESTAMP_FORMAT = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 
-  private SessionFactory sessionFactory;
-  private ReporterDao reporterDao;
+  private static SessionFactory sessionFactory;
+  private static ReporterDao reporterDao;
   private Session session;
 
   @Rule
   public ExpectedException thrown = ExpectedException.none();
 
+  /**
+   * 
+   */
+  @BeforeClass
+  public static void beforeClass() {
+    sessionFactory = new Configuration().configure().buildSessionFactory();
+    reporterDao = new ReporterDao(sessionFactory);
+  }
+
+  /**
+   * 
+   */
+  @AfterClass
+  public static void afterClass() {
+    sessionFactory.close();
+  }
+
   @Override
   @Before
   public void setup() {
-    sessionFactory = new Configuration().configure().buildSessionFactory();
-    reporterDao = new ReporterDao(sessionFactory);
     session = sessionFactory.getCurrentSession();
     session.beginTransaction();
   }
@@ -53,7 +70,6 @@ public class ReporterDaoIT implements DaoTestTemplate {
   @After
   public void teardown() {
     session.getTransaction().rollback();
-    sessionFactory.close();
   }
 
   @Override

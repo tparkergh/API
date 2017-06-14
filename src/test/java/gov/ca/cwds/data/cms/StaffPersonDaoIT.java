@@ -39,7 +39,7 @@ public class StaffPersonDaoIT implements DaoTestTemplate {
   @SuppressWarnings("javadoc")
   @BeforeClass
   public static void beforeClass() {
-    sessionFactory = new Configuration().configure("hibernate.cfg.xml").buildSessionFactory();
+    sessionFactory = new Configuration().configure().buildSessionFactory();
     staffPersonDao = new StaffPersonDao(sessionFactory);
   }
 
