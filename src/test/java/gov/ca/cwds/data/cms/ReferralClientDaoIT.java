@@ -10,10 +10,13 @@ import javax.persistence.EntityExistsException;
 import javax.persistence.EntityNotFoundException;
 
 import org.hamcrest.junit.ExpectedException;
+import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
 import org.junit.After;
+import org.junit.AfterClass;
 import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.Rule;
 import org.junit.Test;
 
@@ -26,25 +29,42 @@ import gov.ca.cwds.data.persistence.cms.ReferralClient.PrimaryKey;
  *
  */
 public class ReferralClientDaoIT implements DaoTestTemplate {
-  private SessionFactory sessionFactory;
-  private ReferralClientDao referralClientDao;
+  private static SessionFactory sessionFactory;
+  private static ReferralClientDao referralClientDao;
+  private Session session;
 
   @SuppressWarnings("javadoc")
   @Rule
   public ExpectedException thrown = ExpectedException.none();
 
+  /**
+   * 
+   */
+  @BeforeClass
+  public static void beforeClass() {
+    sessionFactory = new Configuration().configure().buildSessionFactory();
+    referralClientDao = new ReferralClientDao(sessionFactory);
+  }
+
+  /**
+   * 
+   */
+  @AfterClass
+  public static void afterClass() {
+    sessionFactory.close();
+  }
+
   @Override
   @Before
   public void setup() {
-    sessionFactory = new Configuration().configure().buildSessionFactory();
-    sessionFactory.getCurrentSession().beginTransaction();
-    referralClientDao = new ReferralClientDao(sessionFactory);
+    session = sessionFactory.getCurrentSession();
+    session.beginTransaction();
   }
 
   @Override
   @After
   public void teardown() {
-    sessionFactory.close();
+    session.getTransaction().rollback();
   }
 
   @Override

@@ -33,6 +33,10 @@ import gov.ca.cwds.data.junit.template.DaoTestTemplate;
 import gov.ca.cwds.data.persistence.cms.EducationProviderContact;
 import io.dropwizard.jackson.Jackson;
 
+/**
+ * @author CWDS API Team
+ *
+ */
 public class EducationProviderContactDaoIT implements DaoTestTemplate {
   private static final DateFormat TIMESTAMP_FORMAT = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
   private static final ObjectMapper MAPPER = Jackson.newObjectMapper();
@@ -47,10 +51,11 @@ public class EducationProviderContactDaoIT implements DaoTestTemplate {
   @SuppressWarnings("javadoc")
   @BeforeClass
   public static void beforeClass() {
-    sessionFactory = new Configuration().configure("hibernate.cfg.xml").buildSessionFactory();
+    sessionFactory = new Configuration().configure().buildSessionFactory();
     educationProviderContactDao = new EducationProviderContactDao(sessionFactory);
   }
 
+  @SuppressWarnings("javadoc")
   @AfterClass
   public static void afterClass() {
     sessionFactory.close();

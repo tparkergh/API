@@ -13,10 +13,13 @@ import javax.persistence.EntityExistsException;
 import javax.persistence.EntityNotFoundException;
 
 import org.hamcrest.junit.ExpectedException;
+import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
 import org.junit.After;
+import org.junit.AfterClass;
 import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.Rule;
 import org.junit.Test;
 
@@ -30,8 +33,9 @@ import gov.ca.cwds.data.persistence.cms.CountyTriggerEmbeddable;
  */
 public class CountyTriggerDaoIT implements DaoTestTemplate {
 
-  private SessionFactory sessionFactory;
-  private CountyTriggerDao countyTriggerDao;
+  private static SessionFactory sessionFactory;
+  private static CountyTriggerDao countyTriggerDao;
+  private Session session;
 
   /*
    * pktableId matches src/main/resources/db.cms/ci-seeds.sql
@@ -47,21 +51,31 @@ public class CountyTriggerDaoIT implements DaoTestTemplate {
   /**
    * 
    */
-  @Override
-  @Before
-  public void setup() {
+  @BeforeClass
+  public static void beforeClass() {
     sessionFactory = new Configuration().configure().buildSessionFactory();
-    sessionFactory.getCurrentSession().beginTransaction();
     countyTriggerDao = new CountyTriggerDao(sessionFactory);
   }
 
   /**
    * 
    */
+  @AfterClass
+  public static void afterClass() {
+    sessionFactory.close();
+  }
+
+  @Override
+  @Before
+  public void setup() {
+    session = sessionFactory.getCurrentSession();
+    session.beginTransaction();
+  }
+
   @Override
   @After
   public void teardown() {
-    sessionFactory.close();
+    session.getTransaction().rollback();
   }
 
   @Override
