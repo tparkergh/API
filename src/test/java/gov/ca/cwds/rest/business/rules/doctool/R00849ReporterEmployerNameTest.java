@@ -72,17 +72,22 @@ public class R00849ReporterEmployerNameTest {
   }
 
 
-
-  /*
-   * Class level lawEnforcementIdAndEmployerName tests
+  /**
+   * <pre>
+   * <blockquote>
+   * DocTool Rule R - 00849 Employer Name specification 
    * 
-   * Referential Integrity Rule tests R - 00849 Employer Name specification. If REPORTER is
-   * associated with LAW ENFORCEMENT, the EMPLOYER NAME (AGENCY NAME) must not be specified.
+   * If REPORTER is associated with LAW ENFORCEMENT, the EMPLOYER NAME (AGENCY NAME) must not be specified.
+   * Access Logic: If REPORTER>LAW_ENFORCEMENT exists, then disable Agency, and if Agency_Name exists, disable Law_Enforcement, else enable
    * 
    * @MutuallyExclusive(required = false, properties = {"employerName", "lawEnforcementId"})
+   * </blockquote>
+   * </pre>
+   * 
+   * @throws Exception general error
    */
   @Test
-  public void testLawEnforcementIdAndEmployerNameFails() throws Exception {
+  public void testBothLawEnforcementIdExistsAndEmployerNameExistsFails() throws Exception {
     Reporter toCreate =
         MAPPER
             .readValue(
@@ -98,7 +103,7 @@ public class R00849ReporterEmployerNameTest {
   }
 
   @Test
-  public void testLawEnforcementIdNotEmployerNameNotSuccess() throws Exception {
+  public void testBothLawEnforcementIdIsEmptyAndEmployerNameIsEmptySuccess() throws Exception {
     Reporter toCreate =
         MAPPER
             .readValue(
@@ -112,7 +117,7 @@ public class R00849ReporterEmployerNameTest {
   }
 
   @Test
-  public void testLawEnforcementIdNullEmployerNameSuccess() throws Exception {
+  public void testLawEnforcementIdIsEmptyAndEmployerNameExistsSuccess() throws Exception {
     Reporter toCreate =
         MAPPER.readValue(
             fixture("fixtures/domain/legacy/Reporter/valid/lawEnforcementIdNullEmployerName.json"),
@@ -124,7 +129,7 @@ public class R00849ReporterEmployerNameTest {
   }
 
   @Test
-  public void testLawEnforcementIdEmployerNameNotSuccess() throws Exception {
+  public void testLawEnforcementIdExistsAndEmployerNameIsEmptySuccess() throws Exception {
     Reporter toCreate =
         MAPPER.readValue(
             fixture("fixtures/domain/legacy/Reporter/valid/lawEnforcementIdEmployerNameNot.json"),
@@ -134,7 +139,6 @@ public class R00849ReporterEmployerNameTest {
             .post(Entity.entity(toCreate, MediaType.APPLICATION_JSON));
     assertThat(response.getStatus(), is(equalTo(204)));
   }
-
 
   /*
    * Utilities

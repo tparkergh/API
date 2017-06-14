@@ -69,31 +69,25 @@ public class R00846ReporterBadgeNumberTest {
   }
 
 
-
-  /*
-   * badgeNumber Tests
+  /**
+   * <blockquote>
    * 
-   * Referential Integrity Rule tests R - 00846 Badge Number specification. BADGE NUMBER may only be
-   * specified if the REPORTER is associated with LAW ENFORCEMENT.
+   * <pre>
+   * 
+   * DocTool Rule : "R - 00846" - Badge Number specification
+   * 
+   * BADGE NUMBER may only be specified if the REPORTER is associated with LAW ENFORCEMENT.
+   * Access Logic: If Law Enforcement is entered, then Badge Number is enabled, else disabled.
    * 
    * @OnlyIf(property = "badgeNumber", ifProperty = "lawEnforcementId")
+   * </pre>
+   * 
+   * </blockquote>
+   * 
+   * @throws Exception general error
    */
   @Test
-  public void testBadgeNumberTooLong() throws Exception {
-    Reporter toCreate =
-        MAPPER.readValue(
-            fixture("fixtures/domain/legacy/Reporter/invalid/badgeNumberTooLong.json"),
-            Reporter.class);
-    Response response =
-        resources.client().target(ROOT_RESOURCE).request().accept(MediaType.APPLICATION_JSON)
-            .post(Entity.entity(toCreate, MediaType.APPLICATION_JSON));
-    assertThat(response.getStatus(), is(equalTo(422)));
-    assertThat(response.readEntity(String.class),
-        is(equalTo("{\"errors\":[\"badgeNumber size must be less than or equal to 6\"]}")));
-  }
-
-  @Test
-  public void testBadgeNumberNotLawEnforcementIdFails() throws Exception {
+  public void testBadgeNumberIsSpecifiedButLawEnforcementIdIsEmptyFails() throws Exception {
     Reporter toCreate =
         MAPPER.readValue(
             fixture("fixtures/domain/legacy/Reporter/invalid/badgeNumberNotLawEnforcementId.json"),
@@ -107,44 +101,10 @@ public class R00846ReporterBadgeNumberTest {
   }
 
   @Test
-  public void testBadgeNumberEmptyLawEnforcementIdFails() throws Exception {
+  public void testBadgeNumberIsEmptyButLawEnforcementIdIsSpecifiedSuccess() throws Exception {
     Reporter toCreate =
-        MAPPER
-            .readValue(
-                fixture("fixtures/domain/legacy/Reporter/invalid/badgeNumberEmptyLawEnforcementId.json"),
-                Reporter.class);
-    Response response =
-        resources.client().target(ROOT_RESOURCE).request().accept(MediaType.APPLICATION_JSON)
-            .post(Entity.entity(toCreate, MediaType.APPLICATION_JSON));
-    assertThat(response.getStatus(), is(equalTo(204)));
-  }
-
-  @Test
-  public void testBadgeNumberEmptySuccess() throws Exception {
-    Reporter toCreate =
-        MAPPER.readValue(fixture("fixtures/domain/legacy/Reporter/valid/badgeNumberEmpty.json"),
-            Reporter.class);
-    Response response =
-        resources.client().target(ROOT_RESOURCE).request().accept(MediaType.APPLICATION_JSON)
-            .post(Entity.entity(toCreate, MediaType.APPLICATION_JSON));
-    assertThat(response.getStatus(), is(equalTo(204)));
-  }
-
-  @Test
-  public void testBadgeNumberMissingSuccess() throws Exception {
-    Reporter toCreate =
-        MAPPER.readValue(fixture("fixtures/domain/legacy/Reporter/valid/badgeNumberMissing.json"),
-            Reporter.class);
-    Response response =
-        resources.client().target(ROOT_RESOURCE).request().accept(MediaType.APPLICATION_JSON)
-            .post(Entity.entity(toCreate, MediaType.APPLICATION_JSON));
-    assertThat(response.getStatus(), is(equalTo(204)));
-  }
-
-  @Test
-  public void testBadgeNumberNullSuccess() throws Exception {
-    Reporter toCreate =
-        MAPPER.readValue(fixture("fixtures/domain/legacy/Reporter/valid/badgeNumberNull.json"),
+        MAPPER.readValue(
+            fixture("fixtures/domain/legacy/Reporter/valid/badgeNumberEmptyLawEnforcementId.json"),
             Reporter.class);
     Response response =
         resources.client().target(ROOT_RESOURCE).request().accept(MediaType.APPLICATION_JSON)
