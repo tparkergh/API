@@ -1,5 +1,15 @@
 package gov.ca.cwds.rest.services.cms;
 
+import java.io.Serializable;
+
+import javax.persistence.EntityExistsException;
+import javax.persistence.EntityNotFoundException;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import com.google.inject.Inject;
+
 import gov.ca.cwds.data.Dao;
 import gov.ca.cwds.data.cms.ClientAddressDao;
 import gov.ca.cwds.data.cms.StaffPersonDao;
@@ -12,16 +22,6 @@ import gov.ca.cwds.rest.business.rules.LACountyTrigger;
 import gov.ca.cwds.rest.services.CrudsService;
 import gov.ca.cwds.rest.services.ServiceException;
 import gov.ca.cwds.rest.util.IdGenerator;
-
-import java.io.Serializable;
-
-import javax.persistence.EntityExistsException;
-import javax.persistence.EntityNotFoundException;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import com.google.inject.Inject;
 
 /**
  * Business layer object to work on {@link ClientAddress}
@@ -92,8 +92,9 @@ public class ClientAddressService implements CrudsService {
         (gov.ca.cwds.rest.api.domain.cms.ClientAddress) request;
 
     try {
+      String lastUpdatedId = staffPersonIdRetriever.getStaffPersonId();
       ClientAddress managedClientAddress =
-          new ClientAddress(IdGenerator.randomString(10), clientAddress, "BTr");
+          new ClientAddress(IdGenerator.randomString(10), clientAddress, lastUpdatedId);
       // checking the staffPerson county code
       StaffPerson staffperson = staffpersonDao.find(managedClientAddress.getLastUpdatedId());
       if (staffperson != null
