@@ -12,10 +12,13 @@ import javax.persistence.EntityExistsException;
 import javax.persistence.EntityNotFoundException;
 
 import org.hamcrest.junit.ExpectedException;
+import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
 import org.junit.After;
+import org.junit.AfterClass;
 import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.Rule;
 import org.junit.Test;
 
@@ -25,10 +28,15 @@ import com.fasterxml.jackson.databind.JsonMappingException;
 import gov.ca.cwds.data.junit.template.DaoTestTemplate;
 import gov.ca.cwds.data.persistence.cms.DrmsDocument;
 
+/**
+ * 
+ * @author CWDS API Team
+ */
 public class DrmsDocumentDaoIT implements DaoTestTemplate {
 
-  private SessionFactory sessionFactory;
-  private DrmsDocumentDao drmsDocumentDao;
+  private static SessionFactory sessionFactory;
+  private static DrmsDocumentDao drmsDocumentDao;
+  private Session session;
 
   /**
    * id matches src/main/resources/db.cms/ci-seeds.sql
@@ -44,22 +52,31 @@ public class DrmsDocumentDaoIT implements DaoTestTemplate {
   /**
    * 
    */
-  @Override
-  @Before
-  public void setup() {
-    // TODO: Don't open a pool of connections for each test case!
+  @BeforeClass
+  public static void beforeClass() {
     sessionFactory = new Configuration().configure().buildSessionFactory();
-    sessionFactory.getCurrentSession().beginTransaction();
     drmsDocumentDao = new DrmsDocumentDao(sessionFactory);
   }
 
   /**
    * 
    */
+  @AfterClass
+  public static void afterClass() {
+    sessionFactory.close();
+  }
+
+  @Override
+  @Before
+  public void setup() {
+    session = sessionFactory.getCurrentSession();
+    session.beginTransaction();
+  }
+
   @Override
   @After
   public void teardown() {
-    sessionFactory.close();
+    session.getTransaction().rollback();
   }
 
   /**
