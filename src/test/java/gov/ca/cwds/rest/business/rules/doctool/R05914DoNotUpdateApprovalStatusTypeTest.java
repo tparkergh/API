@@ -49,6 +49,7 @@ import org.junit.rules.ExpectedException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 /**
+ * Test Class for DocTool Rule: R - 05914 - Do Not Update Approval Status Type
  * 
  * @author CWDS API Team
  */
@@ -159,7 +160,7 @@ public class R05914DoNotUpdateApprovalStatusTypeTest {
    * 
    * <pre>
    * 
-   * BUSINESS RULE: "R - 05914" -  Do Not Update Approval Status Type
+   * DocTool Rule: "R - 05914" -  Do Not Update Approval Status Type
    * 
    * When creating the Referral entity, set the Approval Status Type = 'Request Not Submitted'. 
    * When updating the Referral entity, update every attribute except Approval Status Type. 

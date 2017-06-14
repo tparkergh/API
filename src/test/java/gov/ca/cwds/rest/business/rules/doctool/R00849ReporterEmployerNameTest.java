@@ -35,6 +35,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.squarespace.jersey2.guice.JerseyGuiceUtils;
 
 /**
+ * Test Class for DocTool Rule R - 00849 Employer Name specification
  * 
  * @author CWDS API Team
  */
@@ -75,15 +76,15 @@ public class R00849ReporterEmployerNameTest {
   /**
    * <pre>
    * <blockquote>
-   * DocTool Rule R - 00849 Employer Name specification 
+   * DocTool Rule "R - 00849" Employer Name specification 
    * 
    * If REPORTER is associated with LAW ENFORCEMENT, the EMPLOYER NAME (AGENCY NAME) must not be specified.
    * Access Logic: If REPORTER>LAW_ENFORCEMENT exists, then disable Agency, and if Agency_Name exists, disable Law_Enforcement, else enable
    * 
-   * @MutuallyExclusive(required = false, properties = {"employerName", "lawEnforcementId"})
    * </blockquote>
    * </pre>
    * 
+   * @MutuallyExclusive(required = false, properties = {"employerName", "lawEnforcementId"})
    * @throws Exception general error
    */
   @Test

@@ -33,6 +33,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.squarespace.jersey2.guice.JerseyGuiceUtils;
 
 /**
+ * Test Class for DocTool Rule : R - 00846 - Badge Number specification
  * 
  * @author CWDS API Team
  */
@@ -78,12 +79,11 @@ public class R00846ReporterBadgeNumberTest {
    * 
    * BADGE NUMBER may only be specified if the REPORTER is associated with LAW ENFORCEMENT.
    * Access Logic: If Law Enforcement is entered, then Badge Number is enabled, else disabled.
-   * 
-   * @OnlyIf(property = "badgeNumber", ifProperty = "lawEnforcementId")
    * </pre>
    * 
    * </blockquote>
    * 
+   * @OnlyIf(property = "badgeNumber", ifProperty = "lawEnforcementId")
    * @throws Exception general error
    */
   @Test
