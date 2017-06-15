@@ -420,12 +420,16 @@ public class ChildClient extends ReportingDomain implements Request, Response {
   private static final short DEFAULT_CODE = 0;
   private static final int DEFAULT_INT = 0;
 
-  public static ChildClient createWithDefaults(String clientId){
+  /**
+   * @param clientId - clientId
+   * @return the childClient
+   */
+  public static ChildClient createWithDefaults(String clientId) {
 
-    return new ChildClient(clientId, "NA", DEFAULT_CODE, false, false, false, "",
-        "", "", false, false, false, "", DEFAULT_CODE, "D", "U", "", "", false, "", false, "U",
-        false, false, false, false, false, false, false, false, "X", false, false, DEFAULT_INT, "",
-        "", false, false, "", false);
+    return new ChildClient(clientId, "NA", DEFAULT_CODE, false, false, false, "", "", "", false,
+        false, false, "", DEFAULT_CODE, "D", "U", "", "", false, "", false, "U", false, false,
+        false, false, false, false, false, false, "X", false, false, DEFAULT_INT, "", "", false,
+        false, "", false);
   }
 
   /**
