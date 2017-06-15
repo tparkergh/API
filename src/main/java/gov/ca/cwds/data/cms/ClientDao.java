@@ -42,7 +42,7 @@ public class ClientDao extends BaseDaoImpl<Client> {
   // CALL CWSNS4.SPSSANAME3(
   // 'CLT_PHTT',
   // 'I',
-  // 'KATlYxa0JG',
+  // 'KATlYxa0JL',
   // 'C',
   // 'JAMES',
   // 'BOND',
@@ -62,7 +62,7 @@ public class ClientDao extends BaseDaoImpl<Client> {
 
     Transaction txn = null;
     try {
-      // txn = session.beginTransaction();
+      // txn = session.beginTransaction(); // If transaction not yet started.
       txn = session.getTransaction(); // For JUnit.
       ProcedureCall q = session.createStoredProcedureCall("CWSNS4.SPSSANAME3");
 
@@ -78,13 +78,13 @@ public class ClientDao extends BaseDaoImpl<Client> {
       q.registerStoredProcedureParameter(++pos, String.class, ParameterMode.IN);
       q.registerStoredProcedureParameter(++pos, String.class, ParameterMode.IN); // timestamp
       q.registerStoredProcedureParameter(++pos, String.class, ParameterMode.IN); // staff
-      q.registerStoredProcedureParameter(++pos, String.class, ParameterMode.OUT);
-      q.registerStoredProcedureParameter(++pos, String.class, ParameterMode.OUT);
+      q.registerStoredProcedureParameter(++pos, String.class, ParameterMode.OUT); // result code
+      q.registerStoredProcedureParameter(++pos, String.class, ParameterMode.OUT); // error message
 
       pos = -1;
       q.setParameter(++pos, "CLT_PHTT");
       q.setParameter(++pos, "I");
-      q.setParameter(++pos, "KATlYxa0JI");
+      q.setParameter(++pos, "TaylorSWft");
       q.setParameter(++pos, "C");
       q.setParameter(++pos, "JAMES");
       q.setParameter(++pos, "BOND");
