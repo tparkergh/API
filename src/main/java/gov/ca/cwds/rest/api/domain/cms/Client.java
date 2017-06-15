@@ -711,12 +711,7 @@ public class Client extends ReportingDomain implements Request, Response {
 
   }
 
-  /**
-   * @param participant - participant
-   * @param dateStarted - dateStarted
-   * @param genderCode - genderCode
-   * @return the client
-   */
+
   public static Client createWithDefaults(Participant participant, String dateStarted,
       String genderCode) {
     return new Client("", false, DEFAULT_ADOPTION_STATUS_CODE, "", "", DEFAULT_CODE,
@@ -1211,8 +1206,8 @@ public class Client extends ReportingDomain implements Request, Response {
   /**
    * Allows limited fields to be updated after creation
    * 
-   * @param firstName - firstName
-   * @param lastName - lastName
+   * @param firstName first name
+   * @param lastName last name
    */
   public void update(String firstName, String lastName) {
     this.commonFirstName = firstName;
