@@ -1206,6 +1206,16 @@ public class Client extends ReportingDomain implements Request, Response {
   }
 
   /**
+   * Allows limited fields to be updated after creation
+   * @param firstName
+   * @param lastName
+   */
+  public void update(String firstName, String lastName){
+    this.commonFirstName = firstName;
+    this.commonLastName = lastName;
+  }
+
+  /**
    * {@inheritDoc}
    *
    * @see java.lang.Object#hashCode()

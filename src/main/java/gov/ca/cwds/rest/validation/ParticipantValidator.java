@@ -27,7 +27,7 @@ public class ParticipantValidator {
   private static final String SELF_REPORTED_ROLE = "Self Reported";
 
   private static final DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-  private static final DateFormat timeFormat = new SimpleDateFormat("HH:MM:SS");
+  private static final DateFormat timeFormat = new SimpleDateFormat("HH:mm:ss");
   private static final DateFormat dateTimeFormat =
       new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'", Locale.US);
 

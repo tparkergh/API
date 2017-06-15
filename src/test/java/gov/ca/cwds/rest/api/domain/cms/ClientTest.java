@@ -396,6 +396,17 @@ public class ClientTest implements DomainTestTemplate {
   }
 
   @Test
+  public void shouldAllowClientNamesToBeUpdatedAfterInitialization(){
+    Participant participant = new Participant(1, "sourceTable", "clientId", "Fred","Bill", "gender","ssn", "dob", 3,4,new HashSet(), new HashSet());
+    Client client = Client.createWithDefaults(participant,"","");
+
+    client.update("Barney", "Rubble");
+
+    assertEquals("Expected Client name to have been changed", "Barney", client.getCommonFirstName());
+    assertEquals("Expected Client name to have been changed", "Rubble", client.getCommonLastName());
+  }
+
+  @Test
   public void testCreateWithDefaultCreatesWithDefaultValues(){
     Participant participant = new Participant(1, "sourceTable", "clientId", "firstName","lastName", "gender","ssn", "dob", 3,4,new HashSet(), new HashSet());
     String genderCode = "male";

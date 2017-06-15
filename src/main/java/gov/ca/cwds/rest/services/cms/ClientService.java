@@ -148,15 +148,17 @@ public class ClientService implements CrudsService {
     gov.ca.cwds.rest.api.domain.cms.Client client =
         (gov.ca.cwds.rest.api.domain.cms.Client) request;
 
+   gov.ca.cwds.rest.api.domain.cms.Client savedEntity;
     try {
       String lastUpdatedId = staffPersonIdRetriever.getStaffPersonId();
       Client managed = new Client((String) primaryKey, client, lastUpdatedId);
       managed = clientDao.update(managed);
-      return new gov.ca.cwds.rest.api.domain.cms.Client(managed, true);
+      savedEntity = new gov.ca.cwds.rest.api.domain.cms.Client(managed, true);
     } catch (EntityNotFoundException e) {
+      savedEntity = null;
       LOGGER.info("Client not found : {}", client);
-      throw new ServiceException(e);
     }
+    return savedEntity;
   }
 
 }
