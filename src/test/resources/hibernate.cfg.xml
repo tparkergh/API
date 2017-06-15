@@ -22,7 +22,7 @@
 <!-- NS4: -->
 <!-- 
 		<property name="hibernate.connection.username">CWDSABC</property>
-		<property name="hibernate.connection.password">someultracrypticAES1024CBCencryptedstochasticallyrandompassword</property>
+		<property name="hibernate.connection.password">obscurity</property>
 		<property name="hibernate.connection.url">jdbc:db2://localhost:9000/DBN1SOC</property>
 		<property name="hibernate.default_schema">CWSNS4</property>
  -->
