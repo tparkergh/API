@@ -240,8 +240,7 @@ public class ScreeningToReferralService implements CrudsService {
       try {
         if (!ParticipantValidator.hasValidRoles(incomingParticipant)) {
           String message = " Participant contains incompatiable roles ";
-          ServiceException exception = new ServiceException(message);
-          logError(message, exception);
+          logError(message);
           // next participant
           continue;
         }
@@ -286,16 +285,13 @@ public class ScreeningToReferralService implements CrudsService {
             if (!ParticipantValidator.roleIsAnonymousReporter(role)) {
               String clientId;
 
-              if (incomingParticipant.getLegacyId() == null
-                  || incomingParticipant.getLegacyId().isEmpty()) {
-                // legacy Id not set - create a CLIENT row
-                PostedClient postedClient;
-                // not an anonymous reporter participant - create client
+              boolean newClient = incomingParticipant.getLegacyId() == null
+                  || incomingParticipant.getLegacyId().isEmpty();
+              if (newClient) {
                 Client client =
                     Client.createWithDefaults(incomingParticipant, dateStarted, genderCode);
                 messageBuilder.addDomainValidationError(validator.validate(client));
-
-                postedClient = this.clientService.create(client);
+                PostedClient postedClient = this.clientService.create(client);
                 clientId = postedClient.getId();
                 incomingParticipant.setLegacyId(clientId);
                 incomingParticipant.setLegacySourceTable(CLIENT_TABLE_NAME);
@@ -303,6 +299,17 @@ public class ScreeningToReferralService implements CrudsService {
                 // legacy Id passed - check for existenct in CWS/CMS - no update yet
                 clientId = incomingParticipant.getLegacyId();
                 Client foundClient = this.clientService.find(clientId);
+                if (foundClient != null) {
+                  foundClient.update(incomingParticipant.getFirstName(),incomingParticipant.getLastName());
+                  gov.ca.cwds.rest.api.domain.cms.Client savedClient = this.clientService.update(incomingParticipant.getLegacyId(), foundClient);
+                  if(savedClient == null){
+                    String message =
+                        "Unable to save Client";
+                    logError(message);
+                    throw new ServiceException(message);
+                  }
+
+                }
                 if (foundClient == null) {
                   String message =
                       " Legacy Id of Participant does not correspond to an existing CWS/CMS Client ";
@@ -333,7 +340,7 @@ public class ScreeningToReferralService implements CrudsService {
                 victimClient.put(incomingParticipant.getId(), clientId);
                 // since this is the victim - process the ChildClient
                 try {
-                  this.processChildClient(incomingParticipant, clientId);
+                    this.processChildClient(incomingParticipant, clientId);
                 } catch (ServiceException e) {
                   String message = e.getMessage();
                   logError(message, e);
@@ -906,8 +913,12 @@ public class ScreeningToReferralService implements CrudsService {
 
   private ChildClient processChildClient(Participant id, String clientId) throws ServiceException {
 
-    ChildClient childClient = ChildClient.createWithDefaults(clientId);
-    messageBuilder.addDomainValidationError(validator.validate(childClient));
-    return this.childClientService.create(childClient);
+    ChildClient exsistingChild = this.childClientService.find(clientId);
+    if(exsistingChild == null){
+      ChildClient childClient = ChildClient.createWithDefaults(clientId);
+      messageBuilder.addDomainValidationError(validator.validate(childClient));
+      exsistingChild =  this.childClientService.create(childClient);
+    }
+    return exsistingChild;
   }
 }
