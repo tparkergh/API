@@ -2,7 +2,6 @@ package gov.ca.cwds.rest.api.domain.cms;
 
 import static gov.ca.cwds.data.persistence.cms.CmsPersistentObject.CMS_ID_LEN;
 
-import gov.ca.cwds.rest.api.domain.Participant;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -23,6 +22,7 @@ import gov.ca.cwds.rest.api.Request;
 import gov.ca.cwds.rest.api.Response;
 import gov.ca.cwds.rest.api.domain.DomainChef;
 import gov.ca.cwds.rest.api.domain.DomainObject;
+import gov.ca.cwds.rest.api.domain.Participant;
 import gov.ca.cwds.rest.api.domain.ReportingDomain;
 import io.dropwizard.validation.OneOf;
 import io.swagger.annotations.ApiModel;
@@ -711,22 +711,25 @@ public class Client extends ReportingDomain implements Request, Response {
 
   }
 
-
-  public static Client createWithDefaults(Participant participant, String dateStarted,String genderCode){
-    return new Client("", false, DEFAULT_ADOPTION_STATUS_CODE, "", "",
-                    DEFAULT_CODE, participant.getDateOfBirth(), "", DEFAULT_CODE, false,
-                    DEFAULT_CHILD_CLIENT_INDICATOR, "", "", participant.getFirstName(),
-                    participant.getLastName(), "", "", false, dateStarted, false, "", false,
-                    "", false, "", "", "", DEFAULT_CODE, "", DEFAULT_ESTIMATED_DOB_CODE,
-                    DEFAULT_UNABLE_TO_DETAIN_CODE, "", genderCode, "", "",
-                    DEFAULT_HISPANIC_ORIGIN_CODE, DEFAULT_CODE, DEFAULT_CODE,
-                    DEFAULT_INCAPCITATED_PARENT_CODE, false, false, DEFAULT_LITERATE_CODE, false,
-                    DEFAULT_CODE, DEFAULT_MILITARY_STATUS_CODE, "", "", DEFAULT_NAME_TYPE, false,
-                    false, "", false, DEFAULT_CODE, DEFAULT_CODE, DEFAULT_CODE,
-                    DEFAULT_SECONDARY_LANGUAGE_TYPE, false, DEFAULT_SENSITIVITY_INDICATOR,
-                    DEFAULT_SOC158_PLACEMENT_CODE, false, DEFAULT_SOCIAL_SECURITY_NUM_CHANGE_CODE,
-                    participant.getSsn(), "", false, false, DEFAULT_UNEMPLOYED_PARENT_CODE,
-                    false, null);
+  /**
+   * @param participant - participant
+   * @param dateStarted - dateStarted
+   * @param genderCode - genderCode
+   * @return the client
+   */
+  public static Client createWithDefaults(Participant participant, String dateStarted,
+      String genderCode) {
+    return new Client("", false, DEFAULT_ADOPTION_STATUS_CODE, "", "", DEFAULT_CODE,
+        participant.getDateOfBirth(), "", DEFAULT_CODE, false, DEFAULT_CHILD_CLIENT_INDICATOR, "",
+        "", participant.getFirstName(), participant.getLastName(), "", "", false, dateStarted,
+        false, "", false, "", false, "", "", "", DEFAULT_CODE, "", DEFAULT_ESTIMATED_DOB_CODE,
+        DEFAULT_UNABLE_TO_DETAIN_CODE, "", genderCode, "", "", DEFAULT_HISPANIC_ORIGIN_CODE,
+        DEFAULT_CODE, DEFAULT_CODE, DEFAULT_INCAPCITATED_PARENT_CODE, false, false,
+        DEFAULT_LITERATE_CODE, false, DEFAULT_CODE, DEFAULT_MILITARY_STATUS_CODE, "", "",
+        DEFAULT_NAME_TYPE, false, false, "", false, DEFAULT_CODE, DEFAULT_CODE, DEFAULT_CODE,
+        DEFAULT_SECONDARY_LANGUAGE_TYPE, false, DEFAULT_SENSITIVITY_INDICATOR,
+        DEFAULT_SOC158_PLACEMENT_CODE, false, DEFAULT_SOCIAL_SECURITY_NUM_CHANGE_CODE,
+        participant.getSsn(), "", false, false, DEFAULT_UNEMPLOYED_PARENT_CODE, false, null);
   }
 
   /**
@@ -1207,10 +1210,11 @@ public class Client extends ReportingDomain implements Request, Response {
 
   /**
    * Allows limited fields to be updated after creation
-   * @param firstName
-   * @param lastName
+   * 
+   * @param firstName - firstName
+   * @param lastName - lastName
    */
-  public void update(String firstName, String lastName){
+  public void update(String firstName, String lastName) {
     this.commonFirstName = firstName;
     this.commonLastName = lastName;
   }
