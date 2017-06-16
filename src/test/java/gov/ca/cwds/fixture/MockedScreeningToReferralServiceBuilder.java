@@ -44,7 +44,6 @@ import gov.ca.cwds.rest.services.cms.StaffPersonIdRetriever;
  * 
  * @author CWDS API Team
  */
-@SuppressWarnings("javadoc")
 public class MockedScreeningToReferralServiceBuilder {
   private ReferralService referralService;
   private ClientService clientService;
@@ -62,6 +61,9 @@ public class MockedScreeningToReferralServiceBuilder {
   private StaffPersonIdRetriever staffPersonIdRetriever;
   private MessageBuilder messageBuilder;
 
+  /**
+   * @return the referralService
+   */
   public ReferralService getReferralService() {
     if (referralService == null) {
       buildDefaultMockForReferralService();
@@ -76,6 +78,9 @@ public class MockedScreeningToReferralServiceBuilder {
     when(referralService.create(any(Referral.class))).thenReturn(postedReferral);
   }
 
+  /**
+   * @return the clientService
+   */
   public ClientService getClientService() {
     if (clientService == null) {
       buildDefaultMockForClientService();
@@ -90,6 +95,9 @@ public class MockedScreeningToReferralServiceBuilder {
     when(clientService.create(any(Client.class))).thenReturn(postedClient);
   }
 
+  /**
+   * @return teh referralClientService
+   */
   public ReferralClientService getReferralClientService() {
     if (referralClientService == null) {
       buildDefaultMockForReferralClientService();
@@ -103,6 +111,9 @@ public class MockedScreeningToReferralServiceBuilder {
     when(referralClientService.create(any(ReferralClient.class))).thenReturn(referralClient);
   }
 
+  /**
+   * @return the allegationService
+   */
   public AllegationService getAllegationService() {
     if (allegationService == null) {
       buildDefaultMockForAllegationService();
@@ -117,6 +128,9 @@ public class MockedScreeningToReferralServiceBuilder {
     when(allegationService.create(any(Allegation.class))).thenReturn(postedAllegation);
   }
 
+  /**
+   * @return the crossReportService
+   */
   public CrossReportService getCrossReportService() {
     if (crossReportService == null) {
       buildDefaultMockForCrossReportService();
@@ -131,6 +145,9 @@ public class MockedScreeningToReferralServiceBuilder {
     when(crossReportService.create(any(CrossReport.class))).thenReturn(postedCrossReport);
   }
 
+  /**
+   * @return the reporterService
+   */
   public ReporterService getReporterService() {
     if (reporterService == null) {
       buildDefaultMockForReporterService();
@@ -146,6 +163,9 @@ public class MockedScreeningToReferralServiceBuilder {
     when(reporterService.create(any(Reporter.class))).thenReturn(postedReporter);
   }
 
+  /**
+   * @return the addressService
+   */
   public AddressService getAddressService() {
     if (addressService == null) {
       buildDefaultMockForAddressService();
@@ -160,6 +180,9 @@ public class MockedScreeningToReferralServiceBuilder {
     when(addressService.create(any(Address.class))).thenReturn(postedAddress);
   }
 
+  /**
+   * @return the clientAddressService
+   */
   public ClientAddressService getClientAddressService() {
     if (clientAddressService == null) {
       buildDefaultMockForClientAddressService();
@@ -173,6 +196,9 @@ public class MockedScreeningToReferralServiceBuilder {
     when(clientAddressService.create(any(ClientAddress.class))).thenReturn(clientAddress);
   }
 
+  /**
+   * @return the childClientService
+   */
   public ChildClientService getChildClientService() {
     if (childClientService == null) {
       buildDefaultMockForChildClientService();
@@ -186,6 +212,9 @@ public class MockedScreeningToReferralServiceBuilder {
     when(childClientService.create(any(ChildClient.class))).thenReturn(childClient);
   }
 
+  /**
+   * @return the longTextService
+   */
   public LongTextService getLongTextService() {
     if (longTextService == null) {
       buildDefaultMockForLongTextService();
@@ -200,6 +229,9 @@ public class MockedScreeningToReferralServiceBuilder {
     when(longTextService.create(any(LongText.class))).thenReturn(postedLongText);
   }
 
+  /**
+   * @return the drmsDocumentService
+   */
   public DrmsDocumentService getDrmsDocumentService() {
     if (drmsDocumentService == null) {
       buildDefaultMockForDmsDocumentService();
@@ -215,6 +247,9 @@ public class MockedScreeningToReferralServiceBuilder {
 
   }
 
+  /**
+   * @return the referralDao
+   */
   public ReferralDao getReferralDao() {
     if (referralDao == null) {
       referralDao = mock(ReferralDao.class);
@@ -222,6 +257,9 @@ public class MockedScreeningToReferralServiceBuilder {
     return referralDao;
   }
 
+  /**
+   * @return the staffPersonIdRetriever
+   */
   public StaffPersonIdRetriever getStaffPersonIdRetriever() {
     if (staffPersonIdRetriever == null) {
       buildDefaultMockForStaffPersonIdRetriever();
@@ -234,6 +272,9 @@ public class MockedScreeningToReferralServiceBuilder {
     when(staffPersonIdRetriever.getStaffPersonId()).thenReturn("abc");
   }
 
+  /**
+   * @return the messageBuilder
+   */
   public MessageBuilder getMessageBuilder() {
     if (messageBuilder == null) {
       messageBuilder = mock(MessageBuilder.class);
@@ -241,86 +282,145 @@ public class MockedScreeningToReferralServiceBuilder {
     return messageBuilder;
   }
 
+  /**
+   * @param drmsDocumentService - drmsDocumentService
+   * @return the drmsDocumentService
+   */
   public MockedScreeningToReferralServiceBuilder addDrmsDocumentService(
       DrmsDocumentService drmsDocumentService) {
     this.drmsDocumentService = drmsDocumentService;
     return this;
   }
 
+  /**
+   * @param referralService - referralService
+   * @return the referralService
+   */
   public MockedScreeningToReferralServiceBuilder addReferralService(
       ReferralService referralService) {
     this.referralService = referralService;
     return this;
   }
 
+  /**
+   * @param clientService - clientService
+   * @return the clientService
+   */
   public MockedScreeningToReferralServiceBuilder addClientService(ClientService clientService) {
     this.clientService = clientService;
     return this;
   }
 
+  /**
+   * @param referralClientService - referralClientService
+   * @return the referralClientService
+   */
   public MockedScreeningToReferralServiceBuilder addReferralClientService(
       ReferralClientService referralClientService) {
     this.referralClientService = referralClientService;
     return this;
   }
 
+  /**
+   * @param allegationService - allegationService
+   * @return the allegationService
+   */
   public MockedScreeningToReferralServiceBuilder addAllegationService(
       AllegationService allegationService) {
     this.allegationService = allegationService;
     return this;
   }
 
+  /**
+   * @param crossReportService - crossReportService
+   * @return the crossReportService
+   */
   public MockedScreeningToReferralServiceBuilder addCrossReportService(
       CrossReportService crossReportService) {
     this.crossReportService = crossReportService;
     return this;
   }
 
+  /**
+   * @param reporterService - reporterService
+   * @return the reporterService
+   */
   public MockedScreeningToReferralServiceBuilder addReporterService(
       ReporterService reporterService) {
     this.reporterService = reporterService;
     return this;
   }
 
+  /**
+   * @param addressService - addressService
+   * @return the addressService
+   */
   public MockedScreeningToReferralServiceBuilder addAddressService(AddressService addressService) {
     this.addressService = addressService;
     return this;
   }
 
+  /**
+   * @param clientAddressService - clientAddressService
+   * @return the clientAddressService
+   */
   public MockedScreeningToReferralServiceBuilder addClientAddressService(
       ClientAddressService clientAddressService) {
     this.clientAddressService = clientAddressService;
     return this;
   }
 
+  /**
+   * @param childClientService - childClientService
+   * @return the childClientService
+   */
   public MockedScreeningToReferralServiceBuilder addChildClientService(
       ChildClientService childClientService) {
     this.childClientService = childClientService;
     return this;
   }
 
+  /**
+   * @param longTextService - longTextService
+   * @return the longTextService
+   */
   public MockedScreeningToReferralServiceBuilder addLongTextService(
       LongTextService longTextService) {
     this.longTextService = longTextService;
     return this;
   }
 
+  /**
+   * @param referralDao - referralDao
+   * @return the referralDao
+   */
   public MockedScreeningToReferralServiceBuilder addReferralDao(ReferralDao referralDao) {
     this.referralDao = referralDao;
     return this;
   }
 
+  /**
+   * @param staffPersonIdRetriever - staffPersonIdRetriever
+   * @return the staffPersonIdRetriever
+   */
   public MockedScreeningToReferralServiceBuilder addStaffPersonIdRetriever(
       StaffPersonIdRetriever staffPersonIdRetriever) {
     this.staffPersonIdRetriever = staffPersonIdRetriever;
     return this;
   }
 
+  /**
+   * @param messageBuilder - messageBuilder
+   * @return the messageBuilder
+   */
   public MockedScreeningToReferralServiceBuilder addMessageBuilder(MessageBuilder messageBuilder) {
     this.messageBuilder = messageBuilder;
     return this;
   }
 
+  /**
+   * @return the screeningToReferralService
+   */
   public ScreeningToReferralService createScreeningToReferralService() {
     return new ScreeningToReferralService(getReferralService(), getClientService(),
         getAllegationService(), getCrossReportService(), getReferralClientService(),
