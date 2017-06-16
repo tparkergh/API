@@ -1,10 +1,16 @@
 package gov.ca.cwds.fixture;
 
-import gov.ca.cwds.rest.api.domain.Participant;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
 
+import gov.ca.cwds.rest.api.domain.Participant;
+
+/**
+ * 
+ * @author CWDS API Team
+ */
+@SuppressWarnings("javadoc")
 public class ParticipantResourceBuilder {
 
   long id = 5432;
@@ -85,10 +91,7 @@ public class ParticipantResourceBuilder {
     this.roles = new HashSet<String>(Arrays.asList("Victim"));
 
     gov.ca.cwds.rest.api.domain.Address address = new AddressResourceBuilder()
-        .setStreetAddress("123 First St")
-        .setCity("San Jose")
-        .setZip(94321)
-        .createAddress();
+        .setStreetAddress("123 First St").setCity("San Jose").setZip(94321).createAddress();
     this.addresses = new HashSet(Arrays.asList(address));
 
   }
@@ -108,6 +111,7 @@ public class ParticipantResourceBuilder {
     return createParticipant();
 
   }
+
   public Participant createParticipant() {
     return new Participant(id, legacySourceTable, legacyId, firstName, lastName, gender, ssn,
         dateOfBirth, personId, screeningId, roles, addresses);
