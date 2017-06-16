@@ -597,6 +597,9 @@ public class Referral extends ReportingDomain implements Request, Response {
    * 
    * @param anonymousReporter - anonymousReporter
    * @param communicationsMethodCode - communicationsMethodCode
+   * @param drmsAllegationDescriptionDoc - drmsAllegationDescriptionDoc
+   * @param drmsErReferralDoc - drmsErReferralDoc
+   * @param drmsInvestigationDoc - drmsInvestigationDoc
    * @param referalName - referalName
    * @param dateStarted - dateStarted
    * @param timeStarted - timeStarted
@@ -610,12 +613,14 @@ public class Referral extends ReportingDomain implements Request, Response {
    * @return the referral
    */
   public static Referral createWithDefaults(Boolean anonymousReporter,
-      short communicationsMethodCode, String referalName, String dateStarted, String timeStarted,
+      short communicationsMethodCode, String drmsAllegationDescriptionDoc, String drmsErReferralDoc,
+      String drmsInvestigationDoc, String referalName, String dateStarted, String timeStarted,
       short referralResponseTypeCode, String allegesAbuseOccurredAtAddressId,
       String firstResponseDeterminedByStaffPersonId, String longTextId, String countyCode,
       short approvalCode, String staffId) {
     return new Referral(false, anonymousReporter, false, "", approvalCode, false, "",
-        communicationsMethodCode, "", "", "", "", false, false, DEFAULT_CODE, DEFAULT_NO, false,
+        communicationsMethodCode, "", drmsAllegationDescriptionDoc, drmsErReferralDoc,
+        drmsInvestigationDoc, false, false, DEFAULT_CODE, DEFAULT_NO, false,
         DEFAULT_LIMITIED_ACCESS_CODE, "", referalName, "", dateStarted, timeStarted,
         referralResponseTypeCode, DEFAULT_CODE, "", "", "", longTextId, DEFAULT_NO, DEFAULT_NO,
         DEFAULT_NO, "", allegesAbuseOccurredAtAddressId, firstResponseDeterminedByStaffPersonId,
@@ -1400,10 +1405,16 @@ public class Referral extends ReportingDomain implements Request, Response {
     return true;
   }
 
+  /**
+   * @return the uiIdentifier
+   */
   public String getUiIdentifier() {
     return uiIdentifier;
   }
 
+  /**
+   * @param uiIdentifier - uiIdentifier
+   */
   public void setUiIdentifier(String uiIdentifier) {
     this.uiIdentifier = uiIdentifier;
   }

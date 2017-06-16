@@ -13,7 +13,6 @@ import static org.mockito.Mockito.when;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
-import java.util.HashSet;
 import java.util.Set;
 
 import javax.ws.rs.client.Entity;
@@ -238,6 +237,9 @@ public class ReferralTest {
   public void testCreateWithDefaultsSetsValues() {
     boolean anonReporter = true;
     Short communicationsMethodCode = 44;
+    String drmsAllegationDescriptionDoc = "ABC1234569";
+    String drmsErReferralDoc = "1234567ABC";
+    String drmsInvestigationDoc = "ABD1234567";
     String referalName = "referralName";
     String dateStarted = "may 22";
     String timeStarted = "6 o'clock";
@@ -249,14 +251,20 @@ public class ReferralTest {
     Short approvalCode = 4;
     String staffId = "098";
 
-    Referral referral =
-        Referral.createWithDefaults(anonReporter, communicationsMethodCode, referalName,
-            dateStarted, timeStarted, referralResponseTypeCode, allegesAbuseOccurredAtAddressId,
-            firstResponseDeterminedByStaffPersonId, longTextId, countyCode, approvalCode, staffId);
+    Referral referral = Referral.createWithDefaults(anonReporter, communicationsMethodCode,
+        drmsAllegationDescriptionDoc, drmsErReferralDoc, drmsInvestigationDoc, referalName,
+        dateStarted, timeStarted, referralResponseTypeCode, allegesAbuseOccurredAtAddressId,
+        firstResponseDeterminedByStaffPersonId, longTextId, countyCode, approvalCode, staffId);
     assertEquals("Expected anonReporter field to have presetValues", anonReporter,
         referral.getAnonymousReporterIndicator());
     assertEquals("Expected communicationsMethodCode field to have presetValues",
         communicationsMethodCode, referral.getCommunicationMethodType());
+    assertEquals("Expected drmsAllegationDescriptionDoc field to have presetValues",
+        drmsAllegationDescriptionDoc, referral.getDrmsAllegationDescriptionDoc());
+    assertEquals("Expected drmsErReferralDoc field to have presetValues", drmsErReferralDoc,
+        referral.getDrmsErReferralDoc());
+    assertEquals("Expected drmsInvestigationDoc field to have presetValues", drmsInvestigationDoc,
+        referral.getDrmsInvestigationDoc());
     assertEquals("Expected referalName field to have presetValues", referalName,
         referral.getReferralName());
     assertEquals("Expected dateStarted field to have presetValues", dateStarted,
@@ -280,9 +288,13 @@ public class ReferralTest {
         referral.getPrimaryContactStaffPersonId());
   }
 
+  @Test
   public void testCreateWithDefaultsSetsDefaultsValues() {
     boolean anonReporter = true;
     short communicationsMethodCode = 44;
+    String drmsAllegationDescriptionDoc = "ABC1234569";
+    String drmsErReferralDoc = "1234567ABC";
+    String drmsInvestigationDoc = "ABD1234567";
     String referalName = "referralName";
     String dateStarted = "may 22";
     String timeStarted = "6 o'clock";
@@ -294,52 +306,49 @@ public class ReferralTest {
     short approvalCode = 4;
     String staffId = "098";
 
-    Boolean additionalInfoIncludedCode = true;
-    Boolean applicationForPetitionIndicator = true;
-    String approvalNumber = "approvalNumber";
-    Boolean caretakersPerpetratorCode = true;
-    String closureDate = "closureDate";
-    String currentLocationOfChildren = "currentLocationOfChildren";
-    String drmsAllegationDescriptionDoc = "drmsAllegationDescriptionDoc";
-    String drmsErReferralDoc = "drmsErReferralDoc";
-    String drmsInvestigationDoc = "drmsInvestigationDoc";
-    Boolean filedSuspectedChildAbuseReporttoLawEnforcementIndicator = true;
-    Boolean familyAwarenessIndicator = true;
-    Short govtEntityType = 4;
-    String legalDefinitionCode = "legalDefinitionCode";
-    Boolean legalRightsNoticeIndicator = true;
-    String limitedAccessCode = "limitedAccessCode";
-    String madatedCrossReportReceivedDate = "mandatedCrossReportReceivedDate";
-    String openAdequateCaseCode = "openAdequateCaseCode";
-    Short referredToResourceType = 6;
-    String responseDeterminationDate = "responseDeterminationDate";
-    String responseDeterminationTime = "responseDeterminationTime";
-    String responseRationaleText = "responseRationaleText";
-    String specificsIncludedCode = "specificsIncludedCode";
-    String sufficientInformationCode = "sufficientInformationCode";
-    String unfoundedSeriesCode = "unfoundedSeriesCod";
-    String linkToPrimaryReferralId = "linkToPrimaryReferralId";
-    Boolean specialProjectReferralIndicator = true;
-    Boolean zippyCreatedIndicator = true;
-    Boolean homelessIndicator = true;
-    Boolean familyRefusedServicesIndicator = true;
-    String firstEvaluatedOutApprovalDate = "firstEvaluatedOutApprovalDat";
-    String responsibleAgencyCode = "responsibleAgencyCod";
-    Short limitedAccessGovtAgencyType = 7;
-    String limitedAccessDate = "limitedAccessDate";
-    String limitedAccessDesc = "limitedAccessDesc";
-    String originalClosureDate = "originalClosureDate";
-    Set<gov.ca.cwds.rest.api.domain.cms.Address> address = new HashSet<>();
-    Set<Reporter> reporter = new HashSet();
-    Set<CrossReport> crossReport = new HashSet();
-    Set<Allegation> allegation = new HashSet();
-    Set<Client> victimClient = new HashSet();
-    Set<Client> perpetratorClient = new HashSet();
+    Boolean additionalInfoIncludedCode = false;
+    Boolean applicationForPetitionIndicator = false;
+    String approvalNumber = "";
+    Boolean caretakersPerpetratorCode = false;
+    String closureDate = "";
+    String currentLocationOfChildren = "";
+    Boolean filedSuspectedChildAbuseReporttoLawEnforcementIndicator = false;
+    Boolean familyAwarenessIndicator = false;
+    Short govtEntityType = 0;
+    String legalDefinitionCode = "N";
+    Boolean legalRightsNoticeIndicator = false;
+    String limitedAccessCode = "N";
+    String madatedCrossReportReceivedDate = "";
+    String openAdequateCaseCode = "";
+    Short referredToResourceType = 0;
+    String responseDeterminationDate = "";
+    String responseDeterminationTime = "";
+    String responseRationaleText = "";
+    String specificsIncludedCode = "N";
+    String sufficientInformationCode = "N";
+    String unfoundedSeriesCode = "N";
+    String linkToPrimaryReferralId = "";
+    Boolean specialProjectReferralIndicator = false;
+    Boolean zippyCreatedIndicator = false;
+    Boolean homelessIndicator = false;
+    Boolean familyRefusedServicesIndicator = false;
+    String firstEvaluatedOutApprovalDate = "";
+    String responsibleAgencyCode = "C";
+    Short limitedAccessGovtAgencyType = 0;
+    String limitedAccessDate = "";
+    String limitedAccessDesc = "";
+    String originalClosureDate = "";
+    Set<gov.ca.cwds.rest.api.domain.cms.Address> address = null;
+    Set<Reporter> reporter = null;
+    Set<CrossReport> crossReport = null;
+    Set<Allegation> allegation = null;
+    Set<Client> victimClient = null;
+    Set<Client> perpetratorClient = null;
 
-    Referral referral =
-        Referral.createWithDefaults(anonReporter, communicationsMethodCode, referalName,
-            dateStarted, timeStarted, referralResponseTypeCode, allegesAbuseOccurredAtAddressId,
-            firstResponseDeterminedByStaffPersonId, longTextId, countyCode, approvalCode, staffId);
+    Referral referral = Referral.createWithDefaults(anonReporter, communicationsMethodCode,
+        drmsAllegationDescriptionDoc, drmsErReferralDoc, drmsInvestigationDoc, referalName,
+        dateStarted, timeStarted, referralResponseTypeCode, allegesAbuseOccurredAtAddressId,
+        firstResponseDeterminedByStaffPersonId, longTextId, countyCode, approvalCode, staffId);
     assertEquals("Expected additionalInfoIncludedCode field to have presetValues",
         additionalInfoIncludedCode, referral.getAdditionalInfoIncludedCode());
     assertEquals("Expected applicationForPetitionIndicator field to have presetValues",
