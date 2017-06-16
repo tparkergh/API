@@ -16,17 +16,6 @@ import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-import com.smartystreets.api.us_street.ClientBuilder;
-import gov.ca.cwds.fixture.AddressResourceBuilder;
-import gov.ca.cwds.fixture.AllegationResourceBuilder;
-import gov.ca.cwds.fixture.CrossReportResourceBuilder;
-import gov.ca.cwds.fixture.MockedScreeningToReferralServiceBuilder;
-import gov.ca.cwds.rest.api.domain.Participant;
-import gov.ca.cwds.fixture.ParticipantResourceBuilder;
-import gov.ca.cwds.fixture.ScreeningToReferralResourceBuilder;
-import gov.ca.cwds.rest.filters.UnhandledExceptionMapperImpl;
-import gov.ca.cwds.rest.messages.MessageBuilder;
-import java.util.List;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.LinkedHashSet;
@@ -36,8 +25,6 @@ import java.util.Set;
 import javax.validation.Validation;
 
 import org.apache.commons.lang3.NotImplementedException;
-import javax.validation.Validator;
-import org.elasticsearch.cluster.metadata.AliasAction.Add;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Ignore;
@@ -57,13 +44,21 @@ import gov.ca.cwds.data.cms.ChildClientDao;
 import gov.ca.cwds.data.cms.ClientAddressDao;
 import gov.ca.cwds.data.cms.ClientDao;
 import gov.ca.cwds.data.cms.CrossReportDao;
+import gov.ca.cwds.data.cms.DrmsDocumentDao;
 import gov.ca.cwds.data.cms.LongTextDao;
 import gov.ca.cwds.data.cms.ReferralClientDao;
 import gov.ca.cwds.data.cms.ReferralDao;
 import gov.ca.cwds.data.cms.ReporterDao;
 import gov.ca.cwds.data.cms.StaffPersonDao;
 import gov.ca.cwds.data.rules.TriggerTablesDao;
+import gov.ca.cwds.fixture.AddressResourceBuilder;
+import gov.ca.cwds.fixture.AllegationResourceBuilder;
+import gov.ca.cwds.fixture.CrossReportResourceBuilder;
+import gov.ca.cwds.fixture.MockedScreeningToReferralServiceBuilder;
+import gov.ca.cwds.fixture.ParticipantResourceBuilder;
+import gov.ca.cwds.fixture.ScreeningToReferralResourceBuilder;
 import gov.ca.cwds.rest.api.Response;
+import gov.ca.cwds.rest.api.domain.Participant;
 import gov.ca.cwds.rest.api.domain.PostedScreeningToReferral;
 import gov.ca.cwds.rest.api.domain.ScreeningToReferral;
 import gov.ca.cwds.rest.api.domain.cms.Address;
@@ -73,13 +68,10 @@ import gov.ca.cwds.rest.api.domain.cms.Client;
 import gov.ca.cwds.rest.api.domain.cms.ClientAddress;
 import gov.ca.cwds.rest.api.domain.cms.CmsReferral;
 import gov.ca.cwds.rest.api.domain.cms.CrossReport;
+import gov.ca.cwds.rest.api.domain.cms.DrmsDocument;
 import gov.ca.cwds.rest.api.domain.cms.LongText;
 import gov.ca.cwds.rest.api.domain.cms.PostedAddress;
-import gov.ca.cwds.rest.api.domain.cms.PostedAllegation;
 import gov.ca.cwds.rest.api.domain.cms.PostedClient;
-import gov.ca.cwds.rest.api.domain.cms.PostedLongText;
-import gov.ca.cwds.rest.api.domain.cms.PostedReferral;
-import gov.ca.cwds.rest.api.domain.cms.PostedReporter;
 import gov.ca.cwds.rest.api.domain.cms.Referral;
 import gov.ca.cwds.rest.api.domain.cms.ReferralClient;
 import gov.ca.cwds.rest.api.domain.cms.Reporter;
@@ -93,6 +85,7 @@ import gov.ca.cwds.rest.services.cms.ChildClientService;
 import gov.ca.cwds.rest.services.cms.ClientAddressService;
 import gov.ca.cwds.rest.services.cms.ClientService;
 import gov.ca.cwds.rest.services.cms.CrossReportService;
+import gov.ca.cwds.rest.services.cms.DrmsDocumentService;
 import gov.ca.cwds.rest.services.cms.LongTextService;
 import gov.ca.cwds.rest.services.cms.ReferralClientService;
 import gov.ca.cwds.rest.services.cms.ReferralService;
@@ -136,6 +129,8 @@ public class ScreeningToReferralServiceTest {
   private LACountyTrigger laCountyTrigger;
   private TriggerTablesDao triggerTablesDao;
   private StaffPersonIdRetriever staffPersonIdRetriever;
+  private DrmsDocumentService drmsDocumentService;
+  private DrmsDocumentDao drmsDocumentDao;
 
   private gov.ca.cwds.data.persistence.cms.Referral referral;
   private static gov.ca.cwds.data.persistence.cms.Referral createdReferal = null;
@@ -194,6 +189,9 @@ public class ScreeningToReferralServiceTest {
     longTextDao = mock(LongTextDao.class);
     longTextService = new LongTextService(longTextDao, staffPersonIdRetriever);
 
+    drmsDocumentDao = mock(DrmsDocumentDao.class);
+    drmsDocumentService = new DrmsDocumentService(drmsDocumentDao, staffPersonIdRetriever);
+
     childClientDao = mock(ChildClientDao.class);
     childClientService = new ChildClientService(childClientDao, staffPersonIdRetriever);
 
@@ -201,7 +199,7 @@ public class ScreeningToReferralServiceTest {
         allegationService, crossReportService, referralClientService, reporterService,
         addressService, clientAddressService, longTextService, childClientService,
         Validation.buildDefaultValidatorFactory().getValidator(), referralDao,
-        staffPersonIdRetriever, new MessageBuilder());
+        staffPersonIdRetriever, new MessageBuilder(), drmsDocumentService);
   }
 
   @SuppressWarnings("javadoc")
@@ -213,6 +211,13 @@ public class ScreeningToReferralServiceTest {
         fixture("fixtures/domain/ScreeningToReferral/valid/validReferral.json"), Referral.class);
     gov.ca.cwds.data.persistence.cms.Referral referralToCreate =
         new gov.ca.cwds.data.persistence.cms.Referral("0123456ABC", referralDomain, "2016-10-31");
+
+    DrmsDocument drmsDocumentDomain = MAPPER.readValue(
+        fixture("fixtures/domain/legacy/DrmsDocument/valid/valid.json"), DrmsDocument.class);
+    gov.ca.cwds.data.persistence.cms.DrmsDocument drmsDocumentToCreate =
+        new gov.ca.cwds.data.persistence.cms.DrmsDocument("ABD1234568", drmsDocumentDomain, "ABC");
+    when(drmsDocumentDao.create(any(gov.ca.cwds.data.persistence.cms.DrmsDocument.class)))
+        .thenReturn(drmsDocumentToCreate);
 
     Set<Client> clientDomain =
         MAPPER.readValue(fixture("fixtures/domain/ScreeningToReferral/valid/validClient.json"),
@@ -326,6 +331,14 @@ public class ScreeningToReferralServiceTest {
   public void createReferralWithDefaultsSetsApprovalCodeNotSubmitted() throws Exception {
     ScreeningToReferral screeningToReferral = MAPPER.readValue(
         fixture("fixtures/domain/ScreeningToReferral/valid/valid.json"), ScreeningToReferral.class);
+
+    DrmsDocument drmsDocumentDomain = MAPPER.readValue(
+        fixture("fixtures/domain/legacy/DrmsDocument/valid/valid.json"), DrmsDocument.class);
+    gov.ca.cwds.data.persistence.cms.DrmsDocument drmsDocumentToCreate =
+        new gov.ca.cwds.data.persistence.cms.DrmsDocument("ABD1234568", drmsDocumentDomain, "ABC");
+    when(drmsDocumentDao.create(any(gov.ca.cwds.data.persistence.cms.DrmsDocument.class)))
+        .thenReturn(drmsDocumentToCreate);
+
     LongText longTextDomain = MAPPER.readValue(
         fixture("fixtures/domain/ScreeningToReferral/valid/validLongText.json"), LongText.class);
     gov.ca.cwds.data.persistence.cms.LongText longTextToCreate =
@@ -373,6 +386,13 @@ public class ScreeningToReferralServiceTest {
         new gov.ca.cwds.data.persistence.cms.Referral("0123456ABC", referralDomain, "2016-10-31");
     when(referralDao.create(any(gov.ca.cwds.data.persistence.cms.Referral.class)))
         .thenReturn(referralToCreate);
+
+    DrmsDocument drmsDocumentDomain = MAPPER.readValue(
+        fixture("fixtures/domain/legacy/DrmsDocument/valid/valid.json"), DrmsDocument.class);
+    gov.ca.cwds.data.persistence.cms.DrmsDocument drmsDocumentToCreate =
+        new gov.ca.cwds.data.persistence.cms.DrmsDocument("ABD1234568", drmsDocumentDomain, "ABC");
+    when(drmsDocumentDao.create(any(gov.ca.cwds.data.persistence.cms.DrmsDocument.class)))
+        .thenReturn(drmsDocumentToCreate);
 
     ChildClient childClient = MAPPER.readValue(
         fixture("fixtures/domain/ScreeningToReferral/valid/childClient.json"), ChildClient.class);
@@ -567,11 +587,11 @@ public class ScreeningToReferralServiceTest {
     screeningToReferralService = builder.createScreeningToReferralService();
 
     ScreeningToReferral referral = new ScreeningToReferralResourceBuilder()
-        .setReferralId("1234567ABC")
-        .createScreeningToReferral();
+        .setReferralId("1234567ABC").createScreeningToReferral();
 
     Response response = screeningToReferralService.create(referral);
-    verify(builder.getMessageBuilder()).addError("Legacy Id does not correspond to an existing CMS/CWS Referral");
+    verify(builder.getMessageBuilder())
+        .addError("Legacy Id does not correspond to an existing CMS/CWS Referral");
   }
 
   @SuppressWarnings("javadoc")
@@ -579,21 +599,26 @@ public class ScreeningToReferralServiceTest {
   public void shouldUpdateClientWhenClientIdIsPresent() throws Exception {
     String victimClientLegacyId = "ABC123DSAF";
 
-    Participant victim = new ParticipantResourceBuilder().setLegacyId(victimClientLegacyId).createParticipant();
+    Participant victim =
+        new ParticipantResourceBuilder().setLegacyId(victimClientLegacyId).createParticipant();
     Participant reporter = new ParticipantResourceBuilder().createReporterParticipant();
     Participant perp = new ParticipantResourceBuilder().createReporterParticipant();
-    Set participants = new HashSet(Arrays.asList(reporter, victim, perp));
-    ScreeningToReferral referral = new ScreeningToReferralResourceBuilder().setParticipants(participants).createScreeningToReferral();
+    Set participants = new HashSet<>(Arrays.asList(reporter, victim, perp));
+    ScreeningToReferral referral = new ScreeningToReferralResourceBuilder()
+        .setParticipants(participants).createScreeningToReferral();
 
+    gov.ca.cwds.data.persistence.cms.DrmsDocument drmsDocument =
+        new gov.ca.cwds.data.persistence.cms.DrmsDocument("ABC1234560", null, null, null, null,
+            null);
     clientService = mock(ClientService.class);
     Client updatedClient = mock(Client.class);
     Client foundClient = mock(Client.class);
+    when(drmsDocumentDao.create(any())).thenReturn(drmsDocument);
     when(clientService.find(eq(victimClientLegacyId))).thenReturn(foundClient);
     when(clientService.update(eq(victimClientLegacyId), any())).thenReturn(updatedClient);
     screeningToReferralService = new MockedScreeningToReferralServiceBuilder()
-        .addClientService(clientService)
-        .addMessageBuilder(new MessageBuilder())
-        .createScreeningToReferralService();
+        .addClientService(clientService).addDrmsDocumentService(drmsDocumentService)
+        .addMessageBuilder(new MessageBuilder()).createScreeningToReferralService();
 
     screeningToReferralService.create(referral);
 
@@ -608,14 +633,17 @@ public class ScreeningToReferralServiceTest {
     clientService = mock(ClientService.class);
 
     screeningToReferralService = new MockedScreeningToReferralServiceBuilder()
-        .addClientService(clientService)
-        .createScreeningToReferralService();
+        .addClientService(clientService).createScreeningToReferralService();
 
-    Participant victim = new ParticipantResourceBuilder().setLegacyId(victimClientLegacyId).createParticipant();
-    Participant reporter = new ParticipantResourceBuilder().setRoles(new HashSet(Arrays.asList("Mandated Reporter"))).createParticipant();
-    Participant perp = new ParticipantResourceBuilder().setRoles(new HashSet(Arrays.asList("Perpetrator"))).createParticipant();
-    Set participants = new HashSet(Arrays.asList(reporter, victim, perp));
-    ScreeningToReferral referral = new ScreeningToReferralResourceBuilder().setParticipants(participants).createScreeningToReferral();
+    Participant victim =
+        new ParticipantResourceBuilder().setLegacyId(victimClientLegacyId).createParticipant();
+    Participant reporter = new ParticipantResourceBuilder()
+        .setRoles(new HashSet<>(Arrays.asList("Mandated Reporter"))).createParticipant();
+    Participant perp = new ParticipantResourceBuilder()
+        .setRoles(new HashSet<>(Arrays.asList("Perpetrator"))).createParticipant();
+    Set participants = new HashSet<>(Arrays.asList(reporter, victim, perp));
+    ScreeningToReferral referral = new ScreeningToReferralResourceBuilder()
+        .setParticipants(participants).createScreeningToReferral();
 
     screeningToReferralService.create(referral);
 
@@ -724,21 +752,23 @@ public class ScreeningToReferralServiceTest {
   @SuppressWarnings("javadoc")
   @Test
   public void testScreeningToReferralParticipantWithBlankRolesSuccess() throws Exception {
-    Participant unknownRoleParticipant = new ParticipantResourceBuilder()
-        .setRoles(new HashSet<>())
-        .createParticipant();
+    Participant unknownRoleParticipant =
+        new ParticipantResourceBuilder().setRoles(new HashSet<>()).createParticipant();
 
+    gov.ca.cwds.data.persistence.cms.DrmsDocument drmsDocument =
+        new gov.ca.cwds.data.persistence.cms.DrmsDocument("ABC1234560", null, null, null, null,
+            null);
     Participant victim = new ParticipantResourceBuilder().createVictimParticipant();
     Participant reporter = new ParticipantResourceBuilder().createReporterParticipant();
-    Set participants = new HashSet(Arrays.asList(unknownRoleParticipant, victim, reporter));
+    Set participants = new HashSet<>(Arrays.asList(unknownRoleParticipant, victim, reporter));
+    when(drmsDocumentDao.create(any())).thenReturn(drmsDocument);
 
     ScreeningToReferral referral = new ScreeningToReferralResourceBuilder()
-        .setParticipants(participants)
-        .createScreeningToReferral();
+        .setParticipants(participants).createScreeningToReferral();
 
-    screeningToReferralService = new MockedScreeningToReferralServiceBuilder()
-        .addMessageBuilder(new MessageBuilder())
-        .createScreeningToReferralService();
+    screeningToReferralService =
+        new MockedScreeningToReferralServiceBuilder().addDrmsDocumentService(drmsDocumentService)
+            .addMessageBuilder(new MessageBuilder()).createScreeningToReferralService();
 
     Response response = screeningToReferralService.create(referral);
     assertFalse(response.hasMessages());
@@ -753,6 +783,13 @@ public class ScreeningToReferralServiceTest {
         new gov.ca.cwds.data.persistence.cms.Referral("0123456ABC", referralDomain, "2016-10-31");
     when(referralDao.create(any(gov.ca.cwds.data.persistence.cms.Referral.class)))
         .thenReturn(referralToCreate);
+
+    DrmsDocument drmsDocumentDomain = MAPPER.readValue(
+        fixture("fixtures/domain/legacy/DrmsDocument/valid/valid.json"), DrmsDocument.class);
+    gov.ca.cwds.data.persistence.cms.DrmsDocument drmsDocumentToCreate =
+        new gov.ca.cwds.data.persistence.cms.DrmsDocument("ABD1234568", drmsDocumentDomain, "ABC");
+    when(drmsDocumentDao.create(any(gov.ca.cwds.data.persistence.cms.DrmsDocument.class)))
+        .thenReturn(drmsDocumentToCreate);
 
     ChildClient childClient = MAPPER.readValue(
         fixture("fixtures/domain/ScreeningToReferral/valid/childClient.json"), ChildClient.class);
@@ -846,11 +883,10 @@ public class ScreeningToReferralServiceTest {
   @Test
   public void testScreeningToReferralWithoutCrossReportsSuccess() throws Exception {
     ScreeningToReferral referral = new ScreeningToReferralResourceBuilder()
-        .setCrossReports(new HashSet<>())
-        .createScreeningToReferral();
+        .setCrossReports(new HashSet<>()).createScreeningToReferral();
 
-    screeningToReferralService = new MockedScreeningToReferralServiceBuilder()
-        .createScreeningToReferralService();
+    screeningToReferralService =
+        new MockedScreeningToReferralServiceBuilder().createScreeningToReferralService();
 
     Response response = screeningToReferralService.create(referral);
     assertFalse(response.hasMessages());
@@ -858,23 +894,23 @@ public class ScreeningToReferralServiceTest {
   }
 
   @SuppressWarnings("javadoc")
-  @Test(expected=ServiceException.class)
+  @Test(expected = ServiceException.class)
   // R - 00836 Self rep Ind Limit
   public void testMoreThanOneSelfReportedFail() throws Exception {
     Participant victimReporter1 = new ParticipantResourceBuilder()
-      .setRoles(new HashSet(Arrays.asList("Non-mandated" , "Victim")))
-      .createParticipant();
+        .setRoles(new HashSet<>(Arrays.asList("Non-mandated", "Victim"))).createParticipant();
     Participant victimReporter2 = new ParticipantResourceBuilder()
-        .setRoles(new HashSet(Arrays.asList("Non-mandated" , "Victim")))
-        .createParticipant();
-    Set participants = new HashSet(Arrays.asList(victimReporter1, victimReporter2));
+        .setRoles(new HashSet<>(Arrays.asList("Non-mandated", "Victim"))).createParticipant();
+    Set participants = new HashSet<>(Arrays.asList(victimReporter1, victimReporter2));
 
     ScreeningToReferral referral = new ScreeningToReferralResourceBuilder()
-        .setParticipants(participants)
-        .createScreeningToReferral();
+        .setParticipants(participants).createScreeningToReferral();
 
-
-    gov.ca.cwds.rest.api.domain.cms.Client updatedClient = mock(gov.ca.cwds.rest.api.domain.cms.Client.class);
+    gov.ca.cwds.data.persistence.cms.DrmsDocument drmsDocument =
+        new gov.ca.cwds.data.persistence.cms.DrmsDocument("ABC1234560", null, null, null, null,
+            null);
+    gov.ca.cwds.rest.api.domain.cms.Client updatedClient =
+        mock(gov.ca.cwds.rest.api.domain.cms.Client.class);
     clientService = mock(ClientService.class);
     when(clientService.update(any(), any())).thenReturn(updatedClient);
     PostedClient postedClient = mock(PostedClient.class);
@@ -882,6 +918,7 @@ public class ScreeningToReferralServiceTest {
     when(clientService.create(any())).thenReturn(postedClient);
     Client foundClient = mock(Client.class);
     when(clientService.find(any())).thenReturn(foundClient);
+    when(drmsDocumentDao.create(any())).thenReturn(drmsDocument);
 
     Address foundAddress = mock(Address.class);
     when(foundAddress.getExistingAddressId()).thenReturn("JHGFRTYUIO");
@@ -896,18 +933,17 @@ public class ScreeningToReferralServiceTest {
     when(clientAddressService.find(any())).thenReturn(foundClientAddress);
 
     screeningToReferralService = new MockedScreeningToReferralServiceBuilder()
-      .addAddressService(addressService)
-      .addClientAddressService(clientAddressService)
-      .addClientService(clientService)
-      .addMessageBuilder(new MessageBuilder())
-      .createScreeningToReferralService();
+        .addAddressService(addressService).addClientAddressService(clientAddressService)
+        .addClientService(clientService).addDrmsDocumentService(drmsDocumentService)
+        .addMessageBuilder(new MessageBuilder()).createScreeningToReferralService();
 
     Response response = screeningToReferralService.create(referral);
 
-    //TODO:Reenable as soon as we remove validation exception
-//    String errorMessage = " Incompatiable participants included in request";
-//    assertEquals("Expected only one message to be found",1,response.getMessages().size());
-//    assertEquals("Expected Incompatible participants error message to be recorded",errorMessage, response.getMessages().get(0).getMessage());
+    // TODO:Reenable as soon as we remove validation exception
+    // String errorMessage = " Incompatiable participants included in request";
+    // assertEquals("Expected only one message to be found",1,response.getMessages().size());
+    // assertEquals("Expected Incompatible participants error message to be recorded",errorMessage,
+    // response.getMessages().get(0).getMessage());
   }
 
   @SuppressWarnings("javadoc")
@@ -919,6 +955,13 @@ public class ScreeningToReferralServiceTest {
         new gov.ca.cwds.data.persistence.cms.Referral("0123456ABC", referralDomain, "2016-10-31");
     when(referralDao.create(any(gov.ca.cwds.data.persistence.cms.Referral.class)))
         .thenReturn(referralToCreate);
+
+    DrmsDocument drmsDocumentDomain = MAPPER.readValue(
+        fixture("fixtures/domain/legacy/DrmsDocument/valid/valid.json"), DrmsDocument.class);
+    gov.ca.cwds.data.persistence.cms.DrmsDocument drmsDocumentToCreate =
+        new gov.ca.cwds.data.persistence.cms.DrmsDocument("ABD1234568", drmsDocumentDomain, "ABC");
+    when(drmsDocumentDao.create(any(gov.ca.cwds.data.persistence.cms.DrmsDocument.class)))
+        .thenReturn(drmsDocumentToCreate);
 
     ChildClient childClient = MAPPER.readValue(
         fixture("fixtures/domain/ScreeningToReferral/valid/childClient.json"), ChildClient.class);
@@ -1018,6 +1061,13 @@ public class ScreeningToReferralServiceTest {
     when(referralDao.create(any(gov.ca.cwds.data.persistence.cms.Referral.class)))
         .thenReturn(referralToCreate);
 
+    DrmsDocument drmsDocumentDomain = MAPPER.readValue(
+        fixture("fixtures/domain/legacy/DrmsDocument/valid/valid.json"), DrmsDocument.class);
+    gov.ca.cwds.data.persistence.cms.DrmsDocument drmsDocumentToCreate =
+        new gov.ca.cwds.data.persistence.cms.DrmsDocument("ABD1234568", drmsDocumentDomain, "ABC");
+    when(drmsDocumentDao.create(any(gov.ca.cwds.data.persistence.cms.DrmsDocument.class)))
+        .thenReturn(drmsDocumentToCreate);
+
     ChildClient childClient = MAPPER.readValue(
         fixture("fixtures/domain/ScreeningToReferral/valid/childClient.json"), ChildClient.class);
     gov.ca.cwds.data.persistence.cms.ChildClient childClientToCreate =
@@ -1069,7 +1119,6 @@ public class ScreeningToReferralServiceTest {
     when(reporterDao.create(any(gov.ca.cwds.data.persistence.cms.Reporter.class)))
         .thenReturn(reporterToCreate);
 
-
     Address addressDomain = MAPPER.readValue(
         fixture("fixtures/domain/ScreeningToReferral/valid/validAddress.json"), Address.class);
     gov.ca.cwds.data.persistence.cms.Address addressToCreate =
@@ -1114,6 +1163,13 @@ public class ScreeningToReferralServiceTest {
         new gov.ca.cwds.data.persistence.cms.Referral("0123456ABC", referralDomain, "2016-10-31");
     when(referralDao.create(any(gov.ca.cwds.data.persistence.cms.Referral.class)))
         .thenReturn(referralToCreate);
+
+    DrmsDocument drmsDocumentDomain = MAPPER.readValue(
+        fixture("fixtures/domain/legacy/DrmsDocument/valid/valid.json"), DrmsDocument.class);
+    gov.ca.cwds.data.persistence.cms.DrmsDocument drmsDocumentToCreate =
+        new gov.ca.cwds.data.persistence.cms.DrmsDocument("ABD1234568", drmsDocumentDomain, "ABC");
+    when(drmsDocumentDao.create(any(gov.ca.cwds.data.persistence.cms.DrmsDocument.class)))
+        .thenReturn(drmsDocumentToCreate);
 
     Set<Client> clientDomain =
         MAPPER.readValue(fixture("fixtures/domain/ScreeningToReferral/valid/validClient.json"),
@@ -1208,6 +1264,13 @@ public class ScreeningToReferralServiceTest {
     when(referralDao.create(any(gov.ca.cwds.data.persistence.cms.Referral.class)))
         .thenReturn(referralToCreate);
 
+    DrmsDocument drmsDocumentDomain = MAPPER.readValue(
+        fixture("fixtures/domain/legacy/DrmsDocument/valid/valid.json"), DrmsDocument.class);
+    gov.ca.cwds.data.persistence.cms.DrmsDocument drmsDocumentToCreate =
+        new gov.ca.cwds.data.persistence.cms.DrmsDocument("ABD1234568", drmsDocumentDomain, "ABC");
+    when(drmsDocumentDao.create(any(gov.ca.cwds.data.persistence.cms.DrmsDocument.class)))
+        .thenReturn(drmsDocumentToCreate);
+
     ChildClient childClient = MAPPER.readValue(
         fixture("fixtures/domain/ScreeningToReferral/valid/childClient.json"), ChildClient.class);
     gov.ca.cwds.data.persistence.cms.ChildClient childClientToCreate =
@@ -1259,7 +1322,6 @@ public class ScreeningToReferralServiceTest {
     when(reporterDao.create(any(gov.ca.cwds.data.persistence.cms.Reporter.class)))
         .thenReturn(reporterToCreate);
 
-
     Address addressDomain = MAPPER.readValue(
         fixture("fixtures/domain/ScreeningToReferral/valid/validAddress.json"), Address.class);
     gov.ca.cwds.data.persistence.cms.Address addressToCreate =
@@ -1306,6 +1368,13 @@ public class ScreeningToReferralServiceTest {
         new gov.ca.cwds.data.persistence.cms.Referral("0123456ABC", referralDomain, "2016-10-31");
     when(referralDao.create(any(gov.ca.cwds.data.persistence.cms.Referral.class)))
         .thenReturn(referralToCreate);
+
+    DrmsDocument drmsDocumentDomain = MAPPER.readValue(
+        fixture("fixtures/domain/legacy/DrmsDocument/valid/valid.json"), DrmsDocument.class);
+    gov.ca.cwds.data.persistence.cms.DrmsDocument drmsDocumentToCreate =
+        new gov.ca.cwds.data.persistence.cms.DrmsDocument("ABD1234568", drmsDocumentDomain, "ABC");
+    when(drmsDocumentDao.create(any(gov.ca.cwds.data.persistence.cms.DrmsDocument.class)))
+        .thenReturn(drmsDocumentToCreate);
 
     ChildClient childClient = MAPPER.readValue(
         fixture("fixtures/domain/ScreeningToReferral/valid/childClient.json"), ChildClient.class);
@@ -1405,6 +1474,13 @@ public class ScreeningToReferralServiceTest {
     when(referralDao.create(any(gov.ca.cwds.data.persistence.cms.Referral.class)))
         .thenReturn(referralToCreate);
 
+    DrmsDocument drmsDocumentDomain = MAPPER.readValue(
+        fixture("fixtures/domain/legacy/DrmsDocument/valid/valid.json"), DrmsDocument.class);
+    gov.ca.cwds.data.persistence.cms.DrmsDocument drmsDocumentToCreate =
+        new gov.ca.cwds.data.persistence.cms.DrmsDocument("ABD1234568", drmsDocumentDomain, "ABC");
+    when(drmsDocumentDao.create(any(gov.ca.cwds.data.persistence.cms.DrmsDocument.class)))
+        .thenReturn(drmsDocumentToCreate);
+
     ChildClient childClient = MAPPER.readValue(
         fixture("fixtures/domain/ScreeningToReferral/valid/childClient.json"), ChildClient.class);
     gov.ca.cwds.data.persistence.cms.ChildClient childClientToCreate =
@@ -1503,6 +1579,13 @@ public class ScreeningToReferralServiceTest {
     when(referralDao.create(any(gov.ca.cwds.data.persistence.cms.Referral.class)))
         .thenReturn(referralToCreate);
 
+    DrmsDocument drmsDocumentDomain = MAPPER.readValue(
+        fixture("fixtures/domain/legacy/DrmsDocument/valid/valid.json"), DrmsDocument.class);
+    gov.ca.cwds.data.persistence.cms.DrmsDocument drmsDocumentToCreate =
+        new gov.ca.cwds.data.persistence.cms.DrmsDocument("ABD1234568", drmsDocumentDomain, "ABC");
+    when(drmsDocumentDao.create(any(gov.ca.cwds.data.persistence.cms.DrmsDocument.class)))
+        .thenReturn(drmsDocumentToCreate);
+
     ChildClient childClient = MAPPER.readValue(
         fixture("fixtures/domain/ScreeningToReferral/valid/childClient.json"), ChildClient.class);
     gov.ca.cwds.data.persistence.cms.ChildClient childClientToCreate =
@@ -1554,7 +1637,6 @@ public class ScreeningToReferralServiceTest {
     when(reporterDao.create(any(gov.ca.cwds.data.persistence.cms.Reporter.class)))
         .thenReturn(reporterToCreate);
 
-
     Address addressDomain = MAPPER.readValue(
         fixture("fixtures/domain/ScreeningToReferral/valid/validAddress.json"), Address.class);
     gov.ca.cwds.data.persistence.cms.Address addressToCreate =
@@ -1602,6 +1684,13 @@ public class ScreeningToReferralServiceTest {
         new gov.ca.cwds.data.persistence.cms.Referral("0123456ABC", referralDomain, "2016-10-31");
     when(referralDao.create(any(gov.ca.cwds.data.persistence.cms.Referral.class)))
         .thenReturn(referralToCreate);
+
+    DrmsDocument drmsDocumentDomain = MAPPER.readValue(
+        fixture("fixtures/domain/legacy/DrmsDocument/valid/valid.json"), DrmsDocument.class);
+    gov.ca.cwds.data.persistence.cms.DrmsDocument drmsDocumentToCreate =
+        new gov.ca.cwds.data.persistence.cms.DrmsDocument("ABD1234568", drmsDocumentDomain, "ABC");
+    when(drmsDocumentDao.create(any(gov.ca.cwds.data.persistence.cms.DrmsDocument.class)))
+        .thenReturn(drmsDocumentToCreate);
 
     ChildClient childClient = MAPPER.readValue(
         fixture("fixtures/domain/ScreeningToReferral/valid/childClient.json"), ChildClient.class);
@@ -1695,6 +1784,13 @@ public class ScreeningToReferralServiceTest {
     when(referralDao.create(any(gov.ca.cwds.data.persistence.cms.Referral.class)))
         .thenReturn(referralToCreate);
 
+    DrmsDocument drmsDocumentDomain = MAPPER.readValue(
+        fixture("fixtures/domain/legacy/DrmsDocument/valid/valid.json"), DrmsDocument.class);
+    gov.ca.cwds.data.persistence.cms.DrmsDocument drmsDocumentToCreate =
+        new gov.ca.cwds.data.persistence.cms.DrmsDocument("ABD1234568", drmsDocumentDomain, "ABC");
+    when(drmsDocumentDao.create(any(gov.ca.cwds.data.persistence.cms.DrmsDocument.class)))
+        .thenReturn(drmsDocumentToCreate);
+
     ChildClient childClient = MAPPER.readValue(
         fixture("fixtures/domain/ScreeningToReferral/valid/childClient.json"), ChildClient.class);
     gov.ca.cwds.data.persistence.cms.ChildClient childClientToCreate =
@@ -1745,7 +1841,6 @@ public class ScreeningToReferralServiceTest {
         new gov.ca.cwds.data.persistence.cms.Reporter(reporterDomain, "ABC");
     when(reporterDao.create(any(gov.ca.cwds.data.persistence.cms.Reporter.class)))
         .thenReturn(reporterToCreate);
-
 
     Address addressDomain = MAPPER.readValue(
         fixture("fixtures/domain/ScreeningToReferral/valid/validAddress.json"), Address.class);
@@ -1795,6 +1890,13 @@ public class ScreeningToReferralServiceTest {
     when(referralDao.create(any(gov.ca.cwds.data.persistence.cms.Referral.class)))
         .thenReturn(referralToCreate);
 
+    DrmsDocument drmsDocumentDomain = MAPPER.readValue(
+        fixture("fixtures/domain/legacy/DrmsDocument/valid/valid.json"), DrmsDocument.class);
+    gov.ca.cwds.data.persistence.cms.DrmsDocument drmsDocumentToCreate =
+        new gov.ca.cwds.data.persistence.cms.DrmsDocument("ABD1234568", drmsDocumentDomain, "ABC");
+    when(drmsDocumentDao.create(any(gov.ca.cwds.data.persistence.cms.DrmsDocument.class)))
+        .thenReturn(drmsDocumentToCreate);
+
     ChildClient childClient = MAPPER.readValue(
         fixture("fixtures/domain/ScreeningToReferral/valid/childClient.json"), ChildClient.class);
     gov.ca.cwds.data.persistence.cms.ChildClient childClientToCreate =
@@ -1846,7 +1948,6 @@ public class ScreeningToReferralServiceTest {
     when(reporterDao.create(any(gov.ca.cwds.data.persistence.cms.Reporter.class)))
         .thenReturn(reporterToCreate);
 
-
     Address addressDomain = MAPPER.readValue(
         fixture("fixtures/domain/ScreeningToReferral/valid/validAddress.json"), Address.class);
     gov.ca.cwds.data.persistence.cms.Address addressToCreate =
@@ -1889,17 +1990,16 @@ public class ScreeningToReferralServiceTest {
   @Test
   public void testMoreThanOneParticipantRoleSuccess() throws Exception {
     Participant victimAndReporter = new ParticipantResourceBuilder()
-        .setRoles(new HashSet(Arrays.asList("Non-mandated Reporter", "Victim")))
+        .setRoles(new HashSet<>(Arrays.asList("Non-mandated Reporter", "Victim")))
         .createParticipant();
     Participant perp = new ParticipantResourceBuilder().createPerpParticipant();
-    Set participants = new HashSet(Arrays.asList(victimAndReporter, perp));
+    Set participants = new HashSet<>(Arrays.asList(victimAndReporter, perp));
 
     ScreeningToReferral referral = new ScreeningToReferralResourceBuilder()
-        .setParticipants(new HashSet<>(participants))
-        .createScreeningToReferral();
+        .setParticipants(new HashSet<>(participants)).createScreeningToReferral();
 
-    screeningToReferralService = new MockedScreeningToReferralServiceBuilder()
-        .createScreeningToReferralService();
+    screeningToReferralService =
+        new MockedScreeningToReferralServiceBuilder().createScreeningToReferralService();
 
     Response response = screeningToReferralService.create(referral);
     assertFalse(response.hasMessages());
@@ -1908,24 +2008,28 @@ public class ScreeningToReferralServiceTest {
   @SuppressWarnings("javadoc")
   @Test
   public void testMultipleAddressPerParticipantSuccess() throws Exception {
-    screeningToReferralService = new MockedScreeningToReferralServiceBuilder().createScreeningToReferralService();
+    screeningToReferralService =
+        new MockedScreeningToReferralServiceBuilder().createScreeningToReferralService();
 
-    gov.ca.cwds.rest.api.domain.Address address1 = new AddressResourceBuilder().setStreetAddress("123 First St").createAddress();
-    gov.ca.cwds.rest.api.domain.Address address2 = new AddressResourceBuilder().setStreetAddress("7466 Campbell St").createAddress();
+    gov.ca.cwds.rest.api.domain.Address address1 =
+        new AddressResourceBuilder().setStreetAddress("123 First St").createAddress();
+    gov.ca.cwds.rest.api.domain.Address address2 =
+        new AddressResourceBuilder().setStreetAddress("7466 Campbell St").createAddress();
     Participant reporter = new ParticipantResourceBuilder()
-        .setRoles(new HashSet(Arrays.asList("Mandated Reporter", "Victim")))
-        .setAddresses(new HashSet<>(Arrays.asList(address1, address2)))
-        .createParticipant();
-    Participant perp = new ParticipantResourceBuilder().setRoles(new HashSet(Arrays.asList("Perpetrator", "Victim"))).createParticipant();
-    Set participants = new HashSet(Arrays.asList(reporter, perp));
-    ScreeningToReferral referral = new ScreeningToReferralResourceBuilder().setParticipants(participants).createScreeningToReferral();
+        .setRoles(new HashSet<>(Arrays.asList("Mandated Reporter", "Victim")))
+        .setAddresses(new HashSet<>(Arrays.asList(address1, address2))).createParticipant();
+    Participant perp = new ParticipantResourceBuilder()
+        .setRoles(new HashSet<>(Arrays.asList("Perpetrator", "Victim"))).createParticipant();
+    Set participants = new HashSet<>(Arrays.asList(reporter, perp));
+    ScreeningToReferral referral = new ScreeningToReferralResourceBuilder()
+        .setParticipants(participants).createScreeningToReferral();
 
     Response response = screeningToReferralService.create(referral);
     assertThat(response.getClass(), is(PostedScreeningToReferral.class));
     assertThat(response.hasMessages(), is(equalTo(false)));
   }
 
-   @Ignore
+  @Ignore
   @SuppressWarnings("javadoc")
   @Test
   public void testNoAddressPerParticipantSuccess() throws Exception {
@@ -1935,6 +2039,13 @@ public class ScreeningToReferralServiceTest {
         new gov.ca.cwds.data.persistence.cms.Referral("0123456ABC", referralDomain, "2016-10-31");
     when(referralDao.create(any(gov.ca.cwds.data.persistence.cms.Referral.class)))
         .thenReturn(referralToCreate);
+
+    DrmsDocument drmsDocumentDomain = MAPPER.readValue(
+        fixture("fixtures/domain/legacy/DrmsDocument/valid/valid.json"), DrmsDocument.class);
+    gov.ca.cwds.data.persistence.cms.DrmsDocument drmsDocumentToCreate =
+        new gov.ca.cwds.data.persistence.cms.DrmsDocument("ABD1234568", drmsDocumentDomain, "ABC");
+    when(drmsDocumentDao.create(any(gov.ca.cwds.data.persistence.cms.DrmsDocument.class)))
+        .thenReturn(drmsDocumentToCreate);
 
     ChildClient childClient = MAPPER.readValue(
         fixture("fixtures/domain/ScreeningToReferral/valid/childClient.json"), ChildClient.class);
@@ -2039,6 +2150,13 @@ public class ScreeningToReferralServiceTest {
     when(referralDao.create(any(gov.ca.cwds.data.persistence.cms.Referral.class)))
         .thenReturn(referralToCreate);
 
+    DrmsDocument drmsDocumentDomain = MAPPER.readValue(
+        fixture("fixtures/domain/legacy/DrmsDocument/valid/valid.json"), DrmsDocument.class);
+    gov.ca.cwds.data.persistence.cms.DrmsDocument drmsDocumentToCreate =
+        new gov.ca.cwds.data.persistence.cms.DrmsDocument("ABD1234568", drmsDocumentDomain, "ABC");
+    when(drmsDocumentDao.create(any(gov.ca.cwds.data.persistence.cms.DrmsDocument.class)))
+        .thenReturn(drmsDocumentToCreate);
+
     ChildClient childClient = MAPPER.readValue(
         fixture("fixtures/domain/ScreeningToReferral/valid/childClient.json"), ChildClient.class);
     gov.ca.cwds.data.persistence.cms.ChildClient childClientToCreate =
@@ -2135,20 +2253,17 @@ public class ScreeningToReferralServiceTest {
   @Test
   public void testNoAddressForPerpetratorSuccess() throws Exception {
     Participant reporter = new ParticipantResourceBuilder()
-        .setRoles(new HashSet(Arrays.asList("Mandated Reporter", "Victim")))
-        .createParticipant();
-    Participant perp = new ParticipantResourceBuilder()
-        .setRoles(new HashSet(Arrays.asList("Perpetrator")))
-        .setAddresses(new HashSet<>())
-        .createParticipant();
-    Set participants = new HashSet(Arrays.asList(reporter, perp));
+        .setRoles(new HashSet<>(Arrays.asList("Mandated Reporter", "Victim"))).createParticipant();
+    Participant perp =
+        new ParticipantResourceBuilder().setRoles(new HashSet<>(Arrays.asList("Perpetrator")))
+            .setAddresses(new HashSet<>()).createParticipant();
+    Set participants = new HashSet<>(Arrays.asList(reporter, perp));
 
     ScreeningToReferral referral = new ScreeningToReferralResourceBuilder()
-        .setParticipants(participants)
-        .createScreeningToReferral();
+        .setParticipants(participants).createScreeningToReferral();
 
-    screeningToReferralService = new MockedScreeningToReferralServiceBuilder()
-        .createScreeningToReferralService();
+    screeningToReferralService =
+        new MockedScreeningToReferralServiceBuilder().createScreeningToReferralService();
 
     Response response = screeningToReferralService.create(referral);
     assertFalse(response.hasMessages());
@@ -2158,28 +2273,30 @@ public class ScreeningToReferralServiceTest {
   @Test
   public void testSelfReportedReporterWithNoAddressSuccess() throws Exception {
     Participant reporter = new ParticipantResourceBuilder()
-        .setRoles(new HashSet<>(Arrays.asList("Victim","Non-mandated Reporter")))
-        .setAddresses(new HashSet<>())
-        .createParticipant();
+        .setRoles(new HashSet<>(Arrays.asList("Victim", "Non-mandated Reporter")))
+        .setAddresses(new HashSet<>()).createParticipant();
     Participant perp = new ParticipantResourceBuilder().createPerpParticipant();
-    Set participants = new HashSet(Arrays.asList(reporter, perp));
+    Set participants = new HashSet<>(Arrays.asList(reporter, perp));
 
+    gov.ca.cwds.data.persistence.cms.DrmsDocument drmsDocument =
+        new gov.ca.cwds.data.persistence.cms.DrmsDocument("ABC1234560", null, null, null, null,
+            null);
     ScreeningToReferral referral = new ScreeningToReferralResourceBuilder()
-        .setParticipants(participants)
-        .createScreeningToReferral();
+        .setParticipants(participants).createScreeningToReferral();
 
     PostedClient savedClient = mock(PostedClient.class);
     when(savedClient.getId()).thenReturn("FDDSTHJKHG");
     clientService = mock(ClientService.class);
-    when(clientService.update(any(),any())).thenReturn(mock(gov.ca.cwds.rest.api.domain.cms.Client.class));
+    when(clientService.update(any(), any()))
+        .thenReturn(mock(gov.ca.cwds.rest.api.domain.cms.Client.class));
     when(clientService.create(any())).thenReturn(savedClient);
     Client foundClient = mock(Client.class);
     when(clientService.find(any())).thenReturn(foundClient);
+    when(drmsDocumentDao.create(any())).thenReturn(drmsDocument);
 
     screeningToReferralService = new MockedScreeningToReferralServiceBuilder()
-        .addClientService(clientService)
-        .addMessageBuilder(new MessageBuilder())
-        .createScreeningToReferralService();
+        .addClientService(clientService).addDrmsDocumentService(drmsDocumentService)
+        .addMessageBuilder(new MessageBuilder()).createScreeningToReferralService();
 
     Response response = screeningToReferralService.create(referral);
     assertFalse(response.hasMessages());
@@ -2188,12 +2305,19 @@ public class ScreeningToReferralServiceTest {
   @SuppressWarnings("javadoc")
   @Test
   public void testWithInvalidDateTimeFormatFail() throws Exception {
-   Referral referralDomain = MAPPER.readValue(
+    Referral referralDomain = MAPPER.readValue(
         fixture("fixtures/domain/ScreeningToReferral/valid/validReferral.json"), Referral.class);
     gov.ca.cwds.data.persistence.cms.Referral referralToCreate =
         new gov.ca.cwds.data.persistence.cms.Referral("0123456ABC", referralDomain, "2016-10-31");
     when(referralDao.create(any(gov.ca.cwds.data.persistence.cms.Referral.class)))
         .thenReturn(referralToCreate);
+
+    DrmsDocument drmsDocumentDomain = MAPPER.readValue(
+        fixture("fixtures/domain/legacy/DrmsDocument/valid/valid.json"), DrmsDocument.class);
+    gov.ca.cwds.data.persistence.cms.DrmsDocument drmsDocumentToCreate =
+        new gov.ca.cwds.data.persistence.cms.DrmsDocument("ABD1234568", drmsDocumentDomain, "ABC");
+    when(drmsDocumentDao.create(any(gov.ca.cwds.data.persistence.cms.DrmsDocument.class)))
+        .thenReturn(drmsDocumentToCreate);
 
     ChildClient childClient = MAPPER.readValue(
         fixture("fixtures/domain/ScreeningToReferral/valid/childClient.json"), ChildClient.class);
@@ -2396,6 +2520,13 @@ public class ScreeningToReferralServiceTest {
     when(referralDao.create(any(gov.ca.cwds.data.persistence.cms.Referral.class)))
         .thenReturn(referralToCreate);
 
+    DrmsDocument drmsDocumentDomain = MAPPER.readValue(
+        fixture("fixtures/domain/legacy/DrmsDocument/valid/valid.json"), DrmsDocument.class);
+    gov.ca.cwds.data.persistence.cms.DrmsDocument drmsDocumentToCreate =
+        new gov.ca.cwds.data.persistence.cms.DrmsDocument("ABD1234568", drmsDocumentDomain, "ABC");
+    when(drmsDocumentDao.create(any(gov.ca.cwds.data.persistence.cms.DrmsDocument.class)))
+        .thenReturn(drmsDocumentToCreate);
+
     ChildClient childClient = MAPPER.readValue(
         fixture("fixtures/domain/ScreeningToReferral/valid/childClient.json"), ChildClient.class);
     gov.ca.cwds.data.persistence.cms.ChildClient childClientToCreate =
@@ -2494,6 +2625,13 @@ public class ScreeningToReferralServiceTest {
     when(referralDao.create(any(gov.ca.cwds.data.persistence.cms.Referral.class)))
         .thenReturn(referralToCreate);
 
+    DrmsDocument drmsDocumentDomain = MAPPER.readValue(
+        fixture("fixtures/domain/legacy/DrmsDocument/valid/valid.json"), DrmsDocument.class);
+    gov.ca.cwds.data.persistence.cms.DrmsDocument drmsDocumentToCreate =
+        new gov.ca.cwds.data.persistence.cms.DrmsDocument("ABD1234568", drmsDocumentDomain, "ABC");
+    when(drmsDocumentDao.create(any(gov.ca.cwds.data.persistence.cms.DrmsDocument.class)))
+        .thenReturn(drmsDocumentToCreate);
+
     ChildClient childClient = MAPPER.readValue(
         fixture("fixtures/domain/ScreeningToReferral/valid/childClient.json"), ChildClient.class);
     gov.ca.cwds.data.persistence.cms.ChildClient childClientToCreate =
@@ -2586,6 +2724,13 @@ public class ScreeningToReferralServiceTest {
         new gov.ca.cwds.data.persistence.cms.Referral("0123456ABC", referralDomain, "2016-10-31");
     when(referralDao.create(any(gov.ca.cwds.data.persistence.cms.Referral.class)))
         .thenReturn(referralToCreate);
+
+    DrmsDocument drmsDocumentDomain = MAPPER.readValue(
+        fixture("fixtures/domain/legacy/DrmsDocument/valid/valid.json"), DrmsDocument.class);
+    gov.ca.cwds.data.persistence.cms.DrmsDocument drmsDocumentToCreate =
+        new gov.ca.cwds.data.persistence.cms.DrmsDocument("ABD1234568", drmsDocumentDomain, "ABC");
+    when(drmsDocumentDao.create(any(gov.ca.cwds.data.persistence.cms.DrmsDocument.class)))
+        .thenReturn(drmsDocumentToCreate);
 
     ChildClient childClient = MAPPER.readValue(
         fixture("fixtures/domain/ScreeningToReferral/valid/childClient.json"), ChildClient.class);
@@ -2680,6 +2825,13 @@ public class ScreeningToReferralServiceTest {
         new gov.ca.cwds.data.persistence.cms.Referral("0123456ABC", referralDomain, "2016-10-31");
     when(referralDao.create(any(gov.ca.cwds.data.persistence.cms.Referral.class)))
         .thenReturn(referralToCreate);
+
+    DrmsDocument drmsDocumentDomain = MAPPER.readValue(
+        fixture("fixtures/domain/legacy/DrmsDocument/valid/valid.json"), DrmsDocument.class);
+    gov.ca.cwds.data.persistence.cms.DrmsDocument drmsDocumentToCreate =
+        new gov.ca.cwds.data.persistence.cms.DrmsDocument("ABD1234568", drmsDocumentDomain, "ABC");
+    when(drmsDocumentDao.create(any(gov.ca.cwds.data.persistence.cms.DrmsDocument.class)))
+        .thenReturn(drmsDocumentToCreate);
 
     ChildClient childClient = MAPPER.readValue(
         fixture("fixtures/domain/ScreeningToReferral/valid/childClient.json"), ChildClient.class);
@@ -2884,6 +3036,13 @@ public class ScreeningToReferralServiceTest {
     when(referralDao.create(any(gov.ca.cwds.data.persistence.cms.Referral.class)))
         .thenReturn(referralToCreate);
 
+    DrmsDocument drmsDocumentDomain = MAPPER.readValue(
+        fixture("fixtures/domain/legacy/DrmsDocument/valid/valid.json"), DrmsDocument.class);
+    gov.ca.cwds.data.persistence.cms.DrmsDocument drmsDocumentToCreate =
+        new gov.ca.cwds.data.persistence.cms.DrmsDocument("ABD1234568", drmsDocumentDomain, "ABC");
+    when(drmsDocumentDao.create(any(gov.ca.cwds.data.persistence.cms.DrmsDocument.class)))
+        .thenReturn(drmsDocumentToCreate);
+
     ChildClient childClient = MAPPER.readValue(
         fixture("fixtures/domain/ScreeningToReferral/valid/childClient.json"), ChildClient.class);
     gov.ca.cwds.data.persistence.cms.ChildClient childClientToCreate =
@@ -3000,6 +3159,13 @@ public class ScreeningToReferralServiceTest {
           }
         });
 
+    DrmsDocument drmsDocumentDomain = MAPPER.readValue(
+        fixture("fixtures/domain/legacy/DrmsDocument/valid/valid.json"), DrmsDocument.class);
+    gov.ca.cwds.data.persistence.cms.DrmsDocument drmsDocumentToCreate =
+        new gov.ca.cwds.data.persistence.cms.DrmsDocument("ABD1234568", drmsDocumentDomain, "ABC");
+    when(drmsDocumentDao.create(any(gov.ca.cwds.data.persistence.cms.DrmsDocument.class)))
+        .thenReturn(drmsDocumentToCreate);
+
     ChildClient childClient = MAPPER.readValue(
         fixture("fixtures/domain/ScreeningToReferral/valid/childClient.json"), ChildClient.class);
     gov.ca.cwds.data.persistence.cms.ChildClient childClientToCreate =
@@ -3098,6 +3264,13 @@ public class ScreeningToReferralServiceTest {
     when(referralDao.create(any(gov.ca.cwds.data.persistence.cms.Referral.class)))
         .thenReturn(referralToCreate);
 
+    DrmsDocument drmsDocumentDomain = MAPPER.readValue(
+        fixture("fixtures/domain/legacy/DrmsDocument/valid/valid.json"), DrmsDocument.class);
+    gov.ca.cwds.data.persistence.cms.DrmsDocument drmsDocumentToCreate =
+        new gov.ca.cwds.data.persistence.cms.DrmsDocument("ABD1234568", drmsDocumentDomain, "ABC");
+    when(drmsDocumentDao.create(any(gov.ca.cwds.data.persistence.cms.DrmsDocument.class)))
+        .thenReturn(drmsDocumentToCreate);
+
     ChildClient childClient = MAPPER.readValue(
         fixture("fixtures/domain/ScreeningToReferral/valid/childClient.json"), ChildClient.class);
     gov.ca.cwds.data.persistence.cms.ChildClient childClientToCreate =
@@ -3193,39 +3366,43 @@ public class ScreeningToReferralServiceTest {
   public void shouldUpdatePerpetratorWhenAlreadyExists() throws Exception {
 
     String existingPerpId = "1234567ABC";
-    Participant reporter = new ParticipantResourceBuilder()
-        .setFirstName("Barney")
-        .setLastName("Rubble")
-        .setRoles(new HashSet(Arrays.asList("Non-mandated Reporter", "Victim")))
-        .createParticipant();
-    Participant perp = new ParticipantResourceBuilder()
-        .setLegacyId(existingPerpId)
-        .setFirstName("Fred")
-        .setLastName("Flintsone")
-        .setRoles(new HashSet(Arrays.asList("Perpetrator")))
-        .createParticipant();
-    Set participants = new HashSet(Arrays.asList(reporter, perp));
+    Participant reporter =
+        new ParticipantResourceBuilder().setFirstName("Barney").setLastName("Rubble")
+            .setRoles(new HashSet<>(Arrays.asList("Non-mandated Reporter", "Victim")))
+            .createParticipant();
+    Participant perp = new ParticipantResourceBuilder().setLegacyId(existingPerpId)
+        .setFirstName("Fred").setLastName("Flintsone")
+        .setRoles(new HashSet<>(Arrays.asList("Perpetrator"))).createParticipant();
+    Set participants = new HashSet<>(Arrays.asList(reporter, perp));
 
     ScreeningToReferral referral = new ScreeningToReferralResourceBuilder()
-        .setParticipants(participants)
-        .createScreeningToReferral();
+        .setParticipants(participants).createScreeningToReferral();
 
     String updatedReporterId = "ASDFGHJZXC";
-    gov.ca.cwds.rest.api.domain.cms.Client updatedPerp = mock(gov.ca.cwds.rest.api.domain.cms.Client.class);
-    gov.ca.cwds.rest.api.domain.cms.Client updatedReporter = mock(gov.ca.cwds.rest.api.domain.cms.Client.class);
-    gov.ca.cwds.rest.api.domain.cms.Client foundClient = mock(gov.ca.cwds.rest.api.domain.cms.Client.class);
-    gov.ca.cwds.rest.api.domain.cms.PostedClient savedVictim = mock(gov.ca.cwds.rest.api.domain.cms.PostedClient.class);
+    gov.ca.cwds.data.persistence.cms.DrmsDocument drmsDocument =
+        new gov.ca.cwds.data.persistence.cms.DrmsDocument("ABC1234560", null, null, null, null,
+            null);
+    gov.ca.cwds.rest.api.domain.cms.Client updatedPerp =
+        mock(gov.ca.cwds.rest.api.domain.cms.Client.class);
+    gov.ca.cwds.rest.api.domain.cms.Client updatedReporter =
+        mock(gov.ca.cwds.rest.api.domain.cms.Client.class);
+    gov.ca.cwds.rest.api.domain.cms.Client foundClient =
+        mock(gov.ca.cwds.rest.api.domain.cms.Client.class);
+    gov.ca.cwds.rest.api.domain.cms.PostedClient savedVictim =
+        mock(gov.ca.cwds.rest.api.domain.cms.PostedClient.class);
     when(savedVictim.getId()).thenReturn(updatedReporterId);
     clientService = mock(ClientService.class);
     when(clientService.update(eq(existingPerpId), any())).thenReturn(updatedPerp);
     when(clientService.create(any())).thenReturn(savedVictim);
     when(clientService.update(eq(updatedReporterId), any())).thenReturn(updatedReporter);
     when(clientService.find(any())).thenReturn(foundClient);
+    when(drmsDocumentDao.create(any())).thenReturn(drmsDocument);
 
     clientAddressService = mock(ClientAddressService.class);
     when(clientAddressService.find(any())).thenReturn(mock(ClientAddress.class));
 
-    gov.ca.cwds.rest.api.domain.cms.Address existingAddress = mock(gov.ca.cwds.rest.api.domain.cms.Address.class);
+    gov.ca.cwds.rest.api.domain.cms.Address existingAddress =
+        mock(gov.ca.cwds.rest.api.domain.cms.Address.class);
     when(existingAddress.getExistingAddressId()).thenReturn("ASDHJYTRED");
     PostedAddress postedAddress = mock(PostedAddress.class);
     when(postedAddress.getExistingAddressId()).thenReturn("QWWERTYUIJ");
@@ -3234,11 +3411,9 @@ public class ScreeningToReferralServiceTest {
     when(addressService.create(any())).thenReturn(postedAddress);
 
     screeningToReferralService = new MockedScreeningToReferralServiceBuilder()
-        .addClientAddressService(clientAddressService)
-        .addClientService(clientService)
-        .addAddressService(addressService)
-        .addMessageBuilder(new MessageBuilder())
-        .createScreeningToReferralService();
+        .addClientAddressService(clientAddressService).addDrmsDocumentService(drmsDocumentService)
+        .addClientService(clientService).addAddressService(addressService)
+        .addMessageBuilder(new MessageBuilder()).createScreeningToReferralService();
 
     Response response = screeningToReferralService.create(referral);
     assertFalse(response.hasMessages());
@@ -3252,39 +3427,43 @@ public class ScreeningToReferralServiceTest {
   public void shouldNotUpdatePerpetratorWhenClientIsNotFound() throws Exception {
 
     String existingPerpId = "1234567ABC";
-    Participant reporter = new ParticipantResourceBuilder()
-        .setFirstName("Barney")
-        .setLastName("Rubble")
-        .setRoles(new HashSet(Arrays.asList("Non-mandated Reporter", "Victim")))
-        .createParticipant();
-    Participant perp = new ParticipantResourceBuilder()
-        .setLegacyId(existingPerpId)
-        .setFirstName("Fred")
-        .setLastName("Flintsone")
-        .setRoles(new HashSet(Arrays.asList("Perpetrator")))
-        .createParticipant();
-    Set participants = new HashSet(Arrays.asList(reporter, perp));
+    Participant reporter =
+        new ParticipantResourceBuilder().setFirstName("Barney").setLastName("Rubble")
+            .setRoles(new HashSet<>(Arrays.asList("Non-mandated Reporter", "Victim")))
+            .createParticipant();
+    Participant perp = new ParticipantResourceBuilder().setLegacyId(existingPerpId)
+        .setFirstName("Fred").setLastName("Flintsone")
+        .setRoles(new HashSet<>(Arrays.asList("Perpetrator"))).createParticipant();
+    Set participants = new HashSet<>(Arrays.asList(reporter, perp));
 
     ScreeningToReferral referral = new ScreeningToReferralResourceBuilder()
-        .setParticipants(participants)
-        .createScreeningToReferral();
+        .setParticipants(participants).createScreeningToReferral();
 
     String updatedReporterId = "ASDFGHJZXC";
-    gov.ca.cwds.rest.api.domain.cms.Client updatedPerp = mock(gov.ca.cwds.rest.api.domain.cms.Client.class);
-    gov.ca.cwds.rest.api.domain.cms.Client updatedReporter = mock(gov.ca.cwds.rest.api.domain.cms.Client.class);
-    gov.ca.cwds.rest.api.domain.cms.Client foundClient = mock(gov.ca.cwds.rest.api.domain.cms.Client.class);
-    gov.ca.cwds.rest.api.domain.cms.PostedClient savedVictim = mock(gov.ca.cwds.rest.api.domain.cms.PostedClient.class);
+    gov.ca.cwds.data.persistence.cms.DrmsDocument drmsDocument =
+        new gov.ca.cwds.data.persistence.cms.DrmsDocument("ABC1234560", null, null, null, null,
+            null);
+    gov.ca.cwds.rest.api.domain.cms.Client updatedPerp =
+        mock(gov.ca.cwds.rest.api.domain.cms.Client.class);
+    gov.ca.cwds.rest.api.domain.cms.Client updatedReporter =
+        mock(gov.ca.cwds.rest.api.domain.cms.Client.class);
+    gov.ca.cwds.rest.api.domain.cms.Client foundClient =
+        mock(gov.ca.cwds.rest.api.domain.cms.Client.class);
+    gov.ca.cwds.rest.api.domain.cms.PostedClient savedVictim =
+        mock(gov.ca.cwds.rest.api.domain.cms.PostedClient.class);
     when(savedVictim.getId()).thenReturn(updatedReporterId);
     clientService = mock(ClientService.class);
     when(clientService.update(eq(existingPerpId), any())).thenReturn(updatedPerp);
     when(clientService.create(any())).thenReturn(savedVictim);
     when(clientService.update(eq(updatedReporterId), any())).thenReturn(updatedReporter);
     when(clientService.find(any())).thenReturn(null);
+    when(drmsDocumentDao.create(any())).thenReturn(drmsDocument);
 
     clientAddressService = mock(ClientAddressService.class);
     when(clientAddressService.find(any())).thenReturn(mock(ClientAddress.class));
 
-    gov.ca.cwds.rest.api.domain.cms.Address existingAddress = mock(gov.ca.cwds.rest.api.domain.cms.Address.class);
+    gov.ca.cwds.rest.api.domain.cms.Address existingAddress =
+        mock(gov.ca.cwds.rest.api.domain.cms.Address.class);
     when(existingAddress.getExistingAddressId()).thenReturn("ASDHJYTRED");
     PostedAddress postedAddress = mock(PostedAddress.class);
     when(postedAddress.getExistingAddressId()).thenReturn("QWWERTYUIJ");
@@ -3293,16 +3472,14 @@ public class ScreeningToReferralServiceTest {
     when(addressService.create(any())).thenReturn(postedAddress);
 
     screeningToReferralService = new MockedScreeningToReferralServiceBuilder()
-        .addClientAddressService(clientAddressService)
-        .addClientService(clientService)
-        .addAddressService(addressService)
-        .addMessageBuilder(new MessageBuilder())
-        .createScreeningToReferralService();
+        .addClientAddressService(clientAddressService).addDrmsDocumentService(drmsDocumentService)
+        .addClientService(clientService).addAddressService(addressService)
+        .addMessageBuilder(new MessageBuilder()).createScreeningToReferralService();
 
-    try{
+    try {
       Response response = screeningToReferralService.create(referral);
-    }catch(ServiceException e){
-      //not interested in exception for this test
+    } catch (ServiceException e) {
+      // not interested in exception for this test
     }
     verify(foundClient, times(0)).update("Fred", "Flintsone");
     verify(foundClient, times(0)).update("Barney", "Rubble");
@@ -3312,39 +3489,43 @@ public class ScreeningToReferralServiceTest {
   @Test
   public void shouldReturnErrorMessageWhenUnableToSaveClient() throws Exception {
     String existingPerpId = "1234567ABC";
-    Participant reporter = new ParticipantResourceBuilder()
-        .setFirstName("Barney")
-        .setLastName("Rubble")
-        .setRoles(new HashSet(Arrays.asList("Non-mandated Reporter", "Victim")))
-        .createParticipant();
-    Participant perp = new ParticipantResourceBuilder()
-        .setLegacyId(existingPerpId)
-        .setFirstName("Fred")
-        .setLastName("Flintsone")
-        .setRoles(new HashSet(Arrays.asList("Perpetrator")))
-        .createParticipant();
-    Set participants = new HashSet(Arrays.asList(reporter, perp));
+    Participant reporter =
+        new ParticipantResourceBuilder().setFirstName("Barney").setLastName("Rubble")
+            .setRoles(new HashSet<>(Arrays.asList("Non-mandated Reporter", "Victim")))
+            .createParticipant();
+    Participant perp = new ParticipantResourceBuilder().setLegacyId(existingPerpId)
+        .setFirstName("Fred").setLastName("Flintsone")
+        .setRoles(new HashSet<>(Arrays.asList("Perpetrator"))).createParticipant();
+    Set participants = new HashSet<>(Arrays.asList(reporter, perp));
 
     ScreeningToReferral referral = new ScreeningToReferralResourceBuilder()
-        .setParticipants(participants)
-        .createScreeningToReferral();
+        .setParticipants(participants).createScreeningToReferral();
 
     String updatedReporterId = "ASDFGHJZXC";
-    gov.ca.cwds.rest.api.domain.cms.Client updatedPerp = mock(gov.ca.cwds.rest.api.domain.cms.Client.class);
-    gov.ca.cwds.rest.api.domain.cms.Client updatedReporter = mock(gov.ca.cwds.rest.api.domain.cms.Client.class);
-    gov.ca.cwds.rest.api.domain.cms.Client foundClient = mock(gov.ca.cwds.rest.api.domain.cms.Client.class);
-    gov.ca.cwds.rest.api.domain.cms.PostedClient savedVictim = mock(gov.ca.cwds.rest.api.domain.cms.PostedClient.class);
+    gov.ca.cwds.data.persistence.cms.DrmsDocument drmsDocument =
+        new gov.ca.cwds.data.persistence.cms.DrmsDocument("ABC1234560", null, null, null, null,
+            null);
+    gov.ca.cwds.rest.api.domain.cms.Client updatedPerp =
+        mock(gov.ca.cwds.rest.api.domain.cms.Client.class);
+    gov.ca.cwds.rest.api.domain.cms.Client updatedReporter =
+        mock(gov.ca.cwds.rest.api.domain.cms.Client.class);
+    gov.ca.cwds.rest.api.domain.cms.Client foundClient =
+        mock(gov.ca.cwds.rest.api.domain.cms.Client.class);
+    gov.ca.cwds.rest.api.domain.cms.PostedClient savedVictim =
+        mock(gov.ca.cwds.rest.api.domain.cms.PostedClient.class);
     when(savedVictim.getId()).thenReturn(updatedReporterId);
     clientService = mock(ClientService.class);
     when(clientService.update(eq(existingPerpId), any())).thenReturn(updatedPerp);
     when(clientService.create(any())).thenReturn(savedVictim);
-    when(clientService.update(any(),any())).thenReturn(null);
+    when(clientService.update(any(), any())).thenReturn(null);
     when(clientService.find(any())).thenReturn(foundClient);
+    when(drmsDocumentDao.create(any())).thenReturn(drmsDocument);
 
     clientAddressService = mock(ClientAddressService.class);
     when(clientAddressService.find(any())).thenReturn(mock(ClientAddress.class));
 
-    gov.ca.cwds.rest.api.domain.cms.Address existingAddress = mock(gov.ca.cwds.rest.api.domain.cms.Address.class);
+    gov.ca.cwds.rest.api.domain.cms.Address existingAddress =
+        mock(gov.ca.cwds.rest.api.domain.cms.Address.class);
     when(existingAddress.getExistingAddressId()).thenReturn("ASDHJYTRED");
     PostedAddress postedAddress = mock(PostedAddress.class);
     when(postedAddress.getExistingAddressId()).thenReturn("QWWERTYUIJ");
@@ -3354,11 +3535,9 @@ public class ScreeningToReferralServiceTest {
 
     MessageBuilder messageBuilder = mock(MessageBuilder.class);
     screeningToReferralService = new MockedScreeningToReferralServiceBuilder()
-        .addClientAddressService(clientAddressService)
-        .addClientService(clientService)
-        .addAddressService(addressService)
-        .addMessageBuilder(messageBuilder)
-        .createScreeningToReferralService();
+        .addClientAddressService(clientAddressService).addDrmsDocumentService(drmsDocumentService)
+        .addClientService(clientService).addAddressService(addressService)
+        .addMessageBuilder(messageBuilder).createScreeningToReferralService();
 
     Response response = screeningToReferralService.create(referral);
     verify(messageBuilder, atLeastOnce()).addError("Unable to save Client");
@@ -3367,20 +3546,21 @@ public class ScreeningToReferralServiceTest {
   @SuppressWarnings("javadoc")
   @Test
   public void testClientDoesNotExsitFail() throws Exception {
-    String errorMessage = " Legacy Id of Participant does not correspond to an existing CWS/CMS Client ";
+    String errorMessage =
+        " Legacy Id of Participant does not correspond to an existing CWS/CMS Client ";
     String badLegacyId = "IUKNOWNIDI";
 
     Participant reporter = new ParticipantResourceBuilder().createReporterParticipant();
     Participant victim = new ParticipantResourceBuilder().createVictimParticipant();
-    Participant perp = new ParticipantResourceBuilder()
-        .setLegacyId(badLegacyId)
-        .setRoles(new HashSet(Arrays.asList("Perpetrator")))
-        .createParticipant();
-    Set participants = new HashSet(Arrays.asList(reporter, perp, victim));
+    Participant perp = new ParticipantResourceBuilder().setLegacyId(badLegacyId)
+        .setRoles(new HashSet<>(Arrays.asList("Perpetrator"))).createParticipant();
+    Set participants = new HashSet<>(Arrays.asList(reporter, perp, victim));
 
     ScreeningToReferral referral = new ScreeningToReferralResourceBuilder()
-        .setParticipants(participants)
-        .createScreeningToReferral();
+        .setParticipants(participants).createScreeningToReferral();
+    gov.ca.cwds.data.persistence.cms.DrmsDocument drmsDocument =
+        new gov.ca.cwds.data.persistence.cms.DrmsDocument("ABC1234560", null, null, null, null,
+            null);
 
     PostedClient postedClient = mock(PostedClient.class);
     when(postedClient.getId()).thenReturn("OIUYTREEWQ");
@@ -3388,43 +3568,45 @@ public class ScreeningToReferralServiceTest {
     when(clientService.update(eq(badLegacyId), any())).thenReturn(null);
     when(clientService.create(any())).thenReturn(postedClient);
     when(clientService.find(any())).thenReturn(null);
+    when(drmsDocumentDao.create(any())).thenReturn(drmsDocument);
     screeningToReferralService = new MockedScreeningToReferralServiceBuilder()
-        .addClientService(clientService)
-        .addMessageBuilder(new MessageBuilder())
-        .createScreeningToReferralService();
+        .addClientService(clientService).addDrmsDocumentService(drmsDocumentService)
+        .addMessageBuilder(new MessageBuilder()).createScreeningToReferralService();
 
 
     try {
       Response response = screeningToReferralService.create(referral);
-    }catch(ServiceException e){
-        //not interested in exception for this test
-      assertTrue("Expected thrown error to contain error",e.getMessage().contains(errorMessage));
+    } catch (ServiceException e) {
+      // not interested in exception for this test
+      assertTrue("Expected thrown error to contain error", e.getMessage().contains(errorMessage));
 
     }
-    verify(clientService,never()).update(eq(badLegacyId), any());
-    //TODO:Reenable when exception removed as message feedback mechanism.
-//    assertEquals("Expected only the legacy Id error message", 1, response.getMessages().size());
-//    assertEquals("Expected messge to be Legacy errorMessage", errorMessage, response.getMessages().get(0).getMessage());
+    verify(clientService, never()).update(eq(badLegacyId), any());
+    // TODO:Reenable when exception removed as message feedback mechanism.
+    // assertEquals("Expected only the legacy Id error message", 1, response.getMessages().size());
+    // assertEquals("Expected messge to be Legacy errorMessage", errorMessage,
+    // response.getMessages().get(0).getMessage());
   }
 
   @SuppressWarnings("javadoc")
   @Test
   public void testAllegationExsitSuccess() throws Exception {
 
-    gov.ca.cwds.rest.api.domain.Allegation allegation = new AllegationResourceBuilder()
-        .setLegacyId("GHJKLCVBNM")
-        .createAllegation();
+    gov.ca.cwds.rest.api.domain.Allegation allegation =
+        new AllegationResourceBuilder().setLegacyId("GHJKLCVBNM").createAllegation();
     ScreeningToReferral referral = new ScreeningToReferralResourceBuilder()
-        .setAllegations(new HashSet<>(Arrays.asList(allegation)))
-        .createScreeningToReferral();
+        .setAllegations(new HashSet<>(Arrays.asList(allegation))).createScreeningToReferral();
 
+    gov.ca.cwds.data.persistence.cms.DrmsDocument drmsDocument =
+        new gov.ca.cwds.data.persistence.cms.DrmsDocument("ABC1234560", null, null, null, null,
+            null);
     allegationService = mock(AllegationService.class);
+    when(drmsDocumentDao.create(any())).thenReturn(drmsDocument);
     when(allegationService.find(allegation.getLegacyId())).thenReturn(mock(Allegation.class));
-    MessageBuilder messageBuilder =  new MessageBuilder();
+    MessageBuilder messageBuilder = new MessageBuilder();
     screeningToReferralService = new MockedScreeningToReferralServiceBuilder()
-        .addMessageBuilder(messageBuilder)
-        .addAllegationService(allegationService)
-        .createScreeningToReferralService();
+        .addMessageBuilder(messageBuilder).addAllegationService(allegationService)
+        .addDrmsDocumentService(drmsDocumentService).createScreeningToReferralService();
 
     Response response = screeningToReferralService.create(referral);
 
@@ -3434,13 +3616,20 @@ public class ScreeningToReferralServiceTest {
 
   @SuppressWarnings("javadoc")
   @Test
-  public void testAllegationDoesNotExsitFail() throws Exception {
+  public void testAllegationDoesNotExistFail() throws Exception {
     Referral referralDomain = MAPPER.readValue(
         fixture("fixtures/domain/ScreeningToReferral/valid/validReferral.json"), Referral.class);
     gov.ca.cwds.data.persistence.cms.Referral referralToCreate =
         new gov.ca.cwds.data.persistence.cms.Referral("0123456ABC", referralDomain, "2016-10-31");
     when(referralDao.create(any(gov.ca.cwds.data.persistence.cms.Referral.class)))
         .thenReturn(referralToCreate);
+
+    DrmsDocument drmsDocumentDomain = MAPPER.readValue(
+        fixture("fixtures/domain/legacy/DrmsDocument/valid/valid.json"), DrmsDocument.class);
+    gov.ca.cwds.data.persistence.cms.DrmsDocument drmsDocumentToCreate =
+        new gov.ca.cwds.data.persistence.cms.DrmsDocument("ABD1234568", drmsDocumentDomain, "ABC");
+    when(drmsDocumentDao.create(any(gov.ca.cwds.data.persistence.cms.DrmsDocument.class)))
+        .thenReturn(drmsDocumentToCreate);
 
     ChildClient childClient = MAPPER.readValue(
         fixture("fixtures/domain/ScreeningToReferral/valid/childClient.json"), ChildClient.class);
@@ -3524,7 +3713,8 @@ public class ScreeningToReferralServiceTest {
     try {
       Response response = screeningToReferralService.create(screeningToReferral);
     } catch (Exception e) {
-      if (e.getMessage().contains(" Legacy Id on Allegation does not correspond to an existing CMS/CWS Allegation ")) {
+      if (e.getMessage().contains(
+          " Legacy Id on Allegation does not correspond to an existing CMS/CWS Allegation ")) {
         theErrorDetected = true;
       }
       assertThat(theErrorDetected, is(equalTo(true)));
@@ -3540,6 +3730,13 @@ public class ScreeningToReferralServiceTest {
         new gov.ca.cwds.data.persistence.cms.Referral("0123456ABC", referralDomain, "2016-10-31");
     when(referralDao.create(any(gov.ca.cwds.data.persistence.cms.Referral.class)))
         .thenReturn(referralToCreate);
+
+    DrmsDocument drmsDocumentDomain = MAPPER.readValue(
+        fixture("fixtures/domain/legacy/DrmsDocument/valid/valid.json"), DrmsDocument.class);
+    gov.ca.cwds.data.persistence.cms.DrmsDocument drmsDocumentToCreate =
+        new gov.ca.cwds.data.persistence.cms.DrmsDocument("ABD1234568", drmsDocumentDomain, "ABC");
+    when(drmsDocumentDao.create(any(gov.ca.cwds.data.persistence.cms.DrmsDocument.class)))
+        .thenReturn(drmsDocumentToCreate);
 
     ChildClient childClient = MAPPER.readValue(
         fixture("fixtures/domain/ScreeningToReferral/valid/childClient.json"), ChildClient.class);
@@ -3593,7 +3790,6 @@ public class ScreeningToReferralServiceTest {
         new gov.ca.cwds.data.persistence.cms.Reporter(reporterDomain, "ABC");
     when(reporterDao.create(any(gov.ca.cwds.data.persistence.cms.Reporter.class)))
         .thenReturn(reporterToCreate);
-
 
     Address addressDomain = MAPPER.readValue(
         fixture("fixtures/domain/ScreeningToReferral/valid/validAddress.json"), Address.class);
@@ -3637,19 +3833,17 @@ public class ScreeningToReferralServiceTest {
   }
 
   public void testCrossReportExsitSuccess() throws Exception {
-    gov.ca.cwds.rest.api.domain.CrossReport crossReport = new CrossReportResourceBuilder()
-        .setLegacyId("ASDFGHJKLQ")
-        .createCrossReport();
+    gov.ca.cwds.rest.api.domain.CrossReport crossReport =
+        new CrossReportResourceBuilder().setLegacyId("ASDFGHJKLQ").createCrossReport();
 
     ScreeningToReferral referral = new ScreeningToReferralResourceBuilder()
-        .setCrossReports(new HashSet<>(Arrays.asList(crossReport)))
-        .createScreeningToReferral();
+        .setCrossReports(new HashSet<>(Arrays.asList(crossReport))).createScreeningToReferral();
     crossReportService = mock(CrossReportService.class);
-    when(crossReportService.find(eq(crossReport.getLegacyId()))).thenReturn(mock(gov.ca.cwds.rest.api.domain.cms.CrossReport.class));
-    screeningToReferralService = new MockedScreeningToReferralServiceBuilder()
-        .addCrossReportService(crossReportService)
-        .addMessageBuilder(new MessageBuilder())
-        .createScreeningToReferralService();
+    when(crossReportService.find(eq(crossReport.getLegacyId())))
+        .thenReturn(mock(gov.ca.cwds.rest.api.domain.cms.CrossReport.class));
+    screeningToReferralService =
+        new MockedScreeningToReferralServiceBuilder().addCrossReportService(crossReportService)
+            .addMessageBuilder(new MessageBuilder()).createScreeningToReferralService();
 
     Response response = screeningToReferralService.create(referral);
     assertFalse(response.hasMessages());
@@ -3658,12 +3852,19 @@ public class ScreeningToReferralServiceTest {
   @SuppressWarnings("javadoc")
   @Test
   public void testCrossReportDoesNotExsitFail() throws Exception {
-   Referral referralDomain = MAPPER.readValue(
+    Referral referralDomain = MAPPER.readValue(
         fixture("fixtures/domain/ScreeningToReferral/valid/validReferral.json"), Referral.class);
     gov.ca.cwds.data.persistence.cms.Referral referralToCreate =
         new gov.ca.cwds.data.persistence.cms.Referral("0123456ABC", referralDomain, "2016-10-31");
     when(referralDao.create(any(gov.ca.cwds.data.persistence.cms.Referral.class)))
         .thenReturn(referralToCreate);
+
+    DrmsDocument drmsDocumentDomain = MAPPER.readValue(
+        fixture("fixtures/domain/legacy/DrmsDocument/valid/valid.json"), DrmsDocument.class);
+    gov.ca.cwds.data.persistence.cms.DrmsDocument drmsDocumentToCreate =
+        new gov.ca.cwds.data.persistence.cms.DrmsDocument("ABD1234568", drmsDocumentDomain, "ABC");
+    when(drmsDocumentDao.create(any(gov.ca.cwds.data.persistence.cms.DrmsDocument.class)))
+        .thenReturn(drmsDocumentToCreate);
 
     ChildClient childClient = MAPPER.readValue(
         fixture("fixtures/domain/ScreeningToReferral/valid/childClient.json"), ChildClient.class);
@@ -3717,7 +3918,6 @@ public class ScreeningToReferralServiceTest {
         new gov.ca.cwds.data.persistence.cms.Reporter(reporterDomain, "ABC");
     when(reporterDao.create(any(gov.ca.cwds.data.persistence.cms.Reporter.class)))
         .thenReturn(reporterToCreate);
-
 
     Address addressDomain = MAPPER.readValue(
         fixture("fixtures/domain/ScreeningToReferral/valid/validAddress.json"), Address.class);
@@ -3763,21 +3963,23 @@ public class ScreeningToReferralServiceTest {
   @SuppressWarnings("javadoc")
   @Test
   public void testAddressExsitSuccess() throws Exception {
-//    Referral referralDom
+    // Referral referralDom
 
-    gov.ca.cwds.rest.api.domain.Address address = new AddressResourceBuilder().setLegacyId("ASDFGHJKLQ").createAddress();
-    Participant victim = new ParticipantResourceBuilder()
-        .setRoles(new HashSet(Arrays.asList("Victim")))
-        .setAddresses(new HashSet<>(Arrays.asList(address)))
-        .createParticipant();
+    gov.ca.cwds.rest.api.domain.Address address =
+        new AddressResourceBuilder().setLegacyId("ASDFGHJKLQ").createAddress();
+    Participant victim =
+        new ParticipantResourceBuilder().setRoles(new HashSet<>(Arrays.asList("Victim")))
+            .setAddresses(new HashSet<>(Arrays.asList(address))).createParticipant();
     Participant perp = new ParticipantResourceBuilder().createPerpParticipant();
     Participant reporter = new ParticipantResourceBuilder().createReporterParticipant();
     Set participants = new HashSet<>(Arrays.asList(victim, perp, reporter));
 
     ScreeningToReferral referral = new ScreeningToReferralResourceBuilder()
-        .setParticipants(participants)
-        .createScreeningToReferral();
+        .setParticipants(participants).createScreeningToReferral();
 
+    gov.ca.cwds.data.persistence.cms.DrmsDocument drmsDocument =
+        new gov.ca.cwds.data.persistence.cms.DrmsDocument("ABC1234560", null, null, null, null,
+            null);
     Address victimFoundAddress = mock(Address.class);
     when(victimFoundAddress.getExistingAddressId()).thenReturn("ADDRESS_ID");
     PostedAddress perpCreatedAddress = mock(PostedAddress.class);
@@ -3785,15 +3987,15 @@ public class ScreeningToReferralServiceTest {
     addressService = mock(AddressService.class);
     when(addressService.find(address.getLegacyId())).thenReturn(victimFoundAddress);
     when(addressService.create(any())).thenReturn(perpCreatedAddress);
+    when(drmsDocumentDao.create(any())).thenReturn(drmsDocument);
 
     clientAddressService = mock(ClientAddressService.class);
     when(clientAddressService.find(address.getLegacyId())).thenReturn(mock(ClientAddress.class));
-    MessageBuilder messageBuilder =  new MessageBuilder();
-    screeningToReferralService = new MockedScreeningToReferralServiceBuilder()
-        .addMessageBuilder(messageBuilder)
-        .addAddressService(addressService)
-        .addClientAddressService(clientAddressService)
-        .createScreeningToReferralService();
+    MessageBuilder messageBuilder = new MessageBuilder();
+    screeningToReferralService =
+        new MockedScreeningToReferralServiceBuilder().addMessageBuilder(messageBuilder)
+            .addAddressService(addressService).addDrmsDocumentService(drmsDocumentService)
+            .addClientAddressService(clientAddressService).createScreeningToReferralService();
     Response response = screeningToReferralService.create(referral);
 
     verify(addressService).find(eq(address.getLegacyId()));
@@ -3809,6 +4011,13 @@ public class ScreeningToReferralServiceTest {
         new gov.ca.cwds.data.persistence.cms.Referral("0123456ABC", referralDomain, "2016-10-31");
     when(referralDao.create(any(gov.ca.cwds.data.persistence.cms.Referral.class)))
         .thenReturn(referralToCreate);
+
+    DrmsDocument drmsDocumentDomain = MAPPER.readValue(
+        fixture("fixtures/domain/legacy/DrmsDocument/valid/valid.json"), DrmsDocument.class);
+    gov.ca.cwds.data.persistence.cms.DrmsDocument drmsDocumentToCreate =
+        new gov.ca.cwds.data.persistence.cms.DrmsDocument("ABD1234568", drmsDocumentDomain, "ABC");
+    when(drmsDocumentDao.create(any(gov.ca.cwds.data.persistence.cms.DrmsDocument.class)))
+        .thenReturn(drmsDocumentToCreate);
 
     ChildClient childClient = MAPPER.readValue(
         fixture("fixtures/domain/ScreeningToReferral/valid/childClient.json"), ChildClient.class);
@@ -3905,27 +4114,27 @@ public class ScreeningToReferralServiceTest {
   @Test
   public void testClientAddressExsitSuccess() throws Exception {
     String addressId1 = "1111111111";
-    gov.ca.cwds.rest.api.domain.Address address1 = new AddressResourceBuilder()
-        .setLegacyId("1111111111")
-        .setLegacySourceTable("ADDRS_T")
-        .setStreetAddress("123 First St").createAddress();
+    gov.ca.cwds.rest.api.domain.Address address1 =
+        new AddressResourceBuilder().setLegacyId("1111111111").setLegacySourceTable("ADDRS_T")
+            .setStreetAddress("123 First St").createAddress();
     String addressId2 = "2222222222";
-    gov.ca.cwds.rest.api.domain.Address address2 = new AddressResourceBuilder()
-        .setLegacyId("2222222222")
-        .setLegacySourceTable("ADDRS_T")
-        .setStreetAddress("123 First St").createAddress();
+    gov.ca.cwds.rest.api.domain.Address address2 =
+        new AddressResourceBuilder().setLegacyId("2222222222").setLegacySourceTable("ADDRS_T")
+            .setStreetAddress("123 First St").createAddress();
 
     Participant selfReportingVictim = new ParticipantResourceBuilder()
         .setRoles(new HashSet(Arrays.asList("Non-mandated Reporter", "Victim")))
-        .setAddresses(new HashSet<>(Arrays.asList(address1)))
-        .createParticipant();
+        .setAddresses(new HashSet<>(Arrays.asList(address1))).createParticipant();
     Participant perp = new ParticipantResourceBuilder()
-        .setAddresses(new HashSet<>(Arrays.asList(address2)))
-        .createPerpParticipant();
+        .setAddresses(new HashSet<>(Arrays.asList(address2))).createPerpParticipant();
     Set participants = new HashSet(Arrays.asList(selfReportingVictim, perp));
-    ScreeningToReferral referral = new ScreeningToReferralResourceBuilder().setParticipants(participants).createScreeningToReferral();
+    ScreeningToReferral referral = new ScreeningToReferralResourceBuilder()
+        .setParticipants(participants).createScreeningToReferral();
 
-    //mock clientAddressService to find our address
+    // mock clientAddressService to find our address
+    gov.ca.cwds.data.persistence.cms.DrmsDocument drmsDocument =
+        new gov.ca.cwds.data.persistence.cms.DrmsDocument("ABC1234560", null, null, null, null,
+            null);
     ClientAddress clientAddress = mock(ClientAddress.class);
     Client updatedClient = mock(Client.class);
     PostedClient savedClient = mock(PostedClient.class);
@@ -3935,7 +4144,8 @@ public class ScreeningToReferralServiceTest {
     clientService = mock(ClientService.class);
     when(clientService.find(any())).thenReturn(savedClient);
     when(clientService.create(any())).thenReturn(savedClient);
-    when(clientService.update(any(),any())).thenReturn(updatedClient);
+    when(clientService.update(any(), any())).thenReturn(updatedClient);
+    when(drmsDocumentDao.create(any())).thenReturn(drmsDocument);
 
     Address foundAddress = mock(Address.class);
     when(foundAddress.getExistingAddressId()).thenReturn("ZXCVBNMKJH");
@@ -3947,11 +4157,9 @@ public class ScreeningToReferralServiceTest {
     when(addressService.create(any())).thenReturn(postedAddress);
 
     screeningToReferralService = new MockedScreeningToReferralServiceBuilder()
-        .addAddressService(addressService)
-        .addClientAddressService(clientAddressService)
-        .addClientService(clientService)
-        .addMessageBuilder(new MessageBuilder())
-        .createScreeningToReferralService();
+        .addAddressService(addressService).addClientAddressService(clientAddressService)
+        .addClientService(clientService).addDrmsDocumentService(drmsDocumentService)
+        .addMessageBuilder(new MessageBuilder()).createScreeningToReferralService();
 
     Response response = screeningToReferralService.create(referral);
 
@@ -3971,6 +4179,13 @@ public class ScreeningToReferralServiceTest {
         new gov.ca.cwds.data.persistence.cms.Referral("0123456ABC", referralDomain, "2016-10-31");
     when(referralDao.create(any(gov.ca.cwds.data.persistence.cms.Referral.class)))
         .thenReturn(referralToCreate);
+
+    DrmsDocument drmsDocumentDomain = MAPPER.readValue(
+        fixture("fixtures/domain/legacy/DrmsDocument/valid/valid.json"), DrmsDocument.class);
+    gov.ca.cwds.data.persistence.cms.DrmsDocument drmsDocumentToCreate =
+        new gov.ca.cwds.data.persistence.cms.DrmsDocument("ABD1234568", drmsDocumentDomain, "ABC");
+    when(drmsDocumentDao.create(any(gov.ca.cwds.data.persistence.cms.DrmsDocument.class)))
+        .thenReturn(drmsDocumentToCreate);
 
     ChildClient childClient = MAPPER.readValue(
         fixture("fixtures/domain/ScreeningToReferral/valid/childClient.json"), ChildClient.class);
@@ -4076,6 +4291,13 @@ public class ScreeningToReferralServiceTest {
     when(referralDao.create(any(gov.ca.cwds.data.persistence.cms.Referral.class)))
         .thenReturn(referralToCreate);
 
+    DrmsDocument drmsDocumentDomain = MAPPER.readValue(
+        fixture("fixtures/domain/legacy/DrmsDocument/valid/valid.json"), DrmsDocument.class);
+    gov.ca.cwds.data.persistence.cms.DrmsDocument drmsDocumentToCreate =
+        new gov.ca.cwds.data.persistence.cms.DrmsDocument("ABD1234568", drmsDocumentDomain, "ABC");
+    when(drmsDocumentDao.create(any(gov.ca.cwds.data.persistence.cms.DrmsDocument.class)))
+        .thenReturn(drmsDocumentToCreate);
+
     ChildClient childClient = MAPPER.readValue(
         fixture("fixtures/domain/ScreeningToReferral/valid/childClient.json"), ChildClient.class);
     gov.ca.cwds.data.persistence.cms.ChildClient childClientToCreate =
@@ -4179,6 +4401,13 @@ public class ScreeningToReferralServiceTest {
     when(referralDao.create(any(gov.ca.cwds.data.persistence.cms.Referral.class)))
         .thenReturn(referralToCreate);
 
+    DrmsDocument drmsDocumentDomain = MAPPER.readValue(
+        fixture("fixtures/domain/legacy/DrmsDocument/valid/valid.json"), DrmsDocument.class);
+    gov.ca.cwds.data.persistence.cms.DrmsDocument drmsDocumentToCreate =
+        new gov.ca.cwds.data.persistence.cms.DrmsDocument("ABD1234568", drmsDocumentDomain, "ABC");
+    when(drmsDocumentDao.create(any(gov.ca.cwds.data.persistence.cms.DrmsDocument.class)))
+        .thenReturn(drmsDocumentToCreate);
+
     ChildClient childClient = MAPPER.readValue(
         fixture("fixtures/domain/ScreeningToReferral/valid/childClient.json"), ChildClient.class);
     gov.ca.cwds.data.persistence.cms.ChildClient childClientToCreate =
@@ -4275,30 +4504,30 @@ public class ScreeningToReferralServiceTest {
   @SuppressWarnings("javadoc")
   @Test
   public void testMultipleVictimSuccess() throws Exception {
-    Participant victim1 = new ParticipantResourceBuilder()
-        .setFirstName("Sally")
-        .createVictimParticipant();
-    Participant victim2 = new ParticipantResourceBuilder()
-        .setFirstName("Fred")
-        .createVictimParticipant();
+    Participant victim1 =
+        new ParticipantResourceBuilder().setFirstName("Sally").createVictimParticipant();
+    Participant victim2 =
+        new ParticipantResourceBuilder().setFirstName("Fred").createVictimParticipant();
     Participant reporter = new ParticipantResourceBuilder().createReporterParticipant();
     Participant perp = new ParticipantResourceBuilder().createPerpParticipant();
-    Set participants = new HashSet(Arrays.asList(reporter, perp, victim1, victim2));
+    Set participants = new HashSet<>(Arrays.asList(reporter, perp, victim1, victim2));
     int numberOfClientsThatAreNotReporters = 3;
 
+    gov.ca.cwds.data.persistence.cms.DrmsDocument drmsDocument =
+        new gov.ca.cwds.data.persistence.cms.DrmsDocument("ABC1234560", null, null, null, null,
+            null);
     ScreeningToReferral referral = new ScreeningToReferralResourceBuilder()
-        .setParticipants(participants)
-        .createScreeningToReferral();
+        .setParticipants(participants).createScreeningToReferral();
 
     PostedClient savedClient = mock(PostedClient.class);
     when(savedClient.getId()).thenReturn("ASDFGHJKWE");
     clientService = mock(ClientService.class);
     when(clientService.create(any())).thenReturn(savedClient);
+    when(drmsDocumentDao.create(any())).thenReturn(drmsDocument);
 
     screeningToReferralService = new MockedScreeningToReferralServiceBuilder()
-        .addClientService(clientService)
-        .addMessageBuilder(new MessageBuilder())
-        .createScreeningToReferralService();
+        .addClientService(clientService).addDrmsDocumentService(drmsDocumentService)
+        .addMessageBuilder(new MessageBuilder()).createScreeningToReferralService();
 
     Response response = screeningToReferralService.create(referral);
     assertFalse(response.hasMessages());

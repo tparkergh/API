@@ -69,7 +69,7 @@ import io.dropwizard.jackson.Jackson;
  * 
  * @author CWDS API Team
  */
-public class R04537FirstResponseDeterminedByStaffPersonIdTest {
+public class R07577CreateDummyDocsForReferralTest {
 
   private ScreeningToReferralService screeningToReferralService;
   private static final ObjectMapper MAPPER = Jackson.newObjectMapper();
@@ -176,18 +176,23 @@ public class R04537FirstResponseDeterminedByStaffPersonIdTest {
    * <blockquote>
    * 
    * <pre>
-   * BUSINESS RULE: "R - 04537" - FKSTFPERS0 set when first referral determined
+   * BUSINESS RULE: "R - 07577" - Create Dummy Docs for Referral
    * 
-   * IF    referralResponseTypeCode is set to default
-   * THEN  firstResponseDeterminedByStaffPersonId is set to the staffpersonId
+   * When Referral is Posted, it creates three dummy document values in the drmsDocument and 
+   * assigned the identifer in the referrals(drmsAllegationDescriptionDoc, drmsErReferralDoc, 
+   * drmsInvestigationDoc).
    *
    * </pre>
    * 
    * </blockquote>
    */
+
+  /*
+   * test for drmsAllegationDescriptionDoc Id
+   */
   @SuppressWarnings("javadoc")
   @Test
-  public void testForfirstResponseDeterminedByStaffPersonId() throws Exception {
+  public void testForDrmsAllegationDescriptionDocId() throws Exception {
     Referral referralDomain = MAPPER.readValue(
         fixture("fixtures/domain/ScreeningToReferral/valid/validReferral.json"), Referral.class);
     gov.ca.cwds.data.persistence.cms.Referral referralToCreate =
@@ -291,9 +296,236 @@ public class R04537FirstResponseDeterminedByStaffPersonIdTest {
         });
 
     screeningToReferralService.create(screeningToReferral);
-    assertThat(referral.getFirstResponseDeterminedByStaffPersonId(), is(equalTo("0X5")));
+    assertThat(referral.getDrmsAllegationDescriptionDoc(), is(equalTo("ABD1234568")));
 
   }
 
+  /*
+   * test for drmsErReferralDoc Id
+   */
+  @SuppressWarnings("javadoc")
+  @Test
+  public void testForDrmsErReferralDocId() throws Exception {
+    Referral referralDomain = MAPPER.readValue(
+        fixture("fixtures/domain/ScreeningToReferral/valid/validReferral.json"), Referral.class);
+    gov.ca.cwds.data.persistence.cms.Referral referralToCreate =
+        new gov.ca.cwds.data.persistence.cms.Referral("0123456ABC", referralDomain, "2016-10-31");
+    when(referralDao.create(any(gov.ca.cwds.data.persistence.cms.Referral.class)))
+        .thenReturn(referralToCreate);
+
+    DrmsDocument drmsDocumentDomain = MAPPER.readValue(
+        fixture("fixtures/domain/legacy/DrmsDocument/valid/valid.json"), DrmsDocument.class);
+    gov.ca.cwds.data.persistence.cms.DrmsDocument drmsDocumentToCreate =
+        new gov.ca.cwds.data.persistence.cms.DrmsDocument("ABZ123456k", drmsDocumentDomain, "ABC");
+    when(drmsDocumentDao.create(any(gov.ca.cwds.data.persistence.cms.DrmsDocument.class)))
+        .thenReturn(drmsDocumentToCreate);
+
+    ChildClient childClient = MAPPER.readValue(
+        fixture("fixtures/domain/ScreeningToReferral/valid/childClient.json"), ChildClient.class);
+    gov.ca.cwds.data.persistence.cms.ChildClient childClientToCreate =
+        new gov.ca.cwds.data.persistence.cms.ChildClient("1234567ABC", childClient, "0XA");
+    when(childClientDao.create(any(gov.ca.cwds.data.persistence.cms.ChildClient.class)))
+        .thenReturn(childClientToCreate);
+
+    Set<Client> clientDomain =
+        MAPPER.readValue(fixture("fixtures/domain/ScreeningToReferral/valid/validClient.json"),
+            new TypeReference<Set<Client>>() {});
+    gov.ca.cwds.data.persistence.cms.Client clientToCreate =
+        new gov.ca.cwds.data.persistence.cms.Client("1234567ABC",
+            (Client) clientDomain.toArray()[0], "2016-10-31");
+    when(clientDao.create(any(gov.ca.cwds.data.persistence.cms.Client.class)))
+        .thenReturn(clientToCreate);
+
+    Set<ReferralClient> referralClientDomain = MAPPER.readValue(
+        fixture("fixtures/domain/ScreeningToReferral/valid/validReferralClient.json"),
+        new TypeReference<Set<ReferralClient>>() {});
+    gov.ca.cwds.data.persistence.cms.ReferralClient referralClientToCreate =
+        new gov.ca.cwds.data.persistence.cms.ReferralClient(
+            (ReferralClient) referralClientDomain.toArray()[0], "2016-10-31");
+    when(referralClientDao.create(any(gov.ca.cwds.data.persistence.cms.ReferralClient.class)))
+        .thenReturn(referralClientToCreate);
+
+    Set<Allegation> allegationDomain =
+        MAPPER.readValue(fixture("fixtures/domain/ScreeningToReferral/valid/validAllegation.json"),
+            new TypeReference<Set<Allegation>>() {});
+    gov.ca.cwds.data.persistence.cms.Allegation allegationToCreate =
+        new gov.ca.cwds.data.persistence.cms.Allegation("2345678ABC",
+            (Allegation) allegationDomain.toArray()[0], "2016-10-31");
+    when(allegationDao.create(any(gov.ca.cwds.data.persistence.cms.Allegation.class)))
+        .thenReturn(allegationToCreate);
+
+    Set<CrossReport> crossReportDomain =
+        MAPPER.readValue(fixture("fixtures/domain/ScreeningToReferral/valid/validCrossReport.json"),
+            new TypeReference<Set<CrossReport>>() {});
+    gov.ca.cwds.data.persistence.cms.CrossReport crossReportToCreate =
+        new gov.ca.cwds.data.persistence.cms.CrossReport("3456789ABC",
+            // ((CrossReport) crossReportDomain).getThirdId(),
+            (CrossReport) crossReportDomain.toArray()[0], "OXA");
+    when(crossReportDao.create(any(gov.ca.cwds.data.persistence.cms.CrossReport.class)))
+        .thenReturn(crossReportToCreate);
+
+    Reporter reporterDomain = MAPPER.readValue(
+        fixture("fixtures/domain/ScreeningToReferral/valid/validReporter.json"), Reporter.class);
+    gov.ca.cwds.data.persistence.cms.Reporter reporterToCreate =
+        new gov.ca.cwds.data.persistence.cms.Reporter(reporterDomain, "ABC");
+    when(reporterDao.create(any(gov.ca.cwds.data.persistence.cms.Reporter.class)))
+        .thenReturn(reporterToCreate);
+
+    Address addressDomain = MAPPER.readValue(
+        fixture("fixtures/domain/ScreeningToReferral/valid/validAddress.json"), Address.class);
+    gov.ca.cwds.data.persistence.cms.Address addressToCreate =
+        new gov.ca.cwds.data.persistence.cms.Address("345678ABC", addressDomain, "ABC");
+    when(addressDao.create(any(gov.ca.cwds.data.persistence.cms.Address.class)))
+        .thenReturn(addressToCreate);
+
+    ClientAddress clientAddressDomain = MAPPER.readValue(
+        fixture("fixtures/domain/ScreeningToReferral/valid/validClientAddress.json"),
+        ClientAddress.class);
+    gov.ca.cwds.data.persistence.cms.ClientAddress clientAddressToCreate =
+        new gov.ca.cwds.data.persistence.cms.ClientAddress("456789ABC", clientAddressDomain, "ABC");
+    when(clientAddressDao.create(any(gov.ca.cwds.data.persistence.cms.ClientAddress.class)))
+        .thenReturn(clientAddressToCreate);
+
+    LongText longTextDomain = MAPPER.readValue(
+        fixture("fixtures/domain/ScreeningToReferral/valid/validLongText.json"), LongText.class);
+    gov.ca.cwds.data.persistence.cms.LongText longTextToCreate =
+        new gov.ca.cwds.data.persistence.cms.LongText("567890ABC", longTextDomain, "ABC");
+    when(longTextDao.create(any(gov.ca.cwds.data.persistence.cms.LongText.class)))
+        .thenReturn(longTextToCreate);
+
+    ScreeningToReferral screeningToReferral = MAPPER.readValue(
+        fixture("fixtures/domain/ScreeningToReferral/valid/valid.json"), ScreeningToReferral.class);
+    when(staffPersonIdRetriever.getStaffPersonId()).thenReturn("0X5");
+
+    when(referralDao.create(any(gov.ca.cwds.data.persistence.cms.Referral.class)))
+        .thenAnswer(new Answer<gov.ca.cwds.data.persistence.cms.Referral>() {
+
+          @Override
+          public gov.ca.cwds.data.persistence.cms.Referral answer(InvocationOnMock invocation)
+              throws Throwable {
+            referral = (gov.ca.cwds.data.persistence.cms.Referral) invocation.getArguments()[0];
+            return referral;
+          }
+        });
+
+    screeningToReferralService.create(screeningToReferral);
+    assertThat(referral.getDrmsErReferralDoc(), is(equalTo("ABZ123456k")));
+
+  }
+
+  /*
+   * test for drmsInvestigationDoc Id
+   */
+  @SuppressWarnings("javadoc")
+  @Test
+  public void testForDrmsInvestigationDocId() throws Exception {
+    Referral referralDomain = MAPPER.readValue(
+        fixture("fixtures/domain/ScreeningToReferral/valid/validReferral.json"), Referral.class);
+    gov.ca.cwds.data.persistence.cms.Referral referralToCreate =
+        new gov.ca.cwds.data.persistence.cms.Referral("0123456ABC", referralDomain, "2016-10-31");
+    when(referralDao.create(any(gov.ca.cwds.data.persistence.cms.Referral.class)))
+        .thenReturn(referralToCreate);
+
+    DrmsDocument drmsDocumentDomain = MAPPER.readValue(
+        fixture("fixtures/domain/legacy/DrmsDocument/valid/valid.json"), DrmsDocument.class);
+    gov.ca.cwds.data.persistence.cms.DrmsDocument drmsDocumentToCreate =
+        new gov.ca.cwds.data.persistence.cms.DrmsDocument("AYZ12340X5", drmsDocumentDomain, "ABC");
+    when(drmsDocumentDao.create(any(gov.ca.cwds.data.persistence.cms.DrmsDocument.class)))
+        .thenReturn(drmsDocumentToCreate);
+
+    ChildClient childClient = MAPPER.readValue(
+        fixture("fixtures/domain/ScreeningToReferral/valid/childClient.json"), ChildClient.class);
+    gov.ca.cwds.data.persistence.cms.ChildClient childClientToCreate =
+        new gov.ca.cwds.data.persistence.cms.ChildClient("1234567ABC", childClient, "0XA");
+    when(childClientDao.create(any(gov.ca.cwds.data.persistence.cms.ChildClient.class)))
+        .thenReturn(childClientToCreate);
+
+    Set<Client> clientDomain =
+        MAPPER.readValue(fixture("fixtures/domain/ScreeningToReferral/valid/validClient.json"),
+            new TypeReference<Set<Client>>() {});
+    gov.ca.cwds.data.persistence.cms.Client clientToCreate =
+        new gov.ca.cwds.data.persistence.cms.Client("1234567ABC",
+            (Client) clientDomain.toArray()[0], "2016-10-31");
+    when(clientDao.create(any(gov.ca.cwds.data.persistence.cms.Client.class)))
+        .thenReturn(clientToCreate);
+
+    Set<ReferralClient> referralClientDomain = MAPPER.readValue(
+        fixture("fixtures/domain/ScreeningToReferral/valid/validReferralClient.json"),
+        new TypeReference<Set<ReferralClient>>() {});
+    gov.ca.cwds.data.persistence.cms.ReferralClient referralClientToCreate =
+        new gov.ca.cwds.data.persistence.cms.ReferralClient(
+            (ReferralClient) referralClientDomain.toArray()[0], "2016-10-31");
+    when(referralClientDao.create(any(gov.ca.cwds.data.persistence.cms.ReferralClient.class)))
+        .thenReturn(referralClientToCreate);
+
+    Set<Allegation> allegationDomain =
+        MAPPER.readValue(fixture("fixtures/domain/ScreeningToReferral/valid/validAllegation.json"),
+            new TypeReference<Set<Allegation>>() {});
+    gov.ca.cwds.data.persistence.cms.Allegation allegationToCreate =
+        new gov.ca.cwds.data.persistence.cms.Allegation("2345678ABC",
+            (Allegation) allegationDomain.toArray()[0], "2016-10-31");
+    when(allegationDao.create(any(gov.ca.cwds.data.persistence.cms.Allegation.class)))
+        .thenReturn(allegationToCreate);
+
+    Set<CrossReport> crossReportDomain =
+        MAPPER.readValue(fixture("fixtures/domain/ScreeningToReferral/valid/validCrossReport.json"),
+            new TypeReference<Set<CrossReport>>() {});
+    gov.ca.cwds.data.persistence.cms.CrossReport crossReportToCreate =
+        new gov.ca.cwds.data.persistence.cms.CrossReport("3456789ABC",
+            // ((CrossReport) crossReportDomain).getThirdId(),
+            (CrossReport) crossReportDomain.toArray()[0], "OXA");
+    when(crossReportDao.create(any(gov.ca.cwds.data.persistence.cms.CrossReport.class)))
+        .thenReturn(crossReportToCreate);
+
+    Reporter reporterDomain = MAPPER.readValue(
+        fixture("fixtures/domain/ScreeningToReferral/valid/validReporter.json"), Reporter.class);
+    gov.ca.cwds.data.persistence.cms.Reporter reporterToCreate =
+        new gov.ca.cwds.data.persistence.cms.Reporter(reporterDomain, "ABC");
+    when(reporterDao.create(any(gov.ca.cwds.data.persistence.cms.Reporter.class)))
+        .thenReturn(reporterToCreate);
+
+    Address addressDomain = MAPPER.readValue(
+        fixture("fixtures/domain/ScreeningToReferral/valid/validAddress.json"), Address.class);
+    gov.ca.cwds.data.persistence.cms.Address addressToCreate =
+        new gov.ca.cwds.data.persistence.cms.Address("345678ABC", addressDomain, "ABC");
+    when(addressDao.create(any(gov.ca.cwds.data.persistence.cms.Address.class)))
+        .thenReturn(addressToCreate);
+
+    ClientAddress clientAddressDomain = MAPPER.readValue(
+        fixture("fixtures/domain/ScreeningToReferral/valid/validClientAddress.json"),
+        ClientAddress.class);
+    gov.ca.cwds.data.persistence.cms.ClientAddress clientAddressToCreate =
+        new gov.ca.cwds.data.persistence.cms.ClientAddress("456789ABC", clientAddressDomain, "ABC");
+    when(clientAddressDao.create(any(gov.ca.cwds.data.persistence.cms.ClientAddress.class)))
+        .thenReturn(clientAddressToCreate);
+
+    LongText longTextDomain = MAPPER.readValue(
+        fixture("fixtures/domain/ScreeningToReferral/valid/validLongText.json"), LongText.class);
+    gov.ca.cwds.data.persistence.cms.LongText longTextToCreate =
+        new gov.ca.cwds.data.persistence.cms.LongText("567890ABC", longTextDomain, "ABC");
+    when(longTextDao.create(any(gov.ca.cwds.data.persistence.cms.LongText.class)))
+        .thenReturn(longTextToCreate);
+
+    ScreeningToReferral screeningToReferral = MAPPER.readValue(
+        fixture("fixtures/domain/ScreeningToReferral/valid/valid.json"), ScreeningToReferral.class);
+    when(staffPersonIdRetriever.getStaffPersonId()).thenReturn("0X5");
+
+    when(referralDao.create(any(gov.ca.cwds.data.persistence.cms.Referral.class)))
+        .thenAnswer(new Answer<gov.ca.cwds.data.persistence.cms.Referral>() {
+
+          @Override
+          public gov.ca.cwds.data.persistence.cms.Referral answer(InvocationOnMock invocation)
+              throws Throwable {
+            referral = (gov.ca.cwds.data.persistence.cms.Referral) invocation.getArguments()[0];
+            return referral;
+          }
+        });
+
+    screeningToReferralService.create(screeningToReferral);
+    assertThat(referral.getDrmsInvestigationDoc(), is(equalTo("AYZ12340X5")));
+
+  }
 
 }
+
+

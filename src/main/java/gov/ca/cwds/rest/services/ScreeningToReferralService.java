@@ -30,10 +30,12 @@ import gov.ca.cwds.rest.api.domain.cms.Address;
 import gov.ca.cwds.rest.api.domain.cms.ChildClient;
 import gov.ca.cwds.rest.api.domain.cms.Client;
 import gov.ca.cwds.rest.api.domain.cms.ClientAddress;
+import gov.ca.cwds.rest.api.domain.cms.DrmsDocument;
 import gov.ca.cwds.rest.api.domain.cms.LongText;
 import gov.ca.cwds.rest.api.domain.cms.PostedAddress;
 import gov.ca.cwds.rest.api.domain.cms.PostedAllegation;
 import gov.ca.cwds.rest.api.domain.cms.PostedClient;
+import gov.ca.cwds.rest.api.domain.cms.PostedDrmsDocument;
 import gov.ca.cwds.rest.api.domain.cms.PostedLongText;
 import gov.ca.cwds.rest.api.domain.cms.PostedReferral;
 import gov.ca.cwds.rest.api.domain.cms.Referral;
@@ -47,6 +49,7 @@ import gov.ca.cwds.rest.services.cms.ChildClientService;
 import gov.ca.cwds.rest.services.cms.ClientAddressService;
 import gov.ca.cwds.rest.services.cms.ClientService;
 import gov.ca.cwds.rest.services.cms.CrossReportService;
+import gov.ca.cwds.rest.services.cms.DrmsDocumentService;
 import gov.ca.cwds.rest.services.cms.LongTextService;
 import gov.ca.cwds.rest.services.cms.ReferralClientService;
 import gov.ca.cwds.rest.services.cms.ReferralService;
@@ -91,6 +94,7 @@ public class ScreeningToReferralService implements CrudsService {
   private LongTextService longTextService;
   private ChildClientService childClientService;
   private StaffPersonIdRetriever staffPersonIdRetriever;
+  private DrmsDocumentService drmsDocumentService;
 
   private ReferralDao referralDao;
 
@@ -130,6 +134,7 @@ public class ScreeningToReferralService implements CrudsService {
    * @param staffPersonIdRetriever = The staffPersonId handling
    *        {@link gov.ca.cwds.rest.services.cms.StaffPersonIdRetriever} objects.
    * @param messageBuilder log message
+   * @param drmsDocumentService - cms DrmsDocumentService
    */
   @Inject
   public ScreeningToReferralService(ReferralService referralService, ClientService clientService,
@@ -138,7 +143,7 @@ public class ScreeningToReferralService implements CrudsService {
       AddressService addressService, ClientAddressService clientAddressService,
       LongTextService longTextService, ChildClientService childClientService, Validator validator,
       ReferralDao referralDao, StaffPersonIdRetriever staffPersonIdRetriever,
-      MessageBuilder messageBuilder) {
+      MessageBuilder messageBuilder, DrmsDocumentService drmsDocumentService) {
 
     super();
     this.referralService = referralService;
@@ -155,6 +160,7 @@ public class ScreeningToReferralService implements CrudsService {
     this.referralDao = referralDao;
     this.staffPersonIdRetriever = staffPersonIdRetriever;
     this.messageBuilder = messageBuilder;
+    this.drmsDocumentService = drmsDocumentService;
   }
 
   @UnitOfWork(value = "cms")
@@ -300,11 +306,12 @@ public class ScreeningToReferralService implements CrudsService {
                 clientId = incomingParticipant.getLegacyId();
                 Client foundClient = this.clientService.find(clientId);
                 if (foundClient != null) {
-                  foundClient.update(incomingParticipant.getFirstName(),incomingParticipant.getLastName());
-                  gov.ca.cwds.rest.api.domain.cms.Client savedClient = this.clientService.update(incomingParticipant.getLegacyId(), foundClient);
-                  if(savedClient == null){
-                    String message =
-                        "Unable to save Client";
+                  foundClient.update(incomingParticipant.getFirstName(),
+                      incomingParticipant.getLastName());
+                  gov.ca.cwds.rest.api.domain.cms.Client savedClient =
+                      this.clientService.update(incomingParticipant.getLegacyId(), foundClient);
+                  if (savedClient == null) {
+                    String message = "Unable to save Client";
                     logError(message);
                     throw new ServiceException(message);
                   }
@@ -340,7 +347,7 @@ public class ScreeningToReferralService implements CrudsService {
                 victimClient.put(incomingParticipant.getId(), clientId);
                 // since this is the victim - process the ChildClient
                 try {
-                    this.processChildClient(incomingParticipant, clientId);
+                  this.processChildClient(incomingParticipant, clientId);
                 } catch (ServiceException e) {
                   String message = e.getMessage();
                   logError(message, e);
@@ -431,6 +438,13 @@ public class ScreeningToReferralService implements CrudsService {
     String firstResponseDeterminedByStaffPersonId = getFirstResponseDeterminedByStaffPersonId();
 
     /*
+     * create a three dummy records using generateDrmsDocumentId method
+     */
+    String drmsAllegationDescriptionDoc = generateDrmsDocumentId();
+    String drmsErReferralDoc = generateDrmsDocumentId();
+    String drmsInvestigationDoc = generateDrmsDocumentId();
+
+    /*
      * create the referralAddress and assign the value to the
      * allegesAbuseOccurredAtAddressId(FKADDRS_T)
      */
@@ -438,7 +452,8 @@ public class ScreeningToReferralService implements CrudsService {
     String allegesAbuseOccurredAtAddressId = screeningToReferral.getAddress().getLegacyId();
 
     return Referral.createWithDefaults(ParticipantValidator.anonymousReporter(screeningToReferral),
-        communicationsMethodCode, screeningToReferral.getName(), dateStarted, timeStarted,
+        communicationsMethodCode, drmsAllegationDescriptionDoc, drmsErReferralDoc,
+        drmsInvestigationDoc, screeningToReferral.getName(), dateStarted, timeStarted,
         referralResponseTypeCode, allegesAbuseOccurredAtAddressId,
         firstResponseDeterminedByStaffPersonId, longTextId, DEFAULT_COUNTY_SPECIFIC_CODE,
         approvalStatusCode, DEFAULT_STAFF_PERSON_ID);
@@ -479,6 +494,34 @@ public class ScreeningToReferralService implements CrudsService {
     return APPROVAL_STATUS_CODE_NOT_SUBMITTED;
   }
 
+  /**
+   * <blockquote>
+   * 
+   * <pre>
+   * BUSINESS RULE: "R - 07577" - Create Dummy Docs for Referral
+   * 
+   * When Referral is Posted, it creates three dummy document values in the drmsDocument and 
+   * assigned the identifer in the referrals(drmsAllegationDescriptionDoc, drmsErReferralDoc, 
+   * drmsInvestigationDoc).
+   *
+   * </pre>
+   * 
+   * </blockquote>
+   */
+  private String generateDrmsDocumentId() throws Exception {
+    PostedDrmsDocument postedDrmsDocument = null;
+    try {
+      String staffPersonId = staffPersonIdRetriever.getStaffPersonId();
+      DrmsDocument drmsDocument = DrmsDocument.createDefaults(staffPersonId);
+      // drmsDocumentService.create(drmsDocument);
+      postedDrmsDocument = drmsDocumentService.create(drmsDocument);
+    } catch (ServiceException e) {
+      String message = e.getMessage();
+      logError(message, e);
+    }
+    return postedDrmsDocument.getId();
+
+  }
 
   private String generateLongTextId(ScreeningToReferral screeningToReferral) {
     String longTextId = null;
@@ -914,10 +957,10 @@ public class ScreeningToReferralService implements CrudsService {
   private ChildClient processChildClient(Participant id, String clientId) throws ServiceException {
 
     ChildClient exsistingChild = this.childClientService.find(clientId);
-    if(exsistingChild == null){
+    if (exsistingChild == null) {
       ChildClient childClient = ChildClient.createWithDefaults(clientId);
       messageBuilder.addDomainValidationError(validator.validate(childClient));
-      exsistingChild =  this.childClientService.create(childClient);
+      exsistingChild = this.childClientService.create(childClient);
     }
     return exsistingChild;
   }

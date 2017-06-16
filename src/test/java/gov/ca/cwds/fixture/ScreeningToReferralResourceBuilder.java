@@ -1,8 +1,5 @@
 package gov.ca.cwds.fixture;
 
-import gov.ca.cwds.rest.api.domain.DomainChef;
-import gov.ca.cwds.rest.api.domain.Participant;
-import gov.ca.cwds.rest.api.domain.ScreeningToReferral;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Arrays;
@@ -11,6 +8,15 @@ import java.util.HashSet;
 import java.util.Locale;
 import java.util.Set;
 
+import gov.ca.cwds.rest.api.domain.DomainChef;
+import gov.ca.cwds.rest.api.domain.Participant;
+import gov.ca.cwds.rest.api.domain.ScreeningToReferral;
+
+/**
+ * 
+ * @author CWDS API Team
+ */
+@SuppressWarnings("javadoc")
 public class ScreeningToReferralResourceBuilder {
 
   private static final DateFormat dateTimeFormat =
@@ -41,15 +47,18 @@ public class ScreeningToReferralResourceBuilder {
 
   public ScreeningToReferralResourceBuilder() {
     address = new AddressResourceBuilder().createAddress();
-    Participant victim = new ParticipantResourceBuilder().setRoles(new HashSet(Arrays.asList("Victim"))).createParticipant();
-    Participant perp = new ParticipantResourceBuilder().setRoles(new HashSet(Arrays.asList("Perpetrator"))).createParticipant();
-    Participant reporter = new ParticipantResourceBuilder().setRoles(new HashSet(Arrays.asList("Non-mandated Reporter"))).createParticipant();
+    Participant victim = new ParticipantResourceBuilder()
+        .setRoles(new HashSet<>(Arrays.asList("Victim"))).createParticipant();
+    Participant perp = new ParticipantResourceBuilder()
+        .setRoles(new HashSet<>(Arrays.asList("Perpetrator"))).createParticipant();
+    Participant reporter = new ParticipantResourceBuilder()
+        .setRoles(new HashSet<>(Arrays.asList("Non-mandated Reporter"))).createParticipant();
     this.participants = new HashSet<>(Arrays.asList(victim, perp, reporter));
-    gov.ca.cwds.rest.api.domain.CrossReport crossReport = new CrossReportResourceBuilder()
-        .createCrossReport();
+    gov.ca.cwds.rest.api.domain.CrossReport crossReport =
+        new CrossReportResourceBuilder().createCrossReport();
     this.crossReports = new HashSet<>(Arrays.asList(crossReport));
-    gov.ca.cwds.rest.api.domain.Allegation allegation = new AllegationResourceBuilder()
-        .createAllegation();
+    gov.ca.cwds.rest.api.domain.Allegation allegation =
+        new AllegationResourceBuilder().createAllegation();
     this.allegations = new HashSet<>(Arrays.asList(allegation));
 
   }

@@ -26,6 +26,7 @@ import gov.ca.cwds.data.cms.ChildClientDao;
 import gov.ca.cwds.data.cms.ClientAddressDao;
 import gov.ca.cwds.data.cms.ClientDao;
 import gov.ca.cwds.data.cms.CrossReportDao;
+import gov.ca.cwds.data.cms.DrmsDocumentDao;
 import gov.ca.cwds.data.cms.LongTextDao;
 import gov.ca.cwds.data.cms.ReferralClientDao;
 import gov.ca.cwds.data.cms.ReferralDao;
@@ -40,6 +41,7 @@ import gov.ca.cwds.rest.api.domain.cms.ChildClient;
 import gov.ca.cwds.rest.api.domain.cms.Client;
 import gov.ca.cwds.rest.api.domain.cms.ClientAddress;
 import gov.ca.cwds.rest.api.domain.cms.CrossReport;
+import gov.ca.cwds.rest.api.domain.cms.DrmsDocument;
 import gov.ca.cwds.rest.api.domain.cms.LongText;
 import gov.ca.cwds.rest.api.domain.cms.Referral;
 import gov.ca.cwds.rest.api.domain.cms.ReferralClient;
@@ -54,6 +56,7 @@ import gov.ca.cwds.rest.services.cms.ChildClientService;
 import gov.ca.cwds.rest.services.cms.ClientAddressService;
 import gov.ca.cwds.rest.services.cms.ClientService;
 import gov.ca.cwds.rest.services.cms.CrossReportService;
+import gov.ca.cwds.rest.services.cms.DrmsDocumentService;
 import gov.ca.cwds.rest.services.cms.LongTextService;
 import gov.ca.cwds.rest.services.cms.ReferralClientService;
 import gov.ca.cwds.rest.services.cms.ReferralService;
@@ -97,6 +100,8 @@ public class R05360ReferralCityMandatoryTest {
   private LACountyTrigger laCountyTrigger;
   private TriggerTablesDao triggerTablesDao;
   private StaffPersonIdRetriever staffPersonIdRetriever;
+  private DrmsDocumentService drmsDocumentService;
+  private DrmsDocumentDao drmsDocumentDao;
 
   @SuppressWarnings("javadoc")
   @Rule
@@ -152,6 +157,9 @@ public class R05360ReferralCityMandatoryTest {
     longTextDao = mock(LongTextDao.class);
     longTextService = new LongTextService(longTextDao, staffPersonIdRetriever);
 
+    drmsDocumentDao = mock(DrmsDocumentDao.class);
+    drmsDocumentService = new DrmsDocumentService(drmsDocumentDao, staffPersonIdRetriever);
+
     childClientDao = mock(ChildClientDao.class);
     childClientService = new ChildClientService(childClientDao, staffPersonIdRetriever);
 
@@ -159,7 +167,7 @@ public class R05360ReferralCityMandatoryTest {
         allegationService, crossReportService, referralClientService, reporterService,
         addressService, clientAddressService, longTextService, childClientService,
         Validation.buildDefaultValidatorFactory().getValidator(), referralDao,
-        staffPersonIdRetriever, new MessageBuilder());
+        staffPersonIdRetriever, new MessageBuilder(), drmsDocumentService);
   }
 
   /**
@@ -185,6 +193,13 @@ public class R05360ReferralCityMandatoryTest {
         new gov.ca.cwds.data.persistence.cms.Referral("0123456ABC", referralDomain, "2016-10-31");
     when(referralDao.create(any(gov.ca.cwds.data.persistence.cms.Referral.class)))
         .thenReturn(referralToCreate);
+
+    DrmsDocument drmsDocumentDomain = MAPPER.readValue(
+        fixture("fixtures/domain/legacy/DrmsDocument/valid/valid.json"), DrmsDocument.class);
+    gov.ca.cwds.data.persistence.cms.DrmsDocument drmsDocumentToCreate =
+        new gov.ca.cwds.data.persistence.cms.DrmsDocument("ABD1234568", drmsDocumentDomain, "ABC");
+    when(drmsDocumentDao.create(any(gov.ca.cwds.data.persistence.cms.DrmsDocument.class)))
+        .thenReturn(drmsDocumentToCreate);
 
     ChildClient childClient = MAPPER.readValue(
         fixture("fixtures/domain/ScreeningToReferral/valid/childClient.json"), ChildClient.class);
@@ -284,6 +299,13 @@ public class R05360ReferralCityMandatoryTest {
     when(referralDao.create(any(gov.ca.cwds.data.persistence.cms.Referral.class)))
         .thenReturn(referralToCreate);
 
+    DrmsDocument drmsDocumentDomain = MAPPER.readValue(
+        fixture("fixtures/domain/legacy/DrmsDocument/valid/valid.json"), DrmsDocument.class);
+    gov.ca.cwds.data.persistence.cms.DrmsDocument drmsDocumentToCreate =
+        new gov.ca.cwds.data.persistence.cms.DrmsDocument("ABD1234568", drmsDocumentDomain, "ABC");
+    when(drmsDocumentDao.create(any(gov.ca.cwds.data.persistence.cms.DrmsDocument.class)))
+        .thenReturn(drmsDocumentToCreate);
+
     ChildClient childClient = MAPPER.readValue(
         fixture("fixtures/domain/ScreeningToReferral/valid/childClient.json"), ChildClient.class);
     gov.ca.cwds.data.persistence.cms.ChildClient childClientToCreate =
@@ -381,6 +403,13 @@ public class R05360ReferralCityMandatoryTest {
         new gov.ca.cwds.data.persistence.cms.Referral("0123456ABC", referralDomain, "2016-10-31");
     when(referralDao.create(any(gov.ca.cwds.data.persistence.cms.Referral.class)))
         .thenReturn(referralToCreate);
+
+    DrmsDocument drmsDocumentDomain = MAPPER.readValue(
+        fixture("fixtures/domain/legacy/DrmsDocument/valid/valid.json"), DrmsDocument.class);
+    gov.ca.cwds.data.persistence.cms.DrmsDocument drmsDocumentToCreate =
+        new gov.ca.cwds.data.persistence.cms.DrmsDocument("ABD1234568", drmsDocumentDomain, "ABC");
+    when(drmsDocumentDao.create(any(gov.ca.cwds.data.persistence.cms.DrmsDocument.class)))
+        .thenReturn(drmsDocumentToCreate);
 
     ChildClient childClient = MAPPER.readValue(
         fixture("fixtures/domain/ScreeningToReferral/valid/childClient.json"), ChildClient.class);
@@ -480,6 +509,13 @@ public class R05360ReferralCityMandatoryTest {
     when(referralDao.create(any(gov.ca.cwds.data.persistence.cms.Referral.class)))
         .thenReturn(referralToCreate);
 
+    DrmsDocument drmsDocumentDomain = MAPPER.readValue(
+        fixture("fixtures/domain/legacy/DrmsDocument/valid/valid.json"), DrmsDocument.class);
+    gov.ca.cwds.data.persistence.cms.DrmsDocument drmsDocumentToCreate =
+        new gov.ca.cwds.data.persistence.cms.DrmsDocument("ABD1234568", drmsDocumentDomain, "ABC");
+    when(drmsDocumentDao.create(any(gov.ca.cwds.data.persistence.cms.DrmsDocument.class)))
+        .thenReturn(drmsDocumentToCreate);
+
     ChildClient childClient = MAPPER.readValue(
         fixture("fixtures/domain/ScreeningToReferral/valid/childClient.json"), ChildClient.class);
     gov.ca.cwds.data.persistence.cms.ChildClient childClientToCreate =
@@ -578,6 +614,13 @@ public class R05360ReferralCityMandatoryTest {
     when(referralDao.create(any(gov.ca.cwds.data.persistence.cms.Referral.class)))
         .thenReturn(referralToCreate);
 
+    DrmsDocument drmsDocumentDomain = MAPPER.readValue(
+        fixture("fixtures/domain/legacy/DrmsDocument/valid/valid.json"), DrmsDocument.class);
+    gov.ca.cwds.data.persistence.cms.DrmsDocument drmsDocumentToCreate =
+        new gov.ca.cwds.data.persistence.cms.DrmsDocument("ABD1234568", drmsDocumentDomain, "ABC");
+    when(drmsDocumentDao.create(any(gov.ca.cwds.data.persistence.cms.DrmsDocument.class)))
+        .thenReturn(drmsDocumentToCreate);
+
     ChildClient childClient = MAPPER.readValue(
         fixture("fixtures/domain/ScreeningToReferral/valid/childClient.json"), ChildClient.class);
     gov.ca.cwds.data.persistence.cms.ChildClient childClientToCreate =
@@ -675,6 +718,13 @@ public class R05360ReferralCityMandatoryTest {
         new gov.ca.cwds.data.persistence.cms.Referral("0123456ABC", referralDomain, "2016-10-31");
     when(referralDao.create(any(gov.ca.cwds.data.persistence.cms.Referral.class)))
         .thenReturn(referralToCreate);
+
+    DrmsDocument drmsDocumentDomain = MAPPER.readValue(
+        fixture("fixtures/domain/legacy/DrmsDocument/valid/valid.json"), DrmsDocument.class);
+    gov.ca.cwds.data.persistence.cms.DrmsDocument drmsDocumentToCreate =
+        new gov.ca.cwds.data.persistence.cms.DrmsDocument("ABD1234568", drmsDocumentDomain, "ABC");
+    when(drmsDocumentDao.create(any(gov.ca.cwds.data.persistence.cms.DrmsDocument.class)))
+        .thenReturn(drmsDocumentToCreate);
 
     ChildClient childClient = MAPPER.readValue(
         fixture("fixtures/domain/ScreeningToReferral/valid/childClient.json"), ChildClient.class);

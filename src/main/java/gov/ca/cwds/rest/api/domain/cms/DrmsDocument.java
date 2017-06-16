@@ -86,6 +86,14 @@ public class DrmsDocument extends ReportingDomain implements Request, Response {
   }
 
   /**
+   * @param staffPersonId - staffPersonId
+   * @return the drmsDocument
+   */
+  public static DrmsDocument createDefaults(String staffPersonId) {
+    return new DrmsDocument(new Date(), "DUMMY", null, staffPersonId, "DUMMY");
+  }
+
+  /**
    * @return the creationTimeStamp
    */
   public Date getCreationTimeStamp() {

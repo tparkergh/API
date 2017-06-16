@@ -7,12 +7,23 @@ import static org.hamcrest.Matchers.is;
 import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
+
+import javax.validation.Validation;
+
+import org.junit.Before;
+import org.junit.Rule;
+import org.junit.Test;
+import org.junit.rules.ExpectedException;
+
+import com.fasterxml.jackson.databind.ObjectMapper;
+
 import gov.ca.cwds.data.cms.AddressDao;
 import gov.ca.cwds.data.cms.AllegationDao;
 import gov.ca.cwds.data.cms.ChildClientDao;
 import gov.ca.cwds.data.cms.ClientAddressDao;
 import gov.ca.cwds.data.cms.ClientDao;
 import gov.ca.cwds.data.cms.CrossReportDao;
+import gov.ca.cwds.data.cms.DrmsDocumentDao;
 import gov.ca.cwds.data.cms.LongTextDao;
 import gov.ca.cwds.data.cms.ReferralClientDao;
 import gov.ca.cwds.data.cms.ReferralDao;
@@ -20,6 +31,7 @@ import gov.ca.cwds.data.cms.ReporterDao;
 import gov.ca.cwds.data.cms.StaffPersonDao;
 import gov.ca.cwds.data.rules.TriggerTablesDao;
 import gov.ca.cwds.rest.api.domain.ScreeningToReferral;
+import gov.ca.cwds.rest.api.domain.cms.DrmsDocument;
 import gov.ca.cwds.rest.api.domain.cms.LongText;
 import gov.ca.cwds.rest.api.domain.cms.Referral;
 import gov.ca.cwds.rest.business.rules.LACountyTrigger;
@@ -32,21 +44,13 @@ import gov.ca.cwds.rest.services.cms.ChildClientService;
 import gov.ca.cwds.rest.services.cms.ClientAddressService;
 import gov.ca.cwds.rest.services.cms.ClientService;
 import gov.ca.cwds.rest.services.cms.CrossReportService;
+import gov.ca.cwds.rest.services.cms.DrmsDocumentService;
 import gov.ca.cwds.rest.services.cms.LongTextService;
 import gov.ca.cwds.rest.services.cms.ReferralClientService;
 import gov.ca.cwds.rest.services.cms.ReferralService;
 import gov.ca.cwds.rest.services.cms.ReporterService;
 import gov.ca.cwds.rest.services.cms.StaffPersonIdRetriever;
 import io.dropwizard.jackson.Jackson;
-
-import javax.validation.Validation;
-
-import org.junit.Before;
-import org.junit.Rule;
-import org.junit.Test;
-import org.junit.rules.ExpectedException;
-
-import com.fasterxml.jackson.databind.ObjectMapper;
 
 /**
  * Test Class for DocTool Rule: R - 05914 - Do Not Update Approval Status Type
@@ -83,8 +87,8 @@ public class R05914DoNotUpdateApprovalStatusTypeTest {
   private LACountyTrigger laCountyTrigger;
   private TriggerTablesDao triggerTablesDao;
   private StaffPersonIdRetriever staffPersonIdRetriever;
-
-  private gov.ca.cwds.data.persistence.cms.Referral referral;
+  private DrmsDocumentService drmsDocumentService;
+  private DrmsDocumentDao drmsDocumentDao;
 
   @SuppressWarnings("javadoc")
   @Rule
@@ -100,26 +104,23 @@ public class R05914DoNotUpdateApprovalStatusTypeTest {
     triggerTablesDao = mock(TriggerTablesDao.class);
     staffpersonDao = mock(StaffPersonDao.class);
     staffPersonIdRetriever = mock(StaffPersonIdRetriever.class);
-    referralService =
-        new ReferralService(referralDao, nonLACountyTriggers, laCountyTrigger, triggerTablesDao,
-            staffpersonDao, staffPersonIdRetriever);
+    referralService = new ReferralService(referralDao, nonLACountyTriggers, laCountyTrigger,
+        triggerTablesDao, staffpersonDao, staffPersonIdRetriever);
 
     clientDao = mock(ClientDao.class);
     staffpersonDao = mock(StaffPersonDao.class);
     triggerTablesDao = mock(TriggerTablesDao.class);
     nonLACountyTriggers = mock(NonLACountyTriggers.class);
-    clientService =
-        new ClientService(clientDao, staffpersonDao, triggerTablesDao, nonLACountyTriggers,
-            staffPersonIdRetriever);
+    clientService = new ClientService(clientDao, staffpersonDao, triggerTablesDao,
+        nonLACountyTriggers, staffPersonIdRetriever);
 
     referralClientDao = mock(ReferralClientDao.class);
     nonLACountyTriggers = mock(NonLACountyTriggers.class);
     laCountyTrigger = mock(LACountyTrigger.class);
     triggerTablesDao = mock(TriggerTablesDao.class);
     staffpersonDao = mock(StaffPersonDao.class);
-    referralClientService =
-        new ReferralClientService(referralClientDao, nonLACountyTriggers, laCountyTrigger,
-            triggerTablesDao, staffpersonDao, staffPersonIdRetriever);
+    referralClientService = new ReferralClientService(referralClientDao, nonLACountyTriggers,
+        laCountyTrigger, triggerTablesDao, staffpersonDao, staffPersonIdRetriever);
 
     allegationDao = mock(AllegationDao.class);
     allegationService = new AllegationService(allegationDao, staffPersonIdRetriever);
@@ -137,22 +138,23 @@ public class R05914DoNotUpdateApprovalStatusTypeTest {
     laCountyTrigger = mock(LACountyTrigger.class);
     triggerTablesDao = mock(TriggerTablesDao.class);
     staffpersonDao = mock(StaffPersonDao.class);
-    clientAddressService =
-        new ClientAddressService(clientAddressDao, staffpersonDao, triggerTablesDao,
-            laCountyTrigger, staffPersonIdRetriever);
+    clientAddressService = new ClientAddressService(clientAddressDao, staffpersonDao,
+        triggerTablesDao, laCountyTrigger, staffPersonIdRetriever);
 
     longTextDao = mock(LongTextDao.class);
     longTextService = new LongTextService(longTextDao, staffPersonIdRetriever);
 
+    drmsDocumentDao = mock(DrmsDocumentDao.class);
+    drmsDocumentService = new DrmsDocumentService(drmsDocumentDao, staffPersonIdRetriever);
+
     childClientDao = mock(ChildClientDao.class);
     childClientService = new ChildClientService(childClientDao, staffPersonIdRetriever);
 
-    screeningToReferralService =
-        new ScreeningToReferralService(referralService, clientService, allegationService,
-            crossReportService, referralClientService, reporterService, addressService,
-            clientAddressService, longTextService, childClientService, Validation
-                .buildDefaultValidatorFactory().getValidator(), referralDao,
-            staffPersonIdRetriever, new MessageBuilder());
+    screeningToReferralService = new ScreeningToReferralService(referralService, clientService,
+        allegationService, crossReportService, referralClientService, reporterService,
+        addressService, clientAddressService, longTextService, childClientService,
+        Validation.buildDefaultValidatorFactory().getValidator(), referralDao,
+        staffPersonIdRetriever, new MessageBuilder(), drmsDocumentService);
   }
 
   /**
@@ -171,22 +173,27 @@ public class R05914DoNotUpdateApprovalStatusTypeTest {
    * 
    * @throws Exception general error
    */
-  @SuppressWarnings("javadoc")
   @Test
   public void createReferralWithDefaultsSetsApprovalCodeNotSubmitted() throws Exception {
-    ScreeningToReferral screeningToReferral =
-        MAPPER.readValue(fixture("fixtures/domain/ScreeningToReferral/valid/valid.json"),
-            ScreeningToReferral.class);
-    LongText longTextDomain =
-        MAPPER.readValue(fixture("fixtures/domain/ScreeningToReferral/valid/validLongText.json"),
-            LongText.class);
+    ScreeningToReferral screeningToReferral = MAPPER.readValue(
+        fixture("fixtures/domain/ScreeningToReferral/valid/valid.json"), ScreeningToReferral.class);
+
+    LongText longTextDomain = MAPPER.readValue(
+        fixture("fixtures/domain/ScreeningToReferral/valid/validLongText.json"), LongText.class);
     gov.ca.cwds.data.persistence.cms.LongText longTextToCreate =
         new gov.ca.cwds.data.persistence.cms.LongText("567890ABC", longTextDomain, "ABC");
-    when(longTextDao.create(any(gov.ca.cwds.data.persistence.cms.LongText.class))).thenReturn(
-        longTextToCreate);
-    Referral referralCreated =
-        screeningToReferralService.createReferralWithDefaults(screeningToReferral,
-            "2016-08-03T01:00:00.000Z", "2016-08-03T01:00:00.000Z");
+    when(longTextDao.create(any(gov.ca.cwds.data.persistence.cms.LongText.class)))
+        .thenReturn(longTextToCreate);
+
+    DrmsDocument drmsDocumentDomain = MAPPER.readValue(
+        fixture("fixtures/domain/legacy/DrmsDocument/valid/valid.json"), DrmsDocument.class);
+    gov.ca.cwds.data.persistence.cms.DrmsDocument drmsDocumentToCreate =
+        new gov.ca.cwds.data.persistence.cms.DrmsDocument("ABD1234568", drmsDocumentDomain, "ABC");
+    when(drmsDocumentDao.create(any(gov.ca.cwds.data.persistence.cms.DrmsDocument.class)))
+        .thenReturn(drmsDocumentToCreate);
+
+    Referral referralCreated = screeningToReferralService.createReferralWithDefaults(
+        screeningToReferral, "2016-08-03T01:00:00.000Z", "2016-08-03T01:00:00.000Z");
     System.out.println(referralCreated.getApprovalStatusType());
     assertThat(referralCreated.getApprovalStatusType(), is(equalTo((short) 118)));
   }
