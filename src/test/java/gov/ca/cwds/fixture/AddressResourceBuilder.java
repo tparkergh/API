@@ -1,5 +1,10 @@
 package gov.ca.cwds.fixture;
 
+/**
+ * 
+ * @author CWDS API Team
+ */
+@SuppressWarnings("javadoc")
 public class AddressResourceBuilder {
 
   String legacySourceTable = "";
@@ -46,7 +51,7 @@ public class AddressResourceBuilder {
   }
 
   public gov.ca.cwds.rest.api.domain.Address createAddress() {
-    return new gov.ca.cwds.rest.api.domain.Address(legacySourceTable, legacyId, streetAddress,
-        city, state, zip, type);
+    return new gov.ca.cwds.rest.api.domain.Address(legacySourceTable, legacyId, streetAddress, city,
+        state, zip, type);
   }
 }

@@ -1,5 +1,10 @@
 package gov.ca.cwds.fixture;
 
+/**
+ * 
+ * @author CWDS API Team
+ */
+@SuppressWarnings("javadoc")
 public class AllegationResourceBuilder {
 
   String legacySourceTable = "";

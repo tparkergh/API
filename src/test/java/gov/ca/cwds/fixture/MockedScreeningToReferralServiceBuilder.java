@@ -6,7 +6,6 @@ import static org.mockito.Mockito.when;
 
 import javax.validation.Validation;
 
-import gov.ca.cwds.data.cms.DrmsDocumentDao;
 import gov.ca.cwds.data.cms.ReferralDao;
 import gov.ca.cwds.rest.api.domain.cms.Address;
 import gov.ca.cwds.rest.api.domain.cms.Allegation;
@@ -58,7 +57,6 @@ public class MockedScreeningToReferralServiceBuilder {
   private ChildClientService childClientService;
   private LongTextService longTextService;
   private DrmsDocumentService drmsDocumentService;
-  private DrmsDocumentDao drmsDocumentDao;
 
   private ReferralDao referralDao;
   private StaffPersonIdRetriever staffPersonIdRetriever;
