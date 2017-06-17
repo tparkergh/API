@@ -63,6 +63,20 @@ smartystreets:
 triggertables:
   laCountySpecificCode: 19
  
+webSecurity:
+  httpResponseSecurityHeaders:
+    # Prevent MIMI sniffing
+    X-Content-Type-Options: nosniff
+    
+    # Prevent click-jacking
+    X-Frame-Options: deny
+    
+    # Prevent cross site scripting
+    X-XSS-Protection: 1; mode=block
+    
+    # Prevent everything other than same origin
+    Content-Security-Policy: default-src 'self';
+     
 server:
   applicationConnectors:
   - type: http 
