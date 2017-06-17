@@ -1,9 +1,11 @@
 package gov.ca.cwds.inject;
 
 import com.google.inject.AbstractModule;
+import com.google.inject.Provides;
 
 import gov.ca.cwds.rest.ApiApplication;
 import gov.ca.cwds.rest.ApiConfiguration;
+import gov.ca.cwds.rest.WebSecurityConfiguration;
 import io.dropwizard.setup.Bootstrap;
 
 /**
@@ -39,6 +41,11 @@ public class ApplicationModule extends AbstractModule {
     install(new ResourcesModule());
     install(new FiltersModule());
     install(new AuditingModule());
+  }
+
+  @Provides
+  public WebSecurityConfiguration provideWebSecurityConfiguration(ApiConfiguration configuration) {
+    return configuration.getWebSecurityConfiguration();
   }
 
 }
