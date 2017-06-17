@@ -53,8 +53,8 @@ public class ParticipantResourceBuilder {
   }
 
   /**
-   * @param personId
-   * @return the personId
+   * @param personId person id
+   * @return the person id
    */
   public ParticipantResourceBuilder setPersonId(long personId) {
     this.personId = personId;
