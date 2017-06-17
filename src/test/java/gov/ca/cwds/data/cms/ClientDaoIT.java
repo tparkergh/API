@@ -71,7 +71,9 @@ public class ClientDaoIT implements DaoTestTemplate {
   @Override
   @After
   public void teardown() throws Exception {
-    session.getTransaction().rollback();
+    if (session.getTransaction().getStatus().canRollback()) {
+      session.getTransaction().rollback();
+    }
   }
 
   @Override
@@ -103,34 +105,6 @@ public class ClientDaoIT implements DaoTestTemplate {
     clientDao.callStoredProc();
     System.out.println("Survived calling stored proc!");
   }
-
-  // TODO: #138438305: move to jobs project.
-  // @SuppressWarnings("javadoc")
-  // @Test
-  // public void testFindAllUpdatedAfterNamedQueryExists() throws Exception {
-  // Query query =
-  // session.getNamedQuery("gov.ca.cwds.data.persistence.cms.Client.findAllUpdatedAfter");
-  // assertThat(query, is(notNullValue()));
-  // }
-
-  // TODO: #138438305: move to jobs project.
-  // @SuppressWarnings("javadoc")
-  // @Test
-  // public void testFindAllUpdatedAfterReturnsCorrectList() throws Exception {
-  // Query query =
-  // session.getNamedQuery("gov.ca.cwds.data.persistence.cms.Client.findAllUpdatedAfter")
-  // .setDate("after", TIMESTAMP_FORMAT.parse("2004-01-02 00:00:00"));
-  //
-  // @SuppressWarnings("unchecked")
-  // final List<Client> list = query.list();
-  // System.out.println("size of query list is: " + list.size());
-  // for (Client c : list) {
-  // System.out.println("id " + c.getId() + " " + c.getSensitivityIndicator() + " "
-  // + c.getSoc158SealedClientIndicator() + " " + c.getLastUpdatedTime());
-  // }
-  //
-  // assertThat(query.list().size(), is(1));
-  // }
 
   @Override
   @Test

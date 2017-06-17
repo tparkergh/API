@@ -184,6 +184,8 @@ public class R04537FirstResponseDeterminedByStaffPersonIdTest {
    * </pre>
    * 
    * </blockquote>
+   * 
+   * @throws Exception on general error
    */
   @SuppressWarnings("javadoc")
   @Test

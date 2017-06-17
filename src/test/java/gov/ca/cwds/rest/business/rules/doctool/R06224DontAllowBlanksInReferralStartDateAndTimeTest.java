@@ -177,6 +177,8 @@ public class R06224DontAllowBlanksInReferralStartDateAndTimeTest {
    * 
    * </blockquote>
    * </pre>
+   * 
+   * @throws Exception on general error
    */
   @SuppressWarnings("javadoc")
   @Test
