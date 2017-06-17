@@ -187,8 +187,10 @@ public class R07577CreateDummyDocsForReferralTest {
    * </blockquote>
    */
 
-  /*
+  /**
    * test for drmsAllegationDescriptionDoc Id
+   * 
+   * @throws Exception on IO or JSON error
    */
   @SuppressWarnings("javadoc")
   @Test

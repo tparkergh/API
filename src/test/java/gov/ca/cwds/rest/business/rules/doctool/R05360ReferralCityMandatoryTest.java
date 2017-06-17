@@ -183,6 +183,8 @@ public class R05360ReferralCityMandatoryTest {
    * THEN city is required
    * </blockquote>
    * </pre>
+   * 
+   * @throws Exception on general error
    */
   @SuppressWarnings("javadoc")
   @Test
