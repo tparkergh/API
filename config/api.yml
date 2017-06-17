@@ -75,7 +75,7 @@ webSecurity:
     X-XSS-Protection: 1; mode=block
     
     # Prevent everything other than same origin
-    Content-Security-Policy: default-src 'self';
+    Content-Security-Policy: default-src 'self' 'unsafe-inline';
      
 server:
   applicationConnectors:
