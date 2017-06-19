@@ -185,6 +185,8 @@ public class R07577CreateDummyDocsForReferralTest {
    * </pre>
    * 
    * </blockquote>
+   * 
+   * @throws Exception on general error
    */
 
   /**
@@ -192,7 +194,6 @@ public class R07577CreateDummyDocsForReferralTest {
    * 
    * @throws Exception on IO or JSON error
    */
-  @SuppressWarnings("javadoc")
   @Test
   public void testForDrmsAllegationDescriptionDocId() throws Exception {
     Referral referralDomain = MAPPER.readValue(
@@ -302,8 +303,10 @@ public class R07577CreateDummyDocsForReferralTest {
 
   }
 
-  /*
+  /**
    * test for drmsErReferralDoc Id
+   * 
+   * @throws Exception on IO or JSON error
    */
   @SuppressWarnings("javadoc")
   @Test
@@ -415,8 +418,10 @@ public class R07577CreateDummyDocsForReferralTest {
 
   }
 
-  /*
+  /**
    * test for drmsInvestigationDoc Id
+   * 
+   * @throws Exception on IO or JSON error
    */
   @SuppressWarnings("javadoc")
   @Test
@@ -529,5 +534,3 @@ public class R07577CreateDummyDocsForReferralTest {
   }
 
 }
-
-

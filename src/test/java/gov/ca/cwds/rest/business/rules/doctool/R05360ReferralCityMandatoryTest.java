@@ -186,7 +186,6 @@ public class R05360ReferralCityMandatoryTest {
    * 
    * @throws Exception on general error
    */
-  @SuppressWarnings("javadoc")
   @Test
   public void testForReferralstreetNameEmptyFailure() throws Exception {
     Referral referralDomain = MAPPER.readValue(

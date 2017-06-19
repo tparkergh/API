@@ -187,7 +187,6 @@ public class R04537FirstResponseDeterminedByStaffPersonIdTest {
    * 
    * @throws Exception on general error
    */
-  @SuppressWarnings("javadoc")
   @Test
   public void testForfirstResponseDeterminedByStaffPersonId() throws Exception {
     Referral referralDomain = MAPPER.readValue(

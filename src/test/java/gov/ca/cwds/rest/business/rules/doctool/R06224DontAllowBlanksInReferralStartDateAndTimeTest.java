@@ -180,7 +180,6 @@ public class R06224DontAllowBlanksInReferralStartDateAndTimeTest {
    * 
    * @throws Exception on general error
    */
-  @SuppressWarnings("javadoc")
   @Test
   public void testForStartedAtEmptyFailure() throws Exception {
     Referral referralDomain = MAPPER.readValue(
