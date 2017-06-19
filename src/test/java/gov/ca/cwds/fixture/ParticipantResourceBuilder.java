@@ -18,6 +18,7 @@ public class ParticipantResourceBuilder {
   long personId = 12345;
   long screeningId = 12345;
   String firstName = "John";
+  String middleName = "S.";
   String lastName = "Smith";
   String gender = "male";
   String dateOfBirth = "2001-03-15";
@@ -76,6 +77,15 @@ public class ParticipantResourceBuilder {
    */
   public ParticipantResourceBuilder setFirstName(String firstName) {
     this.firstName = firstName;
+    return this;
+  }
+
+  /**
+   * @param middleName - middleName
+   * @return the middleName
+   */
+  public ParticipantResourceBuilder setMiddleName(String middleName) {
+    this.middleName = middleName;
     return this;
   }
 
@@ -166,6 +176,8 @@ public class ParticipantResourceBuilder {
    * @return the createReporterParticipant
    */
   public Participant createReporterParticipant() {
+    //reporter only allows first initial
+    this.middleName = middleName.substring(0,1);
     this.roles = new HashSet<String>(Arrays.asList("Non-mandated Reporter"));
     return createParticipant();
 
@@ -175,7 +187,7 @@ public class ParticipantResourceBuilder {
    * @return the createParticipant
    */
   public Participant createParticipant() {
-    return new Participant(id, legacySourceTable, legacyId, firstName, lastName, gender, ssn,
+    return new Participant(id, legacySourceTable, legacyId, firstName, middleName, lastName, gender, ssn,
         dateOfBirth, personId, screeningId, roles, addresses);
   }
 }

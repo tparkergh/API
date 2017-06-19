@@ -24,6 +24,7 @@
 	  "legacy_source_table" : "",
 	  "legacy_id" : "",
 	  "first_name": "john",
+    "middle_name": "T.",
 	  "last_name": "smith",
 	  "gender": "male",
  	  "ssn": "123456789",

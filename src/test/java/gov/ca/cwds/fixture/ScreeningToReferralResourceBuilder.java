@@ -47,12 +47,9 @@ public class ScreeningToReferralResourceBuilder {
 
   public ScreeningToReferralResourceBuilder() {
     address = new AddressResourceBuilder().createAddress();
-    Participant victim = new ParticipantResourceBuilder()
-        .setRoles(new HashSet<>(Arrays.asList("Victim"))).createParticipant();
-    Participant perp = new ParticipantResourceBuilder()
-        .setRoles(new HashSet<>(Arrays.asList("Perpetrator"))).createParticipant();
-    Participant reporter = new ParticipantResourceBuilder()
-        .setRoles(new HashSet<>(Arrays.asList("Non-mandated Reporter"))).createParticipant();
+    Participant victim = new ParticipantResourceBuilder().createVictimParticipant();
+    Participant perp = new ParticipantResourceBuilder().createPerpParticipant();
+    Participant reporter = new ParticipantResourceBuilder().createReporterParticipant();
     this.participants = new HashSet<>(Arrays.asList(victim, perp, reporter));
     gov.ca.cwds.rest.api.domain.CrossReport crossReport =
         new CrossReportResourceBuilder().createCrossReport();

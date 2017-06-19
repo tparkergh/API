@@ -102,7 +102,7 @@ public class ParticipantResourceTest implements ResourceTestTemplate {
     roles.add("victim");
     Address address = new Address("", "", "123 First St", "San Jose", "CA", 94321, "Home");
     addresses.add(address);
-    Participant participant = new Participant(1, "", "", "Marge", "Simpson", "Female", "11122333",
+    Participant participant = new Participant(1, "", "", "Marge", "J", "Simpson", "Female", "11122333",
         "11-01-2017", 123, 456, roles, addresses);
 
     int status =
@@ -149,7 +149,7 @@ public class ParticipantResourceTest implements ResourceTestTemplate {
     roles.add("victim");
     Address address = new Address("", "", "123 First St", "San Jose", "CA", 94321, "Home");
     addresses.add(address);
-    Participant participant = new Participant(1, "", "", "Marge", "Simpson", "Female", "111223333",
+    Participant participant = new Participant(1, "", "", "Marge", "J", "Simpson", "Female", "111223333",
         "2017-01-23", 123, 456, roles, addresses);
 
     int status =
@@ -204,7 +204,7 @@ public class ParticipantResourceTest implements ResourceTestTemplate {
     roles.add("victim");
     Address address = new Address("", "", "123 First St", "San Jose", "CA", 94321, "Home");
     addresses.add(address);
-    Participant participant = new Participant(1, "", "", "Marge", "Simpson", "Female", "111223333",
+    Participant participant = new Participant(1, "", "", "Marge", "J", "Simpson", "Female", "111223333",
         "2017-01-11", 123, 456, roles, addresses);
     int receivedStatus =
         inMemoryResource.client().target(ROOT_RESOURCE).request().accept(MediaType.APPLICATION_JSON)

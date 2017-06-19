@@ -112,7 +112,7 @@ public class PersonServiceTest {
     races.add(race);
     Set<Ethnicity> ethnicities = new HashSet<Ethnicity>();
     ethnicities.add(ethnicity);
-    Person expected = new Person("Bart", "Simpson", "M", "2016-10-31", "1234556789", addresses,
+    Person expected = new Person("Bart", "S", "Simpson", "M", "2016-10-31", "1234556789", addresses,
         phoneNumbers, languages, races, ethnicities);
 
     gov.ca.cwds.data.persistence.ns.Person person =
@@ -154,7 +154,7 @@ public class PersonServiceTest {
     personAddress.setAddress(toCreateAddress);
     personAddresses.add(personAddress);
     gov.ca.cwds.data.persistence.ns.Person toCreate = new gov.ca.cwds.data.persistence.ns.Person(2L,
-        "Bart", "Simpson", "M", DomainChef.uncookDateString("2013-10-31"), "1234556789",
+        "Bart", "S", "Simpson", "M", DomainChef.uncookDateString("2013-10-31"), "1234556789",
         personAddresses, null, null, null, null);
 
     Person request = new Person(toCreate);
@@ -175,7 +175,7 @@ public class PersonServiceTest {
     personAddress.setAddress(toCreateAddress);
     personAddresses.add(personAddress);
     gov.ca.cwds.data.persistence.ns.Person toCreate = new gov.ca.cwds.data.persistence.ns.Person(2L,
-        "Bart", "Simpson", "M", DomainChef.uncookDateString("2016-10-31"), "1234556789",
+        "Bart", "S", "Simpson", "M", DomainChef.uncookDateString("2016-10-31"), "1234556789",
         personAddresses, null, null, null, null);
     Person request = new Person(toCreate);
     when(personDao.create(any(gov.ca.cwds.data.persistence.ns.Person.class))).thenReturn(toCreate);
@@ -226,7 +226,7 @@ public class PersonServiceTest {
         new Address("", "", "742 Evergreen Terrace", "Springfield", "WA", 98700, "Home");
     Set<Address> addresses = new HashSet<>();
     addresses.add(address);
-    Person toUpdate = new Person("Bart", "Simpson", "M", "2013-10-31", "1234556789", addresses,
+    Person toUpdate = new Person("Bart", "S", "Simpson", "M", "2013-10-31", "1234556789", addresses,
         null, null, null, null);
     personService.update(1L, toUpdate);
   }

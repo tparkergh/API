@@ -55,6 +55,10 @@ public class Participant extends ReportingDomain implements Request, Response {
   @ApiModelProperty(required = false, readOnly = false, value = "First Name", example = "John")
   private String firstName;
 
+  @JsonProperty("middle_name")
+  @ApiModelProperty(required = false, readOnly = false, value = "Middle name", example = "W.")
+  private String middleName;
+
   @JsonProperty("last_name")
   @ApiModelProperty(required = false, readOnly = false, value = "Last name", example = "Smith")
   private String lastName;
@@ -121,6 +125,7 @@ public class Participant extends ReportingDomain implements Request, Response {
    * @param personId The person Id
    * @param screeningId The screening Id
    * @param firstName The first Name
+   * @param middleName The middle Name
    * @param lastName The last Name
    * @param gender The gender
    * @param dateOfBirth The date Of Birth
@@ -133,10 +138,11 @@ public class Participant extends ReportingDomain implements Request, Response {
   public Participant(@JsonProperty("id") long id,
       @JsonProperty("legacy_source_table") String legacySourceTable,
       @JsonProperty("legacy_client_id") String clientId,
-      @JsonProperty("first_name") String firstName, @JsonProperty("last_name") String lastName,
-      @JsonProperty("gender") String gender, @JsonProperty("ssn") String ssn,
-      @JsonProperty("date_of_birth") String dateOfBirth, @JsonProperty("person_id") long personId,
-      @JsonProperty("screening_id") long screeningId, @JsonProperty("roles") Set<String> roles,
+      @JsonProperty("first_name") String firstName, @JsonProperty("middle_name") String middleName,
+      @JsonProperty("last_name") String lastName, @JsonProperty("gender") String gender,
+      @JsonProperty("ssn") String ssn, @JsonProperty("date_of_birth") String dateOfBirth,
+      @JsonProperty("person_id") long personId, @JsonProperty("screening_id") long screeningId,
+      @JsonProperty("roles") Set<String> roles,
       @JsonProperty("addresses") Set<Address> addresses) throws ServiceException {
     super();
     this.id = id;
@@ -145,6 +151,7 @@ public class Participant extends ReportingDomain implements Request, Response {
     this.personId = personId;
     this.screeningId = screeningId;
     this.firstName = firstName;
+    this.middleName = middleName;
     this.lastName = lastName;
     this.gender = gender;
     this.dateOfBirth = dateOfBirth;
@@ -171,6 +178,7 @@ public class Participant extends ReportingDomain implements Request, Response {
     this.screeningId = participant.getHotlineContactId();
     if (participant.getPerson() != null) {
       this.firstName = participant.getPerson().getFirstName();
+      this.middleName = participant.getPerson().getMiddleName();
       this.lastName = participant.getPerson().getLastName();
       this.gender = participant.getPerson().getGender();
       this.dateOfBirth = DomainChef.cookDate(participant.getPerson().getDateOfBirth());
@@ -190,6 +198,7 @@ public class Participant extends ReportingDomain implements Request, Response {
     this.screeningId = participant.getHotlineContactId();
     if (person != null) {
       this.firstName = person.getFirstName();
+      this.middleName = person.getMiddleName();
       this.lastName = person.getLastName();
       this.gender = person.getGender();
       this.dateOfBirth = person.getBirthDate();
@@ -238,6 +247,14 @@ public class Participant extends ReportingDomain implements Request, Response {
    */
   public String getFirstName() {
     return firstName;
+  }
+
+  /**
+   * @return the middleName
+   */
+  public String getMiddleName() {
+
+    return middleName;
   }
 
   /**
@@ -339,6 +356,7 @@ public class Participant extends ReportingDomain implements Request, Response {
     result = prime * result + ((firstName == null) ? 0 : firstName.hashCode());
     result = prime * result + ((gender == null) ? 0 : gender.hashCode());
     result = prime * result + (int) (id ^ (id >>> 32));
+    result = prime * result + ((middleName== null) ? 0 : middleName.hashCode());
     result = prime * result + ((lastName == null) ? 0 : lastName.hashCode());
     result = prime * result + ((legacyId == null) ? 0 : legacyId.hashCode());
     result = prime * result + ((legacySourceTable == null) ? 0 : legacySourceTable.hashCode());
@@ -389,6 +407,11 @@ public class Participant extends ReportingDomain implements Request, Response {
       if (other.lastName != null)
         return false;
     } else if (!lastName.equals(other.lastName))
+      return false;
+    if (middleName == null) {
+      if (other.middleName != null)
+        return false;
+    } else if (!middleName.equals(other.middleName))
       return false;
     if (legacyId == null) {
       if (other.legacyId != null)

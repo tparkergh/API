@@ -25,6 +25,7 @@
 	{
 	  "id" : "5432",
 	  "first_name": "John",
+    "middle_name": "T.",
 	  "last_name": "Smith",
 	  "gender": "male",
 	  "date_of_birth": "2001-03-15",
@@ -47,6 +48,7 @@
 		{
 	  "id" : "1234",
 	  "first_name": "Bart",
+      "middle_name": "T.",
 	  "last_name": "Simpson",
 	  "gender": "male",
 	  "date_of_birth": "2000-03-15",

@@ -35,6 +35,11 @@ public class Person extends ReportingDomain implements Request, Response {
   @Size(max = 50)
   private String firstName;
 
+  @JsonProperty("middle_name")
+  @ApiModelProperty(example = "M.")
+  @Size(max = 50)
+  private String middleName;
+
   @JsonProperty("last_name")
   @ApiModelProperty(example = "simpson")
   @Size(max = 50)
@@ -78,6 +83,7 @@ public class Person extends ReportingDomain implements Request, Response {
    * 
    * @param firstName The first name
    * @param lastName The last name
+   * @param middleName The middle name
    * @param gender The gender
    * @param birthDate The date of birth
    * @param ssn The ssn
@@ -88,15 +94,15 @@ public class Person extends ReportingDomain implements Request, Response {
    * @param ethnicity The ethnicity
    */
   @JsonCreator
-  public Person(@JsonProperty("first_name") String firstName,
+  public Person(@JsonProperty("first_name") String firstName, @JsonProperty("middle_name") String middleName,
       @JsonProperty("last_name") String lastName, @JsonProperty("gender") String gender,
       @JsonProperty("birth_date") String birthDate, @JsonProperty("ssn") String ssn,
-      @JsonProperty("address") Set<Address> address,
-      @JsonProperty("phone") Set<PhoneNumber> phoneNumber,
+      @JsonProperty("address") Set<Address> address, @JsonProperty("phone") Set<PhoneNumber> phoneNumber,
       @JsonProperty("language") Set<Language> language, @JsonProperty("race") Set<Race> race,
       @JsonProperty("ethnicity") Set<Ethnicity> ethnicity) {
     super();
     this.firstName = firstName;
+    this.middleName = middleName;
     this.lastName = lastName;
     this.gender = gender;
     this.birthDate = birthDate;
@@ -115,6 +121,7 @@ public class Person extends ReportingDomain implements Request, Response {
    */
   public Person(gov.ca.cwds.data.persistence.ns.Person person) {
     this.firstName = person.getFirstName();
+    this.middleName = person.getMiddleName();
     this.lastName = person.getLastName();
     this.gender = person.getGender();
     this.birthDate = DomainChef.cookDate(person.getDateOfBirth());
@@ -156,6 +163,13 @@ public class Person extends ReportingDomain implements Request, Response {
    */
   public String getFirstName() {
     return firstName;
+  }
+
+  /**
+   * @return the middle_name
+   */
+  public String getMiddleName() {
+    return middleName;
   }
 
   /**
@@ -238,6 +252,7 @@ public class Person extends ReportingDomain implements Request, Response {
     result = prime * result + ((birthDate == null) ? 0 : birthDate.hashCode());
     result = prime * result + ((firstName == null) ? 0 : firstName.hashCode());
     result = prime * result + ((gender == null) ? 0 : gender.hashCode());
+    result = prime * result + ((middleName == null) ? 0 : middleName.hashCode());
     result = prime * result + ((lastName == null) ? 0 : lastName.hashCode());
     result = prime * result + ((ssn == null) ? 0 : ssn.hashCode());
     return result;
@@ -301,6 +316,11 @@ public class Person extends ReportingDomain implements Request, Response {
       if (other.lastName != null)
         return false;
     } else if (!lastName.equals(other.lastName))
+      return false;
+    if (middleName == null) {
+      if (other.middleName != null)
+        return false;
+    } else if (!middleName.equals(other.middleName))
       return false;
     if (ssn == null) {
       if (other.ssn != null)

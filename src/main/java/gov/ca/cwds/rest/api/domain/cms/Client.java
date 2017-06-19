@@ -482,8 +482,8 @@ public class Client extends ReportingDomain implements Request, Response {
       @JsonProperty("clientIndexNumber") String clientIndexNumber,
       @JsonProperty("commentDescription") String commentDescription,
       @JsonProperty("commonFirstName") String commonFirstName,
-      @JsonProperty("commonLastName") String commonLastName,
       @JsonProperty("commonMiddleName") String commonMiddleName,
+      @JsonProperty("commonLastName") String commonLastName,
       @JsonProperty("confidentialityActionDate") String confidentialityActionDate,
       @JsonProperty("confidentialityInEffectIndicator") Boolean confidentialityInEffectIndicator,
       @JsonProperty("creationDate") String creationDate,
@@ -551,8 +551,8 @@ public class Client extends ReportingDomain implements Request, Response {
     this.clientIndexNumber = clientIndexNumber;
     this.commentDescription = commentDescription;
     this.commonFirstName = commonFirstName;
-    this.commonLastName = commonLastName;
     this.commonMiddleName = commonMiddleName;
+    this.commonLastName = commonLastName;
     this.confidentialityActionDate = confidentialityActionDate;
     this.confidentialityInEffectIndicator = confidentialityInEffectIndicator;
     this.creationDate = creationDate;
@@ -629,8 +629,8 @@ public class Client extends ReportingDomain implements Request, Response {
     this.clientIndexNumber = persistedClient.getClientIndexNumber();
     this.commentDescription = persistedClient.getCommentDescription();
     this.commonFirstName = persistedClient.getCommonFirstName();
-    this.commonLastName = persistedClient.getCommonLastName();
     this.commonMiddleName = persistedClient.getCommonMiddleName();
+    this.commonLastName = persistedClient.getCommonLastName();
     this.confidentialityActionDate =
         DomainChef.cookDate(persistedClient.getConfidentialityActionDate());
     this.confidentialityInEffectIndicator =
@@ -716,7 +716,7 @@ public class Client extends ReportingDomain implements Request, Response {
       String genderCode) {
     return new Client("", false, DEFAULT_ADOPTION_STATUS_CODE, "", "", DEFAULT_CODE,
         participant.getDateOfBirth(), "", DEFAULT_CODE, false, DEFAULT_CHILD_CLIENT_INDICATOR, "",
-        "", participant.getFirstName(), participant.getLastName(), "", "", false, dateStarted,
+        "", participant.getFirstName(), participant.getMiddleName(), participant.getLastName(), "", false, dateStarted,
         false, "", false, "", false, "", "", "", DEFAULT_CODE, "", DEFAULT_ESTIMATED_DOB_CODE,
         DEFAULT_UNABLE_TO_DETAIN_CODE, "", genderCode, "", "", DEFAULT_HISPANIC_ORIGIN_CODE,
         DEFAULT_CODE, DEFAULT_CODE, DEFAULT_INCAPCITATED_PARENT_CODE, false, false,

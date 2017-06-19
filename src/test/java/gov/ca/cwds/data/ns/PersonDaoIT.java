@@ -130,7 +130,7 @@ public class PersonDaoIT implements DaoTestTemplate {
     PersonAddress personAddress = new PersonAddress();
     personAddress.setAddress(toCreateAddress);
     personAddresses.add(personAddress);
-    Person person = new Person(null, "John", "Doe", "Male", new Date(), "111-11-1111",
+    Person person = new Person(null, "John", "J.", "Doe", "Male", new Date(), "111-11-1111",
         personAddresses, null, null, null, null);
     Person created = personDao.create(person);
     assertThat(created, is(person));
