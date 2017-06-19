@@ -1,7 +1,6 @@
 package gov.ca.cwds.inject;
 
 import com.google.inject.AbstractModule;
-import com.google.inject.Provides;
 
 import gov.ca.cwds.rest.ApiApplication;
 import gov.ca.cwds.rest.ApiConfiguration;
@@ -39,13 +38,17 @@ public class ApplicationModule extends AbstractModule {
     install(new DataAccessModule(bootstrap));
     install(new ServicesModule());
     install(new ResourcesModule());
-    install(new FiltersModule());
+    install(new FiltersModule<ApiConfiguration>());
     install(new AuditingModule());
   }
 
-  @Provides
+  /**
+   * Provides WebSecurityConfiguration
+   * 
+   * @param configuration The configuration for application
+   * @return An object of WebSecurityConfiguration
+   */
   public WebSecurityConfiguration provideWebSecurityConfiguration(ApiConfiguration configuration) {
     return configuration.getWebSecurityConfiguration();
   }
-
 }
