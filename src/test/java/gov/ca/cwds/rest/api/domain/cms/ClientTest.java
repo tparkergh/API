@@ -159,7 +159,7 @@ public class ClientTest implements DomainTestTemplate {
     Client domain = new Client(existingClientId, adjudicatedDelinquentIndicator, adoptionStatusCode,
         alienRegistrationNumber, birthCity, birthCountryCodeType, birthDate, birthFacilityName,
         birthStateCodeType, birthplaceVerifiedIndicator, childClientIndicatorVar, clientIndexNumber,
-        commentDescription, commonFirstName, commonLastName, commonMiddleName,
+        commentDescription, commonFirstName,  commonMiddleName, commonLastName,
         confidentialityActionDate, confidentialityInEffectIndicator, creationDate,
         currCaChildrenServIndicator, currentlyOtherDescription, currentlyRegionalCenterIndicator,
         deathDate, deathDateVerified, deathPlace, deathReasonText, driversLicenseNumber,
@@ -275,7 +275,7 @@ public class ClientTest implements DomainTestTemplate {
     Client domain = new Client(existingClientId, adjudicatedDelinquentIndicator, adoptionStatusCode,
         alienRegistrationNumber, birthCity, birthCountryCodeType, birthDate, birthFacilityName,
         birthStateCodeType, birthplaceVerifiedIndicator, childClientIndicatorVar, clientIndexNumber,
-        commentDescription, commonFirstName, commonLastName, commonMiddleName,
+        commentDescription, commonFirstName, commonMiddleName, commonLastName,
         confidentialityActionDate, confidentialityInEffectIndicator, creationDate,
         currCaChildrenServIndicator, currentlyOtherDescription, currentlyRegionalCenterIndicator,
         deathDate, deathDateVerified, deathPlace, deathReasonText, driversLicenseNumber,
@@ -307,8 +307,8 @@ public class ClientTest implements DomainTestTemplate {
     assertThat(domain.getClientIndexNumber(), is(equalTo(vc.getClientIndexNumber())));
     assertThat(domain.getCommentDescription(), is(equalTo(vc.getCommentDescription())));
     assertThat(domain.getCommonFirstName(), is(equalTo(vc.getCommonFirstName())));
-    assertThat(domain.getCommonLastName(), is(equalTo(vc.getCommonLastName())));
     assertThat(domain.getCommonMiddleName(), is(equalTo(vc.getCommonMiddleName())));
+    assertThat(domain.getCommonLastName(), is(equalTo(vc.getCommonLastName())));
     assertThat(domain.getConfidentialityActionDate(),
         is(equalTo(vc.getConfidentialityActionDate())));
     assertThat(domain.getConfidentialityInEffectIndicator(),
@@ -381,7 +381,7 @@ public class ClientTest implements DomainTestTemplate {
 
   @Test
   public void testCreateWithDefaultCreatesWithValues(){
-    Participant participant = new Participant(1, "sourceTable", "clientId", "firstName","lastName", "gender","ssn", "dob", 3,4,new HashSet(), new HashSet());
+    Participant participant = new Participant(1, "sourceTable", "clientId", "firstName", "middleName","lastName", "gender","ssn", "dob", 3,4,new HashSet(), new HashSet());
     String genderCode = "male";
     String dateStarted = "now";
 
@@ -389,6 +389,7 @@ public class ClientTest implements DomainTestTemplate {
 
     assertEquals("Expected BirthDate field to be initialized with values", participant.getDateOfBirth(), client.getBirthDate());
     assertEquals("Expected First Name field to be initialized with values", participant.getFirstName(), client.getCommonFirstName());
+    assertEquals("Expected Middle Name field to be initialized with values", participant.getMiddleName(), client.getCommonMiddleName());
     assertEquals("Expected LastName field to be initialized with values", participant.getLastName(), client.getCommonLastName());
     assertEquals("Expected SSN field to be initialized with values", participant.getSsn(), client.getSocialSecurityNumber());
     assertEquals("Expected genderCode field to be initialized with values", genderCode, client.getGenderCode());
@@ -397,7 +398,7 @@ public class ClientTest implements DomainTestTemplate {
 
   @Test
   public void shouldAllowClientNamesToBeUpdatedAfterInitialization(){
-    Participant participant = new Participant(1, "sourceTable", "clientId", "Fred","Bill", "gender","ssn", "dob", 3,4,new HashSet(), new HashSet());
+    Participant participant = new Participant(1, "sourceTable", "clientId", "Fred", "Wilson", "Bill", "gender","ssn", "dob", 3,4,new HashSet(), new HashSet());
     Client client = Client.createWithDefaults(participant,"","");
 
     client.update("Barney", "Rubble");
@@ -408,7 +409,7 @@ public class ClientTest implements DomainTestTemplate {
 
   @Test
   public void testCreateWithDefaultCreatesWithDefaultValues(){
-    Participant participant = new Participant(1, "sourceTable", "clientId", "firstName","lastName", "gender","ssn", "dob", 3,4,new HashSet(), new HashSet());
+    Participant participant = new Participant(1, "sourceTable", "clientId", "firstName", "middleName", "lastName", "gender","ssn", "dob", 3,4,new HashSet(), new HashSet());
     String genderCode = "male";
     String dateStarted = "now";
 
@@ -426,7 +427,6 @@ public class ClientTest implements DomainTestTemplate {
     assertEquals("Expected childClientIndicatorVar field to be initialized with default values", false, client.getChildClientIndicatorVar());
     assertEquals("Expected clientIndexNumber field to be initialized with default values", "", client.getClientIndexNumber());
     assertEquals("Expected commentDescription field to be initialized with default values", "", client.getCommentDescription());
-    assertEquals("Expected commonMiddleName field to be initialized with default values", "", client.getCommonMiddleName());
     assertEquals("Expected confidentialityActionDate field to be initialized with default values", "", client.getConfidentialityActionDate());
     assertEquals("Expected confidentialityInEffectIndicator field to be initialized with default values", false, client.getConfidentialityInEffectIndicator());
     assertEquals("Expected currCaChildrenServIndicator field to be initialized with default values", false, client.getCurrCaChildrenServIndicator());
@@ -3181,7 +3181,7 @@ public class ClientTest implements DomainTestTemplate {
     Client domain = new Client(existingClientId, adjudicatedDelinquentIndicator, adoptionStatusCode,
         alienRegistrationNumber, birthCity, birthCountryCodeType, birthDate, birthFacilityName,
         birthStateCodeType, birthplaceVerifiedIndicator, childClientIndicatorVar, clientIndexNumber,
-        commentDescription, commonFirstName, commonLastName, commonMiddleName,
+        commentDescription, commonFirstName, commonMiddleName, commonLastName,
         confidentialityActionDate, confidentialityInEffectIndicator, creationDate,
         currCaChildrenServIndicator, currentlyOtherDescription, currentlyRegionalCenterIndicator,
         deathDate, deathDateVerified, deathPlace, deathReasonText, driversLicenseNumber,

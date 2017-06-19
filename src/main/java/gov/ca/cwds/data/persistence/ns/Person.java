@@ -46,6 +46,9 @@ public class Person extends NsPersistentObject
   @Column(name = "first_name")
   private String firstName;
 
+  @Column(name = "middle_name")
+  private String middleName;
+
   @Column(name = "last_name")
   private String lastName;
 
@@ -88,6 +91,7 @@ public class Person extends NsPersistentObject
    * 
    * @param id The identifier of this row
    * @param firstName The first name
+   * @param middleName The middle name
    * @param lastName The last name
    * @param gender The gender
    * @param dateOfBirth The date op birth
@@ -98,13 +102,14 @@ public class Person extends NsPersistentObject
    * @param personRace The race of this person
    * @param personEthnicity the ethnicity of this person
    */
-  public Person(Long id, String firstName, String lastName, String gender, Date dateOfBirth,
+  public Person(Long id, String firstName, String middleName, String lastName, String gender, Date dateOfBirth,
       String ssn, Set<PersonAddress> personAddress, Set<PersonPhone> personPhone,
       Set<PersonLanguage> personLanguage, Set<PersonRace> personRace,
       Set<PersonEthnicity> personEthnicity) {
     super();
     this.id = id;
     this.firstName = firstName;
+    this.middleName = middleName;
     this.lastName = lastName;
     this.gender = gender;
     this.dateOfBirth = dateOfBirth;
@@ -164,6 +169,7 @@ public class Person extends NsPersistentObject
       String createUserId) {
     super(lastUpdatedId, createUserId);
     this.firstName = person.getFirstName();
+    this.middleName = person.getMiddleName();
     this.lastName = person.getLastName();
     this.gender = person.getGender();
     this.dateOfBirth = DomainChef.uncookDateString(person.getBirthDate());
@@ -227,6 +233,14 @@ public class Person extends NsPersistentObject
   // @Override
   public String getFirstName() {
     return firstName;
+  }
+
+  /**
+   * @return the middleName
+   */
+  // @Override
+  public String getMiddleName() {
+    return middleName;
   }
 
   /**

@@ -254,12 +254,12 @@ public class Reporter extends ReportingDomain implements Request, Response {
     this.employerName = employerName;
     this.feedbackDate = feedbackDate;
     this.feedbackRequiredIndicator = feedbackRequiredIndicator;
-    this.firstName = firstName;
-    this.lastName = lastName;
+    this.firstName = firstName == null ? "" : firstName;
+    this.lastName = lastName == null ? "" : lastName;
     this.mandatedReporterIndicator = mandatedReporterIndicator;
     this.messagePhoneExtensionNumber = messagePhoneExtensionNumber;
     this.messagePhoneNumber = messagePhoneNumber;
-    this.middleInitialName = middleInitialName;
+    this.middleInitialName = middleInitialName == null ? "" : middleInitialName;
     this.namePrefixDescription = namePrefixDescription;
     this.primaryPhoneNumber = primaryPhoneNumber;
     this.primaryPhoneExtensionNumber = primaryPhoneExtensionNumber;
@@ -355,7 +355,7 @@ public class Reporter extends ReportingDomain implements Request, Response {
 
     return new Reporter("", city, DEFAULT_CODE, DEFAULT_CODE, false, "", "", "", false,
         participant.getFirstName(), participant.getLastName(), isMandatedReporter, 0,
-        DEFAULT_DECIMAL, "", "", DEFAULT_DECIMAL, 0, stateCode, streetName, streetNumber, "",
+        DEFAULT_DECIMAL, participant.getMiddleName(), "", DEFAULT_DECIMAL, 0, stateCode, streetName, streetNumber, "",
         zipCodeString, referralId, "", DEFAULT_CODE, countyCode);
   }
 

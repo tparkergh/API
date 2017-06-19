@@ -91,6 +91,11 @@ public class ESPerson extends Person {
     FIRST_NAME("first_name", String.class, ""),
 
     /**
+     * middle name
+     */
+    MIDDLE_NAME("middle_name", String.class, ""),
+
+    /**
      * last name
      */
     LAST_NAME("last_name", String.class, ""),
@@ -192,6 +197,7 @@ public class ESPerson extends Person {
     final Map<String, Object> m = hit.getSource();
     ESPerson ret = new ESPerson(ESPerson.<String>pullCol(m, ESColumn.ID),
         ESPerson.<String>pullCol(m, ESColumn.FIRST_NAME),
+        ESPerson.<String>pullCol(m, ESColumn.MIDDLE_NAME),
         ESPerson.<String>pullCol(m, ESColumn.LAST_NAME),
         ESPerson.<String>pullCol(m, ESColumn.GENDER),
         ESPerson.<String>pullCol(m, ESColumn.BIRTH_DATE), ESPerson.<String>pullCol(m, ESColumn.SSN),
@@ -317,6 +323,7 @@ public class ESPerson extends Person {
    * 
    * @param id unique identifier
    * @param firstName The first name
+   * @param middleName The middle name
    * @param lastName The last name
    * @param gender The gender
    * @param birthDate The date of birth
@@ -327,10 +334,10 @@ public class ESPerson extends Person {
    * @param race The race, if any
    * @param ethnicity The Ethnicity, if any
    */
-  public ESPerson(String id, String firstName, String lastName, String gender, String birthDate,
+  public ESPerson(String id, String firstName, String middleName,  String lastName, String gender, String birthDate,
       String ssn, Set<Address> address, Set<PhoneNumber> phoneNumber, Set<Language> language,
       Set<Race> race, Set<Ethnicity> ethnicity) {
-    super(trim(firstName), trim(lastName), trim(gender), trim(birthDate), trim(ssn), address,
+    super(trim(firstName), trim(middleName), trim(lastName), trim(gender), trim(birthDate), trim(ssn), address,
         phoneNumber, language, race, ethnicity);
     this.id = id;
   }
@@ -341,6 +348,7 @@ public class ESPerson extends Person {
    * 
    * @param id identifier
    * @param firstName first name
+   * @param middleName middle name
    * @param lastName last name
    * @param gender gender code
    * @param birthDate birth date
@@ -354,11 +362,11 @@ public class ESPerson extends Person {
    * @param ethnicity ethnicity, if any
    * 
    */
-  public ESPerson(String id, String firstName, String lastName, String gender, String birthDate,
+  public ESPerson(String id, String firstName, String middleName, String lastName, String gender, String birthDate,
       String ssn, String sourceType, String sourceJson, Set<Address> address,
       Set<PhoneNumber> phoneNumber, Set<Language> language, Set<Race> race,
       Set<Ethnicity> ethnicity) {
-    super(trim(firstName), trim(lastName), trim(gender), trim(birthDate), trim(ssn), address,
+    super(trim(firstName), trim(middleName), trim(lastName), trim(gender), trim(birthDate), trim(ssn), address,
         phoneNumber, language, race, ethnicity);
     this.id = id;
     this.sourceType = sourceType;

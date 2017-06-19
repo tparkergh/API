@@ -29,6 +29,7 @@ public class PostedScreeningTest implements DomainTestTemplate {
   private long personId = 12345;
   private long screeningId = 12345;
   private String firstName = "john";
+  private String middleName = "T.";
   private String lastName = "smith";
   private String gender = "male";
   private String dateOfBirth = "2001-09-13";
@@ -69,7 +70,7 @@ public class PostedScreeningTest implements DomainTestTemplate {
     addresses.add(address);
     roles.add("victim");
 
-    Participant participant = new Participant(participantId, "", "", firstName, lastName, gender,
+    Participant participant = new Participant(participantId, "", "", firstName, middleName, lastName, gender,
         ssn, dateOfBirth, personId, screeningId, roles, addresses);
     ImmutableSet.Builder<Participant> participantSetBuilder = ImmutableSet.builder();
     participantSetBuilder.add(participant);
@@ -96,7 +97,7 @@ public class PostedScreeningTest implements DomainTestTemplate {
     addresses.add(address);
     roles.add("victim");
 
-    Participant participant = new Participant(participantId, "", "", firstName, lastName, gender,
+    Participant participant = new Participant(participantId, "", "", firstName, middleName, lastName, gender,
         ssn, dateOfBirth, personId, screeningId, roles, addresses);
     ImmutableSet.Builder<Participant> participantSetBuilder = ImmutableSet.builder();
     participantSetBuilder.add(participant);

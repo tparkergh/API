@@ -70,8 +70,8 @@ public final class Client extends BaseClient
    * @param clientIndexNumber The clientIndexNumber
    * @param commentDescription The commentDescription
    * @param commonFirstName The commonFirstName
-   * @param commonLastName The commonLastName
    * @param commonMiddleName The commonMiddleName
+   * @param commonLastName The commonLastName
    * @param confidentialityActionDate The confidentialityActionDate
    * @param confidentialityInEffectIndicator The confidentialityInEffectIndicator
    * @param creationDate The creationDate
@@ -130,7 +130,7 @@ public final class Client extends BaseClient
       String alienRegistrationNumber, String birthCity, Short birthCountryCodeType, Date birthDate,
       String birthFacilityName, Short birthStateCodeType, String birthplaceVerifiedIndicator,
       String childClientIndicatorVar, String clientIndexNumber, String commentDescription,
-      String commonFirstName, String commonLastName, String commonMiddleName,
+      String commonFirstName,String commonMiddleName, String commonLastName,
       Date confidentialityActionDate, String confidentialityInEffectIndicator, Date creationDate,
       String currCaChildrenServIndicator, String currentlyOtherDescription,
       String currentlyRegionalCenterIndicator, Date deathDate, String deathDateVerifiedIndicator,
@@ -166,8 +166,8 @@ public final class Client extends BaseClient
     this.clientIndexNumber = clientIndexNumber;
     this.commentDescription = commentDescription;
     this.commonFirstName = commonFirstName;
-    this.commonLastName = commonLastName;
     this.commonMiddleName = commonMiddleName;
+    this.commonLastName = commonLastName;
     this.confidentialityActionDate = confidentialityActionDate;
     this.confidentialityInEffectIndicator = confidentialityInEffectIndicator;
     this.creationDate = creationDate;
@@ -249,8 +249,8 @@ public final class Client extends BaseClient
       this.clientIndexNumber = client.getClientIndexNumber();
       this.commentDescription = client.getCommentDescription();
       this.commonFirstName = client.getCommonFirstName();
-      this.commonLastName = client.getCommonLastName();
       this.commonMiddleName = client.getCommonMiddleName();
+      this.commonLastName = client.getCommonLastName();
       this.confidentialityActionDate =
           DomainChef.uncookDateString(client.getConfidentialityActionDate());
       this.confidentialityInEffectIndicator =

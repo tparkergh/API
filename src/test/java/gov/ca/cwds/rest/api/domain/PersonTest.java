@@ -39,6 +39,7 @@ import nl.jqno.equalsverifier.Warning;
 public class PersonTest {
 
   private String firstName = "firstname";
+  private String middleName = "middlename";
   private String lastName = "lastename";
   private String gender = "M";
   private String birthDate = "2001-09-01";
@@ -135,7 +136,7 @@ public class PersonTest {
     languages.add(language);
     races.add(race);
     ethnicities.add(ethnicity);
-    Person domain = new Person(firstName, lastName, gender, birthDate, ssn, addresses, phoneNumbers,
+    Person domain = new Person(firstName, middleName, lastName, gender, birthDate, ssn, addresses, phoneNumbers,
         languages, races, ethnicities);
 
     assertThat(domain.getAddress(), is(equalTo(addresses)));

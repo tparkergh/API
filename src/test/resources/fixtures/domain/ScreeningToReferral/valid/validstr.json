@@ -30,6 +30,7 @@
     "legacy_source_table" : "CLIENT_T",
     "legacy_id" : "1234567ABC",
     "first_name" : "John",
+    "middle_name" : "T.",
     "last_name" : "Smith",
     "gender" : "male",
     "ssn" : "123456789",

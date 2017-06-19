@@ -49,6 +49,7 @@ import com.squarespace.jersey2.guice.JerseyGuiceUtils;
 @SuppressWarnings("javadoc")
 public class ReporterTest {
 
+  private static final int NOT_FOUND = -1;
   private static final String ROOT_RESOURCE = "/" + Api.RESOURCE_REPORTER + "/";
 
   private static final ReporterResource mockedReporterResource = mock(ReporterResource.class);
@@ -223,9 +224,10 @@ public class ReporterTest {
     String referralId = "referralId";
     boolean isMandatedReporter = true;
     String firstName = "firstName";
+    String middleName = "middleName";
     String lastName = "lastName";
     Participant participant =
-        new Participant(5L, "legacy_source_table", "legacy_client_id", firstName, lastName,
+        new Participant(5L, "legacy_source_table", "legacy_client_id", firstName, middleName, lastName,
             "gender", "ssn", "date_of_birth", 7L, 8L, new HashSet<>(), new HashSet<>());
     String countyCode = "countyCode";
     Short stateCode = new Short("0");
@@ -247,6 +249,8 @@ public class ReporterTest {
         reporter.getZipcode());
     assertEquals("Expected firstName field to have been initialized with value", firstName,
         reporter.getFirstName());
+    assertEquals("Expected middleName field to have been initialized with value", middleName,
+        reporter.getMiddleInitialName());
     assertEquals("Expected last name field to have been initialized with value", lastName,
         reporter.getLastName());
     assertEquals("Expected countyCode field to have been initialized with value", countyCode,
@@ -273,9 +277,10 @@ public class ReporterTest {
     String referralId = "referralId";
     boolean isMandatedReporter = true;
     String firstName = "firstName";
+    String middleName = "middleName";
     String lastName = "lastName";
     Participant participant =
-        new Participant(5L, "legacy_source_table", "legacy_client_id", firstName, lastName,
+        new Participant(5L, "legacy_source_table", "legacy_client_id", firstName, middleName, lastName,
             "gender", "ssn", "date_of_birth", 7L, 8L, new HashSet<>(), new HashSet<>());
     String countyCode = "countyCode";
     Short stateCode = new Short("0");
@@ -303,8 +308,6 @@ public class ReporterTest {
         new Integer("0"), reporter.getMessagePhoneExtensionNumber());
     assertEquals("Expected messagePhoneNumber field to have been initialized with value",
         new BigDecimal(0), reporter.getMessagePhoneNumber());
-    assertEquals("Expected middleInitialName field to have been initialized with value", "",
-        reporter.getMiddleInitialName());
     assertEquals("Expected namePrefixDescription field to have been initialized with value", "",
         reporter.getNamePrefixDescription());
     assertEquals("Expected primaryPhoneNumber field to have been initialized with value",
@@ -327,7 +330,7 @@ public class ReporterTest {
         new gov.ca.cwds.rest.api.domain.Address("legacy_source_table", "legacy_id", streetAddress,
             "city", "state", 12345, "type");
     Participant participant =
-        new Participant(5L, "legacy_source_table", "legacy_client_id", "firstName", "lastName",
+        new Participant(5L, "legacy_source_table", "legacy_client_id", "firstName", "middleName", "lastName",
             "gender", "ssn", "date_of_birth", 7L, 8L, new HashSet<>(), new HashSet<>());
 
     Reporter reporter =
@@ -345,7 +348,7 @@ public class ReporterTest {
         new gov.ca.cwds.rest.api.domain.Address("legacy_source_table", "legacy_id", streetAddress,
             "city", "state", 12345, "type");
     Participant participant =
-        new Participant(5L, "legacy_source_table", "legacy_client_id", "firstName", "lastName",
+        new Participant(5L, "legacy_source_table", "legacy_client_id", "firstName", "middleName", "lastName",
             "gender", "ssn", "date_of_birth", 7L, 8L, new HashSet<>(), new HashSet<>());
 
     Reporter reporter =
@@ -363,7 +366,7 @@ public class ReporterTest {
         new gov.ca.cwds.rest.api.domain.Address("legacy_source_table", "legacy_id", streetAddress,
             "city", "state", 12345, "type");
     Participant participant =
-        new Participant(5L, "legacy_source_table", "legacy_client_id", "firstName", "lastName",
+        new Participant(5L, "legacy_source_table", "legacy_client_id", "firstName", "middleName", "lastName",
             "gender", "ssn", "date_of_birth", 7L, 8L, new HashSet<>(), new HashSet<>());
 
     Reporter reporter =
@@ -382,7 +385,7 @@ public class ReporterTest {
         new gov.ca.cwds.rest.api.domain.Address("legacy_source_table", "legacy_id", streetAddress,
             "city", "state", 12345, "type");
     Participant participant =
-        new Participant(5L, "legacy_source_table", "legacy_client_id", "firstName", "lastName",
+        new Participant(5L, "legacy_source_table", "legacy_client_id", "firstName", "middleName", "lastName",
             "gender", "ssn", "date_of_birth", 7L, 8L, new HashSet<>(), new HashSet<>());
 
     Reporter reporter =
@@ -1414,23 +1417,9 @@ public class ReporterTest {
     Response response =
         resources.client().target(ROOT_RESOURCE).request().accept(MediaType.APPLICATION_JSON)
             .post(Entity.entity(toCreate, MediaType.APPLICATION_JSON));
-    assertThat(response.getStatus(), is(equalTo(422)));
+    assertThat(response.getStatus(), is(equalTo(204)));
     assertThat(response.readEntity(String.class).indexOf("middleInitialName may not be null"),
-        is(greaterThanOrEqualTo(0)));
-  }
-
-  @Test
-  public void failsWhenMiddleInitialNameNull() throws Exception {
-    Reporter toCreate =
-        MAPPER.readValue(
-            fixture("fixtures/domain/legacy/Reporter/invalid/middleInitialNameNull.json"),
-            Reporter.class);
-    Response response =
-        resources.client().target(ROOT_RESOURCE).request().accept(MediaType.APPLICATION_JSON)
-            .post(Entity.entity(toCreate, MediaType.APPLICATION_JSON));
-    assertThat(response.getStatus(), is(equalTo(422)));
-    assertThat(response.readEntity(String.class).indexOf("middleInitialName may not be null"),
-        is(greaterThanOrEqualTo(0)));
+        is(greaterThanOrEqualTo(NOT_FOUND)));
   }
 
   @Test
