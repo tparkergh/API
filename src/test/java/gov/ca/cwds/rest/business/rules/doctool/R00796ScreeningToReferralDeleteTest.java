@@ -76,8 +76,6 @@ public class R00796ScreeningToReferralDeleteTest {
   private StaffPersonIdRetriever staffPersonIdRetriever;
   private DrmsDocumentService drmsDocumentService;
 
-  private gov.ca.cwds.data.persistence.cms.Referral referral;
-
   @SuppressWarnings("javadoc")
   @Rule
   public ExpectedException thrown = ExpectedException.none();
@@ -169,6 +167,9 @@ public class R00796ScreeningToReferralDeleteTest {
     screeningToReferralService.delete("string");
   }
 
+  /**
+   * @throws Exception on general error
+   */
   @Test
   public void deleteThrowsAssertionError() throws Exception {
     thrown.expect(AssertionError.class);
