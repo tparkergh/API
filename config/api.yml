@@ -13,6 +13,8 @@ swagger:
   logo: images/CWDS-API-Logo-Horizontal.png
   loginUrl: ${LOGIN_URL:-http://localhost:8090/authn/login}
   showSwagger: ${SHOW_SWAGGER:-false}
+  jsonUrl: ${SWAGGER_JSON_URL:-http://localhost:8080/swagger.json}
+
 nsDataSourceFactory:
   driverClass: org.postgresql.Driver
   user: ${DB_NS_USER}
