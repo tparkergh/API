@@ -125,15 +125,15 @@ public class Client extends ReportingDomain implements Request, Response {
       example = "first name")
   private String commonFirstName;
 
-  @NotBlank
-  @Size(min = 1, max = 25)
-  @ApiModelProperty(required = true, readOnly = false, value = "", example = "last name")
-  private String commonLastName;
-
   @NotNull
   @Size(max = 20)
   @ApiModelProperty(required = false, readOnly = false, value = "", example = "middle name")
   private String commonMiddleName;
+
+  @NotBlank
+  @Size(min = 1, max = 25)
+  @ApiModelProperty(required = true, readOnly = false, value = "", example = "last name")
+  private String commonLastName;
 
   @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = DATE_FORMAT)
   @JsonProperty(value = "confidentialityActionDate")
@@ -712,16 +712,22 @@ public class Client extends ReportingDomain implements Request, Response {
   }
 
 
+  /**
+   * @param participant - participant
+   * @param dateStarted - dateStarted
+   * @param genderCode - genderCode
+   * @return the client
+   */
   public static Client createWithDefaults(Participant participant, String dateStarted,
       String genderCode) {
     return new Client("", false, DEFAULT_ADOPTION_STATUS_CODE, "", "", DEFAULT_CODE,
         participant.getDateOfBirth(), "", DEFAULT_CODE, false, DEFAULT_CHILD_CLIENT_INDICATOR, "",
-        "", participant.getFirstName(), participant.getMiddleName(), participant.getLastName(), "", false, dateStarted,
-        false, "", false, "", false, "", "", "", DEFAULT_CODE, "", DEFAULT_ESTIMATED_DOB_CODE,
-        DEFAULT_UNABLE_TO_DETAIN_CODE, "", genderCode, "", "", DEFAULT_HISPANIC_ORIGIN_CODE,
-        DEFAULT_CODE, DEFAULT_CODE, DEFAULT_INCAPCITATED_PARENT_CODE, false, false,
-        DEFAULT_LITERATE_CODE, false, DEFAULT_CODE, DEFAULT_MILITARY_STATUS_CODE, "", "",
-        DEFAULT_NAME_TYPE, false, false, "", false, DEFAULT_CODE, DEFAULT_CODE, DEFAULT_CODE,
+        "", participant.getFirstName(), participant.getMiddleName(), participant.getLastName(), "",
+        false, dateStarted, false, "", false, "", false, "", "", "", DEFAULT_CODE, "",
+        DEFAULT_ESTIMATED_DOB_CODE, DEFAULT_UNABLE_TO_DETAIN_CODE, "", genderCode, "", "",
+        DEFAULT_HISPANIC_ORIGIN_CODE, DEFAULT_CODE, DEFAULT_CODE, DEFAULT_INCAPCITATED_PARENT_CODE,
+        false, false, DEFAULT_LITERATE_CODE, false, DEFAULT_CODE, DEFAULT_MILITARY_STATUS_CODE, "",
+        "", DEFAULT_NAME_TYPE, false, false, "", false, DEFAULT_CODE, DEFAULT_CODE, DEFAULT_CODE,
         DEFAULT_SECONDARY_LANGUAGE_TYPE, false, DEFAULT_SENSITIVITY_INDICATOR,
         DEFAULT_SOC158_PLACEMENT_CODE, false, DEFAULT_SOCIAL_SECURITY_NUM_CHANGE_CODE,
         participant.getSsn(), "", false, false, DEFAULT_UNEMPLOYED_PARENT_CODE, false, null);
