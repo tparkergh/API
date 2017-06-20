@@ -108,7 +108,7 @@ public class CmsReferralService implements CrudsService {
               incomingClient.getBirthplaceVerifiedIndicator(),
               incomingClient.getChildClientIndicatorVar(), incomingClient.getClientIndexNumber(),
               incomingClient.getCommentDescription(), incomingClient.getCommonFirstName(),
-              incomingClient.getCommonLastName(), incomingClient.getCommonMiddleName(),
+              incomingClient.getCommonMiddleName(), incomingClient.getCommonLastName(),
               incomingClient.getConfidentialityActionDate(),
               incomingClient.getConfidentialityInEffectIndicator(),
               incomingClient.getCreationDate(), incomingClient.getCurrCaChildrenServIndicator(),
