@@ -1,0 +1,15 @@
+{
+"countySpecificCode" : "20",
+"endDate" : "",
+"endTime" : "",
+"establishedForCode": "R",
+"establishedForId": "1234567ABC",
+"fkCaseLoad" : "OkAImUW0Wz",
+"fkOutOfStateContactParty" : "",
+"responsibilityDescription" : "Assignment Description text",
+"secondaryAssignmentRoleType" : 0,
+"startDate" : 1483228800000,
+"startTime" :  82019000,
+"typeOfAssignmentCode" : "P",
+"weightingNumber" : "1.23"
+}
