@@ -44,7 +44,7 @@ import gov.ca.cwds.data.persistence.PersistentObject;
 public class SubstituteCareProvider extends BaseSubstituteCareProvider {
 
   /**
-   * 
+   * Default serialization.
    */
   private static final long serialVersionUID = 1L;
 

@@ -150,7 +150,6 @@ test {
 task integrationTest(type: Test, dependsOn: testClasses) {
     include '**/*IT*'
     exclude '**/*Test*'
-    //exclude '**/*'
 }
 
 run {
