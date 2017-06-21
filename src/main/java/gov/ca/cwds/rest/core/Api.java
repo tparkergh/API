@@ -43,6 +43,11 @@ public interface Api {
   public static final String RESOURCE_ALLEGATION = "_allegations";
 
   /**
+   * A {@code String} constant representing {@value #RESOURCE_ASSIGNMENT} API..
+   */
+  public static final String RESOURCE_ASSIGNMENT = "_assignments";
+
+  /**
    * A {@code String} constant representing {@value #RESOURCE_CLIENT} API..
    */
   public static final String RESOURCE_CLIENT = "_clients";

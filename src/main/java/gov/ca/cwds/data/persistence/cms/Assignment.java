@@ -16,6 +16,7 @@ import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 
 import gov.ca.cwds.data.CmsSystemCodeDeserializer;
 import gov.ca.cwds.data.SystemCodeSerializer;
+import gov.ca.cwds.rest.api.domain.DomainChef;
 
 /**
  * {@link CmsPersistentObject} representing a StaffPerson.
@@ -212,6 +213,30 @@ public class Assignment extends CmsPersistentObject {
     this.weightingNumber = weightingNumber;
   }
 
+
+  /**
+   * @param id - Assignment Id
+   * @param pa - persisted Assignment object
+   * @param lastUpdateId - staff person id
+   */
+  public Assignment(String id, gov.ca.cwds.rest.api.domain.cms.Assignment pa, String lastUpdateId) {
+    super(lastUpdateId);
+    this.id = id;
+    this.countySpecificCode = pa.getCountySpecificCode();
+    this.endDate = DomainChef.uncookDateString(pa.getEndDate());
+    this.endTime = DomainChef.uncookTimeString(pa.getEndTime());
+    this.establishedForCode = pa.getEstablishedForCode();
+    this.establishedForId = pa.getEstablishedForId();
+    this.fkCaseLoad = pa.getCaseLoadId();
+    this.fkOutOfStateContactParty = pa.getOutOfStateContactId();
+    this.responsibilityDescription = pa.getResponsibilityDescription();
+    this.secondaryAssignmentRoleType = pa.getSecondaryAssignmentRoleType();
+    this.startDate = DomainChef.uncookDateString(pa.getStartDate());
+    this.startTime = DomainChef.uncookTimeString(pa.getStartTime());
+    this.typeOfAssignmentCode = pa.getTypeOfAssignmentCode();
+    this.weightingNumber = pa.getWeightingNumber();
+
+  }
 
   @Override
   public final int hashCode() {
