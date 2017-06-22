@@ -1,5 +1,10 @@
 package gov.ca.cwds.data.cms;
 
+import static org.hamcrest.Matchers.equalTo;
+import static org.hamcrest.Matchers.is;
+import static org.hamcrest.Matchers.nullValue;
+import static org.junit.Assert.assertThat;
+
 import org.hamcrest.junit.ExpectedException;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -8,9 +13,13 @@ import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
+import org.junit.Ignore;
 import org.junit.Rule;
+import org.junit.Test;
 
 import gov.ca.cwds.data.junit.template.DaoTestTemplate;
+import gov.ca.cwds.data.persistence.cms.Assignment;
+import gov.ca.cwds.rest.api.domain.DomainChef;
 
 public class AssignmentDaoIT implements DaoTestTemplate {
 
@@ -74,34 +83,37 @@ public class AssignmentDaoIT implements DaoTestTemplate {
     session.getTransaction().rollback();
   }
 
-  // @Override
-  // @Test
-  // public void testFind() throws Exception {
-  // Assignment found = assignmentDao.find(id);
-  // assertThat(found.getId(), is(equalTo(id)));
-  // }
+  @Override
+  @Test
+  @Ignore
+  public void testFind() throws Exception {
+    Assignment found = assignmentDao.find(id);
+    assertThat(found.getId(), is(equalTo(id)));
+  }
 
-  // @Override
-  // @Test
-  // public void testFindEntityNotFoundException() throws Exception {
-  // Assignment found = assignmentDao.find("9999999ZZZ");
-  // assertThat(found, is(nullValue()));
-  // }
+  @Override
+  @Test
+  @Ignore
+  public void testFindEntityNotFoundException() throws Exception {
+    Assignment found = assignmentDao.find("9999999ZZZ");
+    assertThat(found, is(nullValue()));
+  }
 
-  // @Override
-  // @Test
-  // public void testCreate() throws Exception {
-  // gov.ca.cwds.rest.api.domain.cms.Assignment da = validAssignment();
-  //
-  // Assignment pa = new Assignment(countySpecificCode, DomainChef.uncookDateString(endDate),
-  // DomainChef.uncookTimeString(endTime), establishedForCode, establishedForId, caseLoadId,
-  // outOfStatePartyContactId, responsiblityDescription, secondaryAssignmentRoleType,
-  // DomainChef.uncookDateString(startDate), DomainChef.uncookTimeString(startTime),
-  // typeOfAssignmentCode, weightingNumber);
-  //
-  // Assignment create = assignmentDao.create(pa);
-  // assertThat(pa, is(create));
-  // }
+  @Override
+  @Test
+  @Ignore
+  public void testCreate() throws Exception {
+    gov.ca.cwds.rest.api.domain.cms.Assignment da = validAssignment();
+
+    Assignment pa = new Assignment(countySpecificCode, DomainChef.uncookDateString(endDate),
+        DomainChef.uncookTimeString(endTime), establishedForCode, establishedForId, caseLoadId,
+        outOfStatePartyContactId, responsiblityDescription, secondaryAssignmentRoleType,
+        DomainChef.uncookDateString(startDate), DomainChef.uncookTimeString(startTime),
+        typeOfAssignmentCode, weightingNumber);
+
+    Assignment create = assignmentDao.create(pa);
+    assertThat(pa, is(create));
+  }
 
   private gov.ca.cwds.rest.api.domain.cms.Assignment validAssignment() {
     gov.ca.cwds.rest.api.domain.cms.Assignment validAssignment =
