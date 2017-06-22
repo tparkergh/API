@@ -8,6 +8,7 @@ import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
+import java.math.BigDecimal;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 
@@ -66,7 +67,7 @@ public class AssignmentTest {
   private String startDate = "2017-06-20";
   private String startTime = "16:41:49";
   private String typeOfAssignmentCode = "P";
-  private String weightingNumber = "0";
+  private BigDecimal weightingNumber = new BigDecimal("0.0");
   private String staffId = "0X5";
 
   private Assignment validAssignment = validAssignment();

@@ -5,6 +5,8 @@ import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.nullValue;
 import static org.junit.Assert.assertThat;
 
+import java.math.BigDecimal;
+
 import org.hamcrest.junit.ExpectedException;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -39,7 +41,7 @@ public class AssignmentDaoIT implements DaoTestTemplate {
   private String startDate = "2017-06-20";
   private String startTime = "16:41:49";
   private String typeOfAssignmentCode = "P";
-  private String weightingNumber = "0";
+  private BigDecimal weightingNumber = new BigDecimal("0.0");
   private String staffId = "0X5";
 
   /**

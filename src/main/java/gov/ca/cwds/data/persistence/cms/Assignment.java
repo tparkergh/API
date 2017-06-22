@@ -1,6 +1,7 @@
 package gov.ca.cwds.data.persistence.cms;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.util.Date;
 
 import javax.persistence.Column;
@@ -75,9 +76,9 @@ public class Assignment extends CmsPersistentObject {
   @Column(name = "ASGNMNT_CD")
   private String typeOfAssignmentCode;
 
-  @Type(type = "decimal")
+  // @Type(type = "decimal")
   @Column(name = "WGHTNG_NO", length = 5)
-  private String weightingNumber;
+  private BigDecimal weightingNumber;
 
 
   @SuppressWarnings("javadoc")
@@ -90,78 +91,65 @@ public class Assignment extends CmsPersistentObject {
     return endDate;
   }
 
-
   @SuppressWarnings("javadoc")
   public Date getEndTime() {
     return endTime;
   }
-
 
   @SuppressWarnings("javadoc")
   public String getEstablishedForCode() {
     return establishedForCode;
   }
 
-
   @SuppressWarnings("javadoc")
   public String getEstablishedForId() {
     return establishedForId;
   }
-
 
   @SuppressWarnings("javadoc")
   public String getFkCaseLoad() {
     return fkCaseLoad;
   }
 
-
   @SuppressWarnings("javadoc")
   public String getFkOutOfStateContactParty() {
     return fkOutOfStateContactParty;
   }
-
 
   @SuppressWarnings("javadoc")
   public String getId() {
     return id;
   }
 
-
   @SuppressWarnings("javadoc")
   public String getResponsibilityDescription() {
     return responsibilityDescription;
   }
-
 
   @SuppressWarnings("javadoc")
   public Short getSecondaryAssignmentRoleType() {
     return secondaryAssignmentRoleType;
   }
 
-
   @SuppressWarnings("javadoc")
   public Date getStartDate() {
     return startDate;
   }
-
 
   @SuppressWarnings("javadoc")
   public Date getStartTime() {
     return startTime;
   }
 
-
   @SuppressWarnings("javadoc")
   public String getTypeOfAssignmentCode() {
     return typeOfAssignmentCode;
   }
 
-
   @SuppressWarnings("javadoc")
-  public String getWeightingNumber() {
+  public BigDecimal getWeightingNumber() {
     return weightingNumber;
   }
-
 
   @Override
   public Serializable getPrimaryKey() {
@@ -196,7 +184,7 @@ public class Assignment extends CmsPersistentObject {
       String establishedForCode, String establishedForId, String fkCaseLoad,
       String fkOutOfStateContactParty, String responsibilityDescription,
       Short secondaryAssignmentRoleType, Date startDate, Date startTime,
-      String typeOfAssignmentCode, String weightingNumber) {
+      String typeOfAssignmentCode, BigDecimal weightingNumber) {
     super();
     this.countySpecificCode = countySpecificCode;
     this.endDate = endDate;
@@ -235,7 +223,6 @@ public class Assignment extends CmsPersistentObject {
     this.startTime = DomainChef.uncookTimeString(pa.getStartTime());
     this.typeOfAssignmentCode = pa.getTypeOfAssignmentCode();
     this.weightingNumber = pa.getWeightingNumber();
-
   }
 
   @Override
