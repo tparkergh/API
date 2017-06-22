@@ -11,6 +11,7 @@ import org.hibernate.SessionFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.google.common.collect.ImmutableList;
 import com.google.inject.AbstractModule;
 import com.google.inject.Provides;
 
@@ -121,17 +122,19 @@ public class DataAccessModule extends AbstractModule {
   private Client client;
 
   private final HibernateBundle<ApiConfiguration> cmsHibernateBundle =
-      new HibernateBundle<ApiConfiguration>(gov.ca.cwds.data.persistence.cms.Address.class,
-          Allegation.class, ClientAddress.class, ClientCollateral.class,
-          gov.ca.cwds.data.persistence.cms.Client.class, CmsDocReferralClient.class,
-          CmsDocument.class, CmsDocumentBlobSegment.class, CollateralIndividual.class,
-          CrossReport.class, EducationProviderContact.class, OtherAdultInPlacemtHome.class,
-          OtherChildInPlacemtHome.class, OtherClientName.class, Referral.class,
-          ReferralClient.class, Reporter.class, ServiceProvider.class, StaffPerson.class,
-          SubstituteCareProvider.class, LongText.class, AllegationPerpetratorHistory.class,
-          ClientUc.class, ChildClient.class, gov.ca.cwds.data.persistence.cms.Address.class,
-          ClientAddress.class, CountyOwnership.class, CountyTrigger.class,
-          CountyTriggerEmbeddable.class, SystemCode.class, SystemMeta.class, DrmsDocument.class) {
+      new HibernateBundle<ApiConfiguration>(ImmutableList.<Class<?>>of(
+          gov.ca.cwds.data.persistence.cms.Address.class, Allegation.class, ClientAddress.class,
+          ClientCollateral.class, gov.ca.cwds.data.persistence.cms.Client.class,
+          CmsDocReferralClient.class, CmsDocument.class, CmsDocumentBlobSegment.class,
+          CollateralIndividual.class, CrossReport.class, EducationProviderContact.class,
+          OtherAdultInPlacemtHome.class, OtherChildInPlacemtHome.class, OtherClientName.class,
+          Referral.class, ReferralClient.class, Reporter.class, ServiceProvider.class,
+          StaffPerson.class, SubstituteCareProvider.class, LongText.class,
+          AllegationPerpetratorHistory.class, ClientUc.class, ChildClient.class,
+          gov.ca.cwds.data.persistence.cms.Address.class, ClientAddress.class,
+          CountyOwnership.class, CountyTrigger.class, CountyTriggerEmbeddable.class,
+          SystemCode.class, SystemMeta.class, DrmsDocument.class), new ApiSessionFactoryFactory()) {
+
         @Override
         public DataSourceFactory getDataSourceFactory(ApiConfiguration configuration) {
           return configuration.getCmsDataSourceFactory();
