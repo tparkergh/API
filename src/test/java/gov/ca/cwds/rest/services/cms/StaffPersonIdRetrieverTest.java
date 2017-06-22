@@ -1,25 +1,77 @@
 package gov.ca.cwds.rest.services.cms;
 
 import static org.junit.Assert.assertEquals;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
+import gov.ca.cwds.auth.realms.PerryUserIdentity;
+import io.dropwizard.jackson.Jackson;
 
-import org.junit.Rule;
+import java.util.ArrayList;
+import java.util.List;
+
+import org.apache.shiro.subject.PrincipalCollection;
+import org.apache.shiro.subject.Subject;
+import org.junit.After;
 import org.junit.Test;
-import org.junit.rules.ExpectedException;
+
+import com.fasterxml.jackson.databind.ObjectMapper;
+
 
 /**
  * @author CWDS API Team
  *
  */
-public class StaffPersonIdRetrieverTest {
+public class StaffPersonIdRetrieverTest extends AbstractShiroTest {
 
-  @Rule
-  public ExpectedException thrown = ExpectedException.none();
+  private static final ObjectMapper MAPPER = Jackson.newObjectMapper();
 
-  @SuppressWarnings("javadoc")
+  @After
+  public void tearDownSubject() {
+    clearSubject();
+  }
+
+  @SuppressWarnings({"javadoc", "unchecked", "rawtypes"})
   @Test
-  public void getStaffPersonIdReturnsHardCodedValue() {
+  public void getStaffPersonIdReturnsHardCodedValueWhenUserInfoIsNotPassedIn() {
+    Subject mockSubject = mock(Subject.class);
+    PrincipalCollection principalCollection = mock(PrincipalCollection.class);
+
+    List list = new ArrayList();
+    list.add("mg");
+    when(principalCollection.asList()).thenReturn(list);
+    when(mockSubject.getPrincipals()).thenReturn(principalCollection);
+    setSubject(mockSubject);
     String actual = new StaffPersonIdRetriever().getStaffPersonId();
     String expected = "0X5";
     assertEquals(actual, expected);
   }
+
+  @SuppressWarnings("javadoc")
+  @Test
+  public void getStaffPersonIdReturnsHardCodedValueWhenPerryIsNotEnabled() {
+    Subject mockSubject = mock(Subject.class);
+    setSubject(mockSubject);
+    String actual = new StaffPersonIdRetriever().getStaffPersonId();
+    String expected = "0X5";
+    assertEquals(actual, expected);
+  }
+
+  @SuppressWarnings({"javadoc", "rawtypes", "unchecked"})
+  @Test
+  public void getStaffPersonIdReturnsStaffIdValue() throws Exception {
+    Subject mockSubject = mock(Subject.class);
+    PrincipalCollection pc = mock(PrincipalCollection.class);
+    List list = new ArrayList();
+    list.add("mg");
+    list.add(MAPPER.readValue(
+        "{ \"user\" : \"mg\", \"roles\": [\"role1\", \"role2\"], \"staffId\": \"q1p\"}",
+        PerryUserIdentity.class));
+    when(pc.asList()).thenReturn(list);
+    when(mockSubject.getPrincipals()).thenReturn(pc);
+    setSubject(mockSubject);
+    String actual = new StaffPersonIdRetriever().getStaffPersonId();
+    String expected = "q1p";
+    assertEquals(actual, expected);
+  }
+
 }
