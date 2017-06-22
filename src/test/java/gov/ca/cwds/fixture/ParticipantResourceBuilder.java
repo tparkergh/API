@@ -18,7 +18,7 @@ public class ParticipantResourceBuilder {
   long personId = 12345;
   long screeningId = 12345;
   String firstName = "John";
-  String middleName = "S.";
+  String middleName = "S";
   String lastName = "Smith";
   String gender = "male";
   String dateOfBirth = "2001-03-15";

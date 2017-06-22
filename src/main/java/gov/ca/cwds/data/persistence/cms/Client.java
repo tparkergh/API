@@ -381,4 +381,7 @@ public final class Client extends BaseClient
         + zippyCreatedIndicator + "]";
   }
 
+  public void setClientAddress(Set<ClientAddress> clientAddress){
+    this.clientAddress = clientAddress;
+  }
 }

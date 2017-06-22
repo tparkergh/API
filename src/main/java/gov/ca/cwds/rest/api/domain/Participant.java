@@ -2,6 +2,7 @@ package gov.ca.cwds.rest.api.domain;
 
 import static gov.ca.cwds.data.persistence.cms.CmsPersistentObject.CMS_ID_LEN;
 
+import java.util.HashSet;
 import java.util.Set;
 
 import javax.validation.Valid;
@@ -319,6 +320,20 @@ public class Participant extends ReportingDomain implements Request, Response {
    */
   public void setAddresses(Set<Address> addresses) {
     this.addresses = addresses;
+  }
+
+  /**
+   * adds a set of addresses to current addresses.
+   * @param addresses - domain addresses
+   */
+  public void addAddresses(Set<Address> addresses) {
+    if (addresses == null){
+      return;
+    }
+    if (this.addresses == null){
+      this.addresses = new HashSet<Address>();
+    }
+    this.addresses.addAll(addresses);
   }
 
   /**

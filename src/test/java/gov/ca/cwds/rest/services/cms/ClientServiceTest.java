@@ -14,14 +14,22 @@ import static org.mockito.Mockito.when;
 import gov.ca.cwds.data.cms.ClientDao;
 import gov.ca.cwds.data.cms.StaffPersonDao;
 import gov.ca.cwds.data.rules.TriggerTablesDao;
+import gov.ca.cwds.fixture.AddressResourceBuilder;
+import gov.ca.cwds.fixture.ParticipantResourceBuilder;
 import gov.ca.cwds.rest.api.Response;
+import gov.ca.cwds.rest.api.domain.Address;
+import gov.ca.cwds.rest.api.domain.Participant;
 import gov.ca.cwds.rest.api.domain.cms.Client;
+import gov.ca.cwds.rest.api.domain.cms.ClientAddress;
 import gov.ca.cwds.rest.api.domain.cms.PostedClient;
 import gov.ca.cwds.rest.business.rules.NonLACountyTriggers;
 import gov.ca.cwds.rest.services.ServiceException;
 import gov.ca.cwds.rest.services.junit.template.ServiceTestTemplate;
 import io.dropwizard.jackson.Jackson;
 
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.Set;
 import javax.persistence.EntityNotFoundException;
 
 import org.junit.Assert;
@@ -171,6 +179,12 @@ public class ClientServiceTest implements ServiceTestTemplate {
           MAPPER.readValue(fixture("fixtures/domain/legacy/Client/valid/serviceValid.json"),
               Client.class);
 
+      Address address = new AddressResourceBuilder().createAddress();
+      Set addresses = new HashSet(Arrays.asList(address));
+      Participant participant = new ParticipantResourceBuilder().setAddresses(addresses).createParticipant();
+      Client domainClient = Client.createWithDefaults(participant, "", "m");
+      gov.ca.cwds.data.persistence.cms.Client savedClient = new gov.ca.cwds.data.persistence.cms.Client("123", domainClient, "OX5");
+      when(clientDao.find(any())).thenReturn(savedClient);
       when(clientDao.update(any())).thenThrow(EntityNotFoundException.class);
 
       clientService.update("ZZZZZZZZZZ", clientRequest);

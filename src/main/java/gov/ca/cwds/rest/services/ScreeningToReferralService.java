@@ -5,6 +5,7 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Locale;
 import java.util.Set;
 
@@ -844,25 +845,25 @@ public class ScreeningToReferralService implements CrudsService {
         continue;
       }
 
-      if (address.getLegacyId() == null || address.getLegacyId().isEmpty()) {
+      boolean createNewClientAddress = address.getLegacyId() == null || address.getLegacyId().isEmpty();
+      if (createNewClientAddress) {
+        if (!clientAddressExists(address, clientParticipant)) {
+          ClientAddress clientAddress = new ClientAddress(DEFAULT_ADDRESS_TYPE, "", "", "", addressId,
+              clientId, "", referralId);
 
-        ClientAddress clientAddress = new ClientAddress(DEFAULT_ADDRESS_TYPE, "", "", "", addressId,
-            clientId, "", referralId);
+          messageBuilder.addDomainValidationError(validator.validate(clientAddress));
+          this.clientAddressService.create(clientAddress);
 
-        messageBuilder.addDomainValidationError(validator.validate(clientAddress));
-        this.clientAddressService.create(clientAddress);
+          messageBuilder.addDomainValidationError(validator.validate(clientAddress));
 
-        messageBuilder.addDomainValidationError(validator.validate(clientAddress));
-
-        // update the addresses of the participant
-        address.setLegacySourceTable(CLIENT_ADDRESS_TABLE_NAME);
-        address.setLegacyId(addressId);
-        newAddresses.add(address);
+          // update the addresses of the participant
+          address.setLegacySourceTable(CLIENT_ADDRESS_TABLE_NAME);
+          address.setLegacyId(addressId);
+          newAddresses.add(address);
+        }
       } else {
         // verify that ClientAddress exists - no update for now
-        ClientAddress foundClientAddress =
-            (ClientAddress) this.clientAddressService.find(address.getLegacyId());
-        if (foundClientAddress == null) {
+        if (!clientAddressExists(address, clientParticipant)) {
           String message =
               " Legacy Id on Address does not correspond to an existing CMS/CWS Client Address ";
           ServiceException se = new ServiceException(message);
@@ -873,9 +874,14 @@ public class ScreeningToReferralService implements CrudsService {
       }
     }
 
-    clientParticipant.setAddresses(newAddresses);
+    clientParticipant.addAddresses(newAddresses);
 
     return clientParticipant;
+  }
+
+  private boolean clientAddressExists(gov.ca.cwds.rest.api.domain.Address address, Participant client){
+    List foundClientAddress = this.clientAddressService.findByAddressAndClient(address, client);
+    return foundClientAddress != null && !foundClientAddress.isEmpty();
   }
 
   private gov.ca.cwds.rest.api.domain.Address processReferralAddress(ScreeningToReferral scr)

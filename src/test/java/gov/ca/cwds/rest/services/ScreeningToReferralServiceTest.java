@@ -16,6 +16,7 @@ import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.LinkedHashSet;
@@ -3416,6 +3417,7 @@ public class ScreeningToReferralServiceTest {
 
     clientAddressService = mock(ClientAddressService.class);
     when(clientAddressService.find(any())).thenReturn(mock(ClientAddress.class));
+    when(clientAddressService.findByAddressAndClient(any(), any())).thenReturn(mock(List.class));
 
     gov.ca.cwds.rest.api.domain.cms.Address existingAddress =
         mock(gov.ca.cwds.rest.api.domain.cms.Address.class);
@@ -3978,7 +3980,7 @@ public class ScreeningToReferralServiceTest {
 
   @SuppressWarnings("javadoc")
   @Test
-  public void testAddressExsitSuccess() throws Exception {
+  public void testAddressExistSuccess() throws Exception {
     // Referral referralDom
 
     gov.ca.cwds.rest.api.domain.Address address =
@@ -4000,6 +4002,9 @@ public class ScreeningToReferralServiceTest {
     when(victimFoundAddress.getExistingAddressId()).thenReturn("ADDRESS_ID");
     PostedAddress perpCreatedAddress = mock(PostedAddress.class);
     when(perpCreatedAddress.getExistingAddressId()).thenReturn("PERPADDRID");
+    ClientAddress clientAddress = new ClientAddress();
+    List clientAddresses = new ArrayList();
+    clientAddresses.add(clientAddress);
     addressService = mock(AddressService.class);
     when(addressService.find(address.getLegacyId())).thenReturn(victimFoundAddress);
     when(addressService.create(any())).thenReturn(perpCreatedAddress);
@@ -4007,6 +4012,7 @@ public class ScreeningToReferralServiceTest {
 
     clientAddressService = mock(ClientAddressService.class);
     when(clientAddressService.find(address.getLegacyId())).thenReturn(mock(ClientAddress.class));
+    when(clientAddressService.findByAddressAndClient(any(), any())).thenReturn(clientAddresses);
     MessageBuilder messageBuilder = new MessageBuilder();
     screeningToReferralService =
         new MockedScreeningToReferralServiceBuilder().addMessageBuilder(messageBuilder)
@@ -4128,7 +4134,7 @@ public class ScreeningToReferralServiceTest {
 
   @SuppressWarnings("javadoc")
   @Test
-  public void testClientAddressExsitSuccess() throws Exception {
+  public void testClientAddressExistSuccess() throws Exception {
     String addressId1 = "1111111111";
     gov.ca.cwds.rest.api.domain.Address address1 =
         new AddressResourceBuilder().setLegacyId("1111111111").setLegacySourceTable("ADDRS_T")
@@ -4141,6 +4147,7 @@ public class ScreeningToReferralServiceTest {
     Participant selfReportingVictim = new ParticipantResourceBuilder()
         .setRoles(new HashSet(Arrays.asList("Non-mandated Reporter", "Victim")))
         .setAddresses(new HashSet<>(Arrays.asList(address1))).createParticipant();
+    int numberOfReportingVictimsRoles = selfReportingVictim.getRoles().size();
     Participant perp = new ParticipantResourceBuilder()
         .setAddresses(new HashSet<>(Arrays.asList(address2))).createPerpParticipant();
     Set participants = new HashSet(Arrays.asList(selfReportingVictim, perp));
@@ -4152,11 +4159,16 @@ public class ScreeningToReferralServiceTest {
         new gov.ca.cwds.data.persistence.cms.DrmsDocument("ABC1234560", null, null, null, null,
             null);
     ClientAddress clientAddress = mock(ClientAddress.class);
+    ClientAddress foundClientAddress = mock(ClientAddress.class);
+    List foundClientAddresses = new ArrayList<ClientAddress>();
+    foundClientAddresses.add(foundClientAddress);
     Client updatedClient = mock(Client.class);
     PostedClient savedClient = mock(PostedClient.class);
     when(savedClient.getId()).thenReturn("ASDFGHHYTR");
     clientAddressService = mock(ClientAddressService.class);
     when(clientAddressService.find(any())).thenReturn(clientAddress);
+
+    when(clientAddressService.findByAddressAndClient(any(), any())).thenReturn(foundClientAddresses);
     clientService = mock(ClientService.class);
     when(clientService.find(any())).thenReturn(savedClient);
     when(clientService.create(any())).thenReturn(savedClient);
@@ -4180,10 +4192,10 @@ public class ScreeningToReferralServiceTest {
     Response response = screeningToReferralService.create(referral);
 
     assertFalse(response.hasMessages());
-    verify(addressService).find(eq(addressId1));
+    verify(addressService, times(numberOfReportingVictimsRoles)).find(eq(addressId1));
     verify(addressService).find(eq(addressId2));
-    verify(clientAddressService).find(eq(addressId1));
-    verify(clientAddressService).find(eq(addressId2));
+    verify(clientAddressService, times(numberOfReportingVictimsRoles)).findByAddressAndClient(address1, selfReportingVictim);
+    verify(clientAddressService).findByAddressAndClient(address2, perp);
   }
 
   @SuppressWarnings("javadoc")
