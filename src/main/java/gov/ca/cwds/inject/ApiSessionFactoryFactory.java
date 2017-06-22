@@ -10,6 +10,7 @@ import io.dropwizard.hibernate.SessionFactoryFactory;
  * Configure Hibernate before completing construction of a session factory.
  * 
  * @author CWDS API Team
+ * @see ApiReferentialIntegrityInterceptor
  */
 public class ApiSessionFactoryFactory extends SessionFactoryFactory {
 
