@@ -11,8 +11,6 @@ import static org.mockito.Mockito.when;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 
-import javax.ws.rs.client.Entity;
-import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
 import org.junit.After;
@@ -92,22 +90,23 @@ public class AssignmentTest {
 
   @SuppressWarnings("javadoc")
   @Test
-  public void deserializesFromJson() throws Exception {
+  public void testdeserializesFromJson() throws Exception {
     assertThat(MAPPER.readValue(fixture("fixtures/domain/legacy/Assignment/valid/valid.json"),
         Assignment.class), is(equalTo(validAssignment())));
-
   }
 
-  @Test
-  public void testWithValidSuccess() throws Exception {
-    Assignment toCreate = MAPPER
-        .readValue(fixture("fixtures/domain/legacy/Assignment/valid/valid.json"), Assignment.class);
-    Response response =
-        resources.client().target(ROOT_RESOURCE).request().accept(MediaType.APPLICATION_JSON)
-            .post(Entity.entity(toCreate, MediaType.APPLICATION_JSON));
-    assertThat(response.getStatus(), is(equalTo(204)));
-  }
+  // @SuppressWarnings("javadoc")
+  // @Test
+  // public void testWithValidSuccess() throws Exception {
+  // Assignment toCreate = MAPPER
+  // .readValue(fixture("fixtures/domain/legacy/Assignment/valid/valid.json"), Assignment.class);
+  // Response response =
+  // resources.client().target(ROOT_RESOURCE).request().accept(MediaType.APPLICATION_JSON)
+  // .post(Entity.entity(toCreate, MediaType.APPLICATION_JSON));
+  // assertThat(response.getStatus(), is(equalTo(204)));
+  // }
 
+  @SuppressWarnings("javadoc")
   @Test
   public void testDomainConstructorSuccess() throws Exception {
 
@@ -129,6 +128,7 @@ public class AssignmentTest {
 
   }
 
+  @SuppressWarnings("javadoc")
   @Test
   public void testPersistentObjectConstructorSuccess() throws Exception {
 

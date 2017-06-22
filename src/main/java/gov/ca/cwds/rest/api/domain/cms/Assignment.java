@@ -2,6 +2,9 @@ package gov.ca.cwds.rest.api.domain.cms;
 
 import static gov.ca.cwds.data.persistence.cms.CmsPersistentObject.CMS_ID_LEN;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
@@ -30,6 +33,8 @@ public class Assignment extends ReportingDomain implements Request, Response {
    * Serialization version
    */
   private static final long serialVersionUID = 1L;
+  private final static DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
+  private final static DateFormat timeOnlyFormat = new SimpleDateFormat("HH:mm:ss");
 
   @NotEmpty
   @Size(min = 1, max = 2)
@@ -273,6 +278,33 @@ public class Assignment extends ReportingDomain implements Request, Response {
     this.typeOfAssignmentCode = pa.getTypeOfAssignmentCode();
     this.weightingNumber = pa.getWeightingNumber();
 
+  }
+
+  /**
+   * @param countyCode - county code for the assignment
+   * @param referralId - referral Id
+   * @param caseLoadId - CaseLoad Id
+   * @return Assignment
+   */
+  public static Assignment createDefaultReferralAssignment(String countyCode, String referralId,
+      String caseLoadId) {
+
+    final String endDate = "";
+    final String endTime = "";
+    final String establishedForCode = "R";
+    final String outOfStateContactId = null;
+    final String responsibilityDescription = "";
+    final Short secondaryAssignmentRoleType = 0;
+    final String typeOfAssignmentCode = "P";
+    final String weightingNumber = "0";
+
+    final java.util.Date date = new java.util.Date();
+    final String startDate = df.format(date);
+    final String startTime = timeOnlyFormat.format(date);
+
+    return new Assignment(countyCode, endDate, endTime, establishedForCode, referralId, caseLoadId,
+        outOfStateContactId, responsibilityDescription, secondaryAssignmentRoleType, startDate,
+        startTime, typeOfAssignmentCode, weightingNumber);
   }
 
   @Override
