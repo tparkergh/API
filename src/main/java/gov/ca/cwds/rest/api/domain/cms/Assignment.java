@@ -277,7 +277,6 @@ public class Assignment extends ReportingDomain implements Request, Response {
     this.startTime = DomainChef.cookTime(pa.getStartTime());
     this.typeOfAssignmentCode = pa.getTypeOfAssignmentCode();
     this.weightingNumber = pa.getWeightingNumber();
-
   }
 
   /**

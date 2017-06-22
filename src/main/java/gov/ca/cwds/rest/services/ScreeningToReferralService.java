@@ -36,6 +36,7 @@ import gov.ca.cwds.rest.api.domain.cms.DrmsDocument;
 import gov.ca.cwds.rest.api.domain.cms.LongText;
 import gov.ca.cwds.rest.api.domain.cms.PostedAddress;
 import gov.ca.cwds.rest.api.domain.cms.PostedAllegation;
+import gov.ca.cwds.rest.api.domain.cms.PostedAssignment;
 import gov.ca.cwds.rest.api.domain.cms.PostedClient;
 import gov.ca.cwds.rest.api.domain.cms.PostedDrmsDocument;
 import gov.ca.cwds.rest.api.domain.cms.PostedLongText;
@@ -47,6 +48,7 @@ import gov.ca.cwds.rest.api.domain.error.ErrorMessage;
 import gov.ca.cwds.rest.messages.MessageBuilder;
 import gov.ca.cwds.rest.services.cms.AddressService;
 import gov.ca.cwds.rest.services.cms.AllegationService;
+import gov.ca.cwds.rest.services.cms.AssignmentService;
 import gov.ca.cwds.rest.services.cms.ChildClientService;
 import gov.ca.cwds.rest.services.cms.ClientAddressService;
 import gov.ca.cwds.rest.services.cms.ClientService;
@@ -97,6 +99,7 @@ public class ScreeningToReferralService implements CrudsService {
   private ChildClientService childClientService;
   private StaffPersonIdRetriever staffPersonIdRetriever;
   private DrmsDocumentService drmsDocumentService;
+  private AssignmentService assignmentService;
 
   private ReferralDao referralDao;
 
@@ -201,6 +204,7 @@ public class ScreeningToReferralService implements CrudsService {
 
     PostedScreeningToReferral pstr = PostedScreeningToReferral.createWithDefaults(referralId,
         screeningToReferral, resultParticipants, resultCrossReports, resultAllegations);
+
 
     StringBuilder errorMessage = new StringBuilder();
     if (!messageBuilder.getMessages().isEmpty()) {
@@ -412,6 +416,8 @@ public class ScreeningToReferralService implements CrudsService {
 
       PostedReferral postedReferral = this.referralService.create(referral);
       referralId = postedReferral.getId();
+      // createDefaultAssignmentForNewReferral(referralId);
+      // TODO: R - 01054 Prmary Assignment Adding
 
     } else {
       // Referral ID passed - validate that Referral exist in CWS/CMS - no update for now
@@ -845,11 +851,12 @@ public class ScreeningToReferralService implements CrudsService {
         continue;
       }
 
-      boolean createNewClientAddress = address.getLegacyId() == null || address.getLegacyId().isEmpty();
+      boolean createNewClientAddress =
+          address.getLegacyId() == null || address.getLegacyId().isEmpty();
       if (createNewClientAddress) {
         if (!clientAddressExists(address, clientParticipant)) {
-          ClientAddress clientAddress = new ClientAddress(DEFAULT_ADDRESS_TYPE, "", "", "", addressId,
-              clientId, "", referralId);
+          ClientAddress clientAddress = new ClientAddress(DEFAULT_ADDRESS_TYPE, "", "", "",
+              addressId, clientId, "", referralId);
 
           messageBuilder.addDomainValidationError(validator.validate(clientAddress));
           this.clientAddressService.create(clientAddress);
@@ -879,7 +886,8 @@ public class ScreeningToReferralService implements CrudsService {
     return clientParticipant;
   }
 
-  private boolean clientAddressExists(gov.ca.cwds.rest.api.domain.Address address, Participant client){
+  private boolean clientAddressExists(gov.ca.cwds.rest.api.domain.Address address,
+      Participant client) {
     List foundClientAddress = this.clientAddressService.findByAddressAndClient(address, client);
     return foundClientAddress != null && !foundClientAddress.isEmpty();
   }
@@ -971,20 +979,58 @@ public class ScreeningToReferralService implements CrudsService {
     return exsistingChild;
   }
 
+  // create a default assignment
+  // R - 02473 Default Referral Assignment
+  // R - 02160 Assignment - Caseload Access
+  private void createDefaultAssignmentForNewReferral(String referralId) {
+    // #146713651 - BARNEY: Referrals require a default assignment
+    // Default Assignment - referrals will be assigned to the '0X5' staff person ID.
+    //
+    // create an initial Assignment to the Staff Persons Case Load when the referral is created
+    //
+    // initialy use 0X5 staff person id to match the CWS/CMS CWDST user on the TESTDOM workstation
+    // eventually, the id of the staff person making the request will be used
+    String staffId = staffPersonIdRetriever.getStaffPersonId();
 
-  public Assignment createDefaultAssignmentForStaffPerson(String staffId, String countyCode,
-      String referralId) {
+    // To find the Case Load of a Staff Person (0X5):
+    // 1) find the STAFF_PERSON_CASE_LOAD row with FKSTFPERST = '0X5'
+    // 2) find the CASE_LOAD row with CASE_LOAD.CASE_LDT = STAFF_PERSON_CASE_LOAD/IDENTIFIER
+    //
+    // On TESTDOM (CWSNS1) workstation this will find the CASE_LOAD/IDENTIFIER of OkAImUW0Wz
+    //
+    final String caseLoadId = "OkAImUW0Wz";
+
+    // the county code of the CASE_LOAD row for the STAFF_PERSON_CASE_LOAD row with FKSTFPERST =
+    // '0X5' is "20"
+    final String countyCode = "20";
+
+    Assignment da = createDefaultAssignmentForCaseLoad(caseLoadId, countyCode, referralId);
+    messageBuilder.addDomainValidationError(validator.validate(da));
+
+    PostedAssignment pa;
+    try {
+      pa = this.assignmentService.create(da);
+    } catch (ServiceException e) {
+      String message = e.getMessage();
+      logError(message, e);
+    }
+  }
+
+  /**
+   * @param staffId - staff Id
+   * @param countyCode - county code
+   * @param referralId - referral Id
+   * @return - default Assignment
+   */
+  private Assignment createDefaultAssignmentForCaseLoad(String countyCode, String referralId,
+      String caseLoadId) {
     // #146713651 - BARNEY: Referrals require a default assignment
     // Default Assignment - referrals will be assigned to the '0X5' staff person ID.
     //
     // An assignment is the association between a Staff Person Case Load and the Referral
     //
-    // To find the Case Load of a Staff Person (0X5):
-    // 1) find the STAFF_PERSON_CASE_LOAD row with FKSTFPERST = '0X5'
-    // 2) find the CASE_LOAD row with CASE_LOAD.CASE_LDT = STAFF_PERSON_CASE_LOAD/IDENTIFIER
-    // On TESTDOM (CWSNS1) workstation this will find the CASE_LOAD/IDENTIFIER of OkAImUW0Wz
 
-    return null;
+    return Assignment.createDefaultReferralAssignment(countyCode, referralId, caseLoadId);
 
   }
 }
