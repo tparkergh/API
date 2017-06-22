@@ -514,7 +514,6 @@ public class ScreeningToReferralService implements CrudsService {
     try {
       String staffPersonId = staffPersonIdRetriever.getStaffPersonId();
       DrmsDocument drmsDocument = DrmsDocument.createDefaults(staffPersonId);
-      // drmsDocumentService.create(drmsDocument);
       postedDrmsDocument = drmsDocumentService.create(drmsDocument);
     } catch (ServiceException e) {
       String message = e.getMessage();
