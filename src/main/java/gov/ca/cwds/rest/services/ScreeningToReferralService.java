@@ -28,6 +28,7 @@ import gov.ca.cwds.rest.api.domain.PostedScreeningToReferral;
 import gov.ca.cwds.rest.api.domain.Screening;
 import gov.ca.cwds.rest.api.domain.ScreeningToReferral;
 import gov.ca.cwds.rest.api.domain.cms.Address;
+import gov.ca.cwds.rest.api.domain.cms.Assignment;
 import gov.ca.cwds.rest.api.domain.cms.ChildClient;
 import gov.ca.cwds.rest.api.domain.cms.Client;
 import gov.ca.cwds.rest.api.domain.cms.ClientAddress;
@@ -968,5 +969,22 @@ public class ScreeningToReferralService implements CrudsService {
       exsistingChild = this.childClientService.create(childClient);
     }
     return exsistingChild;
+  }
+
+
+  public Assignment createDefaultAssignmentForStaffPerson(String staffId, String countyCode,
+      String referralId) {
+    // #146713651 - BARNEY: Referrals require a default assignment
+    // Default Assignment - referrals will be assigned to the '0X5' staff person ID.
+    //
+    // An assignment is the association between a Staff Person Case Load and the Referral
+    //
+    // To find the Case Load of a Staff Person (0X5):
+    // 1) find the STAFF_PERSON_CASE_LOAD row with FKSTFPERST = '0X5'
+    // 2) find the CASE_LOAD row with CASE_LOAD.CASE_LDT = STAFF_PERSON_CASE_LOAD/IDENTIFIER
+    // On TESTDOM (CWSNS1) workstation this will find the CASE_LOAD/IDENTIFIER of OkAImUW0Wz
+
+    return null;
+
   }
 }
