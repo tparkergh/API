@@ -127,3 +127,5 @@ the following command:
     % docker build -t api .
 
 This results in a local docker image in a repository called api with the tag latest.
+
+Sample text for commit demo
