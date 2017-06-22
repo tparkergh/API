@@ -2,6 +2,7 @@ package gov.ca.cwds.rest.api.domain.cms;
 
 import static gov.ca.cwds.data.persistence.cms.CmsPersistentObject.CMS_ID_LEN;
 
+import java.math.BigDecimal;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 
@@ -113,11 +114,101 @@ public class Assignment extends ReportingDomain implements Request, Response {
 
   @Size(max = 5)
   @ApiModelProperty(required = true, readOnly = false)
-  private String weightingNumber;
+  private BigDecimal weightingNumber;
 
-  @SuppressWarnings("javadoc")
-  public static long getSerialversionuid() {
-    return serialVersionUID;
+  /**
+   * 
+   */
+  public Assignment() {
+    super();
+  }
+
+  /**
+   * @param countySpecificCode - code indicating the county with the primary assignment
+   * @param endDate - end date of assignment
+   * @param endTime - end time of assignment
+   * @param establishedForCode - R = referral, C = case
+   * @param establishedForId - Id of referral or case
+   * @param caseLoadId - is part of this case load
+   * @param outOfStateContactId - assigned to out of state contact id
+   * @param responsibilityDescription - description
+   * @param secondaryAssignmentRoleType - system code for secondary assignment description
+   * @param startDate - start date of assignment
+   * @param startTime - start time of assignment
+   * @param typeOfAssignmentCode - P = primary
+   * @param weightingNumber - weight within case load
+   */
+  public Assignment(String countySpecificCode,
+      @Date(format = "yyyy-MM-dd", required = false) String endDate,
+      @Date(format = "HH:mm:ss", required = true) String endTime,
+      @OneOf(value = {"R", "C"}, ignoreCase = true,
+          ignoreWhitespace = true) String establishedForCode,
+      String establishedForId, String caseLoadId, String outOfStateContactId,
+      String responsibilityDescription, Short secondaryAssignmentRoleType,
+      @Date(format = "yyyy-MM-dd", required = false) String startDate,
+      @Date(format = "HH:mm:ss", required = true) String startTime, @OneOf(value = {"P", "S", "R"},
+          ignoreCase = true, ignoreWhitespace = true) String typeOfAssignmentCode,
+      BigDecimal weightingNumber) {
+    super();
+    this.countySpecificCode = countySpecificCode;
+    this.endDate = endDate;
+    this.endTime = endTime;
+    this.establishedForCode = establishedForCode;
+    this.establishedForId = establishedForId;
+    this.caseLoadId = caseLoadId;
+    this.outOfStateContactId = outOfStateContactId;
+    this.responsibilityDescription = responsibilityDescription;
+    this.secondaryAssignmentRoleType = secondaryAssignmentRoleType;
+    this.startDate = startDate;
+    this.startTime = startTime;
+    this.typeOfAssignmentCode = typeOfAssignmentCode;
+    this.weightingNumber = weightingNumber;
+  }
+
+  /**
+   * @param pa - persistence cms Assignment
+   */
+  public Assignment(gov.ca.cwds.data.persistence.cms.Assignment pa) {
+    this.countySpecificCode = pa.getCountySpecificCode();
+    this.endDate = DomainChef.cookDate(pa.getEndDate());
+    this.endTime = DomainChef.cookTime(pa.getEndTime());
+    this.establishedForCode = pa.getEstablishedForCode();
+    this.establishedForId = pa.getEstablishedForId();
+    this.caseLoadId = pa.getFkCaseLoad();
+    this.outOfStateContactId = pa.getFkOutOfStateContactParty();
+    this.responsibilityDescription = pa.getResponsibilityDescription();
+    this.secondaryAssignmentRoleType = pa.getSecondaryAssignmentRoleType();
+    this.startDate = DomainChef.cookDate(pa.getStartDate());
+    this.startTime = DomainChef.cookTime(pa.getStartTime());
+    this.typeOfAssignmentCode = pa.getTypeOfAssignmentCode();
+    this.weightingNumber = pa.getWeightingNumber();
+  }
+
+  /**
+   * @param countyCode - county code for the assignment
+   * @param referralId - referral Id
+   * @param caseLoadId - CaseLoad Id
+   * @return Assignment
+   */
+  public static Assignment createDefaultReferralAssignment(String countyCode, String referralId,
+      String caseLoadId) {
+
+    final String endDate = "";
+    final String endTime = "";
+    final String establishedForCode = "R";
+    final String outOfStateContactId = null;
+    final String responsibilityDescription = "";
+    final Short secondaryAssignmentRoleType = 0;
+    final String typeOfAssignmentCode = "P";
+    final BigDecimal weightingNumber = new BigDecimal("0.0");
+
+    final java.util.Date date = new java.util.Date();
+    final String startDate = df.format(date);
+    final String startTime = timeOnlyFormat.format(date);
+
+    return new Assignment(countyCode, endDate, endTime, establishedForCode, referralId, caseLoadId,
+        outOfStateContactId, responsibilityDescription, secondaryAssignmentRoleType, startDate,
+        startTime, typeOfAssignmentCode, weightingNumber);
   }
 
   /**
@@ -207,103 +298,8 @@ public class Assignment extends ReportingDomain implements Request, Response {
   /**
    * @return - weight within case load
    */
-  public String getWeightingNumber() {
+  public BigDecimal getWeightingNumber() {
     return weightingNumber;
-  }
-
-  /**
-   * 
-   */
-  public Assignment() {
-    super();
-  }
-
-  /**
-   * @param countySpecificCode - code indicating the county with the primary assignment
-   * @param endDate - end date of assignment
-   * @param endTime - end time of assignment
-   * @param establishedForCode - R = referral, C = case
-   * @param establishedForId - Id of referral or case
-   * @param caseLoadId - is part of this case load
-   * @param outOfStateContactId - assigned to out of state contact id
-   * @param responsibilityDescription - description
-   * @param secondaryAssignmentRoleType - system code for secondary assignment description
-   * @param startDate - start date of assignment
-   * @param startTime - start time of assignment
-   * @param typeOfAssignmentCode - P = primary
-   * @param weightingNumber - weight within case load
-   */
-  public Assignment(String countySpecificCode,
-      @Date(format = "yyyy-MM-dd", required = false) String endDate,
-      @Date(format = "HH:mm:ss", required = true) String endTime,
-      @OneOf(value = {"R", "C"}, ignoreCase = true,
-          ignoreWhitespace = true) String establishedForCode,
-      String establishedForId, String caseLoadId, String outOfStateContactId,
-      String responsibilityDescription, Short secondaryAssignmentRoleType,
-      @Date(format = "yyyy-MM-dd", required = false) String startDate,
-      @Date(format = "HH:mm:ss", required = true) String startTime, @OneOf(value = {"P", "S", "R"},
-          ignoreCase = true, ignoreWhitespace = true) String typeOfAssignmentCode,
-      String weightingNumber) {
-    super();
-    this.countySpecificCode = countySpecificCode;
-    this.endDate = endDate;
-    this.endTime = endTime;
-    this.establishedForCode = establishedForCode;
-    this.establishedForId = establishedForId;
-    this.caseLoadId = caseLoadId;
-    this.outOfStateContactId = outOfStateContactId;
-    this.responsibilityDescription = responsibilityDescription;
-    this.secondaryAssignmentRoleType = secondaryAssignmentRoleType;
-    this.startDate = startDate;
-    this.startTime = startTime;
-    this.typeOfAssignmentCode = typeOfAssignmentCode;
-    this.weightingNumber = weightingNumber;
-  }
-
-  /**
-   * @param pa - persistence cms Assignment
-   */
-  public Assignment(gov.ca.cwds.data.persistence.cms.Assignment pa) {
-    this.countySpecificCode = pa.getCountySpecificCode();
-    this.endDate = DomainChef.cookDate(pa.getEndDate());
-    this.endTime = DomainChef.cookTime(pa.getEndTime());
-    this.establishedForCode = pa.getEstablishedForCode();
-    this.establishedForId = pa.getEstablishedForId();
-    this.caseLoadId = pa.getFkCaseLoad();
-    this.outOfStateContactId = pa.getFkOutOfStateContactParty();
-    this.responsibilityDescription = pa.getResponsibilityDescription();
-    this.secondaryAssignmentRoleType = pa.getSecondaryAssignmentRoleType();
-    this.startDate = DomainChef.cookDate(pa.getStartDate());
-    this.startTime = DomainChef.cookTime(pa.getStartTime());
-    this.typeOfAssignmentCode = pa.getTypeOfAssignmentCode();
-    this.weightingNumber = pa.getWeightingNumber();
-  }
-
-  /**
-   * @param countyCode - county code for the assignment
-   * @param referralId - referral Id
-   * @param caseLoadId - CaseLoad Id
-   * @return Assignment
-   */
-  public static Assignment createDefaultReferralAssignment(String countyCode, String referralId,
-      String caseLoadId) {
-
-    final String endDate = "";
-    final String endTime = "";
-    final String establishedForCode = "R";
-    final String outOfStateContactId = null;
-    final String responsibilityDescription = "";
-    final Short secondaryAssignmentRoleType = 0;
-    final String typeOfAssignmentCode = "P";
-    final String weightingNumber = "0";
-
-    final java.util.Date date = new java.util.Date();
-    final String startDate = df.format(date);
-    final String startTime = timeOnlyFormat.format(date);
-
-    return new Assignment(countyCode, endDate, endTime, establishedForCode, referralId, caseLoadId,
-        outOfStateContactId, responsibilityDescription, secondaryAssignmentRoleType, startDate,
-        startTime, typeOfAssignmentCode, weightingNumber);
   }
 
   @Override
