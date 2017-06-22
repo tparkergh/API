@@ -45,7 +45,7 @@ public class AssignmentDaoIT implements DaoTestTemplate {
   /**
    * id matches src/main/resources/db.cms/ci-seeds.sql
    */
-  private String id = "Aaeae9r0X5";
+  private String id = "SlCAr46088";
 
   /**
    * 

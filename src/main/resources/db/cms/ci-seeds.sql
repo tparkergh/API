@@ -141,3 +141,7 @@ VALUES ('62', 'Hzfdiu90X5', 'C ', '2017-05-23 19:53:50.597', 'REFR_CLT');
 truncate table cwsint.DRMSDOCT immediate;
 INSERT INTO CWSINT.DRMSDOCT(CREATN_TS, IDENTIFIER, DOCHNDL_NM, LST_UPD_ID, LST_UPD_TS, FKDOCTMPLT, FKSTFPERST, FKFPSTFPRT) 
 VALUES ('2002-10-25 11:22:01.0', 'Dv0v5KY0Dv', 'DUMMY                         ', '0Dv', '2002-10-25 11:21:02.000196', 'DUMMY     ', '0Dv', null);
+
+truncate table cwsint.ASGNM_T immediate;
+INSERT INTO CWSINT.ASGNM_T(IDENTIFIER, END_DT, END_TM, ESTBLSH_ID, ESTBLSH_CD, ASSG_RLC, START_DT, START_TM, ASGNMNT_CD, WGHTNG_NO, LST_UPD_ID, LST_UPD_TS, FKOST_PTYT, FKCASE_LDT, RESPL_DSC, CNTY_SPFCD) 
+VALUES ('SlCAr46088', '1998-09-10', '14:14:00', 'SvgDqxm0AJ', 'R', 0, '1998-09-04', '16:38:00', 'P', 0.000, '088', '1998-09-10 14:14:43.626004', null, 'Aci1N2I00E', '                                                                                                                                                                ', '99');
