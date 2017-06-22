@@ -4,7 +4,11 @@ import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.Date;
 
+import javax.persistence.DiscriminatorColumn;
+import javax.persistence.DiscriminatorType;
 import javax.persistence.Entity;
+import javax.persistence.Inheritance;
+import javax.persistence.InheritanceType;
 import javax.persistence.Table;
 
 import org.apache.commons.lang3.builder.EqualsBuilder;
@@ -50,12 +54,14 @@ import gov.ca.cwds.data.persistence.PersistentObject;
     resultClass = CollateralIndividual.class)})
 @Entity
 @Table(name = "COLTRL_T")
+@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
+@DiscriminatorColumn(name = "ESTBLSH_CD", discriminatorType = DiscriminatorType.STRING, length = 1)
 @JsonPropertyOrder(alphabetic = true)
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class CollateralIndividual extends BaseCollateralIndividual {
 
   /**
-   * 
+   * Default serialization.
    */
   private static final long serialVersionUID = 1L;
 

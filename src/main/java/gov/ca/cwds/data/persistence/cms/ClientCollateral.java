@@ -16,10 +16,9 @@ import gov.ca.cwds.data.SystemCodeSerializer;
 import gov.ca.cwds.data.persistence.PersistentObject;
 
 /**
- * {@link PersistentObject} representing a ClientCollateral
+ * {@link PersistentObject} representing a Client Collateral.
  * 
  * @author CWDS API Team
- * 
  */
 @Entity
 @Table(name = "CLN_COLT")
