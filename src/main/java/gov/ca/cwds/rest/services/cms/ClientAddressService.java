@@ -1,10 +1,14 @@
 package gov.ca.cwds.rest.services.cms;
 
+import gov.ca.cwds.rest.api.domain.Participant;
 import java.io.Serializable;
 
+import java.util.ArrayList;
+import java.util.List;
 import javax.persistence.EntityExistsException;
 import javax.persistence.EntityNotFoundException;
 
+import org.hibernate.query.Query;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -69,6 +73,20 @@ public class ClientAddressService implements CrudsService {
         clientAddressDao.find(primaryKey);
     if (persistedClientAddress != null) {
       return new gov.ca.cwds.rest.api.domain.cms.ClientAddress(persistedClientAddress, true);
+    }
+    return null;
+  }
+
+  public List<Response> findByAddressAndClient(gov.ca.cwds.rest.api.domain.Address address, Participant clientParticipant) {
+    List<gov.ca.cwds.data.persistence.cms.ClientAddress> persistedClientAddresses =
+        clientAddressDao.findByAddressAndClient(address.getLegacyId(), clientParticipant.getLegacyId());
+    if (persistedClientAddresses != null && ! persistedClientAddresses.isEmpty()) {
+      ArrayList<Response> foundClientAddresses = new ArrayList();
+      for (ClientAddress clientAddress : persistedClientAddresses){
+        foundClientAddresses.add(new gov.ca.cwds.rest.api.domain.cms.ClientAddress(clientAddress, true));
+
+      }
+      return foundClientAddresses;
     }
     return null;
   }

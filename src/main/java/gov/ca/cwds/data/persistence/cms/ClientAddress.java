@@ -30,7 +30,9 @@ import gov.ca.cwds.rest.api.domain.DomainChef;
     @NamedQuery(name = "gov.ca.cwds.data.persistence.cms.ClientAddress.findAll",
         query = "FROM ClientAddress"),
     @NamedQuery(name = "gov.ca.cwds.data.persistence.cms.ClientAddress.findAllUpdatedAfter",
-        query = "FROM ClientAddress WHERE lastUpdatedTime > :after")})
+        query = "FROM ClientAddress WHERE lastUpdatedTime > :after"),
+    @NamedQuery(name = "gov.ca.cwds.data.persistence.cms.ClientAddress.findByAddressAndClient",
+        query = "FROM ClientAddress WHERE fkAddress = :addressId and fkClient = :clientId")})
 @Entity
 @Table(name = "CL_ADDRT")
 @JsonPropertyOrder(alphabetic = true)
@@ -73,6 +75,36 @@ public class ClientAddress extends BaseClientAddress {
       Date effStartDt, String fkAddress, String fkClient, String homelessInd, String fkReferral,
       Address addresses) {
     super();
+    this.id = id;
+    this.addressType = addressType;
+    this.bkInmtId = bkInmtId;
+    this.effEndDt = effEndDt;
+    this.effStartDt = effStartDt;
+    this.fkAddress = fkAddress;
+    this.fkClient = fkClient;
+    this.homelessInd = homelessInd;
+    this.fkReferral = fkReferral;
+    this.addresses = addresses;
+  }
+
+  /**
+   * A convience helper Constructor that includes lastUpdatedId
+   * @param id The identifier
+   * @param addressType The addressType
+   * @param bkInmtId The bkInmtId
+   * @param effEndDt The effEndDt
+   * @param effStartDt The effStartDt
+   * @param fkAddress The fkAddress
+   * @param fkClient The fkClient
+   * @param homelessInd The homelessInd
+   * @param fkReferral The fkReferral
+   * @param addresses The addresses
+   * @param lastUpdateId - staff Id
+   */
+  public ClientAddress(String id, Short addressType, String bkInmtId, Date effEndDt,
+      Date effStartDt, String fkAddress, String fkClient, String homelessInd, String fkReferral,
+      Address addresses,String lastUpdateId) {
+    super(lastUpdateId);
     this.id = id;
     this.addressType = addressType;
     this.bkInmtId = bkInmtId;

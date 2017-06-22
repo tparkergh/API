@@ -11,6 +11,8 @@ import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
+import gov.ca.cwds.fixture.AddressResourceBuilder;
+import gov.ca.cwds.fixture.ParticipantResourceBuilder;
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.HashSet;
@@ -302,6 +304,21 @@ public class ParticipantTest implements PersistentTestTemplate {
         constraintViolations.iterator().next().getMessage());
   }
 
+  @Test
+  public void shouldAddListOfAddressesToExistingAddresses(){
+    Address existingAddress = new AddressResourceBuilder().setLegacyId("1").createAddress();
+    Set<Address> existingAddresses = new HashSet(Arrays.asList(existingAddress));
+    Participant participant = new ParticipantResourceBuilder().setAddresses(existingAddresses).createParticipant();
+
+    Address newAddress = new AddressResourceBuilder().setLegacyId("2").createAddress();
+    Set<Address> newAddresses = new HashSet(Arrays.asList(newAddress));
+    participant.addAddresses(newAddresses);
+    assertEquals("Expected 2 addresses", 2, participant.getAddresses().size());
+    assertEquals("Expected 2 addresses", 2, participant.getAddresses().size());
+    assertTrue("Expected to find existing Address", participant.getAddresses().contains(existingAddress));
+    assertTrue("Expected to find new Address", participant.getAddresses().contains(newAddress));
+  }
+
   private Participant createParticipantWithRoles(Set<String> roles) {
     return createParticipant(roles);
 
@@ -322,5 +339,6 @@ public class ParticipantTest implements PersistentTestTemplate {
     return validParticipant;
 
   }
+
 }
 

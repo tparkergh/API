@@ -1,5 +1,8 @@
 package gov.ca.cwds.rest.services.cms;
 
+import gov.ca.cwds.data.cms.ClientAddressDao;
+import gov.ca.cwds.data.persistence.cms.Address;
+import gov.ca.cwds.data.persistence.cms.ClientAddress;
 import java.io.Serializable;
 
 import javax.persistence.EntityExistsException;
@@ -32,6 +35,7 @@ public class ClientService implements CrudsService {
   private static final Logger LOGGER = LoggerFactory.getLogger(ClientService.class);
 
   private ClientDao clientDao;
+  private ClientAddressDao clientAddressDao;
   private StaffPersonDao staffpersonDao;
   private TriggerTablesDao triggerTablesDao;
   private NonLACountyTriggers nonLaCountyTriggers;
@@ -151,7 +155,10 @@ public class ClientService implements CrudsService {
    gov.ca.cwds.rest.api.domain.cms.Client savedEntity;
     try {
       String lastUpdatedId = staffPersonIdRetriever.getStaffPersonId();
+      Client existingClient = clientDao.find(primaryKey);
       Client managed = new Client((String) primaryKey, client, lastUpdatedId);
+
+      managed.setClientAddress(existingClient.getClientAddress());
       managed = clientDao.update(managed);
       savedEntity = new gov.ca.cwds.rest.api.domain.cms.Client(managed, true);
     } catch (EntityNotFoundException e) {
