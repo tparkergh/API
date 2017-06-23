@@ -441,6 +441,7 @@ public class ScreeningToReferralService implements CrudsService {
    * @param screeningToReferral - screeningToReferral
    * @param dateStarted - dateStarted
    * @param timeStarted - timeStarted
+   * @param timestamp - timestamp
    * @return the referral
    * @throws Exception - Exception
    */
