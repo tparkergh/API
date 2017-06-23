@@ -376,6 +376,30 @@ public class Referral extends CmsPersistentObject {
   public Referral(String id, gov.ca.cwds.rest.api.domain.cms.Referral referral,
       String lastUpdatedId) {
     super(lastUpdatedId);
+    init(id, referral);
+
+  }
+
+  /**
+   * Constructor
+   * 
+   * @param id The id
+   * @param referral The domain object to construct this object from
+   * @param lastUpdatedId the id of the last person to update this object
+   * @param lastUpdatedTime the time of last person to update this object
+   */
+  public Referral(String id, gov.ca.cwds.rest.api.domain.cms.Referral referral,
+      String lastUpdatedId, Date lastUpdatedTime) {
+    super(lastUpdatedId, lastUpdatedTime);
+    init(id, referral);
+
+  }
+
+  /**
+   * @param id the id
+   * @param referral - referral
+   */
+  private void init(String id, gov.ca.cwds.rest.api.domain.cms.Referral referral) {
 
     try {
       this.id = id;

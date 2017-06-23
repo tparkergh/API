@@ -4,6 +4,8 @@ import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
+import java.util.Date;
+
 import javax.validation.Validation;
 
 import gov.ca.cwds.data.cms.ReferralDao;
@@ -76,6 +78,8 @@ public class MockedScreeningToReferralServiceBuilder {
     PostedReferral postedReferral = mock(PostedReferral.class);
     when(postedReferral.getId()).thenReturn("3456765433");
     when(referralService.create(any(Referral.class))).thenReturn(postedReferral);
+    when(referralService.createWithSingleTimestamp(any(Referral.class), any(Date.class)))
+        .thenReturn(postedReferral);
   }
 
   /**
@@ -178,6 +182,8 @@ public class MockedScreeningToReferralServiceBuilder {
     PostedAddress postedAddress = mock(PostedAddress.class);
     when(postedAddress.getExistingAddressId()).thenReturn("6783345677");
     when(addressService.create(any(Address.class))).thenReturn(postedAddress);
+    when(addressService.createWithSingleTimestamp(any(Address.class), any(Date.class)))
+        .thenReturn(postedAddress);
   }
 
   /**

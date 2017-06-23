@@ -96,6 +96,9 @@ public class DrmsDocumentDaoIT implements DaoTestTemplate {
     assertThat(found, is(nullValue()));
   }
 
+  /**
+   * Create JUnit test
+   */
   @Override
   @Test
   public void testCreate() throws Exception {
