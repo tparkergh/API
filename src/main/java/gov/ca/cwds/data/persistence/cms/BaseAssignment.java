@@ -34,7 +34,7 @@ import gov.ca.cwds.rest.api.domain.DomainChef;
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 @DiscriminatorFormula("case when ESTBLSH_CD = 'R' then 'REFERRAL' when ESTBLSH_CD = 'C' then 'CASE' end ")
 @DiscriminatorOptions(force = true)
-public class Assignment extends CmsPersistentObject {
+public abstract class BaseAssignment extends CmsPersistentObject {
 
   @Column(name = "CNTY_SPFCD", length = 2)
   private String countySpecificCode;
@@ -49,9 +49,6 @@ public class Assignment extends CmsPersistentObject {
 
   @Column(name = "ESTBLSH_CD", length = 1)
   protected String establishedForCode;
-
-  @Column(name = "ESTBLSH_ID", length = CMS_ID_LEN)
-  protected String establishedForId;
 
   @Column(name = "FKCASE_LDT", length = CMS_ID_LEN)
   private String fkCaseLoad;
@@ -107,10 +104,9 @@ public class Assignment extends CmsPersistentObject {
     return establishedForCode;
   }
 
-  @SuppressWarnings("javadoc")
-  public String getEstablishedForId() {
-    return establishedForId;
-  }
+  public abstract String getEstablishedForId();
+
+  public abstract void setEstablishedForId(String establishedForId);
 
   @SuppressWarnings("javadoc")
   public String getFkCaseLoad() {
@@ -167,7 +163,7 @@ public class Assignment extends CmsPersistentObject {
    * 
    * Required for Hibernate
    */
-  public Assignment() {
+  public BaseAssignment() {
     super();
   }
 
@@ -177,8 +173,8 @@ public class Assignment extends CmsPersistentObject {
    * @param endTime - end time of assignment
    * @param establishedForCode - referral or case
    * @param establishedForId - referral or case Id
-   * @param fkCaseLoad - foriegn key to the case load
-   * @param fkOutOfStateContactParty - foriegn ky to the out of state contact party
+   * @param fkCaseLoad - foreign key to the case load
+   * @param fkOutOfStateContactParty - foreign ky to the out of state contact party
    * @param responsibilityDescription - description
    * @param secondaryAssignmentRoleType - primary or secondary
    * @param startDate - start date of assignment
@@ -186,7 +182,7 @@ public class Assignment extends CmsPersistentObject {
    * @param typeOfAssignmentCode - primary, secondary, or read only
    * @param weightingNumber - weighting within case load
    */
-  public Assignment(String countySpecificCode, Date endDate, Date endTime,
+  public BaseAssignment(String countySpecificCode, Date endDate, Date endTime,
       String establishedForCode, String establishedForId, String fkCaseLoad,
       String fkOutOfStateContactParty, String responsibilityDescription,
       Short secondaryAssignmentRoleType, Date startDate, Date startTime,
@@ -196,7 +192,7 @@ public class Assignment extends CmsPersistentObject {
     this.endDate = endDate;
     this.endTime = endTime;
     this.establishedForCode = establishedForCode;
-    this.establishedForId = establishedForId;
+    setEstablishedForId(establishedForId);
     this.fkCaseLoad = fkCaseLoad;
     this.fkOutOfStateContactParty = fkOutOfStateContactParty;
     this.responsibilityDescription = responsibilityDescription;
@@ -207,20 +203,20 @@ public class Assignment extends CmsPersistentObject {
     this.weightingNumber = weightingNumber;
   }
 
-
   /**
    * @param id - Assignment Id
    * @param pa - persisted Assignment object
    * @param lastUpdateId - staff person id
    */
-  public Assignment(String id, gov.ca.cwds.rest.api.domain.cms.Assignment pa, String lastUpdateId) {
+  public BaseAssignment(String id, gov.ca.cwds.rest.api.domain.cms.Assignment pa,
+      String lastUpdateId) {
     super(lastUpdateId);
     this.id = id;
     this.countySpecificCode = pa.getCountySpecificCode();
     this.endDate = DomainChef.uncookDateString(pa.getEndDate());
     this.endTime = DomainChef.uncookTimeString(pa.getEndTime());
     this.establishedForCode = pa.getEstablishedForCode();
-    this.establishedForId = pa.getEstablishedForId();
+    setEstablishedForId(pa.getEstablishedForId());
     this.fkCaseLoad = pa.getCaseLoadId();
     this.fkOutOfStateContactParty = pa.getOutOfStateContactId();
     this.responsibilityDescription = pa.getResponsibilityDescription();

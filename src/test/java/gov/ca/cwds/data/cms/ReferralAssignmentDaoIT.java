@@ -33,7 +33,7 @@ public class ReferralAssignmentDaoIT implements DaoTestTemplate {
   private String endDate = "2018-06-01";
   private String endTime = "12:01:00";
   private String establishedForCode = "R";
-  private String establishedForId = "12345678ABC";
+  private String establishedForId = "SlCAr46088";
   private String caseLoadId = "2345678ABC";
   private String outOfStatePartyContactId = "";
   private String responsiblityDescription = "ReferralAssignment responsibility description";
