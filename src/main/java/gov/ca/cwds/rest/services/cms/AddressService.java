@@ -48,7 +48,6 @@ public class AddressService implements CrudsService {
         (gov.ca.cwds.rest.api.domain.cms.Address) request;
 
     return create(address, null);
-
   }
 
   /**
@@ -66,7 +65,6 @@ public class AddressService implements CrudsService {
         (gov.ca.cwds.rest.api.domain.cms.Address) request;
 
     return create(address, timestamp);
-
   }
 
   /**

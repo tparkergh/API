@@ -112,7 +112,6 @@ public class ReferralService implements CrudsService {
         (gov.ca.cwds.rest.api.domain.cms.Referral) request;
 
     return create(referral, null);
-
   }
 
   /**
@@ -130,7 +129,6 @@ public class ReferralService implements CrudsService {
         (gov.ca.cwds.rest.api.domain.cms.Referral) request;
 
     return create(referral, timestamp);
-
   }
 
   /**
