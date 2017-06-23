@@ -112,7 +112,6 @@ public class Assignment extends ReportingDomain implements Request, Response {
       value = "P = Primary, S = Secondary, R = Read Only", example = "P")
   private String typeOfAssignmentCode;
 
-  @Size(max = 5)
   @ApiModelProperty(required = true, readOnly = false)
   private BigDecimal weightingNumber;
 
