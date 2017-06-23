@@ -37,7 +37,6 @@ import gov.ca.cwds.rest.api.domain.cms.DrmsDocument;
 import gov.ca.cwds.rest.api.domain.cms.LongText;
 import gov.ca.cwds.rest.api.domain.cms.PostedAddress;
 import gov.ca.cwds.rest.api.domain.cms.PostedAllegation;
-import gov.ca.cwds.rest.api.domain.cms.PostedAssignment;
 import gov.ca.cwds.rest.api.domain.cms.PostedClient;
 import gov.ca.cwds.rest.api.domain.cms.PostedDrmsDocument;
 import gov.ca.cwds.rest.api.domain.cms.PostedLongText;
@@ -147,9 +146,10 @@ public class ScreeningToReferralService implements CrudsService {
       AllegationService allegationService, CrossReportService crossReportService,
       ReferralClientService referralClientService, ReporterService reporterService,
       AddressService addressService, ClientAddressService clientAddressService,
-      LongTextService longTextService, ChildClientService childClientService, Validator validator,
-      ReferralDao referralDao, StaffPersonIdRetriever staffPersonIdRetriever,
-      MessageBuilder messageBuilder, DrmsDocumentService drmsDocumentService) {
+      LongTextService longTextService, ChildClientService childClientService,
+      AssignmentService assignmentService, Validator validator, ReferralDao referralDao,
+      StaffPersonIdRetriever staffPersonIdRetriever, MessageBuilder messageBuilder,
+      DrmsDocumentService drmsDocumentService) {
 
     super();
     this.referralService = referralService;
@@ -162,6 +162,7 @@ public class ScreeningToReferralService implements CrudsService {
     this.clientAddressService = clientAddressService;
     this.longTextService = longTextService;
     this.childClientService = childClientService;
+    this.assignmentService = assignmentService;
     this.validator = validator;
     this.referralDao = referralDao;
     this.staffPersonIdRetriever = staffPersonIdRetriever;
@@ -426,7 +427,9 @@ public class ScreeningToReferralService implements CrudsService {
       PostedReferral postedReferral =
           this.referralService.createWithSingleTimestamp(referral, timestamp);
       referralId = postedReferral.getId();
-      // createDefaultAssignmentForNewReferral(referralId);
+
+      // when creating a referral - create the default assignment to 0XA staff person
+      createDefaultAssignmentForNewReferral(referralId);
       // TODO: R - 01054 Prmary Assignment Adding
 
     } else {
@@ -1016,12 +1019,11 @@ public class ScreeningToReferralService implements CrudsService {
     // '0X5' is "20"
     final String countyCode = "20";
 
-    Assignment da = createDefaultAssignmentForCaseLoad(caseLoadId, countyCode, referralId);
+    Assignment da = createDefaultAssignmentToCaseLoad(countyCode, referralId, caseLoadId);
     messageBuilder.addDomainValidationError(validator.validate(da));
 
-    PostedAssignment pa;
     try {
-      pa = this.assignmentService.create(da);
+      this.assignmentService.create(da);
     } catch (ServiceException e) {
       String message = e.getMessage();
       logError(message, e);
@@ -1034,7 +1036,7 @@ public class ScreeningToReferralService implements CrudsService {
    * @param referralId - referral Id
    * @return - default Assignment
    */
-  private Assignment createDefaultAssignmentForCaseLoad(String countyCode, String referralId,
+  private Assignment createDefaultAssignmentToCaseLoad(String countyCode, String referralId,
       String caseLoadId) {
     // #146713651 - BARNEY: Referrals require a default assignment
     // Default Assignment - referrals will be assigned to the '0X5' staff person ID.

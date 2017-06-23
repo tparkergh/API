@@ -1,0 +1,15 @@
+{
+	"countySpecificCode": "20",
+	"endDate": "2018-06-01",
+	"endTime": "12:01:00",
+	"establishedForCode": "R",
+	"establishedForId": "1234567ABC",
+	"caseLoadId": "2345678ABC",
+	"outOfStateContactId": "",
+	"responsibilityDescription": "Assignment responsibility description",
+	"secondaryAssignmentRoleType": 0,
+	"startDate": "2017-06-20",
+	"startTime": "16:41:49",
+	"typeOfAssignmentCode": "P",
+	"weightingNumber": "0.0"
+}

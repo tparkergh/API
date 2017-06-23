@@ -19,6 +19,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import gov.ca.cwds.data.cms.AddressDao;
 import gov.ca.cwds.data.cms.AllegationDao;
+import gov.ca.cwds.data.cms.AssignmentDao;
 import gov.ca.cwds.data.cms.ChildClientDao;
 import gov.ca.cwds.data.cms.ClientAddressDao;
 import gov.ca.cwds.data.cms.ClientDao;
@@ -40,6 +41,7 @@ import gov.ca.cwds.rest.messages.MessageBuilder;
 import gov.ca.cwds.rest.services.ScreeningToReferralService;
 import gov.ca.cwds.rest.services.cms.AddressService;
 import gov.ca.cwds.rest.services.cms.AllegationService;
+import gov.ca.cwds.rest.services.cms.AssignmentService;
 import gov.ca.cwds.rest.services.cms.ChildClientService;
 import gov.ca.cwds.rest.services.cms.ClientAddressService;
 import gov.ca.cwds.rest.services.cms.ClientService;
@@ -71,6 +73,7 @@ public class R05914DoNotUpdateApprovalStatusTypeTest {
   private ClientAddressService clientAddressService;
   private ChildClientService childClientService;
   private LongTextService longTextService;
+  private AssignmentService assignmentService;
 
   private ReferralDao referralDao;
   private ClientDao clientDao;
@@ -83,6 +86,7 @@ public class R05914DoNotUpdateApprovalStatusTypeTest {
   private ChildClientDao childClientDao;
   private LongTextDao longTextDao;
   private StaffPersonDao staffpersonDao;
+  private AssignmentDao assignmentDao;
   private NonLACountyTriggers nonLACountyTriggers;
   private LACountyTrigger laCountyTrigger;
   private TriggerTablesDao triggerTablesDao;
@@ -150,10 +154,13 @@ public class R05914DoNotUpdateApprovalStatusTypeTest {
     childClientDao = mock(ChildClientDao.class);
     childClientService = new ChildClientService(childClientDao, staffPersonIdRetriever);
 
+    assignmentDao = mock(AssignmentDao.class);
+    assignmentService = new AssignmentService(assignmentDao, staffPersonIdRetriever);
+
     screeningToReferralService = new ScreeningToReferralService(referralService, clientService,
         allegationService, crossReportService, referralClientService, reporterService,
         addressService, clientAddressService, longTextService, childClientService,
-        Validation.buildDefaultValidatorFactory().getValidator(), referralDao,
+        assignmentService, Validation.buildDefaultValidatorFactory().getValidator(), referralDao,
         staffPersonIdRetriever, new MessageBuilder(), drmsDocumentService);
   }
 

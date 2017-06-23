@@ -22,6 +22,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import gov.ca.cwds.data.cms.AddressDao;
 import gov.ca.cwds.data.cms.AllegationDao;
+import gov.ca.cwds.data.cms.AssignmentDao;
 import gov.ca.cwds.data.cms.ChildClientDao;
 import gov.ca.cwds.data.cms.ClientAddressDao;
 import gov.ca.cwds.data.cms.ClientDao;
@@ -37,6 +38,7 @@ import gov.ca.cwds.rest.api.Response;
 import gov.ca.cwds.rest.api.domain.ScreeningToReferral;
 import gov.ca.cwds.rest.api.domain.cms.Address;
 import gov.ca.cwds.rest.api.domain.cms.Allegation;
+import gov.ca.cwds.rest.api.domain.cms.Assignment;
 import gov.ca.cwds.rest.api.domain.cms.ChildClient;
 import gov.ca.cwds.rest.api.domain.cms.Client;
 import gov.ca.cwds.rest.api.domain.cms.ClientAddress;
@@ -52,6 +54,7 @@ import gov.ca.cwds.rest.messages.MessageBuilder;
 import gov.ca.cwds.rest.services.ScreeningToReferralService;
 import gov.ca.cwds.rest.services.cms.AddressService;
 import gov.ca.cwds.rest.services.cms.AllegationService;
+import gov.ca.cwds.rest.services.cms.AssignmentService;
 import gov.ca.cwds.rest.services.cms.ChildClientService;
 import gov.ca.cwds.rest.services.cms.ClientAddressService;
 import gov.ca.cwds.rest.services.cms.ClientService;
@@ -84,6 +87,7 @@ public class R05360ReferralCityMandatoryTest {
   private ClientAddressService clientAddressService;
   private ChildClientService childClientService;
   private LongTextService longTextService;
+  private AssignmentService assignmentService;
 
   private ReferralDao referralDao;
   private ClientDao clientDao;
@@ -96,6 +100,7 @@ public class R05360ReferralCityMandatoryTest {
   private ChildClientDao childClientDao;
   private LongTextDao longTextDao;
   private StaffPersonDao staffpersonDao;
+  private AssignmentDao assignmentDao;
   private NonLACountyTriggers nonLACountyTriggers;
   private LACountyTrigger laCountyTrigger;
   private TriggerTablesDao triggerTablesDao;
@@ -147,6 +152,9 @@ public class R05360ReferralCityMandatoryTest {
     addressDao = mock(AddressDao.class);
     addressService = new AddressService(addressDao, staffPersonIdRetriever);
 
+    assignmentDao = mock(AssignmentDao.class);
+    assignmentService = new AssignmentService(assignmentDao, staffPersonIdRetriever);
+
     clientAddressDao = mock(ClientAddressDao.class);
     laCountyTrigger = mock(LACountyTrigger.class);
     triggerTablesDao = mock(TriggerTablesDao.class);
@@ -166,7 +174,7 @@ public class R05360ReferralCityMandatoryTest {
     screeningToReferralService = new ScreeningToReferralService(referralService, clientService,
         allegationService, crossReportService, referralClientService, reporterService,
         addressService, clientAddressService, longTextService, childClientService,
-        Validation.buildDefaultValidatorFactory().getValidator(), referralDao,
+        assignmentService, Validation.buildDefaultValidatorFactory().getValidator(), referralDao,
         staffPersonIdRetriever, new MessageBuilder(), drmsDocumentService);
   }
 
@@ -275,6 +283,14 @@ public class R05360ReferralCityMandatoryTest {
     when(longTextDao.create(any(gov.ca.cwds.data.persistence.cms.LongText.class)))
         .thenReturn(longTextToCreate);
 
+    Assignment assignment =
+        MAPPER.readValue(fixture("fixtures/domain/ScreeningToReferral/valid/validAssignment.json"),
+            Assignment.class);
+    gov.ca.cwds.data.persistence.cms.Assignment assignmentToCreate =
+        new gov.ca.cwds.data.persistence.cms.Assignment("6789012ABC", assignment, "ABC");
+    when(assignmentDao.create(any(gov.ca.cwds.data.persistence.cms.Assignment.class)))
+        .thenReturn(assignmentToCreate);
+
     ScreeningToReferral screeningToReferral = MAPPER.readValue(
         fixture("fixtures/domain/ScreeningToReferral/invalid/addressCityEmpty.json"),
         ScreeningToReferral.class);
@@ -379,6 +395,14 @@ public class R05360ReferralCityMandatoryTest {
         new gov.ca.cwds.data.persistence.cms.LongText("567890ABC", longTextDomain, "ABC");
     when(longTextDao.create(any(gov.ca.cwds.data.persistence.cms.LongText.class)))
         .thenReturn(longTextToCreate);
+
+    Assignment assignment =
+        MAPPER.readValue(fixture("fixtures/domain/ScreeningToReferral/valid/validAssignment.json"),
+            Assignment.class);
+    gov.ca.cwds.data.persistence.cms.Assignment assignmentToCreate =
+        new gov.ca.cwds.data.persistence.cms.Assignment("6789012ABC", assignment, "ABC");
+    when(assignmentDao.create(any(gov.ca.cwds.data.persistence.cms.Assignment.class)))
+        .thenReturn(assignmentToCreate);
 
     ScreeningToReferral screeningToReferral = MAPPER.readValue(
         fixture("fixtures/domain/ScreeningToReferral/invalid/participantAddressCityEmpty.json"),
@@ -485,6 +509,14 @@ public class R05360ReferralCityMandatoryTest {
     when(longTextDao.create(any(gov.ca.cwds.data.persistence.cms.LongText.class)))
         .thenReturn(longTextToCreate);
 
+    Assignment assignment =
+        MAPPER.readValue(fixture("fixtures/domain/ScreeningToReferral/valid/validAssignment.json"),
+            Assignment.class);
+    gov.ca.cwds.data.persistence.cms.Assignment assignmentToCreate =
+        new gov.ca.cwds.data.persistence.cms.Assignment("6789012ABC", assignment, "ABC");
+    when(assignmentDao.create(any(gov.ca.cwds.data.persistence.cms.Assignment.class)))
+        .thenReturn(assignmentToCreate);
+
     ScreeningToReferral screeningToReferral = MAPPER.readValue(
         fixture("fixtures/domain/ScreeningToReferral/invalid/addressStreetNumberEmpty.json"),
         ScreeningToReferral.class);
@@ -589,6 +621,14 @@ public class R05360ReferralCityMandatoryTest {
         new gov.ca.cwds.data.persistence.cms.LongText("567890ABC", longTextDomain, "ABC");
     when(longTextDao.create(any(gov.ca.cwds.data.persistence.cms.LongText.class)))
         .thenReturn(longTextToCreate);
+
+    Assignment assignment =
+        MAPPER.readValue(fixture("fixtures/domain/ScreeningToReferral/valid/validAssignment.json"),
+            Assignment.class);
+    gov.ca.cwds.data.persistence.cms.Assignment assignmentToCreate =
+        new gov.ca.cwds.data.persistence.cms.Assignment("6789012ABC", assignment, "ABC");
+    when(assignmentDao.create(any(gov.ca.cwds.data.persistence.cms.Assignment.class)))
+        .thenReturn(assignmentToCreate);
 
     ScreeningToReferral screeningToReferral = MAPPER.readValue(
         fixture("fixtures/domain/ScreeningToReferral/invalid/addressStreetNameEmpty.json"),
@@ -695,6 +735,14 @@ public class R05360ReferralCityMandatoryTest {
     when(longTextDao.create(any(gov.ca.cwds.data.persistence.cms.LongText.class)))
         .thenReturn(longTextToCreate);
 
+    Assignment assignment =
+        MAPPER.readValue(fixture("fixtures/domain/ScreeningToReferral/valid/validAssignment.json"),
+            Assignment.class);
+    gov.ca.cwds.data.persistence.cms.Assignment assignmentToCreate =
+        new gov.ca.cwds.data.persistence.cms.Assignment("6789012ABC", assignment, "ABC");
+    when(assignmentDao.create(any(gov.ca.cwds.data.persistence.cms.Assignment.class)))
+        .thenReturn(assignmentToCreate);
+
     ScreeningToReferral screeningToReferral = MAPPER.readValue(
         fixture("fixtures/domain/ScreeningToReferral/invalid/reporterAddressStreetNameEmpty.json"),
         ScreeningToReferral.class);
@@ -799,6 +847,14 @@ public class R05360ReferralCityMandatoryTest {
         new gov.ca.cwds.data.persistence.cms.LongText("567890ABC", longTextDomain, "ABC");
     when(longTextDao.create(any(gov.ca.cwds.data.persistence.cms.LongText.class)))
         .thenReturn(longTextToCreate);
+
+    Assignment assignment =
+        MAPPER.readValue(fixture("fixtures/domain/ScreeningToReferral/valid/validAssignment.json"),
+            Assignment.class);
+    gov.ca.cwds.data.persistence.cms.Assignment assignmentToCreate =
+        new gov.ca.cwds.data.persistence.cms.Assignment("6789012ABC", assignment, "ABC");
+    when(assignmentDao.create(any(gov.ca.cwds.data.persistence.cms.Assignment.class)))
+        .thenReturn(assignmentToCreate);
 
     ScreeningToReferral screeningToReferral = MAPPER.readValue(
         fixture("fixtures/domain/ScreeningToReferral/invalid/addressStreetNumberEmpty.json"),
