@@ -15,7 +15,6 @@ import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
-import org.junit.Ignore;
 import org.junit.Rule;
 import org.junit.Test;
 
@@ -33,7 +32,7 @@ public class ReferralAssignmentDaoIT implements DaoTestTemplate {
   private String endDate = "2018-06-01";
   private String endTime = "12:01:00";
   private String establishedForCode = "R";
-  private String establishedForId = "SlCAr46088";
+  private String establishedForId = "SvgDqxm0AJ";
   private String caseLoadId = "2345678ABC";
   private String outOfStatePartyContactId = "";
   private String responsiblityDescription = "ReferralAssignment responsibility description";
@@ -94,16 +93,16 @@ public class ReferralAssignmentDaoIT implements DaoTestTemplate {
   }
 
   @Override
-  @Test
-  @Ignore
+  // @Test
+  // @Ignore
   public void testFindEntityNotFoundException() throws Exception {
-    ReferralAssignment found = dao.find("9999999ZZZ");
+    ReferralAssignment found = dao.find(id);
     assertThat(found, is(nullValue()));
   }
 
   @Override
-  @Test
-  @Ignore
+  // @Test
+  // @Ignore
   public void testCreate() throws Exception {
     gov.ca.cwds.rest.api.domain.cms.Assignment da = validReferralAssignment();
 
