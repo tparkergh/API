@@ -25,10 +25,11 @@ import gov.ca.cwds.data.persistence.cms.ReferralClient;
 import gov.ca.cwds.data.persistence.cms.ReferralClient.PrimaryKey;
 
 /**
+ * 
  * @author CWDS API Team
- *
  */
 public class ReferralClientDaoIT implements DaoTestTemplate {
+
   private static SessionFactory sessionFactory;
   private static ReferralClientDao referralClientDao;
   private Session session;
@@ -81,7 +82,6 @@ public class ReferralClientDaoIT implements DaoTestTemplate {
   public void testFindEntityNotFoundException() throws Exception {
     ReferralClient found = referralClientDao.find(new PrimaryKey("ZZZZZZZ999", "XXXXXXX000"));
     assertThat(found, is(nullValue()));
-
   }
 
   @Override
@@ -144,6 +144,5 @@ public class ReferralClientDaoIT implements DaoTestTemplate {
   public void testFindAllReturnsCorrectList() throws Exception {
 
   }
-
 
 }
