@@ -130,7 +130,7 @@ public final class Client extends BaseClient
       String alienRegistrationNumber, String birthCity, Short birthCountryCodeType, Date birthDate,
       String birthFacilityName, Short birthStateCodeType, String birthplaceVerifiedIndicator,
       String childClientIndicatorVar, String clientIndexNumber, String commentDescription,
-      String commonFirstName,String commonMiddleName, String commonLastName,
+      String commonFirstName, String commonMiddleName, String commonLastName,
       Date confidentialityActionDate, String confidentialityInEffectIndicator, Date creationDate,
       String currCaChildrenServIndicator, String currentlyOtherDescription,
       String currentlyRegionalCenterIndicator, Date deathDate, String deathDateVerifiedIndicator,
@@ -232,6 +232,28 @@ public final class Client extends BaseClient
    */
   public Client(String id, gov.ca.cwds.rest.api.domain.cms.Client client, String lastUpdatedId) {
     super(lastUpdatedId);
+    init(id, client);
+  }
+
+  /**
+   * Constructor
+   * 
+   * @param id The id
+   * @param client The domain object to construct this object from
+   * @param lastUpdatedId the id of the last person to update this object
+   * @param lastUpdatedTime the time of last person to update this object
+   */
+  public Client(String id, gov.ca.cwds.rest.api.domain.cms.Client client, String lastUpdatedId,
+      Date lastUpdatedTime) {
+    super(lastUpdatedId, lastUpdatedTime);
+    init(id, client);
+  }
+
+  /**
+   * @param id the id
+   * @param client - client
+   */
+  private void init(String id, gov.ca.cwds.rest.api.domain.cms.Client client) {
     try {
       this.id = id;
       this.adjudicatedDelinquentIndicator =
@@ -381,7 +403,10 @@ public final class Client extends BaseClient
         + zippyCreatedIndicator + "]";
   }
 
-  public void setClientAddress(Set<ClientAddress> clientAddress){
+  /**
+   * @param clientAddress - clientAddress
+   */
+  public void setClientAddress(Set<ClientAddress> clientAddress) {
     this.clientAddress = clientAddress;
   }
 }

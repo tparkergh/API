@@ -97,6 +97,8 @@ public class MockedScreeningToReferralServiceBuilder {
     PostedClient postedClient = mock(PostedClient.class);
     when(postedClient.getId()).thenReturn("2342345674");
     when(clientService.create(any(Client.class))).thenReturn(postedClient);
+    when(clientService.createWithSingleTimestamp(any(Client.class), any(Date.class)))
+        .thenReturn(postedClient);
   }
 
   /**

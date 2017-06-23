@@ -1,9 +1,7 @@
 package gov.ca.cwds.rest.services.cms;
 
-import gov.ca.cwds.data.cms.ClientAddressDao;
-import gov.ca.cwds.data.persistence.cms.Address;
-import gov.ca.cwds.data.persistence.cms.ClientAddress;
 import java.io.Serializable;
+import java.util.Date;
 
 import javax.persistence.EntityExistsException;
 import javax.persistence.EntityNotFoundException;
@@ -14,6 +12,7 @@ import org.slf4j.LoggerFactory;
 import com.google.inject.Inject;
 
 import gov.ca.cwds.data.Dao;
+import gov.ca.cwds.data.cms.ClientAddressDao;
 import gov.ca.cwds.data.cms.ClientDao;
 import gov.ca.cwds.data.cms.StaffPersonDao;
 import gov.ca.cwds.data.persistence.cms.Client;
@@ -121,10 +120,40 @@ public class ClientService implements CrudsService {
 
     gov.ca.cwds.rest.api.domain.cms.Client client =
         (gov.ca.cwds.rest.api.domain.cms.Client) request;
+    return create(client, null);
 
+  }
+
+  /**
+   * This createWithSingleTimestamp is used for the referrals to maintian the same timestamp for the
+   * whole transaction
+   * 
+   * @param request - request
+   * @param timestamp - timestamp
+   * @return the single timestamp
+   */
+  public PostedClient createWithSingleTimestamp(Request request, Date timestamp) {
+    assert request instanceof gov.ca.cwds.rest.api.domain.cms.Client;
+
+    gov.ca.cwds.rest.api.domain.cms.Client client =
+        (gov.ca.cwds.rest.api.domain.cms.Client) request;
+    return create(client, timestamp);
+  }
+
+  /**
+   * This private method is created to handle to single client and referrals with single timestamp
+   * 
+   */
+  private PostedClient create(gov.ca.cwds.rest.api.domain.cms.Client client, Date timestamp) {
     try {
       String lastUpdatedId = staffPersonIdRetriever.getStaffPersonId();
-      Client managed = new Client(CmsKeyIdGenerator.generate(lastUpdatedId), client, lastUpdatedId);
+      Client managed;
+      if (timestamp == null) {
+        managed = new Client(CmsKeyIdGenerator.generate(lastUpdatedId), client, lastUpdatedId);
+      } else {
+        managed =
+            new Client(CmsKeyIdGenerator.generate(lastUpdatedId), client, lastUpdatedId, timestamp);
+      }
       managed = clientDao.create(managed);
       // checking the staffPerson county code
       StaffPerson staffperson = staffpersonDao.find(managed.getLastUpdatedId());
@@ -152,7 +181,7 @@ public class ClientService implements CrudsService {
     gov.ca.cwds.rest.api.domain.cms.Client client =
         (gov.ca.cwds.rest.api.domain.cms.Client) request;
 
-   gov.ca.cwds.rest.api.domain.cms.Client savedEntity;
+    gov.ca.cwds.rest.api.domain.cms.Client savedEntity;
     try {
       String lastUpdatedId = staffPersonIdRetriever.getStaffPersonId();
       Client existingClient = clientDao.find(primaryKey);
