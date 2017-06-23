@@ -3,7 +3,6 @@ package gov.ca.cwds.data.persistence.cms;
 import java.math.BigDecimal;
 import java.util.Date;
 
-import javax.persistence.Column;
 import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
@@ -28,9 +27,9 @@ public class ReferralAssignment extends BaseAssignment {
 
   private static final String FOLDED_KEY_CODE = "R";
 
-  @Column(name = "ESTBLSH_ID", length = CMS_ID_LEN, insertable = false, updatable = false)
-  protected String establishedForId;
-
+  /**
+   * Declare foreign key from Assignment to Referral.
+   */
   @OneToOne
   @JoinColumn(name = "IDENTIFIER", referencedColumnName = "ESTBLSH_ID")
   private Referral referral;
@@ -67,24 +66,6 @@ public class ReferralAssignment extends BaseAssignment {
     super(countySpecificCode, endDate, endTime, FOLDED_KEY_CODE, establishedForId, fkCaseLoad,
         fkOutOfStateContactParty, responsibilityDescription, secondaryAssignmentRoleType, startDate,
         startTime, typeOfAssignmentCode, weightingNumber);
-  }
-
-  public Referral getReferral() {
-    return referral;
-  }
-
-  public void setReferral(Referral referral) {
-    this.referral = referral;
-  }
-
-  @Override
-  public String getEstablishedForId() {
-    return establishedForId;
-  }
-
-  @Override
-  public void setEstablishedForId(String establishedForId) {
-    this.establishedForId = establishedForId;
   }
 
 }
