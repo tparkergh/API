@@ -1,13 +1,13 @@
 package gov.ca.cwds.data.cms;
 
-import gov.ca.cwds.data.CrudsDaoImpl;
-import gov.ca.cwds.data.persistence.cms.ReferralClient;
-import gov.ca.cwds.inject.CmsSessionFactory;
-
 import org.hibernate.Query;
 import org.hibernate.SessionFactory;
 
 import com.google.inject.Inject;
+
+import gov.ca.cwds.data.CrudsDaoImpl;
+import gov.ca.cwds.data.persistence.cms.ReferralClient;
+import gov.ca.cwds.inject.CmsSessionFactory;
 
 /**
  * DAO for {@link ReferralClient}.
@@ -28,18 +28,17 @@ public class ReferralClientDao extends CrudsDaoImpl<ReferralClient> {
 
   @SuppressWarnings("unchecked")
   public ReferralClient[] findByReferralId(String referralId) {
-    Query query =
-        this.getSessionFactory().getCurrentSession()
-            .getNamedQuery("gov.ca.cwds.data.persistence.cms.ReferralClient.findByReferral")
-            .setString("referralId", referralId);
+    Query query = this.getSessionFactory().getCurrentSession()
+        .getNamedQuery("gov.ca.cwds.data.persistence.cms.ReferralClient.findByReferral")
+        .setString("referralId", referralId);
     return (ReferralClient[]) query.list().toArray(new ReferralClient[0]);
   }
 
   public ReferralClient[] findByClientId(String clientId) {
-    Query query =
-        this.getSessionFactory().getCurrentSession()
-            .getNamedQuery("gov.ca.cwds.data.persistence.cms.ReferralClient.findByClient")
-            .setString("clientId", clientId);
+    Query query = this.getSessionFactory().getCurrentSession()
+        .getNamedQuery("gov.ca.cwds.data.persistence.cms.ReferralClient.findByClient")
+        .setString("clientId", clientId);
     return (ReferralClient[]) query.list().toArray(new ReferralClient[0]);
   }
+
 }

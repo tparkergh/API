@@ -25,15 +25,18 @@ import io.dropwizard.validation.OneOf;
 import io.swagger.annotations.ApiModelProperty;
 
 /**
- * {@link DomainObject} representing an Assignment
+ * {@link DomainObject} representing an Assignment.
  * 
  * @author CWDS API Team
  */
 public class Assignment extends ReportingDomain implements Request, Response {
+
   /**
    * Serialization version
    */
   private static final long serialVersionUID = 1L;
+
+  // TODO: NOT THREAD SAFE!
   private final static DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
   private final static DateFormat timeOnlyFormat = new SimpleDateFormat("HH:mm:ss");
 
@@ -116,7 +119,7 @@ public class Assignment extends ReportingDomain implements Request, Response {
   private BigDecimal weightingNumber;
 
   /**
-   * 
+   * Default constructor.
    */
   public Assignment() {
     super();
@@ -165,7 +168,9 @@ public class Assignment extends ReportingDomain implements Request, Response {
   }
 
   /**
-   * @param pa - persistence cms Assignment
+   * Construct from persistence bean.
+   * 
+   * @param pa - persistence CMS Assignment
    */
   public Assignment(gov.ca.cwds.data.persistence.cms.Assignment pa) {
     this.countySpecificCode = pa.getCountySpecificCode();

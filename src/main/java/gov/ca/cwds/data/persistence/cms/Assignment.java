@@ -5,8 +5,6 @@ import java.math.BigDecimal;
 import java.util.Date;
 
 import javax.persistence.Column;
-import javax.persistence.DiscriminatorColumn;
-import javax.persistence.DiscriminatorType;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Inheritance;
@@ -15,6 +13,7 @@ import javax.persistence.Table;
 
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
+import org.hibernate.annotations.DiscriminatorFormula;
 import org.hibernate.annotations.Type;
 
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
@@ -32,7 +31,9 @@ import gov.ca.cwds.rest.api.domain.DomainChef;
 @Entity
 @Table(name = "ASGNM_T")
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
-@DiscriminatorColumn(name = "ESTBLSH_CD", discriminatorType = DiscriminatorType.STRING, length = 1)
+// @DiscriminatorColumn(name = "ESTBLSH_CD", discriminatorType = DiscriminatorType.STRING, length =
+// 1)
+@DiscriminatorFormula("case when ESTBLSH_CD = 'R' then 'REFERRAL' when ESTBLSH_CD = 'C' then 'CASE' end ")
 public class Assignment extends CmsPersistentObject {
 
   @Id
@@ -51,10 +52,10 @@ public class Assignment extends CmsPersistentObject {
   private Date endTime;
 
   @Column(name = "ESTBLSH_CD", length = 1)
-  private String establishedForCode;
+  protected String establishedForCode;
 
   @Column(name = "ESTBLSH_ID", length = CMS_ID_LEN)
-  private String establishedForId;
+  protected String establishedForId;
 
   @Column(name = "FKCASE_LDT", length = CMS_ID_LEN)
   private String fkCaseLoad;
