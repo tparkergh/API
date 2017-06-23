@@ -20,7 +20,7 @@ import javax.persistence.PrimaryKeyJoinColumn;
  * @author CWDS API Team
  */
 @Entity(name = "CaseAssignment")
-@DiscriminatorValue(value = "CASE")
+@DiscriminatorValue(value = "CASES")
 @PrimaryKeyJoinColumn(name = "IDENTIFIER")
 @SuppressWarnings("serial")
 public class CaseAssignment extends BaseAssignment {
@@ -32,7 +32,7 @@ public class CaseAssignment extends BaseAssignment {
    */
   @OneToOne
   @JoinColumn(name = "IDENTIFIER", referencedColumnName = "ESTBLSH_ID")
-  private Case theCase;
+  private CmsCase theCase;
 
   /**
    * Default constructor.
@@ -65,6 +65,7 @@ public class CaseAssignment extends BaseAssignment {
     super(countySpecificCode, endDate, endTime, FOLDED_KEY_CODE, referralId, fkCaseLoad,
         fkOutOfStateContactParty, responsibilityDescription, secondaryAssignmentRoleType, startDate,
         startTime, typeOfAssignmentCode, weightingNumber);
+    this.establishedForCode = FOLDED_KEY_CODE;
   }
 
 }

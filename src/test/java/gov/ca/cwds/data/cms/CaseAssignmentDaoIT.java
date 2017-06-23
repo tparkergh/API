@@ -32,7 +32,7 @@ public class CaseAssignmentDaoIT implements DaoTestTemplate {
   private String countySpecificCode = "20";
   private String endDate = "2018-06-01";
   private String endTime = "12:01:00";
-  private String establishedForCode = "R";
+  private String establishedForCode = "C";
   private String establishedForId = "0iiVVuE088";
   private String caseLoadId = "2345678ABC";
   private String outOfStatePartyContactId = "";
@@ -105,7 +105,7 @@ public class CaseAssignmentDaoIT implements DaoTestTemplate {
   @Test
   // @Ignore
   public void testCreate() throws Exception {
-    gov.ca.cwds.rest.api.domain.cms.Assignment da = validReferralAssignment();
+    gov.ca.cwds.rest.api.domain.cms.Assignment da = validCaseAssignment();
 
     CaseAssignment pa = new CaseAssignment(countySpecificCode, DomainChef.uncookDateString(endDate),
         DomainChef.uncookTimeString(endTime), establishedForId, caseLoadId,
@@ -119,7 +119,7 @@ public class CaseAssignmentDaoIT implements DaoTestTemplate {
     assertThat(pa, is(create));
   }
 
-  private gov.ca.cwds.rest.api.domain.cms.Assignment validReferralAssignment() {
+  private gov.ca.cwds.rest.api.domain.cms.Assignment validCaseAssignment() {
     gov.ca.cwds.rest.api.domain.cms.Assignment validReferralAssignment =
         new gov.ca.cwds.rest.api.domain.cms.Assignment(countySpecificCode, endDate, endTime,
             establishedForCode, establishedForId, caseLoadId, outOfStatePartyContactId,
