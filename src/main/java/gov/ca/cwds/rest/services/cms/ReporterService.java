@@ -1,14 +1,7 @@
 package gov.ca.cwds.rest.services.cms;
 
-import gov.ca.cwds.data.Dao;
-import gov.ca.cwds.data.cms.ReporterDao;
-import gov.ca.cwds.data.persistence.cms.Reporter;
-import gov.ca.cwds.rest.api.Request;
-import gov.ca.cwds.rest.api.domain.cms.PostedReporter;
-import gov.ca.cwds.rest.services.CrudsService;
-import gov.ca.cwds.rest.services.ServiceException;
-
 import java.io.Serializable;
+import java.util.Date;
 
 import javax.persistence.EntityExistsException;
 import javax.persistence.EntityNotFoundException;
@@ -17,6 +10,14 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.google.inject.Inject;
+
+import gov.ca.cwds.data.Dao;
+import gov.ca.cwds.data.cms.ReporterDao;
+import gov.ca.cwds.data.persistence.cms.Reporter;
+import gov.ca.cwds.rest.api.Request;
+import gov.ca.cwds.rest.api.domain.cms.PostedReporter;
+import gov.ca.cwds.rest.services.CrudsService;
+import gov.ca.cwds.rest.services.ServiceException;
 
 /**
  * Business layer object to work on {@link Reporter}
@@ -84,16 +85,46 @@ public class ReporterService implements CrudsService {
 
     gov.ca.cwds.rest.api.domain.cms.Reporter reporter =
         (gov.ca.cwds.rest.api.domain.cms.Reporter) request;
+    return create(reporter, null);
 
+  }
+
+  /**
+   * This createWithSingleTimestamp is used for the referrals to maintian the same timestamp for the
+   * whole transaction
+   * 
+   * @param request - request
+   * @param timestamp - timestamp
+   * @return the single timestamp
+   */
+  public PostedReporter createWithSingleTimestamp(Request request, Date timestamp) {
+    assert request instanceof gov.ca.cwds.rest.api.domain.cms.Reporter;
+
+    gov.ca.cwds.rest.api.domain.cms.Reporter reporter =
+        (gov.ca.cwds.rest.api.domain.cms.Reporter) request;
+    return create(reporter, timestamp);
+  }
+
+  /**
+   * This private method is created to handle to single reporter and referrals with single timestamp
+   * 
+   */
+  private PostedReporter create(gov.ca.cwds.rest.api.domain.cms.Reporter reporter, Date timestamp) {
     try {
       String lastUpdatedId = staffPersonIdRetriever.getStaffPersonId();
-      Reporter managed = new Reporter(reporter, lastUpdatedId);
+      Reporter managed;
+      if (timestamp == null) {
+        managed = new Reporter(reporter, lastUpdatedId);
+      } else {
+        managed = new Reporter(reporter, lastUpdatedId, timestamp);
+      }
       managed = reporterDao.create(managed);
       return new PostedReporter(managed);
     } catch (EntityExistsException e) {
       LOGGER.info("Reporter already exists : {}", reporter);
       throw new ServiceException(e);
     }
+
   }
 
   /**

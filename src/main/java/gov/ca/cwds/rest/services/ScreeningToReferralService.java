@@ -201,7 +201,7 @@ public class ScreeningToReferralService implements CrudsService {
     HashMap<Long, String> perpatratorClient = new HashMap<>();
 
     processParticipants(screeningToReferral, dateStarted, referralId, resultParticipants,
-        victimClient, perpatratorClient);
+        victimClient, perpatratorClient, timestamp);
 
     Set<CrossReport> resultCrossReports =
         createCrossReports(screeningToReferral, referralId, timestamp);
@@ -252,7 +252,7 @@ public class ScreeningToReferralService implements CrudsService {
 
   private void processParticipants(ScreeningToReferral screeningToReferral, String dateStarted,
       String referralId, Set<Participant> resultParticipants, HashMap<Long, String> victimClient,
-      HashMap<Long, String> perpatratorClient) {
+      HashMap<Long, String> perpatratorClient, Date timestamp) {
     Set<Participant> participants = screeningToReferral.getParticipants();
     for (Participant incomingParticipant : participants) {
 
@@ -289,7 +289,7 @@ public class ScreeningToReferralService implements CrudsService {
              * anonymous reporter or self-reported
              */
             try {
-              savedReporter = processReporter(incomingParticipant, role, referralId);
+              savedReporter = processReporter(incomingParticipant, role, referralId, timestamp);
               incomingParticipant.setLegacyId(savedReporter.getReferralId());
               incomingParticipant.setLegacySourceTable(REPORTER_TABLE_NAME);
             } catch (ServiceException e) {
@@ -931,7 +931,7 @@ public class ScreeningToReferralService implements CrudsService {
 
   }
 
-  private Reporter processReporter(Participant ip, String role, String referralId)
+  private Reporter processReporter(Participant ip, String role, String referralId, Date timestamp)
       throws ServiceException {
 
     gov.ca.cwds.rest.api.domain.Address reporterAddress = null;
@@ -963,7 +963,7 @@ public class ScreeningToReferralService implements CrudsService {
           reporterAddress, ip, DEFAULT_COUNTY_SPECIFIC_CODE, DEFAULT_STATE_CODE);
 
       messageBuilder.addDomainValidationError(validator.validate(reporter));
-      theReporter = reporterService.create(reporter);
+      theReporter = reporterService.createWithSingleTimestamp(reporter, timestamp);
     }
     return theReporter;
   }
