@@ -203,7 +203,8 @@ public class ScreeningToReferralService implements CrudsService {
     processParticipants(screeningToReferral, dateStarted, referralId, resultParticipants,
         victimClient, perpatratorClient);
 
-    Set<CrossReport> resultCrossReports = createCrossReports(screeningToReferral, referralId);
+    Set<CrossReport> resultCrossReports =
+        createCrossReports(screeningToReferral, referralId, timestamp);
 
     Set<Allegation> resultAllegations = createAllegations(screeningToReferral, referralId,
         victimClient, perpatratorClient, timestamp);
@@ -238,10 +239,10 @@ public class ScreeningToReferralService implements CrudsService {
   }
 
   private Set<CrossReport> createCrossReports(ScreeningToReferral screeningToReferral,
-      String referralId) {
+      String referralId, Date timestamp) {
     Set<CrossReport> resultCrossReports = null;
     try {
-      resultCrossReports = processCrossReports(screeningToReferral, referralId);
+      resultCrossReports = processCrossReports(screeningToReferral, referralId, timestamp);
     } catch (ServiceException e) {
       String message = e.getMessage();
       logError(message, e);
@@ -626,7 +627,7 @@ public class ScreeningToReferralService implements CrudsService {
    * CMS Cross Report
    */
   private Set<gov.ca.cwds.rest.api.domain.CrossReport> processCrossReports(ScreeningToReferral scr,
-      String referralId) throws ServiceException {
+      String referralId, Date timestamp) throws ServiceException {
 
     String crossReportId = "";
     Set<gov.ca.cwds.rest.api.domain.CrossReport> resultCrossReports = new HashSet<>();
@@ -669,7 +670,7 @@ public class ScreeningToReferralService implements CrudsService {
           messageBuilder.addDomainValidationError(validator.validate(cmsCrossReport));
 
           gov.ca.cwds.rest.api.domain.cms.CrossReport postedCrossReport =
-              this.crossReportService.create(cmsCrossReport);
+              this.crossReportService.createWithSingleTimestamp(cmsCrossReport, timestamp);
 
           crossReport.setLegacyId(postedCrossReport.getThirdId());
           crossReport.setLegacySourceTable(CROSS_REPORT_TABLE_NAME);

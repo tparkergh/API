@@ -178,7 +178,28 @@ public class CrossReport extends CmsPersistentObject {
   public CrossReport(String thirdId, gov.ca.cwds.rest.api.domain.cms.CrossReport crossReport,
       String lastUpdatedId) {
     super(lastUpdatedId);
+    init(thirdId, crossReport);
+  }
 
+  /**
+   * Constructor
+   * 
+   * @param thirdId The thirdId is unique key to CrossReport
+   * @param crossReport crossReport The domain object to construct this object from
+   * @param lastUpdatedId the id of the last person to update this object
+   * @param lastUpdatedTime the time of last person to update this object
+   */
+  public CrossReport(String thirdId, gov.ca.cwds.rest.api.domain.cms.CrossReport crossReport,
+      String lastUpdatedId, Date lastUpdatedTime) {
+    super(lastUpdatedId, lastUpdatedTime);
+    init(thirdId, crossReport);
+  }
+
+  /**
+   * @param id the id
+   * @param crossReport - crossReport
+   */
+  private void init(String thirdId, gov.ca.cwds.rest.api.domain.cms.CrossReport crossReport) {
     try {
       this.referralId = crossReport.getReferralId();
       this.thirdId = thirdId;
