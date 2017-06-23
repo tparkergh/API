@@ -113,7 +113,6 @@ public class Address extends BaseAddress {
   public Address(String id, gov.ca.cwds.rest.api.domain.cms.Address address, String lastUpdateId) {
     super(lastUpdateId);
     init(id, address);
-
   }
 
   /**
@@ -136,7 +135,6 @@ public class Address extends BaseAddress {
    * @param address - address
    */
   private void init(String id, gov.ca.cwds.rest.api.domain.cms.Address address) {
-
     try {
       this.id = id;
       this.city = address.getCity();
