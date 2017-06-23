@@ -149,6 +149,8 @@ public class MockedScreeningToReferralServiceBuilder {
     CrossReport postedCrossReport = mock(CrossReport.class);
     when(postedCrossReport.getThirdId()).thenReturn("4565678905");
     when(crossReportService.create(any(CrossReport.class))).thenReturn(postedCrossReport);
+    when(crossReportService.createWithSingleTimestamp(any(CrossReport.class), any(Date.class)))
+        .thenReturn(postedCrossReport);
   }
 
   /**

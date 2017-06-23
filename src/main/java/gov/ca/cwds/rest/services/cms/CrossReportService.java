@@ -1,14 +1,7 @@
 package gov.ca.cwds.rest.services.cms;
 
-import gov.ca.cwds.data.Dao;
-import gov.ca.cwds.data.cms.CrossReportDao;
-import gov.ca.cwds.data.persistence.cms.CmsKeyIdGenerator;
-import gov.ca.cwds.data.persistence.cms.CrossReport;
-import gov.ca.cwds.rest.api.Request;
-import gov.ca.cwds.rest.services.CrudsService;
-import gov.ca.cwds.rest.services.ServiceException;
-
 import java.io.Serializable;
+import java.util.Date;
 
 import javax.persistence.EntityExistsException;
 import javax.persistence.EntityNotFoundException;
@@ -17,6 +10,14 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.google.inject.Inject;
+
+import gov.ca.cwds.data.Dao;
+import gov.ca.cwds.data.cms.CrossReportDao;
+import gov.ca.cwds.data.persistence.cms.CmsKeyIdGenerator;
+import gov.ca.cwds.data.persistence.cms.CrossReport;
+import gov.ca.cwds.rest.api.Request;
+import gov.ca.cwds.rest.services.CrudsService;
+import gov.ca.cwds.rest.services.ServiceException;
 
 /**
  * Business layer object to work on {@link CrossReport}
@@ -88,12 +89,43 @@ public class CrossReportService implements CrudsService {
 
     gov.ca.cwds.rest.api.domain.cms.CrossReport crossReport =
         (gov.ca.cwds.rest.api.domain.cms.CrossReport) request;
+    return create(crossReport, null);
+  }
 
+  /**
+   * This createWithSingleTimestamp is used for the referrals to maintian the same timestamp for the
+   * whole transaction
+   * 
+   * @param request - request
+   * @param timestamp - timestamp
+   * @return the single timestamp
+   */
+  public gov.ca.cwds.rest.api.domain.cms.CrossReport createWithSingleTimestamp(Request request,
+      Date timestamp) {
+    assert request instanceof gov.ca.cwds.rest.api.domain.cms.CrossReport;
+
+    gov.ca.cwds.rest.api.domain.cms.CrossReport crossReport =
+        (gov.ca.cwds.rest.api.domain.cms.CrossReport) request;
+    return create(crossReport, timestamp);
+  }
+
+  /**
+   * This private method is created to handle to single crossReport and referrals with single
+   * timestamp
+   * 
+   */
+  private gov.ca.cwds.rest.api.domain.cms.CrossReport create(
+      gov.ca.cwds.rest.api.domain.cms.CrossReport crossReport, Date timestamp) {
     try {
       String lastUpdatedId = staffPersonIdRetriever.getStaffPersonId();
-      CrossReport managed =
-          new CrossReport(CmsKeyIdGenerator.generate(lastUpdatedId), crossReport,
-              lastUpdatedId);
+      CrossReport managed;
+      if (timestamp == null) {
+        managed =
+            new CrossReport(CmsKeyIdGenerator.generate(lastUpdatedId), crossReport, lastUpdatedId);
+      } else {
+        managed = new CrossReport(CmsKeyIdGenerator.generate(lastUpdatedId), crossReport,
+            lastUpdatedId, timestamp);
+      }
       managed = crossReportDao.create(managed);
       return new gov.ca.cwds.rest.api.domain.cms.CrossReport(managed);
     } catch (EntityExistsException e) {
@@ -109,7 +141,8 @@ public class CrossReportService implements CrudsService {
    *      gov.ca.cwds.rest.api.Request)
    */
   @Override
-  public gov.ca.cwds.rest.api.domain.cms.CrossReport update(Serializable primaryKey, Request request) {
+  public gov.ca.cwds.rest.api.domain.cms.CrossReport update(Serializable primaryKey,
+      Request request) {
     assert request instanceof gov.ca.cwds.rest.api.domain.cms.CrossReport;
     gov.ca.cwds.rest.api.domain.cms.CrossReport crossReport =
         (gov.ca.cwds.rest.api.domain.cms.CrossReport) request;
