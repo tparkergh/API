@@ -1,6 +1,7 @@
 package gov.ca.cwds.rest.services.cms;
 
 import java.io.Serializable;
+import java.util.Date;
 
 import javax.persistence.EntityExistsException;
 import javax.persistence.EntityNotFoundException;
@@ -110,10 +111,42 @@ public class ReferralService implements CrudsService {
     gov.ca.cwds.rest.api.domain.cms.Referral referral =
         (gov.ca.cwds.rest.api.domain.cms.Referral) request;
 
+    return create(referral, null);
+
+  }
+
+  /**
+   * This createWithSingleTimestamp is used for the referrals to maintian the same timestamp for the
+   * whole transaction
+   * 
+   * @param request - request
+   * @param timestamp - timestamp
+   * @return the single timestamp
+   */
+  public PostedReferral createWithSingleTimestamp(Request request, Date timestamp) {
+    assert request instanceof gov.ca.cwds.rest.api.domain.cms.Referral;
+
+    gov.ca.cwds.rest.api.domain.cms.Referral referral =
+        (gov.ca.cwds.rest.api.domain.cms.Referral) request;
+
+    return create(referral, timestamp);
+
+  }
+
+  /**
+   * This private method is created to handle to single referral and referrals with single timestamp
+   * 
+   */
+  private PostedReferral create(gov.ca.cwds.rest.api.domain.cms.Referral referral, Date timestamp) {
     try {
       String lastUpdatedId = staffPersonIdRetriever.getStaffPersonId();
-      Referral managed =
-          new Referral(CmsKeyIdGenerator.generate(lastUpdatedId), referral, lastUpdatedId);
+      Referral managed;
+      if (timestamp == null) {
+        managed = new Referral(CmsKeyIdGenerator.generate(lastUpdatedId), referral, lastUpdatedId);
+      } else {
+        managed = new Referral(CmsKeyIdGenerator.generate(lastUpdatedId), referral, lastUpdatedId,
+            timestamp);
+      }
       managed = referralDao.create(managed);
       if (managed.getId() == null) {
         throw new ServiceException("Referral ID cannot be null");

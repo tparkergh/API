@@ -1,15 +1,7 @@
 package gov.ca.cwds.rest.services.cms;
 
-import gov.ca.cwds.data.cms.AddressDao;
-import gov.ca.cwds.data.persistence.cms.Address;
-import gov.ca.cwds.data.persistence.cms.CmsKeyIdGenerator;
-import gov.ca.cwds.rest.api.Request;
-import gov.ca.cwds.rest.api.Response;
-import gov.ca.cwds.rest.api.domain.cms.PostedAddress;
-import gov.ca.cwds.rest.services.CrudsService;
-import gov.ca.cwds.rest.services.ServiceException;
-
 import java.io.Serializable;
+import java.util.Date;
 
 import javax.persistence.EntityExistsException;
 import javax.persistence.EntityNotFoundException;
@@ -18,6 +10,15 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.google.inject.Inject;
+
+import gov.ca.cwds.data.cms.AddressDao;
+import gov.ca.cwds.data.persistence.cms.Address;
+import gov.ca.cwds.data.persistence.cms.CmsKeyIdGenerator;
+import gov.ca.cwds.rest.api.Request;
+import gov.ca.cwds.rest.api.Response;
+import gov.ca.cwds.rest.api.domain.cms.PostedAddress;
+import gov.ca.cwds.rest.services.CrudsService;
+import gov.ca.cwds.rest.services.ServiceException;
 
 /**
  * @author CWDS API Team
@@ -46,10 +47,43 @@ public class AddressService implements CrudsService {
     gov.ca.cwds.rest.api.domain.cms.Address address =
         (gov.ca.cwds.rest.api.domain.cms.Address) request;
 
+    return create(address, null);
+
+  }
+
+  /**
+   * This createWithSingleTimestamp is used for the referrals to maintian the same timestamp for the
+   * whole transaction
+   * 
+   * @param request - request
+   * @param timestamp - timestamp
+   * @return the single timestamp
+   */
+  public Response createWithSingleTimestamp(Request request, Date timestamp) {
+    assert request instanceof gov.ca.cwds.rest.api.domain.cms.Address;
+
+    gov.ca.cwds.rest.api.domain.cms.Address address =
+        (gov.ca.cwds.rest.api.domain.cms.Address) request;
+
+    return create(address, timestamp);
+
+  }
+
+  /**
+   * This private method is created to handle to single address and referral address with single
+   * timestamp
+   * 
+   */
+  private PostedAddress create(gov.ca.cwds.rest.api.domain.cms.Address address, Date timestamp) {
     try {
       String lastUpdatedId = staffPersonIdRetriever.getStaffPersonId();
-      Address managed =
-          new Address(CmsKeyIdGenerator.generate(lastUpdatedId), address, lastUpdatedId);
+      Address managed;
+      if (timestamp == null) {
+        managed = new Address(CmsKeyIdGenerator.generate(lastUpdatedId), address, lastUpdatedId);
+      } else {
+        managed = new Address(CmsKeyIdGenerator.generate(lastUpdatedId), address, lastUpdatedId,
+            timestamp);
+      }
       managed = addressDao.create(managed);
       if (managed.getId() == null) {
         throw new ServiceException("Address ID cannot be null");

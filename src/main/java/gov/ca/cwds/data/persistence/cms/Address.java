@@ -1,6 +1,7 @@
 package gov.ca.cwds.data.persistence.cms;
 
 import java.math.BigDecimal;
+import java.util.Date;
 
 import javax.persistence.Entity;
 import javax.persistence.PersistenceException;
@@ -103,12 +104,39 @@ public class Address extends BaseAddress {
   }
 
   /**
+   * Constructor
+   * 
    * @param id - Address identifier
    * @param address - domain Address object
    * @param lastUpdateId - staff person Id
    */
   public Address(String id, gov.ca.cwds.rest.api.domain.cms.Address address, String lastUpdateId) {
     super(lastUpdateId);
+    init(id, address);
+
+  }
+
+  /**
+   * Constructor
+   * 
+   * @param id -Address identifier
+   * @param address - domain Address object
+   * @param lastUpdateId - staff person Id
+   * @param lastUpdatedTime - timestamp
+   */
+  public Address(String id, gov.ca.cwds.rest.api.domain.cms.Address address, String lastUpdateId,
+      Date lastUpdatedTime) {
+    super(lastUpdateId, lastUpdatedTime);
+    init(id, address);
+  }
+
+  /**
+   * 
+   * @param id - id
+   * @param address - address
+   */
+  private void init(String id, gov.ca.cwds.rest.api.domain.cms.Address address) {
+
     try {
       this.id = id;
       this.city = address.getCity();

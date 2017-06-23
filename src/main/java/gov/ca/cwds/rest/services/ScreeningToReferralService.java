@@ -3,6 +3,7 @@ package gov.ca.cwds.rest.services;
 import java.io.Serializable;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -175,6 +176,8 @@ public class ScreeningToReferralService implements CrudsService {
 
     verifyReferralHasValidParticipants(screeningToReferral);
 
+    Date timestamp = new Date();
+
     /**
      * <blockquote>
      * 
@@ -188,7 +191,7 @@ public class ScreeningToReferralService implements CrudsService {
     String dateStarted = ParticipantValidator.extractStartDate(screeningToReferral, messageBuilder);
     String timeStarted = ParticipantValidator.extractStartTime(screeningToReferral, messageBuilder);
 
-    String referralId = createCmsReferral(screeningToReferral, dateStarted, timeStarted);
+    String referralId = createCmsReferral(screeningToReferral, dateStarted, timeStarted, timestamp);
 
     Set<Participant> resultParticipants = new HashSet<>();
     HashMap<Long, String> victimClient = new HashMap<>();
@@ -385,10 +388,10 @@ public class ScreeningToReferralService implements CrudsService {
     } // next participant
   }
 
-  private void createReferralAddress(ScreeningToReferral screeningToReferral) {
+  private void createReferralAddress(ScreeningToReferral screeningToReferral, Date timestamp) {
     try {
       gov.ca.cwds.rest.api.domain.Address referralAddress =
-          processReferralAddress(screeningToReferral);
+          processReferralAddress(screeningToReferral, timestamp);
       screeningToReferral.setAddress(referralAddress);
     } catch (ServiceException e1) {
       String message = e1.getMessage();
@@ -397,7 +400,7 @@ public class ScreeningToReferralService implements CrudsService {
   }
 
   private String createCmsReferral(ScreeningToReferral screeningToReferral, String dateStarted,
-      String timeStarted) {
+      String timeStarted, Date timestamp) {
     String referralId = null;
 
     if (screeningToReferral.getReferralId() == null
@@ -406,7 +409,8 @@ public class ScreeningToReferralService implements CrudsService {
       // create a CMS Referral
       Referral referral = null;
       try {
-        referral = createReferralWithDefaults(screeningToReferral, dateStarted, timeStarted);
+        referral =
+            createReferralWithDefaults(screeningToReferral, dateStarted, timeStarted, timestamp);
       } catch (Exception e1) {
         String message = e1.getMessage();
         logError(message, e1);
@@ -414,7 +418,8 @@ public class ScreeningToReferralService implements CrudsService {
 
       messageBuilder.addDomainValidationError(validator.validate(referral));
 
-      PostedReferral postedReferral = this.referralService.create(referral);
+      PostedReferral postedReferral =
+          this.referralService.createWithSingleTimestamp(referral, timestamp);
       referralId = postedReferral.getId();
       // createDefaultAssignmentForNewReferral(referralId);
       // TODO: R - 01054 Prmary Assignment Adding
@@ -440,7 +445,7 @@ public class ScreeningToReferralService implements CrudsService {
    * @throws Exception - Exception
    */
   public Referral createReferralWithDefaults(ScreeningToReferral screeningToReferral,
-      String dateStarted, String timeStarted) throws Exception {
+      String dateStarted, String timeStarted, Date timestamp) throws Exception {
     short approvalStatusCode = approvalStatusCodeOnCreateSetToNotSubmitted();
     String longTextId = generateLongTextId(screeningToReferral);
     String firstResponseDeterminedByStaffPersonId = getFirstResponseDeterminedByStaffPersonId();
@@ -456,7 +461,7 @@ public class ScreeningToReferralService implements CrudsService {
      * create the referralAddress and assign the value to the
      * allegesAbuseOccurredAtAddressId(FKADDRS_T)
      */
-    createReferralAddress(screeningToReferral);
+    createReferralAddress(screeningToReferral, timestamp);
     String allegesAbuseOccurredAtAddressId = screeningToReferral.getAddress().getLegacyId();
 
     return Referral.createWithDefaults(ParticipantValidator.anonymousReporter(screeningToReferral),
@@ -892,8 +897,8 @@ public class ScreeningToReferralService implements CrudsService {
     return foundClientAddress != null && !foundClientAddress.isEmpty();
   }
 
-  private gov.ca.cwds.rest.api.domain.Address processReferralAddress(ScreeningToReferral scr)
-      throws ServiceException {
+  private gov.ca.cwds.rest.api.domain.Address processReferralAddress(ScreeningToReferral scr,
+      Date timestamp) throws ServiceException {
     gov.ca.cwds.rest.api.domain.Address address = scr.getAddress();
     if (address == null || address.getZip() == null || address.getStreetAddress() == null
         || address.getStreetAddress().isEmpty() || address.getType() == null) {
@@ -907,7 +912,8 @@ public class ScreeningToReferralService implements CrudsService {
 
       messageBuilder.addDomainValidationError(validator.validate(domainAddress));
 
-      PostedAddress postedAddress = (PostedAddress) this.addressService.create(domainAddress);
+      PostedAddress postedAddress =
+          (PostedAddress) this.addressService.createWithSingleTimestamp(domainAddress, timestamp);
 
       address.setLegacyId(postedAddress.getExistingAddressId());
       address.setLegacySourceTable("ADDRS_T");

@@ -193,7 +193,7 @@ public class R05914DoNotUpdateApprovalStatusTypeTest {
         .thenReturn(drmsDocumentToCreate);
 
     Referral referralCreated = screeningToReferralService.createReferralWithDefaults(
-        screeningToReferral, "2016-08-03T01:00:00.000Z", "2016-08-03T01:00:00.000Z");
+        screeningToReferral, "2016-08-03T01:00:00.000Z", "2016-08-03T01:00:00.000Z", null);
     System.out.println(referralCreated.getApprovalStatusType());
     assertThat(referralCreated.getApprovalStatusType(), is(equalTo((short) 118)));
   }

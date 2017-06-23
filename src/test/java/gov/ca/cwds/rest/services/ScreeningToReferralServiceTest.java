@@ -222,8 +222,7 @@ public class ScreeningToReferralServiceTest {
 
     Set<Client> clientDomain =
         MAPPER.readValue(fixture("fixtures/domain/ScreeningToReferral/valid/validClient.json"),
-            new TypeReference<Set<Client>>() {
-            });
+            new TypeReference<Set<Client>>() {});
     gov.ca.cwds.data.persistence.cms.Client clientToCreate =
         new gov.ca.cwds.data.persistence.cms.Client("1234567ABC",
             (Client) clientDomain.toArray()[0], "2016-10-31");
@@ -235,24 +234,21 @@ public class ScreeningToReferralServiceTest {
 
     Set<ReferralClient> referralClientDomain = MAPPER.readValue(
         fixture("fixtures/domain/ScreeningToReferral/valid/validReferralClient.json"),
-        new TypeReference<Set<ReferralClient>>() {
-        });
+        new TypeReference<Set<ReferralClient>>() {});
     gov.ca.cwds.data.persistence.cms.ReferralClient referralClientToCreate =
         new gov.ca.cwds.data.persistence.cms.ReferralClient(
             (ReferralClient) referralClientDomain.toArray()[0], "2016-10-31");
 
     Set<Allegation> allegationDomain =
         MAPPER.readValue(fixture("fixtures/domain/ScreeningToReferral/valid/validAllegation.json"),
-            new TypeReference<Set<Allegation>>() {
-            });
+            new TypeReference<Set<Allegation>>() {});
     gov.ca.cwds.data.persistence.cms.Allegation allegationToCreate =
         new gov.ca.cwds.data.persistence.cms.Allegation("2345678ABC",
             (Allegation) allegationDomain.toArray()[0], "2016-10-31");
 
     Set<CrossReport> crossReportDomain =
         MAPPER.readValue(fixture("fixtures/domain/ScreeningToReferral/valid/validCrossReport.json"),
-            new TypeReference<Set<CrossReport>>() {
-            });
+            new TypeReference<Set<CrossReport>>() {});
     gov.ca.cwds.data.persistence.cms.CrossReport crossReportToCreate =
         new gov.ca.cwds.data.persistence.cms.CrossReport("3456789ABC",
             // ((CrossReport) crossReportDomain).getThirdId(),
@@ -352,7 +348,7 @@ public class ScreeningToReferralServiceTest {
         .thenReturn(longTextToCreate);
 
     Referral referralCreated = screeningToReferralService.createReferralWithDefaults(
-        screeningToReferral, "2016-08-03T01:00:00.000Z", "2016-08-03T01:00:00.000Z");
+        screeningToReferral, "2016-08-03T01:00:00.000Z", "2016-08-03T01:00:00.000Z", null);
     assertThat(referralCreated.getApprovalStatusType(), is(equalTo((short) 118)));
   }
 
@@ -406,8 +402,7 @@ public class ScreeningToReferralServiceTest {
         .thenReturn(childClientToCreate);
     Set<Client> clientDomain =
         MAPPER.readValue(fixture("fixtures/domain/ScreeningToReferral/valid/validClient.json"),
-            new TypeReference<Set<Client>>() {
-            });
+            new TypeReference<Set<Client>>() {});
     gov.ca.cwds.data.persistence.cms.Client clientToCreate =
         new gov.ca.cwds.data.persistence.cms.Client("1234567ABC",
             (Client) clientDomain.toArray()[0], "2016-10-31");
@@ -416,8 +411,7 @@ public class ScreeningToReferralServiceTest {
 
     Set<ReferralClient> referralClientDomain = MAPPER.readValue(
         fixture("fixtures/domain/ScreeningToReferral/valid/validReferralClient.json"),
-        new TypeReference<Set<ReferralClient>>() {
-        });
+        new TypeReference<Set<ReferralClient>>() {});
     gov.ca.cwds.data.persistence.cms.ReferralClient referralClientToCreate =
         new gov.ca.cwds.data.persistence.cms.ReferralClient(
             (ReferralClient) referralClientDomain.toArray()[0], "2016-10-31");
@@ -426,8 +420,7 @@ public class ScreeningToReferralServiceTest {
 
     Set<Allegation> allegationDomain =
         MAPPER.readValue(fixture("fixtures/domain/ScreeningToReferral/valid/validAllegation.json"),
-            new TypeReference<Set<Allegation>>() {
-            });
+            new TypeReference<Set<Allegation>>() {});
     gov.ca.cwds.data.persistence.cms.Allegation allegationToCreate =
         new gov.ca.cwds.data.persistence.cms.Allegation("2345678ABC",
             (Allegation) allegationDomain.toArray()[0], "2016-10-31");
@@ -436,8 +429,7 @@ public class ScreeningToReferralServiceTest {
 
     Set<CrossReport> crossReportDomain =
         MAPPER.readValue(fixture("fixtures/domain/ScreeningToReferral/valid/validCrossReport.json"),
-            new TypeReference<Set<CrossReport>>() {
-            });
+            new TypeReference<Set<CrossReport>>() {});
     gov.ca.cwds.data.persistence.cms.CrossReport crossReportToCreate =
         new gov.ca.cwds.data.persistence.cms.CrossReport("3456789ABC",
             // ((CrossReport) crossReportDomain).getThirdId(),
@@ -508,8 +500,7 @@ public class ScreeningToReferralServiceTest {
         .thenReturn(childClientToCreate);
     Set<Client> clientDomain =
         MAPPER.readValue(fixture("fixtures/domain/ScreeningToReferral/valid/validClient.json"),
-            new TypeReference<Set<Client>>() {
-            });
+            new TypeReference<Set<Client>>() {});
     gov.ca.cwds.data.persistence.cms.Client clientToCreate =
         new gov.ca.cwds.data.persistence.cms.Client("1234567ABC",
             (Client) clientDomain.toArray()[0], "2016-10-31");
@@ -518,8 +509,7 @@ public class ScreeningToReferralServiceTest {
 
     Set<ReferralClient> referralClientDomain = MAPPER.readValue(
         fixture("fixtures/domain/ScreeningToReferral/valid/validReferralClient.json"),
-        new TypeReference<Set<ReferralClient>>() {
-        });
+        new TypeReference<Set<ReferralClient>>() {});
     gov.ca.cwds.data.persistence.cms.ReferralClient referralClientToCreate =
         new gov.ca.cwds.data.persistence.cms.ReferralClient(
             (ReferralClient) referralClientDomain.toArray()[0], "2016-10-31");
@@ -528,8 +518,7 @@ public class ScreeningToReferralServiceTest {
 
     Set<Allegation> allegationDomain =
         MAPPER.readValue(fixture("fixtures/domain/ScreeningToReferral/valid/validAllegation.json"),
-            new TypeReference<Set<Allegation>>() {
-            });
+            new TypeReference<Set<Allegation>>() {});
     gov.ca.cwds.data.persistence.cms.Allegation allegationToCreate =
         new gov.ca.cwds.data.persistence.cms.Allegation("2345678ABC",
             (Allegation) allegationDomain.toArray()[0], "2016-10-31");
@@ -538,8 +527,7 @@ public class ScreeningToReferralServiceTest {
 
     Set<CrossReport> crossReportDomain =
         MAPPER.readValue(fixture("fixtures/domain/ScreeningToReferral/valid/validCrossReport.json"),
-            new TypeReference<Set<CrossReport>>() {
-            });
+            new TypeReference<Set<CrossReport>>() {});
     gov.ca.cwds.data.persistence.cms.CrossReport crossReportToCreate =
         new gov.ca.cwds.data.persistence.cms.CrossReport("3456789ABC",
             // ((CrossReport) crossReportDomain).getThirdId(),
@@ -3427,6 +3415,7 @@ public class ScreeningToReferralServiceTest {
     addressService = mock(AddressService.class);
     when(addressService.find(any())).thenReturn(existingAddress);
     when(addressService.create(any())).thenReturn(postedAddress);
+    when(addressService.createWithSingleTimestamp(any(), any())).thenReturn(postedAddress);
 
     screeningToReferralService = new MockedScreeningToReferralServiceBuilder()
         .addClientAddressService(clientAddressService).addDrmsDocumentService(drmsDocumentService)
@@ -4008,6 +3997,7 @@ public class ScreeningToReferralServiceTest {
     addressService = mock(AddressService.class);
     when(addressService.find(address.getLegacyId())).thenReturn(victimFoundAddress);
     when(addressService.create(any())).thenReturn(perpCreatedAddress);
+    when(addressService.createWithSingleTimestamp(any(), any())).thenReturn(perpCreatedAddress);
     when(drmsDocumentDao.create(any())).thenReturn(drmsDocument);
 
     clientAddressService = mock(ClientAddressService.class);
@@ -4168,7 +4158,8 @@ public class ScreeningToReferralServiceTest {
     clientAddressService = mock(ClientAddressService.class);
     when(clientAddressService.find(any())).thenReturn(clientAddress);
 
-    when(clientAddressService.findByAddressAndClient(any(), any())).thenReturn(foundClientAddresses);
+    when(clientAddressService.findByAddressAndClient(any(), any()))
+        .thenReturn(foundClientAddresses);
     clientService = mock(ClientService.class);
     when(clientService.find(any())).thenReturn(savedClient);
     when(clientService.create(any())).thenReturn(savedClient);
@@ -4183,6 +4174,7 @@ public class ScreeningToReferralServiceTest {
     addressService = mock(AddressService.class);
     when(addressService.find(any())).thenReturn(foundAddress);
     when(addressService.create(any())).thenReturn(postedAddress);
+    when(addressService.createWithSingleTimestamp(any(), any())).thenReturn(postedAddress);
 
     screeningToReferralService = new MockedScreeningToReferralServiceBuilder()
         .addAddressService(addressService).addClientAddressService(clientAddressService)
@@ -4194,7 +4186,8 @@ public class ScreeningToReferralServiceTest {
     assertFalse(response.hasMessages());
     verify(addressService, times(numberOfReportingVictimsRoles)).find(eq(addressId1));
     verify(addressService).find(eq(addressId2));
-    verify(clientAddressService, times(numberOfReportingVictimsRoles)).findByAddressAndClient(address1, selfReportingVictim);
+    verify(clientAddressService, times(numberOfReportingVictimsRoles))
+        .findByAddressAndClient(address1, selfReportingVictim);
     verify(clientAddressService).findByAddressAndClient(address2, perp);
   }
 
