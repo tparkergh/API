@@ -130,6 +130,8 @@ public class MockedScreeningToReferralServiceBuilder {
     PostedAllegation postedAllegation = mock(PostedAllegation.class);
     when(postedAllegation.getId()).thenReturn("3453454323");
     when(allegationService.create(any(Allegation.class))).thenReturn(postedAllegation);
+    when(allegationService.createWithSingleTimestamp(any(Allegation.class), any(Date.class)))
+        .thenReturn(postedAllegation);
   }
 
   /**

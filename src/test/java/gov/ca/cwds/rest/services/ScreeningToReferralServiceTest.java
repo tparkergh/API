@@ -4135,12 +4135,12 @@ public class ScreeningToReferralServiceTest {
             .setStreetAddress("123 First St").createAddress();
 
     Participant selfReportingVictim = new ParticipantResourceBuilder()
-        .setRoles(new HashSet(Arrays.asList("Non-mandated Reporter", "Victim")))
+        .setRoles(new HashSet<>(Arrays.asList("Non-mandated Reporter", "Victim")))
         .setAddresses(new HashSet<>(Arrays.asList(address1))).createParticipant();
     int numberOfReportingVictimsRoles = selfReportingVictim.getRoles().size();
     Participant perp = new ParticipantResourceBuilder()
         .setAddresses(new HashSet<>(Arrays.asList(address2))).createPerpParticipant();
-    Set participants = new HashSet(Arrays.asList(selfReportingVictim, perp));
+    Set participants = new HashSet<>(Arrays.asList(selfReportingVictim, perp));
     ScreeningToReferral referral = new ScreeningToReferralResourceBuilder()
         .setParticipants(participants).createScreeningToReferral();
 

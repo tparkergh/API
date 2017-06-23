@@ -176,6 +176,9 @@ public class ScreeningToReferralService implements CrudsService {
 
     verifyReferralHasValidParticipants(screeningToReferral);
 
+    /**
+     * For the referral transaction all the persisted objects lastupdatedTime should be unique
+     */
     Date timestamp = new Date();
 
     /**
@@ -202,8 +205,8 @@ public class ScreeningToReferralService implements CrudsService {
 
     Set<CrossReport> resultCrossReports = createCrossReports(screeningToReferral, referralId);
 
-    Set<Allegation> resultAllegations =
-        createAllegations(screeningToReferral, referralId, victimClient, perpatratorClient);
+    Set<Allegation> resultAllegations = createAllegations(screeningToReferral, referralId,
+        victimClient, perpatratorClient, timestamp);
 
     PostedScreeningToReferral pstr = PostedScreeningToReferral.createWithDefaults(referralId,
         screeningToReferral, resultParticipants, resultCrossReports, resultAllegations);
@@ -222,11 +225,11 @@ public class ScreeningToReferralService implements CrudsService {
 
   private Set<Allegation> createAllegations(ScreeningToReferral screeningToReferral,
       String referralId, HashMap<Long, String> victimClient,
-      HashMap<Long, String> perpatratorClient) {
+      HashMap<Long, String> perpatratorClient, Date timestamp) {
     Set<Allegation> resultAllegations = null;
     try {
-      resultAllegations =
-          processAllegations(screeningToReferral, referralId, perpatratorClient, victimClient);
+      resultAllegations = processAllegations(screeningToReferral, referralId, perpatratorClient,
+          victimClient, timestamp);
     } catch (ServiceException e) {
       String message = e.getMessage();
       logError(message, e);
@@ -692,7 +695,7 @@ public class ScreeningToReferralService implements CrudsService {
    * CMS Allegation - one for each allegation
    */
   private Set<Allegation> processAllegations(ScreeningToReferral scr, String referralId,
-      HashMap<Long, String> perpatratorClient, HashMap<Long, String> victimClient)
+      HashMap<Long, String> perpatratorClient, HashMap<Long, String> victimClient, Date timestamp)
       throws ServiceException {
 
     Set<Allegation> processedAllegations = new HashSet<>();
@@ -780,7 +783,8 @@ public class ScreeningToReferralService implements CrudsService {
 
         messageBuilder.addDomainValidationError(validator.validate(cmsAllegation));
 
-        PostedAllegation postedAllegation = this.allegationService.create(cmsAllegation);
+        PostedAllegation postedAllegation =
+            this.allegationService.createWithSingleTimestamp(cmsAllegation, timestamp);
         allegation.setLegacyId(postedAllegation.getId());
         allegation.setLegacySourceTable(ALLEGATION_TABLE_NAME);
         processedAllegations.add(allegation);
