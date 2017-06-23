@@ -7,14 +7,10 @@ import java.util.Date;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
-import javax.persistence.Inheritance;
-import javax.persistence.InheritanceType;
 import javax.persistence.Table;
 
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
-import org.hibernate.annotations.DiscriminatorFormula;
-import org.hibernate.annotations.DiscriminatorOptions;
 import org.hibernate.annotations.Type;
 
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
@@ -31,9 +27,6 @@ import gov.ca.cwds.rest.api.domain.DomainChef;
 @SuppressWarnings("serial")
 @Entity
 @Table(name = "ASGNM_T")
-@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
-@DiscriminatorFormula("case when ESTBLSH_CD = 'R' then 'REFERRAL' when ESTBLSH_CD = 'C' then 'CASE' end ")
-@DiscriminatorOptions(force = true)
 public class Assignment extends CmsPersistentObject {
 
   @Column(name = "CNTY_SPFCD", length = 2)

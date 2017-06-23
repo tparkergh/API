@@ -40,6 +40,9 @@ public abstract class BaseAssignment extends CmsPersistentObject {
   @Column(name = "IDENTIFIER", length = CMS_ID_LEN)
   private String id;
 
+  @Column(name = "ESTBLSH_ID", length = CMS_ID_LEN, insertable = false, updatable = false)
+  protected String establishedForId;
+
   @Column(name = "CNTY_SPFCD", length = 2)
   private String countySpecificCode;
 
@@ -235,8 +238,12 @@ public abstract class BaseAssignment extends CmsPersistentObject {
     return EqualsBuilder.reflectionEquals(this, obj, false);
   }
 
-  public abstract String getEstablishedForId();
+  public String getEstablishedForId() {
+    return establishedForId;
+  }
 
-  public abstract void setEstablishedForId(String establishedForId);
+  public void setEstablishedForId(String establishedForId) {
+    this.establishedForId = establishedForId;
+  }
 
 }
