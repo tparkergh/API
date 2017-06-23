@@ -36,6 +36,10 @@ import gov.ca.cwds.rest.api.domain.DomainChef;
 @DiscriminatorOptions(force = true)
 public abstract class BaseAssignment extends CmsPersistentObject {
 
+  @Id
+  @Column(name = "IDENTIFIER", length = CMS_ID_LEN)
+  private String id;
+
   @Column(name = "CNTY_SPFCD", length = 2)
   private String countySpecificCode;
 
@@ -55,10 +59,6 @@ public abstract class BaseAssignment extends CmsPersistentObject {
 
   @Column(name = "FKOST_PTYT", length = CMS_ID_LEN)
   private String fkOutOfStateContactParty;
-
-  @Id
-  @Column(name = "IDENTIFIER", length = CMS_ID_LEN)
-  private String id;
 
   @Column(name = "RESPL_DSC", length = 160)
   private String responsibilityDescription;
@@ -84,6 +84,76 @@ public abstract class BaseAssignment extends CmsPersistentObject {
   @Column(name = "WGHTNG_NO", length = 5)
   private BigDecimal weightingNumber;
 
+  /**
+   * Default constructor. Required for Hibernate
+   */
+  public BaseAssignment() {
+    super();
+  }
+
+  /**
+   * Construct from all fields.
+   * 
+   * @param countySpecificCode - county code of case load with this assignment
+   * @param endDate - end date of assignment
+   * @param endTime - end time of assignment
+   * @param establishedForCode - referral or case
+   * @param establishedForId - referral or case Id
+   * @param fkCaseLoad - foreign key to the case load
+   * @param fkOutOfStateContactParty - foreign ky to the out of state contact party
+   * @param responsibilityDescription - description
+   * @param secondaryAssignmentRoleType - primary or secondary
+   * @param startDate - start date of assignment
+   * @param startTime - end date of assignment
+   * @param typeOfAssignmentCode - primary, secondary, or read only
+   * @param weightingNumber - weighting within case load
+   */
+  public BaseAssignment(String countySpecificCode, Date endDate, Date endTime,
+      String establishedForCode, String establishedForId, String fkCaseLoad,
+      String fkOutOfStateContactParty, String responsibilityDescription,
+      Short secondaryAssignmentRoleType, Date startDate, Date startTime,
+      String typeOfAssignmentCode, BigDecimal weightingNumber) {
+    super();
+    setEstablishedForId(establishedForId);
+    this.countySpecificCode = countySpecificCode;
+    this.endDate = endDate;
+    this.endTime = endTime;
+    this.establishedForCode = establishedForCode;
+    this.fkCaseLoad = fkCaseLoad;
+    this.fkOutOfStateContactParty = fkOutOfStateContactParty;
+    this.responsibilityDescription = responsibilityDescription;
+    this.secondaryAssignmentRoleType = secondaryAssignmentRoleType;
+    this.startDate = startDate;
+    this.startTime = startTime;
+    this.typeOfAssignmentCode = typeOfAssignmentCode;
+    this.weightingNumber = weightingNumber;
+  }
+
+  /**
+   * @param id - Assignment Id
+   * @param pa - persisted Assignment object
+   * @param lastUpdateId - staff person id
+   */
+  public BaseAssignment(String id, gov.ca.cwds.rest.api.domain.cms.Assignment pa,
+      String lastUpdateId) {
+    super(lastUpdateId);
+    setEstablishedForId(pa.getEstablishedForId());
+    this.id = id;
+    this.countySpecificCode = pa.getCountySpecificCode();
+    this.endDate = DomainChef.uncookDateString(pa.getEndDate());
+    this.endTime = DomainChef.uncookTimeString(pa.getEndTime());
+    this.establishedForCode = pa.getEstablishedForCode();
+    this.fkCaseLoad = pa.getCaseLoadId();
+    this.fkOutOfStateContactParty = pa.getOutOfStateContactId();
+    this.responsibilityDescription = pa.getResponsibilityDescription();
+    this.secondaryAssignmentRoleType = pa.getSecondaryAssignmentRoleType();
+    this.startDate = DomainChef.uncookDateString(pa.getStartDate());
+    this.startTime = DomainChef.uncookTimeString(pa.getStartTime());
+    this.typeOfAssignmentCode = pa.getTypeOfAssignmentCode();
+    this.weightingNumber = pa.getWeightingNumber();
+  }
+
+
   @SuppressWarnings("javadoc")
   public String getCountySpecificCode() {
     return countySpecificCode;
@@ -103,10 +173,6 @@ public abstract class BaseAssignment extends CmsPersistentObject {
   public String getEstablishedForCode() {
     return establishedForCode;
   }
-
-  public abstract String getEstablishedForId();
-
-  public abstract void setEstablishedForId(String establishedForId);
 
   @SuppressWarnings("javadoc")
   public String getFkCaseLoad() {
@@ -158,75 +224,6 @@ public abstract class BaseAssignment extends CmsPersistentObject {
     return getId();
   }
 
-  /**
-   * Default constructor
-   * 
-   * Required for Hibernate
-   */
-  public BaseAssignment() {
-    super();
-  }
-
-  /**
-   * @param countySpecificCode - county code of case load with this assignment
-   * @param endDate - end date of assignment
-   * @param endTime - end time of assignment
-   * @param establishedForCode - referral or case
-   * @param establishedForId - referral or case Id
-   * @param fkCaseLoad - foreign key to the case load
-   * @param fkOutOfStateContactParty - foreign ky to the out of state contact party
-   * @param responsibilityDescription - description
-   * @param secondaryAssignmentRoleType - primary or secondary
-   * @param startDate - start date of assignment
-   * @param startTime - end date of assignment
-   * @param typeOfAssignmentCode - primary, secondary, or read only
-   * @param weightingNumber - weighting within case load
-   */
-  public BaseAssignment(String countySpecificCode, Date endDate, Date endTime,
-      String establishedForCode, String establishedForId, String fkCaseLoad,
-      String fkOutOfStateContactParty, String responsibilityDescription,
-      Short secondaryAssignmentRoleType, Date startDate, Date startTime,
-      String typeOfAssignmentCode, BigDecimal weightingNumber) {
-    super();
-    this.countySpecificCode = countySpecificCode;
-    this.endDate = endDate;
-    this.endTime = endTime;
-    this.establishedForCode = establishedForCode;
-    setEstablishedForId(establishedForId);
-    this.fkCaseLoad = fkCaseLoad;
-    this.fkOutOfStateContactParty = fkOutOfStateContactParty;
-    this.responsibilityDescription = responsibilityDescription;
-    this.secondaryAssignmentRoleType = secondaryAssignmentRoleType;
-    this.startDate = startDate;
-    this.startTime = startTime;
-    this.typeOfAssignmentCode = typeOfAssignmentCode;
-    this.weightingNumber = weightingNumber;
-  }
-
-  /**
-   * @param id - Assignment Id
-   * @param pa - persisted Assignment object
-   * @param lastUpdateId - staff person id
-   */
-  public BaseAssignment(String id, gov.ca.cwds.rest.api.domain.cms.Assignment pa,
-      String lastUpdateId) {
-    super(lastUpdateId);
-    this.id = id;
-    this.countySpecificCode = pa.getCountySpecificCode();
-    this.endDate = DomainChef.uncookDateString(pa.getEndDate());
-    this.endTime = DomainChef.uncookTimeString(pa.getEndTime());
-    this.establishedForCode = pa.getEstablishedForCode();
-    setEstablishedForId(pa.getEstablishedForId());
-    this.fkCaseLoad = pa.getCaseLoadId();
-    this.fkOutOfStateContactParty = pa.getOutOfStateContactId();
-    this.responsibilityDescription = pa.getResponsibilityDescription();
-    this.secondaryAssignmentRoleType = pa.getSecondaryAssignmentRoleType();
-    this.startDate = DomainChef.uncookDateString(pa.getStartDate());
-    this.startTime = DomainChef.uncookTimeString(pa.getStartTime());
-    this.typeOfAssignmentCode = pa.getTypeOfAssignmentCode();
-    this.weightingNumber = pa.getWeightingNumber();
-  }
-
   @Override
   public final int hashCode() {
     return HashCodeBuilder.reflectionHashCode(this, false);
@@ -237,5 +234,9 @@ public abstract class BaseAssignment extends CmsPersistentObject {
   public final boolean equals(Object obj) {
     return EqualsBuilder.reflectionEquals(this, obj, false);
   }
+
+  public abstract String getEstablishedForId();
+
+  public abstract void setEstablishedForId(String establishedForId);
 
 }

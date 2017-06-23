@@ -7,7 +7,8 @@ import javax.persistence.Column;
 import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
+import javax.persistence.OneToOne;
+import javax.persistence.PrimaryKeyJoinColumn;
 
 /**
  * {@link CmsPersistentObject} representing a Referral Assignment.
@@ -16,6 +17,7 @@ import javax.persistence.ManyToOne;
  */
 @Entity(name = "ReferralAssignment")
 @DiscriminatorValue(value = "REFERRAL")
+@PrimaryKeyJoinColumn(name = "IDENTIFIER")
 @SuppressWarnings("serial")
 public class ReferralAssignment extends BaseAssignment {
 
@@ -24,8 +26,11 @@ public class ReferralAssignment extends BaseAssignment {
   @Column(name = "ESTBLSH_ID", length = CMS_ID_LEN, insertable = false, updatable = false)
   protected String establishedForId;
 
-  @ManyToOne
-  @JoinColumn(name = "ESTBLSH_ID", referencedColumnName = "IDENTIFIER")
+  // @ManyToOne(optional = false)
+  @OneToOne
+  // @JoinColumn(name = "ESTBLSH_ID", referencedColumnName = "IDENTIFIER")
+  @JoinColumn(name = "IDENTIFIER", referencedColumnName = "ESTBLSH_ID")
+  // @JoinColumn(name = "ESTBLSH_ID")
   private Referral referral;
 
   /**
@@ -35,6 +40,23 @@ public class ReferralAssignment extends BaseAssignment {
     super();
   }
 
+  /**
+   * Construct from all fields.
+   * 
+   * @param countySpecificCode - county code of case load with this assignment
+   * @param endDate - end date of assignment
+   * @param endTime - end time of assignment
+   * @param establishedForCode - referral or case
+   * @param establishedForId - referral or case Id
+   * @param fkCaseLoad - foreign key to the case load
+   * @param fkOutOfStateContactParty - foreign ky to the out of state contact party
+   * @param responsibilityDescription - description
+   * @param secondaryAssignmentRoleType - primary or secondary
+   * @param startDate - start date of assignment
+   * @param startTime - end date of assignment
+   * @param typeOfAssignmentCode - primary, secondary, or read only
+   * @param weightingNumber - weighting within case load
+   */
   public ReferralAssignment(String countySpecificCode, Date endDate, Date endTime,
       String establishedForCode, String establishedForId, String fkCaseLoad,
       String fkOutOfStateContactParty, String responsibilityDescription,
