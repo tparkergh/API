@@ -13,6 +13,11 @@ import javax.persistence.PrimaryKeyJoinColumn;
 /**
  * {@link CmsPersistentObject} representing a Referral Assignment.
  * 
+ * <p>
+ * This entity bean wraps the Assignment table's "folded key" FK (virtual FK) on columns ESTBLISH_CD
+ * and ESTBLSH_ID to either to Referral or Case, as dictated by ESTBLISH_CD.
+ * </p>
+ * 
  * @author CWDS API Team
  */
 @Entity(name = "ReferralAssignment")
@@ -26,11 +31,8 @@ public class ReferralAssignment extends BaseAssignment {
   @Column(name = "ESTBLSH_ID", length = CMS_ID_LEN, insertable = false, updatable = false)
   protected String establishedForId;
 
-  // @ManyToOne(optional = false)
   @OneToOne
-  // @JoinColumn(name = "ESTBLSH_ID", referencedColumnName = "IDENTIFIER")
   @JoinColumn(name = "IDENTIFIER", referencedColumnName = "ESTBLSH_ID")
-  // @JoinColumn(name = "ESTBLSH_ID")
   private Referral referral;
 
   /**
