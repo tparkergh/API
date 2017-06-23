@@ -15,7 +15,6 @@ import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
-import org.junit.Ignore;
 import org.junit.Rule;
 import org.junit.Test;
 
@@ -87,7 +86,6 @@ public class AssignmentDaoIT implements DaoTestTemplate {
 
   @Override
   @Test
-  @Ignore
   public void testFind() throws Exception {
     Assignment found = assignmentDao.find(id);
     assertThat(found.getId(), is(equalTo(id)));
@@ -95,7 +93,6 @@ public class AssignmentDaoIT implements DaoTestTemplate {
 
   @Override
   @Test
-  @Ignore
   public void testFindEntityNotFoundException() throws Exception {
     Assignment found = assignmentDao.find("9999999ZZZ");
     assertThat(found, is(nullValue()));
@@ -103,15 +100,16 @@ public class AssignmentDaoIT implements DaoTestTemplate {
 
   @Override
   @Test
-  @Ignore
   public void testCreate() throws Exception {
     gov.ca.cwds.rest.api.domain.cms.Assignment da = validAssignment();
 
-    Assignment pa = new Assignment(countySpecificCode, DomainChef.uncookDateString(endDate),
-        DomainChef.uncookTimeString(endTime), establishedForCode, establishedForId, caseLoadId,
-        outOfStatePartyContactId, responsiblityDescription, secondaryAssignmentRoleType,
-        DomainChef.uncookDateString(startDate), DomainChef.uncookTimeString(startTime),
-        typeOfAssignmentCode, weightingNumber);
+    Assignment pa = new Assignment("ABC0987654", da.getCountySpecificCode(),
+        DomainChef.uncookDateString(da.getEndDate()), DomainChef.uncookTimeString(da.getEndTime()),
+        da.getEstablishedForCode(), da.getEstablishedForId(), da.getCaseLoadId(),
+        da.getOutOfStateContactId(), da.getResponsibilityDescription(),
+        da.getSecondaryAssignmentRoleType(), DomainChef.uncookDateString(da.getStartDate()),
+        DomainChef.uncookTimeString(da.getStartTime()), da.getTypeOfAssignmentCode(),
+        da.getWeightingNumber());
 
     Assignment create = assignmentDao.create(pa);
     assertThat(pa, is(create));

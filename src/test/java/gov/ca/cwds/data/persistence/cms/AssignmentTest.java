@@ -40,8 +40,8 @@ public class AssignmentTest {
 
     Assignment va = validAssignment();
 
-    Assignment pa = new Assignment(va.getCountySpecificCode(), va.getEndDate(), va.getEndTime(),
-        va.getEstablishedForCode(), va.getEstablishedForId(), va.getFkCaseLoad(),
+    Assignment pa = new Assignment(va.getId(), va.getCountySpecificCode(), va.getEndDate(),
+        va.getEndTime(), va.getEstablishedForCode(), va.getEstablishedForId(), va.getFkCaseLoad(),
         va.getFkOutOfStateContactParty(), va.getResponsibilityDescription(),
         va.getSecondaryAssignmentRoleType(), va.getStartDate(), va.getStartTime(),
         va.getTypeOfAssignmentCode(), va.getWeightingNumber());
@@ -73,8 +73,8 @@ public class AssignmentTest {
   public void testSerializeAndDeserialize() throws Exception {
     Assignment va = validAssignment();
 
-    Assignment pa = new Assignment(va.getCountySpecificCode(), va.getEndDate(), va.getEndTime(),
-        va.getEstablishedForCode(), va.getEstablishedForId(), va.getFkCaseLoad(),
+    Assignment pa = new Assignment(va.getId(), va.getCountySpecificCode(), va.getEndDate(),
+        va.getEndTime(), va.getEstablishedForCode(), va.getEstablishedForId(), va.getFkCaseLoad(),
         va.getFkOutOfStateContactParty(), va.getResponsibilityDescription(),
         va.getSecondaryAssignmentRoleType(), va.getStartDate(), va.getStartTime(),
         va.getTypeOfAssignmentCode(), va.getWeightingNumber());
