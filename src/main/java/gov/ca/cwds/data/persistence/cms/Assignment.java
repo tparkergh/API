@@ -200,7 +200,6 @@ public class Assignment extends CmsPersistentObject {
     this.weightingNumber = weightingNumber;
   }
 
-
   /**
    * @param id - Assignment Id
    * @param pa - persisted Assignment object

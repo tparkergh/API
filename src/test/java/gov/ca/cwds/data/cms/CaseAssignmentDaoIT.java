@@ -19,24 +19,24 @@ import org.junit.Rule;
 import org.junit.Test;
 
 import gov.ca.cwds.data.junit.template.DaoTestTemplate;
+import gov.ca.cwds.data.persistence.cms.CaseAssignment;
 import gov.ca.cwds.data.persistence.cms.CmsKeyIdGenerator;
-import gov.ca.cwds.data.persistence.cms.ReferralAssignment;
 import gov.ca.cwds.rest.api.domain.DomainChef;
 
-public class ReferralAssignmentDaoIT implements DaoTestTemplate {
+public class CaseAssignmentDaoIT implements DaoTestTemplate {
 
   private static SessionFactory sessionFactory;
-  private static ReferralAssignmentDao dao;
+  private static CaseAssignmentDao dao;
   private Session session;
 
   private String countySpecificCode = "20";
   private String endDate = "2018-06-01";
   private String endTime = "12:01:00";
   private String establishedForCode = "R";
-  private String establishedForId = "SvgDqxm0AJ";
+  private String establishedForId = "0iiVVuE088";
   private String caseLoadId = "2345678ABC";
   private String outOfStatePartyContactId = "";
-  private String responsiblityDescription = "ReferralAssignment responsibility description";
+  private String responsiblityDescription = "CaseAssignment responsibility description";
   private Short secondaryReferralAssignmentRoleType = 0;
   private String startDate = "2017-06-20";
   private String startTime = "16:41:49";
@@ -47,7 +47,7 @@ public class ReferralAssignmentDaoIT implements DaoTestTemplate {
   /**
    * id matches src/main/resources/db.cms/ci-seeds.sql
    */
-  private String id = "SlCAr46088";
+  private String id = "5rVkB8c088";
 
   /**
    * 
@@ -61,7 +61,7 @@ public class ReferralAssignmentDaoIT implements DaoTestTemplate {
   @BeforeClass
   public static void beforeClass() {
     sessionFactory = new Configuration().configure().buildSessionFactory();
-    dao = new ReferralAssignmentDao(sessionFactory);
+    dao = new CaseAssignmentDao(sessionFactory);
   }
 
   /**
@@ -89,7 +89,7 @@ public class ReferralAssignmentDaoIT implements DaoTestTemplate {
   @Test
   // @Ignore
   public void testFind() throws Exception {
-    ReferralAssignment found = dao.find(id);
+    CaseAssignment found = dao.find(id);
     assertThat(found.getId(), is(equalTo(id)));
   }
 
@@ -97,7 +97,7 @@ public class ReferralAssignmentDaoIT implements DaoTestTemplate {
   @Test
   // @Ignore
   public void testFindEntityNotFoundException() throws Exception {
-    ReferralAssignment found = dao.find("xxxxxyzuk3");
+    CaseAssignment found = dao.find("xxxxxyzuk3");
     assertThat(found, is(nullValue()));
   }
 
@@ -107,15 +107,15 @@ public class ReferralAssignmentDaoIT implements DaoTestTemplate {
   public void testCreate() throws Exception {
     gov.ca.cwds.rest.api.domain.cms.Assignment da = validReferralAssignment();
 
-    ReferralAssignment pa = new ReferralAssignment(countySpecificCode,
-        DomainChef.uncookDateString(endDate), DomainChef.uncookTimeString(endTime),
-        establishedForId, caseLoadId, outOfStatePartyContactId, responsiblityDescription,
-        secondaryReferralAssignmentRoleType, DomainChef.uncookDateString(startDate),
-        DomainChef.uncookTimeString(startTime), typeOfReferralAssignmentCode, weightingNumber);
+    CaseAssignment pa = new CaseAssignment(countySpecificCode, DomainChef.uncookDateString(endDate),
+        DomainChef.uncookTimeString(endTime), establishedForId, caseLoadId,
+        outOfStatePartyContactId, responsiblityDescription, secondaryReferralAssignmentRoleType,
+        DomainChef.uncookDateString(startDate), DomainChef.uncookTimeString(startTime),
+        typeOfReferralAssignmentCode, weightingNumber);
 
     pa.setId(CmsKeyIdGenerator.generate(staffId));
 
-    ReferralAssignment create = dao.create(pa);
+    CaseAssignment create = dao.create(pa);
     assertThat(pa, is(create));
   }
 
