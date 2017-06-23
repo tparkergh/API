@@ -5,8 +5,12 @@ import java.math.BigDecimal;
 import java.util.Date;
 
 import javax.persistence.Column;
+import javax.persistence.DiscriminatorColumn;
+import javax.persistence.DiscriminatorType;
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.Inheritance;
+import javax.persistence.InheritanceType;
 import javax.persistence.Table;
 
 import org.apache.commons.lang3.builder.EqualsBuilder;
@@ -27,6 +31,8 @@ import gov.ca.cwds.rest.api.domain.DomainChef;
 @SuppressWarnings("serial")
 @Entity
 @Table(name = "ASGNM_T")
+@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
+@DiscriminatorColumn(name = "ESTBLSH_CD", discriminatorType = DiscriminatorType.STRING, length = 1)
 public class Assignment extends CmsPersistentObject {
 
   @Id
