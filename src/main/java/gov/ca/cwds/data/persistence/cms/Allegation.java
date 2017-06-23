@@ -1,9 +1,5 @@
 package gov.ca.cwds.data.persistence.cms;
 
-import gov.ca.cwds.data.CmsSystemCodeDeserializer;
-import gov.ca.cwds.data.SystemCodeSerializer;
-import gov.ca.cwds.rest.api.domain.DomainChef;
-
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
@@ -24,6 +20,10 @@ import org.hibernate.annotations.Type;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+
+import gov.ca.cwds.data.CmsSystemCodeDeserializer;
+import gov.ca.cwds.data.SystemCodeSerializer;
+import gov.ca.cwds.rest.api.domain.DomainChef;
 
 /**
  * {@link CmsPersistentObject} Class representing an Allegation.
@@ -153,11 +153,7 @@ public class Allegation extends CmsPersistentObject {
    * @param victimClients victimClient
    * @param perpetratorClients perpetratorClient
    */
-  public Allegation(
-      String id,
-      Date abuseEndDate,
-      Date abuseStartDate,
-      Short abuseFrequency, // NOSONAR
+  public Allegation(String id, Date abuseEndDate, Date abuseStartDate, Short abuseFrequency, // NOSONAR
       String abuseFrequencyPeriodCode, String abuseLocationDescription,
       Short allegationDispositionType, Short allegationType, String dispositionDescription,
       Date dispositionDate, String injuryHarmDetailIndicator, String nonProtectingParentCode,
@@ -199,7 +195,28 @@ public class Allegation extends CmsPersistentObject {
   public Allegation(String id, gov.ca.cwds.rest.api.domain.cms.Allegation persistedAllegation,
       String lastUpdatedId) {
     super(lastUpdatedId);
+    init(id, persistedAllegation);
+  }
 
+  /**
+   * Constructor
+   * 
+   * @param id The id
+   * @param persistedAllegation persistedAllegation The domain object to construct this object from
+   * @param lastUpdatedId the id of the last person to update this object
+   * @param lastUpdatedTime the time of last person to update this object
+   */
+  public Allegation(String id, gov.ca.cwds.rest.api.domain.cms.Allegation persistedAllegation,
+      String lastUpdatedId, Date lastUpdatedTime) {
+    super(lastUpdatedId, lastUpdatedTime);
+    init(id, persistedAllegation);
+  }
+
+  /**
+   * @param id the id
+   * @param persistedAllegation - persistedAllegation
+   */
+  private void init(String id, gov.ca.cwds.rest.api.domain.cms.Allegation persistedAllegation) {
     this.id = id;
     this.abuseEndDate = DomainChef.uncookDateString(persistedAllegation.getAbuseEndDate());
     this.abuseStartDate = DomainChef.uncookDateString(persistedAllegation.getAbuseStartDate());
