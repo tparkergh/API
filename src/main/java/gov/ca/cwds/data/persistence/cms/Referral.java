@@ -377,7 +377,6 @@ public class Referral extends CmsPersistentObject {
       String lastUpdatedId) {
     super(lastUpdatedId);
     init(id, referral);
-
   }
 
   /**
@@ -392,7 +391,6 @@ public class Referral extends CmsPersistentObject {
       String lastUpdatedId, Date lastUpdatedTime) {
     super(lastUpdatedId, lastUpdatedTime);
     init(id, referral);
-
   }
 
   /**
@@ -400,7 +398,6 @@ public class Referral extends CmsPersistentObject {
    * @param referral - referral
    */
   private void init(String id, gov.ca.cwds.rest.api.domain.cms.Referral referral) {
-
     try {
       this.id = id;
       this.additionalInfoIncludedCode =
