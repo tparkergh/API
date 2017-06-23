@@ -17,6 +17,7 @@ import com.google.inject.Provides;
 
 import gov.ca.cwds.data.cms.AllegationDao;
 import gov.ca.cwds.data.cms.AllegationPerpetratorHistoryDao;
+import gov.ca.cwds.data.cms.AssignmentDao;
 import gov.ca.cwds.data.cms.AttorneyDao;
 import gov.ca.cwds.data.cms.ChildClientDao;
 import gov.ca.cwds.data.cms.ClientDao;
@@ -52,6 +53,7 @@ import gov.ca.cwds.data.ns.ScreeningDao;
 import gov.ca.cwds.data.persistence.cms.Allegation;
 import gov.ca.cwds.data.persistence.cms.AllegationPerpetratorHistory;
 import gov.ca.cwds.data.persistence.cms.ApiSystemCodeDao;
+import gov.ca.cwds.data.persistence.cms.Assignment;
 import gov.ca.cwds.data.persistence.cms.ChildClient;
 import gov.ca.cwds.data.persistence.cms.ClientAddress;
 import gov.ca.cwds.data.persistence.cms.ClientCollateral;
@@ -122,18 +124,20 @@ public class DataAccessModule extends AbstractModule {
   private Client client;
 
   private final HibernateBundle<ApiConfiguration> cmsHibernateBundle =
-      new HibernateBundle<ApiConfiguration>(ImmutableList.<Class<?>>of(
-          gov.ca.cwds.data.persistence.cms.Address.class, Allegation.class, ClientAddress.class,
-          ClientCollateral.class, gov.ca.cwds.data.persistence.cms.Client.class,
-          CmsDocReferralClient.class, CmsDocument.class, CmsDocumentBlobSegment.class,
-          CollateralIndividual.class, CrossReport.class, EducationProviderContact.class,
-          OtherAdultInPlacemtHome.class, OtherChildInPlacemtHome.class, OtherClientName.class,
-          Referral.class, ReferralClient.class, Reporter.class, ServiceProvider.class,
-          StaffPerson.class, SubstituteCareProvider.class, LongText.class,
-          AllegationPerpetratorHistory.class, ClientUc.class, ChildClient.class,
-          gov.ca.cwds.data.persistence.cms.Address.class, ClientAddress.class,
-          CountyOwnership.class, CountyTrigger.class, CountyTriggerEmbeddable.class,
-          SystemCode.class, SystemMeta.class, DrmsDocument.class), new ApiSessionFactoryFactory()) {
+      new HibernateBundle<ApiConfiguration>(
+          ImmutableList.<Class<?>>of(gov.ca.cwds.data.persistence.cms.Address.class,
+              Allegation.class, ClientAddress.class, ClientCollateral.class,
+              gov.ca.cwds.data.persistence.cms.Client.class, CmsDocReferralClient.class,
+              CmsDocument.class, CmsDocumentBlobSegment.class, CollateralIndividual.class,
+              CrossReport.class, EducationProviderContact.class, OtherAdultInPlacemtHome.class,
+              OtherChildInPlacemtHome.class, OtherClientName.class, Referral.class,
+              ReferralClient.class, Reporter.class, ServiceProvider.class, StaffPerson.class,
+              SubstituteCareProvider.class, LongText.class, AllegationPerpetratorHistory.class,
+              ClientUc.class, ChildClient.class, gov.ca.cwds.data.persistence.cms.Address.class,
+              ClientAddress.class, CountyOwnership.class, CountyTrigger.class,
+              CountyTriggerEmbeddable.class, SystemCode.class, SystemMeta.class, DrmsDocument.class,
+              Assignment.class),
+          new ApiSessionFactoryFactory()) {
 
         @Override
         public DataSourceFactory getDataSourceFactory(ApiConfiguration configuration) {
@@ -206,6 +210,7 @@ public class DataAccessModule extends AbstractModule {
     bind(SystemCodeDao.class);
     bind(SystemMetaDao.class);
     bind(DrmsDocumentDao.class);
+    bind(AssignmentDao.class);
 
     // NS:
     bind(AddressDao.class);
