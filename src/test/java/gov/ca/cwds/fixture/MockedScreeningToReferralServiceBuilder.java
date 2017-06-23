@@ -11,6 +11,7 @@ import javax.validation.Validation;
 import gov.ca.cwds.data.cms.ReferralDao;
 import gov.ca.cwds.rest.api.domain.cms.Address;
 import gov.ca.cwds.rest.api.domain.cms.Allegation;
+import gov.ca.cwds.rest.api.domain.cms.Assignment;
 import gov.ca.cwds.rest.api.domain.cms.ChildClient;
 import gov.ca.cwds.rest.api.domain.cms.Client;
 import gov.ca.cwds.rest.api.domain.cms.ClientAddress;
@@ -19,6 +20,7 @@ import gov.ca.cwds.rest.api.domain.cms.DrmsDocument;
 import gov.ca.cwds.rest.api.domain.cms.LongText;
 import gov.ca.cwds.rest.api.domain.cms.PostedAddress;
 import gov.ca.cwds.rest.api.domain.cms.PostedAllegation;
+import gov.ca.cwds.rest.api.domain.cms.PostedAssignment;
 import gov.ca.cwds.rest.api.domain.cms.PostedClient;
 import gov.ca.cwds.rest.api.domain.cms.PostedDrmsDocument;
 import gov.ca.cwds.rest.api.domain.cms.PostedLongText;
@@ -31,6 +33,7 @@ import gov.ca.cwds.rest.messages.MessageBuilder;
 import gov.ca.cwds.rest.services.ScreeningToReferralService;
 import gov.ca.cwds.rest.services.cms.AddressService;
 import gov.ca.cwds.rest.services.cms.AllegationService;
+import gov.ca.cwds.rest.services.cms.AssignmentService;
 import gov.ca.cwds.rest.services.cms.ChildClientService;
 import gov.ca.cwds.rest.services.cms.ClientAddressService;
 import gov.ca.cwds.rest.services.cms.ClientService;
@@ -58,6 +61,7 @@ public class MockedScreeningToReferralServiceBuilder {
   private ChildClientService childClientService;
   private LongTextService longTextService;
   private DrmsDocumentService drmsDocumentService;
+  private AssignmentService assignmentService;
 
   private ReferralDao referralDao;
   private StaffPersonIdRetriever staffPersonIdRetriever;
@@ -102,7 +106,7 @@ public class MockedScreeningToReferralServiceBuilder {
   }
 
   /**
-   * @return teh referralClientService
+   * @return the referralClientService
    */
   public ReferralClientService getReferralClientService() {
     if (referralClientService == null) {
@@ -258,6 +262,25 @@ public class MockedScreeningToReferralServiceBuilder {
     PostedDrmsDocument postedDrmsDocument = mock(PostedDrmsDocument.class);
     when(postedDrmsDocument.getId()).thenReturn("9876543BCA");
     when(drmsDocumentService.create(any(DrmsDocument.class))).thenReturn(postedDrmsDocument);
+
+  }
+
+  /**
+   * 
+   * @return the mocked assignmentService
+   */
+  public AssignmentService getAssignmentService() {
+    if (assignmentService == null) {
+      buildDefaultMockForAssignmentService();
+    }
+    return assignmentService;
+  }
+
+  private void buildDefaultMockForAssignmentService() {
+    assignmentService = mock(AssignmentService.class);
+    PostedAssignment postedAssignment = mock(PostedAssignment.class);
+    when(postedAssignment.getId()).thenReturn("6789012ABC");
+    when(assignmentService.create(any(Assignment.class))).thenReturn(postedAssignment);
 
   }
 
@@ -439,8 +462,8 @@ public class MockedScreeningToReferralServiceBuilder {
     return new ScreeningToReferralService(getReferralService(), getClientService(),
         getAllegationService(), getCrossReportService(), getReferralClientService(),
         getReporterService(), getAddressService(), getClientAddressService(), getLongTextService(),
-        getChildClientService(), Validation.buildDefaultValidatorFactory().getValidator(),
-        getReferralDao(), getStaffPersonIdRetriever(), getMessageBuilder(),
-        getDrmsDocumentService());
+        getChildClientService(), getAssignmentService(),
+        Validation.buildDefaultValidatorFactory().getValidator(), getReferralDao(),
+        getStaffPersonIdRetriever(), getMessageBuilder(), getDrmsDocumentService());
   }
 }

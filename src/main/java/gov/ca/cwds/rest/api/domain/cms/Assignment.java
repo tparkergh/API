@@ -56,7 +56,7 @@ public class Assignment extends ReportingDomain implements Request, Response {
 
   @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = TIME_FORMAT)
   @JsonProperty(value = "endTime")
-  @gov.ca.cwds.rest.validation.Date(format = TIME_FORMAT, required = true)
+  @gov.ca.cwds.rest.validation.Date(format = TIME_FORMAT, required = false)
   @ApiModelProperty(required = false, readOnly = false, value = "Assignment end time",
       example = "16:41:49")
   private String endTime;
