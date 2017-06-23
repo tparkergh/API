@@ -2295,6 +2295,7 @@ public class ScreeningToReferralServiceTest {
     when(clientService.update(any(), any()))
         .thenReturn(mock(gov.ca.cwds.rest.api.domain.cms.Client.class));
     when(clientService.create(any())).thenReturn(savedClient);
+    when(clientService.createWithSingleTimestamp(any(), any())).thenReturn(savedClient);
     Client foundClient = mock(Client.class);
     when(clientService.find(any())).thenReturn(foundClient);
     when(drmsDocumentDao.create(any())).thenReturn(drmsDocument);
@@ -3399,6 +3400,7 @@ public class ScreeningToReferralServiceTest {
     clientService = mock(ClientService.class);
     when(clientService.update(eq(existingPerpId), any())).thenReturn(updatedPerp);
     when(clientService.create(any())).thenReturn(savedVictim);
+    when(clientService.createWithSingleTimestamp(any(), any())).thenReturn(savedVictim);
     when(clientService.update(eq(updatedReporterId), any())).thenReturn(updatedReporter);
     when(clientService.find(any())).thenReturn(foundClient);
     when(drmsDocumentDao.create(any())).thenReturn(drmsDocument);
@@ -4163,6 +4165,7 @@ public class ScreeningToReferralServiceTest {
     clientService = mock(ClientService.class);
     when(clientService.find(any())).thenReturn(savedClient);
     when(clientService.create(any())).thenReturn(savedClient);
+    when(clientService.createWithSingleTimestamp(any(), any())).thenReturn(savedClient);
     when(clientService.update(any(), any())).thenReturn(updatedClient);
     when(drmsDocumentDao.create(any())).thenReturn(drmsDocument);
 
@@ -4544,6 +4547,7 @@ public class ScreeningToReferralServiceTest {
     when(savedClient.getId()).thenReturn("ASDFGHJKWE");
     clientService = mock(ClientService.class);
     when(clientService.create(any())).thenReturn(savedClient);
+    when(clientService.createWithSingleTimestamp(any(), any())).thenReturn(savedClient);
     when(drmsDocumentDao.create(any())).thenReturn(drmsDocument);
 
     screeningToReferralService = new MockedScreeningToReferralServiceBuilder()
@@ -4552,6 +4556,8 @@ public class ScreeningToReferralServiceTest {
 
     Response response = screeningToReferralService.create(referral);
     assertFalse(response.hasMessages());
-    verify(clientService, times(numberOfClientsThatAreNotReporters)).create(any());
+    // verify(clientService, times(numberOfClientsThatAreNotReporters)).create(any());
+    verify(clientService, times(numberOfClientsThatAreNotReporters))
+        .createWithSingleTimestamp(any(), any());
   }
 }

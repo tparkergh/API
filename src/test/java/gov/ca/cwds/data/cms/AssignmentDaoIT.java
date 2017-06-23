@@ -7,6 +7,9 @@ import static org.junit.Assert.assertThat;
 
 import java.math.BigDecimal;
 
+import javax.persistence.EntityExistsException;
+import javax.persistence.EntityNotFoundException;
+
 import org.hamcrest.junit.ExpectedException;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -22,6 +25,10 @@ import gov.ca.cwds.data.junit.template.DaoTestTemplate;
 import gov.ca.cwds.data.persistence.cms.Assignment;
 import gov.ca.cwds.rest.api.domain.DomainChef;
 
+/**
+ * @author CWDS API Team
+ *
+ */
 public class AssignmentDaoIT implements DaoTestTemplate {
 
   private static SessionFactory sessionFactory;
@@ -115,6 +122,83 @@ public class AssignmentDaoIT implements DaoTestTemplate {
     assertThat(pa, is(create));
   }
 
+  @Override
+  @Test
+  public void testCreateExistingEntityException() throws Exception {
+
+    thrown.expect(EntityExistsException.class);
+    gov.ca.cwds.rest.api.domain.cms.Assignment da = validAssignment();
+
+    Assignment pa = new Assignment(id, da.getCountySpecificCode(),
+        DomainChef.uncookDateString(da.getEndDate()), DomainChef.uncookTimeString(da.getEndTime()),
+        da.getEstablishedForCode(), da.getEstablishedForId(), da.getCaseLoadId(),
+        da.getOutOfStateContactId(), da.getResponsibilityDescription(),
+        da.getSecondaryAssignmentRoleType(), DomainChef.uncookDateString(da.getStartDate()),
+        DomainChef.uncookTimeString(da.getStartTime()), da.getTypeOfAssignmentCode(),
+        da.getWeightingNumber());
+
+    assignmentDao.create(pa);
+  }
+
+  @Override
+  @Test
+  public void testDelete() throws Exception {
+    Assignment deleted = assignmentDao.delete(id);
+    assertThat(deleted.getId(), is(id));
+  }
+
+  @Override
+  @Test
+  public void testDeleteEntityNotFoundException() throws Exception {
+    Assignment deleted = assignmentDao.delete("9999999ZZZ");
+    assertThat(deleted, is(nullValue()));
+  }
+
+  @Override
+  @Test
+  public void testUpdate() throws Exception {
+    gov.ca.cwds.rest.api.domain.cms.Assignment da = validAssignment();
+
+    Assignment pa = new Assignment(id, da.getCountySpecificCode(),
+        DomainChef.uncookDateString(da.getEndDate()), DomainChef.uncookTimeString(da.getEndTime()),
+        da.getEstablishedForCode(), da.getEstablishedForId(), da.getCaseLoadId(),
+        da.getOutOfStateContactId(), da.getResponsibilityDescription(),
+        da.getSecondaryAssignmentRoleType(), DomainChef.uncookDateString(da.getStartDate()),
+        DomainChef.uncookTimeString(da.getStartTime()), da.getTypeOfAssignmentCode(),
+        da.getWeightingNumber());
+
+    Assignment updated = assignmentDao.update(pa);
+    assertThat(pa, is(updated));
+  }
+
+  @Override
+  @Test
+  public void testUpdateEntityNotFoundException() throws Exception {
+
+    thrown.expect(EntityNotFoundException.class);
+    gov.ca.cwds.rest.api.domain.cms.Assignment da = validAssignment();
+
+    Assignment pa = new Assignment("hfH1234580", da.getCountySpecificCode(),
+        DomainChef.uncookDateString(da.getEndDate()), DomainChef.uncookTimeString(da.getEndTime()),
+        da.getEstablishedForCode(), da.getEstablishedForId(), da.getCaseLoadId(),
+        da.getOutOfStateContactId(), da.getResponsibilityDescription(),
+        da.getSecondaryAssignmentRoleType(), DomainChef.uncookDateString(da.getStartDate()),
+        DomainChef.uncookTimeString(da.getStartTime()), da.getTypeOfAssignmentCode(),
+        da.getWeightingNumber());
+
+    assignmentDao.update(pa);
+  }
+
+  @Override
+  public void testFindAllNamedQueryExist() throws Exception {
+
+  }
+
+  @Override
+  public void testFindAllReturnsCorrectList() throws Exception {
+
+  }
+
   private gov.ca.cwds.rest.api.domain.cms.Assignment validAssignment() {
     gov.ca.cwds.rest.api.domain.cms.Assignment validAssignment =
         new gov.ca.cwds.rest.api.domain.cms.Assignment(countySpecificCode, endDate, endTime,
@@ -122,48 +206,6 @@ public class AssignmentDaoIT implements DaoTestTemplate {
             responsiblityDescription, secondaryAssignmentRoleType, startDate, startTime,
             typeOfAssignmentCode, weightingNumber);
     return validAssignment;
-  }
-
-  @Override
-  public void testFindAllNamedQueryExist() throws Exception {
-    // TODO Auto-generated method stub
-
-  }
-
-  @Override
-  public void testFindAllReturnsCorrectList() throws Exception {
-    // TODO Auto-generated method stub
-
-  }
-
-  @Override
-  public void testCreateExistingEntityException() throws Exception {
-    // TODO Auto-generated method stub
-
-  }
-
-  @Override
-  public void testDelete() throws Exception {
-    // TODO Auto-generated method stub
-
-  }
-
-  @Override
-  public void testDeleteEntityNotFoundException() throws Exception {
-    // TODO Auto-generated method stub
-
-  }
-
-  @Override
-  public void testUpdate() throws Exception {
-    // TODO Auto-generated method stub
-
-  }
-
-  @Override
-  public void testUpdateEntityNotFoundException() throws Exception {
-    // TODO Auto-generated method stub
-
   }
 
 }

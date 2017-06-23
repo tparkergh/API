@@ -310,7 +310,8 @@ public class ScreeningToReferralService implements CrudsService {
                 Client client =
                     Client.createWithDefaults(incomingParticipant, dateStarted, genderCode);
                 messageBuilder.addDomainValidationError(validator.validate(client));
-                PostedClient postedClient = this.clientService.create(client);
+                PostedClient postedClient =
+                    this.clientService.createWithSingleTimestamp(client, timestamp);
                 clientId = postedClient.getId();
                 incomingParticipant.setLegacyId(clientId);
                 incomingParticipant.setLegacySourceTable(CLIENT_TABLE_NAME);
