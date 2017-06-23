@@ -19,7 +19,7 @@ import gov.ca.cwds.rest.api.ApiException;
 import gov.ca.cwds.rest.api.domain.DomainChef;
 
 /**
- * {@link CmsPersistentObject} Class representing an ChildClient.
+ * {@link CmsPersistentObject} Class representing a Child Client.
  * 
  * @author CWDS API Team
  */
@@ -28,12 +28,11 @@ import gov.ca.cwds.rest.api.domain.DomainChef;
 @JsonPropertyOrder(alphabetic = true)
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class ChildClient extends CmsPersistentObject {
+
   /**
    * Serialization version
    */
   private static final long serialVersionUID = 1L;
-
-  protected static final String DATE_FORMAT = "yyyy-MM-dd";
 
   @Id
   @Column(name = "FKCLIENT_T", length = CMS_ID_LEN)

@@ -40,14 +40,13 @@ import gov.ca.cwds.rest.api.domain.DomainChef;
 public class ClientAddress extends BaseClientAddress {
 
   /**
-   * 
+   * Default serialization.
    */
   private static final long serialVersionUID = 1L;
 
   @ManyToOne(cascade = CascadeType.ALL)
   @JoinColumn(name = "FKADDRS_T", insertable = false, updatable = false)
   private Address addresses;
-
 
   /**
    * Default constructor
@@ -57,7 +56,6 @@ public class ClientAddress extends BaseClientAddress {
   public ClientAddress() {
     super();
   }
-
 
   /**
    * @param id The identifier
@@ -89,6 +87,7 @@ public class ClientAddress extends BaseClientAddress {
 
   /**
    * A convience helper Constructor that includes lastUpdatedId
+   * 
    * @param id The identifier
    * @param addressType The addressType
    * @param bkInmtId The bkInmtId
@@ -103,7 +102,7 @@ public class ClientAddress extends BaseClientAddress {
    */
   public ClientAddress(String id, Short addressType, String bkInmtId, Date effEndDt,
       Date effStartDt, String fkAddress, String fkClient, String homelessInd, String fkReferral,
-      Address addresses,String lastUpdateId) {
+      Address addresses, String lastUpdateId) {
     super(lastUpdateId);
     this.id = id;
     this.addressType = addressType;

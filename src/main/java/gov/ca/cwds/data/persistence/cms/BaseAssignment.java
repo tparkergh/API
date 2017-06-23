@@ -26,6 +26,11 @@ import gov.ca.cwds.rest.api.domain.DomainChef;
 /**
  * {@link CmsPersistentObject} representing an Assignment for either Case or Referral.
  * 
+ * <p>
+ * This entity bean wraps the Assignment table's "folded key" FK (virtual FK) on columns ESTBLISH_CD
+ * and ESTBLSH_ID to either to Referral or Case, as dictated by ESTBLISH_CD.
+ * </p>
+ * 
  * @author CWDS API Team
  */
 @SuppressWarnings("serial")
@@ -117,7 +122,9 @@ public abstract class BaseAssignment extends CmsPersistentObject {
       Short secondaryAssignmentRoleType, Date startDate, Date startTime,
       String typeOfAssignmentCode, BigDecimal weightingNumber) {
     super();
+
     setEstablishedForId(establishedForId);
+
     this.countySpecificCode = countySpecificCode;
     this.endDate = endDate;
     this.endTime = endTime;
@@ -133,6 +140,8 @@ public abstract class BaseAssignment extends CmsPersistentObject {
   }
 
   /**
+   * Construct from domain class instance.
+   * 
    * @param id - Assignment Id
    * @param pa - persisted Assignment object
    * @param lastUpdateId - staff person id
@@ -156,6 +165,9 @@ public abstract class BaseAssignment extends CmsPersistentObject {
     this.weightingNumber = pa.getWeightingNumber();
   }
 
+  // ===================
+  // ACCESSORS:
+  // ===================
 
   @SuppressWarnings("javadoc")
   public String getCountySpecificCode() {
@@ -222,6 +234,16 @@ public abstract class BaseAssignment extends CmsPersistentObject {
     return weightingNumber;
   }
 
+  @SuppressWarnings("javadoc")
+  public String getEstablishedForId() {
+    return establishedForId;
+  }
+
+  @SuppressWarnings("javadoc")
+  public void setEstablishedForId(String establishedForId) {
+    this.establishedForId = establishedForId;
+  }
+
   @Override
   public Serializable getPrimaryKey() {
     return getId();
@@ -232,18 +254,73 @@ public abstract class BaseAssignment extends CmsPersistentObject {
     return HashCodeBuilder.reflectionHashCode(this, false);
   }
 
+  @SuppressWarnings("javadoc")
+  public void setEndDate(Date endDate) {
+    this.endDate = endDate;
+  }
+
+  @SuppressWarnings("javadoc")
+  public void setEndTime(Date endTime) {
+    this.endTime = endTime;
+  }
+
+  @SuppressWarnings("javadoc")
+  public void setFkCaseLoad(String fkCaseLoad) {
+    this.fkCaseLoad = fkCaseLoad;
+  }
+
+  @SuppressWarnings("javadoc")
+  public void setFkOutOfStateContactParty(String fkOutOfStateContactParty) {
+    this.fkOutOfStateContactParty = fkOutOfStateContactParty;
+  }
+
+  @SuppressWarnings("javadoc")
+  public void setResponsibilityDescription(String responsibilityDescription) {
+    this.responsibilityDescription = responsibilityDescription;
+  }
+
+  @SuppressWarnings("javadoc")
+  public void setSecondaryAssignmentRoleType(Short secondaryAssignmentRoleType) {
+    this.secondaryAssignmentRoleType = secondaryAssignmentRoleType;
+  }
+
+  @SuppressWarnings("javadoc")
+  public void setStartDate(Date startDate) {
+    this.startDate = startDate;
+  }
+
+  @SuppressWarnings("javadoc")
+  public void setStartTime(Date startTime) {
+    this.startTime = startTime;
+  }
+
+  @SuppressWarnings("javadoc")
+  public void setTypeOfAssignmentCode(String typeOfAssignmentCode) {
+    this.typeOfAssignmentCode = typeOfAssignmentCode;
+  }
+
+  @SuppressWarnings("javadoc")
+  public void setWeightingNumber(BigDecimal weightingNumber) {
+    this.weightingNumber = weightingNumber;
+  }
+
+  // ===================
+  // IDENTITY:
+  // ===================
 
   @Override
   public final boolean equals(Object obj) {
     return EqualsBuilder.reflectionEquals(this, obj, false);
   }
 
-  public String getEstablishedForId() {
-    return establishedForId;
+  @SuppressWarnings("javadoc")
+  public void setId(String id) {
+    this.id = id;
   }
 
-  public void setEstablishedForId(String establishedForId) {
-    this.establishedForId = establishedForId;
+  @SuppressWarnings("javadoc")
+  public void setCountySpecificCode(String countySpecificCode) {
+    this.countySpecificCode = countySpecificCode;
   }
 
 }

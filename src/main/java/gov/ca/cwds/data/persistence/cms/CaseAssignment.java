@@ -10,34 +10,34 @@ import javax.persistence.OneToOne;
 import javax.persistence.PrimaryKeyJoinColumn;
 
 /**
- * {@link CmsPersistentObject} representing a Referral Assignment.
+ * {@link CmsPersistentObject} representing a Case Assignment.
  * 
  * <p>
  * This entity bean wraps the Assignment table's "folded key" FK (virtual FK) on columns ESTBLISH_CD
- * and ESTBLSH_ID to either to Referral or Case, as dictated by ESTBLISH_CD.
+ * and ESTBLSH_ID to a Case Assignment, as dictated by ESTBLISH_CD.
  * </p>
  * 
  * @author CWDS API Team
  */
-@Entity(name = "ReferralAssignment")
-@DiscriminatorValue(value = "REFERRAL")
+@Entity(name = "CaseAssignment")
+@DiscriminatorValue(value = "CASE")
 @PrimaryKeyJoinColumn(name = "IDENTIFIER")
 @SuppressWarnings("serial")
-public class ReferralAssignment extends BaseAssignment {
+public class CaseAssignment extends BaseAssignment {
 
-  private static final String FOLDED_KEY_CODE = "R";
+  private static final String FOLDED_KEY_CODE = "C";
 
   /**
-   * Declare foreign key from Assignment to Referral.
+   * Foreign key from Assignment to Case.
    */
   @OneToOne
   @JoinColumn(name = "IDENTIFIER", referencedColumnName = "ESTBLSH_ID")
-  private Referral referral;
+  private Case theCase;
 
   /**
    * Default constructor.
    */
-  public ReferralAssignment() {
+  public CaseAssignment() {
     super();
     this.establishedForCode = FOLDED_KEY_CODE;
   }
@@ -58,10 +58,10 @@ public class ReferralAssignment extends BaseAssignment {
    * @param typeOfAssignmentCode - primary, secondary, or read only
    * @param weightingNumber - weighting within case load
    */
-  public ReferralAssignment(String countySpecificCode, Date endDate, Date endTime,
-      String referralId, String fkCaseLoad, String fkOutOfStateContactParty,
-      String responsibilityDescription, Short secondaryAssignmentRoleType, Date startDate,
-      Date startTime, String typeOfAssignmentCode, BigDecimal weightingNumber) {
+  public CaseAssignment(String countySpecificCode, Date endDate, Date endTime, String referralId,
+      String fkCaseLoad, String fkOutOfStateContactParty, String responsibilityDescription,
+      Short secondaryAssignmentRoleType, Date startDate, Date startTime,
+      String typeOfAssignmentCode, BigDecimal weightingNumber) {
     super(countySpecificCode, endDate, endTime, FOLDED_KEY_CODE, referralId, fkCaseLoad,
         fkOutOfStateContactParty, responsibilityDescription, secondaryAssignmentRoleType, startDate,
         startTime, typeOfAssignmentCode, weightingNumber);

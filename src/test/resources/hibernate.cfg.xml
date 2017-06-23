@@ -56,9 +56,11 @@
 		<mapping class="gov.ca.cwds.data.persistence.cms.CountyOwnership"/>
 		<mapping class="gov.ca.cwds.data.persistence.cms.CountyTrigger"/>
 		<mapping class="gov.ca.cwds.data.persistence.cms.DrmsDocument"/>
+		<mapping class="gov.ca.cwds.data.persistence.cms.Case"/>
 
 		<mapping class="gov.ca.cwds.data.persistence.cms.Assignment"/>
 		<mapping class="gov.ca.cwds.data.persistence.cms.ReferralAssignment"/>
+		<mapping class="gov.ca.cwds.data.persistence.cms.CaseAssignment"/>
   		
 	</session-factory>
 </hibernate-configuration>
