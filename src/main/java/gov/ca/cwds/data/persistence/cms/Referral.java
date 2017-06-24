@@ -21,12 +21,11 @@ import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 
 import gov.ca.cwds.data.CmsSystemCodeDeserializer;
 import gov.ca.cwds.data.SystemCodeSerializer;
-import gov.ca.cwds.data.ns.NsPersistentObject;
 import gov.ca.cwds.rest.api.ApiException;
 import gov.ca.cwds.rest.api.domain.DomainChef;
 
 /**
- * {@link NsPersistentObject} representing a Referral
+ * {@link CmsPersistentObject} representing a Referral.
  * 
  * @author CWDS API Team
  */
