@@ -39,7 +39,7 @@ public class ReferralAssignment extends BaseAssignment {
    */
   public ReferralAssignment() {
     super();
-    this.establishedForCode = FOLDED_KEY_CODE;
+    setEstablishedForCode(FOLDED_KEY_CODE);
   }
 
   /**

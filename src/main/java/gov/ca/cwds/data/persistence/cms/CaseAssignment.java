@@ -31,7 +31,8 @@ public class CaseAssignment extends BaseAssignment {
    * Foreign key from Assignment to Case.
    */
   @OneToOne
-  @JoinColumn(name = "IDENTIFIER", referencedColumnName = "ESTBLSH_ID")
+  // @JoinColumn(name = "IDENTIFIER", referencedColumnName = "ESTBLSH_ID")
+  @JoinColumn(name = "ESTBLSH_ID", referencedColumnName = "IDENTIFIER")
   private CmsCase theCase;
 
   /**
@@ -39,7 +40,7 @@ public class CaseAssignment extends BaseAssignment {
    */
   public CaseAssignment() {
     super();
-    this.establishedForCode = FOLDED_KEY_CODE;
+    setEstablishedForCode(FOLDED_KEY_CODE);
   }
 
   /**
@@ -65,7 +66,6 @@ public class CaseAssignment extends BaseAssignment {
     super(countySpecificCode, endDate, endTime, FOLDED_KEY_CODE, caseId, fkCaseLoad,
         fkOutOfStateContactParty, responsibilityDescription, secondaryAssignmentRoleType, startDate,
         startTime, typeOfAssignmentCode, weightingNumber);
-    this.establishedForCode = FOLDED_KEY_CODE;
   }
 
 }
