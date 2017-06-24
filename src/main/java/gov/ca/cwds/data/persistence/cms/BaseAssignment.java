@@ -46,7 +46,7 @@ public abstract class BaseAssignment extends CmsPersistentObject {
   private String id;
 
   @Column(name = "ESTBLSH_ID", length = CMS_ID_LEN, insertable = false, updatable = false)
-  protected String establishedForId;
+  private String establishedForId;
 
   @Column(name = "CNTY_SPFCD", length = 2)
   private String countySpecificCode;
@@ -60,7 +60,7 @@ public abstract class BaseAssignment extends CmsPersistentObject {
   private Date endTime;
 
   @Column(name = "ESTBLSH_CD", length = 1)
-  protected String establishedForCode;
+  private String establishedForCode;
 
   @Column(name = "FKCASE_LDT", length = CMS_ID_LEN)
   private String fkCaseLoad;
@@ -321,6 +321,10 @@ public abstract class BaseAssignment extends CmsPersistentObject {
   @SuppressWarnings("javadoc")
   public void setCountySpecificCode(String countySpecificCode) {
     this.countySpecificCode = countySpecificCode;
+  }
+
+  protected void setEstablishedForCode(String establishedForCode) {
+    this.establishedForCode = establishedForCode;
   }
 
 }
