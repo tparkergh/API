@@ -13,12 +13,19 @@
 		<property name="connection_pool_size">2</property>
 		<property name="show_sql">true</property>
 
+<!-- 
+		<property name="hibernate.connection.username">${DB_CMS_USER}</property>
+		<property name="hibernate.connection.password">${DB_CMS_PASSWORD}</property>
+		<property name="hibernate.connection.url">${DB_CMS_JDBC_URL}</property>
+		<property name="hibernate.default_schema">${DB_CMS_SCHEMA}</property>
+ -->
+
 <!-- Taborda: -->
 		<property name="hibernate.connection.username">db2inst1</property>
 		<property name="hibernate.connection.password">jyN3Ec3DRHmk</property>
 		<property name="hibernate.connection.url">jdbc:db2://legacy.db.jenkins.cwds.tabordasolutions.net:50000/DB0TDEV</property>
 		<property name="hibernate.default_schema">CWSINT</property>
-
+ 
 <!-- NS4: -->
 <!-- 
 		<property name="hibernate.connection.username">CWDSABC</property>
@@ -58,7 +65,7 @@
 		<mapping class="gov.ca.cwds.data.persistence.cms.DrmsDocument"/>
 		<mapping class="gov.ca.cwds.data.persistence.cms.CmsCase"/>
 
-		<mapping class="gov.ca.cwds.data.persistence.cms.Assignment"/>
+		<!-- <mapping class="gov.ca.cwds.data.persistence.cms.Assignment"/> -->
 		<mapping class="gov.ca.cwds.data.persistence.cms.ReferralAssignment"/>
 		<mapping class="gov.ca.cwds.data.persistence.cms.CaseAssignment"/>
   		
