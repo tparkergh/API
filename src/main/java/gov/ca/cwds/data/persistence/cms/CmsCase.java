@@ -39,8 +39,9 @@ public class CmsCase extends CmsPersistentObject {
   @Column(name = "APRVL_NO")
   private String approvalNumber;
 
+  @Type(type = "short")
   @Column(name = "APV_STC")
-  private String approvalStatusType;
+  private Short approvalStatusType;
 
   @Type(type = "short")
   @Column(name = "CLS_RSNC")
@@ -106,8 +107,9 @@ public class CmsCase extends CmsPersistentObject {
   @Column(name = "CASE_NM")
   private String caseName;
 
+  @Type(type = "date")
   @Column(name = "NXT_TILPDT")
-  private String nextTilpDueDate;
+  private Date nextTilpDueDate;
 
   @Type(type = "date")
   @Column(name = "PRJ_END_DT")
@@ -174,11 +176,11 @@ public class CmsCase extends CmsPersistentObject {
     this.approvalNumber = approvalNumber;
   }
 
-  public String getApprovalStatusType() {
+  public Short getApprovalStatusType() {
     return approvalStatusType;
   }
 
-  public void setApprovalStatusType(String approvalStatusType) {
+  public void setApprovalStatusType(Short approvalStatusType) {
     this.approvalStatusType = approvalStatusType;
   }
 
@@ -334,11 +336,11 @@ public class CmsCase extends CmsPersistentObject {
     this.caseName = caseName;
   }
 
-  public String getNextTilpDueDate() {
+  public Date getNextTilpDueDate() {
     return nextTilpDueDate;
   }
 
-  public void setNextTilpDueDate(String nextTilpDueDate) {
+  public void setNextTilpDueDate(Date nextTilpDueDate) {
     this.nextTilpDueDate = nextTilpDueDate;
   }
 

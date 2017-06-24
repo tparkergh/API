@@ -33,7 +33,7 @@ public class CaseAssignment extends BaseAssignment {
   @OneToOne
   // @JoinColumn(name = "IDENTIFIER", referencedColumnName = "ESTBLSH_ID")
   @JoinColumn(name = "ESTBLSH_ID", referencedColumnName = "IDENTIFIER")
-  private CmsCase theCase;
+  private CmsCase cmsCase;
 
   /**
    * Default constructor.
@@ -67,6 +67,14 @@ public class CaseAssignment extends BaseAssignment {
         fkOutOfStateContactParty, responsibilityDescription, secondaryAssignmentRoleType, startDate,
         startTime, typeOfAssignmentCode, weightingNumber);
     setEstablishedForCode(FOLDED_KEY_CODE);
+  }
+
+  protected CmsCase getCmsCase() {
+    return cmsCase;
+  }
+
+  protected void setCmsCase(CmsCase cmsCase) {
+    this.cmsCase = cmsCase;
   }
 
 }
