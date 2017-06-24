@@ -28,6 +28,7 @@ import gov.ca.cwds.data.persistence.cms.Referral;
  *
  */
 public class ReferralDaoIT implements DaoTestTemplate {
+
   private static SessionFactory sessionFactory;
   private static ReferralDao referralDao;
   private Session session;

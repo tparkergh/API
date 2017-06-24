@@ -19,6 +19,8 @@ import gov.ca.cwds.data.cms.AllegationDao;
 import gov.ca.cwds.data.cms.AllegationPerpetratorHistoryDao;
 import gov.ca.cwds.data.cms.AssignmentDao;
 import gov.ca.cwds.data.cms.AttorneyDao;
+import gov.ca.cwds.data.cms.CaseAssignmentDao;
+import gov.ca.cwds.data.cms.CaseDao;
 import gov.ca.cwds.data.cms.ChildClientDao;
 import gov.ca.cwds.data.cms.ClientDao;
 import gov.ca.cwds.data.cms.ClientUcDao;
@@ -30,6 +32,7 @@ import gov.ca.cwds.data.cms.CrossReportDao;
 import gov.ca.cwds.data.cms.DrmsDocumentDao;
 import gov.ca.cwds.data.cms.LongTextDao;
 import gov.ca.cwds.data.cms.OtherClientNameDao;
+import gov.ca.cwds.data.cms.ReferralAssignmentDao;
 import gov.ca.cwds.data.cms.ReferralClientDao;
 import gov.ca.cwds.data.cms.ReferralDao;
 import gov.ca.cwds.data.cms.ReporterDao;
@@ -199,6 +202,9 @@ public class DataAccessModule extends AbstractModule {
     bind(ReferralDao.class);
     bind(ReporterDao.class);
     bind(CrossReportDao.class);
+    bind(CaseDao.class);
+    bind(ReferralAssignmentDao.class);
+    bind(CaseAssignmentDao.class);
 
     bind(AttorneyDao.class);
     bind(CmsDocReferralClientDao.class);
