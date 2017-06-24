@@ -17,7 +17,6 @@ import com.google.inject.Provides;
 
 import gov.ca.cwds.data.cms.AllegationDao;
 import gov.ca.cwds.data.cms.AllegationPerpetratorHistoryDao;
-import gov.ca.cwds.data.cms.AssignmentDao;
 import gov.ca.cwds.data.cms.AttorneyDao;
 import gov.ca.cwds.data.cms.CaseAssignmentDao;
 import gov.ca.cwds.data.cms.CaseDao;
@@ -56,7 +55,7 @@ import gov.ca.cwds.data.ns.ScreeningDao;
 import gov.ca.cwds.data.persistence.cms.Allegation;
 import gov.ca.cwds.data.persistence.cms.AllegationPerpetratorHistory;
 import gov.ca.cwds.data.persistence.cms.ApiSystemCodeDao;
-import gov.ca.cwds.data.persistence.cms.Assignment;
+import gov.ca.cwds.data.persistence.cms.BaseAssignment;
 import gov.ca.cwds.data.persistence.cms.CaseAssignment;
 import gov.ca.cwds.data.persistence.cms.ChildClient;
 import gov.ca.cwds.data.persistence.cms.ClientAddress;
@@ -141,7 +140,8 @@ public class DataAccessModule extends AbstractModule {
               ClientUc.class, ChildClient.class, gov.ca.cwds.data.persistence.cms.Address.class,
               ClientAddress.class, CountyOwnership.class, CountyTrigger.class,
               CountyTriggerEmbeddable.class, SystemCode.class, SystemMeta.class, DrmsDocument.class,
-              Assignment.class, ReferralAssignment.class, CaseAssignment.class),
+              // Assignment.class,
+              BaseAssignment.class, ReferralAssignment.class, CaseAssignment.class),
           new ApiSessionFactoryFactory()) {
 
         @Override
@@ -205,6 +205,7 @@ public class DataAccessModule extends AbstractModule {
     bind(CaseDao.class);
     bind(ReferralAssignmentDao.class);
     bind(CaseAssignmentDao.class);
+    bind(CaseDao.class);
 
     bind(AttorneyDao.class);
     bind(CmsDocReferralClientDao.class);
@@ -218,7 +219,7 @@ public class DataAccessModule extends AbstractModule {
     bind(SystemCodeDao.class);
     bind(SystemMetaDao.class);
     bind(DrmsDocumentDao.class);
-    bind(AssignmentDao.class);
+    // bind(AssignmentDao.class);
 
     // NS:
     bind(AddressDao.class);

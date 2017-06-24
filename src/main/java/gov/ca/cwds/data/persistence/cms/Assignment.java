@@ -5,9 +5,7 @@ import java.math.BigDecimal;
 import java.util.Date;
 
 import javax.persistence.Column;
-import javax.persistence.Entity;
 import javax.persistence.Id;
-import javax.persistence.Table;
 
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
@@ -20,13 +18,13 @@ import gov.ca.cwds.data.SystemCodeSerializer;
 import gov.ca.cwds.rest.api.domain.DomainChef;
 
 /**
- * {@link CmsPersistentObject} representing a StaffPerson.
+ * {@link CmsPersistentObject} representing an Assigment.
  * 
  * @author CWDS API Team
  */
 @SuppressWarnings("serial")
-@Entity
-@Table(name = "ASGNM_T")
+// @Entity
+// @Table(name = "ASGNM_T")
 public class Assignment extends CmsPersistentObject {
 
   @Id

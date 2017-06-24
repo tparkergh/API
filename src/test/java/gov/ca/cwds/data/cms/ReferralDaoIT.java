@@ -25,7 +25,6 @@ import gov.ca.cwds.data.persistence.cms.Referral;
 
 /**
  * @author CWDS API Team
- *
  */
 public class ReferralDaoIT implements DaoTestTemplate {
 

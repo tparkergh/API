@@ -20,7 +20,7 @@ import gov.ca.cwds.rest.services.CrudsService;
 import gov.ca.cwds.rest.services.ServiceException;
 
 /**
- * Business layer object to work on {@link Assignment}
+ * Business layer object serves {@link Assignment}.
  * 
  * @author CWDS API Team
  */
