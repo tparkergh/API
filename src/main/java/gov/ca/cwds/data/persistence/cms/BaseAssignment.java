@@ -37,7 +37,7 @@ import gov.ca.cwds.rest.api.domain.DomainChef;
 @Entity
 @Table(name = "ASGNM_T")
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
-@DiscriminatorFormula("case when ESTBLSH_CD = 'R' then 'REFERRAL' when ESTBLSH_CD = 'C' then 'CASES' end")
+@DiscriminatorFormula("case when ESTBLSH_CD = 'R' then 'REFERRAL' when ESTBLSH_CD = 'C' then 'CASEX' end")
 @DiscriminatorOptions(force = true)
 public abstract class BaseAssignment extends CmsPersistentObject {
 

@@ -20,7 +20,7 @@ import javax.persistence.PrimaryKeyJoinColumn;
  * @author CWDS API Team
  */
 @Entity(name = "CaseAssignment")
-@DiscriminatorValue(value = "CASES")
+@DiscriminatorValue(value = "CASEX")
 @PrimaryKeyJoinColumn(name = "IDENTIFIER")
 @SuppressWarnings("serial")
 public class CaseAssignment extends BaseAssignment {
@@ -48,7 +48,7 @@ public class CaseAssignment extends BaseAssignment {
    * @param countySpecificCode - county code of case load with this assignment
    * @param endDate - end date of assignment
    * @param endTime - end time of assignment
-   * @param referralId - referral Id
+   * @param caseId - Case id
    * @param fkCaseLoad - foreign key to the case load
    * @param fkOutOfStateContactParty - foreign ky to the out of state contact party
    * @param responsibilityDescription - description
@@ -58,11 +58,11 @@ public class CaseAssignment extends BaseAssignment {
    * @param typeOfAssignmentCode - primary, secondary, or read only
    * @param weightingNumber - weighting within case load
    */
-  public CaseAssignment(String countySpecificCode, Date endDate, Date endTime, String referralId,
+  public CaseAssignment(String countySpecificCode, Date endDate, Date endTime, String caseId,
       String fkCaseLoad, String fkOutOfStateContactParty, String responsibilityDescription,
       Short secondaryAssignmentRoleType, Date startDate, Date startTime,
       String typeOfAssignmentCode, BigDecimal weightingNumber) {
-    super(countySpecificCode, endDate, endTime, FOLDED_KEY_CODE, referralId, fkCaseLoad,
+    super(countySpecificCode, endDate, endTime, FOLDED_KEY_CODE, caseId, fkCaseLoad,
         fkOutOfStateContactParty, responsibilityDescription, secondaryAssignmentRoleType, startDate,
         startTime, typeOfAssignmentCode, weightingNumber);
     this.establishedForCode = FOLDED_KEY_CODE;

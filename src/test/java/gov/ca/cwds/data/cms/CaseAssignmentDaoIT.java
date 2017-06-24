@@ -36,7 +36,7 @@ public class CaseAssignmentDaoIT implements DaoTestTemplate {
   private String establishedForId = "0iiVVuE088";
   private String caseLoadId = "2345678ABC";
   private String outOfStatePartyContactId = "";
-  private String responsiblityDescription = "CaseAssignment responsibility description";
+  private String responsiblityDescription = "Case Assignment responsibility description";
   private Short secondaryReferralAssignmentRoleType = 0;
   private String startDate = "2017-06-20";
   private String startTime = "16:41:49";

@@ -54,6 +54,7 @@ import gov.ca.cwds.data.persistence.cms.Allegation;
 import gov.ca.cwds.data.persistence.cms.AllegationPerpetratorHistory;
 import gov.ca.cwds.data.persistence.cms.ApiSystemCodeDao;
 import gov.ca.cwds.data.persistence.cms.Assignment;
+import gov.ca.cwds.data.persistence.cms.CaseAssignment;
 import gov.ca.cwds.data.persistence.cms.ChildClient;
 import gov.ca.cwds.data.persistence.cms.ClientAddress;
 import gov.ca.cwds.data.persistence.cms.ClientCollateral;
@@ -73,6 +74,7 @@ import gov.ca.cwds.data.persistence.cms.OtherAdultInPlacemtHome;
 import gov.ca.cwds.data.persistence.cms.OtherChildInPlacemtHome;
 import gov.ca.cwds.data.persistence.cms.OtherClientName;
 import gov.ca.cwds.data.persistence.cms.Referral;
+import gov.ca.cwds.data.persistence.cms.ReferralAssignment;
 import gov.ca.cwds.data.persistence.cms.ReferralClient;
 import gov.ca.cwds.data.persistence.cms.Reporter;
 import gov.ca.cwds.data.persistence.cms.ServiceProvider;
@@ -136,7 +138,7 @@ public class DataAccessModule extends AbstractModule {
               ClientUc.class, ChildClient.class, gov.ca.cwds.data.persistence.cms.Address.class,
               ClientAddress.class, CountyOwnership.class, CountyTrigger.class,
               CountyTriggerEmbeddable.class, SystemCode.class, SystemMeta.class, DrmsDocument.class,
-              Assignment.class),
+              Assignment.class, ReferralAssignment.class, CaseAssignment.class),
           new ApiSessionFactoryFactory()) {
 
         @Override
