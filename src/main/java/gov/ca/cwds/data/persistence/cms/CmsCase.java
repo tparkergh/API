@@ -14,16 +14,20 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
 /**
- * {@link CmsPersistentObject} Class representing a Child Client.
+ * {@link CmsPersistentObject} Class representing a Case.
  * 
  * @author CWDS API Team
  */
-@SuppressWarnings("serial")
 @Entity
 @Table(name = "CASE_T")
 @JsonPropertyOrder(alphabetic = true)
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class CmsCase extends CmsPersistentObject {
+
+  /**
+   * Default serialization.
+   */
+  private static final long serialVersionUID = 1L;
 
   @Id
   @Column(name = "IDENTIFIER", length = CMS_ID_LEN)
@@ -138,7 +142,7 @@ public class CmsCase extends CmsPersistentObject {
    * Default constructor.
    */
   public CmsCase() {
-    // Default, no-op.
+    super();
   }
 
   @Override

@@ -28,7 +28,7 @@ public class CaseAssignment extends BaseAssignment {
   private static final String FOLDED_KEY_CODE = "C";
 
   /**
-   * Foreign key from Assignment to Case.
+   * Foreign key from Assignment to Case. Reverse of {@link ReferralAssignment} ?? Why??
    */
   @OneToOne
   // @JoinColumn(name = "IDENTIFIER", referencedColumnName = "ESTBLSH_ID")
@@ -66,6 +66,7 @@ public class CaseAssignment extends BaseAssignment {
     super(countySpecificCode, endDate, endTime, FOLDED_KEY_CODE, caseId, fkCaseLoad,
         fkOutOfStateContactParty, responsibilityDescription, secondaryAssignmentRoleType, startDate,
         startTime, typeOfAssignmentCode, weightingNumber);
+    setEstablishedForCode(FOLDED_KEY_CODE);
   }
 
 }
