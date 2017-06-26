@@ -3373,12 +3373,19 @@ public class ScreeningToReferralServiceTest {
 
     String existingPerpId = "1234567ABC";
     Participant reporter =
-        new ParticipantResourceBuilder().setFirstName("Barney").setLastName("Rubble")
+        new ParticipantResourceBuilder()
+            .setFirstName("Barney")
+            .setMiddleName("middlestone")
+            .setLastName("Rubble")
             .setRoles(new HashSet<>(Arrays.asList("Non-mandated Reporter", "Victim")))
             .createParticipant();
-    Participant perp = new ParticipantResourceBuilder().setLegacyId(existingPerpId)
-        .setFirstName("Fred").setLastName("Flintsone")
-        .setRoles(new HashSet<>(Arrays.asList("Perpetrator"))).createParticipant();
+    Participant perp = new ParticipantResourceBuilder()
+        .setLegacyId(existingPerpId)
+        .setFirstName("Fred")
+        .setMiddleName("Finnigan")
+        .setLastName("Flintsone")
+        .setRoles(new HashSet<>(Arrays.asList("Perpetrator")))
+        .createParticipant();
     Set participants = new HashSet<>(Arrays.asList(reporter, perp));
 
     ScreeningToReferral referral = new ScreeningToReferralResourceBuilder()
@@ -3426,8 +3433,8 @@ public class ScreeningToReferralServiceTest {
 
     Response response = screeningToReferralService.create(referral);
     assertFalse(response.hasMessages());
-    verify(foundClient, times(1)).update("Fred", "Flintsone");
-    verify(foundClient, times(1)).update("Barney", "Rubble");
+    verify(foundClient, times(1)).update("Fred","Finnigan", "Flintsone");
+    verify(foundClient, times(1)).update("Barney","middlestone", "Rubble");
     verify(clientService).update(eq(existingPerpId), any());
   }
 
@@ -3436,13 +3443,17 @@ public class ScreeningToReferralServiceTest {
   public void shouldNotUpdatePerpetratorWhenClientIsNotFound() throws Exception {
 
     String existingPerpId = "1234567ABC";
-    Participant reporter =
-        new ParticipantResourceBuilder().setFirstName("Barney").setLastName("Rubble")
+    Participant reporter = new ParticipantResourceBuilder()
+            .setFirstName("Barney")
+            .setLastName("Rubble")
             .setRoles(new HashSet<>(Arrays.asList("Non-mandated Reporter", "Victim")))
             .createParticipant();
-    Participant perp = new ParticipantResourceBuilder().setLegacyId(existingPerpId)
-        .setFirstName("Fred").setLastName("Flintsone")
-        .setRoles(new HashSet<>(Arrays.asList("Perpetrator"))).createParticipant();
+    Participant perp = new ParticipantResourceBuilder()
+        .setLegacyId(existingPerpId)
+        .setFirstName("Fred")
+        .setLastName("Flintsone")
+        .setRoles(new HashSet<>(Arrays.asList("Perpetrator")))
+        .createParticipant();
     Set participants = new HashSet<>(Arrays.asList(reporter, perp));
 
     ScreeningToReferral referral = new ScreeningToReferralResourceBuilder()
@@ -3490,8 +3501,8 @@ public class ScreeningToReferralServiceTest {
     } catch (ServiceException e) {
       // not interested in exception for this test
     }
-    verify(foundClient, times(0)).update("Fred", "Flintsone");
-    verify(foundClient, times(0)).update("Barney", "Rubble");
+    verify(foundClient, times(0)).update(any(),any(), any());
+    verify(foundClient, times(0)).update(any(),any(), any());
   }
 
   @SuppressWarnings("javadoc")

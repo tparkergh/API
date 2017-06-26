@@ -401,10 +401,11 @@ public class ClientTest implements DomainTestTemplate {
     Participant participant = new Participant(1, "sourceTable", "clientId", "Fred", "Wilson", "Bill", "gender","ssn", "dob", 3,4,new HashSet(), new HashSet());
     Client client = Client.createWithDefaults(participant,"","");
 
-    client.update("Barney", "Rubble");
+    client.update("Barney","middlestone", "Rubble");
 
-    assertEquals("Expected Client name to have been changed", "Barney", client.getCommonFirstName());
-    assertEquals("Expected Client name to have been changed", "Rubble", client.getCommonLastName());
+    assertEquals("Expected Client first name to have been changed", "Barney", client.getCommonFirstName());
+    assertEquals("Expected Client middle name to have been changed", "middlestone", client.getCommonMiddleName());
+    assertEquals("Expected Client last name to have been changed", "Rubble", client.getCommonLastName());
   }
 
   @Test
