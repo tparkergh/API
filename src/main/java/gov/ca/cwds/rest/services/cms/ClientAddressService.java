@@ -1,14 +1,13 @@
 package gov.ca.cwds.rest.services.cms;
 
-import gov.ca.cwds.rest.api.domain.Participant;
 import java.io.Serializable;
-
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
+
 import javax.persistence.EntityExistsException;
 import javax.persistence.EntityNotFoundException;
 
-import org.hibernate.query.Query;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -22,6 +21,7 @@ import gov.ca.cwds.data.persistence.cms.StaffPerson;
 import gov.ca.cwds.data.rules.TriggerTablesDao;
 import gov.ca.cwds.rest.api.Request;
 import gov.ca.cwds.rest.api.Response;
+import gov.ca.cwds.rest.api.domain.Participant;
 import gov.ca.cwds.rest.business.rules.LACountyTrigger;
 import gov.ca.cwds.rest.services.CrudsService;
 import gov.ca.cwds.rest.services.ServiceException;
@@ -77,13 +77,15 @@ public class ClientAddressService implements CrudsService {
     return null;
   }
 
-  public List<Response> findByAddressAndClient(gov.ca.cwds.rest.api.domain.Address address, Participant clientParticipant) {
-    List<gov.ca.cwds.data.persistence.cms.ClientAddress> persistedClientAddresses =
-        clientAddressDao.findByAddressAndClient(address.getLegacyId(), clientParticipant.getLegacyId());
-    if (persistedClientAddresses != null && ! persistedClientAddresses.isEmpty()) {
+  public List<Response> findByAddressAndClient(gov.ca.cwds.rest.api.domain.Address address,
+      Participant clientParticipant) {
+    List<gov.ca.cwds.data.persistence.cms.ClientAddress> persistedClientAddresses = clientAddressDao
+        .findByAddressAndClient(address.getLegacyId(), clientParticipant.getLegacyId());
+    if (persistedClientAddresses != null && !persistedClientAddresses.isEmpty()) {
       ArrayList<Response> foundClientAddresses = new ArrayList();
-      for (ClientAddress clientAddress : persistedClientAddresses){
-        foundClientAddresses.add(new gov.ca.cwds.rest.api.domain.cms.ClientAddress(clientAddress, true));
+      for (ClientAddress clientAddress : persistedClientAddresses) {
+        foundClientAddresses
+            .add(new gov.ca.cwds.rest.api.domain.cms.ClientAddress(clientAddress, true));
 
       }
       return foundClientAddresses;
@@ -108,11 +110,36 @@ public class ClientAddressService implements CrudsService {
 
     gov.ca.cwds.rest.api.domain.cms.ClientAddress clientAddress =
         (gov.ca.cwds.rest.api.domain.cms.ClientAddress) request;
+    return create(clientAddress, null);
 
+  }
+
+  /**
+   * @param request
+   * @param timestamp
+   * @return
+   */
+  public Response createWithSingleTimestamp(Request request, Date timestamp) {
+    assert request instanceof gov.ca.cwds.rest.api.domain.cms.ClientAddress;
+
+    gov.ca.cwds.rest.api.domain.cms.ClientAddress clientAddress =
+        (gov.ca.cwds.rest.api.domain.cms.ClientAddress) request;
+    return create(clientAddress, timestamp);
+
+  }
+
+  private Response create(gov.ca.cwds.rest.api.domain.cms.ClientAddress clientAddress,
+      Date timestamp) {
     try {
       String lastUpdatedId = staffPersonIdRetriever.getStaffPersonId();
-      ClientAddress managedClientAddress =
-          new ClientAddress(IdGenerator.randomString(10), clientAddress, lastUpdatedId);
+      ClientAddress managedClientAddress;
+      if (timestamp == null) {
+        managedClientAddress =
+            new ClientAddress(IdGenerator.randomString(10), clientAddress, lastUpdatedId);
+      } else {
+        managedClientAddress = new ClientAddress(IdGenerator.randomString(10), clientAddress,
+            lastUpdatedId, timestamp);
+      }
       // checking the staffPerson county code
       StaffPerson staffperson = staffpersonDao.find(managedClientAddress.getLastUpdatedId());
       if (staffperson != null
