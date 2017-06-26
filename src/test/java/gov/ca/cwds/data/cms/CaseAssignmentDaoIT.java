@@ -17,7 +17,7 @@ import org.junit.BeforeClass;
 import org.junit.Rule;
 import org.junit.Test;
 
-import gov.ca.cwds.data.TestAutocloseSessionFactory;
+import gov.ca.cwds.data.AutocloseSessionFactory;
 import gov.ca.cwds.data.junit.template.DaoTestTemplate;
 import gov.ca.cwds.data.persistence.cms.CaseAssignment;
 import gov.ca.cwds.data.persistence.cms.CmsKeyIdGenerator;
@@ -32,7 +32,6 @@ public class CaseAssignmentDaoIT implements DaoTestTemplate {
   private String countySpecificCode = "20";
   private String endDate = "2018-06-01";
   private String endTime = "12:01:00";
-  private String establishedForCode = "C";
   private String establishedForId = "0iiVVuE088";
   private String caseLoadId = "2345678ABC";
   private String outOfStatePartyContactId = "";
@@ -60,7 +59,7 @@ public class CaseAssignmentDaoIT implements DaoTestTemplate {
    */
   @BeforeClass
   public static void beforeClass() {
-    sessionFactory = TestAutocloseSessionFactory.getSessionFactory();
+    sessionFactory = AutocloseSessionFactory.getSessionFactory();
     dao = new CaseAssignmentDao(sessionFactory);
   }
 
@@ -89,13 +88,12 @@ public class CaseAssignmentDaoIT implements DaoTestTemplate {
   @Test
   // @Ignore
   public void testFind() throws Exception {
-    // RETURN NOTING?! BUT THE HIBERNATE GENERATED SELECT STATEMENT WORKS PERFECTLY!!!
     final CaseAssignment found = dao.find("5rVkB8c088");
     assertThat(found.getId(), is(equalTo(id)));
   }
 
   @Override
-  // @Test
+  @Test
   // @Ignore
   public void testFindEntityNotFoundException() throws Exception {
     CaseAssignment found = dao.find("xxxxxyzuk3");
@@ -103,11 +101,9 @@ public class CaseAssignmentDaoIT implements DaoTestTemplate {
   }
 
   @Override
-  // @Test
+  @Test
   // @Ignore
   public void testCreate() throws Exception {
-    gov.ca.cwds.rest.api.domain.cms.Assignment da = validCaseAssignment();
-
     CaseAssignment pa = new CaseAssignment(countySpecificCode, DomainChef.uncookDateString(endDate),
         DomainChef.uncookTimeString(endTime), establishedForId, caseLoadId,
         outOfStatePartyContactId, responsiblityDescription, secondaryReferralAssignmentRoleType,
@@ -119,13 +115,18 @@ public class CaseAssignmentDaoIT implements DaoTestTemplate {
     assertThat(pa, is(create));
   }
 
-  private gov.ca.cwds.rest.api.domain.cms.Assignment validCaseAssignment() {
-    gov.ca.cwds.rest.api.domain.cms.Assignment validReferralAssignment =
-        new gov.ca.cwds.rest.api.domain.cms.Assignment(countySpecificCode, endDate, endTime,
-            establishedForCode, establishedForId, caseLoadId, outOfStatePartyContactId,
-            responsiblityDescription, secondaryReferralAssignmentRoleType, startDate, startTime,
-            typeOfReferralAssignmentCode, weightingNumber);
-    return validReferralAssignment;
+  @Test
+  public void testCreateBadFK() throws Exception {
+    final String garbageFK = "ONDr7gO0X5";
+    CaseAssignment pa = new CaseAssignment(countySpecificCode, DomainChef.uncookDateString(endDate),
+        DomainChef.uncookTimeString(endTime), garbageFK, caseLoadId, outOfStatePartyContactId,
+        responsiblityDescription, secondaryReferralAssignmentRoleType,
+        DomainChef.uncookDateString(startDate), DomainChef.uncookTimeString(startTime),
+        typeOfReferralAssignmentCode, weightingNumber);
+
+    pa.setId(CmsKeyIdGenerator.generate(staffId));
+    CaseAssignment create = dao.create(pa);
+    assertThat(pa, is(create));
   }
 
   @Override

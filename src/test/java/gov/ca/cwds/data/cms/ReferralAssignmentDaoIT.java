@@ -17,7 +17,7 @@ import org.junit.BeforeClass;
 import org.junit.Rule;
 import org.junit.Test;
 
-import gov.ca.cwds.data.TestAutocloseSessionFactory;
+import gov.ca.cwds.data.AutocloseSessionFactory;
 import gov.ca.cwds.data.junit.template.DaoTestTemplate;
 import gov.ca.cwds.data.persistence.cms.CmsKeyIdGenerator;
 import gov.ca.cwds.data.persistence.cms.ReferralAssignment;
@@ -60,7 +60,7 @@ public class ReferralAssignmentDaoIT implements DaoTestTemplate {
    */
   @BeforeClass
   public static void beforeClass() {
-    sessionFactory = TestAutocloseSessionFactory.getSessionFactory();
+    sessionFactory = AutocloseSessionFactory.getSessionFactory();
     dao = new ReferralAssignmentDao(sessionFactory);
   }
 
