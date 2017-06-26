@@ -3,20 +3,20 @@ package gov.ca.cwds.inject;
 import org.hibernate.cfg.Configuration;
 import org.hibernate.service.ServiceRegistry;
 
-import gov.ca.cwds.data.ApiReferentialIntegrityInterceptor;
+import gov.ca.cwds.data.ApiHibernateInterceptor;
 import io.dropwizard.hibernate.SessionFactoryFactory;
 
 /**
  * Configure Hibernate before completing construction of a session factory.
  * 
  * @author CWDS API Team
- * @see ApiReferentialIntegrityInterceptor
+ * @see ApiHibernateInterceptor
  */
 public class ApiSessionFactoryFactory extends SessionFactoryFactory {
 
   @Override
   protected void configure(Configuration configuration, ServiceRegistry registry) {
-    configuration.setInterceptor(new ApiReferentialIntegrityInterceptor());
+    configuration.setInterceptor(new ApiHibernateInterceptor());
   }
 
 }

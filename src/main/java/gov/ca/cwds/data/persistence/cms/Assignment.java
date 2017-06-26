@@ -5,7 +5,9 @@ import java.math.BigDecimal;
 import java.util.Date;
 
 import javax.persistence.Column;
+import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.Table;
 
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
@@ -18,13 +20,18 @@ import gov.ca.cwds.data.SystemCodeSerializer;
 import gov.ca.cwds.rest.api.domain.DomainChef;
 
 /**
- * {@link CmsPersistentObject} representing an Assigment.
+ * {@link CmsPersistentObject} representing an Assignment.
+ * 
+ * <p>
+ * WARNING: Prefer Assignment classes that manage the "folded key" code, such as
+ * {@link ReferralAssignment} and {@link CaseAssignment}.
+ * </p>
  * 
  * @author CWDS API Team
  */
 @SuppressWarnings("serial")
-// @Entity
-// @Table(name = "ASGNM_T")
+@Entity
+@Table(name = "ASGNM_T")
 public class Assignment extends CmsPersistentObject {
 
   @Id
@@ -124,7 +131,6 @@ public class Assignment extends CmsPersistentObject {
     this.typeOfAssignmentCode = typeOfAssignmentCode;
     this.weightingNumber = weightingNumber;
   }
-
 
   /**
    * @param id - Assignment Id
