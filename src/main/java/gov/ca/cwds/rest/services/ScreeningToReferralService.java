@@ -894,8 +894,6 @@ public class ScreeningToReferralService implements CrudsService {
       }
     }
 
-    clientParticipant.addAddresses(newAddresses);
-
     return clientParticipant;
   }
 
