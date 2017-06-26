@@ -250,7 +250,6 @@ public class ReferralClient extends CmsPersistentObject {
   /**
    * Constructor
    * 
-   * @param id The id
    * @param referralClient The domain object to construct this object from
    * @param lastUpdatedId the id of the last person to update this object
    * @param lastUpdatedTime the time of last person to update this object
@@ -262,7 +261,6 @@ public class ReferralClient extends CmsPersistentObject {
   }
 
   /**
-   * @param id the id
    * @param referralClient - referralClient
    */
   private void init(gov.ca.cwds.rest.api.domain.cms.ReferralClient referralClient) {
