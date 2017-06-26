@@ -1,5 +1,17 @@
 package gov.ca.cwds.rest.services.cms;
 
+import java.io.Serializable;
+import java.util.Date;
+import java.util.Map;
+
+import javax.persistence.EntityExistsException;
+import javax.persistence.EntityNotFoundException;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import com.google.inject.Inject;
+
 import gov.ca.cwds.data.Dao;
 import gov.ca.cwds.data.cms.ReferralClientDao;
 import gov.ca.cwds.data.cms.StaffPersonDao;
@@ -12,17 +24,6 @@ import gov.ca.cwds.rest.business.rules.NonLACountyTriggers;
 import gov.ca.cwds.rest.services.CrudsService;
 import gov.ca.cwds.rest.services.ServiceException;
 import gov.ca.cwds.rest.util.ServiceUtils;
-
-import java.io.Serializable;
-import java.util.Map;
-
-import javax.persistence.EntityExistsException;
-import javax.persistence.EntityNotFoundException;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import com.google.inject.Inject;
 
 /**
  * Business layer object to work on {@link ReferralClient}
@@ -112,10 +113,41 @@ public class ReferralClientService implements CrudsService {
 
     gov.ca.cwds.rest.api.domain.cms.ReferralClient referralClient =
         (gov.ca.cwds.rest.api.domain.cms.ReferralClient) request;
+    return create(referralClient, null);
+  }
 
+  /**
+   * This createWithSingleTimestamp is used for the referrals to maintian the same timestamp for the
+   * whole transaction
+   * 
+   * @param request - request
+   * @param timestamp - timestamp
+   * @return the single timestamp
+   */
+  public gov.ca.cwds.rest.api.domain.cms.ReferralClient createWithSingleTimestamp(Request request,
+      Date timestamp) {
+    assert request instanceof gov.ca.cwds.rest.api.domain.cms.ReferralClient;
+
+    gov.ca.cwds.rest.api.domain.cms.ReferralClient referralClient =
+        (gov.ca.cwds.rest.api.domain.cms.ReferralClient) request;
+    return create(referralClient, timestamp);
+  }
+
+  /**
+   * This private method is created to handle to single referralClient and referrals with single
+   * timestamp
+   * 
+   */
+  private gov.ca.cwds.rest.api.domain.cms.ReferralClient create(
+      gov.ca.cwds.rest.api.domain.cms.ReferralClient referralClient, Date timestamp) {
     try {
       String lastUpdatedId = staffPersonIdRetriever.getStaffPersonId();
-      ReferralClient managed = new ReferralClient(referralClient, lastUpdatedId);
+      ReferralClient managed;
+      if (timestamp == null) {
+        managed = new ReferralClient(referralClient, lastUpdatedId);
+      } else {
+        managed = new ReferralClient(referralClient, lastUpdatedId, timestamp);
+      }
       managed = referralClientDao.create(managed);
       // checking the staffPerson county code
       StaffPerson staffperson = staffpersonDao.find(managed.getLastUpdatedId());

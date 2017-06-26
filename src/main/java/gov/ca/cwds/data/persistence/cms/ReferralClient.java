@@ -1,10 +1,5 @@
 package gov.ca.cwds.data.persistence.cms;
 
-import gov.ca.cwds.data.CmsSystemCodeDeserializer;
-import gov.ca.cwds.data.SystemCodeSerializer;
-import gov.ca.cwds.rest.api.ApiException;
-import gov.ca.cwds.rest.api.domain.DomainChef;
-
 import java.io.Serializable;
 import java.util.Date;
 
@@ -22,6 +17,11 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+
+import gov.ca.cwds.data.CmsSystemCodeDeserializer;
+import gov.ca.cwds.data.SystemCodeSerializer;
+import gov.ca.cwds.rest.api.ApiException;
+import gov.ca.cwds.rest.api.domain.DomainChef;
 
 /**
  * {@link CmsPersistentObject} representing a ReferralClient in the replicated schema.
@@ -244,7 +244,28 @@ public class ReferralClient extends CmsPersistentObject {
   public ReferralClient(gov.ca.cwds.rest.api.domain.cms.ReferralClient referralClient,
       String lastUpdateId) {
     super(lastUpdateId);
+    init(referralClient);
+  }
 
+  /**
+   * Constructor
+   * 
+   * @param id The id
+   * @param referralClient The domain object to construct this object from
+   * @param lastUpdatedId the id of the last person to update this object
+   * @param lastUpdatedTime the time of last person to update this object
+   */
+  public ReferralClient(gov.ca.cwds.rest.api.domain.cms.ReferralClient referralClient,
+      String lastUpdatedId, Date lastUpdatedTime) {
+    super(lastUpdatedId, lastUpdatedTime);
+    init(referralClient);
+  }
+
+  /**
+   * @param id the id
+   * @param referralClient - referralClient
+   */
+  private void init(gov.ca.cwds.rest.api.domain.cms.ReferralClient referralClient) {
     try {
       this.referralId = referralClient.getReferralId();
       this.clientId = referralClient.getClientId();
