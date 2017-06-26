@@ -32,8 +32,7 @@ public class ReferralAssignmentDaoIT implements DaoTestTemplate {
   private String countySpecificCode = "20";
   private String endDate = "2018-06-01";
   private String endTime = "12:01:00";
-  private String establishedForCode = "R";
-  private String establishedForId = "SvgDqxm0AJ";
+  private String establishedForId = "C1wCWQ8X8G";
   private String caseLoadId = "2345678ABC";
   private String outOfStatePartyContactId = "";
   private String responsiblityDescription = "Referral Assignment responsibility description";
@@ -105,8 +104,6 @@ public class ReferralAssignmentDaoIT implements DaoTestTemplate {
   @Test
   // @Ignore
   public void testCreate() throws Exception {
-    gov.ca.cwds.rest.api.domain.cms.Assignment da = validReferralAssignment();
-
     ReferralAssignment pa = new ReferralAssignment(countySpecificCode,
         DomainChef.uncookDateString(endDate), DomainChef.uncookTimeString(endTime),
         establishedForId, caseLoadId, outOfStatePartyContactId, responsiblityDescription,
@@ -117,15 +114,6 @@ public class ReferralAssignmentDaoIT implements DaoTestTemplate {
 
     ReferralAssignment create = dao.create(pa);
     assertThat(pa, is(create));
-  }
-
-  private gov.ca.cwds.rest.api.domain.cms.Assignment validReferralAssignment() {
-    gov.ca.cwds.rest.api.domain.cms.Assignment validReferralAssignment =
-        new gov.ca.cwds.rest.api.domain.cms.Assignment(countySpecificCode, endDate, endTime,
-            establishedForCode, establishedForId, caseLoadId, outOfStatePartyContactId,
-            responsiblityDescription, secondaryReferralAssignmentRoleType, startDate, startTime,
-            typeOfReferralAssignmentCode, weightingNumber);
-    return validReferralAssignment;
   }
 
   @Override

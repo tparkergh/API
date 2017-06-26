@@ -67,7 +67,7 @@ public class CaseDaoIT implements DaoTestTemplate {
   @Override
   @Test
   public void testFind() throws Exception {
-    final String id = "0iiVVuE088";
+    final String id = "AadfKnG07n";
     CmsCase found = dao.find(id);
     assertThat(found.getId(), is(id));
   }
@@ -100,7 +100,7 @@ public class CaseDaoIT implements DaoTestTemplate {
   @Override
   @Test
   public void testDelete() throws Exception {
-    String id = "0iiVVuE088";
+    String id = "AadfKnG07n";
     CmsCase deleted = dao.delete(id);
     assertThat(deleted.getId(), is(id));
   }
@@ -117,7 +117,7 @@ public class CaseDaoIT implements DaoTestTemplate {
   @Test
   public void testUpdate() throws Exception {
     CmsCase bean = new CmsCase();
-    bean.setId("0iiVVuE088");
+    bean.setId("AadfKnG07n");
     CmsCase updated = dao.update(bean);
     assertThat(updated, is(bean));
   }
