@@ -4,12 +4,17 @@ import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.nullValue;
 import static org.junit.Assert.assertThat;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 
 import java.math.BigDecimal;
+
+import javax.persistence.PersistenceException;
 
 import org.hamcrest.junit.ExpectedException;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+import org.hibernate.exception.ConstraintViolationException;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
@@ -126,7 +131,14 @@ public class CaseAssignmentDaoIT implements DaoTestTemplate {
 
     pa.setId(CmsKeyIdGenerator.generate(staffId));
     CaseAssignment create = dao.create(pa);
-    assertThat(pa, is(create));
+
+    try {
+      session.getTransaction().commit(); // Force commit to prove FK violation.
+      fail("FK ERROR!");
+    } catch (PersistenceException e) {
+      assertTrue(e.getCause() instanceof ConstraintViolationException);
+    }
+
   }
 
   @Override
