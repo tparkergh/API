@@ -1214,10 +1214,12 @@ public class Client extends ReportingDomain implements Request, Response {
    * 
    * @param firstName first name
    * @param lastName last name
+   * @param middleName middle name
    */
-  public void update(String firstName, String lastName) {
+  public void update(String firstName, String middleName, String lastName) {
     this.commonFirstName = firstName;
     this.commonLastName = lastName;
+    this.commonMiddleName = middleName;
   }
 
   /**
