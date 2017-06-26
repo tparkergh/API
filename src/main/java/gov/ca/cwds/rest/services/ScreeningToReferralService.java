@@ -350,7 +350,7 @@ public class ScreeningToReferralService implements CrudsService {
 
               try {
                 gov.ca.cwds.rest.api.domain.cms.ReferralClient postedReferralClient =
-                    this.referralClientService.create(referralClient);
+                    this.referralClientService.createWithSingleTimestamp(referralClient, timestamp);
               } catch (ServiceException se) {
                 logError(se.getMessage(), se);
               }
