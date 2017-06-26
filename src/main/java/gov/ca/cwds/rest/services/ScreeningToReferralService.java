@@ -375,7 +375,7 @@ public class ScreeningToReferralService implements CrudsService {
               try {
                 // addresses associated with a client
                 Participant resultParticipant =
-                    processClientAddress(incomingParticipant, referralId, clientId);
+                    processClientAddress(incomingParticipant, referralId, clientId, timestamp);
               } catch (ServiceException e) {
                 String message = e.getMessage();
                 logError(message, e);
@@ -810,7 +810,7 @@ public class ScreeningToReferralService implements CrudsService {
    * CMS Address - create ADDRESS and CLIENT_ADDRESS for each address of the participant
    */
   private Participant processClientAddress(Participant clientParticipant, String referralId,
-      String clientId) throws ServiceException {
+      String clientId, Date timestamp) throws ServiceException {
 
     String addressId = new String("");
     Set<gov.ca.cwds.rest.api.domain.Address> addresses;
@@ -829,7 +829,8 @@ public class ScreeningToReferralService implements CrudsService {
 
         messageBuilder.addDomainValidationError(validator.validate(domainAddress));
 
-        PostedAddress postedAddress = (PostedAddress) this.addressService.create(domainAddress);
+        PostedAddress postedAddress =
+            (PostedAddress) this.addressService.createWithSingleTimestamp(domainAddress, timestamp);
         addressId = postedAddress.getExistingAddressId();
       } else {
         // verify that Address row exist - no update for now
@@ -871,7 +872,7 @@ public class ScreeningToReferralService implements CrudsService {
               addressId, clientId, "", referralId);
 
           messageBuilder.addDomainValidationError(validator.validate(clientAddress));
-          this.clientAddressService.create(clientAddress);
+          this.clientAddressService.createWithSingleTimestamp(clientAddress, timestamp);
 
           messageBuilder.addDomainValidationError(validator.validate(clientAddress));
 

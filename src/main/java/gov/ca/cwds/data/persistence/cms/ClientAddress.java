@@ -125,9 +125,28 @@ public class ClientAddress extends BaseClientAddress {
   public ClientAddress(String id, gov.ca.cwds.rest.api.domain.cms.ClientAddress clientAddress,
       String lastUpdateId) {
     super(lastUpdateId);
+    init(id, clientAddress);
+  }
+
+  /**
+   * @param id
+   * @param clientAddress
+   * @param lastUpdatedId
+   * @param lastUpdatedTime
+   */
+  public ClientAddress(String id, gov.ca.cwds.rest.api.domain.cms.ClientAddress clientAddress,
+      String lastUpdatedId, Date lastUpdatedTime) {
+    super(lastUpdatedId, lastUpdatedTime);
+    init(id, clientAddress);
+  }
+
+  /**
+   * @param id
+   * @param clientAddress
+   */
+  public void init(String id, gov.ca.cwds.rest.api.domain.cms.ClientAddress clientAddress) {
     try {
       this.id = id;
-
       this.addressType = clientAddress.getAddressType();
       this.bkInmtId = clientAddress.getBookingOrInmateId();
       this.effEndDt = DomainChef.uncookDateString(clientAddress.getEffectiveEndDate());
@@ -139,7 +158,6 @@ public class ClientAddress extends BaseClientAddress {
     } catch (ApiException e) {
       throw new PersistenceException(e);
     }
-
   }
 
   /**
