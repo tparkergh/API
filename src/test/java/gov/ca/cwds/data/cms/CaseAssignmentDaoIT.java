@@ -14,6 +14,7 @@ import javax.persistence.PersistenceException;
 import org.hamcrest.junit.ExpectedException;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+import org.hibernate.cfg.Configuration;
 import org.hibernate.exception.ConstraintViolationException;
 import org.junit.After;
 import org.junit.AfterClass;
@@ -22,7 +23,6 @@ import org.junit.BeforeClass;
 import org.junit.Rule;
 import org.junit.Test;
 
-import gov.ca.cwds.data.AutocloseSessionFactory;
 import gov.ca.cwds.data.junit.template.DaoTestTemplate;
 import gov.ca.cwds.data.persistence.cms.CaseAssignment;
 import gov.ca.cwds.data.persistence.cms.CmsKeyIdGenerator;
@@ -64,7 +64,8 @@ public class CaseAssignmentDaoIT implements DaoTestTemplate {
    */
   @BeforeClass
   public static void beforeClass() {
-    sessionFactory = AutocloseSessionFactory.getSessionFactory();
+    sessionFactory = new Configuration().configure().buildSessionFactory();
+    // sessionFactory = AutocloseSessionFactory.getSessionFactory();
     dao = new CaseAssignmentDao(sessionFactory);
   }
 

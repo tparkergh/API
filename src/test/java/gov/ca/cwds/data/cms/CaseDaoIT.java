@@ -10,6 +10,7 @@ import javax.persistence.EntityNotFoundException;
 import org.hamcrest.junit.ExpectedException;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+import org.hibernate.cfg.Configuration;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
@@ -17,7 +18,6 @@ import org.junit.BeforeClass;
 import org.junit.Rule;
 import org.junit.Test;
 
-import gov.ca.cwds.data.AutocloseSessionFactory;
 import gov.ca.cwds.data.junit.template.DaoTestTemplate;
 import gov.ca.cwds.data.persistence.cms.CmsCase;
 import gov.ca.cwds.data.persistence.cms.CmsKeyIdGenerator;
@@ -39,7 +39,8 @@ public class CaseDaoIT implements DaoTestTemplate {
    */
   @BeforeClass
   public static void beforeClass() {
-    sessionFactory = AutocloseSessionFactory.getSessionFactory();
+    sessionFactory = new Configuration().configure().buildSessionFactory();
+    // sessionFactory = AutocloseSessionFactory.getSessionFactory();
     dao = new CaseDao(sessionFactory);
   }
 
@@ -67,7 +68,7 @@ public class CaseDaoIT implements DaoTestTemplate {
   @Override
   @Test
   public void testFind() throws Exception {
-    final String id = "AadfKnG07n";
+    final String id = "AbxPBtY0Um";
     CmsCase found = dao.find(id);
     assertThat(found.getId(), is(id));
   }
@@ -100,7 +101,7 @@ public class CaseDaoIT implements DaoTestTemplate {
   @Override
   @Test
   public void testDelete() throws Exception {
-    String id = "AadfKnG07n";
+    String id = "AbxPBtY0Um";
     CmsCase deleted = dao.delete(id);
     assertThat(deleted.getId(), is(id));
   }
@@ -117,7 +118,7 @@ public class CaseDaoIT implements DaoTestTemplate {
   @Test
   public void testUpdate() throws Exception {
     CmsCase bean = new CmsCase();
-    bean.setId("AadfKnG07n");
+    bean.setId("AbxPBtY0Um");
     CmsCase updated = dao.update(bean);
     assertThat(updated, is(bean));
   }
