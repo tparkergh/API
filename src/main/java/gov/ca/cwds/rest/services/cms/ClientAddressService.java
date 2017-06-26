@@ -115,9 +115,12 @@ public class ClientAddressService implements CrudsService {
   }
 
   /**
-   * @param request
-   * @param timestamp
-   * @return
+   * This createWithSingleTimestamp is used for the referrals to maintian the same timestamp for the
+   * whole transaction
+   * 
+   * @param request - request
+   * @param timestamp - timestamp
+   * @return the single timestamp
    */
   public Response createWithSingleTimestamp(Request request, Date timestamp) {
     assert request instanceof gov.ca.cwds.rest.api.domain.cms.ClientAddress;
@@ -128,6 +131,11 @@ public class ClientAddressService implements CrudsService {
 
   }
 
+  /**
+   * This private method is created to handle to single clientAddress and referrals with single
+   * timestamp
+   * 
+   */
   private Response create(gov.ca.cwds.rest.api.domain.cms.ClientAddress clientAddress,
       Date timestamp) {
     try {
