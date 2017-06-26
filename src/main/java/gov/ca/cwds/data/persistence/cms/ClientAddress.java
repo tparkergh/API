@@ -129,10 +129,12 @@ public class ClientAddress extends BaseClientAddress {
   }
 
   /**
-   * @param id
-   * @param clientAddress
-   * @param lastUpdatedId
-   * @param lastUpdatedTime
+   * Constructor
+   * 
+   * @param id The id
+   * @param clientAddress The domain object to construct this object from
+   * @param lastUpdatedId the id of the last person to update this object
+   * @param lastUpdatedTime the time of last person to update this object
    */
   public ClientAddress(String id, gov.ca.cwds.rest.api.domain.cms.ClientAddress clientAddress,
       String lastUpdatedId, Date lastUpdatedTime) {
@@ -141,8 +143,8 @@ public class ClientAddress extends BaseClientAddress {
   }
 
   /**
-   * @param id
-   * @param clientAddress
+   * @param id the id
+   * @param clientAddress - clientAddress
    */
   public void init(String id, gov.ca.cwds.rest.api.domain.cms.ClientAddress clientAddress) {
     try {
