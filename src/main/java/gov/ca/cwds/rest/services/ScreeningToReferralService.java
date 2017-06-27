@@ -527,7 +527,7 @@ public class ScreeningToReferralService implements CrudsService {
    * 
    * </blockquote>
    */
-  private String generateDrmsDocumentId() throws Exception {
+  private String generateDrmsDocumentId() throws ServiceException {
     PostedDrmsDocument postedDrmsDocument = null;
     try {
       String staffPersonId = staffPersonIdRetriever.getStaffPersonId();

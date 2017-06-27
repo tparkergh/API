@@ -192,7 +192,8 @@ public class ClientService implements CrudsService {
       savedEntity = new gov.ca.cwds.rest.api.domain.cms.Client(managed, true);
     } catch (EntityNotFoundException e) {
       savedEntity = null;
-      LOGGER.info("Client not found : {}", client);
+      LOGGER.info("client not found : {}", client);
+      throw new ServiceException(e);
     }
     return savedEntity;
   }
