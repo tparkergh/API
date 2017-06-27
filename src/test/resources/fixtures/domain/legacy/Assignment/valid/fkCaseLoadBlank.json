@@ -4,7 +4,7 @@
 	"endTime": "12:01:00",
 	"establishedForCode": "R",
 	"establishedForId": "1234567ABC",
-	"caseLoadId": "2345678ABC",
+	"caseLoadId": "",
 	"outOfStateContactId": "",
 	"responsibilityDescription": "Assignment responsibility description",
 	"secondaryAssignmentRoleType": 0,

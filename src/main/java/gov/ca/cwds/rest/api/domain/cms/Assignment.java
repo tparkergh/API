@@ -94,6 +94,7 @@ public class Assignment extends ReportingDomain implements Request, Response {
   @ApiModelProperty(required = false, readOnly = false, example = "1234")
   private Short secondaryAssignmentRoleType;
 
+  @NotEmpty
   @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = DATE_FORMAT)
   @JsonProperty(value = "startDate")
   @gov.ca.cwds.rest.validation.Date(format = DATE_FORMAT, required = false)
