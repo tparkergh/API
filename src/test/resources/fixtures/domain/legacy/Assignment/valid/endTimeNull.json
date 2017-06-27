@@ -1,7 +1,7 @@
 {
 	"countySpecificCode": "20",
 	"endDate": "2018-06-01",
-	"endTime": "12:01:00",
+	"endTime": null,
 	"establishedForCode": "R",
 	"establishedForId": "1234567ABC",
 	"caseLoadId": "2345678ABC",

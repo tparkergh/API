@@ -3,7 +3,7 @@
 	"endDate": "2018-06-01",
 	"endTime": "12:01:00",
 	"establishedForCode": "R",
-	"establishedForId": "1234567ABC",
+	"establishedForId": null,
 	"caseLoadId": "2345678ABC",
 	"outOfStateContactId": "",
 	"responsibilityDescription": "Assignment responsibility description",

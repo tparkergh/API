@@ -4,17 +4,14 @@ import static io.dropwizard.testing.FixtureHelpers.fixture;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.is;
-import static org.mockito.Matchers.eq;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
 
 import java.math.BigDecimal;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 
-import javax.ws.rs.client.Entity;
-import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.Response;
+import javax.validation.Validation;
+import javax.validation.Validator;
 
 import org.junit.After;
 import org.junit.Before;
@@ -24,10 +21,11 @@ import org.junit.Test;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.squarespace.jersey2.guice.JerseyGuiceUtils;
 
+import gov.ca.cwds.rest.api.domain.error.ErrorMessage;
 import gov.ca.cwds.rest.core.Api;
-import gov.ca.cwds.rest.resources.cms.AssignmentResource;
+import gov.ca.cwds.rest.messages.MessageBuilder;
+import gov.ca.cwds.rest.resources.cms.JerseyGuiceRule;
 import io.dropwizard.jackson.Jackson;
-import io.dropwizard.testing.junit.ResourceTestRule;
 import nl.jqno.equalsverifier.EqualsVerifier;
 import nl.jqno.equalsverifier.Warning;
 
@@ -38,7 +36,8 @@ import nl.jqno.equalsverifier.Warning;
 public class AssignmentTest {
 
   private static final String ROOT_RESOURCE = "/" + Api.RESOURCE_ASSIGNMENT + "/";
-  private static final AssignmentResource mockedAssignmentResource = mock(AssignmentResource.class);
+  // private static final AssignmentResource mockedAssignmentResource =
+  // mock(AssignmentResource.class);
 
   @SuppressWarnings("javadoc")
   @After
@@ -48,9 +47,14 @@ public class AssignmentTest {
 
   @SuppressWarnings("javadoc")
   @ClassRule
+  public static JerseyGuiceRule rule = new JerseyGuiceRule();
 
-  public static final ResourceTestRule resources =
-      ResourceTestRule.builder().addResource(mockedAssignmentResource).build();
+  /**
+   * 
+   */
+  // @ClassRule
+  // public static final ResourceTestRule resources =
+  // ResourceTestRule.builder().addResource(mockedAssignmentResource).build();
 
   private final static DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
   private final static DateFormat timeOnlyFormat = new SimpleDateFormat("HH:mm:ss");
@@ -60,7 +64,7 @@ public class AssignmentTest {
   private String endDate = "2018-06-01";
   private String endTime = "12:01:00";
   private String establishedForCode = "R";
-  private String establishedForId = "12345678ABC";
+  private String establishedForId = "1234567ABC";
   private String caseLoadId = "2345678ABC";
   private String outOfStatePartyContactId = "";
   private String id = "3456789ABC";
@@ -74,13 +78,17 @@ public class AssignmentTest {
 
   private Assignment validAssignment = validAssignment();
 
+  private MessageBuilder messageBuilder;
+  private Validator validator;
+
   /**
    * 
    */
   @Before
   public void setup() {
-    when(mockedAssignmentResource.create(eq(validAssignment)))
-        .thenReturn(Response.status(Response.Status.NO_CONTENT).entity(null).build());
+    messageBuilder = new MessageBuilder();
+    // when(mockedAssignmentResource.create(eq(validAssignment)))
+    // .thenReturn(Response.status(Response.Status.NO_CONTENT).entity(null).build());
   }
 
   @SuppressWarnings("javadoc")
@@ -103,10 +111,501 @@ public class AssignmentTest {
   public void testWithValidSuccess() throws Exception {
     Assignment toCreate = MAPPER
         .readValue(fixture("fixtures/domain/legacy/Assignment/valid/valid.json"), Assignment.class);
-    Response response =
-        resources.client().target(ROOT_RESOURCE).request().accept(MediaType.APPLICATION_JSON)
-            .post(Entity.entity(toCreate, MediaType.APPLICATION_JSON));
-    assertThat(response.getStatus(), is(equalTo(204)));
+    validator = Validation.buildDefaultValidatorFactory().getValidator();
+    messageBuilder.addDomainValidationError(validator.validate(toCreate));
+
+    assertThat(messageBuilder.getMessages().isEmpty(), is(true));
+  }
+
+  @SuppressWarnings("javadoc")
+  @Test
+  public void testCountySpceficCodeBlankFail() throws Exception {
+    Assignment toCreate = MAPPER.readValue(
+        fixture("fixtures/domain/legacy/Assignment/invalid/countySpecificCodeBlank.json"),
+        Assignment.class);
+    validator = Validation.buildDefaultValidatorFactory().getValidator();
+    messageBuilder.addDomainValidationError(validator.validate(toCreate));
+    Boolean theErrorDetected = false;
+
+    ArrayList<ErrorMessage> validationErrors = messageBuilder.getMessages();
+    for (ErrorMessage message : validationErrors) {
+      if (message.getMessage().equals("countySpecificCode size must be between 1 and 2")) {
+        theErrorDetected = true;
+      }
+    }
+
+    assertThat(theErrorDetected, is(true));
+  }
+
+  @SuppressWarnings("javadoc")
+  @Test
+  public void testCountySpceficCodeNullFail() throws Exception {
+    Assignment toCreate = MAPPER.readValue(
+        fixture("fixtures/domain/legacy/Assignment/invalid/countySpecificCodeBlank.json"),
+        Assignment.class);
+    validator = Validation.buildDefaultValidatorFactory().getValidator();
+    messageBuilder.addDomainValidationError(validator.validate(toCreate));
+    Boolean theErrorDetected = false;
+
+    ArrayList<ErrorMessage> validationErrors = messageBuilder.getMessages();
+    for (ErrorMessage message : validationErrors) {
+      if (message.getMessage().equals("countySpecificCode may not be empty")) {
+        theErrorDetected = true;
+      }
+    }
+    assertThat(theErrorDetected, is(true));
+  }
+
+  @SuppressWarnings("javadoc")
+  @Test
+  public void testCountySpceficCodeNullMissing() throws Exception {
+    Assignment toCreate = MAPPER.readValue(
+        fixture("fixtures/domain/legacy/Assignment/invalid/countySpecificCodeMissing.json"),
+        Assignment.class);
+    validator = Validation.buildDefaultValidatorFactory().getValidator();
+    messageBuilder.addDomainValidationError(validator.validate(toCreate));
+    Boolean theErrorDetected = false;
+
+    ArrayList<ErrorMessage> validationErrors = messageBuilder.getMessages();
+    for (ErrorMessage message : validationErrors) {
+      // System.out.println(message.getMessage());
+      if (message.getMessage().equals("countySpecificCode may not be empty")) {
+        theErrorDetected = true;
+      }
+    }
+    assertThat(theErrorDetected, is(true));
+  }
+
+  @SuppressWarnings("javadoc")
+  @Test
+  public void testEndDateBlankSuccess() throws Exception {
+    Assignment toCreate = MAPPER.readValue(
+        fixture("fixtures/domain/legacy/Assignment/valid/endDateBlank.json"), Assignment.class);
+    validator = Validation.buildDefaultValidatorFactory().getValidator();
+    messageBuilder.addDomainValidationError(validator.validate(toCreate));
+    assertThat(messageBuilder.getMessages().isEmpty(), is(true));
+  }
+
+  @SuppressWarnings("javadoc")
+  @Test
+  public void testEndDateNullSuccess() throws Exception {
+    Assignment toCreate = MAPPER.readValue(
+        fixture("fixtures/domain/legacy/Assignment/valid/endDateNull.json"), Assignment.class);
+    validator = Validation.buildDefaultValidatorFactory().getValidator();
+    messageBuilder.addDomainValidationError(validator.validate(toCreate));
+    assertThat(messageBuilder.getMessages().isEmpty(), is(true));
+  }
+
+  @SuppressWarnings("javadoc")
+  @Test
+  public void testEndDateMissingSuccess() throws Exception {
+    Assignment toCreate = MAPPER.readValue(
+        fixture("fixtures/domain/legacy/Assignment/valid/endDateNull.json"), Assignment.class);
+    validator = Validation.buildDefaultValidatorFactory().getValidator();
+    messageBuilder.addDomainValidationError(validator.validate(toCreate));
+    assertThat(messageBuilder.getMessages().isEmpty(), is(true));
+  }
+
+  @SuppressWarnings("javadoc")
+  @Test
+  public void testEndDateInvlidFormatFails() throws Exception {
+    Assignment toCreate = MAPPER.readValue(
+        fixture("fixtures/domain/legacy/Assignment/invalid/endDateInvalidFormat.json"),
+        Assignment.class);
+    validator = Validation.buildDefaultValidatorFactory().getValidator();
+    messageBuilder.addDomainValidationError(validator.validate(toCreate));
+    Boolean theErrorDetected = false;
+
+    ArrayList<ErrorMessage> validationErrors = messageBuilder.getMessages();
+    for (ErrorMessage message : validationErrors) {
+      // System.out.println(message.getMessage());
+      if (message.getMessage().equals("endDate must be in the format of yyyy-MM-dd")) {
+        theErrorDetected = true;
+      }
+    }
+    assertThat(theErrorDetected, is(true));
+  }
+
+
+  @SuppressWarnings("javadoc")
+  @Test
+  public void testEndTimeBlankSuccess() throws Exception {
+    Assignment toCreate = MAPPER.readValue(
+        fixture("fixtures/domain/legacy/Assignment/valid/endTimeBlank.json"), Assignment.class);
+    validator = Validation.buildDefaultValidatorFactory().getValidator();
+    messageBuilder.addDomainValidationError(validator.validate(toCreate));
+    assertThat(messageBuilder.getMessages().isEmpty(), is(true));
+
+  }
+
+  @SuppressWarnings("javadoc")
+  @Test
+  public void testEndTimeNullSuccess() throws Exception {
+    Assignment toCreate = MAPPER.readValue(
+        fixture("fixtures/domain/legacy/Assignment/valid/endTimeNull.json"), Assignment.class);
+    validator = Validation.buildDefaultValidatorFactory().getValidator();
+    messageBuilder.addDomainValidationError(validator.validate(toCreate));
+    assertThat(messageBuilder.getMessages().isEmpty(), is(true));
+
+  }
+
+  @SuppressWarnings("javadoc")
+  @Test
+  public void testEndTimeMissingSuccess() throws Exception {
+    Assignment toCreate = MAPPER.readValue(
+        fixture("fixtures/domain/legacy/Assignment/valid/endTimeMissing.json"), Assignment.class);
+    validator = Validation.buildDefaultValidatorFactory().getValidator();
+    messageBuilder.addDomainValidationError(validator.validate(toCreate));
+    assertThat(messageBuilder.getMessages().isEmpty(), is(true));
+
+  }
+
+  @SuppressWarnings("javadoc")
+  @Test
+  public void testEndTimeInvalidFormatFails() throws Exception {
+    Assignment toCreate = MAPPER.readValue(
+        fixture("fixtures/domain/legacy/Assignment/invalid/endTimeInvalidFormat.json"),
+        Assignment.class);
+    validator = Validation.buildDefaultValidatorFactory().getValidator();
+    messageBuilder.addDomainValidationError(validator.validate(toCreate));
+    Boolean theErrorDetected = false;
+
+    ArrayList<ErrorMessage> validationErrors = messageBuilder.getMessages();
+    for (ErrorMessage message : validationErrors) {
+      System.out.println(message.getMessage());
+      if (message.getMessage().equals("endTime must be in the format of HH:mm:ss")) {
+        theErrorDetected = true;
+      }
+    }
+    assertThat(theErrorDetected, is(true));
+  }
+
+  @Test
+  public void testEstablishedForCodeMissingFails() throws Exception {
+    Assignment toCreate = MAPPER.readValue(
+        fixture("fixtures/domain/legacy/Assignment/invalid/establishedForCodeMissing.json"),
+        Assignment.class);
+    validator = Validation.buildDefaultValidatorFactory().getValidator();
+    messageBuilder.addDomainValidationError(validator.validate(toCreate));
+    Boolean theErrorDetected = false;
+
+    ArrayList<ErrorMessage> validationErrors = messageBuilder.getMessages();
+    for (ErrorMessage message : validationErrors) {
+      System.out.println(message.getMessage());
+      if (message.getMessage().equals("establishedForCode may not be empty")) {
+        theErrorDetected = true;
+      }
+    }
+    assertThat(theErrorDetected, is(true));
+  }
+
+  @Test
+  public void testEstablishedForCodeInvalidFails() throws Exception {
+    Assignment toCreate = MAPPER.readValue(
+        fixture("fixtures/domain/legacy/Assignment/invalid/establishedForCodeInvalid.json"),
+        Assignment.class);
+    validator = Validation.buildDefaultValidatorFactory().getValidator();
+    messageBuilder.addDomainValidationError(validator.validate(toCreate));
+    Boolean theErrorDetected = false;
+
+    ArrayList<ErrorMessage> validationErrors = messageBuilder.getMessages();
+    for (ErrorMessage message : validationErrors) {
+      // System.out.println(message.getMessage());
+      if (message.getMessage().equals("establishedForCode must be one of [R, C]")) {
+        theErrorDetected = true;
+      }
+    }
+    assertThat(theErrorDetected, is(true));
+  }
+
+  @Test
+  public void testEstablishedForCodeNullFails() throws Exception {
+    Assignment toCreate = MAPPER.readValue(
+        fixture("fixtures/domain/legacy/Assignment/invalid/establishedForCodeNull.json"),
+        Assignment.class);
+    validator = Validation.buildDefaultValidatorFactory().getValidator();
+    messageBuilder.addDomainValidationError(validator.validate(toCreate));
+    Boolean theErrorDetected = false;
+
+    ArrayList<ErrorMessage> validationErrors = messageBuilder.getMessages();
+    for (ErrorMessage message : validationErrors) {
+      // System.out.println(message.getMessage());
+      if (message.getMessage().equals("establishedForCode may not be empty")) {
+        theErrorDetected = true;
+      }
+    }
+    assertThat(theErrorDetected, is(true));
+  }
+
+  @SuppressWarnings("javadoc")
+  @Test
+  public void testEstablishedForIdNullFails() throws Exception {
+    Assignment toCreate = MAPPER.readValue(
+        fixture("fixtures/domain/legacy/Assignment/invalid/establishedForIdCodeNull.json"),
+        Assignment.class);
+    validator = Validation.buildDefaultValidatorFactory().getValidator();
+    messageBuilder.addDomainValidationError(validator.validate(toCreate));
+    Boolean theErrorDetected = false;
+
+    ArrayList<ErrorMessage> validationErrors = messageBuilder.getMessages();
+    for (ErrorMessage message : validationErrors) {
+      // System.out.println(message.getMessage());
+      if (message.getMessage().equals("establishedForId may not be empty")) {
+        theErrorDetected = true;
+      }
+    }
+    assertThat(theErrorDetected, is(true));
+  }
+
+  @SuppressWarnings("javadoc")
+  @Test
+  public void testEstablishedForIdMissingFails() throws Exception {
+    Assignment toCreate = MAPPER.readValue(
+        fixture("fixtures/domain/legacy/Assignment/invalid/establishedForIdCodeNull.json"),
+        Assignment.class);
+    validator = Validation.buildDefaultValidatorFactory().getValidator();
+    messageBuilder.addDomainValidationError(validator.validate(toCreate));
+    Boolean theErrorDetected = false;
+
+    ArrayList<ErrorMessage> validationErrors = messageBuilder.getMessages();
+    for (ErrorMessage message : validationErrors) {
+      // System.out.println(message.getMessage());
+      if (message.getMessage().equals("establishedForId may not be empty")) {
+        theErrorDetected = true;
+      }
+    }
+    assertThat(theErrorDetected, is(true));
+
+  }
+
+  @SuppressWarnings("javadoc")
+  @Test
+  public void testEstablishedForIdInvalidFails() throws Exception {
+    Assignment toCreate = MAPPER.readValue(
+        fixture("fixtures/domain/legacy/Assignment/invalid/establishedForIdInvalid.json"),
+        Assignment.class);
+    validator = Validation.buildDefaultValidatorFactory().getValidator();
+    messageBuilder.addDomainValidationError(validator.validate(toCreate));
+    Boolean theErrorDetected = false;
+
+    ArrayList<ErrorMessage> validationErrors = messageBuilder.getMessages();
+    for (ErrorMessage message : validationErrors) {
+      // System.out.println(message.getMessage());
+      if (message.getMessage().equals("establishedForId size must be between 10 and 10")) {
+        theErrorDetected = true;
+      }
+    }
+    assertThat(theErrorDetected, is(true));
+  }
+
+  @SuppressWarnings("javadoc")
+  @Test
+  public void testFkCaseLoadMissingSuccess() throws Exception {
+    Assignment toCreate =
+        MAPPER.readValue(fixture("fixtures/domain/legacy/Assignment/valid/fkCaseLoadMissing.json"),
+            Assignment.class);
+    validator = Validation.buildDefaultValidatorFactory().getValidator();
+    messageBuilder.addDomainValidationError(validator.validate(toCreate));
+    assertThat(messageBuilder.getMessages().isEmpty(), is(true));
+
+  }
+
+  @SuppressWarnings("javadoc")
+  @Test
+  public void testFkCaseLoadBlankSuccess() throws Exception {
+    Assignment toCreate = MAPPER.readValue(
+        fixture("fixtures/domain/legacy/Assignment/valid/fkCaseLoadBlank.json"), Assignment.class);
+    validator = Validation.buildDefaultValidatorFactory().getValidator();
+    messageBuilder.addDomainValidationError(validator.validate(toCreate));
+    assertThat(messageBuilder.getMessages().isEmpty(), is(true));
+
+  }
+
+  @SuppressWarnings("javadoc")
+  @Test
+  public void testFkCaseLInvalidFormatFails() throws Exception {
+    Assignment toCreate = MAPPER.readValue(
+        fixture("fixtures/domain/legacy/Assignment/invalid/fkCaseLdtInvalidFormat.json"),
+        Assignment.class);
+    validator = Validation.buildDefaultValidatorFactory().getValidator();
+    messageBuilder.addDomainValidationError(validator.validate(toCreate));
+    Boolean theErrorDetected = false;
+
+    ArrayList<ErrorMessage> validationErrors = messageBuilder.getMessages();
+    for (ErrorMessage message : validationErrors) {
+      // System.out.println(message.getMessage());
+      if (message.getMessage().equals("caseLoadId size must be between 0 and 10")) {
+        theErrorDetected = true;
+      }
+    }
+    assertThat(theErrorDetected, is(true));
+  }
+
+  @SuppressWarnings("javadoc")
+  @Test
+  public void testSecondaryAssignmentRoleTypeMissingSuccess() throws Exception {
+    Assignment toCreate = MAPPER.readValue(
+        fixture("fixtures/domain/legacy/Assignment/valid/secondaryAssignmentRoleTypeMissing.json"),
+        Assignment.class);
+    validator = Validation.buildDefaultValidatorFactory().getValidator();
+    messageBuilder.addDomainValidationError(validator.validate(toCreate));
+    assertThat(messageBuilder.getMessages().isEmpty(), is(true));
+
+  }
+
+  @SuppressWarnings("javadoc")
+  @Test
+  public void testStartDateEmptyFails() throws Exception {
+    Assignment toCreate = MAPPER.readValue(
+        fixture("fixtures/domain/legacy/Assignment/invalid/startDateEmpty.json"), Assignment.class);
+    validator = Validation.buildDefaultValidatorFactory().getValidator();
+    messageBuilder.addDomainValidationError(validator.validate(toCreate));
+    Boolean theErrorDetected = false;
+
+    ArrayList<ErrorMessage> validationErrors = messageBuilder.getMessages();
+    for (ErrorMessage message : validationErrors) {
+      // System.out.println(message.getMessage());
+      if (message.getMessage().equals("startDate may not be empty")) {
+        theErrorDetected = true;
+      }
+    }
+    assertThat(theErrorDetected, is(true));
+  }
+
+  @Test
+  public void testStartDateMissingFails() throws Exception {
+    Assignment toCreate = MAPPER.readValue(
+        fixture("fixtures/domain/legacy/Assignment/invalid/startDateEmptyMissing.json"),
+        Assignment.class);
+    validator = Validation.buildDefaultValidatorFactory().getValidator();
+    messageBuilder.addDomainValidationError(validator.validate(toCreate));
+    Boolean theErrorDetected = false;
+
+    ArrayList<ErrorMessage> validationErrors = messageBuilder.getMessages();
+    for (ErrorMessage message : validationErrors) {
+      // System.out.println(message.getMessage());
+      if (message.getMessage().equals("startDate may not be empty")) {
+        theErrorDetected = true;
+      }
+    }
+    assertThat(theErrorDetected, is(true));
+  }
+
+  @SuppressWarnings("javadoc")
+  @Test
+  public void testStartDateNullFails() throws Exception {
+    Assignment toCreate = MAPPER.readValue(
+        fixture("fixtures/domain/legacy/Assignment/invalid/startDateEmptyNull.json"),
+        Assignment.class);
+    validator = Validation.buildDefaultValidatorFactory().getValidator();
+    messageBuilder.addDomainValidationError(validator.validate(toCreate));
+    Boolean theErrorDetected = false;
+
+    ArrayList<ErrorMessage> validationErrors = messageBuilder.getMessages();
+    for (ErrorMessage message : validationErrors) {
+      // System.out.println(message.getMessage());
+      if (message.getMessage().equals("startDate may not be empty")) {
+        theErrorDetected = true;
+      }
+    }
+    assertThat(theErrorDetected, is(true));
+  }
+
+  @Test
+  public void testStartDateInvalidFormat() throws Exception {
+    Assignment toCreate = MAPPER.readValue(
+        fixture("fixtures/domain/legacy/Assignment/invalid/startDateInvalidFormat.json"),
+        Assignment.class);
+    validator = Validation.buildDefaultValidatorFactory().getValidator();
+    messageBuilder.addDomainValidationError(validator.validate(toCreate));
+    Boolean theErrorDetected = false;
+
+    ArrayList<ErrorMessage> validationErrors = messageBuilder.getMessages();
+    for (ErrorMessage message : validationErrors) {
+      // System.out.println(message.getMessage());
+      if (message.getMessage().equals("startDate must be in the format of yyyy-MM-dd")) {
+        theErrorDetected = true;
+      }
+    }
+    assertThat(theErrorDetected, is(true));
+
+  }
+
+  @Test
+  public void testStartTimeEmptyFails() throws Exception {
+    Assignment toCreate = MAPPER.readValue(
+        fixture("fixtures/domain/legacy/Assignment/invalid/startTimeEmpty.json"), Assignment.class);
+    validator = Validation.buildDefaultValidatorFactory().getValidator();
+    messageBuilder.addDomainValidationError(validator.validate(toCreate));
+    Boolean theErrorDetected = false;
+
+    ArrayList<ErrorMessage> validationErrors = messageBuilder.getMessages();
+    for (ErrorMessage message : validationErrors) {
+      // System.out.println(message.getMessage());
+      if (message.getMessage().equals("startTime must be in the format of HH:mm:ss")) {
+        theErrorDetected = true;
+      }
+    }
+    assertThat(theErrorDetected, is(true));
+
+  }
+
+  @Test
+  public void testStartTimeMissingFails() throws Exception {
+    Assignment toCreate =
+        MAPPER.readValue(fixture("fixtures/domain/legacy/Assignment/invalid/startTimeMissing.json"),
+            Assignment.class);
+    validator = Validation.buildDefaultValidatorFactory().getValidator();
+    messageBuilder.addDomainValidationError(validator.validate(toCreate));
+    Boolean theErrorDetected = false;
+
+    ArrayList<ErrorMessage> validationErrors = messageBuilder.getMessages();
+    for (ErrorMessage message : validationErrors) {
+      // System.out.println(message.getMessage());
+      if (message.getMessage().equals("startTime must be in the format of HH:mm:ss")) {
+        theErrorDetected = true;
+      }
+    }
+    assertThat(theErrorDetected, is(true));
+
+  }
+
+  @Test
+  public void testStartTimeNullFails() throws Exception {
+    Assignment toCreate = MAPPER.readValue(
+        fixture("fixtures/domain/legacy/Assignment/invalid/startTimeNull.json"), Assignment.class);
+    validator = Validation.buildDefaultValidatorFactory().getValidator();
+    messageBuilder.addDomainValidationError(validator.validate(toCreate));
+    Boolean theErrorDetected = false;
+
+    ArrayList<ErrorMessage> validationErrors = messageBuilder.getMessages();
+    for (ErrorMessage message : validationErrors) {
+      // System.out.println(message.getMessage());
+      if (message.getMessage().equals("startTime must be in the format of HH:mm:ss")) {
+        theErrorDetected = true;
+      }
+    }
+    assertThat(theErrorDetected, is(true));
+
+  }
+
+  @Test
+  public void testStartTimeInvalidFormat() throws Exception {
+    Assignment toCreate = MAPPER.readValue(
+        fixture("fixtures/domain/legacy/Assignment/invalid/startTimeInvalidFormat.json"),
+        Assignment.class);
+    validator = Validation.buildDefaultValidatorFactory().getValidator();
+    messageBuilder.addDomainValidationError(validator.validate(toCreate));
+    Boolean theErrorDetected = false;
+
+    ArrayList<ErrorMessage> validationErrors = messageBuilder.getMessages();
+    for (ErrorMessage message : validationErrors) {
+      // System.out.println(message.getMessage());
+      if (message.getMessage().equals("startTime must be in the format of HH:mm:ss")) {
+        theErrorDetected = true;
+      }
+    }
+    assertThat(theErrorDetected, is(true));
   }
 
   @SuppressWarnings("javadoc")
