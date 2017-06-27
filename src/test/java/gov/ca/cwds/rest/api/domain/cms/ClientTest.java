@@ -381,7 +381,7 @@ public class ClientTest implements DomainTestTemplate {
 
   @Test
   public void testCreateWithDefaultCreatesWithValues(){
-    Participant participant = new Participant(1, "sourceTable", "clientId", "firstName", "middleName","lastName", "gender","ssn", "dob", 3,4,new HashSet(), new HashSet());
+    Participant participant = new Participant(1, "sourceTable", "clientId", "firstName", "middleName","lastName","jr", "gender","ssn", "dob", 3,4,new HashSet(), new HashSet());
     String genderCode = "male";
     String dateStarted = "now";
 
@@ -391,6 +391,7 @@ public class ClientTest implements DomainTestTemplate {
     assertEquals("Expected First Name field to be initialized with values", participant.getFirstName(), client.getCommonFirstName());
     assertEquals("Expected Middle Name field to be initialized with values", participant.getMiddleName(), client.getCommonMiddleName());
     assertEquals("Expected LastName field to be initialized with values", participant.getLastName(), client.getCommonLastName());
+    assertEquals("Expected suffix name field to be initialized with values", participant.getNameSuffix(), client.getSuffixTitleDescription());
     assertEquals("Expected SSN field to be initialized with values", participant.getSsn(), client.getSocialSecurityNumber());
     assertEquals("Expected genderCode field to be initialized with values", genderCode, client.getGenderCode());
     assertEquals("Expected dateStarted field to be initialized with values", dateStarted, client.getCreationDate());
@@ -398,19 +399,20 @@ public class ClientTest implements DomainTestTemplate {
 
   @Test
   public void shouldAllowClientNamesToBeUpdatedAfterInitialization(){
-    Participant participant = new Participant(1, "sourceTable", "clientId", "Fred", "Wilson", "Bill", "gender","ssn", "dob", 3,4,new HashSet(), new HashSet());
+    Participant participant = new Participant(1, "sourceTable", "clientId", "Fred", "Wilson", "Bill","", "gender","ssn", "dob", 3,4,new HashSet(), new HashSet());
     Client client = Client.createWithDefaults(participant,"","");
 
-    client.update("Barney","middlestone", "Rubble");
+    client.update("Barney","middlestone", "Rubble", "jr");
 
     assertEquals("Expected Client first name to have been changed", "Barney", client.getCommonFirstName());
     assertEquals("Expected Client middle name to have been changed", "middlestone", client.getCommonMiddleName());
     assertEquals("Expected Client last name to have been changed", "Rubble", client.getCommonLastName());
+    assertEquals("Expected Client name suffix to have been changed", "jr", client.getSuffixTitleDescription());
   }
 
   @Test
   public void testCreateWithDefaultCreatesWithDefaultValues(){
-    Participant participant = new Participant(1, "sourceTable", "clientId", "firstName", "middleName", "lastName", "gender","ssn", "dob", 3,4,new HashSet(), new HashSet());
+    Participant participant = new Participant(1, "sourceTable", "clientId", "firstName", "middleName", "lastName", "", "gender","ssn", "dob", 3,4,new HashSet(), new HashSet());
     String genderCode = "male";
     String dateStarted = "now";
 
@@ -471,7 +473,6 @@ public class ClientTest implements DomainTestTemplate {
     assertEquals("Expected soc158PlacementCode field to be initialized with default values", "N", client.getSoc158PlacementCode());
     assertEquals("Expected soc158SealedClientIndicator field to be initialized with default values", false, client.getSoc158SealedClientIndicator());
     assertEquals("Expected socialSecurityNumChangedCode field to be initialized with default values", "N", client.getSocialSecurityNumChangedCode());
-    assertEquals("Expected suffixTitleDescription field to be initialized with default values", "", client.getSuffixTitleDescription());
     assertEquals("Expected tribalAncestryClientIndicatorVar field to be initialized with default values", false, client.getTribalAncestryClientIndicatorVar());
     assertEquals("Expected tribalMembrshpVerifctnIndicatorVar field to be initialized with default values", false, client.getTribalMembrshpVerifctnIndicatorVar());
     assertEquals("Expected unemployedParentCode field to be initialized with default values", "U", client.getUnemployedParentCode());

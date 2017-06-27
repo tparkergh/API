@@ -322,7 +322,7 @@ public class ScreeningToReferralService implements CrudsService {
                 Client foundClient = this.clientService.find(clientId);
                 if (foundClient != null) {
                   foundClient.update(incomingParticipant.getFirstName(),
-                      incomingParticipant.getMiddleName(), incomingParticipant.getLastName());
+                      incomingParticipant.getMiddleName(), incomingParticipant.getLastName(),incomingParticipant.getNameSuffix());
                   gov.ca.cwds.rest.api.domain.cms.Client savedClient =
                       this.clientService.update(incomingParticipant.getLegacyId(), foundClient);
                   if (savedClient == null) {

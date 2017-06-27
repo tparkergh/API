@@ -64,6 +64,10 @@ public class Participant extends ReportingDomain implements Request, Response {
   @ApiModelProperty(required = false, readOnly = false, value = "Last name", example = "Smith")
   private String lastName;
 
+  @JsonProperty("name_suffix")
+  @ApiModelProperty(required = false, readOnly = false, value = "name suffix", example = "Jr.")
+  private String nameSuffix;
+
   @OneOf(value = {"M", "Male", "F", "Female", "O", "Other"}, ignoreCase = true,
       ignoreWhitespace = true)
   @JsonProperty("gender")
@@ -128,6 +132,7 @@ public class Participant extends ReportingDomain implements Request, Response {
    * @param firstName The first Name
    * @param middleName The middle Name
    * @param lastName The last Name
+   * @param nameSuffix The participants suffix Name
    * @param gender The gender
    * @param dateOfBirth The date Of Birth
    * @param ssn The social security number
@@ -140,7 +145,8 @@ public class Participant extends ReportingDomain implements Request, Response {
       @JsonProperty("legacy_source_table") String legacySourceTable,
       @JsonProperty("legacy_client_id") String clientId,
       @JsonProperty("first_name") String firstName, @JsonProperty("middle_name") String middleName,
-      @JsonProperty("last_name") String lastName, @JsonProperty("gender") String gender,
+      @JsonProperty("last_name") String lastName, @JsonProperty("name_suffix") String nameSuffix,
+      @JsonProperty("gender") String gender,
       @JsonProperty("ssn") String ssn, @JsonProperty("date_of_birth") String dateOfBirth,
       @JsonProperty("person_id") long personId, @JsonProperty("screening_id") long screeningId,
       @JsonProperty("roles") Set<String> roles,
@@ -154,6 +160,7 @@ public class Participant extends ReportingDomain implements Request, Response {
     this.firstName = firstName;
     this.middleName = middleName;
     this.lastName = lastName;
+    this.nameSuffix = nameSuffix;
     this.gender = gender;
     this.dateOfBirth = dateOfBirth;
     this.ssn = ssn;
@@ -181,6 +188,7 @@ public class Participant extends ReportingDomain implements Request, Response {
       this.firstName = participant.getPerson().getFirstName();
       this.middleName = participant.getPerson().getMiddleName();
       this.lastName = participant.getPerson().getLastName();
+      this.nameSuffix = "";
       this.gender = participant.getPerson().getGender();
       this.dateOfBirth = DomainChef.cookDate(participant.getPerson().getDateOfBirth());
       this.ssn = participant.getPerson().getSsn();
@@ -201,6 +209,7 @@ public class Participant extends ReportingDomain implements Request, Response {
       this.firstName = person.getFirstName();
       this.middleName = person.getMiddleName();
       this.lastName = person.getLastName();
+      this.nameSuffix = person.getNameSuffix();
       this.gender = person.getGender();
       this.dateOfBirth = person.getBirthDate();
       this.ssn = person.getSsn();
@@ -258,11 +267,14 @@ public class Participant extends ReportingDomain implements Request, Response {
     return middleName;
   }
 
-  /**
-   * @return the lastName
-   */
+  /** * @return the lastName */
   public String getLastName() {
     return lastName;
+  }
+
+  /** * @return the name suffix */
+  public String getNameSuffix() {
+    return nameSuffix;
   }
 
   /**
@@ -373,6 +385,7 @@ public class Participant extends ReportingDomain implements Request, Response {
     result = prime * result + (int) (id ^ (id >>> 32));
     result = prime * result + ((middleName== null) ? 0 : middleName.hashCode());
     result = prime * result + ((lastName == null) ? 0 : lastName.hashCode());
+    result = prime * result + ((nameSuffix == null) ? 0 : nameSuffix.hashCode());
     result = prime * result + ((legacyId == null) ? 0 : legacyId.hashCode());
     result = prime * result + ((legacySourceTable == null) ? 0 : legacySourceTable.hashCode());
     result = prime * result + (int) (personId ^ (personId >>> 32));
@@ -427,6 +440,11 @@ public class Participant extends ReportingDomain implements Request, Response {
       if (other.middleName != null)
         return false;
     } else if (!middleName.equals(other.middleName))
+      return false;
+    if (nameSuffix == null) {
+      if (other.nameSuffix != null)
+        return false;
+    } else if (!nameSuffix.equals(other.nameSuffix))
       return false;
     if (legacyId == null) {
       if (other.legacyId != null)

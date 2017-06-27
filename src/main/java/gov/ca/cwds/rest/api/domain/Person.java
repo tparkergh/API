@@ -45,6 +45,11 @@ public class Person extends ReportingDomain implements Request, Response {
   @Size(max = 50)
   private String lastName;
 
+  @JsonProperty("name_suffix")
+  @ApiModelProperty(example = "jr.")
+  @Size(max = 50)
+  private String nameSuffix;
+
   @JsonProperty("gender")
   @ApiModelProperty(example = "M")
   @Size(max = 10)
@@ -84,6 +89,7 @@ public class Person extends ReportingDomain implements Request, Response {
    * @param firstName The first name
    * @param lastName The last name
    * @param middleName The middle name
+   * @param nameSuffix The name suffix.
    * @param gender The gender
    * @param birthDate The date of birth
    * @param ssn The ssn
@@ -95,15 +101,16 @@ public class Person extends ReportingDomain implements Request, Response {
    */
   @JsonCreator
   public Person(@JsonProperty("first_name") String firstName, @JsonProperty("middle_name") String middleName,
-      @JsonProperty("last_name") String lastName, @JsonProperty("gender") String gender,
-      @JsonProperty("birth_date") String birthDate, @JsonProperty("ssn") String ssn,
-      @JsonProperty("address") Set<Address> address, @JsonProperty("phone") Set<PhoneNumber> phoneNumber,
-      @JsonProperty("language") Set<Language> language, @JsonProperty("race") Set<Race> race,
-      @JsonProperty("ethnicity") Set<Ethnicity> ethnicity) {
+      @JsonProperty("last_name") String lastName, @JsonProperty("name_suffix") String nameSuffix,
+      @JsonProperty("gender") String gender, @JsonProperty("birth_date") String birthDate,
+      @JsonProperty("ssn") String ssn, @JsonProperty("address") Set<Address> address,
+      @JsonProperty("phone") Set<PhoneNumber> phoneNumber, @JsonProperty("language") Set<Language> language,
+      @JsonProperty("race") Set<Race> race, @JsonProperty("ethnicity") Set<Ethnicity> ethnicity) {
     super();
     this.firstName = firstName;
     this.middleName = middleName;
     this.lastName = lastName;
+    this.nameSuffix = nameSuffix;
     this.gender = gender;
     this.birthDate = birthDate;
     this.ssn = ssn;
@@ -123,6 +130,7 @@ public class Person extends ReportingDomain implements Request, Response {
     this.firstName = person.getFirstName();
     this.middleName = person.getMiddleName();
     this.lastName = person.getLastName();
+    this.nameSuffix = "";
     this.gender = person.getGender();
     this.birthDate = DomainChef.cookDate(person.getDateOfBirth());
     this.ssn = person.getSsn();
@@ -180,8 +188,15 @@ public class Person extends ReportingDomain implements Request, Response {
   }
 
   /**
-   * @return the gender
+   * @return the name_suffix
    */
+  public String getNameSuffix() {
+    return nameSuffix;
+  }
+
+    /**
+     * @return the gender
+     */
   public String getGender() {
     return gender;
   }
@@ -254,6 +269,7 @@ public class Person extends ReportingDomain implements Request, Response {
     result = prime * result + ((gender == null) ? 0 : gender.hashCode());
     result = prime * result + ((middleName == null) ? 0 : middleName.hashCode());
     result = prime * result + ((lastName == null) ? 0 : lastName.hashCode());
+    result = prime * result + ((nameSuffix == null) ? 0 : nameSuffix.hashCode());
     result = prime * result + ((ssn == null) ? 0 : ssn.hashCode());
     return result;
   }
@@ -321,6 +337,11 @@ public class Person extends ReportingDomain implements Request, Response {
       if (other.middleName != null)
         return false;
     } else if (!middleName.equals(other.middleName))
+      return false;
+    if (nameSuffix == null) {
+      if (other.nameSuffix != null)
+        return false;
+    } else if (!nameSuffix.equals(other.nameSuffix))
       return false;
     if (ssn == null) {
       if (other.ssn != null)

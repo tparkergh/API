@@ -101,6 +101,11 @@ public class ESPerson extends Person {
     LAST_NAME("last_name", String.class, ""),
 
     /**
+     * name suffix
+     */
+    NAME_SUFFIX("name_suffix", String.class, ""),
+
+    /**
      * gender code (M,F,U)
      */
     GENDER("gender", String.class, "U"),
@@ -199,6 +204,7 @@ public class ESPerson extends Person {
         ESPerson.<String>pullCol(m, ESColumn.FIRST_NAME),
         ESPerson.<String>pullCol(m, ESColumn.MIDDLE_NAME),
         ESPerson.<String>pullCol(m, ESColumn.LAST_NAME),
+        ESPerson.<String>pullCol(m, ESColumn.NAME_SUFFIX),
         ESPerson.<String>pullCol(m, ESColumn.GENDER),
         ESPerson.<String>pullCol(m, ESColumn.BIRTH_DATE), ESPerson.<String>pullCol(m, ESColumn.SSN),
         ESPerson.<String>pullCol(m, ESColumn.TYPE), ESPerson.<String>pullCol(m, ESColumn.SOURCE),
@@ -334,10 +340,10 @@ public class ESPerson extends Person {
    * @param race The race, if any
    * @param ethnicity The Ethnicity, if any
    */
-  public ESPerson(String id, String firstName, String middleName,  String lastName, String gender, String birthDate,
+  public ESPerson(String id, String firstName, String middleName,  String lastName, String nameSuffix, String gender, String birthDate,
       String ssn, Set<Address> address, Set<PhoneNumber> phoneNumber, Set<Language> language,
       Set<Race> race, Set<Ethnicity> ethnicity) {
-    super(trim(firstName), trim(middleName), trim(lastName), trim(gender), trim(birthDate), trim(ssn), address,
+    super(trim(firstName), trim(middleName), trim(lastName), trim(nameSuffix), trim(gender), trim(birthDate), trim(ssn), address,
         phoneNumber, language, race, ethnicity);
     this.id = id;
   }
@@ -362,11 +368,11 @@ public class ESPerson extends Person {
    * @param ethnicity ethnicity, if any
    * 
    */
-  public ESPerson(String id, String firstName, String middleName, String lastName, String gender, String birthDate,
+  public ESPerson(String id, String firstName, String middleName, String lastName, String nameSuffix, String gender, String birthDate,
       String ssn, String sourceType, String sourceJson, Set<Address> address,
       Set<PhoneNumber> phoneNumber, Set<Language> language, Set<Race> race,
       Set<Ethnicity> ethnicity) {
-    super(trim(firstName), trim(middleName), trim(lastName), trim(gender), trim(birthDate), trim(ssn), address,
+    super(trim(firstName), trim(middleName), trim(lastName), trim(nameSuffix), trim(gender), trim(birthDate), trim(ssn), address,
         phoneNumber, language, race, ethnicity);
     this.id = id;
     this.sourceType = sourceType;

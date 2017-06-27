@@ -226,8 +226,9 @@ public class ReporterTest {
     String firstName = "firstName";
     String middleName = "middleName";
     String lastName = "lastName";
+    String suffix = "";
     Participant participant =
-        new Participant(5L, "legacy_source_table", "legacy_client_id", firstName, middleName, lastName,
+        new Participant(5L, "legacy_source_table", "legacy_client_id", firstName, middleName, lastName, suffix,
             "gender", "ssn", "date_of_birth", 7L, 8L, new HashSet<>(), new HashSet<>());
     String countyCode = "countyCode";
     Short stateCode = new Short("0");
@@ -253,6 +254,8 @@ public class ReporterTest {
         reporter.getMiddleInitialName());
     assertEquals("Expected last name field to have been initialized with value", lastName,
         reporter.getLastName());
+    assertEquals("Expected suffix name field to have been initialized with value", suffix,
+        reporter.getSuffixTitleDescription());
     assertEquals("Expected countyCode field to have been initialized with value", countyCode,
         reporter.getCountySpecificCode());
     assertEquals("Expected stateCode field to have been initialized with value", stateCode,
@@ -279,9 +282,10 @@ public class ReporterTest {
     String firstName = "firstName";
     String middleName = "middleName";
     String lastName = "lastName";
+    String suffix = "jr";
     Participant participant =
         new Participant(5L, "legacy_source_table", "legacy_client_id", firstName, middleName, lastName,
-            "gender", "ssn", "date_of_birth", 7L, 8L, new HashSet<>(), new HashSet<>());
+            "jr","gender", "ssn", "date_of_birth", 7L, 8L, new HashSet<>(), new HashSet<>());
     String countyCode = "countyCode";
     Short stateCode = new Short("0");
 
@@ -314,8 +318,6 @@ public class ReporterTest {
         new BigDecimal(0), reporter.getPrimaryPhoneNumber());
     assertEquals("Expected primaryPhoneExtensionNumber field to have been initialized with value",
         new Integer("0"), reporter.getPrimaryPhoneExtensionNumber());
-    assertEquals("Expected suffixTitleDescription field to have been initialized with value", "",
-        reporter.getSuffixTitleDescription());
     assertEquals("Expected lawEnforcementId field to have been initialized with value", "",
         reporter.getLawEnforcementId());
     assertEquals("Expected zipSuffixNumber field to have been initialized with value", new Short(
@@ -331,7 +333,7 @@ public class ReporterTest {
             "city", "state", 12345, "type");
     Participant participant =
         new Participant(5L, "legacy_source_table", "legacy_client_id", "firstName", "middleName", "lastName",
-            "gender", "ssn", "date_of_birth", 7L, 8L, new HashSet<>(), new HashSet<>());
+            "jr", "gender", "ssn", "date_of_birth", 7L, 8L, new HashSet<>(), new HashSet<>());
 
     Reporter reporter =
         Reporter.createWithDefaults("referralId", true, address, participant, "countyCode",
@@ -349,7 +351,7 @@ public class ReporterTest {
             "city", "state", 12345, "type");
     Participant participant =
         new Participant(5L, "legacy_source_table", "legacy_client_id", "firstName", "middleName", "lastName",
-            "gender", "ssn", "date_of_birth", 7L, 8L, new HashSet<>(), new HashSet<>());
+            "jr", "gender", "ssn", "date_of_birth", 7L, 8L, new HashSet<>(), new HashSet<>());
 
     Reporter reporter =
         Reporter.createWithDefaults("referralId", true, address, participant, "countyCode",
@@ -367,7 +369,7 @@ public class ReporterTest {
             "city", "state", 12345, "type");
     Participant participant =
         new Participant(5L, "legacy_source_table", "legacy_client_id", "firstName", "middleName", "lastName",
-            "gender", "ssn", "date_of_birth", 7L, 8L, new HashSet<>(), new HashSet<>());
+            "jr", "gender", "ssn", "date_of_birth", 7L, 8L, new HashSet<>(), new HashSet<>());
 
     Reporter reporter =
         Reporter.createWithDefaults("referralId", true, address, participant, "countyCode",
@@ -386,7 +388,7 @@ public class ReporterTest {
             "city", "state", 12345, "type");
     Participant participant =
         new Participant(5L, "legacy_source_table", "legacy_client_id", "firstName", "middleName", "lastName",
-            "gender", "ssn", "date_of_birth", 7L, 8L, new HashSet<>(), new HashSet<>());
+            "jr", "gender", "ssn", "date_of_birth", 7L, 8L, new HashSet<>(), new HashSet<>());
 
     Reporter reporter =
         Reporter.createWithDefaults("referralId", true, address, participant, "countyCode",

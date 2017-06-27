@@ -57,6 +57,7 @@ public class ParticipantTest implements PersistentTestTemplate {
   private String firstName = "John";
   private String middleName = "T.";
   private String lastName = "Smith";
+  private String suffix = "";
   private String gender = "male";
   private String dateOfBirth = "2001-03-15";
   private String ssn = "123456789";
@@ -146,7 +147,7 @@ public class ParticipantTest implements PersistentTestTemplate {
   public void testConstructorUsingDomain() throws Exception {
 
     Participant domain = new Participant(id, legacySourceTable, clientId, firstName, middleName, lastName,
-        gender, ssn, dateOfBirth, personId, screeningId, roles, addresses);
+        suffix, gender, ssn, dateOfBirth, personId, screeningId, roles, addresses);
 
     assertThat(domain.getId(), is(equalTo(id)));
     assertThat(domain.getLegacySourceTable(), is(equalTo(legacySourceTable)));
@@ -156,6 +157,7 @@ public class ParticipantTest implements PersistentTestTemplate {
     assertThat(domain.getFirstName(), is(equalTo(firstName)));
     assertThat(domain.getMiddleName(), is(equalTo(middleName)));
     assertThat(domain.getLastName(), is(equalTo(lastName)));
+    assertThat(domain.getNameSuffix(), is(equalTo(suffix)));
     assertThat(domain.getGender(), is(equalTo(gender)));
     assertThat(domain.getDateOfBirth(), is(equalTo(dateOfBirth)));
     assertThat(domain.getSsn(), is(equalTo(ssn)));
@@ -332,7 +334,7 @@ public class ParticipantTest implements PersistentTestTemplate {
     Participant validParticipant = null;
     try {
       validParticipant = new Participant(id, legacySourceTable, clientId, firstName, middleName, lastName,
-          gender, ssn, dateOfBirth, personId, screeningId, roles, addresses);
+          suffix, gender, ssn, dateOfBirth, personId, screeningId, roles, addresses);
     } catch (Exception e) {
       e.printStackTrace();
     }

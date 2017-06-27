@@ -599,7 +599,7 @@ public class Client extends ReportingDomain implements Request, Response {
     this.soc158SealedClientIndicator = soc158SealedClientIndicator;
     this.socialSecurityNumChangedCode = socialSecurityNumChangedCode;
     this.socialSecurityNumber = socialSecurityNumber;
-    this.suffixTitleDescription = suffixTitleDescription;
+    this.suffixTitleDescription = suffixTitleDescription == null ? "" : suffixTitleDescription;
     this.tribalAncestryClientIndicatorVar = tribalAncestryClientIndicatorVar;
     this.tribalMembrshpVerifctnIndicatorVar = tribalMembrshpVerifctnIndicatorVar;
     this.unemployedParentCode = unemployedParentCode;
@@ -730,7 +730,7 @@ public class Client extends ReportingDomain implements Request, Response {
         "", DEFAULT_NAME_TYPE, false, false, "", false, DEFAULT_CODE, DEFAULT_CODE, DEFAULT_CODE,
         DEFAULT_SECONDARY_LANGUAGE_TYPE, false, DEFAULT_SENSITIVITY_INDICATOR,
         DEFAULT_SOC158_PLACEMENT_CODE, false, DEFAULT_SOCIAL_SECURITY_NUM_CHANGE_CODE,
-        participant.getSsn(), "", false, false, DEFAULT_UNEMPLOYED_PARENT_CODE, false, null);
+        participant.getSsn(), participant.getNameSuffix(), false, false, DEFAULT_UNEMPLOYED_PARENT_CODE, false, null);
   }
 
   /**
@@ -1216,10 +1216,11 @@ public class Client extends ReportingDomain implements Request, Response {
    * @param lastName last name
    * @param middleName middle name
    */
-  public void update(String firstName, String middleName, String lastName) {
+  public void update(String firstName, String middleName, String lastName, String nameSuffix) {
     this.commonFirstName = firstName;
     this.commonLastName = lastName;
     this.commonMiddleName = middleName;
+    this.suffixTitleDescription = nameSuffix;
   }
 
   /**
