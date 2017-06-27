@@ -41,6 +41,48 @@ public class ClientTest implements PersistentTestTemplate {
     assertThat(Client.class.newInstance(), is(notNullValue()));
   }
 
+  @Test
+  public void nullConstructorFieldsShouldBeStoredAsStrings() throws Exception{
+    Client vc = validClient();
+    String aNullValue = null;
+
+    Client pers = new Client(vc.getAdjudicatedDelinquentIndicator(), vc.getAdoptionStatusCode(),
+        vc.getAlienRegistrationNumber(), vc.getBirthCity(), vc.getBirthCountryCodeType(),
+        vc.getBirthDate(), vc.getBirthFacilityName(), vc.getBirthStateCodeType(),
+        vc.getBirthplaceVerifiedIndicator(), vc.getChildClientIndicatorVar(),
+        vc.getClientIndexNumber(), vc.getCommentDescription(), vc.getCommonFirstName(),
+        aNullValue,
+        vc.getCommonLastName(), vc.getConfidentialityActionDate(),
+        vc.getConfidentialityInEffectIndicator(), vc.getCreationDate(),
+        vc.getCurrCaChildrenServIndicator(), vc.getCurrentlyOtherDescription(),
+        vc.getCurrentlyRegionalCenterIndicator(), vc.getDeathDate(),
+        vc.getDeathDateVerifiedIndicator(), vc.getDeathPlace(), vc.getDeathReasonText(),
+        vc.getDriverLicenseNumber(), vc.getDriverLicenseStateCodeType(), vc.getEmailAddress(),
+        vc.getEstimatedDobCode(), vc.getEthUnableToDetReasonCode(),
+        vc.getFatherParentalRightTermDate(), vc.getGenderCode(), vc.getHealthSummaryText(),
+        vc.getHispUnableToDetReasonCode(), vc.getHispanicOriginCode(), vc.getId(),
+        vc.getImmigrationCountryCodeType(), vc.getImmigrationStatusType(),
+        vc.getIncapacitatedParentCode(), vc.getIndividualHealthCarePlanIndicator(),
+        vc.getLimitationOnScpHealthIndicator(), vc.getLiterateCode(),
+        vc.getMaritalCohabitatnHstryIndicatorVar(), vc.getMaritalStatusType(),
+        vc.getMilitaryStatusCode(), vc.getMotherParentalRightTermDate(),
+        vc.getNamePrefixDescription(), vc.getNameType(), vc.getOutstandingWarrantIndicator(),
+        vc.getPrevCaChildrenServIndicator(), vc.getPrevOtherDescription(),
+        vc.getPrevRegionalCenterIndicator(), vc.getPrimaryEthnicityType(),
+        vc.getPrimaryLanguageType(), vc.getReligionType(), vc.getSecondaryLanguageType(),
+        vc.getSensitiveHlthInfoOnFileIndicator(), vc.getSensitivityIndicator(),
+        vc.getSoc158PlacementCode(), vc.getSoc158SealedClientIndicator(),
+        vc.getSocialSecurityNumChangedCode(), vc.getSocialSecurityNumber(),
+        aNullValue,
+        vc.getTribalAncestryClientIndicatorVar(),
+        vc.getTribalMembrshpVerifctnIndicatorVar(), vc.getUnemployedParentCode(),
+        vc.getZippyCreatedIndicator(), null);
+
+    assertThat(pers.getCommonMiddleName(), is(equalTo("")));
+    assertThat(pers.getSuffixTitleDescription(), is(equalTo("")));
+
+  }
+
   @Override
   @Test
   public void testPersistentConstructor() throws Exception {

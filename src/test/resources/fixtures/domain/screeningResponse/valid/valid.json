@@ -26,6 +26,7 @@
 	  "first_name": "john",
     "middle_name": "T.",
 	  "last_name": "smith",
+    "name_suffix": "",
 	  "gender": "male",
  	  "ssn": "123456789",
 	  "date_of_birth": "2001-09-13",

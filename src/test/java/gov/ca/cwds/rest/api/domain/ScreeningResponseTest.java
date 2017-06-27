@@ -32,6 +32,7 @@ public class ScreeningResponseTest {
   private String firstName = "john";
   private String middleName = "T.";
   private String lastName = "smith";
+  private String suffix = "";
   private String gender = "male";
   private String dateOfBirth = "2001-09-13";
   private String ssn = "123456789";
@@ -141,8 +142,8 @@ public class ScreeningResponseTest {
     addresses.add(address);
     roles.add("victim");
 
-    Participant participant = new Participant(participantId, "", "", firstName, middleName, lastName, gender,
-        ssn, dateOfBirth, personId, screeningId, roles, addresses);
+    Participant participant = new Participant(participantId, "", "", firstName, middleName, lastName,
+        suffix, gender, ssn, dateOfBirth, personId, screeningId, roles, addresses);
     ImmutableSet.Builder<Participant> participantSetBuilder = ImmutableSet.builder();
     participantSetBuilder.add(participant);
     Set<Participant> participants;
@@ -165,8 +166,8 @@ public class ScreeningResponseTest {
     addresses.add(address);
     roles.add("victim");
 
-    Participant participant = new Participant(participantId, "", "", firstName, middleName, lastName, gender,
-        ssn, dateOfBirth, personId, screeningId, roles, addresses);
+    Participant participant = new Participant(participantId, "", "", firstName, middleName, lastName,
+        suffix, gender, ssn, dateOfBirth, personId, screeningId, roles, addresses);
     ImmutableSet.Builder<Participant> participantSetBuilder = ImmutableSet.builder();
     participantSetBuilder.add(participant);
     Set<Participant> participants;

@@ -20,6 +20,7 @@ public class ParticipantResourceBuilder {
   String firstName = "John";
   String middleName = "S";
   String lastName = "Smith";
+  String suffix = "Jr.";
   String gender = "male";
   String dateOfBirth = "2001-03-15";
   String ssn = "123456789";
@@ -187,7 +188,7 @@ public class ParticipantResourceBuilder {
    * @return the createParticipant
    */
   public Participant createParticipant() {
-    return new Participant(id, legacySourceTable, legacyId, firstName, middleName, lastName, gender, ssn,
+    return new Participant(id, legacySourceTable, legacyId, firstName, middleName, lastName, suffix, gender, ssn,
         dateOfBirth, personId, screeningId, roles, addresses);
   }
 }

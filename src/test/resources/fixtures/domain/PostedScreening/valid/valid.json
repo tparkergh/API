@@ -26,6 +26,7 @@
 	  "legacy_id" : "",
 	  "first_name": "john",
     "middle_name": "T.",
+    "name_suffix": "",
 	  "last_name": "smith",
 	  "gender": "male",
  	  "ssn": "123456789",
