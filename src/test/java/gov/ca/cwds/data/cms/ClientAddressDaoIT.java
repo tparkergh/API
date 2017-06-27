@@ -26,28 +26,41 @@ import gov.ca.cwds.fixture.ParticipantResourceBuilder;
 import gov.ca.cwds.rest.api.domain.Participant;
 import gov.ca.cwds.rest.api.domain.cms.Client;
 
-public class ClientAddressDaoTest {
+/**
+ * @author CWDS API Team
+ *
+ */
+public class ClientAddressDaoIT {
 
   public static final String DEFAULT_DATE = "2010-01-28";
   private static SessionFactory sessionFactory;
-  private static ClientAddressDao dao;
+  private static ClientAddressDao clientAddressDao;
   private Session session;
 
   private static final String CLIENT_ID = "CLIENTIDXX";
   private static final String ADDRESS_ID = "ADDRESSIDX";
   gov.ca.cwds.data.persistence.cms.Client entityClient;
 
+  /**
+   * 
+   */
   @BeforeClass
   public static void beforeClass() {
     sessionFactory = new Configuration().configure().buildSessionFactory();
-    dao = new ClientAddressDao(sessionFactory);
+    clientAddressDao = new ClientAddressDao(sessionFactory);
   }
 
+  /**
+   * 
+   */
   @AfterClass
   public static void afterClass() {
     sessionFactory.close();
   }
 
+  /**
+   * 
+   */
   @Before
   public void setup() {
     session = sessionFactory.getCurrentSession();
@@ -77,15 +90,21 @@ public class ClientAddressDaoTest {
     assertNotNull(savedClient.getId());
   }
 
+  /**
+   * 
+   */
   @After
   public void teardown() {
     session.getTransaction().rollback();
   }
 
+  /**
+   * clientAddress Exists
+   */
   @Test
   public void shouldReturnListOfClientAddressesWhenExists() {
     List<ClientAddress> foundClientAddresses =
-        dao.findByAddressAndClient(ADDRESS_ID, CLIENT_ID);
+        clientAddressDao.findByAddressAndClient(ADDRESS_ID, CLIENT_ID);
 
     ClientAddress savedClientAddress = foundClientAddresses.get(0);
     assertEquals("Expected Client Address to have saved address id", ADDRESS_ID,
@@ -94,28 +113,37 @@ public class ClientAddressDaoTest {
         savedClientAddress.getFkClient());
   }
 
+  /**
+   * clientAddress doesn't exists
+   */
   @Test
-  public void shouldReturnEmptyListWhenClientAddressDoesnExist() {
+  public void shouldReturnEmptyListWhenClientAddressDoesntExist() {
     List<ClientAddress> foundClientAddresses =
-        dao.findByAddressAndClient("UNKNOWNID", CLIENT_ID);
+        clientAddressDao.findByAddressAndClient("UNKNOWNID", CLIENT_ID);
 
     assertTrue("Expected no Addresses to have been found", foundClientAddresses.isEmpty());
   }
 
+  /**
+   * clientId is null
+   */
   @Test
   public void shouldReturnEmptyListWhenClientIdIsNull() {
     List<ClientAddress> foundClientAddresses =
-        dao.findByAddressAndClient(ADDRESS_ID, null);
+        clientAddressDao.findByAddressAndClient(ADDRESS_ID, null);
 
     assertTrue("Expected no Addresses to have been found when Client id is null",
         foundClientAddresses.isEmpty());
 
   }
 
+  /**
+   * addressId is null
+   */
   @Test
   public void shouldReturnEmptyListWhenAddressIdIsNull() {
     List<ClientAddress> foundClientAddresses =
-        dao.findByAddressAndClient(null, CLIENT_ID);
+        clientAddressDao.findByAddressAndClient(null, CLIENT_ID);
 
     assertTrue("Expected no Addresses to have been found when Client id is null",
         foundClientAddresses.isEmpty());
