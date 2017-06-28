@@ -39,6 +39,7 @@ import gov.ca.cwds.data.cms.ReporterDao;
 import gov.ca.cwds.data.cms.StaffPersonDao;
 import gov.ca.cwds.data.cms.SystemCodeDao;
 import gov.ca.cwds.data.cms.SystemMetaDao;
+import gov.ca.cwds.data.cms.TickleDao;
 import gov.ca.cwds.data.es.ElasticsearchDao;
 import gov.ca.cwds.data.ns.AddressDao;
 import gov.ca.cwds.data.ns.EthnicityDao;
@@ -88,6 +89,7 @@ import gov.ca.cwds.data.persistence.cms.SubstituteCareProvider;
 import gov.ca.cwds.data.persistence.cms.SystemCode;
 import gov.ca.cwds.data.persistence.cms.SystemCodeDaoFileImpl;
 import gov.ca.cwds.data.persistence.cms.SystemMeta;
+import gov.ca.cwds.data.persistence.cms.Tickle;
 import gov.ca.cwds.data.persistence.ns.Address;
 import gov.ca.cwds.data.persistence.ns.Ethnicity;
 import gov.ca.cwds.data.persistence.ns.Language;
@@ -144,7 +146,7 @@ public class DataAccessModule extends AbstractModule {
               ClientAddress.class, CountyOwnership.class, CountyTrigger.class,
               CountyTriggerEmbeddable.class, SystemCode.class, SystemMeta.class, DrmsDocument.class,
               Assignment.class, BaseAssignment.class, ReferralAssignment.class,
-              CaseAssignment.class, CmsCase.class),
+              CaseAssignment.class, CmsCase.class, Tickle.class),
           new ApiSessionFactoryFactory()) {
 
         @Override
@@ -223,6 +225,7 @@ public class DataAccessModule extends AbstractModule {
     bind(SystemMetaDao.class);
     bind(DrmsDocumentDao.class);
     bind(AssignmentDao.class);
+    bind(TickleDao.class);
 
     // NS:
     bind(AddressDao.class);
