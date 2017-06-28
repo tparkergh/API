@@ -1,6 +1,5 @@
 package gov.ca.cwds.data.cms;
 
-import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
@@ -35,7 +34,7 @@ public class SsaName3Dao {
 
   private SessionFactory sessionFactory;
   private short s = 0;
-  private final static DateFormat tf = new SimpleDateFormat("yyyy-MM-dd-HH.mm.ss.SSS");
+  // private final static DateFormat tf = new SimpleDateFormat("yyyy-MM-dd-HH.mm.ss.SSS");
 
   /**
    * Constructor
@@ -131,6 +130,18 @@ public class SsaName3Dao {
    * Call DB2 stored procedure SPSSANAME3 to insert soundex records for client search. Story
    * #146481759.
    * 
+   * @param tableName table name
+   * @param crudOper CRUD operation (I/U/D)
+   * @param identifier legacy identifier
+   * @param nameCd name code
+   * @param firstName first name
+   * @param middleName middle name
+   * @param lastName last name
+   * @param streettNumber street number
+   * @param streetName street name
+   * @param gvrEntc government entity code
+   * @param updateTimeStamp update timestamp
+   * @param updateId updated by user id
    * @return DB2 result code
    */
   protected String callStoredProc(String tableName, String crudOper, String identifier,
@@ -141,7 +152,7 @@ public class SsaName3Dao {
     final String storedProcName = "SPSSANAME3";
     final String schema =
         (String) session.getSessionFactory().getProperties().get("hibernate.default_schema");
-    String strdtts = tf.format(updateTimeStamp);
+    String strdtts = new SimpleDateFormat("yyyy-MM-dd-HH.mm.ss.SSS").format(updateTimeStamp);
 
     try {
       ProcedureCall q = session.createStoredProcedureCall(schema + "." + storedProcName);
