@@ -85,7 +85,7 @@ server:
     port: ${APP_STD_PORT:-8080}
   adminConnectors:
   - type: http
-    port: ${APP_ADMIN_PORT:-8080}
+    port: ${APP_ADMIN_PORT:-8081}
     
   requestLog:
     appenders:
