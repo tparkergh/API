@@ -37,8 +37,8 @@ public class Assignment extends ReportingDomain implements Request, Response {
   private static final long serialVersionUID = 1L;
 
   // TODO: NOT THREAD SAFE!
-  private final static DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
-  private final static DateFormat timeOnlyFormat = new SimpleDateFormat("HH:mm:ss");
+  private static final DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
+  private static final DateFormat timeOnlyFormat = new SimpleDateFormat("HH:mm:ss");
 
   @NotEmpty
   @Size(min = 1, max = 2)
