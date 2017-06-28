@@ -14,6 +14,7 @@ import com.google.inject.Inject;
 import gov.ca.cwds.data.Dao;
 import gov.ca.cwds.data.cms.ClientAddressDao;
 import gov.ca.cwds.data.cms.ClientDao;
+import gov.ca.cwds.data.cms.SsaName3Dao;
 import gov.ca.cwds.data.cms.StaffPersonDao;
 import gov.ca.cwds.data.persistence.cms.Client;
 import gov.ca.cwds.data.persistence.cms.CmsKeyIdGenerator;
@@ -39,6 +40,7 @@ public class ClientService implements CrudsService {
   private TriggerTablesDao triggerTablesDao;
   private NonLACountyTriggers nonLaCountyTriggers;
   private StaffPersonIdRetriever staffPersonIdRetriever;
+  private SsaName3Dao ssaname3Dao;
 
   /**
    * Constructor
@@ -52,16 +54,18 @@ public class ClientService implements CrudsService {
    * @param nonLaCountyTriggers The {@link Dao} handling
    *        {@link gov.ca.cwds.rest.business.rules.NonLACountyTriggers} objects
    * @param staffPersonIdRetriever the staffPersonIdRetriever
+   * @param ssaname3Dao dao
    */
   @Inject
   public ClientService(ClientDao clientDao, StaffPersonDao staffpersonDao,
       TriggerTablesDao triggerTablesDao, NonLACountyTriggers nonLaCountyTriggers,
-      StaffPersonIdRetriever staffPersonIdRetriever) {
+      StaffPersonIdRetriever staffPersonIdRetriever, SsaName3Dao ssaname3Dao) {
     this.clientDao = clientDao;
     this.staffpersonDao = staffpersonDao;
     this.triggerTablesDao = triggerTablesDao;
     this.nonLaCountyTriggers = nonLaCountyTriggers;
     this.staffPersonIdRetriever = staffPersonIdRetriever;
+    this.ssaname3Dao = ssaname3Dao;
   }
 
   /**
@@ -161,6 +165,7 @@ public class ClientService implements CrudsService {
           && !(triggerTablesDao.getLaCountySpecificCode().equals(staffperson.getCountyCode()))) {
         nonLaCountyTriggers.createClientCountyTrigger(managed);
       }
+      ssaname3Dao.clientSsaname3("I", managed);
       return new PostedClient(managed, false);
     } catch (EntityExistsException e) {
       LOGGER.info("Client already exists : {}", client);

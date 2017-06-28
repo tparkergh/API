@@ -331,6 +331,7 @@ public class ESPerson extends Person {
    * @param firstName The first name
    * @param middleName The middle name
    * @param lastName The last name
+   * @param nameSuffix name suffix
    * @param gender The gender
    * @param birthDate The date of birth
    * @param ssn Social Security Number
@@ -340,11 +341,12 @@ public class ESPerson extends Person {
    * @param race The race, if any
    * @param ethnicity The Ethnicity, if any
    */
-  public ESPerson(String id, String firstName, String middleName,  String lastName, String nameSuffix, String gender, String birthDate,
-      String ssn, Set<Address> address, Set<PhoneNumber> phoneNumber, Set<Language> language,
-      Set<Race> race, Set<Ethnicity> ethnicity) {
-    super(trim(firstName), trim(middleName), trim(lastName), trim(nameSuffix), trim(gender), trim(birthDate), trim(ssn), address,
-        phoneNumber, language, race, ethnicity);
+  public ESPerson(String id, String firstName, String middleName, String lastName,
+      String nameSuffix, String gender, String birthDate, String ssn, Set<Address> address,
+      Set<PhoneNumber> phoneNumber, Set<Language> language, Set<Race> race,
+      Set<Ethnicity> ethnicity) {
+    super(trim(firstName), trim(middleName), trim(lastName), trim(nameSuffix), trim(gender),
+        trim(birthDate), trim(ssn), address, phoneNumber, language, race, ethnicity);
     this.id = id;
   }
 
@@ -356,6 +358,7 @@ public class ESPerson extends Person {
    * @param firstName first name
    * @param middleName middle name
    * @param lastName last name
+   * @param nameSuffix name suffix
    * @param gender gender code
    * @param birthDate birth date
    * @param ssn SSN without dashes
@@ -366,14 +369,13 @@ public class ESPerson extends Person {
    * @param language languages, if any
    * @param race race, if any
    * @param ethnicity ethnicity, if any
-   * 
    */
-  public ESPerson(String id, String firstName, String middleName, String lastName, String nameSuffix, String gender, String birthDate,
-      String ssn, String sourceType, String sourceJson, Set<Address> address,
-      Set<PhoneNumber> phoneNumber, Set<Language> language, Set<Race> race,
-      Set<Ethnicity> ethnicity) {
-    super(trim(firstName), trim(middleName), trim(lastName), trim(nameSuffix), trim(gender), trim(birthDate), trim(ssn), address,
-        phoneNumber, language, race, ethnicity);
+  public ESPerson(String id, String firstName, String middleName, String lastName,
+      String nameSuffix, String gender, String birthDate, String ssn, String sourceType,
+      String sourceJson, Set<Address> address, Set<PhoneNumber> phoneNumber, Set<Language> language,
+      Set<Race> race, Set<Ethnicity> ethnicity) {
+    super(trim(firstName), trim(middleName), trim(lastName), trim(nameSuffix), trim(gender),
+        trim(birthDate), trim(ssn), address, phoneNumber, language, race, ethnicity);
     this.id = id;
     this.sourceType = sourceType;
     this.sourceJson = sourceJson;
