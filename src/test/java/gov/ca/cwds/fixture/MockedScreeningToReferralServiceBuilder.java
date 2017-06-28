@@ -9,6 +9,7 @@ import java.util.Date;
 import javax.validation.Validation;
 
 import gov.ca.cwds.data.cms.ReferralDao;
+import gov.ca.cwds.data.cms.SsaName3Dao;
 import gov.ca.cwds.rest.api.domain.cms.Address;
 import gov.ca.cwds.rest.api.domain.cms.Allegation;
 import gov.ca.cwds.rest.api.domain.cms.Assignment;
@@ -66,6 +67,7 @@ public class MockedScreeningToReferralServiceBuilder {
   private ReferralDao referralDao;
   private StaffPersonIdRetriever staffPersonIdRetriever;
   private MessageBuilder messageBuilder;
+  private SsaName3Dao ssaName3Dao;
 
   /**
    * @return the referralService
@@ -295,6 +297,16 @@ public class MockedScreeningToReferralServiceBuilder {
   }
 
   /**
+   * @return the ssaName3Dao
+   */
+  public SsaName3Dao getssaName3Dao() {
+    if (ssaName3Dao == null) {
+      ssaName3Dao = mock(SsaName3Dao.class);
+    }
+    return ssaName3Dao;
+  }
+
+  /**
    * @return the staffPersonIdRetriever
    */
   public StaffPersonIdRetriever getStaffPersonIdRetriever() {
@@ -437,6 +449,15 @@ public class MockedScreeningToReferralServiceBuilder {
   }
 
   /**
+   * @param ssaName3Dao - ssaName3Dao
+   * @return the ssaName3Dao
+   */
+  public MockedScreeningToReferralServiceBuilder addSsaName3Dao(SsaName3Dao ssaName3Dao) {
+    this.ssaName3Dao = ssaName3Dao;
+    return this;
+  }
+
+  /**
    * @param staffPersonIdRetriever - staffPersonIdRetriever
    * @return the staffPersonIdRetriever
    */
@@ -464,6 +485,7 @@ public class MockedScreeningToReferralServiceBuilder {
         getReporterService(), getAddressService(), getClientAddressService(), getLongTextService(),
         getChildClientService(), getAssignmentService(),
         Validation.buildDefaultValidatorFactory().getValidator(), getReferralDao(),
-        getStaffPersonIdRetriever(), getMessageBuilder(), getDrmsDocumentService());
+        getStaffPersonIdRetriever(), getMessageBuilder(), getDrmsDocumentService(),
+        getssaName3Dao());
   }
 }
