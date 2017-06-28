@@ -2,6 +2,7 @@ package gov.ca.cwds.rest.api.domain;
 
 import static gov.ca.cwds.data.persistence.cms.CmsPersistentObject.CMS_ID_LEN;
 
+import io.swagger.annotations.ApiModel;
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Size;
 
@@ -19,6 +20,7 @@ import io.swagger.annotations.ApiModelProperty;
  * @author CWDS API Team
  */
 @JsonSnakeCase
+@ApiModel("nsAddress")
 public class Address extends ReportingDomain implements Request, Response {
 
   /**

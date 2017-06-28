@@ -70,7 +70,7 @@ public class Participant extends NsPersistentObject {
   public Participant(gov.ca.cwds.rest.api.domain.Participant participant, String lastUpdatedId,
       String createUserId) {
     super(lastUpdatedId, createUserId);
-    this.personId = participant.getPersonId();
+//    this.personId = participant.getPersonId();
     this.screeningId = participant.getScreeningId();
   }
 
@@ -83,7 +83,7 @@ public class Participant extends NsPersistentObject {
   public Participant(gov.ca.cwds.rest.api.domain.Participant participant, String lastUpdatedId,
       String createUserId, Person person) {
     super(lastUpdatedId, createUserId);
-    this.personId = participant.getPersonId();
+//    this.personId = participant.getPersonId();
     this.screeningId = participant.getScreeningId();
     this.person = person;
   }
