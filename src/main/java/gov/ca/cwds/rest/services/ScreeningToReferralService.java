@@ -13,6 +13,7 @@ import java.util.Set;
 import javax.validation.Validator;
 
 import org.apache.commons.lang3.NotImplementedException;
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -20,6 +21,7 @@ import com.google.inject.Inject;
 
 import gov.ca.cwds.data.Dao;
 import gov.ca.cwds.data.cms.ReferralDao;
+import gov.ca.cwds.data.cms.SsaName3Dao;
 import gov.ca.cwds.rest.api.Request;
 import gov.ca.cwds.rest.api.Response;
 import gov.ca.cwds.rest.api.domain.Allegation;
@@ -100,6 +102,7 @@ public class ScreeningToReferralService implements CrudsService {
   private StaffPersonIdRetriever staffPersonIdRetriever;
   private DrmsDocumentService drmsDocumentService;
   private AssignmentService assignmentService;
+  private SsaName3Dao ssaName3Dao;
 
   private ReferralDao referralDao;
 
@@ -133,6 +136,7 @@ public class ScreeningToReferralService implements CrudsService {
    * @param clientAddressService - cms ClientAddress service
    * @param longTextService - cms LongText service
    * @param childClientService - cms ChildClient service
+   * @param assignmentService CMS assignment service
    * @param validator - the validator
    * @param referralDao - The {@link Dao} handling {@link gov.ca.cwds.data.persistence.cms.Referral}
    *        objects.
@@ -140,6 +144,7 @@ public class ScreeningToReferralService implements CrudsService {
    *        {@link gov.ca.cwds.rest.services.cms.StaffPersonIdRetriever} objects.
    * @param messageBuilder log message
    * @param drmsDocumentService - cms DrmsDocumentService
+   * @param ssaName3Dao the ssaName3Dao
    */
   @Inject
   public ScreeningToReferralService(ReferralService referralService, ClientService clientService,
@@ -149,7 +154,7 @@ public class ScreeningToReferralService implements CrudsService {
       LongTextService longTextService, ChildClientService childClientService,
       AssignmentService assignmentService, Validator validator, ReferralDao referralDao,
       StaffPersonIdRetriever staffPersonIdRetriever, MessageBuilder messageBuilder,
-      DrmsDocumentService drmsDocumentService) {
+      DrmsDocumentService drmsDocumentService, SsaName3Dao ssaName3Dao) {
 
     super();
     this.referralService = referralService;
@@ -168,6 +173,7 @@ public class ScreeningToReferralService implements CrudsService {
     this.staffPersonIdRetriever = staffPersonIdRetriever;
     this.messageBuilder = messageBuilder;
     this.drmsDocumentService = drmsDocumentService;
+    this.ssaName3Dao = ssaName3Dao;
   }
 
   @UnitOfWork(value = "cms")
@@ -213,15 +219,21 @@ public class ScreeningToReferralService implements CrudsService {
     PostedScreeningToReferral pstr = PostedScreeningToReferral.createWithDefaults(referralId,
         screeningToReferral, resultParticipants, resultCrossReports, resultAllegations);
 
-
     StringBuilder errorMessage = new StringBuilder();
+    boolean foundError = false;
     if (!messageBuilder.getMessages().isEmpty()) {
       for (ErrorMessage message : messageBuilder.getMessages()) {
-        errorMessage.append(message.getMessage());
-        errorMessage.append("&&");
+        if (StringUtils.isNotBlank(message.getMessage())) {
+          foundError = true;
+          errorMessage.append(message.getMessage());
+          errorMessage.append("&&");
+        }
       }
-      throw new ServiceException(errorMessage.toString(), new ValidationException());
+      if (foundError) {
+        throw new ServiceException(errorMessage.toString(), new ValidationException());
+      }
     }
+
     return pstr;
   }
 
@@ -253,7 +265,7 @@ public class ScreeningToReferralService implements CrudsService {
 
   private void processParticipants(ScreeningToReferral screeningToReferral, String dateStarted,
       String referralId, Set<Participant> resultParticipants, HashMap<Long, String> victimClient,
-      HashMap<Long, String> perpatratorClient, Date timestamp) {
+      HashMap<Long, String> perpetratorClient, Date timestamp) {
     Set<Participant> participants = screeningToReferral.getParticipants();
     for (Participant incomingParticipant : participants) {
 
@@ -276,6 +288,7 @@ public class ScreeningToReferralService implements CrudsService {
         genderCode = incomingParticipant.getGender().toUpperCase().substring(0, 1);
       }
       Set<String> roles = new HashSet<>(incomingParticipant.getRoles());
+
       /**
        * process the roles of this participant
        */
@@ -322,7 +335,8 @@ public class ScreeningToReferralService implements CrudsService {
                 Client foundClient = this.clientService.find(clientId);
                 if (foundClient != null) {
                   foundClient.update(incomingParticipant.getFirstName(),
-                      incomingParticipant.getMiddleName(), incomingParticipant.getLastName(),incomingParticipant.getNameSuffix());
+                      incomingParticipant.getMiddleName(), incomingParticipant.getLastName(),
+                      incomingParticipant.getNameSuffix());
                   gov.ca.cwds.rest.api.domain.cms.Client savedClient =
                       this.clientService.update(incomingParticipant.getLegacyId(), foundClient);
                   if (savedClient == null) {
@@ -370,9 +384,11 @@ public class ScreeningToReferralService implements CrudsService {
                   continue;
                 }
               }
+
               if (ParticipantValidator.roleIsPerpetrator(role)) {
-                perpatratorClient.put(incomingParticipant.getId(), clientId);
+                perpetratorClient.put(incomingParticipant.getId(), clientId);
               }
+
               try {
                 // addresses associated with a client
                 Participant resultParticipant =
@@ -833,7 +849,7 @@ public class ScreeningToReferralService implements CrudsService {
         messageBuilder.addDomainValidationError(validator.validate(domainAddress));
 
         PostedAddress postedAddress =
-            (PostedAddress) this.addressService.createWithSingleTimestamp(domainAddress, timestamp);
+            (PostedAddress) this.addressService.createWithSssaName3(domainAddress, timestamp);
         addressId = postedAddress.getExistingAddressId();
       } else {
         // verify that Address row exist - no update for now

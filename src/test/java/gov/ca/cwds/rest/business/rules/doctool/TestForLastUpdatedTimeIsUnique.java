@@ -36,6 +36,7 @@ import gov.ca.cwds.data.cms.LongTextDao;
 import gov.ca.cwds.data.cms.ReferralClientDao;
 import gov.ca.cwds.data.cms.ReferralDao;
 import gov.ca.cwds.data.cms.ReporterDao;
+import gov.ca.cwds.data.cms.SsaName3Dao;
 import gov.ca.cwds.data.cms.StaffPersonDao;
 import gov.ca.cwds.data.rules.TriggerTablesDao;
 import gov.ca.cwds.rest.api.Response;
@@ -111,6 +112,7 @@ public class TestForLastUpdatedTimeIsUnique {
   private DrmsDocumentService drmsDocumentService;
   private DrmsDocumentDao drmsDocumentDao;
   private AssignmentDao assignmentDao;
+  private SsaName3Dao ssaName3Dao;
 
   private static gov.ca.cwds.data.persistence.cms.Referral createdReferal = null;
   private static gov.ca.cwds.data.persistence.cms.Address createdAddress = null;
@@ -142,8 +144,9 @@ public class TestForLastUpdatedTimeIsUnique {
     staffpersonDao = mock(StaffPersonDao.class);
     triggerTablesDao = mock(TriggerTablesDao.class);
     nonLACountyTriggers = mock(NonLACountyTriggers.class);
+    ssaName3Dao = mock(SsaName3Dao.class);
     clientService = new ClientService(clientDao, staffpersonDao, triggerTablesDao,
-        nonLACountyTriggers, staffPersonIdRetriever);
+        nonLACountyTriggers, staffPersonIdRetriever, ssaName3Dao);
 
     referralClientDao = mock(ReferralClientDao.class);
     nonLACountyTriggers = mock(NonLACountyTriggers.class);
@@ -163,7 +166,7 @@ public class TestForLastUpdatedTimeIsUnique {
     reporterService = new ReporterService(reporterDao, staffPersonIdRetriever);
 
     addressDao = mock(AddressDao.class);
-    addressService = new AddressService(addressDao, staffPersonIdRetriever);
+    addressService = new AddressService(addressDao, staffPersonIdRetriever, ssaName3Dao);
 
     clientAddressDao = mock(ClientAddressDao.class);
     laCountyTrigger = mock(LACountyTrigger.class);
@@ -188,7 +191,7 @@ public class TestForLastUpdatedTimeIsUnique {
         allegationService, crossReportService, referralClientService, reporterService,
         addressService, clientAddressService, longTextService, childClientService,
         assignmentService, Validation.buildDefaultValidatorFactory().getValidator(), referralDao,
-        staffPersonIdRetriever, new MessageBuilder(), drmsDocumentService);
+        staffPersonIdRetriever, new MessageBuilder(), drmsDocumentService, ssaName3Dao);
   }
 
   /**

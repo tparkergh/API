@@ -51,6 +51,7 @@ import gov.ca.cwds.data.cms.LongTextDao;
 import gov.ca.cwds.data.cms.ReferralClientDao;
 import gov.ca.cwds.data.cms.ReferralDao;
 import gov.ca.cwds.data.cms.ReporterDao;
+import gov.ca.cwds.data.cms.SsaName3Dao;
 import gov.ca.cwds.data.cms.StaffPersonDao;
 import gov.ca.cwds.data.rules.TriggerTablesDao;
 import gov.ca.cwds.fixture.AddressResourceBuilder;
@@ -137,6 +138,7 @@ public class ScreeningToReferralServiceTest {
   private DrmsDocumentService drmsDocumentService;
   private DrmsDocumentDao drmsDocumentDao;
   private AssignmentDao assignmentDao;
+  private SsaName3Dao ssaName3Dao;
 
   private gov.ca.cwds.data.persistence.cms.Referral referral;
   private static gov.ca.cwds.data.persistence.cms.Referral createdReferal = null;
@@ -162,8 +164,9 @@ public class ScreeningToReferralServiceTest {
     staffpersonDao = mock(StaffPersonDao.class);
     triggerTablesDao = mock(TriggerTablesDao.class);
     nonLACountyTriggers = mock(NonLACountyTriggers.class);
+    ssaName3Dao = mock(SsaName3Dao.class);
     clientService = new ClientService(clientDao, staffpersonDao, triggerTablesDao,
-        nonLACountyTriggers, staffPersonIdRetriever);
+        nonLACountyTriggers, staffPersonIdRetriever, ssaName3Dao);
 
     referralClientDao = mock(ReferralClientDao.class);
     nonLACountyTriggers = mock(NonLACountyTriggers.class);
@@ -183,7 +186,7 @@ public class ScreeningToReferralServiceTest {
     reporterService = new ReporterService(reporterDao, staffPersonIdRetriever);
 
     addressDao = mock(AddressDao.class);
-    addressService = new AddressService(addressDao, staffPersonIdRetriever);
+    addressService = new AddressService(addressDao, staffPersonIdRetriever, ssaName3Dao);
 
     clientAddressDao = mock(ClientAddressDao.class);
     laCountyTrigger = mock(LACountyTrigger.class);
@@ -208,7 +211,7 @@ public class ScreeningToReferralServiceTest {
         allegationService, crossReportService, referralClientService, reporterService,
         addressService, clientAddressService, longTextService, childClientService,
         assignmentService, Validation.buildDefaultValidatorFactory().getValidator(), referralDao,
-        staffPersonIdRetriever, new MessageBuilder(), drmsDocumentService);
+        staffPersonIdRetriever, new MessageBuilder(), drmsDocumentService, ssaName3Dao);
   }
 
   @SuppressWarnings("javadoc")
@@ -660,7 +663,6 @@ public class ScreeningToReferralServiceTest {
         .addMessageBuilder(new MessageBuilder()).createScreeningToReferralService();
 
     screeningToReferralService.create(referral);
-
     verify(clientService).update(eq(victim.getLegacyId()), any());
   }
 
@@ -670,7 +672,6 @@ public class ScreeningToReferralServiceTest {
     String victimClientLegacyId = "";
 
     clientService = mock(ClientService.class);
-
     screeningToReferralService = new MockedScreeningToReferralServiceBuilder()
         .addClientService(clientService).createScreeningToReferralService();
 
@@ -685,7 +686,6 @@ public class ScreeningToReferralServiceTest {
         .setParticipants(participants).createScreeningToReferral();
 
     screeningToReferralService.create(referral);
-
     verify(clientService, never()).update(any(), any());
   }
 
@@ -3628,8 +3628,8 @@ public class ScreeningToReferralServiceTest {
 
     Response response = screeningToReferralService.create(referral);
     assertFalse(response.hasMessages());
-    verify(foundClient, times(1)).update("Fred","Finnigan", "Flintsone", "Jr.");
-    verify(foundClient, times(1)).update("Barney","middlestone", "Rubble", "Jr.");
+    verify(foundClient, times(1)).update("Fred", "Finnigan", "Flintsone", "Jr.");
+    verify(foundClient, times(1)).update("Barney", "middlestone", "Rubble", "Jr.");
     verify(clientService).update(eq(existingPerpId), any());
   }
 
@@ -3692,8 +3692,8 @@ public class ScreeningToReferralServiceTest {
     } catch (ServiceException e) {
       // not interested in exception for this test
     }
-    verify(foundClient, times(0)).update(any(),any(), any(), any());
-    verify(foundClient, times(0)).update(any(),any(), any(), any());
+    verify(foundClient, times(0)).update(any(), any(), any(), any());
+    verify(foundClient, times(0)).update(any(), any(), any(), any());
   }
 
   @SuppressWarnings("javadoc")
@@ -3784,7 +3784,6 @@ public class ScreeningToReferralServiceTest {
         .addClientService(clientService).addDrmsDocumentService(drmsDocumentService)
         .addMessageBuilder(new MessageBuilder()).createScreeningToReferralService();
 
-
     try {
       Response response = screeningToReferralService.create(referral);
     } catch (ServiceException e) {
@@ -3801,7 +3800,7 @@ public class ScreeningToReferralServiceTest {
 
   @SuppressWarnings("javadoc")
   @Test
-  public void testAllegationExsitSuccess() throws Exception {
+  public void testAllegationExistSuccess() throws Exception {
 
     gov.ca.cwds.rest.api.domain.Allegation allegation =
         new AllegationResourceBuilder().setLegacyId("GHJKLCVBNM").createAllegation();
