@@ -3787,7 +3787,6 @@ public class ScreeningToReferralServiceTest {
         .addClientService(clientService).addDrmsDocumentService(drmsDocumentService)
         .addMessageBuilder(new MessageBuilder()).createScreeningToReferralService();
 
-
     try {
       Response response = screeningToReferralService.create(referral);
     } catch (ServiceException e) {
