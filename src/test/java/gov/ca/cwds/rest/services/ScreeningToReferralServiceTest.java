@@ -3631,8 +3631,8 @@ public class ScreeningToReferralServiceTest {
 
     Response response = screeningToReferralService.create(referral);
     assertFalse(response.hasMessages());
-    verify(foundClient, times(1)).update("Fred","Finnigan", "Flintsone", "Jr.");
-    verify(foundClient, times(1)).update("Barney","middlestone", "Rubble", "Jr.");
+    verify(foundClient, times(1)).update("Fred", "Finnigan", "Flintsone", "Jr.");
+    verify(foundClient, times(1)).update("Barney", "middlestone", "Rubble", "Jr.");
     verify(clientService).update(eq(existingPerpId), any());
   }
 
@@ -3695,8 +3695,8 @@ public class ScreeningToReferralServiceTest {
     } catch (ServiceException e) {
       // not interested in exception for this test
     }
-    verify(foundClient, times(0)).update(any(),any(), any(), any());
-    verify(foundClient, times(0)).update(any(),any(), any(), any());
+    verify(foundClient, times(0)).update(any(), any(), any(), any());
+    verify(foundClient, times(0)).update(any(), any(), any(), any());
   }
 
   @SuppressWarnings("javadoc")
@@ -3804,7 +3804,7 @@ public class ScreeningToReferralServiceTest {
 
   @SuppressWarnings("javadoc")
   @Test
-  public void testAllegationExsitSuccess() throws Exception {
+  public void testAllegationExistSuccess() throws Exception {
 
     gov.ca.cwds.rest.api.domain.Allegation allegation =
         new AllegationResourceBuilder().setLegacyId("GHJKLCVBNM").createAllegation();
