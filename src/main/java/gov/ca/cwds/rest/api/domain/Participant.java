@@ -6,6 +6,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 import javax.validation.Valid;
+import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
@@ -57,7 +58,10 @@ public class Participant extends ReportingDomain implements Request, Response {
   private String firstName;
 
   @JsonProperty("middle_name")
-  @ApiModelProperty(required = false, readOnly = false, value = "Middle name", example = "W.")
+  @NotNull
+  @Size(min = 1, max = 20,
+      message = "middleName size must be between 1 and 20 or assign the value to default Space")
+  @ApiModelProperty(required = true, readOnly = false, value = "", example = "middle name")
   private String middleName;
 
   @JsonProperty("last_name")
@@ -76,9 +80,11 @@ public class Participant extends ReportingDomain implements Request, Response {
   private String gender;
 
   @JsonProperty("ssn")
-  @Size(max = 9)
-  @ApiModelProperty(required = false, readOnly = false, value = "Social Security Number",
-      example = "111223333")
+  @NotNull
+  @Size(min = 1, max = 9,
+      message = "ssn size must be between 1 and 9 or assign the value to defalut 0")
+  @ApiModelProperty(required = true, readOnly = false, value = "", example = "123456789",
+      notes = "Default value should be 0 can't be Empty or Null")
   private String ssn;
 
   @Date
@@ -93,8 +99,8 @@ public class Participant extends ReportingDomain implements Request, Response {
 
   @Valid
   @JsonProperty("roles")
-  @ApiModelProperty(required = true, readOnly = false, value = "Role of participant"
-   ,dataType="java.util.List", example = "['Victim', 'Mandated Reporter']")
+  @ApiModelProperty(required = true, readOnly = false, value = "Role of participant",
+      dataType = "java.util.List", example = "['Victim', 'Mandated Reporter']")
   private Set<String> roles;
 
   @Valid
@@ -143,10 +149,9 @@ public class Participant extends ReportingDomain implements Request, Response {
       @JsonProperty("legacy_client_id") String clientId,
       @JsonProperty("first_name") String firstName, @JsonProperty("middle_name") String middleName,
       @JsonProperty("last_name") String lastName, @JsonProperty("name_suffix") String nameSuffix,
-      @JsonProperty("gender") String gender,
-      @JsonProperty("ssn") String ssn, @JsonProperty("date_of_birth") String dateOfBirth,
-      @JsonProperty("person_id") long personId, @JsonProperty("screening_id") long screeningId,
-      @JsonProperty("roles") Set<String> roles,
+      @JsonProperty("gender") String gender, @JsonProperty("ssn") String ssn,
+      @JsonProperty("date_of_birth") String dateOfBirth, @JsonProperty("person_id") long personId,
+      @JsonProperty("screening_id") long screeningId, @JsonProperty("roles") Set<String> roles,
       @JsonProperty("addresses") Set<Address> addresses) throws ServiceException {
     super();
     this.id = id;
@@ -323,13 +328,14 @@ public class Participant extends ReportingDomain implements Request, Response {
 
   /**
    * adds a set of addresses to current addresses.
+   * 
    * @param addresses - domain addresses
    */
   public void addAddresses(Set<Address> addresses) {
-    if (addresses == null){
+    if (addresses == null) {
       return;
     }
-    if (this.addresses == null){
+    if (this.addresses == null) {
       this.addresses = new HashSet<Address>();
     }
     this.addresses.addAll(addresses);
@@ -370,7 +376,7 @@ public class Participant extends ReportingDomain implements Request, Response {
     result = prime * result + ((firstName == null) ? 0 : firstName.hashCode());
     result = prime * result + ((gender == null) ? 0 : gender.hashCode());
     result = prime * result + (int) (id ^ (id >>> 32));
-    result = prime * result + ((middleName== null) ? 0 : middleName.hashCode());
+    result = prime * result + ((middleName == null) ? 0 : middleName.hashCode());
     result = prime * result + ((lastName == null) ? 0 : lastName.hashCode());
     result = prime * result + ((nameSuffix == null) ? 0 : nameSuffix.hashCode());
     result = prime * result + ((legacyId == null) ? 0 : legacyId.hashCode());

@@ -121,8 +121,9 @@ public class Reporter extends ReportingDomain implements Request, Response {
   private BigDecimal messagePhoneNumber;
 
   @NotNull
-  @Size(max = 1)
-  @ApiModelProperty(required = false, readOnly = false, value = "Middle name", example = "A")
+  @Size(min = 1, max = 1,
+      message = "middleInitialName size should be 1 or assign the the default value of Space")
+  @ApiModelProperty(required = true, readOnly = false, value = "Middle name", example = "A")
   private String middleInitialName;
 
   @NotNull
@@ -355,8 +356,8 @@ public class Reporter extends ReportingDomain implements Request, Response {
 
     return new Reporter("", city, DEFAULT_CODE, DEFAULT_CODE, false, "", "", "", false,
         participant.getFirstName(), participant.getLastName(), isMandatedReporter, 0,
-        DEFAULT_DECIMAL, participant.getMiddleName(), "", DEFAULT_DECIMAL, 0, stateCode, streetName, streetNumber, "",
-        zipCodeString, referralId, "", DEFAULT_CODE, countyCode);
+        DEFAULT_DECIMAL, participant.getMiddleName(), "", DEFAULT_DECIMAL, 0, stateCode, streetName,
+        streetNumber, "", zipCodeString, referralId, "", DEFAULT_CODE, countyCode);
   }
 
   /**

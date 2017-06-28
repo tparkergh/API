@@ -126,8 +126,9 @@ public class Client extends ReportingDomain implements Request, Response {
   private String commonFirstName;
 
   @NotNull
-  @Size(max = 20)
-  @ApiModelProperty(required = false, readOnly = false, value = "", example = "middle name")
+  @Size(min = 1, max = 20,
+      message = "commonMiddleName size must be between 1 and 20 or assign the value to default Space")
+  @ApiModelProperty(required = true, readOnly = false, value = "", example = "middle name")
   private String commonMiddleName;
 
   @NotBlank
@@ -365,9 +366,11 @@ public class Client extends ReportingDomain implements Request, Response {
   @ApiModelProperty(required = true, readOnly = false, value = "", example = "N")
   private String socialSecurityNumChangedCode;
 
-  @NotEmpty
-  @Size(max = 9)
-  @ApiModelProperty(required = false, readOnly = false, value = "", example = "123456789")
+  @NotNull
+  @Size(min = 1, max = 9,
+      message = "socialSecurityNumber size must be between 1 and 9 or assign the value to defalut 0")
+  @ApiModelProperty(required = true, readOnly = false, value = "", example = "123456789",
+      notes = "Default value should be 0 can't be Empty or Null")
   private String socialSecurityNumber;
 
   @NotNull
