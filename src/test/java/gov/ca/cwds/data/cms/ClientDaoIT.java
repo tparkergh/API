@@ -97,14 +97,6 @@ public class ClientDaoIT implements DaoTestTemplate {
     assertThat(query.list().size(), is(4));
   }
 
-  /**
-   * Test on mainframe DB2 with schema CWSNS2/4.
-   */
-  // @Test
-  public void testStoredProc() {
-    clientDao.callStoredProc();
-    System.out.println("Survived calling stored proc!");
-  }
 
   @Override
   @Test

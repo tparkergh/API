@@ -32,6 +32,7 @@ import gov.ca.cwds.data.cms.LongTextDao;
 import gov.ca.cwds.data.cms.ReferralClientDao;
 import gov.ca.cwds.data.cms.ReferralDao;
 import gov.ca.cwds.data.cms.ReporterDao;
+import gov.ca.cwds.data.cms.SsaName3Dao;
 import gov.ca.cwds.data.cms.StaffPersonDao;
 import gov.ca.cwds.data.rules.TriggerTablesDao;
 import gov.ca.cwds.rest.api.Response;
@@ -106,6 +107,7 @@ public class R06224DontAllowBlanksInReferralStartDateAndTimeTest {
   private StaffPersonIdRetriever staffPersonIdRetriever;
   private DrmsDocumentService drmsDocumentService;
   private DrmsDocumentDao drmsDocumentDao;
+  private SsaName3Dao ssaName3Dao;
 
   @SuppressWarnings("javadoc")
   @Rule
@@ -129,7 +131,7 @@ public class R06224DontAllowBlanksInReferralStartDateAndTimeTest {
     triggerTablesDao = mock(TriggerTablesDao.class);
     nonLACountyTriggers = mock(NonLACountyTriggers.class);
     clientService = new ClientService(clientDao, staffpersonDao, triggerTablesDao,
-        nonLACountyTriggers, staffPersonIdRetriever);
+        nonLACountyTriggers, staffPersonIdRetriever, ssaName3Dao);
 
     referralClientDao = mock(ReferralClientDao.class);
     nonLACountyTriggers = mock(NonLACountyTriggers.class);
@@ -149,7 +151,7 @@ public class R06224DontAllowBlanksInReferralStartDateAndTimeTest {
     reporterService = new ReporterService(reporterDao, staffPersonIdRetriever);
 
     addressDao = mock(AddressDao.class);
-    addressService = new AddressService(addressDao, staffPersonIdRetriever);
+    addressService = new AddressService(addressDao, staffPersonIdRetriever, ssaName3Dao);
 
     clientAddressDao = mock(ClientAddressDao.class);
     laCountyTrigger = mock(LACountyTrigger.class);
@@ -174,7 +176,7 @@ public class R06224DontAllowBlanksInReferralStartDateAndTimeTest {
         allegationService, crossReportService, referralClientService, reporterService,
         addressService, clientAddressService, longTextService, childClientService,
         assignmentService, Validation.buildDefaultValidatorFactory().getValidator(), referralDao,
-        staffPersonIdRetriever, new MessageBuilder(), drmsDocumentService);
+        staffPersonIdRetriever, new MessageBuilder(), drmsDocumentService, ssaName3Dao);
   }
 
   /**

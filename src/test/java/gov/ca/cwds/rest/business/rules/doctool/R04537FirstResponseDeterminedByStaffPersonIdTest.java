@@ -34,6 +34,7 @@ import gov.ca.cwds.data.cms.LongTextDao;
 import gov.ca.cwds.data.cms.ReferralClientDao;
 import gov.ca.cwds.data.cms.ReferralDao;
 import gov.ca.cwds.data.cms.ReporterDao;
+import gov.ca.cwds.data.cms.SsaName3Dao;
 import gov.ca.cwds.data.cms.StaffPersonDao;
 import gov.ca.cwds.data.rules.TriggerTablesDao;
 import gov.ca.cwds.rest.api.domain.ScreeningToReferral;
@@ -107,6 +108,7 @@ public class R04537FirstResponseDeterminedByStaffPersonIdTest {
   private TriggerTablesDao triggerTablesDao;
   private StaffPersonIdRetriever staffPersonIdRetriever;
   private DrmsDocumentDao drmsDocumentDao;
+  private SsaName3Dao ssaName3Dao;
 
   private gov.ca.cwds.data.persistence.cms.Referral referral;
 
@@ -131,8 +133,9 @@ public class R04537FirstResponseDeterminedByStaffPersonIdTest {
     staffpersonDao = mock(StaffPersonDao.class);
     triggerTablesDao = mock(TriggerTablesDao.class);
     nonLACountyTriggers = mock(NonLACountyTriggers.class);
+    ssaName3Dao = mock(SsaName3Dao.class);
     clientService = new ClientService(clientDao, staffpersonDao, triggerTablesDao,
-        nonLACountyTriggers, staffPersonIdRetriever);
+        nonLACountyTriggers, staffPersonIdRetriever, ssaName3Dao);
 
     referralClientDao = mock(ReferralClientDao.class);
     nonLACountyTriggers = mock(NonLACountyTriggers.class);
@@ -152,7 +155,7 @@ public class R04537FirstResponseDeterminedByStaffPersonIdTest {
     reporterService = new ReporterService(reporterDao, staffPersonIdRetriever);
 
     addressDao = mock(AddressDao.class);
-    addressService = new AddressService(addressDao, staffPersonIdRetriever);
+    addressService = new AddressService(addressDao, staffPersonIdRetriever, ssaName3Dao);
 
     clientAddressDao = mock(ClientAddressDao.class);
     laCountyTrigger = mock(LACountyTrigger.class);
@@ -177,7 +180,7 @@ public class R04537FirstResponseDeterminedByStaffPersonIdTest {
         allegationService, crossReportService, referralClientService, reporterService,
         addressService, clientAddressService, longTextService, childClientService,
         assignmentService, Validation.buildDefaultValidatorFactory().getValidator(), referralDao,
-        staffPersonIdRetriever, new MessageBuilder(), drmsDocumentService);
+        staffPersonIdRetriever, new MessageBuilder(), drmsDocumentService, ssaName3Dao);
   }
 
   /**

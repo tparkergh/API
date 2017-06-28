@@ -20,6 +20,7 @@ import com.google.inject.Inject;
 
 import gov.ca.cwds.data.Dao;
 import gov.ca.cwds.data.cms.ReferralDao;
+import gov.ca.cwds.data.cms.SsaName3Dao;
 import gov.ca.cwds.rest.api.Request;
 import gov.ca.cwds.rest.api.Response;
 import gov.ca.cwds.rest.api.domain.Allegation;
@@ -100,6 +101,7 @@ public class ScreeningToReferralService implements CrudsService {
   private StaffPersonIdRetriever staffPersonIdRetriever;
   private DrmsDocumentService drmsDocumentService;
   private AssignmentService assignmentService;
+  private SsaName3Dao ssaName3Dao;
 
   private ReferralDao referralDao;
 
@@ -140,6 +142,7 @@ public class ScreeningToReferralService implements CrudsService {
    *        {@link gov.ca.cwds.rest.services.cms.StaffPersonIdRetriever} objects.
    * @param messageBuilder log message
    * @param drmsDocumentService - cms DrmsDocumentService
+   * @param ssaName3Dao the ssaName3Dao
    */
   @Inject
   public ScreeningToReferralService(ReferralService referralService, ClientService clientService,
@@ -149,7 +152,7 @@ public class ScreeningToReferralService implements CrudsService {
       LongTextService longTextService, ChildClientService childClientService,
       AssignmentService assignmentService, Validator validator, ReferralDao referralDao,
       StaffPersonIdRetriever staffPersonIdRetriever, MessageBuilder messageBuilder,
-      DrmsDocumentService drmsDocumentService) {
+      DrmsDocumentService drmsDocumentService, SsaName3Dao ssaName3Dao) {
 
     super();
     this.referralService = referralService;
@@ -168,6 +171,7 @@ public class ScreeningToReferralService implements CrudsService {
     this.staffPersonIdRetriever = staffPersonIdRetriever;
     this.messageBuilder = messageBuilder;
     this.drmsDocumentService = drmsDocumentService;
+    this.ssaName3Dao = ssaName3Dao;
   }
 
   @UnitOfWork(value = "cms")
@@ -833,7 +837,7 @@ public class ScreeningToReferralService implements CrudsService {
         messageBuilder.addDomainValidationError(validator.validate(domainAddress));
 
         PostedAddress postedAddress =
-            (PostedAddress) this.addressService.createWithSingleTimestamp(domainAddress, timestamp);
+            (PostedAddress) this.addressService.createWithSssaName3(domainAddress, timestamp);
         addressId = postedAddress.getExistingAddressId();
       } else {
         // verify that Address row exist - no update for now

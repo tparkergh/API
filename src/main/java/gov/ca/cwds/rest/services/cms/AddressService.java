@@ -12,6 +12,7 @@ import org.slf4j.LoggerFactory;
 import com.google.inject.Inject;
 
 import gov.ca.cwds.data.cms.AddressDao;
+import gov.ca.cwds.data.cms.SsaName3Dao;
 import gov.ca.cwds.data.persistence.cms.Address;
 import gov.ca.cwds.data.persistence.cms.CmsKeyIdGenerator;
 import gov.ca.cwds.rest.api.Request;
@@ -19,6 +20,7 @@ import gov.ca.cwds.rest.api.Response;
 import gov.ca.cwds.rest.api.domain.cms.PostedAddress;
 import gov.ca.cwds.rest.services.CrudsService;
 import gov.ca.cwds.rest.services.ServiceException;
+
 
 /**
  * @author CWDS API Team
@@ -28,6 +30,7 @@ public class AddressService implements CrudsService {
 
   private AddressDao addressDao;
   private StaffPersonIdRetriever staffPersonIdRetriever;
+  private SsaName3Dao ssaname3Dao;
 
   /**
    * 
@@ -35,9 +38,11 @@ public class AddressService implements CrudsService {
    * @param staffPersonIdRetriever the staffPersonIdRetriever
    */
   @Inject
-  public AddressService(AddressDao addressDao, StaffPersonIdRetriever staffPersonIdRetriever) {
+  public AddressService(AddressDao addressDao, StaffPersonIdRetriever staffPersonIdRetriever,
+      SsaName3Dao ssaname3Dao) {
     this.addressDao = addressDao;
     this.staffPersonIdRetriever = staffPersonIdRetriever;
+    this.ssaname3Dao = ssaname3Dao;
   }
 
   @Override
@@ -67,6 +72,33 @@ public class AddressService implements CrudsService {
     return create(address, timestamp);
   }
 
+  public Response createWithSssaName3(Request request, Date timestamp) {
+    assert request instanceof gov.ca.cwds.rest.api.domain.cms.Address;
+
+    gov.ca.cwds.rest.api.domain.cms.Address address =
+        (gov.ca.cwds.rest.api.domain.cms.Address) request;
+
+    try {
+      String lastUpdatedId = staffPersonIdRetriever.getStaffPersonId();
+      Address managed;
+      if (timestamp == null) {
+        managed = new Address(CmsKeyIdGenerator.generate(lastUpdatedId), address, lastUpdatedId);
+      } else {
+        managed = new Address(CmsKeyIdGenerator.generate(lastUpdatedId), address, lastUpdatedId,
+            timestamp);
+      }
+      managed = addressDao.create(managed);
+      if (managed.getId() == null) {
+        throw new ServiceException("Address ID cannot be null");
+      }
+      ssaname3Dao.addressSsaname3("I", managed);
+      return new PostedAddress(managed, true);
+    } catch (EntityExistsException e) {
+      LOGGER.info("Address already exists : ()", address);
+      throw new ServiceException(e);
+    }
+  }
+
   /**
    * This private method is created to handle to single address and referral address with single
    * timestamp
@@ -92,6 +124,7 @@ public class AddressService implements CrudsService {
       throw new ServiceException(e);
     }
   }
+
 
   @Override
   public Response delete(Serializable primaryKey) {
