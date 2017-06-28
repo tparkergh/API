@@ -51,7 +51,7 @@ cmsDataSourceFactory:
       hibernate.connection.autocommit: false
 
 elasticsearch:
-  elasticsearch.host: ${ES_HOST:-localhost}
+  elasticsearch.host: ${ES_HOST:-es.dev.cwds.tabordasolutions.net}
   elasticsearch.port: ${ES_PORT:-9300}
   elasticsearch.cluster: ${ES_CLUSTER:-taborda-dev-es}
   elasticsearch.alias: ${ES_ALIAS:-people}
@@ -82,10 +82,10 @@ webSecurity:
 server:
   applicationConnectors:
   - type: http 
-    port: ${APP_STD_PORT:-8090}
+    port: ${APP_STD_PORT:-8080}
   adminConnectors:
   - type: http
-    port: ${APP_ADMIN_PORT:-8091}
+    port: ${APP_ADMIN_PORT:-8080}
     
   requestLog:
     appenders:
