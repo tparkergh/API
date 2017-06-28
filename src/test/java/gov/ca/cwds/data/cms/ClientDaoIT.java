@@ -6,9 +6,6 @@ import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.notNullValue;
 import static org.hamcrest.Matchers.nullValue;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import gov.ca.cwds.data.persistence.cms.CmsKeyIdGenerator;
-import io.dropwizard.jackson.Jackson;
 import java.io.IOException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -24,7 +21,6 @@ import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
-import org.hibernate.annotations.Table;
 import org.hibernate.cfg.Configuration;
 import org.junit.After;
 import org.junit.AfterClass;
@@ -36,9 +32,10 @@ import org.junit.Test;
 
 import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.databind.JsonMappingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
-import gov.ca.cwds.data.junit.template.DaoTestTemplate;
 import gov.ca.cwds.data.persistence.cms.Client;
+import io.dropwizard.jackson.Jackson;
 
 /**
  * 
@@ -77,7 +74,8 @@ public class ClientDaoIT {
     session.setFlushMode(FlushMode.COMMIT);
     transaction = session.beginTransaction();
 
-    sessionFactory.getCurrentSession().createQuery("delete from gov.ca.cwds.data.persistence.cms.Client").executeUpdate();
+    sessionFactory.getCurrentSession()
+        .createQuery("delete from gov.ca.cwds.data.persistence.cms.Client").executeUpdate();
 
   }
 
@@ -94,20 +92,21 @@ public class ClientDaoIT {
     assertThat(query, is(notNullValue()));
   }
 
-  //TODO:Deprecated, no longer using findall. Research and remove test and code
+  // TODO:Deprecated, no longer using findall. Research and remove test and code
   @SuppressWarnings("unchecked")
   @Ignore
   @Test
   public void shouldReturntheSavedClientsWhenPerformingAFindAll() throws IOException {
-    List<String> ids = Arrays.asList("AaiU7IW0Rt","baiT7IX0Rt","SaiUDIWmRt","QaWU7EW0Rt");
+    List<String> ids = Arrays.asList("AaiU7IW0Rt", "baiT7IX0Rt", "SaiUDIWmRt", "QaWU7EW0Rt");
     for (String id : ids) {
       Client entity = createClientWithId(id);
 
-      gov.ca.cwds.rest.api.domain.cms.Client domainClient = new gov.ca.cwds.rest.api.domain.cms.Client(entity, true);
+      gov.ca.cwds.rest.api.domain.cms.Client domainClient =
+          new gov.ca.cwds.rest.api.domain.cms.Client(entity, true);
       Client entityClient = new Client(id, domainClient, "0X5");
       Client saved = clientDao.create(entityClient);
       session.flush();
-    };
+    } ;
 
     Query query = session.getNamedQuery("gov.ca.cwds.data.persistence.cms.Client.findAll");
     final List<Client> list = query.list();
@@ -119,14 +118,12 @@ public class ClientDaoIT {
     assertThat(query.list().size(), is(4));
   }
 
-  /**
-   * Test on mainframe DB2 with schema CWSNS2/4.
-   */
+  // Test on mainframe DB2 with schema CWSNS2/4.
   // @Test
-  public void shouldRunSuccessfullWhenCallingStoredProc() {
-    clientDao.callStoredProc();
-    System.out.println("Survived calling stored proc!");
-  }
+  // public void shouldRunSuccessfullWhenCallingStoredProc() {
+  // clientDao.callStoredProc();
+  // System.out.println("Survived calling stored proc!");
+  // }
 
   @Test
   public void shouldFindTheClientWhenSearchingById() throws IOException {
@@ -153,7 +150,8 @@ public class ClientDaoIT {
   }
 
   @Test
-  public void shouldThrowExceptionWhenSavingClientGivenAClientIdThatAlreadyExists() throws Exception {
+  public void shouldThrowExceptionWhenSavingClientGivenAClientIdThatAlreadyExists()
+      throws Exception {
     String id = "AaiU7IW0Rt";
     Client pers = createClientWithId(id);
     clientDao.create(pers);
@@ -205,7 +203,7 @@ public class ClientDaoIT {
   }
 
   private Client createClient() throws IOException {
-   return createClientWithId(null)  ;
+    return createClientWithId(null);
   }
 
   private Client createClientWithId(String id) throws IOException {
