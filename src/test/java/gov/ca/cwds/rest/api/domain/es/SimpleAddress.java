@@ -3,6 +3,7 @@ package gov.ca.cwds.rest.api.domain.es;
 import gov.ca.cwds.data.std.ApiAddressAware;
 
 public final class SimpleAddress implements ApiAddressAware {
+
   private String city;
   private String county;
   private String state;
