@@ -54,6 +54,7 @@ public class ClientService implements CrudsService {
    * @param nonLaCountyTriggers The {@link Dao} handling
    *        {@link gov.ca.cwds.rest.business.rules.NonLACountyTriggers} objects
    * @param staffPersonIdRetriever the staffPersonIdRetriever
+   * @param ssaname3Dao dao
    */
   @Inject
   public ClientService(ClientDao clientDao, StaffPersonDao staffpersonDao,

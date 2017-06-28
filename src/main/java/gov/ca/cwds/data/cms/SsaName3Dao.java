@@ -48,37 +48,37 @@ public class SsaName3Dao {
   }
 
   /**
-   * @param c
+   * @param c client
    */
   public void ssaName3(Client c) {
 
   }
 
   /**
-   * @param a
+   * @param a address
    */
   public void ssaName3(Address a) {
 
   }
 
   /**
-   * @param o
+   * @param o other client name
    */
   public void ssaName3(OtherClientName o) {
 
   }
 
   /**
-   * @param s
+   * @param s care provider
    */
   public void ssaName3(SubstituteCareProvider s) {
 
   }
 
   /**
-   * @param crudOperation
-   * @param address
-   * @return
+   * @param crudOperation I/U/D
+   * @param address address
+   * @return status code
    */
   public String addressSsaname3(String crudOperation, Address address) {
     callStoredProc("ADR_PHTT", crudOperation, address.getId(), "A", " ", " ", " ",
@@ -88,11 +88,10 @@ public class SsaName3Dao {
   }
 
   /**
-   * @param crudOperation
-   * @param client
-   * @return
+   * @param crudOperation I/U/D
+   * @param client client
+   * @return status code
    */
-
   public String clientSsaname3(String crudOperation, Client client) {
     callStoredProc("CLT_PHTT", crudOperation, client.getId(), "C", client.getFirstName(),
         client.getMiddleName(), client.getLastName(), " ", " ", s, client.getLastUpdatedTime(),
@@ -102,11 +101,10 @@ public class SsaName3Dao {
 
 
   /**
-   * @param crudOperation
-   * @param client
-   * @return
+   * @param crudOperation I/U/D
+   * @param otherClientName other client name object
+   * @return status code
    */
-
   public String otherClientSsaname3(String crudOperation, OtherClientName otherClientName) {
     callStoredProc("CLT_PHTT", crudOperation, otherClientName.getThirdId(), "N",
         otherClientName.getFirstName(), otherClientName.getMiddleName(),
@@ -116,11 +114,10 @@ public class SsaName3Dao {
   }
 
   /**
-   * @param crudOperation
-   * @param client
-   * @return
+   * @param crudOperation I/U/D
+   * @param substituteCareProvider care provider
+   * @return status code
    */
-
   public String subCareProviderSsaname3(String crudOperation,
       SubstituteCareProvider substituteCareProvider) {
     callStoredProc("SCP_PHTT", crudOperation, substituteCareProvider.getId(), " ",

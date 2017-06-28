@@ -135,6 +135,7 @@ public class ScreeningToReferralService implements CrudsService {
    * @param clientAddressService - cms ClientAddress service
    * @param longTextService - cms LongText service
    * @param childClientService - cms ChildClient service
+   * @param assignmentService CMS assignment service
    * @param validator - the validator
    * @param referralDao - The {@link Dao} handling {@link gov.ca.cwds.data.persistence.cms.Referral}
    *        objects.
@@ -216,7 +217,6 @@ public class ScreeningToReferralService implements CrudsService {
 
     PostedScreeningToReferral pstr = PostedScreeningToReferral.createWithDefaults(referralId,
         screeningToReferral, resultParticipants, resultCrossReports, resultAllegations);
-
 
     StringBuilder errorMessage = new StringBuilder();
     if (!messageBuilder.getMessages().isEmpty()) {
@@ -326,7 +326,8 @@ public class ScreeningToReferralService implements CrudsService {
                 Client foundClient = this.clientService.find(clientId);
                 if (foundClient != null) {
                   foundClient.update(incomingParticipant.getFirstName(),
-                      incomingParticipant.getMiddleName(), incomingParticipant.getLastName(),incomingParticipant.getNameSuffix());
+                      incomingParticipant.getMiddleName(), incomingParticipant.getLastName(),
+                      incomingParticipant.getNameSuffix());
                   gov.ca.cwds.rest.api.domain.cms.Client savedClient =
                       this.clientService.update(incomingParticipant.getLegacyId(), foundClient);
                   if (savedClient == null) {
