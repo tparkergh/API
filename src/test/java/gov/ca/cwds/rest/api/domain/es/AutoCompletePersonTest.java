@@ -74,7 +74,7 @@ public class AutoCompletePersonTest {
 
   @Test
   public void testAutoCompletePersonAddressConstuctor() {
-    ApiAddressAware add = new Address(city, countyCode, state, address, zip);
+    ApiAddressAware add = new SimpleAddress(city, countyCode, state, address, zip);
 
     AutoCompletePerson.AutoCompletePersonAddress acpa =
         new AutoCompletePerson.AutoCompletePersonAddress(add);
@@ -83,7 +83,7 @@ public class AutoCompletePersonTest {
 
   @Test
   public void testAutoCompletePersonAddressGetters() {
-    ApiAddressAware add = new Address(city, countyCode, state, address, zip);
+    ApiAddressAware add = new SimpleAddress(city, countyCode, state, address, zip);
 
     AutoCompletePerson.AutoCompletePersonAddress acpa =
         new AutoCompletePerson.AutoCompletePersonAddress(add);
@@ -98,7 +98,7 @@ public class AutoCompletePersonTest {
 
   @Test
   public void testAutoCompletePersonAddressSetters() {
-    ApiAddressAware add = new Address(city, countyCode, state, address, zip);
+    ApiAddressAware add = new SimpleAddress(city, countyCode, state, address, zip);
 
     AutoCompletePerson.AutoCompletePersonAddress acpa =
         new AutoCompletePerson.AutoCompletePersonAddress(add);
@@ -210,63 +210,4 @@ public class AutoCompletePersonTest {
     return esp;
   }
 
-  public static final class Address implements ApiAddressAware {
-
-    private String city;
-    private String county;
-    private String state;
-    private String streetAddress;
-    private String zip;
-
-    public Address(String city, String county, String state, String address, String zip) {
-      this.city = city;
-      this.county = county;
-      this.state = state;
-      this.streetAddress = address;
-      this.zip = zip;
-    }
-
-    @Override
-    public String getCity() {
-      // TODO Auto-generated method stub
-      return this.city;
-    }
-
-    @Override
-    public String getCounty() {
-      // TODO Auto-generated method stub
-      return this.county;
-    }
-
-    @Override
-    public String getState() {
-      // TODO Auto-generated method stub
-      return this.state;
-    }
-
-    @Override
-    public String getStreetAddress() {
-      // TODO Auto-generated method stub
-      return this.streetAddress;
-    }
-
-    @Override
-    public String getZip() {
-      // TODO Auto-generated method stub
-      return this.zip;
-    }
-
-    @Override
-    public String getAddressId() {
-      // TODO Auto-generated method stub
-      return null;
-    }
-
-    @Override
-    public Short getStateCd() {
-      // TODO Auto-generated method stub
-      return null;
-    }
-
-  }
 }
