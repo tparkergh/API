@@ -2,6 +2,7 @@ package gov.ca.cwds.rest.resources;
 
 import static gov.ca.cwds.rest.core.Api.RESOURCE_REFERRALS;
 
+import gov.ca.cwds.rest.api.domain.PostedScreeningToReferral;
 import javax.validation.Valid;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
@@ -69,7 +70,7 @@ public class ScreeningToReferralResource {
   @ApiResponses(value = {@ApiResponse(code = 401, message = "Not Authorized"),
       @ApiResponse(code = 404, message = "Not found"),
       @ApiResponse(code = 406, message = "Accept Header not supported")})
-  @ApiOperation(value = "Find referral by id", response = Referral.class, code = 200)
+  @ApiOperation(value = "Find referral by id", response = PostedScreeningToReferral.class, code = 200)
   public Response get(@PathParam("id") @ApiParam(required = true, name = "id",
       value = "The id of the Referral to find") String id) {
     return resourceDelegate.get(id);
@@ -90,7 +91,7 @@ public class ScreeningToReferralResource {
       @ApiResponse(code = 422, message = "Unable to validate ScreeningToReferral")})
   @Consumes(value = MediaType.APPLICATION_JSON)
   @ApiOperation(value = "Create Referral from Screening", code = HttpStatus.SC_CREATED,
-      response = PostedCmsReferral.class)
+      response = PostedScreeningToReferral.class)
   public Response create(
       @Valid @ApiParam(hidden = false, required = true) ScreeningToReferral screeningToReferral) {
     return resourceDelegate.create(screeningToReferral);
