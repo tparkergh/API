@@ -13,6 +13,7 @@ import java.util.Set;
 import javax.validation.Validator;
 
 import org.apache.commons.lang3.NotImplementedException;
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -219,13 +220,20 @@ public class ScreeningToReferralService implements CrudsService {
         screeningToReferral, resultParticipants, resultCrossReports, resultAllegations);
 
     StringBuilder errorMessage = new StringBuilder();
+    boolean foundError = false;
     if (!messageBuilder.getMessages().isEmpty()) {
       for (ErrorMessage message : messageBuilder.getMessages()) {
-        errorMessage.append(message.getMessage());
-        errorMessage.append("&&");
+        if (StringUtils.isNotBlank(message.getMessage())) {
+          foundError = true;
+          errorMessage.append(message.getMessage());
+          errorMessage.append("&&");
+        }
       }
-      throw new ServiceException(errorMessage.toString(), new ValidationException());
+      if (foundError) {
+        throw new ServiceException(errorMessage.toString(), new ValidationException());
+      }
     }
+
     return pstr;
   }
 
@@ -257,7 +265,7 @@ public class ScreeningToReferralService implements CrudsService {
 
   private void processParticipants(ScreeningToReferral screeningToReferral, String dateStarted,
       String referralId, Set<Participant> resultParticipants, HashMap<Long, String> victimClient,
-      HashMap<Long, String> perpatratorClient, Date timestamp) {
+      HashMap<Long, String> perpetratorClient, Date timestamp) {
     Set<Participant> participants = screeningToReferral.getParticipants();
     for (Participant incomingParticipant : participants) {
 
@@ -280,6 +288,7 @@ public class ScreeningToReferralService implements CrudsService {
         genderCode = incomingParticipant.getGender().toUpperCase().substring(0, 1);
       }
       Set<String> roles = new HashSet<>(incomingParticipant.getRoles());
+
       /**
        * process the roles of this participant
        */
@@ -375,9 +384,11 @@ public class ScreeningToReferralService implements CrudsService {
                   continue;
                 }
               }
+
               if (ParticipantValidator.roleIsPerpetrator(role)) {
-                perpatratorClient.put(incomingParticipant.getId(), clientId);
+                perpetratorClient.put(incomingParticipant.getId(), clientId);
               }
+
               try {
                 // addresses associated with a client
                 Participant resultParticipant =

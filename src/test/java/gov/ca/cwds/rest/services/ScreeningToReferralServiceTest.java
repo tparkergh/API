@@ -663,7 +663,6 @@ public class ScreeningToReferralServiceTest {
         .addMessageBuilder(new MessageBuilder()).createScreeningToReferralService();
 
     screeningToReferralService.create(referral);
-
     verify(clientService).update(eq(victim.getLegacyId()), any());
   }
 
@@ -673,7 +672,6 @@ public class ScreeningToReferralServiceTest {
     String victimClientLegacyId = "";
 
     clientService = mock(ClientService.class);
-
     screeningToReferralService = new MockedScreeningToReferralServiceBuilder()
         .addClientService(clientService).createScreeningToReferralService();
 
@@ -688,7 +686,6 @@ public class ScreeningToReferralServiceTest {
         .setParticipants(participants).createScreeningToReferral();
 
     screeningToReferralService.create(referral);
-
     verify(clientService, never()).update(any(), any());
   }
 
