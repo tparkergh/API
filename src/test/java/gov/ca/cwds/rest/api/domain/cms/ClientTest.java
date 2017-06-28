@@ -11,10 +11,9 @@ import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
-import gov.ca.cwds.rest.api.domain.Participant;
 import java.io.IOException;
-
 import java.util.HashSet;
+
 import javax.ws.rs.client.Entity;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
@@ -30,6 +29,7 @@ import com.squarespace.jersey2.guice.JerseyGuiceUtils;
 
 import gov.ca.cwds.data.CrudsDao;
 import gov.ca.cwds.rest.api.domain.DomainChef;
+import gov.ca.cwds.rest.api.domain.Participant;
 import gov.ca.cwds.rest.api.domain.junit.template.DomainTestTemplate;
 import gov.ca.cwds.rest.core.Api;
 import gov.ca.cwds.rest.resources.cms.ClientResource;
@@ -159,7 +159,7 @@ public class ClientTest implements DomainTestTemplate {
     Client domain = new Client(existingClientId, adjudicatedDelinquentIndicator, adoptionStatusCode,
         alienRegistrationNumber, birthCity, birthCountryCodeType, birthDate, birthFacilityName,
         birthStateCodeType, birthplaceVerifiedIndicator, childClientIndicatorVar, clientIndexNumber,
-        commentDescription, commonFirstName,  commonMiddleName, commonLastName,
+        commentDescription, commonFirstName, commonMiddleName, commonLastName,
         confidentialityActionDate, confidentialityInEffectIndicator, creationDate,
         currCaChildrenServIndicator, currentlyOtherDescription, currentlyRegionalCenterIndicator,
         deathDate, deathDateVerified, deathPlace, deathReasonText, driversLicenseNumber,
@@ -380,104 +380,189 @@ public class ClientTest implements DomainTestTemplate {
   }
 
   @Test
-  public void testCreateWithDefaultCreatesWithValues(){
-    Participant participant = new Participant(1, "sourceTable", "clientId", "firstName", "middleName","lastName","jr", "gender","ssn", "dob", 3,4,new HashSet(), new HashSet());
+  public void testCreateWithDefaultCreatesWithValues() {
+    Participant participant = new Participant(1, "sourceTable", "clientId", "firstName",
+        "middleName", "lastName", "jr", "gender", "ssn", "dob", 3, 4, new HashSet(), new HashSet());
     String genderCode = "male";
     String dateStarted = "now";
 
-     Client client = Client.createWithDefaults(participant,dateStarted,genderCode);
+    Client client = Client.createWithDefaults(participant, dateStarted, genderCode);
 
-    assertEquals("Expected BirthDate field to be initialized with values", participant.getDateOfBirth(), client.getBirthDate());
-    assertEquals("Expected First Name field to be initialized with values", participant.getFirstName(), client.getCommonFirstName());
-    assertEquals("Expected Middle Name field to be initialized with values", participant.getMiddleName(), client.getCommonMiddleName());
-    assertEquals("Expected LastName field to be initialized with values", participant.getLastName(), client.getCommonLastName());
-    assertEquals("Expected suffix name field to be initialized with values", participant.getNameSuffix(), client.getSuffixTitleDescription());
-    assertEquals("Expected SSN field to be initialized with values", participant.getSsn(), client.getSocialSecurityNumber());
-    assertEquals("Expected genderCode field to be initialized with values", genderCode, client.getGenderCode());
-    assertEquals("Expected dateStarted field to be initialized with values", dateStarted, client.getCreationDate());
+    assertEquals("Expected BirthDate field to be initialized with values",
+        participant.getDateOfBirth(), client.getBirthDate());
+    assertEquals("Expected First Name field to be initialized with values",
+        participant.getFirstName(), client.getCommonFirstName());
+    assertEquals("Expected Middle Name field to be initialized with values",
+        participant.getMiddleName(), client.getCommonMiddleName());
+    assertEquals("Expected LastName field to be initialized with values", participant.getLastName(),
+        client.getCommonLastName());
+    assertEquals("Expected suffix name field to be initialized with values",
+        participant.getNameSuffix(), client.getSuffixTitleDescription());
+    assertEquals("Expected SSN field to be initialized with values", participant.getSsn(),
+        client.getSocialSecurityNumber());
+    assertEquals("Expected genderCode field to be initialized with values", genderCode,
+        client.getGenderCode());
+    assertEquals("Expected dateStarted field to be initialized with values", dateStarted,
+        client.getCreationDate());
   }
 
   @Test
-  public void shouldAllowClientNamesToBeUpdatedAfterInitialization(){
-    Participant participant = new Participant(1, "sourceTable", "clientId", "Fred", "Wilson", "Bill","", "gender","ssn", "dob", 3,4,new HashSet(), new HashSet());
-    Client client = Client.createWithDefaults(participant,"","");
+  public void shouldAllowClientNamesToBeUpdatedAfterInitialization() {
+    Participant participant = new Participant(1, "sourceTable", "clientId", "Fred", "Wilson",
+        "Bill", "", "gender", "ssn", "dob", 3, 4, new HashSet(), new HashSet());
+    Client client = Client.createWithDefaults(participant, "", "");
 
-    client.update("Barney","middlestone", "Rubble", "jr");
+    client.update("Barney", "middlestone", "Rubble", "jr");
 
-    assertEquals("Expected Client first name to have been changed", "Barney", client.getCommonFirstName());
-    assertEquals("Expected Client middle name to have been changed", "middlestone", client.getCommonMiddleName());
-    assertEquals("Expected Client last name to have been changed", "Rubble", client.getCommonLastName());
-    assertEquals("Expected Client name suffix to have been changed", "jr", client.getSuffixTitleDescription());
+    assertEquals("Expected Client first name to have been changed", "Barney",
+        client.getCommonFirstName());
+    assertEquals("Expected Client middle name to have been changed", "middlestone",
+        client.getCommonMiddleName());
+    assertEquals("Expected Client last name to have been changed", "Rubble",
+        client.getCommonLastName());
+    assertEquals("Expected Client name suffix to have been changed", "jr",
+        client.getSuffixTitleDescription());
   }
 
   @Test
-  public void testCreateWithDefaultCreatesWithDefaultValues(){
-    Participant participant = new Participant(1, "sourceTable", "clientId", "firstName", "middleName", "lastName", "", "gender","ssn", "dob", 3,4,new HashSet(), new HashSet());
+  public void testCreateWithDefaultCreatesWithDefaultValues() {
+    Participant participant = new Participant(1, "sourceTable", "clientId", "firstName",
+        "middleName", "lastName", "", "gender", "ssn", "dob", 3, 4, new HashSet(), new HashSet());
     String genderCode = "male";
     String dateStarted = "now";
 
-    Client client = Client.createWithDefaults(participant,dateStarted,genderCode);
+    Client client = Client.createWithDefaults(participant, dateStarted, genderCode);
 
-    assertEquals("Expected existingClientId field to be initialized with default values", "", client.getExistingClientId());
-    assertEquals("Expected adjudicatedDelinquentIndicator field to be initialized with default values", false, client.getAdjudicatedDelinquentIndicator());
-    assertEquals("Expected adoptionStatusCode field to be initialized with default values", "N", client.getAdoptionStatusCode());
-    assertEquals("Expected alienRegistrationNumber field to be initialized with default values", "", client.getAlienRegistrationNumber());
-    assertEquals("Expected birth city field to be initialized with default values", "", client.getBirthCity());
-    assertEquals("Expected birthCountryCodeType field to be initialized with default values", new Short("0"), client.getBirthCountryCodeType());
-    assertEquals("Expected birthFacilityName field to be initialized with default values", "", client.getBirthFacilityName());
-    assertEquals("Expected birthStateCodeType field to be initialized with default values", new Short("0"), client.getBirthStateCodeType());
-    assertEquals("Expected birthplaceVerifiedIndicator field to be initialized with default values", false, client.getBirthplaceVerifiedIndicator());
-    assertEquals("Expected childClientIndicatorVar field to be initialized with default values", false, client.getChildClientIndicatorVar());
-    assertEquals("Expected clientIndexNumber field to be initialized with default values", "", client.getClientIndexNumber());
-    assertEquals("Expected commentDescription field to be initialized with default values", "", client.getCommentDescription());
-    assertEquals("Expected confidentialityActionDate field to be initialized with default values", "", client.getConfidentialityActionDate());
-    assertEquals("Expected confidentialityInEffectIndicator field to be initialized with default values", false, client.getConfidentialityInEffectIndicator());
-    assertEquals("Expected currCaChildrenServIndicator field to be initialized with default values", false, client.getCurrCaChildrenServIndicator());
-    assertEquals("Expected currentlyOtherDescription field to be initialized with default values", "", client.getCurrentlyOtherDescription());
-    assertEquals("Expected currentlyRegionalCenterIndicato field to be initialized with default values", false, client.getCurrentlyRegionalCenterIndicator());
-    assertEquals("Expected deathDate field to be initialized with default values", "", client.getDeathDate());
-    assertEquals("Expected deathDateVerifiedIndicato field to be initialized with default values", false, client.getDeathDateVerifiedIndicator());
-    assertEquals("Expected deathPlace field to be initialized with default values", "", client.getDeathPlace());
-    assertEquals("Expected deathReasonText field to be initialized with default values", "", client.getDeathReasonText());
-    assertEquals("Expected driverLicenseNumber field to be initialized with default values", "", client.getDriverLicenseNumber());
-    assertEquals("Expected driverLicenseStateCodeType field to be initialized with default values", new Short("0"), client.getDriverLicenseStateCodeType());
-    assertEquals("Expected emailAddress field to be initialized with default values", "", client.getEmailAddress());
-    assertEquals("Expected estimatedDobCode field to be initialized with default values", "N", client.getEstimatedDobCode());
-    assertEquals("Expected ethUnableToDetReasonCode field to be initialized with default values", "K", client.getEthUnableToDetReasonCode());
-    assertEquals("Expected fatherParentalRightTermDate field to be initialized with default values", "", client.getFatherParentalRightTermDate());
-    assertEquals("Expected healthSummaryText field to be initialized with default values", "", client.getHealthSummaryText());
-    assertEquals("Expected hispUnableToDetReasonCode field to be initialized with default values", "", client.getHispUnableToDetReasonCode());
-    assertEquals("Expected hispanicOriginCode field to be initialized with default values", "X", client.getHispanicOriginCode());
-    assertEquals("Expected immigrationCountryCodeTyp field to be initialized with default values", new Short("0"), client.getImmigrationCountryCodeType());
-    assertEquals("Expected immigrationStatusType field to be initialized with default values", new Short("0"), client.getImmigrationStatusType());
-    assertEquals("Expected incapacitatedParentCode field to be initialized with default values", "U", client.getIncapacitatedParentCode());
-    assertEquals("Expected individualHealthCarePlanIndicator field to be initialized with default values", false, client.getIndividualHealthCarePlanIndicator());
-    assertEquals("Expected limitationOnScpHealthIndicator field to be initialized with default values", false, client.getLimitationOnScpHealthIndicator());
-    assertEquals("Expected literateCode field to be initialized with default values", "U", client.getLiterateCode());
-    assertEquals("Expected maritalCohabitatnHstryIndicatorVar field to be initialized with default values", false, client.getMaritalCohabitatnHstryIndicatorVar());
-    assertEquals("Expected maritalStatusType field to be initialized with default values", new Short("0"), client.getMaritalStatusType());
-    assertEquals("Expected militaryStatusCod field to be initialized with default values", "N", client.getMilitaryStatusCode());
-    assertEquals("Expected motherParentalRightTermDate field to be initialized with default values", "", client.getMotherParentalRightTermDate());
-    assertEquals("Expected namePrefixDescription field to be initialized with default values", "", client.getNamePrefixDescription());
-    assertEquals("Expected nameType field to be initialized with default values", new Short("1313"), client.getNameType());
-    assertEquals("Expected outstandingWarrantIndicator field to be initialized with default values", false, client.getOutstandingWarrantIndicator());
-    assertEquals("Expected prevCaChildrenServIndicator field to be initialized with default values", false, client.getPrevCaChildrenServIndicator());
-    assertEquals("Expected prevOtherDescription field to be initialized with default values", "", client.getPrevOtherDescription());
-    assertEquals("Expected prevRegionalCenterIndicato field to be initialized with default values", false, client.getPrevRegionalCenterIndicator());
-    assertEquals("Expected primaryEthnicityType field to be initialized with default values", new Short("0"), client.getPrimaryEthnicityType());
-    assertEquals("Expected primaryLanguageType field to be initialized with default values", new Short("0"), client.getPrimaryLanguageType());
-    assertEquals("Expected religionType field to be initialized with default values", new Short("0"), client.getReligionType());
-    assertEquals("Expected secondaryLanguageType field to be initialized with default values",new Short("1253"), client.getSecondaryLanguageType());
-    assertEquals("Expected sensitiveHlthInfoOnFileIndicator field to be initialized with default values", false, client.getSensitiveHlthInfoOnFileIndicator());
-    assertEquals("Expected sensitivityIndicator field to be initialized with default values", "N", client.getSensitivityIndicator());
-    assertEquals("Expected soc158PlacementCode field to be initialized with default values", "N", client.getSoc158PlacementCode());
-    assertEquals("Expected soc158SealedClientIndicator field to be initialized with default values", false, client.getSoc158SealedClientIndicator());
-    assertEquals("Expected socialSecurityNumChangedCode field to be initialized with default values", "N", client.getSocialSecurityNumChangedCode());
-    assertEquals("Expected tribalAncestryClientIndicatorVar field to be initialized with default values", false, client.getTribalAncestryClientIndicatorVar());
-    assertEquals("Expected tribalMembrshpVerifctnIndicatorVar field to be initialized with default values", false, client.getTribalMembrshpVerifctnIndicatorVar());
-    assertEquals("Expected unemployedParentCode field to be initialized with default values", "U", client.getUnemployedParentCode());
-    assertEquals("Expected zippyCreatedIndicator field to be initialized with default values", false, client.getZippyCreatedIndicator());
-    assertEquals("Expected address field to be initialized with default values", null, client.getAddress());
+    assertEquals("Expected existingClientId field to be initialized with default values", "",
+        client.getExistingClientId());
+    assertEquals(
+        "Expected adjudicatedDelinquentIndicator field to be initialized with default values",
+        false, client.getAdjudicatedDelinquentIndicator());
+    assertEquals("Expected adoptionStatusCode field to be initialized with default values", "N",
+        client.getAdoptionStatusCode());
+    assertEquals("Expected alienRegistrationNumber field to be initialized with default values", "",
+        client.getAlienRegistrationNumber());
+    assertEquals("Expected birth city field to be initialized with default values", "",
+        client.getBirthCity());
+    assertEquals("Expected birthCountryCodeType field to be initialized with default values",
+        new Short("0"), client.getBirthCountryCodeType());
+    assertEquals("Expected birthFacilityName field to be initialized with default values", "",
+        client.getBirthFacilityName());
+    assertEquals("Expected birthStateCodeType field to be initialized with default values",
+        new Short("0"), client.getBirthStateCodeType());
+    assertEquals("Expected birthplaceVerifiedIndicator field to be initialized with default values",
+        false, client.getBirthplaceVerifiedIndicator());
+    assertEquals("Expected childClientIndicatorVar field to be initialized with default values",
+        false, client.getChildClientIndicatorVar());
+    assertEquals("Expected clientIndexNumber field to be initialized with default values", "",
+        client.getClientIndexNumber());
+    assertEquals("Expected commentDescription field to be initialized with default values", "",
+        client.getCommentDescription());
+    assertEquals("Expected confidentialityActionDate field to be initialized with default values",
+        "", client.getConfidentialityActionDate());
+    assertEquals(
+        "Expected confidentialityInEffectIndicator field to be initialized with default values",
+        false, client.getConfidentialityInEffectIndicator());
+    assertEquals("Expected currCaChildrenServIndicator field to be initialized with default values",
+        false, client.getCurrCaChildrenServIndicator());
+    assertEquals("Expected currentlyOtherDescription field to be initialized with default values",
+        "", client.getCurrentlyOtherDescription());
+    assertEquals(
+        "Expected currentlyRegionalCenterIndicato field to be initialized with default values",
+        false, client.getCurrentlyRegionalCenterIndicator());
+    assertEquals("Expected deathDate field to be initialized with default values", "",
+        client.getDeathDate());
+    assertEquals("Expected deathDateVerifiedIndicato field to be initialized with default values",
+        false, client.getDeathDateVerifiedIndicator());
+    assertEquals("Expected deathPlace field to be initialized with default values", "",
+        client.getDeathPlace());
+    assertEquals("Expected deathReasonText field to be initialized with default values", "",
+        client.getDeathReasonText());
+    assertEquals("Expected driverLicenseNumber field to be initialized with default values", "",
+        client.getDriverLicenseNumber());
+    assertEquals("Expected driverLicenseStateCodeType field to be initialized with default values",
+        new Short("0"), client.getDriverLicenseStateCodeType());
+    assertEquals("Expected emailAddress field to be initialized with default values", "",
+        client.getEmailAddress());
+    assertEquals("Expected estimatedDobCode field to be initialized with default values", "N",
+        client.getEstimatedDobCode());
+    assertEquals("Expected ethUnableToDetReasonCode field to be initialized with default values",
+        "K", client.getEthUnableToDetReasonCode());
+    assertEquals("Expected fatherParentalRightTermDate field to be initialized with default values",
+        "", client.getFatherParentalRightTermDate());
+    assertEquals("Expected healthSummaryText field to be initialized with default values", "",
+        client.getHealthSummaryText());
+    assertEquals("Expected hispUnableToDetReasonCode field to be initialized with default values",
+        "", client.getHispUnableToDetReasonCode());
+    assertEquals("Expected hispanicOriginCode field to be initialized with default values", "X",
+        client.getHispanicOriginCode());
+    assertEquals("Expected immigrationCountryCodeTyp field to be initialized with default values",
+        new Short("0"), client.getImmigrationCountryCodeType());
+    assertEquals("Expected immigrationStatusType field to be initialized with default values",
+        new Short("0"), client.getImmigrationStatusType());
+    assertEquals("Expected incapacitatedParentCode field to be initialized with default values",
+        "U", client.getIncapacitatedParentCode());
+    assertEquals(
+        "Expected individualHealthCarePlanIndicator field to be initialized with default values",
+        false, client.getIndividualHealthCarePlanIndicator());
+    assertEquals(
+        "Expected limitationOnScpHealthIndicator field to be initialized with default values",
+        false, client.getLimitationOnScpHealthIndicator());
+    assertEquals("Expected literateCode field to be initialized with default values", "U",
+        client.getLiterateCode());
+    assertEquals(
+        "Expected maritalCohabitatnHstryIndicatorVar field to be initialized with default values",
+        false, client.getMaritalCohabitatnHstryIndicatorVar());
+    assertEquals("Expected maritalStatusType field to be initialized with default values",
+        new Short("0"), client.getMaritalStatusType());
+    assertEquals("Expected militaryStatusCod field to be initialized with default values", "N",
+        client.getMilitaryStatusCode());
+    assertEquals("Expected motherParentalRightTermDate field to be initialized with default values",
+        "", client.getMotherParentalRightTermDate());
+    assertEquals("Expected namePrefixDescription field to be initialized with default values", "",
+        client.getNamePrefixDescription());
+    assertEquals("Expected nameType field to be initialized with default values", new Short("1313"),
+        client.getNameType());
+    assertEquals("Expected outstandingWarrantIndicator field to be initialized with default values",
+        false, client.getOutstandingWarrantIndicator());
+    assertEquals("Expected prevCaChildrenServIndicator field to be initialized with default values",
+        false, client.getPrevCaChildrenServIndicator());
+    assertEquals("Expected prevOtherDescription field to be initialized with default values", "",
+        client.getPrevOtherDescription());
+    assertEquals("Expected prevRegionalCenterIndicato field to be initialized with default values",
+        false, client.getPrevRegionalCenterIndicator());
+    assertEquals("Expected primaryEthnicityType field to be initialized with default values",
+        new Short("0"), client.getPrimaryEthnicityType());
+    assertEquals("Expected primaryLanguageType field to be initialized with default values",
+        new Short("0"), client.getPrimaryLanguageType());
+    assertEquals("Expected religionType field to be initialized with default values",
+        new Short("0"), client.getReligionType());
+    assertEquals("Expected secondaryLanguageType field to be initialized with default values",
+        new Short("1253"), client.getSecondaryLanguageType());
+    assertEquals(
+        "Expected sensitiveHlthInfoOnFileIndicator field to be initialized with default values",
+        false, client.getSensitiveHlthInfoOnFileIndicator());
+    assertEquals("Expected sensitivityIndicator field to be initialized with default values", "N",
+        client.getSensitivityIndicator());
+    assertEquals("Expected soc158PlacementCode field to be initialized with default values", "N",
+        client.getSoc158PlacementCode());
+    assertEquals("Expected soc158SealedClientIndicator field to be initialized with default values",
+        false, client.getSoc158SealedClientIndicator());
+    assertEquals(
+        "Expected socialSecurityNumChangedCode field to be initialized with default values", "N",
+        client.getSocialSecurityNumChangedCode());
+    assertEquals(
+        "Expected tribalAncestryClientIndicatorVar field to be initialized with default values",
+        false, client.getTribalAncestryClientIndicatorVar());
+    assertEquals(
+        "Expected tribalMembrshpVerifctnIndicatorVar field to be initialized with default values",
+        false, client.getTribalMembrshpVerifctnIndicatorVar());
+    assertEquals("Expected unemployedParentCode field to be initialized with default values", "U",
+        client.getUnemployedParentCode());
+    assertEquals("Expected zippyCreatedIndicator field to be initialized with default values",
+        false, client.getZippyCreatedIndicator());
+    assertEquals("Expected address field to be initialized with default values", null,
+        client.getAddress());
   }
 
   @Override
@@ -1339,15 +1424,18 @@ public class ClientTest implements DomainTestTemplate {
   }
 
   @Test
-  public void successWhenCommonMiddleNameEmpty() throws Exception {
+  public void failsWhenCommonMiddleNameEmpty() throws Exception {
     Client validClient = MAPPER.readValue(
         fixture("fixtures/domain/legacy/Client/valid/commonMiddleNameEmpty.json"), Client.class);
 
     Response response =
         resources.client().target(ROOT_RESOURCE).request().accept(MediaType.APPLICATION_JSON)
             .post(Entity.entity(validClient, MediaType.APPLICATION_JSON));
-
-    assertThat(response.getStatus(), is(equalTo(204)));
+    assertThat(response.getStatus(), is(equalTo(422)));
+    assertThat(
+        response.readEntity(String.class).indexOf(
+            "commonMiddleName commonMiddleName size must be between 1 and 20 or assign the value to default Space"),
+        is(greaterThanOrEqualTo(0)));
   }
 
   @Test
@@ -1377,7 +1465,8 @@ public class ClientTest implements DomainTestTemplate {
     // System.out.println(response.readEntity(String.class));
     assertThat(response.getStatus(), is(equalTo(422)));
     assertThat(
-        response.readEntity(String.class).indexOf("commonMiddleName size must be between 0 and 20"),
+        response.readEntity(String.class).indexOf(
+            "commonMiddleName size must be between 0 and 20 or assign the value to default Space"),
         is(greaterThanOrEqualTo(0)));
 
   }
