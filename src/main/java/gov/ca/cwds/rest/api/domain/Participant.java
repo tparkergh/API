@@ -87,21 +87,18 @@ public class Participant extends ReportingDomain implements Request, Response {
       example = "2001-09-13")
   private String dateOfBirth;
 
-  @JsonProperty("person_id")
-  @ApiModelProperty(required = false, readOnly = false, value = "Person Id", example = "12345")
-  private long personId;
-
   @JsonProperty("screening_id")
   @ApiModelProperty(required = false, readOnly = false, value = "Screening Id", example = "12345")
   private long screeningId;
 
   @Valid
   @JsonProperty("roles")
-  @ApiModelProperty(required = true, readOnly = false, value = "Role of participant",
-      example = "Victim")
+  @ApiModelProperty(required = true, readOnly = false, value = "Role of participant"
+   ,dataType="java.util.List", example = "['Victim', 'Mandated Reporter']")
   private Set<String> roles;
 
   @Valid
+  @ApiModelProperty(dataType = "List[gov.ca.cwds.rest.api.domain.Address]")
   @JsonProperty("addresses")
   private Set<Address> addresses;
 
@@ -155,7 +152,6 @@ public class Participant extends ReportingDomain implements Request, Response {
     this.id = id;
     this.legacySourceTable = legacySourceTable;
     this.legacyId = clientId;
-    this.personId = personId;
     this.screeningId = screeningId;
     this.firstName = firstName;
     this.middleName = middleName;
@@ -182,7 +178,6 @@ public class Participant extends ReportingDomain implements Request, Response {
    * @param participant persistence level participant object
    */
   public Participant(gov.ca.cwds.data.persistence.ns.Participant participant) {
-    this.personId = participant.getPersonId();
     this.screeningId = participant.getHotlineContactId();
     if (participant.getPerson() != null) {
       this.firstName = participant.getPerson().getFirstName();
@@ -203,7 +198,6 @@ public class Participant extends ReportingDomain implements Request, Response {
    * 
    */
   public Participant(gov.ca.cwds.data.persistence.ns.Participant participant, Person person) {
-    this.personId = participant.getPersonId();
     this.screeningId = participant.getHotlineContactId();
     if (person != null) {
       this.firstName = person.getFirstName();
@@ -282,13 +276,6 @@ public class Participant extends ReportingDomain implements Request, Response {
    */
   public String getGender() {
     return gender;
-  }
-
-  /**
-   * @return the person_id
-   */
-  public long getPersonId() {
-    return personId;
   }
 
   /**
@@ -388,7 +375,6 @@ public class Participant extends ReportingDomain implements Request, Response {
     result = prime * result + ((nameSuffix == null) ? 0 : nameSuffix.hashCode());
     result = prime * result + ((legacyId == null) ? 0 : legacyId.hashCode());
     result = prime * result + ((legacySourceTable == null) ? 0 : legacySourceTable.hashCode());
-    result = prime * result + (int) (personId ^ (personId >>> 32));
     result = prime * result + ((roles == null) ? 0 : roles.hashCode());
     result = prime * result + (int) (screeningId ^ (screeningId >>> 32));
     result = prime * result + ((ssn == null) ? 0 : ssn.hashCode());
@@ -455,8 +441,6 @@ public class Participant extends ReportingDomain implements Request, Response {
       if (other.legacySourceTable != null)
         return false;
     } else if (!legacySourceTable.equals(other.legacySourceTable))
-      return false;
-    if (personId != other.personId)
       return false;
     if (roles == null) {
       if (other.roles != null)
