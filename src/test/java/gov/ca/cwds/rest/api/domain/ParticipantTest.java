@@ -11,8 +11,6 @@ import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
-import gov.ca.cwds.fixture.AddressResourceBuilder;
-import gov.ca.cwds.fixture.ParticipantResourceBuilder;
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.HashSet;
@@ -34,6 +32,8 @@ import com.fasterxml.jackson.databind.SerializationFeature;
 import com.squarespace.jersey2.guice.JerseyGuiceUtils;
 
 import gov.ca.cwds.data.persistence.junit.template.PersistentTestTemplate;
+import gov.ca.cwds.fixture.AddressResourceBuilder;
+import gov.ca.cwds.fixture.ParticipantResourceBuilder;
 import gov.ca.cwds.rest.core.Api;
 import gov.ca.cwds.rest.resources.ParticipantResource;
 import gov.ca.cwds.rest.resources.cms.JerseyGuiceRule;
@@ -146,8 +146,8 @@ public class ParticipantTest implements PersistentTestTemplate {
   @Test
   public void testConstructorUsingDomain() throws Exception {
 
-    Participant domain = new Participant(id, legacySourceTable, clientId, firstName, middleName, lastName,
-        suffix, gender, ssn, dateOfBirth, personId, screeningId, roles, addresses);
+    Participant domain = new Participant(id, legacySourceTable, clientId, firstName, middleName,
+        lastName, suffix, gender, ssn, dateOfBirth, personId, screeningId, roles, addresses);
 
     assertThat(domain.getId(), is(equalTo(id)));
     assertThat(domain.getLegacySourceTable(), is(equalTo(legacySourceTable)));
@@ -234,7 +234,7 @@ public class ParticipantTest implements PersistentTestTemplate {
         fixture("fixtures/domain/participant/invalid/ssnTooLong.json"), Participant.class);
     Set<ConstraintViolation<Participant>> constraintViolations = validator.validate(toValidate);
     assertEquals(1, constraintViolations.size());
-    assertEquals("size must be between 0 and 9",
+    assertEquals("ssn size must be between 1 and 9 or assign the value to defalut 0",
         constraintViolations.iterator().next().getMessage());
 
   }
@@ -306,17 +306,19 @@ public class ParticipantTest implements PersistentTestTemplate {
   }
 
   @Test
-  public void shouldAddListOfAddressesToExistingAddresses(){
+  public void shouldAddListOfAddressesToExistingAddresses() {
     Address existingAddress = new AddressResourceBuilder().setLegacyId("1").createAddress();
     Set<Address> existingAddresses = new HashSet(Arrays.asList(existingAddress));
-    Participant participant = new ParticipantResourceBuilder().setAddresses(existingAddresses).createParticipant();
+    Participant participant =
+        new ParticipantResourceBuilder().setAddresses(existingAddresses).createParticipant();
 
     Address newAddress = new AddressResourceBuilder().setLegacyId("2").createAddress();
     Set<Address> newAddresses = new HashSet(Arrays.asList(newAddress));
     participant.addAddresses(newAddresses);
     assertEquals("Expected 2 addresses", 2, participant.getAddresses().size());
     assertEquals("Expected 2 addresses", 2, participant.getAddresses().size());
-    assertTrue("Expected to find existing Address", participant.getAddresses().contains(existingAddress));
+    assertTrue("Expected to find existing Address",
+        participant.getAddresses().contains(existingAddress));
     assertTrue("Expected to find new Address", participant.getAddresses().contains(newAddress));
   }
 
@@ -332,8 +334,8 @@ public class ParticipantTest implements PersistentTestTemplate {
   private Participant createParticipant(Set<String> roles) {
     Participant validParticipant = null;
     try {
-      validParticipant = new Participant(id, legacySourceTable, clientId, firstName, middleName, lastName,
-          suffix, gender, ssn, dateOfBirth, personId, screeningId, roles, addresses);
+      validParticipant = new Participant(id, legacySourceTable, clientId, firstName, middleName,
+          lastName, suffix, gender, ssn, dateOfBirth, personId, screeningId, roles, addresses);
     } catch (Exception e) {
       e.printStackTrace();
     }

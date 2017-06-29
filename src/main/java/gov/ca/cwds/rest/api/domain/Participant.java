@@ -6,7 +6,6 @@ import java.util.HashSet;
 import java.util.Set;
 
 import javax.validation.Valid;
-import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
@@ -58,7 +57,6 @@ public class Participant extends ReportingDomain implements Request, Response {
   private String firstName;
 
   @JsonProperty("middle_name")
-  @NotNull
   @Size(min = 1, max = 20,
       message = "middleName size must be between 1 and 20 or assign the value to default Space")
   @ApiModelProperty(required = true, readOnly = false, value = "", example = "middle name")
@@ -80,7 +78,6 @@ public class Participant extends ReportingDomain implements Request, Response {
   private String gender;
 
   @JsonProperty("ssn")
-  @NotNull
   @Size(min = 1, max = 9,
       message = "ssn size must be between 1 and 9 or assign the value to defalut 0")
   @ApiModelProperty(required = true, readOnly = false, value = "", example = "123456789",

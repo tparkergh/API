@@ -1318,7 +1318,7 @@ public class ReporterTest {
     Response response =
         resources.client().target(ROOT_RESOURCE).request().accept(MediaType.APPLICATION_JSON)
             .post(Entity.entity(toCreate, MediaType.APPLICATION_JSON));
-    assertThat(response.getStatus(), is(equalTo(204)));
+    assertThat(response.getStatus(), is(equalTo(422)));
     assertThat(response.readEntity(String.class).indexOf("middleInitialName may not be null"),
         is(greaterThanOrEqualTo(NOT_FOUND)));
   }
