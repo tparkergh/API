@@ -55,7 +55,7 @@ public class Tickle extends ReportingDomain implements Request, Response {
   @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = DATE_FORMAT)
   @JsonProperty(value = "dueDate")
   @gov.ca.cwds.rest.validation.Date(format = DATE_FORMAT, required = false)
-  @ApiModelProperty(required = false, readOnly = false, value = "due date will alert the worker",
+  @ApiModelProperty(required = true, readOnly = false, value = "due date will alert the worker",
       example = "1992-06-18")
   private String dueDate;
 
@@ -64,11 +64,9 @@ public class Tickle extends ReportingDomain implements Request, Response {
       example = "ABC1234567")
   private String noteText;
 
-  @NotEmpty
-  @Size(min = 1, max = 10)
-  @ApiModelProperty(required = false, readOnly = false, value = "ABC1234567",
-      example = "ABC1234567")
-  private String tickleMessageType;
+  @NotNull
+  @ApiModelProperty(required = true, readOnly = false, value = "1234", example = "2055")
+  private Short tickleMessageType;
 
   /**
    * @param affectedByCaseOrReferralId The affectedByCaseOrReferralId
@@ -80,7 +78,7 @@ public class Tickle extends ReportingDomain implements Request, Response {
    * @param tickleMessageType The tickleMessageType
    */
   public Tickle(String affectedByCaseOrReferralId, String affectedByCode, String affectedByOtherId,
-      String affectedByThirdId, String dueDate, String noteText, String tickleMessageType) {
+      String affectedByThirdId, String dueDate, String noteText, Short tickleMessageType) {
     super();
     this.affectedByCaseOrReferralId = affectedByCaseOrReferralId;
     this.affectedByCode = affectedByCode;
@@ -151,7 +149,7 @@ public class Tickle extends ReportingDomain implements Request, Response {
   /**
    * @return the tickleMessageType
    */
-  public String getTickleMessageType() {
+  public Short getTickleMessageType() {
     return tickleMessageType;
   }
 
