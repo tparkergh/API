@@ -1453,7 +1453,7 @@ public class ClientTest implements DomainTestTemplate {
   }
 
   @Test
-  public void failWhenCommonMiddleNameTooLong() throws Exception {
+  public void failsWhenCommonMiddleNameTooLong() throws Exception {
     Client validClient = MAPPER.readValue(
         fixture("fixtures/domain/legacy/Client/invalid/commonMiddleNameTooLong.json"),
         Client.class);
@@ -1466,7 +1466,7 @@ public class ClientTest implements DomainTestTemplate {
     assertThat(response.getStatus(), is(equalTo(422)));
     assertThat(
         response.readEntity(String.class).indexOf(
-            "commonMiddleName size must be between 0 and 20 or assign the value to default Space"),
+            "commonMiddleName size must be between 1 and 20 or assign the value to default Space"),
         is(greaterThanOrEqualTo(0)));
 
   }

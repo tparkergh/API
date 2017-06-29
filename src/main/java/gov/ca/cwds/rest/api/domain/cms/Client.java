@@ -369,8 +369,7 @@ public class Client extends ReportingDomain implements Request, Response {
   @NotNull
   @Size(min = 1, max = 9,
       message = "socialSecurityNumber size must be between 1 and 9 or assign the value to defalut 0")
-  @ApiModelProperty(required = true, readOnly = false, value = "", example = "123456789",
-      notes = "Default value should be 0 can't be Empty or Null")
+  @ApiModelProperty(required = true, readOnly = false, value = "", example = "123456789")
   private String socialSecurityNumber;
 
   @NotNull
