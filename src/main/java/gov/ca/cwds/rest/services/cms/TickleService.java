@@ -15,7 +15,6 @@ import gov.ca.cwds.data.cms.TickleDao;
 import gov.ca.cwds.data.persistence.cms.CmsKeyIdGenerator;
 import gov.ca.cwds.data.persistence.cms.Tickle;
 import gov.ca.cwds.rest.api.Request;
-import gov.ca.cwds.rest.api.domain.cms.PostedTickle;
 import gov.ca.cwds.rest.services.CrudsService;
 import gov.ca.cwds.rest.services.ServiceException;
 
@@ -60,7 +59,7 @@ public class TickleService implements CrudsService {
       gov.ca.cwds.data.persistence.cms.Tickle managed = new gov.ca.cwds.data.persistence.cms.Tickle(
           CmsKeyIdGenerator.generate(lastUpdatedId), tickle, lastUpdatedId);
       managed = tickleDao.create(managed);
-      return new PostedTickle(managed);
+      return new gov.ca.cwds.rest.api.domain.cms.Tickle(managed);
     } catch (EntityExistsException e) {
       LOGGER.info("tickle already exists : {}", tickle);
       throw new ServiceException(e);
