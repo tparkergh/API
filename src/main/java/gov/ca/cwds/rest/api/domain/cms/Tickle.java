@@ -7,6 +7,7 @@ import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.hibernate.validator.constraints.NotEmpty;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
@@ -77,8 +78,13 @@ public class Tickle extends ReportingDomain implements Request, Response {
    * @param noteText The noteText
    * @param tickleMessageType The tickleMessageType
    */
-  public Tickle(String affectedByCaseOrReferralId, String affectedByCode, String affectedByOtherId,
-      String affectedByThirdId, String dueDate, String noteText, Short tickleMessageType) {
+  @JsonCreator
+  public Tickle(@JsonProperty("affectedByCaseOrReferralId") String affectedByCaseOrReferralId,
+      @JsonProperty("affectedByCode") String affectedByCode,
+      @JsonProperty("affectedByOtherId") String affectedByOtherId,
+      @JsonProperty("affectedByThirdId") String affectedByThirdId,
+      @JsonProperty("dueDate") String dueDate, @JsonProperty("noteText") String noteText,
+      @JsonProperty("tickleMessageType") Short tickleMessageType) {
     super();
     this.affectedByCaseOrReferralId = affectedByCaseOrReferralId;
     this.affectedByCode = affectedByCode;
