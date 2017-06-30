@@ -1,0 +1,9 @@
+{
+  "affectedByCaseOrReferralId": "ABC1234567",
+  "affectedByCode": "CC",
+  "affectedByOtherId": "ABC1234567",
+  "affectedByThirdId": "ABC1234567",
+  "dueDate": "1992-06-18",
+  "noteText": "ABC1234567",
+  "tickleMessageType": 2055
+}
