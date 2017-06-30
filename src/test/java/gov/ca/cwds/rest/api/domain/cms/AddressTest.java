@@ -38,7 +38,6 @@ import nl.jqno.equalsverifier.Warning;
 @SuppressWarnings("javadoc")
 public class AddressTest {
 
-
   private static final ReporterResource mockedReporterResource = mock(ReporterResource.class);
 
   @After
@@ -125,7 +124,6 @@ public class AddressTest {
         new gov.ca.cwds.data.persistence.cms.Address(id, domain, "0X5");
 
     Address da = new Address(pa, false);
-
     assertThat(pa.getAddressDescription(), is(equalTo(da.getAddressDescription())));
     assertThat(pa.getCity(), is(equalTo(da.getCity())));
     assertThat(pa.getPrimaryNumber(), is(equalTo(da.getPrimaryNumber())));
@@ -167,19 +165,17 @@ public class AddressTest {
         "legacy_source_table", "legacy_id", streetAddress, city, state, zipCode, type);
     Short stateCode = 5;
 
-    Address cmsAddress = Address.createWithDefaults(nsAddress, stateCode);
-    assertEquals("Expected  field to be initialized with values", city, cmsAddress.getCity());
-    assertEquals("Expected  field to be initialized with values", stateCode, cmsAddress.getState());
-    assertEquals("Expected  field to be initialized with values", streetName,
-        cmsAddress.getStreetName());
-    assertEquals("Expected  field to be initialized with values", streetNumber,
-        cmsAddress.getStreetNumber());
-    assertEquals("Expected  field to be initialized with values", zipCode, cmsAddress.getZip());
-    assertEquals("Expected  field to be initialized with values", zipExtension,
-        cmsAddress.getZip4());
-    assertEquals("Expected  field to be initialized with values", type,
-        cmsAddress.getAddressDescription());
-
+    Address cmsAddr = Address.createWithDefaults(nsAddress, stateCode);
+    assertEquals("Expected field to be initialized with values", city, cmsAddr.getCity());
+    assertEquals("Expected field to be initialized with values", stateCode, cmsAddr.getState());
+    assertEquals("Expected field to be initialized with values", streetName,
+        cmsAddr.getStreetName());
+    assertEquals("Expected field to be initialized with values", streetNumber,
+        cmsAddr.getStreetNumber());
+    assertEquals("Expected field to be initialized with values", zipCode, cmsAddr.getZip());
+    assertEquals("Expected field to be initialized with values", zipExtension, cmsAddr.getZip4());
+    assertEquals("Expected field to be initialized with values", type,
+        cmsAddr.getAddressDescription());
   }
 
   @Test
@@ -198,51 +194,48 @@ public class AddressTest {
         "legacy_source_table", "legacy_id", streetAddress, city, state, zipCode, type);
     Short stateCode = 5;
 
-    Address cmsAddress = Address.createWithDefaults(nsAddress, stateCode);
-    assertEquals("Expected  field to be initialized with values", city, cmsAddress.getCity());
-    assertEquals("Expected  field to be initialized with values", stateCode, cmsAddress.getState());
-    assertEquals("Expected  field to be initialized with values", streetName,
-        cmsAddress.getStreetName());
-    assertEquals("Expected  field to be initialized with values", streetNumber,
-        cmsAddress.getStreetNumber());
-    assertEquals("Expected  field to be initialized with values", zipCode, cmsAddress.getZip());
-    assertEquals("Expected  field to be initialized with values", zipExtension,
-        cmsAddress.getZip4());
-    assertEquals("Expected  field to be initialized with values", type,
-        cmsAddress.getAddressDescription());
-
+    Address cmsAddr = Address.createWithDefaults(nsAddress, stateCode);
+    assertEquals("Expected field to be initialized with values", city, cmsAddr.getCity());
+    assertEquals("Expected field to be initialized with values", stateCode, cmsAddr.getState());
+    assertEquals("Expected field to be initialized with values", streetName,
+        cmsAddr.getStreetName());
+    assertEquals("Expected field to be initialized with values", streetNumber,
+        cmsAddr.getStreetNumber());
+    assertEquals("Expected field to be initialized with values", zipCode, cmsAddr.getZip());
+    assertEquals("Expected field to be initialized with values", zipExtension, cmsAddr.getZip4());
+    assertEquals("Expected field to be initialized with values", type,
+        cmsAddr.getAddressDescription());
 
     assertEquals("Expected existingAddressId field to be initialized with default values", " ",
-        cmsAddress.getExistingAddressId());
+        cmsAddr.getExistingAddressId());
     assertEquals("Expected emergencyNumber field to be initialized with default values",
-        new BigDecimal(0), cmsAddress.getEmergencyNumber());
+        new BigDecimal(0), cmsAddr.getEmergencyNumber());
     assertEquals("Expected emergencyExtension field to be initialized with default values",
-        new Integer(0), cmsAddress.getEmergencyExtension());
+        new Integer(0), cmsAddr.getEmergencyExtension());
     assertEquals("Expected frgAdrtB field to be initialized with default values", false,
-        cmsAddress.getFrgAdrtB());
+        cmsAddr.getFrgAdrtB());
     assertEquals("Expected governmentEntityCd field to be initialized with default values",
-        new Short("0"), cmsAddress.getGovernmentEntityCd());
+        new Short("0"), cmsAddr.getGovernmentEntityCd());
     assertEquals("Expected messageNumber field to be initialized with default values",
-        new BigDecimal(0), cmsAddress.getMessageNumber());
+        new BigDecimal(0), cmsAddr.getMessageNumber());
     assertEquals("Expected messageExtension field to be initialized with default values",
-        new Integer(0), cmsAddress.getMessageExtension());
+        new Integer(0), cmsAddr.getMessageExtension());
     assertEquals("Expected headerAddress field to be initialized with default values", " ",
-        cmsAddress.getHeaderAddress());
+        cmsAddr.getHeaderAddress());
     assertEquals("Expected primaryNumber field to be initialized with default values",
-        new BigDecimal(0), cmsAddress.getPrimaryNumber());
+        new BigDecimal(0), cmsAddr.getPrimaryNumber());
     assertEquals("Expected primaryExtension field to be initialized with default values",
-        new Integer(0), cmsAddress.getPrimaryExtension());
+        new Integer(0), cmsAddr.getPrimaryExtension());
     assertEquals("Expected postDirCd field to be initialized with default values", " ",
-        cmsAddress.getPostDirCd());
+        cmsAddr.getPostDirCd());
     assertEquals("Expected preDirCd field to be initialized with default values", " ",
-        cmsAddress.getPreDirCd());
+        cmsAddr.getPreDirCd());
     assertEquals("Expected streetSuffixCd field to be initialized with default values",
-        new Short("0"), cmsAddress.getStreetSuffixCd());
+        new Short("0"), cmsAddr.getStreetSuffixCd());
     assertEquals("Expected unitDesignationCd field to be initialized with default values",
-        new Short("0"), cmsAddress.getUnitDesignationCd());
+        new Short("0"), cmsAddr.getUnitDesignationCd());
     assertEquals("Expected unitNumber field to be initialized with default values", " ",
-        cmsAddress.getUnitNumber());
-
+        cmsAddr.getUnitNumber());
   }
 
   @Test
@@ -253,10 +246,10 @@ public class AddressTest {
     gov.ca.cwds.rest.api.domain.Address nsAddress = new gov.ca.cwds.rest.api.domain.Address(
         "legacy_source_table", "legacy_id", " 1 main", "city", "state", zipCode, "type");
 
-    Address cmsAddress = Address.createWithDefaults(nsAddress, new Short("5"));
-    assertEquals("Expected zip field to contain 5 digits", zipCode, cmsAddress.getZip());
+    Address cmsAddr = Address.createWithDefaults(nsAddress, new Short("5"));
+    assertEquals("Expected zip field to contain 5 digits", zipCode, cmsAddr.getZip());
     assertEquals("Expected zipExtension field to contain no digits", zipExtension,
-        cmsAddress.getZip4());
+        cmsAddr.getZip4());
   }
 
   @Test
@@ -267,9 +260,9 @@ public class AddressTest {
     gov.ca.cwds.rest.api.domain.Address nsAddress = new gov.ca.cwds.rest.api.domain.Address(
         "legacy_source_table", "legacy_id", " 1 main", "city", "state", zipCode, "type");
 
-    Address cmsAddress = Address.createWithDefaults(nsAddress, new Short("5"));
+    Address cmsAddr = Address.createWithDefaults(nsAddress, new Short("5"));
     assertEquals("Expected zipExtension field to contain no digits", zipExtension,
-        cmsAddress.getZip4());
+        cmsAddr.getZip4());
   }
 
   @Test
@@ -280,10 +273,10 @@ public class AddressTest {
     gov.ca.cwds.rest.api.domain.Address nsAddress = new gov.ca.cwds.rest.api.domain.Address(
         "legacy_source_table", "legacy_id", " 1 main", "city", "state", zipCode, "type");
 
-    Address cmsAddress = Address.createWithDefaults(nsAddress, new Short("5"));
-    assertEquals("Expected zip field to contain all the digits", zipCode, cmsAddress.getZip());
+    Address cmsAddr = Address.createWithDefaults(nsAddress, new Short("5"));
+    assertEquals("Expected zip field to contain all the digits", zipCode, cmsAddr.getZip());
     assertEquals("Expected zipExtension field to contain no digits", zipExtension,
-        cmsAddress.getZip4());
+        cmsAddr.getZip4());
   }
 
   @Test(expected = NumberFormatException.class)
@@ -294,7 +287,7 @@ public class AddressTest {
     gov.ca.cwds.rest.api.domain.Address nsAddress = new gov.ca.cwds.rest.api.domain.Address(
         "legacy_source_table", "legacy_id", "streetAddress", "city", "state", zipCode, "type");
 
-    Address cmsAddress = Address.createWithDefaults(nsAddress, new Short("5"));
+    Address cmsAddr = Address.createWithDefaults(nsAddress, new Short("5"));
   }
 
   @Test
@@ -378,11 +371,10 @@ public class AddressTest {
    * Utilities
    */
   private Address validAddress() throws JsonParseException, JsonMappingException, IOException {
-
     Address validAddress = MAPPER.readValue(
         fixture("fixtures/domain/legacy/Address/valid/validAddress.json"), Address.class);
 
     return validAddress;
-
   }
+
 }

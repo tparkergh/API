@@ -35,12 +35,11 @@ import nl.jqno.equalsverifier.Warning;
 
 /**
  * @author CWDS API Team
- *
  */
 public class AllegationTest {
 
   private static final String ROOT_RESOURCE = "/" + Api.RESOURCE_ALLEGATION + "/";
-  private static final AllegationResource mockedAllegationResource = mock(AllegationResource.class);
+  private static final AllegationResource mockedResource = mock(AllegationResource.class);
 
   @SuppressWarnings("javadoc")
   @After
@@ -57,7 +56,7 @@ public class AllegationTest {
    */
   @ClassRule
   public static final ResourceTestRule resources =
-      ResourceTestRule.builder().addResource(mockedAllegationResource).build();
+      ResourceTestRule.builder().addResource(mockedResource).build();
 
   private static final ObjectMapper MAPPER = Jackson.newObjectMapper();
   private Allegation validAllegation = validAllegation();
@@ -88,7 +87,7 @@ public class AllegationTest {
    */
   @Before
   public void setup() {
-    when(mockedAllegationResource.create(eq(validAllegation)))
+    when(mockedResource.create(eq(validAllegation)))
         .thenReturn(Response.status(Response.Status.NO_CONTENT).entity(null).build());
   }
 
@@ -177,10 +176,8 @@ public class AllegationTest {
    */
   @Test
   public void equalsHashCodeWork() {
-    EqualsVerifier.forClass(Allegation.class)
-            .suppress(Warning.NONFINAL_FIELDS)
-            .withIgnoredFields("messages")
-            .verify();
+    EqualsVerifier.forClass(Allegation.class).suppress(Warning.NONFINAL_FIELDS)
+        .withIgnoredFields("messages").verify();
   }
 
   /**

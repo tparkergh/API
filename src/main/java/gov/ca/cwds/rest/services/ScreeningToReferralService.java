@@ -180,7 +180,6 @@ public class ScreeningToReferralService implements CrudsService {
   @Override
   public Response create(Request request) {
     ScreeningToReferral screeningToReferral = (ScreeningToReferral) request;
-
     verifyReferralHasValidParticipants(screeningToReferral);
 
     /**
