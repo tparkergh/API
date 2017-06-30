@@ -80,7 +80,7 @@ dependencies {
 
 	// Dropwizard-guice 1.0.0.2 conflicts with jersey-client 2.25.
 	// Exclude transitive dependencies.
-	compile ('gov.ca.cwds.api:api-core:0.25.321') {
+	compile ('gov.ca.cwds.api:api-core:0.25.330') {
 	    exclude group: 'org.glassfish.jersey.core'
 	}
 
@@ -88,7 +88,7 @@ dependencies {
 	compile group: 'org.apache.logging.log4j', name: 'log4j-api', version: log4jVersion
   	compile group: 'org.apache.logging.log4j', name: 'log4j-core', version: log4jVersion
 	compile group: 'org.apache.logging.log4j', name: 'log4j-to-slf4j', version: log4jVersion
-	// compile group: 'ch.qos.logback', name: 'logback-classic', version: '1.2.1'
+	compile group: 'ch.qos.logback', name: 'logback-classic', version: '1.2.1'
 	compile group: 'org.slf4j', name: 'slf4j-ext', version: '1.7.25'
 	compile group: 'org.slf4j', name: 'slf4j-simple', version: '1.7.25'
 
