@@ -7,6 +7,7 @@ import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.hibernate.validator.constraints.NotEmpty;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
@@ -55,7 +56,7 @@ public class Tickle extends ReportingDomain implements Request, Response {
   @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = DATE_FORMAT)
   @JsonProperty(value = "dueDate")
   @gov.ca.cwds.rest.validation.Date(format = DATE_FORMAT, required = false)
-  @ApiModelProperty(required = false, readOnly = false, value = "due date will alert the worker",
+  @ApiModelProperty(required = true, readOnly = false, value = "due date will alert the worker",
       example = "1992-06-18")
   private String dueDate;
 
@@ -64,11 +65,9 @@ public class Tickle extends ReportingDomain implements Request, Response {
       example = "ABC1234567")
   private String noteText;
 
-  @NotEmpty
-  @Size(min = 1, max = 10)
-  @ApiModelProperty(required = false, readOnly = false, value = "ABC1234567",
-      example = "ABC1234567")
-  private String tickleMessageType;
+  @NotNull
+  @ApiModelProperty(required = true, readOnly = false, value = "1234", example = "2055")
+  private Short tickleMessageType;
 
   /**
    * @param affectedByCaseOrReferralId The affectedByCaseOrReferralId
@@ -79,8 +78,13 @@ public class Tickle extends ReportingDomain implements Request, Response {
    * @param noteText The noteText
    * @param tickleMessageType The tickleMessageType
    */
-  public Tickle(String affectedByCaseOrReferralId, String affectedByCode, String affectedByOtherId,
-      String affectedByThirdId, String dueDate, String noteText, String tickleMessageType) {
+  @JsonCreator
+  public Tickle(@JsonProperty("affectedByCaseOrReferralId") String affectedByCaseOrReferralId,
+      @JsonProperty("affectedByCode") String affectedByCode,
+      @JsonProperty("affectedByOtherId") String affectedByOtherId,
+      @JsonProperty("affectedByThirdId") String affectedByThirdId,
+      @JsonProperty("dueDate") String dueDate, @JsonProperty("noteText") String noteText,
+      @JsonProperty("tickleMessageType") Short tickleMessageType) {
     super();
     this.affectedByCaseOrReferralId = affectedByCaseOrReferralId;
     this.affectedByCode = affectedByCode;
@@ -151,7 +155,7 @@ public class Tickle extends ReportingDomain implements Request, Response {
   /**
    * @return the tickleMessageType
    */
-  public String getTickleMessageType() {
+  public Short getTickleMessageType() {
     return tickleMessageType;
   }
 

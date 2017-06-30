@@ -57,7 +57,7 @@ public class Tickle extends CmsPersistentObject {
   private String noteText;
 
   @Column(name = "TKL_MSGC")
-  private String tickleMessageType;
+  private Short tickleMessageType;
 
   /**
    * Default constructor
@@ -82,7 +82,7 @@ public class Tickle extends CmsPersistentObject {
    */
   public Tickle(String id, String affectedByCaseOrReferralId, String affectedByCode,
       String affectedByOtherId, String affectedByThirdId, Date dueDate, String noteText,
-      String tickleMessageType) {
+      Short tickleMessageType) {
     super();
     this.id = id;
     this.affectedByCaseOrReferralId = affectedByCaseOrReferralId;
@@ -176,7 +176,7 @@ public class Tickle extends CmsPersistentObject {
   /**
    * @return the tickleMessageType
    */
-  public String getTickleMessageType() {
+  public Short getTickleMessageType() {
     return tickleMessageType;
   }
 

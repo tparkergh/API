@@ -145,3 +145,7 @@ VALUES ('2002-10-25 11:22:01.0', 'Dv0v5KY0Dv', 'DUMMY                         ',
 truncate table cwsint.ASGNM_T immediate;
 INSERT INTO CWSINT.ASGNM_T(IDENTIFIER, END_DT, END_TM, ESTBLSH_ID, ESTBLSH_CD, ASSG_RLC, START_DT, START_TM, ASGNMNT_CD, WGHTNG_NO, LST_UPD_ID, LST_UPD_TS, FKOST_PTYT, FKCASE_LDT, RESPL_DSC, CNTY_SPFCD) 
 VALUES ('SlCAr46088', '1998-09-10', '14:14:00', 'SvgDqxm0AJ', 'R', 0, '1998-09-04', '16:38:00', 'P', 0.000, '088', '1998-09-10 14:14:43.626004', null, 'Aci1N2I00E', '                                                                                                                                                                ', '99');
+
+truncate table cwsint.TICKLE_T immediate;
+INSERT INTO CWSINT.TICKLE_T(IDENTIFIER, AFTBY_CRID, AFCTD_BYCD, AFCTD_THID, AFTBY_OTID, DUE_DT, NOTE_TXT, TKL_MSGC, LST_UPD_ID, LST_UPD_TS) 
+VALUES ('AabekZX00F', 'QjoHhgJ00F', 'CC', null, 'K5Fk8Yd00F', '1999-07-01', null, 2055, '00F', '1999-11-23 06:59:33.493395');
