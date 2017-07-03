@@ -8,8 +8,6 @@ import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.notNullValue;
 
 import java.io.IOException;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 
 import org.junit.Test;
 
@@ -20,21 +18,16 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import nl.jqno.equalsverifier.EqualsVerifier;
 import nl.jqno.equalsverifier.Warning;
 
+@SuppressWarnings("javadoc")
 public class AssignmentTest {
 
   private static final ObjectMapper MAPPER = SystemCodeTestHarness.MAPPER;
 
-  private String lastUpdatedId = "0X5";
-  private String id = "1234567ABC";
-  private final static DateFormat timeOnlyFormat = new SimpleDateFormat("HH:mm:ss");
-
-  @SuppressWarnings("javadoc")
   @Test
   public void testEmptyConstructor() throws Exception {
     assertThat(Assignment.class.newInstance(), is(notNullValue()));
   }
 
-  @SuppressWarnings("javadoc")
   @Test
   public void testConstructorUsingDomain() throws Exception {
 
@@ -62,13 +55,11 @@ public class AssignmentTest {
     assertThat(pa.getWeightingNumber(), is(equalTo(va.getWeightingNumber())));
   }
 
-  @SuppressWarnings("javadoc")
   @Test
   public void testEqualsHashCodeWorks() {
     EqualsVerifier.forClass(Assignment.class).suppress(Warning.NONFINAL_FIELDS).verify();
   }
 
-  @SuppressWarnings("javadoc")
   @Test
   public void testSerializeAndDeserialize() throws Exception {
     Assignment va = validAssignment();
