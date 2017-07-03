@@ -22,7 +22,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.squarespace.jersey2.guice.JerseyGuiceUtils;
 
 import gov.ca.cwds.rest.api.domain.error.ErrorMessage;
-import gov.ca.cwds.rest.core.Api;
 import gov.ca.cwds.rest.messages.MessageBuilder;
 import gov.ca.cwds.rest.resources.cms.JerseyGuiceRule;
 import io.dropwizard.jackson.Jackson;
@@ -33,28 +32,17 @@ import nl.jqno.equalsverifier.Warning;
  * @author CWDS API Team
  *
  */
+@SuppressWarnings("javadoc")
 public class AssignmentTest {
 
-  private static final String ROOT_RESOURCE = "/" + Api.RESOURCE_ASSIGNMENT + "/";
-  // private static final AssignmentResource mockedAssignmentResource =
-  // mock(AssignmentResource.class);
-
-  @SuppressWarnings("javadoc")
   @After
   public void ensureServiceLocatorPopulated() {
     JerseyGuiceUtils.reset();
   }
 
-  @SuppressWarnings("javadoc")
   @ClassRule
   public static JerseyGuiceRule rule = new JerseyGuiceRule();
 
-  /**
-   * 
-   */
-  // @ClassRule
-  // public static final ResourceTestRule resources =
-  // ResourceTestRule.builder().addResource(mockedAssignmentResource).build();
 
   private final static DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
   private final static DateFormat timeOnlyFormat = new SimpleDateFormat("HH:mm:ss");
@@ -76,8 +64,6 @@ public class AssignmentTest {
   private BigDecimal weightingNumber = new BigDecimal("0.0");
   private String staffId = "0X5";
 
-  private Assignment validAssignment = validAssignment();
-
   private MessageBuilder messageBuilder;
   private Validator validator;
 
@@ -87,11 +73,8 @@ public class AssignmentTest {
   @Before
   public void setup() {
     messageBuilder = new MessageBuilder();
-    // when(mockedAssignmentResource.create(eq(validAssignment)))
-    // .thenReturn(Response.status(Response.Status.NO_CONTENT).entity(null).build());
   }
 
-  @SuppressWarnings("javadoc")
   @Test
   public void equalsHashCodeWorks() {
     EqualsVerifier.forClass(Assignment.class).suppress(Warning.NONFINAL_FIELDS)
@@ -99,25 +82,21 @@ public class AssignmentTest {
 
   }
 
-  @SuppressWarnings("javadoc")
   @Test
   public void testdeserializesFromJson() throws Exception {
     assertThat(MAPPER.readValue(fixture("fixtures/domain/legacy/Assignment/valid/valid.json"),
         Assignment.class), is(equalTo(validAssignment())));
   }
 
-  @SuppressWarnings("javadoc")
   @Test
   public void testWithValidSuccess() throws Exception {
-    Assignment toCreate = MAPPER
-        .readValue(fixture("fixtures/domain/legacy/Assignment/valid/valid.json"), Assignment.class);
+    Assignment toCreate = validAssignment();
     validator = Validation.buildDefaultValidatorFactory().getValidator();
     messageBuilder.addDomainValidationError(validator.validate(toCreate));
 
     assertThat(messageBuilder.getMessages().isEmpty(), is(true));
   }
 
-  @SuppressWarnings("javadoc")
   @Test
   public void testCountySpceficCodeBlankFail() throws Exception {
     Assignment toCreate = MAPPER.readValue(
@@ -137,7 +116,6 @@ public class AssignmentTest {
     assertThat(theErrorDetected, is(true));
   }
 
-  @SuppressWarnings("javadoc")
   @Test
   public void testCountySpceficCodeNullFail() throws Exception {
     Assignment toCreate = MAPPER.readValue(
@@ -156,7 +134,6 @@ public class AssignmentTest {
     assertThat(theErrorDetected, is(true));
   }
 
-  @SuppressWarnings("javadoc")
   @Test
   public void testCountySpceficCodeNullMissing() throws Exception {
     Assignment toCreate = MAPPER.readValue(
@@ -176,7 +153,6 @@ public class AssignmentTest {
     assertThat(theErrorDetected, is(true));
   }
 
-  @SuppressWarnings("javadoc")
   @Test
   public void testEndDateBlankSuccess() throws Exception {
     Assignment toCreate = MAPPER.readValue(
@@ -186,7 +162,6 @@ public class AssignmentTest {
     assertThat(messageBuilder.getMessages().isEmpty(), is(true));
   }
 
-  @SuppressWarnings("javadoc")
   @Test
   public void testEndDateNullSuccess() throws Exception {
     Assignment toCreate = MAPPER.readValue(
@@ -196,7 +171,6 @@ public class AssignmentTest {
     assertThat(messageBuilder.getMessages().isEmpty(), is(true));
   }
 
-  @SuppressWarnings("javadoc")
   @Test
   public void testEndDateMissingSuccess() throws Exception {
     Assignment toCreate = MAPPER.readValue(
@@ -206,7 +180,6 @@ public class AssignmentTest {
     assertThat(messageBuilder.getMessages().isEmpty(), is(true));
   }
 
-  @SuppressWarnings("javadoc")
   @Test
   public void testEndDateInvlidFormatFails() throws Exception {
     Assignment toCreate = MAPPER.readValue(
@@ -227,7 +200,6 @@ public class AssignmentTest {
   }
 
 
-  @SuppressWarnings("javadoc")
   @Test
   public void testEndTimeBlankSuccess() throws Exception {
     Assignment toCreate = MAPPER.readValue(
@@ -238,7 +210,6 @@ public class AssignmentTest {
 
   }
 
-  @SuppressWarnings("javadoc")
   @Test
   public void testEndTimeNullSuccess() throws Exception {
     Assignment toCreate = MAPPER.readValue(
@@ -249,7 +220,6 @@ public class AssignmentTest {
 
   }
 
-  @SuppressWarnings("javadoc")
   @Test
   public void testEndTimeMissingSuccess() throws Exception {
     Assignment toCreate = MAPPER.readValue(
@@ -260,7 +230,6 @@ public class AssignmentTest {
 
   }
 
-  @SuppressWarnings("javadoc")
   @Test
   public void testEndTimeInvalidFormatFails() throws Exception {
     Assignment toCreate = MAPPER.readValue(
@@ -337,7 +306,6 @@ public class AssignmentTest {
     assertThat(theErrorDetected, is(true));
   }
 
-  @SuppressWarnings("javadoc")
   @Test
   public void testEstablishedForIdNullFails() throws Exception {
     Assignment toCreate = MAPPER.readValue(
@@ -357,7 +325,6 @@ public class AssignmentTest {
     assertThat(theErrorDetected, is(true));
   }
 
-  @SuppressWarnings("javadoc")
   @Test
   public void testEstablishedForIdMissingFails() throws Exception {
     Assignment toCreate = MAPPER.readValue(
@@ -378,7 +345,6 @@ public class AssignmentTest {
 
   }
 
-  @SuppressWarnings("javadoc")
   @Test
   public void testEstablishedForIdInvalidFails() throws Exception {
     Assignment toCreate = MAPPER.readValue(
@@ -398,7 +364,6 @@ public class AssignmentTest {
     assertThat(theErrorDetected, is(true));
   }
 
-  @SuppressWarnings("javadoc")
   @Test
   public void testFkCaseLoadMissingSuccess() throws Exception {
     Assignment toCreate =
@@ -410,7 +375,6 @@ public class AssignmentTest {
 
   }
 
-  @SuppressWarnings("javadoc")
   @Test
   public void testFkCaseLoadBlankSuccess() throws Exception {
     Assignment toCreate = MAPPER.readValue(
@@ -421,7 +385,6 @@ public class AssignmentTest {
 
   }
 
-  @SuppressWarnings("javadoc")
   @Test
   public void testFkCaseLInvalidFormatFails() throws Exception {
     Assignment toCreate = MAPPER.readValue(
@@ -441,7 +404,6 @@ public class AssignmentTest {
     assertThat(theErrorDetected, is(true));
   }
 
-  @SuppressWarnings("javadoc")
   @Test
   public void testSecondaryAssignmentRoleTypeMissingSuccess() throws Exception {
     Assignment toCreate = MAPPER.readValue(
@@ -453,7 +415,6 @@ public class AssignmentTest {
 
   }
 
-  @SuppressWarnings("javadoc")
   @Test
   public void testStartDateEmptyFails() throws Exception {
     Assignment toCreate = MAPPER.readValue(
@@ -491,7 +452,6 @@ public class AssignmentTest {
     assertThat(theErrorDetected, is(true));
   }
 
-  @SuppressWarnings("javadoc")
   @Test
   public void testStartDateNullFails() throws Exception {
     Assignment toCreate = MAPPER.readValue(
@@ -608,7 +568,6 @@ public class AssignmentTest {
     assertThat(theErrorDetected, is(true));
   }
 
-  @SuppressWarnings("javadoc")
   @Test
   public void testDomainConstructorSuccess() throws Exception {
 
@@ -630,7 +589,6 @@ public class AssignmentTest {
 
   }
 
-  @SuppressWarnings("javadoc")
   @Test
   public void testPersistentObjectConstructorSuccess() throws Exception {
 
