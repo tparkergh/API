@@ -24,6 +24,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import gov.ca.cwds.data.cms.AddressDao;
 import gov.ca.cwds.data.cms.AllegationDao;
+import gov.ca.cwds.data.cms.AllegationPerpetratorHistoryDao;
 import gov.ca.cwds.data.cms.AssignmentDao;
 import gov.ca.cwds.data.cms.ChildClientDao;
 import gov.ca.cwds.data.cms.ClientAddressDao;
@@ -55,6 +56,7 @@ import gov.ca.cwds.rest.business.rules.NonLACountyTriggers;
 import gov.ca.cwds.rest.messages.MessageBuilder;
 import gov.ca.cwds.rest.services.ScreeningToReferralService;
 import gov.ca.cwds.rest.services.cms.AddressService;
+import gov.ca.cwds.rest.services.cms.AllegationPerpetratorHistoryService;
 import gov.ca.cwds.rest.services.cms.AllegationService;
 import gov.ca.cwds.rest.services.cms.AssignmentService;
 import gov.ca.cwds.rest.services.cms.ChildClientService;
@@ -82,6 +84,7 @@ public class R04537FirstResponseDeterminedByStaffPersonIdTest {
   private ClientService clientService;
   private ReferralClientService referralClientService;
   private AllegationService allegationService;
+  private AllegationPerpetratorHistoryService allegationPerpetratorHistoryService;
   private CrossReportService crossReportService;
   private ReporterService reporterService;
   private AddressService addressService;
@@ -95,6 +98,7 @@ public class R04537FirstResponseDeterminedByStaffPersonIdTest {
   private ClientDao clientDao;
   private ReferralClientDao referralClientDao;
   private AllegationDao allegationDao;
+  private AllegationPerpetratorHistoryDao allegationPerpetratorHistoryDao;
   private CrossReportDao crossReportDao;
   private ReporterDao reporterDao;
   private AddressDao addressDao;
@@ -148,6 +152,10 @@ public class R04537FirstResponseDeterminedByStaffPersonIdTest {
     allegationDao = mock(AllegationDao.class);
     allegationService = new AllegationService(allegationDao, staffPersonIdRetriever);
 
+    allegationPerpetratorHistoryDao = mock(AllegationPerpetratorHistoryDao.class);
+    allegationPerpetratorHistoryService = new AllegationPerpetratorHistoryService(
+        allegationPerpetratorHistoryDao, staffPersonIdRetriever);
+
     crossReportDao = mock(CrossReportDao.class);
     crossReportService = new CrossReportService(crossReportDao, staffPersonIdRetriever);
 
@@ -180,7 +188,8 @@ public class R04537FirstResponseDeterminedByStaffPersonIdTest {
         allegationService, crossReportService, referralClientService, reporterService,
         addressService, clientAddressService, longTextService, childClientService,
         assignmentService, Validation.buildDefaultValidatorFactory().getValidator(), referralDao,
-        staffPersonIdRetriever, new MessageBuilder(), drmsDocumentService, ssaName3Dao);
+        staffPersonIdRetriever, new MessageBuilder(), drmsDocumentService, ssaName3Dao,
+        allegationPerpetratorHistoryService);
   }
 
   /**

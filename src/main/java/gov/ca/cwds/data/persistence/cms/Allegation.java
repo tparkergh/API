@@ -190,7 +190,7 @@ public class Allegation extends CmsPersistentObject {
    * 
    * @param id The id
    * @param persistedAllegation The domain object to construct this object from
-   * @param lastUpdatedId the id of the last person to update this object
+   * @param lastUpdatedId the id of the last user to update this object
    */
   public Allegation(String id, gov.ca.cwds.rest.api.domain.cms.Allegation persistedAllegation,
       String lastUpdatedId) {
@@ -203,8 +203,8 @@ public class Allegation extends CmsPersistentObject {
    * 
    * @param id The id
    * @param persistedAllegation persistedAllegation The domain object to construct this object from
-   * @param lastUpdatedId the id of the last person to update this object
-   * @param lastUpdatedTime the time of last person to update this object
+   * @param lastUpdatedId the id of the last user to update this object
+   * @param lastUpdatedTime the time of last update this object
    */
   public Allegation(String id, gov.ca.cwds.rest.api.domain.cms.Allegation persistedAllegation,
       String lastUpdatedId, Date lastUpdatedTime) {

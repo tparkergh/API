@@ -155,6 +155,31 @@ public class Assignment extends CmsPersistentObject {
     this.weightingNumber = pa.getWeightingNumber();
   }
 
+  /**
+   * @param id - IDENTIFIER
+   * @param pa - domaing ASSIGNMENT
+   * @param lastUpdateId - staff person id
+   * @param timestamp - Date/time of transaction
+   */
+  public Assignment(String id, gov.ca.cwds.rest.api.domain.cms.Assignment pa, String lastUpdateId,
+      Date timestamp) {
+    super(lastUpdateId, timestamp);
+    this.id = id;
+    this.countySpecificCode = pa.getCountySpecificCode();
+    this.endDate = DomainChef.uncookDateString(pa.getEndDate());
+    this.endTime = DomainChef.uncookTimeString(pa.getEndTime());
+    this.establishedForCode = pa.getEstablishedForCode();
+    this.establishedForId = pa.getEstablishedForId();
+    this.fkCaseLoad = pa.getCaseLoadId();
+    this.fkOutOfStateContactParty = pa.getOutOfStateContactId();
+    this.responsibilityDescription = pa.getResponsibilityDescription();
+    this.secondaryAssignmentRoleType = pa.getSecondaryAssignmentRoleType();
+    this.startDate = DomainChef.uncookDateString(pa.getStartDate());
+    this.startTime = DomainChef.uncookTimeString(pa.getStartTime());
+    this.typeOfAssignmentCode = pa.getTypeOfAssignmentCode();
+    this.weightingNumber = pa.getWeightingNumber();
+  }
+
   @SuppressWarnings("javadoc")
   public String getCountySpecificCode() {
     return countySpecificCode;

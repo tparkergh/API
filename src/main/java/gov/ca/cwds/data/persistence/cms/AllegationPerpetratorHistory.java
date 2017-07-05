@@ -87,12 +87,32 @@ public class AllegationPerpetratorHistory extends CmsPersistentObject {
    * 
    * @param id The id
    * @param persistedAllegationPerpetratorHistory The domain object to construct this object from
-   * @param lastUpdatedId the id of the last person to update this object
+   * @param lastUpdatedId the id of the last user to update this object
    */
   public AllegationPerpetratorHistory(String id,
       gov.ca.cwds.rest.api.domain.cms.AllegationPerpetratorHistory persistedAllegationPerpetratorHistory,
       String lastUpdatedId) {
     super(lastUpdatedId);
+    this.id = id;
+    this.countySpecificCode = persistedAllegationPerpetratorHistory.getCountySpecificCode();
+    this.victimClientId = persistedAllegationPerpetratorHistory.getVictimClientId();
+    this.allegationId = persistedAllegationPerpetratorHistory.getAllegationId();
+    this.perpetratorUpdateDate = DomainChef
+        .uncookDateString(persistedAllegationPerpetratorHistory.getPerpetratorUpdateDate());
+  }
+
+  /**
+   * Constructor using domain
+   * 
+   * @param id The id
+   * @param persistedAllegationPerpetratorHistory The domain object to construct this object from
+   * @param lastUpdatedId the id of the last user to update this object
+   * @param lastUpdateTime the time of last update this object
+   */
+  public AllegationPerpetratorHistory(String id,
+      gov.ca.cwds.rest.api.domain.cms.AllegationPerpetratorHistory persistedAllegationPerpetratorHistory,
+      String lastUpdatedId, Date lastUpdateTime) {
+    super(lastUpdatedId, lastUpdateTime);
     this.id = id;
     this.countySpecificCode = persistedAllegationPerpetratorHistory.getCountySpecificCode();
     this.victimClientId = persistedAllegationPerpetratorHistory.getVictimClientId();

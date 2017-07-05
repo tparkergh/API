@@ -49,6 +49,7 @@ import gov.ca.cwds.rest.api.domain.cms.Reporter;
 import gov.ca.cwds.rest.api.domain.error.ErrorMessage;
 import gov.ca.cwds.rest.messages.MessageBuilder;
 import gov.ca.cwds.rest.services.cms.AddressService;
+import gov.ca.cwds.rest.services.cms.AllegationPerpetratorHistoryService;
 import gov.ca.cwds.rest.services.cms.AllegationService;
 import gov.ca.cwds.rest.services.cms.AssignmentService;
 import gov.ca.cwds.rest.services.cms.ChildClientService;
@@ -91,6 +92,7 @@ public class ScreeningToReferralService implements CrudsService {
   private ReferralService referralService;
   private ClientService clientService;
   private AllegationService allegationService;
+  private AllegationPerpetratorHistoryService allegationPerpetratorHistoryService;
   private CrossReportService crossReportService;
   private ReferralClientService referralClientService;
   private ReporterService reporterService;
@@ -145,6 +147,7 @@ public class ScreeningToReferralService implements CrudsService {
    * @param messageBuilder log message
    * @param drmsDocumentService - cms DrmsDocumentService
    * @param ssaName3Dao the ssaName3Dao
+   * @param allegationPerpetratorHistoryService the allegationPerpetratorHistoryService
    */
   @Inject
   public ScreeningToReferralService(ReferralService referralService, ClientService clientService,
@@ -154,7 +157,8 @@ public class ScreeningToReferralService implements CrudsService {
       LongTextService longTextService, ChildClientService childClientService,
       AssignmentService assignmentService, Validator validator, ReferralDao referralDao,
       StaffPersonIdRetriever staffPersonIdRetriever, MessageBuilder messageBuilder,
-      DrmsDocumentService drmsDocumentService, SsaName3Dao ssaName3Dao) {
+      DrmsDocumentService drmsDocumentService, SsaName3Dao ssaName3Dao,
+      AllegationPerpetratorHistoryService allegationPerpetratorHistoryService) {
 
     super();
     this.referralService = referralService;
@@ -174,6 +178,7 @@ public class ScreeningToReferralService implements CrudsService {
     this.messageBuilder = messageBuilder;
     this.drmsDocumentService = drmsDocumentService;
     this.ssaName3Dao = ssaName3Dao;
+    this.allegationPerpetratorHistoryService = allegationPerpetratorHistoryService;
   }
 
   @UnitOfWork(value = "cms")
@@ -444,7 +449,7 @@ public class ScreeningToReferralService implements CrudsService {
       referralId = postedReferral.getId();
 
       // when creating a referral - create the default assignment to 0XA staff person
-      createDefaultAssignmentForNewReferral(referralId);
+      createDefaultAssignmentForNewReferral(referralId, timestamp);
       // TODO: R - 01054 Prmary Assignment Adding
 
     } else {
@@ -760,7 +765,7 @@ public class ScreeningToReferralService implements CrudsService {
         continue;
       }
       if (victimClient.containsKey(allegation.getVictimPersonId())) {
-        // this is the legacy Id (CLIENT) of the victime
+        // this is the legacy Id (CLIENT) of the victim
         victimClientId = victimClient.get(allegation.getVictimPersonId());
       }
 
@@ -769,7 +774,7 @@ public class ScreeningToReferralService implements CrudsService {
           if (!ParticipantValidator.isPerpetratorParticipant(scr,
               allegation.getPerpetratorPersonId())) {
             String message =
-                " Allegation/Perpetrator Person Id does not contain a Participant with a role of Perpetrator ";
+                "Allegation/Perpetrator Person Id does not contain a Participant with a role of Perpetrator";
             ServiceException exception = new ServiceException(message);
             logError(message, exception);
           }
@@ -785,7 +790,7 @@ public class ScreeningToReferralService implements CrudsService {
         perpatratorClientId = perpatratorClient.get(allegation.getPerpetratorPersonId());
       }
       if (victimClientId.isEmpty()) {
-        String message = "Victim could not be determined for an allegation ";
+        String message = "Victim could not be determined for an allegation";
         ServiceException exception = new ServiceException(message);
         logError(message, exception);
         // next allegation
@@ -808,12 +813,23 @@ public class ScreeningToReferralService implements CrudsService {
         allegation.setLegacyId(postedAllegation.getId());
         allegation.setLegacySourceTable(ALLEGATION_TABLE_NAME);
         processedAllegations.add(allegation);
+
+        // create the Allegation Perpetrator History
+        gov.ca.cwds.rest.api.domain.cms.AllegationPerpetratorHistory cmsPerpHistory =
+            new gov.ca.cwds.rest.api.domain.cms.AllegationPerpetratorHistory(
+                DEFAULT_COUNTY_SPECIFIC_CODE, victimClientId, perpatratorClientId, "2017-07-03");
+
+        messageBuilder.addDomainValidationError(validator.validate(cmsPerpHistory));
+
+        this.allegationPerpetratorHistoryService.createWithSingleTimestamp(cmsPerpHistory,
+            timestamp);
+
       } else {
         gov.ca.cwds.rest.api.domain.cms.Allegation foundAllegation =
             this.allegationService.find(allegation.getLegacyId());
         if (foundAllegation == null) {
           String message =
-              " Legacy Id on Allegation does not correspond to an existing CMS/CWS Allegation ";
+              "Legacy Id on Allegation does not correspond to an existing CMS/CWS Allegation";
           ServiceException se = new ServiceException(message);
           logError(message, se);
           // next allegation
@@ -1012,7 +1028,7 @@ public class ScreeningToReferralService implements CrudsService {
   // create a default assignment
   // R - 02473 Default Referral Assignment
   // R - 02160 Assignment - Caseload Access
-  private void createDefaultAssignmentForNewReferral(String referralId) {
+  private void createDefaultAssignmentForNewReferral(String referralId, Date timestamp) {
     // #146713651 - BARNEY: Referrals require a default assignment
     // Default Assignment - referrals will be assigned to the '0X5' staff person ID.
     //
@@ -1038,7 +1054,7 @@ public class ScreeningToReferralService implements CrudsService {
     messageBuilder.addDomainValidationError(validator.validate(da));
 
     try {
-      this.assignmentService.create(da);
+      this.assignmentService.createWithSingleTimestamp(da, timestamp);
     } catch (ServiceException e) {
       String message = e.getMessage();
       logError(message, e);
