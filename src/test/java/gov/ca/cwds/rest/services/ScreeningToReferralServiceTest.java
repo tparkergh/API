@@ -67,6 +67,7 @@ import gov.ca.cwds.rest.api.domain.PostedScreeningToReferral;
 import gov.ca.cwds.rest.api.domain.ScreeningToReferral;
 import gov.ca.cwds.rest.api.domain.cms.Address;
 import gov.ca.cwds.rest.api.domain.cms.Allegation;
+import gov.ca.cwds.rest.api.domain.cms.AllegationPerpetratorHistory;
 import gov.ca.cwds.rest.api.domain.cms.Assignment;
 import gov.ca.cwds.rest.api.domain.cms.ChildClient;
 import gov.ca.cwds.rest.api.domain.cms.Client;
@@ -266,6 +267,13 @@ public class ScreeningToReferralServiceTest {
         new gov.ca.cwds.data.persistence.cms.Allegation("2345678ABC",
             (Allegation) allegationDomain.toArray()[0], "2016-10-31");
 
+    AllegationPerpetratorHistory allegationPerpHistoryDomain = MAPPER.readValue(
+        fixture("fixtures/domain/ScreeningToReferral/valid/validAllegationPerpetratorHistory.json"),
+        AllegationPerpetratorHistory.class);
+    gov.ca.cwds.data.persistence.cms.AllegationPerpetratorHistory allegationPerpHistoryToCreate =
+        new gov.ca.cwds.data.persistence.cms.AllegationPerpetratorHistory("567890ABC",
+            allegationPerpHistoryDomain, "2017-07-03");
+
     Set<CrossReport> crossReportDomain =
         MAPPER.readValue(fixture("fixtures/domain/ScreeningToReferral/valid/validCrossReport.json"),
             new TypeReference<Set<CrossReport>>() {});
@@ -332,6 +340,9 @@ public class ScreeningToReferralServiceTest {
         .thenReturn(referralClientToCreate);
     when(allegationDao.create(any(gov.ca.cwds.data.persistence.cms.Allegation.class)))
         .thenReturn(allegationToCreate);
+    when(allegationPerpetratorHistoryDao
+        .create(any(gov.ca.cwds.data.persistence.cms.AllegationPerpetratorHistory.class)))
+            .thenReturn(allegationPerpHistoryToCreate);
     when(crossReportDao.create(any(gov.ca.cwds.data.persistence.cms.CrossReport.class)))
         .thenReturn(crossReportToCreate);
     when(reporterDao.create(any(gov.ca.cwds.data.persistence.cms.Reporter.class)))
@@ -352,7 +363,6 @@ public class ScreeningToReferralServiceTest {
     Response response = screeningToReferralService.create(screeningToReferral);
     return response;
   }
-
 
   @SuppressWarnings("javadoc")
   @Test
@@ -456,6 +466,16 @@ public class ScreeningToReferralServiceTest {
             (Allegation) allegationDomain.toArray()[0], "2016-10-31");
     when(allegationDao.create(any(gov.ca.cwds.data.persistence.cms.Allegation.class)))
         .thenReturn(allegationToCreate);
+
+    AllegationPerpetratorHistory allegationPerpHistoryDomain = MAPPER.readValue(
+        fixture("fixtures/domain/ScreeningToReferral/valid/validAllegationPerpetratorHistory.json"),
+        AllegationPerpetratorHistory.class);
+    gov.ca.cwds.data.persistence.cms.AllegationPerpetratorHistory allegationPerpHistoryToCreate =
+        new gov.ca.cwds.data.persistence.cms.AllegationPerpetratorHistory("567890ABC",
+            allegationPerpHistoryDomain, "2017-07-03");
+    when(allegationPerpetratorHistoryDao
+        .create(any(gov.ca.cwds.data.persistence.cms.AllegationPerpetratorHistory.class)))
+            .thenReturn(allegationPerpHistoryToCreate);
 
     Set<CrossReport> crossReportDomain =
         MAPPER.readValue(fixture("fixtures/domain/ScreeningToReferral/valid/validCrossReport.json"),
@@ -562,6 +582,16 @@ public class ScreeningToReferralServiceTest {
             (Allegation) allegationDomain.toArray()[0], "2016-10-31");
     when(allegationDao.create(any(gov.ca.cwds.data.persistence.cms.Allegation.class)))
         .thenReturn(allegationToCreate);
+
+    AllegationPerpetratorHistory allegationPerpHistoryDomain = MAPPER.readValue(
+        fixture("fixtures/domain/ScreeningToReferral/valid/validAllegationPerpetratorHistory.json"),
+        AllegationPerpetratorHistory.class);
+    gov.ca.cwds.data.persistence.cms.AllegationPerpetratorHistory allegationPerpHistoryToCreate =
+        new gov.ca.cwds.data.persistence.cms.AllegationPerpetratorHistory("567890ABC",
+            allegationPerpHistoryDomain, "2017-07-03");
+    when(allegationPerpetratorHistoryDao
+        .create(any(gov.ca.cwds.data.persistence.cms.AllegationPerpetratorHistory.class)))
+            .thenReturn(allegationPerpHistoryToCreate);
 
     Set<CrossReport> crossReportDomain =
         MAPPER.readValue(fixture("fixtures/domain/ScreeningToReferral/valid/validCrossReport.json"),
@@ -742,6 +772,16 @@ public class ScreeningToReferralServiceTest {
     when(allegationDao.create(any(gov.ca.cwds.data.persistence.cms.Allegation.class)))
         .thenReturn(allegationToCreate);
 
+    AllegationPerpetratorHistory allegationPerpHistoryDomain = MAPPER.readValue(
+        fixture("fixtures/domain/ScreeningToReferral/valid/validAllegationPerpetratorHistory.json"),
+        AllegationPerpetratorHistory.class);
+    gov.ca.cwds.data.persistence.cms.AllegationPerpetratorHistory allegationPerpHistoryToCreate =
+        new gov.ca.cwds.data.persistence.cms.AllegationPerpetratorHistory("567890ABC",
+            allegationPerpHistoryDomain, "2017-07-03");
+    when(allegationPerpetratorHistoryDao
+        .create(any(gov.ca.cwds.data.persistence.cms.AllegationPerpetratorHistory.class)))
+            .thenReturn(allegationPerpHistoryToCreate);
+
     Set<CrossReport> crossReportDomain =
         MAPPER.readValue(fixture("fixtures/domain/ScreeningToReferral/valid/validCrossReport.json"),
             new TypeReference<Set<CrossReport>>() {});
@@ -880,6 +920,16 @@ public class ScreeningToReferralServiceTest {
             (Allegation) allegationDomain.toArray()[0], "2016-10-31");
     when(allegationDao.create(any(gov.ca.cwds.data.persistence.cms.Allegation.class)))
         .thenReturn(allegationToCreate);
+
+    AllegationPerpetratorHistory allegationPerpHistoryDomain = MAPPER.readValue(
+        fixture("fixtures/domain/ScreeningToReferral/valid/validAllegationPerpetratorHistory.json"),
+        AllegationPerpetratorHistory.class);
+    gov.ca.cwds.data.persistence.cms.AllegationPerpetratorHistory allegationPerpHistoryToCreate =
+        new gov.ca.cwds.data.persistence.cms.AllegationPerpetratorHistory("567890ABC",
+            allegationPerpHistoryDomain, "2017-07-03");
+    when(allegationPerpetratorHistoryDao
+        .create(any(gov.ca.cwds.data.persistence.cms.AllegationPerpetratorHistory.class)))
+            .thenReturn(allegationPerpHistoryToCreate);
 
     Set<CrossReport> crossReportDomain =
         MAPPER.readValue(fixture("fixtures/domain/ScreeningToReferral/valid/validCrossReport.json"),
@@ -1061,6 +1111,16 @@ public class ScreeningToReferralServiceTest {
     when(allegationDao.create(any(gov.ca.cwds.data.persistence.cms.Allegation.class)))
         .thenReturn(allegationToCreate);
 
+    AllegationPerpetratorHistory allegationPerpHistoryDomain = MAPPER.readValue(
+        fixture("fixtures/domain/ScreeningToReferral/valid/validAllegationPerpetratorHistory.json"),
+        AllegationPerpetratorHistory.class);
+    gov.ca.cwds.data.persistence.cms.AllegationPerpetratorHistory allegationPerpHistoryToCreate =
+        new gov.ca.cwds.data.persistence.cms.AllegationPerpetratorHistory("567890ABC",
+            allegationPerpHistoryDomain, "2017-07-03");
+    when(allegationPerpetratorHistoryDao
+        .create(any(gov.ca.cwds.data.persistence.cms.AllegationPerpetratorHistory.class)))
+            .thenReturn(allegationPerpHistoryToCreate);
+
     Set<CrossReport> crossReportDomain =
         MAPPER.readValue(fixture("fixtures/domain/ScreeningToReferral/valid/validCrossReport.json"),
             new TypeReference<Set<CrossReport>>() {});
@@ -1173,6 +1233,16 @@ public class ScreeningToReferralServiceTest {
             (Allegation) allegationDomain.toArray()[0], "2016-10-31");
     when(allegationDao.create(any(gov.ca.cwds.data.persistence.cms.Allegation.class)))
         .thenReturn(allegationToCreate);
+
+    AllegationPerpetratorHistory allegationPerpHistoryDomain = MAPPER.readValue(
+        fixture("fixtures/domain/ScreeningToReferral/valid/validAllegationPerpetratorHistory.json"),
+        AllegationPerpetratorHistory.class);
+    gov.ca.cwds.data.persistence.cms.AllegationPerpetratorHistory allegationPerpHistoryToCreate =
+        new gov.ca.cwds.data.persistence.cms.AllegationPerpetratorHistory("567890ABC",
+            allegationPerpHistoryDomain, "2017-07-03");
+    when(allegationPerpetratorHistoryDao
+        .create(any(gov.ca.cwds.data.persistence.cms.AllegationPerpetratorHistory.class)))
+            .thenReturn(allegationPerpHistoryToCreate);
 
     Set<CrossReport> crossReportDomain =
         MAPPER.readValue(fixture("fixtures/domain/ScreeningToReferral/valid/validCrossReport.json"),
@@ -1393,6 +1463,16 @@ public class ScreeningToReferralServiceTest {
     when(allegationDao.create(any(gov.ca.cwds.data.persistence.cms.Allegation.class)))
         .thenReturn(allegationToCreate);
 
+    AllegationPerpetratorHistory allegationPerpHistoryDomain = MAPPER.readValue(
+        fixture("fixtures/domain/ScreeningToReferral/valid/validAllegationPerpetratorHistory.json"),
+        AllegationPerpetratorHistory.class);
+    gov.ca.cwds.data.persistence.cms.AllegationPerpetratorHistory allegationPerpHistoryToCreate =
+        new gov.ca.cwds.data.persistence.cms.AllegationPerpetratorHistory("567890ABC",
+            allegationPerpHistoryDomain, "2017-07-03");
+    when(allegationPerpetratorHistoryDao
+        .create(any(gov.ca.cwds.data.persistence.cms.AllegationPerpetratorHistory.class)))
+            .thenReturn(allegationPerpHistoryToCreate);
+
     Set<CrossReport> crossReportDomain =
         MAPPER.readValue(fixture("fixtures/domain/ScreeningToReferral/valid/validCrossReport.json"),
             new TypeReference<Set<CrossReport>>() {});
@@ -1506,6 +1586,16 @@ public class ScreeningToReferralServiceTest {
     when(allegationDao.create(any(gov.ca.cwds.data.persistence.cms.Allegation.class)))
         .thenReturn(allegationToCreate);
 
+    AllegationPerpetratorHistory allegationPerpHistoryDomain = MAPPER.readValue(
+        fixture("fixtures/domain/ScreeningToReferral/valid/validAllegationPerpetratorHistory.json"),
+        AllegationPerpetratorHistory.class);
+    gov.ca.cwds.data.persistence.cms.AllegationPerpetratorHistory allegationPerpHistoryToCreate =
+        new gov.ca.cwds.data.persistence.cms.AllegationPerpetratorHistory("567890ABC",
+            allegationPerpHistoryDomain, "2017-07-03");
+    when(allegationPerpetratorHistoryDao
+        .create(any(gov.ca.cwds.data.persistence.cms.AllegationPerpetratorHistory.class)))
+            .thenReturn(allegationPerpHistoryToCreate);
+
     Set<CrossReport> crossReportDomain =
         MAPPER.readValue(fixture("fixtures/domain/ScreeningToReferral/valid/validCrossReport.json"),
             new TypeReference<Set<CrossReport>>() {});
@@ -1618,6 +1708,16 @@ public class ScreeningToReferralServiceTest {
             (Allegation) allegationDomain.toArray()[0], "2016-10-31");
     when(allegationDao.create(any(gov.ca.cwds.data.persistence.cms.Allegation.class)))
         .thenReturn(allegationToCreate);
+
+    AllegationPerpetratorHistory allegationPerpHistoryDomain = MAPPER.readValue(
+        fixture("fixtures/domain/ScreeningToReferral/valid/validAllegationPerpetratorHistory.json"),
+        AllegationPerpetratorHistory.class);
+    gov.ca.cwds.data.persistence.cms.AllegationPerpetratorHistory allegationPerpHistoryToCreate =
+        new gov.ca.cwds.data.persistence.cms.AllegationPerpetratorHistory("567890ABC",
+            allegationPerpHistoryDomain, "2017-07-03");
+    when(allegationPerpetratorHistoryDao
+        .create(any(gov.ca.cwds.data.persistence.cms.AllegationPerpetratorHistory.class)))
+            .thenReturn(allegationPerpHistoryToCreate);
 
     Set<CrossReport> crossReportDomain =
         MAPPER.readValue(fixture("fixtures/domain/ScreeningToReferral/valid/validCrossReport.json"),
@@ -1846,6 +1946,16 @@ public class ScreeningToReferralServiceTest {
     when(allegationDao.create(any(gov.ca.cwds.data.persistence.cms.Allegation.class)))
         .thenReturn(allegationToCreate);
 
+    AllegationPerpetratorHistory allegationPerpHistoryDomain = MAPPER.readValue(
+        fixture("fixtures/domain/ScreeningToReferral/valid/validAllegationPerpetratorHistory.json"),
+        AllegationPerpetratorHistory.class);
+    gov.ca.cwds.data.persistence.cms.AllegationPerpetratorHistory allegationPerpHistoryToCreate =
+        new gov.ca.cwds.data.persistence.cms.AllegationPerpetratorHistory("567890ABC",
+            allegationPerpHistoryDomain, "2017-07-03");
+    when(allegationPerpetratorHistoryDao
+        .create(any(gov.ca.cwds.data.persistence.cms.AllegationPerpetratorHistory.class)))
+            .thenReturn(allegationPerpHistoryToCreate);
+
     Set<CrossReport> crossReportDomain =
         MAPPER.readValue(fixture("fixtures/domain/ScreeningToReferral/valid/validCrossReport.json"),
             new TypeReference<Set<CrossReport>>() {});
@@ -2067,6 +2177,15 @@ public class ScreeningToReferralServiceTest {
     when(allegationDao.create(any(gov.ca.cwds.data.persistence.cms.Allegation.class)))
         .thenReturn(allegationToCreate);
 
+    AllegationPerpetratorHistory allegationPerpHistoryDomain = MAPPER.readValue(
+        fixture("fixtures/domain/ScreeningToReferral/valid/validAllegationPerpetratorHistory.json"),
+        AllegationPerpetratorHistory.class);
+    gov.ca.cwds.data.persistence.cms.AllegationPerpetratorHistory allegationPerpHistoryToCreate =
+        new gov.ca.cwds.data.persistence.cms.AllegationPerpetratorHistory("567890ABC",
+            allegationPerpHistoryDomain, "2017-07-03");
+    when(allegationPerpetratorHistoryDao
+        .create(any(gov.ca.cwds.data.persistence.cms.AllegationPerpetratorHistory.class)))
+            .thenReturn(allegationPerpHistoryToCreate);
     Set<CrossReport> crossReportDomain =
         MAPPER.readValue(fixture("fixtures/domain/ScreeningToReferral/valid/validCrossReport.json"),
             new TypeReference<Set<CrossReport>>() {});
@@ -2507,6 +2626,16 @@ public class ScreeningToReferralServiceTest {
     when(allegationDao.create(any(gov.ca.cwds.data.persistence.cms.Allegation.class)))
         .thenReturn(allegationToCreate);
 
+    AllegationPerpetratorHistory allegationPerpHistoryDomain = MAPPER.readValue(
+        fixture("fixtures/domain/ScreeningToReferral/valid/validAllegationPerpetratorHistory.json"),
+        AllegationPerpetratorHistory.class);
+    gov.ca.cwds.data.persistence.cms.AllegationPerpetratorHistory allegationPerpHistoryToCreate =
+        new gov.ca.cwds.data.persistence.cms.AllegationPerpetratorHistory("567890ABC",
+            allegationPerpHistoryDomain, "2017-07-03");
+    when(allegationPerpetratorHistoryDao
+        .create(any(gov.ca.cwds.data.persistence.cms.AllegationPerpetratorHistory.class)))
+            .thenReturn(allegationPerpHistoryToCreate);
+
     Set<CrossReport> crossReportDomain =
         MAPPER.readValue(fixture("fixtures/domain/ScreeningToReferral/valid/validCrossReport.json"),
             new TypeReference<Set<CrossReport>>() {});
@@ -2670,7 +2799,6 @@ public class ScreeningToReferralServiceTest {
     }
   }
 
-
   @SuppressWarnings("javadoc")
   @Test
   public void testEmptyAddressOnScreeningFail() throws Exception {
@@ -2721,6 +2849,16 @@ public class ScreeningToReferralServiceTest {
             (Allegation) allegationDomain.toArray()[0], "2016-10-31");
     when(allegationDao.create(any(gov.ca.cwds.data.persistence.cms.Allegation.class)))
         .thenReturn(allegationToCreate);
+
+    AllegationPerpetratorHistory allegationPerpHistoryDomain = MAPPER.readValue(
+        fixture("fixtures/domain/ScreeningToReferral/valid/validAllegationPerpetratorHistory.json"),
+        AllegationPerpetratorHistory.class);
+    gov.ca.cwds.data.persistence.cms.AllegationPerpetratorHistory allegationPerpHistoryToCreate =
+        new gov.ca.cwds.data.persistence.cms.AllegationPerpetratorHistory("567890ABC",
+            allegationPerpHistoryDomain, "2017-07-03");
+    when(allegationPerpetratorHistoryDao
+        .create(any(gov.ca.cwds.data.persistence.cms.AllegationPerpetratorHistory.class)))
+            .thenReturn(allegationPerpHistoryToCreate);
 
     Set<CrossReport> crossReportDomain =
         MAPPER.readValue(fixture("fixtures/domain/ScreeningToReferral/valid/validCrossReport.json"),
@@ -2835,6 +2973,16 @@ public class ScreeningToReferralServiceTest {
     when(allegationDao.create(any(gov.ca.cwds.data.persistence.cms.Allegation.class)))
         .thenReturn(allegationToCreate);
 
+    AllegationPerpetratorHistory allegationPerpHistoryDomain = MAPPER.readValue(
+        fixture("fixtures/domain/ScreeningToReferral/valid/validAllegationPerpetratorHistory.json"),
+        AllegationPerpetratorHistory.class);
+    gov.ca.cwds.data.persistence.cms.AllegationPerpetratorHistory allegationPerpHistoryToCreate =
+        new gov.ca.cwds.data.persistence.cms.AllegationPerpetratorHistory("567890ABC",
+            allegationPerpHistoryDomain, "2017-07-03");
+    when(allegationPerpetratorHistoryDao
+        .create(any(gov.ca.cwds.data.persistence.cms.AllegationPerpetratorHistory.class)))
+            .thenReturn(allegationPerpHistoryToCreate);
+
     Set<CrossReport> crossReportDomain =
         MAPPER.readValue(fixture("fixtures/domain/ScreeningToReferral/valid/validCrossReport.json"),
             new TypeReference<Set<CrossReport>>() {});
@@ -2942,6 +3090,16 @@ public class ScreeningToReferralServiceTest {
             (Allegation) allegationDomain.toArray()[0], "2016-10-31");
     when(allegationDao.create(any(gov.ca.cwds.data.persistence.cms.Allegation.class)))
         .thenReturn(allegationToCreate);
+
+    AllegationPerpetratorHistory allegationPerpHistoryDomain = MAPPER.readValue(
+        fixture("fixtures/domain/ScreeningToReferral/valid/validAllegationPerpetratorHistory.json"),
+        AllegationPerpetratorHistory.class);
+    gov.ca.cwds.data.persistence.cms.AllegationPerpetratorHistory allegationPerpHistoryToCreate =
+        new gov.ca.cwds.data.persistence.cms.AllegationPerpetratorHistory("567890ABC",
+            allegationPerpHistoryDomain, "2017-07-03");
+    when(allegationPerpetratorHistoryDao
+        .create(any(gov.ca.cwds.data.persistence.cms.AllegationPerpetratorHistory.class)))
+            .thenReturn(allegationPerpHistoryToCreate);
 
     Set<CrossReport> crossReportDomain =
         MAPPER.readValue(fixture("fixtures/domain/ScreeningToReferral/valid/validCrossReport.json"),
@@ -3163,6 +3321,16 @@ public class ScreeningToReferralServiceTest {
             (Allegation) allegationDomain.toArray()[0], "2016-10-31");
     when(allegationDao.create(any(gov.ca.cwds.data.persistence.cms.Allegation.class)))
         .thenReturn(allegationToCreate);
+
+    AllegationPerpetratorHistory allegationPerpHistoryDomain = MAPPER.readValue(
+        fixture("fixtures/domain/ScreeningToReferral/valid/validAllegationPerpetratorHistory.json"),
+        AllegationPerpetratorHistory.class);
+    gov.ca.cwds.data.persistence.cms.AllegationPerpetratorHistory allegationPerpHistoryToCreate =
+        new gov.ca.cwds.data.persistence.cms.AllegationPerpetratorHistory("567890ABC",
+            allegationPerpHistoryDomain, "2017-07-03");
+    when(allegationPerpetratorHistoryDao
+        .create(any(gov.ca.cwds.data.persistence.cms.AllegationPerpetratorHistory.class)))
+            .thenReturn(allegationPerpHistoryToCreate);
 
     Set<CrossReport> crossReportDomain =
         MAPPER.readValue(fixture("fixtures/domain/ScreeningToReferral/valid/validCrossReport.json"),
@@ -3400,6 +3568,16 @@ public class ScreeningToReferralServiceTest {
     when(allegationDao.create(any(gov.ca.cwds.data.persistence.cms.Allegation.class)))
         .thenReturn(allegationToCreate);
 
+    AllegationPerpetratorHistory allegationPerpHistoryDomain = MAPPER.readValue(
+        fixture("fixtures/domain/ScreeningToReferral/valid/validAllegationPerpetratorHistory.json"),
+        AllegationPerpetratorHistory.class);
+    gov.ca.cwds.data.persistence.cms.AllegationPerpetratorHistory allegationPerpHistoryToCreate =
+        new gov.ca.cwds.data.persistence.cms.AllegationPerpetratorHistory("567890ABC",
+            allegationPerpHistoryDomain, "2017-07-03");
+    when(allegationPerpetratorHistoryDao
+        .create(any(gov.ca.cwds.data.persistence.cms.AllegationPerpetratorHistory.class)))
+            .thenReturn(allegationPerpHistoryToCreate);
+
     Set<CrossReport> crossReportDomain =
         MAPPER.readValue(fixture("fixtures/domain/ScreeningToReferral/valid/validCrossReport.json"),
             new TypeReference<Set<CrossReport>>() {});
@@ -3513,6 +3691,16 @@ public class ScreeningToReferralServiceTest {
             (Allegation) allegationDomain.toArray()[0], "2016-10-31");
     when(allegationDao.create(any(gov.ca.cwds.data.persistence.cms.Allegation.class)))
         .thenReturn(allegationToCreate);
+
+    AllegationPerpetratorHistory allegationPerpHistoryDomain = MAPPER.readValue(
+        fixture("fixtures/domain/ScreeningToReferral/valid/validAllegationPerpetratorHistory.json"),
+        AllegationPerpetratorHistory.class);
+    gov.ca.cwds.data.persistence.cms.AllegationPerpetratorHistory allegationPerpHistoryToCreate =
+        new gov.ca.cwds.data.persistence.cms.AllegationPerpetratorHistory("567890ABC",
+            allegationPerpHistoryDomain, "2017-07-03");
+    when(allegationPerpetratorHistoryDao
+        .create(any(gov.ca.cwds.data.persistence.cms.AllegationPerpetratorHistory.class)))
+            .thenReturn(allegationPerpHistoryToCreate);
 
     Set<CrossReport> crossReportDomain =
         MAPPER.readValue(fixture("fixtures/domain/ScreeningToReferral/valid/validCrossReport.json"),
@@ -3885,6 +4073,16 @@ public class ScreeningToReferralServiceTest {
         .thenReturn(allegationToCreate);
     when(allegationDao.find("2345678ABC")).thenReturn(allegationToCreate);
 
+    AllegationPerpetratorHistory allegationPerpHistoryDomain = MAPPER.readValue(
+        fixture("fixtures/domain/ScreeningToReferral/valid/validAllegationPerpetratorHistory.json"),
+        AllegationPerpetratorHistory.class);
+    gov.ca.cwds.data.persistence.cms.AllegationPerpetratorHistory allegationPerpHistoryToCreate =
+        new gov.ca.cwds.data.persistence.cms.AllegationPerpetratorHistory("567890ABC",
+            allegationPerpHistoryDomain, "2017-07-03");
+    when(allegationPerpetratorHistoryDao
+        .create(any(gov.ca.cwds.data.persistence.cms.AllegationPerpetratorHistory.class)))
+            .thenReturn(allegationPerpHistoryToCreate);
+
     Set<CrossReport> crossReportDomain =
         MAPPER.readValue(fixture("fixtures/domain/ScreeningToReferral/valid/validCrossReport.json"),
             new TypeReference<Set<CrossReport>>() {});
@@ -3940,8 +4138,9 @@ public class ScreeningToReferralServiceTest {
     try {
       Response response = screeningToReferralService.create(screeningToReferral);
     } catch (Exception e) {
+      System.out.println(e.getMessage());
       if (e.getMessage().contains(
-          " Legacy Id on Allegation does not correspond to an existing CMS/CWS Allegation ")) {
+          "Legacy Id on Allegation does not correspond to an existing CMS/CWS Allegation")) {
         theErrorDetected = true;
       }
       assertThat(theErrorDetected, is(equalTo(true)));
@@ -4607,6 +4806,16 @@ public class ScreeningToReferralServiceTest {
     when(allegationDao.create(any(gov.ca.cwds.data.persistence.cms.Allegation.class)))
         .thenReturn(allegationToCreate);
 
+    AllegationPerpetratorHistory allegationPerpHistoryDomain = MAPPER.readValue(
+        fixture("fixtures/domain/ScreeningToReferral/valid/validAllegationPerpetratorHistory.json"),
+        AllegationPerpetratorHistory.class);
+    gov.ca.cwds.data.persistence.cms.AllegationPerpetratorHistory allegationPerpHistoryToCreate =
+        new gov.ca.cwds.data.persistence.cms.AllegationPerpetratorHistory("567890ABC",
+            allegationPerpHistoryDomain, "2017-07-03");
+    when(allegationPerpetratorHistoryDao
+        .create(any(gov.ca.cwds.data.persistence.cms.AllegationPerpetratorHistory.class)))
+            .thenReturn(allegationPerpHistoryToCreate);
+
     Set<CrossReport> crossReportDomain =
         MAPPER.readValue(fixture("fixtures/domain/ScreeningToReferral/valid/validCrossReport.json"),
             new TypeReference<Set<CrossReport>>() {});
@@ -4724,6 +4933,16 @@ public class ScreeningToReferralServiceTest {
             (Allegation) allegationDomain.toArray()[0], "2016-10-31");
     when(allegationDao.create(any(gov.ca.cwds.data.persistence.cms.Allegation.class)))
         .thenReturn(allegationToCreate);
+
+    AllegationPerpetratorHistory allegationPerpHistoryDomain = MAPPER.readValue(
+        fixture("fixtures/domain/ScreeningToReferral/valid/validAllegationPerpetratorHistory.json"),
+        AllegationPerpetratorHistory.class);
+    gov.ca.cwds.data.persistence.cms.AllegationPerpetratorHistory allegationPerpHistoryToCreate =
+        new gov.ca.cwds.data.persistence.cms.AllegationPerpetratorHistory("567890ABC",
+            allegationPerpHistoryDomain, "2017-07-03");
+    when(allegationPerpetratorHistoryDao
+        .create(any(gov.ca.cwds.data.persistence.cms.AllegationPerpetratorHistory.class)))
+            .thenReturn(allegationPerpHistoryToCreate);
 
     Set<CrossReport> crossReportDomain =
         MAPPER.readValue(fixture("fixtures/domain/ScreeningToReferral/valid/validCrossReport.json"),
