@@ -7,6 +7,8 @@ import gov.ca.cwds.data.persistence.PersistentObject;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 import org.apache.commons.lang3.builder.EqualsBuilder;
@@ -51,6 +53,10 @@ public class ClientCollateral extends CmsPersistentObject {
   @Id
   @Column(name = "THIRD_ID", length = CMS_ID_LEN)
   private String thirdId;
+
+  @ManyToOne(optional = false)
+  @JoinColumn(name = "FKCLIENT_T", nullable = false, updatable = false, insertable = false)
+  private Client client;
 
   /**
    * Default constructor

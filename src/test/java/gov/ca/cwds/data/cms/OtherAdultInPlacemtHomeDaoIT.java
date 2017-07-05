@@ -29,10 +29,11 @@ import gov.ca.cwds.data.persistence.cms.OtherAdultInPlacemtHome;
 
 /**
  * @author CWDS API Team
- *
  */
 public class OtherAdultInPlacemtHomeDaoIT implements DaoTestTemplate {
+
   private static final DateFormat TIMESTAMP_FORMAT = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+
   private DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
   private String birthDateString = "1929-09-09";
   private String startDateString = "1990-06-01";
@@ -168,7 +169,6 @@ public class OtherAdultInPlacemtHomeDaoIT implements DaoTestTemplate {
     String id = "ZZZZZZZ999";
     OtherAdultInPlacemtHome deleted = otherAdultInPlacemtHomeDao.delete(id);
     assertThat(deleted, is(nullValue()));
-
   }
 
   @Override
