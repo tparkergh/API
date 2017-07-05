@@ -24,4 +24,5 @@ public class ClientCollateralDao extends BaseDaoImpl<ClientCollateral> {
   public ClientCollateralDao(@CmsSessionFactory SessionFactory sessionFactory) {
     super(sessionFactory);
   }
+
 }
