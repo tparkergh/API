@@ -22,14 +22,12 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonValue;
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.google.inject.Inject;
 
 import gov.ca.cwds.data.ApiSysCodeAware;
 import gov.ca.cwds.data.ApiTypedIdentifier;
 import gov.ca.cwds.data.es.ApiElasticSearchException;
 import gov.ca.cwds.data.es.ElasticSearchPerson;
 import gov.ca.cwds.data.es.ElasticSearchPerson.ElasticSearchPersonAddress;
-import gov.ca.cwds.data.persistence.cms.ApiSystemCodeCache;
 import gov.ca.cwds.data.std.ApiAddressAware;
 import gov.ca.cwds.data.std.ApiAddressAwareWritable;
 import gov.ca.cwds.data.std.ApiLanguageAware;
@@ -40,7 +38,6 @@ import gov.ca.cwds.data.std.ApiPersonAware;
 import gov.ca.cwds.data.std.ApiPersonAwareWritable;
 import gov.ca.cwds.data.std.ApiPhoneAware;
 import gov.ca.cwds.data.std.ApiPhoneAwareWritable;
-import gov.ca.cwds.inject.SystemCodeCache;
 import gov.ca.cwds.rest.api.Request;
 import gov.ca.cwds.rest.api.domain.DomainChef;
 import gov.ca.cwds.rest.validation.MaskString;
@@ -77,7 +74,8 @@ public class AutoCompletePerson
 
   private static final Logger LOGGER = LoggerFactory.getLogger(AutoCompletePerson.class);
 
-  private static ApiSystemCodeCache systemCodes;
+  private static gov.ca.cwds.rest.api.domain.cms.SystemCodeCache systemCodes =
+      gov.ca.cwds.rest.api.domain.cms.SystemCodeCache.global();
 
   /**
    * County.
@@ -1128,25 +1126,6 @@ public class AutoCompletePerson
   @Override
   public boolean equals(Object obj) {
     return EqualsBuilder.reflectionEquals(this, obj, false);
-  }
-
-  /**
-   * Getter for CMS system code cache.
-   * 
-   * @return reference to CMS system code cache
-   */
-  public static ApiSystemCodeCache getSystemCodes() {
-    return systemCodes;
-  }
-
-  /**
-   * Store a reference to the singleton CMS system code cache for quick convenient access.
-   * 
-   * @param systemCodes CMS system code cache
-   */
-  @Inject
-  public static void setSystemCodes(@SystemCodeCache ApiSystemCodeCache systemCodes) {
-    AutoCompletePerson.systemCodes = systemCodes;
   }
 
   @JsonProperty("id")

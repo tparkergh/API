@@ -12,7 +12,7 @@ import org.slf4j.LoggerFactory;
 import com.google.inject.Inject;
 
 import gov.ca.cwds.data.es.ElasticsearchDao;
-import gov.ca.cwds.data.persistence.cms.ApiSystemCodeCache;
+import gov.ca.cwds.rest.api.domain.cms.SystemCodeCache;
 import gov.ca.cwds.rest.api.domain.es.IndexQueryRequest;
 import gov.ca.cwds.rest.api.domain.es.IndexQueryResponse;
 import gov.ca.cwds.rest.resources.SimpleResourceService;
@@ -31,7 +31,7 @@ public class IndexQueryService
 
   private ElasticsearchDao elasticsearchDao;
   @SuppressWarnings("unused")
-  private ApiSystemCodeCache sysCodeCache;
+  private SystemCodeCache sysCodeCache;
 
   /**
    * Constructor
@@ -40,7 +40,7 @@ public class IndexQueryService
    * @param sysCodeCache system code cache
    */
   @Inject
-  public IndexQueryService(ElasticsearchDao elasticsearchDao, ApiSystemCodeCache sysCodeCache) {
+  public IndexQueryService(ElasticsearchDao elasticsearchDao, SystemCodeCache sysCodeCache) {
     this.elasticsearchDao = elasticsearchDao;
     this.sysCodeCache = sysCodeCache;
   }
