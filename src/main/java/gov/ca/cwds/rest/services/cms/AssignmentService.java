@@ -1,6 +1,7 @@
 package gov.ca.cwds.rest.services.cms;
 
 import java.io.Serializable;
+import java.util.Date;
 
 import javax.persistence.EntityExistsException;
 import javax.persistence.EntityNotFoundException;
@@ -86,15 +87,49 @@ public class AssignmentService implements CrudsService {
   @Override
   public PostedAssignment create(Request request) {
     assert request instanceof gov.ca.cwds.rest.api.domain.cms.Assignment;
+    gov.ca.cwds.rest.api.domain.cms.Assignment assignment =
+        (gov.ca.cwds.rest.api.domain.cms.Assignment) request;
+    return create(assignment, null);
+  }
+
+  /**
+   * This createWithSingleTimestamp is used for the referrals to maintian the same timestamp for the
+   * whole transaction
+   * 
+   * @param request - request
+   * @param timestamp - timestamp
+   * @return the PostedAssignment
+   */
+  public PostedAssignment createWithSingleTimestamp(Request request, Date timestamp) {
+    assert request instanceof gov.ca.cwds.rest.api.domain.cms.Assignment;
 
     gov.ca.cwds.rest.api.domain.cms.Assignment assignment =
         (gov.ca.cwds.rest.api.domain.cms.Assignment) request;
+    return create(assignment, timestamp);
 
+  }
+
+  /**
+   * This private method is created to handle to single referral and referrals with single timestamp
+   * 
+   */
+  private PostedAssignment create(gov.ca.cwds.rest.api.domain.cms.Assignment assignment,
+      Date timestamp) {
     try {
       String lastUpdatedId = staffPersonIdRetriever.getStaffPersonId();
-      Assignment managed =
-          new Assignment(CmsKeyIdGenerator.generate(lastUpdatedId), assignment, lastUpdatedId);
+      Assignment managed;
+      if (timestamp == null) {
+        managed =
+            new Assignment(CmsKeyIdGenerator.generate(lastUpdatedId), assignment, lastUpdatedId);
+      } else {
+        managed = new Assignment(CmsKeyIdGenerator.generate(lastUpdatedId), assignment,
+            lastUpdatedId, timestamp);
+
+      }
       managed = assignmentDao.create(managed);
+      if (managed.getId() == null) {
+        throw new ServiceException("Assignment ID cannot be null");
+      }
       return new PostedAssignment(managed);
     } catch (EntityExistsException e) {
       LOGGER.info("Assignment already exists : {}", assignment);

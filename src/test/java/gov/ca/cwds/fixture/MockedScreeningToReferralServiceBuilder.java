@@ -12,6 +12,7 @@ import gov.ca.cwds.data.cms.ReferralDao;
 import gov.ca.cwds.data.cms.SsaName3Dao;
 import gov.ca.cwds.rest.api.domain.cms.Address;
 import gov.ca.cwds.rest.api.domain.cms.Allegation;
+import gov.ca.cwds.rest.api.domain.cms.AllegationPerpetratorHistory;
 import gov.ca.cwds.rest.api.domain.cms.Assignment;
 import gov.ca.cwds.rest.api.domain.cms.ChildClient;
 import gov.ca.cwds.rest.api.domain.cms.Client;
@@ -21,6 +22,7 @@ import gov.ca.cwds.rest.api.domain.cms.DrmsDocument;
 import gov.ca.cwds.rest.api.domain.cms.LongText;
 import gov.ca.cwds.rest.api.domain.cms.PostedAddress;
 import gov.ca.cwds.rest.api.domain.cms.PostedAllegation;
+import gov.ca.cwds.rest.api.domain.cms.PostedAllegationPerpetratorHistory;
 import gov.ca.cwds.rest.api.domain.cms.PostedAssignment;
 import gov.ca.cwds.rest.api.domain.cms.PostedClient;
 import gov.ca.cwds.rest.api.domain.cms.PostedDrmsDocument;
@@ -33,6 +35,7 @@ import gov.ca.cwds.rest.api.domain.cms.Reporter;
 import gov.ca.cwds.rest.messages.MessageBuilder;
 import gov.ca.cwds.rest.services.ScreeningToReferralService;
 import gov.ca.cwds.rest.services.cms.AddressService;
+import gov.ca.cwds.rest.services.cms.AllegationPerpetratorHistoryService;
 import gov.ca.cwds.rest.services.cms.AllegationService;
 import gov.ca.cwds.rest.services.cms.AssignmentService;
 import gov.ca.cwds.rest.services.cms.ChildClientService;
@@ -63,6 +66,7 @@ public class MockedScreeningToReferralServiceBuilder {
   private LongTextService longTextService;
   private DrmsDocumentService drmsDocumentService;
   private AssignmentService assignmentService;
+  private AllegationPerpetratorHistoryService allegationPerpetratorHistoryService;
 
   private ReferralDao referralDao;
   private StaffPersonIdRetriever staffPersonIdRetriever;
@@ -140,6 +144,35 @@ public class MockedScreeningToReferralServiceBuilder {
     when(allegationService.create(any(Allegation.class))).thenReturn(postedAllegation);
     when(allegationService.createWithSingleTimestamp(any(Allegation.class), any(Date.class)))
         .thenReturn(postedAllegation);
+  }
+
+  /**
+   * @return the AllegationPerpetratorHistoryService
+   */
+  public AllegationPerpetratorHistoryService getAllegationPerpetratorHistoryService() {
+    if (allegationPerpetratorHistoryService == null) {
+      buildDefaultMockForAllegationPerpetratorHistoryService();
+    }
+    return allegationPerpetratorHistoryService;
+
+  }
+
+  private void buildDefaultMockForAllegationPerpetratorHistoryService() {
+
+    allegationPerpetratorHistoryService = mock(AllegationPerpetratorHistoryService.class);
+
+    PostedAllegationPerpetratorHistory postedAllegationPerpetratorHistory =
+        mock(PostedAllegationPerpetratorHistory.class);
+
+    when(postedAllegationPerpetratorHistory.getId()).thenReturn("4567890ABC");
+
+    when(allegationPerpetratorHistoryService.create(any(AllegationPerpetratorHistory.class)))
+        .thenReturn(postedAllegationPerpetratorHistory);
+
+    when(allegationPerpetratorHistoryService
+        .createWithSingleTimestamp(any(AllegationPerpetratorHistory.class), any(Date.class)))
+            .thenReturn(postedAllegationPerpetratorHistory);
+
   }
 
   /**
@@ -381,6 +414,16 @@ public class MockedScreeningToReferralServiceBuilder {
   }
 
   /**
+   * @param allegationPerpetratorHistoryService - allegationPerpetratorHistoryService
+   * @return the allegationPerpetratorHistoryService
+   */
+  public MockedScreeningToReferralServiceBuilder addAllegationPerpetratorHistoryService(
+      AllegationPerpetratorHistoryService allegationPerpetratorHistoryService) {
+    this.allegationPerpetratorHistoryService = allegationPerpetratorHistoryService;
+    return this;
+  }
+
+  /**
    * @param crossReportService - crossReportService
    * @return the crossReportService
    */
@@ -476,6 +519,7 @@ public class MockedScreeningToReferralServiceBuilder {
     return this;
   }
 
+
   /**
    * @return the screeningToReferralService
    */
@@ -486,6 +530,6 @@ public class MockedScreeningToReferralServiceBuilder {
         getChildClientService(), getAssignmentService(),
         Validation.buildDefaultValidatorFactory().getValidator(), getReferralDao(),
         getStaffPersonIdRetriever(), getMessageBuilder(), getDrmsDocumentService(),
-        getssaName3Dao());
+        getssaName3Dao(), getAllegationPerpetratorHistoryService());
   }
 }

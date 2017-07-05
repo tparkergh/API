@@ -26,6 +26,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import gov.ca.cwds.data.cms.AddressDao;
 import gov.ca.cwds.data.cms.AllegationDao;
+import gov.ca.cwds.data.cms.AllegationPerpetratorHistoryDao;
 import gov.ca.cwds.data.cms.AssignmentDao;
 import gov.ca.cwds.data.cms.ChildClientDao;
 import gov.ca.cwds.data.cms.ClientAddressDao;
@@ -43,6 +44,7 @@ import gov.ca.cwds.rest.api.Response;
 import gov.ca.cwds.rest.api.domain.ScreeningToReferral;
 import gov.ca.cwds.rest.api.domain.cms.Address;
 import gov.ca.cwds.rest.api.domain.cms.Allegation;
+import gov.ca.cwds.rest.api.domain.cms.AllegationPerpetratorHistory;
 import gov.ca.cwds.rest.api.domain.cms.Assignment;
 import gov.ca.cwds.rest.api.domain.cms.ChildClient;
 import gov.ca.cwds.rest.api.domain.cms.Client;
@@ -59,6 +61,7 @@ import gov.ca.cwds.rest.business.rules.NonLACountyTriggers;
 import gov.ca.cwds.rest.messages.MessageBuilder;
 import gov.ca.cwds.rest.services.ScreeningToReferralService;
 import gov.ca.cwds.rest.services.cms.AddressService;
+import gov.ca.cwds.rest.services.cms.AllegationPerpetratorHistoryService;
 import gov.ca.cwds.rest.services.cms.AllegationService;
 import gov.ca.cwds.rest.services.cms.AssignmentService;
 import gov.ca.cwds.rest.services.cms.ChildClientService;
@@ -86,6 +89,7 @@ public class TestForLastUpdatedTimeIsUnique {
   private ClientService clientService;
   private ReferralClientService referralClientService;
   private AllegationService allegationService;
+  private AllegationPerpetratorHistoryService allegationPerpetratorHistoryService;
   private CrossReportService crossReportService;
   private ReporterService reporterService;
   private AddressService addressService;
@@ -98,6 +102,7 @@ public class TestForLastUpdatedTimeIsUnique {
   private ClientDao clientDao;
   private ReferralClientDao referralClientDao;
   private AllegationDao allegationDao;
+  private AllegationPerpetratorHistoryDao allegationPerpetratorHistoryDao;
   private CrossReportDao crossReportDao;
   private ReporterDao reporterDao;
   private AddressDao addressDao;
@@ -122,6 +127,9 @@ public class TestForLastUpdatedTimeIsUnique {
   private static gov.ca.cwds.data.persistence.cms.Reporter createdReporter = null;
   private static gov.ca.cwds.data.persistence.cms.CrossReport createdCrossReport = null;
   private static gov.ca.cwds.data.persistence.cms.Allegation createdAllegation = null;
+  private static gov.ca.cwds.data.persistence.cms.AllegationPerpetratorHistory createdAllegationPerpetratorHistory =
+      null;
+  private static gov.ca.cwds.data.persistence.cms.Assignment createdAssignment = null;
 
   @SuppressWarnings("javadoc")
   @Rule
@@ -159,6 +167,10 @@ public class TestForLastUpdatedTimeIsUnique {
     allegationDao = mock(AllegationDao.class);
     allegationService = new AllegationService(allegationDao, staffPersonIdRetriever);
 
+    allegationPerpetratorHistoryDao = mock(AllegationPerpetratorHistoryDao.class);
+    allegationPerpetratorHistoryService = new AllegationPerpetratorHistoryService(
+        allegationPerpetratorHistoryDao, staffPersonIdRetriever);
+
     crossReportDao = mock(CrossReportDao.class);
     crossReportService = new CrossReportService(crossReportDao, staffPersonIdRetriever);
 
@@ -191,7 +203,8 @@ public class TestForLastUpdatedTimeIsUnique {
         allegationService, crossReportService, referralClientService, reporterService,
         addressService, clientAddressService, longTextService, childClientService,
         assignmentService, Validation.buildDefaultValidatorFactory().getValidator(), referralDao,
-        staffPersonIdRetriever, new MessageBuilder(), drmsDocumentService, ssaName3Dao);
+        staffPersonIdRetriever, new MessageBuilder(), drmsDocumentService, ssaName3Dao,
+        allegationPerpetratorHistoryService);
   }
 
   /**
@@ -291,6 +304,31 @@ public class TestForLastUpdatedTimeIsUnique {
           }
         });
 
+    AllegationPerpetratorHistory allegationPerpHistoryDomain = MAPPER.readValue(
+        fixture("fixtures/domain/ScreeningToReferral/valid/validAllegationPerpetratorHistory.json"),
+        AllegationPerpetratorHistory.class);
+    gov.ca.cwds.data.persistence.cms.AllegationPerpetratorHistory allegationPerpHistoryToCreate =
+        new gov.ca.cwds.data.persistence.cms.AllegationPerpetratorHistory("567890ABC",
+            allegationPerpHistoryDomain, "2017-07-03");
+    when(allegationPerpetratorHistoryDao
+        .create(any(gov.ca.cwds.data.persistence.cms.AllegationPerpetratorHistory.class)))
+            .thenReturn(allegationPerpHistoryToCreate);
+
+    when(allegationPerpetratorHistoryDao
+        .create(any(gov.ca.cwds.data.persistence.cms.AllegationPerpetratorHistory.class)))
+            .thenAnswer(
+                new Answer<gov.ca.cwds.data.persistence.cms.AllegationPerpetratorHistory>() {
+
+                  @Override
+                  public gov.ca.cwds.data.persistence.cms.AllegationPerpetratorHistory answer(
+                      InvocationOnMock invocation) throws Throwable {
+                    createdAllegationPerpetratorHistory =
+                        (gov.ca.cwds.data.persistence.cms.AllegationPerpetratorHistory) invocation
+                            .getArguments()[0];
+                    return allegationPerpHistoryToCreate;
+                  }
+                });
+
     Set<CrossReport> crossReportDomain =
         MAPPER.readValue(fixture("fixtures/domain/ScreeningToReferral/valid/validCrossReport.json"),
             new TypeReference<Set<CrossReport>>() {});
@@ -374,8 +412,18 @@ public class TestForLastUpdatedTimeIsUnique {
             Assignment.class);
     gov.ca.cwds.data.persistence.cms.Assignment assignmentToCreate =
         new gov.ca.cwds.data.persistence.cms.Assignment("6789012ABC", assignment, "ABC");
+
     when(assignmentDao.create(any(gov.ca.cwds.data.persistence.cms.Assignment.class)))
-        .thenReturn(assignmentToCreate);
+        .thenAnswer(new Answer<gov.ca.cwds.data.persistence.cms.Assignment>() {
+
+          @Override
+          public gov.ca.cwds.data.persistence.cms.Assignment answer(InvocationOnMock invocation)
+              throws Throwable {
+            createdAssignment =
+                (gov.ca.cwds.data.persistence.cms.Assignment) invocation.getArguments()[0];
+            return assignmentToCreate;
+          }
+        });
 
     ScreeningToReferral screeningToReferral = MAPPER.readValue(
         fixture("fixtures/domain/ScreeningToReferral/valid/valid.json"), ScreeningToReferral.class);
@@ -395,6 +443,9 @@ public class TestForLastUpdatedTimeIsUnique {
     assertThat(createdCrossReport.getLastUpdatedTime(), is(equalTo(createdTimestamp)));
     assertThat(createdReporter.getLastUpdatedTime(), is(equalTo(createdTimestamp)));
     assertThat(createdReferralClient.getLastUpdatedTime(), is(equalTo(createdTimestamp)));
+    assertThat(createdAssignment.getLastUpdatedTime(), is(equalTo(createdTimestamp)));
+    assertThat(createdAllegationPerpetratorHistory.getLastUpdatedTime(),
+        is(equalTo(createdTimestamp)));
     assertThat(response.hasMessages(), is(equalTo(false)));
   }
 

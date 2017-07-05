@@ -22,6 +22,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import gov.ca.cwds.data.cms.AddressDao;
 import gov.ca.cwds.data.cms.AllegationDao;
+import gov.ca.cwds.data.cms.AllegationPerpetratorHistoryDao;
 import gov.ca.cwds.data.cms.AssignmentDao;
 import gov.ca.cwds.data.cms.ChildClientDao;
 import gov.ca.cwds.data.cms.ClientAddressDao;
@@ -35,7 +36,6 @@ import gov.ca.cwds.data.cms.ReporterDao;
 import gov.ca.cwds.data.cms.SsaName3Dao;
 import gov.ca.cwds.data.cms.StaffPersonDao;
 import gov.ca.cwds.data.rules.TriggerTablesDao;
-import gov.ca.cwds.rest.api.Response;
 import gov.ca.cwds.rest.api.domain.ScreeningToReferral;
 import gov.ca.cwds.rest.api.domain.cms.Address;
 import gov.ca.cwds.rest.api.domain.cms.Allegation;
@@ -54,6 +54,7 @@ import gov.ca.cwds.rest.business.rules.NonLACountyTriggers;
 import gov.ca.cwds.rest.messages.MessageBuilder;
 import gov.ca.cwds.rest.services.ScreeningToReferralService;
 import gov.ca.cwds.rest.services.cms.AddressService;
+import gov.ca.cwds.rest.services.cms.AllegationPerpetratorHistoryService;
 import gov.ca.cwds.rest.services.cms.AllegationService;
 import gov.ca.cwds.rest.services.cms.AssignmentService;
 import gov.ca.cwds.rest.services.cms.ChildClientService;
@@ -81,6 +82,7 @@ public class R06224DontAllowBlanksInReferralStartDateAndTimeTest {
   private ClientService clientService;
   private ReferralClientService referralClientService;
   private AllegationService allegationService;
+  private AllegationPerpetratorHistoryService allegationPerpetratorHistoryService;
   private CrossReportService crossReportService;
   private ReporterService reporterService;
   private AddressService addressService;
@@ -93,6 +95,7 @@ public class R06224DontAllowBlanksInReferralStartDateAndTimeTest {
   private ClientDao clientDao;
   private ReferralClientDao referralClientDao;
   private AllegationDao allegationDao;
+  private AllegationPerpetratorHistoryDao allegationPerpetratorHistoryDao;
   private CrossReportDao crossReportDao;
   private ReporterDao reporterDao;
   private AddressDao addressDao;
@@ -144,6 +147,10 @@ public class R06224DontAllowBlanksInReferralStartDateAndTimeTest {
     allegationDao = mock(AllegationDao.class);
     allegationService = new AllegationService(allegationDao, staffPersonIdRetriever);
 
+    allegationPerpetratorHistoryDao = mock(AllegationPerpetratorHistoryDao.class);
+    allegationPerpetratorHistoryService = new AllegationPerpetratorHistoryService(
+        allegationPerpetratorHistoryDao, staffPersonIdRetriever);
+
     crossReportDao = mock(CrossReportDao.class);
     crossReportService = new CrossReportService(crossReportDao, staffPersonIdRetriever);
 
@@ -176,7 +183,8 @@ public class R06224DontAllowBlanksInReferralStartDateAndTimeTest {
         allegationService, crossReportService, referralClientService, reporterService,
         addressService, clientAddressService, longTextService, childClientService,
         assignmentService, Validation.buildDefaultValidatorFactory().getValidator(), referralDao,
-        staffPersonIdRetriever, new MessageBuilder(), drmsDocumentService, ssaName3Dao);
+        staffPersonIdRetriever, new MessageBuilder(), drmsDocumentService, ssaName3Dao,
+        allegationPerpetratorHistoryService);
   }
 
   /**
@@ -293,7 +301,7 @@ public class R06224DontAllowBlanksInReferralStartDateAndTimeTest {
 
     Boolean theErrorDetected = false;
     try {
-      Response response = screeningToReferralService.create(screeningToReferral);
+      this.screeningToReferralService.create(screeningToReferral);
     } catch (Exception e) {
       if (e.getMessage().contains("creationDate may not be null")) {
         theErrorDetected = true;
