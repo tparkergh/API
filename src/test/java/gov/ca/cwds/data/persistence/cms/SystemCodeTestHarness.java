@@ -5,6 +5,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.module.SimpleModule;
 
 import gov.ca.cwds.data.CmsSystemCodeSerializer;
+import gov.ca.cwds.data.cms.TestSystemCodeCache;
 import io.dropwizard.jackson.Jackson;
 
 public class SystemCodeTestHarness {
@@ -19,8 +20,7 @@ public class SystemCodeTestHarness {
     ObjectMapper mapper = Jackson.newObjectMapper();
     SimpleModule module = new SimpleModule("SystemCodeModule",
         new Version(1, 0, 24, "alpha", "ca.gov.data.persistence.cms", "syscode"));
-    module.addSerializer(Short.class,
-        new CmsSystemCodeSerializer(new CmsSystemCodeCacheService(new SystemCodeDaoFileImpl())));
+    module.addSerializer(Short.class, new CmsSystemCodeSerializer(new TestSystemCodeCache()));
     mapper.registerModule(module);
     MAPPER = mapper;
   }

@@ -261,7 +261,8 @@ public class DataAccessModule extends AbstractModule {
   @Provides
   @CmsSessionFactory
   SessionFactory cmsSessionFactory() {
-    return cmsHibernateBundle.getSessionFactory();
+    SessionFactory sessionFactory = cmsHibernateBundle.getSessionFactory();
+    return sessionFactory;
   }
 
   @Provides

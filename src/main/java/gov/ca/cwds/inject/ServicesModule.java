@@ -9,10 +9,11 @@ import com.google.inject.Provides;
 import com.google.inject.matcher.Matchers;
 
 import gov.ca.cwds.data.CmsSystemCodeSerializer;
-import gov.ca.cwds.data.persistence.cms.ApiSystemCodeCache;
-import gov.ca.cwds.data.persistence.cms.CmsSystemCodeCacheService;
+import gov.ca.cwds.data.cms.SystemCodeDao;
+import gov.ca.cwds.data.cms.SystemMetaDao;
 import gov.ca.cwds.rest.ApiConfiguration;
 import gov.ca.cwds.rest.api.domain.ScreeningToReferral;
+import gov.ca.cwds.rest.api.domain.cms.SystemCodeCache;
 import gov.ca.cwds.rest.messages.MessageBuilder;
 import gov.ca.cwds.rest.services.AddressService;
 import gov.ca.cwds.rest.services.AddressValidationService;
@@ -116,7 +117,6 @@ public class ServicesModule extends AbstractModule {
     bind(ScreeningToReferral.class);
     bind(IndexQueryService.class);
     bind(ClientUcService.class);
-    bind(SystemCodeService.class).to(CachingSystemCodeService.class);
     bind(StaffPersonIdRetriever.class);
     bind(DrmsDocumentService.class);
     bind(LegacyKeyService.class);
@@ -124,8 +124,8 @@ public class ServicesModule extends AbstractModule {
     bind(TickleService.class);
 
     // Register CMS system code translator.
-    bind(ApiSystemCodeCache.class).to(CmsSystemCodeCacheService.class).asEagerSingleton();
-    bind(CmsSystemCodeSerializer.class).asEagerSingleton();
+    // bind(ApiSystemCodeCache.class).to(CmsSystemCodeCacheService.class).asEagerSingleton();
+    // bind(CmsSystemCodeSerializer.class).asEagerSingleton();
 
     UnitOfWorkInterceptor interceptor = new UnitOfWorkInterceptor();
     bindInterceptor(Matchers.any(), Matchers.annotatedWith(UnitOfWork.class), interceptor);
@@ -140,5 +140,26 @@ public class ServicesModule extends AbstractModule {
   @Provides
   MessageBuilder provideMessageBuilder() {
     return new MessageBuilder();
+  }
+
+  @Provides
+  public SystemCodeService provideSystemCodeService(SystemCodeDao systemCodeDao,
+      SystemMetaDao systemMetaDao) {
+    SystemCodeService systemCodeService =
+        new CachingSystemCodeService(systemCodeDao, systemMetaDao);
+    return systemCodeService;
+  }
+
+  @Provides
+  public SystemCodeCache provideSystemCodeCache(SystemCodeService systemCodeService) {
+    SystemCodeCache systemCodeCache = (SystemCodeCache) systemCodeService;
+    systemCodeCache.register();
+    return systemCodeCache;
+  }
+
+  @Provides
+  public CmsSystemCodeSerializer provideCmsSystemCodeSerializer(SystemCodeCache systemCodeCache) {
+    CmsSystemCodeSerializer systemCodeSerializer = new CmsSystemCodeSerializer(systemCodeCache);
+    return systemCodeSerializer;
   }
 }
