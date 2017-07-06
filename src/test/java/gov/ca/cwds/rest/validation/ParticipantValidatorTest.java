@@ -4,6 +4,11 @@ import static io.dropwizard.testing.FixtureHelpers.fixture;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.equalTo;
 
+import gov.ca.cwds.fixture.ParticipantResourceBuilder;
+import gov.ca.cwds.fixture.ScreeningToReferralResourceBuilder;
+import gov.ca.cwds.rest.api.domain.Participant;
+import java.util.Arrays;
+import java.util.HashSet;
 import javax.validation.Validation;
 import javax.validation.Validator;
 import javax.validation.ValidatorFactory;
@@ -185,6 +190,19 @@ public class ParticipantValidatorTest {
   @Test
   public void testRoleIsNotMandatedReporterWhenNullSuccess() throws Exception {
     assertThat(ParticipantValidator.roleIsMandatedReporter(null), equalTo(false));
+  }
+
+  @Test
+  public void shouldReturnFalseIfParticipantsRoleContainNull(){
+
+    Participant participants = new ParticipantResourceBuilder()
+        .setRoles(new HashSet(Arrays.asList("SomeRole", null)))
+        .createParticipant();
+    ScreeningToReferral referral = new ScreeningToReferralResourceBuilder()
+        .setParticipants(new HashSet(Arrays.asList(participants)))
+        .createScreeningToReferral();
+
+    assertThat(ParticipantValidator.anonymousReporter(referral), equalTo(false));
   }
 
 }
