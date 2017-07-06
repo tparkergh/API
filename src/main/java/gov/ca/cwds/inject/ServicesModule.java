@@ -145,7 +145,7 @@ public class ServicesModule extends AbstractModule {
   @Provides
   public SystemCodeService provideSystemCodeService(SystemCodeDao systemCodeDao,
       SystemMetaDao systemMetaDao) {
-    final long secondsToRefreshCache = 15 * 24 * 60 * 60; // 15 days
+    final long secondsToRefreshCache = 15L * 24 * 60 * 60; // 15 days
     SystemCodeService systemCodeService =
         new CachingSystemCodeService(systemCodeDao, systemMetaDao, secondsToRefreshCache, false);
     return systemCodeService;
