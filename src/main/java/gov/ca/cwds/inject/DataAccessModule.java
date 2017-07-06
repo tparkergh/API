@@ -117,6 +117,7 @@ import gov.ca.cwds.rest.TriggerTablesConfiguration;
 import gov.ca.cwds.rest.api.ApiException;
 import gov.ca.cwds.rest.business.rules.LACountyTrigger;
 import gov.ca.cwds.rest.business.rules.NonLACountyTriggers;
+import gov.ca.cwds.rest.business.rules.Reminders;
 import io.dropwizard.db.DataSourceFactory;
 import io.dropwizard.hibernate.HibernateBundle;
 import io.dropwizard.setup.Bootstrap;
@@ -249,6 +250,9 @@ public class DataAccessModule extends AbstractModule {
     bind(LACountyTrigger.class);
     bind(TriggerTablesDao.class);
     bind(CountyTriggerEmbeddable.class);
+
+    // Downstream Tables
+    bind(Reminders.class);
 
     // Miscellaneous:
     bind(ElasticsearchDao.class);
