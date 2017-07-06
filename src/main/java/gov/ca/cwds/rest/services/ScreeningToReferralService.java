@@ -47,6 +47,7 @@ import gov.ca.cwds.rest.api.domain.cms.Referral;
 import gov.ca.cwds.rest.api.domain.cms.ReferralClient;
 import gov.ca.cwds.rest.api.domain.cms.Reporter;
 import gov.ca.cwds.rest.api.domain.error.ErrorMessage;
+import gov.ca.cwds.rest.business.rules.Reminders;
 import gov.ca.cwds.rest.messages.MessageBuilder;
 import gov.ca.cwds.rest.services.cms.AddressService;
 import gov.ca.cwds.rest.services.cms.AllegationPerpetratorHistoryService;
@@ -105,6 +106,7 @@ public class ScreeningToReferralService implements CrudsService {
   private DrmsDocumentService drmsDocumentService;
   private AssignmentService assignmentService;
   private SsaName3Dao ssaName3Dao;
+  private Reminders reminders;
 
   private ReferralDao referralDao;
 
@@ -158,7 +160,8 @@ public class ScreeningToReferralService implements CrudsService {
       AssignmentService assignmentService, Validator validator, ReferralDao referralDao,
       StaffPersonIdRetriever staffPersonIdRetriever, MessageBuilder messageBuilder,
       DrmsDocumentService drmsDocumentService, SsaName3Dao ssaName3Dao,
-      AllegationPerpetratorHistoryService allegationPerpetratorHistoryService) {
+      AllegationPerpetratorHistoryService allegationPerpetratorHistoryService,
+      Reminders reminders) {
 
     super();
     this.referralService = referralService;
@@ -179,6 +182,7 @@ public class ScreeningToReferralService implements CrudsService {
     this.drmsDocumentService = drmsDocumentService;
     this.ssaName3Dao = ssaName3Dao;
     this.allegationPerpetratorHistoryService = allegationPerpetratorHistoryService;
+    this.reminders = reminders;
   }
 
   @UnitOfWork(value = "cms")
@@ -222,6 +226,8 @@ public class ScreeningToReferralService implements CrudsService {
 
     PostedScreeningToReferral pstr = PostedScreeningToReferral.createWithDefaults(referralId,
         screeningToReferral, resultParticipants, resultCrossReports, resultAllegations);
+
+    reminders.createTickle(pstr);
 
     StringBuilder errorMessage = new StringBuilder();
     boolean foundError = false;
