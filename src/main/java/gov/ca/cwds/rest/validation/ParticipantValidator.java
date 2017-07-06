@@ -101,7 +101,7 @@ public class ParticipantValidator {
     if (participants != null) {
       for (Participant incomingParticipant : participants) {
         Set<String> roles = new HashSet<>(incomingParticipant.getRoles());
-        if (roles != null && roles.contains(ANONYMOUS_REPORTER_ROLE)) {
+        if (roles.contains(ANONYMOUS_REPORTER_ROLE)) {
 
           return true;
         }
