@@ -994,6 +994,23 @@ public class ScreeningToReferralServiceTest {
   }
 
   @SuppressWarnings("javadoc")
+  @Test(expected = IllegalArgumentException.class)
+  public void shouldThrowExceptionIfUnableToCreateDRMSDocument(){
+    ScreeningToReferral referral = new ScreeningToReferralResourceBuilder()
+        .setCrossReports(new HashSet<>()).createScreeningToReferral();
+
+    DrmsDocumentService mockedDrmsDocService = mock(DrmsDocumentService.class);
+    when(mockedDrmsDocService.create(any())).thenReturn(null);
+    screeningToReferralService =
+        new MockedScreeningToReferralServiceBuilder()
+            .addDrmsDocumentService(mockedDrmsDocService)
+            .createScreeningToReferralService();
+
+
+    Response response = screeningToReferralService.create(referral);
+  }
+
+  @SuppressWarnings("javadoc")
   @Test
   public void testScreeningToReferralWithoutCrossReportsSuccess() throws Exception {
     ScreeningToReferral referral = new ScreeningToReferralResourceBuilder()

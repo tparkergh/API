@@ -367,12 +367,6 @@ public class ScreeningToReferralService implements CrudsService {
               // validate referral client
               messageBuilder.addDomainValidationError(validator.validate(referralClient));
 
-              try {
-                gov.ca.cwds.rest.api.domain.cms.ReferralClient postedReferralClient =
-                    this.referralClientService.createWithSingleTimestamp(referralClient, timestamp);
-              } catch (ServiceException se) {
-                logError(se.getMessage(), se);
-              }
               /*
                * determine other participant/roles attributes relating to CWS/CMS allegation
                */
@@ -474,7 +468,7 @@ public class ScreeningToReferralService implements CrudsService {
    * @throws Exception - Exception
    */
   public Referral createReferralWithDefaults(ScreeningToReferral screeningToReferral,
-      String dateStarted, String timeStarted, Date timestamp) throws Exception {
+      String dateStarted, String timeStarted, Date timestamp) {
     short approvalStatusCode = approvalStatusCodeOnCreateSetToNotSubmitted();
     String longTextId = generateLongTextId(screeningToReferral);
     String firstResponseDeterminedByStaffPersonId = getFirstResponseDeterminedByStaffPersonId();
@@ -556,6 +550,9 @@ public class ScreeningToReferralService implements CrudsService {
       String staffPersonId = staffPersonIdRetriever.getStaffPersonId();
       DrmsDocument drmsDocument = DrmsDocument.createDefaults(staffPersonId);
       postedDrmsDocument = drmsDocumentService.create(drmsDocument);
+      if (postedDrmsDocument == null){
+        throw new ServiceException("Unable to Create DRMS Document");
+      }
     } catch (ServiceException e) {
       String message = e.getMessage();
       logError(message, e);
@@ -1063,7 +1060,6 @@ public class ScreeningToReferralService implements CrudsService {
   }
 
   /**
-   * @param staffId - staff Id
    * @param countyCode - county code
    * @param referralId - referral Id
    * @return - default Assignment
