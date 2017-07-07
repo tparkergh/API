@@ -4,6 +4,9 @@ import static gov.ca.cwds.data.persistence.cms.CmsPersistentObject.CMS_ID_LEN;
 
 import javax.validation.constraints.Size;
 
+import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
+
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -94,59 +97,24 @@ public class AllegationPerpetratorHistory extends ReportingDomain implements Req
     return perpetratorUpdateDate;
   }
 
+  /**
+   * {@inheritDoc}
+   *
+   * @see java.lang.Object#hashCode()
+   */
   @Override
   public final int hashCode() {
-    final int prime = 31;
-    int result = 1;
-    result = prime * result + ((allegationId == null) ? 0 : allegationId.hashCode());
-    result = prime * result + ((countySpecificCode == null) ? 0 : countySpecificCode.hashCode());
-    result =
-        prime * result + ((perpetratorUpdateDate == null) ? 0 : perpetratorUpdateDate.hashCode());
-    result = prime * result + ((victimClientId == null) ? 0 : victimClientId.hashCode());
-    return result;
+    return HashCodeBuilder.reflectionHashCode(this, false);
   }
 
+  /**
+   * {@inheritDoc}
+   *
+   * @see java.lang.Object#equals(java.lang.Object)
+   */
   @Override
   public final boolean equals(Object obj) {
-    if (this == obj) {
-      return true;
-    }
-    if (obj == null) {
-      return false;
-    }
-    if (!(obj instanceof AllegationPerpetratorHistory)) {
-      return false;
-    }
-    AllegationPerpetratorHistory other = (AllegationPerpetratorHistory) obj;
-    if (allegationId == null) {
-      if (other.allegationId != null) {
-        return false;
-      }
-    } else if (!allegationId.equals(other.allegationId)) {
-      return false;
-    }
-    if (countySpecificCode == null) {
-      if (other.countySpecificCode != null) {
-        return false;
-      }
-    } else if (!countySpecificCode.equals(other.countySpecificCode)) {
-      return false;
-    }
-    if (perpetratorUpdateDate == null) {
-      if (other.perpetratorUpdateDate != null) {
-        return false;
-      }
-    } else if (!perpetratorUpdateDate.equals(other.perpetratorUpdateDate)) {
-      return false;
-    }
-    if (victimClientId == null) {
-      if (other.victimClientId != null) {
-        return false;
-      }
-    } else if (!victimClientId.equals(other.victimClientId)) {
-      return false;
-    }
-    return true;
+    return EqualsBuilder.reflectionEquals(this, obj, false);
   }
 
 }

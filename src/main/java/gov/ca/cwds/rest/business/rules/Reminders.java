@@ -294,9 +294,10 @@ public class Reminders {
                     dateFormat.format(dueDate.getTime()), referral.getScreenerNoteText(),
                     REFERRAL_INVESTIGATION_CONTACT_DUE);
             tickleService.create(tickle);
+            LOGGER.info("referralInvestigationContactDue reminder is created");
           }
         } catch (ParseException e) {
-          throw new ServiceException();
+          LOGGER.error("Error While parsing the dateOfBirth");
         }
       }
     }
