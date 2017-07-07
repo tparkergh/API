@@ -397,8 +397,7 @@ public class ReporterTest {
 
   @Test
   public void equalsHashCodeWork() {
-    EqualsVerifier.forClass(Reporter.class).suppress(Warning.NONFINAL_FIELDS)
-        .withIgnoredFields("messages").verify();
+    EqualsVerifier.forClass(Reporter.class).suppress(Warning.NONFINAL_FIELDS).verify();
   }
 
   @Test
