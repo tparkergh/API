@@ -39,6 +39,7 @@ import gov.ca.cwds.data.rules.TriggerTablesDao;
 import gov.ca.cwds.rest.api.domain.ScreeningToReferral;
 import gov.ca.cwds.rest.api.domain.cms.Address;
 import gov.ca.cwds.rest.api.domain.cms.Allegation;
+import gov.ca.cwds.rest.api.domain.cms.AllegationPerpetratorHistory;
 import gov.ca.cwds.rest.api.domain.cms.Assignment;
 import gov.ca.cwds.rest.api.domain.cms.ChildClient;
 import gov.ca.cwds.rest.api.domain.cms.Client;
@@ -298,6 +299,16 @@ public class R06224DontAllowBlanksInReferralStartDateAndTimeTest {
         new gov.ca.cwds.data.persistence.cms.Assignment("6789012ABC", assignment, "ABC");
     when(assignmentDao.create(any(gov.ca.cwds.data.persistence.cms.Assignment.class)))
         .thenReturn(assignmentToCreate);
+
+    AllegationPerpetratorHistory allegationPerpetratorHistory = MAPPER.readValue(
+        fixture("fixtures/domain/ScreeningToReferral/valid/validAllegationPerpetratorHistory.json"),
+        AllegationPerpetratorHistory.class);
+    gov.ca.cwds.data.persistence.cms.AllegationPerpetratorHistory allegationPerpetratorHistoryToCreate =
+        new gov.ca.cwds.data.persistence.cms.AllegationPerpetratorHistory("123PHERAVQ",
+            allegationPerpetratorHistory, "ABC");
+    when(allegationPerpetratorHistoryDao
+        .create(any(gov.ca.cwds.data.persistence.cms.AllegationPerpetratorHistory.class)))
+            .thenReturn(allegationPerpetratorHistoryToCreate);
 
     ScreeningToReferral screeningToReferral =
         MAPPER.readValue(fixture("fixtures/domain/ScreeningToReferral/invalid/startedAtEmpty.json"),
