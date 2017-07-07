@@ -150,6 +150,7 @@ public class ScreeningToReferralService implements CrudsService {
    * @param drmsDocumentService - cms DrmsDocumentService
    * @param ssaName3Dao the ssaName3Dao
    * @param allegationPerpetratorHistoryService the allegationPerpetratorHistoryService
+   * @param reminders - reminders
    */
   @Inject
   public ScreeningToReferralService(ReferralService referralService, ClientService clientService,
@@ -477,10 +478,10 @@ public class ScreeningToReferralService implements CrudsService {
    * @param timeStarted - timeStarted
    * @param timestamp - timestamp
    * @return the referral
-   * @throws Exception - Exception
+   * @throws ServiceException - ServiceException
    */
   public Referral createReferralWithDefaults(ScreeningToReferral screeningToReferral,
-      String dateStarted, String timeStarted, Date timestamp) throws Exception {
+      String dateStarted, String timeStarted, Date timestamp) throws ServiceException {
     short approvalStatusCode = approvalStatusCodeOnCreateSetToNotSubmitted();
     String longTextId = generateLongTextId(screeningToReferral);
     String firstResponseDeterminedByStaffPersonId = getFirstResponseDeterminedByStaffPersonId();
