@@ -29,7 +29,12 @@ import gov.ca.cwds.rest.services.ServiceException;
 import gov.ca.cwds.rest.services.cms.TickleService;
 
 /**
- * @Business layer object to work on referrals for creating the reminders
+ * Business layer object to work on Reminders
+ * 
+ * <p>
+ * This class is handling the some of the business rules for creating the reminders when the zippy
+ * referral is created.
+ * <p>
  * 
  * @author CWDS API Team
  */
