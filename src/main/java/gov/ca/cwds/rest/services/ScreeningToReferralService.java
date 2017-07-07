@@ -367,6 +367,12 @@ public class ScreeningToReferralService implements CrudsService {
               // validate referral client
               messageBuilder.addDomainValidationError(validator.validate(referralClient));
 
+              try {
+                     this.referralClientService.createWithSingleTimestamp(referralClient, timestamp);
+               } catch (ServiceException se) {
+                 logError(se.getMessage(), se);
+               }
+
               /*
                * determine other participant/roles attributes relating to CWS/CMS allegation
                */
@@ -431,9 +437,16 @@ public class ScreeningToReferralService implements CrudsService {
       try {
         referral =
             createReferralWithDefaults(screeningToReferral, dateStarted, timeStarted, timestamp);
-      } catch (Exception e1) {
-        String message = e1.getMessage();
-        logError(message, e1);
+      } catch (ServiceException e) {
+        String message = e.getMessage();
+        logError(message, e);
+      } catch (NullPointerException e) {
+        String message = e.getMessage();
+        logError(message, e);
+      } catch(Exception e){
+        String message = e.getMessage();
+        logError(message, e);
+        throw e;
       }
 
       messageBuilder.addDomainValidationError(validator.validate(referral));
@@ -550,15 +563,14 @@ public class ScreeningToReferralService implements CrudsService {
       String staffPersonId = staffPersonIdRetriever.getStaffPersonId();
       DrmsDocument drmsDocument = DrmsDocument.createDefaults(staffPersonId);
       postedDrmsDocument = drmsDocumentService.create(drmsDocument);
-      if (postedDrmsDocument == null){
-        throw new ServiceException("Unable to Create DRMS Document");
-      }
     } catch (ServiceException e) {
       String message = e.getMessage();
       logError(message, e);
     }
+    if (postedDrmsDocument == null){
+      throw new RuntimeException("Unable to Create DRMS Documents");
+    }
     return postedDrmsDocument.getId();
-
   }
 
   private String generateLongTextId(ScreeningToReferral screeningToReferral) {

@@ -16,6 +16,7 @@ import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
+import gov.ca.cwds.rest.api.domain.cms.PostedDrmsDocument;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
@@ -25,6 +26,7 @@ import java.util.Set;
 
 import javax.validation.Validation;
 
+import javax.validation.constraints.AssertFalse;
 import org.apache.commons.lang3.NotImplementedException;
 import org.junit.Assert;
 import org.junit.Before;
@@ -990,12 +992,11 @@ public class ScreeningToReferralServiceTest {
       // System.out.println("error = " + e.getMessage());
       Assert.fail("Unexpected ServiceException was thrown" + e.getMessage());
     }
-
   }
 
   @SuppressWarnings("javadoc")
-  @Test(expected = IllegalArgumentException.class)
-  public void shouldThrowExceptionIfUnableToCreateDRMSDocument(){
+  @Test(expected = RuntimeException.class)
+  public void shouldLogErrorIfUnableToCreateDRMSDocument(){
     ScreeningToReferral referral = new ScreeningToReferralResourceBuilder()
         .setCrossReports(new HashSet<>()).createScreeningToReferral();
 
@@ -1008,10 +1009,11 @@ public class ScreeningToReferralServiceTest {
 
 
     Response response = screeningToReferralService.create(referral);
+    assertFalse("Expected exception to have been thrown", true);
   }
 
   @SuppressWarnings("javadoc")
-  @Test
+  @Test()
   public void testScreeningToReferralWithoutCrossReportsSuccess() throws Exception {
     ScreeningToReferral referral = new ScreeningToReferralResourceBuilder()
         .setCrossReports(new HashSet<>()).createScreeningToReferral();
@@ -2800,6 +2802,11 @@ public class ScreeningToReferralServiceTest {
         new gov.ca.cwds.data.persistence.cms.LongText("567890ABC", longTextDomain, "ABC");
     when(longTextDao.create(any(gov.ca.cwds.data.persistence.cms.LongText.class)))
         .thenReturn(longTextToCreate);
+
+    gov.ca.cwds.data.persistence.cms.DrmsDocument doc = mock(
+        gov.ca.cwds.data.persistence.cms.DrmsDocument.class);
+    when(doc.getId()).thenReturn("someDocId");
+    when(drmsDocumentDao.create(any())).thenReturn(doc);
 
     ScreeningToReferral screeningToReferral = MAPPER.readValue(
         fixture("fixtures/domain/ScreeningToReferral/invalid/nullAddressOnScreening.json"),
