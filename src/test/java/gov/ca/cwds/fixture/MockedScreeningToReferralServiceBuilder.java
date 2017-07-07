@@ -32,6 +32,7 @@ import gov.ca.cwds.rest.api.domain.cms.PostedReporter;
 import gov.ca.cwds.rest.api.domain.cms.Referral;
 import gov.ca.cwds.rest.api.domain.cms.ReferralClient;
 import gov.ca.cwds.rest.api.domain.cms.Reporter;
+import gov.ca.cwds.rest.business.rules.Reminders;
 import gov.ca.cwds.rest.messages.MessageBuilder;
 import gov.ca.cwds.rest.services.ScreeningToReferralService;
 import gov.ca.cwds.rest.services.cms.AddressService;
@@ -67,6 +68,7 @@ public class MockedScreeningToReferralServiceBuilder {
   private DrmsDocumentService drmsDocumentService;
   private AssignmentService assignmentService;
   private AllegationPerpetratorHistoryService allegationPerpetratorHistoryService;
+  private Reminders reminders;
 
   private ReferralDao referralDao;
   private StaffPersonIdRetriever staffPersonIdRetriever;
@@ -301,6 +303,20 @@ public class MockedScreeningToReferralServiceBuilder {
   }
 
   /**
+   * @return the reminders
+   */
+  public Reminders getReminders() {
+    if (reminders == null) {
+      buildDefaultMockForReminders();
+    }
+    return reminders;
+  }
+
+  private void buildDefaultMockForReminders() {
+    reminders = mock(Reminders.class);
+  }
+
+  /**
    * 
    * @return the mocked assignmentService
    */
@@ -530,6 +546,6 @@ public class MockedScreeningToReferralServiceBuilder {
         getChildClientService(), getAssignmentService(),
         Validation.buildDefaultValidatorFactory().getValidator(), getReferralDao(),
         getStaffPersonIdRetriever(), getMessageBuilder(), getDrmsDocumentService(),
-        getssaName3Dao(), getAllegationPerpetratorHistoryService());
+        getssaName3Dao(), getAllegationPerpetratorHistoryService(), getReminders());
   }
 }
