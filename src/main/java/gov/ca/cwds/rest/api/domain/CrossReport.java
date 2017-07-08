@@ -56,7 +56,7 @@ public class CrossReport extends ReportingDomain implements Request, Response {
   @ApiModelProperty(required = true,
       value = "Communication method system code ID e.g) 2097 -> Telephone Report", example = "2097")
   @NotNull
-  @ValidSystemCodeId(required = true, category = "XRPT_MTC")
+  @ValidSystemCodeId(required = true, category = SystemCodeCategoryId.CROSS_REPORT_METHOD)
   private Integer method;
 
   @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = DATE_FORMAT)

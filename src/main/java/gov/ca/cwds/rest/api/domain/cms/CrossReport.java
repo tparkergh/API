@@ -19,6 +19,7 @@ import gov.ca.cwds.rest.api.Response;
 import gov.ca.cwds.rest.api.domain.DomainChef;
 import gov.ca.cwds.rest.api.domain.DomainObject;
 import gov.ca.cwds.rest.api.domain.ReportingDomain;
+import gov.ca.cwds.rest.api.domain.SystemCodeCategoryId;
 import gov.ca.cwds.rest.validation.ValidSystemCodeId;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
@@ -47,7 +48,7 @@ public class CrossReport extends ReportingDomain implements Request, Response {
 
   @SystemCodeSerializer(logical = true, description = true)
   @NotNull
-  @ValidSystemCodeId(required = true, category = "XRPT_MTC")
+  @ValidSystemCodeId(required = true, category = SystemCodeCategoryId.CROSS_REPORT_METHOD)
   @ApiModelProperty(required = true, readOnly = false,
       value = "Cross report method type system code ID e.g) 2097 -> Telephone Report",
       example = "2097")
