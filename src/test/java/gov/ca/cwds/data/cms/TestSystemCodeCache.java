@@ -2,6 +2,7 @@ package gov.ca.cwds.data.cms;
 
 import java.util.Set;
 
+import gov.ca.cwds.rest.api.domain.SystemCodeCategoryId;
 import gov.ca.cwds.rest.api.domain.cms.SystemCode;
 import gov.ca.cwds.rest.api.domain.cms.SystemCodeCache;
 import gov.ca.cwds.rest.api.domain.cms.SystemMeta;
@@ -56,7 +57,7 @@ public class TestSystemCodeCache implements SystemCodeCache {
       return true;
     }
 
-    if ("XRPT_MTC".equals(metaId)) {
+    if (SystemCodeCategoryId.CROSS_REPORT_METHOD.equals(metaId)) {
       if (2095 == systemCodeId.intValue() || 0 == systemCodeId.intValue()
           || 123 == systemCodeId.intValue() || 1234 == systemCodeId.intValue()) {
         return true;
