@@ -16,7 +16,6 @@ import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-import gov.ca.cwds.rest.api.domain.cms.PostedDrmsDocument;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
@@ -26,7 +25,6 @@ import java.util.Set;
 
 import javax.validation.Validation;
 
-import javax.validation.constraints.AssertFalse;
 import org.apache.commons.lang3.NotImplementedException;
 import org.junit.Assert;
 import org.junit.Before;
@@ -56,6 +54,7 @@ import gov.ca.cwds.data.cms.ReferralDao;
 import gov.ca.cwds.data.cms.ReporterDao;
 import gov.ca.cwds.data.cms.SsaName3Dao;
 import gov.ca.cwds.data.cms.StaffPersonDao;
+import gov.ca.cwds.data.cms.TestSystemCodeCache;
 import gov.ca.cwds.data.rules.TriggerTablesDao;
 import gov.ca.cwds.fixture.AddressResourceBuilder;
 import gov.ca.cwds.fixture.AllegationResourceBuilder;
@@ -149,6 +148,11 @@ public class ScreeningToReferralServiceTest {
 
   private gov.ca.cwds.data.persistence.cms.Referral referral;
   private static gov.ca.cwds.data.persistence.cms.Referral createdReferal = null;
+
+  /**
+   * Initialize system code cache
+   */
+  TestSystemCodeCache testSystemCodeCache = new TestSystemCodeCache();
 
   @SuppressWarnings("javadoc")
   @Rule
@@ -996,16 +1000,14 @@ public class ScreeningToReferralServiceTest {
 
   @SuppressWarnings("javadoc")
   @Test(expected = RuntimeException.class)
-  public void shouldLogErrorIfUnableToCreateDRMSDocument(){
+  public void shouldLogErrorIfUnableToCreateDRMSDocument() {
     ScreeningToReferral referral = new ScreeningToReferralResourceBuilder()
         .setCrossReports(new HashSet<>()).createScreeningToReferral();
 
     DrmsDocumentService mockedDrmsDocService = mock(DrmsDocumentService.class);
     when(mockedDrmsDocService.create(any())).thenReturn(null);
-    screeningToReferralService =
-        new MockedScreeningToReferralServiceBuilder()
-            .addDrmsDocumentService(mockedDrmsDocService)
-            .createScreeningToReferralService();
+    screeningToReferralService = new MockedScreeningToReferralServiceBuilder()
+        .addDrmsDocumentService(mockedDrmsDocService).createScreeningToReferralService();
 
 
     Response response = screeningToReferralService.create(referral);
@@ -2803,8 +2805,8 @@ public class ScreeningToReferralServiceTest {
     when(longTextDao.create(any(gov.ca.cwds.data.persistence.cms.LongText.class)))
         .thenReturn(longTextToCreate);
 
-    gov.ca.cwds.data.persistence.cms.DrmsDocument doc = mock(
-        gov.ca.cwds.data.persistence.cms.DrmsDocument.class);
+    gov.ca.cwds.data.persistence.cms.DrmsDocument doc =
+        mock(gov.ca.cwds.data.persistence.cms.DrmsDocument.class);
     when(doc.getId()).thenReturn("someDocId");
     when(drmsDocumentDao.create(any())).thenReturn(doc);
 
