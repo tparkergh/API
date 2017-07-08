@@ -6,6 +6,13 @@ import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.is;
 import static org.junit.Assert.assertEquals;
 
+import java.util.Set;
+
+import javax.validation.ConstraintViolation;
+import javax.validation.Validation;
+import javax.validation.Validator;
+import javax.validation.ValidatorFactory;
+
 import org.junit.Before;
 import org.junit.Test;
 
@@ -87,6 +94,31 @@ public class CrossReportTest {
     assertThat(domain.getLegacySourceTable(), is(equalTo(legacySourceTable)));
     assertThat(domain.getLegacyId(), is(equalTo(legacyId)));
     assertThat(domain.getId(), is(equalTo(id)));
+  }
 
+  @Test
+  public void testValidCrossReportMethod() throws Exception {
+    Integer validCrossReportMethod = 2095;
+    CrossReport crossReport = new CrossReport(id, legacySourceTable, legacyId, agencyType,
+        agencyName, validCrossReportMethod, informDate);
+
+    ValidatorFactory factory = Validation.buildDefaultValidatorFactory();
+    Validator validator = factory.getValidator();
+
+    Set<ConstraintViolation<CrossReport>> constraintViolations = validator.validate(crossReport);
+    assertEquals(0, constraintViolations.size());
+  }
+
+  @Test
+  public void testInvalidCrossReportMethod() throws Exception {
+    Integer invalidCrossReportMethod = 9999;
+    CrossReport crossReport = new CrossReport(id, legacySourceTable, legacyId, agencyType,
+        agencyName, invalidCrossReportMethod, informDate);
+
+    ValidatorFactory factory = Validation.buildDefaultValidatorFactory();
+    Validator validator = factory.getValidator();
+
+    Set<ConstraintViolation<CrossReport>> constraintViolations = validator.validate(crossReport);
+    assertEquals(1, constraintViolations.size());
   }
 }

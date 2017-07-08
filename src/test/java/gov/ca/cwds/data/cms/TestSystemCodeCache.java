@@ -56,7 +56,11 @@ public class TestSystemCodeCache implements SystemCodeCache {
       return true;
     }
 
-    return true;
+    if (2095 == systemCodeId.intValue() && "XRPT_MTC".equals(metaId)) {
+      return true;
+    }
+
+    return false;
   }
 
   @Override
@@ -68,6 +72,6 @@ public class TestSystemCodeCache implements SystemCodeCache {
     } else if ("Breasts".equals(shortDesc)) {
       return true;
     }
-    return true;
+    return false;
   }
 }

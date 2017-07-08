@@ -2,6 +2,7 @@ package gov.ca.cwds.rest.api.domain;
 
 import static gov.ca.cwds.data.persistence.cms.CmsPersistentObject.CMS_ID_LEN;
 
+import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
 import org.hibernate.validator.constraints.NotEmpty;
@@ -54,6 +55,7 @@ public class CrossReport extends ReportingDomain implements Request, Response {
   @JsonProperty("method")
   @ApiModelProperty(required = true,
       value = "Communication method system code ID e.g) 2097 -> Telephone Report", example = "2097")
+  @NotNull
   @ValidSystemCodeId(required = true, category = "XRPT_MTC")
   private Integer method;
 
