@@ -19,6 +19,7 @@ import gov.ca.cwds.rest.api.Response;
 import gov.ca.cwds.rest.api.domain.DomainChef;
 import gov.ca.cwds.rest.api.domain.DomainObject;
 import gov.ca.cwds.rest.api.domain.ReportingDomain;
+import gov.ca.cwds.rest.validation.ValidSystemCodeId;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 
@@ -46,7 +47,10 @@ public class CrossReport extends ReportingDomain implements Request, Response {
 
   @SystemCodeSerializer(logical = true, description = true)
   @NotNull
-  @ApiModelProperty(required = true, readOnly = false, example = "1234")
+  @ValidSystemCodeId(required = true, category = "XRPT_MTC")
+  @ApiModelProperty(required = true, readOnly = false,
+      value = "Cross report method type system code ID e.g) 2097 -> Telephone Report",
+      example = "2097")
   private Short crossReportMethodType;
 
   @NotNull
@@ -263,8 +267,8 @@ public class CrossReport extends ReportingDomain implements Request, Response {
   public static CrossReport createWithDefaults(String id,
       gov.ca.cwds.rest.api.domain.CrossReport crossReport, String referralId, String staffId,
       String countyCode, Boolean lawEnforcementIndicator) {
-    return new CrossReport(id, CROSS_REPORT_METHOD_CODE, false, false, "", "", DEFAULT_INT,
-        DEFAULT_DECIMAL, crossReport.getInformDate(), "", "", referralId, "", staffId,
+    return new CrossReport(id, crossReport.getMethod().shortValue(), false, false, "", "",
+        DEFAULT_INT, DEFAULT_DECIMAL, crossReport.getInformDate(), "", "", referralId, "", staffId,
         crossReport.getAgencyName(), "", "", countyCode, lawEnforcementIndicator, false, false);
   }
 

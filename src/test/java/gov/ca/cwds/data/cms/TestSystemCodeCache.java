@@ -56,8 +56,11 @@ public class TestSystemCodeCache implements SystemCodeCache {
       return true;
     }
 
-    if (2095 == systemCodeId.intValue() && "XRPT_MTC".equals(metaId)) {
-      return true;
+    if ("XRPT_MTC".equals(metaId)) {
+      if (2095 == systemCodeId.intValue() || 0 == systemCodeId.intValue()
+          || 123 == systemCodeId.intValue() || 1234 == systemCodeId.intValue()) {
+        return true;
+      }
     }
 
     return false;
