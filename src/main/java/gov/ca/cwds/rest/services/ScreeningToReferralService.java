@@ -478,7 +478,6 @@ public class ScreeningToReferralService implements CrudsService {
    * @param timeStarted - timeStarted
    * @param timestamp - timestamp
    * @return the referral
-   * @throws Exception - Exception
    */
   public Referral createReferralWithDefaults(ScreeningToReferral screeningToReferral,
       String dateStarted, String timeStarted, Date timestamp) {
