@@ -18,6 +18,7 @@ import org.junit.Test;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import gov.ca.cwds.data.cms.TestSystemCodeCache;
 import io.dropwizard.jackson.Jackson;
 import nl.jqno.equalsverifier.EqualsVerifier;
 import nl.jqno.equalsverifier.Warning;
@@ -98,6 +99,11 @@ public class CrossReportTest {
 
   @Test
   public void testValidCrossReportMethod() throws Exception {
+    /*
+     * Load system code cache
+     */
+    new TestSystemCodeCache();
+
     Integer validCrossReportMethod = 2095;
     CrossReport crossReport = new CrossReport(id, legacySourceTable, legacyId, agencyType,
         agencyName, validCrossReportMethod, informDate);
@@ -111,6 +117,11 @@ public class CrossReportTest {
 
   @Test
   public void testInvalidCrossReportMethod() throws Exception {
+    /*
+     * Load system code cache
+     */
+    new TestSystemCodeCache();
+
     Integer invalidCrossReportMethod = 9999;
     CrossReport crossReport = new CrossReport(id, legacySourceTable, legacyId, agencyType,
         agencyName, invalidCrossReportMethod, informDate);
