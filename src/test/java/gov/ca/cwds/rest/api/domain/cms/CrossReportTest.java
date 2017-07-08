@@ -191,7 +191,7 @@ public class CrossReportTest {
     String informDate = "informDate";
     gov.ca.cwds.rest.api.domain.CrossReport nsCrossReport =
         new gov.ca.cwds.rest.api.domain.CrossReport(id, "legacy_source_table", "legacy_id",
-            "agency_type", agencyName, "method", informDate);
+            "agency_type", agencyName, 2095, informDate);
 
     CrossReport cmsCrossReport = CrossReport.createWithDefaults(id, nsCrossReport, referralId,
         staffId, countyCode, lawEnforcementIndicator);
@@ -224,7 +224,7 @@ public class CrossReportTest {
     String informDate = "informDate";
     gov.ca.cwds.rest.api.domain.CrossReport nsCrossReport =
         new gov.ca.cwds.rest.api.domain.CrossReport(id, "legacy_source_table", "legacy_id",
-            "agency_type", agencyName, "method", informDate);
+            "agency_type", agencyName, 2095, informDate);
 
     CrossReport cmsCrossReport = CrossReport.createWithDefaults(id, nsCrossReport, referralId,
         staffId, countyCode, lawEnforcementIndicator);

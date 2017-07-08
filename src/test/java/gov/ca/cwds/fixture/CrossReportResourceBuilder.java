@@ -11,7 +11,7 @@ public class CrossReportResourceBuilder {
   String legacyId = "";
   String agencyType = "Law enforcement";
   String agencyName = "Sacramento County Sheriff Deparment";
-  String method = "electronic report";
+  Integer method = 2095; // "electronic report"
   String informDate = "2017-03-15";
 
   /**
@@ -63,7 +63,7 @@ public class CrossReportResourceBuilder {
    * @param method - method
    * @return the method
    */
-  public CrossReportResourceBuilder setMethod(String method) {
+  public CrossReportResourceBuilder setMethod(Integer method) {
     this.method = method;
     return this;
   }
