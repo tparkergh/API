@@ -12,6 +12,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import gov.ca.cwds.rest.api.Request;
 import gov.ca.cwds.rest.api.Response;
 import gov.ca.cwds.rest.validation.Date;
+import gov.ca.cwds.rest.validation.ValidSystemCodeId;
 import io.dropwizard.jackson.JsonSnakeCase;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
@@ -51,9 +52,10 @@ public class CrossReport extends ReportingDomain implements Request, Response {
   private String agencyName;
 
   @JsonProperty("method")
-  @ApiModelProperty(required = true, value = "communication method", example = "phone")
-  @NotEmpty
-  private String method;
+  @ApiModelProperty(required = true,
+      value = "Communication method system code ID e.g) 2097 -> Telephone Report", example = "2097")
+  @ValidSystemCodeId(required = true, category = "XRPT_MTC")
+  private Integer method;
 
   @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = DATE_FORMAT)
   @Date
@@ -75,7 +77,7 @@ public class CrossReport extends ReportingDomain implements Request, Response {
   public CrossReport(@JsonProperty("id") String id,
       @JsonProperty("legacy_source_table") String legacySourceTable,
       @JsonProperty("legacy_id") String legacyId, @JsonProperty("agency_type") String agencyType,
-      @JsonProperty("agency_name") String agencyName, @JsonProperty("method") String method,
+      @JsonProperty("agency_name") String agencyName, @JsonProperty("method") Integer method,
       @JsonProperty("inform_date") String informDate) {
     super();
     this.id = id;
@@ -146,7 +148,7 @@ public class CrossReport extends ReportingDomain implements Request, Response {
   /**
    * @return method
    */
-  public String getMethod() {
+  public Integer getMethod() {
     return method;
   }
 

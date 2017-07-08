@@ -4,10 +4,10 @@ import static io.dropwizard.testing.FixtureHelpers.fixture;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.is;
+import static org.junit.Assert.assertEquals;
 
 import org.junit.Before;
 import org.junit.Test;
-import static org.junit.Assert.assertEquals;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
@@ -19,7 +19,7 @@ public class CrossReportTest {
 
   private String agencyType = "Law enforcement";
   private String agencyName = "Sacramento County Sheriff Deparment";
-  private String method = "electronic report";
+  private Integer method = 2095; // "electronic report"
   private String informDate = "2017-03-15";
   private String legacySourceTable = "CRSS_RPT";
   private String legacyId = "1234567ABC";
@@ -29,9 +29,9 @@ public class CrossReportTest {
   private CrossReport crossReport;
 
   @Before
-  public void setup(){
-    crossReport = new CrossReport("","", "", "Law enforcement",
-        "Sacramento County Sheriff Deparment", "electronic report", "2017-03-15");
+  public void setup() {
+    crossReport = new CrossReport("", "", "", "Law enforcement",
+        "Sacramento County Sheriff Deparment", 2095, "2017-03-15");
 
   }
 
@@ -67,18 +67,18 @@ public class CrossReportTest {
 
   @Test
   public void testEquals() {
-    CrossReport thisCrossReport =
-        new CrossReport(id,legacySourceTable, legacyId, agencyType, agencyName, method, informDate);
-    CrossReport thatCrossReport =
-        new CrossReport(id, legacySourceTable, legacyId, agencyType, agencyName, method, informDate);
+    CrossReport thisCrossReport = new CrossReport(id, legacySourceTable, legacyId, agencyType,
+        agencyName, method, informDate);
+    CrossReport thatCrossReport = new CrossReport(id, legacySourceTable, legacyId, agencyType,
+        agencyName, method, informDate);
     assertEquals("Should be equal", thisCrossReport, thatCrossReport);
 
   }
 
   @Test
   public void testDomainConstructorTest() throws Exception {
-    CrossReport domain =
-        new CrossReport(id, legacySourceTable, legacyId, agencyType, agencyName, method, informDate);
+    CrossReport domain = new CrossReport(id, legacySourceTable, legacyId, agencyType, agencyName,
+        method, informDate);
 
     assertThat(domain.getAgencyType(), is(equalTo(agencyType)));
     assertThat(domain.getAgencyName(), is(equalTo(agencyName)));

@@ -23,6 +23,7 @@ import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 
+import gov.ca.cwds.data.cms.TestSystemCodeCache;
 import gov.ca.cwds.rest.core.Api;
 import gov.ca.cwds.rest.resources.ScreeningToReferralResource;
 import io.dropwizard.jackson.Jackson;
@@ -40,12 +41,14 @@ public class ScreeningToReferralTest {
 
   private String agencyType = "Law enforcement";
   private String agencyName = "Sacramento County Sheriff Deparment";
-  private String method = "electronic report";
+  private Integer method = 2095; // "electronic report";
   private String informDate = "2017-03-15";
   private Set<Participant> participants = new HashSet<Participant>();
   private Set<CrossReport> crossReports = new HashSet<CrossReport>();
   private Set<Allegation> allegations = new HashSet<Allegation>();
   private long id = 2;
+
+  private TestSystemCodeCache TestSystemCodeCache = new TestSystemCodeCache();
 
   @Before
   public void setup() {
@@ -63,7 +66,8 @@ public class ScreeningToReferralTest {
     Address address = validAddress();
     Participant participant = validParticipant();
     participants.add(participant);
-    CrossReport crossReport = new CrossReport("","", "", agencyType, agencyName, method, informDate);
+    CrossReport crossReport =
+        new CrossReport("", "", "", agencyType, agencyName, method, informDate);
     crossReports.add(crossReport);
     Allegation allegation = validAllegation();
     allegations.add(allegation);
@@ -88,7 +92,8 @@ public class ScreeningToReferralTest {
     Address address = validAddress();
     Participant participant = validParticipant();
     participants.add(participant);
-    CrossReport crossReport = new CrossReport("", "", "", agencyType, agencyName, method, informDate);
+    CrossReport crossReport =
+        new CrossReport("", "", "", agencyType, agencyName, method, informDate);
     crossReports.add(crossReport);
     Allegation allegation = validAllegation();
     allegations.add(allegation);
