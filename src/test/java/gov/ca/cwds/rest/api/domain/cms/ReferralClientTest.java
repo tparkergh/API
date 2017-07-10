@@ -184,24 +184,30 @@ public class ReferralClientTest {
   }
 
   @Test
-  public void testCreateWithDefaultCreatesWithValues(){
+  public void testCreateWithDefaultCreatesWithValues() {
     Boolean selfReported = true;
     String referralId = "referralId";
     String clientId = "clientId";
     String countyCode = "countyCode";
     Short approvalCode = 1;
 
-    ReferralClient referralClient = ReferralClient.createWithDefault(selfReported,referralId,clientId, countyCode,approvalCode );
+    ReferralClient referralClient = ReferralClient.createWithDefault(selfReported, referralId,
+        clientId, countyCode, approvalCode);
 
-    assertEquals("Expected selfReported field to be initialized with values", selfReported, referralClient.getSelfReportedIndicator());
-    assertEquals("Expected referralId field to be initialized with values", referralId, referralClient.getReferralId());
-    assertEquals("Expected clientId field to be initialized with values", clientId, referralClient.getClientId());
-    assertEquals("Expected countyCode field to be initialized with values", countyCode, referralClient.getCountySpecificCode());
-    assertEquals("Expected approvalCode field to be initialized with values", approvalCode, referralClient.getApprovalStatusType());
+    assertEquals("Expected selfReported field to be initialized with values", selfReported,
+        referralClient.getSelfReportedIndicator());
+    assertEquals("Expected referralId field to be initialized with values", referralId,
+        referralClient.getReferralId());
+    assertEquals("Expected clientId field to be initialized with values", clientId,
+        referralClient.getClientId());
+    assertEquals("Expected countyCode field to be initialized with values", countyCode,
+        referralClient.getCountySpecificCode());
+    assertEquals("Expected approvalCode field to be initialized with values", approvalCode,
+        referralClient.getApprovalStatusType());
   }
 
   @Test
-  public void testCreateWithDefaultCreatesWithDefaultValues(){
+  public void testCreateWithDefaultCreatesWithDefaultValues() {
     Boolean selfReported = true;
     String referralId = "referralId";
     String clientId = "clientId";
@@ -220,27 +226,38 @@ public class ReferralClientTest {
     Boolean alcoholIndicator = false;
     Boolean drugIndicator = false;
 
-    ReferralClient referralClient = ReferralClient.createWithDefault(selfReported,referralId,clientId, countyCode,approvalCode );
+    ReferralClient referralClient = ReferralClient.createWithDefault(selfReported, referralId,
+        clientId, countyCode, approvalCode);
 
-    assertEquals("Expected approvalNumber field to be initialized with default values", approvalNumber, referralClient.getApprovalNumber());
-    assertEquals("Expected dispositionClosureReasonType field to be initialized with default values", dispositionClosureReasonType, referralClient.getDispositionClosureReasonType());
-    assertEquals("Expected dispositionCode field to be initialized with default values", dispositionCode, referralClient.getDispositionCode());
-    assertEquals("Expected dispositionDat field to be initialized with default values", dispositionDate, referralClient.getDispositionDate());
-    assertEquals("Expected staffPersonAddedIndicato field to be initialized with default values", staffPersonAddedIndicator, referralClient.getStaffPersonAddedIndicator());
-    assertEquals("Expected dispositionClosureDescription field to be initialized with default values", dispositionClosureDescription, referralClient.getDispositionClosureDescription());
-    assertEquals("Expected ageNumber field to be initialized with default values", ageNumber, referralClient.getAgeNumber());
-    assertEquals("Expected agePeriodCode field to be initialized with default values", agePeriodCode, referralClient.getAgePeriodCode());
-    assertEquals("Expected mentalHealthIssuesIndicator field to be initialized with default values", mentalHealthIssuesIndicator, referralClient.getMentalHealthIssuesIndicator());
-    assertEquals("Expected alcoholIndicator field to be initialized with default values", alcoholIndicator, referralClient.getAlcoholIndicator());
-    assertEquals("Expected drugIndicator field to be initialized with default values", drugIndicator, referralClient.getDrugIndicator());
+    assertEquals("Expected approvalNumber field to be initialized with default values",
+        approvalNumber, referralClient.getApprovalNumber());
+    assertEquals(
+        "Expected dispositionClosureReasonType field to be initialized with default values",
+        dispositionClosureReasonType, referralClient.getDispositionClosureReasonType());
+    assertEquals("Expected dispositionCode field to be initialized with default values",
+        dispositionCode, referralClient.getDispositionCode());
+    assertEquals("Expected dispositionDat field to be initialized with default values",
+        dispositionDate, referralClient.getDispositionDate());
+    assertEquals("Expected staffPersonAddedIndicato field to be initialized with default values",
+        staffPersonAddedIndicator, referralClient.getStaffPersonAddedIndicator());
+    assertEquals(
+        "Expected dispositionClosureDescription field to be initialized with default values",
+        dispositionClosureDescription, referralClient.getDispositionClosureDescription());
+    assertEquals("Expected ageNumber field to be initialized with default values", ageNumber,
+        referralClient.getAgeNumber());
+    assertEquals("Expected agePeriodCode field to be initialized with default values",
+        agePeriodCode, referralClient.getAgePeriodCode());
+    assertEquals("Expected mentalHealthIssuesIndicator field to be initialized with default values",
+        mentalHealthIssuesIndicator, referralClient.getMentalHealthIssuesIndicator());
+    assertEquals("Expected alcoholIndicator field to be initialized with default values",
+        alcoholIndicator, referralClient.getAlcoholIndicator());
+    assertEquals("Expected drugIndicator field to be initialized with default values",
+        drugIndicator, referralClient.getDrugIndicator());
   }
 
   @Test
   public void equalsHashCodeWork() {
-    EqualsVerifier.forClass(ReferralClient.class)
-            .suppress(Warning.NONFINAL_FIELDS)
-            .withIgnoredFields("messages")
-            .verify();
+    EqualsVerifier.forClass(ReferralClient.class).suppress(Warning.NONFINAL_FIELDS).verify();
   }
 
   /*

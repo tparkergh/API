@@ -1,18 +1,5 @@
 package gov.ca.cwds.rest.services;
 
-import gov.ca.cwds.data.Dao;
-import gov.ca.cwds.data.ns.ScreeningDao;
-import gov.ca.cwds.data.persistence.ns.Address;
-import gov.ca.cwds.rest.api.Request;
-import gov.ca.cwds.rest.api.Response;
-import gov.ca.cwds.rest.api.domain.PostedScreening;
-import gov.ca.cwds.rest.api.domain.Screening;
-import gov.ca.cwds.rest.api.domain.ScreeningListResponse;
-import gov.ca.cwds.rest.api.domain.ScreeningReference;
-import gov.ca.cwds.rest.api.domain.ScreeningRequest;
-import gov.ca.cwds.rest.api.domain.ScreeningResponse;
-import gov.ca.cwds.rest.util.ServiceUtils;
-
 import java.io.Serializable;
 import java.util.HashSet;
 import java.util.List;
@@ -27,6 +14,19 @@ import org.jadira.usertype.spi.utils.lang.StringUtils;
 
 import com.google.common.collect.ImmutableSet;
 import com.google.inject.Inject;
+
+import gov.ca.cwds.data.Dao;
+import gov.ca.cwds.data.ns.ScreeningDao;
+import gov.ca.cwds.data.persistence.ns.Address;
+import gov.ca.cwds.rest.api.Request;
+import gov.ca.cwds.rest.api.Response;
+import gov.ca.cwds.rest.api.domain.PostedScreening;
+import gov.ca.cwds.rest.api.domain.Screening;
+import gov.ca.cwds.rest.api.domain.ScreeningListResponse;
+import gov.ca.cwds.rest.api.domain.ScreeningReference;
+import gov.ca.cwds.rest.api.domain.ScreeningRequest;
+import gov.ca.cwds.rest.api.domain.ScreeningResponse;
+import gov.ca.cwds.rest.util.ServiceUtils;
 
 /**
  * Business layer object to work on {@link Screening}
@@ -139,10 +139,11 @@ public class ScreeningService implements CrudsService {
     Session session = screeningDao.getSessionFactory().getCurrentSession();
 
     Criteria criteria = session.createCriteria(gov.ca.cwds.data.persistence.ns.Screening.class);
-    if (StringUtils.isNotEmpty(responseTimes) && !responseTimes.equals("null")) {
+    String anObject = "null";
+    if (StringUtils.isNotEmpty(responseTimes) && !anObject.equals(responseTimes)) {
       criteria.add(Restrictions.like("responseTime", responseTimes));
     }
-    if (StringUtils.isNotEmpty(screeningDecisions) && !screeningDecisions.equals("null")) {
+    if (StringUtils.isNotEmpty(screeningDecisions) && !anObject.equals(screeningDecisions)) {
       criteria.add(Restrictions.like("screeningDecision", screeningDecisions));
     }
 
