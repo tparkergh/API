@@ -2,10 +2,11 @@ package gov.ca.cwds.rest.api.domain.cms;
 
 import static gov.ca.cwds.data.persistence.cms.CmsPersistentObject.CMS_ID_LEN;
 
-import gov.ca.cwds.rest.validation.ParticipantValidator;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
+import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.hibernate.validator.constraints.NotBlank;
 import org.hibernate.validator.constraints.NotEmpty;
 
@@ -198,12 +199,19 @@ public class ReferralClient extends ReportingDomain implements Request, Response
     this.drugIndicator = DomainChef.uncookBooleanString(persistedReferralClient.getDrugIndicator());
   }
 
-  public static ReferralClient createWithDefault(Boolean selfReported, String referralId, String clientId, String countyCode, short approvalCode ){
-    return new ReferralClient("", approvalCode,
-                  DEFAULT_CODE, DEFAULT_DISPOSITION_CODE, "",
-                  selfReported, false, referralId,
-                  clientId, "", DEFAULT_CODE, "", countyCode, false, false,
-                  false);
+  /**
+   * @param selfReported - selfReported
+   * @param referralId - referralId
+   * @param clientId - clientId
+   * @param countyCode - countyCode
+   * @param approvalCode - approvalCode
+   * @return the referralClient
+   */
+  public static ReferralClient createWithDefault(Boolean selfReported, String referralId,
+      String clientId, String countyCode, short approvalCode) {
+    return new ReferralClient("", approvalCode, DEFAULT_CODE, DEFAULT_DISPOSITION_CODE, "",
+        selfReported, false, referralId, clientId, "", DEFAULT_CODE, "", countyCode, false, false,
+        false);
   }
 
   /**
@@ -318,136 +326,24 @@ public class ReferralClient extends ReportingDomain implements Request, Response
     return drugIndicator;
   }
 
-  /*
-   * (non-Javadoc)
-   * 
+  /**
+   * {@inheritDoc}
+   *
    * @see java.lang.Object#hashCode()
    */
   @Override
   public final int hashCode() {
-    final int prime = 31;
-    int result = 1;
-    result = prime * result + ((ageNumber == null) ? 0 : ageNumber.hashCode());
-    result = prime * result + ((agePeriodCode == null) ? 0 : agePeriodCode.hashCode());
-    result = prime * result + ((alcoholIndicator == null) ? 0 : alcoholIndicator.hashCode());
-    result = prime * result + ((approvalNumber == null) ? 0 : approvalNumber.hashCode());
-    result = prime * result + ((approvalStatusType == null) ? 0 : approvalStatusType.hashCode());
-    result = prime * result + ((countySpecificCode == null) ? 0 : countySpecificCode.hashCode());
-    result = prime * result
-        + ((dispositionClosureDescription == null) ? 0 : dispositionClosureDescription.hashCode());
-    result = prime * result
-        + ((dispositionClosureReasonType == null) ? 0 : dispositionClosureReasonType.hashCode());
-    result = prime * result + ((dispositionCode == null) ? 0 : dispositionCode.hashCode());
-    result = prime * result + ((dispositionDate == null) ? 0 : dispositionDate.hashCode());
-    result = prime * result + ((drugIndicator == null) ? 0 : drugIndicator.hashCode());
-    result = prime * result + ((clientId == null) ? 0 : clientId.hashCode());
-    result = prime * result + ((referralId == null) ? 0 : referralId.hashCode());
-    result = prime * result
-        + ((mentalHealthIssuesIndicator == null) ? 0 : mentalHealthIssuesIndicator.hashCode());
-    result =
-        prime * result + ((selfReportedIndicator == null) ? 0 : selfReportedIndicator.hashCode());
-    result = prime * result
-        + ((staffPersonAddedIndicator == null) ? 0 : staffPersonAddedIndicator.hashCode());
-    return result;
+    return HashCodeBuilder.reflectionHashCode(this, false);
   }
 
-  /*
-   * (non-Javadoc)
-   * 
+  /**
+   * {@inheritDoc}
+   *
    * @see java.lang.Object#equals(java.lang.Object)
    */
   @Override
   public final boolean equals(Object obj) {
-    if (this == obj) {
-      return true;
-    }
-    if (obj == null) {
-      return false;
-    }
-    if (!(obj instanceof ReferralClient)) {
-      return false;
-    }
-    ReferralClient other = (ReferralClient) obj;
-    if (ageNumber == null) {
-      if (other.ageNumber != null)
-        return false;
-    } else if (!ageNumber.equals(other.ageNumber))
-      return false;
-    if (agePeriodCode == null) {
-      if (other.agePeriodCode != null)
-        return false;
-    } else if (!agePeriodCode.equals(other.agePeriodCode))
-      return false;
-    if (alcoholIndicator == null) {
-      if (other.alcoholIndicator != null)
-        return false;
-    } else if (!alcoholIndicator.equals(other.alcoholIndicator))
-      return false;
-    if (approvalNumber == null) {
-      if (other.approvalNumber != null)
-        return false;
-    } else if (!approvalNumber.equals(other.approvalNumber))
-      return false;
-    if (approvalStatusType == null) {
-      if (other.approvalStatusType != null)
-        return false;
-    } else if (!approvalStatusType.equals(other.approvalStatusType))
-      return false;
-    if (countySpecificCode == null) {
-      if (other.countySpecificCode != null)
-        return false;
-    } else if (!countySpecificCode.equals(other.countySpecificCode))
-      return false;
-    if (dispositionClosureDescription == null) {
-      if (other.dispositionClosureDescription != null)
-        return false;
-    } else if (!dispositionClosureDescription.equals(other.dispositionClosureDescription))
-      return false;
-    if (dispositionClosureReasonType == null) {
-      if (other.dispositionClosureReasonType != null)
-        return false;
-    } else if (!dispositionClosureReasonType.equals(other.dispositionClosureReasonType))
-      return false;
-    if (dispositionCode == null) {
-      if (other.dispositionCode != null)
-        return false;
-    } else if (!dispositionCode.equals(other.dispositionCode))
-      return false;
-    if (dispositionDate == null) {
-      if (other.dispositionDate != null)
-        return false;
-    } else if (!dispositionDate.equals(other.dispositionDate))
-      return false;
-    if (drugIndicator == null) {
-      if (other.drugIndicator != null)
-        return false;
-    } else if (!drugIndicator.equals(other.drugIndicator))
-      return false;
-    if (clientId == null) {
-      if (other.clientId != null)
-        return false;
-    } else if (!clientId.equals(other.clientId))
-      return false;
-    if (referralId == null) {
-      if (other.referralId != null)
-        return false;
-    } else if (!referralId.equals(other.referralId))
-      return false;
-    if (mentalHealthIssuesIndicator == null) {
-      if (other.mentalHealthIssuesIndicator != null)
-        return false;
-    } else if (!mentalHealthIssuesIndicator.equals(other.mentalHealthIssuesIndicator))
-      return false;
-    if (selfReportedIndicator == null) {
-      if (other.selfReportedIndicator != null)
-        return false;
-    } else if (!selfReportedIndicator.equals(other.selfReportedIndicator))
-      return false;
-    if (staffPersonAddedIndicator == null) {
-      if (other.staffPersonAddedIndicator != null)
-        return false;
-    } else if (!staffPersonAddedIndicator.equals(other.staffPersonAddedIndicator))
-      return false;
-    return true;
+    return EqualsBuilder.reflectionEquals(this, obj, false);
   }
+
 }

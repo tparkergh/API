@@ -51,7 +51,7 @@ public class DrmsDocumentServiceTest {
 
   @SuppressWarnings("javadoc")
   @Test
-  public void createReturnsPostedCrossReportClass() throws Exception {
+  public void createReturnsPostedClass() throws Exception {
     String id = "KWV5gl90X5";
     DrmsDocument drmsDocumentDomain = MAPPER.readValue(
         fixture("fixtures/domain/legacy/DrmsDocument/valid/valid.json"), DrmsDocument.class);

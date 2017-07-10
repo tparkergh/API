@@ -2,7 +2,6 @@ package gov.ca.cwds.rest.resources;
 
 import static gov.ca.cwds.rest.core.Api.RESOURCE_REFERRALS;
 
-import gov.ca.cwds.rest.api.domain.PostedScreeningToReferral;
 import javax.validation.Valid;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
@@ -18,9 +17,8 @@ import org.apache.http.HttpStatus;
 import com.google.inject.Inject;
 
 import gov.ca.cwds.inject.ScreeningToReferralServiceBackedResource;
+import gov.ca.cwds.rest.api.domain.PostedScreeningToReferral;
 import gov.ca.cwds.rest.api.domain.ScreeningToReferral;
-import gov.ca.cwds.rest.api.domain.cms.PostedCmsReferral;
-import gov.ca.cwds.rest.api.domain.cms.Referral;
 import io.dropwizard.hibernate.UnitOfWork;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -70,7 +68,8 @@ public class ScreeningToReferralResource {
   @ApiResponses(value = {@ApiResponse(code = 401, message = "Not Authorized"),
       @ApiResponse(code = 404, message = "Not found"),
       @ApiResponse(code = 406, message = "Accept Header not supported")})
-  @ApiOperation(value = "Find referral by id", response = PostedScreeningToReferral.class, code = 200)
+  @ApiOperation(value = "Find referral by id", response = PostedScreeningToReferral.class,
+      code = 200)
   public Response get(@PathParam("id") @ApiParam(required = true, name = "id",
       value = "The id of the Referral to find") String id) {
     return resourceDelegate.get(id);

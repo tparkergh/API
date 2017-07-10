@@ -39,6 +39,7 @@ import gov.ca.cwds.data.rules.TriggerTablesDao;
 import gov.ca.cwds.rest.api.domain.ScreeningToReferral;
 import gov.ca.cwds.rest.api.domain.cms.Address;
 import gov.ca.cwds.rest.api.domain.cms.Allegation;
+import gov.ca.cwds.rest.api.domain.cms.AllegationPerpetratorHistory;
 import gov.ca.cwds.rest.api.domain.cms.Assignment;
 import gov.ca.cwds.rest.api.domain.cms.ChildClient;
 import gov.ca.cwds.rest.api.domain.cms.Client;
@@ -51,6 +52,7 @@ import gov.ca.cwds.rest.api.domain.cms.ReferralClient;
 import gov.ca.cwds.rest.api.domain.cms.Reporter;
 import gov.ca.cwds.rest.business.rules.LACountyTrigger;
 import gov.ca.cwds.rest.business.rules.NonLACountyTriggers;
+import gov.ca.cwds.rest.business.rules.Reminders;
 import gov.ca.cwds.rest.messages.MessageBuilder;
 import gov.ca.cwds.rest.services.ScreeningToReferralService;
 import gov.ca.cwds.rest.services.cms.AddressService;
@@ -111,6 +113,7 @@ public class R06224DontAllowBlanksInReferralStartDateAndTimeTest {
   private DrmsDocumentService drmsDocumentService;
   private DrmsDocumentDao drmsDocumentDao;
   private SsaName3Dao ssaName3Dao;
+  private Reminders reminders;
 
   @SuppressWarnings("javadoc")
   @Rule
@@ -179,12 +182,14 @@ public class R06224DontAllowBlanksInReferralStartDateAndTimeTest {
     assignmentDao = mock(AssignmentDao.class);
     assignmentService = new AssignmentService(assignmentDao, staffPersonIdRetriever);
 
+    reminders = mock(Reminders.class);
+
     screeningToReferralService = new ScreeningToReferralService(referralService, clientService,
         allegationService, crossReportService, referralClientService, reporterService,
         addressService, clientAddressService, longTextService, childClientService,
         assignmentService, Validation.buildDefaultValidatorFactory().getValidator(), referralDao,
         staffPersonIdRetriever, new MessageBuilder(), drmsDocumentService, ssaName3Dao,
-        allegationPerpetratorHistoryService);
+        allegationPerpetratorHistoryService, reminders);
   }
 
   /**
@@ -294,6 +299,16 @@ public class R06224DontAllowBlanksInReferralStartDateAndTimeTest {
         new gov.ca.cwds.data.persistence.cms.Assignment("6789012ABC", assignment, "ABC");
     when(assignmentDao.create(any(gov.ca.cwds.data.persistence.cms.Assignment.class)))
         .thenReturn(assignmentToCreate);
+
+    AllegationPerpetratorHistory allegationPerpetratorHistory = MAPPER.readValue(
+        fixture("fixtures/domain/ScreeningToReferral/valid/validAllegationPerpetratorHistory.json"),
+        AllegationPerpetratorHistory.class);
+    gov.ca.cwds.data.persistence.cms.AllegationPerpetratorHistory allegationPerpetratorHistoryToCreate =
+        new gov.ca.cwds.data.persistence.cms.AllegationPerpetratorHistory("123PHERAVQ",
+            allegationPerpetratorHistory, "ABC");
+    when(allegationPerpetratorHistoryDao
+        .create(any(gov.ca.cwds.data.persistence.cms.AllegationPerpetratorHistory.class)))
+            .thenReturn(allegationPerpetratorHistoryToCreate);
 
     ScreeningToReferral screeningToReferral =
         MAPPER.readValue(fixture("fixtures/domain/ScreeningToReferral/invalid/startedAtEmpty.json"),
