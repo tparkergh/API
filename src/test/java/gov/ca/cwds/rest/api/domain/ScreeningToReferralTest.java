@@ -48,7 +48,7 @@ public class ScreeningToReferralTest {
   private Set<Allegation> allegations = new HashSet<Allegation>();
   private long id = 2;
 
-  private TestSystemCodeCache TestSystemCodeCache = new TestSystemCodeCache();
+  private TestSystemCodeCache testSystemCodeCache = new TestSystemCodeCache();
 
   @Before
   public void setup() {
