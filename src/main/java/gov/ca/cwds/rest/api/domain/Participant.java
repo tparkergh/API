@@ -333,7 +333,7 @@ public class Participant extends ReportingDomain implements Request, Response {
       return;
     }
     if (this.addresses == null) {
-      this.addresses = new HashSet<Address>();
+      this.addresses = new HashSet<>();
     }
     this.addresses.addAll(addresses);
   }

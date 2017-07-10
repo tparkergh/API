@@ -54,6 +54,7 @@ import gov.ca.cwds.rest.api.domain.cms.ReferralClient;
 import gov.ca.cwds.rest.api.domain.cms.Reporter;
 import gov.ca.cwds.rest.business.rules.LACountyTrigger;
 import gov.ca.cwds.rest.business.rules.NonLACountyTriggers;
+import gov.ca.cwds.rest.business.rules.Reminders;
 import gov.ca.cwds.rest.messages.MessageBuilder;
 import gov.ca.cwds.rest.services.ScreeningToReferralService;
 import gov.ca.cwds.rest.services.cms.AddressService;
@@ -114,6 +115,7 @@ public class R07577CreateDummyDocsForReferralTest {
   private DrmsDocumentService drmsDocumentService;
   private DrmsDocumentDao drmsDocumentDao;
   private SsaName3Dao ssaName3Dao;
+  private Reminders reminders;
 
   private gov.ca.cwds.data.persistence.cms.Referral referral;
 
@@ -185,12 +187,14 @@ public class R07577CreateDummyDocsForReferralTest {
     assignmentDao = mock(AssignmentDao.class);
     assignmentService = new AssignmentService(assignmentDao, staffPersonIdRetriever);
 
+    reminders = mock(Reminders.class);
+
     screeningToReferralService = new ScreeningToReferralService(referralService, clientService,
         allegationService, crossReportService, referralClientService, reporterService,
         addressService, clientAddressService, longTextService, childClientService,
         assignmentService, Validation.buildDefaultValidatorFactory().getValidator(), referralDao,
         staffPersonIdRetriever, new MessageBuilder(), drmsDocumentService, ssaName3Dao,
-        allegationPerpetratorHistoryService);
+        allegationPerpetratorHistoryService, reminders);
   }
 
   /**

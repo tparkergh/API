@@ -66,19 +66,25 @@ public class PostedScreeningToReferral extends ScreeningToReferral implements Re
         crossReports, allegations);
   }
 
-  public static PostedScreeningToReferral createWithDefaults(String id, ScreeningToReferral referral,
-      Set<Participant> resultParticipants, Set<CrossReport> resultCrossReports,Set<Allegation> resultAllegations){
+  /**
+   * @param id - id
+   * @param referral - referral
+   * @param resultParticipants - resultParticipants
+   * @param resultCrossReports - resultCrossReports
+   * @param resultAllegations - resultAllegations
+   * @return the postedScreeningToReferral
+   */
+  public static PostedScreeningToReferral createWithDefaults(String id,
+      ScreeningToReferral referral, Set<Participant> resultParticipants,
+      Set<CrossReport> resultCrossReports, Set<Allegation> resultAllegations) {
 
-    return new PostedScreeningToReferral(referral.getId(),
-        id, REFERRAL_TABLE_NAME, referral.getEndedAt(),
-        referral.getIncidentCounty(), referral.getIncidentDate(),
-        referral.getLocationType(), referral.getCommunicationMethod(),
-        referral.getName(), referral.getReportNarrative(),
-        referral.getReference(), referral.getResponseTime(),
-        referral.getStartedAt(), referral.getAssignee(),
-        referral.getAdditionalInformation(), referral.getScreeningDecision(),
-        referral.getScreeningDecisionDetail(), referral.getAddress(),
-        resultParticipants, resultCrossReports, resultAllegations);
+    return new PostedScreeningToReferral(referral.getId(), id, REFERRAL_TABLE_NAME,
+        referral.getEndedAt(), referral.getIncidentCounty(), referral.getIncidentDate(),
+        referral.getLocationType(), referral.getCommunicationMethod(), referral.getName(),
+        referral.getReportNarrative(), referral.getReference(), referral.getResponseTime(),
+        referral.getStartedAt(), referral.getAssignee(), referral.getAdditionalInformation(),
+        referral.getScreeningDecision(), referral.getScreeningDecisionDetail(),
+        referral.getAddress(), resultParticipants, resultCrossReports, resultAllegations);
 
   }
 

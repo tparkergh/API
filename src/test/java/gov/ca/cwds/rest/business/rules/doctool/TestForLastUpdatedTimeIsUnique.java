@@ -58,6 +58,7 @@ import gov.ca.cwds.rest.api.domain.cms.Reporter;
 import gov.ca.cwds.rest.api.domain.error.ErrorMessage;
 import gov.ca.cwds.rest.business.rules.LACountyTrigger;
 import gov.ca.cwds.rest.business.rules.NonLACountyTriggers;
+import gov.ca.cwds.rest.business.rules.Reminders;
 import gov.ca.cwds.rest.messages.MessageBuilder;
 import gov.ca.cwds.rest.services.ScreeningToReferralService;
 import gov.ca.cwds.rest.services.cms.AddressService;
@@ -118,6 +119,7 @@ public class TestForLastUpdatedTimeIsUnique {
   private DrmsDocumentDao drmsDocumentDao;
   private AssignmentDao assignmentDao;
   private SsaName3Dao ssaName3Dao;
+  private Reminders reminders;
 
   private static gov.ca.cwds.data.persistence.cms.Referral createdReferal = null;
   private static gov.ca.cwds.data.persistence.cms.Address createdAddress = null;
@@ -199,12 +201,14 @@ public class TestForLastUpdatedTimeIsUnique {
     assignmentDao = mock(AssignmentDao.class);
     assignmentService = new AssignmentService(assignmentDao, staffPersonIdRetriever);
 
+    reminders = mock(Reminders.class);
+
     screeningToReferralService = new ScreeningToReferralService(referralService, clientService,
         allegationService, crossReportService, referralClientService, reporterService,
         addressService, clientAddressService, longTextService, childClientService,
         assignmentService, Validation.buildDefaultValidatorFactory().getValidator(), referralDao,
         staffPersonIdRetriever, new MessageBuilder(), drmsDocumentService, ssaName3Dao,
-        allegationPerpetratorHistoryService);
+        allegationPerpetratorHistoryService, reminders);
   }
 
   /**
