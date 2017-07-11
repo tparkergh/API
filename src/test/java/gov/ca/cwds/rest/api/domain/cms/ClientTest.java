@@ -6,18 +6,21 @@ import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.greaterThanOrEqualTo;
 import static org.hamcrest.Matchers.is;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
-
+import gov.ca.cwds.fixture.ClientResourceBuilder;
 import java.io.IOException;
+import java.util.Date;
 import java.util.HashSet;
 
 import javax.ws.rs.client.Entity;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
+import org.apache.commons.lang3.time.DateFormatUtils;
 import org.junit.After;
 import org.junit.ClassRule;
 import org.junit.Test;
@@ -66,6 +69,7 @@ public class ClientTest implements DomainTestTemplate {
   private String lastUpdatedId = "0X5";
 
   private String existingClientId = "ABC1234567";
+  private String lastUpdatedTime = "2004-03-31T09:45:58.000-0800";
   private Boolean adjudicatedDelinquentIndicator = Boolean.FALSE;
   private String adoptionStatusCode = "A";
   private String alienRegistrationNumber = "";
@@ -156,7 +160,7 @@ public class ClientTest implements DomainTestTemplate {
   @Test
   public void testPersistentConstructor() throws Exception {
 
-    Client domain = new Client(existingClientId, adjudicatedDelinquentIndicator, adoptionStatusCode,
+    Client domain = new Client(lastUpdatedTime, existingClientId, adjudicatedDelinquentIndicator, adoptionStatusCode,
         alienRegistrationNumber, birthCity, birthCountryCodeType, birthDate, birthFacilityName,
         birthStateCodeType, birthplaceVerifiedIndicator, childClientIndicatorVar, clientIndexNumber,
         commentDescription, commonFirstName, commonMiddleName, commonLastName,
@@ -272,7 +276,7 @@ public class ClientTest implements DomainTestTemplate {
 
     Client vc = validClient();
 
-    Client domain = new Client(existingClientId, adjudicatedDelinquentIndicator, adoptionStatusCode,
+    Client domain = new Client(existingClientId, lastUpdatedTime, adjudicatedDelinquentIndicator, adoptionStatusCode,
         alienRegistrationNumber, birthCity, birthCountryCodeType, birthDate, birthFacilityName,
         birthStateCodeType, birthplaceVerifiedIndicator, childClientIndicatorVar, clientIndexNumber,
         commentDescription, commonFirstName, commonMiddleName, commonLastName,
@@ -591,7 +595,6 @@ public class ClientTest implements DomainTestTemplate {
         is(equalTo(validClient)));
 
   }
-
 
   @Override
   @Test
@@ -3260,6 +3263,14 @@ public class ClientTest implements DomainTestTemplate {
 
   }
 
+  @Test
+  public void shouldReturnTrueWhenOtherClientHasNotBeenModified(){
+
+    Client client1 = new ClientResourceBuilder().setLastUpdateTime("2004-03-31T09:45:58.000-0800").build();
+    Client client2 = new ClientResourceBuilder().setLastUpdateTime("2004-03-31T09:45:58.000-0800").build();
+    assertTrue("Expect client 1 to have same last update time ", client1.hasSameLastUpdate(client2));
+  }
+
 
   private Client validClient() throws JsonParseException, JsonMappingException, IOException {
     Client vc =
@@ -3269,7 +3280,7 @@ public class ClientTest implements DomainTestTemplate {
 
 
   private Client validDomainClient() {
-    Client domain = new Client(existingClientId, adjudicatedDelinquentIndicator, adoptionStatusCode,
+    Client domain = new Client(existingClientId, lastUpdatedTime, adjudicatedDelinquentIndicator, adoptionStatusCode,
         alienRegistrationNumber, birthCity, birthCountryCodeType, birthDate, birthFacilityName,
         birthStateCodeType, birthplaceVerifiedIndicator, childClientIndicatorVar, clientIndexNumber,
         commentDescription, commonFirstName, commonMiddleName, commonLastName,
