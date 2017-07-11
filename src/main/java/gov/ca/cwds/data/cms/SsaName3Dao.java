@@ -34,7 +34,6 @@ public class SsaName3Dao {
 
   private SessionFactory sessionFactory;
   private short s = 0;
-  // private final static DateFormat tf = new SimpleDateFormat("yyyy-MM-dd-HH.mm.ss.SSS");
 
   /**
    * Constructor
@@ -47,43 +46,14 @@ public class SsaName3Dao {
   }
 
   /**
-   * @param c client
-   */
-  public void ssaName3(Client c) {
-
-  }
-
-  /**
-   * @param a address
-   */
-  public void ssaName3(Address a) {
-
-  }
-
-  /**
-   * @param o other client name
-   */
-  public void ssaName3(OtherClientName o) {
-
-  }
-
-  /**
-   * @param s care provider
-   */
-  public void ssaName3(SubstituteCareProvider s) {
-
-  }
-
-  /**
    * @param crudOperation I/U/D
    * @param address address
    * @return status code
    */
-  public String addressSsaname3(String crudOperation, Address address) {
+  public void addressSsaname3(String crudOperation, Address address) {
     callStoredProc("ADR_PHTT", crudOperation, address.getId(), "A", " ", " ", " ",
         address.getStreetNumber(), address.getStreetName(), address.getGovernmentEntityCd(),
         address.getLastUpdatedTime(), address.getLastUpdatedId());
-    return null;
   }
 
   /**
@@ -91,11 +61,10 @@ public class SsaName3Dao {
    * @param client client
    * @return status code
    */
-  public String clientSsaname3(String crudOperation, Client client) {
+  public void clientSsaname3(String crudOperation, Client client) {
     callStoredProc("CLT_PHTT", crudOperation, client.getId(), "C", client.getFirstName(),
         client.getMiddleName(), client.getLastName(), " ", " ", s, client.getLastUpdatedTime(),
         client.getLastUpdatedId());
-    return null;
   }
 
 
@@ -104,12 +73,11 @@ public class SsaName3Dao {
    * @param otherClientName other client name object
    * @return status code
    */
-  public String otherClientSsaname3(String crudOperation, OtherClientName otherClientName) {
+  public void otherClientSsaname3(String crudOperation, OtherClientName otherClientName) {
     callStoredProc("CLT_PHTT", crudOperation, otherClientName.getThirdId(), "N",
         otherClientName.getFirstName(), otherClientName.getMiddleName(),
         otherClientName.getLastName(), " ", " ", s, otherClientName.getLastUpdatedTime(),
         otherClientName.getLastUpdatedId());
-    return null;
   }
 
   /**
@@ -117,13 +85,12 @@ public class SsaName3Dao {
    * @param substituteCareProvider care provider
    * @return status code
    */
-  public String subCareProviderSsaname3(String crudOperation,
+  public void subCareProviderSsaname3(String crudOperation,
       SubstituteCareProvider substituteCareProvider) {
     callStoredProc("SCP_PHTT", crudOperation, substituteCareProvider.getId(), " ",
         substituteCareProvider.getFirstName(), substituteCareProvider.getMiddleName(),
         substituteCareProvider.getLastName(), " ", " ", s,
         substituteCareProvider.getLastUpdatedTime(), substituteCareProvider.getLastUpdatedId());
-    return null;
   }
 
   /**
@@ -144,10 +111,9 @@ public class SsaName3Dao {
    * @param updateId updated by user id
    * @return DB2 result code
    */
-  protected String callStoredProc(String tableName, String crudOper, String identifier,
-      String nameCd, String firstName, String middleName, String lastName, String streettNumber,
-      String streetName, Short gvrEntc, Date updateTimeStamp, String updateId) {
-    String returnCd = null;
+  protected void callStoredProc(String tableName, String crudOper, String identifier, String nameCd,
+      String firstName, String middleName, String lastName, String streettNumber, String streetName,
+      Short gvrEntc, Date updateTimeStamp, String updateId) {
     Session session = sessionFactory.getCurrentSession();
     final String storedProcName = "SPSSANAME3";
     final String schema =
@@ -190,7 +156,6 @@ public class SsaName3Dao {
       final String returnStatus = (String) q.getOutputParameterValue("RETSTATUS");
       final String returnMessage = (String) q.getOutputParameterValue("RETMESSAG");
       int returnCode = Integer.parseInt(returnStatus);
-      returnCd = returnStatus;
 
       LOGGER.info("storeProcReturnStatus: {}, storeProcreturnMessage: {}", returnStatus,
           returnMessage);
@@ -204,10 +169,8 @@ public class SsaName3Dao {
       }
 
     } catch (HibernateException h) {
-      throw new DaoException(h);
+      throw new DaoException("Call to Stored Procedure failed - " + h);
     }
-
-    return returnCd;
   }
 
 }

@@ -1,0 +1,145 @@
+package gov.ca.cwds.rest.business.rules;
+
+import java.io.Serializable;
+
+import org.hibernate.HibernateException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import com.google.inject.Inject;
+
+import gov.ca.cwds.data.DaoException;
+import gov.ca.cwds.data.cms.AddressUcDao;
+import gov.ca.cwds.data.cms.ClientUcDao;
+import gov.ca.cwds.data.persistence.cms.Address;
+import gov.ca.cwds.data.persistence.cms.AddressUc;
+import gov.ca.cwds.data.persistence.cms.Client;
+import gov.ca.cwds.data.persistence.cms.ClientUc;
+
+/**
+ * Business layer object to update upper case tables
+ * 
+ *
+ * @author CWDS API Team
+ */
+public class UpperCaseTables {
+
+  private static final String SOURCE_TBL_CD_CLIENT = "C";
+  private static final String SOURCE_TBL_CD_OTH_CLIENT = "N";
+  private static final String SOURCE_TBL_CD_ADDRESS = "A";
+
+  private static final Logger LOGGER = LoggerFactory.getLogger(UpperCaseTables.class);
+
+  private ClientUcDao clientUcDao;
+  private AddressUcDao addressUcDao;
+
+  /**
+   * @param clientUcDao - client upper case
+   * @param addressUcDao - address upper case
+   */
+  @Inject
+  public UpperCaseTables(ClientUcDao clientUcDao, AddressUcDao addressUcDao) {
+    this.clientUcDao = clientUcDao;
+    this.addressUcDao = addressUcDao;
+  }
+
+  /**
+   * @param client Client creates the client upper case with the client Id
+   */
+  public void createClientUc(Client client) {
+    if (client.getCommonFirstName() != null) {
+      ClientUc clientUc = new ClientUc();
+      clientUc.setPktableId(client.getPrimaryKey());
+      clientUc.setSourceTableCode(SOURCE_TBL_CD_CLIENT);
+      clientUc.setCommonFirstName(client.getCommonFirstName().toUpperCase());
+      clientUc.setCommonMiddleName(client.getCommonMiddleName().toUpperCase());
+      clientUc.setCommonLastName(client.getCommonLastName().toUpperCase());
+      // clientUc.setLastUpdatedId(client.getLastUpdatedId());
+      // clientUc.setLastUpdatedTime(client.getLastUpdatedTime());
+      try {
+        clientUcDao.create(clientUc);
+      } catch (HibernateException h) {
+        throw new DaoException("Insert to client_uc failed - " + h);
+      }
+    }
+  }
+
+  /**
+   * @param client Client updates the client upper case with the client Id
+   */
+  public void updateClientUc(Client client) {
+    if (client.getCommonFirstName() != null) {
+      ClientUc clientUc = new ClientUc();
+      clientUc.setPktableId(client.getPrimaryKey());
+      clientUc.setSourceTableCode(SOURCE_TBL_CD_CLIENT);
+      clientUc.setCommonFirstName(client.getCommonFirstName().toUpperCase());
+      clientUc.setCommonMiddleName(client.getCommonMiddleName().toUpperCase());
+      clientUc.setCommonLastName(client.getCommonLastName().toUpperCase());
+      clientUc.setLastUpdatedId(client.getLastUpdatedId());
+      clientUc.setLastUpdatedTime(client.getLastUpdatedTime());
+      try {
+        clientUcDao.update(clientUc);
+      } catch (HibernateException h) {
+        throw new DaoException("Update to client_uc failed - " + h);
+      }
+    }
+  }
+
+  /**
+   * @param pktableId primary key to delete the client upper case
+   */
+  public void deleteClientUc(Serializable pktableId) {
+    if (pktableId != null) {
+      ClientUc clientUc = new ClientUc();
+      clientUc.setPktableId((String) pktableId);
+      clientUcDao.delete(clientUc);
+    }
+  }
+
+  /**
+   * @param address Address creates the address upper case with the address Id
+   */
+  public void createAddressUc(Address address) {
+    if (address.getStreetName() != null) {
+      AddressUc addressUc = new AddressUc();
+      addressUc.setPktableId(address.getPrimaryKey());
+      addressUc.setSourceTableCode(SOURCE_TBL_CD_ADDRESS);
+      addressUc.setCityName(address.getCity().toUpperCase());
+      addressUc.setStreetNumber(address.getStreetNumber().toUpperCase());
+      addressUc.setStreetName(address.getStreetName().toUpperCase());
+      addressUc.setLastUpdatedId(address.getLastUpdatedId());
+      addressUc.setLastUpdatedTime(address.getLastUpdatedTime());
+      addressUcDao.create(addressUc);
+    }
+  }
+
+  /**
+   * @param address Address updates the address upper case with the address Id
+   */
+  public void updateAddressUc(Address address) {
+    if (address.getStreetName() != null) {
+      AddressUc addressUc = new AddressUc();
+      addressUc.setPktableId(address.getPrimaryKey());
+      addressUc.setSourceTableCode(SOURCE_TBL_CD_ADDRESS);
+      addressUc.setCityName(address.getCity().toUpperCase());
+      addressUc.setStreetNumber(address.getStreetNumber().toUpperCase());
+      addressUc.setStreetName(address.getStreetName().toUpperCase());
+      addressUc.setLastUpdatedId(address.getLastUpdatedId());
+      addressUc.setLastUpdatedTime(address.getLastUpdatedTime());
+      addressUcDao.update(addressUc);
+    }
+  }
+
+  /**
+   * @param pktableId primary key to deletes the address upper case
+   */
+  public void deleteAddressUc(Serializable pktableId) {
+    if (pktableId != null) {
+      AddressUc addressUc = new AddressUc();
+      addressUc.setPktableId((String) pktableId);
+      addressUcDao.delete(addressUc);
+    }
+  }
+
+
+}

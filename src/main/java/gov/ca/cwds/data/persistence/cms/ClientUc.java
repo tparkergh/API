@@ -126,6 +126,43 @@ public class ClientUc extends CmsPersistentObject {
     return commonMiddleName;
   }
 
+
+
+  /**
+   * @param pktableId the pktableId to set
+   */
+  public void setPktableId(String pktableId) {
+    this.pktableId = pktableId;
+  }
+
+  /**
+   * @param sourceTableCode the sourceTableCode to set
+   */
+  public void setSourceTableCode(String sourceTableCode) {
+    this.sourceTableCode = sourceTableCode;
+  }
+
+  /**
+   * @param commonFirstName the commonFirstName to set
+   */
+  public void setCommonFirstName(String commonFirstName) {
+    this.commonFirstName = commonFirstName;
+  }
+
+  /**
+   * @param commonLastName the commonLastName to set
+   */
+  public void setCommonLastName(String commonLastName) {
+    this.commonLastName = commonLastName;
+  }
+
+  /**
+   * @param commonMiddleName the commonMiddleName to set
+   */
+  public void setCommonMiddleName(String commonMiddleName) {
+    this.commonMiddleName = commonMiddleName;
+  }
+
   /**
    * {@inheritDoc}
    *

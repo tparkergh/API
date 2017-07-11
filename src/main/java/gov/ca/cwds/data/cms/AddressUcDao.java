@@ -5,17 +5,17 @@ import org.hibernate.SessionFactory;
 import com.google.inject.Inject;
 
 import gov.ca.cwds.data.CrudsDaoImpl;
-import gov.ca.cwds.data.persistence.cms.ClientUc;
+import gov.ca.cwds.data.persistence.cms.AddressUc;
 import gov.ca.cwds.inject.CmsSessionFactory;
 
 /**
- * Hibernate DAO for DB2 {@link ClientUc}.
+ * Hibernate DAO for DB2 {@link AddressUc}.
  * 
  * @author CWDS API Team
  * @see CmsSessionFactory
  * @see SessionFactory
  */
-public class ClientUcDao extends CrudsDaoImpl<ClientUc> {
+public class AddressUcDao extends CrudsDaoImpl<AddressUc> {
 
   /**
    * Constructor
@@ -23,7 +23,7 @@ public class ClientUcDao extends CrudsDaoImpl<ClientUc> {
    * @param sessionFactory The sessionFactory
    */
   @Inject
-  public ClientUcDao(@CmsSessionFactory SessionFactory sessionFactory) {
+  public AddressUcDao(@CmsSessionFactory SessionFactory sessionFactory) {
     super(sessionFactory);
   }
 
