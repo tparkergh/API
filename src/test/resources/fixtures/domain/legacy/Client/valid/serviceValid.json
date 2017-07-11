@@ -35,6 +35,7 @@
   "immigrationStatusType": 0,
   "incapacitatedParentCode": "U",
   "individualHealthCarePlanIndicator": false,
+  "lastUpdatedTime": "",
   "limitationOnScpHealthIndicator": false,
   "literateCode": "U",
   "maritalCohabitatnHstryIndicatorVar": false,

@@ -35,6 +35,13 @@
     "last_name":"Reporter",
     "legacy_id":"",
     "legacy_source_table":"",
+    "legacy_descriptor": {
+      "legacy_id": "",
+      "legacy_ui_id": "",
+      "legacy_last_updated": "",
+      "legacy_table_name": "",
+      "legacy_table_description": ""
+    },
     "person_id":"",
     "roles":[
        "Mandated Reporter"
@@ -49,7 +56,14 @@
         "state":"AK",
         "street_address":"123 Fake St",
         "type":"Home",
-        "zip":"11222"
+        "zip":"11222",
+        "legacy_descriptor": {
+          "legacy_id": "",
+          "legacy_ui_id": "",
+          "legacy_last_updated": "",
+          "legacy_table_name": "ADDRS_T",
+          "legacy_table_description": "Address"
+         }
        }
     ]
   },
