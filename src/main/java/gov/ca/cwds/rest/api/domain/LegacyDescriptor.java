@@ -1,15 +1,19 @@
 package gov.ca.cwds.rest.api.domain;
 
+import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
+
 import com.fasterxml.jackson.annotation.JsonProperty;
+
 import io.dropwizard.jackson.JsonSnakeCase;
 import io.swagger.annotations.ApiModelProperty;
 
+/**
+ * @author CWDS API Team
+ *
+ */
 @JsonSnakeCase
 public class LegacyDescriptor {
-  /**
-   * Serialization version
-   */
-  private static final long serialVersionUID = 1L;
 
   @JsonProperty("legacy_id")
   @ApiModelProperty(required = false, readOnly = false, value = "Legacy Id", example = "12345")
@@ -19,20 +23,35 @@ public class LegacyDescriptor {
   @JsonProperty("legacy_ui_id")
   private String uiId;
 
-  @ApiModelProperty(required = false, readOnly = false, value = "Legacy Last Updated Time", example = "2010-10-01T15:26:42.000-0700")
+  @ApiModelProperty(required = false, readOnly = false, value = "Legacy Last Updated Time",
+      example = "2010-10-01T15:26:42.000-0700")
   @JsonProperty("legacy_last_updated")
   private String lastUpdated;
 
   @JsonProperty("legacy_table_name")
-  @ApiModelProperty(required = false, readOnly = false, value = "Legacy Table Name", example = "client_t")
+  @ApiModelProperty(required = false, readOnly = false, value = "Legacy Table Name",
+      example = "client_t")
   private String tableName;
 
   @JsonProperty("legacy_table_description")
-  @ApiModelProperty(required = false, readOnly = false, value = "Legacy Table Description", example = "Client")
+  @ApiModelProperty(required = false, readOnly = false, value = "Legacy Table Description",
+      example = "Client")
   private String tableDescription;
 
-  public LegacyDescriptor(){ }
+  /**
+   * Default constructor
+   */
+  public LegacyDescriptor() {
+    // no-opt
+  }
 
+  /**
+   * @param id teh id
+   * @param uiId the UiId
+   * @param lastUpdated the lastupdatedTime
+   * @param tableName the tableName
+   * @param tableDescription the tableDescrption
+   */
   public LegacyDescriptor(String id, String uiId, String lastUpdated, String tableName,
       String tableDescription) {
     this.id = id;
@@ -42,62 +61,59 @@ public class LegacyDescriptor {
     this.tableDescription = tableDescription;
   }
 
+  /**
+   * @return the id
+   */
   public String getId() {
     return id;
   }
 
+  /**
+   * @return the uiId
+   */
   public String getUiId() {
     return uiId;
   }
 
+  /**
+   * @return the lastUpdated
+   */
   public String getLastUpdated() {
     return lastUpdated;
   }
 
+  /**
+   * @return the tableName
+   */
   public String getTableName() {
     return tableName;
   }
 
-  @Override
-  public boolean equals(Object o) {
-    if (this == o) {
-      return true;
-    }
-    if (o == null || getClass() != o.getClass()) {
-      return false;
-    }
-
-    LegacyDescriptor that = (LegacyDescriptor) o;
-
-    if (id != null ? !id.equals(that.id) : that.id != null) {
-      return false;
-    }
-    if (uiId != null ? !uiId.equals(that.uiId) : that.uiId != null) {
-      return false;
-    }
-    if (lastUpdated != null ? !lastUpdated.equals(that.lastUpdated) : that.lastUpdated != null) {
-      return false;
-    }
-    if (tableName != null ? !tableName.equals(that.tableName) : that.tableName != null) {
-      return false;
-    }
-    return !(tableDescription != null ? !tableDescription.equals(that.tableDescription)
-        : that.tableDescription != null);
-
-  }
-
-  @Override
-  public int hashCode() {
-    int result = id != null ? id.hashCode() : 0;
-    result = 31 * result + (uiId != null ? uiId.hashCode() : 0);
-    result = 31 * result + (lastUpdated != null ? lastUpdated.hashCode() : 0);
-    result = 31 * result + (tableName != null ? tableName.hashCode() : 0);
-    result = 31 * result + (tableDescription != null ? tableDescription.hashCode() : 0);
-    return result;
-  }
-
+  /**
+   * @return the tableDescription
+   */
   public String getTableDescription() {
     return tableDescription;
+  }
+
+  /**
+   * {@inheritDoc}
+   *
+   * @see java.lang.Object#hashCode()
+   */
+  @Override
+  public final int hashCode() {
+    return HashCodeBuilder.reflectionHashCode(this, false);
+  }
+
+  /**
+   * {@inheritDoc}
+   *
+   * @see java.lang.Object#equals(java.lang.Object)
+   */
+  @Override
+  public final boolean equals(Object obj) {
+    return EqualsBuilder.reflectionEquals(this, obj, false);
   }
 
 }
