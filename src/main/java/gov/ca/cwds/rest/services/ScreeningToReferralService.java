@@ -147,7 +147,6 @@ public class ScreeningToReferralService implements CrudsService {
    *        {@link gov.ca.cwds.rest.services.cms.StaffPersonIdRetriever} objects.
    * @param messageBuilder log message
    * @param drmsDocumentService - cms DrmsDocumentService
-   * @param ssaName3Dao the ssaName3Dao
    * @param allegationPerpetratorHistoryService the allegationPerpetratorHistoryService
    * @param reminders - reminders
    */

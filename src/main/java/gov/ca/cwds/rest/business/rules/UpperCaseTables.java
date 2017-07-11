@@ -43,17 +43,8 @@ public class UpperCaseTables {
     this.addressUcDao = addressUcDao;
   }
 
-  /**
-   * @param nameOrAddress convert to upper case
-   */
-  protected String convertToUpperCase(String nameOrAddress) {
-    String ucnameOrAddress;
-    if (nameOrAddress != null) {
-      ucnameOrAddress = nameOrAddress.toUpperCase();
-    } else {
-      ucnameOrAddress = nameOrAddress;
-    }
-    return ucnameOrAddress;
+  protected String convertToUpperCase(String s) {
+    return s != null ? s.toUpperCase() : null;
   }
 
   /**
