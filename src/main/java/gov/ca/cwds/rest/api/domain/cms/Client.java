@@ -2,7 +2,6 @@ package gov.ca.cwds.rest.api.domain.cms;
 
 import static gov.ca.cwds.data.persistence.cms.CmsPersistentObject.CMS_ID_LEN;
 
-import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -36,6 +35,7 @@ import io.swagger.annotations.ApiModelProperty;
  */
 @ApiModel
 public class Client extends ReportingDomain implements Request, Response {
+
   public static final String DEFAULT_ADOPTION_STATUS_CODE = "N";
   public static final short DEFAULT_CODE = 0;
   public static final Boolean DEFAULT_CHILD_CLIENT_INDICATOR = false;
@@ -57,7 +57,8 @@ public class Client extends ReportingDomain implements Request, Response {
    */
   private static final long serialVersionUID = 1L;
 
-  @ApiModelProperty(required = false, readOnly = false, value = "Last Updated Time", example = "2004-03-31T09:45:58.000-0800")
+  @ApiModelProperty(required = false, readOnly = false, value = "Last Updated Time",
+      example = "2004-03-31T09:45:58.000-0800")
   private String lastUpdatedTime;
 
   @Size(max = CMS_ID_LEN)
@@ -405,6 +406,7 @@ public class Client extends ReportingDomain implements Request, Response {
 
   /**
    * @param existingClientId - existingClientId
+   * @param lastUpdatedTime - lastUpdatedTime
    * @param adjudicatedDelinquentIndicator - adjudicatedDelinquentIndicator
    * @param adoptionStatusCode - adoptionStatusCode
    * @param alienRegistrationNumber - alienRegistrationNumber
@@ -545,7 +547,7 @@ public class Client extends ReportingDomain implements Request, Response {
       @JsonProperty("address") Set<Address> address) {
     super();
     this.clientId = existingClientId;
-    this.lastUpdatedTime =  lastUpdatedTime;
+    this.lastUpdatedTime = lastUpdatedTime;
     this.adjudicatedDelinquentIndicator = adjudicatedDelinquentIndicator;
     this.adoptionStatusCode = adoptionStatusCode;
     this.alienRegistrationNumber = alienRegistrationNumber;
@@ -621,7 +623,7 @@ public class Client extends ReportingDomain implements Request, Response {
    */
   public Client(gov.ca.cwds.data.persistence.cms.Client persistedClient, boolean isExist) {
     this.clientId = isExist ? persistedClient.getId() : "";
-    this.lastUpdatedTime =  DomainChef.cookStrictTimestamp(persistedClient.getLastUpdatedTime());
+    this.lastUpdatedTime = DomainChef.cookStrictTimestamp(persistedClient.getLastUpdatedTime());
     this.adjudicatedDelinquentIndicator =
         DomainChef.uncookBooleanString(persistedClient.getAdjudicatedDelinquentIndicator());
     this.adoptionStatusCode = persistedClient.getAdoptionStatusCode();
@@ -720,7 +722,6 @@ public class Client extends ReportingDomain implements Request, Response {
 
   }
 
-
   /**
    * @param participant - participant
    * @param dateStarted - dateStarted
@@ -729,14 +730,15 @@ public class Client extends ReportingDomain implements Request, Response {
    */
   public static Client createWithDefaults(Participant participant, String dateStarted,
       String genderCode) {
-    return new Client("",participant.getLegacyDescriptor().getLastUpdated(), false, DEFAULT_ADOPTION_STATUS_CODE, "", "", DEFAULT_CODE,
-        participant.getDateOfBirth(), "", DEFAULT_CODE, false, DEFAULT_CHILD_CLIENT_INDICATOR, "",
-        "", participant.getFirstName(), participant.getMiddleName(), participant.getLastName(), "",
-        false, dateStarted, false, "", false, "", false, "", "", "", DEFAULT_CODE, "",
-        DEFAULT_ESTIMATED_DOB_CODE, DEFAULT_UNABLE_TO_DETAIN_CODE, "", genderCode, "", "",
-        DEFAULT_HISPANIC_ORIGIN_CODE, DEFAULT_CODE, DEFAULT_CODE, DEFAULT_INCAPCITATED_PARENT_CODE,
-        false, false, DEFAULT_LITERATE_CODE, false, DEFAULT_CODE, DEFAULT_MILITARY_STATUS_CODE, "",
-        "", DEFAULT_NAME_TYPE, false, false, "", false, DEFAULT_CODE, DEFAULT_CODE, DEFAULT_CODE,
+    return new Client("", participant.getLegacyDescriptor().getLastUpdated(), false,
+        DEFAULT_ADOPTION_STATUS_CODE, "", "", DEFAULT_CODE, participant.getDateOfBirth(), "",
+        DEFAULT_CODE, false, DEFAULT_CHILD_CLIENT_INDICATOR, "", "", participant.getFirstName(),
+        participant.getMiddleName(), participant.getLastName(), "", false, dateStarted, false, "",
+        false, "", false, "", "", "", DEFAULT_CODE, "", DEFAULT_ESTIMATED_DOB_CODE,
+        DEFAULT_UNABLE_TO_DETAIN_CODE, "", genderCode, "", "", DEFAULT_HISPANIC_ORIGIN_CODE,
+        DEFAULT_CODE, DEFAULT_CODE, DEFAULT_INCAPCITATED_PARENT_CODE, false, false,
+        DEFAULT_LITERATE_CODE, false, DEFAULT_CODE, DEFAULT_MILITARY_STATUS_CODE, "", "",
+        DEFAULT_NAME_TYPE, false, false, "", false, DEFAULT_CODE, DEFAULT_CODE, DEFAULT_CODE,
         DEFAULT_SECONDARY_LANGUAGE_TYPE, false, DEFAULT_SENSITIVITY_INDICATOR,
         DEFAULT_SOC158_PLACEMENT_CODE, false, DEFAULT_SOCIAL_SECURITY_NUM_CHANGE_CODE,
         participant.getSsn(), participant.getNameSuffix(), false, false,
@@ -1261,7 +1263,7 @@ public class Client extends ReportingDomain implements Request, Response {
     return EqualsBuilder.reflectionEquals(this, obj, false);
   }
 
-  public boolean hasSameLastUpdate(Client otherClient){
+  public boolean hasSameLastUpdate(Client otherClient) {
     return this.lastUpdatedTime.equals(otherClient.lastUpdatedTime);
   }
 
