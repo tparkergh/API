@@ -48,7 +48,6 @@ public class SsaName3Dao {
   /**
    * @param crudOperation I/U/D
    * @param address address
-   * @return status code
    */
   public void addressSsaname3(String crudOperation, Address address) {
     callStoredProc("ADR_PHTT", crudOperation, address.getId(), "A", " ", " ", " ",
@@ -59,7 +58,6 @@ public class SsaName3Dao {
   /**
    * @param crudOperation I/U/D
    * @param client client
-   * @return status code
    */
   public void clientSsaname3(String crudOperation, Client client) {
     callStoredProc("CLT_PHTT", crudOperation, client.getId(), "C", client.getFirstName(),
@@ -71,7 +69,6 @@ public class SsaName3Dao {
   /**
    * @param crudOperation I/U/D
    * @param otherClientName other client name object
-   * @return status code
    */
   public void otherClientSsaname3(String crudOperation, OtherClientName otherClientName) {
     callStoredProc("CLT_PHTT", crudOperation, otherClientName.getThirdId(), "N",
@@ -83,7 +80,6 @@ public class SsaName3Dao {
   /**
    * @param crudOperation I/U/D
    * @param substituteCareProvider care provider
-   * @return status code
    */
   public void subCareProviderSsaname3(String crudOperation,
       SubstituteCareProvider substituteCareProvider) {
@@ -109,7 +105,6 @@ public class SsaName3Dao {
    * @param gvrEntc government entity code
    * @param updateTimeStamp update timestamp
    * @param updateId updated by user id
-   * @return DB2 result code
    */
   protected void callStoredProc(String tableName, String crudOper, String identifier, String nameCd,
       String firstName, String middleName, String lastName, String streettNumber, String streetName,

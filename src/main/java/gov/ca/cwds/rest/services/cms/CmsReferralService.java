@@ -53,7 +53,6 @@ public class CmsReferralService implements CrudsService {
    * @param referralClientService the referralClientService
    * @param reporterService the reporterService
    * @param clientService the clientServiec
-   * @param clientUcService the clientUcServiec
    */
   @Inject
   public CmsReferralService(ReferralService referralService, ClientService clientService,
