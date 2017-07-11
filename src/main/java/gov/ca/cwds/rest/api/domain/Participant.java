@@ -6,6 +6,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 import javax.validation.Valid;
+import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
@@ -51,6 +52,11 @@ public class Participant extends ReportingDomain implements Request, Response {
       example = "ABC1234567")
   @Size(max = CMS_ID_LEN)
   private String legacyId;
+
+  @ApiModelProperty(required = true, readOnly = false)
+  @JsonProperty("legacy_descriptor")
+  @Valid
+  private LegacyDescriptor legacyDescriptor;
 
   @JsonProperty("first_name")
   @ApiModelProperty(required = false, readOnly = false, value = "First Name", example = "John")
@@ -248,6 +254,17 @@ public class Participant extends ReportingDomain implements Request, Response {
     this.legacyId = clientId;
   }
 
+  public LegacyDescriptor getLegacyDescriptor() {
+    if (legacyDescriptor == null)  {
+      legacyDescriptor = new LegacyDescriptor();
+    }
+    return legacyDescriptor;
+  }
+
+  public void setLegacyDescriptor(LegacyDescriptor legacyDescriptor) {
+    this.legacyDescriptor = legacyDescriptor;
+  }
+
   /**
    * @return the firstName
    */
@@ -378,6 +395,7 @@ public class Participant extends ReportingDomain implements Request, Response {
     result = prime * result + ((nameSuffix == null) ? 0 : nameSuffix.hashCode());
     result = prime * result + ((legacyId == null) ? 0 : legacyId.hashCode());
     result = prime * result + ((legacySourceTable == null) ? 0 : legacySourceTable.hashCode());
+    result = prime * result + ((legacyDescriptor == null) ? 0 : legacyDescriptor.hashCode());
     result = prime * result + ((roles == null) ? 0 : roles.hashCode());
     result = prime * result + (int) (screeningId ^ (screeningId >>> 32));
     result = prime * result + ((ssn == null) ? 0 : ssn.hashCode());
@@ -457,6 +475,12 @@ public class Participant extends ReportingDomain implements Request, Response {
         return false;
     } else if (!ssn.equals(other.ssn))
       return false;
+    if (legacyDescriptor == null) {
+      if (other.legacyDescriptor != null)
+        return false;
+    } else if (!legacyDescriptor.equals(other.legacyDescriptor))
+      return false;
+
     return true;
   }
 

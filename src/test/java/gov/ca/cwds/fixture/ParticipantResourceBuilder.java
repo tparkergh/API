@@ -1,5 +1,6 @@
 package gov.ca.cwds.fixture;
 
+import gov.ca.cwds.rest.api.domain.LegacyDescriptor;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
@@ -15,6 +16,7 @@ public class ParticipantResourceBuilder {
   long id = 5432;
   String legacySourceTable = "";
   String legacyId = "";
+  LegacyDescriptor legacyDescriptor = null;
   long personId = 12345;
   long screeningId = 12345;
   String firstName = "John";
@@ -51,6 +53,15 @@ public class ParticipantResourceBuilder {
    */
   public ParticipantResourceBuilder setLegacyId(String legacyId) {
     this.legacyId = legacyId;
+    return this;
+  }
+
+  /**
+   * @param legacyDescriptor - legacyDescriptor
+   * @return the legacyDescriptor
+   */
+  public ParticipantResourceBuilder setLegacyDescriptor(LegacyDescriptor legacyDescriptor) {
+    this.legacyDescriptor = legacyDescriptor;
     return this;
   }
 

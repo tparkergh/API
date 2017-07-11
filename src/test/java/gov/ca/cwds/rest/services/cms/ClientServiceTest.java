@@ -12,12 +12,15 @@ import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
+import gov.ca.cwds.fixture.ClientResourceBuilder;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 
 import javax.persistence.EntityNotFoundException;
 
+import org.apache.commons.lang3.time.DateFormatUtils;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Rule;
@@ -95,14 +98,22 @@ public class ClientServiceTest implements ServiceTestTemplate {
   @Test
   public void testFindReturnsCorrectEntity() throws Exception {
     String id = "AaiU7IW0Rt";
-    Client expected = MAPPER
-        .readValue(fixture("fixtures/domain/legacy/Client/valid/serviceValid.json"), Client.class);
+    Date updated = new Date();
+    String formatedUpdateTime = DateFormatUtils.format(updated, "yyyy-MM-dd'T'HH:mm:ss.SSZ");
+    Client expected = new ClientResourceBuilder()
+        .setExistingClientId(id)
+        .setLastUpdateTime(formatedUpdateTime)
+        .setConfidentialityActionDate("2016-03-11")
+        .setDeathDate("2017-06-11")
+        .setFatherParentalRightTermDate("2017-04-01")
+        .setMotherParentalRightTermDate("2015-01-10")
+        .setAddress(new HashSet())
+        .build();
     gov.ca.cwds.data.persistence.cms.Client client =
-        new gov.ca.cwds.data.persistence.cms.Client(id, expected, "04Z");
-
+        new gov.ca.cwds.data.persistence.cms.Client(id, expected, "04Z", updated );
     when(clientDao.find(id)).thenReturn(client);
     Client found = clientService.find(id);
-    assertThat(found, is(expected));
+    assertThat(found.getExistingClientId(), is(expected.getExistingClientId()));
   }
 
   @Override

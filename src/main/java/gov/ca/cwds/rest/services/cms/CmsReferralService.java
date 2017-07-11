@@ -94,6 +94,7 @@ public class CmsReferralService implements CrudsService {
 
         if (savedClient == null) {
           Client client = new Client(incomingClient.getExistingClientId(),
+              incomingClient.getLastUpdatedTime(),
               incomingClient.getAdjudicatedDelinquentIndicator(),
               incomingClient.getAdoptionStatusCode(), incomingClient.getAlienRegistrationNumber(),
               incomingClient.getBirthCity(), incomingClient.getBirthCountryCodeType(),
