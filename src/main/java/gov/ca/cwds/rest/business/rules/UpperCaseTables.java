@@ -44,6 +44,19 @@ public class UpperCaseTables {
   }
 
   /**
+   * @param nameOrAddress convert to upper case
+   */
+  protected String convertToUpperCase(String nameOrAddress) {
+    String ucnameOrAddress;
+    if (nameOrAddress != null) {
+      ucnameOrAddress = nameOrAddress.toUpperCase();
+    } else {
+      ucnameOrAddress = nameOrAddress;
+    }
+    return ucnameOrAddress;
+  }
+
+  /**
    * @param client Client creates the client upper case with the client Id
    */
   public void createClientUc(Client client) {
@@ -51,9 +64,9 @@ public class UpperCaseTables {
       ClientUc clientUc = new ClientUc();
       clientUc.setPktableId(client.getPrimaryKey());
       clientUc.setSourceTableCode(SOURCE_TBL_CD_CLIENT);
-      clientUc.setCommonFirstName(client.getCommonFirstName().toUpperCase());
-      clientUc.setCommonMiddleName(client.getCommonMiddleName().toUpperCase());
-      clientUc.setCommonLastName(client.getCommonLastName().toUpperCase());
+      clientUc.setCommonFirstName(convertToUpperCase(client.getCommonFirstName()));
+      clientUc.setCommonMiddleName(convertToUpperCase(client.getCommonMiddleName()));
+      clientUc.setCommonLastName(convertToUpperCase(client.getCommonLastName()));
       clientUc.setLastUpdatedId(client.getLastUpdatedId());
       clientUc.setLastUpdatedTime(client.getLastUpdatedTime());
       try {
@@ -72,9 +85,9 @@ public class UpperCaseTables {
       ClientUc clientUc = new ClientUc();
       clientUc.setPktableId(client.getPrimaryKey());
       clientUc.setSourceTableCode(SOURCE_TBL_CD_CLIENT);
-      clientUc.setCommonFirstName(client.getCommonFirstName().toUpperCase());
-      clientUc.setCommonMiddleName(client.getCommonMiddleName().toUpperCase());
-      clientUc.setCommonLastName(client.getCommonLastName().toUpperCase());
+      clientUc.setCommonFirstName(convertToUpperCase(client.getCommonFirstName()));
+      clientUc.setCommonMiddleName(convertToUpperCase(client.getCommonMiddleName()));
+      clientUc.setCommonLastName(convertToUpperCase(client.getCommonLastName()));
       clientUc.setLastUpdatedId(client.getLastUpdatedId());
       clientUc.setLastUpdatedTime(client.getLastUpdatedTime());
       try {
@@ -108,9 +121,9 @@ public class UpperCaseTables {
       AddressUc addressUc = new AddressUc();
       addressUc.setPktableId(address.getPrimaryKey());
       addressUc.setSourceTableCode(SOURCE_TBL_CD_ADDRESS);
-      addressUc.setCityName(address.getCity().toUpperCase());
-      addressUc.setStreetNumber(address.getStreetNumber().toUpperCase());
-      addressUc.setStreetName(address.getStreetName().toUpperCase());
+      addressUc.setCityName(convertToUpperCase(address.getCity()));
+      addressUc.setStreetNumber(convertToUpperCase(address.getStreetNumber()));
+      addressUc.setStreetName(convertToUpperCase(address.getStreetName()));
       addressUc.setLastUpdatedId(address.getLastUpdatedId());
       addressUc.setLastUpdatedTime(address.getLastUpdatedTime());
       try {
@@ -129,9 +142,9 @@ public class UpperCaseTables {
       AddressUc addressUc = new AddressUc();
       addressUc.setPktableId(address.getPrimaryKey());
       addressUc.setSourceTableCode(SOURCE_TBL_CD_ADDRESS);
-      addressUc.setCityName(address.getCity().toUpperCase());
-      addressUc.setStreetNumber(address.getStreetNumber().toUpperCase());
-      addressUc.setStreetName(address.getStreetName().toUpperCase());
+      addressUc.setCityName(convertToUpperCase(address.getCity()));
+      addressUc.setStreetNumber(convertToUpperCase(address.getStreetNumber()));
+      addressUc.setStreetName(convertToUpperCase(address.getStreetName()));
       addressUc.setLastUpdatedId(address.getLastUpdatedId());
       addressUc.setLastUpdatedTime(address.getLastUpdatedTime());
       try {
