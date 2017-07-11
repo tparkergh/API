@@ -7,6 +7,7 @@ import static org.hamcrest.Matchers.is;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.assertNotNull;
 import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
@@ -320,6 +321,14 @@ public class ParticipantTest implements PersistentTestTemplate {
     assertTrue("Expected to find existing Address",
         participant.getAddresses().contains(existingAddress));
     assertTrue("Expected to find new Address", participant.getAddresses().contains(newAddress));
+  }
+
+  @Test
+  public void shouldReturnNewLegacyDescriptorWhenItHasANullValue(){
+    Participant participant =
+        new ParticipantResourceBuilder().setLegacyDescriptor(null).createParticipant();
+    assertNotNull(participant.getLegacyDescriptor());
+
   }
 
   private Participant createParticipantWithRoles(Set<String> roles) {

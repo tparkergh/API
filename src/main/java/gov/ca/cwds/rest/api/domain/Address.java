@@ -3,7 +3,9 @@ package gov.ca.cwds.rest.api.domain;
 import static gov.ca.cwds.data.persistence.cms.CmsPersistentObject.CMS_ID_LEN;
 
 import io.swagger.annotations.ApiModel;
+import javax.validation.Valid;
 import javax.validation.constraints.Max;
+import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
@@ -60,6 +62,11 @@ public class Address extends ReportingDomain implements Request, Response {
   @JsonProperty("type")
   @ApiModelProperty(example = "Home")
   private String type;
+
+  @ApiModelProperty(required = true, readOnly = false)
+  @JsonProperty("legacy_descriptor")
+  @Valid
+  private LegacyDescriptor legacyDescriptor;
 
   /**
    * Constructor
@@ -178,6 +185,7 @@ public class Address extends ReportingDomain implements Request, Response {
     int result = 1;
     result = prime * result + ((legacySourceTable == null) ? 0 : legacySourceTable.hashCode());
     result = prime * result + ((legacyId == null) ? 0 : legacyId.hashCode());
+    result = prime * result + ((legacyDescriptor == null) ? 0 : legacyDescriptor.hashCode());
     result = prime * result + ((city == null) ? 0 : city.hashCode());
     result = prime * result + ((state == null) ? 0 : state.hashCode());
     result = prime * result + ((streetAddress == null) ? 0 : streetAddress.hashCode());
@@ -236,6 +244,12 @@ public class Address extends ReportingDomain implements Request, Response {
         return false;
     } else if (!legacyId.equals(other.legacyId))
       return false;
+    if (legacyDescriptor == null) {
+      if (other.legacyDescriptor != null)
+        return false;
+    } else if (!legacyDescriptor.equals(other.legacyDescriptor))
+      return false;
+
     return true;
 
   }

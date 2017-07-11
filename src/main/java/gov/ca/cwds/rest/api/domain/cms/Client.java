@@ -2,6 +2,7 @@ package gov.ca.cwds.rest.api.domain.cms;
 
 import static gov.ca.cwds.data.persistence.cms.CmsPersistentObject.CMS_ID_LEN;
 
+import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -35,26 +36,29 @@ import io.swagger.annotations.ApiModelProperty;
  */
 @ApiModel
 public class Client extends ReportingDomain implements Request, Response {
-  private static final String DEFAULT_ADOPTION_STATUS_CODE = "N";
-  private static final short DEFAULT_CODE = 0;
-  private static final Boolean DEFAULT_CHILD_CLIENT_INDICATOR = false;
-  private static final String DEFAULT_ESTIMATED_DOB_CODE = "N";
-  private static final String DEFAULT_UNABLE_TO_DETAIN_CODE = "K";
-  private static final String DEFAULT_HISPANIC_ORIGIN_CODE = "X";
-  private static final String DEFAULT_INCAPCITATED_PARENT_CODE = "U";
-  private static final String DEFAULT_LITERATE_CODE = "U";
-  private static final String DEFAULT_MILITARY_STATUS_CODE = "N";
-  private static final short DEFAULT_NAME_TYPE = 1313;
-  private static final short DEFAULT_SECONDARY_LANGUAGE_TYPE = 1253; // english
-  private static final String DEFAULT_SENSITIVITY_INDICATOR = "N";
-  private static final String DEFAULT_SOC158_PLACEMENT_CODE = "N";
-  private static final String DEFAULT_SOCIAL_SECURITY_NUM_CHANGE_CODE = "N";
-  private static final String DEFAULT_UNEMPLOYED_PARENT_CODE = "U";
+  public static final String DEFAULT_ADOPTION_STATUS_CODE = "N";
+  public static final short DEFAULT_CODE = 0;
+  public static final Boolean DEFAULT_CHILD_CLIENT_INDICATOR = false;
+  public static final String DEFAULT_ESTIMATED_DOB_CODE = "N";
+  public static final String DEFAULT_UNABLE_TO_DETAIN_CODE = "K";
+  public static final String DEFAULT_HISPANIC_ORIGIN_CODE = "X";
+  public static final String DEFAULT_INCAPCITATED_PARENT_CODE = "U";
+  public static final String DEFAULT_LITERATE_CODE = "U";
+  public static final String DEFAULT_MILITARY_STATUS_CODE = "N";
+  public static final short DEFAULT_NAME_TYPE = 1313;
+  public static final short DEFAULT_SECONDARY_LANGUAGE_TYPE = 1253; // english
+  public static final String DEFAULT_SENSITIVITY_INDICATOR = "N";
+  public static final String DEFAULT_SOC158_PLACEMENT_CODE = "N";
+  public static final String DEFAULT_SOCIAL_SECURITY_NUM_CHANGE_CODE = "N";
+  public static final String DEFAULT_UNEMPLOYED_PARENT_CODE = "U";
 
   /**
    * Serialization version
    */
   private static final long serialVersionUID = 1L;
+
+  @ApiModelProperty(required = false, readOnly = false, value = "Last Updated Time", example = "2004-03-31T09:45:58.000-0800")
+  private String lastUpdatedTime;
 
   @Size(max = CMS_ID_LEN)
   @ApiModelProperty(required = false, readOnly = false, value = "Client Id", example = "ABC1234567")
@@ -471,6 +475,7 @@ public class Client extends ReportingDomain implements Request, Response {
    */
   @JsonCreator
   public Client(@JsonProperty("existingClientId") String existingClientId,
+      @JsonProperty("lastUpdatedTime") String lastUpdatedTime,
       @JsonProperty("adjudicatedDelinquentIndicator") Boolean adjudicatedDelinquentIndicator,
       @JsonProperty("adoptionStatusCode") String adoptionStatusCode,
       @JsonProperty("alienRegistrationNumber") String alienRegistrationNumber,
@@ -540,6 +545,7 @@ public class Client extends ReportingDomain implements Request, Response {
       @JsonProperty("address") Set<Address> address) {
     super();
     this.clientId = existingClientId;
+    this.lastUpdatedTime =  lastUpdatedTime;
     this.adjudicatedDelinquentIndicator = adjudicatedDelinquentIndicator;
     this.adoptionStatusCode = adoptionStatusCode;
     this.alienRegistrationNumber = alienRegistrationNumber;
@@ -615,6 +621,7 @@ public class Client extends ReportingDomain implements Request, Response {
    */
   public Client(gov.ca.cwds.data.persistence.cms.Client persistedClient, boolean isExist) {
     this.clientId = isExist ? persistedClient.getId() : "";
+    this.lastUpdatedTime =  DomainChef.cookStrictTimestamp(persistedClient.getLastUpdatedTime());
     this.adjudicatedDelinquentIndicator =
         DomainChef.uncookBooleanString(persistedClient.getAdjudicatedDelinquentIndicator());
     this.adoptionStatusCode = persistedClient.getAdoptionStatusCode();
@@ -722,7 +729,7 @@ public class Client extends ReportingDomain implements Request, Response {
    */
   public static Client createWithDefaults(Participant participant, String dateStarted,
       String genderCode) {
-    return new Client("", false, DEFAULT_ADOPTION_STATUS_CODE, "", "", DEFAULT_CODE,
+    return new Client("",participant.getLegacyDescriptor().getLastUpdated(), false, DEFAULT_ADOPTION_STATUS_CODE, "", "", DEFAULT_CODE,
         participant.getDateOfBirth(), "", DEFAULT_CODE, false, DEFAULT_CHILD_CLIENT_INDICATOR, "",
         "", participant.getFirstName(), participant.getMiddleName(), participant.getLastName(), "",
         false, dateStarted, false, "", false, "", false, "", "", "", DEFAULT_CODE, "",
@@ -734,6 +741,13 @@ public class Client extends ReportingDomain implements Request, Response {
         DEFAULT_SOC158_PLACEMENT_CODE, false, DEFAULT_SOCIAL_SECURITY_NUM_CHANGE_CODE,
         participant.getSsn(), participant.getNameSuffix(), false, false,
         DEFAULT_UNEMPLOYED_PARENT_CODE, false, null);
+  }
+
+  /**
+   * @return the id
+   */
+  public String getLastUpdatedTime() {
+    return lastUpdatedTime;
   }
 
   /**
@@ -1245,6 +1259,10 @@ public class Client extends ReportingDomain implements Request, Response {
   @Override
   public final boolean equals(Object obj) {
     return EqualsBuilder.reflectionEquals(this, obj, false);
+  }
+
+  public boolean hasSameLastUpdate(Client otherClient){
+    return this.lastUpdatedTime.equals(otherClient.lastUpdatedTime);
   }
 
 }
