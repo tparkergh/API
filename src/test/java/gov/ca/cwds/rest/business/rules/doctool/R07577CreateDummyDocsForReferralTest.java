@@ -55,6 +55,7 @@ import gov.ca.cwds.rest.api.domain.cms.Reporter;
 import gov.ca.cwds.rest.business.rules.LACountyTrigger;
 import gov.ca.cwds.rest.business.rules.NonLACountyTriggers;
 import gov.ca.cwds.rest.business.rules.Reminders;
+import gov.ca.cwds.rest.business.rules.UpperCaseTables;
 import gov.ca.cwds.rest.messages.MessageBuilder;
 import gov.ca.cwds.rest.services.ScreeningToReferralService;
 import gov.ca.cwds.rest.services.cms.AddressService;
@@ -116,6 +117,7 @@ public class R07577CreateDummyDocsForReferralTest {
   private DrmsDocumentDao drmsDocumentDao;
   private SsaName3Dao ssaName3Dao;
   private Reminders reminders;
+  private UpperCaseTables upperCaseTables;
 
   private gov.ca.cwds.data.persistence.cms.Referral referral;
 
@@ -141,8 +143,9 @@ public class R07577CreateDummyDocsForReferralTest {
     triggerTablesDao = mock(TriggerTablesDao.class);
     nonLACountyTriggers = mock(NonLACountyTriggers.class);
     ssaName3Dao = mock(SsaName3Dao.class);
+    upperCaseTables = mock(UpperCaseTables.class);
     clientService = new ClientService(clientDao, staffpersonDao, triggerTablesDao,
-        nonLACountyTriggers, staffPersonIdRetriever, ssaName3Dao);
+        nonLACountyTriggers, staffPersonIdRetriever, ssaName3Dao, upperCaseTables);
 
     referralClientDao = mock(ReferralClientDao.class);
     nonLACountyTriggers = mock(NonLACountyTriggers.class);
@@ -166,7 +169,8 @@ public class R07577CreateDummyDocsForReferralTest {
     reporterService = new ReporterService(reporterDao, staffPersonIdRetriever);
 
     addressDao = mock(AddressDao.class);
-    addressService = new AddressService(addressDao, staffPersonIdRetriever, ssaName3Dao);
+    addressService =
+        new AddressService(addressDao, staffPersonIdRetriever, ssaName3Dao, upperCaseTables);
 
     clientAddressDao = mock(ClientAddressDao.class);
     laCountyTrigger = mock(LACountyTrigger.class);
@@ -193,8 +197,9 @@ public class R07577CreateDummyDocsForReferralTest {
         allegationService, crossReportService, referralClientService, reporterService,
         addressService, clientAddressService, longTextService, childClientService,
         assignmentService, Validation.buildDefaultValidatorFactory().getValidator(), referralDao,
-        staffPersonIdRetriever, new MessageBuilder(), drmsDocumentService, ssaName3Dao,
+        staffPersonIdRetriever, new MessageBuilder(), drmsDocumentService,
         allegationPerpetratorHistoryService, reminders);
+
   }
 
   /**

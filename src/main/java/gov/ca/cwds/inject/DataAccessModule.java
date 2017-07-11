@@ -15,6 +15,7 @@ import com.google.common.collect.ImmutableList;
 import com.google.inject.AbstractModule;
 import com.google.inject.Provides;
 
+import gov.ca.cwds.data.cms.AddressUcDao;
 import gov.ca.cwds.data.cms.AllegationDao;
 import gov.ca.cwds.data.cms.AllegationPerpetratorHistoryDao;
 import gov.ca.cwds.data.cms.AssignmentDao;
@@ -54,6 +55,7 @@ import gov.ca.cwds.data.ns.PersonRaceDao;
 import gov.ca.cwds.data.ns.PhoneNumberDao;
 import gov.ca.cwds.data.ns.RaceDao;
 import gov.ca.cwds.data.ns.ScreeningDao;
+import gov.ca.cwds.data.persistence.cms.AddressUc;
 import gov.ca.cwds.data.persistence.cms.Allegation;
 import gov.ca.cwds.data.persistence.cms.AllegationPerpetratorHistory;
 import gov.ca.cwds.data.persistence.cms.ApiSystemCodeDao;
@@ -147,7 +149,7 @@ public class DataAccessModule extends AbstractModule {
               ClientAddress.class, CountyOwnership.class, CountyTrigger.class,
               CountyTriggerEmbeddable.class, SystemCode.class, SystemMeta.class, DrmsDocument.class,
               Assignment.class, BaseAssignment.class, ReferralAssignment.class,
-              CaseAssignment.class, CmsCase.class, Tickle.class),
+              CaseAssignment.class, CmsCase.class, Tickle.class, AddressUc.class),
           new ApiSessionFactoryFactory()) {
 
         @Override
@@ -227,6 +229,7 @@ public class DataAccessModule extends AbstractModule {
     bind(DrmsDocumentDao.class);
     bind(AssignmentDao.class);
     bind(TickleDao.class);
+    bind(AddressUcDao.class);
 
     // NS:
     bind(AddressDao.class);
