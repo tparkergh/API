@@ -32,7 +32,6 @@ import gov.ca.cwds.data.rules.TriggerTablesDao;
 import gov.ca.cwds.rest.api.Response;
 import gov.ca.cwds.rest.api.domain.cms.Allegation;
 import gov.ca.cwds.rest.api.domain.cms.Client;
-import gov.ca.cwds.rest.api.domain.cms.ClientUc;
 import gov.ca.cwds.rest.api.domain.cms.CmsReferral;
 import gov.ca.cwds.rest.api.domain.cms.CrossReport;
 import gov.ca.cwds.rest.api.domain.cms.PostedAllegation;
@@ -45,6 +44,7 @@ import gov.ca.cwds.rest.api.domain.cms.ReferralClient;
 import gov.ca.cwds.rest.api.domain.cms.Reporter;
 import gov.ca.cwds.rest.business.rules.LACountyTrigger;
 import gov.ca.cwds.rest.business.rules.NonLACountyTriggers;
+import gov.ca.cwds.rest.business.rules.UpperCaseTables;
 import io.dropwizard.jackson.Jackson;
 
 @SuppressWarnings("javadoc")
@@ -58,7 +58,7 @@ public class CmsReferralServiceTest {
   private AllegationService allegationService;
   private CrossReportService crossReportService;
   private ReporterService reporterService;
-  private ClientUcService clientUcService;
+  private UpperCaseTables upperCaseTables;
 
   private ReferralDao referralDao;
   private ClientDao clientDao;
@@ -67,7 +67,6 @@ public class CmsReferralServiceTest {
   private CrossReportDao crossReportDao;
   private ReporterDao reporterDao;
   private ClientUcDao clientUcDao;
-  private ClientUc clientUcDomain;
   private StaffPersonDao staffpersonDao;
   private NonLACountyTriggers nonLACountyTriggers;
   private LACountyTrigger laCountyTrigger;
@@ -96,8 +95,9 @@ public class CmsReferralServiceTest {
     triggerTablesDao = mock(TriggerTablesDao.class);
     nonLACountyTriggers = mock(NonLACountyTriggers.class);
     ssaName3Dao = mock(SsaName3Dao.class);
+    upperCaseTables = mock(UpperCaseTables.class);
     clientService = new ClientService(clientDao, staffpersonDao, triggerTablesDao,
-        nonLACountyTriggers, staffPersonIdRetriever, ssaName3Dao);
+        nonLACountyTriggers, staffPersonIdRetriever, ssaName3Dao, upperCaseTables);
 
     referralClientDao = mock(ReferralClientDao.class);
     nonLACountyTriggers = mock(NonLACountyTriggers.class);
@@ -117,14 +117,12 @@ public class CmsReferralServiceTest {
     reporterService = new ReporterService(reporterDao, staffPersonIdRetriever);
 
     clientUcDao = mock(ClientUcDao.class);
-    clientUcService = new ClientUcService(clientUcDao, staffPersonIdRetriever);
 
-    clientUcDomain = mock(ClientUc.class);
     ssaName3Dao = mock(SsaName3Dao.class);
 
     // cmsReferralDao = mock(CmsReferral.class);
     cmsReferralService = new CmsReferralService(referralService, clientService, allegationService,
-        crossReportService, referralClientService, reporterService, clientUcService);
+        crossReportService, referralClientService, reporterService);
 
   }
 
@@ -309,9 +307,8 @@ public class CmsReferralServiceTest {
     when(reporterDao.create(any(gov.ca.cwds.data.persistence.cms.Reporter.class)))
         .thenReturn(reporterToCreate);
 
-    CmsReferralService cmsReferralRequest =
-        new CmsReferralService(referralService, clientService, allegationService,
-            crossReportService, referralClientService, reporterService, clientUcService);
+    CmsReferralService cmsReferralRequest = new CmsReferralService(referralService, clientService,
+        allegationService, crossReportService, referralClientService, reporterService);
 
     PostedCmsReferral returned = (PostedCmsReferral) cmsReferralRequest.create(cmsReferralToCreate);
 
@@ -413,9 +410,8 @@ public class CmsReferralServiceTest {
     CmsReferral cmsReferralToCreate = new CmsReferral(referralRequest, clientRequestSet,
         allegationRequestSet, crossReportRequestSet, referralClientRequestSet, reporterRequest);
 
-    CmsReferralService cmsReferralRequest =
-        new CmsReferralService(referralService, clientService, allegationService,
-            crossReportService, referralClientService, reporterService, clientUcService);
+    CmsReferralService cmsReferralRequest = new CmsReferralService(referralService, clientService,
+        allegationService, crossReportService, referralClientService, reporterService);
 
     PostedCmsReferral expected = new PostedCmsReferral(postedReferral, postedClientSet,
         postedAllegationSet, postedCrossReportSet, postedReferralClientSet, postedReporter);
