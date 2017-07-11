@@ -373,11 +373,11 @@ public class ScreeningToReferralService implements CrudsService {
               messageBuilder.addDomainValidationError(validator.validate(referralClient));
 
               try {
-                gov.ca.cwds.rest.api.domain.cms.ReferralClient postedReferralClient =
-                    this.referralClientService.createWithSingleTimestamp(referralClient, timestamp);
-              } catch (ServiceException se) {
-                logError(se.getMessage(), se);
-              }
+                     this.referralClientService.createWithSingleTimestamp(referralClient, timestamp);
+               } catch (ServiceException se) {
+                 logError(se.getMessage(), se);
+               }
+
               /*
                * determine other participant/roles attributes relating to CWS/CMS allegation
                */
@@ -443,9 +443,16 @@ public class ScreeningToReferralService implements CrudsService {
       try {
         referral =
             createReferralWithDefaults(screeningToReferral, dateStarted, timeStarted, timestamp);
-      } catch (Exception e1) {
-        String message = e1.getMessage();
-        logError(message, e1);
+      } catch (ServiceException e) {
+        String message = e.getMessage();
+        logError(message, e);
+      } catch (NullPointerException e) {
+        String message = e.getMessage();
+        logError(message, e);
+      } catch(Exception e){
+        String message = e.getMessage();
+        logError(message, e);
+        throw e;
       }
 
       messageBuilder.addDomainValidationError(validator.validate(referral));
@@ -480,7 +487,7 @@ public class ScreeningToReferralService implements CrudsService {
    * @throws ServiceException - ServiceException
    */
   public Referral createReferralWithDefaults(ScreeningToReferral screeningToReferral,
-      String dateStarted, String timeStarted, Date timestamp) throws ServiceException {
+    String dateStarted, String timeStarted, Date timestamp) throws ServiceException {
     short approvalStatusCode = approvalStatusCodeOnCreateSetToNotSubmitted();
     String longTextId = generateLongTextId(screeningToReferral);
     String firstResponseDeterminedByStaffPersonId = getFirstResponseDeterminedByStaffPersonId();
@@ -566,8 +573,10 @@ public class ScreeningToReferralService implements CrudsService {
       String message = e.getMessage();
       logError(message, e);
     }
+    if (postedDrmsDocument == null){
+      throw new RuntimeException("Unable to Create DRMS Documents");
+    }
     return postedDrmsDocument.getId();
-
   }
 
   private String generateLongTextId(ScreeningToReferral screeningToReferral) {
@@ -1069,7 +1078,6 @@ public class ScreeningToReferralService implements CrudsService {
   }
 
   /**
-   * @param staffId - staff Id
    * @param countyCode - county code
    * @param referralId - referral Id
    * @return - default Assignment
