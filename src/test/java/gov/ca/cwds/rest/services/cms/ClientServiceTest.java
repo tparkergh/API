@@ -43,6 +43,7 @@ import gov.ca.cwds.rest.api.domain.Participant;
 import gov.ca.cwds.rest.api.domain.cms.Client;
 import gov.ca.cwds.rest.api.domain.cms.PostedClient;
 import gov.ca.cwds.rest.business.rules.NonLACountyTriggers;
+import gov.ca.cwds.rest.business.rules.UpperCaseTables;
 import gov.ca.cwds.rest.services.ServiceException;
 import gov.ca.cwds.rest.services.junit.template.ServiceTestTemplate;
 import io.dropwizard.jackson.Jackson;
@@ -60,6 +61,7 @@ public class ClientServiceTest implements ServiceTestTemplate {
   private NonLACountyTriggers nonLaCountyTriggers;
   private StaffPersonIdRetriever staffPersonIdRetriever;
   private SsaName3Dao ssaName3Dao;
+  private UpperCaseTables upperCaseTables;
 
   @SuppressWarnings("javadoc")
   @Rule
@@ -74,8 +76,9 @@ public class ClientServiceTest implements ServiceTestTemplate {
     nonLaCountyTriggers = mock(NonLACountyTriggers.class);
     staffPersonIdRetriever = mock(StaffPersonIdRetriever.class);
     ssaName3Dao = mock(SsaName3Dao.class);
+    upperCaseTables = mock(UpperCaseTables.class);
     clientService = new ClientService(clientDao, staffpersonDao, triggerTablesDao,
-        nonLaCountyTriggers, staffPersonIdRetriever, ssaName3Dao);
+        nonLaCountyTriggers, staffPersonIdRetriever, ssaName3Dao, upperCaseTables);
   }
 
   // find test
