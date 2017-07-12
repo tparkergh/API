@@ -2,6 +2,9 @@ package gov.ca.cwds.auth.realms;
 
 import java.io.IOException;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 
@@ -14,6 +17,9 @@ import com.fasterxml.jackson.databind.ObjectMapper;
  *
  */
 public class ApiRealm extends JwtRealm {
+
+  private static final Logger LOGGER = LoggerFactory.getLogger(ApiRealm.class);
+
   private ObjectMapper objectMapper = new ObjectMapper();
 
   /**
@@ -27,12 +33,16 @@ public class ApiRealm extends JwtRealm {
    */
   @Override
   protected PerryUserIdentity map(final String json) {
+    PerryUserIdentity userIdentity = null;
+
     try {
-      return objectMapper.readValue(json, PerryUserIdentity.class);
-    } catch (IOException e) {
-      PerryUserIdentity userIdentity = new PerryUserIdentity();
+      userIdentity = objectMapper.readValue(json, PerryUserIdentity.class);
+    } catch (IOException e) { // NOSONAR
+      LOGGER.info("Could not map user identity, mapping does not apply, " + e.getMessage());
+      userIdentity = new PerryUserIdentity();
       userIdentity.setUser(json);
-      return userIdentity;
     }
+
+    return userIdentity;
   }
 }
