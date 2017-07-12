@@ -16,6 +16,7 @@ import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
+import gov.ca.cwds.rest.api.domain.LegacyDescriptor;
 import gov.ca.cwds.rest.api.domain.cms.PostedDrmsDocument;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -693,6 +694,8 @@ public class ScreeningToReferralServiceTest {
 
     Participant victim =
         new ParticipantResourceBuilder().setLegacyId(victimClientLegacyId).createParticipant();
+    LegacyDescriptor descriptor = new LegacyDescriptor("", "", "2010-03-14T13:33:12.456-0700", "", "");
+    victim.setLegacyDescriptor(descriptor);
     Participant reporter = new ParticipantResourceBuilder().createReporterParticipant();
     Participant perp = new ParticipantResourceBuilder().createReporterParticipant();
     Set participants = new HashSet<>(Arrays.asList(reporter, victim, perp));
@@ -706,6 +709,7 @@ public class ScreeningToReferralServiceTest {
     Client foundClient = mock(Client.class);
     PostedClient createdClient = mock(PostedClient.class);
     when(createdClient.getId()).thenReturn("LEGACYIDXX");
+    when(foundClient.getLastUpdatedTime()).thenReturn("2010-03-14-13.33.12.456");
 
     when(drmsDocumentDao.create(any())).thenReturn(drmsDocument);
 
@@ -742,6 +746,50 @@ public class ScreeningToReferralServiceTest {
 
     screeningToReferralService.create(referral);
     verify(clientService, never()).update(any(), any());
+  }
+
+  @SuppressWarnings("javadoc")
+  @Test
+  public void shouldNotUpdateClientWhenClientRecordHasBeenModifiedInLegacyDb() throws Exception {
+
+    String victimClientLegacyId = "ABC123DSAF";
+
+    Participant victim =
+        new ParticipantResourceBuilder().setLegacyId(victimClientLegacyId).createParticipant();
+    LegacyDescriptor descriptor = new LegacyDescriptor("", "", "2010-03-14T13:33:12.456-0700", "", "");
+    victim.setLegacyDescriptor(descriptor);
+
+    Participant reporter = new ParticipantResourceBuilder().createReporterParticipant();
+    Participant perp = new ParticipantResourceBuilder().createReporterParticipant();
+    Set participants = new HashSet<>(Arrays.asList(reporter, victim, perp));
+    ScreeningToReferral referral = new ScreeningToReferralResourceBuilder()
+        .setParticipants(participants).createScreeningToReferral();
+
+    gov.ca.cwds.data.persistence.cms.DrmsDocument drmsDocument =
+        new gov.ca.cwds.data.persistence.cms.DrmsDocument("ABC1234560", null, null, null, null,
+            null);
+    Client updatedClient = mock(Client.class);
+    Client foundClient = mock(Client.class);
+    when(foundClient.getLastUpdatedTime()).thenReturn("2000-01-27-15.34.55.123");
+    PostedClient createdClient = mock(PostedClient.class);
+    when(createdClient.getId()).thenReturn("LEGACYIDXX");
+
+    when(drmsDocumentDao.create(any())).thenReturn(drmsDocument);
+
+    clientService = mock(ClientService.class);
+    when(clientService.find(eq(victimClientLegacyId))).thenReturn(foundClient);
+    when(clientService.create(any())).thenReturn(createdClient);
+    when(clientService.update(eq(victimClientLegacyId), any())).thenReturn(updatedClient);
+    screeningToReferralService = new MockedScreeningToReferralServiceBuilder()
+        .addClientService(clientService).addDrmsDocumentService(drmsDocumentService)
+        .addMessageBuilder(new MessageBuilder()).createScreeningToReferralService();
+
+    try{
+      screeningToReferralService.create(referral);
+
+    } catch (ServiceException e){
+      assertTrue(e.getMessage().contains("Unable to Update John Smith Client. Client was previously modified&"));
+    }
   }
 
   @SuppressWarnings("javadoc")
@@ -2577,6 +2625,8 @@ public class ScreeningToReferralServiceTest {
     Participant reporter = new ParticipantResourceBuilder()
         .setRoles(new HashSet<>(Arrays.asList("Victim", "Non-mandated Reporter")))
         .setAddresses(new HashSet<>()).createParticipant();
+    LegacyDescriptor descriptor = new LegacyDescriptor("", "", "2010-03-14T13:33:12.456-0700", "", "");
+    reporter.setLegacyDescriptor(descriptor);
     Participant perp = new ParticipantResourceBuilder().createPerpParticipant();
     Set participants = new HashSet<>(Arrays.asList(reporter, perp));
 
@@ -2595,6 +2645,7 @@ public class ScreeningToReferralServiceTest {
     when(clientService.createWithSingleTimestamp(any(), any())).thenReturn(savedClient);
     Client foundClient = mock(Client.class);
     when(clientService.find(any())).thenReturn(foundClient);
+    when(foundClient.getLastUpdatedTime()).thenReturn("2010-03-14-13.33.12.456");
     when(drmsDocumentDao.create(any())).thenReturn(drmsDocument);
 
     screeningToReferralService = new MockedScreeningToReferralServiceBuilder()
@@ -3811,9 +3862,13 @@ public class ScreeningToReferralServiceTest {
         .setMiddleName("middlestone").setLastName("Rubble")
         .setRoles(new HashSet<>(Arrays.asList("Non-mandated Reporter", "Victim")))
         .createParticipant();
+    LegacyDescriptor descriptor = new LegacyDescriptor("", "", "2010-03-14T13:33:12.456-0700", "", "");
+    reporter.setLegacyDescriptor(descriptor);
     Participant perp = new ParticipantResourceBuilder().setLegacyId(existingPerpId)
         .setFirstName("Fred").setMiddleName("Finnigan").setLastName("Flintsone")
         .setRoles(new HashSet<>(Arrays.asList("Perpetrator"))).createParticipant();
+    descriptor = new LegacyDescriptor("", "", "2010-03-14T13:33:12.456-0700", "", "");
+    perp.setLegacyDescriptor(descriptor);
     Set participants = new HashSet<>(Arrays.asList(reporter, perp));
 
     ScreeningToReferral referral = new ScreeningToReferralResourceBuilder()
@@ -3829,6 +3884,7 @@ public class ScreeningToReferralServiceTest {
         mock(gov.ca.cwds.rest.api.domain.cms.Client.class);
     gov.ca.cwds.rest.api.domain.cms.Client foundClient =
         mock(gov.ca.cwds.rest.api.domain.cms.Client.class);
+    when(foundClient.getLastUpdatedTime()).thenReturn("2010-03-14-13.33.12.456");
     gov.ca.cwds.rest.api.domain.cms.PostedClient savedVictim =
         mock(gov.ca.cwds.rest.api.domain.cms.PostedClient.class);
     when(savedVictim.getId()).thenReturn(updatedReporterId);
@@ -3861,8 +3917,8 @@ public class ScreeningToReferralServiceTest {
 
     Response response = screeningToReferralService.create(referral);
     assertFalse(response.hasMessages());
-    verify(foundClient, times(1)).update("Fred", "Finnigan", "Flintsone", "Jr.");
     verify(foundClient, times(1)).update("Barney", "middlestone", "Rubble", "Jr.");
+    verify(foundClient, times(1)).update("Fred", "Finnigan", "Flintsone", "Jr.");
     verify(clientService).update(eq(existingPerpId), any());
   }
 
@@ -3937,9 +3993,13 @@ public class ScreeningToReferralServiceTest {
         new ParticipantResourceBuilder().setFirstName("Barney").setLastName("Rubble")
             .setRoles(new HashSet<>(Arrays.asList("Non-mandated Reporter", "Victim")))
             .createParticipant();
+    LegacyDescriptor descriptor = new LegacyDescriptor("", "", "2010-03-14T13:33:12.456-0700", "", "");
+    reporter.setLegacyDescriptor(descriptor);
     Participant perp = new ParticipantResourceBuilder().setLegacyId(existingPerpId)
         .setFirstName("Fred").setLastName("Flintsone")
         .setRoles(new HashSet<>(Arrays.asList("Perpetrator"))).createParticipant();
+    descriptor = new LegacyDescriptor("", "", "2010-03-14T13:33:12.456-0700", "", "");
+    perp.setLegacyDescriptor(descriptor);
     Set participants = new HashSet<>(Arrays.asList(reporter, perp));
 
     ScreeningToReferral referral = new ScreeningToReferralResourceBuilder()
@@ -3963,6 +4023,7 @@ public class ScreeningToReferralServiceTest {
     when(clientService.create(any())).thenReturn(savedVictim);
     when(clientService.update(any(), any())).thenReturn(null);
     when(clientService.find(any())).thenReturn(foundClient);
+    when(foundClient.getLastUpdatedTime()).thenReturn("2010-03-14-13.33.12.456");
     when(drmsDocumentDao.create(any())).thenReturn(drmsDocument);
 
     clientAddressService = mock(ClientAddressService.class);
@@ -4616,6 +4677,8 @@ public class ScreeningToReferralServiceTest {
     Participant selfReportingVictim = new ParticipantResourceBuilder()
         .setRoles(new HashSet<>(Arrays.asList("Non-mandated Reporter", "Victim")))
         .setAddresses(new HashSet<>(Arrays.asList(address1))).createParticipant();
+    LegacyDescriptor descriptor = new LegacyDescriptor("", "", "2010-03-14T13:33:12.456-0700", "", "");
+    selfReportingVictim.setLegacyDescriptor(descriptor);
     int numberOfReportingVictimsRoles = selfReportingVictim.getRoles().size();
     Participant perp = new ParticipantResourceBuilder()
         .setAddresses(new HashSet<>(Arrays.asList(address2))).createPerpParticipant();
@@ -4634,6 +4697,7 @@ public class ScreeningToReferralServiceTest {
     Client updatedClient = mock(Client.class);
     PostedClient savedClient = mock(PostedClient.class);
     when(savedClient.getId()).thenReturn("ASDFGHHYTR");
+    when(savedClient.getLastUpdatedTime()).thenReturn("2010-03-14-13.33.12.456");
     clientAddressService = mock(ClientAddressService.class);
     when(clientAddressService.find(any())).thenReturn(clientAddress);
 
