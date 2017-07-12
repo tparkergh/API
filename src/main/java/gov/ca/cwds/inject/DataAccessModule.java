@@ -1,20 +1,5 @@
 package gov.ca.cwds.inject;
 
-import java.net.InetAddress;
-
-import org.elasticsearch.client.Client;
-import org.elasticsearch.client.transport.TransportClient;
-import org.elasticsearch.common.settings.Settings;
-import org.elasticsearch.common.transport.InetSocketTransportAddress;
-import org.elasticsearch.transport.client.PreBuiltTransportClient;
-import org.hibernate.SessionFactory;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import com.google.common.collect.ImmutableList;
-import com.google.inject.AbstractModule;
-import com.google.inject.Provides;
-
 import gov.ca.cwds.data.cms.AddressUcDao;
 import gov.ca.cwds.data.cms.AllegationDao;
 import gov.ca.cwds.data.cms.AllegationPerpetratorHistoryDao;
@@ -23,7 +8,9 @@ import gov.ca.cwds.data.cms.AttorneyDao;
 import gov.ca.cwds.data.cms.CaseAssignmentDao;
 import gov.ca.cwds.data.cms.CaseDao;
 import gov.ca.cwds.data.cms.ChildClientDao;
+import gov.ca.cwds.data.cms.ClientCollateralDao;
 import gov.ca.cwds.data.cms.ClientDao;
+import gov.ca.cwds.data.cms.ClientRelationshipDao;
 import gov.ca.cwds.data.cms.ClientUcDao;
 import gov.ca.cwds.data.cms.CmsDocReferralClientDao;
 import gov.ca.cwds.data.cms.CmsDocumentDao;
@@ -65,6 +52,7 @@ import gov.ca.cwds.data.persistence.cms.CaseAssignment;
 import gov.ca.cwds.data.persistence.cms.ChildClient;
 import gov.ca.cwds.data.persistence.cms.ClientAddress;
 import gov.ca.cwds.data.persistence.cms.ClientCollateral;
+import gov.ca.cwds.data.persistence.cms.ClientRelationship;
 import gov.ca.cwds.data.persistence.cms.ClientUc;
 import gov.ca.cwds.data.persistence.cms.CmsCase;
 import gov.ca.cwds.data.persistence.cms.CmsDocReferralClient;
@@ -124,6 +112,21 @@ import io.dropwizard.db.DataSourceFactory;
 import io.dropwizard.hibernate.HibernateBundle;
 import io.dropwizard.setup.Bootstrap;
 
+import java.net.InetAddress;
+
+import org.elasticsearch.client.Client;
+import org.elasticsearch.client.transport.TransportClient;
+import org.elasticsearch.common.settings.Settings;
+import org.elasticsearch.common.transport.InetSocketTransportAddress;
+import org.elasticsearch.transport.client.PreBuiltTransportClient;
+import org.hibernate.SessionFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import com.google.common.collect.ImmutableList;
+import com.google.inject.AbstractModule;
+import com.google.inject.Provides;
+
 /**
  * DI (dependency injection) setup for data access objects (DAO).
  * 
@@ -136,21 +139,22 @@ public class DataAccessModule extends AbstractModule {
   private Client client;
 
   private final HibernateBundle<ApiConfiguration> cmsHibernateBundle =
-      new HibernateBundle<ApiConfiguration>(
-          ImmutableList.<Class<?>>of(gov.ca.cwds.data.persistence.cms.Address.class,
-              Allegation.class, ClientAddress.class, ClientCollateral.class,
-              gov.ca.cwds.data.persistence.cms.Client.class, CmsDocReferralClient.class,
-              CmsDocument.class, CmsDocumentBlobSegment.class, CollateralIndividual.class,
-              CrossReport.class, EducationProviderContact.class, OtherAdultInPlacemtHome.class,
-              OtherChildInPlacemtHome.class, OtherClientName.class, Referral.class,
-              ReferralClient.class, Reporter.class, ServiceProvider.class, StaffPerson.class,
-              SubstituteCareProvider.class, LongText.class, AllegationPerpetratorHistory.class,
-              ClientUc.class, ChildClient.class, gov.ca.cwds.data.persistence.cms.Address.class,
-              ClientAddress.class, CountyOwnership.class, CountyTrigger.class,
-              CountyTriggerEmbeddable.class, SystemCode.class, SystemMeta.class, DrmsDocument.class,
-              Assignment.class, BaseAssignment.class, ReferralAssignment.class,
-              CaseAssignment.class, CmsCase.class, Tickle.class, AddressUc.class),
-          new ApiSessionFactoryFactory()) {
+      new HibernateBundle<ApiConfiguration>(ImmutableList.<Class<?>>of(
+          gov.ca.cwds.data.persistence.cms.Address.class, Allegation.class, ClientAddress.class,
+          ClientCollateral.class, gov.ca.cwds.data.persistence.cms.Client.class,
+          CmsDocReferralClient.class, CmsDocument.class, CmsDocumentBlobSegment.class,
+          CollateralIndividual.class, CrossReport.class, EducationProviderContact.class,
+          OtherAdultInPlacemtHome.class, OtherChildInPlacemtHome.class, OtherClientName.class,
+          Referral.class, ReferralClient.class, Reporter.class, ServiceProvider.class,
+          StaffPerson.class, SubstituteCareProvider.class, LongText.class,
+          AllegationPerpetratorHistory.class, ClientUc.class, ChildClient.class,
+          gov.ca.cwds.data.persistence.cms.Address.class, ClientAddress.class,
+          CountyOwnership.class, CountyTrigger.class, CountyTriggerEmbeddable.class,
+          SystemCode.class, SystemMeta.class, DrmsDocument.class, Assignment.class,
+          BaseAssignment.class, ReferralAssignment.class, CaseAssignment.class, CmsCase.class,
+          Tickle.class, ClientRelationship.class, ClientCollateral.class, AddressUc.class),
+
+      new ApiSessionFactoryFactory()) {
 
         @Override
         public DataSourceFactory getDataSourceFactory(ApiConfiguration configuration) {
@@ -214,6 +218,9 @@ public class DataAccessModule extends AbstractModule {
     bind(ReferralAssignmentDao.class);
     bind(CaseAssignmentDao.class);
     bind(CaseDao.class);
+    bind(ClientRelationshipDao.class);
+    bind(ClientCollateralDao.class);
+
 
     bind(AttorneyDao.class);
     bind(CmsDocReferralClientDao.class);
@@ -268,8 +275,7 @@ public class DataAccessModule extends AbstractModule {
   @Provides
   @CmsSessionFactory
   SessionFactory cmsSessionFactory() {
-    SessionFactory sessionFactory = cmsHibernateBundle.getSessionFactory();
-    return sessionFactory;
+    return cmsHibernateBundle.getSessionFactory();
   }
 
   @Provides
@@ -311,11 +317,11 @@ public class DataAccessModule extends AbstractModule {
     if (client == null) {
       ElasticsearchConfiguration config = apiConfiguration.getElasticsearchConfiguration();
       try {
-        TransportClient ret = new PreBuiltTransportClient(
-            Settings.builder().put("cluster.name", config.getElasticsearchCluster()).build());
-        ret.addTransportAddress(
-            new InetSocketTransportAddress(InetAddress.getByName(config.getElasticsearchHost()),
-                Integer.parseInt(config.getElasticsearchPort())));
+        TransportClient ret =
+            new PreBuiltTransportClient(Settings.builder()
+                .put("cluster.name", config.getElasticsearchCluster()).build());
+        ret.addTransportAddress(new InetSocketTransportAddress(InetAddress.getByName(config
+            .getElasticsearchHost()), Integer.parseInt(config.getElasticsearchPort())));
         client = ret;
       } catch (Exception e) {
         LOGGER.error("Error initializing Elasticsearch client: {}", e.getMessage(), e);
