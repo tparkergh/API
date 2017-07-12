@@ -1,5 +1,7 @@
 package gov.ca.cwds.rest.api.domain;
 
+import java.io.Serializable;
+
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 
@@ -13,7 +15,9 @@ import io.swagger.annotations.ApiModelProperty;
  *
  */
 @JsonSnakeCase
-public class LegacyDescriptor {
+public class LegacyDescriptor implements Serializable {
+
+  private static final long serialVersionUID = 1183360430821640119L;
 
   @JsonProperty("legacy_id")
   @ApiModelProperty(required = false, readOnly = false, value = "Legacy Id", example = "12345")
