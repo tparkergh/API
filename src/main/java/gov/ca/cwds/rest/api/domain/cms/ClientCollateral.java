@@ -35,7 +35,7 @@ public class ClientCollateral extends ReportingDomain implements Request, Respon
   private String activeIndicator;
 
   @NotNull
-  @ApiModelProperty(required = true, readOnly = false, example = "1234")
+  @ApiModelProperty(required = true, readOnly = false, example = "573")
   private Short collateralClientReporterRelationshipType;
 
   @NotEmpty
