@@ -171,7 +171,7 @@ public class ClientService implements CrudsService {
           && !(triggerTablesDao.getLaCountySpecificCode().equals(staffperson.getCountyCode()))) {
         nonLaCountyTriggers.createClientCountyTrigger(managed);
       }
-      ssaname3Dao.clientSsaname3("I", managed);
+      // ssaname3Dao.clientSsaname3("I", managed);
       upperCaseTables.createClientUc(managed);
 
       return new PostedClient(managed, false);
