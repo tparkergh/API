@@ -18,6 +18,7 @@ import gov.ca.cwds.data.persistence.cms.CmsKeyIdGenerator;
 import gov.ca.cwds.rest.api.Request;
 import gov.ca.cwds.rest.api.Response;
 import gov.ca.cwds.rest.api.domain.cms.PostedAddress;
+import gov.ca.cwds.rest.business.rules.UpperCaseTables;
 import gov.ca.cwds.rest.services.CrudsService;
 import gov.ca.cwds.rest.services.ServiceException;
 
@@ -31,19 +32,22 @@ public class AddressService implements CrudsService {
   private AddressDao addressDao;
   private StaffPersonIdRetriever staffPersonIdRetriever;
   private SsaName3Dao ssaname3Dao;
+  private UpperCaseTables upperCaseTables;
 
   /**
    * 
    * @param addressDao the address DAO
    * @param staffPersonIdRetriever the staffPersonIdRetriever
-   * @param ssaname3Dao dao
+   * @param ssaname3Dao the stored procedure call
+   * @param upperCaseTables the address upper case
    */
   @Inject
   public AddressService(AddressDao addressDao, StaffPersonIdRetriever staffPersonIdRetriever,
-      SsaName3Dao ssaname3Dao) {
+      SsaName3Dao ssaname3Dao, UpperCaseTables upperCaseTables) {
     this.addressDao = addressDao;
     this.staffPersonIdRetriever = staffPersonIdRetriever;
     this.ssaname3Dao = ssaname3Dao;
+    this.upperCaseTables = upperCaseTables;
   }
 
   @Override
@@ -73,32 +77,6 @@ public class AddressService implements CrudsService {
     return create(address, timestamp);
   }
 
-  public Response createWithSssaName3(Request request, Date timestamp) {
-    assert request instanceof gov.ca.cwds.rest.api.domain.cms.Address;
-
-    gov.ca.cwds.rest.api.domain.cms.Address address =
-        (gov.ca.cwds.rest.api.domain.cms.Address) request;
-
-    try {
-      String lastUpdatedId = staffPersonIdRetriever.getStaffPersonId();
-      Address managed;
-      if (timestamp == null) {
-        managed = new Address(CmsKeyIdGenerator.generate(lastUpdatedId), address, lastUpdatedId);
-      } else {
-        managed = new Address(CmsKeyIdGenerator.generate(lastUpdatedId), address, lastUpdatedId,
-            timestamp);
-      }
-      managed = addressDao.create(managed);
-      if (managed.getId() == null) {
-        throw new ServiceException("Address ID cannot be null");
-      }
-      ssaname3Dao.addressSsaname3("I", managed);
-      return new PostedAddress(managed, true);
-    } catch (EntityExistsException e) {
-      LOGGER.info("Address already exists : ()", address);
-      throw new ServiceException(e);
-    }
-  }
 
   /**
    * This private method is created to handle to single address and referral address with single
@@ -119,6 +97,8 @@ public class AddressService implements CrudsService {
       if (managed.getId() == null) {
         throw new ServiceException("Address ID cannot be null");
       }
+      ssaname3Dao.addressSsaname3("I", managed);
+      upperCaseTables.createAddressUc(managed);
       return new PostedAddress(managed, true);
     } catch (EntityExistsException e) {
       LOGGER.info("Address already exists : ()", address);
@@ -132,6 +112,7 @@ public class AddressService implements CrudsService {
     assert primaryKey instanceof String;
     gov.ca.cwds.data.persistence.cms.Address persistedAddress = addressDao.delete(primaryKey);
     if (persistedAddress != null) {
+      upperCaseTables.deleteAddressUc(primaryKey);
       return new gov.ca.cwds.rest.api.domain.cms.Address(persistedAddress, true);
     }
     return null;
@@ -159,6 +140,7 @@ public class AddressService implements CrudsService {
       String lastUpdatedId = staffPersonIdRetriever.getStaffPersonId();
       Address managed = new Address((String) primaryKey, address, lastUpdatedId);
       managed = addressDao.update(managed);
+      upperCaseTables.updateAddressUc(managed);
       return new gov.ca.cwds.rest.api.domain.cms.Address(managed, true);
     } catch (EntityNotFoundException e) {
       LOGGER.info("Address not found : {}", address);
