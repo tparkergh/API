@@ -372,10 +372,10 @@ public class ScreeningToReferralService implements CrudsService {
               messageBuilder.addDomainValidationError(validator.validate(referralClient));
 
               try {
-                     this.referralClientService.createWithSingleTimestamp(referralClient, timestamp);
-               } catch (ServiceException se) {
-                 logError(se.getMessage(), se);
-               }
+                this.referralClientService.createWithSingleTimestamp(referralClient, timestamp);
+              } catch (ServiceException se) {
+                logError(se.getMessage(), se);
+              }
 
               /*
                * determine other participant/roles attributes relating to CWS/CMS allegation
@@ -448,7 +448,7 @@ public class ScreeningToReferralService implements CrudsService {
       } catch (NullPointerException e) {
         String message = e.getMessage();
         logError(message, e);
-      } catch(Exception e){
+      } catch (Exception e) {
         String message = e.getMessage();
         logError(message, e);
         throw e;
@@ -486,7 +486,7 @@ public class ScreeningToReferralService implements CrudsService {
    * @throws ServiceException - ServiceException
    */
   public Referral createReferralWithDefaults(ScreeningToReferral screeningToReferral,
-    String dateStarted, String timeStarted, Date timestamp) throws ServiceException {
+      String dateStarted, String timeStarted, Date timestamp) throws ServiceException {
     short approvalStatusCode = approvalStatusCodeOnCreateSetToNotSubmitted();
     String longTextId = generateLongTextId(screeningToReferral);
     String firstResponseDeterminedByStaffPersonId = getFirstResponseDeterminedByStaffPersonId();
@@ -572,8 +572,8 @@ public class ScreeningToReferralService implements CrudsService {
       String message = e.getMessage();
       logError(message, e);
     }
-    if (postedDrmsDocument == null){
-      throw new RuntimeException("Unable to Create DRMS Documents");
+    if (postedDrmsDocument == null) {
+      throw new ServiceException("Unable to Create DRMS Documents");
     }
     return postedDrmsDocument.getId();
   }
@@ -735,7 +735,7 @@ public class ScreeningToReferralService implements CrudsService {
    */
   private Set<Allegation> processAllegations(ScreeningToReferral scr, String referralId,
       HashMap<Long, String> perpatratorClient, HashMap<Long, String> victimClient, Date timestamp)
-      throws ServiceException {
+          throws ServiceException {
 
     Set<Allegation> processedAllegations = new HashSet<>();
     Set<Allegation> allegations;
