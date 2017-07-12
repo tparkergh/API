@@ -101,10 +101,10 @@ logging:
     "AUDIT":
       level: ALL
     "gov.ca.cwds":
-      level: DEBUG
+      level: DEBUG    
   appenders:
     - type: console
-      threshold: WARN
+      threshold: ${LOGLEVEL:-WARN}
       timeZone: UTC
       target: stdout
       logFormat: '%X{remoteAddress} [%date{ISO8601}] %level "%thread" "%X{uniqueId}" %logger: "%message%n"' 
