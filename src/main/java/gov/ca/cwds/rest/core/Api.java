@@ -137,4 +137,15 @@ public interface Api {
    */
   public static final String RESOURCE_CMS_UI_IDENTIFIER = "cms_ui_id";
 
+  /**
+   * A {@code String} constant representing {@value #RESOURCE_RELATIONSHIPS} API..
+   */
+  public static final String RESOURCE_RELATIONSHIPS = "relationships";
+
+  /**
+   * A {@code String} constant representing {@value #RESOURCE_CLIENT_COLLATERALS} API..
+   */
+  public static final String RESOURCE_CLIENT_COLLATERALS = "client_collaterals";
+
+
 }

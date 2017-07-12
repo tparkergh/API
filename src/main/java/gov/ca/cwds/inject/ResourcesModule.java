@@ -1,10 +1,5 @@
 package gov.ca.cwds.inject;
 
-import com.google.inject.AbstractModule;
-import com.google.inject.Injector;
-import com.google.inject.Provides;
-import com.google.inject.name.Named;
-
 import gov.ca.cwds.rest.ApiConfiguration;
 import gov.ca.cwds.rest.SwaggerConfiguration;
 import gov.ca.cwds.rest.api.domain.cms.CmsDocument;
@@ -31,6 +26,8 @@ import gov.ca.cwds.rest.resources.cms.AllegationPerpetratorHistoryResource;
 import gov.ca.cwds.rest.resources.cms.AllegationResource;
 import gov.ca.cwds.rest.resources.cms.AssignmentResource;
 import gov.ca.cwds.rest.resources.cms.ChildClientResource;
+import gov.ca.cwds.rest.resources.cms.ClientCollateralResource;
+import gov.ca.cwds.rest.resources.cms.ClientRelationshipResource;
 import gov.ca.cwds.rest.resources.cms.ClientResource;
 import gov.ca.cwds.rest.resources.cms.CmsDocReferralClientResource;
 import gov.ca.cwds.rest.resources.cms.CmsDocumentResource;
@@ -54,6 +51,8 @@ import gov.ca.cwds.rest.services.cms.AllegationPerpetratorHistoryService;
 import gov.ca.cwds.rest.services.cms.AllegationService;
 import gov.ca.cwds.rest.services.cms.AssignmentService;
 import gov.ca.cwds.rest.services.cms.ChildClientService;
+import gov.ca.cwds.rest.services.cms.ClientCollateralService;
+import gov.ca.cwds.rest.services.cms.ClientRelationshipService;
 import gov.ca.cwds.rest.services.cms.ClientService;
 import gov.ca.cwds.rest.services.cms.CmsDocReferralClientService;
 import gov.ca.cwds.rest.services.cms.CmsDocumentService;
@@ -70,6 +69,11 @@ import gov.ca.cwds.rest.services.cms.StaffPersonService;
 import gov.ca.cwds.rest.services.cms.SystemCodeService;
 import gov.ca.cwds.rest.services.es.AutoCompletePersonService;
 import gov.ca.cwds.rest.services.es.IndexQueryService;
+
+import com.google.inject.AbstractModule;
+import com.google.inject.Injector;
+import com.google.inject.Provides;
+import com.google.inject.name.Named;
 
 
 /**
@@ -114,6 +118,8 @@ public class ResourcesModule extends AbstractModule {
     bind(SystemCodeResource.class);
     bind(DrmsDocumentResource.class);
     bind(AssignmentResource.class);
+    bind(ClientRelationshipResource.class);
+    bind(ClientCollateralResource.class);
   }
 
   @Provides
@@ -171,7 +177,7 @@ public class ResourcesModule extends AbstractModule {
 
   @Provides
   @ChildClientServiceBackedResource
-  public ResourceDelegate ChildClientServiceBackedResource(Injector injector) {
+  public ResourceDelegate childClientServiceBackedResource(Injector injector) {
     return new ServiceBackedResourceDelegate(injector.getInstance(ChildClientService.class));
   }
 
@@ -216,8 +222,7 @@ public class ResourcesModule extends AbstractModule {
   @Provides
   @ScreeningToReferralServiceBackedResource
   public ResourceDelegate screeningToReferralBackedResource(Injector injector) {
-    return new ServiceBackedResourceDelegate(
-        injector.getInstance(ScreeningToReferralService.class));
+    return new ServiceBackedResourceDelegate(injector.getInstance(ScreeningToReferralService.class));
   }
 
   @Provides
@@ -293,6 +298,18 @@ public class ResourcesModule extends AbstractModule {
   public SimpleResourceDelegate<String, LegacyKeyRequest, LegacyKeyResponse, LegacyKeyService> legacyKeyResource(
       Injector inj) {
     return new SimpleResourceDelegate<>(inj.getInstance(LegacyKeyService.class));
+  }
+
+  @Provides
+  @ClientRelationshipServiceBackedResource
+  public ResourceDelegate clientRelationshipServiceBackedResource(Injector injector) {
+    return new ServiceBackedResourceDelegate(injector.getInstance(ClientRelationshipService.class));
+  }
+
+  @Provides
+  @ClientCollateralServiceBackedResource
+  public ResourceDelegate clientCollateralServiceBackedResource(Injector injector) {
+    return new ServiceBackedResourceDelegate(injector.getInstance(ClientCollateralService.class));
   }
 
 }
