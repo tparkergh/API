@@ -37,7 +37,7 @@ public class ClientRelationship extends ReportingDomain implements Request, Resp
   private String absentParentCode;
 
   @NotNull
-  @ApiModelProperty(required = true, readOnly = false, example = "1234")
+  @ApiModelProperty(required = true, readOnly = false, example = "179")
   private Short clientRelationshipType;
 
   @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = DATE_FORMAT)
