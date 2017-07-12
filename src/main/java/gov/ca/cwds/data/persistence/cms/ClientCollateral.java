@@ -1,5 +1,9 @@
 package gov.ca.cwds.data.persistence.cms;
 
+import gov.ca.cwds.data.CmsSystemCodeDeserializer;
+import gov.ca.cwds.data.SystemCodeSerializer;
+import gov.ca.cwds.data.persistence.PersistentObject;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
@@ -12,10 +16,6 @@ import org.hibernate.annotations.Type;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-
-import gov.ca.cwds.data.CmsSystemCodeDeserializer;
-import gov.ca.cwds.data.SystemCodeSerializer;
-import gov.ca.cwds.data.persistence.PersistentObject;
 
 /**
  * {@link PersistentObject} representing a Client Collateral.
@@ -84,6 +84,25 @@ public class ClientCollateral extends CmsPersistentObject {
   }
 
   /**
+   * 
+   * @param thirdId unique key
+   * @param clientCollateral the domain object to construct this object from
+   * @param lastUpdatedId the id of the last person to update this object
+   */
+  public ClientCollateral(String thirdId,
+      gov.ca.cwds.rest.api.domain.cms.ClientCollateral clientCollateral, String lastUpdatedId) {
+    super(lastUpdatedId);
+    this.activeIndicator = clientCollateral.getActiveIndicator();
+    this.collateralClientReporterRelationshipType =
+        clientCollateral.getCollateralClientReporterRelationshipType();
+    this.commentDescription = clientCollateral.getCommentDescription();
+    this.clientId = clientCollateral.getClientId();
+    this.collateralIndividualId = clientCollateral.getCollateralIndividualId();
+    this.thirdId = thirdId;
+  }
+
+
+  /**
    * @return serialVersionUID
    */
   public static long getSerialversionuid() {
@@ -122,6 +141,11 @@ public class ClientCollateral extends CmsPersistentObject {
     return thirdId;
   }
 
+  /*
+   * (non-Javadoc)
+   * 
+   * @see gov.ca.cwds.rest.api.persistence.PersistentObject#getPrimaryKey()
+   */
   @Override
   public String getPrimaryKey() {
     return getThirdId();
