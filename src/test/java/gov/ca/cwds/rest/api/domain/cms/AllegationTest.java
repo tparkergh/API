@@ -176,8 +176,7 @@ public class AllegationTest {
    */
   @Test
   public void equalsHashCodeWork() {
-    EqualsVerifier.forClass(Allegation.class).suppress(Warning.NONFINAL_FIELDS)
-        .withIgnoredFields("messages").verify();
+    EqualsVerifier.forClass(Allegation.class).suppress(Warning.NONFINAL_FIELDS).verify();
   }
 
   /**
