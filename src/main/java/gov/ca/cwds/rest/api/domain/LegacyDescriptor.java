@@ -17,7 +17,10 @@ import io.swagger.annotations.ApiModelProperty;
 @JsonSnakeCase
 public class LegacyDescriptor implements Serializable {
 
-  private static final long serialVersionUID = 1183360430821640119L;
+  /**
+   * 
+   */
+  private static final long serialVersionUID = 1L;
 
   @JsonProperty("legacy_id")
   @ApiModelProperty(required = false, readOnly = false, value = "Legacy Id", example = "12345")
