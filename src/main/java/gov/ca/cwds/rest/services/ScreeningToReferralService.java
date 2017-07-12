@@ -21,7 +21,6 @@ import com.google.inject.Inject;
 
 import gov.ca.cwds.data.Dao;
 import gov.ca.cwds.data.cms.ReferralDao;
-import gov.ca.cwds.data.cms.SsaName3Dao;
 import gov.ca.cwds.rest.api.Request;
 import gov.ca.cwds.rest.api.Response;
 import gov.ca.cwds.rest.api.domain.Allegation;
@@ -105,8 +104,8 @@ public class ScreeningToReferralService implements CrudsService {
   private StaffPersonIdRetriever staffPersonIdRetriever;
   private DrmsDocumentService drmsDocumentService;
   private AssignmentService assignmentService;
-  private SsaName3Dao ssaName3Dao;
   private Reminders reminders;
+
 
   private ReferralDao referralDao;
 
@@ -148,7 +147,6 @@ public class ScreeningToReferralService implements CrudsService {
    *        {@link gov.ca.cwds.rest.services.cms.StaffPersonIdRetriever} objects.
    * @param messageBuilder log message
    * @param drmsDocumentService - cms DrmsDocumentService
-   * @param ssaName3Dao the ssaName3Dao
    * @param allegationPerpetratorHistoryService the allegationPerpetratorHistoryService
    * @param reminders - reminders
    */
@@ -160,7 +158,7 @@ public class ScreeningToReferralService implements CrudsService {
       LongTextService longTextService, ChildClientService childClientService,
       AssignmentService assignmentService, Validator validator, ReferralDao referralDao,
       StaffPersonIdRetriever staffPersonIdRetriever, MessageBuilder messageBuilder,
-      DrmsDocumentService drmsDocumentService, SsaName3Dao ssaName3Dao,
+      DrmsDocumentService drmsDocumentService,
       AllegationPerpetratorHistoryService allegationPerpetratorHistoryService,
       Reminders reminders) {
 
@@ -181,7 +179,6 @@ public class ScreeningToReferralService implements CrudsService {
     this.staffPersonIdRetriever = staffPersonIdRetriever;
     this.messageBuilder = messageBuilder;
     this.drmsDocumentService = drmsDocumentService;
-    this.ssaName3Dao = ssaName3Dao;
     this.allegationPerpetratorHistoryService = allegationPerpetratorHistoryService;
     this.reminders = reminders;
   }
@@ -375,10 +372,10 @@ public class ScreeningToReferralService implements CrudsService {
               messageBuilder.addDomainValidationError(validator.validate(referralClient));
 
               try {
-                     this.referralClientService.createWithSingleTimestamp(referralClient, timestamp);
-               } catch (ServiceException se) {
-                 logError(se.getMessage(), se);
-               }
+                this.referralClientService.createWithSingleTimestamp(referralClient, timestamp);
+              } catch (ServiceException se) {
+                logError(se.getMessage(), se);
+              }
 
               /*
                * determine other participant/roles attributes relating to CWS/CMS allegation
@@ -419,6 +416,7 @@ public class ScreeningToReferralService implements CrudsService {
         resultParticipants.add(incomingParticipant);
       } // next role
     } // next participant
+
   }
 
   private void createReferralAddress(ScreeningToReferral screeningToReferral, Date timestamp) {
@@ -450,7 +448,7 @@ public class ScreeningToReferralService implements CrudsService {
       } catch (NullPointerException e) {
         String message = e.getMessage();
         logError(message, e);
-      } catch(Exception e){
+      } catch (Exception e) {
         String message = e.getMessage();
         logError(message, e);
         throw e;
@@ -488,7 +486,7 @@ public class ScreeningToReferralService implements CrudsService {
    * @throws ServiceException - ServiceException
    */
   public Referral createReferralWithDefaults(ScreeningToReferral screeningToReferral,
-    String dateStarted, String timeStarted, Date timestamp) throws ServiceException {
+      String dateStarted, String timeStarted, Date timestamp) throws ServiceException {
     short approvalStatusCode = approvalStatusCodeOnCreateSetToNotSubmitted();
     String longTextId = generateLongTextId(screeningToReferral);
     String firstResponseDeterminedByStaffPersonId = getFirstResponseDeterminedByStaffPersonId();
@@ -574,8 +572,8 @@ public class ScreeningToReferralService implements CrudsService {
       String message = e.getMessage();
       logError(message, e);
     }
-    if (postedDrmsDocument == null){
-      throw new RuntimeException("Unable to Create DRMS Documents");
+    if (postedDrmsDocument == null) {
+      throw new ServiceException("Unable to Create DRMS Documents");
     }
     return postedDrmsDocument.getId();
   }
@@ -737,7 +735,7 @@ public class ScreeningToReferralService implements CrudsService {
    */
   private Set<Allegation> processAllegations(ScreeningToReferral scr, String referralId,
       HashMap<Long, String> perpatratorClient, HashMap<Long, String> victimClient, Date timestamp)
-      throws ServiceException {
+          throws ServiceException {
 
     Set<Allegation> processedAllegations = new HashSet<>();
     Set<Allegation> allegations;
@@ -881,7 +879,7 @@ public class ScreeningToReferralService implements CrudsService {
         messageBuilder.addDomainValidationError(validator.validate(domainAddress));
 
         PostedAddress postedAddress =
-            (PostedAddress) this.addressService.createWithSssaName3(domainAddress, timestamp);
+            (PostedAddress) this.addressService.createWithSingleTimestamp(domainAddress, timestamp);
         addressId = postedAddress.getExistingAddressId();
       } else {
         // verify that Address row exist - no update for now

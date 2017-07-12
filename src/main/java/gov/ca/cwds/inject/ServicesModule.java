@@ -16,7 +16,6 @@ import gov.ca.cwds.rest.services.cms.AssignmentService;
 import gov.ca.cwds.rest.services.cms.CachingSystemCodeService;
 import gov.ca.cwds.rest.services.cms.ClientCollateralService;
 import gov.ca.cwds.rest.services.cms.ClientRelationshipService;
-import gov.ca.cwds.rest.services.cms.ClientUcService;
 import gov.ca.cwds.rest.services.cms.CmsDocReferralClientService;
 import gov.ca.cwds.rest.services.cms.CmsDocumentService;
 import gov.ca.cwds.rest.services.cms.CmsNSReferralService;
@@ -118,7 +117,6 @@ public class ServicesModule extends AbstractModule {
     bind(CmsNSReferralService.class);
     bind(ScreeningToReferral.class);
     bind(IndexQueryService.class);
-    bind(ClientUcService.class);
     bind(StaffPersonIdRetriever.class);
     bind(DrmsDocumentService.class);
     bind(LegacyKeyService.class);
