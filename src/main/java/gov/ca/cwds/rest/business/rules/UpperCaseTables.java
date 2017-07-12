@@ -25,7 +25,6 @@ import gov.ca.cwds.rest.services.ServiceException;
 public class UpperCaseTables {
 
   private static final String SOURCE_TBL_CD_CLIENT = "C";
-  private static final String SOURCE_TBL_CD_OTH_CLIENT = "N";
   private static final String SOURCE_TBL_CD_ADDRESS = "A";
 
   private static final Logger LOGGER = LoggerFactory.getLogger(UpperCaseTables.class);
@@ -62,6 +61,7 @@ public class UpperCaseTables {
       clientUc.setLastUpdatedTime(client.getLastUpdatedTime());
       try {
         clientUcDao.create(clientUc);
+        LOGGER.info("clientUc is created");
       } catch (ServiceException se) {
         throw new DaoException("Insert to client_uc failed - " + se);
       }
@@ -83,6 +83,7 @@ public class UpperCaseTables {
       clientUc.setLastUpdatedTime(client.getLastUpdatedTime());
       try {
         clientUcDao.update(clientUc);
+        LOGGER.info("clientUc is updated");
       } catch (ServiceException se) {
         throw new DaoException("Update to client_uc failed - " + se);
       }
@@ -98,6 +99,7 @@ public class UpperCaseTables {
       clientUc.setPktableId((String) pktableId);
       try {
         clientUcDao.delete(clientUc);
+        LOGGER.info("clientUc is deleted");
       } catch (ServiceException se) {
         throw new DaoException("Delete from client_uc failed - " + se);
       }
@@ -119,6 +121,7 @@ public class UpperCaseTables {
       addressUc.setLastUpdatedTime(address.getLastUpdatedTime());
       try {
         addressUcDao.create(addressUc);
+        LOGGER.info("addressUc is created");
       } catch (ServiceException se) {
         throw new DaoException("Insert to addrs_uc failed - " + se);
       }
@@ -140,6 +143,7 @@ public class UpperCaseTables {
       addressUc.setLastUpdatedTime(address.getLastUpdatedTime());
       try {
         addressUcDao.update(addressUc);
+        LOGGER.info("addressUc is updated");
       } catch (ServiceException se) {
         throw new DaoException("Update to addrs_uc failed - " + se);
       }
@@ -155,6 +159,7 @@ public class UpperCaseTables {
       addressUc.setPktableId((String) pktableId);
       try {
         addressUcDao.delete(addressUc);
+        LOGGER.info("addressUc is deleted");
       } catch (ServiceException se) {
         throw new DaoException("Delete from addrs_uc failed - " + se);
       }
