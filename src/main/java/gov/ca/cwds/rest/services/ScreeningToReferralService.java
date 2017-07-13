@@ -1,7 +1,10 @@
 package gov.ca.cwds.rest.services;
 
+import com.google.api.client.http.MultipartContent.Part;
+import gov.ca.cwds.rest.resources.ClientException;
 import java.io.Serializable;
 import java.text.DateFormat;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
@@ -14,6 +17,9 @@ import javax.validation.Validator;
 
 import org.apache.commons.lang3.NotImplementedException;
 import org.apache.commons.lang3.StringUtils;
+import org.joda.time.DateTime;
+import org.joda.time.format.DateTimeFormat;
+import org.joda.time.format.DateTimeFormatter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -305,7 +311,7 @@ public class ScreeningToReferralService implements CrudsService {
         try {
           if (ParticipantValidator.roleIsReporterType(role)
               && (!ParticipantValidator.roleIsAnonymousReporter(role)
-                  && !ParticipantValidator.selfReported(incomingParticipant))) {
+                && !ParticipantValidator.selfReported(incomingParticipant))) {
             /*
              * CMS Reporter - if role is 'mandated reporter' or 'non-mandated reporter' and not
              * anonymous reporter or self-reported
@@ -342,19 +348,27 @@ public class ScreeningToReferralService implements CrudsService {
                 clientId = incomingParticipant.getLegacyId();
                 Client foundClient = this.clientService.find(clientId);
                 if (foundClient != null) {
-                  foundClient.update(incomingParticipant.getFirstName(),
-                      incomingParticipant.getMiddleName(), incomingParticipant.getLastName(),
-                      incomingParticipant.getNameSuffix());
-                  gov.ca.cwds.rest.api.domain.cms.Client savedClient =
-                      this.clientService.update(incomingParticipant.getLegacyId(), foundClient);
-                  if (savedClient == null) {
-                    String message = "Unable to save Client";
-                    logError(message);
-                    throw new ServiceException(message);
-                  }
+                    if (unchanged(incomingParticipant, foundClient)) {
+                      foundClient.update(incomingParticipant.getFirstName(),
+                          incomingParticipant.getMiddleName(), incomingParticipant.getLastName(),
+                          incomingParticipant.getNameSuffix());
+                      gov.ca.cwds.rest.api.domain.cms.Client savedClient =
+                          this.clientService.update(incomingParticipant.getLegacyId(), foundClient);
+                      if (savedClient == null) {
+                        String message = "Unable to save Client";
+                        logError(message);
+                        throw new ServiceException(message);
+                      }
+                    } else {
+                      String message = String
+                          .format("Unable to Update %s %s Client. Client was previously modified",
+                              incomingParticipant.getFirstName(),
+                              incomingParticipant.getLastName());
+                      logError(message);
+                      throw new ClientException(message);
 
-                }
-                if (foundClient == null) {
+                    }
+                } else {
                   String message =
                       " Legacy Id of Participant does not correspond to an existing CWS/CMS Client ";
                   logError(message);
@@ -409,6 +423,11 @@ public class ScreeningToReferralService implements CrudsService {
               }
             }
           }
+        } catch(ParseException e){
+          String message = String.format("Unable to process last updated date for %s %s Client", incomingParticipant.getFirstName(), incomingParticipant.getLastName());
+          logError(message);
+          throw new RuntimeException(message, e);
+
         } catch (Exception e) {
           String message = e.getMessage();
           logError(message, e);
@@ -417,6 +436,15 @@ public class ScreeningToReferralService implements CrudsService {
       } // next role
     } // next participant
 
+  }
+
+  private boolean unchanged(Participant incomingClient, Client savedClient) throws ParseException {
+    DateTimeFormatter formatter = DateTimeFormat.forPattern("yyyy-MM-dd-HH.mm.ss.SSS");
+    DateTime dbDate = formatter.parseDateTime(savedClient.getLastUpdatedTime());
+
+    DateTimeFormatter formatter2 = DateTimeFormat.forPattern("yyyy-MM-dd\'T\'HH:mm:ss.SSSZZ");
+    DateTime incommingDate = formatter2.parseDateTime(incomingClient.getLegacyDescriptor().getLastUpdated());
+    return dbDate.isEqual(incommingDate);
   }
 
   private void createReferralAddress(ScreeningToReferral screeningToReferral, Date timestamp) {

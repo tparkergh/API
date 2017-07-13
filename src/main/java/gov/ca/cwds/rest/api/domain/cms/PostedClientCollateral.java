@@ -37,6 +37,18 @@ public class PostedClientCollateral extends ClientCollateral {
   }
 
   /**
+   * 
+   * @param clientCollateral The domain Client Collateral
+   * @param thirdId The Unique Identifier
+   */
+  public PostedClientCollateral(ClientCollateral clientCollateral, String thirdId) {
+    super(clientCollateral.getActiveIndicator(), clientCollateral
+        .getCollateralClientReporterRelationshipType(), clientCollateral.getCommentDescription(),
+        clientCollateral.getClientId(), clientCollateral.getCollateralIndividualId());
+    this.thirdId = thirdId;
+  }
+
+  /**
    * @return the id
    */
   public String getThirdId() {

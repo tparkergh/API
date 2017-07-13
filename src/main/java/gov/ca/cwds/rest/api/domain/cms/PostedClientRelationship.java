@@ -38,6 +38,25 @@ public class PostedClientRelationship extends ClientRelationship {
   }
 
   /**
+   * Constructor
+   * 
+   * @param clientRelationship The domain Client Relationship
+   * @param id The Unique Identifier
+   * 
+   */
+  public PostedClientRelationship(ClientRelationship clientRelationship, String id) {
+    super(clientRelationship.getAbsentParentCode(), clientRelationship.getClientRelationshipType(),
+        clientRelationship.getEndDate(), clientRelationship.getSecondaryClientId(),
+        clientRelationship.getPrimaryClientId(), clientRelationship.getSameHomeCode(),
+        clientRelationship.getStartDate());
+    if (StringUtils.isBlank(id)) {
+      throw new ServiceException("ClientRelationship ID cannot be empty");
+    }
+
+    this.id = id;
+  }
+
+  /**
    * @return the id
    */
   public String getId() {

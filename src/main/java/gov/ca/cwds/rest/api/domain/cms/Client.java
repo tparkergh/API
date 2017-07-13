@@ -623,7 +623,7 @@ public class Client extends ReportingDomain implements Request, Response {
    */
   public Client(gov.ca.cwds.data.persistence.cms.Client persistedClient, boolean isExist) {
     this.clientId = isExist ? persistedClient.getId() : "";
-    this.lastUpdatedTime = DomainChef.cookStrictTimestamp(persistedClient.getLastUpdatedTime());
+    this.lastUpdatedTime = DomainChef.cookTimestamp(persistedClient.getLastUpdatedTime());
     this.adjudicatedDelinquentIndicator =
         DomainChef.uncookBooleanString(persistedClient.getAdjudicatedDelinquentIndicator());
     this.adoptionStatusCode = persistedClient.getAdoptionStatusCode();
