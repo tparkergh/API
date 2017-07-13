@@ -7,6 +7,8 @@ import java.math.BigDecimal;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
+import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.hibernate.validator.constraints.NotEmpty;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
@@ -33,7 +35,6 @@ import io.swagger.annotations.ApiModelProperty;
 public class CrossReport extends ReportingDomain implements Request, Response {
   private static final int DEFAULT_INT = 0;
   private static final BigDecimal DEFAULT_DECIMAL = new BigDecimal(0);
-  private static short CROSS_REPORT_METHOD_CODE = 0;
 
   /**
    * Serialization version
@@ -112,7 +113,6 @@ public class CrossReport extends ReportingDomain implements Request, Response {
       example = "ABC1234567")
   private String lawEnforcementId;
 
-  // TODO: remove the unique key from the domain class
   @NotEmpty
   @Size(min = 3, max = 3)
   @ApiModelProperty(required = true, readOnly = false, value = "", example = "ABC")
@@ -422,171 +422,22 @@ public class CrossReport extends ReportingDomain implements Request, Response {
 
   /**
    * {@inheritDoc}
-   * 
+   *
    * @see java.lang.Object#hashCode()
    */
   @Override
   public final int hashCode() {
-    final int prime = 31;
-    int result = 1;
-    result = prime * result + ((countySpecificCode == null) ? 0 : countySpecificCode.hashCode());
-    result =
-        prime * result + ((crossReportMethodType == null) ? 0 : crossReportMethodType.hashCode());
-    result = prime * result + ((description == null) ? 0 : description.hashCode());
-    result = prime * result
-        + ((filedOutOfStateIndicator == null) ? 0 : filedOutOfStateIndicator.hashCode());
-    result = prime * result + ((governmentOrgCrossRptIndicatorVar == null) ? 0
-        : governmentOrgCrossRptIndicatorVar.hashCode());
-    result = prime * result + ((informDate == null) ? 0 : informDate.hashCode());
-    result = prime * result + ((informTime == null) ? 0 : informTime.hashCode());
-    result = prime * result + ((lawEnforcementId == null) ? 0 : lawEnforcementId.hashCode());
-    result = prime * result
-        + ((lawEnforcementIndicator == null) ? 0 : lawEnforcementIndicator.hashCode());
-    result = prime * result + ((outStateLawEnforcementIndicator == null) ? 0
-        : outStateLawEnforcementIndicator.hashCode());
-    result = prime * result
-        + ((outStateLawEnforcementAddr == null) ? 0 : outStateLawEnforcementAddr.hashCode());
-    result =
-        prime * result + ((recipientBadgeNumber == null) ? 0 : recipientBadgeNumber.hashCode());
-    result = prime * result + ((recipientName == null) ? 0 : recipientName.hashCode());
-    result = prime * result
-        + ((recipientPhoneExtensionNumber == null) ? 0 : recipientPhoneExtensionNumber.hashCode());
-    result =
-        prime * result + ((recipientPhoneNumber == null) ? 0 : recipientPhoneNumber.hashCode());
-    result = prime * result
-        + ((recipientPositionTitleDesc == null) ? 0 : recipientPositionTitleDesc.hashCode());
-    result = prime * result + ((referenceNumber == null) ? 0 : referenceNumber.hashCode());
-    result = prime * result + ((referralId == null) ? 0 : referralId.hashCode());
-    result = prime * result
-        + ((satisfyCrossReportIndicator == null) ? 0 : satisfyCrossReportIndicator.hashCode());
-    result = prime * result + ((staffPersonId == null) ? 0 : staffPersonId.hashCode());
-    result = prime * result + ((thirdId == null) ? 0 : thirdId.hashCode());
-    return result;
+    return HashCodeBuilder.reflectionHashCode(this, false);
   }
 
   /**
    * {@inheritDoc}
-   * 
+   *
    * @see java.lang.Object#equals(java.lang.Object)
    */
   @Override
   public final boolean equals(Object obj) {
-    if (this == obj) {
-      return true;
-    }
-    if (obj == null) {
-      return false;
-    }
-    if (!(obj instanceof CrossReport)) {
-      return false;
-    }
-    CrossReport other = (CrossReport) obj;
-    if (countySpecificCode == null) {
-      if (other.countySpecificCode != null)
-        return false;
-    } else if (!countySpecificCode.equals(other.countySpecificCode))
-      return false;
-    if (crossReportMethodType == null) {
-      if (other.crossReportMethodType != null)
-        return false;
-    } else if (!crossReportMethodType.equals(other.crossReportMethodType))
-      return false;
-    if (description == null) {
-      if (other.description != null)
-        return false;
-    } else if (!description.equals(other.description))
-      return false;
-    if (filedOutOfStateIndicator == null) {
-      if (other.filedOutOfStateIndicator != null)
-        return false;
-    } else if (!filedOutOfStateIndicator.equals(other.filedOutOfStateIndicator))
-      return false;
-    if (governmentOrgCrossRptIndicatorVar == null) {
-      if (other.governmentOrgCrossRptIndicatorVar != null)
-        return false;
-    } else if (!governmentOrgCrossRptIndicatorVar.equals(other.governmentOrgCrossRptIndicatorVar))
-      return false;
-    if (informDate == null) {
-      if (other.informDate != null)
-        return false;
-    } else if (!informDate.equals(other.informDate))
-      return false;
-    if (informTime == null) {
-      if (other.informTime != null)
-        return false;
-    } else if (!informTime.equals(other.informTime))
-      return false;
-    if (lawEnforcementId == null) {
-      if (other.lawEnforcementId != null)
-        return false;
-    } else if (!lawEnforcementId.equals(other.lawEnforcementId))
-      return false;
-    if (lawEnforcementIndicator == null) {
-      if (other.lawEnforcementIndicator != null)
-        return false;
-    } else if (!lawEnforcementIndicator.equals(other.lawEnforcementIndicator))
-      return false;
-    if (outStateLawEnforcementIndicator == null) {
-      if (other.outStateLawEnforcementIndicator != null)
-        return false;
-    } else if (!outStateLawEnforcementIndicator.equals(other.outStateLawEnforcementIndicator))
-      return false;
-    if (outStateLawEnforcementAddr == null) {
-      if (other.outStateLawEnforcementAddr != null)
-        return false;
-    } else if (!outStateLawEnforcementAddr.equals(other.outStateLawEnforcementAddr))
-      return false;
-    if (recipientBadgeNumber == null) {
-      if (other.recipientBadgeNumber != null)
-        return false;
-    } else if (!recipientBadgeNumber.equals(other.recipientBadgeNumber))
-      return false;
-    if (recipientName == null) {
-      if (other.recipientName != null)
-        return false;
-    } else if (!recipientName.equals(other.recipientName))
-      return false;
-    if (recipientPhoneExtensionNumber == null) {
-      if (other.recipientPhoneExtensionNumber != null)
-        return false;
-    } else if (!recipientPhoneExtensionNumber.equals(other.recipientPhoneExtensionNumber))
-      return false;
-    if (recipientPhoneNumber == null) {
-      if (other.recipientPhoneNumber != null)
-        return false;
-    } else if (!recipientPhoneNumber.equals(other.recipientPhoneNumber))
-      return false;
-    if (recipientPositionTitleDesc == null) {
-      if (other.recipientPositionTitleDesc != null)
-        return false;
-    } else if (!recipientPositionTitleDesc.equals(other.recipientPositionTitleDesc))
-      return false;
-    if (referenceNumber == null) {
-      if (other.referenceNumber != null)
-        return false;
-    } else if (!referenceNumber.equals(other.referenceNumber))
-      return false;
-    if (referralId == null) {
-      if (other.referralId != null)
-        return false;
-    } else if (!referralId.equals(other.referralId))
-      return false;
-    if (satisfyCrossReportIndicator == null) {
-      if (other.satisfyCrossReportIndicator != null)
-        return false;
-    } else if (!satisfyCrossReportIndicator.equals(other.satisfyCrossReportIndicator))
-      return false;
-    if (staffPersonId == null) {
-      if (other.staffPersonId != null)
-        return false;
-    } else if (!staffPersonId.equals(other.staffPersonId))
-      return false;
-    if (thirdId == null) {
-      if (other.thirdId != null)
-        return false;
-    } else if (!thirdId.equals(other.thirdId))
-      return false;
-    return true;
+    return EqualsBuilder.reflectionEquals(this, obj, false);
   }
 
 }

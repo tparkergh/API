@@ -9,6 +9,8 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
+import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.hibernate.annotations.Type;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
@@ -149,65 +151,24 @@ public class ClientCollateral extends CmsPersistentObject {
     return getThirdId();
   }
 
+  /**
+   * {@inheritDoc}
+   *
+   * @see java.lang.Object#hashCode()
+   */
   @Override
   public final int hashCode() {
-    final int prime = 31;
-    int result = 1;
-    result = prime * result + ((activeIndicator == null) ? 0 : activeIndicator.hashCode());
-    result = prime * result + ((clientId == null) ? 0 : clientId.hashCode());
-    result =
-        prime
-            * result
-            + ((collateralClientReporterRelationshipType == null) ? 0
-                : collateralClientReporterRelationshipType.hashCode());
-    result =
-        prime * result + ((collateralIndividualId == null) ? 0 : collateralIndividualId.hashCode());
-    result = prime * result + ((commentDescription == null) ? 0 : commentDescription.hashCode());
-    result = prime * result + ((thirdId == null) ? 0 : thirdId.hashCode());
-    return result;
+    return HashCodeBuilder.reflectionHashCode(this, false);
   }
 
+  /**
+   * {@inheritDoc}
+   *
+   * @see java.lang.Object#equals(java.lang.Object)
+   */
   @Override
   public final boolean equals(Object obj) {
-    if (this == obj)
-      return true;
-    if (obj == null)
-      return false;
-    if (getClass() != obj.getClass())
-      return false;
-    ClientCollateral other = (ClientCollateral) obj;
-    if (activeIndicator == null) {
-      if (other.activeIndicator != null)
-        return false;
-    } else if (!activeIndicator.equals(other.activeIndicator))
-      return false;
-    if (clientId == null) {
-      if (other.clientId != null)
-        return false;
-    } else if (!clientId.equals(other.clientId))
-      return false;
-    if (collateralClientReporterRelationshipType == null) {
-      if (other.collateralClientReporterRelationshipType != null)
-        return false;
-    } else if (!collateralClientReporterRelationshipType
-        .equals(other.collateralClientReporterRelationshipType))
-      return false;
-    if (collateralIndividualId == null) {
-      if (other.collateralIndividualId != null)
-        return false;
-    } else if (!collateralIndividualId.equals(other.collateralIndividualId))
-      return false;
-    if (commentDescription == null) {
-      if (other.commentDescription != null)
-        return false;
-    } else if (!commentDescription.equals(other.commentDescription))
-      return false;
-    if (thirdId == null) {
-      if (other.thirdId != null)
-        return false;
-    } else if (!thirdId.equals(other.thirdId))
-      return false;
-    return true;
+    return EqualsBuilder.reflectionEquals(this, obj, false);
   }
 
 }
