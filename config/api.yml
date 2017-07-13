@@ -14,6 +14,7 @@ swagger:
   loginUrl: ${LOGIN_URL:-http://localhost:8090/authn/login}
   showSwagger: ${SHOW_SWAGGER:-false}
   jsonUrl: ${SWAGGER_JSON_URL:-http://localhost:8080/swagger.json}
+  callbackUrl: ${SWAGGER_CALLBACK_URL:-http://localhost:8080/swagger}
 
 nsDataSourceFactory:
   driverClass: org.postgresql.Driver
