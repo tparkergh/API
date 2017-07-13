@@ -77,12 +77,17 @@ public class ClientAddressService implements CrudsService {
     return null;
   }
 
+  /**
+   * @param address - aadress
+   * @param clientParticipant - clientParticipant
+   * @return the address Found
+   */
   public List<Response> findByAddressAndClient(gov.ca.cwds.rest.api.domain.Address address,
       Participant clientParticipant) {
     List<gov.ca.cwds.data.persistence.cms.ClientAddress> persistedClientAddresses = clientAddressDao
         .findByAddressAndClient(address.getLegacyId(), clientParticipant.getLegacyId());
     if (persistedClientAddresses != null && !persistedClientAddresses.isEmpty()) {
-      ArrayList<Response> foundClientAddresses = new ArrayList();
+      ArrayList<Response> foundClientAddresses = new ArrayList<>();
       for (ClientAddress clientAddress : persistedClientAddresses) {
         foundClientAddresses
             .add(new gov.ca.cwds.rest.api.domain.cms.ClientAddress(clientAddress, true));

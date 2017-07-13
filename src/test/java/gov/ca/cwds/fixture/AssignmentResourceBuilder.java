@@ -2,20 +2,23 @@ package gov.ca.cwds.fixture;
 
 import java.math.BigDecimal;
 
-import gov.ca.cwds.data.persistence.cms.Assignment;
-import gov.ca.cwds.rest.api.domain.DomainChef;
+import gov.ca.cwds.rest.api.domain.cms.Assignment;
 
+/**
+ * @author CWDS API Team
+ *
+ */
 @SuppressWarnings("javadoc")
-public class AssignmentEntityBuilder {
+public class AssignmentResourceBuilder {
   private String countySpecificCode = "20";
   private String endDate = "2018-06-01";
   private String endTime = "12:01:00";
   private String establishedForCode = "R";
   private String establishedForId = "1234567ABC";
   private String caseLoadId = "2345678ABC";
-  private String outOfStatePartyContactId = "";
+  private String outOfStateContactId = "";
   private String id = "3456789ABC";
-  private String responsiblityDescription = "Assignment responsibility description";
+  private String responsibilityDescription = "Assignment responsibility description";
   private Short secondaryAssignmentRoleType = 0;
   private String startDate = "2017-06-20";
   private String startTime = "16:41:49";
@@ -23,19 +26,20 @@ public class AssignmentEntityBuilder {
   private BigDecimal weightingNumber = new BigDecimal("0.0");
   private String staffId = "0X5";
 
-  public Assignment create() {
-    return new Assignment(id, countySpecificCode, DomainChef.uncookDateString(endDate),
-        DomainChef.uncookTimeString(endTime), establishedForCode, establishedForId, caseLoadId,
-        outOfStatePartyContactId, responsiblityDescription, secondaryAssignmentRoleType,
-        DomainChef.uncookDateString(startDate), DomainChef.uncookTimeString(startTime),
-        typeOfAssignmentCode, weightingNumber);
+  /**
+   * @return the Assignment
+   */
+  public Assignment createAssignment() {
+    return new Assignment(countySpecificCode, endDate, endTime, establishedForCode,
+        establishedForId, caseLoadId, outOfStateContactId, responsibilityDescription,
+        secondaryAssignmentRoleType, startDate, startTime, typeOfAssignmentCode, weightingNumber);
   }
 
   public String getCountySpecificCode() {
     return countySpecificCode;
   }
 
-  public AssignmentEntityBuilder setCountySpecificCode(String countySpecificCode) {
+  public AssignmentResourceBuilder setCountySpecificCode(String countySpecificCode) {
     this.countySpecificCode = countySpecificCode;
     return this;
   }
@@ -44,7 +48,7 @@ public class AssignmentEntityBuilder {
     return endDate;
   }
 
-  public AssignmentEntityBuilder setEndDate(String endDate) {
+  public AssignmentResourceBuilder setEndDate(String endDate) {
     this.endDate = endDate;
     return this;
   }
@@ -53,7 +57,7 @@ public class AssignmentEntityBuilder {
     return endTime;
   }
 
-  public AssignmentEntityBuilder setEndTime(String endTime) {
+  public AssignmentResourceBuilder setEndTime(String endTime) {
     this.endTime = endTime;
     return this;
   }
@@ -62,7 +66,7 @@ public class AssignmentEntityBuilder {
     return establishedForCode;
   }
 
-  public AssignmentEntityBuilder setEstablishedForCode(String establishedForCode) {
+  public AssignmentResourceBuilder setEstablishedForCode(String establishedForCode) {
     this.establishedForCode = establishedForCode;
     return this;
   }
@@ -71,7 +75,7 @@ public class AssignmentEntityBuilder {
     return establishedForId;
   }
 
-  public AssignmentEntityBuilder setEstablishedForId(String establishedForId) {
+  public AssignmentResourceBuilder setEstablishedForId(String establishedForId) {
     this.establishedForId = establishedForId;
     return this;
   }
@@ -80,17 +84,17 @@ public class AssignmentEntityBuilder {
     return caseLoadId;
   }
 
-  public AssignmentEntityBuilder setCaseLoadId(String caseLoadId) {
+  public AssignmentResourceBuilder setCaseLoadId(String caseLoadId) {
     this.caseLoadId = caseLoadId;
     return this;
   }
 
-  public String getOutOfStatePartyContactId() {
-    return outOfStatePartyContactId;
+  public String getOutOfStateContactId() {
+    return outOfStateContactId;
   }
 
-  public AssignmentEntityBuilder setOutOfStatePartyContactId(String outOfStatePartyContactId) {
-    this.outOfStatePartyContactId = outOfStatePartyContactId;
+  public AssignmentResourceBuilder setOutOfStateContactId(String outOfStateContactId) {
+    this.outOfStateContactId = outOfStateContactId;
     return this;
   }
 
@@ -98,17 +102,17 @@ public class AssignmentEntityBuilder {
     return id;
   }
 
-  public AssignmentEntityBuilder setId(String id) {
+  public AssignmentResourceBuilder setId(String id) {
     this.id = id;
     return this;
   }
 
-  public String getResponsiblityDescription() {
-    return responsiblityDescription;
+  public String getResponsibilityDescription() {
+    return responsibilityDescription;
   }
 
-  public AssignmentEntityBuilder setResponsiblityDescription(String responsiblityDescription) {
-    this.responsiblityDescription = responsiblityDescription;
+  public AssignmentResourceBuilder setResponsibilityDescription(String responsibilityDescription) {
+    this.responsibilityDescription = responsibilityDescription;
     return this;
   }
 
@@ -116,7 +120,7 @@ public class AssignmentEntityBuilder {
     return secondaryAssignmentRoleType;
   }
 
-  public AssignmentEntityBuilder setSecondaryAssignmentRoleType(Short secondaryAssignmentRoleType) {
+  public AssignmentResourceBuilder setSecondaryAssignmentRoleType(Short secondaryAssignmentRoleType) {
     this.secondaryAssignmentRoleType = secondaryAssignmentRoleType;
     return this;
   }
@@ -125,7 +129,7 @@ public class AssignmentEntityBuilder {
     return startDate;
   }
 
-  public AssignmentEntityBuilder setStartDate(String startDate) {
+  public AssignmentResourceBuilder setStartDate(String startDate) {
     this.startDate = startDate;
     return this;
   }
@@ -134,7 +138,7 @@ public class AssignmentEntityBuilder {
     return startTime;
   }
 
-  public AssignmentEntityBuilder setStartTime(String startTime) {
+  public AssignmentResourceBuilder setStartTime(String startTime) {
     this.startTime = startTime;
     return this;
   }
@@ -143,7 +147,7 @@ public class AssignmentEntityBuilder {
     return typeOfAssignmentCode;
   }
 
-  public AssignmentEntityBuilder setTypeOfAssignmentCode(String typeOfAssignmentCode) {
+  public AssignmentResourceBuilder setTypeOfAssignmentCode(String typeOfAssignmentCode) {
     this.typeOfAssignmentCode = typeOfAssignmentCode;
     return this;
   }
@@ -152,7 +156,7 @@ public class AssignmentEntityBuilder {
     return weightingNumber;
   }
 
-  public AssignmentEntityBuilder setWeightingNumber(BigDecimal weightingNumber) {
+  public AssignmentResourceBuilder setWeightingNumber(BigDecimal weightingNumber) {
     this.weightingNumber = weightingNumber;
     return this;
   }
@@ -161,7 +165,7 @@ public class AssignmentEntityBuilder {
     return staffId;
   }
 
-  public AssignmentEntityBuilder setStaffId(String staffId) {
+  public AssignmentResourceBuilder setStaffId(String staffId) {
     this.staffId = staffId;
     return this;
   }
