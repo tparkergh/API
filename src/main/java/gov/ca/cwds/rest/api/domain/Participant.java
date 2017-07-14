@@ -150,6 +150,7 @@ public class Participant extends ReportingDomain implements Request, Response {
   public Participant(@JsonProperty("id") long id,
       @JsonProperty("legacy_source_table") String legacySourceTable,
       @JsonProperty("legacy_client_id") String clientId,
+      @JsonProperty("legacy_descriptor") LegacyDescriptor legacyDescriptor,
       @JsonProperty("first_name") String firstName, @JsonProperty("middle_name") String middleName,
       @JsonProperty("last_name") String lastName, @JsonProperty("name_suffix") String nameSuffix,
       @JsonProperty("gender") String gender, @JsonProperty("ssn") String ssn,
@@ -160,6 +161,7 @@ public class Participant extends ReportingDomain implements Request, Response {
     this.id = id;
     this.legacySourceTable = legacySourceTable;
     this.legacyId = clientId;
+    this.legacyDescriptor = legacyDescriptor;
     this.screeningId = screeningId;
     this.firstName = firstName;
     this.middleName = middleName;
@@ -195,6 +197,7 @@ public class Participant extends ReportingDomain implements Request, Response {
       this.gender = participant.getPerson().getGender();
       this.dateOfBirth = DomainChef.cookDate(participant.getPerson().getDateOfBirth());
       this.ssn = participant.getPerson().getSsn();
+      this.legacyDescriptor = new LegacyDescriptor();
     }
   }
 

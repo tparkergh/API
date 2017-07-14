@@ -142,8 +142,9 @@ public class ScreeningResponseTest {
     addresses.add(address);
     roles.add("victim");
 
-    Participant participant = new Participant(participantId, "", "", firstName, middleName, lastName,
-        suffix, gender, ssn, dateOfBirth, personId, screeningId, roles, addresses);
+    Participant participant = new Participant(participantId, "", "", new LegacyDescriptor(),
+        firstName, middleName, lastName, suffix, gender, ssn, dateOfBirth, personId, screeningId,
+        roles, addresses);
     ImmutableSet.Builder<Participant> participantSetBuilder = ImmutableSet.builder();
     participantSetBuilder.add(participant);
     Set<Participant> participants;
@@ -166,8 +167,9 @@ public class ScreeningResponseTest {
     addresses.add(address);
     roles.add("victim");
 
-    Participant participant = new Participant(participantId, "", "", firstName, middleName, lastName,
-        suffix, gender, ssn, dateOfBirth, personId, screeningId, roles, addresses);
+    Participant participant = new Participant(participantId, "", "", new LegacyDescriptor(),
+        firstName, middleName, lastName, suffix, gender, ssn, dateOfBirth, personId, screeningId,
+        roles, addresses);
     ImmutableSet.Builder<Participant> participantSetBuilder = ImmutableSet.builder();
     participantSetBuilder.add(participant);
     Set<Participant> participants;

@@ -29,6 +29,13 @@
     "id" : 5432,
     "legacy_source_table" : "CLIENT_T",
     "legacy_id" : "1234567ABC",
+     "legacy_descriptor": {
+        "legacy_id": null,
+         "legacy_ui_id": null,
+         "legacy_last_updated": null,
+         "legacy_table_name": null,
+         "legacy_table_description": null
+      },
     "first_name" : "John",
     "middle_name" : "T.",
     "last_name" : "Smith",

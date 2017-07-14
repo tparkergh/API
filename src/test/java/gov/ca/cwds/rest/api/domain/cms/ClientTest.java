@@ -12,6 +12,7 @@ import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 import gov.ca.cwds.fixture.ClientResourceBuilder;
+import gov.ca.cwds.rest.api.domain.LegacyDescriptor;
 import java.io.IOException;
 import java.util.Date;
 import java.util.HashSet;
@@ -385,7 +386,7 @@ public class ClientTest implements DomainTestTemplate {
 
   @Test
   public void testCreateWithDefaultCreatesWithValues() {
-    Participant participant = new Participant(1, "sourceTable", "clientId", "firstName",
+    Participant participant = new Participant(1, "sourceTable", "clientId", new LegacyDescriptor(), "firstName",
         "middleName", "lastName", "jr", "gender", "ssn", "dob", 3, 4, new HashSet(), new HashSet());
     String genderCode = "male";
     String dateStarted = "now";
@@ -412,8 +413,8 @@ public class ClientTest implements DomainTestTemplate {
 
   @Test
   public void shouldAllowClientNamesToBeUpdatedAfterInitialization() {
-    Participant participant = new Participant(1, "sourceTable", "clientId", "Fred", "Wilson",
-        "Bill", "", "gender", "ssn", "dob", 3, 4, new HashSet(), new HashSet());
+    Participant participant = new Participant(1, "sourceTable", "clientId", new LegacyDescriptor(),
+        "Fred", "Wilson", "Bill", "", "gender", "ssn", "dob", 3, 4, new HashSet(), new HashSet());
     Client client = Client.createWithDefaults(participant, "", "");
 
     client.update("Barney", "middlestone", "Rubble", "jr");
@@ -430,8 +431,9 @@ public class ClientTest implements DomainTestTemplate {
 
   @Test
   public void testCreateWithDefaultCreatesWithDefaultValues() {
-    Participant participant = new Participant(1, "sourceTable", "clientId", "firstName",
-        "middleName", "lastName", "", "gender", "ssn", "dob", 3, 4, new HashSet(), new HashSet());
+    Participant participant = new Participant(1, "sourceTable", "clientId",  new LegacyDescriptor(),
+        "firstName", "middleName", "lastName", "", "gender", "ssn", "dob", 3, 4, new HashSet(),
+        new HashSet());
     String genderCode = "male";
     String dateStarted = "now";
 

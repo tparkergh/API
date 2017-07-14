@@ -11,6 +11,7 @@ import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
+import gov.ca.cwds.rest.api.domain.LegacyDescriptor;
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.text.DateFormat;
@@ -225,8 +226,8 @@ public class ReporterTest {
     String lastName = "lastName";
     String suffix = "";
     Participant participant = new Participant(5L, "legacy_source_table", "legacy_client_id",
-        firstName, middleName, lastName, suffix, "gender", "ssn", "date_of_birth", 7L, 8L,
-        new HashSet<>(), new HashSet<>());
+        new LegacyDescriptor(), firstName, middleName, lastName, suffix, "gender", "ssn",
+        "date_of_birth", 7L, 8L, new HashSet<>(), new HashSet<>());
     String countyCode = "countyCode";
     Short stateCode = new Short("0");
 
@@ -279,8 +280,8 @@ public class ReporterTest {
     String lastName = "lastName";
     String suffix = "jr";
     Participant participant = new Participant(5L, "legacy_source_table", "legacy_client_id",
-        firstName, middleName, lastName, "jr", "gender", "ssn", "date_of_birth", 7L, 8L,
-        new HashSet<>(), new HashSet<>());
+        new LegacyDescriptor(), firstName, middleName, lastName, "jr", "gender", "ssn",
+        "date_of_birth", 7L, 8L, new HashSet<>(), new HashSet<>());
     String countyCode = "countyCode";
     Short stateCode = new Short("0");
 
@@ -325,8 +326,8 @@ public class ReporterTest {
     gov.ca.cwds.rest.api.domain.Address address = new gov.ca.cwds.rest.api.domain.Address(
         "legacy_source_table", "legacy_id", streetAddress, "city", "state", 12345, "type");
     Participant participant = new Participant(5L, "legacy_source_table", "legacy_client_id",
-        "firstName", "middleName", "lastName", "jr", "gender", "ssn", "date_of_birth", 7L, 8L,
-        new HashSet<>(), new HashSet<>());
+        new LegacyDescriptor(), "firstName", "middleName", "lastName", "jr", "gender", "ssn",
+        "date_of_birth", 7L, 8L, new HashSet<>(), new HashSet<>());
 
     Reporter reporter = Reporter.createWithDefaults("referralId", true, address, participant,
         "countyCode", new Short("0"));
@@ -341,8 +342,8 @@ public class ReporterTest {
     gov.ca.cwds.rest.api.domain.Address address = new gov.ca.cwds.rest.api.domain.Address(
         "legacy_source_table", "legacy_id", streetAddress, "city", "state", 12345, "type");
     Participant participant = new Participant(5L, "legacy_source_table", "legacy_client_id",
-        "firstName", "middleName", "lastName", "jr", "gender", "ssn", "date_of_birth", 7L, 8L,
-        new HashSet<>(), new HashSet<>());
+        new LegacyDescriptor(), "firstName", "middleName", "lastName", "jr", "gender", "ssn",
+        "date_of_birth", 7L, 8L, new HashSet<>(), new HashSet<>());
 
     Reporter reporter = Reporter.createWithDefaults("referralId", true, address, participant,
         "countyCode", new Short("0"));
@@ -357,8 +358,8 @@ public class ReporterTest {
     gov.ca.cwds.rest.api.domain.Address address = new gov.ca.cwds.rest.api.domain.Address(
         "legacy_source_table", "legacy_id", streetAddress, "city", "state", 12345, "type");
     Participant participant = new Participant(5L, "legacy_source_table", "legacy_client_id",
-        "firstName", "middleName", "lastName", "jr", "gender", "ssn", "date_of_birth", 7L, 8L,
-        new HashSet<>(), new HashSet<>());
+        new LegacyDescriptor(), "firstName", "middleName", "lastName", "jr", "gender", "ssn",
+        "date_of_birth", 7L, 8L, new HashSet<>(), new HashSet<>());
 
     Reporter reporter = Reporter.createWithDefaults("referralId", true, address, participant,
         "countyCode", new Short("0"));
@@ -374,8 +375,8 @@ public class ReporterTest {
     gov.ca.cwds.rest.api.domain.Address address = new gov.ca.cwds.rest.api.domain.Address(
         "legacy_source_table", "legacy_id", streetAddress, "city", "state", 12345, "type");
     Participant participant = new Participant(5L, "legacy_source_table", "legacy_client_id",
-        "firstName", "middleName", "lastName", "jr", "gender", "ssn", "date_of_birth", 7L, 8L,
-        new HashSet<>(), new HashSet<>());
+        new LegacyDescriptor(), "firstName", "middleName", "lastName", "jr", "gender", "ssn",
+        "date_of_birth", 7L, 8L, new HashSet<>(), new HashSet<>());
 
     Reporter reporter = Reporter.createWithDefaults("referralId", true, address, participant,
         "countyCode", new Short("0"));

@@ -9,6 +9,7 @@ import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
+import gov.ca.cwds.rest.api.domain.LegacyDescriptor;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -239,14 +240,10 @@ public class ScreeningServiceTest {
         new ScreeningRequest("ref", "2016-10-31", "Sac", "2016-10-31", "loc", "comm", "name", "now",
             "sure", "2016-10-31", "narrative", domainAddress);
 
-    Participant bart = new Participant(1, "", "", "Bart", "S", "Simpson","", "male", "123456789",
-        "2016-10-31", 1234, 1234, roles, addresses);
-    Participant maggie = new Participant(2, "", "", "Maggie", "F", "Simpson","", "female", "123456789",
-        "2016-10-31", 1234, 1234, roles, addresses);
-    // Participant bart = new Participant(1, 123, "Bart", "Simpson", "M", "2016-10-31",
-    // "123456789");
-    // Participant maggie = new Participant(2, 1, "Maggie", "Simpson", "M", "2016-10-31",
-    // "123456789");
+    Participant bart = new Participant(1, "", "", new LegacyDescriptor(), "Bart", "S", "Simpson","",
+        "male", "123456789", "2016-10-31", 1234, 1234, roles, addresses);
+    Participant maggie = new Participant(2, "", "", new LegacyDescriptor(), "Maggie", "F", "Simpson",
+        "", "female", "123456789", "2016-10-31", 1234, 1234, roles, addresses);
 
     ImmutableSet.Builder<gov.ca.cwds.data.persistence.ns.Participant> peopleListBuilder =
         ImmutableSet.builder();
