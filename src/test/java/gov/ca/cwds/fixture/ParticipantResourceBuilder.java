@@ -199,7 +199,7 @@ public class ParticipantResourceBuilder {
    * @return the createParticipant
    */
   public Participant createParticipant() {
-    return new Participant(id, legacySourceTable, legacyId, firstName, middleName, lastName, suffix, gender, ssn,
+    return new Participant(id, legacySourceTable, legacyId, legacyDescriptor, firstName, middleName, lastName, suffix, gender, ssn,
         dateOfBirth, personId, screeningId, roles, addresses);
   }
 }

@@ -71,7 +71,7 @@ public class PostedScreeningTest implements DomainTestTemplate {
     addresses.add(address);
     roles.add("victim");
 
-    Participant participant = new Participant(participantId, "", "", firstName, middleName, lastName,
+    Participant participant = new Participant(participantId, "", "",new LegacyDescriptor(), firstName, middleName, lastName,
         suffix, gender, ssn, dateOfBirth, personId, screeningId, roles, addresses);
     ImmutableSet.Builder<Participant> participantSetBuilder = ImmutableSet.builder();
     participantSetBuilder.add(participant);
@@ -98,7 +98,7 @@ public class PostedScreeningTest implements DomainTestTemplate {
     addresses.add(address);
     roles.add("victim");
 
-    Participant participant = new Participant(participantId, "", "", firstName, middleName, lastName,
+    Participant participant = new Participant(participantId, "", "", new LegacyDescriptor(), firstName, middleName, lastName,
         suffix, gender, ssn, dateOfBirth, personId, screeningId, roles, addresses);
     ImmutableSet.Builder<Participant> participantSetBuilder = ImmutableSet.builder();
     participantSetBuilder.add(participant);

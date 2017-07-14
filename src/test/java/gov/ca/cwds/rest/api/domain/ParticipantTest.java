@@ -147,8 +147,9 @@ public class ParticipantTest implements PersistentTestTemplate {
   @Test
   public void testConstructorUsingDomain() throws Exception {
 
-    Participant domain = new Participant(id, legacySourceTable, clientId, firstName, middleName,
-        lastName, suffix, gender, ssn, dateOfBirth, personId, screeningId, roles, addresses);
+    Participant domain = new Participant(id, legacySourceTable, clientId, new LegacyDescriptor(),
+        firstName, middleName, lastName, suffix, gender, ssn, dateOfBirth, personId, screeningId,
+        roles, addresses);
 
     assertThat(domain.getId(), is(equalTo(id)));
     assertThat(domain.getLegacySourceTable(), is(equalTo(legacySourceTable)));
@@ -343,8 +344,9 @@ public class ParticipantTest implements PersistentTestTemplate {
   private Participant createParticipant(Set<String> roles) {
     Participant validParticipant = null;
     try {
-      validParticipant = new Participant(id, legacySourceTable, clientId, firstName, middleName,
-          lastName, suffix, gender, ssn, dateOfBirth, personId, screeningId, roles, addresses);
+      validParticipant = new Participant(id, legacySourceTable, clientId, new LegacyDescriptor(),
+          firstName, middleName, lastName, suffix, gender, ssn, dateOfBirth, personId, screeningId,
+          roles, addresses);
     } catch (Exception e) {
       e.printStackTrace();
     }
