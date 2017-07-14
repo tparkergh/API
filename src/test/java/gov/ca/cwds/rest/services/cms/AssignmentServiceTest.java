@@ -27,23 +27,21 @@ import gov.ca.cwds.rest.api.Response;
 import gov.ca.cwds.rest.api.domain.cms.Assignment;
 import gov.ca.cwds.rest.api.domain.cms.PostedAssignment;
 import gov.ca.cwds.rest.services.ServiceException;
-import gov.ca.cwds.rest.services.junit.template.ServiceTestTemplate;
 
 /**
  * @author CWDS API Team
  *
  */
-public class AssignmentServiceTest implements ServiceTestTemplate {
+@SuppressWarnings("javadoc")
+public class AssignmentServiceTest {
 
   private AssignmentService assignmentService;
   private AssignmentDao assignmentDao;;
   private StaffPersonIdRetriever staffPersonIdRetriever;
 
-  @SuppressWarnings("javadoc")
   @Rule
   public ExpectedException thrown = ExpectedException.none();
 
-  @Override
   @Before
   public void setup() throws Exception {
     assignmentDao = mock(AssignmentDao.class);
@@ -52,10 +50,8 @@ public class AssignmentServiceTest implements ServiceTestTemplate {
   }
 
   // find test
-  @Override
   @Test(expected = AssertionError.class)
-  public void testFindThrowsAssertionError() {
-    // thrown.expect(AssertionError.class);
+  public void assignmentServiceFindThrowsAssertionError() {
     try {
       assignmentService.find(1);
     } catch (AssertionError e) {
@@ -63,9 +59,9 @@ public class AssignmentServiceTest implements ServiceTestTemplate {
     }
   }
 
-  @Override
+
   @Test
-  public void testFindReturnsCorrectEntity() throws Exception {
+  public void assignmentServiceFindReturnsCorrectEntity() throws Exception {
     String id = "SlCAr46088";
     Assignment expected = new AssignmentResourceBuilder().createAssignment();
 
@@ -77,17 +73,16 @@ public class AssignmentServiceTest implements ServiceTestTemplate {
     assertThat(found, is(expected));
   }
 
-  @Override
+
   @Test
-  public void testFindReturnsNullWhenNotFound() throws Exception {
+  public void assignmentServiceFindReturnsNullWhenNotFound() throws Exception {
     Response found = assignmentService.find("ABC1234567");
     assertThat(found, is(nullValue()));
   }
 
   // delete test
-  @Override
   @Test(expected = AssertionError.class)
-  public void testDeleteThrowsAssertionError() throws Exception {
+  public void assignmentServiceDeleteThrowsAssertionError() throws Exception {
     try {
       assignmentService.delete(123);
     } catch (AssertionError e) {
@@ -95,34 +90,24 @@ public class AssignmentServiceTest implements ServiceTestTemplate {
     }
   }
 
-  @Override
+
   @Test
-  public void testDeleteDelegatesToCrudsService() {
+  public void assignmentServiceDeleteDelegatesToCrudsService() {
     assignmentService.delete("ABC2345678");
     verify(assignmentDao, times(1)).delete("ABC2345678");
   }
 
-  @Override
+
   @Test
-  public void testDeleteReturnsNullWhenNotFound() throws Exception {
+  public void assignmentServiceDeleteReturnsNullWhenNotFound() throws Exception {
     Response found = assignmentService.delete("ABC1234567");
     assertThat(found, is(nullValue()));
   }
 
-  @Override
-  public void testDeleteThrowsNotImplementedException() throws Exception {
-
-  }
-
-  @Override
-  public void testDeleteReturnsClass() throws Exception {
-
-  }
-
   // update test
-  @Override
+
   @Test(expected = AssertionError.class)
-  public void testUpdateThrowsAssertionError() throws Exception {
+  public void assignmentServiceUpdateThrowsAssertionError() throws Exception {
     try {
       assignmentService.update("ABC1234567", null);
     } catch (AssertionError e) {
@@ -130,9 +115,9 @@ public class AssignmentServiceTest implements ServiceTestTemplate {
     }
   }
 
-  @Override
+
   @Test
-  public void testUpdateReturnsCorrectEntity() throws Exception {
+  public void assignmentServiceUpdateReturnsCorrectEntity() throws Exception {
     String id = "SlCAr46088";
     Assignment expected =
         new AssignmentResourceBuilder().setCountySpecificCode("45").createAssignment();
@@ -147,9 +132,8 @@ public class AssignmentServiceTest implements ServiceTestTemplate {
     assertThat(retval.getClass(), is(Assignment.class));
   }
 
-  @SuppressWarnings("javadoc")
   @Test
-  public void testUpdateThrowsExceptionWhenNotFound() throws Exception {
+  public void assignmentServiceUpdateThrowsExceptionWhenNotFound() throws Exception {
     try {
       Assignment assignmentRequest =
           new AssignmentResourceBuilder().setCountySpecificCode("45").createAssignment();
@@ -162,25 +146,10 @@ public class AssignmentServiceTest implements ServiceTestTemplate {
     }
   }
 
-  @Override
-  public void testUpdateReturnsDomain() throws Exception {
-
-  }
-
-  @Override
-  public void testUpdateThrowsServiceException() throws Exception {
-
-  }
-
-  @Override
-  public void testUpdateThrowsNotImplementedException() throws Exception {
-
-  }
-
   // create test
-  @Override
+
   @Test
-  public void testCreateReturnsPostedClass() throws Exception {
+  public void assignmentServiceCreateReturnsPostedClass() throws Exception {
     String id = "5rVkB8c088";
     Assignment domainAssignment = new AssignmentResourceBuilder().createAssignment();
 
@@ -195,9 +164,8 @@ public class AssignmentServiceTest implements ServiceTestTemplate {
     assertThat(response.getClass(), is(PostedAssignment.class));
   }
 
-  @SuppressWarnings("javadoc")
   @Test
-  public void testCreateReturnsNonNull() throws Exception {
+  public void assignmentServiceCreateReturnsNonNull() throws Exception {
     String id = "5rVkB8c088";
     Assignment domainAssignment = new AssignmentResourceBuilder().createAssignment();
 
@@ -212,9 +180,9 @@ public class AssignmentServiceTest implements ServiceTestTemplate {
     assertThat(postedAssignment, is(notNullValue()));
   }
 
-  @Override
+
   @Test
-  public void testCreateReturnsCorrectEntity() throws Exception {
+  public void assignmentServiceCreateReturnsCorrectEntity() throws Exception {
     String id = "5rVkB8c088";
     Assignment domainAssignment = new AssignmentResourceBuilder().createAssignment();
 
@@ -230,9 +198,9 @@ public class AssignmentServiceTest implements ServiceTestTemplate {
     assertThat(returned, is(expected));
   }
 
-  @Override
+
   @Test
-  public void testCreateNullIDError() throws Exception {
+  public void assignmentServiceCreateNullIDError() throws Exception {
     try {
       Assignment domainAssignment = new AssignmentResourceBuilder().createAssignment();
 
@@ -249,9 +217,8 @@ public class AssignmentServiceTest implements ServiceTestTemplate {
 
   }
 
-  @Override
   @Test
-  public void testCreateBlankIDError() throws Exception {
+  public void assignmentServiceCreateBlankIDError() throws Exception {
     try {
       Assignment domainAssignment = new AssignmentResourceBuilder().createAssignment();
       gov.ca.cwds.data.persistence.cms.Assignment toCreate =
@@ -272,7 +239,7 @@ public class AssignmentServiceTest implements ServiceTestTemplate {
    * @throws Exception - exception
    */
   @Test
-  public void createReturnsGeneratedId() throws Exception {
+  public void assignmentServiceCreateReturnsGeneratedId() throws Exception {
     Assignment domainAssignment = new AssignmentResourceBuilder().createAssignment();
 
     when(assignmentDao.create(any(gov.ca.cwds.data.persistence.cms.Assignment.class)))
@@ -291,26 +258,6 @@ public class AssignmentServiceTest implements ServiceTestTemplate {
     assertEquals(returned.getId().length(), 10);
     PostedAssignment newReturned = assignmentService.create(domainAssignment);
     Assert.assertNotEquals(returned.getId(), newReturned.getId());
-  }
-
-  @Override
-  public void testCreateThrowsAssertionError() throws Exception {
-
-  }
-
-  @Override
-  public void testCreateEmptyIDError() throws Exception {
-
-  }
-
-  @Override
-  public void testCreateThrowsNotImplementedException() throws Exception {
-
-  }
-
-  @Override
-  public void testFindThrowsNotImplementedException() throws Exception {
-
   }
 
 }

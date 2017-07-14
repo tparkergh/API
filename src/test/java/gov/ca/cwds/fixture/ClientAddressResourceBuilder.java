@@ -21,7 +21,7 @@ public class ClientAddressResourceBuilder {
   /**
    * @return the ClientAddress
    */
-  public ClientAddress createClientAddress() {
+  public ClientAddress buildClientAddress() {
     return new ClientAddress(addressType, bkInmtId, effEndDt, effStartDt, fkAddress, fkClient,
         homelessInd, fkReferral);
   }
