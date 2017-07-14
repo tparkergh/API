@@ -78,7 +78,7 @@ public class ClientAddressService implements CrudsService {
   }
 
   /**
-   * @param address - aadress
+   * @param address - address
    * @param clientParticipant - clientParticipant
    * @return the address Found
    */

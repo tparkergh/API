@@ -73,9 +73,6 @@ public class ClientAddressServiceTest implements ServiceTestTemplate {
   @Test
   public void shouldReturnNullWhenNotClientAddressesAreFound() {
     when(clientAddressDao.findByAddressAndClient(any(), any())).thenReturn(new ArrayList<>());
-    // clientAddressService = new ClientAddressService(clientAddressDao, staffpersonDao,
-    // triggerTablesDao,laCountyTrigger, staffPersonIdRetriever);
-
     Address address = mock(Address.class);
     Participant participant = mock(Participant.class);
 
@@ -188,7 +185,7 @@ public class ClientAddressServiceTest implements ServiceTestTemplate {
   public void testUpdateReturnsCorrectEntity() throws Exception {
     String id = "LOmv8Jp0Nu";
     gov.ca.cwds.rest.api.domain.cms.ClientAddress clientAddressDomain =
-        new ClientAddressResourceBuilder().setEffEndDt("2017-01-10").createClientAddress();
+        new ClientAddressResourceBuilder().setEffEndDt("2017-01-10").buildClientAddress();
 
     gov.ca.cwds.data.persistence.cms.ClientAddress clientAddress =
         new gov.ca.cwds.data.persistence.cms.ClientAddress(id, clientAddressDomain, "ABC");
@@ -205,7 +202,7 @@ public class ClientAddressServiceTest implements ServiceTestTemplate {
   public void testUpdateThrowsExceptionWhenNotFound() throws Exception {
     try {
       gov.ca.cwds.rest.api.domain.cms.ClientAddress clientAddressDomain =
-          new ClientAddressResourceBuilder().setEffEndDt("2017-01-10").createClientAddress();
+          new ClientAddressResourceBuilder().setEffEndDt("2017-01-10").buildClientAddress();
 
       when(clientAddressDao.update(any())).thenThrow(EntityNotFoundException.class);
 
@@ -236,7 +233,7 @@ public class ClientAddressServiceTest implements ServiceTestTemplate {
   public void testCreateReturnsPostedClass() throws Exception {
     String id = "QcNOYA10Nu";
     gov.ca.cwds.rest.api.domain.cms.ClientAddress clientAddressDomain =
-        new ClientAddressResourceBuilder().createClientAddress();
+        new ClientAddressResourceBuilder().buildClientAddress();
 
     gov.ca.cwds.data.persistence.cms.ClientAddress toCreate =
         new gov.ca.cwds.data.persistence.cms.ClientAddress(id, clientAddressDomain, "ABC");
@@ -255,7 +252,7 @@ public class ClientAddressServiceTest implements ServiceTestTemplate {
   public void testCreateReturnsNonNull() throws Exception {
     String id = "QcNOYA10Nu";
     gov.ca.cwds.rest.api.domain.cms.ClientAddress clientAddressDomain =
-        new ClientAddressResourceBuilder().createClientAddress();
+        new ClientAddressResourceBuilder().buildClientAddress();
 
     gov.ca.cwds.data.persistence.cms.ClientAddress toCreate =
         new gov.ca.cwds.data.persistence.cms.ClientAddress(id, clientAddressDomain, "ABC");
@@ -274,7 +271,7 @@ public class ClientAddressServiceTest implements ServiceTestTemplate {
   public void testCreateReturnsCorrectEntity() throws Exception {
     String id = "QcNOYA10Nu";
     gov.ca.cwds.rest.api.domain.cms.ClientAddress clientAddressDomain =
-        new ClientAddressResourceBuilder().createClientAddress();
+        new ClientAddressResourceBuilder().buildClientAddress();
 
     gov.ca.cwds.data.persistence.cms.ClientAddress toCreate =
         new gov.ca.cwds.data.persistence.cms.ClientAddress(id, clientAddressDomain, "ABC");
@@ -294,7 +291,7 @@ public class ClientAddressServiceTest implements ServiceTestTemplate {
   public void testCreateNullIDError() throws Exception {
     try {
       gov.ca.cwds.rest.api.domain.cms.ClientAddress clientAddressDomain =
-          new ClientAddressResourceBuilder().createClientAddress();
+          new ClientAddressResourceBuilder().buildClientAddress();
 
       gov.ca.cwds.data.persistence.cms.ClientAddress toCreate =
           new gov.ca.cwds.data.persistence.cms.ClientAddress(null, clientAddressDomain, "ABC");
@@ -314,7 +311,7 @@ public class ClientAddressServiceTest implements ServiceTestTemplate {
   public void testCreateBlankIDError() throws Exception {
     try {
       gov.ca.cwds.rest.api.domain.cms.ClientAddress clientAddressDomain =
-          new ClientAddressResourceBuilder().createClientAddress();
+          new ClientAddressResourceBuilder().buildClientAddress();
 
       gov.ca.cwds.data.persistence.cms.ClientAddress toCreate =
           new gov.ca.cwds.data.persistence.cms.ClientAddress("  ", clientAddressDomain, "ABC");
