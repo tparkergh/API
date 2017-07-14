@@ -12,8 +12,6 @@ import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
-import org.apache.commons.lang3.builder.EqualsBuilder;
-import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.hibernate.annotations.NamedQuery;
 import org.hibernate.annotations.Type;
 
@@ -38,6 +36,7 @@ import gov.ca.cwds.rest.api.domain.DomainChef;
 @JsonPropertyOrder(alphabetic = true)
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class Allegation extends CmsPersistentObject {
+
   protected static final String DATE_FORMAT = "yyyy-MM-dd";
 
   @Id
@@ -392,30 +391,28 @@ public class Allegation extends CmsPersistentObject {
   }
 
   /**
-   * @return teh perpetratorClient
+   * @return the perpetratorClient
    */
   public Set<Client> getPerpetratorClients() {
     return perpetratorClients;
   }
 
-  /**
-   * {@inheritDoc}
-   *
-   * @see java.lang.Object#hashCode()
-   */
   @Override
-  public final int hashCode() {
-    return HashCodeBuilder.reflectionHashCode(this, false);
-  }
-
-  /**
-   * {@inheritDoc}
-   *
-   * @see java.lang.Object#equals(java.lang.Object)
-   */
-  @Override
-  public final boolean equals(Object obj) {
-    return EqualsBuilder.reflectionEquals(this, obj, false);
+  public String toString() {
+    return "Allegation [id=" + id + ", abuseEndDate=" + abuseEndDate + ", abuseFrequency="
+        + abuseFrequency + ", abuseFrequencyPeriodCode=" + abuseFrequencyPeriodCode
+        + ", abuseLocationDescription=" + abuseLocationDescription + ", abuseStartDate="
+        + abuseStartDate + ", allegationDispositionType=" + allegationDispositionType
+        + ", allegationType=" + allegationType + ", dispositionDescription="
+        + dispositionDescription + ", dispositionDate=" + dispositionDate
+        + ", injuryHarmDetailIndicator=" + injuryHarmDetailIndicator + ", nonProtectingParentCode="
+        + nonProtectingParentCode + ", staffPersonAddedIndicator=" + staffPersonAddedIndicator
+        + ", victimClientId=" + victimClientId + ", perpetratorClientId=" + perpetratorClientId
+        + ", referralId=" + referralId + ", countySpecificCode=" + countySpecificCode
+        + ", zippyCreatedIndicator=" + zippyCreatedIndicator + ", placementFacilityType="
+        + placementFacilityType
+        // + ", victimClients=" + victimClients + ", perpetratorClients=" + perpetratorClients
+        + "]";
   }
 
 }

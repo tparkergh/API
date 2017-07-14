@@ -46,6 +46,11 @@ import gov.ca.cwds.data.persistence.PersistentObject;
 public class ServiceProvider extends BaseServiceProvider {
 
   /**
+   * Default.
+   */
+  private static final long serialVersionUID = 1L;
+
+  /**
    * Default constructor
    * 
    * Required for Hibernate

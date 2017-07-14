@@ -33,6 +33,7 @@ import gov.ca.cwds.data.persistence.cms.ChildClient;
  * @author CWDS API Team
  */
 public class ChildClientDaoIT implements DaoTestTemplate {
+
   private static SessionFactory sessionFactory;
   private static ChildClientDao childClientDao;
   private Session session;
@@ -52,6 +53,7 @@ public class ChildClientDaoIT implements DaoTestTemplate {
   @BeforeClass
   public static void beforeClass() {
     sessionFactory = new Configuration().configure().buildSessionFactory();
+    // sessionFactory = AutocloseSessionFactory.getSessionFactory();
     childClientDao = new ChildClientDao(sessionFactory);
   }
 
@@ -76,7 +78,6 @@ public class ChildClientDaoIT implements DaoTestTemplate {
     session.getTransaction().rollback();
   }
 
-
   /**
    * Find JUnit test
    */
@@ -100,7 +101,6 @@ public class ChildClientDaoIT implements DaoTestTemplate {
   @Override
   @Test
   public void testCreate() throws Exception {
-
     ChildClient vchc = validChildClient();
 
     ChildClient childClient = new ChildClient("1234567ABC", vchc.getAdoptableCode(),
