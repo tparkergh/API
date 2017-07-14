@@ -8,9 +8,6 @@ import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 
-import org.apache.commons.lang3.builder.EqualsBuilder;
-import org.apache.commons.lang3.builder.HashCodeBuilder;
-
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
@@ -35,7 +32,7 @@ import gov.ca.cwds.data.persistence.PersistentObject;
 public class OtherChildInPlacemtHome extends BaseOtherChildInPlacemtHome {
 
   /**
-   * 
+   * Default
    */
   private static final long serialVersionUID = 1L;
 
@@ -65,27 +62,6 @@ public class OtherChildInPlacemtHome extends BaseOtherChildInPlacemtHome {
     this.genderCode = genderCode;
     this.id = id;
     this.name = name;
-  }
-
-
-  /**
-   * {@inheritDoc}
-   *
-   * @see java.lang.Object#hashCode()
-   */
-  @Override
-  public final int hashCode() {
-    return HashCodeBuilder.reflectionHashCode(this, false);
-  }
-
-  /**
-   * {@inheritDoc}
-   *
-   * @see java.lang.Object#equals(java.lang.Object)
-   */
-  @Override
-  public final boolean equals(Object obj) {
-    return EqualsBuilder.reflectionEquals(this, obj, false);
   }
 
 }

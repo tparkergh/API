@@ -7,8 +7,6 @@ import java.util.Date;
 import javax.persistence.Entity;
 import javax.persistence.Table;
 
-import org.apache.commons.lang3.builder.EqualsBuilder;
-import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.hibernate.annotations.NamedNativeQueries;
 import org.hibernate.annotations.NamedNativeQuery;
 import org.hibernate.annotations.NamedQueries;
@@ -131,16 +129,6 @@ public class CollateralIndividual extends BaseCollateralIndividual {
     this.suffixTitleDescription = suffixTitleDescription;
     this.zipNumber = zipNumber;
     this.zipSuffixNumber = zipSuffixNumber;
-  }
-
-  @Override
-  public final int hashCode() {
-    return HashCodeBuilder.reflectionHashCode(this, false);
-  }
-
-  @Override
-  public final boolean equals(Object obj) {
-    return EqualsBuilder.reflectionEquals(this, obj, false);
   }
 
 }
