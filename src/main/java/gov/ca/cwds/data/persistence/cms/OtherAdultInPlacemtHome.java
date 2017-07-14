@@ -30,7 +30,7 @@ import gov.ca.cwds.data.persistence.PersistentObject;
 public class OtherAdultInPlacemtHome extends BaseOtherAdultInPlacemtHome {
 
   /**
-   * 
+   * Default.
    */
   private static final long serialVersionUID = 1L;
 

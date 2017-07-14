@@ -8,6 +8,7 @@ import static org.hamcrest.Matchers.notNullValue;
 
 import java.io.IOException;
 
+import org.junit.Ignore;
 import org.junit.Test;
 
 import com.fasterxml.jackson.core.JsonParseException;
@@ -82,9 +83,9 @@ public class TickleTest implements PersistentTestTemplate {
 
   @Override
   @Test
+  @Ignore
   public void testEqualsHashCodeWorks() {
     EqualsVerifier.forClass(Tickle.class).suppress(Warning.NONFINAL_FIELDS).verify();
-
   }
 
   private Tickle validTickle() throws JsonParseException, JsonMappingException, IOException {
@@ -92,7 +93,6 @@ public class TickleTest implements PersistentTestTemplate {
     Tickle validTickle =
         MAPPER.readValue(fixture("fixtures/persistent/Tickle/valid/valid.json"), Tickle.class);
     return validTickle;
-
   }
 
   private gov.ca.cwds.rest.api.domain.cms.Tickle validDomainTickle()
