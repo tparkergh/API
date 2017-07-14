@@ -29,7 +29,7 @@ public class AssignmentResourceBuilder {
   /**
    * @return the Assignment
    */
-  public Assignment createAssignment() {
+  public Assignment buildAssignment() {
     return new Assignment(countySpecificCode, endDate, endTime, establishedForCode,
         establishedForId, caseLoadId, outOfStateContactId, responsibilityDescription,
         secondaryAssignmentRoleType, startDate, startTime, typeOfAssignmentCode, weightingNumber);
@@ -120,7 +120,8 @@ public class AssignmentResourceBuilder {
     return secondaryAssignmentRoleType;
   }
 
-  public AssignmentResourceBuilder setSecondaryAssignmentRoleType(Short secondaryAssignmentRoleType) {
+  public AssignmentResourceBuilder setSecondaryAssignmentRoleType(
+      Short secondaryAssignmentRoleType) {
     this.secondaryAssignmentRoleType = secondaryAssignmentRoleType;
     return this;
   }

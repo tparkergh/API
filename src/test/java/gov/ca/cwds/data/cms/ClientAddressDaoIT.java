@@ -75,8 +75,9 @@ public class ClientAddressDaoIT {
         new gov.ca.cwds.rest.api.domain.cms.Address(address, false);
     Address entityAddress = new Address(ADDRESS_ID, cmsDomainAddress, "OX5");
 
-    ClientAddress clientAddress = new ClientAddressEntityBuilder().setFkAddress(ADDRESS_ID)
-        .setFkClient(CLIENT_ID).setAddresses(entityAddress).setLastUpdatedId("0X5").create();
+    ClientAddress clientAddress =
+        new ClientAddressEntityBuilder().setFkAddress(ADDRESS_ID).setFkClient(CLIENT_ID)
+            .setAddresses(entityAddress).setLastUpdatedId("0X5").buildClientAddress();
     Set<ClientAddress> clientAddresses = new HashSet<>(Arrays.asList(clientAddress));
 
     Participant participant =
