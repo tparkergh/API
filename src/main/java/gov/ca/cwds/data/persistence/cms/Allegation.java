@@ -36,6 +36,7 @@ import gov.ca.cwds.rest.api.domain.DomainChef;
 @JsonPropertyOrder(alphabetic = true)
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class Allegation extends CmsPersistentObject {
+
   protected static final String DATE_FORMAT = "yyyy-MM-dd";
 
   @Id
@@ -394,6 +395,24 @@ public class Allegation extends CmsPersistentObject {
    */
   public Set<Client> getPerpetratorClients() {
     return perpetratorClients;
+  }
+
+  @Override
+  public String toString() {
+    return "Allegation [id=" + id + ", abuseEndDate=" + abuseEndDate + ", abuseFrequency="
+        + abuseFrequency + ", abuseFrequencyPeriodCode=" + abuseFrequencyPeriodCode
+        + ", abuseLocationDescription=" + abuseLocationDescription + ", abuseStartDate="
+        + abuseStartDate + ", allegationDispositionType=" + allegationDispositionType
+        + ", allegationType=" + allegationType + ", dispositionDescription="
+        + dispositionDescription + ", dispositionDate=" + dispositionDate
+        + ", injuryHarmDetailIndicator=" + injuryHarmDetailIndicator + ", nonProtectingParentCode="
+        + nonProtectingParentCode + ", staffPersonAddedIndicator=" + staffPersonAddedIndicator
+        + ", victimClientId=" + victimClientId + ", perpetratorClientId=" + perpetratorClientId
+        + ", referralId=" + referralId + ", countySpecificCode=" + countySpecificCode
+        + ", zippyCreatedIndicator=" + zippyCreatedIndicator + ", placementFacilityType="
+        + placementFacilityType
+        // + ", victimClients=" + victimClients + ", perpetratorClients=" + perpetratorClients
+        + "]";
   }
 
 }

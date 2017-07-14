@@ -14,6 +14,7 @@ import javax.persistence.EntityNotFoundException;
 import org.hamcrest.junit.ExpectedException;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+import org.hibernate.cfg.Configuration;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
@@ -24,7 +25,6 @@ import org.junit.Test;
 import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 
-import gov.ca.cwds.data.AutocloseSessionFactory;
 import gov.ca.cwds.data.junit.template.DaoTestTemplate;
 import gov.ca.cwds.data.persistence.cms.ChildClient;
 
@@ -52,8 +52,8 @@ public class ChildClientDaoIT implements DaoTestTemplate {
    */
   @BeforeClass
   public static void beforeClass() {
-    // sessionFactory = new Configuration().configure().buildSessionFactory();
-    sessionFactory = AutocloseSessionFactory.getSessionFactory();
+    sessionFactory = new Configuration().configure().buildSessionFactory();
+    // sessionFactory = AutocloseSessionFactory.getSessionFactory();
     childClientDao = new ChildClientDao(sessionFactory);
   }
 
