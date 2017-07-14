@@ -5,9 +5,6 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
-import org.apache.commons.lang3.builder.EqualsBuilder;
-import org.apache.commons.lang3.builder.HashCodeBuilder;
-
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
@@ -45,8 +42,8 @@ public class LongText extends CmsPersistentObject {
 
   /**
    * @param id primary key
-   * @param countySpecificCode county specifi code
-   * @param textDescription long text descrption
+   * @param countySpecificCode county specific code
+   * @param textDescription long text description
    */
   public LongText(String id, String countySpecificCode, String textDescription) {
     super();
@@ -102,23 +99,4 @@ public class LongText extends CmsPersistentObject {
     return textDescription;
   }
 
-  /**
-   * {@inheritDoc}
-   *
-   * @see java.lang.Object#hashCode()
-   */
-  @Override
-  public final int hashCode() {
-    return HashCodeBuilder.reflectionHashCode(this, false);
-  }
-
-  /**
-   * {@inheritDoc}
-   *
-   * @see java.lang.Object#equals(java.lang.Object)
-   */
-  @Override
-  public final boolean equals(Object obj) {
-    return EqualsBuilder.reflectionEquals(this, obj, false);
-  }
 }

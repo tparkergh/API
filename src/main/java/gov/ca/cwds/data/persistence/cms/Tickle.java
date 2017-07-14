@@ -7,8 +7,6 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
-import org.apache.commons.lang3.builder.EqualsBuilder;
-import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.hibernate.annotations.Type;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
@@ -26,6 +24,7 @@ import gov.ca.cwds.rest.api.domain.DomainChef;
 @JsonPropertyOrder(alphabetic = true)
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class Tickle extends CmsPersistentObject {
+
   protected static final String DATE_FORMAT = "yyyy-MM-dd";
 
   /**
@@ -71,7 +70,7 @@ public class Tickle extends CmsPersistentObject {
   /**
    * Constructor
    * 
-   * @param id primary kry
+   * @param id primary key
    * @param affectedByCaseOrReferralId affected case or referral id
    * @param affectedByCode affected by code
    * @param affectedByOtherId affected by other id
@@ -178,26 +177,6 @@ public class Tickle extends CmsPersistentObject {
    */
   public Short getTickleMessageType() {
     return tickleMessageType;
-  }
-
-  /**
-   * {@inheritDoc}
-   *
-   * @see java.lang.Object#hashCode()
-   */
-  @Override
-  public final int hashCode() {
-    return HashCodeBuilder.reflectionHashCode(this, false);
-  }
-
-  /**
-   * {@inheritDoc}
-   *
-   * @see java.lang.Object#equals(java.lang.Object)
-   */
-  @Override
-  public final boolean equals(Object obj) {
-    return EqualsBuilder.reflectionEquals(this, obj, false);
   }
 
 }

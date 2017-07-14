@@ -12,8 +12,6 @@ import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
-import org.apache.commons.lang3.builder.EqualsBuilder;
-import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.hibernate.annotations.NamedQuery;
 import org.hibernate.annotations.Type;
 
@@ -392,30 +390,10 @@ public class Allegation extends CmsPersistentObject {
   }
 
   /**
-   * @return teh perpetratorClient
+   * @return the perpetratorClient
    */
   public Set<Client> getPerpetratorClients() {
     return perpetratorClients;
-  }
-
-  /**
-   * {@inheritDoc}
-   *
-   * @see java.lang.Object#hashCode()
-   */
-  @Override
-  public final int hashCode() {
-    return HashCodeBuilder.reflectionHashCode(this, false);
-  }
-
-  /**
-   * {@inheritDoc}
-   *
-   * @see java.lang.Object#equals(java.lang.Object)
-   */
-  @Override
-  public final boolean equals(Object obj) {
-    return EqualsBuilder.reflectionEquals(this, obj, false);
   }
 
 }

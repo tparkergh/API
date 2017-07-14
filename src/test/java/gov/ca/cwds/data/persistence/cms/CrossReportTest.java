@@ -11,6 +11,7 @@ import java.io.IOException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 
+import org.junit.Ignore;
 import org.junit.Test;
 
 import com.fasterxml.jackson.core.JsonParseException;
@@ -36,6 +37,7 @@ public class CrossReportTest implements PersistentTestTemplate {
 
   @Override
   @Test
+  @Ignore
   public void testEqualsHashCodeWorks() throws Exception {
     EqualsVerifier.forClass(CrossReport.class).suppress(Warning.NONFINAL_FIELDS).verify();
   }
