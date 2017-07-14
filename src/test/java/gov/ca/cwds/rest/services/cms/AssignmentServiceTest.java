@@ -63,7 +63,7 @@ public class AssignmentServiceTest {
   @Test
   public void assignmentServiceFindReturnsCorrectEntity() throws Exception {
     String id = "SlCAr46088";
-    Assignment expected = new AssignmentResourceBuilder().createAssignment();
+    Assignment expected = new AssignmentResourceBuilder().buildAssignment();
 
     gov.ca.cwds.data.persistence.cms.Assignment assignment =
         new gov.ca.cwds.data.persistence.cms.Assignment(id, expected, "0XA");
@@ -120,7 +120,7 @@ public class AssignmentServiceTest {
   public void assignmentServiceUpdateReturnsCorrectEntity() throws Exception {
     String id = "SlCAr46088";
     Assignment expected =
-        new AssignmentResourceBuilder().setCountySpecificCode("45").createAssignment();
+        new AssignmentResourceBuilder().setCountySpecificCode("45").buildAssignment();
 
     gov.ca.cwds.data.persistence.cms.Assignment assignment =
         new gov.ca.cwds.data.persistence.cms.Assignment(id, expected, "ABC");
@@ -136,7 +136,7 @@ public class AssignmentServiceTest {
   public void assignmentServiceUpdateThrowsExceptionWhenNotFound() throws Exception {
     try {
       Assignment assignmentRequest =
-          new AssignmentResourceBuilder().setCountySpecificCode("45").createAssignment();
+          new AssignmentResourceBuilder().setCountySpecificCode("45").buildAssignment();
 
       when(assignmentDao.update(any())).thenThrow(EntityNotFoundException.class);
 
@@ -151,7 +151,7 @@ public class AssignmentServiceTest {
   @Test
   public void assignmentServiceCreateReturnsPostedClass() throws Exception {
     String id = "5rVkB8c088";
-    Assignment domainAssignment = new AssignmentResourceBuilder().createAssignment();
+    Assignment domainAssignment = new AssignmentResourceBuilder().buildAssignment();
 
     gov.ca.cwds.data.persistence.cms.Assignment toCreate =
         new gov.ca.cwds.data.persistence.cms.Assignment(id, domainAssignment, "ABC");
@@ -167,7 +167,7 @@ public class AssignmentServiceTest {
   @Test
   public void assignmentServiceCreateReturnsNonNull() throws Exception {
     String id = "5rVkB8c088";
-    Assignment domainAssignment = new AssignmentResourceBuilder().createAssignment();
+    Assignment domainAssignment = new AssignmentResourceBuilder().buildAssignment();
 
     gov.ca.cwds.data.persistence.cms.Assignment toCreate =
         new gov.ca.cwds.data.persistence.cms.Assignment(id, domainAssignment, "ABC");
@@ -184,7 +184,7 @@ public class AssignmentServiceTest {
   @Test
   public void assignmentServiceCreateReturnsCorrectEntity() throws Exception {
     String id = "5rVkB8c088";
-    Assignment domainAssignment = new AssignmentResourceBuilder().createAssignment();
+    Assignment domainAssignment = new AssignmentResourceBuilder().buildAssignment();
 
     gov.ca.cwds.data.persistence.cms.Assignment toCreate =
         new gov.ca.cwds.data.persistence.cms.Assignment(id, domainAssignment, "ABC");
@@ -202,7 +202,7 @@ public class AssignmentServiceTest {
   @Test
   public void assignmentServiceCreateNullIDError() throws Exception {
     try {
-      Assignment domainAssignment = new AssignmentResourceBuilder().createAssignment();
+      Assignment domainAssignment = new AssignmentResourceBuilder().buildAssignment();
 
       gov.ca.cwds.data.persistence.cms.Assignment toCreate =
           new gov.ca.cwds.data.persistence.cms.Assignment(null, domainAssignment, "ABC");
@@ -220,7 +220,7 @@ public class AssignmentServiceTest {
   @Test
   public void assignmentServiceCreateBlankIDError() throws Exception {
     try {
-      Assignment domainAssignment = new AssignmentResourceBuilder().createAssignment();
+      Assignment domainAssignment = new AssignmentResourceBuilder().buildAssignment();
       gov.ca.cwds.data.persistence.cms.Assignment toCreate =
           new gov.ca.cwds.data.persistence.cms.Assignment("   ", domainAssignment, "ABC");
 
@@ -240,7 +240,7 @@ public class AssignmentServiceTest {
    */
   @Test
   public void assignmentServiceCreateReturnsGeneratedId() throws Exception {
-    Assignment domainAssignment = new AssignmentResourceBuilder().createAssignment();
+    Assignment domainAssignment = new AssignmentResourceBuilder().buildAssignment();
 
     when(assignmentDao.create(any(gov.ca.cwds.data.persistence.cms.Assignment.class)))
         .thenAnswer(new Answer<gov.ca.cwds.data.persistence.cms.Assignment>() {

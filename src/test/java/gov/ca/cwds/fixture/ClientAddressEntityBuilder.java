@@ -1,25 +1,26 @@
 package gov.ca.cwds.fixture;
 
-import gov.ca.cwds.data.persistence.cms.Address;
-import gov.ca.cwds.data.persistence.cms.ClientAddress;
 import java.util.Date;
 
-public class ClientAddressEntityBuilder {
-    String id = "CLNTADDRID";
-    Short addressType = 2;
-    String bkInmtId = "";
-    Date effEndDt = new Date();
-    Date effStartDt = new Date();
-    String fkAddress = "FKADDRESSX";
-    String fkClient = "FKCLIENTXX";
-    String homelessInd = "";
-    String fkReferral = "FKREFERRAL";
-    Address addresses = null;
-    String lastUpdatedId = "0X5";
+import gov.ca.cwds.data.persistence.cms.Address;
+import gov.ca.cwds.data.persistence.cms.ClientAddress;
 
-  public ClientAddress create(){
-    return new ClientAddress(id, addressType, bkInmtId, effEndDt,
-      effStartDt, fkAddress, fkClient, homelessInd, fkReferral, addresses, lastUpdatedId);
+public class ClientAddressEntityBuilder {
+  String id = "CLNTADDRID";
+  Short addressType = 2;
+  String bkInmtId = "";
+  Date effEndDt = new Date();
+  Date effStartDt = new Date();
+  String fkAddress = "FKADDRESSX";
+  String fkClient = "FKCLIENTXX";
+  String homelessInd = "";
+  String fkReferral = "FKREFERRAL";
+  Address addresses = null;
+  String lastUpdatedId = "0X5";
+
+  public ClientAddress buildClientAddress() {
+    return new ClientAddress(id, addressType, bkInmtId, effEndDt, effStartDt, fkAddress, fkClient,
+        homelessInd, fkReferral, addresses, lastUpdatedId);
   }
 
   public String getId() {
