@@ -1,5 +1,7 @@
 package gov.ca.cwds.rest.services;
 
+import gov.ca.cwds.rest.api.domain.DomainChef;
+import gov.ca.cwds.rest.api.domain.comparator.EntityChangedComparator;
 import java.io.Serializable;
 import java.text.DateFormat;
 import java.text.ParseException;
@@ -347,7 +349,8 @@ public class ScreeningToReferralService implements CrudsService {
                 clientId = incomingParticipant.getLegacyId();
                 Client foundClient = this.clientService.find(clientId);
                 if (foundClient != null) {
-                  if (unchanged(incomingParticipant, foundClient)) {
+                  EntityChangedComparator comparator = new EntityChangedComparator();
+                  if (comparator.compare(incomingParticipant, foundClient)) {
                     foundClient.update(incomingParticipant.getFirstName(),
                         incomingParticipant.getMiddleName(), incomingParticipant.getLastName(),
                         incomingParticipant.getNameSuffix());
@@ -356,15 +359,12 @@ public class ScreeningToReferralService implements CrudsService {
                     if (savedClient == null) {
                       String message = "Unable to save Client";
                       logError(message);
-                      throw new ServiceException(message);
                     }
                   } else {
                     String message = String.format(
                         "Unable to Update %s %s Client. Client was previously modified",
                         incomingParticipant.getFirstName(), incomingParticipant.getLastName());
                     logError(message);
-                    throw new ClientException(message);
-
                   }
                 } else {
                   String message =
@@ -421,12 +421,6 @@ public class ScreeningToReferralService implements CrudsService {
               }
             }
           }
-        } catch (ParseException e) {
-          String message = String.format("Unable to process last updated date for %s %s Client",
-              incomingParticipant.getFirstName(), incomingParticipant.getLastName());
-          logError(message);
-          throw new ServiceException(message, e);
-
         } catch (Exception e) {
           String message = e.getMessage();
           logError(message, e);
@@ -438,12 +432,11 @@ public class ScreeningToReferralService implements CrudsService {
   }
 
   private boolean unchanged(Participant incomingClient, Client savedClient) throws ParseException {
-    DateTimeFormatter formatter = DateTimeFormat.forPattern("yyyy-MM-dd-HH.mm.ss.SSS");
+    DateTimeFormatter formatter = DateTimeFormat.forPattern(DomainChef.TIMESTAMP_FORMAT);;
     DateTime dbDate = formatter.parseDateTime(savedClient.getLastUpdatedTime());
 
-    DateTimeFormatter formatter2 = DateTimeFormat.forPattern("yyyy-MM-dd\'T\'HH:mm:ss.SSSZZ");
-    DateTime incommingDate =
-        formatter2.parseDateTime(incomingClient.getLegacyDescriptor().getLastUpdated());
+    DateTimeFormatter formatter2 = DateTimeFormat.forPattern(DomainChef.TIMESTAMP_STRICT_FORMAT);
+    DateTime incommingDate = formatter2.parseDateTime(incomingClient.getLegacyDescriptor().getLastUpdated());
     return dbDate.isEqual(incommingDate);
   }
 
