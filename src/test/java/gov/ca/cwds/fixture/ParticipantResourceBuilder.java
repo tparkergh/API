@@ -192,7 +192,6 @@ public class ParticipantResourceBuilder {
     this.middleName = middleName.substring(0,1);
     this.roles = new HashSet<String>(Arrays.asList("Non-mandated Reporter"));
     return createParticipant();
-
   }
 
   /**
