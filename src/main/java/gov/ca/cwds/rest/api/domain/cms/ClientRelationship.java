@@ -48,12 +48,12 @@ public class ClientRelationship extends ReportingDomain implements Request, Resp
   private String endDate;
 
   @NotEmpty
-  @Size(max = CMS_ID_LEN)
+  @Size(min = 1, max = CMS_ID_LEN)
   @ApiModelProperty(required = true, readOnly = false, value = "", example = "ABC123")
   private String secondaryClientId;
 
   @NotEmpty
-  @Size(max = CMS_ID_LEN)
+  @Size(min = 1, max = CMS_ID_LEN)
   @ApiModelProperty(required = true, readOnly = false, value = "", example = "DEF123")
   private String primaryClientId;
 
