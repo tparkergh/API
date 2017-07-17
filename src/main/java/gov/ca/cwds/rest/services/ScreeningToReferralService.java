@@ -516,7 +516,7 @@ public class ScreeningToReferralService implements CrudsService {
   public Referral createReferralWithDefaults(ScreeningToReferral screeningToReferral,
       String dateStarted, String timeStarted, Date timestamp) throws ServiceException {
     short approvalStatusCode = approvalStatusCodeOnCreateSetToNotSubmitted();
-    String longTextId = generateLongTextId(screeningToReferral);
+    String longTextId = generateReportNarrative(screeningToReferral);
     String firstResponseDeterminedByStaffPersonId = getFirstResponseDeterminedByStaffPersonId();
 
     /*
@@ -606,15 +606,15 @@ public class ScreeningToReferralService implements CrudsService {
     return postedDrmsDocument.getId();
   }
 
-  private String generateLongTextId(ScreeningToReferral screeningToReferral) {
+  private String generateReportNarrative(ScreeningToReferral screeningToReferral) {
     String longTextId = null;
-    if (screeningToReferral.getAdditionalInformation() == null
-        || screeningToReferral.getAdditionalInformation().isEmpty()) {
+    if (screeningToReferral.getReportNarrative() == null
+        || screeningToReferral.getReportNarrative().isEmpty()) {
       longTextId = null;
     } else {
       try {
-        longTextId = createLongText(DEFAULT_COUNTY_SPECIFIC_CODE,
-            screeningToReferral.getAdditionalInformation());
+        longTextId =
+            createLongText(DEFAULT_COUNTY_SPECIFIC_CODE, screeningToReferral.getReportNarrative());
       } catch (ServiceException e) {
         String message = e.getMessage();
         logError(message, e);
@@ -843,10 +843,9 @@ public class ScreeningToReferralService implements CrudsService {
         // create an allegation in CMS legacy database
         gov.ca.cwds.rest.api.domain.cms.Allegation cmsAllegation =
             new gov.ca.cwds.rest.api.domain.cms.Allegation("", DEFAULT_CODE, "",
-                scr.getLocationType(), "", allegationDispositionType, allegationTypeCode,
-                scr.getReportNarrative(), "", false, DEFAULT_NON_PROTECTING_PARENT_CODE, false,
-                victimClientId, perpatratorClientId, referralId, DEFAULT_COUNTY_SPECIFIC_CODE,
-                false, DEFAULT_CODE);
+                scr.getLocationType(), "", allegationDispositionType, allegationTypeCode, "", "",
+                false, DEFAULT_NON_PROTECTING_PARENT_CODE, false, victimClientId,
+                perpatratorClientId, referralId, DEFAULT_COUNTY_SPECIFIC_CODE, false, DEFAULT_CODE);
 
         messageBuilder.addDomainValidationError(validator.validate(cmsAllegation));
 

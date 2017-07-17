@@ -6,7 +6,6 @@ import java.util.HashSet;
 import java.util.Set;
 
 import javax.validation.Valid;
-import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
@@ -133,6 +132,7 @@ public class Participant extends ReportingDomain implements Request, Response {
    * @param id The id of the Participant
    * @param legacySourceTable - legacy source table name
    * @param clientId - the legacy clientId
+   * @param legacyDescriptor - descriptor for CWS/CMS database
    * @param personId The person Id
    * @param screeningId The screening Id
    * @param firstName The first Name
@@ -257,13 +257,19 @@ public class Participant extends ReportingDomain implements Request, Response {
     this.legacyId = clientId;
   }
 
+  /**
+   * @return the descriptor for the CWS/CMS database
+   */
   public LegacyDescriptor getLegacyDescriptor() {
-    if (legacyDescriptor == null)  {
+    if (legacyDescriptor == null) {
       legacyDescriptor = new LegacyDescriptor();
     }
     return legacyDescriptor;
   }
 
+  /**
+   * @param legacyDescriptor - set the descriptor for the CWS/CMS database
+   */
   public void setLegacyDescriptor(LegacyDescriptor legacyDescriptor) {
     this.legacyDescriptor = legacyDescriptor;
   }
