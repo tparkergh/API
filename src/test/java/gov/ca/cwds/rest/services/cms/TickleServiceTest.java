@@ -12,6 +12,7 @@ import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
+import javax.persistence.EntityExistsException;
 import javax.persistence.EntityNotFoundException;
 
 import org.junit.Before;
@@ -25,24 +26,22 @@ import gov.ca.cwds.data.cms.TickleDao;
 import gov.ca.cwds.rest.api.Response;
 import gov.ca.cwds.rest.api.domain.cms.Tickle;
 import gov.ca.cwds.rest.services.ServiceException;
-import gov.ca.cwds.rest.services.junit.template.ServiceTestTemplate;
 import io.dropwizard.jackson.Jackson;
 
 /**
  * @author CWDS API Team
  *
  */
-public class TickleServiceTest implements ServiceTestTemplate {
+@SuppressWarnings("javadoc")
+public class TickleServiceTest {
   private static final ObjectMapper MAPPER = Jackson.newObjectMapper();
   private TickleService tickleService;
   private TickleDao tickleDao;
   private StaffPersonIdRetriever staffPersonIdRetriever;
 
-  @SuppressWarnings("javadoc")
   @Rule
   public ExpectedException thrown = ExpectedException.none();
 
-  @Override
   @Before
   public void setup() throws Exception {
     tickleDao = mock(TickleDao.class);
@@ -51,11 +50,9 @@ public class TickleServiceTest implements ServiceTestTemplate {
   }
 
   // find test
-  @Override
-  @Test
-  public void testFindThrowsAssertionError() {
+  @Test(expected = AssertionError.class)
+  public void tickleServiceFindThrowsAssertionError() {
     // expect string type for primary key test
-    thrown.expect(AssertionError.class);
     try {
       tickleService.find(1);
     } catch (AssertionError e) {
@@ -63,9 +60,8 @@ public class TickleServiceTest implements ServiceTestTemplate {
     }
   }
 
-  @Override
   @Test
-  public void testFindReturnsCorrectEntity() throws Exception {
+  public void tickleServiceFindReturnsCorrectEntity() throws Exception {
     String id = "AabekZX00F";
     Tickle expected =
         MAPPER.readValue(fixture("fixtures/domain/legacy/Tickle/valid/valid.json"), Tickle.class);
@@ -77,18 +73,15 @@ public class TickleServiceTest implements ServiceTestTemplate {
     assertThat(found, is(expected));
   }
 
-  @Override
   @Test
-  public void testFindReturnsNullWhenNotFound() throws Exception {
+  public void tickleServiceFindReturnsNullWhenNotFound() throws Exception {
     Response found = tickleService.find("ABC1234567");
     assertThat(found, is(nullValue()));
   }
 
   // delete test
-  @Override
-  @Test
-  public void testDeleteThrowsAssertionError() throws Exception {
-    thrown.expect(AssertionError.class);
+  @Test(expected = AssertionError.class)
+  public void tickleServiceDeleteThrowsAssertionError() throws Exception {
     try {
       tickleService.delete(123);
     } catch (AssertionError e) {
@@ -96,35 +89,21 @@ public class TickleServiceTest implements ServiceTestTemplate {
     }
   }
 
-  @Override
   @Test
-  public void testDeleteDelegatesToCrudsService() {
+  public void tickleServiceDeleteDelegatesToCrudsService() {
     tickleService.delete("ABC2345678");
     verify(tickleDao, times(1)).delete("ABC2345678");
   }
 
-  @Override
   @Test
-  public void testDeleteReturnsNullWhenNotFound() throws Exception {
+  public void tickleServiceDeleteReturnsNullWhenNotFound() throws Exception {
     Response found = tickleService.delete("ABC1234567");
     assertThat(found, is(nullValue()));
   }
 
-  @Override
-  public void testDeleteThrowsNotImplementedException() throws Exception {
-
-  }
-
-  @Override
-  public void testDeleteReturnsClass() throws Exception {
-
-  }
-
   // update test
-  @Override
-  @Test
-  public void testUpdateThrowsAssertionError() throws Exception {
-    thrown.expect(AssertionError.class);
+  @Test(expected = AssertionError.class)
+  public void tickleServiceUpdateThrowsAssertionError() throws Exception {
     try {
       tickleService.update("ABC1234567", null);
     } catch (AssertionError e) {
@@ -132,9 +111,8 @@ public class TickleServiceTest implements ServiceTestTemplate {
     }
   }
 
-  @Override
   @Test
-  public void testUpdateReturnsCorrectEntity() throws Exception {
+  public void tickleServiceUpdateReturnsCorrectEntity() throws Exception {
     String id = "AabekZX00F";
     Tickle expected =
         MAPPER.readValue(fixture("fixtures/domain/legacy/Tickle/valid/valid.json"), Tickle.class);
@@ -149,9 +127,8 @@ public class TickleServiceTest implements ServiceTestTemplate {
     assertThat(retval.getClass(), is(Tickle.class));
   }
 
-  @SuppressWarnings("javadoc")
   @Test
-  public void testUpdateThrowsExceptionWhenNotFound() throws Exception {
+  public void tickleServiceUpdateThrowsExceptionWhenNotFound() throws Exception {
     try {
       Tickle tickleRequest =
           MAPPER.readValue(fixture("fixtures/domain/legacy/Tickle/valid/valid.json"), Tickle.class);
@@ -164,25 +141,9 @@ public class TickleServiceTest implements ServiceTestTemplate {
     }
   }
 
-  @Override
-  public void testUpdateReturnsDomain() throws Exception {
-
-  }
-
-  @Override
-  public void testUpdateThrowsServiceException() throws Exception {
-
-  }
-
-  @Override
-  public void testUpdateThrowsNotImplementedException() throws Exception {
-
-  }
-
   // create test
-  @Override
   @Test
-  public void testCreateReturnsPostedClass() throws Exception {
+  public void tickleServiceCreateReturnsPostedClass() throws Exception {
     String id = "AabekZX00F";
     Tickle tickleDomain =
         MAPPER.readValue(fixture("fixtures/domain/legacy/Tickle/valid/valid.json"), Tickle.class);
@@ -196,9 +157,8 @@ public class TickleServiceTest implements ServiceTestTemplate {
     assertThat(response.getClass(), is(Tickle.class));
   }
 
-  @SuppressWarnings("javadoc")
   @Test
-  public void testCreateReturnsNonNull() throws Exception {
+  public void tickleServiceCreateReturnsNonNull() throws Exception {
     String id = "AabekZX00F";
     Tickle tickleDomain =
         MAPPER.readValue(fixture("fixtures/domain/legacy/Tickle/valid/valid.json"), Tickle.class);
@@ -212,14 +172,13 @@ public class TickleServiceTest implements ServiceTestTemplate {
     assertThat(postedtickle, is(notNullValue()));
   }
 
-  @Override
   @Test
-  public void testCreateReturnsCorrectEntity() throws Exception {
+  public void tickleServiceCreateReturnsCorrectEntity() throws Exception {
     String id = "AabekZX00F";
-    Tickle allegationDomain =
+    Tickle tickleDomain =
         MAPPER.readValue(fixture("fixtures/domain/legacy/Tickle/valid/valid.json"), Tickle.class);
     gov.ca.cwds.data.persistence.cms.Tickle toCreate =
-        new gov.ca.cwds.data.persistence.cms.Tickle(id, allegationDomain, "ABC");
+        new gov.ca.cwds.data.persistence.cms.Tickle(id, tickleDomain, "ABC");
 
     Tickle request = new Tickle(toCreate);
     when(tickleDao.create(any(gov.ca.cwds.data.persistence.cms.Tickle.class))).thenReturn(toCreate);
@@ -229,9 +188,22 @@ public class TickleServiceTest implements ServiceTestTemplate {
     assertThat(returned, is(expected));
   }
 
-  @Override
   @Test
-  public void testCreateNullIDError() throws Exception {
+  public void tickleServiceCreateThrowsEntityExistsException() throws Exception {
+    try {
+      Tickle tickleDomain =
+          MAPPER.readValue(fixture("fixtures/domain/legacy/Tickle/valid/valid.json"), Tickle.class);
+
+      when(tickleDao.create(any())).thenThrow(EntityExistsException.class);
+
+      tickleService.create(tickleDomain);
+    } catch (Exception e) {
+      assertEquals(e.getClass(), ServiceException.class);
+    }
+  }
+
+  @Test
+  public void tickleServiceCreateNullIDError() throws Exception {
     try {
       Tickle tickleDomain =
           MAPPER.readValue(fixture("fixtures/domain/legacy/Tickle/valid/valid.json"), Tickle.class);
@@ -248,9 +220,8 @@ public class TickleServiceTest implements ServiceTestTemplate {
 
   }
 
-  @Override
   @Test
-  public void testCreateBlankIDError() throws Exception {
+  public void tickleServiceCreateBlankIDError() throws Exception {
     try {
       Tickle tickleDomain =
           MAPPER.readValue(fixture("fixtures/domain/legacy/Tickle/valid/valid.json"), Tickle.class);
@@ -264,26 +235,6 @@ public class TickleServiceTest implements ServiceTestTemplate {
     } catch (ServiceException e) {
       assertEquals("Allegation ID cannot be blank", e.getMessage());
     }
-
-  }
-
-  @Override
-  public void testCreateThrowsAssertionError() throws Exception {
-
-  }
-
-  @Override
-  public void testCreateEmptyIDError() throws Exception {
-
-  }
-
-  @Override
-  public void testCreateThrowsNotImplementedException() throws Exception {
-
-  }
-
-  @Override
-  public void testFindThrowsNotImplementedException() throws Exception {
 
   }
 

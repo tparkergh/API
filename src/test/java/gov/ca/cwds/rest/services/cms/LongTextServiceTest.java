@@ -11,14 +11,8 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
-import gov.ca.cwds.data.cms.LongTextDao;
-import gov.ca.cwds.rest.api.Response;
-import gov.ca.cwds.rest.api.domain.cms.LongText;
-import gov.ca.cwds.rest.api.domain.cms.PostedLongText;
-import gov.ca.cwds.rest.services.ServiceException;
-import gov.ca.cwds.rest.services.junit.template.ServiceTestTemplate;
-import io.dropwizard.jackson.Jackson;
 
+import javax.persistence.EntityExistsException;
 import javax.persistence.EntityNotFoundException;
 
 import org.junit.Assert;
@@ -31,21 +25,27 @@ import org.mockito.stubbing.Answer;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import gov.ca.cwds.data.cms.LongTextDao;
+import gov.ca.cwds.rest.api.Response;
+import gov.ca.cwds.rest.api.domain.cms.LongText;
+import gov.ca.cwds.rest.api.domain.cms.PostedLongText;
+import gov.ca.cwds.rest.services.ServiceException;
+import io.dropwizard.jackson.Jackson;
+
 /**
  * @author CWDS API Team
  *
  */
-public class LongTextServiceTest implements ServiceTestTemplate {
+@SuppressWarnings("javadoc")
+public class LongTextServiceTest {
   private static final ObjectMapper MAPPER = Jackson.newObjectMapper();
   private LongTextService longTextService;
   private LongTextDao longTextDao;
   private StaffPersonIdRetriever staffPersonIdRetriever;
 
-  @SuppressWarnings("javadoc")
   @Rule
   public ExpectedException thrown = ExpectedException.none();
 
-  @Override
   @Before
   public void setup() throws Exception {
     longTextDao = mock(LongTextDao.class);
@@ -54,9 +54,8 @@ public class LongTextServiceTest implements ServiceTestTemplate {
   }
 
   // find test
-  @Override
   @Test
-  public void testFindThrowsAssertionError() {
+  public void longTextServiceFindThrowsAssertionError() {
     // expect string type for primary key test
     thrown.expect(AssertionError.class);
     try {
@@ -66,13 +65,11 @@ public class LongTextServiceTest implements ServiceTestTemplate {
     }
   }
 
-  @Override
   @Test
-  public void testFindReturnsCorrectEntity() throws Exception {
+  public void longTextServiceFindReturnsCorrectEntity() throws Exception {
     String id = "AaoDyiJq27";
-    LongText expected =
-        MAPPER.readValue(fixture("fixtures/domain/legacy/LongText/valid/valid.json"),
-            LongText.class);
+    LongText expected = MAPPER
+        .readValue(fixture("fixtures/domain/legacy/LongText/valid/valid.json"), LongText.class);
     gov.ca.cwds.data.persistence.cms.LongText longText =
         new gov.ca.cwds.data.persistence.cms.LongText(id, expected, "q27");
 
@@ -81,17 +78,15 @@ public class LongTextServiceTest implements ServiceTestTemplate {
     assertThat(found, is(expected));
   }
 
-  @Override
   @Test
-  public void testFindReturnsNullWhenNotFound() throws Exception {
+  public void longTextServiceFindReturnsNullWhenNotFound() throws Exception {
     Response found = longTextService.find("ABC1234567");
     assertThat(found, is(nullValue()));
   }
 
-  @Override
   @Test
   // delete test
-  public void testDeleteThrowsAssertionError() throws Exception {
+  public void longTextServiceDeleteThrowsAssertionError() throws Exception {
     // expect string type for primary key test
     thrown.expect(AssertionError.class);
     try {
@@ -101,35 +96,21 @@ public class LongTextServiceTest implements ServiceTestTemplate {
     }
   }
 
-  @Override
   @Test
-  public void testDeleteDelegatesToCrudsService() {
+  public void longTextServiceDeleteDelegatesToCrudsService() {
     longTextService.delete("ABC2345678");
     verify(longTextDao, times(1)).delete("ABC2345678");
   }
 
-  @Override
   @Test
-  public void testDeleteReturnsNullWhenNotFound() throws Exception {
+  public void longTextServiceDeleteReturnsNullWhenNotFound() throws Exception {
     Response found = longTextService.delete("ABC1234567");
     assertThat(found, is(nullValue()));
   }
 
-  @Override
-  public void testDeleteThrowsNotImplementedException() throws Exception {
-    // delete is implemented
-
-  }
-
-  @Override
-  public void testDeleteReturnsClass() throws Exception {
-
-  }
-
   // update test
-  @Override
   @Test
-  public void testUpdateThrowsAssertionError() throws Exception {
+  public void longTextServiceUpdateThrowsAssertionError() throws Exception {
     // expected string type for primary key test
     thrown.expect(AssertionError.class);
     try {
@@ -139,13 +120,11 @@ public class LongTextServiceTest implements ServiceTestTemplate {
     }
   }
 
-  @Override
   @Test
-  public void testUpdateReturnsCorrectEntity() throws Exception {
+  public void longTextServiceUpdateReturnsCorrectEntity() throws Exception {
     String id = "AaoDyiJq27";
-    LongText expected =
-        MAPPER.readValue(fixture("fixtures/domain/legacy/LongText/valid/valid.json"),
-            LongText.class);
+    LongText expected = MAPPER
+        .readValue(fixture("fixtures/domain/legacy/LongText/valid/valid.json"), LongText.class);
 
     gov.ca.cwds.data.persistence.cms.LongText longText =
         new gov.ca.cwds.data.persistence.cms.LongText(id, expected, "q27");
@@ -157,13 +136,11 @@ public class LongTextServiceTest implements ServiceTestTemplate {
     assertThat(retval.getClass(), is(LongText.class));
   }
 
-  @SuppressWarnings("javadoc")
   @Test
-  public void testUpdateThrowsExceptionWhenNotFound() throws Exception {
+  public void longTextServiceUpdateThrowsExceptionWhenNotFound() throws Exception {
     try {
-      LongText longTextRquest =
-          MAPPER.readValue(fixture("fixtures/domain/legacy/LongText/valid/valid.json"),
-              LongText.class);
+      LongText longTextRquest = MAPPER
+          .readValue(fixture("fixtures/domain/legacy/LongText/valid/valid.json"), LongText.class);
 
       when(longTextDao.update(any())).thenThrow(EntityNotFoundException.class);
 
@@ -173,89 +150,80 @@ public class LongTextServiceTest implements ServiceTestTemplate {
     }
   }
 
-  @Override
-  public void testUpdateReturnsDomain() throws Exception {
-
-  }
-
-  @Override
-  public void testUpdateThrowsServiceException() throws Exception {
-
-  }
-
-  @Override
-  public void testUpdateThrowsNotImplementedException() throws Exception {
-
-  }
-
   // create test
-  @Override
   @Test
-  public void testCreateReturnsPostedClass() throws Exception {
+  public void longTextServiceCreateReturnsPostedClass() throws Exception {
     String id = "AaoDyiJq27";
-    LongText longTextDomain =
-        MAPPER.readValue(fixture("fixtures/domain/legacy/LongText/valid/valid.json"),
-            LongText.class);
+    LongText longTextDomain = MAPPER
+        .readValue(fixture("fixtures/domain/legacy/LongText/valid/valid.json"), LongText.class);
     gov.ca.cwds.data.persistence.cms.LongText toCreate =
         new gov.ca.cwds.data.persistence.cms.LongText(id, longTextDomain, "q27");
 
     LongText request = new LongText(toCreate);
-    when(longTextDao.create(any(gov.ca.cwds.data.persistence.cms.LongText.class))).thenReturn(
-        toCreate);
+    when(longTextDao.create(any(gov.ca.cwds.data.persistence.cms.LongText.class)))
+        .thenReturn(toCreate);
 
     Response response = longTextService.create(request);
     assertThat(response.getClass(), is(PostedLongText.class));
   }
 
-  @SuppressWarnings("javadoc")
   @Test
-  public void testCreateReturnsNonNull() throws Exception {
+  public void longTextServiceCreateReturnsNonNull() throws Exception {
     String id = "AaoDyiJq27";
-    LongText longTextDomain =
-        MAPPER.readValue(fixture("fixtures/domain/legacy/LongText/valid/valid.json"),
-            LongText.class);
+    LongText longTextDomain = MAPPER
+        .readValue(fixture("fixtures/domain/legacy/LongText/valid/valid.json"), LongText.class);
     gov.ca.cwds.data.persistence.cms.LongText toCreate =
         new gov.ca.cwds.data.persistence.cms.LongText(id, longTextDomain, "q27");
 
     LongText request = new LongText(toCreate);
-    when(longTextDao.create(any(gov.ca.cwds.data.persistence.cms.LongText.class))).thenReturn(
-        toCreate);
+    when(longTextDao.create(any(gov.ca.cwds.data.persistence.cms.LongText.class)))
+        .thenReturn(toCreate);
 
     PostedLongText postedLongText = longTextService.create(request);
     assertThat(postedLongText, is(notNullValue()));
   }
 
-  @Override
   @Test
-  public void testCreateReturnsCorrectEntity() throws Exception {
+  public void longTextServiceCreateReturnsCorrectEntity() throws Exception {
     String id = "AaoDyiJq27";
-    LongText longTextDomain =
-        MAPPER.readValue(fixture("fixtures/domain/legacy/LongText/valid/valid.json"),
-            LongText.class);
+    LongText longTextDomain = MAPPER
+        .readValue(fixture("fixtures/domain/legacy/LongText/valid/valid.json"), LongText.class);
     gov.ca.cwds.data.persistence.cms.LongText toCreate =
         new gov.ca.cwds.data.persistence.cms.LongText(id, longTextDomain, "q27");
 
     LongText request = new LongText(toCreate);
-    when(longTextDao.create(any(gov.ca.cwds.data.persistence.cms.LongText.class))).thenReturn(
-        toCreate);
+    when(longTextDao.create(any(gov.ca.cwds.data.persistence.cms.LongText.class)))
+        .thenReturn(toCreate);
 
     PostedLongText expected = new PostedLongText(toCreate);
     PostedLongText returned = longTextService.create(request);
     assertThat(returned, is(expected));
   }
 
-  @Override
   @Test
-  public void testCreateNullIDError() throws Exception {
+  public void longTextServiceCreateThrowsEntityExistsException() throws Exception {
     try {
-      LongText longTextDomain =
-          MAPPER.readValue(fixture("fixtures/domain/legacy/LongText/valid/valid.json"),
-              LongText.class);
+      LongText longTextRquest = MAPPER
+          .readValue(fixture("fixtures/domain/legacy/LongText/valid/valid.json"), LongText.class);
+
+      when(longTextDao.create(any())).thenThrow(EntityExistsException.class);
+
+      longTextService.create(longTextRquest);
+    } catch (Exception e) {
+      assertEquals(e.getClass(), ServiceException.class);
+    }
+  }
+
+  @Test
+  public void longTextServiceCreateNullIDError() throws Exception {
+    try {
+      LongText longTextDomain = MAPPER
+          .readValue(fixture("fixtures/domain/legacy/LongText/valid/valid.json"), LongText.class);
       gov.ca.cwds.data.persistence.cms.LongText toCreate =
           new gov.ca.cwds.data.persistence.cms.LongText(null, longTextDomain, "q27");
 
-      when(longTextDao.create(any(gov.ca.cwds.data.persistence.cms.LongText.class))).thenReturn(
-          toCreate);
+      when(longTextDao.create(any(gov.ca.cwds.data.persistence.cms.LongText.class)))
+          .thenReturn(toCreate);
 
       PostedLongText expected = new PostedLongText(toCreate);
     } catch (ServiceException e) {
@@ -264,18 +232,16 @@ public class LongTextServiceTest implements ServiceTestTemplate {
 
   }
 
-  @Override
   @Test
-  public void testCreateBlankIDError() throws Exception {
+  public void longTextServiceCreateBlankIDError() throws Exception {
     try {
-      LongText longTextDomain =
-          MAPPER.readValue(fixture("fixtures/domain/legacy/LongText/valid/valid.json"),
-              LongText.class);
+      LongText longTextDomain = MAPPER
+          .readValue(fixture("fixtures/domain/legacy/LongText/valid/valid.json"), LongText.class);
       gov.ca.cwds.data.persistence.cms.LongText toCreate =
           new gov.ca.cwds.data.persistence.cms.LongText(" ", longTextDomain, "q27");
 
-      when(longTextDao.create(any(gov.ca.cwds.data.persistence.cms.LongText.class))).thenReturn(
-          toCreate);
+      when(longTextDao.create(any(gov.ca.cwds.data.persistence.cms.LongText.class)))
+          .thenReturn(toCreate);
 
       PostedLongText expected = new PostedLongText(toCreate);
     } catch (ServiceException e) {
@@ -287,14 +253,12 @@ public class LongTextServiceTest implements ServiceTestTemplate {
   /*
    * Test for checking the new Allegation Id generated and lenght is 10
    */
-  @SuppressWarnings("javadoc")
   @Test
-  public void createReturnsGeneratedId() throws Exception {
-    LongText longTextDomain =
-        MAPPER.readValue(fixture("fixtures/domain/legacy/LongText/valid/valid.json"),
-            LongText.class);
-    when(longTextDao.create(any(gov.ca.cwds.data.persistence.cms.LongText.class))).thenAnswer(
-        new Answer<gov.ca.cwds.data.persistence.cms.LongText>() {
+  public void longTextServicecreateReturnsGeneratedId() throws Exception {
+    LongText longTextDomain = MAPPER
+        .readValue(fixture("fixtures/domain/legacy/LongText/valid/valid.json"), LongText.class);
+    when(longTextDao.create(any(gov.ca.cwds.data.persistence.cms.LongText.class)))
+        .thenAnswer(new Answer<gov.ca.cwds.data.persistence.cms.LongText>() {
 
           @Override
           public gov.ca.cwds.data.persistence.cms.LongText answer(InvocationOnMock invocation)
@@ -309,26 +273,6 @@ public class LongTextServiceTest implements ServiceTestTemplate {
     assertEquals(returned.getId().length(), 10);
     PostedLongText newReturned = longTextService.create(longTextDomain);
     Assert.assertNotEquals(returned.getId(), newReturned.getId());
-  }
-
-  @Override
-  public void testCreateThrowsAssertionError() throws Exception {
-
-  }
-
-  @Override
-  public void testCreateEmptyIDError() throws Exception {
-
-  }
-
-  @Override
-  public void testCreateThrowsNotImplementedException() throws Exception {
-
-  }
-
-  @Override
-  public void testFindThrowsNotImplementedException() throws Exception {
-
   }
 
 }
