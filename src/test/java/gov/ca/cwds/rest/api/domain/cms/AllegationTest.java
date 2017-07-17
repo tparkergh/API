@@ -735,7 +735,7 @@ public class AllegationTest {
         resources.client().target(ROOT_RESOURCE).request().accept(MediaType.APPLICATION_JSON)
             .post(Entity.entity(toCreate, MediaType.APPLICATION_JSON));
     assertThat(response.getStatus(), is(equalTo(422)));
-    assertThat(response.readEntity(String.class).indexOf("dispositionDescription may not be empty"),
+    assertThat(response.readEntity(String.class).indexOf("dispositionDescription may not be null"),
         is(greaterThanOrEqualTo(0)));
   }
 
@@ -752,7 +752,7 @@ public class AllegationTest {
         resources.client().target(ROOT_RESOURCE).request().accept(MediaType.APPLICATION_JSON)
             .post(Entity.entity(toCreate, MediaType.APPLICATION_JSON));
     assertThat(response.getStatus(), is(equalTo(422)));
-    assertThat(response.readEntity(String.class).indexOf("dispositionDescription may not be empty"),
+    assertThat(response.readEntity(String.class).indexOf("dispositionDescription may not be null"),
         is(greaterThanOrEqualTo(0)));
   }
 
@@ -761,16 +761,14 @@ public class AllegationTest {
    * 
    */
   @Test
-  public void failsWhenDispositionDescriptionEmpty() throws Exception {
+  public void successWhenDispositionDescriptionEmpty() throws Exception {
     Allegation toCreate = MAPPER.readValue(
-        fixture("fixtures/domain/legacy/Allegation/invalid/dispositionDescriptionEmpty.json"),
+        fixture("fixtures/domain/legacy/Allegation/valid/dispositionDescriptionEmpty.json"),
         Allegation.class);
     Response response =
         resources.client().target(ROOT_RESOURCE).request().accept(MediaType.APPLICATION_JSON)
             .post(Entity.entity(toCreate, MediaType.APPLICATION_JSON));
-    assertThat(response.getStatus(), is(equalTo(422)));
-    assertThat(response.readEntity(String.class).indexOf("dispositionDescription may not be empty"),
-        is(greaterThanOrEqualTo(0)));
+    assertThat(response.getStatus(), is(equalTo(204)));
   }
 
   /*
