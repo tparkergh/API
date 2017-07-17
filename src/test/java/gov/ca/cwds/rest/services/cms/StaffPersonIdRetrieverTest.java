@@ -58,6 +58,22 @@ public class StaffPersonIdRetrieverTest extends AbstractShiroTest {
 
   @SuppressWarnings({"javadoc", "rawtypes", "unchecked"})
   @Test
+  public void getStaffPersonIdReturnsHardCodedValueWhenStaffIdIsNotProvided() throws Exception {
+    Subject mockSubject = mock(Subject.class);
+    PrincipalCollection pc = mock(PrincipalCollection.class);
+    List list = new ArrayList();
+    list.add("mg");
+    list.add(MAPPER.readValue("{ \"user\" : \"guest\"}", PerryUserIdentity.class));
+    when(pc.asList()).thenReturn(list);
+    when(mockSubject.getPrincipals()).thenReturn(pc);
+    setSubject(mockSubject);
+    String actual = new StaffPersonIdRetriever().getStaffPersonId();
+    String expected = "0X5";
+    assertEquals(actual, expected);
+  }
+
+  @SuppressWarnings({"javadoc", "rawtypes", "unchecked"})
+  @Test
   public void getStaffPersonIdReturnsStaffIdValue() throws Exception {
     Subject mockSubject = mock(Subject.class);
     PrincipalCollection pc = mock(PrincipalCollection.class);
