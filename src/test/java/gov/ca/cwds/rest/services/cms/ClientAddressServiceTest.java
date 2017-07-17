@@ -15,6 +15,7 @@ import static org.mockito.Mockito.when;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.persistence.EntityExistsException;
 import javax.persistence.EntityNotFoundException;
 
 import org.junit.Before;
@@ -284,6 +285,21 @@ public class ClientAddressServiceTest implements ServiceTestTemplate {
     Response expected = new gov.ca.cwds.rest.api.domain.cms.ClientAddress(toCreate, false);
     Response returned = clientAddressService.create(request);
     assertThat(returned, is(expected));
+  }
+
+  @SuppressWarnings("javadoc")
+  @Test
+  public void testCreateThrowsEntityExistsException() throws Exception {
+    try {
+      gov.ca.cwds.rest.api.domain.cms.ClientAddress clientAddressDomain =
+          new ClientAddressResourceBuilder().buildClientAddress();
+
+      when(clientAddressDao.create(any())).thenThrow(EntityExistsException.class);
+
+      clientAddressService.create(clientAddressDomain);
+    } catch (Exception e) {
+      assertEquals(e.getClass(), ServiceException.class);
+    }
   }
 
   @Override

@@ -11,6 +11,7 @@ import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
+import javax.persistence.EntityExistsException;
 import javax.persistence.EntityNotFoundException;
 
 import org.junit.Assert;
@@ -105,7 +106,6 @@ public class AssignmentServiceTest {
   }
 
   // update test
-
   @Test(expected = AssertionError.class)
   public void assignmentServiceUpdateThrowsAssertionError() throws Exception {
     try {
@@ -147,7 +147,6 @@ public class AssignmentServiceTest {
   }
 
   // create test
-
   @Test
   public void assignmentServiceCreateReturnsPostedClass() throws Exception {
     String id = "5rVkB8c088";
@@ -198,6 +197,18 @@ public class AssignmentServiceTest {
     assertThat(returned, is(expected));
   }
 
+  @Test
+  public void assignmentServiceCreateThrowsEntityExistsException() throws Exception {
+    try {
+      Assignment assignmentRequest = new AssignmentResourceBuilder().buildAssignment();
+
+      when(assignmentDao.create(any())).thenThrow(EntityExistsException.class);
+
+      assignmentService.create(assignmentRequest);
+    } catch (Exception e) {
+      assertEquals(e.getClass(), ServiceException.class);
+    }
+  }
 
   @Test
   public void assignmentServiceCreateNullIDError() throws Exception {
