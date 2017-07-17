@@ -27,7 +27,7 @@ import gov.ca.cwds.data.ApiSysCodeAware;
 import gov.ca.cwds.data.ApiTypedIdentifier;
 import gov.ca.cwds.data.es.ApiElasticSearchException;
 import gov.ca.cwds.data.es.ElasticSearchPerson;
-import gov.ca.cwds.data.es.ElasticSearchPerson.ElasticSearchPersonAddress;
+import gov.ca.cwds.data.es.ElasticSearchPersonAddress;
 import gov.ca.cwds.data.std.ApiAddressAware;
 import gov.ca.cwds.data.std.ApiAddressAwareWritable;
 import gov.ca.cwds.data.std.ApiLanguageAware;
@@ -606,7 +606,7 @@ public class AutoCompletePerson
      * 
      * @return ES person document object
      */
-    public ElasticSearchPerson.ElasticSearchPersonAddress toESPersonAddress() {
+    public ElasticSearchPersonAddress toESPersonAddress() {
       return new ElasticSearchPersonAddress(this.id, this.streetAddress, this.city,
           this.stateType != null ? this.stateType.stateCd : null,
           StringUtils.isNotBlank(this.zip) && !"0".equals(this.zip)
