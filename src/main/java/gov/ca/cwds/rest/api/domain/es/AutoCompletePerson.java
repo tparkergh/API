@@ -28,7 +28,6 @@ import gov.ca.cwds.data.ApiTypedIdentifier;
 import gov.ca.cwds.data.es.ApiElasticSearchException;
 import gov.ca.cwds.data.es.ElasticSearchPerson;
 import gov.ca.cwds.data.es.ElasticSearchPersonAddress;
-import gov.ca.cwds.data.es.ElasticSearchPersonLanguage;
 import gov.ca.cwds.data.std.ApiAddressAware;
 import gov.ca.cwds.data.std.ApiAddressAwareWritable;
 import gov.ca.cwds.data.std.ApiLanguageAware;
@@ -772,7 +771,7 @@ public class AutoCompletePerson
   private List<AutoCompletePersonPhone> phoneNumbers = new ArrayList<>();
 
   @JsonInclude(JsonInclude.Include.NON_EMPTY)
-  private List<ElasticSearchPersonLanguage> languages = new ArrayList<>();
+  private List<ElasticSearchPerson.ElasticSearchPersonLanguage> languages = new ArrayList<>();
 
   private Map<String, String> highlight;
 
@@ -866,7 +865,8 @@ public class AutoCompletePerson
       if (esp.getSourceObj() instanceof ApiMultipleLanguagesAware) {
         final ApiMultipleLanguagesAware langs = (ApiMultipleLanguagesAware) esp.getSourceObj();
         for (ApiLanguageAware lang : langs.getLanguages()) {
-          addLanguage(ElasticSearchPersonLanguage.findBySysId(lang.getLanguageSysId()));
+          addLanguage(
+              ElasticSearchPerson.ElasticSearchPersonLanguage.findBySysId(lang.getLanguageSysId()));
         }
       }
     }
@@ -1050,7 +1050,7 @@ public class AutoCompletePerson
    * @param language language to add
    */
   @JsonIgnore
-  public void addLanguage(ElasticSearchPersonLanguage language) {
+  public void addLanguage(ElasticSearchPerson.ElasticSearchPersonLanguage language) {
     if (this.languages == null) {
       this.languages = new ArrayList<>();
     }
@@ -1083,7 +1083,7 @@ public class AutoCompletePerson
    * 
    * @return languages
    */
-  public List<ElasticSearchPersonLanguage> getLanguages() {
+  public List<ElasticSearchPerson.ElasticSearchPersonLanguage> getLanguages() {
     return languages;
   }
 
@@ -1092,7 +1092,7 @@ public class AutoCompletePerson
    * 
    * @param languages list of languages
    */
-  public void setLanguages(List<ElasticSearchPersonLanguage> languages) {
+  public void setLanguages(List<ElasticSearchPerson.ElasticSearchPersonLanguage> languages) {
     this.languages = languages;
   }
 
