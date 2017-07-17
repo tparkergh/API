@@ -39,12 +39,12 @@ public class ClientCollateral extends ReportingDomain implements Request, Respon
   private Short collateralClientReporterRelationshipType;
 
   @NotEmpty
-  @Size(max = CMS_ID_LEN)
+  @Size(min = 1, max = CMS_ID_LEN)
   @ApiModelProperty(required = true, readOnly = false, value = "", example = "ABC123")
   private String clientId;
 
   @NotEmpty
-  @Size(max = CMS_ID_LEN)
+  @Size(min = 1, max = CMS_ID_LEN)
   @ApiModelProperty(required = true, readOnly = false, value = "", example = "DEF123")
   private String collateralIndividualId;
 

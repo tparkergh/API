@@ -1,11 +1,11 @@
 package gov.ca.cwds.rest.services.cms;
 
+import gov.ca.cwds.auth.realms.PerryUserIdentity;
+
 import java.util.List;
 
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.subject.Subject;
-
-import gov.ca.cwds.auth.realms.PerryUserIdentity;
 
 /**
  * @author CWDS API Team
@@ -31,7 +31,8 @@ public class StaffPersonIdRetriever {
       List principals = currentUser.getPrincipals().asList();
       if (principals.size() > 1 && principals.get(1) instanceof PerryUserIdentity) {
         PerryUserIdentity currentUserInfo = (PerryUserIdentity) principals.get(1);
-        return currentUserInfo.getStaffId();
+        staffPersonId =
+            currentUserInfo.getStaffId() != null ? currentUserInfo.getStaffId() : staffPersonId;
       }
     }
     return staffPersonId;
