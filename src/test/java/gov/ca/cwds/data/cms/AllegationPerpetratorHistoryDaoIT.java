@@ -108,7 +108,7 @@ public class AllegationPerpetratorHistoryDaoIT implements DaoTestTemplate {
         validDomainAllegationPerpetratorHistory();
 
     AllegationPerpetratorHistory allegationPerpetratorHistory = new AllegationPerpetratorHistory(
-        "1234567ABC", vdaph.getCountySpecificCode(), vdaph.getVictimClientId(),
+        "1234567ABC", vdaph.getCountySpecificCode(), vdaph.getPerpetratorClientId(),
         vdaph.getAllegationId(), DomainChef.uncookDateString(vdaph.getPerpetratorUpdateDate()));
 
     AllegationPerpetratorHistory create =
@@ -126,7 +126,7 @@ public class AllegationPerpetratorHistoryDaoIT implements DaoTestTemplate {
         validDomainAllegationPerpetratorHistory();
 
     AllegationPerpetratorHistory allegationPerpetratorHistory = new AllegationPerpetratorHistory(id,
-        vdaph.getCountySpecificCode(), vdaph.getVictimClientId(), vdaph.getAllegationId(),
+        vdaph.getCountySpecificCode(), vdaph.getPerpetratorClientId(), vdaph.getAllegationId(),
         DomainChef.uncookDateString(vdaph.getPerpetratorUpdateDate()));
 
     allegationPerpetratorHistoryDao.create(allegationPerpetratorHistory);
@@ -157,7 +157,7 @@ public class AllegationPerpetratorHistoryDaoIT implements DaoTestTemplate {
         validDomainAllegationPerpetratorHistory();
 
     AllegationPerpetratorHistory allegationPerpetratorHistory = new AllegationPerpetratorHistory(id,
-        vdaph.getCountySpecificCode(), vdaph.getVictimClientId(), vdaph.getAllegationId(),
+        vdaph.getCountySpecificCode(), vdaph.getPerpetratorClientId(), vdaph.getAllegationId(),
         DomainChef.uncookDateString(vdaph.getPerpetratorUpdateDate()));
 
     AllegationPerpetratorHistory updated =
@@ -177,7 +177,7 @@ public class AllegationPerpetratorHistoryDaoIT implements DaoTestTemplate {
         validDomainAllegationPerpetratorHistory();
 
     AllegationPerpetratorHistory allegationPerpetratorHistory = new AllegationPerpetratorHistory(
-        "1234567ABC", vdaph.getCountySpecificCode(), vdaph.getVictimClientId(),
+        "1234567ABC", vdaph.getCountySpecificCode(), vdaph.getPerpetratorClientId(),
         vdaph.getAllegationId(), DomainChef.uncookDateString(vdaph.getPerpetratorUpdateDate()));
 
     allegationPerpetratorHistoryDao.update(allegationPerpetratorHistory);

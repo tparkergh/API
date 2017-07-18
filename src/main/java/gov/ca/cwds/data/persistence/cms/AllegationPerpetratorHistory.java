@@ -40,7 +40,7 @@ public class AllegationPerpetratorHistory extends CmsPersistentObject {
   private String countySpecificCode;
 
   @Column(name = "FKCLIENT_T", length = CMS_ID_LEN)
-  private String victimClientId;
+  private String perpetratorClientId;
 
   @NotEmpty
   @Size(min = CMS_ID_LEN, max = CMS_ID_LEN)
@@ -75,7 +75,7 @@ public class AllegationPerpetratorHistory extends CmsPersistentObject {
     super();
     this.id = id;
     this.countySpecificCode = countySpecificCode;
-    this.victimClientId = victimClientId;
+    this.perpetratorClientId = victimClientId;
     this.allegationId = allegationId;
     this.perpetratorUpdateDate = perpetratorUpdateDate;
   }
@@ -93,7 +93,7 @@ public class AllegationPerpetratorHistory extends CmsPersistentObject {
     super(lastUpdatedId);
     this.id = id;
     this.countySpecificCode = persistedAllegationPerpetratorHistory.getCountySpecificCode();
-    this.victimClientId = persistedAllegationPerpetratorHistory.getVictimClientId();
+    this.perpetratorClientId = persistedAllegationPerpetratorHistory.getPerpetratorClientId();
     this.allegationId = persistedAllegationPerpetratorHistory.getAllegationId();
     this.perpetratorUpdateDate = DomainChef
         .uncookDateString(persistedAllegationPerpetratorHistory.getPerpetratorUpdateDate());
@@ -113,7 +113,7 @@ public class AllegationPerpetratorHistory extends CmsPersistentObject {
     super(lastUpdatedId, lastUpdateTime);
     this.id = id;
     this.countySpecificCode = persistedAllegationPerpetratorHistory.getCountySpecificCode();
-    this.victimClientId = persistedAllegationPerpetratorHistory.getVictimClientId();
+    this.perpetratorClientId = persistedAllegationPerpetratorHistory.getPerpetratorClientId();
     this.allegationId = persistedAllegationPerpetratorHistory.getAllegationId();
     this.perpetratorUpdateDate = DomainChef
         .uncookDateString(persistedAllegationPerpetratorHistory.getPerpetratorUpdateDate());
@@ -144,10 +144,10 @@ public class AllegationPerpetratorHistory extends CmsPersistentObject {
   }
 
   /**
-   * @return the victinClientId
+   * @return the perpetratorClientId
    */
-  public String getVictimClientId() {
-    return victimClientId;
+  public String getPerpetratorClientId() {
+    return perpetratorClientId;
   }
 
   /**
