@@ -1,13 +1,12 @@
 package gov.ca.cwds.rest.services.cms;
 
-import gov.ca.cwds.rest.messages.MessageBuilder;
 import java.io.Serializable;
 import java.util.Date;
 
 import javax.persistence.EntityExistsException;
 import javax.persistence.EntityNotFoundException;
-
 import javax.validation.Validator;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -15,10 +14,15 @@ import com.google.inject.Inject;
 
 import gov.ca.cwds.data.Dao;
 import gov.ca.cwds.data.cms.AssignmentDao;
+import gov.ca.cwds.data.cms.StaffPersonDao;
 import gov.ca.cwds.data.persistence.cms.Assignment;
 import gov.ca.cwds.data.persistence.cms.CmsKeyIdGenerator;
+import gov.ca.cwds.data.persistence.cms.StaffPerson;
+import gov.ca.cwds.data.rules.TriggerTablesDao;
 import gov.ca.cwds.rest.api.Request;
 import gov.ca.cwds.rest.api.domain.cms.PostedAssignment;
+import gov.ca.cwds.rest.business.rules.NonLACountyTriggers;
+import gov.ca.cwds.rest.messages.MessageBuilder;
 import gov.ca.cwds.rest.services.CrudsService;
 import gov.ca.cwds.rest.services.ServiceException;
 
@@ -32,6 +36,9 @@ public class AssignmentService implements CrudsService {
   private static final Logger LOGGER = LoggerFactory.getLogger(AssignmentService.class);
 
   private AssignmentDao assignmentDao;
+  private NonLACountyTriggers nonLACountyTriggers;
+  private StaffPersonDao staffpersonDao;
+  private TriggerTablesDao triggerTablesDao;
   private StaffPersonIdRetriever staffPersonIdRetriever;
 
   private Validator validator;
@@ -41,13 +48,22 @@ public class AssignmentService implements CrudsService {
    * 
    * @param assignmentDao The {@link Dao} handling
    *        {@link gov.ca.cwds.data.persistence.cms.Assignment} objects.
+   * @param nonLACountyTriggers The {@link Dao} handling
+   *        {@link gov.ca.cwds.rest.business.rules.NonLACountyTriggers} objects
+   * @param staffpersonDao The {@link Dao} handling
+   *        {@link gov.ca.cwds.data.persistence.cms.StaffPerson} objects.
+   * @param triggerTablesDao - triggerTablesDao
    * @param staffPersonIdRetriever the staffPersonIdRetriever
    * @param validator the validator to use to validate validatable objects
    */
   @Inject
-  public AssignmentService(AssignmentDao assignmentDao,
+  public AssignmentService(AssignmentDao assignmentDao, NonLACountyTriggers nonLACountyTriggers,
+      StaffPersonDao staffpersonDao, TriggerTablesDao triggerTablesDao,
       StaffPersonIdRetriever staffPersonIdRetriever, Validator validator) {
     this.assignmentDao = assignmentDao;
+    this.nonLACountyTriggers = nonLACountyTriggers;
+    this.staffpersonDao = staffpersonDao;
+    this.triggerTablesDao = triggerTablesDao;
     this.staffPersonIdRetriever = staffPersonIdRetriever;
     this.validator = validator;
   }
@@ -136,6 +152,12 @@ public class AssignmentService implements CrudsService {
       if (managed.getId() == null) {
         throw new ServiceException("Assignment ID cannot be null");
       }
+      // checking the staffPerson county code
+      StaffPerson staffperson = staffpersonDao.find(managed.getLastUpdatedId());
+      if (staffperson != null
+          && !(triggerTablesDao.getLaCountySpecificCode().equals(staffperson.getCountyCode()))) {
+        nonLACountyTriggers.createAndUpdateReferralCoutyOwnership(managed);
+      }
       return new PostedAssignment(managed);
     } catch (EntityExistsException e) {
       LOGGER.info("Assignment already exists : {}", assignment);
@@ -146,7 +168,8 @@ public class AssignmentService implements CrudsService {
   // create a default assignment
   // R - 02473 Default Referral Assignment
   // R - 02160 Assignment - Caseload Access
-  public void createDefaultAssignmentForNewReferral(String referralId, Date timestamp, MessageBuilder messageBuilder) {
+  public void createDefaultAssignmentForNewReferral(String referralId, Date timestamp,
+      MessageBuilder messageBuilder) {
     // #146713651 - BARNEY: Referrals require a default assignment
     // Default Assignment - referrals will be assigned to the '0X5' staff person ID.
     //
@@ -168,7 +191,8 @@ public class AssignmentService implements CrudsService {
     // '0X5' is "20"
     final String countyCode = "20";
 
-    gov.ca.cwds.rest.api.domain.cms.Assignment da = createDefaultAssignmentToCaseLoad(countyCode, referralId, caseLoadId);
+    gov.ca.cwds.rest.api.domain.cms.Assignment da =
+        createDefaultAssignmentToCaseLoad(countyCode, referralId, caseLoadId);
     messageBuilder.addDomainValidationError(validator.validate(da));
 
     try {
@@ -178,20 +202,22 @@ public class AssignmentService implements CrudsService {
       messageBuilder.addMessageAndLog(message, e, LOGGER);
     }
   }
+
   /**
    * @param countyCode - county code
    * @param referralId - referral Id
    * @return - default Assignment
    */
-  private gov.ca.cwds.rest.api.domain.cms.Assignment createDefaultAssignmentToCaseLoad(String countyCode, String referralId,
-      String caseLoadId) {
+  private gov.ca.cwds.rest.api.domain.cms.Assignment createDefaultAssignmentToCaseLoad(
+      String countyCode, String referralId, String caseLoadId) {
     // #146713651 - BARNEY: Referrals require a default assignment
     // Default Assignment - referrals will be assigned to the '0X5' staff person ID.
     //
     // An assignment is the association between a Staff Person Case Load and the Referral
     //
 
-    return gov.ca.cwds.rest.api.domain.cms.Assignment.createDefaultReferralAssignment(countyCode, referralId, caseLoadId);
+    return gov.ca.cwds.rest.api.domain.cms.Assignment.createDefaultReferralAssignment(countyCode,
+        referralId, caseLoadId);
 
   }
 
