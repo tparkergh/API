@@ -7,6 +7,8 @@ import org.slf4j.LoggerFactory;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import gov.ca.cwds.security.shiro.realms.JwtRealm;
+
 
 /**
  * Implementation of JWT processing realm. This realm validates JWT token and extract identity claim
@@ -14,7 +16,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
  * "staffId" : "id"}
  *
  * @author CWDS API Team
- *
  */
 public class ApiRealm extends JwtRealm {
 
