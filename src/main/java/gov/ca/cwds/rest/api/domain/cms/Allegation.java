@@ -76,7 +76,7 @@ public class Allegation extends ReportingDomain implements Request, Response {
   @ApiModelProperty(required = true, readOnly = false, example = "1234")
   private Short allegationType;
 
-  @NotEmpty
+  @NotNull
   @Size(max = 254)
   @ApiModelProperty(required = false, readOnly = false,
       value = "description of allegation disposition", example = "investigate")
