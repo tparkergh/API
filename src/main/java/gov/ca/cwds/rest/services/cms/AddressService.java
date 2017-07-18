@@ -1,10 +1,14 @@
 package gov.ca.cwds.rest.services.cms;
 
+import gov.ca.cwds.rest.api.domain.ScreeningToReferral;
+import gov.ca.cwds.rest.messages.MessageBuilder;
+import gov.ca.cwds.rest.services.LegacyDefaultValues;
 import java.io.Serializable;
 import java.util.Date;
 
 import javax.persistence.EntityExistsException;
 import javax.persistence.EntityNotFoundException;
+import javax.validation.Validator;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -29,11 +33,15 @@ import gov.ca.cwds.rest.services.ServiceException;
 public class AddressService implements CrudsService {
   private static final Logger LOGGER = LoggerFactory.getLogger(ClientService.class);
 
+
   private AddressDao addressDao;
   private StaffPersonIdRetriever staffPersonIdRetriever;
   private SsaName3Dao ssaname3Dao;
   private UpperCaseTables upperCaseTables;
 
+  private Validator validator;
+
+    LegacyDefaultValues legacyDefaultValues = new LegacyDefaultValues();
   /**
    * 
    * @param addressDao the address DAO
@@ -43,11 +51,12 @@ public class AddressService implements CrudsService {
    */
   @Inject
   public AddressService(AddressDao addressDao, StaffPersonIdRetriever staffPersonIdRetriever,
-      SsaName3Dao ssaname3Dao, UpperCaseTables upperCaseTables) {
+      SsaName3Dao ssaname3Dao, UpperCaseTables upperCaseTables, Validator validator) {
     this.addressDao = addressDao;
     this.staffPersonIdRetriever = staffPersonIdRetriever;
     this.ssaname3Dao = ssaname3Dao;
     this.upperCaseTables = upperCaseTables;
+    this.validator = validator;
   }
 
   @Override
@@ -106,6 +115,33 @@ public class AddressService implements CrudsService {
     }
   }
 
+  public gov.ca.cwds.rest.api.domain.Address createAddressFromScreening(ScreeningToReferral scr, Date timestamp, MessageBuilder messageBuilder){
+        gov.ca.cwds.rest.api.domain.Address address = scr.getAddress();
+    if (address == null || address.getZip() == null || address.getStreetAddress() == null
+        || address.getStreetAddress().isEmpty() || address.getType() == null) {
+      String message = "Screening address is null or empty";
+      messageBuilder.addMessageAndLog(message, LOGGER);
+      return address;
+    }
+
+    try {
+      gov.ca.cwds.rest.api.domain.cms.Address domainAddress = gov.ca.cwds.rest.api.domain.cms.Address
+          .createWithDefaults(address, legacyDefaultValues.DEFAULT_STATE_CODE);
+
+      messageBuilder.addDomainValidationError(validator.validate(domainAddress));
+
+      PostedAddress postedAddress =
+          (PostedAddress) this.createWithSingleTimestamp(domainAddress, timestamp);
+
+      address.setLegacyId(postedAddress.getExistingAddressId());
+      address.setLegacySourceTable("ADDRS_T");
+    } catch (Exception e) {
+      messageBuilder.addMessageAndLog(e.getMessage(), e, LOGGER);
+    }
+
+    return address;
+
+  }
 
   @Override
   public Response delete(Serializable primaryKey) {

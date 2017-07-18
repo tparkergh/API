@@ -12,6 +12,7 @@ import java.util.Set;
 
 import javax.validation.Validation;
 
+import javax.validation.Validator;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
@@ -118,7 +119,7 @@ public class R05360ReferralCityMandatoryTest {
   private SsaName3Dao ssaName3Dao;
   private Reminders reminders;
   private UpperCaseTables upperCaseTables;
-
+  private Validator validator;
 
   @SuppressWarnings("javadoc")
   @Rule
@@ -127,15 +128,13 @@ public class R05360ReferralCityMandatoryTest {
   @SuppressWarnings("javadoc")
   @Before
   public void setup() throws Exception {
-
+    validator = Validation.buildDefaultValidatorFactory().getValidator();
     referralDao = mock(ReferralDao.class);
     nonLACountyTriggers = mock(NonLACountyTriggers.class);
     laCountyTrigger = mock(LACountyTrigger.class);
     triggerTablesDao = mock(TriggerTablesDao.class);
     staffpersonDao = mock(StaffPersonDao.class);
     staffPersonIdRetriever = mock(StaffPersonIdRetriever.class);
-    referralService = new ReferralService(referralDao, nonLACountyTriggers, laCountyTrigger,
-        triggerTablesDao, staffpersonDao, staffPersonIdRetriever);
 
     clientDao = mock(ClientDao.class);
     staffpersonDao = mock(StaffPersonDao.class);
@@ -169,10 +168,10 @@ public class R05360ReferralCityMandatoryTest {
 
     addressDao = mock(AddressDao.class);
     addressService =
-        new AddressService(addressDao, staffPersonIdRetriever, ssaName3Dao, upperCaseTables);
+        new AddressService(addressDao, staffPersonIdRetriever, ssaName3Dao, upperCaseTables, validator);
 
     assignmentDao = mock(AssignmentDao.class);
-    assignmentService = new AssignmentService(assignmentDao, staffPersonIdRetriever);
+    assignmentService = new AssignmentService(assignmentDao, staffPersonIdRetriever, validator);
 
     clientAddressDao = mock(ClientAddressDao.class);
     laCountyTrigger = mock(LACountyTrigger.class);
@@ -192,13 +191,15 @@ public class R05360ReferralCityMandatoryTest {
 
     reminders = mock(Reminders.class);
 
+    referralService = new ReferralService(referralDao, nonLACountyTriggers, laCountyTrigger,
+        triggerTablesDao, staffpersonDao, staffPersonIdRetriever, assignmentService, validator,
+        drmsDocumentService, addressService, longTextService);
+
     screeningToReferralService = new ScreeningToReferralService(referralService, clientService,
         allegationService, crossReportService, referralClientService, reporterService,
-        addressService, clientAddressService, longTextService, childClientService,
+        addressService, clientAddressService, childClientService,
         assignmentService, Validation.buildDefaultValidatorFactory().getValidator(), referralDao,
-        staffPersonIdRetriever, new MessageBuilder(), drmsDocumentService,
-        allegationPerpetratorHistoryService, reminders);
-
+        new MessageBuilder(), allegationPerpetratorHistoryService, reminders);
   }
 
   /**

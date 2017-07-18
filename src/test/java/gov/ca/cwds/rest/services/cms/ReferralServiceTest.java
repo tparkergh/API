@@ -15,6 +15,8 @@ import java.math.BigDecimal;
 
 import javax.persistence.EntityNotFoundException;
 
+import javax.validation.Validation;
+import javax.validation.Validator;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Rule;
@@ -39,6 +41,11 @@ import gov.ca.cwds.rest.services.junit.template.ServiceTestTemplate;
  * @author CWDS API Team
  */
 public class ReferralServiceTest implements ServiceTestTemplate {
+
+  private AssignmentService assignmentService;
+  private DrmsDocumentService drmsDocumentService;
+  private AddressService addressService;
+  private LongTextService longTextService;
   private ReferralService referralService;
   private ReferralDao referralDao;
   private NonLACountyTriggers nonLACountyTriggers;
@@ -46,6 +53,7 @@ public class ReferralServiceTest implements ServiceTestTemplate {
   private TriggerTablesDao triggerTablesDao;
   private StaffPersonDao staffpersonDao;
   private StaffPersonIdRetriever staffPersonIdRetriever;
+  private Validator validator;
 
   private static Boolean isLaCountyTrigger = false;
 
@@ -56,14 +64,21 @@ public class ReferralServiceTest implements ServiceTestTemplate {
   @Override
   @Before
   public void setup() throws Exception {
+    validator = Validation.buildDefaultValidatorFactory().getValidator();
     referralDao = mock(ReferralDao.class);
     nonLACountyTriggers = mock(NonLACountyTriggers.class);
     laCountyTrigger = mock(LACountyTrigger.class);
     triggerTablesDao = mock(TriggerTablesDao.class);
     staffpersonDao = mock(StaffPersonDao.class);
+    assignmentService = mock(AssignmentService.class);
+    drmsDocumentService = mock(DrmsDocumentService.class);
+    addressService = mock(AddressService.class);
+    longTextService = mock(LongTextService.class);
+
     staffPersonIdRetriever = mock(StaffPersonIdRetriever.class);
     referralService = new ReferralService(referralDao, nonLACountyTriggers, laCountyTrigger,
-        triggerTablesDao, staffpersonDao, staffPersonIdRetriever);
+        triggerTablesDao, staffpersonDao, staffPersonIdRetriever, assignmentService, validator,
+        drmsDocumentService, addressService, longTextService);
   }
 
   // find test

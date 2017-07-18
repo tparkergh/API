@@ -14,6 +14,8 @@ import static org.mockito.Mockito.when;
 import javax.persistence.EntityExistsException;
 import javax.persistence.EntityNotFoundException;
 
+import javax.validation.Validation;
+import javax.validation.Validator;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Rule;
@@ -39,15 +41,17 @@ public class AssignmentServiceTest {
   private AssignmentService assignmentService;
   private AssignmentDao assignmentDao;;
   private StaffPersonIdRetriever staffPersonIdRetriever;
+  private Validator validator;
 
   @Rule
   public ExpectedException thrown = ExpectedException.none();
 
   @Before
   public void setup() throws Exception {
+    validator = Validation.buildDefaultValidatorFactory().getValidator();
     assignmentDao = mock(AssignmentDao.class);
     staffPersonIdRetriever = mock(StaffPersonIdRetriever.class);
-    assignmentService = new AssignmentService(assignmentDao, staffPersonIdRetriever);
+    assignmentService = new AssignmentService(assignmentDao, staffPersonIdRetriever, validator);
   }
 
   // find test

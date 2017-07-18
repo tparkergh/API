@@ -8,9 +8,12 @@ import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
+import gov.ca.cwds.rest.messages.MessageBuilder;
 import java.util.LinkedHashSet;
 import java.util.Set;
 
+import javax.validation.Validation;
+import javax.validation.Validator;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
@@ -58,6 +61,10 @@ public class CmsReferralServiceTest {
   private AllegationService allegationService;
   private CrossReportService crossReportService;
   private ReporterService reporterService;
+  private AssignmentService assignmentService;
+  private DrmsDocumentService drmsDocumentService;
+  private AddressService addressService;
+  private LongTextService longTextService;
   private UpperCaseTables upperCaseTables;
 
   private ReferralDao referralDao;
@@ -73,7 +80,7 @@ public class CmsReferralServiceTest {
   private TriggerTablesDao triggerTablesDao;
   private StaffPersonIdRetriever staffPersonIdRetriever;
   private SsaName3Dao ssaName3Dao;
-
+  private Validator validator;
 
   @Rule
   public ExpectedException thrown = ExpectedException.none();
@@ -87,8 +94,13 @@ public class CmsReferralServiceTest {
     triggerTablesDao = mock(TriggerTablesDao.class);
     staffpersonDao = mock(StaffPersonDao.class);
     staffPersonIdRetriever = mock(StaffPersonIdRetriever.class);
+    assignmentService = mock(AssignmentService.class);
+    drmsDocumentService = mock(DrmsDocumentService.class);
+    addressService = mock(AddressService.class);
+    longTextService = mock(LongTextService.class);
     referralService = new ReferralService(referralDao, nonLACountyTriggers, laCountyTrigger,
-        triggerTablesDao, staffpersonDao, staffPersonIdRetriever);
+        triggerTablesDao, staffpersonDao, staffPersonIdRetriever, assignmentService, validator,
+        drmsDocumentService, addressService, longTextService);
 
     clientDao = mock(ClientDao.class);
     staffpersonDao = mock(StaffPersonDao.class);
@@ -123,6 +135,8 @@ public class CmsReferralServiceTest {
     // cmsReferralDao = mock(CmsReferral.class);
     cmsReferralService = new CmsReferralService(referralService, clientService, allegationService,
         crossReportService, referralClientService, reporterService);
+
+    validator = Validation.buildDefaultValidatorFactory().getValidator();
 
   }
 

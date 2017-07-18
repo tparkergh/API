@@ -8,12 +8,14 @@ import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
+import gov.ca.cwds.data.cms.TestSystemCodeCache;
 import java.util.Date;
 import java.util.List;
 import java.util.Set;
 
 import javax.validation.Validation;
 
+import javax.validation.Validator;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
@@ -123,6 +125,8 @@ public class TestForLastUpdatedTimeIsUnique {
   private Reminders reminders;
   private UpperCaseTables upperCaseTables;
 
+  private Validator validator;
+
   private static gov.ca.cwds.data.persistence.cms.Referral createdReferal = null;
   private static gov.ca.cwds.data.persistence.cms.Address createdAddress = null;
   private static gov.ca.cwds.data.persistence.cms.Client createdClient = null;
@@ -135,6 +139,11 @@ public class TestForLastUpdatedTimeIsUnique {
       null;
   private static gov.ca.cwds.data.persistence.cms.Assignment createdAssignment = null;
 
+  /**
+   * Initialize system code cache
+   */
+  TestSystemCodeCache testSystemCodeCache = new TestSystemCodeCache();
+
   @SuppressWarnings("javadoc")
   @Rule
   public ExpectedException thrown = ExpectedException.none();
@@ -142,15 +151,22 @@ public class TestForLastUpdatedTimeIsUnique {
   @SuppressWarnings("javadoc")
   @Before
   public void setup() throws Exception {
-
+    validator = Validation.buildDefaultValidatorFactory().getValidator();
     referralDao = mock(ReferralDao.class);
     nonLACountyTriggers = mock(NonLACountyTriggers.class);
     laCountyTrigger = mock(LACountyTrigger.class);
     triggerTablesDao = mock(TriggerTablesDao.class);
     staffpersonDao = mock(StaffPersonDao.class);
     staffPersonIdRetriever = mock(StaffPersonIdRetriever.class);
-    referralService = new ReferralService(referralDao, nonLACountyTriggers, laCountyTrigger,
-        triggerTablesDao, staffpersonDao, staffPersonIdRetriever);
+
+    longTextDao = mock(LongTextDao.class);
+    longTextService = new LongTextService(longTextDao, staffPersonIdRetriever);
+
+    drmsDocumentDao = mock(DrmsDocumentDao.class);
+    drmsDocumentService = new DrmsDocumentService(drmsDocumentDao, staffPersonIdRetriever);
+
+    assignmentDao = mock(AssignmentDao.class);
+    assignmentService = new AssignmentService(assignmentDao, staffPersonIdRetriever, validator);
 
     clientDao = mock(ClientDao.class);
     staffpersonDao = mock(StaffPersonDao.class);
@@ -182,10 +198,6 @@ public class TestForLastUpdatedTimeIsUnique {
     reporterDao = mock(ReporterDao.class);
     reporterService = new ReporterService(reporterDao, staffPersonIdRetriever);
 
-    addressDao = mock(AddressDao.class);
-    addressService =
-        new AddressService(addressDao, staffPersonIdRetriever, ssaName3Dao, upperCaseTables);
-
     clientAddressDao = mock(ClientAddressDao.class);
     laCountyTrigger = mock(LACountyTrigger.class);
     triggerTablesDao = mock(TriggerTablesDao.class);
@@ -193,26 +205,25 @@ public class TestForLastUpdatedTimeIsUnique {
     clientAddressService = new ClientAddressService(clientAddressDao, staffpersonDao,
         triggerTablesDao, laCountyTrigger, staffPersonIdRetriever);
 
-    longTextDao = mock(LongTextDao.class);
-    longTextService = new LongTextService(longTextDao, staffPersonIdRetriever);
-
-    drmsDocumentDao = mock(DrmsDocumentDao.class);
-    drmsDocumentService = new DrmsDocumentService(drmsDocumentDao, staffPersonIdRetriever);
-
     childClientDao = mock(ChildClientDao.class);
     childClientService = new ChildClientService(childClientDao, staffPersonIdRetriever);
 
-    assignmentDao = mock(AssignmentDao.class);
-    assignmentService = new AssignmentService(assignmentDao, staffPersonIdRetriever);
-
     reminders = mock(Reminders.class);
+
+    addressDao = mock(AddressDao.class);
+    addressService =
+        new AddressService(addressDao, staffPersonIdRetriever, ssaName3Dao, upperCaseTables, validator);
+
+
+    referralService = new ReferralService(referralDao, nonLACountyTriggers, laCountyTrigger,
+        triggerTablesDao, staffpersonDao, staffPersonIdRetriever, assignmentService, validator,
+        drmsDocumentService, addressService, longTextService);
 
     screeningToReferralService = new ScreeningToReferralService(referralService, clientService,
         allegationService, crossReportService, referralClientService, reporterService,
-        addressService, clientAddressService, longTextService, childClientService,
+        addressService, clientAddressService, childClientService,
         assignmentService, Validation.buildDefaultValidatorFactory().getValidator(), referralDao,
-        staffPersonIdRetriever, new MessageBuilder(), drmsDocumentService,
-        allegationPerpetratorHistoryService, reminders);
+        new MessageBuilder(), allegationPerpetratorHistoryService, reminders);
 
   }
 
