@@ -38,6 +38,11 @@ public class AllegationPerpetratorHistoryTest implements PersistentTestTemplate 
   }
 
   @Override
+  public void testConstructorUsingDomain() throws Exception {
+
+  }
+
+  @Override
   @Test
   public void testPersistentConstructor() throws Exception {
 
@@ -45,14 +50,20 @@ public class AllegationPerpetratorHistoryTest implements PersistentTestTemplate 
 
     gov.ca.cwds.data.persistence.cms.AllegationPerpetratorHistory persistent =
         new gov.ca.cwds.data.persistence.cms.AllegationPerpetratorHistory(id,
-            vp.getCountySpecificCode(), vp.getVictimClientId(), vp.getAllegationId(),
+            vp.getCountySpecificCode(), vp.getPerpetratorClientId(), vp.getAllegationId(),
             vp.getPerpetratorUpdateDate());
 
     assertThat(persistent.getId(), is(equalTo(id)));
     assertThat(persistent.getCountySpecificCode(), is(equalTo(vp.getCountySpecificCode())));
-    assertThat(persistent.getVictimClientId(), is(equalTo(vp.getVictimClientId())));
+    assertThat(persistent.getPerpetratorClientId(), is(equalTo(vp.getPerpetratorClientId())));
     assertThat(persistent.getAllegationId(), is(equalTo(vp.getAllegationId())));
     assertThat(persistent.getPerpetratorUpdateDate(), is(equalTo(vp.getPerpetratorUpdateDate())));
+  }
+
+  @SuppressWarnings("javadoc")
+  @Test
+  public void testConstructorUsingLastUpdatedTime() throws Exception {
+
   }
 
   @Override
@@ -71,10 +82,4 @@ public class AllegationPerpetratorHistoryTest implements PersistentTestTemplate 
         AllegationPerpetratorHistory.class);
     return validAllegationPerpetratorHistory;
   }
-
-  @Override
-  public void testConstructorUsingDomain() throws Exception {
-
-  }
-
 }

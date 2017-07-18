@@ -35,7 +35,7 @@ public class AllegationPerpetratorHistory extends ReportingDomain implements Req
   @Size(min = CMS_ID_LEN, max = CMS_ID_LEN)
   @ApiModelProperty(required = false, readOnly = false, value = "CLIENT ID of victim",
       example = "ABC1234568")
-  private String victimClientId;
+  private String perpetratorClientId;
 
   @ApiModelProperty(required = true, readOnly = false, value = "ALLEGATION ID",
       example = "ABC1234567")
@@ -62,7 +62,7 @@ public class AllegationPerpetratorHistory extends ReportingDomain implements Req
       @JsonProperty("perpetratorUpdateDate") String perpetratorUpdateDate) {
     super();
     this.countySpecificCode = countySpecificCode;
-    this.victimClientId = victimClientId;
+    this.perpetratorClientId = victimClientId;
     this.allegationId = allegationId;
     this.perpetratorUpdateDate = perpetratorUpdateDate;
   }
@@ -71,7 +71,7 @@ public class AllegationPerpetratorHistory extends ReportingDomain implements Req
   public AllegationPerpetratorHistory(
       gov.ca.cwds.data.persistence.cms.AllegationPerpetratorHistory persistedAllegationPerpetratorHistory) {
     this.countySpecificCode = persistedAllegationPerpetratorHistory.getCountySpecificCode();
-    this.victimClientId = persistedAllegationPerpetratorHistory.getVictimClientId();
+    this.perpetratorClientId = persistedAllegationPerpetratorHistory.getPerpetratorClientId();
     this.allegationId = persistedAllegationPerpetratorHistory.getAllegationId();
     this.perpetratorUpdateDate =
         DomainChef.cookDate(persistedAllegationPerpetratorHistory.getPerpetratorUpdateDate());
@@ -83,8 +83,8 @@ public class AllegationPerpetratorHistory extends ReportingDomain implements Req
   }
 
   @SuppressWarnings("javadoc")
-  public String getVictimClientId() {
-    return victimClientId;
+  public String getPerpetratorClientId() {
+    return perpetratorClientId;
   }
 
   @SuppressWarnings("javadoc")
