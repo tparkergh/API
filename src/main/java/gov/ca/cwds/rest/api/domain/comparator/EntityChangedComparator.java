@@ -17,9 +17,9 @@ public class EntityChangedComparator{
    *
    * Joda time is used to handle
    *
-   * @param participant
-   * @param client
-   * @return
+   * @param participant The participant to compare last updated time with
+   * @param client the Client to compare last updated time with
+   * @return returns true if the date is equal to the second resolution
    */
   public boolean compare(Participant participant, Client client){
     DateTimeFormatter formatter = DateTimeFormat.forPattern(deleteAfterSeconds(DomainChef.TIMESTAMP_FORMAT));;

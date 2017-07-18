@@ -42,6 +42,7 @@ public class AssignmentService implements CrudsService {
    * @param assignmentDao The {@link Dao} handling
    *        {@link gov.ca.cwds.data.persistence.cms.Assignment} objects.
    * @param staffPersonIdRetriever the staffPersonIdRetriever
+   * @param validator the validator to use to validate validatable objects
    */
   @Inject
   public AssignmentService(AssignmentDao assignmentDao,

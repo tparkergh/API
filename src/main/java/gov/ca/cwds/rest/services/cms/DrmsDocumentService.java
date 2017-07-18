@@ -102,6 +102,9 @@ public class DrmsDocumentService implements CrudsService {
    * </pre>
    *
    * </blockquote>
+     *
+     *  @param messageBuilder the messaging object to build error messages
+     *  @return  The Id of the created DRMS Document
    */
   public String generateDrmsDocumentId(MessageBuilder messageBuilder) throws ServiceException {
     PostedDrmsDocument postedDrmsDocument = null;

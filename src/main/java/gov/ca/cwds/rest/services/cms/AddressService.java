@@ -48,6 +48,7 @@ public class AddressService implements CrudsService {
    * @param staffPersonIdRetriever the staffPersonIdRetriever
    * @param ssaname3Dao the stored procedure call
    * @param upperCaseTables the address upper case
+   * @param validator the validator object used to validate validatable objects
    */
   @Inject
   public AddressService(AddressDao addressDao, StaffPersonIdRetriever staffPersonIdRetriever,
