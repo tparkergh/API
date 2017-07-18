@@ -1,5 +1,7 @@
 package gov.ca.cwds.rest.services.cms;
 
+import com.google.inject.spi.Message;
+import gov.ca.cwds.rest.messages.MessageBuilder;
 import java.io.Serializable;
 
 import javax.persistence.EntityExistsException;
@@ -33,6 +35,7 @@ public class DrmsDocumentService implements CrudsService {
 
   /**
    * @param drmsDocumentDao {@link Dao} handling
+   *        {@link gov.ca.cwds.data.persistence.cms.DrmsDocument} objects
    *        {@link gov.ca.cwds.data.persistence.cms.DrmsDocument} objects
    * @param staffPersonIdRetriever the staffPersonIdRetriever
    */
@@ -84,4 +87,36 @@ public class DrmsDocumentService implements CrudsService {
     return null;
   }
 
+
+
+    /**
+   * <blockquote>
+   *
+   * <pre>
+   * BUSINESS RULE: "R - 07577" - Create Dummy Docs for Referral
+   *
+   * When Referral is Posted, it creates three dummy document values in the drmsDocument and
+   * assigned the identifer in the referrals(drmsAllegationDescriptionDoc, drmsErReferralDoc,
+   * drmsInvestigationDoc).
+   *
+   * </pre>
+   *
+   * </blockquote>
+   */
+  public String generateDrmsDocumentId(MessageBuilder messageBuilder) throws ServiceException {
+    PostedDrmsDocument postedDrmsDocument = null;
+    try {
+      String staffPersonId = staffPersonIdRetriever.getStaffPersonId();
+      gov.ca.cwds.rest.api.domain.cms.DrmsDocument drmsDocument = gov.ca.cwds.rest.api.domain.cms.DrmsDocument
+          .createDefaults(staffPersonId);
+      postedDrmsDocument = create(drmsDocument);
+    } catch (ServiceException e) {
+      String message = e.getMessage();
+      messageBuilder.addMessageAndLog(message, e, LOGGER);
+    }
+    if (postedDrmsDocument == null) {
+      throw new ServiceException("Unable to Create DRMS Documents");
+    }
+    return postedDrmsDocument.getId();
+  }
 }

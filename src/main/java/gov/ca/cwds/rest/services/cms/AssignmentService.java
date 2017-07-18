@@ -1,11 +1,13 @@
 package gov.ca.cwds.rest.services.cms;
 
+import gov.ca.cwds.rest.messages.MessageBuilder;
 import java.io.Serializable;
 import java.util.Date;
 
 import javax.persistence.EntityExistsException;
 import javax.persistence.EntityNotFoundException;
 
+import javax.validation.Validator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -32,6 +34,8 @@ public class AssignmentService implements CrudsService {
   private AssignmentDao assignmentDao;
   private StaffPersonIdRetriever staffPersonIdRetriever;
 
+  private Validator validator;
+
   /**
    * Constructor
    * 
@@ -41,9 +45,10 @@ public class AssignmentService implements CrudsService {
    */
   @Inject
   public AssignmentService(AssignmentDao assignmentDao,
-      StaffPersonIdRetriever staffPersonIdRetriever) {
+      StaffPersonIdRetriever staffPersonIdRetriever, Validator validator) {
     this.assignmentDao = assignmentDao;
     this.staffPersonIdRetriever = staffPersonIdRetriever;
+    this.validator = validator;
   }
 
   /**
@@ -135,6 +140,58 @@ public class AssignmentService implements CrudsService {
       LOGGER.info("Assignment already exists : {}", assignment);
       throw new ServiceException(e);
     }
+  }
+
+  // create a default assignment
+  // R - 02473 Default Referral Assignment
+  // R - 02160 Assignment - Caseload Access
+  public void createDefaultAssignmentForNewReferral(String referralId, Date timestamp, MessageBuilder messageBuilder) {
+    // #146713651 - BARNEY: Referrals require a default assignment
+    // Default Assignment - referrals will be assigned to the '0X5' staff person ID.
+    //
+    // create an initial Assignment to the Staff Persons Case Load when the referral is created
+    //
+    // initialy use 0X5 staff person id to match the CWS/CMS CWDST user on the TESTDOM workstation
+    // eventually, the id of the staff person making the request will be used
+    String staffId = staffPersonIdRetriever.getStaffPersonId();
+
+    // To find the Case Load of a Staff Person (0X5):
+    // 1) find the STAFF_PERSON_CASE_LOAD row with FKSTFPERST = '0X5'
+    // 2) find the CASE_LOAD row with CASE_LOAD.CASE_LDT = STAFF_PERSON_CASE_LOAD/IDENTIFIER
+    //
+    // On TESTDOM (CWSNS1) workstation this will find the CASE_LOAD/IDENTIFIER of OkAImUW0Wz
+    //
+    final String caseLoadId = "OkAImUW0Wz";
+
+    // the county code of the CASE_LOAD row for the STAFF_PERSON_CASE_LOAD row with FKSTFPERST =
+    // '0X5' is "20"
+    final String countyCode = "20";
+
+    gov.ca.cwds.rest.api.domain.cms.Assignment da = createDefaultAssignmentToCaseLoad(countyCode, referralId, caseLoadId);
+    messageBuilder.addDomainValidationError(validator.validate(da));
+
+    try {
+      this.createWithSingleTimestamp(da, timestamp);
+    } catch (ServiceException e) {
+      String message = e.getMessage();
+      messageBuilder.addMessageAndLog(message, e, LOGGER);
+    }
+  }
+  /**
+   * @param countyCode - county code
+   * @param referralId - referral Id
+   * @return - default Assignment
+   */
+  private gov.ca.cwds.rest.api.domain.cms.Assignment createDefaultAssignmentToCaseLoad(String countyCode, String referralId,
+      String caseLoadId) {
+    // #146713651 - BARNEY: Referrals require a default assignment
+    // Default Assignment - referrals will be assigned to the '0X5' staff person ID.
+    //
+    // An assignment is the association between a Staff Person Case Load and the Referral
+    //
+
+    return gov.ca.cwds.rest.api.domain.cms.Assignment.createDefaultReferralAssignment(countyCode, referralId, caseLoadId);
+
   }
 
   /**

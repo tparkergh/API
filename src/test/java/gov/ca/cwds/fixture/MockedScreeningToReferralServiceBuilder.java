@@ -63,14 +63,11 @@ public class MockedScreeningToReferralServiceBuilder {
   private AddressService addressService;
   private ClientAddressService clientAddressService;
   private ChildClientService childClientService;
-  private LongTextService longTextService;
-  private DrmsDocumentService drmsDocumentService;
   private AssignmentService assignmentService;
   private AllegationPerpetratorHistoryService allegationPerpetratorHistoryService;
   private Reminders reminders;
 
   private ReferralDao referralDao;
-  private StaffPersonIdRetriever staffPersonIdRetriever;
   private MessageBuilder messageBuilder;
 
   /**
@@ -266,41 +263,6 @@ public class MockedScreeningToReferralServiceBuilder {
   }
 
   /**
-   * @return the longTextService
-   */
-  public LongTextService getLongTextService() {
-    if (longTextService == null) {
-      buildDefaultMockForLongTextService();
-    }
-    return longTextService;
-  }
-
-  private void buildDefaultMockForLongTextService() {
-    longTextService = mock(LongTextService.class);
-    PostedLongText postedLongText = mock(PostedLongText.class);
-    when(postedLongText.getId()).thenReturn("7894345643");
-    when(longTextService.create(any(LongText.class))).thenReturn(postedLongText);
-  }
-
-  /**
-   * @return the drmsDocumentService
-   */
-  public DrmsDocumentService getDrmsDocumentService() {
-    if (drmsDocumentService == null) {
-      buildDefaultMockForDmsDocumentService();
-    }
-    return drmsDocumentService;
-  }
-
-  private void buildDefaultMockForDmsDocumentService() {
-    drmsDocumentService = mock(DrmsDocumentService.class);
-    PostedDrmsDocument postedDrmsDocument = mock(PostedDrmsDocument.class);
-    when(postedDrmsDocument.getId()).thenReturn("9876543BCA");
-    when(drmsDocumentService.create(any(DrmsDocument.class))).thenReturn(postedDrmsDocument);
-
-  }
-
-  /**
    * @return the reminders
    */
   public Reminders getReminders() {
@@ -344,21 +306,6 @@ public class MockedScreeningToReferralServiceBuilder {
   }
 
   /**
-   * @return the staffPersonIdRetriever
-   */
-  public StaffPersonIdRetriever getStaffPersonIdRetriever() {
-    if (staffPersonIdRetriever == null) {
-      buildDefaultMockForStaffPersonIdRetriever();
-    }
-    return staffPersonIdRetriever;
-  }
-
-  private void buildDefaultMockForStaffPersonIdRetriever() {
-    staffPersonIdRetriever = mock(StaffPersonIdRetriever.class);
-    when(staffPersonIdRetriever.getStaffPersonId()).thenReturn("abc");
-  }
-
-  /**
    * @return the messageBuilder
    */
   public MessageBuilder getMessageBuilder() {
@@ -366,16 +313,6 @@ public class MockedScreeningToReferralServiceBuilder {
       messageBuilder = mock(MessageBuilder.class);
     }
     return messageBuilder;
-  }
-
-  /**
-   * @param drmsDocumentService - drmsDocumentService
-   * @return the drmsDocumentService
-   */
-  public MockedScreeningToReferralServiceBuilder addDrmsDocumentService(
-      DrmsDocumentService drmsDocumentService) {
-    this.drmsDocumentService = drmsDocumentService;
-    return this;
   }
 
   /**
@@ -477,32 +414,11 @@ public class MockedScreeningToReferralServiceBuilder {
   }
 
   /**
-   * @param longTextService - longTextService
-   * @return the longTextService
-   */
-  public MockedScreeningToReferralServiceBuilder addLongTextService(
-      LongTextService longTextService) {
-    this.longTextService = longTextService;
-    return this;
-  }
-
-  /**
    * @param referralDao - referralDao
    * @return the referralDao
    */
   public MockedScreeningToReferralServiceBuilder addReferralDao(ReferralDao referralDao) {
     this.referralDao = referralDao;
-    return this;
-  }
-
-
-  /**
-   * @param staffPersonIdRetriever - staffPersonIdRetriever
-   * @return the staffPersonIdRetriever
-   */
-  public MockedScreeningToReferralServiceBuilder addStaffPersonIdRetriever(
-      StaffPersonIdRetriever staffPersonIdRetriever) {
-    this.staffPersonIdRetriever = staffPersonIdRetriever;
     return this;
   }
 
@@ -515,18 +431,15 @@ public class MockedScreeningToReferralServiceBuilder {
     return this;
   }
 
-
   /**
    * @return the screeningToReferralService
    */
   public ScreeningToReferralService createScreeningToReferralService() {
     return new ScreeningToReferralService(getReferralService(), getClientService(),
         getAllegationService(), getCrossReportService(), getReferralClientService(),
-        getReporterService(), getAddressService(), getClientAddressService(), getLongTextService(),
+        getReporterService(), getAddressService(), getClientAddressService(),
         getChildClientService(), getAssignmentService(),
         Validation.buildDefaultValidatorFactory().getValidator(), getReferralDao(),
-        getStaffPersonIdRetriever(), getMessageBuilder(), getDrmsDocumentService(),
-        getAllegationPerpetratorHistoryService(), getReminders());
-
+        getMessageBuilder(), getAllegationPerpetratorHistoryService(), getReminders());
   }
 }
