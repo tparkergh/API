@@ -1,8 +1,6 @@
 package gov.ca.cwds.inject;
 
 import java.net.InetAddress;
-import java.util.HashMap;
-import java.util.Map;
 
 import org.elasticsearch.client.Client;
 import org.elasticsearch.client.transport.TransportClient;
@@ -16,7 +14,6 @@ import org.slf4j.LoggerFactory;
 import com.google.common.collect.ImmutableList;
 import com.google.inject.AbstractModule;
 import com.google.inject.Provides;
-import com.google.inject.name.Named;
 
 import gov.ca.cwds.data.cms.AddressUcDao;
 import gov.ca.cwds.data.cms.AllegationDao;
@@ -36,7 +33,6 @@ import gov.ca.cwds.data.cms.CountyOwnershipDao;
 import gov.ca.cwds.data.cms.CountyTriggerDao;
 import gov.ca.cwds.data.cms.CrossReportDao;
 import gov.ca.cwds.data.cms.DrmsDocumentDao;
-import gov.ca.cwds.data.cms.ExternalInterfaceDao;
 import gov.ca.cwds.data.cms.LongTextDao;
 import gov.ca.cwds.data.cms.OtherClientNameDao;
 import gov.ca.cwds.data.cms.ReferralAssignmentDao;
@@ -84,7 +80,6 @@ import gov.ca.cwds.data.persistence.cms.CountyTriggerEmbeddable;
 import gov.ca.cwds.data.persistence.cms.CrossReport;
 import gov.ca.cwds.data.persistence.cms.DrmsDocument;
 import gov.ca.cwds.data.persistence.cms.EducationProviderContact;
-import gov.ca.cwds.data.persistence.cms.ExternalInterface;
 import gov.ca.cwds.data.persistence.cms.LongText;
 import gov.ca.cwds.data.persistence.cms.OtherAdultInPlacemtHome;
 import gov.ca.cwds.data.persistence.cms.OtherChildInPlacemtHome;
@@ -141,26 +136,25 @@ public class DataAccessModule extends AbstractModule {
 
   private static final Logger LOGGER = LoggerFactory.getLogger(DataAccessModule.class);
 
-  private Map<String, Client> clients;
+  private Client client;
 
   private final HibernateBundle<ApiConfiguration> cmsHibernateBundle =
-      new HibernateBundle<ApiConfiguration>(
-          ImmutableList.<Class<?>>of(gov.ca.cwds.data.persistence.cms.Address.class,
-              Allegation.class, ClientAddress.class, ClientCollateral.class,
-              gov.ca.cwds.data.persistence.cms.Client.class, CmsDocReferralClient.class,
-              CmsDocument.class, CmsDocumentBlobSegment.class, CollateralIndividual.class,
-              CrossReport.class, EducationProviderContact.class, OtherAdultInPlacemtHome.class,
-              OtherChildInPlacemtHome.class, OtherClientName.class, Referral.class,
-              ReferralClient.class, Reporter.class, ServiceProvider.class, StaffPerson.class,
-              SubstituteCareProvider.class, LongText.class, AllegationPerpetratorHistory.class,
-              ClientUc.class, ChildClient.class, gov.ca.cwds.data.persistence.cms.Address.class,
-              ClientAddress.class, CountyOwnership.class, CountyTrigger.class,
-              CountyTriggerEmbeddable.class, SystemCode.class, SystemMeta.class, DrmsDocument.class,
-              Assignment.class, BaseAssignment.class, ReferralAssignment.class,
-              CaseAssignment.class, CmsCase.class, Tickle.class, ClientRelationship.class,
-              ClientCollateral.class, AddressUc.class, ExternalInterface.class),
+      new HibernateBundle<ApiConfiguration>(ImmutableList.<Class<?>>of(
+          gov.ca.cwds.data.persistence.cms.Address.class, Allegation.class, ClientAddress.class,
+          ClientCollateral.class, gov.ca.cwds.data.persistence.cms.Client.class,
+          CmsDocReferralClient.class, CmsDocument.class, CmsDocumentBlobSegment.class,
+          CollateralIndividual.class, CrossReport.class, EducationProviderContact.class,
+          OtherAdultInPlacemtHome.class, OtherChildInPlacemtHome.class, OtherClientName.class,
+          Referral.class, ReferralClient.class, Reporter.class, ServiceProvider.class,
+          StaffPerson.class, SubstituteCareProvider.class, LongText.class,
+          AllegationPerpetratorHistory.class, ClientUc.class, ChildClient.class,
+          gov.ca.cwds.data.persistence.cms.Address.class, ClientAddress.class,
+          CountyOwnership.class, CountyTrigger.class, CountyTriggerEmbeddable.class,
+          SystemCode.class, SystemMeta.class, DrmsDocument.class, Assignment.class,
+          BaseAssignment.class, ReferralAssignment.class, CaseAssignment.class, CmsCase.class,
+          Tickle.class, ClientRelationship.class, ClientCollateral.class, AddressUc.class),
 
-          new ApiSessionFactoryFactory()) {
+          new ApiSessionFactoryFactory()) { // Hibernate interceptor
 
         @Override
         public DataSourceFactory getDataSourceFactory(ApiConfiguration configuration) {
@@ -227,7 +221,6 @@ public class DataAccessModule extends AbstractModule {
     bind(ClientRelationshipDao.class);
     bind(ClientCollateralDao.class);
 
-
     bind(AttorneyDao.class);
     bind(CmsDocReferralClientDao.class);
     bind(CmsDocumentDao.class);
@@ -243,7 +236,6 @@ public class DataAccessModule extends AbstractModule {
     bind(AssignmentDao.class);
     bind(TickleDao.class);
     bind(AddressUcDao.class);
-    bind(ExternalInterfaceDao.class);
 
     // NS:
     bind(AddressDao.class);
@@ -272,10 +264,20 @@ public class DataAccessModule extends AbstractModule {
     bind(Reminders.class);
 
     // Miscellaneous:
+    bind(ElasticsearchDao.class);
     bind(SmartyStreetsDao.class);
 
     // System code loader DAO.
     bind(ApiSystemCodeDao.class).to(SystemCodeDaoFileImpl.class);
+
+    // ApiHibernateInterceptor.addHandler(ClientRelationship.class, e -> {
+    // System.out.println("handle ClientRelationship");
+    // });
+    //
+    // ApiHibernateInterceptor.addHandler(ClientAddress.class, e -> {
+    // System.out.println("handle ClientAddress");
+    // });
+
   }
 
   @Provides
@@ -303,9 +305,8 @@ public class DataAccessModule extends AbstractModule {
   }
 
   @Provides
-  public Map<String, ElasticsearchConfiguration> elasticSearchConfigs(
-      ApiConfiguration apiConfiguration) {
-    return apiConfiguration.getElasticsearchConfigurations();
+  public ElasticsearchConfiguration elasticSearchConfig(ApiConfiguration apiConfiguration) {
+    return apiConfiguration.getElasticsearchConfiguration();
   }
 
   @Provides
@@ -318,65 +319,25 @@ public class DataAccessModule extends AbstractModule {
     return apiConfiguration.getTriggerTablesConfiguration();
   }
 
+  // @Singleton
   @Provides
-  @Named("elasticsearch.daos")
-  public Map<String, ElasticsearchDao> provideElasticSearchDaos(ApiConfiguration apiConfiguration) {
-    if (clients == null) {
-      provideElasticsearchClients(apiConfiguration);
-    }
-
-    Map<String, ElasticsearchDao> esDaos = new HashMap<>();
-    for (String esKey : clients.keySet()) {
-      Client client = clients.get(esKey);
-      ElasticsearchConfiguration config =
-          apiConfiguration.getElasticsearchConfigurations().get(esKey);
-      ElasticsearchDao dao = new ElasticsearchDao(client, config);
-      esDaos.put(esKey, dao);
-    }
-    return esDaos;
-  }
-
-  @Provides
-  @Named("people.index")
-  public ElasticsearchDao provideElasticSearchDaoPeople(
-      @Named("elasticsearch.daos") Map<String, ElasticsearchDao> esDaos) {
-    return esDaos.get("peopleIndex");
-  }
-
-  @Provides
-  @Named("screenings.index")
-  public ElasticsearchDao provideEelasticSearchDaoScreenings(
-      @Named("elasticsearch.daos") Map<String, ElasticsearchDao> esDaos) {
-    return esDaos.get("screeningsIndex");
-  }
-
-  @Provides
-  public synchronized Map<String, Client> provideElasticsearchClients(
-      ApiConfiguration apiConfiguration) {
-
-    if (clients == null) {
-      clients = new HashMap<>();
-
-      Map<String, ElasticsearchConfiguration> esConfigs =
-          apiConfiguration.getElasticsearchConfigurations();
-
-      for (String esConfigKey : esConfigs.keySet()) {
-        ElasticsearchConfiguration config = esConfigs.get(esConfigKey);
-
-        try {
-          TransportClient transportClient = new PreBuiltTransportClient(
-              Settings.builder().put("cluster.name", config.getElasticsearchCluster()).build());
-          transportClient.addTransportAddress(
-              new InetSocketTransportAddress(InetAddress.getByName(config.getElasticsearchHost()),
-                  Integer.parseInt(config.getElasticsearchPort())));
-          clients.put(esConfigKey, transportClient);
-        } catch (Exception e) {
-          LOGGER.error("Error initializing Elasticsearch client: {}", e.getMessage(), e);
-          throw new ApiException("Error initializing Elasticsearch client: " + e.getMessage(), e);
-        }
+  public synchronized Client elasticsearchClient(ApiConfiguration apiConfiguration) {
+    if (client == null) {
+      ElasticsearchConfiguration config = apiConfiguration.getElasticsearchConfiguration();
+      try {
+        TransportClient ret = new PreBuiltTransportClient(
+            Settings.builder().put("cluster.name", config.getElasticsearchCluster()).build());
+        ret.addTransportAddress(
+            new InetSocketTransportAddress(InetAddress.getByName(config.getElasticsearchHost()),
+                Integer.parseInt(config.getElasticsearchPort())));
+        client = ret;
+      } catch (Exception e) {
+        LOGGER.error("Error initializing Elasticsearch client: {}", e.getMessage(), e);
+        throw new ApiException("Error initializing Elasticsearch client: " + e.getMessage(), e);
       }
     }
 
-    return clients;
+    return client;
   }
+
 }
