@@ -6,12 +6,7 @@ import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-import gov.ca.cwds.fixture.ReferralResourceBuilder;
-import gov.ca.cwds.rest.messages.MessageBuilder;
-import gov.ca.cwds.rest.resources.cms.ReferralResource;
-import gov.ca.cwds.rest.services.cms.ReferralService;
 import java.util.Arrays;
-import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -28,8 +23,8 @@ import gov.ca.cwds.data.cms.ReporterDao;
 import gov.ca.cwds.fixture.AddressResourceBuilder;
 import gov.ca.cwds.fixture.AllegationResourceBuilder;
 import gov.ca.cwds.fixture.CrossReportResourceBuilder;
-import gov.ca.cwds.fixture.MockedScreeningToReferralServiceBuilder;
 import gov.ca.cwds.fixture.ParticipantResourceBuilder;
+import gov.ca.cwds.fixture.ReferralResourceBuilder;
 import gov.ca.cwds.fixture.ScreeningToReferralResourceBuilder;
 import gov.ca.cwds.rest.api.domain.Address;
 import gov.ca.cwds.rest.api.domain.Allegation;
@@ -49,7 +44,6 @@ import gov.ca.cwds.rest.services.cms.TickleService;
 public class RemindersTest {
 
   private TickleService tickleService;
-  private ReferralService referralService;
   private ClientDao clientDao;
   private ReferralDao referralDao;
   private AllegationDao allegationDao;
@@ -72,7 +66,6 @@ public class RemindersTest {
   @Before
   public void setup() throws Exception {
     tickleService = mock(TickleService.class);
-    referralService = mock(ReferralService.class);
     clientDao = mock(ClientDao.class);
     referralDao = mock(ReferralDao.class);
     allegationDao = mock(AllegationDao.class);
@@ -103,10 +96,8 @@ public class RemindersTest {
     PostedScreeningToReferral postedScreeningToReferral = PostedScreeningToReferral
         .createWithDefaults("123ABC1234", referral, participants, crossReports, allegations);
 
-    Referral domainReferral = new ReferralResourceBuilder()
-        .setReceivedDate("2016-09-02")
-        .setReceivedTime("13:00:00")
-        .build();
+    Referral domainReferral = new ReferralResourceBuilder().setReceivedDate("2016-09-02")
+        .setReceivedTime("13:00:00").build();
 
     gov.ca.cwds.data.persistence.cms.Referral savedReferral =
         new gov.ca.cwds.data.persistence.cms.Referral("123ABC1235", domainReferral, "0X5");
@@ -166,10 +157,8 @@ public class RemindersTest {
     PostedScreeningToReferral postedScreeningToReferral = PostedScreeningToReferral
         .createWithDefaults("123ABC1234", referral, participants, crossReports, allegations);
 
-    Referral domainReferral = new ReferralResourceBuilder()
-        .setReceivedDate("2016-09-02")
-        .setReceivedTime("13:00:00")
-        .build();
+    Referral domainReferral = new ReferralResourceBuilder().setReceivedDate("2016-09-02")
+        .setReceivedTime("13:00:00").build();
 
     gov.ca.cwds.data.persistence.cms.Referral savedReferral =
         new gov.ca.cwds.data.persistence.cms.Referral("123ABC1235", domainReferral, "0X5");
@@ -228,10 +217,8 @@ public class RemindersTest {
     PostedScreeningToReferral postedScreeningToReferral = PostedScreeningToReferral
         .createWithDefaults("123ABC1234", referral, participants, crossReports, allegations);
 
-    Referral domainReferral = new ReferralResourceBuilder()
-        .setReceivedDate("2016-09-02")
-        .setReceivedTime("13:00:00")
-        .build();
+    Referral domainReferral = new ReferralResourceBuilder().setReceivedDate("2016-09-02")
+        .setReceivedTime("13:00:00").build();
 
     gov.ca.cwds.data.persistence.cms.Referral savedReferral =
         new gov.ca.cwds.data.persistence.cms.Referral("123ABC1235", domainReferral, "0X5");
@@ -291,10 +278,8 @@ public class RemindersTest {
     PostedScreeningToReferral postedScreeningToReferral = PostedScreeningToReferral
         .createWithDefaults("123ABC1234", referral, participants, crossReports, allegations);
 
-    Referral domainReferral = new ReferralResourceBuilder()
-        .setReceivedDate("2016-09-02")
-        .setReceivedTime("13:00:00")
-        .build();
+    Referral domainReferral = new ReferralResourceBuilder().setReceivedDate("2016-09-02")
+        .setReceivedTime("13:00:00").build();
 
     gov.ca.cwds.data.persistence.cms.Referral savedReferral =
         new gov.ca.cwds.data.persistence.cms.Referral("123ABC1235", domainReferral, "0X5");
@@ -362,10 +347,8 @@ public class RemindersTest {
     PostedScreeningToReferral postedScreeningToReferral = PostedScreeningToReferral
         .createWithDefaults("123ABC1234", referral, participants, crossReports, allegations);
 
-    Referral domainReferral = new ReferralResourceBuilder()
-        .setReceivedDate("2016-09-02")
-        .setReceivedTime("13:00:00")
-        .build();
+    Referral domainReferral = new ReferralResourceBuilder().setReceivedDate("2016-09-02")
+        .setReceivedTime("13:00:00").build();
 
     gov.ca.cwds.data.persistence.cms.Referral savedReferral =
         new gov.ca.cwds.data.persistence.cms.Referral("123ABC1235", domainReferral, "0X5");
@@ -433,10 +416,8 @@ public class RemindersTest {
     PostedScreeningToReferral postedScreeningToReferral = PostedScreeningToReferral
         .createWithDefaults("123ABC1234", referral, participants, crossReports, allegations);
 
-    Referral domainReferral = new ReferralResourceBuilder()
-        .setReceivedDate("2016-09-02")
-        .setReceivedTime("13:00:00")
-        .build();
+    Referral domainReferral = new ReferralResourceBuilder().setReceivedDate("2016-09-02")
+        .setReceivedTime("13:00:00").build();
 
     gov.ca.cwds.data.persistence.cms.Referral savedReferral =
         new gov.ca.cwds.data.persistence.cms.Referral("123ABC1235", domainReferral, "0X5");
@@ -504,10 +485,8 @@ public class RemindersTest {
     PostedScreeningToReferral postedScreeningToReferral = PostedScreeningToReferral
         .createWithDefaults("123ABC1234", referral, participants, crossReports, allegations);
 
-    Referral domainReferral = new ReferralResourceBuilder()
-        .setReceivedDate("2016-09-02")
-        .setReceivedTime("13:00:00")
-        .build();
+    Referral domainReferral = new ReferralResourceBuilder().setReceivedDate("2016-09-02")
+        .setReceivedTime("13:00:00").build();
 
     gov.ca.cwds.data.persistence.cms.Referral savedReferral =
         new gov.ca.cwds.data.persistence.cms.Referral("123ABC1235", domainReferral, "0X5");
@@ -575,10 +554,8 @@ public class RemindersTest {
     PostedScreeningToReferral postedScreeningToReferral = PostedScreeningToReferral
         .createWithDefaults("123ABC1234", referral, participants, crossReports, allegations);
 
-    Referral domainReferral = new ReferralResourceBuilder()
-        .setReceivedDate("2016-09-02")
-        .setReceivedTime("13:00:00")
-        .build();
+    Referral domainReferral = new ReferralResourceBuilder().setReceivedDate("2016-09-02")
+        .setReceivedTime("13:00:00").build();
 
     gov.ca.cwds.data.persistence.cms.Referral savedReferral =
         new gov.ca.cwds.data.persistence.cms.Referral("123ABC1235", domainReferral, "0X5");
@@ -646,10 +623,8 @@ public class RemindersTest {
     PostedScreeningToReferral postedScreeningToReferral = PostedScreeningToReferral
         .createWithDefaults("123ABC1234", referral, participants, crossReports, allegations);
 
-    Referral domainReferral = new ReferralResourceBuilder()
-        .setReceivedDate("2016-09-02")
-        .setReceivedTime("13:00:00")
-        .build();
+    Referral domainReferral = new ReferralResourceBuilder().setReceivedDate("2016-09-02")
+        .setReceivedTime("13:00:00").build();
 
     gov.ca.cwds.data.persistence.cms.Referral savedReferral =
         new gov.ca.cwds.data.persistence.cms.Referral("123ABC1235", domainReferral, "0X5");
