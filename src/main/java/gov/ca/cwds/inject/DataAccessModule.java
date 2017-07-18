@@ -1,5 +1,20 @@
 package gov.ca.cwds.inject;
 
+import java.net.InetAddress;
+
+import org.elasticsearch.client.Client;
+import org.elasticsearch.client.transport.TransportClient;
+import org.elasticsearch.common.settings.Settings;
+import org.elasticsearch.common.transport.InetSocketTransportAddress;
+import org.elasticsearch.transport.client.PreBuiltTransportClient;
+import org.hibernate.SessionFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import com.google.common.collect.ImmutableList;
+import com.google.inject.AbstractModule;
+import com.google.inject.Provides;
+
 import gov.ca.cwds.data.cms.AddressUcDao;
 import gov.ca.cwds.data.cms.AllegationDao;
 import gov.ca.cwds.data.cms.AllegationPerpetratorHistoryDao;
@@ -112,21 +127,6 @@ import io.dropwizard.db.DataSourceFactory;
 import io.dropwizard.hibernate.HibernateBundle;
 import io.dropwizard.setup.Bootstrap;
 
-import java.net.InetAddress;
-
-import org.elasticsearch.client.Client;
-import org.elasticsearch.client.transport.TransportClient;
-import org.elasticsearch.common.settings.Settings;
-import org.elasticsearch.common.transport.InetSocketTransportAddress;
-import org.elasticsearch.transport.client.PreBuiltTransportClient;
-import org.hibernate.SessionFactory;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import com.google.common.collect.ImmutableList;
-import com.google.inject.AbstractModule;
-import com.google.inject.Provides;
-
 /**
  * DI (dependency injection) setup for data access objects (DAO).
  * 
@@ -154,7 +154,7 @@ public class DataAccessModule extends AbstractModule {
           BaseAssignment.class, ReferralAssignment.class, CaseAssignment.class, CmsCase.class,
           Tickle.class, ClientRelationship.class, ClientCollateral.class, AddressUc.class),
 
-      new ApiSessionFactoryFactory()) {
+          new ApiSessionFactoryFactory()) { // Hibernate interceptor
 
         @Override
         public DataSourceFactory getDataSourceFactory(ApiConfiguration configuration) {
@@ -221,7 +221,6 @@ public class DataAccessModule extends AbstractModule {
     bind(ClientRelationshipDao.class);
     bind(ClientCollateralDao.class);
 
-
     bind(AttorneyDao.class);
     bind(CmsDocReferralClientDao.class);
     bind(CmsDocumentDao.class);
@@ -270,6 +269,15 @@ public class DataAccessModule extends AbstractModule {
 
     // System code loader DAO.
     bind(ApiSystemCodeDao.class).to(SystemCodeDaoFileImpl.class);
+
+    // ApiHibernateInterceptor.addHandler(ClientRelationship.class, e -> {
+    // System.out.println("handle ClientRelationship");
+    // });
+    //
+    // ApiHibernateInterceptor.addHandler(ClientAddress.class, e -> {
+    // System.out.println("handle ClientAddress");
+    // });
+
   }
 
   @Provides
@@ -317,11 +325,11 @@ public class DataAccessModule extends AbstractModule {
     if (client == null) {
       ElasticsearchConfiguration config = apiConfiguration.getElasticsearchConfiguration();
       try {
-        TransportClient ret =
-            new PreBuiltTransportClient(Settings.builder()
-                .put("cluster.name", config.getElasticsearchCluster()).build());
-        ret.addTransportAddress(new InetSocketTransportAddress(InetAddress.getByName(config
-            .getElasticsearchHost()), Integer.parseInt(config.getElasticsearchPort())));
+        TransportClient ret = new PreBuiltTransportClient(
+            Settings.builder().put("cluster.name", config.getElasticsearchCluster()).build());
+        ret.addTransportAddress(
+            new InetSocketTransportAddress(InetAddress.getByName(config.getElasticsearchHost()),
+                Integer.parseInt(config.getElasticsearchPort())));
         client = ret;
       } catch (Exception e) {
         LOGGER.error("Error initializing Elasticsearch client: {}", e.getMessage(), e);
