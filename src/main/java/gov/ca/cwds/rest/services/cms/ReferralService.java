@@ -72,6 +72,11 @@ public class ReferralService implements CrudsService {
    * @param staffpersonDao The {@link Dao} handling
    *        {@link gov.ca.cwds.data.persistence.cms.StaffPerson} objects
    * @param staffPersonIdRetriever the staffPersonIdRetriever
+   * @param assignmentService the Assignment Service
+   * @param validator the validator used for entity validation
+   * @param drmsDocumentService the service for generating DRMS Documents
+   * @param addressService the service for creating addresses
+   * @param longTextService the longText Service
    */
   @Inject
   public ReferralService(final ReferralDao referralDao, NonLACountyTriggers nonLaTriggers,
@@ -237,6 +242,7 @@ public class ReferralService implements CrudsService {
    * @param dateStarted - dateStarted
    * @param timeStarted - timeStarted
    * @param timestamp - timestamp
+   * @param messageBuilder - the messageBuilder object responsible for handling errors
    * @return the referral
    * @throws ServiceException - ServiceException
    */
