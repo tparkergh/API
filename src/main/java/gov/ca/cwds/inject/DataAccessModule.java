@@ -15,6 +15,7 @@ import com.google.common.collect.ImmutableList;
 import com.google.inject.AbstractModule;
 import com.google.inject.Provides;
 
+import gov.ca.cwds.data.ApiHibernateInterceptor;
 import gov.ca.cwds.data.cms.AddressUcDao;
 import gov.ca.cwds.data.cms.AllegationDao;
 import gov.ca.cwds.data.cms.AllegationPerpetratorHistoryDao;
@@ -270,13 +271,17 @@ public class DataAccessModule extends AbstractModule {
     // System code loader DAO.
     bind(ApiSystemCodeDao.class).to(SystemCodeDaoFileImpl.class);
 
-    // ApiHibernateInterceptor.addHandler(ClientRelationship.class, e -> {
-    // System.out.println("handle ClientRelationship");
-    // });
-    //
-    // ApiHibernateInterceptor.addHandler(ClientAddress.class, e -> {
-    // System.out.println("handle ClientAddress");
-    // });
+    ApiHibernateInterceptor.addCommitHandler(ClientRelationship.class, e -> {
+      LOGGER.warn("handle ClientRelationship");
+    });
+
+    ApiHibernateInterceptor.addCommitHandler(ClientAddress.class, e -> {
+      LOGGER.warn("handle ClientAddress");
+    });
+
+    ApiHibernateInterceptor.addCommitHandler(SystemMeta.class, e -> {
+      LOGGER.warn("handle SystemMeta");
+    });
 
   }
 
