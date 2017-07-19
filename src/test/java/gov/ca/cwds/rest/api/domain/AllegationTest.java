@@ -6,6 +6,7 @@ import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.is;
 import static org.junit.Assert.assertEquals;
 
+import gov.ca.cwds.data.cms.TestSystemCodeCache;
 import java.io.IOException;
 import java.util.Set;
 
@@ -34,7 +35,7 @@ public class AllegationTest {
 
   private long victimPersonId = 1;
   private long perpetratorPersonId = 2;
-  private String type = "physical abuse";
+  private Short type = 2179;
   private String county = "Sacramento";
   private String legacySourceTable = "ALLGTN_T";
   private String legacyId = "1234567ABC";
@@ -42,6 +43,9 @@ public class AllegationTest {
   private static final ObjectMapper MAPPER = Jackson.newObjectMapper();
   private Validator validator;
 
+  TestSystemCodeCache testSystemCodeCache = new TestSystemCodeCache();
+
+  private Short abuseCode = (short)2179;
 
   @Before
   public void setup() {
@@ -56,7 +60,7 @@ public class AllegationTest {
   @Test
   public void serializesToJSON() throws Exception {
     String expected = MAPPER.writeValueAsString(
-        new Allegation("ALLGTN_T", "1234567ABC", 5432, 2, "physical abuse", "Sacramento"));
+        new Allegation("ALLGTN_T", "1234567ABC", 5432, 2, abuseCode, "Sacramento"));
 
     String serialized = MAPPER.writeValueAsString(
         MAPPER.readValue(fixture("fixtures/domain/Allegation/valid/valid.json"), Allegation.class));
@@ -68,7 +72,7 @@ public class AllegationTest {
   @Test
   public void testDeserializesFromJSON() throws Exception {
     Allegation expected =
-        new Allegation("ALLGTN_T", "1234567ABC", 5432, 2, "physical abuse", "Sacramento");
+        new Allegation("ALLGTN_T", "1234567ABC", 5432, 2, abuseCode, "Sacramento");
 
     Allegation serialized =
         MAPPER.readValue(fixture("fixtures/domain/Allegation/valid/valid.json"), Allegation.class);
