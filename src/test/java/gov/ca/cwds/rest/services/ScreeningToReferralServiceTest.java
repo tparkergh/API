@@ -24,8 +24,8 @@ import java.util.List;
 import java.util.Set;
 
 import javax.validation.Validation;
-
 import javax.validation.Validator;
+
 import org.apache.commons.lang3.NotImplementedException;
 import org.junit.Assert;
 import org.junit.Before;
@@ -208,15 +208,17 @@ public class ScreeningToReferralServiceTest {
     reporterService = new ReporterService(reporterDao, staffPersonIdRetriever);
 
     addressDao = mock(AddressDao.class);
-    addressService =
-        new AddressService(addressDao, staffPersonIdRetriever, ssaName3Dao, upperCaseTables, validator);
+    addressService = new AddressService(addressDao, staffPersonIdRetriever, ssaName3Dao,
+        upperCaseTables, validator);
 
     clientAddressDao = mock(ClientAddressDao.class);
     laCountyTrigger = mock(LACountyTrigger.class);
     triggerTablesDao = mock(TriggerTablesDao.class);
     staffpersonDao = mock(StaffPersonDao.class);
+    nonLACountyTriggers = mock(NonLACountyTriggers.class);
     clientAddressService = new ClientAddressService(clientAddressDao, staffpersonDao,
-        triggerTablesDao, laCountyTrigger, staffPersonIdRetriever);
+        triggerTablesDao, laCountyTrigger, staffPersonIdRetriever, nonLACountyTriggers);
+
 
     longTextDao = mock(LongTextDao.class);
     longTextService = new LongTextService(longTextDao, staffPersonIdRetriever);
@@ -228,7 +230,11 @@ public class ScreeningToReferralServiceTest {
     childClientService = new ChildClientService(childClientDao, staffPersonIdRetriever);
 
     assignmentDao = mock(AssignmentDao.class);
-    assignmentService = new AssignmentService(assignmentDao, staffPersonIdRetriever, validator);
+    staffpersonDao = mock(StaffPersonDao.class);
+    nonLACountyTriggers = mock(NonLACountyTriggers.class);
+    triggerTablesDao = mock(TriggerTablesDao.class);
+    assignmentService = new AssignmentService(assignmentDao, nonLACountyTriggers, staffpersonDao,
+        triggerTablesDao, staffPersonIdRetriever, validator);
 
     reminders = mock(Reminders.class);
 
@@ -238,9 +244,9 @@ public class ScreeningToReferralServiceTest {
 
     screeningToReferralService = new ScreeningToReferralService(referralService, clientService,
         allegationService, crossReportService, referralClientService, reporterService,
-        addressService, clientAddressService, childClientService,
-        assignmentService, Validation.buildDefaultValidatorFactory().getValidator(), referralDao,
-        new MessageBuilder(), allegationPerpetratorHistoryService, reminders);
+        addressService, clientAddressService, childClientService, assignmentService,
+        Validation.buildDefaultValidatorFactory().getValidator(), referralDao, new MessageBuilder(),
+        allegationPerpetratorHistoryService, reminders);
   }
 
   @SuppressWarnings("javadoc")
@@ -404,8 +410,8 @@ public class ScreeningToReferralServiceTest {
     when(longTextDao.create(any(gov.ca.cwds.data.persistence.cms.LongText.class)))
         .thenReturn(longTextToCreate);
 
-    Referral referralCreated = referralService.createReferralWithDefaults(
-        screeningToReferral, "2016-08-03T01:00:00.000Z", "2016-08-03T01:00:00.000Z", null, new MessageBuilder());
+    Referral referralCreated = referralService.createReferralWithDefaults(screeningToReferral,
+        "2016-08-03T01:00:00.000Z", "2016-08-03T01:00:00.000Z", null, new MessageBuilder());
     assertThat(referralCreated.getApprovalStatusType(), is(equalTo((short) 118)));
   }
 
@@ -679,17 +685,16 @@ public class ScreeningToReferralServiceTest {
   @Test
   public void shouldFailWhenSpecifyingALegacyReferralIdThatDoesNotExist() throws Exception {
     MockedScreeningToReferralServiceBuilder builder = new MockedScreeningToReferralServiceBuilder();
-    screeningToReferralService = builder
-        .addReferralService(referralService)
-//        .addMessageBuilder(new MessageBuilder())
+    screeningToReferralService = builder.addReferralService(referralService)
+        // .addMessageBuilder(new MessageBuilder())
         .createScreeningToReferralService();
 
     ScreeningToReferral referral = new ScreeningToReferralResourceBuilder()
         .setReferralId("1234567ABC").createScreeningToReferral();
 
-    try{
+    try {
       Response response = screeningToReferralService.create(referral);
-    }catch(ServiceException e){
+    } catch (ServiceException e) {
       verify(builder.getMessageBuilder())
           .addError("Legacy Id does not correspond to an existing CMS/CWS Referral");
 
@@ -725,16 +730,15 @@ public class ScreeningToReferralServiceTest {
     when(drmsDocumentDao.create(any())).thenReturn(drmsDocument);
 
     referralService = mock(ReferralService.class);
-    when(referralService.createCmsReferralFromScreening(any(), any(), any(), any(), any())).thenReturn("REFERRALID");
+    when(referralService.createCmsReferralFromScreening(any(), any(), any(), any(), any()))
+        .thenReturn("REFERRALID");
     clientService = mock(ClientService.class);
     when(clientService.find(eq(victimClientLegacyId))).thenReturn(foundClient);
     when(clientService.create(any())).thenReturn(createdClient);
     when(clientService.update(eq(victimClientLegacyId), any())).thenReturn(updatedClient);
     screeningToReferralService = new MockedScreeningToReferralServiceBuilder()
-        .addClientService(clientService)
-        .addReferralService(referralService)
-        .addMessageBuilder(new MessageBuilder())
-        .createScreeningToReferralService();
+        .addClientService(clientService).addReferralService(referralService)
+        .addMessageBuilder(new MessageBuilder()).createScreeningToReferralService();
 
     screeningToReferralService.create(referral);
     verify(clientService).update(eq(victim.getLegacyId()), any());
@@ -796,9 +800,9 @@ public class ScreeningToReferralServiceTest {
     when(clientService.find(eq(victimClientLegacyId))).thenReturn(foundClient);
     when(clientService.create(any())).thenReturn(createdClient);
     when(clientService.update(eq(victimClientLegacyId), any())).thenReturn(updatedClient);
-    screeningToReferralService = new MockedScreeningToReferralServiceBuilder()
-        .addClientService(clientService)
-        .addMessageBuilder(new MessageBuilder()).createScreeningToReferralService();
+    screeningToReferralService =
+        new MockedScreeningToReferralServiceBuilder().addClientService(clientService)
+            .addMessageBuilder(new MessageBuilder()).createScreeningToReferralService();
 
     try {
       screeningToReferralService.create(referral);
@@ -944,11 +948,11 @@ public class ScreeningToReferralServiceTest {
         .setParticipants(participants).createScreeningToReferral();
 
     referralService = mock(ReferralService.class);
-    when(referralService.createCmsReferralFromScreening(any(), any(), any(), any(), any())).thenReturn("REFERRALID");
+    when(referralService.createCmsReferralFromScreening(any(), any(), any(), any(), any()))
+        .thenReturn("REFERRALID");
 
     screeningToReferralService =
-        new MockedScreeningToReferralServiceBuilder()
-            .addReferralService(referralService)
+        new MockedScreeningToReferralServiceBuilder().addReferralService(referralService)
             .addMessageBuilder(new MessageBuilder()).createScreeningToReferralService();
 
     Response response = screeningToReferralService.create(referral);
@@ -1086,8 +1090,7 @@ public class ScreeningToReferralServiceTest {
     DrmsDocumentService mockedDrmsDocService = mock(DrmsDocumentService.class);
     when(mockedDrmsDocService.create(any())).thenReturn(null);
     screeningToReferralService = new MockedScreeningToReferralServiceBuilder()
-        .addReferralService(referralService)
-        .createScreeningToReferralService();
+        .addReferralService(referralService).createScreeningToReferralService();
     Response response = screeningToReferralService.create(referral);
     assertFalse("Expected exception to have been thrown", true);
   }
@@ -1145,10 +1148,10 @@ public class ScreeningToReferralServiceTest {
     clientAddressService = mock(ClientAddressService.class);
     when(clientAddressService.find(any())).thenReturn(foundClientAddress);
 
-    screeningToReferralService = new MockedScreeningToReferralServiceBuilder()
-        .addAddressService(addressService).addClientAddressService(clientAddressService)
-        .addClientService(clientService)
-        .addMessageBuilder(new MessageBuilder()).createScreeningToReferralService();
+    screeningToReferralService =
+        new MockedScreeningToReferralServiceBuilder().addAddressService(addressService)
+            .addClientAddressService(clientAddressService).addClientService(clientService)
+            .addMessageBuilder(new MessageBuilder()).createScreeningToReferralService();
 
     Response response = screeningToReferralService.create(referral);
 
@@ -2670,11 +2673,11 @@ public class ScreeningToReferralServiceTest {
     when(drmsDocumentDao.create(any())).thenReturn(drmsDocument);
 
     referralService = mock(ReferralService.class);
-    when(referralService.createCmsReferralFromScreening(any(), any(), any(), any(), any())).thenReturn("REFERRALID");
+    when(referralService.createCmsReferralFromScreening(any(), any(), any(), any(), any()))
+        .thenReturn("REFERRALID");
 
     screeningToReferralService = new MockedScreeningToReferralServiceBuilder()
-        .addClientService(clientService)
-        .addReferralService(referralService)
+        .addClientService(clientService).addReferralService(referralService)
         .addMessageBuilder(new MessageBuilder()).createScreeningToReferralService();
 
     Response response = screeningToReferralService.create(referral);
@@ -3936,12 +3939,12 @@ public class ScreeningToReferralServiceTest {
     when(addressService.create(any())).thenReturn(postedAddress);
     when(addressService.createWithSingleTimestamp(any(), any())).thenReturn(postedAddress);
     referralService = mock(ReferralService.class);
-    when(referralService.createCmsReferralFromScreening(any(), any(), any(), any(), any())).thenReturn("REFERRALID");
+    when(referralService.createCmsReferralFromScreening(any(), any(), any(), any(), any()))
+        .thenReturn("REFERRALID");
 
     screeningToReferralService = new MockedScreeningToReferralServiceBuilder()
-        .addClientAddressService(clientAddressService)
-        .addClientService(clientService).addAddressService(addressService)
-        .addReferralService(referralService)
+        .addClientAddressService(clientAddressService).addClientService(clientService)
+        .addAddressService(addressService).addReferralService(referralService)
         .addMessageBuilder(new MessageBuilder()).createScreeningToReferralService();
 
     Response response = screeningToReferralService.create(referral);
@@ -4000,10 +4003,10 @@ public class ScreeningToReferralServiceTest {
     when(addressService.find(any())).thenReturn(existingAddress);
     when(addressService.create(any())).thenReturn(postedAddress);
 
-    screeningToReferralService = new MockedScreeningToReferralServiceBuilder()
-        .addClientAddressService(clientAddressService)
-        .addClientService(clientService).addAddressService(addressService)
-        .addMessageBuilder(new MessageBuilder()).createScreeningToReferralService();
+    screeningToReferralService =
+        new MockedScreeningToReferralServiceBuilder().addClientAddressService(clientAddressService)
+            .addClientService(clientService).addAddressService(addressService)
+            .addMessageBuilder(new MessageBuilder()).createScreeningToReferralService();
 
     try {
       Response response = screeningToReferralService.create(referral);
@@ -4069,10 +4072,10 @@ public class ScreeningToReferralServiceTest {
     when(addressService.create(any())).thenReturn(postedAddress);
 
     MessageBuilder messageBuilder = mock(MessageBuilder.class);
-    screeningToReferralService = new MockedScreeningToReferralServiceBuilder()
-        .addClientAddressService(clientAddressService)
-        .addClientService(clientService).addAddressService(addressService)
-        .addMessageBuilder(messageBuilder).createScreeningToReferralService();
+    screeningToReferralService =
+        new MockedScreeningToReferralServiceBuilder().addClientAddressService(clientAddressService)
+            .addClientService(clientService).addAddressService(addressService)
+            .addMessageBuilder(messageBuilder).createScreeningToReferralService();
 
     Response response = screeningToReferralService.create(referral);
     verify(messageBuilder, atLeastOnce()).addError("Unable to save Client");
@@ -4104,9 +4107,9 @@ public class ScreeningToReferralServiceTest {
     when(clientService.create(any())).thenReturn(postedClient);
     when(clientService.find(any())).thenReturn(null);
     when(drmsDocumentDao.create(any())).thenReturn(drmsDocument);
-    screeningToReferralService = new MockedScreeningToReferralServiceBuilder()
-        .addClientService(clientService)
-        .addMessageBuilder(new MessageBuilder()).createScreeningToReferralService();
+    screeningToReferralService =
+        new MockedScreeningToReferralServiceBuilder().addClientService(clientService)
+            .addMessageBuilder(new MessageBuilder()).createScreeningToReferralService();
 
     try {
       Response response = screeningToReferralService.create(referral);
@@ -4139,12 +4142,12 @@ public class ScreeningToReferralServiceTest {
     when(allegationService.find(allegation.getLegacyId())).thenReturn(mock(Allegation.class));
     MessageBuilder messageBuilder = new MessageBuilder();
     referralService = mock(ReferralService.class);
-    when(referralService.createCmsReferralFromScreening(any(), any(), any(), any(), any())).thenReturn("REFERRALID");
+    when(referralService.createCmsReferralFromScreening(any(), any(), any(), any(), any()))
+        .thenReturn("REFERRALID");
 
     screeningToReferralService = new MockedScreeningToReferralServiceBuilder()
         .addMessageBuilder(messageBuilder).addAllegationService(allegationService)
-        .addReferralService(referralService)
-        .createScreeningToReferralService();
+        .addReferralService(referralService).createScreeningToReferralService();
 
     Response response = screeningToReferralService.create(referral);
 
@@ -4572,11 +4575,11 @@ public class ScreeningToReferralServiceTest {
     MessageBuilder messageBuilder = new MessageBuilder();
 
     referralService = mock(ReferralService.class);
-    when(referralService.createCmsReferralFromScreening(any(), any(), any(), any(), any())).thenReturn("REFERRALID");
+    when(referralService.createCmsReferralFromScreening(any(), any(), any(), any(), any()))
+        .thenReturn("REFERRALID");
     screeningToReferralService =
         new MockedScreeningToReferralServiceBuilder().addMessageBuilder(messageBuilder)
-            .addAddressService(addressService)
-            .addReferralService(referralService)
+            .addAddressService(addressService).addReferralService(referralService)
             .addClientAddressService(clientAddressService).createScreeningToReferralService();
     Response response = screeningToReferralService.create(referral);
 
@@ -4760,12 +4763,12 @@ public class ScreeningToReferralServiceTest {
     when(addressService.createWithSingleTimestamp(any(), any())).thenReturn(postedAddress);
 
     referralService = mock(ReferralService.class);
-    when(referralService.createCmsReferralFromScreening(any(), any(), any(), any(), any())).thenReturn("REFERRALID");
+    when(referralService.createCmsReferralFromScreening(any(), any(), any(), any(), any()))
+        .thenReturn("REFERRALID");
 
     screeningToReferralService = new MockedScreeningToReferralServiceBuilder()
         .addAddressService(addressService).addClientAddressService(clientAddressService)
-        .addClientService(clientService)
-        .addReferralService(referralService)
+        .addClientService(clientService).addReferralService(referralService)
         .addMessageBuilder(new MessageBuilder()).createScreeningToReferralService();
 
     Response response = screeningToReferralService.create(referral);
@@ -5179,11 +5182,11 @@ public class ScreeningToReferralServiceTest {
     when(drmsDocumentDao.create(any())).thenReturn(drmsDocument);
 
     referralService = mock(ReferralService.class);
-    when(referralService.createCmsReferralFromScreening(any(), any(), any(), any(), any())).thenReturn("REFERRALID");
+    when(referralService.createCmsReferralFromScreening(any(), any(), any(), any(), any()))
+        .thenReturn("REFERRALID");
 
     screeningToReferralService = new MockedScreeningToReferralServiceBuilder()
-        .addClientService(clientService)
-        .addReferralService(referralService)
+        .addClientService(clientService).addReferralService(referralService)
         .addMessageBuilder(new MessageBuilder()).createScreeningToReferralService();
 
     Response response = screeningToReferralService.create(referral);
