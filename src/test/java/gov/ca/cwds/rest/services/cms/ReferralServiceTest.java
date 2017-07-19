@@ -13,10 +13,11 @@ import static org.mockito.Mockito.when;
 
 import java.math.BigDecimal;
 
+import javax.persistence.EntityExistsException;
 import javax.persistence.EntityNotFoundException;
-
 import javax.validation.Validation;
 import javax.validation.Validator;
+
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Rule;
@@ -260,6 +261,20 @@ public class ReferralServiceTest implements ServiceTestTemplate {
 
   }
 
+  @SuppressWarnings("javadoc")
+  @Test
+  public void referralServiceCreateThrowsEntityExistsException() throws Exception {
+    try {
+      Referral referralRequest = MAPPER
+          .readValue(fixture("fixtures/domain/legacy/Referral/valid/valid.json"), Referral.class);
+
+      when(referralDao.create(any())).thenThrow(EntityExistsException.class);
+
+      referralService.create(referralRequest);
+    } catch (Exception e) {
+      assertEquals(e.getClass(), ServiceException.class);
+    }
+  }
 
   @Override
   @Test

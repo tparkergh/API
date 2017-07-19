@@ -1,11 +1,10 @@
 package gov.ca.cwds.rest.services.cms;
 
-import com.google.inject.spi.Message;
-import gov.ca.cwds.rest.messages.MessageBuilder;
 import java.io.Serializable;
 
 import javax.persistence.EntityExistsException;
 
+import org.apache.commons.lang3.NotImplementedException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -18,6 +17,7 @@ import gov.ca.cwds.data.persistence.cms.DrmsDocument;
 import gov.ca.cwds.rest.api.Request;
 import gov.ca.cwds.rest.api.Response;
 import gov.ca.cwds.rest.api.domain.cms.PostedDrmsDocument;
+import gov.ca.cwds.rest.messages.MessageBuilder;
 import gov.ca.cwds.rest.services.CrudsService;
 import gov.ca.cwds.rest.services.ServiceException;
 
@@ -74,22 +74,21 @@ public class DrmsDocumentService implements CrudsService {
 
   @Override
   public Response delete(Serializable arg0) {
-    return null;
+    throw new NotImplementedException("delete not implement");
   }
 
   @Override
   public Response find(Serializable arg0) {
-    return null;
+    throw new NotImplementedException("find not implement");
   }
 
   @Override
   public Response update(Serializable arg0, Request arg1) {
-    return null;
+    throw new NotImplementedException("update not implement");
   }
 
 
-
-    /**
+  /**
    * <blockquote>
    *
    * <pre>
@@ -102,16 +101,17 @@ public class DrmsDocumentService implements CrudsService {
    * </pre>
    *
    * </blockquote>
-     *
-     *  @param messageBuilder the messaging object to build error messages
-     *  @return  The Id of the created DRMS Document
+   *
+   * @param messageBuilder the messaging object to build error messages
+   * @return The Id of the created DRMS Document
+   * @throws ServiceException - serviceException
    */
   public String generateDrmsDocumentId(MessageBuilder messageBuilder) throws ServiceException {
     PostedDrmsDocument postedDrmsDocument = null;
     try {
       String staffPersonId = staffPersonIdRetriever.getStaffPersonId();
-      gov.ca.cwds.rest.api.domain.cms.DrmsDocument drmsDocument = gov.ca.cwds.rest.api.domain.cms.DrmsDocument
-          .createDefaults(staffPersonId);
+      gov.ca.cwds.rest.api.domain.cms.DrmsDocument drmsDocument =
+          gov.ca.cwds.rest.api.domain.cms.DrmsDocument.createDefaults(staffPersonId);
       postedDrmsDocument = create(drmsDocument);
     } catch (ServiceException e) {
       String message = e.getMessage();
