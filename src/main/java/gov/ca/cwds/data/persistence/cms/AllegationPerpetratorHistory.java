@@ -66,16 +66,16 @@ public class AllegationPerpetratorHistory extends CmsPersistentObject {
    * 
    * @param id primary key
    * @param countySpecificCode county Specific Code
-   * @param victimClientId victim Client Id
+   * @param perpetratorClientId perpetrator Client Id
    * @param allegationId allegation Id
    * @param perpetratorUpdateDate perpetrator Update Date
    */
-  public AllegationPerpetratorHistory(String id, String countySpecificCode, String victimClientId,
-      String allegationId, Date perpetratorUpdateDate) {
+  public AllegationPerpetratorHistory(String id, String countySpecificCode,
+      String perpetratorClientId, String allegationId, Date perpetratorUpdateDate) {
     super();
     this.id = id;
     this.countySpecificCode = countySpecificCode;
-    this.perpetratorClientId = victimClientId;
+    this.perpetratorClientId = perpetratorClientId;
     this.allegationId = allegationId;
     this.perpetratorUpdateDate = perpetratorUpdateDate;
   }

@@ -32,12 +32,12 @@ public class AllegationPerpetratorHistory extends ReportingDomain implements Req
   @ApiModelProperty(required = true, readOnly = false, value = "County code", example = "99")
   private String countySpecificCode;
 
-  @Size(min = CMS_ID_LEN, max = CMS_ID_LEN)
-  @ApiModelProperty(required = false, readOnly = false, value = "CLIENT ID of victim",
+  @ApiModelProperty(required = false, readOnly = false, value = "Client ID of perpetrator",
       example = "ABC1234568")
   private String perpetratorClientId;
 
-  @ApiModelProperty(required = true, readOnly = false, value = "ALLEGATION ID",
+  @Size(min = CMS_ID_LEN, max = CMS_ID_LEN)
+  @ApiModelProperty(required = true, readOnly = false, value = "Allegation ID",
       example = "ABC1234567")
   private String allegationId;
 
@@ -51,18 +51,18 @@ public class AllegationPerpetratorHistory extends ReportingDomain implements Req
    * Constructor. Build from JSON.
    * 
    * @param countySpecificCode county Specific Code
-   * @param victimClientId victim Client Id
+   * @param perpetratorClientId perpetrator Client Id
    * @param allegationId allegation Id
    * @param perpetratorUpdateDate perpetrator Update Date
    */
   @JsonCreator
   public AllegationPerpetratorHistory(@JsonProperty("countySpecificCode") String countySpecificCode,
-      @JsonProperty("victimClientId") String victimClientId,
+      @JsonProperty("perpetratorClientId") String perpetratorClientId,
       @JsonProperty("allegationId") String allegationId,
       @JsonProperty("perpetratorUpdateDate") String perpetratorUpdateDate) {
     super();
     this.countySpecificCode = countySpecificCode;
-    this.perpetratorClientId = victimClientId;
+    this.perpetratorClientId = perpetratorClientId;
     this.allegationId = allegationId;
     this.perpetratorUpdateDate = perpetratorUpdateDate;
   }
