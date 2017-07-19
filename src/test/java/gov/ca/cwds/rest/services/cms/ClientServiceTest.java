@@ -12,12 +12,12 @@ import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-import gov.ca.cwds.fixture.ClientResourceBuilder;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 
+import javax.persistence.EntityExistsException;
 import javax.persistence.EntityNotFoundException;
 
 import org.apache.commons.lang3.time.DateFormatUtils;
@@ -36,6 +36,7 @@ import gov.ca.cwds.data.cms.SsaName3Dao;
 import gov.ca.cwds.data.cms.StaffPersonDao;
 import gov.ca.cwds.data.rules.TriggerTablesDao;
 import gov.ca.cwds.fixture.AddressResourceBuilder;
+import gov.ca.cwds.fixture.ClientResourceBuilder;
 import gov.ca.cwds.fixture.ParticipantResourceBuilder;
 import gov.ca.cwds.rest.api.Response;
 import gov.ca.cwds.rest.api.domain.Address;
@@ -100,17 +101,12 @@ public class ClientServiceTest implements ServiceTestTemplate {
     String id = "AaiU7IW0Rt";
     Date updated = new Date();
     String formatedUpdateTime = DateFormatUtils.format(updated, "yyyy-MM-dd'T'HH:mm:ss.SSZ");
-    Client expected = new ClientResourceBuilder()
-        .setExistingClientId(id)
-        .setLastUpdateTime(formatedUpdateTime)
-        .setConfidentialityActionDate("2016-03-11")
-        .setDeathDate("2017-06-11")
-        .setFatherParentalRightTermDate("2017-04-01")
-        .setMotherParentalRightTermDate("2015-01-10")
-        .setAddress(new HashSet())
-        .build();
+    Client expected = new ClientResourceBuilder().setExistingClientId(id)
+        .setLastUpdateTime(formatedUpdateTime).setConfidentialityActionDate("2016-03-11")
+        .setDeathDate("2017-06-11").setFatherParentalRightTermDate("2017-04-01")
+        .setMotherParentalRightTermDate("2015-01-10").setAddress(new HashSet()).build();
     gov.ca.cwds.data.persistence.cms.Client client =
-        new gov.ca.cwds.data.persistence.cms.Client(id, expected, "04Z", updated );
+        new gov.ca.cwds.data.persistence.cms.Client(id, expected, "04Z", updated);
     when(clientDao.find(id)).thenReturn(client);
     Client found = clientService.find(id);
     assertThat(found.getExistingClientId(), is(expected.getExistingClientId()));
@@ -239,6 +235,21 @@ public class ClientServiceTest implements ServiceTestTemplate {
 
     Response response = clientService.create(request);
     assertThat(response.getClass(), is(PostedClient.class));
+  }
+
+  @SuppressWarnings("javadoc")
+  @Test
+  public void reporterServiceCreateThrowsEntityExistsException() throws Exception {
+    try {
+      Client clientRequest = MAPPER.readValue(
+          fixture("fixtures/domain/legacy/Client/valid/serviceValid.json"), Client.class);
+
+      when(clientDao.create(any())).thenThrow(EntityExistsException.class);
+
+      clientService.create(clientRequest);
+    } catch (Exception e) {
+      assertEquals(e.getClass(), ServiceException.class);
+    }
   }
 
   @SuppressWarnings("javadoc")
