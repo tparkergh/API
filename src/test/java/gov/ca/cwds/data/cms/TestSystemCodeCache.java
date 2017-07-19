@@ -64,6 +64,11 @@ public class TestSystemCodeCache implements SystemCodeCache {
       }
     }
 
+    if (SystemCodeCategoryId.INJURY_HARM_TYPE.equals(metaId)) {
+      if (2179 == systemCodeId.intValue()) {
+        return true;
+      }
+    }
     return false;
   }
 

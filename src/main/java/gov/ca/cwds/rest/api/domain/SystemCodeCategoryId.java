@@ -40,6 +40,15 @@ public final class SystemCodeCategoryId {
   public static final String SERVICE_COMPONENT = "SRV_CMPC";
 
   /**
+   * Injury Harm Code ,e.g) General Neglect, Exploitation, Burns
+   */
+  public static final String INJURY_HARM_TYPE = "INJR_HMC";
+
+  /**
+   * Communication Method, e.g) Telephone, In-Person, Written
+   */
+  public static final String COMMUNICATION_METHOD = "CMM_MTHC";
+  /**
    * Private constructor
    */
   private SystemCodeCategoryId() {}

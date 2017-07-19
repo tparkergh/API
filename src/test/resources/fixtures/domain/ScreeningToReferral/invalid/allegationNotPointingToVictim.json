@@ -120,7 +120,7 @@
           "legacy_id" : "",
          "victim_person_id":"1234",
          "perpetrator_person_id":"1234",
-         "type":"physical abuse",
+         "type":2179,
          "county":"Sacramento"
       }
    ]
