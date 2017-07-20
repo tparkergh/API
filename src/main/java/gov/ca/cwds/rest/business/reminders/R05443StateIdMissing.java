@@ -24,6 +24,14 @@ import gov.ca.cwds.rest.services.ServiceException;
 import gov.ca.cwds.rest.services.cms.TickleService;
 
 /**
+ * 
+ * <p>
+ * BUSINESS RULE: "R - 05443" - TICKLE for State ID Missing
+ * 
+ * If the Client age is less then 26 Years, doesn't have state_Id and the client is in referral then
+ * this reminder is created.
+ * </p>
+ * 
  * @author CWDS API Team
  *
  */
@@ -62,15 +70,6 @@ public class R05443StateIdMissing {
   }
 
   /**
-   * <blockquote>
-   * 
-   * <pre>
-   * BUSINESS RULE: "R - 05443" - TICKLE for State ID Missing
-   * 
-   * If the Client age is less then 26 Years, doesn't have state_Id and the client is in referral then this reminder is created.
-   * </blockquote>
-   * </pre>
-   * 
    * @param postedScreeningToReferral - postedScreeningToReferral
    * @throws ServiceException - ServiceException
    */

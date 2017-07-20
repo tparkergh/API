@@ -23,6 +23,15 @@ import gov.ca.cwds.rest.api.domain.ScreeningToReferral;
 import gov.ca.cwds.rest.services.cms.TickleService;
 
 /**
+ * 
+ * <p>
+ * BUSINESS RULE: "R - 04631" - TICKLE for Referral Investigation Contact Due reminder
+ * 
+ * If the Client age is less then 19 Years create a reminder for the investigation contact due and
+ * teh dueDate is updated according to the referralResponseType. Now the referralResponseType is
+ * define to a default value Zero. So updating the dueDate to 10 days.
+ * <p>
+ * 
  * @author CWDS API Team
  *
  */
@@ -60,17 +69,8 @@ public class R04631ReferralInvestigationContactDue {
   }
 
   /**
-   * <blockquote>
    * 
-   * <pre>
-   * BUSINESS RULE: "R - 04631" - TICKLE for Referral Investigation Contact Due reminder
-   * 
-   * If the Client age is less then 19 Years create a reminder for the investigation contact due and teh dueDate is updated according 
-   * to the referralResponseType. Now the referralResponseType is define to a default value Zero. So updating the dueDate to 10 days. 
-   * </blockquote>
-   * </pre>
-   * 
-   * @param postedScreeningToReferral
+   * @param postedScreeningToReferral - postedScreeningToReferral
    */
   public void referralInvestigationContactDue(PostedScreeningToReferral postedScreeningToReferral) {
     ScreeningToReferral screeningToReferral = postedScreeningToReferral;

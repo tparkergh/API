@@ -23,6 +23,14 @@ import gov.ca.cwds.rest.api.domain.PostedScreeningToReferral;
 import gov.ca.cwds.rest.services.cms.TickleService;
 
 /**
+ * 
+ * <p>
+ * BUSINESS RULE: "R - 04464" - TICKLE for Cross Report for Law Enforcement Due
+ * 
+ * If the Allegation typs is not a general Neglect and substantial risk, crossReport and reporter
+ * doesnt have a lawEnforcement Id. Then create this reminder.
+ * <p>
+ * 
  * @author CWDS API Team
  *
  */
@@ -73,15 +81,6 @@ public class R04464CrossReportLawEnforcementDue {
   }
 
   /**
-   * <blockquote>
-   * 
-   * <pre>
-   * BUSINESS RULE: "R - 04464" - TICKLE for Cross Report for Law Enforcement Due
-   * 
-   * If the Allegation typs is not a general Neglect and substantial risk, crossReport and reporter doesnt have a lawEnforcement Id. 
-   * Then create this reminder.
-   * </blockquote>
-   * </pre>
    * 
    * @param postedScreeningToReferral - postedScreeningToReferral
    */
