@@ -89,10 +89,7 @@ public class ClientUcTest {
    */
   @Test
   public void equalsHashCodeWork() {
-    EqualsVerifier.forClass(ClientUc.class)
-            .suppress(Warning.NONFINAL_FIELDS)
-            .withIgnoredFields("messages")
-            .verify();
+    EqualsVerifier.forClass(ClientUc.class).suppress(Warning.NONFINAL_FIELDS).verify();
   }
 
   /**
