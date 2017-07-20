@@ -32,7 +32,7 @@ public final class SystemCodeCategoryId {
   /**
    * Referral Response, e.g) Immediate, 5 Day, 3 Day, Evaluate Out
    */
-  public static final String REFERRAL_RESPONE = "RFR_RSPC";
+  public static final String REFERRAL_RESPONSE = "RFR_RSPC";
 
   /**
    * Service Component, e.g) Emergency Response, Permanent Placement, Family Reunification
@@ -48,6 +48,7 @@ public final class SystemCodeCategoryId {
    * Communication Method, e.g) Telephone, In-Person, Written
    */
   public static final String COMMUNICATION_METHOD = "CMM_MTHC";
+
   /**
    * Private constructor
    */

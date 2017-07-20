@@ -50,6 +50,8 @@ public class ScreeningToReferralTest {
 
   private TestSystemCodeCache testSystemCodeCache = new TestSystemCodeCache();
 
+  private Short responseTime = (short)1520;
+
   @Before
   public void setup() {
     MAPPER.configure(SerializationFeature.INDENT_OUTPUT, true);
@@ -76,8 +78,8 @@ public class ScreeningToReferralTest {
     String expected = MAPPER.writeValueAsString(
         new ScreeningToReferral(id, "", "", "2016-08-03T01:00:00.000Z", "sacramento", "2016-08-02",
             "Foster Home", "Phone", "The Rocky Horror Show", "Narrative 123 test", "123ABC",
-            "immediate", "2016-08-03T01:00:00.000Z", "Michael Bastow", "addtional information",
-            "Response time", "Detail", address, participants, crossReports, allegations));
+            responseTime, "2016-08-03T01:00:00.000Z", "Michael Bastow", "addtional information",
+            "Screening Descision", "Detail", address, participants, crossReports, allegations));
 
     // System.out.println(expected);
     String serialized = MAPPER.writeValueAsString(
@@ -101,8 +103,8 @@ public class ScreeningToReferralTest {
     ScreeningToReferral expected =
         new ScreeningToReferral(id, "", "", "2016-08-03T01:00:00.000Z", "sacramento", "2016-08-02",
             "Foster Home", "Phone", "The Rocky Horror Show", "Narrative 123 test", "123ABC",
-            "immediate", "2016-08-03T01:00:00.000Z", "Michael Bastow", "addtional information",
-            "Response time", "Detail", address, participants, crossReports, allegations);
+            responseTime, "2016-08-03T01:00:00.000Z", "Michael Bastow", "addtional information",
+            "Screening Descision", "Detail", address, participants, crossReports, allegations);
 
 
     ScreeningToReferral serialized =

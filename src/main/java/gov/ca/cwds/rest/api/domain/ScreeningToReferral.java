@@ -2,6 +2,7 @@ package gov.ca.cwds.rest.api.domain;
 
 import static gov.ca.cwds.data.persistence.cms.CmsPersistentObject.CMS_ID_LEN;
 
+import gov.ca.cwds.rest.validation.ValidSystemCodeId;
 import java.util.Set;
 
 import javax.validation.Valid;
@@ -107,11 +108,11 @@ public class ScreeningToReferral extends ReportingDomain implements Request {
   private String reference;
 
   @JsonProperty("response_time")
-  @NotEmpty
-  @ApiModelProperty(required = true, readOnly = false, value = "Response time",
-      example = "immediate")
-  @Size(max = 50)
-  private String responseTime;
+  @NotNull
+  @ApiModelProperty(required = true, readOnly = false, value = "Referral Response Type",
+      example = "1520")
+  @ValidSystemCodeId(required = true, category = SystemCodeCategoryId.REFERRAL_RESPONSE)
+  private Short responseTime;
 
   @JsonProperty("started_at")
   @NotEmpty
@@ -198,7 +199,7 @@ public class ScreeningToReferral extends ReportingDomain implements Request {
   public ScreeningToReferral(long id, String legacySourceTable, String referralId,
       @Date String endedAt, String incidentCounty, @Date String incidentDate, String locationType,
       String communicationMethod, String name, String reportNarrative, String reference,
-      String responseTime, @Date String startedAt, String assignee, String additionalInformation,
+      Short responseTime, @Date String startedAt, String assignee, String additionalInformation,
       String screeningDecision, String screeningDecisionDetail, Address address,
       Set<Participant> participants, Set<CrossReport> crossReports, Set<Allegation> allegations) {
     super();
@@ -305,7 +306,7 @@ public class ScreeningToReferral extends ReportingDomain implements Request {
   /**
    * @return response time
    */
-  public String getResponseTime() {
+  public Short getResponseTime() {
     return responseTime;
   }
 

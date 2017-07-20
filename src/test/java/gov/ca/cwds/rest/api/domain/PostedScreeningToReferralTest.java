@@ -57,10 +57,12 @@ public class PostedScreeningToReferralTest {
   }
 
   private ScreeningToReferral createScreeningReferral(){
+    Short responseTime = (short)1516;
     return  new ScreeningToReferral(1235, "sourcetable", "referralId",
         "endedAt", "incidentCounty","incidentDate", "locationType",
         "communicationMethod", "name", "reportNarrative", "reference",
-        "responseTime", "startedAt", "assignee", "additionalInformation",
+        responseTime, "startedAt", "assignee", "additionalInformation",
+
         "screeningDecision", "screeningDecisionDetail", new Address(new gov.ca.cwds.data.persistence.ns.Address()),
         new HashSet(), new HashSet(), new HashSet());
 

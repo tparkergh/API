@@ -69,38 +69,83 @@ public class LegacyDescriptor implements Serializable {
   }
 
   /**
-   * @return the id
+   *
+   * @return the Legacy Id
    */
   public String getId() {
     return id;
   }
 
   /**
-   * @return the uiId
+   *
+   * @param id Set the legacy Id
+   */
+  public void setId(String id) {
+    this.id = id;
+  }
+
+  /**
+   *
+   * @return the Ui Id
    */
   public String getUiId() {
     return uiId;
   }
 
   /**
-   * @return the lastUpdated
+   *
+   * @param uiId set the uiId
+   */
+  public void setUiId(String uiId) {
+    this.uiId = uiId;
+  }
+
+  /**
+   *
+   * @return return the last updated time as a string
    */
   public String getLastUpdated() {
     return lastUpdated;
   }
 
   /**
-   * @return the tableName
+   *
+   * @param lastUpdated set the last updated time as a string
+   */
+  public void setLastUpdated(String lastUpdated) {
+    this.lastUpdated = lastUpdated;
+  }
+
+  /**
+   *
+   * @return get legacy table name
    */
   public String getTableName() {
     return tableName;
   }
 
   /**
-   * @return the tableDescription
+   *
+   * @param tableName set legacy table name
+   */
+  public void setTableName(String tableName) {
+    this.tableName = tableName;
+  }
+
+  /**
+   *
+   * @return get legacy table description
    */
   public String getTableDescription() {
     return tableDescription;
+  }
+
+  /**
+   *
+   * @param tableDescription set the legacy table description
+   */
+  public void setTableDescription(String tableDescription) {
+    this.tableDescription = tableDescription;
   }
 
   /**
