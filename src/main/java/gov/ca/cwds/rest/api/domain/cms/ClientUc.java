@@ -5,6 +5,8 @@ import static gov.ca.cwds.data.persistence.cms.CmsPersistentObject.CMS_ID_LEN;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
+import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.hibernate.validator.constraints.NotBlank;
 import org.hibernate.validator.constraints.NotEmpty;
 
@@ -135,76 +137,24 @@ public class ClientUc extends ReportingDomain implements Request, Response {
     return commonMiddleName;
   }
 
-  /*
-   * (non-Javadoc)
-   * 
+  /**
+   * {@inheritDoc}
+   *
    * @see java.lang.Object#hashCode()
    */
   @Override
   public final int hashCode() {
-    final int prime = 31;
-    int result = 1;
-    result = prime * result + ((commonFirstName == null) ? 0 : commonFirstName.hashCode());
-    result = prime * result + ((commonLastName == null) ? 0 : commonLastName.hashCode());
-    result = prime * result + ((commonMiddleName == null) ? 0 : commonMiddleName.hashCode());
-    result = prime * result + ((pktableId == null) ? 0 : pktableId.hashCode());
-    result = prime * result + ((sourceTableCode == null) ? 0 : sourceTableCode.hashCode());
-    return result;
+    return HashCodeBuilder.reflectionHashCode(this, false);
   }
 
-  /*
-   * (non-Javadoc)
-   * 
+  /**
+   * {@inheritDoc}
+   *
    * @see java.lang.Object#equals(java.lang.Object)
    */
   @Override
   public final boolean equals(Object obj) {
-    if (this == obj) {
-      return true;
-    }
-    if (obj == null) {
-      return false;
-    }
-    if (!(obj instanceof ClientUc)) {
-      return false;
-    }
-    ClientUc other = (ClientUc) obj;
-    if (commonFirstName == null) {
-      if (other.commonFirstName != null) {
-        return false;
-      }
-    } else if (!commonFirstName.equals(other.commonFirstName)) {
-      return false;
-    }
-    if (commonLastName == null) {
-      if (other.commonLastName != null) {
-        return false;
-      }
-    } else if (!commonLastName.equals(other.commonLastName)) {
-      return false;
-    }
-    if (commonMiddleName == null) {
-      if (other.commonMiddleName != null) {
-        return false;
-      }
-    } else if (!commonMiddleName.equals(other.commonMiddleName)) {
-      return false;
-    }
-    if (pktableId == null) {
-      if (other.pktableId != null) {
-        return false;
-      }
-    } else if (!pktableId.equals(other.pktableId)) {
-      return false;
-    }
-    if (sourceTableCode == null) {
-      if (other.sourceTableCode != null) {
-        return false;
-      }
-    } else if (!sourceTableCode.equals(other.sourceTableCode)) {
-      return false;
-    }
-    return true;
+    return EqualsBuilder.reflectionEquals(this, obj, false);
   }
 
 }
