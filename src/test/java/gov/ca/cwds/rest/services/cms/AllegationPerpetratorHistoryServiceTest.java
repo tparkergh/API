@@ -10,6 +10,7 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
+
 import java.util.Date;
 
 import javax.persistence.EntityExistsException;
@@ -56,7 +57,7 @@ public class AllegationPerpetratorHistoryServiceTest implements ServiceTestTempl
     staffPersonIdRetriever = mock(StaffPersonIdRetriever.class);
     allegationPerpetratorHistoryService = new AllegationPerpetratorHistoryService(
         allegationPerpetratorHistoryDao, staffPersonIdRetriever);
-   timestamp = new Date();
+    timestamp = new Date();
   }
 
   // find test
@@ -219,9 +220,8 @@ public class AllegationPerpetratorHistoryServiceTest implements ServiceTestTempl
   public void allegationPerpetratorHistoryServiceCreateThrowsEntityExistsException()
       throws Exception {
     try {
-      AllegationPerpetratorHistory allegationPerpetratorHistoryRequest = MAPPER.readValue(
-          fixture("fixtures/domain/legacy/AllegationPerpetratorHistory/valid/valid.json"),
-          AllegationPerpetratorHistory.class);
+      AllegationPerpetratorHistory allegationPerpetratorHistoryRequest =
+          new AllegationPerpetratorHistoryResourceBuilder().createAllegationPerpetratorHistory();
 
       when(allegationPerpetratorHistoryDao.create(any())).thenThrow(EntityExistsException.class);
       allegationPerpetratorHistoryService.create(allegationPerpetratorHistoryRequest);
