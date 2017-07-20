@@ -4,7 +4,6 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.nullValue;
 import static org.junit.Assert.assertEquals;
-import static org.mockito.Mockito.mock;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -31,9 +30,9 @@ public class ScreeningServiceTest {
 
   @Before
   public void setup() throws Exception {
-    screeningDao = mock(ScreeningDao.class);
-    personService = mock(PersonService.class);
-    screeningService = new ScreeningService(screeningDao, personService);
+    // screeningDao = mock(ScreeningDao.class);
+    // personService = mock(PersonService.class);
+    // screeningService = new ScreeningService(screeningDao, personService);
   }
 
   /*
