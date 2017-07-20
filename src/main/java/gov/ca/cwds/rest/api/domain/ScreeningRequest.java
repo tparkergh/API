@@ -13,7 +13,7 @@ import io.dropwizard.jackson.JsonSnakeCase;
  */
 
 @JsonSnakeCase
-public class ScreeningRequest extends Screening implements Request {
+public class ScreeningRequest implements Request {
 
   /**
    * Serialization version
@@ -50,8 +50,7 @@ public class ScreeningRequest extends Screening implements Request {
       @JsonProperty("screening_decision") String screeningDecision,
       @JsonProperty("started_at") String startedAt, @JsonProperty("narrative") String narrative,
       @JsonProperty("address") Address address) {
-    super(reference, endedAt, incidentCounty, incidentDate, locationType, communicationMethod, name,
-        responseTime, screeningDecision, startedAt, narrative);
+    super();
     this.address = address;
   }
 
@@ -77,7 +76,7 @@ public class ScreeningRequest extends Screening implements Request {
 
   /**
    * {@inheritDoc}
-   * 
+   *
    * @see java.lang.Object#equals(java.lang.Object)
    */
   @Override

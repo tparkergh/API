@@ -20,7 +20,6 @@ import javax.persistence.Table;
 import org.hibernate.annotations.Type;
 
 import gov.ca.cwds.data.ns.NsPersistentObject;
-import gov.ca.cwds.rest.api.domain.DomainChef;
 
 /**
  * {@link NsPersistentObject} representing a Person.
@@ -150,27 +149,27 @@ public class Screening extends NsPersistentObject {
    * @param lastUpdatedId the id of the last person to update this object
    * @param createUserId the id of the person created the record
    */
-  public Screening(Long id, gov.ca.cwds.rest.api.domain.Screening screening, Address address,
-      Set<Participant> participants, String lastUpdatedId, String createUserId) {
-    super(lastUpdatedId, createUserId);
-
-    this.id = id;
-    this.reference = screening.getReference();
-    this.endedAt = DomainChef.uncookDateString(screening.getEndedAt());
-    this.incidentCounty = screening.getIncidentCounty();
-    this.incidentDate = DomainChef.uncookDateString(screening.getIncidentDate());
-    this.locationType = screening.getLocationType();
-    this.communicationMethod = screening.getCommunicationMethod();
-    this.name = screening.getName();
-    this.responseTime = screening.getResponseTime();
-    this.screeningDecision = screening.getScreeningDecision();
-    this.startedAt = DomainChef.uncookDateString(screening.getStartedAt());
-    this.narrative = screening.getNarrative();
-    this.contactAddress = address;
-    if (participants != null) {
-      this.participants.addAll(participants);
-    }
-  }
+  // public Screening(Long id, gov.ca.cwds.rest.api.domain.Screening screening, Address address,
+  // Set<Participant> participants, String lastUpdatedId, String createUserId) {
+  // super(lastUpdatedId, createUserId);
+  //
+  // this.id = id;
+  // this.reference = screening.getReference();
+  // this.endedAt = DomainChef.uncookDateString(screening.getEndedAt());
+  // this.incidentCounty = screening.getIncidentCounty();
+  // this.incidentDate = DomainChef.uncookDateString(screening.getIncidentDate());
+  // this.locationType = screening.getLocationType();
+  // this.communicationMethod = screening.getCommunicationMethod();
+  // this.name = screening.getName();
+  // this.responseTime = screening.getResponseTime();
+  // this.screeningDecision = screening.getScreeningDecision();
+  // this.startedAt = DomainChef.uncookDateString(screening.getStartedAt());
+  // this.narrative = screening.getNarrative();
+  // this.contactAddress = address;
+  // if (participants != null) {
+  // this.participants.addAll(participants);
+  // }
+  // }
 
   /**
    * {@inheritDoc}

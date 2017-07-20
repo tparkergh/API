@@ -1,10 +1,8 @@
 package gov.ca.cwds.rest.services;
 
 import java.io.Serializable;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 import org.apache.commons.lang3.NotImplementedException;
 import org.hibernate.Criteria;
@@ -17,14 +15,10 @@ import com.google.inject.Inject;
 
 import gov.ca.cwds.data.Dao;
 import gov.ca.cwds.data.ns.ScreeningDao;
-import gov.ca.cwds.data.persistence.ns.Address;
 import gov.ca.cwds.rest.api.Request;
 import gov.ca.cwds.rest.api.Response;
-import gov.ca.cwds.rest.api.domain.PostedScreening;
 import gov.ca.cwds.rest.api.domain.Screening;
 import gov.ca.cwds.rest.api.domain.ScreeningListResponse;
-import gov.ca.cwds.rest.api.domain.ScreeningReference;
-import gov.ca.cwds.rest.api.domain.ScreeningRequest;
 import gov.ca.cwds.rest.api.domain.ScreeningResponse;
 import gov.ca.cwds.rest.util.ServiceUtils;
 
@@ -60,7 +54,7 @@ public class ScreeningService implements CrudsService {
     if (primaryKey instanceof Long) {
       gov.ca.cwds.data.persistence.ns.Screening screening = screeningDao.find(primaryKey);
       if (screening != null) {
-        return new ScreeningResponse(screening, screening.getParticipants());
+        // return new ScreeningResponse(screening, screening.getParticipants());
       }
       return null;
     } else {
@@ -68,7 +62,7 @@ public class ScreeningService implements CrudsService {
       ImmutableSet.Builder<ScreeningResponse> builder = ImmutableSet.builder();
       for (gov.ca.cwds.data.persistence.ns.Screening screening : screenings) {
         if (screening != null) {
-          builder.add(new ScreeningResponse(screening, screening.getParticipants()));
+          // builder.add(new ScreeningResponse(screening, screening.getParticipants()));
         }
 
       }
@@ -90,18 +84,14 @@ public class ScreeningService implements CrudsService {
   /**
    * {@inheritDoc}
    * 
+   * @param request the request
+   * 
    * @see gov.ca.cwds.rest.services.CrudsService#create(gov.ca.cwds.rest.api.Request)
    */
   @Override
-  public PostedScreening create(Request request) {
-    assert request instanceof ScreeningReference;
-
-    ScreeningReference screeningReference = (ScreeningReference) request;
-    gov.ca.cwds.data.persistence.ns.Screening managed =
-        new gov.ca.cwds.data.persistence.ns.Screening(screeningReference.getReference());
-
-    managed = screeningDao.create(managed);
-    return new PostedScreening(managed.getId(), managed.getReference());
+  public Screening create(Request request) {
+    assert request instanceof Screening;
+    return (Screening) request;
   }
 
   /**
@@ -111,23 +101,25 @@ public class ScreeningService implements CrudsService {
    *      gov.ca.cwds.rest.api.Request)
    */
   @Override
-  public ScreeningResponse update(Serializable primaryKey, Request request) {
-    assert primaryKey instanceof Long;
-    assert request instanceof ScreeningRequest;
-
-    ScreeningRequest screeningRequest = (ScreeningRequest) request;
-
-    Set<gov.ca.cwds.data.persistence.ns.Participant> participants = new HashSet<>();
-    Address address = new Address(screeningRequest.getAddress(), null, null);
-    gov.ca.cwds.data.persistence.ns.Screening screening =
-        new gov.ca.cwds.data.persistence.ns.Screening((Long) primaryKey, screeningRequest, address,
-            participants, null, null);
-    screening = screeningDao.update(screening);
-    if (screeningDao.getSessionFactory() != null) {
-      screeningDao.getSessionFactory().getCurrentSession().flush();
-      screeningDao.getSessionFactory().getCurrentSession().refresh(screening);
-    }
-    return new ScreeningResponse(screening, screening.getParticipants());
+  public Screening update(Serializable primaryKey, Request request) {
+    return (Screening) request;
+    // assert primaryKey instanceof Long;
+    // assert request instanceof ScreeningRequest;
+    //
+    // ScreeningRequest screeningRequest = (ScreeningRequest) request;
+    //
+    // Set<gov.ca.cwds.data.persistence.ns.Participant> participants = new HashSet<>();
+    // Address address = new Address(screeningRequest.getAddress(), null, null);
+    // // gov.ca.cwds.data.persistence.ns.Screening screening =
+    // // new gov.ca.cwds.data.persistence.ns.Screening((Long) primaryKey, screeningRequest,
+    // // address,
+    // // participants, null, null);
+    // // screening = screeningDao.update(screening);
+    // if (screeningDao.getSessionFactory() != null) {
+    // screeningDao.getSessionFactory().getCurrentSession().flush();
+    // screeningDao.getSessionFactory().getCurrentSession().refresh(screening);
+    // }
+    // // return new ScreeningResponse(screening, screening.getParticipants());
 
   }
 
