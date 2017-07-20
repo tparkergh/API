@@ -38,6 +38,11 @@ public interface Api {
   public static final String RESOURCE_REFERRALS = "referrals";
 
   /**
+   * A {@code String} constant representing {@value #RESOURCE_STAFF_PERSONS} API.
+   */
+  public static final String RESOURCE_STAFF_PERSONS = "staffpersons";
+
+  /**
    * A {@code String} constant representing {@value #RESOURCE_ALLEGATION} API..
    */
   public static final String RESOURCE_ALLEGATION = "_allegations";

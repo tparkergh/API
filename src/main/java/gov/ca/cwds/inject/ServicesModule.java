@@ -124,6 +124,7 @@ public class ServicesModule extends AbstractModule {
     bind(TickleService.class);
     bind(ClientRelationshipService.class);
     bind(ClientCollateralService.class);
+    bind(gov.ca.cwds.rest.services.StaffPersonService.class);
 
     // Register CMS system code translator.
     // bind(ApiSystemCodeCache.class).to(CmsSystemCodeCacheService.class).asEagerSingleton();
