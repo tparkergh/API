@@ -336,8 +336,8 @@ public class ScreeningToReferralService implements CrudsService {
               // CMS Referral Client
               ReferralClient referralClient = ReferralClient.createWithDefault(
                   ParticipantValidator.selfReported(incomingParticipant), referralId, clientId,
-                  legacyDefaultValues.DEFAULT_COUNTY_SPECIFIC_CODE,
-                  legacyDefaultValues.DEFAULT_APPROVAL_STATUS_CODE);
+                  LegacyDefaultValues.DEFAULT_COUNTY_SPECIFIC_CODE,
+                  LegacyDefaultValues.DEFAULT_APPROVAL_STATUS_CODE);
 
               // validate referral client
               messageBuilder.addDomainValidationError(validator.validate(referralClient));
@@ -513,8 +513,8 @@ public class ScreeningToReferralService implements CrudsService {
           // create the cross report
           gov.ca.cwds.rest.api.domain.cms.CrossReport cmsCrossReport =
               gov.ca.cwds.rest.api.domain.cms.CrossReport.createWithDefaults(crossReportId,
-                  crossReport, referralId, legacyDefaultValues.DEFAULT_STAFF_PERSON_ID,
-                  legacyDefaultValues.DEFAULT_COUNTY_SPECIFIC_CODE, lawEnforcementIndicator);
+                  crossReport, referralId, LegacyDefaultValues.DEFAULT_STAFF_PERSON_ID,
+                  LegacyDefaultValues.DEFAULT_COUNTY_SPECIFIC_CODE, lawEnforcementIndicator);
 
           messageBuilder.addDomainValidationError(validator.validate(cmsCrossReport));
 
@@ -567,7 +567,7 @@ public class ScreeningToReferralService implements CrudsService {
      * </blockquote>
      * </pre>
      */
-    final Short allegationDispositionType = legacyDefaultValues.DEFAULT_CODE;
+    final Short allegationDispositionType = LegacyDefaultValues.DEFAULT_CODE;
 
     if (allegations == null || allegations.isEmpty()) {
       String message = " Referral must have at least one Allegation ";
@@ -625,12 +625,12 @@ public class ScreeningToReferralService implements CrudsService {
       if (allegation.getLegacyId() == null || allegation.getLegacyId().isEmpty()) {
         // create an allegation in CMS legacy database
         gov.ca.cwds.rest.api.domain.cms.Allegation cmsAllegation =
-            new gov.ca.cwds.rest.api.domain.cms.Allegation("", legacyDefaultValues.DEFAULT_CODE, "",
-                scr.getLocationType(), "", allegationDispositionType,
-                legacyCodes.allegationTypeCode, "", "", false,
-                legacyDefaultValues.DEFAULT_NON_PROTECTING_PARENT_CODE, false, victimClientId,
-                perpatratorClientId, referralId, legacyDefaultValues.DEFAULT_COUNTY_SPECIFIC_CODE,
-                false, legacyDefaultValues.DEFAULT_CODE);
+            new gov.ca.cwds.rest.api.domain.cms.Allegation("", LegacyDefaultValues.DEFAULT_CODE, "",
+                scr.getLocationType(), "", allegationDispositionType, allegation.getType(), "", "",
+                false, LegacyDefaultValues.DEFAULT_NON_PROTECTING_PARENT_CODE, false,
+                victimClientId, perpatratorClientId, referralId,
+                LegacyDefaultValues.DEFAULT_COUNTY_SPECIFIC_CODE, false,
+                LegacyDefaultValues.DEFAULT_CODE);
 
         messageBuilder.addDomainValidationError(validator.validate(cmsAllegation));
 
@@ -643,8 +643,8 @@ public class ScreeningToReferralService implements CrudsService {
         // create the Allegation Perpetrator History
         gov.ca.cwds.rest.api.domain.cms.AllegationPerpetratorHistory cmsPerpHistory =
             new gov.ca.cwds.rest.api.domain.cms.AllegationPerpetratorHistory(
-                legacyDefaultValues.DEFAULT_COUNTY_SPECIFIC_CODE,
-                postedAllegation.getPerpetratorClientId(), postedAllegation.getId(), "2017-07-03");
+                LegacyDefaultValues.DEFAULT_COUNTY_SPECIFIC_CODE,
+                postedAllegation.getVictimClientId(), postedAllegation.getId(), "2017-07-03");
 
         messageBuilder.addDomainValidationError(validator.validate(cmsPerpHistory));
 
@@ -686,7 +686,7 @@ public class ScreeningToReferralService implements CrudsService {
       if (address.getLegacyId() == null || address.getLegacyId().isEmpty()) {
         // add the Address row
         Address domainAddress =
-            Address.createWithDefaults(address, legacyDefaultValues.DEFAULT_STATE_CODE);
+            Address.createWithDefaults(address, LegacyDefaultValues.DEFAULT_STATE_CODE);
         zipSuffix = domainAddress.getZip4();
 
         messageBuilder.addDomainValidationError(validator.validate(domainAddress));
@@ -730,7 +730,7 @@ public class ScreeningToReferralService implements CrudsService {
           address.getLegacyId() == null || address.getLegacyId().isEmpty();
       if (createNewClientAddress) {
         if (!clientAddressExists(address, clientParticipant)) {
-          ClientAddress clientAddress = new ClientAddress(legacyDefaultValues.DEFAULT_ADDRESS_TYPE,
+          ClientAddress clientAddress = new ClientAddress(LegacyDefaultValues.DEFAULT_ADDRESS_TYPE,
               "", "", "", addressId, clientId, "", referralId);
 
           messageBuilder.addDomainValidationError(validator.validate(clientAddress));
@@ -794,8 +794,8 @@ public class ScreeningToReferralService implements CrudsService {
     Reporter theReporter = reporterService.find(referralId);
     if (theReporter == null) {
       Reporter reporter = Reporter.createWithDefaults(referralId, mandatedReporterIndicator,
-          reporterAddress, ip, legacyDefaultValues.DEFAULT_COUNTY_SPECIFIC_CODE,
-          legacyDefaultValues.DEFAULT_STATE_CODE);
+          reporterAddress, ip, LegacyDefaultValues.DEFAULT_COUNTY_SPECIFIC_CODE,
+          LegacyDefaultValues.DEFAULT_STATE_CODE);
 
       messageBuilder.addDomainValidationError(validator.validate(reporter));
       theReporter = reporterService.createWithSingleTimestamp(reporter, timestamp);

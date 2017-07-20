@@ -2,6 +2,8 @@ package gov.ca.cwds.rest.api.domain;
 
 import static gov.ca.cwds.data.persistence.cms.CmsPersistentObject.CMS_ID_LEN;
 
+import gov.ca.cwds.rest.validation.ValidSystemCodeId;
+import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
 import org.hibernate.validator.constraints.NotEmpty;
@@ -46,10 +48,10 @@ public class Allegation extends ReportingDomain implements Request, Response {
   private long perpetratorPersonId;
 
   @JsonProperty("type")
-  @ApiModelProperty(required = true, value = "type of allegation", example = "mental abuse")
-  @NotEmpty
-  @Size(max = 75)
-  private String type;
+  @ApiModelProperty(required = true, value = "type of allegation code", example = "1373")
+  @NotNull
+  @ValidSystemCodeId(required = true, category = SystemCodeCategoryId.INJURY_HARM_TYPE)
+  private Short type;
 
   @JsonProperty("county")
   @ApiModelProperty(example = "Sacramento")
@@ -67,7 +69,7 @@ public class Allegation extends ReportingDomain implements Request, Response {
       @JsonProperty("legacy_id") String legacyId,
       @JsonProperty("victim_person_id") long victimPersonId,
       @JsonProperty("perpetrator_person_id") long perpetratorPersonId,
-      @JsonProperty("type") String type, @JsonProperty("county") String county) {
+      @JsonProperty("type") Short type, @JsonProperty("county") String county) {
     super();
     this.legacySourceTable = legacySourceTable;
     this.legacyId = legacyId;
@@ -122,7 +124,7 @@ public class Allegation extends ReportingDomain implements Request, Response {
   /**
    * @return type
    */
-  public String getType() {
+  public Short getType() {
     return type;
   }
 

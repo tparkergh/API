@@ -23,10 +23,7 @@ import org.apache.http.HttpStatus;
 import com.google.inject.Inject;
 
 import gov.ca.cwds.inject.ScreeningServiceBackedResource;
-import gov.ca.cwds.rest.api.domain.PostedScreening;
 import gov.ca.cwds.rest.api.domain.Screening;
-import gov.ca.cwds.rest.api.domain.ScreeningReference;
-import gov.ca.cwds.rest.api.domain.ScreeningRequest;
 import gov.ca.cwds.rest.api.domain.ScreeningResponse;
 import io.dropwizard.hibernate.UnitOfWork;
 import io.swagger.annotations.Api;
@@ -126,8 +123,8 @@ public class ScreeningResource {
 
   /**
    * Create a {@link Screening}.
-   * 
-   * @param screeningReference The {@link ScreeningReference}
+   *
+   * @param screening - screening
    * 
    * @return The {@link Response}
    */
@@ -140,36 +137,31 @@ public class ScreeningResource {
       @ApiResponse(code = 422, message = "Unable to validate Screening")})
   @Consumes(value = MediaType.APPLICATION_JSON)
   @ApiOperation(value = "Creates a new screening", code = HttpStatus.SC_CREATED,
-      response = PostedScreening.class)
-  public Response create(
-      @Valid @ApiParam(hidden = false, required = true) ScreeningReference screeningReference) {
-    return resourceDelegate.create(screeningReference);
+      response = Screening.class)
+  public Response create(@Valid @ApiParam(hidden = false, required = true) Screening screening) {
+    return resourceDelegate.create(screening);
   }
 
   /**
    * Update a {@link Screening}.
    *
-   * @param id the id
-   * @param screeningRequest {@link Screening}
+   * @param screening the screening
    *
    * @return The {@link Response}
    */
   @UnitOfWork(value = "ns")
   @PUT
-  @Path("/{id}")
+  // @Path("/{id}")
   @ApiResponses(value = {@ApiResponse(code = 400, message = "Unable to process JSON"),
       @ApiResponse(code = 401, message = "Not Authorized"),
       @ApiResponse(code = 404, message = "not found"),
       @ApiResponse(code = 406, message = "Accept Header not supported"),
       @ApiResponse(code = 422, message = "Unable to validate Screening")})
   @Consumes(value = MediaType.APPLICATION_JSON)
-  @ApiOperation(value = "Update Screening", code = HttpStatus.SC_OK,
-      response = ScreeningResponse.class)
-  public Response update(
-      @PathParam("id") @ApiParam(required = true, name = "id",
-          value = "The id of the Screening to update") long id,
-      @ApiParam(required = true, name = "screeningRequest",
-          value = "The screening request") ScreeningRequest screeningRequest) {
-    return resourceDelegate.update(id, screeningRequest);
+  @ApiOperation(value = "Update Screening", code = HttpStatus.SC_OK, response = Screening.class)
+
+  public Response update(@ApiParam(required = true, name = "screening",
+      value = "The screening request") Screening screening) {
+    return resourceDelegate.update(null, screening);
   }
 }

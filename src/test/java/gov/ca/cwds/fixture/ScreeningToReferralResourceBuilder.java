@@ -33,7 +33,7 @@ public class ScreeningToReferralResourceBuilder {
   private String name = "The Rocky Horror Show";
   private String reportNarrative = "Narrative 123 test";
   private String reference = "123ABC";
-  private String responseTime = "immediate";
+  private Short responseTime = 1516;
   private String startedAt = dateTimeFormat.format(new Date());
   private String assignee = "Michael Bastow";
   private String additionalInformation = "additional information about the referral";
@@ -115,7 +115,7 @@ public class ScreeningToReferralResourceBuilder {
     return this;
   }
 
-  public ScreeningToReferralResourceBuilder setResponseTime(String responseTime) {
+  public ScreeningToReferralResourceBuilder setResponseTime(Short responseTime) {
     this.responseTime = responseTime;
     return this;
   }
