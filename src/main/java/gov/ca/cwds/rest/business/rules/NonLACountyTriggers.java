@@ -72,7 +72,6 @@ public class NonLACountyTriggers {
     countyOwnership.setEntityId(managed.getPrimaryKey());
     countyOwnership.setEntityCode(CLIENT_ENTITY_CODE);
     countyOwnershipDao.create(countyOwnership);
-
   }
 
   /**
@@ -89,23 +88,7 @@ public class NonLACountyTriggers {
       countyOwnership.setEntityCode(CLIENT_ENTITY_CODE);
     }
     String methodName = SET_COUNTY + managed.getCountySpecificCode() + FLAG;
-    Method method = null;
-    try {
-      method = countyOwnership.getClass().getMethod(methodName, String.class);
-      method.invoke(countyOwnership, SET_FLAG);
-    } catch (NoSuchMethodException | SecurityException | IllegalAccessException
-        | IllegalArgumentException | InvocationTargetException e) {
-      LOGGER.info(COUNTY_OWNERSHIP_UNABLE_TO_TRIGGER, countyOwnership);
-      LOGGER.error(e.getMessage(), e);
-      throw new TriggerTableException();
-    }
-
-    if (countyExists) {
-      countyOwnershipDao.update(countyOwnership);
-    } else {
-      countyOwnershipDao.create(countyOwnership);
-    }
-
+    createOrUpdateCountyOwnership(countyOwnership, methodName, countyExists);
   }
 
   /**
@@ -124,23 +107,7 @@ public class NonLACountyTriggers {
     ReferralClient referralClient = referralClientDao.find(
         new PrimaryKey(managedClientAddress.getFkReferral(), managedClientAddress.getFkClient()));
     String methodName = SET_COUNTY + referralClient.getCountySpecificCode() + FLAG;
-    Method method = null;
-    try {
-      method = countyOwnership.getClass().getMethod(methodName, String.class);
-      method.invoke(countyOwnership, SET_FLAG);
-    } catch (NoSuchMethodException | IllegalAccessException | IllegalArgumentException
-        | InvocationTargetException e) {
-      LOGGER.info(COUNTY_OWNERSHIP_UNABLE_TO_TRIGGER, countyOwnership);
-      LOGGER.error(e.getMessage(), e);
-      throw new TriggerTableException();
-    }
-
-    if (countyExists) {
-      countyOwnershipDao.update(countyOwnership);
-    } else {
-      countyOwnershipDao.create(countyOwnership);
-    }
-
+    createOrUpdateCountyOwnership(countyOwnership, methodName, countyExists);
   }
 
   /**
@@ -163,6 +130,14 @@ public class NonLACountyTriggers {
     }
     Referral referral = referralDao.find(managed.getEstablishedForId());
     String methodName = SET_COUNTY + referral.getCountySpecificCode() + FLAG;
+    createOrUpdateCountyOwnership(countyOwnership, methodName, countyExists);
+  }
+
+  /**
+   * 
+   */
+  private void createOrUpdateCountyOwnership(CountyOwnership countyOwnership, String methodName,
+      Boolean countyExists) {
     Method method = null;
     try {
       method = countyOwnership.getClass().getMethod(methodName, String.class);
