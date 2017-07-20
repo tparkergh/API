@@ -186,7 +186,7 @@ public class DataAccessModule extends AbstractModule {
       };
 
   /**
-   * Constructor takes the API config.
+   * Constructor takes the API configuration.
    * 
    * @param bootstrap the ApiConfiguration
    */
@@ -196,17 +196,23 @@ public class DataAccessModule extends AbstractModule {
   }
 
   /**
+   * <p>
+   * Fails here. Call later. Method getSessionFactory() returns null at this point and fails method
+   * toInstance(). <blockquote>
+   * 
+   * <pre>
+   * {@code bind(SessionFactory.class).toInstance(cmsHibernateBundle.getSessionFactory());}.
+   * </pre>
+   * 
+   * </blockquote>
+   * </p>
+   * 
    * {@inheritDoc}
    * 
    * @see com.google.inject.AbstractModule#configure()
    */
   @Override
   protected void configure() {
-
-    // Fails here. Call later.
-    // Method getSessionFactory() returns null at this point and fails method toInstance().
-    // bind(SessionFactory.class).toInstance(cmsHibernateBundle.getSessionFactory());
-
     // CMS:
     // CmsReferral participants:
     bind(AllegationDao.class);
@@ -271,15 +277,19 @@ public class DataAccessModule extends AbstractModule {
     // System code loader DAO.
     bind(ApiSystemCodeDao.class).to(SystemCodeDaoFileImpl.class);
 
-    ApiHibernateInterceptor.addCommitHandler(ClientRelationship.class, e -> {
+    registerReferentialIntegrityHandlers();
+  }
+
+  protected void registerReferentialIntegrityHandlers() {
+    ApiHibernateInterceptor.addHandler(ClientRelationship.class, e -> {
       LOGGER.warn("handle ClientRelationship");
     });
 
-    ApiHibernateInterceptor.addCommitHandler(ClientAddress.class, e -> {
+    ApiHibernateInterceptor.addHandler(ClientAddress.class, e -> {
       LOGGER.warn("handle ClientAddress");
     });
 
-    ApiHibernateInterceptor.addCommitHandler(SystemMeta.class, e -> {
+    ApiHibernateInterceptor.addHandler(SystemMeta.class, e -> {
       LOGGER.warn("handle SystemMeta");
     });
 
