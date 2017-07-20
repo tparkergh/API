@@ -64,6 +64,12 @@ public class TestSystemCodeCache implements SystemCodeCache {
       }
     }
 
+    if (SystemCodeCategoryId.REFERRAL_RESPONSE.equals(metaId)) {
+      if (1520 == systemCodeId.intValue()) {
+        return true;
+      }
+    }
+
     if (SystemCodeCategoryId.INJURY_HARM_TYPE.equals(metaId)) {
       if (2179 == systemCodeId.intValue()) {
         return true;
