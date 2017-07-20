@@ -35,12 +35,13 @@ public class AllegationPerpetratorHistory extends CmsPersistentObject {
   private String id;
 
   @NotEmpty
-  @Size(min = 1, max = 2)
+  @Size(min = 2, max = 2)
   @Column(name = "CNTY_SPFCD")
   private String countySpecificCode;
 
+  @Size(max = CMS_ID_LEN)
   @Column(name = "FKCLIENT_T", length = CMS_ID_LEN)
-  private String victimClientId;
+  private String perpetratorClientId;
 
   @NotEmpty
   @Size(min = CMS_ID_LEN, max = CMS_ID_LEN)
@@ -66,16 +67,16 @@ public class AllegationPerpetratorHistory extends CmsPersistentObject {
    * 
    * @param id primary key
    * @param countySpecificCode county Specific Code
-   * @param victimClientId victim Client Id
+   * @param perpetratorClientId perpetrator Client Id
    * @param allegationId allegation Id
    * @param perpetratorUpdateDate perpetrator Update Date
    */
-  public AllegationPerpetratorHistory(String id, String countySpecificCode, String victimClientId,
-      String allegationId, Date perpetratorUpdateDate) {
+  public AllegationPerpetratorHistory(String id, String countySpecificCode,
+      String perpetratorClientId, String allegationId, Date perpetratorUpdateDate) {
     super();
     this.id = id;
     this.countySpecificCode = countySpecificCode;
-    this.victimClientId = victimClientId;
+    this.perpetratorClientId = perpetratorClientId;
     this.allegationId = allegationId;
     this.perpetratorUpdateDate = perpetratorUpdateDate;
   }
@@ -93,7 +94,7 @@ public class AllegationPerpetratorHistory extends CmsPersistentObject {
     super(lastUpdatedId);
     this.id = id;
     this.countySpecificCode = persistedAllegationPerpetratorHistory.getCountySpecificCode();
-    this.victimClientId = persistedAllegationPerpetratorHistory.getVictimClientId();
+    this.perpetratorClientId = persistedAllegationPerpetratorHistory.getPerpetratorClientId();
     this.allegationId = persistedAllegationPerpetratorHistory.getAllegationId();
     this.perpetratorUpdateDate = DomainChef
         .uncookDateString(persistedAllegationPerpetratorHistory.getPerpetratorUpdateDate());
@@ -113,7 +114,7 @@ public class AllegationPerpetratorHistory extends CmsPersistentObject {
     super(lastUpdatedId, lastUpdateTime);
     this.id = id;
     this.countySpecificCode = persistedAllegationPerpetratorHistory.getCountySpecificCode();
-    this.victimClientId = persistedAllegationPerpetratorHistory.getVictimClientId();
+    this.perpetratorClientId = persistedAllegationPerpetratorHistory.getPerpetratorClientId();
     this.allegationId = persistedAllegationPerpetratorHistory.getAllegationId();
     this.perpetratorUpdateDate = DomainChef
         .uncookDateString(persistedAllegationPerpetratorHistory.getPerpetratorUpdateDate());
@@ -144,10 +145,10 @@ public class AllegationPerpetratorHistory extends CmsPersistentObject {
   }
 
   /**
-   * @return the victinClientId
+   * @return the perpetratorClientId
    */
-  public String getVictimClientId() {
-    return victimClientId;
+  public String getPerpetratorClientId() {
+    return perpetratorClientId;
   }
 
   /**
