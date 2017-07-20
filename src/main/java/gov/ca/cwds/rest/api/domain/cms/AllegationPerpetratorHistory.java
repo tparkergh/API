@@ -6,6 +6,7 @@ import javax.validation.constraints.Size;
 
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
+import org.hibernate.validator.constraints.NotEmpty;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonFormat;
@@ -29,13 +30,16 @@ public class AllegationPerpetratorHistory extends ReportingDomain implements Req
    */
   private static final long serialVersionUID = 1L;
 
+  @Size(min = 2, max = 2)
   @ApiModelProperty(required = true, readOnly = false, value = "County code", example = "99")
   private String countySpecificCode;
 
+  @Size(max = CMS_ID_LEN)
   @ApiModelProperty(required = false, readOnly = false, value = "Client ID of perpetrator",
       example = "ABC1234568")
   private String perpetratorClientId;
 
+  @NotEmpty
   @Size(min = CMS_ID_LEN, max = CMS_ID_LEN)
   @ApiModelProperty(required = true, readOnly = false, value = "Allegation ID",
       example = "ABC1234567")

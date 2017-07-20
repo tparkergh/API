@@ -1,6 +1,5 @@
 package gov.ca.cwds.rest.services.cms;
 
-import static io.dropwizard.testing.FixtureHelpers.fixture;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.notNullValue;
@@ -27,6 +26,7 @@ import org.mockito.stubbing.Answer;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import gov.ca.cwds.data.cms.AllegationPerpetratorHistoryDao;
+import gov.ca.cwds.fixture.AllegationPerpetratorHistoryResourceBuilder;
 import gov.ca.cwds.rest.api.Response;
 import gov.ca.cwds.rest.api.domain.cms.AllegationPerpetratorHistory;
 import gov.ca.cwds.rest.api.domain.cms.PostedAllegationPerpetratorHistory;
@@ -76,9 +76,9 @@ public class AllegationPerpetratorHistoryServiceTest implements ServiceTestTempl
   @Test
   public void testFindReturnsCorrectEntity() throws Exception {
     String id = "AbjFyc80It";
-    AllegationPerpetratorHistory expected = MAPPER.readValue(
-        fixture("fixtures/domain/legacy/AllegationPerpetratorHistory/valid/valid.json"),
-        AllegationPerpetratorHistory.class);
+    AllegationPerpetratorHistory expected =
+        new AllegationPerpetratorHistoryResourceBuilder().createAllegationPerpetratorHistory();
+
     gov.ca.cwds.data.persistence.cms.AllegationPerpetratorHistory allegationPerpetratorHistory =
         new gov.ca.cwds.data.persistence.cms.AllegationPerpetratorHistory(id, expected, "0XA");
 
@@ -149,9 +149,8 @@ public class AllegationPerpetratorHistoryServiceTest implements ServiceTestTempl
   @Test
   public void testUpdateReturnsCorrectEntity() throws Exception {
     String id = "AbjFyc80It";
-    AllegationPerpetratorHistory expected = MAPPER.readValue(
-        fixture("fixtures/domain/legacy/AllegationPerpetratorHistory/valid/valid.json"),
-        AllegationPerpetratorHistory.class);
+    AllegationPerpetratorHistory expected =
+        new AllegationPerpetratorHistoryResourceBuilder().createAllegationPerpetratorHistory();
 
     gov.ca.cwds.data.persistence.cms.AllegationPerpetratorHistory allegationPerpetratorHistory =
         new gov.ca.cwds.data.persistence.cms.AllegationPerpetratorHistory(id, expected, "ABC");
@@ -168,9 +167,8 @@ public class AllegationPerpetratorHistoryServiceTest implements ServiceTestTempl
   @Test
   public void testUpdateThrowsExceptionWhenNotFound() throws Exception {
     try {
-      AllegationPerpetratorHistory allegationPerpetratorHistoryRequest = MAPPER.readValue(
-          fixture("fixtures/domain/legacy/AllegationPerpetratorHistory/valid/valid.json"),
-          AllegationPerpetratorHistory.class);
+      AllegationPerpetratorHistory allegationPerpetratorHistoryRequest =
+          new AllegationPerpetratorHistoryResourceBuilder().createAllegationPerpetratorHistory();
 
       when(allegationPerpetratorHistoryDao.update(any())).thenThrow(EntityNotFoundException.class);
 
@@ -200,9 +198,9 @@ public class AllegationPerpetratorHistoryServiceTest implements ServiceTestTempl
   @Test
   public void testCreateReturnsPostedClass() throws Exception {
     String id = "AbjFyc80It";
-    AllegationPerpetratorHistory allegationPerpetratorHistoryDomain = MAPPER.readValue(
-        fixture("fixtures/domain/legacy/AllegationPerpetratorHistory/valid/valid.json"),
-        AllegationPerpetratorHistory.class);
+    AllegationPerpetratorHistory allegationPerpetratorHistoryDomain =
+        new AllegationPerpetratorHistoryResourceBuilder().createAllegationPerpetratorHistory();
+
     gov.ca.cwds.data.persistence.cms.AllegationPerpetratorHistory toCreate =
         new gov.ca.cwds.data.persistence.cms.AllegationPerpetratorHistory(id,
             allegationPerpetratorHistoryDomain, "ABC");
@@ -220,9 +218,9 @@ public class AllegationPerpetratorHistoryServiceTest implements ServiceTestTempl
   @Test
   public void testCreateReturnsNonNull() throws Exception {
     String id = "AbjFyc80It";
-    AllegationPerpetratorHistory allegationPerpetratorHistoryDomain = MAPPER.readValue(
-        fixture("fixtures/domain/legacy/AllegationPerpetratorHistory/valid/valid.json"),
-        AllegationPerpetratorHistory.class);
+    AllegationPerpetratorHistory allegationPerpetratorHistoryDomain =
+        new AllegationPerpetratorHistoryResourceBuilder().createAllegationPerpetratorHistory();
+
     gov.ca.cwds.data.persistence.cms.AllegationPerpetratorHistory toCreate =
         new gov.ca.cwds.data.persistence.cms.AllegationPerpetratorHistory(id,
             allegationPerpetratorHistoryDomain, "ABC");
@@ -241,9 +239,9 @@ public class AllegationPerpetratorHistoryServiceTest implements ServiceTestTempl
   @Test
   public void testCreateReturnsCorrectEntity() throws Exception {
     String id = "AbjFyc80It";
-    AllegationPerpetratorHistory allegationPerpetratorHistoryDomain = MAPPER.readValue(
-        fixture("fixtures/domain/legacy/AllegationPerpetratorHistory/valid/valid.json"),
-        AllegationPerpetratorHistory.class);
+    AllegationPerpetratorHistory allegationPerpetratorHistoryDomain =
+        new AllegationPerpetratorHistoryResourceBuilder().createAllegationPerpetratorHistory();
+
     gov.ca.cwds.data.persistence.cms.AllegationPerpetratorHistory toCreate =
         new gov.ca.cwds.data.persistence.cms.AllegationPerpetratorHistory(id,
             allegationPerpetratorHistoryDomain, "ABC");
@@ -263,9 +261,8 @@ public class AllegationPerpetratorHistoryServiceTest implements ServiceTestTempl
   @Test
   public void testCreateWithSingleTimestampReturnsCorrectEntity() throws Exception {
     String id = "AbjFyc80It";
-    AllegationPerpetratorHistory allegationPerpetratorHistoryDomain = MAPPER.readValue(
-        fixture("fixtures/domain/legacy/AllegationPerpetratorHistory/valid/valid.json"),
-        AllegationPerpetratorHistory.class);
+    AllegationPerpetratorHistory allegationPerpetratorHistoryDomain =
+        new AllegationPerpetratorHistoryResourceBuilder().createAllegationPerpetratorHistory();
     gov.ca.cwds.data.persistence.cms.AllegationPerpetratorHistory toCreate =
         new gov.ca.cwds.data.persistence.cms.AllegationPerpetratorHistory(id,
             allegationPerpetratorHistoryDomain, "ABC");
@@ -285,9 +282,8 @@ public class AllegationPerpetratorHistoryServiceTest implements ServiceTestTempl
   @Test
   public void testCreateNullIDError() throws Exception {
     try {
-      AllegationPerpetratorHistory allegationPerpetratorHistoryDomain = MAPPER.readValue(
-          fixture("fixtures/domain/legacy/AllegationPerpetratorHistory/valid/valid.json"),
-          AllegationPerpetratorHistory.class);
+      AllegationPerpetratorHistory allegationPerpetratorHistoryDomain =
+          new AllegationPerpetratorHistoryResourceBuilder().createAllegationPerpetratorHistory();
       gov.ca.cwds.data.persistence.cms.AllegationPerpetratorHistory toCreate =
           new gov.ca.cwds.data.persistence.cms.AllegationPerpetratorHistory(null,
               allegationPerpetratorHistoryDomain, "ABC");
@@ -308,9 +304,9 @@ public class AllegationPerpetratorHistoryServiceTest implements ServiceTestTempl
   @Test
   public void testCreateBlankIDError() throws Exception {
     try {
-      AllegationPerpetratorHistory allegationPerpetratorHistoryDomain = MAPPER.readValue(
-          fixture("fixtures/domain/legacy/AllegationPerpetratorHistory/valid/valid.json"),
-          AllegationPerpetratorHistory.class);
+      AllegationPerpetratorHistory allegationPerpetratorHistoryDomain =
+          new AllegationPerpetratorHistoryResourceBuilder().createAllegationPerpetratorHistory();
+
       gov.ca.cwds.data.persistence.cms.AllegationPerpetratorHistory toCreate =
           new gov.ca.cwds.data.persistence.cms.AllegationPerpetratorHistory(" ",
               allegationPerpetratorHistoryDomain, "ABC");
@@ -333,9 +329,8 @@ public class AllegationPerpetratorHistoryServiceTest implements ServiceTestTempl
   @SuppressWarnings("javadoc")
   @Test
   public void testCreateReturnsGeneratedId() throws Exception {
-    AllegationPerpetratorHistory allegationPerpetratorHistoryDomain = MAPPER.readValue(
-        fixture("fixtures/domain/legacy/AllegationPerpetratorHistory/valid/valid.json"),
-        AllegationPerpetratorHistory.class);
+    AllegationPerpetratorHistory allegationPerpetratorHistoryDomain =
+        new AllegationPerpetratorHistoryResourceBuilder().createAllegationPerpetratorHistory();
     when(allegationPerpetratorHistoryDao
         .create(any(gov.ca.cwds.data.persistence.cms.AllegationPerpetratorHistory.class)))
             .thenAnswer(

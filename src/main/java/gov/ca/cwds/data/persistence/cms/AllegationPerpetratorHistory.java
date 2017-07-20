@@ -35,10 +35,11 @@ public class AllegationPerpetratorHistory extends CmsPersistentObject {
   private String id;
 
   @NotEmpty
-  @Size(min = 1, max = 2)
+  @Size(min = 2, max = 2)
   @Column(name = "CNTY_SPFCD")
   private String countySpecificCode;
 
+  @Size(max = CMS_ID_LEN)
   @Column(name = "FKCLIENT_T", length = CMS_ID_LEN)
   private String perpetratorClientId;
 
