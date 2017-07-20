@@ -9,6 +9,9 @@ import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
+import javax.persistence.EntityExistsException;
+
+import org.apache.commons.lang3.NotImplementedException;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Rule;
@@ -48,6 +51,31 @@ public class DrmsDocumentServiceTest {
     drmsDocumentService = new DrmsDocumentService(drmsDocumentDao, staffPersonIdRetriever);
   }
 
+  // create
+  @SuppressWarnings("javadoc")
+  @Test(expected = AssertionError.class)
+  public void drmsDocumentServiceCreateThrowsAssertionError() throws Exception {
+    try {
+      drmsDocumentService.create(null);
+    } catch (AssertionError e) {
+      assertEquals("Expected AssertionError", e.getMessage());
+    }
+  }
+
+  @SuppressWarnings("javadoc")
+  @Test
+  public void drmsDocumentServiceCreateThrowsEntityExistsException() throws Exception {
+    try {
+      DrmsDocument drmsDocumentRequest = MAPPER.readValue(
+          fixture("fixtures/domain/legacy/DrmsDocument/valid/valid.json"), DrmsDocument.class);
+
+      when(drmsDocumentDao.create(any())).thenThrow(EntityExistsException.class);
+
+      drmsDocumentService.create(drmsDocumentRequest);
+    } catch (Exception e) {
+      assertEquals(e.getClass(), ServiceException.class);
+    }
+  }
 
   @SuppressWarnings("javadoc")
   @Test
@@ -161,6 +189,30 @@ public class DrmsDocumentServiceTest {
     assertEquals(returned.getId().length(), 10);
     PostedDrmsDocument newReturned = drmsDocumentService.create(drmsDocumentDomain);
     Assert.assertNotEquals(returned.getId(), newReturned.getId());
+  }
+
+  // delete
+  @SuppressWarnings("javadoc")
+  @Test
+  public void drmsDocumentDeleteThrowsNotImplementedException() throws Exception {
+    thrown.expect(NotImplementedException.class);
+    drmsDocumentService.delete("string");
+  }
+
+  // find
+  @SuppressWarnings("javadoc")
+  @Test
+  public void drmsDocumentFindThrowsNotImplementedException() throws Exception {
+    thrown.expect(NotImplementedException.class);
+    drmsDocumentService.find("string");
+  }
+
+  // update
+  @SuppressWarnings("javadoc")
+  @Test
+  public void drmsDocumentUpdateThrowsNotImplementedException() throws Exception {
+    thrown.expect(NotImplementedException.class);
+    drmsDocumentService.update("String", null);
   }
 
 }

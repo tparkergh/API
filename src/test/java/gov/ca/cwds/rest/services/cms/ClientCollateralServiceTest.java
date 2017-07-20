@@ -8,11 +8,8 @@ import static org.junit.Assert.assertEquals;
 import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
-import gov.ca.cwds.data.cms.ClientCollateralDao;
-import gov.ca.cwds.rest.api.Response;
-import gov.ca.cwds.rest.api.domain.cms.ClientCollateral;
-import gov.ca.cwds.rest.api.domain.cms.PostedClientCollateral;
-import gov.ca.cwds.rest.services.ServiceException;
+
+import javax.persistence.EntityExistsException;
 
 import org.apache.commons.lang3.NotImplementedException;
 import org.junit.Assert;
@@ -20,6 +17,14 @@ import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
+import org.mockito.invocation.InvocationOnMock;
+import org.mockito.stubbing.Answer;
+
+import gov.ca.cwds.data.cms.ClientCollateralDao;
+import gov.ca.cwds.rest.api.Response;
+import gov.ca.cwds.rest.api.domain.cms.ClientCollateral;
+import gov.ca.cwds.rest.api.domain.cms.PostedClientCollateral;
+import gov.ca.cwds.rest.services.ServiceException;
 
 /**
  * @author CWDS API Team
@@ -97,6 +102,14 @@ public class ClientCollateralServiceTest {
     }
   }
 
+  // update
+  @SuppressWarnings("javadoc")
+  @Test
+  public void updateThrowsNotImplementedException() throws Exception {
+    thrown.expect(NotImplementedException.class);
+    clientCollateralService.update("string", null);
+  }
+
   // create test
   @SuppressWarnings("javadoc")
   @Test
@@ -107,6 +120,19 @@ public class ClientCollateralServiceTest {
       Assert.fail("Expected AssertionError");
     } catch (AssertionError e) {
       assertEquals("Expected AssertionError", e.getMessage());
+    }
+  }
+
+  @SuppressWarnings("javadoc")
+  @Test
+  public void clientCollateralServiceCreateThrowsEntityExistsException() throws Exception {
+    try {
+      ClientCollateral clientCollateralRequest = validClientCollateralDomainObject();
+
+      when(clientCollateralDao.create(any())).thenThrow(EntityExistsException.class);
+      clientCollateralService.create(clientCollateralRequest);
+    } catch (Exception e) {
+      assertEquals(e.getClass(), ServiceException.class);
     }
   }
 
@@ -227,6 +253,31 @@ public class ClientCollateralServiceTest {
     } catch (ServiceException e) {
       assertEquals("ClientCollateral ID cannot be empty", e.getMessage());
     }
+  }
+
+  /*
+   * Test for checking the new ClientRelationship Id generated and lenght is 10
+   */
+  @SuppressWarnings("javadoc")
+  @Test
+  public void createReturnsGeneratedId() throws Exception {
+    ClientCollateral clientCollateralDomain = validClientCollateralDomainObject();
+    when(clientCollateralDao.create(any(gov.ca.cwds.data.persistence.cms.ClientCollateral.class)))
+        .thenAnswer(new Answer<gov.ca.cwds.data.persistence.cms.ClientCollateral>() {
+
+          @Override
+          public gov.ca.cwds.data.persistence.cms.ClientCollateral answer(
+              InvocationOnMock invocation) throws Throwable {
+            gov.ca.cwds.data.persistence.cms.ClientCollateral report =
+                (gov.ca.cwds.data.persistence.cms.ClientCollateral) invocation.getArguments()[0];
+            return report;
+          }
+        });
+
+    PostedClientCollateral returned = clientCollateralService.create(clientCollateralDomain);
+    assertEquals(returned.getThirdId().length(), 10);
+    PostedClientCollateral newReturned = clientCollateralService.create(clientCollateralDomain);
+    Assert.assertNotEquals(returned.getThirdId(), newReturned.getThirdId());
   }
 
   public PostedClientCollateral validClientCollateralDomainObject() {

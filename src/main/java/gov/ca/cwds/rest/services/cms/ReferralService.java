@@ -269,7 +269,7 @@ public class ReferralService implements CrudsService {
     return gov.ca.cwds.rest.api.domain.cms.Referral.createWithDefaults(ParticipantValidator.anonymousReporter(screeningToReferral),
         legacyCodes.communicationsMethodCode, drmsAllegationDescriptionDoc, drmsErReferralDoc,
         drmsInvestigationDoc, screeningToReferral.getName(), dateStarted, timeStarted,
-        legacyCodes.referralResponseTypeCode, allegesAbuseOccurredAtAddressId,
+        screeningToReferral.getResponseTime(), allegesAbuseOccurredAtAddressId,
         firstResponseDeterminedByStaffPersonId, longTextId, LegacyDefaultValues.DEFAULT_COUNTY_SPECIFIC_CODE,
         approvalStatusCode, LegacyDefaultValues.DEFAULT_STAFF_PERSON_ID);
   }

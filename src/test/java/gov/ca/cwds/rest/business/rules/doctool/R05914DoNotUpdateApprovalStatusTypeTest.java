@@ -8,10 +8,9 @@ import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
-import com.google.inject.spi.Message;
 import javax.validation.Validation;
-
 import javax.validation.Validator;
+
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
@@ -133,8 +132,8 @@ public class R05914DoNotUpdateApprovalStatusTypeTest {
     drmsDocumentService = new DrmsDocumentService(drmsDocumentDao, staffPersonIdRetriever);
 
     addressDao = mock(AddressDao.class);
-    addressService =
-        new AddressService(addressDao, staffPersonIdRetriever, ssaName3Dao, upperCaseTables, validator);
+    addressService = new AddressService(addressDao, staffPersonIdRetriever, ssaName3Dao,
+        upperCaseTables, validator);
 
     referralService = new ReferralService(referralDao, nonLACountyTriggers, laCountyTrigger,
         triggerTablesDao, staffpersonDao, staffPersonIdRetriever, assignmentService, validator,
@@ -173,22 +172,27 @@ public class R05914DoNotUpdateApprovalStatusTypeTest {
     laCountyTrigger = mock(LACountyTrigger.class);
     triggerTablesDao = mock(TriggerTablesDao.class);
     staffpersonDao = mock(StaffPersonDao.class);
+    nonLACountyTriggers = mock(NonLACountyTriggers.class);
     clientAddressService = new ClientAddressService(clientAddressDao, staffpersonDao,
-        triggerTablesDao, laCountyTrigger, staffPersonIdRetriever);
+        triggerTablesDao, laCountyTrigger, staffPersonIdRetriever, nonLACountyTriggers);
 
     childClientDao = mock(ChildClientDao.class);
     childClientService = new ChildClientService(childClientDao, staffPersonIdRetriever);
 
     assignmentDao = mock(AssignmentDao.class);
-    assignmentService = new AssignmentService(assignmentDao, staffPersonIdRetriever, validator);
+    staffpersonDao = mock(StaffPersonDao.class);
+    nonLACountyTriggers = mock(NonLACountyTriggers.class);
+    triggerTablesDao = mock(TriggerTablesDao.class);
+    assignmentService = new AssignmentService(assignmentDao, nonLACountyTriggers, staffpersonDao,
+        triggerTablesDao, staffPersonIdRetriever, validator);
 
     reminders = mock(Reminders.class);
 
     screeningToReferralService = new ScreeningToReferralService(referralService, clientService,
         allegationService, crossReportService, referralClientService, reporterService,
-        addressService, clientAddressService, childClientService,
-        assignmentService, Validation.buildDefaultValidatorFactory().getValidator(), referralDao,
-        new MessageBuilder(), allegationPerpetratorHistoryService, reminders);
+        addressService, clientAddressService, childClientService, assignmentService,
+        Validation.buildDefaultValidatorFactory().getValidator(), referralDao, new MessageBuilder(),
+        allegationPerpetratorHistoryService, reminders);
 
   }
 
@@ -227,8 +231,8 @@ public class R05914DoNotUpdateApprovalStatusTypeTest {
     when(drmsDocumentDao.create(any(gov.ca.cwds.data.persistence.cms.DrmsDocument.class)))
         .thenReturn(drmsDocumentToCreate);
 
-    Referral referralCreated = referralService.createReferralWithDefaults(
-        screeningToReferral, "2016-08-03T01:00:00.000Z", "2016-08-03T01:00:00.000Z", null, new MessageBuilder());
+    Referral referralCreated = referralService.createReferralWithDefaults(screeningToReferral,
+        "2016-08-03T01:00:00.000Z", "2016-08-03T01:00:00.000Z", null, new MessageBuilder());
     System.out.println(referralCreated.getApprovalStatusType());
     assertThat(referralCreated.getApprovalStatusType(), is(equalTo((short) 118)));
   }
