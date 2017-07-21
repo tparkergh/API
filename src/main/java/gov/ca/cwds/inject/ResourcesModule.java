@@ -120,6 +120,7 @@ public class ResourcesModule extends AbstractModule {
     bind(AssignmentResource.class);
     bind(ClientRelationshipResource.class);
     bind(ClientCollateralResource.class);
+    bind(gov.ca.cwds.rest.resources.StaffPersonResource.class);
   }
 
   @Provides
@@ -247,6 +248,13 @@ public class ResourcesModule extends AbstractModule {
   @StaffPersonServiceBackedResource
   public ResourceDelegate staffPersonServiceBackedResource(Injector injector) {
     return new ServiceBackedResourceDelegate(injector.getInstance(StaffPersonService.class));
+  }
+
+  @Provides
+  @StaffPersonsServiceBackedResource
+  public ResourceDelegate staffPersonsServiceBackedResource(Injector injector) {
+    return new ServiceBackedResourceDelegate(
+        injector.getInstance(gov.ca.cwds.rest.services.StaffPersonService.class));
   }
 
   @Provides
