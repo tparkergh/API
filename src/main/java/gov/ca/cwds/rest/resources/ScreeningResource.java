@@ -151,7 +151,7 @@ public class ScreeningResource {
    */
   @UnitOfWork(value = "ns")
   @PUT
-  // @Path("/{id}")
+  @Path("/{id}")
   @ApiResponses(value = {@ApiResponse(code = 400, message = "Unable to process JSON"),
       @ApiResponse(code = 401, message = "Not Authorized"),
       @ApiResponse(code = 404, message = "not found"),
@@ -160,8 +160,11 @@ public class ScreeningResource {
   @Consumes(value = MediaType.APPLICATION_JSON)
   @ApiOperation(value = "Update Screening", code = HttpStatus.SC_OK, response = Screening.class)
 
-  public Response update(@ApiParam(required = true, name = "screening",
-      value = "The screening request") Screening screening) {
-    return resourceDelegate.update(null, screening);
+  public Response update(
+      @PathParam("id") @ApiParam(required = true, name = "id",
+          value = "The id of the Screening to update") String id,
+      @ApiParam(required = true, name = "screening",
+          value = "The screening request") Screening screening) {
+    return resourceDelegate.update(id, screening);
   }
 }

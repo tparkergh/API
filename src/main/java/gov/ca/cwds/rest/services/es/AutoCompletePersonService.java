@@ -8,6 +8,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.google.inject.Inject;
+import com.google.inject.name.Named;
 
 import gov.ca.cwds.data.es.ElasticSearchPerson;
 import gov.ca.cwds.data.es.ElasticsearchDao;
@@ -39,7 +40,7 @@ public class AutoCompletePersonService
    * @param sysCodeCache system code cache
    */
   @Inject
-  public AutoCompletePersonService(ElasticsearchDao elasticsearchDao,
+  public AutoCompletePersonService(@Named("people") ElasticsearchDao elasticsearchDao,
       SystemCodeCache sysCodeCache) {
     this.elasticsearchDao = elasticsearchDao;
     this.sysCodeCache = sysCodeCache;

@@ -2,6 +2,8 @@ package gov.ca.cwds.auth.realms;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+import gov.ca.cwds.security.shiro.realms.PerryAccount;
+
 /**
  * Custom Implementation for additional security attributes in JWT token
  * 

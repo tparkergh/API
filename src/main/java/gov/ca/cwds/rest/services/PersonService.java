@@ -8,6 +8,7 @@ import org.slf4j.LoggerFactory;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.inject.Inject;
+import com.google.inject.name.Named;
 
 import gov.ca.cwds.data.Dao;
 import gov.ca.cwds.data.es.ElasticsearchDao;
@@ -92,7 +93,7 @@ public class PersonService implements CrudsService {
    * 
    */
   @Inject
-  public PersonService(PersonDao personDao, ElasticsearchDao elasticsearchDao,
+  public PersonService(PersonDao personDao, @Named("people") ElasticsearchDao elasticsearchDao,
       PersonAddressDao personAddressDao, AddressDao addressDao, PersonPhoneDao personPhoneDao,
       PhoneNumberDao phoneNumberDao, PersonLanguageDao personLanguageDao, LanguageDao languageDao,
       PersonRaceDao personRaceDao, RaceDao raceDao, PersonEthnicityDao personEthnicityDao,

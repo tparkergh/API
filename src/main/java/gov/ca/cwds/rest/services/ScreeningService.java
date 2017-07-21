@@ -4,6 +4,10 @@ import java.io.Serializable;
 
 import org.apache.commons.lang3.NotImplementedException;
 
+import com.google.inject.Inject;
+import com.google.inject.name.Named;
+
+import gov.ca.cwds.data.es.ElasticsearchDao;
 import gov.ca.cwds.rest.api.Request;
 import gov.ca.cwds.rest.api.Response;
 import gov.ca.cwds.rest.api.domain.Screening;
@@ -15,14 +19,19 @@ import gov.ca.cwds.rest.api.domain.Screening;
  */
 public class ScreeningService implements CrudsService {
 
+  private ElasticsearchDao esDao;
+
   // private ScreeningDao screeningDao;
   // private PersonService personService;
 
   /**
-   * default constructor
+   * Construct the object
+   * 
+   * @param esDao Screenings ES DAO
    */
-  public ScreeningService() {
-    // no-opt
+  @Inject
+  public ScreeningService(@Named("screenings") ElasticsearchDao esDao) {
+    this.esDao = esDao;
   }
 
   // /**
