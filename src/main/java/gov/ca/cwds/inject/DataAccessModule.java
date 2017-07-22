@@ -16,7 +16,6 @@ import org.slf4j.LoggerFactory;
 import com.google.common.collect.ImmutableList;
 import com.google.inject.AbstractModule;
 import com.google.inject.Provides;
-import com.google.inject.Singleton;
 import com.google.inject.name.Named;
 
 import gov.ca.cwds.data.cms.AddressUcDao;
@@ -317,7 +316,6 @@ public class DataAccessModule extends AbstractModule {
 
   @Provides
   @Named("ElasticSearchDaos")
-  @Singleton
   public Map<String, ElasticsearchDao> elasticSearchDaos(ApiConfiguration apiConfiguration) {
     if (clients == null) {
       elasticsearchClients(apiConfiguration);
