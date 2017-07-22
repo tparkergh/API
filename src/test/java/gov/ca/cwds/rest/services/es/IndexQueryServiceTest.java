@@ -19,6 +19,7 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
 import gov.ca.cwds.data.es.ElasticsearchDao;
+import gov.ca.cwds.rest.ElasticsearchConfiguration;
 import gov.ca.cwds.rest.api.domain.cms.SystemCodeCache;
 import gov.ca.cwds.rest.api.domain.es.IndexQueryRequest;
 import gov.ca.cwds.rest.api.domain.es.IndexQueryResponse;
@@ -37,6 +38,9 @@ public class IndexQueryServiceTest {
   private ElasticsearchDao dao;
 
   @Mock
+  private ElasticsearchConfiguration esConfig;
+
+  @Mock
   private SystemCodeCache systemCodeCache;
 
   @Mock
@@ -51,6 +55,8 @@ public class IndexQueryServiceTest {
   public void initMocks() {
     MockitoAnnotations.initMocks(this);
 
+    when(dao.getConfig()).thenReturn(esConfig);
+    when(esConfig.getElasticsearchAlias()).thenReturn("index");
     Map<String, ElasticsearchDao> esDaos = new HashMap<>();
     esDaos.put("index", dao);
     target = new IndexQueryService(esDaos, systemCodeCache);

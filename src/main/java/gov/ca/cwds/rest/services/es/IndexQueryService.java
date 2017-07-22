@@ -38,12 +38,12 @@ public class IndexQueryService
   /**
    * Constructor
    * 
-   * @param elasticsearchDao the ElasticSearch DAO
+   * @param elasticsearchDaos the ElasticSearch DAO
    * @param sysCodeCache system code cache
    */
   @Inject
   public IndexQueryService(
-      @Named("ElasticSearchDaos") Map<String, ElasticsearchDao> elasticsearchDaos,
+      @Named("elasticsearch.daos") Map<String, ElasticsearchDao> elasticsearchDaos,
       SystemCodeCache sysCodeCache) {
     this.elasticsearchDaos = elasticsearchDaos;
     this.sysCodeCache = sysCodeCache;
@@ -57,8 +57,20 @@ public class IndexQueryService
    * @return complete domain object
    */
   protected String callDao(final String index, final String query) {
-    ElasticsearchDao dao = elasticsearchDaos.get(index);
-    return dao.searchIndexByQuery(index, query);
+    ElasticsearchDao esDao = null;
+
+    for (ElasticsearchDao dao : elasticsearchDaos.values()) {
+      if (index.equals(dao.getConfig().getElasticsearchAlias())) {
+        esDao = dao;
+        break;
+      }
+    }
+
+    if (esDao == null) {
+      throw new ServiceException("Unknown index: " + index);
+    }
+
+    return esDao.searchIndexByQuery(index, query);
   }
 
   @Override
@@ -76,13 +88,5 @@ public class IndexQueryService
   @Override
   protected IndexQueryResponse handleFind(String searchForThis) {
     throw new NotImplementedException("handleFind is not implemented");
-    // try {
-    // return new IndexQueryResponse(
-    // callDao(elasticsearchDao.getDefaultAlias(), searchForThis.trim()));
-    // } catch (Exception e) {
-    // LOGGER.error("Something went wrong ...", e.getMessage());
-    // throw new ServiceException("Something went wrong ...", e);
-    // }
   }
-
 }

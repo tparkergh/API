@@ -315,10 +315,10 @@ public class DataAccessModule extends AbstractModule {
   }
 
   @Provides
-  @Named("ElasticSearchDaos")
-  public Map<String, ElasticsearchDao> elasticSearchDaos(ApiConfiguration apiConfiguration) {
+  @Named("elasticsearch.daos")
+  public Map<String, ElasticsearchDao> provideElasticSearchDaos(ApiConfiguration apiConfiguration) {
     if (clients == null) {
-      elasticsearchClients(apiConfiguration);
+      provideElasticsearchClients(apiConfiguration);
     }
 
     Map<String, ElasticsearchDao> esDaos = new HashMap<>();
@@ -333,21 +333,23 @@ public class DataAccessModule extends AbstractModule {
   }
 
   @Provides
-  @Named("people")
-  public ElasticsearchDao elasticSearchDaoPeople(
-      @Named("ElasticSearchDaos") Map<String, ElasticsearchDao> esDaos) {
-    return esDaos.get("people");
+  @Named("people.index")
+  public ElasticsearchDao provideElasticSearchDaoPeople(
+      @Named("elasticsearch.daos") Map<String, ElasticsearchDao> esDaos) {
+    return esDaos.get("peopleIndex");
   }
 
   @Provides
-  @Named("screenings")
-  public ElasticsearchDao elasticSearchDaoScreenings(
-      @Named("ElasticSearchDaos") Map<String, ElasticsearchDao> esDaos) {
-    return esDaos.get("screenings");
+  @Named("screenings.index")
+  public ElasticsearchDao provideEelasticSearchDaoScreenings(
+      @Named("elasticsearch.daos") Map<String, ElasticsearchDao> esDaos) {
+    return esDaos.get("screeningsIndex");
   }
 
   @Provides
-  public synchronized Map<String, Client> elasticsearchClients(ApiConfiguration apiConfiguration) {
+  public synchronized Map<String, Client> provideElasticsearchClients(
+      ApiConfiguration apiConfiguration) {
+
     if (clients == null) {
       clients = new HashMap<>();
 
