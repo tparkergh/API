@@ -1,7 +1,5 @@
 package gov.ca.cwds.rest.api.domain;
 
-import static gov.ca.cwds.data.persistence.cms.CmsPersistentObject.CMS_ID_LEN;
-
 import javax.validation.constraints.Size;
 
 import org.apache.commons.lang3.builder.EqualsBuilder;
@@ -13,7 +11,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 import gov.ca.cwds.rest.api.Request;
 import gov.ca.cwds.rest.api.Response;
+import gov.ca.cwds.rest.validation.Date;
 import io.dropwizard.jackson.JsonSnakeCase;
+import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 
 /**
@@ -22,6 +22,7 @@ import io.swagger.annotations.ApiModelProperty;
  * @author CWDS API Team
  */
 @JsonSnakeCase
+@ApiModel("Screening")
 public class Screening extends ReportingDomain implements Request, Response {
   /**
    * Serialization version
@@ -29,7 +30,7 @@ public class Screening extends ReportingDomain implements Request, Response {
   private static final long serialVersionUID = 1L;
 
   @JsonProperty("id")
-  @Size(min = CMS_ID_LEN, max = CMS_ID_LEN)
+  @Size(min = 1, max = 50)
   @ApiModelProperty(required = true, readOnly = false, value = "Screener id",
       example = "ABC1234568")
   private String id;
@@ -41,7 +42,7 @@ public class Screening extends ReportingDomain implements Request, Response {
   private String name;
 
   @JsonProperty("reference")
-  @Size(min = 1, max = 20)
+  @Size(min = 1, max = 50)
   @ApiModelProperty(required = true, readOnly = false, value = "screener Reference",
       example = "Screening Reference")
   private String reference;
@@ -59,7 +60,7 @@ public class Screening extends ReportingDomain implements Request, Response {
   private String screeningDecisionDetail;
 
   @JsonProperty("assignee")
-  @Size(min = 1, max = 20)
+  @Size(min = 1, max = 50)
   @ApiModelProperty(required = true, readOnly = false, value = "screener assignee",
       example = "assignee")
   private String assignee;
@@ -68,6 +69,7 @@ public class Screening extends ReportingDomain implements Request, Response {
   @Type(type = "date")
   @ApiModelProperty(required = true, readOnly = false, value = "startdate of the Screening",
       example = "1992-06-18")
+  @Date(format = "yyyy-MM-dd", required = true)
   private String startedAt;
 
   /**

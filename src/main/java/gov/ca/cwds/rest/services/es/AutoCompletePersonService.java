@@ -40,7 +40,7 @@ public class AutoCompletePersonService
    * @param sysCodeCache system code cache
    */
   @Inject
-  public AutoCompletePersonService(@Named("people") ElasticsearchDao elasticsearchDao,
+  public AutoCompletePersonService(@Named("people.index") ElasticsearchDao elasticsearchDao,
       SystemCodeCache sysCodeCache) {
     this.elasticsearchDao = elasticsearchDao;
     this.sysCodeCache = sysCodeCache;

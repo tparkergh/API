@@ -3,7 +3,12 @@ package gov.ca.cwds.rest.services;
 import java.io.Serializable;
 
 import org.apache.commons.lang3.NotImplementedException;
+import org.elasticsearch.action.index.IndexRequestBuilder;
+import org.elasticsearch.action.update.UpdateRequestBuilder;
+import org.elasticsearch.common.xcontent.XContentType;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.inject.Inject;
 import com.google.inject.name.Named;
 
@@ -19,10 +24,9 @@ import gov.ca.cwds.rest.api.domain.Screening;
  */
 public class ScreeningService implements CrudsService {
 
-  private ElasticsearchDao esDao;
+  private static final ObjectMapper OBJECT_MAPPER = new ObjectMapper();
 
-  // private ScreeningDao screeningDao;
-  // private PersonService personService;
+  private ElasticsearchDao esDao;
 
   /**
    * Construct the object
@@ -30,22 +34,9 @@ public class ScreeningService implements CrudsService {
    * @param esDao Screenings ES DAO
    */
   @Inject
-  public ScreeningService(@Named("screenings") ElasticsearchDao esDao) {
+  public ScreeningService(@Named("screenings.index") ElasticsearchDao esDao) {
     this.esDao = esDao;
   }
-
-  // /**
-  // *
-  // * @param screeningDao The {@link Dao} handling {@link
-  // gov.ca.cwds.data.persistence.ns.Screening}
-  // * objects.
-  // * @param personService The person service
-  // */
-  // @Inject
-  // public ScreeningService(ScreeningDao screeningDao, PersonService personService) {
-  // this.screeningDao = screeningDao;
-  // this.personService = personService;
-  // }
 
   /**
    * {@inheritDoc}
@@ -54,24 +45,7 @@ public class ScreeningService implements CrudsService {
    */
   @Override
   public Response find(Serializable primaryKey) {
-    return null;
-    // if (primaryKey instanceof Long) {
-    // gov.ca.cwds.data.persistence.ns.Screening screening = screeningDao.find(primaryKey);
-    // if (screening != null) {
-    // // return new ScreeningResponse(screening, screening.getParticipants());
-    // }
-    // return null;
-    // } else {
-    // List<gov.ca.cwds.data.persistence.ns.Screening> screenings = findByCriteria(primaryKey);
-    // ImmutableSet.Builder<ScreeningResponse> builder = ImmutableSet.builder();
-    // for (gov.ca.cwds.data.persistence.ns.Screening screening : screenings) {
-    // if (screening != null) {
-    // // builder.add(new ScreeningResponse(screening, screening.getParticipants()));
-    // }
-    //
-    // }
-    // return new ScreeningListResponse(builder.build());
-    // }
+    throw new NotImplementedException("Find is not implemented");
   }
 
   /**
@@ -81,7 +55,6 @@ public class ScreeningService implements CrudsService {
    */
   @Override
   public Response delete(Serializable primaryKey) {
-    assert primaryKey instanceof Long;
     throw new NotImplementedException("Delete is not implemented");
   }
 
@@ -95,7 +68,16 @@ public class ScreeningService implements CrudsService {
   @Override
   public Screening create(Request request) {
     assert request instanceof Screening;
-    return (Screening) request;
+    Screening screening = (Screening) request;
+
+    String screeningJson = toJson(screening);
+    IndexRequestBuilder builder =
+        esDao.getClient().prepareIndex(esDao.getConfig().getElasticsearchAlias(),
+            esDao.getConfig().getElasticsearchDocType(), screening.getId());
+    builder.setSource(screeningJson, XContentType.JSON);
+    builder.execute().actionGet();
+
+    return screening;
   }
 
   /**
@@ -106,25 +88,40 @@ public class ScreeningService implements CrudsService {
    */
   @Override
   public Screening update(Serializable primaryKey, Request request) {
-    return (Screening) request;
-    // assert primaryKey instanceof Long;
-    // assert request instanceof ScreeningRequest;
-    //
-    // ScreeningRequest screeningRequest = (ScreeningRequest) request;
-    //
-    // Set<gov.ca.cwds.data.persistence.ns.Participant> participants = new HashSet<>();
-    // Address address = new Address(screeningRequest.getAddress(), null, null);
-    // // gov.ca.cwds.data.persistence.ns.Screening screening =
-    // // new gov.ca.cwds.data.persistence.ns.Screening((Long) primaryKey, screeningRequest,
-    // // address,
-    // // participants, null, null);
-    // // screening = screeningDao.update(screening);
-    // if (screeningDao.getSessionFactory() != null) {
-    // screeningDao.getSessionFactory().getCurrentSession().flush();
-    // screeningDao.getSessionFactory().getCurrentSession().refresh(screening);
-    // }
-    // // return new ScreeningResponse(screening, screening.getParticipants());
+    assert primaryKey instanceof String;
+    assert request instanceof Screening;
+    Screening screening = (Screening) request;
 
+    if (!primaryKey.equals(screening.getId())) {
+      throw new ServiceException(
+          "Primary key mismatch, [" + primaryKey + " != " + screening.getId() + "]");
+    }
+
+    String screeningJson = toJson(screening);
+
+    UpdateRequestBuilder builder =
+        esDao.getClient().prepareUpdate(esDao.getConfig().getElasticsearchAlias(),
+            esDao.getConfig().getElasticsearchDocType(), screening.getId());
+    builder.setDoc(screeningJson, XContentType.JSON);
+    builder.execute().actionGet();
+
+    return (Screening) request;
+  }
+
+  /**
+   * Convert given screening to JSON.
+   * 
+   * @param screening Screening to convert to JSON format
+   * @return Screening as JSON format
+   */
+  private String toJson(Screening screening) {
+    String screeningJson;
+    try {
+      screeningJson = OBJECT_MAPPER.writeValueAsString(screening);
+    } catch (JsonProcessingException e) {
+      throw new ServiceException(e);
+    }
+    return screeningJson;
   }
 
 }

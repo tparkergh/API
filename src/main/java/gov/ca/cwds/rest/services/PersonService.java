@@ -93,11 +93,11 @@ public class PersonService implements CrudsService {
    * 
    */
   @Inject
-  public PersonService(PersonDao personDao, @Named("people") ElasticsearchDao elasticsearchDao,
-      PersonAddressDao personAddressDao, AddressDao addressDao, PersonPhoneDao personPhoneDao,
-      PhoneNumberDao phoneNumberDao, PersonLanguageDao personLanguageDao, LanguageDao languageDao,
-      PersonRaceDao personRaceDao, RaceDao raceDao, PersonEthnicityDao personEthnicityDao,
-      EthnicityDao ethnicityDao) {
+  public PersonService(PersonDao personDao,
+      @Named("people.index") ElasticsearchDao elasticsearchDao, PersonAddressDao personAddressDao,
+      AddressDao addressDao, PersonPhoneDao personPhoneDao, PhoneNumberDao phoneNumberDao,
+      PersonLanguageDao personLanguageDao, LanguageDao languageDao, PersonRaceDao personRaceDao,
+      RaceDao raceDao, PersonEthnicityDao personEthnicityDao, EthnicityDao ethnicityDao) {
     this.personDao = personDao;
     this.elasticsearchDao = elasticsearchDao;
     this.personAddressDao = personAddressDao;

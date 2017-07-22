@@ -52,7 +52,7 @@ cmsDataSourceFactory:
 
 elasticsearch:
   # People index
-  people:
+  peopleIndex:
     elasticsearch.host: ${ES_HOST_PEOPLE:-es.dev.cwds.tabordasolutions.net}
     elasticsearch.port: ${ES_PORT_PEOPLE:-9300}
     elasticsearch.cluster: ${ES_CLUSTER_PEOPLE:-taborda-dev-es}
@@ -60,7 +60,7 @@ elasticsearch:
     elasticsearch.doctype: ${ES_DOCTYPE_PEOPLE:-person}  
     
   # Screenings index  
-  screenings:
+  screeningsIndex:
     elasticsearch.host: ${ES_HOST_SCREENINGS:-es.dev.cwds.tabordasolutions.net}
     elasticsearch.port: ${ES_PORT_SCREENINGS:-9300}
     elasticsearch.cluster: ${ES_CLUSTER_SCREENINGS:-taborda-dev-es}

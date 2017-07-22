@@ -2,8 +2,6 @@ package gov.ca.cwds.rest.resources;
 
 import static gov.ca.cwds.rest.core.Api.RESOURCE_SCREENINGS;
 
-import java.text.MessageFormat;
-
 import javax.validation.Valid;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
@@ -72,11 +70,12 @@ public class ScreeningResource {
   @Path("/fetch/{id}")
   @ApiResponses(value = {@ApiResponse(code = 401, message = "Not Authorized"),
       @ApiResponse(code = 404, message = "Not found"),
-      @ApiResponse(code = 406, message = "Accept Header not supported")})
+      @ApiResponse(code = 406, message = "Accept Header not supported"),
+      @ApiResponse(code = 501, message = "Not Implemented")})
   @ApiOperation(value = "Find Screening by id", response = ScreeningResponse.class)
   public Response get(@PathParam("id") @ApiParam(required = true, name = "id",
-      value = "The id of the Screening to find") long id) {
-    return resourceDelegate.get(id);
+      value = "The id of the Screening to find") String id) {
+    return Response.status(Response.Status.NOT_IMPLEMENTED).entity(null).build();
   }
 
   /*
@@ -89,7 +88,8 @@ public class ScreeningResource {
   @Path("/fetch")
   @ApiResponses(value = {@ApiResponse(code = 401, message = "Not Authorized"),
       @ApiResponse(code = 404, message = "Not found"),
-      @ApiResponse(code = 406, message = "Accept Header not supported")})
+      @ApiResponse(code = 406, message = "Accept Header not supported"),
+      @ApiResponse(code = 501, message = "Not Implemented")})
   @ApiOperation(value = "Find Screening", response = ScreeningResponse.class)
   @Consumes(value = MediaType.TEXT_PLAIN)
   public Response get(
@@ -97,9 +97,7 @@ public class ScreeningResource {
           example = "immediate") String responseTimes,
       @QueryParam("screening_decisions") @ApiParam(required = false,
           value = "The screening decisions", example = "Decision") String screeningDecisions) {
-    String pk = MessageFormat.format("responseTimes={0},screeningDecisions={1}", responseTimes,
-        screeningDecisions);
-    return resourceDelegate.get(pk);
+    return Response.status(Response.Status.NOT_IMPLEMENTED).entity(null).build();
   }
 
   /**
@@ -112,11 +110,12 @@ public class ScreeningResource {
    */
   @DELETE
   @Path("/{id}")
-  @ApiResponses(value = {@ApiResponse(code = 401, message = "Not Authorized")})
+  @ApiResponses(value = {@ApiResponse(code = 401, message = "Not Authorized"),
+      @ApiResponse(code = 501, message = "Not Implemented")})
   @ApiOperation(hidden = true, value = "Delete Screening - not currently implemented",
       code = HttpStatus.SC_OK, response = Object.class)
   public Response delete(
-      @PathParam("id") @ApiParam(required = true, value = "id of person to delete") long id,
+      @PathParam("id") @ApiParam(required = true, value = "id of person to delete") String id,
       @HeaderParam("Accept") @ApiParam(hidden = true) String acceptHeader) {
     return Response.status(Response.Status.NOT_IMPLEMENTED).entity(null).build();
   }
@@ -138,7 +137,8 @@ public class ScreeningResource {
   @Consumes(value = MediaType.APPLICATION_JSON)
   @ApiOperation(value = "Creates a new screening", code = HttpStatus.SC_CREATED,
       response = Screening.class)
-  public Response create(@Valid @ApiParam(hidden = false, required = true) Screening screening) {
+  public Response create(@Valid @ApiParam(hidden = false, required = true,
+      value = "The screening request") Screening screening) {
     return resourceDelegate.create(screening);
   }
 
@@ -154,16 +154,15 @@ public class ScreeningResource {
   @Path("/{id}")
   @ApiResponses(value = {@ApiResponse(code = 400, message = "Unable to process JSON"),
       @ApiResponse(code = 401, message = "Not Authorized"),
-      @ApiResponse(code = 404, message = "not found"),
+      @ApiResponse(code = 404, message = "Not Found"),
       @ApiResponse(code = 406, message = "Accept Header not supported"),
       @ApiResponse(code = 422, message = "Unable to validate Screening")})
   @Consumes(value = MediaType.APPLICATION_JSON)
   @ApiOperation(value = "Update Screening", code = HttpStatus.SC_OK, response = Screening.class)
-
   public Response update(
-      @PathParam("id") @ApiParam(required = true, name = "id",
+      @PathParam("id") @ApiParam(required = true,
           value = "The id of the Screening to update") String id,
-      @ApiParam(required = true, name = "screening",
+      @Valid @ApiParam(required = true, hidden = false,
           value = "The screening request") Screening screening) {
     return resourceDelegate.update(id, screening);
   }
