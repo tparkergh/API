@@ -1,11 +1,8 @@
 package gov.ca.cwds.inject;
 
 import java.net.InetAddress;
-<<<<<<< HEAD
-=======
 import java.util.HashMap;
 import java.util.Map;
->>>>>>> 3b3ef0b72b6f7ba3342da913acd30d35fb2525ad
 
 import org.elasticsearch.client.Client;
 import org.elasticsearch.client.transport.TransportClient;
@@ -19,13 +16,9 @@ import org.slf4j.LoggerFactory;
 import com.google.common.collect.ImmutableList;
 import com.google.inject.AbstractModule;
 import com.google.inject.Provides;
-<<<<<<< HEAD
-
-import gov.ca.cwds.data.ApiHibernateInterceptor;
-=======
 import com.google.inject.name.Named;
 
->>>>>>> 3b3ef0b72b6f7ba3342da913acd30d35fb2525ad
+import gov.ca.cwds.data.ApiHibernateInterceptor;
 import gov.ca.cwds.data.cms.AddressUcDao;
 import gov.ca.cwds.data.cms.AllegationDao;
 import gov.ca.cwds.data.cms.AllegationPerpetratorHistoryDao;
@@ -165,11 +158,7 @@ public class DataAccessModule extends AbstractModule {
           BaseAssignment.class, ReferralAssignment.class, CaseAssignment.class, CmsCase.class,
           Tickle.class, ClientRelationship.class, ClientCollateral.class, AddressUc.class),
 
-<<<<<<< HEAD
-          new ApiSessionFactoryFactory()) { // Hibernate interceptor
-=======
-  new ApiSessionFactoryFactory()) {
->>>>>>> 3b3ef0b72b6f7ba3342da913acd30d35fb2525ad
+          new ApiSessionFactoryFactory()) {
 
         @Override
         public DataSourceFactory getDataSourceFactory(ApiConfiguration configuration) {
@@ -200,7 +189,7 @@ public class DataAccessModule extends AbstractModule {
       };
 
   /**
-   * Constructor takes the API configuration.
+   * Constructor takes the API config.
    * 
    * @param bootstrap the ApiConfiguration
    */
@@ -210,23 +199,17 @@ public class DataAccessModule extends AbstractModule {
   }
 
   /**
-   * <p>
-   * Fails here. Call later. Method getSessionFactory() returns null at this point and fails method
-   * toInstance(). <blockquote>
-   * 
-   * <pre>
-   * {@code bind(SessionFactory.class).toInstance(cmsHibernateBundle.getSessionFactory());}.
-   * </pre>
-   * 
-   * </blockquote>
-   * </p>
-   * 
    * {@inheritDoc}
    * 
    * @see com.google.inject.AbstractModule#configure()
    */
   @Override
   protected void configure() {
+
+    // Fails here. Call later.
+    // Method getSessionFactory() returns null at this point and fails method toInstance().
+    // bind(SessionFactory.class).toInstance(cmsHibernateBundle.getSessionFactory());
+
     // CMS:
     // CmsReferral participants:
     bind(AllegationDao.class);
@@ -241,6 +224,7 @@ public class DataAccessModule extends AbstractModule {
     bind(CaseDao.class);
     bind(ClientRelationshipDao.class);
     bind(ClientCollateralDao.class);
+
 
     bind(AttorneyDao.class);
     bind(CmsDocReferralClientDao.class);
@@ -349,22 +333,6 @@ public class DataAccessModule extends AbstractModule {
   }
 
   @Provides
-<<<<<<< HEAD
-  public synchronized Client elasticsearchClient(ApiConfiguration apiConfiguration) {
-    if (client == null) {
-      ElasticsearchConfiguration config = apiConfiguration.getElasticsearchConfiguration();
-      try {
-        TransportClient ret = new PreBuiltTransportClient(
-            Settings.builder().put("cluster.name", config.getElasticsearchCluster()).build());
-        ret.addTransportAddress(
-            new InetSocketTransportAddress(InetAddress.getByName(config.getElasticsearchHost()),
-                Integer.parseInt(config.getElasticsearchPort())));
-        client = ret;
-      } catch (Exception e) {
-        LOGGER.error("Error initializing Elasticsearch client: {}", e.getMessage(), e);
-        throw new ApiException("Error initializing Elasticsearch client: " + e.getMessage(), e);
-      }
-=======
   @Named("elasticsearch.daos")
   public Map<String, ElasticsearchDao> provideElasticSearchDaos(ApiConfiguration apiConfiguration) {
     if (clients == null) {
@@ -378,7 +346,6 @@ public class DataAccessModule extends AbstractModule {
           apiConfiguration.getElasticsearchConfigurations().get(esKey);
       ElasticsearchDao dao = new ElasticsearchDao(client, config);
       esDaos.put(esKey, dao);
->>>>>>> 3b3ef0b72b6f7ba3342da913acd30d35fb2525ad
     }
     return esDaos;
   }
