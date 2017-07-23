@@ -13,6 +13,7 @@ import java.util.List;
 import java.util.Set;
 
 import javax.validation.Validation;
+import javax.validation.Validator;
 
 import org.junit.Before;
 import org.junit.Rule;
@@ -39,6 +40,7 @@ import gov.ca.cwds.data.cms.ReferralDao;
 import gov.ca.cwds.data.cms.ReporterDao;
 import gov.ca.cwds.data.cms.SsaName3Dao;
 import gov.ca.cwds.data.cms.StaffPersonDao;
+import gov.ca.cwds.data.cms.TestSystemCodeCache;
 import gov.ca.cwds.data.rules.TriggerTablesDao;
 import gov.ca.cwds.rest.api.Response;
 import gov.ca.cwds.rest.api.domain.ScreeningToReferral;
@@ -123,6 +125,8 @@ public class TestForLastUpdatedTimeIsUnique {
   private Reminders reminders;
   private UpperCaseTables upperCaseTables;
 
+  private Validator validator;
+
   private static gov.ca.cwds.data.persistence.cms.Referral createdReferal = null;
   private static gov.ca.cwds.data.persistence.cms.Address createdAddress = null;
   private static gov.ca.cwds.data.persistence.cms.Client createdClient = null;
@@ -135,6 +139,11 @@ public class TestForLastUpdatedTimeIsUnique {
       null;
   private static gov.ca.cwds.data.persistence.cms.Assignment createdAssignment = null;
 
+  /**
+   * Initialize system code cache
+   */
+  TestSystemCodeCache testSystemCodeCache = new TestSystemCodeCache();
+
   @SuppressWarnings("javadoc")
   @Rule
   public ExpectedException thrown = ExpectedException.none();
@@ -142,15 +151,26 @@ public class TestForLastUpdatedTimeIsUnique {
   @SuppressWarnings("javadoc")
   @Before
   public void setup() throws Exception {
-
+    validator = Validation.buildDefaultValidatorFactory().getValidator();
     referralDao = mock(ReferralDao.class);
     nonLACountyTriggers = mock(NonLACountyTriggers.class);
     laCountyTrigger = mock(LACountyTrigger.class);
     triggerTablesDao = mock(TriggerTablesDao.class);
     staffpersonDao = mock(StaffPersonDao.class);
     staffPersonIdRetriever = mock(StaffPersonIdRetriever.class);
-    referralService = new ReferralService(referralDao, nonLACountyTriggers, laCountyTrigger,
-        triggerTablesDao, staffpersonDao, staffPersonIdRetriever);
+
+    longTextDao = mock(LongTextDao.class);
+    longTextService = new LongTextService(longTextDao, staffPersonIdRetriever);
+
+    drmsDocumentDao = mock(DrmsDocumentDao.class);
+    drmsDocumentService = new DrmsDocumentService(drmsDocumentDao, staffPersonIdRetriever);
+
+    assignmentDao = mock(AssignmentDao.class);
+    staffpersonDao = mock(StaffPersonDao.class);
+    nonLACountyTriggers = mock(NonLACountyTriggers.class);
+    triggerTablesDao = mock(TriggerTablesDao.class);
+    assignmentService = new AssignmentService(assignmentDao, nonLACountyTriggers, staffpersonDao,
+        triggerTablesDao, staffPersonIdRetriever, validator);
 
     clientDao = mock(ClientDao.class);
     staffpersonDao = mock(StaffPersonDao.class);
@@ -182,36 +202,32 @@ public class TestForLastUpdatedTimeIsUnique {
     reporterDao = mock(ReporterDao.class);
     reporterService = new ReporterService(reporterDao, staffPersonIdRetriever);
 
-    addressDao = mock(AddressDao.class);
-    addressService =
-        new AddressService(addressDao, staffPersonIdRetriever, ssaName3Dao, upperCaseTables);
-
     clientAddressDao = mock(ClientAddressDao.class);
     laCountyTrigger = mock(LACountyTrigger.class);
     triggerTablesDao = mock(TriggerTablesDao.class);
     staffpersonDao = mock(StaffPersonDao.class);
+    nonLACountyTriggers = mock(NonLACountyTriggers.class);
     clientAddressService = new ClientAddressService(clientAddressDao, staffpersonDao,
-        triggerTablesDao, laCountyTrigger, staffPersonIdRetriever);
-
-    longTextDao = mock(LongTextDao.class);
-    longTextService = new LongTextService(longTextDao, staffPersonIdRetriever);
-
-    drmsDocumentDao = mock(DrmsDocumentDao.class);
-    drmsDocumentService = new DrmsDocumentService(drmsDocumentDao, staffPersonIdRetriever);
+        triggerTablesDao, laCountyTrigger, staffPersonIdRetriever, nonLACountyTriggers);
 
     childClientDao = mock(ChildClientDao.class);
     childClientService = new ChildClientService(childClientDao, staffPersonIdRetriever);
 
-    assignmentDao = mock(AssignmentDao.class);
-    assignmentService = new AssignmentService(assignmentDao, staffPersonIdRetriever);
-
     reminders = mock(Reminders.class);
+
+    addressDao = mock(AddressDao.class);
+    addressService = new AddressService(addressDao, staffPersonIdRetriever, ssaName3Dao,
+        upperCaseTables, validator);
+
+
+    referralService = new ReferralService(referralDao, nonLACountyTriggers, laCountyTrigger,
+        triggerTablesDao, staffpersonDao, staffPersonIdRetriever, assignmentService, validator,
+        drmsDocumentService, addressService, longTextService);
 
     screeningToReferralService = new ScreeningToReferralService(referralService, clientService,
         allegationService, crossReportService, referralClientService, reporterService,
-        addressService, clientAddressService, longTextService, childClientService,
-        assignmentService, Validation.buildDefaultValidatorFactory().getValidator(), referralDao,
-        staffPersonIdRetriever, new MessageBuilder(), drmsDocumentService,
+        addressService, clientAddressService, childClientService, assignmentService,
+        Validation.buildDefaultValidatorFactory().getValidator(), referralDao, new MessageBuilder(),
         allegationPerpetratorHistoryService, reminders);
 
   }

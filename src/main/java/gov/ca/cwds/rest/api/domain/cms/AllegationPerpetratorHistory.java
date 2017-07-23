@@ -6,6 +6,7 @@ import javax.validation.constraints.Size;
 
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
+import org.hibernate.validator.constraints.NotEmpty;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonFormat;
@@ -29,15 +30,18 @@ public class AllegationPerpetratorHistory extends ReportingDomain implements Req
    */
   private static final long serialVersionUID = 1L;
 
+  @Size(min = 2, max = 2)
   @ApiModelProperty(required = true, readOnly = false, value = "County code", example = "99")
   private String countySpecificCode;
 
-  @Size(min = CMS_ID_LEN, max = CMS_ID_LEN)
-  @ApiModelProperty(required = false, readOnly = false, value = "CLIENT ID of victim",
+  @Size(max = CMS_ID_LEN)
+  @ApiModelProperty(required = false, readOnly = false, value = "Client ID of perpetrator",
       example = "ABC1234568")
-  private String victimClientId;
+  private String perpetratorClientId;
 
-  @ApiModelProperty(required = true, readOnly = false, value = "ALLEGATION ID",
+  @NotEmpty
+  @Size(min = CMS_ID_LEN, max = CMS_ID_LEN)
+  @ApiModelProperty(required = true, readOnly = false, value = "Allegation ID",
       example = "ABC1234567")
   private String allegationId;
 
@@ -51,18 +55,18 @@ public class AllegationPerpetratorHistory extends ReportingDomain implements Req
    * Constructor. Build from JSON.
    * 
    * @param countySpecificCode county Specific Code
-   * @param victimClientId victim Client Id
+   * @param perpetratorClientId perpetrator Client Id
    * @param allegationId allegation Id
    * @param perpetratorUpdateDate perpetrator Update Date
    */
   @JsonCreator
   public AllegationPerpetratorHistory(@JsonProperty("countySpecificCode") String countySpecificCode,
-      @JsonProperty("victimClientId") String victimClientId,
+      @JsonProperty("perpetratorClientId") String perpetratorClientId,
       @JsonProperty("allegationId") String allegationId,
       @JsonProperty("perpetratorUpdateDate") String perpetratorUpdateDate) {
     super();
     this.countySpecificCode = countySpecificCode;
-    this.victimClientId = victimClientId;
+    this.perpetratorClientId = perpetratorClientId;
     this.allegationId = allegationId;
     this.perpetratorUpdateDate = perpetratorUpdateDate;
   }
@@ -71,7 +75,7 @@ public class AllegationPerpetratorHistory extends ReportingDomain implements Req
   public AllegationPerpetratorHistory(
       gov.ca.cwds.data.persistence.cms.AllegationPerpetratorHistory persistedAllegationPerpetratorHistory) {
     this.countySpecificCode = persistedAllegationPerpetratorHistory.getCountySpecificCode();
-    this.victimClientId = persistedAllegationPerpetratorHistory.getVictimClientId();
+    this.perpetratorClientId = persistedAllegationPerpetratorHistory.getPerpetratorClientId();
     this.allegationId = persistedAllegationPerpetratorHistory.getAllegationId();
     this.perpetratorUpdateDate =
         DomainChef.cookDate(persistedAllegationPerpetratorHistory.getPerpetratorUpdateDate());
@@ -83,8 +87,8 @@ public class AllegationPerpetratorHistory extends ReportingDomain implements Req
   }
 
   @SuppressWarnings("javadoc")
-  public String getVictimClientId() {
-    return victimClientId;
+  public String getPerpetratorClientId() {
+    return perpetratorClientId;
   }
 
   @SuppressWarnings("javadoc")

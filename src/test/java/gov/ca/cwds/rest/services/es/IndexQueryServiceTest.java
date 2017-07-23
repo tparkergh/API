@@ -5,9 +5,6 @@ import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.CoreMatchers.notNullValue;
 import static org.junit.Assert.assertThat;
 import static org.mockito.Mockito.when;
-import gov.ca.cwds.data.es.ElasticsearchDao;
-import gov.ca.cwds.rest.api.domain.es.IndexQueryRequest;
-import gov.ca.cwds.rest.api.domain.es.IndexQueryResponse;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -18,10 +15,14 @@ import org.json.JSONObject;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
-import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
-import org.mockito.Spy;
+
+import gov.ca.cwds.data.es.ElasticsearchDao;
+import gov.ca.cwds.rest.ElasticsearchConfiguration;
+import gov.ca.cwds.rest.api.domain.cms.SystemCodeCache;
+import gov.ca.cwds.rest.api.domain.es.IndexQueryRequest;
+import gov.ca.cwds.rest.api.domain.es.IndexQueryResponse;
 
 /**
  * @author CWDS API Team
@@ -37,18 +38,28 @@ public class IndexQueryServiceTest {
   private ElasticsearchDao dao;
 
   @Mock
+  private ElasticsearchConfiguration esConfig;
+
+  @Mock
+  private SystemCodeCache systemCodeCache;
+
+  @Mock
   private SearchHits hits;
 
   @Mock
   private IndexQueryRequest req;
 
-  @Spy
-  @InjectMocks
-  private IndexQueryService target; // "Class Under Test"
+  private IndexQueryService target;
 
   @Before
   public void initMocks() {
     MockitoAnnotations.initMocks(this);
+
+    when(dao.getConfig()).thenReturn(esConfig);
+    when(esConfig.getElasticsearchAlias()).thenReturn("index");
+    Map<String, ElasticsearchDao> esDaos = new HashMap<>();
+    esDaos.put("index", dao);
+    target = new IndexQueryService(esDaos, systemCodeCache);
   }
 
   @Test

@@ -10,7 +10,7 @@ public class AllegationResourceBuilder {
   String legacyId = "";
   long victimPersonId = 5432;
   long perpetratorPersonId = 0;
-  String type = "physical abuse";
+  Short type = 1373;
   String county = "Sacramento";
 
   /**
@@ -53,7 +53,7 @@ public class AllegationResourceBuilder {
    * @param type - type
    * @return the type
    */
-  public AllegationResourceBuilder setType(String type) {
+  public AllegationResourceBuilder setType(Short type) {
     this.type = type;
     return this;
   }

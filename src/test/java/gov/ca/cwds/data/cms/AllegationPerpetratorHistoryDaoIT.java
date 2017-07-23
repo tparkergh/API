@@ -1,12 +1,9 @@
 package gov.ca.cwds.data.cms;
 
-import static io.dropwizard.testing.FixtureHelpers.fixture;
 import static org.hamcrest.Matchers.nullValue;
 import static org.hamcrest.core.Is.is;
 import static org.hamcrest.core.IsEqual.equalTo;
 import static org.junit.Assert.assertThat;
-
-import java.io.IOException;
 
 import javax.persistence.EntityExistsException;
 import javax.persistence.EntityNotFoundException;
@@ -22,11 +19,9 @@ import org.junit.BeforeClass;
 import org.junit.Rule;
 import org.junit.Test;
 
-import com.fasterxml.jackson.core.JsonParseException;
-import com.fasterxml.jackson.databind.JsonMappingException;
-
 import gov.ca.cwds.data.junit.template.DaoTestTemplate;
 import gov.ca.cwds.data.persistence.cms.AllegationPerpetratorHistory;
+import gov.ca.cwds.fixture.AllegationPerpetratorHistoryResourceBuilder;
 import gov.ca.cwds.rest.api.domain.DomainChef;
 
 /**
@@ -105,10 +100,10 @@ public class AllegationPerpetratorHistoryDaoIT implements DaoTestTemplate {
   public void testCreate() throws Exception {
 
     gov.ca.cwds.rest.api.domain.cms.AllegationPerpetratorHistory vdaph =
-        validDomainAllegationPerpetratorHistory();
+        new AllegationPerpetratorHistoryResourceBuilder().createAllegationPerpetratorHistory();
 
     AllegationPerpetratorHistory allegationPerpetratorHistory = new AllegationPerpetratorHistory(
-        "1234567ABC", vdaph.getCountySpecificCode(), vdaph.getVictimClientId(),
+        "1234567ABC", vdaph.getCountySpecificCode(), vdaph.getPerpetratorClientId(),
         vdaph.getAllegationId(), DomainChef.uncookDateString(vdaph.getPerpetratorUpdateDate()));
 
     AllegationPerpetratorHistory create =
@@ -123,10 +118,10 @@ public class AllegationPerpetratorHistoryDaoIT implements DaoTestTemplate {
     thrown.expect(EntityExistsException.class);
 
     gov.ca.cwds.rest.api.domain.cms.AllegationPerpetratorHistory vdaph =
-        validDomainAllegationPerpetratorHistory();
+        new AllegationPerpetratorHistoryResourceBuilder().createAllegationPerpetratorHistory();
 
     AllegationPerpetratorHistory allegationPerpetratorHistory = new AllegationPerpetratorHistory(id,
-        vdaph.getCountySpecificCode(), vdaph.getVictimClientId(), vdaph.getAllegationId(),
+        vdaph.getCountySpecificCode(), vdaph.getPerpetratorClientId(), vdaph.getAllegationId(),
         DomainChef.uncookDateString(vdaph.getPerpetratorUpdateDate()));
 
     allegationPerpetratorHistoryDao.create(allegationPerpetratorHistory);
@@ -154,10 +149,10 @@ public class AllegationPerpetratorHistoryDaoIT implements DaoTestTemplate {
   public void testUpdate() throws Exception {
 
     gov.ca.cwds.rest.api.domain.cms.AllegationPerpetratorHistory vdaph =
-        validDomainAllegationPerpetratorHistory();
+        new AllegationPerpetratorHistoryResourceBuilder().createAllegationPerpetratorHistory();
 
     AllegationPerpetratorHistory allegationPerpetratorHistory = new AllegationPerpetratorHistory(id,
-        vdaph.getCountySpecificCode(), vdaph.getVictimClientId(), vdaph.getAllegationId(),
+        vdaph.getCountySpecificCode(), vdaph.getPerpetratorClientId(), vdaph.getAllegationId(),
         DomainChef.uncookDateString(vdaph.getPerpetratorUpdateDate()));
 
     AllegationPerpetratorHistory updated =
@@ -174,10 +169,10 @@ public class AllegationPerpetratorHistoryDaoIT implements DaoTestTemplate {
     thrown.expect(EntityNotFoundException.class);
 
     gov.ca.cwds.rest.api.domain.cms.AllegationPerpetratorHistory vdaph =
-        validDomainAllegationPerpetratorHistory();
+        new AllegationPerpetratorHistoryResourceBuilder().createAllegationPerpetratorHistory();
 
     AllegationPerpetratorHistory allegationPerpetratorHistory = new AllegationPerpetratorHistory(
-        "1234567ABC", vdaph.getCountySpecificCode(), vdaph.getVictimClientId(),
+        "1234567ABC", vdaph.getCountySpecificCode(), vdaph.getPerpetratorClientId(),
         vdaph.getAllegationId(), DomainChef.uncookDateString(vdaph.getPerpetratorUpdateDate()));
 
     allegationPerpetratorHistoryDao.update(allegationPerpetratorHistory);
@@ -195,16 +190,5 @@ public class AllegationPerpetratorHistoryDaoIT implements DaoTestTemplate {
   public void testFindAllReturnsCorrectList() throws Exception {
 
   }
-
-  private gov.ca.cwds.rest.api.domain.cms.AllegationPerpetratorHistory validDomainAllegationPerpetratorHistory()
-      throws JsonParseException, JsonMappingException, IOException {
-
-    gov.ca.cwds.rest.api.domain.cms.AllegationPerpetratorHistory validDomainAllegationPerpetratorHistory =
-        MAPPER.readValue(
-            fixture("fixtures/domain/legacy/AllegationPerpetratorHistory/valid/valid.json"),
-            gov.ca.cwds.rest.api.domain.cms.AllegationPerpetratorHistory.class);
-    return validDomainAllegationPerpetratorHistory;
-  }
-
 
 }

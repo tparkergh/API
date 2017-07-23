@@ -32,7 +32,6 @@ nsDataSourceFactory:
       hibernate.id.new_generator_mappings: false
       hibernate.show_sql: true
 
-
 cmsDataSourceFactory:
   autoCommitByDefault: false
   driverClass: com.ibm.db2.jcc.DB2Driver
@@ -52,12 +51,22 @@ cmsDataSourceFactory:
       hibernate.connection.autocommit: false
 
 elasticsearch:
-  elasticsearch.host: ${ES_HOST:-es.dev.cwds.tabordasolutions.net}
-  elasticsearch.port: ${ES_PORT:-9300}
-  elasticsearch.cluster: ${ES_CLUSTER:-taborda-dev-es}
-  elasticsearch.alias: ${ES_ALIAS:-people}
-  elasticsearch.doctype: ${ES_DOCTYPE:-person}
-  
+  # People index
+  peopleIndex:
+    elasticsearch.host: ${ES_HOST_PEOPLE:-es.dev.cwds.tabordasolutions.net}
+    elasticsearch.port: ${ES_PORT_PEOPLE:-9300}
+    elasticsearch.cluster: ${ES_CLUSTER_PEOPLE:-taborda-dev-es}
+    elasticsearch.alias: ${ES_ALIAS_PEOPLE:-people}
+    elasticsearch.doctype: ${ES_DOCTYPE_PEOPLE:-person}  
+    
+  # Screenings index  
+  screeningsIndex:
+    elasticsearch.host: ${ES_HOST_SCREENINGS:-es.dev.cwds.tabordasolutions.net}
+    elasticsearch.port: ${ES_PORT_SCREENINGS:-9300}
+    elasticsearch.cluster: ${ES_CLUSTER_SCREENINGS:-taborda-dev-es}
+    elasticsearch.alias: ${ES_ALIAS_SCREENINGS:-screenings}
+    elasticsearch.doctype: ${ES_DOCTYPE:-screening}
+    
 smartystreets:
   clientId: ${SS_ID:-8721f357-6381-1001-4633-5157e84b68cb}
   token: ${SS_TOKEN:-Q62NxpgzuBEUq3IalqVx}

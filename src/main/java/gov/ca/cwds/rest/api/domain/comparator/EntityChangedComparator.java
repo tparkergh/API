@@ -18,9 +18,15 @@ public class EntityChangedComparator {
    *
    * Joda time is used to handle comparison.
    *
+<<<<<<< HEAD
    * @param participant participant to compare.
    * @param client client to compare
    * @return true if equivalent
+=======
+   * @param participant The participant to compare last updated time with
+   * @param client the Client to compare last updated time with
+   * @return returns true if the date is equal to the second resolution
+>>>>>>> 3b3ef0b72b6f7ba3342da913acd30d35fb2525ad
    */
   public boolean compare(Participant participant, Client client) {
     DateTimeFormatter formatter =
