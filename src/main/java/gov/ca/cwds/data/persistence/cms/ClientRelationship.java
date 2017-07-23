@@ -1,10 +1,5 @@
 package gov.ca.cwds.data.persistence.cms;
 
-import gov.ca.cwds.data.CmsSystemCodeDeserializer;
-import gov.ca.cwds.data.SystemCodeSerializer;
-import gov.ca.cwds.data.persistence.PersistentObject;
-import gov.ca.cwds.rest.api.domain.DomainChef;
-
 import java.util.Date;
 
 import javax.persistence.Column;
@@ -18,6 +13,11 @@ import org.hibernate.annotations.Type;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+
+import gov.ca.cwds.data.CmsSystemCodeDeserializer;
+import gov.ca.cwds.data.SystemCodeSerializer;
+import gov.ca.cwds.data.persistence.PersistentObject;
+import gov.ca.cwds.rest.api.domain.DomainChef;
 
 /**
  * {@link PersistentObject} representing a Client Relationship
@@ -185,93 +185,5 @@ public class ClientRelationship extends CmsPersistentObject {
   public Date getStartDate() {
     return startDate;
   }
-
-  @Override
-  public int hashCode() {
-    final int prime = 31;
-    int result = 1;
-    result = prime * result + ((absentParentCode == null) ? 0 : absentParentCode.hashCode());
-    result =
-        prime * result + ((clientRelationshipType == null) ? 0 : clientRelationshipType.hashCode());
-    result = prime * result + ((endDate == null) ? 0 : endDate.hashCode());
-    result = prime * result + ((secondaryClientId == null) ? 0 : secondaryClientId.hashCode());
-    result = prime * result + ((primaryClientId == null) ? 0 : primaryClientId.hashCode());
-    result = prime * result + ((id == null) ? 0 : id.hashCode());
-    result = prime * result + ((sameHomeCode == null) ? 0 : sameHomeCode.hashCode());
-    result = prime * result + ((startDate == null) ? 0 : startDate.hashCode());
-    return result;
-  }
-
-  @Override
-  public boolean equals(Object obj) {
-    if (this == obj) {
-      return true;
-    }
-    if (obj == null) {
-      return false;
-    }
-    if (getClass() != obj.getClass()) {
-      return false;
-    }
-    ClientRelationship other = (ClientRelationship) obj;
-    if (absentParentCode == null) {
-      if (other.absentParentCode != null) {
-        return false;
-      }
-    } else if (!absentParentCode.equals(other.absentParentCode)) {
-      return false;
-    }
-    if (clientRelationshipType == null) {
-      if (other.clientRelationshipType != null) {
-        return false;
-      }
-    } else if (!clientRelationshipType.equals(other.clientRelationshipType)) {
-      return false;
-    }
-    if (endDate == null) {
-      if (other.endDate != null) {
-        return false;
-      }
-    } else if (!endDate.equals(other.endDate)) {
-      return false;
-    }
-    if (secondaryClientId == null) {
-      if (other.secondaryClientId != null) {
-        return false;
-      }
-    } else if (!secondaryClientId.equals(other.secondaryClientId)) {
-      return false;
-    }
-    if (primaryClientId == null) {
-      if (other.primaryClientId != null) {
-        return false;
-      }
-    } else if (!primaryClientId.equals(other.primaryClientId)) {
-      return false;
-    }
-    if (id == null) {
-      if (other.id != null) {
-        return false;
-      }
-    } else if (!id.equals(other.id)) {
-      return false;
-    }
-    if (sameHomeCode == null) {
-      if (other.sameHomeCode != null) {
-        return false;
-      }
-    } else if (!sameHomeCode.equals(other.sameHomeCode)) {
-      return false;
-    }
-    if (startDate == null) {
-      if (other.startDate != null) {
-        return false;
-      }
-    } else if (!startDate.equals(other.startDate)) {
-      return false;
-    }
-    return true;
-  }
-
 
 }

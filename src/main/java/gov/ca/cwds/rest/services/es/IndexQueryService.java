@@ -4,12 +4,14 @@ import static com.google.common.base.Preconditions.checkArgument;
 
 import java.util.Map;
 
+import org.apache.commons.lang3.NotImplementedException;
 import org.apache.commons.lang3.StringUtils;
 import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.google.inject.Inject;
+import com.google.inject.name.Named;
 
 import gov.ca.cwds.data.es.ElasticsearchDao;
 import gov.ca.cwds.rest.api.domain.cms.SystemCodeCache;
@@ -29,19 +31,21 @@ public class IndexQueryService
 
   private static final Logger LOGGER = LoggerFactory.getLogger(IndexQueryService.class);
 
-  private ElasticsearchDao elasticsearchDao;
+  private Map<String, ElasticsearchDao> elasticsearchDaos;
   @SuppressWarnings("unused")
   private SystemCodeCache sysCodeCache;
 
   /**
    * Constructor
    * 
-   * @param elasticsearchDao the ElasticSearch DAO
+   * @param elasticsearchDaos the ElasticSearch DAO
    * @param sysCodeCache system code cache
    */
   @Inject
-  public IndexQueryService(ElasticsearchDao elasticsearchDao, SystemCodeCache sysCodeCache) {
-    this.elasticsearchDao = elasticsearchDao;
+  public IndexQueryService(
+      @Named("elasticsearch.daos") Map<String, ElasticsearchDao> elasticsearchDaos,
+      SystemCodeCache sysCodeCache) {
+    this.elasticsearchDaos = elasticsearchDaos;
     this.sysCodeCache = sysCodeCache;
   }
 
@@ -53,7 +57,20 @@ public class IndexQueryService
    * @return complete domain object
    */
   protected String callDao(final String index, final String query) {
-    return this.elasticsearchDao.searchIndexByQuery(index, query);
+    ElasticsearchDao esDao = null;
+
+    for (ElasticsearchDao dao : elasticsearchDaos.values()) {
+      if (index.equals(dao.getConfig().getElasticsearchAlias())) {
+        esDao = dao;
+        break;
+      }
+    }
+
+    if (esDao == null) {
+      throw new ServiceException("Unknown index: " + index);
+    }
+
+    return esDao.searchIndexByQuery(index, query);
   }
 
   @Override
@@ -70,13 +87,6 @@ public class IndexQueryService
 
   @Override
   protected IndexQueryResponse handleFind(String searchForThis) {
-    try {
-      return new IndexQueryResponse(
-          callDao(elasticsearchDao.getDefaultAlias(), searchForThis.trim()));
-    } catch (Exception e) {
-      LOGGER.error("Something went wrong ...", e.getMessage());
-      throw new ServiceException("Something went wrong ...", e);
-    }
+    throw new NotImplementedException("handleFind is not implemented");
   }
-
 }

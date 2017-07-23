@@ -10,7 +10,7 @@
    "name":"The Rocky Horror Show",
    "report_narrative":"Narrative 123 test",
    "reference":"123ABC",
-   "response_time":"immediate",
+   "response_time":1520,
    "started_at":"2016-08-03T01:00:00.000Z",
    "assignee":"Michael Bastow",
    "additional_information":"additional information about the referral",
@@ -94,7 +94,7 @@
           "legacy_id" : "",
          "victim_person_id":"5432",
          "perpetrator_person_id":"1234",
-         "type":"physical abuse",
+         "type":2179,
          "county":"Sacramento"
       }
    ]

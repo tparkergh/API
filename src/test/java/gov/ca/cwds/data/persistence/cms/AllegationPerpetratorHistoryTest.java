@@ -7,6 +7,7 @@ import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.notNullValue;
 
 import java.io.IOException;
+import java.util.Date;
 
 import org.junit.Ignore;
 import org.junit.Test;
@@ -16,15 +17,20 @@ import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import gov.ca.cwds.data.persistence.junit.template.PersistentTestTemplate;
+import gov.ca.cwds.fixture.AllegationPerpetratorHistoryResourceBuilder;
+import gov.ca.cwds.rest.api.domain.DomainChef;
 import nl.jqno.equalsverifier.EqualsVerifier;
 import nl.jqno.equalsverifier.Warning;
 
 /**
  * @author CWDS API Team
  */
+@SuppressWarnings("javadoc")
 public class AllegationPerpetratorHistoryTest implements PersistentTestTemplate {
 
   private String id = "1234567ABC";
+  private String staffId = "0X5";
+  private Date lastUpdateDateTime = new Date();
 
   private static final ObjectMapper MAPPER = SystemCodeTestHarness.MAPPER;
 
@@ -39,18 +45,56 @@ public class AllegationPerpetratorHistoryTest implements PersistentTestTemplate 
 
   @Override
   @Test
+  public void testConstructorUsingDomain() throws Exception {
+    gov.ca.cwds.rest.api.domain.cms.AllegationPerpetratorHistory domain =
+        validDomainAllegationPerpetratorHistory();
+    AllegationPerpetratorHistory constructed =
+        new AllegationPerpetratorHistory(id, domain, staffId);
+
+    assertThat(constructed.getPrimaryKey(), is(equalTo(id)));
+    assertThat(constructed.getId(), is(equalTo(id)));
+    assertThat(constructed.getAllegationId(), is(equalTo(domain.getAllegationId())));
+    assertThat(constructed.getCountySpecificCode(), is(equalTo(domain.getCountySpecificCode())));
+    assertThat(constructed.getLastUpdatedId(), is(equalTo(staffId)));
+    assertThat(constructed.getPerpetratorClientId(), is(equalTo(domain.getPerpetratorClientId())));
+    assertThat(constructed.getPerpetratorUpdateDate(),
+        is(equalTo(DomainChef.uncookDateString(domain.getPerpetratorUpdateDate()))));
+
+  }
+
+  @Test
+  public void testConstructorUsingLastUpdatedTime() throws Exception {
+    gov.ca.cwds.rest.api.domain.cms.AllegationPerpetratorHistory domain =
+        validDomainAllegationPerpetratorHistory();
+    AllegationPerpetratorHistory constructed =
+        new AllegationPerpetratorHistory(id, domain, staffId, lastUpdateDateTime);
+
+    assertThat(constructed.getPrimaryKey(), is(equalTo(id)));
+    assertThat(constructed.getId(), is(equalTo(id)));
+    assertThat(constructed.getAllegationId(), is(equalTo(domain.getAllegationId())));
+    assertThat(constructed.getCountySpecificCode(), is(equalTo(domain.getCountySpecificCode())));
+    assertThat(constructed.getLastUpdatedId(), is(equalTo(staffId)));
+    assertThat(constructed.getPerpetratorClientId(), is(equalTo(domain.getPerpetratorClientId())));
+    assertThat(constructed.getPerpetratorUpdateDate(),
+        is(equalTo(DomainChef.uncookDateString(domain.getPerpetratorUpdateDate()))));
+    assertThat(constructed.getLastUpdatedTime(), is(equalTo(lastUpdateDateTime)));
+
+  }
+
+  @Override
+  @Test
   public void testPersistentConstructor() throws Exception {
 
     AllegationPerpetratorHistory vp = validAllegationPerpetratorHistory();
 
     gov.ca.cwds.data.persistence.cms.AllegationPerpetratorHistory persistent =
         new gov.ca.cwds.data.persistence.cms.AllegationPerpetratorHistory(id,
-            vp.getCountySpecificCode(), vp.getVictimClientId(), vp.getAllegationId(),
+            vp.getCountySpecificCode(), vp.getPerpetratorClientId(), vp.getAllegationId(),
             vp.getPerpetratorUpdateDate());
 
     assertThat(persistent.getId(), is(equalTo(id)));
     assertThat(persistent.getCountySpecificCode(), is(equalTo(vp.getCountySpecificCode())));
-    assertThat(persistent.getVictimClientId(), is(equalTo(vp.getVictimClientId())));
+    assertThat(persistent.getPerpetratorClientId(), is(equalTo(vp.getPerpetratorClientId())));
     assertThat(persistent.getAllegationId(), is(equalTo(vp.getAllegationId())));
     assertThat(persistent.getPerpetratorUpdateDate(), is(equalTo(vp.getPerpetratorUpdateDate())));
   }
@@ -72,9 +116,10 @@ public class AllegationPerpetratorHistoryTest implements PersistentTestTemplate 
     return validAllegationPerpetratorHistory;
   }
 
-  @Override
-  public void testConstructorUsingDomain() throws Exception {
+  private gov.ca.cwds.rest.api.domain.cms.AllegationPerpetratorHistory validDomainAllegationPerpetratorHistory() {
+    gov.ca.cwds.rest.api.domain.cms.AllegationPerpetratorHistory toTest =
+        new AllegationPerpetratorHistoryResourceBuilder().createAllegationPerpetratorHistory();
+    return toTest;
 
   }
-
 }

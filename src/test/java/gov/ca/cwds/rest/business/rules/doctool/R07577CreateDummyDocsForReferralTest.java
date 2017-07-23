@@ -11,6 +11,7 @@ import static org.mockito.Mockito.when;
 import java.util.Set;
 
 import javax.validation.Validation;
+import javax.validation.Validator;
 
 import org.junit.Before;
 import org.junit.Rule;
@@ -119,6 +120,8 @@ public class R07577CreateDummyDocsForReferralTest {
   private Reminders reminders;
   private UpperCaseTables upperCaseTables;
 
+  private Validator validator;
+
   private gov.ca.cwds.data.persistence.cms.Referral referral;
 
   @SuppressWarnings("javadoc")
@@ -128,6 +131,7 @@ public class R07577CreateDummyDocsForReferralTest {
   @SuppressWarnings("javadoc")
   @Before
   public void setup() throws Exception {
+    validator = Validation.buildDefaultValidatorFactory().getValidator();
 
     referralDao = mock(ReferralDao.class);
     nonLACountyTriggers = mock(NonLACountyTriggers.class);
@@ -135,8 +139,6 @@ public class R07577CreateDummyDocsForReferralTest {
     triggerTablesDao = mock(TriggerTablesDao.class);
     staffpersonDao = mock(StaffPersonDao.class);
     staffPersonIdRetriever = mock(StaffPersonIdRetriever.class);
-    referralService = new ReferralService(referralDao, nonLACountyTriggers, laCountyTrigger,
-        triggerTablesDao, staffpersonDao, staffPersonIdRetriever);
 
     clientDao = mock(ClientDao.class);
     staffpersonDao = mock(StaffPersonDao.class);
@@ -169,15 +171,16 @@ public class R07577CreateDummyDocsForReferralTest {
     reporterService = new ReporterService(reporterDao, staffPersonIdRetriever);
 
     addressDao = mock(AddressDao.class);
-    addressService =
-        new AddressService(addressDao, staffPersonIdRetriever, ssaName3Dao, upperCaseTables);
+    addressService = new AddressService(addressDao, staffPersonIdRetriever, ssaName3Dao,
+        upperCaseTables, validator);
 
     clientAddressDao = mock(ClientAddressDao.class);
     laCountyTrigger = mock(LACountyTrigger.class);
     triggerTablesDao = mock(TriggerTablesDao.class);
     staffpersonDao = mock(StaffPersonDao.class);
+    nonLACountyTriggers = mock(NonLACountyTriggers.class);
     clientAddressService = new ClientAddressService(clientAddressDao, staffpersonDao,
-        triggerTablesDao, laCountyTrigger, staffPersonIdRetriever);
+        triggerTablesDao, laCountyTrigger, staffPersonIdRetriever, nonLACountyTriggers);
 
     longTextDao = mock(LongTextDao.class);
     longTextService = new LongTextService(longTextDao, staffPersonIdRetriever);
@@ -189,17 +192,24 @@ public class R07577CreateDummyDocsForReferralTest {
     childClientService = new ChildClientService(childClientDao, staffPersonIdRetriever);
 
     assignmentDao = mock(AssignmentDao.class);
-    assignmentService = new AssignmentService(assignmentDao, staffPersonIdRetriever);
+    staffpersonDao = mock(StaffPersonDao.class);
+    nonLACountyTriggers = mock(NonLACountyTriggers.class);
+    triggerTablesDao = mock(TriggerTablesDao.class);
+    assignmentService = new AssignmentService(assignmentDao, nonLACountyTriggers, staffpersonDao,
+        triggerTablesDao, staffPersonIdRetriever, validator);
+
 
     reminders = mock(Reminders.class);
 
+    referralService = new ReferralService(referralDao, nonLACountyTriggers, laCountyTrigger,
+        triggerTablesDao, staffpersonDao, staffPersonIdRetriever, assignmentService, validator,
+        drmsDocumentService, addressService, longTextService);
+
     screeningToReferralService = new ScreeningToReferralService(referralService, clientService,
         allegationService, crossReportService, referralClientService, reporterService,
-        addressService, clientAddressService, longTextService, childClientService,
-        assignmentService, Validation.buildDefaultValidatorFactory().getValidator(), referralDao,
-        staffPersonIdRetriever, new MessageBuilder(), drmsDocumentService,
+        addressService, clientAddressService, childClientService, assignmentService,
+        Validation.buildDefaultValidatorFactory().getValidator(), referralDao, new MessageBuilder(),
         allegationPerpetratorHistoryService, reminders);
-
   }
 
   /**

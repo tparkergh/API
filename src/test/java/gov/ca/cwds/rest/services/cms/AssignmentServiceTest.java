@@ -13,6 +13,8 @@ import static org.mockito.Mockito.when;
 
 import javax.persistence.EntityExistsException;
 import javax.persistence.EntityNotFoundException;
+import javax.validation.Validation;
+import javax.validation.Validator;
 
 import org.junit.Assert;
 import org.junit.Before;
@@ -23,10 +25,13 @@ import org.mockito.invocation.InvocationOnMock;
 import org.mockito.stubbing.Answer;
 
 import gov.ca.cwds.data.cms.AssignmentDao;
+import gov.ca.cwds.data.cms.StaffPersonDao;
+import gov.ca.cwds.data.rules.TriggerTablesDao;
 import gov.ca.cwds.fixture.AssignmentResourceBuilder;
 import gov.ca.cwds.rest.api.Response;
 import gov.ca.cwds.rest.api.domain.cms.Assignment;
 import gov.ca.cwds.rest.api.domain.cms.PostedAssignment;
+import gov.ca.cwds.rest.business.rules.NonLACountyTriggers;
 import gov.ca.cwds.rest.services.ServiceException;
 
 /**
@@ -37,17 +42,26 @@ import gov.ca.cwds.rest.services.ServiceException;
 public class AssignmentServiceTest {
 
   private AssignmentService assignmentService;
-  private AssignmentDao assignmentDao;;
+  private AssignmentDao assignmentDao;
+  private NonLACountyTriggers nonLACountyTriggers;
+  private StaffPersonDao staffpersonDao;
+  private TriggerTablesDao triggerTablesDao;
   private StaffPersonIdRetriever staffPersonIdRetriever;
+  private Validator validator;
 
   @Rule
   public ExpectedException thrown = ExpectedException.none();
 
   @Before
   public void setup() throws Exception {
+    validator = Validation.buildDefaultValidatorFactory().getValidator();
     assignmentDao = mock(AssignmentDao.class);
     staffPersonIdRetriever = mock(StaffPersonIdRetriever.class);
-    assignmentService = new AssignmentService(assignmentDao, staffPersonIdRetriever);
+    nonLACountyTriggers = mock(NonLACountyTriggers.class);
+    staffpersonDao = mock(StaffPersonDao.class);
+    triggerTablesDao = mock(TriggerTablesDao.class);
+    assignmentService = new AssignmentService(assignmentDao, nonLACountyTriggers, staffpersonDao,
+        triggerTablesDao, staffPersonIdRetriever, validator);
   }
 
   // find test

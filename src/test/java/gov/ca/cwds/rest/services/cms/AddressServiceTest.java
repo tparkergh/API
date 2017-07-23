@@ -14,6 +14,8 @@ import static org.mockito.Mockito.when;
 import javax.persistence.EntityExistsException;
 import javax.persistence.EntityNotFoundException;
 
+import javax.validation.Validation;
+import javax.validation.Validator;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
@@ -40,19 +42,22 @@ public class AddressServiceTest {
   private SsaName3Dao ssaname3Dao;
   private UpperCaseTables upperCaseTables;
   private StaffPersonIdRetriever staffPersonIdRetriever;
+  private Validator validator;
+
 
   @Rule
   public ExpectedException thrown = ExpectedException.none();
 
   @Before
   public void setup() throws Exception {
+    validator = Validation.buildDefaultValidatorFactory().getValidator();
     addressService = mock(AddressService.class);
     addressDao = mock(AddressDao.class);
     ssaname3Dao = mock(SsaName3Dao.class);
     upperCaseTables = mock(UpperCaseTables.class);
     staffPersonIdRetriever = mock(StaffPersonIdRetriever.class);
     addressService =
-        new AddressService(addressDao, staffPersonIdRetriever, ssaname3Dao, upperCaseTables);
+        new AddressService(addressDao, staffPersonIdRetriever, ssaname3Dao, upperCaseTables, validator);
   }
 
   // find

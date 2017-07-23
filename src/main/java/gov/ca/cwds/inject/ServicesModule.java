@@ -124,6 +124,7 @@ public class ServicesModule extends AbstractModule {
     bind(TickleService.class);
     bind(ClientRelationshipService.class);
     bind(ClientCollateralService.class);
+    bind(gov.ca.cwds.rest.services.StaffPersonService.class);
 
     UnitOfWorkInterceptor interceptor = new UnitOfWorkInterceptor();
     bindInterceptor(Matchers.any(), Matchers.annotatedWith(UnitOfWork.class), interceptor);

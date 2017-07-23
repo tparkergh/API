@@ -3,11 +3,13 @@ package gov.ca.cwds.rest.messages;
 import java.util.ArrayList;
 import java.util.Set;
 
+import java.util.logging.Logger;
 import javax.validation.ConstraintViolation;
 
 import gov.ca.cwds.rest.api.domain.DomainObject;
 import gov.ca.cwds.rest.api.domain.error.ErrorMessage;
 import gov.ca.cwds.rest.api.domain.error.ErrorMessage.ErrorType;
+import org.slf4j.LoggerFactory;
 
 /**
  * @author CWDS API Team
@@ -58,5 +60,15 @@ public class MessageBuilder {
    */
   public ArrayList<ErrorMessage> getMessages() {
     return messages == null ? new ArrayList<>() : messages;
+  }
+
+  public void addMessageAndLog(String message, org.slf4j.Logger logger){
+    addError(message);
+    logger.error(message);
+  }
+
+  public void addMessageAndLog(String message, Exception exception, org.slf4j.Logger logger){
+    addError(message);
+    logger.error(message, exception.getMessage());
   }
 }

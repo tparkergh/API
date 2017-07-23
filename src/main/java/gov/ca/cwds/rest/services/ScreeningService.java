@@ -1,32 +1,21 @@
 package gov.ca.cwds.rest.services;
 
 import java.io.Serializable;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
 
 import org.apache.commons.lang3.NotImplementedException;
-import org.hibernate.Criteria;
-import org.hibernate.Session;
-import org.hibernate.criterion.Restrictions;
-import org.jadira.usertype.spi.utils.lang.StringUtils;
+import org.elasticsearch.action.index.IndexRequestBuilder;
+import org.elasticsearch.action.update.UpdateRequestBuilder;
+import org.elasticsearch.common.xcontent.XContentType;
 
-import com.google.common.collect.ImmutableSet;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.inject.Inject;
+import com.google.inject.name.Named;
 
-import gov.ca.cwds.data.Dao;
-import gov.ca.cwds.data.ns.ScreeningDao;
-import gov.ca.cwds.data.persistence.ns.Address;
+import gov.ca.cwds.data.es.ElasticsearchDao;
 import gov.ca.cwds.rest.api.Request;
 import gov.ca.cwds.rest.api.Response;
-import gov.ca.cwds.rest.api.domain.PostedScreening;
 import gov.ca.cwds.rest.api.domain.Screening;
-import gov.ca.cwds.rest.api.domain.ScreeningListResponse;
-import gov.ca.cwds.rest.api.domain.ScreeningReference;
-import gov.ca.cwds.rest.api.domain.ScreeningRequest;
-import gov.ca.cwds.rest.api.domain.ScreeningResponse;
-import gov.ca.cwds.rest.util.ServiceUtils;
 
 /**
  * Business layer object to work on {@link Screening}
@@ -35,19 +24,18 @@ import gov.ca.cwds.rest.util.ServiceUtils;
  */
 public class ScreeningService implements CrudsService {
 
-  private ScreeningDao screeningDao;
-  private PersonService personService;
+  private static final ObjectMapper OBJECT_MAPPER = new ObjectMapper();
+
+  private ElasticsearchDao esDao;
 
   /**
+   * Construct the object
    * 
-   * @param screeningDao The {@link Dao} handling {@link gov.ca.cwds.data.persistence.ns.Screening}
-   *        objects.
-   * @param personService The person service
+   * @param esDao Screenings ES DAO
    */
   @Inject
-  public ScreeningService(ScreeningDao screeningDao, PersonService personService) {
-    this.screeningDao = screeningDao;
-    this.personService = personService;
+  public ScreeningService(@Named("screenings.index") ElasticsearchDao esDao) {
+    this.esDao = esDao;
   }
 
   /**
@@ -57,23 +45,7 @@ public class ScreeningService implements CrudsService {
    */
   @Override
   public Response find(Serializable primaryKey) {
-    if (primaryKey instanceof Long) {
-      gov.ca.cwds.data.persistence.ns.Screening screening = screeningDao.find(primaryKey);
-      if (screening != null) {
-        return new ScreeningResponse(screening, screening.getParticipants());
-      }
-      return null;
-    } else {
-      List<gov.ca.cwds.data.persistence.ns.Screening> screenings = findByCriteria(primaryKey);
-      ImmutableSet.Builder<ScreeningResponse> builder = ImmutableSet.builder();
-      for (gov.ca.cwds.data.persistence.ns.Screening screening : screenings) {
-        if (screening != null) {
-          builder.add(new ScreeningResponse(screening, screening.getParticipants()));
-        }
-
-      }
-      return new ScreeningListResponse(builder.build());
-    }
+    throw new NotImplementedException("Find is not implemented");
   }
 
   /**
@@ -83,25 +55,29 @@ public class ScreeningService implements CrudsService {
    */
   @Override
   public Response delete(Serializable primaryKey) {
-    assert primaryKey instanceof Long;
     throw new NotImplementedException("Delete is not implemented");
   }
 
   /**
    * {@inheritDoc}
    * 
+   * @param request the request
+   * 
    * @see gov.ca.cwds.rest.services.CrudsService#create(gov.ca.cwds.rest.api.Request)
    */
   @Override
-  public PostedScreening create(Request request) {
-    assert request instanceof ScreeningReference;
+  public Screening create(Request request) {
+    assert request instanceof Screening;
+    Screening screening = (Screening) request;
 
-    ScreeningReference screeningReference = (ScreeningReference) request;
-    gov.ca.cwds.data.persistence.ns.Screening managed =
-        new gov.ca.cwds.data.persistence.ns.Screening(screeningReference.getReference());
+    String screeningJson = toJson(screening);
+    IndexRequestBuilder builder =
+        esDao.getClient().prepareIndex(esDao.getConfig().getElasticsearchAlias(),
+            esDao.getConfig().getElasticsearchDocType(), screening.getId());
+    builder.setSource(screeningJson, XContentType.JSON);
+    builder.execute().actionGet();
 
-    managed = screeningDao.create(managed);
-    return new PostedScreening(managed.getId(), managed.getReference());
+    return screening;
   }
 
   /**
@@ -111,42 +87,41 @@ public class ScreeningService implements CrudsService {
    *      gov.ca.cwds.rest.api.Request)
    */
   @Override
-  public ScreeningResponse update(Serializable primaryKey, Request request) {
-    assert primaryKey instanceof Long;
-    assert request instanceof ScreeningRequest;
+  public Screening update(Serializable primaryKey, Request request) {
+    assert primaryKey instanceof String;
+    assert request instanceof Screening;
+    Screening screening = (Screening) request;
 
-    ScreeningRequest screeningRequest = (ScreeningRequest) request;
-
-    Set<gov.ca.cwds.data.persistence.ns.Participant> participants = new HashSet<>();
-    Address address = new Address(screeningRequest.getAddress(), null, null);
-    gov.ca.cwds.data.persistence.ns.Screening screening =
-        new gov.ca.cwds.data.persistence.ns.Screening((Long) primaryKey, screeningRequest, address,
-            participants, null, null);
-    screening = screeningDao.update(screening);
-    if (screeningDao.getSessionFactory() != null) {
-      screeningDao.getSessionFactory().getCurrentSession().flush();
-      screeningDao.getSessionFactory().getCurrentSession().refresh(screening);
+    if (!primaryKey.equals(screening.getId())) {
+      throw new ServiceException(
+          "Primary key mismatch, [" + primaryKey + " != " + screening.getId() + "]");
     }
-    return new ScreeningResponse(screening, screening.getParticipants());
 
+    String screeningJson = toJson(screening);
+
+    UpdateRequestBuilder builder =
+        esDao.getClient().prepareUpdate(esDao.getConfig().getElasticsearchAlias(),
+            esDao.getConfig().getElasticsearchDocType(), screening.getId());
+    builder.setDoc(screeningJson, XContentType.JSON);
+    builder.execute().actionGet();
+
+    return (Screening) request;
   }
 
-  @SuppressWarnings("unchecked")
-  public List<gov.ca.cwds.data.persistence.ns.Screening> findByCriteria(Serializable keys) {
-    Map<String, String> nameValuePairs = ServiceUtils.extractKeyValuePairs(keys);
-    String responseTimes = nameValuePairs.get("responseTimes");
-    String screeningDecisions = nameValuePairs.get("screeningDecisions");
-    Session session = screeningDao.getSessionFactory().getCurrentSession();
-
-    Criteria criteria = session.createCriteria(gov.ca.cwds.data.persistence.ns.Screening.class);
-    String anObject = "null";
-    if (StringUtils.isNotEmpty(responseTimes) && !anObject.equals(responseTimes)) {
-      criteria.add(Restrictions.like("responseTime", responseTimes));
+  /**
+   * Convert given screening to JSON.
+   * 
+   * @param screening Screening to convert to JSON format
+   * @return Screening as JSON format
+   */
+  private String toJson(Screening screening) {
+    String screeningJson;
+    try {
+      screeningJson = OBJECT_MAPPER.writeValueAsString(screening);
+    } catch (JsonProcessingException e) {
+      throw new ServiceException(e);
     }
-    if (StringUtils.isNotEmpty(screeningDecisions) && !anObject.equals(screeningDecisions)) {
-      criteria.add(Restrictions.like("screeningDecision", screeningDecisions));
-    }
-
-    return criteria.list();
+    return screeningJson;
   }
+
 }

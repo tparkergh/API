@@ -9,6 +9,7 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 import javax.validation.Validation;
+import javax.validation.Validator;
 
 import org.junit.Before;
 import org.junit.Rule;
@@ -103,6 +104,8 @@ public class R05914DoNotUpdateApprovalStatusTypeTest {
   private SsaName3Dao ssaName3Dao;
   private Reminders reminders;
   private UpperCaseTables upperCaseTables;
+  private Validator validator;
+
 
 
   @SuppressWarnings("javadoc")
@@ -112,15 +115,29 @@ public class R05914DoNotUpdateApprovalStatusTypeTest {
   @SuppressWarnings("javadoc")
   @Before
   public void setup() throws Exception {
+    validator = Validation.buildDefaultValidatorFactory().getValidator();
+    staffPersonIdRetriever = mock(StaffPersonIdRetriever.class);
+    when(staffPersonIdRetriever.getStaffPersonId()).thenReturn("0X5");
+
+    longTextDao = mock(LongTextDao.class);
+    longTextService = new LongTextService(longTextDao, staffPersonIdRetriever);
 
     referralDao = mock(ReferralDao.class);
     nonLACountyTriggers = mock(NonLACountyTriggers.class);
     laCountyTrigger = mock(LACountyTrigger.class);
     triggerTablesDao = mock(TriggerTablesDao.class);
     staffpersonDao = mock(StaffPersonDao.class);
-    staffPersonIdRetriever = mock(StaffPersonIdRetriever.class);
+
+    drmsDocumentDao = mock(DrmsDocumentDao.class);
+    drmsDocumentService = new DrmsDocumentService(drmsDocumentDao, staffPersonIdRetriever);
+
+    addressDao = mock(AddressDao.class);
+    addressService = new AddressService(addressDao, staffPersonIdRetriever, ssaName3Dao,
+        upperCaseTables, validator);
+
     referralService = new ReferralService(referralDao, nonLACountyTriggers, laCountyTrigger,
-        triggerTablesDao, staffpersonDao, staffPersonIdRetriever);
+        triggerTablesDao, staffpersonDao, staffPersonIdRetriever, assignmentService, validator,
+        drmsDocumentService, addressService, longTextService);
 
     clientDao = mock(ClientDao.class);
     staffpersonDao = mock(StaffPersonDao.class);
@@ -151,54 +168,48 @@ public class R05914DoNotUpdateApprovalStatusTypeTest {
     reporterDao = mock(ReporterDao.class);
     reporterService = new ReporterService(reporterDao, staffPersonIdRetriever);
 
-    addressDao = mock(AddressDao.class);
-    addressService =
-        new AddressService(addressDao, staffPersonIdRetriever, ssaName3Dao, upperCaseTables);
-
     clientAddressDao = mock(ClientAddressDao.class);
     laCountyTrigger = mock(LACountyTrigger.class);
     triggerTablesDao = mock(TriggerTablesDao.class);
     staffpersonDao = mock(StaffPersonDao.class);
+    nonLACountyTriggers = mock(NonLACountyTriggers.class);
     clientAddressService = new ClientAddressService(clientAddressDao, staffpersonDao,
-        triggerTablesDao, laCountyTrigger, staffPersonIdRetriever);
-
-    longTextDao = mock(LongTextDao.class);
-    longTextService = new LongTextService(longTextDao, staffPersonIdRetriever);
-
-    drmsDocumentDao = mock(DrmsDocumentDao.class);
-    drmsDocumentService = new DrmsDocumentService(drmsDocumentDao, staffPersonIdRetriever);
+        triggerTablesDao, laCountyTrigger, staffPersonIdRetriever, nonLACountyTriggers);
 
     childClientDao = mock(ChildClientDao.class);
     childClientService = new ChildClientService(childClientDao, staffPersonIdRetriever);
 
     assignmentDao = mock(AssignmentDao.class);
-    assignmentService = new AssignmentService(assignmentDao, staffPersonIdRetriever);
+    staffpersonDao = mock(StaffPersonDao.class);
+    nonLACountyTriggers = mock(NonLACountyTriggers.class);
+    triggerTablesDao = mock(TriggerTablesDao.class);
+    assignmentService = new AssignmentService(assignmentDao, nonLACountyTriggers, staffpersonDao,
+        triggerTablesDao, staffPersonIdRetriever, validator);
 
     reminders = mock(Reminders.class);
 
     screeningToReferralService = new ScreeningToReferralService(referralService, clientService,
         allegationService, crossReportService, referralClientService, reporterService,
-        addressService, clientAddressService, longTextService, childClientService,
-        assignmentService, Validation.buildDefaultValidatorFactory().getValidator(), referralDao,
-        staffPersonIdRetriever, new MessageBuilder(), drmsDocumentService,
+        addressService, clientAddressService, childClientService, assignmentService,
+        Validation.buildDefaultValidatorFactory().getValidator(), referralDao, new MessageBuilder(),
         allegationPerpetratorHistoryService, reminders);
 
   }
 
   /**
    * <blockquote>
-   * 
+   *
    * <pre>
-   * 
+   *
    * DocTool Rule: "R - 05914" -  Do Not Update Approval Status Type
-   * 
-   * When creating the Referral entity, set the Approval Status Type = 'Request Not Submitted'. 
-   * When updating the Referral entity, update every attribute except Approval Status Type. 
+   *
+   * When creating the Referral entity, set the Approval Status Type = 'Request Not Submitted'.
+   * When updating the Referral entity, update every attribute except Approval Status Type.
    * The Approval Status Type will be updated by the Host, not the workstation.
    * </pre>
-   * 
+   *
    * </blockquote>
-   * 
+   *
    * @throws Exception general error
    */
   @Test
@@ -220,8 +231,8 @@ public class R05914DoNotUpdateApprovalStatusTypeTest {
     when(drmsDocumentDao.create(any(gov.ca.cwds.data.persistence.cms.DrmsDocument.class)))
         .thenReturn(drmsDocumentToCreate);
 
-    Referral referralCreated = screeningToReferralService.createReferralWithDefaults(
-        screeningToReferral, "2016-08-03T01:00:00.000Z", "2016-08-03T01:00:00.000Z", null);
+    Referral referralCreated = referralService.createReferralWithDefaults(screeningToReferral,
+        "2016-08-03T01:00:00.000Z", "2016-08-03T01:00:00.000Z", null, new MessageBuilder());
     System.out.println(referralCreated.getApprovalStatusType());
     assertThat(referralCreated.getApprovalStatusType(), is(equalTo((short) 118)));
   }

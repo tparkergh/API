@@ -23,6 +23,7 @@ import gov.ca.cwds.rest.api.Request;
 import gov.ca.cwds.rest.api.Response;
 import gov.ca.cwds.rest.api.domain.Participant;
 import gov.ca.cwds.rest.business.rules.LACountyTrigger;
+import gov.ca.cwds.rest.business.rules.NonLACountyTriggers;
 import gov.ca.cwds.rest.services.CrudsService;
 import gov.ca.cwds.rest.services.ServiceException;
 import gov.ca.cwds.rest.util.IdGenerator;
@@ -39,6 +40,7 @@ public class ClientAddressService implements CrudsService {
   private StaffPersonDao staffpersonDao;
   private TriggerTablesDao triggerTablesDao;
   private LACountyTrigger laCountyTrigger;
+  private NonLACountyTriggers nonLaTriggers;
   private StaffPersonIdRetriever staffPersonIdRetriever;
 
   /**
@@ -53,16 +55,19 @@ public class ClientAddressService implements CrudsService {
    * @param staffpersonDao The {@link Dao} handling
    *        {@link gov.ca.cwds.data.persistence.cms.StaffPerson} objects
    * @param staffPersonIdRetriever the staffPersonIdRetriever
+   * @param nonLaTriggers The {@link Dao} handling
+   *        {@link gov.ca.cwds.rest.business.rules.NonLACountyTriggers} objects.
    */
   @Inject
   public ClientAddressService(ClientAddressDao clientAddressDao, StaffPersonDao staffpersonDao,
       TriggerTablesDao triggerTablesDao, LACountyTrigger laCountyTrigger,
-      StaffPersonIdRetriever staffPersonIdRetriever) {
+      StaffPersonIdRetriever staffPersonIdRetriever, NonLACountyTriggers nonLaTriggers) {
     this.clientAddressDao = clientAddressDao;
     this.staffpersonDao = staffpersonDao;
     this.triggerTablesDao = triggerTablesDao;
     this.laCountyTrigger = laCountyTrigger;
     this.staffPersonIdRetriever = staffPersonIdRetriever;
+    this.nonLaTriggers = nonLaTriggers;
   }
 
   @Override
@@ -158,6 +163,8 @@ public class ClientAddressService implements CrudsService {
       if (staffperson != null
           && (triggerTablesDao.getLaCountySpecificCode().equals(staffperson.getCountyCode()))) {
         laCountyTrigger.createClientAddressCountyTrigger(managedClientAddress);
+      } else {
+        nonLaTriggers.createAndUpdateClientAddressCoutyOwnership(managedClientAddress);
       }
       managedClientAddress = clientAddressDao.create(managedClientAddress);
       return new gov.ca.cwds.rest.api.domain.cms.ClientAddress(managedClientAddress, false);

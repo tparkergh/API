@@ -4,6 +4,7 @@ import javax.persistence.Entity;
 import javax.persistence.Table;
 
 import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.hibernate.annotations.NamedNativeQueries;
 import org.hibernate.annotations.NamedNativeQuery;
 import org.hibernate.annotations.NamedQueries;
@@ -79,44 +80,24 @@ public class OtherClientName extends BaseOtherClientName {
     this.thirdId = thirdId;
   }
 
+  /**
+   * {@inheritDoc}
+   *
+   * @see java.lang.Object#hashCode()
+   */
   @Override
   public final int hashCode() {
-    final int prime = 31;
-    int ret = 1;
-    ret = prime * ret + ((thirdId == null) ? 0 : thirdId.hashCode());
-    ret = prime * ret + ((clientId == null) ? 0 : clientId.hashCode());
-    ret = prime * ret + ((firstName == null) ? 0 : firstName.hashCode());
-    ret = prime * ret + ((lastName == null) ? 0 : lastName.hashCode());
-    ret = prime * ret + ((middleName == null) ? 0 : middleName.hashCode());
-    ret = prime * ret + ((namePrefixDescription == null) ? 0 : namePrefixDescription.hashCode());
-    ret = prime * ret + ((nameType == null) ? 0 : nameType.hashCode());
-    ret = prime * ret + ((suffixTitleDescription == null) ? 0 : suffixTitleDescription.hashCode());
-    ret = prime * ret
-        + ((super.getLastUpdatedId() == null) ? 0 : super.getLastUpdatedId().hashCode());
-    ret = prime * ret
-        + ((super.getLastUpdatedTime() == null) ? 0 : super.getLastUpdatedTime().hashCode());
-
-    return ret;
+    return HashCodeBuilder.reflectionHashCode(this, false);
   }
 
+  /**
+   * {@inheritDoc}
+   *
+   * @see java.lang.Object#equals(java.lang.Object)
+   */
   @Override
   public final boolean equals(Object obj) {
-    if (this == obj) {
-      return true;
-    }
-    if (obj == null) {
-      return false;
-    }
-    if (!(obj instanceof OtherClientName)) {
-      return false;
-    }
-    OtherClientName o = (OtherClientName) obj;
-
-    // Reduce cognitive complexity -- at the expense of slightly slower performance.
-    if (!EqualsBuilder.reflectionEquals(this, o, false))
-      return false;
-
-    return true;
+    return EqualsBuilder.reflectionEquals(this, obj, false);
   }
 
 }
