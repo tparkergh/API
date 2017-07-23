@@ -144,6 +144,8 @@ public class ScreeningResource {
 
   /**
    * Update a {@link Screening}.
+   * 
+   * @param id primary key
    *
    * @param screening the screening
    *
