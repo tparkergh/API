@@ -10,6 +10,11 @@ import gov.ca.cwds.rest.api.domain.cms.CrossReport;
 import gov.ca.cwds.rest.api.domain.cms.Referral;
 import gov.ca.cwds.rest.api.domain.cms.Reporter;
 
+/**
+ * @author CWDS API Team
+ *
+ */
+@SuppressWarnings("javadoc")
 public class ReferralResourceBuilder {
   Boolean additionalInfoIncludedCode = false;
   Boolean anonymousReporterIndicator = false;

@@ -15,6 +15,7 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.ClassRule;
 import org.junit.Rule;
+import org.junit.Test;
 import org.mockito.Mockito;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -65,7 +66,7 @@ public class ChildClientResourceTest {
   /*
    * Get Tests
    */
-  // @Test
+  @Test
   public void getDelegatesToResourceDelegate() throws Exception {
     inMemoryResource.client().target(FOUND_RESOURCE).request().accept(MediaType.APPLICATION_JSON)
         .get();
@@ -75,7 +76,7 @@ public class ChildClientResourceTest {
   /*
    * Create Tests
    */
-  // @Test
+  @Test
   public void createDelegatesToResourceDelegate() throws Exception {
     ChildClient serialized = MAPPER.readValue(
         fixture("fixtures/domain/legacy/ChildClient/valid/valid.json"), ChildClient.class);
@@ -85,7 +86,7 @@ public class ChildClientResourceTest {
     verify(resourceDelegate).create(eq(serialized));
   }
 
-  // @Test
+  @Test
   public void createValidatesEntity() throws Exception {
     ChildClient serialized = MAPPER.readValue(
         fixture(
@@ -101,7 +102,7 @@ public class ChildClientResourceTest {
   /*
    * Delete Tests
    */
-  // @Test
+  @Test
   public void deleteDelegatesToResourceDelegate() throws Exception {
     inMemoryResource.client().target(FOUND_RESOURCE).request().accept(MediaType.APPLICATION_JSON)
         .delete();
@@ -111,7 +112,7 @@ public class ChildClientResourceTest {
   /*
    * Update Tests
    */
-  // @Test
+  @Test
   public void updateDelegatesToResourceDelegate() throws Exception {
     ChildClient serialized = MAPPER.readValue(
         fixture("fixtures/domain/legacy/ChildClient/valid/valid.json"), ChildClient.class);
@@ -121,7 +122,7 @@ public class ChildClientResourceTest {
     verify(resourceDelegate).update(eq(null), eq(serialized));
   }
 
-  // @Test
+  @Test
   public void updateValidatesEntity() throws Exception {
     ChildClient serialized = MAPPER.readValue(
         fixture(

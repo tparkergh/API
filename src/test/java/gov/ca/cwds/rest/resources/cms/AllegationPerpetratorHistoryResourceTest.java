@@ -1,10 +1,8 @@
 package gov.ca.cwds.rest.resources.cms;
 
-import static io.dropwizard.testing.FixtureHelpers.fixture;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
 import static org.mockito.Matchers.eq;
-import static org.mockito.Mockito.atLeastOnce;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 
@@ -19,13 +17,12 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.mockito.Mockito;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.squarespace.jersey2.guice.JerseyGuiceUtils;
 
-import gov.ca.cwds.rest.api.domain.cms.Referral;
+import gov.ca.cwds.fixture.AllegationPerpetratorHistoryResourceBuilder;
+import gov.ca.cwds.rest.api.domain.cms.AllegationPerpetratorHistory;
 import gov.ca.cwds.rest.resources.ResourceDelegate;
 import gov.ca.cwds.rest.resources.ServiceBackedResourceDelegate;
-import io.dropwizard.jackson.Jackson;
 import io.dropwizard.testing.junit.ResourceTestRule;
 
 /**
@@ -35,12 +32,10 @@ import io.dropwizard.testing.junit.ResourceTestRule;
  * @author CWDS API Team
  */
 @SuppressWarnings("javadoc")
-public class ReferralResourceTest {
+public class AllegationPerpetratorHistoryResourceTest {
 
-  private static final String ROOT_RESOURCE = "/_referrals/";
-  private static final String FOUND_RESOURCE = "/_referrals/abc";
-
-  private static final ObjectMapper MAPPER = Jackson.newObjectMapper();
+  private static final String ROOT_RESOURCE = "/_allegationPerpetratorHistory/";
+  private static final String FOUND_RESOURCE = "/_allegationPerpetratorHistory/abc";
 
   @After
   public void ensureServiceLocatorPopulated() {
@@ -56,8 +51,8 @@ public class ReferralResourceTest {
   private final static ResourceDelegate resourceDelegate = mock(ResourceDelegate.class);
 
   @ClassRule
-  public final static ResourceTestRule inMemoryResource =
-      ResourceTestRule.builder().addResource(new ReferralResource(resourceDelegate)).build();
+  public final static ResourceTestRule inMemoryResource = ResourceTestRule.builder()
+      .addResource(new AllegationPerpetratorHistoryResource(resourceDelegate)).build();
 
   @Before
   public void setup() throws Exception {
@@ -74,40 +69,29 @@ public class ReferralResourceTest {
     verify(resourceDelegate).get("abc");
   }
 
+
   /*
    * Create Tests
    */
   @Test
   public void createDelegatesToResourceDelegate() throws Exception {
-    Referral serialized = MAPPER
-        .readValue(fixture("fixtures/domain/legacy/Referral/valid/valid.json"), Referral.class);
+    AllegationPerpetratorHistory serialized =
+        new AllegationPerpetratorHistoryResourceBuilder().createAllegationPerpetratorHistory();
 
     inMemoryResource.client().target(ROOT_RESOURCE).request().accept(MediaType.APPLICATION_JSON)
-        .post(Entity.entity(serialized, MediaType.APPLICATION_JSON)).getStatus();
+        .post(Entity.entity(serialized, MediaType.APPLICATION_JSON));
     verify(resourceDelegate).create(eq(serialized));
   }
 
   @Test
-  public void testPost422ValidationError() throws Exception {
-    Referral serialized = MAPPER.readValue(
-        fixture("fixtures/domain/legacy/Referral/invalid/closureDateWrongFormat.json"),
-        Referral.class);
+  public void createValidatesEntity() throws Exception {
+    AllegationPerpetratorHistory serialized = new AllegationPerpetratorHistoryResourceBuilder()
+        .setCountySpecificCode("1234567").createAllegationPerpetratorHistory();
 
     int status =
         inMemoryResource.client().target(ROOT_RESOURCE).request().accept(MediaType.APPLICATION_JSON)
             .post(Entity.entity(serialized, MediaType.APPLICATION_JSON)).getStatus();
     assertThat(status, is(422));
-  }
-
-  @Test
-  public void testPost204ResourceSuccess() throws Exception {
-    Referral serialized = MAPPER
-        .readValue(fixture("fixtures/domain/legacy/Referral/valid/valid.json"), Referral.class);
-    Integer status = inMemoryResource.client().target(FOUND_RESOURCE).request()
-        .accept(MediaType.APPLICATION_JSON)
-        .put(Entity.entity(serialized, MediaType.APPLICATION_JSON)).getStatus();
-    assertThat(status, is(204));
-
   }
 
   /*
@@ -124,20 +108,19 @@ public class ReferralResourceTest {
    * Update Tests
    */
   @Test
-  public void udpateDelegatesToResourceDelegate() throws Exception {
-    Referral serialized = MAPPER
-        .readValue(fixture("fixtures/domain/legacy/Referral/valid/valid.json"), Referral.class);
+  public void updateDelegatesToResourceDelegate() throws Exception {
+    AllegationPerpetratorHistory serialized =
+        new AllegationPerpetratorHistoryResourceBuilder().createAllegationPerpetratorHistory();
 
     inMemoryResource.client().target(FOUND_RESOURCE).request().accept(MediaType.APPLICATION_JSON)
         .put(Entity.entity(serialized, MediaType.APPLICATION_JSON));
-    verify(resourceDelegate, atLeastOnce()).update(eq("abc"), eq(serialized));
+    verify(resourceDelegate).update(eq("abc"), eq(serialized));
   }
 
   @Test
-  public void testUpdate422ValidationError() throws Exception {
-    Referral serialized = MAPPER.readValue(
-        fixture("fixtures/domain/legacy/Referral/invalid/closureDateWrongFormat.json"),
-        Referral.class);
+  public void updateValidatesEntity() throws Exception {
+    AllegationPerpetratorHistory serialized = new AllegationPerpetratorHistoryResourceBuilder()
+        .setCountySpecificCode("1234567").createAllegationPerpetratorHistory();
 
     int status = inMemoryResource.client().target(FOUND_RESOURCE).request()
         .accept(MediaType.APPLICATION_JSON)
@@ -145,13 +128,4 @@ public class ReferralResourceTest {
     assertThat(status, is(422));
   }
 
-  @Test
-  public void testUpdate204ResourceSuccess() throws Exception {
-    Referral serialized = MAPPER
-        .readValue(fixture("fixtures/domain/legacy/Referral/valid/valid.json"), Referral.class);
-    Integer status = inMemoryResource.client().target(FOUND_RESOURCE).request()
-        .accept(MediaType.APPLICATION_JSON)
-        .put(Entity.entity(serialized, MediaType.APPLICATION_JSON)).getStatus();
-    assertThat(status, is(204));
-  }
 }
