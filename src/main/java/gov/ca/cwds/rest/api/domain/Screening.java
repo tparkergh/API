@@ -1,5 +1,6 @@
 package gov.ca.cwds.rest.api.domain;
 
+import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
 import org.apache.commons.lang3.builder.EqualsBuilder;
@@ -31,6 +32,7 @@ public class Screening extends ReportingDomain implements Request, Response {
 
   @JsonProperty("id")
   @Size(min = 1, max = 50)
+  @NotNull
   @ApiModelProperty(required = true, readOnly = false, value = "Screener id",
       example = "ABC1234568")
   private String id;
