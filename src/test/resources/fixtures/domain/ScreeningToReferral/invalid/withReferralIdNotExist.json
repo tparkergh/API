@@ -6,7 +6,7 @@
   "incident_county" : "sacramento",
   "incident_date" : "2016-08-02",
   "location_type" : "Foster Home",
-  "communication_method" : "Phone",
+  "communication_method" : 409,
   "name" : "The Rocky Horror Show",
   "report_narrative" : "Narrative 123 test",
   "reference" : "123ABC",
