@@ -108,6 +108,19 @@ public class LongTextServiceTest {
     assertThat(found, is(nullValue()));
   }
 
+  @Test
+  public void longTextServiceDeleteReturnsNotNull() throws Exception {
+    String id = "AabekZX00F";
+    LongText expected = MAPPER
+        .readValue(fixture("fixtures/domain/legacy/LongText/valid/valid.json"), LongText.class);
+    gov.ca.cwds.data.persistence.cms.LongText tickle =
+        new gov.ca.cwds.data.persistence.cms.LongText(id, expected, "0XA");
+
+    when(longTextDao.delete(id)).thenReturn(tickle);
+    LongText found = longTextService.delete(id);
+    assertThat(found, is(expected));
+  }
+
   // update test
   @Test
   public void longTextServiceUpdateThrowsAssertionError() throws Exception {

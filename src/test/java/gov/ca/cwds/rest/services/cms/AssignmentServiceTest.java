@@ -74,7 +74,6 @@ public class AssignmentServiceTest {
     }
   }
 
-
   @Test
   public void assignmentServiceFindReturnsCorrectEntity() throws Exception {
     String id = "SlCAr46088";
@@ -105,18 +104,28 @@ public class AssignmentServiceTest {
     }
   }
 
-
   @Test
   public void assignmentServiceDeleteDelegatesToCrudsService() {
     assignmentService.delete("ABC2345678");
     verify(assignmentDao, times(1)).delete("ABC2345678");
   }
 
-
   @Test
   public void assignmentServiceDeleteReturnsNullWhenNotFound() throws Exception {
     Response found = assignmentService.delete("ABC1234567");
     assertThat(found, is(nullValue()));
+  }
+
+  @Test
+  public void assignmentServiceDeleteReturnsNotNull() throws Exception {
+    String id = "AabekZX00F";
+    Assignment expected = new AssignmentResourceBuilder().buildAssignment();
+    gov.ca.cwds.data.persistence.cms.Assignment assignment =
+        new gov.ca.cwds.data.persistence.cms.Assignment(id, expected, "0XA");
+
+    when(assignmentDao.delete(id)).thenReturn(assignment);
+    Assignment found = assignmentService.delete(id);
+    assertThat(found, is(expected));
   }
 
   // update test
@@ -128,7 +137,6 @@ public class AssignmentServiceTest {
       assertEquals("Expected AssertionError", e.getMessage());
     }
   }
-
 
   @Test
   public void assignmentServiceUpdateReturnsCorrectEntity() throws Exception {
@@ -192,7 +200,6 @@ public class AssignmentServiceTest {
     PostedAssignment postedAssignment = assignmentService.create(request);
     assertThat(postedAssignment, is(notNullValue()));
   }
-
 
   @Test
   public void assignmentServiceCreateReturnsCorrectEntity() throws Exception {

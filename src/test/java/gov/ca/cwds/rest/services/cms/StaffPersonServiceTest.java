@@ -89,6 +89,7 @@ public class StaffPersonServiceTest {
     assertThat(found, is(nullValue()));
   }
 
+  // delete test
   @SuppressWarnings("javadoc")
   @Test
   public void deleteThrowsAssersionError() throws Exception {
@@ -112,6 +113,20 @@ public class StaffPersonServiceTest {
   public void deleteDelegatesToCrudsService() {
     staffPersonService.delete("ABC");
     verify(staffPersonDao, times(1)).delete("ABC");
+  }
+
+  @SuppressWarnings("javadoc")
+  @Test
+  public void staffPersonServiceDeleteReturnsNotNull() throws Exception {
+    String id = "BTr";
+    StaffPerson expected = MAPPER.readValue(
+        fixture("fixtures/domain/legacy/StaffPerson/valid/valid.json"), StaffPerson.class);
+    gov.ca.cwds.data.persistence.cms.StaffPerson staffPerson =
+        new gov.ca.cwds.data.persistence.cms.StaffPerson(id, expected, "0XA");
+
+    when(staffPersonDao.delete(id)).thenReturn(staffPerson);
+    StaffPerson found = staffPersonService.delete(id);
+    assertThat(found, is(expected));
   }
 
   // update test
