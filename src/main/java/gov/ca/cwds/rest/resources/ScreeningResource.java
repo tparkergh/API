@@ -4,15 +4,11 @@ import static gov.ca.cwds.rest.core.Api.RESOURCE_SCREENINGS;
 
 import javax.validation.Valid;
 import javax.ws.rs.Consumes;
-import javax.ws.rs.DELETE;
-import javax.ws.rs.GET;
-import javax.ws.rs.HeaderParam;
 import javax.ws.rs.POST;
 import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
-import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
@@ -22,7 +18,6 @@ import com.google.inject.Inject;
 
 import gov.ca.cwds.inject.ScreeningServiceBackedResource;
 import gov.ca.cwds.rest.api.domain.Screening;
-import gov.ca.cwds.rest.api.domain.ScreeningResponse;
 import io.dropwizard.hibernate.UnitOfWork;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -46,6 +41,7 @@ import io.swagger.annotations.ApiResponses;
 @Produces(MediaType.APPLICATION_JSON)
 @Consumes(MediaType.APPLICATION_JSON)
 public class ScreeningResource {
+
   private ResourceDelegate resourceDelegate;
 
   /**
@@ -56,68 +52,6 @@ public class ScreeningResource {
   @Inject
   public ScreeningResource(@ScreeningServiceBackedResource ResourceDelegate resourceDelegate) {
     this.resourceDelegate = resourceDelegate;
-  }
-
-  /**
-   * Finds a {@link Screening} by id.
-   * 
-   * @param id The id
-   *
-   * @return the response
-   */
-  @UnitOfWork(value = "ns")
-  @GET
-  @Path("/fetch/{id}")
-  @ApiResponses(value = {@ApiResponse(code = 401, message = "Not Authorized"),
-      @ApiResponse(code = 404, message = "Not found"),
-      @ApiResponse(code = 406, message = "Accept Header not supported"),
-      @ApiResponse(code = 501, message = "Not Implemented")})
-  @ApiOperation(value = "Find Screening by id", response = ScreeningResponse.class)
-  public Response get(@PathParam("id") @ApiParam(required = true, name = "id",
-      value = "The id of the Screening to find") String id) {
-    return Response.status(Response.Status.NOT_IMPLEMENTED).entity(null).build();
-  }
-
-  /*
-   * (non-Javadoc)
-   * 
-   * @see gov.ca.cwds.rest.resources.CrudsResource#get(java.lang.String, java.lang.String)
-   */
-  @UnitOfWork(value = "ns")
-  @GET
-  @Path("/fetch")
-  @ApiResponses(value = {@ApiResponse(code = 401, message = "Not Authorized"),
-      @ApiResponse(code = 404, message = "Not found"),
-      @ApiResponse(code = 406, message = "Accept Header not supported"),
-      @ApiResponse(code = 501, message = "Not Implemented")})
-  @ApiOperation(value = "Find Screening", response = ScreeningResponse.class)
-  @Consumes(value = MediaType.TEXT_PLAIN)
-  public Response get(
-      @QueryParam("response_times") @ApiParam(required = false, value = "The response times",
-          example = "immediate") String responseTimes,
-      @QueryParam("screening_decisions") @ApiParam(required = false,
-          value = "The screening decisions", example = "Decision") String screeningDecisions) {
-    return Response.status(Response.Status.NOT_IMPLEMENTED).entity(null).build();
-  }
-
-  /**
-   * Delete a {@link Screening}
-   * 
-   * @param id The id of the {@link Screening}
-   * @param acceptHeader The accept header.
-   * 
-   * @return {@link Response}
-   */
-  @DELETE
-  @Path("/{id}")
-  @ApiResponses(value = {@ApiResponse(code = 401, message = "Not Authorized"),
-      @ApiResponse(code = 501, message = "Not Implemented")})
-  @ApiOperation(hidden = true, value = "Delete Screening - not currently implemented",
-      code = HttpStatus.SC_OK, response = Object.class)
-  public Response delete(
-      @PathParam("id") @ApiParam(required = true, value = "id of person to delete") String id,
-      @HeaderParam("Accept") @ApiParam(hidden = true) String acceptHeader) {
-    return Response.status(Response.Status.NOT_IMPLEMENTED).entity(null).build();
   }
 
   /**
@@ -163,7 +97,7 @@ public class ScreeningResource {
       @PathParam("id") @ApiParam(required = true,
           value = "The id of the Screening to update") String id,
       @Valid @ApiParam(required = true, hidden = false,
-          value = "The screening request") Screening screening) {
+          value = "The screening request") gov.ca.cwds.rest.api.domain.Screening screening) {
     return resourceDelegate.update(id, screening);
   }
 }
