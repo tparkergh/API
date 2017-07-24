@@ -9,10 +9,8 @@ import static org.mockito.Mockito.verify;
 import javax.ws.rs.client.Entity;
 import javax.ws.rs.core.MediaType;
 
-import org.hamcrest.junit.ExpectedException;
 import org.junit.Before;
 import org.junit.ClassRule;
-import org.junit.Rule;
 import org.junit.Test;
 import org.mockito.Mockito;
 
@@ -31,10 +29,6 @@ import io.dropwizard.testing.junit.ResourceTestRule;
 public class ScreeningResourceTest {
 
   private static final String ROOT_RESOURCE = "/screenings/";
-  private static final String FOUND_RESOURCE = "/screenings/1";
-
-  @Rule
-  public ExpectedException thrown = ExpectedException.none();
 
   private static final ResourceDelegate resourceDelegate = mock(ResourceDelegate.class);
 
@@ -83,14 +77,14 @@ public class ScreeningResourceTest {
   /*
    * Update Tests
    */
-  // @Test
+  @Test
   public void testUpdate() throws Exception {
     Screening screening = new Screening("abc", "screening", "reference", "screeningDecision",
         "screeningDecisionDetail", "assignee", "2017-01-01");
 
     String screeningJson = OBJECT_MAPPER.writeValueAsString(screening);
 
-    int actualStatus = inMemoryResource.client().target("screenings/abc").request()
+    int actualStatus = inMemoryResource.client().target(ROOT_RESOURCE + "abc").request()
         .accept(MediaType.APPLICATION_JSON)
         .put(Entity.entity(screeningJson, MediaType.APPLICATION_JSON)).getStatus();
 
@@ -102,11 +96,11 @@ public class ScreeningResourceTest {
   /*
    * Update Tests
    */
-  // @Test
+  @Test
   public void testUpdateInvalid() throws Exception {
     Screening screening = new Screening("", "", "", "", "", "", "");
 
-    int actualStatus = inMemoryResource.client().target("screenings/abc").request()
+    int actualStatus = inMemoryResource.client().target(ROOT_RESOURCE + "abc").request()
         .accept(MediaType.APPLICATION_JSON)
         .put(Entity.entity(screening, MediaType.APPLICATION_JSON)).getStatus();
 
