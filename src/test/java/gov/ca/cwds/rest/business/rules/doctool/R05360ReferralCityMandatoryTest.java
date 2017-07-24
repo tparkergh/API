@@ -52,6 +52,7 @@ import gov.ca.cwds.rest.api.domain.cms.LongText;
 import gov.ca.cwds.rest.api.domain.cms.Referral;
 import gov.ca.cwds.rest.api.domain.cms.ReferralClient;
 import gov.ca.cwds.rest.api.domain.cms.Reporter;
+import gov.ca.cwds.rest.business.rules.ExternalInterfaceTables;
 import gov.ca.cwds.rest.business.rules.LACountyTrigger;
 import gov.ca.cwds.rest.business.rules.NonLACountyTriggers;
 import gov.ca.cwds.rest.business.rules.Reminders;
@@ -120,6 +121,7 @@ public class R05360ReferralCityMandatoryTest {
   private Reminders reminders;
   private UpperCaseTables upperCaseTables;
   private Validator validator;
+  private ExternalInterfaceTables externalInterfaceTables;
 
   @SuppressWarnings("javadoc")
   @Rule
@@ -142,8 +144,10 @@ public class R05360ReferralCityMandatoryTest {
     nonLACountyTriggers = mock(NonLACountyTriggers.class);
     ssaName3Dao = mock(SsaName3Dao.class);
     upperCaseTables = mock(UpperCaseTables.class);
-    clientService = new ClientService(clientDao, staffpersonDao, triggerTablesDao,
-        nonLACountyTriggers, staffPersonIdRetriever, ssaName3Dao, upperCaseTables);
+    externalInterfaceTables = mock(ExternalInterfaceTables.class);
+    clientService =
+        new ClientService(clientDao, staffpersonDao, triggerTablesDao, nonLACountyTriggers,
+            staffPersonIdRetriever, ssaName3Dao, upperCaseTables, externalInterfaceTables);
 
     referralClientDao = mock(ReferralClientDao.class);
     nonLACountyTriggers = mock(NonLACountyTriggers.class);
@@ -175,7 +179,7 @@ public class R05360ReferralCityMandatoryTest {
     nonLACountyTriggers = mock(NonLACountyTriggers.class);
     triggerTablesDao = mock(TriggerTablesDao.class);
     assignmentService = new AssignmentService(assignmentDao, nonLACountyTriggers, staffpersonDao,
-        triggerTablesDao, staffPersonIdRetriever, validator);
+        triggerTablesDao, staffPersonIdRetriever, validator, externalInterfaceTables);
 
     clientAddressDao = mock(ClientAddressDao.class);
     laCountyTrigger = mock(LACountyTrigger.class);

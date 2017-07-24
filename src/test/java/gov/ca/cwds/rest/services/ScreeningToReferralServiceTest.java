@@ -85,6 +85,7 @@ import gov.ca.cwds.rest.api.domain.cms.Referral;
 import gov.ca.cwds.rest.api.domain.cms.ReferralClient;
 import gov.ca.cwds.rest.api.domain.cms.Reporter;
 import gov.ca.cwds.rest.api.domain.error.ErrorMessage;
+import gov.ca.cwds.rest.business.rules.ExternalInterfaceTables;
 import gov.ca.cwds.rest.business.rules.LACountyTrigger;
 import gov.ca.cwds.rest.business.rules.NonLACountyTriggers;
 import gov.ca.cwds.rest.business.rules.Reminders;
@@ -152,6 +153,7 @@ public class ScreeningToReferralServiceTest {
   private Reminders reminders;
   private UpperCaseTables upperCaseTables;
   private Validator validator;
+  private ExternalInterfaceTables externalInterfaceTables;
 
   private gov.ca.cwds.data.persistence.cms.Referral referral;
   private static gov.ca.cwds.data.persistence.cms.Referral createdReferal = null;
@@ -183,8 +185,10 @@ public class ScreeningToReferralServiceTest {
     nonLACountyTriggers = mock(NonLACountyTriggers.class);
     ssaName3Dao = mock(SsaName3Dao.class);
     upperCaseTables = mock(UpperCaseTables.class);
-    clientService = new ClientService(clientDao, staffpersonDao, triggerTablesDao,
-        nonLACountyTriggers, staffPersonIdRetriever, ssaName3Dao, upperCaseTables);
+    externalInterfaceTables = mock(ExternalInterfaceTables.class);
+    clientService =
+        new ClientService(clientDao, staffpersonDao, triggerTablesDao, nonLACountyTriggers,
+            staffPersonIdRetriever, ssaName3Dao, upperCaseTables, externalInterfaceTables);
 
     referralClientDao = mock(ReferralClientDao.class);
     nonLACountyTriggers = mock(NonLACountyTriggers.class);
@@ -234,8 +238,7 @@ public class ScreeningToReferralServiceTest {
     nonLACountyTriggers = mock(NonLACountyTriggers.class);
     triggerTablesDao = mock(TriggerTablesDao.class);
     assignmentService = new AssignmentService(assignmentDao, nonLACountyTriggers, staffpersonDao,
-        triggerTablesDao, staffPersonIdRetriever, validator);
-
+        triggerTablesDao, staffPersonIdRetriever, validator, externalInterfaceTables);
     reminders = mock(Reminders.class);
 
     referralService = new ReferralService(referralDao, nonLACountyTriggers, laCountyTrigger,
