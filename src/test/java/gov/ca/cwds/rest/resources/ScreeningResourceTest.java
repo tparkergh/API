@@ -14,8 +14,6 @@ import org.junit.ClassRule;
 import org.junit.Test;
 import org.mockito.Mockito;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-
 import gov.ca.cwds.rest.api.domain.Screening;
 import gov.ca.cwds.rest.resources.cms.JerseyGuiceRule;
 import io.dropwizard.testing.junit.ResourceTestRule;
@@ -38,8 +36,6 @@ public class ScreeningResourceTest {
   @ClassRule
   public static final ResourceTestRule inMemoryResource =
       ResourceTestRule.builder().addResource(new ScreeningResource(resourceDelegate)).build();
-
-  private static final ObjectMapper OBJECT_MAPPER = new ObjectMapper();
 
   @Before
   public void setup() throws Exception {
@@ -82,11 +78,9 @@ public class ScreeningResourceTest {
     Screening screening = new Screening("abc", "screening", "reference", "screeningDecision",
         "screeningDecisionDetail", "assignee", "2017-01-01");
 
-    String screeningJson = OBJECT_MAPPER.writeValueAsString(screening);
-
     int actualStatus = inMemoryResource.client().target(ROOT_RESOURCE + "abc").request()
         .accept(MediaType.APPLICATION_JSON)
-        .put(Entity.entity(screeningJson, MediaType.APPLICATION_JSON)).getStatus();
+        .put(Entity.entity(screening, MediaType.APPLICATION_JSON)).getStatus();
 
     int expectedStatus = 204; // in real web interaction this would be 200
     assertThat(actualStatus, is(expectedStatus));
