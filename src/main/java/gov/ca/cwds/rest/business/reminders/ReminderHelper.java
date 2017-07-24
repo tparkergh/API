@@ -35,10 +35,6 @@ public class ReminderHelper {
 
   /**
    * @param dateOfBirth - dateOfBirth
-   * @param postedScreeningToReferral - postedScreeningToReferral
-   * @param referral - referral
-   * @param client - client
-   * @param years - years
    * @return the ageDiffernce
    */
   public static int checkForAgeDiffernce(String dateOfBirth) {
@@ -64,7 +60,6 @@ public class ReminderHelper {
     }
     return years;
   }
-
 
   /**
    * Mapped all the Referaal Response Type Code

@@ -50,6 +50,8 @@ public class ClientAddressServiceTest implements ServiceTestTemplate {
   NonLACountyTriggers nonLACountyTriggers;
   StaffPersonIdRetriever staffPersonIdRetriever;
 
+  private static Boolean isLaCountyTrigger = false;
+
   @SuppressWarnings("javadoc")
   @Rule
   public ExpectedException thrown = ExpectedException.none();
