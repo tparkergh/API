@@ -78,6 +78,8 @@ public class ScreeningResource {
 
   /**
    * Update a {@link Screening}.
+   * 
+   * @param id The id
    *
    * @param screening the screening
    *

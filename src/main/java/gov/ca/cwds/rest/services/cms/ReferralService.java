@@ -28,7 +28,6 @@ import gov.ca.cwds.rest.business.rules.LACountyTrigger;
 import gov.ca.cwds.rest.business.rules.NonLACountyTriggers;
 import gov.ca.cwds.rest.messages.MessageBuilder;
 import gov.ca.cwds.rest.services.CrudsService;
-import gov.ca.cwds.rest.services.LegacyCodes;
 import gov.ca.cwds.rest.services.LegacyDefaultValues;
 import gov.ca.cwds.rest.services.ServiceException;
 import gov.ca.cwds.rest.validation.ParticipantValidator;
@@ -54,9 +53,6 @@ public class ReferralService implements CrudsService {
   private DrmsDocumentService drmsDocumentService;
   private AddressService addressService;
   private LongTextService longTextService;
-
-  private LegacyDefaultValues legacyDefaultValues = new LegacyDefaultValues();
-  private LegacyCodes legacyCodes = new LegacyCodes();
 
   /**
    * Constructor

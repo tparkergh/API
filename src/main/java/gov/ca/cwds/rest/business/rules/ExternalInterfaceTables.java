@@ -87,8 +87,8 @@ public class ExternalInterfaceTables {
   }
 
   /**
-   * @param primaryKey
-   * @param sourceTable
+   * @param primaryKey the primary key
+   * @param sourceTable the source table name
    * 
    */
   public void createExtInterForDelete(Serializable primaryKey, String sourceTable) {

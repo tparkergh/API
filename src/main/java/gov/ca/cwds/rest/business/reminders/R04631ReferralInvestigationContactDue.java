@@ -26,8 +26,7 @@ import gov.ca.cwds.rest.services.cms.TickleService;
  * BUSINESS RULE: "R - 04631" - TICKLE for Referral Investigation Contact Due reminder
  * 
  * If the Client age is less then 19 Years create a reminder for the investigation contact due and
- * teh dueDate is updated according to the referralResponseType. Now the referralResponseType is
- * define to a default value Zero. So updating the dueDate to 10 days.
+ * the dueDate is updated according to the referralResponseType.
  * <p>
  * 
  * @author CWDS API Team
@@ -80,6 +79,7 @@ public class R04631ReferralInvestigationContactDue {
           && participant.getDateOfBirth() != null) {
         Client client = clientDao.find(participant.getLegacyId());
         String dateOfBirth = participant.getDateOfBirth();
+
         int years = ReminderHelper.checkForAgeDiffernce(dateOfBirth);
 
         if (years < 19 && ReminderHelper.getMap().get(referral.getReferralResponseType()) != null) {

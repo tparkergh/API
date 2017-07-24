@@ -41,12 +41,12 @@ import io.dropwizard.jackson.Jackson;
  * 
  * @author CWDS API Team
  */
+@SuppressWarnings("javadoc")
 public class ClientDaoIT {
   static final ObjectMapper MAPPER = Jackson.newObjectMapper();
 
   private static final DateFormat TIMESTAMP_FORMAT = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 
-  @SuppressWarnings("javadoc")
   @Rule
   public ExpectedException thrown = ExpectedException.none();
 
@@ -55,14 +55,12 @@ public class ClientDaoIT {
   private Session session;
   Transaction transaction;
 
-  @SuppressWarnings("javadoc")
   @BeforeClass
   public static void beforeClass() {
     sessionFactory = new Configuration().configure().buildSessionFactory();
     clientDao = new ClientDao(sessionFactory);
   }
 
-  @SuppressWarnings("javadoc")
   @AfterClass
   public static void afterClass() {
     sessionFactory.close();
