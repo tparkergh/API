@@ -113,6 +113,20 @@ public class CrossReportServiceTest {
     assertThat(found, is(nullValue()));
   }
 
+  @SuppressWarnings("javadoc")
+  @Test
+  public void crossReportServiceDeleteReturnsNotNull() throws Exception {
+    String thirdId = "ABC1234567";
+    CrossReport expected = MAPPER.readValue(
+        fixture("fixtures/domain/legacy/CrossReport/valid/valid.json"), CrossReport.class);
+    gov.ca.cwds.data.persistence.cms.CrossReport crossReport =
+        new gov.ca.cwds.data.persistence.cms.CrossReport(thirdId, expected, "0XA");
+
+    when(crossReportDao.delete(thirdId)).thenReturn(crossReport);
+    CrossReport found = crossReportService.delete(thirdId);
+    assertThat(found, is(expected));
+  }
+
   // update test
   @SuppressWarnings("javadoc")
   @Test

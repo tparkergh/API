@@ -1,19 +1,12 @@
 package gov.ca.cwds.rest.services.cms;
 
-import gov.ca.cwds.rest.api.domain.ScreeningToReferral;
-import gov.ca.cwds.rest.api.domain.cms.LongText;
-import gov.ca.cwds.rest.api.domain.cms.PostedLongText;
-import gov.ca.cwds.rest.messages.MessageBuilder;
-import gov.ca.cwds.rest.services.LegacyCodes;
-import gov.ca.cwds.rest.services.LegacyDefaultValues;
-import gov.ca.cwds.rest.validation.ParticipantValidator;
 import java.io.Serializable;
 import java.util.Date;
 
 import javax.persistence.EntityExistsException;
 import javax.persistence.EntityNotFoundException;
-
 import javax.validation.Validator;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -27,11 +20,18 @@ import gov.ca.cwds.data.persistence.cms.Referral;
 import gov.ca.cwds.data.persistence.cms.StaffPerson;
 import gov.ca.cwds.data.rules.TriggerTablesDao;
 import gov.ca.cwds.rest.api.Request;
+import gov.ca.cwds.rest.api.domain.ScreeningToReferral;
+import gov.ca.cwds.rest.api.domain.cms.LongText;
+import gov.ca.cwds.rest.api.domain.cms.PostedLongText;
 import gov.ca.cwds.rest.api.domain.cms.PostedReferral;
 import gov.ca.cwds.rest.business.rules.LACountyTrigger;
 import gov.ca.cwds.rest.business.rules.NonLACountyTriggers;
+import gov.ca.cwds.rest.messages.MessageBuilder;
 import gov.ca.cwds.rest.services.CrudsService;
+import gov.ca.cwds.rest.services.LegacyCodes;
+import gov.ca.cwds.rest.services.LegacyDefaultValues;
 import gov.ca.cwds.rest.services.ServiceException;
+import gov.ca.cwds.rest.validation.ParticipantValidator;
 
 /**
  * Business layer object to work on {@link Referral}
@@ -82,8 +82,9 @@ public class ReferralService implements CrudsService {
   public ReferralService(final ReferralDao referralDao, NonLACountyTriggers nonLaTriggers,
       LACountyTrigger laCountyTrigger, TriggerTablesDao triggerTablesDao,
       StaffPersonDao staffpersonDao, StaffPersonIdRetriever staffPersonIdRetriever,
-      AssignmentService assignmentService, Validator validator, DrmsDocumentService drmsDocumentService,
-      AddressService addressService, LongTextService longTextService) {
+      AssignmentService assignmentService, Validator validator,
+      DrmsDocumentService drmsDocumentService, AddressService addressService,
+      LongTextService longTextService) {
     this.referralDao = referralDao;
     this.nonLaTriggers = nonLaTriggers;
     this.laCountyTrigger = laCountyTrigger;
@@ -189,8 +190,16 @@ public class ReferralService implements CrudsService {
     }
   }
 
-  public String createCmsReferralFromScreening(ScreeningToReferral screeningToReferral, String dateStarted,
-      String timeStarted, Date timestamp, MessageBuilder messageBuilder){
+  /**
+   * @param screeningToReferral - screeningToReferral
+   * @param dateStarted - dateStarted
+   * @param timeStarted - timeStarted
+   * @param timestamp - timestamp
+   * @param messageBuilder - messageBuilder
+   * @return the cmsReferral
+   */
+  public String createCmsReferralFromScreening(ScreeningToReferral screeningToReferral,
+      String dateStarted, String timeStarted, Date timestamp, MessageBuilder messageBuilder) {
 
     String referralId = null;
 
@@ -200,8 +209,8 @@ public class ReferralService implements CrudsService {
       // create a CMS Referral
       gov.ca.cwds.rest.api.domain.cms.Referral referral = null;
       try {
-        referral =
-            createReferralWithDefaults(screeningToReferral, dateStarted, timeStarted, timestamp, messageBuilder);
+        referral = createReferralWithDefaults(screeningToReferral, dateStarted, timeStarted,
+            timestamp, messageBuilder);
       } catch (ServiceException e) {
         String message = e.getMessage();
         messageBuilder.addMessageAndLog(message, e, LOGGER);
@@ -216,12 +225,12 @@ public class ReferralService implements CrudsService {
 
       messageBuilder.addDomainValidationError(validator.validate(referral));
 
-      PostedReferral postedReferral =
-          this.createWithSingleTimestamp(referral, timestamp);
+      PostedReferral postedReferral = this.createWithSingleTimestamp(referral, timestamp);
       referralId = postedReferral.getId();
 
       // when creating a referral - create the default assignment to 0XA staff person
-      assignmentService.createDefaultAssignmentForNewReferral(referralId, timestamp, messageBuilder);
+      assignmentService.createDefaultAssignmentForNewReferral(referralId, timestamp,
+          messageBuilder);
       // TODO: R - 01054 Prmary Assignment Adding
 
     } else {
@@ -237,7 +246,7 @@ public class ReferralService implements CrudsService {
     return referralId;
   }
 
-    /**
+  /**
    * @param screeningToReferral - screeningToReferral
    * @param dateStarted - dateStarted
    * @param timeStarted - timeStarted
@@ -246,8 +255,9 @@ public class ReferralService implements CrudsService {
    * @return the referral
    * @throws ServiceException - ServiceException
    */
-  public gov.ca.cwds.rest.api.domain.cms.Referral createReferralWithDefaults(ScreeningToReferral screeningToReferral,
-      String dateStarted, String timeStarted, Date timestamp, MessageBuilder messageBuilder) throws ServiceException {
+  public gov.ca.cwds.rest.api.domain.cms.Referral createReferralWithDefaults(
+      ScreeningToReferral screeningToReferral, String dateStarted, String timeStarted,
+      Date timestamp, MessageBuilder messageBuilder) throws ServiceException {
     short approvalStatusCode = approvalStatusCodeOnCreateSetToNotSubmitted();
     String longTextId = generateReportNarrative(screeningToReferral, messageBuilder);
     String firstResponseDeterminedByStaffPersonId = getFirstResponseDeterminedByStaffPersonId();
@@ -255,7 +265,8 @@ public class ReferralService implements CrudsService {
     /*
      * create a three dummy records using generateDrmsDocumentId method
      */
-    String drmsAllegationDescriptionDoc = drmsDocumentService.generateDrmsDocumentId(messageBuilder);
+    String drmsAllegationDescriptionDoc =
+        drmsDocumentService.generateDrmsDocumentId(messageBuilder);
     String drmsErReferralDoc = drmsDocumentService.generateDrmsDocumentId(messageBuilder);
     String drmsInvestigationDoc = drmsDocumentService.generateDrmsDocumentId(messageBuilder);
 
@@ -266,15 +277,17 @@ public class ReferralService implements CrudsService {
     createReferralAddress(screeningToReferral, timestamp, messageBuilder);
     String allegesAbuseOccurredAtAddressId = screeningToReferral.getAddress().getLegacyId();
 
-    return gov.ca.cwds.rest.api.domain.cms.Referral.createWithDefaults(ParticipantValidator.anonymousReporter(screeningToReferral),
-        screeningToReferral.getCommunicationMethod(), drmsAllegationDescriptionDoc, drmsErReferralDoc,
-        drmsInvestigationDoc, screeningToReferral.getName(), dateStarted, timeStarted,
-        screeningToReferral.getResponseTime(), allegesAbuseOccurredAtAddressId,
-        firstResponseDeterminedByStaffPersonId, longTextId, LegacyDefaultValues.DEFAULT_COUNTY_SPECIFIC_CODE,
-        approvalStatusCode, LegacyDefaultValues.DEFAULT_STAFF_PERSON_ID);
+    return gov.ca.cwds.rest.api.domain.cms.Referral.createWithDefaults(
+        ParticipantValidator.anonymousReporter(screeningToReferral),
+        screeningToReferral.getCommunicationMethod(), drmsAllegationDescriptionDoc,
+        drmsErReferralDoc, drmsInvestigationDoc, screeningToReferral.getName(), dateStarted,
+        timeStarted, screeningToReferral.getResponseTime(), allegesAbuseOccurredAtAddressId,
+        firstResponseDeterminedByStaffPersonId, longTextId,
+        LegacyDefaultValues.DEFAULT_COUNTY_SPECIFIC_CODE, approvalStatusCode,
+        LegacyDefaultValues.DEFAULT_STAFF_PERSON_ID);
   }
 
-    /**
+  /**
    * <blockquote>
    *
    * <pre>
@@ -291,7 +304,7 @@ public class ReferralService implements CrudsService {
     return staffPersonIdRetriever.getStaffPersonId();
   }
 
-    /**
+  /**
    * <blockquote>
    *
    * <pre>
@@ -306,10 +319,11 @@ public class ReferralService implements CrudsService {
    * </blockquote>
    */
   private short approvalStatusCodeOnCreateSetToNotSubmitted() {
-    return legacyDefaultValues.APPROVAL_STATUS_CODE_NOT_SUBMITTED;
+    return LegacyDefaultValues.APPROVAL_STATUS_CODE_NOT_SUBMITTED;
   }
 
-  private void createReferralAddress(ScreeningToReferral screeningToReferral, Date timestamp, MessageBuilder messageBuilder) {
+  private void createReferralAddress(ScreeningToReferral screeningToReferral, Date timestamp,
+      MessageBuilder messageBuilder) {
     try {
       gov.ca.cwds.rest.api.domain.Address referralAddress =
           addressService.createAddressFromScreening(screeningToReferral, timestamp, messageBuilder);
@@ -320,14 +334,15 @@ public class ReferralService implements CrudsService {
     }
   }
 
-  private String generateReportNarrative(ScreeningToReferral screeningToReferral, MessageBuilder messageBuilder) {
+  private String generateReportNarrative(ScreeningToReferral screeningToReferral,
+      MessageBuilder messageBuilder) {
     String longTextId = null;
     if (screeningToReferral.getReportNarrative() == null
         || screeningToReferral.getReportNarrative().isEmpty()) {
       longTextId = null;
     } else {
       try {
-        longTextId = createLongText(legacyDefaultValues.DEFAULT_COUNTY_SPECIFIC_CODE,
+        longTextId = createLongText(LegacyDefaultValues.DEFAULT_COUNTY_SPECIFIC_CODE,
             screeningToReferral.getReportNarrative(), messageBuilder);
       } catch (ServiceException e) {
         String message = e.getMessage();
@@ -337,8 +352,8 @@ public class ReferralService implements CrudsService {
     return longTextId;
   }
 
-  private String createLongText(String countySpecificCode, String textDescription, MessageBuilder messageBuilder)
-      throws ServiceException {
+  private String createLongText(String countySpecificCode, String textDescription,
+      MessageBuilder messageBuilder) throws ServiceException {
 
     LongText longText = new LongText(countySpecificCode, textDescription);
     PostedLongText postedLongText = longTextService.create(longText);

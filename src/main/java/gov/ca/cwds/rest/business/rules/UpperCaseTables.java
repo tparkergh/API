@@ -95,10 +95,8 @@ public class UpperCaseTables {
    */
   public void deleteClientUc(Serializable pktableId) {
     if (pktableId != null) {
-      ClientUc clientUc = new ClientUc();
-      clientUc.setPktableId((String) pktableId);
       try {
-        clientUcDao.delete(clientUc);
+        clientUcDao.delete(pktableId);
         LOGGER.info("clientUc is deleted");
       } catch (ServiceException se) {
         throw new DaoException("Delete from client_uc failed - " + se);
@@ -155,16 +153,13 @@ public class UpperCaseTables {
    */
   public void deleteAddressUc(Serializable pktableId) {
     if (pktableId != null) {
-      AddressUc addressUc = new AddressUc();
-      addressUc.setPktableId((String) pktableId);
       try {
-        addressUcDao.delete(addressUc);
+        addressUcDao.delete(pktableId);
         LOGGER.info("addressUc is deleted");
       } catch (ServiceException se) {
         throw new DaoException("Delete from addrs_uc failed - " + se);
       }
     }
   }
-
 
 }

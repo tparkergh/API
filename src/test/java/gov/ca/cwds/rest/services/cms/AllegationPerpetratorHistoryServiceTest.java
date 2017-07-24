@@ -122,6 +122,21 @@ public class AllegationPerpetratorHistoryServiceTest implements ServiceTestTempl
     assertThat(found, is(nullValue()));
   }
 
+  @SuppressWarnings("javadoc")
+  @Test
+  public void assignmentServiceDeleteReturnsNotNull() throws Exception {
+    String id = "1234567ABC";
+    AllegationPerpetratorHistory expected =
+        new AllegationPerpetratorHistoryResourceBuilder().createAllegationPerpetratorHistory();
+
+    gov.ca.cwds.data.persistence.cms.AllegationPerpetratorHistory allegationPerpetratorHistory =
+        new gov.ca.cwds.data.persistence.cms.AllegationPerpetratorHistory(id, expected, "0XA");
+
+    when(allegationPerpetratorHistoryDao.delete(id)).thenReturn(allegationPerpetratorHistory);
+    AllegationPerpetratorHistory found = allegationPerpetratorHistoryService.delete(id);
+    assertThat(found, is(expected));
+  }
+
   @Override
   public void testDeleteThrowsNotImplementedException() throws Exception {
     // delete is implemented

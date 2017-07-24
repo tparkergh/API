@@ -30,6 +30,7 @@ import gov.ca.cwds.data.cms.ReferralDao;
 import gov.ca.cwds.data.cms.StaffPersonDao;
 import gov.ca.cwds.data.persistence.cms.StaffPerson;
 import gov.ca.cwds.data.rules.TriggerTablesDao;
+import gov.ca.cwds.fixture.ReferralResourceBuilder;
 import gov.ca.cwds.rest.api.Response;
 import gov.ca.cwds.rest.api.domain.cms.PostedReferral;
 import gov.ca.cwds.rest.api.domain.cms.Referral;
@@ -148,8 +149,7 @@ public class ReferralServiceTest implements ServiceTestTemplate {
   @Test
   public void testDeleteReturnsClass() throws Exception {
     // delete success
-    Referral referralDomain = MAPPER
-        .readValue(fixture("fixtures/domain/legacy/Referral/valid/valid.json"), Referral.class);
+    Referral referralDomain = new ReferralResourceBuilder().build();
 
     gov.ca.cwds.data.persistence.cms.Referral referral =
         new gov.ca.cwds.data.persistence.cms.Referral("1234567ABC", referralDomain, "ABC");
@@ -186,8 +186,7 @@ public class ReferralServiceTest implements ServiceTestTemplate {
   public void testUpdateThrowsAssertionErrorNullPrimaryKey() throws Exception {
     thrown.expect(AssertionError.class);
     try {
-      Referral referralDomain = MAPPER
-          .readValue(fixture("fixtures/domain/legacy/Referral/valid/valid.json"), Referral.class);
+      Referral referralDomain = new ReferralResourceBuilder().build();
       gov.ca.cwds.data.persistence.cms.Referral toCreate =
           new gov.ca.cwds.data.persistence.cms.Referral("1234567ABC", referralDomain, "0XA");
 
@@ -201,8 +200,7 @@ public class ReferralServiceTest implements ServiceTestTemplate {
   @Override
   @Test
   public void testUpdateReturnsDomain() throws Exception {
-    Referral expected = MAPPER
-        .readValue(fixture("fixtures/domain/legacy/Referral/valid/valid.json"), Referral.class);
+    Referral expected = new ReferralResourceBuilder().build();
 
     gov.ca.cwds.data.persistence.cms.Referral referral =
         new gov.ca.cwds.data.persistence.cms.Referral("1234567ABC", expected, "ABC");
@@ -219,8 +217,7 @@ public class ReferralServiceTest implements ServiceTestTemplate {
   public void testUpdateThrowsServiceException() throws Exception {
 
     try {
-      Referral referralRequest = MAPPER
-          .readValue(fixture("fixtures/domain/legacy/Referral/valid/valid.json"), Referral.class);
+      Referral referralRequest = new ReferralResourceBuilder().build();
 
       when(referralDao.update(any())).thenThrow(EntityNotFoundException.class);
 
@@ -265,8 +262,7 @@ public class ReferralServiceTest implements ServiceTestTemplate {
   @Test
   public void referralServiceCreateThrowsEntityExistsException() throws Exception {
     try {
-      Referral referralRequest = MAPPER
-          .readValue(fixture("fixtures/domain/legacy/Referral/valid/valid.json"), Referral.class);
+      Referral referralRequest = new ReferralResourceBuilder().build();
 
       when(referralDao.create(any())).thenThrow(EntityExistsException.class);
 
@@ -279,8 +275,7 @@ public class ReferralServiceTest implements ServiceTestTemplate {
   @Override
   @Test
   public void testCreateReturnsPostedClass() throws Exception {
-    Referral referralDomain = MAPPER
-        .readValue(fixture("fixtures/domain/legacy/Referral/valid/valid.json"), Referral.class);
+    Referral referralDomain = new ReferralResourceBuilder().build();
     gov.ca.cwds.data.persistence.cms.Referral toCreate =
         new gov.ca.cwds.data.persistence.cms.Referral("1234567ABC", referralDomain, "0XA");
 
@@ -297,8 +292,7 @@ public class ReferralServiceTest implements ServiceTestTemplate {
   @Override
   @Test
   public void testCreateReturnsCorrectEntity() throws Exception {
-    Referral referralDomain = MAPPER
-        .readValue(fixture("fixtures/domain/legacy/Referral/valid/valid.json"), Referral.class);
+    Referral referralDomain = new ReferralResourceBuilder().build();
     gov.ca.cwds.data.persistence.cms.Referral toCreate =
         new gov.ca.cwds.data.persistence.cms.Referral("1234567ABC", referralDomain, "0XA");
 
@@ -315,8 +309,7 @@ public class ReferralServiceTest implements ServiceTestTemplate {
   @Test
   public void testCreateEmptyIDError() throws Exception {
     try {
-      Referral referralDomain = MAPPER
-          .readValue(fixture("fixtures/domain/legacy/Referral/valid/valid.json"), Referral.class);
+      Referral referralDomain = new ReferralResourceBuilder().build();
       gov.ca.cwds.data.persistence.cms.Referral toCreate =
           new gov.ca.cwds.data.persistence.cms.Referral("", referralDomain, "0XA");
 
@@ -336,8 +329,7 @@ public class ReferralServiceTest implements ServiceTestTemplate {
   @Test
   public void testCreateNullIDError() throws Exception {
     try {
-      Referral referralDomain = MAPPER
-          .readValue(fixture("fixtures/domain/legacy/Referral/valid/valid.json"), Referral.class);
+      Referral referralDomain = new ReferralResourceBuilder().build();
       gov.ca.cwds.data.persistence.cms.Referral toCreate =
           new gov.ca.cwds.data.persistence.cms.Referral(null, referralDomain, "0XA");
 
@@ -356,8 +348,7 @@ public class ReferralServiceTest implements ServiceTestTemplate {
   @Test
   public void testCreateBlankIDError() throws Exception {
     try {
-      Referral referralDomain = MAPPER
-          .readValue(fixture("fixtures/domain/legacy/Referral/valid/valid.json"), Referral.class);
+      Referral referralDomain = new ReferralResourceBuilder().build();
       gov.ca.cwds.data.persistence.cms.Referral toCreate =
           new gov.ca.cwds.data.persistence.cms.Referral("   ", referralDomain, "0XA");
 
@@ -375,8 +366,7 @@ public class ReferralServiceTest implements ServiceTestTemplate {
   @SuppressWarnings("javadoc")
   @Test
   public void testCreateReturnsCorrectReferralId() throws Exception {
-    Referral referralDomain = MAPPER
-        .readValue(fixture("fixtures/domain/legacy/Referral/valid/valid.json"), Referral.class);
+    Referral referralDomain = new ReferralResourceBuilder().build();
     gov.ca.cwds.data.persistence.cms.Referral toCreate =
         new gov.ca.cwds.data.persistence.cms.Referral("1234567ABC", referralDomain, "0XA");
 
@@ -396,8 +386,7 @@ public class ReferralServiceTest implements ServiceTestTemplate {
   @SuppressWarnings("javadoc")
   @Test
   public void createReturnsGeneratedId() throws Exception {
-    Referral referralDomain = MAPPER
-        .readValue(fixture("fixtures/domain/legacy/Referral/valid/valid.json"), Referral.class);
+    Referral referralDomain = new ReferralResourceBuilder().build();
     when(referralDao.create(any(gov.ca.cwds.data.persistence.cms.Referral.class)))
         .thenAnswer(new Answer<gov.ca.cwds.data.persistence.cms.Referral>() {
 
@@ -421,14 +410,10 @@ public class ReferralServiceTest implements ServiceTestTemplate {
 
   }
 
-  /*
-   * Test for checking the staffperson county Code
-   */
   @SuppressWarnings("javadoc")
   @Test
-  public void createCountyTriggerForLACounty() throws Exception {
-    Referral referralDomain = MAPPER
-        .readValue(fixture("fixtures/domain/legacy/Referral/valid/valid.json"), Referral.class);
+  public void testCreateLACountyTriggerForReferralCreate() throws Exception {
+    Referral referralDomain = new ReferralResourceBuilder().build();
     gov.ca.cwds.data.persistence.cms.Referral toCreate =
         new gov.ca.cwds.data.persistence.cms.Referral("1234567ABC", referralDomain, "BTr");
 
@@ -455,6 +440,41 @@ public class ReferralServiceTest implements ServiceTestTemplate {
         });
 
     referralService.create(request);
+    assertThat(isLaCountyTrigger, is(true));
+
+  }
+
+  @SuppressWarnings("javadoc")
+  @Test
+  public void testCreateLACountyTriggerForReferralUpdate() throws Exception {
+    Referral referralDomain = new ReferralResourceBuilder().build();
+
+    gov.ca.cwds.data.persistence.cms.Referral toUpdate =
+        new gov.ca.cwds.data.persistence.cms.Referral("1234567ABC", referralDomain, "BTr");
+
+    Referral request = new Referral(toUpdate);
+
+    when(triggerTablesDao.getLaCountySpecificCode()).thenReturn("19");
+
+    StaffPerson staffPerson = new StaffPerson("BTr", null, "External Interface",
+        "external interface", "SCXCIN7", " ", "", BigDecimal.valueOf(9165672100L), 0, null, "    ",
+        "N", "MIZN02k00E", "  ", "    ", "19", "N", "3XPCP92q38", null);
+
+    when(staffpersonDao.find(any(String.class))).thenReturn(staffPerson);
+    when(referralDao.update(any(gov.ca.cwds.data.persistence.cms.Referral.class)))
+        .thenReturn(toUpdate);
+
+    when(laCountyTrigger.createCountyTrigger(any(gov.ca.cwds.data.persistence.cms.Referral.class)))
+        .thenAnswer(new Answer<Boolean>() {
+
+          @Override
+          public Boolean answer(InvocationOnMock invocation) throws Throwable {
+            isLaCountyTrigger = true;
+            return true;
+          }
+        });
+
+    referralService.update("1234567ABC", request);
     assertThat(isLaCountyTrigger, is(true));
 
   }

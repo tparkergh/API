@@ -1,69 +1,70 @@
 package gov.ca.cwds.fixture;
 
+import java.util.HashSet;
+import java.util.Set;
+
 import gov.ca.cwds.rest.api.domain.cms.Address;
 import gov.ca.cwds.rest.api.domain.cms.Allegation;
 import gov.ca.cwds.rest.api.domain.cms.Client;
 import gov.ca.cwds.rest.api.domain.cms.CrossReport;
 import gov.ca.cwds.rest.api.domain.cms.Referral;
 import gov.ca.cwds.rest.api.domain.cms.Reporter;
-import java.util.HashSet;
-import java.util.Set;
 
 public class ReferralResourceBuilder {
-       Boolean additionalInfoIncludedCode = false;
-       Boolean anonymousReporterIndicator = false;
-       Boolean applicationForPetitionIndicator = false;
-       String approvalNumber = "";
-       Short approvalStatusType = 0;
-       Boolean caretakersPerpetratorCode = false;
-       String closureDate = "";
-       Short communicationMethodType = 0;
-       String currentLocationOfChildren = "";
-       String drmsAllegationDescriptionDoc = "";
-       String drmsErReferralDoc = "";
-       String drmsInvestigationDoc = "";
-       Boolean filedSuspectedChildAbuseReporttoLawEnforcementIndicator = false;
-       Boolean familyAwarenessIndicator = false;
-       Short govtEntityType = 0;
-       String legalDefinitionCode = "N";
-       Boolean legalRightsNoticeIndicator = false;
-       String limitedAccessCode = "N";
-       String mandatedCrossReportReceivedDate = "";
-       String referralName = "";
-       String openAdequateCaseCode = "";
-       String receivedDate = "";
-       String receivedTime = "";
-       Short referralResponseType = 0;
-       Short referredToResourceType = 0;
-       String responseDeterminationDate = "";
-       String responseDeterminationTime = "";
-       String responseRationaleText = "";
-       String screenerNoteText = "";
-       String specificsIncludedCode = "N";
-       String sufficientInformationCode = "N";
-       String unfoundedSeriesCode = "N";
-       String linkToPrimaryReferralId = "";
-       String allegesAbuseOccurredAtAddressId = "";
-       String firstResponseDeterminedByStaffPersonId = "";
-       String primaryContactStaffPersonId = "";
-       String countySpecificCode = "";
-       Boolean specialProjectReferralIndicator = false;
-       Boolean zippyCreatedIndicator = false;
-       Boolean homelessIndicator = false;
-       Boolean familyRefusedServicesIndicator = false;
-       String firstEvaluatedOutApprovalDate = "";
-       String responsibleAgencyCode = "C";
-       Short limitedAccessGovtAgencyType = 0;
-       String limitedAccessDate = "";
-       String limitedAccessDesc = "";
-       String originalClosureDate = "";
-       String uiIdentifier = "";
-       Set<Address> address = new HashSet<>();
-       Set<Reporter> reporter = new HashSet<>();
-       Set<CrossReport> crossReport = new HashSet<>();
-       Set<Allegation> allegation = new HashSet<>();
-       Set<Client> victimClient = new HashSet<>();
-       Set<Client> perpetratorClient = new HashSet<>();
+  Boolean additionalInfoIncludedCode = false;
+  Boolean anonymousReporterIndicator = false;
+  Boolean applicationForPetitionIndicator = false;
+  String approvalNumber = "";
+  Short approvalStatusType = 0;
+  Boolean caretakersPerpetratorCode = false;
+  String closureDate = "";
+  Short communicationMethodType = 0;
+  String currentLocationOfChildren = "";
+  String drmsAllegationDescriptionDoc = "";
+  String drmsErReferralDoc = "";
+  String drmsInvestigationDoc = "";
+  Boolean filedSuspectedChildAbuseReporttoLawEnforcementIndicator = false;
+  Boolean familyAwarenessIndicator = false;
+  Short govtEntityType = 0;
+  String legalDefinitionCode = "N";
+  Boolean legalRightsNoticeIndicator = false;
+  String limitedAccessCode = "N";
+  String mandatedCrossReportReceivedDate = "";
+  String referralName = "";
+  String openAdequateCaseCode = "";
+  String receivedDate = "";
+  String receivedTime = "";
+  Short referralResponseType = 1520;
+  Short referredToResourceType = 0;
+  String responseDeterminationDate = "";
+  String responseDeterminationTime = "";
+  String responseRationaleText = "";
+  String screenerNoteText = "";
+  String specificsIncludedCode = "N";
+  String sufficientInformationCode = "N";
+  String unfoundedSeriesCode = "N";
+  String linkToPrimaryReferralId = "";
+  String allegesAbuseOccurredAtAddressId = "";
+  String firstResponseDeterminedByStaffPersonId = "";
+  String primaryContactStaffPersonId = "";
+  String countySpecificCode = "";
+  Boolean specialProjectReferralIndicator = false;
+  Boolean zippyCreatedIndicator = false;
+  Boolean homelessIndicator = false;
+  Boolean familyRefusedServicesIndicator = false;
+  String firstEvaluatedOutApprovalDate = "";
+  String responsibleAgencyCode = "C";
+  Short limitedAccessGovtAgencyType = 0;
+  String limitedAccessDate = "";
+  String limitedAccessDesc = "";
+  String originalClosureDate = "";
+  String uiIdentifier = "";
+  Set<Address> address = new HashSet<>();
+  Set<Reporter> reporter = new HashSet<>();
+  Set<CrossReport> crossReport = new HashSet<>();
+  Set<Allegation> allegation = new HashSet<>();
+  Set<Client> victimClient = new HashSet<>();
+  Set<Client> perpetratorClient = new HashSet<>();
 
   public Boolean getAdditionalInfoIncludedCode() {
     return additionalInfoIncludedCode;
@@ -87,7 +88,8 @@ public class ReferralResourceBuilder {
     return applicationForPetitionIndicator;
   }
 
-  public ReferralResourceBuilder setApplicationForPetitionIndicator(Boolean applicationForPetitionIndicator) {
+  public ReferralResourceBuilder setApplicationForPetitionIndicator(
+      Boolean applicationForPetitionIndicator) {
     this.applicationForPetitionIndicator = applicationForPetitionIndicator;
     return this;
   }
@@ -150,7 +152,8 @@ public class ReferralResourceBuilder {
     return drmsAllegationDescriptionDoc;
   }
 
-  public ReferralResourceBuilder setDrmsAllegationDescriptionDoc(String drmsAllegationDescriptionDoc) {
+  public ReferralResourceBuilder setDrmsAllegationDescriptionDoc(
+      String drmsAllegationDescriptionDoc) {
     this.drmsAllegationDescriptionDoc = drmsAllegationDescriptionDoc;
     return this;
   }
@@ -179,7 +182,8 @@ public class ReferralResourceBuilder {
 
   public ReferralResourceBuilder setFiledSuspectedChildAbuseReporttoLawEnforcementIndicator(
       Boolean filedSuspectedChildAbuseReporttoLawEnforcementIndicator) {
-    this.filedSuspectedChildAbuseReporttoLawEnforcementIndicator = filedSuspectedChildAbuseReporttoLawEnforcementIndicator;
+    this.filedSuspectedChildAbuseReporttoLawEnforcementIndicator =
+        filedSuspectedChildAbuseReporttoLawEnforcementIndicator;
     return this;
   }
 
@@ -232,7 +236,8 @@ public class ReferralResourceBuilder {
     return mandatedCrossReportReceivedDate;
   }
 
-  public ReferralResourceBuilder setMandatedCrossReportReceivedDate(String mandatedCrossReportReceivedDate) {
+  public ReferralResourceBuilder setMandatedCrossReportReceivedDate(
+      String mandatedCrossReportReceivedDate) {
     this.mandatedCrossReportReceivedDate = mandatedCrossReportReceivedDate;
     return this;
   }
@@ -367,7 +372,8 @@ public class ReferralResourceBuilder {
     return allegesAbuseOccurredAtAddressId;
   }
 
-  public ReferralResourceBuilder setAllegesAbuseOccurredAtAddressId(String allegesAbuseOccurredAtAddressId) {
+  public ReferralResourceBuilder setAllegesAbuseOccurredAtAddressId(
+      String allegesAbuseOccurredAtAddressId) {
     this.allegesAbuseOccurredAtAddressId = allegesAbuseOccurredAtAddressId;
     return this;
   }
@@ -386,7 +392,8 @@ public class ReferralResourceBuilder {
     return primaryContactStaffPersonId;
   }
 
-  public ReferralResourceBuilder setPrimaryContactStaffPersonId(String primaryContactStaffPersonId) {
+  public ReferralResourceBuilder setPrimaryContactStaffPersonId(
+      String primaryContactStaffPersonId) {
     this.primaryContactStaffPersonId = primaryContactStaffPersonId;
     return this;
   }
@@ -404,7 +411,8 @@ public class ReferralResourceBuilder {
     return specialProjectReferralIndicator;
   }
 
-  public ReferralResourceBuilder setSpecialProjectReferralIndicator(Boolean specialProjectReferralIndicator) {
+  public ReferralResourceBuilder setSpecialProjectReferralIndicator(
+      Boolean specialProjectReferralIndicator) {
     this.specialProjectReferralIndicator = specialProjectReferralIndicator;
     return this;
   }
@@ -431,7 +439,8 @@ public class ReferralResourceBuilder {
     return familyRefusedServicesIndicator;
   }
 
-  public ReferralResourceBuilder setFamilyRefusedServicesIndicator(Boolean familyRefusedServicesIndicator) {
+  public ReferralResourceBuilder setFamilyRefusedServicesIndicator(
+      Boolean familyRefusedServicesIndicator) {
     this.familyRefusedServicesIndicator = familyRefusedServicesIndicator;
     return this;
   }
@@ -440,7 +449,8 @@ public class ReferralResourceBuilder {
     return firstEvaluatedOutApprovalDate;
   }
 
-  public ReferralResourceBuilder setFirstEvaluatedOutApprovalDate(String firstEvaluatedOutApprovalDate) {
+  public ReferralResourceBuilder setFirstEvaluatedOutApprovalDate(
+      String firstEvaluatedOutApprovalDate) {
     this.firstEvaluatedOutApprovalDate = firstEvaluatedOutApprovalDate;
     return this;
   }
@@ -548,26 +558,27 @@ public class ReferralResourceBuilder {
     return perpetratorClient;
   }
 
-  public ReferralResourceBuilder setPerpetratorClient(
-      Set<Client> perpetratorClient) {
+  public ReferralResourceBuilder setPerpetratorClient(Set<Client> perpetratorClient) {
     this.perpetratorClient = perpetratorClient;
     return this;
   }
 
-  public Referral build(){
-    return new Referral(additionalInfoIncludedCode,anonymousReporterIndicator,applicationForPetitionIndicator,
-        approvalNumber, approvalStatusType, caretakersPerpetratorCode, closureDate, communicationMethodType,
-        currentLocationOfChildren, drmsAllegationDescriptionDoc, drmsErReferralDoc, drmsInvestigationDoc,
-        filedSuspectedChildAbuseReporttoLawEnforcementIndicator, familyAwarenessIndicator, govtEntityType,
-        legalDefinitionCode, legalRightsNoticeIndicator,limitedAccessCode, mandatedCrossReportReceivedDate,
-        referralName, openAdequateCaseCode, receivedDate, receivedTime, referralResponseType, referredToResourceType,
-        responseDeterminationDate, responseDeterminationTime, responseRationaleText, screenerNoteText,
-        specificsIncludedCode, sufficientInformationCode,unfoundedSeriesCode, linkToPrimaryReferralId,
-        allegesAbuseOccurredAtAddressId, firstResponseDeterminedByStaffPersonId, primaryContactStaffPersonId,
-        countySpecificCode, specialProjectReferralIndicator, zippyCreatedIndicator, homelessIndicator,
-        familyRefusedServicesIndicator, firstEvaluatedOutApprovalDate, responsibleAgencyCode, limitedAccessGovtAgencyType,
-        limitedAccessDate,limitedAccessDesc, originalClosureDate, uiIdentifier, address, reporter,
-        crossReport, allegation, victimClient, perpetratorClient
-      );
+  public Referral build() {
+    return new Referral(additionalInfoIncludedCode, anonymousReporterIndicator,
+        applicationForPetitionIndicator, approvalNumber, approvalStatusType,
+        caretakersPerpetratorCode, closureDate, communicationMethodType, currentLocationOfChildren,
+        drmsAllegationDescriptionDoc, drmsErReferralDoc, drmsInvestigationDoc,
+        filedSuspectedChildAbuseReporttoLawEnforcementIndicator, familyAwarenessIndicator,
+        govtEntityType, legalDefinitionCode, legalRightsNoticeIndicator, limitedAccessCode,
+        mandatedCrossReportReceivedDate, referralName, openAdequateCaseCode, receivedDate,
+        receivedTime, referralResponseType, referredToResourceType, responseDeterminationDate,
+        responseDeterminationTime, responseRationaleText, screenerNoteText, specificsIncludedCode,
+        sufficientInformationCode, unfoundedSeriesCode, linkToPrimaryReferralId,
+        allegesAbuseOccurredAtAddressId, firstResponseDeterminedByStaffPersonId,
+        primaryContactStaffPersonId, countySpecificCode, specialProjectReferralIndicator,
+        zippyCreatedIndicator, homelessIndicator, familyRefusedServicesIndicator,
+        firstEvaluatedOutApprovalDate, responsibleAgencyCode, limitedAccessGovtAgencyType,
+        limitedAccessDate, limitedAccessDesc, originalClosureDate, uiIdentifier, address, reporter,
+        crossReport, allegation, victimClient, perpetratorClient);
   }
 }

@@ -1,10 +1,8 @@
 package gov.ca.cwds.rest.business.reminders;
 
 import java.text.DateFormat;
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.Set;
 
 import org.slf4j.Logger;
@@ -82,43 +80,24 @@ public class R04631ReferralInvestigationContactDue {
           && participant.getDateOfBirth() != null) {
         Client client = clientDao.find(participant.getLegacyId());
         String dateOfBirth = participant.getDateOfBirth();
-        try {
-          /*
-           * check for the client age is below 19 or not by using the Java Calender
-           */
-          Date dob = dateFormat.parse(dateOfBirth);
-          Calendar present = Calendar.getInstance();
-          Calendar past = Calendar.getInstance();
-          past.setTime(dob);
-          int years = 0;
-          while (past.before(present)) {
-            past.add(Calendar.YEAR, 1);
-            if (past.before(present)) {
-              years++;
-            }
-          }
+        int years = ReminderHelper.checkForAgeDiffernce(dateOfBirth);
 
-          if (years < 19 && referral.getReferralResponseType() == 0) {
-            /*
-             * duedate is updated with adding 10 Days to the referral receivedDate. As the
-             * referralResponseType is defined to a default Zero.
-             */
-            Calendar dueDate = Calendar.getInstance();
-            dueDate.setTime(referral.getReceivedDate());
-            dueDate.add(Calendar.DATE, 10);
-            gov.ca.cwds.rest.api.domain.cms.Tickle tickle =
-                new gov.ca.cwds.rest.api.domain.cms.Tickle(referral.getId(),
-                    REFERRAL_REFERRALCLIENT, client.getId(), null,
-                    dateFormat.format(dueDate.getTime()), referral.getScreenerNoteText(),
-                    REFERRAL_INVESTIGATION_CONTACT_DUE);
-            tickleService.create(tickle);
-            LOGGER.info("referralInvestigationContactDue reminder is created");
-          }
-        } catch (ParseException e) {
-          LOGGER.error("Error While parsing the dateOfBirth");
+        if (years < 19 && ReminderHelper.getMap().get(referral.getReferralResponseType()) != null) {
+          /*
+           * duedate is updated based on the referralResponseType.
+           */
+          Calendar dueDate = Calendar.getInstance();
+          dueDate.setTime(referral.getReceivedDate());
+          dueDate.add(Calendar.DATE,
+              ReminderHelper.getMap().get(referral.getReferralResponseType()));
+          gov.ca.cwds.rest.api.domain.cms.Tickle tickle =
+              new gov.ca.cwds.rest.api.domain.cms.Tickle(referral.getId(), REFERRAL_REFERRALCLIENT,
+                  client.getId(), null, dateFormat.format(dueDate.getTime()),
+                  referral.getScreenerNoteText(), REFERRAL_INVESTIGATION_CONTACT_DUE);
+          tickleService.create(tickle);
+          LOGGER.info("referralInvestigationContactDue reminder is created");
         }
       }
     }
   }
-
 }

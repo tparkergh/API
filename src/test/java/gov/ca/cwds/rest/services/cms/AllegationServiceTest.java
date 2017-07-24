@@ -116,6 +116,20 @@ public class AllegationServiceTest implements ServiceTestTemplate {
     assertThat(found, is(nullValue()));
   }
 
+  @SuppressWarnings("javadoc")
+  @Test
+  public void assignmentServiceDeleteReturnsNotNull() throws Exception {
+    String id = "AabekZX00F";
+    Allegation expected = MAPPER
+        .readValue(fixture("fixtures/domain/legacy/Allegation/valid/valid.json"), Allegation.class);
+    gov.ca.cwds.data.persistence.cms.Allegation allegation =
+        new gov.ca.cwds.data.persistence.cms.Allegation(id, expected, "0XA");
+
+    when(allegationDao.delete(id)).thenReturn(allegation);
+    Allegation found = allegationService.delete(id);
+    assertThat(found, is(expected));
+  }
+
   @Override
   public void testDeleteThrowsNotImplementedException() throws Exception {
     // delete is implemented
