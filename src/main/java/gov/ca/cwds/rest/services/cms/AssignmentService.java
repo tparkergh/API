@@ -21,6 +21,7 @@ import gov.ca.cwds.data.persistence.cms.StaffPerson;
 import gov.ca.cwds.data.rules.TriggerTablesDao;
 import gov.ca.cwds.rest.api.Request;
 import gov.ca.cwds.rest.api.domain.cms.PostedAssignment;
+import gov.ca.cwds.rest.business.rules.ExternalInterfaceTables;
 import gov.ca.cwds.rest.business.rules.NonLACountyTriggers;
 import gov.ca.cwds.rest.messages.MessageBuilder;
 import gov.ca.cwds.rest.services.CrudsService;
@@ -40,6 +41,7 @@ public class AssignmentService implements CrudsService {
   private StaffPersonDao staffpersonDao;
   private TriggerTablesDao triggerTablesDao;
   private StaffPersonIdRetriever staffPersonIdRetriever;
+  private ExternalInterfaceTables externalInterfaceTables;
 
   private Validator validator;
 
@@ -55,17 +57,21 @@ public class AssignmentService implements CrudsService {
    * @param triggerTablesDao - triggerTablesDao
    * @param staffPersonIdRetriever the staffPersonIdRetriever
    * @param validator the validator to use to validate validatable objects
+   * @param externalInterfaceTables external interface table
    */
   @Inject
+
   public AssignmentService(AssignmentDao assignmentDao, NonLACountyTriggers nonLACountyTriggers,
       StaffPersonDao staffpersonDao, TriggerTablesDao triggerTablesDao,
-      StaffPersonIdRetriever staffPersonIdRetriever, Validator validator) {
+      StaffPersonIdRetriever staffPersonIdRetriever, Validator validator,
+      ExternalInterfaceTables externalInterfaceTables) {
     this.assignmentDao = assignmentDao;
     this.nonLACountyTriggers = nonLACountyTriggers;
     this.staffpersonDao = staffpersonDao;
     this.triggerTablesDao = triggerTablesDao;
     this.staffPersonIdRetriever = staffPersonIdRetriever;
     this.validator = validator;
+    this.externalInterfaceTables = externalInterfaceTables;
   }
 
   /**
@@ -95,6 +101,7 @@ public class AssignmentService implements CrudsService {
     assert primaryKey instanceof String;
     gov.ca.cwds.data.persistence.cms.Assignment persistedAssignment =
         assignmentDao.delete(primaryKey);
+    externalInterfaceTables.createExtInterForDelete(primaryKey, "ASGNM_T");
     if (persistedAssignment != null) {
       return new gov.ca.cwds.rest.api.domain.cms.Assignment(persistedAssignment);
     }
@@ -158,6 +165,7 @@ public class AssignmentService implements CrudsService {
           && !(triggerTablesDao.getLaCountySpecificCode().equals(staffperson.getCountyCode()))) {
         nonLACountyTriggers.createAndUpdateReferralCoutyOwnership(managed);
       }
+      externalInterfaceTables.createExtInterAssignment(managed, "N");
       return new PostedAssignment(managed);
     } catch (EntityExistsException e) {
       LOGGER.info("Assignment already exists : {}", assignment);
@@ -239,6 +247,7 @@ public class AssignmentService implements CrudsService {
       String lastUpdatedId = staffPersonIdRetriever.getStaffPersonId();
       Assignment managed = new Assignment((String) primaryKey, assignment, lastUpdatedId);
       managed = assignmentDao.update(managed);
+      externalInterfaceTables.createExtInterAssignment(managed, "C");
       return new gov.ca.cwds.rest.api.domain.cms.Assignment(managed);
     } catch (EntityNotFoundException e) {
       LOGGER.info("Assignment not found : {}", assignment);

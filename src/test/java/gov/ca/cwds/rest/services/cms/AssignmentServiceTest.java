@@ -31,6 +31,7 @@ import gov.ca.cwds.fixture.AssignmentResourceBuilder;
 import gov.ca.cwds.rest.api.Response;
 import gov.ca.cwds.rest.api.domain.cms.Assignment;
 import gov.ca.cwds.rest.api.domain.cms.PostedAssignment;
+import gov.ca.cwds.rest.business.rules.ExternalInterfaceTables;
 import gov.ca.cwds.rest.business.rules.NonLACountyTriggers;
 import gov.ca.cwds.rest.services.ServiceException;
 
@@ -48,6 +49,7 @@ public class AssignmentServiceTest {
   private TriggerTablesDao triggerTablesDao;
   private StaffPersonIdRetriever staffPersonIdRetriever;
   private Validator validator;
+  private ExternalInterfaceTables externalInterfaceTables;
 
   @Rule
   public ExpectedException thrown = ExpectedException.none();
@@ -60,8 +62,11 @@ public class AssignmentServiceTest {
     nonLACountyTriggers = mock(NonLACountyTriggers.class);
     staffpersonDao = mock(StaffPersonDao.class);
     triggerTablesDao = mock(TriggerTablesDao.class);
+    externalInterfaceTables = mock(ExternalInterfaceTables.class);
     assignmentService = new AssignmentService(assignmentDao, nonLACountyTriggers, staffpersonDao,
-        triggerTablesDao, staffPersonIdRetriever, validator);
+        triggerTablesDao, staffPersonIdRetriever, validator, externalInterfaceTables);
+
+
   }
 
   // find test
