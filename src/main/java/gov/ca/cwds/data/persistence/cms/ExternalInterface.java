@@ -228,32 +228,32 @@ public class ExternalInterface implements PersistentObject, Serializable {
   }
 
   /**
-   * @param aidTypeCode
-   * @param assignmentUnitCode
-   * @param clearanceResponseType
-   * @param fbiIndicator
-   * @param governmentEntityCode
-   * @param logonUserId
-   * @param licenseNumber
-   * @param operationType
-   * @param otherData
-   * @param personNumber
-   * @param primaryKey1
-   * @param primaryKey2
-   * @param primaryKey3
-   * @param primaryKey4
-   * @param primaryKey5
-   * @param primaryKey6
-   * @param primaryKey7
-   * @param primaryKey8
-   * @param rapIdentifier
-   * @param responseReceivedDate
-   * @param clearanceResponseDate
-   * @param sequenceNumber
-   * @param serialNumber
-   * @param startDate
-   * @param submitlTimestamp
-   * @param tableName
+   * @param aidTypeCode the aid type code
+   * @param assignmentUnitCode the assignment unit code
+   * @param clearanceResponseType the clearance response type
+   * @param fbiIndicator the fbi indicator
+   * @param governmentEntityCode the government entity code
+   * @param logonUserId the logon user Id
+   * @param licenseNumber the license number
+   * @param operationType the crud type
+   * @param otherData the other data
+   * @param personNumber the person number
+   * @param primaryKey1 the primary key
+   * @param primaryKey2 the primary key
+   * @param primaryKey3 the primary key
+   * @param primaryKey4 the primary key
+   * @param primaryKey5 the primary key
+   * @param primaryKey6 the primary key
+   * @param primaryKey7 the primary key
+   * @param primaryKey8 the primary key
+   * @param rapIdentifier the rpi identifier
+   * @param responseReceivedDate the response received date
+   * @param clearanceResponseDate the clearance response date
+   * @param sequenceNumber the sequence number
+   * @param serialNumber the serial number
+   * @param startDate the start date
+   * @param submitlTimestamp the submital time stamp
+   * @param tableName the table name
    */
   public ExternalInterface(Short aidTypeCode, String assignmentUnitCode,
       Short clearanceResponseType, String fbiIndicator, Short governmentEntityCode,
