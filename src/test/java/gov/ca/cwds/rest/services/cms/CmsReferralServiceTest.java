@@ -8,12 +8,12 @@ import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
-import gov.ca.cwds.rest.messages.MessageBuilder;
 import java.util.LinkedHashSet;
 import java.util.Set;
 
 import javax.validation.Validation;
 import javax.validation.Validator;
+
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
@@ -45,6 +45,7 @@ import gov.ca.cwds.rest.api.domain.cms.PostedReporter;
 import gov.ca.cwds.rest.api.domain.cms.Referral;
 import gov.ca.cwds.rest.api.domain.cms.ReferralClient;
 import gov.ca.cwds.rest.api.domain.cms.Reporter;
+import gov.ca.cwds.rest.business.rules.ExternalInterfaceTables;
 import gov.ca.cwds.rest.business.rules.LACountyTrigger;
 import gov.ca.cwds.rest.business.rules.NonLACountyTriggers;
 import gov.ca.cwds.rest.business.rules.UpperCaseTables;
@@ -81,6 +82,7 @@ public class CmsReferralServiceTest {
   private StaffPersonIdRetriever staffPersonIdRetriever;
   private SsaName3Dao ssaName3Dao;
   private Validator validator;
+  private ExternalInterfaceTables externalInterfaceTables;
 
   @Rule
   public ExpectedException thrown = ExpectedException.none();
@@ -108,8 +110,10 @@ public class CmsReferralServiceTest {
     nonLACountyTriggers = mock(NonLACountyTriggers.class);
     ssaName3Dao = mock(SsaName3Dao.class);
     upperCaseTables = mock(UpperCaseTables.class);
-    clientService = new ClientService(clientDao, staffpersonDao, triggerTablesDao,
-        nonLACountyTriggers, staffPersonIdRetriever, ssaName3Dao, upperCaseTables);
+    externalInterfaceTables = mock(ExternalInterfaceTables.class);
+    clientService =
+        new ClientService(clientDao, staffpersonDao, triggerTablesDao, nonLACountyTriggers,
+            staffPersonIdRetriever, ssaName3Dao, upperCaseTables, externalInterfaceTables);
 
     referralClientDao = mock(ReferralClientDao.class);
     nonLACountyTriggers = mock(NonLACountyTriggers.class);
