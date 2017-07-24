@@ -267,7 +267,7 @@ public class ReferralService implements CrudsService {
     String allegesAbuseOccurredAtAddressId = screeningToReferral.getAddress().getLegacyId();
 
     return gov.ca.cwds.rest.api.domain.cms.Referral.createWithDefaults(ParticipantValidator.anonymousReporter(screeningToReferral),
-        legacyCodes.communicationsMethodCode, drmsAllegationDescriptionDoc, drmsErReferralDoc,
+        screeningToReferral.getCommunicationMethod(), drmsAllegationDescriptionDoc, drmsErReferralDoc,
         drmsInvestigationDoc, screeningToReferral.getName(), dateStarted, timeStarted,
         screeningToReferral.getResponseTime(), allegesAbuseOccurredAtAddressId,
         firstResponseDeterminedByStaffPersonId, longTextId, LegacyDefaultValues.DEFAULT_COUNTY_SPECIFIC_CODE,

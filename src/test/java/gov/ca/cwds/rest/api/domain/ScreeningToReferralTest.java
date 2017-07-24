@@ -48,6 +48,8 @@ public class ScreeningToReferralTest {
   private Set<Allegation> allegations = new HashSet<Allegation>();
   private long id = 2;
 
+  Short communicationMethod = 409;
+
   private TestSystemCodeCache testSystemCodeCache = new TestSystemCodeCache();
 
   private Short responseTime = (short)1520;
@@ -77,7 +79,7 @@ public class ScreeningToReferralTest {
 
     String expected = MAPPER.writeValueAsString(
         new ScreeningToReferral(id, "", "", "2016-08-03T01:00:00.000Z", "sacramento", "2016-08-02",
-            "Foster Home", "Phone", "The Rocky Horror Show", "Narrative 123 test", "123ABC",
+            "Foster Home", communicationMethod, "The Rocky Horror Show", "Narrative 123 test", "123ABC",
             responseTime, "2016-08-03T01:00:00.000Z", "Michael Bastow", "addtional information",
             "Screening Descision", "Detail", address, participants, crossReports, allegations));
 
@@ -102,7 +104,7 @@ public class ScreeningToReferralTest {
 
     ScreeningToReferral expected =
         new ScreeningToReferral(id, "", "", "2016-08-03T01:00:00.000Z", "sacramento", "2016-08-02",
-            "Foster Home", "Phone", "The Rocky Horror Show", "Narrative 123 test", "123ABC",
+            "Foster Home", communicationMethod, "The Rocky Horror Show", "Narrative 123 test", "123ABC",
             responseTime, "2016-08-03T01:00:00.000Z", "Michael Bastow", "addtional information",
             "Screening Descision", "Detail", address, participants, crossReports, allegations);
 

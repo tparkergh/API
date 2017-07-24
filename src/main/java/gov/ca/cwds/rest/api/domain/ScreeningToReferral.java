@@ -82,11 +82,11 @@ public class ScreeningToReferral extends ReportingDomain implements Request {
   private String locationType;
 
   @JsonProperty("communication_method")
-  @NotEmpty
+  @NotNull
   @ApiModelProperty(required = true, readOnly = false, value = "Communication Method",
-      example = "email")
-  @Size(max = 50)
-  private String communicationMethod;
+      example = "409")
+  @ValidSystemCodeId(required = true, category = SystemCodeCategoryId.COMMUNICATION_METHOD)
+  private Short communicationMethod;
 
   @JsonProperty("name")
   @NotEmpty
@@ -198,7 +198,7 @@ public class ScreeningToReferral extends ReportingDomain implements Request {
    */
   public ScreeningToReferral(long id, String legacySourceTable, String referralId,
       @Date String endedAt, String incidentCounty, @Date String incidentDate, String locationType,
-      String communicationMethod, String name, String reportNarrative, String reference,
+      Short communicationMethod, String name, String reportNarrative, String reference,
       Short responseTime, @Date String startedAt, String assignee, String additionalInformation,
       String screeningDecision, String screeningDecisionDetail, Address address,
       Set<Participant> participants, Set<CrossReport> crossReports, Set<Allegation> allegations) {
@@ -278,7 +278,7 @@ public class ScreeningToReferral extends ReportingDomain implements Request {
   /**
    * @return communicaion method
    */
-  public String getCommunicationMethod() {
+  public Short getCommunicationMethod() {
     return communicationMethod;
   }
 
