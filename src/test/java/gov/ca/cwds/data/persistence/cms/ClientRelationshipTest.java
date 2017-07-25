@@ -5,6 +5,8 @@ import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.notNullValue;
 import gov.ca.cwds.rest.api.domain.DomainChef;
+import nl.jqno.equalsverifier.EqualsVerifier;
+import nl.jqno.equalsverifier.Warning;
 
 import org.junit.Test;
 
@@ -50,5 +52,11 @@ public class ClientRelationshipTest {
     assertThat(persistent.getSameHomeCode(), is(equalTo(sameHomeCode)));
     assertThat(persistent.getStartDate(), is(equalTo(DomainChef.uncookDateString(startDate))));
     assertThat(persistent.getLastUpdatedId(), is(equalTo(lastUpdatedId)));
+  }
+
+  @Test
+  public void testEqualsHashCodeWorks() throws Exception {
+    EqualsVerifier.forClass(gov.ca.cwds.data.persistence.cms.ClientRelationship.class)
+        .suppress(Warning.STRICT_INHERITANCE).withRedefinedSuperclass().verify();
   }
 }

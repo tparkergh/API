@@ -97,7 +97,8 @@ public class ClientCollateralTest {
 
   @Test
   public void equalsHashCodeWork() {
-    EqualsVerifier.forClass(ClientCollateral.class).suppress(Warning.NONFINAL_FIELDS).verify();
+    EqualsVerifier.forClass(ClientCollateral.class).suppress(Warning.NONFINAL_FIELDS)
+        .withRedefinedSubclass(PostedClientCollateral.class).verify();
   }
 
   /*
