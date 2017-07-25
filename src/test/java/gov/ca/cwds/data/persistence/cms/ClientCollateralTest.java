@@ -6,19 +6,18 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.notNullValue;
+import gov.ca.cwds.data.persistence.junit.template.PersistentTestTemplate;
 
 import java.io.IOException;
 
-import org.junit.Ignore;
+import nl.jqno.equalsverifier.EqualsVerifier;
+import nl.jqno.equalsverifier.Warning;
+
 import org.junit.Test;
 
 import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-
-import gov.ca.cwds.data.persistence.junit.template.PersistentTestTemplate;
-import nl.jqno.equalsverifier.EqualsVerifier;
-import nl.jqno.equalsverifier.Warning;
 
 /**
  * @author CWDS API Team
@@ -30,9 +29,9 @@ public class ClientCollateralTest implements PersistentTestTemplate {
 
   @Override
   @Test
-  @Ignore
   public void testEqualsHashCodeWorks() {
-    EqualsVerifier.forClass(ClientCollateral.class).suppress(Warning.NONFINAL_FIELDS).verify();
+    EqualsVerifier.forClass(ClientCollateral.class).suppress(Warning.STRICT_INHERITANCE)
+        .withRedefinedSuperclass().verify();
   }
 
   /*
@@ -49,9 +48,10 @@ public class ClientCollateralTest implements PersistentTestTemplate {
   public void testPersistentConstructor() throws Exception {
     ClientCollateral ci = validClientCollateral();
 
-    ClientCollateral persistent = new ClientCollateral(ci.getActiveIndicator(),
-        ci.getCollateralClientReporterRelationshipType(), ci.getCommentDescription(),
-        ci.getClientId(), ci.getCollateralIndividualId(), ci.getThirdId());
+    ClientCollateral persistent =
+        new ClientCollateral(ci.getActiveIndicator(),
+            ci.getCollateralClientReporterRelationshipType(), ci.getCommentDescription(),
+            ci.getClientId(), ci.getCollateralIndividualId(), ci.getThirdId());
 
 
     assertThat(persistent.getActiveIndicator(), is(equalTo(ci.getActiveIndicator())));
@@ -75,21 +75,24 @@ public class ClientCollateralTest implements PersistentTestTemplate {
   public void testSerializeAndDeserialize() throws Exception {
     ClientCollateral ci = validClientCollateral();
 
-    ClientCollateral persistent = new ClientCollateral(ci.getActiveIndicator(),
-        ci.getCollateralClientReporterRelationshipType(), ci.getCommentDescription(),
-        ci.getClientId(), ci.getCollateralIndividualId(), ci.getThirdId());
-    final String expected = MAPPER.writeValueAsString((MAPPER.readValue(
-        fixture("fixtures/persistent/ClientCollateral/valid/validWithSysCodes.json"),
-        ClientCollateral.class)));
+    ClientCollateral persistent =
+        new ClientCollateral(ci.getActiveIndicator(),
+            ci.getCollateralClientReporterRelationshipType(), ci.getCommentDescription(),
+            ci.getClientId(), ci.getCollateralIndividualId(), ci.getThirdId());
+    final String expected =
+        MAPPER.writeValueAsString((MAPPER.readValue(
+            fixture("fixtures/persistent/ClientCollateral/valid/validWithSysCodes.json"),
+            ClientCollateral.class)));
 
     assertThat(MAPPER.writeValueAsString(persistent)).isEqualTo(expected);
   }
 
-  private ClientCollateral validClientCollateral()
-      throws JsonParseException, JsonMappingException, IOException {
+  private ClientCollateral validClientCollateral() throws JsonParseException, JsonMappingException,
+      IOException {
 
-    ClientCollateral validClientCollateral = MAPPER.readValue(
-        fixture("fixtures/persistent/ClientCollateral/valid/valid.json"), ClientCollateral.class);
+    ClientCollateral validClientCollateral =
+        MAPPER.readValue(fixture("fixtures/persistent/ClientCollateral/valid/valid.json"),
+            ClientCollateral.class);
 
     return validClientCollateral;
   }
