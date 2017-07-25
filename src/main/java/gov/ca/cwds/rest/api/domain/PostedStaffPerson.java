@@ -4,6 +4,8 @@ import gov.ca.cwds.rest.api.Response;
 import gov.ca.cwds.rest.services.ServiceException;
 
 import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
@@ -80,4 +82,23 @@ public class PostedStaffPerson extends StaffPerson {
     return county;
   }
 
+  /**
+   * {@inheritDoc}
+   *
+   * @see java.lang.Object#hashCode()
+   */
+  @Override
+  public int hashCode() {
+    return HashCodeBuilder.reflectionHashCode(this, false);
+  }
+
+  /**
+   * {@inheritDoc}
+   *
+   * @see java.lang.Object#equals(java.lang.Object)
+   */
+  @Override
+  public boolean equals(Object obj) {
+    return EqualsBuilder.reflectionEquals(this, obj, false);
+  }
 }

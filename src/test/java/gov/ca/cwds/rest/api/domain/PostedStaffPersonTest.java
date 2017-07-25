@@ -114,7 +114,7 @@ public class PostedStaffPersonTest {
   @Test
   public void equalsHashCodeWork() {
     EqualsVerifier.forClass(PostedStaffPerson.class).suppress(Warning.NONFINAL_FIELDS)
-        .withRedefinedSuperclass().verify();
+        .suppress(Warning.STRICT_INHERITANCE).withRedefinedSuperclass().verify();
   }
 
   @Test

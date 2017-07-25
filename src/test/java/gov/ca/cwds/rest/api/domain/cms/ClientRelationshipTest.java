@@ -102,7 +102,8 @@ public class ClientRelationshipTest {
 
   @Test
   public void equalsHashCodeWork() {
-    EqualsVerifier.forClass(ClientRelationship.class).suppress(Warning.NONFINAL_FIELDS).verify();
+    EqualsVerifier.forClass(ClientRelationship.class).suppress(Warning.NONFINAL_FIELDS)
+        .withRedefinedSubclass(PostedClientRelationship.class).verify();
   }
 
   /*
