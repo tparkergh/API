@@ -124,10 +124,9 @@ public class AllegationDaoIT implements DaoTestTemplate {
   }
 
   @Override
-  @Test
+  @Test(expected = EntityExistsException.class)
   public void testCreateExistingEntityException() throws Exception {
 
-    thrown.expect(EntityExistsException.class);
     gov.ca.cwds.rest.api.domain.cms.Allegation vda = validDomainAllegation();
 
     Allegation allegation = new Allegation(id, DomainChef.uncookDateString(vda.getAbuseEndDate()),

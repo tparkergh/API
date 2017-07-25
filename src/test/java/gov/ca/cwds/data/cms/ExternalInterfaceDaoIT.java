@@ -82,14 +82,14 @@ public class ExternalInterfaceDaoIT implements DaoTestTemplate {
   @Override
   @Test
   public void testFind() throws Exception {
-    String timestamp = "2004-08-03 14:53:04.382";
+    String timestamp = "2004-08-03 15:11:22.761";
     DateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS");
     Date date = formatter.parse(timestamp);
-    ExternalInterface found = externalInterfaceDao.find(new PrimaryKey(date, 1, "SMITHBO"));
+    ExternalInterface found = externalInterfaceDao.find(new PrimaryKey(date, 2, "SMITHBO "));
     String dateString = formatter.format(found.getSubmitlTimestamp());
     Date datefound = formatter.parse(dateString);
     assertThat(datefound, is(equalTo(date)));
-    assertThat(found.getSequenceNumber(), is(equalTo(1)));
+    assertThat(found.getSequenceNumber(), is(equalTo(2)));
     assertThat(found.getLogonUserId(), is(equalTo("SMITHBO ")));
   }
 
@@ -121,28 +121,28 @@ public class ExternalInterfaceDaoIT implements DaoTestTemplate {
   @Override
   @Test
   public void testCreateExistingEntityException() throws Exception {
-    String timestamp = "2004-08-03 14:53:04.382";
+    String timestamp = "2004-08-03 15:11:22.761";
     DateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS");
     Date date = formatter.parse(timestamp);
     thrown.expect(EntityExistsException.class);
     ExternalInterface externalInterface = new ExternalInterface((short) 0, "1", (short) 0, " ",
         (short) 1124, "SMITHBO ", "         ", "N", "DyN0KOO0V2", "12", "KZQ79se0V2", "          ",
         "          ", "          ", "          ", "          ", "          ", "          ",
-        "          ", "          ", "          ", 1, "1234568", "2004-08-03", date, "ST_ID_T ");
+        "          ", "          ", "          ", 2, "1234568", "2004-08-03", date, "FSTUA    ");
     externalInterfaceDao.create(externalInterface);
   }
 
   @Override
   @Test
   public void testDelete() throws Exception {
-    String timestamp = "2004-08-03 14:53:04.382";
+    String timestamp = "2004-08-03 15:11:22.761";
     DateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS");
     Date date = formatter.parse(timestamp);
-    ExternalInterface deleted = externalInterfaceDao.delete(new PrimaryKey(date, 1, "SMITHBO"));
+    ExternalInterface deleted = externalInterfaceDao.delete(new PrimaryKey(date, 2, "SMITHBO"));
     String dateString = formatter.format(deleted.getSubmitlTimestamp());
     Date datedeleted = formatter.parse(dateString);
     assertThat(datedeleted, is(equalTo(date)));
-    assertThat(deleted.getSequenceNumber(), is(equalTo(1)));
+    assertThat(deleted.getSequenceNumber(), is(equalTo(2)));
     assertThat(deleted.getLogonUserId(), is(equalTo("SMITHBO ")));
   }
 
@@ -160,13 +160,13 @@ public class ExternalInterfaceDaoIT implements DaoTestTemplate {
   @Override
   @Test
   public void testUpdate() throws Exception {
-    String timestamp = "2004-08-03 14:53:04.382";
+    String timestamp = "2004-08-03 15:11:22.761";
     DateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS");
     Date date = formatter.parse(timestamp);
     ExternalInterface externalInterface = new ExternalInterface((short) 0, "1", (short) 0, " ",
         (short) 1124, "SMITHBO ", "         ", "N", "DyN0KOO0V2", "12", "KZQ79se0V2", "          ",
         "          ", "          ", "          ", "          ", "          ", "          ",
-        "          ", "          ", "          ", 1, "1234568", "2004-08-03", date, "ST_ID_T ");
+        "          ", "          ", "          ", 2, "1234568", "2004-08-03", date, "ST_ID_T ");
     ExternalInterface updated = externalInterfaceDao.update(externalInterface);
     assertThat(updated, is(externalInterface));
   }

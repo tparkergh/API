@@ -1,3 +1,4 @@
+
 <!DOCTYPE hibernate-configuration PUBLIC
         "-//Hibernate/Hibernate Configuration DTD 3.0//EN"
         "http://www.hibernate.org/dtd/hibernate-configuration-3.0.dtd">
@@ -23,8 +24,8 @@
 
 <!-- Taborda Jenkins: -->
 		<property name="hibernate.connection.username">db2inst1</property>
-		<property name="hibernate.connection.password">jyN3Ec3DRHmk</property>
-		<property name="hibernate.connection.url">jdbc:db2://legacy.db.jenkins.cwds.tabordasolutions.net:50000/DB0TDEV</property>
+		<property name="hibernate.connection.password">db2inst1</property>
+		<property name="hibernate.connection.url">jdbc:db2://cms.db.dev.cwds.tabordasolutions.net:50000/DB0TDEV</property>
 		<property name="hibernate.default_schema">CWSINT</property>
  
 <!-- NS4: -->

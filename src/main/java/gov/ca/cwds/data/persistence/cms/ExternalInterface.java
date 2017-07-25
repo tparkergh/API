@@ -67,8 +67,6 @@ public class ExternalInterface implements PersistentObject, Serializable {
       this.logonUserId = logonUserId;
     }
 
-
-
     /*
      * (non-Javadoc)
      * 
@@ -124,8 +122,6 @@ public class ExternalInterface implements PersistentObject, Serializable {
       }
       return true;
     }
-
-
 
   }
 
