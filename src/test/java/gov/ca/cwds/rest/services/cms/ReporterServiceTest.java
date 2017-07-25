@@ -2,6 +2,7 @@ package gov.ca.cwds.rest.services.cms;
 
 import static io.dropwizard.testing.FixtureHelpers.fixture;
 import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.notNullValue;
 import static org.hamcrest.Matchers.nullValue;
@@ -110,6 +111,20 @@ public class ReporterServiceTest {
   public void deleteReturnsNullWhenNotFount() throws Exception {
     Response found = reporterService.delete("ABC1234567");
     assertThat(found, is(nullValue()));
+  }
+
+  @SuppressWarnings("javadoc")
+  @Test
+  public void reporterServiceDeleteReturnsNotNull() throws Exception {
+    String referralId = "AbiQCgu0Hj";
+    Reporter expected = MAPPER
+        .readValue(fixture("fixtures/domain/legacy/Reporter/valid/valid.json"), Reporter.class);
+    gov.ca.cwds.data.persistence.cms.Reporter reporter =
+        new gov.ca.cwds.data.persistence.cms.Reporter(expected, "0Hj");
+
+    when(reporterDao.delete(referralId)).thenReturn(reporter);
+    Reporter found = reporterService.delete(referralId);
+    assertThat(found.getReferralId(), is(equalTo("AbiQCgu0Hj")));
   }
 
   // update test

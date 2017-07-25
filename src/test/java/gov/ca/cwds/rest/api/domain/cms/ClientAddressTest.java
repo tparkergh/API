@@ -126,8 +126,7 @@ public class ClientAddressTest {
   @SuppressWarnings("javadoc")
   @Test
   public void equalsHashCodeWork() {
-    EqualsVerifier.forClass(ClientAddress.class).suppress(Warning.NONFINAL_FIELDS)
-        .withIgnoredFields("messages").verify();
+    EqualsVerifier.forClass(ClientAddress.class).suppress(Warning.NONFINAL_FIELDS).verify();
   }
 
   private ClientAddress validClientAddress()
