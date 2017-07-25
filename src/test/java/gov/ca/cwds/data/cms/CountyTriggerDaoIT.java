@@ -114,10 +114,10 @@ public class CountyTriggerDaoIT implements DaoTestTemplate {
   @Test
   public void testCreateExistingEntityException() throws Exception {
     thrown.expect(EntityExistsException.class);
-    String timestamp = "2017-05-23 19:53:50.597";
+    String timestamp = "2017-05-24 21:35:18.746";
     DateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS");
     Date date = formatter.parse(timestamp);
-    CountyTrigger countyTrigger = new CountyTrigger("Hzfdiu90X5", "62", "C", null, "REFR_CLT");
+    CountyTrigger countyTrigger = new CountyTrigger("LiFHJnZ0X5", "62", "C", null, "REFR_CLT");
     countyTrigger.getPrimaryKey().setIntegratorTimeStamp(date);
     countyTriggerDao.create(countyTrigger);
   }

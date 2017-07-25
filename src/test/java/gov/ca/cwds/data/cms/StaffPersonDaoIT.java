@@ -129,7 +129,7 @@ public class StaffPersonDaoIT implements DaoTestTemplate {
   @Test
   public void testUpdateEntityNotFoundException() throws Exception {
     thrown.expect(EntityNotFoundException.class);
-    StaffPerson staffPerson = new StaffPerson("q1q", null, "External Interface",
+    StaffPerson staffPerson = new StaffPerson("q1k", null, "External Interface",
         "external interface", "SCXCIN7", " ", "", BigDecimal.valueOf(9165672100L), 0, null, "    ",
         "N", "MIZN02k00E", "  ", "    ", "99", "N", "3XPCP92q38", null);
     staffPersonDao.update(staffPerson);

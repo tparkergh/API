@@ -207,7 +207,7 @@ public class ChildClientDaoIT implements DaoTestTemplate {
   public void testUpdateEntityNotFoundException() throws Exception {
     thrown.expect(EntityNotFoundException.class);
     ChildClient vchc = validChildClient();
-    ChildClient pers = new ChildClient("AbNNjTK0P1", vchc.getAdoptableCode(), vchc.getAdoptedAge(),
+    ChildClient pers = new ChildClient("AbNNjTK0P2", vchc.getAdoptableCode(), vchc.getAdoptedAge(),
         vchc.getAfdcFcEligibilityIndicatorVar(), vchc.getAllEducationInfoOnFileIndicator(),
         vchc.getAllHealthInfoOnFileIndicator(), vchc.getAttemptToAcquireEducInfoDesc(),
         vchc.getAttemptToAcquireHlthInfoDesc(), vchc.getAwolAbductedCode(),

@@ -118,7 +118,7 @@ public class OtherClientNameDaoIT implements DaoTestTemplate {
   @Override
   @Test
   public void testFind() throws Exception {
-    final String thirdId = "123ABCDEFG";
+    final String thirdId = "AakYNc30AA";
     OtherClientName found = otherClientNameDao.find(thirdId);
     assertThat(found.getThirdId(), is(thirdId));
   }
@@ -144,15 +144,15 @@ public class OtherClientNameDaoIT implements DaoTestTemplate {
   @Test
   public void testCreateExistingEntityException() throws Exception {
     thrown.expect(EntityExistsException.class);
-    OtherClientName otherClientName = new OtherClientName("AapJGAU04Z", "Gregg", "Hill", "Brian",
-        "1", (short) 1, "1", "123ABCDEFG");
+    OtherClientName otherClientName = new OtherClientName("Ab6Lwal0KL", "Gregg", "Hill", "Brian",
+        "1", (short) 1, "1", "Ab6Lwal0Ki");
     otherClientNameDao.create(otherClientName);
   }
 
   @Override
   @Test
   public void testDelete() throws Exception {
-    final String thirdId = "123ABCDEFG";
+    final String thirdId = "AakYNc30AA";
     OtherClientName deleted = otherClientNameDao.delete(thirdId);
     assertThat(deleted.getThirdId(), is(thirdId));
   }
@@ -169,8 +169,8 @@ public class OtherClientNameDaoIT implements DaoTestTemplate {
   @Override
   @Test
   public void testUpdate() throws Exception {
-    OtherClientName otherClientName = new OtherClientName("AapJGAU04Z", "Gregory", "Hill", "Brian",
-        "1", (short) 1, "1", "123ABCDEFG");
+    OtherClientName otherClientName = new OtherClientName("AakYNc30AK", "Gregory", "Hill", "Brian",
+        "1", (short) 1, "1", "AakYNc30AA");
     OtherClientName updated = otherClientNameDao.update(otherClientName);
     assertThat(updated, is(otherClientName));
   }
