@@ -369,7 +369,7 @@ public class ClientAddressServiceTest implements ServiceTestTemplate {
 
   @SuppressWarnings("javadoc")
   @Test
-  public void testCreateLACountyTriggerForReferralCreate() throws Exception {
+  public void testCreateLACountyTriggerForClientAddressCreate() throws Exception {
     gov.ca.cwds.rest.api.domain.cms.ClientAddress clientAddressDomain =
         new ClientAddressResourceBuilder().buildClientAddress();
 

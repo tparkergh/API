@@ -23,6 +23,8 @@ import gov.ca.cwds.rest.services.ServiceException;
  */
 public class ExternalInterfaceTables {
 
+  private static final String INSERT_TO_EXTINF_FAILED = "Insert to extinf failed - ";
+  private static final String EXTERNAL_INTERFACE_ROW_IS_CREATED = "External Interface row is created";
   private static final String SOURCE_TBL_CLIENT = "CLIENT_T";
   private static final String SOURCE_TBL_ASSIGNMENT = "ASGNM_T";
   private static final String OPERATION_TYPE_DELETE = "D";
@@ -57,9 +59,9 @@ public class ExternalInterfaceTables {
 
     try {
       externalInterfaceDao.create(externalInterface);
-      LOGGER.info("External Interface row is created");
+      LOGGER.info(EXTERNAL_INTERFACE_ROW_IS_CREATED);
     } catch (ServiceException se) {
-      throw new DaoException("Insert to extinf failed - " + se);
+      throw new DaoException(INSERT_TO_EXTINF_FAILED + se);
     }
   }
 
@@ -80,9 +82,9 @@ public class ExternalInterfaceTables {
 
     try {
       externalInterfaceDao.create(externalInterface);
-      LOGGER.info("External Interface row is created");
+      LOGGER.info(EXTERNAL_INTERFACE_ROW_IS_CREATED);
     } catch (ServiceException se) {
-      throw new DaoException("Insert to extinf failed - " + se);
+      throw new DaoException(INSERT_TO_EXTINF_FAILED + se);
     }
   }
 
@@ -103,9 +105,9 @@ public class ExternalInterfaceTables {
 
     try {
       externalInterfaceDao.create(externalInterface);
-      LOGGER.info("External Interface row is created");
+      LOGGER.info(EXTERNAL_INTERFACE_ROW_IS_CREATED);
     } catch (ServiceException se) {
-      throw new DaoException("Insert to extinf failed - " + se);
+      throw new DaoException(INSERT_TO_EXTINF_FAILED + se);
     }
 
   }

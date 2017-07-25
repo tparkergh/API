@@ -184,10 +184,10 @@ public class AllegationDaoIT implements DaoTestTemplate {
   }
 
   @Override
-  @Test
+  @Test(expected = EntityNotFoundException.class)
   public void testUpdateEntityNotFoundException() throws Exception {
 
-    thrown.expect(EntityNotFoundException.class);
+    // thrown.expect(EntityNotFoundException.class);
     gov.ca.cwds.rest.api.domain.cms.Allegation vda = validDomainAllegation();
 
     Allegation allegation =
