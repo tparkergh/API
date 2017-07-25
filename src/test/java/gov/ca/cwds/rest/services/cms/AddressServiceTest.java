@@ -13,9 +13,9 @@ import static org.mockito.Mockito.when;
 
 import javax.persistence.EntityExistsException;
 import javax.persistence.EntityNotFoundException;
-
 import javax.validation.Validation;
 import javax.validation.Validator;
+
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
@@ -56,8 +56,8 @@ public class AddressServiceTest {
     ssaname3Dao = mock(SsaName3Dao.class);
     upperCaseTables = mock(UpperCaseTables.class);
     staffPersonIdRetriever = mock(StaffPersonIdRetriever.class);
-    addressService =
-        new AddressService(addressDao, staffPersonIdRetriever, ssaname3Dao, upperCaseTables, validator);
+    addressService = new AddressService(addressDao, staffPersonIdRetriever, ssaname3Dao,
+        upperCaseTables, validator);
   }
 
   // find
@@ -111,6 +111,19 @@ public class AddressServiceTest {
   public void addressServiceDeleteReturnsNullWhenNotFound() throws Exception {
     Response found = addressService.delete("ABC1234567");
     assertThat(found, is(nullValue()));
+  }
+
+  @Test
+  public void cmsAddressServiceDeleteReturnsNotNull() throws Exception {
+    String id = "ABC1234567";
+    gov.ca.cwds.rest.api.domain.cms.Address expected =
+        new CmsAddressResourceBuilder().buildCmsAddress();
+    gov.ca.cwds.data.persistence.cms.Address address =
+        new gov.ca.cwds.data.persistence.cms.Address(id, expected, "0XA");
+
+    when(addressDao.delete(id)).thenReturn(address);
+    Response found = addressService.delete(id);
+    assertThat(found, is(expected));
   }
 
   // update test

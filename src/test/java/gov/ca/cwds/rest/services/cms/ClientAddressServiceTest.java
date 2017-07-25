@@ -366,7 +366,6 @@ public class ClientAddressServiceTest implements ServiceTestTemplate {
     }
   }
 
-
   @SuppressWarnings("javadoc")
   @Test
   public void testCreateLACountyTriggerForClientAddressCreate() throws Exception {
