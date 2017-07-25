@@ -18,12 +18,12 @@ import org.junit.BeforeClass;
 import org.junit.Rule;
 import org.junit.Test;
 
-import gov.ca.cwds.data.junit.template.DaoTestTemplate;
 import gov.ca.cwds.data.persistence.cms.CmsKeyIdGenerator;
 import gov.ca.cwds.data.persistence.cms.ReferralAssignment;
 import gov.ca.cwds.rest.api.domain.DomainChef;
 
-public class ReferralAssignmentDaoIT implements DaoTestTemplate {
+@SuppressWarnings("javadoc")
+public class ReferralAssignmentDaoIT {
 
   private static SessionFactory sessionFactory;
   private static ReferralAssignmentDao dao;
@@ -72,38 +72,30 @@ public class ReferralAssignmentDaoIT implements DaoTestTemplate {
     sessionFactory.close();
   }
 
-  @Override
   @Before
   public void setup() {
     session = sessionFactory.getCurrentSession();
     session.beginTransaction();
   }
 
-  @Override
   @After
   public void teardown() {
     session.getTransaction().rollback();
   }
 
-  @Override
   @Test
-  // @Ignore
   public void testFind() throws Exception {
     ReferralAssignment found = dao.find(id);
     assertThat(found.getId(), is(equalTo(id)));
   }
 
-  @Override
   @Test
-  // @Ignore
   public void testFindEntityNotFoundException() throws Exception {
     ReferralAssignment found = dao.find("xxxxxyzuk3");
     assertThat(found, is(nullValue()));
   }
 
-  @Override
   @Test
-  // @Ignore
   public void testCreate() throws Exception {
     ReferralAssignment pa = new ReferralAssignment(countySpecificCode,
         DomainChef.uncookDateString(endDate), DomainChef.uncookTimeString(endTime),
@@ -116,26 +108,5 @@ public class ReferralAssignmentDaoIT implements DaoTestTemplate {
     ReferralAssignment create = dao.create(pa);
     assertThat(pa, is(create));
   }
-
-  @Override
-  public void testFindAllNamedQueryExist() throws Exception {}
-
-  @Override
-  public void testFindAllReturnsCorrectList() throws Exception {}
-
-  @Override
-  public void testCreateExistingEntityException() throws Exception {}
-
-  @Override
-  public void testDelete() throws Exception {}
-
-  @Override
-  public void testDeleteEntityNotFoundException() throws Exception {}
-
-  @Override
-  public void testUpdate() throws Exception {}
-
-  @Override
-  public void testUpdateEntityNotFoundException() throws Exception {}
 
 }
