@@ -7,8 +7,6 @@ import static org.hamcrest.Matchers.notNullValue;
 import static org.hamcrest.Matchers.nullValue;
 
 import java.io.IOException;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.util.Arrays;
 import java.util.List;
 
@@ -16,11 +14,9 @@ import javax.persistence.EntityExistsException;
 import javax.persistence.EntityNotFoundException;
 
 import org.hamcrest.junit.ExpectedException;
-import org.hibernate.FlushMode;
 import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
-import org.hibernate.Transaction;
 import org.hibernate.cfg.Configuration;
 import org.junit.After;
 import org.junit.AfterClass;
@@ -45,15 +41,12 @@ import io.dropwizard.jackson.Jackson;
 public class ClientDaoIT {
   static final ObjectMapper MAPPER = Jackson.newObjectMapper();
 
-  private static final DateFormat TIMESTAMP_FORMAT = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-
   @Rule
   public ExpectedException thrown = ExpectedException.none();
 
   private static ClientDao clientDao;
   private static SessionFactory sessionFactory;
   private Session session;
-  Transaction transaction;
 
   @BeforeClass
   public static void beforeClass() {
@@ -69,19 +62,12 @@ public class ClientDaoIT {
   @Before
   public void setup() {
     session = sessionFactory.getCurrentSession();
-    session.setFlushMode(FlushMode.COMMIT);
-    transaction = session.beginTransaction();
-
-    sessionFactory.getCurrentSession()
-        .createQuery("delete from gov.ca.cwds.data.persistence.cms.Client").executeUpdate();
-
+    session.beginTransaction();
   }
 
   @After
-  public void teardown() throws Exception {
-    if (session.getTransaction().getStatus().canRollback()) {
-      session.getTransaction().rollback();
-    }
+  public void teardown() {
+    session.getTransaction().rollback();
   }
 
   @Test
@@ -125,7 +111,7 @@ public class ClientDaoIT {
 
   @Test
   public void shouldFindTheClientWhenSearchingById() throws IOException {
-    String id = "AaiU7IW0Rt";
+    String id = "VCITznlBPu";
     Client pers = createClientWithId(id);
     clientDao.create(pers);
 
@@ -170,6 +156,7 @@ public class ClientDaoIT {
     assertThat(deleted.getId(), is(id));
   }
 
+  @Test
   public void shouldReturnNullWhenDeletingAClientByANonExistentId() throws Exception {
     String id = "9999999ZZZ";
     Client deleted = clientDao.delete(id);
@@ -190,7 +177,7 @@ public class ClientDaoIT {
   public void shoudlThrowExceptionWhenIdNotFound() throws Exception {
     thrown.expect(EntityNotFoundException.class);
     Client vc = validClient();
-    Client pers = createClientWithId("AasRx3r0Ha");
+    Client pers = createClientWithId("AasRx3r0HA");
     clientDao.update(pers);
   }
 
