@@ -21,6 +21,8 @@ import javax.persistence.EntityExistsException;
 import javax.persistence.EntityNotFoundException;
 
 import org.apache.commons.lang3.time.DateFormatUtils;
+import org.joda.time.DateTime;
+import org.joda.time.format.DateTimeFormat;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Rule;
@@ -104,9 +106,9 @@ public class ClientServiceTest implements ServiceTestTemplate {
   public void testFindReturnsCorrectEntity() throws Exception {
     String id = "AaiU7IW0Rt";
     Date updated = new Date();
-    String formatedUpdateTime = DateFormatUtils.format(updated, "yyyy-MM-dd'T'HH:mm:ss.SSZ");
+    DateTime lastUpdatedTime =  DateTimeFormat.forPattern("yyyy-MM-dd'T'HH:mm:ss.SSSZ").parseDateTime("2004-03-31T09:45:58.000-0800");
     Client expected = new ClientResourceBuilder().setExistingClientId(id)
-        .setLastUpdateTime(formatedUpdateTime).setConfidentialityActionDate("2016-03-11")
+        .setLastUpdateTime(lastUpdatedTime).setConfidentialityActionDate("2016-03-11")
         .setDeathDate("2017-06-11").setFatherParentalRightTermDate("2017-04-01")
         .setMotherParentalRightTermDate("2015-01-10").setAddress(new HashSet()).build();
     gov.ca.cwds.data.persistence.cms.Client client =

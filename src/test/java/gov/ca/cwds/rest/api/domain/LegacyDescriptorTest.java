@@ -7,6 +7,7 @@ import static org.junit.Assert.assertTrue;
 import java.util.HashSet;
 import java.util.Set;
 
+import org.joda.time.DateTime;
 import org.junit.Test;
 
 import nl.jqno.equalsverifier.EqualsVerifier;
@@ -19,7 +20,7 @@ import nl.jqno.equalsverifier.Warning;
 public class LegacyDescriptorTest {
   private static final String ID = "12345";
   private static final String UI_ID = "98765";
-  private static final String LAST_UPDATED = "98765";
+  private static final DateTime LAST_UPDATED = new DateTime();
   private static final String TABLE_NAME = "table_name";
   private static final String DESCRIPTION = "description";
 

@@ -1,5 +1,6 @@
 package gov.ca.cwds.rest.api.domain;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import java.io.Serializable;
 
 import org.apache.commons.lang3.builder.EqualsBuilder;
@@ -9,6 +10,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 import io.dropwizard.jackson.JsonSnakeCase;
 import io.swagger.annotations.ApiModelProperty;
+import org.joda.time.DateTime;
 
 /**
  * @author CWDS API Team
@@ -33,7 +35,8 @@ public class LegacyDescriptor implements Serializable {
   @ApiModelProperty(required = false, readOnly = false, value = "Legacy Last Updated Time",
       example = "2010-10-01T15:26:42.000-0700")
   @JsonProperty("legacy_last_updated")
-  private String lastUpdated;
+  @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss.SSSZ" )
+  private DateTime lastUpdated;
 
   @JsonProperty("legacy_table_name")
   @ApiModelProperty(required = false, readOnly = false, value = "Legacy Table Name",
@@ -59,7 +62,7 @@ public class LegacyDescriptor implements Serializable {
    * @param tableName the tableName
    * @param tableDescription the tableDescrption
    */
-  public LegacyDescriptor(String id, String uiId, String lastUpdated, String tableName,
+  public LegacyDescriptor(String id, String uiId, DateTime lastUpdated, String tableName,
       String tableDescription) {
     this.id = id;
     this.uiId = uiId;
@@ -104,7 +107,7 @@ public class LegacyDescriptor implements Serializable {
    *
    * @return return the last updated time as a string
    */
-  public String getLastUpdated() {
+  public DateTime getLastUpdated() {
     return lastUpdated;
   }
 
@@ -112,7 +115,7 @@ public class LegacyDescriptor implements Serializable {
    *
    * @param lastUpdated set the last updated time as a string
    */
-  public void setLastUpdated(String lastUpdated) {
+  public void setLastUpdated(DateTime lastUpdated) {
     this.lastUpdated = lastUpdated;
   }
 

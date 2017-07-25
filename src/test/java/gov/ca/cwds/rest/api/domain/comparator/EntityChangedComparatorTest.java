@@ -7,17 +7,19 @@ import gov.ca.cwds.fixture.ParticipantResourceBuilder;
 import gov.ca.cwds.rest.api.domain.LegacyDescriptor;
 import gov.ca.cwds.rest.api.domain.Participant;
 import gov.ca.cwds.rest.api.domain.cms.Client;
+import org.joda.time.DateTime;
+import org.joda.time.format.DateTimeFormat;
+import org.joda.time.format.DateTimeFormatter;
 import org.junit.Before;
 import org.junit.Test;
 
 public class EntityChangedComparatorTest {
 
-//  public static final String CLIENT_DATE = "2016-11-25-14.32.23.123";
-//  public static final String PARTICIPANT_DATE = "2016-11-25T14:32:23.123-0700";
   EntityChangedComparator comparator;
   Participant participant;
   Client client;
   LegacyDescriptor legacyDescriptor;
+  DateTimeFormatter dateTimeFormatter = DateTimeFormat.forPattern("yyyy-MM-dd'T'HH:mm:ss.SSSZ");
 
   @Before
   public void setup(){
@@ -28,15 +30,15 @@ public class EntityChangedComparatorTest {
   @Test
   public void shouldCompareEqualDatesAsTrue(){
     participant = createParticipant("2016-11-25T14:32:23.123-0700");
-    client = createClient( "2016-11-25-14.32.23.123");
+    client = createClient( "2016-11-25T14:32:23.123-0700");
 
     assertTrue(comparator.compare(participant, client));
   }
 
   @Test
   public void shouldIgnoreMilliseconds(){
-    participant = createParticipant("2016-11-25T14:32:23.thisisignored");
-    client = createClient( "2016-11-25-14.32.23.notreleventvalue");
+    participant = createParticipant("2016-11-25T14:32:23.123-0800");
+    client = createClient( "2016-11-25T14:32:23.987-0800");
 
     assertTrue(comparator.compare(participant, client));
   }
@@ -44,7 +46,7 @@ public class EntityChangedComparatorTest {
   @Test
   public void shouldNotEvaluateStringsWithDifferentSecondsAsEqual(){
     participant = createParticipant("2016-11-25T14:32:00.123-0700");
-    client = createClient( "2016-11-25-14.32.59.123");
+    client = createClient( "2016-11-25T14:32:59.123-0700");
 
     assertFalse(comparator.compare(participant, client));
   }
@@ -52,7 +54,7 @@ public class EntityChangedComparatorTest {
   @Test
   public void shouldNotEvaluateStringsWithDifferentDayAsEqual(){
     participant = createParticipant("2016-11-02T14:32:00.123-0700");
-    client = createClient( "2016-11-01-14.32.00.123");
+    client = createClient( "2016-11-01T14:32:00.123-0700");
 
     assertFalse(comparator.compare(participant, client));
   }
@@ -65,7 +67,7 @@ public class EntityChangedComparatorTest {
     assertFalse(comparator.compare(participant, client));
   }
 
-  @Test(expected=StringIndexOutOfBoundsException.class)
+  @Test(expected=IllegalArgumentException.class)
   public void shouldThrowIndexOutOfBoundsExceptionIfNoMillisecondsArefound(){
     participant = createParticipant("BadDate");
     client = createClient( "2016-11-01-14.32.00.123");
@@ -74,11 +76,13 @@ public class EntityChangedComparatorTest {
   }
 
   private Client createClient(String clientDate){
-    return new ClientResourceBuilder().setLastUpdateTime(clientDate).build();
+    DateTime date = dateTimeFormatter.parseDateTime(clientDate);
+    return new ClientResourceBuilder().setLastUpdateTime(date).build();
   }
 
   private Participant createParticipant(String participantDate){
-    legacyDescriptor = new LegacyDescriptor("DFGHJYTR", "", participantDate, "", "");
+    DateTime date = dateTimeFormatter.parseDateTime(participantDate);
+    legacyDescriptor = new LegacyDescriptor("DFGHJYTR", "", date, "", "");
     return new ParticipantResourceBuilder().setLegacyDescriptor(legacyDescriptor).createParticipant();
   }
 }

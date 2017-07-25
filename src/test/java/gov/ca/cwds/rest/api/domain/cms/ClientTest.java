@@ -14,14 +14,16 @@ import static org.mockito.Mockito.when;
 import gov.ca.cwds.fixture.ClientResourceBuilder;
 import gov.ca.cwds.rest.api.domain.LegacyDescriptor;
 import java.io.IOException;
-import java.util.Date;
 import java.util.HashSet;
 
 import javax.ws.rs.client.Entity;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
-import org.apache.commons.lang3.time.DateFormatUtils;
+import org.joda.time.DateTime;
+import org.joda.time.format.DateTimeFormat;
+import org.joda.time.format.DateTimeFormatter;
+import org.joda.time.format.ISODateTimeFormat;
 import org.junit.After;
 import org.junit.ClassRule;
 import org.junit.Test;
@@ -70,7 +72,7 @@ public class ClientTest implements DomainTestTemplate {
   private String lastUpdatedId = "0X5";
 
   private String existingClientId = "ABC1234567";
-  private String lastUpdatedTime = "2004-03-31T09:45:58.000-0800";
+  private DateTime lastUpdatedTime = DateTimeFormat.forPattern("yyyy-MM-dd'T'HH:mm:ss.SSSZ").parseDateTime("2004-03-31T09:45:58.000-0800");
   private Boolean adjudicatedDelinquentIndicator = Boolean.FALSE;
   private String adoptionStatusCode = "A";
   private String alienRegistrationNumber = "";
@@ -161,7 +163,7 @@ public class ClientTest implements DomainTestTemplate {
   @Test
   public void testPersistentConstructor() throws Exception {
 
-    Client domain = new Client(lastUpdatedTime, existingClientId, adjudicatedDelinquentIndicator, adoptionStatusCode,
+    Client domain = new Client(existingClientId,lastUpdatedTime, adjudicatedDelinquentIndicator, adoptionStatusCode,
         alienRegistrationNumber, birthCity, birthCountryCodeType, birthDate, birthFacilityName,
         birthStateCodeType, birthplaceVerifiedIndicator, childClientIndicatorVar, clientIndexNumber,
         commentDescription, commonFirstName, commonMiddleName, commonLastName,
@@ -574,7 +576,9 @@ public class ClientTest implements DomainTestTemplate {
   @Override
   @Test
   public void testEqualsHashCodeWorks() throws Exception {
-    EqualsVerifier.forClass(Client.class).suppress(Warning.NONFINAL_FIELDS).verify();
+    EqualsVerifier.forClass(Client.class)
+        .withIgnoredFields("messages")
+        .suppress(Warning.NONFINAL_FIELDS).verify();
 
   }
 
@@ -585,17 +589,18 @@ public class ClientTest implements DomainTestTemplate {
     final String expected = MAPPER.writeValueAsString(
         MAPPER.readValue(fixture("fixtures/domain/legacy/Client/valid/valid.json"), Client.class));
 
-    assertThat(MAPPER.writeValueAsString(validClient), is(equalTo(expected)));
+    String client = MAPPER.writeValueAsString(validClient);
+    assertThat(client, is(equalTo(expected)));
   }
 
   @Override
   @Test
   public void testDeserializesFromJSON() throws Exception {
+    lastUpdatedTime = DateTimeFormat.forPattern("yyyy-MM-dd'T'HH:mm:ss.SSSZ").parseDateTime("2004-03-31T09:45:58.000-0800");
     Client validClient = validDomainClient();
-    assertThat(
-        MAPPER.readValue(fixture("fixtures/domain/legacy/Client/valid/valid.json"), Client.class),
-        is(equalTo(validClient)));
+    Client clientFromSnippet = MAPPER.readValue(fixture("fixtures/domain/legacy/Client/valid/valid.json"), Client.class);
 
+    assertTrue(clientFromSnippet.equals(validClient));
   }
 
   @Override
@@ -3267,9 +3272,10 @@ public class ClientTest implements DomainTestTemplate {
 
   @Test
   public void shouldReturnTrueWhenOtherClientHasNotBeenModified(){
+    DateTime lastUpdateTime = DateTimeFormat.forPattern("yyyy-MM-dd'T'HH:mm:ss.sssZ").parseDateTime("2004-03-31T09:45:58.000-0800");
 
-    Client client1 = new ClientResourceBuilder().setLastUpdateTime("2004-03-31T09:45:58.000-0800").build();
-    Client client2 = new ClientResourceBuilder().setLastUpdateTime("2004-03-31T09:45:58.000-0800").build();
+    Client client1 = new ClientResourceBuilder().setLastUpdateTime(lastUpdateTime).build();
+    Client client2 = new ClientResourceBuilder().setLastUpdateTime(lastUpdateTime).build();
     assertTrue("Expect client 1 to have same last update time ", client1.hasSameLastUpdate(client2));
   }
 

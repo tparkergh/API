@@ -3,10 +3,12 @@ package gov.ca.cwds.fixture;
 import gov.ca.cwds.rest.api.domain.cms.Address;
 import gov.ca.cwds.rest.api.domain.cms.Client;
 import java.util.Set;
+import org.joda.time.DateTime;
+import org.joda.time.format.DateTimeFormat;
 
 public class ClientResourceBuilder {
   String existingClientId = "";
-  private String lastUpdatedTime = "2004-03-31T09:45:58.000-0800";
+  private DateTime lastUpdatedTime = DateTimeFormat.forPattern("yyyy-MM-dd'T'HH:mm:ss.SSSZ").parseDateTime("2004-03-31T09:45:58.000-0800");
   Boolean adjudicatedDelinquentIndicator = false;
   String adoptionStatusCode = Client.DEFAULT_ADOPTION_STATUS_CODE;
   String alienRegistrationNumber = "";
@@ -84,11 +86,11 @@ public class ClientResourceBuilder {
     return this;
   }
 
-  public String getLastUpdatedTime(){
+  public DateTime getLastUpdatedTime(){
     return lastUpdatedTime;
   }
 
-  public ClientResourceBuilder setLastUpdateTime(String lastUpdatedTime){
+  public ClientResourceBuilder setLastUpdateTime(DateTime lastUpdatedTime){
     this.lastUpdatedTime = lastUpdatedTime;
     return this;
   }
