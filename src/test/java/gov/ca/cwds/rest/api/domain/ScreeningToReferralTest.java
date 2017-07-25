@@ -27,6 +27,8 @@ import gov.ca.cwds.data.cms.TestSystemCodeCache;
 import gov.ca.cwds.rest.core.Api;
 import gov.ca.cwds.rest.resources.ScreeningToReferralResource;
 import io.dropwizard.jackson.Jackson;
+import nl.jqno.equalsverifier.EqualsVerifier;
+import nl.jqno.equalsverifier.Warning;
 
 @SuppressWarnings("javadoc")
 public class ScreeningToReferralTest {
@@ -52,7 +54,7 @@ public class ScreeningToReferralTest {
 
   private TestSystemCodeCache testSystemCodeCache = new TestSystemCodeCache();
 
-  private Short responseTime = (short)1520;
+  private Short responseTime = (short) 1520;
 
   @Before
   public void setup() {
@@ -77,11 +79,11 @@ public class ScreeningToReferralTest {
     allegations.add(allegation);
 
 
-    String expected = MAPPER.writeValueAsString(
-        new ScreeningToReferral(id, "", "", "2016-08-03T01:00:00.000Z", "sacramento", "2016-08-02",
-            "Foster Home", communicationMethod, "The Rocky Horror Show", "Narrative 123 test", "123ABC",
-            responseTime, "2016-08-03T01:00:00.000Z", "Michael Bastow", "addtional information",
-            "Screening Descision", "Detail", address, participants, crossReports, allegations));
+    String expected = MAPPER.writeValueAsString(new ScreeningToReferral(id, "", "",
+        "2016-08-03T01:00:00.000Z", "sacramento", "2016-08-02", "Foster Home", communicationMethod,
+        "The Rocky Horror Show", "Narrative 123 test", "123ABC", responseTime,
+        "2016-08-03T01:00:00.000Z", "Michael Bastow", "addtional information",
+        "Screening Descision", "Detail", address, participants, crossReports, allegations));
 
     // System.out.println(expected);
     String serialized = MAPPER.writeValueAsString(
@@ -102,11 +104,11 @@ public class ScreeningToReferralTest {
     Allegation allegation = validAllegation();
     allegations.add(allegation);
 
-    ScreeningToReferral expected =
-        new ScreeningToReferral(id, "", "", "2016-08-03T01:00:00.000Z", "sacramento", "2016-08-02",
-            "Foster Home", communicationMethod, "The Rocky Horror Show", "Narrative 123 test", "123ABC",
-            responseTime, "2016-08-03T01:00:00.000Z", "Michael Bastow", "addtional information",
-            "Screening Descision", "Detail", address, participants, crossReports, allegations);
+    ScreeningToReferral expected = new ScreeningToReferral(id, "", "", "2016-08-03T01:00:00.000Z",
+        "sacramento", "2016-08-02", "Foster Home", communicationMethod, "The Rocky Horror Show",
+        "Narrative 123 test", "123ABC", responseTime, "2016-08-03T01:00:00.000Z", "Michael Bastow",
+        "addtional information", "Screening Descision", "Detail", address, participants,
+        crossReports, allegations);
 
 
     ScreeningToReferral serialized =
@@ -190,6 +192,11 @@ public class ScreeningToReferralTest {
         validator.validate(toValidate);
     assertEquals(1, constraintViolations.size());
     assertEquals("may not be empty", constraintViolations.iterator().next().getMessage());
+  }
+
+  @Test
+  public void equalsHashCodeWork() {
+    EqualsVerifier.forClass(ScreeningToReferral.class).suppress(Warning.NONFINAL_FIELDS).verify();
   }
 
   @Test
