@@ -302,6 +302,7 @@ public class ScreeningToReferralService implements CrudsService {
                 clientId = postedClient.getId();
                 incomingParticipant.setLegacyId(clientId);
                 incomingParticipant.setLegacySourceTable(CLIENT_TABLE_NAME);
+                incomingParticipant.getLegacyDescriptor().setLastUpdated(postedClient.getLastUpdatedTime());
               } else {
                 // legacy Id passed - check for existenct in CWS/CMS - no update yet
                 clientId = incomingParticipant.getLegacyId();
@@ -314,9 +315,12 @@ public class ScreeningToReferralService implements CrudsService {
                         incomingParticipant.getNameSuffix());
                     gov.ca.cwds.rest.api.domain.cms.Client savedClient =
                         this.clientService.update(incomingParticipant.getLegacyId(), foundClient);
-                    if (savedClient == null) {
+                    if (savedClient != null) {
+                      incomingParticipant.getLegacyDescriptor().setLastUpdated(savedClient.getLastUpdatedTime());
+                    }else{
                       String message = "Unable to save Client";
                       logError(message);
+
                     }
                   } else {
                     String message = String.format(
@@ -388,16 +392,6 @@ public class ScreeningToReferralService implements CrudsService {
       } // next role
     } // next participant
 
-  }
-
-  private boolean unchanged(Participant incomingClient, Client savedClient) throws ParseException {
-    DateTimeFormatter formatter = DateTimeFormat.forPattern(DomainChef.TIMESTAMP_FORMAT);;
-    DateTime dbDate = formatter.parseDateTime(savedClient.getLastUpdatedTime());
-
-    DateTimeFormatter formatter2 = DateTimeFormat.forPattern(DomainChef.TIMESTAMP_STRICT_FORMAT);
-    DateTime incommingDate =
-        formatter2.parseDateTime(incomingClient.getLegacyDescriptor().getLastUpdated());
-    return dbDate.isEqual(incommingDate);
   }
 
   private String createCmsReferral(ScreeningToReferral screeningToReferral, String dateStarted,
