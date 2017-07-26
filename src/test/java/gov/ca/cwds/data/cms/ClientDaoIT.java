@@ -7,8 +7,6 @@ import static org.hamcrest.Matchers.notNullValue;
 import static org.hamcrest.Matchers.nullValue;
 
 import java.io.IOException;
-import java.util.Arrays;
-import java.util.List;
 
 import javax.persistence.EntityExistsException;
 import javax.persistence.EntityNotFoundException;
@@ -22,7 +20,6 @@ import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
-import org.junit.Ignore;
 import org.junit.Rule;
 import org.junit.Test;
 
@@ -74,32 +71,6 @@ public class ClientDaoIT {
   public void shouldReturnANonNullValueWhenFindingAllClients() throws Exception {
     Query query = session.getNamedQuery("gov.ca.cwds.data.persistence.cms.Client.findAll");
     assertThat(query, is(notNullValue()));
-  }
-
-  // TODO:Deprecated, no longer using findall. Research and remove test and code
-  @SuppressWarnings("unchecked")
-  @Ignore
-  @Test
-  public void shouldReturntheSavedClientsWhenPerformingAFindAll() throws IOException {
-    List<String> ids = Arrays.asList("AaiU7IW0Rt", "baiT7IX0Rt", "SaiUDIWmRt", "QaWU7EW0Rt");
-    for (String id : ids) {
-      Client entity = createClientWithId(id);
-
-      gov.ca.cwds.rest.api.domain.cms.Client domainClient =
-          new gov.ca.cwds.rest.api.domain.cms.Client(entity, true);
-      Client entityClient = new Client(id, domainClient, "0X5");
-      Client saved = clientDao.create(entityClient);
-      session.flush();
-    } ;
-
-    Query query = session.getNamedQuery("gov.ca.cwds.data.persistence.cms.Client.findAll");
-    final List<Client> list = query.list();
-    System.out.println("size of query list is: " + list.size());
-    for (Client c : list) {
-      System.out.println("id " + c.getId() + " " + c.getSensitivityIndicator() + " "
-          + c.getSoc158SealedClientIndicator() + " " + c.getLastUpdatedTime());
-    }
-    assertThat(query.list().size(), is(4));
   }
 
   // Test on mainframe DB2 with schema CWSNS2/4.
