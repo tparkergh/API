@@ -120,7 +120,7 @@ public class ClientServiceTest {
     Client expected = new ClientResourceBuilder().setExistingClientId(id)
         .setLastUpdateTime(lastUpdatedTime).setConfidentialityActionDate("2016-03-11")
         .setDeathDate("2017-06-11").setFatherParentalRightTermDate("2017-04-01")
-        .setMotherParentalRightTermDate("2015-01-10").setAddress(new HashSet()).build();
+        .setMotherParentalRightTermDate("2015-01-10").setAddress(new HashSet<>()).build();
     gov.ca.cwds.data.persistence.cms.Client client =
         new gov.ca.cwds.data.persistence.cms.Client(id, expected, "04Z", updated);
     when(clientDao.find(id)).thenReturn(client);
@@ -198,7 +198,6 @@ public class ClientServiceTest {
     assertThat(retval.getClass(), is(Client.class));
   }
 
-  @SuppressWarnings("javadoc")
   @Test
   public void testUpdateThrowsExceptionWhenNotFound() throws Exception {
     try {
@@ -206,7 +205,7 @@ public class ClientServiceTest {
           fixture("fixtures/domain/legacy/Client/valid/serviceValid.json"), Client.class);
 
       Address address = new AddressResourceBuilder().createAddress();
-      Set addresses = new HashSet(Arrays.asList(address));
+      Set<Address> addresses = new HashSet<>(Arrays.asList(address));
       Participant participant =
           new ParticipantResourceBuilder().setAddresses(addresses).createParticipant();
       Client domainClient = Client.createWithDefaults(participant, "", "m");
@@ -267,7 +266,6 @@ public class ClientServiceTest {
     }
   }
 
-  @SuppressWarnings("javadoc")
   @Test
   public void testCreateReturnsNonNull() throws Exception {
     String id = "Aaeae9r0F4";

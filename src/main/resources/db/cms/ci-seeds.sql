@@ -154,6 +154,11 @@ truncate table cwsint.ADDRS_UC immediate;
 INSERT INTO CWSINT.ADDRS_UC(PKTBL_ID, SRCTBL_CD, CITY_NM, LST_UPD_ID, LST_UPD_TS, STREET_NM, STREET_NO) 
 VALUES ('AbjqVmy04O', 'A', 'HANFORD', '04O', '2004-05-17 15:49:26.191285', 'SOUTH MAIN', '5885');
 
+truncate table cwsint.EXTINF_T immediate;
 INSERT INTO CWSINT.EXTINF_T(SEQ_NO,SUBMTL_TS,TABLE_NAME,OPER_TYPE,PRM_KEY_1,PRM_KEY_2,PRM_KEY_3,PRM_KEY_4,PRM_KEY_5,PRM_KEY_6,PRM_KEY_7,PRM_KEY_8,START_DT,AST_UNT_CD,PERSON_NO,SERIAL_NO,AID_TPC,GVR_ENTC,LICENSE_NO,RESPONS_DT,RECEIVE_DT,RAP_ID,FBI_IND,CRSP_TPC,OTHER_DATA,L_USERID)
 VALUES (1,'2004-08-03 14:53:04.382631','ST_ID_T ','N','KZQ79se0V2','          ','          ','          ','          ','          ','          ','          ','2004-08-03', '1', '12', '1234568', 0, 1124, '         ', '          ', '          ', '          ', ' ', 0, '          DyN0KOO0V2                                                                                                                                                                                                                                          ',	 'SMITHBO ');
+
+truncate table cwsint.CLN_RELT immediate;
+INSERT INTO CWSINT.CLN_RELT(IDENTIFIER, ABSENT_CD, CLNTRELC, END_DT, SAME_HM_CD, START_DT, LST_UPD_ID, LST_UPD_TS, FKCLIENT_T, FKCLIENT_0) 
+VALUES ('Aaqj06L00h', 'N', 179, null, 'Y', null, '00h', '1997-09-15 09:53:49.687102', '0LIZAWH00h', 'GjRyRJh00h');
 
