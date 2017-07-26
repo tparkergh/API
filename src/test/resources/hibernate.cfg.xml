@@ -69,6 +69,7 @@
 		<mapping class="gov.ca.cwds.data.persistence.cms.CmsCase"/>
 		<mapping class="gov.ca.cwds.data.persistence.cms.Tickle"/>
 		<mapping class="gov.ca.cwds.data.persistence.cms.ExternalInterface"/>
+		<mapping class="gov.ca.cwds.data.persistence.cms.ClientRelationship"/>
 
 		<mapping class="gov.ca.cwds.data.persistence.cms.Assignment"/>
 		<mapping class="gov.ca.cwds.data.persistence.cms.ReferralAssignment"/>
