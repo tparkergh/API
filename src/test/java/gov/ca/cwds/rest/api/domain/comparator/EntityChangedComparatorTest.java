@@ -36,14 +36,6 @@ public class EntityChangedComparatorTest {
   }
 
   @Test
-  public void shouldIgnoreMilliseconds(){
-    participant = createParticipant("2016-11-25T14:32:23.123-0800");
-    client = createClient( "2016-11-25T14:32:23.987-0800");
-
-    assertTrue(comparator.compare(participant, client));
-  }
-
-  @Test
   public void shouldNotEvaluateStringsWithDifferentSecondsAsEqual(){
     participant = createParticipant("2016-11-25T14:32:00.123-0700");
     client = createClient( "2016-11-25T14:32:59.123-0700");
