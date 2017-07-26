@@ -153,7 +153,6 @@ public class AssignmentService implements CrudsService {
       } else {
         managed = new Assignment(CmsKeyIdGenerator.generate(lastUpdatedId), assignment,
             lastUpdatedId, timestamp);
-
       }
       managed = assignmentDao.create(managed);
       if (managed.getId() == null) {

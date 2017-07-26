@@ -23,8 +23,6 @@ import org.junit.rules.ExpectedException;
 import org.mockito.invocation.InvocationOnMock;
 import org.mockito.stubbing.Answer;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-
 import gov.ca.cwds.data.cms.ReferralClientDao;
 import gov.ca.cwds.data.cms.StaffPersonDao;
 import gov.ca.cwds.data.persistence.cms.StaffPerson;
@@ -35,7 +33,6 @@ import gov.ca.cwds.rest.api.domain.cms.ReferralClient;
 import gov.ca.cwds.rest.business.rules.LACountyTrigger;
 import gov.ca.cwds.rest.business.rules.NonLACountyTriggers;
 import gov.ca.cwds.rest.services.ServiceException;
-import io.dropwizard.jackson.Jackson;
 
 /**
  * See story #136586059, Tech debt: exception handling in service layer.
@@ -43,8 +40,6 @@ import io.dropwizard.jackson.Jackson;
  * @author CWDS API Team
  */
 public class ReferralClientServiceTest {
-
-  private static final ObjectMapper MAPPER = Jackson.newObjectMapper();
 
   // Unit under test:
   private ReferralClientService referralClientService;
@@ -56,7 +51,6 @@ public class ReferralClientServiceTest {
   private StaffPersonIdRetriever staffPersonIdRetriever;
 
   private static Boolean isLaCountyTrigger = false;
-  private static Boolean isNonLaCountyTrigger = false;
 
   @SuppressWarnings("javadoc")
   @Rule
