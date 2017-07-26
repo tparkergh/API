@@ -16,14 +16,11 @@ import org.junit.rules.ExpectedException;
 import org.mockito.invocation.InvocationOnMock;
 import org.mockito.stubbing.Answer;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-
 import gov.ca.cwds.data.DaoException;
 import gov.ca.cwds.data.cms.AddressUcDao;
 import gov.ca.cwds.data.cms.ClientUcDao;
 import gov.ca.cwds.data.persistence.cms.AddressUc;
 import gov.ca.cwds.data.persistence.cms.ClientUc;
-import gov.ca.cwds.data.persistence.cms.SystemCodeTestHarness;
 import gov.ca.cwds.fixture.ClientResourceBuilder;
 import gov.ca.cwds.fixture.CmsAddressResourceBuilder;
 import gov.ca.cwds.rest.api.domain.cms.Address;
@@ -35,8 +32,6 @@ import gov.ca.cwds.rest.services.ServiceException;
  *
  */
 public class UpperCaseTablesTest {
-
-  private static final ObjectMapper MAPPER = SystemCodeTestHarness.MAPPER;
 
   private ClientUcDao clientUcDao;
   private AddressUcDao addressUcDao;
