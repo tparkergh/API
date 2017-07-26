@@ -382,4 +382,25 @@ public class ClientServiceTest {
     verify(countyOwnershipDao, times(1)).create(any());
   }
 
+  @Test
+  public void testCreateNonLACountyTriggerForClientNotCreated() throws Exception {
+    Client clientDomain = new ClientResourceBuilder().build();
+    gov.ca.cwds.data.persistence.cms.Client toCreate =
+        new gov.ca.cwds.data.persistence.cms.Client("ABC1234567", clientDomain, "BTr");
+
+    Client request = new Client(toCreate, false);
+
+    when(triggerTablesDao.getLaCountySpecificCode()).thenReturn("19");
+
+    StaffPerson staffPerson = new StaffPerson("BTr", null, "External Interface",
+        "external interface", "SCXCIN7", " ", "", BigDecimal.valueOf(9165672100L), 0, null, "    ",
+        "N", "MIZN02k00E", "  ", "    ", "19", "N", "3XPCP92q38", null);
+
+    when(staffpersonDao.find(any(String.class))).thenReturn(staffPerson);
+    when(clientDao.create(any(gov.ca.cwds.data.persistence.cms.Client.class))).thenReturn(toCreate);
+    clientService.create(request);
+
+    verify(countyOwnershipDao, times(0)).create(any());
+  }
+
 }

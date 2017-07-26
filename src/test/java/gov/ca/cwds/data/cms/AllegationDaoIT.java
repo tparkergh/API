@@ -161,6 +161,9 @@ public class AllegationDaoIT implements DaoTestTemplate {
     assertThat(deleted, is(nullValue()));
   }
 
+  /**
+   * Update JUnit test
+   */
   @Override
   @Test
   public void testUpdate() throws Exception {
