@@ -162,3 +162,10 @@ truncate table cwsint.CLN_RELT immediate;
 INSERT INTO CWSINT.CLN_RELT(IDENTIFIER, ABSENT_CD, CLNTRELC, END_DT, SAME_HM_CD, START_DT, LST_UPD_ID, LST_UPD_TS, FKCLIENT_T, FKCLIENT_0) 
 VALUES ('Aaqj06L00h', 'N', 179, null, 'Y', null, '00h', '1997-09-15 09:53:49.687102', '0LIZAWH00h', 'GjRyRJh00h');
 
+truncate table cwsint.CLN_COLT immediate;
+INSERT INTO CWSINT.CLN_COLT(ACTIVE_IND, COL_RELC, COMNT_DSC, LST_UPD_ID, LST_UPD_TS, THIRD_ID, FKCOLTRL_T, FKCLIENT_T) 
+VALUES ('Y', 580, '                                                  ', '00b', '1997-12-12 09:32:05.286839', 'AaxovM900b', '8mRr2gb00b', '0mnwWdl00b');
+
+truncate table cwsint.COLTRL_T immediate;
+INSERT INTO CWSINT.COLTRL_T(IDENTIFIER, BADGE_NO, CITY_NM, EMPLYR_NM, FAX_NO, FIRST_NM, FRG_ADRT_B, LAST_NM, MID_INI_NM, NMPRFX_DSC, PRM_TEL_NO, PRM_EXT_NO, STATE_C, STREET_NM, STREET_NO, SUFX_TLDSC, ZIP_NO, LST_UPD_ID, LST_UPD_TS, ZIP_SFX_NO, COMNT_DSC, GENDER_CD, BIRTH_DT, MRTL_STC, EMAIL_ADDR, ESTBLSH_CD, ESTBLSH_ID, RESOST_IND) 
+VALUES ('AarHGUP0Ki', '      ', 'Blythe              ', '                                   ', 0, 'Sandy               ', 'N', 'A.                       ', ' ', '      ', 6190008021, 0, 1828, 'Fake Circle                             ', '5602      ', '    ', 92225, '0Ki', '2001-04-25 07:50:46.576797', 0, '                                                                                                                                                                                                                                                              ', 'U', null, 0, null, null, null, null);
