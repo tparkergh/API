@@ -85,6 +85,19 @@ public class ExternalInterfaceTablesTest {
   }
 
   /**
+   * @throws Exception
+   */
+  @Test(expected = DaoException.class)
+  public void testForAssignmentExternalInterfaceThrowsDaoException() throws Exception {
+    when(externalInterfaceDao.create(any())).thenThrow(new ServiceException());
+    Assignment assignmentDomain = new AssignmentResourceBuilder().buildAssignment();
+    gov.ca.cwds.data.persistence.cms.Assignment assignment =
+        new gov.ca.cwds.data.persistence.cms.Assignment("ABC1234567", assignmentDomain, "BTr");
+    externalInterfaceTables.createExtInterAssignment(assignment, "N");
+
+  }
+
+  /**
    * @throws Exception - Exception
    */
   @Test
@@ -156,7 +169,6 @@ public class ExternalInterfaceTablesTest {
 
 
   }
-
 
   /**
    * @throws Exception - Exception
@@ -242,5 +254,25 @@ public class ExternalInterfaceTablesTest {
 
   }
 
+
+  /**
+   * @throws Exception
+   */
+  @Test(expected = ServiceException.class)
+  public void testForDeleteExternalThrowsServiceException() throws Exception {
+    when(externalInterfaceDao.create(any())).thenThrow(new ServiceException());
+    when(externalInterfaceDao.create(any(ExternalInterface.class)))
+        .thenAnswer(new Answer<ExternalInterface>() {
+          @Override
+          public ExternalInterface answer(InvocationOnMock invocation) throws Throwable {
+
+            ExternalInterface report = (ExternalInterface) invocation.getArguments()[0];
+            externalInterface = report;
+            return report;
+          }
+        });
+
+    externalInterfaceTables.createExtInterForDelete("ABC1234567", "ASGNM_T");
+  }
 
 }
