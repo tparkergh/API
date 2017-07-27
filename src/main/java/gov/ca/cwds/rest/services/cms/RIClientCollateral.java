@@ -19,12 +19,15 @@ public class RIClientCollateral implements ApiReferentialCheck<ClientCollateral>
   @Inject
   public RIClientCollateral(final ClientDao clientDao) {
     this.clientDao = clientDao;
+    ApiHibernateInterceptor.addHandler(ClientCollateral.class, c -> {
+      LOGGER.warn("handle ClientCollateral");
+      if (apply((ClientCollateral) c)) {
+
+      }
+    });
   }
 
-  {
-    ApiHibernateInterceptor.addHandler(ClientCollateral.class, this);
-  }
-
+  // @Override
   @Override
   public Boolean apply(ClientCollateral t) {
     LOGGER.warn("handle ClientCollateral");

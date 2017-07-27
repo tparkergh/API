@@ -284,22 +284,17 @@ public class DataAccessModule extends AbstractModule {
   protected void registerReferentialIntegrityHandlers() {
     ApiHibernateInterceptor.addHandler(ClientRelationship.class, e -> {
       LOGGER.warn("handle ClientRelationship");
-      return true;
+      // return true;
     });
 
     ApiHibernateInterceptor.addHandler(ClientAddress.class, e -> {
       LOGGER.warn("handle ClientAddress");
-      return true;
+      // return true;
     });
 
     ApiHibernateInterceptor.addHandler(SystemMeta.class, e -> {
       LOGGER.warn("handle SystemMeta");
-      return true;
-    });
-
-    ApiHibernateInterceptor.addHandler(ClientCollateral.class, e -> {
-      LOGGER.warn("handle ClientCollateral");
-      return true;
+      // return true;
     });
 
   }
