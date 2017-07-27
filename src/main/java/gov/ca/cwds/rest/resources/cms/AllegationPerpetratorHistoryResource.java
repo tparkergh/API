@@ -21,6 +21,7 @@ import com.google.inject.Inject;
 import gov.ca.cwds.inject.AllegationPerpetratorHistoryServiceBackedResource;
 import gov.ca.cwds.rest.api.domain.cms.AllegationPerpetratorHistory;
 import gov.ca.cwds.rest.resources.ResourceDelegate;
+import gov.ca.cwds.rest.resources.TypedResourceDelegate;
 import io.dropwizard.hibernate.UnitOfWork;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -45,7 +46,7 @@ import io.swagger.annotations.ApiResponses;
 @Consumes(MediaType.APPLICATION_JSON)
 public class AllegationPerpetratorHistoryResource {
 
-  private ResourceDelegate resourceDelegate;
+  private TypedResourceDelegate<String, AllegationPerpetratorHistory> resourceDelegate;
 
   /**
    * Constructor
@@ -54,7 +55,7 @@ public class AllegationPerpetratorHistoryResource {
    */
   @Inject
   public AllegationPerpetratorHistoryResource(
-      @AllegationPerpetratorHistoryServiceBackedResource ResourceDelegate resourceDelegate) {
+      @AllegationPerpetratorHistoryServiceBackedResource TypedResourceDelegate<String, AllegationPerpetratorHistory> resourceDelegate) {
     this.resourceDelegate = resourceDelegate;
   }
 
