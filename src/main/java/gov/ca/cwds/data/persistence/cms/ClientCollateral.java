@@ -7,6 +7,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
+import org.hibernate.annotations.ColumnTransformer;
 import org.hibernate.annotations.Type;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
@@ -16,9 +17,11 @@ import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import gov.ca.cwds.data.CmsSystemCodeDeserializer;
 import gov.ca.cwds.data.SystemCodeSerializer;
 import gov.ca.cwds.data.persistence.PersistentObject;
+import gov.ca.cwds.rest.api.domain.SystemCodeCategoryId;
+import gov.ca.cwds.rest.validation.ValidSystemCodeId;
 
 /**
- * {@link PersistentObject} representing a Client Collateral.
+ * {@link PersistentObject} representing a Client Collateral person.
  * 
  * @author CWDS API Team
  */
@@ -35,22 +38,25 @@ public class ClientCollateral extends CmsPersistentObject {
 
   @SystemCodeSerializer(logical = true, description = true)
   @JsonDeserialize(using = CmsSystemCodeDeserializer.class)
+  @ValidSystemCodeId(required = true,
+      category = SystemCodeCategoryId.CLIENT_COLLATERAL_RELATIONSHIP)
   @Type(type = "short")
   @Column(name = "COL_RELC")
   private Short collateralClientReporterRelationshipType;
 
   @Column(name = "COMNT_DSC")
+  @ColumnTransformer(read = "trim(COMNT_DSC)")
   private String commentDescription;
-
-  @Column(name = "FKCLIENT_T")
-  private String clientId;
-
-  @Column(name = "FKCOLTRL_T")
-  private String collateralIndividualId;
 
   @Id
   @Column(name = "THIRD_ID", length = CMS_ID_LEN)
   private String thirdId;
+
+  @Column(name = "FKCLIENT_T", length = CMS_ID_LEN)
+  private String clientId;
+
+  @Column(name = "FKCOLTRL_T", length = CMS_ID_LEN)
+  private String collateralIndividualId;
 
   /**
    * #147241489: referential integrity check.
