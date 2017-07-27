@@ -148,7 +148,7 @@ public class NonLACountyTriggersTest {
         });
     nonLaCountyTriggers.createAndUpdateReferralClientCoutyOwnership(toCreate);
     assertThat(countyOwnership, is(notNullValue()));
-    assertThat(countyOwnership.getCounty62Flag(), is(equalTo("Y")));
+    assertThat(countyOwnership.getCounty55Flag(), is(equalTo("Y")));
   }
 
   /**
@@ -209,7 +209,7 @@ public class NonLACountyTriggersTest {
     nonLaCountyTriggers.createAndUpdateClientAddressCoutyOwnership(toCreate);
     assertThat(countyOwnership, is(notNullValue()));
     assertThat(countyOwnership.getEntityCode(), is(equalTo("A")));
-    assertThat(countyOwnership.getCounty62Flag(), is(equalTo("Y")));
+    assertThat(countyOwnership.getCounty55Flag(), is(equalTo("Y")));
   }
 
 
@@ -316,7 +316,7 @@ public class NonLACountyTriggersTest {
     nonLaCountyTriggers.createAndUpdateReferralCoutyOwnership(toCreate);
     assertThat(countyOwnership, is(notNullValue()));
     assertThat(countyOwnership.getEntityCode(), is(equalTo("R")));
-    assertThat(countyOwnership.getCounty62Flag(), is(equalTo("Y")));
+    assertThat(countyOwnership.getCounty55Flag(), is(equalTo("Y")));
   }
 
   /**
