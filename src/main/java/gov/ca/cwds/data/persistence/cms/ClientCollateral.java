@@ -52,6 +52,12 @@ public class ClientCollateral extends CmsPersistentObject {
   @Column(name = "THIRD_ID", length = CMS_ID_LEN)
   private String thirdId;
 
+  /**
+   * #147241489: referential integrity check.
+   * <p>
+   * Doesn't actually load the data. Just checks the existence of the parent client record.
+   * </p>
+   */
   @ManyToOne(optional = false)
   @JoinColumn(name = "FKCLIENT_T", nullable = false, updatable = false, insertable = false)
   private Client client;
