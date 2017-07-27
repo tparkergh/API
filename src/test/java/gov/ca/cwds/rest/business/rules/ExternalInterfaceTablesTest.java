@@ -254,24 +254,12 @@ public class ExternalInterfaceTablesTest {
 
   }
 
-
   /**
    * @throws Exception
    */
-  @Test(expected = ServiceException.class)
+  @Test(expected = DaoException.class)
   public void testForDeleteExternalThrowsServiceException() throws Exception {
     when(externalInterfaceDao.create(any())).thenThrow(new ServiceException());
-    when(externalInterfaceDao.create(any(ExternalInterface.class)))
-        .thenAnswer(new Answer<ExternalInterface>() {
-          @Override
-          public ExternalInterface answer(InvocationOnMock invocation) throws Throwable {
-
-            ExternalInterface report = (ExternalInterface) invocation.getArguments()[0];
-            externalInterface = report;
-            return report;
-          }
-        });
-
     externalInterfaceTables.createExtInterForDelete("ABC1234567", "ASGNM_T");
   }
 

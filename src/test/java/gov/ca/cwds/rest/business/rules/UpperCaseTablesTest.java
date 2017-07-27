@@ -131,12 +131,12 @@ public class UpperCaseTablesTest {
   }
 
   /**
-   * @throws Exception
+   * @throws Exception - exception
    */
-  @Test(expected = DaoException.class)
+  @Test
   public void testForClientUpperCaseUpdateThrowsDaoExceptionWhenNull() throws Exception {
-    when(clientUcDao.update(any())).thenThrow(new ServiceException());
     Client clientDomain = new ClientResourceBuilder().setCommonFirstName(null).build();
+
     gov.ca.cwds.data.persistence.cms.Client client =
         new gov.ca.cwds.data.persistence.cms.Client("ABC1234567", clientDomain, "0X5");
     upperCaseTables.updateClientUc(client);

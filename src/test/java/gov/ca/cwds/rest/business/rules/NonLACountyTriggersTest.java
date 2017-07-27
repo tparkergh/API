@@ -4,6 +4,7 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.notNullValue;
+import static org.hamcrest.Matchers.nullValue;
 import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
@@ -128,7 +129,7 @@ public class NonLACountyTriggersTest {
   @Test
   public void testForReferralClientUpdatedCountyOwnership() throws Exception {
     ReferralClient referralClientDomain =
-        new ReferralClientResourceBuilder().setCountySpecificCode("62").buildReferralClient();
+        new ReferralClientResourceBuilder().setCountySpecificCode("55").buildReferralClient();
 
     gov.ca.cwds.data.persistence.cms.ReferralClient toCreate =
         new gov.ca.cwds.data.persistence.cms.ReferralClient(referralClientDomain, "ABC");
@@ -189,7 +190,7 @@ public class NonLACountyTriggersTest {
     ClientAddress toCreate = new ClientAddress("ABC1234567", clientAddressDomain, "ABC");
 
     ReferralClient referralClientDomain =
-        new ReferralClientResourceBuilder().setCountySpecificCode("62").buildReferralClient();
+        new ReferralClientResourceBuilder().setCountySpecificCode("55").buildReferralClient();
     gov.ca.cwds.data.persistence.cms.ReferralClient referralClient =
         new gov.ca.cwds.data.persistence.cms.ReferralClient(referralClientDomain, "ABC");
 
@@ -296,7 +297,7 @@ public class NonLACountyTriggersTest {
         new gov.ca.cwds.data.persistence.cms.Assignment("ABC1234567", assignmentDomain, "ABC");
 
     Referral referralClientDomain =
-        new ReferralResourceBuilder().setCountySpecificCode("62").build();
+        new ReferralResourceBuilder().setCountySpecificCode("55").build();
     gov.ca.cwds.data.persistence.cms.Referral referral =
         new gov.ca.cwds.data.persistence.cms.Referral("ABC1234567", referralClientDomain, "0X5");
 
@@ -316,6 +317,134 @@ public class NonLACountyTriggersTest {
     assertThat(countyOwnership, is(notNullValue()));
     assertThat(countyOwnership.getEntityCode(), is(equalTo("R")));
     assertThat(countyOwnership.getCounty62Flag(), is(equalTo("Y")));
+  }
+
+  /**
+   * Referral countyOwnership is not created when AssignmentCode is set to S
+   * 
+   * @throws Exception
+   */
+  @Test
+  public void testForAssignmentCodeIsS() throws Exception {
+
+    Assignment assignmentDomain =
+        new AssignmentResourceBuilder().setTypeOfAssignmentCode("S").buildAssignment();
+    gov.ca.cwds.data.persistence.cms.Assignment toCreate =
+        new gov.ca.cwds.data.persistence.cms.Assignment("ABC1234567", assignmentDomain, "ABC");
+
+    Referral referralClientDomain =
+        new ReferralResourceBuilder().setCountySpecificCode("62").build();
+    gov.ca.cwds.data.persistence.cms.Referral referral =
+        new gov.ca.cwds.data.persistence.cms.Referral("ABC1234567", referralClientDomain, "0X5");
+
+    when(referralDao.find(any(String.class))).thenReturn(referral);
+    when(countyOwnershipDao.create(any(CountyOwnership.class)))
+        .thenAnswer(new Answer<CountyOwnership>() {
+
+          @Override
+          public CountyOwnership answer(InvocationOnMock invocation) throws Throwable {
+
+            CountyOwnership report = (CountyOwnership) invocation.getArguments()[0];
+            countyOwnership = report;
+            return report;
+          }
+        });
+    nonLaCountyTriggers.createAndUpdateReferralCoutyOwnership(toCreate);
+    assertThat(countyOwnership, is(nullValue()));
+  }
+
+  /**
+   * Referral countyOwnership is not created when assignment established is set to C
+   * 
+   * @throws Exception
+   */
+  @Test
+  public void testForEstablishedCodeIsC() throws Exception {
+
+    Assignment assignmentDomain =
+        new AssignmentResourceBuilder().setEstablishedForCode("C").buildAssignment();
+    gov.ca.cwds.data.persistence.cms.Assignment toCreate =
+        new gov.ca.cwds.data.persistence.cms.Assignment("ABC1234567", assignmentDomain, "ABC");
+
+    Referral referralClientDomain =
+        new ReferralResourceBuilder().setCountySpecificCode("62").build();
+    gov.ca.cwds.data.persistence.cms.Referral referral =
+        new gov.ca.cwds.data.persistence.cms.Referral("ABC1234567", referralClientDomain, "0X5");
+
+    when(referralDao.find(any(String.class))).thenReturn(referral);
+    when(countyOwnershipDao.create(any(CountyOwnership.class)))
+        .thenAnswer(new Answer<CountyOwnership>() {
+
+          @Override
+          public CountyOwnership answer(InvocationOnMock invocation) throws Throwable {
+
+            CountyOwnership report = (CountyOwnership) invocation.getArguments()[0];
+            countyOwnership = report;
+            return report;
+          }
+        });
+    nonLaCountyTriggers.createAndUpdateReferralCoutyOwnership(toCreate);
+    assertThat(countyOwnership, is(nullValue()));
+  }
+
+  /**
+   * @throws Exception - exception
+   */
+  @Test
+  public void testForReferralClientCreatedCountyOwnershipForDefault99() throws Exception {
+
+    ReferralClient referralClientDomain =
+        new ReferralClientResourceBuilder().setCountySpecificCode("99").buildReferralClient();
+
+    gov.ca.cwds.data.persistence.cms.ReferralClient toCreate =
+        new gov.ca.cwds.data.persistence.cms.ReferralClient(referralClientDomain, "ABC");
+
+    when(countyOwnershipDao.create(any(CountyOwnership.class)))
+        .thenAnswer(new Answer<CountyOwnership>() {
+
+          @Override
+          public CountyOwnership answer(InvocationOnMock invocation) throws Throwable {
+
+            CountyOwnership report = (CountyOwnership) invocation.getArguments()[0];
+            countyOwnership = report;
+            return report;
+          }
+        });
+    nonLaCountyTriggers.createAndUpdateReferralClientCoutyOwnership(toCreate);
+    assertThat(countyOwnership, is(notNullValue()));
+    assertThat(countyOwnership.getEntityCode(), is(equalTo("C")));
+  }
+
+  /**
+   * @throws Exception
+   */
+  @Test
+  public void testForReferralCreatedCountyOwnershipForDefault99() throws Exception {
+
+    Assignment assignmentDomain = new AssignmentResourceBuilder().buildAssignment();
+    gov.ca.cwds.data.persistence.cms.Assignment toCreate =
+        new gov.ca.cwds.data.persistence.cms.Assignment("ABC1234567", assignmentDomain, "ABC");
+
+    Referral referralClientDomain =
+        new ReferralResourceBuilder().setCountySpecificCode("99").build();
+    gov.ca.cwds.data.persistence.cms.Referral referral =
+        new gov.ca.cwds.data.persistence.cms.Referral("ABC1234567", referralClientDomain, "0X5");
+
+    when(referralDao.find(any(String.class))).thenReturn(referral);
+    when(countyOwnershipDao.create(any(CountyOwnership.class)))
+        .thenAnswer(new Answer<CountyOwnership>() {
+
+          @Override
+          public CountyOwnership answer(InvocationOnMock invocation) throws Throwable {
+
+            CountyOwnership report = (CountyOwnership) invocation.getArguments()[0];
+            countyOwnership = report;
+            return report;
+          }
+        });
+    nonLaCountyTriggers.createAndUpdateReferralCoutyOwnership(toCreate);
+    assertThat(countyOwnership, is(notNullValue()));
+    assertThat(countyOwnership.getEntityCode(), is(equalTo("R")));
   }
 
   /**
