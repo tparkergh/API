@@ -105,8 +105,8 @@ public class LACountyTrigger {
 
         countyTriggerDao.create(countyTrigger1);
         countyTriggerDao.create(countyTrigger2);
+        LOGGER.info("LA county clientAddress triggered");
       }
-      LOGGER.info("LA county clientAddress triggered");
     }
     return true;
   }
