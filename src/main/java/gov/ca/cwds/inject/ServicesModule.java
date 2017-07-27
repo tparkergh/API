@@ -3,14 +3,21 @@ package gov.ca.cwds.inject;
 import javax.validation.Validation;
 import javax.validation.Validator;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.google.inject.AbstractModule;
 import com.google.inject.Inject;
 import com.google.inject.Provides;
 import com.google.inject.matcher.Matchers;
 
+import gov.ca.cwds.data.ApiHibernateInterceptor;
 import gov.ca.cwds.data.CmsSystemCodeSerializer;
 import gov.ca.cwds.data.cms.SystemCodeDao;
 import gov.ca.cwds.data.cms.SystemMetaDao;
+import gov.ca.cwds.data.persistence.cms.ClientAddress;
+import gov.ca.cwds.data.persistence.cms.ClientRelationship;
+import gov.ca.cwds.data.persistence.cms.SystemMeta;
 import gov.ca.cwds.rest.ApiConfiguration;
 import gov.ca.cwds.rest.api.domain.ScreeningToReferral;
 import gov.ca.cwds.rest.api.domain.cms.SystemCodeCache;
@@ -31,6 +38,7 @@ import gov.ca.cwds.rest.services.cms.CmsReferralService;
 import gov.ca.cwds.rest.services.cms.CrossReportService;
 import gov.ca.cwds.rest.services.cms.DrmsDocumentService;
 import gov.ca.cwds.rest.services.cms.LegacyKeyService;
+import gov.ca.cwds.rest.services.cms.RIClientCollateral;
 import gov.ca.cwds.rest.services.cms.ReferralClientService;
 import gov.ca.cwds.rest.services.cms.ReferralService;
 import gov.ca.cwds.rest.services.cms.ReporterService;
@@ -52,6 +60,8 @@ import io.dropwizard.hibernate.UnitOfWorkAwareProxyFactory;
  * @author CWDS API Team
  */
 public class ServicesModule extends AbstractModule {
+
+  private static final Logger LOGGER = LoggerFactory.getLogger(ServicesModule.class);
 
   /**
    * @author CWDS API Team
@@ -129,6 +139,31 @@ public class ServicesModule extends AbstractModule {
     UnitOfWorkInterceptor interceptor = new UnitOfWorkInterceptor();
     bindInterceptor(Matchers.any(), Matchers.annotatedWith(UnitOfWork.class), interceptor);
     requestInjection(interceptor);
+
+    // Referential integrity.
+    bind(RIClientCollateral.class);
+    registerReferentialIntegrityHandlers();
+  }
+
+  /**
+   * Register referential integrity checks.
+   */
+  protected void registerReferentialIntegrityHandlers() {
+    ApiHibernateInterceptor.addHandler(ClientRelationship.class, e -> {
+      LOGGER.warn("handle ClientRelationship");
+      // return true;
+    });
+
+    ApiHibernateInterceptor.addHandler(ClientAddress.class, e -> {
+      LOGGER.warn("handle ClientAddress");
+      // return true;
+    });
+
+    ApiHibernateInterceptor.addHandler(SystemMeta.class, e -> {
+      LOGGER.warn("handle SystemMeta");
+      // return true;
+    });
+
   }
 
   @Provides

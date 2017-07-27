@@ -9,6 +9,7 @@ import gov.ca.cwds.data.ApiHibernateInterceptor;
 import gov.ca.cwds.data.ApiReferentialCheck;
 import gov.ca.cwds.data.cms.ClientDao;
 import gov.ca.cwds.data.persistence.cms.ClientCollateral;
+import gov.ca.cwds.rest.api.ApiException;
 
 public class RIClientCollateral implements ApiReferentialCheck<ClientCollateral> {
 
@@ -22,12 +23,11 @@ public class RIClientCollateral implements ApiReferentialCheck<ClientCollateral>
     ApiHibernateInterceptor.addHandler(ClientCollateral.class, c -> {
       LOGGER.warn("handle ClientCollateral");
       if (apply((ClientCollateral) c)) {
-
+        throw new ApiException("RI ERROR: ClientCollateral => Client");
       }
     });
   }
 
-  // @Override
   @Override
   public Boolean apply(ClientCollateral t) {
     LOGGER.warn("handle ClientCollateral");
