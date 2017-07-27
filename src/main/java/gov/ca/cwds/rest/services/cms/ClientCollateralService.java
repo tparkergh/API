@@ -30,6 +30,7 @@ public class ClientCollateralService implements CrudsService {
 
   private ClientCollateralDao clientCollateralDao;
   private StaffPersonIdRetriever staffPersonIdRetriever;
+  private RIClientCollateral ri;
 
   /**
    * Constructor
@@ -37,12 +38,14 @@ public class ClientCollateralService implements CrudsService {
    * @param clientCollateralDao The {@link Dao} handling
    *        {@link gov.ca.cwds.data.persistence.cms.ClientCollateral} objects.
    * @param staffPersonIdRetriever the staffPersonIdRetriever
+   * @param ri referential integrity checker
    */
   @Inject
   public ClientCollateralService(ClientCollateralDao clientCollateralDao,
-      StaffPersonIdRetriever staffPersonIdRetriever) {
+      StaffPersonIdRetriever staffPersonIdRetriever, RIClientCollateral ri) {
     this.clientCollateralDao = clientCollateralDao;
     this.staffPersonIdRetriever = staffPersonIdRetriever;
+    this.ri = ri;
   }
 
   /**

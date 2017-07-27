@@ -52,7 +52,7 @@ public final class SystemCodeCategoryId {
   /**
    * Client collateral relationship.
    */
-  public static final String CLIENT_COLLATERAL_RELATIONSHIP = "CLNTRELC";
+  public static final String CLIENT_COLLATERAL_RELATIONSHIP = "COL_RELC";
 
   /**
    * Private constructor

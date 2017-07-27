@@ -28,12 +28,13 @@ import gov.ca.cwds.rest.services.ServiceException;
 
 /**
  * @author CWDS API Team
- *
  */
 public class ClientCollateralServiceTest {
+
   private ClientCollateralService clientCollateralService;
   private ClientCollateralDao clientCollateralDao;
   private StaffPersonIdRetriever staffPersonIdRetriever;
+  private RIClientCollateral ri;
 
   @Rule
   public ExpectedException thrown = ExpectedException.none();
@@ -43,10 +44,10 @@ public class ClientCollateralServiceTest {
   public void setup() throws Exception {
     clientCollateralDao = mock(ClientCollateralDao.class);
     staffPersonIdRetriever = mock(StaffPersonIdRetriever.class);
+    ri = mock(RIClientCollateral.class);
 
     clientCollateralService =
-        new ClientCollateralService(clientCollateralDao, staffPersonIdRetriever);
-
+        new ClientCollateralService(clientCollateralDao, staffPersonIdRetriever, ri);
   }
 
   // find test
@@ -70,9 +71,7 @@ public class ClientCollateralServiceTest {
         new gov.ca.cwds.data.persistence.cms.ClientCollateral(id, expected, "0X5");
 
     when(clientCollateralDao.find(id)).thenReturn(clientCollateral);
-
     ClientCollateral found = clientCollateralService.find(id);
-
     assertThat(found, is(expected));
   }
 
@@ -146,12 +145,10 @@ public class ClientCollateralServiceTest {
             "2017-01-07");
 
     ClientCollateral request = new ClientCollateral(toCreate);
-
     when(clientCollateralDao.create(any(gov.ca.cwds.data.persistence.cms.ClientCollateral.class)))
         .thenReturn(toCreate);
 
     Response response = clientCollateralService.create(request);
-
     assertThat(response.getClass(), is(PostedClientCollateral.class));
   }
 
@@ -165,12 +162,10 @@ public class ClientCollateralServiceTest {
             "2017-01-07");
 
     ClientCollateral request = new ClientCollateral(toCreate);
-
     when(clientCollateralDao.create(any(gov.ca.cwds.data.persistence.cms.ClientCollateral.class)))
         .thenReturn(toCreate);
 
     PostedClientCollateral postedClientCollateral = clientCollateralService.create(request);
-
     assertThat(postedClientCollateral, is(notNullValue()));
   }
 
@@ -184,14 +179,11 @@ public class ClientCollateralServiceTest {
             "2017-01-07");
 
     ClientCollateral request = new ClientCollateral(toCreate);
-
     when(clientCollateralDao.create(any(gov.ca.cwds.data.persistence.cms.ClientCollateral.class)))
         .thenReturn(toCreate);
 
     PostedClientCollateral expected = new PostedClientCollateral(toCreate);
-
     PostedClientCollateral returned = clientCollateralService.create(request);
-
     assertThat(returned, is(expected));
   }
 
@@ -256,7 +248,7 @@ public class ClientCollateralServiceTest {
   }
 
   /*
-   * Test for checking the new ClientRelationship Id generated and lenght is 10
+   * Test for checking the new ClientRelationship Id generated and length is 10.
    */
   @SuppressWarnings("javadoc")
   @Test
