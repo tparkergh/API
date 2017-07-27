@@ -50,6 +50,11 @@ public final class SystemCodeCategoryId {
   public static final String COMMUNICATION_METHOD = "CMM_MTHC";
 
   /**
+   * Client collateral relationship.
+   */
+  public static final String CLIENT_COLLATERAL_RELATIONSHIP = "CLNTRELC";
+
+  /**
    * Private constructor
    */
   private SystemCodeCategoryId() {}
