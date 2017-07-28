@@ -64,9 +64,9 @@ public class AddressServiceTest implements ServiceTestTemplate {
   @Test
   public void testFindReturnsCorrectEntity() throws Exception {
     when(addressDao.find(new Long(1))).thenReturn(new gov.ca.cwds.data.persistence.ns.Address(1L,
-        "742 Evergreen Terrace", "Springfield", "WA", new Integer(98700), "32"));
+        "742 Evergreen Terrace", "Springfield", "1877", new Integer(98700), "32"));
 
-    Address expected = new Address("", "", "742 Evergreen Terrace", "Springfield", "WA", 98700, 32);
+    Address expected = new Address("", "", "742 Evergreen Terrace", "Springfield", 1877, 98700, 32);
 
     Address found = addressService.find(new Long(1));
 
@@ -107,7 +107,7 @@ public class AddressServiceTest implements ServiceTestTemplate {
   @Test
   public void testCreateReturnsPostedClass() throws Exception {
     gov.ca.cwds.data.persistence.ns.Address toCreate = new gov.ca.cwds.data.persistence.ns.Address(
-        1L, "742 Evergreen Terrace", "Springfield", "WA", new Integer(98700), "32");
+        1L, "742 Evergreen Terrace", "Springfield", "1877", new Integer(98700), "32");
     Address request = new Address(toCreate);
 
     when(addressDao.create(any(gov.ca.cwds.data.persistence.ns.Address.class)))
@@ -121,14 +121,14 @@ public class AddressServiceTest implements ServiceTestTemplate {
   @Test
   public void testCreateReturnsCorrectEntity() throws Exception {
     gov.ca.cwds.data.persistence.ns.Address toCreate = new gov.ca.cwds.data.persistence.ns.Address(
-        10L, "742 Evergreen Terrace", "Springfield", "WA", new Integer(98700), "32");
+        10L, "742 Evergreen Terrace", "Springfield", "1877", new Integer(98700), "32");
     Address request = new Address(toCreate);
 
     when(addressDao.create(any(gov.ca.cwds.data.persistence.ns.Address.class)))
         .thenReturn(toCreate);
 
     PostedAddress expected = new PostedAddress(10, "", "", "742 Evergreen Terrace", "Springfield",
-        "WA", new Integer(98700), 32);
+        1877, new Integer(98700), 32);
     PostedAddress returned = addressService.create(request);
 
     assertThat(returned, is(expected));
@@ -166,14 +166,14 @@ public class AddressServiceTest implements ServiceTestTemplate {
   public void testCreateExistsError() throws Exception {
 
     gov.ca.cwds.data.persistence.ns.Address toCreate = new gov.ca.cwds.data.persistence.ns.Address(
-        (long) 1, "742 Evergreen Terrace", "Springfield", "WA", new Integer(98700), "32");
+        (long) 1, "742 Evergreen Terrace", "Springfield", "1877", new Integer(98700), "32");
     Address request = new Address(toCreate);
 
     when(addressDao.create(any(gov.ca.cwds.data.persistence.ns.Address.class)))
         .thenReturn(toCreate);
 
     PostedAddress expected = new PostedAddress(1, "", "", "742 Evergreen Terrace", "Springfield",
-        "WA", new Integer(98700), 32);
+        1877, new Integer(98700), 32);
 
     PostedAddress returned = addressService.create(request);
 
@@ -230,7 +230,7 @@ public class AddressServiceTest implements ServiceTestTemplate {
   public void testUpdateThrowsAssertionError() throws Exception {
     thrown.expect(AssertionError.class);
     try {
-      addressService.update(null, new Address("", "", "street", "city", "state", 95555, 32));
+      addressService.update(null, new Address("", "", "street", "city", 1828, 95555, 32));
     } catch (AssertionError e) {
       assertEquals("Expected AssertionError", e.getMessage());
     }
@@ -241,7 +241,7 @@ public class AddressServiceTest implements ServiceTestTemplate {
   public void testUpdateThrowsNotImplementedException() throws Exception {
     thrown.expect(NotImplementedException.class);
 
-    addressService.update(1L, new Address("", "", "street", "city", "state", 95555, 32));
+    addressService.update(1L, new Address("", "", "street", "city", 1828, 95555, 32));
   }
 
   @Override

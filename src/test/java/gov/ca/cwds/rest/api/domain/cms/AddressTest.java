@@ -155,7 +155,7 @@ public class AddressTest {
     String streetName = "main";
     String streetAddress = streetNumber + " " + streetName;
     String city = "sacramento";
-    String state = "ca";
+    Integer state = 1828; // "ca";
     Integer zip = 12345;
     Short zipExtension = 9876;
     Integer zipCode = 123459876;
@@ -184,7 +184,7 @@ public class AddressTest {
     String streetName = "main";
     String streetAddress = streetNumber + " " + streetName;
     String city = "sacramento";
-    String state = "ca";
+    Integer state = 1828; // "ca";
     Integer zip = 12345;
     Short zipExtension = 9876;
     Integer zipCode = 123459876;
@@ -244,7 +244,7 @@ public class AddressTest {
     Integer zipCode = 12345;
 
     gov.ca.cwds.rest.api.domain.Address nsAddress = new gov.ca.cwds.rest.api.domain.Address(
-        "legacy_source_table", "legacy_id", " 1 main", "city", "state", zipCode, 32);
+        "legacy_source_table", "legacy_id", " 1 main", "city", 1828, zipCode, 32);
 
     Address cmsAddr = Address.createWithDefaults(nsAddress, new Short("5"));
     assertEquals("Expected zip field to contain 5 digits", zipCode, cmsAddr.getZip());
@@ -258,7 +258,7 @@ public class AddressTest {
     Integer zipCode = 1234532767;
 
     gov.ca.cwds.rest.api.domain.Address nsAddress = new gov.ca.cwds.rest.api.domain.Address(
-        "legacy_source_table", "legacy_id", " 1 main", "city", "state", zipCode, 32);
+        "legacy_source_table", "legacy_id", " 1 main", "city", 1828, zipCode, 32);
 
     Address cmsAddr = Address.createWithDefaults(nsAddress, new Short("5"));
     assertEquals("Expected zipExtension field to contain no digits", zipExtension,
@@ -271,7 +271,7 @@ public class AddressTest {
     Integer zipCode = 1234532767;
 
     gov.ca.cwds.rest.api.domain.Address nsAddress = new gov.ca.cwds.rest.api.domain.Address(
-        "legacy_source_table", "legacy_id", " 1 main", "city", "state", zipCode, 32);
+        "legacy_source_table", "legacy_id", " 1 main", "city", 1828, zipCode, 32);
 
     Address cmsAddr = Address.createWithDefaults(nsAddress, new Short("5"));
     assertEquals("Expected zip field to contain all the digits", zipCode, cmsAddr.getZip());
@@ -285,7 +285,7 @@ public class AddressTest {
     Integer zipCode = 1234532767;
 
     gov.ca.cwds.rest.api.domain.Address nsAddress = new gov.ca.cwds.rest.api.domain.Address(
-        "legacy_source_table", "legacy_id", "streetAddress", "city", "state", zipCode, 32);
+        "legacy_source_table", "legacy_id", "streetAddress", "city", 1828, zipCode, 32);
 
     Address cmsAddr = Address.createWithDefaults(nsAddress, new Short("5"));
   }
@@ -295,7 +295,7 @@ public class AddressTest {
     String streetAddress = "1 main";
 
     gov.ca.cwds.rest.api.domain.Address nsAddress = new gov.ca.cwds.rest.api.domain.Address(
-        "legacy_source_table", "legacy_id", streetAddress, "city", "state", 12345, 32);
+        "legacy_source_table", "legacy_id", streetAddress, "city", 1828, 12345, 32);
 
     Address address = Address.createWithDefaults(nsAddress, new Short("5"));
     assertEquals("Street Number not parsed from street address", "1", address.getStreetNumber());
@@ -306,7 +306,7 @@ public class AddressTest {
     String streetAddress = "1 main";
 
     gov.ca.cwds.rest.api.domain.Address nsAddress = new gov.ca.cwds.rest.api.domain.Address(
-        "legacy_source_table", "legacy_id", streetAddress, "city", "state", 12345, 32);
+        "legacy_source_table", "legacy_id", streetAddress, "city", 1828, 12345, 32);
 
     Address address = Address.createWithDefaults(nsAddress, new Short("5"));
     assertEquals("Street Number not parsed from street address", "main", address.getStreetName());
@@ -317,7 +317,7 @@ public class AddressTest {
     String streetAddress = "1 San Andreas Blvd";
 
     gov.ca.cwds.rest.api.domain.Address nsAddress = new gov.ca.cwds.rest.api.domain.Address(
-        "legacy_source_table", "legacy_id", streetAddress, "city", "state", 12345, 32);
+        "legacy_source_table", "legacy_id", streetAddress, "city", 1828, 12345, 32);
 
     Address address = Address.createWithDefaults(nsAddress, new Short("5"));
     assertEquals("Street Number not parsed from street address", "San Andreas Blvd",
@@ -329,7 +329,7 @@ public class AddressTest {
     String streetAddress = "Main St";
 
     gov.ca.cwds.rest.api.domain.Address nsAddress = new gov.ca.cwds.rest.api.domain.Address(
-        "legacy_source_table", "legacy_id", streetAddress, "city", "state", 12345, 32);
+        "legacy_source_table", "legacy_id", streetAddress, "city", 1828, 12345, 32);
 
     Address address = Address.createWithDefaults(nsAddress, new Short("5"));
     assertThat(address.getStreetNumber(), is(equalTo(null)));
@@ -340,7 +340,7 @@ public class AddressTest {
     String streetAddress = "Main St";
 
     gov.ca.cwds.rest.api.domain.Address nsAddress = new gov.ca.cwds.rest.api.domain.Address(
-        "legacy_source_table", "legacy_id", streetAddress, "city", "state", 12345, 32);
+        "legacy_source_table", "legacy_id", streetAddress, "city", 1828, 12345, 32);
 
     Address address = Address.createWithDefaults(nsAddress, new Short("5"));
     assertThat(address.getStreetName(), is(equalTo("Main St")));

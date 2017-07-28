@@ -10,7 +10,7 @@ public class AddressResourceBuilder {
   String legacyId = "";
   String streetAddress = "123 Main";
   String city = "Sacramento";
-  String state = "CA";
+  Integer state = 1828; // "CA";
   Integer zip = 95757;
   Integer type = 32;
 
@@ -54,7 +54,7 @@ public class AddressResourceBuilder {
    * @param state - state
    * @return the state
    */
-  public AddressResourceBuilder setState(String state) {
+  public AddressResourceBuilder setState(Integer state) {
     this.state = state;
     return this;
   }

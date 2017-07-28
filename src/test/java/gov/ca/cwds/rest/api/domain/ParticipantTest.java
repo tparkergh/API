@@ -94,7 +94,7 @@ public class ParticipantTest implements PersistentTestTemplate {
     MAPPER.configure(SerializationFeature.INDENT_OUTPUT, true);
     Participant validParticipant = this.validParticipant();
     roles.add("Victim");
-    Address address = new Address("", "", "123 First St", "San Jose", "CA", 94321, 32);
+    Address address = new Address("", "", "123 First St", "San Jose", 1828, 94321, 32);
     addresses.add(address);
     MAPPER.configure(SerializationFeature.INDENT_OUTPUT, true);
 

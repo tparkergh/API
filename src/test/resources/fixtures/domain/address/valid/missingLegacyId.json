@@ -2,7 +2,7 @@
   "legacy_source_table" : "CLIENT_T",
   "street_address": "123 Main",
   "city": "Sacramento",
-  "state": "CA",
+  "state": 1828,
   "zip": 95757,
   "type": 32
 }

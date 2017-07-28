@@ -15,7 +15,7 @@
 	  "legacy_id" : "",
     "street_address": "10 main st",
     "city": "Sacramento",
-    "state": "CA",
+    "state": 1828,
     "zip": 95814,
     "type": 32
   }

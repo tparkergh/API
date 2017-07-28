@@ -17,7 +17,7 @@
     "legacy_source_table" : "",
    "legacy_id" : "",
   			"street_address" : "123 First St",
-  			"state" : "CA",
+  			"state": 1828,
   			"city" : "San Jose",
   			"zip" : "94321",
   			"type": 32

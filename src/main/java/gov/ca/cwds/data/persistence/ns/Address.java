@@ -99,7 +99,7 @@ public class Address extends NsPersistentObject {
     super(lastUpdatedId, createUserId);
     this.streetAddress = address.getStreetAddress();
     this.city = address.getCity();
-    this.state = address.getState();
+    this.state = address.getState() != null ? address.getState().toString() : null;
     this.zip = address.getZip();
     this.type = address.getType() != null ? address.getType().toString() : null;
   }
