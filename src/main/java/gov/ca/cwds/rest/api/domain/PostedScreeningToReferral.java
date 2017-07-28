@@ -56,7 +56,7 @@ public class PostedScreeningToReferral extends ScreeningToReferral implements Re
    */
   public PostedScreeningToReferral(long id, String referralId, String legacySourceTable,
       @Date String endedAt, String incidentCounty, @Date String incidentDate, String locationType,
-      String communicationMethod, String name, String reportNarrative, String reference,
+      Short communicationMethod, String name, String reportNarrative, String reference,
       Short responseTime, @Date String startedAt, String assignee, String additionalInformation,
       String screeningDecision, String screeningDecisionDetail, Address address,
       Set<Participant> participants, Set<CrossReport> crossReports, Set<Allegation> allegations) {

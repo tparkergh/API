@@ -22,6 +22,7 @@ import gov.ca.cwds.data.persistence.cms.StaffPerson;
 import gov.ca.cwds.data.rules.TriggerTablesDao;
 import gov.ca.cwds.rest.api.Request;
 import gov.ca.cwds.rest.api.domain.cms.PostedClient;
+import gov.ca.cwds.rest.business.rules.ExternalInterfaceTables;
 import gov.ca.cwds.rest.business.rules.NonLACountyTriggers;
 import gov.ca.cwds.rest.business.rules.UpperCaseTables;
 import gov.ca.cwds.rest.services.CrudsService;
@@ -43,6 +44,7 @@ public class ClientService implements CrudsService {
   private StaffPersonIdRetriever staffPersonIdRetriever;
   private SsaName3Dao ssaname3Dao;
   private UpperCaseTables upperCaseTables;
+  private ExternalInterfaceTables externalInterfaceTables;
 
   /**
    * Constructor
@@ -58,12 +60,13 @@ public class ClientService implements CrudsService {
    * @param staffPersonIdRetriever the staffPersonIdRetriever
    * @param ssaname3Dao dao the stored procedure call
    * @param upperCaseTables the downstream tables
+   * @param externalInterfaceTables the external interface table
    */
   @Inject
   public ClientService(ClientDao clientDao, StaffPersonDao staffpersonDao,
       TriggerTablesDao triggerTablesDao, NonLACountyTriggers nonLaCountyTriggers,
       StaffPersonIdRetriever staffPersonIdRetriever, SsaName3Dao ssaname3Dao,
-      UpperCaseTables upperCaseTables) {
+      UpperCaseTables upperCaseTables, ExternalInterfaceTables externalInterfaceTables) {
     this.clientDao = clientDao;
     this.staffpersonDao = staffpersonDao;
     this.triggerTablesDao = triggerTablesDao;
@@ -71,6 +74,7 @@ public class ClientService implements CrudsService {
     this.staffPersonIdRetriever = staffPersonIdRetriever;
     this.ssaname3Dao = ssaname3Dao;
     this.upperCaseTables = upperCaseTables;
+    this.externalInterfaceTables = externalInterfaceTables;
   }
 
   /**
@@ -114,6 +118,7 @@ public class ClientService implements CrudsService {
     gov.ca.cwds.data.persistence.cms.Client persistedClient = clientDao.delete(primaryKey);
     if (persistedClient != null) {
       upperCaseTables.deleteClientUc(primaryKey);
+      externalInterfaceTables.createExtInterForDelete(primaryKey, "CLIENT_T");
       return new gov.ca.cwds.rest.api.domain.cms.Client(persistedClient, true);
     }
     return null;
@@ -173,6 +178,7 @@ public class ClientService implements CrudsService {
       }
       // ssaname3Dao.clientSsaname3("I", managed);
       upperCaseTables.createClientUc(managed);
+      externalInterfaceTables.createExtInterClient(managed, "N");
 
       return new PostedClient(managed, false);
     } catch (EntityExistsException e) {
@@ -204,6 +210,7 @@ public class ClientService implements CrudsService {
       managed = clientDao.update(managed);
       savedEntity = new gov.ca.cwds.rest.api.domain.cms.Client(managed, true);
       upperCaseTables.updateClientUc(managed);
+      externalInterfaceTables.createExtInterClient(managed, "C");
     } catch (EntityNotFoundException e) {
       savedEntity = null;
       LOGGER.info("client not found : {}", client);

@@ -34,6 +34,7 @@ import gov.ca.cwds.data.rules.TriggerTableException;
  */
 public class NonLACountyTriggers {
 
+  private static final String COUNTY_SPECIFIC_CODE_DEFAULT_CODE = "99";
   private static final String COUNTY_OWNERSHIP_UNABLE_TO_TRIGGER =
       "CountyOwnership Unable to Trigger : {}";
   private static final String CLIENT_ENTITY_CODE = "C";
@@ -140,8 +141,10 @@ public class NonLACountyTriggers {
       Boolean countyExists) {
     Method method = null;
     try {
-      method = countyOwnership.getClass().getMethod(methodName, String.class);
-      method.invoke(countyOwnership, SET_FLAG);
+      if (!methodName.equals(SET_COUNTY + COUNTY_SPECIFIC_CODE_DEFAULT_CODE + FLAG)) {
+        method = countyOwnership.getClass().getMethod(methodName, String.class);
+        method.invoke(countyOwnership, SET_FLAG);
+      }
     } catch (NoSuchMethodException | SecurityException | IllegalAccessException
         | IllegalArgumentException | InvocationTargetException e) {
       LOGGER.info(COUNTY_OWNERSHIP_UNABLE_TO_TRIGGER, countyOwnership);

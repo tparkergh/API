@@ -27,6 +27,7 @@ import gov.ca.cwds.rest.api.domain.ReportingDomain;
 import io.dropwizard.validation.OneOf;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
+import org.joda.time.DateTime;
 
 /**
  * {@link DomainObject} representing a Client
@@ -59,7 +60,7 @@ public class Client extends ReportingDomain implements Request, Response {
 
   @ApiModelProperty(required = false, readOnly = false, value = "Last Updated Time",
       example = "2004-03-31T09:45:58.000-0800")
-  private String lastUpdatedTime;
+  private DateTime lastUpdatedTime;
 
   @Size(max = CMS_ID_LEN)
   @ApiModelProperty(required = false, readOnly = false, value = "Client Id", example = "ABC1234567")
@@ -477,7 +478,7 @@ public class Client extends ReportingDomain implements Request, Response {
    */
   @JsonCreator
   public Client(@JsonProperty("existingClientId") String existingClientId,
-      @JsonProperty("lastUpdatedTime") String lastUpdatedTime,
+      @JsonProperty("lastUpdatedTime") DateTime lastUpdatedTime,
       @JsonProperty("adjudicatedDelinquentIndicator") Boolean adjudicatedDelinquentIndicator,
       @JsonProperty("adoptionStatusCode") String adoptionStatusCode,
       @JsonProperty("alienRegistrationNumber") String alienRegistrationNumber,
@@ -623,7 +624,7 @@ public class Client extends ReportingDomain implements Request, Response {
    */
   public Client(gov.ca.cwds.data.persistence.cms.Client persistedClient, boolean isExist) {
     this.clientId = isExist ? persistedClient.getId() : "";
-    this.lastUpdatedTime = DomainChef.cookTimestamp(persistedClient.getLastUpdatedTime());
+    this.lastUpdatedTime = new DateTime(persistedClient.getLastUpdatedTime());
     this.adjudicatedDelinquentIndicator =
         DomainChef.uncookBooleanString(persistedClient.getAdjudicatedDelinquentIndicator());
     this.adoptionStatusCode = persistedClient.getAdoptionStatusCode();
@@ -748,7 +749,7 @@ public class Client extends ReportingDomain implements Request, Response {
   /**
    * @return the id
    */
-  public String getLastUpdatedTime() {
+  public DateTime getLastUpdatedTime() {
     return lastUpdatedTime;
   }
 
@@ -1246,24 +1247,435 @@ public class Client extends ReportingDomain implements Request, Response {
   /**
    * {@inheritDoc}
    *
-   * @see java.lang.Object#hashCode()
+   * @see java.lang.Object#equals(java.lang.Object)
    */
   @Override
-  public final int hashCode() {
-    return HashCodeBuilder.reflectionHashCode(this, false);
+  final public boolean equals(Object other) {
+    if (!(other instanceof Client)) {
+      return false;
+    }
+    if (this == other) {
+      return true;
+    }
+    if (other == null ) {
+      return false;
+    }
+
+    Client client = (Client) other;
+
+    if (lastUpdatedTime != null  && client.lastUpdatedTime != null ? lastUpdatedTime.getMillis() != client.lastUpdatedTime.getMillis() : client.lastUpdatedTime != null
+       ) {
+      return false;
+    }
+    if (clientId != null ? !clientId.equals(client.clientId) : client.clientId != null) {
+      return false;
+    }
+    if (adjudicatedDelinquentIndicator != null ? !adjudicatedDelinquentIndicator
+        .equals(client.adjudicatedDelinquentIndicator)
+        : client.adjudicatedDelinquentIndicator != null) {
+      return false;
+    }
+    if (adoptionStatusCode != null ? !adoptionStatusCode.equals(client.adoptionStatusCode)
+        : client.adoptionStatusCode != null) {
+      return false;
+    }
+    if (alienRegistrationNumber != null ? !alienRegistrationNumber
+        .equals(client.alienRegistrationNumber) : client.alienRegistrationNumber != null) {
+      return false;
+    }
+    if (birthCity != null ? !birthCity.equals(client.birthCity) : client.birthCity != null) {
+      return false;
+    }
+    if (birthCountryCodeType != null ? !birthCountryCodeType.equals(client.birthCountryCodeType)
+        : client.birthCountryCodeType != null) {
+      return false;
+    }
+    if (birthDate != null ? !birthDate.equals(client.birthDate) : client.birthDate != null) {
+      return false;
+    }
+    if (birthFacilityName != null ? !birthFacilityName.equals(client.birthFacilityName)
+        : client.birthFacilityName != null) {
+      return false;
+    }
+    if (birthStateCodeType != null ? !birthStateCodeType.equals(client.birthStateCodeType)
+        : client.birthStateCodeType != null) {
+      return false;
+    }
+    if (birthplaceVerifiedIndicator != null ? !birthplaceVerifiedIndicator
+        .equals(client.birthplaceVerifiedIndicator) : client.birthplaceVerifiedIndicator != null) {
+      return false;
+    }
+    if (childClientIndicatorVar != null ? !childClientIndicatorVar
+        .equals(client.childClientIndicatorVar) : client.childClientIndicatorVar != null) {
+      return false;
+    }
+    if (clientIndexNumber != null ? !clientIndexNumber.equals(client.clientIndexNumber)
+        : client.clientIndexNumber != null) {
+      return false;
+    }
+    if (commentDescription != null ? !commentDescription.equals(client.commentDescription)
+        : client.commentDescription != null) {
+      return false;
+    }
+    if (commonFirstName != null ? !commonFirstName.equals(client.commonFirstName)
+        : client.commonFirstName != null) {
+      return false;
+    }
+    if (commonMiddleName != null ? !commonMiddleName.equals(client.commonMiddleName)
+        : client.commonMiddleName != null) {
+      return false;
+    }
+    if (commonLastName != null ? !commonLastName.equals(client.commonLastName)
+        : client.commonLastName != null) {
+      return false;
+    }
+    if (confidentialityActionDate != null ? !confidentialityActionDate
+        .equals(client.confidentialityActionDate) : client.confidentialityActionDate != null) {
+      return false;
+    }
+    if (confidentialityInEffectIndicator != null ? !confidentialityInEffectIndicator
+        .equals(client.confidentialityInEffectIndicator)
+        : client.confidentialityInEffectIndicator != null) {
+      return false;
+    }
+    if (creationDate != null ? !creationDate.equals(client.creationDate)
+        : client.creationDate != null) {
+      return false;
+    }
+    if (currCaChildrenServIndicator != null ? !currCaChildrenServIndicator
+        .equals(client.currCaChildrenServIndicator) : client.currCaChildrenServIndicator != null) {
+      return false;
+    }
+    if (currentlyOtherDescription != null ? !currentlyOtherDescription
+        .equals(client.currentlyOtherDescription) : client.currentlyOtherDescription != null) {
+      return false;
+    }
+    if (currentlyRegionalCenterIndicator != null ? !currentlyRegionalCenterIndicator
+        .equals(client.currentlyRegionalCenterIndicator)
+        : client.currentlyRegionalCenterIndicator != null) {
+      return false;
+    }
+    if (deathDate != null ? !deathDate.equals(client.deathDate) : client.deathDate != null) {
+      return false;
+    }
+    if (deathDateVerifiedIndicator != null ? !deathDateVerifiedIndicator
+        .equals(client.deathDateVerifiedIndicator) : client.deathDateVerifiedIndicator != null) {
+      return false;
+    }
+    if (deathPlace != null ? !deathPlace.equals(client.deathPlace) : client.deathPlace != null) {
+      return false;
+    }
+    if (deathReasonText != null ? !deathReasonText.equals(client.deathReasonText)
+        : client.deathReasonText != null) {
+      return false;
+    }
+    if (driverLicenseNumber != null ? !driverLicenseNumber.equals(client.driverLicenseNumber)
+        : client.driverLicenseNumber != null) {
+      return false;
+    }
+    if (driverLicenseStateCodeType != null ? !driverLicenseStateCodeType
+        .equals(client.driverLicenseStateCodeType) : client.driverLicenseStateCodeType != null) {
+      return false;
+    }
+    if (emailAddress != null ? !emailAddress.equals(client.emailAddress)
+        : client.emailAddress != null) {
+      return false;
+    }
+    if (estimatedDobCode != null ? !estimatedDobCode.equals(client.estimatedDobCode)
+        : client.estimatedDobCode != null) {
+      return false;
+    }
+    if (ethUnableToDetReasonCode != null ? !ethUnableToDetReasonCode
+        .equals(client.ethUnableToDetReasonCode) : client.ethUnableToDetReasonCode != null) {
+      return false;
+    }
+    if (fatherParentalRightTermDate != null ? !fatherParentalRightTermDate
+        .equals(client.fatherParentalRightTermDate) : client.fatherParentalRightTermDate != null) {
+      return false;
+    }
+    if (genderCode != null ? !genderCode.equals(client.genderCode) : client.genderCode != null) {
+      return false;
+    }
+    if (healthSummaryText != null ? !healthSummaryText.equals(client.healthSummaryText)
+        : client.healthSummaryText != null) {
+      return false;
+    }
+    if (hispUnableToDetReasonCode != null ? !hispUnableToDetReasonCode
+        .equals(client.hispUnableToDetReasonCode) : client.hispUnableToDetReasonCode != null) {
+      return false;
+    }
+    if (hispanicOriginCode != null ? !hispanicOriginCode.equals(client.hispanicOriginCode)
+        : client.hispanicOriginCode != null) {
+      return false;
+    }
+    if (immigrationCountryCodeType != null ? !immigrationCountryCodeType
+        .equals(client.immigrationCountryCodeType) : client.immigrationCountryCodeType != null) {
+      return false;
+    }
+    if (immigrationStatusType != null ? !immigrationStatusType.equals(client.immigrationStatusType)
+        : client.immigrationStatusType != null) {
+      return false;
+    }
+    if (incapacitatedParentCode != null ? !incapacitatedParentCode
+        .equals(client.incapacitatedParentCode) : client.incapacitatedParentCode != null) {
+      return false;
+    }
+    if (individualHealthCarePlanIndicator != null ? !individualHealthCarePlanIndicator
+        .equals(client.individualHealthCarePlanIndicator)
+        : client.individualHealthCarePlanIndicator != null) {
+      return false;
+    }
+    if (limitationOnScpHealthIndicator != null ? !limitationOnScpHealthIndicator
+        .equals(client.limitationOnScpHealthIndicator)
+        : client.limitationOnScpHealthIndicator != null) {
+      return false;
+    }
+    if (literateCode != null ? !literateCode.equals(client.literateCode)
+        : client.literateCode != null) {
+      return false;
+    }
+    if (maritalCohabitatnHstryIndicatorVar != null ? !maritalCohabitatnHstryIndicatorVar
+        .equals(client.maritalCohabitatnHstryIndicatorVar)
+        : client.maritalCohabitatnHstryIndicatorVar != null) {
+      return false;
+    }
+    if (maritalStatusType != null ? !maritalStatusType.equals(client.maritalStatusType)
+        : client.maritalStatusType != null) {
+      return false;
+    }
+    if (militaryStatusCode != null ? !militaryStatusCode.equals(client.militaryStatusCode)
+        : client.militaryStatusCode != null) {
+      return false;
+    }
+    if (motherParentalRightTermDate != null ? !motherParentalRightTermDate
+        .equals(client.motherParentalRightTermDate) : client.motherParentalRightTermDate != null) {
+      return false;
+    }
+    if (namePrefixDescription != null ? !namePrefixDescription.equals(client.namePrefixDescription)
+        : client.namePrefixDescription != null) {
+      return false;
+    }
+    if (nameType != null ? !nameType.equals(client.nameType) : client.nameType != null) {
+      return false;
+    }
+    if (outstandingWarrantIndicator != null ? !outstandingWarrantIndicator
+        .equals(client.outstandingWarrantIndicator) : client.outstandingWarrantIndicator != null) {
+      return false;
+    }
+    if (prevCaChildrenServIndicator != null ? !prevCaChildrenServIndicator
+        .equals(client.prevCaChildrenServIndicator) : client.prevCaChildrenServIndicator != null) {
+      return false;
+    }
+    if (prevOtherDescription != null ? !prevOtherDescription.equals(client.prevOtherDescription)
+        : client.prevOtherDescription != null) {
+      return false;
+    }
+    if (prevRegionalCenterIndicator != null ? !prevRegionalCenterIndicator
+        .equals(client.prevRegionalCenterIndicator) : client.prevRegionalCenterIndicator != null) {
+      return false;
+    }
+    if (primaryEthnicityType != null ? !primaryEthnicityType.equals(client.primaryEthnicityType)
+        : client.primaryEthnicityType != null) {
+      return false;
+    }
+    if (primaryLanguageType != null ? !primaryLanguageType.equals(client.primaryLanguageType)
+        : client.primaryLanguageType != null) {
+      return false;
+    }
+    if (religionType != null ? !religionType.equals(client.religionType)
+        : client.religionType != null) {
+      return false;
+    }
+    if (secondaryLanguageType != null ? !secondaryLanguageType.equals(client.secondaryLanguageType)
+        : client.secondaryLanguageType != null) {
+      return false;
+    }
+    if (sensitiveHlthInfoOnFileIndicator != null ? !sensitiveHlthInfoOnFileIndicator
+        .equals(client.sensitiveHlthInfoOnFileIndicator)
+        : client.sensitiveHlthInfoOnFileIndicator != null) {
+      return false;
+    }
+    if (sensitivityIndicator != null ? !sensitivityIndicator.equals(client.sensitivityIndicator)
+        : client.sensitivityIndicator != null) {
+      return false;
+    }
+    if (soc158PlacementCode != null ? !soc158PlacementCode.equals(client.soc158PlacementCode)
+        : client.soc158PlacementCode != null) {
+      return false;
+    }
+    if (soc158SealedClientIndicator != null ? !soc158SealedClientIndicator
+        .equals(client.soc158SealedClientIndicator) : client.soc158SealedClientIndicator != null) {
+      return false;
+    }
+    if (socialSecurityNumChangedCode != null ? !socialSecurityNumChangedCode
+        .equals(client.socialSecurityNumChangedCode)
+        : client.socialSecurityNumChangedCode != null) {
+      return false;
+    }
+    if (socialSecurityNumber != null ? !socialSecurityNumber.equals(client.socialSecurityNumber)
+        : client.socialSecurityNumber != null) {
+      return false;
+    }
+    if (suffixTitleDescription != null ? !suffixTitleDescription
+        .equals(client.suffixTitleDescription)
+        : client.suffixTitleDescription != null) {
+      return false;
+    }
+    if (tribalAncestryClientIndicatorVar != null ? !tribalAncestryClientIndicatorVar
+        .equals(client.tribalAncestryClientIndicatorVar)
+        : client.tribalAncestryClientIndicatorVar != null) {
+      return false;
+    }
+    if (tribalMembrshpVerifctnIndicatorVar != null ? !tribalMembrshpVerifctnIndicatorVar
+        .equals(client.tribalMembrshpVerifctnIndicatorVar)
+        : client.tribalMembrshpVerifctnIndicatorVar != null) {
+      return false;
+    }
+    if (unemployedParentCode != null ? !unemployedParentCode.equals(client.unemployedParentCode)
+        : client.unemployedParentCode != null) {
+      return false;
+    }
+    if (zippyCreatedIndicator != null ? !zippyCreatedIndicator.equals(client.zippyCreatedIndicator)
+        : client.zippyCreatedIndicator != null) {
+      return false;
+    }
+    return !(address != null ? !address.equals(client.address) : client.address != null);
+
   }
 
   /**
    * {@inheritDoc}
    *
-   * @see java.lang.Object#equals(java.lang.Object)
+   * @see java.lang.Object#hashCode()
    */
   @Override
-  public final boolean equals(Object obj) {
-    return EqualsBuilder.reflectionEquals(this, obj, false);
+  final public int hashCode() {
+    int result = lastUpdatedTime != null ? Long.hashCode(lastUpdatedTime.getMillis()) : 0;
+    result = 31 * result + (clientId != null ? clientId.hashCode() : 0);
+    result = 31 * result + (adjudicatedDelinquentIndicator != null ? adjudicatedDelinquentIndicator
+        .hashCode() : 0);
+    result = 31 * result + (adoptionStatusCode != null ? adoptionStatusCode.hashCode() : 0);
+    result =
+        31 * result + (alienRegistrationNumber != null ? alienRegistrationNumber.hashCode() : 0);
+    result = 31 * result + (birthCity != null ? birthCity.hashCode() : 0);
+    result = 31 * result + (birthCountryCodeType != null ? birthCountryCodeType.hashCode() : 0);
+    result = 31 * result + (birthDate != null ? birthDate.hashCode() : 0);
+    result = 31 * result + (birthFacilityName != null ? birthFacilityName.hashCode() : 0);
+    result = 31 * result + (birthStateCodeType != null ? birthStateCodeType.hashCode() : 0);
+    result =
+        31 * result + (birthplaceVerifiedIndicator != null ? birthplaceVerifiedIndicator.hashCode()
+            : 0);
+    result =
+        31 * result + (childClientIndicatorVar != null ? childClientIndicatorVar.hashCode() : 0);
+    result = 31 * result + (clientIndexNumber != null ? clientIndexNumber.hashCode() : 0);
+    result = 31 * result + (commentDescription != null ? commentDescription.hashCode() : 0);
+    result = 31 * result + (commonFirstName != null ? commonFirstName.hashCode() : 0);
+    result = 31 * result + (commonMiddleName != null ? commonMiddleName.hashCode() : 0);
+    result = 31 * result + (commonLastName != null ? commonLastName.hashCode() : 0);
+    result =
+        31 * result + (confidentialityActionDate != null ? confidentialityActionDate.hashCode()
+            : 0);
+    result =
+        31 * result + (confidentialityInEffectIndicator != null ? confidentialityInEffectIndicator
+            .hashCode() : 0);
+    result = 31 * result + (creationDate != null ? creationDate.hashCode() : 0);
+    result =
+        31 * result + (currCaChildrenServIndicator != null ? currCaChildrenServIndicator.hashCode()
+            : 0);
+    result =
+        31 * result + (currentlyOtherDescription != null ? currentlyOtherDescription.hashCode()
+            : 0);
+    result =
+        31 * result + (currentlyRegionalCenterIndicator != null ? currentlyRegionalCenterIndicator
+            .hashCode() : 0);
+    result = 31 * result + (deathDate != null ? deathDate.hashCode() : 0);
+    result =
+        31 * result + (deathDateVerifiedIndicator != null ? deathDateVerifiedIndicator.hashCode()
+            : 0);
+    result = 31 * result + (deathPlace != null ? deathPlace.hashCode() : 0);
+    result = 31 * result + (deathReasonText != null ? deathReasonText.hashCode() : 0);
+    result = 31 * result + (driverLicenseNumber != null ? driverLicenseNumber.hashCode() : 0);
+    result =
+        31 * result + (driverLicenseStateCodeType != null ? driverLicenseStateCodeType.hashCode()
+            : 0);
+    result = 31 * result + (emailAddress != null ? emailAddress.hashCode() : 0);
+    result = 31 * result + (estimatedDobCode != null ? estimatedDobCode.hashCode() : 0);
+    result =
+        31 * result + (ethUnableToDetReasonCode != null ? ethUnableToDetReasonCode.hashCode() : 0);
+    result =
+        31 * result + (fatherParentalRightTermDate != null ? fatherParentalRightTermDate.hashCode()
+            : 0);
+    result = 31 * result + (genderCode != null ? genderCode.hashCode() : 0);
+    result = 31 * result + (healthSummaryText != null ? healthSummaryText.hashCode() : 0);
+    result =
+        31 * result + (hispUnableToDetReasonCode != null ? hispUnableToDetReasonCode.hashCode()
+            : 0);
+    result = 31 * result + (hispanicOriginCode != null ? hispanicOriginCode.hashCode() : 0);
+    result =
+        31 * result + (immigrationCountryCodeType != null ? immigrationCountryCodeType.hashCode()
+            : 0);
+    result = 31 * result + (immigrationStatusType != null ? immigrationStatusType.hashCode() : 0);
+    result =
+        31 * result + (incapacitatedParentCode != null ? incapacitatedParentCode.hashCode() : 0);
+    result =
+        31 * result + (individualHealthCarePlanIndicator != null ? individualHealthCarePlanIndicator
+            .hashCode() : 0);
+    result = 31 * result + (limitationOnScpHealthIndicator != null ? limitationOnScpHealthIndicator
+        .hashCode() : 0);
+    result = 31 * result + (literateCode != null ? literateCode.hashCode() : 0);
+    result =
+        31 * result + (maritalCohabitatnHstryIndicatorVar != null
+            ? maritalCohabitatnHstryIndicatorVar
+            .hashCode() : 0);
+    result = 31 * result + (maritalStatusType != null ? maritalStatusType.hashCode() : 0);
+    result = 31 * result + (militaryStatusCode != null ? militaryStatusCode.hashCode() : 0);
+    result =
+        31 * result + (motherParentalRightTermDate != null ? motherParentalRightTermDate.hashCode()
+            : 0);
+    result = 31 * result + (namePrefixDescription != null ? namePrefixDescription.hashCode() : 0);
+    result = 31 * result + (nameType != null ? nameType.hashCode() : 0);
+    result =
+        31 * result + (outstandingWarrantIndicator != null ? outstandingWarrantIndicator.hashCode()
+            : 0);
+    result =
+        31 * result + (prevCaChildrenServIndicator != null ? prevCaChildrenServIndicator.hashCode()
+            : 0);
+    result = 31 * result + (prevOtherDescription != null ? prevOtherDescription.hashCode() : 0);
+    result =
+        31 * result + (prevRegionalCenterIndicator != null ? prevRegionalCenterIndicator.hashCode()
+            : 0);
+    result = 31 * result + (primaryEthnicityType != null ? primaryEthnicityType.hashCode() : 0);
+    result = 31 * result + (primaryLanguageType != null ? primaryLanguageType.hashCode() : 0);
+    result = 31 * result + (religionType != null ? religionType.hashCode() : 0);
+    result = 31 * result + (secondaryLanguageType != null ? secondaryLanguageType.hashCode() : 0);
+    result =
+        31 * result + (sensitiveHlthInfoOnFileIndicator != null ? sensitiveHlthInfoOnFileIndicator
+            .hashCode() : 0);
+    result = 31 * result + (sensitivityIndicator != null ? sensitivityIndicator.hashCode() : 0);
+    result = 31 * result + (soc158PlacementCode != null ? soc158PlacementCode.hashCode() : 0);
+    result =
+        31 * result + (soc158SealedClientIndicator != null ? soc158SealedClientIndicator.hashCode()
+            : 0);
+    result =
+        31 * result + (socialSecurityNumChangedCode != null ? socialSecurityNumChangedCode
+            .hashCode()
+            : 0);
+    result = 31 * result + (socialSecurityNumber != null ? socialSecurityNumber.hashCode() : 0);
+    result = 31 * result + (suffixTitleDescription != null ? suffixTitleDescription.hashCode() : 0);
+    result =
+        31 * result + (tribalAncestryClientIndicatorVar != null ? tribalAncestryClientIndicatorVar
+            .hashCode() : 0);
+    result =
+        31 * result + (tribalMembrshpVerifctnIndicatorVar != null
+            ? tribalMembrshpVerifctnIndicatorVar
+            .hashCode() : 0);
+    result = 31 * result + (unemployedParentCode != null ? unemployedParentCode.hashCode() : 0);
+    result = 31 * result + (zippyCreatedIndicator != null ? zippyCreatedIndicator.hashCode() : 0);
+    result = 31 * result + (address != null ? address.hashCode() : 0);
+    return result;
   }
 
-  public boolean hasSameLastUpdate(Client otherClient) {
+ public boolean hasSameLastUpdate(Client otherClient) {
     return this.lastUpdatedTime.equals(otherClient.lastUpdatedTime);
   }
 

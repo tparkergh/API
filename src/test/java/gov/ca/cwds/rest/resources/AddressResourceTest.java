@@ -96,12 +96,6 @@ public class AddressResourceTest {
 
   }
 
-  @SuppressWarnings("javadoc")
-  public void testGet501NotImplemented() throws Exception {
-    // get implemented
-
-  }
-
   /*
    * Create Tests
    */
@@ -128,12 +122,6 @@ public class AddressResourceTest {
   }
 
   @SuppressWarnings("javadoc")
-  public void testPost409AlreadyExistsError() throws Exception {
-    //
-
-  }
-
-  @SuppressWarnings("javadoc")
   @Test
   public void testPost200ResourceSuccess() throws Exception {
     Address address =
@@ -143,13 +131,6 @@ public class AddressResourceTest {
             .post(Entity.entity(address, MediaType.APPLICATION_JSON)).getStatus();
     assertThat(status, is(204));
 
-
-  }
-
-
-  @SuppressWarnings("javadoc")
-  public void testPost501NotImplemented() throws Exception {
-    // post is implemented
 
   }
 
@@ -166,25 +147,6 @@ public class AddressResourceTest {
 
   }
 
-  @SuppressWarnings("javadoc")
-  public void testDelete200ResourceSuccess() throws Exception {
-    // delete not implemented
-  }
-
-  @SuppressWarnings("javadoc")
-  public void testDelete404NotFoundError() throws Exception {
-    // delete not implemented
-
-  }
-
-
-
-  @SuppressWarnings("javadoc")
-  @Test
-  public void testDeleteDelegatesToResource() throws Exception {
-    // delete not implemented
-  }
-
   /*
    * Update Tests
    */
@@ -197,50 +159,6 @@ public class AddressResourceTest {
         inMemoryResource.client().target(ROOT_RESOURCE).request().accept(MediaType.APPLICATION_JSON)
             .put(Entity.entity(address, MediaType.APPLICATION_JSON)).getStatus();
     assertThat(status, is(501));
-  }
-
-
-  @SuppressWarnings("javadoc")
-  public void testUpdateDelegatesToResourceDelegate() throws Exception {
-    // update not implemented
-
-  }
-
-  @SuppressWarnings("javadoc")
-  public void testUpdate200ResourceSuccess() throws Exception {
-    // update not implemented
-
-  }
-
-  @SuppressWarnings("javadoc")
-  public void testUpdate400JSONError() throws Exception {
-    // update not implemented
-
-  }
-
-  @SuppressWarnings("javadoc")
-  public void testUpdate404NotFoundError() throws Exception {
-    // update not implemented
-
-  }
-
-  @SuppressWarnings("javadoc")
-  public void testUpdate406NotSupportedError() throws Exception {
-    // update not implemented
-
-
-  }
-
-  @SuppressWarnings("javadoc")
-  public void testUpdate422ValidationError() throws Exception {
-    // update not implemented
-
-  }
-
-  @SuppressWarnings("javadoc")
-  public void testGet201ResourceSuccess() throws Exception {
-    // update not implemented
-
   }
 
 }

@@ -24,16 +24,20 @@ import org.junit.Test;
 
 import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.databind.JsonMappingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
-import gov.ca.cwds.data.junit.template.DaoTestTemplate;
 import gov.ca.cwds.data.persistence.cms.Allegation;
 import gov.ca.cwds.rest.api.domain.DomainChef;
+import io.dropwizard.jackson.Jackson;
 
 /**
  * 
  * @author CWDS API Team
  */
-public class AllegationDaoIT implements DaoTestTemplate {
+@SuppressWarnings("javadoc")
+public class AllegationDaoIT {
+
+  static final ObjectMapper MAPPER = Jackson.newObjectMapper();
 
   private static SessionFactory sessionFactory;
   private static AllegationDao allegationDao;
@@ -67,14 +71,12 @@ public class AllegationDaoIT implements DaoTestTemplate {
     sessionFactory.close();
   }
 
-  @Override
   @Before
   public void setup() {
     session = sessionFactory.getCurrentSession();
     session.beginTransaction();
   }
 
-  @Override
   @After
   public void teardown() {
     session.getTransaction().rollback();
@@ -83,14 +85,12 @@ public class AllegationDaoIT implements DaoTestTemplate {
   /**
    * Find JUnit test
    */
-  @Override
   @Test
   public void testFind() throws Exception {
     Allegation found = allegationDao.find(id);
     assertThat(found.getId(), is(equalTo(id)));
   }
 
-  @Override
   @Test
   public void testFindEntityNotFoundException() throws Exception {
     Allegation found = allegationDao.find("9999999ZZZ");
@@ -100,7 +100,6 @@ public class AllegationDaoIT implements DaoTestTemplate {
   /**
    * Create JUnit test
    */
-  @Override
   @Test
   public void testCreate() throws Exception {
 
@@ -123,11 +122,9 @@ public class AllegationDaoIT implements DaoTestTemplate {
     assertThat(allegation, is(create));
   }
 
-  @Override
-  @Test
+  @Test(expected = EntityExistsException.class)
   public void testCreateExistingEntityException() throws Exception {
 
-    thrown.expect(EntityExistsException.class);
     gov.ca.cwds.rest.api.domain.cms.Allegation vda = validDomainAllegation();
 
     Allegation allegation = new Allegation(id, DomainChef.uncookDateString(vda.getAbuseEndDate()),
@@ -148,21 +145,21 @@ public class AllegationDaoIT implements DaoTestTemplate {
   /**
    * Delete JUnit test
    */
-  @Override
   @Test
   public void testDelete() throws Exception {
     Allegation deleted = allegationDao.delete(id);
     assertThat(deleted.getId(), is(id));
   }
 
-  @Override
   @Test
   public void testDeleteEntityNotFoundException() throws Exception {
     Allegation deleted = allegationDao.delete("9999999ZZZ");
     assertThat(deleted, is(nullValue()));
   }
 
-  @Override
+  /**
+   * Update JUnit test
+   */
   @Test
   public void testUpdate() throws Exception {
 
@@ -184,11 +181,9 @@ public class AllegationDaoIT implements DaoTestTemplate {
     assertThat(allegation, is(updated));
   }
 
-  @Override
-  @Test
+  @Test(expected = EntityNotFoundException.class)
   public void testUpdateEntityNotFoundException() throws Exception {
 
-    thrown.expect(EntityNotFoundException.class);
     gov.ca.cwds.rest.api.domain.cms.Allegation vda = validDomainAllegation();
 
     Allegation allegation =
@@ -205,19 +200,6 @@ public class AllegationDaoIT implements DaoTestTemplate {
             null, null);
 
     allegationDao.update(allegation);
-  }
-
-  /*
-   * Named Query JUnit test
-   */
-  @Override
-  public void testFindAllNamedQueryExist() throws Exception {
-
-  }
-
-  @Override
-  public void testFindAllReturnsCorrectList() throws Exception {
-
   }
 
   private gov.ca.cwds.rest.api.domain.cms.Allegation validDomainAllegation()

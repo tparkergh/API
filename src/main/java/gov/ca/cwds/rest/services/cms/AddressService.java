@@ -1,8 +1,5 @@
 package gov.ca.cwds.rest.services.cms;
 
-import gov.ca.cwds.rest.api.domain.ScreeningToReferral;
-import gov.ca.cwds.rest.messages.MessageBuilder;
-import gov.ca.cwds.rest.services.LegacyDefaultValues;
 import java.io.Serializable;
 import java.util.Date;
 
@@ -21,9 +18,12 @@ import gov.ca.cwds.data.persistence.cms.Address;
 import gov.ca.cwds.data.persistence.cms.CmsKeyIdGenerator;
 import gov.ca.cwds.rest.api.Request;
 import gov.ca.cwds.rest.api.Response;
+import gov.ca.cwds.rest.api.domain.ScreeningToReferral;
 import gov.ca.cwds.rest.api.domain.cms.PostedAddress;
 import gov.ca.cwds.rest.business.rules.UpperCaseTables;
+import gov.ca.cwds.rest.messages.MessageBuilder;
 import gov.ca.cwds.rest.services.CrudsService;
+import gov.ca.cwds.rest.services.LegacyDefaultValues;
 import gov.ca.cwds.rest.services.ServiceException;
 
 
@@ -41,7 +41,8 @@ public class AddressService implements CrudsService {
 
   private Validator validator;
 
-    LegacyDefaultValues legacyDefaultValues = new LegacyDefaultValues();
+  LegacyDefaultValues legacyDefaultValues = new LegacyDefaultValues();
+
   /**
    * 
    * @param addressDao the address DAO
@@ -116,8 +117,15 @@ public class AddressService implements CrudsService {
     }
   }
 
-  public gov.ca.cwds.rest.api.domain.Address createAddressFromScreening(ScreeningToReferral scr, Date timestamp, MessageBuilder messageBuilder){
-        gov.ca.cwds.rest.api.domain.Address address = scr.getAddress();
+  /**
+   * @param scr - scr
+   * @param timestamp - timestamp
+   * @param messageBuilder - messageBuilder
+   * @return the AddressFromScreening
+   */
+  public gov.ca.cwds.rest.api.domain.Address createAddressFromScreening(ScreeningToReferral scr,
+      Date timestamp, MessageBuilder messageBuilder) {
+    gov.ca.cwds.rest.api.domain.Address address = scr.getAddress();
     if (address == null || address.getZip() == null || address.getStreetAddress() == null
         || address.getStreetAddress().isEmpty() || address.getType() == null) {
       String message = "Screening address is null or empty";
@@ -126,8 +134,9 @@ public class AddressService implements CrudsService {
     }
 
     try {
-      gov.ca.cwds.rest.api.domain.cms.Address domainAddress = gov.ca.cwds.rest.api.domain.cms.Address
-          .createWithDefaults(address, legacyDefaultValues.DEFAULT_STATE_CODE);
+      gov.ca.cwds.rest.api.domain.cms.Address domainAddress =
+          gov.ca.cwds.rest.api.domain.cms.Address.createWithDefaults(address,
+              LegacyDefaultValues.DEFAULT_STATE_CODE);
 
       messageBuilder.addDomainValidationError(validator.validate(domainAddress));
 

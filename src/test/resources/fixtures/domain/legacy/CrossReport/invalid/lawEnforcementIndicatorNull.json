@@ -11,7 +11,7 @@
   "recipientPositionTitleDesc": "ABC23",
   "referenceNumber": "DE123",
   "referralId": "1234567ABC",
-  "lawEnforcementId": "1234567ABC",
+  "lawEnforcementId": null,
   "staffPersonId": "q1p",
   "description": "ABC DESC",
   "recipientName": "JOHN",

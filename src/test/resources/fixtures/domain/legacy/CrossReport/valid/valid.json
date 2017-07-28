@@ -19,5 +19,5 @@
   "countySpecificCode": "AB",
   "lawEnforcementIndicator": false,
   "outStateLawEnforcementIndicator": false,
-  "satisfyCrossReportIndicator": false
+  "satisfyCrossReportIndicator": true
 }
