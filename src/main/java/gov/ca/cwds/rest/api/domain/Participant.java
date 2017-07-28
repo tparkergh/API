@@ -22,6 +22,8 @@ import gov.ca.cwds.rest.validation.ParticipantValidator;
 import io.dropwizard.jackson.JsonSnakeCase;
 import io.dropwizard.validation.OneOf;
 import io.swagger.annotations.ApiModelProperty;
+import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
 
 /**
  * {@link DomainObject} representing a Participant.
@@ -409,6 +411,8 @@ public class Participant extends ReportingDomain implements Request, Response {
     result = prime * result + ((middleName == null) ? 0 : middleName.hashCode());
     result = prime * result + ((lastName == null) ? 0 : lastName.hashCode());
     result = prime * result + ((nameSuffix == null) ? 0 : nameSuffix.hashCode());
+    result = prime * result + ((primaryLanguage == null) ? 0 : primaryLanguage.hashCode());
+    result = prime * result + ((secondaryLanguage == null) ? 0 : secondaryLanguage.hashCode());
     result = prime * result + ((legacyId == null) ? 0 : legacyId.hashCode());
     result = prime * result + ((legacySourceTable == null) ? 0 : legacySourceTable.hashCode());
     result = prime * result + ((legacyDescriptor == null) ? 0 : legacyDescriptor.hashCode());
@@ -468,6 +472,16 @@ public class Participant extends ReportingDomain implements Request, Response {
       if (other.nameSuffix != null)
         return false;
     } else if (!nameSuffix.equals(other.nameSuffix))
+      return false;
+    if (primaryLanguage == null) {
+      if (other.primaryLanguage != null)
+        return false;
+    } else if (!primaryLanguage.equals(other.primaryLanguage))
+      return false;
+    if (secondaryLanguage == null) {
+      if (other.secondaryLanguage != null)
+        return false;
+    } else if (!secondaryLanguage.equals(other.secondaryLanguage))
       return false;
     if (legacyId == null) {
       if (other.legacyId != null)
