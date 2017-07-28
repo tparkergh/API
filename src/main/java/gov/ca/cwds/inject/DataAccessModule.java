@@ -283,19 +283,20 @@ public class DataAccessModule extends AbstractModule {
    * Register referential integrity checks.
    */
   protected void registerReferentialIntegrityHandlers() {
+
     ApiHibernateInterceptor.addHandler(ClientRelationship.class, e -> {
       LOGGER.warn("handle ClientRelationship");
-      // return true;
+      // raise exception on FK error.
     });
 
     ApiHibernateInterceptor.addHandler(ClientAddress.class, e -> {
       LOGGER.warn("handle ClientAddress");
-      // return true;
+      // raise exception on FK error.
     });
 
     ApiHibernateInterceptor.addHandler(SystemMeta.class, e -> {
       LOGGER.warn("handle SystemMeta");
-      // return true;
+      // raise exception on FK error.
     });
 
   }

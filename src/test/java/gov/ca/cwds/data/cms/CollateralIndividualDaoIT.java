@@ -107,6 +107,8 @@ public class CollateralIndividualDaoIT {
 
   /**
    * Find JUnit test
+   * 
+   * @throws Exception test general
    */
   @Test
   public void testFind() throws Exception {
@@ -122,6 +124,8 @@ public class CollateralIndividualDaoIT {
 
   /**
    * Create JUnit test
+   * 
+   * @throws Exception test general
    */
   @Test
   public void testCreate() throws Exception {
@@ -153,6 +157,8 @@ public class CollateralIndividualDaoIT {
 
   /**
    * Delete JUnit test
+   * 
+   * @throws Exception test general
    */
   @Test
   public void testDelete() throws Exception {
@@ -168,6 +174,8 @@ public class CollateralIndividualDaoIT {
 
   /**
    * Update JUnit test
+   * 
+   * @throws Exception test general
    */
   @Test
   public void testUpdate() throws Exception {

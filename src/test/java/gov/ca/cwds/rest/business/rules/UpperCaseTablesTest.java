@@ -44,9 +44,6 @@ public class UpperCaseTablesTest {
   @Rule
   public ExpectedException thrown = ExpectedException.none();
 
-  /**
-   * @throws Exception
-   */
   @Before
   public void setup() throws Exception {
     clientUcDao = mock(ClientUcDao.class);
