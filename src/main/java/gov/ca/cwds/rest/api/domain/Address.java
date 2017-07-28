@@ -108,7 +108,7 @@ public class Address extends ReportingDomain implements Request, Response {
     this.city = address.getCity();
     this.state = address.getState();
     this.zip = address.getZip();
-    this.type = address.getType();
+    this.type = address.getType() != null ? Integer.valueOf(address.getType()) : null;
 
   }
 

@@ -15,7 +15,6 @@ import javax.persistence.Table;
 
 import org.hibernate.annotations.NamedQueries;
 import org.hibernate.annotations.NamedQuery;
-import org.hibernate.annotations.Type;
 
 import gov.ca.cwds.data.ns.NsPersistentObject;
 
@@ -53,8 +52,7 @@ public class Address extends NsPersistentObject {
   private Integer zip;
 
   @Column(name = "address_type_id")
-  @Type(type = "int")
-  private Integer type;
+  private String type;
 
   @OneToMany(fetch = FetchType.EAGER, mappedBy = "personAddressId.address")
   private Set<PersonAddress> personAddress = new HashSet<>();
@@ -79,7 +77,7 @@ public class Address extends NsPersistentObject {
    * @param type - address type
    */
   public Address(Long id, String streetAddress, String city, String state, Integer zip,
-      Integer type) {
+      String type) {
     super();
     this.id = id;
     this.streetAddress = streetAddress;
@@ -103,7 +101,7 @@ public class Address extends NsPersistentObject {
     this.city = address.getCity();
     this.state = address.getState();
     this.zip = address.getZip();
-    this.type = address.getType();
+    this.type = address.getType() != null ? address.getType().toString() : null;
   }
 
   /**
@@ -154,7 +152,7 @@ public class Address extends NsPersistentObject {
   /**
    * @return the address type
    */
-  public Integer getType() {
+  public String getType() {
     return type;
   }
 
