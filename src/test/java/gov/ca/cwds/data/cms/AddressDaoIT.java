@@ -75,6 +75,8 @@ public class AddressDaoIT {
 
   /**
    * Find JUnit test
+   * 
+   * @throws Exception test general
    */
   @Test
   public void testFind() throws Exception {
@@ -135,6 +137,8 @@ public class AddressDaoIT {
 
   /**
    * Delete JUnit test
+   * 
+   * @throws Exception test general
    */
   @Test
   public void testDelete() throws Exception {
