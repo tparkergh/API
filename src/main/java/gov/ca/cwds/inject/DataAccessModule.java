@@ -1,6 +1,8 @@
 package gov.ca.cwds.inject;
 
 import java.net.InetAddress;
+import java.util.HashMap;
+import java.util.Map;
 
 import org.elasticsearch.client.Client;
 import org.elasticsearch.client.transport.TransportClient;
@@ -14,6 +16,7 @@ import org.slf4j.LoggerFactory;
 import com.google.common.collect.ImmutableList;
 import com.google.inject.AbstractModule;
 import com.google.inject.Provides;
+import com.google.inject.name.Named;
 
 import gov.ca.cwds.data.ApiHibernateInterceptor;
 import gov.ca.cwds.data.cms.AddressUcDao;
@@ -124,6 +127,7 @@ import gov.ca.cwds.rest.api.ApiException;
 import gov.ca.cwds.rest.business.rules.LACountyTrigger;
 import gov.ca.cwds.rest.business.rules.NonLACountyTriggers;
 import gov.ca.cwds.rest.business.rules.Reminders;
+import gov.ca.cwds.rest.services.cms.RIClientCollateral;
 import io.dropwizard.db.DataSourceFactory;
 import io.dropwizard.hibernate.HibernateBundle;
 import io.dropwizard.setup.Bootstrap;
@@ -137,7 +141,7 @@ public class DataAccessModule extends AbstractModule {
 
   private static final Logger LOGGER = LoggerFactory.getLogger(DataAccessModule.class);
 
-  private Client client;
+  private Map<String, Client> clients;
 
   private final HibernateBundle<ApiConfiguration> cmsHibernateBundle =
       new HibernateBundle<ApiConfiguration>(ImmutableList.<Class<?>>of(
@@ -155,7 +159,7 @@ public class DataAccessModule extends AbstractModule {
           BaseAssignment.class, ReferralAssignment.class, CaseAssignment.class, CmsCase.class,
           Tickle.class, ClientRelationship.class, ClientCollateral.class, AddressUc.class),
 
-          new ApiSessionFactoryFactory()) { // Hibernate interceptor
+          new ApiSessionFactoryFactory()) {
 
         @Override
         public DataSourceFactory getDataSourceFactory(ApiConfiguration configuration) {
@@ -265,22 +269,34 @@ public class DataAccessModule extends AbstractModule {
     bind(Reminders.class);
 
     // Miscellaneous:
-    bind(ElasticsearchDao.class);
     bind(SmartyStreetsDao.class);
 
     // System code loader DAO.
     bind(ApiSystemCodeDao.class).to(SystemCodeDaoFileImpl.class);
 
-    ApiHibernateInterceptor.addCommitHandler(ClientRelationship.class, e -> {
+    // Referential integrity.
+    bind(RIClientCollateral.class);
+    registerReferentialIntegrityHandlers();
+  }
+
+  /**
+   * Register referential integrity checks.
+   */
+  protected void registerReferentialIntegrityHandlers() {
+
+    ApiHibernateInterceptor.addHandler(ClientRelationship.class, e -> {
       LOGGER.warn("handle ClientRelationship");
+      // raise exception on FK error.
     });
 
-    ApiHibernateInterceptor.addCommitHandler(ClientAddress.class, e -> {
+    ApiHibernateInterceptor.addHandler(ClientAddress.class, e -> {
       LOGGER.warn("handle ClientAddress");
+      // raise exception on FK error.
     });
 
-    ApiHibernateInterceptor.addCommitHandler(SystemMeta.class, e -> {
+    ApiHibernateInterceptor.addHandler(SystemMeta.class, e -> {
       LOGGER.warn("handle SystemMeta");
+      // raise exception on FK error.
     });
 
   }
@@ -310,8 +326,9 @@ public class DataAccessModule extends AbstractModule {
   }
 
   @Provides
-  public ElasticsearchConfiguration elasticSearchConfig(ApiConfiguration apiConfiguration) {
-    return apiConfiguration.getElasticsearchConfiguration();
+  public Map<String, ElasticsearchConfiguration> elasticSearchConfigs(
+      ApiConfiguration apiConfiguration) {
+    return apiConfiguration.getElasticsearchConfigurations();
   }
 
   @Provides
@@ -324,25 +341,65 @@ public class DataAccessModule extends AbstractModule {
     return apiConfiguration.getTriggerTablesConfiguration();
   }
 
-  // @Singleton
   @Provides
-  public synchronized Client elasticsearchClient(ApiConfiguration apiConfiguration) {
-    if (client == null) {
-      ElasticsearchConfiguration config = apiConfiguration.getElasticsearchConfiguration();
-      try {
-        TransportClient ret = new PreBuiltTransportClient(
-            Settings.builder().put("cluster.name", config.getElasticsearchCluster()).build());
-        ret.addTransportAddress(
-            new InetSocketTransportAddress(InetAddress.getByName(config.getElasticsearchHost()),
-                Integer.parseInt(config.getElasticsearchPort())));
-        client = ret;
-      } catch (Exception e) {
-        LOGGER.error("Error initializing Elasticsearch client: {}", e.getMessage(), e);
-        throw new ApiException("Error initializing Elasticsearch client: " + e.getMessage(), e);
+  @Named("elasticsearch.daos")
+  public Map<String, ElasticsearchDao> provideElasticSearchDaos(ApiConfiguration apiConfiguration) {
+    if (clients == null) {
+      provideElasticsearchClients(apiConfiguration);
+    }
+
+    Map<String, ElasticsearchDao> esDaos = new HashMap<>();
+    for (String esKey : clients.keySet()) {
+      Client client = clients.get(esKey);
+      ElasticsearchConfiguration config =
+          apiConfiguration.getElasticsearchConfigurations().get(esKey);
+      ElasticsearchDao dao = new ElasticsearchDao(client, config);
+      esDaos.put(esKey, dao);
+    }
+    return esDaos;
+  }
+
+  @Provides
+  @Named("people.index")
+  public ElasticsearchDao provideElasticSearchDaoPeople(
+      @Named("elasticsearch.daos") Map<String, ElasticsearchDao> esDaos) {
+    return esDaos.get("peopleIndex");
+  }
+
+  @Provides
+  @Named("screenings.index")
+  public ElasticsearchDao provideEelasticSearchDaoScreenings(
+      @Named("elasticsearch.daos") Map<String, ElasticsearchDao> esDaos) {
+    return esDaos.get("screeningsIndex");
+  }
+
+  @Provides
+  public synchronized Map<String, Client> provideElasticsearchClients(
+      ApiConfiguration apiConfiguration) {
+
+    if (clients == null) {
+      clients = new HashMap<>();
+
+      Map<String, ElasticsearchConfiguration> esConfigs =
+          apiConfiguration.getElasticsearchConfigurations();
+
+      for (String esConfigKey : esConfigs.keySet()) {
+        ElasticsearchConfiguration config = esConfigs.get(esConfigKey);
+
+        try {
+          TransportClient transportClient = new PreBuiltTransportClient(
+              Settings.builder().put("cluster.name", config.getElasticsearchCluster()).build());
+          transportClient.addTransportAddress(
+              new InetSocketTransportAddress(InetAddress.getByName(config.getElasticsearchHost()),
+                  Integer.parseInt(config.getElasticsearchPort())));
+          clients.put(esConfigKey, transportClient);
+        } catch (Exception e) {
+          LOGGER.error("Error initializing Elasticsearch client: {}", e.getMessage(), e);
+          throw new ApiException("Error initializing Elasticsearch client: " + e.getMessage(), e);
+        }
       }
     }
 
-    return client;
+    return clients;
   }
-
 }
