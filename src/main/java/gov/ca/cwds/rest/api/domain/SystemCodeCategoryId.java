@@ -50,6 +50,11 @@ public final class SystemCodeCategoryId {
   public static final String COMMUNICATION_METHOD = "CMM_MTHC";
 
   /**
+   * Address Type e.g) Business, In-Person, Residence, Homeless
+   */
+  public static final String ADDRESS_TYPE = "ADDR_TPC";
+
+  /**
    * Private constructor
    */
   private SystemCodeCategoryId() {}

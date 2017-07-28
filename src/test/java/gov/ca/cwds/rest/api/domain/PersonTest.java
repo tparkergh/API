@@ -45,7 +45,7 @@ public class PersonTest {
   private String gender = "M";
   private String birthDate = "2001-09-01";
   private String ssn = "123456789";
-  private Address address = new Address("", "", "123 Main", "Sacramento", "CA", 95757, "Home");
+  private Address address = new Address("", "", "123 Main", "Sacramento", "CA", 95757, 32);
   private Set<Address> addresses = new HashSet<>();
   private PhoneNumber phoneNumber = new PhoneNumber("408-641-0287", "cell");
   private Set<PhoneNumber> phoneNumbers = new HashSet<>();
@@ -137,8 +137,8 @@ public class PersonTest {
     languages.add(language);
     races.add(race);
     ethnicities.add(ethnicity);
-    Person domain = new Person(firstName, middleName, lastName, suffix, gender, birthDate, ssn, addresses, phoneNumbers,
-        languages, races, ethnicities);
+    Person domain = new Person(firstName, middleName, lastName, suffix, gender, birthDate, ssn,
+        addresses, phoneNumbers, languages, races, ethnicities);
 
     assertThat(domain.getAddress(), is(equalTo(addresses)));
     assertThat(domain.getPhoneNumber(), is(equalTo(phoneNumbers)));

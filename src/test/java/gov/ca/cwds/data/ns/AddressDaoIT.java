@@ -119,7 +119,7 @@ public class AddressDaoIT implements DaoTestTemplate {
   @Override
   @Test
   public void testCreate() {
-    Address address = new Address(null, "123 Main Street", "SAC", "CA", 95757, "Home");
+    Address address = new Address(null, "123 Main Street", "SAC", "CA", 95757, 32);
     Address created = addressDao.create(address);
     assertThat(created, is(address));
   }
@@ -128,7 +128,7 @@ public class AddressDaoIT implements DaoTestTemplate {
   @Test
   public void testCreateExistingEntityException() {
     thrown.expect(EntityExistsException.class);
-    Address address = new Address(1L, "123 Main Street", "SAC", "CA", 95757, "Home");
+    Address address = new Address(1L, "123 Main Street", "SAC", "CA", 95757, 32);
     addressDao.create(address);
   }
 
@@ -150,7 +150,7 @@ public class AddressDaoIT implements DaoTestTemplate {
   @Override
   @Test
   public void testUpdate() {
-    Address address = new Address(1L, "123 Main Street", "SAC", "CA", 95757, "Home");
+    Address address = new Address(1L, "123 Main Street", "SAC", "CA", 95757, 32);
     Address updated = addressDao.update(address);
     assertThat(updated, is(address));
   }
@@ -159,7 +159,7 @@ public class AddressDaoIT implements DaoTestTemplate {
   @Test
   public void testUpdateEntityNotFoundException() {
     thrown.expect(EntityNotFoundException.class);
-    Address address = new Address(111L, "123 Main Street", "SAC", "CA", 95757, "Home");
+    Address address = new Address(111L, "123 Main Street", "SAC", "CA", 95757, 32);
     addressDao.update(address);
   }
 

@@ -22,6 +22,7 @@ import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 
+import gov.ca.cwds.data.cms.TestSystemCodeCache;
 import io.dropwizard.jackson.Jackson;
 import nl.jqno.equalsverifier.EqualsVerifier;
 import nl.jqno.equalsverifier.Warning;
@@ -37,13 +38,15 @@ public class AddressTest {
   private String city = "Sacramento";
   private String state = "CA";
   private Integer zip = 95757;
-  private String type = "Home";
+  private Integer type = 32; // "Residence"
   private String legacySourceTable = "CLIENT_T";
   private String legacyId = "1234567ABC";
 
   private Validator validator;
 
   private static final ObjectMapper MAPPER = Jackson.newObjectMapper();
+
+  private TestSystemCodeCache testSystemCodeCache = new TestSystemCodeCache();
 
   @Before
   public void setup() {
@@ -58,8 +61,8 @@ public class AddressTest {
    */
   @Test
   public void serializesToJSON() throws Exception {
-    String expected = MAPPER
-        .writeValueAsString(new Address("", "", "123 Main", "Sacramento", "CA", 95757, "Home"));
+    String expected =
+        MAPPER.writeValueAsString(new Address("", "", "123 Main", "Sacramento", "CA", 95757, 32));
 
     String serialized = MAPPER.writeValueAsString(
         MAPPER.readValue(fixture("fixtures/domain/address/valid/valid.json"), Address.class));
@@ -69,7 +72,7 @@ public class AddressTest {
 
   @Test
   public void testDeserializesFromJSON() throws Exception {
-    Address expected = new Address("", "", "123 Main", "Sacramento", "CA", 95757, "Home");
+    Address expected = new Address("", "", "123 Main", "Sacramento", "CA", 95757, 32);
 
     Address serialized =
         MAPPER.readValue(fixture("fixtures/domain/address/valid/valid.json"), Address.class);

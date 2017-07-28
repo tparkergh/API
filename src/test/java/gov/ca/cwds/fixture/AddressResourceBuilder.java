@@ -12,7 +12,7 @@ public class AddressResourceBuilder {
   String city = "Sacramento";
   String state = "CA";
   Integer zip = 95757;
-  String type = "Home";
+  Integer type = 32;
 
   /**
    * @param legacySourceTable - legacySourceTable
@@ -72,7 +72,7 @@ public class AddressResourceBuilder {
    * @param type - type
    * @return the type
    */
-  public AddressResourceBuilder setType(String type) {
+  public AddressResourceBuilder setType(Integer type) {
     this.type = type;
     return this;
   }

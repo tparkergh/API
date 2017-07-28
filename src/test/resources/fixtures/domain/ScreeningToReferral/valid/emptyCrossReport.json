@@ -23,7 +23,7 @@
 	  "city": "Sacramento",
 	  "state": "CA",
 	  "zip": 95757,
-	  "type": "Home"
+	  "type": 32
 	},
   "participants":[
   {
@@ -55,7 +55,7 @@
         "legacy_source_table":"",
         "state":"AK",
         "street_address":"123 Fake St",
-        "type":"Home",
+        "type": 32,
         "zip":"11222",
         "legacy_descriptor": {
           "legacy_id": "",
@@ -90,7 +90,7 @@
 	  			"state" : "CA",
 	  			"city" : "San Jose",
 	  			"zip" : "94321",
-	  			"type" : "Home"
+	  			"type": 32
 	  		}
 	  	]
 	},

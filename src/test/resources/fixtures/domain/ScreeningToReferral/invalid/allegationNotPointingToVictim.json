@@ -23,7 +23,7 @@
 	  "city": "Sacramento",
 	  "state": "CA",
 	  "zip": 95757,
-	  "type": "Home"
+	  "type": 32
   },
    "participants":[
 	{
@@ -48,7 +48,7 @@
 	  			"state" : "CA",
 	  			"city" : "San Jose",
 	  			"zip" : "94321",
-	  			"type" : "Home"
+	  			"type": 32
 	  		}
 	  	]
 	},
@@ -74,7 +74,7 @@
 	  			"state" : "CA",
 	  			"city" : "San Jose",
 	  			"zip" : "94321",
-	  			"type" : "Home"
+	  			"type": 32
 	  		}
 	  	]
 	},
@@ -100,7 +100,7 @@
 	  			"state" : "CA",
 	  			"city" : "San Jose",
 	  			"zip" : "94321",
-	  			"type" : "Home"
+	  			"type": 32
 	  		}
 	  	]
 	}

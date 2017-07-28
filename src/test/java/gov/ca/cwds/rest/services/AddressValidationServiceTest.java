@@ -46,8 +46,8 @@ public class AddressValidationServiceTest {
   @Test
   public void createThrowsNotImplementedException() throws Exception {
     thrown.expect(NotImplementedException.class);
-    addressValidationService.create(new Address("", "", "742 Evergreen Terrace", "Springfield",
-        "WA", new Integer(98700), "Home"));
+    addressValidationService.create(
+        new Address("", "", "742 Evergreen Terrace", "Springfield", "WA", new Integer(98700), 32));
   }
 
   /*
@@ -66,8 +66,7 @@ public class AddressValidationServiceTest {
   public void updateThrowsNotImplementedException() throws Exception {
     thrown.expect(NotImplementedException.class);
 
-    addressValidationService.update(1L,
-        new Address("", "", "street", "city", "state", 95555, "Home"));
+    addressValidationService.update(1L, new Address("", "", "street", "city", "state", 95555, 32));
   }
 
   @Test
@@ -75,7 +74,7 @@ public class AddressValidationServiceTest {
       throws Exception {
     thrown.expect(Exception.class);
     addressValidationService
-        .fetchValidatedAddresses(new Address("", "", "street", "city", "state", 95555, "Home"));
+        .fetchValidatedAddresses(new Address("", "", "street", "city", "state", 95555, 32));
   }
 
 }

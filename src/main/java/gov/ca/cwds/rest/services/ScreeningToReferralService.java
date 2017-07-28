@@ -1,7 +1,6 @@
 package gov.ca.cwds.rest.services;
 
 import java.io.Serializable;
-import java.text.ParseException;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -12,9 +11,6 @@ import javax.validation.Validator;
 
 import org.apache.commons.lang3.NotImplementedException;
 import org.apache.commons.lang3.StringUtils;
-import org.joda.time.DateTime;
-import org.joda.time.format.DateTimeFormat;
-import org.joda.time.format.DateTimeFormatter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -26,7 +22,6 @@ import gov.ca.cwds.rest.api.Request;
 import gov.ca.cwds.rest.api.Response;
 import gov.ca.cwds.rest.api.domain.Allegation;
 import gov.ca.cwds.rest.api.domain.CrossReport;
-import gov.ca.cwds.rest.api.domain.DomainChef;
 import gov.ca.cwds.rest.api.domain.Participant;
 import gov.ca.cwds.rest.api.domain.PostedScreeningToReferral;
 import gov.ca.cwds.rest.api.domain.Screening;
@@ -302,7 +297,8 @@ public class ScreeningToReferralService implements CrudsService {
                 clientId = postedClient.getId();
                 incomingParticipant.setLegacyId(clientId);
                 incomingParticipant.setLegacySourceTable(CLIENT_TABLE_NAME);
-                incomingParticipant.getLegacyDescriptor().setLastUpdated(postedClient.getLastUpdatedTime());
+                incomingParticipant.getLegacyDescriptor()
+                    .setLastUpdated(postedClient.getLastUpdatedTime());
               } else {
                 // legacy Id passed - check for existenct in CWS/CMS - no update yet
                 clientId = incomingParticipant.getLegacyId();
@@ -316,8 +312,9 @@ public class ScreeningToReferralService implements CrudsService {
                     gov.ca.cwds.rest.api.domain.cms.Client savedClient =
                         this.clientService.update(incomingParticipant.getLegacyId(), foundClient);
                     if (savedClient != null) {
-                      incomingParticipant.getLegacyDescriptor().setLastUpdated(savedClient.getLastUpdatedTime());
-                    }else{
+                      incomingParticipant.getLegacyDescriptor()
+                          .setLastUpdated(savedClient.getLastUpdatedTime());
+                    } else {
                       String message = "Unable to save Client";
                       logError(message);
 
@@ -540,7 +537,7 @@ public class ScreeningToReferralService implements CrudsService {
    */
   private Set<Allegation> processAllegations(ScreeningToReferral scr, String referralId,
       HashMap<Long, String> perpatratorClient, HashMap<Long, String> victimClient, Date timestamp)
-      throws ServiceException {
+          throws ServiceException {
 
     Set<Allegation> processedAllegations = new HashSet<>();
     Set<Allegation> allegations;
@@ -724,8 +721,10 @@ public class ScreeningToReferralService implements CrudsService {
           address.getLegacyId() == null || address.getLegacyId().isEmpty();
       if (createNewClientAddress) {
         if (!clientAddressExists(address, clientParticipant)) {
-          ClientAddress clientAddress = new ClientAddress(LegacyDefaultValues.DEFAULT_ADDRESS_TYPE,
-              "", "", "", addressId, clientId, "", referralId);
+          Short addressType = address.getType() != null ? address.getType().shortValue()
+              : LegacyDefaultValues.DEFAULT_ADDRESS_TYPE;
+          ClientAddress clientAddress =
+              new ClientAddress(addressType, "", "", "", addressId, clientId, "", referralId);
 
           messageBuilder.addDomainValidationError(validator.validate(clientAddress));
           this.clientAddressService.createWithSingleTimestamp(clientAddress, timestamp);

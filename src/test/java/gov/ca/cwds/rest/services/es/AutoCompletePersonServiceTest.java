@@ -21,6 +21,7 @@ import org.mockito.Spy;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import gov.ca.cwds.data.cms.TestSystemCodeCache;
 import gov.ca.cwds.data.es.ElasticSearchPerson;
 import gov.ca.cwds.data.es.ElasticsearchDao;
 import gov.ca.cwds.rest.api.domain.es.AutoCompletePerson;
@@ -37,6 +38,8 @@ import io.dropwizard.jackson.Jackson;
 public class AutoCompletePersonServiceTest {
 
   private static final ObjectMapper MAPPER = Jackson.newObjectMapper();
+
+  private TestSystemCodeCache testSystemCodeCache = new TestSystemCodeCache();
 
   @Rule
   public ExpectedException thrown = ExpectedException.none();

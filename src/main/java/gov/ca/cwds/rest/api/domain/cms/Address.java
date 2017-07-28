@@ -269,8 +269,7 @@ public class Address extends ReportingDomain implements Request, Response {
 
     return new Address(" ", address.getCity(), DEFAULT_DECIMAL, DEFAULT_INT, false, DEFAULT_CODE,
         DEFAULT_DECIMAL, DEFAULT_INT, " ", DEFAULT_DECIMAL, DEFAULT_INT, stateCode, streetName,
-        streetNumber, zipCode, address.getType(), zipSuffix, " ", " ", DEFAULT_CODE, DEFAULT_CODE,
-        " ");
+        streetNumber, zipCode, " ", zipSuffix, " ", " ", DEFAULT_CODE, DEFAULT_CODE, " ");
   }
 
   /**

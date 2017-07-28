@@ -23,7 +23,7 @@
     "city" : "Sacramento",
     "state" : "CA",
     "zip" : 95757,
-    "type" : "Home"
+    "type": 32
   },
   "participants" : [ {
     "id" : 5432,
@@ -53,7 +53,7 @@
       "city" : "San Jose",
       "state" : "CA",
       "zip" : 94321,
-      "type" : "Home"
+      "type": 32
     } ]
   } ],
   "cross_reports" : [ {
