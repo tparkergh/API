@@ -49,12 +49,12 @@ public class AllegationPerpetratorHistoryResourceTest {
   public ExpectedException thrown = ExpectedException.none();
 
   @SuppressWarnings("unchecked")
-  private final static TypedResourceDelegate<String, AllegationPerpetratorHistory> resourceDelegate =
+  private final static TypedResourceDelegate<String, AllegationPerpetratorHistory> typedResourceDelegate =
       mock(TypedResourceDelegate.class);
 
   @ClassRule
   public final static ResourceTestRule inMemoryResource = ResourceTestRule.builder()
-      .addResource(new AllegationPerpetratorHistoryResource(resourceDelegate)).build();
+      .addResource(new AllegationPerpetratorHistoryResource(typedResourceDelegate)).build();
 
   @Before
   public void initMocks() {
@@ -68,7 +68,7 @@ public class AllegationPerpetratorHistoryResourceTest {
   public void getDelegatesToResourceDelegate() throws Exception {
     inMemoryResource.client().target(FOUND_RESOURCE).request().accept(MediaType.APPLICATION_JSON)
         .get();
-    verify(resourceDelegate).get("abc");
+    verify(typedResourceDelegate).get("abc");
   }
 
 
@@ -82,7 +82,7 @@ public class AllegationPerpetratorHistoryResourceTest {
 
     inMemoryResource.client().target(ROOT_RESOURCE).request().accept(MediaType.APPLICATION_JSON)
         .post(Entity.entity(serialized, MediaType.APPLICATION_JSON));
-    verify(resourceDelegate).create(eq(serialized));
+    verify(typedResourceDelegate).create(eq(serialized));
   }
 
   @Test
@@ -103,7 +103,7 @@ public class AllegationPerpetratorHistoryResourceTest {
   public void deleteDelegatesToResourceDelegate() throws Exception {
     inMemoryResource.client().target(FOUND_RESOURCE).request().accept(MediaType.APPLICATION_JSON)
         .delete();
-    verify(resourceDelegate).delete("abc");
+    verify(typedResourceDelegate).delete("abc");
   }
 
   /*
@@ -116,7 +116,7 @@ public class AllegationPerpetratorHistoryResourceTest {
 
     inMemoryResource.client().target(FOUND_RESOURCE).request().accept(MediaType.APPLICATION_JSON)
         .put(Entity.entity(serialized, MediaType.APPLICATION_JSON));
-    verify(resourceDelegate).update(eq("abc"), eq(serialized));
+    verify(typedResourceDelegate).update(eq("abc"), eq(serialized));
   }
 
   @Test

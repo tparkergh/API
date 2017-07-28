@@ -1,7 +1,5 @@
 package gov.ca.cwds.rest.services.cms;
 
-import java.io.Serializable;
-
 import javax.persistence.EntityExistsException;
 
 import org.apache.commons.lang3.NotImplementedException;
@@ -14,19 +12,18 @@ import gov.ca.cwds.data.Dao;
 import gov.ca.cwds.data.cms.DrmsDocumentDao;
 import gov.ca.cwds.data.persistence.cms.CmsKeyIdGenerator;
 import gov.ca.cwds.data.persistence.cms.DrmsDocument;
-import gov.ca.cwds.rest.api.Request;
-import gov.ca.cwds.rest.api.Response;
 import gov.ca.cwds.rest.api.domain.cms.PostedDrmsDocument;
 import gov.ca.cwds.rest.messages.MessageBuilder;
-import gov.ca.cwds.rest.services.CrudsService;
 import gov.ca.cwds.rest.services.ServiceException;
+import gov.ca.cwds.rest.services.TypedCrudsService;
 
 /**
  * Business layer object to work on {@link DrmsDocument}
  * 
  * @author CWDS API Team
  */
-public class DrmsDocumentService implements CrudsService {
+public class DrmsDocumentService implements
+    TypedCrudsService<String, gov.ca.cwds.rest.api.domain.cms.DrmsDocument, gov.ca.cwds.rest.api.domain.cms.DrmsDocument> {
 
   private static final Logger LOGGER = LoggerFactory.getLogger(DrmsDocumentService.class);
 
@@ -53,11 +50,10 @@ public class DrmsDocumentService implements CrudsService {
    * @see gov.ca.cwds.rest.services.CrudsService#create(gov.ca.cwds.rest.api.Request)
    */
   @Override
-  public PostedDrmsDocument create(Request request) {
+  public PostedDrmsDocument create(gov.ca.cwds.rest.api.domain.cms.DrmsDocument request) {
     assert request instanceof gov.ca.cwds.rest.api.domain.cms.DrmsDocument;
 
-    gov.ca.cwds.rest.api.domain.cms.DrmsDocument drmsDocument =
-        (gov.ca.cwds.rest.api.domain.cms.DrmsDocument) request;
+    gov.ca.cwds.rest.api.domain.cms.DrmsDocument drmsDocument = request;
 
     try {
       String lastUpdatedId = staffPersonIdRetriever.getStaffPersonId();
@@ -73,20 +69,20 @@ public class DrmsDocumentService implements CrudsService {
   }
 
   @Override
-  public Response delete(Serializable arg0) {
+  public gov.ca.cwds.rest.api.domain.cms.DrmsDocument delete(String arg0) {
     throw new NotImplementedException("delete not implement");
   }
 
   @Override
-  public Response find(Serializable arg0) {
+  public gov.ca.cwds.rest.api.domain.cms.DrmsDocument find(String arg0) {
     throw new NotImplementedException("find not implement");
   }
 
   @Override
-  public Response update(Serializable arg0, Request arg1) {
+  public gov.ca.cwds.rest.api.domain.cms.DrmsDocument update(String arg0,
+      gov.ca.cwds.rest.api.domain.cms.DrmsDocument arg1) {
     throw new NotImplementedException("update not implement");
   }
-
 
   /**
    * <blockquote>
@@ -122,4 +118,5 @@ public class DrmsDocumentService implements CrudsService {
     }
     return postedDrmsDocument.getId();
   }
+
 }

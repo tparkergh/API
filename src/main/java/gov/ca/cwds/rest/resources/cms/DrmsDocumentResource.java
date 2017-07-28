@@ -17,6 +17,7 @@ import com.google.inject.Inject;
 import gov.ca.cwds.inject.DrmsDocumentServiceBackedResource;
 import gov.ca.cwds.rest.api.domain.cms.DrmsDocument;
 import gov.ca.cwds.rest.resources.ResourceDelegate;
+import gov.ca.cwds.rest.resources.TypedResourceDelegate;
 import io.dropwizard.hibernate.UnitOfWork;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -40,17 +41,17 @@ import io.swagger.annotations.ApiResponses;
 @Consumes(MediaType.APPLICATION_JSON)
 public class DrmsDocumentResource {
 
-  private ResourceDelegate resourceDelegate;
+  private TypedResourceDelegate<String, DrmsDocument> typedResourceDelegate;
 
   /**
    * Constructor
    * 
-   * @param resourceDelegate The resourceDelegate to delegate to.
+   * @param typedResourceDelegate The typedResourceDelegate to delegate to.
    */
   @Inject
   public DrmsDocumentResource(
-      @DrmsDocumentServiceBackedResource ResourceDelegate resourceDelegate) {
-    this.resourceDelegate = resourceDelegate;
+      @DrmsDocumentServiceBackedResource TypedResourceDelegate<String, DrmsDocument> typedResourceDelegate) {
+    this.typedResourceDelegate = typedResourceDelegate;
   }
 
   /**
@@ -72,7 +73,7 @@ public class DrmsDocumentResource {
       response = gov.ca.cwds.rest.api.domain.cms.DrmsDocument.class)
   public Response create(@Valid @ApiParam(hidden = false,
       required = true) gov.ca.cwds.rest.api.domain.cms.DrmsDocument drmsDocument) {
-    return resourceDelegate.create(drmsDocument);
+    return typedResourceDelegate.create(drmsDocument);
   }
 
 }
