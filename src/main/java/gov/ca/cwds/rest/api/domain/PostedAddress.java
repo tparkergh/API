@@ -32,7 +32,7 @@ public class PostedAddress extends Address {
    * @param type - address type
    */
   public PostedAddress(long id, String legacySourceTable, String legacyId, String streetAddress,
-      String city, String state, Integer zip, Integer type) {
+      String city, Integer state, Integer zip, Integer type) {
     super(legacySourceTable, legacyId, streetAddress, city, state, zip, type);
     this.id = id;
   }

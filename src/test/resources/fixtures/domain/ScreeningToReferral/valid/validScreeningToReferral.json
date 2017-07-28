@@ -17,7 +17,7 @@
    "address":{
 	  "street_address": "123 Main",
 	  "city": "Sacramento",
-	  "state": "CA",
+	  "state": 1828,
 	  "zip": 95757,
 	  "type": 32
 	},
@@ -38,7 +38,7 @@
 	  	"addresses" : [
 	  		{
 	  			"street_address" : "123 First St",
-	  			"state" : "CA",
+	  			"state": 1828,
 	  			"city" : "San Jose",
 	  			"zip" : "94321",
 	  			"type": 32
@@ -61,7 +61,7 @@
 	  	"addresses" : [
 	  		{
 	  			"street_address" : "234 Second St",
-	  			"state" : "CA",
+	  			"state": 1828,
 	  			"city" : "San Jose",
 	  			"zip" : "94321",
 	  			"type": 32

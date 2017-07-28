@@ -50,9 +50,9 @@ public class Address extends ReportingDomain implements Request, Response {
   private String city;
 
   @JsonProperty("state")
-  @ApiModelProperty(value = "State Code", example = "CA")
-  @Size(max = 50)
-  private String state;
+  @ApiModelProperty(value = "State Code", example = "1828")
+  @ValidSystemCodeId(required = true, category = SystemCodeCategoryId.STATE_CODE)
+  private Integer state;
 
   @JsonProperty("zip")
   @ApiModelProperty(value = "Zip", example = "95757")
@@ -84,7 +84,7 @@ public class Address extends ReportingDomain implements Request, Response {
   public Address(@JsonProperty("legacy_source_table") String legacySourceTable,
       @JsonProperty("legacy_id") String addressId,
       @JsonProperty("street_address") String streetAddress, @JsonProperty("city") String city,
-      @JsonProperty("state") String state, @JsonProperty("zip") Integer zip,
+      @JsonProperty("state") Integer state, @JsonProperty("zip") Integer zip,
       @JsonProperty("type") Integer type) {
     super();
     this.legacySourceTable = legacySourceTable;
@@ -106,7 +106,7 @@ public class Address extends ReportingDomain implements Request, Response {
     this.legacyId = "";
     this.streetAddress = address.getStreetAddress();
     this.city = address.getCity();
-    this.state = address.getState();
+    this.state = address.getState() != null ? Integer.valueOf(address.getState()) : null;
     this.zip = address.getZip();
     this.type = address.getType() != null ? Integer.valueOf(address.getType()) : null;
 
@@ -157,7 +157,7 @@ public class Address extends ReportingDomain implements Request, Response {
   /**
    * @return the state
    */
-  public String getState() {
+  public Integer getState() {
     return state;
   }
 

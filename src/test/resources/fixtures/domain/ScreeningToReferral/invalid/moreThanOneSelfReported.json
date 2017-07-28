@@ -21,7 +21,7 @@
       "legacy_id" : "",
 	  "street_address": "123 Main",
 	  "city": "Sacramento",
-	  "state": "CA",
+	  "state": 1828,
 	  "zip": 95757,
 	  "type": 32
 },
@@ -45,7 +45,7 @@
                 "legacy_source_table" : "",
                 "legacy_id" : "",
 	  			"street_address" : "123 First St",
-	  			"state" : "CA",
+	  			"state": 1828,
 	  			"city" : "San Jose",
 	  			"zip" : "94321",
 	  			"type": 32
@@ -71,7 +71,7 @@
                 "legacy_source_table" : "",
                 "legacy_id" : "",
 	  			"street_address" : "234 Second St",
-	  			"state" : "CA",
+	  			"state": 1828,
 	  			"city" : "San Jose",
 	  			"zip" : "94321",
 	  			"type": 32

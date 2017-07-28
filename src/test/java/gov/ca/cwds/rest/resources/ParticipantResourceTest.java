@@ -77,7 +77,7 @@ public class ParticipantResourceTest {
   @Test
   public void testPostValidatesEntity() throws Exception {
     roles.add("victim");
-    Address address = new Address("", "", "123 First St", "San Jose", "CA", 94321, 32);
+    Address address = new Address("", "", "123 First St", "San Jose", 1828, 94321, 32);
     addresses.add(address);
     Participant participant = new Participant(1, "", "", new LegacyDescriptor(), "Marge", "J",
         "Simpson", "Female", "", "11122333", "11-01-2017", 123, 456, roles, addresses);
@@ -91,7 +91,7 @@ public class ParticipantResourceTest {
   @Test
   public void testDelete200ResourceSuccess() throws Exception {
     roles.add("victim");
-    Address address = new Address("", "", "123 First St", "San Jose", "CA", 94321, 32);
+    Address address = new Address("", "", "123 First St", "San Jose", 1828, 94321, 32);
     addresses.add(address);
     Participant participant = new Participant(1, "", "", new LegacyDescriptor(), "Marge", "J",
         "Simpson", "", "Female", "111223333", "2017-01-23", 123, 456, roles, addresses);
@@ -115,7 +115,7 @@ public class ParticipantResourceTest {
   @Test
   public void testUpdate404NotFoundError() throws Exception {
     roles.add("victim");
-    Address address = new Address("", "", "123 First St", "San Jose", "CA", 94321, 32);
+    Address address = new Address("", "", "123 First St", "San Jose", 1828, 94321, 32);
     addresses.add(address);
     Participant participant = new Participant(1, "", "", new LegacyDescriptor(), "Marge", "J",
         "Simpson", "", "Female", "111223333", "2017-01-11", 123, 456, roles, addresses);

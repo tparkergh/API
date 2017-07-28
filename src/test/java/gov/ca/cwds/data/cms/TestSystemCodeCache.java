@@ -87,6 +87,14 @@ public class TestSystemCodeCache implements SystemCodeCache {
         return true;
       }
     }
+
+    if (SystemCodeCategoryId.STATE_CODE.equals(metaId)) {
+      if (1828 == systemCodeId.intValue() || 1877 == systemCodeId.intValue()
+          || 1823 == systemCodeId.intValue()) {
+        return true;
+      }
+    }
+
     return false;
   }
 

@@ -11,6 +11,7 @@ import gov.ca.cwds.rest.api.Request;
 import gov.ca.cwds.rest.api.Response;
 import gov.ca.cwds.rest.api.domain.Address;
 import gov.ca.cwds.rest.api.domain.ValidatedAddress;
+import gov.ca.cwds.rest.api.domain.cms.SystemCodeCache;
 import gov.ca.cwds.rest.validation.SmartyStreet;
 
 /**
@@ -38,8 +39,9 @@ public class AddressValidationService implements CrudsService {
     ValidatedAddress[] addresses = null;
     try {
       SmartyStreet smartyStreet = new SmartyStreet(smartyStreetsDao);
+      String state = SystemCodeCache.global().getSystemCodeShortDescription(address.getState());
       addresses = smartyStreet.usStreetSingleAddress(address.getStreetAddress(), address.getCity(),
-          address.getState(), address.getZip());
+          state, address.getZip());
     } catch (Exception e) {
       throw new ServiceException("ERROR calling usStreetSingleAddress in SmartyStreet", e);
     }

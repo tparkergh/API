@@ -56,7 +56,7 @@ public class ScreeningResponseTest {
   @Test
   public void testPesistentObjectConstructor() throws Exception {
 
-    Address addressDomain = new Address("", "", "123 Main", "Sacramento", "CA", 95757, 32);
+    Address addressDomain = new Address("", "", "123 Main", "Sacramento", 1828, 95757, 32);
     addresses.add(addressDomain);
     roles.add("victim");
 

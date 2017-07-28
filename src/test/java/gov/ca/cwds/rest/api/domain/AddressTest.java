@@ -36,7 +36,7 @@ public class AddressTest {
 
   private String street_name = "123 Main";
   private String city = "Sacramento";
-  private String state = "CA";
+  private Integer state = 1828; // "CA";
   private Integer zip = 95757;
   private Integer type = 32; // "Residence"
   private String legacySourceTable = "CLIENT_T";
@@ -62,7 +62,7 @@ public class AddressTest {
   @Test
   public void serializesToJSON() throws Exception {
     String expected =
-        MAPPER.writeValueAsString(new Address("", "", "123 Main", "Sacramento", "CA", 95757, 32));
+        MAPPER.writeValueAsString(new Address("", "", "123 Main", "Sacramento", 1828, 95757, 32));
 
     String serialized = MAPPER.writeValueAsString(
         MAPPER.readValue(fixture("fixtures/domain/address/valid/valid.json"), Address.class));
@@ -72,7 +72,7 @@ public class AddressTest {
 
   @Test
   public void testDeserializesFromJSON() throws Exception {
-    Address expected = new Address("", "", "123 Main", "Sacramento", "CA", 95757, 32);
+    Address expected = new Address("", "", "123 Main", "Sacramento", 1828, 95757, 32);
 
     Address serialized =
         MAPPER.readValue(fixture("fixtures/domain/address/valid/valid.json"), Address.class);
@@ -95,7 +95,7 @@ public class AddressTest {
 
     Address totest = new Address(persistent);
     assertThat(totest.getCity(), is(equalTo(persistent.getCity())));
-    assertThat(totest.getState(), is(equalTo(persistent.getState())));
+    assertThat(totest.getState().toString(), is(equalTo(persistent.getState())));
     assertThat(totest.getStreetAddress(), is(equalTo(persistent.getStreetAddress())));
     assertThat(totest.getZip(), is(equalTo(persistent.getZip())));
     assertThat(totest.getType().toString(), is(equalTo(persistent.getType())));

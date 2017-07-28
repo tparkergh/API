@@ -39,7 +39,6 @@ public class ValidatedAddress extends ReportingDomain implements Request, Respon
 
   @JsonProperty("state")
   @ApiModelProperty(example = "CA")
-  @Size(max = 50)
   private String state;
 
   @JsonProperty("longitude")

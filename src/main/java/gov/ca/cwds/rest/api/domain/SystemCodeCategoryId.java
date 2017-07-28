@@ -55,6 +55,11 @@ public final class SystemCodeCategoryId {
   public static final String ADDRESS_TYPE = "ADDR_TPC";
 
   /**
+   * State Code e.g) California, Illinois
+   */
+  public static final String STATE_CODE = "STATE_C";
+
+  /**
    * Private constructor
    */
   private SystemCodeCategoryId() {}
