@@ -100,6 +100,7 @@ public class ClientCollateral extends CmsPersistentObject {
   }
 
   /**
+   * Constructor.
    * 
    * @param thirdId unique key
    * @param clientCollateral the domain object to construct this object from
@@ -149,10 +150,8 @@ public class ClientCollateral extends CmsPersistentObject {
     return thirdId;
   }
 
-  /*
-   * (non-Javadoc)
-   * 
-   * @see gov.ca.cwds.rest.api.persistence.PersistentObject#getPrimaryKey()
+  /**
+   * {@inheritDoc}
    */
   @Override
   public String getPrimaryKey() {
