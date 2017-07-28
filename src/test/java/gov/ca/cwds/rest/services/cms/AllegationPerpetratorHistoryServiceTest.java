@@ -24,8 +24,6 @@ import org.junit.rules.ExpectedException;
 import org.mockito.invocation.InvocationOnMock;
 import org.mockito.stubbing.Answer;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-
 import gov.ca.cwds.data.cms.AllegationPerpetratorHistoryDao;
 import gov.ca.cwds.fixture.AllegationPerpetratorHistoryResourceBuilder;
 import gov.ca.cwds.rest.api.Response;
@@ -33,14 +31,13 @@ import gov.ca.cwds.rest.api.domain.cms.AllegationPerpetratorHistory;
 import gov.ca.cwds.rest.api.domain.cms.PostedAllegationPerpetratorHistory;
 import gov.ca.cwds.rest.services.ServiceException;
 import gov.ca.cwds.rest.services.junit.template.ServiceTestTemplate;
-import io.dropwizard.jackson.Jackson;
 
 /**
  * @author CWDS API Team
  *
  */
 public class AllegationPerpetratorHistoryServiceTest implements ServiceTestTemplate {
-  private static final ObjectMapper MAPPER = Jackson.newObjectMapper();
+
   private AllegationPerpetratorHistoryService allegationPerpetratorHistoryService;
   private AllegationPerpetratorHistoryDao allegationPerpetratorHistoryDao;
   private StaffPersonIdRetriever staffPersonIdRetriever;
@@ -120,6 +117,21 @@ public class AllegationPerpetratorHistoryServiceTest implements ServiceTestTempl
   public void testDeleteReturnsNullWhenNotFound() throws Exception {
     Response found = allegationPerpetratorHistoryService.delete("ABC1234567");
     assertThat(found, is(nullValue()));
+  }
+
+  @SuppressWarnings("javadoc")
+  @Test
+  public void assignmentServiceDeleteReturnsNotNull() throws Exception {
+    String id = "1234567ABC";
+    AllegationPerpetratorHistory expected =
+        new AllegationPerpetratorHistoryResourceBuilder().createAllegationPerpetratorHistory();
+
+    gov.ca.cwds.data.persistence.cms.AllegationPerpetratorHistory allegationPerpetratorHistory =
+        new gov.ca.cwds.data.persistence.cms.AllegationPerpetratorHistory(id, expected, "0XA");
+
+    when(allegationPerpetratorHistoryDao.delete(id)).thenReturn(allegationPerpetratorHistory);
+    AllegationPerpetratorHistory found = allegationPerpetratorHistoryService.delete(id);
+    assertThat(found, is(expected));
   }
 
   @Override

@@ -18,6 +18,7 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
  * 
  * @author CWDS API Team
  */
+@SuppressWarnings("javadoc")
 @Entity
 @Table(name = "CASE_T")
 @JsonPropertyOrder(alphabetic = true)

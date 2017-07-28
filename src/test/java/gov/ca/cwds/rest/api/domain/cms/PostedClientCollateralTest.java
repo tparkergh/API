@@ -52,6 +52,6 @@ public class PostedClientCollateralTest {
   @Test
   public void equalsHashCodeWork() {
     EqualsVerifier.forClass(PostedClientCollateral.class).suppress(Warning.NONFINAL_FIELDS)
-        .withRedefinedSuperclass().verify();
+        .suppress(Warning.STRICT_INHERITANCE).withRedefinedSuperclass().verify();
   }
 }

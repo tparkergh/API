@@ -58,6 +58,7 @@ import gov.ca.cwds.rest.api.domain.cms.Referral;
 import gov.ca.cwds.rest.api.domain.cms.ReferralClient;
 import gov.ca.cwds.rest.api.domain.cms.Reporter;
 import gov.ca.cwds.rest.api.domain.error.ErrorMessage;
+import gov.ca.cwds.rest.business.rules.ExternalInterfaceTables;
 import gov.ca.cwds.rest.business.rules.LACountyTrigger;
 import gov.ca.cwds.rest.business.rules.NonLACountyTriggers;
 import gov.ca.cwds.rest.business.rules.Reminders;
@@ -124,6 +125,7 @@ public class TestForLastUpdatedTimeIsUnique {
   private SsaName3Dao ssaName3Dao;
   private Reminders reminders;
   private UpperCaseTables upperCaseTables;
+  private ExternalInterfaceTables externalInterfaceTables;
 
   private Validator validator;
 
@@ -169,8 +171,9 @@ public class TestForLastUpdatedTimeIsUnique {
     staffpersonDao = mock(StaffPersonDao.class);
     nonLACountyTriggers = mock(NonLACountyTriggers.class);
     triggerTablesDao = mock(TriggerTablesDao.class);
+    externalInterfaceTables = mock(ExternalInterfaceTables.class);
     assignmentService = new AssignmentService(assignmentDao, nonLACountyTriggers, staffpersonDao,
-        triggerTablesDao, staffPersonIdRetriever, validator);
+        triggerTablesDao, staffPersonIdRetriever, validator, externalInterfaceTables);
 
     clientDao = mock(ClientDao.class);
     staffpersonDao = mock(StaffPersonDao.class);
@@ -178,8 +181,9 @@ public class TestForLastUpdatedTimeIsUnique {
     nonLACountyTriggers = mock(NonLACountyTriggers.class);
     ssaName3Dao = mock(SsaName3Dao.class);
     upperCaseTables = mock(UpperCaseTables.class);
-    clientService = new ClientService(clientDao, staffpersonDao, triggerTablesDao,
-        nonLACountyTriggers, staffPersonIdRetriever, ssaName3Dao, upperCaseTables);
+    clientService =
+        new ClientService(clientDao, staffpersonDao, triggerTablesDao, nonLACountyTriggers,
+            staffPersonIdRetriever, ssaName3Dao, upperCaseTables, externalInterfaceTables);
 
     referralClientDao = mock(ReferralClientDao.class);
     nonLACountyTriggers = mock(NonLACountyTriggers.class);

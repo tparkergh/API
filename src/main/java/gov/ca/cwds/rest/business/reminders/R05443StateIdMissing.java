@@ -1,10 +1,8 @@
 package gov.ca.cwds.rest.business.reminders;
 
 import java.text.DateFormat;
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.Set;
 
 import org.slf4j.Logger;
@@ -84,46 +82,31 @@ public class R05443StateIdMissing {
           && participant.getDateOfBirth() != null) {
         Client client = clientDao.find(participant.getLegacyId());
         String dateOfBirth = participant.getDateOfBirth();
-        try {
+
+        int years = ReminderHelper.checkForAgeDiffernce(dateOfBirth);
+
+        boolean clientCheck = client.getEstimatedDobCode() != null
+            && client.getEstimatedDobCode().equals(DEFAULT_TRUE_INDICATOR)
+            && client.getDriverLicenseNumber().isEmpty();
+        if (years < 26 || clientCheck && referral.getClosureDate() == null) {
           /*
-           * check for the client age is below 26 or not by using the Java Calender
+           * duedate is updated with adding 30 days to the client creationDate
            */
-          Date dob = dateFormat.parse(dateOfBirth);
-          Calendar present = Calendar.getInstance();
-          Calendar past = Calendar.getInstance();
-          past.setTime(dob);
-          int years = 0;
-          while (past.before(present)) {
-            past.add(Calendar.YEAR, 1);
-            if (past.before(present)) {
-              years++;
-            }
-          }
-          boolean clientCheck = client.getEstimatedDobCode() != null
-              && client.getEstimatedDobCode().equals(DEFAULT_TRUE_INDICATOR)
-              && client.getDriverLicenseNumber().isEmpty();
-          if (years < 26 || clientCheck && referral.getClosureDate() == null) {
-            /*
-             * duedate is updated with adding 30 days to the client creationDate
-             */
-            Calendar dueDate = Calendar.getInstance();
-            dueDate.setTime(client.getCreationDate());
-            dueDate.add(Calendar.DATE, 30);
+          Calendar dueDate = Calendar.getInstance();
+          dueDate.setTime(client.getCreationDate());
+          dueDate.add(Calendar.DATE, 30);
 
-            gov.ca.cwds.rest.api.domain.cms.Tickle tickle =
-                new gov.ca.cwds.rest.api.domain.cms.Tickle(referral.getId(),
-                    REFERRAL_REFERRALCLIENT, client.getId(), null,
-                    dateFormat.format(dueDate.getTime()), referral.getScreenerNoteText(),
-                    STATE_ID_MISSING);
-            tickleService.create(tickle);
-            LOGGER.info("stateIdMissing reminder is created");
+          gov.ca.cwds.rest.api.domain.cms.Tickle tickle =
+              new gov.ca.cwds.rest.api.domain.cms.Tickle(referral.getId(), REFERRAL_REFERRALCLIENT,
+                  client.getId(), null, dateFormat.format(dueDate.getTime()),
+                  referral.getScreenerNoteText(), STATE_ID_MISSING);
+          tickleService.create(tickle);
+          LOGGER.info("stateIdMissing reminder is created");
 
-          }
-        } catch (ParseException e) {
-          LOGGER.error("Error While parsing the dateOfBirth");
         }
       }
     }
   }
-
 }
+
+

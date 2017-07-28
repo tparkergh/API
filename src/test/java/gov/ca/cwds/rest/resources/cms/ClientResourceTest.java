@@ -1,6 +1,5 @@
 package gov.ca.cwds.rest.resources.cms;
 
-import static io.dropwizard.testing.FixtureHelpers.fixture;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
 import static org.mockito.Matchers.eq;
@@ -15,15 +14,15 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.ClassRule;
 import org.junit.Rule;
+import org.junit.Test;
 import org.mockito.Mockito;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.squarespace.jersey2.guice.JerseyGuiceUtils;
 
+import gov.ca.cwds.fixture.ClientResourceBuilder;
 import gov.ca.cwds.rest.api.domain.cms.Client;
 import gov.ca.cwds.rest.resources.ResourceDelegate;
 import gov.ca.cwds.rest.resources.ServiceBackedResourceDelegate;
-import io.dropwizard.jackson.Jackson;
 import io.dropwizard.testing.junit.ResourceTestRule;
 
 /**
@@ -37,8 +36,6 @@ public class ClientResourceTest {
 
   private static final String ROOT_RESOURCE = "/_clients/";
   private static final String FOUND_RESOURCE = "/_clients/AaiU7IW0Rt";
-
-  private static final ObjectMapper MAPPER = Jackson.newObjectMapper();
 
   @After
   public void ensureServiceLocatorPopulated() {
@@ -65,7 +62,7 @@ public class ClientResourceTest {
   /*
    * Get Tests
    */
-  // @Test
+  @Test
   public void getDelegatesToResourceDelegate() throws Exception {
     inMemoryResource.client().target(FOUND_RESOURCE).request().accept(MediaType.APPLICATION_JSON)
         .get();
@@ -75,20 +72,18 @@ public class ClientResourceTest {
   /*
    * Create Tests
    */
-  // @Test
+  @Test
   public void createDelegatesToResourceDelegate() throws Exception {
-    Client serialized =
-        MAPPER.readValue(fixture("fixtures/domain/legacy/Client/valid/valid.json"), Client.class);
+    Client serialized = new ClientResourceBuilder().build();
 
     inMemoryResource.client().target(ROOT_RESOURCE).request().accept(MediaType.APPLICATION_JSON)
         .post(Entity.entity(serialized, MediaType.APPLICATION_JSON));
     verify(resourceDelegate).create(eq(serialized));
   }
 
-  // @Test
+  @Test
   public void createValidatesEntity() throws Exception {
-    Client serialized = MAPPER.readValue(
-        fixture("fixtures/domain/legacy/Client/invalid/birthDateInvalidFormat.json"), Client.class);
+    Client serialized = new ClientResourceBuilder().setBirthDate("03/31/1993").build();
 
     int status =
         inMemoryResource.client().target(ROOT_RESOURCE).request().accept(MediaType.APPLICATION_JSON)
@@ -99,7 +94,7 @@ public class ClientResourceTest {
   /*
    * Delete Tests
    */
-  // @Test
+  @Test
   public void deleteDelegatesToResourceDelegate() throws Exception {
     inMemoryResource.client().target(FOUND_RESOURCE).request().accept(MediaType.APPLICATION_JSON)
         .delete();
@@ -109,20 +104,18 @@ public class ClientResourceTest {
   /*
    * Update Tests
    */
-  // @Test
+  @Test
   public void updateDelegatesToResourceDelegate() throws Exception {
-    Client serialized =
-        MAPPER.readValue(fixture("fixtures/domain/legacy/Client/valid/valid.json"), Client.class);
+    Client serialized = new ClientResourceBuilder().build();
 
     inMemoryResource.client().target(FOUND_RESOURCE).request().accept(MediaType.APPLICATION_JSON)
         .put(Entity.entity(serialized, MediaType.APPLICATION_JSON));
     verify(resourceDelegate).update(eq("AaiU7IW0Rt"), eq(serialized));
   }
 
-  // @Test
+  @Test
   public void updateValidatesEntity() throws Exception {
-    Client serialized = MAPPER.readValue(
-        fixture("fixtures/domain/legacy/Client/invalid/birthDateInvalidFormat.json"), Client.class);
+    Client serialized = new ClientResourceBuilder().setBirthDate("03/31/1993").build();
 
     int status = inMemoryResource.client().target(FOUND_RESOURCE).request()
         .accept(MediaType.APPLICATION_JSON)

@@ -7,6 +7,9 @@ import static org.junit.Assert.assertThat;
 
 import java.math.BigDecimal;
 
+import javax.persistence.EntityExistsException;
+import javax.persistence.EntityNotFoundException;
+
 import org.hamcrest.junit.ExpectedException;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -18,12 +21,12 @@ import org.junit.BeforeClass;
 import org.junit.Rule;
 import org.junit.Test;
 
-import gov.ca.cwds.data.junit.template.DaoTestTemplate;
 import gov.ca.cwds.data.persistence.cms.CmsKeyIdGenerator;
 import gov.ca.cwds.data.persistence.cms.ReferralAssignment;
 import gov.ca.cwds.rest.api.domain.DomainChef;
 
-public class ReferralAssignmentDaoIT implements DaoTestTemplate {
+@SuppressWarnings("javadoc")
+public class ReferralAssignmentDaoIT {
 
   private static SessionFactory sessionFactory;
   private static ReferralAssignmentDao dao;
@@ -72,38 +75,30 @@ public class ReferralAssignmentDaoIT implements DaoTestTemplate {
     sessionFactory.close();
   }
 
-  @Override
   @Before
   public void setup() {
     session = sessionFactory.getCurrentSession();
     session.beginTransaction();
   }
 
-  @Override
   @After
   public void teardown() {
     session.getTransaction().rollback();
   }
 
-  @Override
   @Test
-  // @Ignore
   public void testFind() throws Exception {
     ReferralAssignment found = dao.find(id);
     assertThat(found.getId(), is(equalTo(id)));
   }
 
-  @Override
   @Test
-  // @Ignore
   public void testFindEntityNotFoundException() throws Exception {
     ReferralAssignment found = dao.find("xxxxxyzuk3");
     assertThat(found, is(nullValue()));
   }
 
-  @Override
   @Test
-  // @Ignore
   public void testCreate() throws Exception {
     ReferralAssignment pa = new ReferralAssignment(countySpecificCode,
         DomainChef.uncookDateString(endDate), DomainChef.uncookTimeString(endTime),
@@ -117,25 +112,62 @@ public class ReferralAssignmentDaoIT implements DaoTestTemplate {
     assertThat(pa, is(create));
   }
 
-  @Override
-  public void testFindAllNamedQueryExist() throws Exception {}
+  @Test(expected = EntityExistsException.class)
+  public void testCreateExistingEntityException() throws Exception {
+    ReferralAssignment pa = new ReferralAssignment(countySpecificCode,
+        DomainChef.uncookDateString(endDate), DomainChef.uncookTimeString(endTime),
+        establishedForId, caseLoadId, outOfStatePartyContactId, responsiblityDescription,
+        secondaryReferralAssignmentRoleType, DomainChef.uncookDateString(startDate),
+        DomainChef.uncookTimeString(startTime), typeOfReferralAssignmentCode, weightingNumber);
 
-  @Override
-  public void testFindAllReturnsCorrectList() throws Exception {}
+    pa.setId(id);
+    dao.create(pa);
 
-  @Override
-  public void testCreateExistingEntityException() throws Exception {}
+  }
 
-  @Override
-  public void testDelete() throws Exception {}
+  /**
+   * Delete JUnit test
+   */
+  @Test
+  public void testDelete() throws Exception {
+    ReferralAssignment deleted = dao.delete(id);
+    assertThat(deleted.getId(), is(id));
+  }
 
-  @Override
-  public void testDeleteEntityNotFoundException() throws Exception {}
+  @Test
+  public void testDeleteEntityNotFoundException() throws Exception {
+    ReferralAssignment deleted = dao.delete("Gxqddjyqwd");
+    assertThat(deleted, is(nullValue()));
+  }
 
-  @Override
-  public void testUpdate() throws Exception {}
+  /**
+   * Update JUnit test
+   */
+  @Test
+  public void testUpdate() throws Exception {
+    ReferralAssignment pa = new ReferralAssignment(countySpecificCode,
+        DomainChef.uncookDateString(endDate), DomainChef.uncookTimeString(endTime),
+        establishedForId, caseLoadId, outOfStatePartyContactId, responsiblityDescription,
+        secondaryReferralAssignmentRoleType, DomainChef.uncookDateString(startDate),
+        DomainChef.uncookTimeString(startTime), typeOfReferralAssignmentCode, weightingNumber);
 
-  @Override
-  public void testUpdateEntityNotFoundException() throws Exception {}
+    pa.setId(id);
+
+    ReferralAssignment update = dao.update(pa);
+    assertThat(pa, is(update));
+  }
+
+  @Test(expected = EntityNotFoundException.class)
+  public void testUpdateEntityNotFoundException() throws Exception {
+    ReferralAssignment pa = new ReferralAssignment(countySpecificCode,
+        DomainChef.uncookDateString(endDate), DomainChef.uncookTimeString(endTime),
+        establishedForId, caseLoadId, outOfStatePartyContactId, responsiblityDescription,
+        secondaryReferralAssignmentRoleType, DomainChef.uncookDateString(startDate),
+        DomainChef.uncookTimeString(startTime), typeOfReferralAssignmentCode, weightingNumber);
+
+    pa.setId("hjkbacecF");
+
+    dao.update(pa);
+  }
 
 }

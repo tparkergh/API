@@ -1,5 +1,7 @@
 package gov.ca.cwds.rest.resources.cms;
 
+import static gov.ca.cwds.rest.core.Api.RESOURCE_ALLEGATION_PERPETRATOR_HISTORY;
+
 import javax.validation.Valid;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
@@ -37,8 +39,8 @@ import io.swagger.annotations.ApiResponses;
  * 
  * @author CWDS API Team
  */
-@Api(value = "_allegationPerpetratorHistory")
-@Path(value = "_allegationPerpetratorHistory")
+@Api(value = RESOURCE_ALLEGATION_PERPETRATOR_HISTORY)
+@Path(value = RESOURCE_ALLEGATION_PERPETRATOR_HISTORY)
 @Produces(MediaType.APPLICATION_JSON)
 @Consumes(MediaType.APPLICATION_JSON)
 public class AllegationPerpetratorHistoryResource {

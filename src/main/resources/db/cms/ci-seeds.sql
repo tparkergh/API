@@ -149,3 +149,23 @@ VALUES ('SlCAr46088', '1998-09-10', '14:14:00', 'SvgDqxm0AJ', 'R', 0, '1998-09-0
 truncate table cwsint.TICKLE_T immediate;
 INSERT INTO CWSINT.TICKLE_T(IDENTIFIER, AFTBY_CRID, AFCTD_BYCD, AFCTD_THID, AFTBY_OTID, DUE_DT, NOTE_TXT, TKL_MSGC, LST_UPD_ID, LST_UPD_TS) 
 VALUES ('AabekZX00F', 'QjoHhgJ00F', 'CC', null, 'K5Fk8Yd00F', '1999-07-01', null, 2055, '00F', '1999-11-23 06:59:33.493395');
+
+truncate table cwsint.ADDRS_UC immediate;
+INSERT INTO CWSINT.ADDRS_UC(PKTBL_ID, SRCTBL_CD, CITY_NM, LST_UPD_ID, LST_UPD_TS, STREET_NM, STREET_NO) 
+VALUES ('AbjqVmy04O', 'A', 'HANFORD', '04O', '2004-05-17 15:49:26.191285', 'SOUTH MAIN', '5885');
+
+truncate table cwsint.EXTINF_T immediate;
+INSERT INTO CWSINT.EXTINF_T(SEQ_NO,SUBMTL_TS,TABLE_NAME,OPER_TYPE,PRM_KEY_1,PRM_KEY_2,PRM_KEY_3,PRM_KEY_4,PRM_KEY_5,PRM_KEY_6,PRM_KEY_7,PRM_KEY_8,START_DT,AST_UNT_CD,PERSON_NO,SERIAL_NO,AID_TPC,GVR_ENTC,LICENSE_NO,RESPONS_DT,RECEIVE_DT,RAP_ID,FBI_IND,CRSP_TPC,OTHER_DATA,L_USERID)
+VALUES (1,'2004-08-03 14:53:04.382631','ST_ID_T ','N','KZQ79se0V2','          ','          ','          ','          ','          ','          ','          ','2004-08-03', '1', '12', '1234568', 0, 1124, '         ', '          ', '          ', '          ', ' ', 0, '          DyN0KOO0V2                                                                                                                                                                                                                                          ',	 'SMITHBO ');
+
+truncate table cwsint.CLN_RELT immediate;
+INSERT INTO CWSINT.CLN_RELT(IDENTIFIER, ABSENT_CD, CLNTRELC, END_DT, SAME_HM_CD, START_DT, LST_UPD_ID, LST_UPD_TS, FKCLIENT_T, FKCLIENT_0) 
+VALUES ('Aaqj06L00h', 'N', 179, null, 'Y', null, '00h', '1997-09-15 09:53:49.687102', '0LIZAWH00h', 'GjRyRJh00h');
+
+truncate table cwsint.CLN_COLT immediate;
+INSERT INTO CWSINT.CLN_COLT(ACTIVE_IND, COL_RELC, COMNT_DSC, LST_UPD_ID, LST_UPD_TS, THIRD_ID, FKCOLTRL_T, FKCLIENT_T) 
+VALUES ('Y', 580, '                                                  ', '00b', '1997-12-12 09:32:05.286839', 'AaxovM900b', '8mRr2gb00b', '0mnwWdl00b');
+
+truncate table cwsint.COLTRL_T immediate;
+INSERT INTO CWSINT.COLTRL_T(IDENTIFIER, BADGE_NO, CITY_NM, EMPLYR_NM, FAX_NO, FIRST_NM, FRG_ADRT_B, LAST_NM, MID_INI_NM, NMPRFX_DSC, PRM_TEL_NO, PRM_EXT_NO, STATE_C, STREET_NM, STREET_NO, SUFX_TLDSC, ZIP_NO, LST_UPD_ID, LST_UPD_TS, ZIP_SFX_NO, COMNT_DSC, GENDER_CD, BIRTH_DT, MRTL_STC, EMAIL_ADDR, ESTBLSH_CD, ESTBLSH_ID, RESOST_IND) 
+VALUES ('AarHGUP0Ki', '      ', 'Blythe              ', '                                   ', 0, 'Sandy               ', 'N', 'A.                       ', ' ', '      ', 6190008021, 0, 1828, 'Fake Circle                             ', '5602      ', '    ', 92225, '0Ki', '2001-04-25 07:50:46.576797', 0, '                                                                                                                                                                                                                                                              ', 'U', null, 0, null, null, null, null);

@@ -50,7 +50,7 @@ public class OtherAdultInPlacemtHomeDaoIT implements DaoTestTemplate {
   @SuppressWarnings("javadoc")
   @BeforeClass
   public static void beforeClass() {
-    sessionFactory = new Configuration().configure("hibernate.cfg.xml").buildSessionFactory();
+    sessionFactory = new Configuration().configure().buildSessionFactory();
     otherAdultInPlacemtHomeDao = new OtherAdultInPlacemtHomeDao(sessionFactory);
   }
 

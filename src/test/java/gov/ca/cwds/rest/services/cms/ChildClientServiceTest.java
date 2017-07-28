@@ -112,6 +112,20 @@ public class ChildClientServiceTest {
     assertThat(found, is(nullValue()));
   }
 
+  @SuppressWarnings("javadoc")
+  @Test
+  public void childClientServiceDeleteReturnsNotNull() throws Exception {
+    String id = "ABC1234567";
+    ChildClient expected = MAPPER.readValue(
+        fixture("fixtures/domain/legacy/ChildClient/valid/valid.json"), ChildClient.class);
+    gov.ca.cwds.data.persistence.cms.ChildClient childClient =
+        new gov.ca.cwds.data.persistence.cms.ChildClient(id, expected, "0XA");
+
+    when(childClientDao.delete(id)).thenReturn(childClient);
+    ChildClient found = childClientService.delete(id);
+    assertThat(found, is(expected));
+  }
+
   // update test
   @SuppressWarnings("javadoc")
   @Test

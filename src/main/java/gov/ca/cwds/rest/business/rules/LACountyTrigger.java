@@ -1,7 +1,5 @@
 package gov.ca.cwds.rest.business.rules;
 
-import java.util.Date;
-
 import javax.persistence.Table;
 
 import org.slf4j.Logger;
@@ -96,17 +94,17 @@ public class LACountyTrigger {
       if (clientAddress.getFkClient() != "" && clientAddress.getFkClient() != null
           && clientAddress.getFkAddress() != "" && clientAddress.getFkAddress() != null) {
         CountyTrigger countyTrigger1 = new CountyTrigger(clientAddress.getFkClient(),
-            LA_COUNTY_SPECIFIC_CODE, CLIENT_COUNTYOWNERSHIP, new Date(),
+            LA_COUNTY_SPECIFIC_CODE, CLIENT_COUNTYOWNERSHIP, null,
             ClientAddress.class.getDeclaredAnnotation(Table.class).name());
 
         CountyTrigger countyTrigger2 = new CountyTrigger(clientAddress.getFkAddress(),
-            LA_COUNTY_SPECIFIC_CODE, ADDRESS_COUNTYOWNERSHIP, new Date(),
+            LA_COUNTY_SPECIFIC_CODE, ADDRESS_COUNTYOWNERSHIP, null,
             ClientAddress.class.getDeclaredAnnotation(Table.class).name());
 
         countyTriggerDao.create(countyTrigger1);
         countyTriggerDao.create(countyTrigger2);
+        LOGGER.info("LA county clientAddress triggered");
       }
-      LOGGER.info("LA county clientAddress triggered");
     }
     return true;
   }

@@ -89,6 +89,15 @@ public class TickleServiceTest {
     }
   }
 
+  @Test(expected = AssertionError.class)
+  public void tickleServiceDeleteThrowsAssertionErrorForNull() throws Exception {
+    try {
+      tickleService.delete(null);
+    } catch (AssertionError e) {
+      assertEquals("Expected AssertionError", e.getMessage());
+    }
+  }
+
   @Test
   public void tickleServiceDeleteDelegatesToCrudsService() {
     tickleService.delete("ABC2345678");
@@ -99,6 +108,19 @@ public class TickleServiceTest {
   public void tickleServiceDeleteReturnsNullWhenNotFound() throws Exception {
     Response found = tickleService.delete("ABC1234567");
     assertThat(found, is(nullValue()));
+  }
+
+  @Test
+  public void tickleServiceDeleteReturnsNotNull() throws Exception {
+    String id = "AabekZX00F";
+    Tickle expected =
+        MAPPER.readValue(fixture("fixtures/domain/legacy/Tickle/valid/valid.json"), Tickle.class);
+    gov.ca.cwds.data.persistence.cms.Tickle tickle =
+        new gov.ca.cwds.data.persistence.cms.Tickle(id, expected, "0XA");
+
+    when(tickleDao.delete(id)).thenReturn(tickle);
+    Tickle found = tickleService.delete(id);
+    assertThat(found, is(expected));
   }
 
   // update test

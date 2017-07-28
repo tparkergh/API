@@ -9,14 +9,13 @@ import static org.mockito.Mockito.verify;
 import javax.ws.rs.client.Entity;
 import javax.ws.rs.core.MediaType;
 
-import org.hamcrest.junit.ExpectedException;
 import org.junit.Before;
 import org.junit.ClassRule;
-import org.junit.Rule;
 import org.junit.Test;
 import org.mockito.Mockito;
 
 import gov.ca.cwds.rest.api.domain.Screening;
+import gov.ca.cwds.rest.resources.cms.JerseyGuiceRule;
 import io.dropwizard.testing.junit.ResourceTestRule;
 
 /**
@@ -26,13 +25,13 @@ import io.dropwizard.testing.junit.ResourceTestRule;
  * @author CWDS API Team
  */
 public class ScreeningResourceTest {
-  private static final String ROOT_RESOURCE = "/screenings/";
-  private static final String FOUND_RESOURCE = "/screenings/1";
 
-  @Rule
-  public ExpectedException thrown = ExpectedException.none();
+  private static final String ROOT_RESOURCE = "/screenings/";
 
   private static final ResourceDelegate resourceDelegate = mock(ResourceDelegate.class);
+
+  @ClassRule
+  public static final JerseyGuiceRule rule = new JerseyGuiceRule();
 
   @ClassRule
   public static final ResourceTestRule inMemoryResource =
@@ -44,37 +43,17 @@ public class ScreeningResourceTest {
   }
 
   /*
-   * Get Tests
-   */
-
-  @Test
-  public void testGetNotImplemented() throws Exception {
-    int receivedStatus = inMemoryResource.client().target("/screenings/fetch/abc").request()
-        .accept(MediaType.APPLICATION_JSON).get().getStatus();
-    int expectedStatus = 501;
-    assertThat(receivedStatus, is(expectedStatus));
-  }
-
-  /*
-   * Delete Tests
-   */
-  @Test
-  public void testDeletedNotNotImplemented() throws Exception {
-    int receivedStatus = inMemoryResource.client().target(FOUND_RESOURCE).request()
-        .accept(MediaType.APPLICATION_JSON).delete().getStatus();
-    int expectedStatus = 501;
-    assertThat(receivedStatus, is(expectedStatus));
-  }
-
-  /*
    * Create Tests
    */
   @Test
   public void testCreate() throws Exception {
     Screening screening = new Screening("abc", "screening", "reference", "screeningDecision",
         "screeningDecisionDetail", "assignee", "2017-01-01");
-    inMemoryResource.client().target(ROOT_RESOURCE).request().accept(MediaType.APPLICATION_JSON)
-        .post(Entity.entity(screening, MediaType.APPLICATION_JSON));
+    int actualStatus =
+        inMemoryResource.client().target(ROOT_RESOURCE).request().accept(MediaType.APPLICATION_JSON)
+            .post(Entity.entity(screening, MediaType.APPLICATION_JSON)).getStatus();
+    int expectedStatus = 204; // in real web interaction this would be 201
+    assertThat(actualStatus, is(expectedStatus));
     verify(resourceDelegate).create(eq(screening));
   }
 
@@ -94,24 +73,31 @@ public class ScreeningResourceTest {
   /*
    * Update Tests
    */
-  // @Test
+  @Test
   public void testUpdate() throws Exception {
-    Screening screening = new Screening("", "", "", "", "", "", "");
-    inMemoryResource.client().target("screenings/abc").request().accept(MediaType.APPLICATION_JSON)
-        .put(Entity.entity(screening, MediaType.APPLICATION_JSON));
+    Screening screening = new Screening("abc", "screening", "reference", "screeningDecision",
+        "screeningDecisionDetail", "assignee", "2017-01-01");
+
+    int actualStatus = inMemoryResource.client().target(ROOT_RESOURCE + "abc").request()
+        .accept(MediaType.APPLICATION_JSON)
+        .put(Entity.entity(screening, MediaType.APPLICATION_JSON)).getStatus();
+
+    int expectedStatus = 204; // in real web interaction this would be 200
+    assertThat(actualStatus, is(expectedStatus));
     verify(resourceDelegate).update(eq("abc"), eq(screening));
   }
 
   /*
    * Update Tests
    */
-  // @Test
+  @Test
   public void testUpdateInvalid() throws Exception {
-    Screening screening = new Screening("", "", "", "screeningDecision", "screeningDecisionDetail",
-        "assignee", "2017-01-01");
-    int actualStatus = inMemoryResource.client().target("screenings/abc").request()
+    Screening screening = new Screening("", "", "", "", "", "", "");
+
+    int actualStatus = inMemoryResource.client().target(ROOT_RESOURCE + "abc").request()
         .accept(MediaType.APPLICATION_JSON)
         .put(Entity.entity(screening, MediaType.APPLICATION_JSON)).getStatus();
+
     int expectedStatus = 422;
     assertThat(actualStatus, is(expectedStatus));
   }

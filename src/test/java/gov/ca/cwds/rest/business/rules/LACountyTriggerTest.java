@@ -1,6 +1,5 @@
 package gov.ca.cwds.rest.business.rules;
 
-import static io.dropwizard.testing.FixtureHelpers.fixture;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.is;
@@ -19,22 +18,21 @@ import org.mockito.stubbing.Answer;
 
 import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.databind.JsonMappingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 
 import gov.ca.cwds.data.cms.CountyTriggerDao;
 import gov.ca.cwds.data.persistence.cms.ClientAddress;
 import gov.ca.cwds.data.persistence.cms.CountyTrigger;
 import gov.ca.cwds.data.persistence.cms.Referral;
 import gov.ca.cwds.data.persistence.cms.ReferralClient;
-import gov.ca.cwds.data.persistence.cms.SystemCodeTestHarness;
+import gov.ca.cwds.fixture.ClientAddressResourceBuilder;
+import gov.ca.cwds.fixture.ReferralClientResourceBuilder;
+import gov.ca.cwds.fixture.ReferralResourceBuilder;
 
 /**
  * @author CWDS API Team
  *
  */
 public class LACountyTriggerTest {
-
-  private static final ObjectMapper MAPPER = SystemCodeTestHarness.MAPPER;
 
   private CountyTriggerDao countyTriggerDao;
   private LACountyTrigger laCountyTrigger;
@@ -65,10 +63,8 @@ public class LACountyTriggerTest {
 
     when(countyTriggerDao.find(any(String.class))).thenReturn(null);
 
-    gov.ca.cwds.rest.api.domain.cms.Referral validDomainReferral = MAPPER.readValue(
-        fixture("fixtures/legacy/business/rules/laCountyTrigger/validReferral.json"),
-        gov.ca.cwds.rest.api.domain.cms.Referral.class);
-
+    gov.ca.cwds.rest.api.domain.cms.Referral validDomainReferral =
+        new ReferralResourceBuilder().setAllegesAbuseOccurredAtAddressId("1234567ABC").build();
     when(countyTriggerDao.create(any(CountyTrigger.class))).thenAnswer(new Answer<CountyTrigger>() {
 
       @Override
@@ -95,10 +91,36 @@ public class LACountyTriggerTest {
 
     when(countyTriggerDao.find(any(String.class))).thenReturn(null);
 
-    gov.ca.cwds.rest.api.domain.cms.Referral validDomainReferral = MAPPER.readValue(
-        fixture(
-            "fixtures/legacy/business/rules/laCountyTrigger/allegesAbuseOccurredAtAddressIdNull.json"),
-        gov.ca.cwds.rest.api.domain.cms.Referral.class);
+    gov.ca.cwds.rest.api.domain.cms.Referral validDomainReferral =
+        new ReferralResourceBuilder().setAllegesAbuseOccurredAtAddressId(null).build();
+
+    when(countyTriggerDao.create(any(CountyTrigger.class))).thenAnswer(new Answer<CountyTrigger>() {
+
+      @Override
+      public CountyTrigger answer(InvocationOnMock invocation) throws Throwable {
+        CountyTrigger report = (CountyTrigger) invocation.getArguments()[0];
+        countyTrigger = report;
+        return report;
+      }
+    });
+
+    Referral referral = new Referral("ABC1234567", validDomainReferral, "BTr");
+    laCountyTrigger.createCountyTrigger(referral);
+    assertThat(countyTrigger, is(equalTo(null)));
+  }
+
+  /*
+   * Test for checking referral county trigger not created as FkAddress_T is empty
+   */
+  @SuppressWarnings("javadoc")
+  @Test
+  public void referralFkAddresssIdEmptyTest()
+      throws JsonParseException, JsonMappingException, IOException {
+
+    when(countyTriggerDao.find(any(String.class))).thenReturn(null);
+
+    gov.ca.cwds.rest.api.domain.cms.Referral validDomainReferral =
+        new ReferralResourceBuilder().setAllegesAbuseOccurredAtAddressId("").build();
 
     when(countyTriggerDao.create(any(CountyTrigger.class))).thenAnswer(new Answer<CountyTrigger>() {
 
@@ -125,9 +147,8 @@ public class LACountyTriggerTest {
 
     when(countyTriggerDao.find(any(String.class))).thenReturn(null);
 
-    gov.ca.cwds.rest.api.domain.cms.ReferralClient validDomainReferralClient = MAPPER.readValue(
-        fixture("fixtures/legacy/business/rules/laCountyTrigger/validReferralClient.json"),
-        gov.ca.cwds.rest.api.domain.cms.ReferralClient.class);
+    gov.ca.cwds.rest.api.domain.cms.ReferralClient validDomainReferralClient =
+        new ReferralClientResourceBuilder().setClientId("ABC1234567").buildReferralClient();
 
     when(countyTriggerDao.create(any(CountyTrigger.class))).thenAnswer(new Answer<CountyTrigger>() {
 
@@ -155,10 +176,36 @@ public class LACountyTriggerTest {
 
     when(countyTriggerDao.find(any(String.class))).thenReturn(null);
 
-    gov.ca.cwds.rest.api.domain.cms.ReferralClient validDomainReferralClient = MAPPER.readValue(
-        fixture(
-            "fixtures/legacy/business/rules/laCountyTrigger/referralClientFkClientTIdNull.json"),
-        gov.ca.cwds.rest.api.domain.cms.ReferralClient.class);
+    gov.ca.cwds.rest.api.domain.cms.ReferralClient validDomainReferralClient =
+        new ReferralClientResourceBuilder().setClientId(null).buildReferralClient();
+
+    when(countyTriggerDao.create(any(CountyTrigger.class))).thenAnswer(new Answer<CountyTrigger>() {
+
+      @Override
+      public CountyTrigger answer(InvocationOnMock invocation) throws Throwable {
+        CountyTrigger report = (CountyTrigger) invocation.getArguments()[0];
+        countyTrigger = report;
+        return report;
+      }
+    });
+
+    ReferralClient referralClient = new ReferralClient(validDomainReferralClient, "BTr");
+    laCountyTrigger.createCountyTrigger(referralClient);
+    assertThat(countyTrigger, is(equalTo(null)));
+  }
+
+  /*
+   * Test for checking referralClient county trigger not created as FkClient_T is empty
+   */
+  @SuppressWarnings("javadoc")
+  @Test
+  public void referralClientFkClientIdEmptyTest()
+      throws JsonParseException, JsonMappingException, IOException {
+
+    when(countyTriggerDao.find(any(String.class))).thenReturn(null);
+
+    gov.ca.cwds.rest.api.domain.cms.ReferralClient validDomainReferralClient =
+        new ReferralClientResourceBuilder().setClientId("").buildReferralClient();
 
     when(countyTriggerDao.create(any(CountyTrigger.class))).thenAnswer(new Answer<CountyTrigger>() {
 
@@ -185,9 +232,8 @@ public class LACountyTriggerTest {
 
     when(countyTriggerDao.find(any(String.class))).thenReturn(null);
 
-    gov.ca.cwds.rest.api.domain.cms.ClientAddress validDomainClientAddress = MAPPER.readValue(
-        fixture("fixtures/legacy/business/rules/laCountyTrigger/validClientAddress.json"),
-        gov.ca.cwds.rest.api.domain.cms.ClientAddress.class);
+    gov.ca.cwds.rest.api.domain.cms.ClientAddress validDomainClientAddress =
+        new ClientAddressResourceBuilder().setFkAddress("1234567ABC").buildClientAddress();
 
     when(countyTriggerDao.create(any(CountyTrigger.class))).thenAnswer(new Answer<CountyTrigger>() {
 
@@ -215,9 +261,36 @@ public class LACountyTriggerTest {
 
     when(countyTriggerDao.find(any(String.class))).thenReturn(null);
 
-    gov.ca.cwds.rest.api.domain.cms.ClientAddress validDomainClientAddress = MAPPER.readValue(
-        fixture("fixtures/legacy/business/rules/laCountyTrigger/fkAddressTNull.json"),
-        gov.ca.cwds.rest.api.domain.cms.ClientAddress.class);
+    gov.ca.cwds.rest.api.domain.cms.ClientAddress validDomainClientAddress =
+        new ClientAddressResourceBuilder().setFkAddress(null).buildClientAddress();
+
+    when(countyTriggerDao.create(any(CountyTrigger.class))).thenAnswer(new Answer<CountyTrigger>() {
+
+      @Override
+      public CountyTrigger answer(InvocationOnMock invocation) throws Throwable {
+        CountyTrigger report = (CountyTrigger) invocation.getArguments()[0];
+        countyTrigger = report;
+        return report;
+      }
+    });
+
+    ClientAddress clientAddress = new ClientAddress("ABC1234567", validDomainClientAddress, "BTr");
+    laCountyTrigger.createClientAddressCountyTrigger(clientAddress);
+    assertThat(countyTrigger, is(equalTo(null)));
+  }
+
+  /*
+   * Test for checking clientAddress county trigger not created as FkAddress_T is empty
+   */
+  @SuppressWarnings("javadoc")
+  @Test
+  public void clientAddressfkAddressIdEmptyTest()
+      throws JsonParseException, JsonMappingException, IOException {
+
+    when(countyTriggerDao.find(any(String.class))).thenReturn(null);
+
+    gov.ca.cwds.rest.api.domain.cms.ClientAddress validDomainClientAddress =
+        new ClientAddressResourceBuilder().setFkAddress("").buildClientAddress();
 
     when(countyTriggerDao.create(any(CountyTrigger.class))).thenAnswer(new Answer<CountyTrigger>() {
 
@@ -244,9 +317,36 @@ public class LACountyTriggerTest {
 
     when(countyTriggerDao.find(any(String.class))).thenReturn(null);
 
-    gov.ca.cwds.rest.api.domain.cms.ClientAddress validDomainClientAddress = MAPPER.readValue(
-        fixture("fixtures/legacy/business/rules/laCountyTrigger/fkClientTNull.json"),
-        gov.ca.cwds.rest.api.domain.cms.ClientAddress.class);
+    gov.ca.cwds.rest.api.domain.cms.ClientAddress validDomainClientAddress =
+        new ClientAddressResourceBuilder().setFkClient(null).buildClientAddress();
+
+    when(countyTriggerDao.create(any(CountyTrigger.class))).thenAnswer(new Answer<CountyTrigger>() {
+
+      @Override
+      public CountyTrigger answer(InvocationOnMock invocation) throws Throwable {
+        CountyTrigger report = (CountyTrigger) invocation.getArguments()[0];
+        countyTrigger = report;
+        return report;
+      }
+    });
+
+    ClientAddress clientAddress = new ClientAddress("ABC1234567", validDomainClientAddress, "BTr");
+    laCountyTrigger.createClientAddressCountyTrigger(clientAddress);
+    assertThat(countyTrigger, is(equalTo(null)));
+  }
+
+  /*
+   * Test for checking clientAddress county trigger not created as FkClient_T is empty
+   */
+  @SuppressWarnings("javadoc")
+  @Test
+  public void clientAddressfkclientIdEmptyTest()
+      throws JsonParseException, JsonMappingException, IOException {
+
+    when(countyTriggerDao.find(any(String.class))).thenReturn(null);
+
+    gov.ca.cwds.rest.api.domain.cms.ClientAddress validDomainClientAddress =
+        new ClientAddressResourceBuilder().setFkClient("").buildClientAddress();
 
     when(countyTriggerDao.create(any(CountyTrigger.class))).thenAnswer(new Answer<CountyTrigger>() {
 

@@ -50,21 +50,12 @@ public class UpperCaseTables {
    * @param client Client creates the client upper case with the client Id
    */
   public void createClientUc(Client client) {
-    if (client.getCommonFirstName() != null) {
-      ClientUc clientUc = new ClientUc();
-      clientUc.setPktableId(client.getPrimaryKey());
-      clientUc.setSourceTableCode(SOURCE_TBL_CD_CLIENT);
-      clientUc.setCommonFirstName(convertToUpperCase(client.getCommonFirstName()));
-      clientUc.setCommonMiddleName(convertToUpperCase(client.getCommonMiddleName()));
-      clientUc.setCommonLastName(convertToUpperCase(client.getCommonLastName()));
-      clientUc.setLastUpdatedId(client.getLastUpdatedId());
-      clientUc.setLastUpdatedTime(client.getLastUpdatedTime());
-      try {
-        clientUcDao.create(clientUc);
-        LOGGER.info("clientUc is created");
-      } catch (ServiceException se) {
-        throw new DaoException("Insert to client_uc failed - " + se);
-      }
+    ClientUc clientUc = createClientUpperCase(client);
+    try {
+      clientUcDao.create(clientUc);
+      LOGGER.info("clientUc is created");
+    } catch (ServiceException se) {
+      throw new DaoException("Insert to client_uc failed - " + se);
     }
   }
 
@@ -72,21 +63,12 @@ public class UpperCaseTables {
    * @param client Client updates the client upper case with the client Id
    */
   public void updateClientUc(Client client) {
-    if (client.getCommonFirstName() != null) {
-      ClientUc clientUc = new ClientUc();
-      clientUc.setPktableId(client.getPrimaryKey());
-      clientUc.setSourceTableCode(SOURCE_TBL_CD_CLIENT);
-      clientUc.setCommonFirstName(convertToUpperCase(client.getCommonFirstName()));
-      clientUc.setCommonMiddleName(convertToUpperCase(client.getCommonMiddleName()));
-      clientUc.setCommonLastName(convertToUpperCase(client.getCommonLastName()));
-      clientUc.setLastUpdatedId(client.getLastUpdatedId());
-      clientUc.setLastUpdatedTime(client.getLastUpdatedTime());
-      try {
-        clientUcDao.update(clientUc);
-        LOGGER.info("clientUc is updated");
-      } catch (ServiceException se) {
-        throw new DaoException("Update to client_uc failed - " + se);
-      }
+    ClientUc clientUc = createClientUpperCase(client);
+    try {
+      clientUcDao.update(clientUc);
+      LOGGER.info("clientUc is updated");
+    } catch (ServiceException se) {
+      throw new DaoException("Update to client_uc failed - " + se);
     }
   }
 
@@ -95,10 +77,8 @@ public class UpperCaseTables {
    */
   public void deleteClientUc(Serializable pktableId) {
     if (pktableId != null) {
-      ClientUc clientUc = new ClientUc();
-      clientUc.setPktableId((String) pktableId);
       try {
-        clientUcDao.delete(clientUc);
+        clientUcDao.delete(pktableId);
         LOGGER.info("clientUc is deleted");
       } catch (ServiceException se) {
         throw new DaoException("Delete from client_uc failed - " + se);
@@ -110,21 +90,12 @@ public class UpperCaseTables {
    * @param address Address creates the address upper case with the address Id
    */
   public void createAddressUc(Address address) {
-    if (address.getStreetName() != null) {
-      AddressUc addressUc = new AddressUc();
-      addressUc.setPktableId(address.getPrimaryKey());
-      addressUc.setSourceTableCode(SOURCE_TBL_CD_ADDRESS);
-      addressUc.setCityName(convertToUpperCase(address.getCity()));
-      addressUc.setStreetNumber(convertToUpperCase(address.getStreetNumber()));
-      addressUc.setStreetName(convertToUpperCase(address.getStreetName()));
-      addressUc.setLastUpdatedId(address.getLastUpdatedId());
-      addressUc.setLastUpdatedTime(address.getLastUpdatedTime());
-      try {
-        addressUcDao.create(addressUc);
-        LOGGER.info("addressUc is created");
-      } catch (ServiceException se) {
-        throw new DaoException("Insert to addrs_uc failed - " + se);
-      }
+    AddressUc addressUc = createAddressUpperCase(address);
+    try {
+      addressUcDao.create(addressUc);
+      LOGGER.info("addressUc is created");
+    } catch (ServiceException se) {
+      throw new DaoException("Insert to addrs_uc failed - " + se);
     }
   }
 
@@ -132,21 +103,12 @@ public class UpperCaseTables {
    * @param address Address updates the address upper case with the address Id
    */
   public void updateAddressUc(Address address) {
-    if (address.getStreetName() != null) {
-      AddressUc addressUc = new AddressUc();
-      addressUc.setPktableId(address.getPrimaryKey());
-      addressUc.setSourceTableCode(SOURCE_TBL_CD_ADDRESS);
-      addressUc.setCityName(convertToUpperCase(address.getCity()));
-      addressUc.setStreetNumber(convertToUpperCase(address.getStreetNumber()));
-      addressUc.setStreetName(convertToUpperCase(address.getStreetName()));
-      addressUc.setLastUpdatedId(address.getLastUpdatedId());
-      addressUc.setLastUpdatedTime(address.getLastUpdatedTime());
-      try {
-        addressUcDao.update(addressUc);
-        LOGGER.info("addressUc is updated");
-      } catch (ServiceException se) {
-        throw new DaoException("Update to addrs_uc failed - " + se);
-      }
+    AddressUc addressUc = createAddressUpperCase(address);
+    try {
+      addressUcDao.update(addressUc);
+      LOGGER.info("addressUc is updated");
+    } catch (ServiceException se) {
+      throw new DaoException("Update to addrs_uc failed - " + se);
     }
   }
 
@@ -155,10 +117,8 @@ public class UpperCaseTables {
    */
   public void deleteAddressUc(Serializable pktableId) {
     if (pktableId != null) {
-      AddressUc addressUc = new AddressUc();
-      addressUc.setPktableId((String) pktableId);
       try {
-        addressUcDao.delete(addressUc);
+        addressUcDao.delete(pktableId);
         LOGGER.info("addressUc is deleted");
       } catch (ServiceException se) {
         throw new DaoException("Delete from addrs_uc failed - " + se);
@@ -166,5 +126,38 @@ public class UpperCaseTables {
     }
   }
 
+  /**
+   * 
+   * @param client - client
+   * @return the created clientUpperCase
+   */
+  private ClientUc createClientUpperCase(Client client) {
+    ClientUc clientUc = new ClientUc();
+    clientUc.setPktableId(client.getPrimaryKey());
+    clientUc.setSourceTableCode(SOURCE_TBL_CD_CLIENT);
+    clientUc.setCommonFirstName(convertToUpperCase(client.getCommonFirstName()));
+    clientUc.setCommonMiddleName(convertToUpperCase(client.getCommonMiddleName()));
+    clientUc.setCommonLastName(convertToUpperCase(client.getCommonLastName()));
+    clientUc.setLastUpdatedId(client.getLastUpdatedId());
+    clientUc.setLastUpdatedTime(client.getLastUpdatedTime());
+    return clientUc;
+  }
+
+  /**
+   * 
+   * @param address - address
+   * @return the created addressUpperCase
+   */
+  private AddressUc createAddressUpperCase(Address address) {
+    AddressUc addressUc = new AddressUc();
+    addressUc.setPktableId(address.getPrimaryKey());
+    addressUc.setSourceTableCode(SOURCE_TBL_CD_ADDRESS);
+    addressUc.setCityName(convertToUpperCase(address.getCity()));
+    addressUc.setStreetNumber(convertToUpperCase(address.getStreetNumber()));
+    addressUc.setStreetName(convertToUpperCase(address.getStreetName()));
+    addressUc.setLastUpdatedId(address.getLastUpdatedId());
+    addressUc.setLastUpdatedTime(address.getLastUpdatedTime());
+    return addressUc;
+  }
 
 }

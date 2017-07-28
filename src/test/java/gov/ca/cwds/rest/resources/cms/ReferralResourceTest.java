@@ -12,12 +12,15 @@ import javax.ws.rs.client.Entity;
 import javax.ws.rs.core.MediaType;
 
 import org.hamcrest.junit.ExpectedException;
+import org.junit.After;
 import org.junit.Before;
 import org.junit.ClassRule;
 import org.junit.Rule;
+import org.junit.Test;
 import org.mockito.Mockito;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.squarespace.jersey2.guice.JerseyGuiceUtils;
 
 import gov.ca.cwds.rest.api.domain.cms.Referral;
 import gov.ca.cwds.rest.resources.ResourceDelegate;
@@ -31,6 +34,7 @@ import io.dropwizard.testing.junit.ResourceTestRule;
  * 
  * @author CWDS API Team
  */
+@SuppressWarnings("javadoc")
 public class ReferralResourceTest {
 
   private static final String ROOT_RESOURCE = "/_referrals/";
@@ -38,18 +42,23 @@ public class ReferralResourceTest {
 
   private static final ObjectMapper MAPPER = Jackson.newObjectMapper();
 
-  @SuppressWarnings("javadoc")
+  @After
+  public void ensureServiceLocatorPopulated() {
+    JerseyGuiceUtils.reset();
+  }
+
+  @ClassRule
+  public static JerseyGuiceRule rule = new JerseyGuiceRule();
+
   @Rule
   public ExpectedException thrown = ExpectedException.none();
 
   private final static ResourceDelegate resourceDelegate = mock(ResourceDelegate.class);
 
-  @SuppressWarnings("javadoc")
   @ClassRule
   public final static ResourceTestRule inMemoryResource =
       ResourceTestRule.builder().addResource(new ReferralResource(resourceDelegate)).build();
 
-  @SuppressWarnings("javadoc")
   @Before
   public void setup() throws Exception {
     Mockito.reset(resourceDelegate);
@@ -58,8 +67,7 @@ public class ReferralResourceTest {
   /*
    * Get Tests
    */
-  @SuppressWarnings("javadoc")
-  // @Test
+  @Test
   public void getDelegatesToResourceDelegate() throws Exception {
     inMemoryResource.client().target(FOUND_RESOURCE).request().accept(MediaType.APPLICATION_JSON)
         .get();
@@ -69,19 +77,17 @@ public class ReferralResourceTest {
   /*
    * Create Tests
    */
-  @SuppressWarnings("javadoc")
-  // @Test
+  @Test
   public void createDelegatesToResourceDelegate() throws Exception {
     Referral serialized = MAPPER
         .readValue(fixture("fixtures/domain/legacy/Referral/valid/valid.json"), Referral.class);
 
     inMemoryResource.client().target(ROOT_RESOURCE).request().accept(MediaType.APPLICATION_JSON)
-        .post(Entity.entity(serialized, MediaType.APPLICATION_JSON));
+        .post(Entity.entity(serialized, MediaType.APPLICATION_JSON)).getStatus();
     verify(resourceDelegate).create(eq(serialized));
   }
 
-  @SuppressWarnings("javadoc")
-  // @Test
+  @Test
   public void testPost422ValidationError() throws Exception {
     Referral serialized = MAPPER.readValue(
         fixture("fixtures/domain/legacy/Referral/invalid/closureDateWrongFormat.json"),
@@ -93,8 +99,7 @@ public class ReferralResourceTest {
     assertThat(status, is(422));
   }
 
-  @SuppressWarnings("javadoc")
-  // @Test
+  @Test
   public void testPost204ResourceSuccess() throws Exception {
     Referral serialized = MAPPER
         .readValue(fixture("fixtures/domain/legacy/Referral/valid/valid.json"), Referral.class);
@@ -108,8 +113,7 @@ public class ReferralResourceTest {
   /*
    * Delete Tests
    */
-  @SuppressWarnings("javadoc")
-  // @Test
+  @Test
   public void deleteDelegatesToResourceDelegate() throws Exception {
     inMemoryResource.client().target(FOUND_RESOURCE).request().accept(MediaType.APPLICATION_JSON)
         .delete();
@@ -119,8 +123,7 @@ public class ReferralResourceTest {
   /*
    * Update Tests
    */
-  @SuppressWarnings("javadoc")
-  // @Test
+  @Test
   public void udpateDelegatesToResourceDelegate() throws Exception {
     Referral serialized = MAPPER
         .readValue(fixture("fixtures/domain/legacy/Referral/valid/valid.json"), Referral.class);
@@ -130,8 +133,7 @@ public class ReferralResourceTest {
     verify(resourceDelegate, atLeastOnce()).update(eq("abc"), eq(serialized));
   }
 
-  @SuppressWarnings("javadoc")
-  // @Test
+  @Test
   public void testUpdate422ValidationError() throws Exception {
     Referral serialized = MAPPER.readValue(
         fixture("fixtures/domain/legacy/Referral/invalid/closureDateWrongFormat.json"),
@@ -143,8 +145,7 @@ public class ReferralResourceTest {
     assertThat(status, is(422));
   }
 
-  @SuppressWarnings("javadoc")
-  // @Test
+  @Test
   public void testUpdate204ResourceSuccess() throws Exception {
     Referral serialized = MAPPER
         .readValue(fixture("fixtures/domain/legacy/Referral/valid/valid.json"), Referral.class);

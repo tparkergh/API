@@ -29,7 +29,7 @@ public class ScreeningToReferralResourceBuilder {
   private String incidentCounty = "Sacramento";
   private String incidentDate = DomainChef.cookDate(new Date());
   private String locationType = "Foster Home";
-  private String communicationMethod = "Phone";
+  private Short communicationMethod = 409;
   private String name = "The Rocky Horror Show";
   private String reportNarrative = "Narrative 123 test";
   private String reference = "123ABC";
@@ -95,7 +95,7 @@ public class ScreeningToReferralResourceBuilder {
     return this;
   }
 
-  public ScreeningToReferralResourceBuilder setCommunicationMethod(String communicationMethod) {
+  public ScreeningToReferralResourceBuilder setCommunicationMethod(Short communicationMethod) {
     this.communicationMethod = communicationMethod;
     return this;
   }

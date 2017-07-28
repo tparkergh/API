@@ -1,6 +1,7 @@
 package gov.ca.cwds.rest.services.cms;
 
 import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.notNullValue;
 import static org.hamcrest.Matchers.nullValue;
@@ -12,6 +13,7 @@ import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -22,10 +24,13 @@ import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
+import org.mockito.invocation.InvocationOnMock;
+import org.mockito.stubbing.Answer;
 
 import gov.ca.cwds.data.cms.ClientAddressDao;
 import gov.ca.cwds.data.cms.StaffPersonDao;
 import gov.ca.cwds.data.persistence.cms.ClientAddress;
+import gov.ca.cwds.data.persistence.cms.StaffPerson;
 import gov.ca.cwds.data.rules.TriggerTablesDao;
 import gov.ca.cwds.fixture.ClientAddressResourceBuilder;
 import gov.ca.cwds.rest.api.Response;
@@ -49,6 +54,8 @@ public class ClientAddressServiceTest implements ServiceTestTemplate {
   LACountyTrigger laCountyTrigger;
   NonLACountyTriggers nonLACountyTriggers;
   StaffPersonIdRetriever staffPersonIdRetriever;
+
+  private static Boolean isLaCountyTrigger = false;
 
   @SuppressWarnings("javadoc")
   @Rule
@@ -171,6 +178,21 @@ public class ClientAddressServiceTest implements ServiceTestTemplate {
   @Override
   public void testDeleteReturnsClass() throws Exception {
 
+  }
+
+  @SuppressWarnings("javadoc")
+  @Test
+  public void clientAddressServiceDeleteReturnsNotNull() throws Exception {
+    String id = "LOmv8Jp0Nu";
+    gov.ca.cwds.rest.api.domain.cms.ClientAddress expected =
+        new ClientAddressResourceBuilder().buildClientAddress();
+    gov.ca.cwds.data.persistence.cms.ClientAddress clientAddress =
+        new gov.ca.cwds.data.persistence.cms.ClientAddress(id, expected, "0XA");
+
+    when(clientAddressDao.delete(id)).thenReturn(clientAddress);
+    gov.ca.cwds.rest.api.domain.cms.ClientAddress found =
+        (gov.ca.cwds.rest.api.domain.cms.ClientAddress) clientAddressService.delete(id);
+    assertThat(found.getClientId(), is(equalTo("FKCLIENTXX")));
   }
 
   // update test
@@ -342,6 +364,123 @@ public class ClientAddressServiceTest implements ServiceTestTemplate {
     } catch (ServiceException e) {
       assertEquals("Assignment ID cannot be blank", e.getMessage());
     }
+  }
+
+  @SuppressWarnings("javadoc")
+  @Test
+  public void testCreateLACountyTriggerForClientAddress() throws Exception {
+    gov.ca.cwds.rest.api.domain.cms.ClientAddress clientAddressDomain =
+        new ClientAddressResourceBuilder().buildClientAddress();
+
+    gov.ca.cwds.data.persistence.cms.ClientAddress toCreate =
+        new gov.ca.cwds.data.persistence.cms.ClientAddress("1234567ABC", clientAddressDomain,
+            "BTr");
+
+    gov.ca.cwds.rest.api.domain.cms.ClientAddress request =
+        new gov.ca.cwds.rest.api.domain.cms.ClientAddress(toCreate, false);
+
+    when(triggerTablesDao.getLaCountySpecificCode()).thenReturn("19");
+
+    StaffPerson staffPerson = new StaffPerson("BTr", null, "External Interface",
+        "external interface", "SCXCIN7", " ", "", BigDecimal.valueOf(9165672100L), 0, null, "    ",
+        "N", "MIZN02k00E", "  ", "    ", "19", "N", "3XPCP92q38", null);
+
+    when(staffpersonDao.find(any(String.class))).thenReturn(staffPerson);
+    when(clientAddressDao.create(any(gov.ca.cwds.data.persistence.cms.ClientAddress.class)))
+        .thenReturn(toCreate);
+
+    when(laCountyTrigger.createClientAddressCountyTrigger(
+        any(gov.ca.cwds.data.persistence.cms.ClientAddress.class)))
+            .thenAnswer(new Answer<Boolean>() {
+
+              @Override
+              public Boolean answer(InvocationOnMock invocation) throws Throwable {
+                isLaCountyTrigger = true;
+                return true;
+              }
+            });
+
+    clientAddressService.create(request);
+    assertThat(isLaCountyTrigger, is(true));
+
+  }
+
+  @SuppressWarnings("javadoc")
+  @Test
+  public void testCreateLACountyTriggerForClientAddressNotCreated() throws Exception {
+    gov.ca.cwds.rest.api.domain.cms.ClientAddress clientAddressDomain =
+        new ClientAddressResourceBuilder().buildClientAddress();
+
+    gov.ca.cwds.data.persistence.cms.ClientAddress toCreate =
+        new gov.ca.cwds.data.persistence.cms.ClientAddress("1234567ABC", clientAddressDomain,
+            "q1p");
+
+    gov.ca.cwds.rest.api.domain.cms.ClientAddress request =
+        new gov.ca.cwds.rest.api.domain.cms.ClientAddress(toCreate, false);
+
+    when(triggerTablesDao.getLaCountySpecificCode()).thenReturn("20");
+
+    StaffPerson staffPerson = new StaffPerson("BTr", null, "External Interface",
+        "external interface", "SCXCIN7", " ", "", BigDecimal.valueOf(9165672100L), 0, null, "    ",
+        "N", "MIZN02k00E", "  ", "    ", "19", "N", "3XPCP92q38", null);
+
+    when(staffpersonDao.find(any(String.class))).thenReturn(staffPerson);
+    when(clientAddressDao.create(any(gov.ca.cwds.data.persistence.cms.ClientAddress.class)))
+        .thenReturn(toCreate);
+
+    when(laCountyTrigger.createClientAddressCountyTrigger(
+        any(gov.ca.cwds.data.persistence.cms.ClientAddress.class)))
+            .thenAnswer(new Answer<Boolean>() {
+
+              @Override
+              public Boolean answer(InvocationOnMock invocation) throws Throwable {
+                isLaCountyTrigger = true;
+                return true;
+              }
+            });
+
+    clientAddressService.create(request);
+    assertThat(isLaCountyTrigger, is(true));
+
+  }
+
+  @SuppressWarnings("javadoc")
+  @Test
+  public void testUpdateLACountyTriggerForClientAddressNotCreated() throws Exception {
+    gov.ca.cwds.rest.api.domain.cms.ClientAddress clientAddressDomain =
+        new ClientAddressResourceBuilder().buildClientAddress();
+
+    gov.ca.cwds.data.persistence.cms.ClientAddress toCreate =
+        new gov.ca.cwds.data.persistence.cms.ClientAddress("1234567ABC", clientAddressDomain,
+            "BTr");
+
+    gov.ca.cwds.rest.api.domain.cms.ClientAddress request =
+        new gov.ca.cwds.rest.api.domain.cms.ClientAddress(toCreate, false);
+
+    when(triggerTablesDao.getLaCountySpecificCode()).thenReturn("19");
+
+    StaffPerson staffPerson = new StaffPerson("BTr", null, "External Interface",
+        "external interface", "SCXCIN7", " ", "", BigDecimal.valueOf(9165672100L), 0, null, "    ",
+        "N", "MIZN02k00E", "  ", "    ", "19", "N", "3XPCP92q38", null);
+
+    when(staffpersonDao.find(any(String.class))).thenReturn(staffPerson);
+    when(clientAddressDao.update(any(gov.ca.cwds.data.persistence.cms.ClientAddress.class)))
+        .thenReturn(toCreate);
+
+    when(laCountyTrigger.createClientAddressCountyTrigger(
+        any(gov.ca.cwds.data.persistence.cms.ClientAddress.class)))
+            .thenAnswer(new Answer<Boolean>() {
+
+              @Override
+              public Boolean answer(InvocationOnMock invocation) throws Throwable {
+                isLaCountyTrigger = true;
+                return true;
+              }
+            });
+
+    clientAddressService.update("1234567ABC", request);
+    assertThat(isLaCountyTrigger, is(true));
+
   }
 
   @Override

@@ -2,12 +2,18 @@ package gov.ca.cwds.rest.resources.cms;
 
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
-import gov.ca.cwds.rest.api.domain.cms.ClientCollateral;
-import gov.ca.cwds.rest.resources.ResourceDelegate;
 
 import org.junit.Before;
 import org.junit.Test;
 
+import gov.ca.cwds.rest.api.domain.cms.ClientCollateral;
+import gov.ca.cwds.rest.resources.ResourceDelegate;
+
+/**
+ * @author CWDS API Team
+ *
+ */
+@SuppressWarnings("javadoc")
 public class ClientCollateralResourceTest {
 
   private ClientCollateralResource resource;

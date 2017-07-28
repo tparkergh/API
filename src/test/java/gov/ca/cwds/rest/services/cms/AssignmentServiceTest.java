@@ -11,6 +11,8 @@ import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
+import java.math.BigDecimal;
+
 import javax.persistence.EntityExistsException;
 import javax.persistence.EntityNotFoundException;
 import javax.validation.Validation;
@@ -25,12 +27,19 @@ import org.mockito.invocation.InvocationOnMock;
 import org.mockito.stubbing.Answer;
 
 import gov.ca.cwds.data.cms.AssignmentDao;
+import gov.ca.cwds.data.cms.CountyOwnershipDao;
+import gov.ca.cwds.data.cms.ReferralClientDao;
+import gov.ca.cwds.data.cms.ReferralDao;
 import gov.ca.cwds.data.cms.StaffPersonDao;
+import gov.ca.cwds.data.persistence.cms.StaffPerson;
 import gov.ca.cwds.data.rules.TriggerTablesDao;
 import gov.ca.cwds.fixture.AssignmentResourceBuilder;
+import gov.ca.cwds.fixture.ReferralResourceBuilder;
 import gov.ca.cwds.rest.api.Response;
 import gov.ca.cwds.rest.api.domain.cms.Assignment;
 import gov.ca.cwds.rest.api.domain.cms.PostedAssignment;
+import gov.ca.cwds.rest.api.domain.cms.Referral;
+import gov.ca.cwds.rest.business.rules.ExternalInterfaceTables;
 import gov.ca.cwds.rest.business.rules.NonLACountyTriggers;
 import gov.ca.cwds.rest.services.ServiceException;
 
@@ -48,6 +57,10 @@ public class AssignmentServiceTest {
   private TriggerTablesDao triggerTablesDao;
   private StaffPersonIdRetriever staffPersonIdRetriever;
   private Validator validator;
+  private ExternalInterfaceTables externalInterfaceTables;
+  private CountyOwnershipDao countyOwnershipDao;
+  private ReferralDao referralDao;
+  private ReferralClientDao referralClientDao;
 
   @Rule
   public ExpectedException thrown = ExpectedException.none();
@@ -60,8 +73,16 @@ public class AssignmentServiceTest {
     nonLACountyTriggers = mock(NonLACountyTriggers.class);
     staffpersonDao = mock(StaffPersonDao.class);
     triggerTablesDao = mock(TriggerTablesDao.class);
+    externalInterfaceTables = mock(ExternalInterfaceTables.class);
+    countyOwnershipDao = mock(CountyOwnershipDao.class);
+    referralDao = mock(ReferralDao.class);
+    referralClientDao = mock(ReferralClientDao.class);
+    nonLACountyTriggers =
+        new NonLACountyTriggers(countyOwnershipDao, referralDao, referralClientDao);
     assignmentService = new AssignmentService(assignmentDao, nonLACountyTriggers, staffpersonDao,
-        triggerTablesDao, staffPersonIdRetriever, validator);
+        triggerTablesDao, staffPersonIdRetriever, validator, externalInterfaceTables);
+
+
   }
 
   // find test
@@ -73,7 +94,6 @@ public class AssignmentServiceTest {
       assertEquals("Expeceted AssertionError", e.getMessage());
     }
   }
-
 
   @Test
   public void assignmentServiceFindReturnsCorrectEntity() throws Exception {
@@ -105,18 +125,28 @@ public class AssignmentServiceTest {
     }
   }
 
-
   @Test
   public void assignmentServiceDeleteDelegatesToCrudsService() {
     assignmentService.delete("ABC2345678");
     verify(assignmentDao, times(1)).delete("ABC2345678");
   }
 
-
   @Test
   public void assignmentServiceDeleteReturnsNullWhenNotFound() throws Exception {
     Response found = assignmentService.delete("ABC1234567");
     assertThat(found, is(nullValue()));
+  }
+
+  @Test
+  public void assignmentServiceDeleteReturnsNotNull() throws Exception {
+    String id = "AabekZX00F";
+    Assignment expected = new AssignmentResourceBuilder().buildAssignment();
+    gov.ca.cwds.data.persistence.cms.Assignment assignment =
+        new gov.ca.cwds.data.persistence.cms.Assignment(id, expected, "0XA");
+
+    when(assignmentDao.delete(id)).thenReturn(assignment);
+    Assignment found = assignmentService.delete(id);
+    assertThat(found, is(expected));
   }
 
   // update test
@@ -128,7 +158,6 @@ public class AssignmentServiceTest {
       assertEquals("Expected AssertionError", e.getMessage());
     }
   }
-
 
   @Test
   public void assignmentServiceUpdateReturnsCorrectEntity() throws Exception {
@@ -192,7 +221,6 @@ public class AssignmentServiceTest {
     PostedAssignment postedAssignment = assignmentService.create(request);
     assertThat(postedAssignment, is(notNullValue()));
   }
-
 
   @Test
   public void assignmentServiceCreateReturnsCorrectEntity() throws Exception {
@@ -283,6 +311,62 @@ public class AssignmentServiceTest {
     assertEquals(returned.getId().length(), 10);
     PostedAssignment newReturned = assignmentService.create(domainAssignment);
     Assert.assertNotEquals(returned.getId(), newReturned.getId());
+  }
+
+  @Test
+  public void testCreateNonLACountyTriggerForAssignment() throws Exception {
+    Assignment assignmentDomain = new AssignmentResourceBuilder().buildAssignment();
+    gov.ca.cwds.data.persistence.cms.Assignment toCreate =
+        new gov.ca.cwds.data.persistence.cms.Assignment("ABC1234567", assignmentDomain, "q1p");
+
+    Referral domainReferral = new ReferralResourceBuilder().setCountySpecificCode("00").build();
+    gov.ca.cwds.data.persistence.cms.Referral referral =
+        new gov.ca.cwds.data.persistence.cms.Referral("ABC1234568", domainReferral, "0X5");
+
+    Assignment request = new Assignment(toCreate);
+
+    when(triggerTablesDao.getLaCountySpecificCode()).thenReturn("20");
+
+    StaffPerson staffPerson = new StaffPerson("BTr", null, "External Interface",
+        "external interface", "SCXCIN7", " ", "", BigDecimal.valueOf(9165672100L), 0, null, "    ",
+        "N", "MIZN02k00E", "  ", "    ", "19", "N", "3XPCP92q38", null);
+
+    when(staffpersonDao.find(any(String.class))).thenReturn(staffPerson);
+    when(referralDao.find(any(gov.ca.cwds.data.persistence.cms.Referral.class)))
+        .thenReturn(referral);
+    when(assignmentDao.create(any(gov.ca.cwds.data.persistence.cms.Assignment.class)))
+        .thenReturn(toCreate);
+    assignmentService.create(request);
+
+    verify(countyOwnershipDao, times(1)).create(any());
+  }
+
+  @Test
+  public void testNotCreateNonLACountyTriggerForAssignment() throws Exception {
+    Assignment assignmentDomain = new AssignmentResourceBuilder().buildAssignment();
+    gov.ca.cwds.data.persistence.cms.Assignment toCreate =
+        new gov.ca.cwds.data.persistence.cms.Assignment("ABC1234567", assignmentDomain, "BTr");
+
+    Referral domainReferral = new ReferralResourceBuilder().setCountySpecificCode("00").build();
+    gov.ca.cwds.data.persistence.cms.Referral referral =
+        new gov.ca.cwds.data.persistence.cms.Referral("ABC1234568", domainReferral, "0X5");
+
+    Assignment request = new Assignment(toCreate);
+
+    when(triggerTablesDao.getLaCountySpecificCode()).thenReturn("19");
+
+    StaffPerson staffPerson = new StaffPerson("BTr", null, "External Interface",
+        "external interface", "SCXCIN7", " ", "", BigDecimal.valueOf(9165672100L), 0, null, "    ",
+        "N", "MIZN02k00E", "  ", "    ", "19", "N", "3XPCP92q38", null);
+
+    when(staffpersonDao.find(any(String.class))).thenReturn(staffPerson);
+    when(referralDao.find(any(gov.ca.cwds.data.persistence.cms.Referral.class)))
+        .thenReturn(referral);
+    when(assignmentDao.create(any(gov.ca.cwds.data.persistence.cms.Assignment.class)))
+        .thenReturn(toCreate);
+    assignmentService.create(request);
+
+    verify(countyOwnershipDao, times(0)).create(any());
   }
 
 }

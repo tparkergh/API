@@ -149,15 +149,11 @@ public class OtherClientNameTest implements PersistentTestTemplate {
   }
 
   @SuppressWarnings("javadoc")
-  @Test
-  @Ignore
   public void hashCode_Args$() throws Exception {
     EqualsVerifier.forClass(OtherClientName.class).suppress(Warning.NONFINAL_FIELDS).verify();
   }
 
   @SuppressWarnings("javadoc")
-  @Test
-  @Ignore
   public void equals_Args$Object() throws Exception {
     EqualsVerifier.forClass(OtherClientName.class).suppress(Warning.NONFINAL_FIELDS).verify();
   }
