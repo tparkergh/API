@@ -6,6 +6,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 import javax.validation.Valid;
+import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
@@ -94,6 +95,18 @@ public class Participant extends ReportingDomain implements Request, Response {
   @ApiModelProperty(required = false, readOnly = false, value = "Date of Birth",
       example = "2001-09-13")
   private String dateOfBirth;
+
+  @JsonProperty("primary_language")
+//  @NotNull
+  @ApiModelProperty(required = false, readOnly = false, value = "", example = "1234",
+      notes = "The code for primary Language")
+  private Short primaryLanguage;
+
+  @JsonProperty("secondary_language")
+//  @NotNull
+  @ApiModelProperty(required = false, readOnly = false, value = "", example = "1234",
+      notes = "The code for secondary Language")
+  private Short secondaryLanguage;
 
   @JsonProperty("screening_id")
   @ApiModelProperty(required = false, readOnly = false, value = "Screening Id", example = "12345")
