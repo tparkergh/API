@@ -49,9 +49,6 @@ public class ExternalInterfaceTablesTest {
   @Rule
   public ExpectedException thrown = ExpectedException.none();
 
-  /**
-   * @throws Exception
-   */
   @Before
   public void setup() throws Exception {
     externalInterfaceDao = mock(ExternalInterfaceDao.class);
@@ -84,9 +81,6 @@ public class ExternalInterfaceTablesTest {
 
   }
 
-  /**
-   * @throws Exception
-   */
   @Test(expected = DaoException.class)
   public void testForAssignmentExternalInterfaceThrowsDaoException() throws Exception {
     when(externalInterfaceDao.create(any())).thenThrow(new ServiceException());
@@ -97,9 +91,6 @@ public class ExternalInterfaceTablesTest {
 
   }
 
-  /**
-   * @throws Exception - Exception
-   */
   @Test
   public void testForCreateClientExternalInterface() throws Exception {
     Client clientDomain = new ClientResourceBuilder().build();
@@ -254,9 +245,6 @@ public class ExternalInterfaceTablesTest {
 
   }
 
-  /**
-   * @throws Exception
-   */
   @Test(expected = DaoException.class)
   public void testForDeleteExternalThrowsServiceException() throws Exception {
     when(externalInterfaceDao.create(any())).thenThrow(new ServiceException());
