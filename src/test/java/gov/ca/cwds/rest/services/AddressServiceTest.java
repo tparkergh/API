@@ -64,7 +64,7 @@ public class AddressServiceTest implements ServiceTestTemplate {
   @Test
   public void testFindReturnsCorrectEntity() throws Exception {
     when(addressDao.find(new Long(1))).thenReturn(new gov.ca.cwds.data.persistence.ns.Address(1L,
-        "742 Evergreen Terrace", "Springfield", "WA", new Integer(98700), 32));
+        "742 Evergreen Terrace", "Springfield", "WA", new Integer(98700), "32"));
 
     Address expected = new Address("", "", "742 Evergreen Terrace", "Springfield", "WA", 98700, 32);
 
@@ -107,7 +107,7 @@ public class AddressServiceTest implements ServiceTestTemplate {
   @Test
   public void testCreateReturnsPostedClass() throws Exception {
     gov.ca.cwds.data.persistence.ns.Address toCreate = new gov.ca.cwds.data.persistence.ns.Address(
-        1L, "742 Evergreen Terrace", "Springfield", "WA", new Integer(98700), 32);
+        1L, "742 Evergreen Terrace", "Springfield", "WA", new Integer(98700), "32");
     Address request = new Address(toCreate);
 
     when(addressDao.create(any(gov.ca.cwds.data.persistence.ns.Address.class)))
@@ -121,7 +121,7 @@ public class AddressServiceTest implements ServiceTestTemplate {
   @Test
   public void testCreateReturnsCorrectEntity() throws Exception {
     gov.ca.cwds.data.persistence.ns.Address toCreate = new gov.ca.cwds.data.persistence.ns.Address(
-        10L, "742 Evergreen Terrace", "Springfield", "WA", new Integer(98700), 32);
+        10L, "742 Evergreen Terrace", "Springfield", "WA", new Integer(98700), "32");
     Address request = new Address(toCreate);
 
     when(addressDao.create(any(gov.ca.cwds.data.persistence.ns.Address.class)))
@@ -166,7 +166,7 @@ public class AddressServiceTest implements ServiceTestTemplate {
   public void testCreateExistsError() throws Exception {
 
     gov.ca.cwds.data.persistence.ns.Address toCreate = new gov.ca.cwds.data.persistence.ns.Address(
-        (long) 1, "742 Evergreen Terrace", "Springfield", "WA", new Integer(98700), 32);
+        (long) 1, "742 Evergreen Terrace", "Springfield", "WA", new Integer(98700), "32");
     Address request = new Address(toCreate);
 
     when(addressDao.create(any(gov.ca.cwds.data.persistence.ns.Address.class)))

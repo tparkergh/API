@@ -146,7 +146,7 @@ public class PersonServiceTest {
   public void createReturnsPostedPerson() throws Exception {
     gov.ca.cwds.data.persistence.ns.Address toCreateAddress =
         new gov.ca.cwds.data.persistence.ns.Address(1L, "742 Evergreen Terrace", "Springfield",
-            "WA", new Integer(98700), 32);
+            "WA", new Integer(98700), "32");
     Set<PersonAddress> personAddresses = new HashSet<>();
 
     PersonAddress personAddress = new PersonAddress();
@@ -167,7 +167,7 @@ public class PersonServiceTest {
   public void createReturnsNonNull() throws Exception {
     gov.ca.cwds.data.persistence.ns.Address toCreateAddress =
         new gov.ca.cwds.data.persistence.ns.Address(1L, "742 Evergreen Terrace", "Springfield",
-            "WA", new Integer(98700), 32);
+            "WA", new Integer(98700), "32");
     Set<PersonAddress> personAddresses = new HashSet<>();
 
     PersonAddress personAddress = new PersonAddress();

@@ -98,7 +98,7 @@ public class AddressTest {
     assertThat(totest.getState(), is(equalTo(persistent.getState())));
     assertThat(totest.getStreetAddress(), is(equalTo(persistent.getStreetAddress())));
     assertThat(totest.getZip(), is(equalTo(persistent.getZip())));
-    assertThat(totest.getType(), is(equalTo(persistent.getType())));
+    assertThat(totest.getType().toString(), is(equalTo(persistent.getType())));
   }
 
   @Test
