@@ -29,15 +29,14 @@ public class ExternalInterfaceTest {
 
   /**
    * Constructor test
+   * 
+   * @throws Exception test general
    */
   @Test
   public void testEmptyConstructor() throws Exception {
     assertThat(ExternalInterface.class.newInstance(), is(notNullValue()));
   }
 
-  /**
-   * @throws Exception
-   */
   @Test
   public void testPersistentConstructor() throws Exception {
     ExternalInterface exin = validExternalInterface();
@@ -82,10 +81,6 @@ public class ExternalInterfaceTest {
     assertThat(persistent.getTableName(), is(equalTo(exin.getTableName())));
   }
 
-
-  /**
-   * @throws Exception
-   */
   @Test
   @Ignore
   public void testEqualsHashCodeWorks() {
