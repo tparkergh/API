@@ -46,17 +46,17 @@ import io.swagger.annotations.ApiResponses;
 @Consumes(MediaType.APPLICATION_JSON)
 public class AllegationPerpetratorHistoryResource {
 
-  private TypedResourceDelegate<String, AllegationPerpetratorHistory> resourceDelegate;
+  private TypedResourceDelegate<String, AllegationPerpetratorHistory> typedResourceDelegate;
 
   /**
    * Constructor
    * 
-   * @param resourceDelegate The resourceDelegate to delegate to.
+   * @param typedResourceDelegate The typedResourceDelegate to delegate to.
    */
   @Inject
   public AllegationPerpetratorHistoryResource(
-      @AllegationPerpetratorHistoryServiceBackedResource TypedResourceDelegate<String, AllegationPerpetratorHistory> resourceDelegate) {
-    this.resourceDelegate = resourceDelegate;
+      @AllegationPerpetratorHistoryServiceBackedResource TypedResourceDelegate<String, AllegationPerpetratorHistory> typedResourceDelegate) {
+    this.typedResourceDelegate = typedResourceDelegate;
   }
 
   /**
@@ -76,7 +76,7 @@ public class AllegationPerpetratorHistoryResource {
       response = AllegationPerpetratorHistory.class, code = 200)
   public Response get(@PathParam("id") @ApiParam(required = true, name = "id",
       value = "The id of the AllegationPerpetratorHistory to find") String id) {
-    return resourceDelegate.get(id);
+    return typedResourceDelegate.get(id);
   }
 
   /**
@@ -94,7 +94,7 @@ public class AllegationPerpetratorHistoryResource {
       response = Object.class)
   public Response delete(@PathParam("id") @ApiParam(required = true,
       value = "id of AllegationPerpetratorHistory to delete") String id) {
-    return resourceDelegate.delete(id);
+    return typedResourceDelegate.delete(id);
   }
 
   /**
@@ -116,7 +116,7 @@ public class AllegationPerpetratorHistoryResource {
       response = AllegationPerpetratorHistory.class)
   public Response create(@Valid @ApiParam(hidden = false,
       required = true) AllegationPerpetratorHistory allegationPerpetratorHistory) {
-    return resourceDelegate.create(allegationPerpetratorHistory);
+    return typedResourceDelegate.create(allegationPerpetratorHistory);
   }
 
   /**
@@ -142,6 +142,6 @@ public class AllegationPerpetratorHistoryResource {
       @PathParam("id") @ApiParam(required = true, name = "id",
           value = "The id of the AllegationPerpetratorHistory to update") String id,
       @Valid @ApiParam(hidden = false) AllegationPerpetratorHistory allegationPerpetratorHistory) {
-    return resourceDelegate.update(id, allegationPerpetratorHistory);
+    return typedResourceDelegate.update(id, allegationPerpetratorHistory);
   }
 }

@@ -1,5 +1,6 @@
 package gov.ca.cwds.rest.api.domain.cms;
 
+import java.io.Serializable;
 import java.util.Date;
 
 import javax.validation.constraints.NotNull;
@@ -21,7 +22,7 @@ import io.swagger.annotations.ApiModelProperty;
  * 
  * @author CWDS API Team
  */
-public class DrmsDocument extends ReportingDomain implements Request, Response {
+public class DrmsDocument extends ReportingDomain implements Request, Response, Serializable {
 
   /**
    * Serialization version

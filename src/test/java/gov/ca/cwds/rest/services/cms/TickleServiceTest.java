@@ -50,16 +50,6 @@ public class TickleServiceTest {
   }
 
   // find test
-  @Test(expected = AssertionError.class)
-  public void tickleServiceFindThrowsAssertionError() {
-    // expect string type for primary key test
-    try {
-      tickleService.find(1);
-    } catch (AssertionError e) {
-      assertEquals("Expeceted AssertionError", e.getMessage());
-    }
-  }
-
   @Test
   public void tickleServiceFindReturnsCorrectEntity() throws Exception {
     String id = "AabekZX00F";
@@ -80,24 +70,6 @@ public class TickleServiceTest {
   }
 
   // delete test
-  @Test(expected = AssertionError.class)
-  public void tickleServiceDeleteThrowsAssertionError() throws Exception {
-    try {
-      tickleService.delete(123);
-    } catch (AssertionError e) {
-      assertEquals("Expected AssertionError", e.getMessage());
-    }
-  }
-
-  @Test(expected = AssertionError.class)
-  public void tickleServiceDeleteThrowsAssertionErrorForNull() throws Exception {
-    try {
-      tickleService.delete(null);
-    } catch (AssertionError e) {
-      assertEquals("Expected AssertionError", e.getMessage());
-    }
-  }
-
   @Test
   public void tickleServiceDeleteDelegatesToCrudsService() {
     tickleService.delete("ABC2345678");
@@ -124,15 +96,6 @@ public class TickleServiceTest {
   }
 
   // update test
-  @Test(expected = AssertionError.class)
-  public void tickleServiceUpdateThrowsAssertionError() throws Exception {
-    try {
-      tickleService.update("ABC1234567", null);
-    } catch (AssertionError e) {
-      assertEquals("Expected AssertionError", e.getMessage());
-    }
-  }
-
   @Test
   public void tickleServiceUpdateReturnsCorrectEntity() throws Exception {
     String id = "AabekZX00F";

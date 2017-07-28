@@ -1,3 +1,4 @@
+
 package gov.ca.cwds.inject;
 
 import com.google.inject.AbstractModule;
@@ -9,6 +10,7 @@ import gov.ca.cwds.rest.ApiConfiguration;
 import gov.ca.cwds.rest.SwaggerConfiguration;
 import gov.ca.cwds.rest.api.domain.cms.AllegationPerpetratorHistory;
 import gov.ca.cwds.rest.api.domain.cms.CmsDocument;
+import gov.ca.cwds.rest.api.domain.cms.DrmsDocument;
 import gov.ca.cwds.rest.api.domain.cms.LegacyKeyRequest;
 import gov.ca.cwds.rest.api.domain.cms.LegacyKeyResponse;
 import gov.ca.cwds.rest.api.domain.es.AutoCompletePersonRequest;
@@ -173,8 +175,10 @@ public class ResourcesModule extends AbstractModule {
 
   @Provides
   @DrmsDocumentServiceBackedResource
-  public ResourceDelegate drmsDocumentServiceBackedResource(Injector injector) {
-    return new ServiceBackedResourceDelegate(injector.getInstance(DrmsDocumentService.class));
+  public TypedResourceDelegate<String, DrmsDocument> drmsDocumentServiceBackedResource(
+      Injector injector) {
+    return new TypedServiceBackedResourceDelegate<>(
+        injector.getInstance(DrmsDocumentService.class));
   }
 
   @Provides
