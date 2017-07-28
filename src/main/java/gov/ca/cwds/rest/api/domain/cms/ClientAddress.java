@@ -14,6 +14,8 @@ import gov.ca.cwds.rest.api.Response;
 import gov.ca.cwds.rest.api.domain.DomainChef;
 import gov.ca.cwds.rest.api.domain.DomainObject;
 import gov.ca.cwds.rest.api.domain.ReportingDomain;
+import gov.ca.cwds.rest.api.domain.SystemCodeCategoryId;
+import gov.ca.cwds.rest.validation.ValidSystemCodeId;
 import io.swagger.annotations.ApiModelProperty;
 
 /**
@@ -34,6 +36,7 @@ public class ClientAddress extends ReportingDomain implements Request, Response 
 
   @NotNull
   @ApiModelProperty(required = true, readOnly = false, example = "32")
+  @ValidSystemCodeId(required = true, category = SystemCodeCategoryId.ADDRESS_TYPE)
   private Short addressType;
 
   @NotNull

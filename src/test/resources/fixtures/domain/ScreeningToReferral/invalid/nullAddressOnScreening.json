@@ -39,7 +39,7 @@
 	  			"state" : "CA",
 	  			"city" : "San Jose",
 	  			"zip" : "94321",
-	  			"type" : "Home"
+	  			"type": 32
 	  		}
 	  	]
 	},
@@ -65,7 +65,7 @@
 	  			"state" : "CA",
 	  			"city" : "San Jose",
 	  			"zip" : "94321",
-	  			"type" : "Home"
+	  			"type": 32
 	  		}
 	  	]
 	}

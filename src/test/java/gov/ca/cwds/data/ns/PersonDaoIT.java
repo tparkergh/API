@@ -124,7 +124,7 @@ public class PersonDaoIT implements DaoTestTemplate {
   public void testCreate() {
     gov.ca.cwds.data.persistence.ns.Address toCreateAddress =
         new gov.ca.cwds.data.persistence.ns.Address(1L, "742 Evergreen Terrace", "Springfield",
-            "WA", new Integer(98700), "Home");
+            "WA", new Integer(98700), 32);
     Set<PersonAddress> personAddresses = new HashSet<>();
 
     PersonAddress personAddress = new PersonAddress();

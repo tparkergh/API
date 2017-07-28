@@ -6,8 +6,8 @@ import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.is;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
@@ -32,6 +32,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.squarespace.jersey2.guice.JerseyGuiceUtils;
 
+import gov.ca.cwds.data.cms.TestSystemCodeCache;
 import gov.ca.cwds.data.persistence.junit.template.PersistentTestTemplate;
 import gov.ca.cwds.fixture.AddressResourceBuilder;
 import gov.ca.cwds.fixture.ParticipantResourceBuilder;
@@ -49,6 +50,8 @@ import nl.jqno.equalsverifier.Warning;
  */
 @SuppressWarnings({"javadoc"})
 public class ParticipantTest implements PersistentTestTemplate {
+
+  private TestSystemCodeCache testSystemCodeCache = new TestSystemCodeCache();
 
   private long id = 5432;
   private String legacySourceTable = "CLIENT_T";
@@ -91,7 +94,7 @@ public class ParticipantTest implements PersistentTestTemplate {
     MAPPER.configure(SerializationFeature.INDENT_OUTPUT, true);
     Participant validParticipant = this.validParticipant();
     roles.add("Victim");
-    Address address = new Address("", "", "123 First St", "San Jose", "CA", 94321, "Home");
+    Address address = new Address("", "", "123 First St", "San Jose", "CA", 94321, 32);
     addresses.add(address);
     MAPPER.configure(SerializationFeature.INDENT_OUTPUT, true);
 
@@ -325,7 +328,7 @@ public class ParticipantTest implements PersistentTestTemplate {
   }
 
   @Test
-  public void shouldReturnNewLegacyDescriptorWhenItHasANullValue(){
+  public void shouldReturnNewLegacyDescriptorWhenItHasANullValue() {
     Participant participant =
         new ParticipantResourceBuilder().setLegacyDescriptor(null).createParticipant();
     assertNotNull(participant.getLegacyDescriptor());

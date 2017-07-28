@@ -18,7 +18,7 @@
 		"city": "Sacramento",
 		"state": "CA",
 		"zip": 95757,
-		"type": "Home"
+		"type": 32
 	},
 	"participants": [{
 	  "id" : "1",
@@ -51,7 +51,7 @@
                "state":"CA",
                "city":"Sacramento",
                "zip":"95757",
-               "type":"Home"
+               "type": 32
             }
          ]
 	}]

@@ -2,10 +2,8 @@ package gov.ca.cwds.rest.api.domain;
 
 import static gov.ca.cwds.data.persistence.cms.CmsPersistentObject.CMS_ID_LEN;
 
-import io.swagger.annotations.ApiModel;
 import javax.validation.Valid;
 import javax.validation.constraints.Max;
-import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
@@ -13,7 +11,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 import gov.ca.cwds.rest.api.Request;
 import gov.ca.cwds.rest.api.Response;
+import gov.ca.cwds.rest.validation.ValidSystemCodeId;
 import io.dropwizard.jackson.JsonSnakeCase;
+import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 
 /**
@@ -60,8 +60,9 @@ public class Address extends ReportingDomain implements Request, Response {
   private Integer zip;
 
   @JsonProperty("type")
-  @ApiModelProperty(example = "Home")
-  private String type;
+  @ApiModelProperty(example = "32")
+  @ValidSystemCodeId(required = true, category = SystemCodeCategoryId.ADDRESS_TYPE)
+  private Integer type;
 
   @ApiModelProperty(required = true, readOnly = false)
   @JsonProperty("legacy_descriptor")
@@ -84,7 +85,7 @@ public class Address extends ReportingDomain implements Request, Response {
       @JsonProperty("legacy_id") String addressId,
       @JsonProperty("street_address") String streetAddress, @JsonProperty("city") String city,
       @JsonProperty("state") String state, @JsonProperty("zip") Integer zip,
-      @JsonProperty("type") String type) {
+      @JsonProperty("type") Integer type) {
     super();
     this.legacySourceTable = legacySourceTable;
     this.legacyId = addressId;
@@ -170,7 +171,7 @@ public class Address extends ReportingDomain implements Request, Response {
   /**
    * @return address type
    */
-  public String getType() {
+  public Integer getType() {
     return type;
   }
 

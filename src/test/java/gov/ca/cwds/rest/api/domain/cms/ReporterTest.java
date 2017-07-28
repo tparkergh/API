@@ -11,7 +11,6 @@ import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
-import gov.ca.cwds.rest.api.domain.LegacyDescriptor;
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.text.DateFormat;
@@ -34,6 +33,7 @@ import com.squarespace.jersey2.guice.JerseyGuiceUtils;
 
 import gov.ca.cwds.data.CrudsDao;
 import gov.ca.cwds.rest.api.domain.DomainChef;
+import gov.ca.cwds.rest.api.domain.LegacyDescriptor;
 import gov.ca.cwds.rest.api.domain.Participant;
 import gov.ca.cwds.rest.core.Api;
 import gov.ca.cwds.rest.resources.cms.JerseyGuiceRule;
@@ -214,7 +214,7 @@ public class ReporterTest {
     String city = "sacramento";
     String state = "ca";
     Integer zipCode = 12345;
-    String type = "type";
+    Integer type = 32;
 
     gov.ca.cwds.rest.api.domain.Address address = new gov.ca.cwds.rest.api.domain.Address(
         "legacy_source_table", "legacy_id", streetAddress, city, state, zipCode, type);
@@ -268,7 +268,7 @@ public class ReporterTest {
     String city = "sacramento";
     String state = "ca";
     Integer zipCode = 12345;
-    String type = "type";
+    Integer type = 32;
 
     gov.ca.cwds.rest.api.domain.Address address = new gov.ca.cwds.rest.api.domain.Address(
         "legacy_source_table", "legacy_id", streetAddress, city, state, zipCode, type);
@@ -324,7 +324,7 @@ public class ReporterTest {
     String streetAddress = "1 main";
 
     gov.ca.cwds.rest.api.domain.Address address = new gov.ca.cwds.rest.api.domain.Address(
-        "legacy_source_table", "legacy_id", streetAddress, "city", "state", 12345, "type");
+        "legacy_source_table", "legacy_id", streetAddress, "city", "state", 12345, 32);
     Participant participant = new Participant(5L, "legacy_source_table", "legacy_client_id",
         new LegacyDescriptor(), "firstName", "middleName", "lastName", "jr", "gender", "ssn",
         "date_of_birth", 7L, 8L, new HashSet<>(), new HashSet<>());
@@ -340,7 +340,7 @@ public class ReporterTest {
     String streetAddress = "1 main";
 
     gov.ca.cwds.rest.api.domain.Address address = new gov.ca.cwds.rest.api.domain.Address(
-        "legacy_source_table", "legacy_id", streetAddress, "city", "state", 12345, "type");
+        "legacy_source_table", "legacy_id", streetAddress, "city", "state", 12345, 32);
     Participant participant = new Participant(5L, "legacy_source_table", "legacy_client_id",
         new LegacyDescriptor(), "firstName", "middleName", "lastName", "jr", "gender", "ssn",
         "date_of_birth", 7L, 8L, new HashSet<>(), new HashSet<>());
@@ -356,7 +356,7 @@ public class ReporterTest {
     String streetAddress = "1 San Andreas Blvd";
 
     gov.ca.cwds.rest.api.domain.Address address = new gov.ca.cwds.rest.api.domain.Address(
-        "legacy_source_table", "legacy_id", streetAddress, "city", "state", 12345, "type");
+        "legacy_source_table", "legacy_id", streetAddress, "city", "state", 12345, 32);
     Participant participant = new Participant(5L, "legacy_source_table", "legacy_client_id",
         new LegacyDescriptor(), "firstName", "middleName", "lastName", "jr", "gender", "ssn",
         "date_of_birth", 7L, 8L, new HashSet<>(), new HashSet<>());
@@ -373,7 +373,7 @@ public class ReporterTest {
     String streetAddress = "Main St";
 
     gov.ca.cwds.rest.api.domain.Address address = new gov.ca.cwds.rest.api.domain.Address(
-        "legacy_source_table", "legacy_id", streetAddress, "city", "state", 12345, "type");
+        "legacy_source_table", "legacy_id", streetAddress, "city", "state", 12345, 32);
     Participant participant = new Participant(5L, "legacy_source_table", "legacy_client_id",
         new LegacyDescriptor(), "firstName", "middleName", "lastName", "jr", "gender", "ssn",
         "date_of_birth", 7L, 8L, new HashSet<>(), new HashSet<>());
@@ -390,7 +390,7 @@ public class ReporterTest {
     String streetAddress = "Main St";
 
     gov.ca.cwds.rest.api.domain.Address nsAddress = new gov.ca.cwds.rest.api.domain.Address(
-        "legacy_source_table", "legacy_id", streetAddress, "city", "state", 12345, "type");
+        "legacy_source_table", "legacy_id", streetAddress, "city", "state", 12345, 32);
 
     Address address = Address.createWithDefaults(nsAddress, new Short("5"));
     assertThat(address.getStreetNumber(), is(equalTo(null)));
