@@ -15,14 +15,14 @@ import org.junit.Before;
 import org.junit.ClassRule;
 import org.junit.Rule;
 import org.junit.Test;
-import org.mockito.Mockito;
+import org.mockito.MockitoAnnotations;
 
 import com.squarespace.jersey2.guice.JerseyGuiceUtils;
 
 import gov.ca.cwds.fixture.AllegationPerpetratorHistoryResourceBuilder;
 import gov.ca.cwds.rest.api.domain.cms.AllegationPerpetratorHistory;
-import gov.ca.cwds.rest.resources.ResourceDelegate;
 import gov.ca.cwds.rest.resources.ServiceBackedResourceDelegate;
+import gov.ca.cwds.rest.resources.TypedResourceDelegate;
 import io.dropwizard.testing.junit.ResourceTestRule;
 
 /**
@@ -48,15 +48,17 @@ public class AllegationPerpetratorHistoryResourceTest {
   @Rule
   public ExpectedException thrown = ExpectedException.none();
 
-  private final static ResourceDelegate resourceDelegate = mock(ResourceDelegate.class);
+  @SuppressWarnings("unchecked")
+  private final static TypedResourceDelegate<String, AllegationPerpetratorHistory> resourceDelegate =
+      mock(TypedResourceDelegate.class);
 
   @ClassRule
   public final static ResourceTestRule inMemoryResource = ResourceTestRule.builder()
       .addResource(new AllegationPerpetratorHistoryResource(resourceDelegate)).build();
 
   @Before
-  public void setup() throws Exception {
-    Mockito.reset(resourceDelegate);
+  public void initMocks() {
+    MockitoAnnotations.initMocks(this);
   }
 
   /*

@@ -79,6 +79,8 @@ public class ClientRelationshipDaoIT {
 
   /**
    * Find JUnit test
+   * 
+   * @throws Exception test general
    */
   @Test
   public void testFind() throws Exception {
@@ -94,6 +96,8 @@ public class ClientRelationshipDaoIT {
 
   /**
    * Create JUnit test
+   * 
+   * @throws Exception test general
    */
   @Test
   public void testCreate() throws Exception {
@@ -135,6 +139,8 @@ public class ClientRelationshipDaoIT {
 
   /**
    * Delete JUnit test
+   * 
+   * @throws Exception test general
    */
   @Test
   public void testDelete() throws Exception {
@@ -150,6 +156,8 @@ public class ClientRelationshipDaoIT {
 
   /**
    * Update JUnit test
+   * 
+   * @throws Exception test general
    */
   @Test
   public void testUpdate() throws Exception {

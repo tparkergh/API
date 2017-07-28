@@ -84,6 +84,8 @@ public class AllegationDaoIT {
 
   /**
    * Find JUnit test
+   * 
+   * @throws Exception test general
    */
   @Test
   public void testFind() throws Exception {
@@ -99,6 +101,8 @@ public class AllegationDaoIT {
 
   /**
    * Create JUnit test
+   * 
+   * @throws Exception test general
    */
   @Test
   public void testCreate() throws Exception {
@@ -144,6 +148,8 @@ public class AllegationDaoIT {
 
   /**
    * Delete JUnit test
+   * 
+   * @throws Exception test general
    */
   @Test
   public void testDelete() throws Exception {
@@ -159,6 +165,8 @@ public class AllegationDaoIT {
 
   /**
    * Update JUnit test
+   * 
+   * @throws Exception test general
    */
   @Test
   public void testUpdate() throws Exception {

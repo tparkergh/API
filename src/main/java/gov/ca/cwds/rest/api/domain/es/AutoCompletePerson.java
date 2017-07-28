@@ -866,7 +866,8 @@ public class AutoCompletePerson
       if (esp.getSourceObj() instanceof ApiMultipleLanguagesAware) {
         final ApiMultipleLanguagesAware langs = (ApiMultipleLanguagesAware) esp.getSourceObj();
         for (ApiLanguageAware lang : langs.getLanguages()) {
-          addLanguage(ElasticSearchPersonLanguage.findBySysId(lang.getLanguageSysId()));
+          addLanguage(
+              ElasticSearchPersonLanguage.findBySysId(lang.getLanguageSysId()));
         }
       }
     }

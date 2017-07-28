@@ -29,15 +29,14 @@ public class AddressUcTest {
 
   /**
    * Constructor test
+   * 
+   * @throws Exception test general
    */
   @Test
   public void testEmptyConstructor() throws Exception {
     assertThat(AddressUc.class.newInstance(), is(notNullValue()));
   }
 
-  /**
-   * @throws Exception
-   */
   @Test
   public void testPersistentConstructor() throws Exception {
     AddressUc aduc = validAddressUc();
@@ -53,11 +52,6 @@ public class AddressUcTest {
     assertThat(persistent.getStreetName(), is(equalTo(aduc.getStreetName())));
     assertThat(persistent.getStreetNumber(), is(equalTo(aduc.getStreetNumber())));
   }
-
-
-  /**
-   * @throws Exception
-   */
 
   @Test
   @Ignore

@@ -1,7 +1,13 @@
 package gov.ca.cwds.inject;
 
+import com.google.inject.AbstractModule;
+import com.google.inject.Injector;
+import com.google.inject.Provides;
+import com.google.inject.name.Named;
+
 import gov.ca.cwds.rest.ApiConfiguration;
 import gov.ca.cwds.rest.SwaggerConfiguration;
+import gov.ca.cwds.rest.api.domain.cms.AllegationPerpetratorHistory;
 import gov.ca.cwds.rest.api.domain.cms.CmsDocument;
 import gov.ca.cwds.rest.api.domain.cms.LegacyKeyRequest;
 import gov.ca.cwds.rest.api.domain.cms.LegacyKeyResponse;
@@ -69,11 +75,6 @@ import gov.ca.cwds.rest.services.cms.StaffPersonService;
 import gov.ca.cwds.rest.services.cms.SystemCodeService;
 import gov.ca.cwds.rest.services.es.AutoCompletePersonService;
 import gov.ca.cwds.rest.services.es.IndexQueryService;
-
-import com.google.inject.AbstractModule;
-import com.google.inject.Injector;
-import com.google.inject.Provides;
-import com.google.inject.name.Named;
 
 
 /**
@@ -184,8 +185,9 @@ public class ResourcesModule extends AbstractModule {
 
   @Provides
   @AllegationPerpetratorHistoryServiceBackedResource
-  public ResourceDelegate allegationPerpetratorHistoryServiceBackedResource(Injector injector) {
-    return new ServiceBackedResourceDelegate(
+  public TypedResourceDelegate<String, AllegationPerpetratorHistory> allegationPerpetratorHistoryServiceBackedResource(
+      Injector injector) {
+    return new TypedServiceBackedResourceDelegate<>(
         injector.getInstance(AllegationPerpetratorHistoryService.class));
   }
 
@@ -223,7 +225,8 @@ public class ResourcesModule extends AbstractModule {
   @Provides
   @ScreeningToReferralServiceBackedResource
   public ResourceDelegate screeningToReferralBackedResource(Injector injector) {
-    return new ServiceBackedResourceDelegate(injector.getInstance(ScreeningToReferralService.class));
+    return new ServiceBackedResourceDelegate(
+        injector.getInstance(ScreeningToReferralService.class));
   }
 
   @Provides
