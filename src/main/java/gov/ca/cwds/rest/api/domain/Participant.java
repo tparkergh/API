@@ -132,7 +132,7 @@ public class Participant extends ReportingDomain implements Request, Response {
    * @param id The id of the Participant
    * @param legacySourceTable - legacy source table name
    * @param clientId - the legacy clientId
-   * @param legacyDescriptor - descriptor for CWS/CMS database
+   * @param legacyDescriptor legacy descriptor
    * @param personId The person Id
    * @param screeningId The screening Id
    * @param firstName The first Name
@@ -257,9 +257,6 @@ public class Participant extends ReportingDomain implements Request, Response {
     this.legacyId = clientId;
   }
 
-  /**
-   * @return the descriptor for the CWS/CMS database
-   */
   public LegacyDescriptor getLegacyDescriptor() {
     if (legacyDescriptor == null) {
       legacyDescriptor = new LegacyDescriptor();
@@ -267,9 +264,6 @@ public class Participant extends ReportingDomain implements Request, Response {
     return legacyDescriptor;
   }
 
-  /**
-   * @param legacyDescriptor - set the descriptor for the CWS/CMS database
-   */
   public void setLegacyDescriptor(LegacyDescriptor legacyDescriptor) {
     this.legacyDescriptor = legacyDescriptor;
   }

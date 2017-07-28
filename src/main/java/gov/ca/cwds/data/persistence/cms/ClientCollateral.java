@@ -1,9 +1,5 @@
 package gov.ca.cwds.data.persistence.cms;
 
-import gov.ca.cwds.data.CmsSystemCodeDeserializer;
-import gov.ca.cwds.data.SystemCodeSerializer;
-import gov.ca.cwds.data.persistence.PersistentObject;
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
@@ -11,16 +7,21 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
-import org.apache.commons.lang3.builder.EqualsBuilder;
-import org.apache.commons.lang3.builder.HashCodeBuilder;
+import org.hibernate.annotations.ColumnTransformer;
 import org.hibernate.annotations.Type;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 
+import gov.ca.cwds.data.CmsSystemCodeDeserializer;
+import gov.ca.cwds.data.SystemCodeSerializer;
+import gov.ca.cwds.data.persistence.PersistentObject;
+import gov.ca.cwds.rest.api.domain.SystemCodeCategoryId;
+import gov.ca.cwds.rest.validation.ValidSystemCodeId;
+
 /**
- * {@link PersistentObject} representing a Client Collateral.
+ * {@link PersistentObject} representing a Client Collateral person.
  * 
  * @author CWDS API Team
  */
@@ -37,23 +38,32 @@ public class ClientCollateral extends CmsPersistentObject {
 
   @SystemCodeSerializer(logical = true, description = true)
   @JsonDeserialize(using = CmsSystemCodeDeserializer.class)
+  @ValidSystemCodeId(required = true,
+      category = SystemCodeCategoryId.CLIENT_COLLATERAL_RELATIONSHIP)
   @Type(type = "short")
   @Column(name = "COL_RELC")
   private Short collateralClientReporterRelationshipType;
 
   @Column(name = "COMNT_DSC")
+  @ColumnTransformer(read = "trim(COMNT_DSC)")
   private String commentDescription;
-
-  @Column(name = "FKCLIENT_T")
-  private String clientId;
-
-  @Column(name = "FKCOLTRL_T")
-  private String collateralIndividualId;
 
   @Id
   @Column(name = "THIRD_ID", length = CMS_ID_LEN)
   private String thirdId;
 
+  @Column(name = "FKCLIENT_T", length = CMS_ID_LEN)
+  private String clientId;
+
+  @Column(name = "FKCOLTRL_T", length = CMS_ID_LEN)
+  private String collateralIndividualId;
+
+  /**
+   * #147241489: referential integrity check.
+   * <p>
+   * Doesn't actually load the data. Just checks the existence of the parent client record.
+   * </p>
+   */
   @ManyToOne(optional = false)
   @JoinColumn(name = "FKCLIENT_T", nullable = false, updatable = false, insertable = false)
   private Client client;
@@ -90,6 +100,7 @@ public class ClientCollateral extends CmsPersistentObject {
   }
 
   /**
+   * Constructor.
    * 
    * @param thirdId unique key
    * @param clientCollateral the domain object to construct this object from
@@ -139,34 +150,12 @@ public class ClientCollateral extends CmsPersistentObject {
     return thirdId;
   }
 
-  /*
-   * (non-Javadoc)
-   * 
-   * @see gov.ca.cwds.rest.api.persistence.PersistentObject#getPrimaryKey()
+  /**
+   * {@inheritDoc}
    */
   @Override
   public String getPrimaryKey() {
     return getThirdId();
-  }
-
-  /**
-   * {@inheritDoc}
-   * 
-   * @see java.lang.Object#hashCode()
-   */
-  @Override
-  public int hashCode() {
-    return HashCodeBuilder.reflectionHashCode(this, false);
-  }
-
-  /**
-   * {@inheritDoc}
-   * 
-   * @see java.lang.Object#equals(java.lang.Object)
-   */
-  @Override
-  public boolean equals(Object obj) {
-    return EqualsBuilder.reflectionEquals(this, obj, false);
   }
 
 }

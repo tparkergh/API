@@ -86,8 +86,8 @@ public class R05443StateIdMissing {
         int years = ReminderHelper.checkForAgeDiffernce(dateOfBirth);
 
         boolean clientCheck = client.getEstimatedDobCode() != null
-            && client.getEstimatedDobCode().equals(DEFAULT_TRUE_INDICATOR)
-            && client.getDriverLicenseNumber().isEmpty();
+            && client.getEstimatedDobCode().equals(DEFAULT_TRUE_INDICATOR);
+
         if (years < 26 || clientCheck && referral.getClosureDate() == null) {
           /*
            * duedate is updated with adding 30 days to the client creationDate

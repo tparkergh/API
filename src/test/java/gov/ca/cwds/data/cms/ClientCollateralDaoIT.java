@@ -78,6 +78,8 @@ public class ClientCollateralDaoIT {
 
   /**
    * Find JUnit test
+   * 
+   * @throws Exception test general
    */
   @Test
   public void testFind() throws Exception {
@@ -93,6 +95,8 @@ public class ClientCollateralDaoIT {
 
   /**
    * Create JUnit test
+   * 
+   * @throws Exception test general
    */
   @Test
   public void testCreate() throws Exception {
@@ -131,6 +135,8 @@ public class ClientCollateralDaoIT {
 
   /**
    * Delete JUnit test
+   * 
+   * @throws Exception test general
    */
   @Test
   public void testDelete() throws Exception {
@@ -146,6 +152,8 @@ public class ClientCollateralDaoIT {
 
   /**
    * Update JUnit test
+   * 
+   * @throws Exception test general
    */
   @Test
   public void testUpdate() throws Exception {

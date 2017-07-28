@@ -18,6 +18,7 @@ import com.google.inject.AbstractModule;
 import com.google.inject.Provides;
 import com.google.inject.name.Named;
 
+import gov.ca.cwds.data.ApiHibernateInterceptor;
 import gov.ca.cwds.data.cms.AddressUcDao;
 import gov.ca.cwds.data.cms.AllegationDao;
 import gov.ca.cwds.data.cms.AllegationPerpetratorHistoryDao;
@@ -128,6 +129,7 @@ import gov.ca.cwds.rest.api.ApiException;
 import gov.ca.cwds.rest.business.rules.LACountyTrigger;
 import gov.ca.cwds.rest.business.rules.NonLACountyTriggers;
 import gov.ca.cwds.rest.business.rules.Reminders;
+import gov.ca.cwds.rest.services.cms.RIClientCollateral;
 import io.dropwizard.db.DataSourceFactory;
 import io.dropwizard.hibernate.HibernateBundle;
 import io.dropwizard.setup.Bootstrap;
@@ -227,7 +229,6 @@ public class DataAccessModule extends AbstractModule {
     bind(ClientRelationshipDao.class);
     bind(ClientCollateralDao.class);
 
-
     bind(AttorneyDao.class);
     bind(CmsDocReferralClientDao.class);
     bind(CmsDocumentDao.class);
@@ -276,6 +277,32 @@ public class DataAccessModule extends AbstractModule {
 
     // System code loader DAO.
     bind(ApiSystemCodeDao.class).to(SystemCodeDaoFileImpl.class);
+
+    // Referential integrity.
+    bind(RIClientCollateral.class);
+    registerReferentialIntegrityHandlers();
+  }
+
+  /**
+   * Register referential integrity checks.
+   */
+  protected void registerReferentialIntegrityHandlers() {
+
+    ApiHibernateInterceptor.addHandler(ClientRelationship.class, e -> {
+      LOGGER.warn("handle ClientRelationship");
+      // raise exception on FK error.
+    });
+
+    ApiHibernateInterceptor.addHandler(ClientAddress.class, e -> {
+      LOGGER.warn("handle ClientAddress");
+      // raise exception on FK error.
+    });
+
+    ApiHibernateInterceptor.addHandler(SystemMeta.class, e -> {
+      LOGGER.warn("handle SystemMeta");
+      // raise exception on FK error.
+    });
+
   }
 
   @Provides

@@ -19,14 +19,14 @@ import org.junit.BeforeClass;
 import org.junit.Rule;
 import org.junit.Test;
 
-import gov.ca.cwds.data.junit.template.DaoTestTemplate;
 import gov.ca.cwds.data.persistence.cms.AddressUc;
 
 /**
  * @author CWDS API Team
  *
  */
-public class AddressUcDaoIT implements DaoTestTemplate {
+@SuppressWarnings("javadoc")
+public class AddressUcDaoIT {
 
   private static SessionFactory sessionFactory;
   private static AddressUcDao addressUcDao;
@@ -60,20 +60,17 @@ public class AddressUcDaoIT implements DaoTestTemplate {
     sessionFactory.close();
   }
 
-  @Override
   @Before
   public void setup() {
     session = sessionFactory.getCurrentSession();
     session.beginTransaction();
   }
 
-  @Override
   @After
   public void teardown() {
     session.getTransaction().rollback();
   }
 
-  @Override
   @Test
   public void testFind() throws Exception {
     String entityId = "AbjqVmy04O";
@@ -81,14 +78,13 @@ public class AddressUcDaoIT implements DaoTestTemplate {
     assertThat(found.getPktableId(), is(equalTo(entityId)));
   }
 
-  @Override
   @Test
   public void testFindEntityNotFoundException() throws Exception {
     AddressUc found = addressUcDao.find("9999999ZZZ");
     assertThat(found, is(nullValue()));
   }
 
-  @Override
+
   @Test
   public void testCreate() throws Exception {
     AddressUc addressUc = new AddressUc("ABC1234567", "C", "Sacramento", "Main Street", "123");
@@ -96,7 +92,6 @@ public class AddressUcDaoIT implements DaoTestTemplate {
     assertThat(created, is(addressUc));
   }
 
-  @Override
   @Test
   public void testCreateExistingEntityException() throws Exception {
     thrown.expect(EntityExistsException.class);
@@ -104,14 +99,12 @@ public class AddressUcDaoIT implements DaoTestTemplate {
     addressUcDao.create(addressUc);
   }
 
-  @Override
   @Test
   public void testDelete() throws Exception {
     AddressUc deleted = addressUcDao.delete(id);
     assertThat(deleted.getPktableId(), is(id));
   }
 
-  @Override
   @Test
   public void testDeleteEntityNotFoundException() throws Exception {
     String id = "ABC1234568";
@@ -120,31 +113,18 @@ public class AddressUcDaoIT implements DaoTestTemplate {
 
   }
 
-  @Override
-  // @Test
+  @Test
   public void testUpdate() throws Exception {
     AddressUc addressUc = new AddressUc("AbjqVmy04O", "C", "Sacramento", "Main Street", "123");
     AddressUc updated = addressUcDao.update(addressUc);
     assertThat(updated, is(addressUc));
   }
 
-  @Override
   @Test
   public void testUpdateEntityNotFoundException() throws Exception {
     thrown.expect(EntityNotFoundException.class);
     AddressUc addressUc = new AddressUc("AbjqVmy04y", "C", "Sacramento", "Main Street", "123");
     addressUcDao.update(addressUc);
   }
-
-  @Override
-  public void testFindAllNamedQueryExist() throws Exception {
-
-  }
-
-  @Override
-  public void testFindAllReturnsCorrectList() throws Exception {
-
-  }
-
 
 }

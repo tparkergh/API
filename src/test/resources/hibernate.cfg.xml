@@ -20,10 +20,12 @@
 		<property name="hibernate.connection.password">${DB_CMS_PASSWORD}</property>
 		<property name="hibernate.connection.url">${DB_CMS_JDBC_URL}</property>
 		<property name="hibernate.default_schema">${DB_CMS_SCHEMA}</property>
- -->
-
+-->
+ 
 <!-- Taborda Jenkins: -->
-		<property name="hibernate.connection.username">db2inst1</property>
+<!-- 
+-->
+ 		<property name="hibernate.connection.username">db2inst1</property>
 		<property name="hibernate.connection.password">db2inst1</property>
 		<property name="hibernate.connection.url">jdbc:db2://cms.db.dev.cwds.tabordasolutions.net:50000/DB0TDEV</property>
 		<property name="hibernate.default_schema">CWSINT</property>
