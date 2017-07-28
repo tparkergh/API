@@ -1,6 +1,5 @@
 package gov.ca.cwds.rest.services.cms;
 
-import java.io.Serializable;
 import java.util.Date;
 
 import javax.persistence.EntityExistsException;
@@ -15,17 +14,17 @@ import gov.ca.cwds.data.Dao;
 import gov.ca.cwds.data.cms.AllegationPerpetratorHistoryDao;
 import gov.ca.cwds.data.persistence.cms.AllegationPerpetratorHistory;
 import gov.ca.cwds.data.persistence.cms.CmsKeyIdGenerator;
-import gov.ca.cwds.rest.api.Request;
 import gov.ca.cwds.rest.api.domain.cms.PostedAllegationPerpetratorHistory;
-import gov.ca.cwds.rest.services.CrudsService;
 import gov.ca.cwds.rest.services.ServiceException;
+import gov.ca.cwds.rest.services.TypedCrudsService;
 
 /**
  * Business layer object to work on {@link AllegationPerpetratorHistory}
  * 
  * @author CWDS API Team
  */
-public class AllegationPerpetratorHistoryService implements CrudsService {
+public class AllegationPerpetratorHistoryService implements
+    TypedCrudsService<String, gov.ca.cwds.rest.api.domain.cms.AllegationPerpetratorHistory, gov.ca.cwds.rest.api.domain.cms.AllegationPerpetratorHistory> {
 
   private static final Logger LOGGER =
       LoggerFactory.getLogger(AllegationPerpetratorHistoryService.class);
@@ -56,9 +55,7 @@ public class AllegationPerpetratorHistoryService implements CrudsService {
    * @see gov.ca.cwds.rest.services.CrudsService#find(java.io.Serializable)
    */
   @Override
-  public gov.ca.cwds.rest.api.domain.cms.AllegationPerpetratorHistory find(
-      Serializable primaryKey) {
-    assert primaryKey instanceof String;
+  public gov.ca.cwds.rest.api.domain.cms.AllegationPerpetratorHistory find(String primaryKey) {
 
     gov.ca.cwds.data.persistence.cms.AllegationPerpetratorHistory persistedAllegationPerpetratorHistory =
         allegationPerpetratorHistoryDao.find(primaryKey);
@@ -75,9 +72,8 @@ public class AllegationPerpetratorHistoryService implements CrudsService {
    * @see gov.ca.cwds.rest.services.CrudsService#delete(java.io.Serializable)
    */
   @Override
-  public gov.ca.cwds.rest.api.domain.cms.AllegationPerpetratorHistory delete(
-      Serializable primaryKey) {
-    assert primaryKey instanceof String;
+  public gov.ca.cwds.rest.api.domain.cms.AllegationPerpetratorHistory delete(String primaryKey) {
+
     gov.ca.cwds.data.persistence.cms.AllegationPerpetratorHistory persistedAllegationPerpetratorHistory =
         allegationPerpetratorHistoryDao.delete(primaryKey);
     if (persistedAllegationPerpetratorHistory != null) {
@@ -93,11 +89,11 @@ public class AllegationPerpetratorHistoryService implements CrudsService {
    * @see gov.ca.cwds.rest.services.CrudsService#create(gov.ca.cwds.rest.api.Request)
    */
   @Override
-  public PostedAllegationPerpetratorHistory create(Request request) {
-    assert request instanceof gov.ca.cwds.rest.api.domain.cms.AllegationPerpetratorHistory;
+  public PostedAllegationPerpetratorHistory create(
+      gov.ca.cwds.rest.api.domain.cms.AllegationPerpetratorHistory request) {
 
     gov.ca.cwds.rest.api.domain.cms.AllegationPerpetratorHistory allegationPerpetratoryHistory =
-        (gov.ca.cwds.rest.api.domain.cms.AllegationPerpetratorHistory) request;
+        request;
     return create(allegationPerpetratoryHistory, null);
 
   }
@@ -110,12 +106,11 @@ public class AllegationPerpetratorHistoryService implements CrudsService {
    * @param timestamp - timestamp
    * @return the Posted Allegation Perpetrator History
    */
-  public PostedAllegationPerpetratorHistory createWithSingleTimestamp(Request request,
-      Date timestamp) {
-    assert request instanceof gov.ca.cwds.rest.api.domain.cms.AllegationPerpetratorHistory;
+  public PostedAllegationPerpetratorHistory createWithSingleTimestamp(
+      gov.ca.cwds.rest.api.domain.cms.AllegationPerpetratorHistory request, Date timestamp) {
 
     gov.ca.cwds.rest.api.domain.cms.AllegationPerpetratorHistory allegationPerpetratoryHistory =
-        (gov.ca.cwds.rest.api.domain.cms.AllegationPerpetratorHistory) request;
+        request;
     return create(allegationPerpetratoryHistory, timestamp);
 
   }
@@ -154,17 +149,16 @@ public class AllegationPerpetratorHistoryService implements CrudsService {
    *      gov.ca.cwds.rest.api.Request)
    */
   @Override
-  public gov.ca.cwds.rest.api.domain.cms.AllegationPerpetratorHistory update(
-      Serializable primaryKey, Request request) {
-    assert primaryKey instanceof String;
-    assert request instanceof gov.ca.cwds.rest.api.domain.cms.AllegationPerpetratorHistory;
+  public gov.ca.cwds.rest.api.domain.cms.AllegationPerpetratorHistory update(String primaryKey,
+      gov.ca.cwds.rest.api.domain.cms.AllegationPerpetratorHistory request) {
+
     gov.ca.cwds.rest.api.domain.cms.AllegationPerpetratorHistory allegationPerpetratorHistory =
-        (gov.ca.cwds.rest.api.domain.cms.AllegationPerpetratorHistory) request;
+        request;
 
     try {
       String lastUpdatedId = staffPersonIdRetriever.getStaffPersonId();
-      AllegationPerpetratorHistory managed = new AllegationPerpetratorHistory((String) primaryKey,
-          allegationPerpetratorHistory, lastUpdatedId);
+      AllegationPerpetratorHistory managed =
+          new AllegationPerpetratorHistory(primaryKey, allegationPerpetratorHistory, lastUpdatedId);
       managed = allegationPerpetratorHistoryDao.update(managed);
       return new gov.ca.cwds.rest.api.domain.cms.AllegationPerpetratorHistory(managed);
     } catch (EntityNotFoundException e) {
