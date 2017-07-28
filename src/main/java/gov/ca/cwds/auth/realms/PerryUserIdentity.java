@@ -8,7 +8,6 @@ import gov.ca.cwds.security.shiro.realms.PerryAccount;
  * Custom Implementation for additional security attributes in JWT token
  * 
  * @author CWDS API Team
- *
  */
 public class PerryUserIdentity extends PerryAccount {
 

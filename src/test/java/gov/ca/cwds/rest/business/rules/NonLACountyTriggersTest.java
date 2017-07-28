@@ -322,7 +322,7 @@ public class NonLACountyTriggersTest {
   /**
    * Referral countyOwnership is not created when AssignmentCode is set to S
    * 
-   * @throws Exception
+   * @throws Exception test general
    */
   @Test
   public void testForAssignmentCodeIsS() throws Exception {
@@ -356,7 +356,7 @@ public class NonLACountyTriggersTest {
   /**
    * Referral countyOwnership is not created when assignment established is set to C
    * 
-   * @throws Exception
+   * @throws Exception test general
    */
   @Test
   public void testForEstablishedCodeIsC() throws Exception {
@@ -415,9 +415,6 @@ public class NonLACountyTriggersTest {
     assertThat(countyOwnership.getEntityCode(), is(equalTo("C")));
   }
 
-  /**
-   * @throws Exception
-   */
   @Test
   public void testForReferralCreatedCountyOwnershipForDefault99() throws Exception {
 

@@ -16,7 +16,6 @@ import gov.ca.cwds.security.shiro.realms.JwtRealm;
  * "staffId" : "id"}
  *
  * @author CWDS API Team
- *
  */
 public class ApiRealm extends JwtRealm {
 

@@ -1,14 +1,5 @@
 package gov.ca.cwds.rest.services.cms;
 
-import gov.ca.cwds.data.Dao;
-import gov.ca.cwds.data.cms.ClientCollateralDao;
-import gov.ca.cwds.data.persistence.cms.CmsKeyIdGenerator;
-import gov.ca.cwds.rest.api.Request;
-import gov.ca.cwds.rest.api.domain.cms.ClientCollateral;
-import gov.ca.cwds.rest.api.domain.cms.PostedClientCollateral;
-import gov.ca.cwds.rest.services.CrudsService;
-import gov.ca.cwds.rest.services.ServiceException;
-
 import java.io.Serializable;
 
 import javax.persistence.EntityExistsException;
@@ -19,8 +10,17 @@ import org.slf4j.LoggerFactory;
 
 import com.google.inject.Inject;
 
+import gov.ca.cwds.data.Dao;
+import gov.ca.cwds.data.cms.ClientCollateralDao;
+import gov.ca.cwds.data.persistence.cms.CmsKeyIdGenerator;
+import gov.ca.cwds.rest.api.Request;
+import gov.ca.cwds.rest.api.domain.cms.ClientCollateral;
+import gov.ca.cwds.rest.api.domain.cms.PostedClientCollateral;
+import gov.ca.cwds.rest.services.CrudsService;
+import gov.ca.cwds.rest.services.ServiceException;
+
 /**
- * Business layer object to work on {@link ClientCollateral}
+ * Business layer object to work on {@link ClientCollateral}.
  * 
  * @author CWDS API Team
  */
@@ -30,6 +30,7 @@ public class ClientCollateralService implements CrudsService {
 
   private ClientCollateralDao clientCollateralDao;
   private StaffPersonIdRetriever staffPersonIdRetriever;
+  private RIClientCollateral ri;
 
   /**
    * Constructor
@@ -37,12 +38,14 @@ public class ClientCollateralService implements CrudsService {
    * @param clientCollateralDao The {@link Dao} handling
    *        {@link gov.ca.cwds.data.persistence.cms.ClientCollateral} objects.
    * @param staffPersonIdRetriever the staffPersonIdRetriever
+   * @param ri referential integrity checker
    */
   @Inject
   public ClientCollateralService(ClientCollateralDao clientCollateralDao,
-      StaffPersonIdRetriever staffPersonIdRetriever) {
+      StaffPersonIdRetriever staffPersonIdRetriever, RIClientCollateral ri) {
     this.clientCollateralDao = clientCollateralDao;
     this.staffPersonIdRetriever = staffPersonIdRetriever;
+    this.ri = ri;
   }
 
   /**

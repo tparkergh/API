@@ -50,7 +50,7 @@ public final class SystemCodeCategoryId {
   public static final String COMMUNICATION_METHOD = "CMM_MTHC";
 
   /**
-   * Address Type e.g) Business, In-Person, Residence, Homeless
+   * <<<<<<< HEAD Address Type e.g) Business, In-Person, Residence, Homeless
    */
   public static final String ADDRESS_TYPE = "ADDR_TPC";
 
@@ -58,6 +58,11 @@ public final class SystemCodeCategoryId {
    * State Code e.g) California, Illinois
    */
   public static final String STATE_CODE = "STATE_C";
+
+  /**
+   * Client collateral relationship, e.g) Attorney, Clergy, Friend
+   */
+  public static final String CLIENT_COLLATERAL_RELATIONSHIP = "COL_RELC";
 
   /**
    * Private constructor
