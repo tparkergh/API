@@ -127,6 +127,8 @@ public class ReferralAssignmentDaoIT {
 
   /**
    * Delete JUnit test
+   * 
+   * @throws Exception test general
    */
   @Test
   public void testDelete() throws Exception {
@@ -142,6 +144,8 @@ public class ReferralAssignmentDaoIT {
 
   /**
    * Update JUnit test
+   * 
+   * @throws Exception test general
    */
   @Test
   public void testUpdate() throws Exception {
