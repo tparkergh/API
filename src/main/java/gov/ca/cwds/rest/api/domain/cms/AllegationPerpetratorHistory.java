@@ -2,6 +2,8 @@ package gov.ca.cwds.rest.api.domain.cms;
 
 import static gov.ca.cwds.data.persistence.cms.CmsPersistentObject.CMS_ID_LEN;
 
+import java.io.Serializable;
+
 import javax.validation.constraints.Size;
 
 import org.apache.commons.lang3.builder.EqualsBuilder;
@@ -23,7 +25,8 @@ import io.swagger.annotations.ApiModelProperty;
  * 
  * @author CWDS API Team
  */
-public class AllegationPerpetratorHistory extends ReportingDomain implements Request, Response {
+public class AllegationPerpetratorHistory extends ReportingDomain
+    implements Request, Response, Serializable {
 
   /**
    * Default serialization.
