@@ -22,6 +22,7 @@ import gov.ca.cwds.rest.api.ApiException;
  * 
  * <p>
  * Enforce foreign key constraints using "normal" Hibernate mechanisms, such as this typical FK:
+ * </p>
  * <blockquote>
  * 
  * <pre>
@@ -31,7 +32,6 @@ import gov.ca.cwds.rest.api.ApiException;
  * </pre>
  * 
  * </blockquote>
- * </p>
  * 
  * @author CWDS API Team
  * @see ApiHibernateInterceptor
