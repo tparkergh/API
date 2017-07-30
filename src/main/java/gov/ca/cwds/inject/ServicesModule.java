@@ -66,6 +66,7 @@ public class ServicesModule extends AbstractModule {
     @Inject
     @CmsHibernateBundle
     HibernateBundle<ApiConfiguration> cmsHibernateBundle;
+
     UnitOfWorkAwareProxyFactory proxyFactory;
 
     @Inject
@@ -149,12 +150,14 @@ public class ServicesModule extends AbstractModule {
   @Provides
   public SystemCodeService provideSystemCodeService(SystemCodeDao systemCodeDao,
       SystemMetaDao systemMetaDao) {
+    LOGGER.debug("provide syscode service");
     final long secondsToRefreshCache = 15L * 24 * 60 * 60; // 15 days
     return new CachingSystemCodeService(systemCodeDao, systemMetaDao, secondsToRefreshCache, false);
   }
 
   @Provides
   public SystemCodeCache provideSystemCodeCache(SystemCodeService systemCodeService) {
+    LOGGER.debug("provide syscode cache");
     SystemCodeCache systemCodeCache = (SystemCodeCache) systemCodeService;
     systemCodeCache.register();
     return systemCodeCache;
@@ -162,6 +165,7 @@ public class ServicesModule extends AbstractModule {
 
   @Provides
   public CmsSystemCodeSerializer provideCmsSystemCodeSerializer(SystemCodeCache systemCodeCache) {
+    LOGGER.debug("provide syscode serializer");
     return new CmsSystemCodeSerializer(systemCodeCache);
   }
 }
