@@ -18,7 +18,6 @@ import com.google.inject.AbstractModule;
 import com.google.inject.Provides;
 import com.google.inject.name.Named;
 
-import gov.ca.cwds.data.ApiHibernateInterceptor;
 import gov.ca.cwds.data.cms.AddressUcDao;
 import gov.ca.cwds.data.cms.AllegationDao;
 import gov.ca.cwds.data.cms.AllegationPerpetratorHistoryDao;
@@ -193,7 +192,7 @@ public class DataAccessModule extends AbstractModule {
       };
 
   /**
-   * Constructor takes the API config.
+   * Constructor takes the API configuration.
    * 
    * @param bootstrap the ApiConfiguration
    */
@@ -280,29 +279,6 @@ public class DataAccessModule extends AbstractModule {
 
     // Referential integrity.
     bind(RIClientCollateral.class);
-    registerReferentialIntegrityHandlers();
-  }
-
-  /**
-   * Register referential integrity checks.
-   */
-  protected void registerReferentialIntegrityHandlers() {
-
-    ApiHibernateInterceptor.addHandler(ClientRelationship.class, e -> {
-      LOGGER.warn("handle ClientRelationship");
-      // raise exception on FK error.
-    });
-
-    ApiHibernateInterceptor.addHandler(ClientAddress.class, e -> {
-      LOGGER.warn("handle ClientAddress");
-      // raise exception on FK error.
-    });
-
-    ApiHibernateInterceptor.addHandler(SystemMeta.class, e -> {
-      LOGGER.warn("handle SystemMeta");
-      // raise exception on FK error.
-    });
-
   }
 
   @Provides
