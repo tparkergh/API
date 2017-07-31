@@ -617,7 +617,7 @@ public class ScreeningToReferralService implements CrudsService {
         // create an allegation in CMS legacy database
         gov.ca.cwds.rest.api.domain.cms.Allegation cmsAllegation =
             new gov.ca.cwds.rest.api.domain.cms.Allegation("", LegacyDefaultValues.DEFAULT_CODE, "",
-                scr.getLocationType(), "", allegationDispositionType, allegation.getType(), "", "",
+                scr.getLocationType(), "", allegationDispositionType, legacyCodes.allegationTypeCode, "", "",
                 false, LegacyDefaultValues.DEFAULT_NON_PROTECTING_PARENT_CODE, false,
                 victimClientId, perpatratorClientId, referralId,
                 LegacyDefaultValues.DEFAULT_COUNTY_SPECIFIC_CODE, false,

@@ -43,6 +43,8 @@
     "gender" : "male",
     "ssn" : "123456789",
     "date_of_birth" : "2001-03-15",
+    "primary_language": 1253,
+    "secondary_language": 1271,
     "person_id" : 12345,
     "screening_id" : 12345,
     "roles" : [ "Victim" ],

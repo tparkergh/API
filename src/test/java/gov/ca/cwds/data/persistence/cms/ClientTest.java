@@ -280,7 +280,7 @@ public class ClientTest implements PersistentTestTemplate {
         is(equalTo(DomainChef.cookBoolean(vc.getPrevRegionalCenterIndicator()))));
     assertThat(pers.getPrimaryEthnicityType(), is(equalTo(vc.getPrimaryEthnicityType())));
     assertThat(pers.getReligionType(), is(equalTo(vc.getReligionType())));
-    assertThat(pers.getSecondaryLanguageType(), is(equalTo(vc.getSecondaryLanguageType())));
+    assertThat(pers.getSecondaryLanguageType(), is(equalTo(vc.getSecondaryLanguage())));
     assertThat(pers.getSensitiveHlthInfoOnFileIndicator(),
         is(equalTo(DomainChef.cookBoolean(vc.getSensitiveHlthInfoOnFileIndicator()))));
     assertThat(pers.getSensitivityIndicator(), is(equalTo(vc.getSensitivityIndicator())));

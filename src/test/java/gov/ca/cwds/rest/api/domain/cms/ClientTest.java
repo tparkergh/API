@@ -22,8 +22,6 @@ import javax.ws.rs.core.Response;
 
 import org.joda.time.DateTime;
 import org.joda.time.format.DateTimeFormat;
-import org.joda.time.format.DateTimeFormatter;
-import org.joda.time.format.ISODateTimeFormat;
 import org.junit.After;
 import org.junit.ClassRule;
 import org.junit.Test;
@@ -366,9 +364,9 @@ public class ClientTest implements DomainTestTemplate {
         is(equalTo(vc.getPrevCaChildrenServIndicator())));
     assertThat(domain.getPrevOtherDescription(), is(equalTo(vc.getPrevOtherDescription())));
     assertThat(domain.getPrimaryEthnicityType(), is(equalTo(vc.getPrimaryEthnicityType())));
-    assertThat(domain.getPrimaryLanguageType(), is(equalTo(vc.getPrimaryLanguageType())));
+    assertThat(domain.getPrimaryLanguage(), is(equalTo(vc.getPrimaryLanguage())));
     assertThat(domain.getReligionType(), is(equalTo(vc.getReligionType())));
-    assertThat(domain.getSecondaryLanguageType(), is(equalTo(vc.getSecondaryLanguageType())));
+    assertThat(domain.getSecondaryLanguage(), is(equalTo(vc.getSecondaryLanguage())));
     assertThat(domain.getSensitiveHlthInfoOnFileIndicator(),
         is(equalTo(vc.getSensitiveHlthInfoOnFileIndicator())));
     assertThat(domain.getSensitivityIndicator(), is(equalTo(vc.getSensitivityIndicator())));
@@ -389,7 +387,7 @@ public class ClientTest implements DomainTestTemplate {
   @Test
   public void testCreateWithDefaultCreatesWithValues() {
     Participant participant = new Participant(1, "sourceTable", "clientId", new LegacyDescriptor(), "firstName",
-        "middleName", "lastName", "jr", "gender", "ssn", "dob", 3, 4, new HashSet(), new HashSet());
+        "middleName", "lastName", "jr", "gender", "ssn", "dob", primaryLanguageType, secondaryLanguageType, 3, 4, new HashSet(), new HashSet());
     String genderCode = "male";
     String dateStarted = "now";
 
@@ -415,8 +413,10 @@ public class ClientTest implements DomainTestTemplate {
 
   @Test
   public void shouldAllowClientNamesToBeUpdatedAfterInitialization() {
+
     Participant participant = new Participant(1, "sourceTable", "clientId", new LegacyDescriptor(),
-        "Fred", "Wilson", "Bill", "", "gender", "ssn", "dob", 3, 4, new HashSet(), new HashSet());
+        "Fred", "Wilson", "Bill", "", "gender", "ssn", "dob", primaryLanguageType,
+        secondaryLanguageType, 3, 4, new HashSet(), new HashSet());
     Client client = Client.createWithDefaults(participant, "", "");
 
     client.update("Barney", "middlestone", "Rubble", "jr");
@@ -434,7 +434,7 @@ public class ClientTest implements DomainTestTemplate {
   @Test
   public void testCreateWithDefaultCreatesWithDefaultValues() {
     Participant participant = new Participant(1, "sourceTable", "clientId",  new LegacyDescriptor(),
-        "firstName", "middleName", "lastName", "", "gender", "ssn", "dob", 3, 4, new HashSet(),
+        "firstName", "middleName", "lastName", "", "gender", "ssn", "dob", primaryLanguageType, secondaryLanguageType, 3, 4, new HashSet(),
         new HashSet());
     String genderCode = "male";
     String dateStarted = "now";
@@ -541,12 +541,8 @@ public class ClientTest implements DomainTestTemplate {
         false, client.getPrevRegionalCenterIndicator());
     assertEquals("Expected primaryEthnicityType field to be initialized with default values",
         new Short("0"), client.getPrimaryEthnicityType());
-    assertEquals("Expected primaryLanguageType field to be initialized with default values",
-        new Short("0"), client.getPrimaryLanguageType());
     assertEquals("Expected religionType field to be initialized with default values",
         new Short("0"), client.getReligionType());
-    assertEquals("Expected secondaryLanguageType field to be initialized with default values",
-        new Short("1253"), client.getSecondaryLanguageType());
     assertEquals(
         "Expected sensitiveHlthInfoOnFileIndicator field to be initialized with default values",
         false, client.getSensitiveHlthInfoOnFileIndicator());

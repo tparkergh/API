@@ -33,6 +33,8 @@ public class ParticipantResourceTest {
 
   private static final String ROOT_RESOURCE = "/participants/";
   private static final String FOUND_RESOURCE = "/participants/1";
+  private final Short primaryLanguage = 1253;
+  private final Short secondaryLanguage = 1271;
   private Set<String> roles = new HashSet<String>();
   private Set<Address> addresses = new HashSet<Address>();
 
@@ -80,7 +82,7 @@ public class ParticipantResourceTest {
     Address address = new Address("", "", "123 First St", "San Jose", 1828, 94321, 32);
     addresses.add(address);
     Participant participant = new Participant(1, "", "", new LegacyDescriptor(), "Marge", "J",
-        "Simpson", "Female", "", "11122333", "11-01-2017", 123, 456, roles, addresses);
+        "Simpson", "Female", "", "11122333", "11-01-2017", primaryLanguage, secondaryLanguage, 123, 456, roles, addresses);
 
     int status =
         inMemoryResource.client().target(ROOT_RESOURCE).request().accept(MediaType.APPLICATION_JSON)
@@ -94,7 +96,7 @@ public class ParticipantResourceTest {
     Address address = new Address("", "", "123 First St", "San Jose", 1828, 94321, 32);
     addresses.add(address);
     Participant participant = new Participant(1, "", "", new LegacyDescriptor(), "Marge", "J",
-        "Simpson", "", "Female", "111223333", "2017-01-23", 123, 456, roles, addresses);
+        "Simpson", "", "Female", "111223333", "2017-01-23", primaryLanguage, secondaryLanguage, 123, 456, roles, addresses);
 
     int status =
         inMemoryResource.client().target(ROOT_RESOURCE).request().accept(MediaType.APPLICATION_JSON)
@@ -118,12 +120,11 @@ public class ParticipantResourceTest {
     Address address = new Address("", "", "123 First St", "San Jose", 1828, 94321, 32);
     addresses.add(address);
     Participant participant = new Participant(1, "", "", new LegacyDescriptor(), "Marge", "J",
-        "Simpson", "", "Female", "111223333", "2017-01-11", 123, 456, roles, addresses);
+        "Simpson", "", "Female", "111223333", "2017-01-11", primaryLanguage, secondaryLanguage, 123, 456, roles, addresses);
     int receivedStatus =
         inMemoryResource.client().target(ROOT_RESOURCE).request().accept(MediaType.APPLICATION_JSON)
             .put(Entity.entity(participant, MediaType.APPLICATION_JSON)).getStatus();
     int expectedStatus = 405;
     assertThat(receivedStatus, is(expectedStatus));
   }
-
 }

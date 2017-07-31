@@ -8,8 +8,6 @@ import java.util.Set;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
-import org.apache.commons.lang3.builder.EqualsBuilder;
-import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.hibernate.validator.constraints.NotBlank;
 import org.hibernate.validator.constraints.NotEmpty;
 
@@ -335,7 +333,7 @@ public class Client extends ReportingDomain implements Request, Response {
   @SystemCodeSerializer(logical = true, description = true)
   @NotNull
   @ApiModelProperty(required = false, readOnly = false, example = "1253")
-  private Short primaryLanguageType;
+  private Short primaryLanguage;
 
   @SystemCodeSerializer(logical = true, description = true)
   @NotNull
@@ -345,7 +343,7 @@ public class Client extends ReportingDomain implements Request, Response {
   @SystemCodeSerializer(logical = true, description = true)
   @NotNull
   @ApiModelProperty(required = false, readOnly = false, example = "1255")
-  private Short secondaryLanguageType;
+  private Short secondaryLanguage;
 
   @NotNull
   @ApiModelProperty(required = true, readOnly = false)
@@ -460,9 +458,9 @@ public class Client extends ReportingDomain implements Request, Response {
    * @param prevOtherDescription - prevOtherDescription
    * @param prevRegionalCenterIndicator - prevRegionalCenterIndicator
    * @param primaryEthnicityType - primaryEthnicityType
-   * @param primaryLanguageType - primaryLanguageType
+   * @param primaryLanguage - primaryLanguage
    * @param religionType - religionType
-   * @param secondaryLanguageType - secondaryLanguageType
+   * @param secondaryLanguage - secondaryLanguage
    * @param sensitiveHlthInfoOnFileIndicator - sensitiveHlthInfoOnFileIndicator
    * @param sensitivityIndicator - sensitivityIndicator
    * @param soc158PlacementCode - soc158PlacementCode
@@ -531,9 +529,9 @@ public class Client extends ReportingDomain implements Request, Response {
       @JsonProperty("prevOtherDescription") String prevOtherDescription,
       @JsonProperty("prevRegionalCenterIndicator") Boolean prevRegionalCenterIndicator,
       @JsonProperty("primaryEthnicityType") Short primaryEthnicityType,
-      @JsonProperty("primaryLanguageType") Short primaryLanguageType,
+      @JsonProperty("primaryLanguage") Short primaryLanguage,
       @JsonProperty("religionType") Short religionType,
-      @JsonProperty("secondaryLanguageType") Short secondaryLanguageType,
+      @JsonProperty("secondaryLanguage") Short secondaryLanguage,
       @JsonProperty("sensitiveHlthInfoOnFileIndicator") Boolean sensitiveHlthInfoOnFileIndicator,
       @JsonProperty("sensitivityIndicator") String sensitivityIndicator,
       @JsonProperty("soc158PlacementCode") String soc158PlacementCode,
@@ -601,9 +599,9 @@ public class Client extends ReportingDomain implements Request, Response {
     this.prevOtherDescription = prevOtherDescription;
     this.prevRegionalCenterIndicator = prevRegionalCenterIndicator;
     this.primaryEthnicityType = primaryEthnicityType;
-    this.primaryLanguageType = primaryLanguageType;
+    this.primaryLanguage = primaryLanguage;
     this.religionType = religionType;
-    this.secondaryLanguageType = secondaryLanguageType;
+    this.secondaryLanguage = secondaryLanguage;
     this.sensitiveHlthInfoOnFileIndicator = sensitiveHlthInfoOnFileIndicator;
     this.sensitivityIndicator = sensitivityIndicator;
     this.soc158PlacementCode = soc158PlacementCode;
@@ -693,9 +691,9 @@ public class Client extends ReportingDomain implements Request, Response {
     this.prevRegionalCenterIndicator =
         DomainChef.uncookBooleanString(persistedClient.getPrevRegionalCenterIndicator());
     this.primaryEthnicityType = persistedClient.getPrimaryEthnicityType();
-    this.primaryLanguageType = persistedClient.getPrimaryLanguageType();
+    this.primaryLanguage = persistedClient.getPrimaryLanguageType();
     this.religionType = persistedClient.getReligionType();
-    this.secondaryLanguageType = persistedClient.getSecondaryLanguageType();
+    this.secondaryLanguage = persistedClient.getSecondaryLanguageType();
     this.sensitiveHlthInfoOnFileIndicator =
         DomainChef.uncookBooleanString(persistedClient.getSensitiveHlthInfoOnFileIndicator());
     this.sensitivityIndicator = persistedClient.getSensitivityIndicator();
@@ -739,8 +737,8 @@ public class Client extends ReportingDomain implements Request, Response {
         DEFAULT_UNABLE_TO_DETAIN_CODE, "", genderCode, "", "", DEFAULT_HISPANIC_ORIGIN_CODE,
         DEFAULT_CODE, DEFAULT_CODE, DEFAULT_INCAPCITATED_PARENT_CODE, false, false,
         DEFAULT_LITERATE_CODE, false, DEFAULT_CODE, DEFAULT_MILITARY_STATUS_CODE, "", "",
-        DEFAULT_NAME_TYPE, false, false, "", false, DEFAULT_CODE, DEFAULT_CODE, DEFAULT_CODE,
-        DEFAULT_SECONDARY_LANGUAGE_TYPE, false, DEFAULT_SENSITIVITY_INDICATOR,
+        DEFAULT_NAME_TYPE, false, false, "", false, DEFAULT_CODE, participant.getPrimaryLanguage(), DEFAULT_CODE,
+        participant.getSecondaryLanguage(), false, DEFAULT_SENSITIVITY_INDICATOR,
         DEFAULT_SOC158_PLACEMENT_CODE, false, DEFAULT_SOCIAL_SECURITY_NUM_CHANGE_CODE,
         participant.getSsn(), participant.getNameSuffix(), false, false,
         DEFAULT_UNEMPLOYED_PARENT_CODE, false, null);
@@ -1125,10 +1123,10 @@ public class Client extends ReportingDomain implements Request, Response {
   }
 
   /**
-   * @return the primaryLanguageType
+   * @return the primaryLanguage
    */
-  public Short getPrimaryLanguageType() {
-    return primaryLanguageType;
+  public Short getPrimaryLanguage() {
+    return primaryLanguage;
   }
 
   /**
@@ -1139,10 +1137,10 @@ public class Client extends ReportingDomain implements Request, Response {
   }
 
   /**
-   * @return the secondaryLanguageType
+   * @return the secondaryLanguage
    */
-  public Short getSecondaryLanguageType() {
-    return secondaryLanguageType;
+  public Short getSecondaryLanguage() {
+    return secondaryLanguage;
   }
 
   /**
@@ -1478,16 +1476,16 @@ public class Client extends ReportingDomain implements Request, Response {
         : client.primaryEthnicityType != null) {
       return false;
     }
-    if (primaryLanguageType != null ? !primaryLanguageType.equals(client.primaryLanguageType)
-        : client.primaryLanguageType != null) {
+    if (primaryLanguage != null ? !primaryLanguage.equals(client.primaryLanguage)
+        : client.primaryLanguage != null) {
       return false;
     }
     if (religionType != null ? !religionType.equals(client.religionType)
         : client.religionType != null) {
       return false;
     }
-    if (secondaryLanguageType != null ? !secondaryLanguageType.equals(client.secondaryLanguageType)
-        : client.secondaryLanguageType != null) {
+    if (secondaryLanguage != null ? !secondaryLanguage.equals(client.secondaryLanguage)
+        : client.secondaryLanguage != null) {
       return false;
     }
     if (sensitiveHlthInfoOnFileIndicator != null ? !sensitiveHlthInfoOnFileIndicator
@@ -1645,9 +1643,9 @@ public class Client extends ReportingDomain implements Request, Response {
         31 * result + (prevRegionalCenterIndicator != null ? prevRegionalCenterIndicator.hashCode()
             : 0);
     result = 31 * result + (primaryEthnicityType != null ? primaryEthnicityType.hashCode() : 0);
-    result = 31 * result + (primaryLanguageType != null ? primaryLanguageType.hashCode() : 0);
+    result = 31 * result + (primaryLanguage != null ? primaryLanguage.hashCode() : 0);
     result = 31 * result + (religionType != null ? religionType.hashCode() : 0);
-    result = 31 * result + (secondaryLanguageType != null ? secondaryLanguageType.hashCode() : 0);
+    result = 31 * result + (secondaryLanguage != null ? secondaryLanguage.hashCode() : 0);
     result =
         31 * result + (sensitiveHlthInfoOnFileIndicator != null ? sensitiveHlthInfoOnFileIndicator
             .hashCode() : 0);

@@ -2,6 +2,7 @@ package gov.ca.cwds.rest.api.domain;
 
 import static gov.ca.cwds.data.persistence.cms.CmsPersistentObject.CMS_ID_LEN;
 
+import gov.ca.cwds.rest.validation.ValidSystemCodeId;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -99,15 +100,17 @@ public class Participant extends ReportingDomain implements Request, Response {
   private String dateOfBirth;
 
   @JsonProperty("primary_language")
-//  @NotNull
+  @NotNull
   @ApiModelProperty(required = false, readOnly = false, value = "", example = "1234",
       notes = "The code for primary Language")
+  @ValidSystemCodeId(required = true, category = SystemCodeCategoryId.LANGUAGE_CODE)
   private Short primaryLanguage;
 
   @JsonProperty("secondary_language")
-//  @NotNull
+  @NotNull
   @ApiModelProperty(required = false, readOnly = false, value = "", example = "1234",
       notes = "The code for secondary Language")
+  @ValidSystemCodeId(required = true, category = SystemCodeCategoryId.LANGUAGE_CODE)
   private Short secondaryLanguage;
 
   @JsonProperty("screening_id")
@@ -169,7 +172,10 @@ public class Participant extends ReportingDomain implements Request, Response {
       @JsonProperty("first_name") String firstName, @JsonProperty("middle_name") String middleName,
       @JsonProperty("last_name") String lastName, @JsonProperty("name_suffix") String nameSuffix,
       @JsonProperty("gender") String gender, @JsonProperty("ssn") String ssn,
-      @JsonProperty("date_of_birth") String dateOfBirth, @JsonProperty("person_id") long personId,
+      @JsonProperty("date_of_birth") String dateOfBirth,
+      @JsonProperty("primary_language") Short primaryLanguage,
+      @JsonProperty("secondary_language") Short secondaryLanguage,
+      @JsonProperty("person_id") long personId,
       @JsonProperty("screening_id") long screeningId, @JsonProperty("roles") Set<String> roles,
       @JsonProperty("addresses") Set<Address> addresses) throws ServiceException {
     super();
@@ -185,6 +191,8 @@ public class Participant extends ReportingDomain implements Request, Response {
     this.gender = gender;
     this.dateOfBirth = dateOfBirth;
     this.ssn = ssn;
+    this.primaryLanguage = primaryLanguage;
+    this.secondaryLanguage = secondaryLanguage;
     this.roles = roles;
     this.addresses = addresses;
 
@@ -212,6 +220,8 @@ public class Participant extends ReportingDomain implements Request, Response {
       this.gender = participant.getPerson().getGender();
       this.dateOfBirth = DomainChef.cookDate(participant.getPerson().getDateOfBirth());
       this.ssn = participant.getPerson().getSsn();
+//      this.primaryLanguage = participant;
+//      this.secondaryLanguage = secondaryLanguage;
       this.legacyDescriptor = new LegacyDescriptor();
     }
   }
@@ -341,6 +351,20 @@ public class Participant extends ReportingDomain implements Request, Response {
    */
   public String getSsn() {
     return ssn;
+  }
+
+  /**
+   * @return the primaryLanguage
+   */
+  public Short getPrimaryLanguage() {
+    return primaryLanguage;
+  }
+
+  /**
+   * @return the secondaryLanguage
+   */
+  public Short getSecondaryLanguage() {
+    return secondaryLanguage;
   }
 
   /**

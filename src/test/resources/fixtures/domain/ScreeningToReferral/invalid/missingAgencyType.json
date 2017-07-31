@@ -35,6 +35,8 @@
 	  "gender": "male",
 	  "date_of_birth": "2001-03-15",
 	  "ssn": "123456789",
+    "primary_language": 1253,
+    "secondary_language": 1271,
 	  "person_id": 12345,
 	  "screening_id": 12345,
 	  "roles" : [
@@ -61,6 +63,8 @@
 	  "gender": "male",
 	  "date_of_birth": "2000-03-15",
 	  "ssn": "234567890",
+    "primary_language": 1253,
+    "secondary_language": 1271,
 	  "person_id": 12345,
 	  "screening_id": 12345,
 	  "roles" : [
@@ -87,6 +91,8 @@
 	  "gender": "male",
 	  "date_of_birth": "2000-03-15",
 	  "ssn": "234567890",
+    "primary_language": 1253,
+    "secondary_language": 1271,
 	  "person_id": 12345,
 	  "screening_id": 12345,
 	  "roles" : [
