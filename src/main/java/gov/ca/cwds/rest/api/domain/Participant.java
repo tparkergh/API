@@ -2,7 +2,6 @@ package gov.ca.cwds.rest.api.domain;
 
 import static gov.ca.cwds.data.persistence.cms.CmsPersistentObject.CMS_ID_LEN;
 
-import gov.ca.cwds.rest.validation.ValidSystemCodeId;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -20,11 +19,10 @@ import gov.ca.cwds.rest.api.Response;
 import gov.ca.cwds.rest.services.ServiceException;
 import gov.ca.cwds.rest.validation.Date;
 import gov.ca.cwds.rest.validation.ParticipantValidator;
+import gov.ca.cwds.rest.validation.ValidSystemCodeId;
 import io.dropwizard.jackson.JsonSnakeCase;
 import io.dropwizard.validation.OneOf;
 import io.swagger.annotations.ApiModelProperty;
-import org.apache.commons.lang3.builder.EqualsBuilder;
-import org.apache.commons.lang3.builder.HashCodeBuilder;
 
 /**
  * {@link DomainObject} representing a Participant.
@@ -160,6 +158,8 @@ public class Participant extends ReportingDomain implements Request, Response {
    * @param gender The gender
    * @param dateOfBirth The date Of Birth
    * @param ssn The social security number
+   * @param primaryLanguage primary language
+   * @param secondaryLanguage secondary language
    * @param roles The roles of the participant
    * @param addresses The addresses of the participant
    * @throws ServiceException throw any exception
@@ -175,9 +175,9 @@ public class Participant extends ReportingDomain implements Request, Response {
       @JsonProperty("date_of_birth") String dateOfBirth,
       @JsonProperty("primary_language") Short primaryLanguage,
       @JsonProperty("secondary_language") Short secondaryLanguage,
-      @JsonProperty("person_id") long personId,
-      @JsonProperty("screening_id") long screeningId, @JsonProperty("roles") Set<String> roles,
-      @JsonProperty("addresses") Set<Address> addresses) throws ServiceException {
+      @JsonProperty("person_id") long personId, @JsonProperty("screening_id") long screeningId,
+      @JsonProperty("roles") Set<String> roles, @JsonProperty("addresses") Set<Address> addresses)
+      throws ServiceException {
     super();
     this.id = id;
     this.legacySourceTable = legacySourceTable;
@@ -220,8 +220,8 @@ public class Participant extends ReportingDomain implements Request, Response {
       this.gender = participant.getPerson().getGender();
       this.dateOfBirth = DomainChef.cookDate(participant.getPerson().getDateOfBirth());
       this.ssn = participant.getPerson().getSsn();
-//      this.primaryLanguage = participant;
-//      this.secondaryLanguage = secondaryLanguage;
+      // this.primaryLanguage = participant;
+      // this.secondaryLanguage = secondaryLanguage;
       this.legacyDescriptor = new LegacyDescriptor();
     }
   }
@@ -245,7 +245,6 @@ public class Participant extends ReportingDomain implements Request, Response {
       this.ssn = person.getSsn();
     }
   }
-
 
   /**
    * @return id
