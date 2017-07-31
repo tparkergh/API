@@ -70,9 +70,9 @@
    &quot;legacy_id&quot; : &quot;&quot;,&#xd;
 	  &quot;street_address&quot;: &quot;123 Main&quot;,&#xd;
 	  &quot;city&quot;: &quot;Sacramento&quot;,&#xd;
-	  &quot;state&quot;: &quot;CA&quot;,&#xd;
+	  &quot;state&quot;: 1828,&#xd;
 	  &quot;zip&quot;: 95757,&#xd;
-	  &quot;type&quot;: &quot;Home&quot;&#xd;
+	  &quot;type&quot;: 32&#xd;
   },&#xd;
    &quot;participants&quot;:[&#xd;
 	{&#xd;
@@ -85,6 +85,8 @@
 	  &quot;gender&quot;: &quot;male&quot;,&#xd;
 	  &quot;date_of_birth&quot;: &quot;2001-03-15&quot;,&#xd;
 	  &quot;ssn&quot;: &quot;123456789&quot;,&#xd;
+    &quot;primary_language&quot;: 1253,&#xd;
+    &quot;secondary_language&quot;: 1271,&#xd;
 	  &quot;person_id&quot;: 12345,&#xd;
 	  &quot;screening_id&quot;: 12345,&#xd;
 	  &quot;roles&quot; : [&#xd;
@@ -95,10 +97,10 @@
                 &quot;legacy_source_table&quot; : &quot;&quot;,&#xd;
                 &quot;legacy_id&quot; : &quot;&quot;,&#xd;
 	  			&quot;street_address&quot; : &quot;123 First St&quot;,&#xd;
-	  			&quot;state&quot; : &quot;CA&quot;,&#xd;
+	  			&quot;state&quot;: 1828,&#xd;
 	  			&quot;city&quot; : &quot;San Jose&quot;,&#xd;
 	  			&quot;zip&quot; : &quot;94321&quot;,&#xd;
-	  			&quot;type&quot; : &quot;Home&quot;&#xd;
+	  			&quot;type&quot;: 32&#xd;
 	  		}&#xd;
 	  	]&#xd;
 	},&#xd;
@@ -112,6 +114,8 @@
 	  &quot;gender&quot;: &quot;male&quot;,&#xd;
 	  &quot;date_of_birth&quot;: &quot;2000-03-15&quot;,&#xd;
 	  &quot;ssn&quot;: &quot;234567890&quot;,&#xd;
+    &quot;primary_language&quot;: 1253,&#xd;
+    &quot;secondary_language&quot;: 1271,&#xd;
 	  &quot;person_id&quot;: 12345,&#xd;
 	  &quot;screening_id&quot;: 12345,&#xd;
 	  &quot;roles&quot; : [&#xd;
@@ -122,10 +126,10 @@
                 &quot;legacy_source_table&quot; : &quot;&quot;,&#xd;
                 &quot;legacy_id&quot; : &quot;&quot;,&#xd;
 	  			&quot;street_address&quot; : &quot;234 Second St&quot;,&#xd;
-	  			&quot;state&quot; : &quot;CA&quot;,&#xd;
+	  			&quot;state&quot;: 1828,&#xd;
 	  			&quot;city&quot; : &quot;San Jose&quot;,&#xd;
 	  			&quot;zip&quot; : &quot;94321&quot;,&#xd;
-	  			&quot;type&quot; : &quot;Home&quot;&#xd;
+	  			&quot;type&quot;: 32&#xd;
 	  		}&#xd;
 	  	]&#xd;
 	}&#xd;

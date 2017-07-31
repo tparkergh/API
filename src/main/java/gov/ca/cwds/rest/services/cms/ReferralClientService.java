@@ -172,7 +172,8 @@ public class ReferralClientService implements CrudsService {
         (gov.ca.cwds.rest.api.domain.cms.ReferralClient) request;
 
     try {
-      ReferralClient managed = new ReferralClient(referralClient, "BTr");
+      String lastUpdatedId = staffPersonIdRetriever.getStaffPersonId();
+      ReferralClient managed = new ReferralClient(referralClient, lastUpdatedId);
       // checking the staffPerson county code
       StaffPerson staffperson = staffpersonDao.find(managed.getLastUpdatedId());
       if (staffperson != null

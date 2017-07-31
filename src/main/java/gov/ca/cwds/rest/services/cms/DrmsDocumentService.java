@@ -51,7 +51,6 @@ public class DrmsDocumentService implements
    */
   @Override
   public PostedDrmsDocument create(gov.ca.cwds.rest.api.domain.cms.DrmsDocument request) {
-    assert request instanceof gov.ca.cwds.rest.api.domain.cms.DrmsDocument;
 
     gov.ca.cwds.rest.api.domain.cms.DrmsDocument drmsDocument = request;
 
@@ -102,7 +101,7 @@ public class DrmsDocumentService implements
    * @return The Id of the created DRMS Document
    * @throws ServiceException - serviceException
    */
-  public String generateDrmsDocumentId(MessageBuilder messageBuilder) throws ServiceException {
+  public String generateDrmsDocumentId(MessageBuilder messageBuilder) {
     PostedDrmsDocument postedDrmsDocument = null;
     try {
       String staffPersonId = staffPersonIdRetriever.getStaffPersonId();
