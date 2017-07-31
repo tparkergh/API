@@ -323,9 +323,9 @@ public final class Client extends BaseClient
       this.prevRegionalCenterIndicator =
           DomainChef.cookBoolean(client.getPrevRegionalCenterIndicator());
       this.primaryEthnicityType = client.getPrimaryEthnicityType();
-      this.primaryLanguageType = client.getPrimaryLanguageType();
+      this.primaryLanguageType = client.getPrimaryLanguage();
       this.religionType = client.getReligionType();
-      this.secondaryLanguageType = client.getSecondaryLanguageType();
+      this.secondaryLanguageType = client.getSecondaryLanguage();
       this.sensitiveHlthInfoOnFileIndicator =
           DomainChef.cookBoolean(client.getSensitiveHlthInfoOnFileIndicator());
       this.sensitivityIndicator = client.getSensitivityIndicator();

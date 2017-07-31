@@ -101,9 +101,9 @@
   &quot;prevOtherDescription&quot;: &quot; &quot;,&#xd;
   &quot;prevRegionalCenterIndicator&quot;: false,&#xd;
   &quot;primaryEthnicityType&quot;: 6352,&#xd;
-  &quot;primaryLanguageType&quot;: 1253,&#xd;
+  &quot;primaryLanguage&quot;: 1253,&#xd;
   &quot;religionType&quot;: 0,&#xd;
-  &quot;secondaryLanguageType&quot;: 0,&#xd;
+  &quot;secondaryLanguage&quot;: 0,&#xd;
   &quot;sensitiveHlthInfoOnFileIndicator&quot;: false,&#xd;
   &quot;sensitivityIndicator&quot;: &quot;N&quot;,&#xd;
   &quot;soc158PlacementCode&quot;: &quot;N&quot;,&#xd;
@@ -338,9 +338,9 @@ log.info(&quot;variable port &quot;+&quot;${__P(api.host)}&quot;);</stringProp>
   &quot;prevOtherDescription&quot;: &quot; &quot;,&#xd;
   &quot;prevRegionalCenterIndicator&quot;: false,&#xd;
   &quot;primaryEthnicityType&quot;: 6352,&#xd;
-  &quot;primaryLanguageType&quot;: 1253,&#xd;
+  &quot;primaryLanguage&quot;: 1253,&#xd;
   &quot;religionType&quot;: 0,&#xd;
-  &quot;secondaryLanguageType&quot;: 0,&#xd;
+  &quot;secondaryLanguage&quot;: 0,&#xd;
   &quot;sensitiveHlthInfoOnFileIndicator&quot;: false,&#xd;
   &quot;sensitivityIndicator&quot;: &quot;N&quot;,&#xd;
   &quot;soc158PlacementCode&quot;: &quot;N&quot;,&#xd;

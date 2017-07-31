@@ -26,6 +26,8 @@ public class ParticipantResourceBuilder {
   String gender = "male";
   String dateOfBirth = "2001-03-15";
   String ssn = "123456789";
+  Short primaryLanguage = 1271;
+  Short secondaryLanguage = 1253;
   Set<String> roles;
   Set<gov.ca.cwds.rest.api.domain.Address> addresses;
 
@@ -40,7 +42,7 @@ public class ParticipantResourceBuilder {
 
   /**
    * @param legacySourceTable - legacySourceTable
-   * @return the legacySourceTable
+   * @return the ParticipantResourceBuilder
    */
   public ParticipantResourceBuilder setLegacySourceTable(String legacySourceTable) {
     this.legacySourceTable = legacySourceTable;
@@ -49,7 +51,7 @@ public class ParticipantResourceBuilder {
 
   /**
    * @param legacyId - legacyId
-   * @return the legacyId
+   * @return the ParticipantResourceBuilder
    */
   public ParticipantResourceBuilder setLegacyId(String legacyId) {
     this.legacyId = legacyId;
@@ -58,7 +60,7 @@ public class ParticipantResourceBuilder {
 
   /**
    * @param legacyDescriptor - legacyDescriptor
-   * @return the legacyDescriptor
+   * @return the ParticipantResourceBuilder
    */
   public ParticipantResourceBuilder setLegacyDescriptor(LegacyDescriptor legacyDescriptor) {
     this.legacyDescriptor = legacyDescriptor;
@@ -67,7 +69,7 @@ public class ParticipantResourceBuilder {
 
   /**
    * @param personId person id
-   * @return the person id
+   * @return the ParticipantResourceBuilder
    */
   public ParticipantResourceBuilder setPersonId(long personId) {
     this.personId = personId;
@@ -76,7 +78,7 @@ public class ParticipantResourceBuilder {
 
   /**
    * @param screeningId - screeningId
-   * @return the screeningId
+   * @return the ParticipantResourceBuilder
    */
   public ParticipantResourceBuilder setScreeningId(long screeningId) {
     this.screeningId = screeningId;
@@ -85,7 +87,7 @@ public class ParticipantResourceBuilder {
 
   /**
    * @param firstName - firstName
-   * @return the firstName
+   * @return the ParticipantResourceBuilder
    */
   public ParticipantResourceBuilder setFirstName(String firstName) {
     this.firstName = firstName;
@@ -94,7 +96,7 @@ public class ParticipantResourceBuilder {
 
   /**
    * @param middleName - middleName
-   * @return the middleName
+   * @return the ParticipantResourceBuilder
    */
   public ParticipantResourceBuilder setMiddleName(String middleName) {
     this.middleName = middleName;
@@ -103,7 +105,7 @@ public class ParticipantResourceBuilder {
 
   /**
    * @param lastName - lastName
-   * @return the lastName
+   * @return the ParticipantResourceBuilder
    */
   public ParticipantResourceBuilder setLastName(String lastName) {
     this.lastName = lastName;
@@ -112,7 +114,7 @@ public class ParticipantResourceBuilder {
 
   /**
    * @param gender - gender
-   * @return the gender
+   * @return the ParticipantResourceBuilder
    */
   public ParticipantResourceBuilder setGender(String gender) {
     this.gender = gender;
@@ -121,16 +123,33 @@ public class ParticipantResourceBuilder {
 
   /**
    * @param dateOfBirth - dateOfBirth
-   * @return the dateOfBirth
+   * @return the ParticipantResourceBuilder
    */
   public ParticipantResourceBuilder setDateOfBirth(String dateOfBirth) {
     this.dateOfBirth = dateOfBirth;
     return this;
   }
+  /**
+   * @param primaryLanguage - primaryLanguage
+   * @return the ParticipantResourceBuilder
+   */
+  public ParticipantResourceBuilder setPrimaryLanguage(Short primaryLanguage) {
+    this.primaryLanguage = primaryLanguage;
+    return this;
+  }
+
+  /**
+   * @param secondaryLanguage - secondaryLanguage
+   * @return the ParticipantResourceBuilder
+   */
+  public ParticipantResourceBuilder setSecondaryLanguage(Short secondaryLanguage) {
+    this.secondaryLanguage = secondaryLanguage;
+    return this;
+  }
 
   /**
    * @param ssn - ssn
-   * @return the ssn
+   * @return the ParticipantResourceBuilder
    */
   public ParticipantResourceBuilder setSsn(String ssn) {
     this.ssn = ssn;
@@ -139,7 +158,7 @@ public class ParticipantResourceBuilder {
 
   /**
    * @param roles - roles
-   * @return the roles
+   * @return the ParticipantResourceBuilder
    */
   public ParticipantResourceBuilder setRoles(Set<String> roles) {
     this.roles = roles;
@@ -148,7 +167,7 @@ public class ParticipantResourceBuilder {
 
   /**
    * @param addresses - addresses
-   * @return the addresses
+   * @return the ParticipantResourceBuilder
    */
   public ParticipantResourceBuilder setAddresses(
       Set<gov.ca.cwds.rest.api.domain.Address> addresses) {
@@ -156,9 +175,7 @@ public class ParticipantResourceBuilder {
     return this;
   }
 
-  /**
-   * 
-   */
+
   public ParticipantResourceBuilder() {
     this.roles = new HashSet<String>(Arrays.asList("Victim"));
 
@@ -169,7 +186,7 @@ public class ParticipantResourceBuilder {
   }
 
   /**
-   * @return the createVictimParticipant
+   * @return the Victim Participant
    */
   public Participant createVictimParticipant() {
     this.roles = new HashSet<String>(Arrays.asList("Victim"));
@@ -177,7 +194,7 @@ public class ParticipantResourceBuilder {
   }
 
   /**
-   * @return the createPerpParticipant
+   * @return the Perp Participant
    */
   public Participant createPerpParticipant() {
     this.roles = new HashSet<String>(Arrays.asList("Perpetrator"));
@@ -185,7 +202,7 @@ public class ParticipantResourceBuilder {
   }
 
   /**
-   * @return the createReporterParticipant
+   * @return the Reporter Participant
    */
   public Participant createReporterParticipant() {
     //reporter only allows first initial
@@ -195,10 +212,10 @@ public class ParticipantResourceBuilder {
   }
 
   /**
-   * @return the createParticipant
+   * @return the Participant
    */
   public Participant createParticipant() {
     return new Participant(id, legacySourceTable, legacyId, legacyDescriptor, firstName, middleName, lastName, suffix, gender, ssn,
-        dateOfBirth, personId, screeningId, roles, addresses);
+        dateOfBirth, primaryLanguage, secondaryLanguage, personId, screeningId, roles, addresses);
   }
 }

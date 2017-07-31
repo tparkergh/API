@@ -60,9 +60,19 @@ public final class SystemCodeCategoryId {
   public static final String STATE_CODE = "STATE_C";
 
   /**
+   * County Code e.g) Sonoma, Sacramento, Marin
+   */
+  public static final String COUNTY_CODE = "SCNT_TPC";
+
+  /**
    * Client collateral relationship, e.g) Attorney, Clergy, Friend
    */
   public static final String CLIENT_COLLATERAL_RELATIONSHIP = "COL_RELC";
+
+  /**
+   * Langauge Code, e.g) Russian, Spanish, English
+   */
+  public static final String LANGUAGE_CODE = "LANG_TPC";
 
   /**
    * Private constructor

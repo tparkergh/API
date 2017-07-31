@@ -95,6 +95,19 @@ public class TestSystemCodeCache implements SystemCodeCache {
       }
     }
 
+    if (SystemCodeCategoryId.COUNTY_CODE.equals(metaId)) {
+      if (5542 == systemCodeId.intValue() || 5548 == systemCodeId.intValue()
+          || 5550 == systemCodeId.intValue()) {
+        return true;
+      }
+    }
+
+    if (SystemCodeCategoryId.LANGUAGE_CODE.equals(metaId)) {
+      if (1253 == systemCodeId.intValue() || 1271 == systemCodeId.intValue()
+          || 1274 == systemCodeId.intValue()) {
+        return true;
+      }
+    }
     return false;
   }
 

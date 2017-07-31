@@ -9,6 +9,8 @@
   "ssn": "123456789",
   "person_id": 12345,
   "screening_id": 12345,
+  "primary_language": 1253,
+  "secondary_language": 1271,
   "roles" : [
   	"Victim", "Non-mandated Reporter"
   	],

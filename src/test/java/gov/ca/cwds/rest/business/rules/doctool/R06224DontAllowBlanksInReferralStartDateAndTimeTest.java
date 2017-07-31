@@ -8,6 +8,7 @@ import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
+import gov.ca.cwds.data.cms.TestSystemCodeCache;
 import java.util.Set;
 
 import javax.validation.Validation;
@@ -120,6 +121,8 @@ public class R06224DontAllowBlanksInReferralStartDateAndTimeTest {
   private UpperCaseTables upperCaseTables;
   private Validator validator;
   private ExternalInterfaceTables externalInterfaceTables;
+
+  private TestSystemCodeCache testSystemCodeCache = new TestSystemCodeCache();
 
   @SuppressWarnings("javadoc")
   @Rule

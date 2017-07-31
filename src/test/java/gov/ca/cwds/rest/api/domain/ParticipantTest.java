@@ -51,6 +51,8 @@ import nl.jqno.equalsverifier.Warning;
 @SuppressWarnings({"javadoc"})
 public class ParticipantTest implements PersistentTestTemplate {
 
+  private final Short primaryLanguage = 1253;
+  private final Short secondaryLanguage = 1271;
   private TestSystemCodeCache testSystemCodeCache = new TestSystemCodeCache();
 
   private long id = 5432;
@@ -151,7 +153,7 @@ public class ParticipantTest implements PersistentTestTemplate {
   public void testConstructorUsingDomain() throws Exception {
 
     Participant domain = new Participant(id, legacySourceTable, clientId, new LegacyDescriptor(),
-        firstName, middleName, lastName, suffix, gender, ssn, dateOfBirth, personId, screeningId,
+        firstName, middleName, lastName, suffix, gender, ssn, dateOfBirth, primaryLanguage, secondaryLanguage, personId, screeningId,
         roles, addresses);
 
     assertThat(domain.getId(), is(equalTo(id)));
@@ -348,7 +350,8 @@ public class ParticipantTest implements PersistentTestTemplate {
     Participant validParticipant = null;
     try {
       validParticipant = new Participant(id, legacySourceTable, clientId, new LegacyDescriptor(),
-          firstName, middleName, lastName, suffix, gender, ssn, dateOfBirth, personId, screeningId,
+          firstName, middleName, lastName, suffix, gender, ssn, dateOfBirth, primaryLanguage,
+          secondaryLanguage, personId, screeningId,
           roles, addresses);
     } catch (Exception e) {
       e.printStackTrace();

@@ -98,6 +98,9 @@ public class ReporterTest {
   private Short zipSuffixNumber = 1234;
   private String countySpecificCode = "AB";
 
+  private Short primaryLanguage = 1253;
+  private Short secondaryLanguage = 1271;
+
   @Before
   public void setup() throws Exception {
     @SuppressWarnings("rawtypes")
@@ -227,7 +230,7 @@ public class ReporterTest {
     String suffix = "";
     Participant participant = new Participant(5L, "legacy_source_table", "legacy_client_id",
         new LegacyDescriptor(), firstName, middleName, lastName, suffix, "gender", "ssn",
-        "date_of_birth", 7L, 8L, new HashSet<>(), new HashSet<>());
+        "date_of_birth", primaryLanguage, secondaryLanguage, 7L, 8L, new HashSet<>(), new HashSet<>());
     String countyCode = "countyCode";
     Short stateCode = new Short("0");
 
@@ -281,7 +284,7 @@ public class ReporterTest {
     String suffix = "jr";
     Participant participant = new Participant(5L, "legacy_source_table", "legacy_client_id",
         new LegacyDescriptor(), firstName, middleName, lastName, "jr", "gender", "ssn",
-        "date_of_birth", 7L, 8L, new HashSet<>(), new HashSet<>());
+        "date_of_birth", primaryLanguage, secondaryLanguage, 7L, 8L, new HashSet<>(), new HashSet<>());
     String countyCode = "countyCode";
     Short stateCode = new Short("0");
 
@@ -327,7 +330,7 @@ public class ReporterTest {
         "legacy_source_table", "legacy_id", streetAddress, "city", 1828, 12345, 32);
     Participant participant = new Participant(5L, "legacy_source_table", "legacy_client_id",
         new LegacyDescriptor(), "firstName", "middleName", "lastName", "jr", "gender", "ssn",
-        "date_of_birth", 7L, 8L, new HashSet<>(), new HashSet<>());
+        "date_of_birth", primaryLanguage, secondaryLanguage, 7L, 8L, new HashSet<>(), new HashSet<>());
 
     Reporter reporter = Reporter.createWithDefaults("referralId", true, address, participant,
         "countyCode", new Short("0"));
@@ -343,7 +346,7 @@ public class ReporterTest {
         "legacy_source_table", "legacy_id", streetAddress, "city", 1828, 12345, 32);
     Participant participant = new Participant(5L, "legacy_source_table", "legacy_client_id",
         new LegacyDescriptor(), "firstName", "middleName", "lastName", "jr", "gender", "ssn",
-        "date_of_birth", 7L, 8L, new HashSet<>(), new HashSet<>());
+        "date_of_birth", primaryLanguage, secondaryLanguage, 7L, 8L, new HashSet<>(), new HashSet<>());
 
     Reporter reporter = Reporter.createWithDefaults("referralId", true, address, participant,
         "countyCode", new Short("0"));
@@ -359,7 +362,7 @@ public class ReporterTest {
         "legacy_source_table", "legacy_id", streetAddress, "city", 1828, 12345, 32);
     Participant participant = new Participant(5L, "legacy_source_table", "legacy_client_id",
         new LegacyDescriptor(), "firstName", "middleName", "lastName", "jr", "gender", "ssn",
-        "date_of_birth", 7L, 8L, new HashSet<>(), new HashSet<>());
+        "date_of_birth",primaryLanguage, secondaryLanguage, 7L, 8L, new HashSet<>(), new HashSet<>());
 
     Reporter reporter = Reporter.createWithDefaults("referralId", true, address, participant,
         "countyCode", new Short("0"));
@@ -376,7 +379,7 @@ public class ReporterTest {
         "legacy_source_table", "legacy_id", streetAddress, "city", 1828, 12345, 32);
     Participant participant = new Participant(5L, "legacy_source_table", "legacy_client_id",
         new LegacyDescriptor(), "firstName", "middleName", "lastName", "jr", "gender", "ssn",
-        "date_of_birth", 7L, 8L, new HashSet<>(), new HashSet<>());
+        "date_of_birth", primaryLanguage, secondaryLanguage, 7L, 8L, new HashSet<>(), new HashSet<>());
 
     Reporter reporter = Reporter.createWithDefaults("referralId", true, address, participant,
         "countyCode", new Short("0"));

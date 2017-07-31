@@ -8,6 +8,7 @@ import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
+import gov.ca.cwds.data.cms.TestSystemCodeCache;
 import java.util.Set;
 
 import javax.validation.Validation;
@@ -123,6 +124,8 @@ public class R07577CreateDummyDocsForReferralTest {
   private ExternalInterfaceTables externalInterfaceTables;
 
   private Validator validator;
+
+  private TestSystemCodeCache testSystemCodeCache = new TestSystemCodeCache();
 
   private gov.ca.cwds.data.persistence.cms.Referral referral;
 
