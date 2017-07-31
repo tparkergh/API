@@ -1,6 +1,7 @@
 package gov.ca.cwds.rest.services.cms;
 
 import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.empty;
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.notNullValue;
@@ -80,13 +81,14 @@ public class ClientAddressServiceTest implements ServiceTestTemplate {
   /**
    * 
    */
-  // @Test
+  @Test
   public void shouldReturnNullWhenNotClientAddressesAreFound() {
     when(clientAddressDao.findByAddressAndClient(any(), any())).thenReturn(new ArrayList<>());
     Address address = mock(Address.class);
     Participant participant = mock(Participant.class);
 
-    List foundClients = clientAddressService.findByAddressAndClient(address, participant);
+    List<Response> foundClients = clientAddressService.findByAddressAndClient(address, participant);
+    assertThat(foundClients, is(empty()));
   }
 
   /**
