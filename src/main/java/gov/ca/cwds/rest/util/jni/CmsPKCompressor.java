@@ -1,23 +1,17 @@
 package gov.ca.cwds.rest.util.jni;
 
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.OutputStream;
 
 import javax.xml.bind.DatatypeConverter;
 
-import org.apache.commons.compress.utils.IOUtils;
+// import org.apache.commons.compress.utils.IOUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.pkware.deflate.DeflateOutputStream;
-import com.pkware.deflate.InflateInputStream;
+// import com.pkware.deflate.DeflateOutputStream;
+// import com.pkware.deflate.InflateInputStream;
 
 /**
  * Compresses (deflates) and decompresses (inflates) PK archives created by the Windows PKWare
@@ -81,14 +75,14 @@ public class CmsPKCompressor implements CWDSPKLicense {
     if (StringUtils.isBlank(inputFileName) || StringUtils.isBlank(outputFileName)) {
       throw new IOException("REQUIRED: file names cannot be null");
     }
-    FileInputStream fis = new FileInputStream(new File(inputFileName));
-    InputStream iis = new InflateInputStream(fis, true);
-
-    FileOutputStream fos = new FileOutputStream(new File(outputFileName));
-    IOUtils.copy(iis, fos);
-
-    fis.close();
-    fos.close();
+    // FileInputStream fis = new FileInputStream(new File(inputFileName));
+    // InputStream iis = new InflateInputStream(fis, true);
+    //
+    // FileOutputStream fos = new FileOutputStream(new File(outputFileName));
+    // IOUtils.copy(iis, fos);
+    //
+    // fis.close();
+    // fos.close();
   }
 
   /**
@@ -102,20 +96,20 @@ public class CmsPKCompressor implements CWDSPKLicense {
     if (bytes == null) {
       throw new IOException("REQUIRED: bytes to decompress cannot be null");
     }
-    ByteArrayInputStream bis = new ByteArrayInputStream(bytes);
-    InputStream iis = new InflateInputStream(bis, true);
-    ByteArrayOutputStream bos = new ByteArrayOutputStream(DEFAULT_OUTPUT_SIZE);
-    IOUtils.copy(iis, bos);
-
-    iis.close();
-    bis.close();
-    bos.flush();
-    bos.close();
-
-    final byte[] retval = bos.toByteArray();
-    LOGGER.debug("CmsPKCompressor.decompress(byte[]): retval len=" + retval.length);
-
-    return retval;
+    // ByteArrayInputStream bis = new ByteArrayInputStream(bytes);
+    // InputStream iis = new InflateInputStream(bis, true);
+    // ByteArrayOutputStream bos = new ByteArrayOutputStream(DEFAULT_OUTPUT_SIZE);
+    // IOUtils.copy(iis, bos);
+    //
+    // iis.close();
+    // bis.close();
+    // bos.flush();
+    // bos.close();
+    //
+    // final byte[] retval = bos.toByteArray();
+    // LOGGER.debug("CmsPKCompressor.decompress(byte[]): retval len=" + retval.length);
+    // return retval;
+    return null;
   }
 
   /**
@@ -129,14 +123,15 @@ public class CmsPKCompressor implements CWDSPKLicense {
     if (input == null) {
       throw new IOException("REQUIRED: input stream to decompress cannot be null");
     }
-    InputStream iis = new InflateInputStream(input, true);
-    ByteArrayOutputStream bos = new ByteArrayOutputStream(DEFAULT_OUTPUT_SIZE);
-    IOUtils.copy(iis, bos);
-
-    iis.close();
-    bos.flush();
-    bos.close();
-    return bos.toByteArray();
+    // InputStream iis = new InflateInputStream(input, true);
+    // ByteArrayOutputStream bos = new ByteArrayOutputStream(DEFAULT_OUTPUT_SIZE);
+    // IOUtils.copy(iis, bos);
+    //
+    // iis.close();
+    // bos.flush();
+    // bos.close();
+    // return bos.toByteArray();
+    return null;
   }
 
   /**
@@ -183,13 +178,13 @@ public class CmsPKCompressor implements CWDSPKLicense {
     if (StringUtils.isBlank(inputFileName) || StringUtils.isBlank(outputFileName)) {
       throw new IOException("REQUIRED: file names cannot be null");
     }
-    FileInputStream fis = new FileInputStream(new File(inputFileName));
-    OutputStream fos = new DeflateOutputStream(new FileOutputStream(new File(outputFileName)),
-        DEFAULT_COMPRESSION_LEVEL, true);
-    IOUtils.copy(fis, fos);
-
-    fis.close();
-    fos.close();
+    // FileInputStream fis = new FileInputStream(new File(inputFileName));
+    // OutputStream fos = new DeflateOutputStream(new FileOutputStream(new File(outputFileName)),
+    // DEFAULT_COMPRESSION_LEVEL, true);
+    // IOUtils.copy(fis, fos);
+    //
+    // fis.close();
+    // fos.close();
   }
 
   /**
@@ -203,16 +198,17 @@ public class CmsPKCompressor implements CWDSPKLicense {
     if (bytes == null) {
       throw new IOException("REQUIRED: bytes to compress cannot be null");
     }
-    ByteArrayInputStream bis = new ByteArrayInputStream(bytes);
-    ByteArrayOutputStream bos = new ByteArrayOutputStream(DEFAULT_OUTPUT_SIZE);
-
-    OutputStream dos = new DeflateOutputStream(bos, DEFAULT_COMPRESSION_LEVEL, true);
-    IOUtils.copy(bis, dos);
-
-    bis.close();
-    dos.close();
-
-    return bos.toByteArray();
+    // ByteArrayInputStream bis = new ByteArrayInputStream(bytes);
+    // ByteArrayOutputStream bos = new ByteArrayOutputStream(DEFAULT_OUTPUT_SIZE);
+    //
+    // OutputStream dos = new DeflateOutputStream(bos, DEFAULT_COMPRESSION_LEVEL, true);
+    // IOUtils.copy(bis, dos);
+    //
+    // bis.close();
+    // dos.close();
+    //
+    // return bos.toByteArray();
+    return null;
   }
 
 }
