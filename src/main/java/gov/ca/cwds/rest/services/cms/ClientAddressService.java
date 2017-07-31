@@ -2,6 +2,7 @@ package gov.ca.cwds.rest.services.cms;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
@@ -100,7 +101,7 @@ public class ClientAddressService implements CrudsService {
       }
       return foundClientAddresses;
     }
-    return null;
+    return Collections.emptyList();
   }
 
   @Override
