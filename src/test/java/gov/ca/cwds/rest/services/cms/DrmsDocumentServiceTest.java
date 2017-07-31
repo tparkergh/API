@@ -53,16 +53,6 @@ public class DrmsDocumentServiceTest {
 
   // create
   @SuppressWarnings("javadoc")
-  @Test(expected = AssertionError.class)
-  public void drmsDocumentServiceCreateThrowsAssertionError() throws Exception {
-    try {
-      drmsDocumentService.create(null);
-    } catch (AssertionError e) {
-      assertEquals("Expected AssertionError", e.getMessage());
-    }
-  }
-
-  @SuppressWarnings("javadoc")
   @Test
   public void drmsDocumentServiceCreateThrowsEntityExistsException() throws Exception {
     try {
