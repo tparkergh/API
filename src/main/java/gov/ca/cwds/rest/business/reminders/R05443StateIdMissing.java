@@ -71,8 +71,7 @@ public class R05443StateIdMissing {
    * @param postedScreeningToReferral - postedScreeningToReferral
    * @throws ServiceException - ServiceException
    */
-  public void stateIdMissing(PostedScreeningToReferral postedScreeningToReferral)
-      throws ServiceException {
+  public void stateIdMissing(PostedScreeningToReferral postedScreeningToReferral) {
     ScreeningToReferral screeningToReferral = postedScreeningToReferral;
     Set<Participant> participants = screeningToReferral.getParticipants();
     Referral referral = referralDao.find(postedScreeningToReferral.getReferralId());

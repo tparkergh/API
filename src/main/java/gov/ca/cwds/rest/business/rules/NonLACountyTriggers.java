@@ -113,7 +113,7 @@ public class NonLACountyTriggers {
 
   /**
    * @param managed referral creates or updates the countyOwnership bases on the Assignment
-   *        establishedCode with teh referral foreign key
+   *        establishedCode with the referral foreign key
    */
   public void createAndUpdateReferralCoutyOwnership(Assignment managed) {
     Boolean countyExists = true;

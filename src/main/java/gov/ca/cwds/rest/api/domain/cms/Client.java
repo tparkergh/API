@@ -10,6 +10,7 @@ import javax.validation.constraints.Size;
 
 import org.hibernate.validator.constraints.NotBlank;
 import org.hibernate.validator.constraints.NotEmpty;
+import org.joda.time.DateTime;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonFormat;
@@ -25,7 +26,6 @@ import gov.ca.cwds.rest.api.domain.ReportingDomain;
 import io.dropwizard.validation.OneOf;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
-import org.joda.time.DateTime;
 
 /**
  * {@link DomainObject} representing a Client
@@ -737,8 +737,8 @@ public class Client extends ReportingDomain implements Request, Response {
         DEFAULT_UNABLE_TO_DETAIN_CODE, "", genderCode, "", "", DEFAULT_HISPANIC_ORIGIN_CODE,
         DEFAULT_CODE, DEFAULT_CODE, DEFAULT_INCAPCITATED_PARENT_CODE, false, false,
         DEFAULT_LITERATE_CODE, false, DEFAULT_CODE, DEFAULT_MILITARY_STATUS_CODE, "", "",
-        DEFAULT_NAME_TYPE, false, false, "", false, DEFAULT_CODE, participant.getPrimaryLanguage(), DEFAULT_CODE,
-        participant.getSecondaryLanguage(), false, DEFAULT_SENSITIVITY_INDICATOR,
+        DEFAULT_NAME_TYPE, false, false, "", false, DEFAULT_CODE, participant.getPrimaryLanguage(),
+        DEFAULT_CODE, participant.getSecondaryLanguage(), false, DEFAULT_SENSITIVITY_INDICATOR,
         DEFAULT_SOC158_PLACEMENT_CODE, false, DEFAULT_SOCIAL_SECURITY_NUM_CHANGE_CODE,
         participant.getSsn(), participant.getNameSuffix(), false, false,
         DEFAULT_UNEMPLOYED_PARENT_CODE, false, null);
@@ -1248,28 +1248,25 @@ public class Client extends ReportingDomain implements Request, Response {
    * @see java.lang.Object#equals(java.lang.Object)
    */
   @Override
-  final public boolean equals(Object other) {
+  public final boolean equals(Object other) {
     if (!(other instanceof Client)) {
       return false;
     }
     if (this == other) {
       return true;
     }
-    if (other == null ) {
-      return false;
-    }
-
     Client client = (Client) other;
 
-    if (lastUpdatedTime != null  && client.lastUpdatedTime != null ? lastUpdatedTime.getMillis() != client.lastUpdatedTime.getMillis() : client.lastUpdatedTime != null
-       ) {
+    if (lastUpdatedTime != null && client.lastUpdatedTime != null
+        ? lastUpdatedTime.getMillis() != client.lastUpdatedTime.getMillis()
+        : client.lastUpdatedTime != null) {
       return false;
     }
     if (clientId != null ? !clientId.equals(client.clientId) : client.clientId != null) {
       return false;
     }
-    if (adjudicatedDelinquentIndicator != null ? !adjudicatedDelinquentIndicator
-        .equals(client.adjudicatedDelinquentIndicator)
+    if (adjudicatedDelinquentIndicator != null
+        ? !adjudicatedDelinquentIndicator.equals(client.adjudicatedDelinquentIndicator)
         : client.adjudicatedDelinquentIndicator != null) {
       return false;
     }
@@ -1277,8 +1274,9 @@ public class Client extends ReportingDomain implements Request, Response {
         : client.adoptionStatusCode != null) {
       return false;
     }
-    if (alienRegistrationNumber != null ? !alienRegistrationNumber
-        .equals(client.alienRegistrationNumber) : client.alienRegistrationNumber != null) {
+    if (alienRegistrationNumber != null
+        ? !alienRegistrationNumber.equals(client.alienRegistrationNumber)
+        : client.alienRegistrationNumber != null) {
       return false;
     }
     if (birthCity != null ? !birthCity.equals(client.birthCity) : client.birthCity != null) {
@@ -1299,12 +1297,14 @@ public class Client extends ReportingDomain implements Request, Response {
         : client.birthStateCodeType != null) {
       return false;
     }
-    if (birthplaceVerifiedIndicator != null ? !birthplaceVerifiedIndicator
-        .equals(client.birthplaceVerifiedIndicator) : client.birthplaceVerifiedIndicator != null) {
+    if (birthplaceVerifiedIndicator != null
+        ? !birthplaceVerifiedIndicator.equals(client.birthplaceVerifiedIndicator)
+        : client.birthplaceVerifiedIndicator != null) {
       return false;
     }
-    if (childClientIndicatorVar != null ? !childClientIndicatorVar
-        .equals(client.childClientIndicatorVar) : client.childClientIndicatorVar != null) {
+    if (childClientIndicatorVar != null
+        ? !childClientIndicatorVar.equals(client.childClientIndicatorVar)
+        : client.childClientIndicatorVar != null) {
       return false;
     }
     if (clientIndexNumber != null ? !clientIndexNumber.equals(client.clientIndexNumber)
@@ -1327,12 +1327,13 @@ public class Client extends ReportingDomain implements Request, Response {
         : client.commonLastName != null) {
       return false;
     }
-    if (confidentialityActionDate != null ? !confidentialityActionDate
-        .equals(client.confidentialityActionDate) : client.confidentialityActionDate != null) {
+    if (confidentialityActionDate != null
+        ? !confidentialityActionDate.equals(client.confidentialityActionDate)
+        : client.confidentialityActionDate != null) {
       return false;
     }
-    if (confidentialityInEffectIndicator != null ? !confidentialityInEffectIndicator
-        .equals(client.confidentialityInEffectIndicator)
+    if (confidentialityInEffectIndicator != null
+        ? !confidentialityInEffectIndicator.equals(client.confidentialityInEffectIndicator)
         : client.confidentialityInEffectIndicator != null) {
       return false;
     }
@@ -1340,24 +1341,27 @@ public class Client extends ReportingDomain implements Request, Response {
         : client.creationDate != null) {
       return false;
     }
-    if (currCaChildrenServIndicator != null ? !currCaChildrenServIndicator
-        .equals(client.currCaChildrenServIndicator) : client.currCaChildrenServIndicator != null) {
+    if (currCaChildrenServIndicator != null
+        ? !currCaChildrenServIndicator.equals(client.currCaChildrenServIndicator)
+        : client.currCaChildrenServIndicator != null) {
       return false;
     }
-    if (currentlyOtherDescription != null ? !currentlyOtherDescription
-        .equals(client.currentlyOtherDescription) : client.currentlyOtherDescription != null) {
+    if (currentlyOtherDescription != null
+        ? !currentlyOtherDescription.equals(client.currentlyOtherDescription)
+        : client.currentlyOtherDescription != null) {
       return false;
     }
-    if (currentlyRegionalCenterIndicator != null ? !currentlyRegionalCenterIndicator
-        .equals(client.currentlyRegionalCenterIndicator)
+    if (currentlyRegionalCenterIndicator != null
+        ? !currentlyRegionalCenterIndicator.equals(client.currentlyRegionalCenterIndicator)
         : client.currentlyRegionalCenterIndicator != null) {
       return false;
     }
     if (deathDate != null ? !deathDate.equals(client.deathDate) : client.deathDate != null) {
       return false;
     }
-    if (deathDateVerifiedIndicator != null ? !deathDateVerifiedIndicator
-        .equals(client.deathDateVerifiedIndicator) : client.deathDateVerifiedIndicator != null) {
+    if (deathDateVerifiedIndicator != null
+        ? !deathDateVerifiedIndicator.equals(client.deathDateVerifiedIndicator)
+        : client.deathDateVerifiedIndicator != null) {
       return false;
     }
     if (deathPlace != null ? !deathPlace.equals(client.deathPlace) : client.deathPlace != null) {
@@ -1371,8 +1375,9 @@ public class Client extends ReportingDomain implements Request, Response {
         : client.driverLicenseNumber != null) {
       return false;
     }
-    if (driverLicenseStateCodeType != null ? !driverLicenseStateCodeType
-        .equals(client.driverLicenseStateCodeType) : client.driverLicenseStateCodeType != null) {
+    if (driverLicenseStateCodeType != null
+        ? !driverLicenseStateCodeType.equals(client.driverLicenseStateCodeType)
+        : client.driverLicenseStateCodeType != null) {
       return false;
     }
     if (emailAddress != null ? !emailAddress.equals(client.emailAddress)
@@ -1383,12 +1388,14 @@ public class Client extends ReportingDomain implements Request, Response {
         : client.estimatedDobCode != null) {
       return false;
     }
-    if (ethUnableToDetReasonCode != null ? !ethUnableToDetReasonCode
-        .equals(client.ethUnableToDetReasonCode) : client.ethUnableToDetReasonCode != null) {
+    if (ethUnableToDetReasonCode != null
+        ? !ethUnableToDetReasonCode.equals(client.ethUnableToDetReasonCode)
+        : client.ethUnableToDetReasonCode != null) {
       return false;
     }
-    if (fatherParentalRightTermDate != null ? !fatherParentalRightTermDate
-        .equals(client.fatherParentalRightTermDate) : client.fatherParentalRightTermDate != null) {
+    if (fatherParentalRightTermDate != null
+        ? !fatherParentalRightTermDate.equals(client.fatherParentalRightTermDate)
+        : client.fatherParentalRightTermDate != null) {
       return false;
     }
     if (genderCode != null ? !genderCode.equals(client.genderCode) : client.genderCode != null) {
@@ -1398,33 +1405,36 @@ public class Client extends ReportingDomain implements Request, Response {
         : client.healthSummaryText != null) {
       return false;
     }
-    if (hispUnableToDetReasonCode != null ? !hispUnableToDetReasonCode
-        .equals(client.hispUnableToDetReasonCode) : client.hispUnableToDetReasonCode != null) {
+    if (hispUnableToDetReasonCode != null
+        ? !hispUnableToDetReasonCode.equals(client.hispUnableToDetReasonCode)
+        : client.hispUnableToDetReasonCode != null) {
       return false;
     }
     if (hispanicOriginCode != null ? !hispanicOriginCode.equals(client.hispanicOriginCode)
         : client.hispanicOriginCode != null) {
       return false;
     }
-    if (immigrationCountryCodeType != null ? !immigrationCountryCodeType
-        .equals(client.immigrationCountryCodeType) : client.immigrationCountryCodeType != null) {
+    if (immigrationCountryCodeType != null
+        ? !immigrationCountryCodeType.equals(client.immigrationCountryCodeType)
+        : client.immigrationCountryCodeType != null) {
       return false;
     }
     if (immigrationStatusType != null ? !immigrationStatusType.equals(client.immigrationStatusType)
         : client.immigrationStatusType != null) {
       return false;
     }
-    if (incapacitatedParentCode != null ? !incapacitatedParentCode
-        .equals(client.incapacitatedParentCode) : client.incapacitatedParentCode != null) {
+    if (incapacitatedParentCode != null
+        ? !incapacitatedParentCode.equals(client.incapacitatedParentCode)
+        : client.incapacitatedParentCode != null) {
       return false;
     }
-    if (individualHealthCarePlanIndicator != null ? !individualHealthCarePlanIndicator
-        .equals(client.individualHealthCarePlanIndicator)
+    if (individualHealthCarePlanIndicator != null
+        ? !individualHealthCarePlanIndicator.equals(client.individualHealthCarePlanIndicator)
         : client.individualHealthCarePlanIndicator != null) {
       return false;
     }
-    if (limitationOnScpHealthIndicator != null ? !limitationOnScpHealthIndicator
-        .equals(client.limitationOnScpHealthIndicator)
+    if (limitationOnScpHealthIndicator != null
+        ? !limitationOnScpHealthIndicator.equals(client.limitationOnScpHealthIndicator)
         : client.limitationOnScpHealthIndicator != null) {
       return false;
     }
@@ -1432,8 +1442,8 @@ public class Client extends ReportingDomain implements Request, Response {
         : client.literateCode != null) {
       return false;
     }
-    if (maritalCohabitatnHstryIndicatorVar != null ? !maritalCohabitatnHstryIndicatorVar
-        .equals(client.maritalCohabitatnHstryIndicatorVar)
+    if (maritalCohabitatnHstryIndicatorVar != null
+        ? !maritalCohabitatnHstryIndicatorVar.equals(client.maritalCohabitatnHstryIndicatorVar)
         : client.maritalCohabitatnHstryIndicatorVar != null) {
       return false;
     }
@@ -1445,8 +1455,9 @@ public class Client extends ReportingDomain implements Request, Response {
         : client.militaryStatusCode != null) {
       return false;
     }
-    if (motherParentalRightTermDate != null ? !motherParentalRightTermDate
-        .equals(client.motherParentalRightTermDate) : client.motherParentalRightTermDate != null) {
+    if (motherParentalRightTermDate != null
+        ? !motherParentalRightTermDate.equals(client.motherParentalRightTermDate)
+        : client.motherParentalRightTermDate != null) {
       return false;
     }
     if (namePrefixDescription != null ? !namePrefixDescription.equals(client.namePrefixDescription)
@@ -1456,20 +1467,23 @@ public class Client extends ReportingDomain implements Request, Response {
     if (nameType != null ? !nameType.equals(client.nameType) : client.nameType != null) {
       return false;
     }
-    if (outstandingWarrantIndicator != null ? !outstandingWarrantIndicator
-        .equals(client.outstandingWarrantIndicator) : client.outstandingWarrantIndicator != null) {
+    if (outstandingWarrantIndicator != null
+        ? !outstandingWarrantIndicator.equals(client.outstandingWarrantIndicator)
+        : client.outstandingWarrantIndicator != null) {
       return false;
     }
-    if (prevCaChildrenServIndicator != null ? !prevCaChildrenServIndicator
-        .equals(client.prevCaChildrenServIndicator) : client.prevCaChildrenServIndicator != null) {
+    if (prevCaChildrenServIndicator != null
+        ? !prevCaChildrenServIndicator.equals(client.prevCaChildrenServIndicator)
+        : client.prevCaChildrenServIndicator != null) {
       return false;
     }
     if (prevOtherDescription != null ? !prevOtherDescription.equals(client.prevOtherDescription)
         : client.prevOtherDescription != null) {
       return false;
     }
-    if (prevRegionalCenterIndicator != null ? !prevRegionalCenterIndicator
-        .equals(client.prevRegionalCenterIndicator) : client.prevRegionalCenterIndicator != null) {
+    if (prevRegionalCenterIndicator != null
+        ? !prevRegionalCenterIndicator.equals(client.prevRegionalCenterIndicator)
+        : client.prevRegionalCenterIndicator != null) {
       return false;
     }
     if (primaryEthnicityType != null ? !primaryEthnicityType.equals(client.primaryEthnicityType)
@@ -1488,8 +1502,8 @@ public class Client extends ReportingDomain implements Request, Response {
         : client.secondaryLanguage != null) {
       return false;
     }
-    if (sensitiveHlthInfoOnFileIndicator != null ? !sensitiveHlthInfoOnFileIndicator
-        .equals(client.sensitiveHlthInfoOnFileIndicator)
+    if (sensitiveHlthInfoOnFileIndicator != null
+        ? !sensitiveHlthInfoOnFileIndicator.equals(client.sensitiveHlthInfoOnFileIndicator)
         : client.sensitiveHlthInfoOnFileIndicator != null) {
       return false;
     }
@@ -1501,12 +1515,13 @@ public class Client extends ReportingDomain implements Request, Response {
         : client.soc158PlacementCode != null) {
       return false;
     }
-    if (soc158SealedClientIndicator != null ? !soc158SealedClientIndicator
-        .equals(client.soc158SealedClientIndicator) : client.soc158SealedClientIndicator != null) {
+    if (soc158SealedClientIndicator != null
+        ? !soc158SealedClientIndicator.equals(client.soc158SealedClientIndicator)
+        : client.soc158SealedClientIndicator != null) {
       return false;
     }
-    if (socialSecurityNumChangedCode != null ? !socialSecurityNumChangedCode
-        .equals(client.socialSecurityNumChangedCode)
+    if (socialSecurityNumChangedCode != null
+        ? !socialSecurityNumChangedCode.equals(client.socialSecurityNumChangedCode)
         : client.socialSecurityNumChangedCode != null) {
       return false;
     }
@@ -1514,18 +1529,18 @@ public class Client extends ReportingDomain implements Request, Response {
         : client.socialSecurityNumber != null) {
       return false;
     }
-    if (suffixTitleDescription != null ? !suffixTitleDescription
-        .equals(client.suffixTitleDescription)
+    if (suffixTitleDescription != null
+        ? !suffixTitleDescription.equals(client.suffixTitleDescription)
         : client.suffixTitleDescription != null) {
       return false;
     }
-    if (tribalAncestryClientIndicatorVar != null ? !tribalAncestryClientIndicatorVar
-        .equals(client.tribalAncestryClientIndicatorVar)
+    if (tribalAncestryClientIndicatorVar != null
+        ? !tribalAncestryClientIndicatorVar.equals(client.tribalAncestryClientIndicatorVar)
         : client.tribalAncestryClientIndicatorVar != null) {
       return false;
     }
-    if (tribalMembrshpVerifctnIndicatorVar != null ? !tribalMembrshpVerifctnIndicatorVar
-        .equals(client.tribalMembrshpVerifctnIndicatorVar)
+    if (tribalMembrshpVerifctnIndicatorVar != null
+        ? !tribalMembrshpVerifctnIndicatorVar.equals(client.tribalMembrshpVerifctnIndicatorVar)
         : client.tribalMembrshpVerifctnIndicatorVar != null) {
       return false;
     }
@@ -1547,11 +1562,11 @@ public class Client extends ReportingDomain implements Request, Response {
    * @see java.lang.Object#hashCode()
    */
   @Override
-  final public int hashCode() {
+  public final int hashCode() {
     int result = lastUpdatedTime != null ? Long.hashCode(lastUpdatedTime.getMillis()) : 0;
     result = 31 * result + (clientId != null ? clientId.hashCode() : 0);
-    result = 31 * result + (adjudicatedDelinquentIndicator != null ? adjudicatedDelinquentIndicator
-        .hashCode() : 0);
+    result = 31 * result
+        + (adjudicatedDelinquentIndicator != null ? adjudicatedDelinquentIndicator.hashCode() : 0);
     result = 31 * result + (adoptionStatusCode != null ? adoptionStatusCode.hashCode() : 0);
     result =
         31 * result + (alienRegistrationNumber != null ? alienRegistrationNumber.hashCode() : 0);
@@ -1560,9 +1575,8 @@ public class Client extends ReportingDomain implements Request, Response {
     result = 31 * result + (birthDate != null ? birthDate.hashCode() : 0);
     result = 31 * result + (birthFacilityName != null ? birthFacilityName.hashCode() : 0);
     result = 31 * result + (birthStateCodeType != null ? birthStateCodeType.hashCode() : 0);
-    result =
-        31 * result + (birthplaceVerifiedIndicator != null ? birthplaceVerifiedIndicator.hashCode()
-            : 0);
+    result = 31 * result
+        + (birthplaceVerifiedIndicator != null ? birthplaceVerifiedIndicator.hashCode() : 0);
     result =
         31 * result + (childClientIndicatorVar != null ? childClientIndicatorVar.hashCode() : 0);
     result = 31 * result + (clientIndexNumber != null ? clientIndexNumber.hashCode() : 0);
@@ -1570,110 +1584,86 @@ public class Client extends ReportingDomain implements Request, Response {
     result = 31 * result + (commonFirstName != null ? commonFirstName.hashCode() : 0);
     result = 31 * result + (commonMiddleName != null ? commonMiddleName.hashCode() : 0);
     result = 31 * result + (commonLastName != null ? commonLastName.hashCode() : 0);
-    result =
-        31 * result + (confidentialityActionDate != null ? confidentialityActionDate.hashCode()
-            : 0);
-    result =
-        31 * result + (confidentialityInEffectIndicator != null ? confidentialityInEffectIndicator
-            .hashCode() : 0);
+    result = 31 * result
+        + (confidentialityActionDate != null ? confidentialityActionDate.hashCode() : 0);
+    result = 31 * result + (confidentialityInEffectIndicator != null
+        ? confidentialityInEffectIndicator.hashCode() : 0);
     result = 31 * result + (creationDate != null ? creationDate.hashCode() : 0);
-    result =
-        31 * result + (currCaChildrenServIndicator != null ? currCaChildrenServIndicator.hashCode()
-            : 0);
-    result =
-        31 * result + (currentlyOtherDescription != null ? currentlyOtherDescription.hashCode()
-            : 0);
-    result =
-        31 * result + (currentlyRegionalCenterIndicator != null ? currentlyRegionalCenterIndicator
-            .hashCode() : 0);
+    result = 31 * result
+        + (currCaChildrenServIndicator != null ? currCaChildrenServIndicator.hashCode() : 0);
+    result = 31 * result
+        + (currentlyOtherDescription != null ? currentlyOtherDescription.hashCode() : 0);
+    result = 31 * result + (currentlyRegionalCenterIndicator != null
+        ? currentlyRegionalCenterIndicator.hashCode() : 0);
     result = 31 * result + (deathDate != null ? deathDate.hashCode() : 0);
-    result =
-        31 * result + (deathDateVerifiedIndicator != null ? deathDateVerifiedIndicator.hashCode()
-            : 0);
+    result = 31 * result
+        + (deathDateVerifiedIndicator != null ? deathDateVerifiedIndicator.hashCode() : 0);
     result = 31 * result + (deathPlace != null ? deathPlace.hashCode() : 0);
     result = 31 * result + (deathReasonText != null ? deathReasonText.hashCode() : 0);
     result = 31 * result + (driverLicenseNumber != null ? driverLicenseNumber.hashCode() : 0);
-    result =
-        31 * result + (driverLicenseStateCodeType != null ? driverLicenseStateCodeType.hashCode()
-            : 0);
+    result = 31 * result
+        + (driverLicenseStateCodeType != null ? driverLicenseStateCodeType.hashCode() : 0);
     result = 31 * result + (emailAddress != null ? emailAddress.hashCode() : 0);
     result = 31 * result + (estimatedDobCode != null ? estimatedDobCode.hashCode() : 0);
     result =
         31 * result + (ethUnableToDetReasonCode != null ? ethUnableToDetReasonCode.hashCode() : 0);
-    result =
-        31 * result + (fatherParentalRightTermDate != null ? fatherParentalRightTermDate.hashCode()
-            : 0);
+    result = 31 * result
+        + (fatherParentalRightTermDate != null ? fatherParentalRightTermDate.hashCode() : 0);
     result = 31 * result + (genderCode != null ? genderCode.hashCode() : 0);
     result = 31 * result + (healthSummaryText != null ? healthSummaryText.hashCode() : 0);
-    result =
-        31 * result + (hispUnableToDetReasonCode != null ? hispUnableToDetReasonCode.hashCode()
-            : 0);
+    result = 31 * result
+        + (hispUnableToDetReasonCode != null ? hispUnableToDetReasonCode.hashCode() : 0);
     result = 31 * result + (hispanicOriginCode != null ? hispanicOriginCode.hashCode() : 0);
-    result =
-        31 * result + (immigrationCountryCodeType != null ? immigrationCountryCodeType.hashCode()
-            : 0);
+    result = 31 * result
+        + (immigrationCountryCodeType != null ? immigrationCountryCodeType.hashCode() : 0);
     result = 31 * result + (immigrationStatusType != null ? immigrationStatusType.hashCode() : 0);
     result =
         31 * result + (incapacitatedParentCode != null ? incapacitatedParentCode.hashCode() : 0);
-    result =
-        31 * result + (individualHealthCarePlanIndicator != null ? individualHealthCarePlanIndicator
-            .hashCode() : 0);
-    result = 31 * result + (limitationOnScpHealthIndicator != null ? limitationOnScpHealthIndicator
-        .hashCode() : 0);
+    result = 31 * result + (individualHealthCarePlanIndicator != null
+        ? individualHealthCarePlanIndicator.hashCode() : 0);
+    result = 31 * result
+        + (limitationOnScpHealthIndicator != null ? limitationOnScpHealthIndicator.hashCode() : 0);
     result = 31 * result + (literateCode != null ? literateCode.hashCode() : 0);
-    result =
-        31 * result + (maritalCohabitatnHstryIndicatorVar != null
-            ? maritalCohabitatnHstryIndicatorVar
-            .hashCode() : 0);
+    result = 31 * result + (maritalCohabitatnHstryIndicatorVar != null
+        ? maritalCohabitatnHstryIndicatorVar.hashCode() : 0);
     result = 31 * result + (maritalStatusType != null ? maritalStatusType.hashCode() : 0);
     result = 31 * result + (militaryStatusCode != null ? militaryStatusCode.hashCode() : 0);
-    result =
-        31 * result + (motherParentalRightTermDate != null ? motherParentalRightTermDate.hashCode()
-            : 0);
+    result = 31 * result
+        + (motherParentalRightTermDate != null ? motherParentalRightTermDate.hashCode() : 0);
     result = 31 * result + (namePrefixDescription != null ? namePrefixDescription.hashCode() : 0);
     result = 31 * result + (nameType != null ? nameType.hashCode() : 0);
-    result =
-        31 * result + (outstandingWarrantIndicator != null ? outstandingWarrantIndicator.hashCode()
-            : 0);
-    result =
-        31 * result + (prevCaChildrenServIndicator != null ? prevCaChildrenServIndicator.hashCode()
-            : 0);
+    result = 31 * result
+        + (outstandingWarrantIndicator != null ? outstandingWarrantIndicator.hashCode() : 0);
+    result = 31 * result
+        + (prevCaChildrenServIndicator != null ? prevCaChildrenServIndicator.hashCode() : 0);
     result = 31 * result + (prevOtherDescription != null ? prevOtherDescription.hashCode() : 0);
-    result =
-        31 * result + (prevRegionalCenterIndicator != null ? prevRegionalCenterIndicator.hashCode()
-            : 0);
+    result = 31 * result
+        + (prevRegionalCenterIndicator != null ? prevRegionalCenterIndicator.hashCode() : 0);
     result = 31 * result + (primaryEthnicityType != null ? primaryEthnicityType.hashCode() : 0);
     result = 31 * result + (primaryLanguage != null ? primaryLanguage.hashCode() : 0);
     result = 31 * result + (religionType != null ? religionType.hashCode() : 0);
     result = 31 * result + (secondaryLanguage != null ? secondaryLanguage.hashCode() : 0);
-    result =
-        31 * result + (sensitiveHlthInfoOnFileIndicator != null ? sensitiveHlthInfoOnFileIndicator
-            .hashCode() : 0);
+    result = 31 * result + (sensitiveHlthInfoOnFileIndicator != null
+        ? sensitiveHlthInfoOnFileIndicator.hashCode() : 0);
     result = 31 * result + (sensitivityIndicator != null ? sensitivityIndicator.hashCode() : 0);
     result = 31 * result + (soc158PlacementCode != null ? soc158PlacementCode.hashCode() : 0);
-    result =
-        31 * result + (soc158SealedClientIndicator != null ? soc158SealedClientIndicator.hashCode()
-            : 0);
-    result =
-        31 * result + (socialSecurityNumChangedCode != null ? socialSecurityNumChangedCode
-            .hashCode()
-            : 0);
+    result = 31 * result
+        + (soc158SealedClientIndicator != null ? soc158SealedClientIndicator.hashCode() : 0);
+    result = 31 * result
+        + (socialSecurityNumChangedCode != null ? socialSecurityNumChangedCode.hashCode() : 0);
     result = 31 * result + (socialSecurityNumber != null ? socialSecurityNumber.hashCode() : 0);
     result = 31 * result + (suffixTitleDescription != null ? suffixTitleDescription.hashCode() : 0);
-    result =
-        31 * result + (tribalAncestryClientIndicatorVar != null ? tribalAncestryClientIndicatorVar
-            .hashCode() : 0);
-    result =
-        31 * result + (tribalMembrshpVerifctnIndicatorVar != null
-            ? tribalMembrshpVerifctnIndicatorVar
-            .hashCode() : 0);
+    result = 31 * result + (tribalAncestryClientIndicatorVar != null
+        ? tribalAncestryClientIndicatorVar.hashCode() : 0);
+    result = 31 * result + (tribalMembrshpVerifctnIndicatorVar != null
+        ? tribalMembrshpVerifctnIndicatorVar.hashCode() : 0);
     result = 31 * result + (unemployedParentCode != null ? unemployedParentCode.hashCode() : 0);
     result = 31 * result + (zippyCreatedIndicator != null ? zippyCreatedIndicator.hashCode() : 0);
     result = 31 * result + (address != null ? address.hashCode() : 0);
     return result;
   }
 
- public boolean hasSameLastUpdate(Client otherClient) {
+  public boolean hasSameLastUpdate(Client otherClient) {
     return this.lastUpdatedTime.equals(otherClient.lastUpdatedTime);
   }
 
