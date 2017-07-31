@@ -12,6 +12,7 @@ import java.io.OutputStream;
 import javax.xml.bind.DatatypeConverter;
 
 import org.apache.commons.compress.utils.IOUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -65,7 +66,9 @@ public class CmsPKCompressor implements CWDSPKLicense {
   /**
    * Constructor
    */
-  public CmsPKCompressor() {}
+  public CmsPKCompressor() {
+    // Default, no-op. Get over it, SonarQube.
+  }
 
   /**
    * Decompress (inflate) a CMS PKWare archive.
@@ -75,6 +78,9 @@ public class CmsPKCompressor implements CWDSPKLicense {
    * @throws IOException If an I/O error occurs
    */
   public void decompressFile(String inputFileName, String outputFileName) throws IOException {
+    if (StringUtils.isBlank(inputFileName) || StringUtils.isBlank(outputFileName)) {
+      throw new IOException("REQUIRED: file names cannot be null");
+    }
     FileInputStream fis = new FileInputStream(new File(inputFileName));
     InputStream iis = new InflateInputStream(fis, true);
 
@@ -93,6 +99,9 @@ public class CmsPKCompressor implements CWDSPKLicense {
    * @throws IOException If an I/O error occurs
    */
   public byte[] decompressBytes(byte[] bytes) throws IOException {
+    if (bytes == null) {
+      throw new IOException("REQUIRED: bytes to decompress cannot be null");
+    }
     ByteArrayInputStream bis = new ByteArrayInputStream(bytes);
     InputStream iis = new InflateInputStream(bis, true);
     ByteArrayOutputStream bos = new ByteArrayOutputStream(DEFAULT_OUTPUT_SIZE);
@@ -117,6 +126,9 @@ public class CmsPKCompressor implements CWDSPKLicense {
    * @throws IOException If an I/O error occurs
    */
   public byte[] decompressStream(InputStream input) throws IOException {
+    if (input == null) {
+      throw new IOException("REQUIRED: input stream to decompress cannot be null");
+    }
     InputStream iis = new InflateInputStream(input, true);
     ByteArrayOutputStream bos = new ByteArrayOutputStream(DEFAULT_OUTPUT_SIZE);
     IOUtils.copy(iis, bos);
@@ -135,6 +147,9 @@ public class CmsPKCompressor implements CWDSPKLicense {
    * @throws IOException If an I/O error occurs
    */
   public byte[] decompressBase64(String base64Doc) throws IOException {
+    if (base64Doc == null) {
+      throw new IOException("REQUIRED: base64 string to decompress cannot be null");
+    }
     final byte[] bytes = decompressBytes(DatatypeConverter.parseBase64Binary(base64Doc.trim()));
     LOGGER.debug("CmsPKCompressor.decompressBase64(String): bytes len=" + bytes.length);
     return bytes;
@@ -148,6 +163,9 @@ public class CmsPKCompressor implements CWDSPKLicense {
    * @throws IOException If an I/O error occurs
    */
   public byte[] decompressHex(String hex) throws IOException {
+    if (StringUtils.isBlank(hex)) {
+      throw new IOException("REQUIRED: hex to decompress cannot be null");
+    }
     final byte[] bytes = decompressBytes(DatatypeConverter.parseHexBinary(hex.trim()));
     LOGGER.debug("CmsPKCompressor.decompressHex(String): bytes len=" + bytes.length);
     return bytes;
@@ -162,6 +180,9 @@ public class CmsPKCompressor implements CWDSPKLicense {
    * @throws IOException If an I/O error occurs
    */
   public void compressFile(String inputFileName, String outputFileName) throws IOException {
+    if (StringUtils.isBlank(inputFileName) || StringUtils.isBlank(outputFileName)) {
+      throw new IOException("REQUIRED: file names cannot be null");
+    }
     FileInputStream fis = new FileInputStream(new File(inputFileName));
     OutputStream fos = new DeflateOutputStream(new FileOutputStream(new File(outputFileName)),
         DEFAULT_COMPRESSION_LEVEL, true);
@@ -179,6 +200,9 @@ public class CmsPKCompressor implements CWDSPKLicense {
    * @throws IOException If an I/O error occurs
    */
   public byte[] compressBytes(byte[] bytes) throws IOException {
+    if (bytes == null) {
+      throw new IOException("REQUIRED: bytes to compress cannot be null");
+    }
     ByteArrayInputStream bis = new ByteArrayInputStream(bytes);
     ByteArrayOutputStream bos = new ByteArrayOutputStream(DEFAULT_OUTPUT_SIZE);
 
