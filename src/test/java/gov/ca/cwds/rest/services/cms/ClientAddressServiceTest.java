@@ -87,7 +87,6 @@ public class ClientAddressServiceTest implements ServiceTestTemplate {
     Participant participant = mock(Participant.class);
 
     List foundClients = clientAddressService.findByAddressAndClient(address, participant);
-    assertEquals(expecteds, actuals);
   }
 
   /**
