@@ -122,8 +122,13 @@ dependencies {
 	testCompile group: 'com.google.errorprone', name: 'error_prone_annotations', version: '2.0.19'
 }
 
+// task printProps << {
+//     println System.properties['DB_CMS_JDBC_URL']
+// }
+
 tasks.withType(Test) {
     enableAssertions = true
+    // systemProperties project.properties.subMap(["DB_CMS_JDBC_URL", "DB_CMS_PASSWORD", "DB_CMS_SCHEMA", "DB_CMS_USER", "DB_NS_JDBC_URL", "DB_NS_PASSWORD", "DB_NS_SCHEMA", "DB_NS_USER"])
     
     // These don't work. Docs mistaken?
     // jvmArgs '-Djava.library.path=.:$rootProject.projectDir/lib/:/var/lib/jenkins/workspace/API/:/usr/local/lib/'
