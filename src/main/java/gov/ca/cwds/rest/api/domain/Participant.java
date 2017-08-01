@@ -106,7 +106,6 @@ public class Participant extends ReportingDomain implements Request, Response {
 
   @JsonProperty("secondary_language")
   @NotNull
->>>>>>> Stashed changes
   @ApiModelProperty(required = false, readOnly = false, value = "", example = "1234",
       notes = "The code for secondary Language")
   @ValidSystemCodeId(required = true, category = SystemCodeCategoryId.LANGUAGE_CODE)
