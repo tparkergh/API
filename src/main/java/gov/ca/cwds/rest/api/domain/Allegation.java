@@ -3,6 +3,7 @@ package gov.ca.cwds.rest.api.domain;
 import static gov.ca.cwds.data.persistence.cms.CmsPersistentObject.CMS_ID_LEN;
 
 import gov.ca.cwds.rest.validation.ValidSystemCodeId;
+import io.dropwizard.validation.OneOf;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
@@ -46,6 +47,13 @@ public class Allegation extends ReportingDomain implements Request, Response {
   @JsonProperty("perpetrator_person_id")
   @ApiModelProperty(required = true, value = "id of perpatrator", example = "12345")
   private long perpetratorPersonId;
+
+  @JsonProperty("non_protecting_parent")
+  @ApiModelProperty(required = true, value = "Non protecting parent Code", example = "U",
+      allowableValues = "U, P, Y, N")
+  @OneOf(value = {"U", "P", "Y", "N"})
+  @Size(max = 1)
+  private String nonProtectingParent;
 
   @JsonProperty("type")
   @ApiModelProperty(required = true, value = "type of allegation code", example = "1373")
@@ -147,6 +155,7 @@ public class Allegation extends ReportingDomain implements Request, Response {
     result = prime * result + ((county == null) ? 0 : county.hashCode());
     result = prime * result + (int) (perpetratorPersonId ^ (perpetratorPersonId >>> 32));
     result = prime * result + ((type == null) ? 0 : type.hashCode());
+    result = prime * result + ((nonProtectingParent == null) ? 0 : nonProtectingParent.hashCode());
     result = prime * result + ((legacySourceTable == null) ? 0 : legacySourceTable.hashCode());
     result = prime * result + ((legacyId == null) ? 0 : legacyId.hashCode());
     result = prime * result + (int) (victimPersonId ^ (victimPersonId >>> 32));
@@ -179,6 +188,11 @@ public class Allegation extends ReportingDomain implements Request, Response {
       if (other.type != null)
         return false;
     } else if (!type.equals(other.type))
+      return false;
+    if (nonProtectingParent == null) {
+      if (other.nonProtectingParent != null)
+        return false;
+    } else if (!nonProtectingParent.equals(other.nonProtectingParent))
       return false;
     if (legacySourceTable == null) {
       if (other.legacySourceTable != null)
