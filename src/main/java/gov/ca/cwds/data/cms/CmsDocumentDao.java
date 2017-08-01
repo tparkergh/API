@@ -107,6 +107,7 @@ public class CmsDocumentDao extends BaseDaoImpl<CmsDocument> {
    */
   protected String decompressLZW(gov.ca.cwds.data.persistence.cms.CmsDocument doc) {
     String retval = "";
+
     try {
       File src = File.createTempFile("src", ".lzw");
       src.deleteOnExit();
