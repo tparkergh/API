@@ -106,10 +106,26 @@ public class Participant extends ReportingDomain implements Request, Response {
 
   @JsonProperty("secondary_language")
   @NotNull
+>>>>>>> Stashed changes
   @ApiModelProperty(required = false, readOnly = false, value = "", example = "1234",
       notes = "The code for secondary Language")
   @ValidSystemCodeId(required = true, category = SystemCodeCategoryId.LANGUAGE_CODE)
   private Short secondaryLanguage;
+
+  //only used for reporter
+  @JsonProperty("reporter_confidential_waiver")
+  @ApiModelProperty(required = false, value = "Reporter Confidential Waiver", example = "N" )
+  private boolean reporterConfidentialWaiver;
+
+  //only used for reporter
+  @JsonProperty("reporter_employer_name")
+  @ApiModelProperty(required = false, value = "Reporter Employer Name", example = "Buisness Name, Inc" )
+  private String reporterEmployerName;
+
+  //only used for Client
+  @JsonProperty("client_staff_person_added")
+  @ApiModelProperty(required = false, value = "Staff Person Added", example = "N")
+  private boolean clientStaffPersonAdded;
 
   @JsonProperty("screening_id")
   @ApiModelProperty(required = false, readOnly = false, value = "Screening Id", example = "12345")
@@ -434,6 +450,9 @@ public class Participant extends ReportingDomain implements Request, Response {
     result = prime * result + ((middleName == null) ? 0 : middleName.hashCode());
     result = prime * result + ((lastName == null) ? 0 : lastName.hashCode());
     result = prime * result + ((nameSuffix == null) ? 0 : nameSuffix.hashCode());
+    result = prime * result + ((reporterEmployerName == null) ? 0 : reporterEmployerName.hashCode());
+    result = prime * result + ((reporterConfidentialWaiver == true) ? 1 : 0);
+    result = prime * result + ((clientStaffPersonAdded == true) ? 1 : 0);
     result = prime * result + ((primaryLanguage == null) ? 0 : primaryLanguage.hashCode());
     result = prime * result + ((secondaryLanguage == null) ? 0 : secondaryLanguage.hashCode());
     result = prime * result + ((legacyId == null) ? 0 : legacyId.hashCode());
@@ -496,6 +515,17 @@ public class Participant extends ReportingDomain implements Request, Response {
         return false;
     } else if (!nameSuffix.equals(other.nameSuffix))
       return false;
+     if (reporterEmployerName == null) {
+      if (other.reporterEmployerName != null)
+        return false;
+    } else if (!reporterEmployerName.equals(other.reporterEmployerName))
+      return false;
+    if (reporterConfidentialWaiver != other.reporterConfidentialWaiver){
+      return false;
+    }
+    if (clientStaffPersonAdded != other.clientStaffPersonAdded){
+      return false;
+    }
     if (primaryLanguage == null) {
       if (other.primaryLanguage != null)
         return false;
