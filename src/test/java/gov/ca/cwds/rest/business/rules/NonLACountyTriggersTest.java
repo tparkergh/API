@@ -415,6 +415,9 @@ public class NonLACountyTriggersTest {
     assertThat(countyOwnership.getEntityCode(), is(equalTo("C")));
   }
 
+  /**
+   * @throws Exception - TriggerTableException
+   */
   @Test
   public void testForReferralCreatedCountyOwnershipForDefault99() throws Exception {
 
