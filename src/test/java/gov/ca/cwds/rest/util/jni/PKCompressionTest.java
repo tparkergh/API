@@ -3,9 +3,12 @@ package gov.ca.cwds.rest.util.jni;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
+import java.io.ByteArrayInputStream;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileReader;
 
+import org.apache.commons.io.IOUtils;
 // import org.apache.commons.compress.utils.IOUtils;
 import org.flywaydb.core.internal.util.FileCopyUtils;
 import org.junit.Before;
@@ -66,20 +69,20 @@ public class PKCompressionTest {
 
   @Test
   public void testDecompressInputStream1() {
-    // try {
-    // final String src = PKCompressionTest.class.getResource(ZIP_PK_1).getPath();
-    // final String good = PKCompressionTest.class.getResource(ZIP_DOC_1).getPath();
-    //
-    // final byte[] bytes = inst.decompressStream(
-    // new ByteArrayInputStream(IOUtils.toByteArray(new FileInputStream(new File(src)))));
-    //
-    // final String chkTgt = CWDSCompressionUtils.checksum(bytes);
-    // final String chkFirst = CWDSCompressionUtils.checksum(new File(good));
-    //
-    // assertTrue("PK decompression failed", chkTgt.equals(chkFirst));
-    // } catch (Exception e) {
-    // fail("Exception: " + e.getMessage());
-    // }
+    try {
+      final String src = PKCompressionTest.class.getResource(ZIP_PK_1).getPath();
+      final String good = PKCompressionTest.class.getResource(ZIP_DOC_1).getPath();
+
+      final byte[] bytes = inst.decompressStream(
+          new ByteArrayInputStream(IOUtils.toByteArray(new FileInputStream(new File(src)))));
+
+      final String chkTgt = CWDSCompressionUtils.checksum(bytes);
+      final String chkFirst = CWDSCompressionUtils.checksum(new File(good));
+
+      assertTrue("PK decompression failed", chkTgt.equals(chkFirst));
+    } catch (Exception e) {
+      fail("Exception: " + e.getMessage());
+    }
   }
 
   @Test
@@ -153,20 +156,20 @@ public class PKCompressionTest {
 
   @Test
   public void testCompressBytes1() {
-    // try {
-    // final String src = PKCompressionTest.class.getResource(ZIP_DOC_1).getPath();
-    // final String good = PKCompressionTest.class.getResource(ZIP_PK_1).getPath();
-    //
-    // final byte[] bytes =
-    // inst.compressBytes(IOUtils.toByteArray(new FileInputStream(new File(src))));
-    //
-    // final String chkTgt = CWDSCompressionUtils.checksum(bytes);
-    // final String chkFirst = CWDSCompressionUtils.checksum(new File(good));
-    //
-    // assertTrue("PK compression failed", chkTgt.equals(chkFirst));
-    // } catch (Exception e) {
-    // fail("Exception: " + e.getMessage());
-    // }
+    try {
+      final String src = PKCompressionTest.class.getResource(ZIP_DOC_1).getPath();
+      final String good = PKCompressionTest.class.getResource(ZIP_PK_1).getPath();
+
+      final byte[] bytes =
+          inst.compressBytes(IOUtils.toByteArray(new FileInputStream(new File(src))));
+
+      final String chkTgt = CWDSCompressionUtils.checksum(bytes);
+      final String chkFirst = CWDSCompressionUtils.checksum(new File(good));
+
+      assertTrue("PK compression failed", chkTgt.equals(chkFirst));
+    } catch (Exception e) {
+      fail("Exception: " + e.getMessage());
+    }
   }
 
 }
