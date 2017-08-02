@@ -2,6 +2,7 @@ package gov.ca.cwds.rest.api.domain;
 
 import static gov.ca.cwds.data.persistence.cms.CmsPersistentObject.CMS_ID_LEN;
 
+import io.dropwizard.validation.OneOf;
 import java.util.Set;
 
 import javax.validation.Valid;
@@ -147,6 +148,28 @@ public class ScreeningToReferral extends ReportingDomain implements Request {
       example = "decision detail")
   @Size(max = 1500)
   private String screeningDecisionDetail;
+
+  @JsonProperty("approval_status")
+  @ApiModelProperty(required = false, readOnly = false, value = "Status of the approval",
+      example = "118")
+  private String approvalStatus;
+
+  @JsonProperty("family_awareness")
+  @ApiModelProperty(required = false, readOnly = false, value = "Family is aware of referral",
+      example = "true" )
+  private boolean familyAwareness;
+
+  @JsonProperty("filed_with_law_enforcement")
+  @ApiModelProperty(required = false, readOnly = false, value = "Filed Cross Report with Law Enforcement",
+      example = "N")
+  private boolean filedWithLawEnforcement;
+
+  @JsonProperty("responsible_agency")
+  @ApiModelProperty(required = false, readOnly = false, value = "Responsible Agency Code",
+      example = "C", allowableValues = "C, P, O, A, S, I, K, M")
+  @OneOf(value = {"C", "P", "O", "A", "S", "I", "K", "M"})
+  @Size(max = 1)
+  private String responsibleAgency;
 
   @NotNull
   @ApiModelProperty(required = true, readOnly = false)
