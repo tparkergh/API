@@ -59,6 +59,23 @@ shadowJar {
   version = ''
 }
 
+publishing {
+  publications {
+    library(MavenPublication) {
+      from components.java
+      groupId 'gov.ca.cwds.api'
+      artifactId 'api'
+        version version + ((System.properties.getProperty('build') != null ) ? '.' + System.properties.getProperty('build') : '')
+    }
+  }
+  repositories {
+    maven {
+      // TODO: set to http url
+      url "file:///usr/share/nginx/html/maven2"
+    }
+  }
+}
+
 dependencies {
 	compile group: "io.dropwizard", name: "dropwizard-client", version: dropwizardVersion
 	compile group: "io.dropwizard", name: "dropwizard-hibernate", version: dropwizardVersion
@@ -122,9 +139,14 @@ dependencies {
 	testCompile group: 'com.google.errorprone', name: 'error_prone_annotations', version: '2.0.19'
 }
 
+task printProps << {
+    println System.properties['DB_CMS_JDBC_URL']
+}
+
 tasks.withType(Test) {
     enableAssertions = true
-    
+    systemProperties project.properties.subMap(["DB_CMS_JDBC_URL", "DB_CMS_PASSWORD", "DB_CMS_SCHEMA", "DB_CMS_USER", "DB_NS_JDBC_URL", "DB_NS_PASSWORD", "DB_NS_SCHEMA", "DB_NS_USER"])
+
     // These don't work. Docs mistaken?
     // jvmArgs '-Djava.library.path=.:$rootProject.projectDir/lib/:/var/lib/jenkins/workspace/API/:/usr/local/lib/'
     // jvmArgs '-Djava.library.path=.:./lib/:/var/lib/jenkins/workspace/API/:/usr/local/lib/'
@@ -150,6 +172,7 @@ test {
 task integrationTest(type: Test, dependsOn: testClasses) {
     include '**/*IT*'
     exclude '**/*Test*'
+    // systemProperties project.properties.subMap(["DB_CMS_JDBC_URL", "DB_CMS_PASSWORD", "DB_CMS_SCHEMA", "DB_CMS_USER", "DB_NS_JDBC_URL", "DB_NS_PASSWORD", "DB_NS_SCHEMA", "DB_NS_USER"])
 }
 
 run {
@@ -168,23 +191,6 @@ sonarqube {
   properties {
       property "sonar.jacoco.reportPath", "${buildDir}/jacoco/test.exec"
       property "sonar.jacoco.itReportPath", "${buildDir}/jacoco/integrationTest.exec"
-  }
-}
-
-publishing {
-  publications {
-    library(MavenPublication) {
-      from components.java
-      groupId 'gov.ca.cwds.api'
-      artifactId 'api'
-        version version + ((System.properties.getProperty('build') != null ) ? '.' + System.properties.getProperty('build') : '')
-    }
-  }
-  repositories {
-    maven {
-      // TODO: set to http url
-      url "file:///usr/share/nginx/html/maven2"
-    }
   }
 }
 
@@ -220,6 +226,7 @@ task pushDockerLatest(type:Exec, dependsOn: createDockerImage) {
 task pushDockerVersionTagged(type:Exec, dependsOn: tagDockerImage) {
   commandLine 'docker',  'push',  "cwds/api:$dockerTag"
 }
+
 task publishDocker(dependsOn: [pushDockerVersionTagged, pushDockerLatest]) {
    doLast { 
 	 println 'Published'

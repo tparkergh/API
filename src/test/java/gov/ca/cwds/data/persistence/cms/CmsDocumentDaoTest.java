@@ -18,7 +18,6 @@ import gov.ca.cwds.data.cms.CmsDocumentDao;
 import gov.ca.cwds.rest.api.domain.DomainChef;
 import gov.ca.cwds.rest.util.jni.LZWEncoder;
 
-
 /**
  * JUnit tests for {@link CmsDocumentDao}.
  * 
