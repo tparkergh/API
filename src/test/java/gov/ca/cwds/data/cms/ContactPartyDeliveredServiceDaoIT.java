@@ -34,7 +34,7 @@ public class ContactPartyDeliveredServiceDaoIT {
   private Session session;
 
   /*
-   * pktableId matches src/main/resources/db.cms/ci-seeds.sql
+   * thirdId matches src/main/resources/db.cms/ci-seeds.sql
    */
   private String thirdId = "EvpOcb50Eg";
 
@@ -83,6 +83,7 @@ public class ContactPartyDeliveredServiceDaoIT {
     ContactPartyDeliveredService contactPartyDeliveredService =
         new ContactPartyDeliverdServiceEntityBuilder().setThirdId("ABC12347ho")
             .buildContactPartyDeliveredService();
+
     ContactPartyDeliveredService created =
         contactPartyDeliveredServiceDao.create(contactPartyDeliveredService);
     assertThat(created, is(contactPartyDeliveredService));
@@ -94,6 +95,7 @@ public class ContactPartyDeliveredServiceDaoIT {
     ContactPartyDeliveredService contactPartyDeliveredService =
         new ContactPartyDeliverdServiceEntityBuilder().setThirdId(thirdId)
             .buildContactPartyDeliveredService();
+
     contactPartyDeliveredServiceDao.create(contactPartyDeliveredService);
   }
 
@@ -115,6 +117,7 @@ public class ContactPartyDeliveredServiceDaoIT {
     ContactPartyDeliveredService contactPartyDeliveredService =
         new ContactPartyDeliverdServiceEntityBuilder().setThirdId(thirdId)
             .setCountySpecificCode("00").buildContactPartyDeliveredService();
+
     ContactPartyDeliveredService updated =
         contactPartyDeliveredServiceDao.update(contactPartyDeliveredService);
     assertThat(updated, is(contactPartyDeliveredService));
@@ -125,6 +128,7 @@ public class ContactPartyDeliveredServiceDaoIT {
     thrown.expect(EntityNotFoundException.class);
     ContactPartyDeliveredService contactPartyDeliveredService =
         new ContactPartyDeliverdServiceEntityBuilder().buildContactPartyDeliveredService();
+
     contactPartyDeliveredServiceDao.update(contactPartyDeliveredService);
   }
 

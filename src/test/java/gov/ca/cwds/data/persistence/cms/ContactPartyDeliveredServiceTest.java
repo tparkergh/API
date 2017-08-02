@@ -38,7 +38,7 @@ public class ContactPartyDeliveredServiceTest {
         new ContactPartyDeliveredService(validContactPartyDeliveredService.getThirdId(),
             validContactPartyDeliveredService.getContactPartyType(),
             validContactPartyDeliveredService.getCountySpecificCode(),
-            validContactPartyDeliveredService.getDeliveryServiceId());
+            validContactPartyDeliveredService.getDeliveredServiceId());
 
     assertThat(persistent.getThirdId(),
         is(equalTo(validContactPartyDeliveredService.getThirdId())));
@@ -46,8 +46,8 @@ public class ContactPartyDeliveredServiceTest {
         is(equalTo(validContactPartyDeliveredService.getContactPartyType())));
     assertThat(persistent.getCountySpecificCode(),
         is(equalTo(validContactPartyDeliveredService.getCountySpecificCode())));
-    assertThat(persistent.getDeliveryServiceId(),
-        is(equalTo(validContactPartyDeliveredService.getDeliveryServiceId())));
+    assertThat(persistent.getDeliveredServiceId(),
+        is(equalTo(validContactPartyDeliveredService.getDeliveredServiceId())));
   }
 
 }

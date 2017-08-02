@@ -12,11 +12,11 @@ public class ContactPartyDeliverdServiceEntityBuilder {
   String thirdId = "ABC1906757";
   Short contactPartyType = (short) 421;
   String countySpecificCode = "99";
-  String deliveryServiceId = "ABC123456y";
+  String deliveredServiceId = "ABC123456y";
 
   public ContactPartyDeliveredService buildContactPartyDeliveredService() {
     return new ContactPartyDeliveredService(thirdId, contactPartyType, countySpecificCode,
-        deliveryServiceId);
+        deliveredServiceId);
   }
 
   public String getThirdId() {
@@ -46,12 +46,12 @@ public class ContactPartyDeliverdServiceEntityBuilder {
     return this;
   }
 
-  public String getDeliveryServiceId() {
-    return deliveryServiceId;
+  public String getDeliveredServiceId() {
+    return deliveredServiceId;
   }
 
-  public ContactPartyDeliverdServiceEntityBuilder setDeliveryServiceId(String deliveryServiceId) {
-    this.deliveryServiceId = deliveryServiceId;
+  public ContactPartyDeliverdServiceEntityBuilder setDeliveredServiceId(String deliveredServiceId) {
+    this.deliveredServiceId = deliveredServiceId;
     return this;
   }
 

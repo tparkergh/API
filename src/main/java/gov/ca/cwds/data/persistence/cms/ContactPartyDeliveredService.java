@@ -38,7 +38,7 @@ public class ContactPartyDeliveredService extends CmsPersistentObject {
   private String countySpecificCode;
 
   @Column(name = "FKDL_SVC_T")
-  private String deliveryServiceId;
+  private String deliveredServiceId;
 
   /**
    * Default constructor
@@ -50,18 +50,18 @@ public class ContactPartyDeliveredService extends CmsPersistentObject {
   }
 
   /**
-   * @param thirdId
-   * @param contactPartyType
-   * @param countySpecificCode
-   * @param deliveryServiceId
+   * @param thirdId - thirdId
+   * @param contactPartyType - contactPartyType
+   * @param countySpecificCode - countySpecificCode
+   * @param deliveredServiceId - deliveredServiceId
    */
   public ContactPartyDeliveredService(String thirdId, Short contactPartyType,
-      String countySpecificCode, String deliveryServiceId) {
+      String countySpecificCode, String deliveredServiceId) {
     super();
     this.thirdId = thirdId;
     this.contactPartyType = contactPartyType;
     this.countySpecificCode = countySpecificCode;
-    this.deliveryServiceId = deliveryServiceId;
+    this.deliveredServiceId = deliveredServiceId;
   }
 
   /**
@@ -98,8 +98,8 @@ public class ContactPartyDeliveredService extends CmsPersistentObject {
   /**
    * @return the deliveryServiceId
    */
-  public String getDeliveryServiceId() {
-    return deliveryServiceId;
+  public String getDeliveredServiceId() {
+    return deliveredServiceId;
   }
 
 }
