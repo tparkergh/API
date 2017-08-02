@@ -11,19 +11,20 @@ import org.apache.commons.lang3.builder.HashCodeBuilder;
 import gov.ca.cwds.data.persistence.PersistentObject;
 
 /**
- * {@link PersistentObject} representing an ReferralClient Delivered Service Embeddable
+ * {@link PersistentObject} representing an Individual Delivered Service Embeddable
  * 
  * <p>
- * ReferralClientDeliveredServiceEmbeddable is the primaryKey representation of
- * ReferralClientDeliveredService and making the three columns(deliveredServiceId, referralId and
- * clientId) as composite keys, as the primary can be repeatable.
+ * IndividualDeliveredServiceEmbeddable is the primaryKey representation of
+ * IndividualDeliveredServiceEmbeddable and making the three columns(deliveredServiceId,
+ * deliveredToIndividualCode and deliveredToIndividualId) as composite keys, as the primary can be
+ * repeatable.
  * <p>
  * 
  * @author CWDS API Team
  * 
  */
 @Embeddable
-public class ReferralClientDeliveredServiceEmbeddable implements Serializable {
+public class IndividualDeliveredServiceEmbeddable implements Serializable {
 
   /**
    * 
@@ -35,32 +36,32 @@ public class ReferralClientDeliveredServiceEmbeddable implements Serializable {
   @Column(name = "FKDL_SVC_T", length = CMS_ID_LEN)
   private String deliveredServiceId;
 
-  @Column(name = "FKREFR_CL0", length = CMS_ID_LEN)
-  private String referralId;
+  @Column(name = "DEL_IDV_CD")
+  private String deliveredToIndividualCode;
 
-  @Column(name = "FKREFR_CLT", length = CMS_ID_LEN)
-  private String clientId;
+  @Column(name = "DEL_IDV_ID", length = CMS_ID_LEN)
+  private String deliveredToIndividualId;
 
   /**
    * Default constructor
    * 
    * Required for Hibernate
    */
-  public ReferralClientDeliveredServiceEmbeddable() {
+  public IndividualDeliveredServiceEmbeddable() {
     // no-opt
   }
 
   /**
-   * @param deliveredServiceId - deliveredServiceId
-   * @param referralId - referralId
-   * @param clientId - clientId
+   * @param deliveredServiceId
+   * @param deliveredToIndividualCode
+   * @param deliveredToIndividualId
    */
-  public ReferralClientDeliveredServiceEmbeddable(String deliveredServiceId, String referralId,
-      String clientId) {
+  public IndividualDeliveredServiceEmbeddable(String deliveredServiceId,
+      String deliveredToIndividualCode, String deliveredToIndividualId) {
     super();
     this.deliveredServiceId = deliveredServiceId;
-    this.referralId = referralId;
-    this.clientId = clientId;
+    this.deliveredToIndividualCode = deliveredToIndividualCode;
+    this.deliveredToIndividualId = deliveredToIndividualId;
   }
 
   /**
@@ -71,17 +72,17 @@ public class ReferralClientDeliveredServiceEmbeddable implements Serializable {
   }
 
   /**
-   * @return the referralId
+   * @return the deliveredToIndividualCode
    */
-  public String getReferralId() {
-    return referralId;
+  public String getDeliveredToIndividualCode() {
+    return deliveredToIndividualCode;
   }
 
   /**
-   * @return the clientId
+   * @return the deliveredToIndividualId
    */
-  public String getClientId() {
-    return clientId;
+  public String getDeliveredToIndividualId() {
+    return deliveredToIndividualId;
   }
 
   /**

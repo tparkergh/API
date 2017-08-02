@@ -70,8 +70,9 @@
 		<mapping class="gov.ca.cwds.data.persistence.cms.ExternalInterface"/>
 		<mapping class="gov.ca.cwds.data.persistence.cms.ClientRelationship"/>
 		<mapping class="gov.ca.cwds.data.persistence.cms.ClientCollateral"/>
-		<mapping class="gov.ca.cwds.data.persistence.cms.ContactPartyDeliveredService"/>
-		<mapping class="gov.ca.cwds.data.persistence.cms.ReferralClientDeliveredService"/>
+		<mapping class="gov.ca.cwds.data.persistence.cms.ContactPartyDeliveredServiceEntity"/>
+		<mapping class="gov.ca.cwds.data.persistence.cms.ReferralClientDeliveredServiceEntity"/> 
+		<mapping class="gov.ca.cwds.data.persistence.cms.IndividualDeliveredServiceEntity"/>
 
 		<mapping class="gov.ca.cwds.data.persistence.cms.Assignment"/>
 		<mapping class="gov.ca.cwds.data.persistence.cms.ReferralAssignment"/>

@@ -22,7 +22,7 @@ public class ContactPartyDeliveredServiceTest {
    */
   @Test
   public void testEmptyConstructor() throws Exception {
-    assertThat(ContactPartyDeliveredService.class.newInstance(), is(notNullValue()));
+    assertThat(ContactPartyDeliveredServiceEntity.class.newInstance(), is(notNullValue()));
   }
 
   /**
@@ -31,11 +31,11 @@ public class ContactPartyDeliveredServiceTest {
   @Test
   public void testPersistentConstructor() throws Exception {
 
-    ContactPartyDeliveredService validContactPartyDeliveredService =
+    ContactPartyDeliveredServiceEntity validContactPartyDeliveredService =
         new ContactPartyDeliverdServiceEntityBuilder().buildContactPartyDeliveredService();
 
-    gov.ca.cwds.data.persistence.cms.ContactPartyDeliveredService persistent =
-        new ContactPartyDeliveredService(validContactPartyDeliveredService.getThirdId(),
+    gov.ca.cwds.data.persistence.cms.ContactPartyDeliveredServiceEntity persistent =
+        new ContactPartyDeliveredServiceEntity(validContactPartyDeliveredService.getThirdId(),
             validContactPartyDeliveredService.getContactPartyType(),
             validContactPartyDeliveredService.getCountySpecificCode(),
             validContactPartyDeliveredService.getDeliveredServiceId());

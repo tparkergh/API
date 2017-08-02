@@ -19,7 +19,7 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 @Table(name = "CPTY_SVT")
 @JsonPropertyOrder(alphabetic = true)
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class ContactPartyDeliveredService extends CmsPersistentObject {
+public class ContactPartyDeliveredServiceEntity extends CmsPersistentObject {
 
   /**
    * 
@@ -45,7 +45,7 @@ public class ContactPartyDeliveredService extends CmsPersistentObject {
    * 
    * Required for Hibernate
    */
-  public ContactPartyDeliveredService() {
+  public ContactPartyDeliveredServiceEntity() {
     super();
   }
 
@@ -55,7 +55,7 @@ public class ContactPartyDeliveredService extends CmsPersistentObject {
    * @param countySpecificCode - countySpecificCode
    * @param deliveredServiceId - deliveredServiceId
    */
-  public ContactPartyDeliveredService(String thirdId, Short contactPartyType,
+  public ContactPartyDeliveredServiceEntity(String thirdId, Short contactPartyType,
       String countySpecificCode, String deliveredServiceId) {
     super();
     this.thirdId = thirdId;
