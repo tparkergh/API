@@ -1,6 +1,6 @@
 package gov.ca.cwds.fixture;
 
-import gov.ca.cwds.data.persistence.cms.ContactPartyDeliveredService;
+import gov.ca.cwds.data.persistence.cms.ContactPartyDeliveredServiceEntity;
 
 /**
  * @author CWDS API Team
@@ -14,8 +14,8 @@ public class ContactPartyDeliverdServiceEntityBuilder {
   String countySpecificCode = "99";
   String deliveredServiceId = "ABC123456y";
 
-  public ContactPartyDeliveredService buildContactPartyDeliveredService() {
-    return new ContactPartyDeliveredService(thirdId, contactPartyType, countySpecificCode,
+  public ContactPartyDeliveredServiceEntity buildContactPartyDeliveredService() {
+    return new ContactPartyDeliveredServiceEntity(thirdId, contactPartyType, countySpecificCode,
         deliveredServiceId);
   }
 

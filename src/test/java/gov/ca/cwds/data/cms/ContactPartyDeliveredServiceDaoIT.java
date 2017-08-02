@@ -19,7 +19,7 @@ import org.junit.BeforeClass;
 import org.junit.Rule;
 import org.junit.Test;
 
-import gov.ca.cwds.data.persistence.cms.ContactPartyDeliveredService;
+import gov.ca.cwds.data.persistence.cms.ContactPartyDeliveredServiceEntity;
 import gov.ca.cwds.fixture.ContactPartyDeliverdServiceEntityBuilder;
 
 /**
@@ -74,17 +74,17 @@ public class ContactPartyDeliveredServiceDaoIT {
 
   @Test
   public void testFind() throws Exception {
-    ContactPartyDeliveredService found = contactPartyDeliveredServiceDao.find(thirdId);
+    ContactPartyDeliveredServiceEntity found = contactPartyDeliveredServiceDao.find(thirdId);
     assertThat(found.getThirdId(), is(equalTo(thirdId)));
   }
 
   @Test
   public void testCreate() throws Exception {
-    ContactPartyDeliveredService contactPartyDeliveredService =
+    ContactPartyDeliveredServiceEntity contactPartyDeliveredService =
         new ContactPartyDeliverdServiceEntityBuilder().setThirdId("ABC12347ho")
             .buildContactPartyDeliveredService();
 
-    ContactPartyDeliveredService created =
+    ContactPartyDeliveredServiceEntity created =
         contactPartyDeliveredServiceDao.create(contactPartyDeliveredService);
     assertThat(created, is(contactPartyDeliveredService));
   }
@@ -92,7 +92,7 @@ public class ContactPartyDeliveredServiceDaoIT {
   @Test
   public void testCreateExistingEntityException() throws Exception {
     thrown.expect(EntityExistsException.class);
-    ContactPartyDeliveredService contactPartyDeliveredService =
+    ContactPartyDeliveredServiceEntity contactPartyDeliveredService =
         new ContactPartyDeliverdServiceEntityBuilder().setThirdId(thirdId)
             .buildContactPartyDeliveredService();
 
@@ -101,24 +101,24 @@ public class ContactPartyDeliveredServiceDaoIT {
 
   @Test
   public void testDelete() throws Exception {
-    ContactPartyDeliveredService deleted = contactPartyDeliveredServiceDao.delete(thirdId);
+    ContactPartyDeliveredServiceEntity deleted = contactPartyDeliveredServiceDao.delete(thirdId);
     assertThat(deleted.getThirdId(), is(thirdId));
   }
 
   @Test
   public void testDeleteEntityNotFoundException() throws Exception {
     String thirdId = "ABC1234568";
-    ContactPartyDeliveredService deleted = contactPartyDeliveredServiceDao.delete(thirdId);
+    ContactPartyDeliveredServiceEntity deleted = contactPartyDeliveredServiceDao.delete(thirdId);
     assertThat(deleted, is(nullValue()));
   }
 
   @Test
   public void testUpdate() throws Exception {
-    ContactPartyDeliveredService contactPartyDeliveredService =
+    ContactPartyDeliveredServiceEntity contactPartyDeliveredService =
         new ContactPartyDeliverdServiceEntityBuilder().setThirdId(thirdId)
             .setCountySpecificCode("00").buildContactPartyDeliveredService();
 
-    ContactPartyDeliveredService updated =
+    ContactPartyDeliveredServiceEntity updated =
         contactPartyDeliveredServiceDao.update(contactPartyDeliveredService);
     assertThat(updated, is(contactPartyDeliveredService));
   }
@@ -126,7 +126,7 @@ public class ContactPartyDeliveredServiceDaoIT {
   @Test
   public void testUpdateEntityNotFoundException() throws Exception {
     thrown.expect(EntityNotFoundException.class);
-    ContactPartyDeliveredService contactPartyDeliveredService =
+    ContactPartyDeliveredServiceEntity contactPartyDeliveredService =
         new ContactPartyDeliverdServiceEntityBuilder().buildContactPartyDeliveredService();
 
     contactPartyDeliveredServiceDao.update(contactPartyDeliveredService);

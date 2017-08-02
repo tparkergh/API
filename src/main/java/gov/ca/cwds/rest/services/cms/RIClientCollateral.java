@@ -45,7 +45,7 @@ public class RIClientCollateral implements ApiReferentialCheck<ClientCollateral>
 
   private static final Logger LOGGER = LoggerFactory.getLogger(ClientCollateral.class);
 
-  private ClientDao clientDao;
+  private transient ClientDao clientDao;
 
   /**
    * Constructor.

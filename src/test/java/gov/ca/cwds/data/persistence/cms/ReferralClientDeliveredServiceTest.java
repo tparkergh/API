@@ -29,7 +29,7 @@ public class ReferralClientDeliveredServiceTest {
    */
   @Test
   public void testEmptyConstructor() throws Exception {
-    assertThat(ReferralClientDeliveredService.class.newInstance(), is(notNullValue()));
+    assertThat(ReferralClientDeliveredServiceEntity.class.newInstance(), is(notNullValue()));
   }
 
   /**
@@ -38,19 +38,19 @@ public class ReferralClientDeliveredServiceTest {
   @Test
   public void testPersistentConstructor() throws Exception {
 
-    ReferralClientDeliveredService valid = validReferralClientDeliveredService();
+    ReferralClientDeliveredServiceEntity valid = validReferralClientDeliveredService();
 
-    ReferralClientDeliveredService persistent = new ReferralClientDeliveredService(
+    ReferralClientDeliveredServiceEntity persistent = new ReferralClientDeliveredServiceEntity(
         deliveredServiceId, referralId, clientId, valid.getCountySpecificCode());
 
     assertThat(persistent.getCountySpecificCode(), is(equalTo(valid.getCountySpecificCode())));
   }
 
-  private ReferralClientDeliveredService validReferralClientDeliveredService()
+  private ReferralClientDeliveredServiceEntity validReferralClientDeliveredService()
       throws JsonParseException, JsonMappingException, IOException {
 
-    ReferralClientDeliveredService validReferralClientDeliveredService =
-        new ReferralClientDeliveredService(deliveredServiceId, referralId, clientId, "99");
+    ReferralClientDeliveredServiceEntity validReferralClientDeliveredService =
+        new ReferralClientDeliveredServiceEntity(deliveredServiceId, referralId, clientId, "99");
     return validReferralClientDeliveredService;
 
   }

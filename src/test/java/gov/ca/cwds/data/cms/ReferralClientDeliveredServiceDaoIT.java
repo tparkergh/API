@@ -19,7 +19,7 @@ import org.junit.BeforeClass;
 import org.junit.Rule;
 import org.junit.Test;
 
-import gov.ca.cwds.data.persistence.cms.ReferralClientDeliveredService;
+import gov.ca.cwds.data.persistence.cms.ReferralClientDeliveredServiceEntity;
 import gov.ca.cwds.data.persistence.cms.ReferralClientDeliveredServiceEmbeddable;
 
 /**
@@ -79,7 +79,7 @@ public class ReferralClientDeliveredServiceDaoIT {
     ReferralClientDeliveredServiceEmbeddable referralClientDeliveredServiceEmbeddable =
         new ReferralClientDeliveredServiceEmbeddable(deliveredServiceId, referralId, clientId);
 
-    ReferralClientDeliveredService found =
+    ReferralClientDeliveredServiceEntity found =
         referralClientDeliveredServiceDao.find(referralClientDeliveredServiceEmbeddable);
     assertThat(found.getReferralClientDeliveredServiceEmbeddable().getDeliveredServiceId(),
         is(equalTo(deliveredServiceId)));
@@ -90,17 +90,17 @@ public class ReferralClientDeliveredServiceDaoIT {
     ReferralClientDeliveredServiceEmbeddable referralClientDeliveredServiceEmbeddable =
         new ReferralClientDeliveredServiceEmbeddable("ZZZZ127o0", "ppppxsxcx", "icbdc00ll");
 
-    ReferralClientDeliveredService found =
+    ReferralClientDeliveredServiceEntity found =
         referralClientDeliveredServiceDao.find(referralClientDeliveredServiceEmbeddable);
     assertThat(found, is(nullValue()));
   }
 
   @Test
   public void testCreate() throws Exception {
-    ReferralClientDeliveredService referralClientDeliveredService =
-        new ReferralClientDeliveredService("ABC123456k", "ABC1209876", "NMo09754e1", "99");
+    ReferralClientDeliveredServiceEntity referralClientDeliveredService =
+        new ReferralClientDeliveredServiceEntity("ABC123456k", "ABC1209876", "NMo09754e1", "99");
 
-    ReferralClientDeliveredService created =
+    ReferralClientDeliveredServiceEntity created =
         referralClientDeliveredServiceDao.create(referralClientDeliveredService);
     assertThat(created, is(referralClientDeliveredService));
   }
@@ -108,8 +108,8 @@ public class ReferralClientDeliveredServiceDaoIT {
   @Test
   public void testCreateExistingEntityException() throws Exception {
     thrown.expect(EntityExistsException.class);
-    ReferralClientDeliveredService referralClientDeliveredService =
-        new ReferralClientDeliveredService(deliveredServiceId, referralId, clientId, "13");
+    ReferralClientDeliveredServiceEntity referralClientDeliveredService =
+        new ReferralClientDeliveredServiceEntity(deliveredServiceId, referralId, clientId, "13");
 
     referralClientDeliveredServiceDao.create(referralClientDeliveredService);
   }
@@ -118,7 +118,8 @@ public class ReferralClientDeliveredServiceDaoIT {
   public void testDelete() throws Exception {
     ReferralClientDeliveredServiceEmbeddable referralClientDeliveredServiceEmbeddable =
         new ReferralClientDeliveredServiceEmbeddable(deliveredServiceId, referralId, clientId);
-    ReferralClientDeliveredService deleted =
+
+    ReferralClientDeliveredServiceEntity deleted =
         referralClientDeliveredServiceDao.delete(referralClientDeliveredServiceEmbeddable);
     assertThat(deleted, is(nullValue()));
   }
@@ -127,7 +128,8 @@ public class ReferralClientDeliveredServiceDaoIT {
   public void testDeleteEntityNotFoundException() throws Exception {
     ReferralClientDeliveredServiceEmbeddable referralClientDeliveredServiceEmbeddable =
         new ReferralClientDeliveredServiceEmbeddable("12v07bfyg1", "09mg5TFb1G", "lPyb15Fn8");
-    ReferralClientDeliveredService deleted =
+
+    ReferralClientDeliveredServiceEntity deleted =
         referralClientDeliveredServiceDao.delete(referralClientDeliveredServiceEmbeddable);
     assertThat(deleted, is(nullValue()));
   }
@@ -135,9 +137,10 @@ public class ReferralClientDeliveredServiceDaoIT {
   @Test
   public void testUpdate() throws Exception {
 
-    ReferralClientDeliveredService referralClientDeliveredService =
-        new ReferralClientDeliveredService(deliveredServiceId, referralId, clientId, "13");
-    ReferralClientDeliveredService updated =
+    ReferralClientDeliveredServiceEntity referralClientDeliveredService =
+        new ReferralClientDeliveredServiceEntity(deliveredServiceId, referralId, clientId, "13");
+
+    ReferralClientDeliveredServiceEntity updated =
         referralClientDeliveredServiceDao.update(referralClientDeliveredService);
     assertThat(updated, is(referralClientDeliveredService));
   }
@@ -145,8 +148,9 @@ public class ReferralClientDeliveredServiceDaoIT {
   @Test
   public void testUpdateEntityNotFoundException() throws Exception {
     thrown.expect(EntityNotFoundException.class);
-    ReferralClientDeliveredService referralClientDeliveredService =
-        new ReferralClientDeliveredService(deliveredServiceId, referralId, clientId, "13");
+    ReferralClientDeliveredServiceEntity referralClientDeliveredService =
+        new ReferralClientDeliveredServiceEntity(deliveredServiceId, referralId, clientId, "13");
+
     referralClientDeliveredServiceDao.update(referralClientDeliveredService);
 
   }

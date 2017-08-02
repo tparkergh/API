@@ -17,7 +17,7 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 @Table(name = "RFDLSVCT")
 @JsonPropertyOrder(alphabetic = true)
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class ReferralClientDeliveredService extends CmsPersistentObject {
+public class ReferralClientDeliveredServiceEntity extends CmsPersistentObject {
 
   /**
    * 
@@ -35,7 +35,7 @@ public class ReferralClientDeliveredService extends CmsPersistentObject {
    * 
    * Required for Hibernate
    */
-  public ReferralClientDeliveredService() {
+  public ReferralClientDeliveredServiceEntity() {
     super();
   }
 
@@ -45,7 +45,7 @@ public class ReferralClientDeliveredService extends CmsPersistentObject {
    * @param clientId - clientId
    * @param countySpecificCode - countySpecificCode
    */
-  public ReferralClientDeliveredService(String deliveredServiceId, String referralId,
+  public ReferralClientDeliveredServiceEntity(String deliveredServiceId, String referralId,
       String clientId, String countySpecificCode) {
     super();
     this.countySpecificCode = countySpecificCode;
