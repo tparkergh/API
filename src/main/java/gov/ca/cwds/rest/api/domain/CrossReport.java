@@ -2,6 +2,7 @@ package gov.ca.cwds.rest.api.domain;
 
 import static gov.ca.cwds.data.persistence.cms.CmsPersistentObject.CMS_ID_LEN;
 
+import io.dropwizard.validation.OneOf;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
@@ -58,6 +59,11 @@ public class CrossReport extends ReportingDomain implements Request, Response {
   @NotNull
   @ValidSystemCodeId(required = true, category = SystemCodeCategoryId.CROSS_REPORT_METHOD)
   private Integer method;
+
+  @JsonProperty("filed_out_of_state")
+  @ApiModelProperty(required = false, value = "Cross Report was filed out of state", example = "N")
+
+  private boolean filedOutOfState;
 
   @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = DATE_FORMAT)
   @Date
@@ -168,6 +174,7 @@ public class CrossReport extends ReportingDomain implements Request, Response {
     result = prime * result + ((agencyName == null) ? 0 : agencyName.hashCode());
     result = prime * result + ((agencyType == null) ? 0 : agencyType.hashCode());
     result = prime * result + ((informDate == null) ? 0 : informDate.hashCode());
+    result = prime * result + ((filedOutOfState) ? 1 : 0);
     result = prime * result + ((legacySourceTable == null) ? 0 : legacySourceTable.hashCode());
     result = prime * result + ((legacyId == null) ? 0 : legacyId.hashCode());
     result = prime * result + ((id == null) ? 0 : id.hashCode());
@@ -192,6 +199,9 @@ public class CrossReport extends ReportingDomain implements Request, Response {
     }
     if (legacySourceTable != null ? !legacySourceTable.equals(that.legacySourceTable)
         : that.legacySourceTable != null) {
+      return false;
+    }
+    if (filedOutOfState != that.filedOutOfState){
       return false;
     }
     if (legacyId != null ? !legacyId.equals(that.legacyId) : that.legacyId != null) {
