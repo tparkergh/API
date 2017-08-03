@@ -3,7 +3,7 @@
    "legacy_source_table" : "REFERL_T",
    "legacy_id" : "1234567ABC",
    "ended_at":"2016-08-03T01:00:00.000Z",
-   "incident_county":"sacramento",
+   "incident_county":"34",
    "incident_date":"2016-08-02",
    "location_type":"Foster Home",
    "communication_method":409,

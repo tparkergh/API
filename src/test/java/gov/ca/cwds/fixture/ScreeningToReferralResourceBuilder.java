@@ -26,7 +26,7 @@ public class ScreeningToReferralResourceBuilder {
   private String referralId = "";
   private String legacySourceTable = "";
   private String endedAt = DomainChef.cookDate(new Date());
-  private String incidentCounty = "Sacramento";
+  private String incidentCounty = "34";
   private String incidentDate = DomainChef.cookDate(new Date());
   private String locationType = "Foster Home";
   private Short communicationMethod = 409;

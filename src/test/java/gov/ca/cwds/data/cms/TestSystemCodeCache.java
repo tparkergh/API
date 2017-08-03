@@ -112,6 +112,17 @@ public class TestSystemCodeCache implements SystemCodeCache {
   }
 
   @Override
+  public boolean verifyActiveLogicalIdForMeta(String logicalId, String metaId) {
+    if (SystemCodeCategoryId.COUNTY_CODE.equals(metaId)) {
+      if ("34".equals(logicalId) || "01".equals(logicalId)
+          || "58".equals(logicalId) || "99".equals(logicalId)){
+        return true;
+      }
+    }
+    return false;
+  }
+
+  @Override
   public boolean verifyActiveSystemCodeDescriptionForMeta(String shortDesc, String metaId) {
     if ("djdjskshahfdsa".equals(shortDesc)) {
       return false;

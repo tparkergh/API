@@ -8,6 +8,7 @@ buildscript {
     dependencies {
         classpath 'com.github.jengelman.gradle.plugins:shadow:1.2.3'
         classpath 'se.transmode.gradle:gradle-docker:1.2'
+        classpath "com.smokejumperit.gradle.license:Gradle-License-Report:0.0.2"
     }
 }
 
@@ -21,6 +22,7 @@ apply plugin: 'maven-publish'
 apply plugin: 'docker'
 apply plugin: 'com.github.johnrengelman.shadow'
 apply plugin: 'jacoco'
+apply plugin:'license-report'
 
 sourceCompatibility = 1.8
 applicationDefaultJvmArgs = ["-Djava.library.path=.:./lib:/var/lib/jenkins/workspace/API/lib:/usr/local/lib"]
@@ -97,7 +99,7 @@ dependencies {
 
 	// Dropwizard-guice 1.0.0.2 conflicts with jersey-client 2.25.
 	// Exclude transitive dependencies.
-	compile ('gov.ca.cwds.api:api-core:0.28.384') {
+	compile ('gov.ca.cwds.api:api-core:0.28.386') {
 	    exclude group: 'org.glassfish.jersey.core'
 	}
 

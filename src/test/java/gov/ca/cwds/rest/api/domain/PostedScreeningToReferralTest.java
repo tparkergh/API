@@ -7,6 +7,9 @@ import java.util.Set;
 import org.junit.Test;
 
 public class PostedScreeningToReferralTest {
+
+  public static final String SACRAMENTO_COUNTY_CODE = "34";
+
   @Test
   public void testCreateWithDefaultCreatesWithValues(){
     String referralId = "referalId";
@@ -60,7 +63,7 @@ public class PostedScreeningToReferralTest {
     Short responseTime = (short)1516;
     Short communicationMethod = 409;
     return  new ScreeningToReferral(1235, "sourcetable", "referralId",
-        "endedAt", "incidentCounty","incidentDate", "locationType",
+        "endedAt", SACRAMENTO_COUNTY_CODE,"incidentDate", "locationType",
         communicationMethod, "name", "reportNarrative", "reference",
         responseTime, "startedAt", "assignee", "additionalInformation",
         "screeningDecision", "screeningDecisionDetail", new Address(new gov.ca.cwds.data.persistence.ns.Address()),

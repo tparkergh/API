@@ -35,6 +35,7 @@ public class ScreeningToReferralTest {
 
   private static final String ROOT_RESOURCE = "/" + Api.RESOURCE_REFERRALS + "/";;
   private static final ObjectMapper MAPPER = Jackson.newObjectMapper();
+  public static final String SACRAMENTO_COUNTY_CODE = "34";
   private Validator validator;
 
 
@@ -80,7 +81,7 @@ public class ScreeningToReferralTest {
 
 
     String expected = MAPPER.writeValueAsString(new ScreeningToReferral(id, "", "",
-        "2016-08-03T01:00:00.000Z", "sacramento", "2016-08-02", "Foster Home", communicationMethod,
+        "2016-08-03T01:00:00.000Z", SACRAMENTO_COUNTY_CODE, "2016-08-02", "Foster Home", communicationMethod,
         "The Rocky Horror Show", "Narrative 123 test", "123ABC", responseTime,
         "2016-08-03T01:00:00.000Z", "Michael Bastow", "addtional information",
         "Screening Descision", "Detail", address, participants, crossReports, allegations));
@@ -105,7 +106,7 @@ public class ScreeningToReferralTest {
     allegations.add(allegation);
 
     ScreeningToReferral expected = new ScreeningToReferral(id, "", "", "2016-08-03T01:00:00.000Z",
-        "sacramento", "2016-08-02", "Foster Home", communicationMethod, "The Rocky Horror Show",
+        SACRAMENTO_COUNTY_CODE, "2016-08-02", "Foster Home", communicationMethod, "The Rocky Horror Show",
         "Narrative 123 test", "123ABC", responseTime, "2016-08-03T01:00:00.000Z", "Michael Bastow",
         "addtional information", "Screening Descision", "Detail", address, participants,
         crossReports, allegations);
