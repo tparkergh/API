@@ -13,6 +13,7 @@ import gov.ca.cwds.data.persistence.cms.Assignment;
 import gov.ca.cwds.data.persistence.cms.Client;
 import gov.ca.cwds.data.persistence.cms.ExternalInterface;
 import gov.ca.cwds.rest.filters.RequestExecutionContext;
+import gov.ca.cwds.rest.filters.RequestExecutionContext.Parameter;
 import gov.ca.cwds.rest.services.ServiceException;
 
 /**
@@ -34,7 +35,6 @@ public class ExternalInterfaceTables {
 
   private ExternalInterfaceDao externalInterfaceDao;
   private RequestExecutionContext requestExecutionContext = RequestExecutionContext.instance();
-  private Integer sequenceExternalTable = 0;
 
   /**
    * @param externalInterfaceDao - external interface table
@@ -110,7 +110,9 @@ public class ExternalInterfaceTables {
   }
 
   private Integer incrementAndGetSequenceExternalTable() {
-    sequenceExternalTable = sequenceExternalTable + 1;
-    return sequenceExternalTable;
+    Integer seqNum = (Integer) requestExecutionContext.get(Parameter.SEQUENCE_EXTERNAL_TABLE);
+    Integer seqNumUpdated = Math.addExact(seqNum, 1);
+    requestExecutionContext.put(Parameter.SEQUENCE_EXTERNAL_TABLE, seqNumUpdated);
+    return seqNumUpdated;
   }
 }
