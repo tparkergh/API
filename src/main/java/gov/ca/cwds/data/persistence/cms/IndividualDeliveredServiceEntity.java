@@ -57,17 +57,17 @@ public class IndividualDeliveredServiceEntity extends CmsPersistentObject {
   }
 
   /**
-   * @param deliveredServiceId
-   * @param deliveredToIndividualCode
-   * @param deliveredToIndividualId
-   * @param countySpecificCode
-   * @param endDate
-   * @param serviceContactType
-   * @param startDate
+   * @param deliveredServiceId The deliveredServiceId
+   * @param deliveredToIndividualCode The deliveredToIndividualCode
+   * @param deliveredToIndividualId The deliveredToIndividualId
+   * @param countySpecificCode The countySpecificCode
+   * @param endDate The endDate
+   * @param serviceContactType The serviceContactType
+   * @param startDate The startDate
    */
-  public IndividualDeliveredServiceEntity(String deliveredServiceId, String deliveredToIndividualCode,
-      String deliveredToIndividualId, String countySpecificCode, Date endDate,
-      Short serviceContactType, Date startDate) {
+  public IndividualDeliveredServiceEntity(String deliveredServiceId,
+      String deliveredToIndividualCode, String deliveredToIndividualId, String countySpecificCode,
+      Date endDate, Short serviceContactType, Date startDate) {
     super();
     this.countySpecificCode = countySpecificCode;
     this.endDate = endDate;

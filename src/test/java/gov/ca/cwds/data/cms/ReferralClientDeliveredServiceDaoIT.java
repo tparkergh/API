@@ -19,8 +19,8 @@ import org.junit.BeforeClass;
 import org.junit.Rule;
 import org.junit.Test;
 
-import gov.ca.cwds.data.persistence.cms.ReferralClientDeliveredServiceEntity;
 import gov.ca.cwds.data.persistence.cms.ReferralClientDeliveredServiceEmbeddable;
+import gov.ca.cwds.data.persistence.cms.ReferralClientDeliveredServiceEntity;
 
 /**
  * @author CWDS API Team
@@ -36,9 +36,9 @@ public class ReferralClientDeliveredServiceDaoIT {
   /*
    * deliveredServiceId matches src/main/resources/db.cms/ci-seeds.sql
    */
-  private String deliveredServiceId = "ABC1234567";
-  private String referralId = "ABX1234560";
-  private String clientId = "APc109852u";
+  private String deliveredServiceId = "DrbC4No0Hj";
+  private String referralId = "AbiQCgu0Hj";
+  private String clientId = "CeHWwE80Hj";
 
   /**
    * 
@@ -121,7 +121,7 @@ public class ReferralClientDeliveredServiceDaoIT {
 
     ReferralClientDeliveredServiceEntity deleted =
         referralClientDeliveredServiceDao.delete(referralClientDeliveredServiceEmbeddable);
-    assertThat(deleted, is(nullValue()));
+    assertThat(deleted.getReferralClientDeliveredServiceEmbeddable().getClientId(), is(clientId));
   }
 
   @Test
@@ -149,7 +149,7 @@ public class ReferralClientDeliveredServiceDaoIT {
   public void testUpdateEntityNotFoundException() throws Exception {
     thrown.expect(EntityNotFoundException.class);
     ReferralClientDeliveredServiceEntity referralClientDeliveredService =
-        new ReferralClientDeliveredServiceEntity(deliveredServiceId, referralId, clientId, "13");
+        new ReferralClientDeliveredServiceEntity("hjadvbcH", "Gyhaytg5g", clientId, "13");
 
     referralClientDeliveredServiceDao.update(referralClientDeliveredService);
 

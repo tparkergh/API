@@ -1,26 +1,26 @@
 package gov.ca.cwds.data.persistence.cms;
 
-import java.sql.Time;
 import java.util.Date;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.PersistenceException;
 import javax.persistence.Table;
 import javax.validation.constraints.Size;
 
-import org.apache.commons.lang3.builder.EqualsBuilder;
-import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.hibernate.annotations.Type;
 import org.hibernate.validator.constraints.NotEmpty;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
+import gov.ca.cwds.rest.api.ApiException;
+import gov.ca.cwds.rest.api.domain.DomainChef;
 import io.dropwizard.validation.OneOf;
 
 /**
- * {@link CmsPersistentObject} class representing a External Interface Table
+ * {@link CmsPersistentObject} class representing a Delivered Service Entity
  * 
  * @author CWDS API Team
  */
@@ -29,7 +29,7 @@ import io.dropwizard.validation.OneOf;
 @Table(name = "DL_SVC_T")
 @JsonPropertyOrder(alphabetic = true)
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class DeliveredService extends CmsPersistentObject {
+public class DeliveredServiceEntity extends CmsPersistentObject {
 
   @Type(type = "short")
   @Column(name = "CFTLAGYC")
@@ -67,11 +67,13 @@ public class DeliveredService extends CmsPersistentObject {
   @Column(name = "DTL2_TXT")
   private String detailTextContinuation;
 
+  @Type(type = "date")
   @Column(name = "END_DT")
   private Date endDate;
 
+  @Type(type = "time")
   @Column(name = "END_TM")
-  private Time endTime;
+  private Date endTime;
 
   @Column(name = "FKDL_SVC_T")
   private String primaryDeliveryServiceId;
@@ -99,7 +101,6 @@ public class DeliveredService extends CmsPersistentObject {
 
   @NotEmpty
   @Size(min = 1, max = 1)
-  @OneOf(value = {"A", "C", "S"}, ignoreCase = true, ignoreWhitespace = true)
   @Column(name = "STATUS_CD")
   private String statusCode;
 
@@ -107,24 +108,23 @@ public class DeliveredService extends CmsPersistentObject {
   private String supervisionCode;
 
   @Column(name = "SVC_CNTC")
-  private String serviceContactType;
+  private Short serviceContactType;
 
   @Column(name = "WRAPSVCIND")
   private String wraparoundServiceIndicator;
-
 
   /**
    * Default constructor
    * 
    * Required for Hibernate
    */
-  public DeliveredService() {
+  public DeliveredServiceEntity() {
     super();
   }
 
-
-
   /**
+   * Constructor
+   * 
    * @param cftLeadAgencyType the CFT lead agency type
    * @param coreServiceIndicator the core service indicator
    * @param communicationMethodType the communication method type
@@ -148,18 +148,13 @@ public class DeliveredService extends CmsPersistentObject {
    * @param serviceContactType the service contact type
    * @param wraparoundServiceIndicator the wraparound Service Indicator
    */
-  public DeliveredService(Short cftLeadAgencyType, String coreServiceIndicator,
-      Short communicationMethodType, Short contactLocationType,
-      @OneOf(value = {"C", "N", "V"}, ignoreCase = true,
-          ignoreWhitespace = true) String contactVisitCode,
-      String countySpecificCode, String detailText,
-      @OneOf(value = {"N", "U", "Y"}, ignoreCase = true,
-          ignoreWhitespace = true) String hardCopyDocumentOnFileCode,
-      String detailTextContinuation, Date endDate, Time endTime, String primaryDeliveryServiceId,
+  public DeliveredServiceEntity(Short cftLeadAgencyType, String coreServiceIndicator,
+      Short communicationMethodType, Short contactLocationType, String contactVisitCode,
+      String countySpecificCode, String detailText, String hardCopyDocumentOnFileCode,
+      String detailTextContinuation, Date endDate, Date endTime, String primaryDeliveryServiceId,
       String id, String otherParticipantsDesc, String providedByCode, String providedById,
-      Date startDate, Date startTime,
-      @OneOf(value = {"A", "C", "S"}, ignoreCase = true, ignoreWhitespace = true) String statusCode,
-      String supervisionCode, String serviceContactType, String wraparoundServiceIndicator) {
+      Date startDate, Date startTime, String statusCode, String supervisionCode,
+      Short serviceContactType, String wraparoundServiceIndicator) {
     super();
     this.cftLeadAgencyType = cftLeadAgencyType;
     this.coreServiceIndicator = coreServiceIndicator;
@@ -186,17 +181,62 @@ public class DeliveredService extends CmsPersistentObject {
   }
 
   /**
+   * Constructor using domain
+   * 
+   * @param id The id
+   * @param deliveredServiceEntity The domain object to construct this object from
+   * @param lastUpdatedId The id of the last person to update this object
+   */
+  public DeliveredServiceEntity(String id,
+      gov.ca.cwds.rest.api.domain.cms.DeliveredService deliveredServiceEntity,
+      String lastUpdatedId) {
+    super(lastUpdatedId);
+    try {
+      this.cftLeadAgencyType = deliveredServiceEntity.getCftLeadAgencyType();
+      this.coreServiceIndicator =
+          DomainChef.cookBoolean(deliveredServiceEntity.getCoreServiceIndicator());
+      this.communicationMethodType =
+          deliveredServiceEntity.getCommunicationMethodType().shortValue();
+      this.contactLocationType = deliveredServiceEntity.getContactLocationType().shortValue();
+      this.contactVisitCode = deliveredServiceEntity.getContactVisitCode();
+      this.countySpecificCode = deliveredServiceEntity.getCountySpecificCode();
+      this.detailText = deliveredServiceEntity.getDetailText();
+      this.hardCopyDocumentOnFileCode = deliveredServiceEntity.getHardCopyDocumentOnFileCode();
+      this.detailTextContinuation = deliveredServiceEntity.getDetailTextContinuation();
+      this.endDate = DomainChef.uncookDateString(deliveredServiceEntity.getEndDate());
+      this.endTime = DomainChef.uncookTimeString(deliveredServiceEntity.getEndTime());
+      this.primaryDeliveryServiceId = deliveredServiceEntity.getPrimaryDeliveredServiceId();
+      this.id = id;
+      this.otherParticipantsDesc = deliveredServiceEntity.getOtherParticipantsDesc();
+      this.providedByCode = deliveredServiceEntity.getProvidedByCode();
+      this.providedById = deliveredServiceEntity.getProvidedById();
+      this.startDate = DomainChef.uncookDateString(deliveredServiceEntity.getStartDate());
+      this.startTime = DomainChef.uncookTimeString(deliveredServiceEntity.getStartTime());
+      this.statusCode = deliveredServiceEntity.getStatusCode();
+      this.supervisionCode = deliveredServiceEntity.getSupervisionCode();
+      this.serviceContactType = deliveredServiceEntity.getServiceContactType().shortValue();
+      this.wraparoundServiceIndicator =
+          DomainChef.cookBoolean(deliveredServiceEntity.getWrapAroundIndicator());
+    } catch (ApiException e) {
+      throw new PersistenceException(e);
+    }
+  }
+
+  /**
+   * {@inheritDoc}
+   * 
+   * @see gov.ca.cwds.data.persistence.PersistentObject#getPrimaryKey()
+   */
+  @Override
+  public String getPrimaryKey() {
+    return getId();
+  }
+
+  /**
    * @return the cftLeadAgencyType
    */
   public Short getCftLeadAgencyType() {
     return cftLeadAgencyType;
-  }
-
-  /**
-   * @param cftLeadAgencyType the cftLeadAgencyType to set
-   */
-  public void setCftLeadAgencyType(Short cftLeadAgencyType) {
-    this.cftLeadAgencyType = cftLeadAgencyType;
   }
 
   /**
@@ -207,24 +247,10 @@ public class DeliveredService extends CmsPersistentObject {
   }
 
   /**
-   * @param coreServiceIndicator the coreServiceIndicator to set
-   */
-  public void setCoreServiceIndicator(String coreServiceIndicator) {
-    this.coreServiceIndicator = coreServiceIndicator;
-  }
-
-  /**
    * @return the communicationMethodType
    */
   public Short getCommunicationMethodType() {
     return communicationMethodType;
-  }
-
-  /**
-   * @param communicationMethodType the communicationMethodType to set
-   */
-  public void setCommunicationMethodType(Short communicationMethodType) {
-    this.communicationMethodType = communicationMethodType;
   }
 
   /**
@@ -234,34 +260,12 @@ public class DeliveredService extends CmsPersistentObject {
     return contactLocationType;
   }
 
-
-
-  /**
-   * @param contactLocationType the contactLocationType to set
-   */
-  public void setContactLocationType(Short contactLocationType) {
-    this.contactLocationType = contactLocationType;
-  }
-
-
-
   /**
    * @return the contactVisitCode
    */
   public String getContactVisitCode() {
     return contactVisitCode;
   }
-
-
-
-  /**
-   * @param contactVisitCode the contactVisitCode to set
-   */
-  public void setContactVisitCode(String contactVisitCode) {
-    this.contactVisitCode = contactVisitCode;
-  }
-
-
 
   /**
    * @return the countySpecificCode
@@ -270,34 +274,12 @@ public class DeliveredService extends CmsPersistentObject {
     return countySpecificCode;
   }
 
-
-
-  /**
-   * @param countySpecificCode the countySpecificCode to set
-   */
-  public void setCountySpecificCode(String countySpecificCode) {
-    this.countySpecificCode = countySpecificCode;
-  }
-
-
-
   /**
    * @return the detailText
    */
   public String getDetailText() {
     return detailText;
   }
-
-
-
-  /**
-   * @param detailText the detailText to set
-   */
-  public void setDetailText(String detailText) {
-    this.detailText = detailText;
-  }
-
-
 
   /**
    * @return the hardCopyDocumentOnFileCode
@@ -306,34 +288,12 @@ public class DeliveredService extends CmsPersistentObject {
     return hardCopyDocumentOnFileCode;
   }
 
-
-
-  /**
-   * @param hardCopyDocumentOnFileCode the hardCopyDocumentOnFileCode to set
-   */
-  public void setHardCopyDocumentOnFileCode(String hardCopyDocumentOnFileCode) {
-    this.hardCopyDocumentOnFileCode = hardCopyDocumentOnFileCode;
-  }
-
-
-
   /**
    * @return the detailTextContinuation
    */
   public String getDetailTextContinuation() {
     return detailTextContinuation;
   }
-
-
-
-  /**
-   * @param detailTextContinuation the detailTextContinuation to set
-   */
-  public void setDetailTextContinuation(String detailTextContinuation) {
-    this.detailTextContinuation = detailTextContinuation;
-  }
-
-
 
   /**
    * @return the endDate
@@ -342,34 +302,12 @@ public class DeliveredService extends CmsPersistentObject {
     return endDate;
   }
 
-
-
-  /**
-   * @param endDate the endDate to set
-   */
-  public void setEndDate(Date endDate) {
-    this.endDate = endDate;
-  }
-
-
-
   /**
    * @return the endTime
    */
-  public Time getEndTime() {
+  public Date getEndTime() {
     return endTime;
   }
-
-
-
-  /**
-   * @param endTime the endTime to set
-   */
-  public void setEndTime(Time endTime) {
-    this.endTime = endTime;
-  }
-
-
 
   /**
    * @return the primaryDeliveryServiceId
@@ -378,34 +316,12 @@ public class DeliveredService extends CmsPersistentObject {
     return primaryDeliveryServiceId;
   }
 
-
-
   /**
-   * @param primaryDeliveryServiceId the primaryDeliveryServiceId to set
-   */
-  public void setPrimaryDeliveryServiceId(String primaryDeliveryServiceId) {
-    this.primaryDeliveryServiceId = primaryDeliveryServiceId;
-  }
-
-
-
-  /**
-   * @return the id
+   * @return the primary key
    */
   public String getId() {
     return id;
   }
-
-
-
-  /**
-   * @param id the id to set
-   */
-  public void setId(String id) {
-    this.id = id;
-  }
-
-
 
   /**
    * @return the otherParticipantsDesc
@@ -414,34 +330,12 @@ public class DeliveredService extends CmsPersistentObject {
     return otherParticipantsDesc;
   }
 
-
-
-  /**
-   * @param otherParticipantsDesc the otherParticipantsDesc to set
-   */
-  public void setOtherParticipantsDesc(String otherParticipantsDesc) {
-    this.otherParticipantsDesc = otherParticipantsDesc;
-  }
-
-
-
   /**
    * @return the providedByCode
    */
   public String getProvidedByCode() {
     return providedByCode;
   }
-
-
-
-  /**
-   * @param providedByCode the providedByCode to set
-   */
-  public void setProvidedByCode(String providedByCode) {
-    this.providedByCode = providedByCode;
-  }
-
-
 
   /**
    * @return the providedById
@@ -450,34 +344,12 @@ public class DeliveredService extends CmsPersistentObject {
     return providedById;
   }
 
-
-
-  /**
-   * @param providedById the providedById to set
-   */
-  public void setProvidedById(String providedById) {
-    this.providedById = providedById;
-  }
-
-
-
   /**
    * @return the startDate
    */
   public Date getStartDate() {
     return startDate;
   }
-
-
-
-  /**
-   * @param startDate the startDate to set
-   */
-  public void setStartDate(Date startDate) {
-    this.startDate = startDate;
-  }
-
-
 
   /**
    * @return the startTime
@@ -486,34 +358,12 @@ public class DeliveredService extends CmsPersistentObject {
     return startTime;
   }
 
-
-
-  /**
-   * @param startTime the startTime to set
-   */
-  public void setStartTime(Date startTime) {
-    this.startTime = startTime;
-  }
-
-
-
   /**
    * @return the statusCode
    */
   public String getStatusCode() {
     return statusCode;
   }
-
-
-
-  /**
-   * @param statusCode the statusCode to set
-   */
-  public void setStatusCode(String statusCode) {
-    this.statusCode = statusCode;
-  }
-
-
 
   /**
    * @return the supervisionCode
@@ -522,76 +372,18 @@ public class DeliveredService extends CmsPersistentObject {
     return supervisionCode;
   }
 
-
-
-  /**
-   * @param supervisionCode the supervisionCode to set
-   */
-  public void setSupervisionCode(String supervisionCode) {
-    this.supervisionCode = supervisionCode;
-  }
-
-
-
   /**
    * @return the serviceContactType
    */
-  public String getServiceContactType() {
+  public Short getServiceContactType() {
     return serviceContactType;
   }
-
-
-
-  /**
-   * @param serviceContactType the serviceContactType to set
-   */
-  public void setServiceContactType(String serviceContactType) {
-    this.serviceContactType = serviceContactType;
-  }
-
-
 
   /**
    * @return the wraparoundServiceIndicator
    */
   public String getWraparoundServiceIndicator() {
     return wraparoundServiceIndicator;
-  }
-
-
-
-  /**
-   * @param wraparoundServiceIndicator the wraparoundServiceIndicator to set
-   */
-  public void setWraparoundServiceIndicator(String wraparoundServiceIndicator) {
-    this.wraparoundServiceIndicator = wraparoundServiceIndicator;
-  }
-
-
-
-  /**
-   * {@inheritDoc}
-   *
-   * @see java.lang.Object#hashCode()
-   */
-  @Override
-  public final int hashCode() {
-    return HashCodeBuilder.reflectionHashCode(this, false);
-  }
-
-  /**
-   * {@inheritDoc}
-   *
-   * @see java.lang.Object#equals(java.lang.Object)
-   */
-  @Override
-  public final boolean equals(Object obj) {
-    return EqualsBuilder.reflectionEquals(this, obj, false);
-  }
-
-  @Override
-  public String getPrimaryKey() {
-    return getId();
   }
 
 }

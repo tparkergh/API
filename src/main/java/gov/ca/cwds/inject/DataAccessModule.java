@@ -87,7 +87,7 @@ import gov.ca.cwds.data.persistence.cms.CountyOwnership;
 import gov.ca.cwds.data.persistence.cms.CountyTrigger;
 import gov.ca.cwds.data.persistence.cms.CountyTriggerEmbeddable;
 import gov.ca.cwds.data.persistence.cms.CrossReport;
-import gov.ca.cwds.data.persistence.cms.DeliveredService;
+import gov.ca.cwds.data.persistence.cms.DeliveredServiceEntity;
 import gov.ca.cwds.data.persistence.cms.DrmsDocument;
 import gov.ca.cwds.data.persistence.cms.EducationProviderContact;
 import gov.ca.cwds.data.persistence.cms.ExternalInterface;
@@ -167,7 +167,7 @@ public class DataAccessModule extends AbstractModule {
           SystemCode.class, SystemMeta.class, DrmsDocument.class, Assignment.class,
           BaseAssignment.class, ReferralAssignment.class, CaseAssignment.class, CmsCase.class,
           Tickle.class, ClientRelationship.class, ClientCollateral.class, AddressUc.class,
-          ExternalInterface.class, DeliveredService.class, ContactPartyDeliveredServiceEntity.class,
+          ExternalInterface.class, DeliveredServiceEntity.class, ContactPartyDeliveredServiceEntity.class,
           ReferralClientDeliveredServiceEntity.class, IndividualDeliveredServiceEntity.class),
 
           new ApiSessionFactoryFactory()) {
