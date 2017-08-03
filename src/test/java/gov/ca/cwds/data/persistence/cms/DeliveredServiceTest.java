@@ -20,24 +20,21 @@ import nl.jqno.equalsverifier.Warning;
 
 /**
  * @author CWDS API Team
- *
  */
 public class DeliveredServiceTest {
-
 
   private static final ObjectMapper MAPPER = SystemCodeTestHarness.MAPPER;
 
   /**
    * Constructor test
+   * 
+   * @throws Exception on generic exception
    */
   @Test
   public void testEmptyConstructor() throws Exception {
     assertThat(DeliveredService.class.newInstance(), is(notNullValue()));
   }
 
-  /**
-   * @throws Exception
-   */
   @Test
   public void testPersistentConstructor() throws Exception {
     DeliveredService delsv = validDeliveredService();
@@ -84,10 +81,6 @@ public class DeliveredServiceTest {
         is(equalTo(delsv.getWraparoundServiceIndicator())));
   }
 
-
-  /**
-   * @throws Exception
-   */
   @Test
   @Ignore
   public void testEqualsHashCodeWorks() {
