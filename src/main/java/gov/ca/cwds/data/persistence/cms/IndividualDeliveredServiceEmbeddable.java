@@ -52,9 +52,9 @@ public class IndividualDeliveredServiceEmbeddable implements Serializable {
   }
 
   /**
-   * @param deliveredServiceId
-   * @param deliveredToIndividualCode
-   * @param deliveredToIndividualId
+   * @param deliveredServiceId The deliveredServiceId
+   * @param deliveredToIndividualCode The deliveredToIndividualCode
+   * @param deliveredToIndividualId The deliveredToIndividualId
    */
   public IndividualDeliveredServiceEmbeddable(String deliveredServiceId,
       String deliveredToIndividualCode, String deliveredToIndividualId) {

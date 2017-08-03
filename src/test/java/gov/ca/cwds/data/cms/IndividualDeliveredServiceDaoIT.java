@@ -21,8 +21,8 @@ import org.junit.BeforeClass;
 import org.junit.Rule;
 import org.junit.Test;
 
-import gov.ca.cwds.data.persistence.cms.IndividualDeliveredServiceEntity;
 import gov.ca.cwds.data.persistence.cms.IndividualDeliveredServiceEmbeddable;
+import gov.ca.cwds.data.persistence.cms.IndividualDeliveredServiceEntity;
 
 /**
  * @author CWDS API Team
@@ -38,9 +38,9 @@ public class IndividualDeliveredServiceDaoIT {
   /*
    * deliveredServiceId matches src/main/resources/db.cms/ci-seeds.sql
    */
-  private String deliveredServiceId = "ABC1234567";
+  private String deliveredServiceId = "Aabg4cV0AB";
   private String deliveredToIndividualCode = "C";
-  private String deliveredToIndividualId = "AVC1098765";
+  private String deliveredToIndividualId = "A0YcYQV0AB";
 
   /**
    * 
@@ -101,8 +101,8 @@ public class IndividualDeliveredServiceDaoIT {
   @Test
   public void testCreate() throws Exception {
     IndividualDeliveredServiceEntity individualDeliveredService =
-        new IndividualDeliveredServiceEntity(deliveredServiceId, deliveredToIndividualCode,
-            deliveredToIndividualId, "99", new Date(), (short) 420, new Date());
+        new IndividualDeliveredServiceEntity("ABC1234567", deliveredToIndividualCode, "ABC123458",
+            "99", new Date(), (short) 420, new Date());
 
     IndividualDeliveredServiceEntity created =
         individualDeliveredServiceDao.create(individualDeliveredService);
@@ -127,7 +127,8 @@ public class IndividualDeliveredServiceDaoIT {
 
     IndividualDeliveredServiceEntity deleted =
         individualDeliveredServiceDao.delete(individualDeliveredServiceEmbeddable);
-    assertThat(deleted, is(nullValue()));
+    assertThat(deleted.getIndividualDeliveredServiceEmbeddable().getDeliveredServiceId(),
+        is(deliveredServiceId));
   }
 
   @Test
@@ -156,8 +157,8 @@ public class IndividualDeliveredServiceDaoIT {
   public void testUpdateEntityNotFoundException() throws Exception {
     thrown.expect(EntityNotFoundException.class);
     IndividualDeliveredServiceEntity individualDeliveredService =
-        new IndividualDeliveredServiceEntity(deliveredServiceId, deliveredToIndividualCode,
-            deliveredToIndividualId, "00", new Date(), (short) 420, new Date());
+        new IndividualDeliveredServiceEntity("CVJSVCjnj", deliveredToIndividualCode, "sbdvh7chhv",
+            "00", new Date(), (short) 420, new Date());
 
     individualDeliveredServiceDao.update(individualDeliveredService);
 
