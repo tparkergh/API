@@ -55,6 +55,7 @@ public class RequestResponseLoggingFilter implements Filter {
    * Constructor
    * 
    * @param auditLogger The audit logger
+   * @param loggingContext API logging context
    */
   @Inject
   public RequestResponseLoggingFilter(AuditLogger auditLogger, LoggingContext loggingContext) {

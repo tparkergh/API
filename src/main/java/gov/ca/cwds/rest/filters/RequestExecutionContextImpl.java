@@ -23,6 +23,8 @@ import gov.ca.cwds.auth.realms.PerryUserIdentity;
  */
 class RequestExecutionContextImpl implements RequestExecutionContext {
 
+  private static final String DEFAULT_USER_ID = "0X5";
+
   /**
    * Context parameters
    */
@@ -36,6 +38,7 @@ class RequestExecutionContextImpl implements RequestExecutionContext {
   private RequestExecutionContextImpl(PerryUserIdentity userIdentity) {
     put(Parameter.REQUEST_START_TIME, new Date());
     put(Parameter.USER_IDENTITY, userIdentity);
+    put(Parameter.SEQUENCE_EXTERNAL_TABLE, new Integer(0));
   }
 
   /**
