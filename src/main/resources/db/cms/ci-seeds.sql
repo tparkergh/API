@@ -177,3 +177,16 @@ VALUES ('Aabg4cV0AB',	 0,	 0,	 'N',	 NULL,	 '1999-08-02',	 NULL,	 'N',	 'CHSkjUu
 ('AaqTgYd0Eg',	 408,	 417,	 'C',	 NULL,	 '1999-07-05',	 NULL,	 'U',	 '0Eg       ',	 'S',	 435,	 '1999-07-05',	 NULL,	 'C',	 ' ',	 '0Eg',	 '1999-07-20 13:47:02.280941',	 NULL,	 '                                                                                                    ',	 '13',	 NULL,	 'N',	 NULL,	 'N'),
 ('AaxsX7i0D3',	 5378,	 414,	 'C',	 NULL,	 '1998-12-30',	 NULL,	 'U',	 '0D3       ',	 'S',	 434,	 '1998-12-30',	 NULL,	 'A',	 ' ',	 '0D3',	 '1998-12-30 15:18:45.501647',	 NULL,	 '                                                                                                    ',	 '13',	 NULL,	 'N',	 NULL,	 'N'),
 ('AbeS3Bi0Bi',	 408,	 417,	 'C',	 NULL,	 '1998-08-12',	 NULL,	 'U',	 '0Bi       ',	 'S',	 435,	 '1998-08-12',	 NULL,	 'C',	 ' ',	 '0Bi',	 '1998-08-12 15:33:57.589815',	 NULL,	 '                                                                                                    ',	 '43',	 NULL,	 'N',	 NULL,	 'N');
+
+truncate table cwsint.CPTY_SVT immediate;
+INSERT INTO CWSINT.CPTY_SVT(THIRD_ID, CNT_PRTC, LST_UPD_ID, LST_UPD_TS, FKDL_SVC_T, CNTY_SPFCD) 
+VALUES ('EvpOcb50Eg', 425, '0Eg', '1999-07-20 13:47:02.280941', 'AaqTgYd0Eg', '13');
+
+truncate table cwsint.IDV_SVCT immediate;
+INSERT INTO CWSINT.IDV_SVCT(DEL_IDV_CD, DEL_IDV_ID, LST_UPD_ID, LST_UPD_TS, FKDL_SVC_T, CNTY_SPFCD, SVC_CNTC, START_DT, END_DT) 
+VALUES ('C', 'A0YcYQV0AB', '0AB', '1999-11-04 10:40:10.367428', 'Aabg4cV0AB', '37', 3239, '1999-08-02', '1999-08-02');
+
+truncate table cwsint.RFDLSVCT immediate;
+INSERT INTO CWSINT.RFDLSVCT(LST_UPD_ID, LST_UPD_TS, FKREFR_CLT, FKDL_SVC_T, FKREFR_CL0, CNTY_SPFCD) 
+VALUES ('0Hj', '2000-01-31 14:44:57.709335', 'CeHWwE80Hj', 'DrbC4No0Hj', 'AbiQCgu0Hj', '51');
+
