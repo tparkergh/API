@@ -2,9 +2,11 @@ package gov.ca.cwds.rest.api.domain;
 
 import static gov.ca.cwds.data.persistence.cms.CmsPersistentObject.CMS_ID_LEN;
 
+import gov.ca.cwds.rest.validation.ValidLogicalId;
 import io.dropwizard.validation.OneOf;
 import java.util.Set;
 
+import javax.persistence.criteria.CriteriaBuilder.In;
 import javax.validation.Valid;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
@@ -66,7 +68,7 @@ public class ScreeningToReferral extends ReportingDomain implements Request {
   @NotEmpty
   @ApiModelProperty(required = true, readOnly = false, value = "County where incident occurred",
       example = "Sacramento")
-  @Size(max = 50)
+  @ValidLogicalId(required = true, category = SystemCodeCategoryId.COUNTY_CODE)
   private String incidentCounty;
 
   @Date

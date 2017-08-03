@@ -62,7 +62,7 @@ public final class SystemCodeCategoryId {
   /**
    * County Code e.g) Sonoma, Sacramento, Marin
    */
-  public static final String COUNTY_CODE = "SCNT_TPC";
+  public static final String COUNTY_CODE = "GVR_ENTC";
 
   /**
    * Client collateral relationship, e.g) Attorney, Clergy, Friend
