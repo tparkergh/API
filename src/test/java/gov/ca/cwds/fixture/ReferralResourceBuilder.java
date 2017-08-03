@@ -43,7 +43,7 @@ public class ReferralResourceBuilder {
   Short referredToResourceType = 0;
   String responseDeterminationDate = "";
   String responseDeterminationTime = "";
-  String responseRationaleText = "";
+  String responseRationaleText = "1234567ABC";
   String screenerNoteText = "";
   String specificsIncludedCode = "N";
   String sufficientInformationCode = "N";

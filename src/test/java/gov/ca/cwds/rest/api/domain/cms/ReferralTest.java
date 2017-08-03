@@ -95,7 +95,7 @@ public class ReferralTest {
   private Short referredToResourceType = 5;
   private String responseDeterminationDate = "1985-09-04";
   private String responseDeterminationTime = "16:41:49";
-  private String responseRationaleText = "m";
+  private String responseRationaleText = "1234567ABC";
   private String screenerNoteText = "n";
   private String specificsIncludedCode = "o";
   private String sufficientInformationCode = "p";
@@ -114,7 +114,7 @@ public class ReferralTest {
   private Short limitedAccessGovtAgencyType = 6;
   private String limitedAccessDate = "2001-01-01";
   private String limitedAccessDesc = "x";
-  private String originalClosureDate = "1946-02-09";
+  private String originalClosureDate = "2017-02-09";
 
   @Before
   public void setup() {
@@ -254,7 +254,8 @@ public class ReferralTest {
     Referral referral = Referral.createWithDefaults(anonReporter, communicationsMethodCode,
         drmsAllegationDescriptionDoc, drmsErReferralDoc, drmsInvestigationDoc, referalName,
         dateStarted, timeStarted, referralResponseTypeCode, allegesAbuseOccurredAtAddressId,
-        firstResponseDeterminedByStaffPersonId, longTextId, countyCode, approvalCode, staffId);
+        firstResponseDeterminedByStaffPersonId, longTextId, countyCode, approvalCode, staffId,
+        longTextId);
     assertEquals("Expected anonReporter field to have presetValues", anonReporter,
         referral.getAnonymousReporterIndicator());
     assertEquals("Expected communicationsMethodCode field to have presetValues",
@@ -280,6 +281,8 @@ public class ReferralTest {
         referral.getFirstResponseDeterminedByStaffPersonId());
     assertEquals("Expected longTextId field to have presetValues", longTextId,
         referral.getScreenerNoteText());
+    assertEquals("Expected longTextId field to have presetValues", longTextId,
+        referral.getResponseRationaleText());
     assertEquals("Expected countyCode field to have presetValues", countyCode,
         referral.getCountySpecificCode());
     assertEquals("Expected approvalCode field to have presetValues", approvalCode,
@@ -323,7 +326,7 @@ public class ReferralTest {
     Short referredToResourceType = 0;
     String responseDeterminationDate = "";
     String responseDeterminationTime = "";
-    String responseRationaleText = "";
+    String responseRationaleText = "1234567ABC";
     String specificsIncludedCode = "N";
     String sufficientInformationCode = "N";
     String unfoundedSeriesCode = "N";
@@ -348,7 +351,8 @@ public class ReferralTest {
     Referral referral = Referral.createWithDefaults(anonReporter, communicationsMethodCode,
         drmsAllegationDescriptionDoc, drmsErReferralDoc, drmsInvestigationDoc, referalName,
         dateStarted, timeStarted, referralResponseTypeCode, allegesAbuseOccurredAtAddressId,
-        firstResponseDeterminedByStaffPersonId, longTextId, countyCode, approvalCode, staffId);
+        firstResponseDeterminedByStaffPersonId, longTextId, countyCode, approvalCode, staffId,
+        responseRationaleText);
     assertEquals("Expected additionalInfoIncludedCode field to have presetValues",
         additionalInfoIncludedCode, referral.getAdditionalInfoIncludedCode());
     assertEquals("Expected applicationForPetitionIndicator field to have presetValues",
