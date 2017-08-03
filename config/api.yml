@@ -117,4 +117,5 @@ logging:
       threshold: ${LOGLEVEL:-WARN}
       timeZone: UTC
       target: stdout
-      logFormat: '%X{remoteAddress} [%date{ISO8601}] %level "%thread" "%X{uniqueId}" %logger: "%message%n"' 
+      logFormat: '[%X{REMOTE_ADDRESS}] [%date{ISO8601}] [%level] [%thread] [%X{UNIQUE_ID}] [%logger] [%X{USER_ID}] [%X{REQUEST_START_TIME}]: [%message]%n'
+ 

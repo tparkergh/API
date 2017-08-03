@@ -1,12 +1,20 @@
 package gov.ca.cwds.rest;
 
+import java.util.EnumSet;
+
+import javax.servlet.DispatcherType;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.google.inject.Injector;
 import com.google.inject.Module;
 
 import gov.ca.cwds.inject.ApplicationModule;
+import gov.ca.cwds.rest.filters.RequestExecutionContextFilter;
+import gov.ca.cwds.rest.filters.RequestResponseLoggingFilter;
 import io.dropwizard.setup.Bootstrap;
+import io.dropwizard.setup.Environment;
 
 /**
  * Core execution class of CWDS REST API server application.
@@ -47,4 +55,18 @@ public class ApiApplication extends BaseApiApplication<ApiConfiguration> {
     return new ApplicationModule(bootstrap);
   }
 
+  @Override
+  public void runInternal(final ApiConfiguration configuration, final Environment environment) {
+    Injector injector = guiceBundle.getInjector();
+
+    environment.servlets()
+        .addFilter("RequestExecutionContextManagingFilter",
+            injector.getInstance(RequestExecutionContextFilter.class))
+        .addMappingForUrlPatterns(EnumSet.of(DispatcherType.REQUEST), true, "/*");
+
+    environment.servlets()
+        .addFilter("AuditAndLoggingFilter",
+            injector.getInstance(RequestResponseLoggingFilter.class))
+        .addMappingForUrlPatterns(EnumSet.of(DispatcherType.REQUEST), true, "/*");
+  }
 }

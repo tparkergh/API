@@ -12,7 +12,7 @@ import gov.ca.cwds.data.cms.ExternalInterfaceDao;
 import gov.ca.cwds.data.persistence.cms.Assignment;
 import gov.ca.cwds.data.persistence.cms.Client;
 import gov.ca.cwds.data.persistence.cms.ExternalInterface;
-import gov.ca.cwds.rest.filters.ApiRequestCommonInfo;
+import gov.ca.cwds.rest.filters.RequestExecutionContext;
 import gov.ca.cwds.rest.services.ServiceException;
 
 /**
@@ -24,7 +24,8 @@ import gov.ca.cwds.rest.services.ServiceException;
 public class ExternalInterfaceTables {
 
   private static final String INSERT_TO_EXTINF_FAILED = "Insert to extinf failed - ";
-  private static final String EXTERNAL_INTERFACE_ROW_IS_CREATED = "External Interface row is created";
+  private static final String EXTERNAL_INTERFACE_ROW_IS_CREATED =
+      "External Interface row is created";
   private static final String SOURCE_TBL_CLIENT = "CLIENT_T";
   private static final String SOURCE_TBL_ASSIGNMENT = "ASGNM_T";
   private static final String OPERATION_TYPE_DELETE = "D";
@@ -32,7 +33,8 @@ public class ExternalInterfaceTables {
   private static final Logger LOGGER = LoggerFactory.getLogger(ExternalInterfaceTables.class);
 
   private ExternalInterfaceDao externalInterfaceDao;
-  private ApiRequestCommonInfo apiRequestCommonInfo = ApiRequestCommonInfo.getRequestCommon();
+  private RequestExecutionContext requestExecutionContext = RequestExecutionContext.instance();
+  private Integer sequenceExternalTable = 0;
 
   /**
    * @param externalInterfaceDao - external interface table
@@ -42,20 +44,18 @@ public class ExternalInterfaceTables {
     this.externalInterfaceDao = externalInterfaceDao;
   }
 
-
   /**
    * @param client Client creates the external interface with the client Id
    * @param operType operation type
    */
   public void createExtInterClient(Client client, String operType) {
     ExternalInterface externalInterface = new ExternalInterface();
-    externalInterface
-        .setSequenceNumber(apiRequestCommonInfo.incrementAndGetSequenceExternalTable());
+    externalInterface.setSequenceNumber(incrementAndGetSequenceExternalTable());
     externalInterface.setSubmitlTimestamp(client.getLastUpdatedTime());
     externalInterface.setTableName(SOURCE_TBL_CLIENT);
     externalInterface.setOperationType(operType);
     externalInterface.setPrimaryKey1(client.getId());
-    externalInterface.setLogonUserId(apiRequestCommonInfo.getRacf());
+    externalInterface.setLogonUserId(requestExecutionContext.getUserId());
 
     try {
       externalInterfaceDao.create(externalInterface);
@@ -72,13 +72,12 @@ public class ExternalInterfaceTables {
    */
   public void createExtInterAssignment(Assignment assignment, String operType) {
     ExternalInterface externalInterface = new ExternalInterface();
-    externalInterface
-        .setSequenceNumber(apiRequestCommonInfo.incrementAndGetSequenceExternalTable());
+    externalInterface.setSequenceNumber(incrementAndGetSequenceExternalTable());
     externalInterface.setSubmitlTimestamp(assignment.getLastUpdatedTime());
     externalInterface.setTableName(SOURCE_TBL_ASSIGNMENT);
     externalInterface.setOperationType(operType);
     externalInterface.setPrimaryKey1(assignment.getId());
-    externalInterface.setLogonUserId(apiRequestCommonInfo.getRacf());
+    externalInterface.setLogonUserId(requestExecutionContext.getUserId());
 
     try {
       externalInterfaceDao.create(externalInterface);
@@ -95,13 +94,12 @@ public class ExternalInterfaceTables {
    */
   public void createExtInterForDelete(Serializable primaryKey, String sourceTable) {
     ExternalInterface externalInterface = new ExternalInterface();
-    externalInterface
-        .setSequenceNumber(apiRequestCommonInfo.incrementAndGetSequenceExternalTable());
-    externalInterface.setSubmitlTimestamp(apiRequestCommonInfo.getRequestBegin());
+    externalInterface.setSequenceNumber(incrementAndGetSequenceExternalTable());
+    externalInterface.setSubmitlTimestamp(requestExecutionContext.getRequestStartTime());
     externalInterface.setTableName(sourceTable);
     externalInterface.setOperationType(OPERATION_TYPE_DELETE);
     externalInterface.setPrimaryKey1((String) primaryKey);
-    externalInterface.setLogonUserId(apiRequestCommonInfo.getRacf());
+    externalInterface.setLogonUserId(requestExecutionContext.getUserId());
 
     try {
       externalInterfaceDao.create(externalInterface);
@@ -109,8 +107,10 @@ public class ExternalInterfaceTables {
     } catch (ServiceException se) {
       throw new DaoException(INSERT_TO_EXTINF_FAILED + se);
     }
-
   }
 
-
+  private Integer incrementAndGetSequenceExternalTable() {
+    sequenceExternalTable = sequenceExternalTable + 1;
+    return sequenceExternalTable;
+  }
 }

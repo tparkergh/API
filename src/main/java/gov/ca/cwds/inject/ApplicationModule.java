@@ -4,7 +4,6 @@ import com.google.inject.AbstractModule;
 
 import gov.ca.cwds.rest.ApiApplication;
 import gov.ca.cwds.rest.ApiConfiguration;
-import gov.ca.cwds.rest.WebSecurityConfiguration;
 import io.dropwizard.setup.Bootstrap;
 
 /**
@@ -38,17 +37,7 @@ public class ApplicationModule extends AbstractModule {
     install(new DataAccessModule(bootstrap));
     install(new ServicesModule());
     install(new ResourcesModule());
-    install(new FiltersModule<ApiConfiguration>());
+    install(new FiltersModule());
     install(new AuditingModule());
-  }
-
-  /**
-   * Provides WebSecurityConfiguration
-   * 
-   * @param configuration The configuration for application
-   * @return An object of WebSecurityConfiguration
-   */
-  public WebSecurityConfiguration provideWebSecurityConfiguration(ApiConfiguration configuration) {
-    return configuration.getWebSecurityConfiguration();
   }
 }
