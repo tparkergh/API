@@ -13,10 +13,8 @@ public interface RequestExecutionContext {
    * Known request execution parameters
    */
   public enum Parameter {
-    USER_IDENTITY, REQUEST_START_TIME
+    USER_IDENTITY, REQUEST_START_TIME, SEQUENCE_EXTERNAL_TABLE
   }
-
-  public static final String DEFAULT_USER_ID = "0X5";
 
   /**
    * Store request execution parameter
