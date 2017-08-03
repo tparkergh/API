@@ -32,16 +32,19 @@ import gov.ca.cwds.data.cms.ClientRelationshipDao;
 import gov.ca.cwds.data.cms.ClientUcDao;
 import gov.ca.cwds.data.cms.CmsDocReferralClientDao;
 import gov.ca.cwds.data.cms.CmsDocumentDao;
+import gov.ca.cwds.data.cms.ContactPartyDeliveredServiceDao;
 import gov.ca.cwds.data.cms.CountyOwnershipDao;
 import gov.ca.cwds.data.cms.CountyTriggerDao;
 import gov.ca.cwds.data.cms.CrossReportDao;
 import gov.ca.cwds.data.cms.DeliveredServiceDao;
 import gov.ca.cwds.data.cms.DrmsDocumentDao;
 import gov.ca.cwds.data.cms.ExternalInterfaceDao;
+import gov.ca.cwds.data.cms.IndividualDeliveredServiceDao;
 import gov.ca.cwds.data.cms.LongTextDao;
 import gov.ca.cwds.data.cms.OtherClientNameDao;
 import gov.ca.cwds.data.cms.ReferralAssignmentDao;
 import gov.ca.cwds.data.cms.ReferralClientDao;
+import gov.ca.cwds.data.cms.ReferralClientDeliveredServiceDao;
 import gov.ca.cwds.data.cms.ReferralDao;
 import gov.ca.cwds.data.cms.ReporterDao;
 import gov.ca.cwds.data.cms.StaffPersonDao;
@@ -79,14 +82,16 @@ import gov.ca.cwds.data.persistence.cms.CmsDocReferralClient;
 import gov.ca.cwds.data.persistence.cms.CmsDocument;
 import gov.ca.cwds.data.persistence.cms.CmsDocumentBlobSegment;
 import gov.ca.cwds.data.persistence.cms.CollateralIndividual;
+import gov.ca.cwds.data.persistence.cms.ContactPartyDeliveredServiceEntity;
 import gov.ca.cwds.data.persistence.cms.CountyOwnership;
 import gov.ca.cwds.data.persistence.cms.CountyTrigger;
 import gov.ca.cwds.data.persistence.cms.CountyTriggerEmbeddable;
 import gov.ca.cwds.data.persistence.cms.CrossReport;
-import gov.ca.cwds.data.persistence.cms.DeliveredService;
+import gov.ca.cwds.data.persistence.cms.DeliveredServiceEntity;
 import gov.ca.cwds.data.persistence.cms.DrmsDocument;
 import gov.ca.cwds.data.persistence.cms.EducationProviderContact;
 import gov.ca.cwds.data.persistence.cms.ExternalInterface;
+import gov.ca.cwds.data.persistence.cms.IndividualDeliveredServiceEntity;
 import gov.ca.cwds.data.persistence.cms.LongText;
 import gov.ca.cwds.data.persistence.cms.OtherAdultInPlacemtHome;
 import gov.ca.cwds.data.persistence.cms.OtherChildInPlacemtHome;
@@ -94,6 +99,7 @@ import gov.ca.cwds.data.persistence.cms.OtherClientName;
 import gov.ca.cwds.data.persistence.cms.Referral;
 import gov.ca.cwds.data.persistence.cms.ReferralAssignment;
 import gov.ca.cwds.data.persistence.cms.ReferralClient;
+import gov.ca.cwds.data.persistence.cms.ReferralClientDeliveredServiceEntity;
 import gov.ca.cwds.data.persistence.cms.Reporter;
 import gov.ca.cwds.data.persistence.cms.ServiceProvider;
 import gov.ca.cwds.data.persistence.cms.StaffPerson;
@@ -161,7 +167,8 @@ public class DataAccessModule extends AbstractModule {
           SystemCode.class, SystemMeta.class, DrmsDocument.class, Assignment.class,
           BaseAssignment.class, ReferralAssignment.class, CaseAssignment.class, CmsCase.class,
           Tickle.class, ClientRelationship.class, ClientCollateral.class, AddressUc.class,
-          ExternalInterface.class, DeliveredService.class),
+          ExternalInterface.class, DeliveredServiceEntity.class, ContactPartyDeliveredServiceEntity.class,
+          ReferralClientDeliveredServiceEntity.class, IndividualDeliveredServiceEntity.class),
 
           new ApiSessionFactoryFactory()) {
 
@@ -247,6 +254,9 @@ public class DataAccessModule extends AbstractModule {
     bind(AddressUcDao.class);
     bind(ExternalInterfaceDao.class);
     bind(DeliveredServiceDao.class);
+    bind(ContactPartyDeliveredServiceDao.class);
+    bind(ReferralClientDeliveredServiceDao.class);
+    bind(IndividualDeliveredServiceDao.class);
 
     // NS:
     bind(AddressDao.class);
