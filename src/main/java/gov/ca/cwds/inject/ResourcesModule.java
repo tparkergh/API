@@ -10,6 +10,7 @@ import gov.ca.cwds.rest.ApiConfiguration;
 import gov.ca.cwds.rest.SwaggerConfiguration;
 import gov.ca.cwds.rest.api.domain.cms.AllegationPerpetratorHistory;
 import gov.ca.cwds.rest.api.domain.cms.CmsDocument;
+import gov.ca.cwds.rest.api.domain.cms.DeliveredService;
 import gov.ca.cwds.rest.api.domain.cms.DrmsDocument;
 import gov.ca.cwds.rest.api.domain.cms.LegacyKeyRequest;
 import gov.ca.cwds.rest.api.domain.cms.LegacyKeyResponse;
@@ -42,6 +43,7 @@ import gov.ca.cwds.rest.resources.cms.CmsDocumentResource;
 import gov.ca.cwds.rest.resources.cms.CmsNSReferralResource;
 import gov.ca.cwds.rest.resources.cms.CmsReferralResource;
 import gov.ca.cwds.rest.resources.cms.CrossReportResource;
+import gov.ca.cwds.rest.resources.cms.DeliveredServiceResource;
 import gov.ca.cwds.rest.resources.cms.DrmsDocumentResource;
 import gov.ca.cwds.rest.resources.cms.LongTextResource;
 import gov.ca.cwds.rest.resources.cms.ReferralClientResource;
@@ -124,6 +126,7 @@ public class ResourcesModule extends AbstractModule {
     bind(ClientRelationshipResource.class);
     bind(ClientCollateralResource.class);
     bind(gov.ca.cwds.rest.resources.StaffPersonResource.class);
+    bind(DeliveredServiceResource.class);
   }
 
   @Provides
@@ -179,6 +182,14 @@ public class ResourcesModule extends AbstractModule {
       Injector injector) {
     return new TypedServiceBackedResourceDelegate<>(
         injector.getInstance(DrmsDocumentService.class));
+  }
+
+  @Provides
+  @DeliveredServiceBackedResource
+  public TypedResourceDelegate<String, DeliveredService> deliveredServiceBackedResource(
+      Injector injector) {
+    return new TypedServiceBackedResourceDelegate<>(
+        injector.getInstance(gov.ca.cwds.rest.services.cms.DeliveredService.class));
   }
 
   @Provides

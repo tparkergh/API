@@ -35,7 +35,7 @@ public class AddressUcDaoIT {
   /*
    * pktableId matches src/main/resources/db.cms/ci-seeds.sql
    */
-  private String id = "AbjqVmy04O";
+  private String pktableId = "AbjqVmy04O";
 
   /**
    * 
@@ -73,9 +73,8 @@ public class AddressUcDaoIT {
 
   @Test
   public void testFind() throws Exception {
-    String entityId = "AbjqVmy04O";
-    AddressUc found = addressUcDao.find(entityId);
-    assertThat(found.getPktableId(), is(equalTo(entityId)));
+    AddressUc found = addressUcDao.find(pktableId);
+    assertThat(found.getPktableId(), is(equalTo(pktableId)));
   }
 
   @Test
@@ -83,7 +82,6 @@ public class AddressUcDaoIT {
     AddressUc found = addressUcDao.find("9999999ZZZ");
     assertThat(found, is(nullValue()));
   }
-
 
   @Test
   public void testCreate() throws Exception {
@@ -101,14 +99,14 @@ public class AddressUcDaoIT {
 
   @Test
   public void testDelete() throws Exception {
-    AddressUc deleted = addressUcDao.delete(id);
-    assertThat(deleted.getPktableId(), is(id));
+    AddressUc deleted = addressUcDao.delete(pktableId);
+    assertThat(deleted.getPktableId(), is(pktableId));
   }
 
   @Test
   public void testDeleteEntityNotFoundException() throws Exception {
-    String id = "ABC1234568";
-    AddressUc deleted = addressUcDao.delete(id);
+    String pktableId = "ABC1234568";
+    AddressUc deleted = addressUcDao.delete(pktableId);
     assertThat(deleted, is(nullValue()));
 
   }

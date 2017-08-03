@@ -174,6 +174,7 @@ public class ReferralClientService implements CrudsService {
     try {
       String lastUpdatedId = staffPersonIdRetriever.getStaffPersonId();
       ReferralClient managed = new ReferralClient(referralClient, lastUpdatedId);
+      managed = referralClientDao.update(managed);
       // checking the staffPerson county code
       StaffPerson staffperson = staffpersonDao.find(managed.getLastUpdatedId());
       if (staffperson != null

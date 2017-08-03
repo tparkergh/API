@@ -75,6 +75,11 @@ public final class SystemCodeCategoryId {
   public static final String LANGUAGE_CODE = "LANG_TPC";
 
   /**
+   * Contact Location, e.g) CWS Office, Court, School
+   */
+  public static final String CONTACT_LOCATION = "CNT_LOC";
+
+  /**
    * Private constructor
    */
   private SystemCodeCategoryId() {}

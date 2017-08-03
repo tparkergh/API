@@ -158,5 +158,10 @@ public interface Api {
    */
   public static final String RESOURCE_CLIENT_COLLATERALS = "client_collaterals";
 
+  /**
+   * A {@code String} constant representing {@value #RESOURCE_DRMS_DOCUMENT} API.
+   */
+  public static final String RESOURCE_DELIVERY_SERVICE = "contacts";
+
 
 }
