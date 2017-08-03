@@ -9,6 +9,11 @@ import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import org.apache.shiro.subject.PrincipalCollection;
+import org.apache.shiro.subject.Subject;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
@@ -26,22 +31,21 @@ import gov.ca.cwds.fixture.AssignmentResourceBuilder;
 import gov.ca.cwds.fixture.ClientResourceBuilder;
 import gov.ca.cwds.rest.api.domain.cms.Assignment;
 import gov.ca.cwds.rest.api.domain.cms.Client;
-import gov.ca.cwds.rest.filters.TestApiRequestCommonInfo;
+import gov.ca.cwds.rest.filters.RequestExecutionContext;
+import gov.ca.cwds.rest.filters.TestRequestExecutionContext;
 import gov.ca.cwds.rest.services.ServiceException;
+import gov.ca.cwds.rest.services.cms.AbstractShiroTest;
 
 /**
  * @author CWDS API Team
  *
  */
-public class ExternalInterfaceTablesTest {
+public class ExternalInterfaceTablesTest extends AbstractShiroTest {
 
   private static final ObjectMapper MAPPER = SystemCodeTestHarness.MAPPER;
 
   private ExternalInterfaceDao externalInterfaceDao;
   private ExternalInterfaceTables externalInterfaceTables;
-
-  private TestApiRequestCommonInfo testApiRequestCommonInfo =
-      new TestApiRequestCommonInfo("CWDSTEST");
 
   private static ExternalInterface externalInterface;
 
@@ -51,6 +55,18 @@ public class ExternalInterfaceTablesTest {
 
   @Before
   public void setup() throws Exception {
+    Subject mockSubject = mock(Subject.class);
+    PrincipalCollection principalCollection = mock(PrincipalCollection.class);
+
+    List list = new ArrayList();
+    list.add("msg");
+
+    when(principalCollection.asList()).thenReturn(list);
+    when(mockSubject.getPrincipals()).thenReturn(principalCollection);
+    setSubject(mockSubject);
+
+    TestRequestExecutionContext testApiRequestCommonInfo = new TestRequestExecutionContext();
+
     externalInterfaceDao = mock(ExternalInterfaceDao.class);
     externalInterfaceTables = new ExternalInterfaceTables(externalInterfaceDao);
   }
@@ -112,7 +128,8 @@ public class ExternalInterfaceTablesTest {
     assertThat(externalInterface.getPrimaryKey1(), is(equalTo("ABC1234567")));
     assertThat(externalInterface.getTableName(), is(equalTo("CLIENT_T")));
     assertThat(externalInterface.getOperationType(), is(equalTo("N")));
-    assertThat(externalInterface.getLogonUserId(), is(equalTo("CWDSTEST")));
+    assertThat(externalInterface.getLogonUserId(),
+        is(equalTo(RequestExecutionContext.DEFAULT_USER_ID)));
 
   }
 
@@ -144,19 +161,22 @@ public class ExternalInterfaceTablesTest {
     assertThat(externalInterface.getPrimaryKey1(), is(equalTo("VICTIM1111")));
     assertThat(externalInterface.getTableName(), is(equalTo("CLIENT_T")));
     assertThat(externalInterface.getOperationType(), is(equalTo("N")));
-    assertThat(externalInterface.getLogonUserId(), is(equalTo("CWDSTEST")));
+    assertThat(externalInterface.getLogonUserId(),
+        is(equalTo(RequestExecutionContext.DEFAULT_USER_ID)));
     externalInterfaceTables.createExtInterClient(client2, "C");
     assertThat(externalInterface.getSequenceNumber(), is(equalTo(2)));
     assertThat(externalInterface.getPrimaryKey1(), is(equalTo("VICTIM2222")));
     assertThat(externalInterface.getTableName(), is(equalTo("CLIENT_T")));
     assertThat(externalInterface.getOperationType(), is(equalTo("C")));
-    assertThat(externalInterface.getLogonUserId(), is(equalTo("CWDSTEST")));
+    assertThat(externalInterface.getLogonUserId(),
+        is(equalTo(RequestExecutionContext.DEFAULT_USER_ID)));
     externalInterfaceTables.createExtInterClient(client3, "N");
     assertThat(externalInterface.getSequenceNumber(), is(equalTo(3)));
     assertThat(externalInterface.getPrimaryKey1(), is(equalTo("PERPET1111")));
     assertThat(externalInterface.getTableName(), is(equalTo("CLIENT_T")));
     assertThat(externalInterface.getOperationType(), is(equalTo("N")));
-    assertThat(externalInterface.getLogonUserId(), is(equalTo("CWDSTEST")));
+    assertThat(externalInterface.getLogonUserId(),
+        is(equalTo(RequestExecutionContext.DEFAULT_USER_ID)));
 
 
   }
@@ -185,7 +205,8 @@ public class ExternalInterfaceTablesTest {
     assertThat(externalInterface.getPrimaryKey1(), is(equalTo("ABC1234567")));
     assertThat(externalInterface.getTableName(), is(equalTo("ASGNM_T")));
     assertThat(externalInterface.getOperationType(), is(equalTo("N")));
-    assertThat(externalInterface.getLogonUserId(), is(equalTo("CWDSTEST")));
+    assertThat(externalInterface.getLogonUserId(),
+        is(equalTo(RequestExecutionContext.DEFAULT_USER_ID)));
 
   }
 
@@ -210,7 +231,8 @@ public class ExternalInterfaceTablesTest {
     assertThat(externalInterface.getPrimaryKey1(), is(equalTo("ABC1234567")));
     assertThat(externalInterface.getTableName(), is(equalTo("ASGNM_T")));
     assertThat(externalInterface.getOperationType(), is(equalTo("D")));
-    assertThat(externalInterface.getLogonUserId(), is(equalTo("CWDSTEST")));
+    assertThat(externalInterface.getLogonUserId(),
+        is(equalTo(RequestExecutionContext.DEFAULT_USER_ID)));
 
   }
 
@@ -235,7 +257,8 @@ public class ExternalInterfaceTablesTest {
     assertThat(externalInterface.getPrimaryKey1(), is(equalTo("ABC1234567")));
     assertThat(externalInterface.getTableName(), is(equalTo("ASGNM_T")));
     assertThat(externalInterface.getOperationType(), is(equalTo("D")));
-    assertThat(externalInterface.getLogonUserId(), is(equalTo("CWDSTEST")));
+    assertThat(externalInterface.getLogonUserId(),
+        is(equalTo(RequestExecutionContext.DEFAULT_USER_ID)));
 
     externalInterfaceTables.createExtInterForDelete("ABC2345678", "CLIENT_T");
     assertThat(externalInterface.getSequenceNumber(), is(equalTo(2)));
