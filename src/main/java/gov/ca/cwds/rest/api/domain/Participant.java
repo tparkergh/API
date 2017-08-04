@@ -77,11 +77,12 @@ public class Participant extends ReportingDomain implements Request, Response {
   @ApiModelProperty(required = false, readOnly = false, value = "name suffix", example = "Jr.")
   private String nameSuffix;
 
-  @OneOf(value = {"M", "Male", "F", "Female", "O", "Other"}, ignoreCase = true,
+  @OneOf(value = {"M", "F", "U"}, ignoreCase = true,
       ignoreWhitespace = true)
+  @NotNull
   @JsonProperty("gender")
-  @ApiModelProperty(required = false, readOnly = false, value = "Gender", example = "Male",
-      allowableValues = "M, Male, F, Female, O, Other")
+  @ApiModelProperty(required = false, readOnly = false, value = "Gender Code", example = "M",
+      allowableValues = "M, F, U")
   private String gender;
 
   @JsonProperty("ssn")

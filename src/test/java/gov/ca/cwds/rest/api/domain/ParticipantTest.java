@@ -15,6 +15,7 @@ import static org.mockito.Mockito.when;
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import javax.validation.ConstraintViolation;
@@ -64,7 +65,7 @@ public class ParticipantTest implements PersistentTestTemplate {
   private String middleName = "T.";
   private String lastName = "Smith";
   private String suffix = "";
-  private String gender = "male";
+  private String gender = "m";
   private String dateOfBirth = "2001-03-15";
   private String ssn = "123456789";
   private Set<String> roles = new HashSet<String>();
@@ -171,6 +172,28 @@ public class ParticipantTest implements PersistentTestTemplate {
     assertThat(domain.getAddresses(), is(equalTo(addresses)));
   }
 
+  @Test
+  public void shouldNotHaveValidationErrorForValidGenders(){
+    List<String> acceptableGenders = Arrays.asList("M", "F", "U");
+    acceptableGenders.forEach(gender -> {
+        Participant participant = new ParticipantResourceBuilder().setGender(gender).createParticipant();
+      String errorMessage = "Expected no validation error for gender value: " + gender;
+        assertEquals(errorMessage, 0, validator.validate(participant).size());
+      }
+    );
+  }
+
+  @Test
+  public void shouldHaveValidationErrorsForInvaldGenders(){
+    List<String> acceptableGenders = Arrays.asList("q", "1", "6", null,"Male", "Female", "O");
+    acceptableGenders.forEach(gender -> {
+          Participant participant = new ParticipantResourceBuilder().setGender(gender).createParticipant();
+          String errorMessage = "Expected a validation error for gender value: " + gender;
+          assertEquals(errorMessage, 1, validator.validate(participant).size());
+        }
+    );
+
+  }
   @Test
   public void testBlankLegacySourceTableSuccess() throws Exception {
     Participant toValidate =
@@ -308,7 +331,7 @@ public class ParticipantTest implements PersistentTestTemplate {
         fixture("fixtures/domain/participant/invalid/genderInvalid.json"), Participant.class);
     Set<ConstraintViolation<Participant>> constraintViolations = validator.validate(toValidate);
     assertEquals(1, constraintViolations.size());
-    assertEquals("must be one of [M, Male, F, Female, O, Other]",
+    assertEquals("must be one of [M, F, U]",
         constraintViolations.iterator().next().getMessage());
   }
 
