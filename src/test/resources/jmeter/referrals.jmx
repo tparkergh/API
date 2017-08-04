@@ -82,7 +82,7 @@
 	  &quot;first_name&quot;: &quot;John&quot;,&#xd;
     &quot;middle_name&quot;: &quot;T.&quot;,&#xd;
 	  &quot;last_name&quot;: &quot;Smith&quot;,&#xd;
-	  &quot;gender&quot;: &quot;male&quot;,&#xd;
+	  &quot;gender&quot;: &quot;m&quot;,&#xd;
 	  &quot;date_of_birth&quot;: &quot;2001-03-15&quot;,&#xd;
 	  &quot;ssn&quot;: &quot;123456789&quot;,&#xd;
     &quot;primary_language&quot;: 1253,&#xd;
@@ -111,7 +111,7 @@
 	  &quot;first_name&quot;: &quot;Bart&quot;,&#xd;
     &quot;middle_name&quot;: &quot;T&quot;,&#xd;
 	  &quot;last_name&quot;: &quot;Simpson&quot;,&#xd;
-	  &quot;gender&quot;: &quot;male&quot;,&#xd;
+	  &quot;gender&quot;: &quot;m&quot;,&#xd;
 	  &quot;date_of_birth&quot;: &quot;2000-03-15&quot;,&#xd;
 	  &quot;ssn&quot;: &quot;234567890&quot;,&#xd;
     &quot;primary_language&quot;: 1253,&#xd;
