@@ -1,4 +1,4 @@
-package gov.ca.cwds.data.cms;
+package gov.ca.cwds.data.dao.contact;
 
 import static org.hamcrest.Matchers.nullValue;
 import static org.hamcrest.core.Is.is;
@@ -19,8 +19,8 @@ import org.junit.BeforeClass;
 import org.junit.Rule;
 import org.junit.Test;
 
-import gov.ca.cwds.data.persistence.cms.ContactPartyDeliveredServiceEntity;
-import gov.ca.cwds.fixture.ContactPartyDeliverdServiceEntityBuilder;
+import gov.ca.cwds.data.persistence.contact.ContactPartyDeliveredServiceEntity;
+import gov.ca.cwds.fixture.contacts.ContactPartyDeliverdServiceEntityBuilder;
 
 /**
  * @author CWDS API Team
@@ -80,23 +80,23 @@ public class ContactPartyDeliveredServiceDaoIT {
 
   @Test
   public void testCreate() throws Exception {
-    ContactPartyDeliveredServiceEntity contactPartyDeliveredService =
+    ContactPartyDeliveredServiceEntity contactPartyDeliveredServiceEntity =
         new ContactPartyDeliverdServiceEntityBuilder().setThirdId("ABC12347ho")
             .buildContactPartyDeliveredService();
 
     ContactPartyDeliveredServiceEntity created =
-        contactPartyDeliveredServiceDao.create(contactPartyDeliveredService);
-    assertThat(created, is(contactPartyDeliveredService));
+        contactPartyDeliveredServiceDao.create(contactPartyDeliveredServiceEntity);
+    assertThat(created, is(contactPartyDeliveredServiceEntity));
   }
 
   @Test
   public void testCreateExistingEntityException() throws Exception {
     thrown.expect(EntityExistsException.class);
-    ContactPartyDeliveredServiceEntity contactPartyDeliveredService =
+    ContactPartyDeliveredServiceEntity contactPartyDeliveredServiceEntity =
         new ContactPartyDeliverdServiceEntityBuilder().setThirdId(thirdId)
             .buildContactPartyDeliveredService();
 
-    contactPartyDeliveredServiceDao.create(contactPartyDeliveredService);
+    contactPartyDeliveredServiceDao.create(contactPartyDeliveredServiceEntity);
   }
 
   @Test
@@ -114,22 +114,22 @@ public class ContactPartyDeliveredServiceDaoIT {
 
   @Test
   public void testUpdate() throws Exception {
-    ContactPartyDeliveredServiceEntity contactPartyDeliveredService =
+    ContactPartyDeliveredServiceEntity contactPartyDeliveredServiceEntity =
         new ContactPartyDeliverdServiceEntityBuilder().setThirdId(thirdId)
             .setCountySpecificCode("00").buildContactPartyDeliveredService();
 
     ContactPartyDeliveredServiceEntity updated =
-        contactPartyDeliveredServiceDao.update(contactPartyDeliveredService);
-    assertThat(updated, is(contactPartyDeliveredService));
+        contactPartyDeliveredServiceDao.update(contactPartyDeliveredServiceEntity);
+    assertThat(updated, is(contactPartyDeliveredServiceEntity));
   }
 
   @Test
   public void testUpdateEntityNotFoundException() throws Exception {
     thrown.expect(EntityNotFoundException.class);
-    ContactPartyDeliveredServiceEntity contactPartyDeliveredService =
+    ContactPartyDeliveredServiceEntity contactPartyDeliveredServiceEntity =
         new ContactPartyDeliverdServiceEntityBuilder().buildContactPartyDeliveredService();
 
-    contactPartyDeliveredServiceDao.update(contactPartyDeliveredService);
+    contactPartyDeliveredServiceDao.update(contactPartyDeliveredServiceEntity);
   }
 
 }

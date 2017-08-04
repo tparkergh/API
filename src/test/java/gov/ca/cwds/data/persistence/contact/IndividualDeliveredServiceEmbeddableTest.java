@@ -1,4 +1,4 @@
-package gov.ca.cwds.data.persistence.cms;
+package gov.ca.cwds.data.persistence.contact;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.equalTo;
@@ -44,14 +44,15 @@ public class IndividualDeliveredServiceEmbeddableTest {
 
     IndividualDeliveredServiceEmbeddable valid = validIndividualDeliveredServiceEmbeddable();
 
-    IndividualDeliveredServiceEmbeddable persistent =
+    IndividualDeliveredServiceEmbeddable individualDeliveredServiceEmbeddable =
         new IndividualDeliveredServiceEmbeddable(valid.getDeliveredServiceId(),
             valid.getDeliveredToIndividualCode(), valid.getDeliveredToIndividualId());
 
-    assertThat(persistent.getDeliveredServiceId(), is(equalTo(valid.getDeliveredServiceId())));
-    assertThat(persistent.getDeliveredToIndividualCode(),
+    assertThat(individualDeliveredServiceEmbeddable.getDeliveredServiceId(),
+        is(equalTo(valid.getDeliveredServiceId())));
+    assertThat(individualDeliveredServiceEmbeddable.getDeliveredToIndividualCode(),
         is(equalTo(valid.getDeliveredToIndividualCode())));
-    assertThat(persistent.getDeliveredToIndividualId(),
+    assertThat(individualDeliveredServiceEmbeddable.getDeliveredToIndividualId(),
         is(equalTo(valid.getDeliveredToIndividualId())));
   }
 

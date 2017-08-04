@@ -1,6 +1,6 @@
-package gov.ca.cwds.fixture;
+package gov.ca.cwds.fixture.contacts;
 
-import gov.ca.cwds.data.persistence.cms.ContactPartyDeliveredServiceEntity;
+import gov.ca.cwds.data.persistence.contact.ContactPartyDeliveredServiceEntity;
 
 /**
  * @author CWDS API Team
