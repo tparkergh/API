@@ -98,17 +98,15 @@ public class Participant extends ReportingDomain implements Request, Response {
   private String dateOfBirth;
 
   @JsonProperty("primary_language")
-  @NotNull
   @ApiModelProperty(required = false, readOnly = false, value = "", example = "1234",
       notes = "The code for primary Language")
-  @ValidSystemCodeId(required = true, category = SystemCodeCategoryId.LANGUAGE_CODE)
+  @ValidSystemCodeId(required = false, category = SystemCodeCategoryId.LANGUAGE_CODE, ignoreable = true, ignoredValue = 0)
   private Short primaryLanguage;
 
   @JsonProperty("secondary_language")
-  @NotNull
   @ApiModelProperty(required = false, readOnly = false, value = "", example = "1234",
       notes = "The code for secondary Language")
-  @ValidSystemCodeId(required = true, category = SystemCodeCategoryId.LANGUAGE_CODE)
+  @ValidSystemCodeId(required = false, category = SystemCodeCategoryId.LANGUAGE_CODE, ignoreable = true, ignoredValue = 0)
   private Short secondaryLanguage;
 
   //only used for reporter
