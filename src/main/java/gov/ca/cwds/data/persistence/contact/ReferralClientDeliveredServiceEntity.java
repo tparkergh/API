@@ -1,4 +1,4 @@
-package gov.ca.cwds.data.persistence.cms;
+package gov.ca.cwds.data.persistence.contact;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -7,6 +7,8 @@ import javax.persistence.Table;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
+
+import gov.ca.cwds.data.persistence.cms.CmsPersistentObject;
 
 /**
  * {@link CmsPersistentObject} Class representing an ReferralClientDeliveredService.

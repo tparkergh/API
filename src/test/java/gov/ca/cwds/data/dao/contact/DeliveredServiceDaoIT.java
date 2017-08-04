@@ -19,7 +19,6 @@ import org.junit.BeforeClass;
 import org.junit.Rule;
 import org.junit.Test;
 
-import gov.ca.cwds.data.dao.contact.DeliveredServiceDao;
 import gov.ca.cwds.data.persistence.contact.DeliveredServiceEntity;
 import gov.ca.cwds.fixture.contacts.DeliveredServiceEntityBuilder;
 
@@ -94,19 +93,19 @@ public class DeliveredServiceDaoIT {
 
   @Test
   public void testCreate() throws Exception {
-    DeliveredServiceEntity deliveredService =
+    DeliveredServiceEntity deliveredServiceEntity =
         new DeliveredServiceEntityBuilder().buildDeliveredServiceEntity();
 
-    DeliveredServiceEntity created = deliveredServiceDao.create(deliveredService);
-    assertThat(created, is(deliveredService));
+    DeliveredServiceEntity created = deliveredServiceDao.create(deliveredServiceEntity);
+    assertThat(created, is(deliveredServiceEntity));
   }
 
   @Test
   public void testCreateExistingEntityException() throws Exception {
     thrown.expect(EntityExistsException.class);
-    DeliveredServiceEntity deliveredService =
+    DeliveredServiceEntity deliveredServiceEntity =
         new DeliveredServiceEntityBuilder().setId(id).buildDeliveredServiceEntity();
-    deliveredServiceDao.create(deliveredService);
+    deliveredServiceDao.create(deliveredServiceEntity);
   }
 
   @Test
@@ -124,19 +123,19 @@ public class DeliveredServiceDaoIT {
 
   @Test
   public void testUpdate() throws Exception {
-    DeliveredServiceEntity deliveredService = new DeliveredServiceEntityBuilder().setId(id)
+    DeliveredServiceEntity deliveredServiceEntity = new DeliveredServiceEntityBuilder().setId(id)
         .setCommunicationMethodType((short) 409).buildDeliveredServiceEntity();
-    DeliveredServiceEntity updated = deliveredServiceDao.update(deliveredService);
-    assertThat(updated, is(deliveredService));
+    DeliveredServiceEntity updated = deliveredServiceDao.update(deliveredServiceEntity);
+    assertThat(updated, is(deliveredServiceEntity));
   }
 
   @Test
   public void testUpdateEntityNotFoundException() throws Exception {
     thrown.expect(EntityNotFoundException.class);
 
-    DeliveredServiceEntity deliveredService =
+    DeliveredServiceEntity deliveredServiceEntity =
         new DeliveredServiceEntityBuilder().setId("VXGcagc66").buildDeliveredServiceEntity();
-    deliveredServiceDao.update(deliveredService);
+    deliveredServiceDao.update(deliveredServiceEntity);
   }
 
 }

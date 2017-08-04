@@ -1,11 +1,11 @@
-package gov.ca.cwds.data.cms;
+package gov.ca.cwds.data.dao.contact;
 
 import org.hibernate.SessionFactory;
 
 import com.google.inject.Inject;
 
 import gov.ca.cwds.data.CrudsDaoImpl;
-import gov.ca.cwds.data.persistence.cms.ReferralClientDeliveredServiceEntity;
+import gov.ca.cwds.data.persistence.contact.ReferralClientDeliveredServiceEntity;
 import gov.ca.cwds.inject.CmsSessionFactory;
 
 /**

@@ -1,4 +1,4 @@
-package gov.ca.cwds.data.persistence.cms;
+package gov.ca.cwds.data.persistence.contact;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.equalTo;
@@ -41,14 +41,17 @@ public class IndividualDeliveredServiceTest {
 
     IndividualDeliveredServiceEntity valid = validIndividualDeliveredService();
 
-    IndividualDeliveredServiceEntity persistent = new IndividualDeliveredServiceEntity(deliveredServiceId,
-        deliveredToIndividualCode, deliveredToIndividualId, valid.getCountySpecificCode(),
-        valid.getEndDate(), valid.getServiceContactType(), valid.getStartDate());
+    IndividualDeliveredServiceEntity individualDeliveredServiceEntity =
+        new IndividualDeliveredServiceEntity(deliveredServiceId, deliveredToIndividualCode,
+            deliveredToIndividualId, valid.getCountySpecificCode(), valid.getEndDate(),
+            valid.getServiceContactType(), valid.getStartDate());
 
-    assertThat(persistent.getCountySpecificCode(), is(equalTo(valid.getCountySpecificCode())));
-    assertThat(persistent.getServiceContactType(), is(equalTo(valid.getServiceContactType())));
-    assertThat(persistent.getEndDate(), is(equalTo(valid.getEndDate())));
-    assertThat(persistent.getStartDate(), is(equalTo(valid.getStartDate())));
+    assertThat(individualDeliveredServiceEntity.getCountySpecificCode(),
+        is(equalTo(valid.getCountySpecificCode())));
+    assertThat(individualDeliveredServiceEntity.getServiceContactType(),
+        is(equalTo(valid.getServiceContactType())));
+    assertThat(individualDeliveredServiceEntity.getEndDate(), is(equalTo(valid.getEndDate())));
+    assertThat(individualDeliveredServiceEntity.getStartDate(), is(equalTo(valid.getStartDate())));
   }
 
   private IndividualDeliveredServiceEntity validIndividualDeliveredService()
