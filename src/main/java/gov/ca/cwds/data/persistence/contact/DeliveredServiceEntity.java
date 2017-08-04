@@ -184,11 +184,12 @@ public class DeliveredServiceEntity extends CmsPersistentObject {
    * @param id The id
    * @param deliveredServiceDomain The domain object to construct this object from
    * @param lastUpdatedId The id of the last person to update this object
+   * @param lastUpdatedTime The time of the object was created or updated
    */
   public DeliveredServiceEntity(String id,
       gov.ca.cwds.rest.api.contact.DeliveredServiceDomain deliveredServiceDomain,
-      String lastUpdatedId) {
-    super(lastUpdatedId);
+      String lastUpdatedId, Date lastUpdatedTime) {
+    super(lastUpdatedId, lastUpdatedTime);
     try {
       this.cftLeadAgencyType = deliveredServiceDomain.getCftLeadAgencyType();
       this.coreServiceIndicator =

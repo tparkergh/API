@@ -1,5 +1,7 @@
 package gov.ca.cwds.rest.services.contact;
 
+import java.util.Date;
+
 import javax.persistence.EntityExistsException;
 
 import org.apache.commons.lang3.NotImplementedException;
@@ -31,7 +33,7 @@ public class DeliveredService
 
   /**
    * @param deliveredServiceDao {@link Dao} handling
-   *        {@link gov.ca.cwds.data.persistence.cms.DeliveredServiceEntity} objects
+   *        {@link gov.ca.cwds.data.persistence.contact.DeliveredServiceEntity} objects
    */
   @Inject
   public DeliveredService(DeliveredServiceDao deliveredServiceDao) {
@@ -52,9 +54,11 @@ public class DeliveredService
 
     try {
       String lastUpdatedId = RequestExecutionContext.instance().getUserId();
+      Date lastUpdatedTime = RequestExecutionContext.instance().getRequestStartTime();
       gov.ca.cwds.data.persistence.contact.DeliveredServiceEntity managed =
           new gov.ca.cwds.data.persistence.contact.DeliveredServiceEntity(
-              CmsKeyIdGenerator.generate(lastUpdatedId), deliveredServiceDomain, lastUpdatedId);
+              CmsKeyIdGenerator.generate(lastUpdatedId), deliveredServiceDomain, lastUpdatedId,
+              lastUpdatedTime);
       managed = deliveredServiceDao.create(managed);
       return new gov.ca.cwds.rest.api.contact.DeliveredServiceDomain(managed);
     } catch (EntityExistsException e) {

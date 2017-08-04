@@ -5,6 +5,8 @@ import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.notNullValue;
 
+import java.util.Date;
+
 import org.junit.Test;
 
 import gov.ca.cwds.fixture.contacts.DeliveredServiceEntityBuilder;
@@ -21,6 +23,7 @@ public class DeliveredServiceEntityTest {
 
   private String id = "1234567ABC";
   private String lastUpdatedId = "0X5";
+  private Date lastUpdatedTime = new Date();
 
   /**
    * Constructor test
@@ -105,7 +108,7 @@ public class DeliveredServiceEntityTest {
         new DeliveredServiceResourceBuilder().buildDeliveredServiceResource();
 
     DeliveredServiceEntity persistent =
-        new DeliveredServiceEntity(id, deliveredServiceDomain, lastUpdatedId);
+        new DeliveredServiceEntity(id, deliveredServiceDomain, lastUpdatedId, lastUpdatedTime);
 
     assertThat(persistent.getId(), is(equalTo(id)));
     assertThat(persistent.getCftLeadAgencyType(),
