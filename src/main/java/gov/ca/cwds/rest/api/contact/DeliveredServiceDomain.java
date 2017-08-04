@@ -1,4 +1,4 @@
-package gov.ca.cwds.rest.api.domain.cms;
+package gov.ca.cwds.rest.api.contact;
 
 import static gov.ca.cwds.data.persistence.cms.CmsPersistentObject.CMS_ID_LEN;
 
@@ -28,7 +28,7 @@ import io.swagger.annotations.ApiModelProperty;
  * 
  * @author CWDS API Team
  */
-public class DeliveredService extends ReportingDomain implements Request, Response {
+public class DeliveredServiceDomain extends ReportingDomain implements Request, Response {
 
   /**
    * 
@@ -61,7 +61,7 @@ public class DeliveredService extends ReportingDomain implements Request, Respon
 
   @NotEmpty
   @Size(max = 1)
-  @OneOf(value = {"C", "N", "V"}, ignoreCase = true, ignoreWhitespace = true)
+  @OneOf(value = {"C", "N", "V"}, ignoreCase = false, ignoreWhitespace = true)
   @ApiModelProperty(required = true, readOnly = false, value = "", example = "C")
   private String contactVisitCode;
 
@@ -100,7 +100,7 @@ public class DeliveredService extends ReportingDomain implements Request, Respon
 
   @NotEmpty
   @Size(min = 1, max = 1)
-  @OneOf(value = {"N", "U", "Y"}, ignoreCase = true, ignoreWhitespace = true)
+  @OneOf(value = {"N", "U", "Y"}, ignoreCase = false, ignoreWhitespace = true)
   @ApiModelProperty(required = false, readOnly = false, value = "", example = "N")
   private String hardCopyDocumentOnFileCode;
 
@@ -110,7 +110,7 @@ public class DeliveredService extends ReportingDomain implements Request, Respon
   private String otherParticipantsDesc;
 
   @Size(min = 1, max = 1)
-  @OneOf(value = {"S", "O", "V", "X"}, ignoreCase = true, ignoreWhitespace = true)
+  @OneOf(value = {"S", "O", "V", "X"}, ignoreCase = false, ignoreWhitespace = true)
   @ApiModelProperty(required = false, readOnly = false, value = "", example = "S")
   private String providedByCode;
 
@@ -138,18 +138,18 @@ public class DeliveredService extends ReportingDomain implements Request, Respon
 
   @NotEmpty
   @Size(min = 1, max = 1)
-  @OneOf(value = {"C", "A", "S"}, ignoreCase = true, ignoreWhitespace = true)
+  @OneOf(value = {"C", "A", "S"}, ignoreCase = false, ignoreWhitespace = true)
   @ApiModelProperty(required = false, readOnly = false, value = "", example = "C")
   private String statusCode;
 
   @Size(min = 1, max = 1)
-  @OneOf(value = {"C", "S", "O", "N"}, ignoreCase = true, ignoreWhitespace = true)
+  @OneOf(value = {"C", "S", "O", "N"}, ignoreCase = false, ignoreWhitespace = true)
   @ApiModelProperty(required = false, readOnly = false, value = "", example = "C")
   private String supervisionCode;
 
   @NotNull
   @ApiModelProperty(required = true, readOnly = false)
-  private Boolean wrapAroundIndicator;
+  private Boolean wraparoundServiceIndicator;
 
   /**
    * @param id - id
@@ -173,10 +173,10 @@ public class DeliveredService extends ReportingDomain implements Request, Respon
    * @param startTime - startTime
    * @param statusCode - statusCode
    * @param supervisionCode - supervisionCode
-   * @param wrapAroundIndicator - wrapAroundIndicator
+   * @param wraparoundServiceIndicator - wraparoundServiceIndicator
    */
   @JsonCreator
-  public DeliveredService(@JsonProperty("id") String id,
+  public DeliveredServiceDomain(@JsonProperty("id") String id,
       @JsonProperty("cft_lead_agency_type") Short cftLeadAgencyType,
       @JsonProperty("core_service") Boolean coreServiceIndicator,
       @JsonProperty("communication_type") Integer communicationMethodType,
@@ -197,7 +197,7 @@ public class DeliveredService extends ReportingDomain implements Request, Respon
       @JsonProperty(value = "start_Time") String startTime,
       @JsonProperty(value = "status") String statusCode,
       @JsonProperty(value = "supervision") String supervisionCode,
-      @JsonProperty(value = "wrap_around") Boolean wrapAroundIndicator) {
+      @JsonProperty(value = "wrap_around") Boolean wraparoundServiceIndicator) {
     super();
     this.id = id;
     this.cftLeadAgencyType = cftLeadAgencyType;
@@ -220,7 +220,7 @@ public class DeliveredService extends ReportingDomain implements Request, Respon
     this.startTime = startTime;
     this.statusCode = statusCode;
     this.supervisionCode = supervisionCode;
-    this.wrapAroundIndicator = wrapAroundIndicator;
+    this.wraparoundServiceIndicator = wraparoundServiceIndicator;
   }
 
   /**
@@ -228,8 +228,8 @@ public class DeliveredService extends ReportingDomain implements Request, Respon
    * 
    * @param persistedDeliverdService persisted tickle object
    */
-  public DeliveredService(
-      gov.ca.cwds.data.persistence.cms.DeliveredServiceEntity persistedDeliverdService) {
+  public DeliveredServiceDomain(
+      gov.ca.cwds.data.persistence.contact.DeliveredServiceEntity persistedDeliverdService) {
     this.id = persistedDeliverdService.getId();
     this.cftLeadAgencyType = persistedDeliverdService.getCftLeadAgencyType();
     this.coreServiceIndicator =
@@ -243,7 +243,7 @@ public class DeliveredService extends ReportingDomain implements Request, Respon
     this.detailTextContinuation = persistedDeliverdService.getDetailTextContinuation();
     this.endDate = DomainChef.cookDate(persistedDeliverdService.getEndDate());
     this.endTime = DomainChef.cookTime(persistedDeliverdService.getEndTime());
-    this.primaryDeliveredServiceId = persistedDeliverdService.getPrimaryDeliveryServiceId();
+    this.primaryDeliveredServiceId = persistedDeliverdService.getPrimaryDeliveredServiceId();
     this.hardCopyDocumentOnFileCode = persistedDeliverdService.getHardCopyDocumentOnFileCode();
     this.otherParticipantsDesc = persistedDeliverdService.getOtherParticipantsDesc();
     this.providedByCode = persistedDeliverdService.getProvidedByCode();
@@ -253,7 +253,7 @@ public class DeliveredService extends ReportingDomain implements Request, Respon
     this.startTime = DomainChef.cookTime(persistedDeliverdService.getStartTime());
     this.statusCode = persistedDeliverdService.getStatusCode();
     this.supervisionCode = persistedDeliverdService.getSupervisionCode();
-    this.wrapAroundIndicator =
+    this.wraparoundServiceIndicator =
         DomainChef.uncookBooleanString(persistedDeliverdService.getWraparoundServiceIndicator());
   }
 
@@ -407,8 +407,8 @@ public class DeliveredService extends ReportingDomain implements Request, Respon
   /**
    * @return the wrapAroundIndicator
    */
-  public Boolean getWrapAroundIndicator() {
-    return wrapAroundIndicator;
+  public Boolean getWraparoundServiceIndicator() {
+    return wraparoundServiceIndicator;
   }
 
   /**

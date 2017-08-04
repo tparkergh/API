@@ -1,4 +1,4 @@
-package gov.ca.cwds.data.cms;
+package gov.ca.cwds.data.dao.contact;
 
 import static org.hamcrest.Matchers.nullValue;
 import static org.hamcrest.core.Is.is;
@@ -19,15 +19,16 @@ import org.junit.BeforeClass;
 import org.junit.Rule;
 import org.junit.Test;
 
-import gov.ca.cwds.data.junit.template.DaoTestTemplate;
-import gov.ca.cwds.data.persistence.cms.DeliveredServiceEntity;
-import gov.ca.cwds.fixture.DeliveredServiceEntityBuilder;
+import gov.ca.cwds.data.dao.contact.DeliveredServiceDao;
+import gov.ca.cwds.data.persistence.contact.DeliveredServiceEntity;
+import gov.ca.cwds.fixture.contacts.DeliveredServiceEntityBuilder;
 
 /**
  * @author CWDS API Team
  *
  */
-public class DeliveredServiceDaoIT implements DaoTestTemplate {
+@SuppressWarnings("javadoc")
+public class DeliveredServiceDaoIT {
 
   private static SessionFactory sessionFactory;
   private static DeliveredServiceDao deliveredServiceDao;
@@ -61,20 +62,23 @@ public class DeliveredServiceDaoIT implements DaoTestTemplate {
     sessionFactory.close();
   }
 
-  @Override
+  /**
+   * 
+   */
   @Before
   public void setup() {
     session = sessionFactory.getCurrentSession();
     session.beginTransaction();
   }
 
-  @Override
+  /**
+   * 
+   */
   @After
   public void teardown() {
     session.getTransaction().rollback();
   }
 
-  @Override
   @Test
   public void testFind() throws Exception {
     DeliveredServiceEntity found = deliveredServiceDao.find(id);
@@ -82,14 +86,12 @@ public class DeliveredServiceDaoIT implements DaoTestTemplate {
   }
 
 
-  @Override
   @Test
   public void testFindEntityNotFoundException() throws Exception {
     DeliveredServiceEntity found = deliveredServiceDao.find("Aabg4cV0AD");
     assertThat(found, is(nullValue()));
   }
 
-  @Override
   @Test
   public void testCreate() throws Exception {
     DeliveredServiceEntity deliveredService =
@@ -99,7 +101,6 @@ public class DeliveredServiceDaoIT implements DaoTestTemplate {
     assertThat(created, is(deliveredService));
   }
 
-  @Override
   @Test
   public void testCreateExistingEntityException() throws Exception {
     thrown.expect(EntityExistsException.class);
@@ -108,14 +109,12 @@ public class DeliveredServiceDaoIT implements DaoTestTemplate {
     deliveredServiceDao.create(deliveredService);
   }
 
-  @Override
   @Test
   public void testDelete() throws Exception {
     DeliveredServiceEntity deleted = deliveredServiceDao.delete("AajvGGx0Et");
     assertThat(deleted.getId(), is(equalTo("AajvGGx0Et")));
   }
 
-  @Override
   @Test
   public void testDeleteEntityNotFoundException() throws Exception {
     DeliveredServiceEntity deleted = deliveredServiceDao.delete("AajvGGx0Ey");
@@ -123,7 +122,6 @@ public class DeliveredServiceDaoIT implements DaoTestTemplate {
 
   }
 
-  @Override
   @Test
   public void testUpdate() throws Exception {
     DeliveredServiceEntity deliveredService = new DeliveredServiceEntityBuilder().setId(id)
@@ -132,7 +130,6 @@ public class DeliveredServiceDaoIT implements DaoTestTemplate {
     assertThat(updated, is(deliveredService));
   }
 
-  @Override
   @Test
   public void testUpdateEntityNotFoundException() throws Exception {
     thrown.expect(EntityNotFoundException.class);
@@ -141,16 +138,5 @@ public class DeliveredServiceDaoIT implements DaoTestTemplate {
         new DeliveredServiceEntityBuilder().setId("VXGcagc66").buildDeliveredServiceEntity();
     deliveredServiceDao.update(deliveredService);
   }
-
-  @Override
-  public void testFindAllNamedQueryExist() throws Exception {
-
-  }
-
-  @Override
-  public void testFindAllReturnsCorrectList() throws Exception {
-
-  }
-
 
 }
