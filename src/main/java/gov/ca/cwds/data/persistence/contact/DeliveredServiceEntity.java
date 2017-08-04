@@ -1,4 +1,4 @@
-package gov.ca.cwds.data.persistence.cms;
+package gov.ca.cwds.data.persistence.contact;
 
 import java.util.Date;
 
@@ -15,9 +15,9 @@ import org.hibernate.validator.constraints.NotEmpty;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
+import gov.ca.cwds.data.persistence.cms.CmsPersistentObject;
 import gov.ca.cwds.rest.api.ApiException;
 import gov.ca.cwds.rest.api.domain.DomainChef;
-import io.dropwizard.validation.OneOf;
 
 /**
  * {@link CmsPersistentObject} class representing a Delivered Service Entity
@@ -47,7 +47,6 @@ public class DeliveredServiceEntity extends CmsPersistentObject {
   private Short contactLocationType;
 
   @NotEmpty
-  @OneOf(value = {"C", "N", "V"}, ignoreCase = true, ignoreWhitespace = true)
   @Column(name = "CNT_VST_CD")
   private String contactVisitCode;
 
@@ -60,7 +59,6 @@ public class DeliveredServiceEntity extends CmsPersistentObject {
 
   @NotEmpty
   @Size(min = 1, max = 1)
-  @OneOf(value = {"N", "U", "Y"}, ignoreCase = true, ignoreWhitespace = true)
   @Column(name = "DOC_FL_CD")
   private String hardCopyDocumentOnFileCode;
 
@@ -76,7 +74,7 @@ public class DeliveredServiceEntity extends CmsPersistentObject {
   private Date endTime;
 
   @Column(name = "FKDL_SVC_T")
-  private String primaryDeliveryServiceId;
+  private String primaryDeliveredServiceId;
 
   @Id
   @Column(name = "IDENTIFIER", length = CMS_ID_LEN)
@@ -136,7 +134,7 @@ public class DeliveredServiceEntity extends CmsPersistentObject {
    * @param detailTextContinuation the detail text continuation
    * @param endDate the ends date
    * @param endTime the end time
-   * @param primaryDeliveryServiceId the delivered service Id
+   * @param primaryDeliveredServiceId the delivered service Id
    * @param id the identifier
    * @param otherParticipantsDesc the other participant description
    * @param providedByCode the provided by code
@@ -151,7 +149,7 @@ public class DeliveredServiceEntity extends CmsPersistentObject {
   public DeliveredServiceEntity(Short cftLeadAgencyType, String coreServiceIndicator,
       Short communicationMethodType, Short contactLocationType, String contactVisitCode,
       String countySpecificCode, String detailText, String hardCopyDocumentOnFileCode,
-      String detailTextContinuation, Date endDate, Date endTime, String primaryDeliveryServiceId,
+      String detailTextContinuation, Date endDate, Date endTime, String primaryDeliveredServiceId,
       String id, String otherParticipantsDesc, String providedByCode, String providedById,
       Date startDate, Date startTime, String statusCode, String supervisionCode,
       Short serviceContactType, String wraparoundServiceIndicator) {
@@ -167,7 +165,7 @@ public class DeliveredServiceEntity extends CmsPersistentObject {
     this.detailTextContinuation = detailTextContinuation;
     this.endDate = endDate;
     this.endTime = endTime;
-    this.primaryDeliveryServiceId = primaryDeliveryServiceId;
+    this.primaryDeliveredServiceId = primaryDeliveredServiceId;
     this.id = id;
     this.otherParticipantsDesc = otherParticipantsDesc;
     this.providedByCode = providedByCode;
@@ -184,39 +182,39 @@ public class DeliveredServiceEntity extends CmsPersistentObject {
    * Constructor using domain
    * 
    * @param id The id
-   * @param deliveredServiceEntity The domain object to construct this object from
+   * @param deliveredServiceDomain The domain object to construct this object from
    * @param lastUpdatedId The id of the last person to update this object
    */
   public DeliveredServiceEntity(String id,
-      gov.ca.cwds.rest.api.domain.cms.DeliveredService deliveredServiceEntity,
+      gov.ca.cwds.rest.api.contact.DeliveredServiceDomain deliveredServiceDomain,
       String lastUpdatedId) {
     super(lastUpdatedId);
     try {
-      this.cftLeadAgencyType = deliveredServiceEntity.getCftLeadAgencyType();
+      this.cftLeadAgencyType = deliveredServiceDomain.getCftLeadAgencyType();
       this.coreServiceIndicator =
-          DomainChef.cookBoolean(deliveredServiceEntity.getCoreServiceIndicator());
+          DomainChef.cookBoolean(deliveredServiceDomain.getCoreServiceIndicator());
       this.communicationMethodType =
-          deliveredServiceEntity.getCommunicationMethodType().shortValue();
-      this.contactLocationType = deliveredServiceEntity.getContactLocationType().shortValue();
-      this.contactVisitCode = deliveredServiceEntity.getContactVisitCode();
-      this.countySpecificCode = deliveredServiceEntity.getCountySpecificCode();
-      this.detailText = deliveredServiceEntity.getDetailText();
-      this.hardCopyDocumentOnFileCode = deliveredServiceEntity.getHardCopyDocumentOnFileCode();
-      this.detailTextContinuation = deliveredServiceEntity.getDetailTextContinuation();
-      this.endDate = DomainChef.uncookDateString(deliveredServiceEntity.getEndDate());
-      this.endTime = DomainChef.uncookTimeString(deliveredServiceEntity.getEndTime());
-      this.primaryDeliveryServiceId = deliveredServiceEntity.getPrimaryDeliveredServiceId();
+          deliveredServiceDomain.getCommunicationMethodType().shortValue();
+      this.contactLocationType = deliveredServiceDomain.getContactLocationType().shortValue();
+      this.contactVisitCode = deliveredServiceDomain.getContactVisitCode();
+      this.countySpecificCode = deliveredServiceDomain.getCountySpecificCode();
+      this.detailText = deliveredServiceDomain.getDetailText();
+      this.hardCopyDocumentOnFileCode = deliveredServiceDomain.getHardCopyDocumentOnFileCode();
+      this.detailTextContinuation = deliveredServiceDomain.getDetailTextContinuation();
+      this.endDate = DomainChef.uncookDateString(deliveredServiceDomain.getEndDate());
+      this.endTime = DomainChef.uncookTimeString(deliveredServiceDomain.getEndTime());
+      this.primaryDeliveredServiceId = deliveredServiceDomain.getPrimaryDeliveredServiceId();
       this.id = id;
-      this.otherParticipantsDesc = deliveredServiceEntity.getOtherParticipantsDesc();
-      this.providedByCode = deliveredServiceEntity.getProvidedByCode();
-      this.providedById = deliveredServiceEntity.getProvidedById();
-      this.startDate = DomainChef.uncookDateString(deliveredServiceEntity.getStartDate());
-      this.startTime = DomainChef.uncookTimeString(deliveredServiceEntity.getStartTime());
-      this.statusCode = deliveredServiceEntity.getStatusCode();
-      this.supervisionCode = deliveredServiceEntity.getSupervisionCode();
-      this.serviceContactType = deliveredServiceEntity.getServiceContactType().shortValue();
+      this.otherParticipantsDesc = deliveredServiceDomain.getOtherParticipantsDesc();
+      this.providedByCode = deliveredServiceDomain.getProvidedByCode();
+      this.providedById = deliveredServiceDomain.getProvidedById();
+      this.startDate = DomainChef.uncookDateString(deliveredServiceDomain.getStartDate());
+      this.startTime = DomainChef.uncookTimeString(deliveredServiceDomain.getStartTime());
+      this.statusCode = deliveredServiceDomain.getStatusCode();
+      this.supervisionCode = deliveredServiceDomain.getSupervisionCode();
+      this.serviceContactType = deliveredServiceDomain.getServiceContactType().shortValue();
       this.wraparoundServiceIndicator =
-          DomainChef.cookBoolean(deliveredServiceEntity.getWrapAroundIndicator());
+          DomainChef.cookBoolean(deliveredServiceDomain.getWraparoundServiceIndicator());
     } catch (ApiException e) {
       throw new PersistenceException(e);
     }
@@ -312,8 +310,8 @@ public class DeliveredServiceEntity extends CmsPersistentObject {
   /**
    * @return the primaryDeliveryServiceId
    */
-  public String getPrimaryDeliveryServiceId() {
-    return primaryDeliveryServiceId;
+  public String getPrimaryDeliveredServiceId() {
+    return primaryDeliveredServiceId;
   }
 
   /**
