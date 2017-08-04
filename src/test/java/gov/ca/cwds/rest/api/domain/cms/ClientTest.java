@@ -3275,6 +3275,14 @@ public class ClientTest implements DomainTestTemplate {
     assertTrue("Expect client 1 to have same last update time ", client1.hasSameLastUpdate(client2));
   }
 
+  @Test
+  public void shouldConvertNullValuesToDefault0(){
+    Client client = new ClientResourceBuilder()
+        .setPrimaryLanguageType(null)
+        .setSecondaryLanguageType(null).build();
+    assertEquals(0, (int)client.getPrimaryLanguage());
+    assertEquals(0, (int)client.getSecondaryLanguage());
+  }
 
   private Client validClient() throws JsonParseException, JsonMappingException, IOException {
     Client vc =

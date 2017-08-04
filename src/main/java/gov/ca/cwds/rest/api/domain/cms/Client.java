@@ -599,9 +599,9 @@ public class Client extends ReportingDomain implements Request, Response {
     this.prevOtherDescription = prevOtherDescription;
     this.prevRegionalCenterIndicator = prevRegionalCenterIndicator;
     this.primaryEthnicityType = primaryEthnicityType;
-    this.primaryLanguage = primaryLanguage;
+    this.primaryLanguage = primaryLanguage != null ? primaryLanguage : 0;
     this.religionType = religionType;
-    this.secondaryLanguage = secondaryLanguage;
+    this.secondaryLanguage = secondaryLanguage != null ? secondaryLanguage : 0;
     this.sensitiveHlthInfoOnFileIndicator = sensitiveHlthInfoOnFileIndicator;
     this.sensitivityIndicator = sensitivityIndicator;
     this.soc158PlacementCode = soc158PlacementCode;
@@ -691,9 +691,9 @@ public class Client extends ReportingDomain implements Request, Response {
     this.prevRegionalCenterIndicator =
         DomainChef.uncookBooleanString(persistedClient.getPrevRegionalCenterIndicator());
     this.primaryEthnicityType = persistedClient.getPrimaryEthnicityType();
-    this.primaryLanguage = persistedClient.getPrimaryLanguageType();
+    this.primaryLanguage = persistedClient.getPrimaryLanguageType() != null ?  persistedClient.getPrimaryLanguageType()  : 0;
     this.religionType = persistedClient.getReligionType();
-    this.secondaryLanguage = persistedClient.getSecondaryLanguageType();
+    this.secondaryLanguage = persistedClient.getSecondaryLanguageType() != null ?  persistedClient.getSecondaryLanguageType()  : 0;
     this.sensitiveHlthInfoOnFileIndicator =
         DomainChef.uncookBooleanString(persistedClient.getSensitiveHlthInfoOnFileIndicator());
     this.sensitivityIndicator = persistedClient.getSensitivityIndicator();
