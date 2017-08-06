@@ -77,8 +77,7 @@ public class Participant extends ReportingDomain implements Request, Response {
   @ApiModelProperty(required = false, readOnly = false, value = "name suffix", example = "Jr.")
   private String nameSuffix;
 
-  @OneOf(value = {"M", "F", "U"}, ignoreCase = true,
-      ignoreWhitespace = true)
+  @OneOf(value = {"M", "F", "U"}, ignoreCase = true, ignoreWhitespace = true)
   @NotNull
   @JsonProperty("gender")
   @ApiModelProperty(required = false, readOnly = false, value = "Gender Code", example = "M",
@@ -101,26 +100,29 @@ public class Participant extends ReportingDomain implements Request, Response {
   @JsonProperty("primary_language")
   @ApiModelProperty(required = false, readOnly = false, value = "", example = "1234",
       notes = "The code for primary Language")
-  @ValidSystemCodeId(required = false, category = SystemCodeCategoryId.LANGUAGE_CODE, ignoreable = true, ignoredValue = 0)
+  @ValidSystemCodeId(required = false, category = SystemCodeCategoryId.LANGUAGE_CODE,
+      ignoreable = true, ignoredValue = 0)
   private Short primaryLanguage;
 
   @JsonProperty("secondary_language")
   @ApiModelProperty(required = false, readOnly = false, value = "", example = "1234",
       notes = "The code for secondary Language")
-  @ValidSystemCodeId(required = false, category = SystemCodeCategoryId.LANGUAGE_CODE, ignoreable = true, ignoredValue = 0)
+  @ValidSystemCodeId(required = false, category = SystemCodeCategoryId.LANGUAGE_CODE,
+      ignoreable = true, ignoredValue = 0)
   private Short secondaryLanguage;
 
-  //only used for reporter
+  // only used for reporter
   @JsonProperty("reporter_confidential_waiver")
-  @ApiModelProperty(required = false, value = "Reporter Confidential Waiver", example = "N" )
+  @ApiModelProperty(required = false, value = "Reporter Confidential Waiver", example = "N")
   private boolean reporterConfidentialWaiver;
 
-  //only used for reporter
+  // only used for reporter
   @JsonProperty("reporter_employer_name")
-  @ApiModelProperty(required = false, value = "Reporter Employer Name", example = "Buisness Name, Inc" )
+  @ApiModelProperty(required = false, value = "Reporter Employer Name",
+      example = "Buisness Name, Inc")
   private String reporterEmployerName;
 
-  //only used for Client
+  // only used for Client
   @JsonProperty("client_staff_person_added")
   @ApiModelProperty(required = false, value = "Staff Person Added", example = "N")
   private boolean clientStaffPersonAdded;
@@ -448,7 +450,8 @@ public class Participant extends ReportingDomain implements Request, Response {
     result = prime * result + ((middleName == null) ? 0 : middleName.hashCode());
     result = prime * result + ((lastName == null) ? 0 : lastName.hashCode());
     result = prime * result + ((nameSuffix == null) ? 0 : nameSuffix.hashCode());
-    result = prime * result + ((reporterEmployerName == null) ? 0 : reporterEmployerName.hashCode());
+    result =
+        prime * result + ((reporterEmployerName == null) ? 0 : reporterEmployerName.hashCode());
     result = prime * result + ((reporterConfidentialWaiver == true) ? 1 : 0);
     result = prime * result + ((clientStaffPersonAdded == true) ? 1 : 0);
     result = prime * result + ((primaryLanguage == null) ? 0 : primaryLanguage.hashCode());
@@ -513,15 +516,15 @@ public class Participant extends ReportingDomain implements Request, Response {
         return false;
     } else if (!nameSuffix.equals(other.nameSuffix))
       return false;
-     if (reporterEmployerName == null) {
+    if (reporterEmployerName == null) {
       if (other.reporterEmployerName != null)
         return false;
     } else if (!reporterEmployerName.equals(other.reporterEmployerName))
       return false;
-    if (reporterConfidentialWaiver != other.reporterConfidentialWaiver){
+    if (reporterConfidentialWaiver != other.reporterConfidentialWaiver) {
       return false;
     }
-    if (clientStaffPersonAdded != other.clientStaffPersonAdded){
+    if (clientStaffPersonAdded != other.clientStaffPersonAdded) {
       return false;
     }
     if (primaryLanguage == null) {
