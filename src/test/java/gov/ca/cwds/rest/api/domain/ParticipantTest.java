@@ -65,7 +65,7 @@ public class ParticipantTest implements PersistentTestTemplate {
   private String middleName = "T.";
   private String lastName = "Smith";
   private String suffix = "";
-  private String gender = "m";
+  private String gender = "M";
   private String dateOfBirth = "2001-03-15";
   private String ssn = "123456789";
   private Set<String> roles = new HashSet<String>();
@@ -154,8 +154,8 @@ public class ParticipantTest implements PersistentTestTemplate {
   public void testConstructorUsingDomain() throws Exception {
 
     Participant domain = new Participant(id, legacySourceTable, clientId, new LegacyDescriptor(),
-        firstName, middleName, lastName, suffix, gender, ssn, dateOfBirth, primaryLanguage, secondaryLanguage, personId, screeningId,
-        roles, addresses);
+        firstName, middleName, lastName, suffix, gender, ssn, dateOfBirth, primaryLanguage,
+        secondaryLanguage, personId, screeningId, roles, addresses);
 
     assertThat(domain.getId(), is(equalTo(id)));
     assertThat(domain.getLegacySourceTable(), is(equalTo(legacySourceTable)));
@@ -173,27 +173,28 @@ public class ParticipantTest implements PersistentTestTemplate {
   }
 
   @Test
-  public void shouldNotHaveValidationErrorForValidGenders(){
+  public void shouldNotHaveValidationErrorForValidGenders() {
     List<String> acceptableGenders = Arrays.asList("M", "F", "U");
     acceptableGenders.forEach(gender -> {
-        Participant participant = new ParticipantResourceBuilder().setGender(gender).createParticipant();
+      Participant participant =
+          new ParticipantResourceBuilder().setGender(gender).createParticipant();
       String errorMessage = "Expected no validation error for gender value: " + gender;
-        assertEquals(errorMessage, 0, validator.validate(participant).size());
-      }
-    );
+      assertEquals(errorMessage, 0, validator.validate(participant).size());
+    });
   }
 
   @Test
-  public void shouldHaveValidationErrorsForInvaldGenders(){
-    List<String> acceptableGenders = Arrays.asList("q", "1", "6", null,"Male", "Female", "O");
+  public void shouldHaveValidationErrorsForInvaldGenders() {
+    List<String> acceptableGenders = Arrays.asList("q", "1", "6", null, "Male", "Female", "O");
     acceptableGenders.forEach(gender -> {
-          Participant participant = new ParticipantResourceBuilder().setGender(gender).createParticipant();
-          String errorMessage = "Expected a validation error for gender value: " + gender;
-          assertEquals(errorMessage, 1, validator.validate(participant).size());
-        }
-    );
+      Participant participant =
+          new ParticipantResourceBuilder().setGender(gender).createParticipant();
+      String errorMessage = "Expected a validation error for gender value: " + gender;
+      assertEquals(errorMessage, 1, validator.validate(participant).size());
+    });
 
   }
+
   @Test
   public void testBlankLegacySourceTableSuccess() throws Exception {
     Participant toValidate =
@@ -331,8 +332,7 @@ public class ParticipantTest implements PersistentTestTemplate {
         fixture("fixtures/domain/participant/invalid/genderInvalid.json"), Participant.class);
     Set<ConstraintViolation<Participant>> constraintViolations = validator.validate(toValidate);
     assertEquals(1, constraintViolations.size());
-    assertEquals("must be one of [M, F, U]",
-        constraintViolations.iterator().next().getMessage());
+    assertEquals("must be one of [M, F, U]", constraintViolations.iterator().next().getMessage());
   }
 
   @Test
@@ -374,8 +374,7 @@ public class ParticipantTest implements PersistentTestTemplate {
     try {
       validParticipant = new Participant(id, legacySourceTable, clientId, new LegacyDescriptor(),
           firstName, middleName, lastName, suffix, gender, ssn, dateOfBirth, primaryLanguage,
-          secondaryLanguage, personId, screeningId,
-          roles, addresses);
+          secondaryLanguage, personId, screeningId, roles, addresses);
     } catch (Exception e) {
       e.printStackTrace();
     }

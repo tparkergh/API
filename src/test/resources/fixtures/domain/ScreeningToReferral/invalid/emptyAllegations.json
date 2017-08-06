@@ -29,7 +29,7 @@
   {
     "date_of_birth":"2017-05-12",
     "first_name":"Robert",
-    "gender":"male",
+    "gender":"M",
     "id":"3",
     "last_name":"Reporter",
     "legacy_id":"",
@@ -60,7 +60,7 @@
    "legacy_id" : "",
 	  "first_name": "John",
 	  "last_name": "Smith",
-	  "gender": "male",
+	  "gender": "M",
 	  "date_of_birth": "2001-03-15",
 	  "ssn": "123456789",
     "primary_language": 1253,
@@ -85,7 +85,7 @@
   {
    "date_of_birth":"2017-05-10",
     "first_name":"Test",
-    "gender":"male",
+    "gender":"M",
     "id":"1",
     "last_name":"Perp",
     "legacy_id":"",
