@@ -82,7 +82,8 @@ public class ParticipantResourceTest {
     Address address = new Address("", "", "123 First St", "San Jose", 1828, 94321, 32);
     addresses.add(address);
     Participant participant = new Participant(1, "", "", new LegacyDescriptor(), "Marge", "J",
-        "Simpson", "Female", "", "11122333", "11-01-2017", primaryLanguage, secondaryLanguage, 123, 456, roles, addresses);
+        "Simpson", "F", "", "11122333", "11-01-2017", primaryLanguage, secondaryLanguage, 123, 456,
+        roles, addresses);
 
     int status =
         inMemoryResource.client().target(ROOT_RESOURCE).request().accept(MediaType.APPLICATION_JSON)
@@ -96,7 +97,8 @@ public class ParticipantResourceTest {
     Address address = new Address("", "", "123 First St", "San Jose", 1828, 94321, 32);
     addresses.add(address);
     Participant participant = new Participant(1, "", "", new LegacyDescriptor(), "Marge", "J",
-        "Simpson", "", "Female", "111223333", "2017-01-23", primaryLanguage, secondaryLanguage, 123, 456, roles, addresses);
+        "Simpson", "", "F", "111223333", "2017-01-23", primaryLanguage, secondaryLanguage, 123, 456,
+        roles, addresses);
 
     int status =
         inMemoryResource.client().target(ROOT_RESOURCE).request().accept(MediaType.APPLICATION_JSON)
@@ -120,7 +122,8 @@ public class ParticipantResourceTest {
     Address address = new Address("", "", "123 First St", "San Jose", 1828, 94321, 32);
     addresses.add(address);
     Participant participant = new Participant(1, "", "", new LegacyDescriptor(), "Marge", "J",
-        "Simpson", "", "Female", "111223333", "2017-01-11", primaryLanguage, secondaryLanguage, 123, 456, roles, addresses);
+        "Simpson", "", "Female", "111223333", "2017-01-11", primaryLanguage, secondaryLanguage, 123,
+        456, roles, addresses);
     int receivedStatus =
         inMemoryResource.client().target(ROOT_RESOURCE).request().accept(MediaType.APPLICATION_JSON)
             .put(Entity.entity(participant, MediaType.APPLICATION_JSON)).getStatus();
