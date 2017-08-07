@@ -1,8 +1,8 @@
-package gov.ca.cwds.fixture;
+package gov.ca.cwds.fixture.contacts;
 
 import java.util.Date;
 
-import gov.ca.cwds.data.persistence.cms.DeliveredServiceEntity;
+import gov.ca.cwds.data.persistence.contact.DeliveredServiceEntity;
 
 /**
  * @author CWDS API Team
@@ -22,7 +22,7 @@ public class DeliveredServiceEntityBuilder {
   String detailTextContinuation = "ABC12345t7";
   Date endDate = new Date();
   Date endTime = new Date();
-  String primaryDeliveryServiceId = "ABC1at0875";
+  String primaryDeliveredServiceId = "ABC1at0875";
   String id = "ABC1234567";
   String otherParticipantsDesc = "description of the world";
   String providedByCode = "S";
@@ -38,7 +38,7 @@ public class DeliveredServiceEntityBuilder {
     return new DeliveredServiceEntity(cftLeadAgencyType, coreServiceIndicator,
         communicationMethodType, contactLocationType, contactVisitCode, countySpecificCode,
         detailText, hardCopyDocumentOnFileCode, detailTextContinuation, endDate, endTime,
-        primaryDeliveryServiceId, id, otherParticipantsDesc, providedByCode, providedById,
+        primaryDeliveredServiceId, id, otherParticipantsDesc, providedByCode, providedById,
         startDate, startTime, statusCode, supervisionCode, serviceContactType,
         wraparoundServiceIndicator);
   }
@@ -143,13 +143,13 @@ public class DeliveredServiceEntityBuilder {
     return this;
   }
 
-  public String getPrimaryDeliveryServiceId() {
-    return primaryDeliveryServiceId;
+  public String getPrimaryDeliveredServiceId() {
+    return primaryDeliveredServiceId;
   }
 
-  public DeliveredServiceEntityBuilder setPrimaryDeliveryServiceId(
-      String primaryDeliveryServiceId) {
-    this.primaryDeliveryServiceId = primaryDeliveryServiceId;
+  public DeliveredServiceEntityBuilder setPrimaryDeliveredServiceId(
+      String primaryDeliveredServiceId) {
+    this.primaryDeliveredServiceId = primaryDeliveredServiceId;
     return this;
   }
 

@@ -82,14 +82,15 @@ public class R04631ReferralInvestigationContactDue {
 
         int years = ReminderHelper.checkForAgeDiffernce(dateOfBirth);
 
-        if (years < 19 && ReminderHelper.getMap().get(referral.getReferralResponseType()) != null) {
+        if (years < 19
+            && ReminderHelper.getMapTheDueDate().get(referral.getReferralResponseType()) != null) {
           /*
            * duedate is updated based on the referralResponseType.
            */
           Calendar dueDate = Calendar.getInstance();
           dueDate.setTime(referral.getReceivedDate());
           dueDate.add(Calendar.DATE,
-              ReminderHelper.getMap().get(referral.getReferralResponseType()));
+              ReminderHelper.getMapTheDueDate().get(referral.getReferralResponseType()));
           gov.ca.cwds.rest.api.domain.cms.Tickle tickle =
               new gov.ca.cwds.rest.api.domain.cms.Tickle(referral.getId(), REFERRAL_REFERRALCLIENT,
                   client.getId(), null, dateFormat.format(dueDate.getTime()),

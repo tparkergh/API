@@ -1,11 +1,11 @@
-package gov.ca.cwds.data.cms;
+package gov.ca.cwds.data.dao.contact;
 
 import org.hibernate.SessionFactory;
 
 import com.google.inject.Inject;
 
 import gov.ca.cwds.data.CrudsDaoImpl;
-import gov.ca.cwds.data.persistence.cms.ContactPartyDeliveredServiceEntity;
+import gov.ca.cwds.data.persistence.contact.ContactPartyDeliveredServiceEntity;
 import gov.ca.cwds.inject.CmsSessionFactory;
 
 /**
@@ -13,7 +13,8 @@ import gov.ca.cwds.inject.CmsSessionFactory;
  *
  * @author CWDS API Team
  */
-public class ContactPartyDeliveredServiceDao extends CrudsDaoImpl<ContactPartyDeliveredServiceEntity> {
+public class ContactPartyDeliveredServiceDao
+    extends CrudsDaoImpl<ContactPartyDeliveredServiceEntity> {
 
   /**
    * Constructor

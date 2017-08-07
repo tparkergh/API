@@ -41,6 +41,7 @@ import gov.ca.cwds.rest.services.cms.StaffPersonIdRetriever;
 import gov.ca.cwds.rest.services.cms.StaffPersonService;
 import gov.ca.cwds.rest.services.cms.SystemCodeService;
 import gov.ca.cwds.rest.services.cms.TickleService;
+import gov.ca.cwds.rest.services.contact.DeliveredService;
 import gov.ca.cwds.rest.services.es.AutoCompletePersonService;
 import gov.ca.cwds.rest.services.es.IndexQueryService;
 import io.dropwizard.hibernate.HibernateBundle;
@@ -131,6 +132,7 @@ public class ServicesModule extends AbstractModule {
     bind(ClientRelationshipService.class);
     bind(ClientCollateralService.class);
     bind(gov.ca.cwds.rest.services.StaffPersonService.class);
+    bind(DeliveredService.class);
 
     UnitOfWorkInterceptor interceptor = new UnitOfWorkInterceptor();
     bindInterceptor(Matchers.any(), Matchers.annotatedWith(UnitOfWork.class), interceptor);

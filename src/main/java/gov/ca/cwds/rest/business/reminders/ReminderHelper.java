@@ -66,7 +66,7 @@ public class ReminderHelper {
    * 
    * @return the number of days the dueDate to set
    */
-  public static Map<Short, Integer> getMap() {
+  public static Map<Short, Integer> getMapTheDueDate() {
     Map<Short, Integer> valueMap = new HashMap<>();
     valueMap.put(REFERRAL_RESPONSE_TYPE_10_DAYS, 10);
     valueMap.put(REFERRAL_RESPONSE_TYPE_3_DAYS, 3);

@@ -1,4 +1,4 @@
-package gov.ca.cwds.data.persistence.cms;
+package gov.ca.cwds.data.persistence.contact;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.equalTo;
@@ -16,7 +16,7 @@ import com.fasterxml.jackson.databind.JsonMappingException;
  * @author CWDS API Team
  *
  */
-public class ReferralClientDeliveredServiceTest {
+public class ReferralClientDeliveredServiceEntityTest {
 
   private String deliveredServiceId = "ABC1234567";
   private String referralId = "ABX1234560";
@@ -40,10 +40,12 @@ public class ReferralClientDeliveredServiceTest {
 
     ReferralClientDeliveredServiceEntity valid = validReferralClientDeliveredService();
 
-    ReferralClientDeliveredServiceEntity persistent = new ReferralClientDeliveredServiceEntity(
-        deliveredServiceId, referralId, clientId, valid.getCountySpecificCode());
+    ReferralClientDeliveredServiceEntity referralClientDeliveredServiceEntity =
+        new ReferralClientDeliveredServiceEntity(deliveredServiceId, referralId, clientId,
+            valid.getCountySpecificCode());
 
-    assertThat(persistent.getCountySpecificCode(), is(equalTo(valid.getCountySpecificCode())));
+    assertThat(referralClientDeliveredServiceEntity.getCountySpecificCode(),
+        is(equalTo(valid.getCountySpecificCode())));
   }
 
   private ReferralClientDeliveredServiceEntity validReferralClientDeliveredService()
