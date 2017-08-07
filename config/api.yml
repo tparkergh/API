@@ -31,6 +31,8 @@ nsDataSourceFactory:
       hibernate.dialect: org.hibernate.dialect.PostgreSQL82Dialect
       hibernate.id.new_generator_mappings: false
       hibernate.show_sql: true
+      hibernate.format_sql: true
+      hibernate.use_sql_comments: false
 
 cmsDataSourceFactory:
   autoCommitByDefault: false
@@ -47,6 +49,8 @@ cmsDataSourceFactory:
   properties:
       hibernate.dialect: org.hibernate.dialect.DB2Dialect
       hibernate.show_sql: true
+      hibernate.format_sql: true
+      hibernate.use_sql_comments: false
       hibernate.default_schema: ${DB_CMS_SCHEMA}
       hibernate.connection.autocommit: false
 
@@ -108,10 +112,12 @@ logging:
       level: DEBUG
     "org.hibernate.type.descriptor.sql":
       level: DEBUG
+    "org.skife":
+      level: TRACE  
     "AUDIT":
       level: ALL
     "gov.ca.cwds":
-      level: DEBUG    
+      level: DEBUG
   appenders:
     - type: console
       threshold: ${LOGLEVEL:-WARN}

@@ -228,9 +228,10 @@ public class ReporterTest {
     String middleName = "middleName";
     String lastName = "lastName";
     String suffix = "";
-    Participant participant = new Participant(5L, "legacy_source_table", "legacy_client_id",
-        new LegacyDescriptor(), firstName, middleName, lastName, suffix, "gender", "ssn",
-        "date_of_birth", primaryLanguage, secondaryLanguage, 7L, 8L, new HashSet<>(), new HashSet<>());
+    Participant participant =
+        new Participant(5L, "legacy_source_table", "legacy_client_id", new LegacyDescriptor(),
+            firstName, middleName, lastName, suffix, "gender", "ssn", "date_of_birth",
+            primaryLanguage, secondaryLanguage, 7L, 8L, new HashSet<>(), new HashSet<>());
     String countyCode = "countyCode";
     Short stateCode = new Short("0");
 
@@ -282,9 +283,10 @@ public class ReporterTest {
     String middleName = "middleName";
     String lastName = "lastName";
     String suffix = "jr";
-    Participant participant = new Participant(5L, "legacy_source_table", "legacy_client_id",
-        new LegacyDescriptor(), firstName, middleName, lastName, "jr", "gender", "ssn",
-        "date_of_birth", primaryLanguage, secondaryLanguage, 7L, 8L, new HashSet<>(), new HashSet<>());
+    Participant participant =
+        new Participant(5L, "legacy_source_table", "legacy_client_id", new LegacyDescriptor(),
+            firstName, middleName, lastName, "jr", "gender", "ssn", "date_of_birth",
+            primaryLanguage, secondaryLanguage, 7L, 8L, new HashSet<>(), new HashSet<>());
     String countyCode = "countyCode";
     Short stateCode = new Short("0");
 
@@ -328,9 +330,10 @@ public class ReporterTest {
 
     gov.ca.cwds.rest.api.domain.Address address = new gov.ca.cwds.rest.api.domain.Address(
         "legacy_source_table", "legacy_id", streetAddress, "city", 1828, 12345, 32);
-    Participant participant = new Participant(5L, "legacy_source_table", "legacy_client_id",
-        new LegacyDescriptor(), "firstName", "middleName", "lastName", "jr", "gender", "ssn",
-        "date_of_birth", primaryLanguage, secondaryLanguage, 7L, 8L, new HashSet<>(), new HashSet<>());
+    Participant participant =
+        new Participant(5L, "legacy_source_table", "legacy_client_id", new LegacyDescriptor(),
+            "firstName", "middleName", "lastName", "jr", "gender", "ssn", "date_of_birth",
+            primaryLanguage, secondaryLanguage, 7L, 8L, new HashSet<>(), new HashSet<>());
 
     Reporter reporter = Reporter.createWithDefaults("referralId", true, address, participant,
         "countyCode", new Short("0"));
@@ -344,9 +347,10 @@ public class ReporterTest {
 
     gov.ca.cwds.rest.api.domain.Address address = new gov.ca.cwds.rest.api.domain.Address(
         "legacy_source_table", "legacy_id", streetAddress, "city", 1828, 12345, 32);
-    Participant participant = new Participant(5L, "legacy_source_table", "legacy_client_id",
-        new LegacyDescriptor(), "firstName", "middleName", "lastName", "jr", "gender", "ssn",
-        "date_of_birth", primaryLanguage, secondaryLanguage, 7L, 8L, new HashSet<>(), new HashSet<>());
+    Participant participant =
+        new Participant(5L, "legacy_source_table", "legacy_client_id", new LegacyDescriptor(),
+            "firstName", "middleName", "lastName", "jr", "gender", "ssn", "date_of_birth",
+            primaryLanguage, secondaryLanguage, 7L, 8L, new HashSet<>(), new HashSet<>());
 
     Reporter reporter = Reporter.createWithDefaults("referralId", true, address, participant,
         "countyCode", new Short("0"));
@@ -360,9 +364,10 @@ public class ReporterTest {
 
     gov.ca.cwds.rest.api.domain.Address address = new gov.ca.cwds.rest.api.domain.Address(
         "legacy_source_table", "legacy_id", streetAddress, "city", 1828, 12345, 32);
-    Participant participant = new Participant(5L, "legacy_source_table", "legacy_client_id",
-        new LegacyDescriptor(), "firstName", "middleName", "lastName", "jr", "gender", "ssn",
-        "date_of_birth",primaryLanguage, secondaryLanguage, 7L, 8L, new HashSet<>(), new HashSet<>());
+    Participant participant =
+        new Participant(5L, "legacy_source_table", "legacy_client_id", new LegacyDescriptor(),
+            "firstName", "middleName", "lastName", "jr", "gender", "ssn", "date_of_birth",
+            primaryLanguage, secondaryLanguage, 7L, 8L, new HashSet<>(), new HashSet<>());
 
     Reporter reporter = Reporter.createWithDefaults("referralId", true, address, participant,
         "countyCode", new Short("0"));
@@ -377,9 +382,10 @@ public class ReporterTest {
 
     gov.ca.cwds.rest.api.domain.Address address = new gov.ca.cwds.rest.api.domain.Address(
         "legacy_source_table", "legacy_id", streetAddress, "city", 1828, 12345, 32);
-    Participant participant = new Participant(5L, "legacy_source_table", "legacy_client_id",
-        new LegacyDescriptor(), "firstName", "middleName", "lastName", "jr", "gender", "ssn",
-        "date_of_birth", primaryLanguage, secondaryLanguage, 7L, 8L, new HashSet<>(), new HashSet<>());
+    Participant participant =
+        new Participant(5L, "legacy_source_table", "legacy_client_id", new LegacyDescriptor(),
+            "firstName", "middleName", "lastName", "jr", "gender", "ssn", "date_of_birth",
+            primaryLanguage, secondaryLanguage, 7L, 8L, new HashSet<>(), new HashSet<>());
 
     Reporter reporter = Reporter.createWithDefaults("referralId", true, address, participant,
         "countyCode", new Short("0"));
@@ -395,7 +401,7 @@ public class ReporterTest {
     gov.ca.cwds.rest.api.domain.Address nsAddress = new gov.ca.cwds.rest.api.domain.Address(
         "legacy_source_table", "legacy_id", streetAddress, "city", 1828, 12345, 32);
 
-    Address address = Address.createWithDefaults(nsAddress, new Short("5"));
+    Address address = Address.createWithDefaults(nsAddress);
     assertThat(address.getStreetNumber(), is(equalTo(null)));
   }
 
