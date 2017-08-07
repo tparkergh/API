@@ -135,8 +135,7 @@ public class AddressService implements CrudsService {
 
     try {
       gov.ca.cwds.rest.api.domain.cms.Address domainAddress =
-          gov.ca.cwds.rest.api.domain.cms.Address.createWithDefaults(address,
-              LegacyDefaultValues.DEFAULT_STATE_CODE);
+          gov.ca.cwds.rest.api.domain.cms.Address.createWithDefaults(address);
 
       messageBuilder.addDomainValidationError(validator.validate(domainAddress));
 
