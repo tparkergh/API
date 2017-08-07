@@ -24,6 +24,6 @@ public class EntityChangedComparator {
     return particpantDate.getMillis() == clientDate.getMillis();
   }
   public static DateTime trimMilliseconds(DateTime dt) {
-    return new DateTime(dt.getYear(), dt.getMonthOfYear(), dt.getDayOfMonth(), dt.getHourOfDay(), dt.getMinuteOfHour(), dt.getSecondOfMinute(), 0);
+    return new DateTime(dt.getYear(), dt.getMonthOfYear(), dt.getDayOfMonth(), dt.getHourOfDay(), dt.getMinuteOfHour(), dt.getSecondOfMinute(), 0, dt.getZone());
   }
 }
