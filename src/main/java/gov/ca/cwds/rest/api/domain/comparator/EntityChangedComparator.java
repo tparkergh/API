@@ -2,6 +2,7 @@ package gov.ca.cwds.rest.api.domain.comparator;
 
 import gov.ca.cwds.rest.api.domain.Participant;
 import gov.ca.cwds.rest.api.domain.cms.Client;
+import org.joda.time.DateTime;
 
 public class EntityChangedComparator {
 
@@ -18,7 +19,11 @@ public class EntityChangedComparator {
    * @return returns true if the date is equal to the second resolution
    */
   public boolean compare(Participant participant, Client client) {
-    return participant.getLegacyDescriptor().getLastUpdated().getMillis() == client
-        .getLastUpdatedTime().getMillis();
+    DateTime particpantDate = trimMilliseconds(participant.getLegacyDescriptor().getLastUpdated());
+    DateTime clientDate = trimMilliseconds(client.getLastUpdatedTime());
+    return particpantDate.getMillis() == clientDate.getMillis();
+  }
+  public static DateTime trimMilliseconds(DateTime dt) {
+    return new DateTime(dt.getYear(), dt.getMonthOfYear(), dt.getDayOfMonth(), dt.getHourOfDay(), dt.getMinuteOfHour(), dt.getSecondOfMinute(), 0);
   }
 }
