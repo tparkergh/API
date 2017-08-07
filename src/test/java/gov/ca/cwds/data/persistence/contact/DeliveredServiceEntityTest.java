@@ -1,19 +1,29 @@
-package gov.ca.cwds.data.persistence.cms;
+package gov.ca.cwds.data.persistence.contact;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.notNullValue;
 
+import java.util.Date;
+
 import org.junit.Test;
 
-import gov.ca.cwds.fixture.DeliveredServiceEntityBuilder;
+import gov.ca.cwds.fixture.contacts.DeliveredServiceEntityBuilder;
+import gov.ca.cwds.fixture.contacts.DeliveredServiceResourceBuilder;
+import gov.ca.cwds.rest.api.contact.DeliveredServiceDomain;
+import gov.ca.cwds.rest.api.domain.DomainChef;
+
 
 /**
  * @author CWDS API Team
  *
  */
-public class DeliveredServiceTest {
+public class DeliveredServiceEntityTest {
+
+  private String id = "1234567ABC";
+  private String lastUpdatedId = "0X5";
+  private Date lastUpdatedTime = new Date();
 
   /**
    * Constructor test
@@ -41,7 +51,7 @@ public class DeliveredServiceTest {
         deliverdServiceEntity.getCountySpecificCode(), deliverdServiceEntity.getDetailText(),
         deliverdServiceEntity.getHardCopyDocumentOnFileCode(),
         deliverdServiceEntity.getDetailTextContinuation(), deliverdServiceEntity.getEndDate(),
-        deliverdServiceEntity.getEndTime(), deliverdServiceEntity.getPrimaryDeliveryServiceId(),
+        deliverdServiceEntity.getEndTime(), deliverdServiceEntity.getPrimaryDeliveredServiceId(),
         deliverdServiceEntity.getId(), deliverdServiceEntity.getOtherParticipantsDesc(),
         deliverdServiceEntity.getProvidedByCode(), deliverdServiceEntity.getProvidedById(),
         deliverdServiceEntity.getStartDate(), deliverdServiceEntity.getStartTime(),
@@ -68,8 +78,8 @@ public class DeliveredServiceTest {
         is(equalTo(deliverdServiceEntity.getDetailTextContinuation())));
     assertThat(persistent.getEndDate(), is(equalTo(deliverdServiceEntity.getEndDate())));
     assertThat(persistent.getEndTime(), is(equalTo(deliverdServiceEntity.getEndTime())));
-    assertThat(persistent.getPrimaryDeliveryServiceId(),
-        is(equalTo(deliverdServiceEntity.getPrimaryDeliveryServiceId())));
+    assertThat(persistent.getPrimaryDeliveredServiceId(),
+        is(equalTo(deliverdServiceEntity.getPrimaryDeliveredServiceId())));
     assertThat(persistent.getId(), is(equalTo(deliverdServiceEntity.getId())));
     assertThat(persistent.getOtherParticipantsDesc(),
         is(equalTo(deliverdServiceEntity.getOtherParticipantsDesc())));
@@ -85,6 +95,64 @@ public class DeliveredServiceTest {
         is(equalTo(deliverdServiceEntity.getServiceContactType())));
     assertThat(persistent.getWraparoundServiceIndicator(),
         is(equalTo(deliverdServiceEntity.getWraparoundServiceIndicator())));
+
+  }
+
+  /**
+   * @throws Exception - exception
+   */
+  @Test
+  public void testConstructorUsingDomain() throws Exception {
+
+    DeliveredServiceDomain deliveredServiceDomain =
+        new DeliveredServiceResourceBuilder().buildDeliveredServiceResource();
+
+    DeliveredServiceEntity deliveredServiceEntity =
+        new DeliveredServiceEntity(id, deliveredServiceDomain, lastUpdatedId, lastUpdatedTime);
+
+    assertThat(deliveredServiceEntity.getId(), is(equalTo(id)));
+    assertThat(deliveredServiceEntity.getCftLeadAgencyType(),
+        is(equalTo(deliveredServiceDomain.getCftLeadAgencyType())));
+    assertThat(deliveredServiceEntity.getCoreServiceIndicator(),
+        is(equalTo(DomainChef.cookBoolean(deliveredServiceDomain.getCoreServiceIndicator()))));
+    assertThat(deliveredServiceEntity.getCommunicationMethodType(),
+        is(equalTo(deliveredServiceDomain.getCommunicationMethodType().shortValue())));
+    assertThat(deliveredServiceEntity.getContactLocationType(),
+        is(equalTo(deliveredServiceDomain.getContactLocationType().shortValue())));
+    assertThat(deliveredServiceEntity.getContactVisitCode(),
+        is(equalTo(deliveredServiceDomain.getContactVisitCode())));
+    assertThat(deliveredServiceEntity.getCountySpecificCode(),
+        is(equalTo(deliveredServiceDomain.getCountySpecificCode())));
+    assertThat(deliveredServiceEntity.getDetailText(),
+        is(equalTo(deliveredServiceDomain.getDetailText())));
+    assertThat(deliveredServiceEntity.getHardCopyDocumentOnFileCode(),
+        is(equalTo(deliveredServiceDomain.getHardCopyDocumentOnFileCode())));
+    assertThat(deliveredServiceEntity.getDetailTextContinuation(),
+        is(equalTo(deliveredServiceDomain.getDetailTextContinuation())));
+    assertThat(deliveredServiceEntity.getEndDate(),
+        is(equalTo(DomainChef.uncookDateString(deliveredServiceDomain.getEndDate()))));
+    assertThat(deliveredServiceEntity.getEndTime(),
+        is(equalTo(DomainChef.uncookTimeString(deliveredServiceDomain.getEndTime()))));
+    assertThat(deliveredServiceEntity.getPrimaryDeliveredServiceId(),
+        is(equalTo(deliveredServiceDomain.getPrimaryDeliveredServiceId())));
+    assertThat(deliveredServiceEntity.getOtherParticipantsDesc(),
+        is(equalTo(deliveredServiceDomain.getOtherParticipantsDesc())));
+    assertThat(deliveredServiceEntity.getProvidedByCode(),
+        is(equalTo(deliveredServiceDomain.getProvidedByCode())));
+    assertThat(deliveredServiceEntity.getProvidedById(),
+        is(equalTo(deliveredServiceDomain.getProvidedById())));
+    assertThat(deliveredServiceEntity.getStartDate(),
+        is(equalTo(DomainChef.uncookDateString(deliveredServiceDomain.getStartDate()))));
+    assertThat(deliveredServiceEntity.getStartTime(),
+        is(equalTo(DomainChef.uncookTimeString(deliveredServiceDomain.getStartTime()))));
+    assertThat(deliveredServiceEntity.getStatusCode(),
+        is(equalTo(deliveredServiceDomain.getStatusCode())));
+    assertThat(deliveredServiceEntity.getSupervisionCode(),
+        is(equalTo(deliveredServiceDomain.getSupervisionCode())));
+    assertThat(deliveredServiceEntity.getServiceContactType(),
+        is(equalTo(deliveredServiceDomain.getServiceContactType().shortValue())));
+    assertThat(deliveredServiceEntity.getWraparoundServiceIndicator(), is(
+        equalTo(DomainChef.cookBoolean(deliveredServiceDomain.getWraparoundServiceIndicator()))));
 
   }
 

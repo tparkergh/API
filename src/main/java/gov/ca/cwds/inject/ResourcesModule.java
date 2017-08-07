@@ -8,9 +8,9 @@ import com.google.inject.name.Named;
 
 import gov.ca.cwds.rest.ApiConfiguration;
 import gov.ca.cwds.rest.SwaggerConfiguration;
+import gov.ca.cwds.rest.api.contact.DeliveredServiceDomain;
 import gov.ca.cwds.rest.api.domain.cms.AllegationPerpetratorHistory;
 import gov.ca.cwds.rest.api.domain.cms.CmsDocument;
-import gov.ca.cwds.rest.api.domain.cms.DeliveredService;
 import gov.ca.cwds.rest.api.domain.cms.DrmsDocument;
 import gov.ca.cwds.rest.api.domain.cms.LegacyKeyRequest;
 import gov.ca.cwds.rest.api.domain.cms.LegacyKeyResponse;
@@ -43,7 +43,6 @@ import gov.ca.cwds.rest.resources.cms.CmsDocumentResource;
 import gov.ca.cwds.rest.resources.cms.CmsNSReferralResource;
 import gov.ca.cwds.rest.resources.cms.CmsReferralResource;
 import gov.ca.cwds.rest.resources.cms.CrossReportResource;
-import gov.ca.cwds.rest.resources.cms.DeliveredServiceResource;
 import gov.ca.cwds.rest.resources.cms.DrmsDocumentResource;
 import gov.ca.cwds.rest.resources.cms.LongTextResource;
 import gov.ca.cwds.rest.resources.cms.ReferralClientResource;
@@ -51,6 +50,7 @@ import gov.ca.cwds.rest.resources.cms.ReferralResource;
 import gov.ca.cwds.rest.resources.cms.ReporterResource;
 import gov.ca.cwds.rest.resources.cms.StaffPersonResource;
 import gov.ca.cwds.rest.resources.cms.SystemCodeResource;
+import gov.ca.cwds.rest.resources.contact.DeliveredServiceResource;
 import gov.ca.cwds.rest.services.AddressService;
 import gov.ca.cwds.rest.services.AddressValidationService;
 import gov.ca.cwds.rest.services.ParticipantService;
@@ -77,6 +77,7 @@ import gov.ca.cwds.rest.services.cms.ReferralService;
 import gov.ca.cwds.rest.services.cms.ReporterService;
 import gov.ca.cwds.rest.services.cms.StaffPersonService;
 import gov.ca.cwds.rest.services.cms.SystemCodeService;
+import gov.ca.cwds.rest.services.contact.DeliveredService;
 import gov.ca.cwds.rest.services.es.AutoCompletePersonService;
 import gov.ca.cwds.rest.services.es.IndexQueryService;
 
@@ -186,10 +187,9 @@ public class ResourcesModule extends AbstractModule {
 
   @Provides
   @DeliveredServiceBackedResource
-  public TypedResourceDelegate<String, DeliveredService> deliveredServiceBackedResource(
+  public TypedResourceDelegate<String, DeliveredServiceDomain> deliveredServiceBackedResource(
       Injector injector) {
-    return new TypedServiceBackedResourceDelegate<>(
-        injector.getInstance(gov.ca.cwds.rest.services.cms.DeliveredService.class));
+    return new TypedServiceBackedResourceDelegate<>(injector.getInstance(DeliveredService.class));
   }
 
   @Provides

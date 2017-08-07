@@ -1,4 +1,4 @@
-package gov.ca.cwds.rest.api.domain.cms;
+package gov.ca.cwds.rest.api.contact;
 
 import static gov.ca.cwds.data.persistence.cms.CmsPersistentObject.CMS_ID_LEN;
 
@@ -28,7 +28,7 @@ import io.swagger.annotations.ApiModelProperty;
  * 
  * @author CWDS API Team
  */
-public class DeliveredService extends ReportingDomain implements Request, Response {
+public class DeliveredServiceDomain extends ReportingDomain implements Request, Response {
 
   /**
    * 
@@ -39,7 +39,7 @@ public class DeliveredService extends ReportingDomain implements Request, Respon
   @ApiModelProperty(required = true, readOnly = true, value = "", example = "ABC1234567")
   private String id;
 
-  @JsonProperty("cft_lead_agency_type")
+  @JsonProperty("child_family_team_lead_agency")
   @ApiModelProperty(required = false, readOnly = false, example = "4212")
   private Short cftLeadAgencyType;
 
@@ -47,109 +47,124 @@ public class DeliveredService extends ReportingDomain implements Request, Respon
   @ApiModelProperty(required = false, readOnly = false)
   private Boolean coreServiceIndicator;
 
+  @JsonProperty("communication_method")
   @ValidSystemCodeId(required = false, category = SystemCodeCategoryId.COMMUNICATION_METHOD)
   @ApiModelProperty(required = false, readOnly = false,
       value = "Delivered service communication method type system code ID e.g) 408 -> In-Person",
       example = "408")
   private Integer communicationMethodType;
 
+  @JsonProperty("contact_location")
   @ValidSystemCodeId(required = false, category = SystemCodeCategoryId.CONTACT_LOCATION)
   @ApiModelProperty(required = false, readOnly = false,
       value = "Delivered service contact location type system code ID e.g) 415 -> CWS Office",
       example = "415")
   private Integer contactLocationType;
 
+  @JsonProperty("contact_visit")
   @NotEmpty
   @Size(max = 1)
-  @OneOf(value = {"C", "N", "V"}, ignoreCase = true, ignoreWhitespace = true)
+  @OneOf(value = {"C", "N", "V"}, ignoreCase = false, ignoreWhitespace = true)
   @ApiModelProperty(required = true, readOnly = false, value = "", example = "C")
   private String contactVisitCode;
 
+  @JsonProperty("county")
   @NotEmpty
   @Size(min = 2, max = 2)
   @ApiModelProperty(required = true, readOnly = false, value = "", example = "99")
   private String countySpecificCode;
 
+  @JsonProperty("detail_text")
   @Size(max = 32700)
   @ApiModelProperty(required = false, readOnly = false, value = "",
       example = "detail text of the contact")
   private String detailText;
 
+  @JsonProperty("detail_text_continuation")
   @Size(max = 32700)
   @ApiModelProperty(required = false, readOnly = false, value = "",
       example = "continued detailed text")
   private String detailTextContinuation;
 
   @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = DATE_FORMAT)
-  @JsonProperty(value = "end_Date")
+  @JsonProperty(value = "end_date")
   @gov.ca.cwds.rest.validation.Date(format = DATE_FORMAT, required = true)
   @ApiModelProperty(required = false, readOnly = false, value = "yyyy-MM-dd",
       example = "2000-01-01")
   private String endDate;
 
   @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = TIME_FORMAT)
-  @JsonProperty(value = "end_Time")
+  @JsonProperty(value = "end_time")
   @gov.ca.cwds.rest.validation.Date(format = TIME_FORMAT, required = false)
   @ApiModelProperty(required = false, readOnly = false, value = "Assignment end time",
       example = "16:41:49")
   private String endTime;
 
+  @JsonProperty(value = "primary_delivered_service_id")
   @Size(min = CMS_ID_LEN, max = CMS_ID_LEN)
   @ApiModelProperty(required = false, readOnly = false, value = "", example = "ABC1234567")
   private String primaryDeliveredServiceId;
 
   @NotEmpty
+  @JsonProperty(value = "document_on_file")
   @Size(min = 1, max = 1)
-  @OneOf(value = {"N", "U", "Y"}, ignoreCase = true, ignoreWhitespace = true)
+  @OneOf(value = {"N", "U", "Y"}, ignoreCase = false, ignoreWhitespace = true)
   @ApiModelProperty(required = false, readOnly = false, value = "", example = "N")
   private String hardCopyDocumentOnFileCode;
 
+  @JsonProperty(value = "other_participants")
   @Size(max = 100)
   @ApiModelProperty(required = false, readOnly = false, value = "",
       example = "Attorney, Doctor and etc")
   private String otherParticipantsDesc;
 
+  @JsonProperty(value = "provided_by")
   @Size(min = 1, max = 1)
-  @OneOf(value = {"S", "O", "V", "X"}, ignoreCase = true, ignoreWhitespace = true)
+  @OneOf(value = {"S", "O", "V", "X"}, ignoreCase = false, ignoreWhitespace = true)
   @ApiModelProperty(required = false, readOnly = false, value = "", example = "S")
   private String providedByCode;
 
+  @JsonProperty(value = "provided_by_id")
   @Size(min = CMS_ID_LEN, max = CMS_ID_LEN)
   @ApiModelProperty(required = false, readOnly = false, value = "", example = "ABC1234567")
   private String providedById;
 
+  @JsonProperty(value = "service_contact")
   @ApiModelProperty(required = false, readOnly = false)
   private Integer serviceContactType;
 
   @NotEmpty
   @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = DATE_FORMAT)
-  @JsonProperty(value = "start_Date")
+  @JsonProperty(value = "start_date")
   @gov.ca.cwds.rest.validation.Date(format = DATE_FORMAT, required = true)
   @ApiModelProperty(required = true, readOnly = false, value = "yyyy-MM-dd", example = "2000-01-01")
   private String startDate;
 
   @NotEmpty
   @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = TIME_FORMAT)
-  @JsonProperty(value = "start_Time")
+  @JsonProperty(value = "start_time")
   @gov.ca.cwds.rest.validation.Date(format = TIME_FORMAT, required = false)
   @ApiModelProperty(required = true, readOnly = false, value = "Contact end time",
       example = "16:41:49")
   private String startTime;
 
   @NotEmpty
+  @JsonProperty(value = "status")
   @Size(min = 1, max = 1)
-  @OneOf(value = {"C", "A", "S"}, ignoreCase = true, ignoreWhitespace = true)
+  @OneOf(value = {"C", "A", "S"}, ignoreCase = false, ignoreWhitespace = true)
   @ApiModelProperty(required = false, readOnly = false, value = "", example = "C")
   private String statusCode;
 
+  @JsonProperty(value = "supervision")
   @Size(min = 1, max = 1)
-  @OneOf(value = {"C", "S", "O", "N"}, ignoreCase = true, ignoreWhitespace = true)
+  @OneOf(value = {"C", "S", "O", "N"}, ignoreCase = false, ignoreWhitespace = true)
   @ApiModelProperty(required = false, readOnly = false, value = "", example = "C")
   private String supervisionCode;
 
   @NotNull
+  @JsonProperty(value = "wrap_around_service")
   @ApiModelProperty(required = true, readOnly = false)
-  private Boolean wrapAroundIndicator;
+  private Boolean wraparoundServiceIndicator;
 
   /**
    * @param id - id
@@ -173,11 +188,11 @@ public class DeliveredService extends ReportingDomain implements Request, Respon
    * @param startTime - startTime
    * @param statusCode - statusCode
    * @param supervisionCode - supervisionCode
-   * @param wrapAroundIndicator - wrapAroundIndicator
+   * @param wraparoundServiceIndicator - wraparoundServiceIndicator
    */
   @JsonCreator
-  public DeliveredService(@JsonProperty("id") String id,
-      @JsonProperty("cft_lead_agency_type") Short cftLeadAgencyType,
+  public DeliveredServiceDomain(@JsonProperty("id") String id,
+      @JsonProperty("child_family_team_lead_agency") Short cftLeadAgencyType,
       @JsonProperty("core_service") Boolean coreServiceIndicator,
       @JsonProperty("communication_type") Integer communicationMethodType,
       @JsonProperty("contact_location") Integer contactLocationType,
@@ -185,19 +200,17 @@ public class DeliveredService extends ReportingDomain implements Request, Respon
       @JsonProperty("county") String countySpecificCode,
       @JsonProperty("detail_text") String detailText,
       @JsonProperty("detail_text_continuation") String detailTextContinuation,
-      @JsonProperty(value = "end_Date") String endDate,
-      @JsonProperty(value = "end_Time") String endTime,
-      @JsonProperty(value = "primary_delivered_service_id") String primaryDeliveredServiceId,
-      @JsonProperty(value = "document_on_file") String hardCopyDocumentOnFileCode,
-      @JsonProperty(value = "other_participant") String otherParticipantsDesc,
-      @JsonProperty(value = "provied_by") String providedByCode,
-      @JsonProperty(value = "provided_by_id") String providedById,
-      @JsonProperty(value = "service_contact") Integer serviceContactType,
-      @JsonProperty(value = "start_Date") String startDate,
-      @JsonProperty(value = "start_Time") String startTime,
-      @JsonProperty(value = "status") String statusCode,
-      @JsonProperty(value = "supervision") String supervisionCode,
-      @JsonProperty(value = "wrap_around") Boolean wrapAroundIndicator) {
+      @JsonProperty("end_date") String endDate, @JsonProperty("end_time") String endTime,
+      @JsonProperty("primary_delivered_service_id") String primaryDeliveredServiceId,
+      @JsonProperty("document_on_file") String hardCopyDocumentOnFileCode,
+      @JsonProperty("other_participant") String otherParticipantsDesc,
+      @JsonProperty("provied_by") String providedByCode,
+      @JsonProperty("provided_by_id") String providedById,
+      @JsonProperty("service_contact") Integer serviceContactType,
+      @JsonProperty("start_date") String startDate, @JsonProperty("start_time") String startTime,
+      @JsonProperty("status") String statusCode,
+      @JsonProperty("supervision") String supervisionCode,
+      @JsonProperty("wrap_around_service") Boolean wraparoundServiceIndicator) {
     super();
     this.id = id;
     this.cftLeadAgencyType = cftLeadAgencyType;
@@ -220,7 +233,7 @@ public class DeliveredService extends ReportingDomain implements Request, Respon
     this.startTime = startTime;
     this.statusCode = statusCode;
     this.supervisionCode = supervisionCode;
-    this.wrapAroundIndicator = wrapAroundIndicator;
+    this.wraparoundServiceIndicator = wraparoundServiceIndicator;
   }
 
   /**
@@ -228,8 +241,8 @@ public class DeliveredService extends ReportingDomain implements Request, Respon
    * 
    * @param persistedDeliverdService persisted tickle object
    */
-  public DeliveredService(
-      gov.ca.cwds.data.persistence.cms.DeliveredServiceEntity persistedDeliverdService) {
+  public DeliveredServiceDomain(
+      gov.ca.cwds.data.persistence.contact.DeliveredServiceEntity persistedDeliverdService) {
     this.id = persistedDeliverdService.getId();
     this.cftLeadAgencyType = persistedDeliverdService.getCftLeadAgencyType();
     this.coreServiceIndicator =
@@ -243,7 +256,7 @@ public class DeliveredService extends ReportingDomain implements Request, Respon
     this.detailTextContinuation = persistedDeliverdService.getDetailTextContinuation();
     this.endDate = DomainChef.cookDate(persistedDeliverdService.getEndDate());
     this.endTime = DomainChef.cookTime(persistedDeliverdService.getEndTime());
-    this.primaryDeliveredServiceId = persistedDeliverdService.getPrimaryDeliveryServiceId();
+    this.primaryDeliveredServiceId = persistedDeliverdService.getPrimaryDeliveredServiceId();
     this.hardCopyDocumentOnFileCode = persistedDeliverdService.getHardCopyDocumentOnFileCode();
     this.otherParticipantsDesc = persistedDeliverdService.getOtherParticipantsDesc();
     this.providedByCode = persistedDeliverdService.getProvidedByCode();
@@ -253,7 +266,7 @@ public class DeliveredService extends ReportingDomain implements Request, Respon
     this.startTime = DomainChef.cookTime(persistedDeliverdService.getStartTime());
     this.statusCode = persistedDeliverdService.getStatusCode();
     this.supervisionCode = persistedDeliverdService.getSupervisionCode();
-    this.wrapAroundIndicator =
+    this.wraparoundServiceIndicator =
         DomainChef.uncookBooleanString(persistedDeliverdService.getWraparoundServiceIndicator());
   }
 
@@ -407,8 +420,8 @@ public class DeliveredService extends ReportingDomain implements Request, Respon
   /**
    * @return the wrapAroundIndicator
    */
-  public Boolean getWrapAroundIndicator() {
-    return wrapAroundIndicator;
+  public Boolean getWraparoundServiceIndicator() {
+    return wraparoundServiceIndicator;
   }
 
   /**

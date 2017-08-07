@@ -1,4 +1,4 @@
-package gov.ca.cwds.data.cms;
+package gov.ca.cwds.data.dao.contact;
 
 import static org.hamcrest.Matchers.nullValue;
 import static org.hamcrest.core.Is.is;
@@ -21,8 +21,8 @@ import org.junit.BeforeClass;
 import org.junit.Rule;
 import org.junit.Test;
 
-import gov.ca.cwds.data.persistence.cms.IndividualDeliveredServiceEmbeddable;
-import gov.ca.cwds.data.persistence.cms.IndividualDeliveredServiceEntity;
+import gov.ca.cwds.data.persistence.contact.IndividualDeliveredServiceEmbeddable;
+import gov.ca.cwds.data.persistence.contact.IndividualDeliveredServiceEntity;
 
 /**
  * @author CWDS API Team
@@ -100,23 +100,23 @@ public class IndividualDeliveredServiceDaoIT {
 
   @Test
   public void testCreate() throws Exception {
-    IndividualDeliveredServiceEntity individualDeliveredService =
+    IndividualDeliveredServiceEntity individualDeliveredServiceEntity =
         new IndividualDeliveredServiceEntity("ABC1234567", deliveredToIndividualCode, "ABC123458",
             "99", new Date(), (short) 420, new Date());
 
     IndividualDeliveredServiceEntity created =
-        individualDeliveredServiceDao.create(individualDeliveredService);
-    assertThat(created, is(individualDeliveredService));
+        individualDeliveredServiceDao.create(individualDeliveredServiceEntity);
+    assertThat(created, is(individualDeliveredServiceEntity));
   }
 
   @Test
   public void testCreateExistingEntityException() throws Exception {
     thrown.expect(EntityExistsException.class);
-    IndividualDeliveredServiceEntity individualDeliveredService =
+    IndividualDeliveredServiceEntity individualDeliveredServiceEntity =
         new IndividualDeliveredServiceEntity(deliveredServiceId, deliveredToIndividualCode,
             deliveredToIndividualId, "99", new Date(), (short) 420, new Date());
 
-    individualDeliveredServiceDao.create(individualDeliveredService);
+    individualDeliveredServiceDao.create(individualDeliveredServiceEntity);
   }
 
   @Test
@@ -144,23 +144,23 @@ public class IndividualDeliveredServiceDaoIT {
   @Test
   public void testUpdate() throws Exception {
 
-    IndividualDeliveredServiceEntity individualDeliveredService =
+    IndividualDeliveredServiceEntity individualDeliveredServiceEntity =
         new IndividualDeliveredServiceEntity(deliveredServiceId, deliveredToIndividualCode,
             deliveredToIndividualId, "00", new Date(), (short) 420, new Date());
 
     IndividualDeliveredServiceEntity updated =
-        individualDeliveredServiceDao.update(individualDeliveredService);
-    assertThat(updated, is(individualDeliveredService));
+        individualDeliveredServiceDao.update(individualDeliveredServiceEntity);
+    assertThat(updated, is(individualDeliveredServiceEntity));
   }
 
   @Test
   public void testUpdateEntityNotFoundException() throws Exception {
     thrown.expect(EntityNotFoundException.class);
-    IndividualDeliveredServiceEntity individualDeliveredService =
+    IndividualDeliveredServiceEntity individualDeliveredServiceEntity =
         new IndividualDeliveredServiceEntity("CVJSVCjnj", deliveredToIndividualCode, "sbdvh7chhv",
             "00", new Date(), (short) 420, new Date());
 
-    individualDeliveredServiceDao.update(individualDeliveredService);
+    individualDeliveredServiceDao.update(individualDeliveredServiceEntity);
 
   }
 

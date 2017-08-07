@@ -1,4 +1,4 @@
-package gov.ca.cwds.data.persistence.cms;
+package gov.ca.cwds.data.persistence.contact;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.equalTo;
@@ -49,13 +49,16 @@ public class ReferralClientDeliveredServiceEmbeddableTest {
     ReferralClientDeliveredServiceEmbeddable valid =
         validReferralClientDeliveredServiceEmbeddable();
 
-    ReferralClientDeliveredServiceEmbeddable persistent =
+    ReferralClientDeliveredServiceEmbeddable ReferralClientDeliveredServiceEmbeddable =
         new ReferralClientDeliveredServiceEmbeddable(valid.getDeliveredServiceId(),
             valid.getReferralId(), valid.getClientId());
 
-    assertThat(persistent.getDeliveredServiceId(), is(equalTo(valid.getDeliveredServiceId())));
-    assertThat(persistent.getReferralId(), is(equalTo(valid.getReferralId())));
-    assertThat(persistent.getClientId(), is(equalTo(valid.getClientId())));
+    assertThat(ReferralClientDeliveredServiceEmbeddable.getDeliveredServiceId(),
+        is(equalTo(valid.getDeliveredServiceId())));
+    assertThat(ReferralClientDeliveredServiceEmbeddable.getReferralId(),
+        is(equalTo(valid.getReferralId())));
+    assertThat(ReferralClientDeliveredServiceEmbeddable.getClientId(),
+        is(equalTo(valid.getClientId())));
   }
 
   private ReferralClientDeliveredServiceEmbeddable validReferralClientDeliveredServiceEmbeddable()

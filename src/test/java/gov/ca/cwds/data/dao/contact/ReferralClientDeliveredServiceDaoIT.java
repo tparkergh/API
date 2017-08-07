@@ -1,4 +1,4 @@
-package gov.ca.cwds.data.cms;
+package gov.ca.cwds.data.dao.contact;
 
 import static org.hamcrest.Matchers.nullValue;
 import static org.hamcrest.core.Is.is;
@@ -19,8 +19,8 @@ import org.junit.BeforeClass;
 import org.junit.Rule;
 import org.junit.Test;
 
-import gov.ca.cwds.data.persistence.cms.ReferralClientDeliveredServiceEmbeddable;
-import gov.ca.cwds.data.persistence.cms.ReferralClientDeliveredServiceEntity;
+import gov.ca.cwds.data.persistence.contact.ReferralClientDeliveredServiceEmbeddable;
+import gov.ca.cwds.data.persistence.contact.ReferralClientDeliveredServiceEntity;
 
 /**
  * @author CWDS API Team
