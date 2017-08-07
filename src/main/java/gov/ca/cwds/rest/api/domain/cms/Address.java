@@ -232,8 +232,7 @@ public class Address extends ReportingDomain implements Request, Response {
    * @param stateCode - stateCode
    * @return - postedAddress
    */
-  public static Address createWithDefaults(gov.ca.cwds.rest.api.domain.Address address,
-      short stateCode) {
+  public static Address createWithDefaults(gov.ca.cwds.rest.api.domain.Address address) {
     // TODO: 41511573 address parsing - Smarty Streets Free Form display requires standardizing
     // parsing to fields in CMS
     int zipCode = address.getZip();
@@ -268,8 +267,9 @@ public class Address extends ReportingDomain implements Request, Response {
     }
 
     return new Address(" ", address.getCity(), DEFAULT_DECIMAL, DEFAULT_INT, false, DEFAULT_CODE,
-        DEFAULT_DECIMAL, DEFAULT_INT, " ", DEFAULT_DECIMAL, DEFAULT_INT, stateCode, streetName,
-        streetNumber, zipCode, " ", zipSuffix, " ", " ", DEFAULT_CODE, DEFAULT_CODE, " ");
+        DEFAULT_DECIMAL, DEFAULT_INT, " ", DEFAULT_DECIMAL, DEFAULT_INT,
+        address.getState().shortValue(), streetName, streetNumber, zipCode, " ", zipSuffix, " ",
+        " ", DEFAULT_CODE, DEFAULT_CODE, " ");
   }
 
   /**
