@@ -26,6 +26,17 @@ import io.swagger.annotations.ApiParam;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 
+/**
+ * A resource providing a RESTful interface for {@link DrmsDocument}. It delegates functions to
+ * {@link TypedResourceDelegate}. It decorates the {@link TypedResourceDelegate} not in
+ * functionality but with @see
+ * <a href= "https://github.com/swagger-api/swagger-core/wiki/Annotations-1.5.X">Swagger
+ * Annotations</a> and
+ * <a href="https://jersey.java.net/documentation/latest/user-guide.html#jaxrs-resources">Jersey
+ * Annotations</a>
+ * 
+ * @author CWDS API Team
+ */
 @Api(value = RESOURCE_DELIVERY_SERVICE)
 @Path(value = RESOURCE_DELIVERY_SERVICE)
 @Produces(MediaType.APPLICATION_JSON)
@@ -48,7 +59,7 @@ public class DeliveredServiceResource {
   /**
    * Create an {@link DrmsDocument}.
    *
-   * @param deliveredServiceEntity The {@link DeliveredService}
+   * @param deliveredServiceDomain The {@link DeliveredService}
    *
    * @return The {@link Response}
    */
@@ -61,10 +72,10 @@ public class DeliveredServiceResource {
       @ApiResponse(code = 422, message = "Unable to validate deliveredServiceEntity")})
   @Consumes(value = MediaType.APPLICATION_JSON)
   @ApiOperation(value = "Create deliveredService", code = HttpStatus.SC_CREATED,
-      response = gov.ca.cwds.rest.api.contact.DeliveredServiceDomain.class)
+      response = DeliveredServiceDomain.class)
   public Response create(@Valid @ApiParam(hidden = false,
-      required = true) gov.ca.cwds.rest.api.contact.DeliveredServiceDomain deliveredServiceEntity) {
-    return typedResourceDelegate.create(deliveredServiceEntity);
+      required = true) DeliveredServiceDomain deliveredServiceDomain) {
+    return typedResourceDelegate.create(deliveredServiceDomain);
   }
 
 }
