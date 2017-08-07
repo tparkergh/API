@@ -117,7 +117,7 @@ public class R04631ReferralInvestigationContactDueTest {
     Address address = new AddressResourceBuilder().createAddress();
 
     Reporter reporterDomain =
-        Reporter.createWithDefaults("123ABC1235", false, address, reporter, "62", (short) 1828);
+        Reporter.createWithDefaults("123ABC1235", false, address, reporter, "62");
 
     gov.ca.cwds.data.persistence.cms.Reporter savedReporter =
         new gov.ca.cwds.data.persistence.cms.Reporter(reporterDomain, "0X5");
@@ -190,7 +190,7 @@ public class R04631ReferralInvestigationContactDueTest {
     Address address = new AddressResourceBuilder().createAddress();
 
     Reporter reporterDomain =
-        Reporter.createWithDefaults("123ABC1235", false, address, reporter, "62", (short) 1828);
+        Reporter.createWithDefaults("123ABC1235", false, address, reporter, "62");
 
     gov.ca.cwds.data.persistence.cms.Reporter savedReporter =
         new gov.ca.cwds.data.persistence.cms.Reporter(reporterDomain, "0X5");
@@ -267,7 +267,7 @@ public class R04631ReferralInvestigationContactDueTest {
     Address address = new AddressResourceBuilder().createAddress();
 
     Reporter reporterDomain =
-        Reporter.createWithDefaults("123ABC1235", true, address, reporter, "62", (short) 1828);
+        Reporter.createWithDefaults("123ABC1235", true, address, reporter, "62");
 
     gov.ca.cwds.data.persistence.cms.Reporter savedReporter =
         new gov.ca.cwds.data.persistence.cms.Reporter(reporterDomain, "0X5");
@@ -342,7 +342,7 @@ public class R04631ReferralInvestigationContactDueTest {
     Address address = new AddressResourceBuilder().createAddress();
 
     Reporter reporterDomain =
-        Reporter.createWithDefaults("123ABC1235", false, address, reporter, "62", (short) 1828);
+        Reporter.createWithDefaults("123ABC1235", false, address, reporter, "62");
 
     gov.ca.cwds.data.persistence.cms.Reporter savedReporter =
         new gov.ca.cwds.data.persistence.cms.Reporter(reporterDomain, "0X5");
