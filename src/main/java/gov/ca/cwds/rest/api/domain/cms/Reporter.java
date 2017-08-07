@@ -319,7 +319,6 @@ public class Reporter extends ReportingDomain implements Request, Response {
    * @param address - address
    * @param participant - participant
    * @param countyCode - countyCode
-   * @param stateCode - stateCode
    * @return the address
    */
   public static Reporter createWithDefaults(String referralId, boolean isMandatedReporter,
