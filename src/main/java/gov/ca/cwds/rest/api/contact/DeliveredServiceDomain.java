@@ -12,6 +12,7 @@ import org.hibernate.validator.constraints.NotEmpty;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
 import gov.ca.cwds.rest.api.Request;
 import gov.ca.cwds.rest.api.Response;
@@ -20,6 +21,7 @@ import gov.ca.cwds.rest.api.domain.DomainObject;
 import gov.ca.cwds.rest.api.domain.ReportingDomain;
 import gov.ca.cwds.rest.api.domain.SystemCodeCategoryId;
 import gov.ca.cwds.rest.validation.ValidSystemCodeId;
+import io.dropwizard.jackson.JsonSnakeCase;
 import io.dropwizard.validation.OneOf;
 import io.swagger.annotations.ApiModelProperty;
 
@@ -28,6 +30,13 @@ import io.swagger.annotations.ApiModelProperty;
  * 
  * @author CWDS API Team
  */
+@JsonSnakeCase
+@JsonPropertyOrder({"id", "cftLeadAgencyType", "coreServiceIndicator", "communicationMethodType",
+    "contactLocationType", "contactVisitCode", "countySpecificCode", "detailText",
+    "detailTextContinuation", "endDate", "endTime", "primaryDeliveredServiceId",
+    "hardCopyDocumentOnFileCode", "otherParticipantsDesc", "providedByCode", "providedById",
+    "serviceContactType", "startDate", "startTime", "statusCode", "supervisionCode",
+    "wraparoundServiceIndicator"})
 public class DeliveredServiceDomain extends ReportingDomain implements Request, Response {
 
   /**
@@ -36,6 +45,7 @@ public class DeliveredServiceDomain extends ReportingDomain implements Request, 
   private static final long serialVersionUID = 1L;
 
   @Size(max = CMS_ID_LEN)
+  @NotNull
   @ApiModelProperty(required = true, readOnly = true, value = "", example = "ABC1234567")
   private String id;
 
@@ -61,15 +71,15 @@ public class DeliveredServiceDomain extends ReportingDomain implements Request, 
       example = "415")
   private Integer contactLocationType;
 
-  @JsonProperty("contact_visit")
   @NotEmpty
+  @JsonProperty("contact_visit")
   @Size(max = 1)
   @OneOf(value = {"C", "N", "V"}, ignoreCase = false, ignoreWhitespace = true)
   @ApiModelProperty(required = true, readOnly = false, value = "", example = "C")
   private String contactVisitCode;
 
-  @JsonProperty("county")
   @NotEmpty
+  @JsonProperty("county")
   @Size(min = 2, max = 2)
   @ApiModelProperty(required = true, readOnly = false, value = "", example = "99")
   private String countySpecificCode;
@@ -87,82 +97,82 @@ public class DeliveredServiceDomain extends ReportingDomain implements Request, 
   private String detailTextContinuation;
 
   @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = DATE_FORMAT)
-  @JsonProperty(value = "end_date")
+  @JsonProperty("end_date")
   @gov.ca.cwds.rest.validation.Date(format = DATE_FORMAT, required = true)
   @ApiModelProperty(required = false, readOnly = false, value = "yyyy-MM-dd",
       example = "2000-01-01")
   private String endDate;
 
   @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = TIME_FORMAT)
-  @JsonProperty(value = "end_time")
+  @JsonProperty("end_time")
   @gov.ca.cwds.rest.validation.Date(format = TIME_FORMAT, required = false)
   @ApiModelProperty(required = false, readOnly = false, value = "Assignment end time",
       example = "16:41:49")
   private String endTime;
 
-  @JsonProperty(value = "primary_delivered_service_id")
+  @JsonProperty("primary_delivered_service_id")
   @Size(min = CMS_ID_LEN, max = CMS_ID_LEN)
   @ApiModelProperty(required = false, readOnly = false, value = "", example = "ABC1234567")
   private String primaryDeliveredServiceId;
 
   @NotEmpty
-  @JsonProperty(value = "document_on_file")
+  @JsonProperty("document_on_file")
   @Size(min = 1, max = 1)
   @OneOf(value = {"N", "U", "Y"}, ignoreCase = false, ignoreWhitespace = true)
   @ApiModelProperty(required = false, readOnly = false, value = "", example = "N")
   private String hardCopyDocumentOnFileCode;
 
-  @JsonProperty(value = "other_participants")
+  @JsonProperty("other_participants")
   @Size(max = 100)
   @ApiModelProperty(required = false, readOnly = false, value = "",
       example = "Attorney, Doctor and etc")
   private String otherParticipantsDesc;
 
-  @JsonProperty(value = "provided_by")
+  @JsonProperty("provided_by")
   @Size(min = 1, max = 1)
   @OneOf(value = {"S", "O", "V", "X"}, ignoreCase = false, ignoreWhitespace = true)
   @ApiModelProperty(required = false, readOnly = false, value = "", example = "S")
   private String providedByCode;
 
-  @JsonProperty(value = "provided_by_id")
+  @JsonProperty("provided_by_id")
   @Size(min = CMS_ID_LEN, max = CMS_ID_LEN)
   @ApiModelProperty(required = false, readOnly = false, value = "", example = "ABC1234567")
   private String providedById;
 
-  @JsonProperty(value = "service_contact")
-  @ApiModelProperty(required = false, readOnly = false)
+  @JsonProperty("service_contact")
+  @ApiModelProperty(required = false, readOnly = false, value = "", example = "0")
   private Integer serviceContactType;
 
   @NotEmpty
   @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = DATE_FORMAT)
-  @JsonProperty(value = "start_date")
+  @JsonProperty("start_date")
   @gov.ca.cwds.rest.validation.Date(format = DATE_FORMAT, required = true)
   @ApiModelProperty(required = true, readOnly = false, value = "yyyy-MM-dd", example = "2000-01-01")
   private String startDate;
 
   @NotEmpty
   @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = TIME_FORMAT)
-  @JsonProperty(value = "start_time")
+  @JsonProperty("start_time")
   @gov.ca.cwds.rest.validation.Date(format = TIME_FORMAT, required = false)
   @ApiModelProperty(required = true, readOnly = false, value = "Contact end time",
       example = "16:41:49")
   private String startTime;
 
   @NotEmpty
-  @JsonProperty(value = "status")
+  @JsonProperty("status")
   @Size(min = 1, max = 1)
   @OneOf(value = {"C", "A", "S"}, ignoreCase = false, ignoreWhitespace = true)
   @ApiModelProperty(required = false, readOnly = false, value = "", example = "C")
   private String statusCode;
 
-  @JsonProperty(value = "supervision")
+  @JsonProperty("supervision")
   @Size(min = 1, max = 1)
   @OneOf(value = {"C", "S", "O", "N"}, ignoreCase = false, ignoreWhitespace = true)
   @ApiModelProperty(required = false, readOnly = false, value = "", example = "C")
   private String supervisionCode;
 
   @NotNull
-  @JsonProperty(value = "wrap_around_service")
+  @JsonProperty("wrap_around_service")
   @ApiModelProperty(required = true, readOnly = false)
   private Boolean wraparoundServiceIndicator;
 
