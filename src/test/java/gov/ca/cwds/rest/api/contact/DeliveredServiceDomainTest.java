@@ -2,7 +2,6 @@ package gov.ca.cwds.rest.api.contact;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.equalTo;
-import static org.hamcrest.Matchers.greaterThanOrEqualTo;
 import static org.hamcrest.Matchers.is;
 import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.mock;
@@ -10,8 +9,6 @@ import static org.mockito.Mockito.when;
 
 import java.util.Date;
 
-import javax.ws.rs.client.Entity;
-import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
 import org.junit.After;
@@ -31,7 +28,8 @@ import io.dropwizard.testing.junit.ResourceTestRule;
 import nl.jqno.equalsverifier.EqualsVerifier;
 import nl.jqno.equalsverifier.Warning;
 
-/**
+/***
+ * 
  * @author CWDS API Team
  *
  */
@@ -54,8 +52,6 @@ public class DeliveredServiceDomainTest {
   @ClassRule
   public static final ResourceTestRule resources =
       ResourceTestRule.builder().addResource(mockedDeliveredServiceResource).build();
-  private DeliveredServiceDomain validDeliveredService =
-      new DeliveredServiceResourceBuilder().buildDeliveredServiceResource();
 
   private String id = "ABC1234567";
   private String lastUpdatedId = "0X5";
@@ -85,7 +81,8 @@ public class DeliveredServiceDomainTest {
 
   @Before
   public void setup() {
-
+    DeliveredServiceDomain validDeliveredService =
+        new DeliveredServiceResourceBuilder().buildDeliveredServiceResource();
 
     when(mockedDeliveredServiceResource.create(eq(validDeliveredService)))
         .thenReturn(Response.status(Response.Status.NO_CONTENT).entity(null).build());
@@ -186,41 +183,5 @@ public class DeliveredServiceDomainTest {
         .verify();
 
   }
-
-  @Test
-  public void testSuccessWithValid() throws Exception {
-    DeliveredServiceDomain toCreate =
-        new DeliveredServiceResourceBuilder().buildDeliveredServiceResource();
-    Response response =
-        resources.client().target(ROOT_RESOURCE).request().accept(MediaType.APPLICATION_JSON)
-            .post(Entity.entity(toCreate, MediaType.APPLICATION_JSON));
-    assertThat(response.getStatus(), is(equalTo(204)));
-
-  }
-
-  @Test
-  public void failWhenContactIdNull() throws Exception {
-    DeliveredServiceDomain validDeliveredService =
-        new DeliveredServiceResourceBuilder().setId(null).buildDeliveredServiceResource();
-
-    Response response =
-        resources.client().target(ROOT_RESOURCE).request().accept(MediaType.APPLICATION_JSON)
-            .post(Entity.entity(validDeliveredService, MediaType.APPLICATION_JSON));
-
-    assertThat(response.getStatus(), is(equalTo(422)));
-    assertThat(response.readEntity(String.class).indexOf("id may not be null"),
-        is(greaterThanOrEqualTo(0)));
-
-  }
-
-
-  // private DeliveredServiceDomain validDeliveredService() {
-  // return new DeliveredServiceDomain(id, cftLeadAgencyType, coreServiceIndicator,
-  // communicationMethodType, contactLocationType, contactVisitCode, countySpecificCode,
-  // detailText, detailTextContinuation, endDate, endTime, primaryDeliveredServiceId,
-  // hardCopyDocumentOnFileCode, otherParticipantsDesc, providedByCode, providedById,
-  // serviceContactType, startDate, startTime, statusCode, supervisionCode,
-  // wraparoundServiceIndicator);
-  // }
 
 }
