@@ -608,26 +608,28 @@ public class Referral extends ReportingDomain implements Request, Response {
    * @param referralResponseTypeCode - referralResponseTypeCode
    * @param allegesAbuseOccurredAtAddressId - allegesAbuseOccurredAtAddressId
    * @param firstResponseDeterminedByStaffPersonId - firstResponseDeterminedByStaffPersonId
-   * @param longTextId - longTextId
+   * @param screenerNoteLongTextId - screenerNoteLongTextId
    * @param countyCode - countyCode
    * @param approvalCode - approvalCode
    * @param staffId - staffId
+   * @param responseRationalLongTextId - longTextId for Response Rational Text
    * @return the referral
    */
   public static Referral createWithDefaults(Boolean anonymousReporter,
       short communicationsMethodCode, String drmsAllegationDescriptionDoc, String drmsErReferralDoc,
       String drmsInvestigationDoc, String referalName, String dateStarted, String timeStarted,
       short referralResponseTypeCode, String allegesAbuseOccurredAtAddressId,
-      String firstResponseDeterminedByStaffPersonId, String longTextId, String countyCode,
-      short approvalCode, String staffId) {
+      String firstResponseDeterminedByStaffPersonId, String screenerNoteLongTextId,
+      String countyCode, short approvalCode, String staffId, String responseRationalLongTextId) {
     return new Referral(false, anonymousReporter, false, "", approvalCode, false, "",
         communicationsMethodCode, "", drmsAllegationDescriptionDoc, drmsErReferralDoc,
         drmsInvestigationDoc, false, false, DEFAULT_CODE, DEFAULT_NO, false,
         DEFAULT_LIMITIED_ACCESS_CODE, "", referalName, "", dateStarted, timeStarted,
-        referralResponseTypeCode, DEFAULT_CODE, "", "", "", longTextId, DEFAULT_NO, DEFAULT_NO,
-        DEFAULT_NO, "", allegesAbuseOccurredAtAddressId, firstResponseDeterminedByStaffPersonId,
-        staffId, countyCode, false, false, false, false, "", DEFAULT_RESPONSIBLE_AGENCY_CODE,
-        DEFAULT_CODE, "", "", "", null, null, null, null, null, null, null);
+        referralResponseTypeCode, DEFAULT_CODE, "", "", responseRationalLongTextId,
+        screenerNoteLongTextId, DEFAULT_NO, DEFAULT_NO, DEFAULT_NO, "",
+        allegesAbuseOccurredAtAddressId, firstResponseDeterminedByStaffPersonId, staffId,
+        countyCode, false, false, false, false, "", DEFAULT_RESPONSIBLE_AGENCY_CODE, DEFAULT_CODE,
+        "", "", "", null, null, null, null, null, null, null);
   }
 
   /**
