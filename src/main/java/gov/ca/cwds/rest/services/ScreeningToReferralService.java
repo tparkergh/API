@@ -617,11 +617,11 @@ public class ScreeningToReferralService implements CrudsService {
         // create an allegation in CMS legacy database
         gov.ca.cwds.rest.api.domain.cms.Allegation cmsAllegation =
             new gov.ca.cwds.rest.api.domain.cms.Allegation("", LegacyDefaultValues.DEFAULT_CODE, "",
-                scr.getLocationType(), "", allegationDispositionType, legacyCodes.allegationTypeCode, "", "",
-                false, LegacyDefaultValues.DEFAULT_NON_PROTECTING_PARENT_CODE, false,
-                victimClientId, perpatratorClientId, referralId,
-                LegacyDefaultValues.DEFAULT_COUNTY_SPECIFIC_CODE, false,
-                LegacyDefaultValues.DEFAULT_CODE);
+                scr.getLocationType(), "", allegationDispositionType,
+                legacyCodes.allegationTypeCode, "", "", false,
+                LegacyDefaultValues.DEFAULT_NON_PROTECTING_PARENT_CODE, false, victimClientId,
+                perpatratorClientId, referralId, LegacyDefaultValues.DEFAULT_COUNTY_SPECIFIC_CODE,
+                false, LegacyDefaultValues.DEFAULT_CODE);
 
         messageBuilder.addDomainValidationError(validator.validate(cmsAllegation));
 
@@ -676,8 +676,7 @@ public class ScreeningToReferralService implements CrudsService {
     for (gov.ca.cwds.rest.api.domain.Address address : addresses) {
       if (address.getLegacyId() == null || address.getLegacyId().isEmpty()) {
         // add the Address row
-        Address domainAddress =
-            Address.createWithDefaults(address, LegacyDefaultValues.DEFAULT_STATE_CODE);
+        Address domainAddress = Address.createWithDefaults(address);
         zipSuffix = domainAddress.getZip4();
 
         messageBuilder.addDomainValidationError(validator.validate(domainAddress));
