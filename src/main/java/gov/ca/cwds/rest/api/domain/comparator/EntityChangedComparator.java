@@ -2,9 +2,13 @@ package gov.ca.cwds.rest.api.domain.comparator;
 
 import gov.ca.cwds.rest.api.domain.Participant;
 import gov.ca.cwds.rest.api.domain.cms.Client;
+import org.apache.logging.log4j.core.layout.StringBuilderEncoder;
 import org.joda.time.DateTime;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class EntityChangedComparator {
+  private static final Logger LOGGER = LoggerFactory.getLogger(EntityChangedComparator.class);
 
   /**
    * Compares the last update time stamp of the participant and client. This comparator does NOT use
@@ -21,9 +25,22 @@ public class EntityChangedComparator {
   public boolean compare(Participant participant, Client client) {
     DateTime particpantDate = trimMilliseconds(participant.getLegacyDescriptor().getLastUpdated());
     DateTime clientDate = trimMilliseconds(client.getLastUpdatedTime());
-    return particpantDate.getMillis() == clientDate.getMillis();
+    boolean isSameDate =  particpantDate.getMillis() == clientDate.getMillis();
+    if (!isSameDate){
+      logDateNotEqual(particpantDate, clientDate);
+    }
+    return isSameDate;
   }
-  public static DateTime trimMilliseconds(DateTime dt) {
+  private DateTime trimMilliseconds(DateTime dt) {
     return new DateTime(dt.getYear(), dt.getMonthOfYear(), dt.getDayOfMonth(), dt.getHourOfDay(), dt.getMinuteOfHour(), dt.getSecondOfMinute(), 0, dt.getZone());
+  }
+
+  private void logDateNotEqual(DateTime particpantDate, DateTime clientDate) {
+    StringBuilder builder = new StringBuilder();
+    builder.append("Date comparison failed. ParticipantDate: ");
+    builder.append(particpantDate);
+    builder.append(" clientDate: ");
+    builder.append(clientDate);
+    LOGGER.info(builder.toString());
   }
 }
