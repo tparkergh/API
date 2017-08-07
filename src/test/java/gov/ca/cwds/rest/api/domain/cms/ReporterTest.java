@@ -236,7 +236,7 @@ public class ReporterTest {
     Short stateCode = new Short("0");
 
     Reporter reporter = Reporter.createWithDefaults(referralId, isMandatedReporter, address,
-        participant, countyCode, stateCode);
+        participant, countyCode);
     assertEquals("Expected referralId field to have been initialized with value", referralId,
         reporter.getReferralId());
     assertEquals("Expected isMandatedReporter field to have been initialized with value",
@@ -259,8 +259,6 @@ public class ReporterTest {
         reporter.getSuffixTitleDescription());
     assertEquals("Expected countyCode field to have been initialized with value", countyCode,
         reporter.getCountySpecificCode());
-    assertEquals("Expected stateCode field to have been initialized with value", stateCode,
-        reporter.getStateCodeType());
   }
 
   @Test
@@ -291,7 +289,7 @@ public class ReporterTest {
     Short stateCode = new Short("0");
 
     Reporter reporter = Reporter.createWithDefaults(referralId, isMandatedReporter, address,
-        participant, countyCode, stateCode);
+        participant, countyCode);
     assertEquals("Expected badgeNumber field to have been initialized with value", "",
         reporter.getBadgeNumber());
     assertEquals("Expected colltrClientRptrReltnshpType field to have been initialized with value",
@@ -335,8 +333,8 @@ public class ReporterTest {
             "firstName", "middleName", "lastName", "jr", "gender", "ssn", "date_of_birth",
             primaryLanguage, secondaryLanguage, 7L, 8L, new HashSet<>(), new HashSet<>());
 
-    Reporter reporter = Reporter.createWithDefaults("referralId", true, address, participant,
-        "countyCode", new Short("0"));
+    Reporter reporter =
+        Reporter.createWithDefaults("referralId", true, address, participant, "countyCode");
 
     assertEquals("Street Number not parsed from street address", "1", reporter.getStreetNumber());
   }
@@ -352,8 +350,8 @@ public class ReporterTest {
             "firstName", "middleName", "lastName", "jr", "gender", "ssn", "date_of_birth",
             primaryLanguage, secondaryLanguage, 7L, 8L, new HashSet<>(), new HashSet<>());
 
-    Reporter reporter = Reporter.createWithDefaults("referralId", true, address, participant,
-        "countyCode", new Short("0"));
+    Reporter reporter =
+        Reporter.createWithDefaults("referralId", true, address, participant, "countyCode");
 
     assertEquals("Street Number not parsed from street address", "main", reporter.getStreetName());
   }
@@ -369,8 +367,8 @@ public class ReporterTest {
             "firstName", "middleName", "lastName", "jr", "gender", "ssn", "date_of_birth",
             primaryLanguage, secondaryLanguage, 7L, 8L, new HashSet<>(), new HashSet<>());
 
-    Reporter reporter = Reporter.createWithDefaults("referralId", true, address, participant,
-        "countyCode", new Short("0"));
+    Reporter reporter =
+        Reporter.createWithDefaults("referralId", true, address, participant, "countyCode");
 
     assertEquals("Street Number not parsed from street address", "San Andreas Blvd",
         reporter.getStreetName());
@@ -387,8 +385,8 @@ public class ReporterTest {
             "firstName", "middleName", "lastName", "jr", "gender", "ssn", "date_of_birth",
             primaryLanguage, secondaryLanguage, 7L, 8L, new HashSet<>(), new HashSet<>());
 
-    Reporter reporter = Reporter.createWithDefaults("referralId", true, address, participant,
-        "countyCode", new Short("0"));
+    Reporter reporter =
+        Reporter.createWithDefaults("referralId", true, address, participant, "countyCode");
 
     assertEquals("Expected StreetName to contain second word as street name", "Main St",
         reporter.getStreetName());

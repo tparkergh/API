@@ -323,8 +323,7 @@ public class Reporter extends ReportingDomain implements Request, Response {
    * @return the address
    */
   public static Reporter createWithDefaults(String referralId, boolean isMandatedReporter,
-      gov.ca.cwds.rest.api.domain.Address address, Participant participant, String countyCode,
-      Short stateCode) {
+      gov.ca.cwds.rest.api.domain.Address address, Participant participant, String countyCode) {
     // TODO: #141511573 address parsing - Smarty Streets Free Form display requires
     // standardizing
     // parsing to fields in CMS
@@ -358,8 +357,9 @@ public class Reporter extends ReportingDomain implements Request, Response {
 
     return new Reporter("", city, DEFAULT_CODE, DEFAULT_CODE, false, "", "", "", false,
         participant.getFirstName(), participant.getLastName(), isMandatedReporter, 0,
-        DEFAULT_DECIMAL, participant.getMiddleName(), "", DEFAULT_DECIMAL, 0, stateCode, streetName,
-        streetNumber, "", zipCodeString, referralId, "", DEFAULT_CODE, countyCode);
+        DEFAULT_DECIMAL, participant.getMiddleName(), "", DEFAULT_DECIMAL, 0,
+        address.getState().shortValue(), streetName, streetNumber, "", zipCodeString, referralId,
+        "", DEFAULT_CODE, countyCode);
   }
 
   /**

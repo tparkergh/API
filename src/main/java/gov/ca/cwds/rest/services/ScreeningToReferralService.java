@@ -786,8 +786,7 @@ public class ScreeningToReferralService implements CrudsService {
     Reporter theReporter = reporterService.find(referralId);
     if (theReporter == null) {
       Reporter reporter = Reporter.createWithDefaults(referralId, mandatedReporterIndicator,
-          reporterAddress, ip, LegacyDefaultValues.DEFAULT_COUNTY_SPECIFIC_CODE,
-          LegacyDefaultValues.DEFAULT_STATE_CODE);
+          reporterAddress, ip, LegacyDefaultValues.DEFAULT_COUNTY_SPECIFIC_CODE);
 
       messageBuilder.addDomainValidationError(validator.validate(reporter));
       theReporter = reporterService.createWithSingleTimestamp(reporter, timestamp);
