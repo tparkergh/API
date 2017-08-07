@@ -229,7 +229,6 @@ public class Address extends ReportingDomain implements Request, Response {
 
   /**
    * @param address - address
-   * @param stateCode - stateCode
    * @return - postedAddress
    */
   public static Address createWithDefaults(gov.ca.cwds.rest.api.domain.Address address) {
