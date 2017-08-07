@@ -186,7 +186,7 @@ public class ReferralService implements CrudsService {
     }
   }
 
-  //TODO:Start of my changes
+  // TODO:Start of my changes
   /**
    * @param screeningToReferral - screeningToReferral
    * @param dateStarted - dateStarted
@@ -257,6 +257,8 @@ public class ReferralService implements CrudsService {
       Date timestamp, MessageBuilder messageBuilder) throws ServiceException {
     short approvalStatusCode = approvalStatusCodeOnCreateSetToNotSubmitted();
     String longTextId = generateReportNarrative(screeningToReferral, messageBuilder);
+    String responseRationalLongTextId =
+        generateResponseRationalText(screeningToReferral, messageBuilder);
     String firstResponseDeterminedByStaffPersonId = getFirstResponseDeterminedByStaffPersonId();
 
     /*
@@ -281,7 +283,7 @@ public class ReferralService implements CrudsService {
         timeStarted, screeningToReferral.getResponseTime(), allegesAbuseOccurredAtAddressId,
         firstResponseDeterminedByStaffPersonId, longTextId,
         LegacyDefaultValues.DEFAULT_COUNTY_SPECIFIC_CODE, approvalStatusCode,
-        LegacyDefaultValues.DEFAULT_STAFF_PERSON_ID);
+        LegacyDefaultValues.DEFAULT_STAFF_PERSON_ID, responseRationalLongTextId);
   }
 
   /**
@@ -349,6 +351,24 @@ public class ReferralService implements CrudsService {
     return longTextId;
   }
 
+  private String generateResponseRationalText(ScreeningToReferral screeningToReferral,
+      MessageBuilder messageBuilder) {
+    String longTextId = null;
+    if (screeningToReferral.getAdditionalInformation() == null
+        || screeningToReferral.getAdditionalInformation().isEmpty()) {
+      longTextId = null;
+    } else {
+      try {
+        longTextId = createLongText(LegacyDefaultValues.DEFAULT_COUNTY_SPECIFIC_CODE,
+            screeningToReferral.getAdditionalInformation(), messageBuilder);
+      } catch (ServiceException e) {
+        String message = e.getMessage();
+        messageBuilder.addMessageAndLog(message, e, LOGGER);
+      }
+    }
+    return longTextId;
+  }
+
   private String createLongText(String countySpecificCode, String textDescription,
       MessageBuilder messageBuilder) throws ServiceException {
 
@@ -361,7 +381,7 @@ public class ReferralService implements CrudsService {
 
   }
 
-  //TODO: end of my changes
+  // TODO: end of my changes
   /**
    * {@inheritDoc}
    * 
