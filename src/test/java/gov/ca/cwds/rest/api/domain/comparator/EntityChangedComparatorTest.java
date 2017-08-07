@@ -36,6 +36,13 @@ public class EntityChangedComparatorTest {
   }
 
   @Test
+  public void shouldCompareDatesWithSecondResolution(){
+    participant = createParticipant("2016-11-25T14:32:00.999-0700");
+    client = createClient( "2016-11-25T14:32:00.001-0700");
+
+    assertTrue(comparator.compare(participant, client));
+  }
+  @Test
   public void shouldNotEvaluateStringsWithDifferentSecondsAsEqual(){
     participant = createParticipant("2016-11-25T14:32:00.123-0700");
     client = createClient( "2016-11-25T14:32:59.123-0700");
