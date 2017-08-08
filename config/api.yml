@@ -29,6 +29,7 @@ nsDataSourceFactory:
   minIdleTime: 1 minute
   properties:
       hibernate.dialect: org.hibernate.dialect.PostgreSQL82Dialect
+      hibernate.jdbc.time_zone: PST
       hibernate.id.new_generator_mappings: false
       #hibernate.show_sql: true
       hibernate.format_sql: true
@@ -48,6 +49,7 @@ cmsDataSourceFactory:
   minIdleTime: 1 minute
   properties:
       hibernate.dialect: org.hibernate.dialect.DB2Dialect
+      hibernate.jdbc.time_zone: PST
       #hibernate.show_sql: true
       hibernate.format_sql: true
       hibernate.use_sql_comments: false
