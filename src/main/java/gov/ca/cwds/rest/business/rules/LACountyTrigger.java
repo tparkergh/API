@@ -1,5 +1,7 @@
 package gov.ca.cwds.rest.business.rules;
 
+import java.util.Date;
+
 import javax.persistence.Table;
 
 import org.slf4j.Logger;
@@ -12,6 +14,7 @@ import gov.ca.cwds.data.persistence.cms.ClientAddress;
 import gov.ca.cwds.data.persistence.cms.CountyTrigger;
 import gov.ca.cwds.data.persistence.cms.Referral;
 import gov.ca.cwds.data.persistence.cms.ReferralClient;
+import gov.ca.cwds.rest.filters.RequestExecutionContext;
 
 /**
  * Business layer object to work on LA County Trigger
@@ -30,6 +33,8 @@ public class LACountyTrigger {
   private static final String CLIENT_COUNTYOWNERSHIP = "C";
 
   private static final String ADDRESS_COUNTYOWNERSHIP = "A";
+
+  private Date integratorTimeStamp = RequestExecutionContext.instance().getRequestStartTime();
 
   private static final Logger LOGGER = LoggerFactory.getLogger(LACountyTrigger.class);
 
@@ -55,10 +60,9 @@ public class LACountyTrigger {
 
       if (referral.getAllegesAbuseOccurredAtAddressId() != ""
           && referral.getAllegesAbuseOccurredAtAddressId() != null) {
-        CountyTrigger countyTrigger =
-            new CountyTrigger(referral.getAllegesAbuseOccurredAtAddressId(),
-                referral.getCountySpecificCode(), ADDRESS_COUNTYOWNERSHIP, null,
-                Referral.class.getDeclaredAnnotation(Table.class).name());
+        CountyTrigger countyTrigger = new CountyTrigger(referral.getCountySpecificCode(),
+            ADDRESS_COUNTYOWNERSHIP, referral.getAllegesAbuseOccurredAtAddressId(),
+            Referral.class.getDeclaredAnnotation(Table.class).name(), integratorTimeStamp);
 
         countyTriggerDao.create(countyTrigger);
         LOGGER.info("LA county referral address triggered");
@@ -69,9 +73,9 @@ public class LACountyTrigger {
       referralClient = (ReferralClient) object;
 
       if (referralClient.getClientId() != "" && referralClient.getClientId() != null) {
-        CountyTrigger countyTrigger = new CountyTrigger(referralClient.getClientId(),
-            referralClient.getCountySpecificCode(), CLIENT_COUNTYOWNERSHIP, null,
-            ReferralClient.class.getDeclaredAnnotation(Table.class).name());
+        CountyTrigger countyTrigger = new CountyTrigger(referralClient.getCountySpecificCode(),
+            CLIENT_COUNTYOWNERSHIP, referralClient.getClientId(),
+            ReferralClient.class.getDeclaredAnnotation(Table.class).name(), integratorTimeStamp);
 
         countyTriggerDao.create(countyTrigger);
         LOGGER.info("LA county referralClient triggered");
@@ -93,13 +97,13 @@ public class LACountyTrigger {
 
       if (clientAddress.getFkClient() != "" && clientAddress.getFkClient() != null
           && clientAddress.getFkAddress() != "" && clientAddress.getFkAddress() != null) {
-        CountyTrigger countyTrigger1 = new CountyTrigger(clientAddress.getFkClient(),
-            LA_COUNTY_SPECIFIC_CODE, CLIENT_COUNTYOWNERSHIP, null,
-            ClientAddress.class.getDeclaredAnnotation(Table.class).name());
+        CountyTrigger countyTrigger1 = new CountyTrigger(LA_COUNTY_SPECIFIC_CODE,
+            CLIENT_COUNTYOWNERSHIP, clientAddress.getFkClient(),
+            ClientAddress.class.getDeclaredAnnotation(Table.class).name(), integratorTimeStamp);
 
-        CountyTrigger countyTrigger2 = new CountyTrigger(clientAddress.getFkAddress(),
-            LA_COUNTY_SPECIFIC_CODE, ADDRESS_COUNTYOWNERSHIP, null,
-            ClientAddress.class.getDeclaredAnnotation(Table.class).name());
+        CountyTrigger countyTrigger2 = new CountyTrigger(LA_COUNTY_SPECIFIC_CODE,
+            ADDRESS_COUNTYOWNERSHIP, clientAddress.getFkAddress(),
+            ClientAddress.class.getDeclaredAnnotation(Table.class).name(), integratorTimeStamp);
 
         countyTriggerDao.create(countyTrigger1);
         countyTriggerDao.create(countyTrigger2);
