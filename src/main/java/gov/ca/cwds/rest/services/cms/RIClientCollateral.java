@@ -1,15 +1,15 @@
 package gov.ca.cwds.rest.services.cms;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import com.google.inject.Inject;
-
 import gov.ca.cwds.data.ApiHibernateInterceptor;
 import gov.ca.cwds.data.ApiReferentialCheck;
 import gov.ca.cwds.data.cms.ClientDao;
 import gov.ca.cwds.data.persistence.cms.ClientCollateral;
-import gov.ca.cwds.rest.api.ApiException;
+import gov.ca.cwds.rest.validation.ReferentialIntegrityException;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import com.google.inject.Inject;
 
 /**
  * Verifies that a client collateral record refers to a valid client. Returns true if all parent
@@ -26,8 +26,8 @@ import gov.ca.cwds.rest.api.ApiException;
  * <blockquote>
  * 
  * <pre>
- * &#64;ManyToOne(optional = false)
- * &#64;JoinColumn(name = "FKCLIENT_T", nullable = false, updatable = false, insertable = false)
+ * &#064;ManyToOne(optional = false)
+ * &#064;JoinColumn(name = &quot;FKCLIENT_T&quot;, nullable = false, updatable = false, insertable = false)
  * private Client client;
  * </pre>
  * 
@@ -57,7 +57,8 @@ public class RIClientCollateral implements ApiReferentialCheck<ClientCollateral>
     this.clientDao = clientDao;
     ApiHibernateInterceptor.addHandler(ClientCollateral.class, c -> {
       if (!apply((ClientCollateral) c)) {
-        throw new ApiException("RI ERROR: ClientCollateral => Client");
+        throw new ReferentialIntegrityException(
+            "ClientCollateral => Client with given Identifier is not present in database");
       }
     });
   }
