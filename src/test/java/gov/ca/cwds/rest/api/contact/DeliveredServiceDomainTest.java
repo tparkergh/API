@@ -210,7 +210,7 @@ public class DeliveredServiceDomainTest {
   }
 
   /*
-   * victimClientId test
+   * id test
    */
   @Test
   public void failWhenIdNull() throws Exception {
@@ -223,6 +223,570 @@ public class DeliveredServiceDomainTest {
 
     assertThat(response.getStatus(), is(equalTo(422)));
     assertThat(response.readEntity(String.class).indexOf("id may not be null"),
+        is(greaterThanOrEqualTo(0)));
+  }
+
+  /*
+   * communicationMethodType test
+   */
+  @Test
+  public void failWhenCommunicationMethodTypeInvalid() throws Exception {
+    DeliveredServiceDomain validDeliveredService = new DeliveredServiceResourceBuilder()
+        .setCommunicationMethodType(123).buildDeliveredServiceResource();
+
+    Response response =
+        resources.client().target(ROOT_RESOURCE).request().accept(MediaType.APPLICATION_JSON)
+            .post(Entity.entity(validDeliveredService, MediaType.APPLICATION_JSON));
+
+    assertThat(response.getStatus(), is(equalTo(422)));
+    assertThat(
+        response.readEntity(String.class).indexOf(
+            "communicationMethodType {property} must be a valid system code for category CMM_MTHC"),
+        is(greaterThanOrEqualTo(0)));
+  }
+
+  /*
+   * contactLocationType test
+   */
+  @Test
+  public void failWhenContactLocationTypeInvalid() throws Exception {
+    DeliveredServiceDomain validDeliveredService = new DeliveredServiceResourceBuilder()
+        .setContactLocationType(123).buildDeliveredServiceResource();
+
+    Response response =
+        resources.client().target(ROOT_RESOURCE).request().accept(MediaType.APPLICATION_JSON)
+            .post(Entity.entity(validDeliveredService, MediaType.APPLICATION_JSON));
+
+    assertThat(response.getStatus(), is(equalTo(422)));
+    assertThat(
+        response.readEntity(String.class).indexOf(
+            "contactLocationType {property} must be a valid system code for category CNT_LOC"),
+        is(greaterThanOrEqualTo(0)));
+  }
+
+  /*
+   * contactVisitCode test
+   */
+  @Test
+  public void failWhenContactVisitCodeNull() throws Exception {
+    DeliveredServiceDomain validDeliveredService = new DeliveredServiceResourceBuilder()
+        .setContactVisitCode(null).buildDeliveredServiceResource();
+
+    Response response =
+        resources.client().target(ROOT_RESOURCE).request().accept(MediaType.APPLICATION_JSON)
+            .post(Entity.entity(validDeliveredService, MediaType.APPLICATION_JSON));
+
+    assertThat(response.getStatus(), is(equalTo(422)));
+    assertThat(response.readEntity(String.class).indexOf("contactVisitCode may not be empty"),
+        is(greaterThanOrEqualTo(0)));
+  }
+
+  @Test
+  public void failWhenContactVisitCodeEmpty() throws Exception {
+    DeliveredServiceDomain validDeliveredService = new DeliveredServiceResourceBuilder()
+        .setContactVisitCode("").buildDeliveredServiceResource();
+
+    Response response =
+        resources.client().target(ROOT_RESOURCE).request().accept(MediaType.APPLICATION_JSON)
+            .post(Entity.entity(validDeliveredService, MediaType.APPLICATION_JSON));
+
+    assertThat(response.getStatus(), is(equalTo(422)));
+    assertThat(response.readEntity(String.class).indexOf("contactVisitCode may not be empty"),
+        is(greaterThanOrEqualTo(0)));
+  }
+
+  @Test
+  public void successWhenContactVisitCodeC() throws Exception {
+    DeliveredServiceDomain validDeliveredService = new DeliveredServiceResourceBuilder()
+        .setContactVisitCode("C").buildDeliveredServiceResource();
+
+    Response response =
+        resources.client().target(ROOT_RESOURCE).request().accept(MediaType.APPLICATION_JSON)
+            .post(Entity.entity(validDeliveredService, MediaType.APPLICATION_JSON));
+
+    assertThat(response.getStatus(), is(equalTo(204)));
+  }
+
+  @Test
+  public void successWhenContactVisitCodeN() throws Exception {
+    DeliveredServiceDomain validDeliveredService = new DeliveredServiceResourceBuilder()
+        .setContactVisitCode("N").buildDeliveredServiceResource();
+
+    Response response =
+        resources.client().target(ROOT_RESOURCE).request().accept(MediaType.APPLICATION_JSON)
+            .post(Entity.entity(validDeliveredService, MediaType.APPLICATION_JSON));
+
+    assertThat(response.getStatus(), is(equalTo(204)));
+  }
+
+  @Test
+  public void successWhenContactVisitCodeV() throws Exception {
+    DeliveredServiceDomain validDeliveredService = new DeliveredServiceResourceBuilder()
+        .setContactVisitCode("V").buildDeliveredServiceResource();
+
+    Response response =
+        resources.client().target(ROOT_RESOURCE).request().accept(MediaType.APPLICATION_JSON)
+            .post(Entity.entity(validDeliveredService, MediaType.APPLICATION_JSON));
+
+    assertThat(response.getStatus(), is(equalTo(204)));
+  }
+
+  /*
+   * countySpecificCode test
+   */
+  @Test
+  public void failWhenCountySpecificCodeNull() throws Exception {
+    DeliveredServiceDomain validDeliveredService = new DeliveredServiceResourceBuilder()
+        .setCountySpecificCode(null).buildDeliveredServiceResource();
+
+    Response response =
+        resources.client().target(ROOT_RESOURCE).request().accept(MediaType.APPLICATION_JSON)
+            .post(Entity.entity(validDeliveredService, MediaType.APPLICATION_JSON));
+
+    assertThat(response.getStatus(), is(equalTo(422)));
+    assertThat(response.readEntity(String.class).indexOf("countySpecificCode may not be empty"),
+        is(greaterThanOrEqualTo(0)));
+  }
+
+  @Test
+  public void failWhenCountySpecificCodeEmpty() throws Exception {
+    DeliveredServiceDomain validDeliveredService = new DeliveredServiceResourceBuilder()
+        .setCountySpecificCode("").buildDeliveredServiceResource();
+
+    Response response =
+        resources.client().target(ROOT_RESOURCE).request().accept(MediaType.APPLICATION_JSON)
+            .post(Entity.entity(validDeliveredService, MediaType.APPLICATION_JSON));
+
+    assertThat(response.getStatus(), is(equalTo(422)));
+    assertThat(response.readEntity(String.class).indexOf("countySpecificCode may not be empty"),
+        is(greaterThanOrEqualTo(0)));
+  }
+
+  /*
+   * endDate test
+   */
+  @Test
+  public void failWhenEndDateWrongFormat() throws Exception {
+    DeliveredServiceDomain validDeliveredService = new DeliveredServiceResourceBuilder()
+        .setEndDate("2000/01/01").buildDeliveredServiceResource();
+
+    Response response =
+        resources.client().target(ROOT_RESOURCE).request().accept(MediaType.APPLICATION_JSON)
+            .post(Entity.entity(validDeliveredService, MediaType.APPLICATION_JSON));
+
+    assertThat(response.getStatus(), is(equalTo(422)));
+    assertThat(
+        response.readEntity(String.class).indexOf("endDate must be in the format of yyyy-MM-dd"),
+        is(greaterThanOrEqualTo(0)));
+  }
+
+  /*
+   * endTime test
+   */
+  @Test
+  public void failWhenEndTimeWrongFormat() throws Exception {
+    DeliveredServiceDomain validDeliveredService = new DeliveredServiceResourceBuilder()
+        .setEndTime("16/41/49").buildDeliveredServiceResource();
+
+    Response response =
+        resources.client().target(ROOT_RESOURCE).request().accept(MediaType.APPLICATION_JSON)
+            .post(Entity.entity(validDeliveredService, MediaType.APPLICATION_JSON));
+
+    assertThat(response.getStatus(), is(equalTo(422)));
+    assertThat(
+        response.readEntity(String.class).indexOf("endTime must be in the format of HH:mm:ss"),
+        is(greaterThanOrEqualTo(0)));
+  }
+
+  /*
+   * hardCopyDocumentOnFileCode test
+   */
+  @Test
+  public void failWhenHardCopyDocumentOnFileCodeNull() throws Exception {
+    DeliveredServiceDomain validDeliveredService = new DeliveredServiceResourceBuilder()
+        .setHardCopyDocumentOnFileCode(null).buildDeliveredServiceResource();
+
+    Response response =
+        resources.client().target(ROOT_RESOURCE).request().accept(MediaType.APPLICATION_JSON)
+            .post(Entity.entity(validDeliveredService, MediaType.APPLICATION_JSON));
+
+    assertThat(response.getStatus(), is(equalTo(422)));
+    assertThat(
+        response.readEntity(String.class).indexOf("hardCopyDocumentOnFileCode may not be empty"),
+        is(greaterThanOrEqualTo(0)));
+  }
+
+  @Test
+  public void failWhenHardCopyDocumentOnFileCodeEmpty() throws Exception {
+    DeliveredServiceDomain validDeliveredService = new DeliveredServiceResourceBuilder()
+        .setHardCopyDocumentOnFileCode("").buildDeliveredServiceResource();
+
+    Response response =
+        resources.client().target(ROOT_RESOURCE).request().accept(MediaType.APPLICATION_JSON)
+            .post(Entity.entity(validDeliveredService, MediaType.APPLICATION_JSON));
+
+    assertThat(response.getStatus(), is(equalTo(422)));
+    assertThat(
+        response.readEntity(String.class).indexOf("hardCopyDocumentOnFileCode may not be empty"),
+        is(greaterThanOrEqualTo(0)));
+  }
+
+  @Test
+  public void sucessWhenHardCopyDocumentOnFileCodeN() throws Exception {
+    DeliveredServiceDomain validDeliveredService = new DeliveredServiceResourceBuilder()
+        .setHardCopyDocumentOnFileCode("N").buildDeliveredServiceResource();
+
+    Response response =
+        resources.client().target(ROOT_RESOURCE).request().accept(MediaType.APPLICATION_JSON)
+            .post(Entity.entity(validDeliveredService, MediaType.APPLICATION_JSON));
+
+    assertThat(response.getStatus(), is(equalTo(204)));
+  }
+
+  @Test
+  public void sucessWhenHardCopyDocumentOnFileCodeU() throws Exception {
+    DeliveredServiceDomain validDeliveredService = new DeliveredServiceResourceBuilder()
+        .setHardCopyDocumentOnFileCode("U").buildDeliveredServiceResource();
+
+    Response response =
+        resources.client().target(ROOT_RESOURCE).request().accept(MediaType.APPLICATION_JSON)
+            .post(Entity.entity(validDeliveredService, MediaType.APPLICATION_JSON));
+
+    assertThat(response.getStatus(), is(equalTo(204)));
+  }
+
+  @Test
+  public void sucessWhenHardCopyDocumentOnFileCodeY() throws Exception {
+    DeliveredServiceDomain validDeliveredService = new DeliveredServiceResourceBuilder()
+        .setHardCopyDocumentOnFileCode("Y").buildDeliveredServiceResource();
+
+    Response response =
+        resources.client().target(ROOT_RESOURCE).request().accept(MediaType.APPLICATION_JSON)
+            .post(Entity.entity(validDeliveredService, MediaType.APPLICATION_JSON));
+
+    assertThat(response.getStatus(), is(equalTo(204)));
+  }
+
+  /*
+   * providedByCode test
+   */
+  @Test
+  public void failWhenProvidedByCodeInValid() throws Exception {
+    DeliveredServiceDomain validDeliveredService = new DeliveredServiceResourceBuilder()
+        .setProvidedByCode("Z").buildDeliveredServiceResource();
+
+    Response response =
+        resources.client().target(ROOT_RESOURCE).request().accept(MediaType.APPLICATION_JSON)
+            .post(Entity.entity(validDeliveredService, MediaType.APPLICATION_JSON));
+
+    assertThat(response.getStatus(), is(equalTo(422)));
+    assertThat(
+        response.readEntity(String.class).indexOf("providedByCode must be one of [S, O, V, X]"),
+        is(greaterThanOrEqualTo(0)));
+  }
+
+  @Test
+  public void successWhenProvidedByCodeS() throws Exception {
+    DeliveredServiceDomain validDeliveredService = new DeliveredServiceResourceBuilder()
+        .setProvidedByCode("S").buildDeliveredServiceResource();
+
+    Response response =
+        resources.client().target(ROOT_RESOURCE).request().accept(MediaType.APPLICATION_JSON)
+            .post(Entity.entity(validDeliveredService, MediaType.APPLICATION_JSON));
+
+    assertThat(response.getStatus(), is(equalTo(204)));
+  }
+
+  @Test
+  public void successWhenProvidedByCodeO() throws Exception {
+    DeliveredServiceDomain validDeliveredService = new DeliveredServiceResourceBuilder()
+        .setProvidedByCode("O").buildDeliveredServiceResource();
+
+    Response response =
+        resources.client().target(ROOT_RESOURCE).request().accept(MediaType.APPLICATION_JSON)
+            .post(Entity.entity(validDeliveredService, MediaType.APPLICATION_JSON));
+
+    assertThat(response.getStatus(), is(equalTo(204)));
+  }
+
+  @Test
+  public void successWhenProvidedByCodeV() throws Exception {
+    DeliveredServiceDomain validDeliveredService = new DeliveredServiceResourceBuilder()
+        .setProvidedByCode("V").buildDeliveredServiceResource();
+
+    Response response =
+        resources.client().target(ROOT_RESOURCE).request().accept(MediaType.APPLICATION_JSON)
+            .post(Entity.entity(validDeliveredService, MediaType.APPLICATION_JSON));
+
+    assertThat(response.getStatus(), is(equalTo(204)));
+  }
+
+  @Test
+  public void successWhenProvidedByCodeX() throws Exception {
+    DeliveredServiceDomain validDeliveredService = new DeliveredServiceResourceBuilder()
+        .setProvidedByCode("X").buildDeliveredServiceResource();
+
+    Response response =
+        resources.client().target(ROOT_RESOURCE).request().accept(MediaType.APPLICATION_JSON)
+            .post(Entity.entity(validDeliveredService, MediaType.APPLICATION_JSON));
+
+    assertThat(response.getStatus(), is(equalTo(204)));
+  }
+
+  /*
+   * startDate test
+   */
+  @Test
+  public void failWhenStartDateWrongFormat() throws Exception {
+    DeliveredServiceDomain validDeliveredService = new DeliveredServiceResourceBuilder()
+        .setStartDate("2000/01/01").buildDeliveredServiceResource();
+
+    Response response =
+        resources.client().target(ROOT_RESOURCE).request().accept(MediaType.APPLICATION_JSON)
+            .post(Entity.entity(validDeliveredService, MediaType.APPLICATION_JSON));
+
+    assertThat(response.getStatus(), is(equalTo(422)));
+    assertThat(
+        response.readEntity(String.class).indexOf("startDate must be in the format of yyyy-MM-dd"),
+        is(greaterThanOrEqualTo(0)));
+  }
+
+  @Test
+  public void failWhenStartDateNull() throws Exception {
+    DeliveredServiceDomain validDeliveredService =
+        new DeliveredServiceResourceBuilder().setStartDate(null).buildDeliveredServiceResource();
+
+    Response response =
+        resources.client().target(ROOT_RESOURCE).request().accept(MediaType.APPLICATION_JSON)
+            .post(Entity.entity(validDeliveredService, MediaType.APPLICATION_JSON));
+
+    assertThat(response.getStatus(), is(equalTo(422)));
+    assertThat(response.readEntity(String.class).lastIndexOf("startDate may not be empty"),
+        is(greaterThanOrEqualTo(0)));
+  }
+
+  @Test
+  public void failWhenStartDateEmpty() throws Exception {
+    DeliveredServiceDomain validDeliveredService =
+        new DeliveredServiceResourceBuilder().setStartDate("").buildDeliveredServiceResource();
+
+    Response response =
+        resources.client().target(ROOT_RESOURCE).request().accept(MediaType.APPLICATION_JSON)
+            .post(Entity.entity(validDeliveredService, MediaType.APPLICATION_JSON));
+
+    assertThat(response.getStatus(), is(equalTo(422)));
+    assertThat(response.readEntity(String.class).lastIndexOf("startDate may not be empty"),
+        is(greaterThanOrEqualTo(0)));
+  }
+
+  /*
+   * startTime test
+   */
+  @Test
+  public void failWhenStartTimeWrongFormat() throws Exception {
+    DeliveredServiceDomain validDeliveredService = new DeliveredServiceResourceBuilder()
+        .setStartTime("16/41/49").buildDeliveredServiceResource();
+
+    Response response =
+        resources.client().target(ROOT_RESOURCE).request().accept(MediaType.APPLICATION_JSON)
+            .post(Entity.entity(validDeliveredService, MediaType.APPLICATION_JSON));
+
+    assertThat(response.getStatus(), is(equalTo(422)));
+    assertThat(
+        response.readEntity(String.class).indexOf("startTime must be in the format of HH:mm:ss"),
+        is(greaterThanOrEqualTo(0)));
+  }
+
+  @Test
+  public void failWhenStartTimeNull() throws Exception {
+    DeliveredServiceDomain validDeliveredService =
+        new DeliveredServiceResourceBuilder().setStartTime(null).buildDeliveredServiceResource();
+
+    Response response =
+        resources.client().target(ROOT_RESOURCE).request().accept(MediaType.APPLICATION_JSON)
+            .post(Entity.entity(validDeliveredService, MediaType.APPLICATION_JSON));
+
+    assertThat(response.getStatus(), is(equalTo(422)));
+    assertThat(response.readEntity(String.class).lastIndexOf("startTime may not be empty"),
+        is(greaterThanOrEqualTo(0)));
+  }
+
+  @Test
+  public void failWhenStartTimeEmpty() throws Exception {
+    DeliveredServiceDomain validDeliveredService =
+        new DeliveredServiceResourceBuilder().setStartTime("").buildDeliveredServiceResource();
+
+    Response response =
+        resources.client().target(ROOT_RESOURCE).request().accept(MediaType.APPLICATION_JSON)
+            .post(Entity.entity(validDeliveredService, MediaType.APPLICATION_JSON));
+
+    assertThat(response.getStatus(), is(equalTo(422)));
+    assertThat(response.readEntity(String.class).lastIndexOf("startTime may not be empty"),
+        is(greaterThanOrEqualTo(0)));
+  }
+
+  /*
+   * statusCode test
+   */
+  @Test
+  public void failWhenStatusCodeInValid() throws Exception {
+    DeliveredServiceDomain validDeliveredService =
+        new DeliveredServiceResourceBuilder().setStatusCode("Z").buildDeliveredServiceResource();
+
+    Response response =
+        resources.client().target(ROOT_RESOURCE).request().accept(MediaType.APPLICATION_JSON)
+            .post(Entity.entity(validDeliveredService, MediaType.APPLICATION_JSON));
+
+    assertThat(response.getStatus(), is(equalTo(422)));
+    assertThat(response.readEntity(String.class).indexOf("statusCode must be one of [C, A, S]"),
+        is(greaterThanOrEqualTo(0)));
+  }
+
+  @Test
+  public void failWhenStatusCodeEmpty() throws Exception {
+    DeliveredServiceDomain validDeliveredService =
+        new DeliveredServiceResourceBuilder().setStatusCode("").buildDeliveredServiceResource();
+
+    Response response =
+        resources.client().target(ROOT_RESOURCE).request().accept(MediaType.APPLICATION_JSON)
+            .post(Entity.entity(validDeliveredService, MediaType.APPLICATION_JSON));
+
+    assertThat(response.getStatus(), is(equalTo(422)));
+    assertThat(response.readEntity(String.class).indexOf("statusCode may not be empty"),
+        is(greaterThanOrEqualTo(0)));
+  }
+
+  @Test
+  public void failWhenStatusCodeNull() throws Exception {
+    DeliveredServiceDomain validDeliveredService =
+        new DeliveredServiceResourceBuilder().setStatusCode(null).buildDeliveredServiceResource();
+
+    Response response =
+        resources.client().target(ROOT_RESOURCE).request().accept(MediaType.APPLICATION_JSON)
+            .post(Entity.entity(validDeliveredService, MediaType.APPLICATION_JSON));
+
+    assertThat(response.getStatus(), is(equalTo(422)));
+    assertThat(response.readEntity(String.class).indexOf("statusCode may not be empty"),
+        is(greaterThanOrEqualTo(0)));
+  }
+
+  @Test
+  public void successWhenStatusCodeC() throws Exception {
+    DeliveredServiceDomain validDeliveredService =
+        new DeliveredServiceResourceBuilder().setStatusCode("C").buildDeliveredServiceResource();
+
+    Response response =
+        resources.client().target(ROOT_RESOURCE).request().accept(MediaType.APPLICATION_JSON)
+            .post(Entity.entity(validDeliveredService, MediaType.APPLICATION_JSON));
+
+    assertThat(response.getStatus(), is(equalTo(204)));
+  }
+
+  @Test
+  public void successWhenStatusCodeA() throws Exception {
+    DeliveredServiceDomain validDeliveredService =
+        new DeliveredServiceResourceBuilder().setStatusCode("A").buildDeliveredServiceResource();
+
+    Response response =
+        resources.client().target(ROOT_RESOURCE).request().accept(MediaType.APPLICATION_JSON)
+            .post(Entity.entity(validDeliveredService, MediaType.APPLICATION_JSON));
+
+    assertThat(response.getStatus(), is(equalTo(204)));
+  }
+
+  @Test
+  public void successWhenStatusCodeS() throws Exception {
+    DeliveredServiceDomain validDeliveredService =
+        new DeliveredServiceResourceBuilder().setStatusCode("S").buildDeliveredServiceResource();
+
+    Response response =
+        resources.client().target(ROOT_RESOURCE).request().accept(MediaType.APPLICATION_JSON)
+            .post(Entity.entity(validDeliveredService, MediaType.APPLICATION_JSON));
+
+    assertThat(response.getStatus(), is(equalTo(204)));
+  }
+
+  /*
+   * supervisionCode test
+   */
+  @Test
+  public void failWhenSupervisionCodeInValid() throws Exception {
+    DeliveredServiceDomain validDeliveredService = new DeliveredServiceResourceBuilder()
+        .setSupervisionCode("Z").buildDeliveredServiceResource();
+
+    Response response =
+        resources.client().target(ROOT_RESOURCE).request().accept(MediaType.APPLICATION_JSON)
+            .post(Entity.entity(validDeliveredService, MediaType.APPLICATION_JSON));
+
+    assertThat(response.getStatus(), is(equalTo(422)));
+    assertThat(
+        response.readEntity(String.class).indexOf("supervisionCode must be one of [C, S, O, N]"),
+        is(greaterThanOrEqualTo(0)));
+  }
+
+  @Test
+  public void successWhenSupervisionCodeC() throws Exception {
+    DeliveredServiceDomain validDeliveredService = new DeliveredServiceResourceBuilder()
+        .setSupervisionCode("C").buildDeliveredServiceResource();
+
+    Response response =
+        resources.client().target(ROOT_RESOURCE).request().accept(MediaType.APPLICATION_JSON)
+            .post(Entity.entity(validDeliveredService, MediaType.APPLICATION_JSON));
+
+    assertThat(response.getStatus(), is(equalTo(204)));
+  }
+
+  @Test
+  public void successWhenSupervisionCodeS() throws Exception {
+    DeliveredServiceDomain validDeliveredService = new DeliveredServiceResourceBuilder()
+        .setSupervisionCode("S").buildDeliveredServiceResource();
+
+    Response response =
+        resources.client().target(ROOT_RESOURCE).request().accept(MediaType.APPLICATION_JSON)
+            .post(Entity.entity(validDeliveredService, MediaType.APPLICATION_JSON));
+
+    assertThat(response.getStatus(), is(equalTo(204)));
+  }
+
+  @Test
+  public void successWhenSupervisionCodeO() throws Exception {
+    DeliveredServiceDomain validDeliveredService = new DeliveredServiceResourceBuilder()
+        .setSupervisionCode("O").buildDeliveredServiceResource();
+
+    Response response =
+        resources.client().target(ROOT_RESOURCE).request().accept(MediaType.APPLICATION_JSON)
+            .post(Entity.entity(validDeliveredService, MediaType.APPLICATION_JSON));
+
+    assertThat(response.getStatus(), is(equalTo(204)));
+  }
+
+  @Test
+  public void successWhenSupervisionCodeN() throws Exception {
+    DeliveredServiceDomain validDeliveredService = new DeliveredServiceResourceBuilder()
+        .setSupervisionCode("N").buildDeliveredServiceResource();
+
+    Response response =
+        resources.client().target(ROOT_RESOURCE).request().accept(MediaType.APPLICATION_JSON)
+            .post(Entity.entity(validDeliveredService, MediaType.APPLICATION_JSON));
+
+    assertThat(response.getStatus(), is(equalTo(204)));
+  }
+
+  /*
+   * wraparoundServiceIndicator test
+   */
+  @Test
+  public void failWhenWraparoundServiceIndicatorNull() throws Exception {
+    DeliveredServiceDomain validDeliveredService = new DeliveredServiceResourceBuilder()
+        .setWraparoundServiceIndicator(null).buildDeliveredServiceResource();
+
+    Response response =
+        resources.client().target(ROOT_RESOURCE).request().accept(MediaType.APPLICATION_JSON)
+            .post(Entity.entity(validDeliveredService, MediaType.APPLICATION_JSON));
+
+    assertThat(response.getStatus(), is(equalTo(422)));
+    assertThat(
+        response.readEntity(String.class).indexOf("wraparoundServiceIndicator may not be null"),
         is(greaterThanOrEqualTo(0)));
   }
 
