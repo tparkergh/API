@@ -7,6 +7,7 @@ import org.slf4j.LoggerFactory;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import gov.ca.cwds.ObjectMapperUtils;
 import gov.ca.cwds.security.shiro.realms.JwtRealm;
 
 
@@ -21,7 +22,7 @@ public class ApiRealm extends JwtRealm {
 
   private static final Logger LOGGER = LoggerFactory.getLogger(ApiRealm.class);
 
-  private ObjectMapper objectMapper = new ObjectMapper();
+  private ObjectMapper objectMapper = ObjectMapperUtils.createObjectMapper();
 
   /**
    * Maps JWT payload to user info. User info will be accessible as secondary principal:

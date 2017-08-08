@@ -10,6 +10,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.inject.Inject;
 import com.google.inject.name.Named;
 
+import gov.ca.cwds.ObjectMapperUtils;
 import gov.ca.cwds.data.Dao;
 import gov.ca.cwds.data.es.ElasticsearchDao;
 import gov.ca.cwds.data.ns.AddressDao;
@@ -50,7 +51,7 @@ import io.dropwizard.hibernate.UnitOfWork;
 public class PersonService implements CrudsService {
 
   private static final Logger LOGGER = LoggerFactory.getLogger(PersonService.class);
-  private static final ObjectMapper MAPPER = new ObjectMapper();
+  private static final ObjectMapper MAPPER = ObjectMapperUtils.createObjectMapper();
 
   // private static final String INDEX_PERSON = ElasticsearchDao.DEFAULT_PERSON_IDX_NM;
   // private static final String DOCUMENT_TYPE_PERSON = ElasticsearchDao.DEFAULT_PERSON_DOC_TYPE;
