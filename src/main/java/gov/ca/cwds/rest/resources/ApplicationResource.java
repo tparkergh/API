@@ -11,6 +11,7 @@ import com.google.common.collect.ImmutableMap;
 import com.google.inject.Inject;
 import com.google.inject.name.Named;
 
+import gov.ca.cwds.ObjectMapperUtils;
 import gov.ca.cwds.rest.api.ApiException;
 import io.swagger.annotations.Api;
 
@@ -27,7 +28,7 @@ public class ApplicationResource {
   private String applicationName;
   private String version;
 
-  private static final ObjectMapper MAPPER = new ObjectMapper();
+  private static final ObjectMapper MAPPER = ObjectMapperUtils.createObjectMapper();
 
   /**
    * Constructor

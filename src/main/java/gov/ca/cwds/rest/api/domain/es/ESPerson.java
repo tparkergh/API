@@ -11,9 +11,9 @@ import org.slf4j.LoggerFactory;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import gov.ca.cwds.ObjectMapperUtils;
 import gov.ca.cwds.data.persistence.cms.OtherClientName;
 import gov.ca.cwds.data.persistence.cms.Reporter;
 import gov.ca.cwds.rest.api.domain.Address;
@@ -53,22 +53,22 @@ public class ESPerson extends Person {
    * it, such as ignoring unknown JSON properties, applies to ALL target class types.
    * </p>
    */
-  private static final ObjectMapper MAPPER;
+  private static final ObjectMapper MAPPER = ObjectMapperUtils.createObjectMapper();
 
   // =========================
   // STATIC INITIALIZATION:
   // =========================
 
-  /**
-   * Relax strict constraints regarding unknown JSON properties, since API classes may change over
-   * time, and not all classes emit version information in JSON.
-   */
-  static {
-    ObjectMapper mapper = new ObjectMapper();
-    mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
-    mapper.configure(DeserializationFeature.FAIL_ON_NULL_FOR_PRIMITIVES, false);
-    MAPPER = mapper;
-  }
+  // /**
+  // * Relax strict constraints regarding unknown JSON properties, since API classes may change over
+  // * time, and not all classes emit version information in JSON.
+  // */
+  // static {
+  // ObjectMapper mapper = ObjectMapperUtils.createObjectMapper();
+  // mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+  // mapper.configure(DeserializationFeature.FAIL_ON_NULL_FOR_PRIMITIVES, false);
+  // MAPPER = mapper;
+  // }
 
   // =========================
   // PUBLIC STATIC:
@@ -192,7 +192,8 @@ public class ESPerson extends Person {
    * </p>
    * 
    * <blockquote>
-   * {@code Class.forName("some.nested.class", false, Thread.currentThread().getContextClassLoader())}</blockquote>
+   * {@code Class.forName("some.nested.class", false, Thread.currentThread().getContextClassLoader())}
+   * </blockquote>
    * 
    * @param hit search result
    * @return populated domain-level ES object
