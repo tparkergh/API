@@ -281,9 +281,9 @@ public class ReferralService implements CrudsService {
         screeningToReferral.getCommunicationMethod(), drmsAllegationDescriptionDoc,
         drmsErReferralDoc, drmsInvestigationDoc, screeningToReferral.getName(), dateStarted,
         timeStarted, screeningToReferral.getResponseTime(), allegesAbuseOccurredAtAddressId,
-        firstResponseDeterminedByStaffPersonId, longTextId,
-        LegacyDefaultValues.DEFAULT_COUNTY_SPECIFIC_CODE, approvalStatusCode,
-        LegacyDefaultValues.DEFAULT_STAFF_PERSON_ID, responseRationalLongTextId);
+        firstResponseDeterminedByStaffPersonId, longTextId, screeningToReferral.getIncidentCounty(),
+        approvalStatusCode, LegacyDefaultValues.DEFAULT_STAFF_PERSON_ID,
+        responseRationalLongTextId);
   }
 
   /**
