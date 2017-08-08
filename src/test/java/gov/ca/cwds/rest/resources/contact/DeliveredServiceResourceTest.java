@@ -1,4 +1,4 @@
-package gov.ca.cwds.rest.resources.cms;
+package gov.ca.cwds.rest.resources.contact;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
@@ -23,6 +23,7 @@ import gov.ca.cwds.data.cms.TestSystemCodeCache;
 import gov.ca.cwds.fixture.contacts.DeliveredServiceResourceBuilder;
 import gov.ca.cwds.rest.api.contact.DeliveredServiceDomain;
 import gov.ca.cwds.rest.resources.TypedResourceDelegate;
+import gov.ca.cwds.rest.resources.cms.JerseyGuiceRule;
 import gov.ca.cwds.rest.resources.contact.DeliveredServiceResource;
 import io.dropwizard.testing.junit.ResourceTestRule;
 

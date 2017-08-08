@@ -27,8 +27,8 @@ import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 
 /**
- * A resource providing a RESTful interface for {@link DrmsDocument}. It delegates functions to
- * {@link TypedResourceDelegate}. It decorates the {@link TypedResourceDelegate} not in
+ * A resource providing a RESTful interface for {@link DeliveredServiceDomain}. It delegates
+ * functions to {@link TypedResourceDelegate}. It decorates the {@link TypedResourceDelegate} not in
  * functionality but with @see
  * <a href= "https://github.com/swagger-api/swagger-core/wiki/Annotations-1.5.X">Swagger
  * Annotations</a> and
