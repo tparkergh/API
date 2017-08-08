@@ -2,6 +2,7 @@ package gov.ca.cwds.rest.api.contact;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.equalTo;
+import static org.hamcrest.Matchers.greaterThanOrEqualTo;
 import static org.hamcrest.Matchers.is;
 import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.mock;
@@ -9,6 +10,8 @@ import static org.mockito.Mockito.when;
 
 import java.util.Date;
 
+import javax.ws.rs.client.Entity;
+import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
 import org.junit.After;
@@ -16,14 +19,17 @@ import org.junit.Before;
 import org.junit.ClassRule;
 import org.junit.Test;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.squarespace.jersey2.guice.JerseyGuiceUtils;
 
+import gov.ca.cwds.data.cms.TestSystemCodeCache;
 import gov.ca.cwds.data.persistence.contact.DeliveredServiceEntity;
 import gov.ca.cwds.fixture.contacts.DeliveredServiceResourceBuilder;
 import gov.ca.cwds.rest.api.domain.DomainChef;
 import gov.ca.cwds.rest.core.Api;
 import gov.ca.cwds.rest.resources.cms.JerseyGuiceRule;
 import gov.ca.cwds.rest.resources.contact.DeliveredServiceResource;
+import io.dropwizard.jackson.Jackson;
 import io.dropwizard.testing.junit.ResourceTestRule;
 import nl.jqno.equalsverifier.EqualsVerifier;
 import nl.jqno.equalsverifier.Warning;
@@ -37,12 +43,13 @@ import nl.jqno.equalsverifier.Warning;
 public class DeliveredServiceDomainTest {
 
   private static final String ROOT_RESOURCE = "/" + Api.RESOURCE_DELIVERY_SERVICE + "/";
-
   private static final DeliveredServiceResource mockedDeliveredServiceResource =
       mock(DeliveredServiceResource.class);
 
+  private static final ObjectMapper MAPPER = Jackson.newObjectMapper();
+
   @After
-  public void ensureSerivceLocatorPopulate() {
+  public void ensureServiceLocatorPopulated() {
     JerseyGuiceUtils.reset();
   }
 
@@ -53,17 +60,20 @@ public class DeliveredServiceDomainTest {
   public static final ResourceTestRule resources =
       ResourceTestRule.builder().addResource(mockedDeliveredServiceResource).build();
 
+  private DeliveredServiceDomain validDeliveredServiceDomain =
+      new DeliveredServiceResourceBuilder().buildDeliveredServiceResource();
+
   private String id = "ABC1234567";
   private String lastUpdatedId = "0X5";
   private Date lastUpdatedTime = new Date();
 
-  private Short cftLeadAgencyType = (short) 12;
-  private Boolean coreServiceIndicator = false;
-  private Integer communicationMethodType = 408;
+  private Short cftLeadAgencyType = (short) 4212;
+  private Boolean coreServiceIndicator = Boolean.FALSE;
+  private Integer communicationMethodType = 409;
   private Integer contactLocationType = 415;
   private String contactVisitCode = "C";
   private String countySpecificCode = "99";
-  private String detailText = "ABC12345679";
+  private String detailText = "ABC1234567";
   private String detailTextContinuation = "ABC12345t7";
   private String endDate = "2000-01-01";
   private String endTime = "16:41:49";
@@ -77,14 +87,16 @@ public class DeliveredServiceDomainTest {
   private String startTime = "16:41:49";
   private String statusCode = "C";
   private String supervisionCode = "C";
-  private Boolean wraparoundServiceIndicator = false;
+  private Boolean wraparoundServiceIndicator = Boolean.FALSE;
+
+  /*
+   * Load system code cache
+   */
+  TestSystemCodeCache testSystemCodeCache = new TestSystemCodeCache();
 
   @Before
   public void setup() {
-    DeliveredServiceDomain validDeliveredService =
-        new DeliveredServiceResourceBuilder().buildDeliveredServiceResource();
-
-    when(mockedDeliveredServiceResource.create(eq(validDeliveredService)))
+    when(mockedDeliveredServiceResource.create(eq(validDeliveredServiceDomain)))
         .thenReturn(Response.status(Response.Status.NO_CONTENT).entity(null).build());
 
   }
@@ -139,6 +151,7 @@ public class DeliveredServiceDomainTest {
         providedByCode, providedById, serviceContactType, startDate, startTime, statusCode,
         supervisionCode, wraparoundServiceIndicator);
 
+    assertThat(domain.getId(), is(equalTo(validDeliveredServiceDomain.getId())));
     assertThat(domain.getCftLeadAgencyType(),
         is(equalTo(validDeliveredServiceDomain.getCftLeadAgencyType())));
     assertThat(domain.getCoreServiceIndicator(),
@@ -182,6 +195,35 @@ public class DeliveredServiceDomainTest {
     EqualsVerifier.forClass(DeliveredServiceDomain.class).suppress(Warning.NONFINAL_FIELDS)
         .verify();
 
+  }
+
+  @Test
+  public void testSuccessWithValid() throws Exception {
+    DeliveredServiceDomain toCreate =
+        new DeliveredServiceResourceBuilder().buildDeliveredServiceResource();
+
+    Response response =
+        resources.client().target(ROOT_RESOURCE).request().accept(MediaType.APPLICATION_JSON)
+            .post(Entity.entity(toCreate, MediaType.APPLICATION_JSON));
+    assertThat(response.getStatus(), is(equalTo(204)));
+
+  }
+
+  /*
+   * victimClientId test
+   */
+  @Test
+  public void failWhenIdNull() throws Exception {
+    DeliveredServiceDomain validDeliveredService =
+        new DeliveredServiceResourceBuilder().setId(null).buildDeliveredServiceResource();
+
+    Response response =
+        resources.client().target(ROOT_RESOURCE).request().accept(MediaType.APPLICATION_JSON)
+            .post(Entity.entity(validDeliveredService, MediaType.APPLICATION_JSON));
+
+    assertThat(response.getStatus(), is(equalTo(422)));
+    assertThat(response.readEntity(String.class).indexOf("id may not be null"),
+        is(greaterThanOrEqualTo(0)));
   }
 
 }
