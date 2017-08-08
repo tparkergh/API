@@ -108,14 +108,20 @@ public class TestSystemCodeCache implements SystemCodeCache {
         return true;
       }
     }
+
+    if (SystemCodeCategoryId.CONTACT_LOCATION.equals(metaId)) {
+      if (415 == systemCodeId.intValue() || 5524 == systemCodeId.intValue()) {
+        return true;
+      }
+    }
     return false;
   }
 
   @Override
   public boolean verifyActiveLogicalIdForMeta(String logicalId, String metaId) {
     if (SystemCodeCategoryId.COUNTY_CODE.equals(metaId)) {
-      if ("34".equals(logicalId) || "01".equals(logicalId)
-          || "58".equals(logicalId) || "99".equals(logicalId)){
+      if ("34".equals(logicalId) || "01".equals(logicalId) || "58".equals(logicalId)
+          || "99".equals(logicalId)) {
         return true;
       }
     }

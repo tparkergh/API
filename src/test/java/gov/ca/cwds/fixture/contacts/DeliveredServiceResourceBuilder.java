@@ -9,13 +9,13 @@ import gov.ca.cwds.rest.api.contact.DeliveredServiceDomain;
 @SuppressWarnings("javadoc")
 public class DeliveredServiceResourceBuilder {
   String id = "ABC1234567";
-  Short cftLeadAgencyType = (short) 12;
+  Short cftLeadAgencyType = (short) 4212;
   Boolean coreServiceIndicator = false;
-  Integer communicationMethodType = 408;
+  Integer communicationMethodType = 409;
   Integer contactLocationType = 415;
   String contactVisitCode = "C";
   String countySpecificCode = "99";
-  String detailText = "ABC12345679";
+  String detailText = "ABC1234567";
   String detailTextContinuation = "ABC12345t7";
   String endDate = "2000-01-01";
   String endTime = "16:41:49";
@@ -32,12 +32,12 @@ public class DeliveredServiceResourceBuilder {
   Boolean wraparoundServiceIndicator = false;
 
   public DeliveredServiceDomain buildDeliveredServiceResource() {
-    return new DeliveredServiceDomain(primaryDeliveredServiceId, cftLeadAgencyType,
-        coreServiceIndicator, communicationMethodType, contactLocationType, contactVisitCode,
-        countySpecificCode, detailText, detailTextContinuation, endDate, endTime,
-        primaryDeliveredServiceId, hardCopyDocumentOnFileCode, otherParticipantsDesc,
-        providedByCode, providedById, serviceContactType, startDate, startTime, statusCode,
-        supervisionCode, wraparoundServiceIndicator);
+    return new DeliveredServiceDomain(id, cftLeadAgencyType, coreServiceIndicator,
+        communicationMethodType, contactLocationType, contactVisitCode, countySpecificCode,
+        detailText, detailTextContinuation, endDate, endTime, primaryDeliveredServiceId,
+        hardCopyDocumentOnFileCode, otherParticipantsDesc, providedByCode, providedById,
+        serviceContactType, startDate, startTime, statusCode, supervisionCode,
+        wraparoundServiceIndicator);
   }
 
   public String getId() {
