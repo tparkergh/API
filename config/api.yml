@@ -30,7 +30,7 @@ nsDataSourceFactory:
   properties:
       hibernate.dialect: org.hibernate.dialect.PostgreSQL82Dialect
       hibernate.id.new_generator_mappings: false
-      hibernate.show_sql: true
+      #hibernate.show_sql: true
       hibernate.format_sql: true
       hibernate.use_sql_comments: false
 
@@ -48,7 +48,7 @@ cmsDataSourceFactory:
   minIdleTime: 1 minute
   properties:
       hibernate.dialect: org.hibernate.dialect.DB2Dialect
-      hibernate.show_sql: true
+      #hibernate.show_sql: true
       hibernate.format_sql: true
       hibernate.use_sql_comments: false
       hibernate.default_schema: ${DB_CMS_SCHEMA}
@@ -111,16 +111,18 @@ logging:
     "org.hibernate.SQL":
       level: DEBUG
     "org.hibernate.type.descriptor.sql":
-      level: DEBUG
-    "org.skife":
-      level: TRACE  
+      level: TRACE
+    "io.dropwizard.server":
+      level: INFO
+    "io.dropwizard.jersey.DropwizardResourceConfig":
+      level: INFO
     "AUDIT":
       level: ALL
-    "gov.ca.cwds":
-      level: DEBUG
+    "gov.ca.cwds.data.ApiHibernateInterceptor":
+      level: INFO      
   appenders:
     - type: console
-      threshold: ${LOGLEVEL:-WARN}
+      threshold: ALL
       timeZone: UTC
       target: stdout
       logFormat: '[%X{REMOTE_ADDRESS}] [%date{ISO8601}] [%level] [%thread] [%X{UNIQUE_ID}] [%logger] [%X{USER_ID}] [%X{REQUEST_START_TIME}]: [%message]%n'
