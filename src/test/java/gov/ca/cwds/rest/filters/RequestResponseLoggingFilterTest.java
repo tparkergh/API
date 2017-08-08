@@ -81,7 +81,7 @@ public class RequestResponseLoggingFilterTest extends AbstractShiroTest {
     when(mockSubject.getPrincipals()).thenReturn(principalCollection);
     setSubject(mockSubject);
 
-    new TestRequestExecutionContext();
+    new TestingRequestExecutionContext("0X5");
 
     filter = new RequestResponseLoggingFilter(auditLogger, loggingContext);
 
