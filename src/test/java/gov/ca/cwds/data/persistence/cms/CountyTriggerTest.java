@@ -6,14 +6,13 @@ import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.notNullValue;
 
 import java.io.IOException;
+import java.util.Date;
 
 import org.junit.Test;
 
 import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.databind.JsonMappingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 
-import gov.ca.cwds.data.persistence.junit.template.PersistentTestTemplate;
 import nl.jqno.equalsverifier.EqualsVerifier;
 import nl.jqno.equalsverifier.Warning;
 
@@ -21,37 +20,42 @@ import nl.jqno.equalsverifier.Warning;
  * @author CWDS API Team
  *
  */
-public class CountyTriggerTest implements PersistentTestTemplate {
+public class CountyTriggerTest {
 
   private String countyOwnershipT = "1234567ABC";
+  private String countyOwnership0 = "C";
+  private String integratorEntity = "REFR_CLT";
+  private String logicId = "99";
 
-  private static final ObjectMapper MAPPER = SystemCodeTestHarness.MAPPER;
-
-  /*
-   * Constructor test
+  /**
+   * EmptyConstructor test
+   * 
+   * @throws Exception - exception
    */
-  @Override
   @Test
   public void testEmptyConstructor() throws Exception {
     assertThat(CountyTrigger.class.newInstance(), is(notNullValue()));
   }
 
-  @Override
+  /**
+   * @throws Exception - exception
+   */
   @Test
   public void testPersistentConstructor() throws Exception {
 
-    CountyTrigger vct = validCountyTrigger();
+    CountyTrigger countyTrigger = validCountyTrigger();
 
-    CountyTrigger persistent = new CountyTrigger(countyOwnershipT, vct.getLogicId(),
-        vct.getCountyOwnership0(), null, vct.getIntegratorEntity());
+    CountyTrigger persistent = new CountyTrigger(logicId, countyOwnership0, countyOwnershipT,
+        integratorEntity, countyTrigger.getIntegratorTimeStamp());
 
-    assertThat(persistent.getLogicId(), is(equalTo(vct.getLogicId())));
-    assertThat(persistent.getCountyOwnership0(), is(equalTo(vct.getCountyOwnership0())));
-    assertThat(persistent.getIntegratorEntity(), is(equalTo(vct.getIntegratorEntity())));
+    assertThat(persistent.getIntegratorTimeStamp(),
+        is(equalTo(countyTrigger.getIntegratorTimeStamp())));
 
   }
 
-  @Override
+  /**
+   * 
+   */
   @Test
   public void testEqualsHashCodeWorks() {
     EqualsVerifier.forClass(CountyTrigger.class).suppress(Warning.NONFINAL_FIELDS).verify();
@@ -62,14 +66,9 @@ public class CountyTriggerTest implements PersistentTestTemplate {
       throws JsonParseException, JsonMappingException, IOException {
 
     CountyTrigger validCountyTrigger =
-        new CountyTrigger(countyOwnershipT, "99", "C", null, "REFR_CLT");
+        new CountyTrigger("99", "C", countyOwnershipT, "REFR_CLT", new Date());
     return validCountyTrigger;
 
-  }
-
-  @Override
-  public void testConstructorUsingDomain() throws Exception {
-    // No Domain Class
   }
 
 }

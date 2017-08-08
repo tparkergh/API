@@ -27,6 +27,7 @@ import gov.ca.cwds.data.persistence.cms.ReferralClient;
 import gov.ca.cwds.fixture.ClientAddressResourceBuilder;
 import gov.ca.cwds.fixture.ReferralClientResourceBuilder;
 import gov.ca.cwds.fixture.ReferralResourceBuilder;
+import gov.ca.cwds.rest.filters.TestingRequestExecutionContext;
 
 /**
  * @author CWDS API Team
@@ -48,6 +49,7 @@ public class LACountyTriggerTest {
    */
   @Before
   public void setup() throws Exception {
+    new TestingRequestExecutionContext("0X5");
     countyTriggerDao = mock(CountyTriggerDao.class);
     laCountyTrigger = new LACountyTrigger(countyTriggerDao);
     countyTrigger = null;

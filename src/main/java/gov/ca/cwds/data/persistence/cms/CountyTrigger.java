@@ -7,11 +7,10 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
-import javax.validation.constraints.Size;
 
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
-import org.hibernate.validator.constraints.NotEmpty;
+import org.hibernate.annotations.Type;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
@@ -39,20 +38,9 @@ public class CountyTrigger implements PersistentObject, Serializable {
   @Id
   private CountyTriggerEmbeddable countyTriggerEmbeddable;
 
-  @NotEmpty
-  @Size(max = 2)
-  @Column(name = "LGCID")
-  private String logicId;
-
-  @NotEmpty
-  @Size(max = 2)
-  @Column(name = "FKCNTY_OWN0")
-  private String countyOwnership0;
-
-  @NotEmpty
-  @Size(max = 8)
-  @Column(name = "INTREG_ENT")
-  private String integratorEntity;
+  @Type(type = "timestamp")
+  @Column(name = "INT_REG_TS")
+  private Date integratorTimeStamp;
 
   /**
    * Default Constructor
@@ -62,20 +50,18 @@ public class CountyTrigger implements PersistentObject, Serializable {
   }
 
   /**
-   * @param countyOwnershipT - countyOwnershipT
    * @param logicId - logicId
    * @param countyOwnership0 - countyOwnership0
-   * @param integratorTimeStamp - integratorTimeStamp
+   * @param countyOwnershipT - countyOwnershipT
    * @param integratorEntity - integratorEntity
+   * @param integratorTimeStamp - integratorTimeStamp
    */
-  public CountyTrigger(String countyOwnershipT, String logicId, String countyOwnership0,
-      Date integratorTimeStamp, String integratorEntity) {
+  public CountyTrigger(String logicId, String countyOwnership0, String countyOwnershipT,
+      String integratorEntity, Date integratorTimeStamp) {
     super();
-    this.logicId = logicId;
-    this.countyOwnership0 = countyOwnership0;
-    this.integratorEntity = integratorEntity;
     this.countyTriggerEmbeddable =
-        new CountyTriggerEmbeddable(countyOwnershipT, integratorTimeStamp);
+        new CountyTriggerEmbeddable(logicId, countyOwnership0, countyOwnershipT, integratorEntity);
+    this.integratorTimeStamp = integratorTimeStamp;
   }
 
   /**
@@ -96,24 +82,10 @@ public class CountyTrigger implements PersistentObject, Serializable {
   }
 
   /**
-   * @return the logicId
+   * @return the integratorTimeStamp
    */
-  public String getLogicId() {
-    return logicId;
-  }
-
-  /**
-   * @return the countyOwnership0
-   */
-  public String getCountyOwnership0() {
-    return countyOwnership0;
-  }
-
-  /**
-   * @return the integratorEntity
-   */
-  public String getIntegratorEntity() {
-    return integratorEntity;
+  public Date getIntegratorTimeStamp() {
+    return integratorTimeStamp;
   }
 
   /**
