@@ -86,14 +86,12 @@ public class DeliveredServiceDomain extends ReportingDomain implements Request, 
 
   @JsonProperty("detail_text")
   @Size(max = 32700)
-  @ApiModelProperty(required = false, readOnly = false, value = "",
-      example = "detail text of the contact")
+  @ApiModelProperty(required = false, readOnly = false, value = "", example = "detail1")
   private String detailText;
 
   @JsonProperty("detail_text_continuation")
   @Size(max = 32700)
-  @ApiModelProperty(required = false, readOnly = false, value = "",
-      example = "continued detailed text")
+  @ApiModelProperty(required = false, readOnly = false, value = "", example = "continued2")
   private String detailTextContinuation;
 
   @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = DATE_FORMAT)
