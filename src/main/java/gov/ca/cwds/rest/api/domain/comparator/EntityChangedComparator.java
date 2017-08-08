@@ -41,6 +41,6 @@ public class EntityChangedComparator {
     builder.append(particpantDate);
     builder.append(" clientDate: ");
     builder.append(clientDate);
-    LOGGER.info(builder.toString());
+    LOGGER.warn(builder.toString());
   }
 }
