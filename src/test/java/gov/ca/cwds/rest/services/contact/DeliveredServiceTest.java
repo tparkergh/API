@@ -8,15 +8,11 @@ import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
 
 import javax.persistence.EntityExistsException;
 
 import org.apache.commons.lang3.NotImplementedException;
-import org.apache.shiro.subject.PrincipalCollection;
-import org.apache.shiro.subject.Subject;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
@@ -25,9 +21,8 @@ import org.junit.rules.ExpectedException;
 import gov.ca.cwds.data.dao.contact.DeliveredServiceDao;
 import gov.ca.cwds.fixture.contacts.DeliveredServiceResourceBuilder;
 import gov.ca.cwds.rest.api.contact.DeliveredServiceDomain;
-import gov.ca.cwds.rest.filters.TestRequestExecutionContext;
+import gov.ca.cwds.rest.filters.TestingRequestExecutionContext;
 import gov.ca.cwds.rest.services.ServiceException;
-import gov.ca.cwds.rest.services.cms.AbstractShiroTest;
 
 /***
  * 
@@ -35,7 +30,7 @@ import gov.ca.cwds.rest.services.cms.AbstractShiroTest;
  *
  */
 @SuppressWarnings("javadoc")
-public class DeliveredServiceTest extends AbstractShiroTest {
+public class DeliveredServiceTest {
 
   private DeliveredService deliveredService;
   private DeliveredServiceDao deliveredServiceDao;
@@ -45,22 +40,10 @@ public class DeliveredServiceTest extends AbstractShiroTest {
 
   @Before
   public void setup() throws Exception {
-    Subject mockSubject = mock(Subject.class);
-    PrincipalCollection principalCollection = mock(PrincipalCollection.class);
-
-    List<Object> list = new ArrayList<>();
-    list.add("msg");
-
-    when(principalCollection.asList()).thenReturn(list);
-    when(mockSubject.getPrincipals()).thenReturn(principalCollection);
-    setSubject(mockSubject);
-
-    @SuppressWarnings("unused")
-    TestRequestExecutionContext testApiRequestCommonInfo = new TestRequestExecutionContext();
+    new TestingRequestExecutionContext("0X5");
 
     deliveredServiceDao = mock(DeliveredServiceDao.class);
     deliveredService = new DeliveredService(deliveredServiceDao);
-
   }
 
   // find test

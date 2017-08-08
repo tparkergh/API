@@ -9,11 +9,6 @@ import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import org.apache.shiro.subject.PrincipalCollection;
-import org.apache.shiro.subject.Subject;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
@@ -31,15 +26,14 @@ import gov.ca.cwds.fixture.AssignmentResourceBuilder;
 import gov.ca.cwds.fixture.ClientResourceBuilder;
 import gov.ca.cwds.rest.api.domain.cms.Assignment;
 import gov.ca.cwds.rest.api.domain.cms.Client;
-import gov.ca.cwds.rest.filters.TestRequestExecutionContext;
+import gov.ca.cwds.rest.filters.TestingRequestExecutionContext;
 import gov.ca.cwds.rest.services.ServiceException;
-import gov.ca.cwds.rest.services.cms.AbstractShiroTest;
 
 /**
  * @author CWDS API Team
  *
  */
-public class ExternalInterfaceTablesTest extends AbstractShiroTest {
+public class ExternalInterfaceTablesTest {
 
   private static final ObjectMapper MAPPER = SystemCodeTestHarness.MAPPER;
 
@@ -56,17 +50,7 @@ public class ExternalInterfaceTablesTest extends AbstractShiroTest {
 
   @Before
   public void setup() throws Exception {
-    Subject mockSubject = mock(Subject.class);
-    PrincipalCollection principalCollection = mock(PrincipalCollection.class);
-
-    List list = new ArrayList();
-    list.add("msg");
-
-    when(principalCollection.asList()).thenReturn(list);
-    when(mockSubject.getPrincipals()).thenReturn(principalCollection);
-    setSubject(mockSubject);
-
-    TestRequestExecutionContext testApiRequestCommonInfo = new TestRequestExecutionContext();
+    new TestingRequestExecutionContext(DEFAULT_USER_ID);
 
     externalInterfaceDao = mock(ExternalInterfaceDao.class);
     externalInterfaceTables = new ExternalInterfaceTables(externalInterfaceDao);
