@@ -88,6 +88,7 @@ public class ClientDaoIT {
 
     Client found = clientDao.find(id);
     assertThat(found.getId(), is(id));
+    assertThat(found.getLastUpdatedTime(), is(pers.getLastUpdatedTime()));
   }
 
   @Test

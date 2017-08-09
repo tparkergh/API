@@ -58,11 +58,13 @@ public class PostedScreeningToReferral extends ScreeningToReferral implements Re
       @Date String endedAt, String incidentCounty, @Date String incidentDate, String locationType,
       Short communicationMethod, String name, String reportNarrative, String reference,
       Short responseTime, @Date String startedAt, String assignee, String additionalInformation,
-      String screeningDecision, String screeningDecisionDetail, Address address,
+      String screeningDecision, String screeningDecisionDetail, int approvalStatus,
+      boolean familyAwareness, boolean filedWithLawEnforcement, String responsibleAgency, Address address,
       Set<Participant> participants, Set<CrossReport> crossReports, Set<Allegation> allegations) {
     super(id, legacySourceTable, referralId, endedAt, incidentCounty, incidentDate, locationType,
         communicationMethod, name, reportNarrative, reference, responseTime, startedAt, assignee,
-        additionalInformation, screeningDecision, screeningDecisionDetail, address, participants,
+        additionalInformation, screeningDecision, screeningDecisionDetail, approvalStatus,
+        familyAwareness, filedWithLawEnforcement, responsibleAgency, address, participants,
         crossReports, allegations);
   }
 
@@ -84,7 +86,9 @@ public class PostedScreeningToReferral extends ScreeningToReferral implements Re
         referral.getReportNarrative(), referral.getReference(), referral.getResponseTime(),
         referral.getStartedAt(), referral.getAssignee(), referral.getAdditionalInformation(),
         referral.getScreeningDecision(), referral.getScreeningDecisionDetail(),
-        referral.getAddress(), resultParticipants, resultCrossReports, resultAllegations);
+        referral.getApprovalStatus(), referral.isFamilyAwareness(),
+        referral.isFiledWithLawEnforcement(), referral.getResponsibleAgency(), referral.getAddress(),
+        resultParticipants, resultCrossReports, resultAllegations);
 
   }
 

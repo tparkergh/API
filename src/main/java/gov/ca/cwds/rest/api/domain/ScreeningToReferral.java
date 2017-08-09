@@ -154,7 +154,7 @@ public class ScreeningToReferral extends ReportingDomain implements Request {
   @JsonProperty("approval_status")
   @ApiModelProperty(required = false, readOnly = false, value = "Status of the approval",
       example = "118")
-  private String approvalStatus;
+  private int approvalStatus;
 
   @JsonProperty("family_awareness")
   @ApiModelProperty(required = false, readOnly = false, value = "Family is aware of referral",
@@ -227,7 +227,8 @@ public class ScreeningToReferral extends ReportingDomain implements Request {
       @Date String endedAt, String incidentCounty, @Date String incidentDate, String locationType,
       Short communicationMethod, String name, String reportNarrative, String reference,
       Short responseTime, @Date String startedAt, String assignee, String additionalInformation,
-      String screeningDecision, String screeningDecisionDetail, Address address,
+      String screeningDecision, String screeningDecisionDetail, int approvalStatus,
+      boolean familyAwareness, boolean filedWithLawEnforcement, String responsibleAgency, Address address,
       Set<Participant> participants, Set<CrossReport> crossReports, Set<Allegation> allegations) {
     super();
     this.id = id;
@@ -247,6 +248,10 @@ public class ScreeningToReferral extends ReportingDomain implements Request {
     this.additionalInformation = additionalInformation;
     this.screeningDecision = screeningDecision;
     this.screeningDecisionDetail = screeningDecisionDetail;
+    this.approvalStatus = approvalStatus;
+    this.familyAwareness = familyAwareness;
+    this.filedWithLawEnforcement = filedWithLawEnforcement;
+    this.responsibleAgency = responsibleAgency;
     this.address = address;
     this.participants = participants;
     this.crossReports = crossReports;
@@ -370,6 +375,34 @@ public class ScreeningToReferral extends ReportingDomain implements Request {
    */
   public String getScreeningDecisionDetail() {
     return screeningDecisionDetail;
+  }
+
+  /**
+   * @return approval status
+   */
+  public int getApprovalStatus() {
+    return approvalStatus;
+  }
+
+  /**
+   * @return family awareness
+   */
+  public boolean isFamilyAwareness() {
+    return familyAwareness;
+  }
+
+  /**
+   * @return crossreport filed with Law Enforecement
+   */
+  public boolean isFiledWithLawEnforcement() {
+    return filedWithLawEnforcement;
+  }
+
+  /**
+   * @return responsible agency
+   */
+  public String getResponsibleAgency() {
+    return responsibleAgency;
   }
 
   @SuppressWarnings("javadoc")

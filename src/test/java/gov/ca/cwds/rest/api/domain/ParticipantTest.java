@@ -172,6 +172,8 @@ public class ParticipantTest implements PersistentTestTemplate {
     assertThat(domain.getGender(), is(equalTo(gender)));
     assertThat(domain.getDateOfBirth(), is(equalTo(dateOfBirth)));
     assertThat(domain.getSsn(), is(equalTo(ssn)));
+    assertThat(domain.isReporterConfidentialWaiver(), is(equalTo(reporterConfidentialWaiver)));
+    assertThat(domain.getReporterEmployerName(), is(equalTo(reporterEmployerName)));
     assertThat(domain.getRoles(), is(equalTo(roles)));
     assertThat(domain.getAddresses(), is(equalTo(addresses)));
   }

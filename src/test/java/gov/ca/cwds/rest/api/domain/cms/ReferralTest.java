@@ -115,6 +115,7 @@ public class ReferralTest {
   private String limitedAccessDate = "2001-01-01";
   private String limitedAccessDesc = "x";
   private String originalClosureDate = "2017-02-09";
+  private boolean filedCrossReport = true;
 
   @Before
   public void setup() {
@@ -250,12 +251,15 @@ public class ReferralTest {
     String countyCode = "sacramento";
     Short approvalCode = 4;
     String staffId = "098";
+    boolean filedCrossReport = true;
+
 
     Referral referral = Referral.createWithDefaults(anonReporter, communicationsMethodCode,
-        drmsAllegationDescriptionDoc, drmsErReferralDoc, drmsInvestigationDoc, referalName,
+        drmsAllegationDescriptionDoc, drmsErReferralDoc, drmsInvestigationDoc, filedCrossReport,
+        familyAwarenessIndicator, govtEntityType, referalName,
         dateStarted, timeStarted, referralResponseTypeCode, allegesAbuseOccurredAtAddressId,
         firstResponseDeterminedByStaffPersonId, longTextId, countyCode, approvalCode, staffId,
-        longTextId);
+        longTextId, responsibleAgencyCode);
     assertEquals("Expected anonReporter field to have presetValues", anonReporter,
         referral.getAnonymousReporterIndicator());
     assertEquals("Expected communicationsMethodCode field to have presetValues",
@@ -279,6 +283,10 @@ public class ReferralTest {
     assertEquals("Expected firstResponseDeterminedByStaffPersonId field to have presetValues",
         firstResponseDeterminedByStaffPersonId,
         referral.getFirstResponseDeterminedByStaffPersonId());
+    assertEquals(
+        "Expected filedSuspectedChildAbuseReporttoLawEnforcementIndicator field to have presetValues",
+        filedCrossReport,
+        referral.getFiledSuspectedChildAbuseReporttoLawEnforcementIndicator());
     assertEquals("Expected longTextId field to have presetValues", longTextId,
         referral.getScreenerNoteText());
     assertEquals("Expected longTextId field to have presetValues", longTextId,
@@ -315,7 +323,6 @@ public class ReferralTest {
     Boolean caretakersPerpetratorCode = false;
     String closureDate = "";
     String currentLocationOfChildren = "";
-    Boolean filedSuspectedChildAbuseReporttoLawEnforcementIndicator = false;
     Boolean familyAwarenessIndicator = false;
     Short govtEntityType = 0;
     String legalDefinitionCode = "N";
@@ -349,10 +356,11 @@ public class ReferralTest {
     Set<Client> perpetratorClient = null;
 
     Referral referral = Referral.createWithDefaults(anonReporter, communicationsMethodCode,
-        drmsAllegationDescriptionDoc, drmsErReferralDoc, drmsInvestigationDoc, referalName,
+        drmsAllegationDescriptionDoc, drmsErReferralDoc, drmsInvestigationDoc,
+        filedCrossReport, familyAwarenessIndicator, govtEntityType, referalName,
         dateStarted, timeStarted, referralResponseTypeCode, allegesAbuseOccurredAtAddressId,
         firstResponseDeterminedByStaffPersonId, longTextId, countyCode, approvalCode, staffId,
-        responseRationaleText);
+        responseRationaleText, responsibleAgencyCode);
     assertEquals("Expected additionalInfoIncludedCode field to have presetValues",
         additionalInfoIncludedCode, referral.getAdditionalInfoIncludedCode());
     assertEquals("Expected applicationForPetitionIndicator field to have presetValues",
@@ -371,10 +379,6 @@ public class ReferralTest {
         referral.getDrmsErReferralDoc());
     assertEquals("Expected drmsInvestigationDoc field to have presetValues", drmsInvestigationDoc,
         referral.getDrmsInvestigationDoc());
-    assertEquals(
-        "Expected filedSuspectedChildAbuseReporttoLawEnforcementIndicator field to have presetValues",
-        filedSuspectedChildAbuseReporttoLawEnforcementIndicator,
-        referral.getFiledSuspectedChildAbuseReporttoLawEnforcementIndicator());
     assertEquals("Expected familyAwarenessIndicator field to have presetValues",
         familyAwarenessIndicator, referral.getFamilyAwarenessIndicator());
     assertEquals("Expected govtEntityType field to have presetValues", govtEntityType,

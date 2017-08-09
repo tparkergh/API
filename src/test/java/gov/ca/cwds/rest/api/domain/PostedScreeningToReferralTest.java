@@ -66,7 +66,8 @@ public class PostedScreeningToReferralTest {
         "endedAt", SACRAMENTO_COUNTY_CODE,"incidentDate", "locationType",
         communicationMethod, "name", "reportNarrative", "reference",
         responseTime, "startedAt", "assignee", "additionalInformation",
-        "screeningDecision", "screeningDecisionDetail", new Address(new gov.ca.cwds.data.persistence.ns.Address()),
+        "screeningDecision", "screeningDecisionDetail", 118, false, false, "C",
+        new Address(new gov.ca.cwds.data.persistence.ns.Address()),
         new HashSet(), new HashSet(), new HashSet());
 
   }

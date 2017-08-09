@@ -52,6 +52,11 @@ public class ScreeningToReferralTest {
   private long id = 2;
   private boolean filedOutOfState = false;
 
+  int approvalStatus = 118;
+  boolean familyAwarness = false;
+  boolean filedWithLawEnforcement = false;
+  String responsibleAgency = "C";
+
   Short communicationMethod = 409;
 
   private TestSystemCodeCache testSystemCodeCache = new TestSystemCodeCache();
@@ -85,7 +90,8 @@ public class ScreeningToReferralTest {
         "2016-08-03T01:00:00.000Z", SACRAMENTO_COUNTY_CODE, "2016-08-02", "Foster Home", communicationMethod,
         "The Rocky Horror Show", "Narrative 123 test", "123ABC", responseTime,
         "2016-08-03T01:00:00.000Z", "Michael Bastow", "addtional information",
-        "Screening Descision", "Detail", address, participants, crossReports, allegations));
+        "Screening Descision", "Detail", approvalStatus, familyAwarness, filedWithLawEnforcement,
+        responsibleAgency, address, participants, crossReports, allegations));
 
     // System.out.println(expected);
     String serialized = MAPPER.writeValueAsString(
@@ -109,7 +115,8 @@ public class ScreeningToReferralTest {
     ScreeningToReferral expected = new ScreeningToReferral(id, "", "", "2016-08-03T01:00:00.000Z",
         SACRAMENTO_COUNTY_CODE, "2016-08-02", "Foster Home", communicationMethod, "The Rocky Horror Show",
         "Narrative 123 test", "123ABC", responseTime, "2016-08-03T01:00:00.000Z", "Michael Bastow",
-        "addtional information", "Screening Descision", "Detail", address, participants,
+        "addtional information", "Screening Descision", "Detail",approvalStatus, familyAwarness,
+        filedWithLawEnforcement, responsibleAgency, address, participants,
         crossReports, allegations);
 
 

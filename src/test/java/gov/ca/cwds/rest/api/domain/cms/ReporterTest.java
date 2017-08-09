@@ -229,6 +229,8 @@ public class ReporterTest {
     String firstName = "firstName";
     String middleName = "middleName";
     String lastName = "lastName";
+    String employerName = "Employer Name";
+    boolean confidentialityWaver = true;
     String suffix = "";
     Participant participant =
         new Participant(5L, "legacy_source_table", "legacy_client_id", new LegacyDescriptor(),
@@ -259,10 +261,16 @@ public class ReporterTest {
         reporter.getMiddleInitialName());
     assertEquals("Expected last name field to have been initialized with value", lastName,
         reporter.getLastName());
+    assertEquals("Expected employerName field to have been initialized with value", employerName,
+        reporter.getEmployerName());
+    assertEquals("Expected reported confidentialWaiver field to have been initialized with value", employerName,
+        reporter.getEmployerName());
     assertEquals("Expected suffix name field to have been initialized with value", suffix,
         reporter.getSuffixTitleDescription());
     assertEquals("Expected countyCode field to have been initialized with value", countyCode,
         reporter.getCountySpecificCode());
+    assertEquals("Expected confidentialWaiverIndicator field to have been initialized with value",
+        true, reporter.getConfidentialWaiverIndicator());
   }
 
   @Test
@@ -301,12 +309,8 @@ public class ReporterTest {
         new Short("0"), reporter.getColltrClientRptrReltnshpType());
     assertEquals("Expected communicationMethodType field to have been initialized with value",
         new Short("0"), reporter.getCommunicationMethodType());
-    assertEquals("Expected confidentialWaiverIndicator field to have been initialized with value",
-        false, reporter.getConfidentialWaiverIndicator());
     assertEquals("Expected drmsMandatedRprtrFeedback field to have been initialized with value", "",
         reporter.getDrmsMandatedRprtrFeedback());
-    assertEquals("Expected employerName field to have been initialized with value", "",
-        reporter.getEmployerName());
     assertEquals("Expected feedbackDate field to have been initialized with value", "",
         reporter.getFeedbackDate());
     assertEquals("Expected feedbackRequiredIndicator field to have been initialized with value",

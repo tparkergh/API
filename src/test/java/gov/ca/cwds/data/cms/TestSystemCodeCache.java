@@ -1,5 +1,6 @@
 package gov.ca.cwds.data.cms;
 
+import java.util.HashSet;
 import java.util.Set;
 
 import gov.ca.cwds.rest.api.domain.SystemCodeCategoryId;
@@ -37,8 +38,13 @@ public class TestSystemCodeCache implements SystemCodeCache {
 
   @Override
   public Set<SystemCode> getSystemCodesForMeta(String metaId) {
+    Set codes = new HashSet();
+      if ("GVR_ENTC" == metaId) {
+        SystemCode sacramento = new SystemCode((short) 1101, null, null, null, "Sacramento", "34", null, null, null);
+        codes.add(sacramento);
+      }
 
-    return null;
+    return codes;
   }
 
   @Override
