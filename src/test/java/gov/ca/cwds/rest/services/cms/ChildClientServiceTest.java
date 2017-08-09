@@ -12,6 +12,11 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
+import gov.ca.cwds.data.cms.ChildClientDao;
+import gov.ca.cwds.rest.api.Response;
+import gov.ca.cwds.rest.api.domain.cms.ChildClient;
+import gov.ca.cwds.rest.services.ServiceException;
+import io.dropwizard.jackson.Jackson;
 
 import javax.persistence.EntityExistsException;
 import javax.persistence.EntityNotFoundException;
@@ -23,12 +28,6 @@ import org.junit.rules.ExpectedException;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import gov.ca.cwds.data.cms.ChildClientDao;
-import gov.ca.cwds.rest.api.Response;
-import gov.ca.cwds.rest.api.domain.cms.ChildClient;
-import gov.ca.cwds.rest.services.ServiceException;
-import io.dropwizard.jackson.Jackson;
-
 /**
  * @author CWDS API Team
  *
@@ -38,6 +37,7 @@ public class ChildClientServiceTest {
   private ChildClientService childClientService;
   private ChildClientDao childClientDao;
   private StaffPersonIdRetriever staffPersonIdRetriever;
+  private RIChildClient ri;
 
   @SuppressWarnings("javadoc")
   @Rule
@@ -48,7 +48,8 @@ public class ChildClientServiceTest {
   public void setup() throws Exception {
     childClientDao = mock(ChildClientDao.class);
     staffPersonIdRetriever = mock(StaffPersonIdRetriever.class);
-    childClientService = new ChildClientService(childClientDao, staffPersonIdRetriever);
+    ri = mock(RIChildClient.class);
+    childClientService = new ChildClientService(childClientDao, staffPersonIdRetriever, ri);
   }
 
 
@@ -68,8 +69,9 @@ public class ChildClientServiceTest {
   @SuppressWarnings("javadoc")
   @Test
   public void findReturnsChildClientReportWhenFound() throws Exception {
-    ChildClient expected = MAPPER.readValue(
-        fixture("fixtures/domain/legacy/ChildClient/valid/valid.json"), ChildClient.class);
+    ChildClient expected =
+        MAPPER.readValue(fixture("fixtures/domain/legacy/ChildClient/valid/valid.json"),
+            ChildClient.class);
 
     gov.ca.cwds.data.persistence.cms.ChildClient childCleint =
         new gov.ca.cwds.data.persistence.cms.ChildClient(expected.getVictimClientId(), expected,
@@ -116,8 +118,9 @@ public class ChildClientServiceTest {
   @Test
   public void childClientServiceDeleteReturnsNotNull() throws Exception {
     String id = "ABC1234567";
-    ChildClient expected = MAPPER.readValue(
-        fixture("fixtures/domain/legacy/ChildClient/valid/valid.json"), ChildClient.class);
+    ChildClient expected =
+        MAPPER.readValue(fixture("fixtures/domain/legacy/ChildClient/valid/valid.json"),
+            ChildClient.class);
     gov.ca.cwds.data.persistence.cms.ChildClient childClient =
         new gov.ca.cwds.data.persistence.cms.ChildClient(id, expected, "0XA");
 
@@ -141,8 +144,9 @@ public class ChildClientServiceTest {
   @SuppressWarnings("javadoc")
   @Test
   public void updateReturnsChildClientResponseOnSuccess() throws Exception {
-    ChildClient expected = MAPPER.readValue(
-        fixture("fixtures/domain/legacy/ChildClient/valid/valid.json"), ChildClient.class);
+    ChildClient expected =
+        MAPPER.readValue(fixture("fixtures/domain/legacy/ChildClient/valid/valid.json"),
+            ChildClient.class);
 
     gov.ca.cwds.data.persistence.cms.ChildClient childClient =
         new gov.ca.cwds.data.persistence.cms.ChildClient(expected.getVictimClientId(), expected,
@@ -157,8 +161,9 @@ public class ChildClientServiceTest {
   @SuppressWarnings("javadoc")
   @Test
   public void updateReturnsCorrectChildClientOnSuccess() throws Exception {
-    ChildClient childClientRequest = MAPPER.readValue(
-        fixture("fixtures/domain/legacy/ChildClient/valid/valid.json"), ChildClient.class);
+    ChildClient childClientRequest =
+        MAPPER.readValue(fixture("fixtures/domain/legacy/ChildClient/valid/valid.json"),
+            ChildClient.class);
 
     gov.ca.cwds.data.persistence.cms.ChildClient childClient =
         new gov.ca.cwds.data.persistence.cms.ChildClient(childClientRequest.getVictimClientId(),
@@ -177,8 +182,9 @@ public class ChildClientServiceTest {
   public void updateThrowsExceptionWhenChildClientNotFound() throws Exception {
 
     try {
-      ChildClient crossReportRequest = MAPPER.readValue(
-          fixture("fixtures/domain/legacy/ChildClient/valid/valid.json"), ChildClient.class);
+      ChildClient crossReportRequest =
+          MAPPER.readValue(fixture("fixtures/domain/legacy/ChildClient/valid/valid.json"),
+              ChildClient.class);
 
       when(childClientDao.update(any())).thenThrow(EntityNotFoundException.class);
 
@@ -192,8 +198,9 @@ public class ChildClientServiceTest {
   @SuppressWarnings("javadoc")
   @Test
   public void createReturnsPostedCrossReportClass() throws Exception {
-    ChildClient childClientDomain = MAPPER.readValue(
-        fixture("fixtures/domain/legacy/ChildClient/valid/valid.json"), ChildClient.class);
+    ChildClient childClientDomain =
+        MAPPER.readValue(fixture("fixtures/domain/legacy/ChildClient/valid/valid.json"),
+            ChildClient.class);
     gov.ca.cwds.data.persistence.cms.ChildClient toCreate =
         new gov.ca.cwds.data.persistence.cms.ChildClient(childClientDomain.getVictimClientId(),
             childClientDomain, "ABC");
@@ -209,9 +216,10 @@ public class ChildClientServiceTest {
   @SuppressWarnings("javadoc")
   @Test(expected = ServiceException.class)
   public void childClientServiceCreateThrowsServiceExceptionWhenVictimIdNull() throws Exception {
-    ChildClient childClientRequest = MAPPER.readValue(
-        fixture("fixtures/domain/legacy/ChildClient/invalid/victimClientIdNull.json"),
-        ChildClient.class);
+    ChildClient childClientRequest =
+        MAPPER.readValue(
+            fixture("fixtures/domain/legacy/ChildClient/invalid/victimClientIdNull.json"),
+            ChildClient.class);
 
     childClientService.create(childClientRequest);
   }
@@ -221,8 +229,9 @@ public class ChildClientServiceTest {
   @Test
   public void childClientServiceCreateThrowsEntityExistsException() throws Exception {
     try {
-      ChildClient childClientRequest = MAPPER.readValue(
-          fixture("fixtures/domain/legacy/ChildClient/valid/valid.json"), ChildClient.class);
+      ChildClient childClientRequest =
+          MAPPER.readValue(fixture("fixtures/domain/legacy/ChildClient/valid/valid.json"),
+              ChildClient.class);
 
       when(childClientDao.create(any())).thenThrow(EntityExistsException.class);
       childClientService.create(childClientRequest);
@@ -234,8 +243,9 @@ public class ChildClientServiceTest {
   @SuppressWarnings("javadoc")
   @Test
   public void createReturnsNonNull() throws Exception {
-    ChildClient childClientDomain = MAPPER.readValue(
-        fixture("fixtures/domain/legacy/ChildClient/valid/valid.json"), ChildClient.class);
+    ChildClient childClientDomain =
+        MAPPER.readValue(fixture("fixtures/domain/legacy/ChildClient/valid/valid.json"),
+            ChildClient.class);
     gov.ca.cwds.data.persistence.cms.ChildClient toCreate =
         new gov.ca.cwds.data.persistence.cms.ChildClient(childClientDomain.getVictimClientId(),
             childClientDomain, "ABC");
@@ -251,8 +261,9 @@ public class ChildClientServiceTest {
   @SuppressWarnings("javadoc")
   @Test
   public void createReturnsCorrectPostedChildClient() throws Exception {
-    ChildClient childClientDomain = MAPPER.readValue(
-        fixture("fixtures/domain/legacy/ChildClient/valid/valid.json"), ChildClient.class);
+    ChildClient childClientDomain =
+        MAPPER.readValue(fixture("fixtures/domain/legacy/ChildClient/valid/valid.json"),
+            ChildClient.class);
     gov.ca.cwds.data.persistence.cms.ChildClient toCreate =
         new gov.ca.cwds.data.persistence.cms.ChildClient(childClientDomain.getVictimClientId(),
             childClientDomain, "ABC");

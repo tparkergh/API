@@ -28,6 +28,7 @@ public class ChildClientService implements CrudsService {
 
   private ChildClientDao childClientDao;
   private StaffPersonIdRetriever staffPersonIdRetriever;
+  private RIChildClient riChildClient;
 
   /**
    * Constructor
@@ -35,12 +36,14 @@ public class ChildClientService implements CrudsService {
    * @param childClientDao The {@link Dao} handling
    *        {@link gov.ca.cwds.data.persistence.cms.ChildClient} objects.
    * @param staffPersonIdRetriever the staffPersonIdRetriever
+   * @param riChildClient referential integrity checker
    */
   @Inject
   public ChildClientService(ChildClientDao childClientDao,
-      StaffPersonIdRetriever staffPersonIdRetriever) {
+      StaffPersonIdRetriever staffPersonIdRetriever, RIChildClient riChildClient) {
     this.childClientDao = childClientDao;
     this.staffPersonIdRetriever = staffPersonIdRetriever;
+    this.riChildClient = riChildClient;
   }
 
   /**
