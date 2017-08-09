@@ -29,6 +29,9 @@ public class DeliveredService
 
   private static final Logger LOGGER = LoggerFactory.getLogger(DeliveredService.class);
 
+  private String lastUpdatedId = RequestExecutionContext.instance().getUserId();
+  private Date lastUpdatedTime = RequestExecutionContext.instance().getRequestStartTime();
+
   private DeliveredServiceDao deliveredServiceDao;
 
   /**
@@ -53,8 +56,6 @@ public class DeliveredService
     gov.ca.cwds.rest.api.contact.DeliveredServiceDomain deliveredServiceDomain = request;
 
     try {
-      String lastUpdatedId = RequestExecutionContext.instance().getUserId();
-      Date lastUpdatedTime = RequestExecutionContext.instance().getRequestStartTime();
       gov.ca.cwds.data.persistence.contact.DeliveredServiceEntity managed =
           new gov.ca.cwds.data.persistence.contact.DeliveredServiceEntity(
               CmsKeyIdGenerator.generate(lastUpdatedId), deliveredServiceDomain, lastUpdatedId,

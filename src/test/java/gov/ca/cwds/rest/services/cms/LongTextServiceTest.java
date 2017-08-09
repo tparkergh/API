@@ -55,17 +55,6 @@ public class LongTextServiceTest {
 
   // find test
   @Test
-  public void longTextServiceFindThrowsAssertionError() {
-    // expect string type for primary key test
-    thrown.expect(AssertionError.class);
-    try {
-      longTextService.find(1);
-    } catch (AssertionError e) {
-      assertEquals("Expeceted AssertionError", e.getMessage());
-    }
-  }
-
-  @Test
   public void longTextServiceFindReturnsCorrectEntity() throws Exception {
     String id = "AaoDyiJq27";
     LongText expected = MAPPER
@@ -84,18 +73,8 @@ public class LongTextServiceTest {
     assertThat(found, is(nullValue()));
   }
 
-  @Test
-  // delete test
-  public void longTextServiceDeleteThrowsAssertionError() throws Exception {
-    // expect string type for primary key test
-    thrown.expect(AssertionError.class);
-    try {
-      longTextService.delete(123);
-    } catch (AssertionError e) {
-      assertEquals("Expected AssertionError", e.getMessage());
-    }
-  }
 
+  // delete test
   @Test
   public void longTextServiceDeleteDelegatesToCrudsService() {
     longTextService.delete("ABC2345678");
@@ -122,17 +101,6 @@ public class LongTextServiceTest {
   }
 
   // update test
-  @Test
-  public void longTextServiceUpdateThrowsAssertionError() throws Exception {
-    // expected string type for primary key test
-    thrown.expect(AssertionError.class);
-    try {
-      longTextService.update("ABC1234567", null);
-    } catch (AssertionError e) {
-      assertEquals("Expected AssertionError", e.getMessage());
-    }
-  }
-
   @Test
   public void longTextServiceUpdateReturnsCorrectEntity() throws Exception {
     String id = "AaoDyiJq27";
