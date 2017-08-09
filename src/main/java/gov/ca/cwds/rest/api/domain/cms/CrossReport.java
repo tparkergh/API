@@ -268,7 +268,7 @@ public class CrossReport extends ReportingDomain implements Request, Response {
   public static CrossReport createWithDefaults(String id,
       gov.ca.cwds.rest.api.domain.CrossReport crossReport, String referralId, String staffId,
       String countyCode, Boolean lawEnforcementIndicator) {
-    return new CrossReport(id, crossReport.getMethod().shortValue(), false, false, "", "",
+    return new CrossReport(id, crossReport.getMethod().shortValue(),crossReport.isFiledOutOfState(), false, "", "",
         DEFAULT_INT, DEFAULT_DECIMAL, crossReport.getInformDate(), "", "", referralId, "", staffId,
         crossReport.getAgencyName(), "", "", countyCode, lawEnforcementIndicator, false, false);
   }

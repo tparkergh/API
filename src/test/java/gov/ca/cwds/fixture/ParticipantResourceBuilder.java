@@ -28,6 +28,9 @@ public class ParticipantResourceBuilder {
   String ssn = "123456789";
   Short primaryLanguage = 1271;
   Short secondaryLanguage = 1253;
+  boolean reporterConfidentialWaiver = false;
+  String reporterEmployerName = "Employer Name";
+  boolean clientStaffPersonAdded = false;
   Set<String> roles;
   Set<gov.ca.cwds.rest.api.domain.Address> addresses;
 
@@ -155,6 +158,41 @@ public class ParticipantResourceBuilder {
     this.ssn = ssn;
     return this;
   }
+   /**
+   * @param suffix - suffix
+   * @return the ParticipantResourceBuilder
+   */
+  public ParticipantResourceBuilder setSuffix(String suffix) {
+    this.suffix = suffix;
+    return this;
+  }
+
+  /**
+   * @param reporterConfidentialWaiver - reporterConfidentialWaiver
+   * @return the ParticipantResourceBuilder
+   */
+  public ParticipantResourceBuilder setReporterConfidentialWaiver(boolean reporterConfidentialWaiver) {
+    this.reporterConfidentialWaiver = reporterConfidentialWaiver;
+    return this;
+  }
+
+  /**
+   * @param reporterEmployerName - reporterEmployerName
+   * @return the ParticipantResourceBuilder
+   */
+  public ParticipantResourceBuilder setReporterEmployerName(String reporterEmployerName) {
+    this.reporterEmployerName = reporterEmployerName;
+    return this;
+  }
+
+  /**
+   * @param clientStaffPersonAdded - clientStaffPersonAdded
+   * @return the ParticipantResourceBuilder
+   */
+  public ParticipantResourceBuilder setClientStaffPersonAdded(boolean clientStaffPersonAdded) {
+    this.clientStaffPersonAdded = clientStaffPersonAdded;
+    return this;
+  }
 
   /**
    * @param roles - roles
@@ -216,6 +254,6 @@ public class ParticipantResourceBuilder {
    */
   public Participant createParticipant() {
     return new Participant(id, legacySourceTable, legacyId, legacyDescriptor, firstName, middleName, lastName, suffix, gender, ssn,
-        dateOfBirth, primaryLanguage, secondaryLanguage, personId, screeningId, roles, addresses);
+        dateOfBirth, primaryLanguage, secondaryLanguage, personId, screeningId, reporterConfidentialWaiver, reporterEmployerName, clientStaffPersonAdded , roles, addresses);
   }
 }

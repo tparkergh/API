@@ -176,6 +176,9 @@ public class Participant extends ReportingDomain implements Request, Response {
    * @param ssn The social security number
    * @param primaryLanguage primary language
    * @param secondaryLanguage secondary language
+   * @param reporterConfidentialWaiver Confidential Waiver indicator for reporter
+   * @param reporterEmployerName Reporter Employer Name
+   * @param clientStaffPersonAdded Client Staff person Added indicator
    * @param roles The roles of the participant
    * @param addresses The addresses of the participant
    * @throws ServiceException throw any exception
@@ -192,6 +195,9 @@ public class Participant extends ReportingDomain implements Request, Response {
       @JsonProperty("primary_language") Short primaryLanguage,
       @JsonProperty("secondary_language") Short secondaryLanguage,
       @JsonProperty("person_id") long personId, @JsonProperty("screening_id") long screeningId,
+      @JsonProperty("reporter_confidential_waiver") boolean reporterConfidentialWaiver,
+      @JsonProperty("reporter_employer_name") String reporterEmployerName,
+      @JsonProperty("client_staff_person_added") boolean clientStaffPersonAdded,
       @JsonProperty("roles") Set<String> roles, @JsonProperty("addresses") Set<Address> addresses)
       throws ServiceException {
     super();
@@ -211,6 +217,9 @@ public class Participant extends ReportingDomain implements Request, Response {
     this.secondaryLanguage = secondaryLanguage;
     this.roles = roles;
     this.addresses = addresses;
+    this.reporterConfidentialWaiver = reporterConfidentialWaiver;
+    this.reporterEmployerName = reporterEmployerName;
+    this.clientStaffPersonAdded = clientStaffPersonAdded;
 
     try {
       victim = ParticipantValidator.hasVictimRole(this);
@@ -380,6 +389,27 @@ public class Participant extends ReportingDomain implements Request, Response {
    */
   public Short getSecondaryLanguage() {
     return secondaryLanguage;
+  }
+
+  /**
+   * @return the reporterConfidentialWaiver
+   */
+  public boolean isReporterConfidentialWaiver() {
+    return reporterConfidentialWaiver;
+  }
+
+  /**
+   * @return the reporterEmployerName
+   */
+  public String getReporterEmployerName() {
+    return reporterEmployerName;
+  }
+
+  /**
+   * @return the clientStaffPersonAdded
+   */
+  public boolean isClientStaffPersonAdded() {
+    return clientStaffPersonAdded;
   }
 
   /**

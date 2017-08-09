@@ -85,7 +85,9 @@ public class CrossReport extends ReportingDomain implements Request, Response {
   public CrossReport(@JsonProperty("id") String id,
       @JsonProperty("legacy_source_table") String legacySourceTable,
       @JsonProperty("legacy_id") String legacyId, @JsonProperty("agency_type") String agencyType,
-      @JsonProperty("agency_name") String agencyName, @JsonProperty("method") Integer method,
+      @JsonProperty("agency_name") String agencyName,
+      @JsonProperty("filed_out_of_state") boolean filedOutOfState,
+      @JsonProperty("method") Integer method,
       @JsonProperty("inform_date") String informDate) {
     super();
     this.id = id;
@@ -94,6 +96,7 @@ public class CrossReport extends ReportingDomain implements Request, Response {
     this.agencyType = agencyType;
     this.agencyName = agencyName;
     this.method = method;
+    this.filedOutOfState = filedOutOfState;
     this.informDate = informDate;
   }
 
@@ -158,6 +161,13 @@ public class CrossReport extends ReportingDomain implements Request, Response {
    */
   public Integer getMethod() {
     return method;
+  }
+
+  /**
+   * @return filedOutOfState
+   */
+  public boolean isFiledOutOfState() {
+    return filedOutOfState;
   }
 
   /**
