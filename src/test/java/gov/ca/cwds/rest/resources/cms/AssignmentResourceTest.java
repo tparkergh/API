@@ -22,7 +22,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.squarespace.jersey2.guice.JerseyGuiceUtils;
 
 import gov.ca.cwds.rest.api.domain.cms.Assignment;
-import gov.ca.cwds.rest.resources.ResourceDelegate;
+import gov.ca.cwds.rest.resources.TypedResourceDelegate;
 import io.dropwizard.jackson.Jackson;
 import io.dropwizard.testing.junit.ResourceTestRule;
 
@@ -44,15 +44,16 @@ public class AssignmentResourceTest {
   @Rule
   public ExpectedException thrown = ExpectedException.none();
 
-  private final static ResourceDelegate resourceDelegate = mock(ResourceDelegate.class);
+  private final static TypedResourceDelegate<String, Assignment> typedResourceDelegate =
+      mock(TypedResourceDelegate.class);
 
   @ClassRule
   public final static ResourceTestRule inMemoryResource =
-      ResourceTestRule.builder().addResource(new AssignmentResource(resourceDelegate)).build();
+      ResourceTestRule.builder().addResource(new AssignmentResource(typedResourceDelegate)).build();
 
   @Before
   public void setup() throws Exception {
-    Mockito.reset(resourceDelegate);
+    Mockito.reset(typedResourceDelegate);
 
   }
 
@@ -63,7 +64,7 @@ public class AssignmentResourceTest {
   public void getDelegatesToResourceDelegate() throws Exception {
     inMemoryResource.client().target(FOUND_RESOURCE).request().accept(MediaType.APPLICATION_JSON)
         .get();
-    verify(resourceDelegate).get("abc");
+    verify(typedResourceDelegate).get("abc");
   }
 
   /*
@@ -76,7 +77,7 @@ public class AssignmentResourceTest {
 
     inMemoryResource.client().target(ROOT_RESOURCE).request().accept(MediaType.APPLICATION_JSON)
         .post(Entity.entity(serialized, MediaType.APPLICATION_JSON));
-    verify(resourceDelegate).create(eq(serialized));
+    verify(typedResourceDelegate).create(eq(serialized));
   }
 
   @Test
@@ -98,7 +99,7 @@ public class AssignmentResourceTest {
   public void deleteDelegatesToResourceDelegate() throws Exception {
     inMemoryResource.client().target(FOUND_RESOURCE).request().accept(MediaType.APPLICATION_JSON)
         .delete();
-    verify(resourceDelegate).delete("abc");
+    verify(typedResourceDelegate).delete("abc");
   }
 
   /*
@@ -111,7 +112,7 @@ public class AssignmentResourceTest {
 
     inMemoryResource.client().target(FOUND_RESOURCE).request().accept(MediaType.APPLICATION_JSON)
         .put(Entity.entity(serialized, MediaType.APPLICATION_JSON));
-    verify(resourceDelegate).update(eq("abc"), eq(serialized));
+    verify(typedResourceDelegate).update(eq("abc"), eq(serialized));
   }
 
   @Test

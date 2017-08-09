@@ -1,6 +1,5 @@
 package gov.ca.cwds.rest.services.cms;
 
-import java.io.Serializable;
 import java.util.Date;
 
 import javax.persistence.EntityExistsException;
@@ -24,15 +23,16 @@ import gov.ca.cwds.rest.api.domain.cms.PostedAssignment;
 import gov.ca.cwds.rest.business.rules.ExternalInterfaceTables;
 import gov.ca.cwds.rest.business.rules.NonLACountyTriggers;
 import gov.ca.cwds.rest.messages.MessageBuilder;
-import gov.ca.cwds.rest.services.CrudsService;
 import gov.ca.cwds.rest.services.ServiceException;
+import gov.ca.cwds.rest.services.TypedCrudsService;
 
 /**
  * Business layer object serves {@link Assignment}.
  * 
  * @author CWDS API Team
  */
-public class AssignmentService implements CrudsService {
+public class AssignmentService implements
+    TypedCrudsService<String, gov.ca.cwds.rest.api.domain.cms.Assignment, gov.ca.cwds.rest.api.domain.cms.Assignment> {
 
   private static final Logger LOGGER = LoggerFactory.getLogger(AssignmentService.class);
 
@@ -80,8 +80,7 @@ public class AssignmentService implements CrudsService {
    * @see gov.ca.cwds.rest.services.CrudsService#find(java.io.Serializable)
    */
   @Override
-  public gov.ca.cwds.rest.api.domain.cms.Assignment find(Serializable primaryKey) {
-    assert primaryKey instanceof String;
+  public gov.ca.cwds.rest.api.domain.cms.Assignment find(String primaryKey) {
 
     gov.ca.cwds.data.persistence.cms.Assignment persistedAssignment =
         assignmentDao.find(primaryKey);
@@ -97,8 +96,7 @@ public class AssignmentService implements CrudsService {
    * @see gov.ca.cwds.rest.services.CrudsService#delete(java.io.Serializable)
    */
   @Override
-  public gov.ca.cwds.rest.api.domain.cms.Assignment delete(Serializable primaryKey) {
-    assert primaryKey instanceof String;
+  public gov.ca.cwds.rest.api.domain.cms.Assignment delete(String primaryKey) {
     gov.ca.cwds.data.persistence.cms.Assignment persistedAssignment =
         assignmentDao.delete(primaryKey);
     externalInterfaceTables.createExtInterForDelete(primaryKey, "ASGNM_T");
@@ -114,10 +112,8 @@ public class AssignmentService implements CrudsService {
    * @see gov.ca.cwds.rest.services.CrudsService#create(gov.ca.cwds.rest.api.Request)
    */
   @Override
-  public PostedAssignment create(Request request) {
-    assert request instanceof gov.ca.cwds.rest.api.domain.cms.Assignment;
-    gov.ca.cwds.rest.api.domain.cms.Assignment assignment =
-        (gov.ca.cwds.rest.api.domain.cms.Assignment) request;
+  public PostedAssignment create(gov.ca.cwds.rest.api.domain.cms.Assignment request) {
+    gov.ca.cwds.rest.api.domain.cms.Assignment assignment = request;
     return create(assignment, null);
   }
 
@@ -235,16 +231,13 @@ public class AssignmentService implements CrudsService {
    *      gov.ca.cwds.rest.api.Request)
    */
   @Override
-  public gov.ca.cwds.rest.api.domain.cms.Assignment update(Serializable primaryKey,
-      Request request) {
-    assert primaryKey instanceof String;
-    assert request instanceof gov.ca.cwds.rest.api.domain.cms.Assignment;
-    gov.ca.cwds.rest.api.domain.cms.Assignment assignment =
-        (gov.ca.cwds.rest.api.domain.cms.Assignment) request;
+  public gov.ca.cwds.rest.api.domain.cms.Assignment update(String primaryKey,
+      gov.ca.cwds.rest.api.domain.cms.Assignment request) {
+    gov.ca.cwds.rest.api.domain.cms.Assignment assignment = request;
 
     try {
       String lastUpdatedId = staffPersonIdRetriever.getStaffPersonId();
-      Assignment managed = new Assignment((String) primaryKey, assignment, lastUpdatedId);
+      Assignment managed = new Assignment(primaryKey, assignment, lastUpdatedId);
       managed = assignmentDao.update(managed);
       externalInterfaceTables.createExtInterAssignment(managed, "C");
       return new gov.ca.cwds.rest.api.domain.cms.Assignment(managed);

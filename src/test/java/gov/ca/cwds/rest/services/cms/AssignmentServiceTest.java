@@ -86,15 +86,6 @@ public class AssignmentServiceTest {
   }
 
   // find test
-  @Test(expected = AssertionError.class)
-  public void assignmentServiceFindThrowsAssertionError() {
-    try {
-      assignmentService.find(1);
-    } catch (AssertionError e) {
-      assertEquals("Expeceted AssertionError", e.getMessage());
-    }
-  }
-
   @Test
   public void assignmentServiceFindReturnsCorrectEntity() throws Exception {
     String id = "SlCAr46088";
@@ -116,15 +107,6 @@ public class AssignmentServiceTest {
   }
 
   // delete test
-  @Test(expected = AssertionError.class)
-  public void assignmentServiceDeleteThrowsAssertionError() throws Exception {
-    try {
-      assignmentService.delete(123);
-    } catch (AssertionError e) {
-      assertEquals("Expected AssertionError", e.getMessage());
-    }
-  }
-
   @Test
   public void assignmentServiceDeleteDelegatesToCrudsService() {
     assignmentService.delete("ABC2345678");
@@ -150,15 +132,6 @@ public class AssignmentServiceTest {
   }
 
   // update test
-  @Test(expected = AssertionError.class)
-  public void assignmentServiceUpdateThrowsAssertionError() throws Exception {
-    try {
-      assignmentService.update("ABC1234567", null);
-    } catch (AssertionError e) {
-      assertEquals("Expected AssertionError", e.getMessage());
-    }
-  }
-
   @Test
   public void assignmentServiceUpdateReturnsCorrectEntity() throws Exception {
     String id = "SlCAr46088";
