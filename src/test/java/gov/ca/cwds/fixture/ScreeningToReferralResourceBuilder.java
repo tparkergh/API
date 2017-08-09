@@ -39,6 +39,10 @@ public class ScreeningToReferralResourceBuilder {
   private String additionalInformation = "additional information about the referral";
   private String screeningDecision = "Response time";
   private String screeningDecisionDetail = "Detail";
+  private int approvalStatus = 118;
+  private boolean familyAwareness = false;
+  private boolean filedWithLawEnforcement = false;
+  private String responsibleAgency = "C";
   private gov.ca.cwds.rest.api.domain.Address address;
   private Set<Participant> participants;
   private Set<gov.ca.cwds.rest.api.domain.CrossReport> crossReports;
@@ -146,6 +150,26 @@ public class ScreeningToReferralResourceBuilder {
     return this;
   }
 
+  public ScreeningToReferralResourceBuilder setApprovalStatus(int approvalStatus) {
+    this.approvalStatus = approvalStatus;
+    return this;
+  }
+
+  public ScreeningToReferralResourceBuilder setFamilyAwareness(boolean familyAwareness) {
+    this.familyAwareness = familyAwareness;
+    return this;
+  }
+
+  public ScreeningToReferralResourceBuilder setFiledWithLawEnforcement(boolean filedWithLawEnforcement) {
+    this.filedWithLawEnforcement = filedWithLawEnforcement;
+    return this;
+  }
+
+  public ScreeningToReferralResourceBuilder setResponsibleAgency(String responsibleAgency) {
+    this.responsibleAgency = responsibleAgency;
+    return this;
+  }
+
   public ScreeningToReferralResourceBuilder setAddress(
       gov.ca.cwds.rest.api.domain.Address address) {
     this.address = address;
@@ -173,6 +197,7 @@ public class ScreeningToReferralResourceBuilder {
     return new ScreeningToReferral(id, legacySourceTable, referralId, endedAt, incidentCounty,
         incidentDate, locationType, communicationMethod, name, reportNarrative, reference,
         responseTime, startedAt, assignee, additionalInformation, screeningDecision,
-        screeningDecisionDetail, address, participants, crossReports, allegations);
+        screeningDecisionDetail, approvalStatus, familyAwareness, filedWithLawEnforcement,
+        responsibleAgency, address, participants, crossReports, allegations);
   }
 }

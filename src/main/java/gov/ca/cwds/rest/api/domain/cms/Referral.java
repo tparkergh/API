@@ -366,6 +366,8 @@ public class Referral extends ReportingDomain implements Request, Response {
       @JsonProperty("anonymousReporterIndicator") Boolean anonymousReporterIndicator,
       @JsonProperty("applicationForPetitionIndicator") Boolean applicationForPetitionIndicator,
       @JsonProperty("approvalNumber") String approvalNumber,
+
+
       @JsonProperty("approvalStatusType") Short approvalStatusType,
       @JsonProperty("caretakersPerpetratorCode") Boolean caretakersPerpetratorCode,
       @JsonProperty("closureDate") String closureDate,
@@ -374,8 +376,16 @@ public class Referral extends ReportingDomain implements Request, Response {
       @JsonProperty("drmsAllegationDescriptionDoc") String drmsAllegationDescriptionDoc,
       @JsonProperty("drmsErReferralDoc") String drmsErReferralDoc,
       @JsonProperty("drmsInvestigationDoc") String drmsInvestigationDoc,
+
+
+
       @JsonProperty("filedSuspectedChildAbuseReporttoLawEnforcementIndicator") Boolean filedSuspectedChildAbuseReporttoLawEnforcementIndicator,
+
+
+
       @JsonProperty("familyAwarenessIndicator") Boolean familyAwarenessIndicator,
+
+
       @JsonProperty("govtEntityType") Short govtEntityType,
       @JsonProperty("legalDefinitionCode") String legalDefinitionCode,
       @JsonProperty("legalRightsNoticeIndicator") Boolean legalRightsNoticeIndicator,
@@ -404,6 +414,8 @@ public class Referral extends ReportingDomain implements Request, Response {
       @JsonProperty("homelessIndicator") Boolean homelessIndicator,
       @JsonProperty("familyRefusedServicesIndicator") Boolean familyRefusedServicesIndicator,
       @JsonProperty("firstEvaluatedOutApprovalDate") String firstEvaluatedOutApprovalDate,
+
+
       @JsonProperty("responsibleAgencyCode") String responsibleAgencyCode,
       @JsonProperty("limitedAccessGovtAgencyType") Short limitedAccessGovtAgencyType,
       @JsonProperty("limitedAccessDate") String limitedAccessDate,
@@ -615,21 +627,37 @@ public class Referral extends ReportingDomain implements Request, Response {
    * @param responseRationalLongTextId - longTextId for Response Rational Text
    * @return the referral
    */
-  public static Referral createWithDefaults(Boolean anonymousReporter,
-      short communicationsMethodCode, String drmsAllegationDescriptionDoc, String drmsErReferralDoc,
-      String drmsInvestigationDoc, String referalName, String dateStarted, String timeStarted,
-      short referralResponseTypeCode, String allegesAbuseOccurredAtAddressId,
-      String firstResponseDeterminedByStaffPersonId, String screenerNoteLongTextId,
-      String countyCode, short approvalCode, String staffId, String responseRationalLongTextId) {
+  public static Referral createWithDefaults(
+      Boolean anonymousReporter,
+      short communicationsMethodCode,
+      String drmsAllegationDescriptionDoc,
+      String drmsErReferralDoc,
+      String drmsInvestigationDoc,
+      boolean filedCrossReport,
+      boolean familyAwareness,
+      int governmentEntity,
+      String referalName,
+      String dateStarted,
+      String timeStarted,
+      short referralResponseTypeCode,
+      String allegesAbuseOccurredAtAddressId,
+      String firstResponseDeterminedByStaffPersonId,
+      String screenerNoteLongTextId,
+      String countyCode,
+      short approvalCode,
+      String staffId,
+      String responseRationalLongTextId,
+      String responsibleAgencyCode) {
+
     return new Referral(false, anonymousReporter, false, "", approvalCode, false, "",
         communicationsMethodCode, "", drmsAllegationDescriptionDoc, drmsErReferralDoc,
-        drmsInvestigationDoc, false, false, DEFAULT_CODE, DEFAULT_NO, false,
-        DEFAULT_LIMITIED_ACCESS_CODE, "", referalName, "", dateStarted, timeStarted,
+        drmsInvestigationDoc, filedCrossReport, familyAwareness, (short)governmentEntity, DEFAULT_NO,
+        false, DEFAULT_LIMITIED_ACCESS_CODE, "", referalName, "", dateStarted, timeStarted,
         referralResponseTypeCode, DEFAULT_CODE, "", "", responseRationalLongTextId,
         screenerNoteLongTextId, DEFAULT_NO, DEFAULT_NO, DEFAULT_NO, "",
-        allegesAbuseOccurredAtAddressId, firstResponseDeterminedByStaffPersonId, staffId,
-        countyCode, false, false, false, false, "", DEFAULT_RESPONSIBLE_AGENCY_CODE, DEFAULT_CODE,
-        "", "", "", null, null, null, null, null, null, null);
+        allegesAbuseOccurredAtAddressId, firstResponseDeterminedByStaffPersonId, staffId, countyCode,
+        false, false, false, false, "", responsibleAgencyCode, DEFAULT_CODE, "", "", "", null,
+        null, null, null, null, null, null);
   }
 
   /**

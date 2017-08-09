@@ -210,6 +210,8 @@ public class Participant extends ReportingDomain implements Request, Response {
     this.middleName = middleName;
     this.lastName = lastName;
     this.nameSuffix = nameSuffix;
+    this.reporterConfidentialWaiver = reporterConfidentialWaiver;
+    this.reporterEmployerName = reporterEmployerName;
     this.gender = gender;
     this.dateOfBirth = dateOfBirth;
     this.ssn = ssn;
@@ -390,6 +392,9 @@ public class Participant extends ReportingDomain implements Request, Response {
   public Short getSecondaryLanguage() {
     return secondaryLanguage;
   }
+
+
+
 
   /**
    * @return the reporterConfidentialWaiver

@@ -51,6 +51,14 @@ public class EntityChangedComparatorTest {
   }
 
   @Test
+  public void shouldEvaluateDateWithDifferentTimeZoneAsEqual(){
+    participant = createParticipant("2016-11-25T14:32:00.000-0700");
+    client = createClient( "2016-11-25T14:32:59.000-0700");
+
+    assertFalse(comparator.compare(participant, client));
+  }
+
+  @Test
   public void shouldNotEvaluateStringsWithDifferentDayAsEqual(){
     participant = createParticipant("2016-11-02T14:32:00.123-0700");
     client = createClient( "2016-11-01T14:32:00.123-0700");

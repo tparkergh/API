@@ -5,6 +5,10 @@
    "ended_at":"2016-08-03T01:00:00.000Z",
    "incident_county":"34",
    "incident_date":"2016-08-02",
+   "approval_status": 118,
+   "family_awareness": false,
+   "filed_with_law_enforcement": false,
+   "responsible_agency": "C",
    "location_type":"Foster Home",
    "communication_method":409,
    "name":"The Rocky Horror Show",
@@ -38,6 +42,8 @@
 	  "ssn": "123456789",
     "primary_language": 1253,
     "secondary_language": 1271,
+    "reporter_employer_name": "employerName",
+    "reporter_confidential_waiver" : true,
 	  "person_id": 12345,
 	  "screening_id": 12345,
 	  "roles" : [
@@ -67,6 +73,8 @@
 	  "ssn": "234567890",
     "primary_language": 1253,
     "secondary_language": 1271,
+    "reporter_employer_name": "employerName",
+    "reporter_confidential_waiver" : true,
 	  "person_id": 12345,
 	  "screening_id": 12345,
 	  "roles" : [

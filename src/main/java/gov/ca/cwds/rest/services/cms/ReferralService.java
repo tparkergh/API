@@ -1,8 +1,11 @@
 package gov.ca.cwds.rest.services.cms;
 
+import gov.ca.cwds.rest.api.domain.cms.SystemCode;
+import gov.ca.cwds.rest.api.domain.cms.SystemCodeCache;
 import java.io.Serializable;
 import java.util.Date;
 
+import java.util.Set;
 import javax.persistence.EntityExistsException;
 import javax.persistence.EntityNotFoundException;
 import javax.validation.Validator;
@@ -255,7 +258,6 @@ public class ReferralService implements CrudsService {
   public gov.ca.cwds.rest.api.domain.cms.Referral createReferralWithDefaults(
       ScreeningToReferral screeningToReferral, String dateStarted, String timeStarted,
       Date timestamp, MessageBuilder messageBuilder) throws ServiceException {
-    short approvalStatusCode = approvalStatusCodeOnCreateSetToNotSubmitted();
     String longTextId = generateReportNarrative(screeningToReferral, messageBuilder);
     String responseRationalLongTextId =
         generateResponseRationalText(screeningToReferral, messageBuilder);
@@ -276,14 +278,40 @@ public class ReferralService implements CrudsService {
     createReferralAddress(screeningToReferral, timestamp, messageBuilder);
     String allegesAbuseOccurredAtAddressId = screeningToReferral.getAddress().getLegacyId();
 
+    int govEnt = convertLogicalIdToSystemCodeFor(screeningToReferral.getIncidentCounty(), "GVR_ENTC");
     return gov.ca.cwds.rest.api.domain.cms.Referral.createWithDefaults(
         ParticipantValidator.anonymousReporter(screeningToReferral),
-        screeningToReferral.getCommunicationMethod(), drmsAllegationDescriptionDoc,
-        drmsErReferralDoc, drmsInvestigationDoc, screeningToReferral.getName(), dateStarted,
-        timeStarted, screeningToReferral.getResponseTime(), allegesAbuseOccurredAtAddressId,
-        firstResponseDeterminedByStaffPersonId, longTextId, screeningToReferral.getIncidentCounty(),
-        approvalStatusCode, LegacyDefaultValues.DEFAULT_STAFF_PERSON_ID,
-        responseRationalLongTextId);
+        screeningToReferral.getCommunicationMethod(),
+        drmsAllegationDescriptionDoc,
+        drmsErReferralDoc,
+        drmsInvestigationDoc,
+        screeningToReferral.isFiledWithLawEnforcement(),
+        screeningToReferral.isFamilyAwareness(),
+        govEnt,
+        screeningToReferral.getName(),
+        dateStarted,
+        timeStarted,
+        screeningToReferral.getResponseTime(),
+        allegesAbuseOccurredAtAddressId,
+        firstResponseDeterminedByStaffPersonId,
+        longTextId,
+        screeningToReferral.getIncidentCounty(),
+        (short) screeningToReferral.getApprovalStatus(),
+        LegacyDefaultValues.DEFAULT_STAFF_PERSON_ID,
+        responseRationalLongTextId,
+        screeningToReferral.getResponsibleAgency());
+  }
+
+  private int convertLogicalIdToSystemCodeFor(String logicalCode,
+      String governmentEntityCode) {
+    int foundCode = 0;
+    Set<SystemCode> systemCodes = SystemCodeCache.global().getSystemCodesForMeta(governmentEntityCode);
+    for (SystemCode systemCode : systemCodes){
+      if (systemCode.getLogicalId().equals(logicalCode)){
+        foundCode = systemCode.getSystemId();
+      }
+    }
+    return foundCode;
   }
 
   /**
@@ -303,23 +331,6 @@ public class ReferralService implements CrudsService {
     return staffPersonIdRetriever.getStaffPersonId();
   }
 
-  /**
-   * <blockquote>
-   *
-   * <pre>
-   *
-   * BUSINESS RULE: "R - 05914" -  Do Not Update Approval Status Type
-   *
-   * When creating the Referral entity, set the Approval Status Type = 'Request Not Submitted'.
-   * When updating the Referral entity, update every attribute except Approval Status Type.
-   * The Approval Status Type will be updated by the Host, not the workstation.
-   * </pre>
-   *
-   * </blockquote>
-   */
-  private short approvalStatusCodeOnCreateSetToNotSubmitted() {
-    return LegacyDefaultValues.APPROVAL_STATUS_CODE_NOT_SUBMITTED;
-  }
 
   private void createReferralAddress(ScreeningToReferral screeningToReferral, Date timestamp,
       MessageBuilder messageBuilder) {
