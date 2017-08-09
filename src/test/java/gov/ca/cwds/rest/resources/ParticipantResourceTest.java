@@ -35,6 +35,9 @@ public class ParticipantResourceTest {
   private static final String FOUND_RESOURCE = "/participants/1";
   private final Short primaryLanguage = 1253;
   private final Short secondaryLanguage = 1271;
+  private boolean reporterConfidentialWaiver = true;
+  private String reporterEmployerName = "Employer Name";
+  private boolean clientStaffPersonAdded = true;
   private Set<String> roles = new HashSet<String>();
   private Set<Address> addresses = new HashSet<Address>();
 
@@ -83,7 +86,7 @@ public class ParticipantResourceTest {
     addresses.add(address);
     Participant participant = new Participant(1, "", "", new LegacyDescriptor(), "Marge", "J",
         "Simpson", "F", "", "11122333", "11-01-2017", primaryLanguage, secondaryLanguage, 123, 456,
-        roles, addresses);
+        reporterConfidentialWaiver, reporterEmployerName, clientStaffPersonAdded, roles, addresses);
 
     int status =
         inMemoryResource.client().target(ROOT_RESOURCE).request().accept(MediaType.APPLICATION_JSON)
@@ -98,7 +101,7 @@ public class ParticipantResourceTest {
     addresses.add(address);
     Participant participant = new Participant(1, "", "", new LegacyDescriptor(), "Marge", "J",
         "Simpson", "", "F", "111223333", "2017-01-23", primaryLanguage, secondaryLanguage, 123, 456,
-        roles, addresses);
+        reporterConfidentialWaiver, reporterEmployerName, clientStaffPersonAdded, roles, addresses);
 
     int status =
         inMemoryResource.client().target(ROOT_RESOURCE).request().accept(MediaType.APPLICATION_JSON)
@@ -123,7 +126,7 @@ public class ParticipantResourceTest {
     addresses.add(address);
     Participant participant = new Participant(1, "", "", new LegacyDescriptor(), "Marge", "J",
         "Simpson", "", "Female", "111223333", "2017-01-11", primaryLanguage, secondaryLanguage, 123,
-        456, roles, addresses);
+        456, reporterConfidentialWaiver, reporterEmployerName, clientStaffPersonAdded, roles, addresses);
     int receivedStatus =
         inMemoryResource.client().target(ROOT_RESOURCE).request().accept(MediaType.APPLICATION_JSON)
             .put(Entity.entity(participant, MediaType.APPLICATION_JSON)).getStatus();

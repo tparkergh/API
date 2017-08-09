@@ -77,7 +77,7 @@ public class ReferralClientTest {
   private String dispositionCode = "d";
   private String dispositionDate = "1973-11-22";
   private Boolean selfReportedIndicator = Boolean.TRUE;
-  private Boolean staffPersonAddedIndicator = Boolean.FALSE;
+  private Boolean staffPersonAddedIndicator = Boolean.TRUE;
   private String dispositionClosureDescription = "e";
   private Short ageNumber = 3;
   private String agePeriodCode = "f";
@@ -172,7 +172,7 @@ public class ReferralClientTest {
     assertThat(referralClient.getDispositionCode(), is(equalTo(dispositionCode)));
     assertThat(referralClient.getDispositionDate(), is(equalTo(dispositionDate)));
     assertThat(referralClient.getSelfReportedIndicator(), is(equalTo(Boolean.TRUE)));
-    assertThat(referralClient.getStaffPersonAddedIndicator(), is(equalTo(Boolean.FALSE)));
+    assertThat(referralClient.getStaffPersonAddedIndicator(), is(equalTo(Boolean.TRUE)));
     assertThat(referralClient.getDispositionClosureDescription(),
         is(equalTo(dispositionClosureDescription)));
     assertThat(referralClient.getAgeNumber(), is(equalTo(ageNumber)));
@@ -191,7 +191,7 @@ public class ReferralClientTest {
     String countyCode = "countyCode";
     Short approvalCode = 1;
 
-    ReferralClient referralClient = ReferralClient.createWithDefault(selfReported, referralId,
+    ReferralClient referralClient = ReferralClient.createWithDefault(selfReported, staffPersonAddedIndicator, referralId,
         clientId, countyCode, approvalCode);
 
     assertEquals("Expected selfReported field to be initialized with values", selfReported,
@@ -226,7 +226,7 @@ public class ReferralClientTest {
     Boolean alcoholIndicator = false;
     Boolean drugIndicator = false;
 
-    ReferralClient referralClient = ReferralClient.createWithDefault(selfReported, referralId,
+    ReferralClient referralClient = ReferralClient.createWithDefault(selfReported, staffPersonAddedIndicator, referralId,
         clientId, countyCode, approvalCode);
 
     assertEquals("Expected approvalNumber field to be initialized with default values",

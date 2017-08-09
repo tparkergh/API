@@ -50,6 +50,7 @@ public class ScreeningToReferralTest {
   private Set<CrossReport> crossReports = new HashSet<CrossReport>();
   private Set<Allegation> allegations = new HashSet<Allegation>();
   private long id = 2;
+  private boolean filedOutOfState = false;
 
   Short communicationMethod = 409;
 
@@ -74,7 +75,7 @@ public class ScreeningToReferralTest {
     Participant participant = validParticipant();
     participants.add(participant);
     CrossReport crossReport =
-        new CrossReport("", "", "", agencyType, agencyName, method, informDate);
+        new CrossReport("", "", "", agencyType, agencyName, filedOutOfState, method, informDate);
     crossReports.add(crossReport);
     Allegation allegation = validAllegation();
     allegations.add(allegation);
@@ -100,7 +101,7 @@ public class ScreeningToReferralTest {
     Participant participant = validParticipant();
     participants.add(participant);
     CrossReport crossReport =
-        new CrossReport("", "", "", agencyType, agencyName, method, informDate);
+        new CrossReport("", "", "", agencyType, agencyName, filedOutOfState, method, informDate);
     crossReports.add(crossReport);
     Allegation allegation = validAllegation();
     allegations.add(allegation);

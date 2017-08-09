@@ -336,7 +336,7 @@ public class ScreeningToReferralService implements CrudsService {
 
               // CMS Referral Client
               ReferralClient referralClient = ReferralClient.createWithDefault(
-                  ParticipantValidator.selfReported(incomingParticipant), referralId, clientId,
+                  ParticipantValidator.selfReported(incomingParticipant), incomingParticipant.isClientStaffPersonAdded(), referralId, clientId,
                   LegacyDefaultValues.DEFAULT_COUNTY_SPECIFIC_CODE,
                   LegacyDefaultValues.DEFAULT_APPROVAL_STATUS_CODE);
 

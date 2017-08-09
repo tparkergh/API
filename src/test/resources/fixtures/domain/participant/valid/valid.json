@@ -20,6 +20,10 @@
   "screening_id": 12345,
   "primary_language": 1253,
   "secondary_language": 1271,
+  "reporter_confidential_waiver": false,
+  "reporter_employer_name": "Employer Name",
+  "client_staff_person_added": false,
+
   "roles" : [
   	"Victim"
   	],

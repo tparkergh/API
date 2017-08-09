@@ -32,6 +32,7 @@ public class CrossReportTest {
   private String legacySourceTable = "CRSS_RPT";
   private String legacyId = "1234567ABC";
   private String id = "1234567ABC";
+  private boolean filedOutOfState = false;
 
   private static final ObjectMapper MAPPER = Jackson.newObjectMapper();
   private CrossReport crossReport;
@@ -39,8 +40,7 @@ public class CrossReportTest {
   @Before
   public void setup() {
     crossReport = new CrossReport("", "", "", "Law enforcement",
-        "Sacramento County Sheriff Deparment", 2095, "2017-03-15");
-
+        "Sacramento County Sheriff Deparment",filedOutOfState, 2095, "2017-03-15");
   }
 
   /*
@@ -76,9 +76,9 @@ public class CrossReportTest {
   @Test
   public void testEquals() {
     CrossReport thisCrossReport = new CrossReport(id, legacySourceTable, legacyId, agencyType,
-        agencyName, method, informDate);
+        agencyName,filedOutOfState, method, informDate);
     CrossReport thatCrossReport = new CrossReport(id, legacySourceTable, legacyId, agencyType,
-        agencyName, method, informDate);
+        agencyName,filedOutOfState, method, informDate);
     assertEquals("Should be equal", thisCrossReport, thatCrossReport);
 
   }
@@ -86,7 +86,7 @@ public class CrossReportTest {
   @Test
   public void testDomainConstructorTest() throws Exception {
     CrossReport domain = new CrossReport(id, legacySourceTable, legacyId, agencyType, agencyName,
-        method, informDate);
+        filedOutOfState, method, informDate);
 
     assertThat(domain.getAgencyType(), is(equalTo(agencyType)));
     assertThat(domain.getAgencyName(), is(equalTo(agencyName)));
@@ -106,7 +106,7 @@ public class CrossReportTest {
 
     Integer validCrossReportMethod = 2095;
     CrossReport crossReport = new CrossReport(id, legacySourceTable, legacyId, agencyType,
-        agencyName, validCrossReportMethod, informDate);
+        agencyName,filedOutOfState, validCrossReportMethod, informDate);
 
     ValidatorFactory factory = Validation.buildDefaultValidatorFactory();
     Validator validator = factory.getValidator();
@@ -124,7 +124,7 @@ public class CrossReportTest {
 
     Integer invalidCrossReportMethod = 9999;
     CrossReport crossReport = new CrossReport(id, legacySourceTable, legacyId, agencyType,
-        agencyName, invalidCrossReportMethod, informDate);
+        agencyName,filedOutOfState, invalidCrossReportMethod, informDate);
 
     ValidatorFactory factory = Validation.buildDefaultValidatorFactory();
     Validator validator = factory.getValidator();

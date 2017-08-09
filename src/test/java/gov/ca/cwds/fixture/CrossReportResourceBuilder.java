@@ -11,6 +11,7 @@ public class CrossReportResourceBuilder {
   String legacyId = "";
   String agencyType = "Law enforcement";
   String agencyName = "Sacramento County Sheriff Deparment";
+  boolean filedOutOfState = false;
   Integer method = 2095; // "electronic report"
   String informDate = "2017-03-15";
 
@@ -77,11 +78,16 @@ public class CrossReportResourceBuilder {
     return this;
   }
 
+  public CrossReportResourceBuilder setFiledOutOfState(boolean filedOutOfState) {
+    this.filedOutOfState = filedOutOfState;
+    return this;
+  }
+
   /**
    * @return the CrossReport
    */
   public gov.ca.cwds.rest.api.domain.CrossReport createCrossReport() {
     return new gov.ca.cwds.rest.api.domain.CrossReport(id, legacySourceTable, legacyId, agencyType,
-        agencyName, method, informDate);
+        agencyName, filedOutOfState, method, informDate);
   }
 }
