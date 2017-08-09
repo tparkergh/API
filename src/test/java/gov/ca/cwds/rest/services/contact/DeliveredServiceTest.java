@@ -13,10 +13,13 @@ import java.util.Date;
 import javax.persistence.EntityExistsException;
 
 import org.apache.commons.lang3.NotImplementedException;
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
+import org.mockito.invocation.InvocationOnMock;
+import org.mockito.stubbing.Answer;
 
 import gov.ca.cwds.data.dao.contact.DeliveredServiceDao;
 import gov.ca.cwds.fixture.contacts.DeliveredServiceResourceBuilder;
@@ -181,6 +184,31 @@ public class DeliveredServiceTest {
       assertEquals("DeliveredService ID cannot be blank", e.getMessage());
     }
 
+  }
+
+  /*
+   * Test for checking the new id Generated for deliveredService
+   */
+  @Test
+  public void createReturnsGeneratedId() throws Exception {
+    DeliveredServiceDomain deliveredServiceDomain =
+        new DeliveredServiceResourceBuilder().buildDeliveredServiceResource();
+    when(deliveredServiceDao
+        .create(any(gov.ca.cwds.data.persistence.contact.DeliveredServiceEntity.class)))
+            .thenAnswer(new Answer<gov.ca.cwds.data.persistence.contact.DeliveredServiceEntity>() {
+
+              @Override
+              public gov.ca.cwds.data.persistence.contact.DeliveredServiceEntity answer(
+                  InvocationOnMock invocation) throws Throwable {
+                gov.ca.cwds.data.persistence.contact.DeliveredServiceEntity report =
+                    (gov.ca.cwds.data.persistence.contact.DeliveredServiceEntity) invocation
+                        .getArguments()[0];
+                return report;
+              }
+            });
+
+    DeliveredServiceDomain returned = deliveredService.create(deliveredServiceDomain);
+    Assert.assertNotEquals(returned.getId(), deliveredServiceDomain.getId());
   }
 
 }

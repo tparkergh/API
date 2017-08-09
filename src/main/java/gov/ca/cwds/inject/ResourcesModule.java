@@ -10,6 +10,7 @@ import gov.ca.cwds.rest.ApiConfiguration;
 import gov.ca.cwds.rest.SwaggerConfiguration;
 import gov.ca.cwds.rest.api.contact.DeliveredServiceDomain;
 import gov.ca.cwds.rest.api.domain.cms.AllegationPerpetratorHistory;
+import gov.ca.cwds.rest.api.domain.cms.Assignment;
 import gov.ca.cwds.rest.api.domain.cms.CmsDocument;
 import gov.ca.cwds.rest.api.domain.cms.DrmsDocument;
 import gov.ca.cwds.rest.api.domain.cms.LegacyKeyRequest;
@@ -302,8 +303,9 @@ public class ResourcesModule extends AbstractModule {
 
   @Provides
   @AssignmentServiceBackedResource
-  public ResourceDelegate assignmentServiceBackedResource(Injector injector) {
-    return new ServiceBackedResourceDelegate(injector.getInstance(AssignmentService.class));
+  public TypedResourceDelegate<String, Assignment> assignmentServiceBackedResource(
+      Injector injector) {
+    return new TypedServiceBackedResourceDelegate<>(injector.getInstance(AssignmentService.class));
   }
 
   @Provides
