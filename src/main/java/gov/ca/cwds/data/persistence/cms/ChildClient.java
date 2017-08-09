@@ -1,10 +1,15 @@
 package gov.ca.cwds.data.persistence.cms;
 
+import gov.ca.cwds.rest.api.ApiException;
+import gov.ca.cwds.rest.api.domain.DomainChef;
+
 import java.util.Date;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToOne;
 import javax.persistence.PersistenceException;
 import javax.persistence.Table;
 
@@ -12,9 +17,6 @@ import org.hibernate.annotations.Type;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
-
-import gov.ca.cwds.rest.api.ApiException;
-import gov.ca.cwds.rest.api.domain.DomainChef;
 
 /**
  * {@link CmsPersistentObject} Class representing a Child Client.
@@ -160,6 +162,17 @@ public class ChildClient extends CmsPersistentObject {
   private String tribalCustomaryAdoptionIndicator;
 
   /**
+   * referential integrity check.
+   * <p>
+   * Doesn't actually load the data. Just checks the existence of the parent client record.
+   * </p>
+   */
+  @OneToOne(optional = false)
+  @JoinColumn(name = "FKCLIENT_T", nullable = false, updatable = false, insertable = false)
+  private Client client;
+
+
+  /**
    * Default constructor
    * 
    * Required for Hibernate
@@ -214,9 +227,10 @@ public class ChildClient extends CmsPersistentObject {
   public ChildClient(String victimClientId, String adoptableCode, Short adoptedAge,
       String afdcFcEligibilityIndicatorVar, String allEducationInfoOnFileIndicator,
       String allHealthInfoOnFileIndicator, String attemptToAcquireEducInfoDesc,
-      String attemptToAcquireHlthInfoDesc, String awolAbductedCode, String birthHistoryIndicatorVar,
-      String childIndianAncestryIndicator, String collegeIndicator, String currentCaseId,
-      Short deathCircumstancesType, String disabilityDiagnosedCode, String drmsHePassportDocOld,
+      String attemptToAcquireHlthInfoDesc, String awolAbductedCode,
+      String birthHistoryIndicatorVar, String childIndianAncestryIndicator,
+      String collegeIndicator, String currentCaseId, Short deathCircumstancesType,
+      String disabilityDiagnosedCode, String drmsHePassportDocOld,
       String drmsHealthEducPassportDoc, String drmsVoluntaryPlcmntAgrmntDoc,
       String fc2EligApplicationIndicatorVar, Date foodStampsApplicationDate,
       String foodStampsApplicationIndicator, String icwaEligibilityCode,
@@ -277,8 +291,8 @@ public class ChildClient extends CmsPersistentObject {
    * @param childClient The domain object to construct this object from
    * @param lastUpdatedId the id of the last person to update this object
    */
-  public ChildClient(String victimClientId, gov.ca.cwds.rest.api.domain.cms.ChildClient childClient,
-      String lastUpdatedId) {
+  public ChildClient(String victimClientId,
+      gov.ca.cwds.rest.api.domain.cms.ChildClient childClient, String lastUpdatedId) {
     super(lastUpdatedId);
 
     try {
@@ -352,7 +366,6 @@ public class ChildClient extends CmsPersistentObject {
 
   /*
    * (non-Javadoc)
-   * 
    */
   @Override
   public String getPrimaryKey() {
