@@ -11,6 +11,7 @@ import gov.ca.cwds.rest.SwaggerConfiguration;
 import gov.ca.cwds.rest.api.contact.DeliveredServiceDomain;
 import gov.ca.cwds.rest.api.domain.cms.AllegationPerpetratorHistory;
 import gov.ca.cwds.rest.api.domain.cms.Assignment;
+import gov.ca.cwds.rest.api.domain.cms.ClientCollateral;
 import gov.ca.cwds.rest.api.domain.cms.CmsDocument;
 import gov.ca.cwds.rest.api.domain.cms.DrmsDocument;
 import gov.ca.cwds.rest.api.domain.cms.LegacyKeyRequest;
@@ -337,8 +338,10 @@ public class ResourcesModule extends AbstractModule {
 
   @Provides
   @ClientCollateralServiceBackedResource
-  public ResourceDelegate clientCollateralServiceBackedResource(Injector injector) {
-    return new ServiceBackedResourceDelegate(injector.getInstance(ClientCollateralService.class));
+  public TypedResourceDelegate<String, ClientCollateral> clientCollateralServiceBackedResource(
+      Injector injector) {
+    return new TypedServiceBackedResourceDelegate<>(
+        injector.getInstance(ClientCollateralService.class));
   }
 
 }

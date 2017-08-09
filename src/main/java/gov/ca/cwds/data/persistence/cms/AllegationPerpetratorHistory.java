@@ -5,6 +5,8 @@ import java.util.Date;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
@@ -52,6 +54,14 @@ public class AllegationPerpetratorHistory extends CmsPersistentObject {
   @Type(type = "date")
   @Column(name = "PR_UPD_DT")
   private Date perpetratorUpdateDate;
+
+  @ManyToOne(optional = true)
+  @JoinColumn(name = "FKCLIENT_T", nullable = true, updatable = false, insertable = false)
+  private Client client;
+
+  @ManyToOne(optional = false)
+  @JoinColumn(name = "FKALLGTN_T", nullable = false, updatable = false, insertable = false)
+  private Allegation allegation;
 
   /**
    * Default constructor

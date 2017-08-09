@@ -1,16 +1,6 @@
 package gov.ca.cwds.rest.resources.cms;
 
 import static gov.ca.cwds.rest.core.Api.RESOURCE_CLIENT_COLLATERALS;
-import gov.ca.cwds.inject.ClientCollateralServiceBackedResource;
-import gov.ca.cwds.rest.api.domain.cms.ClientCollateral;
-import gov.ca.cwds.rest.api.domain.cms.PostedClientCollateral;
-import gov.ca.cwds.rest.resources.ResourceDelegate;
-import io.dropwizard.hibernate.UnitOfWork;
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
-import io.swagger.annotations.ApiParam;
-import io.swagger.annotations.ApiResponse;
-import io.swagger.annotations.ApiResponses;
 
 import javax.validation.Valid;
 import javax.ws.rs.Consumes;
@@ -26,12 +16,24 @@ import org.apache.http.HttpStatus;
 
 import com.google.inject.Inject;
 
+import gov.ca.cwds.inject.ClientCollateralServiceBackedResource;
+import gov.ca.cwds.rest.api.domain.cms.ClientCollateral;
+import gov.ca.cwds.rest.api.domain.cms.PostedClientCollateral;
+import gov.ca.cwds.rest.resources.TypedResourceDelegate;
+import io.dropwizard.hibernate.UnitOfWork;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
+import io.swagger.annotations.ApiResponse;
+import io.swagger.annotations.ApiResponses;
+
 /**
  * A resource providing a RESTful interface for {@link ClientCollateral}. It delegates functions to
- * {@link ResourceDelegate}. It decorates the {@link ResourceDelegate} not in functionality but with @see
+ * {@link TypedResourceDelegate}. It decorates the {@link TypedResourceDelegate} not in
+ * functionality but with @see
  * <a href= "https://github.com/swagger-api/swagger-core/wiki/Annotations-1.5.X">Swagger
- * Annotations</a> and <a
- * href="https://jersey.java.net/documentation/latest/user-guide.html#jaxrs-resources">Jersey
+ * Annotations</a> and
+ * <a href="https://jersey.java.net/documentation/latest/user-guide.html#jaxrs-resources">Jersey
  * Annotations</a>
  * 
  * @author CWDS API Team
@@ -42,17 +44,17 @@ import com.google.inject.Inject;
 @Consumes(MediaType.APPLICATION_JSON)
 public class ClientCollateralResource {
 
-  private ResourceDelegate resourceDelegate;
+  private TypedResourceDelegate<String, ClientCollateral> typedResourceDelegate;
 
   /**
    * Constructor
    * 
-   * @param resourceDelegate The resourceDelegate to delegate to.
+   * @param typedResourceDelegate The typedResourceDelegate to delegate to.
    */
   @Inject
   public ClientCollateralResource(
-      @ClientCollateralServiceBackedResource ResourceDelegate resourceDelegate) {
-    this.resourceDelegate = resourceDelegate;
+      @ClientCollateralServiceBackedResource TypedResourceDelegate<String, ClientCollateral> typedResourceDelegate) {
+    this.typedResourceDelegate = typedResourceDelegate;
   }
 
   /**
@@ -72,7 +74,7 @@ public class ClientCollateralResource {
       code = 200)
   public Response get(@PathParam("id") @ApiParam(required = true, name = "id",
       value = "The id of the Client Collateral to find") String id) {
-    return resourceDelegate.get(id);
+    return typedResourceDelegate.get(id);
   }
 
   /**
@@ -94,7 +96,7 @@ public class ClientCollateralResource {
       response = PostedClientCollateral.class)
   public Response create(
       @Valid @ApiParam(hidden = false, required = true) ClientCollateral clientCollateral) {
-    return resourceDelegate.create(clientCollateral);
+    return typedResourceDelegate.create(clientCollateral);
   }
 
 }
