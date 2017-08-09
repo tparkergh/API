@@ -1,7 +1,5 @@
 package gov.ca.cwds.rest.services.cms;
 
-import java.io.Serializable;
-
 import javax.persistence.EntityExistsException;
 
 import org.apache.commons.lang3.NotImplementedException;
@@ -13,18 +11,18 @@ import com.google.inject.Inject;
 import gov.ca.cwds.data.Dao;
 import gov.ca.cwds.data.cms.ClientCollateralDao;
 import gov.ca.cwds.data.persistence.cms.CmsKeyIdGenerator;
-import gov.ca.cwds.rest.api.Request;
 import gov.ca.cwds.rest.api.domain.cms.ClientCollateral;
 import gov.ca.cwds.rest.api.domain.cms.PostedClientCollateral;
-import gov.ca.cwds.rest.services.CrudsService;
 import gov.ca.cwds.rest.services.ServiceException;
+import gov.ca.cwds.rest.services.TypedCrudsService;
 
 /**
  * Business layer object to work on {@link ClientCollateral}.
  * 
  * @author CWDS API Team
  */
-public class ClientCollateralService implements CrudsService {
+public class ClientCollateralService
+    implements TypedCrudsService<String, ClientCollateral, ClientCollateral> {
 
   private static final Logger LOGGER = LoggerFactory.getLogger(ClientCollateralService.class);
 
@@ -54,8 +52,7 @@ public class ClientCollateralService implements CrudsService {
    * @see gov.ca.cwds.rest.services.CrudsService#find(java.io.Serializable)
    */
   @Override
-  public gov.ca.cwds.rest.api.domain.cms.PostedClientCollateral find(Serializable primaryKey) {
-    assert primaryKey instanceof String;
+  public gov.ca.cwds.rest.api.domain.cms.PostedClientCollateral find(String primaryKey) {
     gov.ca.cwds.data.persistence.cms.ClientCollateral persistedClientCollateral =
         clientCollateralDao.find(primaryKey);
     if (persistedClientCollateral != null) {
@@ -70,8 +67,7 @@ public class ClientCollateralService implements CrudsService {
    * @see gov.ca.cwds.rest.services.CrudsService#delete(java.io.Serializable)
    */
   @Override
-  public gov.ca.cwds.rest.api.domain.cms.ClientCollateral delete(Serializable primaryKey) {
-    assert primaryKey instanceof String;
+  public gov.ca.cwds.rest.api.domain.cms.ClientCollateral delete(String primaryKey) {
     throw new NotImplementedException("Delete is not implemented");
   }
 
@@ -81,9 +77,8 @@ public class ClientCollateralService implements CrudsService {
    * @see gov.ca.cwds.rest.services.CrudsService#create(gov.ca.cwds.rest.api.Request)
    */
   @Override
-  public PostedClientCollateral create(Request request) {
-    assert request instanceof gov.ca.cwds.rest.api.domain.cms.ClientCollateral;
-    ClientCollateral clientCollateral = (ClientCollateral) request;
+  public PostedClientCollateral create(ClientCollateral request) {
+    ClientCollateral clientCollateral = request;
 
     try {
       String lastUpdatedId = staffPersonIdRetriever.getStaffPersonId();
@@ -105,7 +100,7 @@ public class ClientCollateralService implements CrudsService {
    *      gov.ca.cwds.rest.api.Request)
    */
   @Override
-  public ClientCollateral update(Serializable primaryKey, Request request) {
+  public ClientCollateral update(String primaryKey, ClientCollateral request) {
     assert primaryKey instanceof String;
     throw new NotImplementedException("Update is not implemented");
   }

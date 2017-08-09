@@ -17,6 +17,7 @@ import gov.ca.cwds.data.persistence.cms.CmsKeyIdGenerator;
 import gov.ca.cwds.rest.api.domain.cms.PostedAllegationPerpetratorHistory;
 import gov.ca.cwds.rest.services.ServiceException;
 import gov.ca.cwds.rest.services.TypedCrudsService;
+import gov.ca.cwds.rest.services.referentialintegrity.RIAllegationPerpetratorHistory;
 
 /**
  * Business layer object to work on {@link AllegationPerpetratorHistory}
@@ -31,6 +32,7 @@ public class AllegationPerpetratorHistoryService implements
 
   private AllegationPerpetratorHistoryDao allegationPerpetratorHistoryDao;
   private StaffPersonIdRetriever staffPersonIdRetriever;
+  private RIAllegationPerpetratorHistory riAllegationPerpetratorHistory;
 
 
   /**
@@ -39,13 +41,16 @@ public class AllegationPerpetratorHistoryService implements
    * @param allegationPerpetratorHistoryDao The {@link Dao} handling
    *        {@link gov.ca.cwds.data.persistence.cms.AllegationPerpetratorHistory} objects.
    * @param staffPersonIdRetriever the staffPersonIdRetriever
+   * @param riAllegationPerpetratorHistory
    */
   @Inject
   public AllegationPerpetratorHistoryService(
       AllegationPerpetratorHistoryDao allegationPerpetratorHistoryDao,
-      StaffPersonIdRetriever staffPersonIdRetriever) {
+      StaffPersonIdRetriever staffPersonIdRetriever,
+      RIAllegationPerpetratorHistory riAllegationPerpetratorHistory) {
     this.allegationPerpetratorHistoryDao = allegationPerpetratorHistoryDao;
     this.staffPersonIdRetriever = staffPersonIdRetriever;
+    this.riAllegationPerpetratorHistory = riAllegationPerpetratorHistory;
 
   }
 

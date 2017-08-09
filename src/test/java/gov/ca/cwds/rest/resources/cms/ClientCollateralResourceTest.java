@@ -1,13 +1,26 @@
 package gov.ca.cwds.rest.resources.cms;
 
+import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 
-import org.junit.Before;
-import org.junit.Test;
+import javax.ws.rs.client.Entity;
+import javax.ws.rs.core.MediaType;
 
+import org.hamcrest.junit.ExpectedException;
+import org.junit.After;
+import org.junit.Before;
+import org.junit.ClassRule;
+import org.junit.Rule;
+import org.junit.Test;
+import org.mockito.MockitoAnnotations;
+
+import com.squarespace.jersey2.guice.JerseyGuiceUtils;
+
+import gov.ca.cwds.fixture.ClientCollateralResourceBuilder;
 import gov.ca.cwds.rest.api.domain.cms.ClientCollateral;
-import gov.ca.cwds.rest.resources.ResourceDelegate;
+import gov.ca.cwds.rest.resources.TypedResourceDelegate;
+import io.dropwizard.testing.junit.ResourceTestRule;
 
 /**
  * @author CWDS API Team
@@ -16,19 +29,40 @@ import gov.ca.cwds.rest.resources.ResourceDelegate;
 @SuppressWarnings("javadoc")
 public class ClientCollateralResourceTest {
 
-  private ClientCollateralResource resource;
-  private ClientCollateral clientCollateral;
-  private ResourceDelegate service;
+  private static final String ROOT_RESOURCE = "/client_collaterals/";
+
+  @After
+  public void ensureServiceLocatorPopulated() {
+    JerseyGuiceUtils.reset();
+  }
+
+  @ClassRule
+  public static JerseyGuiceRule rule = new JerseyGuiceRule();
+
+  @Rule
+  public ExpectedException thrown = ExpectedException.none();
+
+  @SuppressWarnings("unchecked")
+  private final static TypedResourceDelegate<String, ClientCollateral> typedResourceDelegate =
+      mock(TypedResourceDelegate.class);
+
+  @ClassRule
+  public final static ResourceTestRule inMemoryResource = ResourceTestRule.builder()
+      .addResource(new ClientCollateralResource(typedResourceDelegate)).build();
 
   @Before
-  public void setup() {
-    service = mock(ResourceDelegate.class);
-    resource = new ClientCollateralResource(service);
+  public void initMocks() {
+    MockitoAnnotations.initMocks(this);
   }
 
   @Test
-  public void callClientCollateralService() throws Exception {
-    resource.create(clientCollateral);
-    verify(service).create(clientCollateral);
+  public void createDelegatesToResourceDelegate() throws Exception {
+    ClientCollateral serialized = new ClientCollateralResourceBuilder().buildClientCollateral();
+
+    inMemoryResource.client().target(ROOT_RESOURCE).request().accept(MediaType.APPLICATION_JSON)
+        .post(Entity.entity(serialized, MediaType.APPLICATION_JSON));
+    verify(typedResourceDelegate).create(eq(serialized));
   }
+
+
 }

@@ -2,6 +2,16 @@ package gov.ca.cwds.rest.business.rules.doctool;
 
 import static org.junit.Assert.assertEquals;
 import static org.mockito.Mockito.mock;
+
+import javax.validation.Validation;
+import javax.validation.Validator;
+
+import org.apache.commons.lang3.NotImplementedException;
+import org.junit.Before;
+import org.junit.Rule;
+import org.junit.Test;
+import org.junit.rules.ExpectedException;
+
 import gov.ca.cwds.data.cms.AddressDao;
 import gov.ca.cwds.data.cms.AllegationDao;
 import gov.ca.cwds.data.cms.AllegationPerpetratorHistoryDao;
@@ -39,15 +49,7 @@ import gov.ca.cwds.rest.services.cms.ReferralClientService;
 import gov.ca.cwds.rest.services.cms.ReferralService;
 import gov.ca.cwds.rest.services.cms.ReporterService;
 import gov.ca.cwds.rest.services.cms.StaffPersonIdRetriever;
-
-import javax.validation.Validation;
-import javax.validation.Validator;
-
-import org.apache.commons.lang3.NotImplementedException;
-import org.junit.Before;
-import org.junit.Rule;
-import org.junit.Test;
-import org.junit.rules.ExpectedException;
+import gov.ca.cwds.rest.services.referentialintegrity.RIAllegationPerpetratorHistory;
 
 /**
  * 
@@ -71,6 +73,7 @@ public class R00796ScreeningToReferralDeleteTest {
   private DrmsDocumentService drmsDocumentService;
   private AssignmentService assignmentService;
   private RIChildClient riChildClient;
+  private RIAllegationPerpetratorHistory riAllegationPerpetratorHistory;
 
   private ReferralDao referralDao;
   private ClientDao clientDao;
@@ -108,10 +111,9 @@ public class R00796ScreeningToReferralDeleteTest {
     triggerTablesDao = mock(TriggerTablesDao.class);
     staffpersonDao = mock(StaffPersonDao.class);
     staffPersonIdRetriever = mock(StaffPersonIdRetriever.class);
-    referralService =
-        new ReferralService(referralDao, nonLACountyTriggers, laCountyTrigger, triggerTablesDao,
-            staffpersonDao, staffPersonIdRetriever, assignmentService, validator,
-            drmsDocumentService, addressService, longTextService);
+    referralService = new ReferralService(referralDao, nonLACountyTriggers, laCountyTrigger,
+        triggerTablesDao, staffpersonDao, staffPersonIdRetriever, assignmentService, validator,
+        drmsDocumentService, addressService, longTextService);
 
     clientDao = mock(ClientDao.class);
     staffpersonDao = mock(StaffPersonDao.class);
@@ -130,17 +132,16 @@ public class R00796ScreeningToReferralDeleteTest {
     laCountyTrigger = mock(LACountyTrigger.class);
     triggerTablesDao = mock(TriggerTablesDao.class);
     staffpersonDao = mock(StaffPersonDao.class);
-    referralClientService =
-        new ReferralClientService(referralClientDao, nonLACountyTriggers, laCountyTrigger,
-            triggerTablesDao, staffpersonDao, staffPersonIdRetriever);
+    referralClientService = new ReferralClientService(referralClientDao, nonLACountyTriggers,
+        laCountyTrigger, triggerTablesDao, staffpersonDao, staffPersonIdRetriever);
 
     allegationDao = mock(AllegationDao.class);
     allegationService = new AllegationService(allegationDao, staffPersonIdRetriever);
 
     allegationPerpetratorHistoryDao = mock(AllegationPerpetratorHistoryDao.class);
-    allegationPerpetratorHistoryService =
-        new AllegationPerpetratorHistoryService(allegationPerpetratorHistoryDao,
-            staffPersonIdRetriever);
+    riAllegationPerpetratorHistory = mock(RIAllegationPerpetratorHistory.class);
+    allegationPerpetratorHistoryService = new AllegationPerpetratorHistoryService(
+        allegationPerpetratorHistoryDao, staffPersonIdRetriever, riAllegationPerpetratorHistory);
 
     crossReportDao = mock(CrossReportDao.class);
     crossReportService = new CrossReportService(crossReportDao, staffPersonIdRetriever);
@@ -149,18 +150,16 @@ public class R00796ScreeningToReferralDeleteTest {
     reporterService = new ReporterService(reporterDao, staffPersonIdRetriever);
 
     addressDao = mock(AddressDao.class);
-    addressService =
-        new AddressService(addressDao, staffPersonIdRetriever, ssaName3Dao, upperCaseTables,
-            validator);
+    addressService = new AddressService(addressDao, staffPersonIdRetriever, ssaName3Dao,
+        upperCaseTables, validator);
 
     clientAddressDao = mock(ClientAddressDao.class);
     laCountyTrigger = mock(LACountyTrigger.class);
     triggerTablesDao = mock(TriggerTablesDao.class);
     staffpersonDao = mock(StaffPersonDao.class);
     nonLACountyTriggers = mock(NonLACountyTriggers.class);
-    clientAddressService =
-        new ClientAddressService(clientAddressDao, staffpersonDao, triggerTablesDao,
-            laCountyTrigger, staffPersonIdRetriever, nonLACountyTriggers);
+    clientAddressService = new ClientAddressService(clientAddressDao, staffpersonDao,
+        triggerTablesDao, laCountyTrigger, staffPersonIdRetriever, nonLACountyTriggers);
 
     longTextDao = mock(LongTextDao.class);
     longTextService = new LongTextService(longTextDao, staffPersonIdRetriever);
@@ -174,18 +173,16 @@ public class R00796ScreeningToReferralDeleteTest {
     staffpersonDao = mock(StaffPersonDao.class);
     nonLACountyTriggers = mock(NonLACountyTriggers.class);
     triggerTablesDao = mock(TriggerTablesDao.class);
-    assignmentService =
-        new AssignmentService(assignmentDao, nonLACountyTriggers, staffpersonDao, triggerTablesDao,
-            staffPersonIdRetriever, validator, externalInterfaceTables);
+    assignmentService = new AssignmentService(assignmentDao, nonLACountyTriggers, staffpersonDao,
+        triggerTablesDao, staffPersonIdRetriever, validator, externalInterfaceTables);
 
     reminders = mock(Reminders.class);
 
-    screeningToReferralService =
-        new ScreeningToReferralService(referralService, clientService, allegationService,
-            crossReportService, referralClientService, reporterService, addressService,
-            clientAddressService, childClientService, assignmentService, Validation
-                .buildDefaultValidatorFactory().getValidator(), referralDao, new MessageBuilder(),
-            allegationPerpetratorHistoryService, reminders);
+    screeningToReferralService = new ScreeningToReferralService(referralService, clientService,
+        allegationService, crossReportService, referralClientService, reporterService,
+        addressService, clientAddressService, childClientService, assignmentService,
+        Validation.buildDefaultValidatorFactory().getValidator(), referralDao, new MessageBuilder(),
+        allegationPerpetratorHistoryService, reminders);
   }
 
   /**

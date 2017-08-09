@@ -53,17 +53,6 @@ public class ClientCollateralServiceTest {
   // find test
   @SuppressWarnings("javadoc")
   @Test
-  public void findThrowsAssertionError() {
-    thrown.expect(AssertionError.class);
-    try {
-      clientCollateralService.find(new Long(1));
-    } catch (AssertionError e) {
-      assertEquals("Expected AssertionError", e.getMessage());
-    }
-  }
-
-  @SuppressWarnings("javadoc")
-  @Test
   public void findReturnsCorrectClientCollateralWhenFound() throws Exception {
     String id = "ABC";
     PostedClientCollateral expected = validClientCollateralDomainObject();
@@ -90,17 +79,6 @@ public class ClientCollateralServiceTest {
     clientCollateralService.delete("string");
   }
 
-  @SuppressWarnings("javadoc")
-  @Test
-  public void deleteThrowsAssertionError() throws Exception {
-    thrown.expect(AssertionError.class);
-    try {
-      clientCollateralService.delete(new Long(1));
-    } catch (AssertionError e) {
-      assertEquals("Expected AssertionError", e.getMessage());
-    }
-  }
-
   // update
   @SuppressWarnings("javadoc")
   @Test
@@ -110,18 +88,6 @@ public class ClientCollateralServiceTest {
   }
 
   // create test
-  @SuppressWarnings("javadoc")
-  @Test
-  public void createThrowsAssertionError() throws Exception {
-    thrown.expect(AssertionError.class);
-    try {
-      clientCollateralService.create(null);
-      Assert.fail("Expected AssertionError");
-    } catch (AssertionError e) {
-      assertEquals("Expected AssertionError", e.getMessage());
-    }
-  }
-
   @SuppressWarnings("javadoc")
   @Test
   public void clientCollateralServiceCreateThrowsEntityExistsException() throws Exception {
