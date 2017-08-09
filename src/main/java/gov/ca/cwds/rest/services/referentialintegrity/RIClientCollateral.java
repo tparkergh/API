@@ -1,15 +1,16 @@
-package gov.ca.cwds.rest.services.cms;
-
-import gov.ca.cwds.data.ApiHibernateInterceptor;
-import gov.ca.cwds.data.ApiReferentialCheck;
-import gov.ca.cwds.data.cms.ClientDao;
-import gov.ca.cwds.data.persistence.cms.ClientCollateral;
-import gov.ca.cwds.rest.validation.ReferentialIntegrityException;
+package gov.ca.cwds.rest.services.referentialintegrity;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.google.inject.Inject;
+
+import gov.ca.cwds.data.ApiHibernateInterceptor;
+import gov.ca.cwds.data.ApiReferentialCheck;
+import gov.ca.cwds.data.cms.ClientDao;
+import gov.ca.cwds.data.cms.CollateralIndividualDao;
+import gov.ca.cwds.data.persistence.cms.ClientCollateral;
+import gov.ca.cwds.rest.validation.ReferentialIntegrityException;
 
 /**
  * Verifies that a client collateral record refers to a valid client. Returns true if all parent
@@ -46,20 +47,21 @@ public class RIClientCollateral implements ApiReferentialCheck<ClientCollateral>
   private static final Logger LOGGER = LoggerFactory.getLogger(ClientCollateral.class);
 
   private transient ClientDao clientDao;
+  private transient CollateralIndividualDao collateralIndividualDao;
 
   /**
    * Constructor.
    * 
    * @param clientDao client DAO
+   * @param collateralIndividualDao collateral Individual DAO
    */
   @Inject
-  public RIClientCollateral(final ClientDao clientDao) {
+  public RIClientCollateral(final ClientDao clientDao,
+      CollateralIndividualDao collateralIndividualDao) {
     this.clientDao = clientDao;
+    this.collateralIndividualDao = collateralIndividualDao;
     ApiHibernateInterceptor.addHandler(ClientCollateral.class, c -> {
-      if (!apply((ClientCollateral) c)) {
-        throw new ReferentialIntegrityException(
-            "ClientCollateral => Client with given Identifier is not present in database");
-      }
+      apply((ClientCollateral) c);
     });
   }
 
@@ -72,7 +74,16 @@ public class RIClientCollateral implements ApiReferentialCheck<ClientCollateral>
   @Override
   public Boolean apply(ClientCollateral t) {
     LOGGER.debug("RI: ClientCollateral");
-    return clientDao.find(t.getClientId()) != null;
+    if (clientDao.find(t.getClientId()) == null) {
+      throw new ReferentialIntegrityException(
+          "ClientCollateral => Client with given Identifier is not present in database");
+
+    } else if (collateralIndividualDao.find(t.getCollateralIndividualId()) == null) {
+      throw new ReferentialIntegrityException(
+          "ClientCollateral => CollateralIndividual with given Identifier is not present in database");
+
+    }
+    return true;
   }
 
 }
