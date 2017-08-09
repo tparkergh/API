@@ -15,6 +15,7 @@ import gov.ca.cwds.rest.api.domain.cms.ClientCollateral;
 import gov.ca.cwds.rest.api.domain.cms.PostedClientCollateral;
 import gov.ca.cwds.rest.services.ServiceException;
 import gov.ca.cwds.rest.services.TypedCrudsService;
+import gov.ca.cwds.rest.services.referentialintegrity.RIClientCollateral;
 
 /**
  * Business layer object to work on {@link ClientCollateral}.
