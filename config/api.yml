@@ -31,7 +31,6 @@ nsDataSourceFactory:
       hibernate.dialect: org.hibernate.dialect.PostgreSQL82Dialect
       hibernate.jdbc.time_zone: America/Los_Angeles
       hibernate.id.new_generator_mappings: false
-      #hibernate.show_sql: true
       hibernate.format_sql: true
       hibernate.use_sql_comments: false
 
@@ -50,7 +49,6 @@ cmsDataSourceFactory:
   properties:
       hibernate.dialect: org.hibernate.dialect.DB2Dialect
       hibernate.jdbc.time_zone: America/Los_Angeles
-      #hibernate.show_sql: true
       hibernate.format_sql: true
       hibernate.use_sql_comments: false
       hibernate.default_schema: ${DB_CMS_SCHEMA}
@@ -111,17 +109,20 @@ logging:
   level: ${LOGLEVEL:-WARN}
   loggers:
     "org.hibernate.SQL":
+      # Use DEBUG to see SQL logged
       level: DEBUG
     "org.hibernate.type.descriptor.sql":
-      level: TRACE
+      # Use TRACE to see SQL parameters logged
+      level: INFO
+    "gov.ca.cwds.data.ApiHibernateInterceptor":
+      # Use DEBUG or TRACE to see entities logged
+      level: INFO  
     "io.dropwizard.server":
       level: INFO
     "io.dropwizard.jersey.DropwizardResourceConfig":
       level: INFO
     "AUDIT":
-      level: ALL
-    "gov.ca.cwds.data.ApiHibernateInterceptor":
-      level: INFO      
+      level: ALL      
   appenders:
     - type: console
       threshold: ALL
