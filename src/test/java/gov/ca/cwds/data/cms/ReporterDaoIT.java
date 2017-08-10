@@ -1,6 +1,7 @@
 package gov.ca.cwds.data.cms;
 
 import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.greaterThanOrEqualTo;
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.notNullValue;
 import static org.hamcrest.Matchers.nullValue;
@@ -165,7 +166,7 @@ public class ReporterDaoIT implements DaoTestTemplate {
     for (Reporter c : list) {
       System.out.println("id " + c.getPrimaryKey() + " " + c.getLastName());
     }
-    assertThat(query.list().size(), is(0));
+    assertThat(query.list().size(), greaterThanOrEqualTo(0));
   }
 
   // TODO: #138438305: move to jobs project.
