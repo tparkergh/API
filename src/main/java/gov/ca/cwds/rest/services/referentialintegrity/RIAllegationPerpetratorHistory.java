@@ -72,6 +72,12 @@ public class RIAllegationPerpetratorHistory
     });
   }
 
+  /**
+   * Verifies that a allegationPerpetratorHistory record refers to a valid client and allegation.
+   * Returns true if all parent foreign keys exist when the transaction commits, otherwise false.
+   * 
+   * @return true if all parent foreign keys exist
+   */
   @Override
   public Boolean apply(AllegationPerpetratorHistory t) {
     LOGGER.debug("RI: AllegationPerpetratorHistory");
