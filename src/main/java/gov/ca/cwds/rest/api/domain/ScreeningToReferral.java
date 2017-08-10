@@ -2,11 +2,8 @@ package gov.ca.cwds.rest.api.domain;
 
 import static gov.ca.cwds.data.persistence.cms.CmsPersistentObject.CMS_ID_LEN;
 
-import gov.ca.cwds.rest.validation.ValidLogicalId;
-import io.dropwizard.validation.OneOf;
 import java.util.Set;
 
-import javax.persistence.criteria.CriteriaBuilder.In;
 import javax.validation.Valid;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
@@ -22,8 +19,10 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
 import gov.ca.cwds.rest.api.Request;
 import gov.ca.cwds.rest.validation.Date;
+import gov.ca.cwds.rest.validation.ValidLogicalId;
 import gov.ca.cwds.rest.validation.ValidSystemCodeId;
 import io.dropwizard.jackson.JsonSnakeCase;
+import io.dropwizard.validation.OneOf;
 import io.swagger.annotations.ApiModelProperty;
 
 /**
@@ -158,12 +157,12 @@ public class ScreeningToReferral extends ReportingDomain implements Request {
 
   @JsonProperty("family_awareness")
   @ApiModelProperty(required = false, readOnly = false, value = "Family is aware of referral",
-      example = "true" )
+      example = "true")
   private boolean familyAwareness;
 
   @JsonProperty("filed_with_law_enforcement")
-  @ApiModelProperty(required = false, readOnly = false, value = "Filed Cross Report with Law Enforcement",
-      example = "N")
+  @ApiModelProperty(required = false, readOnly = false,
+      value = "Filed Cross Report with Law Enforcement", example = "N")
   private boolean filedWithLawEnforcement;
 
   @JsonProperty("responsible_agency")
@@ -215,9 +214,13 @@ public class ScreeningToReferral extends ReportingDomain implements Request {
    * @param responseTime - response time
    * @param startedAt - response started at time
    * @param assignee - staff person assigned
-   * @param additionalInformation = additional information
+   * @param additionalInformation - additional information
    * @param screeningDecision - screening decesion
    * @param screeningDecisionDetail - screening decision detail
+   * @param approvalStatus - approvalStatus
+   * @param familyAwareness - familyAwareness
+   * @param filedWithLawEnforcement - filedWithLawEnforcement
+   * @param responsibleAgency - responsibleAgency
    * @param address - address associated with participants
    * @param participants - participants associcated with this screening
    * @param crossReports - Cross Reort
@@ -228,8 +231,9 @@ public class ScreeningToReferral extends ReportingDomain implements Request {
       Short communicationMethod, String name, String reportNarrative, String reference,
       Short responseTime, @Date String startedAt, String assignee, String additionalInformation,
       String screeningDecision, String screeningDecisionDetail, int approvalStatus,
-      boolean familyAwareness, boolean filedWithLawEnforcement, String responsibleAgency, Address address,
-      Set<Participant> participants, Set<CrossReport> crossReports, Set<Allegation> allegations) {
+      boolean familyAwareness, boolean filedWithLawEnforcement, String responsibleAgency,
+      Address address, Set<Participant> participants, Set<CrossReport> crossReports,
+      Set<Allegation> allegations) {
     super();
     this.id = id;
     this.referralId = referralId;

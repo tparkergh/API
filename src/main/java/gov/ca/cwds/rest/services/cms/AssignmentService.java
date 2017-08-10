@@ -60,6 +60,7 @@ public class AssignmentService implements
    * @param staffPersonIdRetriever the staffPersonIdRetriever
    * @param validator the validator to use to validate validatable objects
    * @param externalInterfaceTables external interface table
+   * @param riAssignment - riAssignment
    */
   @Inject
 
