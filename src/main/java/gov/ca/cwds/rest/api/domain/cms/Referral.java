@@ -614,6 +614,9 @@ public class Referral extends ReportingDomain implements Request, Response {
    * @param drmsAllegationDescriptionDoc - drmsAllegationDescriptionDoc
    * @param drmsErReferralDoc - drmsErReferralDoc
    * @param drmsInvestigationDoc - drmsInvestigationDoc
+   * @param filedCrossReport - filedCrossReport
+   * @param familyAwareness - familyAwareness
+   * @param governmentEntity - governmentEntity
    * @param referalName - referalName
    * @param dateStarted - dateStarted
    * @param timeStarted - timeStarted
@@ -625,39 +628,27 @@ public class Referral extends ReportingDomain implements Request, Response {
    * @param approvalCode - approvalCode
    * @param staffId - staffId
    * @param responseRationalLongTextId - longTextId for Response Rational Text
+   * @param responsibleAgencyCode - responsibleAgencyCode
    * @return the referral
    */
-  public static Referral createWithDefaults(
-      Boolean anonymousReporter,
-      short communicationsMethodCode,
-      String drmsAllegationDescriptionDoc,
-      String drmsErReferralDoc,
-      String drmsInvestigationDoc,
-      boolean filedCrossReport,
-      boolean familyAwareness,
-      int governmentEntity,
-      String referalName,
-      String dateStarted,
-      String timeStarted,
-      short referralResponseTypeCode,
-      String allegesAbuseOccurredAtAddressId,
-      String firstResponseDeterminedByStaffPersonId,
-      String screenerNoteLongTextId,
-      String countyCode,
-      short approvalCode,
-      String staffId,
-      String responseRationalLongTextId,
+  public static Referral createWithDefaults(Boolean anonymousReporter,
+      short communicationsMethodCode, String drmsAllegationDescriptionDoc, String drmsErReferralDoc,
+      String drmsInvestigationDoc, boolean filedCrossReport, boolean familyAwareness,
+      int governmentEntity, String referalName, String dateStarted, String timeStarted,
+      short referralResponseTypeCode, String allegesAbuseOccurredAtAddressId,
+      String firstResponseDeterminedByStaffPersonId, String screenerNoteLongTextId,
+      String countyCode, short approvalCode, String staffId, String responseRationalLongTextId,
       String responsibleAgencyCode) {
 
     return new Referral(false, anonymousReporter, false, "", approvalCode, false, "",
         communicationsMethodCode, "", drmsAllegationDescriptionDoc, drmsErReferralDoc,
-        drmsInvestigationDoc, filedCrossReport, familyAwareness, (short)governmentEntity, DEFAULT_NO,
-        false, DEFAULT_LIMITIED_ACCESS_CODE, "", referalName, "", dateStarted, timeStarted,
-        referralResponseTypeCode, DEFAULT_CODE, "", "", responseRationalLongTextId,
+        drmsInvestigationDoc, filedCrossReport, familyAwareness, (short) governmentEntity,
+        DEFAULT_NO, false, DEFAULT_LIMITIED_ACCESS_CODE, "", referalName, "", dateStarted,
+        timeStarted, referralResponseTypeCode, DEFAULT_CODE, "", "", responseRationalLongTextId,
         screenerNoteLongTextId, DEFAULT_NO, DEFAULT_NO, DEFAULT_NO, "",
-        allegesAbuseOccurredAtAddressId, firstResponseDeterminedByStaffPersonId, staffId, countyCode,
-        false, false, false, false, "", responsibleAgencyCode, DEFAULT_CODE, "", "", "", null,
-        null, null, null, null, null, null);
+        allegesAbuseOccurredAtAddressId, firstResponseDeterminedByStaffPersonId, staffId,
+        countyCode, false, false, false, false, "", responsibleAgencyCode, DEFAULT_CODE, "", "", "",
+        null, null, null, null, null, null, null);
   }
 
   /**

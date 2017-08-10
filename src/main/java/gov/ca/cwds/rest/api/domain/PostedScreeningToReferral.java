@@ -49,6 +49,10 @@ public class PostedScreeningToReferral extends ScreeningToReferral implements Re
    * @param additionalInformation - additional information
    * @param screeningDecision - screening decision
    * @param screeningDecisionDetail - detail
+   * @param approvalStatus - approvalStatus
+   * @param familyAwareness - familyAwareness
+   * @param filedWithLawEnforcement - filedWithLawEnforcement
+   * @param responsibleAgency - responsibleAgency
    * @param address - address of referral
    * @param participants - participants of the referral
    * @param crossReports - cross reports
@@ -59,8 +63,9 @@ public class PostedScreeningToReferral extends ScreeningToReferral implements Re
       Short communicationMethod, String name, String reportNarrative, String reference,
       Short responseTime, @Date String startedAt, String assignee, String additionalInformation,
       String screeningDecision, String screeningDecisionDetail, int approvalStatus,
-      boolean familyAwareness, boolean filedWithLawEnforcement, String responsibleAgency, Address address,
-      Set<Participant> participants, Set<CrossReport> crossReports, Set<Allegation> allegations) {
+      boolean familyAwareness, boolean filedWithLawEnforcement, String responsibleAgency,
+      Address address, Set<Participant> participants, Set<CrossReport> crossReports,
+      Set<Allegation> allegations) {
     super(id, legacySourceTable, referralId, endedAt, incidentCounty, incidentDate, locationType,
         communicationMethod, name, reportNarrative, reference, responseTime, startedAt, assignee,
         additionalInformation, screeningDecision, screeningDecisionDetail, approvalStatus,
@@ -87,8 +92,8 @@ public class PostedScreeningToReferral extends ScreeningToReferral implements Re
         referral.getStartedAt(), referral.getAssignee(), referral.getAdditionalInformation(),
         referral.getScreeningDecision(), referral.getScreeningDecisionDetail(),
         referral.getApprovalStatus(), referral.isFamilyAwareness(),
-        referral.isFiledWithLawEnforcement(), referral.getResponsibleAgency(), referral.getAddress(),
-        resultParticipants, resultCrossReports, resultAllegations);
+        referral.isFiledWithLawEnforcement(), referral.getResponsibleAgency(),
+        referral.getAddress(), resultParticipants, resultCrossReports, resultAllegations);
 
   }
 

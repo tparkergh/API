@@ -78,6 +78,7 @@ public class CrossReport extends ReportingDomain implements Request, Response {
    * @param legacyId - legacy Id
    * @param agencyType - Agency Type
    * @param agencyName - Agency Name
+   * @param filedOutOfState - filedOutOfState
    * @param method - reporting method
    * @param informDate - reported date
    */
@@ -86,8 +87,7 @@ public class CrossReport extends ReportingDomain implements Request, Response {
       @JsonProperty("legacy_id") String legacyId, @JsonProperty("agency_type") String agencyType,
       @JsonProperty("agency_name") String agencyName,
       @JsonProperty("filed_out_of_state") boolean filedOutOfState,
-      @JsonProperty("method") Integer method,
-      @JsonProperty("inform_date") String informDate) {
+      @JsonProperty("method") Integer method, @JsonProperty("inform_date") String informDate) {
     super();
     this.id = id;
     this.legacySourceTable = legacySourceTable;
@@ -210,7 +210,7 @@ public class CrossReport extends ReportingDomain implements Request, Response {
         : that.legacySourceTable != null) {
       return false;
     }
-    if (filedOutOfState != that.filedOutOfState){
+    if (filedOutOfState != that.filedOutOfState) {
       return false;
     }
     if (legacyId != null ? !legacyId.equals(that.legacyId) : that.legacyId != null) {
