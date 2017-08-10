@@ -25,6 +25,7 @@ import gov.ca.cwds.rest.business.rules.NonLACountyTriggers;
 import gov.ca.cwds.rest.messages.MessageBuilder;
 import gov.ca.cwds.rest.services.ServiceException;
 import gov.ca.cwds.rest.services.TypedCrudsService;
+import gov.ca.cwds.rest.services.referentialintegrity.RIAssignment;
 
 /**
  * Business layer object serves {@link Assignment}.
@@ -42,6 +43,7 @@ public class AssignmentService implements
   private TriggerTablesDao triggerTablesDao;
   private StaffPersonIdRetriever staffPersonIdRetriever;
   private ExternalInterfaceTables externalInterfaceTables;
+  private RIAssignment riAssignment;
 
   private Validator validator;
 
@@ -64,7 +66,7 @@ public class AssignmentService implements
   public AssignmentService(AssignmentDao assignmentDao, NonLACountyTriggers nonLACountyTriggers,
       StaffPersonDao staffpersonDao, TriggerTablesDao triggerTablesDao,
       StaffPersonIdRetriever staffPersonIdRetriever, Validator validator,
-      ExternalInterfaceTables externalInterfaceTables) {
+      ExternalInterfaceTables externalInterfaceTables, RIAssignment riAssignment) {
     this.assignmentDao = assignmentDao;
     this.nonLACountyTriggers = nonLACountyTriggers;
     this.staffpersonDao = staffpersonDao;
@@ -72,6 +74,7 @@ public class AssignmentService implements
     this.staffPersonIdRetriever = staffPersonIdRetriever;
     this.validator = validator;
     this.externalInterfaceTables = externalInterfaceTables;
+    this.riAssignment = riAssignment;
   }
 
   /**

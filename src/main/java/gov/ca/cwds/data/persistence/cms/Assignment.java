@@ -7,6 +7,8 @@ import java.util.Date;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 import org.hibernate.annotations.Type;
@@ -82,6 +84,16 @@ public class Assignment extends CmsPersistentObject {
   // @Type(type = "decimal")
   @Column(name = "WGHTNG_NO", length = 5)
   private BigDecimal weightingNumber;
+
+  /**
+   * referential integrity check.
+   * <p>
+   * Doesn't actually load the data. Just checks the existence of the parent client record.
+   * </p>
+   */
+  @OneToOne(optional = true)
+  @JoinColumn(name = "ESTBLSH_ID", nullable = true, updatable = false, insertable = false)
+  private Referral referral;
 
   /**
    * Default constructor
