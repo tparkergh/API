@@ -61,6 +61,7 @@ import gov.ca.cwds.rest.services.cms.ReferralService;
 import gov.ca.cwds.rest.services.cms.ReporterService;
 import gov.ca.cwds.rest.services.cms.StaffPersonIdRetriever;
 import gov.ca.cwds.rest.services.referentialintegrity.RIAllegationPerpetratorHistory;
+import gov.ca.cwds.rest.services.referentialintegrity.RIAssignment;
 import io.dropwizard.jackson.Jackson;
 
 /**
@@ -86,6 +87,7 @@ public class R05914DoNotUpdateApprovalStatusTypeTest {
   private AssignmentService assignmentService;
   private RIChildClient riChildClient;
   private RIAllegationPerpetratorHistory riAllegationPerpetratorHistory;
+  private RIAssignment riAssignment;
 
   private ReferralDao referralDao;
   private ClientDao clientDao;
@@ -194,8 +196,9 @@ public class R05914DoNotUpdateApprovalStatusTypeTest {
     staffpersonDao = mock(StaffPersonDao.class);
     nonLACountyTriggers = mock(NonLACountyTriggers.class);
     triggerTablesDao = mock(TriggerTablesDao.class);
+    riAssignment = mock(RIAssignment.class);
     assignmentService = new AssignmentService(assignmentDao, nonLACountyTriggers, staffpersonDao,
-        triggerTablesDao, staffPersonIdRetriever, validator, externalInterfaceTables);
+        triggerTablesDao, staffPersonIdRetriever, validator, externalInterfaceTables, riAssignment);
 
     reminders = mock(Reminders.class);
 

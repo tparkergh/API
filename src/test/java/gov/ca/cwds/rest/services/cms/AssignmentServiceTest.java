@@ -42,6 +42,7 @@ import gov.ca.cwds.rest.api.domain.cms.Referral;
 import gov.ca.cwds.rest.business.rules.ExternalInterfaceTables;
 import gov.ca.cwds.rest.business.rules.NonLACountyTriggers;
 import gov.ca.cwds.rest.services.ServiceException;
+import gov.ca.cwds.rest.services.referentialintegrity.RIAssignment;
 
 /**
  * @author CWDS API Team
@@ -61,6 +62,7 @@ public class AssignmentServiceTest {
   private CountyOwnershipDao countyOwnershipDao;
   private ReferralDao referralDao;
   private ReferralClientDao referralClientDao;
+  private RIAssignment riAssignment;
 
   @Rule
   public ExpectedException thrown = ExpectedException.none();
@@ -77,10 +79,11 @@ public class AssignmentServiceTest {
     countyOwnershipDao = mock(CountyOwnershipDao.class);
     referralDao = mock(ReferralDao.class);
     referralClientDao = mock(ReferralClientDao.class);
+    riAssignment = mock(RIAssignment.class);
     nonLACountyTriggers =
         new NonLACountyTriggers(countyOwnershipDao, referralDao, referralClientDao);
     assignmentService = new AssignmentService(assignmentDao, nonLACountyTriggers, staffpersonDao,
-        triggerTablesDao, staffPersonIdRetriever, validator, externalInterfaceTables);
+        triggerTablesDao, staffPersonIdRetriever, validator, externalInterfaceTables, riAssignment);
 
 
   }
