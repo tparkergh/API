@@ -139,6 +139,7 @@ import gov.ca.cwds.rest.business.rules.Reminders;
 import gov.ca.cwds.rest.services.cms.RIChildClient;
 import gov.ca.cwds.rest.services.referentialintegrity.RIAllegationPerpetratorHistory;
 import gov.ca.cwds.rest.services.referentialintegrity.RIAssignment;
+import gov.ca.cwds.rest.services.referentialintegrity.RIClientAddress;
 import gov.ca.cwds.rest.services.referentialintegrity.RIClientCollateral;
 import io.dropwizard.db.DataSourceFactory;
 import io.dropwizard.hibernate.HibernateBundle;
@@ -299,6 +300,7 @@ public class DataAccessModule extends AbstractModule {
     bind(RIChildClient.class);
     bind(RIAllegationPerpetratorHistory.class);
     bind(RIAssignment.class);
+    bind(RIClientAddress.class);
   }
 
   @Provides

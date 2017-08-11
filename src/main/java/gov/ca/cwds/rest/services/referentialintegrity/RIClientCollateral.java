@@ -60,9 +60,8 @@ public class RIClientCollateral implements ApiReferentialCheck<ClientCollateral>
       CollateralIndividualDao collateralIndividualDao) {
     this.clientDao = clientDao;
     this.collateralIndividualDao = collateralIndividualDao;
-    ApiHibernateInterceptor.addHandler(ClientCollateral.class, c -> {
-      apply((ClientCollateral) c);
-    });
+    ApiHibernateInterceptor.addHandler(ClientCollateral.class, c -> apply((ClientCollateral) c));
+
   }
 
   /**

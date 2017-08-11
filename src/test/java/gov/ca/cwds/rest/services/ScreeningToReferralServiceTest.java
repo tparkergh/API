@@ -110,6 +110,7 @@ import gov.ca.cwds.rest.services.cms.ReporterService;
 import gov.ca.cwds.rest.services.cms.StaffPersonIdRetriever;
 import gov.ca.cwds.rest.services.referentialintegrity.RIAllegationPerpetratorHistory;
 import gov.ca.cwds.rest.services.referentialintegrity.RIAssignment;
+import gov.ca.cwds.rest.services.referentialintegrity.RIClientAddress;
 import io.dropwizard.jackson.Jackson;
 
 /**
@@ -137,6 +138,7 @@ public class ScreeningToReferralServiceTest {
   private RIChildClient riChildClient;
   private RIAllegationPerpetratorHistory riAllegationPerpetratorHistory;
   private RIAssignment riAssignment;
+  private RIClientAddress riClientAddress;
 
   private ReferralDao referralDao;
   private ClientDao clientDao;
@@ -233,8 +235,10 @@ public class ScreeningToReferralServiceTest {
     triggerTablesDao = mock(TriggerTablesDao.class);
     staffpersonDao = mock(StaffPersonDao.class);
     nonLACountyTriggers = mock(NonLACountyTriggers.class);
-    clientAddressService = new ClientAddressService(clientAddressDao, staffpersonDao,
-        triggerTablesDao, laCountyTrigger, staffPersonIdRetriever, nonLACountyTriggers);
+    riClientAddress = mock(RIClientAddress.class);
+    clientAddressService =
+        new ClientAddressService(clientAddressDao, staffpersonDao, triggerTablesDao,
+            laCountyTrigger, staffPersonIdRetriever, nonLACountyTriggers, riClientAddress);
 
 
     longTextDao = mock(LongTextDao.class);

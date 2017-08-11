@@ -53,13 +53,8 @@ public class RIAssignment implements ApiReferentialCheck<Assignment> {
   @Inject
   public RIAssignment(final ReferralDao referralDao) {
     this.referralDao = referralDao;
-    ApiHibernateInterceptor.addHandler(Assignment.class, c -> {
-      if (!apply((Assignment) c)) {
-        throw new ReferentialIntegrityException(
-            "Assignment => referral with the given Identifier is not present in database");
-      }
-    });
-
+    ApiHibernateInterceptor.addHandler(Assignment.class,
+        assignment -> apply((Assignment) assignment));
   }
 
   /**
@@ -71,6 +66,12 @@ public class RIAssignment implements ApiReferentialCheck<Assignment> {
   @Override
   public Boolean apply(Assignment t) {
     LOGGER.debug("RI: Assignment");
-    return referralDao.find(t.getEstablishedForId()) != null;
+    if ("R".equals(t.getEstablishedForCode())
+        && referralDao.find(t.getEstablishedForId()) == null) {
+      throw new ReferentialIntegrityException(
+          "Assignment => Referral with given Identifier is not present in database");
+
+    }
+    return true;
   }
 }
