@@ -40,6 +40,7 @@ import gov.ca.cwds.rest.business.rules.LACountyTrigger;
 import gov.ca.cwds.rest.business.rules.NonLACountyTriggers;
 import gov.ca.cwds.rest.services.ServiceException;
 import gov.ca.cwds.rest.services.junit.template.ServiceTestTemplate;
+import gov.ca.cwds.rest.services.referentialintegrity.RIClientAddress;
 
 /**
  * @author CWS-NS2
@@ -54,6 +55,7 @@ public class ClientAddressServiceTest implements ServiceTestTemplate {
   LACountyTrigger laCountyTrigger;
   NonLACountyTriggers nonLACountyTriggers;
   StaffPersonIdRetriever staffPersonIdRetriever;
+  RIClientAddress riClientAddress;
 
   private static Boolean isLaCountyTrigger = false;
 
@@ -73,9 +75,11 @@ public class ClientAddressServiceTest implements ServiceTestTemplate {
     laCountyTrigger = mock(LACountyTrigger.class);
     nonLACountyTriggers = mock(NonLACountyTriggers.class);
     staffPersonIdRetriever = mock(StaffPersonIdRetriever.class);
+    riClientAddress = mock(RIClientAddress.class);
 
-    clientAddressService = new ClientAddressService(clientAddressDao, staffpersonDao,
-        triggerTablesDao, laCountyTrigger, staffPersonIdRetriever, nonLACountyTriggers);
+    clientAddressService =
+        new ClientAddressService(clientAddressDao, staffpersonDao, triggerTablesDao,
+            laCountyTrigger, staffPersonIdRetriever, nonLACountyTriggers, riClientAddress);
   }
 
   /**

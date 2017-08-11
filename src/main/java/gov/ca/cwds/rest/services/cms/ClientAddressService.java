@@ -27,6 +27,7 @@ import gov.ca.cwds.rest.business.rules.LACountyTrigger;
 import gov.ca.cwds.rest.business.rules.NonLACountyTriggers;
 import gov.ca.cwds.rest.services.CrudsService;
 import gov.ca.cwds.rest.services.ServiceException;
+import gov.ca.cwds.rest.services.referentialintegrity.RIClientAddress;
 import gov.ca.cwds.rest.util.IdGenerator;
 
 /**
@@ -43,6 +44,7 @@ public class ClientAddressService implements CrudsService {
   private LACountyTrigger laCountyTrigger;
   private NonLACountyTriggers nonLaTriggers;
   private StaffPersonIdRetriever staffPersonIdRetriever;
+  private RIClientAddress riClientAddress;
 
   /**
    * Constructor
@@ -62,13 +64,15 @@ public class ClientAddressService implements CrudsService {
   @Inject
   public ClientAddressService(ClientAddressDao clientAddressDao, StaffPersonDao staffpersonDao,
       TriggerTablesDao triggerTablesDao, LACountyTrigger laCountyTrigger,
-      StaffPersonIdRetriever staffPersonIdRetriever, NonLACountyTriggers nonLaTriggers) {
+      StaffPersonIdRetriever staffPersonIdRetriever, NonLACountyTriggers nonLaTriggers,
+      RIClientAddress riClientAddress) {
     this.clientAddressDao = clientAddressDao;
     this.staffpersonDao = staffpersonDao;
     this.triggerTablesDao = triggerTablesDao;
     this.laCountyTrigger = laCountyTrigger;
     this.staffPersonIdRetriever = staffPersonIdRetriever;
     this.nonLaTriggers = nonLaTriggers;
+    this.riClientAddress = riClientAddress;
   }
 
   @Override

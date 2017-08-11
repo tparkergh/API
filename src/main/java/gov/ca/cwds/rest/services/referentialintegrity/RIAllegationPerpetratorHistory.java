@@ -64,12 +64,9 @@ public class RIAllegationPerpetratorHistory
   public RIAllegationPerpetratorHistory(final ClientDao clientDao, AllegationDao allegationDao) {
     this.clientDao = clientDao;
     this.allegationDao = allegationDao;
-    ApiHibernateInterceptor.addHandler(AllegationPerpetratorHistory.class, a -> {
-      if (!apply((AllegationPerpetratorHistory) a)) {
-        throw new ReferentialIntegrityException(
-            "allegationPerpetratorHistory => Allegation, Client with the given Identifier is not present in database");
-      }
-    });
+    ApiHibernateInterceptor.addHandler(AllegationPerpetratorHistory.class,
+        allegationPerpetratorHistory -> apply(
+            (AllegationPerpetratorHistory) allegationPerpetratorHistory));
   }
 
   /**
@@ -81,8 +78,14 @@ public class RIAllegationPerpetratorHistory
   @Override
   public Boolean apply(AllegationPerpetratorHistory t) {
     LOGGER.debug("RI: AllegationPerpetratorHistory");
-    return clientDao.find(t.getPerpetratorClientId()) != null
-        && allegationDao.find(t.getAllegationId()) != null;
-  }
+    if (t.getPerpetratorClientId() != null && clientDao.find(t.getPerpetratorClientId()) == null) {
+      throw new ReferentialIntegrityException(
+          "AllegationPerpetratorHistory => Client with given Identifier is not present in database");
 
+    } else if (allegationDao.find(t.getAllegationId()) == null) {
+      throw new ReferentialIntegrityException(
+          "AllegationPerpetratorHistory => Allegation with given Identifier is not present in database");
+    }
+    return true;
+  }
 }

@@ -44,9 +44,24 @@ public class ClientAddress extends BaseClientAddress {
    */
   private static final long serialVersionUID = 1L;
 
-  @ManyToOne(cascade = CascadeType.ALL)
-  @JoinColumn(name = "FKADDRS_T", insertable = false, updatable = false)
+  @ManyToOne(cascade = CascadeType.ALL, optional = false)
+  @JoinColumn(name = "FKADDRS_T", nullable = false, insertable = false, updatable = false)
   private Address addresses;
+
+  /**
+   * referential integrity check.
+   * <p>
+   * Doesn't actually load the data. Just checks the existence of the parent address, client and
+   * referral records.
+   * </p>
+   */
+  @ManyToOne(optional = false)
+  @JoinColumn(name = "FKCLIENT_T", nullable = false, updatable = false, insertable = false)
+  private Client client;
+
+  @ManyToOne(optional = true)
+  @JoinColumn(name = "FKREFERL_T", nullable = true, updatable = false, insertable = false)
+  private Referral referral;
 
   /**
    * Default constructor

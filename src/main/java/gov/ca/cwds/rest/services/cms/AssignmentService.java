@@ -63,7 +63,6 @@ public class AssignmentService implements
    * @param riAssignment - riAssignment
    */
   @Inject
-
   public AssignmentService(AssignmentDao assignmentDao, NonLACountyTriggers nonLACountyTriggers,
       StaffPersonDao staffpersonDao, TriggerTablesDao triggerTablesDao,
       StaffPersonIdRetriever staffPersonIdRetriever, Validator validator,

@@ -82,6 +82,7 @@ import gov.ca.cwds.rest.services.cms.ReporterService;
 import gov.ca.cwds.rest.services.cms.StaffPersonIdRetriever;
 import gov.ca.cwds.rest.services.referentialintegrity.RIAllegationPerpetratorHistory;
 import gov.ca.cwds.rest.services.referentialintegrity.RIAssignment;
+import gov.ca.cwds.rest.services.referentialintegrity.RIClientAddress;
 import io.dropwizard.jackson.Jackson;
 
 /**
@@ -108,6 +109,7 @@ public class TestForLastUpdatedTimeIsUnique {
   private RIChildClient riChildClient;
   private RIAllegationPerpetratorHistory riAllegationPerpetratorHistory;
   private RIAssignment riAssignment;
+  private RIClientAddress riClientAddress;
 
   private ReferralDao referralDao;
   private ClientDao clientDao;
@@ -219,8 +221,10 @@ public class TestForLastUpdatedTimeIsUnique {
     triggerTablesDao = mock(TriggerTablesDao.class);
     staffpersonDao = mock(StaffPersonDao.class);
     nonLACountyTriggers = mock(NonLACountyTriggers.class);
-    clientAddressService = new ClientAddressService(clientAddressDao, staffpersonDao,
-        triggerTablesDao, laCountyTrigger, staffPersonIdRetriever, nonLACountyTriggers);
+    riClientAddress = mock(RIClientAddress.class);
+    clientAddressService =
+        new ClientAddressService(clientAddressDao, staffpersonDao, triggerTablesDao,
+            laCountyTrigger, staffPersonIdRetriever, nonLACountyTriggers, riClientAddress);
 
     childClientDao = mock(ChildClientDao.class);
     riChildClient = mock(RIChildClient.class);
