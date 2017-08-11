@@ -60,6 +60,7 @@ public class ClientAddressService implements CrudsService {
    * @param staffPersonIdRetriever the staffPersonIdRetriever
    * @param nonLaTriggers The {@link Dao} handling
    *        {@link gov.ca.cwds.rest.business.rules.NonLACountyTriggers} objects.
+   * @param riClientAddress - riClientAddress
    */
   @Inject
   public ClientAddressService(ClientAddressDao clientAddressDao, StaffPersonDao staffpersonDao,

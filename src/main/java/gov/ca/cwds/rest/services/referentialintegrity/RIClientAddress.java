@@ -62,9 +62,9 @@ public class RIClientAddress implements ApiReferentialCheck<ClientAddress> {
   /**
    * Constructor
    * 
-   * @param addressDao
-   * @param clientDao
-   * @param referralDao
+   * @param addressDao - addressDao
+   * @param clientDao - clientDao
+   * @param referralDao - referralDao
    */
   @Inject
   public RIClientAddress(final AddressDao addressDao, ClientDao clientDao,
