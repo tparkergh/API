@@ -31,6 +31,7 @@ import gov.ca.cwds.rest.api.domain.cms.Allegation;
 import gov.ca.cwds.rest.api.domain.cms.PostedAllegation;
 import gov.ca.cwds.rest.services.ServiceException;
 import gov.ca.cwds.rest.services.junit.template.ServiceTestTemplate;
+import gov.ca.cwds.rest.services.referentialintegrity.RIAllegation;
 import io.dropwizard.jackson.Jackson;
 
 /**
@@ -42,6 +43,7 @@ public class AllegationServiceTest implements ServiceTestTemplate {
   private AllegationService allegationService;
   private AllegationDao allegationDao;
   private StaffPersonIdRetriever staffPersonIdRetriever;
+  private RIAllegation riAllegation;
 
   @SuppressWarnings("javadoc")
   @Rule
@@ -52,7 +54,8 @@ public class AllegationServiceTest implements ServiceTestTemplate {
   public void setup() throws Exception {
     allegationDao = mock(AllegationDao.class);
     staffPersonIdRetriever = mock(StaffPersonIdRetriever.class);
-    allegationService = new AllegationService(allegationDao, staffPersonIdRetriever);
+    riAllegation = mock(RIAllegation.class);
+    allegationService = new AllegationService(allegationDao, staffPersonIdRetriever, riAllegation);
   }
 
   // find test
