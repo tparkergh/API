@@ -137,6 +137,7 @@ import gov.ca.cwds.rest.business.rules.LACountyTrigger;
 import gov.ca.cwds.rest.business.rules.NonLACountyTriggers;
 import gov.ca.cwds.rest.business.rules.Reminders;
 import gov.ca.cwds.rest.services.cms.RIChildClient;
+import gov.ca.cwds.rest.services.referentialintegrity.RIAllegation;
 import gov.ca.cwds.rest.services.referentialintegrity.RIAllegationPerpetratorHistory;
 import gov.ca.cwds.rest.services.referentialintegrity.RIAssignment;
 import gov.ca.cwds.rest.services.referentialintegrity.RIClientAddress;
@@ -301,6 +302,7 @@ public class DataAccessModule extends AbstractModule {
     bind(RIAllegationPerpetratorHistory.class);
     bind(RIAssignment.class);
     bind(RIClientAddress.class);
+    bind(RIAllegation.class);
   }
 
   @Provides

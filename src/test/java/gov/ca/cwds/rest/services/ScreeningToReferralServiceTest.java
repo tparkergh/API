@@ -108,6 +108,7 @@ import gov.ca.cwds.rest.services.cms.ReferralClientService;
 import gov.ca.cwds.rest.services.cms.ReferralService;
 import gov.ca.cwds.rest.services.cms.ReporterService;
 import gov.ca.cwds.rest.services.cms.StaffPersonIdRetriever;
+import gov.ca.cwds.rest.services.referentialintegrity.RIAllegation;
 import gov.ca.cwds.rest.services.referentialintegrity.RIAllegationPerpetratorHistory;
 import gov.ca.cwds.rest.services.referentialintegrity.RIAssignment;
 import gov.ca.cwds.rest.services.referentialintegrity.RIClientAddress;
@@ -139,6 +140,7 @@ public class ScreeningToReferralServiceTest {
   private RIAllegationPerpetratorHistory riAllegationPerpetratorHistory;
   private RIAssignment riAssignment;
   private RIClientAddress riClientAddress;
+  private RIAllegation riAllegation;
 
   private ReferralDao referralDao;
   private ClientDao clientDao;
@@ -213,7 +215,8 @@ public class ScreeningToReferralServiceTest {
         laCountyTrigger, triggerTablesDao, staffpersonDao, staffPersonIdRetriever);
 
     allegationDao = mock(AllegationDao.class);
-    allegationService = new AllegationService(allegationDao, staffPersonIdRetriever);
+    riAllegation = mock(RIAllegation.class);
+    allegationService = new AllegationService(allegationDao, staffPersonIdRetriever, riAllegation);
 
     allegationPerpetratorHistoryDao = mock(AllegationPerpetratorHistoryDao.class);
     riAllegationPerpetratorHistory = mock(RIAllegationPerpetratorHistory.class);

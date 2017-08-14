@@ -19,6 +19,7 @@ import gov.ca.cwds.rest.api.Request;
 import gov.ca.cwds.rest.api.domain.cms.PostedAllegation;
 import gov.ca.cwds.rest.services.CrudsService;
 import gov.ca.cwds.rest.services.ServiceException;
+import gov.ca.cwds.rest.services.referentialintegrity.RIAllegation;
 
 /**
  * Business layer object to work on {@link Allegation}
@@ -31,6 +32,7 @@ public class AllegationService implements CrudsService {
 
   private AllegationDao allegationDao;
   private StaffPersonIdRetriever staffPersonIdRetriever;
+  private RIAllegation riAllegation;
 
   /**
    * Constructor
@@ -38,12 +40,14 @@ public class AllegationService implements CrudsService {
    * @param allegationDao The {@link Dao} handling
    *        {@link gov.ca.cwds.data.persistence.cms.Allegation} objects.
    * @param staffPersonIdRetriever the staffPersonIdRetriever
+   * @param riAllegation the ri for allegation
    */
   @Inject
   public AllegationService(AllegationDao allegationDao,
-      StaffPersonIdRetriever staffPersonIdRetriever) {
+      StaffPersonIdRetriever staffPersonIdRetriever, RIAllegation riAllegation) {
     this.allegationDao = allegationDao;
     this.staffPersonIdRetriever = staffPersonIdRetriever;
+    this.riAllegation = riAllegation;
   }
 
   /**
