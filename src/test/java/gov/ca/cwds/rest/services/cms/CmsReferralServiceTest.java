@@ -8,7 +8,6 @@ import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
-import gov.ca.cwds.data.cms.TestSystemCodeCache;
 import java.util.LinkedHashSet;
 import java.util.Set;
 
@@ -50,6 +49,7 @@ import gov.ca.cwds.rest.business.rules.ExternalInterfaceTables;
 import gov.ca.cwds.rest.business.rules.LACountyTrigger;
 import gov.ca.cwds.rest.business.rules.NonLACountyTriggers;
 import gov.ca.cwds.rest.business.rules.UpperCaseTables;
+import gov.ca.cwds.rest.services.referentialintegrity.RIAllegation;
 import io.dropwizard.jackson.Jackson;
 
 @SuppressWarnings("javadoc")
@@ -84,6 +84,7 @@ public class CmsReferralServiceTest {
   private SsaName3Dao ssaName3Dao;
   private Validator validator;
   private ExternalInterfaceTables externalInterfaceTables;
+  private RIAllegation riAllegation;
 
   @Rule
   public ExpectedException thrown = ExpectedException.none();
@@ -125,7 +126,8 @@ public class CmsReferralServiceTest {
         laCountyTrigger, triggerTablesDao, staffpersonDao, staffPersonIdRetriever);
 
     allegationDao = mock(AllegationDao.class);
-    allegationService = new AllegationService(allegationDao, staffPersonIdRetriever);
+    riAllegation = mock(RIAllegation.class);
+    allegationService = new AllegationService(allegationDao, staffPersonIdRetriever, riAllegation);
 
     crossReportDao = mock(CrossReportDao.class);
     crossReportService = new CrossReportService(crossReportDao, staffPersonIdRetriever);
