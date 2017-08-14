@@ -30,6 +30,9 @@ import gov.ca.cwds.rest.validation.ReferentialIntegrityException;
  * &#064;ManyToOne(optional = false)
  * &#064;JoinColumn(name = &quot;FKCLIENT_T&quot;, nullable = false, updatable = false, insertable = false)
  * private Client client;
+ * &#064;ManyToOne(optional = false)
+ * &#064;JoinColumn(name = &quot;FKCOLTRL_T&quot;, nullable = false, updatable = false, insertable = false)
+ * private CollateralIndividual collateralIndividual;
  * </pre>
  * 
  * </blockquote>
@@ -65,8 +68,8 @@ public class RIClientCollateral implements ApiReferentialCheck<ClientCollateral>
   }
 
   /**
-   * Verifies that a client collateral record refers to a valid client. Returns true if all parent
-   * foreign keys exist when the transaction commits, otherwise false.
+   * Verifies that a client collateral record refers to a valid client and collateral Individual.
+   * Returns true if all parent foreign keys exist when the transaction commits, otherwise false.
    * 
    * @return true if all parent foreign keys exist
    */
@@ -79,7 +82,7 @@ public class RIClientCollateral implements ApiReferentialCheck<ClientCollateral>
 
     } else if (collateralIndividualDao.find(t.getCollateralIndividualId()) == null) {
       throw new ReferentialIntegrityException(
-          "ClientCollateral => CollateralIndividual with given Identifier is not present in database");
+          "ClientCollateral => Collateral Individual with given Identifier is not present in database");
 
     }
     return true;
