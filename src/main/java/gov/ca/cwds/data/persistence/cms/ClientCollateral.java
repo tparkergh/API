@@ -6,6 +6,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.persistence.UniqueConstraint;
 
 import org.hibernate.annotations.ColumnTransformer;
 import org.hibernate.annotations.Type;
@@ -26,7 +27,8 @@ import gov.ca.cwds.rest.validation.ValidSystemCodeId;
  * @author CWDS API Team
  */
 @Entity
-@Table(name = "CLN_COLT")
+@Table(name = "CLN_COLT",
+    uniqueConstraints = {@UniqueConstraint(columnNames = {"FKCLIENT_T", "FKCOLTRL_T"})})
 @JsonPropertyOrder(alphabetic = true)
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class ClientCollateral extends CmsPersistentObject {
@@ -67,6 +69,10 @@ public class ClientCollateral extends CmsPersistentObject {
   @ManyToOne(optional = false)
   @JoinColumn(name = "FKCLIENT_T", nullable = false, updatable = false, insertable = false)
   private Client client;
+
+  @ManyToOne(optional = false)
+  @JoinColumn(name = "FKCOLTRL_T", nullable = false, updatable = false, insertable = false)
+  private CollateralIndividual collateralIndividual;
 
   /**
    * Default constructor
