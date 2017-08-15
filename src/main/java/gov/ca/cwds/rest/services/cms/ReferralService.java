@@ -27,7 +27,6 @@ import gov.ca.cwds.rest.api.domain.cms.PostedLongText;
 import gov.ca.cwds.rest.api.domain.cms.PostedReferral;
 import gov.ca.cwds.rest.api.domain.cms.SystemCode;
 import gov.ca.cwds.rest.api.domain.cms.SystemCodeCache;
-import gov.ca.cwds.rest.business.rules.ExternalInterfaceTables;
 import gov.ca.cwds.rest.business.rules.LACountyTrigger;
 import gov.ca.cwds.rest.business.rules.NonLACountyTriggers;
 import gov.ca.cwds.rest.filters.RequestExecutionContext;
@@ -94,7 +93,6 @@ public class ReferralService implements CrudsService {
    * @param drmsDocumentService the service for generating DRMS Documents
    * @param addressService the service for creating addresses
    * @param longTextService the longText Service
-   * @param externalInterfaceTables handling {@link ExternalInterfaceTables} objects
    */
   @Inject
   public ReferralService(final ReferralDao referralDao, NonLACountyTriggers nonLaTriggers,
