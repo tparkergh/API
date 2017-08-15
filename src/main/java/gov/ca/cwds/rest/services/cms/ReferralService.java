@@ -1,11 +1,9 @@
 package gov.ca.cwds.rest.services.cms;
 
-import gov.ca.cwds.rest.api.domain.cms.SystemCode;
-import gov.ca.cwds.rest.api.domain.cms.SystemCodeCache;
 import java.io.Serializable;
 import java.util.Date;
-
 import java.util.Set;
+
 import javax.persistence.EntityExistsException;
 import javax.persistence.EntityNotFoundException;
 import javax.validation.Validator;
@@ -27,8 +25,11 @@ import gov.ca.cwds.rest.api.domain.ScreeningToReferral;
 import gov.ca.cwds.rest.api.domain.cms.LongText;
 import gov.ca.cwds.rest.api.domain.cms.PostedLongText;
 import gov.ca.cwds.rest.api.domain.cms.PostedReferral;
+import gov.ca.cwds.rest.api.domain.cms.SystemCode;
+import gov.ca.cwds.rest.api.domain.cms.SystemCodeCache;
 import gov.ca.cwds.rest.business.rules.LACountyTrigger;
 import gov.ca.cwds.rest.business.rules.NonLACountyTriggers;
+import gov.ca.cwds.rest.filters.RequestExecutionContext;
 import gov.ca.cwds.rest.messages.MessageBuilder;
 import gov.ca.cwds.rest.services.CrudsService;
 import gov.ca.cwds.rest.services.LegacyDefaultValues;
@@ -261,7 +262,6 @@ public class ReferralService implements CrudsService {
     String longTextId = generateReportNarrative(screeningToReferral, messageBuilder);
     String responseRationalLongTextId =
         generateResponseRationalText(screeningToReferral, messageBuilder);
-    String firstResponseDeterminedByStaffPersonId = getFirstResponseDeterminedByStaffPersonId();
 
     /*
      * create a three dummy records using generateDrmsDocumentId method
@@ -278,40 +278,43 @@ public class ReferralService implements CrudsService {
     createReferralAddress(screeningToReferral, timestamp, messageBuilder);
     String allegesAbuseOccurredAtAddressId = screeningToReferral.getAddress().getLegacyId();
 
-    int govEnt = convertLogicalIdToSystemCodeFor(screeningToReferral.getIncidentCounty(), "GVR_ENTC");
+    int govEnt =
+        convertLogicalIdToSystemCodeFor(screeningToReferral.getIncidentCounty(), "GVR_ENTC");
     return gov.ca.cwds.rest.api.domain.cms.Referral.createWithDefaults(
         ParticipantValidator.anonymousReporter(screeningToReferral),
-        screeningToReferral.getCommunicationMethod(),
-        drmsAllegationDescriptionDoc,
-        drmsErReferralDoc,
-        drmsInvestigationDoc,
-        screeningToReferral.isFiledWithLawEnforcement(),
-        screeningToReferral.isFamilyAwareness(),
-        govEnt,
-        screeningToReferral.getName(),
-        dateStarted,
-        timeStarted,
-        screeningToReferral.getResponseTime(),
-        allegesAbuseOccurredAtAddressId,
-        firstResponseDeterminedByStaffPersonId,
-        longTextId,
-        screeningToReferral.getIncidentCounty(),
-        (short) screeningToReferral.getApprovalStatus(),
-        LegacyDefaultValues.DEFAULT_STAFF_PERSON_ID,
-        responseRationalLongTextId,
+        screeningToReferral.getCommunicationMethod(), drmsAllegationDescriptionDoc,
+        drmsErReferralDoc, drmsInvestigationDoc, screeningToReferral.isFiledWithLawEnforcement(),
+        screeningToReferral.isFamilyAwareness(), govEnt, screeningToReferral.getName(), dateStarted,
+        timeStarted, screeningToReferral.getResponseTime(), allegesAbuseOccurredAtAddressId,
+        firstResponseDeterminedByStaffPersonId(), longTextId,
+        screeningToReferral.getIncidentCounty(), (short) screeningToReferral.getApprovalStatus(),
+        LegacyDefaultValues.DEFAULT_STAFF_PERSON_ID, responseRationalLongTextId,
         screeningToReferral.getResponsibleAgency());
   }
 
-  private int convertLogicalIdToSystemCodeFor(String logicalCode,
-      String governmentEntityCode) {
+  private int convertLogicalIdToSystemCodeFor(String logicalCode, String governmentEntityCode) {
     int foundCode = 0;
-    Set<SystemCode> systemCodes = SystemCodeCache.global().getSystemCodesForMeta(governmentEntityCode);
-    for (SystemCode systemCode : systemCodes){
-      if (systemCode.getLogicalId().equals(logicalCode)){
+    Set<SystemCode> systemCodes =
+        SystemCodeCache.global().getSystemCodesForMeta(governmentEntityCode);
+    for (SystemCode systemCode : systemCodes) {
+      if (systemCode.getLogicalId().equals(logicalCode)) {
         foundCode = systemCode.getSystemId();
       }
     }
     return foundCode;
+  }
+
+
+  private void createReferralAddress(ScreeningToReferral screeningToReferral, Date timestamp,
+      MessageBuilder messageBuilder) {
+    try {
+      gov.ca.cwds.rest.api.domain.Address referralAddress =
+          addressService.createAddressFromScreening(screeningToReferral, timestamp, messageBuilder);
+      screeningToReferral.setAddress(referralAddress);
+    } catch (ServiceException e1) {
+      String message = e1.getMessage();
+      messageBuilder.addMessageAndLog(message, e1, LOGGER);
+    }
   }
 
   /**
@@ -327,21 +330,9 @@ public class ReferralService implements CrudsService {
    *
    * </blockquote>
    */
-  private String getFirstResponseDeterminedByStaffPersonId() {
-    return staffPersonIdRetriever.getStaffPersonId();
-  }
+  private String firstResponseDeterminedByStaffPersonId() {
+    return RequestExecutionContext.instance().getUserId();
 
-
-  private void createReferralAddress(ScreeningToReferral screeningToReferral, Date timestamp,
-      MessageBuilder messageBuilder) {
-    try {
-      gov.ca.cwds.rest.api.domain.Address referralAddress =
-          addressService.createAddressFromScreening(screeningToReferral, timestamp, messageBuilder);
-      screeningToReferral.setAddress(referralAddress);
-    } catch (ServiceException e1) {
-      String message = e1.getMessage();
-      messageBuilder.addMessageAndLog(message, e1, LOGGER);
-    }
   }
 
   private String generateReportNarrative(ScreeningToReferral screeningToReferral,
