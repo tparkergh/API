@@ -330,7 +330,7 @@ public class ReferralService implements CrudsService {
    *
    * </blockquote>
    */
-  private String firstResponseDeterminedByStaffPersonId() {
+  private static String firstResponseDeterminedByStaffPersonId() {
     return RequestExecutionContext.instance().getUserId();
 
   }

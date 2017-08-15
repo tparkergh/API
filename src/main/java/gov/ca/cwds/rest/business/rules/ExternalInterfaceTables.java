@@ -29,6 +29,7 @@ public class ExternalInterfaceTables {
       "External Interface row is created";
   private static final String SOURCE_TBL_CLIENT = "CLIENT_T";
   private static final String SOURCE_TBL_ASSIGNMENT = "ASGNM_T";
+  private static final String SOURCE_TBL_REFERRAL = "REFERL_T";
   private static final String OPERATION_TYPE_DELETE = "D";
 
   private static final Logger LOGGER = LoggerFactory.getLogger(ExternalInterfaceTables.class);
@@ -104,6 +105,27 @@ public class ExternalInterfaceTables {
     try {
       externalInterfaceDao.create(externalInterface);
       LOGGER.info(EXTERNAL_INTERFACE_ROW_IS_CREATED);
+    } catch (ServiceException se) {
+      throw new DaoException(INSERT_TO_EXTINF_FAILED + se);
+    }
+  }
+
+  /**
+   * @param referralId - referralId
+   * @param operType - operype
+   */
+  public void createExternalInterfaceReferral(String referralId, String operType) {
+    ExternalInterface externalInterface = new ExternalInterface();
+    externalInterface.setSequenceNumber(incrementAndGetSequenceExternalTable());
+    externalInterface.setSubmitlTimestamp(requestExecutionContext.getRequestStartTime());
+    externalInterface.setTableName(SOURCE_TBL_REFERRAL);
+    externalInterface.setOperationType(operType);
+    externalInterface.setPrimaryKey1(referralId);
+    externalInterface.setLogonUserId(requestExecutionContext.getUserId());
+
+    try {
+      externalInterfaceDao.create(externalInterface);
+      LOGGER.info("External Interface row is created for referral");
     } catch (ServiceException se) {
       throw new DaoException(INSERT_TO_EXTINF_FAILED + se);
     }

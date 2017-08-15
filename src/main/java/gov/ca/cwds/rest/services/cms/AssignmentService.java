@@ -201,6 +201,12 @@ public class AssignmentService implements
         createDefaultAssignmentToCaseLoad(countyCode, referralId, caseLoadId);
     messageBuilder.addDomainValidationError(validator.validate(da));
 
+    if ("R".equals(da.getEstablishedForCode())
+        && ("P".equals(da.getTypeOfAssignmentCode()) || ("S".equals(da.getTypeOfAssignmentCode())))
+        || (da.getSecondaryAssignmentRoleType() == 143)) {
+      externalInterfaceTables.createExternalInterfaceReferral(referralId, "N");
+    }
+
     try {
       this.createWithSingleTimestamp(da, timestamp);
     } catch (ServiceException e) {
