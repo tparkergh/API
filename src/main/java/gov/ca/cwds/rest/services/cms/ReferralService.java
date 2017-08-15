@@ -1,11 +1,9 @@
 package gov.ca.cwds.rest.services.cms;
 
-import gov.ca.cwds.rest.api.domain.cms.SystemCode;
-import gov.ca.cwds.rest.api.domain.cms.SystemCodeCache;
 import java.io.Serializable;
 import java.util.Date;
-
 import java.util.Set;
+
 import javax.persistence.EntityExistsException;
 import javax.persistence.EntityNotFoundException;
 import javax.validation.Validator;
@@ -27,8 +25,12 @@ import gov.ca.cwds.rest.api.domain.ScreeningToReferral;
 import gov.ca.cwds.rest.api.domain.cms.LongText;
 import gov.ca.cwds.rest.api.domain.cms.PostedLongText;
 import gov.ca.cwds.rest.api.domain.cms.PostedReferral;
+import gov.ca.cwds.rest.api.domain.cms.SystemCode;
+import gov.ca.cwds.rest.api.domain.cms.SystemCodeCache;
+import gov.ca.cwds.rest.business.rules.ExternalInterfaceTables;
 import gov.ca.cwds.rest.business.rules.LACountyTrigger;
 import gov.ca.cwds.rest.business.rules.NonLACountyTriggers;
+import gov.ca.cwds.rest.filters.RequestExecutionContext;
 import gov.ca.cwds.rest.messages.MessageBuilder;
 import gov.ca.cwds.rest.services.CrudsService;
 import gov.ca.cwds.rest.services.LegacyDefaultValues;
@@ -58,6 +60,22 @@ public class ReferralService implements CrudsService {
   private LongTextService longTextService;
 
   /**
+   * <blockquote>
+   *
+   * <pre>
+   * BUSINESS RULE: "R - 04537" - FKSTFPERS0 set when first referral determined
+   *
+   * IF    referralResponseTypeCode is set to default
+   * THEN  firstResponseDeterminedByStaffPersonId is set to the staffpersonId
+   *
+   * </pre>
+   *
+   * </blockquote>
+   */
+  private String firstResponseDeterminedByStaffPersonId =
+      RequestExecutionContext.instance().getUserId();
+
+  /**
    * Constructor
    * 
    * @param referralDao The {@link Dao} handling {@link gov.ca.cwds.data.persistence.cms.Referral}
@@ -76,6 +94,7 @@ public class ReferralService implements CrudsService {
    * @param drmsDocumentService the service for generating DRMS Documents
    * @param addressService the service for creating addresses
    * @param longTextService the longText Service
+   * @param externalInterfaceTables handling {@link ExternalInterfaceTables} objects
    */
   @Inject
   public ReferralService(final ReferralDao referralDao, NonLACountyTriggers nonLaTriggers,
@@ -261,7 +280,6 @@ public class ReferralService implements CrudsService {
     String longTextId = generateReportNarrative(screeningToReferral, messageBuilder);
     String responseRationalLongTextId =
         generateResponseRationalText(screeningToReferral, messageBuilder);
-    String firstResponseDeterminedByStaffPersonId = getFirstResponseDeterminedByStaffPersonId();
 
     /*
      * create a three dummy records using generateDrmsDocumentId method
@@ -278,57 +296,30 @@ public class ReferralService implements CrudsService {
     createReferralAddress(screeningToReferral, timestamp, messageBuilder);
     String allegesAbuseOccurredAtAddressId = screeningToReferral.getAddress().getLegacyId();
 
-    int govEnt = convertLogicalIdToSystemCodeFor(screeningToReferral.getIncidentCounty(), "GVR_ENTC");
+    int govEnt =
+        convertLogicalIdToSystemCodeFor(screeningToReferral.getIncidentCounty(), "GVR_ENTC");
     return gov.ca.cwds.rest.api.domain.cms.Referral.createWithDefaults(
         ParticipantValidator.anonymousReporter(screeningToReferral),
-        screeningToReferral.getCommunicationMethod(),
-        drmsAllegationDescriptionDoc,
-        drmsErReferralDoc,
-        drmsInvestigationDoc,
-        screeningToReferral.isFiledWithLawEnforcement(),
-        screeningToReferral.isFamilyAwareness(),
-        govEnt,
-        screeningToReferral.getName(),
-        dateStarted,
-        timeStarted,
-        screeningToReferral.getResponseTime(),
-        allegesAbuseOccurredAtAddressId,
-        firstResponseDeterminedByStaffPersonId,
-        longTextId,
-        screeningToReferral.getIncidentCounty(),
+        screeningToReferral.getCommunicationMethod(), drmsAllegationDescriptionDoc,
+        drmsErReferralDoc, drmsInvestigationDoc, screeningToReferral.isFiledWithLawEnforcement(),
+        screeningToReferral.isFamilyAwareness(), govEnt, screeningToReferral.getName(), dateStarted,
+        timeStarted, screeningToReferral.getResponseTime(), allegesAbuseOccurredAtAddressId,
+        firstResponseDeterminedByStaffPersonId, longTextId, screeningToReferral.getIncidentCounty(),
         (short) screeningToReferral.getApprovalStatus(),
-        LegacyDefaultValues.DEFAULT_STAFF_PERSON_ID,
-        responseRationalLongTextId,
+        LegacyDefaultValues.DEFAULT_STAFF_PERSON_ID, responseRationalLongTextId,
         screeningToReferral.getResponsibleAgency());
   }
 
-  private int convertLogicalIdToSystemCodeFor(String logicalCode,
-      String governmentEntityCode) {
+  private int convertLogicalIdToSystemCodeFor(String logicalCode, String governmentEntityCode) {
     int foundCode = 0;
-    Set<SystemCode> systemCodes = SystemCodeCache.global().getSystemCodesForMeta(governmentEntityCode);
-    for (SystemCode systemCode : systemCodes){
-      if (systemCode.getLogicalId().equals(logicalCode)){
+    Set<SystemCode> systemCodes =
+        SystemCodeCache.global().getSystemCodesForMeta(governmentEntityCode);
+    for (SystemCode systemCode : systemCodes) {
+      if (systemCode.getLogicalId().equals(logicalCode)) {
         foundCode = systemCode.getSystemId();
       }
     }
     return foundCode;
-  }
-
-  /**
-   * <blockquote>
-   *
-   * <pre>
-   * BUSINESS RULE: "R - 04537" - FKSTFPERS0 set when first referral determined
-   *
-   * IF    referralResponseTypeCode is set to default
-   * THEN  firstResponseDeterminedByStaffPersonId is set to the staffpersonId
-   *
-   * </pre>
-   *
-   * </blockquote>
-   */
-  private String getFirstResponseDeterminedByStaffPersonId() {
-    return staffPersonIdRetriever.getStaffPersonId();
   }
 
 

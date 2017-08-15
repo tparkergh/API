@@ -49,6 +49,7 @@ import gov.ca.cwds.rest.business.rules.ExternalInterfaceTables;
 import gov.ca.cwds.rest.business.rules.LACountyTrigger;
 import gov.ca.cwds.rest.business.rules.NonLACountyTriggers;
 import gov.ca.cwds.rest.business.rules.UpperCaseTables;
+import gov.ca.cwds.rest.filters.TestingRequestExecutionContext;
 import gov.ca.cwds.rest.services.referentialintegrity.RIAllegation;
 import io.dropwizard.jackson.Jackson;
 
@@ -92,6 +93,7 @@ public class CmsReferralServiceTest {
   @Before
   public void setup() throws Exception {
 
+    new TestingRequestExecutionContext("0X5");
     referralDao = mock(ReferralDao.class);
     nonLACountyTriggers = mock(NonLACountyTriggers.class);
     laCountyTrigger = mock(LACountyTrigger.class);
