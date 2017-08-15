@@ -12,6 +12,7 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import java.math.BigDecimal;
+import java.util.Date;
 
 import javax.persistence.EntityExistsException;
 import javax.persistence.EntityNotFoundException;
@@ -41,6 +42,7 @@ import gov.ca.cwds.rest.api.domain.cms.PostedAssignment;
 import gov.ca.cwds.rest.api.domain.cms.Referral;
 import gov.ca.cwds.rest.business.rules.ExternalInterfaceTables;
 import gov.ca.cwds.rest.business.rules.NonLACountyTriggers;
+import gov.ca.cwds.rest.messages.MessageBuilder;
 import gov.ca.cwds.rest.services.ServiceException;
 import gov.ca.cwds.rest.services.referentialintegrity.RIAssignment;
 
@@ -63,6 +65,7 @@ public class AssignmentServiceTest {
   private ReferralDao referralDao;
   private ReferralClientDao referralClientDao;
   private RIAssignment riAssignment;
+  private MessageBuilder messageBuilder;
 
   @Rule
   public ExpectedException thrown = ExpectedException.none();
@@ -80,6 +83,7 @@ public class AssignmentServiceTest {
     referralDao = mock(ReferralDao.class);
     referralClientDao = mock(ReferralClientDao.class);
     riAssignment = mock(RIAssignment.class);
+    messageBuilder = mock(MessageBuilder.class);
     nonLACountyTriggers =
         new NonLACountyTriggers(countyOwnershipDao, referralDao, referralClientDao);
     assignmentService = new AssignmentService(assignmentDao, nonLACountyTriggers, staffpersonDao,
@@ -343,6 +347,21 @@ public class AssignmentServiceTest {
     assignmentService.create(request);
 
     verify(countyOwnershipDao, times(0)).create(any());
+  }
+
+  @Test
+  public void testForCreateAssignment() throws Exception {
+
+    Assignment assignmentDomain = new AssignmentResourceBuilder().buildAssignment();
+    gov.ca.cwds.data.persistence.cms.Assignment toCreate =
+        new gov.ca.cwds.data.persistence.cms.Assignment("ABC1234567", assignmentDomain, "q1p");
+
+    when(assignmentDao.create(any(gov.ca.cwds.data.persistence.cms.Assignment.class)))
+        .thenReturn(toCreate);
+
+    assignmentService.createDefaultAssignmentForNewReferral("ABC1234567", new Date(),
+        messageBuilder);
+    verify(assignmentDao, times(1)).create(any());
   }
 
 }
