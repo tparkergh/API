@@ -59,22 +59,6 @@ public class ReferralService implements CrudsService {
   private LongTextService longTextService;
 
   /**
-   * <blockquote>
-   *
-   * <pre>
-   * BUSINESS RULE: "R - 04537" - FKSTFPERS0 set when first referral determined
-   *
-   * IF    referralResponseTypeCode is set to default
-   * THEN  firstResponseDeterminedByStaffPersonId is set to the staffpersonId
-   *
-   * </pre>
-   *
-   * </blockquote>
-   */
-  private String firstResponseDeterminedByStaffPersonId =
-      RequestExecutionContext.instance().getUserId();
-
-  /**
    * Constructor
    * 
    * @param referralDao The {@link Dao} handling {@link gov.ca.cwds.data.persistence.cms.Referral}
@@ -302,8 +286,8 @@ public class ReferralService implements CrudsService {
         drmsErReferralDoc, drmsInvestigationDoc, screeningToReferral.isFiledWithLawEnforcement(),
         screeningToReferral.isFamilyAwareness(), govEnt, screeningToReferral.getName(), dateStarted,
         timeStarted, screeningToReferral.getResponseTime(), allegesAbuseOccurredAtAddressId,
-        firstResponseDeterminedByStaffPersonId, longTextId, screeningToReferral.getIncidentCounty(),
-        (short) screeningToReferral.getApprovalStatus(),
+        firstResponseDeterminedByStaffPersonId(), longTextId,
+        screeningToReferral.getIncidentCounty(), (short) screeningToReferral.getApprovalStatus(),
         LegacyDefaultValues.DEFAULT_STAFF_PERSON_ID, responseRationalLongTextId,
         screeningToReferral.getResponsibleAgency());
   }
@@ -331,6 +315,24 @@ public class ReferralService implements CrudsService {
       String message = e1.getMessage();
       messageBuilder.addMessageAndLog(message, e1, LOGGER);
     }
+  }
+
+  /**
+   * <blockquote>
+   *
+   * <pre>
+   * BUSINESS RULE: "R - 04537" - FKSTFPERS0 set when first referral determined
+   *
+   * IF    referralResponseTypeCode is set to default
+   * THEN  firstResponseDeterminedByStaffPersonId is set to the staffpersonId
+   *
+   * </pre>
+   *
+   * </blockquote>
+   */
+  private String firstResponseDeterminedByStaffPersonId() {
+    return RequestExecutionContext.instance().getUserId();
+
   }
 
   private String generateReportNarrative(ScreeningToReferral screeningToReferral,
