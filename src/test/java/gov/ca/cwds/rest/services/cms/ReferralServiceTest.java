@@ -11,17 +11,8 @@ import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-import gov.ca.cwds.fixture.AddressResourceBuilder;
-import gov.ca.cwds.fixture.ScreeningToReferralResourceBuilder;
-import gov.ca.cwds.rest.api.domain.Address;
-import gov.ca.cwds.rest.api.domain.ScreeningToReferral;
-import gov.ca.cwds.rest.api.domain.cms.LongText;
-import gov.ca.cwds.rest.api.domain.cms.PostedLongText;
-import gov.ca.cwds.rest.messages.MessageBuilder;
 import java.math.BigDecimal;
 
-import java.util.Date;
-import org.slf4j.Logger;
 import javax.persistence.EntityExistsException;
 import javax.persistence.EntityNotFoundException;
 import javax.validation.Validation;
@@ -45,6 +36,7 @@ import gov.ca.cwds.rest.api.domain.cms.PostedReferral;
 import gov.ca.cwds.rest.api.domain.cms.Referral;
 import gov.ca.cwds.rest.business.rules.LACountyTrigger;
 import gov.ca.cwds.rest.business.rules.NonLACountyTriggers;
+import gov.ca.cwds.rest.filters.TestingRequestExecutionContext;
 import gov.ca.cwds.rest.services.ServiceException;
 import gov.ca.cwds.rest.services.junit.template.ServiceTestTemplate;
 
@@ -75,6 +67,7 @@ public class ReferralServiceTest implements ServiceTestTemplate {
   @Override
   @Before
   public void setup() throws Exception {
+    new TestingRequestExecutionContext("0X5");
     validator = Validation.buildDefaultValidatorFactory().getValidator();
     referralDao = mock(ReferralDao.class);
     nonLACountyTriggers = mock(NonLACountyTriggers.class);
@@ -488,46 +481,58 @@ public class ReferralServiceTest implements ServiceTestTemplate {
 
   }
 
-//  @Test
-//  public void shouldCreateCmsReferralFromScreening(){
-//    Date timestamp = new Date();
-//    Address address = new AddressResourceBuilder().createAddress();
-//    ScreeningToReferral screeningToReferral = new ScreeningToReferralResourceBuilder()
-//        .setAddress(address).createScreeningToReferral();
-//    MessageBuilder messageBuilder = mock(MessageBuilder.class);
-//    when(addressService.createAddressFromScreening(screeningToReferral, timestamp, messageBuilder)).thenReturn(address);
-//    gov.ca.cwds.data.persistence.cms.LongText longText = new gov.ca.cwds.data.persistence.cms.LongText("123abc2345", "65", "A long text ");
-//    PostedLongText postedLongText = new PostedLongText(longText);
-////    when(drmsDocumentService.generateDrmsDocumentId(messageBuilder)).thenThrow(new ServiceException());
-//    when(longTextService.create(any(LongText.class))).thenReturn(postedLongText);
-//    Referral savedReferral= mock(Referral.class);
-//    when(referralDao.create(any())).thenReturn((savedReferral));
-////    staffPersonIdRetriever
-//    ReferralService referralService = new ReferralService( referralDao, nonLACountyTriggers, laCountyTrigger,
-//        triggerTablesDao,staffpersonDao, staffPersonIdRetriever, assignmentService, validator, drmsDocumentService,
-//        addressService, longTextService);
-////    LongTextService longTextService = mock(LongTextService.class);
-//    String dateStarted = "2013-01-30";
-//    String timeStarted = "14:22:58";
-//    referralService.createCmsReferralFromScreening(screeningToReferral, dateStarted, timeStarted, timestamp, messageBuilder);
-//
-////    verify(messageBuilder).addMessageAndLog("", any(ServiceException.class),any(Logger.class));
-//
-//  }
+  // @Test
+  // public void shouldCreateCmsReferralFromScreening(){
+  // Date timestamp = new Date();
+  // Address address = new AddressResourceBuilder().createAddress();
+  // ScreeningToReferral screeningToReferral = new ScreeningToReferralResourceBuilder()
+  // .setAddress(address).createScreeningToReferral();
+  // MessageBuilder messageBuilder = mock(MessageBuilder.class);
+  // when(addressService.createAddressFromScreening(screeningToReferral, timestamp,
+  // messageBuilder)).thenReturn(address);
+  // gov.ca.cwds.data.persistence.cms.LongText longText = new
+  // gov.ca.cwds.data.persistence.cms.LongText("123abc2345", "65", "A long text ");
+  // PostedLongText postedLongText = new PostedLongText(longText);
+  //// when(drmsDocumentService.generateDrmsDocumentId(messageBuilder)).thenThrow(new
+  // ServiceException());
+  // when(longTextService.create(any(LongText.class))).thenReturn(postedLongText);
+  // Referral savedReferral= mock(Referral.class);
+  // when(referralDao.create(any())).thenReturn((savedReferral));
+  //// staffPersonIdRetriever
+  // ReferralService referralService = new ReferralService( referralDao, nonLACountyTriggers,
+  // laCountyTrigger,
+  // triggerTablesDao,staffpersonDao, staffPersonIdRetriever, assignmentService, validator,
+  // drmsDocumentService,
+  // addressService, longTextService);
+  //// LongTextService longTextService = mock(LongTextService.class);
+  // String dateStarted = "2013-01-30";
+  // String timeStarted = "14:22:58";
+  // referralService.createCmsReferralFromScreening(screeningToReferral, dateStarted, timeStarted,
+  // timestamp, messageBuilder);
+  //
+  //// verify(messageBuilder).addMessageAndLog("", any(ServiceException.class),any(Logger.class));
+  //
+  // }
 
-//  @Test
-//  public void shouldLogAndBuildMessageWhenServiceExceptionIsThrownWhileCreatingCmsReferralFromScreening(){
-//    MessageBuilder messageBuilder = mock(MessageBuilder.class);
-//    when(drmsDocumentService.generateDrmsDocumentId(messageBuilder)).thenThrow(new ServiceException());
-////    longTextService
-////    staffPersonIdRetriever
-//    ReferralService referralService = new ReferralService( referralDao, nonLACountyTriggers, laCountyTrigger,
-//    triggerTablesDao,staffpersonDao, staffPersonIdRetriever, assignmentService, validator, drmsDocumentService,
-//    addressService, longTextService);
-////    LongTextService longTextService = mock(LongTextService.class);
-//    ScreeningToReferral screeningToReferral = new ScreeningToReferralResourceBuilder().createScreeningToReferral();
-//    referralService.createCmsReferralFromScreening(screeningToReferral, "dateStarted", "timeStarted", new Date(), messageBuilder);
-//
-//    verify(messageBuilder).addMessageAndLog("", any(ServiceException.class),any(Logger.class));
-//  }
+  // @Test
+  // public void
+  // shouldLogAndBuildMessageWhenServiceExceptionIsThrownWhileCreatingCmsReferralFromScreening(){
+  // MessageBuilder messageBuilder = mock(MessageBuilder.class);
+  // when(drmsDocumentService.generateDrmsDocumentId(messageBuilder)).thenThrow(new
+  // ServiceException());
+  //// longTextService
+  //// staffPersonIdRetriever
+  // ReferralService referralService = new ReferralService( referralDao, nonLACountyTriggers,
+  // laCountyTrigger,
+  // triggerTablesDao,staffpersonDao, staffPersonIdRetriever, assignmentService, validator,
+  // drmsDocumentService,
+  // addressService, longTextService);
+  //// LongTextService longTextService = mock(LongTextService.class);
+  // ScreeningToReferral screeningToReferral = new
+  // ScreeningToReferralResourceBuilder().createScreeningToReferral();
+  // referralService.createCmsReferralFromScreening(screeningToReferral, "dateStarted",
+  // "timeStarted", new Date(), messageBuilder);
+  //
+  // verify(messageBuilder).addMessageAndLog("", any(ServiceException.class),any(Logger.class));
+  // }
 }
