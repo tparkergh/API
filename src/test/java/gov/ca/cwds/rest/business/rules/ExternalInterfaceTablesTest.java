@@ -16,12 +16,9 @@ import org.junit.rules.ExpectedException;
 import org.mockito.invocation.InvocationOnMock;
 import org.mockito.stubbing.Answer;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-
 import gov.ca.cwds.data.DaoException;
 import gov.ca.cwds.data.cms.ExternalInterfaceDao;
 import gov.ca.cwds.data.persistence.cms.ExternalInterface;
-import gov.ca.cwds.data.persistence.cms.SystemCodeTestHarness;
 import gov.ca.cwds.fixture.AssignmentResourceBuilder;
 import gov.ca.cwds.fixture.ClientResourceBuilder;
 import gov.ca.cwds.rest.api.domain.cms.Assignment;
@@ -33,9 +30,8 @@ import gov.ca.cwds.rest.services.ServiceException;
  * @author CWDS API Team
  *
  */
+@SuppressWarnings("javadoc")
 public class ExternalInterfaceTablesTest {
-
-  private static final ObjectMapper MAPPER = SystemCodeTestHarness.MAPPER;
 
   private ExternalInterfaceDao externalInterfaceDao;
   private ExternalInterfaceTables externalInterfaceTables;
@@ -44,7 +40,6 @@ public class ExternalInterfaceTablesTest {
 
   private static final String DEFAULT_USER_ID = "0X5";
 
-  @SuppressWarnings("javadoc")
   @Rule
   public ExpectedException thrown = ExpectedException.none();
 
@@ -56,9 +51,6 @@ public class ExternalInterfaceTablesTest {
     externalInterfaceTables = new ExternalInterfaceTables(externalInterfaceDao);
   }
 
-  /**
-   * @throws Exception - Exception
-   */
   @Test
   public void testForClientExternalInterfaceCreated() throws Exception {
     Client clientDomain = new ClientResourceBuilder().build();
@@ -69,9 +61,6 @@ public class ExternalInterfaceTablesTest {
 
   }
 
-  /**
-   * @throws Exception - Exception
-   */
   @Test(expected = DaoException.class)
   public void testForClientExternalInterfaceThrowsDaoException() throws Exception {
     when(externalInterfaceDao.create(any())).thenThrow(new ServiceException());
@@ -117,9 +106,6 @@ public class ExternalInterfaceTablesTest {
 
   }
 
-  /**
-   * @throws Exception - Exception
-   */
   @Test
   public void testForCreateMultipleClientExternalInterface() throws Exception {
     Client clientDomain = new ClientResourceBuilder().build();
@@ -162,9 +148,6 @@ public class ExternalInterfaceTablesTest {
 
   }
 
-  /**
-   * @throws Exception - Exception
-   */
   @Test
   public void testForCreateAssignmentExternalInterface() throws Exception {
     Assignment assignmentDomain = new AssignmentResourceBuilder().buildAssignment();
@@ -190,9 +173,6 @@ public class ExternalInterfaceTablesTest {
 
   }
 
-  /**
-   * @throws Exception - Exception
-   */
   @Test
   public void testForDeleteAssignmentExternalInterface() throws Exception {
     when(externalInterfaceDao.create(any(ExternalInterface.class)))
@@ -215,9 +195,6 @@ public class ExternalInterfaceTablesTest {
 
   }
 
-  /**
-   * @throws Exception - Exception
-   */
   @Test
   public void testForDeleteMultipleExternalInterface() throws Exception {
     when(externalInterfaceDao.create(any(ExternalInterface.class)))
@@ -250,6 +227,37 @@ public class ExternalInterfaceTablesTest {
   public void testForDeleteExternalThrowsServiceException() throws Exception {
     when(externalInterfaceDao.create(any())).thenThrow(new ServiceException());
     externalInterfaceTables.createExtInterForDelete("ABC1234567", "ASGNM_T");
+  }
+
+  @Test
+  public void testForReferralExternalInterfaceCreated() throws Exception {
+    when(externalInterfaceDao.create(any(ExternalInterface.class)))
+        .thenAnswer(new Answer<ExternalInterface>() {
+          @Override
+          public ExternalInterface answer(InvocationOnMock invocation) throws Throwable {
+
+            ExternalInterface report = (ExternalInterface) invocation.getArguments()[0];
+            externalInterface = report;
+            return report;
+          }
+        });
+
+    externalInterfaceTables.createExternalInterfaceReferral("ABC1234567", "R");
+    verify(externalInterfaceDao, times(1)).create(any());
+
+
+    assertThat(externalInterface.getSequenceNumber(), is(equalTo(1)));
+    assertThat(externalInterface.getPrimaryKey1(), is(equalTo("ABC1234567")));
+    assertThat(externalInterface.getOperationType(), is(equalTo("R")));
+    assertThat(externalInterface.getLogonUserId(), is(equalTo(DEFAULT_USER_ID)));
+    assertThat(externalInterface.getTableName(), is(equalTo("REFERL_T")));
+
+  }
+
+  @Test(expected = DaoException.class)
+  public void testForReferralCreateExternalThrowsServiceException() throws Exception {
+    when(externalInterfaceDao.create(any())).thenThrow(new ServiceException());
+    externalInterfaceTables.createExternalInterfaceReferral("ABC1234567", "R");
   }
 
 }
