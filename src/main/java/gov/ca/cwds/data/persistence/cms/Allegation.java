@@ -9,6 +9,7 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
@@ -92,7 +93,7 @@ public class Allegation extends CmsPersistentObject {
   @Column(name = "FKCLIENT_T", length = CMS_ID_LEN)
   private String victimClientId;
 
-  @Column(name = "FKCLIENT_0", length = CMS_ID_LEN)
+  @Column(name = "FKCLIENT_0", length = CMS_ID_LEN, nullable = true)
   private String perpetratorClientId;
 
   @Column(name = "FKREFERL_T", length = CMS_ID_LEN)
@@ -110,6 +111,13 @@ public class Allegation extends CmsPersistentObject {
   @Column(name = "PLC_FCLC")
   private Short placementFacilityType;
 
+  /**
+   * #147241489: referential integrity check.
+   * <p>
+   * Doesn't actually load the data. Just checks the existence of the parent referral record.
+   * </p>
+   */
+
   @OneToMany(cascade = CascadeType.ALL)
   @JoinColumn(name = "IDENTIFIER", referencedColumnName = "FKCLIENT_T")
   private Set<Client> victimClients = new HashSet<>();
@@ -117,6 +125,11 @@ public class Allegation extends CmsPersistentObject {
   @OneToMany(cascade = CascadeType.ALL)
   @JoinColumn(name = "IDENTIFIER", referencedColumnName = "FKCLIENT_0")
   private Set<Client> perpetratorClients = new HashSet<>();
+
+
+  @ManyToOne(optional = false)
+  @JoinColumn(name = "FKREFERL_T", nullable = false, updatable = false, insertable = false)
+  private Referral referral;
 
   /**
    * Default constructor

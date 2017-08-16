@@ -18,6 +18,7 @@ import gov.ca.cwds.data.persistence.cms.CrossReport;
 import gov.ca.cwds.rest.api.Request;
 import gov.ca.cwds.rest.services.CrudsService;
 import gov.ca.cwds.rest.services.ServiceException;
+import gov.ca.cwds.rest.services.referentialintegrity.RICrossReport;
 
 /**
  * Business layer object to work on {@link CrossReport}
@@ -30,6 +31,7 @@ public class CrossReportService implements CrudsService {
 
   private CrossReportDao crossReportDao;
   private StaffPersonIdRetriever staffPersonIdRetriever;
+  private RICrossReport riCrossReport;
 
   /**
    * Constructor
@@ -37,12 +39,14 @@ public class CrossReportService implements CrudsService {
    * @param crossReportDao The {@link Dao} handling
    *        {@link gov.ca.cwds.data.persistence.cms.CrossReport} objects.
    * @param staffPersonIdRetriever the staffPersonIdRetriever
+   * @param riCrossReport the ri for cross report
    */
   @Inject
   public CrossReportService(CrossReportDao crossReportDao,
-      StaffPersonIdRetriever staffPersonIdRetriever) {
+      StaffPersonIdRetriever staffPersonIdRetriever, RICrossReport riCrossReport) {
     this.crossReportDao = crossReportDao;
     this.staffPersonIdRetriever = staffPersonIdRetriever;
+    this.riCrossReport = riCrossReport;
   }
 
   /**
