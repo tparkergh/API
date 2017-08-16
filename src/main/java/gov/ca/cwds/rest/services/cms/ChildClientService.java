@@ -1,12 +1,5 @@
 package gov.ca.cwds.rest.services.cms;
 
-import gov.ca.cwds.data.Dao;
-import gov.ca.cwds.data.cms.ChildClientDao;
-import gov.ca.cwds.data.persistence.cms.ChildClient;
-import gov.ca.cwds.rest.api.Request;
-import gov.ca.cwds.rest.services.CrudsService;
-import gov.ca.cwds.rest.services.ServiceException;
-
 import java.io.Serializable;
 
 import javax.persistence.EntityExistsException;
@@ -16,6 +9,14 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.google.inject.Inject;
+
+import gov.ca.cwds.data.Dao;
+import gov.ca.cwds.data.cms.ChildClientDao;
+import gov.ca.cwds.data.persistence.cms.ChildClient;
+import gov.ca.cwds.rest.api.Request;
+import gov.ca.cwds.rest.services.CrudsService;
+import gov.ca.cwds.rest.services.ServiceException;
+import gov.ca.cwds.rest.services.referentialintegrity.RIChildClient;
 
 /**
  * Business layer object to work on {@link ChildClient}
@@ -115,7 +116,8 @@ public class ChildClientService implements CrudsService {
    *      gov.ca.cwds.rest.api.Request)
    */
   @Override
-  public gov.ca.cwds.rest.api.domain.cms.ChildClient update(Serializable primaryKey, Request request) {
+  public gov.ca.cwds.rest.api.domain.cms.ChildClient update(Serializable primaryKey,
+      Request request) {
     assert request instanceof gov.ca.cwds.rest.api.domain.cms.ChildClient;
     gov.ca.cwds.rest.api.domain.cms.ChildClient childClient =
         (gov.ca.cwds.rest.api.domain.cms.ChildClient) request;

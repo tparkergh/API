@@ -1,4 +1,4 @@
-package gov.ca.cwds.rest.services.cms;
+package gov.ca.cwds.rest.services.referentialintegrity;
 
 import gov.ca.cwds.data.ApiHibernateInterceptor;
 import gov.ca.cwds.data.ApiReferentialCheck;
