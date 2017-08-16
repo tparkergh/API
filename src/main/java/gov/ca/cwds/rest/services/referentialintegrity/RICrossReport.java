@@ -84,7 +84,7 @@ public class RICrossReport implements ApiReferentialCheck<CrossReport> {
       throw new ReferentialIntegrityException(
           "CrossReport => Staff Person with given Identifier is not present in database");
 
-    } else if (t.getLawEnforcementId() != null
+    } else if (t.getLawEnforcementId() != null && !t.getLawEnforcementId().isEmpty()
         && lawEnforcementDao.find(t.getLawEnforcementId()) == null) {
       throw new ReferentialIntegrityException(
           "CrossReport => Law enforcement with given Identifier is not present in database");
