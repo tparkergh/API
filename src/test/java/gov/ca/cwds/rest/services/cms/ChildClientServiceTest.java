@@ -1,6 +1,5 @@
 package gov.ca.cwds.rest.services.cms;
 
-import static io.dropwizard.testing.FixtureHelpers.fixture;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.notNullValue;
@@ -12,11 +11,6 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
-import gov.ca.cwds.data.cms.ChildClientDao;
-import gov.ca.cwds.rest.api.Response;
-import gov.ca.cwds.rest.api.domain.cms.ChildClient;
-import gov.ca.cwds.rest.services.ServiceException;
-import io.dropwizard.jackson.Jackson;
 
 import javax.persistence.EntityExistsException;
 import javax.persistence.EntityNotFoundException;
@@ -26,14 +20,18 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
+import gov.ca.cwds.data.cms.ChildClientDao;
+import gov.ca.cwds.fixture.ChildClientResourceBuilder;
+import gov.ca.cwds.rest.api.Response;
+import gov.ca.cwds.rest.api.domain.cms.ChildClient;
+import gov.ca.cwds.rest.services.ServiceException;
+import gov.ca.cwds.rest.services.referentialintegrity.RIChildClient;
 
 /**
  * @author CWDS API Team
  *
  */
 public class ChildClientServiceTest {
-  private static final ObjectMapper MAPPER = Jackson.newObjectMapper();
   private ChildClientService childClientService;
   private ChildClientDao childClientDao;
   private StaffPersonIdRetriever staffPersonIdRetriever;
@@ -69,9 +67,7 @@ public class ChildClientServiceTest {
   @SuppressWarnings("javadoc")
   @Test
   public void findReturnsChildClientReportWhenFound() throws Exception {
-    ChildClient expected =
-        MAPPER.readValue(fixture("fixtures/domain/legacy/ChildClient/valid/valid.json"),
-            ChildClient.class);
+    ChildClient expected = new ChildClientResourceBuilder().buildChildClient();
 
     gov.ca.cwds.data.persistence.cms.ChildClient childCleint =
         new gov.ca.cwds.data.persistence.cms.ChildClient(expected.getVictimClientId(), expected,
@@ -118,9 +114,7 @@ public class ChildClientServiceTest {
   @Test
   public void childClientServiceDeleteReturnsNotNull() throws Exception {
     String id = "ABC1234567";
-    ChildClient expected =
-        MAPPER.readValue(fixture("fixtures/domain/legacy/ChildClient/valid/valid.json"),
-            ChildClient.class);
+    ChildClient expected = new ChildClientResourceBuilder().buildChildClient();
     gov.ca.cwds.data.persistence.cms.ChildClient childClient =
         new gov.ca.cwds.data.persistence.cms.ChildClient(id, expected, "0XA");
 
@@ -144,9 +138,7 @@ public class ChildClientServiceTest {
   @SuppressWarnings("javadoc")
   @Test
   public void updateReturnsChildClientResponseOnSuccess() throws Exception {
-    ChildClient expected =
-        MAPPER.readValue(fixture("fixtures/domain/legacy/ChildClient/valid/valid.json"),
-            ChildClient.class);
+    ChildClient expected = new ChildClientResourceBuilder().buildChildClient();
 
     gov.ca.cwds.data.persistence.cms.ChildClient childClient =
         new gov.ca.cwds.data.persistence.cms.ChildClient(expected.getVictimClientId(), expected,
@@ -161,9 +153,7 @@ public class ChildClientServiceTest {
   @SuppressWarnings("javadoc")
   @Test
   public void updateReturnsCorrectChildClientOnSuccess() throws Exception {
-    ChildClient childClientRequest =
-        MAPPER.readValue(fixture("fixtures/domain/legacy/ChildClient/valid/valid.json"),
-            ChildClient.class);
+    ChildClient childClientRequest = new ChildClientResourceBuilder().buildChildClient();
 
     gov.ca.cwds.data.persistence.cms.ChildClient childClient =
         new gov.ca.cwds.data.persistence.cms.ChildClient(childClientRequest.getVictimClientId(),
@@ -182,13 +172,11 @@ public class ChildClientServiceTest {
   public void updateThrowsExceptionWhenChildClientNotFound() throws Exception {
 
     try {
-      ChildClient crossReportRequest =
-          MAPPER.readValue(fixture("fixtures/domain/legacy/ChildClient/valid/valid.json"),
-              ChildClient.class);
+      ChildClient childClientRequest = new ChildClientResourceBuilder().buildChildClient();
 
       when(childClientDao.update(any())).thenThrow(EntityNotFoundException.class);
 
-      childClientService.update("ZZZ1234567", crossReportRequest);
+      childClientService.update("ZZZ1234567", childClientRequest);
     } catch (Exception e) {
       assertEquals(e.getClass(), ServiceException.class);
     }
@@ -197,10 +185,9 @@ public class ChildClientServiceTest {
   // create test
   @SuppressWarnings("javadoc")
   @Test
-  public void createReturnsPostedCrossReportClass() throws Exception {
-    ChildClient childClientDomain =
-        MAPPER.readValue(fixture("fixtures/domain/legacy/ChildClient/valid/valid.json"),
-            ChildClient.class);
+  public void createReturnsPostedChildClientClass() throws Exception {
+    ChildClient childClientDomain = new ChildClientResourceBuilder().buildChildClient();
+
     gov.ca.cwds.data.persistence.cms.ChildClient toCreate =
         new gov.ca.cwds.data.persistence.cms.ChildClient(childClientDomain.getVictimClientId(),
             childClientDomain, "ABC");
@@ -217,9 +204,7 @@ public class ChildClientServiceTest {
   @Test(expected = ServiceException.class)
   public void childClientServiceCreateThrowsServiceExceptionWhenVictimIdNull() throws Exception {
     ChildClient childClientRequest =
-        MAPPER.readValue(
-            fixture("fixtures/domain/legacy/ChildClient/invalid/victimClientIdNull.json"),
-            ChildClient.class);
+        new ChildClientResourceBuilder().setVictimClientId(null).buildChildClient();
 
     childClientService.create(childClientRequest);
   }
@@ -229,9 +214,7 @@ public class ChildClientServiceTest {
   @Test
   public void childClientServiceCreateThrowsEntityExistsException() throws Exception {
     try {
-      ChildClient childClientRequest =
-          MAPPER.readValue(fixture("fixtures/domain/legacy/ChildClient/valid/valid.json"),
-              ChildClient.class);
+      ChildClient childClientRequest = new ChildClientResourceBuilder().buildChildClient();
 
       when(childClientDao.create(any())).thenThrow(EntityExistsException.class);
       childClientService.create(childClientRequest);
@@ -243,9 +226,8 @@ public class ChildClientServiceTest {
   @SuppressWarnings("javadoc")
   @Test
   public void createReturnsNonNull() throws Exception {
-    ChildClient childClientDomain =
-        MAPPER.readValue(fixture("fixtures/domain/legacy/ChildClient/valid/valid.json"),
-            ChildClient.class);
+    ChildClient childClientDomain = new ChildClientResourceBuilder().buildChildClient();
+
     gov.ca.cwds.data.persistence.cms.ChildClient toCreate =
         new gov.ca.cwds.data.persistence.cms.ChildClient(childClientDomain.getVictimClientId(),
             childClientDomain, "ABC");
@@ -261,9 +243,8 @@ public class ChildClientServiceTest {
   @SuppressWarnings("javadoc")
   @Test
   public void createReturnsCorrectPostedChildClient() throws Exception {
-    ChildClient childClientDomain =
-        MAPPER.readValue(fixture("fixtures/domain/legacy/ChildClient/valid/valid.json"),
-            ChildClient.class);
+    ChildClient childClientDomain = new ChildClientResourceBuilder().buildChildClient();
+
     gov.ca.cwds.data.persistence.cms.ChildClient toCreate =
         new gov.ca.cwds.data.persistence.cms.ChildClient(childClientDomain.getVictimClientId(),
             childClientDomain, "ABC");
@@ -277,29 +258,5 @@ public class ChildClientServiceTest {
     ChildClient returned = childClientService.create(request);
     assertThat(returned, is(expected));
   }
-
-  /*
-   * Test for checking the new VictimId Generated for crossReport
-   */
-  // @SuppressWarnings("javadoc")
-  // @Test
-  // public void createReturnsGeneratedVictimId() throws Exception {
-  // ChildClient childClientDomain = MAPPER.readValue(
-  // fixture("fixtures/domain/legacy/ChildClient/valid/valid.json"), ChildClient.class);
-  // when(childClientDao.create(any(gov.ca.cwds.data.persistence.cms.ChildClient.class)))
-  // .thenAnswer(new Answer<gov.ca.cwds.data.persistence.cms.ChildClient>() {
-  //
-  // @Override
-  // public gov.ca.cwds.data.persistence.cms.ChildClient answer(InvocationOnMock invocation)
-  // throws Throwable {
-  // gov.ca.cwds.data.persistence.cms.ChildClient childClient =
-  // (gov.ca.cwds.data.persistence.cms.ChildClient) invocation.getArguments()[0];
-  // return childClient;
-  // }
-  // });
-  //
-  // ChildClient returned = childClientService.create(childClientDomain);
-  // Assert.assertNotEquals(returned.getVictimClientId(), childClientDomain.getVictimClientId());
-  // }
 
 }
