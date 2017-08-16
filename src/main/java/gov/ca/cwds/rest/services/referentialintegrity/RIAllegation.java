@@ -7,7 +7,6 @@ import com.google.inject.Inject;
 
 import gov.ca.cwds.data.ApiHibernateInterceptor;
 import gov.ca.cwds.data.ApiReferentialCheck;
-import gov.ca.cwds.data.cms.AllegationDao;
 import gov.ca.cwds.data.cms.ClientDao;
 import gov.ca.cwds.data.cms.ReferralDao;
 import gov.ca.cwds.data.persistence.cms.Allegation;
@@ -49,7 +48,6 @@ public class RIAllegation implements ApiReferentialCheck<Allegation> {
 
   private transient ClientDao clientDao;
   private transient ReferralDao referralDao;
-  private transient AllegationDao allegationDao;
 
   /**
    * Constructor.

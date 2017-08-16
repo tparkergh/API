@@ -76,6 +76,34 @@ public class RIClientAddressTest {
     target.apply(clientAddress);
   }
 
+  @Test
+  public void testForApply() throws Exception {
+    ClientAddress clientAddressDomain =
+        new ClientAddressResourceBuilder().setFkReferral(null).buildClientAddress();
+    gov.ca.cwds.data.persistence.cms.ClientAddress clientAddress =
+        new gov.ca.cwds.data.persistence.cms.ClientAddress("ABC1234567", clientAddressDomain,
+            "0X5");
+
+    Address addressDomain = new CmsAddressResourceBuilder().buildCmsAddress();
+    gov.ca.cwds.data.persistence.cms.Address address =
+        new gov.ca.cwds.data.persistence.cms.Address("ABC1234560", addressDomain, "0X5");
+
+    Client clientDomain = new ClientResourceBuilder().build();
+    gov.ca.cwds.data.persistence.cms.Client client =
+        new gov.ca.cwds.data.persistence.cms.Client("ABC123456k", clientDomain, "0X5");
+
+    Referral referralDomain = new ReferralResourceBuilder().build();
+    gov.ca.cwds.data.persistence.cms.Referral referral =
+        new gov.ca.cwds.data.persistence.cms.Referral("ABC1234ftd", referralDomain, "0X5");
+
+    when(addressDao.find(any(String.class))).thenReturn(address);
+    when(clientDao.find(any(String.class))).thenReturn(client);
+    when(referralDao.find(any(String.class))).thenReturn(referral);
+    RIClientAddress target = new RIClientAddress(addressDao, clientDao, referralDao);
+    Boolean result = target.apply(clientAddress);
+    assertThat(result, is(equalTo(true)));
+  }
+
   /*
    * Test success when fkReferral is null
    */
@@ -95,16 +123,32 @@ public class RIClientAddressTest {
     gov.ca.cwds.data.persistence.cms.Client client =
         new gov.ca.cwds.data.persistence.cms.Client("ABC123456k", clientDomain, "0X5");
 
-    Referral domain = new ReferralResourceBuilder().build();
-    gov.ca.cwds.data.persistence.cms.Referral referral =
-        new gov.ca.cwds.data.persistence.cms.Referral("ABC1234567", domain, "0X5");
-
     when(addressDao.find(any(String.class))).thenReturn(address);
     when(clientDao.find(any(String.class))).thenReturn(client);
-    when(referralDao.find(any(String.class))).thenReturn(referral);
+    when(referralDao.find(any(String.class))).thenReturn(null);
     RIClientAddress target = new RIClientAddress(addressDao, clientDao, referralDao);
     Boolean result = target.apply(clientAddress);
     assertThat(result, is(equalTo(true)));
+  }
+
+  @Test(expected = ReferentialIntegrityException.class)
+  public void testFailureWhenFkClientlIsNull() throws Exception {
+    ClientAddress clientAddressDomain =
+        new ClientAddressResourceBuilder().setFkClient(null).buildClientAddress();
+    gov.ca.cwds.data.persistence.cms.ClientAddress clientAddress =
+        new gov.ca.cwds.data.persistence.cms.ClientAddress("ABC1234567", clientAddressDomain,
+            "0X5");
+
+    Address addressDomain = new CmsAddressResourceBuilder().buildCmsAddress();
+    gov.ca.cwds.data.persistence.cms.Address address =
+        new gov.ca.cwds.data.persistence.cms.Address("ABC1234560", addressDomain, "0X5");
+
+    when(addressDao.find(any(String.class))).thenReturn(address);
+    when(clientDao.find(any(String.class))).thenReturn(null);
+    when(referralDao.find(any(String.class))).thenReturn(null);
+    RIClientAddress target = new RIClientAddress(addressDao, clientDao, referralDao);
+    target.apply(clientAddress);
+
   }
 
 }

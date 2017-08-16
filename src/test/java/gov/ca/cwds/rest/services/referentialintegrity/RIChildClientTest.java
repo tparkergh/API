@@ -1,4 +1,4 @@
-package gov.ca.cwds.rest.services.cms;
+package gov.ca.cwds.rest.services.referentialintegrity;
 
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.is;
