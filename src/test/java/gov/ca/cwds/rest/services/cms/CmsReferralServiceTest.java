@@ -51,6 +51,7 @@ import gov.ca.cwds.rest.business.rules.NonLACountyTriggers;
 import gov.ca.cwds.rest.business.rules.UpperCaseTables;
 import gov.ca.cwds.rest.filters.TestingRequestExecutionContext;
 import gov.ca.cwds.rest.services.referentialintegrity.RIAllegation;
+import gov.ca.cwds.rest.services.referentialintegrity.RICrossReport;
 import io.dropwizard.jackson.Jackson;
 
 @SuppressWarnings("javadoc")
@@ -86,6 +87,7 @@ public class CmsReferralServiceTest {
   private Validator validator;
   private ExternalInterfaceTables externalInterfaceTables;
   private RIAllegation riAllegation;
+  private RICrossReport riCrossReport;
 
   @Rule
   public ExpectedException thrown = ExpectedException.none();
@@ -132,7 +134,9 @@ public class CmsReferralServiceTest {
     allegationService = new AllegationService(allegationDao, staffPersonIdRetriever, riAllegation);
 
     crossReportDao = mock(CrossReportDao.class);
-    crossReportService = new CrossReportService(crossReportDao, staffPersonIdRetriever);
+    riCrossReport = mock(RICrossReport.class);
+    crossReportService =
+        new CrossReportService(crossReportDao, staffPersonIdRetriever, riCrossReport);
 
     reporterDao = mock(ReporterDao.class);
     reporterService = new ReporterService(reporterDao, staffPersonIdRetriever);

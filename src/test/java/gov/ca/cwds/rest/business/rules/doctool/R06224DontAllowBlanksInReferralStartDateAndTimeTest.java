@@ -79,6 +79,7 @@ import gov.ca.cwds.rest.services.referentialintegrity.RIAllegation;
 import gov.ca.cwds.rest.services.referentialintegrity.RIAllegationPerpetratorHistory;
 import gov.ca.cwds.rest.services.referentialintegrity.RIAssignment;
 import gov.ca.cwds.rest.services.referentialintegrity.RIClientAddress;
+import gov.ca.cwds.rest.services.referentialintegrity.RICrossReport;
 import io.dropwizard.jackson.Jackson;
 
 /**
@@ -107,6 +108,7 @@ public class R06224DontAllowBlanksInReferralStartDateAndTimeTest {
   private RIAssignment riAssignment;
   private RIClientAddress riClientAddress;
   private RIAllegation riAllegation;
+  private RICrossReport riCrossReport;
 
   private ReferralDao referralDao;
   private ClientDao clientDao;
@@ -180,7 +182,9 @@ public class R06224DontAllowBlanksInReferralStartDateAndTimeTest {
         allegationPerpetratorHistoryDao, staffPersonIdRetriever, riAllegationPerpetratorHistory);
 
     crossReportDao = mock(CrossReportDao.class);
-    crossReportService = new CrossReportService(crossReportDao, staffPersonIdRetriever);
+    riCrossReport = mock(RICrossReport.class);
+    crossReportService =
+        new CrossReportService(crossReportDao, staffPersonIdRetriever, riCrossReport);
 
     reporterDao = mock(ReporterDao.class);
     reporterService = new ReporterService(reporterDao, staffPersonIdRetriever);
