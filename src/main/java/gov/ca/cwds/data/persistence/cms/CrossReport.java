@@ -6,6 +6,8 @@ import java.util.Date;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.PersistenceException;
 import javax.persistence.Table;
 
@@ -101,6 +103,24 @@ public class CrossReport extends CmsPersistentObject {
 
   @Column(name = "SXRPT_IND")
   private String satisfyCrossReportIndicator;
+
+  /**
+   * #147241489: referential integrity check.
+   * <p>
+   * Doesn't actually load the data. Just checks the existence of the parent referral record.
+   * </p>
+   */
+  @ManyToOne(optional = false)
+  @JoinColumn(name = "FKREFERL_T", nullable = false, updatable = false, insertable = false)
+  private Referral referral;
+
+  @ManyToOne(optional = true)
+  @JoinColumn(name = "FKLAW_ENFT", nullable = true, updatable = false, insertable = false)
+  private LawEnforcement lawEnforcement;
+
+  @ManyToOne(optional = false)
+  @JoinColumn(name = "FKSTFPERST", nullable = false, updatable = false, insertable = false)
+  private StaffPerson staffPerson;
 
   /**
    * Default constructor
