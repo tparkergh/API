@@ -30,6 +30,7 @@ import gov.ca.cwds.data.cms.CrossReportDao;
 import gov.ca.cwds.rest.api.Response;
 import gov.ca.cwds.rest.api.domain.cms.CrossReport;
 import gov.ca.cwds.rest.services.ServiceException;
+import gov.ca.cwds.rest.services.referentialintegrity.RICrossReport;
 import io.dropwizard.jackson.Jackson;
 
 /**
@@ -41,6 +42,7 @@ public class CrossReportServiceTest {
   private CrossReportService crossReportService;
   private CrossReportDao crossReportDao;
   private StaffPersonIdRetriever staffPersonIdRetriever;
+  private RICrossReport riCrossReport;
 
   @Rule
   public ExpectedException thrown = ExpectedException.none();
@@ -50,7 +52,8 @@ public class CrossReportServiceTest {
   public void setup() throws Exception {
     crossReportDao = mock(CrossReportDao.class);
     staffPersonIdRetriever = mock(StaffPersonIdRetriever.class);
-    crossReportService = new CrossReportService(crossReportDao, staffPersonIdRetriever);
+    crossReportService =
+        new CrossReportService(crossReportDao, staffPersonIdRetriever, riCrossReport);
   }
 
   // find test
