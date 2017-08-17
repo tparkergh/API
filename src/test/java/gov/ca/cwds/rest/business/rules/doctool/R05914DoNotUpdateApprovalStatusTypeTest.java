@@ -66,6 +66,7 @@ import gov.ca.cwds.rest.services.referentialintegrity.RIAssignment;
 import gov.ca.cwds.rest.services.referentialintegrity.RIChildClient;
 import gov.ca.cwds.rest.services.referentialintegrity.RIClientAddress;
 import gov.ca.cwds.rest.services.referentialintegrity.RICrossReport;
+import gov.ca.cwds.rest.services.referentialintegrity.RIReporter;
 import io.dropwizard.jackson.Jackson;
 
 /**
@@ -95,6 +96,7 @@ public class R05914DoNotUpdateApprovalStatusTypeTest {
   private RIClientAddress riClientAddress;
   private RIAllegation riAllegation;
   private RICrossReport riCrossReport;
+  private RIReporter riReporter;
 
   private ReferralDao referralDao;
   private ClientDao clientDao;
@@ -188,7 +190,8 @@ public class R05914DoNotUpdateApprovalStatusTypeTest {
         new CrossReportService(crossReportDao, staffPersonIdRetriever, riCrossReport);
 
     reporterDao = mock(ReporterDao.class);
-    reporterService = new ReporterService(reporterDao, staffPersonIdRetriever);
+    riReporter = mock(RIReporter.class);
+    reporterService = new ReporterService(reporterDao, staffPersonIdRetriever, riReporter);
 
     clientAddressDao = mock(ClientAddressDao.class);
     laCountyTrigger = mock(LACountyTrigger.class);

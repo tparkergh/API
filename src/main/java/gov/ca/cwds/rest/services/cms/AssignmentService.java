@@ -204,7 +204,7 @@ public class AssignmentService implements
     if ("R".equals(da.getEstablishedForCode())
         && ("P".equals(da.getTypeOfAssignmentCode()) || ("S".equals(da.getTypeOfAssignmentCode())))
         || (da.getSecondaryAssignmentRoleType() == 143)) {
-      externalInterfaceTables.createExternalInterfaceReferral(referralId, "N");
+      externalInterfaceTables.createExternalInterfaceReferral(referralId, "C");
     }
 
     try {
