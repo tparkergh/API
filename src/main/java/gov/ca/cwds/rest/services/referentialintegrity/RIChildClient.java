@@ -1,15 +1,15 @@
 package gov.ca.cwds.rest.services.referentialintegrity;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import com.google.inject.Inject;
+
 import gov.ca.cwds.data.ApiHibernateInterceptor;
 import gov.ca.cwds.data.ApiReferentialCheck;
 import gov.ca.cwds.data.cms.ClientDao;
 import gov.ca.cwds.data.persistence.cms.ChildClient;
 import gov.ca.cwds.rest.validation.ReferentialIntegrityException;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import com.google.inject.Inject;
 
 /**
  * Verifies that a child client record refers to a valid client. Returns true if all parent foreign
@@ -55,12 +55,8 @@ public class RIChildClient implements ApiReferentialCheck<ChildClient> {
   @Inject
   public RIChildClient(final ClientDao clientDao) {
     this.clientDao = clientDao;
-    ApiHibernateInterceptor.addHandler(ChildClient.class, c -> {
-      if (!apply((ChildClient) c)) {
-        throw new ReferentialIntegrityException(
-            "ChildClient => Victim Client with given Identifier is not present in database");
-      }
-    });
+    ApiHibernateInterceptor.addHandler(ChildClient.class,
+        childClient -> apply((ChildClient) childClient));
   }
 
   /**
@@ -72,7 +68,11 @@ public class RIChildClient implements ApiReferentialCheck<ChildClient> {
   @Override
   public Boolean apply(ChildClient t) {
     LOGGER.debug("RI: ChildClient");
-    return clientDao.find(t.getVictimClientId()) != null;
+    if (clientDao.find(t.getVictimClientId()) == null) {
+      throw new ReferentialIntegrityException(
+          "ChildClient => Victim Client with given Identifier is not present in database");
+    }
+    return true;
   }
 
 }
