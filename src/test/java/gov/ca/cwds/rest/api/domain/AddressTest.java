@@ -37,7 +37,7 @@ public class AddressTest {
   private String street_name = "123 Main";
   private String city = "Sacramento";
   private Integer state = 1828; // "CA";
-  private Integer zip = 95757;
+  private String zip = "95757";
   private Integer type = 32; // "Residence"
   private String legacySourceTable = "CLIENT_T";
   private String legacyId = "1234567ABC";
@@ -62,7 +62,7 @@ public class AddressTest {
   @Test
   public void serializesToJSON() throws Exception {
     String expected =
-        MAPPER.writeValueAsString(new Address("", "", "123 Main", "Sacramento", 1828, 95757, 32));
+        MAPPER.writeValueAsString(new Address("", "", "123 Main", "Sacramento", 1828, "95757", 32));
 
     String serialized = MAPPER.writeValueAsString(
         MAPPER.readValue(fixture("fixtures/domain/address/valid/valid.json"), Address.class));
@@ -72,7 +72,7 @@ public class AddressTest {
 
   @Test
   public void testDeserializesFromJSON() throws Exception {
-    Address expected = new Address("", "", "123 Main", "Sacramento", 1828, 95757, 32);
+    Address expected = new Address("", "", "123 Main", "Sacramento", 1828, "95757", 32);
 
     Address serialized =
         MAPPER.readValue(fixture("fixtures/domain/address/valid/valid.json"), Address.class);
@@ -122,7 +122,7 @@ public class AddressTest {
     Set<ConstraintViolation<Address>> constraintViolations = validator.validate(toValidate);
     System.out.println(constraintViolations.iterator().next().getMessage());
     assertEquals(1, constraintViolations.size());
-    assertEquals("must be less than or equal to 99999",
+    assertEquals("size must be between 5 and 5",
         constraintViolations.iterator().next().getMessage());
   }
 
