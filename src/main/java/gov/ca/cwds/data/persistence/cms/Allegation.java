@@ -245,7 +245,8 @@ public class Allegation extends CmsPersistentObject {
     this.staffPersonAddedIndicator =
         DomainChef.cookBoolean(persistedAllegation.getStaffPersonAddedIndicator());
     this.victimClientId = persistedAllegation.getVictimClientId();
-    this.perpetratorClientId = persistedAllegation.getPerpetratorClientId();
+    this.perpetratorClientId = persistedAllegation.getPerpetratorClientId().isEmpty() ? null
+        : persistedAllegation.getPerpetratorClientId();
     this.referralId = persistedAllegation.getReferralId();
     this.countySpecificCode = persistedAllegation.getCountySpecificCode();
     this.zippyCreatedIndicator =
