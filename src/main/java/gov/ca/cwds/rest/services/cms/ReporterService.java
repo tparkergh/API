@@ -18,6 +18,7 @@ import gov.ca.cwds.rest.api.Request;
 import gov.ca.cwds.rest.api.domain.cms.PostedReporter;
 import gov.ca.cwds.rest.services.CrudsService;
 import gov.ca.cwds.rest.services.ServiceException;
+import gov.ca.cwds.rest.services.referentialintegrity.RIReporter;
 
 /**
  * Business layer object to work on {@link Reporter}
@@ -29,6 +30,7 @@ public class ReporterService implements CrudsService {
 
   private ReporterDao reporterDao;
   private StaffPersonIdRetriever staffPersonIdRetriever;
+  private RIReporter riReporter;
 
   /**
    * Constructor
@@ -36,11 +38,14 @@ public class ReporterService implements CrudsService {
    * @param reporterDao The {@link Dao} handling {@link gov.ca.cwds.data.persistence.cms.Reporter}
    *        objects.
    * @param staffPersonIdRetriever the staffPersonIdRetriever
+   * @param riReporter see {@link RIReporter}
    */
   @Inject
-  public ReporterService(ReporterDao reporterDao, StaffPersonIdRetriever staffPersonIdRetriever) {
+  public ReporterService(ReporterDao reporterDao, StaffPersonIdRetriever staffPersonIdRetriever,
+      RIReporter riReporter) {
     this.reporterDao = reporterDao;
     this.staffPersonIdRetriever = staffPersonIdRetriever;
+    this.riReporter = riReporter;
   }
 
   /**

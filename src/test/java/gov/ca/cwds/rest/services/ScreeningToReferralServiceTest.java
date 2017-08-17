@@ -8,17 +8,25 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.eq;
-import static org.mockito.Mockito.atLeastOnce;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
+import gov.ca.cwds.fixture.AllegationEntityBuilder;
+import gov.ca.cwds.fixture.AllegationPerpetratorHistoryEntityBuilder;
+import gov.ca.cwds.fixture.ClientEntityResourceBuilder;
+import gov.ca.cwds.fixture.CrossReportEntityBuilder;
+import gov.ca.cwds.fixture.LongTextEntityBuilder;
+import gov.ca.cwds.fixture.ReporterEntityBuilder;
+import gov.ca.cwds.rest.api.domain.cms.PostedAllegation;
+import gov.ca.cwds.rest.api.domain.cms.PostedAllegationPerpetratorHistory;
+import gov.ca.cwds.rest.api.domain.cms.PostedDrmsDocument;
+import gov.ca.cwds.rest.api.domain.cms.PostedLongText;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
-import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -37,7 +45,6 @@ import org.junit.rules.ExpectedException;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.SerializationFeature;
 
 import gov.ca.cwds.data.cms.AddressDao;
 import gov.ca.cwds.data.cms.AllegationDao;
@@ -58,13 +65,9 @@ import gov.ca.cwds.data.cms.TestSystemCodeCache;
 import gov.ca.cwds.data.rules.TriggerTablesDao;
 import gov.ca.cwds.fixture.AddressResourceBuilder;
 import gov.ca.cwds.fixture.AllegationResourceBuilder;
-import gov.ca.cwds.fixture.ClientEntityResourceBuilder;
-import gov.ca.cwds.fixture.ClientResourceBuilder;
 import gov.ca.cwds.fixture.CrossReportResourceBuilder;
-import gov.ca.cwds.fixture.LongTextEntityBuilder;
 import gov.ca.cwds.fixture.MockedScreeningToReferralServiceBuilder;
 import gov.ca.cwds.fixture.ParticipantResourceBuilder;
-import gov.ca.cwds.fixture.ReporterEntityBuilder;
 import gov.ca.cwds.fixture.ScreeningToReferralResourceBuilder;
 import gov.ca.cwds.rest.api.Response;
 import gov.ca.cwds.rest.api.domain.LegacyDescriptor;
@@ -78,14 +81,11 @@ import gov.ca.cwds.rest.api.domain.cms.Assignment;
 import gov.ca.cwds.rest.api.domain.cms.ChildClient;
 import gov.ca.cwds.rest.api.domain.cms.Client;
 import gov.ca.cwds.rest.api.domain.cms.ClientAddress;
-import gov.ca.cwds.rest.api.domain.cms.CmsReferral;
 import gov.ca.cwds.rest.api.domain.cms.CrossReport;
 import gov.ca.cwds.rest.api.domain.cms.DrmsDocument;
 import gov.ca.cwds.rest.api.domain.cms.LongText;
 import gov.ca.cwds.rest.api.domain.cms.PostedAddress;
 import gov.ca.cwds.rest.api.domain.cms.PostedClient;
-import gov.ca.cwds.rest.api.domain.cms.PostedDrmsDocument;
-import gov.ca.cwds.rest.api.domain.cms.PostedLongText;
 import gov.ca.cwds.rest.api.domain.cms.Referral;
 import gov.ca.cwds.rest.api.domain.cms.ReferralClient;
 import gov.ca.cwds.rest.api.domain.cms.Reporter;
@@ -95,7 +95,6 @@ import gov.ca.cwds.rest.business.rules.LACountyTrigger;
 import gov.ca.cwds.rest.business.rules.NonLACountyTriggers;
 import gov.ca.cwds.rest.business.rules.Reminders;
 import gov.ca.cwds.rest.business.rules.UpperCaseTables;
-import gov.ca.cwds.rest.filters.TestingRequestExecutionContext;
 import gov.ca.cwds.rest.messages.MessageBuilder;
 import gov.ca.cwds.rest.services.cms.AddressService;
 import gov.ca.cwds.rest.services.cms.AllegationPerpetratorHistoryService;
@@ -177,6 +176,15 @@ public class ScreeningToReferralServiceTest {
   private Validator validator;
   private ExternalInterfaceTables externalInterfaceTables;
 
+  private Participant defaultVictim;
+  private Participant defaultVictimReporter;
+  private Participant defaultReporter;
+  private Participant defaultMandatedReporter;
+  private Participant defaultPerpetrator;
+
+  private gov.ca.cwds.rest.api.domain.cms.CrossReport mockLegacyCrossReport;
+  private MessageBuilder messageBuilder;
+
   private gov.ca.cwds.data.persistence.cms.Referral referral;
   private static gov.ca.cwds.data.persistence.cms.Referral createdReferal = null;
 
@@ -196,97 +204,23 @@ public class ScreeningToReferralServiceTest {
   @SuppressWarnings("javadoc")
   @Before
   public void setup() throws Exception {
+    defaultVictim = new ParticipantResourceBuilder().createVictimParticipant();
+    defaultReporter = new ParticipantResourceBuilder().setRoles((new HashSet<>(Arrays
+        .asList("Mandated Reporter")))).createReporterParticipant();
+    defaultMandatedReporter= new ParticipantResourceBuilder().createReporterParticipant();
+
+    defaultPerpetrator = new ParticipantResourceBuilder().createPerpParticipant();
+    defaultVictimReporter = new ParticipantResourceBuilder().createVictimParticipant();
+
     validator = Validation.buildDefaultValidatorFactory().getValidator();
     defaultReferralBuilder = new ScreeningToReferralResourceBuilder();
 
-    new TestingRequestExecutionContext("0X5");
-    referralDao = mock(ReferralDao.class);
-    nonLACountyTriggers = mock(NonLACountyTriggers.class);
-    laCountyTrigger = mock(LACountyTrigger.class);
-    triggerTablesDao = mock(TriggerTablesDao.class);
-    staffpersonDao = mock(StaffPersonDao.class);
     staffPersonIdRetriever = mock(StaffPersonIdRetriever.class);
-
-    clientDao = mock(ClientDao.class);
-    staffpersonDao = mock(StaffPersonDao.class);
-    triggerTablesDao = mock(TriggerTablesDao.class);
-    nonLACountyTriggers = mock(NonLACountyTriggers.class);
-    ssaName3Dao = mock(SsaName3Dao.class);
-    upperCaseTables = mock(UpperCaseTables.class);
-    externalInterfaceTables = mock(ExternalInterfaceTables.class);
-    clientService =
-        new ClientService(clientDao, staffpersonDao, triggerTablesDao, nonLACountyTriggers,
-            staffPersonIdRetriever, ssaName3Dao, upperCaseTables, externalInterfaceTables);
-
-    referralClientDao = mock(ReferralClientDao.class);
-    nonLACountyTriggers = mock(NonLACountyTriggers.class);
-    laCountyTrigger = mock(LACountyTrigger.class);
-    triggerTablesDao = mock(TriggerTablesDao.class);
-    staffpersonDao = mock(StaffPersonDao.class);
-    referralClientService = new ReferralClientService(referralClientDao, nonLACountyTriggers,
-        laCountyTrigger, triggerTablesDao, staffpersonDao, staffPersonIdRetriever);
-
-    allegationDao = mock(AllegationDao.class);
-    riAllegation = mock(RIAllegation.class);
-    allegationService = new AllegationService(allegationDao, staffPersonIdRetriever, riAllegation);
-
-    allegationPerpetratorHistoryDao = mock(AllegationPerpetratorHistoryDao.class);
-    riAllegationPerpetratorHistory = mock(RIAllegationPerpetratorHistory.class);
-    allegationPerpetratorHistoryService = new AllegationPerpetratorHistoryService(
-        allegationPerpetratorHistoryDao, staffPersonIdRetriever, riAllegationPerpetratorHistory);
-
-    crossReportDao = mock(CrossReportDao.class);
-    riCrossReport = mock(RICrossReport.class);
-    crossReportService =
-        new CrossReportService(crossReportDao, staffPersonIdRetriever, riCrossReport);
-
-    reporterDao = mock(ReporterDao.class);
-    reporterService = new ReporterService(reporterDao, staffPersonIdRetriever);
-
-    addressDao = mock(AddressDao.class);
-    addressService = new AddressService(addressDao, staffPersonIdRetriever, ssaName3Dao,
-        upperCaseTables, validator);
-
-    clientAddressDao = mock(ClientAddressDao.class);
-    laCountyTrigger = mock(LACountyTrigger.class);
-    triggerTablesDao = mock(TriggerTablesDao.class);
-    staffpersonDao = mock(StaffPersonDao.class);
-    nonLACountyTriggers = mock(NonLACountyTriggers.class);
-    riClientAddress = mock(RIClientAddress.class);
-    clientAddressService =
-        new ClientAddressService(clientAddressDao, staffpersonDao, triggerTablesDao,
-            laCountyTrigger, staffPersonIdRetriever, nonLACountyTriggers, riClientAddress);
-
-
-    longTextDao = mock(LongTextDao.class);
-    longTextService = new LongTextService(longTextDao, staffPersonIdRetriever);
 
     drmsDocumentDao = mock(DrmsDocumentDao.class);
     drmsDocumentService = new DrmsDocumentService(drmsDocumentDao, staffPersonIdRetriever);
 
-    childClientDao = mock(ChildClientDao.class);
-    riChildClient = mock(RIChildClient.class);
-    childClientService =
-        new ChildClientService(childClientDao, staffPersonIdRetriever, riChildClient);
-
-    assignmentDao = mock(AssignmentDao.class);
-    staffpersonDao = mock(StaffPersonDao.class);
-    nonLACountyTriggers = mock(NonLACountyTriggers.class);
-    triggerTablesDao = mock(TriggerTablesDao.class);
-    riAssignment = mock(RIAssignment.class);
-    assignmentService = new AssignmentService(assignmentDao, nonLACountyTriggers, staffpersonDao,
-        triggerTablesDao, staffPersonIdRetriever, validator, externalInterfaceTables, riAssignment);
     reminders = mock(Reminders.class);
-
-    referralService = new ReferralService(referralDao, nonLACountyTriggers, laCountyTrigger,
-        triggerTablesDao, staffpersonDao, staffPersonIdRetriever, assignmentService, validator,
-        drmsDocumentService, addressService, longTextService);
-
-    screeningToReferralService = new ScreeningToReferralService(referralService, clientService,
-        allegationService, crossReportService, referralClientService, reporterService,
-        addressService, clientAddressService, childClientService, assignmentService,
-        Validation.buildDefaultValidatorFactory().getValidator(), referralDao, new MessageBuilder(),
-        allegationPerpetratorHistoryService, reminders);
 
     lastUpdateDate = DateTimeFormat.forPattern("yyyy-MM-dd'T'HH:mm:ss.SSSZ")
         .parseDateTime("2010-03-14T13:33:12.456-0700");
@@ -294,270 +228,99 @@ public class ScreeningToReferralServiceTest {
     modifiedLastUpdateDate = DateTimeFormat.forPattern("yyyy-MM-dd-HH.mm.ss.SSS")
         .parseDateTime("2010-03-14-13.33.12.456");
 
-  }
+    referralClientService = mock(ReferralClientService.class);
 
-  private void setUpValidMocks() throws Exception {
-    Referral referralDomain = MAPPER.readValue(
-        fixture("fixtures/domain/ScreeningToReferral/valid/validReferral.json"), Referral.class);
-    gov.ca.cwds.data.persistence.cms.Referral referralToCreate =
-        new gov.ca.cwds.data.persistence.cms.Referral("0123456ABC", referralDomain, "2016-10-31");
-    when(referralDao.create(any(gov.ca.cwds.data.persistence.cms.Referral.class)))
-        .thenReturn(referralToCreate);
-    when(referralDao.find("0123456ABC")).thenReturn(referralToCreate);
+    gov.ca.cwds.rest.api.domain.cms.Address existingAddress =
+        mock(gov.ca.cwds.rest.api.domain.cms.Address.class);
+    when(existingAddress.getExistingAddressId()).thenReturn("ASDHJYTRED");
 
-    ChildClient childClient = MAPPER.readValue(
-        fixture("fixtures/domain/ScreeningToReferral/valid/childClient.json"), ChildClient.class);
-    gov.ca.cwds.data.persistence.cms.ChildClient childClientToCreate =
-        new gov.ca.cwds.data.persistence.cms.ChildClient("1234567ABC", childClient, "0XA");
-    when(childClientDao.create(any(gov.ca.cwds.data.persistence.cms.ChildClient.class)))
-        .thenReturn(childClientToCreate);
+    PostedAddress postedAddress = mock(PostedAddress.class);
+    when(postedAddress.getExistingAddressId()).thenReturn("QWWERTYUIJ");
+    gov.ca.cwds.data.persistence.cms.Client savedEntityClient = new ClientEntityResourceBuilder()
+        .setId("1234567ABC")
+        .build();
+    PostedClient savedClient = new PostedClient(savedEntityClient, false);
+    clientService = mock(ClientService.class);
+    when(clientService.createWithSingleTimestamp(any(), any())).thenReturn(savedClient);
 
-    Set<Client> clientDomain =
-        MAPPER.readValue(fixture("fixtures/domain/ScreeningToReferral/valid/validClient.json"),
-            new TypeReference<Set<Client>>() {});
-    gov.ca.cwds.data.persistence.cms.Client clientToCreate =
-        new gov.ca.cwds.data.persistence.cms.Client("1234567ABC",
-            (Client) clientDomain.toArray()[0], "2016-10-31");
-    when(clientDao.create(any(gov.ca.cwds.data.persistence.cms.Client.class)))
-        .thenReturn(clientToCreate);
+    clientAddressService = mock(ClientAddressService.class);
+    when(clientAddressService.find(any())).thenReturn(mock(ClientAddress.class));
+    when(clientAddressService.findByAddressAndClient(any(), any())).thenReturn(mock(List.class));
 
-    Set<ReferralClient> referralClientDomain = MAPPER.readValue(
-        fixture("fixtures/domain/ScreeningToReferral/valid/validReferralClient.json"),
-        new TypeReference<Set<ReferralClient>>() {});
-    gov.ca.cwds.data.persistence.cms.ReferralClient referralClientToCreate =
-        new gov.ca.cwds.data.persistence.cms.ReferralClient(
-            (ReferralClient) referralClientDomain.toArray()[0], "2016-10-31");
-    when(referralClientDao.create(any(gov.ca.cwds.data.persistence.cms.ReferralClient.class)))
-        .thenReturn(referralClientToCreate);
+    childClientService = mock(ChildClientService.class);
+    ChildClient childClient = mock(ChildClient.class);
+    when(childClientService.create(any())).thenReturn(childClient);
 
+    addressService = mock(AddressService.class);
 
-    Set<Allegation> allegationDomain =
-        MAPPER.readValue(fixture("fixtures/domain/ScreeningToReferral/valid/validAllegation.json"),
-            new TypeReference<Set<Allegation>>() {});
-    gov.ca.cwds.data.persistence.cms.Allegation allegationToCreate =
-        new gov.ca.cwds.data.persistence.cms.Allegation("2345678ABC",
-            (Allegation) allegationDomain.toArray()[0], "2016-10-31");
-    when(allegationDao.create(any(gov.ca.cwds.data.persistence.cms.Allegation.class)))
-        .thenReturn(allegationToCreate);
+    allegationService = mock(AllegationService.class);
+    gov.ca.cwds.data.persistence.cms.Allegation allegation = new AllegationEntityBuilder().build();
+    PostedAllegation postedAllegation = new PostedAllegation(allegation);
+    when(allegationService.createWithSingleTimestamp(any(), any())).thenReturn(postedAllegation);
+    gov.ca.cwds.data.persistence.cms.AllegationPerpetratorHistory allegationPerpetratorHistory = new AllegationPerpetratorHistoryEntityBuilder().build();
+    PostedAllegationPerpetratorHistory postedAllegationPerpHistory = new PostedAllegationPerpetratorHistory(allegationPerpetratorHistory);
+    allegationPerpetratorHistoryService = mock(AllegationPerpetratorHistoryService.class);
+    when(allegationPerpetratorHistoryService.createWithSingleTimestamp(any(), any())).thenReturn(postedAllegationPerpHistory);
 
-
-    AllegationPerpetratorHistory allegationPerpHistoryDomain = MAPPER.readValue(
-        fixture("fixtures/domain/ScreeningToReferral/valid/validAllegationPerpetratorHistory.json"),
-        AllegationPerpetratorHistory.class);
-    gov.ca.cwds.data.persistence.cms.AllegationPerpetratorHistory allegationPerpHistoryToCreate =
-        new gov.ca.cwds.data.persistence.cms.AllegationPerpetratorHistory("567890ABC",
-            allegationPerpHistoryDomain, "2017-07-03");
-    when(allegationPerpetratorHistoryDao
-        .create(any(gov.ca.cwds.data.persistence.cms.AllegationPerpetratorHistory.class)))
-            .thenReturn(allegationPerpHistoryToCreate);
-
-    Set<CrossReport> crossReportDomain =
-        MAPPER.readValue(fixture("fixtures/domain/ScreeningToReferral/valid/validCrossReport.json"),
-            new TypeReference<Set<CrossReport>>() {});
-    gov.ca.cwds.data.persistence.cms.CrossReport crossReportToCreate =
-        new gov.ca.cwds.data.persistence.cms.CrossReport("3456789ABC",
-            // ((CrossReport) crossReportDomain).getThirdId(),
-            (CrossReport) crossReportDomain.toArray()[0], "OXA");
-    when(crossReportDao.create(any(gov.ca.cwds.data.persistence.cms.CrossReport.class)))
-        .thenReturn(crossReportToCreate);
-
-    Reporter reporterDomain = MAPPER.readValue(
-        fixture("fixtures/domain/ScreeningToReferral/valid/validReporter.json"), Reporter.class);
-    gov.ca.cwds.data.persistence.cms.Reporter reporterToCreate =
-        new gov.ca.cwds.data.persistence.cms.Reporter(reporterDomain, "ABC");
-    when(reporterDao.create(any(gov.ca.cwds.data.persistence.cms.Reporter.class)))
-        .thenReturn(reporterToCreate);
-
-    Address addressDomain = MAPPER.readValue(
-        fixture("fixtures/domain/ScreeningToReferral/valid/validAddress.json"), Address.class);
-    gov.ca.cwds.data.persistence.cms.Address addressToCreate =
-        new gov.ca.cwds.data.persistence.cms.Address("345678ABC", addressDomain, "ABC");
-    when(addressDao.create(any(gov.ca.cwds.data.persistence.cms.Address.class)))
-        .thenReturn(addressToCreate);
-
-
-    ClientAddress clientAddressDomain = MAPPER.readValue(
-        fixture("fixtures/domain/ScreeningToReferral/valid/validClientAddress.json"),
-        ClientAddress.class);
-    gov.ca.cwds.data.persistence.cms.ClientAddress clientAddressToCreate =
-        new gov.ca.cwds.data.persistence.cms.ClientAddress("456789ABC", clientAddressDomain, "ABC");
-    when(clientAddressDao.create(any(gov.ca.cwds.data.persistence.cms.ClientAddress.class)))
-        .thenReturn(clientAddressToCreate);
-
-    Assignment assignment =
-        MAPPER.readValue(fixture("fixtures/domain/ScreeningToReferral/valid/validAssignment.json"),
-            Assignment.class);
-    gov.ca.cwds.data.persistence.cms.Assignment assignmentToCreate =
-        new gov.ca.cwds.data.persistence.cms.Assignment("6789012ABC", assignment, "ABC");
-    when(assignmentDao.create(any(gov.ca.cwds.data.persistence.cms.Assignment.class)))
-        .thenReturn(assignmentToCreate);
-  }
-
-  @SuppressWarnings("javadoc")
-  public Response screeningToReferralServiceResponse() throws Exception {
-
-    MAPPER.configure(SerializationFeature.INDENT_OUTPUT, true);
-
-    Referral referralDomain = MAPPER.readValue(
-        fixture("fixtures/domain/ScreeningToReferral/valid/validReferral.json"), Referral.class);
-    gov.ca.cwds.data.persistence.cms.Referral referralToCreate =
-        new gov.ca.cwds.data.persistence.cms.Referral("0123456ABC", referralDomain, "2016-10-31");
-
-    DrmsDocument drmsDocumentDomain = MAPPER.readValue(
-        fixture("fixtures/domain/legacy/DrmsDocument/valid/valid.json"), DrmsDocument.class);
-    gov.ca.cwds.data.persistence.cms.DrmsDocument drmsDocumentToCreate =
-        new gov.ca.cwds.data.persistence.cms.DrmsDocument("ABD1234568", drmsDocumentDomain, "ABC");
-    when(drmsDocumentDao.create(any(gov.ca.cwds.data.persistence.cms.DrmsDocument.class)))
-        .thenReturn(drmsDocumentToCreate);
-
-    Set<Client> clientDomain =
-        MAPPER.readValue(fixture("fixtures/domain/ScreeningToReferral/valid/validClient.json"),
-            new TypeReference<Set<Client>>() {});
-    gov.ca.cwds.data.persistence.cms.Client clientToCreate =
-        new gov.ca.cwds.data.persistence.cms.Client("1234567ABC",
-            (Client) clientDomain.toArray()[0], "2016-10-31");
-
-    ChildClient childClient = MAPPER.readValue(
-        fixture("fixtures/domain/ScreeningToReferral/valid/childClient.json"), ChildClient.class);
-    gov.ca.cwds.data.persistence.cms.ChildClient childClientToCreate =
-        new gov.ca.cwds.data.persistence.cms.ChildClient("1234567ABC", childClient, "0XA");
-
-    Set<ReferralClient> referralClientDomain = MAPPER.readValue(
-        fixture("fixtures/domain/ScreeningToReferral/valid/validReferralClient.json"),
-        new TypeReference<Set<ReferralClient>>() {});
-    gov.ca.cwds.data.persistence.cms.ReferralClient referralClientToCreate =
-        new gov.ca.cwds.data.persistence.cms.ReferralClient(
-            (ReferralClient) referralClientDomain.toArray()[0], "2016-10-31");
-
-    Set<Allegation> allegationDomain =
-        MAPPER.readValue(fixture("fixtures/domain/ScreeningToReferral/valid/validAllegation.json"),
-            new TypeReference<Set<Allegation>>() {});
-    gov.ca.cwds.data.persistence.cms.Allegation allegationToCreate =
-        new gov.ca.cwds.data.persistence.cms.Allegation("2345678ABC",
-            (Allegation) allegationDomain.toArray()[0], "2016-10-31");
-
-    AllegationPerpetratorHistory allegationPerpHistoryDomain = MAPPER.readValue(
-        fixture("fixtures/domain/ScreeningToReferral/valid/validAllegationPerpetratorHistory.json"),
-        AllegationPerpetratorHistory.class);
-    gov.ca.cwds.data.persistence.cms.AllegationPerpetratorHistory allegationPerpHistoryToCreate =
-        new gov.ca.cwds.data.persistence.cms.AllegationPerpetratorHistory("567890ABC",
-            allegationPerpHistoryDomain, "2017-07-03");
-
-    Set<CrossReport> crossReportDomain =
-        MAPPER.readValue(fixture("fixtures/domain/ScreeningToReferral/valid/validCrossReport.json"),
-            new TypeReference<Set<CrossReport>>() {});
-    gov.ca.cwds.data.persistence.cms.CrossReport crossReportToCreate =
-        new gov.ca.cwds.data.persistence.cms.CrossReport("3456789ABC",
-            // ((CrossReport) crossReportDomain).getThirdId(),
-            (CrossReport) crossReportDomain.toArray()[0], "OXA");
-
-    Address addressDomain = MAPPER.readValue(
-        fixture("fixtures/domain/ScreeningToReferral/valid/validAddress.json"), Address.class);
-    gov.ca.cwds.data.persistence.cms.Address addressToCreate =
-        new gov.ca.cwds.data.persistence.cms.Address("345678ABC", addressDomain, "ABC");
-
-    ClientAddress clientAddressDomain = MAPPER.readValue(
-        fixture("fixtures/domain/ScreeningToReferral/valid/validClientAddress.json"),
-        ClientAddress.class);
-    gov.ca.cwds.data.persistence.cms.ClientAddress clientAddressToCreate =
-        new gov.ca.cwds.data.persistence.cms.ClientAddress("456789ABC", clientAddressDomain, "ABC");
-
-    LongText longTextDomain = MAPPER.readValue(
-        fixture("fixtures/domain/ScreeningToReferral/valid/validLongText.json"), LongText.class);
-    gov.ca.cwds.data.persistence.cms.LongText longTextToCreate =
-        new gov.ca.cwds.data.persistence.cms.LongText("567890ABC", longTextDomain, "ABC");
-
-    Reporter reporterDomain = MAPPER.readValue(
-        fixture("fixtures/domain/ScreeningToReferral/valid/validReporter.json"), Reporter.class);
-    gov.ca.cwds.data.persistence.cms.Reporter reporterToCreate =
-        new gov.ca.cwds.data.persistence.cms.Reporter(reporterDomain, "ABC");
-    Reporter reporterRequest = new Reporter(reporterToCreate);
-
-    Assignment assignment =
-        MAPPER.readValue(fixture("fixtures/domain/ScreeningToReferral/valid/validAssignment.json"),
-            Assignment.class);
-    gov.ca.cwds.data.persistence.cms.Assignment assignmentToCreate =
-        new gov.ca.cwds.data.persistence.cms.Assignment("6789012ABC", assignment, "ABC");
-    when(assignmentDao.create(any(gov.ca.cwds.data.persistence.cms.Assignment.class)))
-        .thenReturn(assignmentToCreate);
-
-    Referral referralRequest = new Referral(referralToCreate);
-
-    ReferralClient referralClientRequest = new ReferralClient(referralClientToCreate);
-    Set<ReferralClient> referralClientRequestSet = new LinkedHashSet<>();
-    referralClientRequestSet.add(referralClientRequest);
-
-    Client clientRequest = new Client(clientToCreate, false);
-    Set<Client> clientRequestSet = new LinkedHashSet<>();
-    clientRequestSet.add(clientRequest);
-
-    Allegation allegationRequest = new Allegation(allegationToCreate);
-    Set<Allegation> allegationRequestSet = new LinkedHashSet<>();
-    allegationRequestSet.add(allegationRequest);
-
-    CrossReport crossReportRequest = new CrossReport(crossReportToCreate);
-    Set<CrossReport> crossReportRequestSet = new LinkedHashSet<>();
-    crossReportRequestSet.add(crossReportRequest);
-
-    when(referralDao.create(any(gov.ca.cwds.data.persistence.cms.Referral.class)))
-        .thenReturn(referralToCreate);
-    when(childClientDao.create(any(gov.ca.cwds.data.persistence.cms.ChildClient.class)))
-        .thenReturn(childClientToCreate);
-    when(clientDao.create(any(gov.ca.cwds.data.persistence.cms.Client.class)))
-        .thenReturn(clientToCreate);
-    when(referralClientDao.create(any(gov.ca.cwds.data.persistence.cms.ReferralClient.class)))
-        .thenReturn(referralClientToCreate);
-    when(allegationDao.create(any(gov.ca.cwds.data.persistence.cms.Allegation.class)))
-        .thenReturn(allegationToCreate);
-    when(allegationPerpetratorHistoryDao
-        .create(any(gov.ca.cwds.data.persistence.cms.AllegationPerpetratorHistory.class)))
-            .thenReturn(allegationPerpHistoryToCreate);
-    when(crossReportDao.create(any(gov.ca.cwds.data.persistence.cms.CrossReport.class)))
-        .thenReturn(crossReportToCreate);
-    when(reporterDao.create(any(gov.ca.cwds.data.persistence.cms.Reporter.class)))
-        .thenReturn(reporterToCreate);
-    when(addressDao.create(any(gov.ca.cwds.data.persistence.cms.Address.class)))
-        .thenReturn(addressToCreate);
-    when(clientAddressDao.create(any(gov.ca.cwds.data.persistence.cms.ClientAddress.class)))
-        .thenReturn(clientAddressToCreate);
-    when(longTextDao.create(any(gov.ca.cwds.data.persistence.cms.LongText.class)))
-        .thenReturn(longTextToCreate);
-
-    CmsReferral cmsReferral = new CmsReferral(referralRequest, clientRequestSet,
-        allegationRequestSet, crossReportRequestSet, referralClientRequestSet, reporterRequest);
-
-    ScreeningToReferral screeningToReferral = MAPPER.readValue(
-        fixture("fixtures/domain/ScreeningToReferral/valid/valid.json"), ScreeningToReferral.class);
-
-    Response response = screeningToReferralService.create(screeningToReferral);
-    return response;
-  }
-
-  @SuppressWarnings("javadoc")
-  @Test
-  public void shouldSetApprovalCodeToNotSubmittedDefaultValue() throws Exception {
-    ScreeningToReferral screeningToReferral = defaultReferralBuilder.createScreeningToReferral();
+    mockLegacyCrossReport = mock(gov.ca.cwds.rest.api.domain.cms.CrossReport.class);
+    CrossReport crossReport = new CrossReportEntityBuilder().build();
+    crossReportService = mock(CrossReportService.class);
+    when(crossReportService.createWithSingleTimestamp(any(), any())).thenReturn(crossReport);
+    when(crossReportService.find(any())) .thenReturn(mockLegacyCrossReport);
 
     PostedDrmsDocument drmsDocument = mock(PostedDrmsDocument.class);
     DrmsDocumentService drmsDocumentService = mock(DrmsDocumentService.class);
     when(drmsDocumentService.create(any())).thenReturn(drmsDocument);
 
-    gov.ca.cwds.data.persistence.cms.LongText longTextEntity =
-        new LongTextEntityBuilder().setId("1").build();
+    gov.ca.cwds.data.persistence.cms.LongText longTextEntity = new LongTextEntityBuilder().setId("1").build();
     PostedLongText longText = new PostedLongText(longTextEntity);
     LongTextService longTextService = mock(LongTextService.class);
     when(longTextService.create(any())).thenReturn(longText);
 
-    referralService = new ReferralService(referralDao, nonLACountyTriggers, laCountyTrigger,
-        triggerTablesDao, staffpersonDao, staffPersonIdRetriever, assignmentService, validator,
-        drmsDocumentService, addressService, longTextService);
+    ScreeningToReferral screeningToReferral = defaultReferralBuilder.createScreeningToReferral();
+    referralService = mock(ReferralService.class);
+    when(referralService.createCmsReferralFromScreening(eq(screeningToReferral),any(),any(), any(), any())).thenReturn(validReferralId);
+
+    reporterService = mock(ReporterService.class);
+    Reporter savedReporter = new ReporterEntityBuilder().build();
+    when(reporterService.find(any())).thenReturn(savedReporter);
+
+    messageBuilder = new MessageBuilder();
+
+    screeningToReferralService = new ScreeningToReferralService(referralService, clientService,
+        allegationService, crossReportService, referralClientService, reporterService,
+        addressService, clientAddressService, childClientService, assignmentService,
+        Validation.buildDefaultValidatorFactory().getValidator(), referralDao, messageBuilder,
+        allegationPerpetratorHistoryService, reminders);
+
+  }
+
+  //TODO:Move to referralService
+  @SuppressWarnings("javadoc")
+  @Ignore
+  @Test
+  public void shouldSetApprovalCodeToNotSubmittedDefaultValue() throws Exception {
+    ScreeningToReferral screeningToReferral = defaultReferralBuilder.createScreeningToReferral();
+
+//    PostedDrmsDocument drmsDocument = mock(PostedDrmsDocument.class);
+//    DrmsDocumentService drmsDocumentService = mock(DrmsDocumentService.class);
+//    when(drmsDocumentService.create(any())).thenReturn(drmsDocument);
+//
+//    gov.ca.cwds.data.persistence.cms.LongText longTextEntity = new LongTextEntityBuilder().setId("1").build();
+//    PostedLongText longText = new PostedLongText(longTextEntity);
+//    LongTextService longTextService = mock(LongTextService.class);
+//    when(longTextService.create(any())).thenReturn(longText);
+//
+//    referralService = new ReferralService(referralDao, nonLACountyTriggers, laCountyTrigger,
+//        triggerTablesDao, staffpersonDao, staffPersonIdRetriever, assignmentService, validator,
+//        drmsDocumentService, addressService, longTextService);
 
     Referral referralCreated = referralService.createReferralWithDefaults(screeningToReferral,
         "2016-08-03T01:00:00.000Z", "2016-08-03T01:00:00.000Z", null, new MessageBuilder());
+
     assertThat(referralCreated.getApprovalStatusType(), is(equalTo((short) 118)));
   }
 
-  // Delete Tests
   @SuppressWarnings("javadoc")
   @Test(expected = NotImplementedException.class)
   public void deleteThrowsNotImplementedException() throws Exception {
@@ -570,34 +333,23 @@ public class ScreeningToReferralServiceTest {
     screeningToReferralService.delete(new Long(1));
   }
 
-  // Create Tests
   @SuppressWarnings("javadoc")
   @Test
-  public void createReturnsPostedCmsReferral() throws Exception {
-    Response response = screeningToReferralServiceResponse();
+  public void shouldReturnPostedCmsReferralWhenSaveIsSuccessfull() throws Exception {
+    ScreeningToReferral screeningToReferral = defaultReferralBuilder.createScreeningToReferral();
+    Response response = screeningToReferralService.create(screeningToReferral);
+
     assertThat(response.getClass(), is(PostedScreeningToReferral.class));
   }
 
 
   @SuppressWarnings("javadoc")
   @Test
-  public void shouldSuccessfullyCreateReferral() throws Exception {
-    setUpValidMocks();
-
+  public void shouldContainNoErrorMessageWhenSavingAValidReferral() throws Exception {
     ScreeningToReferral screeningToReferral = defaultReferralBuilder.createScreeningToReferral();
-    referralService = mock(ReferralService.class);
-    when(referralService.createCmsReferralFromScreening(eq(screeningToReferral), any(), any(),
-        any(), any())).thenReturn(validReferralId);
-
-    screeningToReferralService = new ScreeningToReferralService(referralService, clientService,
-        allegationService, crossReportService, referralClientService, reporterService,
-        addressService, clientAddressService, childClientService, assignmentService,
-        Validation.buildDefaultValidatorFactory().getValidator(), referralDao, new MessageBuilder(),
-        allegationPerpetratorHistoryService, reminders);
 
     Response response = screeningToReferralService.create(screeningToReferral);
 
-    assertThat(response.getClass(), is(PostedScreeningToReferral.class));
     assertThat(response.hasMessages(), is(equalTo(false)));
   }
 
@@ -606,8 +358,6 @@ public class ScreeningToReferralServiceTest {
   @SuppressWarnings("javadoc")
   @Test
   public void shouldSaveSuccessfullyWhenReferrralAlreadyExistsWithAReferralId() throws Exception {
-    setUpValidMocks();
-
     ScreeningToReferral screeningToReferral =
         defaultReferralBuilder.setReferralId(validReferralId).createScreeningToReferral();
 
@@ -627,12 +377,14 @@ public class ScreeningToReferralServiceTest {
     assertThat(response.hasMessages(), is(equalTo(false)));
   }
 
+  //TODO:move to referralService
+  @Ignore
   @SuppressWarnings("javadoc")
   @Test
   public void shouldFailWhenSpecifyingALegacyReferralIdThatDoesNotExist() throws Exception {
     MockedScreeningToReferralServiceBuilder builder = new MockedScreeningToReferralServiceBuilder();
-    screeningToReferralService =
-        builder.addReferralService(referralService).createScreeningToReferralService();
+//    screeningToReferralService = builder.addReferralService(referralService)
+//      .createScreeningToReferralService();
 
     ScreeningToReferral referral = new ScreeningToReferralResourceBuilder()
         .setReferralId(NON_EXISTING_REFERRAL_ID).createScreeningToReferral();
@@ -647,39 +399,27 @@ public class ScreeningToReferralServiceTest {
   public void shouldUpdateClientWhenClientIdIsPresent() throws Exception {
     String victimClientLegacyId = "ABC123DSAF";
 
-    Participant victim =
-        new ParticipantResourceBuilder().setLegacyId(victimClientLegacyId).createParticipant();
     LegacyDescriptor descriptor = new LegacyDescriptor("", "", lastUpdateDate, "", "");
-    victim.setLegacyDescriptor(descriptor);
-    Participant reporter = new ParticipantResourceBuilder().createReporterParticipant();
-    Participant perp = new ParticipantResourceBuilder().createReporterParticipant();
-    Set participants = new HashSet<>(Arrays.asList(reporter, victim, perp));
+    Participant victim =
+        new ParticipantResourceBuilder().setLegacyId(victimClientLegacyId).setLegacyDescriptor(descriptor).createParticipant();
+    Set participants = new HashSet<>(Arrays.asList(victim, defaultReporter,
+        defaultPerpetrator));
+
     ScreeningToReferral referral = new ScreeningToReferralResourceBuilder()
         .setParticipants(participants).createScreeningToReferral();
 
-    gov.ca.cwds.data.persistence.cms.DrmsDocument drmsDocument =
-        new gov.ca.cwds.data.persistence.cms.DrmsDocument("ABC1234560", null, null, null, null,
-            null);
-    when(drmsDocumentDao.create(any())).thenReturn(drmsDocument);
-
-    referralService = mock(ReferralService.class);
-    when(referralService.createCmsReferralFromScreening(any(), any(), any(), any(), any()))
-        .thenReturn("REFERRALID");
+    Client foundClient = mock(Client.class);
+    when(foundClient.getLastUpdatedTime()).thenReturn(modifiedLastUpdateDate);
 
     PostedClient createdClient = mock(PostedClient.class);
     when(createdClient.getId()).thenReturn("LEGACYIDXX");
-    Client foundClient = mock(Client.class);
-    when(foundClient.getLastUpdatedTime()).thenReturn(modifiedLastUpdateDate);
-    Client updatedClient = mock(Client.class);
-
-    clientService = mock(ClientService.class);
     when(clientService.find(eq(victimClientLegacyId))).thenReturn(foundClient);
     when(clientService.create(any())).thenReturn(createdClient);
-    when(clientService.update(eq(victimClientLegacyId), any())).thenReturn(updatedClient);
-    screeningToReferralService = new MockedScreeningToReferralServiceBuilder()
-        .addClientService(clientService).addReferralService(referralService)
-        .addMessageBuilder(new MessageBuilder()).createScreeningToReferralService();
 
+    Client updatedClient = mock(Client.class);
+    when(clientService.update(eq(victimClientLegacyId), any())).thenReturn(updatedClient);
+
+    when(referralService.createCmsReferralFromScreening(eq(referral),any(),any(), any(), any())).thenReturn(validReferralId);
     screeningToReferralService.create(referral);
     verify(clientService).update(eq(victim.getLegacyId()), any());
   }
@@ -695,11 +435,7 @@ public class ScreeningToReferralServiceTest {
 
     Participant victim =
         new ParticipantResourceBuilder().setLegacyId(victimClientLegacyId).createParticipant();
-    Participant reporter = new ParticipantResourceBuilder()
-        .setRoles(new HashSet<>(Arrays.asList("Mandated Reporter"))).createParticipant();
-    Participant perp = new ParticipantResourceBuilder()
-        .setRoles(new HashSet<>(Arrays.asList("Perpetrator"))).createParticipant();
-    Set participants = new HashSet<>(Arrays.asList(reporter, victim, perp));
+    Set participants = new HashSet<>(Arrays.asList(victim,defaultMandatedReporter, defaultPerpetrator));
     ScreeningToReferral referral = new ScreeningToReferralResourceBuilder()
         .setParticipants(participants).createScreeningToReferral();
 
@@ -710,40 +446,27 @@ public class ScreeningToReferralServiceTest {
   @SuppressWarnings("javadoc")
   @Test
   public void shouldNotUpdateClientWhenClientRecordHasBeenModifiedInLegacyDb() throws Exception {
-
     DateTime modifiedLastUpdateDate = DateTimeFormat.forPattern("yyyy-MM-dd-HH.mm.ss.SSS")
         .parseDateTime("2000-01-27-15.34.55.123");
     String victimClientLegacyId = "ABC123DSAF";
 
-    Participant victim =
-        new ParticipantResourceBuilder().setLegacyId(victimClientLegacyId).createParticipant();
     LegacyDescriptor descriptor = new LegacyDescriptor("", "", lastUpdateDate, "", "");
-    victim.setLegacyDescriptor(descriptor);
+    Participant victim =
+        new ParticipantResourceBuilder().setLegacyId(victimClientLegacyId).setLegacyDescriptor(descriptor).createParticipant();
 
-    Participant reporter = new ParticipantResourceBuilder().createReporterParticipant();
-    Participant perp = new ParticipantResourceBuilder().createReporterParticipant();
-    Set participants = new HashSet<>(Arrays.asList(reporter, victim, perp));
+    Set participants = new HashSet<>(Arrays.asList(victim, defaultReporter, defaultPerpetrator));
     ScreeningToReferral referral = new ScreeningToReferralResourceBuilder()
         .setParticipants(participants).createScreeningToReferral();
 
-    gov.ca.cwds.data.persistence.cms.DrmsDocument drmsDocument =
-        new gov.ca.cwds.data.persistence.cms.DrmsDocument("ABC1234560", null, null, null, null,
-            null);
     Client updatedClient = mock(Client.class);
     Client foundClient = mock(Client.class);
     when(foundClient.getLastUpdatedTime()).thenReturn(modifiedLastUpdateDate);
     PostedClient createdClient = mock(PostedClient.class);
     when(createdClient.getId()).thenReturn("LEGACYIDXX");
 
-    when(drmsDocumentDao.create(any())).thenReturn(drmsDocument);
-
-    clientService = mock(ClientService.class);
     when(clientService.find(eq(victimClientLegacyId))).thenReturn(foundClient);
     when(clientService.create(any())).thenReturn(createdClient);
     when(clientService.update(eq(victimClientLegacyId), any())).thenReturn(updatedClient);
-    screeningToReferralService =
-        new MockedScreeningToReferralServiceBuilder().addClientService(clientService)
-            .addMessageBuilder(new MessageBuilder()).createScreeningToReferralService();
 
     try {
       screeningToReferralService.create(referral);
@@ -757,29 +480,17 @@ public class ScreeningToReferralServiceTest {
 
   @SuppressWarnings("javadoc")
   @Test
-  public void shouldSuccessfullyCreateReferralWithParticipantsThatHaveBlankRoles()
-      throws Exception {
+  public void shouldSuccessfullyCreateReferralWithParticipantsThatHaveBlankRoles() throws Exception {
     Participant unknownRoleParticipant =
         new ParticipantResourceBuilder().setRoles(new HashSet<>()).createParticipant();
 
-    gov.ca.cwds.data.persistence.cms.DrmsDocument drmsDocument =
-        new gov.ca.cwds.data.persistence.cms.DrmsDocument("ABC1234560", null, null, null, null,
-            null);
-    Participant victim = new ParticipantResourceBuilder().createVictimParticipant();
-    Participant reporter = new ParticipantResourceBuilder().createReporterParticipant();
-    Set participants = new HashSet<>(Arrays.asList(unknownRoleParticipant, victim, reporter));
-    when(drmsDocumentDao.create(any())).thenReturn(drmsDocument);
+    Set participants = new HashSet<>(Arrays.asList(unknownRoleParticipant, defaultVictim, defaultReporter));
 
     ScreeningToReferral referral = new ScreeningToReferralResourceBuilder()
         .setParticipants(participants).createScreeningToReferral();
 
-    referralService = mock(ReferralService.class);
     when(referralService.createCmsReferralFromScreening(any(), any(), any(), any(), any()))
         .thenReturn("REFERRALID");
-
-    screeningToReferralService =
-        new MockedScreeningToReferralServiceBuilder().addReferralService(referralService)
-            .addMessageBuilder(new MessageBuilder()).createScreeningToReferralService();
 
     Response response = screeningToReferralService.create(referral);
     assertFalse(response.hasMessages());
@@ -788,8 +499,6 @@ public class ScreeningToReferralServiceTest {
   @SuppressWarnings("javadoc")
   @Test
   public void testScreeningToReferralMultipleCrossReportsSuccess() throws Exception {
-    setUpValidMocks();
-
     Set crossReports = new HashSet();
     gov.ca.cwds.rest.api.domain.CrossReport sheriffCrossReport =
         new CrossReportResourceBuilder().setAgencyName("Sacramento County Sheriff Deparment")
@@ -800,17 +509,11 @@ public class ScreeningToReferralServiceTest {
     crossReports.add(sheriffCrossReport);
     crossReports.add(daCrossReport);
 
-    ScreeningToReferral screeningToReferral =
-        defaultReferralBuilder.setCrossReports(crossReports).createScreeningToReferral();
-    referralService = mock(ReferralService.class);
-    when(referralService.createCmsReferralFromScreening(eq(screeningToReferral), any(), any(),
+    ScreeningToReferral screeningToReferral = defaultReferralBuilder
+        .setCrossReports(crossReports).createScreeningToReferral();
+    when(referralService.createCmsReferralFromScreening(eq(screeningToReferral),any(),any(),
         any(), any())).thenReturn(validReferralId);
 
-    screeningToReferralService = new ScreeningToReferralService(referralService, clientService,
-        allegationService, crossReportService, referralClientService, reporterService,
-        addressService, clientAddressService, childClientService, assignmentService,
-        Validation.buildDefaultValidatorFactory().getValidator(), referralDao, new MessageBuilder(),
-        allegationPerpetratorHistoryService, reminders);
 
     Response response = screeningToReferralService.create(screeningToReferral);
     assertThat(response.getClass(), is(PostedScreeningToReferral.class));
@@ -819,12 +522,11 @@ public class ScreeningToReferralServiceTest {
 
   @SuppressWarnings("javadoc")
   @Test(expected = RuntimeException.class)
-  public void shouldLogErrorIfUnableToCreateDRMSDocument() {
+  public void shouldLogErrorIfUnableToCreateDRMSDocument() throws Exception {
     ScreeningToReferral referral = new ScreeningToReferralResourceBuilder()
         .setCrossReports(new HashSet<>()).createScreeningToReferral();
 
-    DrmsDocumentService mockedDrmsDocService = mock(DrmsDocumentService.class);
-    when(mockedDrmsDocService.create(any())).thenReturn(null);
+    when(drmsDocumentService.create(any())).thenReturn(null);
     screeningToReferralService = new MockedScreeningToReferralServiceBuilder()
         .addReferralService(referralService).createScreeningToReferralService();
     Response response = screeningToReferralService.create(referral);
@@ -842,15 +544,12 @@ public class ScreeningToReferralServiceTest {
 
     Response response = screeningToReferralService.create(referral);
     assertFalse(response.hasMessages());
-
   }
 
   @SuppressWarnings("javadoc")
   @Test
   // R - 00836 Self rep Ind Limit
   public void testMoreThanOneSelfReportedFail() throws Exception {
-    setUpValidMocks();
-
     Participant victimReporter1 = new ParticipantResourceBuilder()
         .setRoles(new HashSet<>(Arrays.asList("Non-mandated", "Victim"))).createParticipant();
     Participant victimReporter2 = new ParticipantResourceBuilder()
@@ -860,15 +559,9 @@ public class ScreeningToReferralServiceTest {
     ScreeningToReferral screeningToReferral = new ScreeningToReferralResourceBuilder()
         .setParticipants(participants).createScreeningToReferral();
 
-    referralService = mock(ReferralService.class);
-    when(referralService.createCmsReferralFromScreening(eq(screeningToReferral), any(), any(),
-        any(), any())).thenReturn(validReferralId);
+    when(referralService.createCmsReferralFromScreening(eq(screeningToReferral),any(),any(),
+          any(), any())).thenReturn(validReferralId);
 
-    screeningToReferralService = new ScreeningToReferralService(referralService, clientService,
-        allegationService, crossReportService, referralClientService, reporterService,
-        addressService, clientAddressService, childClientService, assignmentService,
-        Validation.buildDefaultValidatorFactory().getValidator(), referralDao, new MessageBuilder(),
-        allegationPerpetratorHistoryService, reminders);
     try {
       screeningToReferralService.create(screeningToReferral);
       assertTrue("expected exception to be thrown", false);
@@ -882,8 +575,6 @@ public class ScreeningToReferralServiceTest {
   @SuppressWarnings("javadoc")
   @Test
   public void testMoreThanOneReporterFail() throws Exception {
-    setUpValidMocks();
-
     Participant reporter1 =
         new ParticipantResourceBuilder().setRoles(new HashSet<>(Arrays.asList("Mandated Reporter")))
             .setFirstName("Bill").createParticipant();
@@ -895,15 +586,8 @@ public class ScreeningToReferralServiceTest {
     ScreeningToReferral screeningToReferral = new ScreeningToReferralResourceBuilder()
         .setParticipants(participants).createScreeningToReferral();
 
-    referralService = mock(ReferralService.class);
-    when(referralService.createCmsReferralFromScreening(eq(screeningToReferral), any(), any(),
-        any(), any())).thenReturn(validReferralId);
-
-    screeningToReferralService = new ScreeningToReferralService(referralService, clientService,
-        allegationService, crossReportService, referralClientService, reporterService,
-        addressService, clientAddressService, childClientService, assignmentService,
-        Validation.buildDefaultValidatorFactory().getValidator(), referralDao, new MessageBuilder(),
-        allegationPerpetratorHistoryService, reminders);
+    when(referralService.createCmsReferralFromScreening(eq(screeningToReferral),any(),any(), any(),
+          any())).thenReturn(validReferralId);
     try {
       Response response = screeningToReferralService.create(screeningToReferral);
       assertTrue("expected exception to be thrown", false);
@@ -916,26 +600,15 @@ public class ScreeningToReferralServiceTest {
   @SuppressWarnings("javadoc")
   @Test
   public void testMoreThanOneVictimSuccess() throws Exception {
-    setUpValidMocks();
-
-    Participant victim1 = new ParticipantResourceBuilder()
-        .setRoles(new HashSet<>(Arrays.asList("Victim"))).setFirstName("John").createParticipant();
-    Participant victim2 = new ParticipantResourceBuilder()
-        .setRoles(new HashSet<>(Arrays.asList("Victim"))).setFirstName("Sean").createParticipant();
-    Participant reporter = new ParticipantResourceBuilder().createReporterParticipant();
-    Set participants = new HashSet<>(Arrays.asList(victim1, victim2, reporter));
+    Participant victim1 = new ParticipantResourceBuilder().createVictimParticipant();
+    Participant victim2 = new ParticipantResourceBuilder().createVictimParticipant();
+    Set participants = new HashSet<>(Arrays.asList(victim1, victim2, defaultReporter));
     ScreeningToReferral screeningToReferral = new ScreeningToReferralResourceBuilder()
         .setParticipants(participants).createScreeningToReferral();
 
-    referralService = mock(ReferralService.class);
-    when(referralService.createCmsReferralFromScreening(eq(screeningToReferral), any(), any(),
-        any(), any())).thenReturn(validReferralId);
+    when(referralService.createCmsReferralFromScreening(eq(screeningToReferral),any(),any(),
+          any(), any())).thenReturn(validReferralId);
 
-    screeningToReferralService = new ScreeningToReferralService(referralService, clientService,
-        allegationService, crossReportService, referralClientService, reporterService,
-        addressService, clientAddressService, childClientService, assignmentService,
-        Validation.buildDefaultValidatorFactory().getValidator(), referralDao, new MessageBuilder(),
-        allegationPerpetratorHistoryService, reminders);
     Response response = screeningToReferralService.create(screeningToReferral);
     assertThat(response.getClass(), is(PostedScreeningToReferral.class));
     assertThat(response.hasMessages(), is(equalTo(false)));
@@ -944,21 +617,13 @@ public class ScreeningToReferralServiceTest {
   @SuppressWarnings("javadoc")
   @Test
   public void shouldFailCreateWhenNoVictimIsProvided() throws Exception {
-    setUpValidMocks();
-    Participant reporter = new ParticipantResourceBuilder().createReporterParticipant();
-    Set participants = new HashSet<>(Arrays.asList(reporter));
+    Set participants = new HashSet<>(Arrays.asList(defaultReporter));
     ScreeningToReferral screeningToReferral = new ScreeningToReferralResourceBuilder()
         .setParticipants(participants).createScreeningToReferral();
 
-    referralService = mock(ReferralService.class);
-    when(referralService.createCmsReferralFromScreening(eq(screeningToReferral), any(), any(),
-        any(), any())).thenReturn(validReferralId);
+    when(referralService.createCmsReferralFromScreening(eq(screeningToReferral),any(),any(), 
+          any(), any())).thenReturn(validReferralId);
 
-    screeningToReferralService = new ScreeningToReferralService(referralService, clientService,
-        allegationService, crossReportService, referralClientService, reporterService,
-        addressService, clientAddressService, childClientService, assignmentService,
-        Validation.buildDefaultValidatorFactory().getValidator(), referralDao, new MessageBuilder(),
-        allegationPerpetratorHistoryService, reminders);
     try {
       screeningToReferralService.create(screeningToReferral);
       assertTrue("expected exception to be thrown", false);
@@ -973,25 +638,15 @@ public class ScreeningToReferralServiceTest {
   // R - 00831
   public void shouldFailCreateWhenReporterRolesAreIncompatable_AnonymousSelfReporter()
       throws Exception {
-    setUpValidMocks();
-
-    Participant victim = new ParticipantResourceBuilder().createVictimParticipant();
     Participant anonymousSelfReporter = new ParticipantResourceBuilder()
         .setRoles(new HashSet<>(Arrays.asList("Anonymous Reporter", "Self Reported")))
         .createParticipant();
-    Set participants = new HashSet<>(Arrays.asList(victim, anonymousSelfReporter));
+    Set participants = new HashSet<>(Arrays.asList(anonymousSelfReporter, defaultVictim));
     ScreeningToReferral screeningToReferral = new ScreeningToReferralResourceBuilder()
         .setParticipants(participants).createScreeningToReferral();
 
-    referralService = mock(ReferralService.class);
-    when(referralService.createCmsReferralFromScreening(eq(screeningToReferral), any(), any(),
-        any(), any())).thenReturn(validReferralId);
-
-    screeningToReferralService = new ScreeningToReferralService(referralService, clientService,
-        allegationService, crossReportService, referralClientService, reporterService,
-        addressService, clientAddressService, childClientService, assignmentService,
-        Validation.buildDefaultValidatorFactory().getValidator(), referralDao, new MessageBuilder(),
-        allegationPerpetratorHistoryService, reminders);
+    when(referralService.createCmsReferralFromScreening(eq(screeningToReferral),any(),any(),
+          any(), any())).thenReturn(validReferralId);
 
     try {
       Response response = screeningToReferralService.create(screeningToReferral);
@@ -1006,17 +661,9 @@ public class ScreeningToReferralServiceTest {
   @Test
   public void shouldThrowExceptionWithMessagesReferralServiceAddsMessageToMessageBuilder()
       throws Exception {
-    setUpValidMocks();
-
     String message = "Error occured in referralService";
     MessageBuilder messageBuilder = new MessageBuilder();
     messageBuilder.addError(message);
-    ScreeningToReferral screeningToReferral =
-        new ScreeningToReferralResourceBuilder().createScreeningToReferral();
-
-    referralService = mock(ReferralService.class);
-    when(referralService.createCmsReferralFromScreening(eq(screeningToReferral), any(), any(),
-        any(), any())).thenReturn(validReferralId);
 
     screeningToReferralService = new ScreeningToReferralService(referralService, clientService,
         allegationService, crossReportService, referralClientService, reporterService,
@@ -1024,6 +671,9 @@ public class ScreeningToReferralServiceTest {
         Validation.buildDefaultValidatorFactory().getValidator(), referralDao, messageBuilder,
         allegationPerpetratorHistoryService, reminders);
 
+    ScreeningToReferral screeningToReferral = new ScreeningToReferralResourceBuilder()
+        .createScreeningToReferral();
+    when(referralService.createCmsReferralFromScreening(eq(screeningToReferral),any(),any(), any(), any())).thenReturn(validReferralId);
     try {
       Response response = screeningToReferralService.create(screeningToReferral);
       assertTrue("expected exception to be thrown", false);
@@ -1037,22 +687,19 @@ public class ScreeningToReferralServiceTest {
   @SuppressWarnings("javadoc")
   @Test
   public void testForStreetAddressEmptyFailure() throws Exception {
-    setUpValidMocks();
-
     gov.ca.cwds.rest.api.domain.Address address =
         new AddressResourceBuilder().setStreetAddress("").createAddress();
     ScreeningToReferral screeningToReferral =
         new ScreeningToReferralResourceBuilder().setAddress(address).createScreeningToReferral();
 
-    referralService = mock(ReferralService.class);
-    when(referralService.createCmsReferralFromScreening(eq(screeningToReferral), any(), any(),
-        any(), any())).thenReturn(validReferralId);
+//    referralService = mock(ReferralService.class);
+    when(referralService.createCmsReferralFromScreening(eq(screeningToReferral),any(),any(), any(), any())).thenReturn(validReferralId);
 
-    screeningToReferralService = new ScreeningToReferralService(referralService, clientService,
-        allegationService, crossReportService, referralClientService, reporterService,
-        addressService, clientAddressService, childClientService, assignmentService,
-        Validation.buildDefaultValidatorFactory().getValidator(), referralDao, new MessageBuilder(),
-        allegationPerpetratorHistoryService, reminders);
+//    screeningToReferralService = new ScreeningToReferralService(referralService, clientService,
+//        allegationService, crossReportService, referralClientService, reporterService,
+//        addressService, clientAddressService, childClientService, assignmentService,
+//        Validation.buildDefaultValidatorFactory().getValidator(), referralDao, new MessageBuilder(),
+//        allegationPerpetratorHistoryService, reminders);
 
     Boolean theErrorDetected = false;
     try {
@@ -1064,11 +711,11 @@ public class ScreeningToReferralServiceTest {
     }
   }
 
+  //TODO: move to reporter service
+  @Ignore
   @SuppressWarnings("javadoc")
   @Test
   public void shouldThrowExceptionWithMessageWhenReporterStreetAddressIsEmpty() throws Exception {
-    setUpValidMocks();
-
     gov.ca.cwds.rest.api.domain.Address address =
         new AddressResourceBuilder().setStreetAddress("").createAddress();
     Set addresses = new HashSet<>();
@@ -1082,15 +729,14 @@ public class ScreeningToReferralServiceTest {
     ScreeningToReferral screeningToReferral = new ScreeningToReferralResourceBuilder()
         .setParticipants(participants).createScreeningToReferral();
 
-    referralService = mock(ReferralService.class);
-    when(referralService.createCmsReferralFromScreening(eq(screeningToReferral), any(), any(),
-        any(), any())).thenReturn(validReferralId);
+//    referralService = mock(ReferralService.class);
+    when(referralService.createCmsReferralFromScreening(eq(screeningToReferral),any(),any(), any(), any())).thenReturn(validReferralId);
 
-    screeningToReferralService = new ScreeningToReferralService(referralService, clientService,
-        allegationService, crossReportService, referralClientService, reporterService,
-        addressService, clientAddressService, childClientService, assignmentService,
-        Validation.buildDefaultValidatorFactory().getValidator(), referralDao, new MessageBuilder(),
-        allegationPerpetratorHistoryService, reminders);
+//    screeningToReferralService = new ScreeningToReferralService(referralService, clientService,
+//        allegationService, crossReportService, referralClientService, reporterService,
+//        addressService, clientAddressService, childClientService, assignmentService,
+//        Validation.buildDefaultValidatorFactory().getValidator(), referralDao, new MessageBuilder(),
+//        allegationPerpetratorHistoryService, reminders);
 
     try {
       Response response = screeningToReferralService.create(screeningToReferral);
@@ -1104,25 +750,13 @@ public class ScreeningToReferralServiceTest {
   @SuppressWarnings("javadoc")
   @Test
   public void shouldFailWhenVictimeHasIncompatiableRoles_AnonymousVictim() throws Exception {
-    setUpValidMocks();
-
-
-    Participant perp = new ParticipantResourceBuilder().createPerpParticipant();
     Participant reporterVictim = new ParticipantResourceBuilder()
         .setRoles(new HashSet<>(Arrays.asList("Anonymous Reporter", "Victim"))).createParticipant();
-    Set participants = new HashSet<>(Arrays.asList(perp, reporterVictim));
+    Set participants = new HashSet<>(Arrays.asList(reporterVictim, defaultPerpetrator));
     ScreeningToReferral screeningToReferral = new ScreeningToReferralResourceBuilder()
         .setParticipants(participants).createScreeningToReferral();
 
-    referralService = mock(ReferralService.class);
-    when(referralService.createCmsReferralFromScreening(eq(screeningToReferral), any(), any(),
-        any(), any())).thenReturn(validReferralId);
-
-    screeningToReferralService = new ScreeningToReferralService(referralService, clientService,
-        allegationService, crossReportService, referralClientService, reporterService,
-        addressService, clientAddressService, childClientService, assignmentService,
-        Validation.buildDefaultValidatorFactory().getValidator(), referralDao, new MessageBuilder(),
-        allegationPerpetratorHistoryService, reminders);
+    when(referralService.createCmsReferralFromScreening(eq(screeningToReferral),any(),any(), any(), any())).thenReturn(validReferralId);
 
     try {
       Response response = screeningToReferralService.create(screeningToReferral);
@@ -1136,25 +770,14 @@ public class ScreeningToReferralServiceTest {
   @SuppressWarnings("javadoc")
   @Test
   public void shouldFailWhenReporterHasIncompatiableRoles_AnonymousReporterFail() throws Exception {
-    setUpValidMocks();
-
-    Participant victim = new ParticipantResourceBuilder().createVictimParticipant();
     Participant anonymousNonMandatedReporter = new ParticipantResourceBuilder()
         .setRoles(new HashSet<>(Arrays.asList("Anonymous Reporter", "Non-mandated Reporter")))
         .createParticipant();
-    Set participants = new HashSet<>(Arrays.asList(victim, anonymousNonMandatedReporter));
+    Set participants = new HashSet<>(Arrays.asList(anonymousNonMandatedReporter, defaultVictim));
     ScreeningToReferral screeningToReferral = new ScreeningToReferralResourceBuilder()
         .setParticipants(participants).createScreeningToReferral();
 
-    referralService = mock(ReferralService.class);
-    when(referralService.createCmsReferralFromScreening(eq(screeningToReferral), any(), any(),
-        any(), any())).thenReturn(validReferralId);
-
-    screeningToReferralService = new ScreeningToReferralService(referralService, clientService,
-        allegationService, crossReportService, referralClientService, reporterService,
-        addressService, clientAddressService, childClientService, assignmentService,
-        Validation.buildDefaultValidatorFactory().getValidator(), referralDao, new MessageBuilder(),
-        allegationPerpetratorHistoryService, reminders);
+    when(referralService.createCmsReferralFromScreening(eq(screeningToReferral),any(),any(), any(), any())).thenReturn(validReferralId);
 
     try {
       Response response = screeningToReferralService.create(screeningToReferral);
@@ -1167,25 +790,13 @@ public class ScreeningToReferralServiceTest {
   @SuppressWarnings("javadoc")
   @Test
   public void shouldFailWhenVictimIsIncompatiableRoles_VictimPerpetrator() throws Exception {
-    setUpValidMocks();
-
     Participant perpVictim = new ParticipantResourceBuilder()
         .setRoles(new HashSet<>(Arrays.asList("Perpetrator", "Victim"))).createParticipant();
-    Participant mandatedReporter = new ParticipantResourceBuilder()
-        .setRoles(new HashSet<>(Arrays.asList("Mandated Reporter"))).createParticipant();
-    Set participants = new HashSet<>(Arrays.asList(perpVictim, mandatedReporter));
+    Set participants = new HashSet<>(Arrays.asList(perpVictim, defaultMandatedReporter));
 
     ScreeningToReferral screeningToReferral = new ScreeningToReferralResourceBuilder()
         .setParticipants(participants).createScreeningToReferral();
-    referralService = mock(ReferralService.class);
-    when(referralService.createCmsReferralFromScreening(eq(screeningToReferral), any(), any(),
-        any(), any())).thenReturn(validReferralId);
-
-    screeningToReferralService = new ScreeningToReferralService(referralService, clientService,
-        allegationService, crossReportService, referralClientService, reporterService,
-        addressService, clientAddressService, childClientService, assignmentService,
-        Validation.buildDefaultValidatorFactory().getValidator(), referralDao, new MessageBuilder(),
-        allegationPerpetratorHistoryService, reminders);
+    when(referralService.createCmsReferralFromScreening(eq(screeningToReferral),any(),any(), any(), any())).thenReturn(validReferralId);
 
     try {
       Response response = screeningToReferralService.create(screeningToReferral);
@@ -1201,26 +812,15 @@ public class ScreeningToReferralServiceTest {
   @Test
   public void shouldFaileWhenReporterHasIncompatiableRoles_MandatedNonMandatedFail()
       throws Exception {
-    setUpValidMocks();
-
-    Participant victim = new ParticipantResourceBuilder().createVictimParticipant();
     Participant mandatedNonMandatedReporter = new ParticipantResourceBuilder()
         .setRoles(new HashSet<>(Arrays.asList("Mandated Reporter", "Non-mandated Reporter")))
         .createParticipant();
-    Set participants = new HashSet<>(Arrays.asList(victim, mandatedNonMandatedReporter));
+    Set participants = new HashSet<>(Arrays.asList(mandatedNonMandatedReporter, defaultVictim));
 
     ScreeningToReferral screeningToReferral = new ScreeningToReferralResourceBuilder()
         .setParticipants(participants).createScreeningToReferral();
 
-    referralService = mock(ReferralService.class);
-    when(referralService.createCmsReferralFromScreening(eq(screeningToReferral), any(), any(),
-        any(), any())).thenReturn(validReferralId);
-
-    screeningToReferralService = new ScreeningToReferralService(referralService, clientService,
-        allegationService, crossReportService, referralClientService, reporterService,
-        addressService, clientAddressService, childClientService, assignmentService,
-        Validation.buildDefaultValidatorFactory().getValidator(), referralDao, new MessageBuilder(),
-        allegationPerpetratorHistoryService, reminders);
+    when(referralService.createCmsReferralFromScreening(eq(screeningToReferral),any(),any(), any(), any())).thenReturn(validReferralId);
 
     try {
       Response response = screeningToReferralService.create(screeningToReferral);
@@ -1237,8 +837,7 @@ public class ScreeningToReferralServiceTest {
     Participant victimAndReporter = new ParticipantResourceBuilder()
         .setRoles(new HashSet<>(Arrays.asList("Non-mandated Reporter", "Victim")))
         .createParticipant();
-    Participant perp = new ParticipantResourceBuilder().createPerpParticipant();
-    Set participants = new HashSet<>(Arrays.asList(victimAndReporter, perp));
+    Set participants = new HashSet<>(Arrays.asList(victimAndReporter, defaultPerpetrator));
 
     ScreeningToReferral referral = new ScreeningToReferralResourceBuilder()
         .setParticipants(new HashSet<>(participants)).createScreeningToReferral();
@@ -1263,9 +862,7 @@ public class ScreeningToReferralServiceTest {
     Participant reporter = new ParticipantResourceBuilder()
         .setRoles(new HashSet<>(Arrays.asList("Mandated Reporter", "Victim")))
         .setAddresses(new HashSet<>(Arrays.asList(address1, address2))).createParticipant();
-    Participant perp = new ParticipantResourceBuilder()
-        .setRoles(new HashSet<>(Arrays.asList("Perpetrator", "Victim"))).createParticipant();
-    Set participants = new HashSet<>(Arrays.asList(reporter, perp));
+    Set participants = new HashSet<>(Arrays.asList(reporter, defaultPerpetrator, defaultVictim));
     ScreeningToReferral referral = new ScreeningToReferralResourceBuilder()
         .setParticipants(participants).createScreeningToReferral();
 
@@ -1277,39 +874,14 @@ public class ScreeningToReferralServiceTest {
   @SuppressWarnings("javadoc")
   @Test
   public void shouldSaveSucessfullyWhenPerpHasNoAddress() throws Exception {
-    setUpValidMocks();
     Participant perpWithNoAddress =
         new ParticipantResourceBuilder().setAddresses(null).setId(12345).createPerpParticipant();
-    Participant victim = new ParticipantResourceBuilder()
-        .setRoles(new HashSet<>(Arrays.asList("Victim"))).createParticipant();
-    Participant reporter = new ParticipantResourceBuilder()
-        .setRoles(new HashSet<>(Arrays.asList("Non-mandated Reporter"))).createParticipant();
-    Set participants = new HashSet<>(Arrays.asList(perpWithNoAddress, victim, reporter));
+    Set participants = new HashSet<>(Arrays.asList(perpWithNoAddress, defaultVictim, defaultReporter));
 
-    gov.ca.cwds.rest.api.domain.Allegation allegation = new AllegationResourceBuilder()
-        .setVictimPersonId(5432).setPerpetratorPersonId(12345).createAllegation();
-    Set allegations = new HashSet<>(Arrays.asList(allegation));
     ScreeningToReferral screeningToReferral = new ScreeningToReferralResourceBuilder()
-        .setParticipants(participants).setAllegations(allegations).createScreeningToReferral();
+        .setParticipants(participants).createScreeningToReferral();
 
-    referralService = mock(ReferralService.class);
-    when(referralService.createCmsReferralFromScreening(eq(screeningToReferral), any(), any(),
-        any(), any())).thenReturn(validReferralId);
-
-    clientService = mock(ClientService.class);
-    Client client = new ClientResourceBuilder().build();
-
-    gov.ca.cwds.data.persistence.cms.Client savedClient =
-        new ClientEntityResourceBuilder().setId("1234567890").build();
-    PostedClient postedClient = new PostedClient(savedClient, true);
-    when(clientService.find(any())).thenReturn(client);
-    when(clientService.createWithSingleTimestamp(any(), any())).thenReturn(postedClient);
-
-    screeningToReferralService = new ScreeningToReferralService(referralService, clientService,
-        allegationService, crossReportService, referralClientService, reporterService,
-        addressService, clientAddressService, childClientService, assignmentService,
-        Validation.buildDefaultValidatorFactory().getValidator(), referralDao, new MessageBuilder(),
-        allegationPerpetratorHistoryService, reminders);
+    when(referralService.createCmsReferralFromScreening(eq(screeningToReferral),any(),any(), any(), any())).thenReturn(validReferralId);
 
     Response response = screeningToReferralService.create(screeningToReferral);
     assertThat(response.getClass(), is(PostedScreeningToReferral.class));
@@ -1319,30 +891,15 @@ public class ScreeningToReferralServiceTest {
   @SuppressWarnings("javadoc")
   @Test
   public void shouldSaveSucessfullyWhenReporterHasNoAddress() throws Exception {
-    setUpValidMocks();
-
-    Participant perpWithNoAddress =
-        new ParticipantResourceBuilder().setId(12345).createPerpParticipant();
-
-    Participant victim = new ParticipantResourceBuilder()
-        .setRoles(new HashSet<>(Arrays.asList("Victim"))).createParticipant();
     Participant reporter = new ParticipantResourceBuilder()
         .setRoles(new HashSet<>(Arrays.asList("Non-mandated Reporter"))).setAddresses(null)
         .createParticipant();
-    Set participants = new HashSet<>(Arrays.asList(perpWithNoAddress, victim, reporter));
+    Set participants = new HashSet<>(Arrays.asList(reporter, defaultPerpetrator, defaultVictim));
 
     ScreeningToReferral screeningToReferral = new ScreeningToReferralResourceBuilder()
         .setParticipants(participants).createScreeningToReferral();
 
-    referralService = mock(ReferralService.class);
-    when(referralService.createCmsReferralFromScreening(eq(screeningToReferral), any(), any(),
-        any(), any())).thenReturn(validReferralId);
-
-    screeningToReferralService = new ScreeningToReferralService(referralService, clientService,
-        allegationService, crossReportService, referralClientService, reporterService,
-        addressService, clientAddressService, childClientService, assignmentService,
-        Validation.buildDefaultValidatorFactory().getValidator(), referralDao, new MessageBuilder(),
-        allegationPerpetratorHistoryService, reminders);
+    when(referralService.createCmsReferralFromScreening(eq(screeningToReferral),any(),any(), any(), any())).thenReturn(validReferralId);
 
     Response response = screeningToReferralService.create(screeningToReferral);
     assertThat(response.getClass(), is(PostedScreeningToReferral.class));
@@ -1352,12 +909,10 @@ public class ScreeningToReferralServiceTest {
   @SuppressWarnings("javadoc")
   @Test
   public void testNoAddressForPerpetratorSuccess() throws Exception {
-    Participant reporter = new ParticipantResourceBuilder()
-        .setRoles(new HashSet<>(Arrays.asList("Mandated Reporter", "Victim"))).createParticipant();
     Participant perp =
         new ParticipantResourceBuilder().setRoles(new HashSet<>(Arrays.asList("Perpetrator")))
             .setAddresses(new HashSet<>()).createParticipant();
-    Set participants = new HashSet<>(Arrays.asList(reporter, perp));
+    Set participants = new HashSet<>(Arrays.asList(perp, defaultReporter, defaultVictim));
 
     ScreeningToReferral referral = new ScreeningToReferralResourceBuilder()
         .setParticipants(participants).createScreeningToReferral();
@@ -1380,19 +935,14 @@ public class ScreeningToReferralServiceTest {
             .setAddresses(new HashSet<>()).createParticipant();
     LegacyDescriptor descriptor = new LegacyDescriptor("", "", lastUpdateDate, "", "");
     reporter.setLegacyDescriptor(descriptor);
-    Participant perp = new ParticipantResourceBuilder().setLegacyId("").createPerpParticipant();
-    Set participants = new HashSet<>(Arrays.asList(reporter, perp));
+    Set participants = new HashSet<>(Arrays.asList(reporter, defaultPerpetrator));
 
-    gov.ca.cwds.data.persistence.cms.DrmsDocument drmsDocument =
-        new gov.ca.cwds.data.persistence.cms.DrmsDocument("ABC1234560", null, null, null, null,
-            null);
     ScreeningToReferral referral = new ScreeningToReferralResourceBuilder()
         .setParticipants(participants).createScreeningToReferral();
 
     PostedClient savedClient = mock(PostedClient.class);
     when(savedClient.getId()).thenReturn(victimId);
     when(savedClient.getLastUpdatedTime()).thenReturn(updatedTime);
-    clientService = mock(ClientService.class);
     when(clientService.update(any(), any()))
         .thenReturn(mock(gov.ca.cwds.rest.api.domain.cms.Client.class));
     when(clientService.create(any())).thenReturn(savedClient);
@@ -1405,15 +955,8 @@ public class ScreeningToReferralServiceTest {
     when(clientService.find(eq(victimId))).thenReturn(foundVictimClient);
     when(clientService.find(eq(perpId))).thenReturn(foundPerpClient);
 
-    when(drmsDocumentDao.create(any())).thenReturn(drmsDocument);
-
-    referralService = mock(ReferralService.class);
     when(referralService.createCmsReferralFromScreening(any(), any(), any(), any(), any()))
         .thenReturn("REFERRALID");
-
-    screeningToReferralService = new MockedScreeningToReferralServiceBuilder()
-        .addClientService(clientService).addReferralService(referralService)
-        .addMessageBuilder(new MessageBuilder()).createScreeningToReferralService();
 
     Response response = screeningToReferralService.create(referral);
     assertFalse(response.hasMessages());
@@ -1423,26 +966,23 @@ public class ScreeningToReferralServiceTest {
   @SuppressWarnings("javadoc")
   @Test
   public void shouldFailSavingWhenReferralHasInvalidDateTimeFormat() throws Exception {
-    setUpValidMocks();
 
-
-    // ScreeningToReferral screeningToReferral = MAPPER.readValue(
-    // fixture("fixtures/domain/ScreeningToReferral/invalid/invalidDateTimeStamp.json"),
-    // ScreeningToReferral.class);
+//    ScreeningToReferral screeningToReferral = MAPPER.readValue(
+//        fixture("fixtures/domain/ScreeningToReferral/invalid/invalidDateTimeStamp.json"),
+//        ScreeningToReferral.class);
     ScreeningToReferral screeningToReferral = new ScreeningToReferralResourceBuilder()
         // .setEndedAt("2016/08/03T01:00:00.000Z")
         // .setStartedAt("08/2016/03T01:00:00.000Z")
         .createScreeningToReferral();
 
-    referralService = mock(ReferralService.class);
-    when(referralService.createCmsReferralFromScreening(eq(screeningToReferral), any(), any(),
-        any(), any())).thenReturn(validReferralId);
+//    referralService = mock(ReferralService.class);
+    when(referralService.createCmsReferralFromScreening(eq(screeningToReferral),any(),any(), any(), any())).thenReturn(validReferralId);
 
-    screeningToReferralService = new ScreeningToReferralService(referralService, clientService,
-        allegationService, crossReportService, referralClientService, reporterService,
-        addressService, clientAddressService, childClientService, assignmentService,
-        Validation.buildDefaultValidatorFactory().getValidator(), referralDao, new MessageBuilder(),
-        allegationPerpetratorHistoryService, reminders);
+//    screeningToReferralService = new ScreeningToReferralService(referralService, clientService,
+//        allegationService, crossReportService, referralClientService, reporterService,
+//        addressService, clientAddressService, childClientService, assignmentService,
+//        Validation.buildDefaultValidatorFactory().getValidator(), referralDao, new MessageBuilder(),
+//        allegationPerpetratorHistoryService, reminders);
 
     Boolean theErrorDetected = false;
     try {
@@ -1460,21 +1000,18 @@ public class ScreeningToReferralServiceTest {
   @SuppressWarnings("javadoc")
   @Test
   public void testNullAddressOnScreeningFail() throws Exception {
-    setUpValidMocks();
-
     ScreeningToReferral screeningToReferral = MAPPER.readValue(
         fixture("fixtures/domain/ScreeningToReferral/invalid/nullAddressOnScreening.json"),
         ScreeningToReferral.class);
 
-    referralService = mock(ReferralService.class);
-    when(referralService.createCmsReferralFromScreening(eq(screeningToReferral), any(), any(),
-        any(), any())).thenReturn(validReferralId);
+//    referralService = mock(ReferralService.class);
+    when(referralService.createCmsReferralFromScreening(eq(screeningToReferral),any(),any(), any(), any())).thenReturn(validReferralId);
 
-    screeningToReferralService = new ScreeningToReferralService(referralService, clientService,
-        allegationService, crossReportService, referralClientService, reporterService,
-        addressService, clientAddressService, childClientService, assignmentService,
-        Validation.buildDefaultValidatorFactory().getValidator(), referralDao, new MessageBuilder(),
-        allegationPerpetratorHistoryService, reminders);
+//    screeningToReferralService = new ScreeningToReferralService(referralService, clientService,
+//        allegationService, crossReportService, referralClientService, reporterService,
+//        addressService, clientAddressService, childClientService, assignmentService,
+//        Validation.buildDefaultValidatorFactory().getValidator(), referralDao, new MessageBuilder(),
+//        allegationPerpetratorHistoryService, reminders);
 
     Boolean theErrorDetected = false;
     try {
@@ -1487,7 +1024,8 @@ public class ScreeningToReferralServiceTest {
     }
   }
 
-  // TODO: Move to ReferralService
+  //TODO: Move to ReferralService
+  @Ignore
   @SuppressWarnings("javadoc")
   @Test
   public void shouldFailSavingWhenReferralAddressIsEmptyAddress() throws Exception {
@@ -1611,7 +1149,8 @@ public class ScreeningToReferralServiceTest {
     }
   }
 
-  // TODO:MOVE TO referralService
+  //TODO:MOVE TO referralService
+  @Ignore
   @SuppressWarnings("javadoc")
   @Test
   public void shouldSuccessfullySaveReferralWhenAdditionalInfoIsEmtpy() throws Exception {
@@ -1730,7 +1269,8 @@ public class ScreeningToReferralServiceTest {
     assertThat(response.hasMessages(), is(equalTo(false)));
   }
 
-  // TODO:MOVE TO referralService
+  //TODO:MOVE TO referralService
+  @Ignore
   @SuppressWarnings("javadoc")
   @Test
   public void shouldSaveSuccessfullWhenReferralAdditionalInfoIsNull() throws Exception {
@@ -1853,20 +1393,10 @@ public class ScreeningToReferralServiceTest {
   @Test
   // R - 03895
   public void shouldFailSavingReferralWhenAllegationIsMissing() throws Exception {
-    setUpValidMocks();
-
     ScreeningToReferral screeningToReferral =
         new ScreeningToReferralResourceBuilder().setAllegations(null).createScreeningToReferral();
 
-    referralService = mock(ReferralService.class);
-    when(referralService.createCmsReferralFromScreening(eq(screeningToReferral), any(), any(),
-        any(), any())).thenReturn(validReferralId);
-
-    screeningToReferralService = new ScreeningToReferralService(referralService, clientService,
-        allegationService, crossReportService, referralClientService, reporterService,
-        addressService, clientAddressService, childClientService, assignmentService,
-        Validation.buildDefaultValidatorFactory().getValidator(), referralDao, new MessageBuilder(),
-        allegationPerpetratorHistoryService, reminders);
+    when(referralService.createCmsReferralFromScreening(eq(screeningToReferral),any(),any(), any(), any())).thenReturn(validReferralId);
 
     try {
       Response response = screeningToReferralService.create(screeningToReferral);
@@ -1880,7 +1410,6 @@ public class ScreeningToReferralServiceTest {
   @SuppressWarnings("javadoc")
   @Test
   public void shouldSaveSuccessfullyWhenReferraHasMultipleAllegations() throws Exception {
-    setUpValidMocks();
     Set allegations = new HashSet();
     gov.ca.cwds.rest.api.domain.Allegation allegation1 =
         new AllegationResourceBuilder().createAllegation();
@@ -1891,15 +1420,7 @@ public class ScreeningToReferralServiceTest {
     ScreeningToReferral screeningToReferral = new ScreeningToReferralResourceBuilder()
         .setAllegations(allegations).createScreeningToReferral();
 
-    referralService = mock(ReferralService.class);
-    when(referralService.createCmsReferralFromScreening(eq(screeningToReferral), any(), any(),
-        any(), any())).thenReturn(validReferralId);
-
-    screeningToReferralService = new ScreeningToReferralService(referralService, clientService,
-        allegationService, crossReportService, referralClientService, reporterService,
-        addressService, clientAddressService, childClientService, assignmentService,
-        Validation.buildDefaultValidatorFactory().getValidator(), referralDao, new MessageBuilder(),
-        allegationPerpetratorHistoryService, reminders);
+    when(referralService.createCmsReferralFromScreening(eq(screeningToReferral),any(),any(), any(), any())).thenReturn(validReferralId);
 
     try {
       Response response = screeningToReferralService.create(screeningToReferral);
@@ -1915,8 +1436,6 @@ public class ScreeningToReferralServiceTest {
   public void shouldFailSavingWhenAllegationDoesNotHaveMatchingVictim() throws Exception {
     int nonExistentVictimId = -999999999;
 
-    setUpValidMocks();
-
     Set allegations = new HashSet();
     gov.ca.cwds.rest.api.domain.Allegation allegation =
         new AllegationResourceBuilder().setVictimPersonId(nonExistentVictimId).createAllegation();
@@ -1925,15 +1444,7 @@ public class ScreeningToReferralServiceTest {
     ScreeningToReferral screeningToReferral = new ScreeningToReferralResourceBuilder()
         .setAllegations(allegations).createScreeningToReferral();
 
-    referralService = mock(ReferralService.class);
-    when(referralService.createCmsReferralFromScreening(eq(screeningToReferral), any(), any(),
-        any(), any())).thenReturn(validReferralId);
-
-    screeningToReferralService = new ScreeningToReferralService(referralService, clientService,
-        allegationService, crossReportService, referralClientService, reporterService,
-        addressService, clientAddressService, childClientService, assignmentService,
-        Validation.buildDefaultValidatorFactory().getValidator(), referralDao, new MessageBuilder(),
-        allegationPerpetratorHistoryService, reminders);
+    when(referralService.createCmsReferralFromScreening(eq(screeningToReferral),any(),any(), any(), any())).thenReturn(validReferralId);
 
     Boolean theErrorDetected = false;
     try {
@@ -1956,20 +1467,17 @@ public class ScreeningToReferralServiceTest {
   @SuppressWarnings("javadoc")
   @Test
   public void testAllegesAbuseOccurredAtAddressId() throws Exception {
-    setUpValidMocks();
-
     ScreeningToReferral screeningToReferral = MAPPER.readValue(
         fixture("fixtures/domain/ScreeningToReferral/valid/valid.json"), ScreeningToReferral.class);
 
-    referralService = mock(ReferralService.class);
-    when(referralService.createCmsReferralFromScreening(eq(screeningToReferral), any(), any(),
-        any(), any())).thenReturn(validReferralId);
+//    referralService = mock(ReferralService.class);
+    when(referralService.createCmsReferralFromScreening(eq(screeningToReferral),any(),any(), any(), any())).thenReturn(validReferralId);
 
-    screeningToReferralService = new ScreeningToReferralService(referralService, clientService,
-        allegationService, crossReportService, referralClientService, reporterService,
-        addressService, clientAddressService, childClientService, assignmentService,
-        Validation.buildDefaultValidatorFactory().getValidator(), referralDao, new MessageBuilder(),
-        allegationPerpetratorHistoryService, reminders);
+//    screeningToReferralService = new ScreeningToReferralService(referralService, clientService,
+//        allegationService, crossReportService, referralClientService, reporterService,
+//        addressService, clientAddressService, childClientService, assignmentService,
+//        Validation.buildDefaultValidatorFactory().getValidator(), referralDao, new MessageBuilder(),
+//        allegationPerpetratorHistoryService, reminders);
 
     Response response = null;
     try {
@@ -1995,8 +1503,6 @@ public class ScreeningToReferralServiceTest {
       throws Exception {
     long nonExistentPerpId = -9999999;
 
-    setUpValidMocks();
-
     Set allegations = new HashSet();
     gov.ca.cwds.rest.api.domain.Allegation allegation = new AllegationResourceBuilder()
         .setPerpetratorPersonId(nonExistentPerpId).createAllegation();
@@ -2004,32 +1510,20 @@ public class ScreeningToReferralServiceTest {
     ScreeningToReferral screeningToReferral = new ScreeningToReferralResourceBuilder()
         .setAllegations(allegations).createScreeningToReferral();
 
-    referralService = mock(ReferralService.class);
-    when(referralService.createCmsReferralFromScreening(eq(screeningToReferral), any(), any(),
-        any(), any())).thenReturn(validReferralId);
+    when(referralService.createCmsReferralFromScreening(eq(screeningToReferral),any(),any(), any(), any())).thenReturn(validReferralId);
 
-    screeningToReferralService = new ScreeningToReferralService(referralService, clientService,
-        allegationService, crossReportService, referralClientService, reporterService,
-        addressService, clientAddressService, childClientService, assignmentService,
-        Validation.buildDefaultValidatorFactory().getValidator(), referralDao, new MessageBuilder(),
-        allegationPerpetratorHistoryService, reminders);
-
-    Boolean theErrorDetected = false;
     try {
       Response response = screeningToReferralService.create(screeningToReferral);
+      assertFalse("Expected an exception to have been thrown", true);
     } catch (Exception e) {
-      if (e.getMessage().contains(
-          "Allegation/Perpetrator Person Id does not contain a Participant with a role of Perpetrator")) {
-        theErrorDetected = true;
+      assertTrue("Expected Exception to contain allegation/perpetrator don't correspond error message", e.getMessage().contains(
+          "Allegation/Perpetrator Person Id does not contain a Participant with a role of Perpetrator"));
       }
-      assertThat(theErrorDetected, is(equalTo(true)));
-    }
   }
 
   @SuppressWarnings("javadoc")
   @Test
   public void shouldUpdatePerpetratorWhenAlreadyExists() throws Exception {
-
     String victimId = "VICTIM__ID";
     String existingPerpId = "1234567ABC";
     Participant reporter = new ParticipantResourceBuilder().setFirstName("Barney")
@@ -2048,9 +1542,6 @@ public class ScreeningToReferralServiceTest {
     ScreeningToReferral referral = new ScreeningToReferralResourceBuilder()
         .setParticipants(participants).createScreeningToReferral();
 
-    gov.ca.cwds.data.persistence.cms.DrmsDocument drmsDocument =
-        new gov.ca.cwds.data.persistence.cms.DrmsDocument("ABC1234560", null, null, null, null,
-            null);
     gov.ca.cwds.rest.api.domain.cms.Client updatedPerp =
         mock(gov.ca.cwds.rest.api.domain.cms.Client.class);
     gov.ca.cwds.rest.api.domain.cms.Client updatedReporter =
@@ -2067,36 +1558,14 @@ public class ScreeningToReferralServiceTest {
         mock(gov.ca.cwds.rest.api.domain.cms.PostedClient.class);
     when(savedVictim.getId()).thenReturn(victimId);
     when(savedVictim.getLastUpdatedTime()).thenReturn(updatedTime);
-    clientService = mock(ClientService.class);
     when(clientService.update(eq(existingPerpId), any())).thenReturn(updatedPerp);
     when(clientService.create(any())).thenReturn(savedVictim);
     when(clientService.createWithSingleTimestamp(any(), any())).thenReturn(savedVictim);
     when(clientService.update(eq(victimId), any())).thenReturn(updatedReporter);
     when(clientService.find(victimId)).thenReturn(foundVictim);
     when(clientService.find(existingPerpId)).thenReturn(foundPerp);
-    when(drmsDocumentDao.create(any())).thenReturn(drmsDocument);
-
-    clientAddressService = mock(ClientAddressService.class);
-    when(clientAddressService.find(any())).thenReturn(mock(ClientAddress.class));
-    when(clientAddressService.findByAddressAndClient(any(), any())).thenReturn(mock(List.class));
-
-    gov.ca.cwds.rest.api.domain.cms.Address existingAddress =
-        mock(gov.ca.cwds.rest.api.domain.cms.Address.class);
-    when(existingAddress.getExistingAddressId()).thenReturn("ASDHJYTRED");
-    PostedAddress postedAddress = mock(PostedAddress.class);
-    when(postedAddress.getExistingAddressId()).thenReturn("QWWERTYUIJ");
-    addressService = mock(AddressService.class);
-    when(addressService.find(any())).thenReturn(existingAddress);
-    when(addressService.create(any())).thenReturn(postedAddress);
-    when(addressService.createWithSingleTimestamp(any(), any())).thenReturn(postedAddress);
-    referralService = mock(ReferralService.class);
     when(referralService.createCmsReferralFromScreening(any(), any(), any(), any(), any()))
         .thenReturn("REFERRALID");
-
-    screeningToReferralService = new MockedScreeningToReferralServiceBuilder()
-        .addClientAddressService(clientAddressService).addClientService(clientService)
-        .addAddressService(addressService).addReferralService(referralService)
-        .addMessageBuilder(new MessageBuilder()).createScreeningToReferralService();
 
     Response response = screeningToReferralService.create(referral);
     assertFalse(response.hasMessages());
@@ -2108,7 +1577,6 @@ public class ScreeningToReferralServiceTest {
   @SuppressWarnings("javadoc")
   @Test
   public void shouldNotUpdatePerpetratorWhenClientIsNotFound() throws Exception {
-
     String existingPerpId = "1234567ABC";
     Participant reporter =
         new ParticipantResourceBuilder().setFirstName("Barney").setLastName("Rubble")
@@ -2123,9 +1591,6 @@ public class ScreeningToReferralServiceTest {
         .setParticipants(participants).createScreeningToReferral();
 
     String updatedReporterId = "ASDFGHJZXC";
-    gov.ca.cwds.data.persistence.cms.DrmsDocument drmsDocument =
-        new gov.ca.cwds.data.persistence.cms.DrmsDocument("ABC1234560", null, null, null, null,
-            null);
     gov.ca.cwds.rest.api.domain.cms.Client updatedPerp =
         mock(gov.ca.cwds.rest.api.domain.cms.Client.class);
     gov.ca.cwds.rest.api.domain.cms.Client updatedReporter =
@@ -2135,29 +1600,14 @@ public class ScreeningToReferralServiceTest {
     gov.ca.cwds.rest.api.domain.cms.PostedClient savedVictim =
         mock(gov.ca.cwds.rest.api.domain.cms.PostedClient.class);
     when(savedVictim.getId()).thenReturn(updatedReporterId);
-    clientService = mock(ClientService.class);
     when(clientService.update(eq(existingPerpId), any())).thenReturn(updatedPerp);
     when(clientService.create(any())).thenReturn(savedVictim);
     when(clientService.update(eq(updatedReporterId), any())).thenReturn(updatedReporter);
     when(clientService.find(any())).thenReturn(null);
-    when(drmsDocumentDao.create(any())).thenReturn(drmsDocument);
 
-    clientAddressService = mock(ClientAddressService.class);
     when(clientAddressService.find(any())).thenReturn(mock(ClientAddress.class));
 
-    gov.ca.cwds.rest.api.domain.cms.Address existingAddress =
-        mock(gov.ca.cwds.rest.api.domain.cms.Address.class);
-    when(existingAddress.getExistingAddressId()).thenReturn("ASDHJYTRED");
-    PostedAddress postedAddress = mock(PostedAddress.class);
-    when(postedAddress.getExistingAddressId()).thenReturn("QWWERTYUIJ");
-    addressService = mock(AddressService.class);
-    when(addressService.find(any())).thenReturn(existingAddress);
-    when(addressService.create(any())).thenReturn(postedAddress);
 
-    screeningToReferralService =
-        new MockedScreeningToReferralServiceBuilder().addClientAddressService(clientAddressService)
-            .addClientService(clientService).addAddressService(addressService)
-            .addMessageBuilder(new MessageBuilder()).createScreeningToReferralService();
 
     try {
       Response response = screeningToReferralService.create(referral);
@@ -2189,9 +1639,6 @@ public class ScreeningToReferralServiceTest {
         .setParticipants(participants).createScreeningToReferral();
 
     String updatedReporterId = "ASDFGHJZXC";
-    gov.ca.cwds.data.persistence.cms.DrmsDocument drmsDocument =
-        new gov.ca.cwds.data.persistence.cms.DrmsDocument("ABC1234560", null, null, null, null,
-            null);
     gov.ca.cwds.rest.api.domain.cms.Client updatedPerp =
         mock(gov.ca.cwds.rest.api.domain.cms.Client.class);
     gov.ca.cwds.rest.api.domain.cms.Client updatedReporter =
@@ -2201,72 +1648,43 @@ public class ScreeningToReferralServiceTest {
     gov.ca.cwds.rest.api.domain.cms.PostedClient savedVictim =
         mock(gov.ca.cwds.rest.api.domain.cms.PostedClient.class);
     when(savedVictim.getId()).thenReturn(updatedReporterId);
-    clientService = mock(ClientService.class);
     when(clientService.update(eq(existingPerpId), any())).thenReturn(updatedPerp);
     when(clientService.create(any())).thenReturn(savedVictim);
     when(clientService.update(any(), any())).thenReturn(null);
     when(clientService.find(any())).thenReturn(foundClient);
     when(foundClient.getLastUpdatedTime()).thenReturn(modifiedLastUpdateDate);
-    when(drmsDocumentDao.create(any())).thenReturn(drmsDocument);
 
-    clientAddressService = mock(ClientAddressService.class);
-    when(clientAddressService.find(any())).thenReturn(mock(ClientAddress.class));
+    when(referralService.createCmsReferralFromScreening(eq(referral),any(),any(), any(), any())).thenReturn(validReferralId);
 
-    gov.ca.cwds.rest.api.domain.cms.Address existingAddress =
-        mock(gov.ca.cwds.rest.api.domain.cms.Address.class);
-    when(existingAddress.getExistingAddressId()).thenReturn("ASDHJYTRED");
-    PostedAddress postedAddress = mock(PostedAddress.class);
-    when(postedAddress.getExistingAddressId()).thenReturn("QWWERTYUIJ");
-    addressService = mock(AddressService.class);
-    when(addressService.find(any())).thenReturn(existingAddress);
-    when(addressService.create(any())).thenReturn(postedAddress);
+    try {
+      screeningToReferralService.create(referral);
+      assertFalse("Expected an exception to have been thrown ", true);
+    } catch (ServiceException e) {
+      // not interested in exception for this test
+      assertTrue("Expected exception to contain unable to save Client error message", e.getMessage().contains("Unable to save Client"));
 
-    MessageBuilder messageBuilder = mock(MessageBuilder.class);
-    screeningToReferralService =
-        new MockedScreeningToReferralServiceBuilder().addClientAddressService(clientAddressService)
-            .addClientService(clientService).addAddressService(addressService)
-            .addMessageBuilder(messageBuilder).createScreeningToReferralService();
-
-    Response response = screeningToReferralService.create(referral);
-    verify(messageBuilder, atLeastOnce()).addError("Unable to save Client");
+    }
   }
 
   @SuppressWarnings("javadoc")
   @Test
   public void testClientDoesNotExsitFail() throws Exception {
-    String errorMessage =
-        " Legacy Id of Participant does not correspond to an existing CWS/CMS Client ";
     String badLegacyId = "IUKNOWNIDI";
 
-    Participant reporter = new ParticipantResourceBuilder().createReporterParticipant();
-    Participant victim = new ParticipantResourceBuilder().createVictimParticipant();
     Participant perp = new ParticipantResourceBuilder().setLegacyId(badLegacyId)
         .setRoles(new HashSet<>(Arrays.asList("Perpetrator"))).createParticipant();
-    Set participants = new HashSet<>(Arrays.asList(reporter, perp, victim));
+    Set participants = new HashSet<>(Arrays.asList(perp, defaultReporter, defaultVictim));
 
     ScreeningToReferral referral = new ScreeningToReferralResourceBuilder()
         .setParticipants(participants).createScreeningToReferral();
-    gov.ca.cwds.data.persistence.cms.DrmsDocument drmsDocument =
-        new gov.ca.cwds.data.persistence.cms.DrmsDocument("ABC1234560", null, null, null, null,
-            null);
 
-    PostedClient postedClient = mock(PostedClient.class);
-    when(postedClient.getId()).thenReturn("OIUYTREEWQ");
-    clientService = mock(ClientService.class);
-    when(clientService.update(eq(badLegacyId), any())).thenReturn(null);
-    when(clientService.create(any())).thenReturn(postedClient);
-    when(clientService.find(any())).thenReturn(null);
-    when(drmsDocumentDao.create(any())).thenReturn(drmsDocument);
-    screeningToReferralService =
-        new MockedScreeningToReferralServiceBuilder().addClientService(clientService)
-            .addMessageBuilder(new MessageBuilder()).createScreeningToReferralService();
-
-    Response response = null;
     try {
-      response = screeningToReferralService.create(referral);
+      screeningToReferralService.create(referral);
       assertFalse("Expected an exception to have been thrown ", true);
     } catch (ServiceException e) {
       // not interested in exception for this test
+      String errorMessage =
+          " Legacy Id of Participant does not correspond to an existing CWS/CMS Client ";
       assertTrue("Expected thrown error to contain error", e.getMessage().contains(errorMessage));
       verify(clientService, never()).update(eq(badLegacyId), any());
 
@@ -2276,26 +1694,16 @@ public class ScreeningToReferralServiceTest {
   @SuppressWarnings("javadoc")
   @Test
   public void testAllegationExistSuccess() throws Exception {
-
     gov.ca.cwds.rest.api.domain.Allegation allegation =
         new AllegationResourceBuilder().setLegacyId("GHJKLCVBNM").createAllegation();
     ScreeningToReferral referral = new ScreeningToReferralResourceBuilder()
         .setAllegations(new HashSet<>(Arrays.asList(allegation))).createScreeningToReferral();
 
-    gov.ca.cwds.data.persistence.cms.DrmsDocument drmsDocument =
-        new gov.ca.cwds.data.persistence.cms.DrmsDocument("ABC1234560", null, null, null, null,
-            null);
-    allegationService = mock(AllegationService.class);
-    when(drmsDocumentDao.create(any())).thenReturn(drmsDocument);
     when(allegationService.find(allegation.getLegacyId())).thenReturn(mock(Allegation.class));
     MessageBuilder messageBuilder = new MessageBuilder();
-    referralService = mock(ReferralService.class);
     when(referralService.createCmsReferralFromScreening(any(), any(), any(), any(), any()))
         .thenReturn("REFERRALID");
 
-    screeningToReferralService = new MockedScreeningToReferralServiceBuilder()
-        .addMessageBuilder(messageBuilder).addAllegationService(allegationService)
-        .addReferralService(referralService).createScreeningToReferralService();
 
     Response response = screeningToReferralService.create(referral);
 
@@ -2306,11 +1714,8 @@ public class ScreeningToReferralServiceTest {
   @SuppressWarnings("javadoc")
   @Test
   public void shouldFailSavingWhenAllegationIdIsNotFound() throws Exception {
-    setUpValidMocks();
-
     Participant victim = new ParticipantResourceBuilder().setId(1234).createVictimParticipant();
-    Participant reporter = new ParticipantResourceBuilder().createReporterParticipant();
-    Set participants = new HashSet<>(Arrays.asList(victim, reporter));
+    Set participants = new HashSet<>(Arrays.asList(victim, defaultReporter));
 
     gov.ca.cwds.rest.api.domain.Allegation allegation =
         new AllegationResourceBuilder().setLegacyId("1234567ABC").setVictimPersonId(1234)
@@ -2320,15 +1725,7 @@ public class ScreeningToReferralServiceTest {
     ScreeningToReferral screeningToReferral = new ScreeningToReferralResourceBuilder()
         .setAllegations(allegations).setParticipants(participants).createScreeningToReferral();
 
-    referralService = mock(ReferralService.class);
-    when(referralService.createCmsReferralFromScreening(eq(screeningToReferral), any(), any(),
-        any(), any())).thenReturn(validReferralId);
-
-    screeningToReferralService = new ScreeningToReferralService(referralService, clientService,
-        allegationService, crossReportService, referralClientService, reporterService,
-        addressService, clientAddressService, childClientService, assignmentService,
-        Validation.buildDefaultValidatorFactory().getValidator(), referralDao, new MessageBuilder(),
-        allegationPerpetratorHistoryService, reminders);
+    when(referralService.createCmsReferralFromScreening(eq(screeningToReferral),any(),any(), any(), any())).thenReturn(validReferralId);
 
     try {
       Response response = screeningToReferralService.create(screeningToReferral);
@@ -2342,23 +1739,15 @@ public class ScreeningToReferralServiceTest {
   @SuppressWarnings("javadoc")
   @Test
   public void shouldFailSavingWhenCrossReportIdIsNotFound() throws Exception {
-    setUpValidMocks();
-
     gov.ca.cwds.rest.api.domain.CrossReport crossReport =
         new CrossReportResourceBuilder().setLegacyId("3456789ABC").createCrossReport();
     Set crossReports = new HashSet<>(Arrays.asList(crossReport));
     ScreeningToReferral screeningToReferral = new ScreeningToReferralResourceBuilder()
         .setCrossReports(crossReports).createScreeningToReferral();
 
-    referralService = mock(ReferralService.class);
-    when(referralService.createCmsReferralFromScreening(eq(screeningToReferral), any(), any(),
-        any(), any())).thenReturn(validReferralId);
+    when(referralService.createCmsReferralFromScreening(eq(screeningToReferral),any(),any(), any(), any())).thenReturn(validReferralId);
 
-    screeningToReferralService = new ScreeningToReferralService(referralService, clientService,
-        allegationService, crossReportService, referralClientService, reporterService,
-        addressService, clientAddressService, childClientService, assignmentService,
-        Validation.buildDefaultValidatorFactory().getValidator(), referralDao, new MessageBuilder(),
-        allegationPerpetratorHistoryService, reminders);
+    when(crossReportService.find(eq(crossReport.getLegacyId()))).thenReturn(null);
 
     try {
       Response response = screeningToReferralService.create(screeningToReferral);
@@ -2376,13 +1765,6 @@ public class ScreeningToReferralServiceTest {
 
     ScreeningToReferral referral = new ScreeningToReferralResourceBuilder()
         .setCrossReports(new HashSet<>(Arrays.asList(crossReport))).createScreeningToReferral();
-    crossReportService = mock(CrossReportService.class);
-    when(crossReportService.find(eq(crossReport.getLegacyId())))
-        .thenReturn(mock(gov.ca.cwds.rest.api.domain.cms.CrossReport.class));
-    screeningToReferralService =
-        new MockedScreeningToReferralServiceBuilder().addCrossReportService(crossReportService)
-            .addMessageBuilder(new MessageBuilder()).createScreeningToReferralService();
-
     Response response = screeningToReferralService.create(referral);
     assertFalse(response.hasMessages());
   }
@@ -2390,23 +1772,14 @@ public class ScreeningToReferralServiceTest {
   @SuppressWarnings("javadoc")
   @Test
   public void shouldFailSavingWhenCrossReportIdIsDoesNotExist() throws Exception {
-    setUpValidMocks();
-
     gov.ca.cwds.rest.api.domain.CrossReport crossReport =
         new CrossReportResourceBuilder().setLegacyId("3456789ABC").createCrossReport();
     Set crossReports = new HashSet<>(Arrays.asList(crossReport));
     ScreeningToReferral screeningToReferral = new ScreeningToReferralResourceBuilder()
         .setCrossReports(crossReports).createScreeningToReferral();
 
-    referralService = mock(ReferralService.class);
-    when(referralService.createCmsReferralFromScreening(eq(screeningToReferral), any(), any(),
-        any(), any())).thenReturn(validReferralId);
-
-    screeningToReferralService = new ScreeningToReferralService(referralService, clientService,
-        allegationService, crossReportService, referralClientService, reporterService,
-        addressService, clientAddressService, childClientService, assignmentService,
-        Validation.buildDefaultValidatorFactory().getValidator(), referralDao, new MessageBuilder(),
-        allegationPerpetratorHistoryService, reminders);
+    when(referralService.createCmsReferralFromScreening(eq(screeningToReferral),any(),any(), any(), any())).thenReturn(validReferralId);
+    when(crossReportService.find(eq(crossReport.getLegacyId()))).thenReturn(null);
 
     try {
       Response response = screeningToReferralService.create(screeningToReferral);
@@ -2421,16 +1794,12 @@ public class ScreeningToReferralServiceTest {
   @SuppressWarnings("javadoc")
   @Test
   public void testAddressExistSuccess() throws Exception {
-    // Referral referralDom
-
     gov.ca.cwds.rest.api.domain.Address address =
         new AddressResourceBuilder().setLegacyId("ASDFGHJKLQ").createAddress();
     Participant victim =
         new ParticipantResourceBuilder().setRoles(new HashSet<>(Arrays.asList("Victim")))
             .setAddresses(new HashSet<>(Arrays.asList(address))).createParticipant();
-    Participant perp = new ParticipantResourceBuilder().createPerpParticipant();
-    Participant reporter = new ParticipantResourceBuilder().createReporterParticipant();
-    Set participants = new HashSet<>(Arrays.asList(victim, perp, reporter));
+    Set participants = new HashSet<>(Arrays.asList(victim, defaultPerpetrator, defaultReporter));
 
     ScreeningToReferral referral = new ScreeningToReferralResourceBuilder()
         .setParticipants(participants).createScreeningToReferral();
@@ -2451,18 +1820,18 @@ public class ScreeningToReferralServiceTest {
     when(addressService.createWithSingleTimestamp(any(), any())).thenReturn(perpCreatedAddress);
     when(drmsDocumentDao.create(any())).thenReturn(drmsDocument);
 
-    clientAddressService = mock(ClientAddressService.class);
     when(clientAddressService.find(address.getLegacyId())).thenReturn(mock(ClientAddress.class));
     when(clientAddressService.findByAddressAndClient(any(), any())).thenReturn(clientAddresses);
     MessageBuilder messageBuilder = new MessageBuilder();
 
-    referralService = mock(ReferralService.class);
     when(referralService.createCmsReferralFromScreening(any(), any(), any(), any(), any()))
         .thenReturn("REFERRALID");
-    screeningToReferralService =
-        new MockedScreeningToReferralServiceBuilder().addMessageBuilder(messageBuilder)
-            .addAddressService(addressService).addReferralService(referralService)
-            .addClientAddressService(clientAddressService).createScreeningToReferralService();
+    screeningToReferralService = new ScreeningToReferralService(referralService, clientService,
+        allegationService, crossReportService, referralClientService, reporterService,
+        addressService, clientAddressService, childClientService, assignmentService,
+        Validation.buildDefaultValidatorFactory().getValidator(), referralDao, messageBuilder,
+        allegationPerpetratorHistoryService, reminders);
+
     Response response = screeningToReferralService.create(referral);
 
     verify(addressService).find(eq(address.getLegacyId()));
@@ -2472,8 +1841,6 @@ public class ScreeningToReferralServiceTest {
   @SuppressWarnings("javadoc")
   @Test
   public void shouldFailSavingWhenAddressIdDoesNotExist() throws Exception {
-    setUpValidMocks();
-
     gov.ca.cwds.rest.api.domain.Address perpAddress =
         new AddressResourceBuilder().setLegacyId("1234567ABC").createAddress();
     Set perpAddresses = new HashSet();
@@ -2486,21 +1853,12 @@ public class ScreeningToReferralServiceTest {
     victimAddresses.add(victimAddress);
     Participant victim =
         new ParticipantResourceBuilder().setAddresses(victimAddresses).createVictimParticipant();
-    Participant reporter = new ParticipantResourceBuilder().createReporterParticipant();
-    Set participants = new HashSet<>(Arrays.asList(victim, reporter, perp));
+    Set participants = new HashSet<>(Arrays.asList(victim, perp, defaultReporter));
 
     ScreeningToReferral screeningToReferral = new ScreeningToReferralResourceBuilder()
         .setParticipants(participants).createScreeningToReferral();
 
-    referralService = mock(ReferralService.class);
-    when(referralService.createCmsReferralFromScreening(eq(screeningToReferral), any(), any(),
-        any(), any())).thenReturn(validReferralId);
-
-    screeningToReferralService = new ScreeningToReferralService(referralService, clientService,
-        allegationService, crossReportService, referralClientService, reporterService,
-        addressService, clientAddressService, childClientService, assignmentService,
-        Validation.buildDefaultValidatorFactory().getValidator(), referralDao, new MessageBuilder(),
-        allegationPerpetratorHistoryService, reminders);
+    when(referralService.createCmsReferralFromScreening(eq(screeningToReferral),any(),any(), any(), any())).thenReturn(validReferralId);
 
     try {
       Response response = screeningToReferralService.create(screeningToReferral);
@@ -2535,10 +1893,6 @@ public class ScreeningToReferralServiceTest {
     ScreeningToReferral referral = new ScreeningToReferralResourceBuilder()
         .setParticipants(participants).createScreeningToReferral();
 
-    // mock clientAddressService to find our address
-    gov.ca.cwds.data.persistence.cms.DrmsDocument drmsDocument =
-        new gov.ca.cwds.data.persistence.cms.DrmsDocument("ABC1234560", null, null, null, null,
-            null);
     ClientAddress clientAddress = mock(ClientAddress.class);
     ClientAddress foundClientAddress = mock(ClientAddress.class);
     List foundClientAddresses = new ArrayList<ClientAddress>();
@@ -2547,36 +1901,26 @@ public class ScreeningToReferralServiceTest {
     PostedClient savedClient = mock(PostedClient.class);
     when(savedClient.getId()).thenReturn("ASDFGHHYTR");
     when(savedClient.getLastUpdatedTime()).thenReturn(modifiedLastUpdateDate);
-    clientAddressService = mock(ClientAddressService.class);
     when(clientAddressService.find(any())).thenReturn(clientAddress);
 
     when(clientAddressService.findByAddressAndClient(any(), any()))
         .thenReturn(foundClientAddresses);
-    clientService = mock(ClientService.class);
     when(clientService.find(any())).thenReturn(savedClient);
     when(clientService.create(any())).thenReturn(savedClient);
     when(clientService.createWithSingleTimestamp(any(), any())).thenReturn(savedClient);
     when(clientService.update(any(), any())).thenReturn(updatedClient);
-    when(drmsDocumentDao.create(any())).thenReturn(drmsDocument);
 
     Address foundAddress = mock(Address.class);
     when(foundAddress.getExistingAddressId()).thenReturn("ZXCVBNMKJH");
     PostedAddress postedAddress = mock(PostedAddress.class);
     when(postedAddress.getExistingAddressId()).thenReturn("ZXCVBNMKJH");
 
-    addressService = mock(AddressService.class);
     when(addressService.find(any())).thenReturn(foundAddress);
     when(addressService.create(any())).thenReturn(postedAddress);
     when(addressService.createWithSingleTimestamp(any(), any())).thenReturn(postedAddress);
 
-    referralService = mock(ReferralService.class);
     when(referralService.createCmsReferralFromScreening(any(), any(), any(), any(), any()))
         .thenReturn("REFERRALID");
-
-    screeningToReferralService = new MockedScreeningToReferralServiceBuilder()
-        .addAddressService(addressService).addClientAddressService(clientAddressService)
-        .addClientService(clientService).addReferralService(referralService)
-        .addMessageBuilder(new MessageBuilder()).createScreeningToReferralService();
 
     Response response = screeningToReferralService.create(referral);
 
@@ -2591,8 +1935,6 @@ public class ScreeningToReferralServiceTest {
   @SuppressWarnings("javadoc")
   @Test
   public void shouldFailSavingWhenClientAddressDoesNotExist() throws Exception {
-    setUpValidMocks();
-
     String nonExistantPerpAddressId = "999999999";
     String nonExistentVictimAddressId = "888888888";
 
@@ -2608,15 +1950,12 @@ public class ScreeningToReferralServiceTest {
     victimAddresses.add(victimAddress);
     Participant victim =
         new ParticipantResourceBuilder().setAddresses(victimAddresses).createVictimParticipant();
-    Participant reporter = new ParticipantResourceBuilder().createReporterParticipant();
-    Set participants = new HashSet<>(Arrays.asList(victim, reporter, perp));
+    Set participants = new HashSet<>(Arrays.asList(victim, perp, defaultReporter));
 
     ScreeningToReferral screeningToReferral = new ScreeningToReferralResourceBuilder()
         .setParticipants(participants).createScreeningToReferral();
 
-    referralService = mock(ReferralService.class);
-    when(referralService.createCmsReferralFromScreening(eq(screeningToReferral), any(), any(),
-        any(), any())).thenReturn(validReferralId);
+    when(referralService.createCmsReferralFromScreening(eq(screeningToReferral),any(),any(), any(), any())).thenReturn(validReferralId);
 
     Address victimLegacyAddress = new Address().createWithDefaults(victimAddress);
     Set victimLegacyAddresses = new HashSet();
@@ -2628,7 +1967,6 @@ public class ScreeningToReferralServiceTest {
     when(addressService.find(nonExistentVictimAddressId)).thenReturn(victimLegacyAddress);
     when(addressService.find(nonExistantPerpAddressId)).thenReturn(perpLegacyAddress);
 
-    clientAddressService = mock(ClientAddressService.class);
     when(clientAddressService.findByAddressAndClient(eq(victimAddress), any())).thenReturn(null);
     when(clientAddressService.findByAddressAndClient(eq(perpAddress), any())).thenReturn(null);
 
@@ -2651,30 +1989,17 @@ public class ScreeningToReferralServiceTest {
   @SuppressWarnings("javadoc")
   @Test
   public void shouldSaveWhenReporterExists() throws Exception {
-    setUpValidMocks();
-
     Participant reporter =
         new ParticipantResourceBuilder().setLegacyId(validReferralId).createReporterParticipant();
-    Participant perp = new ParticipantResourceBuilder().createPerpParticipant();
-    Participant victim = new ParticipantResourceBuilder().createVictimParticipant();
-    Set participants = new HashSet<>(Arrays.asList(victim, reporter, perp));
+    Set participants = new HashSet<>(Arrays.asList(reporter, defaultPerpetrator, defaultVictim));
 
     ScreeningToReferral screeningToReferral = new ScreeningToReferralResourceBuilder()
         .setParticipants(participants).createScreeningToReferral();
 
-    reporterService = mock(ReporterService.class);
     Reporter savedReporter = new ReporterEntityBuilder().build();
     when(reporterService.find(any())).thenReturn(savedReporter);
 
-    referralService = mock(ReferralService.class);
-    when(referralService.createCmsReferralFromScreening(eq(screeningToReferral), any(), any(),
-        any(), any())).thenReturn(validReferralId);
-
-    screeningToReferralService = new ScreeningToReferralService(referralService, clientService,
-        allegationService, crossReportService, referralClientService, reporterService,
-        addressService, clientAddressService, childClientService, assignmentService,
-        Validation.buildDefaultValidatorFactory().getValidator(), referralDao, new MessageBuilder(),
-        allegationPerpetratorHistoryService, reminders);
+    when(referralService.createCmsReferralFromScreening(eq(screeningToReferral),any(),any(), any(), any())).thenReturn(validReferralId);
 
     Response response = screeningToReferralService.create(screeningToReferral);
     assertThat(response.getClass(), is(PostedScreeningToReferral.class));
@@ -2684,28 +2009,16 @@ public class ScreeningToReferralServiceTest {
   @SuppressWarnings("javadoc")
   @Test
   public void shouldSaveReferralWhenReporterIsANonReporter() throws Exception {
-    setUpValidMocks();
-
     Set roles = new HashSet();
     roles.add("Anonymous Reporter");
     Participant reporter =
         new ParticipantResourceBuilder().setRoles(roles).createReporterParticipant();
-    Participant perp = new ParticipantResourceBuilder().createPerpParticipant();
-    Participant victim = new ParticipantResourceBuilder().createVictimParticipant();
-    Set participants = new HashSet<>(Arrays.asList(victim, reporter, perp));
+    Set participants = new HashSet<>(Arrays.asList(reporter, defaultPerpetrator, defaultVictim));
 
     ScreeningToReferral screeningToReferral = new ScreeningToReferralResourceBuilder()
         .setParticipants(participants).createScreeningToReferral();
 
-    referralService = mock(ReferralService.class);
-    when(referralService.createCmsReferralFromScreening(eq(screeningToReferral), any(), any(),
-        any(), any())).thenReturn(validReferralId);
-
-    screeningToReferralService = new ScreeningToReferralService(referralService, clientService,
-        allegationService, crossReportService, referralClientService, reporterService,
-        addressService, clientAddressService, childClientService, assignmentService,
-        Validation.buildDefaultValidatorFactory().getValidator(), referralDao, new MessageBuilder(),
-        allegationPerpetratorHistoryService, reminders);
+    when(referralService.createCmsReferralFromScreening(eq(screeningToReferral),any(),any(), any(), any())).thenReturn(validReferralId);
 
     Response response = screeningToReferralService.create(screeningToReferral);
     assertThat(response.getClass(), is(PostedScreeningToReferral.class));
@@ -2719,35 +2032,17 @@ public class ScreeningToReferralServiceTest {
         new ParticipantResourceBuilder().setFirstName("Sally").createVictimParticipant();
     Participant victim2 =
         new ParticipantResourceBuilder().setFirstName("Fred").createVictimParticipant();
-    Participant reporter = new ParticipantResourceBuilder().createReporterParticipant();
-    Participant perp = new ParticipantResourceBuilder().createPerpParticipant();
-    Set participants = new HashSet<>(Arrays.asList(reporter, perp, victim1, victim2));
+    Set participants = new HashSet<>(Arrays.asList(victim1, victim2, defaultReporter, defaultVictim));
     int numberOfClientsThatAreNotReporters = 3;
 
-    gov.ca.cwds.data.persistence.cms.DrmsDocument drmsDocument =
-        new gov.ca.cwds.data.persistence.cms.DrmsDocument("ABC1234560", null, null, null, null,
-            null);
     ScreeningToReferral referral = new ScreeningToReferralResourceBuilder()
         .setParticipants(participants).createScreeningToReferral();
 
-    PostedClient savedClient = mock(PostedClient.class);
-    when(savedClient.getId()).thenReturn("ASDFGHJKWE");
-    clientService = mock(ClientService.class);
-    when(clientService.create(any())).thenReturn(savedClient);
-    when(clientService.createWithSingleTimestamp(any(), any())).thenReturn(savedClient);
-    when(drmsDocumentDao.create(any())).thenReturn(drmsDocument);
-
-    referralService = mock(ReferralService.class);
     when(referralService.createCmsReferralFromScreening(any(), any(), any(), any(), any()))
         .thenReturn("REFERRALID");
 
-    screeningToReferralService = new MockedScreeningToReferralServiceBuilder()
-        .addClientService(clientService).addReferralService(referralService)
-        .addMessageBuilder(new MessageBuilder()).createScreeningToReferralService();
-
     Response response = screeningToReferralService.create(referral);
     assertFalse(response.hasMessages());
-    // verify(clientService, times(numberOfClientsThatAreNotReporters)).create(any());
     verify(clientService, times(numberOfClientsThatAreNotReporters))
         .createWithSingleTimestamp(any(), any());
   }
