@@ -48,7 +48,7 @@ public class RIAssignmentTest {
    * 
    */
   @Test(expected = ReferentialIntegrityException.class)
-  public void testForReferentialIntegrityException() throws Exception {
+  public void riCheckForReferentialIntegrityException() throws Exception {
     Assignment assignmentDomain = new AssignmentResourceBuilder().buildAssignment();
     gov.ca.cwds.data.persistence.cms.Assignment assignment =
         new gov.ca.cwds.data.persistence.cms.Assignment("ABC1234567", assignmentDomain, "0X5");
@@ -61,7 +61,7 @@ public class RIAssignmentTest {
    * test success
    */
   @Test
-  public void testForApplyTrue() throws Exception {
+  public void riCheckPass() throws Exception {
     Assignment assignmentDomain = new AssignmentResourceBuilder().buildAssignment();
     gov.ca.cwds.data.persistence.cms.Assignment assignment =
         new gov.ca.cwds.data.persistence.cms.Assignment("ABC1234567", assignmentDomain, "0X5");
@@ -79,7 +79,7 @@ public class RIAssignmentTest {
    * test success when assignment establishedCode is C
    */
   @Test
-  public void testForApplyTrueWhenEstablishedCodeC() throws Exception {
+  public void riCheckPassesWhenEstablishedCodeC() throws Exception {
     Assignment assignmentDomain =
         new AssignmentResourceBuilder().setEstablishedForCode("C").buildAssignment();
     gov.ca.cwds.data.persistence.cms.Assignment assignment =

@@ -63,7 +63,7 @@ public class RIClientAddressTest {
    * Test for test the referential Integrity Exception
    */
   @Test(expected = ReferentialIntegrityException.class)
-  public void testForReferentialIntegrityException() throws Exception {
+  public void riCheckForReferentialIntegrityException() throws Exception {
     ClientAddress clientAddressDomain = new ClientAddressResourceBuilder().buildClientAddress();
     gov.ca.cwds.data.persistence.cms.ClientAddress clientAddress =
         new gov.ca.cwds.data.persistence.cms.ClientAddress("ABC1234567", clientAddressDomain,
@@ -77,7 +77,7 @@ public class RIClientAddressTest {
   }
 
   @Test
-  public void testForApply() throws Exception {
+  public void riCheckPass() throws Exception {
     ClientAddress clientAddressDomain =
         new ClientAddressResourceBuilder().setFkReferral(null).buildClientAddress();
     gov.ca.cwds.data.persistence.cms.ClientAddress clientAddress =
@@ -108,7 +108,7 @@ public class RIClientAddressTest {
    * Test success when fkReferral is null
    */
   @Test
-  public void testForApplyTrueWhenFkReferralIsNull() throws Exception {
+  public void riCheckPassesWhenFkReferralIsNull() throws Exception {
     ClientAddress clientAddressDomain =
         new ClientAddressResourceBuilder().setFkReferral(null).buildClientAddress();
     gov.ca.cwds.data.persistence.cms.ClientAddress clientAddress =
@@ -132,7 +132,7 @@ public class RIClientAddressTest {
   }
 
   @Test(expected = ReferentialIntegrityException.class)
-  public void testFailureWhenFkClientlIsNull() throws Exception {
+  public void riCheckFailureWhenFkClientlIsNull() throws Exception {
     ClientAddress clientAddressDomain =
         new ClientAddressResourceBuilder().setFkClient(null).buildClientAddress();
     gov.ca.cwds.data.persistence.cms.ClientAddress clientAddress =

@@ -55,7 +55,7 @@ public class RIAllegationPerpetratorHistoryTest {
    * Test for test the referential Integrity Exception
    */
   @Test(expected = ReferentialIntegrityException.class)
-  public void testForReferentialIntegrityException() throws Exception {
+  public void riCheckForReferentialIntegrityException() throws Exception {
     AllegationPerpetratorHistory allegationPerpetratorHistoryDomain =
         new AllegationPerpetratorHistoryResourceBuilder().createAllegationPerpetratorHistory();
     gov.ca.cwds.data.persistence.cms.AllegationPerpetratorHistory allegationPerpetratorHistory =
@@ -70,7 +70,7 @@ public class RIAllegationPerpetratorHistoryTest {
   }
 
   @Test
-  public void testApplyTrueWhenPerpetratorNull() throws Exception {
+  public void riCheckPassesWhenPerpetratorNull() throws Exception {
     AllegationPerpetratorHistory allegationPerpetratorHistoryDomain =
         new AllegationPerpetratorHistoryResourceBuilder().setPerpertratorClientId(null)
             .createAllegationPerpetratorHistory();
@@ -91,7 +91,7 @@ public class RIAllegationPerpetratorHistoryTest {
   }
 
   @Test
-  public void testApplyTrue() throws Exception {
+  public void riCheckPass() throws Exception {
     AllegationPerpetratorHistory allegationPerpetratorHistoryDomain =
         new AllegationPerpetratorHistoryResourceBuilder().setPerpertratorClientId(null)
             .createAllegationPerpetratorHistory();
@@ -116,7 +116,7 @@ public class RIAllegationPerpetratorHistoryTest {
   }
 
   @Test(expected = ReferentialIntegrityException.class)
-  public void testFailureWhenAllegationIsNull() throws Exception {
+  public void riCheckFailureWhenAllegationIsNull() throws Exception {
     AllegationPerpetratorHistory allegationPerpetratorHistoryDomain =
         new AllegationPerpetratorHistoryResourceBuilder().setAllegationId(null)
             .createAllegationPerpetratorHistory();
