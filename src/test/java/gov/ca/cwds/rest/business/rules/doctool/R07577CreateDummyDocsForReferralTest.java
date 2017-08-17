@@ -82,6 +82,7 @@ import gov.ca.cwds.rest.services.referentialintegrity.RIAssignment;
 import gov.ca.cwds.rest.services.referentialintegrity.RIChildClient;
 import gov.ca.cwds.rest.services.referentialintegrity.RIClientAddress;
 import gov.ca.cwds.rest.services.referentialintegrity.RICrossReport;
+import gov.ca.cwds.rest.services.referentialintegrity.RIReporter;
 import io.dropwizard.jackson.Jackson;
 
 /**
@@ -111,6 +112,7 @@ public class R07577CreateDummyDocsForReferralTest {
   private RIClientAddress riClientAddress;
   private RIAllegation riAllegation;
   private RICrossReport riCrossReport;
+  private RIReporter riReporter;
 
   private ReferralDao referralDao;
   private ClientDao clientDao;
@@ -193,7 +195,8 @@ public class R07577CreateDummyDocsForReferralTest {
         new CrossReportService(crossReportDao, staffPersonIdRetriever, riCrossReport);
 
     reporterDao = mock(ReporterDao.class);
-    reporterService = new ReporterService(reporterDao, staffPersonIdRetriever);
+    riReporter = mock(RIReporter.class);
+    reporterService = new ReporterService(reporterDao, staffPersonIdRetriever, riReporter);
 
     addressDao = mock(AddressDao.class);
     addressService = new AddressService(addressDao, staffPersonIdRetriever, ssaName3Dao,
