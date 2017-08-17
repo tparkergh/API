@@ -7,6 +7,8 @@ import java.util.Date;
 import java.util.List;
 
 import javax.persistence.Entity;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
@@ -58,6 +60,21 @@ import gov.ca.cwds.rest.api.domain.DomainChef;
 @JsonPropertyOrder(alphabetic = true)
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class Reporter extends BaseReporter {
+
+  /**
+   * #147241489: referential integrity check.
+   * <p>
+   * Doesn't actually load the data. Just checks the existence of the parent lawEnforcement and
+   * reporterDrmsDocument record.
+   * </p>
+   */
+  @ManyToOne(optional = true)
+  @JoinColumn(name = "FKLAW_ENFT", nullable = true, updatable = false, insertable = false)
+  private LawEnforcement lawEnforcement;
+
+  @ManyToOne(optional = true)
+  @JoinColumn(name = "FDBACK_DOC", nullable = true, updatable = false, insertable = false)
+  private DrmsDocument drmsDocument;
 
   /**
    * Default constructor
