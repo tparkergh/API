@@ -336,7 +336,8 @@ public class ScreeningToReferralService implements CrudsService {
 
               // CMS Referral Client
               ReferralClient referralClient = ReferralClient.createWithDefault(
-                  ParticipantValidator.selfReported(incomingParticipant), incomingParticipant.isClientStaffPersonAdded(), referralId, clientId,
+                  ParticipantValidator.selfReported(incomingParticipant),
+                  incomingParticipant.isClientStaffPersonAdded(), referralId, clientId,
                   LegacyDefaultValues.DEFAULT_COUNTY_SPECIFIC_CODE,
                   LegacyDefaultValues.DEFAULT_APPROVAL_STATUS_CODE);
 
@@ -537,7 +538,7 @@ public class ScreeningToReferralService implements CrudsService {
    */
   private Set<Allegation> processAllegations(ScreeningToReferral scr, String referralId,
       HashMap<Long, String> perpatratorClient, HashMap<Long, String> victimClient, Date timestamp)
-          throws ServiceException {
+      throws ServiceException {
 
     Set<Allegation> processedAllegations = new HashSet<>();
     Set<Allegation> allegations;
@@ -617,11 +618,13 @@ public class ScreeningToReferralService implements CrudsService {
         // create an allegation in CMS legacy database
         gov.ca.cwds.rest.api.domain.cms.Allegation cmsAllegation =
             new gov.ca.cwds.rest.api.domain.cms.Allegation("", LegacyDefaultValues.DEFAULT_CODE, "",
-                scr.getLocationType(), "", allegationDispositionType,
-                allegation.getType(), "", "", false,
-                LegacyDefaultValues.DEFAULT_NON_PROTECTING_PARENT_CODE, false, victimClientId,
-                perpatratorClientId, referralId, LegacyDefaultValues.DEFAULT_COUNTY_SPECIFIC_CODE,
-                false, LegacyDefaultValues.DEFAULT_CODE);
+                scr.getLocationType(), "", allegationDispositionType, allegation.getType(), "", "",
+                false,
+                (perpatratorClientId != null && !perpatratorClientId.isEmpty()) ? "Y"
+                    : LegacyDefaultValues.DEFAULT_NON_PROTECTING_PARENT_CODE,
+                false, victimClientId, perpatratorClientId, referralId,
+                LegacyDefaultValues.DEFAULT_COUNTY_SPECIFIC_CODE, false,
+                LegacyDefaultValues.DEFAULT_CODE);
 
         messageBuilder.addDomainValidationError(validator.validate(cmsAllegation));
 
