@@ -60,7 +60,7 @@ public class RIClientAddressTest {
   }
 
   /*
-   * Test for test the referential Integrity Exception
+   * Test for the referential Integrity Exception
    */
   @Test(expected = ReferentialIntegrityException.class)
   public void riCheckForReferentialIntegrityException() throws Exception {
@@ -71,6 +71,29 @@ public class RIClientAddressTest {
 
     when(addressDao.find(any(String.class))).thenReturn(null);
     when(clientDao.find(any(String.class))).thenReturn(null);
+    when(referralDao.find(any(String.class))).thenReturn(null);
+    RIClientAddress target = new RIClientAddress(addressDao, clientDao, referralDao);
+    target.apply(clientAddress);
+  }
+
+  @Test(expected = ReferentialIntegrityException.class)
+  public void riCheckFailureWhenFkReferralNotFound() throws Exception {
+    ClientAddress clientAddressDomain = new ClientAddressResourceBuilder()
+        .setFkAddress("ABC1234560").setFkClient("ABC123456k").buildClientAddress();
+    gov.ca.cwds.data.persistence.cms.ClientAddress clientAddress =
+        new gov.ca.cwds.data.persistence.cms.ClientAddress("ABC1234567", clientAddressDomain,
+            "0X5");
+
+    Address addressDomain = new CmsAddressResourceBuilder().buildCmsAddress();
+    gov.ca.cwds.data.persistence.cms.Address address =
+        new gov.ca.cwds.data.persistence.cms.Address("ABC1234560", addressDomain, "0X5");
+
+    Client clientDomain = new ClientResourceBuilder().build();
+    gov.ca.cwds.data.persistence.cms.Client client =
+        new gov.ca.cwds.data.persistence.cms.Client("ABC123456k", clientDomain, "0X5");
+
+    when(addressDao.find(any(String.class))).thenReturn(address);
+    when(clientDao.find(any(String.class))).thenReturn(client);
     when(referralDao.find(any(String.class))).thenReturn(null);
     RIClientAddress target = new RIClientAddress(addressDao, clientDao, referralDao);
     target.apply(clientAddress);

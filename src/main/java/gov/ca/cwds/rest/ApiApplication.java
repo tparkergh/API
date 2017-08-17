@@ -1,5 +1,6 @@
 package gov.ca.cwds.rest;
 
+import gov.ca.cwds.rest.api.domain.cms.SystemCodeCache;
 import java.util.EnumSet;
 
 import javax.servlet.DispatcherType;
@@ -68,5 +69,7 @@ public class ApiApplication extends BaseApiApplication<ApiConfiguration> {
         .addFilter("AuditAndLoggingFilter",
             injector.getInstance(RequestResponseLoggingFilter.class))
         .addMappingForUrlPatterns(EnumSet.of(DispatcherType.REQUEST), true, "/*");
+
+    injector.getInstance(SystemCodeCache.class);
   }
 }
