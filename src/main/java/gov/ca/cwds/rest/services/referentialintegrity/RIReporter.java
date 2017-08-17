@@ -60,7 +60,6 @@ public class RIReporter implements ApiReferentialCheck<Reporter> {
   /**
    * Constructor
    * 
-   * @param referralDao - referralDao
    * @param lawEnforcementDao - lawEnforcementDao
    * @param drmsDocumentDao - drmsDocumentDao
    * 
