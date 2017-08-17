@@ -29,6 +29,7 @@ import gov.ca.cwds.rest.api.Response;
 import gov.ca.cwds.rest.api.domain.cms.PostedReporter;
 import gov.ca.cwds.rest.api.domain.cms.Reporter;
 import gov.ca.cwds.rest.services.ServiceException;
+import gov.ca.cwds.rest.services.referentialintegrity.RIReporter;
 import io.dropwizard.jackson.Jackson;
 
 /**
@@ -40,6 +41,7 @@ public class ReporterServiceTest {
   private ReporterService reporterService;
   private ReporterDao reporterDao;
   private StaffPersonIdRetriever staffPersonIdRetriever;
+  private RIReporter riReporter;
 
   @SuppressWarnings("javadoc")
   @Rule
@@ -50,7 +52,8 @@ public class ReporterServiceTest {
   public void setup() throws Exception {
     reporterDao = mock(ReporterDao.class);
     staffPersonIdRetriever = mock(StaffPersonIdRetriever.class);
-    reporterService = new ReporterService(reporterDao, staffPersonIdRetriever);
+    riReporter = mock(RIReporter.class);
+    reporterService = new ReporterService(reporterDao, staffPersonIdRetriever, riReporter);
   }
 
   // find test
