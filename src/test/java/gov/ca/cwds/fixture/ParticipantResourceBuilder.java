@@ -1,10 +1,10 @@
 package gov.ca.cwds.fixture;
 
-import gov.ca.cwds.rest.api.domain.LegacyDescriptor;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
 
+import gov.ca.cwds.rest.api.domain.LegacyDescriptor;
 import gov.ca.cwds.rest.api.domain.Participant;
 
 /**
@@ -132,6 +132,7 @@ public class ParticipantResourceBuilder {
     this.dateOfBirth = dateOfBirth;
     return this;
   }
+
   /**
    * @param primaryLanguage - primaryLanguage
    * @return the ParticipantResourceBuilder
@@ -158,7 +159,8 @@ public class ParticipantResourceBuilder {
     this.ssn = ssn;
     return this;
   }
-   /**
+
+  /**
    * @param suffix - suffix
    * @return the ParticipantResourceBuilder
    */
@@ -171,7 +173,8 @@ public class ParticipantResourceBuilder {
    * @param reporterConfidentialWaiver - reporterConfidentialWaiver
    * @return the ParticipantResourceBuilder
    */
-  public ParticipantResourceBuilder setReporterConfidentialWaiver(boolean reporterConfidentialWaiver) {
+  public ParticipantResourceBuilder setReporterConfidentialWaiver(
+      boolean reporterConfidentialWaiver) {
     this.reporterConfidentialWaiver = reporterConfidentialWaiver;
     return this;
   }
@@ -218,7 +221,7 @@ public class ParticipantResourceBuilder {
     this.roles = new HashSet<String>(Arrays.asList("Victim"));
 
     gov.ca.cwds.rest.api.domain.Address address = new AddressResourceBuilder()
-        .setStreetAddress("123 First St").setCity("San Jose").setZip(94321).createAddress();
+        .setStreetAddress("123 First St").setCity("San Jose").setZip("94321").createAddress();
     this.addresses = new HashSet<>(Arrays.asList(address));
 
   }
@@ -243,8 +246,8 @@ public class ParticipantResourceBuilder {
    * @return the Reporter Participant
    */
   public Participant createReporterParticipant() {
-    //reporter only allows first initial
-    this.middleName = middleName.substring(0,1);
+    // reporter only allows first initial
+    this.middleName = middleName.substring(0, 1);
     this.roles = new HashSet<String>(Arrays.asList("Non-mandated Reporter"));
     return createParticipant();
   }
@@ -253,7 +256,9 @@ public class ParticipantResourceBuilder {
    * @return the Participant
    */
   public Participant createParticipant() {
-    return new Participant(id, legacySourceTable, legacyId, legacyDescriptor, firstName, middleName, lastName, suffix, gender, ssn,
-        dateOfBirth, primaryLanguage, secondaryLanguage, personId, screeningId, reporterConfidentialWaiver, reporterEmployerName, clientStaffPersonAdded , roles, addresses);
+    return new Participant(id, legacySourceTable, legacyId, legacyDescriptor, firstName, middleName,
+        lastName, suffix, gender, ssn, dateOfBirth, primaryLanguage, secondaryLanguage, personId,
+        screeningId, reporterConfidentialWaiver, reporterEmployerName, clientStaffPersonAdded,
+        roles, addresses);
   }
 }

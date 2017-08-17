@@ -103,6 +103,7 @@ public class ReporterTest {
   private boolean reporterConfidentialWaiver = true;
   private String reporterEmployerName = "Employer Name";
   private boolean clientStaffPersonAdded = true;
+
   @Before
   public void setup() throws Exception {
     @SuppressWarnings("rawtypes")
@@ -218,7 +219,7 @@ public class ReporterTest {
     String streetAddress = streetNumber + " " + streetName;
     String city = "sacramento";
     Integer state = 1828; // "ca";
-    Integer zipCode = 12345;
+    String zipCode = "12345";
     Integer type = 32;
 
     gov.ca.cwds.rest.api.domain.Address address = new gov.ca.cwds.rest.api.domain.Address(
@@ -232,11 +233,10 @@ public class ReporterTest {
     String employerName = "Employer Name";
     boolean confidentialityWaver = true;
     String suffix = "";
-    Participant participant =
-        new Participant(5L, "legacy_source_table", "legacy_client_id", new LegacyDescriptor(),
-            firstName, middleName, lastName, suffix, "gender", "ssn", "date_of_birth",
-            primaryLanguage, secondaryLanguage, 7L, 8L, reporterConfidentialWaiver,
-            reporterEmployerName, clientStaffPersonAdded,  new HashSet<>(), new HashSet<>());
+    Participant participant = new Participant(5L, "legacy_source_table", "legacy_client_id",
+        new LegacyDescriptor(), firstName, middleName, lastName, suffix, "gender", "ssn",
+        "date_of_birth", primaryLanguage, secondaryLanguage, 7L, 8L, reporterConfidentialWaiver,
+        reporterEmployerName, clientStaffPersonAdded, new HashSet<>(), new HashSet<>());
 
     String countyCode = "countyCode";
     Short stateCode = new Short("0");
@@ -263,8 +263,8 @@ public class ReporterTest {
         reporter.getLastName());
     assertEquals("Expected employerName field to have been initialized with value", employerName,
         reporter.getEmployerName());
-    assertEquals("Expected reported confidentialWaiver field to have been initialized with value", employerName,
-        reporter.getEmployerName());
+    assertEquals("Expected reported confidentialWaiver field to have been initialized with value",
+        employerName, reporter.getEmployerName());
     assertEquals("Expected suffix name field to have been initialized with value", suffix,
         reporter.getSuffixTitleDescription());
     assertEquals("Expected countyCode field to have been initialized with value", countyCode,
@@ -281,7 +281,7 @@ public class ReporterTest {
     String streetAddress = streetNumber + " " + streetName;
     String city = "sacramento";
     Integer state = 1828; // "ca";
-    Integer zipCode = 12345;
+    String zipCode = "12345";
     Integer type = 32;
 
     gov.ca.cwds.rest.api.domain.Address address = new gov.ca.cwds.rest.api.domain.Address(
@@ -293,11 +293,10 @@ public class ReporterTest {
     String middleName = "middleName";
     String lastName = "lastName";
     String suffix = "jr";
-    Participant participant =
-        new Participant(5L, "legacy_source_table", "legacy_client_id", new LegacyDescriptor(),
-            firstName, middleName, lastName, "jr", "gender", "ssn", "date_of_birth",
-            primaryLanguage, secondaryLanguage, 7L, 8L,reporterConfidentialWaiver,
-            reporterEmployerName, clientStaffPersonAdded,  new HashSet<>(), new HashSet<>());
+    Participant participant = new Participant(5L, "legacy_source_table", "legacy_client_id",
+        new LegacyDescriptor(), firstName, middleName, lastName, "jr", "gender", "ssn",
+        "date_of_birth", primaryLanguage, secondaryLanguage, 7L, 8L, reporterConfidentialWaiver,
+        reporterEmployerName, clientStaffPersonAdded, new HashSet<>(), new HashSet<>());
     String countyCode = "countyCode";
     Short stateCode = new Short("0");
 
@@ -336,12 +335,11 @@ public class ReporterTest {
     String streetAddress = "1 main";
 
     gov.ca.cwds.rest.api.domain.Address address = new gov.ca.cwds.rest.api.domain.Address(
-        "legacy_source_table", "legacy_id", streetAddress, "city", 1828, 12345, 32);
-    Participant participant =
-        new Participant(5L, "legacy_source_table", "legacy_client_id", new LegacyDescriptor(),
-            "firstName", "middleName", "lastName", "jr", "gender", "ssn", "date_of_birth",
-            primaryLanguage, secondaryLanguage, 7L, 8L, reporterConfidentialWaiver,
-            reporterEmployerName, clientStaffPersonAdded, new HashSet<>(), new HashSet<>());
+        "legacy_source_table", "legacy_id", streetAddress, "city", 1828, "12345", 32);
+    Participant participant = new Participant(5L, "legacy_source_table", "legacy_client_id",
+        new LegacyDescriptor(), "firstName", "middleName", "lastName", "jr", "gender", "ssn",
+        "date_of_birth", primaryLanguage, secondaryLanguage, 7L, 8L, reporterConfidentialWaiver,
+        reporterEmployerName, clientStaffPersonAdded, new HashSet<>(), new HashSet<>());
 
     Reporter reporter =
         Reporter.createWithDefaults("referralId", true, address, participant, "countyCode");
@@ -354,12 +352,11 @@ public class ReporterTest {
     String streetAddress = "1 main";
 
     gov.ca.cwds.rest.api.domain.Address address = new gov.ca.cwds.rest.api.domain.Address(
-        "legacy_source_table", "legacy_id", streetAddress, "city", 1828, 12345, 32);
-    Participant participant =
-        new Participant(5L, "legacy_source_table", "legacy_client_id", new LegacyDescriptor(),
-            "firstName", "middleName", "lastName", "jr", "gender", "ssn", "date_of_birth",
-            primaryLanguage, secondaryLanguage, 7L, 8L, reporterConfidentialWaiver,
-            reporterEmployerName, clientStaffPersonAdded, new HashSet<>(), new HashSet<>());
+        "legacy_source_table", "legacy_id", streetAddress, "city", 1828, "12345", 32);
+    Participant participant = new Participant(5L, "legacy_source_table", "legacy_client_id",
+        new LegacyDescriptor(), "firstName", "middleName", "lastName", "jr", "gender", "ssn",
+        "date_of_birth", primaryLanguage, secondaryLanguage, 7L, 8L, reporterConfidentialWaiver,
+        reporterEmployerName, clientStaffPersonAdded, new HashSet<>(), new HashSet<>());
 
     Reporter reporter =
         Reporter.createWithDefaults("referralId", true, address, participant, "countyCode");
@@ -372,12 +369,11 @@ public class ReporterTest {
     String streetAddress = "1 San Andreas Blvd";
 
     gov.ca.cwds.rest.api.domain.Address address = new gov.ca.cwds.rest.api.domain.Address(
-        "legacy_source_table", "legacy_id", streetAddress, "city", 1828, 12345, 32);
-    Participant participant =
-        new Participant(5L, "legacy_source_table", "legacy_client_id", new LegacyDescriptor(),
-            "firstName", "middleName", "lastName", "jr", "gender", "ssn", "date_of_birth",
-            primaryLanguage, secondaryLanguage, 7L, 8L, reporterConfidentialWaiver,
-            reporterEmployerName, clientStaffPersonAdded, new HashSet<>(), new HashSet<>());
+        "legacy_source_table", "legacy_id", streetAddress, "city", 1828, "12345", 32);
+    Participant participant = new Participant(5L, "legacy_source_table", "legacy_client_id",
+        new LegacyDescriptor(), "firstName", "middleName", "lastName", "jr", "gender", "ssn",
+        "date_of_birth", primaryLanguage, secondaryLanguage, 7L, 8L, reporterConfidentialWaiver,
+        reporterEmployerName, clientStaffPersonAdded, new HashSet<>(), new HashSet<>());
 
     Reporter reporter =
         Reporter.createWithDefaults("referralId", true, address, participant, "countyCode");
@@ -391,12 +387,11 @@ public class ReporterTest {
     String streetAddress = "Main St";
 
     gov.ca.cwds.rest.api.domain.Address address = new gov.ca.cwds.rest.api.domain.Address(
-        "legacy_source_table", "legacy_id", streetAddress, "city", 1828, 12345, 32);
-    Participant participant =
-        new Participant(5L, "legacy_source_table", "legacy_client_id", new LegacyDescriptor(),
-            "firstName", "middleName", "lastName", "jr", "gender", "ssn", "date_of_birth",
-            primaryLanguage, secondaryLanguage, 7L, 8L, reporterConfidentialWaiver,
-            reporterEmployerName, clientStaffPersonAdded, new HashSet<>(), new HashSet<>());
+        "legacy_source_table", "legacy_id", streetAddress, "city", 1828, "12345", 32);
+    Participant participant = new Participant(5L, "legacy_source_table", "legacy_client_id",
+        new LegacyDescriptor(), "firstName", "middleName", "lastName", "jr", "gender", "ssn",
+        "date_of_birth", primaryLanguage, secondaryLanguage, 7L, 8L, reporterConfidentialWaiver,
+        reporterEmployerName, clientStaffPersonAdded, new HashSet<>(), new HashSet<>());
 
     Reporter reporter =
         Reporter.createWithDefaults("referralId", true, address, participant, "countyCode");
@@ -410,7 +405,7 @@ public class ReporterTest {
     String streetAddress = "Main St";
 
     gov.ca.cwds.rest.api.domain.Address nsAddress = new gov.ca.cwds.rest.api.domain.Address(
-        "legacy_source_table", "legacy_id", streetAddress, "city", 1828, 12345, 32);
+        "legacy_source_table", "legacy_id", streetAddress, "city", 1828, "12345", 32);
 
     Address address = Address.createWithDefaults(nsAddress);
     assertThat(address.getStreetNumber(), is(equalTo(null)));

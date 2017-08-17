@@ -96,7 +96,8 @@ public class PersonServiceTest {
    */
   @Test
   public void testFindReturnsCorrectPersonWhenFound() throws Exception {
-    Address address = new Address("", "", "742 Evergreen Terrace", "Springfield", 1828, 98700, 32);
+    Address address =
+        new Address("", "", "742 Evergreen Terrace", "Springfield", 1828, "98700", 32);
     PhoneNumber phoneNumber = new PhoneNumber("408-277-4778", "cell");
     Language language = new Language("English");
     Race race = new Race("White", "European");
@@ -146,7 +147,7 @@ public class PersonServiceTest {
   public void createReturnsPostedPerson() throws Exception {
     gov.ca.cwds.data.persistence.ns.Address toCreateAddress =
         new gov.ca.cwds.data.persistence.ns.Address(1L, "742 Evergreen Terrace", "Springfield",
-            "1877", new Integer(98700), "32");
+            "1877", "98700", "32");
     Set<PersonAddress> personAddresses = new HashSet<>();
 
     PersonAddress personAddress = new PersonAddress();
@@ -167,7 +168,7 @@ public class PersonServiceTest {
   public void createReturnsNonNull() throws Exception {
     gov.ca.cwds.data.persistence.ns.Address toCreateAddress =
         new gov.ca.cwds.data.persistence.ns.Address(1L, "742 Evergreen Terrace", "Springfield",
-            "1877", new Integer(98700), "32");
+            "1877", "98700", "32");
     Set<PersonAddress> personAddresses = new HashSet<>();
 
     PersonAddress personAddress = new PersonAddress();
@@ -221,7 +222,8 @@ public class PersonServiceTest {
   public void updateThrowsNullPointeException() throws Exception {
     thrown.expect(NullPointerException.class);
 
-    Address address = new Address("", "", "742 Evergreen Terrace", "Springfield", 1828, 98700, 32);
+    Address address =
+        new Address("", "", "742 Evergreen Terrace", "Springfield", 1828, "98700", 32);
     Set<Address> addresses = new HashSet<>();
     addresses.add(address);
     Person toUpdate = new Person("Bart", "S", "Simpson", "", "M", "2013-10-31", "1234556789",

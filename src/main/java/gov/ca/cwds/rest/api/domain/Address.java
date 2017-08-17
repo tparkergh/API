@@ -3,7 +3,6 @@ package gov.ca.cwds.rest.api.domain;
 import static gov.ca.cwds.data.persistence.cms.CmsPersistentObject.CMS_ID_LEN;
 
 import javax.validation.Valid;
-import javax.validation.constraints.Max;
 import javax.validation.constraints.Size;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
@@ -56,8 +55,8 @@ public class Address extends ReportingDomain implements Request, Response {
 
   @JsonProperty("zip")
   @ApiModelProperty(value = "Zip", example = "95757")
-  @Max(99999)
-  private Integer zip;
+  @Size(min = 5, max = 5)
+  private String zip;
 
   @JsonProperty("type")
   @ApiModelProperty(example = "32")
@@ -84,7 +83,7 @@ public class Address extends ReportingDomain implements Request, Response {
   public Address(@JsonProperty("legacy_source_table") String legacySourceTable,
       @JsonProperty("legacy_id") String addressId,
       @JsonProperty("street_address") String streetAddress, @JsonProperty("city") String city,
-      @JsonProperty("state") Integer state, @JsonProperty("zip") Integer zip,
+      @JsonProperty("state") Integer state, @JsonProperty("zip") String zip,
       @JsonProperty("type") Integer type) {
     super();
     this.legacySourceTable = legacySourceTable;
@@ -164,7 +163,7 @@ public class Address extends ReportingDomain implements Request, Response {
   /**
    * @return zip code
    */
-  public Integer getZip() {
+  public String getZip() {
     return zip;
   }
 

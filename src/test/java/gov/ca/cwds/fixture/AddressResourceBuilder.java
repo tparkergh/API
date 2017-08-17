@@ -11,7 +11,7 @@ public class AddressResourceBuilder {
   String streetAddress = "123 Main";
   String city = "Sacramento";
   Integer state = 1828; // "CA";
-  Integer zip = 95757;
+  String zip = "95757";
   Integer type = 32;
 
   /**
@@ -63,7 +63,7 @@ public class AddressResourceBuilder {
    * @param zip - zip
    * @return the zip
    */
-  public AddressResourceBuilder setZip(Integer zip) {
+  public AddressResourceBuilder setZip(String zip) {
     this.zip = zip;
     return this;
   }

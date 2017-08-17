@@ -234,7 +234,7 @@ public class Address extends ReportingDomain implements Request, Response {
   public static Address createWithDefaults(gov.ca.cwds.rest.api.domain.Address address) {
     // TODO: 41511573 address parsing - Smarty Streets Free Form display requires standardizing
     // parsing to fields in CMS
-    int zipCode = address.getZip();
+    int zipCode = Integer.parseInt(address.getZip());
     short zipSuffix = 0;
     if (address.getZip().toString().length() > 5) {
       zipSuffix = Short.parseShort(address.getZip().toString().substring(5));

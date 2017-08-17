@@ -82,7 +82,7 @@ public class ParticipantResourceTest {
   @Test
   public void testPostValidatesEntity() throws Exception {
     roles.add("victim");
-    Address address = new Address("", "", "123 First St", "San Jose", 1828, 94321, 32);
+    Address address = new Address("", "", "123 First St", "San Jose", 1828, "94321", 32);
     addresses.add(address);
     Participant participant = new Participant(1, "", "", new LegacyDescriptor(), "Marge", "J",
         "Simpson", "F", "", "11122333", "11-01-2017", primaryLanguage, secondaryLanguage, 123, 456,
@@ -97,7 +97,7 @@ public class ParticipantResourceTest {
   @Test
   public void testDelete200ResourceSuccess() throws Exception {
     roles.add("victim");
-    Address address = new Address("", "", "123 First St", "San Jose", 1828, 94321, 32);
+    Address address = new Address("", "", "123 First St", "San Jose", 1828, "94321", 32);
     addresses.add(address);
     Participant participant = new Participant(1, "", "", new LegacyDescriptor(), "Marge", "J",
         "Simpson", "", "F", "111223333", "2017-01-23", primaryLanguage, secondaryLanguage, 123, 456,
@@ -122,11 +122,12 @@ public class ParticipantResourceTest {
   @Test
   public void testUpdate404NotFoundError() throws Exception {
     roles.add("victim");
-    Address address = new Address("", "", "123 First St", "San Jose", 1828, 94321, 32);
+    Address address = new Address("", "", "123 First St", "San Jose", 1828, "94321", 32);
     addresses.add(address);
     Participant participant = new Participant(1, "", "", new LegacyDescriptor(), "Marge", "J",
         "Simpson", "", "Female", "111223333", "2017-01-11", primaryLanguage, secondaryLanguage, 123,
-        456, reporterConfidentialWaiver, reporterEmployerName, clientStaffPersonAdded, roles, addresses);
+        456, reporterConfidentialWaiver, reporterEmployerName, clientStaffPersonAdded, roles,
+        addresses);
     int receivedStatus =
         inMemoryResource.client().target(ROOT_RESOURCE).request().accept(MediaType.APPLICATION_JSON)
             .put(Entity.entity(participant, MediaType.APPLICATION_JSON)).getStatus();

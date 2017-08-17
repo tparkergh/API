@@ -62,7 +62,7 @@ public class MessageBuilderTest {
     String longWelshCityName = "Llanfairpwllgwyngyllgogerychwyrndrobwllllantysiliogogogoch";
 
     Address address = Address.createWithDefaults(new gov.ca.cwds.rest.api.domain.Address(null, null,
-        "1 main", longWelshCityName, 1828, 123435, 32));
+        "1 main", longWelshCityName, 1828, "123435", 32));
     Validator validator = Validation.buildDefaultValidatorFactory().getValidator();
 
     builder.addDomainValidationError(validator.validate(address));
