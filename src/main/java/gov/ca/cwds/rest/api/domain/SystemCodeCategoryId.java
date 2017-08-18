@@ -80,6 +80,11 @@ public final class SystemCodeCategoryId {
   public static final String CONTACT_LOCATION = "CNT_LOC";
 
   /**
+   * Approval Status, e.g) Request Not Submitted, Pending Approval
+   */
+  public static final String APPROVAL_STATUS_TYPE = "APV_STC";
+
+  /**
    * Private constructor
    */
   private SystemCodeCategoryId() {}
