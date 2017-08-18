@@ -366,8 +366,6 @@ public class Referral extends ReportingDomain implements Request, Response {
       @JsonProperty("anonymousReporterIndicator") Boolean anonymousReporterIndicator,
       @JsonProperty("applicationForPetitionIndicator") Boolean applicationForPetitionIndicator,
       @JsonProperty("approvalNumber") String approvalNumber,
-
-
       @JsonProperty("approvalStatusType") Short approvalStatusType,
       @JsonProperty("caretakersPerpetratorCode") Boolean caretakersPerpetratorCode,
       @JsonProperty("closureDate") String closureDate,
@@ -376,16 +374,8 @@ public class Referral extends ReportingDomain implements Request, Response {
       @JsonProperty("drmsAllegationDescriptionDoc") String drmsAllegationDescriptionDoc,
       @JsonProperty("drmsErReferralDoc") String drmsErReferralDoc,
       @JsonProperty("drmsInvestigationDoc") String drmsInvestigationDoc,
-
-
-
       @JsonProperty("filedSuspectedChildAbuseReporttoLawEnforcementIndicator") Boolean filedSuspectedChildAbuseReporttoLawEnforcementIndicator,
-
-
-
       @JsonProperty("familyAwarenessIndicator") Boolean familyAwarenessIndicator,
-
-
       @JsonProperty("govtEntityType") Short govtEntityType,
       @JsonProperty("legalDefinitionCode") String legalDefinitionCode,
       @JsonProperty("legalRightsNoticeIndicator") Boolean legalRightsNoticeIndicator,
@@ -414,8 +404,6 @@ public class Referral extends ReportingDomain implements Request, Response {
       @JsonProperty("homelessIndicator") Boolean homelessIndicator,
       @JsonProperty("familyRefusedServicesIndicator") Boolean familyRefusedServicesIndicator,
       @JsonProperty("firstEvaluatedOutApprovalDate") String firstEvaluatedOutApprovalDate,
-
-
       @JsonProperty("responsibleAgencyCode") String responsibleAgencyCode,
       @JsonProperty("limitedAccessGovtAgencyType") Short limitedAccessGovtAgencyType,
       @JsonProperty("limitedAccessDate") String limitedAccessDate,
@@ -587,20 +575,11 @@ public class Referral extends ReportingDomain implements Request, Response {
       for (gov.ca.cwds.data.persistence.cms.Allegation persistedAllegation : persistedReferral
           .getAllegations()) {
         this.allegation.add(new Allegation(persistedAllegation));
-
-        if (persistedAllegation.getVictimClients() != null
-            && !persistedAllegation.getVictimClients().isEmpty()) {
-          for (gov.ca.cwds.data.persistence.cms.Client persistentClient : persistedAllegation
-              .getVictimClients()) {
-            this.victimClient.add(new Client(persistentClient, true));
-          }
+        if (persistedAllegation.getVictimClients() != null) {
+          this.victimClient.add(new Client(persistedAllegation.getVictimClients(), true));
         }
-        if (persistedAllegation.getPerpetratorClients() != null
-            && !persistedAllegation.getPerpetratorClients().isEmpty()) {
-          for (gov.ca.cwds.data.persistence.cms.Client persistentPerpetratorClient : persistedAllegation
-              .getPerpetratorClients()) {
-            this.perpetratorClient.add(new Client(persistentPerpetratorClient, true));
-          }
+        if (persistedAllegation.getPerpetratorClients() != null) {
+          this.perpetratorClient.add(new Client(persistedAllegation.getPerpetratorClients(), true));
         }
       }
     }
