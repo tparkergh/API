@@ -49,7 +49,7 @@ public class Address extends NsPersistentObject {
   private String state;
 
   @Column(name = "zip")
-  private Integer zip;
+  private String zip;
 
   @Column(name = "address_type_id")
   private String type;
@@ -76,7 +76,7 @@ public class Address extends NsPersistentObject {
    * @param zip - zip code
    * @param type - address type
    */
-  public Address(Long id, String streetAddress, String city, String state, Integer zip,
+  public Address(Long id, String streetAddress, String city, String state, String zip,
       String type) {
     super();
     this.id = id;
@@ -145,7 +145,7 @@ public class Address extends NsPersistentObject {
   /**
    * @return the zip
    */
-  public Integer getZip() {
+  public String getZip() {
     return zip;
   }
 

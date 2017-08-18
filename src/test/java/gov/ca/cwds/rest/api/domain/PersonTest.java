@@ -45,7 +45,7 @@ public class PersonTest {
   private String gender = "M";
   private String birthDate = "2001-09-01";
   private String ssn = "123456789";
-  private Address address = new Address("", "", "123 Main", "Sacramento", 1828, 95757, 32);
+  private Address address = new Address("", "", "123 Main", "Sacramento", 1828, "95757", 32);
   private Set<Address> addresses = new HashSet<>();
   private PhoneNumber phoneNumber = new PhoneNumber("408-641-0287", "cell");
   private Set<PhoneNumber> phoneNumbers = new HashSet<>();

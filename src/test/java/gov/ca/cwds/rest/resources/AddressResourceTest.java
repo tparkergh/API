@@ -102,7 +102,8 @@ public class AddressResourceTest {
   @SuppressWarnings("javadoc")
   @Test
   public void testPostDelegatesToResourceDelegate() throws Exception {
-    Address address = new Address("", "", "742 Evergreen Terrace", "Springfield", 1828, 98700, 32);
+    Address address =
+        new Address("", "", "742 Evergreen Terrace", "Springfield", 1828, "98700", 32);
     inMemoryResource.client().target(ROOT_RESOURCE).request().accept(MediaType.APPLICATION_JSON)
         .post(Entity.entity(address, MediaType.APPLICATION_JSON)).getStatus();
     verify(resourceDelegate, atLeastOnce()).create(eq(address));
@@ -112,7 +113,7 @@ public class AddressResourceTest {
   @Test
   public void testPostValidatesEntity() throws Exception {
     Address address = new Address("", "", "123456789012345678901234567890123456789012345678901",
-        "Springfield", 1828, 98700, 32);
+        "Springfield", 1828, "98700", 32);
     int status =
         inMemoryResource.client().target(ROOT_RESOURCE).request().accept(MediaType.APPLICATION_JSON)
             .post(Entity.entity(address, MediaType.APPLICATION_JSON)).getStatus();
@@ -123,7 +124,8 @@ public class AddressResourceTest {
   @SuppressWarnings("javadoc")
   @Test
   public void testPost200ResourceSuccess() throws Exception {
-    Address address = new Address("", "", "742 Evergreen Terrace", "Springfield", 1828, 98700, 32);
+    Address address =
+        new Address("", "", "742 Evergreen Terrace", "Springfield", 1828, "98700", 32);
     int status =
         inMemoryResource.client().target(ROOT_RESOURCE).request().accept(MediaType.APPLICATION_JSON)
             .post(Entity.entity(address, MediaType.APPLICATION_JSON)).getStatus();
@@ -151,7 +153,8 @@ public class AddressResourceTest {
   @SuppressWarnings("javadoc")
   @Test
   public void testUpdate501NotImplemented() throws Exception {
-    Address address = new Address("", "", "742 Evergreen Terrace", "Springfield", 1828, 98700, 32);
+    Address address =
+        new Address("", "", "742 Evergreen Terrace", "Springfield", 1828, "98700", 32);
     int status =
         inMemoryResource.client().target(ROOT_RESOURCE).request().accept(MediaType.APPLICATION_JSON)
             .put(Entity.entity(address, MediaType.APPLICATION_JSON)).getStatus();
