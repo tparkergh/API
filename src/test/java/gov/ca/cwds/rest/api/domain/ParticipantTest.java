@@ -100,7 +100,7 @@ public class ParticipantTest implements PersistentTestTemplate {
     MAPPER.configure(SerializationFeature.INDENT_OUTPUT, true);
     Participant validParticipant = this.validParticipant();
     roles.add("Victim");
-    Address address = new Address("", "", "123 First St", "San Jose", 1828, 94321, 32);
+    Address address = new Address("", "", "123 First St", "San Jose", 1828, "94321", 32);
     addresses.add(address);
     MAPPER.configure(SerializationFeature.INDENT_OUTPUT, true);
 
@@ -158,7 +158,7 @@ public class ParticipantTest implements PersistentTestTemplate {
 
     Participant domain = new Participant(id, legacySourceTable, clientId, new LegacyDescriptor(),
         firstName, middleName, lastName, suffix, gender, ssn, dateOfBirth, primaryLanguage,
-        secondaryLanguage, personId, screeningId,reporterConfidentialWaiver,reporterEmployerName,
+        secondaryLanguage, personId, screeningId, reporterConfidentialWaiver, reporterEmployerName,
         clientStaffPersonAdded, roles, addresses);
 
     assertThat(domain.getId(), is(equalTo(id)));
@@ -380,7 +380,8 @@ public class ParticipantTest implements PersistentTestTemplate {
     try {
       validParticipant = new Participant(id, legacySourceTable, clientId, new LegacyDescriptor(),
           firstName, middleName, lastName, suffix, gender, ssn, dateOfBirth, primaryLanguage,
-          secondaryLanguage, personId, screeningId, reporterConfidentialWaiver, reporterEmployerName, clientStaffPersonAdded, roles, addresses);
+          secondaryLanguage, personId, screeningId, reporterConfidentialWaiver,
+          reporterEmployerName, clientStaffPersonAdded, roles, addresses);
     } catch (Exception e) {
       e.printStackTrace();
     }

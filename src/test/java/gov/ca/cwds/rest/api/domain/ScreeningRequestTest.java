@@ -50,7 +50,7 @@ public class ScreeningRequestTest {
   @Test
   public void testConstructor() throws Exception {
 
-    Address address = new Address("", "", "10 main st", "Sacramento", 1828, 95814, 32);
+    Address address = new Address("", "", "10 main st", "Sacramento", 1828, "95814", 32);
     ScreeningRequest screeningRequest = new ScreeningRequest("X5HNJK", "1973-11-22", "Amador",
         "1973-11-22", "Home", "email", "First screening", "immediate", "accept_for_investigation",
         "2016-10-11", "first narrative", address);
@@ -69,7 +69,7 @@ public class ScreeningRequestTest {
    */
   @Test
   public void serializesToJSON() throws Exception {
-    Address address = new Address("", "", "10 main st", "Sacramento", 1828, 95814, 32);
+    Address address = new Address("", "", "10 main st", "Sacramento", 1828, "95814", 32);
     ScreeningRequest screeningRequest = new ScreeningRequest("X5HNJK", "1973-11-22", "Amador",
         "1973-11-22", "Home", "email", "First screening", "immediate", "accept_for_investigation",
         "2016-10-11", "first narrative", address);
@@ -86,7 +86,7 @@ public class ScreeningRequestTest {
    */
   @Test
   public void deserializesFromJSON() throws Exception {
-    Address address = new Address("", "", "10 main st", "Sacramento", 1828, 95814, 32);
+    Address address = new Address("", "", "10 main st", "Sacramento", 1828, "95814", 32);
     @SuppressWarnings("unused")
     ImmutableList.Builder<Long> builder = ImmutableList.builder();
     ScreeningRequest expected = new ScreeningRequest("X5HNJK", "11/22/1973", "Amador", "11/22/1973",
