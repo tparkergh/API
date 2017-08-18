@@ -778,8 +778,8 @@ public class ScreeningToReferralService implements CrudsService {
         }
         reporterAddress = address;
         zipSuffix = null;
-        if (address.getZip().toString().length() > 5) {
-          zipSuffix = Short.parseShort(address.getZip().toString().substring(5));
+        if (address.getZip().length() > 5) {
+          zipSuffix = Short.parseShort(address.getZip().substring(5));
         }
         break;
       }

@@ -700,12 +700,12 @@ public class R04464CrossReportLawEnforcementDueTest {
   }
 
   /**
-   * Test for reminder not created when reporter law Enforcement Id is Null
+   * Test for reminder created when reporter law Enforcement Id is Null
    * 
    * @throws Exception - exception
    */
   @Test
-  public void reminderNotCreatedWhenReporterEnforcementIdNull() throws Exception {
+  public void reminderCreatedWhenReporterEnforcementIdNull() throws Exception {
     Participant victim =
         new ParticipantResourceBuilder().setDateOfBirth("1992-06-18").createVictimParticipant();
     Participant perp = new ParticipantResourceBuilder().createPerpParticipant();
@@ -772,16 +772,16 @@ public class R04464CrossReportLawEnforcementDueTest {
     r04464CrossReportLawEnforcementDue.crossReportForLawEnforcmentDue(postedScreeningToReferral);
     r04631ReferralInvestigationContactDue
         .referralInvestigationContactDue(postedScreeningToReferral);
-    verify(tickleService, times(3)).create(any());
+    verify(tickleService, times(4)).create(any());
   }
 
   /**
-   * Test for reminder not created when crossReport law Enforcement Id is Null
+   * Test for reminder created when crossReport law Enforcement Id is Null
    * 
    * @throws Exception - exception
    */
   @Test
-  public void reminderNotCreatedWhenCrossReportEnforcementIdNull() throws Exception {
+  public void reminderCreatedWhenCrossReportEnforcementIdNull() throws Exception {
     Participant victim =
         new ParticipantResourceBuilder().setDateOfBirth("1992-06-18").createVictimParticipant();
     Participant perp = new ParticipantResourceBuilder().createPerpParticipant();
@@ -850,7 +850,7 @@ public class R04464CrossReportLawEnforcementDueTest {
     r04464CrossReportLawEnforcementDue.crossReportForLawEnforcmentDue(postedScreeningToReferral);
     r04631ReferralInvestigationContactDue
         .referralInvestigationContactDue(postedScreeningToReferral);
-    verify(tickleService, times(3)).create(any());
+    verify(tickleService, times(4)).create(any());
   }
 
 

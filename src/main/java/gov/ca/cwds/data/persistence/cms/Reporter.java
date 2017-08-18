@@ -189,7 +189,8 @@ public class Reporter extends BaseReporter {
     this.communicationMethodType = reporter.getCommunicationMethodType();
     this.confidentialWaiverIndicator =
         DomainChef.cookBoolean(reporter.getConfidentialWaiverIndicator());
-    this.drmsMandatedRprtrFeedback = reporter.getDrmsMandatedRprtrFeedback();
+    this.drmsMandatedRprtrFeedback = StringUtils.isBlank(reporter.getDrmsMandatedRprtrFeedback())
+        ? null : reporter.getDrmsMandatedRprtrFeedback();
     this.employerName = reporter.getEmployerName();
     this.feedbackDate = DomainChef.uncookDateString(reporter.getFeedbackDate());
     this.feedbackRequiredIndicator =
@@ -209,7 +210,8 @@ public class Reporter extends BaseReporter {
     this.streetNumber = reporter.getStreetNumber();
     this.suffixTitleDescription = reporter.getSuffixTitleDescription();
     this.zipNumber = DomainChef.uncookZipcodeString(reporter.getZipcode());
-    this.lawEnforcementId = reporter.getLawEnforcementId();
+    this.lawEnforcementId =
+        StringUtils.isBlank(reporter.getLawEnforcementId()) ? null : reporter.getLawEnforcementId();
     this.zipSuffixNumber = reporter.getZipSuffixNumber();
     this.countySpecificCode = reporter.getCountySpecificCode();
   }

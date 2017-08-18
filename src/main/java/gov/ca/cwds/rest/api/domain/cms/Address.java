@@ -236,8 +236,8 @@ public class Address extends ReportingDomain implements Request, Response {
     // parsing to fields in CMS
     int zipCode = Integer.parseInt(address.getZip());
     short zipSuffix = 0;
-    if (address.getZip().toString().length() > 5) {
-      zipSuffix = Short.parseShort(address.getZip().toString().substring(5));
+    if (address.getZip().length() > 5) {
+      zipSuffix = Short.parseShort(address.getZip().substring(5));
     }
 
     /**
