@@ -11,6 +11,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.PersistenceException;
 import javax.persistence.Table;
 
+import org.apache.commons.lang3.StringUtils;
 import org.hibernate.annotations.Type;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
@@ -233,7 +234,8 @@ public class CrossReport extends CmsPersistentObject {
       this.informDate = DomainChef.uncookDateString(crossReport.getInformDate());
       this.recipientPositionTitleDesc = crossReport.getRecipientPositionTitleDesc();
       this.referenceNumber = crossReport.getReferenceNumber();
-      this.lawEnforcementId = crossReport.getLawEnforcementId();
+      this.lawEnforcementId = StringUtils.isBlank(crossReport.getLawEnforcementId()) ? null
+          : crossReport.getLawEnforcementId();
       this.staffPersonId = crossReport.getStaffPersonId();
       this.description = crossReport.getDescription();
       this.recipientName = crossReport.getRecipientName();

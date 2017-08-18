@@ -5,6 +5,7 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Set;
 
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -125,14 +126,14 @@ public class R04464CrossReportLawEnforcementDue {
 
         boolean reporterCheck =
             persistedReporter.getMandatedReporterIndicator() != DEFAULT_TRUE_INDICATOR
-                && persistedReporter.getLawEnforcementId() != null;
+                && StringUtils.isBlank(persistedReporter.getLawEnforcementId());
 
         if (!reminderCreated && allegationCheck && reporterCheck) {
 
           for (gov.ca.cwds.rest.api.domain.CrossReport crossReport : crossReports) {
             gov.ca.cwds.data.persistence.cms.CrossReport savedCrossReport =
                 crossReportDao.find(crossReport.getLegacyId());
-            if (!reminderCreated && savedCrossReport.getLawEnforcementId() != null
+            if (!reminderCreated && StringUtils.isBlank(savedCrossReport.getLawEnforcementId())
                 && DEFAULT_FALSE_INDICATOR
                     .equals(savedCrossReport.getSatisfyCrossReportIndicator())) {
 

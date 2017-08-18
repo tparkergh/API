@@ -9,6 +9,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
+import org.apache.commons.lang3.StringUtils;
 import org.hibernate.annotations.NamedQuery;
 import org.hibernate.annotations.Type;
 
@@ -239,8 +240,9 @@ public class Allegation extends CmsPersistentObject {
     this.staffPersonAddedIndicator =
         DomainChef.cookBoolean(persistedAllegation.getStaffPersonAddedIndicator());
     this.victimClientId = persistedAllegation.getVictimClientId();
-    this.perpetratorClientId = persistedAllegation.getPerpetratorClientId().isEmpty() ? null
-        : persistedAllegation.getPerpetratorClientId();
+
+    this.perpetratorClientId = StringUtils.isBlank(persistedAllegation.getPerpetratorClientId())
+        ? null : persistedAllegation.getPerpetratorClientId();
     this.referralId = persistedAllegation.getReferralId();
     this.countySpecificCode = persistedAllegation.getCountySpecificCode();
     this.zippyCreatedIndicator =
