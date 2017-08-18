@@ -11,6 +11,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 import org.apache.commons.lang3.StringUtils;
@@ -64,10 +65,14 @@ public class Reporter extends BaseReporter {
   /**
    * #147241489: referential integrity check.
    * <p>
-   * Doesn't actually load the data. Just checks the existence of the parent lawEnforcement and
-   * reporterDrmsDocument record.
+   * Doesn't actually load the data. Just checks the existence of the parent referral,
+   * lawEnforcement and reporterDrmsDocument record.
    * </p>
    */
+  @OneToOne(optional = false)
+  @JoinColumn(name = "FKREFERL_T", nullable = false, updatable = false, insertable = false)
+  private Referral referral;
+
   @ManyToOne(optional = true)
   @JoinColumn(name = "FKLAW_ENFT", nullable = true, updatable = false, insertable = false)
   private LawEnforcement lawEnforcement;

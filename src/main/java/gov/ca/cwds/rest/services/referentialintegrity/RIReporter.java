@@ -9,6 +9,7 @@ import gov.ca.cwds.data.ApiHibernateInterceptor;
 import gov.ca.cwds.data.ApiReferentialCheck;
 import gov.ca.cwds.data.cms.DrmsDocumentDao;
 import gov.ca.cwds.data.cms.LawEnforcementDao;
+import gov.ca.cwds.data.cms.ReferralDao;
 import gov.ca.cwds.data.persistence.cms.Reporter;
 import gov.ca.cwds.rest.validation.ReferentialIntegrityException;
 
@@ -54,18 +55,22 @@ public class RIReporter implements ApiReferentialCheck<Reporter> {
 
   private static final Logger LOGGER = LoggerFactory.getLogger(Reporter.class);
 
+  private transient ReferralDao referralDao;
   private transient LawEnforcementDao lawEnforcementDao;
   private transient DrmsDocumentDao drmsDocumentDao;
 
   /**
    * Constructor
    * 
+   * @param referralDao - referralDao
    * @param lawEnforcementDao - lawEnforcementDao
    * @param drmsDocumentDao - drmsDocumentDao
    * 
    */
   @Inject
-  public RIReporter(final LawEnforcementDao lawEnforcementDao, DrmsDocumentDao drmsDocumentDao) {
+  public RIReporter(final ReferralDao referralDao, LawEnforcementDao lawEnforcementDao,
+      DrmsDocumentDao drmsDocumentDao) {
+    this.referralDao = referralDao;
     this.lawEnforcementDao = lawEnforcementDao;
     this.drmsDocumentDao = drmsDocumentDao;
     ApiHibernateInterceptor.addHandler(Reporter.class, reporter -> apply((Reporter) reporter));
@@ -74,7 +79,11 @@ public class RIReporter implements ApiReferentialCheck<Reporter> {
   @Override
   public Boolean apply(Reporter t) {
     LOGGER.debug("RI: Reporter");
-    if (t.getLawEnforcementId() != null && !t.getLawEnforcementId().isEmpty()
+    if (referralDao.find(t.getReferralId()) == null) {
+      throw new ReferentialIntegrityException(
+          "Reporter => Referral with given Identifier is not present in database");
+
+    } else if (t.getLawEnforcementId() != null && !t.getLawEnforcementId().isEmpty()
         && lawEnforcementDao.find(t.getLawEnforcementId()) == null) {
       throw new ReferentialIntegrityException(
           "Reporter => LawEnforcement with given Identifier is not present in database");
