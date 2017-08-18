@@ -87,8 +87,8 @@ public class ScreeningToReferralTest {
 
 
     String expected = MAPPER.writeValueAsString(new ScreeningToReferral(id, "", "",
-        "2016-08-03T01:00:00.000Z", SACRAMENTO_COUNTY_CODE, "2016-08-02", "Foster Home", communicationMethod,
-        "The Rocky Horror Show", "Narrative 123 test", "123ABC", responseTime,
+        "2016-08-03T01:00:00.000Z", SACRAMENTO_COUNTY_CODE, "2016-08-02", "Foster Home",
+        communicationMethod, "The Rocky Horror Show", "Narrative 123 test", "123ABC", responseTime,
         "2016-08-03T01:00:00.000Z", "Michael Bastow", "addtional information",
         "Screening Descision", "Detail", approvalStatus, familyAwarness, filedWithLawEnforcement,
         responsibleAgency, address, participants, crossReports, allegations));
@@ -113,11 +113,11 @@ public class ScreeningToReferralTest {
     allegations.add(allegation);
 
     ScreeningToReferral expected = new ScreeningToReferral(id, "", "", "2016-08-03T01:00:00.000Z",
-        SACRAMENTO_COUNTY_CODE, "2016-08-02", "Foster Home", communicationMethod, "The Rocky Horror Show",
-        "Narrative 123 test", "123ABC", responseTime, "2016-08-03T01:00:00.000Z", "Michael Bastow",
-        "addtional information", "Screening Descision", "Detail",approvalStatus, familyAwarness,
-        filedWithLawEnforcement, responsibleAgency, address, participants,
-        crossReports, allegations);
+        SACRAMENTO_COUNTY_CODE, "2016-08-02", "Foster Home", communicationMethod,
+        "The Rocky Horror Show", "Narrative 123 test", "123ABC", responseTime,
+        "2016-08-03T01:00:00.000Z", "Michael Bastow", "addtional information",
+        "Screening Descision", "Detail", approvalStatus, familyAwarness, filedWithLawEnforcement,
+        responsibleAgency, address, participants, crossReports, allegations);
 
 
     ScreeningToReferral serialized =

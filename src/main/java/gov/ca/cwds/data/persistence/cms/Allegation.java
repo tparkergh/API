@@ -240,7 +240,6 @@ public class Allegation extends CmsPersistentObject {
     this.staffPersonAddedIndicator =
         DomainChef.cookBoolean(persistedAllegation.getStaffPersonAddedIndicator());
     this.victimClientId = persistedAllegation.getVictimClientId();
-
     this.perpetratorClientId = StringUtils.isBlank(persistedAllegation.getPerpetratorClientId())
         ? null : persistedAllegation.getPerpetratorClientId();
     this.referralId = persistedAllegation.getReferralId();

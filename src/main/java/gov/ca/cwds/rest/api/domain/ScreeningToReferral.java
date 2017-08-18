@@ -151,6 +151,7 @@ public class ScreeningToReferral extends ReportingDomain implements Request {
   private String screeningDecisionDetail;
 
   @JsonProperty("approval_status")
+  @ValidSystemCodeId(required = false, category = SystemCodeCategoryId.APPROVAL_STATUS_TYPE)
   @ApiModelProperty(required = false, readOnly = false, value = "Status of the approval",
       example = "118")
   private int approvalStatus;
