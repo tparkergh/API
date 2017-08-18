@@ -11,11 +11,14 @@ import org.junit.Test;
 
 import gov.ca.cwds.data.cms.DrmsDocumentDao;
 import gov.ca.cwds.data.cms.LawEnforcementDao;
+import gov.ca.cwds.data.cms.ReferralDao;
 import gov.ca.cwds.data.persistence.cms.LawEnforcement;
 import gov.ca.cwds.fixture.CmsReporterResourceBuilder;
 import gov.ca.cwds.fixture.DrmsDocumentResourceBuilder;
 import gov.ca.cwds.fixture.LawEnforcementEntityBuilder;
+import gov.ca.cwds.fixture.ReferralResourceBuilder;
 import gov.ca.cwds.rest.api.domain.cms.DrmsDocument;
+import gov.ca.cwds.rest.api.domain.cms.Referral;
 import gov.ca.cwds.rest.api.domain.cms.Reporter;
 import gov.ca.cwds.rest.validation.ReferentialIntegrityException;
 
@@ -26,11 +29,13 @@ import gov.ca.cwds.rest.validation.ReferentialIntegrityException;
 @SuppressWarnings("javadoc")
 public class RIReporterTest {
 
+  private ReferralDao referralDao;
   private LawEnforcementDao lawEnforcementDao;
   private DrmsDocumentDao drmsDocumentDao;
 
   @Before
   public void setup() {
+    referralDao = mock(ReferralDao.class);
     lawEnforcementDao = mock(LawEnforcementDao.class);
     drmsDocumentDao = mock(DrmsDocumentDao.class);
   }
@@ -48,7 +53,7 @@ public class RIReporterTest {
    */
   @Test
   public void instantiation() throws Exception {
-    RIReporter riReporter = new RIReporter(lawEnforcementDao, drmsDocumentDao);
+    RIReporter riReporter = new RIReporter(referralDao, lawEnforcementDao, drmsDocumentDao);
     assertThat(riReporter, notNullValue());
   }
 
@@ -56,15 +61,29 @@ public class RIReporterTest {
    * Test for test the referential Integrity Exception
    */
   @Test(expected = ReferentialIntegrityException.class)
+  public void riCheckFailureWhenReferralIdNotFound() throws Exception {
+    Reporter reporterDomain = new CmsReporterResourceBuilder().setReferralId("abpI86Te1V").build();
+    gov.ca.cwds.data.persistence.cms.Reporter reporter =
+        new gov.ca.cwds.data.persistence.cms.Reporter(reporterDomain, "0X5");
+
+    when(referralDao.find(any())).thenReturn(null);
+    when(lawEnforcementDao.find(any())).thenReturn(null);
+    when(drmsDocumentDao.find(any())).thenReturn(null);
+    RIReporter target = new RIReporter(referralDao, lawEnforcementDao, drmsDocumentDao);
+    target.apply(reporter);
+  }
+
+  @Test(expected = ReferentialIntegrityException.class)
   public void riCheckFailureWhenLawEnforcemntNotFound() throws Exception {
     Reporter reporterDomain =
         new CmsReporterResourceBuilder().setLawEnforcementId("lpourfGe7V").build();
     gov.ca.cwds.data.persistence.cms.Reporter reporter =
         new gov.ca.cwds.data.persistence.cms.Reporter(reporterDomain, "0X5");
 
+    when(referralDao.find(any())).thenReturn(null);
     when(lawEnforcementDao.find(any())).thenReturn(null);
     when(drmsDocumentDao.find(any())).thenReturn(null);
-    RIReporter target = new RIReporter(lawEnforcementDao, drmsDocumentDao);
+    RIReporter target = new RIReporter(referralDao, lawEnforcementDao, drmsDocumentDao);
     target.apply(reporter);
   }
 
@@ -75,13 +94,18 @@ public class RIReporterTest {
     gov.ca.cwds.data.persistence.cms.Reporter reporter =
         new gov.ca.cwds.data.persistence.cms.Reporter(reporterDomain, "0X5");
 
+    Referral referralDomain = new ReferralResourceBuilder().build();
+    gov.ca.cwds.data.persistence.cms.Referral referral =
+        new gov.ca.cwds.data.persistence.cms.Referral("AB0751Gthu", referralDomain, "0X5");
+
     DrmsDocument drmsDocumentDomain = new DrmsDocumentResourceBuilder().build();
     gov.ca.cwds.data.persistence.cms.DrmsDocument drmsDocument =
         new gov.ca.cwds.data.persistence.cms.DrmsDocument("ABC1234lll", drmsDocumentDomain, "0X5");
 
+    when(referralDao.find(any())).thenReturn(referral);
     when(lawEnforcementDao.find(any())).thenReturn(null);
     when(drmsDocumentDao.find(any())).thenReturn(drmsDocument);
-    RIReporter riReporter = new RIReporter(lawEnforcementDao, drmsDocumentDao);
+    RIReporter riReporter = new RIReporter(referralDao, lawEnforcementDao, drmsDocumentDao);
     riReporter.apply(reporter);
   }
 
@@ -92,11 +116,16 @@ public class RIReporterTest {
     gov.ca.cwds.data.persistence.cms.Reporter reporter =
         new gov.ca.cwds.data.persistence.cms.Reporter(reporterDomain, "0X5");
 
+    Referral referralDomain = new ReferralResourceBuilder().build();
+    gov.ca.cwds.data.persistence.cms.Referral referral =
+        new gov.ca.cwds.data.persistence.cms.Referral("AB0751Gthu", referralDomain, "0X5");
+
     LawEnforcement lawEnforcemnt = new LawEnforcementEntityBuilder().build();
 
+    when(referralDao.find(any())).thenReturn(referral);
     when(lawEnforcementDao.find(any())).thenReturn(lawEnforcemnt);
     when(drmsDocumentDao.find(any())).thenReturn(null);
-    RIReporter riReporter = new RIReporter(lawEnforcementDao, drmsDocumentDao);
+    RIReporter riReporter = new RIReporter(referralDao, lawEnforcementDao, drmsDocumentDao);
     riReporter.apply(reporter);
   }
 
@@ -106,15 +135,20 @@ public class RIReporterTest {
     gov.ca.cwds.data.persistence.cms.Reporter reporter =
         new gov.ca.cwds.data.persistence.cms.Reporter(reporterDomain, "0X5");
 
+    Referral referralDomain = new ReferralResourceBuilder().build();
+    gov.ca.cwds.data.persistence.cms.Referral referral =
+        new gov.ca.cwds.data.persistence.cms.Referral("AB0751Gthu", referralDomain, "0X5");
+
     DrmsDocument drmsDocumentDomain = new DrmsDocumentResourceBuilder().build();
     gov.ca.cwds.data.persistence.cms.DrmsDocument drmsDocument =
         new gov.ca.cwds.data.persistence.cms.DrmsDocument("ABC1234lll", drmsDocumentDomain, "0X5");
 
     LawEnforcement lawEnforcemnt = new LawEnforcementEntityBuilder().build();
 
+    when(referralDao.find(any())).thenReturn(referral);
     when(lawEnforcementDao.find(any())).thenReturn(lawEnforcemnt);
     when(drmsDocumentDao.find(any())).thenReturn(drmsDocument);
-    RIReporter riReporter = new RIReporter(lawEnforcementDao, drmsDocumentDao);
+    RIReporter riReporter = new RIReporter(referralDao, lawEnforcementDao, drmsDocumentDao);
     riReporter.apply(reporter);
   }
 
@@ -124,15 +158,20 @@ public class RIReporterTest {
     gov.ca.cwds.data.persistence.cms.Reporter reporter =
         new gov.ca.cwds.data.persistence.cms.Reporter(reporterDomain, "0X5");
 
+    Referral referralDomain = new ReferralResourceBuilder().build();
+    gov.ca.cwds.data.persistence.cms.Referral referral =
+        new gov.ca.cwds.data.persistence.cms.Referral("AB0751Gthu", referralDomain, "0X5");
+
     DrmsDocument drmsDocumentDomain = new DrmsDocumentResourceBuilder().build();
     gov.ca.cwds.data.persistence.cms.DrmsDocument drmsDocument =
         new gov.ca.cwds.data.persistence.cms.DrmsDocument("ABC1234lll", drmsDocumentDomain, "0X5");
 
     LawEnforcement lawEnforcemnt = new LawEnforcementEntityBuilder().build();
 
+    when(referralDao.find(any())).thenReturn(referral);
     when(lawEnforcementDao.find(any())).thenReturn(lawEnforcemnt);
     when(drmsDocumentDao.find(any())).thenReturn(drmsDocument);
-    RIReporter riReporter = new RIReporter(lawEnforcementDao, drmsDocumentDao);
+    RIReporter riReporter = new RIReporter(referralDao, lawEnforcementDao, drmsDocumentDao);
     riReporter.apply(reporter);
   }
 
@@ -143,15 +182,20 @@ public class RIReporterTest {
     gov.ca.cwds.data.persistence.cms.Reporter reporter =
         new gov.ca.cwds.data.persistence.cms.Reporter(reporterDomain, "0X5");
 
+    Referral referralDomain = new ReferralResourceBuilder().build();
+    gov.ca.cwds.data.persistence.cms.Referral referral =
+        new gov.ca.cwds.data.persistence.cms.Referral("AB0751Gthu", referralDomain, "0X5");
+
     DrmsDocument drmsDocumentDomain = new DrmsDocumentResourceBuilder().build();
     gov.ca.cwds.data.persistence.cms.DrmsDocument drmsDocument =
         new gov.ca.cwds.data.persistence.cms.DrmsDocument("ABC1234lll", drmsDocumentDomain, "0X5");
 
     LawEnforcement lawEnforcemnt = new LawEnforcementEntityBuilder().build();
 
+    when(referralDao.find(any())).thenReturn(referral);
     when(lawEnforcementDao.find(any())).thenReturn(lawEnforcemnt);
     when(drmsDocumentDao.find(any())).thenReturn(drmsDocument);
-    RIReporter riReporter = new RIReporter(lawEnforcementDao, drmsDocumentDao);
+    RIReporter riReporter = new RIReporter(referralDao, lawEnforcementDao, drmsDocumentDao);
     riReporter.apply(reporter);
   }
 
@@ -162,15 +206,20 @@ public class RIReporterTest {
     gov.ca.cwds.data.persistence.cms.Reporter reporter =
         new gov.ca.cwds.data.persistence.cms.Reporter(reporterDomain, "0X5");
 
+    Referral referralDomain = new ReferralResourceBuilder().build();
+    gov.ca.cwds.data.persistence.cms.Referral referral =
+        new gov.ca.cwds.data.persistence.cms.Referral("AB0751Gthu", referralDomain, "0X5");
+
     DrmsDocument drmsDocumentDomain = new DrmsDocumentResourceBuilder().build();
     gov.ca.cwds.data.persistence.cms.DrmsDocument drmsDocument =
         new gov.ca.cwds.data.persistence.cms.DrmsDocument("ABC1234lll", drmsDocumentDomain, "0X5");
 
     LawEnforcement lawEnforcemnt = new LawEnforcementEntityBuilder().build();
 
+    when(referralDao.find(any())).thenReturn(referral);
     when(lawEnforcementDao.find(any())).thenReturn(lawEnforcemnt);
     when(drmsDocumentDao.find(any())).thenReturn(drmsDocument);
-    RIReporter riReporter = new RIReporter(lawEnforcementDao, drmsDocumentDao);
+    RIReporter riReporter = new RIReporter(referralDao, lawEnforcementDao, drmsDocumentDao);
     riReporter.apply(reporter);
   }
 
@@ -181,9 +230,14 @@ public class RIReporterTest {
     gov.ca.cwds.data.persistence.cms.Reporter reporter =
         new gov.ca.cwds.data.persistence.cms.Reporter(reporterDomain, "0X5");
 
+    Referral referralDomain = new ReferralResourceBuilder().build();
+    gov.ca.cwds.data.persistence.cms.Referral referral =
+        new gov.ca.cwds.data.persistence.cms.Referral("AB0751Gthu", referralDomain, "0X5");
+
+    when(referralDao.find(any())).thenReturn(referral);
     when(lawEnforcementDao.find(any())).thenReturn(null);
     when(drmsDocumentDao.find(any())).thenReturn(null);
-    RIReporter target = new RIReporter(lawEnforcementDao, drmsDocumentDao);
+    RIReporter target = new RIReporter(referralDao, lawEnforcementDao, drmsDocumentDao);
     target.apply(reporter);
   }
 
