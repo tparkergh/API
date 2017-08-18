@@ -1,11 +1,9 @@
 package gov.ca.cwds.fixture;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.util.Date;
+
 import gov.ca.cwds.data.persistence.cms.Allegation;
 import gov.ca.cwds.data.persistence.cms.Client;
-import java.util.Date;
-import java.util.HashSet;
-import java.util.Set;
 
 public class AllegationEntityBuilder {
   String id = "1234567890";
@@ -27,8 +25,8 @@ public class AllegationEntityBuilder {
   String countySpecificCode = "";
   String zippyCreatedIndicator = "";
   Short placementFacilityType = 0;
-  Set<Client> victimClients = new HashSet<>();
-  java.util.Set<Client> perpetratorClients = new HashSet<>();
+  Client victimClients = new Client();
+  Client perpetratorClients = new Client();
 
   public AllegationEntityBuilder setId(String id) {
     this.id = id;
@@ -125,24 +123,22 @@ public class AllegationEntityBuilder {
     return this;
   }
 
-  public AllegationEntityBuilder setVictimClients(Set<Client> victimClients) {
+  public AllegationEntityBuilder setVictimClients(Client victimClients) {
     this.victimClients = victimClients;
     return this;
   }
 
-  public AllegationEntityBuilder setPerpetratorClients(
-      Set<Client> perpetratorClients) {
+  public AllegationEntityBuilder setPerpetratorClients(Client perpetratorClients) {
     this.perpetratorClients = perpetratorClients;
     return this;
   }
 
-  public Allegation build(){
-    return new  Allegation(id, abuseEndDate, abuseStartDate, abuseFrequency,
-      abuseFrequencyPeriodCode, abuseLocationDescription,
-      allegationDispositionType, allegationType, dispositionDescription,
-      dispositionDate, injuryHarmDetailIndicator, nonProtectingParentCode,
-      staffPersonAddedIndicator, victimClientId, perpetratorClientId,
-      referralId, countySpecificCode, zippyCreatedIndicator,
-      placementFacilityType, victimClients, perpetratorClients);
+  public Allegation build() {
+    return new Allegation(id, abuseEndDate, abuseStartDate, abuseFrequency,
+        abuseFrequencyPeriodCode, abuseLocationDescription, allegationDispositionType,
+        allegationType, dispositionDescription, dispositionDate, injuryHarmDetailIndicator,
+        nonProtectingParentCode, staffPersonAddedIndicator, victimClientId, perpetratorClientId,
+        referralId, countySpecificCode, zippyCreatedIndicator, placementFacilityType, victimClients,
+        perpetratorClients);
   }
 }
