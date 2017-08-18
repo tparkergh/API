@@ -1,16 +1,12 @@
 package gov.ca.cwds.data.persistence.cms;
 
 import java.util.Date;
-import java.util.HashSet;
-import java.util.Set;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import org.hibernate.annotations.NamedQuery;
@@ -117,15 +113,13 @@ public class Allegation extends CmsPersistentObject {
    * Doesn't actually load the data. Just checks the existence of the parent referral record.
    * </p>
    */
+  @ManyToOne(optional = false)
+  @JoinColumn(name = "FKCLIENT_T", nullable = false, insertable = false, updatable = false)
+  private Client victimClients;
 
-  @OneToMany(cascade = CascadeType.ALL)
-  @JoinColumn(name = "IDENTIFIER", referencedColumnName = "FKCLIENT_T")
-  private Set<Client> victimClients = new HashSet<>();
-
-  @OneToMany(cascade = CascadeType.ALL)
-  @JoinColumn(name = "IDENTIFIER", referencedColumnName = "FKCLIENT_0")
-  private Set<Client> perpetratorClients = new HashSet<>();
-
+  @ManyToOne(optional = true)
+  @JoinColumn(name = "FKCLIENT_0", nullable = true, insertable = false, updatable = false)
+  private Client perpetratorClients;
 
   @ManyToOne(optional = false)
   @JoinColumn(name = "FKREFERL_T", nullable = false, updatable = false, insertable = false)
@@ -171,7 +165,7 @@ public class Allegation extends CmsPersistentObject {
       Date dispositionDate, String injuryHarmDetailIndicator, String nonProtectingParentCode,
       String staffPersonAddedIndicator, String victimClientId, String perpetratorClientId,
       String referralId, String countySpecificCode, String zippyCreatedIndicator,
-      Short placementFacilityType, Set<Client> victimClients, Set<Client> perpetratorClients) {
+      Short placementFacilityType, Client victimClients, Client perpetratorClients) {
     super();
 
     this.id = id;
@@ -400,14 +394,14 @@ public class Allegation extends CmsPersistentObject {
   /**
    * @return the victimClient
    */
-  public Set<Client> getVictimClients() {
+  public Client getVictimClients() {
     return victimClients;
   }
 
   /**
    * @return the perpetratorClient
    */
-  public Set<Client> getPerpetratorClients() {
+  public Client getPerpetratorClients() {
     return perpetratorClients;
   }
 
