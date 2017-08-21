@@ -75,12 +75,16 @@ public class RIReporterTest {
 
   @Test(expected = ReferentialIntegrityException.class)
   public void riCheckFailureWhenLawEnforcemntNotFound() throws Exception {
-    Reporter reporterDomain =
-        new CmsReporterResourceBuilder().setLawEnforcementId("lpourfGe7V").build();
+    Reporter reporterDomain = new CmsReporterResourceBuilder().setReferralId("AB0751Gthu")
+        .setLawEnforcementId("lpourfGe7V").build();
     gov.ca.cwds.data.persistence.cms.Reporter reporter =
         new gov.ca.cwds.data.persistence.cms.Reporter(reporterDomain, "0X5");
 
-    when(referralDao.find(any())).thenReturn(null);
+    Referral referralDomain = new ReferralResourceBuilder().build();
+    gov.ca.cwds.data.persistence.cms.Referral referral =
+        new gov.ca.cwds.data.persistence.cms.Referral("AB0751Gthu", referralDomain, "0X5");
+
+    when(referralDao.find(any())).thenReturn(referral);
     when(lawEnforcementDao.find(any())).thenReturn(null);
     when(drmsDocumentDao.find(any())).thenReturn(null);
     RIReporter target = new RIReporter(referralDao, lawEnforcementDao, drmsDocumentDao);
