@@ -71,7 +71,7 @@
   &quot;streetNumber&quot;: &quot;123&quot;,&#xd;
   &quot;suffixTitleDescription&quot;: &quot;A1&quot;,&#xd;
   &quot;zipcode&quot;: &quot;08654&quot;,&#xd;
-  &quot;referralId&quot;: &quot;${__RandomString(10,0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ,)}&quot;,&#xd;
+  &quot;referralId&quot;: &quot;H4LlQDyCON&quot;,&#xd;
   &quot;lawEnforcementId&quot;: &quot;BdtRAyx0GV&quot;,&#xd;
   &quot;zipSuffixNumber&quot;: 1234,&#xd;
   &quot;countySpecificCode&quot;: &quot;99&quot;&#xd;
@@ -252,7 +252,7 @@
   &quot;streetNumber&quot;: &quot;123&quot;,&#xd;
   &quot;suffixTitleDescription&quot;: &quot;A1&quot;,&#xd;
   &quot;zipcode&quot;: &quot;08654&quot;,&#xd;
-  &quot;referralId&quot;: &quot;${referralId}&quot;,&#xd;
+  &quot;referralId&quot;: &quot;H4LlQDyCON&quot;,&#xd;
   &quot;lawEnforcementId&quot;: &quot;BdtRAyx0GV&quot;,&#xd;
   &quot;zipSuffixNumber&quot;: 1234,&#xd;
   &quot;countySpecificCode&quot;: &quot;99&quot;&#xd;
