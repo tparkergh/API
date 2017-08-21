@@ -1,14 +1,11 @@
 package gov.ca.cwds.fixture;
 
-import gov.ca.cwds.data.persistence.cms.DrmsDocument;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.Date;
-import javax.persistence.Column;
-import org.hibernate.annotations.Type;
+
+import gov.ca.cwds.data.persistence.cms.DrmsDocument;
 
 public class DmrsDocumentEntityResourceBuilder {
-  private String id = "2" ;
+  private String id = "2";
   private Date creationTimeStamp = new Date();
   private String drmsDocumentTemplateId = "DUMMY";
   private String fingerprintStaffPerson = "q1p";
@@ -17,7 +14,7 @@ public class DmrsDocumentEntityResourceBuilder {
 
   /**
    *
-   * @param id
+   * @param id key
    * @return The Builder
    */
   public DmrsDocumentEntityResourceBuilder setId(String id) {
@@ -27,7 +24,7 @@ public class DmrsDocumentEntityResourceBuilder {
 
   /**
    *
-   * @param creationTimeStamp
+   * @param creationTimeStamp record creation moment
    * @return The Builder
    */
   public DmrsDocumentEntityResourceBuilder setCreationTimeStamp(Date creationTimeStamp) {
@@ -37,27 +34,29 @@ public class DmrsDocumentEntityResourceBuilder {
 
   /**
    *
-   * @param drmsDocumentTemplateId
+   * @param drmsDocumentTemplateId primary key
    * @return The Builder
    */
-  public DmrsDocumentEntityResourceBuilder setDrmsDocumentTemplateId(String drmsDocumentTemplateId) {
+  public DmrsDocumentEntityResourceBuilder setDrmsDocumentTemplateId(
+      String drmsDocumentTemplateId) {
     this.drmsDocumentTemplateId = drmsDocumentTemplateId;
     return this;
   }
 
   /**
    *
-   * @param fingerprintStaffPerson
+   * @param fingerprintStaffPerson primary key
    * @return The Builder
    */
-  public DmrsDocumentEntityResourceBuilder setFingerprintStaffPerson(String fingerprintStaffPerson) {
+  public DmrsDocumentEntityResourceBuilder setFingerprintStaffPerson(
+      String fingerprintStaffPerson) {
     this.fingerprintStaffPerson = fingerprintStaffPerson;
     return this;
   }
 
   /**
    *
-   * @param staffPersonId
+   * @param staffPersonId key
    * @return The Builder
    */
   public DmrsDocumentEntityResourceBuilder setStaffPersonId(String staffPersonId) {
@@ -67,7 +66,7 @@ public class DmrsDocumentEntityResourceBuilder {
 
   /**
    *
-   * @param handleName
+   * @param handleName doc me!
    * @return The Builder
    */
   public DmrsDocumentEntityResourceBuilder setHandleName(String handleName) {
@@ -79,7 +78,8 @@ public class DmrsDocumentEntityResourceBuilder {
    *
    * @return the built DrmsDocument
    */
-  public DrmsDocument build(){
-    return new DrmsDocument(id, creationTimeStamp, drmsDocumentTemplateId, fingerprintStaffPerson, staffPersonId, handleName);
+  public DrmsDocument build() {
+    return new DrmsDocument(id, creationTimeStamp, drmsDocumentTemplateId, fingerprintStaffPerson,
+        staffPersonId, handleName);
   }
 }
