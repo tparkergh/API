@@ -83,8 +83,8 @@ public class RICrossReport implements ApiReferentialCheck<CrossReport> {
     } else if (staffPersonDao.find(t.getStaffPersonId()) == null) {
       throw new ReferentialIntegrityException(
           "CrossReport => Staff Person with given Identifier is not present in database");
-
-    } else if (t.getLawEnforcementId() != null && !t.getLawEnforcementId().isEmpty()
+    } else if ((t.getLawEnforcementId() != null && !t.getLawEnforcementId().isEmpty()
+        && !t.getLawEnforcementId().trim().isEmpty())
         && lawEnforcementDao.find(t.getLawEnforcementId()) == null) {
       throw new ReferentialIntegrityException(
           "CrossReport => Law enforcement with given Identifier is not present in database");

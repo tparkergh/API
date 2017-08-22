@@ -85,6 +85,7 @@ import gov.ca.cwds.rest.services.referentialintegrity.RIAssignment;
 import gov.ca.cwds.rest.services.referentialintegrity.RIChildClient;
 import gov.ca.cwds.rest.services.referentialintegrity.RIClientAddress;
 import gov.ca.cwds.rest.services.referentialintegrity.RICrossReport;
+import gov.ca.cwds.rest.services.referentialintegrity.RIReferral;
 import gov.ca.cwds.rest.services.referentialintegrity.RIReporter;
 import io.dropwizard.jackson.Jackson;
 
@@ -116,6 +117,7 @@ public class TestForLastUpdatedTimeIsUnique {
   private RIAllegation riAllegation;
   private RICrossReport riCrossReport;
   private RIReporter riReporter;
+  private RIReferral riReferral;
 
   private ReferralDao referralDao;
   private ClientDao clientDao;
@@ -246,11 +248,12 @@ public class TestForLastUpdatedTimeIsUnique {
     addressDao = mock(AddressDao.class);
     addressService = new AddressService(addressDao, staffPersonIdRetriever, ssaName3Dao,
         upperCaseTables, validator);
+    riReferral = mock(RIReferral.class);
 
 
     referralService = new ReferralService(referralDao, nonLACountyTriggers, laCountyTrigger,
         triggerTablesDao, staffpersonDao, staffPersonIdRetriever, assignmentService, validator,
-        drmsDocumentService, addressService, longTextService);
+        drmsDocumentService, addressService, longTextService, riReferral);
 
     screeningToReferralService = new ScreeningToReferralService(referralService, clientService,
         allegationService, crossReportService, referralClientService, reporterService,
