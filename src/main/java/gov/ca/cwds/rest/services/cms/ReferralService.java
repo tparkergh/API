@@ -34,6 +34,7 @@ import gov.ca.cwds.rest.messages.MessageBuilder;
 import gov.ca.cwds.rest.services.CrudsService;
 import gov.ca.cwds.rest.services.LegacyDefaultValues;
 import gov.ca.cwds.rest.services.ServiceException;
+import gov.ca.cwds.rest.services.referentialintegrity.RIReferral;
 import gov.ca.cwds.rest.validation.ParticipantValidator;
 
 /**
@@ -57,6 +58,7 @@ public class ReferralService implements CrudsService {
   private DrmsDocumentService drmsDocumentService;
   private AddressService addressService;
   private LongTextService longTextService;
+  private RIReferral riReferral;
 
   /**
    * Constructor
@@ -77,6 +79,7 @@ public class ReferralService implements CrudsService {
    * @param drmsDocumentService the service for generating DRMS Documents
    * @param addressService the service for creating addresses
    * @param longTextService the longText Service
+   * @param riReferral the ri
    */
   @Inject
   public ReferralService(final ReferralDao referralDao, NonLACountyTriggers nonLaTriggers,
@@ -84,7 +87,7 @@ public class ReferralService implements CrudsService {
       StaffPersonDao staffpersonDao, StaffPersonIdRetriever staffPersonIdRetriever,
       AssignmentService assignmentService, Validator validator,
       DrmsDocumentService drmsDocumentService, AddressService addressService,
-      LongTextService longTextService) {
+      LongTextService longTextService, RIReferral riReferral) {
     this.referralDao = referralDao;
     this.nonLaTriggers = nonLaTriggers;
     this.laCountyTrigger = laCountyTrigger;
@@ -96,6 +99,7 @@ public class ReferralService implements CrudsService {
     this.drmsDocumentService = drmsDocumentService;
     this.addressService = addressService;
     this.longTextService = longTextService;
+    this.riReferral = riReferral;
   }
 
   /**

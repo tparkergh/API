@@ -145,6 +145,7 @@ import gov.ca.cwds.rest.services.referentialintegrity.RIChildClient;
 import gov.ca.cwds.rest.services.referentialintegrity.RIClientAddress;
 import gov.ca.cwds.rest.services.referentialintegrity.RIClientCollateral;
 import gov.ca.cwds.rest.services.referentialintegrity.RICrossReport;
+import gov.ca.cwds.rest.services.referentialintegrity.RIReferral;
 import gov.ca.cwds.rest.services.referentialintegrity.RIReporter;
 import io.dropwizard.db.DataSourceFactory;
 import io.dropwizard.hibernate.HibernateBundle;
@@ -310,6 +311,7 @@ public class DataAccessModule extends AbstractModule {
     bind(RIAllegation.class);
     bind(RICrossReport.class);
     bind(RIReporter.class);
+    bind(RIReferral.class);
   }
 
   @Provides

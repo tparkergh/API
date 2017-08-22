@@ -82,6 +82,7 @@ import gov.ca.cwds.rest.services.referentialintegrity.RIAssignment;
 import gov.ca.cwds.rest.services.referentialintegrity.RIChildClient;
 import gov.ca.cwds.rest.services.referentialintegrity.RIClientAddress;
 import gov.ca.cwds.rest.services.referentialintegrity.RICrossReport;
+import gov.ca.cwds.rest.services.referentialintegrity.RIReferral;
 import gov.ca.cwds.rest.services.referentialintegrity.RIReporter;
 import io.dropwizard.jackson.Jackson;
 
@@ -114,6 +115,7 @@ public class R04537FirstResponseDeterminedByStaffPersonIdTest {
   private RIAllegation riAllegation;
   private RICrossReport riCrossReport;
   private RIReporter riReporter;
+  private RIReferral riReferral;
 
   private ReferralDao referralDao;
   private ClientDao clientDao;
@@ -234,10 +236,11 @@ public class R04537FirstResponseDeterminedByStaffPersonIdTest {
         triggerTablesDao, staffPersonIdRetriever, validator, externalInterfaceTables, riAssignment);
 
     reminders = mock(Reminders.class);
+    riReferral = mock(RIReferral.class);
 
     referralService = new ReferralService(referralDao, nonLACountyTriggers, laCountyTrigger,
         triggerTablesDao, staffpersonDao, staffPersonIdRetriever, assignmentService, validator,
-        drmsDocumentService, addressService, longTextService);
+        drmsDocumentService, addressService, longTextService, riReferral);
 
     screeningToReferralService = new ScreeningToReferralService(referralService, clientService,
         allegationService, crossReportService, referralClientService, reporterService,
