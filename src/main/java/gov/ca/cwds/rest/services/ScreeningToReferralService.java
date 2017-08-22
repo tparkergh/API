@@ -480,6 +480,27 @@ public class ScreeningToReferralService implements CrudsService {
       for (CrossReport crossReport : crossReports) {
 
         Boolean lawEnforcementIndicator = false;
+        Boolean outStateLawEnforcementIndicator = false;
+        String outStateLawEnforcementAddr = "";
+
+        /**
+         * <blockquote>
+         * 
+         * <pre>
+         * BUSINESS RULE: "R - 05930" - Out of State text Mandatory
+         * 
+         * IF    CrossReport out  StateLaw Enforcement Indicator is 'true'
+         * THEN  CrossReport outStateLawEnforcementAddr can't be blank
+         * </blockquote>
+         * </pre>
+         */
+        if (outStateLawEnforcementIndicator == true
+            && StringUtils.isBlank(outStateLawEnforcementAddr)) {
+          String message =
+              "outStateLawEnforcementIndicator is set true, Then outStateLawEnforcementAddr can't be blank";
+          ServiceException se = new ServiceException(message);
+          logError(message, se);
+        }
 
         /**
          * <blockquote>
@@ -502,11 +523,13 @@ public class ScreeningToReferralService implements CrudsService {
         }
 
         if (crossReport.getLegacyId() == null || crossReport.getLegacyId().isEmpty()) {
+          // String outStateLawEnforcementAddr = null;
           // create the cross report
           gov.ca.cwds.rest.api.domain.cms.CrossReport cmsCrossReport =
               gov.ca.cwds.rest.api.domain.cms.CrossReport.createWithDefaults(crossReportId,
                   crossReport, referralId, LegacyDefaultValues.DEFAULT_STAFF_PERSON_ID,
-                  LegacyDefaultValues.DEFAULT_COUNTY_SPECIFIC_CODE, lawEnforcementIndicator);
+                  outStateLawEnforcementAddr, LegacyDefaultValues.DEFAULT_COUNTY_SPECIFIC_CODE,
+                  lawEnforcementIndicator, outStateLawEnforcementIndicator);
 
           messageBuilder.addDomainValidationError(validator.validate(cmsCrossReport));
 

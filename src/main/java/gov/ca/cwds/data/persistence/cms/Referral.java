@@ -13,6 +13,7 @@ import javax.persistence.OneToMany;
 import javax.persistence.PersistenceException;
 import javax.persistence.Table;
 
+import org.apache.commons.lang3.StringUtils;
 import org.hibernate.annotations.Type;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
@@ -411,7 +412,8 @@ public class Referral extends CmsPersistentObject {
           DomainChef.cookBoolean(referral.getCaretakersPerpetratorCode());
       this.closureDate = DomainChef.uncookDateString(referral.getClosureDate());
       this.communicationMethodType = referral.getCommunicationMethodType();
-      this.currentLocationOfChildren = referral.getCurrentLocationOfChildren();
+      this.currentLocationOfChildren = StringUtils.isBlank(referral.getCurrentLocationOfChildren())
+          ? null : referral.getCurrentLocationOfChildren();
       this.drmsAllegationDescriptionDoc = referral.getDrmsAllegationDescriptionDoc();
       this.drmsErReferralDoc = referral.getDrmsErReferralDoc();
       this.drmsInvestigationDoc = referral.getDrmsInvestigationDoc();
@@ -441,11 +443,17 @@ public class Referral extends CmsPersistentObject {
       this.specificsIncludedCode = referral.getSpecificsIncludedCode();
       this.sufficientInformationCode = referral.getSufficientInformationCode();
       this.unfoundedSeriesCode = referral.getUnfoundedSeriesCode();
-      this.linkToPrimaryReferralId = referral.getLinkToPrimaryReferralId();
-      this.allegesAbuseOccurredAtAddressId = referral.getAllegesAbuseOccurredAtAddressId();
+      this.linkToPrimaryReferralId = StringUtils.isBlank(referral.getLinkToPrimaryReferralId())
+          ? null : referral.getLinkToPrimaryReferralId();
+      this.allegesAbuseOccurredAtAddressId =
+          StringUtils.isBlank(referral.getAllegesAbuseOccurredAtAddressId()) ? null
+              : referral.getAllegesAbuseOccurredAtAddressId();
       this.firstResponseDeterminedByStaffPersonId =
-          referral.getFirstResponseDeterminedByStaffPersonId();
-      this.primaryContactStaffPersonId = referral.getPrimaryContactStaffPersonId();
+          StringUtils.isBlank(referral.getFirstResponseDeterminedByStaffPersonId()) ? null
+              : referral.getFirstResponseDeterminedByStaffPersonId();
+      this.primaryContactStaffPersonId =
+          StringUtils.isBlank(referral.getPrimaryContactStaffPersonId()) ? null
+              : referral.getPrimaryContactStaffPersonId();
       this.countySpecificCode = referral.getCountySpecificCode();
       this.specialProjectReferralIndicator =
           DomainChef.cookBoolean(referral.getSpecialProjectReferralIndicator());
