@@ -9,6 +9,7 @@ import javax.persistence.PersistenceException;
 import javax.persistence.Table;
 import javax.validation.constraints.Size;
 
+import org.apache.commons.lang3.StringUtils;
 import org.hibernate.annotations.Type;
 import org.hibernate.validator.constraints.NotEmpty;
 
@@ -199,9 +200,12 @@ public class DeliveredServiceEntity extends CmsPersistentObject {
       this.contactLocationType = deliveredServiceDomain.getContactLocationType().shortValue();
       this.contactVisitCode = deliveredServiceDomain.getContactVisitCode();
       this.countySpecificCode = deliveredServiceDomain.getCountySpecificCode();
-      this.detailText = deliveredServiceDomain.getDetailText();
+      this.detailText = StringUtils.isBlank(deliveredServiceDomain.getDetailText()) ? null
+          : deliveredServiceDomain.getDetailText();
       this.hardCopyDocumentOnFileCode = deliveredServiceDomain.getHardCopyDocumentOnFileCode();
-      this.detailTextContinuation = deliveredServiceDomain.getDetailTextContinuation();
+      this.detailTextContinuation =
+          StringUtils.isBlank(deliveredServiceDomain.getDetailTextContinuation()) ? null
+              : deliveredServiceDomain.getDetailTextContinuation();
       this.endDate = DomainChef.uncookDateString(deliveredServiceDomain.getEndDate());
       this.endTime = DomainChef.uncookTimeString(deliveredServiceDomain.getEndTime());
       this.primaryDeliveredServiceId = deliveredServiceDomain.getPrimaryDeliveredServiceId();

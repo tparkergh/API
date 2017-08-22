@@ -129,7 +129,7 @@ public class R04464CrossReportLawEnforcementDueTest {
 
     gov.ca.cwds.rest.api.domain.cms.CrossReport cmsCrossReport =
         gov.ca.cwds.rest.api.domain.cms.CrossReport.createWithDefaults("123ABC1K35", crossReport,
-            "123ABC1235", DEFAULT_STAFF_PERSON_ID, DEFAULT_COUNTY_SPECIFIC_CODE, false);
+            "123ABC1235", DEFAULT_STAFF_PERSON_ID, "", DEFAULT_COUNTY_SPECIFIC_CODE, false, false);
 
     gov.ca.cwds.data.persistence.cms.CrossReport savedCrossReport =
         new gov.ca.cwds.data.persistence.cms.CrossReport("123ABp1235", cmsCrossReport, "0X5");
@@ -208,7 +208,7 @@ public class R04464CrossReportLawEnforcementDueTest {
 
     gov.ca.cwds.rest.api.domain.cms.CrossReport cmsCrossReport =
         gov.ca.cwds.rest.api.domain.cms.CrossReport.createWithDefaults("123ABC1K35", crossReport,
-            "123ABC1235", DEFAULT_STAFF_PERSON_ID, DEFAULT_COUNTY_SPECIFIC_CODE, false);
+            "123ABC1235", DEFAULT_STAFF_PERSON_ID, "", DEFAULT_COUNTY_SPECIFIC_CODE, false, false);
 
     gov.ca.cwds.data.persistence.cms.CrossReport savedCrossReport =
         new gov.ca.cwds.data.persistence.cms.CrossReport("123ABp1235", cmsCrossReport, "0X5");
@@ -279,7 +279,7 @@ public class R04464CrossReportLawEnforcementDueTest {
 
     gov.ca.cwds.rest.api.domain.cms.CrossReport cmsCrossReport =
         gov.ca.cwds.rest.api.domain.cms.CrossReport.createWithDefaults("123ABC1K35", crossReport,
-            "123ABC1235", DEFAULT_STAFF_PERSON_ID, DEFAULT_COUNTY_SPECIFIC_CODE, false);
+            "123ABC1235", DEFAULT_STAFF_PERSON_ID, "", DEFAULT_COUNTY_SPECIFIC_CODE, false, false);
 
     gov.ca.cwds.data.persistence.cms.CrossReport savedCrossReport =
         new gov.ca.cwds.data.persistence.cms.CrossReport("123ABp1235", cmsCrossReport, "0X5");
@@ -358,7 +358,7 @@ public class R04464CrossReportLawEnforcementDueTest {
 
     gov.ca.cwds.rest.api.domain.cms.CrossReport cmsCrossReport =
         gov.ca.cwds.rest.api.domain.cms.CrossReport.createWithDefaults("123ABC1K35", crossReport,
-            "123ABC1235", DEFAULT_STAFF_PERSON_ID, DEFAULT_COUNTY_SPECIFIC_CODE, false);
+            "123ABC1235", DEFAULT_STAFF_PERSON_ID, "", DEFAULT_COUNTY_SPECIFIC_CODE, false, false);
 
     gov.ca.cwds.data.persistence.cms.CrossReport savedCrossReport =
         new gov.ca.cwds.data.persistence.cms.CrossReport("123ABp1235", cmsCrossReport, "0X5");
@@ -438,7 +438,7 @@ public class R04464CrossReportLawEnforcementDueTest {
 
     gov.ca.cwds.rest.api.domain.cms.CrossReport cmsCrossReport =
         gov.ca.cwds.rest.api.domain.cms.CrossReport.createWithDefaults("123ABC1K35", crossReport,
-            "123ABC1235", DEFAULT_STAFF_PERSON_ID, DEFAULT_COUNTY_SPECIFIC_CODE, false);
+            "123ABC1235", DEFAULT_STAFF_PERSON_ID, "", DEFAULT_COUNTY_SPECIFIC_CODE, false, false);
 
     gov.ca.cwds.data.persistence.cms.CrossReport savedCrossReport =
         new gov.ca.cwds.data.persistence.cms.CrossReport("123ABp1235", cmsCrossReport, "0X5");
@@ -517,7 +517,7 @@ public class R04464CrossReportLawEnforcementDueTest {
 
     gov.ca.cwds.rest.api.domain.cms.CrossReport cmsCrossReport =
         gov.ca.cwds.rest.api.domain.cms.CrossReport.createWithDefaults("123ABC1K35", crossReport,
-            "123ABC1235", DEFAULT_STAFF_PERSON_ID, DEFAULT_COUNTY_SPECIFIC_CODE, false);
+            "123ABC1235", DEFAULT_STAFF_PERSON_ID, "", DEFAULT_COUNTY_SPECIFIC_CODE, false, false);
 
     gov.ca.cwds.data.persistence.cms.CrossReport savedCrossReport =
         new gov.ca.cwds.data.persistence.cms.CrossReport("123ABp1235", cmsCrossReport, "0X5");
@@ -596,7 +596,7 @@ public class R04464CrossReportLawEnforcementDueTest {
 
     gov.ca.cwds.rest.api.domain.cms.CrossReport cmsCrossReport =
         gov.ca.cwds.rest.api.domain.cms.CrossReport.createWithDefaults("123ABC1K35", crossReport,
-            "123ABC1235", DEFAULT_STAFF_PERSON_ID, DEFAULT_COUNTY_SPECIFIC_CODE, false);
+            "123ABC1235", DEFAULT_STAFF_PERSON_ID, "", DEFAULT_COUNTY_SPECIFIC_CODE, false, false);
 
     gov.ca.cwds.data.persistence.cms.CrossReport savedCrossReport =
         new gov.ca.cwds.data.persistence.cms.CrossReport("123ABp1235", cmsCrossReport, "0X5");
@@ -674,7 +674,7 @@ public class R04464CrossReportLawEnforcementDueTest {
 
     gov.ca.cwds.rest.api.domain.cms.CrossReport cmsCrossReport =
         gov.ca.cwds.rest.api.domain.cms.CrossReport.createWithDefaults("123ABC1K35", crossReport,
-            "123ABC1235", DEFAULT_STAFF_PERSON_ID, DEFAULT_COUNTY_SPECIFIC_CODE, false);
+            "123ABC1235", DEFAULT_STAFF_PERSON_ID, "", DEFAULT_COUNTY_SPECIFIC_CODE, false, false);
 
     gov.ca.cwds.data.persistence.cms.CrossReport savedCrossReport =
         new gov.ca.cwds.data.persistence.cms.CrossReport("123ABp1235", cmsCrossReport, "0X5");
@@ -750,7 +750,7 @@ public class R04464CrossReportLawEnforcementDueTest {
 
     gov.ca.cwds.rest.api.domain.cms.CrossReport cmsCrossReport =
         gov.ca.cwds.rest.api.domain.cms.CrossReport.createWithDefaults("123ABC1K35", crossReport,
-            "123ABC1235", DEFAULT_STAFF_PERSON_ID, DEFAULT_COUNTY_SPECIFIC_CODE, false);
+            "123ABC1235", DEFAULT_STAFF_PERSON_ID, "", DEFAULT_COUNTY_SPECIFIC_CODE, false, false);
 
     gov.ca.cwds.data.persistence.cms.CrossReport savedCrossReport =
         new gov.ca.cwds.data.persistence.cms.CrossReport("123ABp1235", cmsCrossReport, "0X5");
