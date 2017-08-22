@@ -55,6 +55,7 @@ import gov.ca.cwds.rest.services.referentialintegrity.RIAssignment;
 import gov.ca.cwds.rest.services.referentialintegrity.RIChildClient;
 import gov.ca.cwds.rest.services.referentialintegrity.RIClientAddress;
 import gov.ca.cwds.rest.services.referentialintegrity.RICrossReport;
+import gov.ca.cwds.rest.services.referentialintegrity.RIReferral;
 import gov.ca.cwds.rest.services.referentialintegrity.RIReporter;
 
 /**
@@ -85,6 +86,7 @@ public class R00796ScreeningToReferralDeleteTest {
   private RIAllegation riAllegation;
   private RICrossReport riCrossReport;
   private RIReporter riReporter;
+  private RIReferral riReferral;
 
   private ReferralDao referralDao;
   private ClientDao clientDao;
@@ -123,9 +125,10 @@ public class R00796ScreeningToReferralDeleteTest {
     triggerTablesDao = mock(TriggerTablesDao.class);
     staffpersonDao = mock(StaffPersonDao.class);
     staffPersonIdRetriever = mock(StaffPersonIdRetriever.class);
+    riReferral = mock(RIReferral.class);
     referralService = new ReferralService(referralDao, nonLACountyTriggers, laCountyTrigger,
         triggerTablesDao, staffpersonDao, staffPersonIdRetriever, assignmentService, validator,
-        drmsDocumentService, addressService, longTextService);
+        drmsDocumentService, addressService, longTextService, riReferral);
 
     clientDao = mock(ClientDao.class);
     staffpersonDao = mock(StaffPersonDao.class);

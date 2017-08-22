@@ -9,6 +9,7 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.PersistenceException;
 import javax.persistence.Table;
@@ -224,6 +225,52 @@ public class Referral extends CmsPersistentObject {
   @OneToMany(cascade = CascadeType.ALL)
   @JoinColumn(name = "FKREFERL_T", referencedColumnName = "IDENTIFIER")
   private Set<Reporter> reporters = new HashSet<>();
+
+  /**
+   * #147241489: referential integrity check.
+   * <p>
+   * Doesn't actually load the data. Just checks the existence of the parent client record.
+   * </p>
+   */
+  @ManyToOne(optional = false)
+  @JoinColumn(name = "FKSTFPERST", nullable = false, updatable = false, insertable = false)
+  private StaffPerson staffPerson;
+
+  @ManyToOne(optional = true)
+  @JoinColumn(name = "FKSTFPERS0", nullable = true, updatable = false, insertable = false)
+  private StaffPerson staffPerson0;
+
+  @ManyToOne(optional = true)
+  @JoinColumn(name = "FKREFERL_T", nullable = true, updatable = false, insertable = false)
+  private Referral referral;
+
+  @ManyToOne(optional = true)
+  @JoinColumn(name = "ALGDSC_DOC", nullable = true, updatable = false, insertable = false)
+  private DrmsDocument drmsDocument;
+
+  @ManyToOne(optional = true)
+  @JoinColumn(name = "ER_REF_DOC", nullable = true, updatable = false, insertable = false)
+  private DrmsDocument drmsDocument1;
+
+  @ManyToOne(optional = true)
+  @JoinColumn(name = "INVSTG_DOC", nullable = true, updatable = false, insertable = false)
+  private DrmsDocument drmsDocument2;
+
+  // @ManyToOne(optional = true)
+  // @JoinColumn(name = "APRVL_NO", nullable = true, updatable = false, insertable = false)
+  // private SupervisorApproval supervisorApproval;
+
+  @ManyToOne(optional = true)
+  @JoinColumn(name = "CHILOC_TXT", nullable = true, updatable = false, insertable = false)
+  private LongText longText;
+
+  @ManyToOne(optional = true)
+  @JoinColumn(name = "RSP_RTNTXT", nullable = true, updatable = false, insertable = false)
+  private LongText longText1;
+
+  @ManyToOne(optional = true)
+  @JoinColumn(name = "SCN_NT_TXT", nullable = true, updatable = false, insertable = false)
+  private LongText longText2;
 
   /**
    * Default constructor
