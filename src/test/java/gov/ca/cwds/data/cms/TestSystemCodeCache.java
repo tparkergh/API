@@ -75,6 +75,9 @@ public class TestSystemCodeCache implements SystemCodeCache {
       if (1520 == systemCodeId.intValue()) {
         return true;
       }
+      if (1516 == systemCodeId.intValue()) {
+        return true;
+      }
     }
 
     if (SystemCodeCategoryId.COMMUNICATION_METHOD.equals(metaId)) {
@@ -85,6 +88,9 @@ public class TestSystemCodeCache implements SystemCodeCache {
 
     if (SystemCodeCategoryId.INJURY_HARM_TYPE.equals(metaId)) {
       if (2179 == systemCodeId.intValue()) {
+        return true;
+      }
+      if (2178 == systemCodeId.intValue()) {
         return true;
       }
     }
