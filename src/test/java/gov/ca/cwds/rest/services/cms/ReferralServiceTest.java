@@ -39,6 +39,7 @@ import gov.ca.cwds.rest.business.rules.NonLACountyTriggers;
 import gov.ca.cwds.rest.filters.TestingRequestExecutionContext;
 import gov.ca.cwds.rest.services.ServiceException;
 import gov.ca.cwds.rest.services.junit.template.ServiceTestTemplate;
+import gov.ca.cwds.rest.services.referentialintegrity.RIReferral;
 
 /**
  * @author CWDS API Team
@@ -57,6 +58,7 @@ public class ReferralServiceTest implements ServiceTestTemplate {
   private StaffPersonDao staffpersonDao;
   private StaffPersonIdRetriever staffPersonIdRetriever;
   private Validator validator;
+  private RIReferral riReferral;
 
   private static Boolean isLaCountyTrigger = false;
 
@@ -80,9 +82,10 @@ public class ReferralServiceTest implements ServiceTestTemplate {
     longTextService = mock(LongTextService.class);
 
     staffPersonIdRetriever = mock(StaffPersonIdRetriever.class);
+    riReferral = mock(RIReferral.class);
     referralService = new ReferralService(referralDao, nonLACountyTriggers, laCountyTrigger,
         triggerTablesDao, staffpersonDao, staffPersonIdRetriever, assignmentService, validator,
-        drmsDocumentService, addressService, longTextService);
+        drmsDocumentService, addressService, longTextService, riReferral);
   }
 
   // find test
