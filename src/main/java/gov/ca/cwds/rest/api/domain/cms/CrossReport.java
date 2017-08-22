@@ -261,6 +261,7 @@ public class CrossReport extends ReportingDomain implements Request, Response {
    * @param crossReport - crossReport
    * @param referralId - referralId
    * @param staffId - staffId
+   * @param outStateLawEnforcementAddr - outStateLawEnforcementAddr
    * @param countyCode - countyCode
    * @param lawEnforcementIndicator - lawEnforcementIndicator
    * @param outStateLawEnforcementIndicator - outStateLawEnforcementIndicator
