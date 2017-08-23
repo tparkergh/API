@@ -99,10 +99,11 @@ public class Tickle extends CmsPersistentObject {
    * @param id The id
    * @param domainTickle The domain object to construct this object from
    * @param lastUpdatedId The id of the last person to update this object
+   * @param lastUpdatedTime the time of last person to updated this object
    */
   public Tickle(String id, gov.ca.cwds.rest.api.domain.cms.Tickle domainTickle,
-      String lastUpdatedId) {
-    super(lastUpdatedId);
+      String lastUpdatedId, Date lastUpdatedTime) {
+    super(lastUpdatedId, lastUpdatedTime);
     this.id = id;
     this.affectedByCaseOrReferralId = domainTickle.getAffectedByCaseOrReferralId();
     this.affectedByCode = domainTickle.getAffectedByCode();
