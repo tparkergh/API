@@ -347,7 +347,7 @@ public class ReferralService implements CrudsService {
       longTextId = null;
     } else {
       try {
-        longTextId = createLongText(LegacyDefaultValues.DEFAULT_COUNTY_SPECIFIC_CODE,
+        longTextId = createLongText(screeningToReferral.getIncidentCounty(),
             screeningToReferral.getReportNarrative(), messageBuilder);
       } catch (ServiceException e) {
         String message = e.getMessage();
@@ -365,7 +365,7 @@ public class ReferralService implements CrudsService {
       longTextId = null;
     } else {
       try {
-        longTextId = createLongText(LegacyDefaultValues.DEFAULT_COUNTY_SPECIFIC_CODE,
+        longTextId = createLongText(screeningToReferral.getIncidentCounty(),
             screeningToReferral.getAdditionalInformation(), messageBuilder);
       } catch (ServiceException e) {
         String message = e.getMessage();
