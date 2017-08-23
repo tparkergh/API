@@ -83,6 +83,7 @@ import gov.ca.cwds.rest.services.referentialintegrity.RIChildClient;
 import gov.ca.cwds.rest.services.referentialintegrity.RIClientAddress;
 import gov.ca.cwds.rest.services.referentialintegrity.RICrossReport;
 import gov.ca.cwds.rest.services.referentialintegrity.RIReferral;
+import gov.ca.cwds.rest.services.referentialintegrity.RIReferralClient;
 import gov.ca.cwds.rest.services.referentialintegrity.RIReporter;
 import io.dropwizard.jackson.Jackson;
 
@@ -115,6 +116,7 @@ public class R07577CreateDummyDocsForReferralTest {
   private RICrossReport riCrossReport;
   private RIReporter riReporter;
   private RIReferral riReferral;
+  private RIReferralClient riReferralClient;
 
   private ReferralDao referralDao;
   private ClientDao clientDao;
@@ -179,8 +181,10 @@ public class R07577CreateDummyDocsForReferralTest {
     laCountyTrigger = mock(LACountyTrigger.class);
     triggerTablesDao = mock(TriggerTablesDao.class);
     staffpersonDao = mock(StaffPersonDao.class);
-    referralClientService = new ReferralClientService(referralClientDao, nonLACountyTriggers,
-        laCountyTrigger, triggerTablesDao, staffpersonDao, staffPersonIdRetriever);
+    riReferralClient = mock(RIReferralClient.class);
+    referralClientService =
+        new ReferralClientService(referralClientDao, nonLACountyTriggers, laCountyTrigger,
+            triggerTablesDao, staffpersonDao, staffPersonIdRetriever, riReferralClient);
 
     allegationDao = mock(AllegationDao.class);
     riAllegation = mock(RIAllegation.class);
