@@ -238,7 +238,7 @@ public class DeliveredServiceDomainTest {
     assertThat(response.getStatus(), is(equalTo(422)));
     assertThat(
         response.readEntity(String.class).indexOf(
-            "communicationMethodType '123' must be a valid system code for category CMM_MTHC"),
+            "communicationMethodType  must be a valid system code for category CMM_MTHC"),
         is(greaterThanOrEqualTo(0)));
   }
 
@@ -258,7 +258,7 @@ public class DeliveredServiceDomainTest {
     assertThat(response.getStatus(), is(equalTo(422)));
     assertThat(
         response.readEntity(String.class).indexOf(
-            "contactLocationType '123' must be a valid system code for category CNT_LOC"),
+            "contactLocationType  must be a valid system code for category CNT_LOC"),
         is(greaterThanOrEqualTo(0)));
   }
 
