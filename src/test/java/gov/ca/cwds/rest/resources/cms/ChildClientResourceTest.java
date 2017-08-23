@@ -22,8 +22,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.squarespace.jersey2.guice.JerseyGuiceUtils;
 
 import gov.ca.cwds.rest.api.domain.cms.ChildClient;
-import gov.ca.cwds.rest.resources.ResourceDelegate;
 import gov.ca.cwds.rest.resources.ServiceBackedResourceDelegate;
+import gov.ca.cwds.rest.resources.TypedResourceDelegate;
 import io.dropwizard.jackson.Jackson;
 import io.dropwizard.testing.junit.ResourceTestRule;
 
@@ -52,15 +52,17 @@ public class ChildClientResourceTest {
   @Rule
   public ExpectedException thrown = ExpectedException.none();
 
-  private final static ResourceDelegate resourceDelegate = mock(ResourceDelegate.class);
+  @SuppressWarnings("unchecked")
+  private final static TypedResourceDelegate<String, ChildClient> typedResourceDelegate =
+      mock(TypedResourceDelegate.class);
 
   @ClassRule
-  public final static ResourceTestRule inMemoryResource =
-      ResourceTestRule.builder().addResource(new ChildClientResource(resourceDelegate)).build();
+  public final static ResourceTestRule inMemoryResource = ResourceTestRule.builder()
+      .addResource(new ChildClientResource(typedResourceDelegate)).build();
 
   @Before
   public void setup() throws Exception {
-    Mockito.reset(resourceDelegate);
+    Mockito.reset(typedResourceDelegate);
   }
 
   /*
@@ -70,7 +72,7 @@ public class ChildClientResourceTest {
   public void getDelegatesToResourceDelegate() throws Exception {
     inMemoryResource.client().target(FOUND_RESOURCE).request().accept(MediaType.APPLICATION_JSON)
         .get();
-    verify(resourceDelegate).get("AbiOD9Y0Hj");
+    verify(typedResourceDelegate).get("AbiOD9Y0Hj");
   }
 
   /*
@@ -83,7 +85,7 @@ public class ChildClientResourceTest {
 
     inMemoryResource.client().target(ROOT_RESOURCE).request().accept(MediaType.APPLICATION_JSON)
         .post(Entity.entity(serialized, MediaType.APPLICATION_JSON));
-    verify(resourceDelegate).create(eq(serialized));
+    verify(typedResourceDelegate).create(eq(serialized));
   }
 
   @Test
@@ -106,7 +108,7 @@ public class ChildClientResourceTest {
   public void deleteDelegatesToResourceDelegate() throws Exception {
     inMemoryResource.client().target(FOUND_RESOURCE).request().accept(MediaType.APPLICATION_JSON)
         .delete();
-    verify(resourceDelegate).delete("AbiOD9Y0Hj");
+    verify(typedResourceDelegate).delete("AbiOD9Y0Hj");
   }
 
   /*
@@ -119,7 +121,7 @@ public class ChildClientResourceTest {
 
     inMemoryResource.client().target(ROOT_RESOURCE).request().accept(MediaType.APPLICATION_JSON)
         .put(Entity.entity(serialized, MediaType.APPLICATION_JSON));
-    verify(resourceDelegate).update(eq(null), eq(serialized));
+    verify(typedResourceDelegate).update(eq(null), eq(serialized));
   }
 
   @Test

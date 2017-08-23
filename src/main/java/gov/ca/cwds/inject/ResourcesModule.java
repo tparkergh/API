@@ -12,6 +12,7 @@ import gov.ca.cwds.rest.api.contact.DeliveredServiceDomain;
 import gov.ca.cwds.rest.api.domain.cms.Allegation;
 import gov.ca.cwds.rest.api.domain.cms.AllegationPerpetratorHistory;
 import gov.ca.cwds.rest.api.domain.cms.Assignment;
+import gov.ca.cwds.rest.api.domain.cms.ChildClient;
 import gov.ca.cwds.rest.api.domain.cms.ClientCollateral;
 import gov.ca.cwds.rest.api.domain.cms.CmsDocument;
 import gov.ca.cwds.rest.api.domain.cms.DrmsDocument;
@@ -199,8 +200,9 @@ public class ResourcesModule extends AbstractModule {
 
   @Provides
   @ChildClientServiceBackedResource
-  public ResourceDelegate childClientServiceBackedResource(Injector injector) {
-    return new ServiceBackedResourceDelegate(injector.getInstance(ChildClientService.class));
+  public TypedResourceDelegate<String, ChildClient> childClientServiceBackedResource(
+      Injector injector) {
+    return new TypedServiceBackedResourceDelegate<>(injector.getInstance(ChildClientService.class));
   }
 
   @Provides

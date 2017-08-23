@@ -129,7 +129,6 @@ public class AssignmentService implements
    * @return the PostedAssignment
    */
   public PostedAssignment createWithSingleTimestamp(Request request, Date timestamp) {
-    assert request instanceof gov.ca.cwds.rest.api.domain.cms.Assignment;
 
     gov.ca.cwds.rest.api.domain.cms.Assignment assignment =
         (gov.ca.cwds.rest.api.domain.cms.Assignment) request;
