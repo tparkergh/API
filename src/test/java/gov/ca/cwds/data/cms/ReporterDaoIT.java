@@ -112,7 +112,7 @@ public class ReporterDaoIT implements DaoTestTemplate {
   }
 
   @Override
-  // @Test
+  @Test
   public void testDelete() throws Exception {
     String id = "AbiQCgu0Hj";
     Reporter deleted = reporterDao.delete(id);
