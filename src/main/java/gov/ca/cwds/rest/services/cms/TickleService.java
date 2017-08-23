@@ -36,7 +36,6 @@ public class TickleService implements
   /**
    * @param tickleDao The {@link Dao} handling {@link gov.ca.cwds.data.persistence.cms.Tickle}
    *        objects.
-   * @param staffPersonIdRetriever the staffPersonIdRetriever
    */
   @Inject
   public TickleService(TickleDao tickleDao) {

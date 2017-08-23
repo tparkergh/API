@@ -63,6 +63,7 @@ public class RIReferral implements ApiReferentialCheck<Referral> {
    * @param staffPersonDao staffPerson DAO
    * @param drmsDocumentDao drmsDocument DAO
    * @param longTextDao longText DAO
+   * @param referralDao referral DAO
    */
   @Inject
   public RIReferral(final AddressDao addressDao, StaffPersonDao staffPersonDao,
