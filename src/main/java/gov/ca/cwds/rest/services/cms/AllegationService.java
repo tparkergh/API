@@ -89,7 +89,6 @@ public class AllegationService implements
    */
   @Override
   public PostedAllegation create(gov.ca.cwds.rest.api.domain.cms.Allegation request) {
-    assert request instanceof gov.ca.cwds.rest.api.domain.cms.Allegation;
 
     gov.ca.cwds.rest.api.domain.cms.Allegation allegation = request;
     return create(allegation, null);
@@ -105,7 +104,6 @@ public class AllegationService implements
    * @return the single timestamp
    */
   public PostedAllegation createWithSingleTimestamp(Request request, Date timestamp) {
-    assert request instanceof gov.ca.cwds.rest.api.domain.cms.Allegation;
 
     gov.ca.cwds.rest.api.domain.cms.Allegation allegation =
         (gov.ca.cwds.rest.api.domain.cms.Allegation) request;

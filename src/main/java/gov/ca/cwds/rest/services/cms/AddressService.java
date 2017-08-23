@@ -62,10 +62,7 @@ public class AddressService implements
 
   @Override
   public PostedAddress create(gov.ca.cwds.rest.api.domain.cms.Address request) {
-    assert request instanceof gov.ca.cwds.rest.api.domain.cms.Address;
-
     gov.ca.cwds.rest.api.domain.cms.Address address = request;
-
     return create(address, null);
   }
 
@@ -78,11 +75,8 @@ public class AddressService implements
    * @return the single timestamp
    */
   public PostedAddress createWithSingleTimestamp(Request request, Date timestamp) {
-    assert request instanceof gov.ca.cwds.rest.api.domain.cms.Address;
-
     gov.ca.cwds.rest.api.domain.cms.Address address =
         (gov.ca.cwds.rest.api.domain.cms.Address) request;
-
     return create(address, timestamp);
   }
 

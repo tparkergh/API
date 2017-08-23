@@ -101,17 +101,6 @@ public class ClientServiceTest {
 
   // find test
   @Test
-  public void testFindThrowsAssertionError() {
-    // expect string type for primary key test
-    thrown.expect(AssertionError.class);
-    try {
-      clientService.find(1);
-    } catch (AssertionError e) {
-      assertEquals("Expeceted AssertionError", e.getMessage());
-    }
-  }
-
-  @Test
   public void testFindReturnsCorrectEntity() throws Exception {
     String id = "AaiU7IW0Rt";
     Date updated = new Date();
@@ -134,18 +123,7 @@ public class ClientServiceTest {
     assertThat(found, is(nullValue()));
   }
 
-  @Test
   // delete test
-  public void testDeleteThrowsAssertionError() throws Exception {
-    // expect string type for primary key test
-    thrown.expect(AssertionError.class);
-    try {
-      clientService.delete(123);
-    } catch (AssertionError e) {
-      assertEquals("Expected AssertionError", e.getMessage());
-    }
-  }
-
   @Test
   public void testDeleteDelegatesToCrudsService() {
     clientService.delete("ABC2345678");
@@ -171,17 +149,6 @@ public class ClientServiceTest {
   }
 
   // update test
-  @Test
-  public void testUpdateThrowsAssertionError() throws Exception {
-    // expected string type for primary key test
-    thrown.expect(AssertionError.class);
-    try {
-      clientService.update("ABC1234567", null);
-    } catch (AssertionError e) {
-      assertEquals("Expected AssertionError", e.getMessage());
-    }
-  }
-
   @Test
   public void testUpdateReturnsCorrectEntity() throws Exception {
     String id = "Aaeae9r0F4";
