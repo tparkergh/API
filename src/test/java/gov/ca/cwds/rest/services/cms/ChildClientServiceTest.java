@@ -54,18 +54,6 @@ public class ChildClientServiceTest {
   // find test
   @SuppressWarnings("javadoc")
   @Test
-  public void findThrowsAssertionError() {
-    thrown.expect(AssertionError.class);
-    try {
-      childClientService.find(1);
-    } catch (AssertionError e) {
-      assertEquals("Expected AssertionError", e.getMessage());
-
-    }
-  }
-
-  @SuppressWarnings("javadoc")
-  @Test
   public void findReturnsChildClientReportWhenFound() throws Exception {
     ChildClient expected = new ChildClientResourceBuilder().buildChildClient();
 
@@ -85,17 +73,6 @@ public class ChildClientServiceTest {
   }
 
   // delete test
-  @SuppressWarnings("javadoc")
-  @Test
-  public void deleteThrowsAssersionError() throws Exception {
-    thrown.expect(AssertionError.class);
-    try {
-      childClientService.delete(1);
-    } catch (AssertionError e) {
-      assertEquals("Expected AssertionError", e.getMessage());
-    }
-  }
-
   @SuppressWarnings("javadoc")
   @Test
   public void deleteDelegatesToCrudsService() {
@@ -124,17 +101,6 @@ public class ChildClientServiceTest {
   }
 
   // update test
-  @SuppressWarnings("javadoc")
-  @Test
-  public void updateThrowsAssertionError() throws Exception {
-    thrown.expect(AssertionError.class);
-    try {
-      childClientService.update("xxx", null);
-    } catch (AssertionError e) {
-      assertEquals("Expected AssertionError", e.getMessage());
-    }
-  }
-
   @SuppressWarnings("javadoc")
   @Test
   public void updateReturnsChildClientResponseOnSuccess() throws Exception {
