@@ -271,7 +271,8 @@ public class ScreeningToReferralService implements CrudsService {
              * anonymous reporter or self-reported
              */
             try {
-              savedReporter = processReporter(incomingParticipant, role, referralId, timestamp);
+              savedReporter = processReporter(incomingParticipant, role, referralId, timestamp,
+                  screeningToReferral.getIncidentCounty());
               incomingParticipant.setLegacyId(savedReporter.getReferralId());
               incomingParticipant.setLegacySourceTable(REPORTER_TABLE_NAME);
             } catch (ServiceException e) {
@@ -338,7 +339,7 @@ public class ScreeningToReferralService implements CrudsService {
               ReferralClient referralClient = ReferralClient.createWithDefault(
                   ParticipantValidator.selfReported(incomingParticipant),
                   incomingParticipant.isClientStaffPersonAdded(), referralId, clientId,
-                  LegacyDefaultValues.DEFAULT_COUNTY_SPECIFIC_CODE,
+                  screeningToReferral.getIncidentCounty(),
                   LegacyDefaultValues.DEFAULT_APPROVAL_STATUS_CODE);
 
               // validate referral client
@@ -528,8 +529,8 @@ public class ScreeningToReferralService implements CrudsService {
           gov.ca.cwds.rest.api.domain.cms.CrossReport cmsCrossReport =
               gov.ca.cwds.rest.api.domain.cms.CrossReport.createWithDefaults(crossReportId,
                   crossReport, referralId, LegacyDefaultValues.DEFAULT_STAFF_PERSON_ID,
-                  outStateLawEnforcementAddr, LegacyDefaultValues.DEFAULT_COUNTY_SPECIFIC_CODE,
-                  lawEnforcementIndicator, outStateLawEnforcementIndicator);
+                  outStateLawEnforcementAddr, scr.getIncidentCounty(), lawEnforcementIndicator,
+                  outStateLawEnforcementIndicator);
 
           messageBuilder.addDomainValidationError(validator.validate(cmsCrossReport));
 
@@ -643,8 +644,7 @@ public class ScreeningToReferralService implements CrudsService {
             new gov.ca.cwds.rest.api.domain.cms.Allegation("", LegacyDefaultValues.DEFAULT_CODE, "",
                 scr.getLocationType(), "", allegationDispositionType, allegation.getType(), "", "",
                 false, LegacyDefaultValues.DEFAULT_NON_PROTECTING_PARENT_CODE, false,
-                victimClientId, perpatratorClientId, referralId,
-                LegacyDefaultValues.DEFAULT_COUNTY_SPECIFIC_CODE, false,
+                victimClientId, perpatratorClientId, referralId, scr.getIncidentCounty(), false,
                 LegacyDefaultValues.DEFAULT_CODE);
 
         messageBuilder.addDomainValidationError(validator.validate(cmsAllegation));
@@ -658,8 +658,8 @@ public class ScreeningToReferralService implements CrudsService {
         // create the Allegation Perpetrator History
         gov.ca.cwds.rest.api.domain.cms.AllegationPerpetratorHistory cmsPerpHistory =
             new gov.ca.cwds.rest.api.domain.cms.AllegationPerpetratorHistory(
-                LegacyDefaultValues.DEFAULT_COUNTY_SPECIFIC_CODE,
-                postedAllegation.getVictimClientId(), postedAllegation.getId(), "2017-07-03");
+                scr.getIncidentCounty(), postedAllegation.getVictimClientId(),
+                postedAllegation.getId(), "2017-07-03");
 
         messageBuilder.addDomainValidationError(validator.validate(cmsPerpHistory));
 
@@ -781,8 +781,8 @@ public class ScreeningToReferralService implements CrudsService {
     return foundClientAddress != null && !foundClientAddress.isEmpty();
   }
 
-  private Reporter processReporter(Participant ip, String role, String referralId, Date timestamp)
-      throws ServiceException {
+  private Reporter processReporter(Participant ip, String role, String referralId, Date timestamp,
+      String countySpecificCode) throws ServiceException {
 
     gov.ca.cwds.rest.api.domain.Address reporterAddress = null;
 
@@ -810,7 +810,7 @@ public class ScreeningToReferralService implements CrudsService {
     Reporter theReporter = reporterService.find(referralId);
     if (theReporter == null) {
       Reporter reporter = Reporter.createWithDefaults(referralId, mandatedReporterIndicator,
-          reporterAddress, ip, LegacyDefaultValues.DEFAULT_COUNTY_SPECIFIC_CODE);
+          reporterAddress, ip, countySpecificCode);
 
       messageBuilder.addDomainValidationError(validator.validate(reporter));
       theReporter = reporterService.createWithSingleTimestamp(reporter, timestamp);
