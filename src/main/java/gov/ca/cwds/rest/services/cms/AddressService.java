@@ -1,6 +1,5 @@
 package gov.ca.cwds.rest.services.cms;
 
-import java.io.Serializable;
 import java.util.Date;
 
 import javax.persistence.EntityExistsException;
@@ -17,20 +16,20 @@ import gov.ca.cwds.data.cms.SsaName3Dao;
 import gov.ca.cwds.data.persistence.cms.Address;
 import gov.ca.cwds.data.persistence.cms.CmsKeyIdGenerator;
 import gov.ca.cwds.rest.api.Request;
-import gov.ca.cwds.rest.api.Response;
 import gov.ca.cwds.rest.api.domain.ScreeningToReferral;
 import gov.ca.cwds.rest.api.domain.cms.PostedAddress;
 import gov.ca.cwds.rest.business.rules.UpperCaseTables;
 import gov.ca.cwds.rest.messages.MessageBuilder;
-import gov.ca.cwds.rest.services.CrudsService;
 import gov.ca.cwds.rest.services.LegacyDefaultValues;
 import gov.ca.cwds.rest.services.ServiceException;
+import gov.ca.cwds.rest.services.TypedCrudsService;
 
 
 /**
  * @author CWDS API Team
  */
-public class AddressService implements CrudsService {
+public class AddressService implements
+    TypedCrudsService<String, gov.ca.cwds.rest.api.domain.cms.Address, gov.ca.cwds.rest.api.domain.cms.Address> {
   private static final Logger LOGGER = LoggerFactory.getLogger(ClientService.class);
 
 
@@ -62,11 +61,10 @@ public class AddressService implements CrudsService {
   }
 
   @Override
-  public Response create(Request request) {
+  public PostedAddress create(gov.ca.cwds.rest.api.domain.cms.Address request) {
     assert request instanceof gov.ca.cwds.rest.api.domain.cms.Address;
 
-    gov.ca.cwds.rest.api.domain.cms.Address address =
-        (gov.ca.cwds.rest.api.domain.cms.Address) request;
+    gov.ca.cwds.rest.api.domain.cms.Address address = request;
 
     return create(address, null);
   }
@@ -79,7 +77,7 @@ public class AddressService implements CrudsService {
    * @param timestamp - timestamp
    * @return the single timestamp
    */
-  public Response createWithSingleTimestamp(Request request, Date timestamp) {
+  public PostedAddress createWithSingleTimestamp(Request request, Date timestamp) {
     assert request instanceof gov.ca.cwds.rest.api.domain.cms.Address;
 
     gov.ca.cwds.rest.api.domain.cms.Address address =
@@ -139,8 +137,7 @@ public class AddressService implements CrudsService {
 
       messageBuilder.addDomainValidationError(validator.validate(domainAddress));
 
-      PostedAddress postedAddress =
-          (PostedAddress) this.createWithSingleTimestamp(domainAddress, timestamp);
+      PostedAddress postedAddress = this.createWithSingleTimestamp(domainAddress, timestamp);
 
       address.setLegacyId(postedAddress.getExistingAddressId());
       address.setLegacySourceTable("ADDRS_T");
@@ -153,8 +150,8 @@ public class AddressService implements CrudsService {
   }
 
   @Override
-  public Response delete(Serializable primaryKey) {
-    assert primaryKey instanceof String;
+  public gov.ca.cwds.rest.api.domain.cms.Address delete(String primaryKey) {
+
     gov.ca.cwds.data.persistence.cms.Address persistedAddress = addressDao.delete(primaryKey);
     if (persistedAddress != null) {
       upperCaseTables.deleteAddressUc(primaryKey);
@@ -164,8 +161,7 @@ public class AddressService implements CrudsService {
   }
 
   @Override
-  public Response find(Serializable primaryKey) {
-    assert primaryKey instanceof String;
+  public gov.ca.cwds.rest.api.domain.cms.Address find(String primaryKey) {
 
     gov.ca.cwds.data.persistence.cms.Address persistedAddress = addressDao.find(primaryKey);
     if (persistedAddress != null) {
@@ -175,15 +171,13 @@ public class AddressService implements CrudsService {
   }
 
   @Override
-  public Response update(Serializable primaryKey, Request request) {
-    assert primaryKey instanceof String;
-    assert request instanceof gov.ca.cwds.rest.api.domain.cms.Address;
-    gov.ca.cwds.rest.api.domain.cms.Address address =
-        (gov.ca.cwds.rest.api.domain.cms.Address) request;
+  public gov.ca.cwds.rest.api.domain.cms.Address update(String primaryKey,
+      gov.ca.cwds.rest.api.domain.cms.Address request) {
+    gov.ca.cwds.rest.api.domain.cms.Address address = request;
 
     try {
       String lastUpdatedId = staffPersonIdRetriever.getStaffPersonId();
-      Address managed = new Address((String) primaryKey, address, lastUpdatedId);
+      Address managed = new Address(primaryKey, address, lastUpdatedId);
       managed = addressDao.update(managed);
       upperCaseTables.updateAddressUc(managed);
       return new gov.ca.cwds.rest.api.domain.cms.Address(managed, true);

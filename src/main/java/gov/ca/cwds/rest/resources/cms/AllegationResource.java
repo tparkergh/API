@@ -21,6 +21,7 @@ import com.google.inject.Inject;
 import gov.ca.cwds.inject.AllegationServieBackedResource;
 import gov.ca.cwds.rest.api.domain.cms.Allegation;
 import gov.ca.cwds.rest.resources.ResourceDelegate;
+import gov.ca.cwds.rest.resources.TypedResourceDelegate;
 import io.dropwizard.hibernate.UnitOfWork;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -44,16 +45,17 @@ import io.swagger.annotations.ApiResponses;
 @Consumes(MediaType.APPLICATION_JSON)
 public class AllegationResource {
 
-  private ResourceDelegate resourceDelegate;
+  private TypedResourceDelegate<String, Allegation> typedResourceDelegate;
 
   /**
    * Constructor
    * 
-   * @param resourceDelegate The resourceDelegate to delegate to.
+   * @param typedResourceDelegate The typedResourceDelegate to delegate to.
    */
   @Inject
-  public AllegationResource(@AllegationServieBackedResource ResourceDelegate resourceDelegate) {
-    this.resourceDelegate = resourceDelegate;
+  public AllegationResource(
+      @AllegationServieBackedResource TypedResourceDelegate<String, Allegation> typedResourceDelegate) {
+    this.typedResourceDelegate = typedResourceDelegate;
   }
 
   /**
@@ -72,7 +74,7 @@ public class AllegationResource {
   @ApiOperation(value = "Find allegation by id", response = Allegation.class, code = 200)
   public Response get(@PathParam("id") @ApiParam(required = true, name = "id",
       value = "The id of the Allegation to find") String id) {
-    return resourceDelegate.get(id);
+    return typedResourceDelegate.get(id);
   }
 
   /**
@@ -89,7 +91,7 @@ public class AllegationResource {
   @ApiOperation(value = "Delete Allegation", code = HttpStatus.SC_OK, response = Object.class)
   public Response delete(
       @PathParam("id") @ApiParam(required = true, value = "id of Allegation to delete") String id) {
-    return resourceDelegate.delete(id);
+    return typedResourceDelegate.delete(id);
   }
 
   /**
@@ -110,7 +112,7 @@ public class AllegationResource {
   @ApiOperation(value = "Create Allegation", code = HttpStatus.SC_CREATED,
       response = Allegation.class)
   public Response create(@Valid @ApiParam(hidden = false, required = true) Allegation allegation) {
-    return resourceDelegate.create(allegation);
+    return typedResourceDelegate.create(allegation);
   }
 
   /**
@@ -136,6 +138,6 @@ public class AllegationResource {
       @PathParam("id") @ApiParam(required = true, name = "id",
           value = "The id of the Allegation to update") String id,
       @Valid @ApiParam(hidden = false) Allegation allegation) {
-    return resourceDelegate.update(id, allegation);
+    return typedResourceDelegate.update(id, allegation);
   }
 }

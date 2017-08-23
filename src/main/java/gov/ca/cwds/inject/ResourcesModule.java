@@ -9,6 +9,7 @@ import com.google.inject.name.Named;
 import gov.ca.cwds.rest.ApiConfiguration;
 import gov.ca.cwds.rest.SwaggerConfiguration;
 import gov.ca.cwds.rest.api.contact.DeliveredServiceDomain;
+import gov.ca.cwds.rest.api.domain.cms.Allegation;
 import gov.ca.cwds.rest.api.domain.cms.AllegationPerpetratorHistory;
 import gov.ca.cwds.rest.api.domain.cms.Assignment;
 import gov.ca.cwds.rest.api.domain.cms.ClientCollateral;
@@ -170,8 +171,9 @@ public class ResourcesModule extends AbstractModule {
 
   @Provides
   @AllegationServieBackedResource
-  public ResourceDelegate allegationServieBackedResource(Injector injector) {
-    return new ServiceBackedResourceDelegate(injector.getInstance(AllegationService.class));
+  public TypedResourceDelegate<String, Allegation> allegationServieBackedResource(
+      Injector injector) {
+    return new TypedServiceBackedResourceDelegate<>(injector.getInstance(AllegationService.class));
   }
 
   @Provides
