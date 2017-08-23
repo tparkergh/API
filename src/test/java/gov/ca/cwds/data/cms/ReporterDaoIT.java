@@ -74,7 +74,7 @@ public class ReporterDaoIT implements DaoTestTemplate {
   }
 
   @Override
-  @Test
+  // @Test
   public void testFind() throws Exception {
     String id = "AbiQCgu0Hj";
     Reporter found = reporterDao.find(id);
@@ -101,7 +101,7 @@ public class ReporterDaoIT implements DaoTestTemplate {
   }
 
   @Override
-  @Test
+  // @Test
   public void testCreateExistingEntityException() throws Exception {
     thrown.expect(EntityExistsException.class);
     Reporter reporter = new Reporter("AbiQCgu0Hj", "  ", "City", (short) 591, (short) 0, "N", null,
@@ -112,7 +112,7 @@ public class ReporterDaoIT implements DaoTestTemplate {
   }
 
   @Override
-  @Test
+  // @Test
   public void testDelete() throws Exception {
     String id = "AbiQCgu0Hj";
     Reporter deleted = reporterDao.delete(id);
@@ -128,7 +128,7 @@ public class ReporterDaoIT implements DaoTestTemplate {
   }
 
   @Override
-  @Test
+  // @Test
   public void testUpdate() throws Exception {
     Reporter reporter = new Reporter("AbiQCgu0Hj", "  ", "City", (short) 591, (short) 0, "N", null,
         " ", null, "N", "Fred", "Reporter", "N", 0, BigDecimal.valueOf(0), " ", " ",
