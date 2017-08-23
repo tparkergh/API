@@ -195,17 +195,20 @@ public class CrossReportTest {
     String id = "id";
     String referralId = "referralId";
     String staffId = "staffId";
+    String outStateLawEnforcementAddr = "Law Enforcement Address";
     String countyCode = "countyCode";
     Boolean lawEnforcementIndicator = true;
+    Boolean outStateLawEnforcementIndicator = true;
 
     String agencyName = "agencyName";
     String informDate = "informDate";
     gov.ca.cwds.rest.api.domain.CrossReport nsCrossReport =
         new gov.ca.cwds.rest.api.domain.CrossReport(id, "legacy_source_table", "legacy_id",
-            "agency_type", agencyName,filedOutOfStateIndicator, 2095, informDate);
+            "agency_type", agencyName, filedOutOfStateIndicator, 2095, informDate);
 
     CrossReport cmsCrossReport = CrossReport.createWithDefaults(id, nsCrossReport, referralId,
-        staffId, countyCode, lawEnforcementIndicator);
+        staffId, outStateLawEnforcementAddr, countyCode, lawEnforcementIndicator,
+        outStateLawEnforcementIndicator);
     assertEquals("Expected id field to be initialized with values", id,
         cmsCrossReport.getThirdId());
     assertEquals("Expected InformDate field to be initialized with values",
@@ -216,12 +219,16 @@ public class CrossReportTest {
         cmsCrossReport.getReferralId());
     assertEquals("Expected staffId field to be initialized with values", staffId,
         cmsCrossReport.getStaffPersonId());
+    assertEquals("Expected outStateLawEnforcementAddr field to be initialized with values",
+        outStateLawEnforcementAddr, cmsCrossReport.getOutStateLawEnforcementAddr());
     assertEquals("Expected countyCode field to be initialized with values", countyCode,
         cmsCrossReport.getCountySpecificCode());
     assertEquals("Expected lawEnforcementIndicator field to be initialized with values",
         lawEnforcementIndicator, cmsCrossReport.getLawEnforcementIndicator());
     assertEquals("Expected  field to be initialized with default values", true,
         cmsCrossReport.getFiledOutOfStateIndicator());
+    assertEquals("Expected  field to be initialized with default values", true,
+        cmsCrossReport.getOutStateLawEnforcementIndicator());
 
   }
 
@@ -230,8 +237,10 @@ public class CrossReportTest {
     String id = "id";
     String referralId = "referralId";
     String staffId = "staffId";
+    String outStateLawEnforcementAddr = "Law Enforcement Address";
     String countyCode = "countyCode";
     Boolean lawEnforcementIndicator = true;
+    Boolean outStateLawEnforcementIndicator = true;
 
     String agencyName = "agencyName";
     String informDate = "informDate";
@@ -240,7 +249,8 @@ public class CrossReportTest {
             "agency_type", agencyName, filedOutOfStateIndicator, 2095, informDate);
 
     CrossReport cmsCrossReport = CrossReport.createWithDefaults(id, nsCrossReport, referralId,
-        staffId, countyCode, lawEnforcementIndicator);
+        staffId, outStateLawEnforcementAddr, countyCode, lawEnforcementIndicator,
+        outStateLawEnforcementIndicator);
     // assertEquals("Expected field to be initialized with default values", new Short("0"),
     // cmsCrossReport.getCrossReportMethodType());
     assertEquals("Expected  field to be initialized with default values", false,
@@ -261,10 +271,10 @@ public class CrossReportTest {
         cmsCrossReport.getLawEnforcementId());
     assertEquals("Expected  field to be initialized with default values", "",
         cmsCrossReport.getRecipientName());
-    assertEquals("Expected  field to be initialized with default values", "",
-        cmsCrossReport.getOutStateLawEnforcementAddr());
-    assertEquals("Expected  field to be initialized with default values", false,
-        cmsCrossReport.getOutStateLawEnforcementIndicator());
+    // assertEquals("Expected field to be initialized with default values", "",
+    // cmsCrossReport.getOutStateLawEnforcementAddr());
+    // assertEquals("Expected field to be initialized with default values", false,
+    // cmsCrossReport.getOutStateLawEnforcementIndicator());
     assertEquals("Expected  field to be initialized with default values", false,
         cmsCrossReport.getSatisfyCrossReportIndicator());
 
