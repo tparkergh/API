@@ -65,8 +65,8 @@ public class ScreeningToReferral extends ReportingDomain implements Request {
 
   @JsonProperty("incident_county")
   @NotEmpty
-  @ApiModelProperty(required = true, readOnly = false, value = "County where incident occurred",
-      example = "Sacramento")
+  @ApiModelProperty(required = true, readOnly = false,
+      value = "County with primary assignment responsibility for Referral", example = "34")
   @ValidLogicalId(required = true, category = SystemCodeCategoryId.COUNTY_CODE)
   private String incidentCounty;
 
