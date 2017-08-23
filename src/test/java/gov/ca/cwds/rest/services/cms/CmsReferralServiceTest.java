@@ -53,6 +53,7 @@ import gov.ca.cwds.rest.filters.TestingRequestExecutionContext;
 import gov.ca.cwds.rest.services.referentialintegrity.RIAllegation;
 import gov.ca.cwds.rest.services.referentialintegrity.RICrossReport;
 import gov.ca.cwds.rest.services.referentialintegrity.RIReferral;
+import gov.ca.cwds.rest.services.referentialintegrity.RIReferralClient;
 import gov.ca.cwds.rest.services.referentialintegrity.RIReporter;
 import io.dropwizard.jackson.Jackson;
 
@@ -92,6 +93,8 @@ public class CmsReferralServiceTest {
   private RICrossReport riCrossReport;
   private RIReporter riReporter;
   private RIReferral riReferral;
+  private RIReferralClient riReferralClient;
+
 
   @Rule
   public ExpectedException thrown = ExpectedException.none();
@@ -131,8 +134,10 @@ public class CmsReferralServiceTest {
     laCountyTrigger = mock(LACountyTrigger.class);
     triggerTablesDao = mock(TriggerTablesDao.class);
     staffpersonDao = mock(StaffPersonDao.class);
-    referralClientService = new ReferralClientService(referralClientDao, nonLACountyTriggers,
-        laCountyTrigger, triggerTablesDao, staffpersonDao, staffPersonIdRetriever);
+    riReferralClient = mock(RIReferralClient.class);
+    referralClientService =
+        new ReferralClientService(referralClientDao, nonLACountyTriggers, laCountyTrigger,
+            triggerTablesDao, staffpersonDao, staffPersonIdRetriever, riReferralClient);
 
     allegationDao = mock(AllegationDao.class);
     riAllegation = mock(RIAllegation.class);
