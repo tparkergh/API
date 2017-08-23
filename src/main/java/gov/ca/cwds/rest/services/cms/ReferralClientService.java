@@ -23,6 +23,7 @@ import gov.ca.cwds.rest.business.rules.LACountyTrigger;
 import gov.ca.cwds.rest.business.rules.NonLACountyTriggers;
 import gov.ca.cwds.rest.services.CrudsService;
 import gov.ca.cwds.rest.services.ServiceException;
+import gov.ca.cwds.rest.services.referentialintegrity.RIReferralClient;
 import gov.ca.cwds.rest.util.ServiceUtils;
 
 /**
@@ -43,6 +44,7 @@ public class ReferralClientService implements CrudsService {
   private TriggerTablesDao triggerTablesDao;
   private StaffPersonDao staffpersonDao;
   private StaffPersonIdRetriever staffPersonIdRetriever;
+  private RIReferralClient riReferralClient;
 
 
   /**
@@ -59,18 +61,20 @@ public class ReferralClientService implements CrudsService {
    * @param staffpersonDao The {@link Dao} handling
    *        {@link gov.ca.cwds.data.persistence.cms.StaffPerson} objects
    * @param staffPersonIdRetriever the staffPersonIdRetriever
+   * @param riReferralClient the ri for referral client
    */
   @Inject
   public ReferralClientService(ReferralClientDao referralClientDao,
       NonLACountyTriggers nonLaTriggers, LACountyTrigger laCountyTrigger,
       TriggerTablesDao triggerTablesDao, StaffPersonDao staffpersonDao,
-      StaffPersonIdRetriever staffPersonIdRetriever) {
+      StaffPersonIdRetriever staffPersonIdRetriever, RIReferralClient riReferralClient) {
     this.referralClientDao = referralClientDao;
     this.nonLaTriggers = nonLaTriggers;
     this.laCountyTrigger = laCountyTrigger;
     this.triggerTablesDao = triggerTablesDao;
     this.staffpersonDao = staffpersonDao;
     this.staffPersonIdRetriever = staffPersonIdRetriever;
+    this.riReferralClient = riReferralClient;
   }
 
   /**

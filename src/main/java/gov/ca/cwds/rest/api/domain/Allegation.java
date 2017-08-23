@@ -54,9 +54,10 @@ public class Allegation extends ReportingDomain implements Request, Response {
   private String nonProtectingParent;
 
   @JsonProperty("type")
-  @ApiModelProperty(required = true, value = "type of allegation code", example = "1373")
+  @ApiModelProperty(required = true, value = "type of allegation code", example = "2179")
   @NotNull
-  @ValidSystemCodeId(required = true, category = SystemCodeCategoryId.INJURY_HARM_TYPE)
+  @ValidSystemCodeId(required = true, category = SystemCodeCategoryId.INJURY_HARM_TYPE,
+      checkCategoryIdValueIsZero = true)
   private Short type;
 
   @JsonProperty("county")
