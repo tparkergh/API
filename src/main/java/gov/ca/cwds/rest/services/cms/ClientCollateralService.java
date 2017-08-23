@@ -102,7 +102,6 @@ public class ClientCollateralService
    */
   @Override
   public ClientCollateral update(String primaryKey, ClientCollateral request) {
-    assert primaryKey instanceof String;
     throw new NotImplementedException("Update is not implemented");
   }
 

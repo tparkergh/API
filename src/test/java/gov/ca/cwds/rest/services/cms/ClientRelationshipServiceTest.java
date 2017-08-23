@@ -52,17 +52,6 @@ public class ClientRelationshipServiceTest {
   // find test
   @SuppressWarnings("javadoc")
   @Test
-  public void findThrowsAssertionError() {
-    thrown.expect(AssertionError.class);
-    try {
-      clientRelationshipService.find(new Long(1));
-    } catch (AssertionError e) {
-      assertEquals("Expected AssertionError", e.getMessage());
-    }
-  }
-
-  @SuppressWarnings("javadoc")
-  @Test
   public void findReturnsCorrectClientRelationshipWhenFound() throws Exception {
     String id = "ABC";
     PostedClientRelationship expected = validClientRelationshipDomainObject();
@@ -91,17 +80,6 @@ public class ClientRelationshipServiceTest {
     clientRelationshipService.delete("string");
   }
 
-  @SuppressWarnings("javadoc")
-  @Test
-  public void deleteThrowsAssertionError() throws Exception {
-    thrown.expect(AssertionError.class);
-    try {
-      clientRelationshipService.delete(new Long(1));
-    } catch (AssertionError e) {
-      assertEquals("Expected AssertionError", e.getMessage());
-    }
-  }
-
   // update
   @SuppressWarnings("javadoc")
   @Test
@@ -111,18 +89,6 @@ public class ClientRelationshipServiceTest {
   }
 
   // create test
-  @SuppressWarnings("javadoc")
-  @Test
-  public void createThrowsAssertionError() throws Exception {
-    thrown.expect(AssertionError.class);
-    try {
-      clientRelationshipService.create(null);
-      Assert.fail("Expected AssertionError");
-    } catch (AssertionError e) {
-      assertEquals("Expected AssertionError", e.getMessage());
-    }
-  }
-
   @SuppressWarnings("javadoc")
   @Test
   public void clientRelationshipServiceCreateThrowsEntityExistsException() throws Exception {
