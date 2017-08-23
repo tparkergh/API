@@ -24,6 +24,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 
 import gov.ca.cwds.data.cms.TestSystemCodeCache;
+import gov.ca.cwds.fixture.ScreeningToReferralResourceBuilder;
 import gov.ca.cwds.rest.core.Api;
 import gov.ca.cwds.rest.resources.ScreeningToReferralResource;
 import io.dropwizard.jackson.Jackson;
@@ -85,7 +86,6 @@ public class ScreeningToReferralTest {
     Allegation allegation = validAllegation();
     allegations.add(allegation);
 
-
     String expected = MAPPER.writeValueAsString(new ScreeningToReferral(id, "", "",
         "2016-08-03T01:00:00.000Z", SACRAMENTO_COUNTY_CODE, "2016-08-02", "Foster Home",
         communicationMethod, "The Rocky Horror Show", "Narrative 123 test", "123ABC", responseTime,
@@ -118,7 +118,6 @@ public class ScreeningToReferralTest {
         "2016-08-03T01:00:00.000Z", "Michael Bastow", "addtional information",
         "Screening Descision", "Detail", approvalStatus, familyAwarness, filedWithLawEnforcement,
         responsibleAgency, address, participants, crossReports, allegations);
-
 
     ScreeningToReferral serialized =
         MAPPER.readValue(fixture("fixtures/domain/ScreeningToReferral/valid/validstr.json"),
@@ -345,8 +344,21 @@ public class ScreeningToReferralTest {
         ScreeningToReferral.class);
     Set<ConstraintViolation<ScreeningToReferral>> constraintViolations =
         validator.validate(toValidate);
-    // System.out.println(constraintViolations.iterator().next().getMessage());
     assertEquals(0, constraintViolations.size());
+  }
+
+  @Test
+  public void testWithInvalidCountySpecificCodeFails() throws Exception {
+    ScreeningToReferral screeningToReferral = new ScreeningToReferralResourceBuilder()
+        .setIncidentCounty("XX").createScreeningToReferral();
+
+    Set<ConstraintViolation<ScreeningToReferral>> constraintViolations =
+        validator.validate(screeningToReferral);
+
+    // assertEquals(1, constraintViolations.size());
+    assertEquals("{property} must be a valid logical id code for category GVR_ENTC",
+        constraintViolations.iterator().next().getMessage());
+
   }
 
   private ScreeningToReferral validScreeningToReferral() {

@@ -39,9 +39,10 @@ public class TestSystemCodeCache implements SystemCodeCache {
   @Override
   public Set<SystemCode> getSystemCodesForMeta(String metaId) {
     Set codes = new HashSet();
+    short sysCode = 1101;
     if ("GVR_ENTC" == metaId) {
       SystemCode sacramento =
-          new SystemCode((short) 1101, null, null, null, "Sacramento", "34", null, null, null);
+          new SystemCode(sysCode, null, "N", null, "Sacramento", "34", null, null, null);
       codes.add(sacramento);
     }
 
@@ -76,6 +77,9 @@ public class TestSystemCodeCache implements SystemCodeCache {
       if (1520 == systemCodeId.intValue()) {
         return true;
       }
+      if (1516 == systemCodeId.intValue()) {
+        return true;
+      }
     }
 
     if (SystemCodeCategoryId.COMMUNICATION_METHOD.equals(metaId)) {
@@ -86,6 +90,9 @@ public class TestSystemCodeCache implements SystemCodeCache {
 
     if (SystemCodeCategoryId.INJURY_HARM_TYPE.equals(metaId)) {
       if (2179 == systemCodeId.intValue()) {
+        return true;
+      }
+      if (2178 == systemCodeId.intValue()) {
         return true;
       }
     }
