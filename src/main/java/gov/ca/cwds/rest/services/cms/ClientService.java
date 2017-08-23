@@ -20,20 +20,20 @@ import gov.ca.cwds.data.persistence.cms.Client;
 import gov.ca.cwds.data.persistence.cms.CmsKeyIdGenerator;
 import gov.ca.cwds.data.persistence.cms.StaffPerson;
 import gov.ca.cwds.data.rules.TriggerTablesDao;
-import gov.ca.cwds.rest.api.Request;
 import gov.ca.cwds.rest.api.domain.cms.PostedClient;
 import gov.ca.cwds.rest.business.rules.ExternalInterfaceTables;
 import gov.ca.cwds.rest.business.rules.NonLACountyTriggers;
 import gov.ca.cwds.rest.business.rules.UpperCaseTables;
-import gov.ca.cwds.rest.services.CrudsService;
 import gov.ca.cwds.rest.services.ServiceException;
+import gov.ca.cwds.rest.services.TypedCrudsService;
 
 /**
  * Business layer object to work on {@link Client}
  * 
  * @author CWDS API Team
  */
-public class ClientService implements CrudsService {
+public class ClientService implements
+    TypedCrudsService<String, gov.ca.cwds.rest.api.domain.cms.Client, gov.ca.cwds.rest.api.domain.cms.Client> {
   private static final Logger LOGGER = LoggerFactory.getLogger(ClientService.class);
 
   private ClientDao clientDao;
@@ -83,8 +83,7 @@ public class ClientService implements CrudsService {
    * @see gov.ca.cwds.rest.services.CrudsService#find(java.io.Serializable)
    */
   @Override
-  public gov.ca.cwds.rest.api.domain.cms.Client find(Serializable primaryKey) {
-    assert primaryKey instanceof String;
+  public gov.ca.cwds.rest.api.domain.cms.Client find(String primaryKey) {
 
     gov.ca.cwds.data.persistence.cms.Client persistedClient = clientDao.find(primaryKey);
     if (persistedClient != null) {
@@ -98,7 +97,6 @@ public class ClientService implements CrudsService {
    */
   @SuppressWarnings("javadoc")
   public PostedClient findInboundId(Serializable primaryKey) {
-    assert primaryKey instanceof String;
 
     gov.ca.cwds.data.persistence.cms.Client persistedClient = clientDao.find(primaryKey);
     if (persistedClient != null) {
@@ -113,8 +111,7 @@ public class ClientService implements CrudsService {
    * @see gov.ca.cwds.rest.services.CrudsService#delete(java.io.Serializable)
    */
   @Override
-  public gov.ca.cwds.rest.api.domain.cms.Client delete(Serializable primaryKey) {
-    assert primaryKey instanceof String;
+  public gov.ca.cwds.rest.api.domain.cms.Client delete(String primaryKey) {
     gov.ca.cwds.data.persistence.cms.Client persistedClient = clientDao.delete(primaryKey);
     if (persistedClient != null) {
       upperCaseTables.deleteClientUc(primaryKey);
@@ -130,11 +127,9 @@ public class ClientService implements CrudsService {
    * @see gov.ca.cwds.rest.services.CrudsService#create(gov.ca.cwds.rest.api.Request)
    */
   @Override
-  public PostedClient create(Request request) {
-    assert request instanceof gov.ca.cwds.rest.api.domain.cms.Client;
+  public PostedClient create(gov.ca.cwds.rest.api.domain.cms.Client request) {
 
-    gov.ca.cwds.rest.api.domain.cms.Client client =
-        (gov.ca.cwds.rest.api.domain.cms.Client) request;
+    gov.ca.cwds.rest.api.domain.cms.Client client = request;
     return create(client, null);
 
   }
@@ -147,11 +142,10 @@ public class ClientService implements CrudsService {
    * @param timestamp - timestamp
    * @return the single timestamp
    */
-  public PostedClient createWithSingleTimestamp(Request request, Date timestamp) {
-    assert request instanceof gov.ca.cwds.rest.api.domain.cms.Client;
+  public PostedClient createWithSingleTimestamp(gov.ca.cwds.rest.api.domain.cms.Client request,
+      Date timestamp) {
 
-    gov.ca.cwds.rest.api.domain.cms.Client client =
-        (gov.ca.cwds.rest.api.domain.cms.Client) request;
+    gov.ca.cwds.rest.api.domain.cms.Client client = request;
     return create(client, timestamp);
   }
 
@@ -194,17 +188,15 @@ public class ClientService implements CrudsService {
    *      gov.ca.cwds.rest.api.Request)
    */
   @Override
-  public gov.ca.cwds.rest.api.domain.cms.Client update(Serializable primaryKey, Request request) {
-    assert primaryKey instanceof String;
-    assert request instanceof gov.ca.cwds.rest.api.domain.cms.Client;
-    gov.ca.cwds.rest.api.domain.cms.Client client =
-        (gov.ca.cwds.rest.api.domain.cms.Client) request;
+  public gov.ca.cwds.rest.api.domain.cms.Client update(String primaryKey,
+      gov.ca.cwds.rest.api.domain.cms.Client request) {
+    gov.ca.cwds.rest.api.domain.cms.Client client = request;
 
     gov.ca.cwds.rest.api.domain.cms.Client savedEntity;
     try {
       String lastUpdatedId = staffPersonIdRetriever.getStaffPersonId();
       Client existingClient = clientDao.find(primaryKey);
-      Client managed = new Client((String) primaryKey, client, lastUpdatedId);
+      Client managed = new Client(primaryKey, client, lastUpdatedId);
 
       managed.setClientAddress(existingClient.getClientAddress());
       managed = clientDao.update(managed);
