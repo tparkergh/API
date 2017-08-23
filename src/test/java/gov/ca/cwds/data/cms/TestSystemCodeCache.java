@@ -39,9 +39,10 @@ public class TestSystemCodeCache implements SystemCodeCache {
   @Override
   public Set<SystemCode> getSystemCodesForMeta(String metaId) {
     Set codes = new HashSet();
+    short sysCode = 1101;
     if ("GVR_ENTC" == metaId) {
       SystemCode sacramento =
-          new SystemCode((short) 1101, null, null, null, "Sacramento", "34", null, null, null);
+          new SystemCode(sysCode, null, "N", null, "Sacramento", "34", null, null, null);
       codes.add(sacramento);
     }
 
