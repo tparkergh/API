@@ -30,7 +30,7 @@ public class RIReferralTest {
   public ExpectedException expectedException = ExpectedException.none();
 
   /**
-   * @throws Exception
+   * @throws Exception generic error
    */
   @Test
   public void type() throws Exception {
@@ -38,7 +38,7 @@ public class RIReferralTest {
   }
 
   /**
-   * @throws Exception
+   * @throws Exception generic error
    */
   @Test
   public void instantiation() throws Exception {
