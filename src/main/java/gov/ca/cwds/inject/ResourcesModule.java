@@ -16,6 +16,7 @@ import gov.ca.cwds.rest.api.domain.cms.ChildClient;
 import gov.ca.cwds.rest.api.domain.cms.ClientCollateral;
 import gov.ca.cwds.rest.api.domain.cms.ClientRelationship;
 import gov.ca.cwds.rest.api.domain.cms.CmsDocument;
+import gov.ca.cwds.rest.api.domain.cms.CrossReport;
 import gov.ca.cwds.rest.api.domain.cms.DrmsDocument;
 import gov.ca.cwds.rest.api.domain.cms.LegacyKeyRequest;
 import gov.ca.cwds.rest.api.domain.cms.LegacyKeyResponse;
@@ -297,8 +298,9 @@ public class ResourcesModule extends AbstractModule {
 
   @Provides
   @CrossReportServiceBackedResource
-  public ResourceDelegate crossReportServiceBackedResource(Injector injector) {
-    return new ServiceBackedResourceDelegate(injector.getInstance(CrossReportService.class));
+  public TypedResourceDelegate<String, CrossReport> crossReportServiceBackedResource(
+      Injector injector) {
+    return new TypedServiceBackedResourceDelegate<>(injector.getInstance(CrossReportService.class));
   }
 
   @Provides

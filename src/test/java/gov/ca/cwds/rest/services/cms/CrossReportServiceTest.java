@@ -60,18 +60,6 @@ public class CrossReportServiceTest {
   // TODO: Story #136701343: Tech debt: exception handling in service layer.
   @SuppressWarnings("javadoc")
   @Test
-  public void findThrowsAssertionError() {
-    thrown.expect(AssertionError.class);
-    try {
-      crossReportService.find(1);
-    } catch (AssertionError e) {
-      assertEquals("Expected AssertionError", e.getMessage());
-
-    }
-  }
-
-  @SuppressWarnings("javadoc")
-  @Test
   public void findReturnsCorrectCrossReportWhenFound() throws Exception {
     CrossReport expected = MAPPER.readValue(
         fixture("fixtures/domain/legacy/CrossReport/valid/valid.json"), CrossReport.class);
@@ -91,17 +79,6 @@ public class CrossReportServiceTest {
   }
 
   // delete test
-  @SuppressWarnings("javadoc")
-  @Test
-  public void deleteThrowsAssersionError() throws Exception {
-    thrown.expect(AssertionError.class);
-    try {
-      crossReportService.delete(1);
-    } catch (AssertionError e) {
-      assertEquals("Expected AssertionError", e.getMessage());
-    }
-  }
-
   @SuppressWarnings("javadoc")
   @Test
   public void deleteDelegatesToCrudsService() {
@@ -131,17 +108,6 @@ public class CrossReportServiceTest {
   }
 
   // update test
-  @SuppressWarnings("javadoc")
-  @Test
-  public void updateThrowsAssertionError() throws Exception {
-    thrown.expect(AssertionError.class);
-    try {
-      crossReportService.update("xxx", null);
-    } catch (AssertionError e) {
-      assertEquals("Expected AssertionError", e.getMessage());
-    }
-  }
-
   @SuppressWarnings("javadoc")
   @Test
   public void updateReturnsCrossReportResponseOnSuccess() throws Exception {
