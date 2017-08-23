@@ -30,7 +30,6 @@ import gov.ca.cwds.rest.api.Response;
 import gov.ca.cwds.rest.api.domain.cms.Allegation;
 import gov.ca.cwds.rest.api.domain.cms.PostedAllegation;
 import gov.ca.cwds.rest.services.ServiceException;
-import gov.ca.cwds.rest.services.junit.template.ServiceTestTemplate;
 import gov.ca.cwds.rest.services.referentialintegrity.RIAllegation;
 import io.dropwizard.jackson.Jackson;
 
@@ -38,18 +37,18 @@ import io.dropwizard.jackson.Jackson;
  * @author CWDS API Team
  *
  */
-public class AllegationServiceTest implements ServiceTestTemplate {
+@SuppressWarnings("javadoc")
+public class AllegationServiceTest {
   private static final ObjectMapper MAPPER = Jackson.newObjectMapper();
   private AllegationService allegationService;
   private AllegationDao allegationDao;
   private StaffPersonIdRetriever staffPersonIdRetriever;
   private RIAllegation riAllegation;
 
-  @SuppressWarnings("javadoc")
   @Rule
   public ExpectedException thrown = ExpectedException.none();
 
-  @Override
+
   @Before
   public void setup() throws Exception {
     allegationDao = mock(AllegationDao.class);
@@ -59,19 +58,6 @@ public class AllegationServiceTest implements ServiceTestTemplate {
   }
 
   // find test
-  @Override
-  @Test
-  public void testFindThrowsAssertionError() {
-    // expect string type for primary key test
-    thrown.expect(AssertionError.class);
-    try {
-      allegationService.find(1);
-    } catch (AssertionError e) {
-      assertEquals("Expeceted AssertionError", e.getMessage());
-    }
-  }
-
-  @Override
   @Test
   public void testFindReturnsCorrectEntity() throws Exception {
     String id = "Aaeae9r0F4";
@@ -85,41 +71,28 @@ public class AllegationServiceTest implements ServiceTestTemplate {
     assertThat(found, is(expected));
   }
 
-  @Override
+
   @Test
   public void testFindReturnsNullWhenNotFound() throws Exception {
     Response found = allegationService.find("ABC1234567");
     assertThat(found, is(nullValue()));
   }
 
-  @Override
-  @Test
   // delete test
-  public void testDeleteThrowsAssertionError() throws Exception {
-    // expect string type for primary key test
-    thrown.expect(AssertionError.class);
-    try {
-      allegationService.delete(123);
-    } catch (AssertionError e) {
-      assertEquals("Expected AssertionError", e.getMessage());
-    }
-  }
 
-  @Override
   @Test
   public void testDeleteDelegatesToCrudsService() {
     allegationService.delete("ABC2345678");
     verify(allegationDao, times(1)).delete("ABC2345678");
   }
 
-  @Override
+
   @Test
   public void testDeleteReturnsNullWhenNotFound() throws Exception {
     Response found = allegationService.delete("ABC1234567");
     assertThat(found, is(nullValue()));
   }
 
-  @SuppressWarnings("javadoc")
   @Test
   public void assignmentServiceDeleteReturnsNotNull() throws Exception {
     String id = "AabekZX00F";
@@ -133,31 +106,18 @@ public class AllegationServiceTest implements ServiceTestTemplate {
     assertThat(found, is(expected));
   }
 
-  @Override
+
   public void testDeleteThrowsNotImplementedException() throws Exception {
     // delete is implemented
 
   }
 
-  @Override
+
   public void testDeleteReturnsClass() throws Exception {
 
   }
 
   // update test
-  @Override
-  @Test
-  public void testUpdateThrowsAssertionError() throws Exception {
-    // expected string type for primary key test
-    thrown.expect(AssertionError.class);
-    try {
-      allegationService.update("ABC1234567", null);
-    } catch (AssertionError e) {
-      assertEquals("Expected AssertionError", e.getMessage());
-    }
-  }
-
-  @Override
   @Test
   public void testUpdateReturnsCorrectEntity() throws Exception {
     String id = "Aaeae9r0F4";
@@ -174,7 +134,6 @@ public class AllegationServiceTest implements ServiceTestTemplate {
     assertThat(retval.getClass(), is(Allegation.class));
   }
 
-  @SuppressWarnings("javadoc")
   @Test
   public void testUpdateThrowsExceptionWhenNotFound() throws Exception {
     try {
@@ -189,23 +148,23 @@ public class AllegationServiceTest implements ServiceTestTemplate {
     }
   }
 
-  @Override
+
   public void testUpdateReturnsDomain() throws Exception {
 
   }
 
-  @Override
+
   public void testUpdateThrowsServiceException() throws Exception {
 
   }
 
-  @Override
+
   public void testUpdateThrowsNotImplementedException() throws Exception {
 
   }
 
   // create test
-  @Override
+
   @Test
   public void testCreateReturnsPostedClass() throws Exception {
     String id = "Aaeae9r0F4";
@@ -222,7 +181,6 @@ public class AllegationServiceTest implements ServiceTestTemplate {
     assertThat(response.getClass(), is(PostedAllegation.class));
   }
 
-  @SuppressWarnings("javadoc")
   @Test
   public void allegationServiceServiceCreateThrowsEntityExistsException() throws Exception {
     try {
@@ -236,7 +194,6 @@ public class AllegationServiceTest implements ServiceTestTemplate {
     }
   }
 
-  @SuppressWarnings("javadoc")
   @Test
   public void testCreateReturnsNonNull() throws Exception {
     String id = "Aaeae9r0F4";
@@ -253,7 +210,7 @@ public class AllegationServiceTest implements ServiceTestTemplate {
     assertThat(postedAllegation, is(notNullValue()));
   }
 
-  @Override
+
   @Test
   public void testCreateReturnsCorrectEntity() throws Exception {
     String id = "Aaeae9r0F4";
@@ -271,7 +228,7 @@ public class AllegationServiceTest implements ServiceTestTemplate {
     assertThat(returned, is(expected));
   }
 
-  @Override
+
   @Test
   public void testCreateNullIDError() throws Exception {
     try {
@@ -290,7 +247,6 @@ public class AllegationServiceTest implements ServiceTestTemplate {
 
   }
 
-  @Override
   @Test
   public void testCreateBlankIDError() throws Exception {
     try {
@@ -312,13 +268,13 @@ public class AllegationServiceTest implements ServiceTestTemplate {
   /*
    * Test for checking the new Allegation Id generated and lenght is 10
    */
-  @SuppressWarnings("javadoc")
   @Test
   public void createReturnsGeneratedId() throws Exception {
     Allegation allegationDomain = MAPPER
         .readValue(fixture("fixtures/domain/legacy/Allegation/valid/valid.json"), Allegation.class);
     when(allegationDao.create(any(gov.ca.cwds.data.persistence.cms.Allegation.class)))
         .thenAnswer(new Answer<gov.ca.cwds.data.persistence.cms.Allegation>() {
+
 
           @Override
           public gov.ca.cwds.data.persistence.cms.Allegation answer(InvocationOnMock invocation)
@@ -333,26 +289,6 @@ public class AllegationServiceTest implements ServiceTestTemplate {
     assertEquals(returned.getId().length(), 10);
     PostedAllegation newReturned = allegationService.create(allegationDomain);
     Assert.assertNotEquals(returned.getId(), newReturned.getId());
-  }
-
-  @Override
-  public void testCreateThrowsAssertionError() throws Exception {
-
-  }
-
-  @Override
-  public void testCreateEmptyIDError() throws Exception {
-
-  }
-
-  @Override
-  public void testCreateThrowsNotImplementedException() throws Exception {
-
-  }
-
-  @Override
-  public void testFindThrowsNotImplementedException() throws Exception {
-
   }
 
 }
