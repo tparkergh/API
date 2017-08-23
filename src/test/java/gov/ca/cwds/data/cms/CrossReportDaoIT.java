@@ -94,9 +94,8 @@ public class CrossReportDaoIT implements DaoTestTemplate {
   }
 
   @Override
-  // @Test
+  @Test(expected = EntityExistsException.class)
   public void testCreateExistingEntityException() throws Exception {
-    thrown.expect(EntityExistsException.class);
     CrossReport crossreport = new CrossReport("Aj20cK10WS", "CVDUfmj0WS", (short) 2094, "N", "N",
         null, "  ", 0, BigDecimal.ZERO, null, " ", " ", "925q4As0AC", "0AC", " ", " ", " ", "34",
         "N", "N", "N");
@@ -120,7 +119,7 @@ public class CrossReportDaoIT implements DaoTestTemplate {
   }
 
   @Override
-  // @Test
+  @Test
   public void testUpdate() throws Exception {
     CrossReport crossreport = new CrossReport("Aj20cK10WS", "CVDUfmj0WS", (short) 2094, "N", "N",
         null, "  ", 0, BigDecimal.ZERO, null, " ", " ", "925q4As0AC", "0AC", " ", " ", " ", "34",
@@ -148,6 +147,5 @@ public class CrossReportDaoIT implements DaoTestTemplate {
   public void testFindAllReturnsCorrectList() throws Exception {
 
   }
-
 
 }
