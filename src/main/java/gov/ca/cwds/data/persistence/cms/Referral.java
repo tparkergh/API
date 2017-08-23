@@ -210,9 +210,9 @@ public class Referral extends CmsPersistentObject {
   @Column(name = "ORIGCLS_DT")
   private Date originalClosureDate;
 
-  @ManyToOne(optional = false)
-  @JoinColumn(name = "FKADDRS_T", nullable = false, updatable = false, insertable = false)
-  private Address addresses;
+  @OneToMany(cascade = CascadeType.ALL)
+  @JoinColumn(name = "IDENTIFIER", referencedColumnName = "FKADDRS_T")
+  private Set<Address> addresses = new HashSet<>();
 
   @OneToMany(cascade = CascadeType.ALL)
   @JoinColumn(name = "FKREFERL_T", referencedColumnName = "IDENTIFIER")
@@ -355,7 +355,7 @@ public class Referral extends CmsPersistentObject {
       String homelessIndicator, String familyRefusedServicesIndicator,
       Date firstEvaluatedOutApprovalDate, String responsibleAgencyCode,
       Short limitedAccessGovtAgencyType, Date limitedAccessDate, String limitedAccessDesc,
-      Date originalClosureDate, Address addresses, Set<Allegation> allegations,
+      Date originalClosureDate, Set<Address> addresses, Set<Allegation> allegations,
       Set<CrossReport> crossReports, Set<Reporter> reporters) {
     super();
     this.id = id;
@@ -869,7 +869,7 @@ public class Referral extends CmsPersistentObject {
   /**
    * @return the address
    */
-  public Address getAddresses() {
+  public Set<Address> getAddresses() {
     return addresses;
   }
 
