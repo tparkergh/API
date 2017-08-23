@@ -1,5 +1,7 @@
 package gov.ca.cwds.rest.services.cms;
 
+import java.util.Date;
+
 import javax.persistence.EntityExistsException;
 import javax.persistence.EntityNotFoundException;
 
@@ -12,6 +14,7 @@ import gov.ca.cwds.data.Dao;
 import gov.ca.cwds.data.cms.TickleDao;
 import gov.ca.cwds.data.persistence.cms.CmsKeyIdGenerator;
 import gov.ca.cwds.data.persistence.cms.Tickle;
+import gov.ca.cwds.rest.filters.RequestExecutionContext;
 import gov.ca.cwds.rest.services.ServiceException;
 import gov.ca.cwds.rest.services.TypedCrudsService;
 
@@ -26,18 +29,17 @@ public class TickleService implements
   private static final Logger LOGGER = LoggerFactory.getLogger(TickleService.class);
 
   private TickleDao tickleDao;
-  private StaffPersonIdRetriever staffPersonIdRetriever;
+  private String lastUpdatedId = RequestExecutionContext.instance().getUserId();
+  private Date lastUpdatedTime = RequestExecutionContext.instance().getRequestStartTime();
 
 
   /**
    * @param tickleDao The {@link Dao} handling {@link gov.ca.cwds.data.persistence.cms.Tickle}
    *        objects.
-   * @param staffPersonIdRetriever the staffPersonIdRetriever
    */
   @Inject
-  public TickleService(TickleDao tickleDao, StaffPersonIdRetriever staffPersonIdRetriever) {
+  public TickleService(TickleDao tickleDao) {
     this.tickleDao = tickleDao;
-    this.staffPersonIdRetriever = staffPersonIdRetriever;
   }
 
   /**
@@ -52,9 +54,9 @@ public class TickleService implements
     gov.ca.cwds.rest.api.domain.cms.Tickle tickle = request;
 
     try {
-      String lastUpdatedId = staffPersonIdRetriever.getStaffPersonId();
+
       gov.ca.cwds.data.persistence.cms.Tickle managed = new gov.ca.cwds.data.persistence.cms.Tickle(
-          CmsKeyIdGenerator.generate(lastUpdatedId), tickle, lastUpdatedId);
+          CmsKeyIdGenerator.generate(lastUpdatedId), tickle, lastUpdatedId, lastUpdatedTime);
       managed = tickleDao.create(managed);
       return new gov.ca.cwds.rest.api.domain.cms.Tickle(managed);
     } catch (EntityExistsException e) {
@@ -107,8 +109,7 @@ public class TickleService implements
     gov.ca.cwds.rest.api.domain.cms.Tickle tickle = request;
 
     try {
-      String lastUpdatedId = staffPersonIdRetriever.getStaffPersonId();
-      Tickle managed = new Tickle(primaryKey, tickle, lastUpdatedId);
+      Tickle managed = new Tickle(primaryKey, tickle, lastUpdatedId, lastUpdatedTime);
       managed = tickleDao.update(managed);
       return new gov.ca.cwds.rest.api.domain.cms.Tickle(managed);
     } catch (EntityNotFoundException e) {

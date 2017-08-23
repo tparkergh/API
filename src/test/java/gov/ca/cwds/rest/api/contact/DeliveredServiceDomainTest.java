@@ -7,20 +7,6 @@ import static org.hamcrest.Matchers.is;
 import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
-
-import java.util.Date;
-
-import javax.ws.rs.client.Entity;
-import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.Response;
-
-import org.junit.After;
-import org.junit.Before;
-import org.junit.ClassRule;
-import org.junit.Test;
-
-import com.squarespace.jersey2.guice.JerseyGuiceUtils;
-
 import gov.ca.cwds.data.cms.TestSystemCodeCache;
 import gov.ca.cwds.data.persistence.contact.DeliveredServiceEntity;
 import gov.ca.cwds.fixture.contacts.DeliveredServiceResourceBuilder;
@@ -29,8 +15,22 @@ import gov.ca.cwds.rest.core.Api;
 import gov.ca.cwds.rest.resources.cms.JerseyGuiceRule;
 import gov.ca.cwds.rest.resources.contact.DeliveredServiceResource;
 import io.dropwizard.testing.junit.ResourceTestRule;
+
+import java.util.Date;
+
+import javax.ws.rs.client.Entity;
+import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
+
 import nl.jqno.equalsverifier.EqualsVerifier;
 import nl.jqno.equalsverifier.Warning;
+
+import org.junit.After;
+import org.junit.Before;
+import org.junit.ClassRule;
+import org.junit.Test;
+
+import com.squarespace.jersey2.guice.JerseyGuiceUtils;
 
 /***
  * 
@@ -53,8 +53,8 @@ public class DeliveredServiceDomainTest {
   public static JerseyGuiceRule rule = new JerseyGuiceRule();
 
   @ClassRule
-  public static final ResourceTestRule resources =
-      ResourceTestRule.builder().addResource(mockedDeliveredServiceResource).build();
+  public static final ResourceTestRule resources = ResourceTestRule.builder()
+      .addResource(mockedDeliveredServiceResource).build();
 
   private DeliveredServiceDomain validDeliveredServiceDomain =
       new DeliveredServiceResourceBuilder().buildDeliveredServiceResource();
@@ -92,8 +92,8 @@ public class DeliveredServiceDomainTest {
 
   @Before
   public void setup() {
-    when(mockedDeliveredServiceResource.create(eq(validDeliveredServiceDomain)))
-        .thenReturn(Response.status(Response.Status.NO_CONTENT).entity(null).build());
+    when(mockedDeliveredServiceResource.create(eq(validDeliveredServiceDomain))).thenReturn(
+        Response.status(Response.Status.NO_CONTENT).entity(null).build());
 
   }
 
@@ -140,12 +140,13 @@ public class DeliveredServiceDomainTest {
     DeliveredServiceDomain validDeliveredServiceDomain =
         new DeliveredServiceResourceBuilder().buildDeliveredServiceResource();
 
-    DeliveredServiceDomain domain = new DeliveredServiceDomain(id, cftLeadAgencyType,
-        coreServiceIndicator, communicationMethodType, contactLocationType, contactVisitCode,
-        countySpecificCode, detailText, detailTextContinuation, endDate, endTime,
-        primaryDeliveredServiceId, hardCopyDocumentOnFileCode, otherParticipantsDesc,
-        providedByCode, providedById, serviceContactType, startDate, startTime, statusCode,
-        supervisionCode, wraparoundServiceIndicator);
+    DeliveredServiceDomain domain =
+        new DeliveredServiceDomain(id, cftLeadAgencyType, coreServiceIndicator,
+            communicationMethodType, contactLocationType, contactVisitCode, countySpecificCode,
+            detailText, detailTextContinuation, endDate, endTime, primaryDeliveredServiceId,
+            hardCopyDocumentOnFileCode, otherParticipantsDesc, providedByCode, providedById,
+            serviceContactType, startDate, startTime, statusCode, supervisionCode,
+            wraparoundServiceIndicator);
 
     assertThat(domain.getId(), is(equalTo(validDeliveredServiceDomain.getId())));
     assertThat(domain.getCftLeadAgencyType(),
@@ -173,8 +174,7 @@ public class DeliveredServiceDomainTest {
         is(equalTo(validDeliveredServiceDomain.getOtherParticipantsDesc())));
     assertThat(domain.getProvidedByCode(),
         is(equalTo(validDeliveredServiceDomain.getProvidedByCode())));
-    assertThat(domain.getProvidedById(),
-        is(equalTo(validDeliveredServiceDomain.getProvidedById())));
+    assertThat(domain.getProvidedById(), is(equalTo(validDeliveredServiceDomain.getProvidedById())));
     assertThat(domain.getStartDate(), is(equalTo(validDeliveredServiceDomain.getStartDate())));
     assertThat(domain.getStartTime(), is(equalTo(validDeliveredServiceDomain.getStartTime())));
     assertThat(domain.getStatusCode(), is(equalTo(validDeliveredServiceDomain.getStatusCode())));
@@ -227,8 +227,9 @@ public class DeliveredServiceDomainTest {
    */
   @Test
   public void failWhenCommunicationMethodTypeInvalid() throws Exception {
-    DeliveredServiceDomain validDeliveredService = new DeliveredServiceResourceBuilder()
-        .setCommunicationMethodType(123).buildDeliveredServiceResource();
+    DeliveredServiceDomain validDeliveredService =
+        new DeliveredServiceResourceBuilder().setCommunicationMethodType(123)
+            .buildDeliveredServiceResource();
 
     Response response =
         resources.client().target(ROOT_RESOURCE).request().accept(MediaType.APPLICATION_JSON)
@@ -237,7 +238,7 @@ public class DeliveredServiceDomainTest {
     assertThat(response.getStatus(), is(equalTo(422)));
     assertThat(
         response.readEntity(String.class).indexOf(
-            "communicationMethodType {property} must be a valid system code for category CMM_MTHC"),
+            "communicationMethodType  must be a valid system code for category CMM_MTHC"),
         is(greaterThanOrEqualTo(0)));
   }
 
@@ -246,8 +247,9 @@ public class DeliveredServiceDomainTest {
    */
   @Test
   public void failWhenContactLocationTypeInvalid() throws Exception {
-    DeliveredServiceDomain validDeliveredService = new DeliveredServiceResourceBuilder()
-        .setContactLocationType(123).buildDeliveredServiceResource();
+    DeliveredServiceDomain validDeliveredService =
+        new DeliveredServiceResourceBuilder().setContactLocationType(123)
+            .buildDeliveredServiceResource();
 
     Response response =
         resources.client().target(ROOT_RESOURCE).request().accept(MediaType.APPLICATION_JSON)
@@ -256,7 +258,7 @@ public class DeliveredServiceDomainTest {
     assertThat(response.getStatus(), is(equalTo(422)));
     assertThat(
         response.readEntity(String.class).indexOf(
-            "contactLocationType {property} must be a valid system code for category CNT_LOC"),
+            "contactLocationType  must be a valid system code for category CNT_LOC"),
         is(greaterThanOrEqualTo(0)));
   }
 
@@ -265,8 +267,9 @@ public class DeliveredServiceDomainTest {
    */
   @Test
   public void failWhenContactVisitCodeNull() throws Exception {
-    DeliveredServiceDomain validDeliveredService = new DeliveredServiceResourceBuilder()
-        .setContactVisitCode(null).buildDeliveredServiceResource();
+    DeliveredServiceDomain validDeliveredService =
+        new DeliveredServiceResourceBuilder().setContactVisitCode(null)
+            .buildDeliveredServiceResource();
 
     Response response =
         resources.client().target(ROOT_RESOURCE).request().accept(MediaType.APPLICATION_JSON)
@@ -279,8 +282,9 @@ public class DeliveredServiceDomainTest {
 
   @Test
   public void failWhenContactVisitCodeEmpty() throws Exception {
-    DeliveredServiceDomain validDeliveredService = new DeliveredServiceResourceBuilder()
-        .setContactVisitCode("").buildDeliveredServiceResource();
+    DeliveredServiceDomain validDeliveredService =
+        new DeliveredServiceResourceBuilder().setContactVisitCode("")
+            .buildDeliveredServiceResource();
 
     Response response =
         resources.client().target(ROOT_RESOURCE).request().accept(MediaType.APPLICATION_JSON)
@@ -293,8 +297,9 @@ public class DeliveredServiceDomainTest {
 
   @Test
   public void successWhenContactVisitCodeC() throws Exception {
-    DeliveredServiceDomain validDeliveredService = new DeliveredServiceResourceBuilder()
-        .setContactVisitCode("C").buildDeliveredServiceResource();
+    DeliveredServiceDomain validDeliveredService =
+        new DeliveredServiceResourceBuilder().setContactVisitCode("C")
+            .buildDeliveredServiceResource();
 
     Response response =
         resources.client().target(ROOT_RESOURCE).request().accept(MediaType.APPLICATION_JSON)
@@ -305,8 +310,9 @@ public class DeliveredServiceDomainTest {
 
   @Test
   public void successWhenContactVisitCodeN() throws Exception {
-    DeliveredServiceDomain validDeliveredService = new DeliveredServiceResourceBuilder()
-        .setContactVisitCode("N").buildDeliveredServiceResource();
+    DeliveredServiceDomain validDeliveredService =
+        new DeliveredServiceResourceBuilder().setContactVisitCode("N")
+            .buildDeliveredServiceResource();
 
     Response response =
         resources.client().target(ROOT_RESOURCE).request().accept(MediaType.APPLICATION_JSON)
@@ -317,8 +323,9 @@ public class DeliveredServiceDomainTest {
 
   @Test
   public void successWhenContactVisitCodeV() throws Exception {
-    DeliveredServiceDomain validDeliveredService = new DeliveredServiceResourceBuilder()
-        .setContactVisitCode("V").buildDeliveredServiceResource();
+    DeliveredServiceDomain validDeliveredService =
+        new DeliveredServiceResourceBuilder().setContactVisitCode("V")
+            .buildDeliveredServiceResource();
 
     Response response =
         resources.client().target(ROOT_RESOURCE).request().accept(MediaType.APPLICATION_JSON)
@@ -332,8 +339,9 @@ public class DeliveredServiceDomainTest {
    */
   @Test
   public void failWhenCountySpecificCodeNull() throws Exception {
-    DeliveredServiceDomain validDeliveredService = new DeliveredServiceResourceBuilder()
-        .setCountySpecificCode(null).buildDeliveredServiceResource();
+    DeliveredServiceDomain validDeliveredService =
+        new DeliveredServiceResourceBuilder().setCountySpecificCode(null)
+            .buildDeliveredServiceResource();
 
     Response response =
         resources.client().target(ROOT_RESOURCE).request().accept(MediaType.APPLICATION_JSON)
@@ -346,8 +354,9 @@ public class DeliveredServiceDomainTest {
 
   @Test
   public void failWhenCountySpecificCodeEmpty() throws Exception {
-    DeliveredServiceDomain validDeliveredService = new DeliveredServiceResourceBuilder()
-        .setCountySpecificCode("").buildDeliveredServiceResource();
+    DeliveredServiceDomain validDeliveredService =
+        new DeliveredServiceResourceBuilder().setCountySpecificCode("")
+            .buildDeliveredServiceResource();
 
     Response response =
         resources.client().target(ROOT_RESOURCE).request().accept(MediaType.APPLICATION_JSON)
@@ -363,8 +372,9 @@ public class DeliveredServiceDomainTest {
    */
   @Test
   public void failWhenEndDateWrongFormat() throws Exception {
-    DeliveredServiceDomain validDeliveredService = new DeliveredServiceResourceBuilder()
-        .setEndDate("2000/01/01").buildDeliveredServiceResource();
+    DeliveredServiceDomain validDeliveredService =
+        new DeliveredServiceResourceBuilder().setEndDate("2000/01/01")
+            .buildDeliveredServiceResource();
 
     Response response =
         resources.client().target(ROOT_RESOURCE).request().accept(MediaType.APPLICATION_JSON)
@@ -381,8 +391,9 @@ public class DeliveredServiceDomainTest {
    */
   @Test
   public void failWhenEndTimeWrongFormat() throws Exception {
-    DeliveredServiceDomain validDeliveredService = new DeliveredServiceResourceBuilder()
-        .setEndTime("16/41/49").buildDeliveredServiceResource();
+    DeliveredServiceDomain validDeliveredService =
+        new DeliveredServiceResourceBuilder().setEndTime("16/41/49")
+            .buildDeliveredServiceResource();
 
     Response response =
         resources.client().target(ROOT_RESOURCE).request().accept(MediaType.APPLICATION_JSON)
@@ -399,8 +410,9 @@ public class DeliveredServiceDomainTest {
    */
   @Test
   public void failWhenHardCopyDocumentOnFileCodeNull() throws Exception {
-    DeliveredServiceDomain validDeliveredService = new DeliveredServiceResourceBuilder()
-        .setHardCopyDocumentOnFileCode(null).buildDeliveredServiceResource();
+    DeliveredServiceDomain validDeliveredService =
+        new DeliveredServiceResourceBuilder().setHardCopyDocumentOnFileCode(null)
+            .buildDeliveredServiceResource();
 
     Response response =
         resources.client().target(ROOT_RESOURCE).request().accept(MediaType.APPLICATION_JSON)
@@ -414,8 +426,9 @@ public class DeliveredServiceDomainTest {
 
   @Test
   public void failWhenHardCopyDocumentOnFileCodeEmpty() throws Exception {
-    DeliveredServiceDomain validDeliveredService = new DeliveredServiceResourceBuilder()
-        .setHardCopyDocumentOnFileCode("").buildDeliveredServiceResource();
+    DeliveredServiceDomain validDeliveredService =
+        new DeliveredServiceResourceBuilder().setHardCopyDocumentOnFileCode("")
+            .buildDeliveredServiceResource();
 
     Response response =
         resources.client().target(ROOT_RESOURCE).request().accept(MediaType.APPLICATION_JSON)
@@ -429,8 +442,9 @@ public class DeliveredServiceDomainTest {
 
   @Test
   public void sucessWhenHardCopyDocumentOnFileCodeN() throws Exception {
-    DeliveredServiceDomain validDeliveredService = new DeliveredServiceResourceBuilder()
-        .setHardCopyDocumentOnFileCode("N").buildDeliveredServiceResource();
+    DeliveredServiceDomain validDeliveredService =
+        new DeliveredServiceResourceBuilder().setHardCopyDocumentOnFileCode("N")
+            .buildDeliveredServiceResource();
 
     Response response =
         resources.client().target(ROOT_RESOURCE).request().accept(MediaType.APPLICATION_JSON)
@@ -441,8 +455,9 @@ public class DeliveredServiceDomainTest {
 
   @Test
   public void sucessWhenHardCopyDocumentOnFileCodeU() throws Exception {
-    DeliveredServiceDomain validDeliveredService = new DeliveredServiceResourceBuilder()
-        .setHardCopyDocumentOnFileCode("U").buildDeliveredServiceResource();
+    DeliveredServiceDomain validDeliveredService =
+        new DeliveredServiceResourceBuilder().setHardCopyDocumentOnFileCode("U")
+            .buildDeliveredServiceResource();
 
     Response response =
         resources.client().target(ROOT_RESOURCE).request().accept(MediaType.APPLICATION_JSON)
@@ -453,8 +468,9 @@ public class DeliveredServiceDomainTest {
 
   @Test
   public void sucessWhenHardCopyDocumentOnFileCodeY() throws Exception {
-    DeliveredServiceDomain validDeliveredService = new DeliveredServiceResourceBuilder()
-        .setHardCopyDocumentOnFileCode("Y").buildDeliveredServiceResource();
+    DeliveredServiceDomain validDeliveredService =
+        new DeliveredServiceResourceBuilder().setHardCopyDocumentOnFileCode("Y")
+            .buildDeliveredServiceResource();
 
     Response response =
         resources.client().target(ROOT_RESOURCE).request().accept(MediaType.APPLICATION_JSON)
@@ -468,8 +484,9 @@ public class DeliveredServiceDomainTest {
    */
   @Test
   public void failWhenProvidedByCodeInValid() throws Exception {
-    DeliveredServiceDomain validDeliveredService = new DeliveredServiceResourceBuilder()
-        .setProvidedByCode("Z").buildDeliveredServiceResource();
+    DeliveredServiceDomain validDeliveredService =
+        new DeliveredServiceResourceBuilder().setProvidedByCode("Z")
+            .buildDeliveredServiceResource();
 
     Response response =
         resources.client().target(ROOT_RESOURCE).request().accept(MediaType.APPLICATION_JSON)
@@ -483,8 +500,9 @@ public class DeliveredServiceDomainTest {
 
   @Test
   public void successWhenProvidedByCodeS() throws Exception {
-    DeliveredServiceDomain validDeliveredService = new DeliveredServiceResourceBuilder()
-        .setProvidedByCode("S").buildDeliveredServiceResource();
+    DeliveredServiceDomain validDeliveredService =
+        new DeliveredServiceResourceBuilder().setProvidedByCode("S")
+            .buildDeliveredServiceResource();
 
     Response response =
         resources.client().target(ROOT_RESOURCE).request().accept(MediaType.APPLICATION_JSON)
@@ -495,8 +513,9 @@ public class DeliveredServiceDomainTest {
 
   @Test
   public void successWhenProvidedByCodeO() throws Exception {
-    DeliveredServiceDomain validDeliveredService = new DeliveredServiceResourceBuilder()
-        .setProvidedByCode("O").buildDeliveredServiceResource();
+    DeliveredServiceDomain validDeliveredService =
+        new DeliveredServiceResourceBuilder().setProvidedByCode("O")
+            .buildDeliveredServiceResource();
 
     Response response =
         resources.client().target(ROOT_RESOURCE).request().accept(MediaType.APPLICATION_JSON)
@@ -507,8 +526,9 @@ public class DeliveredServiceDomainTest {
 
   @Test
   public void successWhenProvidedByCodeV() throws Exception {
-    DeliveredServiceDomain validDeliveredService = new DeliveredServiceResourceBuilder()
-        .setProvidedByCode("V").buildDeliveredServiceResource();
+    DeliveredServiceDomain validDeliveredService =
+        new DeliveredServiceResourceBuilder().setProvidedByCode("V")
+            .buildDeliveredServiceResource();
 
     Response response =
         resources.client().target(ROOT_RESOURCE).request().accept(MediaType.APPLICATION_JSON)
@@ -519,8 +539,9 @@ public class DeliveredServiceDomainTest {
 
   @Test
   public void successWhenProvidedByCodeX() throws Exception {
-    DeliveredServiceDomain validDeliveredService = new DeliveredServiceResourceBuilder()
-        .setProvidedByCode("X").buildDeliveredServiceResource();
+    DeliveredServiceDomain validDeliveredService =
+        new DeliveredServiceResourceBuilder().setProvidedByCode("X")
+            .buildDeliveredServiceResource();
 
     Response response =
         resources.client().target(ROOT_RESOURCE).request().accept(MediaType.APPLICATION_JSON)
@@ -534,8 +555,9 @@ public class DeliveredServiceDomainTest {
    */
   @Test
   public void failWhenStartDateWrongFormat() throws Exception {
-    DeliveredServiceDomain validDeliveredService = new DeliveredServiceResourceBuilder()
-        .setStartDate("2000/01/01").buildDeliveredServiceResource();
+    DeliveredServiceDomain validDeliveredService =
+        new DeliveredServiceResourceBuilder().setStartDate("2000/01/01")
+            .buildDeliveredServiceResource();
 
     Response response =
         resources.client().target(ROOT_RESOURCE).request().accept(MediaType.APPLICATION_JSON)
@@ -580,8 +602,9 @@ public class DeliveredServiceDomainTest {
    */
   @Test
   public void failWhenStartTimeWrongFormat() throws Exception {
-    DeliveredServiceDomain validDeliveredService = new DeliveredServiceResourceBuilder()
-        .setStartTime("16/41/49").buildDeliveredServiceResource();
+    DeliveredServiceDomain validDeliveredService =
+        new DeliveredServiceResourceBuilder().setStartTime("16/41/49")
+            .buildDeliveredServiceResource();
 
     Response response =
         resources.client().target(ROOT_RESOURCE).request().accept(MediaType.APPLICATION_JSON)
@@ -707,8 +730,9 @@ public class DeliveredServiceDomainTest {
    */
   @Test
   public void failWhenSupervisionCodeInValid() throws Exception {
-    DeliveredServiceDomain validDeliveredService = new DeliveredServiceResourceBuilder()
-        .setSupervisionCode("Z").buildDeliveredServiceResource();
+    DeliveredServiceDomain validDeliveredService =
+        new DeliveredServiceResourceBuilder().setSupervisionCode("Z")
+            .buildDeliveredServiceResource();
 
     Response response =
         resources.client().target(ROOT_RESOURCE).request().accept(MediaType.APPLICATION_JSON)
@@ -722,8 +746,9 @@ public class DeliveredServiceDomainTest {
 
   @Test
   public void successWhenSupervisionCodeC() throws Exception {
-    DeliveredServiceDomain validDeliveredService = new DeliveredServiceResourceBuilder()
-        .setSupervisionCode("C").buildDeliveredServiceResource();
+    DeliveredServiceDomain validDeliveredService =
+        new DeliveredServiceResourceBuilder().setSupervisionCode("C")
+            .buildDeliveredServiceResource();
 
     Response response =
         resources.client().target(ROOT_RESOURCE).request().accept(MediaType.APPLICATION_JSON)
@@ -734,8 +759,9 @@ public class DeliveredServiceDomainTest {
 
   @Test
   public void successWhenSupervisionCodeS() throws Exception {
-    DeliveredServiceDomain validDeliveredService = new DeliveredServiceResourceBuilder()
-        .setSupervisionCode("S").buildDeliveredServiceResource();
+    DeliveredServiceDomain validDeliveredService =
+        new DeliveredServiceResourceBuilder().setSupervisionCode("S")
+            .buildDeliveredServiceResource();
 
     Response response =
         resources.client().target(ROOT_RESOURCE).request().accept(MediaType.APPLICATION_JSON)
@@ -746,8 +772,9 @@ public class DeliveredServiceDomainTest {
 
   @Test
   public void successWhenSupervisionCodeO() throws Exception {
-    DeliveredServiceDomain validDeliveredService = new DeliveredServiceResourceBuilder()
-        .setSupervisionCode("O").buildDeliveredServiceResource();
+    DeliveredServiceDomain validDeliveredService =
+        new DeliveredServiceResourceBuilder().setSupervisionCode("O")
+            .buildDeliveredServiceResource();
 
     Response response =
         resources.client().target(ROOT_RESOURCE).request().accept(MediaType.APPLICATION_JSON)
@@ -758,8 +785,9 @@ public class DeliveredServiceDomainTest {
 
   @Test
   public void successWhenSupervisionCodeN() throws Exception {
-    DeliveredServiceDomain validDeliveredService = new DeliveredServiceResourceBuilder()
-        .setSupervisionCode("N").buildDeliveredServiceResource();
+    DeliveredServiceDomain validDeliveredService =
+        new DeliveredServiceResourceBuilder().setSupervisionCode("N")
+            .buildDeliveredServiceResource();
 
     Response response =
         resources.client().target(ROOT_RESOURCE).request().accept(MediaType.APPLICATION_JSON)
@@ -773,8 +801,9 @@ public class DeliveredServiceDomainTest {
    */
   @Test
   public void failWhenWraparoundServiceIndicatorNull() throws Exception {
-    DeliveredServiceDomain validDeliveredService = new DeliveredServiceResourceBuilder()
-        .setWraparoundServiceIndicator(null).buildDeliveredServiceResource();
+    DeliveredServiceDomain validDeliveredService =
+        new DeliveredServiceResourceBuilder().setWraparoundServiceIndicator(null)
+            .buildDeliveredServiceResource();
 
     Response response =
         resources.client().target(ROOT_RESOURCE).request().accept(MediaType.APPLICATION_JSON)
