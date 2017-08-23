@@ -7,6 +7,8 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.IdClass;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.PersistenceException;
 import javax.persistence.Table;
 
@@ -185,6 +187,23 @@ public class ReferralClient extends CmsPersistentObject {
   @Column(name = "DRUG_IND")
   private String drugIndicator;
 
+  /**
+   * #147241489: referential integrity check.
+   * <p>
+   * Doesn't actually load the data. Just checks the existence of the parent client record.
+   * </p>
+   */
+  @ManyToOne(optional = false)
+  @JoinColumn(name = "FKCLIENT_T", nullable = false, updatable = false, insertable = false)
+  private Client client;
+
+  @ManyToOne(optional = false)
+  @JoinColumn(name = "FKREFERL_T", nullable = false, updatable = false, insertable = false)
+  private Referral referral;
+
+  // @OneToMany
+  // @JoinColumn(name = "APRVL_NO", nullable = true, updatable = false, insertable = false)
+  // private SupervisorApproval supervisorApproval;
   /**
    * Default constructor
    * 

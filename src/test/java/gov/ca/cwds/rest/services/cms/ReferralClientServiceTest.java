@@ -33,6 +33,7 @@ import gov.ca.cwds.rest.api.domain.cms.ReferralClient;
 import gov.ca.cwds.rest.business.rules.LACountyTrigger;
 import gov.ca.cwds.rest.business.rules.NonLACountyTriggers;
 import gov.ca.cwds.rest.services.ServiceException;
+import gov.ca.cwds.rest.services.referentialintegrity.RIReferralClient;
 
 /**
  * See story #136586059, Tech debt: exception handling in service layer.
@@ -49,6 +50,7 @@ public class ReferralClientServiceTest {
   private StaffPersonDao staffpersonDao;
   private TriggerTablesDao triggerTablesDao;
   private StaffPersonIdRetriever staffPersonIdRetriever;
+  private RIReferralClient riReferralClient;
 
   private static Boolean isLaCountyTrigger = false;
 
@@ -65,8 +67,10 @@ public class ReferralClientServiceTest {
     triggerTablesDao = mock(TriggerTablesDao.class);
     staffpersonDao = mock(StaffPersonDao.class);
     staffPersonIdRetriever = mock(StaffPersonIdRetriever.class);
-    referralClientService = new ReferralClientService(referralClientDao, nonLACountyTriggers,
-        laCountyTrigger, triggerTablesDao, staffpersonDao, staffPersonIdRetriever);
+    riReferralClient = mock(RIReferralClient.class);
+    referralClientService =
+        new ReferralClientService(referralClientDao, nonLACountyTriggers, laCountyTrigger,
+            triggerTablesDao, staffpersonDao, staffPersonIdRetriever, riReferralClient);
   }
 
   // find test
