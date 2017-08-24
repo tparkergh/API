@@ -1,6 +1,5 @@
 package gov.ca.cwds.rest.services.cms;
 
-import java.io.Serializable;
 import java.util.Date;
 import java.util.Set;
 
@@ -20,7 +19,6 @@ import gov.ca.cwds.data.persistence.cms.CmsKeyIdGenerator;
 import gov.ca.cwds.data.persistence.cms.Referral;
 import gov.ca.cwds.data.persistence.cms.StaffPerson;
 import gov.ca.cwds.data.rules.TriggerTablesDao;
-import gov.ca.cwds.rest.api.Request;
 import gov.ca.cwds.rest.api.domain.ScreeningToReferral;
 import gov.ca.cwds.rest.api.domain.cms.LongText;
 import gov.ca.cwds.rest.api.domain.cms.PostedLongText;
@@ -31,9 +29,9 @@ import gov.ca.cwds.rest.business.rules.LACountyTrigger;
 import gov.ca.cwds.rest.business.rules.NonLACountyTriggers;
 import gov.ca.cwds.rest.filters.RequestExecutionContext;
 import gov.ca.cwds.rest.messages.MessageBuilder;
-import gov.ca.cwds.rest.services.CrudsService;
 import gov.ca.cwds.rest.services.LegacyDefaultValues;
 import gov.ca.cwds.rest.services.ServiceException;
+import gov.ca.cwds.rest.services.TypedCrudsService;
 import gov.ca.cwds.rest.services.referentialintegrity.RIReferral;
 import gov.ca.cwds.rest.validation.ParticipantValidator;
 
@@ -42,7 +40,8 @@ import gov.ca.cwds.rest.validation.ParticipantValidator;
  * 
  * @author CWDS API Team
  */
-public class ReferralService implements CrudsService {
+public class ReferralService implements
+    TypedCrudsService<String, gov.ca.cwds.rest.api.domain.cms.Referral, gov.ca.cwds.rest.api.domain.cms.Referral> {
 
   private static final Logger LOGGER = LoggerFactory.getLogger(ReferralService.class);
 
@@ -108,8 +107,7 @@ public class ReferralService implements CrudsService {
    * @see gov.ca.cwds.rest.services.CrudsService#find(java.io.Serializable)
    */
   @Override
-  public gov.ca.cwds.rest.api.domain.cms.Referral find(Serializable primaryKey) {
-    assert primaryKey instanceof String;
+  public gov.ca.cwds.rest.api.domain.cms.Referral find(String primaryKey) {
 
     gov.ca.cwds.data.persistence.cms.Referral persistedReferral = referralDao.find(primaryKey);
     if (persistedReferral != null) {
@@ -124,8 +122,7 @@ public class ReferralService implements CrudsService {
    * @see gov.ca.cwds.rest.services.CrudsService#delete(java.io.Serializable)
    */
   @Override
-  public gov.ca.cwds.rest.api.domain.cms.Referral delete(Serializable primaryKey) {
-    assert primaryKey instanceof String;
+  public gov.ca.cwds.rest.api.domain.cms.Referral delete(String primaryKey) {
     gov.ca.cwds.data.persistence.cms.Referral persistedReferral = referralDao.delete(primaryKey);
     if (persistedReferral != null) {
       return new gov.ca.cwds.rest.api.domain.cms.Referral(persistedReferral);
@@ -139,11 +136,9 @@ public class ReferralService implements CrudsService {
    * @see gov.ca.cwds.rest.services.CrudsService#create(gov.ca.cwds.rest.api.Request)
    */
   @Override
-  public PostedReferral create(Request request) {
-    assert request instanceof gov.ca.cwds.rest.api.domain.cms.Referral;
+  public PostedReferral create(gov.ca.cwds.rest.api.domain.cms.Referral request) {
 
-    gov.ca.cwds.rest.api.domain.cms.Referral referral =
-        (gov.ca.cwds.rest.api.domain.cms.Referral) request;
+    gov.ca.cwds.rest.api.domain.cms.Referral referral = request;
     return create(referral, null);
   }
 
@@ -155,11 +150,10 @@ public class ReferralService implements CrudsService {
    * @param timestamp - timestamp
    * @return the single timestamp
    */
-  public PostedReferral createWithSingleTimestamp(Request request, Date timestamp) {
-    assert request instanceof gov.ca.cwds.rest.api.domain.cms.Referral;
+  public PostedReferral createWithSingleTimestamp(gov.ca.cwds.rest.api.domain.cms.Referral request,
+      Date timestamp) {
 
-    gov.ca.cwds.rest.api.domain.cms.Referral referral =
-        (gov.ca.cwds.rest.api.domain.cms.Referral) request;
+    gov.ca.cwds.rest.api.domain.cms.Referral referral = request;
     return create(referral, timestamp);
   }
 
@@ -394,15 +388,13 @@ public class ReferralService implements CrudsService {
    *      gov.ca.cwds.rest.api.Request)
    */
   @Override
-  public gov.ca.cwds.rest.api.domain.cms.Referral update(Serializable primaryKey, Request request) {
-    assert primaryKey instanceof String;
-    assert request instanceof gov.ca.cwds.rest.api.domain.cms.Referral;
-    gov.ca.cwds.rest.api.domain.cms.Referral referral =
-        (gov.ca.cwds.rest.api.domain.cms.Referral) request;
+  public gov.ca.cwds.rest.api.domain.cms.Referral update(String primaryKey,
+      gov.ca.cwds.rest.api.domain.cms.Referral request) {
+    gov.ca.cwds.rest.api.domain.cms.Referral referral = request;
 
     try {
       String lastUpdatedId = staffPersonIdRetriever.getStaffPersonId();
-      Referral managed = new Referral((String) primaryKey, referral, lastUpdatedId);
+      Referral managed = new Referral(primaryKey, referral, lastUpdatedId);
       managed = referralDao.update(managed);
       // checking the staffPerson county code
       StaffPerson staffperson = staffpersonDao.find(managed.getLastUpdatedId());

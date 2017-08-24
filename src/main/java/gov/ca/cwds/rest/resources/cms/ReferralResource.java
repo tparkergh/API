@@ -20,7 +20,7 @@ import com.google.inject.Inject;
 
 import gov.ca.cwds.inject.ReferralServiceBackedResource;
 import gov.ca.cwds.rest.api.domain.cms.Referral;
-import gov.ca.cwds.rest.resources.ResourceDelegate;
+import gov.ca.cwds.rest.resources.TypedResourceDelegate;
 import io.dropwizard.hibernate.UnitOfWork;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -30,8 +30,9 @@ import io.swagger.annotations.ApiResponses;
 
 /**
  * A resource providing a RESTful interface for {@link Referral}. It delegates functions to
- * {@link ResourceDelegate}. It decorates the {@link ResourceDelegate} not in functionality but
- * with @see <a href= "https://github.com/swagger-api/swagger-core/wiki/Annotations-1.5.X">Swagger
+ * {@link TypedResourceDelegate}. It decorates the {@link TypedResourceDelegate} not in
+ * functionality but with @see
+ * <a href= "https://github.com/swagger-api/swagger-core/wiki/Annotations-1.5.X">Swagger
  * Annotations</a> and
  * <a href="https://jersey.java.net/documentation/latest/user-guide.html#jaxrs-resources">Jersey
  * Annotations</a>
@@ -43,16 +44,17 @@ import io.swagger.annotations.ApiResponses;
 @Produces(MediaType.APPLICATION_JSON)
 @Consumes(MediaType.APPLICATION_JSON)
 public class ReferralResource {
-  private ResourceDelegate resourceDelegate;
+  private TypedResourceDelegate<String, Referral> typedResourceDelegate;
 
   /**
    * Constructor
    * 
-   * @param resourceDelegate The resourceDelegate to delegate to.
+   * @param typedResourceDelegate The typedResourceDelegate to delegate to.
    */
   @Inject
-  public ReferralResource(@ReferralServiceBackedResource ResourceDelegate resourceDelegate) {
-    this.resourceDelegate = resourceDelegate;
+  public ReferralResource(
+      @ReferralServiceBackedResource TypedResourceDelegate<String, Referral> typedResourceDelegate) {
+    this.typedResourceDelegate = typedResourceDelegate;
   }
 
   /**
@@ -71,7 +73,7 @@ public class ReferralResource {
   @ApiOperation(value = "Find referral by id", response = Referral.class, code = 200)
   public Response get(@PathParam("id") @ApiParam(required = true, name = "id",
       value = "The id of the Referral to find") String id) {
-    return resourceDelegate.get(id);
+    return typedResourceDelegate.get(id);
   }
 
   /**
@@ -88,7 +90,7 @@ public class ReferralResource {
   @ApiOperation(value = "Delete Referral", code = HttpStatus.SC_OK, response = Object.class)
   public Response delete(@PathParam("id") @ApiParam(required = true,
       value = "The id of Referral to delete") String id) {
-    return resourceDelegate.delete(id);
+    return typedResourceDelegate.delete(id);
   }
 
   /**
@@ -108,7 +110,7 @@ public class ReferralResource {
   @Consumes(value = MediaType.APPLICATION_JSON)
   @ApiOperation(value = "Create Referral", code = HttpStatus.SC_CREATED, response = Referral.class)
   public Response create(@Valid @ApiParam(hidden = false, required = true) Referral referral) {
-    return resourceDelegate.create(referral);
+    return typedResourceDelegate.create(referral);
   }
 
   /**
@@ -133,6 +135,6 @@ public class ReferralResource {
       @PathParam("id") @ApiParam(required = true, name = "id",
           value = "The id of the Referral to update") String id,
       @Valid @ApiParam(hidden = false, required = true) Referral referral) {
-    return resourceDelegate.update(id, referral);
+    return typedResourceDelegate.update(id, referral);
   }
 }
