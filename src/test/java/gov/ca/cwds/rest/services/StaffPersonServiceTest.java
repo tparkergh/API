@@ -3,16 +3,8 @@ package gov.ca.cwds.rest.services;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.nullValue;
-import static org.junit.Assert.assertEquals;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
-import gov.ca.cwds.data.cms.StaffPersonDao;
-import gov.ca.cwds.rest.api.Response;
-import gov.ca.cwds.rest.api.domain.DomainChef;
-import gov.ca.cwds.rest.api.domain.PostedStaffPerson;
-import gov.ca.cwds.rest.api.domain.StaffPerson;
-import gov.ca.cwds.rest.services.cms.StaffPersonIdRetriever;
-import io.dropwizard.jackson.Jackson;
 
 import java.math.BigDecimal;
 
@@ -23,6 +15,14 @@ import org.junit.Test;
 import org.junit.rules.ExpectedException;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+
+import gov.ca.cwds.data.cms.StaffPersonDao;
+import gov.ca.cwds.rest.api.Response;
+import gov.ca.cwds.rest.api.domain.DomainChef;
+import gov.ca.cwds.rest.api.domain.PostedStaffPerson;
+import gov.ca.cwds.rest.api.domain.StaffPerson;
+import gov.ca.cwds.rest.services.cms.StaffPersonIdRetriever;
+import io.dropwizard.jackson.Jackson;
 
 /**
  * @author CWDS API Team
@@ -49,23 +49,11 @@ public class StaffPersonServiceTest {
 
   @SuppressWarnings("javadoc")
   @Test
-  public void findThrowsAssertionError() {
-    thrown.expect(AssertionError.class);
-    try {
-      staffPersonService.find(new Long(1));
-    } catch (AssertionError e) {
-      assertEquals("Expected AssertionError", e.getMessage());
-    }
-  }
-
-  @SuppressWarnings("javadoc")
-  @Test
   public void findReturnsCorrectStaffPersonWhenFound() throws Exception {
     String id = "ABC";
-    StaffPerson domainStaffPerson =
-        new StaffPerson("2016-10-31", "John", "CEO", "Doe", "C", "Mr", new BigDecimal(9165551212L),
-            22, "2016-10-31", "III", true, "MIZN02k11B", "abc", "def", "99", false, "3XPCP92b24",
-            "john.doe@anyco.com");
+    StaffPerson domainStaffPerson = new StaffPerson("2016-10-31", "John", "CEO", "Doe", "C", "Mr",
+        new BigDecimal(9165551212L), 22, "2016-10-31", "III", true, "MIZN02k11B", "abc", "def",
+        "99", false, "3XPCP92b24", "john.doe@anyco.com");
     PostedStaffPerson expected = new PostedStaffPerson(domainStaffPerson, "ABC");
     gov.ca.cwds.data.persistence.cms.StaffPerson staffPerson =
         new gov.ca.cwds.data.persistence.cms.StaffPerson(id,
