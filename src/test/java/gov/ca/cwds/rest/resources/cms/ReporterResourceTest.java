@@ -23,8 +23,8 @@ import com.squarespace.jersey2.guice.JerseyGuiceUtils;
 
 import gov.ca.cwds.rest.api.domain.cms.Reporter;
 import gov.ca.cwds.rest.resource.junit.template.ResourceTestTemplate;
-import gov.ca.cwds.rest.resources.ResourceDelegate;
 import gov.ca.cwds.rest.resources.ServiceBackedResourceDelegate;
+import gov.ca.cwds.rest.resources.TypedResourceDelegate;
 import io.dropwizard.jackson.Jackson;
 import io.dropwizard.testing.junit.ResourceTestRule;
 
@@ -53,17 +53,19 @@ public class ReporterResourceTest implements ResourceTestTemplate {
   @Rule
   public ExpectedException thrown = ExpectedException.none();
 
-  private final static ResourceDelegate resourceDelegate = mock(ResourceDelegate.class);
+  @SuppressWarnings("unchecked")
+  private final static TypedResourceDelegate<String, Reporter> typedResourceDelegate =
+      mock(TypedResourceDelegate.class);
 
   @SuppressWarnings("javadoc")
   @ClassRule
   public final static ResourceTestRule inMemoryResource =
-      ResourceTestRule.builder().addResource(new ReporterResource(resourceDelegate)).build();
+      ResourceTestRule.builder().addResource(new ReporterResource(typedResourceDelegate)).build();
 
   @SuppressWarnings("javadoc")
   @Before
   public void setup() throws Exception {
-    Mockito.reset(resourceDelegate);
+    Mockito.reset(typedResourceDelegate);
   }
 
   /*
@@ -74,7 +76,7 @@ public class ReporterResourceTest implements ResourceTestTemplate {
   public void testGetDelegatesToResourceDelegate() throws Exception {
     inMemoryResource.client().target(FOUND_RESOURCE).request().accept(MediaType.APPLICATION_JSON)
         .get();
-    verify(resourceDelegate).get("AbiQCgu0Hj");
+    verify(typedResourceDelegate).get("AbiQCgu0Hj");
   }
 
   @Override
@@ -103,7 +105,7 @@ public class ReporterResourceTest implements ResourceTestTemplate {
 
     inMemoryResource.client().target(ROOT_RESOURCE).request().accept(MediaType.APPLICATION_JSON)
         .post(Entity.entity(serialized, MediaType.APPLICATION_JSON));
-    verify(resourceDelegate).create(eq(serialized));
+    verify(typedResourceDelegate).create(eq(serialized));
   }
 
   @Override
@@ -164,7 +166,7 @@ public class ReporterResourceTest implements ResourceTestTemplate {
   public void testDeleteDelegatesToResource() throws Exception {
     inMemoryResource.client().target(FOUND_RESOURCE).request().accept(MediaType.APPLICATION_JSON)
         .delete();
-    verify(resourceDelegate).delete("AbiQCgu0Hj");
+    verify(typedResourceDelegate).delete("AbiQCgu0Hj");
   }
 
   @Override
@@ -198,7 +200,7 @@ public class ReporterResourceTest implements ResourceTestTemplate {
 
     inMemoryResource.client().target(FOUND_RESOURCE).request().accept(MediaType.APPLICATION_JSON)
         .put(Entity.entity(serialized, MediaType.APPLICATION_JSON));
-    verify(resourceDelegate).update(eq("AbiQCgu0Hj"), eq(serialized));
+    verify(typedResourceDelegate).update(eq("AbiQCgu0Hj"), eq(serialized));
   }
 
   @Override

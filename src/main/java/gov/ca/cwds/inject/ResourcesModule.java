@@ -24,6 +24,7 @@ import gov.ca.cwds.rest.api.domain.cms.LegacyKeyResponse;
 import gov.ca.cwds.rest.api.domain.cms.LongText;
 import gov.ca.cwds.rest.api.domain.cms.Referral;
 import gov.ca.cwds.rest.api.domain.cms.ReferralClient;
+import gov.ca.cwds.rest.api.domain.cms.Reporter;
 import gov.ca.cwds.rest.api.domain.es.AutoCompletePersonRequest;
 import gov.ca.cwds.rest.api.domain.es.AutoCompletePersonResponse;
 import gov.ca.cwds.rest.api.domain.es.IndexQueryRequest;
@@ -272,8 +273,8 @@ public class ResourcesModule extends AbstractModule {
 
   @Provides
   @ReporterServiceBackedResource
-  public ResourceDelegate reporterServiceBackedResource(Injector injector) {
-    return new ServiceBackedResourceDelegate(injector.getInstance(ReporterService.class));
+  public TypedResourceDelegate<String, Reporter> reporterServiceBackedResource(Injector injector) {
+    return new TypedServiceBackedResourceDelegate<>(injector.getInstance(ReporterService.class));
   }
 
   @Provides

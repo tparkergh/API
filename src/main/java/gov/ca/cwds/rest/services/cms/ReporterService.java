@@ -1,6 +1,5 @@
 package gov.ca.cwds.rest.services.cms;
 
-import java.io.Serializable;
 import java.util.Date;
 
 import javax.persistence.EntityExistsException;
@@ -14,10 +13,9 @@ import com.google.inject.Inject;
 import gov.ca.cwds.data.Dao;
 import gov.ca.cwds.data.cms.ReporterDao;
 import gov.ca.cwds.data.persistence.cms.Reporter;
-import gov.ca.cwds.rest.api.Request;
 import gov.ca.cwds.rest.api.domain.cms.PostedReporter;
-import gov.ca.cwds.rest.services.CrudsService;
 import gov.ca.cwds.rest.services.ServiceException;
+import gov.ca.cwds.rest.services.TypedCrudsService;
 import gov.ca.cwds.rest.services.referentialintegrity.RIReporter;
 
 /**
@@ -25,7 +23,8 @@ import gov.ca.cwds.rest.services.referentialintegrity.RIReporter;
  * 
  * @author CWDS API Team
  */
-public class ReporterService implements CrudsService {
+public class ReporterService implements
+    TypedCrudsService<String, gov.ca.cwds.rest.api.domain.cms.Reporter, gov.ca.cwds.rest.api.domain.cms.Reporter> {
   private static final Logger LOGGER = LoggerFactory.getLogger(ReporterService.class);
 
   private ReporterDao reporterDao;
@@ -54,8 +53,7 @@ public class ReporterService implements CrudsService {
    * @see gov.ca.cwds.rest.services.CrudsService#find(java.io.Serializable)
    */
   @Override
-  public gov.ca.cwds.rest.api.domain.cms.Reporter find(Serializable primaryKey) {
-    assert primaryKey instanceof String;
+  public gov.ca.cwds.rest.api.domain.cms.Reporter find(String primaryKey) {
 
     gov.ca.cwds.data.persistence.cms.Reporter persistedReporter = reporterDao.find(primaryKey);
     if (persistedReporter != null) {
@@ -70,8 +68,7 @@ public class ReporterService implements CrudsService {
    * @see gov.ca.cwds.rest.services.CrudsService#delete(java.io.Serializable)
    */
   @Override
-  public gov.ca.cwds.rest.api.domain.cms.Reporter delete(Serializable primaryKey) {
-    assert primaryKey instanceof String;
+  public gov.ca.cwds.rest.api.domain.cms.Reporter delete(String primaryKey) {
     gov.ca.cwds.data.persistence.cms.Reporter persistedReporter = reporterDao.delete(primaryKey);
     if (persistedReporter != null) {
       return new gov.ca.cwds.rest.api.domain.cms.Reporter(persistedReporter);
@@ -85,11 +82,9 @@ public class ReporterService implements CrudsService {
    * @see gov.ca.cwds.rest.services.CrudsService#create(gov.ca.cwds.rest.api.Request)
    */
   @Override
-  public PostedReporter create(Request request) {
-    assert request instanceof gov.ca.cwds.rest.api.domain.cms.Reporter;
+  public PostedReporter create(gov.ca.cwds.rest.api.domain.cms.Reporter request) {
 
-    gov.ca.cwds.rest.api.domain.cms.Reporter reporter =
-        (gov.ca.cwds.rest.api.domain.cms.Reporter) request;
+    gov.ca.cwds.rest.api.domain.cms.Reporter reporter = request;
     return create(reporter, null);
 
   }
@@ -102,11 +97,10 @@ public class ReporterService implements CrudsService {
    * @param timestamp - timestamp
    * @return the single timestamp
    */
-  public PostedReporter createWithSingleTimestamp(Request request, Date timestamp) {
-    assert request instanceof gov.ca.cwds.rest.api.domain.cms.Reporter;
+  public PostedReporter createWithSingleTimestamp(gov.ca.cwds.rest.api.domain.cms.Reporter request,
+      Date timestamp) {
 
-    gov.ca.cwds.rest.api.domain.cms.Reporter reporter =
-        (gov.ca.cwds.rest.api.domain.cms.Reporter) request;
+    gov.ca.cwds.rest.api.domain.cms.Reporter reporter = request;
     return create(reporter, timestamp);
   }
 
@@ -139,11 +133,9 @@ public class ReporterService implements CrudsService {
    *      gov.ca.cwds.rest.api.Request)
    */
   @Override
-  public gov.ca.cwds.rest.api.domain.cms.Reporter update(Serializable primaryKey, Request request) {
-    assert primaryKey instanceof String;
-    assert request instanceof gov.ca.cwds.rest.api.domain.cms.Reporter;
-    gov.ca.cwds.rest.api.domain.cms.Reporter reporter =
-        (gov.ca.cwds.rest.api.domain.cms.Reporter) request;
+  public gov.ca.cwds.rest.api.domain.cms.Reporter update(String primaryKey,
+      gov.ca.cwds.rest.api.domain.cms.Reporter request) {
+    gov.ca.cwds.rest.api.domain.cms.Reporter reporter = request;
 
     try {
       String lastUpdatedId = staffPersonIdRetriever.getStaffPersonId();
