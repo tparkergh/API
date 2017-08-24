@@ -6,13 +6,26 @@ import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.nullValue;
 import static org.junit.Assert.assertEquals;
 import static org.mockito.Matchers.any;
+import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
+import gov.ca.cwds.data.cms.TestSystemCodeCache;
+import gov.ca.cwds.data.persistence.cms.LongText;
+import gov.ca.cwds.fixture.AddressResourceBuilder;
+import gov.ca.cwds.fixture.LongTextEntityBuilder;
+import gov.ca.cwds.fixture.ReferralEntityBuilder;
+import gov.ca.cwds.fixture.ScreeningToReferralResourceBuilder;
+import gov.ca.cwds.rest.api.domain.Address;
+import gov.ca.cwds.rest.api.domain.ScreeningToReferral;
+import gov.ca.cwds.rest.api.domain.cms.PostedDrmsDocument;
+import gov.ca.cwds.rest.api.domain.cms.PostedLongText;
+import gov.ca.cwds.rest.messages.MessageBuilder;
 import java.math.BigDecimal;
 
+import java.util.Date;
 import javax.persistence.EntityExistsException;
 import javax.persistence.EntityNotFoundException;
 import javax.validation.Validation;
@@ -23,6 +36,7 @@ import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
+import org.mockito.ArgumentCaptor;
 import org.mockito.invocation.InvocationOnMock;
 import org.mockito.stubbing.Answer;
 
@@ -60,11 +74,21 @@ public class ReferralServiceTest implements ServiceTestTemplate {
   private Validator validator;
   private RIReferral riReferral;
 
+  private MessageBuilder mockMessageBuilder;
+  private String dateStarted;
+  private String timeStarted;
+  private Date lastUpdatedTimeStamp;
+
   private static Boolean isLaCountyTrigger = false;
 
   @SuppressWarnings("javadoc")
   @Rule
   public ExpectedException thrown = ExpectedException.none();
+
+  /**
+   * Initialize system code cache
+   */
+  TestSystemCodeCache testSystemCodeCache = new TestSystemCodeCache();
 
   @Override
   @Before
@@ -86,6 +110,11 @@ public class ReferralServiceTest implements ServiceTestTemplate {
     referralService = new ReferralService(referralDao, nonLACountyTriggers, laCountyTrigger,
         triggerTablesDao, staffpersonDao, staffPersonIdRetriever, assignmentService, validator,
         drmsDocumentService, addressService, longTextService, riReferral);
+
+    mockMessageBuilder = mock(MessageBuilder.class);
+    dateStarted = "2009-12-20";
+    timeStarted = "07:00:00";
+    lastUpdatedTimeStamp = new Date();
   }
 
   // find test
@@ -483,6 +512,164 @@ public class ReferralServiceTest implements ServiceTestTemplate {
     assertThat(isLaCountyTrigger, is(true));
 
   }
+
+   @SuppressWarnings("javadoc")
+  @Test
+  public void shouldSetApprovalCodeToNotSubmittedDefaultValue() throws Exception {
+    Address address = new AddressResourceBuilder().createAddress();
+    ScreeningToReferral screeningToReferral = new ScreeningToReferralResourceBuilder()
+        .setAddress(address)
+        .createScreeningToReferral();
+
+    PostedDrmsDocument drmsDocument = mock(PostedDrmsDocument.class);
+    DrmsDocumentService drmsDocumentService = mock(DrmsDocumentService.class);
+    when(drmsDocumentService.create(any())).thenReturn(drmsDocument);
+
+    addressService = mock(AddressService.class);
+     when(addressService.createAddressFromScreening(eq(screeningToReferral),
+        any(), any())).thenReturn(address);
+
+     longTextService = mock(LongTextService.class);
+     LongText longTextEntity = new LongTextEntityBuilder().setId("1234567890").build();
+     PostedLongText postedLongText = new PostedLongText(longTextEntity);
+     when(longTextService.create(any())).thenReturn(postedLongText);
+
+    referralService = new ReferralService(referralDao, nonLACountyTriggers, laCountyTrigger,
+        triggerTablesDao, staffpersonDao, staffPersonIdRetriever, assignmentService, validator,
+        drmsDocumentService, addressService, longTextService, riReferral);
+
+    Referral referralCreated = referralService.createReferralWithDefaults(screeningToReferral,
+     dateStarted, timeStarted, lastUpdatedTimeStamp, mockMessageBuilder);
+
+     assertEquals("Expected the approval status type to be 118", (short) 118, (short)referralCreated
+         .getApprovalStatusType ());
+  }
+
+  @SuppressWarnings("javadoc")
+  @Test
+  public void shouldReturnReferralIdWhenReferralHasExistingReferralID(){
+    String referralId = "1234567890";
+    ScreeningToReferral screeningToReferral = new ScreeningToReferralResourceBuilder()
+      .setReferralId(referralId)
+      .createScreeningToReferral();
+
+    gov.ca.cwds.data.persistence.cms.Referral savedReferral = new ReferralEntityBuilder().build();
+    when(referralDao.find(referralId)).thenReturn(savedReferral);
+    referralService = new ReferralService(referralDao, nonLACountyTriggers, laCountyTrigger,
+        triggerTablesDao, staffpersonDao, staffPersonIdRetriever, assignmentService, validator,
+        drmsDocumentService, addressService, longTextService, riReferral);
+
+    MessageBuilder messageBuilder = new MessageBuilder();
+    String response = referralService.createCmsReferralFromScreening(screeningToReferral,
+        dateStarted, timeStarted, lastUpdatedTimeStamp, messageBuilder);
+
+    assertEquals("Expected the reponse to be the referral ID", referralId, response);
+    assertEquals("Expected there not to be any error messages", 0,
+        messageBuilder.getMessages().size());
+  }
+  @SuppressWarnings("javadoc")
+  @Test
+  public void shouldFailWhenSpecifyingALegacyReferralIdThatDoesNotExist() throws Exception {
+    String nonExistingReferralId = "9999999999";
+    ScreeningToReferral screeningToReferral = new ScreeningToReferralResourceBuilder()
+        .setReferralId(nonExistingReferralId)
+        .createScreeningToReferral();
+
+    referralService = new ReferralService(referralDao, nonLACountyTriggers, laCountyTrigger,
+        triggerTablesDao, staffpersonDao, staffPersonIdRetriever, assignmentService, validator,
+        drmsDocumentService, addressService, longTextService, riReferral);
+
+    MessageBuilder messageBuilder = mock(MessageBuilder.class);
+    referralService.createCmsReferralFromScreening(screeningToReferral,
+      dateStarted, timeStarted, lastUpdatedTimeStamp, mockMessageBuilder);
+
+    verify(mockMessageBuilder).addMessageAndLog(
+        eq("Legacy Id does not correspond to an existing CMS/CWS Referral"),any(), any());
+  }
+
+  @SuppressWarnings("javadoc")
+  @Test
+  public void shouldFailSavingWhenReferralHasInvalidDateTimeFormat() throws Exception {
+    ScreeningToReferral screeningToReferral = new ScreeningToReferralResourceBuilder()
+        .createScreeningToReferral();
+
+    PostedDrmsDocument drmsDocument = mock(PostedDrmsDocument.class);
+    DrmsDocumentService drmsDocumentService = mock(DrmsDocumentService.class);
+    when(drmsDocumentService.create(any())).thenReturn(drmsDocument);
+
+    Address address = new AddressResourceBuilder().createAddress();
+    addressService = mock(AddressService.class);
+    when(addressService.createAddressFromScreening(eq(screeningToReferral),
+        any(), any())).thenReturn(address);
+
+    longTextService = mock(LongTextService.class);
+    LongText longTextEntity = new LongTextEntityBuilder().setId("1234567890").build();
+    PostedLongText postedLongText = new PostedLongText(longTextEntity);
+    when(longTextService.create(any())).thenReturn(postedLongText);
+
+    referralService = new ReferralService(referralDao, nonLACountyTriggers, laCountyTrigger,
+        triggerTablesDao, staffpersonDao, staffPersonIdRetriever, assignmentService, validator,
+        drmsDocumentService, addressService, longTextService, riReferral);
+
+    gov.ca.cwds.data.persistence.cms.Referral savedReferral = new ReferralEntityBuilder()
+        .setId ("1234567890") .build();
+    when(referralDao.create(any())).thenReturn(savedReferral);
+
+    MessageBuilder messageBuilder = new MessageBuilder();
+
+    referralService.createCmsReferralFromScreening(screeningToReferral,
+          "01-30-2019", timeStarted, lastUpdatedTimeStamp, messageBuilder);
+
+    assertEquals("Expected a single error message", 1, messageBuilder.getMessages().size());
+    assertEquals("ExpectedDate Error message","receivedDate must be in the format of yyyy-MM-dd",
+        messageBuilder.getMessages().get(0).getMessage());
+
+  }
+
+
+ @SuppressWarnings("javadoc")
+  @Test
+  public void testAllegesAbuseOccurredAtAddressId() throws Exception {
+   String legacyId = "1234567890";
+   Address address = new AddressResourceBuilder().setLegacyId(legacyId).createAddress();
+   ScreeningToReferral screeningToReferral = new ScreeningToReferralResourceBuilder()
+       .setAddress(address)
+       .createScreeningToReferral();
+
+   PostedDrmsDocument drmsDocument = mock(PostedDrmsDocument.class);
+   DrmsDocumentService drmsDocumentService = mock(DrmsDocumentService.class);
+   when(drmsDocumentService.create(any())).thenReturn(drmsDocument);
+
+   addressService = mock(AddressService.class);
+   when(addressService.createAddressFromScreening(eq(screeningToReferral),
+       any(), any())).thenReturn(address);
+
+   longTextService = mock(LongTextService.class);
+   LongText longTextEntity = new LongTextEntityBuilder().setId("1234567890").build();
+   PostedLongText postedLongText = new PostedLongText(longTextEntity);
+   when(longTextService.create(any())).thenReturn(postedLongText);
+
+   referralService = new ReferralService(referralDao, nonLACountyTriggers, laCountyTrigger,
+       triggerTablesDao, staffpersonDao, staffPersonIdRetriever, assignmentService, validator,
+       drmsDocumentService, addressService, longTextService, riReferral);
+
+   gov.ca.cwds.data.persistence.cms.Referral savedReferral = new ReferralEntityBuilder()
+       .setId ("1234567890") .build();
+   when(referralDao.create(any())).thenReturn(savedReferral);
+
+   referralService.createCmsReferralFromScreening(screeningToReferral,
+       dateStarted, timeStarted, lastUpdatedTimeStamp, mockMessageBuilder);
+
+   ArgumentCaptor<gov.ca.cwds.data.persistence.cms.Referral> referralCaptor = ArgumentCaptor
+       .forClass(gov.ca.cwds.data.persistence
+       .cms.Referral.class);
+   verify(referralDao).create(referralCaptor.capture());
+   gov.ca.cwds.data.persistence.cms.Referral capturedReferral = referralCaptor.getValue();
+   assertEquals("Expected referal to have been save allegeges Abuse Occured At to be the Address "
+       + "legacy id", capturedReferral .getAllegesAbuseOccurredAtAddressId(),legacyId) ;
+  }
+
+
 
   // @Test
   // public void shouldCreateCmsReferralFromScreening(){

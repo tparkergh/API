@@ -4,7 +4,6 @@ import java.io.Serializable;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 import javax.validation.Validator;
@@ -22,20 +21,11 @@ import gov.ca.cwds.rest.api.Request;
 import gov.ca.cwds.rest.api.Response;
 import gov.ca.cwds.rest.api.domain.Allegation;
 import gov.ca.cwds.rest.api.domain.CrossReport;
-import gov.ca.cwds.rest.api.domain.Participant;
 import gov.ca.cwds.rest.api.domain.PostedScreeningToReferral;
 import gov.ca.cwds.rest.api.domain.Screening;
 import gov.ca.cwds.rest.api.domain.ScreeningToReferral;
-import gov.ca.cwds.rest.api.domain.cms.Address;
-import gov.ca.cwds.rest.api.domain.cms.ChildClient;
-import gov.ca.cwds.rest.api.domain.cms.Client;
-import gov.ca.cwds.rest.api.domain.cms.ClientAddress;
-import gov.ca.cwds.rest.api.domain.cms.PostedAddress;
 import gov.ca.cwds.rest.api.domain.cms.PostedAllegation;
-import gov.ca.cwds.rest.api.domain.cms.PostedClient;
-import gov.ca.cwds.rest.api.domain.cms.ReferralClient;
 import gov.ca.cwds.rest.api.domain.cms.Reporter;
-import gov.ca.cwds.rest.api.domain.comparator.EntityChangedComparator;
 import gov.ca.cwds.rest.api.domain.error.ErrorMessage;
 import gov.ca.cwds.rest.business.rules.Reminders;
 import gov.ca.cwds.rest.messages.MessageBuilder;
@@ -63,12 +53,8 @@ public class ScreeningToReferralService implements CrudsService {
 
   private static final Logger LOGGER = LoggerFactory.getLogger(ScreeningToReferral.class);
 
-  private static final String CLIENT_TABLE_NAME = "CLIENT_T";
   private static final String ALLEGATION_TABLE_NAME = "ALLGTN_T";
   private static final String CROSS_REPORT_TABLE_NAME = "CRSS_RPT";
-  private static final String CLIENT_ADDRESS_TABLE_NAME = "ADDRS_T";
-  private static final String REPORTER_TABLE_NAME = "REPTR_T";
-
   private Validator validator;
 
   private MessageBuilder messageBuilder;
@@ -85,6 +71,7 @@ public class ScreeningToReferralService implements CrudsService {
   private ClientAddressService clientAddressService;
   private ChildClientService childClientService;
   private AssignmentService assignmentService;
+  private ParticipantService participantService;
   private Reminders reminders;
 
   private ReferralDao referralDao;
@@ -99,7 +86,7 @@ public class ScreeningToReferralService implements CrudsService {
    * Constructor
    * 
    * @param referralService the referralService
-   * @param clientService the clientServiec
+   * @param clientService the clientService
    * @param allegationService the allegationService
    * @param crossReportService the crossReportService
    * @param referralClientService the referralClientService
@@ -108,6 +95,7 @@ public class ScreeningToReferralService implements CrudsService {
    * @param clientAddressService - cms ClientAddress service
    * @param childClientService - cms ChildClient service
    * @param assignmentService CMS assignment service
+   * @param participantService CMS participantService service
    * @param validator - the validator
    * @param referralDao - The {@link Dao} handling {@link gov.ca.cwds.data.persistence.cms.Referral}
    *        objects. {@link gov.ca.cwds.rest.services.cms.StaffPersonIdRetriever} objects.
@@ -121,9 +109,9 @@ public class ScreeningToReferralService implements CrudsService {
       ReferralClientService referralClientService, ReporterService reporterService,
       AddressService addressService, ClientAddressService clientAddressService,
       ChildClientService childClientService, AssignmentService assignmentService,
-      Validator validator, ReferralDao referralDao, MessageBuilder messageBuilder,
-      AllegationPerpetratorHistoryService allegationPerpetratorHistoryService,
-      Reminders reminders) {
+      ParticipantService participantService, Validator validator, ReferralDao referralDao,
+      MessageBuilder messageBuilder,
+      AllegationPerpetratorHistoryService allegationPerpetratorHistoryService, Reminders reminders) {
 
     super();
     this.referralService = referralService;
@@ -136,6 +124,7 @@ public class ScreeningToReferralService implements CrudsService {
     this.clientAddressService = clientAddressService;
     this.childClientService = childClientService;
     this.assignmentService = assignmentService;
+    this.participantService = participantService;
     this.validator = validator;
     this.referralDao = referralDao;
     this.messageBuilder = messageBuilder;
@@ -169,21 +158,19 @@ public class ScreeningToReferralService implements CrudsService {
 
     String referralId = createCmsReferral(screeningToReferral, dateStarted, timeStarted, timestamp);
 
-    Set<Participant> resultParticipants = new HashSet<>();
-    HashMap<Long, String> victimClient = new HashMap<>();
-    HashMap<Long, String> perpatratorClient = new HashMap<>();
-
-    processParticipants(screeningToReferral, dateStarted, referralId, resultParticipants,
-        victimClient, perpatratorClient, timestamp);
+    ClientParticipants clientParticipants = processParticipants(screeningToReferral, dateStarted,
+        referralId, timestamp, messageBuilder);
 
     Set<CrossReport> resultCrossReports =
         createCrossReports(screeningToReferral, referralId, timestamp);
 
     Set<Allegation> resultAllegations = createAllegations(screeningToReferral, referralId,
-        victimClient, perpatratorClient, timestamp);
+        clientParticipants.getVictimIds(), clientParticipants.getPerpetratorIds(),
+            timestamp);
 
     PostedScreeningToReferral pstr = PostedScreeningToReferral.createWithDefaults(referralId,
-        screeningToReferral, resultParticipants, resultCrossReports, resultAllegations);
+        screeningToReferral, clientParticipants.getParticipants(), resultCrossReports,
+        resultAllegations);
 
     reminders.createTickle(pstr);
 
@@ -231,166 +218,12 @@ public class ScreeningToReferralService implements CrudsService {
     return resultCrossReports;
   }
 
-  private void processParticipants(ScreeningToReferral screeningToReferral, String dateStarted,
-      String referralId, Set<Participant> resultParticipants, HashMap<Long, String> victimClient,
-      HashMap<Long, String> perpetratorClient, Date timestamp) {
-    Set<Participant> participants = screeningToReferral.getParticipants();
-    for (Participant incomingParticipant : participants) {
+  private ClientParticipants processParticipants(ScreeningToReferral screeningToReferral, String
+      dateStarted,
+      String referralId, Date timestamp, MessageBuilder messageBuilder) {
 
-      try {
-        if (!ParticipantValidator.hasValidRoles(incomingParticipant)) {
-          String message = " Participant contains incompatiable roles ";
-          logError(message);
-          // next participant
-          continue;
-        }
-      } catch (Exception e1) {
-        String message = e1.getMessage();
-        logError(message, e1);
-        // next participant
-        continue;
-      }
-
-      String genderCode = "";
-      if (!incomingParticipant.getGender().isEmpty()) {
-        genderCode = incomingParticipant.getGender().toUpperCase().substring(0, 1);
-      }
-      Set<String> roles = new HashSet<>(incomingParticipant.getRoles());
-
-      /**
-       * process the roles of this participant
-       */
-      for (String role : roles) {
-
-        try {
-          if (ParticipantValidator.roleIsReporterType(role)
-              && (!ParticipantValidator.roleIsAnonymousReporter(role)
-                  && !ParticipantValidator.selfReported(incomingParticipant))) {
-            /*
-             * CMS Reporter - if role is 'mandated reporter' or 'non-mandated reporter' and not
-             * anonymous reporter or self-reported
-             */
-            try {
-              savedReporter = processReporter(incomingParticipant, role, referralId, timestamp,
-                  screeningToReferral.getIncidentCounty());
-              incomingParticipant.setLegacyId(savedReporter.getReferralId());
-              incomingParticipant.setLegacySourceTable(REPORTER_TABLE_NAME);
-            } catch (ServiceException e) {
-              String message = e.getMessage();
-              logError(message, e);
-              // next role
-              continue;
-            }
-          } else {
-            // not a reporter participant - make a CLIENT and REFERRAL_CLIENT unless anonymous
-            // reporter
-            if (!ParticipantValidator.roleIsAnonymousReporter(role)) {
-              String clientId;
-
-              boolean newClient = incomingParticipant.getLegacyId() == null
-                  || incomingParticipant.getLegacyId().isEmpty();
-              if (newClient) {
-                Client client =
-                    Client.createWithDefaults(incomingParticipant, dateStarted, genderCode);
-                messageBuilder.addDomainValidationError(validator.validate(client));
-                PostedClient postedClient =
-                    this.clientService.createWithSingleTimestamp(client, timestamp);
-                clientId = postedClient.getId();
-                incomingParticipant.setLegacyId(clientId);
-                incomingParticipant.setLegacySourceTable(CLIENT_TABLE_NAME);
-                incomingParticipant.getLegacyDescriptor()
-                    .setLastUpdated(postedClient.getLastUpdatedTime());
-              } else {
-                // legacy Id passed - check for existenct in CWS/CMS - no update yet
-                clientId = incomingParticipant.getLegacyId();
-                Client foundClient = this.clientService.find(clientId);
-                if (foundClient != null) {
-                  EntityChangedComparator comparator = new EntityChangedComparator();
-                  if (comparator.compare(incomingParticipant, foundClient)) {
-                    foundClient.update(incomingParticipant.getFirstName(),
-                        incomingParticipant.getMiddleName(), incomingParticipant.getLastName(),
-                        incomingParticipant.getNameSuffix());
-                    gov.ca.cwds.rest.api.domain.cms.Client savedClient =
-                        this.clientService.update(incomingParticipant.getLegacyId(), foundClient);
-                    if (savedClient != null) {
-                      incomingParticipant.getLegacyDescriptor()
-                          .setLastUpdated(savedClient.getLastUpdatedTime());
-                    } else {
-                      String message = "Unable to save Client";
-                      logError(message);
-
-                    }
-                  } else {
-                    String message = String.format(
-                        "Unable to Update %s %s Client. Client was previously modified",
-                        incomingParticipant.getFirstName(), incomingParticipant.getLastName());
-                    logError(message);
-                  }
-                } else {
-                  String message =
-                      " Legacy Id of Participant does not correspond to an existing CWS/CMS Client ";
-                  logError(message);
-                  // next role
-                  continue;
-                }
-              }
-
-              // CMS Referral Client
-              ReferralClient referralClient = ReferralClient.createWithDefault(
-                  ParticipantValidator.selfReported(incomingParticipant),
-                  incomingParticipant.isClientStaffPersonAdded(), referralId, clientId,
-                  screeningToReferral.getIncidentCounty(),
-                  LegacyDefaultValues.DEFAULT_APPROVAL_STATUS_CODE);
-
-              // validate referral client
-              messageBuilder.addDomainValidationError(validator.validate(referralClient));
-
-              try {
-                this.referralClientService.createWithSingleTimestamp(referralClient, timestamp);
-              } catch (ServiceException se) {
-                logError(se.getMessage(), se);
-              }
-
-              /*
-               * determine other participant/roles attributes relating to CWS/CMS allegation
-               */
-              if (ParticipantValidator.roleIsVictim(role)) {
-                victimClient.put(incomingParticipant.getId(), clientId);
-                // since this is the victim - process the ChildClient
-                try {
-                  this.processChildClient(incomingParticipant, clientId);
-                } catch (ServiceException e) {
-                  String message = e.getMessage();
-                  logError(message, e);
-                  // next role
-                  continue;
-                }
-              }
-
-              if (ParticipantValidator.roleIsPerpetrator(role)) {
-                perpetratorClient.put(incomingParticipant.getId(), clientId);
-              }
-
-              try {
-                // addresses associated with a client
-                Participant resultParticipant =
-                    processClientAddress(incomingParticipant, referralId, clientId, timestamp);
-              } catch (ServiceException e) {
-                String message = e.getMessage();
-                logError(message, e);
-                // next role
-                continue;
-              }
-            }
-          }
-        } catch (Exception e) {
-          String message = e.getMessage();
-          logError(message, e);
-        }
-        resultParticipants.add(incomingParticipant);
-      } // next role
-    } // next participant
-
+    return participantService.saveParticipants(screeningToReferral, dateStarted, referralId,
+        timestamp, messageBuilder);
   }
 
   private String createCmsReferral(ScreeningToReferral screeningToReferral, String dateStarted,
@@ -680,152 +513,5 @@ public class ScreeningToReferralService implements CrudsService {
       }
     }
     return processedAllegations;
-  }
-
-  /*
-   * CMS Address - create ADDRESS and CLIENT_ADDRESS for each address of the participant
-   */
-  private Participant processClientAddress(Participant clientParticipant, String referralId,
-      String clientId, Date timestamp) throws ServiceException {
-
-    String addressId = new String("");
-    Set<gov.ca.cwds.rest.api.domain.Address> addresses;
-    Set<gov.ca.cwds.rest.api.domain.Address> newAddresses = new HashSet<>();
-    addresses = clientParticipant.getAddresses();
-
-    if (addresses == null) {
-      return null;
-    }
-
-    for (gov.ca.cwds.rest.api.domain.Address address : addresses) {
-      if (address.getLegacyId() == null || address.getLegacyId().isEmpty()) {
-        // add the Address row
-        Address domainAddress = Address.createWithDefaults(address);
-        zipSuffix = domainAddress.getZip4();
-
-        messageBuilder.addDomainValidationError(validator.validate(domainAddress));
-
-        PostedAddress postedAddress =
-            (PostedAddress) this.addressService.createWithSingleTimestamp(domainAddress, timestamp);
-        addressId = postedAddress.getExistingAddressId();
-      } else {
-        // verify that Address row exist - no update for now
-        Address foundAddress = (Address) this.addressService.find(address.getLegacyId());
-        if (foundAddress == null) {
-          String message =
-              " Legacy Id on Address does not correspond to an existing CMS/CWS Address ";
-          ServiceException se = new ServiceException(message);
-          logError(message, se);
-          // next address
-          continue;
-        }
-        addressId = foundAddress.getExistingAddressId();
-      }
-
-      /*
-       * CMS Client Address
-       */
-      if (addressId.isEmpty()) {
-        String message = " ADDRESS/IDENTIFIER is required for CLIENT_ADDRESS table ";
-        ServiceException se = new ServiceException(message);
-        logError(message, se);
-        // next address
-        continue;
-      }
-      if (clientId.isEmpty()) {
-        String message = " CLIENT/IDENTIFIER is required for CLIENT_ADDRESS ";
-        ServiceException se = new ServiceException(message);
-        logError(message, se);
-        // next address
-        continue;
-      }
-
-      boolean createNewClientAddress =
-          address.getLegacyId() == null || address.getLegacyId().isEmpty();
-      if (createNewClientAddress) {
-        if (!clientAddressExists(address, clientParticipant)) {
-          Short addressType = address.getType() != null ? address.getType().shortValue()
-              : LegacyDefaultValues.DEFAULT_ADDRESS_TYPE;
-          ClientAddress clientAddress =
-              new ClientAddress(addressType, "", "", "", addressId, clientId, "", referralId);
-
-          messageBuilder.addDomainValidationError(validator.validate(clientAddress));
-          this.clientAddressService.createWithSingleTimestamp(clientAddress, timestamp);
-
-          messageBuilder.addDomainValidationError(validator.validate(clientAddress));
-
-          // update the addresses of the participant
-          address.setLegacySourceTable(CLIENT_ADDRESS_TABLE_NAME);
-          address.setLegacyId(addressId);
-          newAddresses.add(address);
-        }
-      } else {
-        // verify that ClientAddress exists - no update for now
-        if (!clientAddressExists(address, clientParticipant)) {
-          String message =
-              " Legacy Id on Address does not correspond to an existing CMS/CWS Client Address ";
-          ServiceException se = new ServiceException(message);
-          logError(message, se);
-          // next address
-          continue;
-        }
-      }
-    }
-
-    return clientParticipant;
-  }
-
-  private boolean clientAddressExists(gov.ca.cwds.rest.api.domain.Address address,
-      Participant client) {
-    List foundClientAddress = this.clientAddressService.findByAddressAndClient(address, client);
-    return foundClientAddress != null && !foundClientAddress.isEmpty();
-  }
-
-  private Reporter processReporter(Participant ip, String role, String referralId, Date timestamp,
-      String countySpecificCode) throws ServiceException {
-
-    gov.ca.cwds.rest.api.domain.Address reporterAddress = null;
-
-    if (ip.getAddresses() != null) {
-      Set<gov.ca.cwds.rest.api.domain.Address> addresses = new HashSet<>(ip.getAddresses());
-
-      // use the first address node only
-      for (gov.ca.cwds.rest.api.domain.Address address : addresses) {
-        // TODO: #141511573 address parsing - Smarty Streets Free Form display requires
-        // standardizing parsing to fields in CMS
-        if (address == null) {
-          // next address
-          continue;
-        }
-        reporterAddress = address;
-        zipSuffix = null;
-        if (address.getZip().length() > 5) {
-          zipSuffix = Short.parseShort(address.getZip().substring(5));
-        }
-        break;
-      }
-    }
-
-    Boolean mandatedReporterIndicator = ParticipantValidator.roleIsMandatedReporter(role);
-    Reporter theReporter = reporterService.find(referralId);
-    if (theReporter == null) {
-      Reporter reporter = Reporter.createWithDefaults(referralId, mandatedReporterIndicator,
-          reporterAddress, ip, countySpecificCode);
-
-      messageBuilder.addDomainValidationError(validator.validate(reporter));
-      theReporter = reporterService.createWithSingleTimestamp(reporter, timestamp);
-    }
-    return theReporter;
-  }
-
-  private ChildClient processChildClient(Participant id, String clientId) throws ServiceException {
-
-    ChildClient exsistingChild = this.childClientService.find(clientId);
-    if (exsistingChild == null) {
-      ChildClient childClient = ChildClient.createWithDefaults(clientId);
-      messageBuilder.addDomainValidationError(validator.validate(childClient));
-      exsistingChild = this.childClientService.create(childClient);
-    }
-    return exsistingChild;
   }
 }
