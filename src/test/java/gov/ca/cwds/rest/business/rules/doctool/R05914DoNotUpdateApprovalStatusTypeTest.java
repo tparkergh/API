@@ -8,6 +8,7 @@ import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
+import gov.ca.cwds.rest.services.ParticipantService;
 import javax.validation.Validation;
 import javax.validation.Validator;
 
@@ -92,6 +93,7 @@ public class R05914DoNotUpdateApprovalStatusTypeTest {
   private ChildClientService childClientService;
   private LongTextService longTextService;
   private AssignmentService assignmentService;
+  private ParticipantService participantService;
   private RIChildClient riChildClient;
   private RIAllegationPerpetratorHistory riAllegationPerpetratorHistory;
   private RIAssignment riAssignment;
@@ -225,11 +227,13 @@ public class R05914DoNotUpdateApprovalStatusTypeTest {
 
     reminders = mock(Reminders.class);
 
+    participantService = mock(ParticipantService.class);
+
     screeningToReferralService = new ScreeningToReferralService(referralService, clientService,
         allegationService, crossReportService, referralClientService, reporterService,
         addressService, clientAddressService, childClientService, assignmentService,
-        Validation.buildDefaultValidatorFactory().getValidator(), referralDao, new MessageBuilder(),
-        allegationPerpetratorHistoryService, reminders);
+        participantService, Validation.buildDefaultValidatorFactory().getValidator(), referralDao,
+        new MessageBuilder(), allegationPerpetratorHistoryService, reminders);
 
   }
 

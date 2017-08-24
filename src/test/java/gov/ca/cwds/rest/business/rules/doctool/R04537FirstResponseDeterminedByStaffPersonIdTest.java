@@ -8,6 +8,12 @@ import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
+import gov.ca.cwds.helper.CmsIdGenerator;
+import gov.ca.cwds.rest.api.domain.Participant;
+import gov.ca.cwds.rest.services.ParticipantService;
+import gov.ca.cwds.rest.services.ClientParticipants;
+import java.util.Arrays;
+import java.util.Random;
 import java.util.Set;
 
 import javax.validation.Validation;
@@ -109,6 +115,7 @@ public class R04537FirstResponseDeterminedByStaffPersonIdTest {
   private LongTextService longTextService;
   private DrmsDocumentService drmsDocumentService;
   private AssignmentService assignmentService;
+  private ParticipantService participantService;
   private RIChildClient riChildClient;
   private RIAllegationPerpetratorHistory riAllegationPerpetratorHistory;
   private RIAssignment riAssignment;
@@ -243,14 +250,20 @@ public class R04537FirstResponseDeterminedByStaffPersonIdTest {
     reminders = mock(Reminders.class);
     riReferral = mock(RIReferral.class);
 
+    participantService = mock(ParticipantService.class);
+    ClientParticipants referralParticipants = new ClientParticipants();
+    when(participantService.saveParticipants(any(), any(), any(), any(), any()))
+        .thenReturn(referralParticipants);
+
     referralService = new ReferralService(referralDao, nonLACountyTriggers, laCountyTrigger,
         triggerTablesDao, staffpersonDao, staffPersonIdRetriever, assignmentService, validator,
         drmsDocumentService, addressService, longTextService, riReferral);
 
     screeningToReferralService = new ScreeningToReferralService(referralService, clientService,
         allegationService, crossReportService, referralClientService, reporterService,
-        addressService, clientAddressService, childClientService, assignmentService, validator,
-        referralDao, new MessageBuilder(), allegationPerpetratorHistoryService, reminders);
+        addressService, clientAddressService, childClientService, assignmentService,
+        participantService, validator, referralDao, new MessageBuilder(),
+        allegationPerpetratorHistoryService, reminders);
   }
 
   /**
@@ -390,10 +403,18 @@ public class R04537FirstResponseDeterminedByStaffPersonIdTest {
           }
         });
 
+    ClientParticipants clientParticipants = new ClientParticipants();
+    Set <Participant>participants = screeningToReferral.getParticipants();
+
+    CmsIdGenerator generator = new CmsIdGenerator();
+    for(Participant participant : participants){
+      participant.setLegacyId(generator.generate());
+    }
+    clientParticipants.addParticipants(participants);
+    when(participantService.saveParticipants(any(), any(), any(), any(), any()))
+        .thenReturn(clientParticipants);
+
     screeningToReferralService.create(screeningToReferral);
     assertThat(referral.getFirstResponseDeterminedByStaffPersonId(), is(equalTo("0X5")));
-
   }
-
-
 }

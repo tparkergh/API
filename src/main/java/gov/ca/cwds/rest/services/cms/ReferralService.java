@@ -194,7 +194,6 @@ public class ReferralService implements CrudsService {
     }
   }
 
-  // TODO:Start of my changes
   /**
    * @param screeningToReferral - screeningToReferral
    * @param dateStarted - dateStarted

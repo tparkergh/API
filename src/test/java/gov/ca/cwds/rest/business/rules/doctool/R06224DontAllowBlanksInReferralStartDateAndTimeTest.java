@@ -8,6 +8,8 @@ import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
+import gov.ca.cwds.data.ns.ParticipantDao;
+import gov.ca.cwds.rest.services.ParticipantService;
 import java.util.Set;
 
 import javax.validation.Validation;
@@ -106,6 +108,7 @@ public class R06224DontAllowBlanksInReferralStartDateAndTimeTest {
   private ChildClientService childClientService;
   private LongTextService longTextService;
   private AssignmentService assignmentService;
+  private ParticipantService participantService;
   private RIChildClient riChildClient;
   private RIAllegationPerpetratorHistory riAllegationPerpetratorHistory;
   private RIAssignment riAssignment;
@@ -234,14 +237,19 @@ public class R06224DontAllowBlanksInReferralStartDateAndTimeTest {
     reminders = mock(Reminders.class);
     riReferral = mock(RIReferral.class);
 
+    ParticipantDao participantDao = mock(ParticipantDao.class);
+    participantService = new ParticipantService(participantDao, clientService,
+        referralClientService,reporterService, childClientService,addressService,
+        clientAddressService, validator);
+
     referralService = new ReferralService(referralDao, nonLACountyTriggers, laCountyTrigger,
         triggerTablesDao, staffpersonDao, staffPersonIdRetriever, assignmentService, validator,
         drmsDocumentService, addressService, longTextService, riReferral);
     screeningToReferralService = new ScreeningToReferralService(referralService, clientService,
         allegationService, crossReportService, referralClientService, reporterService,
         addressService, clientAddressService, childClientService, assignmentService,
-        Validation.buildDefaultValidatorFactory().getValidator(), referralDao, new MessageBuilder(),
-        allegationPerpetratorHistoryService, reminders);
+        participantService, Validation.buildDefaultValidatorFactory().getValidator(), referralDao,
+        new MessageBuilder(), allegationPerpetratorHistoryService, reminders);
 
   }
 
