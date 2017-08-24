@@ -20,8 +20,8 @@ import org.mockito.Mockito;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import gov.ca.cwds.rest.api.domain.cms.ReferralClient;
-import gov.ca.cwds.rest.resources.ResourceDelegate;
 import gov.ca.cwds.rest.resources.ServiceBackedResourceDelegate;
+import gov.ca.cwds.rest.resources.TypedResourceDelegate;
 import io.dropwizard.jackson.Jackson;
 import io.dropwizard.testing.junit.ResourceTestRule;
 
@@ -43,22 +43,24 @@ public class ReferralClientResourceTest {
   @Rule
   public ExpectedException thrown = ExpectedException.none();
 
-  private final static ResourceDelegate resourceDelegate = mock(ResourceDelegate.class);
+  @SuppressWarnings("unchecked")
+  private final static TypedResourceDelegate<String, ReferralClient> typedResourceDelegate =
+      mock(TypedResourceDelegate.class);
 
   @ClassRule
-  public final static ResourceTestRule inMemoryResource =
-      ResourceTestRule.builder().addResource(new ReferralClientResource(resourceDelegate)).build();
+  public final static ResourceTestRule inMemoryResource = ResourceTestRule.builder()
+      .addResource(new ReferralClientResource(typedResourceDelegate)).build();
 
   @Before
   public void setup() throws Exception {
-    Mockito.reset(resourceDelegate);
+    Mockito.reset(typedResourceDelegate);
   }
 
   @Test
   public void getDelegatesToResourceDelegate() throws Exception {
     inMemoryResource.client().target(FOUND_RESOURCE).request().accept(MediaType.APPLICATION_JSON)
         .get();
-    verify(resourceDelegate).get("referralId=ABC1234567,clientId=1234567ABC");
+    verify(typedResourceDelegate).get("referralId=ABC1234567,clientId=1234567ABC");
   }
 
   /*
@@ -71,7 +73,7 @@ public class ReferralClientResourceTest {
 
     inMemoryResource.client().target(ROOT_RESOURCE).request().accept(MediaType.APPLICATION_JSON)
         .post(Entity.entity(serialized, MediaType.APPLICATION_JSON));
-    verify(resourceDelegate).create(eq(serialized));
+    verify(typedResourceDelegate).create(eq(serialized));
   }
 
   @Test
@@ -93,7 +95,7 @@ public class ReferralClientResourceTest {
   public void deleteDelegatesToResourceDelegate() throws Exception {
     inMemoryResource.client().target(FOUND_RESOURCE).request().accept(MediaType.APPLICATION_JSON)
         .delete();
-    verify(resourceDelegate).delete("referralId=ABC1234567,clientId=1234567ABC");
+    verify(typedResourceDelegate).delete("referralId=ABC1234567,clientId=1234567ABC");
   }
 
   /*
@@ -106,7 +108,7 @@ public class ReferralClientResourceTest {
 
     inMemoryResource.client().target(ROOT_RESOURCE).request().accept(MediaType.APPLICATION_JSON)
         .put(Entity.entity(serialized, MediaType.APPLICATION_JSON));
-    verify(resourceDelegate).update(eq(null), eq(serialized));
+    verify(typedResourceDelegate).update(eq(null), eq(serialized));
   }
 
   @Test

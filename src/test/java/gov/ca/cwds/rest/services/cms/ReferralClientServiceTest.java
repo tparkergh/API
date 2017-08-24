@@ -136,17 +136,6 @@ public class ReferralClientServiceTest {
   // update test
   @SuppressWarnings("javadoc")
   @Test
-  public void updateThrowsAssertionError() throws Exception {
-    thrown.expect(AssertionError.class);
-    try {
-      referralClientService.update("referralId=1234567ABC,clientId=ABC1234567", null);
-    } catch (AssertionError e) {
-      assertEquals("Expected AssertionError", e.getMessage());
-    }
-  }
-
-  @SuppressWarnings("javadoc")
-  @Test
   public void updateReturnsReferralClientResponseOnSuccess() throws Exception {
     ReferralClient expected = new ReferralClientResourceBuilder().buildReferralClient();
 
@@ -218,17 +207,6 @@ public class ReferralClientServiceTest {
   }
 
   // create test
-  @SuppressWarnings("javadoc")
-  @Test
-  public void createThrowsAssertionError() throws Exception {
-    thrown.expect(AssertionError.class);
-    try {
-      referralClientService.create(null);
-    } catch (AssertionError e) {
-      assertEquals("Expected AssertionError", e.getMessage());
-    }
-  }
-
   @SuppressWarnings("javadoc")
   @Test
   public void referralClientServiceCreateThrowsEntityExistsException() throws Exception {
