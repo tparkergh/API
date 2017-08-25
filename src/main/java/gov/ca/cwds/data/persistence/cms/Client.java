@@ -271,7 +271,8 @@ public final class Client extends BaseClient
       this.clientIndexNumber = client.getClientIndexNumber();
       this.commentDescription = client.getCommentDescription();
       this.commonFirstName = client.getCommonFirstName();
-      this.commonMiddleName = client.getCommonMiddleName() == null ? "" :client.getCommonMiddleName();
+      this.commonMiddleName =
+          client.getCommonMiddleName() == null ? "" : client.getCommonMiddleName();
       this.commonLastName = client.getCommonLastName();
       this.confidentialityActionDate =
           DomainChef.uncookDateString(client.getConfidentialityActionDate());
@@ -334,7 +335,8 @@ public final class Client extends BaseClient
           DomainChef.cookBoolean(client.getSoc158SealedClientIndicator());
       this.socialSecurityNumChangedCode = client.getSocialSecurityNumChangedCode();
       this.socialSecurityNumber = client.getSocialSecurityNumber();
-      this.suffixTitleDescription = client.getSuffixTitleDescription() == null ? "" : client.getSuffixTitleDescription();
+      this.suffixTitleDescription =
+          client.getSuffixTitleDescription() == null ? "" : client.getSuffixTitleDescription();
       this.tribalAncestryClientIndicatorVar =
           DomainChef.cookBoolean(client.getTribalAncestryClientIndicatorVar());
       this.tribalMembrshpVerifctnIndicatorVar =

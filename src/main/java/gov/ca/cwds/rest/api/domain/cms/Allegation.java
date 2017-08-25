@@ -53,7 +53,7 @@ public class Allegation extends ReportingDomain implements Request, Response {
   @ApiModelProperty(required = false, readOnly = false, value = "frequency of abuse", example = "D")
   private String abuseFrequencyPeriodCode;
 
-  @NotEmpty
+  @NotNull
   @Size(max = 75)
   @ApiModelProperty(required = true, readOnly = false, value = "location description",
       example = "school yard")
