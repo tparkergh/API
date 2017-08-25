@@ -499,7 +499,7 @@ public class AllegationTest {
             .post(Entity.entity(toCreate, MediaType.APPLICATION_JSON));
     assertThat(response.getStatus(), is(equalTo(422)));
     assertThat(
-        response.readEntity(String.class).indexOf("abuseLocationDescription may not be empty"),
+        response.readEntity(String.class).indexOf("abuseLocationDescription may not be null"),
         is(greaterThanOrEqualTo(0)));
   }
 
@@ -517,7 +517,7 @@ public class AllegationTest {
             .post(Entity.entity(toCreate, MediaType.APPLICATION_JSON));
     assertThat(response.getStatus(), is(equalTo(422)));
     assertThat(
-        response.readEntity(String.class).indexOf("abuseLocationDescription may not be empty"),
+        response.readEntity(String.class).indexOf("abuseLocationDescription may not be null"),
         is(greaterThanOrEqualTo(0)));
   }
 
@@ -526,17 +526,14 @@ public class AllegationTest {
    * 
    */
   @Test
-  public void failsWhenAbuseLocationDescriptionEmpty() throws Exception {
+  public void successWhenAbuseLocationDescriptionEmpty() throws Exception {
     Allegation toCreate = MAPPER.readValue(
         fixture("fixtures/domain/legacy/Allegation/invalid/abuseLocationDescriptionEmpty.json"),
         Allegation.class);
     Response response =
         resources.client().target(ROOT_RESOURCE).request().accept(MediaType.APPLICATION_JSON)
             .post(Entity.entity(toCreate, MediaType.APPLICATION_JSON));
-    assertThat(response.getStatus(), is(equalTo(422)));
-    assertThat(
-        response.readEntity(String.class).indexOf("abuseLocationDescription may not be empty"),
-        is(greaterThanOrEqualTo(0)));
+    assertThat(response.getStatus(), is(equalTo(204)));
   }
 
   /**

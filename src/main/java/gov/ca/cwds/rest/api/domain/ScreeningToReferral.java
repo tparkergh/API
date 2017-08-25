@@ -79,7 +79,7 @@ public class ScreeningToReferral extends ReportingDomain implements Request {
   private String incidentDate;
 
   @JsonProperty("location_type")
-  @NotEmpty
+  @NotNull
   @ApiModelProperty(required = true, readOnly = false, value = "Location Type",
       example = "foster home")
   @Size(max = 75)
