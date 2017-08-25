@@ -85,10 +85,8 @@ public class Participant extends ReportingDomain implements Request, Response {
   private String gender;
 
   @JsonProperty("ssn")
-  @Size(min = 1, max = 9,
-      message = "ssn size must be between 1 and 9 or assign the value to defalut 0")
-  @ApiModelProperty(required = true, readOnly = false, value = "", example = "123456789",
-      notes = "Default value should be 0 can't be Empty or Null")
+  @Size(min = 0, max = 9)
+  @ApiModelProperty(required = true, readOnly = false, value = "", example = "123456789")
   private String ssn;
 
   @Date
@@ -392,7 +390,6 @@ public class Participant extends ReportingDomain implements Request, Response {
   public Short getSecondaryLanguage() {
     return secondaryLanguage;
   }
-
 
 
 

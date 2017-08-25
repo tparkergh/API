@@ -271,9 +271,8 @@ public class ParticipantTest implements PersistentTestTemplate {
         fixture("fixtures/domain/participant/invalid/ssnTooLong.json"), Participant.class);
     Set<ConstraintViolation<Participant>> constraintViolations = validator.validate(toValidate);
     assertEquals(1, constraintViolations.size());
-    assertEquals("ssn size must be between 1 and 9 or assign the value to defalut 0",
+    assertEquals("size must be between 0 and 9",
         constraintViolations.iterator().next().getMessage());
-
   }
 
   @Test

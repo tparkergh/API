@@ -371,8 +371,7 @@ public class Client extends ReportingDomain implements Request, Response {
   private String socialSecurityNumChangedCode;
 
   @NotNull
-  @Size(min = 1, max = 9,
-      message = "socialSecurityNumber size must be between 1 and 9 or assign the value to defalut 0")
+  @Size(min = 0, max = 9)
   @ApiModelProperty(required = true, readOnly = false, value = "", example = "123456789")
   private String socialSecurityNumber;
 
@@ -691,9 +690,11 @@ public class Client extends ReportingDomain implements Request, Response {
     this.prevRegionalCenterIndicator =
         DomainChef.uncookBooleanString(persistedClient.getPrevRegionalCenterIndicator());
     this.primaryEthnicityType = persistedClient.getPrimaryEthnicityType();
-    this.primaryLanguage = persistedClient.getPrimaryLanguageType() != null ?  persistedClient.getPrimaryLanguageType()  : 0;
+    this.primaryLanguage = persistedClient.getPrimaryLanguageType() != null
+        ? persistedClient.getPrimaryLanguageType() : 0;
     this.religionType = persistedClient.getReligionType();
-    this.secondaryLanguage = persistedClient.getSecondaryLanguageType() != null ?  persistedClient.getSecondaryLanguageType()  : 0;
+    this.secondaryLanguage = persistedClient.getSecondaryLanguageType() != null
+        ? persistedClient.getSecondaryLanguageType() : 0;
     this.sensitiveHlthInfoOnFileIndicator =
         DomainChef.uncookBooleanString(persistedClient.getSensitiveHlthInfoOnFileIndicator());
     this.sensitivityIndicator = persistedClient.getSensitivityIndicator();
