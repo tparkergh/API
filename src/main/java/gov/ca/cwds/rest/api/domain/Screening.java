@@ -25,53 +25,49 @@ import io.swagger.annotations.ApiModelProperty;
 @JsonSnakeCase
 @ApiModel("Screening")
 public class Screening extends ReportingDomain implements Request, Response {
+
   /**
    * Serialization version
    */
   private static final long serialVersionUID = 1L;
 
   @JsonProperty("id")
-  @Size(min = 1, max = 50)
   @NotNull
-  @ApiModelProperty(required = true, readOnly = false, value = "Screener id",
+  @Size(min = 1, max = 50)
+  @ApiModelProperty(required = true, readOnly = false, value = "Screening ID",
       example = "ABC1234568")
   private String id;
 
   @JsonProperty("name")
-  @Size(min = 1, max = 50)
-  @ApiModelProperty(required = true, readOnly = false, value = "screener Name",
+  @ApiModelProperty(required = false, readOnly = false, value = "Screening Name",
       example = "Some Screening name")
   private String name;
 
   @JsonProperty("reference")
-  @Size(min = 1, max = 50)
-  @ApiModelProperty(required = true, readOnly = false, value = "screener Reference",
+  @ApiModelProperty(required = false, readOnly = false, value = "Screening Reference",
       example = "Screening Reference")
   private String reference;
 
   @JsonProperty("screening_decision")
-  @Size(min = 1, max = 50)
-  @ApiModelProperty(required = true, readOnly = false, value = "screener decision",
-      example = "Screening decision")
+  @ApiModelProperty(required = false, readOnly = false, value = "Screening Decision",
+      example = "Screening Decision")
   private String screeningDecision;
 
   @JsonProperty("screening_decision_detail")
-  @Size(min = 1, max = 50)
-  @ApiModelProperty(required = true, readOnly = false, value = "screener decision detail",
-      example = "Screening decision Detail")
+  @ApiModelProperty(required = false, readOnly = false, value = "Screening Decision Detail",
+      example = "Screening Decision Detail")
   private String screeningDecisionDetail;
 
   @JsonProperty("assignee")
-  @Size(min = 1, max = 50)
-  @ApiModelProperty(required = true, readOnly = false, value = "screener assignee",
-      example = "assignee")
+  @ApiModelProperty(required = false, readOnly = false, value = "Screening Assignee",
+      example = "Screening Assignee")
   private String assignee;
 
   @JsonProperty("started_at")
   @Type(type = "date")
-  @ApiModelProperty(required = true, readOnly = false, value = "startdate of the Screening",
+  @ApiModelProperty(required = false, readOnly = false, value = "Screening Start Date",
       example = "1992-06-18")
-  @Date(format = "yyyy-MM-dd", required = true)
+  @Date(format = "yyyy-MM-dd", required = false)
   private String startedAt;
 
   /**
@@ -174,5 +170,4 @@ public class Screening extends ReportingDomain implements Request, Response {
   public final boolean equals(Object obj) {
     return EqualsBuilder.reflectionEquals(this, obj, false);
   }
-
 }
