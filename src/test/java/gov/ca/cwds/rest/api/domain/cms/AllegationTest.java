@@ -517,7 +517,7 @@ public class AllegationTest {
             .post(Entity.entity(toCreate, MediaType.APPLICATION_JSON));
     assertThat(response.getStatus(), is(equalTo(422)));
     assertThat(
-        response.readEntity(String.class).indexOf("abuseLocationDescription may not be empty"),
+        response.readEntity(String.class).indexOf("abuseLocationDescription may not be null"),
         is(greaterThanOrEqualTo(0)));
   }
 
