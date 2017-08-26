@@ -4,8 +4,9 @@ import java.io.Serializable;
 
 import org.apache.commons.lang3.NotImplementedException;
 import org.elasticsearch.action.index.IndexRequestBuilder;
-import org.elasticsearch.action.update.UpdateRequestBuilder;
+import org.elasticsearch.action.index.IndexResponse;
 import org.elasticsearch.common.xcontent.XContentType;
+import org.elasticsearch.rest.RestStatus;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -68,17 +69,14 @@ public class ScreeningService implements CrudsService {
    */
   @Override
   public Screening create(Request request) {
-    assert request instanceof Screening;
-    Screening screening = (Screening) request;
+    IndexResponse response = index(request);
+    RestStatus status = response.status();
 
-    String screeningJson = toJson(screening);
-    IndexRequestBuilder builder =
-        esDao.getClient().prepareIndex(esDao.getConfig().getElasticsearchAlias(),
-            esDao.getConfig().getElasticsearchDocType(), screening.getId());
-    builder.setSource(screeningJson, XContentType.JSON);
-    builder.execute().actionGet();
+    if (201 != status.getStatus()) {
+      throw new ServiceException("create -> Could not index screening. " + response);
+    }
 
-    return screening;
+    return (Screening) request;
   }
 
   /**
@@ -98,13 +96,12 @@ public class ScreeningService implements CrudsService {
           "Primary key mismatch, [" + primaryKey + " != " + screening.getId() + "]");
     }
 
-    String screeningJson = toJson(screening);
+    IndexResponse response = index(request);
+    RestStatus status = response.status();
 
-    UpdateRequestBuilder builder =
-        esDao.getClient().prepareUpdate(esDao.getConfig().getElasticsearchAlias(),
-            esDao.getConfig().getElasticsearchDocType(), screening.getId());
-    builder.setDoc(screeningJson, XContentType.JSON);
-    builder.execute().actionGet();
+    if (200 != status.getStatus()) {
+      throw new ServiceException("update -> Could not index screening. " + response);
+    }
 
     return (Screening) request;
   }
@@ -123,6 +120,28 @@ public class ScreeningService implements CrudsService {
       throw new ServiceException(e);
     }
     return screeningJson;
+  }
+
+  /**
+   * Index given screening request.
+   * 
+   * @param request The screening request
+   * @return The IndexResponse
+   */
+  private IndexResponse index(Request request) {
+    assert request instanceof Screening;
+    Screening screening = (Screening) request;
+
+    String screeningJson = toJson(screening);
+
+    IndexRequestBuilder builder =
+        esDao.getClient().prepareIndex(esDao.getConfig().getElasticsearchAlias(),
+            esDao.getConfig().getElasticsearchDocType(), screening.getId());
+    builder.setSource(screeningJson, XContentType.JSON);
+    IndexResponse response = builder.get();
+
+    return response;
+
   }
 
 }
