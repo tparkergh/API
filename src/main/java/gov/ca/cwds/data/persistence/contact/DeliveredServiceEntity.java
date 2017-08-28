@@ -145,7 +145,7 @@ public class DeliveredServiceEntity extends CmsPersistentObject {
    * @param statusCode the status code
    * @param supervisionCode the supervision code
    * @param serviceContactType the service contact type
-   * @param wraparoundServiceIndicator the wraparound Service Indicator
+   * @param wraparoundServiceIndicator the wrap-around Service Indicator
    */
   public DeliveredServiceEntity(Short cftLeadAgencyType, String coreServiceIndicator,
       Short communicationMethodType, Short contactLocationType, String contactVisitCode,

@@ -28,19 +28,17 @@ import gov.ca.cwds.data.persistence.cms.CmsPersistentObject;
 public class IndividualDeliveredServiceEmbeddable implements Serializable {
 
   /**
-   * 
+   * Default.
    */
   private static final long serialVersionUID = 1L;
 
-  protected static final int CMS_ID_LEN = CmsPersistentObject.CMS_ID_LEN;
-
-  @Column(name = "FKDL_SVC_T", length = CMS_ID_LEN)
+  @Column(name = "FKDL_SVC_T", length = CmsPersistentObject.CMS_ID_LEN)
   private String deliveredServiceId;
 
   @Column(name = "DEL_IDV_CD")
   private String deliveredToIndividualCode;
 
-  @Column(name = "DEL_IDV_ID", length = CMS_ID_LEN)
+  @Column(name = "DEL_IDV_ID", length = CmsPersistentObject.CMS_ID_LEN)
   private String deliveredToIndividualId;
 
   /**
