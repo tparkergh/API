@@ -380,7 +380,6 @@ public class ReferralService implements
 
   }
 
-  // TODO: end of my changes
   /**
    * {@inheritDoc}
    * 
