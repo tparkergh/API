@@ -15,16 +15,15 @@ import static org.mockito.Mockito.when;
 
 import gov.ca.cwds.fixture.AllegationEntityBuilder;
 import gov.ca.cwds.fixture.AllegationPerpetratorHistoryEntityBuilder;
-import gov.ca.cwds.fixture.ClientEntityResourceBuilder;
+import gov.ca.cwds.fixture.ClientEntityBuilder;
 import gov.ca.cwds.fixture.CrossReportEntityBuilder;
 import gov.ca.cwds.fixture.LongTextEntityBuilder;
-import gov.ca.cwds.fixture.ReporterEntityBuilder;
+import gov.ca.cwds.fixture.ReporterResourceBuilder;
 import gov.ca.cwds.helper.CmsIdGenerator;
 import gov.ca.cwds.rest.api.domain.cms.PostedAllegation;
 import gov.ca.cwds.rest.api.domain.cms.PostedAllegationPerpetratorHistory;
 import gov.ca.cwds.rest.api.domain.cms.PostedDrmsDocument;
 import gov.ca.cwds.rest.api.domain.cms.PostedLongText;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
@@ -215,7 +214,7 @@ public class ScreeningToReferralServiceTest {
 
     PostedAddress postedAddress = mock(PostedAddress.class);
     when(postedAddress.getExistingAddressId()).thenReturn("QWWERTYUIJ");
-    gov.ca.cwds.data.persistence.cms.Client savedEntityClient = new ClientEntityResourceBuilder()
+    gov.ca.cwds.data.persistence.cms.Client savedEntityClient = new ClientEntityBuilder()
         .setId("1234567ABC")
         .build();
     PostedClient savedClient = new PostedClient(savedEntityClient, false);
@@ -261,7 +260,7 @@ public class ScreeningToReferralServiceTest {
     when(referralService.createCmsReferralFromScreening(eq(screeningToReferral),any(),any(), any(), any())).thenReturn(validReferralId);
 
     reporterService = mock(ReporterService.class);
-    Reporter savedReporter = new ReporterEntityBuilder().build();
+    Reporter savedReporter = new ReporterResourceBuilder().build();
     when(reporterService.find(any())).thenReturn(savedReporter);
 
     participantService = mock(ParticipantService.class);
@@ -1017,7 +1016,7 @@ public class ScreeningToReferralServiceTest {
     ScreeningToReferral screeningToReferral = new ScreeningToReferralResourceBuilder()
         .setParticipants(participants).createScreeningToReferral();
 
-    Reporter savedReporter = new ReporterEntityBuilder().build();
+    Reporter savedReporter = new ReporterResourceBuilder().build();
     when(reporterService.find(any())).thenReturn(savedReporter);
 
     when(referralService.createCmsReferralFromScreening(eq(screeningToReferral),any(),any(), any(),
