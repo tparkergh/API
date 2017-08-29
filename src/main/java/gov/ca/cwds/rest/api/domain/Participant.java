@@ -7,6 +7,7 @@ import java.util.Set;
 
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
@@ -85,8 +86,8 @@ public class Participant extends ReportingDomain implements Request, Response {
   private String gender;
 
   @JsonProperty("ssn")
-  @Size(min = 0, max = 9)
-  @ApiModelProperty(required = true, readOnly = false, value = "", example = "123456789")
+  @ApiModelProperty(required = false, readOnly = false, value = "", example = "123456789")
+  @Pattern(regexp = "^(|[0-9]{9})$")
   private String ssn;
 
   @Date
