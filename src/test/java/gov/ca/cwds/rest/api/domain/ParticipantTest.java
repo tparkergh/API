@@ -277,10 +277,10 @@ public class ParticipantTest implements PersistentTestTemplate {
 
   @Test
   public void testParticipantSsnNonNumericFail() throws Exception {
-    Participant toValidate =
-        new ParticipantResourceBuilder().setSsn("abc123456").createParticipant();
+    Participant toValidate = MAPPER.readValue(
+        fixture("fixtures/domain/participant/invalid/ssnNonNumeric.json"), Participant.class);
     Set<ConstraintViolation<Participant>> constraintViolations = validator.validate(toValidate);
-    assertEquals(2, constraintViolations.size());
+    assertEquals(1, constraintViolations.size());
     assertEquals("must match \"^(|[0-9]{9})$\"",
         constraintViolations.iterator().next().getMessage());
   }

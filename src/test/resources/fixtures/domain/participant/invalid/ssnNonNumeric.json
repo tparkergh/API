@@ -1,0 +1,30 @@
+{
+  "id" : "5432",
+  "legacy_source_table" : "CLIENT_T",
+  "legacy_id" : "1234567ABC",
+  "first_name": "John",
+  "last_name": "Smith",
+  "gender": "m",
+  "date_of_birth": "2001-03-15",
+  "ssn": "12345678f",
+  "person_id": 12345,
+  "screening_id": 12345,
+  "primary_language": 1253,
+  "secondary_language": 1271,
+  "reporter_employer_name": "employerName",
+  "reporter_confidential_waiver" : true,
+  "roles" : [
+  	"Victim"
+  	],
+  	"addresses" : [
+  		{
+            "legacy_source_table" : "",
+            "legacy_id" : "",
+  			"street_address" : "123 First St",
+  			"state": 1828,
+  			"city" : "San Jose",
+  			"zip" : "94321",
+  			"type": 32
+  		}
+  	]
+}
