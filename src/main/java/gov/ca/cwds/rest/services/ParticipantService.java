@@ -1,12 +1,24 @@
 package gov.ca.cwds.rest.services;
 
+import java.io.Serializable;
+import java.util.Date;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+
+import javax.validation.Validator;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import com.google.inject.Inject;
+
 import gov.ca.cwds.data.Dao;
 import gov.ca.cwds.data.ns.ParticipantDao;
 import gov.ca.cwds.rest.api.Request;
 import gov.ca.cwds.rest.api.Response;
 import gov.ca.cwds.rest.api.domain.Participant;
 import gov.ca.cwds.rest.api.domain.Person;
-
 import gov.ca.cwds.rest.api.domain.ScreeningToReferral;
 import gov.ca.cwds.rest.api.domain.cms.Address;
 import gov.ca.cwds.rest.api.domain.cms.ChildClient;
@@ -25,16 +37,6 @@ import gov.ca.cwds.rest.services.cms.ClientService;
 import gov.ca.cwds.rest.services.cms.ReferralClientService;
 import gov.ca.cwds.rest.services.cms.ReporterService;
 import gov.ca.cwds.rest.validation.ParticipantValidator;
-import java.io.Serializable;
-
-import com.google.inject.Inject;
-import java.util.Date;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
-import javax.validation.Validator;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 /**
  * Business layer object to work on {@link Address}
@@ -76,8 +78,8 @@ public class ParticipantService implements CrudsService {
   @Inject
   public ParticipantService(ParticipantDao participantDao, ClientService clientService,
       ReferralClientService referralClientService, ReporterService reporterService,
-      ChildClientService childClientService, AddressService addressService,ClientAddressService
-      clientAddressService,  Validator validator) {
+      ChildClientService childClientService, AddressService addressService,
+      ClientAddressService clientAddressService, Validator validator) {
     this.participantDao = participantDao;
     this.validator = validator;
     this.clientService = clientService;
@@ -104,8 +106,17 @@ public class ParticipantService implements CrudsService {
     return new Participant(managed, person);
   }
 
-  public ClientParticipants saveParticipants(ScreeningToReferral screeningToReferral, String dateStarted,
-      String referralId, Date timestamp, MessageBuilder messageBuilder) {
+  /**
+   * @param screeningToReferral - screeningToReferral
+   * @param dateStarted - dateStarted
+   * @param referralId - referralId
+   * @param timestamp - timestamp
+   * @param messageBuilder - messageBuilder
+   * 
+   * @return the savedParticioants
+   */
+  public ClientParticipants saveParticipants(ScreeningToReferral screeningToReferral,
+      String dateStarted, String referralId, Date timestamp, MessageBuilder messageBuilder) {
     ClientParticipants clientParticipants = new ClientParticipants();
 
     Set<Participant> participants = screeningToReferral.getParticipants();
@@ -242,14 +253,13 @@ public class ParticipantService implements CrudsService {
               }
 
               if (ParticipantValidator.roleIsPerpetrator(role)) {
-                clientParticipants.addPerpetratorIds(incomingParticipant.getId(),
-                    clientId);
+                clientParticipants.addPerpetratorIds(incomingParticipant.getId(), clientId);
               }
 
               try {
                 // addresses associated with a client
-                Participant resultParticipant =
-                    processClientAddress(incomingParticipant, referralId, clientId, timestamp, messageBuilder);
+                Participant resultParticipant = processClientAddress(incomingParticipant,
+                    referralId, clientId, timestamp, messageBuilder);
               } catch (ServiceException e) {
                 String message = e.getMessage();
                 messageBuilder.addMessageAndLog(message, e, LOGGER);
@@ -270,8 +280,7 @@ public class ParticipantService implements CrudsService {
   }
 
   private Reporter saveReporter(Participant ip, String role, String referralId, Date timestamp,
-      String countySpecificCode, MessageBuilder messageBuilder)
-      throws ServiceException {
+      String countySpecificCode, MessageBuilder messageBuilder) throws ServiceException {
 
     gov.ca.cwds.rest.api.domain.Address reporterAddress = null;
 
@@ -307,8 +316,8 @@ public class ParticipantService implements CrudsService {
     return theReporter;
   }
 
-  private ChildClient processChildClient(Participant id, String clientId, MessageBuilder
-      messageBuilder) throws ServiceException {
+  private ChildClient processChildClient(Participant id, String clientId,
+      MessageBuilder messageBuilder) throws ServiceException {
 
     ChildClient exsistingChild = this.childClientService.find(clientId);
     if (exsistingChild == null) {
@@ -323,7 +332,7 @@ public class ParticipantService implements CrudsService {
    * CMS Address - create ADDRESS and CLIENT_ADDRESS for each address of the participant
    */
   private Participant processClientAddress(Participant clientParticipant, String referralId,
-      String clientId, Date timestamp, MessageBuilder messageBuilder ) throws ServiceException {
+      String clientId, Date timestamp, MessageBuilder messageBuilder) throws ServiceException {
 
     String addressId = new String("");
     Set<gov.ca.cwds.rest.api.domain.Address> addresses;
@@ -343,11 +352,11 @@ public class ParticipantService implements CrudsService {
         messageBuilder.addDomainValidationError(validator.validate(domainAddress));
 
         PostedAddress postedAddress =
-            (PostedAddress) this.addressService.createWithSingleTimestamp(domainAddress, timestamp);
+            this.addressService.createWithSingleTimestamp(domainAddress, timestamp);
         addressId = postedAddress.getExistingAddressId();
       } else {
         // verify that Address row exist - no update for now
-        Address foundAddress = (Address) this.addressService.find(address.getLegacyId());
+        Address foundAddress = this.addressService.find(address.getLegacyId());
         if (foundAddress == null) {
           String message =
               " Legacy Id on Address does not correspond to an existing CMS/CWS Address ";
