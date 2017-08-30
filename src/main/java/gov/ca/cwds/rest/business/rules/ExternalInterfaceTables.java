@@ -17,7 +17,7 @@ import gov.ca.cwds.rest.filters.RequestExecutionContext.Parameter;
 import gov.ca.cwds.rest.services.ServiceException;
 
 /**
- * Business layer object to update upper case tables
+ * Business layer object to update External Interface Tables
  * 
  *
  * @author CWDS API Team

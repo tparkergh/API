@@ -65,9 +65,8 @@ public class Participant extends ReportingDomain implements Request, Response {
   private String firstName;
 
   @JsonProperty("middle_name")
-  @Size(min = 1, max = 20,
-      message = "middleName size must be between 1 and 20 or assign the value to default Space")
-  @ApiModelProperty(required = true, readOnly = false, value = "", example = "middle name")
+  @Size(min = 0, max = 20)
+  @ApiModelProperty(required = false, readOnly = false, value = "", example = "middle name")
   private String middleName;
 
   @JsonProperty("last_name")
