@@ -91,7 +91,7 @@ public class Screening extends ReportingDomain implements Request, Response {
    * @param screeningDecisionDetail - screeningDecisionDetail
    * @param assignee - assignee
    * @param startedAt - startedAt
-   * @param referralId TODO
+   * @param referralId referral id, if provided
    */
   @JsonCreator
   public Screening(@JsonProperty("id") String id, @JsonProperty("name") String name,
@@ -160,6 +160,10 @@ public class Screening extends ReportingDomain implements Request, Response {
     return startedAt;
   }
 
+  public String getReferralId() {
+    return referralId;
+  }
+
   /**
    * {@inheritDoc}
    *
@@ -180,7 +184,4 @@ public class Screening extends ReportingDomain implements Request, Response {
     return EqualsBuilder.reflectionEquals(this, obj, false);
   }
 
-  String getReferralId() {
-    return referralId;
-  }
 }
