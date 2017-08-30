@@ -370,7 +370,6 @@ public class Client extends ReportingDomain implements Request, Response {
   @ApiModelProperty(required = true, readOnly = false, value = "", example = "N")
   private String socialSecurityNumChangedCode;
 
-  @NotNull
   @Size(min = 0, max = 9)
   @ApiModelProperty(required = true, readOnly = false, value = "", example = "123456789")
   private String socialSecurityNumber;
