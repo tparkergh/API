@@ -7,6 +7,7 @@ import java.math.BigDecimal;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
+import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.hibernate.validator.constraints.NotEmpty;
@@ -122,9 +123,7 @@ public class Reporter extends ReportingDomain implements Request, Response {
   @ApiModelProperty(required = false, readOnly = false, example = "1234678")
   private BigDecimal messagePhoneNumber;
 
-  @NotNull
-  @Size(min = 1, max = 1,
-      message = "middleInitialName size should be 1 or assign the the default value of Space")
+  @Size(min = 0, max = 1)
   @ApiModelProperty(required = true, readOnly = false, value = "Middle name", example = "A")
   private String middleInitialName;
 
@@ -262,7 +261,7 @@ public class Reporter extends ReportingDomain implements Request, Response {
     this.mandatedReporterIndicator = mandatedReporterIndicator;
     this.messagePhoneExtensionNumber = messagePhoneExtensionNumber;
     this.messagePhoneNumber = messagePhoneNumber;
-    this.middleInitialName = middleInitialName == null ? "" : middleInitialName;
+    this.middleInitialName = StringUtils.isBlank(middleInitialName) ? "" : middleInitialName;
     this.namePrefixDescription = namePrefixDescription;
     this.primaryPhoneNumber = primaryPhoneNumber;
     this.primaryPhoneExtensionNumber = primaryPhoneExtensionNumber;
