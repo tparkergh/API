@@ -44,11 +44,14 @@ public class ScreeningToReferralResourceBuilder {
   private boolean filedWithLawEnforcement = false;
   private String responsibleAgency = "C";
   private Short injuryHarmCategory = 2178;
+  private String limitedAccessCode = "N";
+  private String limitedAccessDescription = "";
+  private short limitedAccessAgency = 0;
+  private Date limitedAccessDate = null;
   private gov.ca.cwds.rest.api.domain.Address address;
   private Set<Participant> participants;
   private Set<gov.ca.cwds.rest.api.domain.CrossReport> crossReports;
   private Set<gov.ca.cwds.rest.api.domain.Allegation> allegations;
-
 
   public ScreeningToReferralResourceBuilder() {
     address = new AddressResourceBuilder().createAddress();
@@ -173,6 +176,42 @@ public class ScreeningToReferralResourceBuilder {
     return this;
   }
 
+  public String getLimitedAccessCode() {
+    return limitedAccessCode;
+  }
+
+  public ScreeningToReferralResourceBuilder setLimitedAccessCode(String limitedAccessCode) {
+    this.limitedAccessCode = limitedAccessCode;
+    return this;
+  }
+
+  public String getLimitedAccessDescription() {
+    return limitedAccessDescription;
+  }
+
+  public ScreeningToReferralResourceBuilder setLimitedAccessDescription(String limitedAccessDescription) {
+    this.limitedAccessDescription = limitedAccessDescription;
+    return this;
+  }
+
+  public short getLimitedAccessAgency() {
+    return limitedAccessAgency;
+  }
+
+  public ScreeningToReferralResourceBuilder setLimitedAccessAgency(short limitedAccessAgency) {
+    this.limitedAccessAgency = limitedAccessAgency;
+    return this;
+  }
+
+  public Date getLimitedAccessDate() {
+    return limitedAccessDate;
+  }
+
+  public ScreeningToReferralResourceBuilder setLimitedAccessDate(Date limitedAccessDate) {
+    this.limitedAccessDate = limitedAccessDate;
+    return this;
+  }
+
   public ScreeningToReferralResourceBuilder setAddress(
       gov.ca.cwds.rest.api.domain.Address address) {
     this.address = address;
@@ -201,6 +240,7 @@ public class ScreeningToReferralResourceBuilder {
         incidentDate, locationType, communicationMethod, name, reportNarrative, reference,
         responseTime, startedAt, assignee, additionalInformation, screeningDecision,
         screeningDecisionDetail, approvalStatus, familyAwareness, filedWithLawEnforcement,
-        responsibleAgency, address, participants, crossReports, allegations);
+        responsibleAgency, limitedAccessCode, limitedAccessDescription, limitedAccessAgency,
+        limitedAccessDate, address, participants, crossReports, allegations);
   }
 }
