@@ -173,6 +173,29 @@ public class ScreeningToReferral extends ReportingDomain implements Request {
   @Size(max = 1)
   private String responsibleAgency;
 
+  @JsonProperty("limited_access_code")
+  @Size(max = 1)
+  @OneOf(value = {"R", "S", "N"})
+  @ApiModelProperty(required = false, readOnly = false,
+      value = "limited access code", example = "N")
+  private String limitedAccessCode;
+
+  @JsonProperty("limited_access_description")
+  @Size(max = 254)
+  @ApiModelProperty(required = false, readOnly = false,
+      value = "limited access description", example = "Some text describing the limited access")
+  private String limitedAccessDescription;
+
+  @JsonProperty("limited_access_agency")
+  @ApiModelProperty(required = false, readOnly = false,
+      value = "1234", example = "The user county")
+  private Short  limitedAccessAgency;
+
+  @JsonProperty("limited_access_date")
+  @ApiModelProperty(required = false, readOnly = false, value = "yyyy-MM-dd", example = "2000-01-01")
+  @JsonFormat (shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
+  private java.util.Date limitedAccessDate;
+
   @NotNull
   @ApiModelProperty(required = true, readOnly = false)
   @Valid
@@ -408,6 +431,34 @@ public class ScreeningToReferral extends ReportingDomain implements Request {
    */
   public String getResponsibleAgency() {
     return responsibleAgency;
+  }
+
+  /**
+   * @return limitedAccessCode the limited access code
+   */
+  public String getLimitedAccessCode() {
+    return limitedAccessCode;
+  }
+
+  /**
+   * @return limitedAccessDescription limited Access Description
+   */
+  public String getLimitedAccessDescription() {
+    return limitedAccessDescription;
+  }
+
+  /**
+   * @return limitedAccessAgency limited Access Agency
+   */
+  public Short getLimitedAccessAgency() {
+    return limitedAccessAgency;
+  }
+
+  /**
+   * @return limitedAccessDate limted Access Date
+   */
+  public java.util.Date getLimitedAccessDate() {
+    return limitedAccessDate;
   }
 
   @SuppressWarnings("javadoc")
