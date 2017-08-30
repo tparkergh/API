@@ -11,6 +11,7 @@ import javax.persistence.OneToMany;
 import javax.persistence.PersistenceException;
 import javax.persistence.Table;
 
+import org.apache.commons.lang3.StringUtils;
 import org.hibernate.annotations.NamedQueries;
 import org.hibernate.annotations.NamedQuery;
 
@@ -334,7 +335,8 @@ public final class Client extends BaseClient
       this.soc158SealedClientIndicator =
           DomainChef.cookBoolean(client.getSoc158SealedClientIndicator());
       this.socialSecurityNumChangedCode = client.getSocialSecurityNumChangedCode();
-      this.socialSecurityNumber = client.getSocialSecurityNumber();
+      this.socialSecurityNumber = StringUtils.isBlank(client.getSocialSecurityNumber()) ? ""
+          : client.getSocialSecurityNumber();
       this.suffixTitleDescription =
           client.getSuffixTitleDescription() == null ? "" : client.getSuffixTitleDescription();
       this.tribalAncestryClientIndicatorVar =
