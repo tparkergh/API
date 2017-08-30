@@ -18,7 +18,7 @@ import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 
 /**
- * {@link DomainObject} representing a screening
+ * {@link DomainObject} representing a screening.
  * 
  * @author CWDS API Team
  */
@@ -37,6 +37,12 @@ public class Screening extends ReportingDomain implements Request, Response {
   @ApiModelProperty(required = true, readOnly = false, value = "Screening ID",
       example = "ABC1234568")
   private String id;
+
+  @JsonProperty("referral_id")
+  @Size(min = 10, max = 10)
+  @ApiModelProperty(required = true, readOnly = false, value = "Referral ID",
+      example = "ABC1234568")
+  private String referralId;
 
   @JsonProperty("name")
   @ApiModelProperty(required = false, readOnly = false, value = "Screening Name",
@@ -85,13 +91,15 @@ public class Screening extends ReportingDomain implements Request, Response {
    * @param screeningDecisionDetail - screeningDecisionDetail
    * @param assignee - assignee
    * @param startedAt - startedAt
+   * @param referralId TODO
    */
   @JsonCreator
   public Screening(@JsonProperty("id") String id, @JsonProperty("name") String name,
       @JsonProperty("reference") String reference,
       @JsonProperty("screening_decision") String screeningDecision,
       @JsonProperty("screening_decision_detail") String screeningDecisionDetail,
-      @JsonProperty("assignee") String assignee, @JsonProperty("started_at") String startedAt) {
+      @JsonProperty("assignee") String assignee, @JsonProperty("started_at") String startedAt,
+      @JsonProperty("referral_id") String referralId) {
     super();
     this.id = id;
     this.name = name;
@@ -100,6 +108,7 @@ public class Screening extends ReportingDomain implements Request, Response {
     this.screeningDecisionDetail = screeningDecisionDetail;
     this.assignee = assignee;
     this.startedAt = startedAt;
+    this.referralId = referralId;
   }
 
   /**
@@ -169,5 +178,9 @@ public class Screening extends ReportingDomain implements Request, Response {
   @Override
   public final boolean equals(Object obj) {
     return EqualsBuilder.reflectionEquals(this, obj, false);
+  }
+
+  String getReferralId() {
+    return referralId;
   }
 }
