@@ -170,6 +170,11 @@ public class AssignmentService implements
     }
   }
 
+  /**
+   * @param referralId - referralId
+   * @param timestamp - timestamp
+   * @param messageBuilder - messageBuilder
+   */
   // create a default assignment
   // R - 02473 Default Referral Assignment
   // R - 02160 Assignment - Caseload Access
