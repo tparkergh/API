@@ -167,7 +167,7 @@ public final class Client extends BaseClient
     this.clientIndexNumber = clientIndexNumber;
     this.commentDescription = commentDescription;
     this.commonFirstName = commonFirstName;
-    this.commonMiddleName = commonMiddleName == null ? "" : commonMiddleName;
+    this.commonMiddleName = StringUtils.isBlank(commonMiddleName) ? "" : commonMiddleName;
     this.commonLastName = commonLastName;
     this.confidentialityActionDate = confidentialityActionDate;
     this.confidentialityInEffectIndicator = confidentialityInEffectIndicator;
@@ -273,7 +273,7 @@ public final class Client extends BaseClient
       this.commentDescription = client.getCommentDescription();
       this.commonFirstName = client.getCommonFirstName();
       this.commonMiddleName =
-          client.getCommonMiddleName() == null ? "" : client.getCommonMiddleName();
+          StringUtils.isBlank(client.getCommonMiddleName()) ? "" : client.getCommonMiddleName();
       this.commonLastName = client.getCommonLastName();
       this.confidentialityActionDate =
           DomainChef.uncookDateString(client.getConfidentialityActionDate());
