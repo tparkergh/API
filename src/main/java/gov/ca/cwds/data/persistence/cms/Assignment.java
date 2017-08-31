@@ -167,7 +167,7 @@ public class Assignment extends CmsPersistentObject {
 
   /**
    * @param id - IDENTIFIER
-   * @param pa - domaing ASSIGNMENT
+   * @param pa - domain ASSIGNMENT
    * @param lastUpdateId - staff person id
    * @param timestamp - Date/time of transaction
    */
