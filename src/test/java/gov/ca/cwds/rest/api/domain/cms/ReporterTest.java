@@ -1326,31 +1326,25 @@ public class ReporterTest {
    * middleInitialName Tests
    */
   @Test
-  public void failsWhenMiddleInitialNameMissing() throws Exception {
+  public void successWhenMiddleInitialNameMissing() throws Exception {
     Reporter toCreate = MAPPER.readValue(
         fixture("fixtures/domain/legacy/Reporter/invalid/middleInitialNameMissing.json"),
         Reporter.class);
     Response response =
         resources.client().target(ROOT_RESOURCE).request().accept(MediaType.APPLICATION_JSON)
             .post(Entity.entity(toCreate, MediaType.APPLICATION_JSON));
-    assertThat(response.getStatus(), is(equalTo(422)));
-    assertThat(response.readEntity(String.class).indexOf("middleInitialName may not be null"),
-        is(greaterThanOrEqualTo(NOT_FOUND)));
+    assertThat(response.getStatus(), is(equalTo(204)));
   }
 
   @Test
-  public void failsWhenMiddleInitialNameEmpty() throws Exception {
+  public void successWhenMiddleInitialNameEmpty() throws Exception {
     Reporter toCreate = MAPPER.readValue(
         fixture("fixtures/domain/legacy/Reporter/valid/middleInitialNameEmpty.json"),
         Reporter.class);
     Response response =
         resources.client().target(ROOT_RESOURCE).request().accept(MediaType.APPLICATION_JSON)
             .post(Entity.entity(toCreate, MediaType.APPLICATION_JSON));
-    assertThat(response.getStatus(), is(equalTo(422)));
-    assertThat(
-        response.readEntity(String.class)
-            .indexOf("middleInitialName size should be 1 or assign the the default value of Space"),
-        is(greaterThanOrEqualTo(0)));
+    assertThat(response.getStatus(), is(equalTo(204)));
   }
 
   @Test
@@ -1363,8 +1357,7 @@ public class ReporterTest {
             .post(Entity.entity(toCreate, MediaType.APPLICATION_JSON));
     assertThat(response.getStatus(), is(equalTo(422)));
     assertThat(
-        response.readEntity(String.class)
-            .indexOf("middleInitialName size should be 1 or assign the the default value of Space"),
+        response.readEntity(String.class).indexOf("middleInitialName size must be between 0 and 1"),
         is(greaterThanOrEqualTo(0)));
   }
 
