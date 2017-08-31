@@ -9,12 +9,13 @@ import com.google.inject.Inject;
 
 import gov.ca.cwds.data.Dao;
 import gov.ca.cwds.data.cms.StaffPersonCaseLoadDao;
+import gov.ca.cwds.data.persistence.cms.StaffPersonCaseLoad;
 import gov.ca.cwds.rest.api.Request;
 import gov.ca.cwds.rest.api.Response;
 import gov.ca.cwds.rest.services.CrudsService;
 
 /**
- * Business layer object to work on {@link StaffPerson}
+ * Business layer object to work on {@link StaffPersonCaseLoad}
  * 
  * @author CWDS API Team
  */

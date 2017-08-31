@@ -53,6 +53,10 @@ public class PostedScreeningToReferral extends ScreeningToReferral implements Re
    * @param familyAwareness - familyAwareness
    * @param filedWithLawEnforcement - filedWithLawEnforcement
    * @param responsibleAgency - responsibleAgency
+   * @param limitedAccessCode - limitedAccessCode
+   * @param limitedAccessDescription - limitedAccessDescription
+   * @param limitedAccessAgency - limitedAccessAgency
+   * @param limitedAccessDate - limitedAccessDate
    * @param address - address of referral
    * @param participants - participants of the referral
    * @param crossReports - cross reports
@@ -96,8 +100,7 @@ public class PostedScreeningToReferral extends ScreeningToReferral implements Re
         referral.getApprovalStatus(), referral.isFamilyAwareness(),
         referral.isFiledWithLawEnforcement(), referral.getResponsibleAgency(),
         referral.getLimitedAccessCode(), referral.getLimitedAccessDescription(),
-        referral.getLimitedAccessAgency(),
-        referral.getLimitedAccessDate(),
-        referral.getAddress(), resultParticipants, resultCrossReports, resultAllegations);
+        referral.getLimitedAccessAgency(), referral.getLimitedAccessDate(), referral.getAddress(),
+        resultParticipants, resultCrossReports, resultAllegations);
   }
 }
