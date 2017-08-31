@@ -131,17 +131,14 @@ public class ScreeningService implements CrudsService {
   private IndexResponse index(Request request) {
     assert request instanceof Screening;
     Screening screening = (Screening) request;
-
     String screeningJson = toJson(screening);
 
     IndexRequestBuilder builder =
         esDao.getClient().prepareIndex(esDao.getConfig().getElasticsearchAlias(),
             esDao.getConfig().getElasticsearchDocType(), screening.getId());
     builder.setSource(screeningJson, XContentType.JSON);
-    IndexResponse response = builder.get();
 
-    return response;
-
+    return builder.get();
   }
 
 }

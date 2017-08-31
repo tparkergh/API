@@ -59,13 +59,8 @@ public class ClientAddressServiceTest {
 
   private static Boolean isLaCountyTrigger = false;
 
-
   @Rule
   public ExpectedException thrown = ExpectedException.none();
-
-  /**
-   * 
-   */
 
   @Before
   public void setup() throws Exception {

@@ -111,7 +111,8 @@ public class ScreeningToReferralService implements CrudsService {
       ChildClientService childClientService, AssignmentService assignmentService,
       ParticipantService participantService, Validator validator, ReferralDao referralDao,
       MessageBuilder messageBuilder,
-      AllegationPerpetratorHistoryService allegationPerpetratorHistoryService, Reminders reminders) {
+      AllegationPerpetratorHistoryService allegationPerpetratorHistoryService,
+      Reminders reminders) {
 
     super();
     this.referralService = referralService;
@@ -165,12 +166,11 @@ public class ScreeningToReferralService implements CrudsService {
         createCrossReports(screeningToReferral, referralId, timestamp);
 
     Set<Allegation> resultAllegations = createAllegations(screeningToReferral, referralId,
-        clientParticipants.getVictimIds(), clientParticipants.getPerpetratorIds(),
-            timestamp);
+        clientParticipants.getVictimIds(), clientParticipants.getPerpetratorIds(), timestamp);
 
-    PostedScreeningToReferral pstr = PostedScreeningToReferral.createWithDefaults(referralId,
-        screeningToReferral, clientParticipants.getParticipants(), resultCrossReports,
-        resultAllegations);
+    PostedScreeningToReferral pstr =
+        PostedScreeningToReferral.createWithDefaults(referralId, screeningToReferral,
+            clientParticipants.getParticipants(), resultCrossReports, resultAllegations);
 
     reminders.createTickle(pstr);
 
@@ -218,9 +218,8 @@ public class ScreeningToReferralService implements CrudsService {
     return resultCrossReports;
   }
 
-  private ClientParticipants processParticipants(ScreeningToReferral screeningToReferral, String
-      dateStarted,
-      String referralId, Date timestamp, MessageBuilder messageBuilder) {
+  private ClientParticipants processParticipants(ScreeningToReferral screeningToReferral,
+      String dateStarted, String referralId, Date timestamp, MessageBuilder messageBuilder) {
 
     return participantService.saveParticipants(screeningToReferral, dateStarted, referralId,
         timestamp, messageBuilder);
@@ -328,8 +327,7 @@ public class ScreeningToReferralService implements CrudsService {
          * </blockquote>
          * </pre>
          */
-        if (outStateLawEnforcementIndicator == true
-            && StringUtils.isBlank(outStateLawEnforcementAddr)) {
+        if (outStateLawEnforcementIndicator && StringUtils.isBlank(outStateLawEnforcementAddr)) {
           String message =
               "outStateLawEnforcementIndicator is set true, Then outStateLawEnforcementAddr can't be blank";
           ServiceException se = new ServiceException(message);

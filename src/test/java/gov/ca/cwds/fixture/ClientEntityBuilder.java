@@ -6,7 +6,7 @@ import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 
-public class ClientEntityResourceBuilder {
+public class ClientEntityBuilder {
 
   protected String adjudicatedDelinquentIndicator = "";
   protected String adoptionStatusCode  = "";
@@ -77,345 +77,345 @@ public class ClientEntityResourceBuilder {
   protected String zippyCreatedIndicator  = "";
   private Set<ClientAddress> clientAddress = new HashSet<>();
 
-  public ClientEntityResourceBuilder setAdjudicatedDelinquentIndicator(String adjudicatedDelinquentIndicator) {
+  public ClientEntityBuilder setAdjudicatedDelinquentIndicator(String adjudicatedDelinquentIndicator) {
     this.adjudicatedDelinquentIndicator = adjudicatedDelinquentIndicator;
     return this;
   }
 
-  public ClientEntityResourceBuilder setAdoptionStatusCode(String adoptionStatusCode) {
+  public ClientEntityBuilder setAdoptionStatusCode(String adoptionStatusCode) {
     this.adoptionStatusCode = adoptionStatusCode;
     return this;
   }
 
-  public ClientEntityResourceBuilder setAlienRegistrationNumber(String alienRegistrationNumber) {
+  public ClientEntityBuilder setAlienRegistrationNumber(String alienRegistrationNumber) {
     this.alienRegistrationNumber = alienRegistrationNumber;
     return this;
   }
 
-  public ClientEntityResourceBuilder setBirthCity(String birthCity) {
+  public ClientEntityBuilder setBirthCity(String birthCity) {
     this.birthCity = birthCity;
     return this;
   }
 
-  public ClientEntityResourceBuilder setBirthCountryCodeType(Short birthCountryCodeType) {
+  public ClientEntityBuilder setBirthCountryCodeType(Short birthCountryCodeType) {
     this.birthCountryCodeType = birthCountryCodeType;
     return this;
   }
 
-  public ClientEntityResourceBuilder setBirthDate(Date birthDate) {
+  public ClientEntityBuilder setBirthDate(Date birthDate) {
     this.birthDate = birthDate;
     return this;
   }
 
-  public ClientEntityResourceBuilder setBirthFacilityName(String birthFacilityName) {
+  public ClientEntityBuilder setBirthFacilityName(String birthFacilityName) {
     this.birthFacilityName = birthFacilityName;
     return this;
   }
 
-  public ClientEntityResourceBuilder setBirthStateCodeType(Short birthStateCodeType) {
+  public ClientEntityBuilder setBirthStateCodeType(Short birthStateCodeType) {
     this.birthStateCodeType = birthStateCodeType;
     return this;
   }
 
-  public ClientEntityResourceBuilder setBirthplaceVerifiedIndicator(String birthplaceVerifiedIndicator) {
+  public ClientEntityBuilder setBirthplaceVerifiedIndicator(String birthplaceVerifiedIndicator) {
     this.birthplaceVerifiedIndicator = birthplaceVerifiedIndicator;
     return this;
   }
 
-  public ClientEntityResourceBuilder setChildClientIndicatorVar(String childClientIndicatorVar) {
+  public ClientEntityBuilder setChildClientIndicatorVar(String childClientIndicatorVar) {
     this.childClientIndicatorVar = childClientIndicatorVar;
     return this;
   }
 
-  public ClientEntityResourceBuilder setClientIndexNumber(String clientIndexNumber) {
+  public ClientEntityBuilder setClientIndexNumber(String clientIndexNumber) {
     this.clientIndexNumber = clientIndexNumber;
     return this;
   }
 
-  public ClientEntityResourceBuilder setCommentDescription(String commentDescription) {
+  public ClientEntityBuilder setCommentDescription(String commentDescription) {
     this.commentDescription = commentDescription;
     return this;
   }
 
-  public ClientEntityResourceBuilder setCommonFirstName(String commonFirstName) {
+  public ClientEntityBuilder setCommonFirstName(String commonFirstName) {
     this.commonFirstName = commonFirstName;
     return this;
   }
 
-  public ClientEntityResourceBuilder setCommonLastName(String commonLastName) {
+  public ClientEntityBuilder setCommonLastName(String commonLastName) {
     this.commonLastName = commonLastName;
     return this;
   }
 
-  public ClientEntityResourceBuilder setCommonMiddleName(String commonMiddleName) {
+  public ClientEntityBuilder setCommonMiddleName(String commonMiddleName) {
     this.commonMiddleName = commonMiddleName;
     return this;
   }
 
-  public ClientEntityResourceBuilder setConfidentialityActionDate(Date confidentialityActionDate) {
+  public ClientEntityBuilder setConfidentialityActionDate(Date confidentialityActionDate) {
     this.confidentialityActionDate = confidentialityActionDate;
     return this;
   }
 
-  public ClientEntityResourceBuilder setConfidentialityInEffectIndicator(String confidentialityInEffectIndicator) {
+  public ClientEntityBuilder setConfidentialityInEffectIndicator(String confidentialityInEffectIndicator) {
     this.confidentialityInEffectIndicator = confidentialityInEffectIndicator;
     return this;
   }
 
-  public ClientEntityResourceBuilder setCreationDate(Date creationDate) {
+  public ClientEntityBuilder setCreationDate(Date creationDate) {
     this.creationDate = creationDate;
     return this;
   }
 
-  public ClientEntityResourceBuilder setCurrCaChildrenServIndicator(String currCaChildrenServIndicator) {
+  public ClientEntityBuilder setCurrCaChildrenServIndicator(String currCaChildrenServIndicator) {
     this.currCaChildrenServIndicator = currCaChildrenServIndicator;
     return this;
   }
 
-  public ClientEntityResourceBuilder setCurrentlyOtherDescription(String currentlyOtherDescription) {
+  public ClientEntityBuilder setCurrentlyOtherDescription(String currentlyOtherDescription) {
     this.currentlyOtherDescription = currentlyOtherDescription;
     return this;
   }
 
-  public ClientEntityResourceBuilder setCurrentlyRegionalCenterIndicator(String currentlyRegionalCenterIndicator) {
+  public ClientEntityBuilder setCurrentlyRegionalCenterIndicator(String currentlyRegionalCenterIndicator) {
     this.currentlyRegionalCenterIndicator = currentlyRegionalCenterIndicator;
     return this;
   }
 
-  public ClientEntityResourceBuilder setDeathDate(Date deathDate) {
+  public ClientEntityBuilder setDeathDate(Date deathDate) {
     this.deathDate = deathDate;
     return this;
   }
 
-  public ClientEntityResourceBuilder setDeathDateVerifiedIndicator(String deathDateVerifiedIndicator) {
+  public ClientEntityBuilder setDeathDateVerifiedIndicator(String deathDateVerifiedIndicator) {
     this.deathDateVerifiedIndicator = deathDateVerifiedIndicator;
     return this;
   }
 
-  public ClientEntityResourceBuilder setDeathPlace(String deathPlace) {
+  public ClientEntityBuilder setDeathPlace(String deathPlace) {
     this.deathPlace = deathPlace;
     return this;
   }
 
-  public ClientEntityResourceBuilder setDeathReasonText(String deathReasonText) {
+  public ClientEntityBuilder setDeathReasonText(String deathReasonText) {
     this.deathReasonText = deathReasonText;
     return this;
   }
 
-  public ClientEntityResourceBuilder setDriverLicenseNumber(String driverLicenseNumber) {
+  public ClientEntityBuilder setDriverLicenseNumber(String driverLicenseNumber) {
     this.driverLicenseNumber = driverLicenseNumber;
     return this;
   }
 
-  public ClientEntityResourceBuilder setDriverLicenseStateCodeType(Short driverLicenseStateCodeType) {
+  public ClientEntityBuilder setDriverLicenseStateCodeType(Short driverLicenseStateCodeType) {
     this.driverLicenseStateCodeType = driverLicenseStateCodeType;
     return this;
   }
 
-  public ClientEntityResourceBuilder setEmailAddress(String emailAddress) {
+  public ClientEntityBuilder setEmailAddress(String emailAddress) {
     this.emailAddress = emailAddress;
     return this;
   }
 
-  public ClientEntityResourceBuilder setEstimatedDobCode(String estimatedDobCode) {
+  public ClientEntityBuilder setEstimatedDobCode(String estimatedDobCode) {
     this.estimatedDobCode = estimatedDobCode;
     return this;
   }
 
-  public ClientEntityResourceBuilder setEthUnableToDetReasonCode(String ethUnableToDetReasonCode) {
+  public ClientEntityBuilder setEthUnableToDetReasonCode(String ethUnableToDetReasonCode) {
     this.ethUnableToDetReasonCode = ethUnableToDetReasonCode;
     return this;
   }
 
-  public ClientEntityResourceBuilder setFatherParentalRightTermDate(Date fatherParentalRightTermDate) {
+  public ClientEntityBuilder setFatherParentalRightTermDate(Date fatherParentalRightTermDate) {
     this.fatherParentalRightTermDate = fatherParentalRightTermDate;
     return this;
   }
 
-  public ClientEntityResourceBuilder setGenderCode(String genderCode) {
+  public ClientEntityBuilder setGenderCode(String genderCode) {
     this.genderCode = genderCode;
     return this;
   }
 
-  public ClientEntityResourceBuilder setHealthSummaryText(String healthSummaryText) {
+  public ClientEntityBuilder setHealthSummaryText(String healthSummaryText) {
     this.healthSummaryText = healthSummaryText;
     return this;
   }
 
-  public ClientEntityResourceBuilder setHispUnableToDetReasonCode(String hispUnableToDetReasonCode) {
+  public ClientEntityBuilder setHispUnableToDetReasonCode(String hispUnableToDetReasonCode) {
     this.hispUnableToDetReasonCode = hispUnableToDetReasonCode;
     return this;
   }
 
-  public ClientEntityResourceBuilder setHispanicOriginCode(String hispanicOriginCode) {
+  public ClientEntityBuilder setHispanicOriginCode(String hispanicOriginCode) {
     this.hispanicOriginCode = hispanicOriginCode;
     return this;
   }
 
-  public ClientEntityResourceBuilder setId(String id) {
+  public ClientEntityBuilder setId(String id) {
     this.id = id;
     return this;
   }
 
-  public ClientEntityResourceBuilder setImmigrationCountryCodeType(Short immigrationCountryCodeType) {
+  public ClientEntityBuilder setImmigrationCountryCodeType(Short immigrationCountryCodeType) {
     this.immigrationCountryCodeType = immigrationCountryCodeType;
     return this;
   }
 
-  public ClientEntityResourceBuilder setImmigrationStatusType(Short immigrationStatusType) {
+  public ClientEntityBuilder setImmigrationStatusType(Short immigrationStatusType) {
     this.immigrationStatusType = immigrationStatusType;
     return this;
   }
 
-  public ClientEntityResourceBuilder setIncapacitatedParentCode(String incapacitatedParentCode) {
+  public ClientEntityBuilder setIncapacitatedParentCode(String incapacitatedParentCode) {
     this.incapacitatedParentCode = incapacitatedParentCode;
     return this;
   }
 
-  public ClientEntityResourceBuilder setIndividualHealthCarePlanIndicator(
+  public ClientEntityBuilder setIndividualHealthCarePlanIndicator(
       String individualHealthCarePlanIndicator) {
     this.individualHealthCarePlanIndicator = individualHealthCarePlanIndicator;
     return this;
   }
 
-  public ClientEntityResourceBuilder setLimitationOnScpHealthIndicator(String limitationOnScpHealthIndicator) {
+  public ClientEntityBuilder setLimitationOnScpHealthIndicator(String limitationOnScpHealthIndicator) {
     this.limitationOnScpHealthIndicator = limitationOnScpHealthIndicator;
     return this;
   }
 
-  public ClientEntityResourceBuilder setLiterateCode(String literateCode) {
+  public ClientEntityBuilder setLiterateCode(String literateCode) {
     this.literateCode = literateCode;
     return this;
   }
 
-  public ClientEntityResourceBuilder setMaritalCohabitatnHstryIndicatorVar(
+  public ClientEntityBuilder setMaritalCohabitatnHstryIndicatorVar(
       String maritalCohabitatnHstryIndicatorVar) {
     this.maritalCohabitatnHstryIndicatorVar = maritalCohabitatnHstryIndicatorVar;
     return this;
   }
 
-  public ClientEntityResourceBuilder setMaritalStatusType(Short maritalStatusType) {
+  public ClientEntityBuilder setMaritalStatusType(Short maritalStatusType) {
     this.maritalStatusType = maritalStatusType;
     return this;
   }
 
-  public ClientEntityResourceBuilder setMilitaryStatusCode(String militaryStatusCode) {
+  public ClientEntityBuilder setMilitaryStatusCode(String militaryStatusCode) {
     this.militaryStatusCode = militaryStatusCode;
     return this;
   }
 
-  public ClientEntityResourceBuilder setMotherParentalRightTermDate(Date motherParentalRightTermDate) {
+  public ClientEntityBuilder setMotherParentalRightTermDate(Date motherParentalRightTermDate) {
     this.motherParentalRightTermDate = motherParentalRightTermDate;
     return this;
   }
 
-  public ClientEntityResourceBuilder setNamePrefixDescription(String namePrefixDescription) {
+  public ClientEntityBuilder setNamePrefixDescription(String namePrefixDescription) {
     this.namePrefixDescription = namePrefixDescription;
     return this;
   }
 
-  public ClientEntityResourceBuilder setNameType(Short nameType) {
+  public ClientEntityBuilder setNameType(Short nameType) {
     this.nameType = nameType;
     return this;
   }
 
-  public ClientEntityResourceBuilder setOutstandingWarrantIndicator(String outstandingWarrantIndicator) {
+  public ClientEntityBuilder setOutstandingWarrantIndicator(String outstandingWarrantIndicator) {
     this.outstandingWarrantIndicator = outstandingWarrantIndicator;
     return this;
   }
 
-  public ClientEntityResourceBuilder setPrevCaChildrenServIndicator(String prevCaChildrenServIndicator) {
+  public ClientEntityBuilder setPrevCaChildrenServIndicator(String prevCaChildrenServIndicator) {
     this.prevCaChildrenServIndicator = prevCaChildrenServIndicator;
     return this;
   }
 
-  public ClientEntityResourceBuilder setPrevOtherDescription(String prevOtherDescription) {
+  public ClientEntityBuilder setPrevOtherDescription(String prevOtherDescription) {
     this.prevOtherDescription = prevOtherDescription;
     return this;
   }
 
-  public ClientEntityResourceBuilder setPrevRegionalCenterIndicator(String prevRegionalCenterIndicator) {
+  public ClientEntityBuilder setPrevRegionalCenterIndicator(String prevRegionalCenterIndicator) {
     this.prevRegionalCenterIndicator = prevRegionalCenterIndicator;
     return this;
   }
 
-  public ClientEntityResourceBuilder setPrimaryEthnicityType(Short primaryEthnicityType) {
+  public ClientEntityBuilder setPrimaryEthnicityType(Short primaryEthnicityType) {
     this.primaryEthnicityType = primaryEthnicityType;
     return this;
   }
 
-  public ClientEntityResourceBuilder setPrimaryLanguageType(Short primaryLanguageType) {
+  public ClientEntityBuilder setPrimaryLanguageType(Short primaryLanguageType) {
     this.primaryLanguageType = primaryLanguageType;
     return this;
   }
 
-  public ClientEntityResourceBuilder setReligionType(Short religionType) {
+  public ClientEntityBuilder setReligionType(Short religionType) {
     this.religionType = religionType;
     return this;
   }
 
-  public ClientEntityResourceBuilder setSecondaryLanguageType(Short secondaryLanguageType) {
+  public ClientEntityBuilder setSecondaryLanguageType(Short secondaryLanguageType) {
     this.secondaryLanguageType = secondaryLanguageType;
     return this;
   }
 
-  public ClientEntityResourceBuilder setSensitiveHlthInfoOnFileIndicator(String sensitiveHlthInfoOnFileIndicator) {
+  public ClientEntityBuilder setSensitiveHlthInfoOnFileIndicator(String sensitiveHlthInfoOnFileIndicator) {
     this.sensitiveHlthInfoOnFileIndicator = sensitiveHlthInfoOnFileIndicator;
     return this;
   }
 
-  public ClientEntityResourceBuilder setSensitivityIndicator(String sensitivityIndicator) {
+  public ClientEntityBuilder setSensitivityIndicator(String sensitivityIndicator) {
     this.sensitivityIndicator = sensitivityIndicator;
     return this;
   }
 
-  public ClientEntityResourceBuilder setSoc158PlacementCode(String soc158PlacementCode) {
+  public ClientEntityBuilder setSoc158PlacementCode(String soc158PlacementCode) {
     this.soc158PlacementCode = soc158PlacementCode;
     return this;
   }
 
-  public ClientEntityResourceBuilder setSoc158SealedClientIndicator(String soc158SealedClientIndicator) {
+  public ClientEntityBuilder setSoc158SealedClientIndicator(String soc158SealedClientIndicator) {
     this.soc158SealedClientIndicator = soc158SealedClientIndicator;
     return this;
   }
 
-  public ClientEntityResourceBuilder setSocialSecurityNumChangedCode(String socialSecurityNumChangedCode) {
+  public ClientEntityBuilder setSocialSecurityNumChangedCode(String socialSecurityNumChangedCode) {
     this.socialSecurityNumChangedCode = socialSecurityNumChangedCode;
     return this;
   }
 
-  public ClientEntityResourceBuilder setSocialSecurityNumber(String socialSecurityNumber) {
+  public ClientEntityBuilder setSocialSecurityNumber(String socialSecurityNumber) {
     this.socialSecurityNumber = socialSecurityNumber;
     return this;
   }
 
-  public ClientEntityResourceBuilder setSuffixTitleDescription(String suffixTitleDescription) {
+  public ClientEntityBuilder setSuffixTitleDescription(String suffixTitleDescription) {
     this.suffixTitleDescription = suffixTitleDescription;
     return this;
   }
 
-  public ClientEntityResourceBuilder setTribalAncestryClientIndicatorVar(String tribalAncestryClientIndicatorVar) {
+  public ClientEntityBuilder setTribalAncestryClientIndicatorVar(String tribalAncestryClientIndicatorVar) {
     this.tribalAncestryClientIndicatorVar = tribalAncestryClientIndicatorVar;
     return this;
   }
 
-  public ClientEntityResourceBuilder setTribalMembrshpVerifctnIndicatorVar(
+  public ClientEntityBuilder setTribalMembrshpVerifctnIndicatorVar(
       String tribalMembrshpVerifctnIndicatorVar) {
     this.tribalMembrshpVerifctnIndicatorVar = tribalMembrshpVerifctnIndicatorVar;
     return this;
   }
 
-  public ClientEntityResourceBuilder setUnemployedParentCode(String unemployedParentCode) {
+  public ClientEntityBuilder setUnemployedParentCode(String unemployedParentCode) {
     this.unemployedParentCode = unemployedParentCode;
     return this;
   }
 
-  public ClientEntityResourceBuilder setZippyCreatedIndicator(String zippyCreatedIndicator) {
+  public ClientEntityBuilder setZippyCreatedIndicator(String zippyCreatedIndicator) {
     this.zippyCreatedIndicator = zippyCreatedIndicator;
     return this;
   }
 
-  public ClientEntityResourceBuilder setClientAddress(
+  public ClientEntityBuilder setClientAddress(
       Set<ClientAddress> clientAddress) {
     this.clientAddress = clientAddress;
     return this;

@@ -12,9 +12,9 @@ import static org.mockito.Mockito.when;
 import gov.ca.cwds.data.cms.TestSystemCodeCache;
 import gov.ca.cwds.data.ns.ParticipantDao;
 import gov.ca.cwds.fixture.AddressResourceBuilder;
-import gov.ca.cwds.fixture.ClientEntityResourceBuilder;
+import gov.ca.cwds.fixture.ClientEntityBuilder;
 import gov.ca.cwds.fixture.ParticipantResourceBuilder;
-import gov.ca.cwds.fixture.ReporterEntityBuilder;
+import gov.ca.cwds.fixture.ReporterResourceBuilder;
 import gov.ca.cwds.fixture.ScreeningToReferralResourceBuilder;
 import gov.ca.cwds.rest.api.domain.LegacyDescriptor;
 import gov.ca.cwds.rest.api.domain.Participant;
@@ -82,7 +82,7 @@ public class ParticipantServiceTest {
 
 
     clientService = mock(ClientService.class);
-    gov.ca.cwds.data.persistence.cms.Client savedEntityClient = new ClientEntityResourceBuilder()
+    gov.ca.cwds.data.persistence.cms.Client savedEntityClient = new ClientEntityBuilder()
         .setId("1234567ABC").build();
     PostedClient savedClient = new PostedClient(savedEntityClient, false);
     when(clientService.createWithSingleTimestamp(any(), any())).thenReturn(savedClient);
@@ -90,7 +90,7 @@ public class ParticipantServiceTest {
     referralClientService = mock(ReferralClientService.class);
 
     //TODO: ReporterEntityBuilder Requires name change, and move rest of code to builder
-    Reporter reporter = new ReporterEntityBuilder()
+    Reporter reporter = new ReporterResourceBuilder()
         .setReferralId("1234567ABC").build();
     gov.ca.cwds.data.persistence.cms.Reporter savedEntityReporter = new gov.ca.cwds.data.persistence
         .cms.Reporter(reporter, "1234567ABC");

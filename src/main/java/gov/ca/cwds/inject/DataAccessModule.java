@@ -25,6 +25,7 @@ import gov.ca.cwds.data.cms.AssignmentDao;
 import gov.ca.cwds.data.cms.AttorneyDao;
 import gov.ca.cwds.data.cms.CaseAssignmentDao;
 import gov.ca.cwds.data.cms.CaseDao;
+import gov.ca.cwds.data.cms.CaseLoadDao;
 import gov.ca.cwds.data.cms.ChildClientDao;
 import gov.ca.cwds.data.cms.ClientCollateralDao;
 import gov.ca.cwds.data.cms.ClientDao;
@@ -73,6 +74,7 @@ import gov.ca.cwds.data.persistence.cms.ApiSystemCodeDao;
 import gov.ca.cwds.data.persistence.cms.Assignment;
 import gov.ca.cwds.data.persistence.cms.BaseAssignment;
 import gov.ca.cwds.data.persistence.cms.CaseAssignment;
+import gov.ca.cwds.data.persistence.cms.CaseLoad;
 import gov.ca.cwds.data.persistence.cms.ChildClient;
 import gov.ca.cwds.data.persistence.cms.ClientAddress;
 import gov.ca.cwds.data.persistence.cms.ClientCollateral;
@@ -180,7 +182,7 @@ public class DataAccessModule extends AbstractModule {
           Tickle.class, ClientRelationship.class, ClientCollateral.class, AddressUc.class,
           ExternalInterface.class, DeliveredServiceEntity.class,
           ContactPartyDeliveredServiceEntity.class, ReferralClientDeliveredServiceEntity.class,
-          IndividualDeliveredServiceEntity.class, LawEnforcement.class),
+          IndividualDeliveredServiceEntity.class, LawEnforcement.class, CaseLoad.class),
 
           new ApiSessionFactoryFactory()) {
 
@@ -270,6 +272,7 @@ public class DataAccessModule extends AbstractModule {
     bind(ReferralClientDeliveredServiceDao.class);
     bind(IndividualDeliveredServiceDao.class);
     bind(LawEnforcementDao.class);
+    bind(CaseLoadDao.class);
 
     // NS:
     bind(AddressDao.class);
