@@ -355,12 +355,13 @@ public class ScreeningToReferralTest {
     Set<ConstraintViolation<ScreeningToReferral>> constraintViolations =
         validator.validate(screeningToReferral);
 
-    // assertEquals(1, constraintViolations.size());
+    assertEquals(1, constraintViolations.size());
     assertEquals("{property} must be a valid logical id code for category GVR_ENTC",
         constraintViolations.iterator().next().getMessage());
 
   }
 
+  @SuppressWarnings("unused")
   private ScreeningToReferral validScreeningToReferral() {
     ScreeningToReferral str = null;
     try {
