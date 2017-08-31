@@ -28,7 +28,7 @@ sourceCompatibility = 1.8
 applicationDefaultJvmArgs = ["-Djava.library.path=.:./lib:/var/lib/jenkins/workspace/API/lib:/usr/local/lib"]
 
 project.ext {
-    apiVersion = 0.28
+    apiVersion = 0.30
     configPath = "$rootProject.projectDir/config/"
     dropwizardVersion = "1.1.0"
     dropwizardFlywayVersion = "1.0.0-1"
@@ -99,7 +99,7 @@ dependencies {
 
 	// Dropwizard-guice 1.0.0.2 conflicts with jersey-client 2.25.
 	// Exclude transitive dependencies.
-	compile ('gov.ca.cwds.api:api-core:3.6.416') {
+	compile ('gov.ca.cwds.api:api-core:3.6.418') {
 	    exclude group: 'org.glassfish.jersey.core'
 	}
 

@@ -74,6 +74,8 @@
 		<mapping class="gov.ca.cwds.data.persistence.cms.ExternalInterface"/>
 		<mapping class="gov.ca.cwds.data.persistence.cms.ClientRelationship"/>
 		<mapping class="gov.ca.cwds.data.persistence.cms.ClientCollateral"/>
+		<mapping class="gov.ca.cwds.data.persistence.cms.CaseLoad"/>
+		<mapping class="gov.ca.cwds.data.persistence.cms.LawEnforcement"/>
 		<mapping class="gov.ca.cwds.data.persistence.contact.DeliveredServiceEntity"/>
 		<mapping class="gov.ca.cwds.data.persistence.contact.ContactPartyDeliveredServiceEntity"/>
 		<mapping class="gov.ca.cwds.data.persistence.contact.ReferralClientDeliveredServiceEntity"/> 

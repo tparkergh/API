@@ -11,8 +11,7 @@ import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
-import gov.ca.cwds.fixture.ClientResourceBuilder;
-import gov.ca.cwds.rest.api.domain.LegacyDescriptor;
+
 import java.io.IOException;
 import java.util.HashSet;
 
@@ -32,7 +31,9 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.squarespace.jersey2.guice.JerseyGuiceUtils;
 
 import gov.ca.cwds.data.CrudsDao;
+import gov.ca.cwds.fixture.ClientResourceBuilder;
 import gov.ca.cwds.rest.api.domain.DomainChef;
+import gov.ca.cwds.rest.api.domain.LegacyDescriptor;
 import gov.ca.cwds.rest.api.domain.Participant;
 import gov.ca.cwds.rest.api.domain.junit.template.DomainTestTemplate;
 import gov.ca.cwds.rest.core.Api;
@@ -70,7 +71,8 @@ public class ClientTest implements DomainTestTemplate {
   private String lastUpdatedId = "0X5";
 
   private String existingClientId = "ABC1234567";
-  private DateTime lastUpdatedTime = DateTimeFormat.forPattern("yyyy-MM-dd'T'HH:mm:ss.SSSZ").parseDateTime("2004-03-31T09:45:58.000-0800");
+  private DateTime lastUpdatedTime = DateTimeFormat.forPattern("yyyy-MM-dd'T'HH:mm:ss.SSSZ")
+      .parseDateTime("2004-03-31T09:45:58.000-0800");
   private Boolean adjudicatedDelinquentIndicator = Boolean.FALSE;
   private String adoptionStatusCode = "A";
   private String alienRegistrationNumber = "";
@@ -163,10 +165,10 @@ public class ClientTest implements DomainTestTemplate {
   @Test
   public void testPersistentConstructor() throws Exception {
 
-    Client domain = new Client(existingClientId,lastUpdatedTime, adjudicatedDelinquentIndicator, adoptionStatusCode,
-        alienRegistrationNumber, birthCity, birthCountryCodeType, birthDate, birthFacilityName,
-        birthStateCodeType, birthplaceVerifiedIndicator, childClientIndicatorVar, clientIndexNumber,
-        commentDescription, commonFirstName, commonMiddleName, commonLastName,
+    Client domain = new Client(existingClientId, lastUpdatedTime, adjudicatedDelinquentIndicator,
+        adoptionStatusCode, alienRegistrationNumber, birthCity, birthCountryCodeType, birthDate,
+        birthFacilityName, birthStateCodeType, birthplaceVerifiedIndicator, childClientIndicatorVar,
+        clientIndexNumber, commentDescription, commonFirstName, commonMiddleName, commonLastName,
         confidentialityActionDate, confidentialityInEffectIndicator, creationDate,
         currCaChildrenServIndicator, currentlyOtherDescription, currentlyRegionalCenterIndicator,
         deathDate, deathDateVerified, deathPlace, deathReasonText, driversLicenseNumber,
@@ -279,10 +281,10 @@ public class ClientTest implements DomainTestTemplate {
 
     Client vc = validClient();
 
-    Client domain = new Client(existingClientId, lastUpdatedTime, adjudicatedDelinquentIndicator, adoptionStatusCode,
-        alienRegistrationNumber, birthCity, birthCountryCodeType, birthDate, birthFacilityName,
-        birthStateCodeType, birthplaceVerifiedIndicator, childClientIndicatorVar, clientIndexNumber,
-        commentDescription, commonFirstName, commonMiddleName, commonLastName,
+    Client domain = new Client(existingClientId, lastUpdatedTime, adjudicatedDelinquentIndicator,
+        adoptionStatusCode, alienRegistrationNumber, birthCity, birthCountryCodeType, birthDate,
+        birthFacilityName, birthStateCodeType, birthplaceVerifiedIndicator, childClientIndicatorVar,
+        clientIndexNumber, commentDescription, commonFirstName, commonMiddleName, commonLastName,
         confidentialityActionDate, confidentialityInEffectIndicator, creationDate,
         currCaChildrenServIndicator, currentlyOtherDescription, currentlyRegionalCenterIndicator,
         deathDate, deathDateVerified, deathPlace, deathReasonText, driversLicenseNumber,
@@ -388,10 +390,10 @@ public class ClientTest implements DomainTestTemplate {
 
   @Test
   public void testCreateWithDefaultCreatesWithValues() {
-    Participant participant = new Participant(1, "sourceTable", "clientId", new LegacyDescriptor(), "firstName",
-        "middleName", "lastName", "jr", "gender", "ssn", "dob", primaryLanguageType,
+    Participant participant = new Participant(1, "sourceTable", "clientId", new LegacyDescriptor(),
+        "firstName", "middleName", "lastName", "jr", "gender", "ssn", "dob", primaryLanguageType,
         secondaryLanguageType, 3, 4, reporterConfidentialWaiver, reporterEmployerName,
-        clientStaffPersonAdded,  new HashSet(), new HashSet());
+        clientStaffPersonAdded, new HashSet(), new HashSet());
     String genderCode = "male";
     String dateStarted = "now";
 
@@ -438,11 +440,10 @@ public class ClientTest implements DomainTestTemplate {
 
   @Test
   public void testCreateWithDefaultCreatesWithDefaultValues() {
-    Participant participant = new Participant(1, "sourceTable", "clientId",  new LegacyDescriptor(),
+    Participant participant = new Participant(1, "sourceTable", "clientId", new LegacyDescriptor(),
         "firstName", "middleName", "lastName", "", "gender", "ssn", "dob", primaryLanguageType,
         secondaryLanguageType, 3, 4, reporterConfidentialWaiver, reporterEmployerName,
-        clientStaffPersonAdded,  new HashSet(),
-        new HashSet());
+        clientStaffPersonAdded, new HashSet(), new HashSet());
     String genderCode = "male";
     String dateStarted = "now";
 
@@ -579,8 +580,7 @@ public class ClientTest implements DomainTestTemplate {
   @Override
   @Test
   public void testEqualsHashCodeWorks() throws Exception {
-    EqualsVerifier.forClass(Client.class)
-        .withIgnoredFields("messages")
+    EqualsVerifier.forClass(Client.class).withIgnoredFields("messages")
         .suppress(Warning.NONFINAL_FIELDS).verify();
 
   }
@@ -599,9 +599,11 @@ public class ClientTest implements DomainTestTemplate {
   @Override
   @Test
   public void testDeserializesFromJSON() throws Exception {
-    lastUpdatedTime = DateTimeFormat.forPattern("yyyy-MM-dd'T'HH:mm:ss.SSSZ").parseDateTime("2004-03-31T09:45:58.000-0800");
+    lastUpdatedTime = DateTimeFormat.forPattern("yyyy-MM-dd'T'HH:mm:ss.SSSZ")
+        .parseDateTime("2004-03-31T09:45:58.000-0800");
     Client validClient = validDomainClient();
-    Client clientFromSnippet = MAPPER.readValue(fixture("fixtures/domain/legacy/Client/valid/valid.json"), Client.class);
+    Client clientFromSnippet =
+        MAPPER.readValue(fixture("fixtures/domain/legacy/Client/valid/valid.json"), Client.class);
 
     assertTrue(clientFromSnippet.equals(validClient));
   }
@@ -1437,18 +1439,14 @@ public class ClientTest implements DomainTestTemplate {
   }
 
   @Test
-  public void failsWhenCommonMiddleNameEmpty() throws Exception {
+  public void successWhenCommonMiddleNameEmpty() throws Exception {
     Client validClient = MAPPER.readValue(
         fixture("fixtures/domain/legacy/Client/valid/commonMiddleNameEmpty.json"), Client.class);
 
     Response response =
         resources.client().target(ROOT_RESOURCE).request().accept(MediaType.APPLICATION_JSON)
             .post(Entity.entity(validClient, MediaType.APPLICATION_JSON));
-    assertThat(response.getStatus(), is(equalTo(422)));
-    assertThat(
-        response.readEntity(String.class).indexOf(
-            "commonMiddleName commonMiddleName size must be between 1 and 20 or assign the value to default Space"),
-        is(greaterThanOrEqualTo(0)));
+    assertThat(response.getStatus(), is(equalTo(204)));
   }
 
   @Test
@@ -1478,14 +1476,13 @@ public class ClientTest implements DomainTestTemplate {
     // System.out.println(response.readEntity(String.class));
     assertThat(response.getStatus(), is(equalTo(422)));
     assertThat(
-        response.readEntity(String.class).indexOf(
-            "commonMiddleName size must be between 1 and 20 or assign the value to default Space"),
+        response.readEntity(String.class).indexOf("commonMiddleName size must be between 0 and 20"),
         is(greaterThanOrEqualTo(0)));
 
   }
 
   @Test
-  public void failWhenCommonMiddleNameNull() throws Exception {
+  public void successWhenCommonMiddleNameNull() throws Exception {
     Client validClient = MAPPER.readValue(
         fixture("fixtures/domain/legacy/Client/invalid/commonMiddleNameNull.json"), Client.class);
 
@@ -1494,14 +1491,12 @@ public class ClientTest implements DomainTestTemplate {
             .post(Entity.entity(validClient, MediaType.APPLICATION_JSON));
 
     // System.out.println(response.readEntity(String.class));
-    assertThat(response.getStatus(), is(equalTo(422)));
-    assertThat(response.readEntity(String.class).indexOf("commonMiddleName may not be null"),
-        is(greaterThanOrEqualTo(0)));
+    assertThat(response.getStatus(), is(equalTo(204)));
 
   }
 
   @Test
-  public void failWhenCommonMiddleNameMissing() throws Exception {
+  public void SuccessWhenCommonMiddleNameMissing() throws Exception {
     Client validClient = MAPPER.readValue(
         fixture("fixtures/domain/legacy/Client/invalid/commonMiddleNameMissing.json"),
         Client.class);
@@ -1511,9 +1506,7 @@ public class ClientTest implements DomainTestTemplate {
             .post(Entity.entity(validClient, MediaType.APPLICATION_JSON));
 
     // System.out.println(response.readEntity(String.class));
-    assertThat(response.getStatus(), is(equalTo(422)));
-    assertThat(response.readEntity(String.class).indexOf("commonMiddleName may not be null"),
-        is(greaterThanOrEqualTo(0)));
+    assertThat(response.getStatus(), is(equalTo(204)));
 
   }
 
@@ -3274,21 +3267,22 @@ public class ClientTest implements DomainTestTemplate {
   }
 
   @Test
-  public void shouldReturnTrueWhenOtherClientHasNotBeenModified(){
-    DateTime lastUpdateTime = DateTimeFormat.forPattern("yyyy-MM-dd'T'HH:mm:ss.sssZ").parseDateTime("2004-03-31T09:45:58.000-0800");
+  public void shouldReturnTrueWhenOtherClientHasNotBeenModified() {
+    DateTime lastUpdateTime = DateTimeFormat.forPattern("yyyy-MM-dd'T'HH:mm:ss.sssZ")
+        .parseDateTime("2004-03-31T09:45:58.000-0800");
 
     Client client1 = new ClientResourceBuilder().setLastUpdateTime(lastUpdateTime).build();
     Client client2 = new ClientResourceBuilder().setLastUpdateTime(lastUpdateTime).build();
-    assertTrue("Expect client 1 to have same last update time ", client1.hasSameLastUpdate(client2));
+    assertTrue("Expect client 1 to have same last update time ",
+        client1.hasSameLastUpdate(client2));
   }
 
   @Test
-  public void shouldConvertNullValuesToDefault0(){
-    Client client = new ClientResourceBuilder()
-        .setPrimaryLanguageType(null)
+  public void shouldConvertNullValuesToDefault0() {
+    Client client = new ClientResourceBuilder().setPrimaryLanguageType(null)
         .setSecondaryLanguageType(null).build();
-    assertEquals(0, (int)client.getPrimaryLanguage());
-    assertEquals(0, (int)client.getSecondaryLanguage());
+    assertEquals(0, (int) client.getPrimaryLanguage());
+    assertEquals(0, (int) client.getSecondaryLanguage());
   }
 
   private Client validClient() throws JsonParseException, JsonMappingException, IOException {
@@ -3299,10 +3293,10 @@ public class ClientTest implements DomainTestTemplate {
 
 
   private Client validDomainClient() {
-    Client domain = new Client(existingClientId, lastUpdatedTime, adjudicatedDelinquentIndicator, adoptionStatusCode,
-        alienRegistrationNumber, birthCity, birthCountryCodeType, birthDate, birthFacilityName,
-        birthStateCodeType, birthplaceVerifiedIndicator, childClientIndicatorVar, clientIndexNumber,
-        commentDescription, commonFirstName, commonMiddleName, commonLastName,
+    Client domain = new Client(existingClientId, lastUpdatedTime, adjudicatedDelinquentIndicator,
+        adoptionStatusCode, alienRegistrationNumber, birthCity, birthCountryCodeType, birthDate,
+        birthFacilityName, birthStateCodeType, birthplaceVerifiedIndicator, childClientIndicatorVar,
+        clientIndexNumber, commentDescription, commonFirstName, commonMiddleName, commonLastName,
         confidentialityActionDate, confidentialityInEffectIndicator, creationDate,
         currCaChildrenServIndicator, currentlyOtherDescription, currentlyRegionalCenterIndicator,
         deathDate, deathDateVerified, deathPlace, deathReasonText, driversLicenseNumber,

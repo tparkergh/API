@@ -11,6 +11,7 @@ import javax.persistence.OneToMany;
 import javax.persistence.PersistenceException;
 import javax.persistence.Table;
 
+import org.apache.commons.lang3.StringUtils;
 import org.hibernate.annotations.NamedQueries;
 import org.hibernate.annotations.NamedQuery;
 
@@ -166,7 +167,7 @@ public final class Client extends BaseClient
     this.clientIndexNumber = clientIndexNumber;
     this.commentDescription = commentDescription;
     this.commonFirstName = commonFirstName;
-    this.commonMiddleName = commonMiddleName == null ? "" : commonMiddleName;
+    this.commonMiddleName = StringUtils.isBlank(commonMiddleName) ? "" : commonMiddleName;
     this.commonLastName = commonLastName;
     this.confidentialityActionDate = confidentialityActionDate;
     this.confidentialityInEffectIndicator = confidentialityInEffectIndicator;
@@ -272,7 +273,7 @@ public final class Client extends BaseClient
       this.commentDescription = client.getCommentDescription();
       this.commonFirstName = client.getCommonFirstName();
       this.commonMiddleName =
-          client.getCommonMiddleName() == null ? "" : client.getCommonMiddleName();
+          StringUtils.isBlank(client.getCommonMiddleName()) ? "" : client.getCommonMiddleName();
       this.commonLastName = client.getCommonLastName();
       this.confidentialityActionDate =
           DomainChef.uncookDateString(client.getConfidentialityActionDate());
@@ -334,7 +335,8 @@ public final class Client extends BaseClient
       this.soc158SealedClientIndicator =
           DomainChef.cookBoolean(client.getSoc158SealedClientIndicator());
       this.socialSecurityNumChangedCode = client.getSocialSecurityNumChangedCode();
-      this.socialSecurityNumber = client.getSocialSecurityNumber();
+      this.socialSecurityNumber = StringUtils.isBlank(client.getSocialSecurityNumber()) ? ""
+          : client.getSocialSecurityNumber();
       this.suffixTitleDescription =
           client.getSuffixTitleDescription() == null ? "" : client.getSuffixTitleDescription();
       this.tribalAncestryClientIndicatorVar =
