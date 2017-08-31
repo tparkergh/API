@@ -392,7 +392,7 @@ public class ScreeningToReferralTest {
     Set<ConstraintViolation<ScreeningToReferral>> constraintViolations =
         validator.validate(screeningToReferral);
 
-    // assertEquals(1, constraintViolations.size());
+    assertEquals(1, constraintViolations.size());
     assertEquals("{property} must be a valid logical id code for category GVR_ENTC",
         constraintViolations.iterator().next().getMessage());
 
@@ -501,6 +501,7 @@ public class ScreeningToReferralTest {
     assertEquals("Expected limited access date value of null to not be an error",
         0, constraintViolations.size());
   }
+
 
   private ScreeningToReferral validScreeningToReferral() {
     ScreeningToReferral str = null;

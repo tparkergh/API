@@ -59,7 +59,7 @@ public class StaffPersonTest {
 
   private final static DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
   private String id = "a";
-  private String endDate = "2016-10-31";
+  private String endDate = "";
   private String firstName = "b";
   private String jobTitle = "c";
   private String lastName = "d";
@@ -97,7 +97,8 @@ public class StaffPersonTest {
     gov.ca.cwds.data.persistence.cms.StaffPerson persistent =
         new gov.ca.cwds.data.persistence.cms.StaffPerson(id, domain, "lastUpdatedId");
 
-    assertThat(domain.getEndDate(), is(equalTo(df.format(persistent.getEndDate()))));
+    assertThat(domain.getEndDate(),
+        is(equalTo(persistent.getEndDate() == null ? "" : df.format(persistent.getEndDate()))));
     assertThat(domain.getFirstName(), is(equalTo(persistent.getFirstName())));
     assertThat(domain.getJobTitle(), is(equalTo(persistent.getJobTitle())));
     assertThat(domain.getLastName(), is(equalTo(persistent.getLastName())));
@@ -167,10 +168,8 @@ public class StaffPersonTest {
 
   @Test
   public void equalsHashCodeWork() {
-    EqualsVerifier.forClass(StaffPerson.class)
-            .suppress(Warning.NONFINAL_FIELDS)
-            .withIgnoredFields("messages")
-            .verify();
+    EqualsVerifier.forClass(StaffPerson.class).suppress(Warning.NONFINAL_FIELDS)
+        .withIgnoredFields("messages").verify();
   }
 
   /*
