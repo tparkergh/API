@@ -73,8 +73,7 @@ public class ScreeningToReferral extends ReportingDomain implements Request {
   @Date
   @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = DATE_FORMAT)
   @JsonProperty("incident_date")
-  @NotEmpty
-  @ApiModelProperty(required = true, readOnly = false, value = "Incident date",
+  @ApiModelProperty(required = false, readOnly = false, value = "Incident date",
       example = "2015-01-13")
   private String incidentDate;
 
@@ -176,24 +175,24 @@ public class ScreeningToReferral extends ReportingDomain implements Request {
   @JsonProperty("limited_access_code")
   @Size(max = 1)
   @OneOf(value = {"R", "S", "N"})
-  @ApiModelProperty(required = false, readOnly = false,
-      value = "limited access code", example = "N")
+  @ApiModelProperty(required = false, readOnly = false, value = "limited access code",
+      example = "N")
   private String limitedAccessCode;
 
   @JsonProperty("limited_access_description")
   @Size(max = 254)
-  @ApiModelProperty(required = false, readOnly = false,
-      value = "limited access description", example = "Some text describing the limited access")
+  @ApiModelProperty(required = false, readOnly = false, value = "limited access description",
+      example = "Some text describing the limited access")
   private String limitedAccessDescription;
 
   @JsonProperty("limited_access_agency")
-  @ApiModelProperty(required = false, readOnly = false,
-      value = "1234", example = "The user county")
-  private short  limitedAccessAgency;
+  @ApiModelProperty(required = false, readOnly = false, value = "1234", example = "The user county")
+  private Short limitedAccessAgency;
 
   @JsonProperty("limited_access_date")
-  @ApiModelProperty(required = false, readOnly = false, value = "yyyy-MM-dd", example = "2000-01-01")
-  @JsonFormat (shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
+  @ApiModelProperty(required = false, readOnly = false, value = "yyyy-MM-dd",
+      example = "2000-01-01")
+  @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
   private java.util.Date limitedAccessDate;
 
   @NotNull
@@ -245,10 +244,6 @@ public class ScreeningToReferral extends ReportingDomain implements Request {
    * @param familyAwareness - familyAwareness
    * @param filedWithLawEnforcement - filedWithLawEnforcement
    * @param responsibleAgency - responsibleAgency
-   * @param limitedAccessCode - limitedAccessCode
-   * @param limitedAccessDescription - limitedAccessDescription
-   * @param limitedAccessAgency - limitedAccessAgency
-   * @param limitedAccessDate - limitedAccessDate
    * @param address - address associated with participants
    * @param participants - participants associcated with this screening
    * @param crossReports - Cross Reort
@@ -260,9 +255,8 @@ public class ScreeningToReferral extends ReportingDomain implements Request {
       Short responseTime, @Date String startedAt, String assignee, String additionalInformation,
       String screeningDecision, String screeningDecisionDetail, int approvalStatus,
       boolean familyAwareness, boolean filedWithLawEnforcement, String responsibleAgency,
-      String limitedAccessCode, String limitedAccessDescription, short limitedAccessAgency,
-      java.util.Date limitedAccessDate, Address address, Set<Participant> participants,
-      Set<CrossReport> crossReports, Set<Allegation> allegations) {
+      Address address, Set<Participant> participants, Set<CrossReport> crossReports,
+      Set<Allegation> allegations) {
     super();
     this.id = id;
     this.referralId = referralId;
@@ -285,10 +279,6 @@ public class ScreeningToReferral extends ReportingDomain implements Request {
     this.familyAwareness = familyAwareness;
     this.filedWithLawEnforcement = filedWithLawEnforcement;
     this.responsibleAgency = responsibleAgency;
-    this.limitedAccessCode = limitedAccessCode;
-    this.limitedAccessDescription = limitedAccessDescription;
-    this.limitedAccessAgency = limitedAccessAgency;
-    this.limitedAccessDate = limitedAccessDate;
     this.address = address;
     this.participants = participants;
     this.crossReports = crossReports;
@@ -459,7 +449,7 @@ public class ScreeningToReferral extends ReportingDomain implements Request {
   /**
    * @return limitedAccessAgency limited Access Agency
    */
-  public short getLimitedAccessAgency() {
+  public Short getLimitedAccessAgency() {
     return limitedAccessAgency;
   }
 
