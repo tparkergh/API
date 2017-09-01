@@ -42,7 +42,7 @@ public class PostedScreeningToReferral extends ScreeningToReferral implements Re
    * @param communicationMethod - communication method
    * @param name - name
    * @param reportNarrative - report narrative
-   * @param reference - referrence
+   * @param reference - reference
    * @param responseTime - response time frame
    * @param startedAt - started at
    * @param assignee - assigned to county worker
@@ -53,10 +53,10 @@ public class PostedScreeningToReferral extends ScreeningToReferral implements Re
    * @param familyAwareness - familyAwareness
    * @param filedWithLawEnforcement - filedWithLawEnforcement
    * @param responsibleAgency - responsibleAgency
-   * @param limitedAccessCode - limitedAccessCode
-   * @param limitedAccessDescription - limitedAccessDescription
-   * @param limitedAccessAgency - limitedAccessAgency
-   * @param limitedAccessDate - limitedAccessDate
+   * @param limitedAccessCode - sealed/sensitive
+   * @param limitedAccessDescription - description of sensitivity
+   * @param limitedAccessAgency - agency that set sensitivity
+   * @param limitedAccessDate - date that sensitivity was set
    * @param address - address of referral
    * @param participants - participants of the referral
    * @param crossReports - cross reports
