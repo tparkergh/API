@@ -163,5 +163,9 @@ public interface Api {
    */
   public static final String RESOURCE_DELIVERY_SERVICE = "contacts";
 
+  /**
+   * A {@code String} constant representing {@value #RESOURCE_INVESTIGATIONS} API.
+   */
+  public static final String RESOURCE_INVESTIGATIONS = "investigations";
 
 }
