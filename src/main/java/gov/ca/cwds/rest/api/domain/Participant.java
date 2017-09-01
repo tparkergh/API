@@ -36,7 +36,7 @@ import io.swagger.annotations.ApiModelProperty;
 public class Participant extends ReportingDomain implements Request, Response {
 
   /**
-   * Serialization version
+   * Serialization version.
    */
   private static final long serialVersionUID = 1L;
 
@@ -332,12 +332,16 @@ public class Participant extends ReportingDomain implements Request, Response {
     return middleName;
   }
 
-  /** * @return the lastName */
+  /**
+   * @return the lastName
+   */
   public String getLastName() {
     return lastName;
   }
 
-  /** * @return the name suffix */
+  /**
+   * @return the name suffix
+   */
   public String getNameSuffix() {
     return nameSuffix;
   }
@@ -391,8 +395,6 @@ public class Participant extends ReportingDomain implements Request, Response {
     return secondaryLanguage;
   }
 
-
-
   /**
    * @return the reporterConfidentialWaiver
    */
@@ -420,7 +422,6 @@ public class Participant extends ReportingDomain implements Request, Response {
   public Set<Address> getAddresses() {
     return addresses;
   }
-
 
   /**
    * @param addresses - domain addresses

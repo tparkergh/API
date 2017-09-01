@@ -6,16 +6,18 @@ import gov.ca.cwds.rest.api.Response;
 import io.dropwizard.jackson.JsonSnakeCase;
 
 /**
- * {@link Response} adding an id to the {@link Address}
+ * {@link Response} adding an id to the {@link Address}.
  * 
  * @author CWDS API Team
  */
 @JsonSnakeCase
 public class PostedAddress extends Address {
+
   /**
    * Serialization version
    */
   private static final long serialVersionUID = 1L;
+
   @JsonProperty("id")
   private long id;
 
