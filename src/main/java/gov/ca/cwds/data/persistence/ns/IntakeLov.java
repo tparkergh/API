@@ -13,8 +13,8 @@ import gov.ca.cwds.data.ns.NsPersistentObject;
  */
 @SuppressWarnings("serial")
 @Entity
-@Table(name = "intake_codes")
-public class IntakeLovCode extends NsPersistentObject {
+@Table(name = "intake_raw_codes")
+public class IntakeLov extends NsPersistentObject {
 
   @Column(name = "LG_SYS_ID")
   private Long legacySystemCodeId;
@@ -54,7 +54,7 @@ public class IntakeLovCode extends NsPersistentObject {
    * 
    * Required for Hibernate
    */
-  public IntakeLovCode() {
+  public IntakeLov() {
     super();
   }
 
@@ -63,7 +63,7 @@ public class IntakeLovCode extends NsPersistentObject {
    * 
    * @param reference The reference
    */
-  public IntakeLovCode(String reference) {
+  public IntakeLov(String reference) {
     this.legacyMeta = reference;
   }
 
@@ -81,7 +81,7 @@ public class IntakeLovCode extends NsPersistentObject {
    * @param intakeCode Intake LOV code
    * @param intakeDisplay Intake display string
    */
-  public IntakeLovCode(String legacyMeta, String legacyShortDescription, String legacyLogicalId,
+  public IntakeLov(String legacyMeta, String legacyShortDescription, String legacyLogicalId,
       String legacyInactive, String legacyCategoryId, String legacyOtherCode,
       String legacyLongDescription, String intakeType, String intakeCode, String intakeDisplay) {
     super();

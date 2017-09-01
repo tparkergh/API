@@ -5,7 +5,7 @@ import org.hibernate.SessionFactory;
 import com.google.inject.Inject;
 
 import gov.ca.cwds.data.CrudsDaoImpl;
-import gov.ca.cwds.data.persistence.ns.IntakeLovCode;
+import gov.ca.cwds.data.persistence.ns.IntakeLov;
 import gov.ca.cwds.inject.NsSessionFactory;
 
 /**
@@ -13,7 +13,7 @@ import gov.ca.cwds.inject.NsSessionFactory;
  * 
  * @author CWDS API Team
  */
-public class IntakeLovCodeDao extends CrudsDaoImpl<IntakeLovCode> {
+public class IntakeLovDao extends CrudsDaoImpl<IntakeLov> {
 
   /**
    * Constructor.
@@ -21,7 +21,7 @@ public class IntakeLovCodeDao extends CrudsDaoImpl<IntakeLovCode> {
    * @param sessionFactory The session factory
    */
   @Inject
-  public IntakeLovCodeDao(@NsSessionFactory SessionFactory sessionFactory) {
+  public IntakeLovDao(@NsSessionFactory SessionFactory sessionFactory) {
     super(sessionFactory);
   }
 
