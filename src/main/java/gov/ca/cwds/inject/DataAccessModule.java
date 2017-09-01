@@ -56,7 +56,7 @@ import gov.ca.cwds.data.dao.contact.ReferralClientDeliveredServiceDao;
 import gov.ca.cwds.data.es.ElasticsearchDao;
 import gov.ca.cwds.data.ns.AddressDao;
 import gov.ca.cwds.data.ns.EthnicityDao;
-import gov.ca.cwds.data.ns.IntakeLovCodeDao;
+import gov.ca.cwds.data.ns.IntakeLovDao;
 import gov.ca.cwds.data.ns.LanguageDao;
 import gov.ca.cwds.data.ns.ParticipantDao;
 import gov.ca.cwds.data.ns.PersonAddressDao;
@@ -289,7 +289,7 @@ public class DataAccessModule extends AbstractModule {
     bind(EthnicityDao.class);
     bind(PersonRaceDao.class);
     bind(RaceDao.class);
-    bind(IntakeLovCodeDao.class);
+    bind(IntakeLovDao.class);
 
     // Trigger Tables:
     bind(CountyOwnershipDao.class);

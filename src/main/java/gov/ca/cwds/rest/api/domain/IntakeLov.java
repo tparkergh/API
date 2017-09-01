@@ -18,8 +18,8 @@ import io.swagger.annotations.ApiModelProperty;
  * @author CWDS API Team
  */
 @JsonSnakeCase
-@ApiModel("nsIntakeLovCode")
-public class IntakeLovCode implements Request, Response {
+@ApiModel("nsIntakeLov")
+public class IntakeLov implements Request, Response {
 
   /**
    * Default serialization.
@@ -96,7 +96,7 @@ public class IntakeLovCode implements Request, Response {
    * @param intakeDisplay Intake display
    */
   @JsonCreator
-  public IntakeLovCode(@JsonProperty("legacySystemCodeId") String legacySystemCodeId,
+  public IntakeLov(@JsonProperty("legacySystemCodeId") String legacySystemCodeId,
       @JsonProperty("legacyMeta") String legacyMeta,
       @JsonProperty("legacyShortDescription") String legacyShortDescription,
       @JsonProperty("legacyLogicalId") String legacyLogicalId,
@@ -125,7 +125,7 @@ public class IntakeLovCode implements Request, Response {
    * 
    * @param lov persistence Intake LOV record
    */
-  public IntakeLovCode(gov.ca.cwds.data.persistence.ns.IntakeLovCode lov) {
+  public IntakeLov(gov.ca.cwds.data.persistence.ns.IntakeLov lov) {
     this.legacySystemCodeId = lov.getLegacySystemCodeId();
     this.legacyMeta = lov.getLegacyMeta();
     this.legacyShortDescription = lov.getLegacyShortDescription();
