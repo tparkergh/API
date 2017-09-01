@@ -56,6 +56,7 @@ import gov.ca.cwds.data.dao.contact.ReferralClientDeliveredServiceDao;
 import gov.ca.cwds.data.es.ElasticsearchDao;
 import gov.ca.cwds.data.ns.AddressDao;
 import gov.ca.cwds.data.ns.EthnicityDao;
+import gov.ca.cwds.data.ns.IntakeLovCodeDao;
 import gov.ca.cwds.data.ns.LanguageDao;
 import gov.ca.cwds.data.ns.ParticipantDao;
 import gov.ca.cwds.data.ns.PersonAddressDao;
@@ -288,8 +289,9 @@ public class DataAccessModule extends AbstractModule {
     bind(EthnicityDao.class);
     bind(PersonRaceDao.class);
     bind(RaceDao.class);
+    bind(IntakeLovCodeDao.class);
 
-    // Trigger Tables
+    // Trigger Tables:
     bind(CountyOwnershipDao.class);
     bind(CountyTriggerDao.class);
     bind(NonLACountyTriggers.class);
@@ -297,16 +299,16 @@ public class DataAccessModule extends AbstractModule {
     bind(TriggerTablesDao.class);
     bind(CountyTriggerEmbeddable.class);
 
-    // Downstream Tables
+    // Downstream Tables:
     bind(Reminders.class);
 
     // Miscellaneous:
     bind(SmartyStreetsDao.class);
 
-    // System code loader DAO.
+    // System code loader DAO:
     bind(ApiSystemCodeDao.class).to(SystemCodeDaoFileImpl.class);
 
-    // Referential integrity.
+    // Referential integrity:
     bind(RIClientCollateral.class);
     bind(RIChildClient.class);
     bind(RIAllegationPerpetratorHistory.class);

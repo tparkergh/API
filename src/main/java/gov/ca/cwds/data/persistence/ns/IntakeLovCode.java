@@ -17,7 +17,7 @@ import gov.ca.cwds.data.ns.NsPersistentObject;
 public class IntakeLovCode extends NsPersistentObject {
 
   @Column(name = "LG_SYS_ID")
-  private Long id;
+  private Long legacySystemCodeId;
 
   @Column(name = "LG_META")
   private String legacyMeta;
@@ -68,33 +68,33 @@ public class IntakeLovCode extends NsPersistentObject {
   }
 
   /**
-   * Constructor
+   * Constructor.
    * 
-   * @param reference The reference
-   * @param endedAt The endedAt date
-   * @param incidentCounty The incident county
-   * @param incidentDate The incident date
-   * @param locationType The location type
-   * @param communicationMethod The communication method
-   * @param name The name of the screening
-   * @param responseTime The response time
-   * @param screeningDecision The screening decision
-   * @param startedAt The started at date
+   * @param legacyMeta legacy "meta" category
+   * @param legacyShortDescription legacy short description
+   * @param legacyLogicalId legacy logical id
+   * @param legacyInactive legacy inactive flag
+   * @param legacyCategoryId legacy category id
+   * @param legacyOtherCode legacy other code
+   * @param legacyLongDescription legacy long description
+   * @param intakeType Intake type category
+   * @param intakeCode Intake LOV code
+   * @param intakeDisplay Intake display string
    */
-  public IntakeLovCode(String reference, String endedAt, String incidentCounty, String incidentDate,
-      String locationType, String communicationMethod, String name, String responseTime,
-      String screeningDecision, String startedAt) {
+  public IntakeLovCode(String legacyMeta, String legacyShortDescription, String legacyLogicalId,
+      String legacyInactive, String legacyCategoryId, String legacyOtherCode,
+      String legacyLongDescription, String intakeType, String intakeCode, String intakeDisplay) {
     super();
-    this.legacyMeta = reference;
-    this.legacyShortDescription = endedAt;
-    this.legacyLogicalId = incidentCounty;
-    this.legacyInactive = incidentDate;
-    this.legacyCategoryId = locationType;
-    this.legacyOtherCode = communicationMethod;
-    this.legacyLongDescription = name;
-    this.intakeType = responseTime;
-    this.intakeCode = screeningDecision;
-    this.intakeDisplay = startedAt;
+    this.legacyMeta = legacyMeta;
+    this.legacyShortDescription = legacyShortDescription;
+    this.legacyLogicalId = legacyLogicalId;
+    this.legacyInactive = legacyInactive;
+    this.legacyCategoryId = legacyCategoryId;
+    this.legacyOtherCode = legacyOtherCode;
+    this.legacyLongDescription = legacyLongDescription;
+    this.intakeType = intakeType;
+    this.intakeCode = intakeCode;
+    this.intakeDisplay = intakeDisplay;
   }
 
   /**
@@ -104,14 +104,7 @@ public class IntakeLovCode extends NsPersistentObject {
    */
   @Override
   public Long getPrimaryKey() {
-    return getId();
-  }
-
-  /**
-   * @return the id
-   */
-  public Long getId() {
-    return id;
+    return getLegacySystemCodeId();
   }
 
   public String getLegacyMeta() {
@@ -194,8 +187,12 @@ public class IntakeLovCode extends NsPersistentObject {
     this.intakeDisplay = intakeDisplay;
   }
 
-  public void setId(Long id) {
-    this.id = id;
+  public Long getLegacySystemCodeId() {
+    return legacySystemCodeId;
+  }
+
+  public void setLegacySystemCodeId(Long legacySystemCodeId) {
+    this.legacySystemCodeId = legacySystemCodeId;
   }
 
 }
