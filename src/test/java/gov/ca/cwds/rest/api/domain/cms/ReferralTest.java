@@ -235,7 +235,7 @@ public class ReferralTest {
   }
 
   @Test
-  public void testCreateWithDefaultsSetsValues() {
+  public void shouldSetValuesWhenPassedIntoConstructor() {
     boolean anonReporter = true;
     Short communicationsMethodCode = 44;
     String drmsAllegationDescriptionDoc = "ABC1234569";
@@ -251,6 +251,10 @@ public class ReferralTest {
     String countyCode = "sacramento";
     Short approvalCode = 4;
     String staffId = "098";
+    String limitedAccessCode = "N";
+    Short limitedAccessGovtAgencyType = 123;
+    String limitedAccessDate = "2019-10-20";
+    String limitedAccessDesc = "Some description";
     boolean filedCrossReport = true;
 
 
@@ -259,7 +263,8 @@ public class ReferralTest {
         familyAwarenessIndicator, govtEntityType, referalName,
         dateStarted, timeStarted, referralResponseTypeCode, allegesAbuseOccurredAtAddressId,
         firstResponseDeterminedByStaffPersonId, longTextId, countyCode, approvalCode, staffId,
-        longTextId, responsibleAgencyCode);
+        longTextId, responsibleAgencyCode, limitedAccessCode, limitedAccessDesc,
+        limitedAccessDate, limitedAccessGovtAgencyType);
     assertEquals("Expected anonReporter field to have presetValues", anonReporter,
         referral.getAnonymousReporterIndicator());
     assertEquals("Expected communicationsMethodCode field to have presetValues",
@@ -297,10 +302,18 @@ public class ReferralTest {
         referral.getApprovalStatusType());
     assertEquals("Expected staffId field to have presetValues", staffId,
         referral.getPrimaryContactStaffPersonId());
+    assertEquals("Expected limitedAccessCode field to have presetValues", limitedAccessCode,
+        referral.getLimitedAccessCode());
+    assertEquals("Expected limitedAccessGovtAgencyType field to have presetValues",
+        limitedAccessGovtAgencyType, referral.getLimitedAccessGovtAgencyType());
+    assertEquals("Expected limitedAccessDate field to have presetValues", limitedAccessDate,
+        referral.getLimitedAccessDate());
+    assertEquals("Expected limitedAccessDesc field to have presetValues", limitedAccessDesc,
+        referral.getLimitedAccessDesc());
   }
 
   @Test
-  public void testCreateWithDefaultsSetsDefaultsValues() {
+  public void shouldUseDefaultValuesForFieldsNotPassedToConstructor() {
     boolean anonReporter = true;
     short communicationsMethodCode = 44;
     String drmsAllegationDescriptionDoc = "ABC1234569";
@@ -327,7 +340,6 @@ public class ReferralTest {
     Short govtEntityType = 0;
     String legalDefinitionCode = "N";
     Boolean legalRightsNoticeIndicator = false;
-    String limitedAccessCode = "N";
     String madatedCrossReportReceivedDate = "";
     String openAdequateCaseCode = "";
     Short referredToResourceType = 0;
@@ -344,9 +356,6 @@ public class ReferralTest {
     Boolean familyRefusedServicesIndicator = false;
     String firstEvaluatedOutApprovalDate = "";
     String responsibleAgencyCode = "C";
-    Short limitedAccessGovtAgencyType = 0;
-    String limitedAccessDate = "";
-    String limitedAccessDesc = "";
     String originalClosureDate = "";
     Set<gov.ca.cwds.rest.api.domain.cms.Address> address = null;
     Set<Reporter> reporter = null;
@@ -360,7 +369,7 @@ public class ReferralTest {
         filedCrossReport, familyAwarenessIndicator, govtEntityType, referalName,
         dateStarted, timeStarted, referralResponseTypeCode, allegesAbuseOccurredAtAddressId,
         firstResponseDeterminedByStaffPersonId, longTextId, countyCode, approvalCode, staffId,
-        responseRationaleText, responsibleAgencyCode);
+        responseRationaleText, responsibleAgencyCode, "N","", null, (short)0);
     assertEquals("Expected additionalInfoIncludedCode field to have presetValues",
         additionalInfoIncludedCode, referral.getAdditionalInfoIncludedCode());
     assertEquals("Expected applicationForPetitionIndicator field to have presetValues",
@@ -387,8 +396,6 @@ public class ReferralTest {
         referral.getLegalDefinitionCode());
     assertEquals("Expected legalRightsNoticeIndicator field to have presetValues",
         legalRightsNoticeIndicator, referral.getLegalRightsNoticeIndicator());
-    assertEquals("Expected limitedAccessCode field to have presetValues", limitedAccessCode,
-        referral.getLimitedAccessCode());
     assertEquals("Expected mandatedCrossReportReceivedDate field to have presetValues",
         madatedCrossReportReceivedDate, referral.getMandatedCrossReportReceivedDate());
     assertEquals("Expected openAdequateCaseCode field to have presetValues", openAdequateCaseCode,
@@ -426,12 +433,6 @@ public class ReferralTest {
         firstEvaluatedOutApprovalDate, referral.getFirstEvaluatedOutApprovalDate());
     assertEquals("Expected responsibleAgencyCode field to have presetValues", responsibleAgencyCode,
         referral.getResponsibleAgencyCode());
-    assertEquals("Expected limitedAccessGovtAgencyType field to have presetValues",
-        limitedAccessGovtAgencyType, referral.getLimitedAccessGovtAgencyType());
-    assertEquals("Expected limitedAccessDate field to have presetValues", limitedAccessDate,
-        referral.getLimitedAccessDate());
-    assertEquals("Expected limitedAccessDesc field to have presetValues", limitedAccessDesc,
-        referral.getLimitedAccessDesc());
     assertEquals("Expected originalClosureDate field to have presetValues", originalClosureDate,
         referral.getOriginalClosureDate());
     assertEquals("Expected address field to have presetValues", address, referral.getAddress());
@@ -444,6 +445,19 @@ public class ReferralTest {
         referral.getVictimClient());
     assertEquals("Expected perpetratorClient field to have presetValues", perpetratorClient,
         referral.getPerpetratorClient());
+  }
+
+  @Test
+  public void shouldSetLimitedAccessCodeToNWhenNull(){
+    String limitedAccessCode = null;
+
+    Referral referral = Referral.createWithDefaults(null, (short)0,
+        drmsAllegationDescriptionDoc, drmsErReferralDoc, drmsInvestigationDoc,
+        filedCrossReport, familyAwarenessIndicator, govtEntityType, "name", "", "",
+        (short)0, "", firstResponseDeterminedByStaffPersonId, "", "", (short)0, "",
+        responseRationaleText, responsibleAgencyCode, limitedAccessCode,"", null, (short)0);
+
+    assertThat(referral.getLimitedAccessCode(), is(equalTo("N")));
   }
 
   @Test
@@ -1223,35 +1237,6 @@ public class ReferralTest {
     assertThat(response.getStatus(), is(equalTo(422)));
     assertThat(
         response.readEntity(String.class).indexOf("legalRightsNoticeIndicator may not be null"),
-        is(greaterThanOrEqualTo(0)));
-  }
-
-  /*
-   * limitedAccessCode Tests
-   */
-  @Test
-  public void failsWhenLimitedAccessCodeMissing() throws Exception {
-    Referral toCreate = MAPPER.readValue(
-        fixture("fixtures/domain/legacy/Referral/invalid/limitedAccessCodeMissing.json"),
-        Referral.class);
-    Response response =
-        resources.client().target(ROOT_RESOURCE).request().accept(MediaType.APPLICATION_JSON)
-            .post(Entity.entity(toCreate, MediaType.APPLICATION_JSON));
-    assertThat(response.getStatus(), is(equalTo(422)));
-    assertThat(response.readEntity(String.class).indexOf("limitedAccessCode may not be empty"),
-        is(greaterThanOrEqualTo(0)));
-  }
-
-  @Test
-  public void failsWhenLimitedAccessCodeNull() throws Exception {
-    Referral toCreate = MAPPER.readValue(
-        fixture("fixtures/domain/legacy/Referral/invalid/limitedAccessCodeNull.json"),
-        Referral.class);
-    Response response =
-        resources.client().target(ROOT_RESOURCE).request().accept(MediaType.APPLICATION_JSON)
-            .post(Entity.entity(toCreate, MediaType.APPLICATION_JSON));
-    assertThat(response.getStatus(), is(equalTo(422)));
-    assertThat(response.readEntity(String.class).indexOf("limitedAccessCode may not be empty"),
         is(greaterThanOrEqualTo(0)));
   }
 

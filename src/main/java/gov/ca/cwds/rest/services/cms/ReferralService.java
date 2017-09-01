@@ -1,5 +1,6 @@
 package gov.ca.cwds.rest.services.cms;
 
+import gov.ca.cwds.rest.api.domain.DomainChef;
 import java.util.Date;
 import java.util.Set;
 
@@ -275,6 +276,8 @@ public class ReferralService implements
     createReferralAddress(screeningToReferral, timestamp, messageBuilder);
     String allegesAbuseOccurredAtAddressId = screeningToReferral.getAddress().getLegacyId();
 
+    String limitedAccessDate = DomainChef.cookDate(screeningToReferral.getLimitedAccessDate());
+
     int govEnt =
         convertLogicalIdToSystemCodeFor(screeningToReferral.getIncidentCounty(), "GVR_ENTC");
     return gov.ca.cwds.rest.api.domain.cms.Referral.createWithDefaults(
@@ -286,7 +289,9 @@ public class ReferralService implements
         firstResponseDeterminedByStaffPersonId(), longTextId,
         screeningToReferral.getIncidentCounty(), (short) screeningToReferral.getApprovalStatus(),
         LegacyDefaultValues.DEFAULT_STAFF_PERSON_ID, responseRationalLongTextId,
-        screeningToReferral.getResponsibleAgency());
+        screeningToReferral.getResponsibleAgency(), screeningToReferral.getLimitedAccessCode(),
+        screeningToReferral.getLimitedAccessDescription(), limitedAccessDate
+        ,screeningToReferral.getLimitedAccessAgency());
   }
 
   private int convertLogicalIdToSystemCodeFor(String logicalCode, String governmentEntityCode) {
