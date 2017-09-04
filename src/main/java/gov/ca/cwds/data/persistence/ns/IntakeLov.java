@@ -2,12 +2,14 @@ package gov.ca.cwds.data.persistence.ns;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.Id;
 import javax.persistence.Table;
 
 import org.hibernate.annotations.NamedQueries;
 import org.hibernate.annotations.NamedQuery;
 
 import gov.ca.cwds.data.ns.NsPersistentObject;
+import gov.ca.cwds.data.persistence.PersistentObject;
 
 /**
  * {@link NsPersistentObject} representing a Person.
@@ -19,8 +21,9 @@ import gov.ca.cwds.data.ns.NsPersistentObject;
     query = "FROM IntakeLov")})
 @Entity
 @Table(name = "intake_raw_codes")
-public class IntakeLov extends NsPersistentObject {
+public class IntakeLov implements PersistentObject {
 
+  @Id
   @Column(name = "LG_SYS_ID")
   private Long legacySystemCodeId;
 
@@ -45,9 +48,11 @@ public class IntakeLov extends NsPersistentObject {
   @Column(name = "LG_LNG_DSC")
   private String legacyLongDescription;
 
+  @Id
   @Column(name = "INTAKE_TYPE")
   private String intakeType;
 
+  @Id
   @Column(name = "INTAKE_CODE")
   private String intakeCode;
 
