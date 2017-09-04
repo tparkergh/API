@@ -115,6 +115,7 @@ import gov.ca.cwds.data.persistence.contact.IndividualDeliveredServiceEntity;
 import gov.ca.cwds.data.persistence.contact.ReferralClientDeliveredServiceEntity;
 import gov.ca.cwds.data.persistence.ns.Address;
 import gov.ca.cwds.data.persistence.ns.Ethnicity;
+import gov.ca.cwds.data.persistence.ns.IntakeLov;
 import gov.ca.cwds.data.persistence.ns.Language;
 import gov.ca.cwds.data.persistence.ns.Participant;
 import gov.ca.cwds.data.persistence.ns.Person;
@@ -203,7 +204,7 @@ public class DataAccessModule extends AbstractModule {
           Participant.class, PersonAddressId.class, PersonAddress.class, PersonPhoneId.class,
           PhoneNumber.class, PersonPhone.class, PersonLanguageId.class, Language.class,
           PersonLanguage.class, PersonEthnicityId.class, PersonEthnicity.class, Ethnicity.class,
-          PersonRaceId.class, PersonRace.class, Race.class) {
+          PersonRaceId.class, PersonRace.class, Race.class, IntakeLov.class) {
         @Override
         public DataSourceFactory getDataSourceFactory(ApiConfiguration configuration) {
           return configuration.getNsDataSourceFactory();
