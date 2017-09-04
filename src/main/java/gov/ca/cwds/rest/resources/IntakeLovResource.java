@@ -2,13 +2,10 @@ package gov.ca.cwds.rest.resources;
 
 import static gov.ca.cwds.rest.core.Api.RESOURCE_INTAKE_LOV;
 
-import javax.validation.Valid;
-import javax.validation.constraints.NotNull;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
-import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
@@ -18,16 +15,15 @@ import org.slf4j.LoggerFactory;
 
 import com.google.inject.Inject;
 
-import gov.ca.cwds.inject.IntakePersonAutoCompleteServiceResource;
+import gov.ca.cwds.inject.IntakeLovServiceResource;
 import gov.ca.cwds.rest.api.ApiException;
 import gov.ca.cwds.rest.api.domain.IntakeLov;
 import gov.ca.cwds.rest.api.domain.IntakeLovResponse;
-import gov.ca.cwds.rest.api.domain.es.AutoCompletePersonRequest;
 import gov.ca.cwds.rest.api.domain.es.ESPersons;
 import gov.ca.cwds.rest.services.IntakeLovService;
+import io.dropwizard.hibernate.UnitOfWork;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
-import io.swagger.annotations.ApiParam;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 
@@ -96,34 +92,31 @@ public class IntakeLovResource {
    */
   @Inject
   public IntakeLovResource(
-      @IntakePersonAutoCompleteServiceResource SimpleResourceDelegate<String, IntakeLov, IntakeLovResponse, IntakeLovService> resourceDelegate) {
+      @IntakeLovServiceResource SimpleResourceDelegate<String, IntakeLov, IntakeLovResponse, IntakeLovService> resourceDelegate) {
     this.resourceDelegate = resourceDelegate;
   }
 
   /**
-   * Endpoint for Intake Auto-complete Person Search.
+   * Endpoint for Intake LOV.
    * 
-   * @param req JSON {@link AutoCompletePersonRequest}
    * @return web service response
    */
+  @UnitOfWork(value = "ns")
   @GET
-  @Path("/")
+  @Path("/all")
   @ApiResponses(value = {@ApiResponse(code = 401, message = "Not Authorized"),
       @ApiResponse(code = 404, message = "Not found"),
-      @ApiResponse(code = 400, message = "Unable to parse parameters")
-      // @ApiResponse(code = 406, message = "Accept Header not supported")
-  })
+      @ApiResponse(code = 400, message = "Unable to parse parameters")})
   @ApiOperation(value = "Query ElasticSearch Persons on given search terms",
       code = HttpStatus.SC_OK, response = IntakeLov[].class)
   @Consumes(value = MediaType.TEXT_PLAIN)
-  public Response searchPerson(@Valid @NotNull @QueryParam("search_term") @ApiParam(hidden = false,
-      required = true, example = "john") IntakeLov req) {
+  public Response getAll() {
     Response ret;
     try {
-      ret = resourceDelegate.handle(req);
+      ret = resourceDelegate.handle(new IntakeLov());
     } catch (Exception e) {
-      LOGGER.error("Intake Person AutoComplete ERROR: {}", e.getMessage(), e);
-      throw new ApiException("Intake Person AutoComplete ERROR. " + e.getMessage(), e);
+      LOGGER.error("Intake LOV ERROR: {}", e.getMessage(), e);
+      throw new ApiException("Intake LOV ERROR. " + e.getMessage(), e);
     }
 
     return ret;
