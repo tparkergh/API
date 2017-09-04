@@ -117,6 +117,9 @@ public class IntakeLov implements Request, Response, ApiMarker {
   public IntakeLov(gov.ca.cwds.data.persistence.ns.IntakeLov lov) {
     this.legacySystemCodeId = lov.getLegacySystemCodeId();
     this.legacyMeta = lov.getLegacyMeta();
+    this.intakeCode = lov.getIntakeCode();
+    this.intakeType = lov.getIntakeType();
+    this.intakeValue = lov.getIntakeDisplay();
   }
 
   public Long getLegacySystemCodeId() {
