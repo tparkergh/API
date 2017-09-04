@@ -7,13 +7,17 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 import gov.ca.cwds.rest.api.Request;
 import gov.ca.cwds.rest.api.Response;
-import gov.ca.cwds.rest.validation.ValidSystemCodeId;
 import io.dropwizard.jackson.JsonSnakeCase;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 
 /**
  * {@link DomainObject} representing an Intake LOV code entry.
+ * 
+ * <p>
+ * Catch: the choice to send either logical id or system code id depends on the given REST API. It's
+ * not an inherent property of an LOV entry.
+ * </p>
  * 
  * @author CWDS API Team
  */
@@ -26,59 +30,44 @@ public class IntakeLov implements Request, Response {
    */
   private static final long serialVersionUID = 1L;
 
-  @ApiModelProperty(value = "State Code", example = "1828")
-  @ValidSystemCodeId(required = true, category = SystemCodeCategoryId.STATE_CODE)
+  @ApiModelProperty(value = "Legacy system code ID", example = "1828")
   private Long legacySystemCodeId;
 
   @JsonProperty("legacy_meta")
-  @ApiModelProperty(example = "742 Evergreen Terrace")
+  @ApiModelProperty(example = "ACTV_RNC")
   @Size(max = 50)
   private String legacyMeta;
 
-  @JsonProperty("legacy_short_description")
-  @ApiModelProperty(example = "742 Evergreen Terrace")
-  @Size(max = 50)
-  private String legacyShortDescription;
-
-  @JsonProperty("legacy_logical_id")
-  @ApiModelProperty(example = "742 Evergreen Terrace")
-  @Size(max = 50)
-  private String legacyLogicalId;
-
-  @JsonProperty("legacy_inactive")
-  @ApiModelProperty(example = "742 Evergreen Terrace")
-  @Size(max = 50)
-  private String legacyInactive;
-
-  @JsonProperty("legacy_category_id")
-  @ApiModelProperty(example = "742 Evergreen Terrace")
-  @Size(max = 50)
-  private String legacyCategoryId;
-
-  @JsonProperty("legacy_other_code")
-  @ApiModelProperty(example = "742 Evergreen Terrace")
-  @Size(max = 50)
-  private String legacyOtherCode;
-
-  @JsonProperty("legacy_long_description")
-  @ApiModelProperty(example = "742 Evergreen Terrace")
-  @Size(max = 50)
-  private String legacyLongDescription;
-
-  @JsonProperty("intake_type")
-  @ApiModelProperty(example = "742 Evergreen Terrace")
-  @Size(max = 50)
-  private String intakeType;
-
+  /**
+   * code: whatever code/id we should pass back to the system
+   */
   @JsonProperty("intake_code")
-  @ApiModelProperty(example = "742 Evergreen Terrace")
+  @ApiModelProperty(example = "2167")
   @Size(max = 50)
   private String intakeCode;
 
-  @JsonProperty("intake_display")
-  @ApiModelProperty(example = "742 Evergreen Terrace")
+  /**
+   * value: the string to display to the user
+   */
+  @JsonProperty("intake_value")
+  @ApiModelProperty(example = "2167")
   @Size(max = 50)
-  private String intakeDisplay;
+  private String intakeValue;
+
+  /**
+   * type: the group this LOV belongs to (ie, states, counties, allegation_types)
+   */
+  @JsonProperty("intake_type")
+  @ApiModelProperty(example = "SAFETY_ALERTS")
+  @Size(max = 50)
+  private String intakeType;
+
+  /**
+   * sort_order: index position of sort order for this LOV object
+   */
+  @JsonProperty("sort_order")
+  @ApiModelProperty(example = "2")
+  private int sortOrder;
 
   /**
    * Constructor
@@ -109,15 +98,6 @@ public class IntakeLov implements Request, Response {
     super();
     this.legacySystemCodeId = Long.parseLong(legacySystemCodeId);
     this.legacyMeta = legacyMeta;
-    this.legacyShortDescription = legacyShortDescription;
-    this.legacyLogicalId = legacyLogicalId;
-    this.legacyInactive = legacyInactive;
-    this.legacyCategoryId = legacyCategoryId;
-    this.legacyOtherCode = legacyOtherCode;
-    this.legacyLongDescription = legacyLongDescription;
-    this.intakeType = intakeType;
-    this.intakeCode = intakeCode;
-    this.intakeDisplay = intakeDisplay;
   }
 
   /**
@@ -128,15 +108,58 @@ public class IntakeLov implements Request, Response {
   public IntakeLov(gov.ca.cwds.data.persistence.ns.IntakeLov lov) {
     this.legacySystemCodeId = lov.getLegacySystemCodeId();
     this.legacyMeta = lov.getLegacyMeta();
-    this.legacyShortDescription = lov.getLegacyShortDescription();
-    this.legacyLogicalId = lov.getLegacyLogicalId();
-    this.legacyInactive = lov.getLegacyInactive();
-    this.legacyCategoryId = lov.getLegacyCategoryId();
-    this.legacyOtherCode = lov.getLegacyOtherCode();
-    this.legacyLongDescription = lov.getLegacyLongDescription();
-    this.intakeType = lov.getIntakeType();
-    this.intakeCode = lov.getIntakeCode();
-    this.intakeDisplay = lov.getIntakeDisplay();
+  }
+
+  public Long getLegacySystemCodeId() {
+    return legacySystemCodeId;
+  }
+
+  public void setLegacySystemCodeId(Long legacySystemCodeId) {
+    this.legacySystemCodeId = legacySystemCodeId;
+  }
+
+  public String getLegacyMeta() {
+    return legacyMeta;
+  }
+
+  public void setLegacyMeta(String legacyMeta) {
+    this.legacyMeta = legacyMeta;
+  }
+
+  public String getIntakeCode() {
+    return intakeCode;
+  }
+
+  public void setIntakeCode(String intakeCode) {
+    this.intakeCode = intakeCode;
+  }
+
+  public String getIntakeValue() {
+    return intakeValue;
+  }
+
+  public void setIntakeValue(String intakeValue) {
+    this.intakeValue = intakeValue;
+  }
+
+  public String getIntakeType() {
+    return intakeType;
+  }
+
+  public void setIntakeType(String intakeType) {
+    this.intakeType = intakeType;
+  }
+
+  public int getSortOrder() {
+    return sortOrder;
+  }
+
+  public void setSortOrder(int sortOrder) {
+    this.sortOrder = sortOrder;
+  }
+
+  public static long getSerialversionuid() {
+    return serialVersionUID;
   }
 
 }

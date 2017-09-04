@@ -4,6 +4,9 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Table;
 
+import org.hibernate.annotations.NamedQueries;
+import org.hibernate.annotations.NamedQuery;
+
 import gov.ca.cwds.data.ns.NsPersistentObject;
 
 /**
@@ -12,6 +15,8 @@ import gov.ca.cwds.data.ns.NsPersistentObject;
  * @author CWDS API Team
  */
 @SuppressWarnings("serial")
+@NamedQueries({@NamedQuery(name = "gov.ca.cwds.data.persistence.ns.IntakeLov.findAll",
+    query = "FROM IntakeLov")})
 @Entity
 @Table(name = "intake_raw_codes")
 public class IntakeLov extends NsPersistentObject {
