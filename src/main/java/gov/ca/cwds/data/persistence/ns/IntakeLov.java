@@ -18,7 +18,7 @@ import gov.ca.cwds.data.persistence.PersistentObject;
  */
 @SuppressWarnings("serial")
 @NamedQueries({@NamedQuery(name = "gov.ca.cwds.data.persistence.ns.IntakeLov.findAll",
-    query = "FROM IntakeLov")})
+    query = "FROM IntakeLov WHERE intakeCode IS NOT NULL")})
 @Entity
 @Table(name = "intake_raw_codes")
 public class IntakeLov implements PersistentObject {
