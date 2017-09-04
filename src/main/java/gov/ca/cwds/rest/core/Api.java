@@ -116,7 +116,7 @@ public interface Api {
   /**
    * A {@code String} constant representing {@value #RESOURCE_AUTOCOMPLETE} API.
    */
-  public static final String RESOURCE_AUTOCOMPLETE = "people_search";
+  public static final String RESOURCE_AUTOCOMPLETE = "_people_search";
 
   /**
    * A {@code String} constant representing {@value #RESOURCE_LONG_TEXT} API
@@ -171,6 +171,6 @@ public interface Api {
   /**
    * A {@code String} constant representing {@value #RESOURCE_INTAKE_LOV} API.
    */
-  public static final String RESOURCE_INTAKE_LOV = "intakelov";
+  public static final String RESOURCE_INTAKE_LOV = "intake_lov";
 
 }

@@ -5,6 +5,7 @@ import javax.validation.constraints.Size;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+import gov.ca.cwds.data.std.ApiMarker;
 import gov.ca.cwds.rest.api.Request;
 import gov.ca.cwds.rest.api.Response;
 import io.dropwizard.jackson.JsonSnakeCase;
@@ -23,7 +24,7 @@ import io.swagger.annotations.ApiModelProperty;
  */
 @JsonSnakeCase
 @ApiModel("nsIntakeLov")
-public class IntakeLov implements Request, Response {
+public class IntakeLov implements Request, Response, ApiMarker {
 
   /**
    * Default serialization.
@@ -70,6 +71,13 @@ public class IntakeLov implements Request, Response {
   private int sortOrder;
 
   /**
+   * Default constructor.
+   */
+  public IntakeLov() {
+    // Default, no-op.
+  }
+
+  /**
    * Constructor
    * 
    * @param legacySystemCodeId legacy lov id
@@ -85,16 +93,17 @@ public class IntakeLov implements Request, Response {
    * @param intakeDisplay Intake display
    */
   @JsonCreator
-  public IntakeLov(@JsonProperty("legacySystemCodeId") String legacySystemCodeId,
-      @JsonProperty("legacyMeta") String legacyMeta,
-      @JsonProperty("legacyShortDescription") String legacyShortDescription,
-      @JsonProperty("legacyLogicalId") String legacyLogicalId,
-      @JsonProperty("legacyInactive") String legacyInactive,
-      @JsonProperty("legacyCategoryId") String legacyCategoryId,
-      @JsonProperty("legacyOtherCode") String legacyOtherCode,
-      @JsonProperty("legacyLongDescription") String legacyLongDescription,
-      @JsonProperty("intakeType") String intakeType, @JsonProperty("intakeCode") String intakeCode,
-      @JsonProperty("intakeDisplay") String intakeDisplay) {
+  public IntakeLov(@JsonProperty("legacy_system_code_id") String legacySystemCodeId,
+      @JsonProperty("legacy_meta") String legacyMeta,
+      @JsonProperty("legacy_short_description") String legacyShortDescription,
+      @JsonProperty("legacy_logical_id") String legacyLogicalId,
+      @JsonProperty("legacy_inactive") String legacyInactive,
+      @JsonProperty("legacy_category_id") String legacyCategoryId,
+      @JsonProperty("legacy_other_code") String legacyOtherCode,
+      @JsonProperty("legacy_long_description") String legacyLongDescription,
+      @JsonProperty("intake_type") String intakeType,
+      @JsonProperty("intake_code") String intakeCode,
+      @JsonProperty("intake_display") String intakeDisplay) {
     super();
     this.legacySystemCodeId = Long.parseLong(legacySystemCodeId);
     this.legacyMeta = legacyMeta;

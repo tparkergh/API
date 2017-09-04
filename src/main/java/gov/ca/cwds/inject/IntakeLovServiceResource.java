@@ -18,6 +18,6 @@ import com.google.inject.BindingAnnotation;
 @BindingAnnotation
 @Target({FIELD, PARAMETER, METHOD})
 @Retention(RUNTIME)
-public @interface IntakePersonAutoCompleteServiceResource {
+public @interface IntakeLovServiceResource {
 
 }

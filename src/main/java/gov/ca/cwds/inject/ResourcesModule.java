@@ -9,6 +9,8 @@ import com.google.inject.name.Named;
 import gov.ca.cwds.rest.ApiConfiguration;
 import gov.ca.cwds.rest.SwaggerConfiguration;
 import gov.ca.cwds.rest.api.contact.DeliveredServiceDomain;
+import gov.ca.cwds.rest.api.domain.IntakeLov;
+import gov.ca.cwds.rest.api.domain.IntakeLovResponse;
 import gov.ca.cwds.rest.api.domain.StaffPerson;
 import gov.ca.cwds.rest.api.domain.cms.Allegation;
 import gov.ca.cwds.rest.api.domain.cms.AllegationPerpetratorHistory;
@@ -26,8 +28,6 @@ import gov.ca.cwds.rest.api.domain.cms.LongText;
 import gov.ca.cwds.rest.api.domain.cms.Referral;
 import gov.ca.cwds.rest.api.domain.cms.ReferralClient;
 import gov.ca.cwds.rest.api.domain.cms.Reporter;
-import gov.ca.cwds.rest.api.domain.es.AutoCompletePersonRequest;
-import gov.ca.cwds.rest.api.domain.es.AutoCompletePersonResponse;
 import gov.ca.cwds.rest.api.domain.es.IndexQueryRequest;
 import gov.ca.cwds.rest.api.domain.es.IndexQueryResponse;
 import gov.ca.cwds.rest.resources.AddressResource;
@@ -65,6 +65,7 @@ import gov.ca.cwds.rest.resources.cms.SystemCodeResource;
 import gov.ca.cwds.rest.resources.contact.DeliveredServiceResource;
 import gov.ca.cwds.rest.services.AddressService;
 import gov.ca.cwds.rest.services.AddressValidationService;
+import gov.ca.cwds.rest.services.IntakeLovService;
 import gov.ca.cwds.rest.services.ParticipantService;
 import gov.ca.cwds.rest.services.PersonService;
 import gov.ca.cwds.rest.services.ScreeningService;
@@ -90,7 +91,6 @@ import gov.ca.cwds.rest.services.cms.ReporterService;
 import gov.ca.cwds.rest.services.cms.StaffPersonService;
 import gov.ca.cwds.rest.services.cms.SystemCodeService;
 import gov.ca.cwds.rest.services.contact.DeliveredService;
-import gov.ca.cwds.rest.services.es.AutoCompletePersonService;
 import gov.ca.cwds.rest.services.es.IndexQueryService;
 
 
@@ -325,10 +325,10 @@ public class ResourcesModule extends AbstractModule {
   }
 
   @Provides
-  @IntakePersonAutoCompleteServiceResource
-  public SimpleResourceDelegate<String, AutoCompletePersonRequest, AutoCompletePersonResponse, AutoCompletePersonService> intakeAutoCompletePersonResource(
+  @IntakeLovServiceResource
+  public SimpleResourceDelegate<String, IntakeLov, IntakeLovResponse, IntakeLovService> intakeLovResource(
       Injector injector) {
-    return new SimpleResourceDelegate<>(injector.getInstance(AutoCompletePersonService.class));
+    return new SimpleResourceDelegate<>(injector.getInstance(IntakeLovService.class));
   }
 
   @Provides
