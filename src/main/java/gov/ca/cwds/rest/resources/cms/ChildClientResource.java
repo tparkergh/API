@@ -20,7 +20,7 @@ import com.google.inject.Inject;
 
 import gov.ca.cwds.inject.ChildClientServiceBackedResource;
 import gov.ca.cwds.rest.api.domain.cms.ChildClient;
-import gov.ca.cwds.rest.resources.ResourceDelegate;
+import gov.ca.cwds.rest.resources.TypedResourceDelegate;
 import io.dropwizard.hibernate.UnitOfWork;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -30,8 +30,9 @@ import io.swagger.annotations.ApiResponses;
 
 /**
  * A resource providing a RESTful interface for {@link ChildClient}. It delegates functions to
- * {@link ResourceDelegate}. It decorates the {@link ResourceDelegate} not in functionality but
- * with @see <a href= "https://github.com/swagger-api/swagger-core/wiki/Annotations-1.5.X">Swagger
+ * {@link TypedResourceDelegate}. It decorates the {@link TypedResourceDelegate} not in
+ * functionality but with @see
+ * <a href= "https://github.com/swagger-api/swagger-core/wiki/Annotations-1.5.X">Swagger
  * Annotations</a> and
  * <a href="https://jersey.java.net/documentation/latest/user-guide.html#jaxrs-resources">Jersey
  * Annotations</a>
@@ -44,16 +45,17 @@ import io.swagger.annotations.ApiResponses;
 @Consumes(MediaType.APPLICATION_JSON)
 public class ChildClientResource {
 
-  private ResourceDelegate resourceDelegate;
+  private TypedResourceDelegate<String, ChildClient> typedResourceDelegate;
 
   /**
    * Constructor
    * 
-   * @param resourceDelegate The resourceDelegate to delegate to.
+   * @param typedResourceDelegate The typedResourceDelegate to delegate to.
    */
   @Inject
-  public ChildClientResource(@ChildClientServiceBackedResource ResourceDelegate resourceDelegate) {
-    this.resourceDelegate = resourceDelegate;
+  public ChildClientResource(
+      @ChildClientServiceBackedResource TypedResourceDelegate<String, ChildClient> typedResourceDelegate) {
+    this.typedResourceDelegate = typedResourceDelegate;
   }
 
   /**
@@ -72,7 +74,7 @@ public class ChildClientResource {
   @ApiOperation(value = "Find childClient by victimId", response = ChildClient.class, code = 200)
   public Response get(@PathParam("victimId") @ApiParam(required = true, value = "The victim id",
       example = "td89slaz98") String victimId) {
-    return resourceDelegate.get(victimId);
+    return typedResourceDelegate.get(victimId);
   }
 
   /**
@@ -89,7 +91,7 @@ public class ChildClientResource {
   @ApiOperation(value = "Delete ChildClient", code = HttpStatus.SC_OK, response = Object.class)
   public Response delete(@PathParam("victimId") @ApiParam(required = true, value = "The victim id",
       example = "td89slaz98") String victimId) {
-    return resourceDelegate.delete(victimId);
+    return typedResourceDelegate.delete(victimId);
   }
 
   /**
@@ -111,7 +113,7 @@ public class ChildClientResource {
       response = ChildClient.class)
   public Response create(
       @Valid @ApiParam(hidden = false, required = true) ChildClient childClient) {
-    return resourceDelegate.create(childClient);
+    return typedResourceDelegate.create(childClient);
   }
 
   /**
@@ -133,7 +135,7 @@ public class ChildClientResource {
       response = Object.class)
   public Response update(
       @Valid @ApiParam(hidden = false, required = true) ChildClient childClient) {
-    return resourceDelegate.update(null, childClient);
+    return typedResourceDelegate.update(null, childClient);
   }
 
 }

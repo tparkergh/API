@@ -20,7 +20,7 @@ import com.google.inject.Inject;
 
 import gov.ca.cwds.inject.CrossReportServiceBackedResource;
 import gov.ca.cwds.rest.api.domain.cms.CrossReport;
-import gov.ca.cwds.rest.resources.ResourceDelegate;
+import gov.ca.cwds.rest.resources.TypedResourceDelegate;
 import io.dropwizard.hibernate.UnitOfWork;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -30,8 +30,9 @@ import io.swagger.annotations.ApiResponses;
 
 /**
  * A resource providing a RESTful interface for {@link CrossReport}. It delegates functions to
- * {@link ResourceDelegate}. It decorates the {@link ResourceDelegate} not in functionality but
- * with @see <a href= "https://github.com/swagger-api/swagger-core/wiki/Annotations-1.5.X">Swagger
+ * {@link TypedResourceDelegate}. It decorates the {@link TypedResourceDelegate} not in
+ * functionality but with @see
+ * <a href= "https://github.com/swagger-api/swagger-core/wiki/Annotations-1.5.X">Swagger
  * Annotations</a> and
  * <a href="https://jersey.java.net/documentation/latest/user-guide.html#jaxrs-resources">Jersey
  * Annotations</a>
@@ -44,16 +45,17 @@ import io.swagger.annotations.ApiResponses;
 @Consumes(MediaType.APPLICATION_JSON)
 public class CrossReportResource {
 
-  private ResourceDelegate resourceDelegate;
+  private TypedResourceDelegate<String, CrossReport> typedResourceDelegate;
 
   /**
    * Constructor
    * 
-   * @param resourceDelegate The resourceDelegate to delegate to.
+   * @param typedResourceDelegate The typedResourceDelegate to delegate to.
    */
   @Inject
-  public CrossReportResource(@CrossReportServiceBackedResource ResourceDelegate resourceDelegate) {
-    this.resourceDelegate = resourceDelegate;
+  public CrossReportResource(
+      @CrossReportServiceBackedResource TypedResourceDelegate<String, CrossReport> typedResourceDelegate) {
+    this.typedResourceDelegate = typedResourceDelegate;
   }
 
   /**
@@ -73,7 +75,7 @@ public class CrossReportResource {
       response = CrossReport.class, code = 200)
   public Response get(@PathParam("thirdId") @ApiParam(required = true, value = "The third id",
       example = "td89slaz98") String thirdId) {
-    return resourceDelegate.get(thirdId);
+    return typedResourceDelegate.get(thirdId);
   }
 
   /**
@@ -90,7 +92,7 @@ public class CrossReportResource {
   @ApiOperation(value = "Delete CrossReport", code = HttpStatus.SC_OK, response = Object.class)
   public Response delete(@PathParam("thirdId") @ApiParam(required = true, value = "The third id",
       example = "td89slaz98") String thirdId) {
-    return resourceDelegate.delete(thirdId);
+    return typedResourceDelegate.delete(thirdId);
   }
 
   /**
@@ -112,7 +114,7 @@ public class CrossReportResource {
       response = CrossReport.class)
   public Response create(
       @Valid @ApiParam(hidden = false, required = true) CrossReport crossReport) {
-    return resourceDelegate.create(crossReport);
+    return typedResourceDelegate.create(crossReport);
   }
 
   /**
@@ -134,6 +136,6 @@ public class CrossReportResource {
       response = Object.class)
   public Response update(
       @Valid @ApiParam(hidden = false, required = true) CrossReport crossReport) {
-    return resourceDelegate.update(null, crossReport);
+    return typedResourceDelegate.update(null, crossReport);
   }
 }

@@ -1,3 +1,4 @@
+
 truncate table cwsint.ALLGTN_T immediate;
 INSERT INTO cwsint.ALLGTN_T(IDENTIFIER, ABUSE_ENDT, ABUSE_FREQ, ABUSE_PDCD, LOC_DSC, ABUSE_STDT, ALG_DSPC, ALG_TPC, DISPSN_DSC, DISPSN_DT, IJHM_DET_B, NON_PRT_CD, STFADD_IND, LST_UPD_ID, LST_UPD_TS, FKCLIENT_T, FKCLIENT_0, FKREFERL_T, CNTY_SPFCD, ZIPPY_IND, PLC_FCLC)
 VALUES ('Aaeae9r0F4', null, 2, 'M', '                                                                           ', null, 0, 2180, '                                                                                                                                                                                                                                                              ', null, 'N', 'N', 'N', '0F4', '1999-07-15 17:06:29.208', 'AHooKwN0F4', null, '8mu1E710F4', '19', 'N', null);
@@ -190,3 +191,10 @@ truncate table cwsint.RFDLSVCT immediate;
 INSERT INTO CWSINT.RFDLSVCT(LST_UPD_ID, LST_UPD_TS, FKREFR_CLT, FKDL_SVC_T, FKREFR_CL0, CNTY_SPFCD) 
 VALUES ('0Hj', '2000-01-31 14:44:57.709335', 'CeHWwE80Hj', 'DrbC4No0Hj', 'AbiQCgu0Hj', '51');
 
+truncate table cwsint.CASE_LDT immediate;
+INSERT INTO CWSINT.CASE_LDT(IDENTIFIER, ASGDSK_IND, CLD_CEILNO, END_DT, IDENTFR_NM, ON_HLD_IND, START_DT, LST_UPD_ID, LST_UPD_TS, FKASG_UNIT, CASELD_B, CNTY_SPFCD, ARCASS_IND) 
+VALUES ('AanwMid0QM', 'N', 0.000, null, 'Second                        ', 'N', '2003-11-18', '0QM', '2003-11-18 17:21:37.126', 'BCeUwRb0QM', 'N', '56', 'N');
+
+truncate table cwsint.LAW_ENFT immediate;
+INSERT INTO CWSINT.LAW_ENFT(IDENTIFIER, CITY_NM, CNT_PERSNM, CNT_TEL_NO, CNT_EXT_NO, CNTITL_DSC, FAX_NO, GVR_ENTC, LAW_ENF_NM, STATE_C, STATION_NM, STREET_NM, STREET_NO, ZIP_NO, LST_UPD_ID, LST_UPD_TS, ZIP_SFX_NO, ARCASS_IND, EMAIL_ADDR) 
+VALUES ('AdAOv470GR', 'qawgr2q35qawgr2q35  ', '                                   ', 0, 0, '                              ', 0, 1088, 'qawgr2q35                          ', 1828, '                    ', 'qawgr2q35qawgr2q35                      ', '          ', 23523, '0GR', '1999-11-23 14:41:58.006746', 0, 'N', null);

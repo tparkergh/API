@@ -3,6 +3,7 @@ package gov.ca.cwds.rest.business.rules.doctool;
 import static org.junit.Assert.assertEquals;
 import static org.mockito.Mockito.mock;
 
+import gov.ca.cwds.rest.services.ParticipantService;
 import javax.validation.Validation;
 import javax.validation.Validator;
 
@@ -80,6 +81,7 @@ public class R00796ScreeningToReferralDeleteTest {
   private LongTextService longTextService;
   private DrmsDocumentService drmsDocumentService;
   private AssignmentService assignmentService;
+  private ParticipantService participantService;
   private RIChildClient riChildClient;
   private RIAllegationPerpetratorHistory riAllegationPerpetratorHistory;
   private RIAssignment riAssignment;
@@ -202,13 +204,15 @@ public class R00796ScreeningToReferralDeleteTest {
     assignmentService = new AssignmentService(assignmentDao, nonLACountyTriggers, staffpersonDao,
         triggerTablesDao, staffPersonIdRetriever, validator, externalInterfaceTables, riAssignment);
 
+    participantService = mock(ParticipantService.class);
+
     reminders = mock(Reminders.class);
 
     screeningToReferralService = new ScreeningToReferralService(referralService, clientService,
         allegationService, crossReportService, referralClientService, reporterService,
         addressService, clientAddressService, childClientService, assignmentService,
-        Validation.buildDefaultValidatorFactory().getValidator(), referralDao, new MessageBuilder(),
-        allegationPerpetratorHistoryService, reminders);
+        participantService, Validation.buildDefaultValidatorFactory().getValidator(), referralDao,
+        new MessageBuilder(), allegationPerpetratorHistoryService, reminders);
   }
 
   /**

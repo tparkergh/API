@@ -61,15 +61,6 @@ public class AddressServiceTest {
   }
 
   // find
-  @Test(expected = AssertionError.class)
-  public void addressServiceFindThrowsAssertionError() {
-    try {
-      addressService.find(1);
-    } catch (AssertionError e) {
-      assertEquals("Expeceted AssertionError", e.getMessage());
-    }
-  }
-
   @Test
   public void addressServiceFindReturnsCorrectEntity() throws Exception {
     String id = "AaNli340MV";
@@ -92,15 +83,6 @@ public class AddressServiceTest {
   }
 
   // delete test
-  @Test(expected = AssertionError.class)
-  public void addressServiceDeleteThrowsAssertionError() throws Exception {
-    try {
-      addressService.delete(123);
-    } catch (AssertionError e) {
-      assertEquals("Expected AssertionError", e.getMessage());
-    }
-  }
-
   @Test
   public void addressServiceDeleteDelegatesToCrudsService() {
     addressService.delete("ABC2345678");
@@ -127,15 +109,6 @@ public class AddressServiceTest {
   }
 
   // update test
-  @Test(expected = AssertionError.class)
-  public void addressServiceUpdateThrowsAssertionError() throws Exception {
-    try {
-      addressService.update("ABC1234567", null);
-    } catch (AssertionError e) {
-      assertEquals("Expected AssertionError", e.getMessage());
-    }
-  }
-
   @Test
   public void addressServiceUpdateReturnsCorrectEntity() throws Exception {
     String id = "AaNli340MV";

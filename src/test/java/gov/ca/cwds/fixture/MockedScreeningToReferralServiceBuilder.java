@@ -4,6 +4,7 @@ import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
+import gov.ca.cwds.rest.services.ParticipantService;
 import java.util.Date;
 
 import javax.validation.Validation;
@@ -64,6 +65,7 @@ public class MockedScreeningToReferralServiceBuilder {
   private ClientAddressService clientAddressService;
   private ChildClientService childClientService;
   private AssignmentService assignmentService;
+  private ParticipantService participantService;
   private AllegationPerpetratorHistoryService allegationPerpetratorHistoryService;
   private Reminders reminders;
 
@@ -413,6 +415,16 @@ public class MockedScreeningToReferralServiceBuilder {
     return this;
   }
 
+  public ParticipantService getParticipantService() {
+    return participantService;
+  }
+
+  public MockedScreeningToReferralServiceBuilder addParticipantService(ParticipantService
+      participantService) {
+    this.participantService = participantService;
+    return this;
+  }
+
   /**
    * @param referralDao - referralDao
    * @return the referralDao
@@ -438,7 +450,7 @@ public class MockedScreeningToReferralServiceBuilder {
     return new ScreeningToReferralService(getReferralService(), getClientService(),
         getAllegationService(), getCrossReportService(), getReferralClientService(),
         getReporterService(), getAddressService(), getClientAddressService(),
-        getChildClientService(), getAssignmentService(),
+        getChildClientService(), getAssignmentService(), getParticipantService(),
         Validation.buildDefaultValidatorFactory().getValidator(), getReferralDao(),
         getMessageBuilder(), getAllegationPerpetratorHistoryService(), getReminders());
   }

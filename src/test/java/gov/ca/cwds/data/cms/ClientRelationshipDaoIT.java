@@ -22,6 +22,7 @@ import org.junit.Test;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import gov.ca.cwds.data.persistence.cms.ClientRelationship;
+import gov.ca.cwds.fixture.ClientRelationshipResourceBuilder;
 import gov.ca.cwds.rest.api.domain.DomainChef;
 import io.dropwizard.jackson.Jackson;
 
@@ -102,8 +103,7 @@ public class ClientRelationshipDaoIT {
   @Test
   public void testCreate() throws Exception {
     gov.ca.cwds.rest.api.domain.cms.ClientRelationship validDomainClientRelationship =
-        new gov.ca.cwds.rest.api.domain.cms.ClientRelationship("N", (short) 172, "2017-01-07",
-            "SECCLIENT", "PRICLIENT", "Y", "2017-01-07");
+        new ClientRelationshipResourceBuilder().build();
 
     ClientRelationship clientRelationship =
         new ClientRelationship(validDomainClientRelationship.getAbsentParentCode(),
@@ -122,8 +122,7 @@ public class ClientRelationshipDaoIT {
   public void testCreateExistingEntityException() throws Exception {
 
     gov.ca.cwds.rest.api.domain.cms.ClientRelationship validDomainClientRelationship =
-        new gov.ca.cwds.rest.api.domain.cms.ClientRelationship("N", (short) 172, "2017-01-07",
-            "SECCLIENT", "PRICLIENT", "Y", "2017-01-07");
+        new ClientRelationshipResourceBuilder().build();
 
     ClientRelationship clientRelationship =
         new ClientRelationship(validDomainClientRelationship.getAbsentParentCode(),
@@ -163,8 +162,7 @@ public class ClientRelationshipDaoIT {
   public void testUpdate() throws Exception {
 
     gov.ca.cwds.rest.api.domain.cms.ClientRelationship validDomainClientRelationship =
-        new gov.ca.cwds.rest.api.domain.cms.ClientRelationship("N", (short) 172, "2017-01-07",
-            "SECCLIENT", "PRICLIENT", "Y", "2017-01-07");
+        new ClientRelationshipResourceBuilder().build();
 
     ClientRelationship clientRelationship =
         new ClientRelationship(validDomainClientRelationship.getAbsentParentCode(),
@@ -183,8 +181,7 @@ public class ClientRelationshipDaoIT {
   public void testUpdateEntityNotFoundException() throws Exception {
 
     gov.ca.cwds.rest.api.domain.cms.ClientRelationship validDomainClientRelationship =
-        new gov.ca.cwds.rest.api.domain.cms.ClientRelationship("N", (short) 172, "2017-01-07",
-            "SECCLIENT", "PRICLIENT", "Y", "2017-01-07");
+        new ClientRelationshipResourceBuilder().build();
 
     ClientRelationship clientRelationship =
         new ClientRelationship(validDomainClientRelationship.getAbsentParentCode(),

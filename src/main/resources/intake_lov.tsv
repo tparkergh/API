@@ -1,0 +1,246 @@
+LG_SYS_ID	LG_META	LG_SHRT_DSC	LG_LOG_ID	LG_INACTIVE	LG_CAT_ID	LG_OTH_CD	LG_LNG_DSC	INTAKE_TYPE	INTAKE_CODE	INTAKE_DISPLAY
+27	ADDR_TPC	Business	0001	N				ADDRESS_TYPE	Work	Business
+6273	ADDR_TPC	Common	0009	N				ADDRESS_TYPE	Common	Common
+28	ADDR_TPC	Day Care	0002	N				ADDRESS_TYPE	Day Care	Day Care
+29	ADDR_TPC	Homeless	0003	N				ADDRESS_TYPE	Homeless	Homeless
+6272	ADDR_TPC	Other Mailing	0008	N				ADDRESS_TYPE	Other	Other Mailing
+30	ADDR_TPC	Penal Institution	0004	N				ADDRESS_TYPE	Penal Institution	Penal Institution
+31	ADDR_TPC	Permanent Mailing Address	0005	N				ADDRESS_TYPE	Permanent Mailing Address	Permanent Mailing Address
+32	ADDR_TPC	Residence	0006	N				ADDRESS_TYPE	Home	Residence
+6271	ADDR_TPC	Residence 2	0007	N				ADDRESS_TYPE	Residence 2	Residence 2
+5001	INJR_HMC	At Risk, sibling abused	0001	N				ALLEGATION_TYPE	At risk, sibling abused	At Risk, sibling abused
+2169	INJR_HMC	Caretaker Absence/Incapacity	0005	N				ALLEGATION_TYPE	Caretaker absent/incapacity	Caretaker Absence/Incapacity
+2176	INJR_HMC	Emotional Abuse	0009	N				ALLEGATION_TYPE	Emotional abuse	Emotional Abuse
+2177	INJR_HMC	Exploitation	0007	N				ALLEGATION_TYPE	Exploitation	Exploitation
+2178	INJR_HMC	General Neglect	0011	N				ALLEGATION_TYPE	General neglect	General Neglect
+2179	INJR_HMC	Physical Abuse	0015	N				ALLEGATION_TYPE	Physical abuse	Physical Abuse
+2180	INJR_HMC	Severe Neglect	0013	N				ALLEGATION_TYPE	Severe neglect	Severe Neglect
+2181	INJR_HMC	Sexual Abuse	0017	N				ALLEGATION_TYPE	Sexual abuse	Sexual Abuse
+118	APV_STC	Request Not Submitted	0001	N		SW		APPROVAL_STATUS	Request Not Submitted	Request Not Submitted
+119	APV_STC	Pending Approval	0002	N		SP		APPROVAL_STATUS
+120	APV_STC	Requires Modification	0003	N		SW		APPROVAL_STATUS
+121	APV_STC	Rejected	0004	N		SP		APPROVAL_STATUS
+122	APV_STC	Approved	0005	N		SP		APPROVAL_STATUS
+123	APV_STC	Pending Higher Approval	0006	N		SP		APPROVAL_STATUS
+1068	GVR_ENTC	Alameda	01	N		Y		COUNTY_TYPE	alameda	Alameda
+1069	GVR_ENTC	Alpine	02	N				COUNTY_TYPE	alpine	Alpine
+1070	GVR_ENTC	Amador	03	N				COUNTY_TYPE	amador	Amador
+1071	GVR_ENTC	Butte	04	N				COUNTY_TYPE	butte	Butte
+1072	GVR_ENTC	Calaveras	05	N				COUNTY_TYPE	calaveras	Calaveras
+1073	GVR_ENTC	Colusa	06	N				COUNTY_TYPE	colusa	Colusa
+1074	GVR_ENTC	Contra Costa	07	N		Y		COUNTY_TYPE	contra_Costa	Contra Costa
+1075	GVR_ENTC	Del Norte	08	N				COUNTY_TYPE	del_norte	Del Norte
+1076	GVR_ENTC	El Dorado	09	N				COUNTY_TYPE	el_dorado	El Dorado
+1077	GVR_ENTC	Fresno	10	N		Y		COUNTY_TYPE	fresno	Fresno
+1078	GVR_ENTC	Glenn	11	N				COUNTY_TYPE	glenn	Glenn
+1079	GVR_ENTC	Humboldt	12	N				COUNTY_TYPE	humboldt	Humboldt
+1080	GVR_ENTC	Imperial	13	N				COUNTY_TYPE	imperial	Imperial
+1081	GVR_ENTC	Inyo	14	N				COUNTY_TYPE	inyo	Inyo
+1082	GVR_ENTC	Kern	15	N				COUNTY_TYPE	kern	Kern
+1083	GVR_ENTC	Kings	16	N				COUNTY_TYPE	kings	Kings
+1084	GVR_ENTC	Lake	17	N				COUNTY_TYPE	lake	Lake
+1085	GVR_ENTC	Lassen	18	N				COUNTY_TYPE	lassen	Lassen
+1086	GVR_ENTC	Los Angeles	19	N				COUNTY_TYPE	los_angeles	Los Angeles
+1087	GVR_ENTC	Madera	20	N				COUNTY_TYPE	madera	Madera
+1088	GVR_ENTC	Marin	21	N				COUNTY_TYPE	marin	Marin
+1089	GVR_ENTC	Mariposa	22	N				COUNTY_TYPE	mariposa	Mariposa
+1090	GVR_ENTC	Mendocino	23	N				COUNTY_TYPE	mendocino	Mendocino
+1091	GVR_ENTC	Merced	24	N				COUNTY_TYPE	merced	Merced
+1092	GVR_ENTC	Modoc	25	N				COUNTY_TYPE	modoc	Modoc
+1093	GVR_ENTC	Mono	26	N				COUNTY_TYPE	mono	Mono
+1094	GVR_ENTC	Monterey	27	N				COUNTY_TYPE	monterey	Monterey
+1095	GVR_ENTC	Napa	28	N				COUNTY_TYPE	napa	Napa
+1096	GVR_ENTC	Nevada	29	N				COUNTY_TYPE	nevada	Nevada
+1097	GVR_ENTC	Orange	30	N		Y		COUNTY_TYPE	orange	Orange
+1098	GVR_ENTC	Placer	31	N		Y		COUNTY_TYPE	placer	Placer
+1099	GVR_ENTC	Plumas	32	N				COUNTY_TYPE	plumas	Plumas
+1100	GVR_ENTC	Riverside	33	N				COUNTY_TYPE	riverside	Riverside
+1101	GVR_ENTC	Sacramento	34	N				COUNTY_TYPE	sacramento	Sacramento
+1102	GVR_ENTC	San Benito	35	N				COUNTY_TYPE	san_benito	San Benito
+1103	GVR_ENTC	San Bernardino	36	N				COUNTY_TYPE	san_bernardino	San Bernardino
+1104	GVR_ENTC	San Diego	37	N		Y		COUNTY_TYPE	san_diego	San Diego
+1105	GVR_ENTC	San Francisco	38	N		Y		COUNTY_TYPE	san_francisco	San Francisco
+1106	GVR_ENTC	San Joaquin	39	N				COUNTY_TYPE	san_luis_Obispo	San Luis Obispo
+1107	GVR_ENTC	San Luis Obispo	40	N		Y		COUNTY_TYPE	san_mateo	San Mateo
+1108	GVR_ENTC	San Mateo	41	N		Y		COUNTY_TYPE	san_joaquin	San Joaquin
+1109	GVR_ENTC	Santa Barbara	42	N		Y		COUNTY_TYPE	santa_barbara	Santa Barbara
+1110	GVR_ENTC	Santa Clara	43	N		Y		COUNTY_TYPE	santa_clara	Santa Clara
+1111	GVR_ENTC	Santa Cruz	44	N		Y		COUNTY_TYPE	santa_cruz	Santa Cruz
+1112	GVR_ENTC	Shasta	45	N				COUNTY_TYPE	shasta	Shasta
+1113	GVR_ENTC	Sierra	46	N				COUNTY_TYPE	sierra	Sierra
+1114	GVR_ENTC	Siskiyou	47	N				COUNTY_TYPE	siskiyou	Siskiyou
+1115	GVR_ENTC	Solano	48	N		Y		COUNTY_TYPE	solano	Solano
+1116	GVR_ENTC	Sonoma	49	N		Y		COUNTY_TYPE	sonoma	Sonoma
+1117	GVR_ENTC	Stanislaus	50	N				COUNTY_TYPE	stanislaus	Stanislaus
+1118	GVR_ENTC	Sutter	51	N				COUNTY_TYPE	sutter	Sutter
+1119	GVR_ENTC	Tehama	52	N				COUNTY_TYPE	tehama	Tehama
+1120	GVR_ENTC	Trinity	53	N				COUNTY_TYPE	trinity	Trinity
+1121	GVR_ENTC	Tulare	54	N		Y		COUNTY_TYPE	tulare	Tulare
+1122	GVR_ENTC	Tuolumne	55	N				COUNTY_TYPE	tuolumne	Tuolumne
+1123	GVR_ENTC	Ventura	56	N				COUNTY_TYPE	ventura	Ventura
+1124	GVR_ENTC	Yolo	57	N		Y		COUNTY_TYPE	yolo	Yolo
+1125	GVR_ENTC	Yuba	58	N				COUNTY_TYPE	yuba	Yuba
+1126	GVR_ENTC	State of California	99	N				COUNTY_TYPE	state_of_california	State of California
+2094	XRPT_MTC	Child Abuse Form	0001	N				CROSS_REPORT_COMM_METHOD	Child Abuse Form	Child Abuse Form
+2095	XRPT_MTC	Electronic Report	0002	N				CROSS_REPORT_COMM_METHOD	Electronic Report	Electronic Report
+2096	XRPT_MTC	Suspected Child Abuse Report	0003	N				CROSS_REPORT_COMM_METHOD	Suspected Child Abuse Report	Suspected Child Abuse Report
+2097	XRPT_MTC	Telephone Report	0004	N				CROSS_REPORT_COMM_METHOD	Telephone Report	Telephone Report
+1248	LANG_TPC	American Sign Language	13	N				LANGUAGE	American Sign Language	American Sign Language
+1249	LANG_TPC	Arabic	14	N				LANGUAGE	Arabic	Arabic
+1250	LANG_TPC	Armenian	15	N				LANGUAGE	Armenian	Armenian
+1251	LANG_TPC	Cambodian	19	N				LANGUAGE	Cambodian	Cambodian
+1252	LANG_TPC	Cantonese	74	N				LANGUAGE	Cantonese	Cantonese
+1253	LANG_TPC	English	07	N				LANGUAGE	English	English
+1254	LANG_TPC	Farsi	41	N				LANGUAGE	Farsi	Farsi
+3198	LANG_TPC	Filipino	49	Y				LANGUAGE	Filipino	Filipino
+1255	LANG_TPC	French	28	N				LANGUAGE	French	French
+1267	LANG_TPC	German	29	N				LANGUAGE	German	German
+1268	LANG_TPC	Hawaiian	99	N				LANGUAGE	Hawaiian	Hawaiian
+1256	LANG_TPC	Hebrew	33	N				LANGUAGE	Hebrew	Hebrew
+1257	LANG_TPC	Hmong	35	N				LANGUAGE	Hmong	Hmong
+1258	LANG_TPC	Ilacano	77	N				LANGUAGE	Ilacano	Ilacano
+3199	LANG_TPC	Indochinese	99	N				LANGUAGE	Indochinese	Indochinese
+1259	LANG_TPC	Italian	42	N				LANGUAGE	Italian	Italian
+1260	LANG_TPC	Japanese	03	N				LANGUAGE	Japanese	Japanese
+1261	LANG_TPC	Korean	04	N				LANGUAGE	Korean	Korean
+1262	LANG_TPC	Lao	43	N				LANGUAGE	Lao	Lao
+1263	LANG_TPC	Mandarin	75	N				LANGUAGE	Mandarin	Mandarin
+1264	LANG_TPC	Mien	76	N				LANGUAGE	Mien	Mien
+1265	LANG_TPC	Other Chinese	02	N				LANGUAGE	Other Chinese	Other Chinese
+1266	LANG_TPC	Other Non-English	99	N				LANGUAGE	Other Non-English	Other Non-English
+1269	LANG_TPC	Polish	50	N				LANGUAGE	Polish	Polish
+1270	LANG_TPC	Portuguese	51	N				LANGUAGE	Portuguese	Portuguese
+3200	LANG_TPC	Romanian	99	N				LANGUAGE	Romanian	Romanian
+1271	LANG_TPC	Russian	54	N				LANGUAGE	Russian	Russian
+1272	LANG_TPC	Samoan	55	N				LANGUAGE	Samoan	Samoan
+1273	LANG_TPC	Sign Language (Not ASL)	78	N				LANGUAGE	Sign Language (Not ASL)	Sign Language (Not ASL)
+1274	LANG_TPC	Spanish	01	N				LANGUAGE	Spanish	Spanish
+1275	LANG_TPC	Tagalog	05	N				LANGUAGE	Tagalog	Tagalog
+1276	LANG_TPC	Thai	65	N				LANGUAGE	Thai	Thai
+1277	LANG_TPC	Turkish	67	N				LANGUAGE	Turkish	Turkish
+1278	LANG_TPC	Vietnamese	69	N				LANGUAGE	Vietnamese	Vietnamese
+5378	CMM_MTHC	E-Mail	0005	N				SCREEN_COMM_METHOD	email	E-Mail
+5375	CMM_MTHC	Fax	0004	N				SCREEN_COMM_METHOD	fax	Fax
+408	CMM_MTHC	In-Person	0001	N				SCREEN_COMM_METHOD	in_person	In-Person
+409	CMM_MTHC	Telephone	0002	N				SCREEN_COMM_METHOD	phone	Telephone
+410	CMM_MTHC	Written	0003	N				SCREEN_COMM_METHOD	mail	Written
+1516	RFR_RSPC	3 Day	0001	N				SCREEN_RESPONSE_TIME	10_days	10 Day
+1517	RFR_RSPC	5 Day	0002	N				SCREEN_RESPONSE_TIME	3_days	3 Day
+1518	RFR_RSPC	10 Day	0003	N				SCREEN_RESPONSE_TIME	5_days	5 Day
+1519	RFR_RSPC	Evaluate Out	0004	N				SCREEN_RESPONSE_TIME	evaluate_out	Evaluate Out
+1520	RFR_RSPC	Immediate	0005	N				SCREEN_RESPONSE_TIME	immediate	Immediate
+1521	RFR_RSPC	N/A Secondary Report	0006	N				SCREEN_RESPONSE_TIME
+1824	STATE_C	Alabama	AL	N			Alabama	US_STATE	AL	Alabama
+1823	STATE_C	Alaska	AK	N			Alaska	US_STATE	AK	Alaska
+1825	STATE_C	American Samoa	AM	N			American Samoa	US_STATE	AM	American Samoa
+1827	STATE_C	Arizona	AZ	N			Arizona	US_STATE	AZ	Arizona
+1826	STATE_C	Arkansas	AR	N			Arkansas	US_STATE	AR	Arkansas
+1828	STATE_C	California	CA	N			California	US_STATE	CA	California
+1832	STATE_C	Canal Zone	CZ	N			Canal Zone	US_STATE	CZ	Canal Zone
+1830	STATE_C	Colorado	CO	N			Colorado	US_STATE	CO	Colorado
+1831	STATE_C	Connecticut	CT	N			Connecticut	US_STATE	CT	Connecticut
+1834	STATE_C	Delaware	DE	N			Delaware	US_STATE	DE	Delaware
+1833	STATE_C	District of Columbia	DC	N			District of Columbia	US_STATE	DC	District of Columbia
+1835	STATE_C	Florida	FL	N			Florida	US_STATE	FL	Florida
+1836	STATE_C	Georgia	GA	N			Georgia	US_STATE	GA	Georgia
+1837	STATE_C	Guam	GU	N			Guam	US_STATE	GU	Guam
+1838	STATE_C	Hawaii	HI	N			Hawaii	US_STATE	HI	Hawaii
+1840	STATE_C	Idaho	ID	N			Idaho	US_STATE	ID	Idaho
+1841	STATE_C	Illinois	IL	N			Illinois	US_STATE	IL	Illinois
+1842	STATE_C	Indiana	IN	N			Indiana	US_STATE	IN	Indiana
+1839	STATE_C	Iowa	IA	N			Iowa	US_STATE	IA	Iowa
+1843	STATE_C	Kansas	KS	N			Kansas	US_STATE	KS	Kansas
+1844	STATE_C	Kentucky	KY	N			Kentucky	US_STATE	KY	Kentucky
+1845	STATE_C	Louisiana	LA	N			Louisiana	US_STATE	LA	Louisiana
+1848	STATE_C	Maine	ME	N			Maine	US_STATE	ME	Maine
+1847	STATE_C	Maryland	MD	N			Maryland	US_STATE	MD	Maryland
+1846	STATE_C	Massachusetts	MA	N			Massachusetts	US_STATE	MA	Massachusetts
+1849	STATE_C	Michigan	MI	N			Michigan	US_STATE	MI	Michigan
+1850	STATE_C	Minnesota	MN	N			Minnesota	US_STATE	MN	Minnesota
+1852	STATE_C	Mississippi	MS	N			Mississippi	US_STATE	MS	Mississippi
+1851	STATE_C	Missouri	MO	N			Missouri	US_STATE	MO	Missouri
+1853	STATE_C	Montana	MT	N			Montana	US_STATE	MT	Montana
+1856	STATE_C	Nebraska	NE	N			Nebraska	US_STATE	NE	Nebraska
+1860	STATE_C	Nevada	NV	N			Nevada	US_STATE	NV	Nevada
+1857	STATE_C	New Hampshire	NH	N			New Hampshire	US_STATE	NH	New Hampshire
+1858	STATE_C	New Jersey	NJ	N			New Jersey	US_STATE	NJ	New Jersey
+1859	STATE_C	New Mexico	NM	N			New Mexico	US_STATE	NM	New Mexico
+1861	STATE_C	New York	NY	N			New York	US_STATE	NY	New York
+1854	STATE_C	North Carolina	NC	N			North Carolina	US_STATE	NC	North Carolina
+1855	STATE_C	North Dakota	ND	N			North Dakota	US_STATE	ND	North Dakota
+1829	STATE_C	Northern Marianas Islands	CM	N			Northern Marianas Islands	US_STATE	MP	Northern Marianas Islands
+1862	STATE_C	Ohio	OH	N			Ohio	US_STATE	OH	Ohio
+1863	STATE_C	Oklahoma	OK	N			Oklahoma	US_STATE	OK	Oklahoma
+1864	STATE_C	Oregon	OR	N			Oregon	US_STATE	OR	Oregon
+1865	STATE_C	Pennsylvania	PA	N			Pennsylvania	US_STATE	PA	Pennsylvania
+1866	STATE_C	Puerto Rico	PR	N			Puerto Rico	US_STATE	PR	Puerto Rico
+1867	STATE_C	Rhode Island	RI	N			Rhode Island	US_STATE	RI	Rhode Island
+1868	STATE_C	South Carolina	SC	N			South Carolina	US_STATE	SC	South Carolina
+1869	STATE_C	South Dakota	SD	N			South Dakota	US_STATE	SD	South Dakota
+1870	STATE_C	Tennessee	TN	N			Tennessee	US_STATE	TN	Tennessee
+1872	STATE_C	Texas	TX	N			Texas	US_STATE	TX	Texas
+1871	STATE_C	Trust Territories	TT	N			Trust Territories	US_STATE	TT	Trust Territories
+1873	STATE_C	Utah	UT	N			Utah	US_STATE	UT	Utah
+1876	STATE_C	Vermont	VT	N			Vermont	US_STATE	VT	Vermont
+1875	STATE_C	Virgin Islands	VI	N			Virgin Islands	US_STATE	VI	Virgin Islands
+1874	STATE_C	Virginia	VA	N			Virginia	US_STATE	VA	Virginia
+1877	STATE_C	Washington	WA	N			Washington	US_STATE	WA	Washington
+1879	STATE_C	West Virginia	WV	N			West Virginia	US_STATE	WV	West Virginia
+1878	STATE_C	Wisconsin	WI	N			Wisconsin	US_STATE	WI	Wisconsin
+1880	STATE_C	Wyoming	WY	N			Wyoming	US_STATE	WY	Wyoming
+6401	ACTV_RNC	Dangerous Animal on Premises	100	N				SAFETY_ALERT	Dangerous Animal on Premises	Dangerous Animal on Premises
+6402	ACTV_RNC	Dangerous Environment	200	N				SAFETY_ALERT	Dangerous Environment	Dangerous Environment
+6403	ACTV_RNC	Firearms in Home	300	N				SAFETY_ALERT	Firearms in Home	Firearms in Home
+6404	ACTV_RNC	Gang Affiliation or Gang Activity	400	N				SAFETY_ALERT	Gang Affiliation or Gang Activity	Gang Affiliation or Gang Activity
+6405	ACTV_RNC	Hostile, Aggressive Client	500	N				SAFETY_ALERT	Hostile Aggressive Client	Hostile, Aggressive Client
+6406	ACTV_RNC	Remote or Isolated Location	600	N				SAFETY_ALERT	Remote or Isolated Location	Remote or Isolated Location
+6407	ACTV_RNC	Severe Mental Health Status	700	N				SAFETY_ALERT	Severe Mental Health Status	Severe Mental Health Status
+6408	ACTV_RNC	Threat or Assault on Staff Member	800	N				SAFETY_ALERT	Threat or Assault on Staff Member	Threat or Assault on Staff Member
+6409	ACTV_RNC	Other	900	N				SAFETY_ALERT	Other	Other
+839	ETHNCTYC	White*	01	N		1	White	ETHNICITY_TYPE	White
+840	ETHNCTYC	White - Armenian*	01	N		1	White	ETHNICITY_TYPE	Armenian
+841	ETHNCTYC	White - Central American*	01	N		1	White	ETHNICITY_TYPE
+842	ETHNCTYC	White - European*	01	N		1	White	ETHNICITY_TYPE	European
+843	ETHNCTYC	White - Middle Eastern*	01	N		1	White	ETHNICITY_TYPE	Middle Eastern
+844	ETHNCTYC	White - Romanian*	01	N		1	White	ETHNICITY_TYPE	Romanian
+3163	ETHNCTYC	Central American	01	N		2	White	ETHNICITY_TYPE	Central American
+830	ETHNCTYC	Hispanic	02	N		2	White	ETHNICITY_TYPE	Hispanic
+3162	ETHNCTYC	Caribbean	02	N		2	White	ETHNICITY_TYPE
+3164	ETHNCTYC	Mexican	02	N		2	White	ETHNICITY_TYPE	Mexican
+3165	ETHNCTYC	South American	02	N		2	White	ETHNICITY_TYPE	South American
+823	ETHNCTYC	Black*	03	N		3	Black or African American	ETHNICITY_TYPE	Black or African American
+834	ETHNCTYC	Other Asian/Pacific Islander*	04	Y		17		ETHNICITY_TYPE
+835	ETHNCTYC	Hmong*	04	N		17	Native Hawaiian or Other Pacific Islander	ETHNICITY_TYPE	Hmong
+836	ETHNCTYC	Polynesian*	04	N		17	Native Hawaiian or Other Pacific Islander	ETHNICITY_TYPE	Other Pacific Islander
+5922	ETHNCTYC	Other Asian*	04	N		17	Asian	ETHNICITY_TYPE
+5923	ETHNCTYC	Other Pacific Islander*	04	N		17	Native Hawaiian or Other Pacific Islander	ETHNICITY_TYPE
+820	ETHNCTYC	Alaskan Native*	05	N		5	American Indian or Alaskan Native	ETHNICITY_TYPE	Alaskan Native
+821	ETHNCTYC	American Indian*	06	N		5	American Indian or Alaskan Native	ETHNICITY_TYPE	American Indian
+827	ETHNCTYC	Filipino*	07	N		7	Asian	ETHNICITY_TYPE	Filipino
+6351	ETHNCTYC	Unable to Determine*	99	N		99	Unable to Determine	ETHNICITY_TYPE
+6352	ETHNCTYC	Declines to State*	99	N		99	Declines to State	ETHNICITY_TYPE	Declined to answer
+6453	ETHNCTYC	Other Race Unknown*	99	N		99		ETHNICITY_TYPE	Unknown
+825	ETHNCTYC	Chinese*	C	N		6	Asian	ETHNICITY_TYPE	Chinese
+826	ETHNCTYC	Ethiopian*	E	N		3	Black or African American	ETHNICITY_TYPE	Ethiopian
+824	ETHNCTYC	Cambodian*	H	N		16	Asian	ETHNICITY_TYPE	Cambodian
+831	ETHNCTYC	Japanese*	J	N		8	Asian	ETHNICITY_TYPE	Japanese
+832	ETHNCTYC	Korean*	K	N		9	Asian	ETHNICITY_TYPE	Korean
+837	ETHNCTYC	Samoan*	M	N		10	Native Hawaiian or Other Pacific Islander	ETHNICITY_TYPE	Samoan
+822	ETHNCTYC	Asian Indian*	N	N		13	Asian	ETHNICITY_TYPE	Asian Indian
+829	ETHNCTYC	Hawaiian*	P	N		11	Native Hawaiian or Other Pacific Islander	ETHNICITY_TYPE	Hawaiian
+828	ETHNCTYC	Guamanian*	R	N		12	Native Hawaiian or Other Pacific Islander	ETHNICITY_TYPE
+833	ETHNCTYC	Laotian*	T	N		15	Asian	ETHNICITY_TYPE	Laotian
+838	ETHNCTYC	Vietnamese*	V	N		14	Asian	ETHNICITY_TYPE	Vietnamese
+1127	GVR_ORGC	Bureau of Indian Affairs	0001	N				AGENCY_TYPE
+1128	GVR_ORGC	Community Care Licensing	0002	N				AGENCY_TYPE
+2524	GVR_ORGC	County Licensing	0003	N				AGENCY_TYPE	Licensing	???
+1129	GVR_ORGC	Court	0004	N				AGENCY_TYPE
+1130	GVR_ORGC	Department of Interior	0005	N				AGENCY_TYPE
+1131	GVR_ORGC	Department of Justice	0006	N				AGENCY_TYPE	Department of justice	Department of Justice
+1132	GVR_ORGC	Department of Mental Health	0007	N				AGENCY_TYPE
+1133	GVR_ORGC	District Attorney	0008	N				AGENCY_TYPE	District attorney	District Attorney
+5316	GVR_ORGC	Eligibility Office	0009	N				AGENCY_TYPE
+1134	GVR_ORGC	Health Department	0010	N				AGENCY_TYPE
+1135	GVR_ORGC	Prison	0011	N				AGENCY_TYPE
+2525	GVR_ORGC	Probation	0012	N				AGENCY_TYPE
+1136	GVR_ORGC	Public Defender Office	0013	N				AGENCY_TYPE		

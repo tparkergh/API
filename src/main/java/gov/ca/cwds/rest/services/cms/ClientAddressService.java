@@ -1,6 +1,5 @@
 package gov.ca.cwds.rest.services.cms;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
@@ -25,8 +24,8 @@ import gov.ca.cwds.rest.api.Response;
 import gov.ca.cwds.rest.api.domain.Participant;
 import gov.ca.cwds.rest.business.rules.LACountyTrigger;
 import gov.ca.cwds.rest.business.rules.NonLACountyTriggers;
-import gov.ca.cwds.rest.services.CrudsService;
 import gov.ca.cwds.rest.services.ServiceException;
+import gov.ca.cwds.rest.services.TypedCrudsService;
 import gov.ca.cwds.rest.services.referentialintegrity.RIClientAddress;
 import gov.ca.cwds.rest.util.IdGenerator;
 
@@ -35,7 +34,8 @@ import gov.ca.cwds.rest.util.IdGenerator;
  * 
  * @author CWDS API Team
  */
-public class ClientAddressService implements CrudsService {
+public class ClientAddressService implements
+    TypedCrudsService<String, gov.ca.cwds.rest.api.domain.cms.ClientAddress, gov.ca.cwds.rest.api.domain.cms.ClientAddress> {
   private static final Logger LOGGER = LoggerFactory.getLogger(ClientService.class);
 
   private ClientAddressDao clientAddressDao;
@@ -77,8 +77,7 @@ public class ClientAddressService implements CrudsService {
   }
 
   @Override
-  public Response find(Serializable primaryKey) {
-    assert primaryKey instanceof String;
+  public gov.ca.cwds.rest.api.domain.cms.ClientAddress find(String primaryKey) {
 
     gov.ca.cwds.data.persistence.cms.ClientAddress persistedClientAddress =
         clientAddressDao.find(primaryKey);
@@ -110,8 +109,7 @@ public class ClientAddressService implements CrudsService {
   }
 
   @Override
-  public Response delete(Serializable primaryKey) {
-    assert primaryKey instanceof String;
+  public gov.ca.cwds.rest.api.domain.cms.ClientAddress delete(String primaryKey) {
     gov.ca.cwds.data.persistence.cms.ClientAddress persistedClientAddress =
         clientAddressDao.delete(primaryKey);
     if (persistedClientAddress != null) {
@@ -121,11 +119,10 @@ public class ClientAddressService implements CrudsService {
   }
 
   @Override
-  public Response create(Request request) {
-    assert request instanceof gov.ca.cwds.rest.api.domain.cms.ClientAddress;
+  public gov.ca.cwds.rest.api.domain.cms.ClientAddress create(
+      gov.ca.cwds.rest.api.domain.cms.ClientAddress request) {
 
-    gov.ca.cwds.rest.api.domain.cms.ClientAddress clientAddress =
-        (gov.ca.cwds.rest.api.domain.cms.ClientAddress) request;
+    gov.ca.cwds.rest.api.domain.cms.ClientAddress clientAddress = request;
     return create(clientAddress, null);
 
   }
@@ -139,7 +136,6 @@ public class ClientAddressService implements CrudsService {
    * @return the single timestamp
    */
   public Response createWithSingleTimestamp(Request request, Date timestamp) {
-    assert request instanceof gov.ca.cwds.rest.api.domain.cms.ClientAddress;
 
     gov.ca.cwds.rest.api.domain.cms.ClientAddress clientAddress =
         (gov.ca.cwds.rest.api.domain.cms.ClientAddress) request;
@@ -152,8 +148,8 @@ public class ClientAddressService implements CrudsService {
    * timestamp
    * 
    */
-  private Response create(gov.ca.cwds.rest.api.domain.cms.ClientAddress clientAddress,
-      Date timestamp) {
+  private gov.ca.cwds.rest.api.domain.cms.ClientAddress create(
+      gov.ca.cwds.rest.api.domain.cms.ClientAddress clientAddress, Date timestamp) {
     try {
       String lastUpdatedId = staffPersonIdRetriever.getStaffPersonId();
       ClientAddress managedClientAddress;
@@ -181,15 +177,13 @@ public class ClientAddressService implements CrudsService {
   }
 
   @Override
-  public Response update(Serializable primaryKey, Request request) {
-    assert primaryKey instanceof String;
-    assert request instanceof gov.ca.cwds.rest.api.domain.cms.ClientAddress;
-    gov.ca.cwds.rest.api.domain.cms.ClientAddress clientAddress =
-        (gov.ca.cwds.rest.api.domain.cms.ClientAddress) request;
+  public gov.ca.cwds.rest.api.domain.cms.ClientAddress update(String primaryKey,
+      gov.ca.cwds.rest.api.domain.cms.ClientAddress request) {
+    gov.ca.cwds.rest.api.domain.cms.ClientAddress clientAddress = request;
 
     try {
       String lastUpdatedId = staffPersonIdRetriever.getStaffPersonId();
-      ClientAddress managed = new ClientAddress((String) primaryKey, clientAddress, lastUpdatedId);
+      ClientAddress managed = new ClientAddress(primaryKey, clientAddress, lastUpdatedId);
       // checking the staffPerson county code
       StaffPerson staffperson = staffpersonDao.find(managed.getLastUpdatedId());
       if (staffperson != null

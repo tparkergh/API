@@ -1,7 +1,5 @@
 package gov.ca.cwds.rest.services.cms;
 
-import java.io.Serializable;
-
 import javax.persistence.EntityExistsException;
 import javax.persistence.EntityNotFoundException;
 
@@ -13,9 +11,8 @@ import com.google.inject.Inject;
 import gov.ca.cwds.data.Dao;
 import gov.ca.cwds.data.cms.ChildClientDao;
 import gov.ca.cwds.data.persistence.cms.ChildClient;
-import gov.ca.cwds.rest.api.Request;
-import gov.ca.cwds.rest.services.CrudsService;
 import gov.ca.cwds.rest.services.ServiceException;
+import gov.ca.cwds.rest.services.TypedCrudsService;
 import gov.ca.cwds.rest.services.referentialintegrity.RIChildClient;
 
 /**
@@ -23,7 +20,8 @@ import gov.ca.cwds.rest.services.referentialintegrity.RIChildClient;
  * 
  * @author CWDS API Team
  */
-public class ChildClientService implements CrudsService {
+public class ChildClientService implements
+    TypedCrudsService<String, gov.ca.cwds.rest.api.domain.cms.ChildClient, gov.ca.cwds.rest.api.domain.cms.ChildClient> {
 
   private static final Logger LOGGER = LoggerFactory.getLogger(ChildClientService.class);
 
@@ -53,11 +51,10 @@ public class ChildClientService implements CrudsService {
    * @see gov.ca.cwds.rest.services.CrudsService#create(gov.ca.cwds.rest.api.Request)
    */
   @Override
-  public gov.ca.cwds.rest.api.domain.cms.ChildClient create(Request request) {
-    assert request instanceof gov.ca.cwds.rest.api.domain.cms.ChildClient;
+  public gov.ca.cwds.rest.api.domain.cms.ChildClient create(
+      gov.ca.cwds.rest.api.domain.cms.ChildClient request) {
 
-    gov.ca.cwds.rest.api.domain.cms.ChildClient childClient =
-        (gov.ca.cwds.rest.api.domain.cms.ChildClient) request;
+    gov.ca.cwds.rest.api.domain.cms.ChildClient childClient = request;
 
     if (childClient.getVictimClientId() == null) {
       LOGGER.info("ChildClient cannot be created with null or empty VictimClientId");
@@ -82,8 +79,7 @@ public class ChildClientService implements CrudsService {
    * @see gov.ca.cwds.rest.services.CrudsService#find(java.io.Serializable)
    */
   @Override
-  public gov.ca.cwds.rest.api.domain.cms.ChildClient find(Serializable primaryKey) {
-    assert primaryKey instanceof String;
+  public gov.ca.cwds.rest.api.domain.cms.ChildClient find(String primaryKey) {
 
     gov.ca.cwds.data.persistence.cms.ChildClient persistedChildClient =
         childClientDao.find(primaryKey);
@@ -99,8 +95,8 @@ public class ChildClientService implements CrudsService {
    * @see gov.ca.cwds.rest.services.CrudsService#delete(java.io.Serializable)
    */
   @Override
-  public gov.ca.cwds.rest.api.domain.cms.ChildClient delete(Serializable primaryKey) {
-    assert primaryKey instanceof String;
+  public gov.ca.cwds.rest.api.domain.cms.ChildClient delete(String primaryKey) {
+
     gov.ca.cwds.data.persistence.cms.ChildClient persistedChildClient =
         childClientDao.delete(primaryKey);
     if (persistedChildClient != null) {
@@ -116,11 +112,9 @@ public class ChildClientService implements CrudsService {
    *      gov.ca.cwds.rest.api.Request)
    */
   @Override
-  public gov.ca.cwds.rest.api.domain.cms.ChildClient update(Serializable primaryKey,
-      Request request) {
-    assert request instanceof gov.ca.cwds.rest.api.domain.cms.ChildClient;
-    gov.ca.cwds.rest.api.domain.cms.ChildClient childClient =
-        (gov.ca.cwds.rest.api.domain.cms.ChildClient) request;
+  public gov.ca.cwds.rest.api.domain.cms.ChildClient update(String primaryKey,
+      gov.ca.cwds.rest.api.domain.cms.ChildClient request) {
+    gov.ca.cwds.rest.api.domain.cms.ChildClient childClient = request;
 
     try {
       String lastUpdatedId = staffPersonIdRetriever.getStaffPersonId();

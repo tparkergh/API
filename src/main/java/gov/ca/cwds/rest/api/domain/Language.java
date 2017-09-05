@@ -19,15 +19,16 @@ import io.swagger.annotations.ApiModelProperty;
  */
 @JsonSnakeCase
 public class Language extends ReportingDomain implements Request, Response {
+
   /**
    * Serialization version
    */
   private static final long serialVersionUID = 1L;
+
   @JsonProperty("language")
   @ApiModelProperty(example = "English")
   @Size(max = 50)
   String language;
-
 
   /**
    * Construct from persistence class

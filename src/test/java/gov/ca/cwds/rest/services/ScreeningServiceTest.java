@@ -7,10 +7,10 @@ import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
-import org.elasticsearch.action.ListenableActionFuture;
 import org.elasticsearch.action.index.IndexRequestBuilder;
-import org.elasticsearch.action.update.UpdateRequestBuilder;
+import org.elasticsearch.action.index.IndexResponse;
 import org.elasticsearch.client.Client;
+import org.elasticsearch.rest.RestStatus;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
@@ -40,13 +40,7 @@ public class ScreeningServiceTest {
   private IndexRequestBuilder indexRequestBuilder;
 
   @Mock
-  private UpdateRequestBuilder updateRequestBuilder;
-
-  @Mock
-  private ListenableActionFuture indexListenableActionFuture;
-
-  @Mock
-  private ListenableActionFuture updateListenableActionFuture;
+  private IndexResponse indexResponse;
 
   @Mock
   private ElasticsearchConfiguration esConfig;
@@ -61,10 +55,7 @@ public class ScreeningServiceTest {
     when(esConfig.getElasticsearchDocType()).thenReturn("screening");
 
     when(esClient.prepareIndex(any(), any(), any())).thenReturn(indexRequestBuilder);
-    when(esClient.prepareUpdate(any(), any(), any())).thenReturn(updateRequestBuilder);
-
-    when(indexRequestBuilder.execute()).thenReturn(indexListenableActionFuture);
-    when(updateRequestBuilder.execute()).thenReturn(updateListenableActionFuture);
+    when(indexRequestBuilder.get()).thenReturn(indexResponse);
 
     screeningService = new ScreeningService(esDao);
   }
@@ -91,21 +82,23 @@ public class ScreeningServiceTest {
 
   @Test
   public void testCreate() {
-    Screening screening = new Screening("abc", null, null, null, null, null, null);
+    when(indexResponse.status()).thenReturn(RestStatus.CREATED);
+    Screening screening = new Screening("abc", null, null, null, null, null, null, null);
     Screening actual = screeningService.create(screening);
     assertThat(actual, is(screening));
   }
 
   @Test
   public void testUpdate() {
-    Screening screening = new Screening("abc", null, null, null, null, null, null);
+    when(indexResponse.status()).thenReturn(RestStatus.OK);
+    Screening screening = new Screening("abc", null, null, null, null, null, null, null);
     Screening actual = screeningService.update("abc", screening);
     assertThat(actual, is(screening));
   }
 
   @Test
   public void testUpdatePrimaryKeyValueMismatch() {
-    Screening screening = new Screening("abc", null, null, null, null, null, null);
+    Screening screening = new Screening("abc", null, null, null, null, null, null, null);
     try {
       screeningService.update("abcd", screening);
       fail("Expected exception");

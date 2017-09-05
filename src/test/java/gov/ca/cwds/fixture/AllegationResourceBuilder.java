@@ -10,8 +10,8 @@ public class AllegationResourceBuilder {
   String legacyId = "";
   long victimPersonId = 5432;
   long perpetratorPersonId = 0;
-  Short type = 1373;
-  String county = "Sacramento";
+  Short injuryHarmType = 2178;
+  String countySpecificCode = "34";
 
   /**
    * @param legacySourceTable - legacySourceTable
@@ -50,20 +50,20 @@ public class AllegationResourceBuilder {
   }
 
   /**
-   * @param type - type
-   * @return the type
+   * @param injuryHarmType - injuryHarmType
+   * @return the injuryHarmType
    */
-  public AllegationResourceBuilder setType(Short type) {
-    this.type = type;
+  public AllegationResourceBuilder setInjuryHarmType(Short injuryHarmType) {
+    this.injuryHarmType = injuryHarmType;
     return this;
   }
 
   /**
-   * @param county - county
-   * @return trhe county
+   * @param countySpecificCode - countySpecificCode
+   * @return trhe countySpecificCode
    */
-  public AllegationResourceBuilder setCounty(String county) {
-    this.county = county;
+  public AllegationResourceBuilder setCountySpecificCode(String countySpecificCode) {
+    this.countySpecificCode = countySpecificCode;
     return this;
   }
 
@@ -72,6 +72,6 @@ public class AllegationResourceBuilder {
    */
   public gov.ca.cwds.rest.api.domain.Allegation createAllegation() {
     return new gov.ca.cwds.rest.api.domain.Allegation(legacySourceTable, legacyId, victimPersonId,
-        perpetratorPersonId, type, county);
+        perpetratorPersonId, injuryHarmType, countySpecificCode);
   }
 }

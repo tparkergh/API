@@ -1,16 +1,6 @@
 package gov.ca.cwds.rest.resources.cms;
 
 import static gov.ca.cwds.rest.core.Api.RESOURCE_RELATIONSHIPS;
-import gov.ca.cwds.inject.ClientRelationshipServiceBackedResource;
-import gov.ca.cwds.rest.api.domain.cms.ClientRelationship;
-import gov.ca.cwds.rest.api.domain.cms.PostedClientRelationship;
-import gov.ca.cwds.rest.resources.ResourceDelegate;
-import io.dropwizard.hibernate.UnitOfWork;
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
-import io.swagger.annotations.ApiParam;
-import io.swagger.annotations.ApiResponse;
-import io.swagger.annotations.ApiResponses;
 
 import javax.validation.Valid;
 import javax.ws.rs.Consumes;
@@ -26,12 +16,24 @@ import org.apache.http.HttpStatus;
 
 import com.google.inject.Inject;
 
+import gov.ca.cwds.inject.ClientRelationshipServiceBackedResource;
+import gov.ca.cwds.rest.api.domain.cms.ClientRelationship;
+import gov.ca.cwds.rest.api.domain.cms.PostedClientRelationship;
+import gov.ca.cwds.rest.resources.TypedResourceDelegate;
+import io.dropwizard.hibernate.UnitOfWork;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
+import io.swagger.annotations.ApiResponse;
+import io.swagger.annotations.ApiResponses;
+
 /**
  * A resource providing a RESTful interface for {@link ClientRelationship}. It delegates functions
- * to {@link ResourceDelegate}. It decorates the {@link ResourceDelegate} not in functionality but
- * with @see <a href= "https://github.com/swagger-api/swagger-core/wiki/Annotations-1.5.X">Swagger
- * Annotations</a> and <a
- * href="https://jersey.java.net/documentation/latest/user-guide.html#jaxrs-resources">Jersey
+ * to {@link TypedResourceDelegate}. It decorates the {@link TypedResourceDelegate} not in
+ * functionality but with @see
+ * <a href= "https://github.com/swagger-api/swagger-core/wiki/Annotations-1.5.X">Swagger
+ * Annotations</a> and
+ * <a href="https://jersey.java.net/documentation/latest/user-guide.html#jaxrs-resources">Jersey
  * Annotations</a>
  * 
  * @author CWDS API Team
@@ -42,17 +44,17 @@ import com.google.inject.Inject;
 @Consumes(MediaType.APPLICATION_JSON)
 public class ClientRelationshipResource {
 
-  private ResourceDelegate resourceDelegate;
+  private TypedResourceDelegate<String, ClientRelationship> typedResourceDelegate;
 
   /**
    * Constructor
    * 
-   * @param resourceDelegate The resourceDelegate to delegate to.
+   * @param typedResourceDelegate The typedResourceDelegate to delegate to.
    */
   @Inject
   public ClientRelationshipResource(
-      @ClientRelationshipServiceBackedResource ResourceDelegate resourceDelegate) {
-    this.resourceDelegate = resourceDelegate;
+      @ClientRelationshipServiceBackedResource TypedResourceDelegate<String, ClientRelationship> typedResourceDelegate) {
+    this.typedResourceDelegate = typedResourceDelegate;
   }
 
   /**
@@ -68,11 +70,11 @@ public class ClientRelationshipResource {
   @ApiResponses(value = {@ApiResponse(code = 401, message = "Not Authorized"),
       @ApiResponse(code = 404, message = "Not found"),
       @ApiResponse(code = 406, message = "Accept Header not supported")})
-  @ApiOperation(value = "Find Client Relationship by id",
-      response = PostedClientRelationship.class, code = 200)
+  @ApiOperation(value = "Find Client Relationship by id", response = PostedClientRelationship.class,
+      code = 200)
   public Response get(@PathParam("id") @ApiParam(required = true, name = "id",
       value = "The id of the Client Relationship to find") String id) {
-    return resourceDelegate.get(id);
+    return typedResourceDelegate.get(id);
   }
 
 
@@ -95,7 +97,7 @@ public class ClientRelationshipResource {
       response = PostedClientRelationship.class)
   public Response create(
       @Valid @ApiParam(hidden = false, required = true) ClientRelationship clientRelationship) {
-    return resourceDelegate.create(clientRelationship);
+    return typedResourceDelegate.create(clientRelationship);
   }
 
 

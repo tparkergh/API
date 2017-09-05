@@ -8,6 +8,7 @@ import java.util.Set;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
+import org.apache.commons.lang3.StringUtils;
 import org.hibernate.validator.constraints.NotBlank;
 import org.hibernate.validator.constraints.NotEmpty;
 import org.joda.time.DateTime;
@@ -129,9 +130,7 @@ public class Client extends ReportingDomain implements Request, Response {
       example = "first name")
   private String commonFirstName;
 
-  @NotNull
-  @Size(min = 1, max = 20,
-      message = "commonMiddleName size must be between 1 and 20 or assign the value to default Space")
+  @Size(min = 0, max = 20)
   @ApiModelProperty(required = true, readOnly = false, value = "", example = "middle name")
   private String commonMiddleName;
 
@@ -370,9 +369,7 @@ public class Client extends ReportingDomain implements Request, Response {
   @ApiModelProperty(required = true, readOnly = false, value = "", example = "N")
   private String socialSecurityNumChangedCode;
 
-  @NotNull
-  @Size(min = 1, max = 9,
-      message = "socialSecurityNumber size must be between 1 and 9 or assign the value to defalut 0")
+  @Size(min = 0, max = 9)
   @ApiModelProperty(required = true, readOnly = false, value = "", example = "123456789")
   private String socialSecurityNumber;
 
@@ -639,7 +636,8 @@ public class Client extends ReportingDomain implements Request, Response {
     this.clientIndexNumber = persistedClient.getClientIndexNumber();
     this.commentDescription = persistedClient.getCommentDescription();
     this.commonFirstName = persistedClient.getCommonFirstName();
-    this.commonMiddleName = persistedClient.getCommonMiddleName();
+    this.commonMiddleName = StringUtils.isBlank(persistedClient.getCommonMiddleName()) ? ""
+        : persistedClient.getCommonMiddleName();
     this.commonLastName = persistedClient.getCommonLastName();
     this.confidentialityActionDate =
         DomainChef.cookDate(persistedClient.getConfidentialityActionDate());
@@ -691,9 +689,11 @@ public class Client extends ReportingDomain implements Request, Response {
     this.prevRegionalCenterIndicator =
         DomainChef.uncookBooleanString(persistedClient.getPrevRegionalCenterIndicator());
     this.primaryEthnicityType = persistedClient.getPrimaryEthnicityType();
-    this.primaryLanguage = persistedClient.getPrimaryLanguageType() != null ?  persistedClient.getPrimaryLanguageType()  : 0;
+    this.primaryLanguage = persistedClient.getPrimaryLanguageType() != null
+        ? persistedClient.getPrimaryLanguageType() : 0;
     this.religionType = persistedClient.getReligionType();
-    this.secondaryLanguage = persistedClient.getSecondaryLanguageType() != null ?  persistedClient.getSecondaryLanguageType()  : 0;
+    this.secondaryLanguage = persistedClient.getSecondaryLanguageType() != null
+        ? persistedClient.getSecondaryLanguageType() : 0;
     this.sensitiveHlthInfoOnFileIndicator =
         DomainChef.uncookBooleanString(persistedClient.getSensitiveHlthInfoOnFileIndicator());
     this.sensitivityIndicator = persistedClient.getSensitivityIndicator();

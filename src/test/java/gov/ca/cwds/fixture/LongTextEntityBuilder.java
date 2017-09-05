@@ -9,7 +9,7 @@ public class LongTextEntityBuilder {
 
   /**
    *
-   * @param id
+   * @param id key
    * @return the builder
    */
   public LongTextEntityBuilder setId(String id) {
@@ -19,7 +19,7 @@ public class LongTextEntityBuilder {
 
   /**
    *
-   * @param countySpecificCode
+   * @param countySpecificCode county code
    * @return the builder
    */
   public LongTextEntityBuilder setCountySpecificCode(String countySpecificCode) {
@@ -29,7 +29,7 @@ public class LongTextEntityBuilder {
 
   /**
    *
-   * @param textDescription
+   * @param textDescription description
    * @return the builder
    */
   public LongTextEntityBuilder setTextDescription(String textDescription) {
@@ -41,7 +41,7 @@ public class LongTextEntityBuilder {
    *
    * @return built LongText object
    */
-  public LongText build(){
+  public LongText build() {
     return new LongText(id, countySpecificCode, textDescription);
   }
 }

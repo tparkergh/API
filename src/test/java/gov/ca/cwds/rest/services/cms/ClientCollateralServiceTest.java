@@ -21,6 +21,7 @@ import org.mockito.invocation.InvocationOnMock;
 import org.mockito.stubbing.Answer;
 
 import gov.ca.cwds.data.cms.ClientCollateralDao;
+import gov.ca.cwds.fixture.ClientCollateralResourceBuilder;
 import gov.ca.cwds.rest.api.Response;
 import gov.ca.cwds.rest.api.domain.cms.ClientCollateral;
 import gov.ca.cwds.rest.api.domain.cms.PostedClientCollateral;
@@ -93,7 +94,8 @@ public class ClientCollateralServiceTest {
   @Test
   public void clientCollateralServiceCreateThrowsEntityExistsException() throws Exception {
     try {
-      ClientCollateral clientCollateralRequest = validClientCollateralDomainObject();
+      ClientCollateral clientCollateralRequest =
+          new ClientCollateralResourceBuilder().buildClientCollateral();
 
       when(clientCollateralDao.create(any())).thenThrow(EntityExistsException.class);
       clientCollateralService.create(clientCollateralRequest);
@@ -106,7 +108,8 @@ public class ClientCollateralServiceTest {
   @Test
   public void createReturnsPostedClientCollateralClass() throws Exception {
     String id = "ABC";
-    ClientCollateral clientCollateralDomain = validClientCollateralDomainObject();
+    ClientCollateral clientCollateralDomain =
+        new ClientCollateralResourceBuilder().buildClientCollateral();
     gov.ca.cwds.data.persistence.cms.ClientCollateral toCreate =
         new gov.ca.cwds.data.persistence.cms.ClientCollateral(id, clientCollateralDomain,
             "2017-01-07");
@@ -123,7 +126,8 @@ public class ClientCollateralServiceTest {
   @Test
   public void createReturnsNonNull() throws Exception {
     String id = "ABC";
-    ClientCollateral clientCollateralDomain = validClientCollateralDomainObject();
+    ClientCollateral clientCollateralDomain =
+        new ClientCollateralResourceBuilder().buildClientCollateral();
     gov.ca.cwds.data.persistence.cms.ClientCollateral toCreate =
         new gov.ca.cwds.data.persistence.cms.ClientCollateral(id, clientCollateralDomain,
             "2017-01-07");
@@ -140,7 +144,8 @@ public class ClientCollateralServiceTest {
   @Test
   public void createReturnsCorrectPostedPerson() throws Exception {
     String id = "ABC";
-    ClientCollateral clientCollateralDomain = validClientCollateralDomainObject();
+    ClientCollateral clientCollateralDomain =
+        new ClientCollateralResourceBuilder().buildClientCollateral();
     gov.ca.cwds.data.persistence.cms.ClientCollateral toCreate =
         new gov.ca.cwds.data.persistence.cms.ClientCollateral(id, clientCollateralDomain,
             "2017-01-07");
@@ -158,7 +163,8 @@ public class ClientCollateralServiceTest {
   @Test
   public void failsWhenPostedClientCollateralIdBlank() throws Exception {
     try {
-      ClientCollateral clientCollateralDomain = validClientCollateralDomainObject();
+      ClientCollateral clientCollateralDomain =
+          new ClientCollateralResourceBuilder().buildClientCollateral();
       gov.ca.cwds.data.persistence.cms.ClientCollateral toCreate =
           new gov.ca.cwds.data.persistence.cms.ClientCollateral("   ", clientCollateralDomain,
               "2017-01-07");
@@ -178,7 +184,8 @@ public class ClientCollateralServiceTest {
   @Test
   public void failsWhenPostedClientCollateralIdNull() throws Exception {
     try {
-      ClientCollateral clientCollateralDomain = validClientCollateralDomainObject();
+      ClientCollateral clientCollateralDomain =
+          new ClientCollateralResourceBuilder().buildClientCollateral();
       gov.ca.cwds.data.persistence.cms.ClientCollateral toCreate =
           new gov.ca.cwds.data.persistence.cms.ClientCollateral(null, clientCollateralDomain,
               "2017-01-07");
@@ -198,7 +205,8 @@ public class ClientCollateralServiceTest {
   @Test
   public void failsWhenPostedClientCollateralIdEmpty() throws Exception {
     try {
-      ClientCollateral clientCollateralDomain = validClientCollateralDomainObject();
+      ClientCollateral clientCollateralDomain =
+          new ClientCollateralResourceBuilder().buildClientCollateral();
       gov.ca.cwds.data.persistence.cms.ClientCollateral toCreate =
           new gov.ca.cwds.data.persistence.cms.ClientCollateral("", clientCollateralDomain,
               "2017-01-07");
@@ -220,7 +228,8 @@ public class ClientCollateralServiceTest {
   @SuppressWarnings("javadoc")
   @Test
   public void createReturnsGeneratedId() throws Exception {
-    ClientCollateral clientCollateralDomain = validClientCollateralDomainObject();
+    ClientCollateral clientCollateralDomain =
+        new ClientCollateralResourceBuilder().buildClientCollateral();
     when(clientCollateralDao.create(any(gov.ca.cwds.data.persistence.cms.ClientCollateral.class)))
         .thenAnswer(new Answer<gov.ca.cwds.data.persistence.cms.ClientCollateral>() {
 

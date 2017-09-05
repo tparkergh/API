@@ -8,6 +8,7 @@ import static org.hamcrest.Matchers.is;
 import java.io.IOException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.Date;
 
 import org.junit.After;
 import org.junit.ClassRule;
@@ -60,7 +61,7 @@ public class TickleTest {
         affectedByThirdId, dueDate, noteText, tickleMessageType);
 
     gov.ca.cwds.data.persistence.cms.Tickle pt =
-        new gov.ca.cwds.data.persistence.cms.Tickle(id, domain, "lastUpdatedId");
+        new gov.ca.cwds.data.persistence.cms.Tickle(id, domain, "lastUpdatedId", new Date());
 
     assertThat(domain.getAffectedByCaseOrReferralId(),
         is(equalTo(pt.getAffectedByCaseOrReferralId())));

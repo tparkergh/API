@@ -18,7 +18,7 @@ import org.slf4j.LoggerFactory;
 
 import com.google.inject.Inject;
 
-import gov.ca.cwds.inject.IntakePersonAutoCompleteServiceResource;
+import gov.ca.cwds.inject.IntakeLovServiceResource;
 import gov.ca.cwds.rest.api.ApiException;
 import gov.ca.cwds.rest.api.domain.es.AutoCompletePersonRequest;
 import gov.ca.cwds.rest.api.domain.es.AutoCompletePersonResponse;
@@ -95,7 +95,7 @@ public class AutoCompletePersonResource {
    */
   @Inject
   public AutoCompletePersonResource(
-      @IntakePersonAutoCompleteServiceResource SimpleResourceDelegate<String, AutoCompletePersonRequest, AutoCompletePersonResponse, AutoCompletePersonService> resourceDelegate) {
+      @IntakeLovServiceResource SimpleResourceDelegate<String, AutoCompletePersonRequest, AutoCompletePersonResponse, AutoCompletePersonService> resourceDelegate) {
     this.resourceDelegate = resourceDelegate;
   }
 

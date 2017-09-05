@@ -27,19 +27,17 @@ import gov.ca.cwds.data.persistence.cms.CmsPersistentObject;
 public class ReferralClientDeliveredServiceEmbeddable implements Serializable {
 
   /**
-   * 
+   * Default.
    */
   private static final long serialVersionUID = 1L;
 
-  protected static final int CMS_ID_LEN = CmsPersistentObject.CMS_ID_LEN;
-
-  @Column(name = "FKDL_SVC_T", length = CMS_ID_LEN)
+  @Column(name = "FKDL_SVC_T", length = CmsPersistentObject.CMS_ID_LEN)
   private String deliveredServiceId;
 
-  @Column(name = "FKREFR_CL0", length = CMS_ID_LEN)
+  @Column(name = "FKREFR_CL0", length = CmsPersistentObject.CMS_ID_LEN)
   private String referralId;
 
-  @Column(name = "FKREFR_CLT", length = CMS_ID_LEN)
+  @Column(name = "FKREFR_CLT", length = CmsPersistentObject.CMS_ID_LEN)
   private String clientId;
 
   /**

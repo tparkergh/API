@@ -85,6 +85,11 @@ public final class SystemCodeCategoryId {
   public static final String APPROVAL_STATUS_TYPE = "APV_STC";
 
   /**
+   * Contact Type
+   */
+  public static final String CONTACT_TYPE = "CNT_TYPC";
+
+  /**
    * Private constructor
    */
   private SystemCodeCategoryId() {}

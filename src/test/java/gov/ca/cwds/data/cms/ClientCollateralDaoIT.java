@@ -22,6 +22,7 @@ import org.junit.Test;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import gov.ca.cwds.data.persistence.cms.ClientCollateral;
+import gov.ca.cwds.fixture.ClientCollateralResourceBuilder;
 import io.dropwizard.jackson.Jackson;
 
 /**
@@ -101,8 +102,7 @@ public class ClientCollateralDaoIT {
   @Test
   public void testCreate() throws Exception {
     gov.ca.cwds.rest.api.domain.cms.ClientCollateral validDomainClientCollateral =
-        new gov.ca.cwds.rest.api.domain.cms.ClientCollateral("Y", (short) 511, "comment",
-            "ABC1234567", "ABC123458");
+        new ClientCollateralResourceBuilder().buildClientCollateral();
 
     ClientCollateral clientCollateral =
         new ClientCollateral(validDomainClientCollateral.getActiveIndicator(),
@@ -119,8 +119,7 @@ public class ClientCollateralDaoIT {
   public void testCreateExistingEntityException() throws Exception {
 
     gov.ca.cwds.rest.api.domain.cms.ClientCollateral validDomainClientCollateral =
-        new gov.ca.cwds.rest.api.domain.cms.ClientCollateral("Y", (short) 511, "comment",
-            "ABC1234567", "ABC123458");
+        new ClientCollateralResourceBuilder().buildClientCollateral();
 
     ClientCollateral clientCollateral =
         new ClientCollateral(validDomainClientCollateral.getActiveIndicator(),
@@ -158,8 +157,7 @@ public class ClientCollateralDaoIT {
   @Test
   public void testUpdate() throws Exception {
     gov.ca.cwds.rest.api.domain.cms.ClientCollateral validDomainClientCollateral =
-        new gov.ca.cwds.rest.api.domain.cms.ClientCollateral("Y", (short) 511, "comment",
-            "ABC1234567", "ABC123458");
+        new ClientCollateralResourceBuilder().buildClientCollateral();
 
     ClientCollateral clientCollateral =
         new ClientCollateral(validDomainClientCollateral.getActiveIndicator(),
@@ -176,8 +174,7 @@ public class ClientCollateralDaoIT {
   @Test(expected = EntityNotFoundException.class)
   public void testUpdateEntityNotFoundException() throws Exception {
     gov.ca.cwds.rest.api.domain.cms.ClientCollateral validDomainClientCollateral =
-        new gov.ca.cwds.rest.api.domain.cms.ClientCollateral("Y", (short) 511, "comment",
-            "ABC1234567", "ABC123458");
+        new ClientCollateralResourceBuilder().buildClientCollateral();
 
     ClientCollateral clientCollateral =
         new ClientCollateral(validDomainClientCollateral.getActiveIndicator(),

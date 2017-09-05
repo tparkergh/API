@@ -27,7 +27,7 @@ public class RIClientCollateralTest {
   public ExpectedException expectedException = ExpectedException.none();
 
   /**
-   * @throws Exception
+   * @throws Exception on generic error
    */
   @Test
   public void type() throws Exception {
@@ -35,7 +35,7 @@ public class RIClientCollateralTest {
   }
 
   /**
-   * @throws Exception
+   * @throws Exception on generic error
    */
   @Test
   public void instantiation() throws Exception {

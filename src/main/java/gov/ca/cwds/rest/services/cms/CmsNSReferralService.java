@@ -76,7 +76,7 @@ public class CmsNSReferralService implements CrudsService {
     Map<CrudsService, Request> cmsRequest = new HashMap<>();
     Map<CrudsService, Request> nsRequest = new HashMap<>();
 
-    cmsRequest.put(referralService, cmsReferral.getReferral());
+    cmsRequest.put((CrudsService) referralService, cmsReferral.getReferral());
     nsRequest.put(personService, cmsReferral.getPerson());
 
     Map<String, Map<CrudsService, Response>> response =

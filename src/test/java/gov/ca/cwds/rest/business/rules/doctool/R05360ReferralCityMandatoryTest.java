@@ -8,6 +8,10 @@ import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
+import gov.ca.cwds.helper.CmsIdGenerator;
+import gov.ca.cwds.rest.api.domain.Participant;
+import gov.ca.cwds.rest.services.ClientParticipants;
+import gov.ca.cwds.rest.services.ParticipantService;
 import java.util.Set;
 
 import javax.validation.Validation;
@@ -109,6 +113,7 @@ public class R05360ReferralCityMandatoryTest {
   private LongTextService longTextService;
   private AssignmentService assignmentService;
   private RIChildClient riChildClient;
+  private ParticipantService participantService;
   private RIAllegationPerpetratorHistory riAllegationPerpetratorHistory;
   private RIAssignment riAssignment;
   private RIClientAddress riClientAddress;
@@ -236,6 +241,8 @@ public class R05360ReferralCityMandatoryTest {
     reminders = mock(Reminders.class);
     riReferral = mock(RIReferral.class);
 
+    participantService = mock(ParticipantService.class);
+
     referralService = new ReferralService(referralDao, nonLACountyTriggers, laCountyTrigger,
         triggerTablesDao, staffpersonDao, staffPersonIdRetriever, assignmentService, validator,
         drmsDocumentService, addressService, longTextService, riReferral);
@@ -243,8 +250,8 @@ public class R05360ReferralCityMandatoryTest {
     screeningToReferralService = new ScreeningToReferralService(referralService, clientService,
         allegationService, crossReportService, referralClientService, reporterService,
         addressService, clientAddressService, childClientService, assignmentService,
-        Validation.buildDefaultValidatorFactory().getValidator(), referralDao, new MessageBuilder(),
-        allegationPerpetratorHistoryService, reminders);
+        participantService, Validation.buildDefaultValidatorFactory().getValidator(), referralDao,
+        new MessageBuilder(), allegationPerpetratorHistoryService, reminders);
   }
 
   /**
@@ -374,6 +381,8 @@ public class R05360ReferralCityMandatoryTest {
         fixture("fixtures/domain/ScreeningToReferral/invalid/addressCityEmpty.json"),
         ScreeningToReferral.class);
 
+    mockParticipantService(screeningToReferral);
+
     Boolean theErrorDetected = false;
     try {
       Response response = screeningToReferralService.create(screeningToReferral);
@@ -496,6 +505,8 @@ public class R05360ReferralCityMandatoryTest {
     ScreeningToReferral screeningToReferral = MAPPER.readValue(
         fixture("fixtures/domain/ScreeningToReferral/invalid/participantAddressCityEmpty.json"),
         ScreeningToReferral.class);
+
+    mockParticipantService(screeningToReferral);
 
     Boolean theErrorDetected = false;
     try {
@@ -620,6 +631,8 @@ public class R05360ReferralCityMandatoryTest {
         fixture("fixtures/domain/ScreeningToReferral/invalid/addressStreetNumberEmpty.json"),
         ScreeningToReferral.class);
 
+    mockParticipantService(screeningToReferral);
+
     Boolean theErrorDetected = false;
     try {
       Response response = screeningToReferralService.create(screeningToReferral);
@@ -742,6 +755,8 @@ public class R05360ReferralCityMandatoryTest {
     ScreeningToReferral screeningToReferral = MAPPER.readValue(
         fixture("fixtures/domain/ScreeningToReferral/invalid/addressStreetNameEmpty.json"),
         ScreeningToReferral.class);
+
+    mockParticipantService(screeningToReferral);
 
     Boolean theErrorDetected = false;
     try {
@@ -866,6 +881,8 @@ public class R05360ReferralCityMandatoryTest {
         fixture("fixtures/domain/ScreeningToReferral/invalid/reporterAddressStreetNameEmpty.json"),
         ScreeningToReferral.class);
 
+    mockParticipantService(screeningToReferral);
+
     Boolean theErrorDetected = false;
     try {
       Response response = screeningToReferralService.create(screeningToReferral);
@@ -989,6 +1006,8 @@ public class R05360ReferralCityMandatoryTest {
         fixture("fixtures/domain/ScreeningToReferral/invalid/addressStreetNumberEmpty.json"),
         ScreeningToReferral.class);
 
+    mockParticipantService(screeningToReferral);
+
     Boolean theErrorDetected = false;
     try {
       Response response = screeningToReferralService.create(screeningToReferral);
@@ -1000,5 +1019,18 @@ public class R05360ReferralCityMandatoryTest {
     }
   }
 
+  private void mockParticipantService(ScreeningToReferral screeningToReferral){
+
+    ClientParticipants clientParticipants = new ClientParticipants();
+    Set <Participant>participants = screeningToReferral.getParticipants();
+
+    CmsIdGenerator generator = new CmsIdGenerator();
+    for(Participant participant : participants){
+      participant.setLegacyId(generator.generate());
+    }
+    clientParticipants.addParticipants(participants);
+    when(participantService.saveParticipants(any(), any(), any(), any(), any()))
+        .thenReturn(clientParticipants);
+  }
 
 }
