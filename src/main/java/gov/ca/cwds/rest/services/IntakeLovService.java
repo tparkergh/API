@@ -40,7 +40,7 @@ public class IntakeLovService extends SimpleResourceService<String, IntakeLov, I
       return new IntakeLovResponse(
           dao.findAll().stream().map(IntakeLov::new).collect(Collectors.toList()));
     } catch (Exception e) {
-      throw new ServiceException("Something went wrong ...", e);
+      throw new ServiceException("ERROR handling find", e);
     }
   }
 
