@@ -54,4 +54,14 @@ public class IntakeLovServiceTest {
     assertThat(actual, is(equalTo(expected)));
   }
 
+  @Test(expected = ServiceException.class)
+  public void handleFind_error() throws Exception {
+    IntakeLovDao dao = mock(IntakeLovDao.class);
+    when(dao.findAll()).thenThrow(ServiceException.class);
+
+    IntakeLovService target = new IntakeLovService(dao);
+    String searchForThis = null;
+    IntakeLovResponse actual = target.handleFind(searchForThis);
+  }
+
 }
