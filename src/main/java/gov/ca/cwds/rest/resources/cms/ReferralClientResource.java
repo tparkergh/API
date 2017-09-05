@@ -22,7 +22,7 @@ import com.google.inject.Inject;
 
 import gov.ca.cwds.inject.ReferralClientServiceBackedResource;
 import gov.ca.cwds.rest.api.domain.cms.ReferralClient;
-import gov.ca.cwds.rest.resources.ResourceDelegate;
+import gov.ca.cwds.rest.resources.TypedResourceDelegate;
 import io.dropwizard.hibernate.UnitOfWork;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -44,17 +44,17 @@ import io.swagger.annotations.ResponseHeader;
 
 public class ReferralClientResource {
 
-  private ResourceDelegate resourceDelegate;
+  private TypedResourceDelegate<String, ReferralClient> typedResourceDelegate;
 
   /**
    * Constructor
    * 
-   * @param resourceDelegate - the resourceDelegate to delegate to.
+   * @param typedResourceDelegate - the typedResourceDelegate to delegate to.
    */
   @Inject
   public ReferralClientResource(
-      @ReferralClientServiceBackedResource ResourceDelegate resourceDelegate) {
-    this.resourceDelegate = resourceDelegate;
+      @ReferralClientServiceBackedResource TypedResourceDelegate<String, ReferralClient> typedResourceDelegate) {
+    this.typedResourceDelegate = typedResourceDelegate;
 
   }
 
@@ -82,7 +82,7 @@ public class ReferralClientResource {
       @PathParam("clientId") @ApiParam(required = true, value = "The client id",
           example = "td89slaz98") String clientId) {
     String pk = MessageFormat.format("referralId={0},clientId={1}", referralId, clientId);
-    return resourceDelegate.get(pk);
+    return typedResourceDelegate.get(pk);
   }
 
   /**
@@ -107,7 +107,7 @@ public class ReferralClientResource {
       @PathParam("clientId") @ApiParam(required = true, value = "The client id",
           example = "td89slaz98") String clientId) {
     String pk = MessageFormat.format("referralId={0},clientId={1}", referralId, clientId);
-    return resourceDelegate.delete(pk);
+    return typedResourceDelegate.delete(pk);
   }
 
   /**
@@ -132,7 +132,7 @@ public class ReferralClientResource {
       response = Object.class)
   public Response update(
       @Valid @ApiParam(hidden = false, required = true) ReferralClient referralClient) {
-    return resourceDelegate.update(null, referralClient);
+    return typedResourceDelegate.update(null, referralClient);
   }
 
   /**
@@ -158,6 +158,6 @@ public class ReferralClientResource {
           response = Object.class))
   public Response create(
       @Valid @ApiParam(hidden = false, required = true) ReferralClient referral) {
-    return resourceDelegate.create(referral);
+    return typedResourceDelegate.create(referral);
   }
 }

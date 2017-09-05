@@ -74,6 +74,8 @@ public class DrmsDocumentDaoIT {
 
   /**
    * Find JUnit test
+   * 
+   * @throws Exception like omg whatever lol
    */
   @Test
   public void testFind() throws Exception {
@@ -89,6 +91,8 @@ public class DrmsDocumentDaoIT {
 
   /**
    * Create JUnit test
+   * 
+   * @throws Exception some incredibly professional yet epically vague comment
    */
   @Test
   public void testCreate() throws Exception {
@@ -118,6 +122,8 @@ public class DrmsDocumentDaoIT {
 
   /**
    * Delete JUnit test
+   * 
+   * @throws Exception whatever -- it's a unit test
    */
   @Test
   public void testDelete() throws Exception {
@@ -133,6 +139,8 @@ public class DrmsDocumentDaoIT {
 
   /**
    * Update JUnit test
+   * 
+   * @throws Exception it's like totaly, you know, a unit test
    */
   @Test
   public void testUpdate() throws Exception {

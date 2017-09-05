@@ -20,7 +20,7 @@ import com.google.inject.Inject;
 
 import gov.ca.cwds.inject.ClientServiceBackedResource;
 import gov.ca.cwds.rest.api.domain.cms.Client;
-import gov.ca.cwds.rest.resources.ResourceDelegate;
+import gov.ca.cwds.rest.resources.TypedResourceDelegate;
 import io.dropwizard.hibernate.UnitOfWork;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -30,8 +30,9 @@ import io.swagger.annotations.ApiResponses;
 
 /**
  * A resource providing a RESTful interface for {@link Client}. It delegates functions to
- * {@link ResourceDelegate}. It decorates the {@link ResourceDelegate} not in functionality but
- * with @see <a href= "https://github.com/swagger-api/swagger-core/wiki/Annotations-1.5.X">Swagger
+ * {@link TypedResourceDelegate}. It decorates the {@link TypedResourceDelegate} not in
+ * functionality but with @see
+ * <a href= "https://github.com/swagger-api/swagger-core/wiki/Annotations-1.5.X">Swagger
  * Annotations</a> and
  * <a href="https://jersey.java.net/documentation/latest/user-guide.html#jaxrs-resources">Jersey
  * Annotations</a>
@@ -44,16 +45,17 @@ import io.swagger.annotations.ApiResponses;
 @Consumes(MediaType.APPLICATION_JSON)
 public class ClientResource {
 
-  private ResourceDelegate resourceDelegate;
+  private TypedResourceDelegate<String, Client> typedResourceDelegate;
 
   /**
    * Constructor
    * 
-   * @param resourceDelegate The resourceDelegate to delegate to.
+   * @param typedResourceDelegate The typedResourceDelegate to delegate to.
    */
   @Inject
-  public ClientResource(@ClientServiceBackedResource ResourceDelegate resourceDelegate) {
-    this.resourceDelegate = resourceDelegate;
+  public ClientResource(
+      @ClientServiceBackedResource TypedResourceDelegate<String, Client> typedResourceDelegate) {
+    this.typedResourceDelegate = typedResourceDelegate;
   }
 
   /**
@@ -72,7 +74,7 @@ public class ClientResource {
   @ApiOperation(value = "Find client by id", response = Client.class, code = 200)
   public Response get(@PathParam("id") @ApiParam(required = true, name = "id",
       value = "The id of the Client to find") String id) {
-    return resourceDelegate.get(id);
+    return typedResourceDelegate.get(id);
   }
 
   /**
@@ -89,7 +91,7 @@ public class ClientResource {
   @ApiOperation(value = "Delete Client", code = HttpStatus.SC_OK, response = Object.class)
   public Response delete(
       @PathParam("id") @ApiParam(required = true, value = "id of Client to delete") String id) {
-    return resourceDelegate.delete(id);
+    return typedResourceDelegate.delete(id);
   }
 
   /**
@@ -109,7 +111,7 @@ public class ClientResource {
   @Consumes(value = MediaType.APPLICATION_JSON)
   @ApiOperation(value = "Create Client", code = HttpStatus.SC_CREATED, response = Client.class)
   public Response create(@Valid @ApiParam(hidden = false, required = true) Client client) {
-    return resourceDelegate.create(client);
+    return typedResourceDelegate.create(client);
   }
 
   /**
@@ -134,6 +136,6 @@ public class ClientResource {
       @PathParam("id") @ApiParam(required = true, name = "id",
           value = "The id of the Client to update") String id,
       @Valid @ApiParam(hidden = false) Client client) {
-    return resourceDelegate.update(id, client);
+    return typedResourceDelegate.update(id, client);
   }
 }

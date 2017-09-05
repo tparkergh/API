@@ -129,7 +129,6 @@ public class AssignmentService implements
    * @return the PostedAssignment
    */
   public PostedAssignment createWithSingleTimestamp(Request request, Date timestamp) {
-    assert request instanceof gov.ca.cwds.rest.api.domain.cms.Assignment;
 
     gov.ca.cwds.rest.api.domain.cms.Assignment assignment =
         (gov.ca.cwds.rest.api.domain.cms.Assignment) request;
@@ -171,6 +170,11 @@ public class AssignmentService implements
     }
   }
 
+  /**
+   * @param referralId - referralId
+   * @param timestamp - timestamp
+   * @param messageBuilder - messageBuilder
+   */
   // create a default assignment
   // R - 02473 Default Referral Assignment
   // R - 02160 Assignment - Caseload Access

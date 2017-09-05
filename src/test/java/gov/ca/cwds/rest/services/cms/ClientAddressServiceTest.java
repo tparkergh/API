@@ -39,14 +39,14 @@ import gov.ca.cwds.rest.api.domain.Participant;
 import gov.ca.cwds.rest.business.rules.LACountyTrigger;
 import gov.ca.cwds.rest.business.rules.NonLACountyTriggers;
 import gov.ca.cwds.rest.services.ServiceException;
-import gov.ca.cwds.rest.services.junit.template.ServiceTestTemplate;
 import gov.ca.cwds.rest.services.referentialintegrity.RIClientAddress;
 
 /**
  * @author CWS-NS2
  *
  */
-public class ClientAddressServiceTest implements ServiceTestTemplate {
+@SuppressWarnings("javadoc")
+public class ClientAddressServiceTest {
   ClientAddressService clientAddressService;
 
   ClientAddressDao clientAddressDao;
@@ -59,14 +59,9 @@ public class ClientAddressServiceTest implements ServiceTestTemplate {
 
   private static Boolean isLaCountyTrigger = false;
 
-  @SuppressWarnings("javadoc")
   @Rule
   public ExpectedException thrown = ExpectedException.none();
 
-  /**
-   * 
-   */
-  @Override
   @Before
   public void setup() throws Exception {
     clientAddressDao = mock(ClientAddressDao.class);
@@ -121,69 +116,19 @@ public class ClientAddressServiceTest implements ServiceTestTemplate {
   }
 
   // find
-  @Override
-  @Test(expected = AssertionError.class)
-  public void testFindThrowsAssertionError() {
-    try {
-      clientAddressService.find(1);
-    } catch (AssertionError e) {
-      assertEquals("Expeceted AssertionError", e.getMessage());
-    }
-  }
-
-  @Override
   @Test
   public void testFindReturnsNullWhenNotFound() throws Exception {
     Response found = clientAddressService.find("ABC1234567");
     assertThat(found, is(nullValue()));
   }
 
-  @Override
-  public void testFindThrowsNotImplementedException() throws Exception {
-
-  }
-
-  @Override
-  public void testFindReturnsCorrectEntity() throws Exception {
-
-  }
-
   // delete test
-  @Override
-  @Test(expected = AssertionError.class)
-  public void testDeleteThrowsAssertionError() throws Exception {
-    try {
-      clientAddressService.delete(123);
-    } catch (AssertionError e) {
-      assertEquals("Expected AssertionError", e.getMessage());
-    }
-  }
-
-  @Override
   @Test
   public void testDeleteDelegatesToCrudsService() {
     clientAddressService.delete("ABC2345678");
     verify(clientAddressDao, times(1)).delete("ABC2345678");
   }
 
-  @Override
-  @Test
-  public void testDeleteReturnsNullWhenNotFound() throws Exception {
-    Response found = clientAddressService.delete("ABC1234567");
-    assertThat(found, is(nullValue()));
-  }
-
-  @Override
-  public void testDeleteThrowsNotImplementedException() throws Exception {
-
-  }
-
-  @Override
-  public void testDeleteReturnsClass() throws Exception {
-
-  }
-
-  @SuppressWarnings("javadoc")
   @Test
   public void clientAddressServiceDeleteReturnsNotNull() throws Exception {
     String id = "LOmv8Jp0Nu";
@@ -193,23 +138,11 @@ public class ClientAddressServiceTest implements ServiceTestTemplate {
         new gov.ca.cwds.data.persistence.cms.ClientAddress(id, expected, "0XA");
 
     when(clientAddressDao.delete(id)).thenReturn(clientAddress);
-    gov.ca.cwds.rest.api.domain.cms.ClientAddress found =
-        (gov.ca.cwds.rest.api.domain.cms.ClientAddress) clientAddressService.delete(id);
+    gov.ca.cwds.rest.api.domain.cms.ClientAddress found = clientAddressService.delete(id);
     assertThat(found.getClientId(), is(equalTo("FKCLIENTXX")));
   }
 
   // update test
-  @Override
-  @Test(expected = AssertionError.class)
-  public void testUpdateThrowsAssertionError() throws Exception {
-    try {
-      clientAddressService.update("ABC1234567", null);
-    } catch (AssertionError e) {
-      assertEquals("Expected AssertionError", e.getMessage());
-    }
-  }
-
-  @Override
   @Test
   public void testUpdateReturnsCorrectEntity() throws Exception {
     String id = "LOmv8Jp0Nu";
@@ -226,7 +159,6 @@ public class ClientAddressServiceTest implements ServiceTestTemplate {
     assertThat(retval.getClass(), is(gov.ca.cwds.rest.api.domain.cms.ClientAddress.class));
   }
 
-  @SuppressWarnings("javadoc")
   @Test
   public void testUpdateThrowsExceptionWhenNotFound() throws Exception {
     try {
@@ -241,23 +173,7 @@ public class ClientAddressServiceTest implements ServiceTestTemplate {
     }
   }
 
-  @Override
-  public void testUpdateReturnsDomain() throws Exception {
-
-  }
-
-  @Override
-  public void testUpdateThrowsServiceException() throws Exception {
-
-  }
-
-  @Override
-  public void testUpdateThrowsNotImplementedException() throws Exception {
-
-  }
-
   // create test
-  @Override
   @Test
   public void testCreateReturnsPostedClass() throws Exception {
     String id = "QcNOYA10Nu";
@@ -276,7 +192,6 @@ public class ClientAddressServiceTest implements ServiceTestTemplate {
     assertThat(response.getClass(), is(gov.ca.cwds.rest.api.domain.cms.ClientAddress.class));
   }
 
-  @SuppressWarnings("javadoc")
   @Test
   public void testCreateReturnsNonNull() throws Exception {
     String id = "QcNOYA10Nu";
@@ -295,7 +210,6 @@ public class ClientAddressServiceTest implements ServiceTestTemplate {
     assertThat(postedClientAddress, is(notNullValue()));
   }
 
-  @Override
   @Test
   public void testCreateReturnsCorrectEntity() throws Exception {
     String id = "QcNOYA10Nu";
@@ -315,7 +229,6 @@ public class ClientAddressServiceTest implements ServiceTestTemplate {
     assertThat(returned, is(expected));
   }
 
-  @SuppressWarnings("javadoc")
   @Test
   public void testCreateThrowsEntityExistsException() throws Exception {
     try {
@@ -330,7 +243,6 @@ public class ClientAddressServiceTest implements ServiceTestTemplate {
     }
   }
 
-  @Override
   @Test
   public void testCreateNullIDError() throws Exception {
     try {
@@ -350,7 +262,6 @@ public class ClientAddressServiceTest implements ServiceTestTemplate {
 
   }
 
-  @Override
   @Test
   public void testCreateBlankIDError() throws Exception {
     try {
@@ -369,7 +280,6 @@ public class ClientAddressServiceTest implements ServiceTestTemplate {
     }
   }
 
-  @SuppressWarnings("javadoc")
   @Test
   public void testCreateLACountyTriggerForClientAddress() throws Exception {
     gov.ca.cwds.rest.api.domain.cms.ClientAddress clientAddressDomain =
@@ -396,6 +306,7 @@ public class ClientAddressServiceTest implements ServiceTestTemplate {
         any(gov.ca.cwds.data.persistence.cms.ClientAddress.class)))
             .thenAnswer(new Answer<Boolean>() {
 
+
               @Override
               public Boolean answer(InvocationOnMock invocation) throws Throwable {
                 isLaCountyTrigger = true;
@@ -408,7 +319,6 @@ public class ClientAddressServiceTest implements ServiceTestTemplate {
 
   }
 
-  @SuppressWarnings("javadoc")
   @Test
   public void testCreateLACountyTriggerForClientAddressNotCreated() throws Exception {
     gov.ca.cwds.rest.api.domain.cms.ClientAddress clientAddressDomain =
@@ -435,6 +345,7 @@ public class ClientAddressServiceTest implements ServiceTestTemplate {
         any(gov.ca.cwds.data.persistence.cms.ClientAddress.class)))
             .thenAnswer(new Answer<Boolean>() {
 
+
               @Override
               public Boolean answer(InvocationOnMock invocation) throws Throwable {
                 isLaCountyTrigger = true;
@@ -447,7 +358,6 @@ public class ClientAddressServiceTest implements ServiceTestTemplate {
 
   }
 
-  @SuppressWarnings("javadoc")
   @Test
   public void testUpdateLACountyTriggerForClientAddressNotCreated() throws Exception {
     gov.ca.cwds.rest.api.domain.cms.ClientAddress clientAddressDomain =
@@ -474,6 +384,7 @@ public class ClientAddressServiceTest implements ServiceTestTemplate {
         any(gov.ca.cwds.data.persistence.cms.ClientAddress.class)))
             .thenAnswer(new Answer<Boolean>() {
 
+
               @Override
               public Boolean answer(InvocationOnMock invocation) throws Throwable {
                 isLaCountyTrigger = true;
@@ -483,21 +394,6 @@ public class ClientAddressServiceTest implements ServiceTestTemplate {
 
     clientAddressService.update("1234567ABC", request);
     assertThat(isLaCountyTrigger, is(true));
-
-  }
-
-  @Override
-  public void testCreateThrowsAssertionError() throws Exception {
-
-  }
-
-  @Override
-  public void testCreateEmptyIDError() throws Exception {
-
-  }
-
-  @Override
-  public void testCreateThrowsNotImplementedException() throws Exception {
 
   }
 

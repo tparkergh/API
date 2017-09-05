@@ -25,6 +25,7 @@ import gov.ca.cwds.data.cms.AssignmentDao;
 import gov.ca.cwds.data.cms.AttorneyDao;
 import gov.ca.cwds.data.cms.CaseAssignmentDao;
 import gov.ca.cwds.data.cms.CaseDao;
+import gov.ca.cwds.data.cms.CaseLoadDao;
 import gov.ca.cwds.data.cms.ChildClientDao;
 import gov.ca.cwds.data.cms.ClientCollateralDao;
 import gov.ca.cwds.data.cms.ClientDao;
@@ -55,6 +56,7 @@ import gov.ca.cwds.data.dao.contact.ReferralClientDeliveredServiceDao;
 import gov.ca.cwds.data.es.ElasticsearchDao;
 import gov.ca.cwds.data.ns.AddressDao;
 import gov.ca.cwds.data.ns.EthnicityDao;
+import gov.ca.cwds.data.ns.IntakeLovDao;
 import gov.ca.cwds.data.ns.LanguageDao;
 import gov.ca.cwds.data.ns.ParticipantDao;
 import gov.ca.cwds.data.ns.PersonAddressDao;
@@ -73,6 +75,7 @@ import gov.ca.cwds.data.persistence.cms.ApiSystemCodeDao;
 import gov.ca.cwds.data.persistence.cms.Assignment;
 import gov.ca.cwds.data.persistence.cms.BaseAssignment;
 import gov.ca.cwds.data.persistence.cms.CaseAssignment;
+import gov.ca.cwds.data.persistence.cms.CaseLoad;
 import gov.ca.cwds.data.persistence.cms.ChildClient;
 import gov.ca.cwds.data.persistence.cms.ClientAddress;
 import gov.ca.cwds.data.persistence.cms.ClientCollateral;
@@ -112,6 +115,7 @@ import gov.ca.cwds.data.persistence.contact.IndividualDeliveredServiceEntity;
 import gov.ca.cwds.data.persistence.contact.ReferralClientDeliveredServiceEntity;
 import gov.ca.cwds.data.persistence.ns.Address;
 import gov.ca.cwds.data.persistence.ns.Ethnicity;
+import gov.ca.cwds.data.persistence.ns.IntakeLov;
 import gov.ca.cwds.data.persistence.ns.Language;
 import gov.ca.cwds.data.persistence.ns.Participant;
 import gov.ca.cwds.data.persistence.ns.Person;
@@ -180,7 +184,7 @@ public class DataAccessModule extends AbstractModule {
           Tickle.class, ClientRelationship.class, ClientCollateral.class, AddressUc.class,
           ExternalInterface.class, DeliveredServiceEntity.class,
           ContactPartyDeliveredServiceEntity.class, ReferralClientDeliveredServiceEntity.class,
-          IndividualDeliveredServiceEntity.class, LawEnforcement.class),
+          IndividualDeliveredServiceEntity.class, LawEnforcement.class, CaseLoad.class),
 
           new ApiSessionFactoryFactory()) {
 
@@ -200,7 +204,7 @@ public class DataAccessModule extends AbstractModule {
           Participant.class, PersonAddressId.class, PersonAddress.class, PersonPhoneId.class,
           PhoneNumber.class, PersonPhone.class, PersonLanguageId.class, Language.class,
           PersonLanguage.class, PersonEthnicityId.class, PersonEthnicity.class, Ethnicity.class,
-          PersonRaceId.class, PersonRace.class, Race.class) {
+          PersonRaceId.class, PersonRace.class, Race.class, IntakeLov.class) {
         @Override
         public DataSourceFactory getDataSourceFactory(ApiConfiguration configuration) {
           return configuration.getNsDataSourceFactory();
@@ -270,6 +274,7 @@ public class DataAccessModule extends AbstractModule {
     bind(ReferralClientDeliveredServiceDao.class);
     bind(IndividualDeliveredServiceDao.class);
     bind(LawEnforcementDao.class);
+    bind(CaseLoadDao.class);
 
     // NS:
     bind(AddressDao.class);
@@ -285,8 +290,9 @@ public class DataAccessModule extends AbstractModule {
     bind(EthnicityDao.class);
     bind(PersonRaceDao.class);
     bind(RaceDao.class);
+    bind(IntakeLovDao.class);
 
-    // Trigger Tables
+    // Trigger Tables:
     bind(CountyOwnershipDao.class);
     bind(CountyTriggerDao.class);
     bind(NonLACountyTriggers.class);
@@ -294,16 +300,16 @@ public class DataAccessModule extends AbstractModule {
     bind(TriggerTablesDao.class);
     bind(CountyTriggerEmbeddable.class);
 
-    // Downstream Tables
+    // Downstream Tables:
     bind(Reminders.class);
 
     // Miscellaneous:
     bind(SmartyStreetsDao.class);
 
-    // System code loader DAO.
+    // System code loader DAO:
     bind(ApiSystemCodeDao.class).to(SystemCodeDaoFileImpl.class);
 
-    // Referential integrity.
+    // Referential integrity:
     bind(RIClientCollateral.class);
     bind(RIChildClient.class);
     bind(RIAllegationPerpetratorHistory.class);

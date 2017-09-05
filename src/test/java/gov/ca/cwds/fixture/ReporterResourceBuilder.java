@@ -3,7 +3,7 @@ package gov.ca.cwds.fixture;
 import gov.ca.cwds.rest.api.domain.cms.Reporter;
 import java.math.BigDecimal;
 
-public class ReporterEntityBuilder {
+public class ReporterResourceBuilder {
   String badgeNumber = "";
    String cityName = "";
    Short colltrClientRptrReltnshpType = 0;
@@ -32,137 +32,137 @@ public class ReporterEntityBuilder {
    Short zipSuffixNumber = 0;
    String countySpecificCode = "99";
 
-  public ReporterEntityBuilder setBadgeNumber(String badgeNumber) {
+  public ReporterResourceBuilder setBadgeNumber(String badgeNumber) {
     this.badgeNumber = badgeNumber;
     return this;
   }
 
-  public ReporterEntityBuilder setCityName(String cityName) {
+  public ReporterResourceBuilder setCityName(String cityName) {
     this.cityName = cityName;
     return this;
   }
 
-  public ReporterEntityBuilder setColltrClientRptrReltnshpType(Short colltrClientRptrReltnshpType) {
+  public ReporterResourceBuilder setColltrClientRptrReltnshpType(Short colltrClientRptrReltnshpType) {
     this.colltrClientRptrReltnshpType = colltrClientRptrReltnshpType;
     return this;
   }
 
-  public ReporterEntityBuilder setCommunicationMethodType(Short communicationMethodType) {
+  public ReporterResourceBuilder setCommunicationMethodType(Short communicationMethodType) {
     this.communicationMethodType = communicationMethodType;
     return this;
   }
 
-  public ReporterEntityBuilder setConfidentialWaiverIndicator(Boolean confidentialWaiverIndicator) {
+  public ReporterResourceBuilder setConfidentialWaiverIndicator(Boolean confidentialWaiverIndicator) {
     this.confidentialWaiverIndicator = confidentialWaiverIndicator;
     return this;
   }
 
-  public ReporterEntityBuilder setDrmsMandatedRprtrFeedback(String drmsMandatedRprtrFeedback) {
+  public ReporterResourceBuilder setDrmsMandatedRprtrFeedback(String drmsMandatedRprtrFeedback) {
     this.drmsMandatedRprtrFeedback = drmsMandatedRprtrFeedback;
     return this;
   }
 
-  public ReporterEntityBuilder setEmployerName(String employerName) {
+  public ReporterResourceBuilder setEmployerName(String employerName) {
     this.employerName = employerName;
     return this;
   }
 
-  public ReporterEntityBuilder setFeedbackDate(String feedbackDate) {
+  public ReporterResourceBuilder setFeedbackDate(String feedbackDate) {
     this.feedbackDate = feedbackDate;
     return this;
   }
 
-  public ReporterEntityBuilder setFeedbackRequiredIndicator(Boolean feedbackRequiredIndicator) {
+  public ReporterResourceBuilder setFeedbackRequiredIndicator(Boolean feedbackRequiredIndicator) {
     this.feedbackRequiredIndicator = feedbackRequiredIndicator;
     return this;
   }
 
-  public ReporterEntityBuilder setFirstName(String firstName) {
+  public ReporterResourceBuilder setFirstName(String firstName) {
     this.firstName = firstName;
     return this;
   }
 
-  public ReporterEntityBuilder setLastName(String lastName) {
+  public ReporterResourceBuilder setLastName(String lastName) {
     this.lastName = lastName;
     return this;
   }
 
-  public ReporterEntityBuilder setMandatedReporterIndicator(Boolean mandatedReporterIndicator) {
+  public ReporterResourceBuilder setMandatedReporterIndicator(Boolean mandatedReporterIndicator) {
     this.mandatedReporterIndicator = mandatedReporterIndicator;
     return this;
   }
 
-  public ReporterEntityBuilder setMessagePhoneExtensionNumber(Integer messagePhoneExtensionNumber) {
+  public ReporterResourceBuilder setMessagePhoneExtensionNumber(Integer messagePhoneExtensionNumber) {
     this.messagePhoneExtensionNumber = messagePhoneExtensionNumber;
     return this;
   }
 
-  public ReporterEntityBuilder setMessagePhoneNumber(BigDecimal messagePhoneNumber) {
+  public ReporterResourceBuilder setMessagePhoneNumber(BigDecimal messagePhoneNumber) {
     this.messagePhoneNumber = messagePhoneNumber;
     return this;
   }
 
-  public ReporterEntityBuilder setMiddleInitialName(String middleInitialName) {
+  public ReporterResourceBuilder setMiddleInitialName(String middleInitialName) {
     this.middleInitialName = middleInitialName;
     return this;
   }
 
-  public ReporterEntityBuilder setNamePrefixDescription(String namePrefixDescription) {
+  public ReporterResourceBuilder setNamePrefixDescription(String namePrefixDescription) {
     this.namePrefixDescription = namePrefixDescription;
     return this;
   }
 
-  public ReporterEntityBuilder setPrimaryPhoneNumber(BigDecimal primaryPhoneNumber) {
+  public ReporterResourceBuilder setPrimaryPhoneNumber(BigDecimal primaryPhoneNumber) {
     this.primaryPhoneNumber = primaryPhoneNumber;
     return this;
   }
 
-  public ReporterEntityBuilder setPrimaryPhoneExtensionNumber(Integer primaryPhoneExtensionNumber) {
+  public ReporterResourceBuilder setPrimaryPhoneExtensionNumber(Integer primaryPhoneExtensionNumber) {
     this.primaryPhoneExtensionNumber = primaryPhoneExtensionNumber;
     return this;
   }
 
-  public ReporterEntityBuilder setStateCodeType(Short stateCodeType) {
+  public ReporterResourceBuilder setStateCodeType(Short stateCodeType) {
     this.stateCodeType = stateCodeType;
     return this;
   }
 
-  public ReporterEntityBuilder setStreetName(String streetName) {
+  public ReporterResourceBuilder setStreetName(String streetName) {
     this.streetName = streetName;
     return this;
   }
 
-  public ReporterEntityBuilder setStreetNumber(String streetNumber) {
+  public ReporterResourceBuilder setStreetNumber(String streetNumber) {
     this.streetNumber = streetNumber;
     return this;
   }
 
-  public ReporterEntityBuilder setSuffixTitleDescription(String suffixTitleDescription) {
+  public ReporterResourceBuilder setSuffixTitleDescription(String suffixTitleDescription) {
     this.suffixTitleDescription = suffixTitleDescription;
     return this;
   }
 
-  public ReporterEntityBuilder setZipcode(String zipcode) {
+  public ReporterResourceBuilder setZipcode(String zipcode) {
     this.zipcode = zipcode;
     return this;
   }
 
-  public ReporterEntityBuilder setReferralId(String referralId) {
+  public ReporterResourceBuilder setReferralId(String referralId) {
     this.referralId = referralId;
     return this;
   }
 
-  public ReporterEntityBuilder setLawEnforcementId(String lawEnforcementId) {
+  public ReporterResourceBuilder setLawEnforcementId(String lawEnforcementId) {
     this.lawEnforcementId = lawEnforcementId;
     return this;
   }
 
-  public ReporterEntityBuilder setZipSuffixNumber(Short zipSuffixNumber) {
+  public ReporterResourceBuilder setZipSuffixNumber(Short zipSuffixNumber) {
     this.zipSuffixNumber = zipSuffixNumber;
     return this;
   }
 
-  public ReporterEntityBuilder setCountySpecificCode(String countySpecificCode) {
+  public ReporterResourceBuilder setCountySpecificCode(String countySpecificCode) {
     this.countySpecificCode = countySpecificCode;
     return this;
   }

@@ -8,6 +8,12 @@ import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
+import gov.ca.cwds.data.ns.ParticipantDao;
+import gov.ca.cwds.helper.CmsIdGenerator;
+import gov.ca.cwds.rest.api.domain.Participant;
+import gov.ca.cwds.rest.filters.TestingRequestExecutionContext;
+import gov.ca.cwds.rest.services.ClientParticipants;
+import gov.ca.cwds.rest.services.ParticipantService;
 import java.util.Date;
 import java.util.List;
 import java.util.Set;
@@ -111,6 +117,7 @@ public class TestForLastUpdatedTimeIsUnique {
   private ChildClientService childClientService;
   private LongTextService longTextService;
   private AssignmentService assignmentService;
+  private ParticipantService participantService;
   private RIChildClient riChildClient;
   private RIAllegationPerpetratorHistory riAllegationPerpetratorHistory;
   private RIAssignment riAssignment;
@@ -171,6 +178,7 @@ public class TestForLastUpdatedTimeIsUnique {
   @SuppressWarnings("javadoc")
   @Before
   public void setup() throws Exception {
+    new TestingRequestExecutionContext("0X5");
     validator = Validation.buildDefaultValidatorFactory().getValidator();
     referralDao = mock(ReferralDao.class);
     nonLACountyTriggers = mock(NonLACountyTriggers.class);
@@ -254,6 +262,10 @@ public class TestForLastUpdatedTimeIsUnique {
         upperCaseTables, validator);
     riReferral = mock(RIReferral.class);
 
+    ParticipantDao participantDao = mock(ParticipantDao.class);
+    participantService = new ParticipantService(participantDao, clientService,
+        referralClientService, reporterService, childClientService, addressService,
+        clientAddressService,  validator);
 
     referralService = new ReferralService(referralDao, nonLACountyTriggers, laCountyTrigger,
         triggerTablesDao, staffpersonDao, staffPersonIdRetriever, assignmentService, validator,
@@ -262,9 +274,8 @@ public class TestForLastUpdatedTimeIsUnique {
     screeningToReferralService = new ScreeningToReferralService(referralService, clientService,
         allegationService, crossReportService, referralClientService, reporterService,
         addressService, clientAddressService, childClientService, assignmentService,
-        Validation.buildDefaultValidatorFactory().getValidator(), referralDao, new MessageBuilder(),
-        allegationPerpetratorHistoryService, reminders);
-
+        participantService, Validation.buildDefaultValidatorFactory().getValidator(), referralDao,
+        new MessageBuilder(), allegationPerpetratorHistoryService, reminders);
   }
 
   /**
@@ -273,6 +284,7 @@ public class TestForLastUpdatedTimeIsUnique {
    * 
    * @throws Exception on general error
    */
+
   @Test
   public void testForLastUpdatedTimeIsUnique() throws Exception {
     Referral referralDomain = MAPPER.readValue(

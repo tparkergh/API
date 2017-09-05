@@ -15,13 +15,14 @@ import org.junit.Before;
 import org.junit.ClassRule;
 import org.junit.Rule;
 import org.junit.Test;
-import org.mockito.Mockito;
+import org.mockito.MockitoAnnotations;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import gov.ca.cwds.data.cms.TestSystemCodeCache;
 import gov.ca.cwds.rest.api.domain.cms.CrossReport;
-import gov.ca.cwds.rest.resources.ResourceDelegate;
 import gov.ca.cwds.rest.resources.ServiceBackedResourceDelegate;
+import gov.ca.cwds.rest.resources.TypedResourceDelegate;
 import io.dropwizard.jackson.Jackson;
 import io.dropwizard.testing.junit.ResourceTestRule;
 
@@ -41,15 +42,22 @@ public class CrossReportResourceTest {
   @Rule
   public ExpectedException thrown = ExpectedException.none();
 
-  private final static ResourceDelegate resourceDelegate = mock(ResourceDelegate.class);
+  @SuppressWarnings("unchecked")
+  private final static TypedResourceDelegate<String, CrossReport> typedResourceDelegate =
+      mock(TypedResourceDelegate.class);
 
   @ClassRule
-  public final static ResourceTestRule inMemoryResource =
-      ResourceTestRule.builder().addResource(new CrossReportResource(resourceDelegate)).build();
+  public final static ResourceTestRule inMemoryResource = ResourceTestRule.builder()
+      .addResource(new CrossReportResource(typedResourceDelegate)).build();
+
+  /*
+   * Load system code cache
+   */
+  TestSystemCodeCache testSystemCodeCache = new TestSystemCodeCache();
 
   @Before
-  public void setup() throws Exception {
-    Mockito.reset(resourceDelegate);
+  public void initMocks() {
+    MockitoAnnotations.initMocks(this);
   }
 
   /*
@@ -59,7 +67,7 @@ public class CrossReportResourceTest {
   public void getDelegatesToResourceDelegate() throws Exception {
     inMemoryResource.client().target(FOUND_RESOURCE).request().accept(MediaType.APPLICATION_JSON)
         .get();
-    verify(resourceDelegate).get("ABC1234567");
+    verify(typedResourceDelegate).get("ABC1234567");
   }
 
   /*
@@ -72,7 +80,7 @@ public class CrossReportResourceTest {
 
     inMemoryResource.client().target(ROOT_RESOURCE).request().accept(MediaType.APPLICATION_JSON)
         .post(Entity.entity(serialized, MediaType.APPLICATION_JSON));
-    verify(resourceDelegate).create(eq(serialized));
+    verify(typedResourceDelegate).create(eq(serialized));
   }
 
   @Test
@@ -94,7 +102,7 @@ public class CrossReportResourceTest {
   public void deleteDelegatesToResourceDelegate() throws Exception {
     inMemoryResource.client().target(FOUND_RESOURCE).request().accept(MediaType.APPLICATION_JSON)
         .delete();
-    verify(resourceDelegate).delete("ABC1234567");
+    verify(typedResourceDelegate).delete("ABC1234567");
   }
 
   /*
@@ -107,7 +115,7 @@ public class CrossReportResourceTest {
 
     inMemoryResource.client().target(ROOT_RESOURCE).request().accept(MediaType.APPLICATION_JSON)
         .put(Entity.entity(serialized, MediaType.APPLICATION_JSON));
-    verify(resourceDelegate).update(eq(null), eq(serialized));
+    verify(typedResourceDelegate).update(eq(null), eq(serialized));
   }
 
   @Test

@@ -22,15 +22,15 @@ import com.squarespace.jersey2.guice.JerseyGuiceUtils;
 import gov.ca.cwds.data.cms.TestSystemCodeCache;
 import gov.ca.cwds.fixture.contacts.DeliveredServiceResourceBuilder;
 import gov.ca.cwds.rest.api.contact.DeliveredServiceDomain;
+import gov.ca.cwds.rest.resources.ServiceBackedResourceDelegate;
 import gov.ca.cwds.rest.resources.TypedResourceDelegate;
 import gov.ca.cwds.rest.resources.cms.JerseyGuiceRule;
-import gov.ca.cwds.rest.resources.contact.DeliveredServiceResource;
 import io.dropwizard.testing.junit.ResourceTestRule;
 
 /****
- * NOTE:The CWDS API Team has taken the pattern of delegating Resource functions to*{**
+ * NOTE:The CWDS API Team has taken the pattern of delegating Resource functions to
  * 
- * @link ServiceBackedResourceDelegate}. As such the tests in here reflect that assumption.
+ * {@link ServiceBackedResourceDelegate}. As such the tests in here reflect that assumption.
  *
  * @author CWDS API Team
  */

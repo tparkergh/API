@@ -26,7 +26,7 @@ import io.swagger.annotations.ApiModelProperty;
 public class Person extends ReportingDomain implements Request, Response {
 
   /**
-   * Default
+   * Default serialization.
    */
   private static final long serialVersionUID = 1L;
 
@@ -82,7 +82,6 @@ public class Person extends ReportingDomain implements Request, Response {
   @JsonProperty("ethnicity")
   private Set<Ethnicity> ethnicity;
 
-
   /**
    * Constructor
    * 
@@ -100,12 +99,14 @@ public class Person extends ReportingDomain implements Request, Response {
    * @param ethnicity The ethnicity
    */
   @JsonCreator
-  public Person(@JsonProperty("first_name") String firstName, @JsonProperty("middle_name") String middleName,
-      @JsonProperty("last_name") String lastName, @JsonProperty("name_suffix") String nameSuffix,
-      @JsonProperty("gender") String gender, @JsonProperty("birth_date") String birthDate,
-      @JsonProperty("ssn") String ssn, @JsonProperty("address") Set<Address> address,
-      @JsonProperty("phone") Set<PhoneNumber> phoneNumber, @JsonProperty("language") Set<Language> language,
-      @JsonProperty("race") Set<Race> race, @JsonProperty("ethnicity") Set<Ethnicity> ethnicity) {
+  public Person(@JsonProperty("first_name") String firstName,
+      @JsonProperty("middle_name") String middleName, @JsonProperty("last_name") String lastName,
+      @JsonProperty("name_suffix") String nameSuffix, @JsonProperty("gender") String gender,
+      @JsonProperty("birth_date") String birthDate, @JsonProperty("ssn") String ssn,
+      @JsonProperty("address") Set<Address> address,
+      @JsonProperty("phone") Set<PhoneNumber> phoneNumber,
+      @JsonProperty("language") Set<Language> language, @JsonProperty("race") Set<Race> race,
+      @JsonProperty("ethnicity") Set<Ethnicity> ethnicity) {
     super();
     this.firstName = firstName;
     this.middleName = middleName;
@@ -194,9 +195,9 @@ public class Person extends ReportingDomain implements Request, Response {
     return nameSuffix;
   }
 
-    /**
-     * @return the gender
-     */
+  /**
+   * @return the gender
+   */
   public String getGender() {
     return gender;
   }

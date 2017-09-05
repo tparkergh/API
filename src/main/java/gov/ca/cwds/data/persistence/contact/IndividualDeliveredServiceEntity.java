@@ -26,11 +26,9 @@ import gov.ca.cwds.data.persistence.cms.CmsPersistentObject;
 public class IndividualDeliveredServiceEntity extends CmsPersistentObject {
 
   /**
-   * 
+   * Default.
    */
   private static final long serialVersionUID = 1L;
-
-  protected static final String DATE_FORMAT = "yyyy-MM-dd";
 
   @Id
   private IndividualDeliveredServiceEmbeddable individualDeliveredServiceEmbeddable;

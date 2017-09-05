@@ -2,18 +2,16 @@ package gov.ca.cwds.rest.api.domain;
 
 import static gov.ca.cwds.data.persistence.cms.CmsPersistentObject.CMS_ID_LEN;
 
-import gov.ca.cwds.rest.validation.ValidSystemCodeId;
-import io.dropwizard.validation.OneOf;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
-
-import org.hibernate.validator.constraints.NotEmpty;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import gov.ca.cwds.rest.api.Request;
 import gov.ca.cwds.rest.api.Response;
+import gov.ca.cwds.rest.validation.ValidSystemCodeId;
 import io.dropwizard.jackson.JsonSnakeCase;
+import io.dropwizard.validation.OneOf;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 
@@ -56,13 +54,14 @@ public class Allegation extends ReportingDomain implements Request, Response {
   private String nonProtectingParent;
 
   @JsonProperty("type")
-  @ApiModelProperty(required = true, value = "type of allegation code", example = "1373")
+  @ApiModelProperty(required = true, value = "type of allegation code", example = "2179")
   @NotNull
-  @ValidSystemCodeId(required = true, category = SystemCodeCategoryId.INJURY_HARM_TYPE)
+  @ValidSystemCodeId(required = true, category = SystemCodeCategoryId.INJURY_HARM_TYPE,
+      checkCategoryIdValueIsZero = true)
   private Short type;
 
   @JsonProperty("county")
-  @ApiModelProperty(example = "Sacramento")
+  @ApiModelProperty(example = "34")
   private String county;
 
   /**

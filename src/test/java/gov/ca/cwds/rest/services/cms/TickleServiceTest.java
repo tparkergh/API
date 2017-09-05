@@ -12,6 +12,8 @@ import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
+import java.util.Date;
+
 import javax.persistence.EntityExistsException;
 import javax.persistence.EntityNotFoundException;
 
@@ -25,6 +27,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import gov.ca.cwds.data.cms.TickleDao;
 import gov.ca.cwds.rest.api.Response;
 import gov.ca.cwds.rest.api.domain.cms.Tickle;
+import gov.ca.cwds.rest.filters.TestingRequestExecutionContext;
 import gov.ca.cwds.rest.services.ServiceException;
 import io.dropwizard.jackson.Jackson;
 
@@ -37,16 +40,16 @@ public class TickleServiceTest {
   private static final ObjectMapper MAPPER = Jackson.newObjectMapper();
   private TickleService tickleService;
   private TickleDao tickleDao;
-  private StaffPersonIdRetriever staffPersonIdRetriever;
 
   @Rule
   public ExpectedException thrown = ExpectedException.none();
 
   @Before
   public void setup() throws Exception {
+    new TestingRequestExecutionContext("0X5");
     tickleDao = mock(TickleDao.class);
-    staffPersonIdRetriever = mock(StaffPersonIdRetriever.class);
-    tickleService = new TickleService(tickleDao, staffPersonIdRetriever);
+    tickleService = new TickleService(tickleDao);
+
   }
 
   // find test
@@ -56,7 +59,7 @@ public class TickleServiceTest {
     Tickle expected =
         MAPPER.readValue(fixture("fixtures/domain/legacy/Tickle/valid/valid.json"), Tickle.class);
     gov.ca.cwds.data.persistence.cms.Tickle tickle =
-        new gov.ca.cwds.data.persistence.cms.Tickle(id, expected, "0XA");
+        new gov.ca.cwds.data.persistence.cms.Tickle(id, expected, "0XA", new Date());
 
     when(tickleDao.find(id)).thenReturn(tickle);
     Tickle found = tickleService.find(id);
@@ -88,7 +91,7 @@ public class TickleServiceTest {
     Tickle expected =
         MAPPER.readValue(fixture("fixtures/domain/legacy/Tickle/valid/valid.json"), Tickle.class);
     gov.ca.cwds.data.persistence.cms.Tickle tickle =
-        new gov.ca.cwds.data.persistence.cms.Tickle(id, expected, "0XA");
+        new gov.ca.cwds.data.persistence.cms.Tickle(id, expected, "0XA", new Date());
 
     when(tickleDao.delete(id)).thenReturn(tickle);
     Tickle found = tickleService.delete(id);
@@ -103,7 +106,7 @@ public class TickleServiceTest {
         MAPPER.readValue(fixture("fixtures/domain/legacy/Tickle/valid/valid.json"), Tickle.class);
 
     gov.ca.cwds.data.persistence.cms.Tickle tickle =
-        new gov.ca.cwds.data.persistence.cms.Tickle(id, expected, "ABC");
+        new gov.ca.cwds.data.persistence.cms.Tickle(id, expected, "ABC", new Date());
 
     when(tickleDao.find("ABC1234567")).thenReturn(tickle);
     when(tickleDao.update(any())).thenReturn(tickle);
@@ -133,7 +136,7 @@ public class TickleServiceTest {
     Tickle tickleDomain =
         MAPPER.readValue(fixture("fixtures/domain/legacy/Tickle/valid/valid.json"), Tickle.class);
     gov.ca.cwds.data.persistence.cms.Tickle toCreate =
-        new gov.ca.cwds.data.persistence.cms.Tickle(id, tickleDomain, "ABC");
+        new gov.ca.cwds.data.persistence.cms.Tickle(id, tickleDomain, "ABC", new Date());
 
     Tickle request = new Tickle(toCreate);
     when(tickleDao.create(any(gov.ca.cwds.data.persistence.cms.Tickle.class))).thenReturn(toCreate);
@@ -148,7 +151,7 @@ public class TickleServiceTest {
     Tickle tickleDomain =
         MAPPER.readValue(fixture("fixtures/domain/legacy/Tickle/valid/valid.json"), Tickle.class);
     gov.ca.cwds.data.persistence.cms.Tickle toCreate =
-        new gov.ca.cwds.data.persistence.cms.Tickle(id, tickleDomain, "ABC");
+        new gov.ca.cwds.data.persistence.cms.Tickle(id, tickleDomain, "ABC", new Date());
 
     Tickle request = new Tickle(toCreate);
     when(tickleDao.create(any(gov.ca.cwds.data.persistence.cms.Tickle.class))).thenReturn(toCreate);
@@ -163,7 +166,7 @@ public class TickleServiceTest {
     Tickle tickleDomain =
         MAPPER.readValue(fixture("fixtures/domain/legacy/Tickle/valid/valid.json"), Tickle.class);
     gov.ca.cwds.data.persistence.cms.Tickle toCreate =
-        new gov.ca.cwds.data.persistence.cms.Tickle(id, tickleDomain, "ABC");
+        new gov.ca.cwds.data.persistence.cms.Tickle(id, tickleDomain, "ABC", new Date());
 
     Tickle request = new Tickle(toCreate);
     when(tickleDao.create(any(gov.ca.cwds.data.persistence.cms.Tickle.class))).thenReturn(toCreate);
@@ -193,7 +196,7 @@ public class TickleServiceTest {
       Tickle tickleDomain =
           MAPPER.readValue(fixture("fixtures/domain/legacy/Tickle/valid/valid.json"), Tickle.class);
       gov.ca.cwds.data.persistence.cms.Tickle toCreate =
-          new gov.ca.cwds.data.persistence.cms.Tickle(null, tickleDomain, "ABC");
+          new gov.ca.cwds.data.persistence.cms.Tickle(null, tickleDomain, "ABC", new Date());
 
       when(tickleDao.create(any(gov.ca.cwds.data.persistence.cms.Tickle.class)))
           .thenReturn(toCreate);
@@ -211,7 +214,7 @@ public class TickleServiceTest {
       Tickle tickleDomain =
           MAPPER.readValue(fixture("fixtures/domain/legacy/Tickle/valid/valid.json"), Tickle.class);
       gov.ca.cwds.data.persistence.cms.Tickle toCreate =
-          new gov.ca.cwds.data.persistence.cms.Tickle("    ", tickleDomain, "ABC");
+          new gov.ca.cwds.data.persistence.cms.Tickle("    ", tickleDomain, "ABC", new Date());
 
       when(tickleDao.create(any(gov.ca.cwds.data.persistence.cms.Tickle.class)))
           .thenReturn(toCreate);

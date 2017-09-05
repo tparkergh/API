@@ -24,7 +24,7 @@ import gov.ca.cwds.data.persistence.cms.CmsPersistentObject;
 public class ContactPartyDeliveredServiceEntity extends CmsPersistentObject {
 
   /**
-   * 
+   * Default serialization.
    */
   private static final long serialVersionUID = 1L;
 

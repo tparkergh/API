@@ -35,9 +35,6 @@ public class DeliveredServiceEntityTest {
     assertThat(DeliveredServiceEntity.class.newInstance(), is(notNullValue()));
   }
 
-  /**
-   * @throws Exception
-   */
   @Test
   public void testPersistentConstructor() throws Exception {
     DeliveredServiceEntity deliverdServiceEntity =
@@ -95,7 +92,6 @@ public class DeliveredServiceEntityTest {
         is(equalTo(deliverdServiceEntity.getServiceContactType())));
     assertThat(persistent.getWraparoundServiceIndicator(),
         is(equalTo(deliverdServiceEntity.getWraparoundServiceIndicator())));
-
   }
 
   /**

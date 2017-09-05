@@ -14,15 +14,15 @@
 		<property name="show_sql">true</property>
 
 <!-- Per environment: -->
-		<property name="hibernate.connection.username">${DB_CMS_USER}</property>
-		<property name="hibernate.connection.password">${DB_CMS_PASSWORD}</property>
-		<property name="hibernate.connection.url">${DB_CMS_JDBC_URL}</property>
-		<property name="hibernate.default_schema">${DB_CMS_SCHEMA}</property>
+<!-- 		<property name="hibernate.connection.username">${DB_CMS_USER}</property> -->
+<!-- 		<property name="hibernate.connection.password">${DB_CMS_PASSWORD}</property> -->
+<!-- 		<property name="hibernate.connection.url">${DB_CMS_JDBC_URL}</property> -->
+<!-- 		<property name="hibernate.default_schema">${DB_CMS_SCHEMA}</property> -->
 <!-- local-->
-    <!--<property name="hibernate.connection.username">db2inst1</property>-->
-    <!--<property name="hibernate.connection.password">db2inst1</property>-->
-    <!--<property name="hibernate.connection.url">jdbc:db2://localhost:50000/DB0TDEV</property>-->
-    <!--<property name="hibernate.default_schema">CWSINT</property>-->
+    <property name="hibernate.connection.username">db2inst1</property>
+    <property name="hibernate.connection.password">db2inst1</property>
+    <property name="hibernate.connection.url">jdbc:db2://cms.db.dev.cwds.tabordasolutions.net:50000/DB0TDEV</property>
+    <property name="hibernate.default_schema">CWSINT</property>
 <!-- Taborda Jenkins: -->
 <!-- 
  		<property name="hibernate.connection.username">db2inst1</property>
@@ -74,6 +74,8 @@
 		<mapping class="gov.ca.cwds.data.persistence.cms.ExternalInterface"/>
 		<mapping class="gov.ca.cwds.data.persistence.cms.ClientRelationship"/>
 		<mapping class="gov.ca.cwds.data.persistence.cms.ClientCollateral"/>
+		<mapping class="gov.ca.cwds.data.persistence.cms.CaseLoad"/>
+		<mapping class="gov.ca.cwds.data.persistence.cms.LawEnforcement"/>
 		<mapping class="gov.ca.cwds.data.persistence.contact.DeliveredServiceEntity"/>
 		<mapping class="gov.ca.cwds.data.persistence.contact.ContactPartyDeliveredServiceEntity"/>
 		<mapping class="gov.ca.cwds.data.persistence.contact.ReferralClientDeliveredServiceEntity"/> 

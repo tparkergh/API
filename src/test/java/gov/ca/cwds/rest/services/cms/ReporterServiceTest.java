@@ -59,18 +59,6 @@ public class ReporterServiceTest {
   // find test
   @SuppressWarnings("javadoc")
   @Test
-  public void findThrowsAssertionError() {
-    // service is expecting a String as primary key
-    thrown.expect(AssertionError.class);
-    try {
-      reporterService.find(1);
-    } catch (AssertionError e) {
-      assertEquals("Expected AssertionError", e.getMessage());
-    }
-  }
-
-  @SuppressWarnings("javadoc")
-  @Test
   public void findReturnsCorrectReporterWhenFound() throws Exception {
     // Reporter expected = MAPPER
     // .readValue(fixture("fixtures/domain/legacy/Reporter/valid/valid.json"), Reporter.class);
@@ -90,18 +78,6 @@ public class ReporterServiceTest {
   }
 
   // delete test
-  @SuppressWarnings("javadoc")
-  @Test
-  public void deleteThrowsAssersionError() throws Exception {
-    // service is expecting a String as primary key
-    thrown.expect(AssertionError.class);
-    try {
-      reporterService.delete(1);
-    } catch (AssertionError e) {
-      assertEquals("Expected AssertionError", e.getMessage());
-    }
-  }
-
   @SuppressWarnings("javadoc")
   @Test
   public void deleteDelegatesToCrudsService() {
@@ -131,18 +107,6 @@ public class ReporterServiceTest {
   }
 
   // update test
-  @SuppressWarnings("javadoc")
-  @Test
-  public void updateThrowsAssertionError() throws Exception {
-    // service expecting domain Reporter object
-    thrown.expect(AssertionError.class);
-    try {
-      reporterService.update("ABC1234567", null);
-    } catch (AssertionError e) {
-      assertEquals("Expected AssertionError", e.getMessage());
-    }
-  }
-
   @SuppressWarnings("javadoc")
   @Test
   public void updateReturnsReporterResponseOnSuccess() throws Exception {
@@ -177,18 +141,6 @@ public class ReporterServiceTest {
   }
 
   // create test
-  @SuppressWarnings("javadoc")
-  @Test
-  public void createThrowsAssertionError() throws Exception {
-    // service expecting domain Reporter object - test when null passed to service
-    thrown.expect(AssertionError.class);
-    try {
-      reporterService.create(null);
-    } catch (AssertionError e) {
-      assertEquals("Expected AssertionError", e.getMessage());
-    }
-  }
-
   @SuppressWarnings("javadoc")
   @Test
   public void reporterServiceCreateThrowsEntityExistsException() throws Exception {

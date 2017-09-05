@@ -1,6 +1,5 @@
 package gov.ca.cwds.rest.services.cms;
 
-import java.io.Serializable;
 import java.util.Date;
 
 import javax.persistence.EntityExistsException;
@@ -15,9 +14,8 @@ import gov.ca.cwds.data.Dao;
 import gov.ca.cwds.data.cms.CrossReportDao;
 import gov.ca.cwds.data.persistence.cms.CmsKeyIdGenerator;
 import gov.ca.cwds.data.persistence.cms.CrossReport;
-import gov.ca.cwds.rest.api.Request;
-import gov.ca.cwds.rest.services.CrudsService;
 import gov.ca.cwds.rest.services.ServiceException;
+import gov.ca.cwds.rest.services.TypedCrudsService;
 import gov.ca.cwds.rest.services.referentialintegrity.RICrossReport;
 
 /**
@@ -25,7 +23,8 @@ import gov.ca.cwds.rest.services.referentialintegrity.RICrossReport;
  * 
  * @author CWDS API Team
  */
-public class CrossReportService implements CrudsService {
+public class CrossReportService implements
+    TypedCrudsService<String, gov.ca.cwds.rest.api.domain.cms.CrossReport, gov.ca.cwds.rest.api.domain.cms.CrossReport> {
 
   private static final Logger LOGGER = LoggerFactory.getLogger(CrossReportService.class);
 
@@ -55,8 +54,7 @@ public class CrossReportService implements CrudsService {
    * @see gov.ca.cwds.rest.services.CrudsService#find(java.io.Serializable)
    */
   @Override
-  public gov.ca.cwds.rest.api.domain.cms.CrossReport find(Serializable primaryKey) {
-    assert primaryKey instanceof String;
+  public gov.ca.cwds.rest.api.domain.cms.CrossReport find(String primaryKey) {
 
     gov.ca.cwds.data.persistence.cms.CrossReport persistedCrossReport =
         crossReportDao.find(primaryKey);
@@ -72,8 +70,7 @@ public class CrossReportService implements CrudsService {
    * @see gov.ca.cwds.rest.services.CrudsService#delete(java.io.Serializable)
    */
   @Override
-  public gov.ca.cwds.rest.api.domain.cms.CrossReport delete(Serializable primaryKey) {
-    assert primaryKey instanceof String;
+  public gov.ca.cwds.rest.api.domain.cms.CrossReport delete(String primaryKey) {
     gov.ca.cwds.data.persistence.cms.CrossReport persistedCrossReport =
         crossReportDao.delete(primaryKey);
     if (persistedCrossReport != null) {
@@ -88,11 +85,10 @@ public class CrossReportService implements CrudsService {
    * @see gov.ca.cwds.rest.services.CrudsService#create(gov.ca.cwds.rest.api.Request)
    */
   @Override
-  public gov.ca.cwds.rest.api.domain.cms.CrossReport create(Request request) {
-    assert request instanceof gov.ca.cwds.rest.api.domain.cms.CrossReport;
+  public gov.ca.cwds.rest.api.domain.cms.CrossReport create(
+      gov.ca.cwds.rest.api.domain.cms.CrossReport request) {
 
-    gov.ca.cwds.rest.api.domain.cms.CrossReport crossReport =
-        (gov.ca.cwds.rest.api.domain.cms.CrossReport) request;
+    gov.ca.cwds.rest.api.domain.cms.CrossReport crossReport = request;
     return create(crossReport, null);
   }
 
@@ -104,12 +100,10 @@ public class CrossReportService implements CrudsService {
    * @param timestamp - timestamp
    * @return the single timestamp
    */
-  public gov.ca.cwds.rest.api.domain.cms.CrossReport createWithSingleTimestamp(Request request,
-      Date timestamp) {
-    assert request instanceof gov.ca.cwds.rest.api.domain.cms.CrossReport;
+  public gov.ca.cwds.rest.api.domain.cms.CrossReport createWithSingleTimestamp(
+      gov.ca.cwds.rest.api.domain.cms.CrossReport request, Date timestamp) {
 
-    gov.ca.cwds.rest.api.domain.cms.CrossReport crossReport =
-        (gov.ca.cwds.rest.api.domain.cms.CrossReport) request;
+    gov.ca.cwds.rest.api.domain.cms.CrossReport crossReport = request;
     return create(crossReport, timestamp);
   }
 
@@ -145,11 +139,9 @@ public class CrossReportService implements CrudsService {
    *      gov.ca.cwds.rest.api.Request)
    */
   @Override
-  public gov.ca.cwds.rest.api.domain.cms.CrossReport update(Serializable primaryKey,
-      Request request) {
-    assert request instanceof gov.ca.cwds.rest.api.domain.cms.CrossReport;
-    gov.ca.cwds.rest.api.domain.cms.CrossReport crossReport =
-        (gov.ca.cwds.rest.api.domain.cms.CrossReport) request;
+  public gov.ca.cwds.rest.api.domain.cms.CrossReport update(String primaryKey,
+      gov.ca.cwds.rest.api.domain.cms.CrossReport request) {
+    gov.ca.cwds.rest.api.domain.cms.CrossReport crossReport = request;
 
     try {
       String lastUpdatedId = staffPersonIdRetriever.getStaffPersonId();

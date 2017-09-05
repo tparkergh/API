@@ -7,6 +7,7 @@ import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.notNullValue;
 
 import java.io.IOException;
+import java.util.Date;
 
 import org.junit.Ignore;
 import org.junit.Test;
@@ -24,6 +25,7 @@ public class TickleTest implements PersistentTestTemplate {
 
   private String id = "1234567ABC";
   private String lastUpdatedId = "0X5";
+  private Date lastUpdatedTime = new Date();
 
   private static final ObjectMapper MAPPER = SystemCodeTestHarness.MAPPER;
 
@@ -65,7 +67,7 @@ public class TickleTest implements PersistentTestTemplate {
 
     gov.ca.cwds.rest.api.domain.cms.Tickle domain = validDomainTickle();
 
-    Tickle persistent = new Tickle(id, domain, lastUpdatedId);
+    Tickle persistent = new Tickle(id, domain, lastUpdatedId, lastUpdatedTime);
 
     assertThat(persistent.getId(), is(equalTo(id)));
     assertThat(persistent.getAffectedByCaseOrReferralId(),

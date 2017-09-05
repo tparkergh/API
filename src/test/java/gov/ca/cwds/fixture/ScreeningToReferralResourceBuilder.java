@@ -43,23 +43,28 @@ public class ScreeningToReferralResourceBuilder {
   private boolean familyAwareness = false;
   private boolean filedWithLawEnforcement = false;
   private String responsibleAgency = "C";
+  private Short injuryHarmCategory = 2178;
+  private String limitedAccessCode = "N";
+  private String limitedAccessDescription = "";
+  private short limitedAccessAgency = 0;
+  private Date limitedAccessDate = null;
   private gov.ca.cwds.rest.api.domain.Address address;
   private Set<Participant> participants;
   private Set<gov.ca.cwds.rest.api.domain.CrossReport> crossReports;
   private Set<gov.ca.cwds.rest.api.domain.Allegation> allegations;
 
-
   public ScreeningToReferralResourceBuilder() {
     address = new AddressResourceBuilder().createAddress();
-    Participant victim = new ParticipantResourceBuilder().createVictimParticipant();
-    Participant perp = new ParticipantResourceBuilder().createPerpParticipant();
-    Participant reporter = new ParticipantResourceBuilder().createReporterParticipant();
+    Participant victim = new ParticipantResourceBuilder().setGender("M").createVictimParticipant();
+    Participant perp = new ParticipantResourceBuilder().setGender("F").createPerpParticipant();
+    Participant reporter =
+        new ParticipantResourceBuilder().setGender("M").createReporterParticipant();
     this.participants = new HashSet<>(Arrays.asList(victim, perp, reporter));
     gov.ca.cwds.rest.api.domain.CrossReport crossReport =
         new CrossReportResourceBuilder().createCrossReport();
     this.crossReports = new HashSet<>(Arrays.asList(crossReport));
     gov.ca.cwds.rest.api.domain.Allegation allegation =
-        new AllegationResourceBuilder().createAllegation();
+        new AllegationResourceBuilder().setInjuryHarmType(injuryHarmCategory).createAllegation();
     this.allegations = new HashSet<>(Arrays.asList(allegation));
 
   }
@@ -160,13 +165,50 @@ public class ScreeningToReferralResourceBuilder {
     return this;
   }
 
-  public ScreeningToReferralResourceBuilder setFiledWithLawEnforcement(boolean filedWithLawEnforcement) {
+  public ScreeningToReferralResourceBuilder setFiledWithLawEnforcement(
+      boolean filedWithLawEnforcement) {
     this.filedWithLawEnforcement = filedWithLawEnforcement;
     return this;
   }
 
   public ScreeningToReferralResourceBuilder setResponsibleAgency(String responsibleAgency) {
     this.responsibleAgency = responsibleAgency;
+    return this;
+  }
+
+  public String getLimitedAccessCode() {
+    return limitedAccessCode;
+  }
+
+  public ScreeningToReferralResourceBuilder setLimitedAccessCode(String limitedAccessCode) {
+    this.limitedAccessCode = limitedAccessCode;
+    return this;
+  }
+
+  public String getLimitedAccessDescription() {
+    return limitedAccessDescription;
+  }
+
+  public ScreeningToReferralResourceBuilder setLimitedAccessDescription(String limitedAccessDescription) {
+    this.limitedAccessDescription = limitedAccessDescription;
+    return this;
+  }
+
+  public short getLimitedAccessAgency() {
+    return limitedAccessAgency;
+  }
+
+  public ScreeningToReferralResourceBuilder setLimitedAccessAgency(short limitedAccessAgency) {
+    this.limitedAccessAgency = limitedAccessAgency;
+    return this;
+  }
+
+  public Date getLimitedAccessDate() {
+    return limitedAccessDate;
+  }
+
+  public ScreeningToReferralResourceBuilder setLimitedAccessDate(Date limitedAccessDate) {
+    this.limitedAccessDate = limitedAccessDate;
     return this;
   }
 
@@ -198,6 +240,7 @@ public class ScreeningToReferralResourceBuilder {
         incidentDate, locationType, communicationMethod, name, reportNarrative, reference,
         responseTime, startedAt, assignee, additionalInformation, screeningDecision,
         screeningDecisionDetail, approvalStatus, familyAwareness, filedWithLawEnforcement,
-        responsibleAgency, address, participants, crossReports, allegations);
+        responsibleAgency, limitedAccessCode, limitedAccessDescription, limitedAccessAgency,
+        limitedAccessDate, address, participants, crossReports, allegations);
   }
 }

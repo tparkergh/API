@@ -7,8 +7,6 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
-import org.apache.commons.lang3.builder.EqualsBuilder;
-import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.hibernate.annotations.Type;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
@@ -136,17 +134,20 @@ public class LawEnforcement extends CmsPersistentObject {
   }
 
   /**
+   * {@inheritDoc}
+   * 
+   * @see gov.ca.cwds.data.persistence.PersistentObject#getPrimaryKey()
+   */
+  @Override
+  public String getPrimaryKey() {
+    return getId();
+  }
+
+  /**
    * @return the archiveAssociationInd
    */
   public String getArchiveAssociationInd() {
     return archiveAssociationInd;
-  }
-
-  /**
-   * @param archiveAssociationInd the archiveAssociationInd to set
-   */
-  public void setArchiveAssociationInd(String archiveAssociationInd) {
-    this.archiveAssociationInd = archiveAssociationInd;
   }
 
   /**
@@ -157,24 +158,10 @@ public class LawEnforcement extends CmsPersistentObject {
   }
 
   /**
-   * @param cityName the cityName to set
-   */
-  public void setCityName(String cityName) {
-    this.cityName = cityName;
-  }
-
-  /**
    * @return the contactPhoneExtensionNumber
    */
   public Integer getContactPhoneExtensionNumber() {
     return contactPhoneExtensionNumber;
-  }
-
-  /**
-   * @param contactPhoneExtensionNumber the contactPhoneExtensionNumber to set
-   */
-  public void setContactPhoneExtensionNumber(Integer contactPhoneExtensionNumber) {
-    this.contactPhoneExtensionNumber = contactPhoneExtensionNumber;
   }
 
   /**
@@ -185,24 +172,10 @@ public class LawEnforcement extends CmsPersistentObject {
   }
 
   /**
-   * @param contactPersonName the contactPersonName to set
-   */
-  public void setContactPersonName(String contactPersonName) {
-    this.contactPersonName = contactPersonName;
-  }
-
-  /**
    * @return the contactPhoneNumber
    */
   public BigDecimal getContactPhoneNumber() {
     return contactPhoneNumber;
-  }
-
-  /**
-   * @param contactPhoneNumber the contactPhoneNumber to set
-   */
-  public void setContactPhoneNumber(BigDecimal contactPhoneNumber) {
-    this.contactPhoneNumber = contactPhoneNumber;
   }
 
   /**
@@ -213,24 +186,10 @@ public class LawEnforcement extends CmsPersistentObject {
   }
 
   /**
-   * @param contactPositionTitleDescription the contactPositionTitleDescription to set
-   */
-  public void setContactPositionTitleDescription(String contactPositionTitleDescription) {
-    this.contactPositionTitleDescription = contactPositionTitleDescription;
-  }
-
-  /**
    * @return the emailAddress
    */
   public String getEmailAddress() {
     return emailAddress;
-  }
-
-  /**
-   * @param emailAddress the emailAddress to set
-   */
-  public void setEmailAddress(String emailAddress) {
-    this.emailAddress = emailAddress;
   }
 
   /**
@@ -241,24 +200,10 @@ public class LawEnforcement extends CmsPersistentObject {
   }
 
   /**
-   * @param faxNumber the faxNumber to set
-   */
-  public void setFaxNumber(BigDecimal faxNumber) {
-    this.faxNumber = faxNumber;
-  }
-
-  /**
    * @return the governmentEntityType
    */
   public Short getGovernmentEntityType() {
     return governmentEntityType;
-  }
-
-  /**
-   * @param governmentEntityType the governmentEntityType to set
-   */
-  public void setGovernmentEntityType(Short governmentEntityType) {
-    this.governmentEntityType = governmentEntityType;
   }
 
   /**
@@ -269,24 +214,10 @@ public class LawEnforcement extends CmsPersistentObject {
   }
 
   /**
-   * @param id the id to set
-   */
-  public void setId(String id) {
-    this.id = id;
-  }
-
-  /**
    * @return the lawEnforcementName
    */
   public String getLawEnforcementName() {
     return lawEnforcementName;
-  }
-
-  /**
-   * @param lawEnforcementName the lawEnforcementName to set
-   */
-  public void setLawEnforcementName(String lawEnforcementName) {
-    this.lawEnforcementName = lawEnforcementName;
   }
 
   /**
@@ -297,24 +228,10 @@ public class LawEnforcement extends CmsPersistentObject {
   }
 
   /**
-   * @param referenceNumber the referenceNumber to set
-   */
-  public void setReferenceNumber(Short referenceNumber) {
-    this.referenceNumber = referenceNumber;
-  }
-
-  /**
    * @return the stationName
    */
   public String getStationName() {
     return stationName;
-  }
-
-  /**
-   * @param stationName the stationName to set
-   */
-  public void setStationName(String stationName) {
-    this.stationName = stationName;
   }
 
   /**
@@ -325,24 +242,10 @@ public class LawEnforcement extends CmsPersistentObject {
   }
 
   /**
-   * @param streetName the streetName to set
-   */
-  public void setStreetName(String streetName) {
-    this.streetName = streetName;
-  }
-
-  /**
-   * @return the streetNumber
+   * @return the streetName
    */
   public String getStreetNumber() {
     return streetNumber;
-  }
-
-  /**
-   * @param streetNumber the streetNumber to set
-   */
-  public void setStreetNumber(String streetNumber) {
-    this.streetNumber = streetNumber;
   }
 
   /**
@@ -353,49 +256,10 @@ public class LawEnforcement extends CmsPersistentObject {
   }
 
   /**
-   * @param zipNumber the zipNumber to set
-   */
-  public void setZipNumber(Integer zipNumber) {
-    this.zipNumber = zipNumber;
-  }
-
-  /**
    * @return the zipSuffixNumber
    */
   public Short getZipSuffixNumber() {
     return zipSuffixNumber;
-  }
-
-  /**
-   * @param zipSuffixNumber the zipSuffixNumber to set
-   */
-  public void setZipSuffixNumber(Short zipSuffixNumber) {
-    this.zipSuffixNumber = zipSuffixNumber;
-  }
-
-  /**
-   * {@inheritDoc}
-   * 
-   * @see java.lang.Object#hashCode()
-   */
-  @Override
-  public final int hashCode() {
-    return HashCodeBuilder.reflectionHashCode(this, false);
-  }
-
-  /**
-   * {@inheritDoc}
-   * 
-   * @see java.lang.Object#equals(java.lang.Object)
-   */
-  @Override
-  public final boolean equals(Object obj) {
-    return EqualsBuilder.reflectionEquals(this, obj, false);
-  }
-
-  @Override
-  public String getPrimaryKey() {
-    return getId();
   }
 
 }

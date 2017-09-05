@@ -19,7 +19,7 @@ public class TestingRequestExecutionContext implements RequestExecutionContext {
   /**
    * Private constructor
    * 
-   * @param userIdentity User identity
+   * @param userId frame user id
    */
   public TestingRequestExecutionContext(String userId) {
     PerryUserIdentity userIdentity = new PerryUserIdentity();
