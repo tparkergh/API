@@ -82,31 +82,22 @@ public class IntakeLov implements Request, Response, ApiMarker {
    * 
    * @param legacySystemCodeId legacy lov id
    * @param legacyMeta legacy category
-   * @param legacyShortDescription legacy short description
-   * @param legacyLogicalId legacy logical code, if used
-   * @param legacyInactive legacy inactive flag
-   * @param legacyCategoryId legacy sub-category id
-   * @param legacyOtherCode legacy other code
-   * @param legacyLongDescription legacy long description, if used
    * @param intakeType Intake category
    * @param intakeCode Intake LOV code
-   * @param intakeDisplay Intake display
+   * @param intakeValue Intake display value
    */
   @JsonCreator
   public IntakeLov(@JsonProperty("legacy_system_code_id") String legacySystemCodeId,
       @JsonProperty("legacy_meta") String legacyMeta,
-      @JsonProperty("legacy_short_description") String legacyShortDescription,
-      @JsonProperty("legacy_logical_id") String legacyLogicalId,
-      @JsonProperty("legacy_inactive") String legacyInactive,
-      @JsonProperty("legacy_category_id") String legacyCategoryId,
-      @JsonProperty("legacy_other_code") String legacyOtherCode,
-      @JsonProperty("legacy_long_description") String legacyLongDescription,
       @JsonProperty("intake_type") String intakeType,
       @JsonProperty("intake_code") String intakeCode,
-      @JsonProperty("intake_display") String intakeDisplay) {
+      @JsonProperty("intake_display") String intakeValue) {
     super();
     this.legacySystemCodeId = Long.parseLong(legacySystemCodeId);
     this.legacyMeta = legacyMeta;
+    this.intakeType = intakeType;
+    this.intakeCode = intakeCode;
+    this.intakeValue = intakeValue;
   }
 
   /**
