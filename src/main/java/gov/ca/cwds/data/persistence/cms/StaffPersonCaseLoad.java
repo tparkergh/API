@@ -54,7 +54,7 @@ public class StaffPersonCaseLoad extends CmsPersistentObject {
   /**
    * @param countyCode - county specific code
    * @param endDate - end data of staff person case load
-   * @param fkCase - primary key to Case Load
+   * @param fkCaseLoad - primary key to Case Load
    * @param fkStaffPerson - primary key to Staff Person
    * @param startDate - start date of staff person case load
    * @param thirdId - primary key to Staff Person Case Load table
