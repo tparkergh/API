@@ -474,8 +474,8 @@ public class ScreeningToReferralService implements CrudsService {
         gov.ca.cwds.rest.api.domain.cms.Allegation cmsAllegation =
             new gov.ca.cwds.rest.api.domain.cms.Allegation("", LegacyDefaultValues.DEFAULT_CODE, "",
                 scr.getLocationType(), "", allegationDispositionType, allegation.getType(), "", "",
-                false, LegacyDefaultValues.DEFAULT_NON_PROTECTING_PARENT_CODE, false,
-                victimClientId, perpatratorClientId, referralId, scr.getIncidentCounty(), false,
+                false, (perpatratorClientId == "") ? "U" : "N", false, victimClientId,
+                perpatratorClientId, referralId, scr.getIncidentCounty(), false,
                 LegacyDefaultValues.DEFAULT_CODE);
 
         messageBuilder.addDomainValidationError(validator.validate(cmsAllegation));

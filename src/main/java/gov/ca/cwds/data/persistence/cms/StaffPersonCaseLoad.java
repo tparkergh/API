@@ -5,6 +5,7 @@ import java.util.Date;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.Id;
 import javax.persistence.Table;
 
 import org.hibernate.annotations.NamedQuery;
@@ -41,6 +42,7 @@ public class StaffPersonCaseLoad extends CmsPersistentObject {
   @Column(name = "START_DT")
   private Date startDate;
 
+  @Id
   @Column(name = "THIRD_ID", length = CMS_ID_LEN)
   private String thirdId;
 
@@ -52,17 +54,17 @@ public class StaffPersonCaseLoad extends CmsPersistentObject {
   /**
    * @param countyCode - county specific code
    * @param endDate - end data of staff person case load
-   * @param fkCase - primary key to Case Load
+   * @param fkCaseLoad - primary key to Case Load
    * @param fkStaffPerson - primary key to Staff Person
    * @param startDate - start date of staff person case load
    * @param thirdId - primary key to Staff Person Case Load table
    */
-  public StaffPersonCaseLoad(String countyCode, Date endDate, String fkCase, String fkStaffPerson,
-      Date startDate, String thirdId) {
+  public StaffPersonCaseLoad(String countyCode, Date endDate, String fkCaseLoad,
+      String fkStaffPerson, Date startDate, String thirdId) {
     super();
     this.countyCode = countyCode;
     this.endDate = endDate;
-    this.fkCaseLoad = fkCase;
+    this.fkCaseLoad = fkCaseLoad;
     this.fkStaffPerson = fkStaffPerson;
     this.startDate = startDate;
     this.thirdId = thirdId;
@@ -109,7 +111,7 @@ public class StaffPersonCaseLoad extends CmsPersistentObject {
   }
 
   @SuppressWarnings("javadoc")
-  public String getFkCase() {
+  public String getFkCaseLoad() {
     return fkCaseLoad;
   }
 
