@@ -5,6 +5,7 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
+import org.hibernate.annotations.ColumnTransformer;
 import org.hibernate.annotations.NamedQueries;
 import org.hibernate.annotations.NamedQuery;
 
@@ -18,7 +19,7 @@ import gov.ca.cwds.data.persistence.PersistentObject;
  */
 @SuppressWarnings("serial")
 @NamedQueries({@NamedQuery(name = "gov.ca.cwds.data.persistence.ns.IntakeLov.findAll",
-    query = "FROM IntakeLov WHERE intakeCode IS NOT NULL")})
+    query = "FROM IntakeLov WHERE intakeCode IS NOT NULL AND intakeCode != ''")})
 @Entity
 @Table(name = "intake_raw_codes")
 public class IntakeLov implements PersistentObject {
@@ -28,9 +29,11 @@ public class IntakeLov implements PersistentObject {
   private Long legacySystemCodeId;
 
   @Column(name = "LG_META")
+  @ColumnTransformer(read = "trim(LG_META)")
   private String legacyMeta;
 
   @Column(name = "LG_SHRT_DSC")
+  @ColumnTransformer(read = "trim(LG_SHRT_DSC)")
   private String legacyShortDescription;
 
   @Column(name = "LG_LOG_ID")
@@ -46,17 +49,21 @@ public class IntakeLov implements PersistentObject {
   private String legacyOtherCode;
 
   @Column(name = "LG_LNG_DSC")
+  @ColumnTransformer(read = "trim(LG_LNG_DSC)")
   private String legacyLongDescription;
 
   @Id
   @Column(name = "INTAKE_TYPE")
+  @ColumnTransformer(read = "trim(INTAKE_TYPE)")
   private String intakeType;
 
   @Id
   @Column(name = "INTAKE_CODE")
+  @ColumnTransformer(read = "trim(INTAKE_CODE)")
   private String intakeCode;
 
   @Column(name = "INTAKE_DISPLAY")
+  @ColumnTransformer(read = "trim(INTAKE_DISPLAY)")
   private String intakeDisplay;
 
   /**
