@@ -69,12 +69,12 @@ public class IntakeLovResource {
    * <tr>
    * <td>Q</td>
    * <td>API Request</td>
-   * <td>AutoCompletePersonRequest</td>
+   * <td>IntakeLov</td>
    * </tr>
    * <tr>
    * <td>P</td>
    * <td>API Response</td>
-   * <td>AutoCompletePersonResponse</td>
+   * <td>IntakeLovResponse</td>
    * </tr>
    * <tr>
    * <td>S</td>
