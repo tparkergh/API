@@ -5,12 +5,11 @@ import org.hibernate.SessionFactory;
 import com.google.inject.Inject;
 
 import gov.ca.cwds.data.CrudsDaoImpl;
-import gov.ca.cwds.data.persistence.cms.StaffPerson;
 import gov.ca.cwds.data.persistence.cms.StaffPersonCaseLoad;
 import gov.ca.cwds.inject.CmsSessionFactory;
 
 /**
- * Hibernate DAO for DB2 {@link StaffPerson}.
+ * Hibernate DAO for DB2 {@link StaffPersonCaseLoad}.
  * 
  * @author CWDS API Team
  */

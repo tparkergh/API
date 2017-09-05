@@ -72,7 +72,7 @@ public class StaffPersonCaseLoadTest {
     assertThat(domain.getCountyCode(), is(equalTo(persistent.getCountyCode())));
     assertThat(domain.getEndDate(),
         is(equalTo((persistent.getEndDate() == null ? null : df.format(persistent.getEndDate())))));
-    assertThat(domain.getFkCaseLoad(), is(equalTo(persistent.getFkCase())));
+    assertThat(domain.getFkCaseLoad(), is(equalTo(persistent.getFkCaseLoad())));
     assertThat(domain.getFkStaffPerson(), is(equalTo(persistent.getFkStaffPerson())));
     assertThat(domain.getStartDate(), is(equalTo(df.format(persistent.getStartDate()))));
     assertThat(domain.getThirdId(), is(equalTo(persistent.getThirdId())));

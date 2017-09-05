@@ -198,3 +198,7 @@ VALUES ('AanwMid0QM', 'N', 0.000, null, 'Second                        ', 'N', '
 truncate table cwsint.LAW_ENFT immediate;
 INSERT INTO CWSINT.LAW_ENFT(IDENTIFIER, CITY_NM, CNT_PERSNM, CNT_TEL_NO, CNT_EXT_NO, CNTITL_DSC, FAX_NO, GVR_ENTC, LAW_ENF_NM, STATE_C, STATION_NM, STREET_NM, STREET_NO, ZIP_NO, LST_UPD_ID, LST_UPD_TS, ZIP_SFX_NO, ARCASS_IND, EMAIL_ADDR) 
 VALUES ('AdAOv470GR', 'qawgr2q35qawgr2q35  ', '                                   ', 0, 0, '                              ', 0, 1088, 'qawgr2q35                          ', 1828, '                    ', 'qawgr2q35qawgr2q35                      ', '          ', 23523, '0GR', '1999-11-23 14:41:58.006746', 0, 'N', null);
+
+truncate table cwsint.STFCSLDT immediate;
+INSERT INTO CWSINT.STFCSLDT(THIRD_ID, END_DT, START_DT, LST_UPD_ID, LST_UPD_TS, FKCASE_LDT, FKSTFPERST, CNTY_SPFCD) 
+VALUES ('MLazRFR00E', '1997-08-13', '1997-08-13', 'con', '1997-08-13 11:05:54.15393', 'CfDfk1300E', 'con', '36');
