@@ -22,7 +22,7 @@ public class IntakeLovDaoTest {
 
   @Before
   public void setup() throws Exception {
-    SessionFactory sessionFactory = mock(SessionFactory.class);
+    sessionFactory = mock(SessionFactory.class);
     Session session = mock(Session.class);
 
     Transaction transaction = mock(Transaction.class);
