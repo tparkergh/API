@@ -24,6 +24,7 @@ import org.junit.Test;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.squarespace.jersey2.guice.JerseyGuiceUtils;
 
+import gov.ca.cwds.fixture.CmsAllegationResourceBuilder;
 import gov.ca.cwds.rest.api.domain.DomainChef;
 import gov.ca.cwds.rest.core.Api;
 import gov.ca.cwds.rest.resources.cms.AllegationResource;
@@ -1543,6 +1544,54 @@ public class AllegationTest {
         resources.client().target(ROOT_RESOURCE).request().accept(MediaType.APPLICATION_JSON)
             .post(Entity.entity(toCreate, MediaType.APPLICATION_JSON));
     assertThat(response.getStatus(), is(equalTo(204)));
+  }
+
+
+  @Test
+  public void shouldSetNonProtectiveParentToUWhenNoPerpetrator() throws Exception {
+
+    gov.ca.cwds.rest.api.domain.cms.Allegation builtAllegation =
+        new CmsAllegationResourceBuilder().setPerpetratorClientId("").buildCmsAllegation();
+
+    gov.ca.cwds.rest.api.domain.cms.Allegation allegation =
+        new gov.ca.cwds.rest.api.domain.cms.Allegation(builtAllegation.getAbuseEndDate(),
+            builtAllegation.getAbuseFrequency(), builtAllegation.getAbuseFrequencyPeriodCode(),
+            builtAllegation.getAbuseLocationDescription(), builtAllegation.getAbuseStartDate(),
+            builtAllegation.getAllegationDispositionType(), builtAllegation.getAllegationType(),
+            builtAllegation.getDispositionDescription(), builtAllegation.getDispositionDate(),
+            builtAllegation.getInjuryHarmDetailIndicator(),
+            (builtAllegation.getPerpetratorClientId() == "") ? "U" : "N",
+            builtAllegation.getStaffPersonAddedIndicator(), builtAllegation.getVictimClientId(),
+            builtAllegation.getPerpetratorClientId(), builtAllegation.getReferralId(),
+            builtAllegation.getCountySpecificCode(), builtAllegation.getZippyCreatedIndicator(),
+            builtAllegation.getPlacementFacilityType());
+
+    assertThat(allegation.getNonProtectingParentCode(), is("U"));
+
+  }
+
+
+  @Test
+  public void shouldSetNonProtectiveParentToNWhenPerpetrator() throws Exception {
+
+    gov.ca.cwds.rest.api.domain.cms.Allegation builtAllegation = new CmsAllegationResourceBuilder()
+        .setPerpetratorClientId("3456789ABC").buildCmsAllegation();
+
+    gov.ca.cwds.rest.api.domain.cms.Allegation allegation =
+        new gov.ca.cwds.rest.api.domain.cms.Allegation(builtAllegation.getAbuseEndDate(),
+            builtAllegation.getAbuseFrequency(), builtAllegation.getAbuseFrequencyPeriodCode(),
+            builtAllegation.getAbuseLocationDescription(), builtAllegation.getAbuseStartDate(),
+            builtAllegation.getAllegationDispositionType(), builtAllegation.getAllegationType(),
+            builtAllegation.getDispositionDescription(), builtAllegation.getDispositionDate(),
+            builtAllegation.getInjuryHarmDetailIndicator(),
+            (builtAllegation.getPerpetratorClientId() == "") ? "U" : "N",
+            builtAllegation.getStaffPersonAddedIndicator(), builtAllegation.getVictimClientId(),
+            builtAllegation.getPerpetratorClientId(), builtAllegation.getReferralId(),
+            builtAllegation.getCountySpecificCode(), builtAllegation.getZippyCreatedIndicator(),
+            builtAllegation.getPlacementFacilityType());
+
+    assertThat(allegation.getNonProtectingParentCode(), is("N"));
+
   }
 
   /*

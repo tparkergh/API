@@ -102,7 +102,7 @@ public class StaffPersonCaseLoad extends DomainObject implements Request, Respon
     super();
     this.countyCode = persisted.getCountyCode();
     this.endDate = DomainChef.cookDate(persisted.getEndDate());
-    this.fkCaseLoad = persisted.getFkCase();
+    this.fkCaseLoad = persisted.getFkCaseLoad();
     this.fkStaffPerson = persisted.getFkStaffPerson();
     this.startDate = DomainChef.cookDate(persisted.getStartDate());
     this.thirdId = persisted.getThirdId();
