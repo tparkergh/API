@@ -41,7 +41,7 @@ public class StaffPersonCaseLoadTest {
     assertThat(builder.getCountyCode(), is(equalTo(persistent.getCountyCode())));
     assertThat(builder.getEndDate(),
         is(equalTo(persistent.getEndDate() == null ? "" : df.format(persistent.getEndDate()))));
-    assertThat(builder.getFkCaseLoad(), is(equalTo(persistent.getFkCase())));
+    assertThat(builder.getFkCaseLoad(), is(equalTo(persistent.getFkCaseLoad())));
     assertThat(builder.getFkStaffPerson(), is(equalTo(persistent.getFkStaffPerson())));
     assertThat(builder.getStartDate(), is(equalTo(df.format(persistent.getStartDate()))));
     assertThat(builder.getThirdId(), is(equalTo(persistent.getThirdId())));
@@ -61,7 +61,7 @@ public class StaffPersonCaseLoadTest {
     assertThat(builder.getCountyCode(), is(equalTo(persistent.getCountyCode())));
     assertThat(builder.getEndDate(),
         is(equalTo(persistent.getEndDate() == null ? "" : df.format(persistent.getEndDate()))));
-    assertThat(builder.getFkCaseLoad(), is(equalTo(persistent.getFkCase())));
+    assertThat(builder.getFkCaseLoad(), is(equalTo(persistent.getFkCaseLoad())));
     assertThat(builder.getFkStaffPerson(), is(equalTo(persistent.getFkStaffPerson())));
     assertThat(builder.getStartDate(), is(equalTo(df.format(persistent.getStartDate()))));
     assertThat(builder.getThirdId(), is(equalTo(persistent.getThirdId())));
