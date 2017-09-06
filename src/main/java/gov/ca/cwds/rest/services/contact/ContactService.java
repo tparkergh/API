@@ -61,7 +61,7 @@ public class ContactService implements TypedCrudsService<String, ContactRequestL
     peopleInIndividualDeliveredService.add(new PostedIndividualDeliveredService("CLIENT_T",
         "3456789ABC", "John", "Bob", "Smith", "Mr.", "Jr.", ""));
     peopleInIndividualDeliveredService.add(new PostedIndividualDeliveredService("REPTR_T",
-        "4567890ABC ", "Sam", "Bill", "Doe", "Mr.", "III", "Reporter"));
+        "4567890ABC ", "Sam", "Bill", "Jones", "Mr.", "III", "Reporter"));
     return peopleInIndividualDeliveredService;
   }
 
