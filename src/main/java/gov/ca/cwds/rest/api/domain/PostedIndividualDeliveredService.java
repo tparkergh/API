@@ -52,7 +52,7 @@ public class PostedIndividualDeliveredService extends ReportingDomain implements
   @NotEmpty
   @JsonProperty("last_name")
   @Size(min = 1, max = 25)
-  @ApiModelProperty(required = true, readOnly = false, value = "", example = "Doe")
+  @ApiModelProperty(required = true, readOnly = false, value = "", example = "Jones")
   private String lastName;
 
 

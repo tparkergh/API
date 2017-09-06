@@ -69,8 +69,11 @@ public class Contact extends ReportingDomain implements Request, Response {
   @JsonProperty("purpose")
   // "service_contact" delivered service serviceContactType
   @ValidSystemCodeId(required = false, category = SystemCodeCategoryId.CONTACT_TYPE)
-  @ApiModelProperty(required = false, readOnly = false,
-      value = "Delivered service contact type system code ID e.g)  -> ", example = "433")
+  @ApiModelProperty(
+      required = false,
+      readOnly = false,
+      value = "Delivered service contact type system code ID e.g)  -> 433 Conduct Client Evaluation ",
+      example = "433")
   private Integer purpose;
 
   @JsonProperty("communication_method")
