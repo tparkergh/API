@@ -1,10 +1,12 @@
 package gov.ca.cwds.rest.api.domain;
 
 import static io.dropwizard.testing.FixtureHelpers.fixture;
+import static junit.framework.TestCase.assertTrue;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.is;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 import static org.mockito.Mockito.mock;
 
 import java.io.IOException;
@@ -491,6 +493,40 @@ public class ScreeningToReferralTest {
         constraintViolations.size());
   }
 
+  @Test
+  public void shouldReportAccessIsLimitedWhenCodeIsS(){
+    ScreeningToReferral screeningToReferral = new ScreeningToReferralResourceBuilder()
+        .setLimitedAccessCode("S")
+        .createScreeningToReferral();
+    assertTrue("Expected access to be limited", screeningToReferral.isAccessLimited());
+  }
+
+  @Test
+  public void shouldReportAccessIsLimitedWhenCodeIsR(){
+    ScreeningToReferral screeningToReferral = new ScreeningToReferralResourceBuilder()
+        .setLimitedAccessCode("R")
+        .createScreeningToReferral();
+    assertTrue("Expected access to be limited", screeningToReferral.isAccessLimited());
+
+  }
+
+  @Test
+  public void shouldReportAccessIsNotLimitedWhenCodeIsN(){
+    ScreeningToReferral screeningToReferral = new ScreeningToReferralResourceBuilder()
+        .setLimitedAccessCode("N")
+        .createScreeningToReferral();
+    assertFalse("Expected access to not be limited", screeningToReferral.isAccessLimited());
+
+  }
+
+  @Test
+  public void shouldReportAccessIsNotLimitedWhenCodeIsNull(){
+    ScreeningToReferral screeningToReferral = new ScreeningToReferralResourceBuilder()
+        .setLimitedAccessCode(null)
+        .createScreeningToReferral();
+    assertFalse("Expected access to not be limited", screeningToReferral.isAccessLimited());
+
+  }
 
   private ScreeningToReferral validScreeningToReferral() {
     ScreeningToReferral str = null;

@@ -2,6 +2,7 @@ package gov.ca.cwds.rest.api.domain.cms;
 
 import static gov.ca.cwds.data.persistence.cms.CmsPersistentObject.CMS_ID_LEN;
 
+import gov.ca.cwds.rest.api.domain.LimitedAccessType;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -1218,6 +1219,35 @@ public class Client extends ReportingDomain implements Request, Response {
    */
   public Boolean getZippyCreatedIndicator() {
     return zippyCreatedIndicator;
+  }
+
+  public void applySensitivityIndicator(String sensitivityIndicator){
+    if (LimitedAccessType.SEALED.getValue().equals(sensitivityIndicator)){
+      makeSealed();
+    } else if(LimitedAccessType.SENSITIVE.getValue().equals(sensitivityIndicator)){
+      makeSensitive();
+    } else if(this.sensitivityIndicator == null){
+      removeSealedSensitive();
+    }
+  }
+
+  private void makeSensitive(){
+    if(!isSealed()){
+      this.sensitivityIndicator = LimitedAccessType.SENSITIVE.getValue();
+
+    }
+  }
+
+  private void makeSealed(){
+      this.sensitivityIndicator = LimitedAccessType.SEALED.getValue();
+  }
+
+  private void removeSealedSensitive(){
+    this.sensitivityIndicator = LimitedAccessType.NONE.getValue();
+  }
+
+  private boolean isSealed(){
+    return LimitedAccessType.SEALED.getValue().equals(sensitivityIndicator);
   }
 
   /**

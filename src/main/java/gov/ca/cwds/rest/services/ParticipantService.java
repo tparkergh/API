@@ -177,6 +177,7 @@ public class ParticipantService implements CrudsService {
               if (newClient) {
                 Client client =
                     Client.createWithDefaults(incomingParticipant, dateStarted, genderCode);
+                client.applySensitivityIndicator(screeningToReferral.getLimitedAccessCode());
                 messageBuilder.addDomainValidationError(validator.validate(client));
                 PostedClient postedClient =
                     this.clientService.createWithSingleTimestamp(client, timestamp);
@@ -192,6 +193,7 @@ public class ParticipantService implements CrudsService {
                 if (foundClient != null) {
                   EntityChangedComparator comparator = new EntityChangedComparator();
                   if (comparator.compare(incomingParticipant, foundClient)) {
+                    foundClient.applySensitivityIndicator(screeningToReferral.getLimitedAccessCode());
                     foundClient.update(incomingParticipant.getFirstName(),
                         incomingParticipant.getMiddleName(), incomingParticipant.getLastName(),
                         incomingParticipant.getNameSuffix());

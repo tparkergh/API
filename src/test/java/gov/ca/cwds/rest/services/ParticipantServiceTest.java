@@ -42,6 +42,7 @@ import org.joda.time.DateTime;
 import org.joda.time.format.DateTimeFormat;
 import org.junit.Before;
 import org.junit.Test;
+import org.mockito.ArgumentCaptor;
 
 public class ParticipantServiceTest {
   private ParticipantService participantService;
@@ -641,5 +642,60 @@ public class ParticipantServiceTest {
         + "modified";
     assertEquals("Expected client previously modified message to have been recorded",
         expectedErrorMessage, message);
+  }
+
+  @Test
+  public void shouldApplySensitivityIndicatorFromReferralWhenSavingNewClient(){
+    Set participants = new HashSet<>(Arrays.asList(defaultVictim, defaultReporter,
+        defaultPerpetrator));
+
+    ScreeningToReferral referral = new ScreeningToReferralResourceBuilder()
+        .setLimitedAccessCode("S")
+        .setParticipants(participants)
+        .createScreeningToReferral();
+
+    PostedClient createdClient = mock(PostedClient.class);
+    when(clientService.create(any())).thenReturn(createdClient);
+
+    ArgumentCaptor<Client> clientArgCaptor = ArgumentCaptor.forClass(Client.class);
+
+    participantService.saveParticipants(referral, dateStarted, referralId, timestamp,
+        messageBuilder);
+
+    verify(clientService,times(2)).createWithSingleTimestamp(clientArgCaptor.capture() , any());
+    assertEquals("Expected client to have sensitivty indicator applied", referral.getLimitedAccessCode(),
+        clientArgCaptor.getValue().getSensitivityIndicator());
+  }
+
+  @Test
+  public void shouldApplySensitivityIndicatorFromReferralWhenUpdatingClient(){
+    String victimClientLegacyId = "ABC123DSAF";
+
+    LegacyDescriptor descriptor = new LegacyDescriptor("", "", lastUpdateDate, "", "");
+    Participant victim =
+        new ParticipantResourceBuilder().setLegacyId(victimClientLegacyId).setLegacyDescriptor(descriptor).createParticipant();
+    Set participants = new HashSet<>(Arrays.asList(victim, defaultReporter,
+        defaultPerpetrator));
+
+    ScreeningToReferral referral = new ScreeningToReferralResourceBuilder()
+        .setLimitedAccessCode("S")
+        .setParticipants(participants)
+        .createScreeningToReferral();
+
+    Client foundClient = mock(Client.class);
+    when(foundClient.getLastUpdatedTime()).thenReturn(modifiedLastUpdateDate);
+
+    PostedClient createdClient = mock(PostedClient.class);
+    when(createdClient.getId()).thenReturn("LEGACYIDXX");
+    when(clientService.find(eq(victimClientLegacyId))).thenReturn(foundClient);
+    when(clientService.create(any())).thenReturn(createdClient);
+
+    Client updatedClient = mock(Client.class);
+    when(clientService.update(eq(victimClientLegacyId), any())).thenReturn(updatedClient);
+
+    participantService.saveParticipants(referral, dateStarted, referralId, timestamp,
+        messageBuilder);
+
+    verify(foundClient).applySensitivityIndicator(eq(referral.getLimitedAccessCode()));
   }
 }
