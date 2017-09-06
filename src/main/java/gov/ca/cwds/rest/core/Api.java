@@ -141,7 +141,7 @@ public interface Api {
   /**
    * A {@code String} constant representing {@value #RESOURCE_LOV} API..
    */
-  public static final String RESOURCE_LOV = "lov";
+  public static final String RESOURCE_LOV = "__oldlov";
 
   /**
    * A {@code String} constant representing {@value #RESOURCE_CMS_UI_IDENTIFIER} API..
@@ -171,6 +171,6 @@ public interface Api {
   /**
    * A {@code String} constant representing {@value #RESOURCE_INTAKE_LOV} API.
    */
-  public static final String RESOURCE_INTAKE_LOV = "intake_lov";
+  public static final String RESOURCE_INTAKE_LOV = "lov";
 
 }
