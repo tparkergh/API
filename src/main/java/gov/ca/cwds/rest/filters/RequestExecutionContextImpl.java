@@ -23,7 +23,8 @@ import gov.ca.cwds.auth.realms.PerryUserIdentity;
  */
 class RequestExecutionContextImpl implements RequestExecutionContext {
 
-  private static final String DEFAULT_USER_ID = "0X5";
+  private static final String DEFAULT_STAFF_ID = "0X5";
+  private static final String DEFAULT_USER_ID = "CWDST";
 
   /**
    * Context parameters
@@ -79,6 +80,22 @@ class RequestExecutionContextImpl implements RequestExecutionContext {
   }
 
   /**
+   * Get staff id if stored.
+   * 
+   * @return The staff id
+   */
+  @Override
+  public String getStaffId() {
+    String staffId = null;
+    PerryUserIdentity userIdentity = (PerryUserIdentity) get(Parameter.USER_IDENTITY);
+    if (userIdentity != null) {
+      staffId = userIdentity.getStaffId();
+    }
+    return staffId;
+  }
+
+
+  /**
    * Get request start time if stored
    * 
    * @return The request start time
@@ -95,6 +112,7 @@ class RequestExecutionContextImpl implements RequestExecutionContext {
    */
   static void startRequest() {
     PerryUserIdentity userIdentity = new PerryUserIdentity();
+    userIdentity.setStaffId(DEFAULT_STAFF_ID);
     userIdentity.setUser(DEFAULT_USER_ID);
 
     Subject currentUser = SecurityUtils.getSubject();
