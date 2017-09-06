@@ -206,8 +206,7 @@ public class ScreeningToReferral extends ReportingDomain implements Request {
   private Set<Participant> participants;
 
   @JsonProperty("cross_reports")
-  @ApiModelProperty(required = true, readOnly = false)
-  @NotEmpty
+  @ApiModelProperty(required = false, readOnly = false)
   @Valid
   private Set<CrossReport> crossReports;
 
