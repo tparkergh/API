@@ -57,8 +57,8 @@ public class IntakeLovResourceTest {
 
   @Test
   public void createDelegatesToResourceDelegate() throws Exception {
-    inMemoryResource.client().target(ROOT_RESOURCE + "/all").request()
-        .accept(MediaType.APPLICATION_JSON).get();
+    inMemoryResource.client().target(ROOT_RESOURCE).request().accept(MediaType.APPLICATION_JSON)
+        .get();
     verify(resourceDelegate).handle(any());
   }
 
