@@ -12,9 +12,13 @@ import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
+import gov.ca.cwds.rest.api.domain.LimitedAccessType;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashSet;
 
+import java.util.List;
 import javax.ws.rs.client.Entity;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
@@ -3283,6 +3287,78 @@ public class ClientTest implements DomainTestTemplate {
         .setSecondaryLanguageType(null).build();
     assertEquals(0, (int) client.getPrimaryLanguage());
     assertEquals(0, (int) client.getSecondaryLanguage());
+  }
+
+  @Test
+  public void shouldApplySealedSensitiveIndicatorRegardlessOfExistingValue(){
+    List<String> sensitivityIndicators = Arrays.asList(null,LimitedAccessType.NONE.getValue(),
+        LimitedAccessType.SENSITIVE.getValue(),LimitedAccessType.SEALED.getValue());
+    for(String sensitivityIndicator : sensitivityIndicators){
+      Client client = new ClientResourceBuilder()
+          .setSensitivityIndicator(sensitivityIndicator)
+          .build();
+
+      client.applySensitivityIndicator(LimitedAccessType.SEALED.getValue());
+      assertEquals("Expected indicator to be Restricited/Sealed", LimitedAccessType.SEALED.getValue(),
+          client.getSensitivityIndicator());
+    }
+  }
+
+  @Test
+  public void shouldNotApplySensitiveSensitiveIndicatorWhenExistingValueIsSealed(){
+    List<String> sensitivityIndicators = Arrays.asList(LimitedAccessType.SEALED.getValue());
+    for(String sensitivityIndicator : sensitivityIndicators){
+      Client client = new ClientResourceBuilder()
+          .setSensitivityIndicator(sensitivityIndicator)
+          .build();
+
+      client.applySensitivityIndicator(LimitedAccessType.SENSITIVE.getValue());
+      assertEquals("Expected indicator to stay as Sealed", LimitedAccessType.SEALED
+          .getValue(),
+          client.getSensitivityIndicator());
+    }
+  }
+
+
+  @Test
+  public void shouldApplySensitiveSensitiveIndicatorWhenExistingValueIsNotRestricted(){
+    List<String> sensitivityIndicators = Arrays.asList(null, LimitedAccessType.SENSITIVE.getValue
+        (), LimitedAccessType.NONE.getValue());
+    for(String sensitivityIndicator : sensitivityIndicators){
+      Client client = new ClientResourceBuilder()
+          .setSensitivityIndicator(sensitivityIndicator)
+          .build();
+
+      client.applySensitivityIndicator(LimitedAccessType.SENSITIVE.getValue());
+      assertEquals("Expected indicator to be Sensitive", LimitedAccessType.SENSITIVE
+              .getValue(),
+          client.getSensitivityIndicator());
+    }
+  }
+
+  @Test
+  public void shouldNotRemoveSealedSensitiveIndicatorWhenAlreadySet(){
+    List<String> sensitivityIndicators = Arrays.asList( LimitedAccessType.SENSITIVE.getValue(),LimitedAccessType.SEALED.getValue());
+    for(String sensitivityIndicator : sensitivityIndicators){
+      Client client = new ClientResourceBuilder()
+          .setSensitivityIndicator(sensitivityIndicator)
+          .build();
+
+      client.applySensitivityIndicator(LimitedAccessType.NONE.getValue());
+      assertEquals("Expected indicator to not be unchanged", sensitivityIndicator,
+          client.getSensitivityIndicator());
+    }
+  }
+
+  @Test
+  public void shouldSetSealedSensitiveIndicatorToNoneWhenPreviousValueIsNull(){
+      Client client = new ClientResourceBuilder()
+          .setSensitivityIndicator(null)
+          .build();
+
+      client.applySensitivityIndicator(LimitedAccessType.NONE.getValue());
+      assertEquals("Expected indicator to not be unchanged", LimitedAccessType.NONE.getValue(),
+          client.getSensitivityIndicator());
   }
 
   private Client validClient() throws JsonParseException, JsonMappingException, IOException {

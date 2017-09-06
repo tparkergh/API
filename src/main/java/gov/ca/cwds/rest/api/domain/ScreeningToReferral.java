@@ -2,6 +2,7 @@ package gov.ca.cwds.rest.api.domain;
 
 import static gov.ca.cwds.data.persistence.cms.CmsPersistentObject.CMS_ID_LEN;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import java.util.Set;
 
 import javax.validation.Valid;
@@ -445,6 +446,11 @@ public class ScreeningToReferral extends ReportingDomain implements Request {
    */
   public String getLimitedAccessCode() {
     return limitedAccessCode;
+  }
+
+  @JsonIgnore
+  public boolean isAccessLimited(){
+    return limitedAccessCode == "S" || limitedAccessCode == "R";
   }
 
   /**
