@@ -36,7 +36,7 @@ public class StaffPersonCaseLoadTest {
     gov.ca.cwds.rest.api.domain.cms.StaffPersonCaseLoad builder =
         new StaffPersonCaseLoadResourceBuilder().build();
 
-    StaffPersonCaseLoad persistent = new StaffPersonCaseLoad(builder.getThirdId(), builder, "0X5");
+    StaffPersonCaseLoad persistent = new StaffPersonCaseLoad(builder, "0X5");
 
     assertThat(builder.getCountyCode(), is(equalTo(persistent.getCountyCode())));
     assertThat(builder.getEndDate(),

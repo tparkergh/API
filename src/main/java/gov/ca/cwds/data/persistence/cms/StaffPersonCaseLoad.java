@@ -74,18 +74,18 @@ public class StaffPersonCaseLoad extends CmsPersistentObject {
    * Constructor using domain
    * 
    * @param thirdId The id
-   * @param persistedStaffPersonCaseLoad The domain object to construct this object from
+   * @param domainStaffPersonCaseLoad The domain object to construct this object from
    * @param lastUpdatedId the id of the last user to update this object
    */
-  public StaffPersonCaseLoad(String thirdId,
-      gov.ca.cwds.rest.api.domain.cms.StaffPersonCaseLoad persistedStaffPersonCaseLoad,
+  public StaffPersonCaseLoad(
+      gov.ca.cwds.rest.api.domain.cms.StaffPersonCaseLoad domainStaffPersonCaseLoad,
       String lastUpdatedId) {
     super(lastUpdatedId);
-    initialize(thirdId, persistedStaffPersonCaseLoad);
+    initialize(domainStaffPersonCaseLoad);
   }
 
   @SuppressWarnings("unused")
-  private void initialize(String thirdId,
+  private void initialize(
       gov.ca.cwds.rest.api.domain.cms.StaffPersonCaseLoad persistedStaffPersonCaseLoad) {
     this.countyCode = persistedStaffPersonCaseLoad.getCountyCode();
     this.endDate = DomainChef.uncookDateString(persistedStaffPersonCaseLoad.getEndDate());
