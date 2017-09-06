@@ -22,6 +22,7 @@ import gov.ca.cwds.rest.api.Request;
 import gov.ca.cwds.rest.api.domain.cms.PostedAssignment;
 import gov.ca.cwds.rest.business.rules.ExternalInterfaceTables;
 import gov.ca.cwds.rest.business.rules.NonLACountyTriggers;
+import gov.ca.cwds.rest.filters.RequestExecutionContext;
 import gov.ca.cwds.rest.messages.MessageBuilder;
 import gov.ca.cwds.rest.services.ServiceException;
 import gov.ca.cwds.rest.services.TypedCrudsService;
@@ -195,7 +196,14 @@ public class AssignmentService implements
     //
     // On TESTDOM (CWSNS1) workstation this will find the CASE_LOAD/IDENTIFIER of OkAImUW0Wz
     //
-    final String caseLoadId = "OkAImUW0Wz";
+
+    final String caseLoadId =
+        assignmentDao.findCaseId(RequestExecutionContext.instance().getUserId());
+    if (caseLoadId == null) {
+      String message = "CaseLoad is not found for the staffperson";
+      ServiceException se = new ServiceException(message);
+      messageBuilder.addMessageAndLog(message, se, LOGGER);
+    }
 
     // the county code of the CASE_LOAD row for the STAFF_PERSON_CASE_LOAD row with FKSTFPERST =
     // '0X5' is "20"
