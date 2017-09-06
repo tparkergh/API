@@ -435,8 +435,8 @@ public class Referral extends ReportingDomain implements Request, Response {
     this.govtEntityType = govtEntityType;
     this.legalDefinitionCode = legalDefinitionCode;
     this.legalRightsNoticeIndicator = legalRightsNoticeIndicator;
-    this.limitedAccessCode = limitedAccessCode == null ? DEFAULT_LIMITIED_ACCESS_CODE :
-        limitedAccessCode;
+    this.limitedAccessCode =
+        limitedAccessCode == null ? DEFAULT_LIMITIED_ACCESS_CODE : limitedAccessCode;
     this.mandatedCrossReportReceivedDate = mandatedCrossReportReceivedDate;
     this.referralName = referralName;
     this.openAdequateCaseCode = openAdequateCaseCode;
@@ -609,6 +609,10 @@ public class Referral extends ReportingDomain implements Request, Response {
    * @param staffId - staffId
    * @param responseRationalLongTextId - longTextId for Response Rational Text
    * @param responsibleAgencyCode - responsibleAgencyCode
+   * @param limitedAccessCode restriction code (S/R/N)
+   * @param limitedAccessDesc restriction description
+   * @param limitedAccessDate restriction date
+   * @param limitedAccessGovtAgencyType agency imposing restriction
    * @return the referral
    */
   public static Referral createWithDefaults(Boolean anonymousReporter,
@@ -619,17 +623,18 @@ public class Referral extends ReportingDomain implements Request, Response {
       String firstResponseDeterminedByStaffPersonId, String screenerNoteLongTextId,
       String countyCode, short approvalCode, String staffId, String responseRationalLongTextId,
       String responsibleAgencyCode, String limitedAccessCode, String limitedAccessDesc,
-      String limitedAccessDate,  Short limitedAccessGovtAgencyType) {
+      String limitedAccessDate, Short limitedAccessGovtAgencyType) {
 
     return new Referral(false, anonymousReporter, false, "", approvalCode, false, "",
         communicationsMethodCode, "", drmsAllegationDescriptionDoc, drmsErReferralDoc,
         drmsInvestigationDoc, filedCrossReport, familyAwareness, (short) governmentEntity,
-        DEFAULT_NO, false, limitedAccessCode, "", referalName, "", dateStarted,
-        timeStarted, referralResponseTypeCode, DEFAULT_CODE, "", "", responseRationalLongTextId,
+        DEFAULT_NO, false, limitedAccessCode, "", referalName, "", dateStarted, timeStarted,
+        referralResponseTypeCode, DEFAULT_CODE, "", "", responseRationalLongTextId,
         screenerNoteLongTextId, DEFAULT_NO, DEFAULT_NO, DEFAULT_NO, "",
         allegesAbuseOccurredAtAddressId, firstResponseDeterminedByStaffPersonId, staffId,
-        countyCode, false, false, false, false, "", responsibleAgencyCode, limitedAccessGovtAgencyType,
-        limitedAccessDate, limitedAccessDesc, "", null, null, null, null, null, null, null);
+        countyCode, false, false, false, false, "", responsibleAgencyCode,
+        limitedAccessGovtAgencyType, limitedAccessDate, limitedAccessDesc, "", null, null, null,
+        null, null, null, null);
   }
 
   /**
