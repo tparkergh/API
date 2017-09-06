@@ -65,6 +65,7 @@ public class ContactResource {
    * Create an {@link Contact}.
    *
    * @param contactList The {@link ContactList}
+   * @param id The id of the Referral the Contact List is for
    *
    * @return The {@link Response}
    */
@@ -79,8 +80,9 @@ public class ContactResource {
   @Consumes(value = MediaType.APPLICATION_JSON)
   @ApiOperation(value = "Create deliveredService", code = HttpStatus.SC_CREATED,
       response = ContactList.class)
-  public Response create(
-      @Valid @ApiParam(hidden = false, required = true) ContactRequestList contactList) {
+  public Response create(@PathParam("id") @ApiParam(required = true, name = "id",
+      value = "The id of the Referral ") String id, @Valid @ApiParam(hidden = false,
+      required = true) ContactRequestList contactList) {
     return typedResourceDelegate.create(contactList);
   }
 
