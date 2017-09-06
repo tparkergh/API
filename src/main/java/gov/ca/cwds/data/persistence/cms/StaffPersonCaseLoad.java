@@ -73,7 +73,6 @@ public class StaffPersonCaseLoad extends CmsPersistentObject {
   /**
    * Constructor using domain
    * 
-   * @param thirdId The id
    * @param domainStaffPersonCaseLoad The domain object to construct this object from
    * @param lastUpdatedId the id of the last user to update this object
    */
