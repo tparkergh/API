@@ -1,14 +1,9 @@
-
 package gov.ca.cwds.inject;
-
-import com.google.inject.AbstractModule;
-import com.google.inject.Injector;
-import com.google.inject.Provides;
-import com.google.inject.name.Named;
 
 import gov.ca.cwds.rest.ApiConfiguration;
 import gov.ca.cwds.rest.SwaggerConfiguration;
 import gov.ca.cwds.rest.api.contact.DeliveredServiceDomain;
+import gov.ca.cwds.rest.api.domain.ContactRequestList;
 import gov.ca.cwds.rest.api.domain.IntakeLov;
 import gov.ca.cwds.rest.api.domain.IntakeLovResponse;
 import gov.ca.cwds.rest.api.domain.StaffPerson;
@@ -62,6 +57,7 @@ import gov.ca.cwds.rest.resources.cms.ReferralResource;
 import gov.ca.cwds.rest.resources.cms.ReporterResource;
 import gov.ca.cwds.rest.resources.cms.StaffPersonResource;
 import gov.ca.cwds.rest.resources.cms.SystemCodeResource;
+import gov.ca.cwds.rest.resources.contact.ContactResource;
 import gov.ca.cwds.rest.resources.contact.DeliveredServiceResource;
 import gov.ca.cwds.rest.services.AddressService;
 import gov.ca.cwds.rest.services.AddressValidationService;
@@ -90,8 +86,14 @@ import gov.ca.cwds.rest.services.cms.ReferralService;
 import gov.ca.cwds.rest.services.cms.ReporterService;
 import gov.ca.cwds.rest.services.cms.StaffPersonService;
 import gov.ca.cwds.rest.services.cms.SystemCodeService;
+import gov.ca.cwds.rest.services.contact.ContactService;
 import gov.ca.cwds.rest.services.contact.DeliveredService;
 import gov.ca.cwds.rest.services.es.IndexQueryService;
+
+import com.google.inject.AbstractModule;
+import com.google.inject.Injector;
+import com.google.inject.Provides;
+import com.google.inject.name.Named;
 
 
 /**
@@ -140,6 +142,7 @@ public class ResourcesModule extends AbstractModule {
     bind(ClientCollateralResource.class);
     bind(gov.ca.cwds.rest.resources.StaffPersonResource.class);
     bind(DeliveredServiceResource.class);
+    bind(ContactResource.class);
   }
 
   @Provides
@@ -179,8 +182,7 @@ public class ResourcesModule extends AbstractModule {
 
   @Provides
   @AllegationServieBackedResource
-  public TypedResourceDelegate<String, Allegation> allegationServiceBackedResource(
-      Injector injector) {
+  public TypedResourceDelegate<String, Allegation> allegationServiceBackedResource(Injector injector) {
     return new TypedServiceBackedResourceDelegate<>(injector.getInstance(AllegationService.class));
   }
 
@@ -194,8 +196,7 @@ public class ResourcesModule extends AbstractModule {
   @DrmsDocumentServiceBackedResource
   public TypedResourceDelegate<String, DrmsDocument> drmsDocumentServiceBackedResource(
       Injector injector) {
-    return new TypedServiceBackedResourceDelegate<>(
-        injector.getInstance(DrmsDocumentService.class));
+    return new TypedServiceBackedResourceDelegate<>(injector.getInstance(DrmsDocumentService.class));
   }
 
   @Provides
@@ -203,6 +204,14 @@ public class ResourcesModule extends AbstractModule {
   public TypedResourceDelegate<String, DeliveredServiceDomain> deliveredServiceBackedResource(
       Injector injector) {
     return new TypedServiceBackedResourceDelegate<>(injector.getInstance(DeliveredService.class));
+  }
+
+
+  @Provides
+  @ContactServiceBackedResource
+  public TypedResourceDelegate<String, ContactRequestList> contactServiceBackedResource(
+      Injector injector) {
+    return new TypedServiceBackedResourceDelegate<>(injector.getInstance(ContactService.class));
   }
 
   @Provides
@@ -254,8 +263,7 @@ public class ResourcesModule extends AbstractModule {
   @Provides
   @ScreeningToReferralServiceBackedResource
   public ResourceDelegate screeningToReferralBackedResource(Injector injector) {
-    return new ServiceBackedResourceDelegate(
-        injector.getInstance(ScreeningToReferralService.class));
+    return new ServiceBackedResourceDelegate(injector.getInstance(ScreeningToReferralService.class));
   }
 
   @Provides
@@ -319,8 +327,7 @@ public class ResourcesModule extends AbstractModule {
 
   @Provides
   @AssignmentServiceBackedResource
-  public TypedResourceDelegate<String, Assignment> assignmentServiceBackedResource(
-      Injector injector) {
+  public TypedResourceDelegate<String, Assignment> assignmentServiceBackedResource(Injector injector) {
     return new TypedServiceBackedResourceDelegate<>(injector.getInstance(AssignmentService.class));
   }
 
