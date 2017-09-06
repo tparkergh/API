@@ -70,6 +70,13 @@ public class IntakeLov implements Request, Response, ApiMarker {
   private String intakeType;
 
   /**
+   * use logical: whether to use the logical id, not the system code id
+   */
+  @JsonProperty("use_logical")
+  @ApiModelProperty(example = "false")
+  private boolean useLogical;
+
+  /**
    * sort_order: index position of sort order for this LOV object
    */
   @JsonIgnore
@@ -92,19 +99,22 @@ public class IntakeLov implements Request, Response, ApiMarker {
    * @param intakeType Intake category
    * @param intakeCode Intake LOV code
    * @param intakeDisplay Intake display value
+   * @param useLogical use the logical id, not the system id
    */
   @JsonCreator
   public IntakeLov(@JsonProperty("legacy_system_code_id") String legacySystemCodeId,
       @JsonProperty("legacy_meta") String legacyMeta,
       @JsonProperty("intake_type") String intakeType,
       @JsonProperty("intake_code") String intakeCode,
-      @JsonProperty("intake_display") String intakeDisplay) {
+      @JsonProperty("intake_display") String intakeDisplay,
+      @JsonProperty("use_logical") boolean useLogical) {
     super();
     this.legacySystemCodeId = Long.parseLong(legacySystemCodeId);
     this.legacyMeta = legacyMeta;
     this.intakeType = intakeType;
     this.intakeCode = intakeCode;
     this.intakeValue = intakeDisplay;
+    this.useLogical = useLogical;
   }
 
   /**
@@ -118,6 +128,7 @@ public class IntakeLov implements Request, Response, ApiMarker {
     this.intakeCode = lov.getIntakeCode();
     this.intakeType = lov.getIntakeType();
     this.intakeValue = lov.getIntakeDisplay();
+    this.useLogical = lov.isUseLogical();
   }
 
   public Long getLegacySystemCodeId() {
@@ -186,6 +197,14 @@ public class IntakeLov implements Request, Response, ApiMarker {
   @Override
   public List<ErrorMessage> getMessages() {
     return Response.super.getMessages();
+  }
+
+  public boolean isUseLogical() {
+    return useLogical;
+  }
+
+  public void setUseLogical(boolean useLogical) {
+    this.useLogical = useLogical;
   }
 
 }
