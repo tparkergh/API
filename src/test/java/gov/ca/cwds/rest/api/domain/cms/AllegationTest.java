@@ -1547,6 +1547,7 @@ public class AllegationTest {
   }
 
 
+  @SuppressWarnings("javadoc")
   @Test
   public void shouldSetNonProtectiveParentToUWhenNoPerpetrator() throws Exception {
 
@@ -1560,7 +1561,7 @@ public class AllegationTest {
             builtAllegation.getAllegationDispositionType(), builtAllegation.getAllegationType(),
             builtAllegation.getDispositionDescription(), builtAllegation.getDispositionDate(),
             builtAllegation.getInjuryHarmDetailIndicator(),
-            (builtAllegation.getPerpetratorClientId() == "") ? "U" : "N",
+            (builtAllegation.getPerpetratorClientId().equals("")) ? "U" : "N",
             builtAllegation.getStaffPersonAddedIndicator(), builtAllegation.getVictimClientId(),
             builtAllegation.getPerpetratorClientId(), builtAllegation.getReferralId(),
             builtAllegation.getCountySpecificCode(), builtAllegation.getZippyCreatedIndicator(),
@@ -1571,6 +1572,7 @@ public class AllegationTest {
   }
 
 
+  @SuppressWarnings("javadoc")
   @Test
   public void shouldSetNonProtectiveParentToNWhenPerpetrator() throws Exception {
 
@@ -1584,7 +1586,7 @@ public class AllegationTest {
             builtAllegation.getAllegationDispositionType(), builtAllegation.getAllegationType(),
             builtAllegation.getDispositionDescription(), builtAllegation.getDispositionDate(),
             builtAllegation.getInjuryHarmDetailIndicator(),
-            (builtAllegation.getPerpetratorClientId() == "") ? "U" : "N",
+            (builtAllegation.getPerpetratorClientId().equals("")) ? "U" : "N",
             builtAllegation.getStaffPersonAddedIndicator(), builtAllegation.getVictimClientId(),
             builtAllegation.getPerpetratorClientId(), builtAllegation.getReferralId(),
             builtAllegation.getCountySpecificCode(), builtAllegation.getZippyCreatedIndicator(),
