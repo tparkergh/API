@@ -21,7 +21,7 @@ import gov.ca.cwds.data.persistence.PersistentObject;
 @NamedQueries({@NamedQuery(name = "gov.ca.cwds.data.persistence.ns.IntakeLov.findAll",
     query = "FROM IntakeLov WHERE intakeCode IS NOT NULL AND intakeCode != ''")})
 @Entity
-@Table(name = "intake_raw_codes")
+@Table(name = "VW_INTAKE_LOV")
 public class IntakeLov implements PersistentObject {
 
   @Id
@@ -39,8 +39,8 @@ public class IntakeLov implements PersistentObject {
   @Column(name = "LG_LOG_ID")
   private String legacyLogicalId;
 
-  @Column(name = "LG_INACTIVE")
-  private String legacyInactive;
+  @Column(name = "USE_LOG_ID")
+  private boolean useLogical;
 
   @Column(name = "LG_CAT_ID")
   private String legacyCategoryId;
@@ -90,7 +90,7 @@ public class IntakeLov implements PersistentObject {
    * @param legacyMeta legacy "meta" category
    * @param legacyShortDescription legacy short description
    * @param legacyLogicalId legacy logical id
-   * @param legacyInactive legacy inactive flag
+   * @param useLogical legacy inactive flag
    * @param legacyCategoryId legacy category id
    * @param legacyOtherCode legacy other code
    * @param legacyLongDescription legacy long description
@@ -99,13 +99,13 @@ public class IntakeLov implements PersistentObject {
    * @param intakeDisplay Intake display string
    */
   public IntakeLov(String legacyMeta, String legacyShortDescription, String legacyLogicalId,
-      String legacyInactive, String legacyCategoryId, String legacyOtherCode,
+      boolean useLogical, String legacyCategoryId, String legacyOtherCode,
       String legacyLongDescription, String intakeType, String intakeCode, String intakeDisplay) {
     super();
     this.legacyMeta = legacyMeta;
     this.legacyShortDescription = legacyShortDescription;
     this.legacyLogicalId = legacyLogicalId;
-    this.legacyInactive = legacyInactive;
+    this.useLogical = useLogical;
     this.legacyCategoryId = legacyCategoryId;
     this.legacyOtherCode = legacyOtherCode;
     this.legacyLongDescription = legacyLongDescription;
@@ -146,14 +146,6 @@ public class IntakeLov implements PersistentObject {
 
   public void setLegacyLogicalId(String legacyLogicalId) {
     this.legacyLogicalId = legacyLogicalId;
-  }
-
-  public String getLegacyInactive() {
-    return legacyInactive;
-  }
-
-  public void setLegacyInactive(String legacyInactive) {
-    this.legacyInactive = legacyInactive;
   }
 
   public String getLegacyCategoryId() {
@@ -210,6 +202,14 @@ public class IntakeLov implements PersistentObject {
 
   public void setLegacySystemCodeId(Long legacySystemCodeId) {
     this.legacySystemCodeId = legacySystemCodeId;
+  }
+
+  public boolean isUseLogical() {
+    return useLogical;
+  }
+
+  public void setUseLogical(boolean useLogical) {
+    this.useLogical = useLogical;
   }
 
 }

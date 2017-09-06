@@ -76,16 +76,15 @@ public class IntakeLovTest {
   @Test
   public void getLegacyInactive_Args__() throws Exception {
     IntakeLov target = new IntakeLov();
-    String actual = target.getLegacyInactive();
-    String expected = null;
+    boolean actual = target.isUseLogical();
+    boolean expected = false;
     assertThat(actual, is(equalTo(expected)));
   }
 
   @Test
   public void setLegacyInactive_Args__String() throws Exception {
     IntakeLov target = new IntakeLov();
-    String legacyInactive = null;
-    target.setLegacyInactive(legacyInactive);
+    target.setUseLogical(false);
   }
 
   @Test
