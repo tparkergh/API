@@ -8,7 +8,6 @@ import static org.junit.Assert.assertEquals;
 import static org.mockito.Mockito.mock;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
@@ -122,13 +121,13 @@ public class ScreeningToReferralTest {
     Allegation allegation = validAllegation();
     allegations.add(allegation);
 
-    String expected = MAPPER.writeValueAsString(new ScreeningToReferral(id, "", "",
-        "2016-08-03T01:00:00.000Z", SACRAMENTO_COUNTY_CODE, "2016-08-02", "Foster Home",
-        communicationMethod, "The Rocky Horror Show", "Narrative 123 test", "123ABC", responseTime,
-        "2016-08-03T01:00:00.000Z", "Michael Bastow", "addtional information",
-        "Screening Descision", "Detail", approvalStatus, familyAwarness, filedWithLawEnforcement,
-        responsibleAgency, null, null, (short)0, null,
-        address, participants, crossReports, allegations));
+    String expected = MAPPER.writeValueAsString(
+        new ScreeningToReferral(id, "", "", "2016-08-03T01:00:00.000Z", SACRAMENTO_COUNTY_CODE,
+            "2016-08-02", "Foster Home", communicationMethod, "The Rocky Horror Show",
+            "Narrative 123 test", "123ABC", responseTime, "2016-08-03T01:00:00.000Z",
+            "Michael Bastow", "addtional information", "Screening Descision", "Detail",
+            approvalStatus, familyAwarness, filedWithLawEnforcement, responsibleAgency, null, null,
+            (short) 0, null, address, participants, crossReports, allegations));
 
     String serialized = MAPPER.writeValueAsString(
         MAPPER.readValue(fixture("fixtures/domain/ScreeningToReferral/valid/validstr.json"),
@@ -148,13 +147,13 @@ public class ScreeningToReferralTest {
     Allegation allegation = validAllegation();
     allegations.add(allegation);
 
-    ScreeningToReferral expected = new ScreeningToReferral(id, "", "", "2016-08-03T01:00:00.000Z",
-        SACRAMENTO_COUNTY_CODE, "2016-08-02", "Foster Home", communicationMethod,
-        "The Rocky Horror Show", "Narrative 123 test", "123ABC", responseTime,
-        "2016-08-03T01:00:00.000Z", "Michael Bastow", "addtional information",
-        "Screening Descision", "Detail", approvalStatus, familyAwarness, filedWithLawEnforcement,
-        responsibleAgency, null,null, (short)0, null,
-        address, participants, crossReports, allegations);
+    ScreeningToReferral expected =
+        new ScreeningToReferral(id, "", "", "2016-08-03T01:00:00.000Z", SACRAMENTO_COUNTY_CODE,
+            "2016-08-02", "Foster Home", communicationMethod, "The Rocky Horror Show",
+            "Narrative 123 test", "123ABC", responseTime, "2016-08-03T01:00:00.000Z",
+            "Michael Bastow", "addtional information", "Screening Descision", "Detail",
+            approvalStatus, familyAwarness, filedWithLawEnforcement, responsibleAgency, null, null,
+            (short) 0, null, address, participants, crossReports, allegations);
 
     ScreeningToReferral serialized =
         MAPPER.readValue(fixture("fixtures/domain/ScreeningToReferral/valid/validstr.json"),
@@ -251,8 +250,7 @@ public class ScreeningToReferralTest {
             ScreeningToReferral.class);
     Set<ConstraintViolation<ScreeningToReferral>> constraintViolations =
         validator.validate(toValidate);
-    assertEquals(1, constraintViolations.size());
-    assertEquals("may not be empty", constraintViolations.iterator().next().getMessage());
+    assertEquals(0, constraintViolations.size());
   }
 
   @Test
@@ -262,8 +260,7 @@ public class ScreeningToReferralTest {
             ScreeningToReferral.class);
     Set<ConstraintViolation<ScreeningToReferral>> constraintViolations =
         validator.validate(toValidate);
-    assertEquals(1, constraintViolations.size());
-    assertEquals("may not be empty", constraintViolations.iterator().next().getMessage());
+    assertEquals(0, constraintViolations.size());
   }
 
   @Test
@@ -399,107 +396,99 @@ public class ScreeningToReferralTest {
   }
 
   @Test
-  public void shouldHaveNoErrorsWhenLimitedAccessCodeIsNull(){
+  public void shouldHaveNoErrorsWhenLimitedAccessCodeIsNull() {
     ScreeningToReferral screeningToReferral = new ScreeningToReferralResourceBuilder()
-        .setLimitedAccessCode(null)
-        .createScreeningToReferral();
+        .setLimitedAccessCode(null).createScreeningToReferral();
 
     Set<ConstraintViolation<ScreeningToReferral>> constraintViolations =
         validator.validate(screeningToReferral);
-    assertEquals("Expected limited access code value of null to not be an error",
-        0, constraintViolations.size());
+    assertEquals("Expected limited access code value of null to not be an error", 0,
+        constraintViolations.size());
   }
 
   @Test
-  public void shouldHaveNoErrorsWhenLimitedAccessCodeIsValid(){
+  public void shouldHaveNoErrorsWhenLimitedAccessCodeIsValid() {
     List<String> accessCodes = Arrays.asList("N", "R", "S");
 
-    for(String code : accessCodes){
+    for (String code : accessCodes) {
       ScreeningToReferral screeningToReferral = new ScreeningToReferralResourceBuilder()
-          .setLimitedAccessCode(code)
-          .createScreeningToReferral();
+          .setLimitedAccessCode(code).createScreeningToReferral();
 
       Set<ConstraintViolation<ScreeningToReferral>> constraintViolations =
           validator.validate(screeningToReferral);
       String message = "Expected limited access code value of " + code + " to not be an error";
-      assertEquals( message, 0, constraintViolations.size());
+      assertEquals(message, 0, constraintViolations.size());
     }
   }
 
   @Test
-  public void shouldHaveErrorsWhenLimitedAccessCodeIsInValid(){
+  public void shouldHaveErrorsWhenLimitedAccessCodeIsInValid() {
     List<String> accessCodes = Arrays.asList("$", "X", "1", "Y", "n", "s", "r");
 
-    for(String code : accessCodes){
+    for (String code : accessCodes) {
       ScreeningToReferral screeningToReferral = new ScreeningToReferralResourceBuilder()
-          .setLimitedAccessCode(code)
-          .createScreeningToReferral();
+          .setLimitedAccessCode(code).createScreeningToReferral();
 
       Set<ConstraintViolation<ScreeningToReferral>> constraintViolations =
           validator.validate(screeningToReferral);
       String message = "Expected limited access code value of " + code + " to not be an error";
-      assertEquals( message, 1, constraintViolations.size());
+      assertEquals(message, 1, constraintViolations.size());
     }
   }
 
   @Test
-  public void shouldHaveNoErrorsWhenLimitedAccessDescriptionIsNull(){
+  public void shouldHaveNoErrorsWhenLimitedAccessDescriptionIsNull() {
     ScreeningToReferral screeningToReferral = new ScreeningToReferralResourceBuilder()
-        .setLimitedAccessDescription(null)
-        .createScreeningToReferral();
+        .setLimitedAccessDescription(null).createScreeningToReferral();
 
     Set<ConstraintViolation<ScreeningToReferral>> constraintViolations =
         validator.validate(screeningToReferral);
-    assertEquals("Expected limited access description value of null to not be an error",
-        0, constraintViolations.size());
+    assertEquals("Expected limited access description value of null to not be an error", 0,
+        constraintViolations.size());
   }
 
   @Test
-  public void shouldHaveNoErrorsWhenLimitedAccessDescriptionIsValid(){
+  public void shouldHaveNoErrorsWhenLimitedAccessDescriptionIsValid() {
     ScreeningToReferral screeningToReferral = new ScreeningToReferralResourceBuilder()
-        .setLimitedAccessDescription("Limited access because ...")
-        .createScreeningToReferral();
+        .setLimitedAccessDescription("Limited access because ...").createScreeningToReferral();
 
     Set<ConstraintViolation<ScreeningToReferral>> constraintViolations =
         validator.validate(screeningToReferral);
-    assertEquals("Expected limited access description value of null to not be an error",
-        0, constraintViolations.size());
+    assertEquals("Expected limited access description value of null to not be an error", 0,
+        constraintViolations.size());
   }
 
   @Test
-  public void shouldHaveNoErrorsWhenLimitedAccessAgencyIsNull(){
+  public void shouldHaveNoErrorsWhenLimitedAccessAgencyIsNull() {
     ScreeningToReferral screeningToReferral = new ScreeningToReferralResourceBuilder()
-        .setLimitedAccessAgency((short)0)
-        .createScreeningToReferral();
+        .setLimitedAccessAgency((short) 0).createScreeningToReferral();
 
     Set<ConstraintViolation<ScreeningToReferral>> constraintViolations =
         validator.validate(screeningToReferral);
-    assertEquals("Expected limited access agency value of null to not be an error",
-        0, constraintViolations.size());
+    assertEquals("Expected limited access agency value of null to not be an error", 0,
+        constraintViolations.size());
   }
 
   @Test
-  public void shouldHaveNoErrorsWhenLimitedAccessAgencyIsAnInteger(){
+  public void shouldHaveNoErrorsWhenLimitedAccessAgencyIsAnInteger() {
     ScreeningToReferral screeningToReferral = new ScreeningToReferralResourceBuilder()
-        .setLimitedAccessAgency((short)999)
-        .createScreeningToReferral();
+        .setLimitedAccessAgency((short) 999).createScreeningToReferral();
 
     Set<ConstraintViolation<ScreeningToReferral>> constraintViolations =
         validator.validate(screeningToReferral);
-    assertEquals("Expected limited access agency value of null to not be an error",
-        0, constraintViolations.size());
+    assertEquals("Expected limited access agency value of null to not be an error", 0,
+        constraintViolations.size());
   }
 
   @Test
-  public void shouldHaveNoErrorsWhenLimitedAccessDateIsNull(){
+  public void shouldHaveNoErrorsWhenLimitedAccessDateIsNull() {
     ScreeningToReferral screeningToReferral = new ScreeningToReferralResourceBuilder()
-        .setLimitedAccessDate(null)
-        .createScreeningToReferral();
+        .setLimitedAccessDate(null).createScreeningToReferral();
 
     Set<ConstraintViolation<ScreeningToReferral>> constraintViolations =
         validator.validate(screeningToReferral);
-    assertEquals("Expected limited access date value of null to not be an error",
-        0, constraintViolations.size());
+    assertEquals("Expected limited access date value of null to not be an error", 0,
+        constraintViolations.size());
   }
 
 
