@@ -328,7 +328,7 @@ public class ReferralService implements
    * </blockquote>
    */
   private static String firstResponseDeterminedByStaffPersonId() {
-    return RequestExecutionContext.instance().getUserId();
+    return RequestExecutionContext.instance().getStaffId();
 
   }
 

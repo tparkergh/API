@@ -29,7 +29,7 @@ public class TickleService implements
   private static final Logger LOGGER = LoggerFactory.getLogger(TickleService.class);
 
   private TickleDao tickleDao;
-  private String lastUpdatedId = RequestExecutionContext.instance().getUserId();
+  private String lastUpdatedId = RequestExecutionContext.instance().getStaffId();
   private Date lastUpdatedTime = RequestExecutionContext.instance().getRequestStartTime();
 
 

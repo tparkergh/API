@@ -198,7 +198,7 @@ public class AssignmentService implements
     //
 
     final String caseLoadId =
-        assignmentDao.findCaseId(RequestExecutionContext.instance().getUserId());
+        assignmentDao.findCaseId(RequestExecutionContext.instance().getStaffId());
     if (caseLoadId == null) {
       String message = "CaseLoad is not found for the staffperson";
       ServiceException se = new ServiceException(message);
