@@ -56,4 +56,14 @@ public class TestingRequestExecutionContext implements RequestExecutionContext {
   public Date getRequestStartTime() {
     return (Date) get(Parameter.REQUEST_START_TIME);
   }
+
+  @Override
+  public String getStaffId() {
+    String staffId = null;
+    PerryUserIdentity userIdentity = (PerryUserIdentity) get(Parameter.USER_IDENTITY);
+    if (userIdentity != null) {
+      staffId = userIdentity.getUser();
+    }
+    return staffId;
+  }
 }
