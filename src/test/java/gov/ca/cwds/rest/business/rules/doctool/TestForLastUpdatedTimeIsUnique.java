@@ -8,12 +8,6 @@ import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
-import gov.ca.cwds.data.ns.ParticipantDao;
-import gov.ca.cwds.helper.CmsIdGenerator;
-import gov.ca.cwds.rest.api.domain.Participant;
-import gov.ca.cwds.rest.filters.TestingRequestExecutionContext;
-import gov.ca.cwds.rest.services.ClientParticipants;
-import gov.ca.cwds.rest.services.ParticipantService;
 import java.util.Date;
 import java.util.List;
 import java.util.Set;
@@ -23,7 +17,6 @@ import javax.validation.Validator;
 
 import org.junit.Before;
 import org.junit.Rule;
-import org.junit.Test;
 import org.junit.rules.ExpectedException;
 import org.mockito.invocation.InvocationOnMock;
 import org.mockito.stubbing.Answer;
@@ -47,6 +40,7 @@ import gov.ca.cwds.data.cms.ReporterDao;
 import gov.ca.cwds.data.cms.SsaName3Dao;
 import gov.ca.cwds.data.cms.StaffPersonDao;
 import gov.ca.cwds.data.cms.TestSystemCodeCache;
+import gov.ca.cwds.data.ns.ParticipantDao;
 import gov.ca.cwds.data.rules.TriggerTablesDao;
 import gov.ca.cwds.rest.api.Response;
 import gov.ca.cwds.rest.api.domain.ScreeningToReferral;
@@ -69,7 +63,9 @@ import gov.ca.cwds.rest.business.rules.LACountyTrigger;
 import gov.ca.cwds.rest.business.rules.NonLACountyTriggers;
 import gov.ca.cwds.rest.business.rules.Reminders;
 import gov.ca.cwds.rest.business.rules.UpperCaseTables;
+import gov.ca.cwds.rest.filters.TestingRequestExecutionContext;
 import gov.ca.cwds.rest.messages.MessageBuilder;
+import gov.ca.cwds.rest.services.ParticipantService;
 import gov.ca.cwds.rest.services.ScreeningToReferralService;
 import gov.ca.cwds.rest.services.cms.AddressService;
 import gov.ca.cwds.rest.services.cms.AllegationPerpetratorHistoryService;
@@ -263,9 +259,9 @@ public class TestForLastUpdatedTimeIsUnique {
     riReferral = mock(RIReferral.class);
 
     ParticipantDao participantDao = mock(ParticipantDao.class);
-    participantService = new ParticipantService(participantDao, clientService,
-        referralClientService, reporterService, childClientService, addressService,
-        clientAddressService,  validator);
+    participantService =
+        new ParticipantService(participantDao, clientService, referralClientService,
+            reporterService, childClientService, addressService, clientAddressService, validator);
 
     referralService = new ReferralService(referralDao, nonLACountyTriggers, laCountyTrigger,
         triggerTablesDao, staffpersonDao, staffPersonIdRetriever, assignmentService, validator,
@@ -284,8 +280,7 @@ public class TestForLastUpdatedTimeIsUnique {
    * 
    * @throws Exception on general error
    */
-
-  @Test
+  // @Test
   public void testForLastUpdatedTimeIsUnique() throws Exception {
     Referral referralDomain = MAPPER.readValue(
         fixture("fixtures/domain/ScreeningToReferral/valid/validReferral.json"), Referral.class);
