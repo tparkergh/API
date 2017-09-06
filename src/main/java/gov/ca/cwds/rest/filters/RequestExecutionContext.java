@@ -40,6 +40,13 @@ public interface RequestExecutionContext {
   String getUserId();
 
   /**
+   * Get staff id if stored.
+   * 
+   * @return The staff id
+   */
+  String getStaffId();
+
+  /**
    * Get request start time if stored
    * 
    * @return The request start time
