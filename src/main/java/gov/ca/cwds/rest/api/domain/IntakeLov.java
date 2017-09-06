@@ -181,9 +181,11 @@ public class IntakeLov implements Request, Response, ApiMarker {
     return false;
   }
 
+  @JsonIgnore
+  @Transient
   @Override
   public List<ErrorMessage> getMessages() {
-    return null; // NOSONAR
+    return Response.super.getMessages();
   }
 
 }

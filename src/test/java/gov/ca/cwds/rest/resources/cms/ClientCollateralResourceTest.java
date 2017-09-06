@@ -24,7 +24,6 @@ import io.dropwizard.testing.junit.ResourceTestRule;
 
 /**
  * @author CWDS API Team
- *
  */
 @SuppressWarnings("javadoc")
 public class ClientCollateralResourceTest {
@@ -63,6 +62,5 @@ public class ClientCollateralResourceTest {
         .post(Entity.entity(serialized, MediaType.APPLICATION_JSON));
     verify(typedResourceDelegate).create(eq(serialized));
   }
-
 
 }

@@ -6,7 +6,6 @@ import gov.ca.cwds.rest.api.Response;
 import io.dropwizard.jackson.JsonSnakeCase;
 import io.swagger.annotations.ApiModelProperty;
 
-import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
 import org.apache.commons.lang3.builder.EqualsBuilder;
@@ -30,30 +29,48 @@ public class PostedIndividualDeliveredService extends ReportingDomain implements
   @NotEmpty
   @JsonProperty("table_name")
   @Size(min = 1, max = 10)
-  @ApiModelProperty(required = true, readOnly = false, value = "", example = "CLIENT_T")
+  @ApiModelProperty(required = true, readOnly = false, value = "", example = "REPTR_T")
   private String tableName;
 
   @Size(max = CMS_ID_LEN)
-  @NotNull
+  // @NotNull
   @ApiModelProperty(required = true, readOnly = true, value = "", example = "ABC1234567")
   private String id;
 
   @NotEmpty
   @JsonProperty("first_name")
-  @Size(min = 1, max = 10)
+  @Size(min = 1, max = 20)
   @ApiModelProperty(required = true, readOnly = false, value = "", example = "John")
   private String firstName;
 
   @NotEmpty
+  @JsonProperty("middle_name")
+  @Size(min = 1, max = 20)
+  @ApiModelProperty(required = false, readOnly = false, value = "", example = "Bob")
+  private String middleName;
+
+  @NotEmpty
   @JsonProperty("last_name")
-  @Size(min = 1, max = 10)
+  @Size(min = 1, max = 25)
   @ApiModelProperty(required = true, readOnly = false, value = "", example = "Doe")
   private String lastName;
+
+
+  @JsonProperty("suffix_title")
+  @Size(max = 4)
+  @ApiModelProperty(required = false, readOnly = false, value = "", example = "SR.")
+  private String suffixTitle;
+
+  @JsonProperty("prefix_title")
+  @Size(max = 6)
+  @ApiModelProperty(required = false, readOnly = false, value = "", example = "MR.")
+  private String prefixTitle;
+
 
   @NotEmpty
   @JsonProperty("relationship")
   @Size(min = 1, max = 10)
-  @ApiModelProperty(required = true, readOnly = false, value = "", example = "unknown")
+  @ApiModelProperty(required = true, readOnly = false, value = "", example = "Reporter")
   private String relationship;
 
 
@@ -61,17 +78,26 @@ public class PostedIndividualDeliveredService extends ReportingDomain implements
    * @param tableName legacy table name
    * @param id id in legacy table
    * @param firstName first name
+   * @param middleName middle name
    * @param lastName last name
+   * @param suffixTitle The name suffix.
+   * @param prefixTitle The prefix_title
    * @param relationship relationship
    */
   public PostedIndividualDeliveredService(@JsonProperty("table_name") String tableName,
       @JsonProperty("id") String id, @JsonProperty("first_name") String firstName,
-      @JsonProperty("last_name") String lastName, @JsonProperty("relationship") String relationship) {
+      @JsonProperty("middle_name") String middleName, @JsonProperty("last_name") String lastName,
+      @JsonProperty("suffix_title") String suffixTitle,
+      @JsonProperty("prefix_title") String prefixTitle,
+      @JsonProperty("relationship") String relationship) {
     super();
     this.tableName = tableName;
     this.id = id;
     this.firstName = firstName;
+    this.middleName = middleName;
     this.lastName = lastName;
+    this.suffixTitle = suffixTitle;
+    this.prefixTitle = prefixTitle;
     this.relationship = relationship;
   }
 
@@ -118,6 +144,33 @@ public class PostedIndividualDeliveredService extends ReportingDomain implements
    */
   public String getRelationship() {
     return relationship;
+  }
+
+
+
+  /**
+   * @return the middleName
+   */
+  public String getMiddleName() {
+    return middleName;
+  }
+
+
+
+  /**
+   * @return the suffixTitle
+   */
+  public String getSuffixTitle() {
+    return suffixTitle;
+  }
+
+
+
+  /**
+   * @return the prefixTitle
+   */
+  public String getPrefixTitle() {
+    return prefixTitle;
   }
 
 
