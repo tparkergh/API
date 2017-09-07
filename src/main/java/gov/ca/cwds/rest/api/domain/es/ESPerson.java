@@ -56,21 +56,6 @@ public class ESPerson extends Person {
   private static final ObjectMapper MAPPER = ObjectMapperUtils.createObjectMapper();
 
   // =========================
-  // STATIC INITIALIZATION:
-  // =========================
-
-  // /**
-  // * Relax strict constraints regarding unknown JSON properties, since API classes may change over
-  // * time, and not all classes emit version information in JSON.
-  // */
-  // static {
-  // ObjectMapper mapper = ObjectMapperUtils.createObjectMapper();
-  // mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
-  // mapper.configure(DeserializationFeature.FAIL_ON_NULL_FOR_PRIMITIVES, false);
-  // MAPPER = mapper;
-  // }
-
-  // =========================
   // PUBLIC STATIC:
   // =========================
 
