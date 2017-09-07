@@ -18,6 +18,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.databind.SerializerProvider;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.google.inject.Inject;
 
 import gov.ca.cwds.data.std.ApiMarker;
 import gov.ca.cwds.rest.api.Request;
@@ -46,19 +47,33 @@ public class IntakeLovResponse implements Response, ApiMarker {
     private ObjectMapper mapper;
 
     public IntakeLovSerializer() {
-      mapper = new ObjectMapper();
+      this.mapper = new ObjectMapper();
       mapper.enable(SerializationFeature.INDENT_OUTPUT);
       mapper.enable(SerializationFeature.WRAP_ROOT_VALUE);
     }
 
+    @Inject
+    public IntakeLovSerializer(ObjectMapper mapper) {
+      this.mapper = mapper;
+    }
+
+    protected String jsonify(Object obj) {
+      String ret = "";
+      try {
+        ret = mapper.writeValueAsString(obj);
+      } catch (Exception e) { // NOSONAR
+        // LOGGER.warn("ERROR SERIALIZING OBJECT {} TO JSON", obj);
+      }
+      return ret;
+    }
+
     private void writeCategory(final JsonGenerator g, Map.Entry<String, List<IntakeLovEntry>> cat) {
       try {
-        // g.writeStartObject();
-        // g.writeStartArray();
-        g.writeArrayFieldStart(cat.getKey());
-        g.writeString(mapper.writeValueAsString(cat.getValue()));
+        g.writeArrayFieldStart(cat.getKey().toLowerCase());
+        String mustParam = String.join(",",
+            cat.getValue().stream().map(this::jsonify).collect(Collectors.toList()));
+        g.writeString("[" + mustParam + "]");
         g.writeEndArray();
-        // g.writeEndObject();
       } catch (IOException e) {
         throw new ServiceException(e);
       }
@@ -140,7 +155,7 @@ public class IntakeLovResponse implements Response, ApiMarker {
     final List<IntakeLovEntry> lovs = new ArrayList<>();
     lovs.add(
         new IntakeLovEntry("1128", "", "ADDR_TPC", "ADDRESS_TYPE", "1128", "Residence", false));
-    // lovs.add(new IntakeLovEntry("1823", "AK", "STATE_C", "STATE_TYPE", "1128", "Alaska", true));
+    lovs.add(new IntakeLovEntry("1823", "AK", "STATE_C", "STATE_TYPE", "1128", "Alaska", true));
 
     IntakeLovResponse term = new IntakeLovResponse(lovs);
     ObjectMapper mapper = new ObjectMapper();
