@@ -41,6 +41,12 @@ public class IntakeLovEntry implements Request, Response, ApiMarker {
   private Long legacySystemCodeId;
 
   @JsonIgnore
+  // @JsonProperty("legacy_logical_code")
+  @ApiModelProperty(example = "AK")
+  @Size(max = 5)
+  private String legacyLogicalCode;
+
+  @JsonIgnore
   // @JsonProperty("legacy_meta")
   @ApiModelProperty(example = "ACTV_RNC")
   @Size(max = 50)
@@ -118,6 +124,7 @@ public class IntakeLovEntry implements Request, Response, ApiMarker {
     super();
     this.legacySystemCodeId = Long.parseLong(legacySystemCodeId);
     this.legacyMeta = legacyMeta;
+    this.legacyLogicalCode = legacyLogicalCode;
     this.intakeType = intakeType;
     this.intakeCode = intakeCode;
     this.intakeValue = intakeDisplay;
@@ -136,6 +143,7 @@ public class IntakeLovEntry implements Request, Response, ApiMarker {
     this.intakeType = lov.getIntakeType();
     this.intakeValue = lov.getIntakeDisplay();
     this.useLogical = lov.isUseLogical();
+    this.legacyLogicalCode = lov.getLegacyLogicalCode();
   }
 
   @JsonIgnore
@@ -218,6 +226,15 @@ public class IntakeLovEntry implements Request, Response, ApiMarker {
   @Override
   public List<ErrorMessage> getMessages() {
     return Response.super.getMessages();
+  }
+
+  @JsonIgnore
+  public String getLegacyLogicalCode() {
+    return legacyLogicalCode;
+  }
+
+  public void setLegacyLogicalCode(String legacyLogicalCode) {
+    this.legacyLogicalCode = legacyLogicalCode;
   }
 
 }

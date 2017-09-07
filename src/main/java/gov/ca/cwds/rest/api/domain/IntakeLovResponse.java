@@ -66,8 +66,12 @@ public class IntakeLovResponse implements Response, ApiMarker {
       String ret = "";
       try {
         // ret = mapper.writeValueAsString(lov);
+
         g.writeStartObject();
-        g.writeStringField("display", lov.getIntakeValue());
+        g.writeStringField("code", lov.isUseLogical() ? lov.getLegacyLogicalCode()
+            : Long.toString(lov.getLegacySystemCodeId()));
+        g.writeStringField("value", lov.getIntakeValue());
+        g.writeStringField("intake_code", lov.getIntakeCode());
         g.writeEndObject();
 
       } catch (Exception e) { // NOSONAR
@@ -79,8 +83,10 @@ public class IntakeLovResponse implements Response, ApiMarker {
     private void writeCategory(final JsonGenerator g, Map.Entry<String, List<IntakeLovEntry>> cat) {
       try {
         g.writeArrayFieldStart(cat.getKey().toLowerCase());
-        final String strLovs = String.join(",",
-            cat.getValue().stream().map(lov -> jsonify(g, lov)).collect(Collectors.toList()));
+        // final String strLovs = String.join(",",
+        cat.getValue().stream().map(lov -> jsonify(g, lov)).collect(Collectors.toList())
+        // )
+        ;
         // g.writeString("[" + strLovs + "]");
         // g.writeObject(mapper.writeValueAsString(cat.getValue()));
         g.writeEndArray();
@@ -163,9 +169,8 @@ public class IntakeLovResponse implements Response, ApiMarker {
 
   public static void main(String[] args) {
     final List<IntakeLovEntry> lovs = new ArrayList<>();
-    lovs.add(
-        new IntakeLovEntry("1128", "", "ADDR_TPC", "ADDRESS_TYPE", "1128", "Residence", false));
-    lovs.add(new IntakeLovEntry("1823", "AK", "STATE_C", "STATE_TYPE", "1128", "Alaska", true));
+    lovs.add(new IntakeLovEntry("1128", "", "ADDR_TPC", "ADDRESS_TYPE", "res", "Residence", false));
+    lovs.add(new IntakeLovEntry("1823", "AK", "STATE_C", "STATE_TYPE", "ak", "Alaska", true));
 
     IntakeLovResponse response = new IntakeLovResponse(lovs);
 

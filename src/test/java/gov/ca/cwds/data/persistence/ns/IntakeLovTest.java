@@ -61,7 +61,7 @@ public class IntakeLovTest {
   @Test
   public void getLegacyLogicalId_Args__() throws Exception {
     IntakeLov target = new IntakeLov();
-    String actual = target.getLegacyLogicalId();
+    String actual = target.getLegacyLogicalCode();
     String expected = null;
     assertThat(actual, is(equalTo(expected)));
   }
@@ -70,7 +70,7 @@ public class IntakeLovTest {
   public void setLegacyLogicalId_Args__String() throws Exception {
     IntakeLov target = new IntakeLov();
     String legacyLogicalId = null;
-    target.setLegacyLogicalId(legacyLogicalId);
+    target.setLegacyLogicalCode(legacyLogicalId);
   }
 
   @Test
