@@ -14,7 +14,8 @@ import gov.ca.cwds.rest.resources.SimpleResourceService;
  * 
  * @author CWDS API Team
  */
-public class IntakeLovService extends SimpleResourceService<String, IntakeLovEntry, IntakeLovResponse> {
+public class IntakeLovService
+    extends SimpleResourceService<String, IntakeLovEntry, IntakeLovResponse> {
 
   private IntakeLovDao dao;
 
@@ -37,8 +38,7 @@ public class IntakeLovService extends SimpleResourceService<String, IntakeLovEnt
   @Override
   protected IntakeLovResponse handleFind(String searchForThis) {
     try {
-      return new IntakeLovResponse(
-          dao.findAll().stream().map(IntakeLovEntry::new).collect(Collectors.toList()));
+      return handleRequest(new IntakeLovEntry());
     } catch (Exception e) {
       throw new ServiceException("ERROR handling find", e);
     }

@@ -137,13 +137,13 @@ public class IntakeLovEntry implements Request, Response, ApiMarker {
    * @param lov persistence Intake LOV record
    */
   public IntakeLovEntry(gov.ca.cwds.data.persistence.ns.IntakeLov lov) {
-    this.legacySystemCodeId = lov.getLegacySystemCodeId();
     this.legacyMeta = lov.getLegacyMeta();
+    this.legacySystemCodeId = lov.getLegacySystemCodeId();
+    this.legacyLogicalCode = lov.getLegacyLogicalCode();
     this.intakeCode = lov.getIntakeCode();
     this.intakeType = lov.getIntakeType();
     this.intakeValue = lov.getIntakeDisplay();
     this.useLogical = lov.isUseLogical();
-    this.legacyLogicalCode = lov.getLegacyLogicalCode();
   }
 
   @JsonIgnore
