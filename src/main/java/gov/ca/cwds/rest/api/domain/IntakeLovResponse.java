@@ -70,9 +70,8 @@ public class IntakeLovResponse implements Response, ApiMarker {
         g.writeStringField("value", lov.getIntakeValue());
         g.writeStringField("intake_code", lov.getIntakeCode());
         g.writeEndObject();
-
       } catch (Exception e) { // NOSONAR
-        LOGGER.warn("ERROR SERIALIZING LOV {} TO JSON", lov, e);
+        LOGGER.warn("ERROR SERIALIZING INTAKE LOV CATEGORY {} TO JSON", lov.getIntakeType(), e);
       }
     }
 
@@ -82,7 +81,7 @@ public class IntakeLovResponse implements Response, ApiMarker {
         cat.getValue().stream().forEach(lov -> jsonify(g, lov));
         g.writeEndArray();
       } catch (IOException e) {
-        throw new ServiceException(e);
+        throw new ServiceException("ERROR streaming JSON for LOV category " + cat.getKey(), e);
       }
     }
 
@@ -91,8 +90,8 @@ public class IntakeLovResponse implements Response, ApiMarker {
         throws IOException {
 
       final Map<String, List<IntakeLovEntry>> lovsByCategory = value.getLovEntries().stream()
-          .sorted((e1, e2) -> e1.getLegacyMeta().compareTo(e2.getLegacyMeta()))
-          .collect(Collectors.groupingBy(IntakeLovEntry::getLegacyMeta));
+          .sorted((e1, e2) -> e1.getIntakeType().compareTo(e2.getIntakeType()))
+          .collect(Collectors.groupingBy(IntakeLovEntry::getIntakeType));
 
       gen.writeStartObject();
       lovsByCategory.entrySet().stream().forEach(e -> writeCategory(gen, e));
