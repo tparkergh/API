@@ -17,6 +17,7 @@ import javax.validation.Validator;
 
 import org.junit.Before;
 import org.junit.Rule;
+import org.junit.Test;
 import org.junit.rules.ExpectedException;
 import org.mockito.invocation.InvocationOnMock;
 import org.mockito.stubbing.Answer;
@@ -280,7 +281,7 @@ public class TestForLastUpdatedTimeIsUnique {
    * 
    * @throws Exception on general error
    */
-  // @Test
+  @Test
   public void testForLastUpdatedTimeIsUnique() throws Exception {
     Referral referralDomain = MAPPER.readValue(
         fixture("fixtures/domain/ScreeningToReferral/valid/validReferral.json"), Referral.class);
@@ -491,7 +492,7 @@ public class TestForLastUpdatedTimeIsUnique {
             return assignmentToCreate;
           }
         });
-
+    when(assignmentDao.findCaseId(any(String.class))).thenReturn("ABC1234567");
     ScreeningToReferral screeningToReferral = MAPPER.readValue(
         fixture("fixtures/domain/ScreeningToReferral/valid/valid.json"), ScreeningToReferral.class);
 

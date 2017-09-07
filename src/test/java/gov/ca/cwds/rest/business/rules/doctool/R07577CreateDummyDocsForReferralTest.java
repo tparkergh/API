@@ -15,6 +15,7 @@ import javax.validation.Validator;
 
 import org.junit.Before;
 import org.junit.Rule;
+import org.junit.Test;
 import org.junit.rules.ExpectedException;
 import org.mockito.invocation.InvocationOnMock;
 import org.mockito.stubbing.Answer;
@@ -278,7 +279,7 @@ public class R07577CreateDummyDocsForReferralTest {
    * 
    * @throws Exception on IO or JSON error
    */
-  // @Test
+  @Test
   public void testForDrmsAllegationDescriptionDocId() throws Exception {
     Referral referralDomain = MAPPER.readValue(
         fixture("fixtures/domain/ScreeningToReferral/valid/validReferral.json"), Referral.class);
@@ -384,6 +385,7 @@ public class R07577CreateDummyDocsForReferralTest {
         new gov.ca.cwds.data.persistence.cms.Assignment("6789012ABC", assignment, "ABC");
     when(assignmentDao.create(any(gov.ca.cwds.data.persistence.cms.Assignment.class)))
         .thenReturn(assignmentToCreate);
+    when(assignmentDao.findCaseId(any(String.class))).thenReturn("ABC1234567");
 
     ScreeningToReferral screeningToReferral = MAPPER.readValue(
         fixture("fixtures/domain/ScreeningToReferral/valid/valid.json"), ScreeningToReferral.class);
@@ -412,7 +414,7 @@ public class R07577CreateDummyDocsForReferralTest {
    * 
    * @throws Exception on IO or JSON error
    */
-  // @Test
+  @Test
   public void testForDrmsErReferralDocId() throws Exception {
     Referral referralDomain = MAPPER.readValue(
         fixture("fixtures/domain/ScreeningToReferral/valid/validReferral.json"), Referral.class);
@@ -518,6 +520,7 @@ public class R07577CreateDummyDocsForReferralTest {
         new gov.ca.cwds.data.persistence.cms.Assignment("6789012ABC", assignment, "ABC");
     when(assignmentDao.create(any(gov.ca.cwds.data.persistence.cms.Assignment.class)))
         .thenReturn(assignmentToCreate);
+    when(assignmentDao.findCaseId(any(String.class))).thenReturn("ABC1234567");
 
     ScreeningToReferral screeningToReferral = MAPPER.readValue(
         fixture("fixtures/domain/ScreeningToReferral/valid/valid.json"), ScreeningToReferral.class);
@@ -546,7 +549,7 @@ public class R07577CreateDummyDocsForReferralTest {
    * 
    * @throws Exception on IO or JSON error
    */
-  // @Test
+  @Test
   public void testForDrmsInvestigationDocId() throws Exception {
     Referral referralDomain = MAPPER.readValue(
         fixture("fixtures/domain/ScreeningToReferral/valid/validReferral.json"), Referral.class);
@@ -652,6 +655,7 @@ public class R07577CreateDummyDocsForReferralTest {
         new gov.ca.cwds.data.persistence.cms.Assignment("6789012ABC", assignment, "ABC");
     when(assignmentDao.create(any(gov.ca.cwds.data.persistence.cms.Assignment.class)))
         .thenReturn(assignmentToCreate);
+    when(assignmentDao.findCaseId(any(String.class))).thenReturn("ABC1234567");
 
     ScreeningToReferral screeningToReferral = MAPPER.readValue(
         fixture("fixtures/domain/ScreeningToReferral/valid/valid.json"), ScreeningToReferral.class);

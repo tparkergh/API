@@ -196,7 +196,6 @@ public class AssignmentService implements
     //
     // On TESTDOM (CWSNS1) workstation this will find the CASE_LOAD/IDENTIFIER of OkAImUW0Wz
     //
-
     final String caseLoadId =
         assignmentDao.findCaseId(RequestExecutionContext.instance().getStaffId());
     if (caseLoadId == null) {
