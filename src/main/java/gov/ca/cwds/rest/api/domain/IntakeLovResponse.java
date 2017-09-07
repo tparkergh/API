@@ -62,11 +62,8 @@ public class IntakeLovResponse implements Response, ApiMarker {
       this.mapper = mapper;
     }
 
-    private String jsonify(final JsonGenerator g, final IntakeLovEntry lov) {
-      String ret = "";
+    private void jsonify(final JsonGenerator g, final IntakeLovEntry lov) {
       try {
-        // ret = mapper.writeValueAsString(lov);
-
         g.writeStartObject();
         g.writeStringField("code", lov.isUseLogical() ? lov.getLegacyLogicalCode()
             : Long.toString(lov.getLegacySystemCodeId()));
@@ -77,18 +74,12 @@ public class IntakeLovResponse implements Response, ApiMarker {
       } catch (Exception e) { // NOSONAR
         LOGGER.warn("ERROR SERIALIZING LOV {} TO JSON", lov, e);
       }
-      return ret;
     }
 
     private void writeCategory(final JsonGenerator g, Map.Entry<String, List<IntakeLovEntry>> cat) {
       try {
         g.writeArrayFieldStart(cat.getKey().toLowerCase());
-        // final String strLovs = String.join(",",
-        cat.getValue().stream().map(lov -> jsonify(g, lov)).collect(Collectors.toList())
-        // )
-        ;
-        // g.writeString("[" + strLovs + "]");
-        // g.writeObject(mapper.writeValueAsString(cat.getValue()));
+        cat.getValue().stream().forEach(lov -> jsonify(g, lov));
         g.writeEndArray();
       } catch (IOException e) {
         throw new ServiceException(e);
@@ -173,17 +164,14 @@ public class IntakeLovResponse implements Response, ApiMarker {
     lovs.add(new IntakeLovEntry("1823", "AK", "STATE_C", "STATE_TYPE", "ak", "Alaska", true));
 
     IntakeLovResponse response = new IntakeLovResponse(lovs);
-
     final ObjectMapper mapper = ObjectMapperUtils.createObjectMapper();
-    // mapper.enable(SerializationFeature.INDENT_OUTPUT);
-    // mapper.enable(SerializationFeature.WRAP_ROOT_VALUE);
 
     String jsonString = null;
     try {
       jsonString = mapper.writeValueAsString(response);
     } catch (JsonProcessingException e) {
-      e.printStackTrace();
+      LOGGER.error("JSON error", e);
     }
-    System.out.println(jsonString);
+    LOGGER.info(jsonString);
   }
 }
