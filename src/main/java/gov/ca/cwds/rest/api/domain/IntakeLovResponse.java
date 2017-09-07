@@ -14,7 +14,6 @@ import org.slf4j.LoggerFactory;
 import com.fasterxml.jackson.annotation.JsonUnwrapped;
 import com.fasterxml.jackson.annotation.JsonValue;
 import com.fasterxml.jackson.core.JsonGenerator;
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonSerializer;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
@@ -157,20 +156,4 @@ public class IntakeLovResponse implements Response, ApiMarker {
     return EqualsBuilder.reflectionEquals(this, obj, false);
   }
 
-  public static void main(String[] args) {
-    final List<IntakeLovEntry> lovs = new ArrayList<>();
-    lovs.add(new IntakeLovEntry("1128", "", "ADDR_TPC", "ADDRESS_TYPE", "res", "Residence", false));
-    lovs.add(new IntakeLovEntry("1823", "AK", "STATE_C", "STATE_TYPE", "ak", "Alaska", true));
-
-    IntakeLovResponse response = new IntakeLovResponse(lovs);
-    final ObjectMapper mapper = ObjectMapperUtils.createObjectMapper();
-
-    String jsonString = null;
-    try {
-      jsonString = mapper.writeValueAsString(response);
-    } catch (JsonProcessingException e) {
-      LOGGER.error("JSON error", e);
-    }
-    LOGGER.info(jsonString);
-  }
 }
