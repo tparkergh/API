@@ -37,7 +37,7 @@ public class IntakeLov implements PersistentObject {
   private String legacyShortDescription;
 
   @Column(name = "LG_LOG_ID")
-  private String legacyLogicalId;
+  private String legacyLogicalCode;
 
   @Column(name = "USE_LOG_ID")
   private boolean useLogical;
@@ -89,7 +89,7 @@ public class IntakeLov implements PersistentObject {
    * 
    * @param legacyMeta legacy "meta" category
    * @param legacyShortDescription legacy short description
-   * @param legacyLogicalId legacy logical id
+   * @param legacyLogicalCode legacy logical code
    * @param useLogical legacy inactive flag
    * @param legacyCategoryId legacy category id
    * @param legacyOtherCode legacy other code
@@ -98,13 +98,13 @@ public class IntakeLov implements PersistentObject {
    * @param intakeCode Intake LOV code
    * @param intakeDisplay Intake display string
    */
-  public IntakeLov(String legacyMeta, String legacyShortDescription, String legacyLogicalId,
+  public IntakeLov(String legacyMeta, String legacyShortDescription, String legacyLogicalCode,
       boolean useLogical, String legacyCategoryId, String legacyOtherCode,
       String legacyLongDescription, String intakeType, String intakeCode, String intakeDisplay) {
     super();
     this.legacyMeta = legacyMeta;
     this.legacyShortDescription = legacyShortDescription;
-    this.legacyLogicalId = legacyLogicalId;
+    this.legacyLogicalCode = legacyLogicalCode;
     this.useLogical = useLogical;
     this.legacyCategoryId = legacyCategoryId;
     this.legacyOtherCode = legacyOtherCode;
@@ -140,12 +140,12 @@ public class IntakeLov implements PersistentObject {
     this.legacyShortDescription = legacyShortDescription;
   }
 
-  public String getLegacyLogicalId() {
-    return legacyLogicalId;
+  public String getLegacyLogicalCode() {
+    return legacyLogicalCode;
   }
 
-  public void setLegacyLogicalId(String legacyLogicalId) {
-    this.legacyLogicalId = legacyLogicalId;
+  public void setLegacyLogicalCode(String legacyLogicalId) {
+    this.legacyLogicalCode = legacyLogicalId;
   }
 
   public String getLegacyCategoryId() {
