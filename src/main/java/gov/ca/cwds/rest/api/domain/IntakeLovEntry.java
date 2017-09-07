@@ -28,8 +28,8 @@ import io.swagger.annotations.ApiModelProperty;
  * @author CWDS API Team
  */
 @JsonSnakeCase
-@ApiModel("nsIntakeLov")
-public class IntakeLov implements Request, Response, ApiMarker {
+@ApiModel("nsIntakeLovEntry")
+public class IntakeLovEntry implements Request, Response, ApiMarker {
 
   /**
    * Default serialization.
@@ -72,6 +72,7 @@ public class IntakeLov implements Request, Response, ApiMarker {
   /**
    * use logical: whether to use the logical id, not the system code id
    */
+  @JsonIgnore
   @JsonProperty("use_logical")
   @ApiModelProperty(example = "false")
   private boolean useLogical;
@@ -87,7 +88,7 @@ public class IntakeLov implements Request, Response, ApiMarker {
   /**
    * Default constructor.
    */
-  public IntakeLov() {
+  public IntakeLovEntry() {
     // Default, no-op.
   }
 
@@ -102,7 +103,7 @@ public class IntakeLov implements Request, Response, ApiMarker {
    * @param useLogical use the logical id, not the system id
    */
   @JsonCreator
-  public IntakeLov(@JsonProperty("legacy_system_code_id") String legacySystemCodeId,
+  public IntakeLovEntry(@JsonProperty("legacy_system_code_id") String legacySystemCodeId,
       @JsonProperty("legacy_meta") String legacyMeta,
       @JsonProperty("intake_type") String intakeType,
       @JsonProperty("intake_code") String intakeCode,
@@ -122,7 +123,7 @@ public class IntakeLov implements Request, Response, ApiMarker {
    * 
    * @param lov persistence Intake LOV record
    */
-  public IntakeLov(gov.ca.cwds.data.persistence.ns.IntakeLov lov) {
+  public IntakeLovEntry(gov.ca.cwds.data.persistence.ns.IntakeLov lov) {
     this.legacySystemCodeId = lov.getLegacySystemCodeId();
     this.legacyMeta = lov.getLegacyMeta();
     this.intakeCode = lov.getIntakeCode();
@@ -187,6 +188,15 @@ public class IntakeLov implements Request, Response, ApiMarker {
     return serialVersionUID;
   }
 
+  @JsonIgnore
+  public boolean isUseLogical() {
+    return useLogical;
+  }
+
+  public void setUseLogical(boolean useLogical) {
+    this.useLogical = useLogical;
+  }
+
   @Override
   public boolean hasMessages() {
     return false;
@@ -197,14 +207,6 @@ public class IntakeLov implements Request, Response, ApiMarker {
   @Override
   public List<ErrorMessage> getMessages() {
     return Response.super.getMessages();
-  }
-
-  public boolean isUseLogical() {
-    return useLogical;
-  }
-
-  public void setUseLogical(boolean useLogical) {
-    this.useLogical = useLogical;
   }
 
 }

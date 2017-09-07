@@ -9,7 +9,7 @@ import gov.ca.cwds.rest.ApiConfiguration;
 import gov.ca.cwds.rest.SwaggerConfiguration;
 import gov.ca.cwds.rest.api.contact.DeliveredServiceDomain;
 import gov.ca.cwds.rest.api.domain.ContactRequestList;
-import gov.ca.cwds.rest.api.domain.IntakeLov;
+import gov.ca.cwds.rest.api.domain.IntakeLovEntry;
 import gov.ca.cwds.rest.api.domain.IntakeLovResponse;
 import gov.ca.cwds.rest.api.domain.StaffPerson;
 import gov.ca.cwds.rest.api.domain.cms.Allegation;
@@ -336,7 +336,7 @@ public class ResourcesModule extends AbstractModule {
 
   @Provides
   @IntakeLovServiceResource
-  public SimpleResourceDelegate<String, IntakeLov, IntakeLovResponse, IntakeLovService> intakeLovResource(
+  public SimpleResourceDelegate<String, IntakeLovEntry, IntakeLovResponse, IntakeLovService> intakeLovResource(
       Injector injector) {
     return new SimpleResourceDelegate<>(injector.getInstance(IntakeLovService.class));
   }

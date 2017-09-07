@@ -38,7 +38,7 @@ public class IntakeLovResponse implements Response, ApiMarker {
   private static final long serialVersionUID = 1L;
 
   @JsonIgnore
-  private List<IntakeLov> lovs = new ArrayList<>();
+  private List<IntakeLovEntry> lovs = new ArrayList<>();
 
   /**
    * Disallow use of default constructor.
@@ -51,28 +51,28 @@ public class IntakeLovResponse implements Response, ApiMarker {
   /**
    * Preferred constructor. Build from person array.
    * 
-   * @param lovs array of {@link IntakeLov}
+   * @param lovs array of {@link IntakeLovEntry}
    */
-  public IntakeLovResponse(List<IntakeLov> lovs) {
+  public IntakeLovResponse(List<IntakeLovEntry> lovs) {
     this.lovs = lovs;
   }
 
   /**
-   * Getter for array of {@link IntakeLov lovs}
+   * Getter for array of {@link IntakeLovEntry lovs}
    * 
    * @return lovs objects suitable for Intake Auto-complete
    */
   @JsonValue
-  public List<IntakeLov> getPersons() {
+  public List<IntakeLovEntry> getPersons() {
     return lovs;
   }
 
   /**
-   * Setter for array of {@link IntakeLov lovs}.
+   * Setter for array of {@link IntakeLovEntry lovs}.
    * 
    * @param lovs person objects suitable for Intake LOV
    */
-  public void setPersons(List<IntakeLov> lovs) {
+  public void setPersons(List<IntakeLovEntry> lovs) {
     this.lovs = lovs;
   }
 
