@@ -11,7 +11,7 @@ import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonUnwrapped;
 import com.fasterxml.jackson.annotation.JsonValue;
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -22,6 +22,7 @@ import com.fasterxml.jackson.databind.SerializerProvider;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.google.inject.Inject;
 
+import gov.ca.cwds.ObjectMapperUtils;
 import gov.ca.cwds.data.std.ApiMarker;
 import gov.ca.cwds.rest.api.Request;
 import gov.ca.cwds.rest.api.Response;
@@ -51,7 +52,7 @@ public class IntakeLovResponse implements Response, ApiMarker {
     private ObjectMapper mapper;
 
     public IntakeLovSerializer() {
-      this.mapper = new ObjectMapper();
+      this.mapper = ObjectMapperUtils.createObjectMapper();
       mapper.enable(SerializationFeature.INDENT_OUTPUT);
       mapper.enable(SerializationFeature.WRAP_ROOT_VALUE);
     }
@@ -61,12 +62,16 @@ public class IntakeLovResponse implements Response, ApiMarker {
       this.mapper = mapper;
     }
 
-    protected String jsonify(Object obj) {
+    private String jsonify(final JsonGenerator g, final IntakeLovEntry lov) {
       String ret = "";
       try {
-        ret = mapper.writeValueAsString(obj);
+        // ret = mapper.writeValueAsString(lov);
+        g.writeStartObject();
+        g.writeStringField("display", lov.getIntakeValue());
+        g.writeEndObject();
+
       } catch (Exception e) { // NOSONAR
-        LOGGER.warn("ERROR SERIALIZING OBJECT {} TO JSON", obj, e);
+        LOGGER.warn("ERROR SERIALIZING LOV {} TO JSON", lov, e);
       }
       return ret;
     }
@@ -75,8 +80,9 @@ public class IntakeLovResponse implements Response, ApiMarker {
       try {
         g.writeArrayFieldStart(cat.getKey().toLowerCase());
         final String strLovs = String.join(",",
-            cat.getValue().stream().map(this::jsonify).collect(Collectors.toList()));
-        g.writeString("[" + strLovs + "]");
+            cat.getValue().stream().map(lov -> jsonify(g, lov)).collect(Collectors.toList()));
+        // g.writeString("[" + strLovs + "]");
+        // g.writeObject(mapper.writeValueAsString(cat.getValue()));
         g.writeEndArray();
       } catch (IOException e) {
         throw new ServiceException(e);
@@ -106,7 +112,7 @@ public class IntakeLovResponse implements Response, ApiMarker {
 
   }
 
-  @JsonIgnore
+  @JsonUnwrapped
   private List<IntakeLovEntry> lovs = new ArrayList<>();
 
   /**
@@ -161,13 +167,15 @@ public class IntakeLovResponse implements Response, ApiMarker {
         new IntakeLovEntry("1128", "", "ADDR_TPC", "ADDRESS_TYPE", "1128", "Residence", false));
     lovs.add(new IntakeLovEntry("1823", "AK", "STATE_C", "STATE_TYPE", "1128", "Alaska", true));
 
-    IntakeLovResponse term = new IntakeLovResponse(lovs);
-    ObjectMapper mapper = new ObjectMapper();
-    mapper.enable(SerializationFeature.INDENT_OUTPUT);
-    mapper.enable(SerializationFeature.WRAP_ROOT_VALUE);
+    IntakeLovResponse response = new IntakeLovResponse(lovs);
+
+    final ObjectMapper mapper = ObjectMapperUtils.createObjectMapper();
+    // mapper.enable(SerializationFeature.INDENT_OUTPUT);
+    // mapper.enable(SerializationFeature.WRAP_ROOT_VALUE);
+
     String jsonString = null;
     try {
-      jsonString = mapper.writeValueAsString(term);
+      jsonString = mapper.writeValueAsString(response);
     } catch (JsonProcessingException e) {
       e.printStackTrace();
     }
