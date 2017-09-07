@@ -17,7 +17,7 @@ import com.google.inject.Inject;
 
 import gov.ca.cwds.inject.IntakeLovServiceResource;
 import gov.ca.cwds.rest.api.ApiException;
-import gov.ca.cwds.rest.api.domain.IntakeLov;
+import gov.ca.cwds.rest.api.domain.IntakeLovEntry;
 import gov.ca.cwds.rest.api.domain.IntakeLovResponse;
 import gov.ca.cwds.rest.api.domain.es.ESPersons;
 import gov.ca.cwds.rest.services.IntakeLovService;
@@ -83,7 +83,7 @@ public class IntakeLovResource {
    * </tr>
    * </table>
    */
-  private SimpleResourceDelegate<String, IntakeLov, IntakeLovResponse, IntakeLovService> resourceDelegate;
+  private SimpleResourceDelegate<String, IntakeLovEntry, IntakeLovResponse, IntakeLovService> resourceDelegate;
 
   /**
    * Constructor
@@ -92,7 +92,7 @@ public class IntakeLovResource {
    */
   @Inject
   public IntakeLovResource(
-      @IntakeLovServiceResource SimpleResourceDelegate<String, IntakeLov, IntakeLovResponse, IntakeLovService> resourceDelegate) {
+      @IntakeLovServiceResource SimpleResourceDelegate<String, IntakeLovEntry, IntakeLovResponse, IntakeLovService> resourceDelegate) {
     this.resourceDelegate = resourceDelegate;
   }
 
@@ -108,12 +108,12 @@ public class IntakeLovResource {
       @ApiResponse(code = 404, message = "Not found"),
       @ApiResponse(code = 400, message = "Unable to parse parameters")})
   @ApiOperation(value = "Query ElasticSearch Persons on given search terms",
-      code = HttpStatus.SC_OK, response = IntakeLov[].class)
+      code = HttpStatus.SC_OK, response = IntakeLovEntry[].class)
   @Consumes(value = MediaType.TEXT_PLAIN)
   public Response getAll() {
     Response ret;
     try {
-      ret = resourceDelegate.handle(new IntakeLov());
+      ret = resourceDelegate.handle(new IntakeLovEntry());
     } catch (Exception e) {
       LOGGER.error("Intake LOV ERROR: {}", e.getMessage(), e);
       throw new ApiException("Intake LOV ERROR. " + e.getMessage(), e);

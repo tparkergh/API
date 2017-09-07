@@ -12,7 +12,7 @@ import java.util.ArrayList;
 import org.junit.Test;
 
 import gov.ca.cwds.data.ns.IntakeLovDao;
-import gov.ca.cwds.rest.api.domain.IntakeLov;
+import gov.ca.cwds.rest.api.domain.IntakeLovEntry;
 import gov.ca.cwds.rest.api.domain.IntakeLovResponse;
 
 public class IntakeLovServiceTest {
@@ -35,7 +35,7 @@ public class IntakeLovServiceTest {
     when(dao.findAll()).thenReturn(new ArrayList<gov.ca.cwds.data.persistence.ns.IntakeLov>());
 
     IntakeLovService target = new IntakeLovService(dao);
-    IntakeLov req = mock(IntakeLov.class);
+    IntakeLovEntry req = mock(IntakeLovEntry.class);
 
     IntakeLovResponse actual = target.handleRequest(req);
     IntakeLovResponse expected = null;
@@ -50,7 +50,7 @@ public class IntakeLovServiceTest {
     IntakeLovService target = new IntakeLovService(dao);
     String searchForThis = null;
     IntakeLovResponse actual = target.handleFind(searchForThis);
-    IntakeLovResponse expected = new IntakeLovResponse(new ArrayList<IntakeLov>());
+    IntakeLovResponse expected = new IntakeLovResponse(new ArrayList<IntakeLovEntry>());
     assertThat(actual, is(equalTo(expected)));
   }
 

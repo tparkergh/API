@@ -19,7 +19,7 @@ import org.mockito.MockitoAnnotations;
 
 import com.squarespace.jersey2.guice.JerseyGuiceUtils;
 
-import gov.ca.cwds.rest.api.domain.IntakeLov;
+import gov.ca.cwds.rest.api.domain.IntakeLovEntry;
 import gov.ca.cwds.rest.api.domain.IntakeLovResponse;
 import gov.ca.cwds.rest.core.Api;
 import gov.ca.cwds.rest.resources.cms.JerseyGuiceRule;
@@ -42,7 +42,7 @@ public class IntakeLovResourceTest {
   public ExpectedException thrown = ExpectedException.none();
 
   @SuppressWarnings("unchecked")
-  private static SimpleResourceDelegate<String, IntakeLov, IntakeLovResponse, IntakeLovService> resourceDelegate =
+  private static SimpleResourceDelegate<String, IntakeLovEntry, IntakeLovResponse, IntakeLovService> resourceDelegate =
       mock(SimpleResourceDelegate.class);
 
   @ClassRule
