@@ -96,6 +96,7 @@ public class IntakeLovEntry implements Request, Response, ApiMarker {
    * Constructor
    * 
    * @param legacySystemCodeId legacy lov id
+   * @param legacyLogicalCode legacy logical code
    * @param legacyMeta legacy category
    * @param intakeType Intake category
    * @param intakeCode Intake LOV code
@@ -104,6 +105,7 @@ public class IntakeLovEntry implements Request, Response, ApiMarker {
    */
   @JsonCreator
   public IntakeLovEntry(@JsonProperty("legacy_system_code_id") String legacySystemCodeId,
+      @JsonProperty("legacy_logical_code") String legacyLogicalCode,
       @JsonProperty("legacy_meta") String legacyMeta,
       @JsonProperty("intake_type") String intakeType,
       @JsonProperty("intake_code") String intakeCode,
