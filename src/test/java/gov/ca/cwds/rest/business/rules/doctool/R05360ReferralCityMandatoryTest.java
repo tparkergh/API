@@ -395,7 +395,7 @@ public class R05360ReferralCityMandatoryTest {
   }
 
   @SuppressWarnings("javadoc")
-  // @Test
+  @Test
   public void testForParticpantAddressCityEmptyFailure() throws Exception {
     Referral referralDomain = MAPPER.readValue(
         fixture("fixtures/domain/ScreeningToReferral/valid/validReferral.json"), Referral.class);
@@ -501,6 +501,7 @@ public class R05360ReferralCityMandatoryTest {
         new gov.ca.cwds.data.persistence.cms.Assignment("6789012ABC", assignment, "ABC");
     when(assignmentDao.create(any(gov.ca.cwds.data.persistence.cms.Assignment.class)))
         .thenReturn(assignmentToCreate);
+    when(assignmentDao.findCaseId(any(String.class))).thenReturn("ABC1234567");
 
     ScreeningToReferral screeningToReferral = MAPPER.readValue(
         fixture("fixtures/domain/ScreeningToReferral/invalid/participantAddressCityEmpty.json"),

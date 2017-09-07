@@ -15,6 +15,7 @@ import javax.validation.Validator;
 
 import org.junit.Before;
 import org.junit.Rule;
+import org.junit.Test;
 import org.junit.rules.ExpectedException;
 import org.mockito.invocation.InvocationOnMock;
 import org.mockito.stubbing.Answer;
@@ -278,7 +279,7 @@ public class R04537FirstResponseDeterminedByStaffPersonIdTest {
    * 
    * @throws Exception on general error
    */
-  // @Test
+  @Test
   public void testForfirstResponseDeterminedByStaffPersonId() throws Exception {
     Referral referralDomain = MAPPER.readValue(
         fixture("fixtures/domain/ScreeningToReferral/valid/validReferral.json"), Referral.class);
@@ -384,6 +385,7 @@ public class R04537FirstResponseDeterminedByStaffPersonIdTest {
         new gov.ca.cwds.data.persistence.cms.Assignment("6789012ABC", assignment, "ABC");
     when(assignmentDao.create(any(gov.ca.cwds.data.persistence.cms.Assignment.class)))
         .thenReturn(assignmentToCreate);
+    when(assignmentDao.findCaseId(any(String.class))).thenReturn("ABC1234567");
 
     ScreeningToReferral screeningToReferral = MAPPER.readValue(
         fixture("fixtures/domain/ScreeningToReferral/valid/valid.json"), ScreeningToReferral.class);
