@@ -8,6 +8,8 @@ import java.util.stream.Collectors;
 
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonValue;
@@ -42,6 +44,8 @@ public class IntakeLovResponse implements Response, ApiMarker {
    */
   private static final long serialVersionUID = 1L;
 
+  private static final Logger LOGGER = LoggerFactory.getLogger(IntakeLovResponse.class);
+
   public static class IntakeLovSerializer extends JsonSerializer<IntakeLovResponse> {
 
     private ObjectMapper mapper;
@@ -62,7 +66,7 @@ public class IntakeLovResponse implements Response, ApiMarker {
       try {
         ret = mapper.writeValueAsString(obj);
       } catch (Exception e) { // NOSONAR
-        // LOGGER.warn("ERROR SERIALIZING OBJECT {} TO JSON", obj);
+        LOGGER.warn("ERROR SERIALIZING OBJECT {} TO JSON", obj, e);
       }
       return ret;
     }
@@ -70,9 +74,9 @@ public class IntakeLovResponse implements Response, ApiMarker {
     private void writeCategory(final JsonGenerator g, Map.Entry<String, List<IntakeLovEntry>> cat) {
       try {
         g.writeArrayFieldStart(cat.getKey().toLowerCase());
-        String mustParam = String.join(",",
+        final String strLovs = String.join(",",
             cat.getValue().stream().map(this::jsonify).collect(Collectors.toList()));
-        g.writeString("[" + mustParam + "]");
+        g.writeString("[" + strLovs + "]");
         g.writeEndArray();
       } catch (IOException e) {
         throw new ServiceException(e);

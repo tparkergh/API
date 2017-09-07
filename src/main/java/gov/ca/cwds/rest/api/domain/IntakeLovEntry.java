@@ -36,11 +36,12 @@ public class IntakeLovEntry implements Request, Response, ApiMarker {
    */
   private static final long serialVersionUID = 1L;
 
+  @JsonIgnore
   @ApiModelProperty(value = "Legacy system code ID", example = "1828")
   private Long legacySystemCodeId;
 
   @JsonIgnore
-  @JsonProperty("legacy_meta")
+  // @JsonProperty("legacy_meta")
   @ApiModelProperty(example = "ACTV_RNC")
   @Size(max = 50)
   private String legacyMeta;
@@ -48,7 +49,8 @@ public class IntakeLovEntry implements Request, Response, ApiMarker {
   /**
    * code: whatever code/id we should pass back to the system
    */
-  @JsonProperty("intake_code")
+  // @JsonProperty("code")
+  @JsonIgnore
   @ApiModelProperty(example = "2167")
   @Size(max = 50)
   private String intakeCode;
@@ -56,7 +58,8 @@ public class IntakeLovEntry implements Request, Response, ApiMarker {
   /**
    * value: the string to display to the user
    */
-  @JsonProperty("intake_display")
+  // @JsonProperty("value")
+  @JsonIgnore
   @ApiModelProperty(example = "Dangerous puppy on premises")
   @Size(max = 50)
   private String intakeValue;
@@ -64,7 +67,8 @@ public class IntakeLovEntry implements Request, Response, ApiMarker {
   /**
    * type: the group this LOV belongs to (ie, states, counties, allegation_types)
    */
-  @JsonProperty("intake_type")
+  // @JsonProperty("type")
+  @JsonIgnore
   @ApiModelProperty(example = "SAFETY_ALERTS")
   @Size(max = 50)
   private String intakeType;
@@ -73,7 +77,7 @@ public class IntakeLovEntry implements Request, Response, ApiMarker {
    * use logical: whether to use the logical id, not the system code id
    */
   @JsonIgnore
-  @JsonProperty("use_logical")
+  // @JsonProperty("use_logical")
   @ApiModelProperty(example = "false")
   private boolean useLogical;
 
@@ -81,7 +85,7 @@ public class IntakeLovEntry implements Request, Response, ApiMarker {
    * sort_order: index position of sort order for this LOV object
    */
   @JsonIgnore
-  @JsonProperty("sort_order")
+  // @JsonProperty("sort_order")
   @ApiModelProperty(example = "2")
   private int sortOrder;
 
@@ -134,6 +138,8 @@ public class IntakeLovEntry implements Request, Response, ApiMarker {
     this.useLogical = lov.isUseLogical();
   }
 
+  @JsonIgnore
+  @Transient
   public Long getLegacySystemCodeId() {
     return legacySystemCodeId;
   }
@@ -152,6 +158,7 @@ public class IntakeLovEntry implements Request, Response, ApiMarker {
     this.legacyMeta = legacyMeta;
   }
 
+  @JsonProperty("code")
   public String getIntakeCode() {
     return intakeCode;
   }
@@ -160,6 +167,7 @@ public class IntakeLovEntry implements Request, Response, ApiMarker {
     this.intakeCode = intakeCode;
   }
 
+  @JsonProperty("display")
   public String getIntakeValue() {
     return intakeValue;
   }
@@ -168,6 +176,7 @@ public class IntakeLovEntry implements Request, Response, ApiMarker {
     this.intakeValue = intakeValue;
   }
 
+  @JsonProperty("type")
   public String getIntakeType() {
     return intakeType;
   }
