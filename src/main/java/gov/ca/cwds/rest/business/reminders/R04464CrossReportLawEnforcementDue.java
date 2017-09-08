@@ -22,6 +22,7 @@ import gov.ca.cwds.rest.api.domain.Allegation;
 import gov.ca.cwds.rest.api.domain.Participant;
 import gov.ca.cwds.rest.api.domain.PostedScreeningToReferral;
 import gov.ca.cwds.rest.services.cms.TickleService;
+import gov.ca.cwds.rest.validation.ParticipantValidator;
 
 /**
  * 
@@ -43,8 +44,6 @@ public class R04464CrossReportLawEnforcementDue {
   final DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
   final DateFormat timeFormat = new SimpleDateFormat("HH:MM:SS");
 
-  private static final String MANDATED_REPORTER_ROLE = "Mandated Reporter";
-  private static final String NON_MANDATED_REPORTER_ROLE = "Non-mandated Reporter";
   private static final String DEFAULT_TRUE_INDICATOR = "Y";
   private static final String DEFAULT_FALSE_INDICATOR = "N";
   private static final String REFERRAL = "R";
@@ -90,11 +89,14 @@ public class R04464CrossReportLawEnforcementDue {
     boolean reminderCreated = false;
     Reporter persistedReporter = null;
     for (Participant participant : reporter) {
-      if (participant.getRoles().contains(MANDATED_REPORTER_ROLE)
-          || participant.getRoles().contains(NON_MANDATED_REPORTER_ROLE)) {
+      if (ParticipantValidator.isReporterType(participant)
+          && !ParticipantValidator.selfReported(participant)) {
         persistedReporter = reporterDao.find(participant.getLegacyId());
         break;
       }
+    }
+    if (persistedReporter == null) {
+      return;
     }
     Set<Allegation> allegations = postedScreeningToReferral.getAllegations();
     Set<gov.ca.cwds.rest.api.domain.CrossReport> crossReports =
@@ -145,11 +147,9 @@ public class R04464CrossReportLawEnforcementDue {
               reminderCreated = true;
               LOGGER.info("crossReportForLawEnforcmentDue reminder is created");
             }
-
           }
         }
       }
     }
   }
-
 }
