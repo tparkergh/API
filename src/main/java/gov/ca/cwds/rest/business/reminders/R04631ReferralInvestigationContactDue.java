@@ -19,6 +19,7 @@ import gov.ca.cwds.rest.api.domain.Participant;
 import gov.ca.cwds.rest.api.domain.PostedScreeningToReferral;
 import gov.ca.cwds.rest.api.domain.ScreeningToReferral;
 import gov.ca.cwds.rest.services.cms.TickleService;
+import gov.ca.cwds.rest.validation.ParticipantValidator;
 
 /**
  * 
@@ -40,8 +41,6 @@ public class R04631ReferralInvestigationContactDue {
   final DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
   final DateFormat timeFormat = new SimpleDateFormat("HH:MM:SS");
 
-  private static final String PERPETRATOR_ROLE = "Perpetrator";
-  private static final String VICTIM_ROLE = "Victim";
   private static final String REFERRAL_REFERRALCLIENT = "RL";
   private static final short REFERRAL_INVESTIGATION_CONTACT_DUE = (short) 2058;
 
@@ -74,8 +73,8 @@ public class R04631ReferralInvestigationContactDue {
     Set<Participant> participants = screeningToReferral.getParticipants();
     Referral referral = referralDao.find(postedScreeningToReferral.getReferralId());
     for (Participant participant : participants) {
-      if ((participant.getRoles().contains(VICTIM_ROLE)
-          || participant.getRoles().contains(PERPETRATOR_ROLE))
+      if ((ParticipantValidator.hasVictimRole(participant)
+          || ParticipantValidator.isPerpetrator(participant))
           && participant.getDateOfBirth() != null) {
         Client client = clientDao.find(participant.getLegacyId());
         String dateOfBirth = participant.getDateOfBirth();
