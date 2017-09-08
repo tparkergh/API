@@ -67,7 +67,7 @@ public class IntakeLovResponse implements Response, ApiMarker {
         g.writeStringField("code", lov.isUseLogical() ? lov.getLegacyLogicalCode()
             : Long.toString(lov.getLegacySystemCodeId()));
         g.writeStringField("value", lov.getIntakeValue());
-        g.writeStringField("intake_code", lov.getIntakeCode());
+        // g.writeStringField("intake_code", lov.getIntakeCode()); // Intake doesn't need this.
         g.writeEndObject();
       } catch (Exception e) { // NOSONAR
         LOGGER.warn("ERROR SERIALIZING INTAKE LOV CATEGORY {} TO JSON", lov.getIntakeType(), e);
