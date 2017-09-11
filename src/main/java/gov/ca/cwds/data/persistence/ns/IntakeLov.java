@@ -19,7 +19,8 @@ import gov.ca.cwds.data.persistence.PersistentObject;
  */
 @SuppressWarnings("serial")
 @NamedQueries({@NamedQuery(name = "gov.ca.cwds.data.persistence.ns.IntakeLov.findAll",
-    query = "FROM IntakeLov WHERE intakeCode IS NOT NULL AND intakeCode != '' AND intakeDisplay IS NOT NULL AND intakeDisplay != '' ORDER BY intakeType, INTAKE_CODE")})
+    query = "FROM IntakeLov WHERE intakeCode IS NOT NULL AND intakeCode != '' "
+        + "AND intakeDisplay IS NOT NULL AND intakeDisplay != '' ORDER BY intakeType, INTAKE_CODE")})
 @Entity
 @Table(name = "VW_INTAKE_LOV")
 public class IntakeLov implements PersistentObject {
