@@ -71,6 +71,7 @@ public class ParticipantTest implements PersistentTestTemplate {
   private boolean reporterConfidentialWaiver = false;
   private String reporterEmployerName = "Employer Name";
   private boolean clientStaffPersonAdded = false;
+  private String  sensitivityIndicator = "N";
   private Set<String> roles = new HashSet<String>();
   private Set<Address> addresses = new HashSet<Address>();
 
@@ -159,7 +160,7 @@ public class ParticipantTest implements PersistentTestTemplate {
     Participant domain = new Participant(id, legacySourceTable, clientId, new LegacyDescriptor(),
         firstName, middleName, lastName, suffix, gender, ssn, dateOfBirth, primaryLanguage,
         secondaryLanguage, personId, screeningId, reporterConfidentialWaiver, reporterEmployerName,
-        clientStaffPersonAdded, roles, addresses);
+        clientStaffPersonAdded, sensitivityIndicator, roles, addresses);
 
     assertThat(domain.getId(), is(equalTo(id)));
     assertThat(domain.getLegacySourceTable(), is(equalTo(legacySourceTable)));
@@ -390,7 +391,7 @@ public class ParticipantTest implements PersistentTestTemplate {
       validParticipant = new Participant(id, legacySourceTable, clientId, new LegacyDescriptor(),
           firstName, middleName, lastName, suffix, gender, ssn, dateOfBirth, primaryLanguage,
           secondaryLanguage, personId, screeningId, reporterConfidentialWaiver,
-          reporterEmployerName, clientStaffPersonAdded, roles, addresses);
+          reporterEmployerName, clientStaffPersonAdded, sensitivityIndicator, roles, addresses);
     } catch (Exception e) {
       e.printStackTrace();
     }

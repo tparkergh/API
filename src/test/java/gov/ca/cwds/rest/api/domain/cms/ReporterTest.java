@@ -103,6 +103,7 @@ public class ReporterTest {
   private boolean reporterConfidentialWaiver = true;
   private String reporterEmployerName = "Employer Name";
   private boolean clientStaffPersonAdded = true;
+  private String sensitivityIndicator = "R";
 
   @Before
   public void setup() throws Exception {
@@ -236,7 +237,8 @@ public class ReporterTest {
     Participant participant = new Participant(5L, "legacy_source_table", "legacy_client_id",
         new LegacyDescriptor(), firstName, middleName, lastName, suffix, "gender", "ssn",
         "date_of_birth", primaryLanguage, secondaryLanguage, 7L, 8L, reporterConfidentialWaiver,
-        reporterEmployerName, clientStaffPersonAdded, new HashSet<>(), new HashSet<>());
+        reporterEmployerName, clientStaffPersonAdded, sensitivityIndicator, new HashSet<>(), new
+        HashSet<>());
 
     String countyCode = "countyCode";
     Short stateCode = new Short("0");
@@ -296,7 +298,8 @@ public class ReporterTest {
     Participant participant = new Participant(5L, "legacy_source_table", "legacy_client_id",
         new LegacyDescriptor(), firstName, middleName, lastName, "jr", "gender", "ssn",
         "date_of_birth", primaryLanguage, secondaryLanguage, 7L, 8L, reporterConfidentialWaiver,
-        reporterEmployerName, clientStaffPersonAdded, new HashSet<>(), new HashSet<>());
+        reporterEmployerName, clientStaffPersonAdded, sensitivityIndicator, new HashSet<>(), new
+        HashSet<>());
     String countyCode = "countyCode";
     Short stateCode = new Short("0");
 
@@ -339,7 +342,7 @@ public class ReporterTest {
     Participant participant = new Participant(5L, "legacy_source_table", "legacy_client_id",
         new LegacyDescriptor(), "firstName", "middleName", "lastName", "jr", "gender", "ssn",
         "date_of_birth", primaryLanguage, secondaryLanguage, 7L, 8L, reporterConfidentialWaiver,
-        reporterEmployerName, clientStaffPersonAdded, new HashSet<>(), new HashSet<>());
+        reporterEmployerName, clientStaffPersonAdded, sensitivityIndicator, new HashSet<>(), new HashSet<>());
 
     Reporter reporter =
         Reporter.createWithDefaults("referralId", true, address, participant, "countyCode");
@@ -356,7 +359,7 @@ public class ReporterTest {
     Participant participant = new Participant(5L, "legacy_source_table", "legacy_client_id",
         new LegacyDescriptor(), "firstName", "middleName", "lastName", "jr", "gender", "ssn",
         "date_of_birth", primaryLanguage, secondaryLanguage, 7L, 8L, reporterConfidentialWaiver,
-        reporterEmployerName, clientStaffPersonAdded, new HashSet<>(), new HashSet<>());
+        reporterEmployerName, clientStaffPersonAdded, sensitivityIndicator, new HashSet<>(), new HashSet<>());
 
     Reporter reporter =
         Reporter.createWithDefaults("referralId", true, address, participant, "countyCode");
@@ -373,7 +376,7 @@ public class ReporterTest {
     Participant participant = new Participant(5L, "legacy_source_table", "legacy_client_id",
         new LegacyDescriptor(), "firstName", "middleName", "lastName", "jr", "gender", "ssn",
         "date_of_birth", primaryLanguage, secondaryLanguage, 7L, 8L, reporterConfidentialWaiver,
-        reporterEmployerName, clientStaffPersonAdded, new HashSet<>(), new HashSet<>());
+        reporterEmployerName, clientStaffPersonAdded, sensitivityIndicator, new HashSet<>(), new HashSet<>());
 
     Reporter reporter =
         Reporter.createWithDefaults("referralId", true, address, participant, "countyCode");
@@ -391,7 +394,7 @@ public class ReporterTest {
     Participant participant = new Participant(5L, "legacy_source_table", "legacy_client_id",
         new LegacyDescriptor(), "firstName", "middleName", "lastName", "jr", "gender", "ssn",
         "date_of_birth", primaryLanguage, secondaryLanguage, 7L, 8L, reporterConfidentialWaiver,
-        reporterEmployerName, clientStaffPersonAdded, new HashSet<>(), new HashSet<>());
+        reporterEmployerName, clientStaffPersonAdded, sensitivityIndicator, new HashSet<>(), new HashSet<>());
 
     Reporter reporter =
         Reporter.createWithDefaults("referralId", true, address, participant, "countyCode");
