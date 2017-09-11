@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.slf4j.Logger;
@@ -46,6 +47,14 @@ public class IntakeLovResponse implements Response, ApiMarker {
 
   private static final Logger LOGGER = LoggerFactory.getLogger(IntakeLovResponse.class);
 
+  /**
+   * Since LOV entries change infrequently (i.e., when did America last admit another state or when
+   * did California split a county?), the Intake has requested that the LOV API return LOV arrays
+   * under the attribute name of the parent category. That is, LOV data drive the JSON attribute
+   * names; the attributes are not fixed, like most other APIs.
+   * 
+   * @author CWDS API Team
+   */
   public static class IntakeLovSerializer extends JsonSerializer<IntakeLovResponse> {
 
     private ObjectMapper mapper;
@@ -67,6 +76,11 @@ public class IntakeLovResponse implements Response, ApiMarker {
         g.writeStringField("code", lov.isUseLogical() ? lov.getLegacyLogicalCode()
             : Long.toString(lov.getLegacySystemCodeId()));
         g.writeStringField("value", lov.getIntakeValue());
+
+        if (StringUtils.isNotBlank(lov.getParentIntakeType())) {
+          g.writeStringField("parent_type", lov.getParentIntakeType());
+        }
+
         g.writeEndObject();
       } catch (Exception e) { // NOSONAR
         LOGGER.warn("ERROR SERIALIZING INTAKE LOV CATEGORY {} TO JSON", lov.getIntakeType(), e);
