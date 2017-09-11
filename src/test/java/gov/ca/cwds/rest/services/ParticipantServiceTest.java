@@ -540,16 +540,17 @@ public class ParticipantServiceTest {
     String existingPerpId = "1234567ABC";
     Participant reporter =
         new ParticipantResourceBuilder().setFirstName("Barney").setLastName("Rubble")
-            .setRoles(new HashSet<>(Arrays.asList("Non-mandated Reporter", "Victim")))
+            .setRoles(new HashSet<>(Arrays.asList("Non-mandated Reporter")))
             .createParticipant();
     LegacyDescriptor descriptor = new LegacyDescriptor("", "", lastUpdateDate, "", "");
     reporter.setLegacyDescriptor(descriptor);
     Participant perp = new ParticipantResourceBuilder().setLegacyId(existingPerpId)
         .setFirstName("Fred").setLastName("Flintsone")
         .setRoles(new HashSet<>(Arrays.asList("Perpetrator"))).createParticipant();
+    Participant victim = new ParticipantResourceBuilder().createVictimParticipant();
     descriptor = new LegacyDescriptor("", "", lastUpdateDate, "", "");
     perp.setLegacyDescriptor(descriptor);
-    Set participants = new HashSet<>(Arrays.asList(reporter, perp));
+    Set participants = new HashSet<>(Arrays.asList(reporter, perp,victim));
 
     ScreeningToReferral referral = new ScreeningToReferralResourceBuilder()
         .setParticipants(participants).createScreeningToReferral();
@@ -581,7 +582,7 @@ public class ParticipantServiceTest {
     participantService.saveParticipants(referral, dateStarted, referralId, timestamp,
         messageBuilder);
 
-    assertEquals("Expected only one error to have been recorded",2, messageBuilder.getMessages()
+    assertEquals("Expected only one error to have been recorded", 1, messageBuilder.getMessages()
         .size());
     String message = messageBuilder.getMessages().get(0).getMessage().trim();
     String expectedErrorMessage = "Unable to save Client";

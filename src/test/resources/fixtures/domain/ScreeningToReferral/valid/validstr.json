@@ -54,6 +54,7 @@
     "reporter_employer_name": "Employer Name",
     "person_id" : 12345,
     "screening_id" : 12345,
+    "limited_access_code": "N",
     "roles" : [ "Victim" ],
     "addresses" : [ {
       "legacy_source_table" : "",

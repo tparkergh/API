@@ -176,7 +176,7 @@ public class ScreeningToReferral extends ReportingDomain implements Request {
   @JsonProperty("limited_access_code")
   @Size(max = 1)
   @OneOf(value = {"R", "S", "N"})
-  @ApiModelProperty(required = false, readOnly = false, value = "limited access code",
+  @ApiModelProperty(required = true, readOnly = false, value = "limited access code",
       example = "N")
   private String limitedAccessCode;
 

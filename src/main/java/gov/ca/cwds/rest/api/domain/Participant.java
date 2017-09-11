@@ -125,6 +125,12 @@ public class Participant extends ReportingDomain implements Request, Response {
   @ApiModelProperty(required = false, value = "Staff Person Added", example = "N")
   private boolean clientStaffPersonAdded;
 
+  @JsonProperty("limited_access_code")
+  @Size(max = 1)
+  @OneOf(value = {"R", "S", "N"})
+  @ApiModelProperty(required = true, readOnly = false, value = "Limited Access Code", example = "R")
+  private String sensitivityIndicator;
+
   @JsonProperty("screening_id")
   @ApiModelProperty(required = false, readOnly = false, value = "Screening Id", example = "12345")
   private long screeningId;
@@ -177,6 +183,7 @@ public class Participant extends ReportingDomain implements Request, Response {
    * @param reporterConfidentialWaiver Confidential Waiver indicator for reporter
    * @param reporterEmployerName Reporter Employer Name
    * @param clientStaffPersonAdded Client Staff person Added indicator
+   * @param sensitivityIndicator Sensitivity Indicator
    * @param roles The roles of the participant
    * @param addresses The addresses of the participant
    * @throws ServiceException throw any exception
@@ -196,6 +203,7 @@ public class Participant extends ReportingDomain implements Request, Response {
       @JsonProperty("reporter_confidential_waiver") boolean reporterConfidentialWaiver,
       @JsonProperty("reporter_employer_name") String reporterEmployerName,
       @JsonProperty("client_staff_person_added") boolean clientStaffPersonAdded,
+      @JsonProperty("limited_access_code") String sensitivityIndicator,
       @JsonProperty("roles") Set<String> roles, @JsonProperty("addresses") Set<Address> addresses)
       throws ServiceException {
     super();
@@ -220,6 +228,7 @@ public class Participant extends ReportingDomain implements Request, Response {
     this.reporterConfidentialWaiver = reporterConfidentialWaiver;
     this.reporterEmployerName = reporterEmployerName;
     this.clientStaffPersonAdded = clientStaffPersonAdded;
+    this.sensitivityIndicator = sensitivityIndicator;
 
     try {
       victim = ParticipantValidator.hasVictimRole(this);
@@ -416,6 +425,10 @@ public class Participant extends ReportingDomain implements Request, Response {
     return clientStaffPersonAdded;
   }
 
+  public String getSensitivityIndicator() {
+    return sensitivityIndicator;
+  }
+
   /**
    * @return addresses
    */
@@ -489,6 +502,7 @@ public class Participant extends ReportingDomain implements Request, Response {
     result = prime * result + ((clientStaffPersonAdded == true) ? 1 : 0);
     result = prime * result + ((primaryLanguage == null) ? 0 : primaryLanguage.hashCode());
     result = prime * result + ((secondaryLanguage == null) ? 0 : secondaryLanguage.hashCode());
+    result = prime * result + ((sensitivityIndicator == null) ? 0 : sensitivityIndicator.hashCode());
     result = prime * result + ((legacyId == null) ? 0 : legacyId.hashCode());
     result = prime * result + ((legacySourceTable == null) ? 0 : legacySourceTable.hashCode());
     result = prime * result + ((legacyDescriptor == null) ? 0 : legacyDescriptor.hashCode());
@@ -569,6 +583,11 @@ public class Participant extends ReportingDomain implements Request, Response {
       if (other.secondaryLanguage != null)
         return false;
     } else if (!secondaryLanguage.equals(other.secondaryLanguage))
+      return false;
+    if (sensitivityIndicator == null) {
+      if (other.sensitivityIndicator != null)
+        return false;
+    } else if (!sensitivityIndicator.equals(other.sensitivityIndicator))
       return false;
     if (legacyId == null) {
       if (other.legacyId != null)

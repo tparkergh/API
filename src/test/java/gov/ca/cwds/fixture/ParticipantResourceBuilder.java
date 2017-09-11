@@ -30,6 +30,7 @@ public class ParticipantResourceBuilder {
   Short secondaryLanguage = 1253;
   boolean reporterConfidentialWaiver = false;
   String reporterEmployerName = "Employer Name";
+  String sensitivityIndicator = "N";
   boolean clientStaffPersonAdded = false;
   Set<String> roles;
   Set<gov.ca.cwds.rest.api.domain.Address> addresses;
@@ -198,6 +199,16 @@ public class ParticipantResourceBuilder {
   }
 
   /**
+   * @param sensitivityIndicator - sensitivityIndicator
+   * @return the ParticipantResourceBuilder
+   */
+  public ParticipantResourceBuilder setSensitivityIndicator(String sensitivityIndicator) {
+    this.sensitivityIndicator = sensitivityIndicator;
+    return this;
+  }
+
+
+  /**
    * @param roles - roles
    * @return the ParticipantResourceBuilder
    */
@@ -259,6 +270,6 @@ public class ParticipantResourceBuilder {
     return new Participant(id, legacySourceTable, legacyId, legacyDescriptor, firstName, middleName,
         lastName, suffix, gender, ssn, dateOfBirth, primaryLanguage, secondaryLanguage, personId,
         screeningId, reporterConfidentialWaiver, reporterEmployerName, clientStaffPersonAdded,
-        roles, addresses);
+        sensitivityIndicator, roles, addresses);
   }
 }

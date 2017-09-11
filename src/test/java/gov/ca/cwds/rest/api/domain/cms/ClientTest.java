@@ -397,7 +397,7 @@ public class ClientTest implements DomainTestTemplate {
     Participant participant = new Participant(1, "sourceTable", "clientId", new LegacyDescriptor(),
         "firstName", "middleName", "lastName", "jr", "gender", "ssn", "dob", primaryLanguageType,
         secondaryLanguageType, 3, 4, reporterConfidentialWaiver, reporterEmployerName,
-        clientStaffPersonAdded, new HashSet(), new HashSet());
+        clientStaffPersonAdded, sensitivityIndicator, new HashSet(), new HashSet());
     String genderCode = "male";
     String dateStarted = "now";
 
@@ -427,7 +427,7 @@ public class ClientTest implements DomainTestTemplate {
     Participant participant = new Participant(1, "sourceTable", "clientId", new LegacyDescriptor(),
         "Fred", "Wilson", "Bill", "", "gender", "ssn", "dob", primaryLanguageType,
         secondaryLanguageType, 3, 4, reporterConfidentialWaiver, reporterEmployerName,
-        clientStaffPersonAdded, new HashSet(), new HashSet());
+        clientStaffPersonAdded, sensitivityIndicator, new HashSet(), new HashSet());
     Client client = Client.createWithDefaults(participant, "", "");
 
     client.update("Barney", "middlestone", "Rubble", "jr");
@@ -447,7 +447,7 @@ public class ClientTest implements DomainTestTemplate {
     Participant participant = new Participant(1, "sourceTable", "clientId", new LegacyDescriptor(),
         "firstName", "middleName", "lastName", "", "gender", "ssn", "dob", primaryLanguageType,
         secondaryLanguageType, 3, 4, reporterConfidentialWaiver, reporterEmployerName,
-        clientStaffPersonAdded, new HashSet(), new HashSet());
+        clientStaffPersonAdded, sensitivityIndicator, new HashSet(), new HashSet());
     String genderCode = "male";
     String dateStarted = "now";
 
