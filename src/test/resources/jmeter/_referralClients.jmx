@@ -55,8 +55,8 @@
   &quot;dispositionDate&quot;: &quot;2000-01-01&quot;,&#xd;
   &quot;selfReportedIndicator&quot;: false,&#xd;
   &quot;staffPersonAddedIndicator&quot;: false,&#xd;
-  &quot;referralId&quot;: &quot;${__RandomString(10,0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ,)}&quot;,&#xd;
-  &quot;clientId&quot;: &quot;${__RandomString(10,0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ,)}&quot;,&#xd;
+  &quot;referralId&quot;: &quot;H4Z5nFs0AB&quot;,&#xd;
+  &quot;clientId&quot;: &quot;Mhqbzn40JG&quot;,&#xd;
   &quot;dispositionClosureDescription&quot;: &quot;Some Description&quot;,&#xd;
   &quot;ageNumber&quot;: 12,&#xd;
   &quot;agePeriodCode&quot;: &quot;D&quot;,&#xd;
