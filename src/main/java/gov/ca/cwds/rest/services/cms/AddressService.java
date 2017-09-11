@@ -100,7 +100,7 @@ public class AddressService implements
       if (managed.getId() == null) {
         throw new ServiceException("Address ID cannot be null");
       }
-      // ssaname3Dao.addressSsaname3("I", managed);
+      ssaname3Dao.addressSsaname3("I", managed);
       upperCaseTables.createAddressUc(managed);
       return new PostedAddress(managed, true);
     } catch (EntityExistsException e) {
