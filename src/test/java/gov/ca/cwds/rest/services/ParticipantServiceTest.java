@@ -699,4 +699,40 @@ public class ParticipantServiceTest {
 
     verify(foundClient).applySensitivityIndicator(eq(referral.getLimitedAccessCode()));
   }
+
+  @Test
+  public void shouldApplySensitivityIndicatorFromClientWhenUpdatingClient(){
+    String victimClientLegacyId = "ABC123DSAF";
+
+    LegacyDescriptor descriptor = new LegacyDescriptor("", "", lastUpdateDate, "", "");
+    Participant victim =
+        new ParticipantResourceBuilder()
+            .setSensitivityIndicator("R")
+            .setLegacyId(victimClientLegacyId)
+            .setLegacyDescriptor(descriptor)
+            .createParticipant();
+    Set participants = new HashSet<>(Arrays.asList(victim, defaultReporter,
+        defaultPerpetrator));
+
+    ScreeningToReferral referral = new ScreeningToReferralResourceBuilder()
+        .setLimitedAccessCode("N")
+        .setParticipants(participants)
+        .createScreeningToReferral();
+
+    Client foundClient = mock(Client.class);
+    when(foundClient.getLastUpdatedTime()).thenReturn(modifiedLastUpdateDate);
+
+    PostedClient createdClient = mock(PostedClient.class);
+    when(createdClient.getId()).thenReturn("LEGACYIDXX");
+    when(clientService.find(eq(victimClientLegacyId))).thenReturn(foundClient);
+    when(clientService.create(any())).thenReturn(createdClient);
+
+    Client updatedClient = mock(Client.class);
+    when(clientService.update(eq(victimClientLegacyId), any())).thenReturn(updatedClient);
+
+    participantService.saveParticipants(referral, dateStarted, referralId, timestamp,
+        messageBuilder);
+
+    verify(foundClient, times(1)).applySensitivityIndicator(eq(victim.getSensitivityIndicator()));
+  }
 }
