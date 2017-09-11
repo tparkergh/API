@@ -59,9 +59,9 @@
  &quot;communicationMethodType&quot; : 409,&#xd;
  &quot;countySpecificCode&quot; : &quot;20&quot;,&#xd;
  &quot;currentLocationOfChildren&quot; : &quot;7h6hSuC0X5&quot;,&#xd;
- &quot;drmsAllegationDescriptionDoc&quot; : &quot;6BLOZ0u0X5&quot;,&#xd;
- &quot;drmsErReferralDoc&quot; : &quot;5sajaEe0X5&quot;,&#xd;
- &quot;drmsInvestigationDoc&quot; : &quot;5Zq4bSO0X5&quot;,&#xd;
+ &quot;drmsAllegationDescriptionDoc&quot; : &quot;AajeIli0Dv&quot;,&#xd;
+ &quot;drmsErReferralDoc&quot; : &quot;Aaxp90g0Mc&quot;,&#xd;
+ &quot;drmsInvestigationDoc&quot; : &quot;AbpSqpC0Ki&quot;,&#xd;
  &quot;filedSuspectedChildAbuseReporttoLawEnforcementIndicator&quot; : false,&#xd;
  &quot;familyAwarenessIndicator&quot; : false,&#xd;
  &quot;govtEntityType&quot; : 1087,&#xd;
@@ -83,7 +83,7 @@
  &quot;sufficientInformationCode&quot; : &quot; &quot;,&#xd;
  &quot;unfoundedSeriesCode&quot; : &quot; &quot;,&#xd;
  &quot;linkToPrimaryReferralId&quot; : null,&#xd;
- &quot;allegesAbuseOccurredAtAddressId&quot; : &quot;8Ic1QSi0X5&quot;,&#xd;
+ &quot;allegesAbuseOccurredAtAddressId&quot; : &quot;AaNli340MV&quot;,&#xd;
  &quot;firstResponseDeterminedByStaffPersonId&quot; : &quot;0X5&quot;,&#xd;
  &quot;primaryContactStaffPersonId&quot; : &quot;0X5&quot;,&#xd;
  &quot;specialProjectReferralIndicator&quot; : false,&#xd;
@@ -189,7 +189,7 @@
  &quot;streetNumber&quot; : &quot;9876&quot;,&#xd;
  &quot;suffixTitleDescription&quot; : &quot;Sir&quot;,&#xd;
  &quot;zipcode&quot; : &quot;99887&quot;,&#xd;
- &quot;lawEnforcementId&quot; : &quot;ABC1234567&quot;,&#xd;
+ &quot;lawEnforcementId&quot; : &quot;Ad4ATcY00E&quot;,&#xd;
  &quot;zipSuffixNumber&quot; : 0,&#xd;
  &quot;countySpecificCode&quot; : &quot;99&quot;&#xd;
 },&#xd;
@@ -574,7 +574,7 @@ for(String arg: bsh.args){
     Object legacyValue = legacyReferral.get(arg);
     Boolean isNotMatching = !(nsValue!=null &amp;&amp; legacyValue!=null &amp;&amp; nsValue.equals(legacyValue) ) &amp;&amp; !(nsValue == null &amp;&amp; legacyValue == null);
 
-    if( !arg.equals(&quot;IDENTIFIER&quot;) &amp;&amp; !arg.equals(&quot;LST_UPD_TS&quot;) &amp;&amp; !arg.equals(&quot;LST_UPD_ID&quot;)){
+    if( !arg.equals(&quot;IDENTIFIER&quot;) &amp;&amp; !arg.equals(&quot;REF_RCV_TM&quot;) &amp;&amp; !arg.equals(&quot;LST_UPD_TS&quot;) &amp;&amp; !arg.equals(&quot;LST_UPD_ID&quot;)){
       if (isNotMatching) {
     	   success = false;
     	   log.info(&quot;not matching &quot;+arg + &quot; = &quot;+nsValue+ &quot; &quot;+legacyValue);
@@ -767,7 +767,7 @@ for(String arg: bsh.args){
     Object legacyValue = legacyCrossReport.get(arg);
     Boolean isNotMatching = !(nsValue!=null &amp;&amp; legacyValue!=null &amp;&amp; nsValue.equals(legacyValue) ) &amp;&amp; !(nsValue == null &amp;&amp; legacyValue == null);
 
-    if( !arg.equals(&quot;FKREFERL_T&quot;) &amp;&amp;!arg.equals(&quot;THIRD_ID&quot;) &amp;&amp; !arg.equals(&quot;LST_UPD_TS&quot;) &amp;&amp; !arg.equals(&quot;LST_UPD_ID&quot;)){
+    if( !arg.equals(&quot;FKREFERL_T&quot;) &amp;&amp;!arg.equals(&quot;THIRD_ID&quot;) &amp;&amp; !arg.equals(&quot;INFORM_TM&quot;) &amp;&amp; !arg.equals(&quot;LST_UPD_TS&quot;) &amp;&amp; !arg.equals(&quot;LST_UPD_ID&quot;)){
       if (isNotMatching) {
     	   success = false;
     	   log.info(&quot;not matching &quot;+arg + &quot; = &quot;+nsValue+ &quot; &quot;+legacyValue);
