@@ -194,6 +194,7 @@ public class ParticipantService implements CrudsService {
                   EntityChangedComparator comparator = new EntityChangedComparator();
                   if (comparator.compare(incomingParticipant, foundClient)) {
                     foundClient.applySensitivityIndicator(screeningToReferral.getLimitedAccessCode());
+                    foundClient.applySensitivityIndicator(incomingParticipant.getSensitivityIndicator());
                     foundClient.update(incomingParticipant.getFirstName(),
                         incomingParticipant.getMiddleName(), incomingParticipant.getLastName(),
                         incomingParticipant.getNameSuffix());
