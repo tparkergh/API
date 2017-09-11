@@ -28,7 +28,7 @@ sourceCompatibility = 1.8
 applicationDefaultJvmArgs = ["-Djava.library.path=.:./lib:/var/lib/jenkins/workspace/API/lib:/usr/local/lib"]
 
 project.ext {
-    apiVersion = 0.30
+    apiVersion = 0.31
     configPath = "$rootProject.projectDir/config/"
     dropwizardVersion = "1.1.0"
     dropwizardFlywayVersion = "1.0.0-1"
