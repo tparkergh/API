@@ -75,9 +75,14 @@ public class IntakeLovEntry implements Request, Response, ApiMarker {
    */
   // @JsonProperty("type")
   @JsonIgnore
-  @ApiModelProperty(example = "SAFETY_ALERTS")
+  @ApiModelProperty(example = "DEADLY_BABY_ANIMALS")
   @Size(max = 50)
   private String intakeType;
+
+  @JsonIgnore
+  @ApiModelProperty(example = "SAFETY_ALERTS")
+  @Size(max = 50)
+  private String parentIntakeType;
 
   /**
    * use logical: whether to use the logical id, not the system code id
@@ -142,6 +147,7 @@ public class IntakeLovEntry implements Request, Response, ApiMarker {
     this.legacyLogicalCode = lov.getLegacyLogicalCode();
     this.intakeCode = lov.getIntakeCode();
     this.intakeType = lov.getIntakeType();
+    this.parentIntakeType = lov.getParentIntakeType();
     this.intakeValue = lov.getIntakeDisplay();
     this.useLogical = lov.isUseLogical();
   }
@@ -216,6 +222,24 @@ public class IntakeLovEntry implements Request, Response, ApiMarker {
     this.useLogical = useLogical;
   }
 
+  @JsonIgnore
+  public String getLegacyLogicalCode() {
+    return legacyLogicalCode;
+  }
+
+  public void setLegacyLogicalCode(String legacyLogicalCode) {
+    this.legacyLogicalCode = legacyLogicalCode;
+  }
+
+  @JsonIgnore
+  public String getParentIntakeType() {
+    return parentIntakeType;
+  }
+
+  public void setParentIntakeType(String parentIntakeType) {
+    this.parentIntakeType = parentIntakeType;
+  }
+
   @Override
   public boolean hasMessages() {
     return false;
@@ -226,15 +250,6 @@ public class IntakeLovEntry implements Request, Response, ApiMarker {
   @Override
   public List<ErrorMessage> getMessages() {
     return Response.super.getMessages();
-  }
-
-  @JsonIgnore
-  public String getLegacyLogicalCode() {
-    return legacyLogicalCode;
-  }
-
-  public void setLegacyLogicalCode(String legacyLogicalCode) {
-    this.legacyLogicalCode = legacyLogicalCode;
   }
 
 }

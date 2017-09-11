@@ -46,6 +46,9 @@ public class IntakeLov implements PersistentObject {
   @Column(name = "LG_CAT_ID")
   private String legacyCategoryId;
 
+  @Column(name = "PARENT_CAT_ID")
+  private String parentCategoryId;
+
   @Column(name = "LG_OTH_CD")
   private String legacyOtherCode;
 
@@ -57,6 +60,10 @@ public class IntakeLov implements PersistentObject {
   @Column(name = "INTAKE_TYPE")
   @ColumnTransformer(read = "trim(INTAKE_TYPE)")
   private String intakeType;
+
+  @Column(name = "PARENT_INTAKE_TYPE")
+  @ColumnTransformer(read = "trim(PARENT_INTAKE_TYPE)")
+  private String parentIntakeType;
 
   @Id
   @Column(name = "INTAKE_CODE")
@@ -211,6 +218,22 @@ public class IntakeLov implements PersistentObject {
 
   public void setUseLogical(boolean useLogical) {
     this.useLogical = useLogical;
+  }
+
+  public String getParentCategoryId() {
+    return parentCategoryId;
+  }
+
+  public void setParentCategoryId(String parentCategoryId) {
+    this.parentCategoryId = parentCategoryId;
+  }
+
+  public String getParentIntakeType() {
+    return parentIntakeType;
+  }
+
+  public void setParentIntakeType(String parentIntakeType) {
+    this.parentIntakeType = parentIntakeType;
   }
 
 }
