@@ -170,7 +170,7 @@ public class ClientService implements
           && !(triggerTablesDao.getLaCountySpecificCode().equals(staffperson.getCountyCode()))) {
         nonLaCountyTriggers.createClientCountyTrigger(managed);
       }
-      // ssaname3Dao.clientSsaname3("I", managed);
+      ssaname3Dao.clientSsaname3("I", managed);
       upperCaseTables.createClientUc(managed);
       externalInterfaceTables.createExtInterClient(managed, "N");
 
