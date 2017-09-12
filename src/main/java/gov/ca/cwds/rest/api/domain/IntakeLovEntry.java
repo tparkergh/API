@@ -5,6 +5,8 @@ import java.util.List;
 
 import javax.validation.constraints.Size;
 
+import org.apache.commons.lang3.StringUtils;
+
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -148,7 +150,8 @@ public class IntakeLovEntry implements Request, Response, ApiMarker {
     this.intakeCode = lov.getIntakeCode();
     this.intakeType = lov.getIntakeType();
     this.parentIntakeType = lov.getParentIntakeType();
-    this.intakeValue = lov.getIntakeDisplay();
+    this.intakeValue = StringUtils.isNotBlank(lov.getIntakeDisplay()) ? lov.getIntakeDisplay()
+        : lov.getLegacyShortDescription().replaceAll("\\*", "");
     this.useLogical = lov.isUseLogical();
   }
 
