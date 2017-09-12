@@ -114,7 +114,7 @@ public class IntakeLovEntry implements Request, Response, ApiMarker {
   /**
    * Constructor
    * 
-   * @param legacySystemCodeId legacy lov id
+   * @param legacySystemCodeId legacy LOV id
    * @param legacyLogicalCode legacy logical code
    * @param legacyMeta legacy category
    * @param intakeType Intake category
