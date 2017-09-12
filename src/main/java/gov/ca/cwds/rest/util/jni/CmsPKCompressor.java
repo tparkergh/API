@@ -35,7 +35,8 @@ import com.pkware.deflate.InflateInputStream;
  *
  * <p>
  * For some unknown reason, this particular compression algorithm (PK_COMPRESS_METHOD_DEFLATE, level
- * 6) does not require a current license key. For example, this initialization is not needed:
+ * 6) <strong>does not require a current license key</strong>. For example, this initialization is
+ * not needed:
  * </p>
  * 
  * <pre>
@@ -56,7 +57,7 @@ import com.pkware.deflate.InflateInputStream;
  * @author CWDS API Team
  * @see LZWEncoder
  */
-public class CmsPKCompressor implements CWDSPKLicense {
+public class CmsPKCompressor {
 
   private static final Logger LOGGER = LoggerFactory.getLogger(CmsPKCompressor.class);
 
@@ -82,10 +83,10 @@ public class CmsPKCompressor implements CWDSPKLicense {
       throw new IOException("REQUIRED: file names cannot be null");
     }
 
-    FileInputStream fis = new FileInputStream(new File(inputFileName));
-    InputStream iis = new InflateInputStream(fis, true);
+    final FileInputStream fis = new FileInputStream(new File(inputFileName));
+    final InputStream iis = new InflateInputStream(fis, true);
+    final FileOutputStream fos = new FileOutputStream(new File(outputFileName));
 
-    FileOutputStream fos = new FileOutputStream(new File(outputFileName));
     IOUtils.copy(iis, fos);
 
     fis.close();
@@ -104,9 +105,10 @@ public class CmsPKCompressor implements CWDSPKLicense {
       throw new IOException("REQUIRED: bytes to decompress cannot be null");
     }
 
-    ByteArrayInputStream bis = new ByteArrayInputStream(bytes);
-    InputStream iis = new InflateInputStream(bis, true);
-    ByteArrayOutputStream bos = new ByteArrayOutputStream(DEFAULT_OUTPUT_SIZE);
+    final ByteArrayInputStream bis = new ByteArrayInputStream(bytes);
+    final InputStream iis = new InflateInputStream(bis, true);
+    final ByteArrayOutputStream bos = new ByteArrayOutputStream(DEFAULT_OUTPUT_SIZE);
+
     IOUtils.copy(iis, bos);
 
     iis.close();
@@ -131,8 +133,8 @@ public class CmsPKCompressor implements CWDSPKLicense {
       throw new IOException("REQUIRED: input stream to decompress cannot be null");
     }
 
-    InputStream iis = new InflateInputStream(input, true);
-    ByteArrayOutputStream bos = new ByteArrayOutputStream(DEFAULT_OUTPUT_SIZE);
+    final InputStream iis = new InflateInputStream(input, true);
+    final ByteArrayOutputStream bos = new ByteArrayOutputStream(DEFAULT_OUTPUT_SIZE);
     IOUtils.copy(iis, bos);
 
     iis.close();
@@ -153,7 +155,7 @@ public class CmsPKCompressor implements CWDSPKLicense {
       throw new IOException("REQUIRED: base64 string to decompress cannot be null");
     }
     final byte[] bytes = decompressBytes(DatatypeConverter.parseBase64Binary(base64Doc.trim()));
-    LOGGER.debug("CmsPKCompressor.decompressBase64(String): bytes len=" + bytes.length);
+    LOGGER.debug("CmsPKCompressor.decompressBase64(String): bytes len={}", bytes.length);
     return bytes;
   }
 
@@ -169,7 +171,7 @@ public class CmsPKCompressor implements CWDSPKLicense {
       throw new IOException("REQUIRED: hex to decompress cannot be null");
     }
     final byte[] bytes = decompressBytes(DatatypeConverter.parseHexBinary(hex.trim()));
-    LOGGER.debug("CmsPKCompressor.decompressHex(String): bytes len=" + bytes.length);
+    LOGGER.debug("CmsPKCompressor.decompressHex(String): bytes len={}", bytes.length);
     return bytes;
   }
 
@@ -186,9 +188,10 @@ public class CmsPKCompressor implements CWDSPKLicense {
       throw new IOException("REQUIRED: file names cannot be null");
     }
 
-    FileInputStream fis = new FileInputStream(new File(inputFileName));
-    OutputStream fos = new DeflateOutputStream(new FileOutputStream(new File(outputFileName)),
+    final FileInputStream fis = new FileInputStream(new File(inputFileName));
+    final OutputStream fos = new DeflateOutputStream(new FileOutputStream(new File(outputFileName)),
         DEFAULT_COMPRESSION_LEVEL, true);
+
     IOUtils.copy(fis, fos);
 
     fis.close();
@@ -207,10 +210,10 @@ public class CmsPKCompressor implements CWDSPKLicense {
       throw new IOException("REQUIRED: bytes to compress cannot be null");
     }
 
-    ByteArrayInputStream bis = new ByteArrayInputStream(bytes);
-    ByteArrayOutputStream bos = new ByteArrayOutputStream(DEFAULT_OUTPUT_SIZE);
+    final ByteArrayInputStream bis = new ByteArrayInputStream(bytes);
+    final ByteArrayOutputStream bos = new ByteArrayOutputStream(DEFAULT_OUTPUT_SIZE);
+    final OutputStream dos = new DeflateOutputStream(bos, DEFAULT_COMPRESSION_LEVEL, true);
 
-    OutputStream dos = new DeflateOutputStream(bos, DEFAULT_COMPRESSION_LEVEL, true);
     IOUtils.copy(bis, dos);
 
     bis.close();
