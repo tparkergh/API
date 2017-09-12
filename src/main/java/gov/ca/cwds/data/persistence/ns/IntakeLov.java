@@ -19,8 +19,7 @@ import gov.ca.cwds.data.persistence.PersistentObject;
  */
 @SuppressWarnings("serial")
 @NamedQueries({@NamedQuery(name = "gov.ca.cwds.data.persistence.ns.IntakeLov.findAll",
-    query = "FROM IntakeLov WHERE intakeCode IS NOT NULL AND intakeCode != '' "
-        + "AND intakeDisplay IS NOT NULL AND intakeDisplay != '' ORDER BY intakeType, INTAKE_CODE")})
+    query = "FROM IntakeLov ORDER BY intakeType, intakeCode")})
 @Entity
 @Table(name = "VW_INTAKE_LOV")
 public class IntakeLov implements PersistentObject {
@@ -58,11 +57,11 @@ public class IntakeLov implements PersistentObject {
 
   @Id
   @Column(name = "INTAKE_TYPE")
-  @ColumnTransformer(read = "trim(INTAKE_TYPE)")
+  @ColumnTransformer(read = "lower(trim(INTAKE_TYPE))")
   private String intakeType;
 
   @Column(name = "PARENT_INTAKE_TYPE")
-  @ColumnTransformer(read = "trim(PARENT_INTAKE_TYPE)")
+  @ColumnTransformer(read = "lower(trim(PARENT_INTAKE_TYPE))")
   private String parentIntakeType;
 
   @Id
