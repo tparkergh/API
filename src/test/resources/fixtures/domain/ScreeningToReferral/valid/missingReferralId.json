@@ -19,6 +19,10 @@
    "additional_information":"additional information about the referral",
    "screening_decision":"Response time",
    "screening_decision_detail":"Detail",
+   "limited_access_code": "S",
+   "limited_access_description": "No client data something happened 2",
+   "limited_access_agency":5548,
+   "limited_access_date":"2016-12-24",
    "address":{
    "legacy_source_table" : "",
    "legacy_id" : "",

@@ -187,7 +187,9 @@ public class ScreeningToReferral extends ReportingDomain implements Request {
   private String limitedAccessDescription;
 
   @JsonProperty("limited_access_agency")
-  @ApiModelProperty(required = false, readOnly = false, value = "1234", example = "The user county")
+  @ApiModelProperty(required = false, readOnly = false, value = "40", example = "The user county")
+  @ValidSystemCodeId(required = false, category = SystemCodeCategoryId.COUNTY_CODE,
+      ignoreable=true, ignoredValue = 0)
   private short limitedAccessAgency;
 
   @JsonProperty("limited_access_date")

@@ -472,13 +472,24 @@ public class ScreeningToReferralTest {
   }
 
   @Test
-  public void shouldHaveNoErrorsWhenLimitedAccessAgencyIsAnInteger() {
+  public void shouldNotHaveErrorsWhenLimitedAccessAgencyIsAValidCode() {
+    ScreeningToReferral screeningToReferral = new ScreeningToReferralResourceBuilder()
+        .setLimitedAccessAgency((short) 5548).createScreeningToReferral();
+
+    Set<ConstraintViolation<ScreeningToReferral>> constraintViolations =
+        validator.validate(screeningToReferral);
+    assertEquals("Expected limited access agency to not have an error when code is correct", 0,
+        constraintViolations.size());
+  }
+
+  @Test
+  public void shouldHaveErrorsWhenLimitedAccessAgencyIsAnInValidCode() {
     ScreeningToReferral screeningToReferral = new ScreeningToReferralResourceBuilder()
         .setLimitedAccessAgency((short) 999).createScreeningToReferral();
 
     Set<ConstraintViolation<ScreeningToReferral>> constraintViolations =
         validator.validate(screeningToReferral);
-    assertEquals("Expected limited access agency value of null to not be an error", 0,
+    assertEquals("Expected limited access agency to have an error when code is incorrect", 1,
         constraintViolations.size());
   }
 
