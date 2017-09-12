@@ -149,8 +149,13 @@ public class IntakeLovEntry implements Request, Response, ApiMarker {
     this.legacyMeta = lov.getLegacyMeta();
     this.legacySystemCodeId = lov.getLegacySystemCodeId();
     this.legacyLogicalCode = lov.getLegacyLogicalCode();
-    this.intakeCode = lov.getIntakeCode();
+    this.useLogical = lov.isUseLogical();
 
+    // Code:
+    this.intakeCode = lov.isUseLogical() ? lov.getLegacyLogicalCode()
+        : Long.toString(lov.getLegacySystemCodeId());
+
+    // Category and sub-category.
     if (StringUtils.isNotBlank(lov.getParentIntakeType())) {
       this.category = lov.getParentIntakeType().trim().toLowerCase();
       this.subCategory = lov.getIntakeType().trim().toLowerCase();
@@ -158,9 +163,9 @@ public class IntakeLovEntry implements Request, Response, ApiMarker {
       this.category = lov.getIntakeType().trim().toLowerCase();
     }
 
+    // Display value:
     this.intakeValue = StringUtils.isNotBlank(lov.getIntakeDisplay()) ? lov.getIntakeDisplay()
         : lov.getLegacyShortDescription().replaceAll("\\*", "");
-    this.useLogical = lov.isUseLogical();
   }
 
   @JsonIgnore
