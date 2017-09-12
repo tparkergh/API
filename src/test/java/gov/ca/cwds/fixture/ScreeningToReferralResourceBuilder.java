@@ -46,7 +46,7 @@ public class ScreeningToReferralResourceBuilder {
   private Short injuryHarmCategory = 2178;
   private String limitedAccessCode = "N";
   private String limitedAccessDescription = "";
-  private short limitedAccessAgency = 0;
+  private short limitedAccessAgency = 5548;
   private Date limitedAccessDate = null;
   private gov.ca.cwds.rest.api.domain.Address address;
   private Set<Participant> participants;

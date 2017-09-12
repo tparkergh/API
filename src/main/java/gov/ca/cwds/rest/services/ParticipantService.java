@@ -178,6 +178,7 @@ public class ParticipantService implements CrudsService {
                 Client client =
                     Client.createWithDefaults(incomingParticipant, dateStarted, genderCode);
                 client.applySensitivityIndicator(screeningToReferral.getLimitedAccessCode());
+                client.applySensitivityIndicator(incomingParticipant.getSensitivityIndicator());
                 messageBuilder.addDomainValidationError(validator.validate(client));
                 PostedClient postedClient =
                     this.clientService.createWithSingleTimestamp(client, timestamp);

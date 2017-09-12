@@ -669,6 +669,32 @@ public class ParticipantServiceTest {
   }
 
   @Test
+  public void shouldApplySensitivityIndicatorFromClientWhenSavingNewClient(){
+    Participant victim = new ParticipantResourceBuilder()
+        .setSensitivityIndicator("S")
+        .createVictimParticipant();
+    Set participants = new HashSet<>(Arrays.asList(defaultVictim, defaultReporter,
+        defaultPerpetrator));
+
+    ScreeningToReferral referral = new ScreeningToReferralResourceBuilder()
+        .setLimitedAccessCode("N")
+        .setParticipants(participants)
+        .createScreeningToReferral();
+
+    PostedClient createdClient = mock(PostedClient.class);
+    when(clientService.create(any())).thenReturn(createdClient);
+
+    ArgumentCaptor<Client> clientArgCaptor = ArgumentCaptor.forClass(Client.class);
+
+    participantService.saveParticipants(referral, dateStarted, referralId, timestamp,
+        messageBuilder);
+
+    verify(clientService,times(2)).createWithSingleTimestamp(clientArgCaptor.capture() , any());
+    assertEquals("Expected client to have sensitivty indicator applied", defaultVictim
+        .getSensitivityIndicator(), clientArgCaptor.getValue().getSensitivityIndicator());
+  }
+
+  @Test
   public void shouldApplySensitivityIndicatorFromReferralWhenUpdatingClient(){
     String victimClientLegacyId = "ABC123DSAF";
 
