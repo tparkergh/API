@@ -9,7 +9,9 @@ import org.apache.commons.lang3.StringUtils;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
 import gov.ca.cwds.data.std.ApiMarker;
 import gov.ca.cwds.rest.api.Request;
@@ -30,6 +32,7 @@ import io.swagger.annotations.ApiModelProperty;
  * @author CWDS API Team
  */
 @JsonSnakeCase
+@JsonPropertyOrder({"code", "value", "category", "sub_category"})
 @ApiModel("nsIntakeLovEntry")
 public class IntakeLovEntry implements Request, Response, ApiMarker {
 
@@ -57,8 +60,7 @@ public class IntakeLovEntry implements Request, Response, ApiMarker {
   /**
    * code: whatever code/id we should pass back to the system
    */
-  // @JsonProperty("code")
-  @JsonIgnore
+  @JsonProperty("code")
   @ApiModelProperty(example = "2167")
   @Size(max = 50)
   private String intakeCode;
@@ -66,25 +68,25 @@ public class IntakeLovEntry implements Request, Response, ApiMarker {
   /**
    * value: the string to display to the user
    */
-  // @JsonProperty("value")
-  @JsonIgnore
+  @JsonProperty("value")
   @ApiModelProperty(example = "Dangerous puppy on premises")
   @Size(max = 50)
   private String intakeValue;
 
   /**
-   * type: the group this LOV belongs to (ie, states, counties, allegation_types)
+   * type: the group this LOV belongs to (i.e., states, counties, allegation_types)
    */
-  // @JsonProperty("type")
-  @JsonIgnore
-  @ApiModelProperty(example = "DEADLY_BABY_ANIMALS")
+  @JsonProperty("sub_category")
+  @JsonInclude(JsonInclude.Include.ALWAYS)
+  @ApiModelProperty(example = "deadly_baby_animals")
   @Size(max = 50)
-  private String intakeType;
+  private String subCategory;
 
-  @JsonIgnore
-  @ApiModelProperty(example = "SAFETY_ALERTS")
+  @JsonProperty("category")
+  @JsonInclude(JsonInclude.Include.ALWAYS)
+  @ApiModelProperty(example = "safety_alerts")
   @Size(max = 50)
-  private String parentIntakeType;
+  private String category;
 
   /**
    * use logical: whether to use the logical id, not the system code id
@@ -132,7 +134,7 @@ public class IntakeLovEntry implements Request, Response, ApiMarker {
     this.legacySystemCodeId = Long.parseLong(legacySystemCodeId);
     this.legacyMeta = legacyMeta;
     this.legacyLogicalCode = legacyLogicalCode;
-    this.intakeType = intakeType;
+    this.subCategory = intakeType;
     this.intakeCode = intakeCode;
     this.intakeValue = intakeDisplay;
     this.useLogical = useLogical;
@@ -148,8 +150,14 @@ public class IntakeLovEntry implements Request, Response, ApiMarker {
     this.legacySystemCodeId = lov.getLegacySystemCodeId();
     this.legacyLogicalCode = lov.getLegacyLogicalCode();
     this.intakeCode = lov.getIntakeCode();
-    this.intakeType = lov.getIntakeType();
-    this.parentIntakeType = lov.getParentIntakeType();
+
+    if (StringUtils.isNotBlank(lov.getParentIntakeType())) {
+      this.category = lov.getParentIntakeType().trim().toLowerCase();
+      this.subCategory = lov.getIntakeType().trim().toLowerCase();
+    } else {
+      this.category = lov.getIntakeType().trim().toLowerCase();
+    }
+
     this.intakeValue = StringUtils.isNotBlank(lov.getIntakeDisplay()) ? lov.getIntakeDisplay()
         : lov.getLegacyShortDescription().replaceAll("\\*", "");
     this.useLogical = lov.isUseLogical();
@@ -175,7 +183,7 @@ public class IntakeLovEntry implements Request, Response, ApiMarker {
     this.legacyMeta = legacyMeta;
   }
 
-  @JsonProperty("code")
+  // @JsonProperty("code")
   public String getIntakeCode() {
     return intakeCode;
   }
@@ -184,22 +192,22 @@ public class IntakeLovEntry implements Request, Response, ApiMarker {
     this.intakeCode = intakeCode;
   }
 
-  @JsonProperty("display")
+  // @JsonProperty("display")
   public String getIntakeValue() {
     return intakeValue;
   }
 
-  public void setIntakeValue(String intakeValue) {
-    this.intakeValue = intakeValue;
+  public void setIntakeValue(String s) {
+    this.intakeValue = s;
   }
 
-  @JsonProperty("type")
-  public String getIntakeType() {
-    return intakeType;
+  // @JsonProperty("type")
+  public String getSubCategory() {
+    return subCategory;
   }
 
-  public void setIntakeType(String intakeType) {
-    this.intakeType = intakeType;
+  public void setSubCategory(String s) {
+    this.subCategory = s;
   }
 
   @JsonIgnore
@@ -230,17 +238,17 @@ public class IntakeLovEntry implements Request, Response, ApiMarker {
     return legacyLogicalCode;
   }
 
-  public void setLegacyLogicalCode(String legacyLogicalCode) {
-    this.legacyLogicalCode = legacyLogicalCode;
+  public void setLegacyLogicalCode(String s) {
+    this.legacyLogicalCode = s;
   }
 
   @JsonIgnore
-  public String getParentIntakeType() {
-    return parentIntakeType;
+  public String getCategory() {
+    return category;
   }
 
-  public void setParentIntakeType(String parentIntakeType) {
-    this.parentIntakeType = parentIntakeType;
+  public void setCategory(String s) {
+    this.category = s;
   }
 
   @Override

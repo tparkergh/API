@@ -19,7 +19,6 @@ import com.fasterxml.jackson.databind.JsonSerializer;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.databind.SerializerProvider;
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.google.inject.Inject;
 
 import gov.ca.cwds.ObjectMapperUtils;
@@ -37,7 +36,7 @@ import io.swagger.annotations.ApiModel;
  */
 @ApiModel
 @JsonSnakeCase
-@JsonSerialize(using = IntakeLovResponse.IntakeLovSerializer.class)
+// @JsonSerialize(using = IntakeLovResponse.IntakeLovSerializer.class)
 public class IntakeLovResponse implements Response, ApiMarker {
 
   /**
@@ -77,13 +76,13 @@ public class IntakeLovResponse implements Response, ApiMarker {
             : Long.toString(lov.getLegacySystemCodeId()));
         g.writeStringField("value", lov.getIntakeValue());
 
-        if (StringUtils.isNotBlank(lov.getParentIntakeType())) {
-          g.writeStringField("parent_type", lov.getParentIntakeType());
+        if (StringUtils.isNotBlank(lov.getCategory())) {
+          g.writeStringField("parent_type", lov.getCategory());
         }
 
         g.writeEndObject();
       } catch (Exception e) { // NOSONAR
-        LOGGER.warn("ERROR SERIALIZING INTAKE LOV CATEGORY {} TO JSON", lov.getIntakeType(), e);
+        LOGGER.warn("ERROR SERIALIZING INTAKE LOV CATEGORY {} TO JSON", lov.getSubCategory(), e);
       }
     }
 
@@ -102,8 +101,8 @@ public class IntakeLovResponse implements Response, ApiMarker {
         throws IOException {
 
       final Map<String, List<IntakeLovEntry>> lovsByCategory = value.getLovEntries().stream()
-          .sorted((e1, e2) -> e1.getIntakeType().compareTo(e2.getIntakeType()))
-          .collect(Collectors.groupingBy(IntakeLovEntry::getIntakeType));
+          .sorted((e1, e2) -> e1.getSubCategory().compareTo(e2.getSubCategory()))
+          .collect(Collectors.groupingBy(IntakeLovEntry::getSubCategory));
 
       gen.writeStartObject();
       lovsByCategory.entrySet().stream().forEach(e -> writeCategory(gen, e));
