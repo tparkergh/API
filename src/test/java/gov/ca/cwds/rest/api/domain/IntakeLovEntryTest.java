@@ -83,7 +83,7 @@ public class IntakeLovEntryTest {
   @Test
   public void getIntakeType_Args__() throws Exception {
     IntakeLovEntry target = new IntakeLovEntry();
-    String actual = target.getIntakeType();
+    String actual = target.getSubCategory();
     String expected = null;
     assertThat(actual, is(equalTo(expected)));
   }
@@ -92,7 +92,7 @@ public class IntakeLovEntryTest {
   public void setIntakeType_Args__String() throws Exception {
     IntakeLovEntry target = new IntakeLovEntry();
     String intakeType = null;
-    target.setIntakeType(intakeType);
+    target.setSubCategory(intakeType);
   }
 
   @Test
