@@ -8,6 +8,7 @@ import javax.persistence.EntityExistsException;
 import javax.persistence.EntityNotFoundException;
 import javax.validation.Validator;
 
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -280,6 +281,8 @@ public class ReferralService implements
 
     int govEnt =
         convertLogicalIdToSystemCodeFor(screeningToReferral.getIncidentCounty(), "GVR_ENTC");
+    Short agencyCode = convertLimitedAccessAgencyToNumericCode(screeningToReferral);
+
     return gov.ca.cwds.rest.api.domain.cms.Referral.createWithDefaults(
         ParticipantValidator.anonymousReporter(screeningToReferral),
         screeningToReferral.getCommunicationMethod(), drmsAllegationDescriptionDoc,
@@ -290,8 +293,12 @@ public class ReferralService implements
         screeningToReferral.getIncidentCounty(), (short) screeningToReferral.getApprovalStatus(),
         LegacyDefaultValues.DEFAULT_STAFF_PERSON_ID, responseRationalLongTextId,
         screeningToReferral.getResponsibleAgency(), screeningToReferral.getLimitedAccessCode(),
-        screeningToReferral.getLimitedAccessDescription(), limitedAccessDate
-        ,screeningToReferral.getLimitedAccessAgency());
+        screeningToReferral.getLimitedAccessDescription(), limitedAccessDate ,agencyCode);
+  }
+
+  private Short convertLimitedAccessAgencyToNumericCode(ScreeningToReferral screeningToReferral) {
+    String agencyValue = screeningToReferral.getLimitedAccessAgency();
+    return StringUtils.isNumeric(agencyValue) ? Short.parseShort(agencyValue) : 0;
   }
 
   private int convertLogicalIdToSystemCodeFor(String logicalCode, String governmentEntityCode) {

@@ -67,7 +67,7 @@ public class PostedScreeningToReferralTest {
         communicationMethod, "name", "reportNarrative", "reference",
         responseTime, "startedAt", "assignee", "additionalInformation",
         "screeningDecision", "screeningDecisionDetail", 118, false, false, "C",
-        "N","", (short)0, null, new Address(new gov.ca.cwds.data.persistence.ns.Address()),
+        "N","", "", null, new Address(new gov.ca.cwds.data.persistence.ns.Address()),
         new HashSet(), new HashSet(), new HashSet());
   }
 }
