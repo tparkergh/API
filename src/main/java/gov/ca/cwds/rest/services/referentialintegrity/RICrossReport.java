@@ -1,6 +1,7 @@
 
 package gov.ca.cwds.rest.services.referentialintegrity;
 
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -83,14 +84,13 @@ public class RICrossReport implements ApiReferentialCheck<CrossReport> {
     } else if (staffPersonDao.find(t.getStaffPersonId()) == null) {
       throw new ReferentialIntegrityException(
           "CrossReport => Staff Person with given Identifier is not present in database");
-    } else if ((t.getLawEnforcementId() != null && !t.getLawEnforcementId().isEmpty()
-        && !t.getLawEnforcementId().trim().isEmpty())
+    } else if (StringUtils.isNotBlank(t.getLawEnforcementId())
         && lawEnforcementDao.find(t.getLawEnforcementId()) == null) {
       throw new ReferentialIntegrityException(
           "CrossReport => Law enforcement with given Identifier is not present in database");
     }
 
-    return true;
+    return Boolean.TRUE;
   }
 
 }

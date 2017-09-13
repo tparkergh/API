@@ -9,7 +9,6 @@ import gov.ca.cwds.data.ApiHibernateInterceptor;
 import gov.ca.cwds.data.ApiReferentialCheck;
 import gov.ca.cwds.data.cms.ClientDao;
 import gov.ca.cwds.data.cms.ReferralDao;
-import gov.ca.cwds.data.persistence.cms.ClientCollateral;
 import gov.ca.cwds.data.persistence.cms.ReferralClient;
 import gov.ca.cwds.rest.validation.ReferentialIntegrityException;
 
@@ -48,7 +47,7 @@ public class RIReferralClient implements ApiReferentialCheck<ReferralClient> {
    */
   private static final long serialVersionUID = 1L;
 
-  private static final Logger LOGGER = LoggerFactory.getLogger(ClientCollateral.class);
+  private static final Logger LOGGER = LoggerFactory.getLogger(RIReferralClient.class);
 
   private transient ClientDao clientDao;
   private transient ReferralDao referralDao;
@@ -85,7 +84,7 @@ public class RIReferralClient implements ApiReferentialCheck<ReferralClient> {
           "ReferralClient => Referral with given Identifier is not present in database");
 
     }
-    return true;
+    return Boolean.TRUE;
   }
 
 }
