@@ -71,9 +71,10 @@ public class ParticipantTest implements PersistentTestTemplate {
   private boolean reporterConfidentialWaiver = false;
   private String reporterEmployerName = "Employer Name";
   private boolean clientStaffPersonAdded = false;
-  private String  sensitivityIndicator = "N";
+  private String sensitivityIndicator = "N";
   private Set<String> roles = new HashSet<String>();
   private Set<Address> addresses = new HashSet<Address>();
+  private RaceAndEthnicity raceAndEthnicity = new RaceAndEthnicity();
 
   private static final String ROOT_RESOURCE = "/" + Api.RESOURCE_PARTICIPANTS + "/";;
   private static final ObjectMapper MAPPER = Jackson.newObjectMapper();
@@ -160,7 +161,7 @@ public class ParticipantTest implements PersistentTestTemplate {
     Participant domain = new Participant(id, legacySourceTable, clientId, new LegacyDescriptor(),
         firstName, middleName, lastName, suffix, gender, ssn, dateOfBirth, primaryLanguage,
         secondaryLanguage, personId, screeningId, reporterConfidentialWaiver, reporterEmployerName,
-        clientStaffPersonAdded, sensitivityIndicator, roles, addresses);
+        clientStaffPersonAdded, sensitivityIndicator, roles, addresses, raceAndEthnicity);
 
     assertThat(domain.getId(), is(equalTo(id)));
     assertThat(domain.getLegacySourceTable(), is(equalTo(legacySourceTable)));
@@ -391,7 +392,8 @@ public class ParticipantTest implements PersistentTestTemplate {
       validParticipant = new Participant(id, legacySourceTable, clientId, new LegacyDescriptor(),
           firstName, middleName, lastName, suffix, gender, ssn, dateOfBirth, primaryLanguage,
           secondaryLanguage, personId, screeningId, reporterConfidentialWaiver,
-          reporterEmployerName, clientStaffPersonAdded, sensitivityIndicator, roles, addresses);
+          reporterEmployerName, clientStaffPersonAdded, sensitivityIndicator, roles, addresses,
+          raceAndEthnicity);
     } catch (Exception e) {
       e.printStackTrace();
     }

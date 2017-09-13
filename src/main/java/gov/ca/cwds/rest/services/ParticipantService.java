@@ -33,6 +33,7 @@ import gov.ca.cwds.rest.messages.MessageBuilder;
 import gov.ca.cwds.rest.services.cms.AddressService;
 import gov.ca.cwds.rest.services.cms.ChildClientService;
 import gov.ca.cwds.rest.services.cms.ClientAddressService;
+import gov.ca.cwds.rest.services.cms.ClientScpEthnicityService;
 import gov.ca.cwds.rest.services.cms.ClientService;
 import gov.ca.cwds.rest.services.cms.ReferralClientService;
 import gov.ca.cwds.rest.services.cms.ReporterService;
@@ -61,6 +62,7 @@ public class ParticipantService implements CrudsService {
   private ChildClientService childClientService;
   private AddressService addressService;
   private ClientAddressService clientAddressService;
+  private ClientScpEthnicityService clientScpEthnicityService;
 
   /**
    * Constructor
@@ -79,7 +81,8 @@ public class ParticipantService implements CrudsService {
   public ParticipantService(ParticipantDao participantDao, ClientService clientService,
       ReferralClientService referralClientService, ReporterService reporterService,
       ChildClientService childClientService, AddressService addressService,
-      ClientAddressService clientAddressService, Validator validator) {
+      ClientAddressService clientAddressService, Validator validator,
+      ClientScpEthnicityService clientScpEthnicityService) {
     this.participantDao = participantDao;
     this.validator = validator;
     this.clientService = clientService;
@@ -88,6 +91,7 @@ public class ParticipantService implements CrudsService {
     this.childClientService = childClientService;
     this.addressService = addressService;
     this.clientAddressService = clientAddressService;
+    this.clientScpEthnicityService = clientScpEthnicityService;
   }
 
   /**
@@ -187,6 +191,8 @@ public class ParticipantService implements CrudsService {
                 incomingParticipant.setLegacySourceTable(CLIENT_TABLE_NAME);
                 incomingParticipant.getLegacyDescriptor()
                     .setLastUpdated(postedClient.getLastUpdatedTime());
+                clientScpEthnicityService.createOtherEthnicity(postedClient.getId(),
+                    incomingParticipant.getRaceAndEthnicity());
               } else {
                 // legacy Id passed - check for existenct in CWS/CMS - no update yet
                 clientId = incomingParticipant.getLegacyId();
@@ -194,8 +200,10 @@ public class ParticipantService implements CrudsService {
                 if (foundClient != null) {
                   EntityChangedComparator comparator = new EntityChangedComparator();
                   if (comparator.compare(incomingParticipant, foundClient)) {
-                    foundClient.applySensitivityIndicator(screeningToReferral.getLimitedAccessCode());
-                    foundClient.applySensitivityIndicator(incomingParticipant.getSensitivityIndicator());
+                    foundClient
+                        .applySensitivityIndicator(screeningToReferral.getLimitedAccessCode());
+                    foundClient
+                        .applySensitivityIndicator(incomingParticipant.getSensitivityIndicator());
                     foundClient.update(incomingParticipant.getFirstName(),
                         incomingParticipant.getMiddleName(), incomingParticipant.getLastName(),
                         incomingParticipant.getNameSuffix());

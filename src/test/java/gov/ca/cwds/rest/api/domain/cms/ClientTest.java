@@ -12,13 +12,11 @@ import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
-import gov.ca.cwds.rest.api.domain.LimitedAccessType;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
-
 import java.util.List;
+
 import javax.ws.rs.client.Entity;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
@@ -38,7 +36,9 @@ import gov.ca.cwds.data.CrudsDao;
 import gov.ca.cwds.fixture.ClientResourceBuilder;
 import gov.ca.cwds.rest.api.domain.DomainChef;
 import gov.ca.cwds.rest.api.domain.LegacyDescriptor;
+import gov.ca.cwds.rest.api.domain.LimitedAccessType;
 import gov.ca.cwds.rest.api.domain.Participant;
+import gov.ca.cwds.rest.api.domain.RaceAndEthnicity;
 import gov.ca.cwds.rest.api.domain.junit.template.DomainTestTemplate;
 import gov.ca.cwds.rest.core.Api;
 import gov.ca.cwds.rest.resources.cms.ClientResource;
@@ -397,7 +397,9 @@ public class ClientTest implements DomainTestTemplate {
     Participant participant = new Participant(1, "sourceTable", "clientId", new LegacyDescriptor(),
         "firstName", "middleName", "lastName", "jr", "gender", "ssn", "dob", primaryLanguageType,
         secondaryLanguageType, 3, 4, reporterConfidentialWaiver, reporterEmployerName,
-        clientStaffPersonAdded, sensitivityIndicator, new HashSet(), new HashSet());
+        clientStaffPersonAdded, sensitivityIndicator, new HashSet<>(), new HashSet<>(),
+        new RaceAndEthnicity());
+
     String genderCode = "male";
     String dateStarted = "now";
 
@@ -424,10 +426,12 @@ public class ClientTest implements DomainTestTemplate {
   @Test
   public void shouldAllowClientNamesToBeUpdatedAfterInitialization() {
 
-    Participant participant = new Participant(1, "sourceTable", "clientId", new LegacyDescriptor(),
-        "Fred", "Wilson", "Bill", "", "gender", "ssn", "dob", primaryLanguageType,
-        secondaryLanguageType, 3, 4, reporterConfidentialWaiver, reporterEmployerName,
-        clientStaffPersonAdded, sensitivityIndicator, new HashSet(), new HashSet());
+    Participant participant =
+        new Participant(1, "sourceTable", "clientId", new LegacyDescriptor(), "Fred", "Wilson",
+            "Bill", "", "gender", "ssn", "dob", primaryLanguageType, secondaryLanguageType, 3, 4,
+            reporterConfidentialWaiver, reporterEmployerName, clientStaffPersonAdded,
+            sensitivityIndicator, new HashSet<>(), new HashSet<>(), new RaceAndEthnicity());
+
     Client client = Client.createWithDefaults(participant, "", "");
 
     client.update("Barney", "middlestone", "Rubble", "jr");
@@ -447,7 +451,9 @@ public class ClientTest implements DomainTestTemplate {
     Participant participant = new Participant(1, "sourceTable", "clientId", new LegacyDescriptor(),
         "firstName", "middleName", "lastName", "", "gender", "ssn", "dob", primaryLanguageType,
         secondaryLanguageType, 3, 4, reporterConfidentialWaiver, reporterEmployerName,
-        clientStaffPersonAdded, sensitivityIndicator, new HashSet(), new HashSet());
+        clientStaffPersonAdded, sensitivityIndicator, new HashSet<>(), new HashSet<>(),
+        new RaceAndEthnicity());
+
     String genderCode = "male";
     String dateStarted = "now";
 
@@ -512,10 +518,6 @@ public class ClientTest implements DomainTestTemplate {
         "", client.getFatherParentalRightTermDate());
     assertEquals("Expected healthSummaryText field to be initialized with default values", "",
         client.getHealthSummaryText());
-    assertEquals("Expected hispUnableToDetReasonCode field to be initialized with default values",
-        "", client.getHispUnableToDetReasonCode());
-    assertEquals("Expected hispanicOriginCode field to be initialized with default values", "X",
-        client.getHispanicOriginCode());
     assertEquals("Expected immigrationCountryCodeTyp field to be initialized with default values",
         new Short("0"), client.getImmigrationCountryCodeType());
     assertEquals("Expected immigrationStatusType field to be initialized with default values",
@@ -3290,59 +3292,54 @@ public class ClientTest implements DomainTestTemplate {
   }
 
   @Test
-  public void shouldApplySealedSensitiveIndicatorRegardlessOfExistingValue(){
-    List<String> sensitivityIndicators = Arrays.asList(null,LimitedAccessType.NONE.getValue(),
-        LimitedAccessType.SENSITIVE.getValue(),LimitedAccessType.SEALED.getValue());
-    for(String sensitivityIndicator : sensitivityIndicators){
-      Client client = new ClientResourceBuilder()
-          .setSensitivityIndicator(sensitivityIndicator)
-          .build();
+  public void shouldApplySealedSensitiveIndicatorRegardlessOfExistingValue() {
+    List<String> sensitivityIndicators = Arrays.asList(null, LimitedAccessType.NONE.getValue(),
+        LimitedAccessType.SENSITIVE.getValue(), LimitedAccessType.SEALED.getValue());
+    for (String sensitivityIndicator : sensitivityIndicators) {
+      Client client =
+          new ClientResourceBuilder().setSensitivityIndicator(sensitivityIndicator).build();
 
       client.applySensitivityIndicator(LimitedAccessType.SEALED.getValue());
-      assertEquals("Expected indicator to be Restricited/Sealed", LimitedAccessType.SEALED.getValue(),
-          client.getSensitivityIndicator());
+      assertEquals("Expected indicator to be Restricited/Sealed",
+          LimitedAccessType.SEALED.getValue(), client.getSensitivityIndicator());
     }
   }
 
   @Test
-  public void shouldNotApplySensitiveSensitiveIndicatorWhenExistingValueIsSealed(){
+  public void shouldNotApplySensitiveSensitiveIndicatorWhenExistingValueIsSealed() {
     List<String> sensitivityIndicators = Arrays.asList(LimitedAccessType.SEALED.getValue());
-    for(String sensitivityIndicator : sensitivityIndicators){
-      Client client = new ClientResourceBuilder()
-          .setSensitivityIndicator(sensitivityIndicator)
-          .build();
+    for (String sensitivityIndicator : sensitivityIndicators) {
+      Client client =
+          new ClientResourceBuilder().setSensitivityIndicator(sensitivityIndicator).build();
 
       client.applySensitivityIndicator(LimitedAccessType.SENSITIVE.getValue());
-      assertEquals("Expected indicator to stay as Sealed", LimitedAccessType.SEALED
-          .getValue(),
+      assertEquals("Expected indicator to stay as Sealed", LimitedAccessType.SEALED.getValue(),
           client.getSensitivityIndicator());
     }
   }
 
 
   @Test
-  public void shouldApplySensitiveSensitiveIndicatorWhenExistingValueIsNotRestricted(){
-    List<String> sensitivityIndicators = Arrays.asList(null, LimitedAccessType.SENSITIVE.getValue
-        (), LimitedAccessType.NONE.getValue());
-    for(String sensitivityIndicator : sensitivityIndicators){
-      Client client = new ClientResourceBuilder()
-          .setSensitivityIndicator(sensitivityIndicator)
-          .build();
+  public void shouldApplySensitiveSensitiveIndicatorWhenExistingValueIsNotRestricted() {
+    List<String> sensitivityIndicators = Arrays.asList(null, LimitedAccessType.SENSITIVE.getValue(),
+        LimitedAccessType.NONE.getValue());
+    for (String sensitivityIndicator : sensitivityIndicators) {
+      Client client =
+          new ClientResourceBuilder().setSensitivityIndicator(sensitivityIndicator).build();
 
       client.applySensitivityIndicator(LimitedAccessType.SENSITIVE.getValue());
-      assertEquals("Expected indicator to be Sensitive", LimitedAccessType.SENSITIVE
-              .getValue(),
+      assertEquals("Expected indicator to be Sensitive", LimitedAccessType.SENSITIVE.getValue(),
           client.getSensitivityIndicator());
     }
   }
 
   @Test
-  public void shouldNotRemoveSealedSensitiveIndicatorWhenAlreadySet(){
-    List<String> sensitivityIndicators = Arrays.asList( LimitedAccessType.SENSITIVE.getValue(),LimitedAccessType.SEALED.getValue());
-    for(String sensitivityIndicator : sensitivityIndicators){
-      Client client = new ClientResourceBuilder()
-          .setSensitivityIndicator(sensitivityIndicator)
-          .build();
+  public void shouldNotRemoveSealedSensitiveIndicatorWhenAlreadySet() {
+    List<String> sensitivityIndicators =
+        Arrays.asList(LimitedAccessType.SENSITIVE.getValue(), LimitedAccessType.SEALED.getValue());
+    for (String sensitivityIndicator : sensitivityIndicators) {
+      Client client =
+          new ClientResourceBuilder().setSensitivityIndicator(sensitivityIndicator).build();
 
       client.applySensitivityIndicator(LimitedAccessType.NONE.getValue());
       assertEquals("Expected indicator to not be unchanged", sensitivityIndicator,
@@ -3351,14 +3348,12 @@ public class ClientTest implements DomainTestTemplate {
   }
 
   @Test
-  public void shouldSetSealedSensitiveIndicatorToNoneWhenPreviousValueIsNull(){
-      Client client = new ClientResourceBuilder()
-          .setSensitivityIndicator(null)
-          .build();
+  public void shouldSetSealedSensitiveIndicatorToNoneWhenPreviousValueIsNull() {
+    Client client = new ClientResourceBuilder().setSensitivityIndicator(null).build();
 
-      client.applySensitivityIndicator(LimitedAccessType.NONE.getValue());
-      assertEquals("Expected indicator to not be unchanged", LimitedAccessType.NONE.getValue(),
-          client.getSensitivityIndicator());
+    client.applySensitivityIndicator(LimitedAccessType.NONE.getValue());
+    assertEquals("Expected indicator to not be unchanged", LimitedAccessType.NONE.getValue(),
+        client.getSensitivityIndicator());
   }
 
   private Client validClient() throws JsonParseException, JsonMappingException, IOException {

@@ -74,6 +74,7 @@ import gov.ca.cwds.rest.services.cms.AllegationService;
 import gov.ca.cwds.rest.services.cms.AssignmentService;
 import gov.ca.cwds.rest.services.cms.ChildClientService;
 import gov.ca.cwds.rest.services.cms.ClientAddressService;
+import gov.ca.cwds.rest.services.cms.ClientScpEthnicityService;
 import gov.ca.cwds.rest.services.cms.ClientService;
 import gov.ca.cwds.rest.services.cms.CrossReportService;
 import gov.ca.cwds.rest.services.cms.DrmsDocumentService;
@@ -148,6 +149,7 @@ public class TestForLastUpdatedTimeIsUnique {
   private Reminders reminders;
   private UpperCaseTables upperCaseTables;
   private ExternalInterfaceTables externalInterfaceTables;
+  private ClientScpEthnicityService clientScpEthnicityService;
 
   private Validator validator;
 
@@ -183,6 +185,7 @@ public class TestForLastUpdatedTimeIsUnique {
     triggerTablesDao = mock(TriggerTablesDao.class);
     staffpersonDao = mock(StaffPersonDao.class);
     staffPersonIdRetriever = mock(StaffPersonIdRetriever.class);
+    clientScpEthnicityService = mock(ClientScpEthnicityService.class);
 
     longTextDao = mock(LongTextDao.class);
     longTextService = new LongTextService(longTextDao, staffPersonIdRetriever);
@@ -260,9 +263,9 @@ public class TestForLastUpdatedTimeIsUnique {
     riReferral = mock(RIReferral.class);
 
     ParticipantDao participantDao = mock(ParticipantDao.class);
-    participantService =
-        new ParticipantService(participantDao, clientService, referralClientService,
-            reporterService, childClientService, addressService, clientAddressService, validator);
+    participantService = new ParticipantService(participantDao, clientService,
+        referralClientService, reporterService, childClientService, addressService,
+        clientAddressService, validator, clientScpEthnicityService);
 
     referralService = new ReferralService(referralDao, nonLACountyTriggers, laCountyTrigger,
         triggerTablesDao, staffpersonDao, staffPersonIdRetriever, assignmentService, validator,
