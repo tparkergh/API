@@ -13,6 +13,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.HashSet;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -34,6 +35,7 @@ import gov.ca.cwds.fixture.ReporterResourceBuilder;
 import gov.ca.cwds.fixture.ScreeningToReferralResourceBuilder;
 import gov.ca.cwds.rest.api.domain.LegacyDescriptor;
 import gov.ca.cwds.rest.api.domain.Participant;
+import gov.ca.cwds.rest.api.domain.RaceAndEthnicity;
 import gov.ca.cwds.rest.api.domain.ScreeningToReferral;
 import gov.ca.cwds.rest.api.domain.cms.Address;
 import gov.ca.cwds.rest.api.domain.cms.ChildClient;
@@ -546,6 +548,8 @@ public class ParticipantServiceTest {
   @Test
   public void shouldReturnErrorMessageWhenUnableToSaveClient() throws Exception {
     String existingPerpId = "1234567ABC";
+    RaceAndEthnicity raceAndEthnicity =
+        new RaceAndEthnicity(new LinkedHashSet<>(), "A", new LinkedHashSet<>(), "X", "A");
     Participant reporter =
         new ParticipantResourceBuilder().setFirstName("Barney").setLastName("Rubble")
             .setRoles(new HashSet<>(Arrays.asList("Non-mandated Reporter"))).createParticipant();

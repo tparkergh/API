@@ -58,7 +58,18 @@
 	  			"zip" : "94321",
 	  			"type": 32
 	  		}
-	  	]
+	  	],
+	  	"race_and_ethinicity":{  
+            "race_codes":[  
+             813, 814
+            ],
+            "unable_to_determine_code":"A",
+            "hispanic_codes":[  
+                3163
+            ],
+            "hispanic_orgin_code":"X",
+            "hispanic_unable_to_determine_code":"A"
+         }
 	},
 	{
 	  "id" : "1234",
@@ -88,7 +99,18 @@
 	  			"zip" : "94321",
 	  			"type": 32
 	  		}
-	  	]
+	  	],
+	  	"race_and_ethinicity":{  
+            "race_codes":[  
+             813, 814
+            ],
+            "unable_to_determine_code":"A",
+            "hispanic_codes":[  
+                3163
+            ],
+            "hispanic_orgin_code":"X",
+            "hispanic_unable_to_determine_code":"A"
+         }
 	}
    ],
    "cross_reports":[
