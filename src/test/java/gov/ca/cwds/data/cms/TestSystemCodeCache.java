@@ -1,12 +1,12 @@
 package gov.ca.cwds.data.cms;
 
+import java.util.HashSet;
+import java.util.Set;
+
 import gov.ca.cwds.rest.api.domain.SystemCodeCategoryId;
 import gov.ca.cwds.rest.api.domain.cms.SystemCode;
 import gov.ca.cwds.rest.api.domain.cms.SystemCodeCache;
 import gov.ca.cwds.rest.api.domain.cms.SystemMeta;
-
-import java.util.HashSet;
-import java.util.Set;
 
 @SuppressWarnings("serial")
 public class TestSystemCodeCache implements SystemCodeCache {
@@ -132,6 +132,12 @@ public class TestSystemCodeCache implements SystemCodeCache {
 
     if (SystemCodeCategoryId.APPROVAL_STATUS_TYPE.equals(metaId)) {
       if (118 == systemCodeId.intValue()) {
+        return true;
+      }
+    }
+
+    if (SystemCodeCategoryId.ETHNICITY.equals(metaId)) {
+      if (839 == systemCodeId.intValue() || 840 == systemCodeId.intValue()) {
         return true;
       }
     }
