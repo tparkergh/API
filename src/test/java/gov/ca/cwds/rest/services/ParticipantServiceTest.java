@@ -1,6 +1,6 @@
 package gov.ca.cwds.rest.services;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.mock;
@@ -8,6 +8,22 @@ import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Date;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+
+import javax.validation.Validation;
+import javax.validation.Validator;
+
+import org.joda.time.DateTime;
+import org.joda.time.format.DateTimeFormat;
+import org.junit.Before;
+import org.junit.Test;
+import org.mockito.ArgumentCaptor;
 
 import gov.ca.cwds.data.cms.TestSystemCodeCache;
 import gov.ca.cwds.data.ns.ParticipantDao;
@@ -28,21 +44,13 @@ import gov.ca.cwds.rest.api.domain.cms.PostedClient;
 import gov.ca.cwds.rest.api.domain.cms.PostedReporter;
 import gov.ca.cwds.rest.api.domain.cms.Reporter;
 import gov.ca.cwds.rest.messages.MessageBuilder;
-import gov.ca.cwds.rest.services.cms.*;
 import gov.ca.cwds.rest.services.cms.AddressService;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Date;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
-import javax.validation.Validation;
-import javax.validation.Validator;
-import org.joda.time.DateTime;
-import org.joda.time.format.DateTimeFormat;
-import org.junit.Before;
-import org.junit.Test;
-import org.mockito.ArgumentCaptor;
+import gov.ca.cwds.rest.services.cms.ChildClientService;
+import gov.ca.cwds.rest.services.cms.ClientAddressService;
+import gov.ca.cwds.rest.services.cms.ClientScpEthnicityService;
+import gov.ca.cwds.rest.services.cms.ClientService;
+import gov.ca.cwds.rest.services.cms.ReferralClientService;
+import gov.ca.cwds.rest.services.cms.ReporterService;
 
 public class ParticipantServiceTest {
   private ParticipantService participantService;
@@ -58,6 +66,7 @@ public class ParticipantServiceTest {
   ChildClientService childClientService;
   AddressService addressService;
   ClientAddressService clientAddressService;
+  private ClientScpEthnicityService clientScpEthnicityService;
 
   private DateTime lastUpdateDate;
   private DateTime modifiedLastUpdateDate;
@@ -73,28 +82,27 @@ public class ParticipantServiceTest {
   private String savedAddressId;
 
   @Before
-  public void setup(){
+  public void setup() {
     defaultVictim = new ParticipantResourceBuilder().createVictimParticipant();
-    defaultReporter = new ParticipantResourceBuilder().setRoles((new HashSet<>(Arrays
-        .asList("Mandated Reporter")))).createReporterParticipant();
-    defaultMandatedReporter= new ParticipantResourceBuilder().createReporterParticipant();
+    defaultReporter = new ParticipantResourceBuilder()
+        .setRoles((new HashSet<>(Arrays.asList("Mandated Reporter")))).createReporterParticipant();
+    defaultMandatedReporter = new ParticipantResourceBuilder().createReporterParticipant();
 
     defaultPerpetrator = new ParticipantResourceBuilder().createPerpParticipant();
 
 
     clientService = mock(ClientService.class);
-    gov.ca.cwds.data.persistence.cms.Client savedEntityClient = new ClientEntityBuilder()
-        .setId("1234567ABC").build();
+    gov.ca.cwds.data.persistence.cms.Client savedEntityClient =
+        new ClientEntityBuilder().setId("1234567ABC").build();
     PostedClient savedClient = new PostedClient(savedEntityClient, false);
     when(clientService.createWithSingleTimestamp(any(), any())).thenReturn(savedClient);
 
     referralClientService = mock(ReferralClientService.class);
 
-    //TODO: ReporterEntityBuilder Requires name change, and move rest of code to builder
-    Reporter reporter = new ReporterResourceBuilder()
-        .setReferralId("1234567ABC").build();
-    gov.ca.cwds.data.persistence.cms.Reporter savedEntityReporter = new gov.ca.cwds.data.persistence
-        .cms.Reporter(reporter, "1234567ABC");
+    // TODO: ReporterEntityBuilder Requires name change, and move rest of code to builder
+    Reporter reporter = new ReporterResourceBuilder().setReferralId("1234567ABC").build();
+    gov.ca.cwds.data.persistence.cms.Reporter savedEntityReporter =
+        new gov.ca.cwds.data.persistence.cms.Reporter(reporter, "1234567ABC");
     PostedReporter savedReporter = new PostedReporter(savedEntityReporter);
     ReporterService reporterService = mock(ReporterService.class);
     when(reporterService.createWithSingleTimestamp(any(), any())).thenReturn(savedReporter);
@@ -110,6 +118,7 @@ public class ParticipantServiceTest {
     when(addressService.createWithSingleTimestamp(any(), any())).thenReturn(postedAddress);
 
     clientAddressService = mock(ClientAddressService.class);
+    clientScpEthnicityService = mock(ClientScpEthnicityService.class);
 
     messageBuilder = new MessageBuilder();
 
@@ -124,8 +133,8 @@ public class ParticipantServiceTest {
     timestamp = new Date();
 
     participantService = new ParticipantService(participantDao, clientService,
-      referralClientService, reporterService, childClientService, addressService,
-      clientAddressService, validator);
+        referralClientService, reporterService, childClientService, addressService,
+        clientAddressService, validator, clientScpEthnicityService);
   }
 
   @SuppressWarnings("javadoc")
@@ -143,8 +152,8 @@ public class ParticipantServiceTest {
     participantService.saveParticipants(screeningToReferral, dateStarted, referralId, timestamp,
         messageBuilder);
 
-    assertEquals("Expected only one error to have been recorded",messageBuilder.getMessages()
-        .size(), 1);
+    assertEquals("Expected only one error to have been recorded",
+        messageBuilder.getMessages().size(), 1);
     String message = messageBuilder.getMessages().get(0).getMessage().trim();
     String expectedErrorMessage = "Participant contains incompatiable roles";
     assertEquals("Expected Incompatible participant Role message to have been recorded",
@@ -166,8 +175,8 @@ public class ParticipantServiceTest {
     participantService.saveParticipants(screeningToReferral, dateStarted, referralId, timestamp,
         messageBuilder);
 
-    assertEquals("Expected only one error to have been recorded",messageBuilder.getMessages()
-        .size(), 1);
+    assertEquals("Expected only one error to have been recorded",
+        messageBuilder.getMessages().size(), 1);
     String message = messageBuilder.getMessages().get(0).getMessage().trim();
     String expectedErrorMessage = "Participant contains incompatiable roles";
     assertEquals("Expected Incompatible participant Role message to have been recorded",
@@ -228,7 +237,7 @@ public class ParticipantServiceTest {
         messageBuilder);
 
     verify(addressService, times(numberOfReportingVictimsRoles)).find(eq(addressId1));
-    verify(addressService).find(eq(addressId2 ));
+    verify(addressService).find(eq(addressId2));
     verify(clientAddressService, times(numberOfReportingVictimsRoles))
         .findByAddressAndClient(address1, selfReportingVictim);
     verify(clientAddressService).findByAddressAndClient(address2, perp);
@@ -240,10 +249,9 @@ public class ParticipantServiceTest {
     String victimClientLegacyId = "ABC123DSAF";
 
     LegacyDescriptor descriptor = new LegacyDescriptor("", "", lastUpdateDate, "", "");
-    Participant victim =
-        new ParticipantResourceBuilder().setLegacyId(victimClientLegacyId).setLegacyDescriptor(descriptor).createParticipant();
-    Set participants = new HashSet<>(Arrays.asList(victim, defaultReporter,
-        defaultPerpetrator));
+    Participant victim = new ParticipantResourceBuilder().setLegacyId(victimClientLegacyId)
+        .setLegacyDescriptor(descriptor).createParticipant();
+    Set participants = new HashSet<>(Arrays.asList(victim, defaultReporter, defaultPerpetrator));
 
     ScreeningToReferral referral = new ScreeningToReferralResourceBuilder()
         .setParticipants(participants).createScreeningToReferral();
@@ -278,8 +286,8 @@ public class ParticipantServiceTest {
     participantService.saveParticipants(screeningToReferral, dateStarted, referralId, timestamp,
         messageBuilder);
 
-    assertEquals("Expected only one error to have been recorded",messageBuilder.getMessages()
-        .size(), 1);
+    assertEquals("Expected only one error to have been recorded",
+        messageBuilder.getMessages().size(), 1);
     String message = messageBuilder.getMessages().get(0).getMessage().trim();
     String expectedErrorMessage = "Participant contains incompatiable roles";
     assertEquals("Expected Incompatible participant Role message to have been recorded",
@@ -294,8 +302,8 @@ public class ParticipantServiceTest {
     String victimClientLegacyId = "ABC123DSAF";
 
     LegacyDescriptor descriptor = new LegacyDescriptor("", "", lastUpdateDate, "", "");
-    Participant victim =
-        new ParticipantResourceBuilder().setLegacyId(victimClientLegacyId).setLegacyDescriptor(descriptor).createParticipant();
+    Participant victim = new ParticipantResourceBuilder().setLegacyId(victimClientLegacyId)
+        .setLegacyDescriptor(descriptor).createParticipant();
 
     Set participants = new HashSet<>(Arrays.asList(victim, defaultReporter, defaultPerpetrator));
     ScreeningToReferral referral = new ScreeningToReferralResourceBuilder()
@@ -314,10 +322,11 @@ public class ParticipantServiceTest {
     participantService.saveParticipants(referral, dateStarted, referralId, timestamp,
         messageBuilder);
 
-    assertEquals("Expected only one error to have been recorded",messageBuilder.getMessages()
-        .size(), 1);
+    assertEquals("Expected only one error to have been recorded",
+        messageBuilder.getMessages().size(), 1);
     String message = messageBuilder.getMessages().get(0).getMessage().trim();
-    String expectedErrorMessage = "Unable to Update John Smith Client. Client was previously modified";
+    String expectedErrorMessage =
+        "Unable to Update John Smith Client. Client was previously modified";
     assertEquals("Expected client previously modified message to have been recorded",
         expectedErrorMessage, message);
   }
@@ -345,10 +354,10 @@ public class ParticipantServiceTest {
     participantService.saveParticipants(screeningToReferral, dateStarted, referralId, timestamp,
         messageBuilder);
 
-    String expectedErrorMessage = "Legacy Id on Address does not correspond to an existing CMS/CWS Address";
+    String expectedErrorMessage =
+        "Legacy Id on Address does not correspond to an existing CMS/CWS Address";
     assertEquals("Expected Legacy Id error messages to have been recorded for both Addresses",
-        messageBuilder.getMessages()
-        .size(), 2);
+        messageBuilder.getMessages().size(), 2);
     String message = messageBuilder.getMessages().get(0).getMessage().trim();
     assertEquals("Expected Address Legacy Id error message to have been recorded",
         expectedErrorMessage, message);
@@ -406,8 +415,8 @@ public class ParticipantServiceTest {
     participantService.saveParticipants(screeningToReferral, dateStarted, referralId, timestamp,
         messageBuilder);
 
-    assertEquals("Expected only one error to have been recorded",messageBuilder.getMessages()
-        .size(), 1);
+    assertEquals("Expected only one error to have been recorded",
+        messageBuilder.getMessages().size(), 1);
     String message = messageBuilder.getMessages().get(0).getMessage().trim();
     String expectedErrorMessage = "Participant contains incompatiable roles";
     assertEquals("Expected Incompatible participant Role message to have been recorded",
@@ -427,8 +436,8 @@ public class ParticipantServiceTest {
     participantService.saveParticipants(screeningToReferral, dateStarted, referralId, timestamp,
         messageBuilder);
 
-    assertEquals("Expected only one error to have been recorded",messageBuilder.getMessages()
-        .size(), 1);
+    assertEquals("Expected only one error to have been recorded",
+        messageBuilder.getMessages().size(), 1);
     String message = messageBuilder.getMessages().get(0).getMessage().trim();
     String expectedErrorMessage = "Participant contains incompatiable roles";
     assertEquals("Expected Incompatible participant Role message to have been recorded",
@@ -450,14 +459,14 @@ public class ParticipantServiceTest {
     participantService.saveParticipants(referral, dateStarted, referralId, timestamp,
         messageBuilder);
 
-    assertEquals("Expected only one error to have been recorded",messageBuilder.getMessages()
-        .size(), 1);
+    assertEquals("Expected only one error to have been recorded",
+        messageBuilder.getMessages().size(), 1);
     String message = messageBuilder.getMessages().get(0).getMessage().trim();
-    String expectedErrorMessage = "Legacy Id of Participant does not correspond to an existing "
-        + "CWS/CMS Client";
+    String expectedErrorMessage =
+        "Legacy Id of Participant does not correspond to an existing " + "CWS/CMS Client";
     assertEquals("Expected participant to not been found message to have been recorded",
         expectedErrorMessage, message);
-      verify(clientService, never()).update(eq(badLegacyId), any());
+    verify(clientService, never()).update(eq(badLegacyId), any());
   }
 
   @SuppressWarnings("javadoc")
@@ -467,18 +476,17 @@ public class ParticipantServiceTest {
         new ParticipantResourceBuilder().setFirstName("Sally").createVictimParticipant();
     Participant victim2 =
         new ParticipantResourceBuilder().setFirstName("Fred").createVictimParticipant();
-    Set participants = new HashSet<>(Arrays.asList(victim1, victim2, defaultReporter, defaultVictim));
+    Set participants =
+        new HashSet<>(Arrays.asList(victim1, victim2, defaultReporter, defaultVictim));
     int numberOfClientsThatAreNotReporters = 3;
 
     ScreeningToReferral referral = new ScreeningToReferralResourceBuilder()
         .setParticipants(participants).createScreeningToReferral();
 
-    participantService.saveParticipants(referral, dateStarted, referralId,
-        timestamp,
+    participantService.saveParticipants(referral, dateStarted, referralId, timestamp,
         messageBuilder);
 
-    assertEquals("Expected no error to have been recorded",messageBuilder.getMessages()
-        .size(), 0);
+    assertEquals("Expected no error to have been recorded", messageBuilder.getMessages().size(), 0);
     verify(clientService, times(numberOfClientsThatAreNotReporters))
         .createWithSingleTimestamp(any(), any());
   }
@@ -540,8 +548,7 @@ public class ParticipantServiceTest {
     String existingPerpId = "1234567ABC";
     Participant reporter =
         new ParticipantResourceBuilder().setFirstName("Barney").setLastName("Rubble")
-            .setRoles(new HashSet<>(Arrays.asList("Non-mandated Reporter")))
-            .createParticipant();
+            .setRoles(new HashSet<>(Arrays.asList("Non-mandated Reporter"))).createParticipant();
     LegacyDescriptor descriptor = new LegacyDescriptor("", "", lastUpdateDate, "", "");
     reporter.setLegacyDescriptor(descriptor);
     Participant perp = new ParticipantResourceBuilder().setLegacyId(existingPerpId)
@@ -550,7 +557,7 @@ public class ParticipantServiceTest {
     Participant victim = new ParticipantResourceBuilder().createVictimParticipant();
     descriptor = new LegacyDescriptor("", "", lastUpdateDate, "", "");
     perp.setLegacyDescriptor(descriptor);
-    Set participants = new HashSet<>(Arrays.asList(reporter, perp,victim));
+    Set participants = new HashSet<>(Arrays.asList(reporter, perp, victim));
 
     ScreeningToReferral referral = new ScreeningToReferralResourceBuilder()
         .setParticipants(participants).createScreeningToReferral();
@@ -577,17 +584,17 @@ public class ParticipantServiceTest {
     ClientAddress clientAddress = mock(ClientAddress.class);
     ArrayList addresses = new ArrayList();
     addresses.add(clientAddress);
-    when(clientAddressService.findByAddressAndClient(any(),eq(reporter))).thenReturn(addresses);
+    when(clientAddressService.findByAddressAndClient(any(), eq(reporter))).thenReturn(addresses);
 
     participantService.saveParticipants(referral, dateStarted, referralId, timestamp,
         messageBuilder);
 
-    assertEquals("Expected only one error to have been recorded", 1, messageBuilder.getMessages()
-        .size());
+    assertEquals("Expected only one error to have been recorded", 1,
+        messageBuilder.getMessages().size());
     String message = messageBuilder.getMessages().get(0).getMessage().trim();
     String expectedErrorMessage = "Unable to save Client";
-    assertEquals("Expected unable to save message to have been recorded",
-        expectedErrorMessage, message);
+    assertEquals("Expected unable to save message to have been recorded", expectedErrorMessage,
+        message);
   }
 
   @SuppressWarnings("javadoc")
@@ -631,29 +638,27 @@ public class ParticipantServiceTest {
     ClientAddress clientAddress = mock(ClientAddress.class);
     ArrayList addresses = new ArrayList();
     addresses.add(clientAddress);
-    when(clientAddressService.findByAddressAndClient(any(),eq(reporter))).thenReturn(addresses);
+    when(clientAddressService.findByAddressAndClient(any(), eq(reporter))).thenReturn(addresses);
 
     participantService.saveParticipants(referral, dateStarted, referralId, timestamp,
         messageBuilder);
 
-    assertEquals("Expected only one error to have been recorded",1, messageBuilder.getMessages()
-        .size());
+    assertEquals("Expected only one error to have been recorded", 1,
+        messageBuilder.getMessages().size());
     String message = messageBuilder.getMessages().get(0).getMessage().trim();
-    String expectedErrorMessage = "Unable to Update Barney Rubble Client. Client was previously "
-        + "modified";
+    String expectedErrorMessage =
+        "Unable to Update Barney Rubble Client. Client was previously " + "modified";
     assertEquals("Expected client previously modified message to have been recorded",
         expectedErrorMessage, message);
   }
 
   @Test
-  public void shouldApplySensitivityIndicatorFromReferralWhenSavingNewClient(){
-    Set participants = new HashSet<>(Arrays.asList(defaultVictim, defaultReporter,
-        defaultPerpetrator));
+  public void shouldApplySensitivityIndicatorFromReferralWhenSavingNewClient() {
+    Set participants =
+        new HashSet<>(Arrays.asList(defaultVictim, defaultReporter, defaultPerpetrator));
 
     ScreeningToReferral referral = new ScreeningToReferralResourceBuilder()
-        .setLimitedAccessCode("S")
-        .setParticipants(participants)
-        .createScreeningToReferral();
+        .setLimitedAccessCode("S").setParticipants(participants).createScreeningToReferral();
 
     PostedClient createdClient = mock(PostedClient.class);
     when(clientService.create(any())).thenReturn(createdClient);
@@ -663,51 +668,46 @@ public class ParticipantServiceTest {
     participantService.saveParticipants(referral, dateStarted, referralId, timestamp,
         messageBuilder);
 
-    verify(clientService,times(2)).createWithSingleTimestamp(clientArgCaptor.capture() , any());
-    assertEquals("Expected client to have sensitivty indicator applied", referral.getLimitedAccessCode(),
+    verify(clientService, times(2)).createWithSingleTimestamp(clientArgCaptor.capture(), any());
+    assertEquals("Expected client to have sensitivty indicator applied",
+        referral.getLimitedAccessCode(), clientArgCaptor.getValue().getSensitivityIndicator());
+  }
+
+  @Test
+  public void shouldApplySensitivityIndicatorFromClientWhenSavingNewClient() {
+    Participant victim =
+        new ParticipantResourceBuilder().setSensitivityIndicator("S").createVictimParticipant();
+    Set participants =
+        new HashSet<>(Arrays.asList(defaultVictim, defaultReporter, defaultPerpetrator));
+
+    ScreeningToReferral referral = new ScreeningToReferralResourceBuilder()
+        .setLimitedAccessCode("N").setParticipants(participants).createScreeningToReferral();
+
+    PostedClient createdClient = mock(PostedClient.class);
+    when(clientService.create(any())).thenReturn(createdClient);
+
+    ArgumentCaptor<Client> clientArgCaptor = ArgumentCaptor.forClass(Client.class);
+
+    participantService.saveParticipants(referral, dateStarted, referralId, timestamp,
+        messageBuilder);
+
+    verify(clientService, times(2)).createWithSingleTimestamp(clientArgCaptor.capture(), any());
+    assertEquals("Expected client to have sensitivty indicator applied",
+        defaultVictim.getSensitivityIndicator(),
         clientArgCaptor.getValue().getSensitivityIndicator());
   }
 
   @Test
-  public void shouldApplySensitivityIndicatorFromClientWhenSavingNewClient(){
-    Participant victim = new ParticipantResourceBuilder()
-        .setSensitivityIndicator("S")
-        .createVictimParticipant();
-    Set participants = new HashSet<>(Arrays.asList(defaultVictim, defaultReporter,
-        defaultPerpetrator));
-
-    ScreeningToReferral referral = new ScreeningToReferralResourceBuilder()
-        .setLimitedAccessCode("N")
-        .setParticipants(participants)
-        .createScreeningToReferral();
-
-    PostedClient createdClient = mock(PostedClient.class);
-    when(clientService.create(any())).thenReturn(createdClient);
-
-    ArgumentCaptor<Client> clientArgCaptor = ArgumentCaptor.forClass(Client.class);
-
-    participantService.saveParticipants(referral, dateStarted, referralId, timestamp,
-        messageBuilder);
-
-    verify(clientService,times(2)).createWithSingleTimestamp(clientArgCaptor.capture() , any());
-    assertEquals("Expected client to have sensitivty indicator applied", defaultVictim
-        .getSensitivityIndicator(), clientArgCaptor.getValue().getSensitivityIndicator());
-  }
-
-  @Test
-  public void shouldApplySensitivityIndicatorFromReferralWhenUpdatingClient(){
+  public void shouldApplySensitivityIndicatorFromReferralWhenUpdatingClient() {
     String victimClientLegacyId = "ABC123DSAF";
 
     LegacyDescriptor descriptor = new LegacyDescriptor("", "", lastUpdateDate, "", "");
-    Participant victim =
-        new ParticipantResourceBuilder().setLegacyId(victimClientLegacyId).setLegacyDescriptor(descriptor).createParticipant();
-    Set participants = new HashSet<>(Arrays.asList(victim, defaultReporter,
-        defaultPerpetrator));
+    Participant victim = new ParticipantResourceBuilder().setLegacyId(victimClientLegacyId)
+        .setLegacyDescriptor(descriptor).createParticipant();
+    Set participants = new HashSet<>(Arrays.asList(victim, defaultReporter, defaultPerpetrator));
 
     ScreeningToReferral referral = new ScreeningToReferralResourceBuilder()
-        .setLimitedAccessCode("S")
-        .setParticipants(participants)
-        .createScreeningToReferral();
+        .setLimitedAccessCode("S").setParticipants(participants).createScreeningToReferral();
 
     Client foundClient = mock(Client.class);
     when(foundClient.getLastUpdatedTime()).thenReturn(modifiedLastUpdateDate);
@@ -727,23 +727,16 @@ public class ParticipantServiceTest {
   }
 
   @Test
-  public void shouldApplySensitivityIndicatorFromClientWhenUpdatingClient(){
+  public void shouldApplySensitivityIndicatorFromClientWhenUpdatingClient() {
     String victimClientLegacyId = "ABC123DSAF";
 
     LegacyDescriptor descriptor = new LegacyDescriptor("", "", lastUpdateDate, "", "");
-    Participant victim =
-        new ParticipantResourceBuilder()
-            .setSensitivityIndicator("R")
-            .setLegacyId(victimClientLegacyId)
-            .setLegacyDescriptor(descriptor)
-            .createParticipant();
-    Set participants = new HashSet<>(Arrays.asList(victim, defaultReporter,
-        defaultPerpetrator));
+    Participant victim = new ParticipantResourceBuilder().setSensitivityIndicator("R")
+        .setLegacyId(victimClientLegacyId).setLegacyDescriptor(descriptor).createParticipant();
+    Set participants = new HashSet<>(Arrays.asList(victim, defaultReporter, defaultPerpetrator));
 
     ScreeningToReferral referral = new ScreeningToReferralResourceBuilder()
-        .setLimitedAccessCode("N")
-        .setParticipants(participants)
-        .createScreeningToReferral();
+        .setLimitedAccessCode("N").setParticipants(participants).createScreeningToReferral();
 
     Client foundClient = mock(Client.class);
     when(foundClient.getLastUpdatedTime()).thenReturn(modifiedLastUpdateDate);

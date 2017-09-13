@@ -24,6 +24,10 @@ import io.dropwizard.jackson.Jackson;
 import nl.jqno.equalsverifier.EqualsVerifier;
 import nl.jqno.equalsverifier.Warning;
 
+/**
+ * @author CWDS API Team
+ *
+ */
 public class TickleTest {
 
   @SuppressWarnings("javadoc")

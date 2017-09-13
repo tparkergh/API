@@ -90,6 +90,11 @@ public final class SystemCodeCategoryId {
   public static final String CONTACT_TYPE = "CNT_TYPC";
 
   /**
+   * Ethnicity
+   */
+  public static final String ETHNICITY = "ETHNCTYC";
+
+  /**
    * Private constructor
    */
   private SystemCodeCategoryId() {}

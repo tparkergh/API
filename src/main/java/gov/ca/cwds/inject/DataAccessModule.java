@@ -30,6 +30,7 @@ import gov.ca.cwds.data.cms.ChildClientDao;
 import gov.ca.cwds.data.cms.ClientCollateralDao;
 import gov.ca.cwds.data.cms.ClientDao;
 import gov.ca.cwds.data.cms.ClientRelationshipDao;
+import gov.ca.cwds.data.cms.ClientScpEthnicityDao;
 import gov.ca.cwds.data.cms.ClientUcDao;
 import gov.ca.cwds.data.cms.CmsDocReferralClientDao;
 import gov.ca.cwds.data.cms.CmsDocumentDao;
@@ -80,6 +81,7 @@ import gov.ca.cwds.data.persistence.cms.ChildClient;
 import gov.ca.cwds.data.persistence.cms.ClientAddress;
 import gov.ca.cwds.data.persistence.cms.ClientCollateral;
 import gov.ca.cwds.data.persistence.cms.ClientRelationship;
+import gov.ca.cwds.data.persistence.cms.ClientScpEthnicity;
 import gov.ca.cwds.data.persistence.cms.ClientUc;
 import gov.ca.cwds.data.persistence.cms.CmsCase;
 import gov.ca.cwds.data.persistence.cms.CmsDocReferralClient;
@@ -169,24 +171,24 @@ public class DataAccessModule extends AbstractModule {
   private Map<String, Client> clients;
 
   private final HibernateBundle<ApiConfiguration> cmsHibernateBundle =
-      new HibernateBundle<ApiConfiguration>(
-          ImmutableList.<Class<?>>of(gov.ca.cwds.data.persistence.cms.Address.class,
-              Allegation.class, ClientAddress.class, ClientCollateral.class,
-              gov.ca.cwds.data.persistence.cms.Client.class, CmsDocReferralClient.class,
-              CmsDocument.class, CmsDocumentBlobSegment.class, CollateralIndividual.class,
-              CrossReport.class, EducationProviderContact.class, OtherAdultInPlacemtHome.class,
-              OtherChildInPlacemtHome.class, OtherClientName.class, Referral.class,
-              ReferralClient.class, Reporter.class, ServiceProvider.class, StaffPerson.class,
-              SubstituteCareProvider.class, LongText.class, AllegationPerpetratorHistory.class,
-              ClientUc.class, ChildClient.class, gov.ca.cwds.data.persistence.cms.Address.class,
-              ClientAddress.class, CountyOwnership.class, CountyTrigger.class,
-              CountyTriggerEmbeddable.class, SystemCode.class, SystemMeta.class, DrmsDocument.class,
-              Assignment.class, BaseAssignment.class, ReferralAssignment.class,
-              CaseAssignment.class, CmsCase.class, Tickle.class, ClientRelationship.class,
-              ClientCollateral.class, AddressUc.class, ExternalInterface.class,
-              DeliveredServiceEntity.class, ContactPartyDeliveredServiceEntity.class,
-              ReferralClientDeliveredServiceEntity.class, IndividualDeliveredServiceEntity.class,
-              LawEnforcement.class, CaseLoad.class, StaffPersonCaseLoad.class),
+      new HibernateBundle<ApiConfiguration>(ImmutableList.<Class<?>>of(
+          gov.ca.cwds.data.persistence.cms.Address.class, Allegation.class, ClientAddress.class,
+          ClientCollateral.class, gov.ca.cwds.data.persistence.cms.Client.class,
+          CmsDocReferralClient.class, CmsDocument.class, CmsDocumentBlobSegment.class,
+          CollateralIndividual.class, CrossReport.class, EducationProviderContact.class,
+          OtherAdultInPlacemtHome.class, OtherChildInPlacemtHome.class, OtherClientName.class,
+          Referral.class, ReferralClient.class, Reporter.class, ServiceProvider.class,
+          StaffPerson.class, SubstituteCareProvider.class, LongText.class,
+          AllegationPerpetratorHistory.class, ClientUc.class, ChildClient.class,
+          gov.ca.cwds.data.persistence.cms.Address.class, ClientAddress.class,
+          CountyOwnership.class, CountyTrigger.class, CountyTriggerEmbeddable.class,
+          SystemCode.class, SystemMeta.class, DrmsDocument.class, Assignment.class,
+          BaseAssignment.class, ReferralAssignment.class, CaseAssignment.class, CmsCase.class,
+          Tickle.class, ClientRelationship.class, ClientCollateral.class, AddressUc.class,
+          ExternalInterface.class, DeliveredServiceEntity.class,
+          ContactPartyDeliveredServiceEntity.class, ReferralClientDeliveredServiceEntity.class,
+          IndividualDeliveredServiceEntity.class, LawEnforcement.class, CaseLoad.class,
+          StaffPersonCaseLoad.class, ClientScpEthnicity.class),
 
           new ApiSessionFactoryFactory()) {
 
@@ -278,6 +280,7 @@ public class DataAccessModule extends AbstractModule {
     bind(LawEnforcementDao.class);
     bind(CaseLoadDao.class);
     bind(StaffPersonDao.class);
+    bind(ClientScpEthnicityDao.class);
 
     // NS:
     bind(AddressDao.class);

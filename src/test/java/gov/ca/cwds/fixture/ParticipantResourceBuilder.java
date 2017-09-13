@@ -6,6 +6,7 @@ import java.util.Set;
 
 import gov.ca.cwds.rest.api.domain.LegacyDescriptor;
 import gov.ca.cwds.rest.api.domain.Participant;
+import gov.ca.cwds.rest.api.domain.RaceAndEthnicity;
 
 /**
  * 
@@ -34,6 +35,7 @@ public class ParticipantResourceBuilder {
   boolean clientStaffPersonAdded = false;
   Set<String> roles;
   Set<gov.ca.cwds.rest.api.domain.Address> addresses;
+  RaceAndEthnicity raceAndEthnicity;
 
   /**
    * @param id - id
@@ -264,12 +266,28 @@ public class ParticipantResourceBuilder {
   }
 
   /**
+   * @return teh raceAndEthnicity
+   */
+  public RaceAndEthnicity getRaceAndEthnicity() {
+    return raceAndEthnicity;
+  }
+
+  /**
+   * @param raceAndEthnicity the race and ethnicity
+   * @return teh raceAndEthnicity
+   */
+  public ParticipantResourceBuilder setRaceAndEthnicity(RaceAndEthnicity raceAndEthnicity) {
+    this.raceAndEthnicity = raceAndEthnicity;
+    return this;
+  }
+
+  /**
    * @return the Participant
    */
   public Participant createParticipant() {
     return new Participant(id, legacySourceTable, legacyId, legacyDescriptor, firstName, middleName,
         lastName, suffix, gender, ssn, dateOfBirth, primaryLanguage, secondaryLanguage, personId,
         screeningId, reporterConfidentialWaiver, reporterEmployerName, clientStaffPersonAdded,
-        sensitivityIndicator, roles, addresses);
+        sensitivityIndicator, roles, addresses, raceAndEthnicity);
   }
 }

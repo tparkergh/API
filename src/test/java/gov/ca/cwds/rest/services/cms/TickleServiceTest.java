@@ -203,7 +203,7 @@ public class TickleServiceTest {
 
       Tickle expected = new Tickle(toCreate);
     } catch (ServiceException e) {
-      assertEquals("Allegation ID cannot be blank", e.getMessage());
+      assertEquals("Tickle ID cannot be blank", e.getMessage());
     }
 
   }
@@ -221,7 +221,7 @@ public class TickleServiceTest {
 
       Tickle expected = new Tickle(toCreate);
     } catch (ServiceException e) {
-      assertEquals("Allegation ID cannot be blank", e.getMessage());
+      assertEquals("Tickle ID cannot be blank", e.getMessage());
     }
 
   }

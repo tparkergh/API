@@ -20,6 +20,7 @@ import org.mockito.Mockito;
 import gov.ca.cwds.rest.api.domain.Address;
 import gov.ca.cwds.rest.api.domain.LegacyDescriptor;
 import gov.ca.cwds.rest.api.domain.Participant;
+import gov.ca.cwds.rest.api.domain.RaceAndEthnicity;
 import io.dropwizard.testing.junit.ResourceTestRule;
 
 /**
@@ -41,6 +42,7 @@ public class ParticipantResourceTest {
   private String sensitivityIndicator = "R";
   private Set<String> roles = new HashSet<String>();
   private Set<Address> addresses = new HashSet<Address>();
+  private RaceAndEthnicity raceAndEthnicity = new RaceAndEthnicity();
 
 
   @Rule
@@ -88,7 +90,7 @@ public class ParticipantResourceTest {
     Participant participant = new Participant(1, "", "", new LegacyDescriptor(), "Marge", "J",
         "Simpson", "F", "", "11122333", "11-01-2017", primaryLanguage, secondaryLanguage, 123, 456,
         reporterConfidentialWaiver, reporterEmployerName, clientStaffPersonAdded,
-        sensitivityIndicator, roles, addresses);
+        sensitivityIndicator, roles, addresses, raceAndEthnicity);
 
     int status =
         inMemoryResource.client().target(ROOT_RESOURCE).request().accept(MediaType.APPLICATION_JSON)
@@ -104,7 +106,7 @@ public class ParticipantResourceTest {
     Participant participant = new Participant(1, "", "", new LegacyDescriptor(), "Marge", "J",
         "Simpson", "", "F", "111223333", "2017-01-23", primaryLanguage, secondaryLanguage, 123, 456,
         reporterConfidentialWaiver, reporterEmployerName, clientStaffPersonAdded,
-        sensitivityIndicator, roles, addresses);
+        sensitivityIndicator, roles, addresses, raceAndEthnicity);
 
     int status =
         inMemoryResource.client().target(ROOT_RESOURCE).request().accept(MediaType.APPLICATION_JSON)
@@ -130,7 +132,8 @@ public class ParticipantResourceTest {
     Participant participant = new Participant(1, "", "", new LegacyDescriptor(), "Marge", "J",
         "Simpson", "", "Female", "111223333", "2017-01-11", primaryLanguage, secondaryLanguage, 123,
         456, reporterConfidentialWaiver, reporterEmployerName, clientStaffPersonAdded,
-        sensitivityIndicator, roles, addresses);
+        sensitivityIndicator, roles, addresses, raceAndEthnicity);
+
     int receivedStatus =
         inMemoryResource.client().target(ROOT_RESOURCE).request().accept(MediaType.APPLICATION_JSON)
             .put(Entity.entity(participant, MediaType.APPLICATION_JSON)).getStatus();

@@ -8,8 +8,6 @@ import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
-import gov.ca.cwds.data.ns.ParticipantDao;
-import gov.ca.cwds.rest.services.ParticipantService;
 import java.util.Set;
 
 import javax.validation.Validation;
@@ -39,6 +37,7 @@ import gov.ca.cwds.data.cms.ReporterDao;
 import gov.ca.cwds.data.cms.SsaName3Dao;
 import gov.ca.cwds.data.cms.StaffPersonDao;
 import gov.ca.cwds.data.cms.TestSystemCodeCache;
+import gov.ca.cwds.data.ns.ParticipantDao;
 import gov.ca.cwds.data.rules.TriggerTablesDao;
 import gov.ca.cwds.rest.api.domain.ScreeningToReferral;
 import gov.ca.cwds.rest.api.domain.cms.Address;
@@ -61,6 +60,7 @@ import gov.ca.cwds.rest.business.rules.Reminders;
 import gov.ca.cwds.rest.business.rules.UpperCaseTables;
 import gov.ca.cwds.rest.filters.TestingRequestExecutionContext;
 import gov.ca.cwds.rest.messages.MessageBuilder;
+import gov.ca.cwds.rest.services.ParticipantService;
 import gov.ca.cwds.rest.services.ScreeningToReferralService;
 import gov.ca.cwds.rest.services.cms.AddressService;
 import gov.ca.cwds.rest.services.cms.AllegationPerpetratorHistoryService;
@@ -68,6 +68,7 @@ import gov.ca.cwds.rest.services.cms.AllegationService;
 import gov.ca.cwds.rest.services.cms.AssignmentService;
 import gov.ca.cwds.rest.services.cms.ChildClientService;
 import gov.ca.cwds.rest.services.cms.ClientAddressService;
+import gov.ca.cwds.rest.services.cms.ClientScpEthnicityService;
 import gov.ca.cwds.rest.services.cms.ClientService;
 import gov.ca.cwds.rest.services.cms.CrossReportService;
 import gov.ca.cwds.rest.services.cms.DrmsDocumentService;
@@ -143,6 +144,7 @@ public class R06224DontAllowBlanksInReferralStartDateAndTimeTest {
   private UpperCaseTables upperCaseTables;
   private Validator validator;
   private ExternalInterfaceTables externalInterfaceTables;
+  private ClientScpEthnicityService clientScpEthnicityService;
 
   private TestSystemCodeCache testSystemCodeCache = new TestSystemCodeCache();
 
@@ -161,6 +163,7 @@ public class R06224DontAllowBlanksInReferralStartDateAndTimeTest {
     triggerTablesDao = mock(TriggerTablesDao.class);
     staffpersonDao = mock(StaffPersonDao.class);
     staffPersonIdRetriever = mock(StaffPersonIdRetriever.class);
+    clientScpEthnicityService = mock(ClientScpEthnicityService.class);
 
     clientDao = mock(ClientDao.class);
     staffpersonDao = mock(StaffPersonDao.class);
@@ -239,8 +242,8 @@ public class R06224DontAllowBlanksInReferralStartDateAndTimeTest {
 
     ParticipantDao participantDao = mock(ParticipantDao.class);
     participantService = new ParticipantService(participantDao, clientService,
-        referralClientService,reporterService, childClientService,addressService,
-        clientAddressService, validator);
+        referralClientService, reporterService, childClientService, addressService,
+        clientAddressService, validator, clientScpEthnicityService);
 
     referralService = new ReferralService(referralDao, nonLACountyTriggers, laCountyTrigger,
         triggerTablesDao, staffpersonDao, staffPersonIdRetriever, assignmentService, validator,

@@ -2,7 +2,6 @@ package gov.ca.cwds.rest.api.domain.cms;
 
 import static gov.ca.cwds.data.persistence.cms.CmsPersistentObject.CMS_ID_LEN;
 
-import gov.ca.cwds.rest.api.domain.LimitedAccessType;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -23,8 +22,10 @@ import gov.ca.cwds.rest.api.Request;
 import gov.ca.cwds.rest.api.Response;
 import gov.ca.cwds.rest.api.domain.DomainChef;
 import gov.ca.cwds.rest.api.domain.DomainObject;
+import gov.ca.cwds.rest.api.domain.LimitedAccessType;
 import gov.ca.cwds.rest.api.domain.Participant;
 import gov.ca.cwds.rest.api.domain.ReportingDomain;
+import gov.ca.cwds.rest.services.RaceAndEthnicityService;
 import io.dropwizard.validation.OneOf;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
@@ -735,14 +736,16 @@ public class Client extends ReportingDomain implements Request, Response {
         DEFAULT_CODE, false, DEFAULT_CHILD_CLIENT_INDICATOR, "", "", participant.getFirstName(),
         participant.getMiddleName(), participant.getLastName(), "", false, dateStarted, false, "",
         false, "", false, "", "", "", DEFAULT_CODE, "", DEFAULT_ESTIMATED_DOB_CODE,
-        DEFAULT_UNABLE_TO_DETAIN_CODE, "", genderCode, "", "", DEFAULT_HISPANIC_ORIGIN_CODE,
-        DEFAULT_CODE, DEFAULT_CODE, DEFAULT_INCAPCITATED_PARENT_CODE, false, false,
-        DEFAULT_LITERATE_CODE, false, DEFAULT_CODE, DEFAULT_MILITARY_STATUS_CODE, "", "",
-        DEFAULT_NAME_TYPE, false, false, "", false, DEFAULT_CODE, participant.getPrimaryLanguage(),
-        DEFAULT_CODE, participant.getSecondaryLanguage(), false, DEFAULT_SENSITIVITY_INDICATOR,
-        DEFAULT_SOC158_PLACEMENT_CODE, false, DEFAULT_SOCIAL_SECURITY_NUM_CHANGE_CODE,
-        participant.getSsn(), participant.getNameSuffix(), false, false,
-        DEFAULT_UNEMPLOYED_PARENT_CODE, false, null);
+        participant.getRaceAndEthnicity().getUnableToDetermineCode(), "", genderCode, "",
+        participant.getRaceAndEthnicity().getHispanicUnableToDetermineCode(),
+        participant.getRaceAndEthnicity().getHispanicOriginCode(), DEFAULT_CODE, DEFAULT_CODE,
+        DEFAULT_INCAPCITATED_PARENT_CODE, false, false, DEFAULT_LITERATE_CODE, false, DEFAULT_CODE,
+        DEFAULT_MILITARY_STATUS_CODE, "", "", DEFAULT_NAME_TYPE, false, false, "", false,
+        RaceAndEthnicityService.getRaceCode(participant.getRaceAndEthnicity()),
+        participant.getPrimaryLanguage(), DEFAULT_CODE, participant.getSecondaryLanguage(), false,
+        DEFAULT_SENSITIVITY_INDICATOR, DEFAULT_SOC158_PLACEMENT_CODE, false,
+        DEFAULT_SOCIAL_SECURITY_NUM_CHANGE_CODE, participant.getSsn(), participant.getNameSuffix(),
+        false, false, DEFAULT_UNEMPLOYED_PARENT_CODE, false, null);
   }
 
   /**
@@ -1221,32 +1224,32 @@ public class Client extends ReportingDomain implements Request, Response {
     return zippyCreatedIndicator;
   }
 
-  public void applySensitivityIndicator(String sensitivityIndicator){
-    if (LimitedAccessType.SEALED.getValue().equals(sensitivityIndicator)){
+  public void applySensitivityIndicator(String sensitivityIndicator) {
+    if (LimitedAccessType.SEALED.getValue().equals(sensitivityIndicator)) {
       makeSealed();
-    } else if(LimitedAccessType.SENSITIVE.getValue().equals(sensitivityIndicator)){
+    } else if (LimitedAccessType.SENSITIVE.getValue().equals(sensitivityIndicator)) {
       makeSensitive();
-    } else if(this.sensitivityIndicator == null){
+    } else if (this.sensitivityIndicator == null) {
       removeSealedSensitive();
     }
   }
 
-  private void makeSensitive(){
-    if(!isSealed()){
+  private void makeSensitive() {
+    if (!isSealed()) {
       this.sensitivityIndicator = LimitedAccessType.SENSITIVE.getValue();
 
     }
   }
 
-  private void makeSealed(){
-      this.sensitivityIndicator = LimitedAccessType.SEALED.getValue();
+  private void makeSealed() {
+    this.sensitivityIndicator = LimitedAccessType.SEALED.getValue();
   }
 
-  private void removeSealedSensitive(){
+  private void removeSealedSensitive() {
     this.sensitivityIndicator = LimitedAccessType.NONE.getValue();
   }
 
-  private boolean isSealed(){
+  private boolean isSealed() {
     return LimitedAccessType.SEALED.getValue().equals(sensitivityIndicator);
   }
 

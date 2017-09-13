@@ -32,7 +32,7 @@ import io.swagger.annotations.ApiModelProperty;
  */
 @JsonSnakeCase
 @JsonPropertyOrder({"id", "legacySourceTable", "legacyId", "firstName", "lastName", "gender", "ssn",
-    "dateOfBirth", "roles", "addresses"})
+    "dateOfBirth", "roles", "addresses", "race_and_ethinicity"})
 public class Participant extends ReportingDomain implements Request, Response {
 
   /**
@@ -146,6 +146,11 @@ public class Participant extends ReportingDomain implements Request, Response {
   @JsonProperty("addresses")
   private Set<Address> addresses;
 
+  @Valid
+  @ApiModelProperty(dataType = "gov.ca.cwds.rest.api.domain.RaceAndEthnicity")
+  @JsonProperty("race_and_ethinicity")
+  private RaceAndEthnicity raceAndEthnicity;
+
   @JsonIgnore
   private boolean perpetrator;
 
@@ -186,6 +191,7 @@ public class Participant extends ReportingDomain implements Request, Response {
    * @param sensitivityIndicator Sensitivity Indicator
    * @param roles The roles of the participant
    * @param addresses The addresses of the participant
+   * @param raceAndEthnicity The race And Ethnicity
    * @throws ServiceException throw any exception
    */
   @JsonCreator
@@ -204,7 +210,8 @@ public class Participant extends ReportingDomain implements Request, Response {
       @JsonProperty("reporter_employer_name") String reporterEmployerName,
       @JsonProperty("client_staff_person_added") boolean clientStaffPersonAdded,
       @JsonProperty("limited_access_code") String sensitivityIndicator,
-      @JsonProperty("roles") Set<String> roles, @JsonProperty("addresses") Set<Address> addresses)
+      @JsonProperty("roles") Set<String> roles, @JsonProperty("addresses") Set<Address> addresses,
+      @JsonProperty("race_and_ethinicity") RaceAndEthnicity raceAndEthnicity)
       throws ServiceException {
     super();
     this.id = id;
@@ -229,6 +236,7 @@ public class Participant extends ReportingDomain implements Request, Response {
     this.reporterEmployerName = reporterEmployerName;
     this.clientStaffPersonAdded = clientStaffPersonAdded;
     this.sensitivityIndicator = sensitivityIndicator;
+    this.raceAndEthnicity = raceAndEthnicity;
 
     try {
       victim = ParticipantValidator.hasVictimRole(this);
@@ -315,6 +323,9 @@ public class Participant extends ReportingDomain implements Request, Response {
     this.legacyId = clientId;
   }
 
+  /**
+   * @return teh legacyDescriptor
+   */
   public LegacyDescriptor getLegacyDescriptor() {
     if (legacyDescriptor == null) {
       legacyDescriptor = new LegacyDescriptor();
@@ -322,6 +333,9 @@ public class Participant extends ReportingDomain implements Request, Response {
     return legacyDescriptor;
   }
 
+  /**
+   * @param legacyDescriptor The legacy Descriptor
+   */
   public void setLegacyDescriptor(LegacyDescriptor legacyDescriptor) {
     this.legacyDescriptor = legacyDescriptor;
   }
@@ -425,6 +439,9 @@ public class Participant extends ReportingDomain implements Request, Response {
     return clientStaffPersonAdded;
   }
 
+  /**
+   * @return the sensitivityIndicator
+   */
   public String getSensitivityIndicator() {
     return sensitivityIndicator;
   }
@@ -459,6 +476,13 @@ public class Participant extends ReportingDomain implements Request, Response {
   }
 
   /**
+   * @return the raceAndEthnicity
+   */
+  public RaceAndEthnicity getRaceAndEthnicity() {
+    return raceAndEthnicity;
+  }
+
+  /**
    * @return boolean
    */
   public boolean isPerpetrator() {
@@ -489,6 +513,7 @@ public class Participant extends ReportingDomain implements Request, Response {
     final int prime = 31;
     int result = 1;
     result = prime * result + ((addresses == null) ? 0 : addresses.hashCode());
+    result = prime * result + ((raceAndEthnicity == null) ? 0 : raceAndEthnicity.hashCode());
     result = prime * result + ((dateOfBirth == null) ? 0 : dateOfBirth.hashCode());
     result = prime * result + ((firstName == null) ? 0 : firstName.hashCode());
     result = prime * result + ((gender == null) ? 0 : gender.hashCode());
@@ -502,7 +527,8 @@ public class Participant extends ReportingDomain implements Request, Response {
     result = prime * result + ((clientStaffPersonAdded == true) ? 1 : 0);
     result = prime * result + ((primaryLanguage == null) ? 0 : primaryLanguage.hashCode());
     result = prime * result + ((secondaryLanguage == null) ? 0 : secondaryLanguage.hashCode());
-    result = prime * result + ((sensitivityIndicator == null) ? 0 : sensitivityIndicator.hashCode());
+    result =
+        prime * result + ((sensitivityIndicator == null) ? 0 : sensitivityIndicator.hashCode());
     result = prime * result + ((legacyId == null) ? 0 : legacyId.hashCode());
     result = prime * result + ((legacySourceTable == null) ? 0 : legacySourceTable.hashCode());
     result = prime * result + ((legacyDescriptor == null) ? 0 : legacyDescriptor.hashCode());
@@ -530,6 +556,11 @@ public class Participant extends ReportingDomain implements Request, Response {
       if (other.addresses != null)
         return false;
     } else if (!addresses.equals(other.addresses))
+      return false;
+    if (raceAndEthnicity == null) {
+      if (other.raceAndEthnicity != null)
+        return false;
+    } else if (!raceAndEthnicity.equals(other.raceAndEthnicity))
       return false;
     if (dateOfBirth == null) {
       if (other.dateOfBirth != null)

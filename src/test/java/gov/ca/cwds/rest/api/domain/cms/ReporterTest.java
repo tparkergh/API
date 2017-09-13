@@ -16,6 +16,7 @@ import java.math.BigDecimal;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.HashSet;
+import java.util.LinkedHashSet;
 
 import javax.ws.rs.client.Entity;
 import javax.ws.rs.core.MediaType;
@@ -35,6 +36,7 @@ import gov.ca.cwds.data.CrudsDao;
 import gov.ca.cwds.rest.api.domain.DomainChef;
 import gov.ca.cwds.rest.api.domain.LegacyDescriptor;
 import gov.ca.cwds.rest.api.domain.Participant;
+import gov.ca.cwds.rest.api.domain.RaceAndEthnicity;
 import gov.ca.cwds.rest.core.Api;
 import gov.ca.cwds.rest.resources.cms.JerseyGuiceRule;
 import gov.ca.cwds.rest.resources.cms.ReporterResource;
@@ -226,6 +228,9 @@ public class ReporterTest {
     gov.ca.cwds.rest.api.domain.Address address = new gov.ca.cwds.rest.api.domain.Address(
         "legacy_source_table", "legacy_id", streetAddress, city, state, zipCode, type);
 
+    RaceAndEthnicity raceAndEthnicity =
+        new RaceAndEthnicity(new LinkedHashSet<>(), "A", new LinkedHashSet<>(), "X", "A");
+
     String referralId = "referralId";
     boolean isMandatedReporter = true;
     String firstName = "firstName";
@@ -237,8 +242,8 @@ public class ReporterTest {
     Participant participant = new Participant(5L, "legacy_source_table", "legacy_client_id",
         new LegacyDescriptor(), firstName, middleName, lastName, suffix, "gender", "ssn",
         "date_of_birth", primaryLanguage, secondaryLanguage, 7L, 8L, reporterConfidentialWaiver,
-        reporterEmployerName, clientStaffPersonAdded, sensitivityIndicator, new HashSet<>(), new
-        HashSet<>());
+        reporterEmployerName, clientStaffPersonAdded, sensitivityIndicator, new HashSet<>(),
+        new HashSet<>(), raceAndEthnicity);
 
     String countyCode = "countyCode";
     Short stateCode = new Short("0");
@@ -289,6 +294,10 @@ public class ReporterTest {
     gov.ca.cwds.rest.api.domain.Address address = new gov.ca.cwds.rest.api.domain.Address(
         "legacy_source_table", "legacy_id", streetAddress, city, state, zipCode, type);
 
+    RaceAndEthnicity raceAndEthnicity =
+        new RaceAndEthnicity(new LinkedHashSet<>(), "A", new LinkedHashSet<>(), "X", "A");
+
+
     String referralId = "referralId";
     boolean isMandatedReporter = true;
     String firstName = "firstName";
@@ -298,8 +307,9 @@ public class ReporterTest {
     Participant participant = new Participant(5L, "legacy_source_table", "legacy_client_id",
         new LegacyDescriptor(), firstName, middleName, lastName, "jr", "gender", "ssn",
         "date_of_birth", primaryLanguage, secondaryLanguage, 7L, 8L, reporterConfidentialWaiver,
-        reporterEmployerName, clientStaffPersonAdded, sensitivityIndicator, new HashSet<>(), new
-        HashSet<>());
+        reporterEmployerName, clientStaffPersonAdded, sensitivityIndicator, new HashSet<>(),
+        new HashSet<>(), raceAndEthnicity);
+
     String countyCode = "countyCode";
     Short stateCode = new Short("0");
 
@@ -339,10 +349,15 @@ public class ReporterTest {
 
     gov.ca.cwds.rest.api.domain.Address address = new gov.ca.cwds.rest.api.domain.Address(
         "legacy_source_table", "legacy_id", streetAddress, "city", 1828, "12345", 32);
+
+    RaceAndEthnicity raceAndEthnicity =
+        new RaceAndEthnicity(new LinkedHashSet<>(), "A", new LinkedHashSet<>(), "X", "A");
+
     Participant participant = new Participant(5L, "legacy_source_table", "legacy_client_id",
         new LegacyDescriptor(), "firstName", "middleName", "lastName", "jr", "gender", "ssn",
         "date_of_birth", primaryLanguage, secondaryLanguage, 7L, 8L, reporterConfidentialWaiver,
-        reporterEmployerName, clientStaffPersonAdded, sensitivityIndicator, new HashSet<>(), new HashSet<>());
+        reporterEmployerName, clientStaffPersonAdded, sensitivityIndicator, new HashSet<>(),
+        new HashSet<>(), raceAndEthnicity);
 
     Reporter reporter =
         Reporter.createWithDefaults("referralId", true, address, participant, "countyCode");
@@ -356,10 +371,15 @@ public class ReporterTest {
 
     gov.ca.cwds.rest.api.domain.Address address = new gov.ca.cwds.rest.api.domain.Address(
         "legacy_source_table", "legacy_id", streetAddress, "city", 1828, "12345", 32);
+
+    RaceAndEthnicity raceAndEthnicity =
+        new RaceAndEthnicity(new LinkedHashSet<>(), "A", new LinkedHashSet<>(), "X", "A");
+
     Participant participant = new Participant(5L, "legacy_source_table", "legacy_client_id",
         new LegacyDescriptor(), "firstName", "middleName", "lastName", "jr", "gender", "ssn",
         "date_of_birth", primaryLanguage, secondaryLanguage, 7L, 8L, reporterConfidentialWaiver,
-        reporterEmployerName, clientStaffPersonAdded, sensitivityIndicator, new HashSet<>(), new HashSet<>());
+        reporterEmployerName, clientStaffPersonAdded, sensitivityIndicator, new HashSet<>(),
+        new HashSet<>(), raceAndEthnicity);
 
     Reporter reporter =
         Reporter.createWithDefaults("referralId", true, address, participant, "countyCode");
@@ -373,10 +393,14 @@ public class ReporterTest {
 
     gov.ca.cwds.rest.api.domain.Address address = new gov.ca.cwds.rest.api.domain.Address(
         "legacy_source_table", "legacy_id", streetAddress, "city", 1828, "12345", 32);
+    RaceAndEthnicity raceAndEthnicity =
+        new RaceAndEthnicity(new LinkedHashSet<>(), "A", new LinkedHashSet<>(), "X", "A");
+
     Participant participant = new Participant(5L, "legacy_source_table", "legacy_client_id",
         new LegacyDescriptor(), "firstName", "middleName", "lastName", "jr", "gender", "ssn",
         "date_of_birth", primaryLanguage, secondaryLanguage, 7L, 8L, reporterConfidentialWaiver,
-        reporterEmployerName, clientStaffPersonAdded, sensitivityIndicator, new HashSet<>(), new HashSet<>());
+        reporterEmployerName, clientStaffPersonAdded, sensitivityIndicator, new HashSet<>(),
+        new HashSet<>(), raceAndEthnicity);
 
     Reporter reporter =
         Reporter.createWithDefaults("referralId", true, address, participant, "countyCode");
@@ -391,10 +415,14 @@ public class ReporterTest {
 
     gov.ca.cwds.rest.api.domain.Address address = new gov.ca.cwds.rest.api.domain.Address(
         "legacy_source_table", "legacy_id", streetAddress, "city", 1828, "12345", 32);
+    RaceAndEthnicity raceAndEthnicity =
+        new RaceAndEthnicity(new LinkedHashSet<>(), "A", new LinkedHashSet<>(), "X", "A");
+
     Participant participant = new Participant(5L, "legacy_source_table", "legacy_client_id",
         new LegacyDescriptor(), "firstName", "middleName", "lastName", "jr", "gender", "ssn",
         "date_of_birth", primaryLanguage, secondaryLanguage, 7L, 8L, reporterConfidentialWaiver,
-        reporterEmployerName, clientStaffPersonAdded, sensitivityIndicator, new HashSet<>(), new HashSet<>());
+        reporterEmployerName, clientStaffPersonAdded, sensitivityIndicator, new HashSet<>(),
+        new HashSet<>(), raceAndEthnicity);
 
     Reporter reporter =
         Reporter.createWithDefaults("referralId", true, address, participant, "countyCode");
