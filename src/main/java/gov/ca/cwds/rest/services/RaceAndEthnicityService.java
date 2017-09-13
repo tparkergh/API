@@ -29,8 +29,8 @@ public class RaceAndEthnicityService {
   }
 
   /**
-   * @param raceAndEthnicity
-   * @return
+   * @param raceAndEthnicity The raceAndEthnicity
+   * @return the race codes
    */
   public static Short getRaceCode(RaceAndEthnicity raceAndEthnicity) {
     Short raceCode = null;

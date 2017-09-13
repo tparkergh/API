@@ -76,6 +76,7 @@ public class ParticipantService implements CrudsService {
    * @param addressService the addressService
    * @param clientAddressService the clientAddressService
    * @param validator - the validator
+   * @param clientScpEthnicityService
    */
   @Inject
   public ParticipantService(ParticipantDao participantDao, ClientService clientService,
