@@ -17,6 +17,7 @@ import java.math.BigDecimal;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.HashSet;
+import java.util.LinkedHashSet;
 import java.util.Set;
 
 import javax.persistence.EntityExistsException;
@@ -48,6 +49,7 @@ import gov.ca.cwds.fixture.ParticipantResourceBuilder;
 import gov.ca.cwds.rest.api.Response;
 import gov.ca.cwds.rest.api.domain.Address;
 import gov.ca.cwds.rest.api.domain.Participant;
+import gov.ca.cwds.rest.api.domain.RaceAndEthnicity;
 import gov.ca.cwds.rest.api.domain.cms.Client;
 import gov.ca.cwds.rest.api.domain.cms.PostedClient;
 import gov.ca.cwds.rest.business.rules.ExternalInterfaceTables;
@@ -172,9 +174,11 @@ public class ClientServiceTest {
           fixture("fixtures/domain/legacy/Client/valid/serviceValid.json"), Client.class);
 
       Address address = new AddressResourceBuilder().createAddress();
+      RaceAndEthnicity raceAndEthnicity =
+          new RaceAndEthnicity(new LinkedHashSet<>(), "A", new LinkedHashSet<>(), "X", "A");
       Set<Address> addresses = new HashSet<>(Arrays.asList(address));
-      Participant participant =
-          new ParticipantResourceBuilder().setAddresses(addresses).createParticipant();
+      Participant participant = new ParticipantResourceBuilder().setAddresses(addresses)
+          .setRaceAndEthnicity(raceAndEthnicity).createParticipant();
       Client domainClient = Client.createWithDefaults(participant, "", "m");
       gov.ca.cwds.data.persistence.cms.Client savedClient =
           new gov.ca.cwds.data.persistence.cms.Client("123", domainClient, "OX5");

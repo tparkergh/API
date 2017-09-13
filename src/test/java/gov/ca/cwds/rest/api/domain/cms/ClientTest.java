@@ -15,6 +15,7 @@ import static org.mockito.Mockito.when;
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.HashSet;
+import java.util.LinkedHashSet;
 import java.util.List;
 
 import javax.ws.rs.client.Entity;
@@ -394,11 +395,14 @@ public class ClientTest implements DomainTestTemplate {
 
   @Test
   public void testCreateWithDefaultCreatesWithValues() {
+    RaceAndEthnicity raceAndEthnicity =
+        new RaceAndEthnicity(new LinkedHashSet<>(), "A", new LinkedHashSet<>(), "X", "A");
+
     Participant participant = new Participant(1, "sourceTable", "clientId", new LegacyDescriptor(),
         "firstName", "middleName", "lastName", "jr", "gender", "ssn", "dob", primaryLanguageType,
         secondaryLanguageType, 3, 4, reporterConfidentialWaiver, reporterEmployerName,
         clientStaffPersonAdded, sensitivityIndicator, new HashSet<>(), new HashSet<>(),
-        new RaceAndEthnicity());
+        raceAndEthnicity);
 
     String genderCode = "male";
     String dateStarted = "now";
@@ -426,11 +430,14 @@ public class ClientTest implements DomainTestTemplate {
   @Test
   public void shouldAllowClientNamesToBeUpdatedAfterInitialization() {
 
+    RaceAndEthnicity raceAndEthnicity =
+        new RaceAndEthnicity(new LinkedHashSet<>(), "A", new LinkedHashSet<>(), "X", "A");
+
     Participant participant =
         new Participant(1, "sourceTable", "clientId", new LegacyDescriptor(), "Fred", "Wilson",
             "Bill", "", "gender", "ssn", "dob", primaryLanguageType, secondaryLanguageType, 3, 4,
             reporterConfidentialWaiver, reporterEmployerName, clientStaffPersonAdded,
-            sensitivityIndicator, new HashSet<>(), new HashSet<>(), new RaceAndEthnicity());
+            sensitivityIndicator, new HashSet<>(), new HashSet<>(), raceAndEthnicity);
 
     Client client = Client.createWithDefaults(participant, "", "");
 
@@ -448,11 +455,14 @@ public class ClientTest implements DomainTestTemplate {
 
   @Test
   public void testCreateWithDefaultCreatesWithDefaultValues() {
+    RaceAndEthnicity raceAndEthnicity =
+        new RaceAndEthnicity(new LinkedHashSet<>(), "A", new LinkedHashSet<>(), "X", "A");
+
     Participant participant = new Participant(1, "sourceTable", "clientId", new LegacyDescriptor(),
         "firstName", "middleName", "lastName", "", "gender", "ssn", "dob", primaryLanguageType,
         secondaryLanguageType, 3, 4, reporterConfidentialWaiver, reporterEmployerName,
         clientStaffPersonAdded, sensitivityIndicator, new HashSet<>(), new HashSet<>(),
-        new RaceAndEthnicity());
+        raceAndEthnicity);
 
     String genderCode = "male";
     String dateStarted = "now";
@@ -512,8 +522,6 @@ public class ClientTest implements DomainTestTemplate {
         client.getEmailAddress());
     assertEquals("Expected estimatedDobCode field to be initialized with default values", "N",
         client.getEstimatedDobCode());
-    assertEquals("Expected ethUnableToDetReasonCode field to be initialized with default values",
-        "K", client.getEthUnableToDetReasonCode());
     assertEquals("Expected fatherParentalRightTermDate field to be initialized with default values",
         "", client.getFatherParentalRightTermDate());
     assertEquals("Expected healthSummaryText field to be initialized with default values", "",
@@ -553,8 +561,6 @@ public class ClientTest implements DomainTestTemplate {
         client.getPrevOtherDescription());
     assertEquals("Expected prevRegionalCenterIndicato field to be initialized with default values",
         false, client.getPrevRegionalCenterIndicator());
-    assertEquals("Expected primaryEthnicityType field to be initialized with default values",
-        new Short("0"), client.getPrimaryEthnicityType());
     assertEquals("Expected religionType field to be initialized with default values",
         new Short("0"), client.getReligionType());
     assertEquals(

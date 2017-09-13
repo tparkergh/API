@@ -2,6 +2,7 @@ package gov.ca.cwds.fixture;
 
 import java.util.Arrays;
 import java.util.HashSet;
+import java.util.LinkedHashSet;
 import java.util.Set;
 
 import gov.ca.cwds.rest.api.domain.LegacyDescriptor;
@@ -232,6 +233,13 @@ public class ParticipantResourceBuilder {
 
   public ParticipantResourceBuilder() {
     this.roles = new HashSet<String>(Arrays.asList("Victim"));
+    LinkedHashSet<Short> racecodes = new LinkedHashSet<Short>();
+    LinkedHashSet<Short> hispaniccodes = new LinkedHashSet<Short>();
+    racecodes.add((short) 813);
+    hispaniccodes.add((short) 3164);
+    RaceAndEthnicity raceAndEthnicity =
+        new RaceAndEthnicity(racecodes, "A", hispaniccodes, "X", "A");
+    this.raceAndEthnicity = raceAndEthnicity;
 
     gov.ca.cwds.rest.api.domain.Address address = new AddressResourceBuilder()
         .setStreetAddress("123 First St").setCity("San Jose").setZip("94321").createAddress();

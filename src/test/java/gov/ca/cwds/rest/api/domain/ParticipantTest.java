@@ -15,6 +15,7 @@ import static org.mockito.Mockito.when;
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.HashSet;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -74,7 +75,6 @@ public class ParticipantTest implements PersistentTestTemplate {
   private String sensitivityIndicator = "N";
   private Set<String> roles = new HashSet<String>();
   private Set<Address> addresses = new HashSet<Address>();
-  private RaceAndEthnicity raceAndEthnicity = new RaceAndEthnicity();
 
   private static final String ROOT_RESOURCE = "/" + Api.RESOURCE_PARTICIPANTS + "/";;
   private static final ObjectMapper MAPPER = Jackson.newObjectMapper();
@@ -82,6 +82,11 @@ public class ParticipantTest implements PersistentTestTemplate {
 
   private static final ParticipantResource mockedParticipantResource =
       mock(ParticipantResource.class);
+
+  LinkedHashSet<Short> racecodes = new LinkedHashSet<Short>();
+  LinkedHashSet<Short> hispaniccodes = new LinkedHashSet<Short>();
+  private RaceAndEthnicity raceAndEthnicity =
+      new RaceAndEthnicity(racecodes, "A", hispaniccodes, "X", "A");
 
   @After
   public void ensureServiceLocatorPopulated() {
@@ -102,6 +107,8 @@ public class ParticipantTest implements PersistentTestTemplate {
     MAPPER.configure(SerializationFeature.INDENT_OUTPUT, true);
     Participant validParticipant = this.validParticipant();
     roles.add("Victim");
+    racecodes.add((short) 813);
+    hispaniccodes.add((short) 3164);
     Address address = new Address("", "", "123 First St", "San Jose", 1828, "94321", 32);
     addresses.add(address);
     MAPPER.configure(SerializationFeature.INDENT_OUTPUT, true);
