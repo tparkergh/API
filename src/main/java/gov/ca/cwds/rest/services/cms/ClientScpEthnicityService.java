@@ -117,8 +117,8 @@ public class ClientScpEthnicityService
   }
 
   /**
-   * @param clientId
-   * @param raceAndEthnicity
+   * @param clientId - clientId
+   * @param raceAndEthnicity - race and ethnicity
    */
   public void createOtherEthnicity(String clientId, RaceAndEthnicity raceAndEthnicity) {
     List<gov.ca.cwds.data.persistence.cms.ClientScpEthnicity> scpEthnicities = new ArrayList<>();
