@@ -20,7 +20,7 @@ public class RaceAndEthnicityService {
   private ClientScpEthnicityService clientScpEthnicityService;
 
   /**
-   * @param clientScpEthnicityService
+   * @param clientScpEthnicityService - clientScpEthnicityService
    */
   @Inject
   public RaceAndEthnicityService(ClientScpEthnicityService clientScpEthnicityService) {
