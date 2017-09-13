@@ -1,5 +1,6 @@
 package gov.ca.cwds.rest.services.referentialintegrity;
 
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -53,7 +54,7 @@ public class RIReporter implements ApiReferentialCheck<Reporter> {
    */
   private static final long serialVersionUID = 1L;
 
-  private static final Logger LOGGER = LoggerFactory.getLogger(Reporter.class);
+  private static final Logger LOGGER = LoggerFactory.getLogger(RIReporter.class);
 
   private transient ReferralDao referralDao;
   private transient LawEnforcementDao lawEnforcementDao;
@@ -83,18 +84,17 @@ public class RIReporter implements ApiReferentialCheck<Reporter> {
       throw new ReferentialIntegrityException(
           "Reporter => Referral with given Identifier is not present in database");
 
-    } else if (t.getLawEnforcementId() != null && !t.getLawEnforcementId().isEmpty()
+    } else if (StringUtils.isNotBlank(t.getLawEnforcementId())
         && lawEnforcementDao.find(t.getLawEnforcementId()) == null) {
       throw new ReferentialIntegrityException(
           "Reporter => LawEnforcement with given Identifier is not present in database");
 
-    } else if (t.getDrmsMandatedRprtrFeedback() != null
-        && !t.getDrmsMandatedRprtrFeedback().isEmpty()
+    } else if (StringUtils.isNotBlank(t.getDrmsMandatedRprtrFeedback())
         && drmsDocumentDao.find(t.getDrmsMandatedRprtrFeedback()) == null) {
       throw new ReferentialIntegrityException(
           "Reporter => DrmsReporterDocument with given Identifier is not present in database");
     }
-    return true;
+    return Boolean.TRUE;
   }
 
 }
