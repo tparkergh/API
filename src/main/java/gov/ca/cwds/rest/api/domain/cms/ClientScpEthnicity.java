@@ -12,9 +12,6 @@ import gov.ca.cwds.rest.api.Request;
 import gov.ca.cwds.rest.api.Response;
 import gov.ca.cwds.rest.api.domain.DomainObject;
 import gov.ca.cwds.rest.api.domain.ReportingDomain;
-import gov.ca.cwds.rest.api.domain.SystemCodeCategoryId;
-import gov.ca.cwds.rest.validation.ValidSystemCodeId;
-import io.dropwizard.validation.OneOf;
 import io.swagger.annotations.ApiModelProperty;
 
 /**
@@ -35,7 +32,6 @@ public class ClientScpEthnicity extends ReportingDomain implements Request, Resp
   private String id;
 
   @NotNull
-  @OneOf(value = {"C", "S"}, ignoreCase = false, ignoreWhitespace = true)
   @ApiModelProperty(required = true, readOnly = false, value = "C", example = "C")
   private String establishedForCode;
 
@@ -46,7 +42,6 @@ public class ClientScpEthnicity extends ReportingDomain implements Request, Resp
 
   @NotNull
   @ApiModelProperty(required = true, readOnly = false, example = "839")
-  @ValidSystemCodeId(required = false, category = SystemCodeCategoryId.ETHNICITY)
   private Short ethnicity;
 
   /**

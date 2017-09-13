@@ -10,6 +10,10 @@ import javax.persistence.Table;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
+import gov.ca.cwds.rest.api.domain.SystemCodeCategoryId;
+import gov.ca.cwds.rest.validation.ValidSystemCodeId;
+import io.dropwizard.validation.OneOf;
+
 /**
  * {@link CmsPersistentObject} Class representing an ClientScpEthnicity.
  * 
@@ -30,12 +34,14 @@ public class ClientScpEthnicity extends CmsPersistentObject {
   @Column(name = "IDENTIFIER", length = CMS_ID_LEN)
   private String id;
 
+  @OneOf(value = {"C", "S"}, ignoreCase = false, ignoreWhitespace = true)
   @Column(name = "ESTBLSH_CD")
   private String establishedForCode;
 
   @Column(name = "ESTBLSH_ID")
   private String establishedId;
 
+  @ValidSystemCodeId(required = false, category = SystemCodeCategoryId.ETHNICITY)
   @Column(name = "ETHNCTYC")
   private Short ethnicity;
 
