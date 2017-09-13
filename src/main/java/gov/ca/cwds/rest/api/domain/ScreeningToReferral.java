@@ -188,9 +188,9 @@ public class ScreeningToReferral extends ReportingDomain implements Request {
 
   @JsonProperty("limited_access_agency")
   @ApiModelProperty(required = false, readOnly = false, value = "40", example = "The user county")
-  @ValidSystemCodeId(required = false, category = SystemCodeCategoryId.COUNTY_CODE,
-      ignoreable=true, ignoredValue = 0)
-  private short limitedAccessAgency;
+  @ValidLogicalId(required = false, category = SystemCodeCategoryId.COUNTY_CODE, ignoreable =
+      true, ignoredValue = "")
+  private String limitedAccessAgency;
 
   @JsonProperty("limited_access_date")
   @ApiModelProperty(required = false, readOnly = false, value = "yyyy-MM-dd",
@@ -261,7 +261,7 @@ public class ScreeningToReferral extends ReportingDomain implements Request {
       Short responseTime, @Date String startedAt, String assignee, String additionalInformation,
       String screeningDecision, String screeningDecisionDetail, int approvalStatus,
       boolean familyAwareness, boolean filedWithLawEnforcement, String responsibleAgency,
-      String limitedAccessCode, String limitedAccessDescription, short limitedAccessAgency,
+      String limitedAccessCode, String limitedAccessDescription, String limitedAccessAgency,
       java.util.Date limitedAccessDate, Address address, Set<Participant> participants,
       Set<CrossReport> crossReports, Set<Allegation> allegations) {
     super();
@@ -465,7 +465,7 @@ public class ScreeningToReferral extends ReportingDomain implements Request {
   /**
    * @return limitedAccessAgency limited Access Agency
    */
-  public short getLimitedAccessAgency() {
+  public String getLimitedAccessAgency() {
     return limitedAccessAgency;
   }
 
