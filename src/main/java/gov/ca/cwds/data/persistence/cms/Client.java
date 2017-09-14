@@ -294,12 +294,14 @@ public final class Client extends BaseClient
       this.driverLicenseStateCodeType = client.getDriverLicenseStateCodeType();
       this.emailAddress = client.getEmailAddress();
       this.estimatedDobCode = client.getEstimatedDobCode();
-      this.ethUnableToDetReasonCode = client.getEthUnableToDetReasonCode();
+      this.ethUnableToDetReasonCode = StringUtils.isBlank(client.getEthUnableToDetReasonCode())
+          ? null : client.getEthUnableToDetReasonCode();
       this.fatherParentalRightTermDate =
           DomainChef.uncookDateString(client.getFatherParentalRightTermDate());
       this.genderCode = client.getGenderCode();
       this.healthSummaryText = client.getHealthSummaryText();
-      this.hispUnableToDetReasonCode = client.getHispUnableToDetReasonCode();
+      this.hispUnableToDetReasonCode = StringUtils.isBlank(client.getHispUnableToDetReasonCode())
+          ? null : client.getHispUnableToDetReasonCode();;
       this.hispanicOriginCode = client.getHispanicOriginCode();
       this.immigrationCountryCodeType = client.getImmigrationCountryCodeType();
       this.immigrationStatusType = client.getImmigrationStatusType();

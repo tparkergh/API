@@ -1,14 +1,17 @@
 package gov.ca.cwds.fixture;
 
-import gov.ca.cwds.rest.api.domain.cms.Address;
-import gov.ca.cwds.rest.api.domain.cms.Client;
 import java.util.Set;
+
 import org.joda.time.DateTime;
 import org.joda.time.format.DateTimeFormat;
 
+import gov.ca.cwds.rest.api.domain.cms.Address;
+import gov.ca.cwds.rest.api.domain.cms.Client;
+
 public class ClientResourceBuilder {
   String existingClientId = "";
-  private DateTime lastUpdatedTime = DateTimeFormat.forPattern("yyyy-MM-dd'T'HH:mm:ss.SSSZ").parseDateTime("2004-03-31T09:45:58.000-0800");
+  private DateTime lastUpdatedTime = DateTimeFormat.forPattern("yyyy-MM-dd'T'HH:mm:ss.SSSZ")
+      .parseDateTime("2004-03-31T09:45:58.000-0800");
   Boolean adjudicatedDelinquentIndicator = false;
   String adoptionStatusCode = Client.DEFAULT_ADOPTION_STATUS_CODE;
   String alienRegistrationNumber = "";
@@ -38,12 +41,12 @@ public class ClientResourceBuilder {
   Short driverLicenseStateCodeType = Client.DEFAULT_CODE;
   String emailAddress = "";
   String estimatedDobCode = Client.DEFAULT_ESTIMATED_DOB_CODE;
-  String ethUnableToDetReasonCode = Client.DEFAULT_UNABLE_TO_DETAIN_CODE;
+  String ethUnableToDetReasonCode = "A";
   String fatherParentalRightTermDate = "";
   String genderCode = "M";
   String healthSummaryText = "";
   String hispUnableToDetReasonCode = "";
-  String hispanicOriginCode = Client.DEFAULT_HISPANIC_ORIGIN_CODE;
+  String hispanicOriginCode = "X";
   Short immigrationCountryCodeType = Client.DEFAULT_CODE;
   Short immigrationStatusType = Client.DEFAULT_CODE;
   String incapacitatedParentCode = Client.DEFAULT_INCAPCITATED_PARENT_CODE;
@@ -86,11 +89,11 @@ public class ClientResourceBuilder {
     return this;
   }
 
-  public DateTime getLastUpdatedTime(){
+  public DateTime getLastUpdatedTime() {
     return lastUpdatedTime;
   }
 
-  public ClientResourceBuilder setLastUpdateTime(DateTime lastUpdatedTime){
+  public ClientResourceBuilder setLastUpdateTime(DateTime lastUpdatedTime) {
     this.lastUpdatedTime = lastUpdatedTime;
     return this;
   }
@@ -99,7 +102,8 @@ public class ClientResourceBuilder {
     return adjudicatedDelinquentIndicator;
   }
 
-  public ClientResourceBuilder setAdjudicatedDelinquentIndicator(Boolean adjudicatedDelinquentIndicator) {
+  public ClientResourceBuilder setAdjudicatedDelinquentIndicator(
+      Boolean adjudicatedDelinquentIndicator) {
     this.adjudicatedDelinquentIndicator = adjudicatedDelinquentIndicator;
     return this;
   }
@@ -453,7 +457,8 @@ public class ClientResourceBuilder {
     return limitationOnScpHealthIndicator;
   }
 
-  public ClientResourceBuilder setLimitationOnScpHealthIndicator(Boolean limitationOnScpHealthIndicator) {
+  public ClientResourceBuilder setLimitationOnScpHealthIndicator(
+      Boolean limitationOnScpHealthIndicator) {
     this.limitationOnScpHealthIndicator = limitationOnScpHealthIndicator;
     return this;
   }
@@ -635,7 +640,8 @@ public class ClientResourceBuilder {
     return socialSecurityNumChangedCode;
   }
 
-  public ClientResourceBuilder setSocialSecurityNumChangedCode(String socialSecurityNumChangedCode) {
+  public ClientResourceBuilder setSocialSecurityNumChangedCode(
+      String socialSecurityNumChangedCode) {
     this.socialSecurityNumChangedCode = socialSecurityNumChangedCode;
     return this;
   }
@@ -705,18 +711,25 @@ public class ClientResourceBuilder {
     return this;
   }
 
-  public Client build(){
-    return new Client(existingClientId, lastUpdatedTime, adjudicatedDelinquentIndicator, adoptionStatusCode, alienRegistrationNumber, birthCity, birthCountryCodeType,
-        birthDate, birthFacilityName, birthStateCodeType, birthplaceVerifiedIndicator, childClientIndicatorVar, clientIndexNumber,
-        commentDescription, commonFirstName, commonMiddleName, commonLastName, confidentialityActionDate,
-        confidentialityInEffectIndicator, creationDate, currCaChildrenServIndicator, currentlyOtherDescription, currentlyRegionalCenterIndicator, deathDate, deathDateVerifiedIndicator, deathPlace, deathReasonText, driverLicenseNumber, driverLicenseStateCodeType, emailAddress,
-        estimatedDobCode, ethUnableToDetReasonCode, fatherParentalRightTermDate, genderCode, healthSummaryText, hispUnableToDetReasonCode,
-        hispanicOriginCode, immigrationCountryCodeType, immigrationStatusType, incapacitatedParentCode,
-        individualHealthCarePlanIndicator, limitationOnScpHealthIndicator, literateCode, maritalCohabitatnHstryIndicatorVar, maritalStatusType, militaryStatusCode, motherParentalRightTermDate,
-        namePrefixDescription, nameType, outstandingWarrantIndicator, prevCaChildrenServIndicator, prevOtherDescription, prevRegionalCenterIndicator, primaryEthnicityType, primaryLanguageType, religionType,
-        secondaryLanguageType, sensitiveHlthInfoOnFileIndicator, sensitivityIndicator,
-        soc158PlacementCode, soc158SealedClientIndicator, socialSecurityNumChangedCode,
-        socialSecurityNumber, suffixTitleDescription, tribalAncestryClientIndicatorVar, tribalMembrshpVerifctnIndicatorVar,
-        unemployedParentCode, zippyCreatedIndicator, address);
+  public Client build() {
+    return new Client(existingClientId, lastUpdatedTime, adjudicatedDelinquentIndicator,
+        adoptionStatusCode, alienRegistrationNumber, birthCity, birthCountryCodeType, birthDate,
+        birthFacilityName, birthStateCodeType, birthplaceVerifiedIndicator, childClientIndicatorVar,
+        clientIndexNumber, commentDescription, commonFirstName, commonMiddleName, commonLastName,
+        confidentialityActionDate, confidentialityInEffectIndicator, creationDate,
+        currCaChildrenServIndicator, currentlyOtherDescription, currentlyRegionalCenterIndicator,
+        deathDate, deathDateVerifiedIndicator, deathPlace, deathReasonText, driverLicenseNumber,
+        driverLicenseStateCodeType, emailAddress, estimatedDobCode, ethUnableToDetReasonCode,
+        fatherParentalRightTermDate, genderCode, healthSummaryText, hispUnableToDetReasonCode,
+        hispanicOriginCode, immigrationCountryCodeType, immigrationStatusType,
+        incapacitatedParentCode, individualHealthCarePlanIndicator, limitationOnScpHealthIndicator,
+        literateCode, maritalCohabitatnHstryIndicatorVar, maritalStatusType, militaryStatusCode,
+        motherParentalRightTermDate, namePrefixDescription, nameType, outstandingWarrantIndicator,
+        prevCaChildrenServIndicator, prevOtherDescription, prevRegionalCenterIndicator,
+        primaryEthnicityType, primaryLanguageType, religionType, secondaryLanguageType,
+        sensitiveHlthInfoOnFileIndicator, sensitivityIndicator, soc158PlacementCode,
+        soc158SealedClientIndicator, socialSecurityNumChangedCode, socialSecurityNumber,
+        suffixTitleDescription, tribalAncestryClientIndicatorVar,
+        tribalMembrshpVerifctnIndicatorVar, unemployedParentCode, zippyCreatedIndicator, address);
   }
 }

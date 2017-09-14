@@ -168,8 +168,7 @@ public class StaffPersonTest {
 
   @Test
   public void equalsHashCodeWork() {
-    EqualsVerifier.forClass(StaffPerson.class).suppress(Warning.NONFINAL_FIELDS)
-        .withIgnoredFields("messages").verify();
+    EqualsVerifier.forClass(StaffPerson.class).suppress(Warning.NONFINAL_FIELDS).verify();
   }
 
   /*

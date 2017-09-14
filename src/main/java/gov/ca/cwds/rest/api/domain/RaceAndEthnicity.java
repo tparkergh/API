@@ -40,9 +40,9 @@ public class RaceAndEthnicity extends ReportingDomain implements Request, Respon
   // @ValidSystemCodeId(required = false, category = SystemCodeCategoryId.ETHNICITY)
   private Set<Short> raceCode;
 
-  @OneOf(value = {"A", "I", "K"}, ignoreCase = false, ignoreWhitespace = true)
   @JsonProperty("unable_to_determine_code")
-  @ApiModelProperty(required = false, value = "A", example = "A")
+  @ApiModelProperty(required = false, readOnly = false, value = "", example = "A")
+  @OneOf(value = {"A", "I", "K", ""}, ignoreCase = true, ignoreWhitespace = true)
   private String unableToDetermineCode;
 
   @Valid
@@ -52,14 +52,14 @@ public class RaceAndEthnicity extends ReportingDomain implements Request, Respon
   // @ValidSystemCodeId(required = false, category = SystemCodeCategoryId.ETHNICITY)
   private Set<Short> hispanicCode;
 
-  @OneOf(value = {"D", "N", "U", "X", "Y", "Z"}, ignoreCase = false, ignoreWhitespace = true)
+  @OneOf(value = {"D", "N", "U", "X", "Y", "Z", ""}, ignoreCase = true, ignoreWhitespace = true)
   @JsonProperty("hispanic_origin_code")
-  @ApiModelProperty(required = false, value = "X", example = "X")
+  @ApiModelProperty(required = false, readOnly = false, value = "", example = "X")
   private String hispanicOriginCode;
 
-  @OneOf(value = {"A", "I", "K"}, ignoreCase = false, ignoreWhitespace = true)
+  @OneOf(value = {"A", "I", "K", ""}, ignoreCase = true, ignoreWhitespace = true)
   @JsonProperty("hispanic_unable_to_determine_code")
-  @ApiModelProperty(required = false, value = "A", example = "A")
+  @ApiModelProperty(required = false, readOnly = false, value = "", example = "A")
   private String hispanicUnableToDetermineCode;
 
   /**

@@ -30,7 +30,7 @@ import gov.ca.cwds.rest.services.TypedCrudsService;
  */
 public class AddressService implements
     TypedCrudsService<String, gov.ca.cwds.rest.api.domain.cms.Address, gov.ca.cwds.rest.api.domain.cms.Address> {
-  private static final Logger LOGGER = LoggerFactory.getLogger(ClientService.class);
+  private static final Logger LOGGER = LoggerFactory.getLogger(AddressService.class);
 
 
   private AddressDao addressDao;

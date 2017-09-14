@@ -55,7 +55,7 @@ public class UpperCaseTables {
       clientUcDao.create(clientUc);
       LOGGER.info("clientUc is created");
     } catch (ServiceException se) {
-      throw new DaoException("Insert to client_uc failed - " + se);
+      throw new DaoException("Insert to client_uc failed - ", se);
     }
   }
 
@@ -68,7 +68,7 @@ public class UpperCaseTables {
       clientUcDao.update(clientUc);
       LOGGER.info("clientUc is updated");
     } catch (ServiceException se) {
-      throw new DaoException("Update to client_uc failed - " + se);
+      throw new DaoException("Update to client_uc failed - ", se);
     }
   }
 
@@ -81,7 +81,7 @@ public class UpperCaseTables {
         clientUcDao.delete(pktableId);
         LOGGER.info("clientUc is deleted");
       } catch (ServiceException se) {
-        throw new DaoException("Delete from client_uc failed - " + se);
+        throw new DaoException("Delete from client_uc failed - ", se);
       }
     }
   }
@@ -95,7 +95,7 @@ public class UpperCaseTables {
       addressUcDao.create(addressUc);
       LOGGER.info("addressUc is created");
     } catch (ServiceException se) {
-      throw new DaoException("Insert to addrs_uc failed - " + se);
+      throw new DaoException("Insert to addrs_uc failed - ", se);
     }
   }
 
@@ -108,7 +108,7 @@ public class UpperCaseTables {
       addressUcDao.update(addressUc);
       LOGGER.info("addressUc is updated");
     } catch (ServiceException se) {
-      throw new DaoException("Update to addrs_uc failed - " + se);
+      throw new DaoException("Update to addrs_uc failed - ", se);
     }
   }
 
@@ -121,7 +121,7 @@ public class UpperCaseTables {
         addressUcDao.delete(pktableId);
         LOGGER.info("addressUc is deleted");
       } catch (ServiceException se) {
-        throw new DaoException("Delete from addrs_uc failed - " + se);
+        throw new DaoException("Delete from addrs_uc failed - ", se);
       }
     }
   }
