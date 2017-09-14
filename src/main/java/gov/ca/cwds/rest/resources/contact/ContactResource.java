@@ -102,7 +102,7 @@ public class ContactResource {
       @ApiResponse(code = 406, message = "Accept Header not supported"),
       @ApiResponse(code = 409, message = "Conflict - already exists")})
   @Consumes(value = MediaType.APPLICATION_JSON)
-  @ApiOperation(value = "Create deliveredService", code = HttpStatus.SC_CREATED,
+  @ApiOperation(value = "Create deliveredService", code = HttpStatus.SC_OK,
       response = Contact.class)
   public Response find(@PathParam("id") @ApiParam(required = true, name = "id",
       value = "The id of the Referral ") String id, @PathParam("contact_id") @ApiParam(
@@ -126,8 +126,7 @@ public class ContactResource {
       @ApiResponse(code = 409, message = "Conflict - already exists"),
       @ApiResponse(code = 422, message = "Unable to validate Contacts")})
   @Consumes(value = MediaType.APPLICATION_JSON)
-  @ApiOperation(value = "Create Contacts", code = HttpStatus.SC_CREATED,
-      response = ContactList.class)
+  @ApiOperation(value = "Create Contacts", code = HttpStatus.SC_OK, response = ContactList.class)
   public Response findAll(@PathParam("id") @ApiParam(required = true, name = "id",
       value = "The id of the Referral ") String id) {
     return typedResourceDelegate.get(id);
@@ -151,7 +150,7 @@ public class ContactResource {
       @ApiResponse(code = 409, message = "Conflict - already exists"),
       @ApiResponse(code = 422, message = "Unable to validate deliveredServiceEntity")})
   @Consumes(value = MediaType.APPLICATION_JSON)
-  @ApiOperation(value = "Create deliveredService", code = HttpStatus.SC_CREATED,
+  @ApiOperation(value = "Create deliveredService", code = HttpStatus.SC_OK,
       response = Contact.class)
   public Response update(@PathParam("id") @ApiParam(required = true, name = "id",
       value = "The id of the Referral ") String id, @PathParam("contact_id") @ApiParam(

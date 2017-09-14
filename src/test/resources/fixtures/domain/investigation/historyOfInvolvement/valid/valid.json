@@ -1,0 +1,239 @@
+{
+  "cases": [
+  {
+    "county_name": "Plumas",
+      "legacy_descriptor": {
+        "legacy_ui_id": "1237-8750-3651-6000739"
+      },
+      "focus_child": {
+        "last_name": "W.",
+        "first_name": "Sharon"
+      },
+      "service_component": "Family Reunification",
+      "assigned_social_worker": {
+        "last_name": "K",
+        "first_name": "Daisie"
+      },
+      "access_limitation": {
+        "limited_access_government_entity_id": "0",
+        "limited_access_code": "N"
+      },
+      "service_component_id": "1694",
+      "start_date": "1999-02-28",
+      "parents": [
+      {
+        "relationship": "Daughter/Mother (Birth)",
+        "last_name": "R.",
+        "first_name": "Missy"
+      },
+      {
+        "relationship": "Daughter/Father (Presumed)",
+        "last_name": "W.",
+        "first_name": "Ricky"
+      }
+      ]
+  },
+  {
+    "county_name": "Plumas",
+    "legacy_descriptor": {
+      "legacy_ui_id": "0762-2283-8000-4000739"
+    },
+    "focus_child": {
+      "last_name": "W.",
+      "first_name": "Roland"
+    },
+    "service_component": "Family Reunification",
+    "assigned_social_worker": {
+      "last_name": "K",
+      "first_name": "Daisie"
+    },
+    "access_limitation": {
+      "limited_access_government_entity_id": "0",
+      "limited_access_code": "N"
+    },
+    "start_date": "1999-02-28",
+    "parents": [
+    {
+      "relationship": "Mother/Son (Birth)",
+      "last_name": "R.",
+      "first_name": "Missy"
+    },
+    {
+      "relationship": "Father/Son (Birth)",
+      "last_name": "W.",
+      "first_name": "Ricky"
+    }
+    ]
+  },
+  {
+    "county_name": "Plumas",
+    "legacy_descriptor": {
+      "legacy_ui_id": "0848-0821-1952-3000739"
+    },
+    "focus_child": {
+      "last_name": "R.",
+      "first_name": "Marty"
+    },
+    "service_component": "Family Reunification",
+    "assigned_social_worker": {
+      "last_name": "K",
+      "first_name": "Daisie"
+    },
+    "access_limitation": {
+      "limited_access_government_entity_id": "0",
+      "limited_access_code": "N"
+    },
+    "start_date": "1999-02-24",
+    "parents": [
+    {
+      "relationship": "Mother/Son (Birth)",
+      "last_name": "R.",
+      "first_name": "Missy"
+    },
+    {
+      "relationship": "Son/Father (Step)",
+      "last_name": "W.",
+      "first_name": "Ricky"
+    }
+    ]
+  }
+  ],
+  "referrals": [
+  {
+    "end_date": "1999-12-02",
+    "legacy_descriptor": {
+      "legacy_ui_id": "1694-5211-0269-1234567"
+    },
+    "reporter": {},
+    "county_name": "Plumas",
+    "allegations": [
+    {
+      "victim_last_name": "R.",
+      "victim_first_name": "Marty",
+      "perpetrator_last_name": "R.",
+      "perpetrator_first_name": "Missy",
+      "disposition_description": "Substantiated",
+      "allegation_description": "Physical Abuse"
+    }
+    ],
+    "assigned_social_worker": {
+      "last_name": "K",
+      "first_name": "Daisie"
+    },
+    "access_limitation": {
+      "limited_access_government_entity_id": "0",
+      "limited_access_code": "N"
+    },
+    "response_time": "Immediate",
+    "start_date": "1999-02-24"
+  },
+  {
+    "end_date": "2000-02-01",
+    "legacy_descriptor": {
+      "legacy_ui_id": "1694-5211-0269-2000739"
+    },
+    "reporter": {
+      "last_name": "ReportLast",
+      "first_name": "ReporterOne",
+      "sensitivity_indicator": null
+    },
+    "county_name": "Plumas",
+    "response_time_id": "1520",
+    "allegations": [
+    {
+      "victim_last_name": "W.",
+      "victim_first_name": "Sharon",
+      "perpetrator_last_name": "W.",
+      "perpetrator_first_name": "Ricky",
+      "disposition_description": "Substantiated",
+      "allegation_description": "Sexual Abuse"
+    },
+    {
+      "victim_last_name": "W.",
+      "victim_first_name": "Sharon",
+      "perpetrator_last_name": "W.",
+      "perpetrator_first_name": "Roland",
+      "disposition_description": "Substantiated",
+      "allegation_description": "Sexual Abuse"
+    },
+    {
+      "victim_last_name": "R.",
+      "victim_first_name": "Marty",
+      "perpetrator_last_name": "R.",
+      "perpetrator_first_name": "Missy",
+      "disposition_description": "Inconclusive",
+      "allegation_description": "Sexual Abuse"
+    },
+    {
+      "victim_last_name": "W.",
+      "victim_first_name": "Roland",
+      "disposition_description": "Substantiated",
+      "allegation_description": "Sexual Abuse"
+    }
+    ],
+    "assigned_social_worker": {
+      "last_name": "K",
+      "first_name": "Daisie"
+    },
+    "access_limitation": {
+      "limited_access_government_entity_id": "0",
+      "limited_access_code": "N"
+    },
+    "response_time": "Immediate",
+    "start_date": "1999-02-28"
+  }
+  ],
+  "screenings": [
+  {
+	"id": 1234,
+    "end_date": null,
+    "reporter": {
+      "last_name": "ReportLast",
+      "first_name": "ReporterOne",
+      "sensitivity_indicator": null
+    },
+    "county_name": "Plumas",
+    "decision": "promote to referral",
+    "service_name": "drug counseling",
+    "all_people": [
+    {
+      "roles": [
+        "Mandated Reporter"
+      ],
+      "last_name": "ReportLast",
+      "first_name": "ReporterOne",
+      "sensitivity_indicator": null
+    },
+    {
+      "roles": [
+        "Perpetrator"
+      ],
+      "last_name": "W.",
+      "first_name": "Ricky",
+      "sensitivity_indicator": null
+    },
+    {
+      "roles": [
+        "Victim"
+      ],
+      "last_name": "R.",
+      "first_name": "Marty"
+    },
+    {
+      "roles": [
+        "Perpetrator"
+      ],
+      "last_name": "R.",
+      "first_name": "Missy",
+      "sensitivity_indicator": null
+    }
+    ],
+    "assigned_social_worker": {
+      "last_name": "Doe",
+      "first_name": "Jane",
+      "sensitivity_indicator": null
+    },
+    "start_date": "2017-09-11"
+  }
+  ]
+}
