@@ -122,7 +122,7 @@ public class ClientScpEthnicityService
    */
   public void createOtherEthnicity(String clientId, RaceAndEthnicity raceAndEthnicity) {
     List<gov.ca.cwds.data.persistence.cms.ClientScpEthnicity> scpEthnicities = new ArrayList<>();
-    if (!raceAndEthnicity.getRaceCode().isEmpty()) {
+    if (raceAndEthnicity != null && !raceAndEthnicity.getRaceCode().isEmpty()) {
       Iterator<Short> it = raceAndEthnicity.getRaceCode().iterator();
       it.next();
       while (it.hasNext()) {
@@ -134,7 +134,7 @@ public class ClientScpEthnicityService
       }
     }
 
-    if (!raceAndEthnicity.getHispanicCode().isEmpty()) {
+    if (raceAndEthnicity != null && !raceAndEthnicity.getHispanicCode().isEmpty()) {
       Iterator<Short> it1 = raceAndEthnicity.getHispanicCode().iterator();
       while (it1.hasNext()) {
         gov.ca.cwds.data.persistence.cms.ClientScpEthnicity scpEthnicity =
