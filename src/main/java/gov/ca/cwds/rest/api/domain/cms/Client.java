@@ -731,17 +731,28 @@ public class Client extends ReportingDomain implements Request, Response {
    */
   public static Client createWithDefaults(Participant participant, String dateStarted,
       String genderCode) {
+
+    //TODO:Reorganize
+    String unableToDetermineCode = "K";
+    String hispanicUnableToDetermineCode = "";
+    String hispanicOriginCode = "X";
+    Short raceCode = 0;
+    if (participant.getRaceAndEthnicity() != null){
+      unableToDetermineCode = participant.getRaceAndEthnicity().getUnableToDetermineCode();
+      hispanicUnableToDetermineCode = participant.getRaceAndEthnicity().getHispanicUnableToDetermineCode();
+      hispanicOriginCode =  participant.getRaceAndEthnicity().getHispanicOriginCode();
+      raceCode = RaceAndEthnicityService.getRaceCode(participant.getRaceAndEthnicity());
+    }
+
     return new Client("", participant.getLegacyDescriptor().getLastUpdated(), false,
         DEFAULT_ADOPTION_STATUS_CODE, "", "", DEFAULT_CODE, participant.getDateOfBirth(), "",
         DEFAULT_CODE, false, DEFAULT_CHILD_CLIENT_INDICATOR, "", "", participant.getFirstName(),
         participant.getMiddleName(), participant.getLastName(), "", false, dateStarted, false, "",
         false, "", false, "", "", "", DEFAULT_CODE, "", DEFAULT_ESTIMATED_DOB_CODE,
-        participant.getRaceAndEthnicity().getUnableToDetermineCode(), "", genderCode, "",
-        participant.getRaceAndEthnicity().getHispanicUnableToDetermineCode(),
-        participant.getRaceAndEthnicity().getHispanicOriginCode(), DEFAULT_CODE, DEFAULT_CODE,
+        unableToDetermineCode, "", genderCode, "",
+        hispanicUnableToDetermineCode, hispanicOriginCode, DEFAULT_CODE, DEFAULT_CODE,
         DEFAULT_INCAPCITATED_PARENT_CODE, false, false, DEFAULT_LITERATE_CODE, false, DEFAULT_CODE,
-        DEFAULT_MILITARY_STATUS_CODE, "", "", DEFAULT_NAME_TYPE, false, false, "", false,
-        RaceAndEthnicityService.getRaceCode(participant.getRaceAndEthnicity()),
+        DEFAULT_MILITARY_STATUS_CODE, "", "", DEFAULT_NAME_TYPE, false, false, "", false, raceCode,
         participant.getPrimaryLanguage(), DEFAULT_CODE, participant.getSecondaryLanguage(), false,
         DEFAULT_SENSITIVITY_INDICATOR, DEFAULT_SOC158_PLACEMENT_CODE, false,
         DEFAULT_SOCIAL_SECURITY_NUM_CHANGE_CODE, participant.getSsn(), participant.getNameSuffix(),
