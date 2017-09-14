@@ -85,6 +85,6 @@ public class RIAllegation implements ApiReferentialCheck<Allegation> {
       throw new ReferentialIntegrityException(
           "Allegation => Perpetrator Client with given Identifier is not present in database");
     }
-    return true;
+    return Boolean.TRUE;
   }
 }

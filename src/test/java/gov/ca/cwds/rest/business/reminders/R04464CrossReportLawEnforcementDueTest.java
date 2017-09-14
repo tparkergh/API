@@ -106,7 +106,7 @@ public class R04464CrossReportLawEnforcementDueTest {
     gov.ca.cwds.data.persistence.cms.Referral savedReferral =
         new gov.ca.cwds.data.persistence.cms.Referral("123ABC1235", domainReferral, "0X5");
 
-    Client client = Client.createWithDefaults(victim, "2016-09-02", "");
+    Client client = Client.createWithDefaults(victim, "2016-09-02", "", (short) 0);
     gov.ca.cwds.data.persistence.cms.Client savedClient =
         new gov.ca.cwds.data.persistence.cms.Client("ABC1234567", client, "0X5");
 
@@ -185,7 +185,7 @@ public class R04464CrossReportLawEnforcementDueTest {
     gov.ca.cwds.data.persistence.cms.Referral savedReferral =
         new gov.ca.cwds.data.persistence.cms.Referral("123ABC1235", domainReferral, "0X5");
 
-    Client client = Client.createWithDefaults(victim, "2016-09-02", "");
+    Client client = Client.createWithDefaults(victim, "2016-09-02", "", (short) 0);
     gov.ca.cwds.data.persistence.cms.Client savedClient =
         new gov.ca.cwds.data.persistence.cms.Client("ABC1234567", client, "0X5");
 
@@ -256,7 +256,7 @@ public class R04464CrossReportLawEnforcementDueTest {
     gov.ca.cwds.data.persistence.cms.Referral savedReferral =
         new gov.ca.cwds.data.persistence.cms.Referral("123ABC1235", domainReferral, "0X5");
 
-    Client client = Client.createWithDefaults(victim, "2016-09-02", "");
+    Client client = Client.createWithDefaults(victim, "2016-09-02", "", (short) 0);
     gov.ca.cwds.data.persistence.cms.Client savedClient =
         new gov.ca.cwds.data.persistence.cms.Client("ABC1234567", client, "0X5");
 
@@ -335,7 +335,7 @@ public class R04464CrossReportLawEnforcementDueTest {
     gov.ca.cwds.data.persistence.cms.Referral savedReferral =
         new gov.ca.cwds.data.persistence.cms.Referral("123ABC1235", domainReferral, "0X5");
 
-    Client client = Client.createWithDefaults(victim, "2016-09-02", "");
+    Client client = Client.createWithDefaults(victim, "2016-09-02", "", (short) 0);
     gov.ca.cwds.data.persistence.cms.Client savedClient =
         new gov.ca.cwds.data.persistence.cms.Client("ABC1234567", client, "0X5");
 
@@ -415,7 +415,7 @@ public class R04464CrossReportLawEnforcementDueTest {
     gov.ca.cwds.data.persistence.cms.Referral savedReferral =
         new gov.ca.cwds.data.persistence.cms.Referral("123ABC1235", domainReferral, "0X5");
 
-    Client client = Client.createWithDefaults(victim, "2016-09-02", "");
+    Client client = Client.createWithDefaults(victim, "2016-09-02", "", (short) 0);
     gov.ca.cwds.data.persistence.cms.Client savedClient =
         new gov.ca.cwds.data.persistence.cms.Client("ABC1234567", client, "0X5");
 
@@ -493,7 +493,7 @@ public class R04464CrossReportLawEnforcementDueTest {
     gov.ca.cwds.data.persistence.cms.Referral savedReferral =
         new gov.ca.cwds.data.persistence.cms.Referral("123ABC1235", domainReferral, "0X5");
 
-    Client client = Client.createWithDefaults(victim, "2016-09-02", "");
+    Client client = Client.createWithDefaults(victim, "2016-09-02", "", (short) 0);
     gov.ca.cwds.data.persistence.cms.Client savedClient =
         new gov.ca.cwds.data.persistence.cms.Client("ABC1234567", client, "0X5");
 
@@ -572,7 +572,7 @@ public class R04464CrossReportLawEnforcementDueTest {
     gov.ca.cwds.data.persistence.cms.Referral savedReferral =
         new gov.ca.cwds.data.persistence.cms.Referral("123ABC1235", domainReferral, "0X5");
 
-    Client client = Client.createWithDefaults(victim, "2016-09-02", "");
+    Client client = Client.createWithDefaults(victim, "2016-09-02", "", (short) 0);
     gov.ca.cwds.data.persistence.cms.Client savedClient =
         new gov.ca.cwds.data.persistence.cms.Client("ABC1234567", client, "0X5");
 
@@ -651,7 +651,7 @@ public class R04464CrossReportLawEnforcementDueTest {
     gov.ca.cwds.data.persistence.cms.Referral savedReferral =
         new gov.ca.cwds.data.persistence.cms.Referral("123ABC1235", domainReferral, "0X5");
 
-    Client client = Client.createWithDefaults(victim, "2016-09-02", "");
+    Client client = Client.createWithDefaults(victim, "2016-09-02", "", (short) 0);
     gov.ca.cwds.data.persistence.cms.Client savedClient =
         new gov.ca.cwds.data.persistence.cms.Client("ABC1234567", client, "0X5");
 
@@ -729,7 +729,7 @@ public class R04464CrossReportLawEnforcementDueTest {
     gov.ca.cwds.data.persistence.cms.Referral savedReferral =
         new gov.ca.cwds.data.persistence.cms.Referral("123ABC1235", domainReferral, "0X5");
 
-    Client client = Client.createWithDefaults(victim, "2016-09-02", "");
+    Client client = Client.createWithDefaults(victim, "2016-09-02", "", (short) 0);
     gov.ca.cwds.data.persistence.cms.Client savedClient =
         new gov.ca.cwds.data.persistence.cms.Client("ABC1234567", client, "0X5");
 
@@ -805,7 +805,7 @@ public class R04464CrossReportLawEnforcementDueTest {
     gov.ca.cwds.data.persistence.cms.Referral savedReferral =
         new gov.ca.cwds.data.persistence.cms.Referral("123ABC1235", domainReferral, "0X5");
 
-    Client client = Client.createWithDefaults(victim, "2016-09-02", "");
+    Client client = Client.createWithDefaults(victim, "2016-09-02", "", (short) 0);
     gov.ca.cwds.data.persistence.cms.Client savedClient =
         new gov.ca.cwds.data.persistence.cms.Client("ABC1234567", client, "0X5");
 
@@ -884,7 +884,7 @@ public class R04464CrossReportLawEnforcementDueTest {
     gov.ca.cwds.data.persistence.cms.Referral savedReferral =
         new gov.ca.cwds.data.persistence.cms.Referral("123ABC1235", domainReferral, "0X5");
 
-    Client client = Client.createWithDefaults(victim, "2016-09-02", "");
+    Client client = Client.createWithDefaults(victim, "2016-09-02", "", (short) 0);
     gov.ca.cwds.data.persistence.cms.Client savedClient =
         new gov.ca.cwds.data.persistence.cms.Client("ABC1234567", client, "0X5");
 

@@ -62,7 +62,7 @@ public class ExternalInterfaceTables {
       externalInterfaceDao.create(externalInterface);
       LOGGER.info(EXTERNAL_INTERFACE_ROW_IS_CREATED);
     } catch (ServiceException se) {
-      throw new DaoException(INSERT_TO_EXTINF_FAILED + se);
+      throw new DaoException(INSERT_TO_EXTINF_FAILED, se);
     }
   }
 
@@ -84,7 +84,7 @@ public class ExternalInterfaceTables {
       externalInterfaceDao.create(externalInterface);
       LOGGER.info(EXTERNAL_INTERFACE_ROW_IS_CREATED);
     } catch (ServiceException se) {
-      throw new DaoException(INSERT_TO_EXTINF_FAILED + se);
+      throw new DaoException(INSERT_TO_EXTINF_FAILED, se);
     }
   }
 
@@ -106,7 +106,7 @@ public class ExternalInterfaceTables {
       externalInterfaceDao.create(externalInterface);
       LOGGER.info(EXTERNAL_INTERFACE_ROW_IS_CREATED);
     } catch (ServiceException se) {
-      throw new DaoException(INSERT_TO_EXTINF_FAILED + se);
+      throw new DaoException(INSERT_TO_EXTINF_FAILED, se);
     }
   }
 
@@ -127,7 +127,7 @@ public class ExternalInterfaceTables {
       externalInterfaceDao.create(externalInterface);
       LOGGER.info("External Interface row is created for referral");
     } catch (ServiceException se) {
-      throw new DaoException(INSERT_TO_EXTINF_FAILED + se);
+      throw new DaoException(INSERT_TO_EXTINF_FAILED, se);
     }
   }
 

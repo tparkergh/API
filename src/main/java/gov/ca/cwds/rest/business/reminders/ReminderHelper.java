@@ -24,8 +24,6 @@ public class ReminderHelper {
 
   private static final Logger LOGGER = LoggerFactory.getLogger(ReminderHelper.class);
 
-  static final DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-
   /**
    * 
    */
@@ -38,6 +36,8 @@ public class ReminderHelper {
    * @return the ageDiffernce
    */
   public static int checkForAgeDiffernce(String dateOfBirth) {
+    final DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+
     int years = 0;
     try {
       /*

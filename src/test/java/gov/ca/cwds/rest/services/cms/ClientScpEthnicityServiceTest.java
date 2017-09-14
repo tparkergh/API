@@ -1,6 +1,7 @@
 package gov.ca.cwds.rest.services.cms;
 
 import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.notNullValue;
 import static org.hamcrest.Matchers.nullValue;
@@ -12,6 +13,7 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import java.util.Date;
+import java.util.LinkedHashSet;
 
 import javax.persistence.EntityExistsException;
 import javax.persistence.EntityNotFoundException;
@@ -24,6 +26,7 @@ import org.junit.rules.ExpectedException;
 import gov.ca.cwds.data.cms.ClientScpEthnicityDao;
 import gov.ca.cwds.fixture.ClientScpEthnicityResourceBuilder;
 import gov.ca.cwds.rest.api.Response;
+import gov.ca.cwds.rest.api.domain.RaceAndEthnicity;
 import gov.ca.cwds.rest.api.domain.cms.ClientScpEthnicity;
 import gov.ca.cwds.rest.filters.TestingRequestExecutionContext;
 import gov.ca.cwds.rest.services.ServiceException;
@@ -229,6 +232,66 @@ public class ClientScpEthnicityServiceTest {
       assertEquals("ClientScpEthnicity ID cannot be blank", e.getMessage());
     }
 
+  }
+
+  @Test
+  public void screeningToReferralServiceTestRaceCode() throws Exception {
+    LinkedHashSet<Short> raceCode = new LinkedHashSet<>();
+    raceCode.add((short) 841);
+    LinkedHashSet<Short> hispanicCode = new LinkedHashSet<>();
+    hispanicCode.add((short) 3162);
+    RaceAndEthnicity raceAndEthnicity = new RaceAndEthnicity(raceCode, "A", hispanicCode, "X", "A");
+    Short primaryEthnicity = clientScpEthnicityService.getRaceCode(raceAndEthnicity);
+    assertThat(primaryEthnicity, is(equalTo((short) 841)));
+
+  }
+
+  @Test
+  public void screeningToReferralTestHispanicRaceCode() throws Exception {
+    LinkedHashSet<Short> raceCode = new LinkedHashSet<>();
+    LinkedHashSet<Short> hispanicCode = new LinkedHashSet<>();
+    hispanicCode.add((short) 3162);
+    RaceAndEthnicity raceAndEthnicity = new RaceAndEthnicity(raceCode, "A", hispanicCode, "X", "A");
+    Short primaryEthnicity = clientScpEthnicityService.getRaceCode(raceAndEthnicity);
+    assertThat(primaryEthnicity, is(equalTo((short) 3162)));
+
+  }
+
+  @Test
+  public void screeningToReferralServiceTestEmptyRaceHispanicCodes() throws Exception {
+    LinkedHashSet<Short> raceCode = new LinkedHashSet<>();
+    LinkedHashSet<Short> hispanicCode = new LinkedHashSet<>();
+    RaceAndEthnicity raceAndEthnicity = new RaceAndEthnicity(raceCode, "A", hispanicCode, "X", "A");
+    Short primaryEthnicity = clientScpEthnicityService.getRaceCode(raceAndEthnicity);
+    assertThat(primaryEthnicity, is(equalTo((short) 0)));
+
+  }
+
+  @Test
+  public void clientScpEthnicityServiceTestCreateSingleOtherEthnicity() throws Exception {
+    LinkedHashSet<Short> raceCode = new LinkedHashSet<>();
+    raceCode.add((short) 841);
+    LinkedHashSet<Short> hispanicCode = new LinkedHashSet<>();
+    hispanicCode.add((short) 3162);
+    RaceAndEthnicity raceAndEthnicity = new RaceAndEthnicity(raceCode, "A", hispanicCode, "X", "A");
+    Short primaryEthnicity = clientScpEthnicityService.getRaceCode(raceAndEthnicity);
+    assertThat(primaryEthnicity, is(equalTo((short) 841)));
+    clientScpEthnicityService.createOtherEthnicity("ABC1234567", raceAndEthnicity);
+    verify(clientScpEthnicityDao, times(1)).create(any());
+  }
+
+  @Test
+  public void clientScpEthnicityServiceTestCreateMultipleOtherEthnicity() throws Exception {
+    LinkedHashSet<Short> raceCode = new LinkedHashSet<>();
+    raceCode.add((short) 841);
+    LinkedHashSet<Short> hispanicCode = new LinkedHashSet<>();
+    hispanicCode.add((short) 3162);
+    hispanicCode.add((short) 3163);
+    RaceAndEthnicity raceAndEthnicity = new RaceAndEthnicity(raceCode, "A", hispanicCode, "X", "A");
+    Short primaryEthnicity = clientScpEthnicityService.getRaceCode(raceAndEthnicity);
+    assertThat(primaryEthnicity, is(equalTo((short) 841)));
+    clientScpEthnicityService.createOtherEthnicity("ABC1234567", raceAndEthnicity);
+    verify(clientScpEthnicityDao, times(2)).create(any());
   }
 
 }

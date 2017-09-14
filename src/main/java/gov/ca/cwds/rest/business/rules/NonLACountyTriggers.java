@@ -80,10 +80,10 @@ public class NonLACountyTriggers {
    *        key
    */
   public void createAndUpdateReferralClientCoutyOwnership(ReferralClient managed) {
-    Boolean countyExists = true;
+    Boolean countyExists = Boolean.TRUE;
     CountyOwnership countyOwnership = countyOwnershipDao.find(managed.getClientId());
     if (countyOwnership == null) {
-      countyExists = false;
+      countyExists = Boolean.FALSE;
       countyOwnership = new CountyOwnership();
       countyOwnership.setEntityId(managed.getClientId());
       countyOwnership.setEntityCode(CLIENT_ENTITY_CODE);
@@ -97,10 +97,10 @@ public class NonLACountyTriggers {
    *        Address foreign key
    */
   public void createAndUpdateClientAddressCoutyOwnership(ClientAddress managedClientAddress) {
-    Boolean countyExists = true;
+    Boolean countyExists = Boolean.TRUE;
     CountyOwnership countyOwnership = countyOwnershipDao.find(managedClientAddress.getFkAddress());
     if (countyOwnership == null) {
-      countyExists = false;
+      countyExists = Boolean.FALSE;
       countyOwnership = new CountyOwnership();
       countyOwnership.setEntityId(managedClientAddress.getFkAddress());
       countyOwnership.setEntityCode(ADDRESS_ENTITY_CODE);
@@ -116,7 +116,7 @@ public class NonLACountyTriggers {
    *        establishedCode with the referral foreign key
    */
   public void createAndUpdateReferralCoutyOwnership(Assignment managed) {
-    Boolean countyExists = true;
+    Boolean countyExists = Boolean.TRUE;
     if (managed.getTypeOfAssignmentCode() != TYPE_OF_ASSIGNMENT_CODE
         || managed.getEstablishedForCode() != REFERRAL_ESTABLISHED_CODE) {
       return;
@@ -124,7 +124,7 @@ public class NonLACountyTriggers {
 
     CountyOwnership countyOwnership = countyOwnershipDao.find(managed.getEstablishedForId());
     if (countyOwnership == null) {
-      countyExists = false;
+      countyExists = Boolean.FALSE;
       countyOwnership = new CountyOwnership();
       countyOwnership.setEntityId(managed.getEstablishedForId());
       countyOwnership.setEntityCode(REFERRAL_ENTITY_CODE);
@@ -147,9 +147,7 @@ public class NonLACountyTriggers {
       }
     } catch (NoSuchMethodException | SecurityException | IllegalAccessException
         | IllegalArgumentException | InvocationTargetException e) {
-      LOGGER.info(COUNTY_OWNERSHIP_UNABLE_TO_TRIGGER, countyOwnership);
-      LOGGER.error(e.getMessage(), e);
-      throw new TriggerTableException();
+      throw new TriggerTableException(COUNTY_OWNERSHIP_UNABLE_TO_TRIGGER, e);
     }
 
     if (countyExists) {
