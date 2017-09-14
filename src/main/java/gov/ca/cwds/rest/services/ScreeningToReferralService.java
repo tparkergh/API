@@ -312,8 +312,8 @@ public class ScreeningToReferralService implements CrudsService {
 
       for (CrossReport crossReport : crossReports) {
 
-        Boolean lawEnforcementIndicator = false;
-        Boolean outStateLawEnforcementIndicator = false;
+        Boolean lawEnforcementIndicator = Boolean.FALSE;
+        Boolean outStateLawEnforcementIndicator = Boolean.FALSE;
         String outStateLawEnforcementAddr = "";
 
         /**
@@ -351,7 +351,7 @@ public class ScreeningToReferralService implements CrudsService {
         boolean lawEnforcementAgencyType = crossReport.getAgencyType().contains("Law Enforcement");
 
         if (lawEnforcementAgencyType && !mandatedReporter) {
-          lawEnforcementIndicator = true;
+          lawEnforcementIndicator = Boolean.TRUE;
         }
 
         if (crossReport.getLegacyId() == null || crossReport.getLegacyId().isEmpty()) {
@@ -474,9 +474,9 @@ public class ScreeningToReferralService implements CrudsService {
         gov.ca.cwds.rest.api.domain.cms.Allegation cmsAllegation =
             new gov.ca.cwds.rest.api.domain.cms.Allegation("", LegacyDefaultValues.DEFAULT_CODE, "",
                 scr.getLocationType(), "", allegationDispositionType, allegation.getType(), "", "",
-                false, (perpatratorClientId.equals("")) ? "U" : "N", false, victimClientId,
-                perpatratorClientId, referralId, scr.getIncidentCounty(), false,
-                LegacyDefaultValues.DEFAULT_CODE);
+                Boolean.FALSE, (perpatratorClientId.equals("")) ? "U" : "N", Boolean.FALSE,
+                victimClientId, perpatratorClientId, referralId, scr.getIncidentCounty(),
+                Boolean.FALSE, LegacyDefaultValues.DEFAULT_CODE);
 
         messageBuilder.addDomainValidationError(validator.validate(cmsAllegation));
 

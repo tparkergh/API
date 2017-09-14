@@ -39,7 +39,7 @@ public class Client extends ReportingDomain implements Request, Response {
 
   public static final String DEFAULT_ADOPTION_STATUS_CODE = "N";
   public static final short DEFAULT_CODE = 0;
-  public static final Boolean DEFAULT_CHILD_CLIENT_INDICATOR = false;
+  public static final Boolean DEFAULT_CHILD_CLIENT_INDICATOR = Boolean.FALSE;
   public static final String DEFAULT_ESTIMATED_DOB_CODE = "N";
   public static final String DEFAULT_UNABLE_TO_DETAIN_CODE = "K";
   public static final String DEFAULT_HISPANIC_ORIGIN_CODE = "X";
@@ -746,19 +746,20 @@ public class Client extends ReportingDomain implements Request, Response {
       hispanicOriginCode = participant.getRaceAndEthnicity().getHispanicOriginCode();
     }
 
-    return new Client("", participant.getLegacyDescriptor().getLastUpdated(), false,
+    return new Client("", participant.getLegacyDescriptor().getLastUpdated(), Boolean.FALSE,
         DEFAULT_ADOPTION_STATUS_CODE, "", "", DEFAULT_CODE, participant.getDateOfBirth(), "",
-        DEFAULT_CODE, false, DEFAULT_CHILD_CLIENT_INDICATOR, "", "", participant.getFirstName(),
-        participant.getMiddleName(), participant.getLastName(), "", false, dateStarted, false, "",
-        false, "", false, "", "", "", DEFAULT_CODE, "", DEFAULT_ESTIMATED_DOB_CODE,
-        unableToDetermineCode, "", genderCode, "", hispanicUnableToDetermineCode,
-        hispanicOriginCode, DEFAULT_CODE, DEFAULT_CODE, DEFAULT_INCAPCITATED_PARENT_CODE, false,
-        false, DEFAULT_LITERATE_CODE, false, DEFAULT_CODE, DEFAULT_MILITARY_STATUS_CODE, "", "",
-        DEFAULT_NAME_TYPE, false, false, "", false, raceCode, participant.getPrimaryLanguage(),
-        DEFAULT_CODE, participant.getSecondaryLanguage(), false, DEFAULT_SENSITIVITY_INDICATOR,
-        DEFAULT_SOC158_PLACEMENT_CODE, false, DEFAULT_SOCIAL_SECURITY_NUM_CHANGE_CODE,
-        participant.getSsn(), participant.getNameSuffix(), false, false,
-        DEFAULT_UNEMPLOYED_PARENT_CODE, false, null);
+        DEFAULT_CODE, Boolean.FALSE, DEFAULT_CHILD_CLIENT_INDICATOR, "", "",
+        participant.getFirstName(), participant.getMiddleName(), participant.getLastName(), "",
+        Boolean.FALSE, dateStarted, Boolean.FALSE, "", Boolean.FALSE, "", Boolean.FALSE, "", "", "",
+        DEFAULT_CODE, "", DEFAULT_ESTIMATED_DOB_CODE, unableToDetermineCode, "", genderCode, "",
+        hispanicUnableToDetermineCode, hispanicOriginCode, DEFAULT_CODE, DEFAULT_CODE,
+        DEFAULT_INCAPCITATED_PARENT_CODE, Boolean.FALSE, Boolean.FALSE, DEFAULT_LITERATE_CODE,
+        Boolean.FALSE, DEFAULT_CODE, DEFAULT_MILITARY_STATUS_CODE, "", "", DEFAULT_NAME_TYPE,
+        Boolean.FALSE, Boolean.FALSE, "", Boolean.FALSE, raceCode, participant.getPrimaryLanguage(),
+        DEFAULT_CODE, participant.getSecondaryLanguage(), Boolean.FALSE,
+        DEFAULT_SENSITIVITY_INDICATOR, DEFAULT_SOC158_PLACEMENT_CODE, Boolean.FALSE,
+        DEFAULT_SOCIAL_SECURITY_NUM_CHANGE_CODE, participant.getSsn(), participant.getNameSuffix(),
+        Boolean.FALSE, Boolean.FALSE, DEFAULT_UNEMPLOYED_PARENT_CODE, Boolean.FALSE, null);
   }
 
   /**
