@@ -40,9 +40,9 @@ public class ParticipantValidator {
    */
   public static final int MINIMUM_NUMBER_OF_VICTIMS = 1;
   @SuppressWarnings("javadoc")
-  public static final boolean INVALID_PARTICIPANTS = false;
+  public static final boolean INVALID_PARTICIPANTS = Boolean.FALSE;
   @SuppressWarnings("javadoc")
-  public static final boolean VALID_PARTICIPANTS = true;
+  public static final boolean VALID_PARTICIPANTS = Boolean.TRUE;
 
   /**
    * default constructor
@@ -103,12 +103,12 @@ public class ParticipantValidator {
         Set<String> roles = new HashSet<>(incomingParticipant.getRoles());
         if (roles.contains(ANONYMOUS_REPORTER_ROLE)) {
 
-          return true;
+          return Boolean.TRUE;
         }
       }
     }
 
-    return false;
+    return Boolean.FALSE;
   }
 
   /**
@@ -121,22 +121,22 @@ public class ParticipantValidator {
     Set<String> roles = participant.getRoles();
     if (roles != null) {
       if (roles.contains(ANONYMOUS_REPORTER_ROLE)) {
-        return true;
+        return Boolean.TRUE;
       }
       if (roles.contains(MANDATED_REPORTER_ROLE)) {
-        return true;
+        return Boolean.TRUE;
       }
       if (roles.contains(NON_MANDATED_REPORTER_ROLE)) {
-        return true;
+        return Boolean.TRUE;
       }
       if (roles.contains(SELF_REPORTED_ROLE)) {
-        return true;
+        return Boolean.TRUE;
       }
       if (roles.contains(VICTIM_ROLE) && roles.contains(NON_MANDATED_REPORTER_ROLE)) {
-        return true;
+        return Boolean.TRUE;
       }
     }
-    return false;
+    return Boolean.FALSE;
   }
 
   /**
@@ -148,9 +148,9 @@ public class ParticipantValidator {
     Set<String> roles = participant.getRoles();
     if (roles != null && roles.contains(PERPETRATOR_ROLE)) {
 
-      return true;
+      return Boolean.TRUE;
     }
-    return false;
+    return Boolean.FALSE;
   }
 
   /**
@@ -162,9 +162,9 @@ public class ParticipantValidator {
     Set<String> roles = participant.getRoles();
     if (roles != null && roles.contains(VICTIM_ROLE)) {
 
-      return true;
+      return Boolean.TRUE;
     }
-    return false;
+    return Boolean.FALSE;
   }
 
   /**
@@ -175,9 +175,9 @@ public class ParticipantValidator {
   public static Boolean hasMandatedReporterRole(Participant participant) throws ServiceException {
     Set<String> roles = participant.getRoles();
     if (roles != null && roles.contains(MANDATED_REPORTER_ROLE)) {
-      return true;
+      return Boolean.TRUE;
     }
-    return false;
+    return Boolean.FALSE;
   }
 
   /**
@@ -247,23 +247,23 @@ public class ParticipantValidator {
     if (roles != null) {
       // R - 00831
       if (roles.contains(ANONYMOUS_REPORTER_ROLE) && roles.contains(SELF_REPORTED_ROLE)) {
-        return false;
+        return Boolean.FALSE;
       }
       if (roles.contains(ANONYMOUS_REPORTER_ROLE) && roles.contains(VICTIM_ROLE)) {
-        return false;
+        return Boolean.FALSE;
       }
       if (roles.contains(ANONYMOUS_REPORTER_ROLE) && (roles.contains(MANDATED_REPORTER_ROLE)
           || roles.contains(NON_MANDATED_REPORTER_ROLE))) {
-        return false;
+        return Boolean.FALSE;
       }
       if (roles.contains(VICTIM_ROLE) && roles.contains(PERPETRATOR_ROLE)) {
-        return false;
+        return Boolean.FALSE;
       }
       if (roles.contains(MANDATED_REPORTER_ROLE) && roles.contains(NON_MANDATED_REPORTER_ROLE)) {
-        return false;
+        return Boolean.FALSE;
       }
     }
-    return true;
+    return Boolean.TRUE;
   }
 
   // check for self-reported participant
@@ -276,13 +276,13 @@ public class ParticipantValidator {
     Set<String> roles = participant.getRoles();
     if (roles != null) {
       if (roles.contains(VICTIM_ROLE) && roles.contains(NON_MANDATED_REPORTER_ROLE)) {
-        return true;
+        return Boolean.TRUE;
       }
       if (roles.contains(SELF_REPORTED_ROLE)) {
-        return true;
+        return Boolean.TRUE;
       }
     }
-    return false;
+    return Boolean.FALSE;
   }
 
   /**
@@ -299,12 +299,12 @@ public class ParticipantValidator {
       for (Participant participant : participants) {
         if (participant.getId() == victimPersonId && hasVictimRole(participant)) {
 
-          return true;
+          return Boolean.TRUE;
         }
       }
     }
 
-    return false;
+    return Boolean.FALSE;
   }
 
   /**
@@ -321,12 +321,12 @@ public class ParticipantValidator {
       for (Participant participant : participants) {
         if (participant.getId() == perpetratorPersonId && (isPerpetrator(participant))) {
 
-          return true;
+          return Boolean.TRUE;
 
         }
       }
     }
-    return false;
+    return Boolean.FALSE;
   }
 
   /**
@@ -338,11 +338,11 @@ public class ParticipantValidator {
   public static Boolean roleIsReporterType(String role) {
     if (role != null && (role.equalsIgnoreCase(MANDATED_REPORTER_ROLE)
         || role.equalsIgnoreCase(NON_MANDATED_REPORTER_ROLE))) {
-      return true;
+      return Boolean.TRUE;
 
     }
 
-    return false;
+    return Boolean.FALSE;
   }
 
   /**
@@ -351,9 +351,9 @@ public class ParticipantValidator {
    */
   public static Boolean roleIsVictim(String role) {
     if (role != null && role.equalsIgnoreCase(VICTIM_ROLE)) {
-      return true;
+      return Boolean.TRUE;
     }
-    return false;
+    return Boolean.FALSE;
   }
 
   /**
@@ -362,9 +362,9 @@ public class ParticipantValidator {
    */
   public static Boolean roleIsPerpetrator(String role) {
     if (role != null && role.equalsIgnoreCase(PERPETRATOR_ROLE)) {
-      return true;
+      return Boolean.TRUE;
     }
-    return false;
+    return Boolean.FALSE;
   }
 
   /**
@@ -374,10 +374,10 @@ public class ParticipantValidator {
   public static Boolean roleIsAnonymousReporter(String role) {
     if (role != null && role.equalsIgnoreCase(ANONYMOUS_REPORTER_ROLE)) {
 
-      return true;
+      return Boolean.TRUE;
 
     }
-    return false;
+    return Boolean.FALSE;
   }
 
   /**
@@ -386,8 +386,8 @@ public class ParticipantValidator {
    */
   public static Boolean roleIsMandatedReporter(String role) {
     if (role != null && role.equalsIgnoreCase(MANDATED_REPORTER_ROLE)) {
-      return true;
+      return Boolean.TRUE;
     }
-    return false;
+    return Boolean.FALSE;
   }
 }

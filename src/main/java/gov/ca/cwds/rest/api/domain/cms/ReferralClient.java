@@ -208,11 +208,12 @@ public class ReferralClient extends ReportingDomain implements Request, Response
    * @param approvalCode - approvalCode
    * @return the referralClient
    */
-  public static ReferralClient createWithDefault(Boolean selfReported, Boolean staffPersonAddedIndicator,  String referralId,
-      String clientId, String countyCode, short approvalCode) {
+  public static ReferralClient createWithDefault(Boolean selfReported,
+      Boolean staffPersonAddedIndicator, String referralId, String clientId, String countyCode,
+      short approvalCode) {
     return new ReferralClient("", approvalCode, DEFAULT_CODE, DEFAULT_DISPOSITION_CODE, "",
-        selfReported, staffPersonAddedIndicator, referralId, clientId, "", DEFAULT_CODE, "", countyCode, false, false,
-        false);
+        selfReported, staffPersonAddedIndicator, referralId, clientId, "", DEFAULT_CODE, "",
+        countyCode, Boolean.FALSE, Boolean.FALSE, Boolean.FALSE);
   }
 
   /**

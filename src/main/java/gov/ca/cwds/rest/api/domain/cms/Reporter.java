@@ -355,7 +355,7 @@ public class Reporter extends ReportingDomain implements Request, Response {
 
     return new Reporter("", city, DEFAULT_CODE, DEFAULT_CODE,
         participant.isReporterConfidentialWaiver(), "", participant.getReporterEmployerName(), "",
-        false, participant.getFirstName(), participant.getLastName(), isMandatedReporter, 0,
+        Boolean.FALSE, participant.getFirstName(), participant.getLastName(), isMandatedReporter, 0,
         DEFAULT_DECIMAL, participant.getMiddleName(), "", DEFAULT_DECIMAL, 0,
         address.getState().shortValue(), streetName, streetNumber, "", zipCodeString, referralId,
         "", DEFAULT_CODE, countyCode);
