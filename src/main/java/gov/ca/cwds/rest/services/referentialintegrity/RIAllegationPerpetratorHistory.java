@@ -49,7 +49,8 @@ public class RIAllegationPerpetratorHistory
    */
   private static final long serialVersionUID = 1L;
 
-  private static final Logger LOGGER = LoggerFactory.getLogger(AllegationPerpetratorHistory.class);
+  private static final Logger LOGGER =
+      LoggerFactory.getLogger(RIAllegationPerpetratorHistory.class);
 
   private transient ClientDao clientDao;
   private transient AllegationDao allegationDao;
@@ -86,6 +87,6 @@ public class RIAllegationPerpetratorHistory
       throw new ReferentialIntegrityException(
           "AllegationPerpetratorHistory => Allegation with given Identifier is not present in database");
     }
-    return true;
+    return Boolean.TRUE;
   }
 }

@@ -53,7 +53,7 @@ public class RIClientAddress implements ApiReferentialCheck<ClientAddress> {
    */
   private static final long serialVersionUID = 1L;
 
-  private static final Logger LOGGER = LoggerFactory.getLogger(ClientAddress.class);
+  private static final Logger LOGGER = LoggerFactory.getLogger(RIClientAddress.class);
 
   private transient AddressDao addressDao;
   private transient ClientDao clientDao;
@@ -91,7 +91,7 @@ public class RIClientAddress implements ApiReferentialCheck<ClientAddress> {
       throw new ReferentialIntegrityException(
           "ClientAddress => Referral with given Identifier is not present in database");
     }
-    return true;
+    return Boolean.TRUE;
   }
 
 }

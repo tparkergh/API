@@ -47,7 +47,7 @@ public class RIClientCollateral implements ApiReferentialCheck<ClientCollateral>
    */
   private static final long serialVersionUID = 1L;
 
-  private static final Logger LOGGER = LoggerFactory.getLogger(ClientCollateral.class);
+  private static final Logger LOGGER = LoggerFactory.getLogger(RIClientCollateral.class);
 
   private transient ClientDao clientDao;
   private transient CollateralIndividualDao collateralIndividualDao;
@@ -85,7 +85,7 @@ public class RIClientCollateral implements ApiReferentialCheck<ClientCollateral>
           "ClientCollateral => Collateral Individual with given Identifier is not present in database");
 
     }
-    return true;
+    return Boolean.TRUE;
   }
 
 }

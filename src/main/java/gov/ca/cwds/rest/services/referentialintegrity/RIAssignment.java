@@ -40,7 +40,7 @@ public class RIAssignment implements ApiReferentialCheck<Assignment> {
 
   private static final long serialVersionUID = 1L;
 
-  private static final Logger LOGGER = LoggerFactory.getLogger(Assignment.class);
+  private static final Logger LOGGER = LoggerFactory.getLogger(RIAssignment.class);
 
   private transient ReferralDao referralDao;
 
@@ -72,6 +72,6 @@ public class RIAssignment implements ApiReferentialCheck<Assignment> {
           "Assignment => Referral with given Identifier is not present in database");
 
     }
-    return true;
+    return Boolean.TRUE;
   }
 }

@@ -1,6 +1,7 @@
 
 package gov.ca.cwds.rest.services.referentialintegrity;
 
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -48,7 +49,7 @@ public class RIReferral implements ApiReferentialCheck<Referral> {
    */
   private static final long serialVersionUID = 1L;
 
-  private static final Logger LOGGER = LoggerFactory.getLogger(RICrossReport.class);
+  private static final Logger LOGGER = LoggerFactory.getLogger(RIReferral.class);
 
   private transient AddressDao addressDao;
   private transient StaffPersonDao staffPersonDao;
@@ -88,58 +89,44 @@ public class RIReferral implements ApiReferentialCheck<Referral> {
     if (staffPersonDao.find(t.getPrimaryContactStaffPersonId()) == null) {
       throw new ReferentialIntegrityException(
           "Referral => Staff Person with given Identifier is not present in database");
-    } else if ((t.getFirstResponseDeterminedByStaffPersonId() != null
-        && !t.getFirstResponseDeterminedByStaffPersonId().isEmpty()
-        && !t.getFirstResponseDeterminedByStaffPersonId().trim().isEmpty())
+    } else if (StringUtils.isNotBlank(t.getFirstResponseDeterminedByStaffPersonId())
         && staffPersonDao.find(t.getFirstResponseDeterminedByStaffPersonId()) == null) {
       throw new ReferentialIntegrityException(
           "Referral => First Response Determined Staff Person with given Identifier is not present in database");
-    } else if ((t.getAllegesAbuseOccurredAtAddressId() != null
-        && !t.getAllegesAbuseOccurredAtAddressId().isEmpty()
-        && !t.getAllegesAbuseOccurredAtAddressId().trim().isEmpty())
+    } else if (StringUtils.isNotBlank(t.getAllegesAbuseOccurredAtAddressId())
         && addressDao.find(t.getAllegesAbuseOccurredAtAddressId()) == null) {
       throw new ReferentialIntegrityException(
           "Referral => Address with given Identifier is not present in database");
-    } else if ((t.getLinkToPrimaryReferralId() != null && !t.getLinkToPrimaryReferralId().isEmpty()
-        && !t.getLinkToPrimaryReferralId().trim().isEmpty())
+    } else if (StringUtils.isNotBlank(t.getLinkToPrimaryReferralId())
         && referralDao.find(t.getLinkToPrimaryReferralId()) == null) {
       throw new ReferentialIntegrityException(
           "Referral => LinkToPrimaryReferralId with given Identifier is not present in database");
-    } else if ((t.getDrmsAllegationDescriptionDoc() != null
-        && !t.getDrmsAllegationDescriptionDoc().isEmpty()
-        && !t.getDrmsAllegationDescriptionDoc().trim().isEmpty())
+    } else if (StringUtils.isNotBlank(t.getDrmsAllegationDescriptionDoc())
         && drmsDocumentDao.find(t.getDrmsAllegationDescriptionDoc()) == null) {
       throw new ReferentialIntegrityException(
           "Referral => Drms Allegation DescriptionDoc with given Identifier is not present in database");
-    } else if ((t.getDrmsErReferralDoc() != null && !t.getDrmsErReferralDoc().isEmpty()
-        && !t.getDrmsErReferralDoc().trim().isEmpty())
+    } else if (StringUtils.isNotBlank(t.getDrmsErReferralDoc())
         && drmsDocumentDao.find(t.getDrmsErReferralDoc()) == null) {
       throw new ReferentialIntegrityException(
           "Referral => Drms Referral Doc with given Identifier is not present in database");
-    } else if ((t.getDrmsInvestigationDoc() != null && !t.getDrmsInvestigationDoc().isEmpty()
-        && !t.getDrmsInvestigationDoc().trim().isEmpty())
+    } else if (StringUtils.isNotBlank(t.getDrmsInvestigationDoc())
         && drmsDocumentDao.find(t.getDrmsInvestigationDoc()) == null) {
       throw new ReferentialIntegrityException(
           "Referral => Drms Investigation Doc with given Identifier is not present in database");
-    } else if ((t.getCurrentLocationOfChildren() != null
-        && !t.getCurrentLocationOfChildren().isEmpty()
-        && !t.getCurrentLocationOfChildren().trim().isEmpty())
+    } else if (StringUtils.isNotBlank(t.getCurrentLocationOfChildren())
         && longTextDao.find(t.getCurrentLocationOfChildren()) == null) {
       throw new ReferentialIntegrityException(
           "Referral => Current Location Of Children with given Identifier is not present in database");
-    } else if ((t.getResponseRationaleText() != null && !t.getResponseRationaleText().isEmpty()
-        && !t.getResponseRationaleText().trim().isEmpty())
+    } else if (StringUtils.isNotBlank(t.getResponseRationaleText())
         && longTextDao.find(t.getResponseRationaleText()) == null) {
       throw new ReferentialIntegrityException(
           "Referral => Response Rationale Text with given Identifier is not present in database");
-    } else if ((t.getScreenerNoteText() != null && !t.getScreenerNoteText().isEmpty()
-        && !t.getScreenerNoteText().trim().isEmpty())
+    } else if (StringUtils.isNotBlank(t.getScreenerNoteText())
         && longTextDao.find(t.getScreenerNoteText()) == null) {
       throw new ReferentialIntegrityException(
           "Referral => Screener Note Text with given Identifier is not present in database");
-
     }
-    return true;
+    return Boolean.TRUE;
   }
 
 }
