@@ -1,0 +1,17 @@
+{
+  "id": "1",
+  "name": "Henderson Screening",
+  "decision": "promote_to_referral",
+  "decision_detail": "immediate",
+  "safety_alerts": ["Dangerous Animal on Premises", "Firearms in Home", "Severe Mental Health Status"],
+  "safety_information": "The animal at residence is a lion",
+  "additional_information": "There was excessive evidence of abuse",
+  "started_at": "2017-09-01T16:48:05.457Z",
+  "allegations": [
+    {
+      "victim_id": "22",
+      "perpetrator_id": "11",
+      "allegation_types": ["General neglect", "Physical abuse"]
+    }
+  ]
+}

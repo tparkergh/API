@@ -4,6 +4,8 @@ import gov.ca.cwds.rest.api.Request;
 
 import java.util.Set;
 
+import javax.validation.Valid;
+
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 
@@ -23,6 +25,8 @@ public class ContactRequestList implements Request {
    * 
    */
   private static final long serialVersionUID = 1L;
+
+  @Valid
   @JsonProperty("contacts")
   private Set<ContactRequest> contacts;
 
@@ -37,6 +41,14 @@ public class ContactRequestList implements Request {
   public ContactRequestList(Set<ContactRequest> contacts) {
     this.contacts = contacts;
   }
+
+  /**
+   * @return the contacts
+   */
+  public Set<ContactRequest> getContacts() {
+    return contacts;
+  }
+
 
   /**
    * {@inheritDoc}
