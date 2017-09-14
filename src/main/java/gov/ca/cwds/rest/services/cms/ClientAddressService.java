@@ -36,7 +36,7 @@ import gov.ca.cwds.rest.util.IdGenerator;
  */
 public class ClientAddressService implements
     TypedCrudsService<String, gov.ca.cwds.rest.api.domain.cms.ClientAddress, gov.ca.cwds.rest.api.domain.cms.ClientAddress> {
-  private static final Logger LOGGER = LoggerFactory.getLogger(ClientService.class);
+  private static final Logger LOGGER = LoggerFactory.getLogger(ClientAddressService.class);
 
   private ClientAddressDao clientAddressDao;
   private StaffPersonDao staffpersonDao;

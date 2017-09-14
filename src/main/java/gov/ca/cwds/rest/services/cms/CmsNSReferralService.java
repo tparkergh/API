@@ -30,7 +30,7 @@ import gov.ca.cwds.rest.services.PersonService;
 public class CmsNSReferralService implements CrudsService {
 
   @SuppressWarnings("unused")
-  private static final Logger LOGGER = LoggerFactory.getLogger(CmsReferralService.class);
+  private static final Logger LOGGER = LoggerFactory.getLogger(CmsNSReferralService.class);
 
   private ReferralService referralService;
   private PersonService personService;

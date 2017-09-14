@@ -229,7 +229,9 @@ public class Allegation extends CmsPersistentObject {
     this.abuseStartDate = DomainChef.uncookDateString(persistedAllegation.getAbuseStartDate());
     this.abuseFrequency = persistedAllegation.getAbuseFrequency();
     this.abuseFrequencyPeriodCode = persistedAllegation.getAbuseFrequencyPeriodCode();
-    this.abuseLocationDescription = persistedAllegation.getAbuseLocationDescription();
+    this.abuseLocationDescription =
+        StringUtils.isBlank(persistedAllegation.getAbuseLocationDescription()) ? ""
+            : persistedAllegation.getAbuseLocationDescription();
     this.allegationDispositionType = persistedAllegation.getAllegationDispositionType();
     this.allegationType = persistedAllegation.getAllegationType();
     this.dispositionDescription = persistedAllegation.getDispositionDescription();

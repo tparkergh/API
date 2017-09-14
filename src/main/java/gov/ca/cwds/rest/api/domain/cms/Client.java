@@ -213,8 +213,7 @@ public class Client extends ReportingDomain implements Request, Response {
   @ApiModelProperty(required = true, readOnly = false, value = "", example = "Y")
   private String estimatedDobCode;
 
-  @Size(max = 1)
-  @OneOf(value = {"A", "I", "K"}, ignoreCase = true, ignoreWhitespace = true)
+  @OneOf(value = {"A", "I", "K", ""}, ignoreCase = true, ignoreWhitespace = true)
   @ApiModelProperty(required = false, readOnly = false, value = "", example = "K")
   private String ethUnableToDetReasonCode;
 
@@ -659,12 +658,16 @@ public class Client extends ReportingDomain implements Request, Response {
     this.driverLicenseStateCodeType = persistedClient.getDriverLicenseStateCodeType();
     this.emailAddress = persistedClient.getEmailAddress();
     this.estimatedDobCode = persistedClient.getEstimatedDobCode();
-    this.ethUnableToDetReasonCode = persistedClient.getEthUnableToDetReasonCode();
+    this.ethUnableToDetReasonCode =
+        StringUtils.isBlank(persistedClient.getEthUnableToDetReasonCode()) ? null
+            : persistedClient.getEthUnableToDetReasonCode();
     this.fatherParentalRightTermDate =
         DomainChef.cookDate(persistedClient.getFatherParentalRightTermDate());
     this.genderCode = persistedClient.getGenderCode();
     this.healthSummaryText = persistedClient.getHealthSummaryText();
-    this.hispUnableToDetReasonCode = persistedClient.getHispUnableToDetReasonCode();
+    this.hispUnableToDetReasonCode =
+        StringUtils.isBlank(persistedClient.getHispUnableToDetReasonCode()) ? null
+            : persistedClient.getHispUnableToDetReasonCode();
     this.hispanicOriginCode = persistedClient.getHispanicOriginCode();
     this.immigrationCountryCodeType = persistedClient.getImmigrationCountryCodeType();
     this.immigrationStatusType = persistedClient.getImmigrationStatusType();

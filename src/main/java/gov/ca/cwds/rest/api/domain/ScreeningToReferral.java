@@ -2,7 +2,6 @@ package gov.ca.cwds.rest.api.domain;
 
 import static gov.ca.cwds.data.persistence.cms.CmsPersistentObject.CMS_ID_LEN;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import java.util.Set;
 
 import javax.validation.Valid;
@@ -15,6 +14,7 @@ import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.hibernate.validator.constraints.NotEmpty;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
@@ -79,7 +79,6 @@ public class ScreeningToReferral extends ReportingDomain implements Request {
   private String incidentDate;
 
   @JsonProperty("location_type")
-  @NotNull
   @ApiModelProperty(required = true, readOnly = false, value = "Location Type",
       example = "foster home")
   @Size(max = 75)
@@ -176,8 +175,7 @@ public class ScreeningToReferral extends ReportingDomain implements Request {
   @JsonProperty("limited_access_code")
   @Size(max = 1)
   @OneOf(value = {"R", "S", "N"})
-  @ApiModelProperty(required = true, readOnly = false, value = "limited access code",
-      example = "N")
+  @ApiModelProperty(required = true, readOnly = false, value = "limited access code", example = "N")
   private String limitedAccessCode;
 
   @JsonProperty("limited_access_description")
@@ -188,8 +186,8 @@ public class ScreeningToReferral extends ReportingDomain implements Request {
 
   @JsonProperty("limited_access_agency")
   @ApiModelProperty(required = false, readOnly = false, value = "40", example = "The user county")
-  @ValidLogicalId(required = false, category = SystemCodeCategoryId.COUNTY_CODE, ignoreable =
-      true, ignoredValue = "")
+  @ValidLogicalId(required = false, category = SystemCodeCategoryId.COUNTY_CODE, ignoreable = true,
+      ignoredValue = "")
   private String limitedAccessAgency;
 
   @JsonProperty("limited_access_date")
@@ -451,7 +449,7 @@ public class ScreeningToReferral extends ReportingDomain implements Request {
   }
 
   @JsonIgnore
-  public boolean isAccessLimited(){
+  public boolean isAccessLimited() {
     return limitedAccessCode == "S" || limitedAccessCode == "R";
   }
 

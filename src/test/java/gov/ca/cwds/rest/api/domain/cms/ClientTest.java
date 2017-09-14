@@ -2309,7 +2309,7 @@ public class ClientTest implements DomainTestTemplate {
   }
 
   @Test
-  public void testFailEthUnableToDetReasonCodeWhiteSpace() throws Exception {
+  public void testPassEthUnableToDetReasonCodeWhiteSpace() throws Exception {
 
     Client validClient = MAPPER.readValue(
         fixture("fixtures/domain/legacy/Client/invalid/ethUnableToDetReasonCodeWhiteSpace.json"),
@@ -2319,9 +2319,7 @@ public class ClientTest implements DomainTestTemplate {
         resources.client().target(ROOT_RESOURCE).request().accept(MediaType.APPLICATION_JSON)
             .post(Entity.entity(validClient, MediaType.APPLICATION_JSON));
 
-    assertThat(response.getStatus(), is(equalTo(422)));
-    assertThat(response.readEntity(String.class)
-        .indexOf("ethUnableToDetReasonCode must be one of [A, I, K]"), is(greaterThanOrEqualTo(0)));
+    assertThat(response.getStatus(), is(equalTo(204)));
   }
 
   @Test

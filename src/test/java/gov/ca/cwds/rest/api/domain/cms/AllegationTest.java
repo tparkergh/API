@@ -478,8 +478,6 @@ public class AllegationTest {
     Response response =
         resources.client().target(ROOT_RESOURCE).request().accept(MediaType.APPLICATION_JSON)
             .post(Entity.entity(toCreate, MediaType.APPLICATION_JSON));
-    // String message = response.readEntity(String.class);
-    // System.out.print(message);
     assertThat(response.getStatus(), is(equalTo(204)));
   }
 
@@ -491,17 +489,14 @@ public class AllegationTest {
    * 
    */
   @Test
-  public void failsWhenAbuseLocationDescriptionMissing() throws Exception {
+  public void successWhenAbuseLocationDescriptionMissing() throws Exception {
     Allegation toCreate = MAPPER.readValue(
-        fixture("fixtures/domain/legacy/Allegation/invalid/abuseLocationDescriptionMissing.json"),
+        fixture("fixtures/domain/legacy/Allegation/valid/abuseLocationDescriptionMissing.json"),
         Allegation.class);
     Response response =
         resources.client().target(ROOT_RESOURCE).request().accept(MediaType.APPLICATION_JSON)
             .post(Entity.entity(toCreate, MediaType.APPLICATION_JSON));
-    assertThat(response.getStatus(), is(equalTo(422)));
-    assertThat(
-        response.readEntity(String.class).indexOf("abuseLocationDescription may not be null"),
-        is(greaterThanOrEqualTo(0)));
+    assertThat(response.getStatus(), is(equalTo(204)));
   }
 
   /**
@@ -509,17 +504,14 @@ public class AllegationTest {
    * 
    */
   @Test
-  public void failsWhenAbuseLocationDescriptionNull() throws Exception {
+  public void successWhenAbuseLocationDescriptionNull() throws Exception {
     Allegation toCreate = MAPPER.readValue(
-        fixture("fixtures/domain/legacy/Allegation/invalid/abuseLocationDescriptionNull.json"),
+        fixture("fixtures/domain/legacy/Allegation/valid/abuseLocationDescriptionNull.json"),
         Allegation.class);
     Response response =
         resources.client().target(ROOT_RESOURCE).request().accept(MediaType.APPLICATION_JSON)
             .post(Entity.entity(toCreate, MediaType.APPLICATION_JSON));
-    assertThat(response.getStatus(), is(equalTo(422)));
-    assertThat(
-        response.readEntity(String.class).indexOf("abuseLocationDescription may not be null"),
-        is(greaterThanOrEqualTo(0)));
+    assertThat(response.getStatus(), is(equalTo(204)));
   }
 
   /**
@@ -600,8 +592,6 @@ public class AllegationTest {
         resources.client().target(ROOT_RESOURCE).request().accept(MediaType.APPLICATION_JSON)
             .post(Entity.entity(toCreate, MediaType.APPLICATION_JSON));
     assertThat(response.getStatus(), is(equalTo(422)));
-    // String message = response.readEntity(String.class);
-    // System.out.print(message);
     assertThat(response.readEntity(String.class).indexOf("abuseStartDate must be in the format of"),
         is(greaterThanOrEqualTo(0)));
   }
@@ -1275,8 +1265,6 @@ public class AllegationTest {
         resources.client().target(ROOT_RESOURCE).request().accept(MediaType.APPLICATION_JSON)
             .post(Entity.entity(toCreate, MediaType.APPLICATION_JSON));
     assertThat(response.getStatus(), is(equalTo(422)));
-    // String message = response.readEntity(String.class);
-    // System.out.print(message);
     assertThat(response.readEntity(String.class)
         .indexOf("perpetratorClientId size must be between 0 and 10"), is(greaterThanOrEqualTo(0)));
   }

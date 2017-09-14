@@ -537,7 +537,8 @@ public class Referral extends ReportingDomain implements Request, Response {
         DomainChef.uncookBooleanString(persistedReferral.getFamilyRefusedServicesIndicator());
     this.firstEvaluatedOutApprovalDate =
         DomainChef.cookDate(persistedReferral.getFirstEvaluatedOutApprovalDate());
-    this.responsibleAgencyCode = persistedReferral.getResponsibleAgencyCode();
+    this.responsibleAgencyCode = StringUtils.isBlank(persistedReferral.getResponsibleAgencyCode())
+        ? "C" : persistedReferral.getResponsibleAgencyCode();
     this.limitedAccessGovtAgencyType = persistedReferral.getLimitedAccessGovtAgencyType();
     this.limitedAccessDate = DomainChef.cookDate(persistedReferral.getLimitedAccessDate());
     this.limitedAccessDesc = persistedReferral.getLimitedAccessDesc();

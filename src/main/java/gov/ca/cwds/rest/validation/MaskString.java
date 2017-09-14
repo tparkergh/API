@@ -20,7 +20,7 @@ import org.slf4j.LoggerFactory;
  */
 public class MaskString {
 
-  private static final Logger LOGGER = LoggerFactory.getLogger(SmartyStreet.class);
+  private static final Logger LOGGER = LoggerFactory.getLogger(MaskString.class);
   private static final String SSN_WITH_HYPHEN = "^(?!000)[0-9]{3}-(?!00)[0-9]{2}-(?!0000)[0-9]{4}$";
   private static final String SSN_WITHOUT_HYPHEN =
       "^(?!000)[0-9]{3}(?!00)[0-9]{2}(?!0000)[0-9]{4}$";
