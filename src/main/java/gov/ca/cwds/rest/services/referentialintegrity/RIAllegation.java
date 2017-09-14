@@ -1,5 +1,6 @@
 package gov.ca.cwds.rest.services.referentialintegrity;
 
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -79,8 +80,7 @@ public class RIAllegation implements ApiReferentialCheck<Allegation> {
       throw new ReferentialIntegrityException(
           "Allegation => Victim Client with given Identifier is not present in database");
 
-    } else if ((t.getPerpetratorClientId() != null && !t.getPerpetratorClientId().isEmpty()
-        && !t.getPerpetratorClientId().trim().isEmpty())
+    } else if (StringUtils.isNotBlank(t.getPerpetratorClientId())
         && clientDao.find(t.getPerpetratorClientId()) == null) {
       throw new ReferentialIntegrityException(
           "Allegation => Perpetrator Client with given Identifier is not present in database");

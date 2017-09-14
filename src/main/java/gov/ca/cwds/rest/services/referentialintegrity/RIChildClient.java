@@ -43,7 +43,7 @@ public class RIChildClient implements ApiReferentialCheck<ChildClient> {
    */
   private static final long serialVersionUID = 1L;
 
-  private static final Logger LOGGER = LoggerFactory.getLogger(ChildClient.class);
+  private static final Logger LOGGER = LoggerFactory.getLogger(RIChildClient.class);
 
   private transient ClientDao clientDao;
 
@@ -72,7 +72,7 @@ public class RIChildClient implements ApiReferentialCheck<ChildClient> {
       throw new ReferentialIntegrityException(
           "ChildClient => Victim Client with given Identifier is not present in database");
     }
-    return true;
+    return Boolean.TRUE;
   }
 
 }
