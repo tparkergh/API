@@ -46,7 +46,7 @@ public class ScreeningToReferralResourceBuilder {
   private Short injuryHarmCategory = 2178;
   private String limitedAccessCode = "N";
   private String limitedAccessDescription = "";
-  private short limitedAccessAgency = 5548;
+  private String limitedAccessAgency = "23";
   private Date limitedAccessDate = null;
   private gov.ca.cwds.rest.api.domain.Address address;
   private Set<Participant> participants;
@@ -194,11 +194,11 @@ public class ScreeningToReferralResourceBuilder {
     return this;
   }
 
-  public short getLimitedAccessAgency() {
+  public String getLimitedAccessAgency() {
     return limitedAccessAgency;
   }
 
-  public ScreeningToReferralResourceBuilder setLimitedAccessAgency(short limitedAccessAgency) {
+  public ScreeningToReferralResourceBuilder setLimitedAccessAgency(String limitedAccessAgency) {
     this.limitedAccessAgency = limitedAccessAgency;
     return this;
   }

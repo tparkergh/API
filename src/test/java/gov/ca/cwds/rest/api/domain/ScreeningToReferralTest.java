@@ -128,8 +128,8 @@ public class ScreeningToReferralTest {
             "2016-08-02", "Foster Home", communicationMethod, "The Rocky Horror Show",
             "Narrative 123 test", "123ABC", responseTime, "2016-08-03T01:00:00.000Z",
             "Michael Bastow", "addtional information", "Screening Descision", "Detail",
-            approvalStatus, familyAwarness, filedWithLawEnforcement, responsibleAgency, null, null,
-            (short) 0, null, address, participants, crossReports, allegations));
+            approvalStatus, familyAwarness, filedWithLawEnforcement, responsibleAgency, "S", "",
+            "23", null, address, participants, crossReports, allegations));
 
     String serialized = MAPPER.writeValueAsString(
         MAPPER.readValue(fixture("fixtures/domain/ScreeningToReferral/valid/validstr.json"),
@@ -154,8 +154,8 @@ public class ScreeningToReferralTest {
             "2016-08-02", "Foster Home", communicationMethod, "The Rocky Horror Show",
             "Narrative 123 test", "123ABC", responseTime, "2016-08-03T01:00:00.000Z",
             "Michael Bastow", "addtional information", "Screening Descision", "Detail",
-            approvalStatus, familyAwarness, filedWithLawEnforcement, responsibleAgency, null, null,
-            (short) 0, null, address, participants, crossReports, allegations);
+            approvalStatus, familyAwarness, filedWithLawEnforcement, responsibleAgency, "S", "",
+            "23", null, address, participants, crossReports, allegations);
 
     ScreeningToReferral serialized =
         MAPPER.readValue(fixture("fixtures/domain/ScreeningToReferral/valid/validstr.json"),
@@ -463,7 +463,17 @@ public class ScreeningToReferralTest {
   @Test
   public void shouldHaveNoErrorsWhenLimitedAccessAgencyIsNull() {
     ScreeningToReferral screeningToReferral = new ScreeningToReferralResourceBuilder()
-        .setLimitedAccessAgency((short) 0).createScreeningToReferral();
+        .setLimitedAccessAgency(null).createScreeningToReferral();
+
+    Set<ConstraintViolation<ScreeningToReferral>> constraintViolations =
+        validator.validate(screeningToReferral);
+    assertEquals("Expected limited access agency value of null to not be an error", 0,
+        constraintViolations.size());
+  }
+  @Test
+  public void shouldHaveNoErrorsWhenLimitedAccessAgencyIsAnEmptyString() {
+    ScreeningToReferral screeningToReferral = new ScreeningToReferralResourceBuilder()
+        .setLimitedAccessAgency("").createScreeningToReferral();
 
     Set<ConstraintViolation<ScreeningToReferral>> constraintViolations =
         validator.validate(screeningToReferral);
@@ -474,7 +484,7 @@ public class ScreeningToReferralTest {
   @Test
   public void shouldNotHaveErrorsWhenLimitedAccessAgencyIsAValidCode() {
     ScreeningToReferral screeningToReferral = new ScreeningToReferralResourceBuilder()
-        .setLimitedAccessAgency((short) 5548).createScreeningToReferral();
+        .setLimitedAccessAgency("23").createScreeningToReferral();
 
     Set<ConstraintViolation<ScreeningToReferral>> constraintViolations =
         validator.validate(screeningToReferral);
@@ -485,7 +495,7 @@ public class ScreeningToReferralTest {
   @Test
   public void shouldHaveErrorsWhenLimitedAccessAgencyIsAnInValidCode() {
     ScreeningToReferral screeningToReferral = new ScreeningToReferralResourceBuilder()
-        .setLimitedAccessAgency((short) 999).createScreeningToReferral();
+        .setLimitedAccessAgency("999").createScreeningToReferral();
 
     Set<ConstraintViolation<ScreeningToReferral>> constraintViolations =
         validator.validate(screeningToReferral);
