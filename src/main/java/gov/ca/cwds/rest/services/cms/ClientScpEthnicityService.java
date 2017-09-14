@@ -2,8 +2,10 @@ package gov.ca.cwds.rest.services.cms;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Set;
 
 import javax.persistence.EntityExistsException;
 import javax.persistence.EntityNotFoundException;
@@ -30,8 +32,10 @@ import gov.ca.cwds.rest.services.TypedCrudsService;
 public class ClientScpEthnicityService
     implements TypedCrudsService<String, ClientScpEthnicity, ClientScpEthnicity> {
 
-  private static final Logger LOGGER = LoggerFactory.getLogger(ClientScpEthnicityService.class);
+  private static final String CLIENT_ESTABLISHED_CODE = "C";
 
+  private static final Logger LOGGER = LoggerFactory.getLogger(ClientScpEthnicityService.class);
+  private Set<Short> raceCodes = new HashSet<>();
   private ClientScpEthnicityDao clientScpEthnicityDao;
   private String lastUpdatedId = RequestExecutionContext.instance().getStaffId();
   private Date lastUpdatedTime = RequestExecutionContext.instance().getRequestStartTime();
@@ -117,36 +121,50 @@ public class ClientScpEthnicityService
   }
 
   /**
+   * @param raceAndEthnicity - raceAndEthnicity
+   * @return the race And Ethnicity codes
+   */
+  public Short getRaceCode(RaceAndEthnicity raceAndEthnicity) {
+    Short raceCode = 0;
+    if (raceAndEthnicity != null && !raceAndEthnicity.getRaceCode().isEmpty()) {
+
+      Iterator<Short> raceCodeIterator = raceAndEthnicity.getRaceCode().iterator();
+      raceCode = raceCodeIterator.next();
+      while (raceCodeIterator.hasNext()) {
+        raceCodes.add(raceCodeIterator.next());
+      }
+    }
+    if (raceAndEthnicity != null && !raceAndEthnicity.getHispanicCode().isEmpty()) {
+      Iterator<Short> hispanicCodeIterator = raceAndEthnicity.getHispanicCode().iterator();
+      if (raceCode == 0) {
+        raceCode = hispanicCodeIterator.next();
+      }
+      while (hispanicCodeIterator.hasNext()) {
+        raceCodes.add(hispanicCodeIterator.next());
+      }
+
+    }
+    return raceCode;
+  }
+
+  /**
    * @param clientId - clientId
    * @param raceAndEthnicity - race and ethnicity
    */
   public void createOtherEthnicity(String clientId, RaceAndEthnicity raceAndEthnicity) {
-    List<gov.ca.cwds.data.persistence.cms.ClientScpEthnicity> scpEthnicities = new ArrayList<>();
-    if (raceAndEthnicity != null && !raceAndEthnicity.getRaceCode().isEmpty()) {
-      Iterator<Short> it = raceAndEthnicity.getRaceCode().iterator();
-      it.next();
-      while (it.hasNext()) {
-        gov.ca.cwds.data.persistence.cms.ClientScpEthnicity scpEthnicity =
+    List<gov.ca.cwds.data.persistence.cms.ClientScpEthnicity> clientScpEthnicities =
+        new ArrayList<>();
+    if (!raceCodes.isEmpty()) {
+      for (Short code : raceCodes) {
+        gov.ca.cwds.data.persistence.cms.ClientScpEthnicity clientScpEthnicity =
             new gov.ca.cwds.data.persistence.cms.ClientScpEthnicity(
-                CmsKeyIdGenerator.generate(lastUpdatedId), "C", clientId, it.next(), lastUpdatedId,
-                lastUpdatedTime);
-        scpEthnicities.add(scpEthnicity);
+                CmsKeyIdGenerator.generate(lastUpdatedId), CLIENT_ESTABLISHED_CODE, clientId, code,
+                lastUpdatedId, lastUpdatedTime);
+        clientScpEthnicities.add(clientScpEthnicity);
       }
     }
-
-    if (raceAndEthnicity != null && !raceAndEthnicity.getHispanicCode().isEmpty()) {
-      Iterator<Short> it1 = raceAndEthnicity.getHispanicCode().iterator();
-      while (it1.hasNext()) {
-        gov.ca.cwds.data.persistence.cms.ClientScpEthnicity scpEthnicity =
-            new gov.ca.cwds.data.persistence.cms.ClientScpEthnicity(
-                CmsKeyIdGenerator.generate(lastUpdatedId), "C", clientId, it1.next(), lastUpdatedId,
-                lastUpdatedTime);
-        scpEthnicities.add(scpEthnicity);
-      }
-    }
-
-    if (!scpEthnicities.isEmpty()) {
-      for (gov.ca.cwds.data.persistence.cms.ClientScpEthnicity entity : scpEthnicities) {
+    if (!clientScpEthnicities.isEmpty()) {
+      for (gov.ca.cwds.data.persistence.cms.ClientScpEthnicity entity : clientScpEthnicities) {
         clientScpEthnicityDao.create(entity);
       }
     }

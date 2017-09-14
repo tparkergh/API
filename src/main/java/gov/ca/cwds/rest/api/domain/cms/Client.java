@@ -25,7 +25,6 @@ import gov.ca.cwds.rest.api.domain.DomainObject;
 import gov.ca.cwds.rest.api.domain.LimitedAccessType;
 import gov.ca.cwds.rest.api.domain.Participant;
 import gov.ca.cwds.rest.api.domain.ReportingDomain;
-import gov.ca.cwds.rest.services.RaceAndEthnicityService;
 import io.dropwizard.validation.OneOf;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
@@ -727,21 +726,21 @@ public class Client extends ReportingDomain implements Request, Response {
    * @param participant - participant
    * @param dateStarted - dateStarted
    * @param genderCode - genderCode
+   * @param raceCode - raceCode
    * @return the client
    */
   public static Client createWithDefaults(Participant participant, String dateStarted,
-      String genderCode) {
+      String genderCode, Short raceCode) {
 
-    //TODO:Reorganize
+    // TODO:Reorganize
     String unableToDetermineCode = "K";
     String hispanicUnableToDetermineCode = "";
     String hispanicOriginCode = "X";
-    Short raceCode = 0;
-    if (participant.getRaceAndEthnicity() != null){
+    if (participant.getRaceAndEthnicity() != null) {
       unableToDetermineCode = participant.getRaceAndEthnicity().getUnableToDetermineCode();
-      hispanicUnableToDetermineCode = participant.getRaceAndEthnicity().getHispanicUnableToDetermineCode();
-      hispanicOriginCode =  participant.getRaceAndEthnicity().getHispanicOriginCode();
-      raceCode = RaceAndEthnicityService.getRaceCode(participant.getRaceAndEthnicity());
+      hispanicUnableToDetermineCode =
+          participant.getRaceAndEthnicity().getHispanicUnableToDetermineCode();
+      hispanicOriginCode = participant.getRaceAndEthnicity().getHispanicOriginCode();
     }
 
     return new Client("", participant.getLegacyDescriptor().getLastUpdated(), false,
@@ -749,14 +748,14 @@ public class Client extends ReportingDomain implements Request, Response {
         DEFAULT_CODE, false, DEFAULT_CHILD_CLIENT_INDICATOR, "", "", participant.getFirstName(),
         participant.getMiddleName(), participant.getLastName(), "", false, dateStarted, false, "",
         false, "", false, "", "", "", DEFAULT_CODE, "", DEFAULT_ESTIMATED_DOB_CODE,
-        unableToDetermineCode, "", genderCode, "",
-        hispanicUnableToDetermineCode, hispanicOriginCode, DEFAULT_CODE, DEFAULT_CODE,
-        DEFAULT_INCAPCITATED_PARENT_CODE, false, false, DEFAULT_LITERATE_CODE, false, DEFAULT_CODE,
-        DEFAULT_MILITARY_STATUS_CODE, "", "", DEFAULT_NAME_TYPE, false, false, "", false, raceCode,
-        participant.getPrimaryLanguage(), DEFAULT_CODE, participant.getSecondaryLanguage(), false,
-        DEFAULT_SENSITIVITY_INDICATOR, DEFAULT_SOC158_PLACEMENT_CODE, false,
-        DEFAULT_SOCIAL_SECURITY_NUM_CHANGE_CODE, participant.getSsn(), participant.getNameSuffix(),
-        false, false, DEFAULT_UNEMPLOYED_PARENT_CODE, false, null);
+        unableToDetermineCode, "", genderCode, "", hispanicUnableToDetermineCode,
+        hispanicOriginCode, DEFAULT_CODE, DEFAULT_CODE, DEFAULT_INCAPCITATED_PARENT_CODE, false,
+        false, DEFAULT_LITERATE_CODE, false, DEFAULT_CODE, DEFAULT_MILITARY_STATUS_CODE, "", "",
+        DEFAULT_NAME_TYPE, false, false, "", false, raceCode, participant.getPrimaryLanguage(),
+        DEFAULT_CODE, participant.getSecondaryLanguage(), false, DEFAULT_SENSITIVITY_INDICATOR,
+        DEFAULT_SOC158_PLACEMENT_CODE, false, DEFAULT_SOCIAL_SECURITY_NUM_CHANGE_CODE,
+        participant.getSsn(), participant.getNameSuffix(), false, false,
+        DEFAULT_UNEMPLOYED_PARENT_CODE, false, null);
   }
 
   /**

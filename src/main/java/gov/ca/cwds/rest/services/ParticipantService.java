@@ -180,8 +180,10 @@ public class ParticipantService implements CrudsService {
               boolean newClient = incomingParticipant.getLegacyId() == null
                   || incomingParticipant.getLegacyId().isEmpty();
               if (newClient) {
-                Client client =
-                    Client.createWithDefaults(incomingParticipant, dateStarted, genderCode);
+                Short raceCode = clientScpEthnicityService
+                    .getRaceCode(incomingParticipant.getRaceAndEthnicity());
+                Client client = Client.createWithDefaults(incomingParticipant, dateStarted,
+                    genderCode, raceCode);
                 client.applySensitivityIndicator(screeningToReferral.getLimitedAccessCode());
                 client.applySensitivityIndicator(incomingParticipant.getSensitivityIndicator());
                 messageBuilder.addDomainValidationError(validator.validate(client));

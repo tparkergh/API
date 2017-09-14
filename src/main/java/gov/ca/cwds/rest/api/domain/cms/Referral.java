@@ -503,7 +503,7 @@ public class Referral extends ReportingDomain implements Request, Response {
     this.legalDefinitionCode = persistedReferral.getLegalDefinitionCode();
     this.legalRightsNoticeIndicator =
         DomainChef.uncookBooleanString(persistedReferral.getLegalRightsNoticeIndicator());
-    this.limitedAccessCode = persistedReferral.getLimitedAccessCode();;
+    this.limitedAccessCode = persistedReferral.getLimitedAccessCode();
     this.mandatedCrossReportReceivedDate =
         DomainChef.cookDate(persistedReferral.getMandatedCrossReportReceivedDate());
     this.referralName = persistedReferral.getReferralName();

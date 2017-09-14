@@ -51,7 +51,7 @@ import io.dropwizard.hibernate.UnitOfWork;
  */
 public class ScreeningToReferralService implements CrudsService {
 
-  private static final Logger LOGGER = LoggerFactory.getLogger(ScreeningToReferral.class);
+  private static final Logger LOGGER = LoggerFactory.getLogger(ScreeningToReferralService.class);
 
   private static final String ALLEGATION_TABLE_NAME = "ALLGTN_T";
   private static final String CROSS_REPORT_TABLE_NAME = "CRSS_RPT";

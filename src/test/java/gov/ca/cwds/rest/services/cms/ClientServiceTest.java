@@ -179,7 +179,7 @@ public class ClientServiceTest {
       Set<Address> addresses = new HashSet<>(Arrays.asList(address));
       Participant participant = new ParticipantResourceBuilder().setAddresses(addresses)
           .setRaceAndEthnicity(raceAndEthnicity).createParticipant();
-      Client domainClient = Client.createWithDefaults(participant, "", "m");
+      Client domainClient = Client.createWithDefaults(participant, "", "m", (short) 0);
       gov.ca.cwds.data.persistence.cms.Client savedClient =
           new gov.ca.cwds.data.persistence.cms.Client("123", domainClient, "OX5");
       when(clientDao.find(any())).thenReturn(savedClient);

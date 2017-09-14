@@ -406,8 +406,9 @@ public class ClientTest implements DomainTestTemplate {
 
     String genderCode = "male";
     String dateStarted = "now";
+    Short raceCode = (short) 0;
 
-    Client client = Client.createWithDefaults(participant, dateStarted, genderCode);
+    Client client = Client.createWithDefaults(participant, dateStarted, genderCode, raceCode);
 
     assertEquals("Expected BirthDate field to be initialized with values",
         participant.getDateOfBirth(), client.getBirthDate());
@@ -439,7 +440,7 @@ public class ClientTest implements DomainTestTemplate {
             reporterConfidentialWaiver, reporterEmployerName, clientStaffPersonAdded,
             sensitivityIndicator, new HashSet<>(), new HashSet<>(), raceAndEthnicity);
 
-    Client client = Client.createWithDefaults(participant, "", "");
+    Client client = Client.createWithDefaults(participant, "", "", (short) 0);
 
     client.update("Barney", "middlestone", "Rubble", "jr");
 
@@ -466,8 +467,9 @@ public class ClientTest implements DomainTestTemplate {
 
     String genderCode = "male";
     String dateStarted = "now";
+    Short raceCode = (short) 0;
 
-    Client client = Client.createWithDefaults(participant, dateStarted, genderCode);
+    Client client = Client.createWithDefaults(participant, dateStarted, genderCode, raceCode);
 
     assertEquals("Expected existingClientId field to be initialized with default values", "",
         client.getExistingClientId());
