@@ -20,6 +20,10 @@
   "additional_information" : "addtional information",
   "screening_decision" : "Screening Descision",
   "screening_decision_detail" : "Detail",
+  "limited_access_code": "S",
+  "limited_access_description": "",
+  "limited_access_agency":"23",
+  "limited_access_date":null,
   "address" : {
    "legacy_source_table" : "",
    "legacy_id" : "",
