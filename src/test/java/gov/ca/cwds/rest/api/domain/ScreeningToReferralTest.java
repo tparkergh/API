@@ -123,13 +123,12 @@ public class ScreeningToReferralTest {
     Allegation allegation = validAllegation();
     allegations.add(allegation);
 
-    String expected = MAPPER.writeValueAsString(
-        new ScreeningToReferral(id, "", "", "2016-08-03T01:00:00.000Z", SACRAMENTO_COUNTY_CODE,
-            "2016-08-02", "Foster Home", communicationMethod, "The Rocky Horror Show",
-            "Narrative 123 test", "123ABC", responseTime, "2016-08-03T01:00:00.000Z",
-            "Michael Bastow", "addtional information", "Screening Descision", "Detail",
-            approvalStatus, familyAwarness, filedWithLawEnforcement, responsibleAgency, "S", "",
-            "23", null, address, participants, crossReports, allegations));
+    String expected = MAPPER.writeValueAsString(new ScreeningToReferral(id, "", "",
+        "2016-08-03T01:00:00.000Z", SACRAMENTO_COUNTY_CODE, "2016-08-02", "Foster Home",
+        communicationMethod, "The Rocky Horror Show", "Narrative 123 test", "123ABC", responseTime,
+        "2016-08-03T01:00:00.000Z", "Michael Bastow", "addtional information",
+        "Screening Descision", "Detail", approvalStatus, familyAwarness, filedWithLawEnforcement,
+        responsibleAgency, "S", "", "23", null, address, participants, crossReports, allegations));
 
     String serialized = MAPPER.writeValueAsString(
         MAPPER.readValue(fixture("fixtures/domain/ScreeningToReferral/valid/validstr.json"),
@@ -149,13 +148,12 @@ public class ScreeningToReferralTest {
     Allegation allegation = validAllegation();
     allegations.add(allegation);
 
-    ScreeningToReferral expected =
-        new ScreeningToReferral(id, "", "", "2016-08-03T01:00:00.000Z", SACRAMENTO_COUNTY_CODE,
-            "2016-08-02", "Foster Home", communicationMethod, "The Rocky Horror Show",
-            "Narrative 123 test", "123ABC", responseTime, "2016-08-03T01:00:00.000Z",
-            "Michael Bastow", "addtional information", "Screening Descision", "Detail",
-            approvalStatus, familyAwarness, filedWithLawEnforcement, responsibleAgency, "S", "",
-            "23", null, address, participants, crossReports, allegations);
+    ScreeningToReferral expected = new ScreeningToReferral(id, "", "", "2016-08-03T01:00:00.000Z",
+        SACRAMENTO_COUNTY_CODE, "2016-08-02", "Foster Home", communicationMethod,
+        "The Rocky Horror Show", "Narrative 123 test", "123ABC", responseTime,
+        "2016-08-03T01:00:00.000Z", "Michael Bastow", "addtional information",
+        "Screening Descision", "Detail", approvalStatus, familyAwarness, filedWithLawEnforcement,
+        responsibleAgency, "S", "", "23", null, address, participants, crossReports, allegations);
 
     ScreeningToReferral serialized =
         MAPPER.readValue(fixture("fixtures/domain/ScreeningToReferral/valid/validstr.json"),
@@ -392,7 +390,7 @@ public class ScreeningToReferralTest {
         validator.validate(screeningToReferral);
 
     assertEquals(1, constraintViolations.size());
-    assertEquals("{property} must be a valid logical id code for category GVR_ENTC",
+    assertEquals("must be a valid logical id code for category GVR_ENTC",
         constraintViolations.iterator().next().getMessage());
 
   }
@@ -470,6 +468,7 @@ public class ScreeningToReferralTest {
     assertEquals("Expected limited access agency value of null to not be an error", 0,
         constraintViolations.size());
   }
+
   @Test
   public void shouldHaveNoErrorsWhenLimitedAccessAgencyIsAnEmptyString() {
     ScreeningToReferral screeningToReferral = new ScreeningToReferralResourceBuilder()
@@ -515,36 +514,32 @@ public class ScreeningToReferralTest {
   }
 
   @Test
-  public void shouldReportAccessIsLimitedWhenCodeIsS(){
+  public void shouldReportAccessIsLimitedWhenCodeIsS() {
     ScreeningToReferral screeningToReferral = new ScreeningToReferralResourceBuilder()
-        .setLimitedAccessCode("S")
-        .createScreeningToReferral();
+        .setLimitedAccessCode("S").createScreeningToReferral();
     assertTrue("Expected access to be limited", screeningToReferral.isAccessLimited());
   }
 
   @Test
-  public void shouldReportAccessIsLimitedWhenCodeIsR(){
+  public void shouldReportAccessIsLimitedWhenCodeIsR() {
     ScreeningToReferral screeningToReferral = new ScreeningToReferralResourceBuilder()
-        .setLimitedAccessCode("R")
-        .createScreeningToReferral();
+        .setLimitedAccessCode("R").createScreeningToReferral();
     assertTrue("Expected access to be limited", screeningToReferral.isAccessLimited());
 
   }
 
   @Test
-  public void shouldReportAccessIsNotLimitedWhenCodeIsN(){
+  public void shouldReportAccessIsNotLimitedWhenCodeIsN() {
     ScreeningToReferral screeningToReferral = new ScreeningToReferralResourceBuilder()
-        .setLimitedAccessCode("N")
-        .createScreeningToReferral();
+        .setLimitedAccessCode("N").createScreeningToReferral();
     assertFalse("Expected access to not be limited", screeningToReferral.isAccessLimited());
 
   }
 
   @Test
-  public void shouldReportAccessIsNotLimitedWhenCodeIsNull(){
+  public void shouldReportAccessIsNotLimitedWhenCodeIsNull() {
     ScreeningToReferral screeningToReferral = new ScreeningToReferralResourceBuilder()
-        .setLimitedAccessCode(null)
-        .createScreeningToReferral();
+        .setLimitedAccessCode(null).createScreeningToReferral();
     assertFalse("Expected access to not be limited", screeningToReferral.isAccessLimited());
 
   }
