@@ -235,7 +235,7 @@ public class ParticipantResourceBuilder {
     this.roles = new HashSet<String>(Arrays.asList("Victim"));
     LinkedHashSet<Short> racecodes = new LinkedHashSet<Short>();
     LinkedHashSet<Short> hispaniccodes = new LinkedHashSet<Short>();
-    racecodes.add((short) 813);
+    racecodes.add((short) 841);
     hispaniccodes.add((short) 3164);
     RaceAndEthnicity raceAndEthnicity =
         new RaceAndEthnicity(racecodes, "A", hispaniccodes, "X", "A");
