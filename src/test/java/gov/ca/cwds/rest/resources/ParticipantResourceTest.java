@@ -106,11 +106,18 @@ public class ParticipantResourceTest {
     assertThat(status, is(422));
   }
 
-  // @Test
+  @Test
   public void testDelete200ResourceSuccess() throws Exception {
     roles.add("victim");
     Address address = new Address("", "", "123 First St", "San Jose", 1828, "94321", 32);
     addresses.add(address);
+    LinkedHashSet<Short> racecodes = new LinkedHashSet<Short>();
+    racecodes.add((short) 841);
+    LinkedHashSet<Short> hispaniccodes = new LinkedHashSet<Short>();
+    hispaniccodes.add((short) 3164);
+    RaceAndEthnicity raceAndEthnicity =
+        new RaceAndEthnicity(racecodes, "A", hispaniccodes, "X", "A");
+
     Participant participant = new Participant(1, "", "", new LegacyDescriptor(), "Marge", "J",
         "Simpson", "", "F", "111223333", "2017-01-23", primaryLanguage, secondaryLanguage, 123, 456,
         reporterConfidentialWaiver, reporterEmployerName, clientStaffPersonAdded,
