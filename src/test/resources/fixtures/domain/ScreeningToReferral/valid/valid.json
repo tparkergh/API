@@ -22,7 +22,7 @@
    "screening_decision_detail":"Detail",
    "limited_access_code":"N",
    "limited_access_description":"",
-   "limited_access_agency":0,
+   "limited_access_agency":"",
    "limited_access_date":"",
    "address":{
    "legacy_source_table" : "",

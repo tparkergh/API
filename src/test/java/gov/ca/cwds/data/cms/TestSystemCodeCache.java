@@ -137,7 +137,7 @@ public class TestSystemCodeCache implements SystemCodeCache {
     }
 
     if (SystemCodeCategoryId.ETHNICITY.equals(metaId)) {
-      if (839 == systemCodeId.intValue() || 840 == systemCodeId.intValue()) {
+      if (841 == systemCodeId.intValue() || 3164 == systemCodeId.intValue()) {
         return true;
       }
     }
@@ -147,9 +147,8 @@ public class TestSystemCodeCache implements SystemCodeCache {
   @Override
   public boolean verifyActiveLogicalIdForMeta(String logicalId, String metaId) {
     if (SystemCodeCategoryId.COUNTY_CODE.equals(metaId)) {
-      if ("23".equals(logicalId) || "34".equals(logicalId) || "01".equals(logicalId) || "58".equals
-          (logicalId)
-          || "99".equals(logicalId)) {
+      if ("23".equals(logicalId) || "34".equals(logicalId) || "01".equals(logicalId)
+          || "58".equals(logicalId) || "99".equals(logicalId)) {
         return true;
       }
     }
