@@ -3,20 +3,14 @@ package gov.ca.cwds.rest.api.domain.investigation;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.is;
-import gov.ca.cwds.rest.resources.cms.JerseyGuiceRule;
 
-import java.text.ParseException;
 import java.util.HashSet;
 import java.util.Set;
 
 import nl.jqno.equalsverifier.EqualsVerifier;
 import nl.jqno.equalsverifier.Warning;
 
-import org.junit.After;
-import org.junit.ClassRule;
 import org.junit.Test;
-
-import com.squarespace.jersey2.guice.JerseyGuiceUtils;
 
 @SuppressWarnings("javadoc")
 public class ScreeningSummaryTest {
@@ -30,11 +24,6 @@ public class ScreeningSummaryTest {
   private String safetyInformation = "the animal at residence is a lion";
   private String id = "1";
 
-  @After
-  public void ensureServiceLocatorPopulated() {
-    JerseyGuiceUtils.reset();
-  }
-
   private Set<String> validSafetyAletrs() {
     Set<String> safetyAlerts = new HashSet<String>();
     safetyAlerts.add("dangerous animal on premises");
@@ -43,15 +32,9 @@ public class ScreeningSummaryTest {
     return safetyAlerts;
   }
 
-  @ClassRule
-  public static JerseyGuiceRule rule = new JerseyGuiceRule();
-
-  public ScreeningSummaryTest() throws ParseException {}
-
   @Test
   public void equalsHashCodeWork() {
     EqualsVerifier.forClass(ScreeningSummary.class).suppress(Warning.NONFINAL_FIELDS).verify();
-
   }
 
   @Test
