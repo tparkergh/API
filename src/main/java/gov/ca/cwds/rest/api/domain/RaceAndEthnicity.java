@@ -14,6 +14,7 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
 import gov.ca.cwds.rest.api.Request;
 import gov.ca.cwds.rest.api.Response;
+import gov.ca.cwds.rest.validation.ValidSystemCodeId;
 import io.dropwizard.jackson.JsonSnakeCase;
 import io.dropwizard.validation.OneOf;
 import io.swagger.annotations.ApiModelProperty;
@@ -37,7 +38,7 @@ public class RaceAndEthnicity extends ReportingDomain implements Request, Respon
   @JsonProperty("race_codes")
   @ApiModelProperty(required = false, readOnly = false, value = "primary races",
       dataType = "java.util.List", example = "['839', '840']")
-  // @ValidSystemCodeId(required = false, category = SystemCodeCategoryId.ETHNICITY)
+  @ValidSystemCodeId(required = false, category = SystemCodeCategoryId.ETHNICITY)
   private Set<Short> raceCode;
 
   @JsonProperty("unable_to_determine_code")
@@ -49,7 +50,7 @@ public class RaceAndEthnicity extends ReportingDomain implements Request, Respon
   @JsonProperty("hispanic_codes")
   @ApiModelProperty(required = false, readOnly = false, value = "other(secondary) races",
       dataType = "java.util.List", example = "['3164']")
-  // @ValidSystemCodeId(required = false, category = SystemCodeCategoryId.ETHNICITY)
+  @ValidSystemCodeId(required = false, category = SystemCodeCategoryId.ETHNICITY)
   private Set<Short> hispanicCode;
 
   @OneOf(value = {"D", "N", "U", "X", "Y", "Z", ""}, ignoreCase = true, ignoreWhitespace = true)
