@@ -16,7 +16,6 @@ public class SimpleLegacyDescriptorTest {
   @Test
   public void equalsHashCodeWork() {
     EqualsVerifier.forClass(LimitedAccess.class).suppress(Warning.NONFINAL_FIELDS).verify();
-
   }
 
   @Test

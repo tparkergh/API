@@ -3,20 +3,14 @@ package gov.ca.cwds.rest.api.domain.investigation;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.is;
-import gov.ca.cwds.rest.resources.cms.JerseyGuiceRule;
 
-import java.text.ParseException;
 import java.util.HashSet;
 import java.util.Set;
 
 import nl.jqno.equalsverifier.EqualsVerifier;
 import nl.jqno.equalsverifier.Warning;
 
-import org.junit.After;
-import org.junit.ClassRule;
 import org.junit.Test;
-
-import com.squarespace.jersey2.guice.JerseyGuiceUtils;
 
 @SuppressWarnings("javadoc")
 public class SimpleReferralTest {
@@ -40,18 +34,6 @@ public class SimpleReferralTest {
   private String countyName = "Plumas";
   private String responseTimeId = "1520";
   private String startDate = "1999-02-28";
-
-
-  @After
-  public void ensureServiceLocatorPopulated() {
-    JerseyGuiceUtils.reset();
-  }
-
-
-  @ClassRule
-  public static JerseyGuiceRule rule = new JerseyGuiceRule();
-
-  public SimpleReferralTest() throws ParseException {}
 
   @Test
   public void equalsHashCodeWork() {
@@ -87,7 +69,6 @@ public class SimpleReferralTest {
 
   private SimplePerson validReporter() {
     return new SimplePerson("One", "Reporter", "R");
-
   }
 
   private SimpleLegacyDescriptor validLegacyDescriptor() {
@@ -96,7 +77,6 @@ public class SimpleReferralTest {
 
   private LimitedAccess validLimitedAccess() {
     return new LimitedAccess(limitedAccessGovernmentEntityId, limitedAccessCode);
-
   }
 
   private SimplePerson validSocialWorker() {

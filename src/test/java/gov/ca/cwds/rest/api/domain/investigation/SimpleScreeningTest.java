@@ -43,7 +43,6 @@ public class SimpleScreeningTest {
     assertThat(domain.getAllPeople(), is(equalTo(allPeople)));
     assertThat(domain.getAssignedSocialWorker(), is(equalTo(assignedSocialWorker)));
     assertThat(domain.getStartDate(), is(equalTo(startDate)));
-
   }
 
 }
