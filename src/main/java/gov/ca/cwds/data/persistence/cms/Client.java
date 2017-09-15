@@ -301,8 +301,9 @@ public final class Client extends BaseClient
       this.genderCode = client.getGenderCode();
       this.healthSummaryText = client.getHealthSummaryText();
       this.hispUnableToDetReasonCode = StringUtils.isBlank(client.getHispUnableToDetReasonCode())
-          ? null : client.getHispUnableToDetReasonCode();;
-      this.hispanicOriginCode = client.getHispanicOriginCode();
+          ? null : client.getHispUnableToDetReasonCode();
+      this.hispanicOriginCode =
+          StringUtils.isBlank(client.getHispanicOriginCode()) ? "" : client.getHispanicOriginCode();
       this.immigrationCountryCodeType = client.getImmigrationCountryCodeType();
       this.immigrationStatusType = client.getImmigrationStatusType();
       this.incapacitatedParentCode = client.getIncapacitatedParentCode();

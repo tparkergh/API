@@ -55,7 +55,7 @@ public class CmsDocReferralClientService implements CrudsService {
     CmsDocReferralClient retval = null;
 
     final String key = (String) primaryKey;
-    LOGGER.info("primaryKey=" + key);
+    LOGGER.info("primaryKey=", key);
     List<gov.ca.cwds.data.persistence.cms.CmsDocReferralClient> docs =
         dao.listDocReferralClient(key);
     if (docs != null) {

@@ -239,8 +239,8 @@ public class Client extends ReportingDomain implements Request, Response {
   @ApiModelProperty(required = false, readOnly = false, value = "", example = "A")
   private String hispUnableToDetReasonCode;
 
-  @NotEmpty
-  @Size(min = 1, max = 1, message = "size must be 1")
+  @NotNull
+  @Size(min = 0, max = 1, message = "size must be 1")
   @ApiModelProperty(required = true, readOnly = false, value = "", example = "X")
   private String hispanicOriginCode;
 
@@ -668,7 +668,8 @@ public class Client extends ReportingDomain implements Request, Response {
     this.hispUnableToDetReasonCode =
         StringUtils.isBlank(persistedClient.getHispUnableToDetReasonCode()) ? null
             : persistedClient.getHispUnableToDetReasonCode();
-    this.hispanicOriginCode = persistedClient.getHispanicOriginCode();
+    this.hispanicOriginCode = StringUtils.isBlank(persistedClient.getHispanicOriginCode()) ? ""
+        : persistedClient.getHispanicOriginCode();
     this.immigrationCountryCodeType = persistedClient.getImmigrationCountryCodeType();
     this.immigrationStatusType = persistedClient.getImmigrationStatusType();
     this.incapacitatedParentCode = persistedClient.getIncapacitatedParentCode();
@@ -735,16 +736,12 @@ public class Client extends ReportingDomain implements Request, Response {
   public static Client createWithDefaults(Participant participant, String dateStarted,
       String genderCode, Short raceCode) {
 
-    // TODO:Reorganize
-    String unableToDetermineCode = "K";
-    String hispanicUnableToDetermineCode = "";
-    String hispanicOriginCode = "X";
-    if (participant.getRaceAndEthnicity() != null) {
-      unableToDetermineCode = participant.getRaceAndEthnicity().getUnableToDetermineCode();
-      hispanicUnableToDetermineCode =
-          participant.getRaceAndEthnicity().getHispanicUnableToDetermineCode();
-      hispanicOriginCode = participant.getRaceAndEthnicity().getHispanicOriginCode();
-    }
+    String unableToDetermineCode = participant.getRaceAndEthnicity() != null
+        ? participant.getRaceAndEthnicity().getUnableToDetermineCode() : "";
+    String hispanicUnableToDetermineCode = participant.getRaceAndEthnicity() != null
+        ? participant.getRaceAndEthnicity().getHispanicUnableToDetermineCode() : "";
+    String hispanicOriginCode = participant.getRaceAndEthnicity() != null
+        ? participant.getRaceAndEthnicity().getHispanicOriginCode() : "";
 
     return new Client("", participant.getLegacyDescriptor().getLastUpdated(), Boolean.FALSE,
         DEFAULT_ADOPTION_STATUS_CODE, "", "", DEFAULT_CODE, participant.getDateOfBirth(), "",
