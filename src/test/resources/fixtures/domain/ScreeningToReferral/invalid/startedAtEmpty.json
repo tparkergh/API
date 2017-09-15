@@ -61,11 +61,11 @@
 	  	],
 	  	"race_and_ethinicity":{  
             "race_codes":[  
-             813, 814
+             841
             ],
             "unable_to_determine_code":"A",
             "hispanic_codes":[  
-                3163
+                3164
             ],
             "hispanic_orgin_code":"X",
             "hispanic_unable_to_determine_code":"A"
@@ -102,11 +102,11 @@
 	  	],
 	  	"race_and_ethinicity":{  
             "race_codes":[  
-             813, 814
+             841
             ],
             "unable_to_determine_code":"A",
             "hispanic_codes":[  
-                3163
+             3164
             ],
             "hispanic_orgin_code":"X",
             "hispanic_unable_to_determine_code":"A"

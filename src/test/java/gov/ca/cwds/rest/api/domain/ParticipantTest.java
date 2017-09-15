@@ -107,7 +107,7 @@ public class ParticipantTest implements PersistentTestTemplate {
     MAPPER.configure(SerializationFeature.INDENT_OUTPUT, true);
     Participant validParticipant = this.validParticipant();
     roles.add("Victim");
-    racecodes.add((short) 813);
+    racecodes.add((short) 841);
     hispaniccodes.add((short) 3164);
     Address address = new Address("", "", "123 First St", "San Jose", 1828, "94321", 32);
     addresses.add(address);
