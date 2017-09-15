@@ -48,15 +48,13 @@ public class HistoryOfInvolvementService implements
   @Override
   public Response find(String primaryKey) {
     HistoryOfInvolvement serialized = new HistoryOfInvolvement();
+    String fileLocation =
+        HistoryOfInvolvementService.class.getPackage().getName().replace('.', '/')
+            + "/historyOfInvolvement/valid/valid.json";
     try {
-      serialized =
-          MAPPER.readValue(
-              fixture("fixtures/domain/investigation/historyOfInvolvement/valid/valid.json"),
-              HistoryOfInvolvement.class);
+      serialized = MAPPER.readValue(fixture(fileLocation), HistoryOfInvolvement.class);
     } catch (Exception e) {
-
       LOGGER.error("Exception In HistoryOfInvolvement " + e.getMessage());
-
     }
     return serialized;
   }
