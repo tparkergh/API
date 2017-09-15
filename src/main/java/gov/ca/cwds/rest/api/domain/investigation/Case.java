@@ -1,11 +1,5 @@
 package gov.ca.cwds.rest.api.domain.investigation;
 
-import gov.ca.cwds.rest.api.Response;
-import gov.ca.cwds.rest.api.domain.DomainObject;
-import gov.ca.cwds.rest.api.domain.ReportingDomain;
-import io.dropwizard.jackson.JsonSnakeCase;
-import io.swagger.annotations.ApiModelProperty;
-
 import java.util.Set;
 
 import org.apache.commons.lang3.builder.EqualsBuilder;
@@ -14,8 +8,14 @@ import org.apache.commons.lang3.builder.HashCodeBuilder;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
+import gov.ca.cwds.rest.api.Response;
+import gov.ca.cwds.rest.api.domain.DomainObject;
+import gov.ca.cwds.rest.api.domain.ReportingDomain;
+import io.dropwizard.jackson.JsonSnakeCase;
+import io.swagger.annotations.ApiModelProperty;
+
 /**
- * {@link DomainObject} representing a Case
+ * {@link DomainObject} representing a Case.
  * 
  * @author CWDS API Team
  */
@@ -61,8 +61,6 @@ public class Case extends ReportingDomain implements Response {
 
   @JsonProperty("parents")
   private Set<SimplePersonWithRelationship> parents;
-
-
 
   /**
    * Constructor

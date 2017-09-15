@@ -19,6 +19,7 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 @JsonPropertyOrder(alphabetic = true)
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class LongText extends CmsPersistentObject {
+
   protected static final String DATE_FORMAT = "yyyy-MM-dd";
 
   @Id
