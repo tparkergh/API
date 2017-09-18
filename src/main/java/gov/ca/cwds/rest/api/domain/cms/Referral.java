@@ -548,11 +548,8 @@ public class Referral extends ReportingDomain implements Request, Response {
     this.uiIdentifier = legacyIdToUIIdentifier(persistedReferral.getId());
 
     this.address = new HashSet<>();
-    if (persistedReferral.getAddresses() != null && !persistedReferral.getAddresses().isEmpty()) {
-      for (gov.ca.cwds.data.persistence.cms.Address persistenceAddress : persistedReferral
-          .getAddresses()) {
-        this.address.add(new Address(persistenceAddress, true));
-      }
+    if (persistedReferral.getAddresses() != null) {
+      this.address.add(new Address(persistedReferral.getAddresses(), true));
     }
     this.reporter = new HashSet<>();
     if (persistedReferral.getReporters() != null && !persistedReferral.getReporters().isEmpty()) {

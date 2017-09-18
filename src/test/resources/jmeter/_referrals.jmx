@@ -47,8 +47,7 @@
               <collectionProp name="Arguments.arguments">
                 <elementProp name="" elementType="HTTPArgument">
                   <boolProp name="HTTPArgument.always_encode">false</boolProp>
-                  <stringProp name="Argument.value">&#xd;
-{&#xd;
+                  <stringProp name="Argument.value">{&#xd;
   &quot;additionalInfoIncludedCode&quot;: false,&#xd;
   &quot;anonymousReporterIndicator&quot;: false,&#xd;
   &quot;applicationForPetitionIndicator&quot;: false,&#xd;
