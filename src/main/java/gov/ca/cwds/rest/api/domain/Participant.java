@@ -7,7 +7,6 @@ import java.util.Set;
 
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Null;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 
@@ -33,7 +32,7 @@ import io.swagger.annotations.ApiModelProperty;
  */
 @JsonSnakeCase
 @JsonPropertyOrder({"id", "legacySourceTable", "legacyId", "firstName", "lastName", "gender", "ssn",
-    "dateOfBirth", "roles", "addresses", "race_and_ethinicity"})
+    "dateOfBirth", "roles", "addresses", "race_ethnicity"})
 public class Participant extends ReportingDomain implements Request, Response {
 
   /**
@@ -149,7 +148,7 @@ public class Participant extends ReportingDomain implements Request, Response {
 
   @Valid
   @ApiModelProperty(dataType = "gov.ca.cwds.rest.api.domain.RaceAndEthnicity")
-  @JsonProperty("race_and_ethinicity")
+  @JsonProperty("race_ethnicity")
   private RaceAndEthnicity raceAndEthnicity;
 
   @JsonIgnore
