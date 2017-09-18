@@ -124,7 +124,7 @@ public class ClientScpEthnicityService
 
   /**
    * @param raceAndEthnicity - raceAndEthnicity
-   * @param messageBuilder
+   * @param messageBuilder - messageBuilder
    * @return the race And Ethnicity codes
    */
   public Short getRaceCode(RaceAndEthnicity raceAndEthnicity, MessageBuilder messageBuilder) {
