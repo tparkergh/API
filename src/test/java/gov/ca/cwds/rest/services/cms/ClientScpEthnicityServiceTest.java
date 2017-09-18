@@ -29,6 +29,7 @@ import gov.ca.cwds.rest.api.Response;
 import gov.ca.cwds.rest.api.domain.RaceAndEthnicity;
 import gov.ca.cwds.rest.api.domain.cms.ClientScpEthnicity;
 import gov.ca.cwds.rest.filters.TestingRequestExecutionContext;
+import gov.ca.cwds.rest.messages.MessageBuilder;
 import gov.ca.cwds.rest.services.ServiceException;
 
 /**
@@ -40,6 +41,7 @@ public class ClientScpEthnicityServiceTest {
 
   private ClientScpEthnicityService clientScpEthnicityService;
   private ClientScpEthnicityDao clientScpEthnicityDao;
+  private MessageBuilder messageBuilder;
 
   @Rule
   public ExpectedException thrown = ExpectedException.none();
@@ -48,6 +50,7 @@ public class ClientScpEthnicityServiceTest {
   public void setup() throws Exception {
     new TestingRequestExecutionContext("0X5");
     this.clientScpEthnicityDao = mock(ClientScpEthnicityDao.class);
+    this.messageBuilder = mock(MessageBuilder.class);
     clientScpEthnicityService = new ClientScpEthnicityService(clientScpEthnicityDao);
   }
 
@@ -241,7 +244,8 @@ public class ClientScpEthnicityServiceTest {
     LinkedHashSet<Short> hispanicCode = new LinkedHashSet<>();
     hispanicCode.add((short) 3162);
     RaceAndEthnicity raceAndEthnicity = new RaceAndEthnicity(raceCode, "A", hispanicCode, "X", "A");
-    Short primaryEthnicity = clientScpEthnicityService.getRaceCode(raceAndEthnicity);
+    Short primaryEthnicity =
+        clientScpEthnicityService.getRaceCode(raceAndEthnicity, messageBuilder);
     assertThat(primaryEthnicity, is(equalTo((short) 841)));
 
   }
@@ -252,7 +256,8 @@ public class ClientScpEthnicityServiceTest {
     LinkedHashSet<Short> hispanicCode = new LinkedHashSet<>();
     hispanicCode.add((short) 3162);
     RaceAndEthnicity raceAndEthnicity = new RaceAndEthnicity(raceCode, "A", hispanicCode, "X", "A");
-    Short primaryEthnicity = clientScpEthnicityService.getRaceCode(raceAndEthnicity);
+    Short primaryEthnicity =
+        clientScpEthnicityService.getRaceCode(raceAndEthnicity, messageBuilder);
     assertThat(primaryEthnicity, is(equalTo((short) 3162)));
 
   }
@@ -262,7 +267,8 @@ public class ClientScpEthnicityServiceTest {
     LinkedHashSet<Short> raceCode = new LinkedHashSet<>();
     LinkedHashSet<Short> hispanicCode = new LinkedHashSet<>();
     RaceAndEthnicity raceAndEthnicity = new RaceAndEthnicity(raceCode, "A", hispanicCode, "X", "A");
-    Short primaryEthnicity = clientScpEthnicityService.getRaceCode(raceAndEthnicity);
+    Short primaryEthnicity =
+        clientScpEthnicityService.getRaceCode(raceAndEthnicity, messageBuilder);
     assertThat(primaryEthnicity, is(equalTo((short) 0)));
 
   }
@@ -274,7 +280,8 @@ public class ClientScpEthnicityServiceTest {
     LinkedHashSet<Short> hispanicCode = new LinkedHashSet<>();
     hispanicCode.add((short) 3162);
     RaceAndEthnicity raceAndEthnicity = new RaceAndEthnicity(raceCode, "A", hispanicCode, "X", "A");
-    Short primaryEthnicity = clientScpEthnicityService.getRaceCode(raceAndEthnicity);
+    Short primaryEthnicity =
+        clientScpEthnicityService.getRaceCode(raceAndEthnicity, messageBuilder);
     assertThat(primaryEthnicity, is(equalTo((short) 841)));
     clientScpEthnicityService.createOtherEthnicity("ABC1234567", raceAndEthnicity);
     verify(clientScpEthnicityDao, times(1)).create(any());
@@ -288,10 +295,84 @@ public class ClientScpEthnicityServiceTest {
     hispanicCode.add((short) 3162);
     hispanicCode.add((short) 3163);
     RaceAndEthnicity raceAndEthnicity = new RaceAndEthnicity(raceCode, "A", hispanicCode, "X", "A");
-    Short primaryEthnicity = clientScpEthnicityService.getRaceCode(raceAndEthnicity);
+    Short primaryEthnicity =
+        clientScpEthnicityService.getRaceCode(raceAndEthnicity, messageBuilder);
     assertThat(primaryEthnicity, is(equalTo((short) 841)));
     clientScpEthnicityService.createOtherEthnicity("ABC1234567", raceAndEthnicity);
     verify(clientScpEthnicityDao, times(2)).create(any());
+  }
+
+  @Test
+  public void clientScpServiceTestFailsWhenUnableToDetermineCodeEmpty() throws Exception {
+    LinkedHashSet<Short> raceCode = new LinkedHashSet<>();
+    raceCode.add((short) 6351);
+    LinkedHashSet<Short> hispanicCode = new LinkedHashSet<>();
+    hispanicCode.add((short) 3162);
+    hispanicCode.add((short) 3163);
+    RaceAndEthnicity raceAndEthnicity = new RaceAndEthnicity(raceCode, "", hispanicCode, "X", "A");
+    Short primaryEthnicity =
+        clientScpEthnicityService.getRaceCode(raceAndEthnicity, messageBuilder);
+    assertThat(primaryEthnicity, is(equalTo((short) 6351)));
+    clientScpEthnicityService.createOtherEthnicity("ABC1234567", raceAndEthnicity);
+    verify(messageBuilder, times(1)).addMessageAndLog(any(), any());
+  }
+
+  @Test
+  public void clientScpServiceTestFailsWhenUnableToDetermineCodeNull() throws Exception {
+    LinkedHashSet<Short> raceCode = new LinkedHashSet<>();
+    raceCode.add((short) 6351);
+    LinkedHashSet<Short> hispanicCode = new LinkedHashSet<>();
+    hispanicCode.add((short) 3162);
+    RaceAndEthnicity raceAndEthnicity =
+        new RaceAndEthnicity(raceCode, null, hispanicCode, "X", "A");
+    Short primaryEthnicity =
+        clientScpEthnicityService.getRaceCode(raceAndEthnicity, messageBuilder);
+    assertThat(primaryEthnicity, is(equalTo((short) 6351)));
+    clientScpEthnicityService.createOtherEthnicity("ABC1234567", raceAndEthnicity);
+    verify(messageBuilder, times(1)).addMessageAndLog(any(), any());
+  }
+
+  @Test
+  public void clientScpServiceTestFailsWhenHispanicUnableToDetermineCodeEmpty() throws Exception {
+    LinkedHashSet<Short> raceCode = new LinkedHashSet<>();
+    raceCode.add((short) 841);
+    LinkedHashSet<Short> hispanicCode = new LinkedHashSet<>();
+    hispanicCode.add((short) 6351);
+    RaceAndEthnicity raceAndEthnicity = new RaceAndEthnicity(raceCode, "A", hispanicCode, "X", "");
+    Short primaryEthnicity =
+        clientScpEthnicityService.getRaceCode(raceAndEthnicity, messageBuilder);
+    assertThat(primaryEthnicity, is(equalTo((short) 841)));
+    clientScpEthnicityService.createOtherEthnicity("ABC1234567", raceAndEthnicity);
+    verify(messageBuilder, times(1)).addMessageAndLog(any(), any());
+  }
+
+  @Test
+  public void clientScpServiceTestFailsWhenHispanicUnableToDetermineCodeNull() throws Exception {
+    LinkedHashSet<Short> raceCode = new LinkedHashSet<>();
+    raceCode.add((short) 841);
+    LinkedHashSet<Short> hispanicCode = new LinkedHashSet<>();
+    hispanicCode.add((short) 6351);
+    RaceAndEthnicity raceAndEthnicity =
+        new RaceAndEthnicity(raceCode, "A", hispanicCode, "X", null);
+    Short primaryEthnicity =
+        clientScpEthnicityService.getRaceCode(raceAndEthnicity, messageBuilder);
+    assertThat(primaryEthnicity, is(equalTo((short) 841)));
+    clientScpEthnicityService.createOtherEthnicity("ABC1234567", raceAndEthnicity);
+    verify(messageBuilder, times(1)).addMessageAndLog(any(), any());
+  }
+
+  @Test
+  public void TestFailsWhenRaceAndHispanicUnableToDetermineIsEmpty() throws Exception {
+    LinkedHashSet<Short> raceCode = new LinkedHashSet<>();
+    raceCode.add((short) 6351);
+    LinkedHashSet<Short> hispanicCode = new LinkedHashSet<>();
+    hispanicCode.add((short) 6351);
+    RaceAndEthnicity raceAndEthnicity = new RaceAndEthnicity(raceCode, "", hispanicCode, "X", "");
+    Short primaryEthnicity =
+        clientScpEthnicityService.getRaceCode(raceAndEthnicity, messageBuilder);
+    assertThat(primaryEthnicity, is(equalTo((short) 6351)));
+    clientScpEthnicityService.createOtherEthnicity("ABC1234567", raceAndEthnicity);
+    verify(messageBuilder, times(2)).addMessageAndLog(any(), any());
   }
 
 }

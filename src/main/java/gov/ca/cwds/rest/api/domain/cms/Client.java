@@ -41,8 +41,6 @@ public class Client extends ReportingDomain implements Request, Response {
   public static final short DEFAULT_CODE = 0;
   public static final Boolean DEFAULT_CHILD_CLIENT_INDICATOR = Boolean.FALSE;
   public static final String DEFAULT_ESTIMATED_DOB_CODE = "N";
-  public static final String DEFAULT_UNABLE_TO_DETAIN_CODE = "K";
-  public static final String DEFAULT_HISPANIC_ORIGIN_CODE = "X";
   public static final String DEFAULT_INCAPCITATED_PARENT_CODE = "U";
   public static final String DEFAULT_LITERATE_CODE = "U";
   public static final String DEFAULT_MILITARY_STATUS_CODE = "N";
