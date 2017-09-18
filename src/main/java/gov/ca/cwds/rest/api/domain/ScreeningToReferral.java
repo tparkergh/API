@@ -21,6 +21,7 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import gov.ca.cwds.rest.api.Request;
 import gov.ca.cwds.rest.validation.Date;
 import gov.ca.cwds.rest.validation.ValidLogicalId;
+import gov.ca.cwds.rest.validation.ValidParticipantRoles;
 import gov.ca.cwds.rest.validation.ValidSystemCodeId;
 import io.dropwizard.jackson.JsonSnakeCase;
 import io.dropwizard.validation.OneOf;
@@ -204,6 +205,7 @@ public class ScreeningToReferral extends ReportingDomain implements Request {
   @NotEmpty
   @ApiModelProperty(required = true, readOnly = false)
   @Valid
+  @ValidParticipantRoles
   private Set<Participant> participants;
 
   @JsonProperty("cross_reports")
