@@ -181,7 +181,7 @@ public class ParticipantService implements CrudsService {
                   || incomingParticipant.getLegacyId().isEmpty();
               if (newClient) {
                 Short raceCode = clientScpEthnicityService
-                    .getRaceCode(incomingParticipant.getRaceAndEthnicity());
+                    .getRaceCode(incomingParticipant.getRaceAndEthnicity(), messageBuilder);
                 Client client = Client.createWithDefaults(incomingParticipant, dateStarted,
                     genderCode, raceCode);
                 client.applySensitivityIndicator(screeningToReferral.getLimitedAccessCode());
