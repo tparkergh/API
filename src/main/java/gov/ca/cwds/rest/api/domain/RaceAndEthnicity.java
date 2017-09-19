@@ -14,6 +14,7 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
 import gov.ca.cwds.rest.api.Request;
 import gov.ca.cwds.rest.api.Response;
+import gov.ca.cwds.rest.validation.IfCollectionContainsShortThen;
 import gov.ca.cwds.rest.validation.ValidSystemCodeId;
 import io.dropwizard.jackson.JsonSnakeCase;
 import io.dropwizard.validation.OneOf;
@@ -27,6 +28,13 @@ import io.swagger.annotations.ApiModelProperty;
 @JsonSnakeCase
 @JsonPropertyOrder({"raceCode", "unableToDetermineCode", "hispanicCode", "hispanicOriginCode",
     "hispanicUnableToDetermineCode"})
+@IfCollectionContainsShortThen.List({
+    @IfCollectionContainsShortThen(ifProperty = "raceCode", thenProperty = "unableToDetermineCode",
+        ifValue = 6351,
+        message = "Unable to determine code must be set if race codes include 6351"),
+    @IfCollectionContainsShortThen(ifProperty = "hispanicCode",
+        thenProperty = "hispanicUnableToDetermineCode", ifValue = 6351,
+        message = "Hispanic unable to determine code must be set if hispanic codes include 6351")})
 public class RaceAndEthnicity extends ReportingDomain implements Request, Response {
 
   /**
