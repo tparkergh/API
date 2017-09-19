@@ -15,14 +15,12 @@ import io.swagger.annotations.ApiModelProperty;
  * 
  * @author CWDS API Team
  */
-public class RelationshipTo {
+public final class RelationshipTo {
 
   /**
    * Serialization version
    */
   private static final long serialVersionUID = 1L;
-
-
 
   @JsonProperty("related_person_first_name")
   @ApiModelProperty(required = false, readOnly = false, value = "first name")
