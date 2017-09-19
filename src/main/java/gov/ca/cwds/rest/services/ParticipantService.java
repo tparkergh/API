@@ -181,7 +181,7 @@ public class ParticipantService implements CrudsService {
                   || incomingParticipant.getLegacyId().isEmpty();
               if (newClient) {
                 Short raceCode = clientScpEthnicityService
-                    .getRaceCode(incomingParticipant.getRaceAndEthnicity(), messageBuilder);
+                    .getRaceCode(incomingParticipant.getRaceAndEthnicity());
                 Client client = Client.createWithDefaults(incomingParticipant, dateStarted,
                     genderCode, raceCode);
                 client.applySensitivityIndicator(screeningToReferral.getLimitedAccessCode());
@@ -207,11 +207,26 @@ public class ParticipantService implements CrudsService {
                         .applySensitivityIndicator(screeningToReferral.getLimitedAccessCode());
                     foundClient
                         .applySensitivityIndicator(incomingParticipant.getSensitivityIndicator());
+                    Short raceCode = clientScpEthnicityService
+                        .getRaceCode(incomingParticipant.getRaceAndEthnicity());
+                    String unableToDetermineCode = incomingParticipant.getRaceAndEthnicity() != null
+                        ? incomingParticipant.getRaceAndEthnicity().getUnableToDetermineCode() : "";
+                    String hispanicUnableToDetermineCode =
+                        incomingParticipant.getRaceAndEthnicity() != null ? incomingParticipant
+                            .getRaceAndEthnicity().getHispanicUnableToDetermineCode() : "";
+                    String hispanicOriginCode = incomingParticipant.getRaceAndEthnicity() != null
+                        ? incomingParticipant.getRaceAndEthnicity().getHispanicOriginCode() : "";
+
                     foundClient.update(incomingParticipant.getFirstName(),
                         incomingParticipant.getMiddleName(), incomingParticipant.getLastName(),
-                        incomingParticipant.getNameSuffix());
+                        incomingParticipant.getNameSuffix(), raceCode, unableToDetermineCode,
+                        hispanicUnableToDetermineCode, hispanicOriginCode);
+
                     gov.ca.cwds.rest.api.domain.cms.Client savedClient =
                         this.clientService.update(incomingParticipant.getLegacyId(), foundClient);
+                    clientScpEthnicityService.createOtherEthnicity(
+                        foundClient.getExistingClientId(),
+                        incomingParticipant.getRaceAndEthnicity());
                     if (savedClient != null) {
                       incomingParticipant.getLegacyDescriptor()
                           .setLastUpdated(savedClient.getLastUpdatedTime());

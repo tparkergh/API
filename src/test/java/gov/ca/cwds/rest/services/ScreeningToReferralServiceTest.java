@@ -13,17 +13,6 @@ import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-import gov.ca.cwds.fixture.AllegationEntityBuilder;
-import gov.ca.cwds.fixture.AllegationPerpetratorHistoryEntityBuilder;
-import gov.ca.cwds.fixture.ClientEntityBuilder;
-import gov.ca.cwds.fixture.CrossReportEntityBuilder;
-import gov.ca.cwds.fixture.LongTextEntityBuilder;
-import gov.ca.cwds.fixture.ReporterResourceBuilder;
-import gov.ca.cwds.helper.CmsIdGenerator;
-import gov.ca.cwds.rest.api.domain.cms.PostedAllegation;
-import gov.ca.cwds.rest.api.domain.cms.PostedAllegationPerpetratorHistory;
-import gov.ca.cwds.rest.api.domain.cms.PostedDrmsDocument;
-import gov.ca.cwds.rest.api.domain.cms.PostedLongText;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
@@ -61,11 +50,18 @@ import gov.ca.cwds.data.cms.StaffPersonDao;
 import gov.ca.cwds.data.cms.TestSystemCodeCache;
 import gov.ca.cwds.data.rules.TriggerTablesDao;
 import gov.ca.cwds.fixture.AddressResourceBuilder;
+import gov.ca.cwds.fixture.AllegationEntityBuilder;
+import gov.ca.cwds.fixture.AllegationPerpetratorHistoryEntityBuilder;
 import gov.ca.cwds.fixture.AllegationResourceBuilder;
+import gov.ca.cwds.fixture.ClientEntityBuilder;
+import gov.ca.cwds.fixture.CrossReportEntityBuilder;
 import gov.ca.cwds.fixture.CrossReportResourceBuilder;
+import gov.ca.cwds.fixture.LongTextEntityBuilder;
 import gov.ca.cwds.fixture.MockedScreeningToReferralServiceBuilder;
 import gov.ca.cwds.fixture.ParticipantResourceBuilder;
+import gov.ca.cwds.fixture.ReporterResourceBuilder;
 import gov.ca.cwds.fixture.ScreeningToReferralResourceBuilder;
+import gov.ca.cwds.helper.CmsIdGenerator;
 import gov.ca.cwds.rest.api.Response;
 import gov.ca.cwds.rest.api.domain.LegacyDescriptor;
 import gov.ca.cwds.rest.api.domain.Participant;
@@ -78,7 +74,11 @@ import gov.ca.cwds.rest.api.domain.cms.Client;
 import gov.ca.cwds.rest.api.domain.cms.ClientAddress;
 import gov.ca.cwds.rest.api.domain.cms.CrossReport;
 import gov.ca.cwds.rest.api.domain.cms.PostedAddress;
+import gov.ca.cwds.rest.api.domain.cms.PostedAllegation;
+import gov.ca.cwds.rest.api.domain.cms.PostedAllegationPerpetratorHistory;
 import gov.ca.cwds.rest.api.domain.cms.PostedClient;
+import gov.ca.cwds.rest.api.domain.cms.PostedDrmsDocument;
+import gov.ca.cwds.rest.api.domain.cms.PostedLongText;
 import gov.ca.cwds.rest.api.domain.cms.Reporter;
 import gov.ca.cwds.rest.business.rules.ExternalInterfaceTables;
 import gov.ca.cwds.rest.business.rules.LACountyTrigger;
@@ -214,9 +214,8 @@ public class ScreeningToReferralServiceTest {
 
     PostedAddress postedAddress = mock(PostedAddress.class);
     when(postedAddress.getExistingAddressId()).thenReturn("QWWERTYUIJ");
-    gov.ca.cwds.data.persistence.cms.Client savedEntityClient = new ClientEntityBuilder()
-        .setId("1234567ABC")
-        .build();
+    gov.ca.cwds.data.persistence.cms.Client savedEntityClient =
+        new ClientEntityBuilder().setId("1234567ABC").build();
     PostedClient savedClient = new PostedClient(savedEntityClient, false);
     clientService = mock(ClientService.class);
     when(clientService.createWithSingleTimestamp(any(), any())).thenReturn(savedClient);
@@ -235,29 +234,34 @@ public class ScreeningToReferralServiceTest {
     gov.ca.cwds.data.persistence.cms.Allegation allegation = new AllegationEntityBuilder().build();
     PostedAllegation postedAllegation = new PostedAllegation(allegation);
     when(allegationService.createWithSingleTimestamp(any(), any())).thenReturn(postedAllegation);
-    gov.ca.cwds.data.persistence.cms.AllegationPerpetratorHistory allegationPerpetratorHistory = new AllegationPerpetratorHistoryEntityBuilder().build();
-    PostedAllegationPerpetratorHistory postedAllegationPerpHistory = new PostedAllegationPerpetratorHistory(allegationPerpetratorHistory);
+    gov.ca.cwds.data.persistence.cms.AllegationPerpetratorHistory allegationPerpetratorHistory =
+        new AllegationPerpetratorHistoryEntityBuilder().build();
+    PostedAllegationPerpetratorHistory postedAllegationPerpHistory =
+        new PostedAllegationPerpetratorHistory(allegationPerpetratorHistory);
     allegationPerpetratorHistoryService = mock(AllegationPerpetratorHistoryService.class);
-    when(allegationPerpetratorHistoryService.createWithSingleTimestamp(any(), any())).thenReturn(postedAllegationPerpHistory);
+    when(allegationPerpetratorHistoryService.createWithSingleTimestamp(any(), any()))
+        .thenReturn(postedAllegationPerpHistory);
 
     CrossReport mockLegacyCrossReport = mock(CrossReport.class);
     CrossReport crossReport = new CrossReportEntityBuilder().build();
     crossReportService = mock(CrossReportService.class);
     when(crossReportService.createWithSingleTimestamp(any(), any())).thenReturn(crossReport);
-    when(crossReportService.find(any())) .thenReturn(mockLegacyCrossReport);
+    when(crossReportService.find(any())).thenReturn(mockLegacyCrossReport);
 
     PostedDrmsDocument drmsDocument = mock(PostedDrmsDocument.class);
     DrmsDocumentService drmsDocumentService = mock(DrmsDocumentService.class);
     when(drmsDocumentService.create(any())).thenReturn(drmsDocument);
 
-    gov.ca.cwds.data.persistence.cms.LongText longTextEntity = new LongTextEntityBuilder().setId("1").build();
+    gov.ca.cwds.data.persistence.cms.LongText longTextEntity =
+        new LongTextEntityBuilder().setId("1").build();
     PostedLongText longText = new PostedLongText(longTextEntity);
     LongTextService longTextService = mock(LongTextService.class);
     when(longTextService.create(any())).thenReturn(longText);
 
     ScreeningToReferral screeningToReferral = defaultReferralBuilder.createScreeningToReferral();
     referralService = mock(ReferralService.class);
-    when(referralService.createCmsReferralFromScreening(eq(screeningToReferral),any(),any(), any(), any())).thenReturn(validReferralId);
+    when(referralService.createCmsReferralFromScreening(eq(screeningToReferral), any(), any(),
+        any(), any())).thenReturn(validReferralId);
 
     reporterService = mock(ReporterService.class);
     Reporter savedReporter = new ReporterResourceBuilder().build();
@@ -266,9 +270,9 @@ public class ScreeningToReferralServiceTest {
     participantService = mock(ParticipantService.class);
 
     defaultVictim = new ParticipantResourceBuilder().createVictimParticipant();
-    defaultReporter = new ParticipantResourceBuilder().setRoles((new HashSet<>(Arrays
-        .asList("Mandated Reporter")))).createReporterParticipant();
-    defaultMandatedReporter= new ParticipantResourceBuilder().createReporterParticipant();
+    defaultReporter = new ParticipantResourceBuilder()
+        .setRoles((new HashSet<>(Arrays.asList("Mandated Reporter")))).createReporterParticipant();
+    defaultMandatedReporter = new ParticipantResourceBuilder().createReporterParticipant();
 
     defaultPerpetrator = new ParticipantResourceBuilder().createPerpParticipant();
 
@@ -325,13 +329,14 @@ public class ScreeningToReferralServiceTest {
     String victimClientLegacyId = "";
 
     clientService = mock(ClientService.class);
-    screeningToReferralService = new MockedScreeningToReferralServiceBuilder()
-        .addParticipantService(participantService).addClientService(clientService)
-        .createScreeningToReferralService();
+    screeningToReferralService =
+        new MockedScreeningToReferralServiceBuilder().addParticipantService(participantService)
+            .addClientService(clientService).createScreeningToReferralService();
 
     Participant victim =
         new ParticipantResourceBuilder().setLegacyId(victimClientLegacyId).createParticipant();
-    Set participants = new HashSet<>(Arrays.asList(victim,defaultMandatedReporter, defaultPerpetrator));
+    Set participants =
+        new HashSet<>(Arrays.asList(victim, defaultMandatedReporter, defaultPerpetrator));
     ScreeningToReferral referral = new ScreeningToReferralResourceBuilder()
         .setParticipants(participants).createScreeningToReferral();
 
@@ -343,11 +348,13 @@ public class ScreeningToReferralServiceTest {
 
   @SuppressWarnings("javadoc")
   @Test
-  public void shouldSuccessfullyCreateReferralWithParticipantsThatHaveBlankRoles() throws Exception {
+  public void shouldSuccessfullyCreateReferralWithParticipantsThatHaveBlankRoles()
+      throws Exception {
     Participant unknownRoleParticipant =
         new ParticipantResourceBuilder().setRoles(new HashSet<>()).createParticipant();
 
-    Set participants = new HashSet<>(Arrays.asList(unknownRoleParticipant, defaultVictim, defaultReporter));
+    Set participants =
+        new HashSet<>(Arrays.asList(unknownRoleParticipant, defaultVictim, defaultReporter));
 
     ScreeningToReferral referral = new ScreeningToReferralResourceBuilder()
         .setParticipants(participants).createScreeningToReferral();
@@ -374,9 +381,9 @@ public class ScreeningToReferralServiceTest {
     crossReports.add(sheriffCrossReport);
     crossReports.add(daCrossReport);
 
-    ScreeningToReferral screeningToReferral = defaultReferralBuilder
-        .setCrossReports(crossReports).createScreeningToReferral();
-    when(referralService.createCmsReferralFromScreening(eq(screeningToReferral),any(),any(),
+    ScreeningToReferral screeningToReferral =
+        defaultReferralBuilder.setCrossReports(crossReports).createScreeningToReferral();
+    when(referralService.createCmsReferralFromScreening(eq(screeningToReferral), any(), any(),
         any(), any())).thenReturn(validReferralId);
 
     mockParticipantService(screeningToReferral);
@@ -405,9 +412,8 @@ public class ScreeningToReferralServiceTest {
     ScreeningToReferral referral = new ScreeningToReferralResourceBuilder()
         .setCrossReports(new HashSet<>()).createScreeningToReferral();
 
-    screeningToReferralService =
-        new MockedScreeningToReferralServiceBuilder().addParticipantService(participantService)
-            .createScreeningToReferralService();
+    screeningToReferralService = new MockedScreeningToReferralServiceBuilder()
+        .addParticipantService(participantService).createScreeningToReferralService();
 
     mockParticipantService(referral);
 
@@ -428,8 +434,8 @@ public class ScreeningToReferralServiceTest {
     ScreeningToReferral screeningToReferral = new ScreeningToReferralResourceBuilder()
         .setParticipants(participants).createScreeningToReferral();
 
-    when(referralService.createCmsReferralFromScreening(eq(screeningToReferral),any(),any(),
-          any(), any())).thenReturn(validReferralId);
+    when(referralService.createCmsReferralFromScreening(eq(screeningToReferral), any(), any(),
+        any(), any())).thenReturn(validReferralId);
 
     mockParticipantService(screeningToReferral);
 
@@ -457,8 +463,8 @@ public class ScreeningToReferralServiceTest {
     ScreeningToReferral screeningToReferral = new ScreeningToReferralResourceBuilder()
         .setParticipants(participants).createScreeningToReferral();
 
-    when(referralService.createCmsReferralFromScreening(eq(screeningToReferral),any(),any(), any(),
-          any())).thenReturn(validReferralId);
+    when(referralService.createCmsReferralFromScreening(eq(screeningToReferral), any(), any(),
+        any(), any())).thenReturn(validReferralId);
 
     mockParticipantService(screeningToReferral);
 
@@ -480,8 +486,8 @@ public class ScreeningToReferralServiceTest {
     ScreeningToReferral screeningToReferral = new ScreeningToReferralResourceBuilder()
         .setParticipants(participants).createScreeningToReferral();
 
-    when(referralService.createCmsReferralFromScreening(eq(screeningToReferral),any(),any(),
-          any(), any())).thenReturn(validReferralId);
+    when(referralService.createCmsReferralFromScreening(eq(screeningToReferral), any(), any(),
+        any(), any())).thenReturn(validReferralId);
 
     mockParticipantService(screeningToReferral);
 
@@ -497,8 +503,8 @@ public class ScreeningToReferralServiceTest {
     ScreeningToReferral screeningToReferral = new ScreeningToReferralResourceBuilder()
         .setParticipants(participants).createScreeningToReferral();
 
-    when(referralService.createCmsReferralFromScreening(eq(screeningToReferral),any(),any(), 
-          any(), any())).thenReturn(validReferralId);
+    when(referralService.createCmsReferralFromScreening(eq(screeningToReferral), any(), any(),
+        any(), any())).thenReturn(validReferralId);
 
     mockParticipantService(screeningToReferral);
 
@@ -512,15 +518,15 @@ public class ScreeningToReferralServiceTest {
   }
 
   @Test
-  public void shouldThrowExceptionWhenMessageBuilderContainsError(){
-     Participant reporterVictim = new ParticipantResourceBuilder()
+  public void shouldThrowExceptionWhenMessageBuilderContainsError() {
+    Participant reporterVictim = new ParticipantResourceBuilder()
         .setRoles(new HashSet<>(Arrays.asList("Anonymous Reporter", "Victim"))).createParticipant();
     Set participants = new HashSet<>(Arrays.asList(reporterVictim, defaultPerpetrator));
     ScreeningToReferral screeningToReferral = new ScreeningToReferralResourceBuilder()
         .setParticipants(participants).createScreeningToReferral();
 
-    when(referralService.createCmsReferralFromScreening(eq(screeningToReferral),any(),any(), any(),
-        any())).thenReturn(validReferralId);
+    when(referralService.createCmsReferralFromScreening(eq(screeningToReferral), any(), any(),
+        any(), any())).thenReturn(validReferralId);
 
     mockParticipantService(screeningToReferral);
 
@@ -547,9 +553,8 @@ public class ScreeningToReferralServiceTest {
     ScreeningToReferral referral = new ScreeningToReferralResourceBuilder()
         .setParticipants(new HashSet<>(participants)).createScreeningToReferral();
 
-    screeningToReferralService =
-        new MockedScreeningToReferralServiceBuilder().addParticipantService(participantService)
-            .createScreeningToReferralService();
+    screeningToReferralService = new MockedScreeningToReferralServiceBuilder()
+        .addParticipantService(participantService).createScreeningToReferralService();
 
     mockParticipantService(referral);
 
@@ -560,9 +565,8 @@ public class ScreeningToReferralServiceTest {
   @SuppressWarnings("javadoc")
   @Test
   public void testMultipleAddressPerParticipantSuccess() throws Exception {
-    screeningToReferralService =
-        new MockedScreeningToReferralServiceBuilder().addParticipantService(participantService).
-    createScreeningToReferralService();
+    screeningToReferralService = new MockedScreeningToReferralServiceBuilder()
+        .addParticipantService(participantService).createScreeningToReferralService();
 
     gov.ca.cwds.rest.api.domain.Address address1 =
         new AddressResourceBuilder().setStreetAddress("123 First St").createAddress();
@@ -587,13 +591,14 @@ public class ScreeningToReferralServiceTest {
   public void shouldSaveSucessfullyWhenPerpHasNoAddress() throws Exception {
     Participant perpWithNoAddress =
         new ParticipantResourceBuilder().setAddresses(null).setId(12345).createPerpParticipant();
-    Set participants = new HashSet<>(Arrays.asList(perpWithNoAddress, defaultVictim, defaultReporter));
+    Set participants =
+        new HashSet<>(Arrays.asList(perpWithNoAddress, defaultVictim, defaultReporter));
 
     ScreeningToReferral screeningToReferral = new ScreeningToReferralResourceBuilder()
         .setParticipants(participants).createScreeningToReferral();
 
-    when(referralService.createCmsReferralFromScreening(eq(screeningToReferral),any(),any(), any(),
-        any())).thenReturn(validReferralId);
+    when(referralService.createCmsReferralFromScreening(eq(screeningToReferral), any(), any(),
+        any(), any())).thenReturn(validReferralId);
 
     mockParticipantService(screeningToReferral);
 
@@ -613,8 +618,8 @@ public class ScreeningToReferralServiceTest {
     ScreeningToReferral screeningToReferral = new ScreeningToReferralResourceBuilder()
         .setParticipants(participants).createScreeningToReferral();
 
-    when(referralService.createCmsReferralFromScreening(eq(screeningToReferral),any(),any(), any(),
-        any())).thenReturn(validReferralId);
+    when(referralService.createCmsReferralFromScreening(eq(screeningToReferral), any(), any(),
+        any(), any())).thenReturn(validReferralId);
 
     mockParticipantService(screeningToReferral);
 
@@ -634,9 +639,8 @@ public class ScreeningToReferralServiceTest {
     ScreeningToReferral referral = new ScreeningToReferralResourceBuilder()
         .setParticipants(participants).createScreeningToReferral();
 
-    screeningToReferralService =
-        new MockedScreeningToReferralServiceBuilder().addParticipantService(participantService)
-        .createScreeningToReferralService();
+    screeningToReferralService = new MockedScreeningToReferralServiceBuilder()
+        .addParticipantService(participantService).createScreeningToReferralService();
 
     mockParticipantService(referral);
 
@@ -692,8 +696,8 @@ public class ScreeningToReferralServiceTest {
     ScreeningToReferral screeningToReferral =
         new ScreeningToReferralResourceBuilder().setAllegations(null).createScreeningToReferral();
 
-    when(referralService.createCmsReferralFromScreening(eq(screeningToReferral),any(),any(), any(),
-        any())).thenReturn(validReferralId);
+    when(referralService.createCmsReferralFromScreening(eq(screeningToReferral), any(), any(),
+        any(), any())).thenReturn(validReferralId);
 
     mockParticipantService(screeningToReferral);
 
@@ -719,8 +723,8 @@ public class ScreeningToReferralServiceTest {
     ScreeningToReferral screeningToReferral = new ScreeningToReferralResourceBuilder()
         .setAllegations(allegations).createScreeningToReferral();
 
-    when(referralService.createCmsReferralFromScreening(eq(screeningToReferral),any(),any(), any(),
-        any())).thenReturn(validReferralId);
+    when(referralService.createCmsReferralFromScreening(eq(screeningToReferral), any(), any(),
+        any(), any())).thenReturn(validReferralId);
 
     mockParticipantService(screeningToReferral);
 
@@ -746,8 +750,8 @@ public class ScreeningToReferralServiceTest {
     ScreeningToReferral screeningToReferral = new ScreeningToReferralResourceBuilder()
         .setAllegations(allegations).createScreeningToReferral();
 
-    when(referralService.createCmsReferralFromScreening(eq(screeningToReferral),any(),any(), any(),
-        any())).thenReturn(validReferralId);
+    when(referralService.createCmsReferralFromScreening(eq(screeningToReferral), any(), any(),
+        any(), any())).thenReturn(validReferralId);
 
     mockParticipantService(screeningToReferral);
 
@@ -776,8 +780,8 @@ public class ScreeningToReferralServiceTest {
     ScreeningToReferral screeningToReferral = new ScreeningToReferralResourceBuilder()
         .setAllegations(allegations).createScreeningToReferral();
 
-    when(referralService.createCmsReferralFromScreening(eq(screeningToReferral),any(),any(), any(),
-        any())).thenReturn(validReferralId);
+    when(referralService.createCmsReferralFromScreening(eq(screeningToReferral), any(), any(),
+        any(), any())).thenReturn(validReferralId);
 
     mockParticipantService(screeningToReferral);
 
@@ -785,9 +789,11 @@ public class ScreeningToReferralServiceTest {
       Response response = screeningToReferralService.create(screeningToReferral);
       assertFalse("Expected an exception to have been thrown", true);
     } catch (Exception e) {
-      assertTrue("Expected Exception to contain allegation/perpetrator don't correspond error message", e.getMessage().contains(
-          "Allegation/Perpetrator Person Id does not contain a Participant with a role of Perpetrator"));
-      }
+      assertTrue(
+          "Expected Exception to contain allegation/perpetrator don't correspond error message",
+          e.getMessage().contains(
+              "Allegation/Perpetrator Person Id does not contain a Participant with a role of Perpetrator"));
+    }
   }
 
 
@@ -831,8 +837,8 @@ public class ScreeningToReferralServiceTest {
     } catch (ServiceException e) {
       // not interested in exception for this test
     }
-    verify(foundClient, times(0)).update(any(), any(), any(), any());
-    verify(foundClient, times(0)).update(any(), any(), any(), any());
+    verify(foundClient, times(0)).update(any(), any(), any(), any(), any(), any(), any(), any());
+    verify(foundClient, times(0)).update(any(), any(), any(), any(), any(), any(), any(), any());
   }
 
   @SuppressWarnings("javadoc")
@@ -870,8 +876,8 @@ public class ScreeningToReferralServiceTest {
     ScreeningToReferral screeningToReferral = new ScreeningToReferralResourceBuilder()
         .setAllegations(allegations).setParticipants(participants).createScreeningToReferral();
 
-    when(referralService.createCmsReferralFromScreening(eq(screeningToReferral),any(),any(), any(),
-        any())).thenReturn(validReferralId);
+    when(referralService.createCmsReferralFromScreening(eq(screeningToReferral), any(), any(),
+        any(), any())).thenReturn(validReferralId);
 
     mockParticipantService(screeningToReferral);
 
@@ -893,8 +899,8 @@ public class ScreeningToReferralServiceTest {
     ScreeningToReferral screeningToReferral = new ScreeningToReferralResourceBuilder()
         .setCrossReports(crossReports).createScreeningToReferral();
 
-    when(referralService.createCmsReferralFromScreening(eq(screeningToReferral),any(),any(), any(),
-        any())).thenReturn(validReferralId);
+    when(referralService.createCmsReferralFromScreening(eq(screeningToReferral), any(), any(),
+        any(), any())).thenReturn(validReferralId);
 
     when(crossReportService.find(eq(crossReport.getLegacyId()))).thenReturn(null);
 
@@ -933,8 +939,8 @@ public class ScreeningToReferralServiceTest {
     ScreeningToReferral screeningToReferral = new ScreeningToReferralResourceBuilder()
         .setCrossReports(crossReports).createScreeningToReferral();
 
-    when(referralService.createCmsReferralFromScreening(eq(screeningToReferral),any(),any(), any(),
-        any())).thenReturn(validReferralId);
+    when(referralService.createCmsReferralFromScreening(eq(screeningToReferral), any(), any(),
+        any(), any())).thenReturn(validReferralId);
     when(crossReportService.find(eq(crossReport.getLegacyId()))).thenReturn(null);
 
     mockParticipantService(screeningToReferral);
@@ -972,8 +978,8 @@ public class ScreeningToReferralServiceTest {
     ScreeningToReferral screeningToReferral = new ScreeningToReferralResourceBuilder()
         .setParticipants(participants).createScreeningToReferral();
 
-    when(referralService.createCmsReferralFromScreening(eq(screeningToReferral),any(),any(), any(),
-        any())).thenReturn(validReferralId);
+    when(referralService.createCmsReferralFromScreening(eq(screeningToReferral), any(), any(),
+        any(), any())).thenReturn(validReferralId);
 
     Address victimLegacyAddress = new Address().createWithDefaults(victimAddress);
     Set victimLegacyAddresses = new HashSet();
@@ -1019,8 +1025,8 @@ public class ScreeningToReferralServiceTest {
     Reporter savedReporter = new ReporterResourceBuilder().build();
     when(reporterService.find(any())).thenReturn(savedReporter);
 
-    when(referralService.createCmsReferralFromScreening(eq(screeningToReferral),any(),any(), any(),
-        any())).thenReturn(validReferralId);
+    when(referralService.createCmsReferralFromScreening(eq(screeningToReferral), any(), any(),
+        any(), any())).thenReturn(validReferralId);
 
     mockParticipantService(screeningToReferral);
 
@@ -1041,8 +1047,8 @@ public class ScreeningToReferralServiceTest {
     ScreeningToReferral screeningToReferral = new ScreeningToReferralResourceBuilder()
         .setParticipants(participants).createScreeningToReferral();
 
-    when(referralService.createCmsReferralFromScreening(eq(screeningToReferral),any(),any(), any(),
-        any())).thenReturn(validReferralId);
+    when(referralService.createCmsReferralFromScreening(eq(screeningToReferral), any(), any(),
+        any(), any())).thenReturn(validReferralId);
 
     mockParticipantService(screeningToReferral);
 
@@ -1051,13 +1057,13 @@ public class ScreeningToReferralServiceTest {
     assertThat(response.hasMessages(), is(equalTo(false)));
   }
 
-  private void mockParticipantService(ScreeningToReferral screeningToReferral){
+  private void mockParticipantService(ScreeningToReferral screeningToReferral) {
 
     ClientParticipants clientParticipants = new ClientParticipants();
-    Set <Participant>participants = screeningToReferral.getParticipants();
+    Set<Participant> participants = screeningToReferral.getParticipants();
 
     CmsIdGenerator generator = new CmsIdGenerator();
-    for(Participant participant : participants){
+    for (Participant participant : participants) {
       participant.setLegacyId(generator.generate());
     }
     clientParticipants.addParticipants(participants);

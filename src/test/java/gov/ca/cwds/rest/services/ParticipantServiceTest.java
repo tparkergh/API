@@ -539,8 +539,10 @@ public class ParticipantServiceTest {
 
     participantService.saveParticipants(referral, dateStarted, referralId, timestamp,
         messageBuilder);
-    verify(foundVictim, times(2)).update("Barney", "middlestone", "Rubble", "Jr.");
-    verify(foundPerp, times(1)).update("Fred", "Finnigan", "Flintsone", "Jr.");
+    verify(foundVictim, times(2)).update("Barney", "middlestone", "Rubble", "Jr.", (short) 0, "A",
+        "A", "X");
+    verify(foundPerp, times(1)).update("Fred", "Finnigan", "Flintsone", "Jr.", (short) 0, "A", "A",
+        "X");
     verify(clientService).update(eq(existingPerpId), any());
   }
 

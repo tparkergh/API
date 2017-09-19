@@ -63,7 +63,7 @@ public class ParticipantRolesValidator
 
   private static Boolean hasReporterRole(Participant participant) {
     Set<String> roles = participant.getRoles();
-    Boolean hasReporterRole = false;
+    Boolean hasReporterRole = Boolean.FALSE;
 
     if (roles != null) {
       hasReporterRole =
