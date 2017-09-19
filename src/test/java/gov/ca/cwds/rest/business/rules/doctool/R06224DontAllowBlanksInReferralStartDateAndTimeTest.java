@@ -58,6 +58,8 @@ import gov.ca.cwds.rest.business.rules.LACountyTrigger;
 import gov.ca.cwds.rest.business.rules.NonLACountyTriggers;
 import gov.ca.cwds.rest.business.rules.Reminders;
 import gov.ca.cwds.rest.business.rules.UpperCaseTables;
+import gov.ca.cwds.rest.exception.BusinessValidationException;
+import gov.ca.cwds.rest.exception.IssueDetails;
 import gov.ca.cwds.rest.filters.TestingRequestExecutionContext;
 import gov.ca.cwds.rest.messages.MessageBuilder;
 import gov.ca.cwds.rest.services.ParticipantService;
@@ -381,11 +383,9 @@ public class R06224DontAllowBlanksInReferralStartDateAndTimeTest {
     Boolean theErrorDetected = false;
     try {
       this.screeningToReferralService.create(screeningToReferral);
-    } catch (Exception e) {
-      if (e.getMessage().contains("creationDate may not be null")) {
-        theErrorDetected = true;
-      }
-      assertThat(theErrorDetected, is(equalTo(true)));
+    } catch (BusinessValidationException e) {
+      Set<IssueDetails> issues = e.getValidationDetailsList();
+      assertThat(issues.size(), is(equalTo(9)));
     }
   }
 
