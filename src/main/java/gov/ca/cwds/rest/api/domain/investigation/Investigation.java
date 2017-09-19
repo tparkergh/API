@@ -1,7 +1,5 @@
 package gov.ca.cwds.rest.api.domain.investigation;
 
-import static gov.ca.cwds.data.persistence.cms.CmsPersistentObject.CMS_ID_LEN;
-
 import java.util.Set;
 
 import javax.validation.Valid;
@@ -16,18 +14,14 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 import gov.ca.cwds.rest.api.Request;
 import gov.ca.cwds.rest.api.Response;
-import gov.ca.cwds.rest.api.domain.Allegation;
-import gov.ca.cwds.rest.api.domain.Contact;
-import gov.ca.cwds.rest.api.domain.CrossReport;
 import gov.ca.cwds.rest.api.domain.DomainObject;
+import gov.ca.cwds.rest.api.domain.LegacyDescriptor;
 import gov.ca.cwds.rest.api.domain.ReportingDomain;
-import gov.ca.cwds.rest.api.domain.Screening;
 import gov.ca.cwds.rest.api.domain.SystemCodeCategoryId;
 import gov.ca.cwds.rest.validation.Date;
 import gov.ca.cwds.rest.validation.ValidLogicalId;
 import gov.ca.cwds.rest.validation.ValidSystemCodeId;
 import io.dropwizard.jackson.JsonSnakeCase;
-import io.dropwizard.validation.OneOf;
 import io.swagger.annotations.ApiModelProperty;
 
 /**
@@ -40,16 +34,8 @@ import io.swagger.annotations.ApiModelProperty;
 public class Investigation extends ReportingDomain implements Request, Response {
   private static final long serialVersionUID = 1L;
 
-  @JsonProperty("table_name")
-  @ApiModelProperty(required = true, readOnly = false, value = "CMS Table Name",
-      example = "REFERL_T")
-  private String tableName;
-
-  @Size(max = CMS_ID_LEN)
-  @NotNull
-  @JsonProperty("id")
-  @ApiModelProperty(required = true, readOnly = true, value = "", example = "ABC1234567")
-  private String id;
+  @JsonProperty("legacy_descriptor")
+  private LegacyDescriptor legacyDescriptor;
 
   @JsonProperty("last_updated_by")
   @ApiModelProperty(required = false, readOnly = false, value = "staff person id")
@@ -59,18 +45,7 @@ public class Investigation extends ReportingDomain implements Request, Response 
       example = "2010-10-01T15:26:42.000-0700")
   @JsonProperty("last_updated_at")
   @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss.SSSZ")
-  private DateTime lastUpdated;
-
-  @JsonProperty("approval_status")
-  @ValidSystemCodeId(required = false, category = SystemCodeCategoryId.APPROVAL_STATUS_TYPE)
-  @ApiModelProperty(required = false, readOnly = false, value = "Status of the approval",
-      example = "118")
-  private int approvalStatus;
-
-  @JsonProperty("family_awareness")
-  @ApiModelProperty(required = false, readOnly = false, value = "Family is aware of referral",
-      example = "true")
-  private boolean familyAwareness;
+  private DateTime lastUpdatedAt;
 
   @JsonProperty("incident_county")
   @NotEmpty
@@ -107,8 +82,8 @@ public class Investigation extends ReportingDomain implements Request, Response 
   @Size(max = 35)
   private String name;
 
-  @JsonProperty("report_narrative")
-  @ApiModelProperty(required = false, readOnly = false, value = "Report Narrative",
+  @JsonProperty("investigation_summary")
+  @ApiModelProperty(required = false, readOnly = false, value = "summary of investigation",
       example = "On the evening of...")
   @Size(max = 254)
   private String reportNarrative;
@@ -133,11 +108,7 @@ public class Investigation extends ReportingDomain implements Request, Response 
   private String startedAt;
 
   @JsonProperty("assignee")
-  @NotEmpty
-  @ApiModelProperty(required = true, readOnly = false, value = "Assigned social worker",
-      example = "CWS Staff")
-  @Size(max = 50)
-  private String assignee;
+  private Assignee assignedd;
 
   @JsonProperty("additional_information")
   @ApiModelProperty(required = false, readOnly = false, value = "Additional Information",
@@ -145,46 +116,32 @@ public class Investigation extends ReportingDomain implements Request, Response 
   @Size(max = 50)
   private String additionalInformation;
 
-  @JsonProperty("limited_access_code")
-  @Size(max = 1)
-  @OneOf(value = {"R", "S", "N"})
-  @ApiModelProperty(required = true, readOnly = false, value = "limited access code", example = "N")
-  private String limitedAccessCode;
 
-  @JsonProperty("limited_access_description")
-  @Size(max = 254)
-  @ApiModelProperty(required = false, readOnly = false, value = "limited access description",
-      example = "Some text describing the limited access")
-  private String limitedAccessDescription;
+  @JsonProperty("sensitive")
+  @ApiModelProperty(required = true, readOnly = false, value = "contains sensitive information")
+  private Boolean sensitive;
 
-  @JsonProperty("limited_access_agency")
-  @ApiModelProperty(required = false, readOnly = false, value = "40",
-      example = "Government Entity Type ")
-  @ValidLogicalId(required = false, category = SystemCodeCategoryId.COUNTY_CODE, ignoreable = true,
-      ignoredValue = "")
-  private String limitedAccessAgency;
+  @JsonProperty("sealed")
+  @ApiModelProperty(required = true, readOnly = false, value = "contains sealed information")
+  private Boolean sealed;
 
-  @JsonProperty("limited_access_date")
-  @ApiModelProperty(required = false, readOnly = false, value = "yyyy-MM-dd",
-      example = "2017-09-01")
-  @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
-  private java.util.Date limitedAccessDate;
+  @JsonProperty("phone")
+  private Set<PhoneNumber> phoneNumbers;
 
   @NotNull
   @ApiModelProperty(required = true, readOnly = false)
   @Valid
   private InvestigationAddress address;
 
-  @JsonProperty("screenings")
+  @JsonProperty("screening")
   @ApiModelProperty(required = false, readOnly = false)
   @Valid
-  private Set<Screening> screenings;
+  private SimpleScreening screening;
 
-  // @JsonProperty("history_of_involvement")
-  // @ApiModelProperty(required = false, readOnly = false)
-  // @Valid
-  // private Set<HistoryOfInvolvement> history_of_involvement;
-
+  @JsonProperty("history_of_involvement")
+  @ApiModelProperty(required = false, readOnly = false)
+  @Valid
+  private HistoryOfInvolvement historyOfInvolvement;
 
   @JsonProperty("allegations")
   @ApiModelProperty(required = false, readOnly = false)
@@ -197,26 +154,25 @@ public class Investigation extends ReportingDomain implements Request, Response 
   // private Set<SafetyAlerts> saftetyAlerts;
 
 
-  @JsonProperty("cross_reports")
-  @ApiModelProperty(required = false, readOnly = false)
-  @Valid
-  private Set<CrossReport> crossReports;
-
-  @JsonProperty("contacts")
-  @ApiModelProperty(required = false, readOnly = false)
-  @Valid
-  private Set<Contact> contacts;
-
+  // @JsonProperty("cross_reports")
+  // @ApiModelProperty(required = false, readOnly = false)
+  // @Valid
+  // private Set<CrossReport> crossReports;
+  //
+  // @JsonProperty("contacts")
+  // @ApiModelProperty(required = false, readOnly = false)
+  // @Valid
+  // private Set<Contact> contacts;
+  //
   @JsonProperty("people")
   @ApiModelProperty(required = false, readOnly = false)
   @Valid
-  private Set<InvestigationPerson> people;
+  private Set<Person> people;
 
   @JsonProperty("relationships")
   @ApiModelProperty(required = false, readOnly = false)
   @Valid
   private Set<Relationship> relationships;
-
 
 
   /**
@@ -227,51 +183,47 @@ public class Investigation extends ReportingDomain implements Request, Response 
   }
 
   /**
-   * @param tableName - CWS table name
-   * @param id - CWS ID
-   * @param lastUpdatedBy - last updated by CWS Staff person ID
-   * @param lastUpdated - last updated date/time
-   * @param approvalStatus - approval status code
-   * @param familyAwareness - family awareness indicator
-   * @param incidentCounty - county code
-   * @param incidentDate - date of incident
-   * @param locationType - location type text
-   * @param communicationMethod - communication method code
-   * @param name - name of investigation
-   * @param reportNarrative - report narrative
-   * @param reference - reference text
-   * @param responseTime - response code
-   * @param startedAt - started at date/time
-   * @param assignee - assigned staff
-   * @param additionalInformation - additional information text
-   * @param limitedAccessCode - limited access code
-   * @param limitedAccessDescription - limited access description
-   * @param limitedAccessAgency - limited access agency
-   * @param limitedAccessDate - date limited access applied
+   * @param legacyDescriptor
+   * @param lastUpdatedBy
+   * @param lastUpdatedAt
+   * @param incidentCounty
+   * @param incidentDate
+   * @param locationType
+   * @param communicationMethod
+   * @param name
+   * @param reportNarrative
+   * @param reference
+   * @param responseTime
+   * @param startedAt
+   * @param assigneee
+   * @param additionalInformation
+   * @param sensitive
+   * @param sealed
+   * @param phoneNumbers
    * @param address
-   * @param screenings
+   * @param screening
+   * @param historyOfInvolvement
    * @param allegations
-   * @param crossReports
-   * @param contacts
    * @param people
    * @param relationships
    */
-  public Investigation(String tableName, String id, String lastUpdatedBy, DateTime lastUpdated,
-      int approvalStatus, boolean familyAwareness, String incidentCounty, String incidentDate,
-      String locationType, Short communicationMethod, String name, String reportNarrative,
-      String reference, Short responseTime, String startedAt, String assignee,
-      String additionalInformation, String limitedAccessCode, String limitedAccessDescription,
-      String limitedAccessAgency, java.util.Date limitedAccessDate, InvestigationAddress address,
-      Set<Screening> screenings, Set<Allegation> allegations, Set<CrossReport> crossReports,
-      Set<Contact> contacts, Set<InvestigationPerson> people, Set<Relationship> relationships) {
+  public Investigation(LegacyDescriptor legacyDescriptor, String lastUpdatedBy,
+      DateTime lastUpdatedAt,
+      @ValidLogicalId(required = true, category = "GVR_ENTC") String incidentCounty,
+      @Date String incidentDate, String locationType,
+      @ValidSystemCodeId(required = true, category = "CMM_MTHC") Short communicationMethod,
+      String name, String reportNarrative, String reference,
+      @ValidSystemCodeId(required = true, category = "RFR_RSPC") Short responseTime,
+      String startedAt, Assignee assignee, String additionalInformation, Boolean sensitive,
+      Boolean sealed, Set<PhoneNumber> phoneNumbers, InvestigationAddress address,
+      SimpleScreening screening, HistoryOfInvolvement historyOfInvolvement,
+      Set<Allegation> allegations, Set<Person> people, Set<Relationship> relationships) {
     super();
-    this.tableName = tableName;
-    this.id = id;
+    this.legacyDescriptor = legacyDescriptor;
     this.lastUpdatedBy = lastUpdatedBy;
-    this.lastUpdated = lastUpdated;
-    this.approvalStatus = approvalStatus;
-    this.familyAwareness = familyAwareness;
+    this.lastUpdatedAt = lastUpdatedAt;
     this.incidentCounty = incidentCounty;
+    this.incidentDate = incidentDate;
     this.locationType = locationType;
     this.communicationMethod = communicationMethod;
     this.name = name;
@@ -279,68 +231,31 @@ public class Investigation extends ReportingDomain implements Request, Response 
     this.reference = reference;
     this.responseTime = responseTime;
     this.startedAt = startedAt;
-    this.assignee = assignee;
+    this.assignedd = assignedd;
     this.additionalInformation = additionalInformation;
+    this.sensitive = sensitive;
+    this.sealed = sealed;
+    this.phoneNumbers = phoneNumbers;
     this.address = address;
-    this.limitedAccessCode = limitedAccessCode;
-    this.limitedAccessDescription = limitedAccessDescription;
-    this.limitedAccessAgency = limitedAccessAgency;
-    this.limitedAccessDate = limitedAccessDate;
-    this.address = address;
-    this.screenings = screenings;
+    this.screening = screening;
+    this.historyOfInvolvement = historyOfInvolvement;
     this.allegations = allegations;
-    this.crossReports = crossReports;
-    this.contacts = contacts;
     this.people = people;
     this.relationships = relationships;
-
   }
 
-  /**
-   * @return CWS table name
-   */
-  public String getTableName() {
-    return tableName;
+  public LegacyDescriptor getLegacyDescriptor() {
+    return legacyDescriptor;
   }
 
-  /**
-   * @return CWS Identifier
-   */
-  public String getId() {
-    return id;
-  }
-
-  /**
-   * @return staff person code of last update
-   */
   public String getLastUpdatedBy() {
     return lastUpdatedBy;
   }
 
-  /**
-   * @return date/time of last of update
-   */
-  public DateTime getLastUpdated() {
-    return lastUpdated;
+  public DateTime getLastUpdatedAt() {
+    return lastUpdatedAt;
   }
 
-  /**
-   * @return approval status code
-   */
-  public int getApprovalStatus() {
-    return approvalStatus;
-  }
-
-  /**
-   * @return family awareness indicator
-   */
-  public boolean isFamilyAwareness() {
-    return familyAwareness;
-  }
-
-  /**
-   * @return incident county code
-   */
   public String getIncidentCounty() {
     return incidentCounty;
   }
@@ -377,51 +292,43 @@ public class Investigation extends ReportingDomain implements Request, Response 
     return startedAt;
   }
 
-  public String getAssignee() {
-    return assignee;
+  public Assignee getAssignedd() {
+    return assignedd;
   }
 
   public String getAdditionalInformation() {
     return additionalInformation;
   }
 
-  public String getLimitedAccessCode() {
-    return limitedAccessCode;
+  public Boolean getSensitive() {
+    return sensitive;
   }
 
-  public String getLimitedAccessDescription() {
-    return limitedAccessDescription;
+  public Boolean getSealed() {
+    return sealed;
   }
 
-  public String getLimitedAccessAgency() {
-    return limitedAccessAgency;
-  }
-
-  public java.util.Date getLimitedAccessDate() {
-    return limitedAccessDate;
+  public Set<PhoneNumber> getPhoneNumbers() {
+    return phoneNumbers;
   }
 
   public InvestigationAddress getAddress() {
     return address;
   }
 
-  public Set<Screening> getScreenings() {
-    return screenings;
+  public SimpleScreening getScreening() {
+    return screening;
+  }
+
+  public HistoryOfInvolvement getHistoryOfInvolvement() {
+    return historyOfInvolvement;
   }
 
   public Set<Allegation> getAllegations() {
     return allegations;
   }
 
-  public Set<CrossReport> getCrossReports() {
-    return crossReports;
-  }
-
-  public Set<Contact> getContacts() {
-    return contacts;
-  }
-
-  public Set<InvestigationPerson> getPeople() {
+  public Set<Person> getPeople() {
     return people;
   }
 
@@ -437,30 +344,27 @@ public class Investigation extends ReportingDomain implements Request, Response 
         prime * result + ((additionalInformation == null) ? 0 : additionalInformation.hashCode());
     result = prime * result + ((address == null) ? 0 : address.hashCode());
     result = prime * result + ((allegations == null) ? 0 : allegations.hashCode());
-    result = prime * result + approvalStatus;
-    result = prime * result + ((assignee == null) ? 0 : assignee.hashCode());
+    result = prime * result + ((assignedd == null) ? 0 : assignedd.hashCode());
     result = prime * result + ((communicationMethod == null) ? 0 : communicationMethod.hashCode());
-    result = prime * result + ((contacts == null) ? 0 : contacts.hashCode());
-    result = prime * result + ((crossReports == null) ? 0 : crossReports.hashCode());
-    result = prime * result + (familyAwareness ? 1231 : 1237);
-    result = prime * result + ((id == null) ? 0 : id.hashCode());
+    result =
+        prime * result + ((historyOfInvolvement == null) ? 0 : historyOfInvolvement.hashCode());
     result = prime * result + ((incidentCounty == null) ? 0 : incidentCounty.hashCode());
     result = prime * result + ((incidentDate == null) ? 0 : incidentDate.hashCode());
-    result = prime * result + ((lastUpdated == null) ? 0 : lastUpdated.hashCode());
+    result = prime * result + ((lastUpdatedAt == null) ? 0 : lastUpdatedAt.hashCode());
     result = prime * result + ((lastUpdatedBy == null) ? 0 : lastUpdatedBy.hashCode());
-    result = prime * result + ((limitedAccessAgency == null) ? 0 : limitedAccessAgency.hashCode());
-    result = prime * result + ((limitedAccessCode == null) ? 0 : limitedAccessCode.hashCode());
-    result = prime * result + ((limitedAccessDate == null) ? 0 : limitedAccessDate.hashCode());
-    result = prime * result
-        + ((limitedAccessDescription == null) ? 0 : limitedAccessDescription.hashCode());
+    result = prime * result + ((legacyDescriptor == null) ? 0 : legacyDescriptor.hashCode());
     result = prime * result + ((locationType == null) ? 0 : locationType.hashCode());
     result = prime * result + ((name == null) ? 0 : name.hashCode());
+    result = prime * result + ((people == null) ? 0 : people.hashCode());
+    result = prime * result + ((phoneNumbers == null) ? 0 : phoneNumbers.hashCode());
     result = prime * result + ((reference == null) ? 0 : reference.hashCode());
+    result = prime * result + ((relationships == null) ? 0 : relationships.hashCode());
     result = prime * result + ((reportNarrative == null) ? 0 : reportNarrative.hashCode());
     result = prime * result + ((responseTime == null) ? 0 : responseTime.hashCode());
-    result = prime * result + ((screenings == null) ? 0 : screenings.hashCode());
+    result = prime * result + ((screening == null) ? 0 : screening.hashCode());
+    result = prime * result + ((sealed == null) ? 0 : sealed.hashCode());
+    result = prime * result + ((sensitive == null) ? 0 : sensitive.hashCode());
     result = prime * result + ((startedAt == null) ? 0 : startedAt.hashCode());
-    result = prime * result + ((tableName == null) ? 0 : tableName.hashCode());
     return result;
   }
 
@@ -488,34 +392,20 @@ public class Investigation extends ReportingDomain implements Request, Response 
         return false;
     } else if (!allegations.equals(other.allegations))
       return false;
-    if (approvalStatus != other.approvalStatus)
-      return false;
-    if (assignee == null) {
-      if (other.assignee != null)
+    if (assignedd == null) {
+      if (other.assignedd != null)
         return false;
-    } else if (!assignee.equals(other.assignee))
+    } else if (!assignedd.equals(other.assignedd))
       return false;
     if (communicationMethod == null) {
       if (other.communicationMethod != null)
         return false;
     } else if (!communicationMethod.equals(other.communicationMethod))
       return false;
-    if (contacts == null) {
-      if (other.contacts != null)
+    if (historyOfInvolvement == null) {
+      if (other.historyOfInvolvement != null)
         return false;
-    } else if (!contacts.equals(other.contacts))
-      return false;
-    if (crossReports == null) {
-      if (other.crossReports != null)
-        return false;
-    } else if (!crossReports.equals(other.crossReports))
-      return false;
-    if (familyAwareness != other.familyAwareness)
-      return false;
-    if (id == null) {
-      if (other.id != null)
-        return false;
-    } else if (!id.equals(other.id))
+    } else if (!historyOfInvolvement.equals(other.historyOfInvolvement))
       return false;
     if (incidentCounty == null) {
       if (other.incidentCounty != null)
@@ -527,35 +417,20 @@ public class Investigation extends ReportingDomain implements Request, Response 
         return false;
     } else if (!incidentDate.equals(other.incidentDate))
       return false;
-    if (lastUpdated == null) {
-      if (other.lastUpdated != null)
+    if (lastUpdatedAt == null) {
+      if (other.lastUpdatedAt != null)
         return false;
-    } else if (!lastUpdated.equals(other.lastUpdated))
+    } else if (!lastUpdatedAt.equals(other.lastUpdatedAt))
       return false;
     if (lastUpdatedBy == null) {
       if (other.lastUpdatedBy != null)
         return false;
     } else if (!lastUpdatedBy.equals(other.lastUpdatedBy))
       return false;
-    if (limitedAccessAgency == null) {
-      if (other.limitedAccessAgency != null)
+    if (legacyDescriptor == null) {
+      if (other.legacyDescriptor != null)
         return false;
-    } else if (!limitedAccessAgency.equals(other.limitedAccessAgency))
-      return false;
-    if (limitedAccessCode == null) {
-      if (other.limitedAccessCode != null)
-        return false;
-    } else if (!limitedAccessCode.equals(other.limitedAccessCode))
-      return false;
-    if (limitedAccessDate == null) {
-      if (other.limitedAccessDate != null)
-        return false;
-    } else if (!limitedAccessDate.equals(other.limitedAccessDate))
-      return false;
-    if (limitedAccessDescription == null) {
-      if (other.limitedAccessDescription != null)
-        return false;
-    } else if (!limitedAccessDescription.equals(other.limitedAccessDescription))
+    } else if (!legacyDescriptor.equals(other.legacyDescriptor))
       return false;
     if (locationType == null) {
       if (other.locationType != null)
@@ -567,10 +442,25 @@ public class Investigation extends ReportingDomain implements Request, Response 
         return false;
     } else if (!name.equals(other.name))
       return false;
+    if (people == null) {
+      if (other.people != null)
+        return false;
+    } else if (!people.equals(other.people))
+      return false;
+    if (phoneNumbers == null) {
+      if (other.phoneNumbers != null)
+        return false;
+    } else if (!phoneNumbers.equals(other.phoneNumbers))
+      return false;
     if (reference == null) {
       if (other.reference != null)
         return false;
     } else if (!reference.equals(other.reference))
+      return false;
+    if (relationships == null) {
+      if (other.relationships != null)
+        return false;
+    } else if (!relationships.equals(other.relationships))
       return false;
     if (reportNarrative == null) {
       if (other.reportNarrative != null)
@@ -582,22 +472,28 @@ public class Investigation extends ReportingDomain implements Request, Response 
         return false;
     } else if (!responseTime.equals(other.responseTime))
       return false;
-    if (screenings == null) {
-      if (other.screenings != null)
+    if (screening == null) {
+      if (other.screening != null)
         return false;
-    } else if (!screenings.equals(other.screenings))
+    } else if (!screening.equals(other.screening))
+      return false;
+    if (sealed == null) {
+      if (other.sealed != null)
+        return false;
+    } else if (!sealed.equals(other.sealed))
+      return false;
+    if (sensitive == null) {
+      if (other.sensitive != null)
+        return false;
+    } else if (!sensitive.equals(other.sensitive))
       return false;
     if (startedAt == null) {
       if (other.startedAt != null)
         return false;
     } else if (!startedAt.equals(other.startedAt))
       return false;
-    if (tableName == null) {
-      if (other.tableName != null)
-        return false;
-    } else if (!tableName.equals(other.tableName))
-      return false;
     return true;
   }
+
 
 }
