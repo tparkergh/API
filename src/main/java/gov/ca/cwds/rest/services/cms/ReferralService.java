@@ -1,6 +1,5 @@
 package gov.ca.cwds.rest.services.cms;
 
-import gov.ca.cwds.rest.api.domain.DomainChef;
 import java.util.Date;
 import java.util.Set;
 
@@ -21,6 +20,7 @@ import gov.ca.cwds.data.persistence.cms.CmsKeyIdGenerator;
 import gov.ca.cwds.data.persistence.cms.Referral;
 import gov.ca.cwds.data.persistence.cms.StaffPerson;
 import gov.ca.cwds.data.rules.TriggerTablesDao;
+import gov.ca.cwds.rest.api.domain.DomainChef;
 import gov.ca.cwds.rest.api.domain.ScreeningToReferral;
 import gov.ca.cwds.rest.api.domain.cms.LongText;
 import gov.ca.cwds.rest.api.domain.cms.PostedLongText;
@@ -293,7 +293,7 @@ public class ReferralService implements
         screeningToReferral.getIncidentCounty(), (short) screeningToReferral.getApprovalStatus(),
         LegacyDefaultValues.DEFAULT_STAFF_PERSON_ID, responseRationalLongTextId,
         screeningToReferral.getResponsibleAgency(), screeningToReferral.getLimitedAccessCode(),
-        screeningToReferral.getLimitedAccessDescription(), limitedAccessDate ,agencyCode);
+        screeningToReferral.getLimitedAccessDescription(), limitedAccessDate, agencyCode);
   }
 
   private Short convertLimitedAccessAgencyToNumericCode(ScreeningToReferral screeningToReferral) {
@@ -308,6 +308,7 @@ public class ReferralService implements
     for (SystemCode systemCode : systemCodes) {
       if (systemCode.getLogicalId().equals(logicalCode)) {
         foundCode = systemCode.getSystemId();
+        break;
       }
     }
     return foundCode;

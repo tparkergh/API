@@ -10,7 +10,6 @@ import java.util.Set;
 import javax.persistence.EntityExistsException;
 import javax.persistence.EntityNotFoundException;
 
-import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -22,7 +21,6 @@ import gov.ca.cwds.data.persistence.cms.CmsKeyIdGenerator;
 import gov.ca.cwds.rest.api.domain.RaceAndEthnicity;
 import gov.ca.cwds.rest.api.domain.cms.ClientScpEthnicity;
 import gov.ca.cwds.rest.filters.RequestExecutionContext;
-import gov.ca.cwds.rest.messages.MessageBuilder;
 import gov.ca.cwds.rest.services.ServiceException;
 import gov.ca.cwds.rest.services.TypedCrudsService;
 
@@ -127,20 +125,7 @@ public class ClientScpEthnicityService
    * @param messageBuilder - messageBuilder
    * @return the race And Ethnicity codes
    */
-  public Short getRaceCode(RaceAndEthnicity raceAndEthnicity, MessageBuilder messageBuilder) {
-    if (raceAndEthnicity != null && raceAndEthnicity.getRaceCode().contains((short) 6351)
-        && StringUtils.isBlank(raceAndEthnicity.getUnableToDetermineCode())) {
-      String message =
-          "RaceCode value is set to Unable to Determine then unableToDetermineCode can't be empty";
-      messageBuilder.addMessageAndLog(message, LOGGER);
-    }
-
-    if (raceAndEthnicity != null && raceAndEthnicity.getHispanicCode().contains((short) 6351)
-        && StringUtils.isBlank(raceAndEthnicity.getHispanicUnableToDetermineCode())) {
-      String message =
-          "HispanicCode value is set to Unable to Determine then hispanicUnableToDetermineCode can't be empty";
-      messageBuilder.addMessageAndLog(message, LOGGER);
-    }
+  public Short getRaceCode(RaceAndEthnicity raceAndEthnicity) {
 
     Short raceCode = 0;
     if (raceAndEthnicity != null && !raceAndEthnicity.getRaceCode().isEmpty()) {

@@ -442,7 +442,7 @@ public class ClientTest implements DomainTestTemplate {
 
     Client client = Client.createWithDefaults(participant, "", "", (short) 0);
 
-    client.update("Barney", "middlestone", "Rubble", "jr");
+    client.update("Barney", "middlestone", "Rubble", "jr", (short) 0, "A", "A", "X");
 
     assertEquals("Expected Client first name to have been changed", "Barney",
         client.getCommonFirstName());
