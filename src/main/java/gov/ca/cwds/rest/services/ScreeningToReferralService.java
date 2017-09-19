@@ -28,6 +28,7 @@ import gov.ca.cwds.rest.api.domain.cms.PostedAllegation;
 import gov.ca.cwds.rest.api.domain.cms.Reporter;
 import gov.ca.cwds.rest.api.domain.error.ErrorMessage;
 import gov.ca.cwds.rest.business.rules.Reminders;
+import gov.ca.cwds.rest.exception.BusinessValidationException;
 import gov.ca.cwds.rest.messages.MessageBuilder;
 import gov.ca.cwds.rest.services.cms.AddressService;
 import gov.ca.cwds.rest.services.cms.AllegationPerpetratorHistoryService;
@@ -41,7 +42,6 @@ import gov.ca.cwds.rest.services.cms.ReferralClientService;
 import gov.ca.cwds.rest.services.cms.ReferralService;
 import gov.ca.cwds.rest.services.cms.ReporterService;
 import gov.ca.cwds.rest.validation.ParticipantValidator;
-import gov.ca.cwds.rest.validation.ValidationException;
 import io.dropwizard.hibernate.UnitOfWork;
 
 /**
@@ -185,7 +185,7 @@ public class ScreeningToReferralService implements CrudsService {
         }
       }
       if (foundError) {
-        throw new ServiceException(errorMessage.toString(), new ValidationException());
+        throw new BusinessValidationException(messageBuilder.getIssues());
       }
     }
 
@@ -393,7 +393,7 @@ public class ScreeningToReferralService implements CrudsService {
    */
   private Set<Allegation> processAllegations(ScreeningToReferral scr, String referralId,
       HashMap<Long, String> perpatratorClient, HashMap<Long, String> victimClient, Date timestamp)
-      throws ServiceException {
+          throws ServiceException {
 
     Set<Allegation> processedAllegations = new HashSet<>();
     Set<Allegation> allegations;
