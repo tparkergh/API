@@ -85,6 +85,9 @@ import gov.ca.cwds.rest.business.rules.LACountyTrigger;
 import gov.ca.cwds.rest.business.rules.NonLACountyTriggers;
 import gov.ca.cwds.rest.business.rules.Reminders;
 import gov.ca.cwds.rest.business.rules.UpperCaseTables;
+import gov.ca.cwds.rest.exception.BusinessValidationException;
+import gov.ca.cwds.rest.exception.IssueDetails;
+import gov.ca.cwds.rest.exception.IssueType;
 import gov.ca.cwds.rest.messages.MessageBuilder;
 import gov.ca.cwds.rest.services.cms.AddressService;
 import gov.ca.cwds.rest.services.cms.AllegationPerpetratorHistoryService;
@@ -442,10 +445,13 @@ public class ScreeningToReferralServiceTest {
     try {
       screeningToReferralService.create(screeningToReferral);
       assertTrue("expected exception to be thrown", false);
-    } catch (ServiceException e) {
-      String errorMessage = " Incompatiable participants included in request";
-      assertTrue("Expected Incompatible participants error message to be recorded",
-          e.getMessage().contains(errorMessage));
+    } catch (BusinessValidationException e) {
+      Set<IssueDetails> issues = e.getValidationDetailsList();
+      assertThat(1, is(equalTo(issues.size())));
+      IssueDetails issue = issues.iterator().next();
+      assertThat(IssueType.CONSTRAINT_VALIDATION, is(equalTo(issue.getType())));
+      assertThat(" Incompatiable participants included in request",
+          is(equalTo(issue.getUserMessage())));
     }
   }
 
@@ -471,9 +477,13 @@ public class ScreeningToReferralServiceTest {
     try {
       Response response = screeningToReferralService.create(screeningToReferral);
       assertTrue("expected exception to be thrown", false);
-    } catch (Exception e) {
-      assertTrue("Expected exception to contain incompatble participants error message",
-          e.getMessage().contains("Incompatiable participants included in request"));
+    } catch (BusinessValidationException e) {
+      Set<IssueDetails> issues = e.getValidationDetailsList();
+      assertThat(issues.size(), is(equalTo(3)));
+      IssueDetails issue = issues.iterator().next();
+      assertThat(IssueType.CONSTRAINT_VALIDATION, is(equalTo(issue.getType())));
+      // assertThat("Incompatiable participants included in request",
+      // is(equalTo(issue.getUserMessage())));
     }
   }
 
@@ -511,9 +521,13 @@ public class ScreeningToReferralServiceTest {
     try {
       screeningToReferralService.create(screeningToReferral);
       assertTrue("expected exception to be thrown", false);
-    } catch (Exception e) {
-      assertTrue("Expected exception to contain incompatible participants error message",
-          e.getMessage().contains("Incompatiable participants included in request"));
+    } catch (BusinessValidationException e) {
+      Set<IssueDetails> issues = e.getValidationDetailsList();
+      assertThat(issues.size(), is(equalTo(3)));
+      IssueDetails issue = issues.iterator().next();
+      assertThat(IssueType.CONSTRAINT_VALIDATION, is(equalTo(issue.getType())));
+      // assertThat("Incompatiable participants included in request",
+      // is(equalTo(issue.getUserMessage())));
     }
   }
 
@@ -536,9 +550,12 @@ public class ScreeningToReferralServiceTest {
     try {
       Response response = screeningToReferralService.create(screeningToReferral);
       assertTrue("expected exception to be thrown", false);
-    } catch (Exception e) {
-      assertTrue("Expected the exception to report participant is incompatible",
-          e.getMessage().contains(message));
+    } catch (BusinessValidationException e) {
+      Set<IssueDetails> issues = e.getValidationDetailsList();
+      assertThat(1, is(equalTo(issues.size())));
+      IssueDetails issue = issues.iterator().next();
+      assertThat(IssueType.CONSTRAINT_VALIDATION, is(equalTo(issue.getType())));
+      assertThat("Some Error Occured", is(equalTo(issue.getUserMessage())));
     }
   }
 
@@ -704,9 +721,13 @@ public class ScreeningToReferralServiceTest {
     try {
       Response response = screeningToReferralService.create(screeningToReferral);
       assertFalse("Expected an Exception to have been thrown", true);
-    } catch (Exception e) {
-      assertTrue("Expected Exception to contain message that Referral must have allegation",
-          e.getMessage().contains("Referral must have at least one Allegation"));
+    } catch (BusinessValidationException e) {
+      Set<IssueDetails> issues = e.getValidationDetailsList();
+      assertThat(1, is(equalTo(issues.size())));
+      IssueDetails issue = issues.iterator().next();
+      assertThat(IssueType.CONSTRAINT_VALIDATION, is(equalTo(issue.getType())));
+      assertThat(" Referral must have at least one Allegation ",
+          is(equalTo(issue.getUserMessage())));
     }
   }
 
@@ -759,11 +780,14 @@ public class ScreeningToReferralServiceTest {
     try {
       Response response = screeningToReferralService.create(screeningToReferral);
       assertFalse("Expected exception to have been thrown", true);
-    } catch (Exception e) {
-      assertTrue(
-          "Expected Exception to conatin Allegation/Victim doesn't contain a victim participant",
-          e.getMessage().contains(
-              "Allegation/Victim Person Id does not contain a Participant with a role of Victim"));
+    } catch (BusinessValidationException e) {
+      Set<IssueDetails> issues = e.getValidationDetailsList();
+      assertThat(issues.size(), is(equalTo(2)));
+      IssueDetails issue = issues.iterator().next();
+      assertThat(IssueType.CONSTRAINT_VALIDATION, is(equalTo(issue.getType())));
+      // assertThat("Allegation/Victim Person Id does not contain a Participant with a role of
+      // Victim",
+      // is(equalTo(issue.getUserMessage())));
     }
   }
 
@@ -788,11 +812,14 @@ public class ScreeningToReferralServiceTest {
     try {
       Response response = screeningToReferralService.create(screeningToReferral);
       assertFalse("Expected an exception to have been thrown", true);
-    } catch (Exception e) {
-      assertTrue(
-          "Expected Exception to contain allegation/perpetrator don't correspond error message",
-          e.getMessage().contains(
-              "Allegation/Perpetrator Person Id does not contain a Participant with a role of Perpetrator"));
+    } catch (BusinessValidationException e) {
+      Set<IssueDetails> issues = e.getValidationDetailsList();
+      assertThat(1, is(equalTo(issues.size())));
+      IssueDetails issue = issues.iterator().next();
+      assertThat(IssueType.CONSTRAINT_VALIDATION, is(equalTo(issue.getType())));
+      assertThat(
+          "Allegation/Perpetrator Person Id does not contain a Participant with a role of Perpetrator",
+          is(equalTo(issue.getUserMessage())));
     }
   }
 
@@ -834,7 +861,7 @@ public class ScreeningToReferralServiceTest {
 
     try {
       Response response = screeningToReferralService.create(referral);
-    } catch (ServiceException e) {
+    } catch (BusinessValidationException e) {
       // not interested in exception for this test
     }
     verify(foundClient, times(0)).update(any(), any(), any(), any(), any(), any(), any(), any());
@@ -884,9 +911,13 @@ public class ScreeningToReferralServiceTest {
     try {
       Response response = screeningToReferralService.create(screeningToReferral);
       assertFalse("Expected exception to have been thrown", true);
-    } catch (Exception e) {
-      assertTrue("Expected exception to contain allegation ", e.getMessage().contains(
-          "Legacy Id on Allegation does not correspond to an existing CMS/CWS Allegation"));
+    } catch (BusinessValidationException e) {
+      Set<IssueDetails> issues = e.getValidationDetailsList();
+      assertThat(1, is(equalTo(issues.size())));
+      IssueDetails issue = issues.iterator().next();
+      assertThat(IssueType.CONSTRAINT_VALIDATION, is(equalTo(issue.getType())));
+      assertThat("Legacy Id on Allegation does not correspond to an existing CMS/CWS Allegation",
+          is(equalTo(issue.getUserMessage())));
     }
   }
 
@@ -910,10 +941,14 @@ public class ScreeningToReferralServiceTest {
     try {
       Response response = screeningToReferralService.create(screeningToReferral);
       assertFalse("expected exception to have been thrown", true);
-    } catch (Exception e) {
-      assertTrue("Expected exception to contain cross report does not exist in legacy",
-          e.getMessage().contains(
-              "Legacy Id on Cross Report does not correspond to an existing CMS/CWS Cross Report"));
+    } catch (BusinessValidationException e) {
+      Set<IssueDetails> issues = e.getValidationDetailsList();
+      assertThat(1, is(equalTo(issues.size())));
+      IssueDetails issue = issues.iterator().next();
+      assertThat(IssueType.CONSTRAINT_VALIDATION, is(equalTo(issue.getType())));
+      assertThat(
+          " Legacy Id on Cross Report does not correspond to an existing CMS/CWS Cross Report ",
+          is(equalTo(issue.getUserMessage())));
     }
   }
 
@@ -948,10 +983,14 @@ public class ScreeningToReferralServiceTest {
     try {
       Response response = screeningToReferralService.create(screeningToReferral);
       assertFalse("Expected exception to have been thrown", true);
-    } catch (Exception e) {
-      assertTrue("Expected exception to contain crossreport doesn't exist in legacy",
-          e.getMessage().contains(
-              "Legacy Id on Cross Report does not correspond to an existing CMS/CWS Cross Report"));
+    } catch (BusinessValidationException e) {
+      Set<IssueDetails> issues = e.getValidationDetailsList();
+      assertThat(1, is(equalTo(issues.size())));
+      IssueDetails issue = issues.iterator().next();
+      assertThat(IssueType.CONSTRAINT_VALIDATION, is(equalTo(issue.getType())));
+      assertThat(
+          " Legacy Id on Cross Report does not correspond to an existing CMS/CWS Cross Report ",
+          is(equalTo(issue.getUserMessage())));
     }
   }
 
