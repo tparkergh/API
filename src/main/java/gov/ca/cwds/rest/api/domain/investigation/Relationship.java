@@ -12,6 +12,8 @@ import org.hibernate.validator.constraints.NotBlank;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import gov.ca.cwds.rest.api.domain.DomainObject;
+import gov.ca.cwds.rest.api.domain.LegacyDescriptor;
+import gov.ca.cwds.rest.validation.Date;
 import io.swagger.annotations.ApiModelProperty;
 
 /**
@@ -23,16 +25,18 @@ public class Relationship {
 
   private static final long serialVersionUID = 1L;
 
-  @JsonProperty("table_name")
-  @ApiModelProperty(required = true, readOnly = false, value = "CWS/CMS table name",
-      example = "CLN_RELT")
-  private String tableName;
-
   @JsonProperty("id")
   @ApiModelProperty(required = true, readOnly = false, value = "CWS/CMS identifier",
       example = "ABC1234567")
   @Size(min = CMS_ID_LEN, max = CMS_ID_LEN)
   private String id;
+
+  @JsonProperty("date_of_birth")
+  @gov.ca.cwds.rest.validation.Date(format = gov.ca.cwds.rest.api.domain.DomainObject.DATE_FORMAT,
+      required = false)
+  @ApiModelProperty(required = true, readOnly = false, value = "date of birth",
+      example = "1999-10-01")
+  private String dateOfBirth;
 
   @JsonProperty("first_name")
   @ApiModelProperty(required = false, readOnly = false, value = "first name")
@@ -42,67 +46,80 @@ public class Relationship {
   @JsonProperty("middle_name")
   @Size(min = 0, max = 20)
   @ApiModelProperty(required = true, readOnly = false, value = "middle name", example = "")
-  private String MiddleName;
+  private String middleName;
 
   @JsonProperty("last_name")
   @NotBlank
   @Size(min = 1, max = 25)
   @ApiModelProperty(required = true, readOnly = false, value = "last name", example = "last name")
-  private String LastName;
+  private String lastName;
 
-  @JsonProperty("suffix_title")
+  @JsonProperty("name_suffix")
   @NotNull
   @Size(max = 4)
   @ApiModelProperty(required = false, readOnly = false, value = "Suffix Title Description",
       example = "phd")
-  private String SuffixTitle;
+  private String suffixName;
 
-  @JsonProperty("prefix_title")
+  @JsonProperty("sensitive")
   @NotNull
-  @Size(max = 6)
-  @ApiModelProperty(required = false, readOnly = false, value = "Prefix Title Description",
-      example = " ")
-  private String prefixTitle;
+  @ApiModelProperty(required = true, readOnly = false, value = "sensitive", example = "false")
+  private Boolean sensitive;
 
-  @JsonProperty("related_to")
+  @JsonProperty("sealed")
+  @NotNull
+  @ApiModelProperty(required = true, readOnly = false, value = "sealed", example = "false")
+  private Boolean sealed;
+
+  @JsonProperty("legacy_descirptor")
+  private LegacyDescriptor legacyDescriptor;
+
+  @JsonProperty("relationship_to")
   private Set<RelationshipTo> relatedTo;
 
+  /**
+   * 
+   */
   public Relationship() {
     super();
   }
 
+
   /**
-   * @param tableName - CWS table name
-   * @param id - CWS identifier
-   * @param firstName - first name
+   * @param id - id
+   * @param dateOfBirth - date of birth
+   * @param firstName - first anme
    * @param middleName - middle name
    * @param lastName - last name
-   * @param suffixTitle - suffix
-   * @param prefixTitle - prefix
-   * @param relatedTo - people related to this person
+   * @param suffixName - suffix
+   * @param sensitive - sensitive data
+   * @param sealed - sealed data
+   * @param legacyDescriptor - CMS record description
+   * @param relatedTo - people realated to this person
    */
-  public Relationship(String tableName, String id, String firstName, String middleName,
-      String lastName, String suffixTitle, String prefixTitle, Set<RelationshipTo> relatedTo) {
+  public Relationship(String id, @Date(format = "yyyy-MM-dd", required = false) String dateOfBirth,
+      String firstName, String middleName, String lastName, String suffixName, Boolean sensitive,
+      Boolean sealed, LegacyDescriptor legacyDescriptor, Set<RelationshipTo> relatedTo) {
     super();
-    this.tableName = tableName;
     this.id = id;
+    this.dateOfBirth = dateOfBirth;
     this.firstName = firstName;
-    MiddleName = middleName;
-    LastName = lastName;
-    SuffixTitle = suffixTitle;
-    this.prefixTitle = prefixTitle;
+    this.middleName = middleName;
+    this.lastName = lastName;
+    this.suffixName = suffixName;
+    this.sensitive = sensitive;
+    this.sealed = sealed;
+    this.legacyDescriptor = legacyDescriptor;
     this.relatedTo = relatedTo;
   }
 
-  /**
-   * @return CWS table name
-   */
-  public String getTableName() {
-    return tableName;
-  }
 
   public String getId() {
     return id;
+  }
+
+  public String getDateOfBirth() {
+    return dateOfBirth;
   }
 
   public String getFirstName() {
@@ -110,19 +127,27 @@ public class Relationship {
   }
 
   public String getMiddleName() {
-    return MiddleName;
+    return middleName;
   }
 
   public String getLastName() {
-    return LastName;
+    return lastName;
   }
 
-  public String getSuffixTitle() {
-    return SuffixTitle;
+  public String getSuffixName() {
+    return suffixName;
   }
 
-  public String getPrefixTitle() {
-    return prefixTitle;
+  public Boolean getSensitive() {
+    return sensitive;
+  }
+
+  public Boolean getSealed() {
+    return sealed;
+  }
+
+  public LegacyDescriptor getLegacyDescriptor() {
+    return legacyDescriptor;
   }
 
   public Set<RelationshipTo> getRelatedTo() {
@@ -133,14 +158,16 @@ public class Relationship {
   public int hashCode() {
     final int prime = 31;
     int result = 1;
-    result = prime * result + ((LastName == null) ? 0 : LastName.hashCode());
-    result = prime * result + ((MiddleName == null) ? 0 : MiddleName.hashCode());
-    result = prime * result + ((SuffixTitle == null) ? 0 : SuffixTitle.hashCode());
+    result = prime * result + ((dateOfBirth == null) ? 0 : dateOfBirth.hashCode());
     result = prime * result + ((firstName == null) ? 0 : firstName.hashCode());
     result = prime * result + ((id == null) ? 0 : id.hashCode());
-    result = prime * result + ((prefixTitle == null) ? 0 : prefixTitle.hashCode());
+    result = prime * result + ((lastName == null) ? 0 : lastName.hashCode());
+    result = prime * result + ((legacyDescriptor == null) ? 0 : legacyDescriptor.hashCode());
+    result = prime * result + ((middleName == null) ? 0 : middleName.hashCode());
     result = prime * result + ((relatedTo == null) ? 0 : relatedTo.hashCode());
-    result = prime * result + ((tableName == null) ? 0 : tableName.hashCode());
+    result = prime * result + ((sealed == null) ? 0 : sealed.hashCode());
+    result = prime * result + ((sensitive == null) ? 0 : sensitive.hashCode());
+    result = prime * result + ((suffixName == null) ? 0 : suffixName.hashCode());
     return result;
   }
 
@@ -153,20 +180,10 @@ public class Relationship {
     if (getClass() != obj.getClass())
       return false;
     Relationship other = (Relationship) obj;
-    if (LastName == null) {
-      if (other.LastName != null)
+    if (dateOfBirth == null) {
+      if (other.dateOfBirth != null)
         return false;
-    } else if (!LastName.equals(other.LastName))
-      return false;
-    if (MiddleName == null) {
-      if (other.MiddleName != null)
-        return false;
-    } else if (!MiddleName.equals(other.MiddleName))
-      return false;
-    if (SuffixTitle == null) {
-      if (other.SuffixTitle != null)
-        return false;
-    } else if (!SuffixTitle.equals(other.SuffixTitle))
+    } else if (!dateOfBirth.equals(other.dateOfBirth))
       return false;
     if (firstName == null) {
       if (other.firstName != null)
@@ -178,20 +195,40 @@ public class Relationship {
         return false;
     } else if (!id.equals(other.id))
       return false;
-    if (prefixTitle == null) {
-      if (other.prefixTitle != null)
+    if (lastName == null) {
+      if (other.lastName != null)
         return false;
-    } else if (!prefixTitle.equals(other.prefixTitle))
+    } else if (!lastName.equals(other.lastName))
+      return false;
+    if (legacyDescriptor == null) {
+      if (other.legacyDescriptor != null)
+        return false;
+    } else if (!legacyDescriptor.equals(other.legacyDescriptor))
+      return false;
+    if (middleName == null) {
+      if (other.middleName != null)
+        return false;
+    } else if (!middleName.equals(other.middleName))
       return false;
     if (relatedTo == null) {
       if (other.relatedTo != null)
         return false;
     } else if (!relatedTo.equals(other.relatedTo))
       return false;
-    if (tableName == null) {
-      if (other.tableName != null)
+    if (sealed == null) {
+      if (other.sealed != null)
         return false;
-    } else if (!tableName.equals(other.tableName))
+    } else if (!sealed.equals(other.sealed))
+      return false;
+    if (sensitive == null) {
+      if (other.sensitive != null)
+        return false;
+    } else if (!sensitive.equals(other.sensitive))
+      return false;
+    if (suffixName == null) {
+      if (other.suffixName != null)
+        return false;
+    } else if (!suffixName.equals(other.suffixName))
       return false;
     return true;
   }
