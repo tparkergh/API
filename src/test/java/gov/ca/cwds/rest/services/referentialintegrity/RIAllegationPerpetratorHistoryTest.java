@@ -37,7 +37,6 @@ public class RIAllegationPerpetratorHistoryTest {
     clientDao = mock(ClientDao.class);
   }
 
-
   @Test
   public void type() throws Exception {
     assertThat(RIAllegationPerpetratorHistory.class, notNullValue());

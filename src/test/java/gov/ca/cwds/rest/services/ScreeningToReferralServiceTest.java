@@ -54,7 +54,7 @@ import gov.ca.cwds.fixture.AllegationEntityBuilder;
 import gov.ca.cwds.fixture.AllegationPerpetratorHistoryEntityBuilder;
 import gov.ca.cwds.fixture.AllegationResourceBuilder;
 import gov.ca.cwds.fixture.ClientEntityBuilder;
-import gov.ca.cwds.fixture.CrossReportEntityBuilder;
+import gov.ca.cwds.fixture.CmsCrossReportResourceBuilder;
 import gov.ca.cwds.fixture.CrossReportResourceBuilder;
 import gov.ca.cwds.fixture.LongTextEntityBuilder;
 import gov.ca.cwds.fixture.MockedScreeningToReferralServiceBuilder;
@@ -243,7 +243,7 @@ public class ScreeningToReferralServiceTest {
         .thenReturn(postedAllegationPerpHistory);
 
     CrossReport mockLegacyCrossReport = mock(CrossReport.class);
-    CrossReport crossReport = new CrossReportEntityBuilder().build();
+    CrossReport crossReport = new CmsCrossReportResourceBuilder().build();
     crossReportService = mock(CrossReportService.class);
     when(crossReportService.createWithSingleTimestamp(any(), any())).thenReturn(crossReport);
     when(crossReportService.find(any())).thenReturn(mockLegacyCrossReport);
