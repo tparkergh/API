@@ -60,6 +60,9 @@ import gov.ca.cwds.rest.business.rules.LACountyTrigger;
 import gov.ca.cwds.rest.business.rules.NonLACountyTriggers;
 import gov.ca.cwds.rest.business.rules.Reminders;
 import gov.ca.cwds.rest.business.rules.UpperCaseTables;
+import gov.ca.cwds.rest.exception.BusinessValidationException;
+import gov.ca.cwds.rest.exception.IssueDetails;
+import gov.ca.cwds.rest.exception.IssueType;
 import gov.ca.cwds.rest.filters.TestingRequestExecutionContext;
 import gov.ca.cwds.rest.messages.MessageBuilder;
 import gov.ca.cwds.rest.services.ClientParticipants;
@@ -386,11 +389,10 @@ public class R05360ReferralCityMandatoryTest {
     Boolean theErrorDetected = false;
     try {
       Response response = screeningToReferralService.create(screeningToReferral);
-    } catch (Exception e) {
-      if (e.getMessage().contains("city is required since streetName is set")) {
-        theErrorDetected = true;
-      }
-      assertThat(theErrorDetected, is(equalTo(true)));
+    } catch (BusinessValidationException e) {
+      Set<IssueDetails> issues = e.getValidationDetailsList();
+      assertThat(issues.size(), is(equalTo(2)));
+      assertThat(IssueType.CONSTRAINT_VALIDATION, is(equalTo(issues.iterator().next().getType())));
     }
   }
 
@@ -637,11 +639,10 @@ public class R05360ReferralCityMandatoryTest {
     Boolean theErrorDetected = false;
     try {
       Response response = screeningToReferralService.create(screeningToReferral);
-    } catch (Exception e) {
-      if (e.getMessage().contains("streetNumber is required since streetName is set")) {
-        theErrorDetected = true;
-      }
-      assertThat(theErrorDetected, is(equalTo(true)));
+    } catch (BusinessValidationException e) {
+      Set<IssueDetails> issues = e.getValidationDetailsList();
+      assertThat(issues.size(), is(equalTo(2)));
+      assertThat(IssueType.CONSTRAINT_VALIDATION, is(equalTo(issues.iterator().next().getType())));
     }
   }
 
@@ -762,11 +763,10 @@ public class R05360ReferralCityMandatoryTest {
     Boolean theErrorDetected = false;
     try {
       Response response = screeningToReferralService.create(screeningToReferral);
-    } catch (Exception e) {
-      if (e.getMessage().contains("streetName is required since streetNumber is set")) {
-        theErrorDetected = true;
-      }
-      assertThat(theErrorDetected, is(equalTo(true)));
+    } catch (BusinessValidationException e) {
+      Set<IssueDetails> issues = e.getValidationDetailsList();
+      assertThat(issues.size(), is(equalTo(2)));
+      assertThat(IssueType.CONSTRAINT_VALIDATION, is(equalTo(issues.iterator().next().getType())));
     }
   }
 
@@ -1009,14 +1009,12 @@ public class R05360ReferralCityMandatoryTest {
 
     mockParticipantService(screeningToReferral);
 
-    Boolean theErrorDetected = false;
     try {
       Response response = screeningToReferralService.create(screeningToReferral);
-    } catch (Exception e) {
-      if (e.getMessage().contains("streetNumber is required since streetName is set")) {
-        theErrorDetected = true;
-      }
-      assertThat(theErrorDetected, is(equalTo(true)));
+    } catch (BusinessValidationException e) {
+      Set<IssueDetails> issues = e.getValidationDetailsList();
+      assertThat(issues.size(), is(equalTo(2)));
+      assertThat(IssueType.CONSTRAINT_VALIDATION, is(equalTo(issues.iterator().next().getType())));
     }
   }
 
