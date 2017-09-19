@@ -5,7 +5,6 @@ import java.util.Date;
 
 import javax.persistence.ParameterMode;
 
-import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.procedure.ProcedureCall;
@@ -163,7 +162,7 @@ public class SsaName3Dao {
         throw new DaoException("Stored Procedure returned with ERROR - " + returnMessage);
       }
 
-    } catch (HibernateException h) {
+    } catch (DaoException h) {
       throw new DaoException("Call to Stored Procedure failed - " + h);
     }
   }
