@@ -116,19 +116,19 @@ public class CmsDocReferralClient extends ReportingDomain implements Request, Re
      */
     @Override
     public final int hashCode() {
-      final int prime = 43;
+      final int PRIME = 43;
       int result = 1;
-      result = (prime * result) + ((address == null) ? prime : address.hashCode());
-      result = (prime * result) + ((addressType == null) ? prime : addressType.hashCode());
-      result = (prime * result) + ((birthDate == null) ? prime : birthDate.hashCode());
-      result = (prime * result) + ((clientId == null) ? prime : clientId.hashCode());
-      result = (prime * result) + ((commonFirstName == null) ? prime : commonFirstName.hashCode());
-      result = (prime * result) + ((commonLastName == null) ? prime : commonLastName.hashCode());
+      result = (PRIME * result) + ((address == null) ? PRIME : address.hashCode());
+      result = (PRIME * result) + ((addressType == null) ? PRIME : addressType.hashCode());
+      result = (PRIME * result) + ((birthDate == null) ? PRIME : birthDate.hashCode());
+      result = (PRIME * result) + ((clientId == null) ? PRIME : clientId.hashCode());
+      result = (PRIME * result) + ((commonFirstName == null) ? PRIME : commonFirstName.hashCode());
+      result = (PRIME * result) + ((commonLastName == null) ? PRIME : commonLastName.hashCode());
       result =
-          (prime * result) + ((commonMiddleName == null) ? prime : commonMiddleName.hashCode());
-      result = (prime * result) + ((nameType == null) ? prime : nameType.hashCode());
-      result = (prime * result) + ((otherName == null) ? prime : otherName.hashCode());
-      result = (prime * result) + ((referlId == null) ? prime : referlId.hashCode());
+          (PRIME * result) + ((commonMiddleName == null) ? PRIME : commonMiddleName.hashCode());
+      result = (PRIME * result) + ((nameType == null) ? PRIME : nameType.hashCode());
+      result = (PRIME * result) + ((otherName == null) ? PRIME : otherName.hashCode());
+      result = (PRIME * result) + ((referlId == null) ? PRIME : referlId.hashCode());
       return result;
     }
 
@@ -375,11 +375,11 @@ public class CmsDocReferralClient extends ReportingDomain implements Request, Re
      */
     @Override
     public final int hashCode() {
-      final int prime = 43;
+      final int PRIME = 43;
       int result = 1;
 
-      result = (prime * result) + ((name == null) ? prime : name.hashCode());
-      result = (prime * result) + ((content == null) ? prime : content.hashCode());
+      result = (PRIME * result) + ((name == null) ? PRIME : name.hashCode());
+      result = (PRIME * result) + ((content == null) ? PRIME : content.hashCode());
 
       return result;
     }
@@ -530,14 +530,14 @@ public class CmsDocReferralClient extends ReportingDomain implements Request, Re
    */
   @Override
   public final int hashCode() {
-    final int prime = 43;
+    final int PRIME = 43;
     int result = 1;
 
-    result = (prime * result) + ((id == null) ? prime : id.hashCode());
-    result = (prime * result) + ((docName == null) ? prime : docName.hashCode());
-    result = (prime * result) + ((docAddedDate == null) ? prime : docAddedDate.hashCode());
-    result = (prime * result) + ((details == null) ? prime : details.hashCode());
-    result = (prime * result) + ((cmsDocument == null) ? prime : cmsDocument.hashCode());
+    result = (PRIME * result) + ((id == null) ? PRIME : id.hashCode());
+    result = (PRIME * result) + ((docName == null) ? PRIME : docName.hashCode());
+    result = (PRIME * result) + ((docAddedDate == null) ? PRIME : docAddedDate.hashCode());
+    result = (PRIME * result) + ((details == null) ? PRIME : details.hashCode());
+    result = (PRIME * result) + ((cmsDocument == null) ? PRIME : cmsDocument.hashCode());
 
     return result;
   }

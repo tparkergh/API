@@ -143,15 +143,15 @@ public class ValidatedAddress extends ReportingDomain implements Request, Respon
    */
   @Override
   public final int hashCode() {
-    final int prime = 31;
+    final int PRIME = 31;
     int result = 1;
-    result = prime * result + ((city == null) ? 0 : city.hashCode());
-    result = prime * result + ((deliverable == null) ? 0 : deliverable.hashCode());
-    result = prime * result + ((lattitude == null) ? 0 : lattitude.hashCode());
-    result = prime * result + ((longitude == null) ? 0 : longitude.hashCode());
-    result = prime * result + ((state == null) ? 0 : state.hashCode());
-    result = prime * result + ((streetAddress == null) ? 0 : streetAddress.hashCode());
-    result = prime * result + ((zip == null) ? 0 : zip.hashCode());
+    result = PRIME * result + ((city == null) ? 0 : city.hashCode());
+    result = PRIME * result + ((deliverable == null) ? 0 : deliverable.hashCode());
+    result = PRIME * result + ((lattitude == null) ? 0 : lattitude.hashCode());
+    result = PRIME * result + ((longitude == null) ? 0 : longitude.hashCode());
+    result = PRIME * result + ((state == null) ? 0 : state.hashCode());
+    result = PRIME * result + ((streetAddress == null) ? 0 : streetAddress.hashCode());
+    result = PRIME * result + ((zip == null) ? 0 : zip.hashCode());
     return result;
   }
 

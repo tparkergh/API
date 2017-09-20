@@ -433,30 +433,30 @@ public class Address extends ReportingDomain implements Request, Response {
    */
   @Override
   public final int hashCode() {
-    final int prime = 31;
+    final int PRIME = 31;
     int result = 1;
-    result = prime * result + ((existingAddressId == null) ? 0 : existingAddressId.hashCode());
-    result = prime * result + ((addressDescription == null) ? 0 : addressDescription.hashCode());
-    result = prime * result + ((city == null) ? 0 : city.hashCode());
-    result = prime * result + ((emergencyExtension == null) ? 0 : emergencyExtension.hashCode());
-    result = prime * result + ((emergencyNumber == null) ? 0 : emergencyNumber.hashCode());
-    result = prime * result + ((frgAdrtB == null) ? 0 : frgAdrtB.hashCode());
-    result = prime * result + ((governmentEntityCd == null) ? 0 : governmentEntityCd.hashCode());
-    result = prime * result + ((headerAddress == null) ? 0 : headerAddress.hashCode());
-    result = prime * result + ((messageExtension == null) ? 0 : messageExtension.hashCode());
-    result = prime * result + ((messageNumber == null) ? 0 : messageNumber.hashCode());
-    result = prime * result + ((postDirCd == null) ? 0 : postDirCd.hashCode());
-    result = prime * result + ((preDirCd == null) ? 0 : preDirCd.hashCode());
-    result = prime * result + ((primaryExtension == null) ? 0 : primaryExtension.hashCode());
-    result = prime * result + ((primaryNumber == null) ? 0 : primaryNumber.hashCode());
-    result = prime * result + ((state == null) ? 0 : state.hashCode());
-    result = prime * result + ((streetName == null) ? 0 : streetName.hashCode());
-    result = prime * result + ((streetNumber == null) ? 0 : streetNumber.hashCode());
-    result = prime * result + ((streetSuffixCd == null) ? 0 : streetSuffixCd.hashCode());
-    result = prime * result + ((unitDesignationCd == null) ? 0 : unitDesignationCd.hashCode());
-    result = prime * result + ((unitNumber == null) ? 0 : unitNumber.hashCode());
-    result = prime * result + ((zip == null) ? 0 : zip.hashCode());
-    result = prime * result + ((zip4 == null) ? 0 : zip4.hashCode());
+    result = PRIME * result + ((existingAddressId == null) ? 0 : existingAddressId.hashCode());
+    result = PRIME * result + ((addressDescription == null) ? 0 : addressDescription.hashCode());
+    result = PRIME * result + ((city == null) ? 0 : city.hashCode());
+    result = PRIME * result + ((emergencyExtension == null) ? 0 : emergencyExtension.hashCode());
+    result = PRIME * result + ((emergencyNumber == null) ? 0 : emergencyNumber.hashCode());
+    result = PRIME * result + ((frgAdrtB == null) ? 0 : frgAdrtB.hashCode());
+    result = PRIME * result + ((governmentEntityCd == null) ? 0 : governmentEntityCd.hashCode());
+    result = PRIME * result + ((headerAddress == null) ? 0 : headerAddress.hashCode());
+    result = PRIME * result + ((messageExtension == null) ? 0 : messageExtension.hashCode());
+    result = PRIME * result + ((messageNumber == null) ? 0 : messageNumber.hashCode());
+    result = PRIME * result + ((postDirCd == null) ? 0 : postDirCd.hashCode());
+    result = PRIME * result + ((preDirCd == null) ? 0 : preDirCd.hashCode());
+    result = PRIME * result + ((primaryExtension == null) ? 0 : primaryExtension.hashCode());
+    result = PRIME * result + ((primaryNumber == null) ? 0 : primaryNumber.hashCode());
+    result = PRIME * result + ((state == null) ? 0 : state.hashCode());
+    result = PRIME * result + ((streetName == null) ? 0 : streetName.hashCode());
+    result = PRIME * result + ((streetNumber == null) ? 0 : streetNumber.hashCode());
+    result = PRIME * result + ((streetSuffixCd == null) ? 0 : streetSuffixCd.hashCode());
+    result = PRIME * result + ((unitDesignationCd == null) ? 0 : unitDesignationCd.hashCode());
+    result = PRIME * result + ((unitNumber == null) ? 0 : unitNumber.hashCode());
+    result = PRIME * result + ((zip == null) ? 0 : zip.hashCode());
+    result = PRIME * result + ((zip4 == null) ? 0 : zip4.hashCode());
     return result;
   }
 

@@ -510,31 +510,31 @@ public class Participant extends ReportingDomain implements Request, Response {
    */
   @Override
   public final int hashCode() {
-    final int prime = 31;
+    final int PRIME = 31;
     int result = 1;
-    result = prime * result + ((addresses == null) ? 0 : addresses.hashCode());
-    result = prime * result + ((raceAndEthnicity == null) ? 0 : raceAndEthnicity.hashCode());
-    result = prime * result + ((dateOfBirth == null) ? 0 : dateOfBirth.hashCode());
-    result = prime * result + ((firstName == null) ? 0 : firstName.hashCode());
-    result = prime * result + ((gender == null) ? 0 : gender.hashCode());
-    result = prime * result + (int) (id ^ (id >>> 32));
-    result = prime * result + ((middleName == null) ? 0 : middleName.hashCode());
-    result = prime * result + ((lastName == null) ? 0 : lastName.hashCode());
-    result = prime * result + ((nameSuffix == null) ? 0 : nameSuffix.hashCode());
+    result = PRIME * result + ((addresses == null) ? 0 : addresses.hashCode());
+    result = PRIME * result + ((raceAndEthnicity == null) ? 0 : raceAndEthnicity.hashCode());
+    result = PRIME * result + ((dateOfBirth == null) ? 0 : dateOfBirth.hashCode());
+    result = PRIME * result + ((firstName == null) ? 0 : firstName.hashCode());
+    result = PRIME * result + ((gender == null) ? 0 : gender.hashCode());
+    result = PRIME * result + (int) (id ^ (id >>> 32));
+    result = PRIME * result + ((middleName == null) ? 0 : middleName.hashCode());
+    result = PRIME * result + ((lastName == null) ? 0 : lastName.hashCode());
+    result = PRIME * result + ((nameSuffix == null) ? 0 : nameSuffix.hashCode());
     result =
-        prime * result + ((reporterEmployerName == null) ? 0 : reporterEmployerName.hashCode());
-    result = prime * result + ((reporterConfidentialWaiver == true) ? 1 : 0);
-    result = prime * result + ((clientStaffPersonAdded == true) ? 1 : 0);
-    result = prime * result + ((primaryLanguage == null) ? 0 : primaryLanguage.hashCode());
-    result = prime * result + ((secondaryLanguage == null) ? 0 : secondaryLanguage.hashCode());
+        PRIME * result + ((reporterEmployerName == null) ? 0 : reporterEmployerName.hashCode());
+    result = PRIME * result + ((reporterConfidentialWaiver == true) ? 1 : 0);
+    result = PRIME * result + ((clientStaffPersonAdded == true) ? 1 : 0);
+    result = PRIME * result + ((primaryLanguage == null) ? 0 : primaryLanguage.hashCode());
+    result = PRIME * result + ((secondaryLanguage == null) ? 0 : secondaryLanguage.hashCode());
     result =
-        prime * result + ((sensitivityIndicator == null) ? 0 : sensitivityIndicator.hashCode());
-    result = prime * result + ((legacyId == null) ? 0 : legacyId.hashCode());
-    result = prime * result + ((legacySourceTable == null) ? 0 : legacySourceTable.hashCode());
-    result = prime * result + ((legacyDescriptor == null) ? 0 : legacyDescriptor.hashCode());
-    result = prime * result + ((roles == null) ? 0 : roles.hashCode());
-    result = prime * result + (int) (screeningId ^ (screeningId >>> 32));
-    result = prime * result + ((ssn == null) ? 0 : ssn.hashCode());
+        PRIME * result + ((sensitivityIndicator == null) ? 0 : sensitivityIndicator.hashCode());
+    result = PRIME * result + ((legacyId == null) ? 0 : legacyId.hashCode());
+    result = PRIME * result + ((legacySourceTable == null) ? 0 : legacySourceTable.hashCode());
+    result = PRIME * result + ((legacyDescriptor == null) ? 0 : legacyDescriptor.hashCode());
+    result = PRIME * result + ((roles == null) ? 0 : roles.hashCode());
+    result = PRIME * result + (int) (screeningId ^ (screeningId >>> 32));
+    result = PRIME * result + ((ssn == null) ? 0 : ssn.hashCode());
     return result;
   }
 

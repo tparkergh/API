@@ -72,10 +72,10 @@ public class PersonAddressId implements Serializable {
 
   @Override
   public int hashCode() {
-    final int prime = 31;
+    final int PRIME = 31;
     int result = 1;
-    result = prime * result + ((address == null) ? 0 : address.hashCode());
-    result = prime * result + ((person == null) ? 0 : person.hashCode());
+    result = PRIME * result + ((address == null) ? 0 : address.hashCode());
+    result = PRIME * result + ((person == null) ? 0 : person.hashCode());
     return result;
   }
 

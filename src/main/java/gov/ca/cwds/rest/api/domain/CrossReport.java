@@ -178,16 +178,16 @@ public class CrossReport extends ReportingDomain implements Request, Response {
 
   @Override
   public final int hashCode() {
-    final int prime = 31;
+    final int PRIME = 31;
     int result = 1;
-    result = prime * result + ((agencyName == null) ? 0 : agencyName.hashCode());
-    result = prime * result + ((agencyType == null) ? 0 : agencyType.hashCode());
-    result = prime * result + ((informDate == null) ? 0 : informDate.hashCode());
-    result = prime * result + (filedOutOfState ? 1 : 0);
-    result = prime * result + ((legacySourceTable == null) ? 0 : legacySourceTable.hashCode());
-    result = prime * result + ((legacyId == null) ? 0 : legacyId.hashCode());
-    result = prime * result + ((id == null) ? 0 : id.hashCode());
-    result = prime * result + ((method == null) ? 0 : method.hashCode());
+    result = PRIME * result + ((agencyName == null) ? 0 : agencyName.hashCode());
+    result = PRIME * result + ((agencyType == null) ? 0 : agencyType.hashCode());
+    result = PRIME * result + ((informDate == null) ? 0 : informDate.hashCode());
+    result = PRIME * result + (filedOutOfState ? 1 : 0);
+    result = PRIME * result + ((legacySourceTable == null) ? 0 : legacySourceTable.hashCode());
+    result = PRIME * result + ((legacyId == null) ? 0 : legacyId.hashCode());
+    result = PRIME * result + ((id == null) ? 0 : id.hashCode());
+    result = PRIME * result + ((method == null) ? 0 : method.hashCode());
     return result;
   }
 

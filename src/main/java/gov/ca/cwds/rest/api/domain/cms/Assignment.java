@@ -198,22 +198,22 @@ public class Assignment extends ReportingDomain implements Request, Response {
   public static Assignment createDefaultReferralAssignment(String countyCode, String referralId,
       String caseLoadId) {
 
-    final String endDate = "";
-    final String endTime = "";
-    final String establishedForCode = "R";
-    final String outOfStateContactId = null;
-    final String responsibilityDescription = "";
-    final Short secondaryAssignmentRoleType = 0;
-    final String typeOfAssignmentCode = "P";
-    final BigDecimal weightingNumber = new BigDecimal("0.0");
+    final String END_DATE = "";
+    final String END_TIME = "";
+    final String ESTABLISHED_FOR_CODE = "R";
+    final String OUT_OF_STATE_CONTACT_ID = null;
+    final String RESPONSIBILITY_DESCRIPTION = "";
+    final Short SECONDARY_ASSIGNMENT_ROLE_TYPE = 0;
+    final String TYPE_OF_ASSIGNMENT_CODE = "P";
+    final BigDecimal WEIGHTING_NUMBER = new BigDecimal("0.0");
 
     final java.util.Date date = new java.util.Date();
     final String startDate = df.format(date);
     final String startTime = timeOnlyFormat.format(date);
 
-    return new Assignment(countyCode, endDate, endTime, establishedForCode, referralId, caseLoadId,
-        outOfStateContactId, responsibilityDescription, secondaryAssignmentRoleType, startDate,
-        startTime, typeOfAssignmentCode, weightingNumber);
+    return new Assignment(countyCode, END_DATE, END_TIME, ESTABLISHED_FOR_CODE, referralId, caseLoadId,
+        OUT_OF_STATE_CONTACT_ID, RESPONSIBILITY_DESCRIPTION, SECONDARY_ASSIGNMENT_ROLE_TYPE, startDate,
+        startTime, TYPE_OF_ASSIGNMENT_CODE, WEIGHTING_NUMBER);
   }
 
   /**
@@ -309,24 +309,24 @@ public class Assignment extends ReportingDomain implements Request, Response {
 
   @Override
   public final int hashCode() {
-    final int prime = 31;
+    final int PRIME = 31;
     int result = 1;
-    result = prime * result + ((caseLoadId == null) ? 0 : caseLoadId.hashCode());
-    result = prime * result + ((countySpecificCode == null) ? 0 : countySpecificCode.hashCode());
-    result = prime * result + ((endDate == null) ? 0 : endDate.hashCode());
-    result = prime * result + ((endTime == null) ? 0 : endTime.hashCode());
-    result = prime * result + ((establishedForCode == null) ? 0 : establishedForCode.hashCode());
-    result = prime * result + ((establishedForId == null) ? 0 : establishedForId.hashCode());
-    result = prime * result + ((outOfStateContactId == null) ? 0 : outOfStateContactId.hashCode());
-    result = prime * result
+    result = PRIME * result + ((caseLoadId == null) ? 0 : caseLoadId.hashCode());
+    result = PRIME * result + ((countySpecificCode == null) ? 0 : countySpecificCode.hashCode());
+    result = PRIME * result + ((endDate == null) ? 0 : endDate.hashCode());
+    result = PRIME * result + ((endTime == null) ? 0 : endTime.hashCode());
+    result = PRIME * result + ((establishedForCode == null) ? 0 : establishedForCode.hashCode());
+    result = PRIME * result + ((establishedForId == null) ? 0 : establishedForId.hashCode());
+    result = PRIME * result + ((outOfStateContactId == null) ? 0 : outOfStateContactId.hashCode());
+    result = PRIME * result
         + ((responsibilityDescription == null) ? 0 : responsibilityDescription.hashCode());
-    result = prime * result
+    result = PRIME * result
         + ((secondaryAssignmentRoleType == null) ? 0 : secondaryAssignmentRoleType.hashCode());
-    result = prime * result + ((startDate == null) ? 0 : startDate.hashCode());
-    result = prime * result + ((startTime == null) ? 0 : startTime.hashCode());
+    result = PRIME * result + ((startDate == null) ? 0 : startDate.hashCode());
+    result = PRIME * result + ((startTime == null) ? 0 : startTime.hashCode());
     result =
-        prime * result + ((typeOfAssignmentCode == null) ? 0 : typeOfAssignmentCode.hashCode());
-    result = prime * result + ((weightingNumber == null) ? 0 : weightingNumber.hashCode());
+        PRIME * result + ((typeOfAssignmentCode == null) ? 0 : typeOfAssignmentCode.hashCode());
+    result = PRIME * result + ((weightingNumber == null) ? 0 : weightingNumber.hashCode());
     return result;
   }
 

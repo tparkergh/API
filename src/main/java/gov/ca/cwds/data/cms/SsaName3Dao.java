@@ -109,13 +109,13 @@ public class SsaName3Dao {
       String firstName, String middleName, String lastName, String streettNumber, String streetName,
       Short gvrEntc, Date updateTimeStamp, String updateId) {
     Session session = sessionFactory.getCurrentSession();
-    final String storedProcName = "SPSSANAME3";
+    final String STORED_PROC_NAME = "SPSSANAME3";
     final String schema =
         (String) session.getSessionFactory().getProperties().get("hibernate.default_schema");
     String strdtts = new SimpleDateFormat("yyyy-MM-dd-HH.mm.ss.SSS").format(updateTimeStamp);
 
     try {
-      ProcedureCall q = session.createStoredProcedureCall(schema + "." + storedProcName);
+      ProcedureCall q = session.createStoredProcedureCall(schema + "." + STORED_PROC_NAME);
 
       q.registerStoredProcedureParameter("TABLENAME", String.class, ParameterMode.IN);
       q.registerStoredProcedureParameter("CRUDFUNCT", String.class, ParameterMode.IN);

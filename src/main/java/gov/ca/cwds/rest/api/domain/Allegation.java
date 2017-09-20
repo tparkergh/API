@@ -149,15 +149,15 @@ public class Allegation extends ReportingDomain implements Request, Response {
    */
   @Override
   public final int hashCode() {
-    final int prime = 31;
+    final int PRIME = 31;
     int result = 1;
-    result = prime * result + ((county == null) ? 0 : county.hashCode());
-    result = prime * result + (int) (perpetratorPersonId ^ (perpetratorPersonId >>> 32));
-    result = prime * result + ((type == null) ? 0 : type.hashCode());
-    result = prime * result + ((nonProtectingParent == null) ? 0 : nonProtectingParent.hashCode());
-    result = prime * result + ((legacySourceTable == null) ? 0 : legacySourceTable.hashCode());
-    result = prime * result + ((legacyId == null) ? 0 : legacyId.hashCode());
-    result = prime * result + (int) (victimPersonId ^ (victimPersonId >>> 32));
+    result = PRIME * result + ((county == null) ? 0 : county.hashCode());
+    result = PRIME * result + (int) (perpetratorPersonId ^ (perpetratorPersonId >>> 32));
+    result = PRIME * result + ((type == null) ? 0 : type.hashCode());
+    result = PRIME * result + ((nonProtectingParent == null) ? 0 : nonProtectingParent.hashCode());
+    result = PRIME * result + ((legacySourceTable == null) ? 0 : legacySourceTable.hashCode());
+    result = PRIME * result + ((legacyId == null) ? 0 : legacyId.hashCode());
+    result = PRIME * result + (int) (victimPersonId ^ (victimPersonId >>> 32));
     return result;
   }
 

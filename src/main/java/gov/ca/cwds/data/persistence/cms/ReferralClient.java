@@ -94,10 +94,10 @@ public class ReferralClient extends CmsPersistentObject {
      */
     @Override
     public int hashCode() {
-      final int prime = 31;
+      final int PRIME = 31;
       int result = 1;
-      result = prime * result + ((clientId == null) ? 0 : clientId.hashCode());
-      result = prime * result + ((referralId == null) ? 0 : referralId.hashCode());
+      result = PRIME * result + ((clientId == null) ? 0 : clientId.hashCode());
+      result = PRIME * result + ((referralId == null) ? 0 : referralId.hashCode());
       return result;
     }
 
