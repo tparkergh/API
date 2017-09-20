@@ -35,7 +35,7 @@ public class ClientScpEthnicityService
   private static final String CLIENT_ESTABLISHED_CODE = "C";
 
   private static final Logger LOGGER = LoggerFactory.getLogger(ClientScpEthnicityService.class);
-  private Set<Short> raceCodes = new HashSet<>();
+  private Set<Short> raceCodes = null;
   private ClientScpEthnicityDao clientScpEthnicityDao;
   private String lastUpdatedId = RequestExecutionContext.instance().getStaffId();
   private Date lastUpdatedTime = RequestExecutionContext.instance().getRequestStartTime();
@@ -125,7 +125,7 @@ public class ClientScpEthnicityService
    * @return the race And Ethnicity codes
    */
   public Short getRaceCode(RaceAndEthnicity raceAndEthnicity) {
-
+    raceCodes = new HashSet<>();
     Short raceCode = 0;
     if (raceAndEthnicity != null && !raceAndEthnicity.getRaceCode().isEmpty()) {
 
