@@ -1,6 +1,7 @@
 package gov.ca.cwds.rest.api.domain;
 
 import static gov.ca.cwds.data.persistence.cms.CmsPersistentObject.CMS_ID_LEN;
+import gov.ca.cwds.data.persistence.contact.DeliveredServiceEntity;
 import gov.ca.cwds.rest.api.Request;
 import gov.ca.cwds.rest.api.Response;
 import gov.ca.cwds.rest.validation.ValidSystemCodeId;
@@ -8,6 +9,9 @@ import io.dropwizard.jackson.JsonSnakeCase;
 import io.dropwizard.validation.OneOf;
 import io.swagger.annotations.ApiModelProperty;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.Set;
 
 import javax.validation.constraints.Size;
@@ -15,6 +19,7 @@ import javax.validation.constraints.Size;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.hibernate.validator.constraints.NotEmpty;
+import org.jadira.usertype.spi.utils.lang.StringUtils;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonFormat;
@@ -152,7 +157,43 @@ public class Contact extends ReportingDomain implements Request, Response {
     this.people = people;
   }
 
+  public Contact(DeliveredServiceEntity persistedDeliverdService, LastUpdatedBy lastUpdatedBy,
+      String note, Set<PostedIndividualDeliveredService> people) {
+    super();
+    this.id = persistedDeliverdService.getId();
+    this.lastUpdatedBy = lastUpdatedBy;
+    String startDate = DomainChef.cookDate(persistedDeliverdService.getStartDate());
+    if (StringUtils.isNotEmpty(startDate)) {
+      this.startedAt = startDate + "T" + cookTime(persistedDeliverdService.getStartTime()) + "Z";
+    }
+    String endDate = DomainChef.cookDate(persistedDeliverdService.getEndDate());
+    if (StringUtils.isNotEmpty(endDate)) {
+      this.endedAt = endDate + "T" + cookTime(persistedDeliverdService.getEndTime()) + "Z";
+    }
+    this.purpose = new Integer(persistedDeliverdService.getServiceContactType());
+    this.communicationMethod = new Integer(persistedDeliverdService.getCommunicationMethodType());
+    this.status = persistedDeliverdService.getStatusCode();
+    this.services = null;
+    this.location = new Integer(persistedDeliverdService.getContactLocationType());
+    this.note = note;
+    this.people = people;
+  }
 
+  public Contact() {
+    // default
+  }
+
+  /**
+   * @param date date to cook
+   * @return String in TIME_FORMAT
+   */
+  public static String cookTime(Date date) {
+    if (date != null) {
+      DateFormat df = new SimpleDateFormat("HH:mm:ss.SSS");
+      return df.format(date);
+    }
+    return "00:00:00.000";
+  }
 
   /**
    * @return the id

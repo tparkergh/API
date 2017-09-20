@@ -1,5 +1,7 @@
 package gov.ca.cwds.data.persistence.contact;
 
+import gov.ca.cwds.data.persistence.cms.CmsPersistentObject;
+
 import java.util.Date;
 
 import javax.persistence.Column;
@@ -7,18 +9,20 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
+import org.hibernate.annotations.NamedQuery;
 import org.hibernate.annotations.Type;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
-
-import gov.ca.cwds.data.persistence.cms.CmsPersistentObject;
 
 /**
  * {@link CmsPersistentObject} Class representing an IndividualDeliveredService.
  * 
  * @author CWDS API Team
  */
+@NamedQuery(
+    name = "gov.ca.cwds.data.persistence.contact.IndividualDeliveredServiceEntity.findAllForDeliveredService",
+    query = "FROM IndividualDeliveredServiceEntity WHERE deliveredServiceId = :deliveredServiceId")
 @Entity
 @Table(name = "IDV_SVCT")
 @JsonPropertyOrder(alphabetic = true)
@@ -47,6 +51,19 @@ public class IndividualDeliveredServiceEntity extends CmsPersistentObject {
   @Column(name = "START_DT")
   private Date startDate;
 
+  @Column(name = "FKDL_SVC_T", updatable = false, insertable = false,
+      length = CmsPersistentObject.CMS_ID_LEN)
+  private String deliveredServiceId;
+
+  @Column(name = "DEL_IDV_CD", updatable = false, insertable = false)
+  private String deliveredToIndividualCode;
+
+  @Column(name = "DEL_IDV_ID", updatable = false, insertable = false,
+      length = CmsPersistentObject.CMS_ID_LEN)
+  private String deliveredToIndividualId;
+
+
+
   /**
    * Default constructor
    * 
@@ -73,8 +90,13 @@ public class IndividualDeliveredServiceEntity extends CmsPersistentObject {
     this.endDate = endDate;
     this.serviceContactType = serviceContactType;
     this.startDate = startDate;
-    this.individualDeliveredServiceEmbeddable = new IndividualDeliveredServiceEmbeddable(
-        deliveredServiceId, deliveredToIndividualCode, deliveredToIndividualId);
+    this.deliveredServiceId = deliveredServiceId;
+    this.deliveredToIndividualCode = deliveredToIndividualCode;
+    this.deliveredToIndividualId = deliveredToIndividualId;
+    this.individualDeliveredServiceEmbeddable =
+        new IndividualDeliveredServiceEmbeddable(deliveredServiceId, deliveredToIndividualCode,
+            deliveredToIndividualId);
+
   }
 
   /**

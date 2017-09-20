@@ -102,6 +102,11 @@ public class PostedIndividualDeliveredService extends ReportingDomain implements
   }
 
 
+  public PostedIndividualDeliveredService() {
+    // default
+  }
+
+
 
   /**
    * @return the tableName

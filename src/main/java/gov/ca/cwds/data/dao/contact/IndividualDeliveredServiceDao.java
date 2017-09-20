@@ -1,12 +1,13 @@
 package gov.ca.cwds.data.dao.contact;
 
-import org.hibernate.SessionFactory;
-
-import com.google.inject.Inject;
-
 import gov.ca.cwds.data.CrudsDaoImpl;
 import gov.ca.cwds.data.persistence.contact.IndividualDeliveredServiceEntity;
 import gov.ca.cwds.inject.CmsSessionFactory;
+
+import org.hibernate.Query;
+import org.hibernate.SessionFactory;
+
+import com.google.inject.Inject;
 
 /**
  * DAO for {@link IndividualDeliveredServiceEntity}.
@@ -25,4 +26,16 @@ public class IndividualDeliveredServiceDao extends CrudsDaoImpl<IndividualDelive
     super(sessionFactory);
   }
 
+  @SuppressWarnings("unchecked")
+  public IndividualDeliveredServiceEntity[] findByDeliveredServiceId(String deliveredServiceId) {
+    Query query =
+        this.getSessionFactory()
+            .getCurrentSession()
+            .getNamedQuery(
+                "gov.ca.cwds.data.persistence.contact.IndividualDeliveredServiceEntity.findAllForDeliveredService")
+            .setString("deliveredServiceId", deliveredServiceId);
+    return (IndividualDeliveredServiceEntity[]) query.list().toArray(
+        new IndividualDeliveredServiceEntity[0]);
+
+  }
 }
