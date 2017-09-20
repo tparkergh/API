@@ -133,11 +133,11 @@ public final class ESPersonSearchRequest extends DomainObject implements Request
 
   @Override
   public int hashCode() {
-    final int prime = 31;
+    final int PRIME = 31;
     int result = 1;
-    result = prime * result + ((birthDate == null) ? 0 : birthDate.hashCode());
-    result = prime * result + ((firstName == null) ? 0 : firstName.hashCode());
-    result = prime * result + ((lastName == null) ? 0 : lastName.hashCode());
+    result = PRIME * result + ((birthDate == null) ? 0 : birthDate.hashCode());
+    result = PRIME * result + ((firstName == null) ? 0 : firstName.hashCode());
+    result = PRIME * result + ((lastName == null) ? 0 : lastName.hashCode());
     return result;
   }
 

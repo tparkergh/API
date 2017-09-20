@@ -206,10 +206,10 @@ public class AssignmentService implements
 
     // the county code of the CASE_LOAD row for the STAFF_PERSON_CASE_LOAD row with FKSTFPERST =
     // '0X5' is "20"
-    final String countyCode = "20";
+    final String COUNTY_CODE = "20";
 
     gov.ca.cwds.rest.api.domain.cms.Assignment da =
-        createDefaultAssignmentToCaseLoad(countyCode, referralId, caseLoadId);
+        createDefaultAssignmentToCaseLoad(COUNTY_CODE, referralId, caseLoadId);
     messageBuilder.addDomainValidationError(validator.validate(da));
 
     if ("R".equals(da.getEstablishedForCode())

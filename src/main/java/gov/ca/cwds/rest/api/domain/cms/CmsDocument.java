@@ -153,19 +153,19 @@ public class CmsDocument extends ReportingDomain implements Request, Response, S
    */
   @Override
   public final int hashCode() {
-    final int prime = 31;
+    final int PRIME = 31;
     int result = 1;
 
-    result = prime * result + ((id == null) ? 0 : id.hashCode());
-    result = prime * result + ((segmentCount == null) ? 0 : segmentCount.hashCode());
-    result = prime * result + ((docLength == null) ? 0 : docLength.hashCode());
-    result = prime * result + ((docAuth == null) ? 0 : docAuth.hashCode());
-    result = prime * result + ((docServ == null) ? 0 : docServ.hashCode());
-    result = prime * result + ((docDate == null) ? 0 : docDate.hashCode());
-    result = prime * result + ((docTime == null) ? 0 : docTime.hashCode());
-    result = prime * result + ((docName == null) ? 0 : docName.hashCode());
-    result = prime * result + ((compressionMethod == null) ? 0 : compressionMethod.hashCode());
-    result = prime * result + ((base64Blob == null) ? 0 : base64Blob.hashCode());
+    result = PRIME * result + ((id == null) ? 0 : id.hashCode());
+    result = PRIME * result + ((segmentCount == null) ? 0 : segmentCount.hashCode());
+    result = PRIME * result + ((docLength == null) ? 0 : docLength.hashCode());
+    result = PRIME * result + ((docAuth == null) ? 0 : docAuth.hashCode());
+    result = PRIME * result + ((docServ == null) ? 0 : docServ.hashCode());
+    result = PRIME * result + ((docDate == null) ? 0 : docDate.hashCode());
+    result = PRIME * result + ((docTime == null) ? 0 : docTime.hashCode());
+    result = PRIME * result + ((docName == null) ? 0 : docName.hashCode());
+    result = PRIME * result + ((compressionMethod == null) ? 0 : compressionMethod.hashCode());
+    result = PRIME * result + ((base64Blob == null) ? 0 : base64Blob.hashCode());
 
     return result;
   }

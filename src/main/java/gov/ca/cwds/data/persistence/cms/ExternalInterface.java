@@ -74,11 +74,11 @@ public class ExternalInterface implements PersistentObject, Serializable {
      */
     @Override
     public int hashCode() {
-      final int prime = 31;
+      final int PRIME = 31;
       int result = 1;
-      result = prime * result + ((submitlTimestamp == null) ? 0 : submitlTimestamp.hashCode());
-      result = prime * result + ((logonUserId == null) ? 0 : logonUserId.hashCode());
-      result = prime * result + ((sequenceNumber == null) ? 0 : sequenceNumber.hashCode());
+      result = PRIME * result + ((submitlTimestamp == null) ? 0 : submitlTimestamp.hashCode());
+      result = PRIME * result + ((logonUserId == null) ? 0 : logonUserId.hashCode());
+      result = PRIME * result + ((sequenceNumber == null) ? 0 : sequenceNumber.hashCode());
       return result;
     }
 

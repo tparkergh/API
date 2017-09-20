@@ -71,10 +71,10 @@ public class PersonPhoneId implements Serializable {
 
   @Override
   public int hashCode() {
-    final int prime = 31;
+    final int PRIME = 31;
     int result = 1;
-    result = prime * result + ((person == null) ? 0 : person.hashCode());
-    result = prime * result + ((phoneNumber == null) ? 0 : phoneNumber.hashCode());
+    result = PRIME * result + ((person == null) ? 0 : person.hashCode());
+    result = PRIME * result + ((phoneNumber == null) ? 0 : phoneNumber.hashCode());
     return result;
   }
 

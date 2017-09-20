@@ -181,16 +181,16 @@ public class Address extends ReportingDomain implements Request, Response {
    */
   @Override
   public final int hashCode() {
-    final int prime = 31;
+    final int PRIME = 31;
     int result = 1;
-    result = prime * result + ((legacySourceTable == null) ? 0 : legacySourceTable.hashCode());
-    result = prime * result + ((legacyId == null) ? 0 : legacyId.hashCode());
-    result = prime * result + ((legacyDescriptor == null) ? 0 : legacyDescriptor.hashCode());
-    result = prime * result + ((city == null) ? 0 : city.hashCode());
-    result = prime * result + ((state == null) ? 0 : state.hashCode());
-    result = prime * result + ((streetAddress == null) ? 0 : streetAddress.hashCode());
-    result = prime * result + ((type == null) ? 0 : type.hashCode());
-    result = prime * result + ((zip == null) ? 0 : zip.hashCode());
+    result = PRIME * result + ((legacySourceTable == null) ? 0 : legacySourceTable.hashCode());
+    result = PRIME * result + ((legacyId == null) ? 0 : legacyId.hashCode());
+    result = PRIME * result + ((legacyDescriptor == null) ? 0 : legacyDescriptor.hashCode());
+    result = PRIME * result + ((city == null) ? 0 : city.hashCode());
+    result = PRIME * result + ((state == null) ? 0 : state.hashCode());
+    result = PRIME * result + ((streetAddress == null) ? 0 : streetAddress.hashCode());
+    result = PRIME * result + ((type == null) ? 0 : type.hashCode());
+    result = PRIME * result + ((zip == null) ? 0 : zip.hashCode());
     return result;
   }
 

@@ -90,9 +90,9 @@ public class PersonLanguage extends NsPersistentObject implements Serializable {
 
   @Override
   public int hashCode() {
-    final int prime = 31;
+    final int PRIME = 31;
     int result = 1;
-    result = prime * result + ((personLanguageId == null) ? 0 : personLanguageId.hashCode());
+    result = PRIME * result + ((personLanguageId == null) ? 0 : personLanguageId.hashCode());
     return result;
   }
 

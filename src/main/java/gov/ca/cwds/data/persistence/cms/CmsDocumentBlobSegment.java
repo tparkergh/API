@@ -89,15 +89,15 @@ public class CmsDocumentBlobSegment implements TypedPersistentObject<VarargPrima
    */
   @Override
   public final int hashCode() {
-    final int prime = 31;
+    final int PRIME = 31;
     int result = 1;
 
-    result = prime * result + ((docHandle == null) ? 0 : docHandle.hashCode());
-    result = prime * result + ((segmentSequence == null) ? 0 : segmentSequence.hashCode());
+    result = PRIME * result + ((docHandle == null) ? 0 : docHandle.hashCode());
+    result = PRIME * result + ((segmentSequence == null) ? 0 : segmentSequence.hashCode());
 
     // 1) NOT part of unique key, 2) potentially large and waste of processing to compute.
     // 3) if you got this far, well ... ;)
-    result = prime * result + ((docBlob == null) ? 0 : docBlob.hashCode());
+    result = PRIME * result + ((docBlob == null) ? 0 : docBlob.hashCode());
 
     return result;
   }

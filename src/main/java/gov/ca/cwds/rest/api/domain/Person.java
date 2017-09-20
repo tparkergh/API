@@ -258,20 +258,20 @@ public class Person extends ReportingDomain implements Request, Response {
    */
   @Override
   public final int hashCode() {
-    final int prime = 31;
+    final int PRIME = 31;
     int result = 1;
-    result = prime * result + ((address == null) ? 0 : address.hashCode());
-    result = prime * result + ((phoneNumber == null) ? 0 : phoneNumber.hashCode());
-    result = prime * result + ((language == null) ? 0 : language.hashCode());
-    result = prime * result + ((ethnicity == null) ? 0 : ethnicity.hashCode());
-    result = prime * result + ((race == null) ? 0 : race.hashCode());
-    result = prime * result + ((birthDate == null) ? 0 : birthDate.hashCode());
-    result = prime * result + ((firstName == null) ? 0 : firstName.hashCode());
-    result = prime * result + ((gender == null) ? 0 : gender.hashCode());
-    result = prime * result + ((middleName == null) ? 0 : middleName.hashCode());
-    result = prime * result + ((lastName == null) ? 0 : lastName.hashCode());
-    result = prime * result + ((nameSuffix == null) ? 0 : nameSuffix.hashCode());
-    result = prime * result + ((ssn == null) ? 0 : ssn.hashCode());
+    result = PRIME * result + ((address == null) ? 0 : address.hashCode());
+    result = PRIME * result + ((phoneNumber == null) ? 0 : phoneNumber.hashCode());
+    result = PRIME * result + ((language == null) ? 0 : language.hashCode());
+    result = PRIME * result + ((ethnicity == null) ? 0 : ethnicity.hashCode());
+    result = PRIME * result + ((race == null) ? 0 : race.hashCode());
+    result = PRIME * result + ((birthDate == null) ? 0 : birthDate.hashCode());
+    result = PRIME * result + ((firstName == null) ? 0 : firstName.hashCode());
+    result = PRIME * result + ((gender == null) ? 0 : gender.hashCode());
+    result = PRIME * result + ((middleName == null) ? 0 : middleName.hashCode());
+    result = PRIME * result + ((lastName == null) ? 0 : lastName.hashCode());
+    result = PRIME * result + ((nameSuffix == null) ? 0 : nameSuffix.hashCode());
+    result = PRIME * result + ((ssn == null) ? 0 : ssn.hashCode());
     return result;
   }
 

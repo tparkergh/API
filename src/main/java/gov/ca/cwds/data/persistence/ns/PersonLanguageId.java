@@ -71,10 +71,10 @@ public class PersonLanguageId implements Serializable {
 
   @Override
   public int hashCode() {
-    final int prime = 31;
+    final int PRIME = 31;
     int result = 1;
-    result = prime * result + ((language == null) ? 0 : language.hashCode());
-    result = prime * result + ((person == null) ? 0 : person.hashCode());
+    result = PRIME * result + ((language == null) ? 0 : language.hashCode());
+    result = PRIME * result + ((person == null) ? 0 : person.hashCode());
     return result;
   }
 

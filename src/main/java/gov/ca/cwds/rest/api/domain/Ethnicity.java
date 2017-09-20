@@ -70,10 +70,10 @@ public class Ethnicity extends ReportingDomain implements Request, Response {
 
   @Override
   public final int hashCode() {
-    final int prime = 31;
+    final int PRIME = 31;
     int result = 1;
-    result = prime * result + ((ethnicityType == null) ? 0 : ethnicityType.hashCode());
-    result = prime * result + ((subEthnicity == null) ? 0 : subEthnicity.hashCode());
+    result = PRIME * result + ((ethnicityType == null) ? 0 : ethnicityType.hashCode());
+    result = PRIME * result + ((subEthnicity == null) ? 0 : subEthnicity.hashCode());
     return result;
   }
 

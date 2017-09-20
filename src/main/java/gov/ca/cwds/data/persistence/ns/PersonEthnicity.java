@@ -91,9 +91,9 @@ public class PersonEthnicity extends NsPersistentObject implements Serializable 
 
   @Override
   public int hashCode() {
-    final int prime = 31;
+    final int PRIME = 31;
     int result = 1;
-    result = prime * result + ((personEthnicityId == null) ? 0 : personEthnicityId.hashCode());
+    result = PRIME * result + ((personEthnicityId == null) ? 0 : personEthnicityId.hashCode());
     return result;
   }
 

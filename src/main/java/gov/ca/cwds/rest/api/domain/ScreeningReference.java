@@ -46,9 +46,9 @@ public class ScreeningReference extends ReportingDomain implements Request {
    */
   @Override
   public final int hashCode() {
-    final int prime = 31;
+    final int PRIME = 31;
     int result = 1;
-    result = prime * result + ((reference == null) ? 0 : reference.hashCode());
+    result = PRIME * result + ((reference == null) ? 0 : reference.hashCode());
     return result;
   }
 

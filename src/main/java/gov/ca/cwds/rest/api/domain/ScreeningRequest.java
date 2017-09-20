@@ -68,9 +68,9 @@ public class ScreeningRequest implements Request {
    */
   @Override
   public final int hashCode() {
-    final int prime = 31;
+    final int PRIME = 31;
     int result = 1;
-    result = prime * result + ((address == null) ? 0 : address.hashCode());
+    result = PRIME * result + ((address == null) ? 0 : address.hashCode());
     return result;
   }
 
