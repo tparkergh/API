@@ -1,5 +1,6 @@
 package gov.ca.cwds.rest.api.domain;
 
+import gov.ca.cwds.data.persistence.cms.StaffPerson;
 import gov.ca.cwds.rest.api.Request;
 import gov.ca.cwds.rest.api.Response;
 import io.swagger.annotations.ApiModelProperty;
@@ -77,6 +78,22 @@ public class LastUpdatedBy extends ReportingDomain implements Request, Response 
     this.lastName = lastName;
     this.suffixTitle = suffixTitle;
     this.prefixTitle = prefixTitle;
+  }
+
+
+  public LastUpdatedBy(StaffPerson persistedStaffPerson) {
+    super();
+    this.id = persistedStaffPerson.getPrimaryKey();
+    this.firstName = persistedStaffPerson.getFirstName();
+    this.middleInitial = persistedStaffPerson.getMiddleInitial();
+    this.lastName = persistedStaffPerson.getLastName();
+    this.suffixTitle = persistedStaffPerson.getNameSuffix();
+    this.prefixTitle = persistedStaffPerson.getNamePrefix();
+  }
+
+
+  public LastUpdatedBy() {
+    // default
   }
 
 
