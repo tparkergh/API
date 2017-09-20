@@ -11,6 +11,8 @@ import org.hibernate.validator.constraints.NotBlank;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+import gov.ca.cwds.rest.api.Request;
+import gov.ca.cwds.rest.api.Response;
 import gov.ca.cwds.rest.api.domain.DomainObject;
 import gov.ca.cwds.rest.api.domain.LegacyDescriptor;
 import gov.ca.cwds.rest.validation.Date;
@@ -21,7 +23,7 @@ import io.swagger.annotations.ApiModelProperty;
  * 
  * @author CWDS API Team
  */
-public class Relationship {
+public class Relationship implements Request, Response {
 
   private static final long serialVersionUID = 1L;
 
@@ -114,42 +116,72 @@ public class Relationship {
   }
 
 
+  /**
+   * @return id
+   */
   public String getId() {
     return id;
   }
 
+  /**
+   * @return date of birth
+   */
   public String getDateOfBirth() {
     return dateOfBirth;
   }
 
+  /**
+   * @return first name
+   */
   public String getFirstName() {
     return firstName;
   }
 
+  /**
+   * @return middle name
+   */
   public String getMiddleName() {
     return middleName;
   }
 
+  /**
+   * @return last name
+   */
   public String getLastName() {
     return lastName;
   }
 
+  /**
+   * @return name suffix
+   */
   public String getSuffixName() {
     return suffixName;
   }
 
+  /**
+   * @return sensitive data
+   */
   public Boolean getSensitive() {
     return sensitive;
   }
 
+  /**
+   * @return sealed data
+   */
   public Boolean getSealed() {
     return sealed;
   }
 
+  /**
+   * @return CMS record description
+   */
   public LegacyDescriptor getLegacyDescriptor() {
     return legacyDescriptor;
   }
 
+  /**
+   * @return people related to this person
+   */
   public Set<RelationshipTo> getRelatedTo() {
     return relatedTo;
   }
