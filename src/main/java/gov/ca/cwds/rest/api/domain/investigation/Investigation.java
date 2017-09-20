@@ -29,6 +29,7 @@ import io.swagger.annotations.ApiModelProperty;
  * 
  * @author CWDS API Team
  */
+@SuppressWarnings("javadoc")
 
 @JsonSnakeCase
 public class Investigation extends ReportingDomain implements Request, Response {
@@ -108,7 +109,7 @@ public class Investigation extends ReportingDomain implements Request, Response 
   private String startedAt;
 
   @JsonProperty("assignee")
-  private Assignee assignedd;
+  private Assignee assignee;
 
   @JsonProperty("additional_information")
   @ApiModelProperty(required = false, readOnly = false, value = "Additional Information",
@@ -183,29 +184,29 @@ public class Investigation extends ReportingDomain implements Request, Response 
   }
 
   /**
-   * @param legacyDescriptor
-   * @param lastUpdatedBy
-   * @param lastUpdatedAt
-   * @param incidentCounty
-   * @param incidentDate
-   * @param locationType
-   * @param communicationMethod
-   * @param name
-   * @param reportNarrative
-   * @param reference
-   * @param responseTime
-   * @param startedAt
-   * @param assigneee
-   * @param additionalInformation
-   * @param sensitive
-   * @param sealed
-   * @param phoneNumbers
-   * @param address
-   * @param screening
-   * @param historyOfInvolvement
-   * @param allegations
-   * @param people
-   * @param relationships
+   * @param legacyDescriptor - CMS record description
+   * @param lastUpdatedBy - updated by staff id
+   * @param lastUpdatedAt - updated date/time
+   * @param incidentCounty - county code
+   * @param incidentDate - incident date
+   * @param locationType - location type code
+   * @param communicationMethod - communication method code
+   * @param name - name
+   * @param reportNarrative - report narrative
+   * @param reference - referrence
+   * @param responseTime - response time
+   * @param startedAt - started at
+   * @param assignee - asignment info
+   * @param additionalInformation - additional information
+   * @param sensitive - contains senstive information
+   * @param sealed - contains sealed information
+   * @param phoneNumbers - phone numbers
+   * @param address - address
+   * @param screening - screening information
+   * @param historyOfInvolvement - history of involvement
+   * @param allegations - allegations
+   * @param people - people of investigation
+   * @param relationships - relationships of people
    */
   public Investigation(LegacyDescriptor legacyDescriptor, String lastUpdatedBy,
       DateTime lastUpdatedAt,
@@ -231,7 +232,7 @@ public class Investigation extends ReportingDomain implements Request, Response 
     this.reference = reference;
     this.responseTime = responseTime;
     this.startedAt = startedAt;
-    this.assignedd = assignedd;
+    this.assignee = assignee;
     this.additionalInformation = additionalInformation;
     this.sensitive = sensitive;
     this.sealed = sealed;
@@ -293,7 +294,7 @@ public class Investigation extends ReportingDomain implements Request, Response 
   }
 
   public Assignee getAssignedd() {
-    return assignedd;
+    return assignee;
   }
 
   public String getAdditionalInformation() {
@@ -344,7 +345,7 @@ public class Investigation extends ReportingDomain implements Request, Response 
         prime * result + ((additionalInformation == null) ? 0 : additionalInformation.hashCode());
     result = prime * result + ((address == null) ? 0 : address.hashCode());
     result = prime * result + ((allegations == null) ? 0 : allegations.hashCode());
-    result = prime * result + ((assignedd == null) ? 0 : assignedd.hashCode());
+    result = prime * result + ((assignee == null) ? 0 : assignee.hashCode());
     result = prime * result + ((communicationMethod == null) ? 0 : communicationMethod.hashCode());
     result =
         prime * result + ((historyOfInvolvement == null) ? 0 : historyOfInvolvement.hashCode());
@@ -392,10 +393,10 @@ public class Investigation extends ReportingDomain implements Request, Response 
         return false;
     } else if (!allegations.equals(other.allegations))
       return false;
-    if (assignedd == null) {
-      if (other.assignedd != null)
+    if (assignee == null) {
+      if (other.assignee != null)
         return false;
-    } else if (!assignedd.equals(other.assignedd))
+    } else if (!assignee.equals(other.assignee))
       return false;
     if (communicationMethod == null) {
       if (other.communicationMethod != null)
