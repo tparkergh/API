@@ -1,5 +1,17 @@
 package gov.ca.cwds.rest.services.contact;
 
+import java.util.Date;
+import java.util.HashSet;
+import java.util.Optional;
+import java.util.Set;
+
+import org.apache.commons.lang3.NotImplementedException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.google.inject.Inject;
+
 import gov.ca.cwds.data.Dao;
 import gov.ca.cwds.data.cms.AttorneyDao;
 import gov.ca.cwds.data.cms.ClientDao;
@@ -32,18 +44,6 @@ import gov.ca.cwds.rest.filters.RequestExecutionContext;
 import gov.ca.cwds.rest.services.TypedCrudsService;
 import io.dropwizard.jackson.Jackson;
 
-import java.util.Date;
-import java.util.HashSet;
-import java.util.Optional;
-import java.util.Set;
-
-import org.apache.commons.lang3.NotImplementedException;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.google.inject.Inject;
-
 /**
  * Business layer object to work on {@link DeliveredServiceEntity}
  * 
@@ -74,7 +74,6 @@ public class ContactService implements TypedCrudsService<String, ContactRequestL
   /**
    * @param deliveredServiceDao {@link Dao} handling
    *        {@link gov.ca.cwds.data.persistence.contact.DeliveredServiceEntity} objects
-   * @param deliveredServiceDao the deliveredServiceDao
    * @param staffPersonDao the staffPersonDao
    * @param longTextDao the longTextDao
    * @param individualDeliveredServiceDao the individualDeliveredServiceDao
@@ -88,9 +87,9 @@ public class ContactService implements TypedCrudsService<String, ContactRequestL
   @Inject
   public ContactService(DeliveredServiceDao deliveredServiceDao, StaffPersonDao staffPersonDao,
       LongTextDao longTextDao, IndividualDeliveredServiceDao individualDeliveredServiceDao,
-      ClientDao clientDao, AttorneyDao attorneyDao,
-      CollateralIndividualDao collateralIndividualDao, ServiceProviderDao serviceProviderDao,
-      SubstituteCareProviderDao substituteCareProviderDao, ReporterDao reporterDao) {
+      ClientDao clientDao, AttorneyDao attorneyDao, CollateralIndividualDao collateralIndividualDao,
+      ServiceProviderDao serviceProviderDao, SubstituteCareProviderDao substituteCareProviderDao,
+      ReporterDao reporterDao) {
     super();
     this.deliveredServiceDao = deliveredServiceDao;
     this.staffPersonDao = staffPersonDao;
@@ -102,9 +101,7 @@ public class ContactService implements TypedCrudsService<String, ContactRequestL
     this.serviceProviderDao = serviceProviderDao;
     this.substituteCareProviderDao = substituteCareProviderDao;
     this.reporterDao = reporterDao;
-
   }
-
 
   /**
    * {@inheritDoc}
@@ -190,15 +187,13 @@ public class ContactService implements TypedCrudsService<String, ContactRequestL
         individualDeliveredServiceDao.findByDeliveredServiceId(deliveredServiceEntity.getId());
     for (IndividualDeliveredServiceEntity individualDeliveredService : individualDeliveredServices) {
 
-      String code =
-          individualDeliveredService.getIndividualDeliveredServiceEmbeddable()
-              .getDeliveredToIndividualCode();
+      String code = individualDeliveredService.getIndividualDeliveredServiceEmbeddable()
+          .getDeliveredToIndividualCode();
       DeliveredToIndividualCode deliveredToIndividualCode =
           DeliveredToIndividualCode.lookupByCode(code);
       PostedIndividualDeliveredService person = new PostedIndividualDeliveredService();
-      String id =
-          individualDeliveredService.getIndividualDeliveredServiceEmbeddable()
-              .getDeliveredToIndividualId();
+      String id = individualDeliveredService.getIndividualDeliveredServiceEmbeddable()
+          .getDeliveredToIndividualId();
       switch (deliveredToIndividualCode) {
         case CLIENT:
           person = processClient(deliveredToIndividualCode, id);
@@ -301,8 +296,6 @@ public class ContactService implements TypedCrudsService<String, ContactRequestL
     return new PostedIndividualDeliveredService(deliveredToIndividualCode.getValue(), id, "", "",
         "", "", "", deliveredToIndividualCode.getDescription());
   }
-
-
 
   private Contact validContact() {
     Set<PostedIndividualDeliveredService> people = validPeople();
