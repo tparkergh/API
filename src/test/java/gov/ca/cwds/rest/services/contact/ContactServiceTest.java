@@ -34,7 +34,6 @@ import org.junit.rules.TemporaryFolder;
 
 import com.ibm.db2.jcc.am.DatabaseMetaData;
 
-import gov.ca.cwds.data.BaseDaoImpl;
 import gov.ca.cwds.data.cms.AttorneyDao;
 import gov.ca.cwds.data.cms.ClientDao;
 import gov.ca.cwds.data.cms.CollateralIndividualDao;
@@ -48,6 +47,8 @@ import gov.ca.cwds.data.dao.contact.DeliveredServiceDao;
 import gov.ca.cwds.data.dao.contact.IndividualDeliveredServiceDao;
 import gov.ca.cwds.data.es.ElasticSearchPerson;
 import gov.ca.cwds.data.es.ElasticsearchDao;
+import gov.ca.cwds.data.persistence.cms.CollateralIndividual;
+import gov.ca.cwds.data.persistence.cms.CollateralIndividualTest;
 import gov.ca.cwds.rest.ElasticsearchConfiguration;
 import gov.ca.cwds.rest.api.Response;
 import gov.ca.cwds.rest.api.domain.Contact;
@@ -165,16 +166,16 @@ public class ContactServiceTest {
     when(esConfig.getElasticsearchDocType()).thenReturn("person");
 
     // Target:
-    deliveredServiceDao = new DeliveredServiceDao(sessionFactory);
-    staffPersonDao = new StaffPersonDao(sessionFactory);
-    longTextDao = new LongTextDao(sessionFactory);
-    individualDeliveredServiceDao = new IndividualDeliveredServiceDao(sessionFactory);
-    clientDao = new ClientDao(sessionFactory);
-    attorneyDao = new AttorneyDao(sessionFactory);
-    collateralIndividualDao = new CollateralIndividualDao(sessionFactory);
-    serviceProviderDao = new ServiceProviderDao(sessionFactory);
-    substituteCareProviderDao = new SubstituteCareProviderDao(sessionFactory);
-    reporterDao = new ReporterDao(sessionFactory);
+    attorneyDao = mock(AttorneyDao.class);
+    clientDao = mock(ClientDao.class);
+    collateralIndividualDao = mock(CollateralIndividualDao.class);
+    deliveredServiceDao = mock(DeliveredServiceDao.class);
+    individualDeliveredServiceDao = mock(IndividualDeliveredServiceDao.class);
+    longTextDao = mock(LongTextDao.class);
+    reporterDao = mock(ReporterDao.class);
+    serviceProviderDao = mock(ServiceProviderDao.class);
+    staffPersonDao = mock(StaffPersonDao.class);
+    substituteCareProviderDao = mock(SubstituteCareProviderDao.class);
 
     target = new ContactService(deliveredServiceDao, staffPersonDao, longTextDao,
         individualDeliveredServiceDao, clientDao, attorneyDao, collateralIndividualDao,
@@ -220,11 +221,13 @@ public class ContactServiceTest {
   }
 
   @Test
-  public void findPerson_Args__BaseDaoImpl__DeliveredToIndividualCode__String() throws Exception {
-    final BaseDaoImpl dao = mock(BaseDaoImpl.class);
+  public void findPerson_Args__BaseDaoImpl__DeliveredToIndividualCode__Collateral()
+      throws Exception {
+    final CollateralIndividual indiv = CollateralIndividualTest.validCollateralIndividual();
+    when(collateralIndividualDao.find(any())).thenReturn(indiv);
+    final String id = indiv.getId();
     final DeliveredToIndividualCode code = DeliveredToIndividualCode.COLLATERAL_INDIVIDUAL;
-    String id = DEFAULT_KEY;
-    PostedIndividualDeliveredService actual = target.findPerson(dao, code, id);
+    PostedIndividualDeliveredService actual = target.findPerson(code, id);
     assertThat(actual, notNullValue());
   }
 
