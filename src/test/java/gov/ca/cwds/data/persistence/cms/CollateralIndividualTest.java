@@ -28,6 +28,16 @@ public class CollateralIndividualTest implements PersistentTestTemplate {
 
   private static final ObjectMapper MAPPER = SystemCodeTestHarness.MAPPER;
 
+  public static CollateralIndividual validCollateralIndividual()
+      throws JsonParseException, JsonMappingException, IOException {
+
+    CollateralIndividual validCollateralIndividual =
+        MAPPER.readValue(fixture("fixtures/persistent/CollateralIndividual/valid/valid.json"),
+            CollateralIndividual.class);
+
+    return validCollateralIndividual;
+  }
+
   @Override
   @Test
   @Ignore
@@ -110,16 +120,6 @@ public class CollateralIndividualTest implements PersistentTestTemplate {
         CollateralIndividual.class)));
 
     assertThat(MAPPER.writeValueAsString(persistent)).isEqualTo(expected);
-  }
-
-  private CollateralIndividual validCollateralIndividual()
-      throws JsonParseException, JsonMappingException, IOException {
-
-    CollateralIndividual validCollateralIndividual =
-        MAPPER.readValue(fixture("fixtures/persistent/CollateralIndividual/valid/valid.json"),
-            CollateralIndividual.class);
-
-    return validCollateralIndividual;
   }
 
 }

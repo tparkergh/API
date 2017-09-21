@@ -54,7 +54,6 @@ public class ClientCollateralTest implements PersistentTestTemplate {
         ci.getCollateralClientReporterRelationshipType(), ci.getCommentDescription(),
         ci.getClientId(), ci.getCollateralIndividualId(), ci.getThirdId());
 
-
     assertThat(persistent.getActiveIndicator(), is(equalTo(ci.getActiveIndicator())));
     assertThat(persistent.getCollateralClientReporterRelationshipType(),
         is(equalTo(ci.getCollateralClientReporterRelationshipType())));
@@ -68,7 +67,6 @@ public class ClientCollateralTest implements PersistentTestTemplate {
   @Override
   public void testConstructorUsingDomain() throws Exception {
     // no domain class.
-
   }
 
   @SuppressWarnings("javadoc")
