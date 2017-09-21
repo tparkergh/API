@@ -24,16 +24,12 @@ import gov.ca.cwds.data.cms.StaffPersonDao;
 import gov.ca.cwds.data.cms.SubstituteCareProviderDao;
 import gov.ca.cwds.data.dao.contact.DeliveredServiceDao;
 import gov.ca.cwds.data.dao.contact.IndividualDeliveredServiceDao;
-import gov.ca.cwds.data.persistence.cms.Attorney;
-import gov.ca.cwds.data.persistence.cms.Client;
-import gov.ca.cwds.data.persistence.cms.CollateralIndividual;
 import gov.ca.cwds.data.persistence.cms.LongText;
-import gov.ca.cwds.data.persistence.cms.Reporter;
-import gov.ca.cwds.data.persistence.cms.ServiceProvider;
 import gov.ca.cwds.data.persistence.cms.StaffPerson;
 import gov.ca.cwds.data.persistence.contact.DeliveredServiceEntity;
 import gov.ca.cwds.data.persistence.contact.IndividualDeliveredServiceEntity;
 import gov.ca.cwds.data.std.ApiPersonAware;
+import gov.ca.cwds.rest.api.ApiException;
 import gov.ca.cwds.rest.api.Response;
 import gov.ca.cwds.rest.api.domain.Contact;
 import gov.ca.cwds.rest.api.domain.ContactList;
@@ -127,11 +123,10 @@ public class ContactService implements TypedCrudsService<String, ContactRequestL
         return null;
       } else {
         LastUpdatedBy lastUpdatedBy = getTheLastUpdatedByStaffPerson(deliveredServiceEntity);
-
         String note = combineDetailTextAndContinuation(deliveredServiceEntity);
 
         Set<PostedIndividualDeliveredService> peopleInIndividualDeliveredService =
-            getPeopleInIndividulDeliveredService(deliveredServiceEntity);
+            getPeopleInIndividualDeliveredService(deliveredServiceEntity);
 
         return new Contact(deliveredServiceEntity, lastUpdatedBy, note,
             peopleInIndividualDeliveredService);
@@ -179,45 +174,53 @@ public class ContactService implements TypedCrudsService<String, ContactRequestL
     return (Optional.of(detail)).map(LongText::getTextDescription).orElse("");
   }
 
-  private Set<PostedIndividualDeliveredService> getPeopleInIndividulDeliveredService(
+  private Set<PostedIndividualDeliveredService> getPeopleInIndividualDeliveredService(
       DeliveredServiceEntity deliveredServiceEntity) {
-    Set<PostedIndividualDeliveredService> peopleInIndividualDeliveredService = new HashSet<>();
-
-    IndividualDeliveredServiceEntity[] individualDeliveredServices =
+    final Set<PostedIndividualDeliveredService> people = new HashSet<>();
+    final IndividualDeliveredServiceEntity[] individualDeliveredServices =
         individualDeliveredServiceDao.findByDeliveredServiceId(deliveredServiceEntity.getId());
     for (IndividualDeliveredServiceEntity individualDeliveredService : individualDeliveredServices) {
-
-      String code = individualDeliveredService.getIndividualDeliveredServiceEmbeddable()
-          .getDeliveredToIndividualCode();
-      DeliveredToIndividualCode deliveredToIndividualCode =
-          DeliveredToIndividualCode.lookupByCode(code);
-      PostedIndividualDeliveredService person = new PostedIndividualDeliveredService();
-      String id = individualDeliveredService.getIndividualDeliveredServiceEmbeddable()
+      final DeliveredToIndividualCode deliveredToIndividualCode =
+          DeliveredToIndividualCode.lookupByCode(individualDeliveredService
+              .getIndividualDeliveredServiceEmbeddable().getDeliveredToIndividualCode());
+      final String id = individualDeliveredService.getIndividualDeliveredServiceEmbeddable()
           .getDeliveredToIndividualId();
-      switch (deliveredToIndividualCode) {
-        case CLIENT:
-          person = processClient(deliveredToIndividualCode, id);
-          break;
-        case SERVICE_PROVIDER:
-          person = processServiceProvider(deliveredToIndividualCode, id);
-          break;
-        case COLLATERAL_INDIVIDUAL:
-          person = processCollateralIndividual(deliveredToIndividualCode, id);
-          break;
-        case REPORTER:
-          person = processReporter(deliveredToIndividualCode, id);
-          break;
-        case ATTORNEY:
-          person = processAttorney(deliveredToIndividualCode, id);
-          break;
-        case SUBSTITUTE_CARE_PROVIDER:
-          person = processSubstituteCareProvider(deliveredToIndividualCode, id);
-          break;
-      }
-      peopleInIndividualDeliveredService.add(person);
-
+      people.add(findPerson(deliveredToIndividualCode, id));
     }
-    return peopleInIndividualDeliveredService;
+    return people;
+  }
+
+  /**
+   * @param code type of contact
+   * @param id key
+   * @return contact person
+   */
+  protected PostedIndividualDeliveredService findPerson(final DeliveredToIndividualCode code,
+      final String id) {
+    PostedIndividualDeliveredService ret;
+    switch (code) {
+      case CLIENT:
+        ret = findPerson(clientDao, code, id);
+        break;
+      case SERVICE_PROVIDER:
+        ret = findPerson(serviceProviderDao, code, id);
+        break;
+      case COLLATERAL_INDIVIDUAL:
+        ret = findPerson(collateralIndividualDao, code, id);
+        break;
+      case REPORTER:
+        ret = findPerson(reporterDao, code, id);
+        break;
+      case ATTORNEY:
+        ret = findPerson(attorneyDao, code, id);
+        break;
+      case SUBSTITUTE_CARE_PROVIDER:
+        ret = findPerson(substituteCareProviderDao, code, id);
+        break;
+      default:
+        throw new ApiException("UNKNOWN DELIVERED TO INDIVIDUAL CODE: " + code);
+    }
+    return ret;
   }
 
   /**
@@ -228,75 +231,15 @@ public class ContactService implements TypedCrudsService<String, ContactRequestL
    * @param id referenced id
    * @return contact
    */
-  protected PostedIndividualDeliveredService findPerson(BaseDaoImpl<? extends ApiPersonAware> dao,
-      final DeliveredToIndividualCode code, String id) {
+  protected PostedIndividualDeliveredService findPerson(
+      final BaseDaoImpl<? extends ApiPersonAware> dao, final DeliveredToIndividualCode code,
+      final String id) {
     final ApiPersonAware person = dao.find(id);
-    if (person != null)
-      return new PostedIndividualDeliveredService(code.getValue(), id, person.getFirstName(),
-          person.getMiddleName(), person.getLastName(), person.getNameSuffix(),
-          person.getNameSuffix(), code.getDescription());
-    return defaultPostedIndividualDeliveredService(code, id);
-  }
-
-  private PostedIndividualDeliveredService processSubstituteCareProvider(
-      DeliveredToIndividualCode deliveredToIndividualCode, String id) {
-    return findPerson(substituteCareProviderDao, deliveredToIndividualCode, id);
-  }
-
-  private PostedIndividualDeliveredService processAttorney(
-      DeliveredToIndividualCode deliveredToIndividualCode, String id) {
-    Attorney attorney = attorneyDao.find(id);
-    if (attorney != null)
-      return new PostedIndividualDeliveredService(deliveredToIndividualCode.getValue(), id,
-          attorney.getFirstName(), attorney.getMiddleName(), attorney.getLastName(),
-          attorney.getNameSuffix(), attorney.getNamePrefixDescription(),
-          deliveredToIndividualCode.getDescription());
-    return defaultPostedIndividualDeliveredService(deliveredToIndividualCode, id);
-  }
-
-  private PostedIndividualDeliveredService processReporter(
-      DeliveredToIndividualCode deliveredToIndividualCode, String id) {
-    Reporter reporter = reporterDao.find(id);
-    if (reporter != null)
-      return new PostedIndividualDeliveredService(deliveredToIndividualCode.getValue(), id,
-          reporter.getFirstName(), reporter.getMiddleName(), reporter.getLastName(),
-          reporter.getNameSuffix(), reporter.getNamePrefixDescription(),
-          deliveredToIndividualCode.getDescription());
-    return defaultPostedIndividualDeliveredService(deliveredToIndividualCode, id);
-  }
-
-  private PostedIndividualDeliveredService processCollateralIndividual(
-      DeliveredToIndividualCode deliveredToIndividualCode, String id) {
-    CollateralIndividual collateralIndividual = collateralIndividualDao.find(id);
-    if (collateralIndividual != null)
-      return new PostedIndividualDeliveredService(deliveredToIndividualCode.getValue(), id,
-          collateralIndividual.getFirstName(), collateralIndividual.getMiddleName(),
-          collateralIndividual.getLastName(), collateralIndividual.getNameSuffix(),
-          collateralIndividual.getNamePrefixDescription(),
-          deliveredToIndividualCode.getDescription());
-    return defaultPostedIndividualDeliveredService(deliveredToIndividualCode, id);
-  }
-
-  private PostedIndividualDeliveredService processServiceProvider(
-      DeliveredToIndividualCode deliveredToIndividualCode, String id) {
-    ServiceProvider serviceProvider = serviceProviderDao.find(id);
-    if (serviceProvider != null)
-      return new PostedIndividualDeliveredService(deliveredToIndividualCode.getValue(), id,
-          serviceProvider.getFirstName(), serviceProvider.getMiddleName(),
-          serviceProvider.getLastName(), serviceProvider.getNameSuffix(),
-          serviceProvider.getNamePrefixDescription(), deliveredToIndividualCode.getDescription());
-    return defaultPostedIndividualDeliveredService(deliveredToIndividualCode, id);
-  }
-
-  private PostedIndividualDeliveredService processClient(
-      DeliveredToIndividualCode deliveredToIndividualCode, String id) {
-    Client client = clientDao.find(id);
-    if (client != null)
-      return new PostedIndividualDeliveredService(deliveredToIndividualCode.getValue(), id,
-          client.getFirstName(), client.getMiddleName(), client.getLastName(),
-          client.getNameSuffix(), client.getNamePrefixDescription(),
-          deliveredToIndividualCode.getDescription());
-    return defaultPostedIndividualDeliveredService(deliveredToIndividualCode, id);
+    return (person != null)
+        ? new PostedIndividualDeliveredService(code.getValue(), id, person.getFirstName(),
+            person.getMiddleName(), person.getLastName(), person.getNameSuffix(),
+            person.getNameSuffix(), code.getDescription())
+        : defaultPostedIndividualDeliveredService(code, id);
   }
 
   private PostedIndividualDeliveredService defaultPostedIndividualDeliveredService(
@@ -306,7 +249,7 @@ public class ContactService implements TypedCrudsService<String, ContactRequestL
   }
 
   private Contact validContact() {
-    Set<PostedIndividualDeliveredService> people = validPeople();
+    final Set<PostedIndividualDeliveredService> people = validPeople();
     LastUpdatedBy lastUpdatedByPerson =
         new LastUpdatedBy("0X5", "Joe", "M", "Friday", "Mr.", "Jr.");
     return new Contact("1234567ABC", lastUpdatedByPerson, "2010-04-27T23:30:14.000Z", "", 433, 408,
@@ -315,12 +258,12 @@ public class ContactService implements TypedCrudsService<String, ContactRequestL
   }
 
   private Set<PostedIndividualDeliveredService> validPeople() {
-    Set<PostedIndividualDeliveredService> peopleInIndividualDeliveredService = new HashSet<>();
-    peopleInIndividualDeliveredService.add(new PostedIndividualDeliveredService("CLIENT_T",
-        "3456789ABC", "John", "Bob", "Smith", "Mr.", "Jr.", ""));
-    peopleInIndividualDeliveredService.add(new PostedIndividualDeliveredService("REPTR_T",
-        "4567890ABC ", "Sam", "Bill", "Jones", "Mr.", "III", "Reporter"));
-    return peopleInIndividualDeliveredService;
+    final Set<PostedIndividualDeliveredService> ret = new HashSet<>();
+    ret.add(new PostedIndividualDeliveredService("CLIENT_T", "3456789ABC", "John", "Bob", "Smith",
+        "Mr.", "Jr.", ""));
+    ret.add(new PostedIndividualDeliveredService("REPTR_T", "4567890ABC ", "Sam", "Bill", "Jones",
+        "Mr.", "III", "Reporter"));
+    return ret;
   }
 
 }
