@@ -155,7 +155,7 @@ public class ClientDaoIT {
 
   private Client validClient() throws JsonParseException, JsonMappingException, IOException {
     Client validClient =
-        MAPPER.readValue(fixture("fixtures/persistence/Client/valid/valid.json"), Client.class);
+        MAPPER.readValue(fixture("fixtures/persistent/Client/valid/valid.json"), Client.class);
     return validClient;
   }
 
