@@ -57,9 +57,9 @@ public class CollateralIndividualTest implements PersistentTestTemplate {
   @Override
   @Test
   public void testPersistentConstructor() throws Exception {
-    CollateralIndividual ci = validCollateralIndividual();
+    final CollateralIndividual ci = validCollateralIndividual();
 
-    CollateralIndividual persistent = new CollateralIndividual(ci.getBadgeNumber(),
+    final CollateralIndividual entity = new CollateralIndividual(ci.getBadgeNumber(),
         ci.getBirthDate(), ci.getCityName(), ci.getCommentDescription(), ci.getEmailAddress(),
         ci.getEmployerName(), ci.getEstablishedForCode(), ci.getFaxNumber(), ci.getFirstName(),
         ci.getForeignAddressIndicatorVariable(), ci.getGenderCode(), ci.getId(), ci.getLastName(),
@@ -68,33 +68,33 @@ public class CollateralIndividualTest implements PersistentTestTemplate {
         ci.getStateCode(), ci.getStreetName(), ci.getStreetNumber(), ci.getSuffixTitleDescription(),
         ci.getZipNumber(), ci.getZipSuffixNumber());
 
-    assertThat(persistent.getBadgeNumber(), is(equalTo(ci.getBadgeNumber())));
-    assertThat(persistent.getBirthDate(), is(equalTo(ci.getBirthDate())));
-    assertThat(persistent.getCityName(), is(equalTo(ci.getCityName())));
-    assertThat(persistent.getCommentDescription(), is(equalTo(ci.getCommentDescription())));
-    assertThat(persistent.getEmailAddress(), is(equalTo(ci.getEmailAddress())));
-    assertThat(persistent.getEmployerName(), is(equalTo(ci.getEmployerName())));
-    assertThat(persistent.getEstablishedForCode(), is(equalTo(ci.getEstablishedForCode())));
-    assertThat(persistent.getFaxNumber(), is(equalTo(ci.getFaxNumber())));
-    assertThat(persistent.getFirstName(), is(equalTo(ci.getFirstName())));
-    assertThat(persistent.getForeignAddressIndicatorVariable(),
+    assertThat(entity.getBadgeNumber(), is(equalTo(ci.getBadgeNumber())));
+    assertThat(entity.getBirthDate(), is(equalTo(ci.getBirthDate())));
+    assertThat(entity.getCityName(), is(equalTo(ci.getCityName())));
+    assertThat(entity.getCommentDescription(), is(equalTo(ci.getCommentDescription())));
+    assertThat(entity.getEmailAddress(), is(equalTo(ci.getEmailAddress())));
+    assertThat(entity.getEmployerName(), is(equalTo(ci.getEmployerName())));
+    assertThat(entity.getEstablishedForCode(), is(equalTo(ci.getEstablishedForCode())));
+    assertThat(entity.getFaxNumber(), is(equalTo(ci.getFaxNumber())));
+    assertThat(entity.getFirstName(), is(equalTo(ci.getFirstName())));
+    assertThat(entity.getForeignAddressIndicatorVariable(),
         is(equalTo(ci.getForeignAddressIndicatorVariable())));
-    assertThat(persistent.getGenderCode(), is(equalTo(ci.getGenderCode())));
-    assertThat(persistent.getId(), is(equalTo(ci.getId())));
-    assertThat(persistent.getLastName(), is(equalTo(ci.getLastName())));
-    assertThat(persistent.getMaritalStatus(), is(equalTo(ci.getMaritalStatus())));
-    assertThat(persistent.getMiddleInitialName(), is(equalTo(ci.getMiddleInitialName())));
-    assertThat(persistent.getNamePrefixDescription(), is(equalTo(ci.getNamePrefixDescription())));
-    assertThat(persistent.getPrimaryExtensionNumber(), is(equalTo(ci.getPrimaryExtensionNumber())));
-    assertThat(persistent.getPrimaryPhoneNo(), is(equalTo(ci.getPrimaryPhoneNo())));
-    assertThat(persistent.getResidedOutOfStateIndicator(),
+    assertThat(entity.getGenderCode(), is(equalTo(ci.getGenderCode())));
+    assertThat(entity.getId(), is(equalTo(ci.getId())));
+    assertThat(entity.getLastName(), is(equalTo(ci.getLastName())));
+    assertThat(entity.getMaritalStatus(), is(equalTo(ci.getMaritalStatus())));
+    assertThat(entity.getMiddleInitialName(), is(equalTo(ci.getMiddleInitialName())));
+    assertThat(entity.getNamePrefixDescription(), is(equalTo(ci.getNamePrefixDescription())));
+    assertThat(entity.getPrimaryExtensionNumber(), is(equalTo(ci.getPrimaryExtensionNumber())));
+    assertThat(entity.getPrimaryPhoneNo(), is(equalTo(ci.getPrimaryPhoneNo())));
+    assertThat(entity.getResidedOutOfStateIndicator(),
         is(equalTo(ci.getResidedOutOfStateIndicator())));
-    assertThat(persistent.getStateCode(), is(equalTo(ci.getStateCode())));
-    assertThat(persistent.getStreetName(), is(equalTo(ci.getStreetName())));
-    assertThat(persistent.getStreetNumber(), is(equalTo(ci.getStreetNumber())));
-    assertThat(persistent.getSuffixTitleDescription(), is(equalTo(ci.getSuffixTitleDescription())));
-    assertThat(persistent.getZipNumber(), is(equalTo(ci.getZipNumber())));
-    assertThat(persistent.getZipSuffixNumber(), is(equalTo(ci.getZipSuffixNumber())));
+    assertThat(entity.getStateCode(), is(equalTo(ci.getStateCode())));
+    assertThat(entity.getStreetName(), is(equalTo(ci.getStreetName())));
+    assertThat(entity.getStreetNumber(), is(equalTo(ci.getStreetNumber())));
+    assertThat(entity.getSuffixTitleDescription(), is(equalTo(ci.getSuffixTitleDescription())));
+    assertThat(entity.getZipNumber(), is(equalTo(ci.getZipNumber())));
+    assertThat(entity.getZipSuffixNumber(), is(equalTo(ci.getZipSuffixNumber())));
   }
 
   @Override
