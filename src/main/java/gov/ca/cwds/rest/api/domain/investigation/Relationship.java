@@ -25,7 +25,7 @@ import io.swagger.annotations.ApiModelProperty;
  * 
  * @author CWDS API Team
  */
-public class Relationship implements Request, Response {
+public final class Relationship implements Request, Response {
 
   private static final long serialVersionUID = 1L;
 

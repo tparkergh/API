@@ -43,6 +43,13 @@ public class Assignee {
   private String staffId;
 
   /**
+   * empty constructor
+   */
+  public Assignee() {
+    super();
+  }
+
+  /**
    * @param name - name of staff person
    * @param countyCode - county code
    * @param office - office name

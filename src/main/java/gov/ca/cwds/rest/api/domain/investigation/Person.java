@@ -24,7 +24,7 @@ import io.swagger.annotations.ApiModelProperty;
  * 
  * @author CWDS API Team
  */
-public class Person implements Request, Response {
+public final class Person implements Request, Response {
 
   private static final long serialVersionUID = 1L;
 
@@ -125,6 +125,12 @@ public class Person implements Request, Response {
   @JsonProperty("addresses")
   private Set<InvestigationAddress> addresses;
 
+  /**
+   * empty consutructor
+   */
+  public Person() {
+    super();
+  }
 
   /**
    * @param legacyDescriptor - CMS record description

@@ -13,8 +13,8 @@ public class RelationshipToEntityBuilder {
   private String relatedLastName = "Briggs";
   private String relationship = "Brother";
   private String relationshipToPerson = "Sister";
-  private String relationshipContext = "";
-  private DateTime now = new DateTime();
+  private String relationshipContext = "step";
+  private DateTime now = new DateTime("2010-10-01T15:26:42.000-0700");
 
   private LegacyDescriptor legacyDescriptor =
       new LegacyDescriptor(id, "111-222-333-4444", now, tableName, "Client");

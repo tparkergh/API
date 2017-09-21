@@ -1,6 +1,6 @@
 package gov.ca.cwds.fixture.investigation;
 
-import java.util.LinkedHashSet;
+import java.util.HashSet;
 import java.util.Set;
 
 import org.joda.time.DateTime;
@@ -14,7 +14,7 @@ public class RelationshipEntityBuilder {
 
   private String tableName = "CLIENT_T";
   private String id = "1234567ABC";
-  DateTime now = new DateTime();
+  private DateTime now = new DateTime("2010-10-01T15:26:42.000-0700");
 
   private LegacyDescriptor legacyDescriptor =
       new LegacyDescriptor(id, "111-222-333-4444", now, tableName, "Client");
@@ -23,10 +23,10 @@ public class RelationshipEntityBuilder {
   private String lastName = "Greene";
   private String dateOfBirth = "2000-10-01";
   private String suffixTitle = "";
-  private Boolean sensitive;
-  private Boolean sealed;
+  private Boolean sensitive = Boolean.FALSE;
+  private Boolean sealed = Boolean.FALSE;
   private RelationshipTo relationshipTo = new RelationshipToEntityBuilder().build();
-  private Set<RelationshipTo> relationshipsTo = new LinkedHashSet<>();
+  private Set<RelationshipTo> relationshipsTo = new HashSet<>();
 
   public Relationship build() {
     relationshipsTo.add(relationshipTo);

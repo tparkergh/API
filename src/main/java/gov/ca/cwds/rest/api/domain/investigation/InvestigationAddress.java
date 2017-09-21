@@ -54,6 +54,13 @@ public class InvestigationAddress implements Request, Response {
 
 
   /**
+   * empty constructor
+   */
+  public InvestigationAddress() {
+    super();
+  }
+
+  /**
    * @param legacyDescriptor - CMS record description
    * @param streetAddress - street address
    * @param city - city
