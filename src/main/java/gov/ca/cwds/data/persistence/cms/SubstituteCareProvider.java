@@ -166,4 +166,3 @@ public class SubstituteCareProvider extends BaseSubstituteCareProvider {
   }
 
 }
-

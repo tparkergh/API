@@ -12,6 +12,7 @@ import org.slf4j.LoggerFactory;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.inject.Inject;
 
+import gov.ca.cwds.data.BaseDaoImpl;
 import gov.ca.cwds.data.Dao;
 import gov.ca.cwds.data.cms.AttorneyDao;
 import gov.ca.cwds.data.cms.ClientDao;
@@ -30,9 +31,9 @@ import gov.ca.cwds.data.persistence.cms.LongText;
 import gov.ca.cwds.data.persistence.cms.Reporter;
 import gov.ca.cwds.data.persistence.cms.ServiceProvider;
 import gov.ca.cwds.data.persistence.cms.StaffPerson;
-import gov.ca.cwds.data.persistence.cms.SubstituteCareProvider;
 import gov.ca.cwds.data.persistence.contact.DeliveredServiceEntity;
 import gov.ca.cwds.data.persistence.contact.IndividualDeliveredServiceEntity;
+import gov.ca.cwds.data.std.ApiPersonAware;
 import gov.ca.cwds.rest.api.Response;
 import gov.ca.cwds.rest.api.domain.Contact;
 import gov.ca.cwds.rest.api.domain.ContactList;
@@ -113,7 +114,7 @@ public class ContactService implements TypedCrudsService<String, ContactRequestL
     if (!primaryKey.contains(":")) {
       Contact contact = validContact;
 
-      Set<Contact> contacts = new HashSet<>();
+      final Set<Contact> contacts = new HashSet<>();
       contacts.add(contact);
       return new ContactList(contacts);
 
@@ -121,7 +122,7 @@ public class ContactService implements TypedCrudsService<String, ContactRequestL
       String[] ids = primaryKey.split(":");
       String referralId = ids[0];
       String contactId = ids[1];
-      DeliveredServiceEntity deliveredServiceEntity = deliveredServiceDao.find(contactId);
+      final DeliveredServiceEntity deliveredServiceEntity = deliveredServiceDao.find(contactId);
       if (deliveredServiceEntity == null) {
         return null;
       } else {
@@ -140,7 +141,7 @@ public class ContactService implements TypedCrudsService<String, ContactRequestL
 
   @Override
   public Contact delete(String primaryKey) {
-    throw new NotImplementedException("delete not implement");
+    throw new NotImplementedException("delete not implemented");
   }
 
   @Override
@@ -219,16 +220,27 @@ public class ContactService implements TypedCrudsService<String, ContactRequestL
     return peopleInIndividualDeliveredService;
   }
 
+  /**
+   * Generic, reusable approach to fetch contact persons.
+   * 
+   * @param dao person aware DAO
+   * @param code referenced table
+   * @param id referenced id
+   * @return contact
+   */
+  protected PostedIndividualDeliveredService findPerson(BaseDaoImpl<? extends ApiPersonAware> dao,
+      final DeliveredToIndividualCode code, String id) {
+    final ApiPersonAware person = dao.find(id);
+    if (person != null)
+      return new PostedIndividualDeliveredService(code.getValue(), id, person.getFirstName(),
+          person.getMiddleName(), person.getLastName(), person.getNameSuffix(),
+          person.getNameSuffix(), code.getDescription());
+    return defaultPostedIndividualDeliveredService(code, id);
+  }
+
   private PostedIndividualDeliveredService processSubstituteCareProvider(
       DeliveredToIndividualCode deliveredToIndividualCode, String id) {
-    SubstituteCareProvider substituteCareProvider = substituteCareProviderDao.find(id);
-    if (substituteCareProvider != null)
-      return new PostedIndividualDeliveredService(deliveredToIndividualCode.getValue(), id,
-          substituteCareProvider.getFirstName(), substituteCareProvider.getMiddleName(),
-          substituteCareProvider.getLastName(), substituteCareProvider.getNameSuffix(),
-          substituteCareProvider.getNamePrefixDescription(),
-          deliveredToIndividualCode.getDescription());
-    return defaultPostedIndividualDeliveredService(deliveredToIndividualCode, id);
+    return findPerson(substituteCareProviderDao, deliveredToIndividualCode, id);
   }
 
   private PostedIndividualDeliveredService processAttorney(

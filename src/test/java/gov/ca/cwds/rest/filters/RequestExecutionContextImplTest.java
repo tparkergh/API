@@ -34,7 +34,7 @@ public class RequestExecutionContextImplTest extends AbstractShiroTest {
     Subject mockSubject = mock(Subject.class);
     PrincipalCollection principalCollection = mock(PrincipalCollection.class);
 
-    List list = new ArrayList();
+    final List list = new ArrayList();
     list.add("msg");
 
     when(principalCollection.asList()).thenReturn(list);
