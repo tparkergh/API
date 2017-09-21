@@ -57,7 +57,7 @@ public class LongText extends ReportingDomain implements Request, Response {
    */
   public LongText(gov.ca.cwds.data.persistence.cms.LongText persistedLongText) {
     this.countySpecificCode = persistedLongText.getCountySpecificCode();
-    this.textDescription = persistedLongText.getTextDescrption();
+    this.textDescription = persistedLongText.getTextDescription();
   }
 
   /**

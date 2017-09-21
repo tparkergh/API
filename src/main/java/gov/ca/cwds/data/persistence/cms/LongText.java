@@ -20,8 +20,6 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class LongText extends CmsPersistentObject {
 
-  protected static final String DATE_FORMAT = "yyyy-MM-dd";
-
   @Id
   @Column(name = "IDENTIFIER", length = CMS_ID_LEN)
   private String id;
@@ -94,9 +92,9 @@ public class LongText extends CmsPersistentObject {
   }
 
   /**
-   * @return the eTextDes
+   * @return the note description
    */
-  public String getTextDescrption() {
+  public String getTextDescription() {
     return textDescription;
   }
 
