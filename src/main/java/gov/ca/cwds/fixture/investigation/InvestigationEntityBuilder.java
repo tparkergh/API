@@ -1,7 +1,7 @@
 package gov.ca.cwds.fixture.investigation;
 
 import java.math.BigDecimal;
-import java.util.LinkedHashSet;
+import java.util.HashSet;
 import java.util.Set;
 
 import org.joda.time.DateTime;
@@ -34,23 +34,23 @@ public class InvestigationEntityBuilder {
   private String locationType = "Home";
   private Short communicationMethod = 408;
   private String name = "The test invetigation";
-  private String reportNarrative = "The saga of the test investigation";
+  private String reportNarrative = "Summary of an investigation would appear here.";
   private String reference = "REF-TEST";
   private Short responseTime = 1518;
   private String startedAt = "2017-08-10";
-  private String additionalInformation = "";
+  private String additionalInformation = "Additional information about the investigation.";
   private Boolean sensitive = Boolean.FALSE;
   private Boolean sealed = Boolean.FALSE;
   private BigDecimal phone = new BigDecimal(4445555);
   private Integer phoneExtension = 1122;
-  private DateTime now = new DateTime();
+  private DateTime now = new DateTime("2010-10-01T15:26:42.000-0700");
 
   private LegacyDescriptor legacyDescriptor =
       new LegacyDescriptor(id, "111-222-333-4444", now, tableName, "Referral");
 
   private Assignee assignee = new Assignee("CWS Staff", incidentCounty, "Madera CWS", "0X5");
 
-  private Set<PhoneNumber> phoneNumbers = new LinkedHashSet<>();
+  private Set<PhoneNumber> phoneNumbers = new HashSet<>();
   private PhoneNumber phoneNumber =
       new PhoneNumber(phone, phoneExtension, "Home", legacyDescriptor);
 
@@ -63,15 +63,14 @@ public class InvestigationEntityBuilder {
   private HistoryOfInvolvement historyOfInvolvement =
       new HistoryOfInvolvementEntityBuilder().build();
 
-
   private Allegation allegation = new AllegationEntityBuilder().build();
-  private Set<Allegation> allegations = new LinkedHashSet<>();
+  private Set<Allegation> allegations = new HashSet<>();
 
   private Person person = new PersonEntityBuilder().build();
-  private Set<Person> people = new LinkedHashSet<>();
+  private Set<Person> people = new HashSet<>();
 
   private Relationship relationship = new RelationshipEntityBuilder().build();
-  private Set<Relationship> relationships = new LinkedHashSet<>();
+  private Set<Relationship> relationships = new HashSet<>();
 
   public Investigation build() {
     allegations.add(allegation);
@@ -85,26 +84,9 @@ public class InvestigationEntityBuilder {
         phoneNumbers, address, screening, historyOfInvolvement, allegations, people, relationships);
   }
 
-  public String getTableName() {
-    return tableName;
-  }
-
-  public InvestigationEntityBuilder setTableName(String tableName) {
-    this.tableName = tableName;
+  public InvestigationEntityBuilder setLegacyDescriptor(LegacyDescriptor legacyDescriptor) {
+    this.legacyDescriptor = legacyDescriptor;
     return this;
-  }
-
-  public String getId() {
-    return id;
-  }
-
-  public InvestigationEntityBuilder setId(String id) {
-    this.id = id;
-    return this;
-  }
-
-  public String getLastUpdatedBy() {
-    return lastUpdatedBy;
   }
 
   public InvestigationEntityBuilder setLastUpdatedBy(String lastUpdatedBy) {
@@ -112,17 +94,9 @@ public class InvestigationEntityBuilder {
     return this;
   }
 
-  public DateTime getLastUpdatedAt() {
-    return lastUpdatedAt;
-  }
-
   public InvestigationEntityBuilder setLastUpdatedAt(DateTime lastUpdatedAt) {
     this.lastUpdatedAt = lastUpdatedAt;
     return this;
-  }
-
-  public String getIncidentCounty() {
-    return incidentCounty;
   }
 
   public InvestigationEntityBuilder setIncidentCounty(String incidentCounty) {
@@ -130,17 +104,9 @@ public class InvestigationEntityBuilder {
     return this;
   }
 
-  public String getIncidentDate() {
-    return incidentDate;
-  }
-
   public InvestigationEntityBuilder setIncidentDate(String incidentDate) {
     this.incidentDate = incidentDate;
     return this;
-  }
-
-  public String getLocationType() {
-    return locationType;
   }
 
   public InvestigationEntityBuilder setLocationType(String locationType) {
@@ -148,17 +114,9 @@ public class InvestigationEntityBuilder {
     return this;
   }
 
-  public Short getCommunicationMethod() {
-    return communicationMethod;
-  }
-
   public InvestigationEntityBuilder setCommunicationMethod(Short communicationMethod) {
     this.communicationMethod = communicationMethod;
     return this;
-  }
-
-  public String getName() {
-    return name;
   }
 
   public InvestigationEntityBuilder setName(String name) {
@@ -166,17 +124,9 @@ public class InvestigationEntityBuilder {
     return this;
   }
 
-  public String getReportNarrative() {
-    return reportNarrative;
-  }
-
   public InvestigationEntityBuilder setReportNarrative(String reportNarrative) {
     this.reportNarrative = reportNarrative;
     return this;
-  }
-
-  public String getReference() {
-    return reference;
   }
 
   public InvestigationEntityBuilder setReference(String reference) {
@@ -184,17 +134,9 @@ public class InvestigationEntityBuilder {
     return this;
   }
 
-  public Short getResponseTime() {
-    return responseTime;
-  }
-
   public InvestigationEntityBuilder setResponseTime(Short responseTime) {
     this.responseTime = responseTime;
     return this;
-  }
-
-  public String getStartedAt() {
-    return startedAt;
   }
 
   public InvestigationEntityBuilder setStartedAt(String startedAt) {
@@ -202,17 +144,15 @@ public class InvestigationEntityBuilder {
     return this;
   }
 
-  public String getAdditionalInformation() {
-    return additionalInformation;
-  }
-
-  public InvestigationEntityBuilder setAdditionalInformation(String additionalInformation) {
-    this.additionalInformation = additionalInformation;
+  public InvestigationEntityBuilder setAssignee(Assignee assignee) {
+    this.assignee = assignee;
     return this;
   }
 
-  public Boolean getSensitive() {
-    return sensitive;
+
+  public InvestigationEntityBuilder setAdditionalInformation(String additionalInformatioin) {
+    this.additionalInformation = additionalInformatioin;
+    return this;
   }
 
   public InvestigationEntityBuilder setSensitive(Boolean sensitive) {
@@ -220,62 +160,9 @@ public class InvestigationEntityBuilder {
     return this;
   }
 
-  public Boolean getSealed() {
-    return sealed;
-  }
-
   public InvestigationEntityBuilder setSealed(Boolean sealed) {
     this.sealed = sealed;
     return this;
-  }
-
-  public BigDecimal getPhone() {
-    return phone;
-  }
-
-  public InvestigationEntityBuilder setPhone(BigDecimal phone) {
-    this.phone = phone;
-    return this;
-  }
-
-  public Integer getPhoneExtension() {
-    return phoneExtension;
-  }
-
-  public InvestigationEntityBuilder setPhoneExtension(Integer phoneExtension) {
-    this.phoneExtension = phoneExtension;
-    return this;
-  }
-
-  public DateTime getNow() {
-    return now;
-  }
-
-  public InvestigationEntityBuilder setNow(DateTime now) {
-    this.now = now;
-    return this;
-  }
-
-  public LegacyDescriptor getLegacyDescriptor() {
-    return legacyDescriptor;
-  }
-
-  public InvestigationEntityBuilder setLegacyDescriptor(LegacyDescriptor legacyDescriptor) {
-    this.legacyDescriptor = legacyDescriptor;
-    return this;
-  }
-
-  public Assignee getAssignee() {
-    return assignee;
-  }
-
-  public InvestigationEntityBuilder setAssignee(Assignee assignee) {
-    this.assignee = assignee;
-    return this;
-  }
-
-  public Set<PhoneNumber> getPhoneNumbers() {
-    return phoneNumbers;
   }
 
   public InvestigationEntityBuilder setPhoneNumbers(Set<PhoneNumber> phoneNumbers) {
@@ -283,44 +170,14 @@ public class InvestigationEntityBuilder {
     return this;
   }
 
-  public PhoneNumber getPhoneNumber() {
-    return phoneNumber;
-  }
-
-  public InvestigationEntityBuilder setPhoneNumber(PhoneNumber phoneNumber) {
-    this.phoneNumber = phoneNumber;
-    return this;
-  }
-
-  public LimitedAccess getLimitedAccess() {
-    return limitedAccess;
-  }
-
-  public InvestigationEntityBuilder setLimitedAccess(LimitedAccess limitedAccess) {
-    this.limitedAccess = limitedAccess;
-    return this;
-  }
-
-  public InvestigationAddress getAddress() {
-    return address;
-  }
-
   public InvestigationEntityBuilder setAddress(InvestigationAddress address) {
     this.address = address;
     return this;
   }
 
-  public SimpleScreening getScreening() {
-    return screening;
-  }
-
   public InvestigationEntityBuilder setScreening(SimpleScreening screening) {
     this.screening = screening;
     return this;
-  }
-
-  public HistoryOfInvolvement getHistoryOfInvolvement() {
-    return historyOfInvolvement;
   }
 
   public InvestigationEntityBuilder setHistoryOfInvolvement(
@@ -329,35 +186,10 @@ public class InvestigationEntityBuilder {
     return this;
   }
 
-  public Allegation getAllegation() {
-    return allegation;
-  }
-
-  public InvestigationEntityBuilder setAllegation(Allegation allegation) {
-    this.allegation = allegation;
-    return this;
-  }
-
-  public Set<Allegation> getAllegations() {
-    return allegations;
-  }
-
   public InvestigationEntityBuilder setAllegations(Set<Allegation> allegations) {
+
     this.allegations = allegations;
     return this;
-  }
-
-  public Person getPerson() {
-    return person;
-  }
-
-  public InvestigationEntityBuilder setPerson(Person person) {
-    this.person = person;
-    return this;
-  }
-
-  public Set<Person> getPeople() {
-    return people;
   }
 
   public InvestigationEntityBuilder setPeople(Set<Person> people) {
@@ -365,22 +197,100 @@ public class InvestigationEntityBuilder {
     return this;
   }
 
-  public Relationship getRelationship() {
-    return relationship;
+  public InvestigationEntityBuilder setRelaitonships(Set<Relationship> relationships) {
+    this.relationships = relationships;
+    return this;
   }
 
-  public InvestigationEntityBuilder setRelationship(Relationship relationship) {
-    this.relationship = relationship;
-    return this;
+  public String getLastUpdatedBy() {
+    return lastUpdatedBy;
+  }
+
+  public DateTime getLastUpdatedAt() {
+    return lastUpdatedAt;
+  }
+
+  public String getIncidentCounty() {
+    return incidentCounty;
+  }
+
+  public String getIncidentDate() {
+    return incidentDate;
+  }
+
+  public String getLocationType() {
+    return locationType;
+  }
+
+  public Short getCommunicationMethod() {
+    return communicationMethod;
+  }
+
+  public String getName() {
+    return name;
+  }
+
+  public String getReportNarrative() {
+    return reportNarrative;
+  }
+
+  public String getReference() {
+    return reference;
+  }
+
+  public Short getResponseTime() {
+    return responseTime;
+  }
+
+  public String getStartedAt() {
+    return startedAt;
+  }
+
+  public String getAdditionalInformation() {
+    return additionalInformation;
+  }
+
+  public Boolean getSensitive() {
+    return sensitive;
+  }
+
+  public Boolean getSealed() {
+    return sealed;
+  }
+
+  public LegacyDescriptor getLegacyDescriptor() {
+    return legacyDescriptor;
+  }
+
+  public Assignee getAssignee() {
+    return assignee;
+  }
+
+  public Set<PhoneNumber> getPhoneNumbers() {
+    return phoneNumbers;
+  }
+
+  public InvestigationAddress getAddress() {
+    return address;
+  }
+
+  public SimpleScreening getScreening() {
+    return screening;
+  }
+
+  public HistoryOfInvolvement getHistoryOfInvolvement() {
+    return historyOfInvolvement;
+  }
+
+  public Set<Allegation> getAllegations() {
+    return allegations;
+  }
+
+  public Set<Person> getPeople() {
+    return people;
   }
 
   public Set<Relationship> getRelationships() {
     return relationships;
   }
-
-  public InvestigationEntityBuilder setRelationships(Set<Relationship> relationships) {
-    this.relationships = relationships;
-    return this;
-  }
-
 }

@@ -1,16 +1,16 @@
 package gov.ca.cwds.rest.api.domain.investigation;
 
-import gov.ca.cwds.rest.api.Response;
-import gov.ca.cwds.rest.api.domain.DomainObject;
-import gov.ca.cwds.rest.api.domain.ReportingDomain;
-import io.dropwizard.jackson.JsonSnakeCase;
-import io.swagger.annotations.ApiModelProperty;
-
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
+
+import gov.ca.cwds.rest.api.Response;
+import gov.ca.cwds.rest.api.domain.DomainObject;
+import gov.ca.cwds.rest.api.domain.ReportingDomain;
+import io.dropwizard.jackson.JsonSnakeCase;
+import io.swagger.annotations.ApiModelProperty;
 
 /**
  * {@link DomainObject} representing an Allegation
@@ -47,6 +47,13 @@ public class Allegation extends ReportingDomain implements Response {
   @JsonProperty("allegation_description")
   @ApiModelProperty(required = false, readOnly = false, value = "", example = "Physical Abuse")
   private String allegationDescription;
+
+  /**
+   * default constructor
+   */
+  public Allegation() {
+    super();
+  }
 
   /**
    * Constructor

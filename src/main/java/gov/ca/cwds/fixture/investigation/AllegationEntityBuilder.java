@@ -17,7 +17,7 @@ public class AllegationEntityBuilder {
         perpetratorFirstName, dispositionDescription, allegationDescription);
   }
 
-  public AllegationEntityBuilder setVictimuLastName(String victimLastName) {
+  public AllegationEntityBuilder setVictimLastName(String victimLastName) {
     this.victimLastName = victimLastName;
     return this;
   }
@@ -49,10 +49,6 @@ public class AllegationEntityBuilder {
 
   public String getVictimLastName() {
     return victimLastName;
-  }
-
-  public void setVictimLastName(String victimLastName) {
-    this.victimLastName = victimLastName;
   }
 
   public String getVictimFirstName() {

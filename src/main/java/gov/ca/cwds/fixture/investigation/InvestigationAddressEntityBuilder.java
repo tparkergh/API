@@ -13,7 +13,7 @@ public class InvestigationAddressEntityBuilder {
   private Short state = 1828;
   private String zip = "95757";
   private Short type = 32;
-  private DateTime now = new DateTime();
+  private DateTime now = new DateTime("2010-10-01T15:26:42.000-0700");
 
   public InvestigationAddress build() {
     legacyDescriptor =

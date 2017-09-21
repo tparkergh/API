@@ -37,13 +37,16 @@ import io.swagger.annotations.ApiModelProperty;
 public class Investigation extends ReportingDomain implements Request, Response {
   private static final long serialVersionUID = 1L;
 
+  @NotNull
   @JsonProperty("legacy_descriptor")
   private LegacyDescriptor legacyDescriptor;
 
+  @NotNull
   @JsonProperty("last_updated_by")
   @ApiModelProperty(required = false, readOnly = false, value = "staff person id")
   private String lastUpdatedBy;
 
+  @NotNull
   @ApiModelProperty(required = false, readOnly = false, value = "Last Updated Time",
       example = "2010-10-01T15:26:42.000-0700")
   @JsonProperty("last_updated_at")
@@ -57,6 +60,7 @@ public class Investigation extends ReportingDomain implements Request, Response 
   @ValidLogicalId(required = true, category = SystemCodeCategoryId.COUNTY_CODE)
   private String incidentCounty;
 
+  @NotNull
   @Date
   @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = DATE_FORMAT)
   @JsonProperty("incident_date")
@@ -111,6 +115,8 @@ public class Investigation extends ReportingDomain implements Request, Response 
   private String startedAt;
 
   @JsonProperty("assignee")
+  @NotNull
+  @Valid
   private Assignee assignee;
 
   @JsonProperty("additional_information")
@@ -119,11 +125,12 @@ public class Investigation extends ReportingDomain implements Request, Response 
   @Size(max = 50)
   private String additionalInformation;
 
-
+  @NotEmpty
   @JsonProperty("sensitive")
   @ApiModelProperty(required = true, readOnly = false, value = "contains sensitive information")
   private Boolean sensitive;
 
+  @NotEmpty
   @JsonProperty("sealed")
   @ApiModelProperty(required = true, readOnly = false, value = "contains sealed information")
   private Boolean sealed;
@@ -131,6 +138,7 @@ public class Investigation extends ReportingDomain implements Request, Response 
   @JsonProperty("phone")
   private Set<PhoneNumber> phoneNumbers;
 
+  @JsonProperty("incident_phone_number")
   @NotNull
   @ApiModelProperty(required = true, readOnly = false)
   @Valid
@@ -295,7 +303,7 @@ public class Investigation extends ReportingDomain implements Request, Response 
     return startedAt;
   }
 
-  public Assignee getAssignedd() {
+  public Assignee getAssignee() {
     return assignee;
   }
 
