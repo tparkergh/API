@@ -1,7 +1,5 @@
 package gov.ca.cwds.rest.services.contact;
 
-import static org.hamcrest.CoreMatchers.equalTo;
-import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.CoreMatchers.notNullValue;
 import static org.junit.Assert.assertThat;
 import static org.mockito.Matchers.any;
@@ -59,6 +57,8 @@ import gov.ca.cwds.rest.api.domain.investigation.contact.DeliveredToIndividualCo
 import gov.ca.cwds.rest.filters.TestingRequestExecutionContext;
 
 public class ContactServiceTest {
+
+  private static final String DEFAULT_KEY = "abc1234567";
 
   @Rule
   public TemporaryFolder tempFolder = new TemporaryFolder();
@@ -181,45 +181,39 @@ public class ContactServiceTest {
 
   @Test
   public void find_Args__String() throws Exception {
-    String primaryKey = null;
+    final String primaryKey = DEFAULT_KEY;
     Response actual = target.find(primaryKey);
-    Response expected = null;
-    assertThat(actual, is(equalTo(expected)));
+    assertThat(actual, notNullValue());
   }
 
-  @Test
+  @Test(expected = Exception.class)
   public void delete_Args__String() throws Exception {
     String primaryKey = null;
     Contact actual = target.delete(primaryKey);
-    Contact expected = null;
-    assertThat(actual, is(equalTo(expected)));
   }
 
   @Test
   public void create_Args__ContactRequestList() throws Exception {
-    ContactRequestList request = mock(ContactRequestList.class);
+    final ContactRequestList request = mock(ContactRequestList.class);
     Response actual = target.create(request);
-    Response expected = null;
-    assertThat(actual, is(equalTo(expected)));
+    assertThat(actual, notNullValue());
   }
 
   @Test
   public void update_Args__String__ContactRequestList() throws Exception {
     String primaryKey = null;
-    ContactRequestList request = mock(ContactRequestList.class);
+    final ContactRequestList request = mock(ContactRequestList.class);
     Response actual = target.update(primaryKey, request);
-    Response expected = null;
-    assertThat(actual, is(equalTo(expected)));
+    assertThat(actual, notNullValue());
   }
 
   @Test
   public void findPerson_Args__BaseDaoImpl__DeliveredToIndividualCode__String() throws Exception {
     final BaseDaoImpl dao = mock(BaseDaoImpl.class);
-    DeliveredToIndividualCode code = mock(DeliveredToIndividualCode.class);
-    String id = null;
+    final DeliveredToIndividualCode code = DeliveredToIndividualCode.COLLATERAL_INDIVIDUAL;
+    String id = DEFAULT_KEY;
     PostedIndividualDeliveredService actual = target.findPerson(dao, code, id);
-    PostedIndividualDeliveredService expected = null;
-    assertThat(actual, is(equalTo(expected)));
+    assertThat(actual, notNullValue());
   }
 
 }
