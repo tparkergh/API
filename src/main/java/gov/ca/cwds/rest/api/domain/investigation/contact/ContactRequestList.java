@@ -1,9 +1,11 @@
-package gov.ca.cwds.rest.api.domain;
+package gov.ca.cwds.rest.api.domain.investigation.contact;
 
 import gov.ca.cwds.rest.api.Request;
-import gov.ca.cwds.rest.api.Response;
+import gov.ca.cwds.rest.api.domain.DomainObject;
 
 import java.util.Set;
+
+import javax.validation.Valid;
 
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
@@ -13,31 +15,41 @@ import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
- * {@link DomainObject} representing a Contact List response
+ * {@link DomainObject} representing a Contact List request
  * 
  * @author CWDS API Team
  */
 @JsonInclude(Include.ALWAYS)
-public class ContactList extends ReportingDomain implements Request, Response {
+public class ContactRequestList implements Request {
 
   /**
    * 
    */
   private static final long serialVersionUID = 1L;
+
+  @Valid
   @JsonProperty("contacts")
-  private Set<Contact> contacts;
+  private Set<ContactRequest> contacts;
 
   /**
    * 
    */
-  public ContactList() {
+  public ContactRequestList() {
     // default
   }
 
 
-  public ContactList(Set<Contact> contacts) {
+  public ContactRequestList(Set<ContactRequest> contacts) {
     this.contacts = contacts;
   }
+
+  /**
+   * @return the contacts
+   */
+  public Set<ContactRequest> getContacts() {
+    return contacts;
+  }
+
 
   /**
    * {@inheritDoc}

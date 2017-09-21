@@ -1,11 +1,10 @@
-package gov.ca.cwds.rest.resources.contact;
+package gov.ca.cwds.rest.resources.investigation;
 
 import static gov.ca.cwds.rest.core.Api.RESOURCE_INVESTIGATIONS;
 import gov.ca.cwds.inject.ContactServiceBackedResource;
-import gov.ca.cwds.rest.api.domain.Contact;
-import gov.ca.cwds.rest.api.domain.ContactList;
-import gov.ca.cwds.rest.api.domain.ContactRequest;
-import gov.ca.cwds.rest.api.domain.ContactRequestList;
+import gov.ca.cwds.rest.api.domain.investigation.contact.Contact;
+import gov.ca.cwds.rest.api.domain.investigation.contact.ContactList;
+import gov.ca.cwds.rest.api.domain.investigation.contact.ContactRequest;
 import gov.ca.cwds.rest.resources.TypedResourceDelegate;
 import io.dropwizard.hibernate.UnitOfWork;
 import io.swagger.annotations.Api;
@@ -13,9 +12,6 @@ import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
-
-import java.util.HashSet;
-import java.util.Set;
 
 import javax.validation.Valid;
 import javax.ws.rs.Consumes;
@@ -48,7 +44,7 @@ import com.google.inject.Inject;
 @Consumes(MediaType.APPLICATION_JSON)
 public class ContactResource {
 
-  private TypedResourceDelegate<String, ContactRequestList> typedResourceDelegate;
+  private TypedResourceDelegate<String, ContactRequest> typedResourceDelegate;
 
   /**
    * Constructor
@@ -57,7 +53,7 @@ public class ContactResource {
    */
   @Inject
   public ContactResource(
-      @ContactServiceBackedResource TypedResourceDelegate<String, ContactRequestList> typedResourceDelegate) {
+      @ContactServiceBackedResource TypedResourceDelegate<String, ContactRequest> typedResourceDelegate) {
     this.typedResourceDelegate = typedResourceDelegate;
   }
 
@@ -79,11 +75,11 @@ public class ContactResource {
       @ApiResponse(code = 422, message = "Unable to validate deliveredServiceEntity")})
   @Consumes(value = MediaType.APPLICATION_JSON)
   @ApiOperation(value = "Create deliveredService", code = HttpStatus.SC_CREATED,
-      response = ContactList.class)
+      response = Contact.class)
   public Response create(@PathParam("id") @ApiParam(required = true, name = "id",
       value = "The id of the Referral ") String id, @Valid @ApiParam(hidden = false,
-      required = true) ContactRequestList contactList) {
-    return typedResourceDelegate.create(contactList);
+      required = true) ContactRequest contact) {
+    return typedResourceDelegate.create(contact);
   }
 
   /**
@@ -158,10 +154,7 @@ public class ContactResource {
       value = "The id of the Referral ") String id, @PathParam("contact_id") @ApiParam(
       required = true, name = "contact_id", value = "The id of the Contact") String contactId,
       @Valid @ApiParam(hidden = false, required = true) ContactRequest contactToUpdate) {
-    Set<ContactRequest> contacts = new HashSet<>();
-    contacts.add(contactToUpdate);
-    ContactRequestList contact = new ContactRequestList(contacts);
-    return typedResourceDelegate.update(id, contact);
+    return typedResourceDelegate.update(id, contactToUpdate);
   }
 
 }

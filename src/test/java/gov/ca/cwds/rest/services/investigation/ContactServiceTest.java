@@ -1,4 +1,4 @@
-package gov.ca.cwds.rest.services.contact;
+package gov.ca.cwds.rest.services.investigation;
 
 import static org.hamcrest.CoreMatchers.notNullValue;
 import static org.junit.Assert.assertThat;
@@ -6,6 +6,32 @@ import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.contains;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
+import gov.ca.cwds.data.cms.AttorneyDao;
+import gov.ca.cwds.data.cms.ClientDao;
+import gov.ca.cwds.data.cms.CollateralIndividualDao;
+import gov.ca.cwds.data.cms.LongTextDao;
+import gov.ca.cwds.data.cms.ReporterDao;
+import gov.ca.cwds.data.cms.ServiceProviderDao;
+import gov.ca.cwds.data.cms.StaffPersonDao;
+import gov.ca.cwds.data.cms.SubstituteCareProviderDao;
+import gov.ca.cwds.data.cms.TestSystemCodeCache;
+import gov.ca.cwds.data.dao.contact.DeliveredServiceDao;
+import gov.ca.cwds.data.dao.contact.IndividualDeliveredServiceDao;
+import gov.ca.cwds.data.es.ElasticSearchPerson;
+import gov.ca.cwds.data.es.ElasticsearchDao;
+import gov.ca.cwds.data.persistence.cms.Attorney;
+import gov.ca.cwds.data.persistence.cms.CollateralIndividual;
+import gov.ca.cwds.data.persistence.cms.Reporter;
+import gov.ca.cwds.data.persistence.cms.ServiceProvider;
+import gov.ca.cwds.data.persistence.cms.SubstituteCareProvider;
+import gov.ca.cwds.data.persistence.junit.template.PersistentTestTemplate;
+import gov.ca.cwds.rest.ElasticsearchConfiguration;
+import gov.ca.cwds.rest.api.Response;
+import gov.ca.cwds.rest.api.domain.PostedIndividualDeliveredService;
+import gov.ca.cwds.rest.api.domain.investigation.contact.Contact;
+import gov.ca.cwds.rest.api.domain.investigation.contact.ContactRequest;
+import gov.ca.cwds.rest.api.domain.investigation.contact.DeliveredToIndividualCode;
+import gov.ca.cwds.rest.filters.TestingRequestExecutionContext;
 
 import java.io.File;
 import java.sql.Connection;
@@ -33,33 +59,6 @@ import org.junit.Test;
 import org.junit.rules.TemporaryFolder;
 
 import com.ibm.db2.jcc.am.DatabaseMetaData;
-
-import gov.ca.cwds.data.cms.AttorneyDao;
-import gov.ca.cwds.data.cms.ClientDao;
-import gov.ca.cwds.data.cms.CollateralIndividualDao;
-import gov.ca.cwds.data.cms.LongTextDao;
-import gov.ca.cwds.data.cms.ReporterDao;
-import gov.ca.cwds.data.cms.ServiceProviderDao;
-import gov.ca.cwds.data.cms.StaffPersonDao;
-import gov.ca.cwds.data.cms.SubstituteCareProviderDao;
-import gov.ca.cwds.data.cms.TestSystemCodeCache;
-import gov.ca.cwds.data.dao.contact.DeliveredServiceDao;
-import gov.ca.cwds.data.dao.contact.IndividualDeliveredServiceDao;
-import gov.ca.cwds.data.es.ElasticSearchPerson;
-import gov.ca.cwds.data.es.ElasticsearchDao;
-import gov.ca.cwds.data.persistence.cms.Attorney;
-import gov.ca.cwds.data.persistence.cms.CollateralIndividual;
-import gov.ca.cwds.data.persistence.cms.Reporter;
-import gov.ca.cwds.data.persistence.cms.ServiceProvider;
-import gov.ca.cwds.data.persistence.cms.SubstituteCareProvider;
-import gov.ca.cwds.data.persistence.junit.template.PersistentTestTemplate;
-import gov.ca.cwds.rest.ElasticsearchConfiguration;
-import gov.ca.cwds.rest.api.Response;
-import gov.ca.cwds.rest.api.domain.Contact;
-import gov.ca.cwds.rest.api.domain.ContactRequestList;
-import gov.ca.cwds.rest.api.domain.PostedIndividualDeliveredService;
-import gov.ca.cwds.rest.api.domain.investigation.contact.DeliveredToIndividualCode;
-import gov.ca.cwds.rest.filters.TestingRequestExecutionContext;
 
 public class ContactServiceTest {
 
@@ -181,9 +180,10 @@ public class ContactServiceTest {
     staffPersonDao = mock(StaffPersonDao.class);
     substituteCareProviderDao = mock(SubstituteCareProviderDao.class);
 
-    target = new ContactService(deliveredServiceDao, staffPersonDao, longTextDao,
-        individualDeliveredServiceDao, clientDao, attorneyDao, collateralIndividualDao,
-        serviceProviderDao, substituteCareProviderDao, reporterDao);
+    target =
+        new ContactService(deliveredServiceDao, staffPersonDao, longTextDao,
+            individualDeliveredServiceDao, clientDao, attorneyDao, collateralIndividualDao,
+            serviceProviderDao, substituteCareProviderDao, reporterDao);
   }
 
   @Test
@@ -211,7 +211,7 @@ public class ContactServiceTest {
 
   @Test
   public void create_Args__ContactRequestList() throws Exception {
-    final ContactRequestList request = mock(ContactRequestList.class);
+    final ContactRequest request = mock(ContactRequest.class);
     Response actual = target.create(request);
     assertThat(actual, notNullValue());
   }
@@ -219,7 +219,7 @@ public class ContactServiceTest {
   @Test
   public void update_Args__String__ContactRequestList() throws Exception {
     String primaryKey = null;
-    final ContactRequestList request = mock(ContactRequestList.class);
+    final ContactRequest request = mock(ContactRequest.class);
     Response actual = target.update(primaryKey, request);
     assertThat(actual, notNullValue());
   }
@@ -239,8 +239,8 @@ public class ContactServiceTest {
   @Test
   public void findPerson_Args__BaseDaoImpl__DeliveredToIndividualCode__Client() throws Exception {
     final gov.ca.cwds.data.persistence.cms.Client indiv =
-        PersistentTestTemplate.<gov.ca.cwds.data.persistence.cms.Client>valid(
-            new gov.ca.cwds.data.persistence.cms.Client());
+        PersistentTestTemplate
+            .<gov.ca.cwds.data.persistence.cms.Client>valid(new gov.ca.cwds.data.persistence.cms.Client());
     when(clientDao.find(any())).thenReturn(indiv);
     final String id = indiv.getId();
     final DeliveredToIndividualCode code = DeliveredToIndividualCode.CLIENT;
