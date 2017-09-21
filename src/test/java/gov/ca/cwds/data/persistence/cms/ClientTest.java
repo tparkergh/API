@@ -42,7 +42,7 @@ public class ClientTest implements PersistentTestTemplate {
   }
 
   @Test
-  public void nullConstructorFieldsShouldBeStoredAsStrings() throws Exception{
+  public void nullConstructorFieldsShouldBeStoredAsStrings() throws Exception {
     Client vc = validClient();
     String aNullValue = null;
 
@@ -50,8 +50,7 @@ public class ClientTest implements PersistentTestTemplate {
         vc.getAlienRegistrationNumber(), vc.getBirthCity(), vc.getBirthCountryCodeType(),
         vc.getBirthDate(), vc.getBirthFacilityName(), vc.getBirthStateCodeType(),
         vc.getBirthplaceVerifiedIndicator(), vc.getChildClientIndicatorVar(),
-        vc.getClientIndexNumber(), vc.getCommentDescription(), vc.getCommonFirstName(),
-        aNullValue,
+        vc.getClientIndexNumber(), vc.getCommentDescription(), vc.getCommonFirstName(), aNullValue,
         vc.getCommonLastName(), vc.getConfidentialityActionDate(),
         vc.getConfidentialityInEffectIndicator(), vc.getCreationDate(),
         vc.getCurrCaChildrenServIndicator(), vc.getCurrentlyOtherDescription(),
@@ -72,11 +71,9 @@ public class ClientTest implements PersistentTestTemplate {
         vc.getPrimaryLanguageType(), vc.getReligionType(), vc.getSecondaryLanguageType(),
         vc.getSensitiveHlthInfoOnFileIndicator(), vc.getSensitivityIndicator(),
         vc.getSoc158PlacementCode(), vc.getSoc158SealedClientIndicator(),
-        vc.getSocialSecurityNumChangedCode(), vc.getSocialSecurityNumber(),
-        aNullValue,
-        vc.getTribalAncestryClientIndicatorVar(),
-        vc.getTribalMembrshpVerifctnIndicatorVar(), vc.getUnemployedParentCode(),
-        vc.getZippyCreatedIndicator(), null);
+        vc.getSocialSecurityNumChangedCode(), vc.getSocialSecurityNumber(), aNullValue,
+        vc.getTribalAncestryClientIndicatorVar(), vc.getTribalMembrshpVerifctnIndicatorVar(),
+        vc.getUnemployedParentCode(), vc.getZippyCreatedIndicator(), null);
 
     assertThat(pers.getCommonMiddleName(), is(equalTo("")));
     assertThat(pers.getSuffixTitleDescription(), is(equalTo("")));
@@ -341,14 +338,14 @@ public class ClientTest implements PersistentTestTemplate {
         vc.getZippyCreatedIndicator(), null);
 
     final String expected = MAPPER.writeValueAsString((MAPPER.readValue(
-        fixture("fixtures/persistence/Client/valid/validWithSysCodes.json"), Client.class)));
+        fixture("fixtures/persistent/Client/valid/validWithSysCodes.json"), Client.class)));
 
     assertThat(MAPPER.writeValueAsString(pers)).isEqualTo(expected);
   }
 
   private Client validClient() throws JsonParseException, JsonMappingException, IOException {
     Client validClient =
-        MAPPER.readValue(fixture("fixtures/persistence/Client/valid/valid.json"), Client.class);
+        MAPPER.readValue(fixture("fixtures/persistent/Client/valid/valid.json"), Client.class);
     return validClient;
   }
 
