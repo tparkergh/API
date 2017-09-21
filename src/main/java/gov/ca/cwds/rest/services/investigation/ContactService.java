@@ -1,16 +1,4 @@
-package gov.ca.cwds.rest.services.contact;
-
-import java.util.Date;
-import java.util.HashSet;
-import java.util.Optional;
-import java.util.Set;
-
-import org.apache.commons.lang3.NotImplementedException;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.google.inject.Inject;
+package gov.ca.cwds.rest.services.investigation;
 
 import gov.ca.cwds.data.BaseDaoImpl;
 import gov.ca.cwds.data.Dao;
@@ -31,22 +19,34 @@ import gov.ca.cwds.data.persistence.contact.IndividualDeliveredServiceEntity;
 import gov.ca.cwds.data.std.ApiPersonAware;
 import gov.ca.cwds.rest.api.ApiException;
 import gov.ca.cwds.rest.api.Response;
-import gov.ca.cwds.rest.api.domain.Contact;
-import gov.ca.cwds.rest.api.domain.ContactList;
-import gov.ca.cwds.rest.api.domain.ContactRequestList;
 import gov.ca.cwds.rest.api.domain.LastUpdatedBy;
 import gov.ca.cwds.rest.api.domain.PostedIndividualDeliveredService;
+import gov.ca.cwds.rest.api.domain.investigation.contact.Contact;
+import gov.ca.cwds.rest.api.domain.investigation.contact.ContactList;
+import gov.ca.cwds.rest.api.domain.investigation.contact.ContactRequest;
 import gov.ca.cwds.rest.api.domain.investigation.contact.DeliveredToIndividualCode;
 import gov.ca.cwds.rest.filters.RequestExecutionContext;
 import gov.ca.cwds.rest.services.TypedCrudsService;
 import io.dropwizard.jackson.Jackson;
+
+import java.util.Date;
+import java.util.HashSet;
+import java.util.Optional;
+import java.util.Set;
+
+import org.apache.commons.lang3.NotImplementedException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.google.inject.Inject;
 
 /**
  * Business layer object to work on {@link DeliveredServiceEntity}
  * 
  * @author CWDS API Team
  */
-public class ContactService implements TypedCrudsService<String, ContactRequestList, Response> {
+public class ContactService implements TypedCrudsService<String, ContactRequest, Response> {
 
   private static final Logger LOGGER = LoggerFactory.getLogger(ContactService.class);
 
@@ -84,9 +84,9 @@ public class ContactService implements TypedCrudsService<String, ContactRequestL
   @Inject
   public ContactService(DeliveredServiceDao deliveredServiceDao, StaffPersonDao staffPersonDao,
       LongTextDao longTextDao, IndividualDeliveredServiceDao individualDeliveredServiceDao,
-      ClientDao clientDao, AttorneyDao attorneyDao, CollateralIndividualDao collateralIndividualDao,
-      ServiceProviderDao serviceProviderDao, SubstituteCareProviderDao substituteCareProviderDao,
-      ReporterDao reporterDao) {
+      ClientDao clientDao, AttorneyDao attorneyDao,
+      CollateralIndividualDao collateralIndividualDao, ServiceProviderDao serviceProviderDao,
+      SubstituteCareProviderDao substituteCareProviderDao, ReporterDao reporterDao) {
     super();
     this.deliveredServiceDao = deliveredServiceDao;
     this.staffPersonDao = staffPersonDao;
@@ -140,15 +140,13 @@ public class ContactService implements TypedCrudsService<String, ContactRequestL
   }
 
   @Override
-  public Response create(ContactRequestList request) {
-    Contact contact = validContact;
-    Set<Contact> contacts = new HashSet<>();
-    contacts.add(contact);
-    return new ContactList(contacts);
+  public Response create(ContactRequest request) {
+
+    return validContact;
   }
 
   @Override
-  public Response update(String primaryKey, ContactRequestList request) {
+  public Response update(String primaryKey, ContactRequest request) {
     return validContact;
   }
 
@@ -183,8 +181,9 @@ public class ContactService implements TypedCrudsService<String, ContactRequestL
       final DeliveredToIndividualCode deliveredToIndividualCode =
           DeliveredToIndividualCode.lookupByCode(individualDeliveredService
               .getIndividualDeliveredServiceEmbeddable().getDeliveredToIndividualCode());
-      final String id = individualDeliveredService.getIndividualDeliveredServiceEmbeddable()
-          .getDeliveredToIndividualId();
+      final String id =
+          individualDeliveredService.getIndividualDeliveredServiceEmbeddable()
+              .getDeliveredToIndividualId();
       people.add(findPerson(deliveredToIndividualCode, id));
     }
     return people;
@@ -235,10 +234,9 @@ public class ContactService implements TypedCrudsService<String, ContactRequestL
       final BaseDaoImpl<? extends ApiPersonAware> dao, final DeliveredToIndividualCode code,
       final String id) {
     final ApiPersonAware person = dao.find(id);
-    return (person != null)
-        ? new PostedIndividualDeliveredService(code.getValue(), id, person.getFirstName(),
-            person.getMiddleName(), person.getLastName(), person.getNameSuffix(),
-            person.getNameSuffix(), code.getDescription())
+    return (person != null) ? new PostedIndividualDeliveredService(code.getValue(), id,
+        person.getFirstName(), person.getMiddleName(), person.getLastName(),
+        person.getNameSuffix(), person.getNameSuffix(), code.getDescription())
         : defaultPostedIndividualDeliveredService(code, id);
   }
 
