@@ -60,8 +60,8 @@ public class ContactResource {
   /**
    * Create an {@link Contact}.
    *
-   * @param contactList The {@link ContactList}
-   * @param id The id of the Referral the Contact List is for
+   * @param contact The {@link ContactRequest}
+   * @param id The id of the Referral the Contact is for
    *
    * @return The {@link Response}
    */
