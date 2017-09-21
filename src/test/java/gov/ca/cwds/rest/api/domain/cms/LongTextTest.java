@@ -87,7 +87,7 @@ public class LongTextTest {
 
     LongText totest = new LongText(persistent);
     assertThat(totest.getCountySpecificCode(), is(equalTo(persistent.getCountySpecificCode())));
-    assertThat(totest.getTextDescription(), is(equalTo(persistent.getTextDescrption())));
+    assertThat(totest.getTextDescription(), is(equalTo(persistent.getTextDescription())));
   }
 
   /**

@@ -46,11 +46,11 @@ public class LongTextTest implements PersistentTestTemplate {
 
     gov.ca.cwds.data.persistence.cms.LongText persistent =
         new gov.ca.cwds.data.persistence.cms.LongText(id, vl.getCountySpecificCode(),
-            vl.getTextDescrption());
+            vl.getTextDescription());
 
     assertThat(persistent.getId(), is(equalTo(id)));
     assertThat(persistent.getCountySpecificCode(), is(equalTo(vl.getCountySpecificCode())));
-    assertThat(persistent.getTextDescrption(), is(equalTo(vl.getTextDescrption())));
+    assertThat(persistent.getTextDescription(), is(equalTo(vl.getTextDescription())));
   }
 
   @Override
@@ -63,7 +63,7 @@ public class LongTextTest implements PersistentTestTemplate {
 
     assertThat(persistent.getId(), is(equalTo(id)));
     assertThat(persistent.getCountySpecificCode(), is(equalTo(domain.getCountySpecificCode())));
-    assertThat(persistent.getTextDescrption(), is(equalTo(domain.getTextDescription())));
+    assertThat(persistent.getTextDescription(), is(equalTo(domain.getTextDescription())));
   }
 
   @Override

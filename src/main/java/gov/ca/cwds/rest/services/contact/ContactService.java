@@ -134,7 +134,6 @@ public class ContactService implements TypedCrudsService<String, ContactRequestL
 
         return new Contact(deliveredServiceEntity, lastUpdatedBy, note,
             peopleInIndividualDeliveredService);
-
       }
     }
   }
@@ -176,7 +175,7 @@ public class ContactService implements TypedCrudsService<String, ContactRequestL
     if (detailText != null) {
       detail = longTextDao.find(detailText);
     }
-    return (Optional.of(detail)).map(LongText::getTextDescrption).orElse("");
+    return (Optional.of(detail)).map(LongText::getTextDescription).orElse("");
   }
 
   private Set<PostedIndividualDeliveredService> getPeopleInIndividulDeliveredService(
@@ -213,7 +212,6 @@ public class ContactService implements TypedCrudsService<String, ContactRequestL
         case SUBSTITUTE_CARE_PROVIDER:
           person = processSubstituteCareProvider(deliveredToIndividualCode, id);
           break;
-
       }
       peopleInIndividualDeliveredService.add(person);
 
@@ -231,7 +229,6 @@ public class ContactService implements TypedCrudsService<String, ContactRequestL
           substituteCareProvider.getNamePrefixDescription(),
           deliveredToIndividualCode.getDescription());
     return defaultPostedIndividualDeliveredService(deliveredToIndividualCode, id);
-
   }
 
   private PostedIndividualDeliveredService processAttorney(
@@ -243,7 +240,6 @@ public class ContactService implements TypedCrudsService<String, ContactRequestL
           attorney.getNameSuffix(), attorney.getNamePrefixDescription(),
           deliveredToIndividualCode.getDescription());
     return defaultPostedIndividualDeliveredService(deliveredToIndividualCode, id);
-
   }
 
   private PostedIndividualDeliveredService processReporter(
