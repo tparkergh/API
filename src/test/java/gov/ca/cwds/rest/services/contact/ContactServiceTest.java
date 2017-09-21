@@ -164,6 +164,18 @@ public class ContactServiceTest {
     when(esConfig.getElasticsearchAlias()).thenReturn("people");
     when(esConfig.getElasticsearchDocType()).thenReturn("person");
 
+    // Target:
+    deliveredServiceDao = new DeliveredServiceDao(sessionFactory);
+    staffPersonDao = new StaffPersonDao(sessionFactory);
+    longTextDao = new LongTextDao(sessionFactory);
+    individualDeliveredServiceDao = new IndividualDeliveredServiceDao(sessionFactory);
+    clientDao = new ClientDao(sessionFactory);
+    attorneyDao = new AttorneyDao(sessionFactory);
+    collateralIndividualDao = new CollateralIndividualDao(sessionFactory);
+    serviceProviderDao = new ServiceProviderDao(sessionFactory);
+    substituteCareProviderDao = new SubstituteCareProviderDao(sessionFactory);
+    reporterDao = new ReporterDao(sessionFactory);
+
     target = new ContactService(deliveredServiceDao, staffPersonDao, longTextDao,
         individualDeliveredServiceDao, clientDao, attorneyDao, collateralIndividualDao,
         serviceProviderDao, substituteCareProviderDao, reporterDao);
