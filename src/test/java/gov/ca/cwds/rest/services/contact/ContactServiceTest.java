@@ -48,7 +48,7 @@ import gov.ca.cwds.data.dao.contact.IndividualDeliveredServiceDao;
 import gov.ca.cwds.data.es.ElasticSearchPerson;
 import gov.ca.cwds.data.es.ElasticsearchDao;
 import gov.ca.cwds.data.persistence.cms.CollateralIndividual;
-import gov.ca.cwds.data.persistence.cms.CollateralIndividualTest;
+import gov.ca.cwds.data.persistence.junit.template.PersistentTestTemplate;
 import gov.ca.cwds.rest.ElasticsearchConfiguration;
 import gov.ca.cwds.rest.api.Response;
 import gov.ca.cwds.rest.api.domain.Contact;
@@ -223,7 +223,8 @@ public class ContactServiceTest {
   @Test
   public void findPerson_Args__BaseDaoImpl__DeliveredToIndividualCode__Collateral()
       throws Exception {
-    final CollateralIndividual indiv = CollateralIndividualTest.validCollateralIndividual();
+    final CollateralIndividual indiv =
+        PersistentTestTemplate.<CollateralIndividual>valid(new CollateralIndividual());
     when(collateralIndividualDao.find(any())).thenReturn(indiv);
     final String id = indiv.getId();
     final DeliveredToIndividualCode code = DeliveredToIndividualCode.COLLATERAL_INDIVIDUAL;
