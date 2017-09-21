@@ -17,13 +17,11 @@ public class TestSystemCodeCache implements SystemCodeCache {
 
   @Override
   public Set<SystemMeta> getAllSystemMetas() {
-
     return null;
   }
 
   @Override
   public Set<SystemCode> getAllSystemCodes() {
-
     return null;
   }
 
@@ -51,7 +49,6 @@ public class TestSystemCodeCache implements SystemCodeCache {
 
   @Override
   public String getSystemCodeShortDescription(Number systemCodeId) {
-
     return null;
   }
 
