@@ -1,4 +1,5 @@
 package gov.ca.cwds.fixture.investigation;
+
 import java.util.LinkedHashSet;
 import java.util.Set;
 
@@ -19,7 +20,7 @@ public class CaseEntityBuilder {
   private LimitedAccess limitedAccess;
   private String serviceComponentId = "1234567ABC";
   private String startDate = "2017-09-01";
-  private Set<SimplePersonWithRelationship> parents = new LinkedHashSet();
+  private Set<SimplePersonWithRelationship> parents = new LinkedHashSet<>();
 
   public Case build() {
 
@@ -74,7 +75,7 @@ public class CaseEntityBuilder {
     return this;
   }
 
-  public CaseEntityBuilder setParents(Set<SimplePersonWithRelationship> partents) {
+  public CaseEntityBuilder setParents(Set<SimplePersonWithRelationship> parents) {
     this.parents = parents;
     return this;
   }

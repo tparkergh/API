@@ -102,7 +102,7 @@ public class SmartyStreet {
       streetAddress = candidate.getDeliveryLine1();
       cityName = candidate.getComponents().getCityName();
       stateName = candidate.getComponents().getState();
-      zip = Integer.parseInt(candidate.getComponents().getZipCode());
+      zip = Integer.valueOf(candidate.getComponents().getZipCode());
 
       ValidatedAddress address = new ValidatedAddress(streetAddress, cityName, stateName, zip,
           longitude, latitude, delPoint);

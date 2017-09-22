@@ -13,9 +13,9 @@ public class HistoryOfInvolvementEntityBuilder {
   private Case caseInvestigation = new CaseEntityBuilder().build();
   private SimpleReferral referral = new SimpleReferralEntityBuilder().build();
   private SimpleScreening screening = new SimpleScreeningEntityBuilder().build();
-  private Set<Case> cases = new LinkedHashSet();
-  private Set<SimpleReferral> referrals = new LinkedHashSet();
-  private Set<SimpleScreening> screenings = new LinkedHashSet();
+  private Set<Case> cases = new LinkedHashSet<>();
+  private Set<SimpleReferral> referrals = new LinkedHashSet<>();
+  private Set<SimpleScreening> screenings = new LinkedHashSet<>();
 
   public HistoryOfInvolvement build() {
     cases.add(caseInvestigation);
@@ -26,7 +26,7 @@ public class HistoryOfInvolvementEntityBuilder {
 
   }
 
-  public HistoryOfInvolvementEntityBuilder setCases(Set<Case> casses) {
+  public HistoryOfInvolvementEntityBuilder setCases(Set<Case> cases) {
     this.cases = cases;
     return this;
   }

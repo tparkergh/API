@@ -328,7 +328,7 @@ public class ParticipantService implements CrudsService {
         reporterAddress = address;
         Short zipSuffix = null;
         if (address.getZip().toString().length() > 5) {
-          zipSuffix = Short.parseShort(address.getZip().toString().substring(5));
+          zipSuffix = Short.valueOf(address.getZip().substring(5));
         }
         break;
       }

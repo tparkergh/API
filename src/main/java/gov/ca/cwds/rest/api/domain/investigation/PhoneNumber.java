@@ -2,6 +2,9 @@ package gov.ca.cwds.rest.api.domain.investigation;
 
 import java.math.BigDecimal;
 
+import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
+
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import gov.ca.cwds.rest.api.Request;
@@ -62,47 +65,24 @@ public class PhoneNumber implements Request, Response {
     return legacyDescriptor;
   }
 
+  /**
+   * {@inheritDoc}
+   *
+   * @see java.lang.Object#hashCode()
+   */
   @Override
-  public int hashCode() {
-    final int prime = 31;
-    int result = 1;
-    result = prime * result + ((legacyDescriptor == null) ? 0 : legacyDescriptor.hashCode());
-    result = prime * result + ((phoneExtension == null) ? 0 : phoneExtension.hashCode());
-    result = prime * result + ((phoneNumber == null) ? 0 : phoneNumber.hashCode());
-    result = prime * result + ((phoneType == null) ? 0 : phoneType.hashCode());
-    return result;
+  public final int hashCode() {
+    return HashCodeBuilder.reflectionHashCode(this, false);
   }
 
+  /**
+   * {@inheritDoc}
+   *
+   * @see java.lang.Object#equals(java.lang.Object)
+   */
   @Override
-  public boolean equals(Object obj) {
-    if (this == obj)
-      return true;
-    if (obj == null)
-      return false;
-    if (getClass() != obj.getClass())
-      return false;
-    PhoneNumber other = (PhoneNumber) obj;
-    if (legacyDescriptor == null) {
-      if (other.legacyDescriptor != null)
-        return false;
-    } else if (!legacyDescriptor.equals(other.legacyDescriptor))
-      return false;
-    if (phoneExtension == null) {
-      if (other.phoneExtension != null)
-        return false;
-    } else if (!phoneExtension.equals(other.phoneExtension))
-      return false;
-    if (phoneNumber == null) {
-      if (other.phoneNumber != null)
-        return false;
-    } else if (!phoneNumber.equals(other.phoneNumber))
-      return false;
-    if (phoneType == null) {
-      if (other.phoneType != null)
-        return false;
-    } else if (!phoneType.equals(other.phoneType))
-      return false;
-    return true;
+  public final boolean equals(Object obj) {
+    return EqualsBuilder.reflectionEquals(this, obj, false);
   }
 
 }

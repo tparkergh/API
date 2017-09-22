@@ -94,8 +94,7 @@ public class RequestResponseLoggingFilter implements Filter {
       try {
         chain.doFilter(wrappedRequest, wrappedResponse);
         StringBuilder reponseStringBuilder = new StringBuilder();
-        reponseStringBuilder.append(wrappedResponse.toString())
-            .append(wrappedResponse.getContent());
+        reponseStringBuilder.append(wrappedResponse).append(wrappedResponse.getContent());
         auditLogger
             .audit(reponseStringBuilder.toString().replaceAll("\n", " ").replaceAll("\r", ""));
       } catch (Exception e) {
@@ -108,10 +107,14 @@ public class RequestResponseLoggingFilter implements Filter {
   }
 
   @Override
-  public void init(FilterConfig filterConfig) throws ServletException {}
+  public void init(FilterConfig filterConfig) throws ServletException {
+    // no opt
+  }
 
   @Override
-  public void destroy() {}
+  public void destroy() {
+    // no opt
+  }
 
   private String requestContent(HttpServletRequest request) throws IOException {
     String headerName;

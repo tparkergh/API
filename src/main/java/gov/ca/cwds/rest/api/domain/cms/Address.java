@@ -213,7 +213,7 @@ public class Address extends ReportingDomain implements Request, Response {
     this.streetName = persistedAddress.getStreetName();
     this.streetNumber = persistedAddress.getStreetNumber();
     try {
-      this.zip = Integer.parseInt(persistedAddress.getZip());
+      this.zip = Integer.valueOf(persistedAddress.getZip());
 
     } catch (NumberFormatException e) {
       throw e;
