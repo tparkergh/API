@@ -1,5 +1,7 @@
 package gov.ca.cwds.rest.api.domain.investigation;
 
+import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.hibernate.validator.constraints.NotEmpty;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -72,47 +74,24 @@ public class Assignee {
     return staffId;
   }
 
+  /**
+   * {@inheritDoc}
+   *
+   * @see java.lang.Object#hashCode()
+   */
   @Override
-  public int hashCode() {
-    final int prime = 31;
-    int result = 1;
-    result = prime * result + ((countyCode == null) ? 0 : countyCode.hashCode());
-    result = prime * result + ((name == null) ? 0 : name.hashCode());
-    result = prime * result + ((office == null) ? 0 : office.hashCode());
-    result = prime * result + ((staffId == null) ? 0 : staffId.hashCode());
-    return result;
+  public final int hashCode() {
+    return HashCodeBuilder.reflectionHashCode(this, false);
   }
 
+  /**
+   * {@inheritDoc}
+   *
+   * @see java.lang.Object#equals(java.lang.Object)
+   */
   @Override
-  public boolean equals(Object obj) {
-    if (this == obj)
-      return true;
-    if (obj == null)
-      return false;
-    if (getClass() != obj.getClass())
-      return false;
-    Assignee other = (Assignee) obj;
-    if (countyCode == null) {
-      if (other.countyCode != null)
-        return false;
-    } else if (!countyCode.equals(other.countyCode))
-      return false;
-    if (name == null) {
-      if (other.name != null)
-        return false;
-    } else if (!name.equals(other.name))
-      return false;
-    if (office == null) {
-      if (other.office != null)
-        return false;
-    } else if (!office.equals(other.office))
-      return false;
-    if (staffId == null) {
-      if (other.staffId != null)
-        return false;
-    } else if (!staffId.equals(other.staffId))
-      return false;
-    return true;
+  public final boolean equals(Object obj) {
+    return EqualsBuilder.reflectionEquals(this, obj, false);
   }
 
 }

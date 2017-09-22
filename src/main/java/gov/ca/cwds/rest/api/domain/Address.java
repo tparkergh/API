@@ -5,6 +5,9 @@ import static gov.ca.cwds.data.persistence.cms.CmsPersistentObject.CMS_ID_LEN;
 import javax.validation.Valid;
 import javax.validation.constraints.Size;
 
+import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
+
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
@@ -174,86 +177,24 @@ public class Address extends ReportingDomain implements Request, Response {
     return type;
   }
 
-  /*
-   * (non-Javadoc)
-   * 
+  /**
+   * {@inheritDoc}
+   *
    * @see java.lang.Object#hashCode()
    */
   @Override
   public final int hashCode() {
-    final int PRIME = 31;
-    int result = 1;
-    result = PRIME * result + ((legacySourceTable == null) ? 0 : legacySourceTable.hashCode());
-    result = PRIME * result + ((legacyId == null) ? 0 : legacyId.hashCode());
-    result = PRIME * result + ((legacyDescriptor == null) ? 0 : legacyDescriptor.hashCode());
-    result = PRIME * result + ((city == null) ? 0 : city.hashCode());
-    result = PRIME * result + ((state == null) ? 0 : state.hashCode());
-    result = PRIME * result + ((streetAddress == null) ? 0 : streetAddress.hashCode());
-    result = PRIME * result + ((type == null) ? 0 : type.hashCode());
-    result = PRIME * result + ((zip == null) ? 0 : zip.hashCode());
-    return result;
+    return HashCodeBuilder.reflectionHashCode(this, false);
   }
 
-  /*
-   * (non-Javadoc)
-   * 
+  /**
+   * {@inheritDoc}
+   *
    * @see java.lang.Object#equals(java.lang.Object)
    */
   @Override
   public final boolean equals(Object obj) {
-    if (this == obj)
-      return true;
-    if (obj == null)
-      return false;
-    if (!(obj instanceof Address)) {
-      return false;
-    }
-    Address other = (Address) obj;
-    if (city == null) {
-      if (other.city != null)
-        return false;
-    } else if (!city.equals(other.city))
-      return false;
-    if (state == null) {
-      if (other.state != null)
-        return false;
-    } else if (!state.equals(other.state))
-      return false;
-    if (streetAddress == null) {
-      if (other.streetAddress != null)
-        return false;
-    } else if (!streetAddress.equals(other.streetAddress))
-      return false;
-    if (type == null) {
-      if (other.type != null)
-        return false;
-    } else if (!type.equals(other.type))
-      return false;
-    if (zip == null) {
-      if (other.zip != null)
-        return false;
-    } else if (!zip.equals(other.zip))
-      return false;
-    if (legacySourceTable == null) {
-      if (other.legacySourceTable != null)
-        return false;
-    } else if (!legacySourceTable.equals(other.legacySourceTable))
-      return false;
-    if (legacyId == null) {
-      if (other.legacyId != null)
-        return false;
-    } else if (!legacyId.equals(other.legacyId))
-      return false;
-    if (legacyDescriptor == null) {
-      if (other.legacyDescriptor != null)
-        return false;
-    } else if (!legacyDescriptor.equals(other.legacyDescriptor))
-      return false;
-
-    return true;
-
+    return EqualsBuilder.reflectionEquals(this, obj, false);
   }
-
-
 
 }

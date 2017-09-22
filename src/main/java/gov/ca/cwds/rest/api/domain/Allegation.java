@@ -5,6 +5,9 @@ import static gov.ca.cwds.data.persistence.cms.CmsPersistentObject.CMS_ID_LEN;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
+import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
+
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import gov.ca.cwds.rest.api.Request;
@@ -144,68 +147,22 @@ public class Allegation extends ReportingDomain implements Request, Response {
 
   /**
    * {@inheritDoc}
-   * 
+   *
    * @see java.lang.Object#hashCode()
    */
   @Override
   public final int hashCode() {
-    final int PRIME = 31;
-    int result = 1;
-    result = PRIME * result + ((county == null) ? 0 : county.hashCode());
-    result = PRIME * result + (int) (perpetratorPersonId ^ (perpetratorPersonId >>> 32));
-    result = PRIME * result + ((type == null) ? 0 : type.hashCode());
-    result = PRIME * result + ((nonProtectingParent == null) ? 0 : nonProtectingParent.hashCode());
-    result = PRIME * result + ((legacySourceTable == null) ? 0 : legacySourceTable.hashCode());
-    result = PRIME * result + ((legacyId == null) ? 0 : legacyId.hashCode());
-    result = PRIME * result + (int) (victimPersonId ^ (victimPersonId >>> 32));
-    return result;
+    return HashCodeBuilder.reflectionHashCode(this, false);
   }
 
   /**
    * {@inheritDoc}
-   * 
+   *
    * @see java.lang.Object#equals(java.lang.Object)
    */
   @Override
   public final boolean equals(Object obj) {
-    if (this == obj)
-      return true;
-    if (obj == null)
-      return false;
-    if (!(obj instanceof Allegation)) {
-      return false;
-    }
-    Allegation other = (Allegation) obj;
-    if (county == null) {
-      if (other.county != null)
-        return false;
-    } else if (!county.equals(other.county))
-      return false;
-    if (perpetratorPersonId != other.perpetratorPersonId)
-      return false;
-    if (type == null) {
-      if (other.type != null)
-        return false;
-    } else if (!type.equals(other.type))
-      return false;
-    if (nonProtectingParent == null) {
-      if (other.nonProtectingParent != null)
-        return false;
-    } else if (!nonProtectingParent.equals(other.nonProtectingParent))
-      return false;
-    if (legacySourceTable == null) {
-      if (other.legacySourceTable != null)
-        return false;
-    } else if (!legacySourceTable.equals(other.legacySourceTable))
-      return false;
-    if (legacyId == null) {
-      if (other.legacyId != null)
-        return false;
-    } else if (!legacyId.equals(other.legacyId))
-      return false;
-    if (victimPersonId != other.victimPersonId)
-      return false;
-    return true;
+    return EqualsBuilder.reflectionEquals(this, obj, false);
   }
 
 }

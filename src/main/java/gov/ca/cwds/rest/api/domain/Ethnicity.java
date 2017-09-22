@@ -2,6 +2,9 @@ package gov.ca.cwds.rest.api.domain;
 
 import javax.validation.constraints.Size;
 
+import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
+
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
@@ -68,35 +71,24 @@ public class Ethnicity extends ReportingDomain implements Request, Response {
     return subEthnicity;
   }
 
+  /**
+   * {@inheritDoc}
+   *
+   * @see java.lang.Object#hashCode()
+   */
   @Override
   public final int hashCode() {
-    final int PRIME = 31;
-    int result = 1;
-    result = PRIME * result + ((ethnicityType == null) ? 0 : ethnicityType.hashCode());
-    result = PRIME * result + ((subEthnicity == null) ? 0 : subEthnicity.hashCode());
-    return result;
+    return HashCodeBuilder.reflectionHashCode(this, false);
   }
 
+  /**
+   * {@inheritDoc}
+   *
+   * @see java.lang.Object#equals(java.lang.Object)
+   */
   @Override
   public final boolean equals(Object obj) {
-    if (this == obj)
-      return true;
-    if (obj == null)
-      return false;
-    if (!(getClass().isInstance(obj)))
-      return false;
-    Ethnicity other = (Ethnicity) obj;
-    if (ethnicityType == null) {
-      if (other.ethnicityType != null)
-        return false;
-    } else if (!ethnicityType.equals(other.ethnicityType))
-      return false;
-    if (subEthnicity == null) {
-      if (other.subEthnicity != null)
-        return false;
-    } else if (!subEthnicity.equals(other.subEthnicity))
-      return false;
-    return true;
+    return EqualsBuilder.reflectionEquals(this, obj, false);
   }
 
 }

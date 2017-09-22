@@ -5,6 +5,8 @@ import static gov.ca.cwds.data.persistence.cms.CmsPersistentObject.CMS_ID_LEN;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
+import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.hibernate.validator.constraints.NotEmpty;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
@@ -176,56 +178,24 @@ public class CrossReport extends ReportingDomain implements Request, Response {
     return informDate;
   }
 
+  /**
+   * {@inheritDoc}
+   *
+   * @see java.lang.Object#hashCode()
+   */
   @Override
   public final int hashCode() {
-    final int PRIME = 31;
-    int result = 1;
-    result = PRIME * result + ((agencyName == null) ? 0 : agencyName.hashCode());
-    result = PRIME * result + ((agencyType == null) ? 0 : agencyType.hashCode());
-    result = PRIME * result + ((informDate == null) ? 0 : informDate.hashCode());
-    result = PRIME * result + (filedOutOfState ? 1 : 0);
-    result = PRIME * result + ((legacySourceTable == null) ? 0 : legacySourceTable.hashCode());
-    result = PRIME * result + ((legacyId == null) ? 0 : legacyId.hashCode());
-    result = PRIME * result + ((id == null) ? 0 : id.hashCode());
-    result = PRIME * result + ((method == null) ? 0 : method.hashCode());
-    return result;
+    return HashCodeBuilder.reflectionHashCode(this, false);
   }
 
+  /**
+   * {@inheritDoc}
+   *
+   * @see java.lang.Object#equals(java.lang.Object)
+   */
   @Override
-  public final boolean equals(Object o) {
-    if (this == o) {
-      return true;
-    }
-
-    if (!(o instanceof CrossReport)) {
-      return false;
-    }
-
-    CrossReport that = (CrossReport) o;
-
-    if (id != null ? !id.equals(that.id) : that.id != null) {
-      return false;
-    }
-    if (legacySourceTable != null ? !legacySourceTable.equals(that.legacySourceTable)
-        : that.legacySourceTable != null) {
-      return false;
-    }
-    if (filedOutOfState != that.filedOutOfState) {
-      return false;
-    }
-    if (legacyId != null ? !legacyId.equals(that.legacyId) : that.legacyId != null) {
-      return false;
-    }
-    if (agencyType != null ? !agencyType.equals(that.agencyType) : that.agencyType != null) {
-      return false;
-    }
-    if (agencyName != null ? !agencyName.equals(that.agencyName) : that.agencyName != null) {
-      return false;
-    }
-    if (method != null ? !method.equals(that.method) : that.method != null) {
-      return false;
-    }
-    return !(informDate != null ? !informDate.equals(that.informDate) : that.informDate != null);
+  public final boolean equals(Object obj) {
+    return EqualsBuilder.reflectionEquals(this, obj, false);
   }
 
 }

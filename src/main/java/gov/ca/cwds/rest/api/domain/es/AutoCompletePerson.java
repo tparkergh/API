@@ -476,7 +476,7 @@ public class AutoCompletePerson
         this.setCounty(AutoCompleteCounty.findByCountyCd(addr.getCounty()).getCountyCd());
       }
       if (StringUtils.isNotBlank(addr.getState()) && NumberUtils.isDigits(addr.getState())) {
-        this.setStateType(AutoCompleteState.findBySysId(Integer.parseInt(addr.getState())));
+        this.setStateType(AutoCompleteState.findBySysId(Integer.valueOf(addr.getState())));
       }
       if (StringUtils.isNotBlank(addr.getStreetAddress())) {
         this.setStreetAddress(addr.getStreetAddress());
@@ -866,8 +866,7 @@ public class AutoCompletePerson
       if (esp.getSourceObj() instanceof ApiMultipleLanguagesAware) {
         final ApiMultipleLanguagesAware langs = (ApiMultipleLanguagesAware) esp.getSourceObj();
         for (ApiLanguageAware lang : langs.getLanguages()) {
-          addLanguage(
-              ElasticSearchPersonLanguage.findBySysId(lang.getLanguageSysId()));
+          addLanguage(ElasticSearchPersonLanguage.findBySysId(lang.getLanguageSysId()));
         }
       }
     }

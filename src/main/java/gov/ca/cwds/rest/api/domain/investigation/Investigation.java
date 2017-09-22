@@ -6,6 +6,8 @@ import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
+import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.hibernate.validator.constraints.NotEmpty;
 import org.joda.time.DateTime;
 
@@ -337,164 +339,24 @@ public class Investigation extends ReportingDomain implements Request, Response 
     return relationships;
   }
 
+  /**
+   * {@inheritDoc}
+   *
+   * @see java.lang.Object#hashCode()
+   */
   @Override
-  public int hashCode() {
-    final int prime = 31;
-    int result = 1;
-    result =
-        prime * result + ((additionalInformation == null) ? 0 : additionalInformation.hashCode());
-    result = prime * result + ((address == null) ? 0 : address.hashCode());
-    result = prime * result + ((allegations == null) ? 0 : allegations.hashCode());
-    result = prime * result + ((assignee == null) ? 0 : assignee.hashCode());
-    result = prime * result + ((communicationMethod == null) ? 0 : communicationMethod.hashCode());
-    result =
-        prime * result + ((historyOfInvolvement == null) ? 0 : historyOfInvolvement.hashCode());
-    result = prime * result + ((incidentCounty == null) ? 0 : incidentCounty.hashCode());
-    result = prime * result + ((incidentDate == null) ? 0 : incidentDate.hashCode());
-    result = prime * result + ((lastUpdatedAt == null) ? 0 : lastUpdatedAt.hashCode());
-    result = prime * result + ((lastUpdatedBy == null) ? 0 : lastUpdatedBy.hashCode());
-    result = prime * result + ((legacyDescriptor == null) ? 0 : legacyDescriptor.hashCode());
-    result = prime * result + ((locationType == null) ? 0 : locationType.hashCode());
-    result = prime * result + ((name == null) ? 0 : name.hashCode());
-    result = prime * result + ((people == null) ? 0 : people.hashCode());
-    result = prime * result + ((phoneNumbers == null) ? 0 : phoneNumbers.hashCode());
-    result = prime * result + ((reference == null) ? 0 : reference.hashCode());
-    result = prime * result + ((relationships == null) ? 0 : relationships.hashCode());
-    result = prime * result + ((reportNarrative == null) ? 0 : reportNarrative.hashCode());
-    result = prime * result + ((responseTime == null) ? 0 : responseTime.hashCode());
-    result = prime * result + ((screening == null) ? 0 : screening.hashCode());
-    result = prime * result + ((sealed == null) ? 0 : sealed.hashCode());
-    result = prime * result + ((sensitive == null) ? 0 : sensitive.hashCode());
-    result = prime * result + ((startedAt == null) ? 0 : startedAt.hashCode());
-    return result;
+  public final int hashCode() {
+    return HashCodeBuilder.reflectionHashCode(this, false);
   }
 
+  /**
+   * {@inheritDoc}
+   *
+   * @see java.lang.Object#equals(java.lang.Object)
+   */
   @Override
-  public boolean equals(Object obj) {
-    if (this == obj)
-      return true;
-    if (obj == null)
-      return false;
-    if (getClass() != obj.getClass())
-      return false;
-    Investigation other = (Investigation) obj;
-    if (additionalInformation == null) {
-      if (other.additionalInformation != null)
-        return false;
-    } else if (!additionalInformation.equals(other.additionalInformation))
-      return false;
-    if (address == null) {
-      if (other.address != null)
-        return false;
-    } else if (!address.equals(other.address))
-      return false;
-    if (allegations == null) {
-      if (other.allegations != null)
-        return false;
-    } else if (!allegations.equals(other.allegations))
-      return false;
-    if (assignee == null) {
-      if (other.assignee != null)
-        return false;
-    } else if (!assignee.equals(other.assignee))
-      return false;
-    if (communicationMethod == null) {
-      if (other.communicationMethod != null)
-        return false;
-    } else if (!communicationMethod.equals(other.communicationMethod))
-      return false;
-    if (historyOfInvolvement == null) {
-      if (other.historyOfInvolvement != null)
-        return false;
-    } else if (!historyOfInvolvement.equals(other.historyOfInvolvement))
-      return false;
-    if (incidentCounty == null) {
-      if (other.incidentCounty != null)
-        return false;
-    } else if (!incidentCounty.equals(other.incidentCounty))
-      return false;
-    if (incidentDate == null) {
-      if (other.incidentDate != null)
-        return false;
-    } else if (!incidentDate.equals(other.incidentDate))
-      return false;
-    if (lastUpdatedAt == null) {
-      if (other.lastUpdatedAt != null)
-        return false;
-    } else if (!lastUpdatedAt.equals(other.lastUpdatedAt))
-      return false;
-    if (lastUpdatedBy == null) {
-      if (other.lastUpdatedBy != null)
-        return false;
-    } else if (!lastUpdatedBy.equals(other.lastUpdatedBy))
-      return false;
-    if (legacyDescriptor == null) {
-      if (other.legacyDescriptor != null)
-        return false;
-    } else if (!legacyDescriptor.equals(other.legacyDescriptor))
-      return false;
-    if (locationType == null) {
-      if (other.locationType != null)
-        return false;
-    } else if (!locationType.equals(other.locationType))
-      return false;
-    if (name == null) {
-      if (other.name != null)
-        return false;
-    } else if (!name.equals(other.name))
-      return false;
-    if (people == null) {
-      if (other.people != null)
-        return false;
-    } else if (!people.equals(other.people))
-      return false;
-    if (phoneNumbers == null) {
-      if (other.phoneNumbers != null)
-        return false;
-    } else if (!phoneNumbers.equals(other.phoneNumbers))
-      return false;
-    if (reference == null) {
-      if (other.reference != null)
-        return false;
-    } else if (!reference.equals(other.reference))
-      return false;
-    if (relationships == null) {
-      if (other.relationships != null)
-        return false;
-    } else if (!relationships.equals(other.relationships))
-      return false;
-    if (reportNarrative == null) {
-      if (other.reportNarrative != null)
-        return false;
-    } else if (!reportNarrative.equals(other.reportNarrative))
-      return false;
-    if (responseTime == null) {
-      if (other.responseTime != null)
-        return false;
-    } else if (!responseTime.equals(other.responseTime))
-      return false;
-    if (screening == null) {
-      if (other.screening != null)
-        return false;
-    } else if (!screening.equals(other.screening))
-      return false;
-    if (sealed == null) {
-      if (other.sealed != null)
-        return false;
-    } else if (!sealed.equals(other.sealed))
-      return false;
-    if (sensitive == null) {
-      if (other.sensitive != null)
-        return false;
-    } else if (!sensitive.equals(other.sensitive))
-      return false;
-    if (startedAt == null) {
-      if (other.startedAt != null)
-        return false;
-    } else if (!startedAt.equals(other.startedAt))
-      return false;
-    return true;
+  public final boolean equals(Object obj) {
+    return EqualsBuilder.reflectionEquals(this, obj, false);
   }
-
 
 }

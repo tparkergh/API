@@ -77,8 +77,7 @@ public class AssignmentTest {
 
   @Test
   public void equalsHashCodeWorks() {
-    EqualsVerifier.forClass(Assignment.class).suppress(Warning.NONFINAL_FIELDS)
-        .withIgnoredFields("messages").verify();
+    EqualsVerifier.forClass(Assignment.class).suppress(Warning.NONFINAL_FIELDS).verify();
 
   }
 

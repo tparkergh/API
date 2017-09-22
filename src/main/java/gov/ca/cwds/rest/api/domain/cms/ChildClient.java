@@ -28,6 +28,9 @@ import io.swagger.annotations.ApiModelProperty;
  */
 public class ChildClient extends ReportingDomain implements Request, Response {
 
+  private static final short DEFAULT_CODE = 0;
+  private static final int DEFAULT_INT = 0;
+
   /**
    * Serialization version
    */
@@ -416,9 +419,6 @@ public class ChildClient extends ReportingDomain implements Request, Response {
     this.tribalCustomaryAdoptionIndicator =
         DomainChef.uncookBooleanString(persistedChildClient.getTribalCustomaryAdoptionIndicator());
   }
-
-  private static final short DEFAULT_CODE = 0;
-  private static final int DEFAULT_INT = 0;
 
   /**
    * @param clientId - clientId

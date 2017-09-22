@@ -6,7 +6,6 @@ import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.is;
 import static org.junit.Assert.assertEquals;
 
-import gov.ca.cwds.data.cms.TestSystemCodeCache;
 import java.io.IOException;
 import java.util.Set;
 
@@ -23,6 +22,7 @@ import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 
+import gov.ca.cwds.data.cms.TestSystemCodeCache;
 import io.dropwizard.jackson.Jackson;
 import nl.jqno.equalsverifier.EqualsVerifier;
 import nl.jqno.equalsverifier.Warning;
@@ -45,7 +45,7 @@ public class AllegationTest {
 
   TestSystemCodeCache testSystemCodeCache = new TestSystemCodeCache();
 
-  private Short abuseCode = (short)2179;
+  private Short abuseCode = (short) 2179;
 
   @Before
   public void setup() {
@@ -83,7 +83,7 @@ public class AllegationTest {
   @Test
   public void equalsHashCodeWork() throws Exception {
     EqualsVerifier.forClass(Allegation.class).suppress(Warning.NONFINAL_FIELDS, Warning.NULL_FIELDS)
-        .withIgnoredFields("messages").verify();
+        .verify();
   }
 
   @Test
