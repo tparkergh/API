@@ -45,12 +45,13 @@ public class PersonTest {
   private Boolean sensitive = false;
   private Boolean sealed = false;
   private DateTime now = new DateTime("2010-10-01T15:26:42.000-0700");
+  private Short phoneType = 1111;
 
   private BigDecimal phoneNumber = new BigDecimal(3219876);
   private LegacyDescriptor phoneLegacyDescriptor =
       new LegacyDescriptor("1234567ABC", "001-2000-3399-415790", now, "CLIENT_T", "Client");
 
-  private PhoneNumber phone = new PhoneNumber(phoneNumber, 3322, "Home", phoneLegacyDescriptor);
+  private PhoneNumber phone = new PhoneNumber(phoneNumber, 3322, phoneType, phoneLegacyDescriptor);
   private Set<PhoneNumber> phoneNumbers = new HashSet<PhoneNumber>();
 
   private Set<String> roles = new HashSet<>();
