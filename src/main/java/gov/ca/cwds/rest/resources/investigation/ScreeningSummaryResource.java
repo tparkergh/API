@@ -1,15 +1,6 @@
 package gov.ca.cwds.rest.resources.investigation;
 
 import static gov.ca.cwds.rest.core.Api.RESOURCE_INVESTIGATIONS;
-import gov.ca.cwds.inject.ScreeningSummaryServiceBackedResource;
-import gov.ca.cwds.rest.api.domain.investigation.ScreeningSummary;
-import gov.ca.cwds.rest.resources.TypedResourceDelegate;
-import io.dropwizard.hibernate.UnitOfWork;
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
-import io.swagger.annotations.ApiParam;
-import io.swagger.annotations.ApiResponse;
-import io.swagger.annotations.ApiResponses;
 
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
@@ -23,11 +14,22 @@ import org.apache.http.HttpStatus;
 
 import com.google.inject.Inject;
 
+import gov.ca.cwds.inject.ScreeningSummaryServiceBackedResource;
+import gov.ca.cwds.rest.api.domain.investigation.ScreeningSummary;
+import gov.ca.cwds.rest.resources.TypedResourceDelegate;
+import io.dropwizard.hibernate.UnitOfWork;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
+import io.swagger.annotations.ApiResponse;
+import io.swagger.annotations.ApiResponses;
+
 /**
  * A resource providing a RESTful interface for {@link ScreeningSummary}. It delegates functions to
  * {@link TypedResourceDelegate}. It decorates the {@link TypedResourceDelegate} not in
- * functionality but with @see <a href=
- * "https://github.com/swagger-api/swagger-core/wiki/Annotations-1.5.X">Swagger Annotations</a> and
+ * functionality but with @see
+ * <a href= "https://github.com/swagger-api/swagger-core/wiki/Annotations-1.5.X">Swagger
+ * Annotations</a> and
  * <a href="https://jersey.java.net/documentation/latest/user-guide.html#jaxrs-resources">Jersey
  * Annotations</a>
  * 
@@ -67,7 +69,6 @@ public class ScreeningSummaryResource {
       @ApiResponse(code = 401, message = "Not Authorized"),
       @ApiResponse(code = 406, message = "Accept Header not supported"),
       @ApiResponse(code = 409, message = "Conflict - already exists")})
-  @Consumes(value = MediaType.APPLICATION_JSON)
   @ApiOperation(value = "Find Screening Summary by Referral Id", code = HttpStatus.SC_OK,
       response = ScreeningSummary.class)
   public Response find(@PathParam("id") @ApiParam(required = true, name = "id",

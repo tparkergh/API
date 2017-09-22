@@ -42,13 +42,6 @@ public class CmsDocReferralClientServiceTest {
     MockitoAnnotations.initMocks(this);
   }
 
-  // find test
-  @Test
-  public void findThrowsAssertionError() {
-    thrown.expect(AssertionError.class);
-    svc.find(1L);
-  }
-
   @Test
   public void createThrowsNotImplementedException() throws Exception {
     // thrown.expect(NotImplementedException.class);

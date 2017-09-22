@@ -22,6 +22,7 @@ import com.google.inject.Inject;
 import gov.ca.cwds.inject.CmsDocumentReferralClientServiceBackedResource;
 import gov.ca.cwds.rest.api.domain.cms.CmsDocReferralClient;
 import gov.ca.cwds.rest.resources.ResourceDelegate;
+import gov.ca.cwds.rest.resources.TypedResourceDelegate;
 import io.dropwizard.hibernate.UnitOfWork;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -45,17 +46,17 @@ import io.swagger.annotations.ApiResponses;
 @Consumes(MediaType.APPLICATION_JSON)
 public class CmsDocReferralClientResource {
 
-  private ResourceDelegate resourceDelegate;
+  private TypedResourceDelegate<String, CmsDocReferralClient> typedResourceDelegate;
 
   /**
    * Constructor
    * 
-   * @param resourceDelegate The resourceDelegate to delegate to.
+   * @param typedResourceDelegate The typedResourceDelegate to delegate to.
    */
   @Inject
   public CmsDocReferralClientResource(
-      @CmsDocumentReferralClientServiceBackedResource ResourceDelegate resourceDelegate) {
-    this.resourceDelegate = resourceDelegate;
+      @CmsDocumentReferralClientServiceBackedResource TypedResourceDelegate<String, CmsDocReferralClient> typedResourceDelegate) {
+    this.typedResourceDelegate = typedResourceDelegate;
   }
 
   /**
@@ -75,7 +76,7 @@ public class CmsDocReferralClientResource {
       code = 200)
   public Response get(@PathParam("id") @ApiParam(required = true, name = "id",
       value = "The id (doc_handle) of the Document to find") String id) {
-    return resourceDelegate.get(id);
+    return typedResourceDelegate.get(id);
   }
 
   /**

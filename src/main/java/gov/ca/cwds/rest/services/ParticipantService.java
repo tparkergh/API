@@ -327,7 +327,7 @@ public class ParticipantService implements CrudsService {
         }
         reporterAddress = address;
         Short zipSuffix = null;
-        if (address.getZip().toString().length() > 5) {
+        if (address.getZip().length() > 5) {
           zipSuffix = Short.valueOf(address.getZip().substring(5));
         }
         break;
@@ -364,7 +364,7 @@ public class ParticipantService implements CrudsService {
   private Participant processClientAddress(Participant clientParticipant, String referralId,
       String clientId, Date timestamp, MessageBuilder messageBuilder) throws ServiceException {
 
-    String addressId = new String("");
+    String addressId;
     Set<gov.ca.cwds.rest.api.domain.Address> addresses;
     Set<gov.ca.cwds.rest.api.domain.Address> newAddresses = new HashSet<>();
     addresses = clientParticipant.getAddresses();

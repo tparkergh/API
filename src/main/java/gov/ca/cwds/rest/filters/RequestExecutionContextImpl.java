@@ -39,7 +39,7 @@ class RequestExecutionContextImpl implements RequestExecutionContext {
   private RequestExecutionContextImpl(PerryUserIdentity userIdentity) {
     put(Parameter.REQUEST_START_TIME, new Date());
     put(Parameter.USER_IDENTITY, userIdentity);
-    put(Parameter.SEQUENCE_EXTERNAL_TABLE, new Integer(0));
+    put(Parameter.SEQUENCE_EXTERNAL_TABLE, Integer.valueOf(0));
   }
 
   /**

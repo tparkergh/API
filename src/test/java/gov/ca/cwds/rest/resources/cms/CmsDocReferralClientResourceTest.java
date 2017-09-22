@@ -12,8 +12,9 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.mockito.Mockito;
 
-import gov.ca.cwds.rest.resources.ResourceDelegate;
+import gov.ca.cwds.rest.api.domain.cms.CmsDocReferralClient;
 import gov.ca.cwds.rest.resources.ServiceBackedResourceDelegate;
+import gov.ca.cwds.rest.resources.TypedResourceDelegate;
 import io.dropwizard.testing.junit.ResourceTestRule;
 
 
@@ -30,15 +31,16 @@ public class CmsDocReferralClientResourceTest {
   @Rule
   public ExpectedException thrown = ExpectedException.none();
 
-  private final static ResourceDelegate resourceDelegate = mock(ResourceDelegate.class);
+  private final static TypedResourceDelegate<String, CmsDocReferralClient> typedResourceDelegate =
+      mock(TypedResourceDelegate.class);
 
   @ClassRule
   public final static ResourceTestRule inMemoryResource = ResourceTestRule.builder()
-      .addResource(new CmsDocReferralClientResource(resourceDelegate)).build();
+      .addResource(new CmsDocReferralClientResource(typedResourceDelegate)).build();
 
   @Before
   public void setup() throws Exception {
-    Mockito.reset(resourceDelegate);
+    Mockito.reset(typedResourceDelegate);
   }
 
   /**
@@ -50,7 +52,7 @@ public class CmsDocReferralClientResourceTest {
   public void getDelegatesToResourceDelegate() throws Exception {
     inMemoryResource.client().target(FOUND_RESOURCE).request().accept(MediaType.APPLICATION_JSON)
         .get();
-    verify(resourceDelegate).get("abc");
+    verify(typedResourceDelegate).get("abc");
   }
 
   /**
