@@ -29,6 +29,7 @@ import gov.ca.cwds.rest.validation.OnlyIf;
 // import gov.ca.cwds.rest.validation.Zipcode;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
+import org.joda.time.DateTime;
 
 /**
  * {@link DomainObject} representing a Reporter
@@ -49,6 +50,13 @@ public class Reporter extends ReportingDomain implements Request, Response {
    * Serialization version.
    */
   private static final long serialVersionUID = 1L;
+
+  @ApiModelProperty(required = false, readOnly = false, value = "Last Updated Time",
+      example = "2004-03-31T09:45:58.000-0800")
+
+
+  //TODO:ADD TESTS
+  private DateTime lastUpdatedTime;
 
   @NotEmpty
   @Size(min = CMS_ID_LEN, max = CMS_ID_LEN)
@@ -221,7 +229,8 @@ public class Reporter extends ReportingDomain implements Request, Response {
    * @param countySpecificCode county code
    */
   @JsonCreator
-  public Reporter(@JsonProperty("badgeNumber") String badgeNumber,
+  public Reporter( @JsonProperty("lastUpdatedTime") DateTime lastUpdatedTime,
+      @JsonProperty("badgeNumber") String badgeNumber,
       @JsonProperty("cityName") String cityName,
       @JsonProperty("colltrClientRptrReltnshpType") Short colltrClientRptrReltnshpType,
       @JsonProperty("communicationMethodType") Short communicationMethodType,
@@ -247,6 +256,7 @@ public class Reporter extends ReportingDomain implements Request, Response {
       @JsonProperty("zipSuffixNumber") Short zipSuffixNumber,
       @JsonProperty("countySpecificCode") String countySpecificCode) {
     super();
+    this.lastUpdatedTime = lastUpdatedTime;
     this.badgeNumber = badgeNumber;
     this.cityName = cityName;
     this.colltrClientRptrReltnshpType = colltrClientRptrReltnshpType;
@@ -280,6 +290,7 @@ public class Reporter extends ReportingDomain implements Request, Response {
    * @param persistedReporter - persisted Report object
    */
   public Reporter(gov.ca.cwds.data.persistence.cms.Reporter persistedReporter) {
+    this.lastUpdatedTime = new DateTime(persistedReporter.getLastUpdatedTime());
     this.referralId = persistedReporter.getReferralId().trim();
     this.badgeNumber = persistedReporter.getBadgeNumber();
     this.cityName = persistedReporter.getCityName();
@@ -352,8 +363,13 @@ public class Reporter extends ReportingDomain implements Request, Response {
       }
     }
     String city = address.getCity();
+    DateTime updated = null;
+    if(participant.getLegacyDescriptor() != null){
+      updated = participant.getLegacyDescriptor().getLastUpdated();
+    }
 
-    return new Reporter("", city, DEFAULT_CODE, DEFAULT_CODE,
+    return new Reporter(updated,"", city,
+        DEFAULT_CODE, DEFAULT_CODE,
         participant.isReporterConfidentialWaiver(), "", participant.getReporterEmployerName(), "",
         Boolean.FALSE, participant.getFirstName(), participant.getLastName(), isMandatedReporter, 0,
         DEFAULT_DECIMAL, participant.getMiddleName(), "", DEFAULT_DECIMAL, 0,
@@ -548,6 +564,12 @@ public class Reporter extends ReportingDomain implements Request, Response {
    */
   public String getCountySpecificCode() {
     return countySpecificCode;
+  }
+/**
+   * @return the countySpecificCode
+   */
+  public DateTime getLastUpdatedTime(){
+    return lastUpdatedTime;
   }
 
   /**

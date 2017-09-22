@@ -413,9 +413,8 @@ public class DataAccessModule extends AbstractModule {
       for (String esConfigKey : esConfigs.keySet()) {
         ElasticsearchConfiguration config = esConfigs.get(esConfigKey);
 
-        try {
-          TransportClient transportClient = new PreBuiltTransportClient(
-              Settings.builder().put("cluster.name", config.getElasticsearchCluster()).build());
+        try( TransportClient transportClient = new PreBuiltTransportClient(
+              Settings.builder().put("cluster.name", config.getElasticsearchCluster()).build()); ) {
           transportClient.addTransportAddress(
               new InetSocketTransportAddress(InetAddress.getByName(config.getElasticsearchHost()),
                   Integer.parseInt(config.getElasticsearchPort())));

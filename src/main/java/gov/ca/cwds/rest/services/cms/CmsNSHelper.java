@@ -3,6 +3,7 @@ package gov.ca.cwds.rest.services.cms;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
 import org.hibernate.context.internal.ManagedSessionContext;
@@ -42,9 +43,8 @@ public class CmsNSHelper {
     Response referral = null;
     Response person;
 
-    org.hibernate.Session sessionCMS = cmsSessionFactory.openSession();
-    org.hibernate.Session sessionNS = nsSessionFactory.openSession();
-    try {
+    try( Session sessionCMS = cmsSessionFactory.openSession();
+         Session sessionNS = nsSessionFactory.openSession(); ) {
       ManagedSessionContext.bind(sessionCMS); // NOSONAR
       Transaction transactionCMS = sessionCMS.beginTransaction();
       for (CrudsService service : cmsRequests.keySet()) {
@@ -78,8 +78,6 @@ public class CmsNSHelper {
         }
       }
     } finally {
-      sessionCMS.close();
-      sessionNS.close();
       ManagedSessionContext.unbind(cmsSessionFactory); // NOSONAR
       ManagedSessionContext.unbind(nsSessionFactory); // NOSONAR
 

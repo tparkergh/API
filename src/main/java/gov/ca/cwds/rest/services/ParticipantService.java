@@ -165,6 +165,8 @@ public class ParticipantService implements CrudsService {
                   timestamp, screeningToReferral.getIncidentCounty(), messageBuilder);
               incomingParticipant.setLegacyId(savedReporter.getReferralId());
               incomingParticipant.setLegacySourceTable(REPORTER_TABLE_NAME);
+              incomingParticipant.getLegacyDescriptor()
+                    .setLastUpdated(savedReporter.getLastUpdatedTime());
             } catch (ServiceException e) {
               String message = e.getMessage();
               messageBuilder.addMessageAndLog(message, e, LOGGER);
