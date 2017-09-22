@@ -5,6 +5,9 @@ import java.math.BigDecimal;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
+import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
+
 import gov.ca.cwds.data.persistence.cms.CmsPersistentObject;
 import gov.ca.cwds.rest.api.Request;
 import gov.ca.cwds.rest.api.Response;
@@ -42,7 +45,6 @@ public class Address extends ReportingDomain implements Request, Response {
   private static final BigDecimal DEFAULT_DECIMAL = new BigDecimal(0);
   private static final int DEFAULT_INT = 0;
   private static final short DEFAULT_CODE = 0;
-
 
   /**
    * Base serialization value. Increment by version
@@ -132,7 +134,7 @@ public class Address extends ReportingDomain implements Request, Response {
    * default constructor
    */
   public Address() {
-
+    // no opt
   }
 
   /**
@@ -234,7 +236,7 @@ public class Address extends ReportingDomain implements Request, Response {
   public static Address createWithDefaults(gov.ca.cwds.rest.api.domain.Address address) {
     // TODO: 41511573 address parsing - Smarty Streets Free Form display requires standardizing
     // parsing to fields in CMS
-    int zipCode = Integer.parseInt(address.getZip());
+    int zipCode = Integer.valueOf(address.getZip());
     short zipSuffix = 0;
     if (address.getZip().length() > 5) {
       zipSuffix = Short.parseShort(address.getZip().substring(5));
@@ -248,7 +250,7 @@ public class Address extends ReportingDomain implements Request, Response {
     String streetNumber = null;
     String streetName = null;
     int index;
-    if ((index = address.getStreetAddress().indexOf(" ")) > 0) {
+    if ((index = address.getStreetAddress().indexOf(' ')) > 0) {
       streetNumber = address.getStreetAddress().substring(0, index);
       if (!streetNumber.chars().allMatch(Character::isDigit)) {
         streetNumber = null;
@@ -425,214 +427,24 @@ public class Address extends ReportingDomain implements Request, Response {
     return unitNumber;
   }
 
-
-  /*
-   * (non-Javadoc)
-   * 
+  /**
+   * {@inheritDoc}
+   *
    * @see java.lang.Object#hashCode()
    */
   @Override
   public final int hashCode() {
-    final int PRIME = 31;
-    int result = 1;
-    result = PRIME * result + ((existingAddressId == null) ? 0 : existingAddressId.hashCode());
-    result = PRIME * result + ((addressDescription == null) ? 0 : addressDescription.hashCode());
-    result = PRIME * result + ((city == null) ? 0 : city.hashCode());
-    result = PRIME * result + ((emergencyExtension == null) ? 0 : emergencyExtension.hashCode());
-    result = PRIME * result + ((emergencyNumber == null) ? 0 : emergencyNumber.hashCode());
-    result = PRIME * result + ((frgAdrtB == null) ? 0 : frgAdrtB.hashCode());
-    result = PRIME * result + ((governmentEntityCd == null) ? 0 : governmentEntityCd.hashCode());
-    result = PRIME * result + ((headerAddress == null) ? 0 : headerAddress.hashCode());
-    result = PRIME * result + ((messageExtension == null) ? 0 : messageExtension.hashCode());
-    result = PRIME * result + ((messageNumber == null) ? 0 : messageNumber.hashCode());
-    result = PRIME * result + ((postDirCd == null) ? 0 : postDirCd.hashCode());
-    result = PRIME * result + ((preDirCd == null) ? 0 : preDirCd.hashCode());
-    result = PRIME * result + ((primaryExtension == null) ? 0 : primaryExtension.hashCode());
-    result = PRIME * result + ((primaryNumber == null) ? 0 : primaryNumber.hashCode());
-    result = PRIME * result + ((state == null) ? 0 : state.hashCode());
-    result = PRIME * result + ((streetName == null) ? 0 : streetName.hashCode());
-    result = PRIME * result + ((streetNumber == null) ? 0 : streetNumber.hashCode());
-    result = PRIME * result + ((streetSuffixCd == null) ? 0 : streetSuffixCd.hashCode());
-    result = PRIME * result + ((unitDesignationCd == null) ? 0 : unitDesignationCd.hashCode());
-    result = PRIME * result + ((unitNumber == null) ? 0 : unitNumber.hashCode());
-    result = PRIME * result + ((zip == null) ? 0 : zip.hashCode());
-    result = PRIME * result + ((zip4 == null) ? 0 : zip4.hashCode());
-    return result;
+    return HashCodeBuilder.reflectionHashCode(this, false);
   }
 
-
-  /*
-   * (non-Javadoc)
-   * 
+  /**
+   * {@inheritDoc}
+   *
    * @see java.lang.Object#equals(java.lang.Object)
    */
   @Override
   public final boolean equals(Object obj) {
-    if (this == obj) {
-      return true;
-    }
-    if (obj == null) {
-      return false;
-    }
-    if (!(obj instanceof Address)) {
-      return false;
-    }
-    Address other = (Address) obj;
-    if (addressDescription == null) {
-      if (other.addressDescription != null) {
-        return false;
-      }
-    } else if (!addressDescription.equals(other.addressDescription)) {
-      return false;
-    }
-    if (existingAddressId == null) {
-      if (other.existingAddressId != null) {
-        return false;
-      }
-    } else if (!existingAddressId.equals(other.existingAddressId)) {
-      return false;
-    }
-    if (city == null) {
-      if (other.city != null) {
-        return false;
-      }
-    } else if (!city.equals(other.city)) {
-      return false;
-    }
-    if (emergencyExtension == null) {
-      if (other.emergencyExtension != null) {
-        return false;
-      }
-    } else if (!emergencyExtension.equals(other.emergencyExtension)) {
-      return false;
-    }
-    if (emergencyNumber == null) {
-      if (other.emergencyNumber != null) {
-        return false;
-      }
-    } else if (!emergencyNumber.equals(other.emergencyNumber)) {
-      return false;
-    }
-    if (frgAdrtB == null) {
-      if (other.frgAdrtB != null) {
-        return false;
-      }
-    } else if (!frgAdrtB.equals(other.frgAdrtB)) {
-      return false;
-    }
-    if (governmentEntityCd == null) {
-      if (other.governmentEntityCd != null) {
-        return false;
-      }
-    } else if (!governmentEntityCd.equals(other.governmentEntityCd)) {
-      return false;
-    }
-    if (headerAddress == null) {
-      if (other.headerAddress != null) {
-        return false;
-      }
-    } else if (!headerAddress.equals(other.headerAddress)) {
-      return false;
-    }
-    if (messageExtension == null) {
-      if (other.messageExtension != null) {
-        return false;
-      }
-    } else if (!messageExtension.equals(other.messageExtension)) {
-      return false;
-    }
-    if (messageNumber == null) {
-      if (other.messageNumber != null) {
-        return false;
-      }
-    } else if (!messageNumber.equals(other.messageNumber)) {
-      return false;
-    }
-    if (postDirCd == null) {
-      if (other.postDirCd != null) {
-        return false;
-      }
-    } else if (!postDirCd.equals(other.postDirCd)) {
-      return false;
-    }
-    if (preDirCd == null) {
-      if (other.preDirCd != null) {
-        return false;
-      }
-    } else if (!preDirCd.equals(other.preDirCd)) {
-      return false;
-    }
-    if (primaryExtension == null) {
-      if (other.primaryExtension != null) {
-        return false;
-      }
-    } else if (!primaryExtension.equals(other.primaryExtension)) {
-      return false;
-    }
-    if (primaryNumber == null) {
-      if (other.primaryNumber != null) {
-        return false;
-      }
-    } else if (!primaryNumber.equals(other.primaryNumber)) {
-      return false;
-    }
-    if (state == null) {
-      if (other.state != null) {
-        return false;
-      }
-    } else if (!state.equals(other.state)) {
-      return false;
-    }
-    if (streetName == null) {
-      if (other.streetName != null) {
-        return false;
-      }
-    } else if (!streetName.equals(other.streetName)) {
-      return false;
-    }
-    if (streetNumber == null) {
-      if (other.streetNumber != null) {
-        return false;
-      }
-    } else if (!streetNumber.equals(other.streetNumber)) {
-      return false;
-    }
-    if (streetSuffixCd == null) {
-      if (other.streetSuffixCd != null) {
-        return false;
-      }
-    } else if (!streetSuffixCd.equals(other.streetSuffixCd)) {
-      return false;
-    }
-    if (unitDesignationCd == null) {
-      if (other.unitDesignationCd != null) {
-        return false;
-      }
-    } else if (!unitDesignationCd.equals(other.unitDesignationCd)) {
-      return false;
-    }
-    if (unitNumber == null) {
-      if (other.unitNumber != null) {
-        return false;
-      }
-    } else if (!unitNumber.equals(other.unitNumber)) {
-      return false;
-    }
-    if (zip == null) {
-      if (other.zip != null) {
-        return false;
-      }
-    } else if (!zip.equals(other.zip)) {
-      return false;
-    }
-    if (zip4 == null) {
-      if (other.zip4 != null) {
-        return false;
-      }
-    } else if (!zip4.equals(other.zip4)) {
-      return false;
-    }
-    return true;
+    return EqualsBuilder.reflectionEquals(this, obj, false);
   }
 
 }

@@ -1,11 +1,5 @@
 package gov.ca.cwds.rest.api.domain.investigation;
 
-import gov.ca.cwds.rest.api.Response;
-import gov.ca.cwds.rest.api.domain.DomainObject;
-import gov.ca.cwds.rest.api.domain.ReportingDomain;
-import io.dropwizard.jackson.JsonSnakeCase;
-import io.swagger.annotations.ApiModelProperty;
-
 import javax.validation.constraints.Size;
 
 import org.apache.commons.lang3.builder.EqualsBuilder;
@@ -14,6 +8,12 @@ import org.hibernate.validator.constraints.NotEmpty;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
+
+import gov.ca.cwds.rest.api.Response;
+import gov.ca.cwds.rest.api.domain.DomainObject;
+import gov.ca.cwds.rest.api.domain.ReportingDomain;
+import io.dropwizard.jackson.JsonSnakeCase;
+import io.swagger.annotations.ApiModelProperty;
 
 /**
  * {@link DomainObject} representing a Simple Person With Relationship
@@ -48,7 +48,6 @@ public class SimplePersonWithRelationship extends ReportingDomain implements Res
   @ApiModelProperty(required = false, readOnly = false, value = "", example = "R")
   private String sensitivityIndicator;
 
-
   /**
    * Constructor
    * 
@@ -66,16 +65,12 @@ public class SimplePersonWithRelationship extends ReportingDomain implements Res
     this.sensitivityIndicator = sensitivityIndicator;
   }
 
-
-
   /**
    * @return the relationship
    */
   public String getRelationship() {
     return relationship;
   }
-
-
 
   /**
    * @return the firstName
@@ -84,8 +79,6 @@ public class SimplePersonWithRelationship extends ReportingDomain implements Res
     return firstName;
   }
 
-
-
   /**
    * @return the lastName
    */
@@ -93,16 +86,12 @@ public class SimplePersonWithRelationship extends ReportingDomain implements Res
     return lastName;
   }
 
-
-
   /**
    * @return the sensitivityIndicator
    */
   public String getSensitivityIndicator() {
     return sensitivityIndicator;
   }
-
-
 
   /**
    * {@inheritDoc}

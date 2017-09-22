@@ -2,6 +2,8 @@ package gov.ca.cwds.rest.api.domain.investigation;
 
 import javax.validation.constraints.Size;
 
+import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.hibernate.validator.constraints.NotBlank;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -106,63 +108,24 @@ public final class RelationshipTo {
     return legacyDescriptor;
   }
 
-
+  /**
+   * {@inheritDoc}
+   *
+   * @see java.lang.Object#hashCode()
+   */
   @Override
-  public int hashCode() {
-    final int prime = 31;
-    int result = 1;
-    result = prime * result + ((legacyDescriptor == null) ? 0 : legacyDescriptor.hashCode());
-    result = prime * result + ((relatedFirstName == null) ? 0 : relatedFirstName.hashCode());
-    result = prime * result + ((relatedLastName == null) ? 0 : relatedLastName.hashCode());
-    result = prime * result
-        + ((relatedPersonRelationship == null) ? 0 : relatedPersonRelationship.hashCode());
-    result = prime * result + ((relationshipContext == null) ? 0 : relationshipContext.hashCode());
-    result =
-        prime * result + ((relationshipToPerson == null) ? 0 : relationshipToPerson.hashCode());
-    return result;
+  public final int hashCode() {
+    return HashCodeBuilder.reflectionHashCode(this, false);
   }
 
-
+  /**
+   * {@inheritDoc}
+   *
+   * @see java.lang.Object#equals(java.lang.Object)
+   */
   @Override
-  public boolean equals(Object obj) {
-    if (this == obj)
-      return true;
-    if (obj == null)
-      return false;
-    if (getClass() != obj.getClass())
-      return false;
-    RelationshipTo other = (RelationshipTo) obj;
-    if (legacyDescriptor == null) {
-      if (other.legacyDescriptor != null)
-        return false;
-    } else if (!legacyDescriptor.equals(other.legacyDescriptor))
-      return false;
-    if (relatedFirstName == null) {
-      if (other.relatedFirstName != null)
-        return false;
-    } else if (!relatedFirstName.equals(other.relatedFirstName))
-      return false;
-    if (relatedLastName == null) {
-      if (other.relatedLastName != null)
-        return false;
-    } else if (!relatedLastName.equals(other.relatedLastName))
-      return false;
-    if (relatedPersonRelationship == null) {
-      if (other.relatedPersonRelationship != null)
-        return false;
-    } else if (!relatedPersonRelationship.equals(other.relatedPersonRelationship))
-      return false;
-    if (relationshipContext == null) {
-      if (other.relationshipContext != null)
-        return false;
-    } else if (!relationshipContext.equals(other.relationshipContext))
-      return false;
-    if (relationshipToPerson == null) {
-      if (other.relationshipToPerson != null)
-        return false;
-    } else if (!relationshipToPerson.equals(other.relationshipToPerson))
-      return false;
-    return true;
+  public final boolean equals(Object obj) {
+    return EqualsBuilder.reflectionEquals(this, obj, false);
   }
 
 }

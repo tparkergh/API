@@ -54,10 +54,7 @@ public class EthnicityTest {
 
   @Test
   public void equalsHashCodeWork() throws Exception {
-    EqualsVerifier.forClass(Ethnicity.class)
-            .suppress(Warning.NONFINAL_FIELDS)
-            .withIgnoredFields("messages")
-            .verify();
+    EqualsVerifier.forClass(Ethnicity.class).suppress(Warning.NONFINAL_FIELDS).verify();
   }
 
   @Test

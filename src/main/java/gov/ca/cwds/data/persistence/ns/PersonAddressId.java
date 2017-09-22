@@ -6,6 +6,9 @@ import javax.persistence.CascadeType;
 import javax.persistence.Embeddable;
 import javax.persistence.ManyToOne;
 
+import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
+
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 /**
@@ -22,19 +25,19 @@ public class PersonAddressId implements Serializable {
    */
   private static final long serialVersionUID = 1L;
 
+  @JsonIgnore
+  @ManyToOne(cascade = CascadeType.ALL)
+  private Person person;
+
+  @ManyToOne(cascade = CascadeType.ALL)
+  private Address address;
+
   /**
    * Default constructor
    */
   public PersonAddressId() {
     super();
   }
-
-  @JsonIgnore
-  @ManyToOne(cascade = CascadeType.ALL)
-  private Person person; // NOSONAR
-
-  @ManyToOne(cascade = CascadeType.ALL)
-  private Address address; // NOSONAR
 
   /**
    * @return the person
@@ -70,35 +73,24 @@ public class PersonAddressId implements Serializable {
     return null;
   }
 
+  /**
+   * {@inheritDoc}
+   *
+   * @see java.lang.Object#hashCode()
+   */
   @Override
-  public int hashCode() {
-    final int PRIME = 31;
-    int result = 1;
-    result = PRIME * result + ((address == null) ? 0 : address.hashCode());
-    result = PRIME * result + ((person == null) ? 0 : person.hashCode());
-    return result;
+  public final int hashCode() {
+    return HashCodeBuilder.reflectionHashCode(this, false);
   }
 
+  /**
+   * {@inheritDoc}
+   *
+   * @see java.lang.Object#equals(java.lang.Object)
+   */
   @Override
-  public boolean equals(Object obj) {
-    if (this == obj)
-      return true;
-    if (obj == null)
-      return false;
-    if (getClass() != obj.getClass())
-      return false;
-    PersonAddressId other = (PersonAddressId) obj;
-    if (address == null) {
-      if (other.address != null)
-        return false;
-    } else if (!address.equals(other.address))
-      return false;
-    if (person == null) {
-      if (other.person != null)
-        return false;
-    } else if (!person.equals(other.person))
-      return false;
-    return true;
+  public final boolean equals(Object obj) {
+    return EqualsBuilder.reflectionEquals(this, obj, false);
   }
 
 }

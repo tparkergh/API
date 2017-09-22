@@ -161,7 +161,7 @@ public class ClientAddress extends BaseClientAddress {
    * @param id the id
    * @param clientAddress - clientAddress
    */
-  public void init(String id, gov.ca.cwds.rest.api.domain.cms.ClientAddress clientAddress) {
+  private void init(String id, gov.ca.cwds.rest.api.domain.cms.ClientAddress clientAddress) {
     try {
       this.id = id;
       this.addressType = clientAddress.getAddressType();

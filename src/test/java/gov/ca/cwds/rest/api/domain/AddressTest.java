@@ -83,7 +83,7 @@ public class AddressTest {
   @Test
   public void equalsHashCodeWork() throws Exception {
     EqualsVerifier.forClass(Address.class).suppress(Warning.NONFINAL_FIELDS, Warning.NULL_FIELDS)
-        .withIgnoredFields("messages").verify();
+        .verify();
   }
 
   @Test

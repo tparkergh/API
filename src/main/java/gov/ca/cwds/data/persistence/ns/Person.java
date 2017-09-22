@@ -102,8 +102,8 @@ public class Person extends NsPersistentObject
    * @param personRace The race of this person
    * @param personEthnicity the ethnicity of this person
    */
-  public Person(Long id, String firstName, String middleName, String lastName, String gender, Date dateOfBirth,
-      String ssn, Set<PersonAddress> personAddress, Set<PersonPhone> personPhone,
+  public Person(Long id, String firstName, String middleName, String lastName, String gender,
+      Date dateOfBirth, String ssn, Set<PersonAddress> personAddress, Set<PersonPhone> personPhone,
       Set<PersonLanguage> personLanguage, Set<PersonRace> personRace,
       Set<PersonEthnicity> personEthnicity) {
     super();
@@ -119,43 +119,6 @@ public class Person extends NsPersistentObject
     this.personLanguage = personLanguage;
     this.personRace = personRace;
     this.personEthnicity = personEthnicity;
-  }
-
-
-  /**
-   * @param personAddress - The personAddress
-   */
-  public void addPersonAddress(PersonAddress personAddress) {
-    this.personAddress.add(personAddress);
-  }
-
-  /**
-   * @param personPhone - The personPhone
-   */
-  public void addPersonPhone(PersonPhone personPhone) {
-    this.personPhone.add(personPhone);
-  }
-
-  /**
-   * @param personLanguage - The person language
-   */
-  public void addPersonLanguage(PersonLanguage personLanguage) {
-    this.personLanguage.add(personLanguage);
-  }
-
-  /**
-   * 
-   * @param personEthnicity - The person Ethnicity
-   */
-  public void addPersonEthnicity(PersonEthnicity personEthnicity) {
-    this.personEthnicity.add(personEthnicity);
-  }
-
-  /**
-   * @param personRace - The person race
-   */
-  public void addPersonRace(PersonRace personRace) {
-    this.personRace.add(personRace);
   }
 
   /**
@@ -209,6 +172,44 @@ public class Person extends NsPersistentObject
       }
     }
   }
+
+  /**
+   * @param personAddress - The personAddress
+   */
+  public void addPersonAddress(PersonAddress personAddress) {
+    this.personAddress.add(personAddress);
+  }
+
+  /**
+   * @param personPhone - The personPhone
+   */
+  public void addPersonPhone(PersonPhone personPhone) {
+    this.personPhone.add(personPhone);
+  }
+
+  /**
+   * @param personLanguage - The person language
+   */
+  public void addPersonLanguage(PersonLanguage personLanguage) {
+    this.personLanguage.add(personLanguage);
+  }
+
+  /**
+   * 
+   * @param personEthnicity - The person Ethnicity
+   */
+  public void addPersonEthnicity(PersonEthnicity personEthnicity) {
+    this.personEthnicity.add(personEthnicity);
+  }
+
+  /**
+   * @param personRace - The person race
+   */
+  public void addPersonRace(PersonRace personRace) {
+    this.personRace.add(personRace);
+  }
+
+
 
   /**
    * {@inheritDoc}

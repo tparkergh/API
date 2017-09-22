@@ -9,6 +9,8 @@ import java.text.SimpleDateFormat;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
+import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.hibernate.validator.constraints.NotEmpty;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
@@ -211,9 +213,10 @@ public class Assignment extends ReportingDomain implements Request, Response {
     final String startDate = df.format(date);
     final String startTime = timeOnlyFormat.format(date);
 
-    return new Assignment(countyCode, END_DATE, END_TIME, ESTABLISHED_FOR_CODE, referralId, caseLoadId,
-        OUT_OF_STATE_CONTACT_ID, RESPONSIBILITY_DESCRIPTION, SECONDARY_ASSIGNMENT_ROLE_TYPE, startDate,
-        startTime, TYPE_OF_ASSIGNMENT_CODE, WEIGHTING_NUMBER);
+    return new Assignment(countyCode, END_DATE, END_TIME, ESTABLISHED_FOR_CODE, referralId,
+        caseLoadId, OUT_OF_STATE_CONTACT_ID, RESPONSIBILITY_DESCRIPTION,
+        SECONDARY_ASSIGNMENT_ROLE_TYPE, startDate, startTime, TYPE_OF_ASSIGNMENT_CODE,
+        WEIGHTING_NUMBER);
   }
 
   /**
@@ -307,105 +310,24 @@ public class Assignment extends ReportingDomain implements Request, Response {
     return weightingNumber;
   }
 
+  /**
+   * {@inheritDoc}
+   *
+   * @see java.lang.Object#hashCode()
+   */
   @Override
   public final int hashCode() {
-    final int PRIME = 31;
-    int result = 1;
-    result = PRIME * result + ((caseLoadId == null) ? 0 : caseLoadId.hashCode());
-    result = PRIME * result + ((countySpecificCode == null) ? 0 : countySpecificCode.hashCode());
-    result = PRIME * result + ((endDate == null) ? 0 : endDate.hashCode());
-    result = PRIME * result + ((endTime == null) ? 0 : endTime.hashCode());
-    result = PRIME * result + ((establishedForCode == null) ? 0 : establishedForCode.hashCode());
-    result = PRIME * result + ((establishedForId == null) ? 0 : establishedForId.hashCode());
-    result = PRIME * result + ((outOfStateContactId == null) ? 0 : outOfStateContactId.hashCode());
-    result = PRIME * result
-        + ((responsibilityDescription == null) ? 0 : responsibilityDescription.hashCode());
-    result = PRIME * result
-        + ((secondaryAssignmentRoleType == null) ? 0 : secondaryAssignmentRoleType.hashCode());
-    result = PRIME * result + ((startDate == null) ? 0 : startDate.hashCode());
-    result = PRIME * result + ((startTime == null) ? 0 : startTime.hashCode());
-    result =
-        PRIME * result + ((typeOfAssignmentCode == null) ? 0 : typeOfAssignmentCode.hashCode());
-    result = PRIME * result + ((weightingNumber == null) ? 0 : weightingNumber.hashCode());
-    return result;
+    return HashCodeBuilder.reflectionHashCode(this, false);
   }
 
+  /**
+   * {@inheritDoc}
+   *
+   * @see java.lang.Object#equals(java.lang.Object)
+   */
   @Override
   public final boolean equals(Object obj) {
-    if (this == obj)
-      return true;
-    if (obj == null)
-      return false;
-    if (!(obj instanceof Assignment)) {
-      return false;
-    }
-    Assignment other = (Assignment) obj;
-    if (caseLoadId == null) {
-      if (other.caseLoadId != null)
-        return false;
-    } else if (!caseLoadId.equals(other.caseLoadId))
-      return false;
-    if (countySpecificCode == null) {
-      if (other.countySpecificCode != null)
-        return false;
-    } else if (!countySpecificCode.equals(other.countySpecificCode))
-      return false;
-    if (endDate == null) {
-      if (other.endDate != null)
-        return false;
-    } else if (!endDate.equals(other.endDate))
-      return false;
-    if (endTime == null) {
-      if (other.endTime != null)
-        return false;
-    } else if (!endTime.equals(other.endTime))
-      return false;
-    if (establishedForCode == null) {
-      if (other.establishedForCode != null)
-        return false;
-    } else if (!establishedForCode.equals(other.establishedForCode))
-      return false;
-    if (establishedForId == null) {
-      if (other.establishedForId != null)
-        return false;
-    } else if (!establishedForId.equals(other.establishedForId))
-      return false;
-    if (outOfStateContactId == null) {
-      if (other.outOfStateContactId != null)
-        return false;
-    } else if (!outOfStateContactId.equals(other.outOfStateContactId))
-      return false;
-    if (responsibilityDescription == null) {
-      if (other.responsibilityDescription != null)
-        return false;
-    } else if (!responsibilityDescription.equals(other.responsibilityDescription))
-      return false;
-    if (secondaryAssignmentRoleType == null) {
-      if (other.secondaryAssignmentRoleType != null)
-        return false;
-    } else if (!secondaryAssignmentRoleType.equals(other.secondaryAssignmentRoleType))
-      return false;
-    if (startDate == null) {
-      if (other.startDate != null)
-        return false;
-    } else if (!startDate.equals(other.startDate))
-      return false;
-    if (startTime == null) {
-      if (other.startTime != null)
-        return false;
-    } else if (!startTime.equals(other.startTime))
-      return false;
-    if (typeOfAssignmentCode == null) {
-      if (other.typeOfAssignmentCode != null)
-        return false;
-    } else if (!typeOfAssignmentCode.equals(other.typeOfAssignmentCode))
-      return false;
-    if (weightingNumber == null) {
-      if (other.weightingNumber != null)
-        return false;
-    } else if (!weightingNumber.equals(other.weightingNumber))
-      return false;
-    return true;
+    return EqualsBuilder.reflectionEquals(this, obj, false);
   }
 
 }

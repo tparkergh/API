@@ -1,7 +1,5 @@
 package gov.ca.cwds.data.persistence.ns;
 
-import gov.ca.cwds.data.ns.NsPersistentObject;
-
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -14,6 +12,8 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
+
+import gov.ca.cwds.data.ns.NsPersistentObject;
 
 /**
  * {@link NsPersistentObject} representing an Address
@@ -70,7 +70,7 @@ public class Participant extends NsPersistentObject {
   public Participant(gov.ca.cwds.rest.api.domain.Participant participant, String lastUpdatedId,
       String createUserId) {
     super(lastUpdatedId, createUserId);
-//    this.personId = participant.getPersonId();
+    // this.personId = participant.getPersonId();
     this.screeningId = participant.getScreeningId();
   }
 
@@ -83,7 +83,7 @@ public class Participant extends NsPersistentObject {
   public Participant(gov.ca.cwds.rest.api.domain.Participant participant, String lastUpdatedId,
       String createUserId, Person person) {
     super(lastUpdatedId, createUserId);
-//    this.personId = participant.getPersonId();
+    // this.personId = participant.getPersonId();
     this.screeningId = participant.getScreeningId();
     this.person = person;
   }
@@ -137,6 +137,5 @@ public class Participant extends NsPersistentObject {
   public Person getPerson() {
     return person;
   }
-
 
 }
