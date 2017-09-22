@@ -11,6 +11,7 @@ import java.io.OutputStream;
 
 import javax.xml.bind.DatatypeConverter;
 
+import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
@@ -83,15 +84,25 @@ public class CmsPKCompressor {
       throw new IOException("REQUIRED: file names cannot be null");
     }
 
-    final FileInputStream fis = new FileInputStream(new File(inputFileName));
+//    String foo = FilenameUtils.getName(inputFileName);
+//    File bar = new File(inputFileName);
+//    File baz =  new File( FilenameUtils.getName(inputFileName));
+
+//    File foo = createFile(inputFileName);
+    final FileInputStream fis = new FileInputStream(createFile(inputFileName));
     final InputStream iis = new InflateInputStream(fis, true);
-    final FileOutputStream fos = new FileOutputStream(new File(outputFileName));
+    final FileOutputStream fos = new FileOutputStream(createFile(outputFileName));
+//    final FileInputStream fis = new FileInputStream(new File(inputFileName));
+//    final InputStream iis = new InflateInputStream(fis, true);
+//    final FileOutputStream fos = new FileOutputStream(new File(outputFileName));
+
 
     IOUtils.copy(iis, fos);
 
     fis.close();
     fos.close();
   }
+
 
   /**
    * Decompress (inflate) raw bytes of a PK-compressed document.
@@ -188,8 +199,8 @@ public class CmsPKCompressor {
       throw new IOException("REQUIRED: file names cannot be null");
     }
 
-    final FileInputStream fis = new FileInputStream(new File(inputFileName));
-    final OutputStream fos = new DeflateOutputStream(new FileOutputStream(new File(outputFileName)),
+    final FileInputStream fis = new FileInputStream(createFile(inputFileName));
+    final OutputStream fos = new DeflateOutputStream(new FileOutputStream(createFile(outputFileName)),
         DEFAULT_COMPRESSION_LEVEL, true);
 
     IOUtils.copy(fis, fos);
@@ -220,6 +231,10 @@ public class CmsPKCompressor {
     dos.close();
 
     return bos.toByteArray();
+  }
+
+  private File createFile(String file){
+    return new File( FilenameUtils.getFullPath(file), FilenameUtils.getName(file));
   }
 
 }

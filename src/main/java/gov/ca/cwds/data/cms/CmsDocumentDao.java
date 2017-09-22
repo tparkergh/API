@@ -140,8 +140,16 @@ public class CmsDocumentDao extends BaseDaoImpl<CmsDocument> {
 
       // For security reasons, remove temporary documents immediately.
       // TODO: pass bytes to C++ library instead of file names.
-      src.delete();
-      tgt.delete();
+      boolean srcDeletedSuccessfully = src.delete();
+      if(!srcDeletedSuccessfully){
+        LOGGER.warn("Unable to delete compressed file" + src.getAbsolutePath() );
+      }
+
+      boolean tgtDeletedSuccessfully = tgt.delete();
+
+      if(!srcDeletedSuccessfully){
+        LOGGER.warn("Unable to delete doc file" + tgt.getAbsolutePath() );
+      }
 
     } catch (Exception e) {
       errorDecompressing(e);
