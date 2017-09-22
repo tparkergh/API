@@ -68,7 +68,7 @@ public class CmsNSReferralService implements CrudsService {
   @Override
   public Response create(Request request) {
 
-    assert request instanceof CmsReferral;
+    assert request instanceof CmsNSReferral;
     CmsNSReferral cmsReferral = (CmsNSReferral) request;
 
     CmsNSHelper helper = new CmsNSHelper(cmsSessionFactory, nsSessionFactory);

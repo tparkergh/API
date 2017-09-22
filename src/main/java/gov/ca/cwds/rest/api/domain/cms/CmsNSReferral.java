@@ -97,7 +97,7 @@ public class CmsNSReferral extends ReportingDomain implements Request, Response 
     if (obj == null) {
       return false;
     }
-    if (!(obj instanceof CmsReferral)) {
+    if (!(obj instanceof CmsNSReferral)) {
       return false;
     }
     CmsNSReferral other = (CmsNSReferral) obj;
