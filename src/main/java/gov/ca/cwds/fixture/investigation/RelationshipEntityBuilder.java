@@ -14,7 +14,7 @@ public class RelationshipEntityBuilder {
 
   private String tableName = "CLIENT_T";
   private String id = "1234567ABC";
-  private DateTime now = new DateTime();
+  DateTime now = new DateTime();
 
   private LegacyDescriptor legacyDescriptor =
       new LegacyDescriptor(id, "111-222-333-4444", now, tableName, "Client");
@@ -26,7 +26,7 @@ public class RelationshipEntityBuilder {
   private Boolean sensitive;
   private Boolean sealed;
   private RelationshipTo relationshipTo = new RelationshipToEntityBuilder().build();
-  private Set<RelationshipTo> relationshipsTo = new LinkedHashSet();
+  private Set<RelationshipTo> relationshipsTo = new LinkedHashSet<>();
 
   public Relationship build() {
     relationshipsTo.add(relationshipTo);

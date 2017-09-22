@@ -256,8 +256,8 @@ public class DeliveredServiceDomain extends ReportingDomain implements Request, 
     this.coreServiceIndicator =
         DomainChef.uncookBooleanString(persistedDeliverdService.getCoreServiceIndicator());
     this.communicationMethodType =
-        new Integer(persistedDeliverdService.getCommunicationMethodType());
-    this.contactLocationType = new Integer(persistedDeliverdService.getContactLocationType());
+        Integer.valueOf(persistedDeliverdService.getCommunicationMethodType());
+    this.contactLocationType = Integer.valueOf(persistedDeliverdService.getContactLocationType());
     this.contactVisitCode = persistedDeliverdService.getContactVisitCode();
     this.countySpecificCode = persistedDeliverdService.getCountySpecificCode();
     this.detailText = persistedDeliverdService.getDetailText();
@@ -269,7 +269,7 @@ public class DeliveredServiceDomain extends ReportingDomain implements Request, 
     this.otherParticipantsDesc = persistedDeliverdService.getOtherParticipantsDesc();
     this.providedByCode = persistedDeliverdService.getProvidedByCode();
     this.providedById = persistedDeliverdService.getProvidedById();
-    this.serviceContactType = new Integer(persistedDeliverdService.getServiceContactType());
+    this.serviceContactType = Integer.valueOf(persistedDeliverdService.getServiceContactType());
     this.startDate = DomainChef.cookDate(persistedDeliverdService.getStartDate());
     this.startTime = DomainChef.cookTime(persistedDeliverdService.getStartTime());
     this.statusCode = persistedDeliverdService.getStatusCode();

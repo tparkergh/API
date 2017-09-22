@@ -67,7 +67,6 @@ public class InvestigationsResource {
       @ApiResponse(code = 401, message = "Not Authorized"),
       @ApiResponse(code = 406, message = "Accept Header not supported"),
       @ApiResponse(code = 409, message = "Conflict - already exists")})
-  @Consumes(value = MediaType.APPLICATION_JSON)
   @ApiOperation(value = "Find Investigation", code = HttpStatus.SC_OK,
       response = Investigation.class)
   public Response find(@PathParam("id") @ApiParam(required = true, name = "id",

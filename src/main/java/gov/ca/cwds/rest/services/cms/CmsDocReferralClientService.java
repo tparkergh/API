@@ -1,6 +1,5 @@
 package gov.ca.cwds.rest.services.cms;
 
-import java.io.Serializable;
 import java.util.List;
 
 import org.apache.commons.lang3.NotImplementedException;
@@ -12,19 +11,16 @@ import com.google.inject.Inject;
 import gov.ca.cwds.data.cms.CmsDocReferralClientDao;
 import gov.ca.cwds.data.cms.CmsDocumentDao;
 import gov.ca.cwds.data.persistence.cms.CmsDocument;
-import gov.ca.cwds.rest.api.Request;
-import gov.ca.cwds.rest.api.Response;
-import gov.ca.cwds.rest.api.domain.PostedScreening;
-import gov.ca.cwds.rest.api.domain.ScreeningResponse;
 import gov.ca.cwds.rest.api.domain.cms.CmsDocReferralClient;
-import gov.ca.cwds.rest.services.CrudsService;
+import gov.ca.cwds.rest.services.TypedCrudsService;
 
 /**
  * Business layer object to work on {@link CmsDocReferralClient}.
  * 
  * @author CWDS API Team
  */
-public class CmsDocReferralClientService implements CrudsService {
+public class CmsDocReferralClientService
+    implements TypedCrudsService<String, CmsDocReferralClient, CmsDocReferralClient> {
 
   private static final Logger LOGGER = LoggerFactory.getLogger(CmsDocReferralClientService.class);
 
@@ -49,12 +45,10 @@ public class CmsDocReferralClientService implements CrudsService {
    * @see gov.ca.cwds.rest.services.CrudsService#find(java.io.Serializable)
    */
   @Override
-  public CmsDocReferralClient find(Serializable primaryKey) {
-    assert primaryKey instanceof String;
-
+  public CmsDocReferralClient find(String primaryKey) {
     CmsDocReferralClient retval = null;
 
-    final String key = (String) primaryKey;
+    final String key = primaryKey;
     LOGGER.info("primaryKey=", key);
     List<gov.ca.cwds.data.persistence.cms.CmsDocReferralClient> docs =
         dao.listDocReferralClient(key);
@@ -74,8 +68,7 @@ public class CmsDocReferralClientService implements CrudsService {
    * @see gov.ca.cwds.rest.services.CrudsService#delete(java.io.Serializable)
    */
   @Override
-  public Response delete(Serializable primaryKey) {
-    assert primaryKey instanceof String;
+  public CmsDocReferralClient delete(String primaryKey) {
     throw new NotImplementedException("Delete is not implemented");
   }
 
@@ -85,8 +78,7 @@ public class CmsDocReferralClientService implements CrudsService {
    * @see gov.ca.cwds.rest.services.CrudsService#create(gov.ca.cwds.rest.api.Request)
    */
   @Override
-  public PostedScreening create(Request request) {
-    // assert request instanceof ScreeningReference;
+  public CmsDocReferralClient create(CmsDocReferralClient request) {
     throw new NotImplementedException("Create is not implemented");
   }
 
@@ -97,9 +89,7 @@ public class CmsDocReferralClientService implements CrudsService {
    *      gov.ca.cwds.rest.api.Request)
    */
   @Override
-  public ScreeningResponse update(Serializable primaryKey, Request request) {
-    assert primaryKey instanceof Long;
-    // assert request instanceof ScreeningRequest;
+  public CmsDocReferralClient update(String primaryKey, CmsDocReferralClient request) {
     throw new NotImplementedException("Update is not implemented");
   }
 
