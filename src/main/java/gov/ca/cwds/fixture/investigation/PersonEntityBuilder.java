@@ -31,8 +31,8 @@ public class PersonEntityBuilder {
   private Short primaryLanguage = 1253;
   private Short secondaryLanguage = 1255;
   private RaceAndEthnicity raceAndEthnicity = new RaceAndEthnicityEntityBuilder().build();
-  private Boolean sensitive = false;
-  private Boolean sealed = false;
+  private Boolean sensitive = Boolean.FALSE;
+  private Boolean sealed = Boolean.FALSE;
   private DateTime now = new DateTime("2010-10-01T15:26:42.000-0700");
   private Short phoneType = 1111;
 
@@ -41,7 +41,7 @@ public class PersonEntityBuilder {
       new LegacyDescriptor("1234567ABC", "001-2000-3399-415790", now, "CLIENT_T", "Client");
 
   private PhoneNumber phone = new PhoneNumber(phoneNumber, 3322, phoneType, phoneLegacyDescriptor);
-  private Set<PhoneNumber> phoneNumbers = new HashSet<PhoneNumber>();
+  private Set<PhoneNumber> phoneNumbers = new HashSet<>();
   private Set<String> roles = new HashSet<>();
 
   private InvestigationAddress address = new InvestigationAddressEntityBuilder().build();

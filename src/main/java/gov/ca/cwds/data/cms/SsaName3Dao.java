@@ -149,7 +149,7 @@ public class SsaName3Dao {
 
       final String returnStatus = (String) q.getOutputParameterValue("RETSTATUS");
       final String returnMessage = (String) q.getOutputParameterValue("RETMESSAG");
-      int returnCode = Integer.valueOf(returnStatus);
+      int returnCode = Integer.parseInt(returnStatus);
 
       LOGGER.info("storeProcReturnStatus: {}, storeProcreturnMessage: {}", returnStatus,
           returnMessage);

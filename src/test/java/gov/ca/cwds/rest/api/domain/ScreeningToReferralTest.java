@@ -126,7 +126,7 @@ public class ScreeningToReferralTest {
     String expected = MAPPER.writeValueAsString(new ScreeningToReferral(id, "", "",
         "2016-08-03T01:00:00.000Z", SACRAMENTO_COUNTY_CODE, "2016-08-02", "Foster Home",
         communicationMethod, "The Rocky Horror Show", "Narrative 123 test", "123ABC", responseTime,
-        "2016-08-03T01:00:00.000Z", "Michael Bastow", "addtional information",
+        "2016-08-03T01:00:00.000Z", "Michael Bastow", "0X5", "addtional information",
         "Screening Descision", "Detail", approvalStatus, familyAwarness, filedWithLawEnforcement,
         responsibleAgency, "S", "", "23", null, address, participants, crossReports, allegations));
 
@@ -151,7 +151,7 @@ public class ScreeningToReferralTest {
     ScreeningToReferral expected = new ScreeningToReferral(id, "", "", "2016-08-03T01:00:00.000Z",
         SACRAMENTO_COUNTY_CODE, "2016-08-02", "Foster Home", communicationMethod,
         "The Rocky Horror Show", "Narrative 123 test", "123ABC", responseTime,
-        "2016-08-03T01:00:00.000Z", "Michael Bastow", "addtional information",
+        "2016-08-03T01:00:00.000Z", "Michael Bastow", "0X5", "addtional information",
         "Screening Descision", "Detail", approvalStatus, familyAwarness, filedWithLawEnforcement,
         responsibleAgency, "S", "", "23", null, address, participants, crossReports, allegations);
 

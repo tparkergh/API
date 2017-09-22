@@ -109,7 +109,7 @@ public class R04464CrossReportLawEnforcementDue {
     String time = timeFormat.format(referral.getReceivedTime());
     Calendar dueDate = Calendar.getInstance();
     dueDate.setTime(referral.getReceivedDate());
-    if (Integer.valueOf(time.split(":")[0]) < 12) {
+    if (Integer.parseInt(time.split(":")[0]) < 12) {
       dueDate.add(Calendar.HOUR, 36);
     } else {
       dueDate.add(Calendar.DATE, 2);

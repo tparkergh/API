@@ -33,7 +33,7 @@ import io.swagger.annotations.ApiModelProperty;
 @JsonSnakeCase
 @JsonPropertyOrder({"id", "legacySourceTable", "referralId", "endedAt", "incidentCounty",
     "incidentDate", "locationType", "communicationMethod", "email", "name", "reportNarrative",
-    "reference", "responseTime", "startedAt", "assignee", "additionalInformation",
+    "reference", "responseTime", "startedAt", "assignee", "assigneeId", "additionalInformation",
     "screeningDecision", "screeningDecisionDetail", "address", "participants", "crossReports",
     "allegations"})
 public class ScreeningToReferral extends ReportingDomain implements Request {
@@ -130,6 +130,12 @@ public class ScreeningToReferral extends ReportingDomain implements Request {
       example = "Mich Bastow")
   @Size(max = 50)
   private String assignee;
+
+  @JsonProperty("assignee_id")
+  @NotEmpty
+  @ApiModelProperty(required = true, readOnly = false, value = "q1p", example = "q1p")
+  @Size(min = 3, max = 3)
+  private String assigneeId;
 
   @JsonProperty("additional_information")
   @ApiModelProperty(required = false, readOnly = false, value = "Additional Information",
@@ -239,6 +245,7 @@ public class ScreeningToReferral extends ReportingDomain implements Request {
    * @param responseTime - response time
    * @param startedAt - response started at time
    * @param assignee - staff person assigned
+   * @param assigneeId - assignee Id
    * @param additionalInformation - additional information
    * @param screeningDecision - screening decesion
    * @param screeningDecisionDetail - screening decision detail
@@ -258,12 +265,12 @@ public class ScreeningToReferral extends ReportingDomain implements Request {
   public ScreeningToReferral(long id, String legacySourceTable, String referralId,
       @Date String endedAt, String incidentCounty, @Date String incidentDate, String locationType,
       Short communicationMethod, String name, String reportNarrative, String reference,
-      Short responseTime, @Date String startedAt, String assignee, String additionalInformation,
-      String screeningDecision, String screeningDecisionDetail, int approvalStatus,
-      boolean familyAwareness, boolean filedWithLawEnforcement, String responsibleAgency,
-      String limitedAccessCode, String limitedAccessDescription, String limitedAccessAgency,
-      java.util.Date limitedAccessDate, Address address, Set<Participant> participants,
-      Set<CrossReport> crossReports, Set<Allegation> allegations) {
+      Short responseTime, @Date String startedAt, String assignee, String assigneeId,
+      String additionalInformation, String screeningDecision, String screeningDecisionDetail,
+      int approvalStatus, boolean familyAwareness, boolean filedWithLawEnforcement,
+      String responsibleAgency, String limitedAccessCode, String limitedAccessDescription,
+      String limitedAccessAgency, java.util.Date limitedAccessDate, Address address,
+      Set<Participant> participants, Set<CrossReport> crossReports, Set<Allegation> allegations) {
     super();
     this.id = id;
     this.referralId = referralId;
@@ -279,6 +286,7 @@ public class ScreeningToReferral extends ReportingDomain implements Request {
     this.responseTime = responseTime;
     this.startedAt = startedAt;
     this.assignee = assignee;
+    this.assigneeId = assigneeId;
     this.additionalInformation = additionalInformation;
     this.screeningDecision = screeningDecision;
     this.screeningDecisionDetail = screeningDecisionDetail;
@@ -392,6 +400,13 @@ public class ScreeningToReferral extends ReportingDomain implements Request {
    */
   public String getAssignee() {
     return assignee;
+  }
+
+  /**
+   * @return assigneeId
+   */
+  public String getAssigneeId() {
+    return assigneeId;
   }
 
   /**
