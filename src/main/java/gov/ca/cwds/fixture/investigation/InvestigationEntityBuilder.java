@@ -44,6 +44,7 @@ public class InvestigationEntityBuilder {
   private BigDecimal phone = new BigDecimal(4445555);
   private Integer phoneExtension = 1122;
   private DateTime now = new DateTime("2010-10-01T15:26:42.000-0700");
+  private Short phoneType = 1111;
 
   private LegacyDescriptor legacyDescriptor =
       new LegacyDescriptor(id, "111-222-333-4444", now, tableName, "Referral");
@@ -52,7 +53,7 @@ public class InvestigationEntityBuilder {
 
   private Set<PhoneNumber> phoneNumbers = new HashSet<>();
   private PhoneNumber phoneNumber =
-      new PhoneNumber(phone, phoneExtension, "Home", legacyDescriptor);
+      new PhoneNumber(phone, phoneExtension, phoneType, legacyDescriptor);
 
   private LimitedAccess limitedAccess = new LimitedAccess("N", "20");
 
