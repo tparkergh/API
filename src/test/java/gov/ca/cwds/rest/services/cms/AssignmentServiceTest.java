@@ -37,6 +37,7 @@ import gov.ca.cwds.data.rules.TriggerTablesDao;
 import gov.ca.cwds.fixture.AssignmentResourceBuilder;
 import gov.ca.cwds.fixture.ReferralResourceBuilder;
 import gov.ca.cwds.rest.api.Response;
+import gov.ca.cwds.rest.api.domain.ScreeningToReferral;
 import gov.ca.cwds.rest.api.domain.cms.Assignment;
 import gov.ca.cwds.rest.api.domain.cms.PostedAssignment;
 import gov.ca.cwds.rest.api.domain.cms.Referral;
@@ -66,6 +67,7 @@ public class AssignmentServiceTest {
   private ReferralClientDao referralClientDao;
   private RIAssignment riAssignment;
   private MessageBuilder messageBuilder;
+  private ScreeningToReferral screeningToReferral;
 
   @Rule
   public ExpectedException thrown = ExpectedException.none();
@@ -84,11 +86,11 @@ public class AssignmentServiceTest {
     referralClientDao = mock(ReferralClientDao.class);
     riAssignment = mock(RIAssignment.class);
     messageBuilder = mock(MessageBuilder.class);
+    screeningToReferral = mock(ScreeningToReferral.class);
     nonLACountyTriggers =
         new NonLACountyTriggers(countyOwnershipDao, referralDao, referralClientDao);
     assignmentService = new AssignmentService(assignmentDao, nonLACountyTriggers, staffpersonDao,
         triggerTablesDao, staffPersonIdRetriever, validator, externalInterfaceTables, riAssignment);
-
 
   }
 
@@ -359,8 +361,8 @@ public class AssignmentServiceTest {
     when(assignmentDao.create(any(gov.ca.cwds.data.persistence.cms.Assignment.class)))
         .thenReturn(toCreate);
 
-    assignmentService.createDefaultAssignmentForNewReferral("ABC1234567", new Date(),
-        messageBuilder);
+    assignmentService.createDefaultAssignmentForNewReferral(screeningToReferral, "ABC1234567",
+        new Date(), messageBuilder);
     verify(assignmentDao, times(1)).create(any());
   }
 

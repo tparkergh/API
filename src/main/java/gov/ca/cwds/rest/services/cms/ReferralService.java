@@ -229,8 +229,8 @@ public class ReferralService implements
       referralId = postedReferral.getId();
 
       // when creating a referral - create the default assignment to 0XA staff person
-      assignmentService.createDefaultAssignmentForNewReferral(referralId, timestamp,
-          messageBuilder);
+      assignmentService.createDefaultAssignmentForNewReferral(screeningToReferral, referralId,
+          timestamp, messageBuilder);
       // TODO: R - 01054 Prmary Assignment Adding
 
     } else {

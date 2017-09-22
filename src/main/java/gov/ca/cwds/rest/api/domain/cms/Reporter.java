@@ -11,6 +11,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.hibernate.validator.constraints.NotEmpty;
+import org.joda.time.DateTime;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonFormat;
@@ -29,7 +30,6 @@ import gov.ca.cwds.rest.validation.OnlyIf;
 // import gov.ca.cwds.rest.validation.Zipcode;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
-import org.joda.time.DateTime;
 
 /**
  * {@link DomainObject} representing a Reporter
@@ -55,7 +55,7 @@ public class Reporter extends ReportingDomain implements Request, Response {
       example = "2004-03-31T09:45:58.000-0800")
 
 
-  //TODO:ADD TESTS
+  // TODO:ADD TESTS
   private DateTime lastUpdatedTime;
 
   @NotEmpty
@@ -200,6 +200,8 @@ public class Reporter extends ReportingDomain implements Request, Response {
   /**
    * Construct from all fields.
    * 
+   * @param lastUpdatedTime lastUpdatedTime
+   * 
    * @param badgeNumber badge number
    * @param cityName city name
    * @param colltrClientRptrReltnshpType ??
@@ -229,9 +231,8 @@ public class Reporter extends ReportingDomain implements Request, Response {
    * @param countySpecificCode county code
    */
   @JsonCreator
-  public Reporter( @JsonProperty("lastUpdatedTime") DateTime lastUpdatedTime,
-      @JsonProperty("badgeNumber") String badgeNumber,
-      @JsonProperty("cityName") String cityName,
+  public Reporter(@JsonProperty("lastUpdatedTime") DateTime lastUpdatedTime,
+      @JsonProperty("badgeNumber") String badgeNumber, @JsonProperty("cityName") String cityName,
       @JsonProperty("colltrClientRptrReltnshpType") Short colltrClientRptrReltnshpType,
       @JsonProperty("communicationMethodType") Short communicationMethodType,
       @JsonProperty("confidentialWaiverIndicator") Boolean confidentialWaiverIndicator,
@@ -364,12 +365,11 @@ public class Reporter extends ReportingDomain implements Request, Response {
     }
     String city = address.getCity();
     DateTime updated = null;
-    if(participant.getLegacyDescriptor() != null){
+    if (participant.getLegacyDescriptor() != null) {
       updated = participant.getLegacyDescriptor().getLastUpdated();
     }
 
-    return new Reporter(updated,"", city,
-        DEFAULT_CODE, DEFAULT_CODE,
+    return new Reporter(updated, "", city, DEFAULT_CODE, DEFAULT_CODE,
         participant.isReporterConfidentialWaiver(), "", participant.getReporterEmployerName(), "",
         Boolean.FALSE, participant.getFirstName(), participant.getLastName(), isMandatedReporter, 0,
         DEFAULT_DECIMAL, participant.getMiddleName(), "", DEFAULT_DECIMAL, 0,
@@ -565,10 +565,11 @@ public class Reporter extends ReportingDomain implements Request, Response {
   public String getCountySpecificCode() {
     return countySpecificCode;
   }
-/**
+
+  /**
    * @return the countySpecificCode
    */
-  public DateTime getLastUpdatedTime(){
+  public DateTime getLastUpdatedTime() {
     return lastUpdatedTime;
   }
 

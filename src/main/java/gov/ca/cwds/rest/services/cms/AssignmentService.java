@@ -19,10 +19,10 @@ import gov.ca.cwds.data.persistence.cms.CmsKeyIdGenerator;
 import gov.ca.cwds.data.persistence.cms.StaffPerson;
 import gov.ca.cwds.data.rules.TriggerTablesDao;
 import gov.ca.cwds.rest.api.Request;
+import gov.ca.cwds.rest.api.domain.ScreeningToReferral;
 import gov.ca.cwds.rest.api.domain.cms.PostedAssignment;
 import gov.ca.cwds.rest.business.rules.ExternalInterfaceTables;
 import gov.ca.cwds.rest.business.rules.NonLACountyTriggers;
-import gov.ca.cwds.rest.filters.RequestExecutionContext;
 import gov.ca.cwds.rest.messages.MessageBuilder;
 import gov.ca.cwds.rest.services.ServiceException;
 import gov.ca.cwds.rest.services.TypedCrudsService;
@@ -172,6 +172,7 @@ public class AssignmentService implements
   }
 
   /**
+   * @param screeningToReferral - screeningToReferral
    * @param referralId - referralId
    * @param timestamp - timestamp
    * @param messageBuilder - messageBuilder
@@ -179,8 +180,8 @@ public class AssignmentService implements
   // create a default assignment
   // R - 02473 Default Referral Assignment
   // R - 02160 Assignment - Caseload Access
-  public void createDefaultAssignmentForNewReferral(String referralId, Date timestamp,
-      MessageBuilder messageBuilder) {
+  public void createDefaultAssignmentForNewReferral(ScreeningToReferral screeningToReferral,
+      String referralId, Date timestamp, MessageBuilder messageBuilder) {
     // #146713651 - BARNEY: Referrals require a default assignment
     // Default Assignment - referrals will be assigned to the '0X5' staff person ID.
     //
@@ -196,8 +197,7 @@ public class AssignmentService implements
     //
     // On TESTDOM (CWSNS1) workstation this will find the CASE_LOAD/IDENTIFIER of OkAImUW0Wz
     //
-    final String caseLoadId =
-        assignmentDao.findCaseId(RequestExecutionContext.instance().getStaffId());
+    final String caseLoadId = assignmentDao.findCaseId(screeningToReferral.getAssigneeId());
     if (caseLoadId == null) {
       String message = "CaseLoad is not found for the staffperson";
       ServiceException se = new ServiceException(message);

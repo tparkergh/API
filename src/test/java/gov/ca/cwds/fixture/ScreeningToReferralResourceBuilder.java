@@ -36,6 +36,7 @@ public class ScreeningToReferralResourceBuilder {
   private Short responseTime = 1516;
   private String startedAt = dateTimeFormat.format(new Date());
   private String assignee = "Michael Bastow";
+  private String assigneeId = "0X5";
   private String additionalInformation = "additional information about the referral";
   private String screeningDecision = "Response time";
   private String screeningDecisionDetail = "Detail";
@@ -67,6 +68,118 @@ public class ScreeningToReferralResourceBuilder {
         new AllegationResourceBuilder().setInjuryHarmType(injuryHarmCategory).createAllegation();
     this.allegations = new HashSet<>(Arrays.asList(allegation));
 
+  }
+
+  public static DateFormat getDatetimeformat() {
+    return dateTimeFormat;
+  }
+
+  public long getId() {
+    return id;
+  }
+
+  public String getReferralId() {
+    return referralId;
+  }
+
+  public String getLegacySourceTable() {
+    return legacySourceTable;
+  }
+
+  public String getEndedAt() {
+    return endedAt;
+  }
+
+  public String getIncidentCounty() {
+    return incidentCounty;
+  }
+
+  public String getIncidentDate() {
+    return incidentDate;
+  }
+
+  public String getLocationType() {
+    return locationType;
+  }
+
+  public Short getCommunicationMethod() {
+    return communicationMethod;
+  }
+
+  public String getName() {
+    return name;
+  }
+
+  public String getReportNarrative() {
+    return reportNarrative;
+  }
+
+  public String getReference() {
+    return reference;
+  }
+
+  public Short getResponseTime() {
+    return responseTime;
+  }
+
+  public String getStartedAt() {
+    return startedAt;
+  }
+
+  public String getAssignee() {
+    return assignee;
+  }
+
+  public String getAssigneeId() {
+    return assigneeId;
+  }
+
+  public String getAdditionalInformation() {
+    return additionalInformation;
+  }
+
+  public String getScreeningDecision() {
+    return screeningDecision;
+  }
+
+  public String getScreeningDecisionDetail() {
+    return screeningDecisionDetail;
+  }
+
+  public int getApprovalStatus() {
+    return approvalStatus;
+  }
+
+  public boolean isFamilyAwareness() {
+    return familyAwareness;
+  }
+
+  public boolean isFiledWithLawEnforcement() {
+    return filedWithLawEnforcement;
+  }
+
+  public String getResponsibleAgency() {
+    return responsibleAgency;
+  }
+
+  public Short getInjuryHarmCategory() {
+    return injuryHarmCategory;
+  }
+
+  public gov.ca.cwds.rest.api.domain.Address getAddress() {
+    return address;
+  }
+
+  public Set<Participant> getParticipants() {
+    return participants;
+  }
+
+  public Set<gov.ca.cwds.rest.api.domain.CrossReport> getCrossReports() {
+    return crossReports;
+  }
+
+  public Set<gov.ca.cwds.rest.api.domain.Allegation> getAllegations() {
+    return allegations;
   }
 
   public ScreeningToReferralResourceBuilder setId(long id) {
@@ -139,6 +252,16 @@ public class ScreeningToReferralResourceBuilder {
     return this;
   }
 
+  public ScreeningToReferralResourceBuilder setAssigneeId(String assigneeId) {
+    this.assigneeId = assigneeId;
+    return this;
+  }
+
+  public ScreeningToReferralResourceBuilder setInjuryHarmCategory(Short injuryHarmCategory) {
+    this.injuryHarmCategory = injuryHarmCategory;
+    return this;
+  }
+
   public ScreeningToReferralResourceBuilder setAdditionalInformation(String additionalInformation) {
     this.additionalInformation = additionalInformation;
     return this;
@@ -189,7 +312,8 @@ public class ScreeningToReferralResourceBuilder {
     return limitedAccessDescription;
   }
 
-  public ScreeningToReferralResourceBuilder setLimitedAccessDescription(String limitedAccessDescription) {
+  public ScreeningToReferralResourceBuilder setLimitedAccessDescription(
+      String limitedAccessDescription) {
     this.limitedAccessDescription = limitedAccessDescription;
     return this;
   }
@@ -238,7 +362,7 @@ public class ScreeningToReferralResourceBuilder {
   public ScreeningToReferral createScreeningToReferral() {
     return new ScreeningToReferral(id, legacySourceTable, referralId, endedAt, incidentCounty,
         incidentDate, locationType, communicationMethod, name, reportNarrative, reference,
-        responseTime, startedAt, assignee, additionalInformation, screeningDecision,
+        responseTime, startedAt, assignee, assigneeId, additionalInformation, screeningDecision,
         screeningDecisionDetail, approvalStatus, familyAwareness, filedWithLawEnforcement,
         responsibleAgency, limitedAccessCode, limitedAccessDescription, limitedAccessAgency,
         limitedAccessDate, address, participants, crossReports, allegations);
