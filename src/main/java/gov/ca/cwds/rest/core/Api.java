@@ -3,8 +3,7 @@ package gov.ca.cwds.rest.core;
 /**
  * Constants defining resources locations in the API.
  * 
- * @author CDWS API Tea
- *  "secondaryLanguage":1255,m
+ * @author CDWS API Tea "secondaryLanguage":1255,m
  */
 public interface Api {
 
@@ -113,11 +112,6 @@ public interface Api {
    * A {@code String} constant representing {@value #RESOURCE_ADDRESS_VALIDATION} API.
    */
   public static final String RESOURCE_ADDRESS_VALIDATION = "address_validation";
-
-  /**
-   * A {@code String} constant representing {@value #RESOURCE_AUTOCOMPLETE} API.
-   */
-  public static final String RESOURCE_AUTOCOMPLETE = "_people_search";
 
   /**
    * A {@code String} constant representing {@value #RESOURCE_LONG_TEXT} API
