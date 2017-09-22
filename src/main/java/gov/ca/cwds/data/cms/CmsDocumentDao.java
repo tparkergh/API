@@ -147,7 +147,7 @@ public class CmsDocumentDao extends BaseDaoImpl<CmsDocument> {
 
       boolean tgtDeletedSuccessfully = tgt.delete();
 
-      if(!srcDeletedSuccessfully){
+      if(!tgtDeletedSuccessfully){
         LOGGER.warn("Unable to delete doc file" + tgt.getAbsolutePath() );
       }
 
