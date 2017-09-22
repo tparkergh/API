@@ -12,12 +12,14 @@ import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.hibernate.validator.constraints.NotBlank;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
 import gov.ca.cwds.rest.api.Request;
 import gov.ca.cwds.rest.api.Response;
 import gov.ca.cwds.rest.api.domain.DomainObject;
 import gov.ca.cwds.rest.api.domain.LegacyDescriptor;
 import gov.ca.cwds.rest.validation.Date;
+import io.dropwizard.jackson.JsonSnakeCase;
 import io.swagger.annotations.ApiModelProperty;
 
 /**
@@ -25,6 +27,9 @@ import io.swagger.annotations.ApiModelProperty;
  * 
  * @author CWDS API Team
  */
+@JsonSnakeCase
+@JsonPropertyOrder({"id", "date_of_birth", "first_name", "middle_name", "last_name", "name_suffix",
+    "sensitive", "sealed", "legacy_descriptor", "relationship_to"})
 public final class Relationship implements Request, Response {
 
   private static final long serialVersionUID = 1L;

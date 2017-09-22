@@ -13,6 +13,7 @@ import org.joda.time.DateTime;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
 import gov.ca.cwds.rest.api.Request;
 import gov.ca.cwds.rest.api.Response;
@@ -31,9 +32,12 @@ import io.swagger.annotations.ApiModelProperty;
  * 
  * @author CWDS API Team
  */
-@SuppressWarnings("javadoc")
-
 @JsonSnakeCase
+@JsonPropertyOrder({"legacy_descriptor", "last_updated_by", "last_updated_at", "incidentCounty",
+    "incident_date", "location_type", "communication_method", "name", "investigation_summary",
+    "reference", "response_time", "started_at", "assignee", "additional_information", "sensitive",
+    "sealed", "incident_phone_number", "incident_address", "screening", "history_of_invovlement",
+    "allegations", "people", "relationships"})
 public class Investigation extends ReportingDomain implements Request, Response {
   private static final long serialVersionUID = 1L;
 
@@ -135,10 +139,10 @@ public class Investigation extends ReportingDomain implements Request, Response 
   @ApiModelProperty(required = true, readOnly = false, value = "contains sealed information")
   private Boolean sealed;
 
-  @JsonProperty("phone")
+  @JsonProperty("incident_phone_number")
   private Set<PhoneNumber> phoneNumbers;
 
-  @JsonProperty("incident_phone_number")
+  @JsonProperty("incident_address")
   @NotNull
   @ApiModelProperty(required = true, readOnly = false)
   @Valid
@@ -164,17 +168,16 @@ public class Investigation extends ReportingDomain implements Request, Response 
   // @Valid
   // private Set<SafetyAlerts> saftetyAlerts;
 
-
   // @JsonProperty("cross_reports")
   // @ApiModelProperty(required = false, readOnly = false)
   // @Valid
   // private Set<CrossReport> crossReports;
-  //
+
   // @JsonProperty("contacts")
   // @ApiModelProperty(required = false, readOnly = false)
   // @Valid
   // private Set<Contact> contacts;
-  //
+
   @JsonProperty("people")
   @ApiModelProperty(required = false, readOnly = false)
   @Valid
@@ -255,94 +258,163 @@ public class Investigation extends ReportingDomain implements Request, Response 
     this.relationships = relationships;
   }
 
+  /**
+   * @return - CMS record description
+   */
   public LegacyDescriptor getLegacyDescriptor() {
     return legacyDescriptor;
   }
 
+  /**
+   * @return - last updated by staff ID
+   */
   public String getLastUpdatedBy() {
     return lastUpdatedBy;
   }
 
+  /**
+   * @return - last updated date/time
+   */
   public DateTime getLastUpdatedAt() {
     return lastUpdatedAt;
   }
 
+  /**
+   * @return - county code
+   */
   public String getIncidentCounty() {
     return incidentCounty;
   }
 
+  /**
+   * @return - date of incident
+   */
   public String getIncidentDate() {
     return incidentDate;
   }
 
+  /**
+   * @return - location type code
+   */
   public String getLocationType() {
     return locationType;
   }
 
+  /**
+   * @return - communication method code
+   */
   public Short getCommunicationMethod() {
     return communicationMethod;
   }
 
+  /**
+   * @return - name
+   */
   public String getName() {
     return name;
   }
 
+  /**
+   * @return - narrative
+   */
   public String getReportNarrative() {
     return reportNarrative;
   }
 
+  /**
+   * @return - referral reference text
+   */
   public String getReference() {
     return reference;
   }
 
+  /**
+   * @return - response type code
+   */
   public Short getResponseTime() {
     return responseTime;
   }
 
+  /**
+   * @return - started at
+   */
   public String getStartedAt() {
     return startedAt;
   }
 
+  /**
+   * @return - assignee information
+   */
   public Assignee getAssignee() {
     return assignee;
   }
 
+  /**
+   * @return - addtional information
+   */
   public String getAdditionalInformation() {
     return additionalInformation;
   }
 
+  /**
+   * @return - contains sensitive information
+   */
   public Boolean getSensitive() {
     return sensitive;
   }
 
+  /**
+   * @return - contains sealed information
+   */
   public Boolean getSealed() {
     return sealed;
   }
 
+  /**
+   * @return - list of phone numbers
+   */
   public Set<PhoneNumber> getPhoneNumbers() {
     return phoneNumbers;
   }
 
+  /**
+   * @return - list of address information
+   */
   public InvestigationAddress getAddress() {
     return address;
   }
 
+  /**
+   * @return - screening information
+   */
   public SimpleScreening getScreening() {
     return screening;
   }
 
+  /**
+   * @return - history of involvement
+   */
   public HistoryOfInvolvement getHistoryOfInvolvement() {
     return historyOfInvolvement;
   }
 
+  /**
+   * @return - allegations
+   */
   public Set<Allegation> getAllegations() {
     return allegations;
   }
 
+  /**
+   * @return - people associated with investigation
+   */
   public Set<Person> getPeople() {
     return people;
   }
 
+  /**
+   * @return - people relationships
+   */
   public Set<Relationship> getRelationships() {
     return relationships;
   }

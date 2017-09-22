@@ -6,17 +6,22 @@ import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
 import gov.ca.cwds.rest.api.Request;
 import gov.ca.cwds.rest.api.Response;
 import gov.ca.cwds.rest.api.domain.LegacyDescriptor;
+import io.dropwizard.jackson.JsonSnakeCase;
 import io.swagger.annotations.ApiModelProperty;
 
 /**
  * 
  * @author CWDS API Team
  */
+@JsonSnakeCase
+@JsonPropertyOrder({"number", "extension", "type", "legacy_descriptor"})
 public class PhoneNumber implements Request, Response {
+
   private static final long serialVersionUID = 1L;
 
   @JsonProperty("number")
@@ -29,7 +34,7 @@ public class PhoneNumber implements Request, Response {
 
   @JsonProperty("type")
   @ApiModelProperty(required = true, readOnly = false, value = "phone number type")
-  private String phoneType;
+  private Short phoneType;
 
   @JsonProperty("legacy_descriptor")
   private LegacyDescriptor legacyDescriptor;
@@ -40,7 +45,7 @@ public class PhoneNumber implements Request, Response {
    * @param phoneType -type
    * @param legacyDescriptor - CMS record description
    */
-  public PhoneNumber(BigDecimal phoneNumber, Integer phoneExtension, String phoneType,
+  public PhoneNumber(BigDecimal phoneNumber, Integer phoneExtension, Short phoneType,
       LegacyDescriptor legacyDescriptor) {
     super();
     this.phoneNumber = phoneNumber;
@@ -49,18 +54,30 @@ public class PhoneNumber implements Request, Response {
     this.legacyDescriptor = legacyDescriptor;
   }
 
+  /**
+   * @return - phone number
+   */
   public BigDecimal getPhoneNumber() {
     return phoneNumber;
   }
 
+  /**
+   * @return - phone extension
+   */
   public Integer getPhoneExtension() {
     return phoneExtension;
   }
 
-  public String getPhoneType() {
+  /**
+   * @return - phone type
+   */
+  public Short getPhoneType() {
     return phoneType;
   }
 
+  /**
+   * @return - CMS record description
+   */
   public LegacyDescriptor getLegacyDescriptor() {
     return legacyDescriptor;
   }

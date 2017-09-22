@@ -1,16 +1,16 @@
 package gov.ca.cwds.rest.api.domain;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
 import java.io.Serializable;
 
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
+import org.joda.time.DateTime;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import io.dropwizard.jackson.JsonSnakeCase;
 import io.swagger.annotations.ApiModelProperty;
-import org.joda.time.DateTime;
 
 /**
  * @author CWDS API Team
@@ -25,26 +25,28 @@ public class LegacyDescriptor implements Serializable {
   private static final long serialVersionUID = 1L;
 
   @JsonProperty("legacy_id")
-  @ApiModelProperty(required = false, readOnly = false, value = "Legacy Id", example = "12345")
+  @ApiModelProperty(required = false, readOnly = false, value = "CWS/CMS Id",
+      example = "1234567ABC")
   private String id;
 
-  @ApiModelProperty(required = false, readOnly = false, value = "Legacy UI Id", example = "998765")
+  @ApiModelProperty(required = false, readOnly = false, value = "CWS/CMS user interface Id",
+      example = "111-222-333-4444")
   @JsonProperty("legacy_ui_id")
   private String uiId;
 
-  @ApiModelProperty(required = false, readOnly = false, value = "Legacy Last Updated Time",
+  @ApiModelProperty(required = false, readOnly = false, value = "CWS/CMS Last Updated Time",
       example = "2010-10-01T15:26:42.000-0700")
   @JsonProperty("legacy_last_updated")
-  @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss.SSSZ" )
-  private DateTime lastUpdated;
+  @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss.SSSZ")
+  private DateTime lastUpdatedAt;
 
   @JsonProperty("legacy_table_name")
-  @ApiModelProperty(required = false, readOnly = false, value = "Legacy Table Name",
-      example = "client_t")
+  @ApiModelProperty(required = false, readOnly = false, value = "CWS/CMS Table Name",
+      example = "CLIENT_T")
   private String tableName;
 
   @JsonProperty("legacy_table_description")
-  @ApiModelProperty(required = false, readOnly = false, value = "Legacy Table Description",
+  @ApiModelProperty(required = false, readOnly = false, value = "CWS/CMS Table Description",
       example = "Client")
   private String tableDescription;
 
@@ -66,7 +68,7 @@ public class LegacyDescriptor implements Serializable {
       String tableDescription) {
     this.id = id;
     this.uiId = uiId;
-    this.lastUpdated = lastUpdated;
+    this.lastUpdatedAt = lastUpdated;
     this.tableName = tableName;
     this.tableDescription = tableDescription;
   }
@@ -108,7 +110,7 @@ public class LegacyDescriptor implements Serializable {
    * @return return the last updated time as a string
    */
   public DateTime getLastUpdated() {
-    return lastUpdated;
+    return lastUpdatedAt;
   }
 
   /**
@@ -116,7 +118,7 @@ public class LegacyDescriptor implements Serializable {
    * @param lastUpdated set the last updated time as a string
    */
   public void setLastUpdated(DateTime lastUpdated) {
-    this.lastUpdated = lastUpdated;
+    this.lastUpdatedAt = lastUpdated;
   }
 
   /**
