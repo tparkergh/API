@@ -84,18 +84,9 @@ public class CmsPKCompressor {
       throw new IOException("REQUIRED: file names cannot be null");
     }
 
-//    String foo = FilenameUtils.getName(inputFileName);
-//    File bar = new File(inputFileName);
-//    File baz =  new File( FilenameUtils.getName(inputFileName));
-
-//    File foo = createFile(inputFileName);
     final FileInputStream fis = new FileInputStream(createFile(inputFileName));
     final InputStream iis = new InflateInputStream(fis, true);
     final FileOutputStream fos = new FileOutputStream(createFile(outputFileName));
-//    final FileInputStream fis = new FileInputStream(new File(inputFileName));
-//    final InputStream iis = new InflateInputStream(fis, true);
-//    final FileOutputStream fos = new FileOutputStream(new File(outputFileName));
-
 
     IOUtils.copy(iis, fos);
 
