@@ -123,7 +123,7 @@ public class ReporterTest {
    */
   @Test
   public void persistentObjectConstructorTest() throws Exception {
-    Reporter domain = new Reporter(badgeNumber, cityName, colltrClientRptrReltnshpType,
+    Reporter domain = new Reporter(null, badgeNumber, cityName, colltrClientRptrReltnshpType,
         communicationMethodType, confidentialWaiverIndicator, drmsMandatedRprtrFeedback,
         employerName, feedbackDate, feedbackRequiredIndicator, firstName, lastName,
         mandatedReporterIndicator, messagePhoneExtensionNumber, messagePhoneNumber,
@@ -176,7 +176,7 @@ public class ReporterTest {
 
   @Test
   public void jsonCreatorConstructorTest() throws Exception {
-    Reporter reporter = new Reporter(badgeNumber, cityName, colltrClientRptrReltnshpType,
+    Reporter reporter = new Reporter(null,badgeNumber, cityName, colltrClientRptrReltnshpType,
         communicationMethodType, confidentialWaiverIndicator, drmsMandatedRprtrFeedback,
         employerName, feedbackDate, feedbackRequiredIndicator, firstName, lastName,
         mandatedReporterIndicator, messagePhoneExtensionNumber, messagePhoneNumber,

@@ -2,6 +2,7 @@ package gov.ca.cwds.data.cms;
 
 import java.io.File;
 import java.io.FileOutputStream;
+import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 
@@ -108,20 +109,24 @@ public class CmsDocumentDao extends BaseDaoImpl<CmsDocument> {
   protected String decompressLZW(gov.ca.cwds.data.persistence.cms.CmsDocument doc) {
     String retval = "";
 
-    try {
-      File src = File.createTempFile("src", ".lzw");
+    File src = null;
+    File tgt = null;
+    try{
+      src = File.createTempFile("src", ".lzw");
       src.deleteOnExit();
-
-      File tgt = File.createTempFile("tgt", ".doc");
+      tgt = File.createTempFile("tgt", ".doc");
       tgt.deleteOnExit();
 
-      FileOutputStream fos = new FileOutputStream(src);
+    } catch (IOException e){
+      errorDecompressing(e);
+    }
+
+    try ( FileOutputStream fos = new FileOutputStream(src); ){
+
       for (CmsDocumentBlobSegment seg : doc.getBlobSegments()) {
         final byte[] bytes = DatatypeConverter.parseHexBinary(seg.getDocBlob().trim());
         fos.write(bytes, 0, bytes.length);
       }
-      fos.flush();
-      fos.close();
 
       // DECOMPRESS!
       // TODO: Trap std::exception in shared library and return error code.
@@ -139,11 +144,15 @@ public class CmsDocumentDao extends BaseDaoImpl<CmsDocument> {
       tgt.delete();
 
     } catch (Exception e) {
-      LOGGER.error("ERROR DECOMPRESSING LZW! " + e.getMessage(), e);
-      throw new ServiceException("ERROR DECOMPRESSING LZW! " + e.getMessage(), e);
+      errorDecompressing(e);
     }
 
     return retval;
+  }
+
+  private void errorDecompressing(Exception e){
+    LOGGER.error("ERROR DECOMPRESSING LZW! " + e.getMessage(), e);
+    throw new ServiceException("ERROR DECOMPRESSING LZW! " + e.getMessage(), e);
   }
 
 }

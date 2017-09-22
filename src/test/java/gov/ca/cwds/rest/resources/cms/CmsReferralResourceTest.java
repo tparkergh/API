@@ -3,8 +3,11 @@ package gov.ca.cwds.rest.resources.cms;
 import static io.dropwizard.testing.FixtureHelpers.fixture;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
+import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
 
+import gov.ca.cwds.data.cms.TestSystemCodeCache;
 import javax.ws.rs.client.Entity;
 import javax.ws.rs.core.MediaType;
 
@@ -19,6 +22,7 @@ import gov.ca.cwds.rest.api.domain.cms.CmsReferral;
 import gov.ca.cwds.rest.resources.ServiceBackedResourceDelegate;
 import io.dropwizard.jackson.Jackson;
 import io.dropwizard.testing.junit.ResourceTestRule;
+import org.junit.Test;
 
 /**
  * NOTE : The CWDS API Team has taken the pattern of delegating Resource functions to
@@ -33,6 +37,8 @@ public class CmsReferralResourceTest {
   private static final String ROOT_RESOURCE = "/_cmsreferrals/";
 
   private static final ObjectMapper MAPPER = Jackson.newObjectMapper();
+
+  TestSystemCodeCache testSystemCodeCache = new TestSystemCodeCache();
 
   @Rule
   public ExpectedException thrown = ExpectedException.none();
@@ -51,20 +57,20 @@ public class CmsReferralResourceTest {
   /*
    * Create Tests
    */
-  // @Test
-  // public void createDelegatesToResourceDelegate() throws Exception {
-  //
-  // CmsReferral serialized = MAPPER.readValue(
-  // fixture("fixtures/domain/cms/CmsReferral/valid/cmsReferral.json"), CmsReferral.class);
-  //
-  // inMemoryResource.client().target(ROOT_RESOURCE).request().accept(MediaType.APPLICATION_JSON)
-  // .post(Entity.entity(serialized, MediaType.APPLICATION_JSON));
-  //
-  // verify(mockedCmsReferralResource).post(eq(serialized));
-  //
-  // }
+   @Test
+   public void createDelegatesToResourceDelegate() throws Exception {
 
-  // @Test
+   CmsReferral serialized = MAPPER.readValue(
+   fixture("fixtures/domain/cms/CmsReferral/valid/cmsReferral.json"), CmsReferral.class);
+
+   inMemoryResource.client().target(ROOT_RESOURCE).request().accept(MediaType.APPLICATION_JSON)
+   .post(Entity.entity(serialized, MediaType.APPLICATION_JSON));
+
+   verify(mockedCmsReferralResource).create(eq(serialized));
+
+   }
+
+  @Test
   public void createValidatesEntity() throws Exception {
     CmsReferral serialized =
         MAPPER.readValue(fixture("fixtures/domain/cms/CmsReferral/invalid/cmsReferralInvalid.json"),

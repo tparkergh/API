@@ -223,8 +223,9 @@ public class CmsReferralService implements CrudsService {
     PostedReporter savedreporter = new PostedReporter();
     if (cmsReferral.getReporter() != null) {
       Reporter incomingReporter = cmsReferral.getReporter();
-      Reporter reporter = new Reporter(incomingReporter.getBadgeNumber(),
-          incomingReporter.getCityName(), incomingReporter.getColltrClientRptrReltnshpType(),
+      Reporter reporter = new Reporter(incomingReporter.getLastUpdatedTime(),
+          incomingReporter.getBadgeNumber(), incomingReporter.getCityName(),
+          incomingReporter.getColltrClientRptrReltnshpType(),
           incomingReporter.getCommunicationMethodType(),
           incomingReporter.getConfidentialWaiverIndicator(),
           incomingReporter.getDrmsMandatedRprtrFeedback(), incomingReporter.getEmployerName(),

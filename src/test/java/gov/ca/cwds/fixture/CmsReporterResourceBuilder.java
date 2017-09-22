@@ -3,6 +3,7 @@ package gov.ca.cwds.fixture;
 import java.math.BigDecimal;
 
 import gov.ca.cwds.rest.api.domain.cms.Reporter;
+import org.joda.time.DateTime;
 
 /**
  * @author CWDS API Team
@@ -11,6 +12,7 @@ import gov.ca.cwds.rest.api.domain.cms.Reporter;
 @SuppressWarnings("javadoc")
 public class CmsReporterResourceBuilder {
 
+  DateTime lastUpdatedTime = new DateTime();
   String badgeNumber = "      ";
   String cityName = "City";
   Short colltrClientRptrReltnshpType = 591;
@@ -41,7 +43,7 @@ public class CmsReporterResourceBuilder {
 
 
   public Reporter build() {
-    return new Reporter(badgeNumber, cityName, colltrClientRptrReltnshpType,
+    return new Reporter(lastUpdatedTime, badgeNumber, cityName, colltrClientRptrReltnshpType,
         communicationMethodType, confidentialWaiverIndicator, drmsMandatedRprtrFeedback,
         employerName, feedbackDate, feedbackRequiredIndicator, firstName, lastName,
         mandatedReporterIndicator, messagePhoneExtensionNumber, messagePhoneNumber,
@@ -50,6 +52,13 @@ public class CmsReporterResourceBuilder {
         lawEnforcementId, zipSuffixNumber, countySpecificCode);
   }
 
+
+  public DateTime getLastUpdatedTime() {return lastUpdatedTime;}
+
+  public CmsReporterResourceBuilder setLastUpdatedTime(DateTime updatedTime){
+    this.lastUpdatedTime = updatedTime;
+    return this;
+  }
 
   public String getBadgeNumber() {
     return badgeNumber;
