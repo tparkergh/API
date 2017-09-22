@@ -5,6 +5,7 @@ import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.hibernate.validator.constraints.NotEmpty;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
 import gov.ca.cwds.rest.api.domain.DomainObject;
 import gov.ca.cwds.rest.api.domain.SystemCodeCategoryId;
@@ -19,11 +20,12 @@ import io.swagger.annotations.ApiModelProperty;
  */
 
 @JsonSnakeCase
+@JsonPropertyOrder({"county_code", "office", "staff_id"})
 public class Assignee {
 
   @JsonProperty("name")
   @ApiModelProperty(required = true, readOnly = false,
-      value = "name of staff person assigned to the investigation")
+      value = "name of staff person assigned to the investigation", example = "Madera Staff Person")
   private String name;
 
   @JsonProperty("county_code")
@@ -35,11 +37,11 @@ public class Assignee {
 
   @JsonProperty("office")
   @ApiModelProperty(required = true, readOnly = false,
-      value = "name of the office assigned to investigate")
+      value = "name of the office assigned to investigate", example = "Madera CWS Office")
   private String office;
 
   @JsonProperty("staff_id")
-  @ApiModelProperty(required = false, readOnly = false, value = "staff person id")
+  @ApiModelProperty(required = false, readOnly = false, value = "staff person id", example = "OX5")
   private String staffId;
 
   /**
@@ -65,18 +67,30 @@ public class Assignee {
     this.staffId = staffId;
   }
 
+  /**
+   * @return social worker name
+   */
   public String getName() {
     return name;
   }
 
+  /**
+   * @return county code
+   */
   public String getCountyCode() {
     return countyCode;
   }
 
+  /**
+   * @return office name
+   */
   public String getOffice() {
     return office;
   }
 
+  /**
+   * @return staff Id
+   */
   public String getStaffId() {
     return staffId;
   }

@@ -33,7 +33,7 @@ public class Allegation extends ReportingDomain implements Response {
   private String victimFirstName;
 
   @JsonProperty("perpetrator_last_name")
-  @ApiModelProperty(required = false, readOnly = false, value = "", example = "B")
+  @ApiModelProperty(required = false, readOnly = false, value = "", example = "Berk")
   private String perpetratorLastName;
 
   @JsonProperty("perpetrator_first_name")

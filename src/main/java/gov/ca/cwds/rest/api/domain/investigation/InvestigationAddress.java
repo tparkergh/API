@@ -6,6 +6,7 @@ import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
 import gov.ca.cwds.rest.api.Request;
 import gov.ca.cwds.rest.api.Response;
@@ -20,8 +21,10 @@ import io.swagger.annotations.ApiModelProperty;
  *
  */
 @JsonSnakeCase
-
+@JsonPropertyOrder({"legacy_descriptor", "street_address", "city", "state", "zip", "type"})
 public class InvestigationAddress implements Request, Response {
+
+  private static final long serialVersionUID = 1L;
 
   @JsonProperty("legacy_descriptor")
   @ApiModelProperty(required = true, readOnly = false, value = "CMS record description")
@@ -34,7 +37,7 @@ public class InvestigationAddress implements Request, Response {
 
   @JsonProperty("city")
   @ApiModelProperty(value = "City", example = "Springfield")
-  @Size(max = 50)
+  @Size(max = 20)
   private String city;
 
   @JsonProperty("state")
@@ -81,31 +84,49 @@ public class InvestigationAddress implements Request, Response {
   }
 
 
+  /**
+   * @return - CMS record description
+   */
   public LegacyDescriptor getLegacyDescriptor() {
     return legacyDescriptor;
   }
 
 
+  /**
+   * @return - street name and number
+   */
   public String getStreetAddress() {
     return streetAddress;
   }
 
 
+  /**
+   * @return - city
+   */
   public String getCity() {
     return city;
   }
 
 
+  /**
+   * @return - state code
+   */
   public Short getState() {
     return state;
   }
 
 
+  /**
+   * @return - zip code
+   */
   public String getZip() {
     return zip;
   }
 
 
+  /**
+   * @return - address type code
+   */
   public Short getType() {
     return type;
   }

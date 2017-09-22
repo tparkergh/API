@@ -10,12 +10,14 @@ import org.apache.commons.lang3.builder.HashCodeBuilder;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
 import gov.ca.cwds.rest.api.Request;
 import gov.ca.cwds.rest.api.Response;
 import gov.ca.cwds.rest.api.domain.LegacyDescriptor;
 import gov.ca.cwds.rest.api.domain.RaceAndEthnicity;
 import gov.ca.cwds.rest.validation.Date;
+import io.dropwizard.jackson.JsonSnakeCase;
 import io.dropwizard.validation.OneOf;
 import io.swagger.annotations.ApiModelProperty;
 
@@ -24,6 +26,10 @@ import io.swagger.annotations.ApiModelProperty;
  * 
  * @author CWDS API Team
  */
+@JsonSnakeCase
+@JsonPropertyOrder({"legacy_descriptor", "last_updated_by", "last_update_at", "first_name",
+    "last_name", "name_suffix", "gender", "date_of_birth", "ssn", "languages", "race_codes",
+    "sensitive", "sealed", "phone_numbers", "roles", "addresses"})
 public final class Person implements Request, Response {
 
   private static final long serialVersionUID = 1L;
@@ -100,6 +106,7 @@ public final class Person implements Request, Response {
   // value = "Secondary language code")
   // private Short secondaryLanguage;
 
+  @JsonProperty("race_codes")
   private RaceAndEthnicity raceAndEthnicity;
 
   @JsonProperty("sensitive")
@@ -112,8 +119,8 @@ public final class Person implements Request, Response {
       value = "person contains sealed information")
   private Boolean sealed;
 
-  @JsonProperty("phone")
-  @ApiModelProperty(required = false, readOnly = false, value = "phone",
+  @JsonProperty("phone_numbers")
+  @ApiModelProperty(required = false, readOnly = false, value = "phone numbers",
       dataType = "java.util.List")
   private Set<PhoneNumber> phone;
 
@@ -209,66 +216,105 @@ public final class Person implements Request, Response {
   }
 
 
+  /**
+   * @return - middle name
+   */
   public String getMiddleName() {
     return middleName;
   }
 
 
+  /**
+   * @return - last name
+   */
   public String getLastName() {
     return lastName;
   }
 
 
+  /**
+   * @return - suffix
+   */
   public String getNameSuffix() {
     return nameSuffix;
   }
 
 
+  /**
+   * @return - gender code
+   */
   public String getGender() {
     return gender;
   }
 
 
+  /**
+   * @return - date of birth
+   */
   public String getDateOfBirth() {
     return dateOfBirth;
   }
 
 
+  /**
+   * @return - ssn
+   */
   public String getSsn() {
     return ssn;
   }
 
 
+  /**
+   * @return - list of language codes
+   */
   public Set<Short> getLanguages() {
     return languages;
   }
 
 
+  /**
+   * @return - list of race/ethnicity codes
+   */
   public RaceAndEthnicity getRaceAndEthnicity() {
     return raceAndEthnicity;
   }
 
 
+  /**
+   * @return - contains sensitive information
+   */
   public Boolean getSensitive() {
     return sensitive;
   }
 
 
+  /**
+   * @return - contains sealed information
+   */
   public Boolean getSealed() {
     return sealed;
   }
 
 
+  /**
+   * @return - list of phone numbers
+   */
   public Set<PhoneNumber> getPhone() {
     return phone;
   }
 
 
+  /**
+   * @return - list of roles
+   */
   public Set<String> getRoles() {
     return roles;
   }
 
 
+  /**
+   * @return - list of address information
+   */
   public Set<InvestigationAddress> getAddresses() {
     return addresses;
   }

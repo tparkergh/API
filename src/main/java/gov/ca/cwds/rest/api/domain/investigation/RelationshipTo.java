@@ -7,9 +7,11 @@ import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.hibernate.validator.constraints.NotBlank;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
 import gov.ca.cwds.rest.api.domain.DomainObject;
 import gov.ca.cwds.rest.api.domain.LegacyDescriptor;
+import io.dropwizard.jackson.JsonSnakeCase;
 import io.swagger.annotations.ApiModelProperty;
 
 /**
@@ -17,6 +19,10 @@ import io.swagger.annotations.ApiModelProperty;
  * 
  * @author CWDS API Team
  */
+@JsonSnakeCase
+@JsonPropertyOrder({"related_person_first_name", "related_person_last_name",
+    "index_person_relationship", "relationship_context", "related_person_relationship",
+    "legacy_description"})
 public final class RelationshipTo {
 
   /**
@@ -79,31 +85,49 @@ public final class RelationshipTo {
   }
 
 
+  /**
+   * @return - related first name
+   */
   public String getRelatedFirstName() {
     return relatedFirstName;
   }
 
 
+  /**
+   * @return - related last name
+   */
   public String getRelatedLastName() {
     return relatedLastName;
   }
 
 
+  /**
+   * @return - relationship to person
+   */
   public String getRelationshipToPerson() {
     return relationshipToPerson;
   }
 
 
+  /**
+   * @return - relationship context
+   */
   public String getRelationshipContext() {
     return relationshipContext;
   }
 
 
+  /**
+   * @return - related person relationship
+   */
   public String getRelatedPersonRelationship() {
     return relatedPersonRelationship;
   }
 
 
+  /**
+   * @return - CMS record description
+   */
   public LegacyDescriptor getLegacyDescriptor() {
     return legacyDescriptor;
   }
