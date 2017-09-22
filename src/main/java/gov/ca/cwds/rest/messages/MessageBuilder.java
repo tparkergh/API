@@ -47,13 +47,13 @@ public class MessageBuilder {
     this.issues.add(issue);
     issue.setUserMessage(message);
 
-    if (ErrorType.DATA_ACCESS.equals(type)) {
+    if (ErrorType.DATA_ACCESS == type) {
       issue.setType(IssueType.DATA_ACCESS_EXCEPTION);
-    } else if (ErrorType.BUSINESS.equals(type)) {
+    } else if (ErrorType.BUSINESS == type) {
       issue.setType(IssueType.BUSINESS_VALIDATION);
-    } else if (ErrorType.VALIDATION.equals(type)) {
+    } else if (ErrorType.VALIDATION == type) {
       issue.setType(IssueType.CONSTRAINT_VALIDATION);
-    } else if (ErrorType.CLIENT_CONTRACT.equals(type)) {
+    } else if (ErrorType.CLIENT_CONTRACT == type) {
       issue.setType(IssueType.JSON_PROCESSING_EXCEPTION);
     } else {
       issue.setType(IssueType.UNEXPECTED_EXCEPTION);
@@ -73,9 +73,7 @@ public class MessageBuilder {
         messages.add(new ErrorMessage(ErrorMessage.ErrorType.VALIDATION, message, ""));
       });
 
-      errors.forEach(error -> {
-        issues.add(IssueDetailsCreator.create(error, null));
-      });
+      errors.forEach(error -> issues.add(IssueDetailsCreator.create(error, null)));
     }
   }
 

@@ -24,33 +24,21 @@ public class RelationshipToEntityBuilder {
         relationshipToPerson, legacyDescriptor);
   }
 
-  public RelationshipToEntityBuilder setRelatedFirstName(String relatedFirstName) {
-    this.relatedFirstName = relatedFirstName;
+  public String getTableName() {
+    return tableName;
+  }
+
+  public RelationshipToEntityBuilder setTableName(String tableName) {
+    this.tableName = tableName;
     return this;
   }
 
-  public RelationshipToEntityBuilder setRelatedLastName(String relatedLastName) {
-    this.relatedLastName = relatedLastName;
-    return this;
+  public String getId() {
+    return id;
   }
 
-  public RelationshipToEntityBuilder setrelationshipToPerson(String relationshipToPerson) {
-    this.relationshipToPerson = relationshipToPerson;
-    return this;
-  }
-
-  public RelationshipToEntityBuilder setRelationshipContext(String relationshipContext) {
-    this.relationshipContext = relationshipContext;
-    return this;
-  }
-
-  public RelationshipToEntityBuilder setRelationshipToPerson(String relationshipToPerson) {
-    this.relationshipToPerson = relationshipToPerson;
-    return this;
-  }
-
-  public RelationshipToEntityBuilder setLegacyDescriptor(LegacyDescriptor legacyDescriptor) {
-    this.legacyDescriptor = legacyDescriptor;
+  public RelationshipToEntityBuilder setId(String id) {
+    this.id = id;
     return this;
   }
 
@@ -58,21 +46,63 @@ public class RelationshipToEntityBuilder {
     return relatedFirstName;
   }
 
+  public RelationshipToEntityBuilder setRelatedFirstName(String relatedFirstName) {
+    this.relatedFirstName = relatedFirstName;
+    return this;
+  }
+
   public String getRelatedLastName() {
     return relatedLastName;
+  }
+
+  public RelationshipToEntityBuilder setRelatedLastName(String relatedLastName) {
+    this.relatedLastName = relatedLastName;
+    return this;
+  }
+
+  public String getRelationship() {
+    return relationship;
+  }
+
+  public RelationshipToEntityBuilder setRelationship(String relationship) {
+    this.relationship = relationship;
+    return this;
   }
 
   public String getRelationshipToPerson() {
     return relationshipToPerson;
   }
 
+  public RelationshipToEntityBuilder setRelationshipToPerson(String relationshipToPerson) {
+    this.relationshipToPerson = relationshipToPerson;
+    return this;
+  }
+
   public String getRelationshipContext() {
     return relationshipContext;
+  }
+
+  public RelationshipToEntityBuilder setRelationshipContext(String relationshipContext) {
+    this.relationshipContext = relationshipContext;
+    return this;
+  }
+
+  public DateTime getNow() {
+    return now;
+  }
+
+  public RelationshipToEntityBuilder setNow(DateTime now) {
+    this.now = now;
+    return this;
   }
 
   public LegacyDescriptor getLegacyDescriptor() {
     return legacyDescriptor;
   }
 
+  public RelationshipToEntityBuilder setLegacyDescriptor(LegacyDescriptor legacyDescriptor) {
+    this.legacyDescriptor = legacyDescriptor;
+    return this;
+  }
 
 }

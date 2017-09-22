@@ -131,7 +131,7 @@ public class IntakeLovEntry implements Request, Response, ApiMarker {
       @JsonProperty("intake_display") String intakeDisplay,
       @JsonProperty("use_logical") boolean useLogical) {
     super();
-    this.legacySystemCodeId = Long.parseLong(legacySystemCodeId);
+    this.legacySystemCodeId = Long.valueOf(legacySystemCodeId);
     this.legacyMeta = legacyMeta;
     this.legacyLogicalCode = legacyLogicalCode;
     this.subCategory = intakeType;

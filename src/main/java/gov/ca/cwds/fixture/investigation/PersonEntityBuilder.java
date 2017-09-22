@@ -26,13 +26,13 @@ public class PersonEntityBuilder {
   private String gender = "M";
   private String birthDate = "1998-10-30";
   private String ssn = "999667777";
-  private Set<Short> languages = new LinkedHashSet<Short>();
+  private Set<Short> languages = new LinkedHashSet<>();
 
   private Short primaryLanguage = 1253;
   private Short secondaryLanguage = 1255;
   private RaceAndEthnicity raceAndEthnicity = new RaceAndEthnicityEntityBuilder().build();
-  private Boolean sensitive = false;
-  private Boolean sealed = false;
+  private Boolean sensitive = Boolean.FALSE;
+  private Boolean sealed = Boolean.FALSE;
   private DateTime now = new DateTime();
 
   private BigDecimal phoneNumber = new BigDecimal(3219876);
@@ -40,11 +40,11 @@ public class PersonEntityBuilder {
       new LegacyDescriptor("1234567ABC", "001-2000-3399-415790", now, "CLIENT_T", "Client");
 
   private PhoneNumber phone = new PhoneNumber(phoneNumber, 3322, "Home", phoneLegacyDescriptor);
-  private Set<PhoneNumber> phoneNumbers = new LinkedHashSet<PhoneNumber>();
-  private Set<String> roles = new HashSet();
+  private Set<PhoneNumber> phoneNumbers = new LinkedHashSet<>();
+  private Set<String> roles = new HashSet<>();
 
   private InvestigationAddress address = new InvestigationAddressEntityBuilder().build();
-  private Set<InvestigationAddress> addresses = new HashSet();
+  private Set<InvestigationAddress> addresses = new HashSet<>();
 
   public Person build() {
     roles.add("Mandated reporter");
@@ -60,9 +60,17 @@ public class PersonEntityBuilder {
         sealed, phoneNumbers, roles, addresses);
   }
 
+  public LegacyDescriptor getLegacyDescriptor() {
+    return legacyDescriptor;
+  }
+
   public PersonEntityBuilder setLegacyDescriptor(LegacyDescriptor legacyDescriptor) {
     this.legacyDescriptor = legacyDescriptor;
     return this;
+  }
+
+  public String getLastUpdatedBy() {
+    return lastUpdatedBy;
   }
 
   public PersonEntityBuilder setLastUpdatedBy(String lastUpdatedBy) {
@@ -70,9 +78,17 @@ public class PersonEntityBuilder {
     return this;
   }
 
+  public String getLastUpdatedAt() {
+    return lastUpdatedAt;
+  }
+
   public PersonEntityBuilder setLastUpdatedAt(String lastUpdatedAt) {
     this.lastUpdatedAt = lastUpdatedAt;
     return this;
+  }
+
+  public String getFirstName() {
+    return firstName;
   }
 
   public PersonEntityBuilder setFirstName(String firstName) {
@@ -80,10 +96,17 @@ public class PersonEntityBuilder {
     return this;
   }
 
+  public String getMiddleName() {
+    return middleName;
+  }
+
   public PersonEntityBuilder setMiddleName(String middleName) {
     this.middleName = middleName;
     return this;
+  }
 
+  public String getLastName() {
+    return lastName;
   }
 
   public PersonEntityBuilder setLastName(String lastName) {
@@ -91,9 +114,17 @@ public class PersonEntityBuilder {
     return this;
   }
 
+  public String getSuffixTitle() {
+    return suffixTitle;
+  }
+
   public PersonEntityBuilder setSuffixTitle(String suffixTitle) {
     this.suffixTitle = suffixTitle;
     return this;
+  }
+
+  public String getGender() {
+    return gender;
   }
 
   public PersonEntityBuilder setGender(String gender) {
@@ -101,9 +132,8 @@ public class PersonEntityBuilder {
     return this;
   }
 
-  public PersonEntityBuilder setSnn(String setSnn) {
-    this.ssn = ssn;
-    return this;
+  public String getBirthDate() {
+    return birthDate;
   }
 
   public PersonEntityBuilder setBirthDate(String birthDate) {
@@ -111,9 +141,44 @@ public class PersonEntityBuilder {
     return this;
   }
 
+  public String getSsn() {
+    return ssn;
+  }
+
+  public PersonEntityBuilder setSsn(String ssn) {
+    this.ssn = ssn;
+    return this;
+  }
+
+  public Set<Short> getLanguages() {
+    return languages;
+  }
+
   public PersonEntityBuilder setLanguages(Set<Short> languages) {
     this.languages = languages;
     return this;
+  }
+
+  public Short getPrimaryLanguage() {
+    return primaryLanguage;
+  }
+
+  public PersonEntityBuilder setPrimaryLanguage(Short primaryLanguage) {
+    this.primaryLanguage = primaryLanguage;
+    return this;
+  }
+
+  public Short getSecondaryLanguage() {
+    return secondaryLanguage;
+  }
+
+  public PersonEntityBuilder setSecondaryLanguage(Short secondaryLanguage) {
+    this.secondaryLanguage = secondaryLanguage;
+    return this;
+  }
+
+  public RaceAndEthnicity getRaceAndEthnicity() {
+    return raceAndEthnicity;
   }
 
   public PersonEntityBuilder setRaceAndEthnicity(RaceAndEthnicity raceAndEthnicity) {
@@ -121,10 +186,17 @@ public class PersonEntityBuilder {
     return this;
   }
 
+  public Boolean getSensitive() {
+    return sensitive;
+  }
 
   public PersonEntityBuilder setSensitive(Boolean sensitive) {
     this.sensitive = sensitive;
     return this;
+  }
+
+  public Boolean getSealed() {
+    return sealed;
   }
 
   public PersonEntityBuilder setSealed(Boolean sealed) {
@@ -132,9 +204,53 @@ public class PersonEntityBuilder {
     return this;
   }
 
+  public DateTime getNow() {
+    return now;
+  }
+
+  public PersonEntityBuilder setNow(DateTime now) {
+    this.now = now;
+    return this;
+  }
+
+  public BigDecimal getPhoneNumber() {
+    return phoneNumber;
+  }
+
+  public PersonEntityBuilder setPhoneNumber(BigDecimal phoneNumber) {
+    this.phoneNumber = phoneNumber;
+    return this;
+  }
+
+  public LegacyDescriptor getPhoneLegacyDescriptor() {
+    return phoneLegacyDescriptor;
+  }
+
+  public PersonEntityBuilder setPhoneLegacyDescriptor(LegacyDescriptor phoneLegacyDescriptor) {
+    this.phoneLegacyDescriptor = phoneLegacyDescriptor;
+    return this;
+  }
+
+  public PhoneNumber getPhone() {
+    return phone;
+  }
+
+  public PersonEntityBuilder setPhone(PhoneNumber phone) {
+    this.phone = phone;
+    return this;
+  }
+
+  public Set<PhoneNumber> getPhoneNumbers() {
+    return phoneNumbers;
+  }
+
   public PersonEntityBuilder setPhoneNumbers(Set<PhoneNumber> phoneNumbers) {
     this.phoneNumbers = phoneNumbers;
     return this;
+  }
+
+  public Set<String> getRoles() {
+    return roles;
   }
 
   public PersonEntityBuilder setRoles(Set<String> roles) {
@@ -142,77 +258,22 @@ public class PersonEntityBuilder {
     return this;
   }
 
-  public PersonEntityBuilder setAddresses(Set<InvestigationAddress> addresses) {
-    this.addresses = addresses;
+  public InvestigationAddress getAddress() {
+    return address;
+  }
+
+  public PersonEntityBuilder setAddress(InvestigationAddress address) {
+    this.address = address;
     return this;
-  }
-
-  public LegacyDescriptor getLegacyDescriptor() {
-    return legacyDescriptor;
-  }
-
-  public String getLastUpdatedBy() {
-    return lastUpdatedBy;
-  }
-
-  public String getLastUpdatedAt() {
-    return lastUpdatedAt;
-  }
-
-  public String getFirstName() {
-    return firstName;
-  }
-
-  public String getMiddleName() {
-    return middleName;
-  }
-
-  public String getLastName() {
-    return lastName;
-  }
-
-  public String getSuffixTitle() {
-    return suffixTitle;
-  }
-
-  public String getGender() {
-    return gender;
-  }
-
-  public String getSnn() {
-    return ssn;
-  }
-
-  public String getBirthDate() {
-    return birthDate;
-  }
-
-  public Set<Short> getLanguages() {
-    return languages;
-  }
-
-  public RaceAndEthnicity getRaceAndEthnicity() {
-    return raceAndEthnicity;
-  }
-
-  public Boolean getSensitive() {
-    return sensitive;
-  }
-
-  public Boolean getSealed() {
-    return sealed;
-  }
-
-  public Set<PhoneNumber> getPhoneNumbers() {
-    return phoneNumbers;
-  }
-
-  public Set<String> getRoles() {
-    return roles;
   }
 
   public Set<InvestigationAddress> getAddresses() {
     return addresses;
+  }
+
+  public PersonEntityBuilder setAddresses(Set<InvestigationAddress> addresses) {
+    this.addresses = addresses;
+    return this;
   }
 
 }

@@ -41,7 +41,7 @@ public class AddressValidationService implements CrudsService {
       SmartyStreet smartyStreet = new SmartyStreet(smartyStreetsDao);
       String state = SystemCodeCache.global().getSystemCodeShortDescription(address.getState());
       addresses = smartyStreet.usStreetSingleAddress(address.getStreetAddress(), address.getCity(),
-          state, Integer.parseInt(address.getZip()));
+          state, Integer.valueOf(address.getZip()));
     } catch (Exception e) {
       throw new ServiceException("ERROR calling usStreetSingleAddress in SmartyStreet", e);
     }

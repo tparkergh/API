@@ -1,12 +1,16 @@
 package gov.ca.cwds.rest.api.domain.comparator;
 
-import gov.ca.cwds.rest.api.domain.Participant;
-import gov.ca.cwds.rest.api.domain.cms.Client;
-import org.apache.logging.log4j.core.layout.StringBuilderEncoder;
 import org.joda.time.DateTime;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import gov.ca.cwds.rest.api.domain.Participant;
+import gov.ca.cwds.rest.api.domain.cms.Client;
+
+/**
+ * @author CWDS API Team
+ *
+ */
 public class EntityChangedComparator {
   private static final Logger LOGGER = LoggerFactory.getLogger(EntityChangedComparator.class);
 
@@ -26,13 +30,15 @@ public class EntityChangedComparator {
     DateTime particpantDate = trimMilliseconds(participant.getLegacyDescriptor().getLastUpdated());
     DateTime clientDate = trimMilliseconds(client.getLastUpdatedTime());
     boolean isSameDate = particpantDate.getMillis() == clientDate.getMillis();
-    if (!isSameDate){
+    if (!isSameDate) {
       logDateNotEqual(particpantDate, clientDate);
     }
     return isSameDate;
   }
+
   private DateTime trimMilliseconds(DateTime dt) {
-    return new DateTime(dt.getYear(), dt.getMonthOfYear(), dt.getDayOfMonth(), dt.getHourOfDay(), dt.getMinuteOfHour(), dt.getSecondOfMinute(), 0, dt.getZone());
+    return new DateTime(dt.getYear(), dt.getMonthOfYear(), dt.getDayOfMonth(), dt.getHourOfDay(),
+        dt.getMinuteOfHour(), dt.getSecondOfMinute(), 0, dt.getZone());
   }
 
   private void logDateNotEqual(DateTime particpantDate, DateTime clientDate) {
@@ -40,13 +46,13 @@ public class EntityChangedComparator {
     builder.append("Date comparison failed. ParticipantDate: ");
     builder.append(particpantDate);
     builder.append(" ");
-    builder.append( particpantDate.getZone());
+    builder.append(particpantDate.getZone());
     builder.append(" ");
     builder.append(particpantDate.getMillis());
     builder.append(" clientDate: ");
     builder.append(clientDate);
     builder.append(" ");
-    builder.append( clientDate.getZone());
+    builder.append(clientDate.getZone());
     builder.append(" ");
     builder.append(clientDate.getMillis());
     LOGGER.warn(builder.toString());
