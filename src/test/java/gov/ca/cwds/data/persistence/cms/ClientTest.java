@@ -24,13 +24,11 @@ import gov.ca.cwds.rest.api.domain.DomainChef;
 
 /**
  * @author CWDS API Team
- *
  */
 public class ClientTest implements PersistentTestTemplate {
 
   private String id = "1234567ABC";
   private String lastUpdatedId = "0X5";
-
   private static final ObjectMapper MAPPER = SystemCodeTestHarness.MAPPER;
 
   /*
@@ -45,7 +43,6 @@ public class ClientTest implements PersistentTestTemplate {
   public void nullConstructorFieldsShouldBeStoredAsStrings() throws Exception {
     Client vc = validClient();
     String aNullValue = null;
-
     Client pers = new Client(vc.getAdjudicatedDelinquentIndicator(), vc.getAdoptionStatusCode(),
         vc.getAlienRegistrationNumber(), vc.getBirthCity(), vc.getBirthCountryCodeType(),
         vc.getBirthDate(), vc.getBirthFacilityName(), vc.getBirthStateCodeType(),
@@ -74,10 +71,8 @@ public class ClientTest implements PersistentTestTemplate {
         vc.getSocialSecurityNumChangedCode(), vc.getSocialSecurityNumber(), aNullValue,
         vc.getTribalAncestryClientIndicatorVar(), vc.getTribalMembrshpVerifctnIndicatorVar(),
         vc.getUnemployedParentCode(), vc.getZippyCreatedIndicator(), null);
-
     assertThat(pers.getCommonMiddleName(), is(equalTo("")));
     assertThat(pers.getSuffixTitleDescription(), is(equalTo("")));
-
   }
 
   @Override
@@ -113,7 +108,6 @@ public class ClientTest implements PersistentTestTemplate {
         vc.getSuffixTitleDescription(), vc.getTribalAncestryClientIndicatorVar(),
         vc.getTribalMembrshpVerifctnIndicatorVar(), vc.getUnemployedParentCode(),
         vc.getZippyCreatedIndicator(), null);
-
     assertThat(pers.getAdjudicatedDelinquentIndicator(),
         is(equalTo(vc.getAdjudicatedDelinquentIndicator())));
     assertThat(pers.getAdoptionStatusCode(), is(equalTo(vc.getAdoptionStatusCode())));
@@ -198,7 +192,6 @@ public class ClientTest implements PersistentTestTemplate {
         is(equalTo(vc.getTribalMembrshpVerifctnIndicatorVar())));
     assertThat(pers.getUnemployedParentCode(), is(equalTo(vc.getUnemployedParentCode())));
     assertThat(pers.getZippyCreatedIndicator(), is(equalTo(vc.getZippyCreatedIndicator())));
-
   }
 
   @Override
@@ -206,7 +199,6 @@ public class ClientTest implements PersistentTestTemplate {
   public void testConstructorUsingDomain() throws Exception {
     gov.ca.cwds.rest.api.domain.cms.Client vc = validDomainClient();
     Client pers = new Client(id, vc, lastUpdatedId);
-
     assertThat(pers.getId(), is(equalTo(id)));
     assertThat(pers.getLastUpdatedId(), is(equalTo(lastUpdatedId)));
     assertThat((pers.getAdjudicatedDelinquentIndicator()),
@@ -336,15 +328,13 @@ public class ClientTest implements PersistentTestTemplate {
         vc.getSuffixTitleDescription(), vc.getTribalAncestryClientIndicatorVar(),
         vc.getTribalMembrshpVerifctnIndicatorVar(), vc.getUnemployedParentCode(),
         vc.getZippyCreatedIndicator(), null);
-
     final String expected = MAPPER.writeValueAsString((MAPPER.readValue(
         fixture("fixtures/persistent/Client/valid/validWithSysCodes.json"), Client.class)));
-
     assertThat(MAPPER.writeValueAsString(pers)).isEqualTo(expected);
   }
 
   private Client validClient() throws JsonParseException, JsonMappingException, IOException {
-    Client validClient =
+    final Client validClient =
         MAPPER.readValue(fixture("fixtures/persistent/Client/valid/valid.json"), Client.class);
     return validClient;
   }
@@ -361,18 +351,15 @@ public class ClientTest implements PersistentTestTemplate {
   @Test
   public void testSerializeAndDeserialize() throws Exception {
     final Client tgt = validBean();
-
-    // Serialize to JSON.
     ByteArrayOutputStream baos = new ByteArrayOutputStream();
     try (PrintStream ps = new PrintStream(baos)) {
       MAPPER.writerWithDefaultPrettyPrinter().writeValue(ps, tgt);
     } finally {
     }
-    final String json = baos.toString(java.nio.charset.StandardCharsets.UTF_8.name());
 
+    final String json = baos.toString(java.nio.charset.StandardCharsets.UTF_8.name());
     // Deserialize from JSON just written.
     final Client actual = MAPPER.readValue(json, Client.class);
-
     // Does it match exactly?
     assertThat(actual, is(equalTo(validBean())));
   }
@@ -394,12 +381,7 @@ public class ClientTest implements PersistentTestTemplate {
   @Test
   public void getPrimaryKey_Args$() throws Exception {
     final Client target = validBean();
-    // given
-    // e.g. : given(mocked.called()).willReturn(1);
-    // when
     final String actual = target.getPrimaryKey();
-    // then
-    // e.g. : verify(mocked).called();
     final String expected = "B3ucP1K07n";
     assertThat(actual, is(equalTo(expected)));
   }
@@ -408,12 +390,7 @@ public class ClientTest implements PersistentTestTemplate {
   @Test
   public void getMiddleName_Args$() throws Exception {
     final Client target = validBean();
-    // given
-    // e.g. : given(mocked.called()).willReturn(1);
-    // when
     String actual = target.getMiddleName();
-    // then
-    // e.g. : verify(mocked).called();
     final String expected = "";
     assertThat(actual, is(equalTo(expected)));
   }
@@ -422,12 +399,7 @@ public class ClientTest implements PersistentTestTemplate {
   @Test
   public void getFirstName_Args$() throws Exception {
     final Client target = validBean();
-    // given
-    // e.g. : given(mocked.called()).willReturn(1);
-    // when
     String actual = target.getFirstName();
-    // then
-    // e.g. : verify(mocked).called();
     final String expected = "Chicken";
     assertThat(actual, is(equalTo(expected)));
   }
@@ -436,12 +408,7 @@ public class ClientTest implements PersistentTestTemplate {
   @Test
   public void getLastName_Args$() throws Exception {
     final Client target = validBean();
-    // given
-    // e.g. : given(mocked.called()).willReturn(1);
-    // when
     String actual = target.getLastName();
-    // then
-    // e.g. : verify(mocked).called();
     final String expected = "Little";
     assertThat(actual, is(equalTo(expected)));
   }
@@ -450,12 +417,7 @@ public class ClientTest implements PersistentTestTemplate {
   @Test
   public void getSsn_Args$() throws Exception {
     final Client target = validBean();
-    // given
-    // e.g. : given(mocked.called()).willReturn(1);
-    // when
     String actual = target.getSsn();
-    // then
-    // e.g. : verify(mocked).called();
     final String expected = "";
     assertThat(actual, is(equalTo(expected)));
   }
@@ -482,6 +444,7 @@ public class ClientTest implements PersistentTestTemplate {
   // public void hashCode_Args$() throws Exception {
   // EqualsVerifier.forClass(Client.class).suppress(Warning.NONFINAL_FIELDS).verify();
   // }
+
   //
   // @SuppressWarnings("javadoc")
   // @Test
@@ -492,4 +455,5 @@ public class ClientTest implements PersistentTestTemplate {
   private Client validBean() throws JsonParseException, JsonMappingException, IOException {
     return MAPPER.readValue(fixture("fixtures/persistence/legacy/Client/valid.json"), Client.class);
   }
+
 }

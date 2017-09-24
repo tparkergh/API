@@ -37,7 +37,6 @@ public class CmsDocumentTest {
 
   @Test
   public void domainCmsDocumentConstructorTest() throws Exception {
-
     gov.ca.cwds.rest.api.domain.cms.CmsDocument domain =
         new gov.ca.cwds.rest.api.domain.cms.CmsDocument(id, segmentCount, docLength, docAuth,
             docServ, docDate, docTime, docName, compressionMethod, baseBlob);
@@ -50,12 +49,10 @@ public class CmsDocumentTest {
     assertThat(persistent.getDocTime(), is(equalTo(tf.parse(docTime))));
     assertThat(persistent.getDocName(), is(equalTo(docName)));
     assertThat(persistent.getCompressionMethod(), is(equalTo(compressionMethod)));
-
   }
 
   @Test
   public void persistentCmsDocumentContructorTest() throws Exception {
-
     CmsDocument persistent = new CmsDocument(id, segmentCount, docLength, docAuth, docServ,
         df.parse(docDate), tf.parse(docTime), docName, compressionMethod);
     assertThat(persistent.getId(), is(equalTo(id)));
@@ -66,7 +63,6 @@ public class CmsDocumentTest {
     assertThat(persistent.getDocTime(), is(equalTo(tf.parse(docTime))));
     assertThat(persistent.getDocName(), is(equalTo(docName)));
     assertThat(persistent.getCompressionMethod(), is(equalTo(compressionMethod)));
-
   }
 
   @Test
@@ -83,12 +79,8 @@ public class CmsDocumentTest {
   @Test
   public void getPrimaryKey_A$() throws Exception {
     CmsDocument target = new CmsDocument();
-    // given
-    // e.g. : given(mocked.called()).willReturn(1);
-    // when
     Serializable actual = target.getPrimaryKey();
-    // then
-    // e.g. : verify(mocked).called();
+
     Serializable expected = null;
     assertThat(actual, is(equalTo(expected)));
   }
@@ -96,13 +88,8 @@ public class CmsDocumentTest {
   @Test
   public void addBlobSegment_A$CmsDocumentBlobSegment() throws Exception {
     CmsDocument target = new CmsDocument();
-    // given
     CmsDocumentBlobSegment blobSegment = mock(CmsDocumentBlobSegment.class);
-    // e.g. : given(mocked.called()).willReturn(1);
-    // when
     target.addBlobSegment(blobSegment);
-    // then
-    // e.g. : verify(mocked).called();
   }
 
 }
