@@ -17,20 +17,13 @@ import gov.ca.cwds.data.cms.SubstituteCareProviderDao;
 import gov.ca.cwds.data.cms.TestSystemCodeCache;
 import gov.ca.cwds.data.dao.contact.DeliveredServiceDao;
 import gov.ca.cwds.data.dao.contact.IndividualDeliveredServiceDao;
+import gov.ca.cwds.data.dao.contact.ReferralClientDeliveredServiceDao;
 import gov.ca.cwds.data.es.ElasticSearchPerson;
 import gov.ca.cwds.data.es.ElasticsearchDao;
-import gov.ca.cwds.data.persistence.cms.Attorney;
-import gov.ca.cwds.data.persistence.cms.CollateralIndividual;
-import gov.ca.cwds.data.persistence.cms.Reporter;
-import gov.ca.cwds.data.persistence.cms.ServiceProvider;
-import gov.ca.cwds.data.persistence.cms.SubstituteCareProvider;
-import gov.ca.cwds.data.persistence.junit.template.PersistentTestTemplate;
 import gov.ca.cwds.rest.ElasticsearchConfiguration;
 import gov.ca.cwds.rest.api.Response;
-import gov.ca.cwds.rest.api.domain.PostedIndividualDeliveredService;
 import gov.ca.cwds.rest.api.domain.investigation.contact.Contact;
 import gov.ca.cwds.rest.api.domain.investigation.contact.ContactRequest;
-import gov.ca.cwds.rest.api.domain.investigation.contact.DeliveredToIndividualCode;
 import gov.ca.cwds.rest.filters.TestingRequestExecutionContext;
 
 import java.io.File;
@@ -97,6 +90,8 @@ public class ContactServiceTest {
   ServiceProviderDao serviceProviderDao;
   SubstituteCareProviderDao substituteCareProviderDao;
   ReporterDao reporterDao;
+  ReferralClientDeliveredServiceDao referralClientDeliveredServiceDao;
+  DeliveredToIndividualService deliveredToIndividualService;
 
   ContactService target;
 
@@ -179,11 +174,14 @@ public class ContactServiceTest {
     serviceProviderDao = mock(ServiceProviderDao.class);
     staffPersonDao = mock(StaffPersonDao.class);
     substituteCareProviderDao = mock(SubstituteCareProviderDao.class);
-
+    referralClientDeliveredServiceDao = mock(ReferralClientDeliveredServiceDao.class);
+    deliveredToIndividualService =
+        new DeliveredToIndividualService(clientDao, attorneyDao, collateralIndividualDao,
+            serviceProviderDao, substituteCareProviderDao, reporterDao);
     target =
         new ContactService(deliveredServiceDao, staffPersonDao, longTextDao,
-            individualDeliveredServiceDao, clientDao, attorneyDao, collateralIndividualDao,
-            serviceProviderDao, substituteCareProviderDao, reporterDao);
+            individualDeliveredServiceDao, referralClientDeliveredServiceDao,
+            deliveredToIndividualService);
   }
 
   @Test
@@ -221,74 +219,6 @@ public class ContactServiceTest {
     String primaryKey = null;
     final ContactRequest request = mock(ContactRequest.class);
     Response actual = target.update(primaryKey, request);
-    assertThat(actual, notNullValue());
-  }
-
-  @Test
-  public void findPerson_Args__BaseDaoImpl__DeliveredToIndividualCode__Collateral()
-      throws Exception {
-    final CollateralIndividual indiv =
-        PersistentTestTemplate.<CollateralIndividual>valid(new CollateralIndividual());
-    when(collateralIndividualDao.find(any())).thenReturn(indiv);
-    final String id = indiv.getId();
-    final DeliveredToIndividualCode code = DeliveredToIndividualCode.COLLATERAL_INDIVIDUAL;
-    PostedIndividualDeliveredService actual = target.findPerson(code, id);
-    assertThat(actual, notNullValue());
-  }
-
-  @Test
-  public void findPerson_Args__BaseDaoImpl__DeliveredToIndividualCode__Client() throws Exception {
-    final gov.ca.cwds.data.persistence.cms.Client indiv =
-        PersistentTestTemplate
-            .<gov.ca.cwds.data.persistence.cms.Client>valid(new gov.ca.cwds.data.persistence.cms.Client());
-    when(clientDao.find(any())).thenReturn(indiv);
-    final String id = indiv.getId();
-    final DeliveredToIndividualCode code = DeliveredToIndividualCode.CLIENT;
-    PostedIndividualDeliveredService actual = target.findPerson(code, id);
-    assertThat(actual, notNullValue());
-  }
-
-  @Test
-  public void findPerson_Args__BaseDaoImpl__DeliveredToIndividualCode__Attorney() throws Exception {
-    final Attorney indiv = PersistentTestTemplate.<Attorney>valid(new Attorney());
-    when(attorneyDao.find(any())).thenReturn(indiv);
-    final String id = indiv.getId();
-    final DeliveredToIndividualCode code = DeliveredToIndividualCode.ATTORNEY;
-    PostedIndividualDeliveredService actual = target.findPerson(code, id);
-    assertThat(actual, notNullValue());
-  }
-
-  @Test
-  public void findPerson_Args__BaseDaoImpl__DeliveredToIndividualCode__Reporter() throws Exception {
-    final Reporter indiv = PersistentTestTemplate.<Reporter>valid(new Reporter());
-    when(reporterDao.find(any())).thenReturn(indiv);
-    final String id = indiv.getPrimaryKey();
-    final DeliveredToIndividualCode code = DeliveredToIndividualCode.REPORTER;
-    PostedIndividualDeliveredService actual = target.findPerson(code, id);
-    assertThat(actual, notNullValue());
-  }
-
-  @Test
-  public void findPerson_Args__BaseDaoImpl__DeliveredToIndividualCode__ServiceProvider()
-      throws Exception {
-    final ServiceProvider indiv =
-        PersistentTestTemplate.<ServiceProvider>valid(new ServiceProvider());
-    when(serviceProviderDao.find(any())).thenReturn(indiv);
-    final String id = indiv.getPrimaryKey();
-    final DeliveredToIndividualCode code = DeliveredToIndividualCode.SERVICE_PROVIDER;
-    PostedIndividualDeliveredService actual = target.findPerson(code, id);
-    assertThat(actual, notNullValue());
-  }
-
-  @Test
-  public void findPerson_Args__BaseDaoImpl__DeliveredToIndividualCode__SubstituteProvider()
-      throws Exception {
-    final SubstituteCareProvider indiv =
-        PersistentTestTemplate.<SubstituteCareProvider>valid(new SubstituteCareProvider());
-    when(substituteCareProviderDao.find(any())).thenReturn(indiv);
-    final String id = indiv.getPrimaryKey();
-    final DeliveredToIndividualCode code = DeliveredToIndividualCode.SUBSTITUTE_CARE_PROVIDER;
-    PostedIndividualDeliveredService actual = target.findPerson(code, id);
     assertThat(actual, notNullValue());
   }
 
