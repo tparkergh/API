@@ -39,6 +39,7 @@ import gov.ca.cwds.data.cms.CountyTriggerDao;
 import gov.ca.cwds.data.cms.CrossReportDao;
 import gov.ca.cwds.data.cms.DrmsDocumentDao;
 import gov.ca.cwds.data.cms.ExternalInterfaceDao;
+import gov.ca.cwds.data.cms.GovernmentOrganizationDao;
 import gov.ca.cwds.data.cms.LawEnforcementDao;
 import gov.ca.cwds.data.cms.LongTextDao;
 import gov.ca.cwds.data.cms.OtherClientNameDao;
@@ -95,6 +96,7 @@ import gov.ca.cwds.data.persistence.cms.CrossReport;
 import gov.ca.cwds.data.persistence.cms.DrmsDocument;
 import gov.ca.cwds.data.persistence.cms.EducationProviderContact;
 import gov.ca.cwds.data.persistence.cms.ExternalInterface;
+import gov.ca.cwds.data.persistence.cms.GovernmentOrganization;
 import gov.ca.cwds.data.persistence.cms.LawEnforcement;
 import gov.ca.cwds.data.persistence.cms.LongText;
 import gov.ca.cwds.data.persistence.cms.OtherAdultInPlacemtHome;
@@ -188,7 +190,7 @@ public class DataAccessModule extends AbstractModule {
           ExternalInterface.class, DeliveredServiceEntity.class,
           ContactPartyDeliveredServiceEntity.class, ReferralClientDeliveredServiceEntity.class,
           IndividualDeliveredServiceEntity.class, LawEnforcement.class, CaseLoad.class,
-          StaffPersonCaseLoad.class, ClientScpEthnicity.class),
+          StaffPersonCaseLoad.class, ClientScpEthnicity.class, GovernmentOrganization.class),
 
           new ApiSessionFactoryFactory()) {
 
@@ -281,6 +283,7 @@ public class DataAccessModule extends AbstractModule {
     bind(CaseLoadDao.class);
     bind(StaffPersonDao.class);
     bind(ClientScpEthnicityDao.class);
+    bind(GovernmentOrganizationDao.class);
 
     // NS:
     bind(AddressDao.class);
@@ -413,8 +416,8 @@ public class DataAccessModule extends AbstractModule {
       for (String esConfigKey : esConfigs.keySet()) {
         ElasticsearchConfiguration config = esConfigs.get(esConfigKey);
 
-        try( TransportClient transportClient = new PreBuiltTransportClient(
-              Settings.builder().put("cluster.name", config.getElasticsearchCluster()).build()); ) {
+        try (TransportClient transportClient = new PreBuiltTransportClient(
+            Settings.builder().put("cluster.name", config.getElasticsearchCluster()).build());) {
           transportClient.addTransportAddress(
               new InetSocketTransportAddress(InetAddress.getByName(config.getElasticsearchHost()),
                   Integer.parseInt(config.getElasticsearchPort())));
