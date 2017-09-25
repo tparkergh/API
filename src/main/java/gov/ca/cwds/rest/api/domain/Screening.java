@@ -76,7 +76,7 @@ public class Screening extends ReportingDomain implements Request, Response {
   @Date(format = "yyyy-MM-dd", required = false)
   private String startedAt;
 
-  @JsonProperty("assignee_Id")
+  @JsonProperty("assignee_id")
   @ApiModelProperty(required = true, readOnly = false, value = "Screening Assignee Id",
       example = "con")
   private String assigneeId;
