@@ -36,7 +36,7 @@ import io.swagger.annotations.ApiModelProperty;
 @JsonPropertyOrder({"legacy_descriptor", "last_updated_by", "last_updated_at", "incidentCounty",
     "incident_date", "location_type", "communication_method", "name", "investigation_summary",
     "reference", "response_time", "started_at", "assignee", "additional_information", "sensitive",
-    "sealed", "incident_phone_number", "incident_address", "screening", "history_of_invovlement",
+    "sealed", "incident_phone_number", "incident_address", "screening", "history_of_involvement",
     "allegations", "people", "relationships"})
 public class Investigation extends ReportingDomain implements Request, Response {
   private static final long serialVersionUID = 1L;
@@ -47,7 +47,7 @@ public class Investigation extends ReportingDomain implements Request, Response 
 
   @NotNull
   @JsonProperty("last_updated_by")
-  @ApiModelProperty(required = false, readOnly = false, value = "staff person id")
+  @ApiModelProperty(required = false, readOnly = false, value = "staff person id", example = "0X5")
   private String lastUpdatedBy;
 
   @NotNull

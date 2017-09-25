@@ -25,15 +25,16 @@ public class PhoneNumber implements Request, Response {
   private static final long serialVersionUID = 1L;
 
   @JsonProperty("number")
-  @ApiModelProperty(required = true, readOnly = false, value = "phone number")
+  @ApiModelProperty(required = true, readOnly = false, value = "phone number", example = "4569939")
   private BigDecimal phoneNumber;
 
   @JsonProperty("extension")
-  @ApiModelProperty(required = true, readOnly = false, value = "extension")
+  @ApiModelProperty(required = true, readOnly = false, value = "extension", example = "2334")
   private Integer phoneExtension;
 
   @JsonProperty("type")
-  @ApiModelProperty(required = true, readOnly = false, value = "phone number type")
+  @ApiModelProperty(required = true, readOnly = false, value = "phone number type",
+      example = "1111")
   private Short phoneType;
 
   @JsonProperty("legacy_descriptor")

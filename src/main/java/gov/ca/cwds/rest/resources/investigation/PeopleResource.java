@@ -14,8 +14,9 @@ import org.apache.http.HttpStatus;
 
 import com.google.inject.Inject;
 
-import gov.ca.cwds.inject.PersonServiceBackedResource;
+import gov.ca.cwds.inject.PeopleServiceBackedResource;
 import gov.ca.cwds.rest.api.domain.investigation.Investigation;
+import gov.ca.cwds.rest.api.domain.investigation.People;
 import gov.ca.cwds.rest.api.domain.investigation.Person;
 import gov.ca.cwds.rest.resources.TypedResourceDelegate;
 import io.dropwizard.hibernate.UnitOfWork;
@@ -42,7 +43,7 @@ import io.swagger.annotations.ApiResponses;
 @Consumes(MediaType.APPLICATION_JSON)
 
 public class PeopleResource {
-  private TypedResourceDelegate<String, Person> typedResourceDelegate;
+  private TypedResourceDelegate<String, People> typedResourceDelegate;
 
   /**
    * Constructor
@@ -51,7 +52,7 @@ public class PeopleResource {
    */
   @Inject
   public PeopleResource(
-      @PersonServiceBackedResource TypedResourceDelegate<String, Person> typedResourceDelegate) {
+      @PeopleServiceBackedResource TypedResourceDelegate<String, People> typedResourceDelegate) {
     this.typedResourceDelegate = typedResourceDelegate;
   }
 
@@ -59,7 +60,7 @@ public class PeopleResource {
    * Find an {@link Investigation}.
    *
    * @param id - CMS Id of Case or Referral
-   * @return - investigation
+   * @return - people of investigation
    */
   @UnitOfWork(value = "cms")
   @GET

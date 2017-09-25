@@ -30,7 +30,7 @@ import io.swagger.annotations.ApiModelProperty;
 @JsonPropertyOrder({"legacy_descriptor", "last_updated_by", "last_update_at", "first_name",
     "last_name", "name_suffix", "gender", "date_of_birth", "ssn", "languages", "race_codes",
     "sensitive", "sealed", "phone_numbers", "roles", "addresses"})
-public final class Person implements Request, Response {
+public class Person implements Request, Response {
 
   private static final long serialVersionUID = 1L;
 
@@ -136,7 +136,7 @@ public final class Person implements Request, Response {
    * empty consutructor
    */
   public Person() {
-    super();
+    // default
   }
 
   /**
