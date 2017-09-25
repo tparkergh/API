@@ -206,3 +206,7 @@ VALUES ('MLazRFR00E', '1997-08-13', '1997-08-13', 'con', '1997-08-13 11:05:54.15
 truncate table cwsint.CLSCP_ET immediate;
 INSERT INTO CWSINT.CLSCP_ET(IDENTIFIER, ETHNCTYC, ESTBLSH_ID, ESTBLSH_CD, LST_UPD_ID, LST_UPD_TS) 
 VALUES ('AcirYvt0Ki', 837, 'NHzI71h0Ki', 'C', '0Ki', '2001-03-08 14:10:28.70059');
+
+truncate table cwsint.GV_ORG_T immediate;
+INSERT INTO CWSINT.GV_ORG_T(IDENTIFIER, CITY_NM, CNT_PERSNM, CNT_TEL_NO, CNT_EXT_NO, CNTITL_DSC, FAX_NO, FEDERL_IND, GVR_ENTC, GVR_ORGC, GVN_ORG_NM, GV_STATE_C, STREET_NM, STREET_NO, ZIP_NO, LST_UPD_ID, LST_UPD_TS, ZIP_SFX_NO, ARCASS_IND, EMAIL_ADDR) 
+VALUES ('02JBdLO00E', 'Butteville          ', 'Mr. Butte Eligibility              ', 1111111111, 1111111, 'Butte Eligibility Contact     ', 1111111111, 'N', 1071, 5316, 'Butte Eligibility Office           ', 1828, 'Butte Eligibiltiy Street Name           ', '1111111111', 11111, '00E', '1998-01-06 15:18:17.225709', 1111, 'N', null);
