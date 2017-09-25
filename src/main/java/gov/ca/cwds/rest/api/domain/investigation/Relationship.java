@@ -23,7 +23,7 @@ import io.dropwizard.jackson.JsonSnakeCase;
 import io.swagger.annotations.ApiModelProperty;
 
 /**
- * {@link DomainObject} representing a ClientRelationship
+ * {@link DomainObject} representing a Relationship
  * 
  * @author CWDS API Team
  */
@@ -48,26 +48,26 @@ public final class Relationship implements Request, Response {
   private String dateOfBirth;
 
   @JsonProperty("first_name")
-  @ApiModelProperty(required = false, readOnly = false, value = "first name")
+  @ApiModelProperty(required = false, readOnly = false, value = "first name", example = "joe")
   @Size(min = 1, max = 20)
   private String firstName;
 
   @JsonProperty("middle_name")
   @Size(min = 0, max = 20)
-  @ApiModelProperty(required = true, readOnly = false, value = "middle name", example = "")
+  @ApiModelProperty(required = true, readOnly = false, value = "middle name", example = "w")
   private String middleName;
 
   @JsonProperty("last_name")
   @NotBlank
   @Size(min = 1, max = 25)
-  @ApiModelProperty(required = true, readOnly = false, value = "last name", example = "last name")
+  @ApiModelProperty(required = true, readOnly = false, value = "last name", example = "sufer")
   private String lastName;
 
   @JsonProperty("name_suffix")
   @NotNull
   @Size(max = 4)
   @ApiModelProperty(required = false, readOnly = false, value = "Suffix Title Description",
-      example = "phd")
+      example = "")
   private String suffixName;
 
   @JsonProperty("sensitive")

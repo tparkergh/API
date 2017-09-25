@@ -31,26 +31,29 @@ public final class RelationshipTo {
   private static final long serialVersionUID = 1L;
 
   @JsonProperty("related_person_first_name")
-  @ApiModelProperty(required = false, readOnly = false, value = "first name")
+  @ApiModelProperty(required = false, readOnly = false, value = "first name", example = "jane")
   @Size(min = 1, max = 20)
   private String relatedFirstName;
 
   @JsonProperty("related_person_last_name")
   @NotBlank
   @Size(min = 1, max = 25)
-  @ApiModelProperty(required = true, readOnly = false, value = "last name", example = "last name")
+  @ApiModelProperty(required = true, readOnly = false, value = "last name", example = "sufer")
   private String relatedLastName;
 
   @JsonProperty("indexed_person_relationship")
-  @ApiModelProperty(required = true, readOnly = false, value = "relationship to the person")
+  @ApiModelProperty(required = true, readOnly = false, value = "relationship to the person",
+      example = "Sister")
   private String relationshipToPerson;
 
   @JsonProperty("relationship_context")
-  @ApiModelProperty(required = true, readOnly = false, value = "context of the relationship")
+  @ApiModelProperty(required = true, readOnly = false, value = "context of the relationship",
+      example = "Paternal")
   private String relationshipContext;
 
   @JsonProperty("related_person_relationship")
-  @ApiModelProperty(required = true, readOnly = false, value = "persons relationship to")
+  @ApiModelProperty(required = true, readOnly = false, value = "persons relationship to",
+      example = "Brother")
   private String relatedPersonRelationship;
 
   @JsonProperty("legacy_descriptor")
@@ -61,7 +64,6 @@ public final class RelationshipTo {
    */
   public RelationshipTo() {
     super();
-
   }
 
   /**

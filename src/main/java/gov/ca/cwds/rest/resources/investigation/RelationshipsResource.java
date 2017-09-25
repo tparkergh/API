@@ -59,7 +59,7 @@ public class RelationshipsResource {
    * Find an {@link Investigation}.
    *
    * @param id - CMS Id of Case or Referral
-   * @return - investigation
+   * @return - Relationships
    */
   @UnitOfWork(value = "cms")
   @GET
@@ -69,7 +69,7 @@ public class RelationshipsResource {
       @ApiResponse(code = 406, message = "Accept Header not supported"),
       @ApiResponse(code = 409, message = "Conflict - already exists")})
   @ApiOperation(value = "Find relationships of an Investigation", code = HttpStatus.SC_OK,
-      response = Investigation.class)
+      response = Relationship.class)
   public Response find(@PathParam("id") @ApiParam(required = true, name = "id",
       value = "The CMS Id of the Case or Referral ") String id) {
     return typedResourceDelegate.get(id);

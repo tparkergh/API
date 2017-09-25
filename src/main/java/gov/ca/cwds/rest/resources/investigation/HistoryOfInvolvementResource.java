@@ -69,7 +69,7 @@ public class HistoryOfInvolvementResource {
       @ApiResponse(code = 401, message = "Not Authorized"),
       @ApiResponse(code = 406, message = "Accept Header not supported"),
       @ApiResponse(code = 409, message = "Conflict - already exists")})
-  @ApiOperation(value = "Find History Of Involvements by Referral Id", code = HttpStatus.SC_OK,
+  @ApiOperation(value = "Find History Of Involvements by Referral/Case Id", code = HttpStatus.SC_OK,
       response = HistoryOfInvolvement.class)
   public Response find(@PathParam("id") @ApiParam(required = true, name = "id",
       value = "The id of the Referral ") String id) {
