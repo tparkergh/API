@@ -192,7 +192,7 @@ public class DataAccessModule extends AbstractModule {
           IndividualDeliveredServiceEntity.class, LawEnforcement.class, CaseLoad.class,
           StaffPersonCaseLoad.class, ClientScpEthnicity.class, GovernmentOrganization.class),
 
-          new ApiSessionFactoryFactory()) {
+  new ApiSessionFactoryFactory()) {
 
         @Override
         public DataSourceFactory getDataSourceFactory(ApiConfiguration configuration) {
@@ -416,8 +416,26 @@ public class DataAccessModule extends AbstractModule {
       for (String esConfigKey : esConfigs.keySet()) {
         ElasticsearchConfiguration config = esConfigs.get(esConfigKey);
 
-        try (TransportClient transportClient = new PreBuiltTransportClient(
-            Settings.builder().put("cluster.name", config.getElasticsearchCluster()).build());) {
+        /*
+         * NOTE: This will close the transportClient because of auto closable...
+         * 
+         * <blockquote> <pre>
+         * 
+         * try (TransportClient transportClient = new PreBuiltTransportClient(
+         * Settings.builder().put("cluster.name", config.getElasticsearchCluster()).build());) { ...
+         * ... }
+         * 
+         * </pre> </blockquote>
+         * 
+         * We want to keep the transportClient open. This is causing following error <br>
+         * java.lang.IllegalStateException: transport client is closed
+         * 
+         * <br> SonarQube however reports following as issue...
+         */
+
+        try {
+          TransportClient transportClient = new PreBuiltTransportClient(
+              Settings.builder().put("cluster.name", config.getElasticsearchCluster()).build());
           transportClient.addTransportAddress(
               new InetSocketTransportAddress(InetAddress.getByName(config.getElasticsearchHost()),
                   Integer.parseInt(config.getElasticsearchPort())));
