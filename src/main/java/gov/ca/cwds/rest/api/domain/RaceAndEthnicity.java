@@ -35,7 +35,7 @@ import io.swagger.annotations.ApiModelProperty;
     @IfCollectionContainsShortThen(ifProperty = "hispanicCode",
         thenProperty = "hispanicUnableToDetermineCode", ifValue = 6351,
         message = "Hispanic unable to determine code must be set if hispanic codes include 6351")})
-public class RaceAndEthnicity implements Request, Response {
+public class RaceAndEthnicity extends ReportingDomain implements Request, Response {
 
   /**
    * Serialization version.
