@@ -18,6 +18,7 @@ import gov.ca.cwds.rest.api.Request;
 import gov.ca.cwds.rest.api.Response;
 import gov.ca.cwds.rest.api.domain.DomainObject;
 import gov.ca.cwds.rest.api.domain.LegacyDescriptor;
+import gov.ca.cwds.rest.api.domain.ReportingDomain;
 import gov.ca.cwds.rest.validation.Date;
 import io.dropwizard.jackson.JsonSnakeCase;
 import io.swagger.annotations.ApiModelProperty;
@@ -30,7 +31,7 @@ import io.swagger.annotations.ApiModelProperty;
 @JsonSnakeCase
 @JsonPropertyOrder({"id", "date_of_birth", "first_name", "middle_name", "last_name", "name_suffix",
     "sensitive", "sealed", "legacy_descriptor", "relationship_to"})
-public final class Relationship implements Request, Response {
+public final class Relationship extends ReportingDomain implements Request, Response {
 
   private static final long serialVersionUID = 1L;
 

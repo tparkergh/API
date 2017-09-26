@@ -25,7 +25,7 @@ public class RelationshipList implements Request, Response {
   private Set<Relationship> relationshipList;
 
   /**
-   * 
+   * empty constructor
    */
   public RelationshipList() {
 

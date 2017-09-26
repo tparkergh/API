@@ -163,21 +163,6 @@ public class Investigation extends ReportingDomain implements Request, Response 
   @Valid
   private Set<Allegation> allegations;
 
-  // @JsonProperty("salfety_alerts")
-  // @ApiModelProperty(required = false, readOnly = false)
-  // @Valid
-  // private Set<SafetyAlerts> saftetyAlerts;
-
-  // @JsonProperty("cross_reports")
-  // @ApiModelProperty(required = false, readOnly = false)
-  // @Valid
-  // private Set<CrossReport> crossReports;
-
-  // @JsonProperty("contacts")
-  // @ApiModelProperty(required = false, readOnly = false)
-  // @Valid
-  // private Set<Contact> contacts;
-
   @JsonProperty("people")
   @ApiModelProperty(required = false, readOnly = false)
   @Valid
@@ -187,7 +172,6 @@ public class Investigation extends ReportingDomain implements Request, Response 
   @ApiModelProperty(required = false, readOnly = false)
   @Valid
   private Set<Relationship> relationships;
-
 
   /**
    * empty constructor

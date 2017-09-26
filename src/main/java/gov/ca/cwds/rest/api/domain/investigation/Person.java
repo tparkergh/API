@@ -16,6 +16,7 @@ import gov.ca.cwds.rest.api.Request;
 import gov.ca.cwds.rest.api.Response;
 import gov.ca.cwds.rest.api.domain.LegacyDescriptor;
 import gov.ca.cwds.rest.api.domain.RaceAndEthnicity;
+import gov.ca.cwds.rest.api.domain.ReportingDomain;
 import gov.ca.cwds.rest.validation.Date;
 import io.dropwizard.jackson.JsonSnakeCase;
 import io.dropwizard.validation.OneOf;
@@ -30,7 +31,7 @@ import io.swagger.annotations.ApiModelProperty;
 @JsonPropertyOrder({"legacy_descriptor", "last_updated_by", "last_update_at", "first_name",
     "last_name", "name_suffix", "gender", "date_of_birth", "ssn", "languages", "race_codes",
     "sensitive", "sealed", "phone_numbers", "roles", "addresses"})
-public class Person implements Request, Response {
+public class Person extends ReportingDomain implements Request, Response {
 
   private static final long serialVersionUID = 1L;
 
@@ -93,18 +94,6 @@ public class Person implements Request, Response {
   @ApiModelProperty(required = false, readOnly = false, value = "languages",
       dataType = "java.util.List", example = "['839', '840']")
   private Set<Short> languages;
-
-  // @SystemCodeSerializer(logical = true, description = true)
-  // @JsonProperty("primary_language")
-  // @ApiModelProperty(required = false, readOnly = false, example = "1253",
-  // value = "Primary language code")
-  // private Short primaryLanguage;
-  //
-  // @SystemCodeSerializer(logical = true, description = true)
-  // @JsonProperty("secondary_language")
-  // @ApiModelProperty(required = false, readOnly = false, example = "1255",
-  // value = "Secondary language code")
-  // private Short secondaryLanguage;
 
   @JsonProperty("race_codes")
   private RaceAndEthnicity raceAndEthnicity;
