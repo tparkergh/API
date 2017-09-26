@@ -3,6 +3,7 @@ package gov.ca.cwds.rest.api.domain;
 import static io.dropwizard.testing.FixtureHelpers.fixture;
 import static junit.framework.TestCase.assertTrue;
 import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.is;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
@@ -18,6 +19,9 @@ import javax.validation.ConstraintViolation;
 import javax.validation.Validation;
 import javax.validation.Validator;
 import javax.validation.ValidatorFactory;
+import javax.ws.rs.client.Entity;
+import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
 
 import org.junit.Before;
 import org.junit.ClassRule;
@@ -88,23 +92,20 @@ public class ScreeningToReferralTest {
   public void successWhenIncidentDateEmpty() throws Exception {
     ScreeningToReferral toCreate =
         new ScreeningToReferralResourceBuilder().setIncidentDate("").createScreeningToReferral();
-    Set<ConstraintViolation<ScreeningToReferral>> constraintViolations =
-        validator.validate(toCreate);
-    assertEquals(0, constraintViolations.size());
+    Response response =
+        resources.client().target(ROOT_RESOURCE).request().accept(MediaType.APPLICATION_JSON)
+            .post(Entity.entity(toCreate, MediaType.APPLICATION_JSON));
+    assertThat(response.getStatus(), is(equalTo(204)));
   }
 
   @Test
   public void successWhenIncidentDateNull() throws Exception {
     ScreeningToReferral toCreate =
         new ScreeningToReferralResourceBuilder().setIncidentDate(null).createScreeningToReferral();
-    Set<ConstraintViolation<ScreeningToReferral>> constraintViolations =
-        validator.validate(toCreate);
-
-    for (ConstraintViolation<?> violation : constraintViolations) {
-      System.out.println(violation.getMessage());
-    }
-    assertEquals(0, constraintViolations.size());
-
+    Response response =
+        resources.client().target(ROOT_RESOURCE).request().accept(MediaType.APPLICATION_JSON)
+            .post(Entity.entity(toCreate, MediaType.APPLICATION_JSON));
+    assertThat(response.getStatus(), is(equalTo(204)));
   }
 
   /*

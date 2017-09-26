@@ -25,6 +25,7 @@ import gov.ca.cwds.data.cms.AddressDao;
 import gov.ca.cwds.data.cms.AllegationDao;
 import gov.ca.cwds.data.cms.AllegationPerpetratorHistoryDao;
 import gov.ca.cwds.data.cms.AssignmentDao;
+import gov.ca.cwds.data.cms.CaseLoadDao;
 import gov.ca.cwds.data.cms.ChildClientDao;
 import gov.ca.cwds.data.cms.ClientAddressDao;
 import gov.ca.cwds.data.cms.ClientDao;
@@ -37,7 +38,9 @@ import gov.ca.cwds.data.cms.ReporterDao;
 import gov.ca.cwds.data.cms.SsaName3Dao;
 import gov.ca.cwds.data.cms.StaffPersonDao;
 import gov.ca.cwds.data.cms.TestSystemCodeCache;
+import gov.ca.cwds.data.persistence.cms.CaseLoad;
 import gov.ca.cwds.data.rules.TriggerTablesDao;
+import gov.ca.cwds.fixture.CaseLoadEntityBuilder;
 import gov.ca.cwds.helper.CmsIdGenerator;
 import gov.ca.cwds.rest.api.Response;
 import gov.ca.cwds.rest.api.domain.Participant;
@@ -150,6 +153,7 @@ public class R05360ReferralCityMandatoryTest {
   private UpperCaseTables upperCaseTables;
   private Validator validator;
   private ExternalInterfaceTables externalInterfaceTables;
+  private CaseLoadDao caseLoadDao;
 
   private TestSystemCodeCache testSystemCodeCache = new TestSystemCodeCache();
 
@@ -217,8 +221,10 @@ public class R05360ReferralCityMandatoryTest {
     nonLACountyTriggers = mock(NonLACountyTriggers.class);
     triggerTablesDao = mock(TriggerTablesDao.class);
     riAssignment = mock(RIAssignment.class);
-    assignmentService = new AssignmentService(assignmentDao, nonLACountyTriggers, staffpersonDao,
-        triggerTablesDao, staffPersonIdRetriever, validator, externalInterfaceTables, riAssignment);
+    caseLoadDao = mock(CaseLoadDao.class);
+    assignmentService =
+        new AssignmentService(assignmentDao, nonLACountyTriggers, staffpersonDao, triggerTablesDao,
+            staffPersonIdRetriever, validator, externalInterfaceTables, riAssignment, caseLoadDao);
 
     clientAddressDao = mock(ClientAddressDao.class);
     laCountyTrigger = mock(LACountyTrigger.class);
@@ -379,6 +385,8 @@ public class R05360ReferralCityMandatoryTest {
         new gov.ca.cwds.data.persistence.cms.Assignment("6789012ABC", assignment, "ABC");
     when(assignmentDao.create(any(gov.ca.cwds.data.persistence.cms.Assignment.class)))
         .thenReturn(assignmentToCreate);
+    CaseLoad caseload = new CaseLoadEntityBuilder().build();
+    when(caseLoadDao.find(any())).thenReturn(caseload);
 
     ScreeningToReferral screeningToReferral = MAPPER.readValue(
         fixture("fixtures/domain/ScreeningToReferral/invalid/addressCityEmpty.json"),
@@ -504,6 +512,8 @@ public class R05360ReferralCityMandatoryTest {
     when(assignmentDao.create(any(gov.ca.cwds.data.persistence.cms.Assignment.class)))
         .thenReturn(assignmentToCreate);
     when(assignmentDao.findCaseId(any(String.class))).thenReturn("ABC1234567");
+    CaseLoad caseload = new CaseLoadEntityBuilder().build();
+    when(caseLoadDao.find(any())).thenReturn(caseload);
 
     ScreeningToReferral screeningToReferral = MAPPER.readValue(
         fixture("fixtures/domain/ScreeningToReferral/invalid/participantAddressCityEmpty.json"),
@@ -514,11 +524,10 @@ public class R05360ReferralCityMandatoryTest {
     Boolean theErrorDetected = false;
     try {
       Response response = screeningToReferralService.create(screeningToReferral);
-    } catch (Exception e) {
-      if (e.getMessage().contains("city is required since streetName is set")) {
-        theErrorDetected = true;
-      }
-      assertThat(theErrorDetected, is(equalTo(true)));
+    } catch (BusinessValidationException e) {
+      Set<IssueDetails> issues = e.getValidationDetailsList();
+      assertThat(issues.size(), is(equalTo(1)));
+      assertThat(IssueType.CONSTRAINT_VALIDATION, is(equalTo(issues.iterator().next().getType())));
     }
   }
 
@@ -629,6 +638,8 @@ public class R05360ReferralCityMandatoryTest {
         new gov.ca.cwds.data.persistence.cms.Assignment("6789012ABC", assignment, "ABC");
     when(assignmentDao.create(any(gov.ca.cwds.data.persistence.cms.Assignment.class)))
         .thenReturn(assignmentToCreate);
+    CaseLoad caseload = new CaseLoadEntityBuilder().build();
+    when(caseLoadDao.find(any())).thenReturn(caseload);
 
     ScreeningToReferral screeningToReferral = MAPPER.readValue(
         fixture("fixtures/domain/ScreeningToReferral/invalid/addressStreetNumberEmpty.json"),
@@ -753,6 +764,8 @@ public class R05360ReferralCityMandatoryTest {
         new gov.ca.cwds.data.persistence.cms.Assignment("6789012ABC", assignment, "ABC");
     when(assignmentDao.create(any(gov.ca.cwds.data.persistence.cms.Assignment.class)))
         .thenReturn(assignmentToCreate);
+    CaseLoad caseload = new CaseLoadEntityBuilder().build();
+    when(caseLoadDao.find(any())).thenReturn(caseload);
 
     ScreeningToReferral screeningToReferral = MAPPER.readValue(
         fixture("fixtures/domain/ScreeningToReferral/invalid/addressStreetNameEmpty.json"),
@@ -1002,6 +1015,8 @@ public class R05360ReferralCityMandatoryTest {
         new gov.ca.cwds.data.persistence.cms.Assignment("6789012ABC", assignment, "ABC");
     when(assignmentDao.create(any(gov.ca.cwds.data.persistence.cms.Assignment.class)))
         .thenReturn(assignmentToCreate);
+    CaseLoad caseload = new CaseLoadEntityBuilder().build();
+    when(caseLoadDao.find(any())).thenReturn(caseload);
 
     ScreeningToReferral screeningToReferral = MAPPER.readValue(
         fixture("fixtures/domain/ScreeningToReferral/invalid/addressStreetNumberEmpty.json"),

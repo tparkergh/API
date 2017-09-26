@@ -25,6 +25,7 @@ import gov.ca.cwds.data.cms.AddressDao;
 import gov.ca.cwds.data.cms.AllegationDao;
 import gov.ca.cwds.data.cms.AllegationPerpetratorHistoryDao;
 import gov.ca.cwds.data.cms.AssignmentDao;
+import gov.ca.cwds.data.cms.CaseLoadDao;
 import gov.ca.cwds.data.cms.ChildClientDao;
 import gov.ca.cwds.data.cms.ClientAddressDao;
 import gov.ca.cwds.data.cms.ClientDao;
@@ -38,7 +39,9 @@ import gov.ca.cwds.data.cms.SsaName3Dao;
 import gov.ca.cwds.data.cms.StaffPersonDao;
 import gov.ca.cwds.data.cms.TestSystemCodeCache;
 import gov.ca.cwds.data.ns.ParticipantDao;
+import gov.ca.cwds.data.persistence.cms.CaseLoad;
 import gov.ca.cwds.data.rules.TriggerTablesDao;
+import gov.ca.cwds.fixture.CaseLoadEntityBuilder;
 import gov.ca.cwds.rest.api.domain.ScreeningToReferral;
 import gov.ca.cwds.rest.api.domain.cms.Address;
 import gov.ca.cwds.rest.api.domain.cms.Allegation;
@@ -147,6 +150,7 @@ public class R06224DontAllowBlanksInReferralStartDateAndTimeTest {
   private Validator validator;
   private ExternalInterfaceTables externalInterfaceTables;
   private ClientScpEthnicityService clientScpEthnicityService;
+  private CaseLoadDao caseLoadDao;
 
   private TestSystemCodeCache testSystemCodeCache = new TestSystemCodeCache();
 
@@ -236,8 +240,10 @@ public class R06224DontAllowBlanksInReferralStartDateAndTimeTest {
     nonLACountyTriggers = mock(NonLACountyTriggers.class);
     triggerTablesDao = mock(TriggerTablesDao.class);
     riAssignment = mock(RIAssignment.class);
-    assignmentService = new AssignmentService(assignmentDao, nonLACountyTriggers, staffpersonDao,
-        triggerTablesDao, staffPersonIdRetriever, validator, externalInterfaceTables, riAssignment);
+    caseLoadDao = mock(CaseLoadDao.class);
+    assignmentService =
+        new AssignmentService(assignmentDao, nonLACountyTriggers, staffpersonDao, triggerTablesDao,
+            staffPersonIdRetriever, validator, externalInterfaceTables, riAssignment, caseLoadDao);
 
     reminders = mock(Reminders.class);
     riReferral = mock(RIReferral.class);
@@ -375,6 +381,8 @@ public class R06224DontAllowBlanksInReferralStartDateAndTimeTest {
     when(allegationPerpetratorHistoryDao
         .create(any(gov.ca.cwds.data.persistence.cms.AllegationPerpetratorHistory.class)))
             .thenReturn(allegationPerpetratorHistoryToCreate);
+    CaseLoad caseload = new CaseLoadEntityBuilder().build();
+    when(caseLoadDao.find(any())).thenReturn(caseload);
 
     ScreeningToReferral screeningToReferral =
         MAPPER.readValue(fixture("fixtures/domain/ScreeningToReferral/invalid/startedAtEmpty.json"),

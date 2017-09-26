@@ -28,13 +28,16 @@ import org.mockito.invocation.InvocationOnMock;
 import org.mockito.stubbing.Answer;
 
 import gov.ca.cwds.data.cms.AssignmentDao;
+import gov.ca.cwds.data.cms.CaseLoadDao;
 import gov.ca.cwds.data.cms.CountyOwnershipDao;
 import gov.ca.cwds.data.cms.ReferralClientDao;
 import gov.ca.cwds.data.cms.ReferralDao;
 import gov.ca.cwds.data.cms.StaffPersonDao;
+import gov.ca.cwds.data.persistence.cms.CaseLoad;
 import gov.ca.cwds.data.persistence.cms.StaffPerson;
 import gov.ca.cwds.data.rules.TriggerTablesDao;
 import gov.ca.cwds.fixture.AssignmentResourceBuilder;
+import gov.ca.cwds.fixture.CaseLoadEntityBuilder;
 import gov.ca.cwds.fixture.ReferralResourceBuilder;
 import gov.ca.cwds.rest.api.Response;
 import gov.ca.cwds.rest.api.domain.ScreeningToReferral;
@@ -68,6 +71,7 @@ public class AssignmentServiceTest {
   private RIAssignment riAssignment;
   private MessageBuilder messageBuilder;
   private ScreeningToReferral screeningToReferral;
+  private CaseLoadDao caseLoadDao;
 
   @Rule
   public ExpectedException thrown = ExpectedException.none();
@@ -87,10 +91,12 @@ public class AssignmentServiceTest {
     riAssignment = mock(RIAssignment.class);
     messageBuilder = mock(MessageBuilder.class);
     screeningToReferral = mock(ScreeningToReferral.class);
+    caseLoadDao = mock(CaseLoadDao.class);
     nonLACountyTriggers =
         new NonLACountyTriggers(countyOwnershipDao, referralDao, referralClientDao);
-    assignmentService = new AssignmentService(assignmentDao, nonLACountyTriggers, staffpersonDao,
-        triggerTablesDao, staffPersonIdRetriever, validator, externalInterfaceTables, riAssignment);
+    assignmentService =
+        new AssignmentService(assignmentDao, nonLACountyTriggers, staffpersonDao, triggerTablesDao,
+            staffPersonIdRetriever, validator, externalInterfaceTables, riAssignment, caseLoadDao);
 
   }
 
@@ -360,6 +366,8 @@ public class AssignmentServiceTest {
 
     when(assignmentDao.create(any(gov.ca.cwds.data.persistence.cms.Assignment.class)))
         .thenReturn(toCreate);
+    CaseLoad caseload = new CaseLoadEntityBuilder().build();
+    when(caseLoadDao.find(any())).thenReturn(caseload);
 
     assignmentService.createDefaultAssignmentForNewReferral(screeningToReferral, "ABC1234567",
         new Date(), messageBuilder);

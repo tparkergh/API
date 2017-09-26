@@ -27,6 +27,7 @@ import gov.ca.cwds.data.cms.AddressDao;
 import gov.ca.cwds.data.cms.AllegationDao;
 import gov.ca.cwds.data.cms.AllegationPerpetratorHistoryDao;
 import gov.ca.cwds.data.cms.AssignmentDao;
+import gov.ca.cwds.data.cms.CaseLoadDao;
 import gov.ca.cwds.data.cms.ChildClientDao;
 import gov.ca.cwds.data.cms.ClientAddressDao;
 import gov.ca.cwds.data.cms.ClientDao;
@@ -39,7 +40,10 @@ import gov.ca.cwds.data.cms.ReporterDao;
 import gov.ca.cwds.data.cms.SsaName3Dao;
 import gov.ca.cwds.data.cms.StaffPersonDao;
 import gov.ca.cwds.data.cms.TestSystemCodeCache;
+import gov.ca.cwds.data.persistence.cms.CaseLoad;
+import gov.ca.cwds.data.persistence.cms.StaffPerson;
 import gov.ca.cwds.data.rules.TriggerTablesDao;
+import gov.ca.cwds.fixture.CaseLoadEntityBuilder;
 import gov.ca.cwds.helper.CmsIdGenerator;
 import gov.ca.cwds.rest.api.domain.Participant;
 import gov.ca.cwds.rest.api.domain.ScreeningToReferral;
@@ -146,6 +150,7 @@ public class R07577CreateDummyDocsForReferralTest {
   private Reminders reminders;
   private UpperCaseTables upperCaseTables;
   private ExternalInterfaceTables externalInterfaceTables;
+  private CaseLoadDao caseLoadDao;
 
   private Validator validator;
 
@@ -239,8 +244,10 @@ public class R07577CreateDummyDocsForReferralTest {
     nonLACountyTriggers = mock(NonLACountyTriggers.class);
     triggerTablesDao = mock(TriggerTablesDao.class);
     riAssignment = mock(RIAssignment.class);
-    assignmentService = new AssignmentService(assignmentDao, nonLACountyTriggers, staffpersonDao,
-        triggerTablesDao, staffPersonIdRetriever, validator, externalInterfaceTables, riAssignment);
+    caseLoadDao = mock(CaseLoadDao.class);
+    assignmentService =
+        new AssignmentService(assignmentDao, nonLACountyTriggers, staffpersonDao, triggerTablesDao,
+            staffPersonIdRetriever, validator, externalInterfaceTables, riAssignment, caseLoadDao);
     reminders = mock(Reminders.class);
     riReferral = mock(RIReferral.class);
 
@@ -386,6 +393,12 @@ public class R07577CreateDummyDocsForReferralTest {
     when(assignmentDao.create(any(gov.ca.cwds.data.persistence.cms.Assignment.class)))
         .thenReturn(assignmentToCreate);
     when(assignmentDao.findCaseId(any(String.class))).thenReturn("ABC1234567");
+    StaffPerson staffPerson = mock(StaffPerson.class);
+    when(staffpersonDao.find(any(String.class))).thenReturn(staffPerson);
+    when(triggerTablesDao.getLaCountySpecificCode()).thenReturn("0X5");
+    when(assignmentDao.findCaseId(any(String.class))).thenReturn("ABC1234567");
+    CaseLoad caseload = new CaseLoadEntityBuilder().build();
+    when(caseLoadDao.find(any())).thenReturn(caseload);
 
     ScreeningToReferral screeningToReferral = MAPPER.readValue(
         fixture("fixtures/domain/ScreeningToReferral/valid/valid.json"), ScreeningToReferral.class);
@@ -521,6 +534,12 @@ public class R07577CreateDummyDocsForReferralTest {
     when(assignmentDao.create(any(gov.ca.cwds.data.persistence.cms.Assignment.class)))
         .thenReturn(assignmentToCreate);
     when(assignmentDao.findCaseId(any(String.class))).thenReturn("ABC1234567");
+    StaffPerson staffPerson = mock(StaffPerson.class);
+    when(staffpersonDao.find(any(String.class))).thenReturn(staffPerson);
+    when(triggerTablesDao.getLaCountySpecificCode()).thenReturn("0X5");
+    when(assignmentDao.findCaseId(any(String.class))).thenReturn("ABC1234567");
+    CaseLoad caseload = new CaseLoadEntityBuilder().build();
+    when(caseLoadDao.find(any())).thenReturn(caseload);
 
     ScreeningToReferral screeningToReferral = MAPPER.readValue(
         fixture("fixtures/domain/ScreeningToReferral/valid/valid.json"), ScreeningToReferral.class);
@@ -656,6 +675,12 @@ public class R07577CreateDummyDocsForReferralTest {
     when(assignmentDao.create(any(gov.ca.cwds.data.persistence.cms.Assignment.class)))
         .thenReturn(assignmentToCreate);
     when(assignmentDao.findCaseId(any(String.class))).thenReturn("ABC1234567");
+    StaffPerson staffPerson = mock(StaffPerson.class);
+    when(staffpersonDao.find(any(String.class))).thenReturn(staffPerson);
+    when(triggerTablesDao.getLaCountySpecificCode()).thenReturn("0X5");
+    when(assignmentDao.findCaseId(any(String.class))).thenReturn("ABC1234567");
+    CaseLoad caseload = new CaseLoadEntityBuilder().build();
+    when(caseLoadDao.find(any())).thenReturn(caseload);
 
     ScreeningToReferral screeningToReferral = MAPPER.readValue(
         fixture("fixtures/domain/ScreeningToReferral/valid/valid.json"), ScreeningToReferral.class);

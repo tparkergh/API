@@ -2,14 +2,12 @@ package gov.ca.cwds.rest.resources;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
-import static org.junit.Assert.assertEquals;
 import static org.mockito.Mockito.mock;
 
 import java.util.HashSet;
 import java.util.LinkedHashSet;
 import java.util.Set;
 
-import javax.validation.ConstraintViolation;
 import javax.validation.Validation;
 import javax.validation.Validator;
 import javax.validation.ValidatorFactory;
@@ -109,40 +107,35 @@ public class ParticipantResourceTest {
         reporterConfidentialWaiver, reporterEmployerName, clientStaffPersonAdded,
         sensitivityIndicator, roles, addresses, raceAndEthnicity);
 
-    Set<ConstraintViolation<Participant>> constraintViolations = validator.validate(participant);
-    for (ConstraintViolation<?> violation : constraintViolations) {
-      System.out.println(violation.getMessage());
-    }
-    assertEquals(3, constraintViolations.size());
-    // int status =
-    // inMemoryResource.client().target(ROOT_RESOURCE).request().accept(MediaType.APPLICATION_JSON)
-    // .post(Entity.entity(participant, MediaType.APPLICATION_JSON)).getStatus();
-    // assertThat(status, is(422));
+    int status =
+        inMemoryResource.client().target(ROOT_RESOURCE).request().accept(MediaType.APPLICATION_JSON)
+            .post(Entity.entity(participant, MediaType.APPLICATION_JSON)).getStatus();
+    assertThat(status, is(422));
   }
 
-  // @Test
-  // public void testDelete200ResourceSuccess() throws Exception {
-  // roles.add("victim");
-  // Address address = new Address("", "", "123 First St", "San Jose", 1828, "94321", 32);
-  // addresses.add(address);
-  // LinkedHashSet<Short> racecodes = new LinkedHashSet<Short>();
-  // racecodes.add((short) 841);
-  // LinkedHashSet<Short> hispaniccodes = new LinkedHashSet<Short>();
-  // hispaniccodes.add((short) 3164);
-  // RaceAndEthnicity raceAndEthnicity =
-  // new RaceAndEthnicity(racecodes, "A", hispaniccodes, "X", "A");
-  //
-  // Participant participant = new Participant(1, "", "", new LegacyDescriptor(), "Marge", "J",
-  // "Simpson", "", "F", "111223333", "2017-01-23", primaryLanguage, secondaryLanguage, 123, 456,
-  // reporterConfidentialWaiver, reporterEmployerName, clientStaffPersonAdded,
-  // sensitivityIndicator, roles, addresses, raceAndEthnicity);
-  //
-  // int status =
-  // inMemoryResource.client().target(ROOT_RESOURCE).request().accept(MediaType.APPLICATION_JSON)
-  // .post(Entity.entity(participant, MediaType.APPLICATION_JSON)).getStatus();
-  // assertThat(status, is(204));
-  //
-  // }
+  @Test
+  public void testDelete200ResourceSuccess() throws Exception {
+    roles.add("victim");
+    Address address = new Address("", "", "123 First St", "San Jose", 1828, "94321", 32);
+    addresses.add(address);
+    LinkedHashSet<Short> racecodes = new LinkedHashSet<Short>();
+    racecodes.add((short) 841);
+    LinkedHashSet<Short> hispaniccodes = new LinkedHashSet<Short>();
+    hispaniccodes.add((short) 3164);
+    RaceAndEthnicity raceAndEthnicity =
+        new RaceAndEthnicity(racecodes, "A", hispaniccodes, "X", "A");
+
+    Participant participant = new Participant(1, "", "", new LegacyDescriptor(), "Marge", "J",
+        "Simpson", "", "F", "111223333", "2017-01-23", primaryLanguage, secondaryLanguage, 123, 456,
+        reporterConfidentialWaiver, reporterEmployerName, clientStaffPersonAdded,
+        sensitivityIndicator, roles, addresses, raceAndEthnicity);
+
+    int status =
+        inMemoryResource.client().target(ROOT_RESOURCE).request().accept(MediaType.APPLICATION_JSON)
+            .post(Entity.entity(participant, MediaType.APPLICATION_JSON)).getStatus();
+    assertThat(status, is(204));
+
+  }
 
   @Test
   public void testDelete404NotFoundError() throws Exception {
