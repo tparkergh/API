@@ -12,7 +12,7 @@ public class PeopleEntityBuilder {
   private Person person1 = new PersonEntityBuilder().build();
   private Person person2 =
       new PersonEntityBuilder().setFirstName("johnny").setLastName("pedd").build();
-  private Set<Person> people = new HashSet<Person>();
+  private Set<Person> people = new HashSet<>();
 
   public People build() {
     people.add(person1);

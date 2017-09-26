@@ -11,6 +11,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 import gov.ca.cwds.rest.api.Request;
 import gov.ca.cwds.rest.api.Response;
+import gov.ca.cwds.rest.api.domain.ReportingDomain;
 
 /**
  *
@@ -18,7 +19,7 @@ import gov.ca.cwds.rest.api.Response;
  * @author CWDS API Team
  */
 @JsonInclude(Include.ALWAYS)
-public final class People implements Request, Response {
+public final class People extends ReportingDomain implements Request, Response {
 
   private static final long serialVersionUID = 1L;
 
