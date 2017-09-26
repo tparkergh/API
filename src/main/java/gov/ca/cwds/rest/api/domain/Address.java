@@ -53,7 +53,8 @@ public class Address extends ReportingDomain implements Request, Response {
 
   @JsonProperty("state")
   @ApiModelProperty(value = "State Code", example = "1828")
-  @ValidSystemCodeId(required = true, category = SystemCodeCategoryId.STATE_CODE)
+  @ValidSystemCodeId(required = false, category = SystemCodeCategoryId.STATE_CODE,
+      ignoreable = true, ignoredValue = 0)
   private Integer state;
 
   @JsonProperty("zip")
@@ -63,7 +64,8 @@ public class Address extends ReportingDomain implements Request, Response {
 
   @JsonProperty("type")
   @ApiModelProperty(example = "32")
-  @ValidSystemCodeId(required = true, category = SystemCodeCategoryId.ADDRESS_TYPE)
+  @ValidSystemCodeId(required = false, category = SystemCodeCategoryId.ADDRESS_TYPE,
+      ignoreable = true, ignoredValue = 0)
   private Integer type;
 
   @ApiModelProperty(required = true, readOnly = false)
