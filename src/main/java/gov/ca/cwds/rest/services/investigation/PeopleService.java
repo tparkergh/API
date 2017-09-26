@@ -7,7 +7,6 @@ import gov.ca.cwds.data.dao.investigation.PeopleDao;
 import gov.ca.cwds.fixture.investigation.PeopleEntityBuilder;
 import gov.ca.cwds.rest.api.Response;
 import gov.ca.cwds.rest.api.domain.investigation.People;
-import gov.ca.cwds.rest.api.domain.investigation.Person;
 import gov.ca.cwds.rest.services.TypedCrudsService;
 
 /**
@@ -15,14 +14,14 @@ import gov.ca.cwds.rest.services.TypedCrudsService;
  * 
  * @author CWDS API Team
  */
-public class PeopleService implements TypedCrudsService<String, Person, Response> {
+public class PeopleService implements TypedCrudsService<String, People, Response> {
 
   private PeopleDao peopleDao;
 
   private People validPeople = new PeopleEntityBuilder().build();
 
   /**
-   * @param peopleDao {@link Dao} handling {@link gov.ca.cwds.rest.api.domain.investigation.Person}
+   * @param peopleDao {@link Dao} handling {@link gov.ca.cwds.rest.api.domain.investigation.People}
    *        objects
    */
   @Inject
@@ -37,7 +36,7 @@ public class PeopleService implements TypedCrudsService<String, Person, Response
   }
 
   @Override
-  public Response create(Person request) {
+  public Response create(People request) {
     return validPeople;
   }
 
@@ -47,7 +46,7 @@ public class PeopleService implements TypedCrudsService<String, Person, Response
   }
 
   @Override
-  public Response update(String primaryKey, Person request) {
+  public Response update(String primaryKey, People request) {
     return validPeople;
   }
 }

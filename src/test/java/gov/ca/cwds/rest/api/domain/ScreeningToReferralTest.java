@@ -84,25 +84,28 @@ public class ScreeningToReferralTest {
   /*
    * incident Date Tests
    */
-  // @Test
-  // public void successWhenIncidentDateEmpty() throws Exception {
-  // ScreeningToReferral toCreate =
-  // new ScreeningToReferralResourceBuilder().setIncidentDate("").createScreeningToReferral();
-  // Response response =
-  // resources.client().target(ROOT_RESOURCE).request().accept(MediaType.APPLICATION_JSON)
-  // .post(Entity.entity(toCreate, MediaType.APPLICATION_JSON));
-  // assertThat(response.getStatus(), is(equalTo(204)));
-  // }
-  //
-  // @Test
-  // public void successWhenIncidentDateNull() throws Exception {
-  // ScreeningToReferral toCreate =
-  // new ScreeningToReferralResourceBuilder().setIncidentDate(null).createScreeningToReferral();
-  // Response response =
-  // resources.client().target(ROOT_RESOURCE).request().accept(MediaType.APPLICATION_JSON)
-  // .post(Entity.entity(toCreate, MediaType.APPLICATION_JSON));
-  // assertThat(response.getStatus(), is(equalTo(204)));
-  // }
+  @Test
+  public void successWhenIncidentDateEmpty() throws Exception {
+    ScreeningToReferral toCreate =
+        new ScreeningToReferralResourceBuilder().setIncidentDate("").createScreeningToReferral();
+    Set<ConstraintViolation<ScreeningToReferral>> constraintViolations =
+        validator.validate(toCreate);
+    assertEquals(0, constraintViolations.size());
+  }
+
+  @Test
+  public void successWhenIncidentDateNull() throws Exception {
+    ScreeningToReferral toCreate =
+        new ScreeningToReferralResourceBuilder().setIncidentDate(null).createScreeningToReferral();
+    Set<ConstraintViolation<ScreeningToReferral>> constraintViolations =
+        validator.validate(toCreate);
+
+    for (ConstraintViolation<?> violation : constraintViolations) {
+      System.out.println(violation.getMessage());
+    }
+    assertEquals(0, constraintViolations.size());
+
+  }
 
   /*
    * Serialization and deserialization

@@ -32,7 +32,8 @@ import gov.ca.cwds.rest.api.domain.es.IndexQueryRequest;
 import gov.ca.cwds.rest.api.domain.es.IndexQueryResponse;
 import gov.ca.cwds.rest.api.domain.investigation.HistoryOfInvolvement;
 import gov.ca.cwds.rest.api.domain.investigation.Investigation;
-import gov.ca.cwds.rest.api.domain.investigation.Relationship;
+import gov.ca.cwds.rest.api.domain.investigation.People;
+import gov.ca.cwds.rest.api.domain.investigation.RelationshipList;
 import gov.ca.cwds.rest.api.domain.investigation.contact.ContactRequest;
 import gov.ca.cwds.rest.resources.AddressResource;
 import gov.ca.cwds.rest.resources.AddressValidationResource;
@@ -68,7 +69,8 @@ import gov.ca.cwds.rest.resources.cms.StaffPersonResource;
 import gov.ca.cwds.rest.resources.contact.DeliveredServiceResource;
 import gov.ca.cwds.rest.resources.investigation.ContactResource;
 import gov.ca.cwds.rest.resources.investigation.HistoryOfInvolvementResource;
-import gov.ca.cwds.rest.resources.investigation.RelationshipsResource;
+import gov.ca.cwds.rest.resources.investigation.PeopleResource;
+import gov.ca.cwds.rest.resources.investigation.RelationshipListResource;
 import gov.ca.cwds.rest.services.AddressService;
 import gov.ca.cwds.rest.services.AddressValidationService;
 import gov.ca.cwds.rest.services.IntakeLovService;
@@ -101,7 +103,8 @@ import gov.ca.cwds.rest.services.es.IndexQueryService;
 import gov.ca.cwds.rest.services.investigation.ContactService;
 import gov.ca.cwds.rest.services.investigation.HistoryOfInvolvementService;
 import gov.ca.cwds.rest.services.investigation.InvestigationService;
-import gov.ca.cwds.rest.services.investigation.RelationshipService;
+import gov.ca.cwds.rest.services.investigation.PeopleService;
+import gov.ca.cwds.rest.services.investigation.RelationshipListService;
 
 
 /**
@@ -154,7 +157,8 @@ public class ResourcesModule extends AbstractModule {
     bind(HistoryOfInvolvementResource.class);
     bind(gov.ca.cwds.rest.resources.investigation.ScreeningSummaryResource.class);
     bind(gov.ca.cwds.rest.resources.investigation.InvestigationsResource.class);
-    bind(RelationshipsResource.class);
+    bind(RelationshipListResource.class);
+    bind(PeopleResource.class);
   }
 
   @Provides
@@ -410,12 +414,17 @@ public class ResourcesModule extends AbstractModule {
   }
 
   @Provides
-  @RelationshipsServiceBackedResource
-  public TypedResourceDelegate<String, Relationship> reslationshipBackedResource(
+  @RelationshipListServiceBackedResource
+  public TypedResourceDelegate<String, RelationshipList> relationshipListBackedResource(
       Injector injector) {
     return new TypedServiceBackedResourceDelegate<>(
-        injector.getInstance(RelationshipService.class));
+        injector.getInstance(RelationshipListService.class));
+  }
 
+  @Provides
+  @PeopleServiceBackedResource
+  public TypedResourceDelegate<String, People> peopleBackedResource(Injector injector) {
+    return new TypedServiceBackedResourceDelegate<>(injector.getInstance(PeopleService.class));
   }
 
 }
