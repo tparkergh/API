@@ -28,9 +28,9 @@ import io.swagger.annotations.ApiModelProperty;
  * @author CWDS API Team
  */
 @JsonSnakeCase
-@JsonPropertyOrder({"legacy_descriptor", "last_updated_by", "last_update_at", "first_name",
-    "last_name", "name_suffix", "gender", "date_of_birth", "ssn", "languages", "race_codes",
-    "sensitive", "sealed", "phone_numbers", "roles", "addresses"})
+@JsonPropertyOrder({"legacy_descriptor", "last_updated_by", "last_updated_at", "first_name",
+    "middle_name", "last_name", "name_suffix", "gender", "date_of_birth", "ssn", "languages",
+    "race_codes", "sensitive", "sealed", "phone_numbers", "roles", "addresses"})
 public class Person extends ReportingDomain implements Request, Response {
 
   private static final long serialVersionUID = 1L;
