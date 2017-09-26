@@ -6,6 +6,7 @@ import javax.persistence.EntityExistsException;
 import javax.persistence.EntityNotFoundException;
 import javax.validation.Validator;
 
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -190,6 +191,7 @@ public class AssignmentService implements
       String referralId, Date timestamp, MessageBuilder messageBuilder) {
 
     String caseLoadId = "";
+    String COUNTY_CODE = "00";
     if (staffpersonDao.find(screeningToReferral.getAssigneeId()) == null) {
       String message = "The given assigneeId is not found";
       ServiceException se = new ServiceException(message);
@@ -203,8 +205,10 @@ public class AssignmentService implements
       }
     }
 
-    final CaseLoad caseLoad = caseLoadDao.find(caseLoadId);
-    final String COUNTY_CODE = caseLoad.getCountySpecificCode();
+    if (StringUtils.isNotBlank(caseLoadId)) {
+      final CaseLoad caseLoad = caseLoadDao.find(caseLoadId);
+      COUNTY_CODE = caseLoad.getCountySpecificCode();
+    }
 
     gov.ca.cwds.rest.api.domain.cms.Assignment da =
         createDefaultAssignmentToCaseLoad(COUNTY_CODE, referralId, caseLoadId);
