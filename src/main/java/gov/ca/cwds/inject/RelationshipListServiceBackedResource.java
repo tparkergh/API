@@ -11,7 +11,7 @@ import java.lang.annotation.Target;
 import com.google.inject.BindingAnnotation;
 
 /**
- * Annotation for binding to our a service backed person resource
+ * Annotation for binding to our a service backed relationships resource
  * 
  * @author CWDS API Team
  */
@@ -19,6 +19,6 @@ import com.google.inject.BindingAnnotation;
 @BindingAnnotation
 @Target({FIELD, PARAMETER, METHOD})
 @Retention(RUNTIME)
-public @interface RelationshipsServiceBackedResource {
+public @interface RelationshipListServiceBackedResource {
 
 }

@@ -17,7 +17,6 @@ import com.google.inject.Inject;
 import gov.ca.cwds.inject.PeopleServiceBackedResource;
 import gov.ca.cwds.rest.api.domain.investigation.Investigation;
 import gov.ca.cwds.rest.api.domain.investigation.People;
-import gov.ca.cwds.rest.api.domain.investigation.Person;
 import gov.ca.cwds.rest.resources.TypedResourceDelegate;
 import io.dropwizard.hibernate.UnitOfWork;
 import io.swagger.annotations.Api;
@@ -70,7 +69,7 @@ public class PeopleResource {
       @ApiResponse(code = 406, message = "Accept Header not supported"),
       @ApiResponse(code = 409, message = "Conflict - already exists")})
   @ApiOperation(value = "Find people of investigation", code = HttpStatus.SC_OK,
-      response = Person.class)
+      response = People.class)
   public Response find(@PathParam("id") @ApiParam(required = true, name = "id",
       value = "The CMS Id of the Case or Referral ") String id) {
     return typedResourceDelegate.get(id);

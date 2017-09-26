@@ -14,9 +14,9 @@ import org.apache.http.HttpStatus;
 
 import com.google.inject.Inject;
 
-import gov.ca.cwds.inject.RelationshipsServiceBackedResource;
+import gov.ca.cwds.inject.RelationshipListServiceBackedResource;
 import gov.ca.cwds.rest.api.domain.investigation.Investigation;
-import gov.ca.cwds.rest.api.domain.investigation.Relationship;
+import gov.ca.cwds.rest.api.domain.investigation.RelationshipList;
 import gov.ca.cwds.rest.resources.TypedResourceDelegate;
 import io.dropwizard.hibernate.UnitOfWork;
 import io.swagger.annotations.Api;
@@ -40,9 +40,9 @@ import io.swagger.annotations.ApiResponses;
 @Path(value = RESOURCE_INVESTIGATIONS)
 @Produces(MediaType.APPLICATION_JSON)
 @Consumes(MediaType.APPLICATION_JSON)
-public class RelationshipsResource {
+public class RelationshipListResource {
 
-  private TypedResourceDelegate<String, Relationship> typedResourceDelegate;
+  private TypedResourceDelegate<String, RelationshipList> typedResourceDelegate;
 
   /**
    * Constructor
@@ -50,8 +50,8 @@ public class RelationshipsResource {
    * @param typedResourceDelegate The typedResourceDelegate to delegate to.
    */
   @Inject
-  public RelationshipsResource(
-      @RelationshipsServiceBackedResource TypedResourceDelegate<String, Relationship> typedResourceDelegate) {
+  public RelationshipListResource(
+      @RelationshipListServiceBackedResource TypedResourceDelegate<String, RelationshipList> typedResourceDelegate) {
     this.typedResourceDelegate = typedResourceDelegate;
   }
 
@@ -59,7 +59,7 @@ public class RelationshipsResource {
    * Find an {@link Investigation}.
    *
    * @param id - CMS Id of Case or Referral
-   * @return - Relationships
+   * @return - RelationshipList
    */
   @UnitOfWork(value = "cms")
   @GET
@@ -69,7 +69,7 @@ public class RelationshipsResource {
       @ApiResponse(code = 406, message = "Accept Header not supported"),
       @ApiResponse(code = 409, message = "Conflict - already exists")})
   @ApiOperation(value = "Find relationships of an Investigation", code = HttpStatus.SC_OK,
-      response = Relationship.class)
+      response = RelationshipList.class)
   public Response find(@PathParam("id") @ApiParam(required = true, name = "id",
       value = "The CMS Id of the Case or Referral ") String id) {
     return typedResourceDelegate.get(id);
