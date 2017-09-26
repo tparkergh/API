@@ -206,14 +206,18 @@ public class Reporter extends BaseReporter {
         DomainChef.cookBoolean(reporter.getMandatedReporterIndicator());
     this.messagePhoneExtensionNumber = reporter.getMessagePhoneExtensionNumber();
     this.messagePhoneNumber = reporter.getMessagePhoneNumber();
-    this.middleInitialName = reporter.getMiddleInitialName();
-    this.namePrefixDescription = reporter.getNamePrefixDescription();
+    this.middleInitialName =
+        StringUtils.isBlank(reporter.getMiddleInitialName()) ? "" : reporter.getMiddleInitialName();
+    this.namePrefixDescription = StringUtils.isBlank(reporter.getNamePrefixDescription()) ? ""
+        : reporter.getNamePrefixDescription();
     this.primaryPhoneNumber = reporter.getPrimaryPhoneNumber();
     this.primaryPhoneExtensionNumber = reporter.getPrimaryPhoneExtensionNumber();
     this.stateCodeType = reporter.getStateCodeType();
-    this.streetName = reporter.getStreetName();
-    this.streetNumber = reporter.getStreetNumber();
-    this.suffixTitleDescription = reporter.getSuffixTitleDescription();
+    this.streetName = StringUtils.isBlank(reporter.getStreetName()) ? "" : reporter.getStreetName();
+    this.streetNumber =
+        StringUtils.isBlank(reporter.getStreetNumber()) ? "" : reporter.getStreetNumber();
+    this.suffixTitleDescription = StringUtils.isBlank(reporter.getSuffixTitleDescription()) ? ""
+        : reporter.getSuffixTitleDescription();
     this.zipNumber = DomainChef.uncookZipcodeString(reporter.getZipcode());
     this.lawEnforcementId =
         StringUtils.isBlank(reporter.getLawEnforcementId()) ? null : reporter.getLawEnforcementId();
