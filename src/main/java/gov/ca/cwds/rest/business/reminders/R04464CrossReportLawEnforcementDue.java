@@ -102,6 +102,16 @@ public class R04464CrossReportLawEnforcementDue {
     Set<gov.ca.cwds.rest.api.domain.CrossReport> crossReports =
         postedScreeningToReferral.getCrossReports();
     Referral referral = referralDao.find(postedScreeningToReferral.getReferralId());
+    Calendar dueDate = setDueDate(referral);
+
+    if (referral.getClosureDate() == null) {
+
+      checkForAllegationTypeAndReporterType(reminderCreated, persistedReporter, allegations,
+          crossReports, referral, dueDate);
+    }
+  }
+
+  private Calendar setDueDate(Referral referral) {
     /*
      * duedate is updated with adding 36 HRS to the referral receivedDate and the time referral was
      * created.
@@ -114,12 +124,7 @@ public class R04464CrossReportLawEnforcementDue {
     } else {
       dueDate.add(Calendar.DATE, 2);
     }
-
-    if (referral.getClosureDate() == null) {
-
-      checkForAllegationTypeAndReporterType(reminderCreated, persistedReporter, allegations,
-          crossReports, referral, dueDate);
-    }
+    return dueDate;
   }
 
   private boolean checkForAllegationTypeAndReporterType(boolean reminderCreated,
