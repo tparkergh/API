@@ -136,9 +136,8 @@ public class ParticipantValidator {
   /**
    * @param participant - Participant
    * @return - Boolean true if Participant has perpetrator role
-   * @throws ServiceException - throws all Exceptions
    */
-  public static Boolean isPerpetrator(Participant participant) throws ServiceException {
+  public static Boolean isPerpetrator(Participant participant) {
     Set<String> roles = participant.getRoles();
     if (roles != null && roles.contains(Role.PERPETRATOR_ROLE.getType())) {
 
@@ -305,10 +304,8 @@ public class ParticipantValidator {
    * @param str - ScreeningToReferral object
    * @param perpetratorPersonId - Person Id of perpetrator
    * @return - True if participant has a role of Perpetrator
-   * @throws ServiceException - throw and exception
    */
-  public static Boolean isPerpetratorParticipant(ScreeningToReferral str, long perpetratorPersonId)
-      throws ServiceException {
+  public static Boolean isPerpetratorParticipant(ScreeningToReferral str, long perpetratorPersonId) {
 
     if (str.getParticipants() != null) {
       Set<Participant> participants = str.getParticipants();

@@ -1,5 +1,6 @@
 package gov.ca.cwds.rest.api.domain.investigation;
 
+import java.io.Serializable;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.hibernate.validator.constraints.NotEmpty;
@@ -21,7 +22,7 @@ import io.swagger.annotations.ApiModelProperty;
 
 @JsonSnakeCase
 @JsonPropertyOrder({"county_code", "office", "staff_id"})
-public class Assignee {
+public class Assignee implements Serializable {
 
   @JsonProperty("name")
   @ApiModelProperty(required = true, readOnly = false,

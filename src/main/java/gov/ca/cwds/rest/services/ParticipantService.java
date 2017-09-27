@@ -180,72 +180,14 @@ public class ParticipantService implements CrudsService {
               boolean newClient = incomingParticipant.getLegacyId() == null
                   || incomingParticipant.getLegacyId().isEmpty();
               if (newClient) {
-                Short raceCode = clientScpEthnicityService
-                    .getRaceCode(incomingParticipant.getRaceAndEthnicity());
-                Client client = Client.createWithDefaults(incomingParticipant, dateStarted,
-                    genderCode, raceCode);
-                client.applySensitivityIndicator(screeningToReferral.getLimitedAccessCode());
-                client.applySensitivityIndicator(incomingParticipant.getSensitivityIndicator());
-                messageBuilder.addDomainValidationError(validator.validate(client));
-                PostedClient postedClient =
-                    this.clientService.createWithSingleTimestamp(client, timestamp);
-                clientId = postedClient.getId();
-                incomingParticipant.setLegacyId(clientId);
-                incomingParticipant.setLegacySourceTable(CLIENT_TABLE_NAME);
-                incomingParticipant.getLegacyDescriptor()
-                    .setLastUpdated(postedClient.getLastUpdatedTime());
-                clientScpEthnicityService.createOtherEthnicity(postedClient.getId(),
-                    incomingParticipant.getRaceAndEthnicity());
+                clientId = createNewClient(screeningToReferral, dateStarted, timestamp,
+                    messageBuilder, incomingParticipant,
+                    genderCode);
               } else {
                 // legacy Id passed - check for existenct in CWS/CMS - no update yet
                 clientId = incomingParticipant.getLegacyId();
-                Client foundClient = this.clientService.find(clientId);
-                if (foundClient != null) {
-                  EntityChangedComparator comparator = new EntityChangedComparator();
-                  if (comparator.compare(incomingParticipant, foundClient)) {
-                    foundClient
-                        .applySensitivityIndicator(screeningToReferral.getLimitedAccessCode());
-                    foundClient
-                        .applySensitivityIndicator(incomingParticipant.getSensitivityIndicator());
-                    Short raceCode = clientScpEthnicityService
-                        .getRaceCode(incomingParticipant.getRaceAndEthnicity());
-                    String unableToDetermineCode = incomingParticipant.getRaceAndEthnicity() != null
-                        ? incomingParticipant.getRaceAndEthnicity().getUnableToDetermineCode() : "";
-                    String hispanicUnableToDetermineCode =
-                        incomingParticipant.getRaceAndEthnicity() != null ? incomingParticipant
-                            .getRaceAndEthnicity().getHispanicUnableToDetermineCode() : "";
-                    String hispanicOriginCode = incomingParticipant.getRaceAndEthnicity() != null
-                        ? incomingParticipant.getRaceAndEthnicity().getHispanicOriginCode() : "";
-
-                    foundClient.update(incomingParticipant.getFirstName(),
-                        incomingParticipant.getMiddleName(), incomingParticipant.getLastName(),
-                        incomingParticipant.getNameSuffix(), raceCode, unableToDetermineCode,
-                        hispanicUnableToDetermineCode, hispanicOriginCode);
-
-                    gov.ca.cwds.rest.api.domain.cms.Client savedClient =
-                        this.clientService.update(incomingParticipant.getLegacyId(), foundClient);
-                    clientScpEthnicityService.createOtherEthnicity(
-                        foundClient.getExistingClientId(),
-                        incomingParticipant.getRaceAndEthnicity());
-                    if (savedClient != null) {
-                      incomingParticipant.getLegacyDescriptor()
-                          .setLastUpdated(savedClient.getLastUpdatedTime());
-                    } else {
-                      String message = "Unable to save Client";
-                      messageBuilder.addMessageAndLog(message, LOGGER);
-
-                    }
-                  } else {
-                    String message = String.format(
-                        "Unable to Update %s %s Client. Client was previously modified",
-                        incomingParticipant.getFirstName(), incomingParticipant.getLastName());
-                    messageBuilder.addMessageAndLog(message, LOGGER);
-                  }
-                } else {
-                  String message =
-                      " Legacy Id of Participant does not correspond to an existing CWS/CMS Client ";
-                  messageBuilder.addMessageAndLog(message, LOGGER);
-                  // next role
+                if (updateClient(screeningToReferral, messageBuilder, incomingParticipant,
+                    clientId)) {
                   continue;
                 }
               }
@@ -307,6 +249,83 @@ public class ParticipantService implements CrudsService {
     } // next participant
 
     return clientParticipants;
+  }
+
+  private boolean updateClient(ScreeningToReferral screeningToReferral,
+      MessageBuilder messageBuilder, Participant incomingParticipant, String clientId) {
+    Client foundClient = this.clientService.find(clientId);
+    if (foundClient != null) {
+      EntityChangedComparator comparator = new EntityChangedComparator();
+      if (comparator.compare(incomingParticipant, foundClient)) {
+        foundClient
+            .applySensitivityIndicator(screeningToReferral.getLimitedAccessCode());
+        foundClient
+            .applySensitivityIndicator(incomingParticipant.getSensitivityIndicator());
+        Short raceCode = clientScpEthnicityService
+            .getRaceCode(incomingParticipant.getRaceAndEthnicity());
+        String unableToDetermineCode = incomingParticipant.getRaceAndEthnicity() != null
+            ? incomingParticipant.getRaceAndEthnicity().getUnableToDetermineCode() : "";
+        String hispanicUnableToDetermineCode =
+            incomingParticipant.getRaceAndEthnicity() != null ? incomingParticipant
+                .getRaceAndEthnicity().getHispanicUnableToDetermineCode() : "";
+        String hispanicOriginCode = incomingParticipant.getRaceAndEthnicity() != null
+            ? incomingParticipant.getRaceAndEthnicity().getHispanicOriginCode() : "";
+
+        foundClient.update(incomingParticipant.getFirstName(),
+            incomingParticipant.getMiddleName(), incomingParticipant.getLastName(),
+            incomingParticipant.getNameSuffix(), raceCode, unableToDetermineCode,
+            hispanicUnableToDetermineCode, hispanicOriginCode);
+
+        Client savedClient =
+            this.clientService.update(incomingParticipant.getLegacyId(), foundClient);
+        clientScpEthnicityService.createOtherEthnicity(
+            foundClient.getExistingClientId(),
+            incomingParticipant.getRaceAndEthnicity());
+        if (savedClient != null) {
+          incomingParticipant.getLegacyDescriptor()
+              .setLastUpdated(savedClient.getLastUpdatedTime());
+        } else {
+          String message = "Unable to save Client";
+          messageBuilder.addMessageAndLog(message, LOGGER);
+
+        }
+      } else {
+        String message = String.format(
+            "Unable to Update %s %s Client. Client was previously modified",
+            incomingParticipant.getFirstName(), incomingParticipant.getLastName());
+        messageBuilder.addMessageAndLog(message, LOGGER);
+      }
+    } else {
+      String message =
+          " Legacy Id of Participant does not correspond to an existing CWS/CMS Client ";
+      messageBuilder.addMessageAndLog(message, LOGGER);
+      // next role
+      return true;
+    }
+    return false;
+  }
+
+  private String createNewClient(ScreeningToReferral screeningToReferral, String dateStarted,
+      Date timestamp, MessageBuilder messageBuilder, Participant incomingParticipant,
+      String genderCode) {
+    String clientId;
+    Short raceCode = clientScpEthnicityService
+        .getRaceCode(incomingParticipant.getRaceAndEthnicity());
+    Client client = Client.createWithDefaults(incomingParticipant, dateStarted,
+        genderCode, raceCode);
+    client.applySensitivityIndicator(screeningToReferral.getLimitedAccessCode());
+    client.applySensitivityIndicator(incomingParticipant.getSensitivityIndicator());
+    messageBuilder.addDomainValidationError(validator.validate(client));
+    PostedClient postedClient =
+        this.clientService.createWithSingleTimestamp(client, timestamp);
+    clientId = postedClient.getId();
+    incomingParticipant.setLegacyId(clientId);
+    incomingParticipant.setLegacySourceTable(CLIENT_TABLE_NAME);
+    incomingParticipant.getLegacyDescriptor()
+        .setLastUpdated(postedClient.getLastUpdatedTime());
+    clientScpEthnicityService.createOtherEthnicity(postedClient.getId(),
+        incomingParticipant.getRaceAndEthnicity());
+    return clientId;
   }
 
   private Reporter saveReporter(Participant ip, String role, String referralId, Date timestamp,

@@ -19,7 +19,9 @@ public class ParticipantRolesValidator
     implements ConstraintValidator<ValidParticipantRoles, Collection<Participant>> {
 
   @Override
-  public void initialize(ValidParticipantRoles anno) {}
+  public void initialize(ValidParticipantRoles anno) {
+    //Nothing to initialize
+  }
 
   @Override
   public boolean isValid(final Collection<Participant> participants,

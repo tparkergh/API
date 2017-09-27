@@ -1,5 +1,6 @@
 package gov.ca.cwds.rest.api.domain.investigation;
 
+import java.io.Serializable;
 import javax.validation.constraints.Size;
 
 import org.apache.commons.lang3.builder.EqualsBuilder;
@@ -23,7 +24,7 @@ import io.swagger.annotations.ApiModelProperty;
 @JsonPropertyOrder({"related_person_first_name", "related_person_last_name",
     "index_person_relationship", "relationship_context", "related_person_relationship",
     "legacy_description"})
-public final class RelationshipTo {
+public final class RelationshipTo implements Serializable{
 
   /**
    * Serialization version
