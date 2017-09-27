@@ -4,9 +4,12 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.is;
 import static org.junit.Assert.assertNotNull;
+import gov.ca.cwds.data.persistence.contact.DeliveredServiceEntity;
+import gov.ca.cwds.fixture.contacts.DeliveredServiceEntityBuilder;
 import gov.ca.cwds.rest.api.domain.LastUpdatedBy;
 import gov.ca.cwds.rest.api.domain.PostedIndividualDeliveredService;
 
+import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -22,6 +25,38 @@ public class ContactTest {
   public void defaultConstructorTest() {
     Contact contact = new Contact();
     assertNotNull(contact);
+  }
+
+  @Test
+  public void createFromDeliveredServiceConstructorTest() throws Exception {
+    DeliveredServiceEntity persistedDeliveredService =
+        new DeliveredServiceEntityBuilder().setStartDate(new Date(1506543120))
+            .setStartTime(new Date(1506543120)).setEndDate(new Date(1506543120))
+            .setEndTime(new Date(1506543120)).buildDeliveredServiceEntity();
+    Set<Integer> services = new HashSet<>();
+    final Set<PostedIndividualDeliveredService> people = validPeople();
+    LastUpdatedBy lastUpdatedByPerson =
+        new LastUpdatedBy("0X5", "Joe", "M", "Friday", "Mr.", "Jr.");
+    Contact domain =
+        new Contact(persistedDeliveredService, lastUpdatedByPerson,
+            "some text describing the contact of up to 8000 characters can be stored in CMS",
+            people);
+    assertThat(domain.getId(), is(equalTo(persistedDeliveredService.getId())));
+    assertThat(domain.getLastUpdatedBy(), is(equalTo(lastUpdatedByPerson)));
+    assertThat(domain.getStartedAt(), is(equalTo("1970-01-18T02:29:03.120Z")));
+    assertThat(domain.getEndedAt(), is(equalTo("1970-01-18T02:29:03.120Z")));
+    assertThat(domain.getPurpose(),
+        is(equalTo(Integer.valueOf(persistedDeliveredService.getServiceContactType()))));
+    assertThat(domain.getCommunicationMethod(),
+        is(Integer.valueOf(persistedDeliveredService.getCommunicationMethodType())));
+    assertThat(domain.getStatus(), is(equalTo(persistedDeliveredService.getStatusCode())));
+    assertThat(domain.getServices(), is(equalTo(null)));
+    assertThat(domain.getLocation(),
+        is(equalTo(Integer.valueOf(persistedDeliveredService.getContactLocationType()))));
+    assertThat(
+        domain.getNote(),
+        is(equalTo("some text describing the contact of up to 8000 characters can be stored in CMS")));
+    assertThat(domain.getPeople(), is(equalTo(people)));
   }
 
   @Test
