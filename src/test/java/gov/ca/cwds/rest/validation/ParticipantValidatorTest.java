@@ -1,10 +1,13 @@
 package gov.ca.cwds.rest.validation;
 
 import static io.dropwizard.testing.FixtureHelpers.fixture;
+import static junit.framework.TestCase.assertTrue;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.not;
+import static org.junit.Assert.assertFalse;
 
+import gov.ca.cwds.rest.api.domain.Role;
 import java.util.Arrays;
 import java.util.HashSet;
 
@@ -246,6 +249,16 @@ public class ParticipantValidatorTest {
   }
 
   @Test
+  public void roleIsSelfReporterShouldReportTrueWhenRoleIsSelfReporter(){
+    assertTrue(ParticipantValidator.roleIsAnyReporter(Role.SELF_REPORTED_ROLE.getType()));
+  }
+
+  @Test
+  public void roleIsSelfReporterShouldReportFalseWhenRoleIsNotSelfReporter(){
+    assertFalse(ParticipantValidator.roleIsAnyReporter("Not a self reporter"));
+  }
+
+  @Test
   public void shouldReturnFalseIfParticipantsRoleContainNull() {
 
     Participant participants = new ParticipantResourceBuilder()
@@ -256,4 +269,28 @@ public class ParticipantValidatorTest {
     assertThat(ParticipantValidator.anonymousReporter(referral), equalTo(false));
   }
 
+  @Test
+  public void roleIsAnyReporterShouldReportTrueWhenRoleMandatedReporter(){
+    assertTrue(ParticipantValidator.roleIsAnyReporter(Role.MANDATED_REPORTER_ROLE.getType()));
+  }
+
+  @Test
+  public void roleIsAnyReporterShouldReportTrueWhenRoleNonMandatedReporter(){
+    assertTrue(ParticipantValidator.roleIsAnyReporter(Role.NON_MANDATED_REPORTER_ROLE.getType()));
+  }
+
+  @Test
+  public void roleIsAnyReporterShouldReportTrueWhenRoleAnonymousReporter(){
+    assertTrue(ParticipantValidator.roleIsAnyReporter(Role.ANONYMOUS_REPORTER_ROLE.getType()));
+  }
+
+  @Test
+  public void roleIsAnyReporterShouldReportTrueWhenRoleSelfReporter(){
+    assertTrue(ParticipantValidator.roleIsAnyReporter(Role.SELF_REPORTED_ROLE.getType()));
+  }
+
+  @Test
+  public void roleIsAnyReporterShouldReportFalseWhenRoleNotAValidReporter(){
+    assertFalse(ParticipantValidator.roleIsAnyReporter("Not A reporter"));
+  }
 }
