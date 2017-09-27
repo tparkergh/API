@@ -117,39 +117,54 @@ public class R04464CrossReportLawEnforcementDue {
 
     if (referral.getClosureDate() == null) {
 
-      for (Allegation allegation : allegations) {
-        gov.ca.cwds.data.persistence.cms.Allegation savedAllegation =
-            allegationDao.find(allegation.getLegacyId());
-        short allegationType = savedAllegation.getAllegationType();
+      checkForAllegationTypeAndReporterType(reminderCreated, persistedReporter, allegations,
+          crossReports, referral, dueDate);
+    }
+  }
 
-        boolean allegationCheck =
-            allegationType != GENERAL_NEGLECT && allegationType != SUBSTANTIAL_RISK
-                && savedAllegation.getAllegationDispositionType() != ENTERED_IN_ERROR;
+  private boolean checkForAllegationTypeAndReporterType(boolean reminderCreated,
+      Reporter persistedReporter, Set<Allegation> allegations,
+      Set<gov.ca.cwds.rest.api.domain.CrossReport> crossReports, Referral referral,
+      Calendar dueDate) {
+    for (Allegation allegation : allegations) {
+      gov.ca.cwds.data.persistence.cms.Allegation savedAllegation =
+          allegationDao.find(allegation.getLegacyId());
+      short allegationType = savedAllegation.getAllegationType();
 
-        boolean reporterCheck =
-            persistedReporter.getMandatedReporterIndicator() != DEFAULT_TRUE_INDICATOR
-                && StringUtils.isBlank(persistedReporter.getLawEnforcementId());
+      boolean allegationCheck =
+          allegationType != GENERAL_NEGLECT && allegationType != SUBSTANTIAL_RISK
+              && savedAllegation.getAllegationDispositionType() != ENTERED_IN_ERROR;
 
-        if (!reminderCreated && allegationCheck && reporterCheck) {
+      boolean reporterCheck =
+          persistedReporter.getMandatedReporterIndicator() != DEFAULT_TRUE_INDICATOR
+              && StringUtils.isBlank(persistedReporter.getLawEnforcementId());
 
-          for (gov.ca.cwds.rest.api.domain.CrossReport crossReport : crossReports) {
-            gov.ca.cwds.data.persistence.cms.CrossReport savedCrossReport =
-                crossReportDao.find(crossReport.getLegacyId());
-            if (!reminderCreated && StringUtils.isBlank(savedCrossReport.getLawEnforcementId())
-                && DEFAULT_FALSE_INDICATOR
-                    .equals(savedCrossReport.getSatisfyCrossReportIndicator())) {
+      if (!reminderCreated && allegationCheck && reporterCheck) {
 
-              gov.ca.cwds.rest.api.domain.cms.Tickle tickle =
-                  new gov.ca.cwds.rest.api.domain.cms.Tickle(referral.getId(), REFERRAL, null, null,
-                      dateFormat.format(dueDate.getTime()), referral.getScreenerNoteText(),
-                      CROSSREPORT_LAWENFORCEMENT_DUE);
-              tickleService.create(tickle);
-              reminderCreated = true;
-              LOGGER.info("crossReportForLawEnforcmentDue reminder is created");
-            }
-          }
-        }
+        checkForReminderCreation(reminderCreated, crossReports, referral, dueDate);
       }
     }
+    return reminderCreated;
+  }
+
+  private boolean checkForReminderCreation(boolean reminderCreated,
+      Set<gov.ca.cwds.rest.api.domain.CrossReport> crossReports, Referral referral,
+      Calendar dueDate) {
+
+    for (gov.ca.cwds.rest.api.domain.CrossReport crossReport : crossReports) {
+      gov.ca.cwds.data.persistence.cms.CrossReport savedCrossReport =
+          crossReportDao.find(crossReport.getLegacyId());
+      if (!reminderCreated && StringUtils.isBlank(savedCrossReport.getLawEnforcementId())
+          && DEFAULT_FALSE_INDICATOR.equals(savedCrossReport.getSatisfyCrossReportIndicator())) {
+
+        gov.ca.cwds.rest.api.domain.cms.Tickle tickle = new gov.ca.cwds.rest.api.domain.cms.Tickle(
+            referral.getId(), REFERRAL, null, null, dateFormat.format(dueDate.getTime()),
+            referral.getScreenerNoteText(), CROSSREPORT_LAWENFORCEMENT_DUE);
+        tickleService.create(tickle);
+        reminderCreated = true;
+        LOGGER.info("crossReportForLawEnforcmentDue reminder is created");
+      }
+    }
+    return reminderCreated;
   }
 }
