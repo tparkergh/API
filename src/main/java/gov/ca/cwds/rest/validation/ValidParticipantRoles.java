@@ -24,7 +24,8 @@ import javax.validation.Payload;
 @Constraint(validatedBy = ParticipantRolesValidator.class)
 public @interface ValidParticipantRoles {
 
-  String message() default "must contain at leaset one victim and only one reporter";
+  String message() default "must contain at least one victim, only one reporter, and compatible "
+      + "roles";
 
   Class<?>[]groups() default {};
 
