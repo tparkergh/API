@@ -23,7 +23,7 @@ import io.swagger.annotations.ApiModelProperty;
  * @author CWDS API Team
  */
 @JsonSnakeCase
-@JsonPropertyOrder({"id", "name", "type"})
+@JsonPropertyOrder({"id", "name", "type", "countyId"})
 public class GovernmentOrganization extends ReportingDomain implements Request, Response {
 
   /**
@@ -51,7 +51,6 @@ public class GovernmentOrganization extends ReportingDomain implements Request, 
   @JsonProperty("countyId")
   @ApiModelProperty(required = true, readOnly = false, value = "", example = "1094")
   private Short governmentEntityType;
-
 
   /**
    * empty constructor
@@ -89,7 +88,7 @@ public class GovernmentOrganization extends ReportingDomain implements Request, 
   }
 
   /**
-   * @param persistestedLawEnforcement
+   * @param persistestedLawEnforcement - persistestedLawEnforcement
    */
   public GovernmentOrganization(
       gov.ca.cwds.data.persistence.cms.LawEnforcement persistestedLawEnforcement) {

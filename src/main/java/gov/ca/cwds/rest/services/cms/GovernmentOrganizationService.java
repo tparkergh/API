@@ -54,6 +54,7 @@ public class GovernmentOrganizationService
 
     governmentOrganizationResponse.setGovernmentOrganizations(lawEnforcementDao.getAllEnforcement()
         .stream().map(GovernmentOrganization::new).collect(Collectors.toList()));
+
     List<String> validCodes = Arrays.asList(new String[] {"1128", "1131", "1133", "2524"});
     if (StringUtils.isNotBlank(countyId)) {
       Short id = Short.parseShort(countyId);

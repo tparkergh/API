@@ -14,7 +14,6 @@ import com.fasterxml.jackson.annotation.JsonValue;
 import gov.ca.cwds.data.std.ApiMarker;
 import gov.ca.cwds.rest.api.Request;
 import gov.ca.cwds.rest.api.Response;
-import gov.ca.cwds.rest.api.domain.IntakeLovEntry;
 import io.dropwizard.jackson.JsonSnakeCase;
 import io.swagger.annotations.ApiModel;
 
@@ -57,7 +56,7 @@ public class GovernmentOrganizationResponse implements Response, ApiMarker {
   }
 
   /**
-   * Getter for array of {@link IntakeLovEntry LOV's}.
+   * Getter for array of {@link GovernmentOrganization governmentOrganization's}.
    * 
    * @return the cross report agencies
    */
