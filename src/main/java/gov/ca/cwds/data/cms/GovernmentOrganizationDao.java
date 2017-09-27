@@ -4,7 +4,7 @@ import org.hibernate.SessionFactory;
 
 import com.google.inject.Inject;
 
-import gov.ca.cwds.data.CrudsDaoImpl;
+import gov.ca.cwds.data.BaseDaoImpl;
 import gov.ca.cwds.data.persistence.cms.GovernmentOrganization;
 import gov.ca.cwds.inject.CmsSessionFactory;
 
@@ -13,7 +13,7 @@ import gov.ca.cwds.inject.CmsSessionFactory;
  * 
  * @author CWDS API Team
  */
-public class GovernmentOrganizationDao extends CrudsDaoImpl<GovernmentOrganization> {
+public class GovernmentOrganizationDao extends BaseDaoImpl<GovernmentOrganization> {
 
   /**
    * Constructor

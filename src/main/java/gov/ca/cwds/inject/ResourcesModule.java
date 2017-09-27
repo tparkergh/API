@@ -22,6 +22,8 @@ import gov.ca.cwds.rest.api.domain.cms.CmsDocReferralClient;
 import gov.ca.cwds.rest.api.domain.cms.CmsDocument;
 import gov.ca.cwds.rest.api.domain.cms.CrossReport;
 import gov.ca.cwds.rest.api.domain.cms.DrmsDocument;
+import gov.ca.cwds.rest.api.domain.cms.GovernmentOrganization;
+import gov.ca.cwds.rest.api.domain.cms.GovernmentOrganizationResponse;
 import gov.ca.cwds.rest.api.domain.cms.LegacyKeyRequest;
 import gov.ca.cwds.rest.api.domain.cms.LegacyKeyResponse;
 import gov.ca.cwds.rest.api.domain.cms.LongText;
@@ -61,6 +63,7 @@ import gov.ca.cwds.rest.resources.cms.CmsNSReferralResource;
 import gov.ca.cwds.rest.resources.cms.CmsReferralResource;
 import gov.ca.cwds.rest.resources.cms.CrossReportResource;
 import gov.ca.cwds.rest.resources.cms.DrmsDocumentResource;
+import gov.ca.cwds.rest.resources.cms.GovernmentOrganizationResource;
 import gov.ca.cwds.rest.resources.cms.LongTextResource;
 import gov.ca.cwds.rest.resources.cms.ReferralClientResource;
 import gov.ca.cwds.rest.resources.cms.ReferralResource;
@@ -91,6 +94,7 @@ import gov.ca.cwds.rest.services.cms.CmsNSReferralService;
 import gov.ca.cwds.rest.services.cms.CmsReferralService;
 import gov.ca.cwds.rest.services.cms.CrossReportService;
 import gov.ca.cwds.rest.services.cms.DrmsDocumentService;
+import gov.ca.cwds.rest.services.cms.GovernmentOrganizationService;
 import gov.ca.cwds.rest.services.cms.LegacyKeyService;
 import gov.ca.cwds.rest.services.cms.LongTextService;
 import gov.ca.cwds.rest.services.cms.ReferralClientService;
@@ -159,6 +163,7 @@ public class ResourcesModule extends AbstractModule {
     bind(gov.ca.cwds.rest.resources.investigation.InvestigationsResource.class);
     bind(RelationshipListResource.class);
     bind(PeopleResource.class);
+    bind(GovernmentOrganizationResource.class);
   }
 
   @Provides
@@ -373,6 +378,13 @@ public class ResourcesModule extends AbstractModule {
   public SimpleResourceDelegate<String, IntakeLovEntry, IntakeLovResponse, IntakeLovService> intakeLovResource(
       Injector injector) {
     return new SimpleResourceDelegate<>(injector.getInstance(IntakeLovService.class));
+  }
+
+  @Provides
+  @GovernmentOrganizationServiceBackedResource
+  public SimpleResourceDelegate<String, GovernmentOrganization, GovernmentOrganizationResponse, GovernmentOrganizationService> governmentOrganizationResource(
+      Injector injector) {
+    return new SimpleResourceDelegate<>(injector.getInstance(GovernmentOrganizationService.class));
   }
 
   @Provides

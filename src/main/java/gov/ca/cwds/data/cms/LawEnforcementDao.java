@@ -1,5 +1,7 @@
 package gov.ca.cwds.data.cms;
 
+import java.util.List;
+
 import org.hibernate.SessionFactory;
 
 import com.google.inject.Inject;
@@ -25,5 +27,12 @@ public class LawEnforcementDao extends CrudsDaoImpl<LawEnforcement> {
     super(sessionFactory);
   }
 
+  /**
+   * @return the all LawEnforcement
+   */
+  @SuppressWarnings({"unchecked", "deprecation"})
+  public List<LawEnforcement> getAllEnforcement() {
+    return this.getSessionFactory().getCurrentSession().createCriteria(LawEnforcement.class).list();
+  }
 }
 
