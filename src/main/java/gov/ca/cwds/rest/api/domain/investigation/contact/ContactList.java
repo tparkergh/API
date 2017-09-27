@@ -42,6 +42,14 @@ public class ContactList extends ReportingDomain implements Request, Response {
   }
 
   /**
+   * @return the contacts
+   */
+  public Set<Contact> getContacts() {
+    return contacts;
+  }
+
+
+  /**
    * {@inheritDoc}
    *
    * @see java.lang.Object#hashCode()
