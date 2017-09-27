@@ -23,7 +23,7 @@ import io.swagger.annotations.ApiModelProperty;
  * @author CWDS API Team
  */
 @JsonSnakeCase
-@JsonPropertyOrder({"id", "name", "type", "countyId"})
+@JsonPropertyOrder({"id", "name", "type", "county_id"})
 public class GovernmentOrganization extends ReportingDomain implements Request, Response {
 
   /**
@@ -48,7 +48,7 @@ public class GovernmentOrganization extends ReportingDomain implements Request, 
   private String agencyType;
 
   @Valid
-  @JsonProperty("countyId")
+  @JsonProperty("county_id")
   @ApiModelProperty(required = true, readOnly = false, value = "", example = "1094")
   private Short governmentEntityType;
 
@@ -68,7 +68,7 @@ public class GovernmentOrganization extends ReportingDomain implements Request, 
   @JsonCreator
   public GovernmentOrganization(@JsonProperty("id") String id,
       @JsonProperty("name") String agencyName, @JsonProperty("type") String agencyType,
-      @JsonProperty("countyId") Short governmentEntityType) {
+      @JsonProperty("county_id") Short governmentEntityType) {
     super();
     this.id = id;
     this.agencyName = agencyName;
@@ -94,7 +94,7 @@ public class GovernmentOrganization extends ReportingDomain implements Request, 
       gov.ca.cwds.data.persistence.cms.LawEnforcement persistestedLawEnforcement) {
     this.id = persistestedLawEnforcement.getId();
     this.agencyName = persistestedLawEnforcement.getLawEnforcementName();
-    this.agencyType = "LAWENFORCEMENT";
+    this.agencyType = "Lawenforcement";
     this.governmentEntityType = persistestedLawEnforcement.getGovernmentEntityType();
   }
 
