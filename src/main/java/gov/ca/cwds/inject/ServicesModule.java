@@ -1,5 +1,16 @@
 package gov.ca.cwds.inject;
 
+import javax.validation.Validation;
+import javax.validation.Validator;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import com.google.inject.AbstractModule;
+import com.google.inject.Inject;
+import com.google.inject.Provides;
+import com.google.inject.matcher.Matchers;
+
 import gov.ca.cwds.data.CmsSystemCodeSerializer;
 import gov.ca.cwds.data.cms.SystemCodeDao;
 import gov.ca.cwds.data.cms.SystemMetaDao;
@@ -22,6 +33,7 @@ import gov.ca.cwds.rest.services.cms.CmsNSReferralService;
 import gov.ca.cwds.rest.services.cms.CmsReferralService;
 import gov.ca.cwds.rest.services.cms.CrossReportService;
 import gov.ca.cwds.rest.services.cms.DrmsDocumentService;
+import gov.ca.cwds.rest.services.cms.GovernmentOrganizationService;
 import gov.ca.cwds.rest.services.cms.LegacyKeyService;
 import gov.ca.cwds.rest.services.cms.ReferralClientService;
 import gov.ca.cwds.rest.services.cms.ReferralService;
@@ -38,17 +50,6 @@ import io.dropwizard.hibernate.HibernateBundle;
 import io.dropwizard.hibernate.UnitOfWork;
 import io.dropwizard.hibernate.UnitOfWorkAspect;
 import io.dropwizard.hibernate.UnitOfWorkAwareProxyFactory;
-
-import javax.validation.Validation;
-import javax.validation.Validator;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import com.google.inject.AbstractModule;
-import com.google.inject.Inject;
-import com.google.inject.Provides;
-import com.google.inject.matcher.Matchers;
 
 /**
  * Identifies all CWDS API business layer (aka, service) classes available for dependency injection
@@ -135,6 +136,7 @@ public class ServicesModule extends AbstractModule {
     bind(DeliveredService.class);
     bind(ContactService.class);
     bind(DeliveredToIndividualService.class);
+    bind(GovernmentOrganizationService.class);
 
     UnitOfWorkInterceptor interceptor = new UnitOfWorkInterceptor();
     bindInterceptor(Matchers.any(), Matchers.annotatedWith(UnitOfWork.class), interceptor);
