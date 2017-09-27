@@ -1,5 +1,6 @@
 package gov.ca.cwds.rest.validation;
 
+import gov.ca.cwds.rest.api.domain.Role;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -18,13 +19,6 @@ import gov.ca.cwds.rest.services.ServiceException;
  *
  */
 public class ParticipantValidator {
-
-  private static final String PERPETRATOR_ROLE = "Perpetrator";
-  private static final String MANDATED_REPORTER_ROLE = "Mandated Reporter";
-  private static final String NON_MANDATED_REPORTER_ROLE = "Non-mandated Reporter";
-  private static final String ANONYMOUS_REPORTER_ROLE = "Anonymous Reporter";
-  private static final String VICTIM_ROLE = "Victim";
-  private static final String SELF_REPORTED_ROLE = "Self Reported";
 
   private static final DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
   private static final DateFormat timeFormat = new SimpleDateFormat("HH:mm:ss");
@@ -101,7 +95,7 @@ public class ParticipantValidator {
     if (participants != null) {
       for (Participant incomingParticipant : participants) {
         Set<String> roles = new HashSet<>(incomingParticipant.getRoles());
-        if (roles.contains(ANONYMOUS_REPORTER_ROLE)) {
+        if (roles.contains(Role.ANONYMOUS_REPORTER_ROLE.getType())) {
 
           return Boolean.TRUE;
         }
@@ -120,19 +114,19 @@ public class ParticipantValidator {
 
     Set<String> roles = participant.getRoles();
     if (roles != null) {
-      if (roles.contains(ANONYMOUS_REPORTER_ROLE)) {
+      if (roles.contains(Role.ANONYMOUS_REPORTER_ROLE.getType())) {
         return Boolean.TRUE;
       }
-      if (roles.contains(MANDATED_REPORTER_ROLE)) {
+      if (roles.contains(Role.MANDATED_REPORTER_ROLE.getType())) {
         return Boolean.TRUE;
       }
-      if (roles.contains(NON_MANDATED_REPORTER_ROLE)) {
+      if (roles.contains(Role.NON_MANDATED_REPORTER_ROLE.getType())) {
         return Boolean.TRUE;
       }
-      if (roles.contains(SELF_REPORTED_ROLE)) {
+      if (roles.contains(Role.SELF_REPORTED_ROLE.getType())) {
         return Boolean.TRUE;
       }
-      if (roles.contains(VICTIM_ROLE) && roles.contains(NON_MANDATED_REPORTER_ROLE)) {
+      if (roles.contains(Role.VICTIM_ROLE.getType()) && roles.contains(Role.NON_MANDATED_REPORTER_ROLE.getType())) {
         return Boolean.TRUE;
       }
     }
@@ -146,7 +140,7 @@ public class ParticipantValidator {
    */
   public static Boolean isPerpetrator(Participant participant) throws ServiceException {
     Set<String> roles = participant.getRoles();
-    if (roles != null && roles.contains(PERPETRATOR_ROLE)) {
+    if (roles != null && roles.contains(Role.PERPETRATOR_ROLE.getType())) {
 
       return Boolean.TRUE;
     }
@@ -160,7 +154,7 @@ public class ParticipantValidator {
    */
   public static Boolean hasVictimRole(Participant participant) throws ServiceException {
     Set<String> roles = participant.getRoles();
-    if (roles != null && roles.contains(VICTIM_ROLE)) {
+    if (roles != null && roles.contains(Role.VICTIM_ROLE.getType())) {
 
       return Boolean.TRUE;
     }
@@ -174,7 +168,7 @@ public class ParticipantValidator {
    */
   public static Boolean hasMandatedReporterRole(Participant participant) throws ServiceException {
     Set<String> roles = participant.getRoles();
-    if (roles != null && roles.contains(MANDATED_REPORTER_ROLE)) {
+    if (roles != null && roles.contains(Role.MANDATED_REPORTER_ROLE.getType())) {
       return Boolean.TRUE;
     }
     return Boolean.FALSE;
@@ -246,20 +240,20 @@ public class ParticipantValidator {
     Set<String> roles = participant.getRoles();
     if (roles != null) {
       // R - 00831
-      if (roles.contains(ANONYMOUS_REPORTER_ROLE) && roles.contains(SELF_REPORTED_ROLE)) {
+      if (roles.contains(Role.ANONYMOUS_REPORTER_ROLE.getType()) && roles.contains(Role.SELF_REPORTED_ROLE.getType())) {
         return Boolean.FALSE;
       }
-      if (roles.contains(ANONYMOUS_REPORTER_ROLE) && roles.contains(VICTIM_ROLE)) {
+      if (roles.contains(Role.ANONYMOUS_REPORTER_ROLE.getType()) && roles.contains(Role.VICTIM_ROLE.getType())) {
         return Boolean.FALSE;
       }
-      if (roles.contains(ANONYMOUS_REPORTER_ROLE) && (roles.contains(MANDATED_REPORTER_ROLE)
-          || roles.contains(NON_MANDATED_REPORTER_ROLE))) {
+      if (roles.contains(Role.ANONYMOUS_REPORTER_ROLE.getType()) && (roles.contains(Role.MANDATED_REPORTER_ROLE.getType())
+          || roles.contains(Role.NON_MANDATED_REPORTER_ROLE.getType()))) {
         return Boolean.FALSE;
       }
-      if (roles.contains(VICTIM_ROLE) && roles.contains(PERPETRATOR_ROLE)) {
+      if (roles.contains(Role.VICTIM_ROLE.getType()) && roles.contains(Role.PERPETRATOR_ROLE.getType())) {
         return Boolean.FALSE;
       }
-      if (roles.contains(MANDATED_REPORTER_ROLE) && roles.contains(NON_MANDATED_REPORTER_ROLE)) {
+      if (roles.contains(Role.MANDATED_REPORTER_ROLE.getType()) && roles.contains(Role.NON_MANDATED_REPORTER_ROLE.getType())) {
         return Boolean.FALSE;
       }
     }
@@ -275,10 +269,10 @@ public class ParticipantValidator {
   public static Boolean selfReported(Participant participant) throws ServiceException {
     Set<String> roles = participant.getRoles();
     if (roles != null) {
-      if (roles.contains(VICTIM_ROLE) && roles.contains(NON_MANDATED_REPORTER_ROLE)) {
+      if (roles.contains(Role.VICTIM_ROLE.getType()) && roles.contains(Role.NON_MANDATED_REPORTER_ROLE.getType())) {
         return Boolean.TRUE;
       }
-      if (roles.contains(SELF_REPORTED_ROLE)) {
+      if (roles.contains(Role.SELF_REPORTED_ROLE.getType())) {
         return Boolean.TRUE;
       }
     }
@@ -331,17 +325,12 @@ public class ParticipantValidator {
 
   /**
    * @param role - String role
-   * @return - Boolean true if mandated or non mandated
-   * 
-   *         Do Not include Anonymous Reporter (special case of reporter)
+   * @return - Boolean true if perpetrator
    */
-  public static Boolean roleIsReporterType(String role) {
-    if (role != null && (role.equalsIgnoreCase(MANDATED_REPORTER_ROLE)
-        || role.equalsIgnoreCase(NON_MANDATED_REPORTER_ROLE))) {
+  public static Boolean roleIsPerpetrator(String role) {
+    if (role != null && role.equalsIgnoreCase(Role.PERPETRATOR_ROLE.getType())) {
       return Boolean.TRUE;
-
     }
-
     return Boolean.FALSE;
   }
 
@@ -350,7 +339,7 @@ public class ParticipantValidator {
    * @return - Boolean true if Victim
    */
   public static Boolean roleIsVictim(String role) {
-    if (role != null && role.equalsIgnoreCase(VICTIM_ROLE)) {
+    if (role != null && role.equalsIgnoreCase(Role.VICTIM_ROLE.getType())) {
       return Boolean.TRUE;
     }
     return Boolean.FALSE;
@@ -358,10 +347,13 @@ public class ParticipantValidator {
 
   /**
    * @param role - String role
-   * @return - Boolean true if perpetrator
+   * @return - Boolean true if any reporter type
+   *
+   * Returns true if role is any reporter role
    */
-  public static Boolean roleIsPerpetrator(String role) {
-    if (role != null && role.equalsIgnoreCase(PERPETRATOR_ROLE)) {
+  public static Boolean roleIsAnyReporter(String role) {
+    boolean specialReporterRole =  role.equalsIgnoreCase(Role.SELF_REPORTED_ROLE.getType());
+    if ( roleIsReporterType(role)|| roleIsAnonymousReporter(role) ||roleIsSelfReporter(role)) {
       return Boolean.TRUE;
     }
     return Boolean.FALSE;
@@ -369,11 +361,39 @@ public class ParticipantValidator {
 
   /**
    * @param role - String role
-   * @return - Boolean true if anonymouse reporter
+   * @return - Boolean true if mandated or non mandated
+   *
+   *         Do Not include Anonymous Reporter (special case of reporter)
+   */
+  public static Boolean roleIsReporterType(String role) {
+    if (role != null && (role.equalsIgnoreCase(Role.MANDATED_REPORTER_ROLE.getType())
+        || role.equalsIgnoreCase(Role.NON_MANDATED_REPORTER_ROLE.getType()))) {
+      return Boolean.TRUE;
+
+    }
+
+    return Boolean.FALSE;
+  }
+
+  /**
+   * @param role - String role
+   * @return - Boolean true if anonymous reporter
    */
   public static Boolean roleIsAnonymousReporter(String role) {
-    if (role != null && role.equalsIgnoreCase(ANONYMOUS_REPORTER_ROLE)) {
+    if (role != null && role.equalsIgnoreCase(Role.ANONYMOUS_REPORTER_ROLE.getType())) {
 
+      return Boolean.TRUE;
+
+    }
+    return Boolean.FALSE;
+  }
+
+  /**
+   * @param role - String role
+   * @return - Boolean true if Self Reporter reporter
+   */
+  public static Boolean roleIsSelfReporter(String role) {
+    if (role != null && role.equalsIgnoreCase(Role.SELF_REPORTED_ROLE.getType())) {
       return Boolean.TRUE;
 
     }
@@ -385,7 +405,7 @@ public class ParticipantValidator {
    * @return - Boolean true if mandated reporter
    */
   public static Boolean roleIsMandatedReporter(String role) {
-    if (role != null && role.equalsIgnoreCase(MANDATED_REPORTER_ROLE)) {
+    if (role != null && role.equalsIgnoreCase(Role.MANDATED_REPORTER_ROLE.getType())) {
       return Boolean.TRUE;
     }
     return Boolean.FALSE;
