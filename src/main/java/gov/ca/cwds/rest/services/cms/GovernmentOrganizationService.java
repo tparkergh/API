@@ -57,7 +57,7 @@ public class GovernmentOrganizationService
 
     List<String> validCodes = Arrays.asList(new String[] {"1128", "1131", "1133", "2524"});
     if (StringUtils.isNotBlank(countyId)) {
-      Short id = Short.parseShort(countyId);
+      Short id = Short.valueOf(countyId);
       for (Iterator<GovernmentOrganization> iterator =
           governmentOrganizationResponse.getGovernmentOrganizations().iterator(); iterator
               .hasNext();) {
