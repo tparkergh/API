@@ -7,6 +7,9 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
+import org.hibernate.annotations.NamedQueries;
+import org.hibernate.annotations.NamedQuery;
+
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
@@ -20,6 +23,8 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 @Table(name = "GV_ORG_T")
 @JsonPropertyOrder(alphabetic = true)
 @JsonIgnoreProperties(ignoreUnknown = true)
+@NamedQueries({@NamedQuery(name = "gov.ca.cwds.data.persistence.cms.GovernmentOrganization.findAll",
+    query = "FROM GovernmentOrganization ORDER BY governmentOrganizationType")})
 public class GovernmentOrganization extends CmsPersistentObject {
 
   @Id

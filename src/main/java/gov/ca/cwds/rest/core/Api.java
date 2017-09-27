@@ -168,4 +168,9 @@ public interface Api {
    */
   public static final String RESOURCE_INTAKE_LOV = "lov";
 
+  /**
+   * A {@code String} constant representing {@value #RESOURCE_GOVERNMENT_ORG} API.
+   */
+  public static final String RESOURCE_GOVERNMENT_ORG = "crossreport_agency";
+
 }
