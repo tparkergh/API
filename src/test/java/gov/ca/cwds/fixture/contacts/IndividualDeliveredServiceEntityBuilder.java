@@ -1,8 +1,8 @@
 package gov.ca.cwds.fixture.contacts;
 
-import gov.ca.cwds.data.persistence.contact.IndividualDeliveredServiceEntity;
-
 import java.util.Date;
+
+import gov.ca.cwds.data.persistence.contact.IndividualDeliveredServiceEntity;
 
 /**
  * The Builder class for {@link IndividualDeliveredServiceEntity}
@@ -28,6 +28,7 @@ public class IndividualDeliveredServiceEntityBuilder {
 
   /**
    * @param deliveredToIndividualId the deliveredToIndividualId to set
+   * @return the builder
    */
   public IndividualDeliveredServiceEntityBuilder setDeliveredToIndividualId(
       String deliveredToIndividualId) {
@@ -37,6 +38,7 @@ public class IndividualDeliveredServiceEntityBuilder {
 
   /**
    * @param deliveredToIndividualCode the deliveredToIndividualCode to set
+   * @return the builder
    */
   public IndividualDeliveredServiceEntityBuilder setDeliveredToIndividualCode(
       String deliveredToIndividualCode) {
@@ -44,9 +46,9 @@ public class IndividualDeliveredServiceEntityBuilder {
     return this;
   }
 
-
   /**
    * @param countySpecificCode the countySpecificCode to set
+   * @return the builder
    */
   public IndividualDeliveredServiceEntityBuilder setCountySpecificCode(String countySpecificCode) {
     this.countySpecificCode = countySpecificCode;
@@ -55,6 +57,7 @@ public class IndividualDeliveredServiceEntityBuilder {
 
   /**
    * @param endDate the endDate to set
+   * @return the builder
    */
   public IndividualDeliveredServiceEntityBuilder setEndDate(Date endDate) {
     this.endDate = endDate;
@@ -63,6 +66,7 @@ public class IndividualDeliveredServiceEntityBuilder {
 
   /**
    * @param serviceContactType the serviceContactType to set
+   * @return the builder
    */
   public IndividualDeliveredServiceEntityBuilder setServiceContactType(Short serviceContactType) {
     this.serviceContactType = serviceContactType;
@@ -71,6 +75,7 @@ public class IndividualDeliveredServiceEntityBuilder {
 
   /**
    * @param startDate the startDate to set
+   * @return the builder
    */
   public IndividualDeliveredServiceEntityBuilder setStartDate(Date startDate) {
     this.startDate = startDate;
