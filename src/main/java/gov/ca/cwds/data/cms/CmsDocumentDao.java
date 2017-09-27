@@ -61,7 +61,7 @@ public class CmsDocumentDao extends BaseDaoImpl<CmsDocument> {
     } else if (doc.getCompressionMethod().endsWith("02")) {
       retval = decompressPK(doc);
     } else {
-      LOGGER.warn("UNSUPPORTED compression method " + doc.getCompressionMethod());
+      LOGGER.warn("UNSUPPORTED compression method {}", doc.getCompressionMethod());
     }
 
     return retval;
@@ -89,10 +89,10 @@ public class CmsDocumentDao extends BaseDaoImpl<CmsDocument> {
       }
 
       final byte[] bytes = pk.decompressHex(buf.toString());
-      LOGGER.info("DAO: bytes len=" + bytes.length);
+      LOGGER.info("DAO: bytes len={}", bytes.length);
       retval = DatatypeConverter.printBase64Binary(bytes);
     } catch (Exception e) {
-      LOGGER.error("ERROR DECOMPRESSING PK! " + e.getMessage());
+      LOGGER.error("ERROR DECOMPRESSING PK! {}", e.getMessage());
       throw new ServiceException("ERROR DECOMPRESSING PK! " + e.getMessage(), e);
     }
 
@@ -142,13 +142,13 @@ public class CmsDocumentDao extends BaseDaoImpl<CmsDocument> {
       // TODO: pass bytes to C++ library instead of file names.
       boolean srcDeletedSuccessfully = src.delete();
       if(!srcDeletedSuccessfully){
-        LOGGER.warn("Unable to delete compressed file" + src.getAbsolutePath() );
+        LOGGER.warn("Unable to delete compressed file {}", src.getAbsolutePath() );
       }
 
       boolean tgtDeletedSuccessfully = tgt.delete();
 
       if(!tgtDeletedSuccessfully){
-        LOGGER.warn("Unable to delete doc file" + tgt.getAbsolutePath() );
+        LOGGER.warn("Unable to delete doc file {}", tgt.getAbsolutePath() );
       }
 
     } catch (Exception e) {
@@ -159,7 +159,7 @@ public class CmsDocumentDao extends BaseDaoImpl<CmsDocument> {
   }
 
   private void errorDecompressing(Exception e){
-    LOGGER.error("ERROR DECOMPRESSING LZW! " + e.getMessage(), e);
+    LOGGER.error("ERROR DECOMPRESSING LZW! {}",e.getMessage(), e);
     throw new ServiceException("ERROR DECOMPRESSING LZW! " + e.getMessage(), e);
   }
 

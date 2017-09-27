@@ -54,7 +54,7 @@ public class HistoryOfInvolvementService implements
     try {
       serialized = MAPPER.readValue(fixture(fileLocation), HistoryOfInvolvement.class);
     } catch (Exception e) {
-      LOGGER.error("Exception In HistoryOfInvolvement " + e.getMessage());
+      LOGGER.error("Exception In HistoryOfInvolvement {}", e.getMessage());
     }
     return serialized;
   }

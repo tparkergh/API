@@ -55,11 +55,11 @@ public final class KeyJNI {
    * @return true = native libraries load correctly
    */
   private static final boolean loadLibs() {
-    LOGGER.info("user.dir=" + System.getProperty("user.dir"));
-    LOGGER.info("java.library.path=" + System.getProperty("java.library.path"));
+    LOGGER.info("user.dir={}", System.getProperty("user.dir"));
+    LOGGER.info("java.library.path={}", System.getProperty("java.library.path"));
 
     final boolean forceLoad = "Y".equalsIgnoreCase(System.getProperty("cwds.jni.force", "N"));
-    LOGGER.info("cwds.jni.force=" + forceLoad);
+    LOGGER.info("cwds.jni.force={}", forceLoad);
 
     boolean retval = false;
 

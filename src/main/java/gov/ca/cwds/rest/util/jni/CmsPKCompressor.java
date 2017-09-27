@@ -119,7 +119,7 @@ public class CmsPKCompressor {
     bos.close();
 
     final byte[] retval = bos.toByteArray();
-    LOGGER.debug("CmsPKCompressor.decompress(byte[]): retval len=" + retval.length);
+    LOGGER.debug("CmsPKCompressor.decompress(byte[]): retval len={}", retval.length);
     return retval;
   }
 
