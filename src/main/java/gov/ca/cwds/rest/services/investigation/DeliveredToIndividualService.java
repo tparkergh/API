@@ -12,6 +12,8 @@ import gov.ca.cwds.data.std.ApiPersonAware;
 import gov.ca.cwds.rest.api.ApiException;
 import gov.ca.cwds.rest.api.domain.PostedIndividualDeliveredService;
 
+import java.util.EnumMap;
+
 import org.apache.commons.lang3.StringUtils;
 
 import com.google.inject.Inject;
@@ -23,13 +25,7 @@ import com.google.inject.Inject;
  */
 public class DeliveredToIndividualService {
 
-
-  private ClientDao clientDao;
-  private AttorneyDao attorneyDao;
-  private CollateralIndividualDao collateralIndividualDao;
-  private ServiceProviderDao serviceProviderDao;
-  private SubstituteCareProviderDao substituteCareProviderDao;
-  private ReporterDao reporterDao;
+  private EnumMap<Code, BaseDaoImpl<? extends ApiPersonAware>> codeToDaoImplememterMap;
 
   /**
    * 
@@ -45,12 +41,36 @@ public class DeliveredToIndividualService {
       CollateralIndividualDao collateralIndividualDao, ServiceProviderDao serviceProviderDao,
       SubstituteCareProviderDao substituteCareProviderDao, ReporterDao reporterDao) {
     super();
-    this.clientDao = clientDao;
-    this.attorneyDao = attorneyDao;
-    this.collateralIndividualDao = collateralIndividualDao;
-    this.serviceProviderDao = serviceProviderDao;
-    this.substituteCareProviderDao = substituteCareProviderDao;
-    this.reporterDao = reporterDao;
+    this.codeToDaoImplememterMap =
+        deliveredToIndividualCodeToDaoImplementerMap(clientDao, attorneyDao,
+            collateralIndividualDao, serviceProviderDao, substituteCareProviderDao, reporterDao);
+  }
+
+  /**
+   * 
+   * @param clientDao the clientDao
+   * @param attorneyDao the attorneyDao
+   * @param collateralIndividualDao the collateralIndividualDao
+   * @param serviceProviderDao the serviceProviderDao
+   * @param substituteCareProviderDao the substituteCareProviderDao
+   * @param reporterDao the reporterDao
+   * @return the Code Dao Implementer EnumMap
+   */
+  private EnumMap<Code, BaseDaoImpl<? extends ApiPersonAware>> deliveredToIndividualCodeToDaoImplementerMap(
+      ClientDao clientDao, AttorneyDao attorneyDao,
+      CollateralIndividualDao collateralIndividualDao, ServiceProviderDao serviceProviderDao,
+      SubstituteCareProviderDao substituteCareProviderDao, ReporterDao reporterDao) {
+    EnumMap<Code, BaseDaoImpl<? extends ApiPersonAware>> deliveredToIndividualCodeToDaoImplememterMap =
+        new EnumMap<>(Code.class);
+    deliveredToIndividualCodeToDaoImplememterMap.put(Code.CLIENT, clientDao);
+    deliveredToIndividualCodeToDaoImplememterMap.put(Code.SERVICE_PROVIDER, serviceProviderDao);
+    deliveredToIndividualCodeToDaoImplememterMap.put(Code.COLLATERAL_INDIVIDUAL,
+        collateralIndividualDao);
+    deliveredToIndividualCodeToDaoImplememterMap.put(Code.REPORTER, reporterDao);
+    deliveredToIndividualCodeToDaoImplememterMap.put(Code.ATTORNEY, attorneyDao);
+    deliveredToIndividualCodeToDaoImplememterMap.put(Code.SUBSTITUTE_CARE_PROVIDER,
+        substituteCareProviderDao);
+    return deliveredToIndividualCodeToDaoImplememterMap;
   }
 
   /**
@@ -60,22 +80,7 @@ public class DeliveredToIndividualService {
    * @return The doo implementer
    */
   private BaseDaoImpl<? extends ApiPersonAware> getDaoImplementer(Code code) {
-    switch (code) {
-      case CLIENT:
-        return clientDao;
-      case SERVICE_PROVIDER:
-        return serviceProviderDao;
-      case COLLATERAL_INDIVIDUAL:
-        return collateralIndividualDao;
-      case REPORTER:
-        return reporterDao;
-      case ATTORNEY:
-        return attorneyDao;
-      case SUBSTITUTE_CARE_PROVIDER:
-        return substituteCareProviderDao;
-      default:
-        throw new ApiException("UNKNOWN DELIVERED TO INDIVIDUAL CODE: " + code);
-    }
+    return this.codeToDaoImplememterMap.get(code);
   }
 
   /**
@@ -174,19 +179,16 @@ public class DeliveredToIndividualService {
      * @return DeliveredToIndividualCode for given code if found, null otherwise.
      */
     public static Code lookupByCodeLiteral(String codeLiteral) {
-      if (StringUtils.isBlank(codeLiteral)) {
-        return null;
-      }
-
-      Code deliveredToIndividualCode = null;
-      for (Code deliveredToIndividual : Code.values()) {
-        if (deliveredToIndividual.getCodeLiteral().equals(codeLiteral.trim())) {
-          deliveredToIndividualCode = deliveredToIndividual;
-          break;
+      if (!StringUtils.isBlank(codeLiteral)) {
+        for (Code deliveredToIndividual : Code.values()) {
+          if (deliveredToIndividual.getCodeLiteral().equals(codeLiteral.trim())) {
+            return deliveredToIndividual;
+          }
         }
       }
-      return deliveredToIndividualCode;
+      throw new ApiException("UNKNOWN DELIVERED TO INDIVIDUAL CODE: " + codeLiteral);
     }
+
   }
 
 }
