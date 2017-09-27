@@ -13,7 +13,7 @@ public class SimpleScreeningEntityBuilder {
   private String serviceName = null;
   private SimplePerson assignedSocialWorker = null;
   private SimplePerson reporter = null;
-  private String id = "123";
+  private String id = "1234567ABC";
   private String countyName = "Fresno";
   private Set<SimplePersonWithRoles> allPeople = null;
   private String startDate = "2017-08-31";
