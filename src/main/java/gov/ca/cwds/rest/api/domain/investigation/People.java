@@ -40,6 +40,9 @@ public final class People extends ReportingDomain implements Request, Response {
     this.persons = people;
   }
 
+  /**
+   * @return - list of people associated with the investigationS
+   */
   public Set<Person> getPersons() {
     return persons;
   }

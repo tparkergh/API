@@ -42,13 +42,21 @@ public class PhoneNumber extends ReportingDomain implements Request, Response {
   private LegacyDescriptor legacyDescriptor;
 
   /**
+   * empty constructor
+   */
+  public PhoneNumber() {
+    super();
+  }
+
+  /**
    * @param phoneNumber - phone number
    * @param phoneExtension - extension
    * @param phoneType -type
    * @param legacyDescriptor - CMS record description
    */
-  public PhoneNumber(BigDecimal phoneNumber, Integer phoneExtension, Short phoneType,
-      LegacyDescriptor legacyDescriptor) {
+  public PhoneNumber(@JsonProperty("number") BigDecimal phoneNumber,
+      @JsonProperty("extension") Integer phoneExtension, @JsonProperty("type") Short phoneType,
+      @JsonProperty("legacy_descriptor") LegacyDescriptor legacyDescriptor) {
     super();
     this.phoneNumber = phoneNumber;
     this.phoneExtension = phoneExtension;
