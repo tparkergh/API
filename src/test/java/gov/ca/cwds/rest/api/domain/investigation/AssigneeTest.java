@@ -51,6 +51,6 @@ public class AssigneeTest {
 
   @Test
   public void equalsHashCodeWork() {
-    EqualsVerifier.forClass(Allegation.class).suppress(Warning.NONFINAL_FIELDS).verify();
+    EqualsVerifier.forClass(Assignee.class).suppress(Warning.NONFINAL_FIELDS).verify();
   }
 }

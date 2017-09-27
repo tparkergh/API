@@ -57,9 +57,10 @@ public class Assignee {
    * @param office - office name
    * @param staffId - staff person ID
    */
-  public Assignee(String name,
-      @ValidLogicalId(required = true, category = "GVR_ENTC") String countyCode, String office,
-      String staffId) {
+  public Assignee(@JsonProperty("name") String name,
+      @JsonProperty("county_code") @ValidLogicalId(required = true,
+          category = "GVR_ENTC") String countyCode,
+      @JsonProperty("office") String office, @JsonProperty("staff_id") String staffId) {
     super();
     this.name = name;
     this.countyCode = countyCode;
