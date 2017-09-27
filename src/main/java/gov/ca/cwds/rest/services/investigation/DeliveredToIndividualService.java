@@ -9,6 +9,7 @@ import gov.ca.cwds.data.cms.ServiceProviderDao;
 import gov.ca.cwds.data.cms.SubstituteCareProviderDao;
 import gov.ca.cwds.data.persistence.contact.IndividualDeliveredServiceEntity;
 import gov.ca.cwds.data.std.ApiPersonAware;
+import gov.ca.cwds.rest.api.ApiException;
 import gov.ca.cwds.rest.api.domain.PostedIndividualDeliveredService;
 
 import java.util.EnumMap;
@@ -178,19 +179,16 @@ public class DeliveredToIndividualService {
      * @return DeliveredToIndividualCode for given code if found, null otherwise.
      */
     public static Code lookupByCodeLiteral(String codeLiteral) {
-      if (StringUtils.isBlank(codeLiteral)) {
-        return null;
-      }
-
-      Code deliveredToIndividualCode = null;
-      for (Code deliveredToIndividual : Code.values()) {
-        if (deliveredToIndividual.getCodeLiteral().equals(codeLiteral.trim())) {
-          deliveredToIndividualCode = deliveredToIndividual;
-          break;
+      if (!StringUtils.isBlank(codeLiteral)) {
+        for (Code deliveredToIndividual : Code.values()) {
+          if (deliveredToIndividual.getCodeLiteral().equals(codeLiteral.trim())) {
+            return deliveredToIndividual;
+          }
         }
       }
-      return deliveredToIndividualCode;
+      throw new ApiException("UNKNOWN DELIVERED TO INDIVIDUAL CODE: " + codeLiteral);
     }
+
   }
 
 }
