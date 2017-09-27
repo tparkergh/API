@@ -28,7 +28,7 @@ public class RelationshipList implements Request, Response {
    * empty constructor
    */
   public RelationshipList() {
-
+    super();
   }
 
   /**

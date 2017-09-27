@@ -78,6 +78,19 @@ public class AllegationTest {
   }
 
   @Test
+  public void shouldFindMultipleItemInHashSetWhenItemsHaveWithDifferentValue() {
+    Allegation allegation = new AllegationEntityBuilder().build();
+    Allegation otherAllegation = new AllegationEntityBuilder().setVictimFirstName("jerry").build();
+    Set<Allegation> items = new HashSet<>();
+    items.add(allegation);
+    items.add(otherAllegation);
+
+    assertTrue(items.contains(allegation));
+    assertTrue(items.contains(otherAllegation));
+    assertEquals(2, items.size());
+  }
+
+  @Test
   public void equalsHashCodeWork() {
     EqualsVerifier.forClass(Allegation.class).suppress(Warning.NONFINAL_FIELDS).verify();
   }

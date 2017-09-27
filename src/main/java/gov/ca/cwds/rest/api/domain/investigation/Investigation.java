@@ -205,17 +205,28 @@ public class Investigation extends ReportingDomain implements Request, Response 
    * @param people - people of investigation
    * @param relationships - relationships of people
    */
-  public Investigation(LegacyDescriptor legacyDescriptor, String lastUpdatedBy,
-      DateTime lastUpdatedAt,
-      @ValidLogicalId(required = true, category = "GVR_ENTC") String incidentCounty,
-      @Date String incidentDate, String locationType,
-      @ValidSystemCodeId(required = true, category = "CMM_MTHC") Short communicationMethod,
-      String name, String reportNarrative, String reference,
-      @ValidSystemCodeId(required = true, category = "RFR_RSPC") Short responseTime,
-      String startedAt, Assignee assignee, String additionalInformation, Boolean sensitive,
-      Boolean sealed, Set<PhoneNumber> phoneNumbers, InvestigationAddress address,
-      SimpleScreening screening, HistoryOfInvolvement historyOfInvolvement,
-      Set<Allegation> allegations, Set<Person> people, Set<Relationship> relationships) {
+  public Investigation(@JsonProperty("legacy_descriptor") LegacyDescriptor legacyDescriptor,
+      @JsonProperty("last_updated_by") String lastUpdatedBy,
+      @JsonProperty("last_updated_at") DateTime lastUpdatedAt,
+      @JsonProperty("incident_county") @ValidLogicalId(required = true,
+          category = "GVR_ENTC") String incidentCounty,
+      @JsonProperty("location_type") @Date String incidentDate, String locationType,
+      @JsonProperty("communication_method") @ValidSystemCodeId(required = true,
+          category = "CMM_MTHC") Short communicationMethod,
+      @JsonProperty("report_narrative") String name, String reportNarrative,
+      @JsonProperty("referrence") String reference,
+      @JsonProperty("response_time") @ValidSystemCodeId(required = true,
+          category = "RFR_RSPC") Short responseTime,
+      @JsonProperty("started_at") String startedAt, @JsonProperty("assignee") Assignee assignee,
+      @JsonProperty("additional_information") String additionalInformation,
+      @JsonProperty("sensitive") Boolean sensitive, @JsonProperty("sealed") Boolean sealed,
+      @JsonProperty("incident_phone_number") Set<PhoneNumber> phoneNumbers,
+      @JsonProperty("incident_address") InvestigationAddress address,
+      @JsonProperty("screening") SimpleScreening screening,
+      @JsonProperty("history_of_involvement") HistoryOfInvolvement historyOfInvolvement,
+      @JsonProperty("allegations") Set<Allegation> allegations,
+      @JsonProperty("people") Set<Person> people,
+      @JsonProperty("relationships") Set<Relationship> relationships) {
     super();
     this.legacyDescriptor = legacyDescriptor;
     this.lastUpdatedBy = lastUpdatedBy;

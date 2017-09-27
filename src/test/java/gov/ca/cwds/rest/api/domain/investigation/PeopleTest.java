@@ -5,6 +5,7 @@ import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.not;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -29,6 +30,12 @@ public class PeopleTest {
   public void setup() {
     people.add(person1);
     people.add(person2);
+  }
+
+  @Test
+  public void testEmptyConstructorSuccess() {
+    People persons = new People();
+    assertNotNull(persons);
   }
 
   @Test
