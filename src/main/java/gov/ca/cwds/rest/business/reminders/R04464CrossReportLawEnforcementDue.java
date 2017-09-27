@@ -105,9 +105,8 @@ public class R04464CrossReportLawEnforcementDue {
     Calendar dueDate = setDueDate(referral);
 
     if (referral.getClosureDate() == null) {
-
-      checkForAllegationTypeAndReporterType(reminderCreated, persistedReporter, allegations,
-          crossReports, referral, dueDate);
+      processRemindersByAllegation(reminderCreated, persistedReporter, allegations, crossReports,
+          referral, dueDate);
     }
   }
 
@@ -127,32 +126,39 @@ public class R04464CrossReportLawEnforcementDue {
     return dueDate;
   }
 
-  private boolean checkForAllegationTypeAndReporterType(boolean reminderCreated,
-      Reporter persistedReporter, Set<Allegation> allegations,
-      Set<gov.ca.cwds.rest.api.domain.CrossReport> crossReports, Referral referral,
-      Calendar dueDate) {
+  private boolean processRemindersByAllegation(boolean reminderCreated, Reporter persistedReporter,
+      Set<Allegation> allegations, Set<gov.ca.cwds.rest.api.domain.CrossReport> crossReports,
+      Referral referral, Calendar dueDate) {
     for (Allegation allegation : allegations) {
-      gov.ca.cwds.data.persistence.cms.Allegation savedAllegation =
-          allegationDao.find(allegation.getLegacyId());
-      short allegationType = savedAllegation.getAllegationType();
 
-      boolean allegationCheck =
-          allegationType != GENERAL_NEGLECT && allegationType != SUBSTANTIAL_RISK
-              && savedAllegation.getAllegationDispositionType() != ENTERED_IN_ERROR;
+      boolean needReminderCreated =
+          needsReminderCreated(reminderCreated, persistedReporter, allegation);
 
-      boolean reporterCheck =
-          persistedReporter.getMandatedReporterIndicator() != DEFAULT_TRUE_INDICATOR
-              && StringUtils.isBlank(persistedReporter.getLawEnforcementId());
-
-      if (!reminderCreated && allegationCheck && reporterCheck) {
-
-        checkForReminderCreation(reminderCreated, crossReports, referral, dueDate);
+      if (needReminderCreated) {
+        createReminder(reminderCreated, crossReports, referral, dueDate);
       }
     }
     return reminderCreated;
   }
 
-  private boolean checkForReminderCreation(boolean reminderCreated,
+  private boolean needsReminderCreated(boolean reminderCreated, Reporter persistedReporter,
+      Allegation allegation) {
+    gov.ca.cwds.data.persistence.cms.Allegation savedAllegation =
+        allegationDao.find(allegation.getLegacyId());
+    short allegationType = savedAllegation.getAllegationType();
+
+    boolean allegationCheck =
+        allegationType != GENERAL_NEGLECT && allegationType != SUBSTANTIAL_RISK
+            && savedAllegation.getAllegationDispositionType() != ENTERED_IN_ERROR;
+
+    boolean reporterCheck =
+        persistedReporter.getMandatedReporterIndicator() != DEFAULT_TRUE_INDICATOR
+            && StringUtils.isBlank(persistedReporter.getLawEnforcementId());
+
+    return !reminderCreated && allegationCheck && reporterCheck;
+  }
+
+  private boolean createReminder(boolean reminderCreated,
       Set<gov.ca.cwds.rest.api.domain.CrossReport> crossReports, Referral referral,
       Calendar dueDate) {
 
@@ -162,14 +168,20 @@ public class R04464CrossReportLawEnforcementDue {
       if (!reminderCreated && StringUtils.isBlank(savedCrossReport.getLawEnforcementId())
           && DEFAULT_FALSE_INDICATOR.equals(savedCrossReport.getSatisfyCrossReportIndicator())) {
 
-        gov.ca.cwds.rest.api.domain.cms.Tickle tickle = new gov.ca.cwds.rest.api.domain.cms.Tickle(
-            referral.getId(), REFERRAL, null, null, dateFormat.format(dueDate.getTime()),
-            referral.getScreenerNoteText(), CROSSREPORT_LAWENFORCEMENT_DUE);
-        tickleService.create(tickle);
-        reminderCreated = true;
-        LOGGER.info("crossReportForLawEnforcmentDue reminder is created");
+        reminderCreated = createTickle(referral, dueDate);
       }
     }
+    return reminderCreated;
+  }
+
+  private boolean createTickle(Referral referral, Calendar dueDate) {
+    boolean reminderCreated;
+    gov.ca.cwds.rest.api.domain.cms.Tickle tickle = new gov.ca.cwds.rest.api.domain.cms.Tickle(
+        referral.getId(), REFERRAL, null, null, dateFormat.format(dueDate.getTime()),
+        referral.getScreenerNoteText(), CROSSREPORT_LAWENFORCEMENT_DUE);
+    tickleService.create(tickle);
+    reminderCreated = true;
+    LOGGER.info("crossReportForLawEnforcmentDue reminder is created");
     return reminderCreated;
   }
 }
