@@ -124,8 +124,8 @@ public class ContactService implements TypedCrudsService<String, ContactRequest,
    */
   private String retrieveContactId(String primaryKey) {
     String[] ids = primaryKey.split(":");
-    String referralId = ids[0];
-    String contactId = ids[1];
+    String referralId = ids[0].trim();
+    String contactId = ids[1].trim();
     if (!isContactIdValidForGivenReferralId(referralId, contactId)) {
       throw new ServiceException("ContactId Is Not Valid For the Given ReferralId");
     }
