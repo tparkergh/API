@@ -174,9 +174,7 @@ public class ParticipantService implements CrudsService {
               continue;
             }
           } else {
-            // not a reporter participant - make a CLIENT and REFERRAL_CLIENT unless anonymous
-            // reporter
-            if (!ParticipantValidator.roleIsAnonymousReporter(role)) {
+            if (!ParticipantValidator.roleIsAnyReporter(role)) {
               String clientId;
 
               boolean newClient = incomingParticipant.getLegacyId() == null

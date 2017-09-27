@@ -1,5 +1,6 @@
 package gov.ca.cwds.rest.validation;
 
+import gov.ca.cwds.rest.api.domain.Role;
 import java.util.Collection;
 import java.util.Set;
 
@@ -17,12 +18,6 @@ import gov.ca.cwds.rest.api.domain.Participant;
 public class ParticipantRolesValidator
     implements ConstraintValidator<ValidParticipantRoles, Collection<Participant>> {
 
-  private static final String MANDATED_REPORTER_ROLE = "Mandated Reporter";
-  private static final String NON_MANDATED_REPORTER_ROLE = "Non-mandated Reporter";
-  private static final String ANONYMOUS_REPORTER_ROLE = "Anonymous Reporter";
-  private static final String VICTIM_ROLE = "Victim";
-  private static final String SELF_REPORTED_ROLE = "Self Reported";
-
   @Override
   public void initialize(ValidParticipantRoles anno) {}
 
@@ -36,6 +31,10 @@ public class ParticipantRolesValidator
 
     if (participants != null) {
       for (Participant participant : participants) {
+        if(!ParticipantValidator.hasValidRoles(participant)){
+          return false;
+        }
+
         if (hasReporterRole(participant)) {
           reporterCount++;
         }
@@ -67,15 +66,17 @@ public class ParticipantRolesValidator
 
     if (roles != null) {
       hasReporterRole =
-          roles.contains(ANONYMOUS_REPORTER_ROLE) || roles.contains(MANDATED_REPORTER_ROLE)
-              || roles.contains(NON_MANDATED_REPORTER_ROLE) || roles.contains(SELF_REPORTED_ROLE);
+        roles.contains(Role.ANONYMOUS_REPORTER_ROLE.getType()) ||
+        roles.contains(Role .MANDATED_REPORTER_ROLE.getType()) ||
+        roles.contains(Role.NON_MANDATED_REPORTER_ROLE.getType()) ||
+        roles.contains(Role.SELF_REPORTED_ROLE.getType());
     }
     return hasReporterRole;
   }
 
   private static Boolean hasVictimRole(Participant participant) {
     Set<String> roles = participant.getRoles();
-    return roles != null && roles.contains(VICTIM_ROLE);
+    return roles != null && roles.contains(Role.VICTIM_ROLE.getType());
   }
 
 }
