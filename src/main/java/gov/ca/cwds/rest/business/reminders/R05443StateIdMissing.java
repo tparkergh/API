@@ -94,17 +94,19 @@ public class R05443StateIdMissing {
           dueDate.setTime(client.getCreationDate());
           dueDate.add(Calendar.DATE, 30);
 
-          gov.ca.cwds.rest.api.domain.cms.Tickle tickle =
-              new gov.ca.cwds.rest.api.domain.cms.Tickle(referral.getId(), REFERRAL_REFERRALCLIENT,
-                  client.getId(), null, dateFormat.format(dueDate.getTime()),
-                  referral.getScreenerNoteText(), STATE_ID_MISSING);
-          tickleService.create(tickle);
-          LOGGER.info("stateIdMissing reminder is created");
+          createTickle(referral, client, dueDate);
 
         }
       }
     }
   }
+
+  private void createTickle(Referral referral, Client client, Calendar dueDate) {
+    gov.ca.cwds.rest.api.domain.cms.Tickle tickle = new gov.ca.cwds.rest.api.domain.cms.Tickle(
+        referral.getId(), REFERRAL_REFERRALCLIENT, client.getId(), null,
+        dateFormat.format(dueDate.getTime()), referral.getScreenerNoteText(), STATE_ID_MISSING);
+    tickleService.create(tickle);
+    LOGGER.info("stateIdMissing reminder is created");
+  }
+
 }
-
-
