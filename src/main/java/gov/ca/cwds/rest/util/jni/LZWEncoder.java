@@ -93,11 +93,11 @@ public class LZWEncoder {
    * @return true = native libraries load correctly
    */
   private static final boolean loadLibs() {
-    LOGGER.info("LZWEncoder: user.dir=" + System.getProperty("user.dir"));
-    LOGGER.info("LZWEncoder: java.library.path=" + System.getProperty("java.library.path"));
+    LOGGER.info("LZWEncoder: user.dir={}", System.getProperty("user.dir"));
+    LOGGER.info("LZWEncoder: java.library.path={}", System.getProperty("java.library.path"));
 
     final boolean forceLoad = "Y".equalsIgnoreCase(System.getProperty("cwds.jni.force", "N"));
-    LOGGER.info("LZWEncoder: cwds.jni.force=" + forceLoad);
+    LOGGER.info("LZWEncoder: cwds.jni.force={}", forceLoad);
 
     boolean retval = false;
 

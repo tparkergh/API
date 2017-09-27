@@ -39,7 +39,7 @@ public class CmsDocumentService implements TypedCrudsService<String, CmsDocument
    */
   @Override
   public CmsDocument find(String primaryKey) {
-    LOGGER.info("primaryKey=" + primaryKey);
+    LOGGER.info("primaryKey={}", primaryKey);
 
     CmsDocument retval = null;
     String base64Doc;

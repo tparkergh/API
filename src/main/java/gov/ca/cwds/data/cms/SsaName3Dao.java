@@ -163,7 +163,7 @@ public class SsaName3Dao {
       }
 
     } catch (DaoException h) {
-      throw new DaoException("Call to Stored Procedure failed - " + h);
+      throw new DaoException("Call to Stored Procedure failed - " + h, h);
     }
   }
 
