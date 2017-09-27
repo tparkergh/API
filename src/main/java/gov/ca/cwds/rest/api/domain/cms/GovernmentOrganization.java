@@ -63,7 +63,7 @@ public class GovernmentOrganization extends ReportingDomain implements Request, 
    * @param id the identifier
    * @param agencyName the agency Name
    * @param agencyType the agency Type
-   * @param governmentEntityType
+   * @param governmentEntityType the government Entity Type
    */
   @JsonCreator
   public GovernmentOrganization(@JsonProperty("id") String id,

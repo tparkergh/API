@@ -65,7 +65,6 @@ public class GovernmentOrganizationResource {
 
   /**
    * @param countyId - countyId
-   * @param groupByAgencyType - group By Agency Type
    * @return the all the cross report agencies
    */
   @UnitOfWork(value = "cms")
