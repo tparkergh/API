@@ -178,7 +178,9 @@ public class RequestResponseLoggingFilter implements Filter {
         }
 
         @Override
-        public void setReadListener(ReadListener arg0) {}
+        public void setReadListener(ReadListener arg0) {
+          //No use for this method
+        }
       };
     }
   }
@@ -273,7 +275,9 @@ public class RequestResponseLoggingFilter implements Filter {
       }
 
       @Override
-      public void setWriteListener(WriteListener writeListener) {}
+      public void setWriteListener(WriteListener writeListener) {
+        //No use for this method currently
+      }
     }
   }
 }

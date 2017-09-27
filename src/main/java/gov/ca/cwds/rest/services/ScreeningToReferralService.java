@@ -441,20 +441,14 @@ public class ScreeningToReferralService implements CrudsService {
         victimClientId = victimClient.get(allegation.getVictimPersonId());
       }
 
-      if (allegation.getPerpetratorPersonId() != 0) {
-        try {
-          if (!ParticipantValidator.isPerpetratorParticipant(scr,
-              allegation.getPerpetratorPersonId())) {
-            String message =
-                "Allegation/Perpetrator Person Id does not contain a Participant with a role of Perpetrator";
-            ServiceException exception = new ServiceException(message);
-            logError(message, exception);
-          }
-        } catch (Exception e) {
-          logError(e.getMessage(), e);
-          // next allegation
-          continue;
-        }
+      boolean allegationHasPerpPersonId = allegation.getPerpetratorPersonId() != 0;
+      boolean isNotPerpetrator = !ParticipantValidator.isPerpetratorParticipant(scr,
+            allegation.getPerpetratorPersonId());
+      if (allegationHasPerpPersonId && isNotPerpetrator) {
+          String message =
+              "Allegation/Perpetrator Person Id does not contain a Participant with a role of Perpetrator";
+          ServiceException exception = new ServiceException(message);
+          logError(message, exception);
       }
 
       if (perpatratorClient.containsKey(allegation.getPerpetratorPersonId())) {
