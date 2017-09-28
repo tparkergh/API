@@ -237,24 +237,25 @@ public class ParticipantValidator {
   public static Boolean hasValidRoles(Participant participant) throws ServiceException {
 
     Set<String> roles = participant.getRoles();
-    if (roles != null) {
-      // R - 00831
-      if (roles.contains(Role.ANONYMOUS_REPORTER_ROLE.getType()) && roles.contains(Role.SELF_REPORTED_ROLE.getType())) {
-        return Boolean.FALSE;
-      }
-      if (roles.contains(Role.ANONYMOUS_REPORTER_ROLE.getType()) && roles.contains(Role.VICTIM_ROLE.getType())) {
-        return Boolean.FALSE;
-      }
-      if (roles.contains(Role.ANONYMOUS_REPORTER_ROLE.getType()) && (roles.contains(Role.MANDATED_REPORTER_ROLE.getType())
-          || roles.contains(Role.NON_MANDATED_REPORTER_ROLE.getType()))) {
-        return Boolean.FALSE;
-      }
-      if (roles.contains(Role.VICTIM_ROLE.getType()) && roles.contains(Role.PERPETRATOR_ROLE.getType())) {
-        return Boolean.FALSE;
-      }
-      if (roles.contains(Role.MANDATED_REPORTER_ROLE.getType()) && roles.contains(Role.NON_MANDATED_REPORTER_ROLE.getType())) {
-        return Boolean.FALSE;
-      }
+    if (roles == null) {
+      return Boolean.TRUE;
+    }
+    // R - 00831
+    if (roles.contains(Role.ANONYMOUS_REPORTER_ROLE.getType()) && roles.contains(Role.SELF_REPORTED_ROLE.getType())) {
+      return Boolean.FALSE;
+    }
+    if (roles.contains(Role.ANONYMOUS_REPORTER_ROLE.getType()) && roles.contains(Role.VICTIM_ROLE.getType())) {
+      return Boolean.FALSE;
+    }
+    if (roles.contains(Role.ANONYMOUS_REPORTER_ROLE.getType()) && (roles.contains(Role.MANDATED_REPORTER_ROLE.getType())
+        || roles.contains(Role.NON_MANDATED_REPORTER_ROLE.getType()))) {
+      return Boolean.FALSE;
+    }
+    if (roles.contains(Role.VICTIM_ROLE.getType()) && roles.contains(Role.PERPETRATOR_ROLE.getType())) {
+      return Boolean.FALSE;
+    }
+    if (roles.contains(Role.MANDATED_REPORTER_ROLE.getType()) && roles.contains(Role.NON_MANDATED_REPORTER_ROLE.getType())) {
+      return Boolean.FALSE;
     }
     return Boolean.TRUE;
   }
