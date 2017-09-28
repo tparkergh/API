@@ -76,7 +76,7 @@ public class Screening extends ReportingDomain implements Request, Response {
   @Date(format = "yyyy-MM-dd", required = false)
   private String startedAt;
 
-  @JsonProperty("assignee_id")
+  @JsonProperty("assignee_staff_id")
   @ApiModelProperty(required = true, readOnly = false, value = "Screening Assignee Id",
       example = "con")
   private String assigneeId;
@@ -106,7 +106,7 @@ public class Screening extends ReportingDomain implements Request, Response {
       @JsonProperty("screening_decision_detail") String screeningDecisionDetail,
       @JsonProperty("assignee") String assignee, @JsonProperty("started_at") String startedAt,
       @JsonProperty("referral_id") String referralId,
-      @JsonProperty("assignee_Id") String assigneeId) {
+      @JsonProperty("assignee_staff_id") String assigneeId) {
     super();
     this.id = id;
     this.name = name;
