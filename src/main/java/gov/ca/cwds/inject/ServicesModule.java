@@ -12,6 +12,8 @@ import com.google.inject.Provides;
 import com.google.inject.matcher.Matchers;
 
 import gov.ca.cwds.data.CmsSystemCodeSerializer;
+import gov.ca.cwds.data.cms.GovernmentOrganizationDao;
+import gov.ca.cwds.data.cms.LawEnforcementDao;
 import gov.ca.cwds.data.cms.SystemCodeDao;
 import gov.ca.cwds.data.cms.SystemMetaDao;
 import gov.ca.cwds.rest.ApiConfiguration;
@@ -98,6 +100,8 @@ public class ServicesModule extends AbstractModule {
 
   }
 
+  private GovernmentOrganizationService governmentOrganizationService;
+
   /**
    * Default, no-op constructor.
    */
@@ -136,7 +140,6 @@ public class ServicesModule extends AbstractModule {
     bind(DeliveredService.class);
     bind(ContactService.class);
     bind(DeliveredToIndividualService.class);
-    bind(GovernmentOrganizationService.class);
 
     UnitOfWorkInterceptor interceptor = new UnitOfWorkInterceptor();
     bindInterceptor(Matchers.any(), Matchers.annotatedWith(UnitOfWork.class), interceptor);
@@ -153,6 +156,11 @@ public class ServicesModule extends AbstractModule {
     return new MessageBuilder();
   }
 
+  /**
+   * @param systemCodeDao - systemCodeDao
+   * @param systemMetaDao - systemMetaDao
+   * @return the systemCodes
+   */
   @Provides
   public SystemCodeService provideSystemCodeService(SystemCodeDao systemCodeDao,
       SystemMetaDao systemMetaDao) {
@@ -161,6 +169,25 @@ public class ServicesModule extends AbstractModule {
     return new CachingSystemCodeService(systemCodeDao, systemMetaDao, secondsToRefreshCache, false);
   }
 
+  /**
+   * @param governmentOrganizationDao - governmentOrganizationDao
+   * @param lawEnforcementDao - lawEnforcementDao
+   * @return the cross report agencies
+   */
+  @Provides
+  public synchronized GovernmentOrganizationService provideGovernmentOrganizationService(
+      GovernmentOrganizationDao governmentOrganizationDao, LawEnforcementDao lawEnforcementDao) {
+    if (governmentOrganizationService == null) {
+      governmentOrganizationService =
+          new GovernmentOrganizationService(governmentOrganizationDao, lawEnforcementDao);
+    }
+    return governmentOrganizationService;
+  }
+
+  /**
+   * @param systemCodeService - systemCodeService
+   * @return the SystemCodeCache
+   */
   @Provides
   public SystemCodeCache provideSystemCodeCache(SystemCodeService systemCodeService) {
     LOGGER.debug("provide syscode cache");
@@ -169,6 +196,10 @@ public class ServicesModule extends AbstractModule {
     return systemCodeCache;
   }
 
+  /**
+   * @param systemCodeCache - systemCodeCache
+   * @return the CmsSystemCodeSerializer
+   */
   @Provides
   public CmsSystemCodeSerializer provideCmsSystemCodeSerializer(SystemCodeCache systemCodeCache) {
     LOGGER.debug("provide syscode serializer");
