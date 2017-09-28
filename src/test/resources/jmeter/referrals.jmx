@@ -66,7 +66,7 @@
    &quot;response_time&quot;:1520,&#xd;
    &quot;started_at&quot;:&quot;2016-08-03T01:00:00.000Z&quot;,&#xd;
    &quot;assignee&quot;:&quot;Michael Bastow&quot;,&#xd;
-   &quot;assignee_id&quot;:&quot;0X5&quot;,&#xd;
+   &quot;assignee_staff_id&quot;:&quot;0X5&quot;,&#xd;
    &quot;additional_information&quot;:&quot;additional information about the referral&quot;,&#xd;
    &quot;screening_decision&quot;:&quot;Response time&quot;,&#xd;
    &quot;screening_decision_detail&quot;:&quot;Detail&quot;,&#xd;

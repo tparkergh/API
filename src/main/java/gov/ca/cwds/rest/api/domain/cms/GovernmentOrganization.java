@@ -72,19 +72,8 @@ public class GovernmentOrganization extends ReportingDomain implements Request, 
     super();
     this.id = id;
     this.agencyName = agencyName;
-    this.agencyType = agencyType;
+    this.agencyType = agencyType.toLowerCase();
     this.governmentEntityType = governmentEntityType;
-  }
-
-  /**
-   * @param persistent - governmentOrganization
-   */
-  public GovernmentOrganization(
-      gov.ca.cwds.data.persistence.cms.GovernmentOrganization persistent) {
-    this.id = persistent.getId();
-    this.agencyName = persistent.getGovernmentOrganizationName();
-    this.agencyType = persistent.getGovernmentOrganizationType().toString();
-    this.governmentEntityType = persistent.getGovernmentEntityType();
   }
 
   /**
@@ -94,7 +83,7 @@ public class GovernmentOrganization extends ReportingDomain implements Request, 
       gov.ca.cwds.data.persistence.cms.LawEnforcement persistestedLawEnforcement) {
     this.id = persistestedLawEnforcement.getId();
     this.agencyName = persistestedLawEnforcement.getLawEnforcementName();
-    this.agencyType = "Lawenforcement";
+    this.agencyType = "law_enforcement";
     this.governmentEntityType = persistestedLawEnforcement.getGovernmentEntityType();
   }
 

@@ -5,6 +5,8 @@ import java.math.BigDecimal;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 
 import org.hibernate.annotations.Type;
@@ -22,6 +24,8 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 @Table(name = "LAW_ENFT")
 @JsonPropertyOrder(alphabetic = true)
 @JsonIgnoreProperties(ignoreUnknown = true)
+@NamedQueries({@NamedQuery(name = "gov.ca.cwds.data.persistence.cms.LawEnforcement.findAll",
+    query = "FROM LawEnforcement ORDER BY governmentEntityType")})
 public class LawEnforcement extends CmsPersistentObject {
 
   @Column(name = "ARCASS_IND")
