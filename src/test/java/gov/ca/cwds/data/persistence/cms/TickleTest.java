@@ -28,7 +28,7 @@ public class TickleTest {
   /**
    * Constructor test
    * 
-   * @throws Exception
+   * @throws Exception general error
    */
   @Test
   public void testEmptyConstructor() throws Exception {
@@ -38,11 +38,10 @@ public class TickleTest {
   /**
    * persistent constructor test
    * 
-   * @throws Exception
+   * @throws Exception general error
    */
   @Test
   public void testPersistentConstructor() throws Exception {
-
     Tickle vt = validTickle();
 
     gov.ca.cwds.data.persistence.cms.Tickle persistent =
@@ -63,14 +62,12 @@ public class TickleTest {
   }
 
   /**
-   * 
    * domain constructor test
    * 
-   * @throws Exception
+   * @throws Exception general error
    */
   @Test
   public void testConstructorUsingDomain() throws Exception {
-
     gov.ca.cwds.rest.api.domain.cms.Tickle domain = validDomainTickle();
 
     Tickle persistent = new Tickle(id, domain, lastUpdatedId, lastUpdatedTime);
@@ -90,7 +87,6 @@ public class TickleTest {
   }
 
   private Tickle validTickle() throws JsonParseException, JsonMappingException, IOException {
-
     Tickle validTickle =
         MAPPER.readValue(fixture("fixtures/persistent/Tickle/valid/valid.json"), Tickle.class);
     return validTickle;
