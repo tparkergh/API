@@ -11,6 +11,7 @@ import gov.ca.cwds.rest.api.domain.Role;
 import java.util.Arrays;
 import java.util.HashSet;
 
+import java.util.Set;
 import javax.validation.Validation;
 import javax.validation.Validator;
 import javax.validation.ValidatorFactory;
@@ -292,5 +293,62 @@ public class ParticipantValidatorTest {
   @Test
   public void roleIsAnyReporterShouldReportFalseWhenRoleNotAValidReporter(){
     assertFalse(ParticipantValidator.roleIsAnyReporter("Not A reporter"));
+  }
+
+  @Test
+  public void hasValidRolesShouldBeValidWhenRolesAreNull(){
+    Participant participant = new ParticipantResourceBuilder().setRoles(null).createParticipant();
+
+    assertTrue(ParticipantValidator.hasValidRoles(participant));
+  }
+
+  @Test
+  public void hasValidRolesShouldBeNotBeValidWhenRolesIncludeAnonymousAndSelfReporter(){
+    Set roles = new HashSet();
+    roles.add(Role.ANONYMOUS_REPORTER_ROLE.getType());
+    roles.add(Role.SELF_REPORTED_ROLE.getType());
+    Participant participant = new ParticipantResourceBuilder().setRoles(roles).createParticipant();
+
+    assertFalse(ParticipantValidator.hasValidRoles(participant));
+  }
+
+  @Test
+  public void hasValidRolesShouldBeNotBeValidWhenRolesIncludeAnonymousAndVictim(){
+    Set roles = new HashSet();
+    roles.add(Role.ANONYMOUS_REPORTER_ROLE.getType());
+    roles.add(Role.VICTIM_ROLE.getType());
+    Participant participant = new ParticipantResourceBuilder().setRoles(roles).createParticipant();
+
+    assertFalse(ParticipantValidator.hasValidRoles(participant));
+  }
+
+  @Test
+  public void hasValidRolesShouldBeNotBeValidWhenRolesIncludeAnonymousAndMandatedReporter(){
+    Set roles = new HashSet();
+    roles.add(Role.ANONYMOUS_REPORTER_ROLE.getType());
+    roles.add(Role.MANDATED_REPORTER_ROLE.getType());
+    Participant participant = new ParticipantResourceBuilder().setRoles(roles).createParticipant();
+
+    assertFalse(ParticipantValidator.hasValidRoles(participant));
+  }
+
+  @Test
+  public void hasValidRolesShouldBeNotBeValidWhenRolesIncludeVictimAndPerpetrator(){
+    Set roles = new HashSet();
+    roles.add(Role.VICTIM_ROLE.getType());
+    roles.add(Role.PERPETRATOR_ROLE.getType());
+    Participant participant = new ParticipantResourceBuilder().setRoles(roles).createParticipant();
+
+    assertFalse(ParticipantValidator.hasValidRoles(participant));
+  }
+
+  @Test
+  public void hasValidRolesShouldBeNotBeValidWhenRolesIncludeMandatedAndNonMandatedRole(){
+    Set roles = new HashSet();
+    roles.add(Role.MANDATED_REPORTER_ROLE.getType());
+    roles.add(Role.NON_MANDATED_REPORTER_ROLE.getType());
+    Participant participant = new ParticipantResourceBuilder().setRoles(roles).createParticipant();
+
+    assertFalse(ParticipantValidator.hasValidRoles(participant));
   }
 }
