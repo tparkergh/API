@@ -131,7 +131,7 @@ public class ScreeningToReferral extends ReportingDomain implements Request {
   @Size(max = 50)
   private String assignee;
 
-  @JsonProperty("assignee_id")
+  @JsonProperty("assignee_staff_id")
   @NotEmpty
   @ApiModelProperty(required = true, readOnly = false, value = "q1p", example = "q1p")
   @Size(min = 3, max = 3)

@@ -9,19 +9,15 @@ import static org.hamcrest.Matchers.notNullValue;
 import java.io.IOException;
 import java.util.Date;
 
-import org.junit.Ignore;
 import org.junit.Test;
 
 import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import gov.ca.cwds.data.persistence.junit.template.PersistentTestTemplate;
 import gov.ca.cwds.rest.api.domain.DomainChef;
-import nl.jqno.equalsverifier.EqualsVerifier;
-import nl.jqno.equalsverifier.Warning;
 
-public class TickleTest implements PersistentTestTemplate {
+public class TickleTest {
 
   private String id = "1234567ABC";
   private String lastUpdatedId = "0X5";
@@ -29,16 +25,21 @@ public class TickleTest implements PersistentTestTemplate {
 
   private static final ObjectMapper MAPPER = SystemCodeTestHarness.MAPPER;
 
-  /*
+  /**
    * Constructor test
+   * 
+   * @throws Exception
    */
-  @Override
   @Test
   public void testEmptyConstructor() throws Exception {
     assertThat(Tickle.class.newInstance(), is(notNullValue()));
   }
 
-  @Override
+  /**
+   * persistent constructor test
+   * 
+   * @throws Exception
+   */
   @Test
   public void testPersistentConstructor() throws Exception {
 
@@ -61,7 +62,12 @@ public class TickleTest implements PersistentTestTemplate {
     assertThat(persistent.getTickleMessageType(), is(equalTo(vt.getTickleMessageType())));
   }
 
-  @Override
+  /**
+   * 
+   * domain constructor test
+   * 
+   * @throws Exception
+   */
   @Test
   public void testConstructorUsingDomain() throws Exception {
 
@@ -81,13 +87,6 @@ public class TickleTest implements PersistentTestTemplate {
     assertThat(persistent.getNoteText(), is(equalTo(domain.getNoteText())));
     assertThat(persistent.getTickleMessageType(), is(equalTo(domain.getTickleMessageType())));
     assertThat(persistent.getLastUpdatedId(), is(equalTo(lastUpdatedId)));
-  }
-
-  @Override
-  @Test
-  @Ignore
-  public void testEqualsHashCodeWorks() {
-    EqualsVerifier.forClass(Tickle.class).suppress(Warning.NONFINAL_FIELDS).verify();
   }
 
   private Tickle validTickle() throws JsonParseException, JsonMappingException, IOException {
