@@ -65,13 +65,12 @@ public class GovernmentOrganizationService
     systemCodeMap = getSystemCodeMap();
 
     GovernmentOrganizationResponse governmentOrganizationResponse =
-        new GovernmentOrganizationResponse(
-            governmentOrganizationDao.findAll().stream().map(temp -> {
-              return new GovernmentOrganization(temp.getId(), temp.getGovernmentOrganizationName(),
-                  systemCodeMap.get(temp.getGovernmentOrganizationType()).replace(" ", "_"),
-                  temp.getGovernmentEntityType());
-
-            }).collect(Collectors.toList()));
+        new GovernmentOrganizationResponse(governmentOrganizationDao.findAll().stream()
+            .map(temp -> new GovernmentOrganization(temp.getId(),
+                temp.getGovernmentOrganizationName(),
+                systemCodeMap.get(temp.getGovernmentOrganizationType()).replace(' ', '_'),
+                temp.getGovernmentEntityType()))
+            .collect(Collectors.toList()));
 
     governmentOrganizationResponse.setGovernmentOrganizations(lawEnforcementDao.findAll().stream()
         .map(GovernmentOrganization::new).collect(Collectors.toList()));
