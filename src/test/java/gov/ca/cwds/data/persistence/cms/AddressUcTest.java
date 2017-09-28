@@ -8,15 +8,11 @@ import static org.hamcrest.Matchers.notNullValue;
 
 import java.io.IOException;
 
-import org.junit.Ignore;
 import org.junit.Test;
 
 import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-
-import nl.jqno.equalsverifier.EqualsVerifier;
-import nl.jqno.equalsverifier.Warning;
 
 /**
  * @author CWDS API Team
@@ -51,12 +47,6 @@ public class AddressUcTest {
     assertThat(persistent.getCityName(), is(equalTo(aduc.getCityName())));
     assertThat(persistent.getStreetName(), is(equalTo(aduc.getStreetName())));
     assertThat(persistent.getStreetNumber(), is(equalTo(aduc.getStreetNumber())));
-  }
-
-  @Test
-  @Ignore
-  public void testEqualsHashCodeWorks() {
-    EqualsVerifier.forClass(AddressUc.class).suppress(Warning.NONFINAL_FIELDS).verify();
   }
 
   private AddressUc validAddressUc() throws JsonParseException, JsonMappingException, IOException {

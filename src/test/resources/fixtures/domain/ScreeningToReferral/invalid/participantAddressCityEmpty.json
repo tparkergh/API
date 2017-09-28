@@ -17,7 +17,7 @@
    "response_time":1520,
    "started_at":"2016-08-03T01:00:00.000Z",
    "assignee":"Michael Bastow",
-   "assignee_id": "0X5",
+   "assignee_staff_id": "0X5",
    "additional_information":"additional information about the referral",
    "screening_decision":"Response time",
    "screening_decision_detail":"Detail",

@@ -347,7 +347,7 @@ public class Reporter extends ReportingDomain implements Request, Response {
     String streetNumber = null;
     String streetName = null;
     int index;
-    if ((index = address.getStreetAddress().indexOf(" ")) > 0) {
+    if ((index = address.getStreetAddress().indexOf(' ')) > 0) {
       streetNumber = address.getStreetAddress().substring(0, index);
       if (!streetNumber.chars().allMatch(Character::isDigit)) {
         streetNumber = null;
