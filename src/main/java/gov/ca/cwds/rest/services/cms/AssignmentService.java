@@ -240,10 +240,8 @@ public class AssignmentService implements
     //
     // An assignment is the association between a Staff Person Case Load and the Referral
     //
-
-    return gov.ca.cwds.rest.api.domain.cms.Assignment.createDefaultReferralAssignment(countyCode,
-        referralId, caseLoadId);
-
+    gov.ca.cwds.rest.api.domain.cms.Assignment assignment = new gov.ca.cwds.rest.api.domain.cms.Assignment();
+    return assignment.createDefaultReferralAssignment(countyCode, referralId, caseLoadId);
   }
 
   /**

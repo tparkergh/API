@@ -38,9 +38,6 @@ public class Assignment extends ReportingDomain implements Request, Response {
    */
   private static final long serialVersionUID = 1L;
 
-  // TODO: NOT THREAD SAFE!
-  private static final DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
-  private static final DateFormat timeOnlyFormat = new SimpleDateFormat("HH:mm:ss");
 
   @NotEmpty
   @Size(min = 1, max = 2)
@@ -197,7 +194,7 @@ public class Assignment extends ReportingDomain implements Request, Response {
    * @param caseLoadId - CaseLoad Id
    * @return Assignment
    */
-  public static Assignment createDefaultReferralAssignment(String countyCode, String referralId,
+  public Assignment createDefaultReferralAssignment(String countyCode, String referralId,
       String caseLoadId) {
 
     final String END_DATE = "";
@@ -210,6 +207,10 @@ public class Assignment extends ReportingDomain implements Request, Response {
     final BigDecimal WEIGHTING_NUMBER = new BigDecimal("0.0");
 
     final java.util.Date date = new java.util.Date();
+
+    final DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
+    final DateFormat timeOnlyFormat = new SimpleDateFormat("HH:mm:ss");
+
     final String startDate = df.format(date);
     final String startTime = timeOnlyFormat.format(date);
 
