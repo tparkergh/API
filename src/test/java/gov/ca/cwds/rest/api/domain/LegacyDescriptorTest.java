@@ -7,12 +7,20 @@ import static org.junit.Assert.assertTrue;
 import java.util.HashSet;
 import java.util.Set;
 
+import javax.validation.ConstraintViolation;
+import javax.validation.Validation;
+import javax.validation.Validator;
+import javax.validation.ValidatorFactory;
+
 import org.joda.time.DateTime;
+import org.junit.Before;
 import org.junit.Test;
 
+import gov.ca.cwds.fixture.LegacyDescriptorEntityBuilder;
 import nl.jqno.equalsverifier.EqualsVerifier;
 import nl.jqno.equalsverifier.Warning;
 
+@SuppressWarnings("javadoc")
 /**
  * @author CWDS API Team
  *
@@ -23,6 +31,14 @@ public class LegacyDescriptorTest {
   private static final DateTime LAST_UPDATED = new DateTime();
   private static final String TABLE_NAME = "table_name";
   private static final String DESCRIPTION = "description";
+
+  private Validator validator;
+
+  @Before
+  public void setup() {
+    ValidatorFactory factory = Validation.buildDefaultValidatorFactory();
+    validator = factory.getValidator();
+  }
 
   /**
    * 
@@ -86,4 +102,40 @@ public class LegacyDescriptorTest {
   public void equalsHashCodeWork() {
     EqualsVerifier.forClass(LegacyDescriptor.class).suppress(Warning.NONFINAL_FIELDS).verify();
   }
+
+  @Test
+  public void testWithIdTooShortFails() {
+    LegacyDescriptor legacyDescriptor = new LegacyDescriptorEntityBuilder().setId("123").build();
+    Set<ConstraintViolation<LegacyDescriptor>> constraintViolations =
+        validator.validate(legacyDescriptor);
+    assertEquals(1, constraintViolations.size());
+    assertEquals("size must be between 10 and 10",
+        constraintViolations.iterator().next().getMessage());
+  }
+
+  @Test
+  public void testWithIdTooLongFails() {
+    LegacyDescriptor legacyDescriptor =
+        new LegacyDescriptorEntityBuilder().setId("12345678901").build();
+    Set<ConstraintViolation<LegacyDescriptor>> constraintViolations =
+        validator.validate(legacyDescriptor);
+    assertEquals(1, constraintViolations.size());
+    assertEquals("size must be between 10 and 10",
+        constraintViolations.iterator().next().getMessage());
+  }
+
+  @Test
+  public void testBlankTableNameFails() {
+    LegacyDescriptor legacyDescriptor =
+        new LegacyDescriptorEntityBuilder().setTableName("").build();
+    Set<ConstraintViolation<LegacyDescriptor>> constraintViolations =
+        validator.validate(legacyDescriptor);
+    assertEquals(1, constraintViolations.size());
+    assertEquals("may not be empty", constraintViolations.iterator().next().getMessage());
+    // for (ConstraintViolation<?> violation : constraintViolations) {
+    // System.out.println(violation.getMessage());
+    // }
+
+  }
+
 }
