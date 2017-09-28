@@ -2,13 +2,17 @@ package gov.ca.cwds.rest.api.domain;
 
 import java.io.Serializable;
 
+import javax.validation.constraints.Size;
+
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
+import org.hibernate.validator.constraints.NotBlank;
 import org.joda.time.DateTime;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+import gov.ca.cwds.data.persistence.cms.CmsPersistentObject;
 import io.dropwizard.jackson.JsonSnakeCase;
 import io.swagger.annotations.ApiModelProperty;
 
@@ -25,13 +29,14 @@ public class LegacyDescriptor implements Serializable {
   private static final long serialVersionUID = 1L;
 
   @JsonProperty("legacy_id")
-  @ApiModelProperty(required = false, readOnly = false, value = "CWS/CMS Id",
-      example = "1234567ABC")
+  @Size(min = CmsPersistentObject.CMS_ID_LEN, max = CmsPersistentObject.CMS_ID_LEN)
+  @ApiModelProperty(required = true, readOnly = false, value = "CWS/CMS Id", example = "1234567ABC")
   private String id;
 
   @ApiModelProperty(required = false, readOnly = false, value = "CWS/CMS user interface Id",
-      example = "111-222-333-4444")
+      example = "1111-2222-3333-4444555")
   @JsonProperty("legacy_ui_id")
+  @Size(max = 19)
   private String uiId;
 
   @ApiModelProperty(required = false, readOnly = false, value = "CWS/CMS Last Updated Time",
@@ -41,7 +46,8 @@ public class LegacyDescriptor implements Serializable {
   private DateTime lastUpdatedAt;
 
   @JsonProperty("legacy_table_name")
-  @ApiModelProperty(required = false, readOnly = false, value = "CWS/CMS Table Name",
+  @NotBlank
+  @ApiModelProperty(required = true, readOnly = false, value = "CWS/CMS Table Name",
       example = "CLIENT_T")
   private String tableName;
 

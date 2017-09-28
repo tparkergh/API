@@ -11,15 +11,15 @@ import gov.ca.cwds.rest.api.domain.investigation.SimplePersonWithRelationship;
 
 @SuppressWarnings("javadoc")
 public class CaseEntityBuilder {
-  private String endDate = "2017-10-30";
-  private String countyName = "Sacramento";
+  protected String endDate = "2017-10-30";
+  protected String countyName = "Sacramento";
   private SimpleLegacyDescriptor legacyDescriptor;
   private SimplePerson focusChild;
-  private String serviceComponent;
+  protected String serviceComponent;
   private SimplePerson assignedSocialWorker;
   private LimitedAccess limitedAccess;
-  private String serviceComponentId = "1234567ABC";
-  private String startDate = "2017-09-01";
+  protected String serviceComponentId = "1234567ABC";
+  protected String startDate = "2017-09-01";
   private Set<SimplePersonWithRelationship> parents = new LinkedHashSet<>();
 
   public Case build() {

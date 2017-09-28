@@ -17,24 +17,24 @@ import gov.ca.cwds.rest.api.domain.investigation.PhoneNumber;
 public class PersonEntityBuilder {
 
   private LegacyDescriptor legacyDescriptor;
-  private String lastUpdatedBy = "0X5";
-  private String lastUpdatedAt = "2016-04-27T23:30:14.000Z";
-  private String firstName = "Art";
-  private String middleName = "Mike";
-  private String lastName = "Griswald";
-  private String suffixTitle = "bs";
-  private String gender = "M";
-  private String birthDate = "1998-10-30";
-  private String ssn = "999667777";
+  protected String lastUpdatedBy = "0X5";
+  protected String lastUpdatedAt = "2016-04-27T23:30:14.000Z";
+  protected String firstName = "Art";
+  protected String middleName = "Mike";
+  protected String lastName = "Griswald";
+  protected String suffixTitle = "bs";
+  protected String gender = "M";
+  protected String birthDate = "1998-10-30";
+  protected String ssn = "999667777";
   private Set<Short> languages = new LinkedHashSet<>();
 
-  private Short primaryLanguage = 1253;
-  private Short secondaryLanguage = 1255;
+  protected Short primaryLanguage = 1253;
+  protected Short secondaryLanguage = 1255;
   private RaceAndEthnicity raceAndEthnicity = new RaceAndEthnicityEntityBuilder().build();
-  private Boolean sensitive = Boolean.FALSE;
-  private Boolean sealed = Boolean.FALSE;
+  protected Boolean sensitive = Boolean.FALSE;
+  protected Boolean sealed = Boolean.FALSE;
   private DateTime now = new DateTime("2010-10-01T15:26:42.000-0700");
-  private Short phoneType = 1111;
+  protected Short phoneType = 1111;
 
   private BigDecimal phoneNumber = new BigDecimal(3219876);
   private LegacyDescriptor phoneLegacyDescriptor =

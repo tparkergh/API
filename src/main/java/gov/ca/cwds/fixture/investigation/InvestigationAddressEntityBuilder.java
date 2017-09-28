@@ -7,12 +7,12 @@ import gov.ca.cwds.rest.api.domain.investigation.InvestigationAddress;
 
 @SuppressWarnings("javadoc")
 public class InvestigationAddressEntityBuilder {
-  private LegacyDescriptor legacyDescriptor;
-  private String streetAddress = "741 Evergreen Ct";
-  private String city = "Springfield";
-  private Short state = 1828;
-  private String zip = "95757";
-  private Short type = 32;
+  protected LegacyDescriptor legacyDescriptor;
+  protected String streetAddress = "741 Evergreen Ct";
+  protected String city = "Springfield";
+  protected Short state = 1828;
+  protected String zip = "95757";
+  protected Short type = 32;
   private DateTime now = new DateTime("2010-10-01T15:26:42.000-0700");
 
   public InvestigationAddress build() {

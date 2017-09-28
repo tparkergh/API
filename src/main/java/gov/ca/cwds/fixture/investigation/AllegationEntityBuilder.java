@@ -5,12 +5,12 @@ import gov.ca.cwds.rest.api.domain.investigation.Allegation;
 @SuppressWarnings("javadoc")
 public class AllegationEntityBuilder {
 
-  private String victimLastName = "Tatum";
-  private String victimFirstName = "Timithoy";
-  private String perpetratorLastName = "Micheals";
-  private String perpetratorFirstName = "Mitchell";
-  private String dispositionDescription = "Substantiated";
-  private String allegationDescription = "physical abuse";
+  protected String victimLastName = "Tatum";
+  protected String victimFirstName = "Timithoy";
+  protected String perpetratorLastName = "Micheals";
+  protected String perpetratorFirstName = "Mitchell";
+  protected String dispositionDescription = "Substantiated";
+  protected String allegationDescription = "physical abuse";
 
   public Allegation build() {
     return new Allegation(victimFirstName, victimLastName, perpetratorLastName,
