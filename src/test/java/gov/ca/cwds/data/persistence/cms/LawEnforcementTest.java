@@ -24,7 +24,7 @@ public class LawEnforcementTest {
    */
   @Test
   public void testEmptyConstructor() throws Exception {
-    assertThat(LawEnforcement.class.newInstance(), is(notNullValue()));
+    assertThat(LawEnforcementEntity.class.newInstance(), is(notNullValue()));
   }
 
 
@@ -36,9 +36,9 @@ public class LawEnforcementTest {
   @Test
   public void testPersistentConstructor() throws Exception {
 
-    LawEnforcement validLawEnforcemrnt = new LawEnforcementEntityBuilder().build();
+    LawEnforcementEntity validLawEnforcemrnt = new LawEnforcementEntityBuilder().build();
 
-    LawEnforcement persistent = new LawEnforcement(validLawEnforcemrnt.getArchiveAssociationInd(),
+    LawEnforcementEntity persistent = new LawEnforcementEntity(validLawEnforcemrnt.getArchiveAssociationInd(),
         validLawEnforcemrnt.getCityName(), validLawEnforcemrnt.getContactPhoneExtensionNumber(),
         validLawEnforcemrnt.getContactPersonName(), validLawEnforcemrnt.getContactPhoneNumber(),
         validLawEnforcemrnt.getContactPositionTitleDescription(),

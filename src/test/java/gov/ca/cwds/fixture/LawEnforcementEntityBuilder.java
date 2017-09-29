@@ -2,7 +2,7 @@ package gov.ca.cwds.fixture;
 
 import java.math.BigDecimal;
 
-import gov.ca.cwds.data.persistence.cms.LawEnforcement;
+import gov.ca.cwds.data.persistence.cms.LawEnforcementEntity;
 
 /**
  * @author CWDS API Team
@@ -29,8 +29,8 @@ public class LawEnforcementEntityBuilder {
   Integer zipNumber = 95833;
   Short zipSuffixNumber = 0;
 
-  public LawEnforcement build() {
-    return new LawEnforcement(archiveAssociationInd, cityName, contactPhoneExtensionNumber,
+  public LawEnforcementEntity build() {
+    return new LawEnforcementEntity(archiveAssociationInd, cityName, contactPhoneExtensionNumber,
         contactPersonName, contactPhoneNumber, contactPositionTitleDescription, emailAddress,
         faxNumber, governmentEntityType, id, lawEnforcementName, referenceNumber, stationName,
         streetName, streetNumber, zipNumber, zipSuffixNumber);

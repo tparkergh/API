@@ -12,7 +12,7 @@ import org.junit.Test;
 import gov.ca.cwds.data.cms.DrmsDocumentDao;
 import gov.ca.cwds.data.cms.LawEnforcementDao;
 import gov.ca.cwds.data.cms.ReferralDao;
-import gov.ca.cwds.data.persistence.cms.LawEnforcement;
+import gov.ca.cwds.data.persistence.cms.LawEnforcementEntity;
 import gov.ca.cwds.fixture.CmsReporterResourceBuilder;
 import gov.ca.cwds.fixture.DrmsDocumentResourceBuilder;
 import gov.ca.cwds.fixture.LawEnforcementEntityBuilder;
@@ -124,7 +124,7 @@ public class RIReporterTest {
     gov.ca.cwds.data.persistence.cms.Referral referral =
         new gov.ca.cwds.data.persistence.cms.Referral("AB0751Gthu", referralDomain, "0X5");
 
-    LawEnforcement lawEnforcemnt = new LawEnforcementEntityBuilder().build();
+    LawEnforcementEntity lawEnforcemnt = new LawEnforcementEntityBuilder().build();
 
     when(referralDao.find(any())).thenReturn(referral);
     when(lawEnforcementDao.find(any())).thenReturn(lawEnforcemnt);
@@ -147,7 +147,7 @@ public class RIReporterTest {
     gov.ca.cwds.data.persistence.cms.DrmsDocument drmsDocument =
         new gov.ca.cwds.data.persistence.cms.DrmsDocument("ABC1234lll", drmsDocumentDomain, "0X5");
 
-    LawEnforcement lawEnforcemnt = new LawEnforcementEntityBuilder().build();
+    LawEnforcementEntity lawEnforcemnt = new LawEnforcementEntityBuilder().build();
 
     when(referralDao.find(any())).thenReturn(referral);
     when(lawEnforcementDao.find(any())).thenReturn(lawEnforcemnt);
@@ -170,7 +170,7 @@ public class RIReporterTest {
     gov.ca.cwds.data.persistence.cms.DrmsDocument drmsDocument =
         new gov.ca.cwds.data.persistence.cms.DrmsDocument("ABC1234lll", drmsDocumentDomain, "0X5");
 
-    LawEnforcement lawEnforcemnt = new LawEnforcementEntityBuilder().build();
+    LawEnforcementEntity lawEnforcemnt = new LawEnforcementEntityBuilder().build();
 
     when(referralDao.find(any())).thenReturn(referral);
     when(lawEnforcementDao.find(any())).thenReturn(lawEnforcemnt);
@@ -194,7 +194,7 @@ public class RIReporterTest {
     gov.ca.cwds.data.persistence.cms.DrmsDocument drmsDocument =
         new gov.ca.cwds.data.persistence.cms.DrmsDocument("ABC1234lll", drmsDocumentDomain, "0X5");
 
-    LawEnforcement lawEnforcemnt = new LawEnforcementEntityBuilder().build();
+    LawEnforcementEntity lawEnforcemnt = new LawEnforcementEntityBuilder().build();
 
     when(referralDao.find(any())).thenReturn(referral);
     when(lawEnforcementDao.find(any())).thenReturn(lawEnforcemnt);
@@ -218,7 +218,7 @@ public class RIReporterTest {
     gov.ca.cwds.data.persistence.cms.DrmsDocument drmsDocument =
         new gov.ca.cwds.data.persistence.cms.DrmsDocument("ABC1234lll", drmsDocumentDomain, "0X5");
 
-    LawEnforcement lawEnforcemnt = new LawEnforcementEntityBuilder().build();
+    LawEnforcementEntity lawEnforcemnt = new LawEnforcementEntityBuilder().build();
 
     when(referralDao.find(any())).thenReturn(referral);
     when(lawEnforcementDao.find(any())).thenReturn(lawEnforcemnt);

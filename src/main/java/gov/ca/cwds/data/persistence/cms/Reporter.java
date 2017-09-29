@@ -75,7 +75,7 @@ public class Reporter extends BaseReporter {
 
   @ManyToOne(optional = true)
   @JoinColumn(name = "FKLAW_ENFT", nullable = true, updatable = false, insertable = false)
-  private LawEnforcement lawEnforcement;
+  private LawEnforcementEntity lawEnforcement;
 
   @ManyToOne(optional = true)
   @JoinColumn(name = "FDBACK_DOC", nullable = true, updatable = false, insertable = false)

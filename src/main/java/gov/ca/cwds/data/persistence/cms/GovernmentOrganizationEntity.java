@@ -5,44 +5,47 @@ import java.math.BigDecimal;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
-import javax.persistence.NamedQueries;
-import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 
-import org.hibernate.annotations.Type;
+import org.hibernate.annotations.NamedQueries;
+import org.hibernate.annotations.NamedQuery;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
 /**
- * {@link CmsPersistentObject} representing a Law Enforcement.
+ * {@link CmsPersistentObject} representing a Government Organization.
  * 
  * @author CWDS API Team
  */
 @SuppressWarnings("serial")
 @Entity
-@Table(name = "LAW_ENFT")
+@Table(name = "GV_ORG_T")
 @JsonPropertyOrder(alphabetic = true)
 @JsonIgnoreProperties(ignoreUnknown = true)
-@NamedQueries({@NamedQuery(name = "gov.ca.cwds.data.persistence.cms.LawEnforcement.findAll",
-    query = "FROM LawEnforcement ORDER BY governmentEntityType")})
-public class LawEnforcement extends CmsPersistentObject {
+@NamedQueries({
+    @NamedQuery(name = "gov.ca.cwds.data.persistence.cms.GovernmentOrganizationEntity.findAll",
+        query = "FROM GovernmentOrganizationEntity ORDER BY governmentOrganizationType")})
+public class GovernmentOrganizationEntity extends CmsPersistentObject {
+
+  @Id
+  @Column(name = "IDENTIFIER", nullable = false, length = CMS_ID_LEN)
+  private String id;
 
   @Column(name = "ARCASS_IND")
   private String archiveAssociationInd;
 
-  @Column(name = "CITY_NM", nullable = false)
+  @Column(name = "CITY_NM")
   private String cityName;
-
-  @Type(type = "integer")
-  @Column(name = "CNT_EXT_NO")
-  private Integer contactPhoneExtensionNumber;
 
   @Column(name = "CNT_PERSNM")
   private String contactPersonName;
 
   @Column(name = "CNT_TEL_NO")
   private BigDecimal contactPhoneNumber;
+
+  @Column(name = "CNT_EXT_NO")
+  private Integer contactPhoneExtNumber;
 
   @Column(name = "CNTITL_DSC")
   private String contactPositionTitleDescription;
@@ -53,23 +56,20 @@ public class LawEnforcement extends CmsPersistentObject {
   @Column(name = "FAX_NO")
   private BigDecimal faxNumber;
 
-  @Type(type = "short")
+  @Column(name = "FEDERL_IND")
+  private String federalInd;
+
   @Column(name = "GVR_ENTC")
   private Short governmentEntityType;
 
-  @Id
-  @Column(name = "IDENTIFIER", nullable = false, length = CMS_ID_LEN)
-  private String id;
+  @Column(name = "GVR_ORGC")
+  private Short governmentOrganizationType;
 
-  @Column(name = "LAW_ENF_NM", nullable = false)
-  private String lawEnforcementName;
+  @Column(name = "GVN_ORG_NM")
+  private String governmentOrganizationName;
 
-  @Type(type = "short")
-  @Column(name = "STATE_C", nullable = false)
-  private Short referenceNumber;
-
-  @Column(name = "STATION_NM")
-  private String stationName;
+  @Column(name = "GV_STATE_C")
+  private Short stateCodeType;
 
   @Column(name = "STREET_NM")
   private String streetName;
@@ -77,60 +77,60 @@ public class LawEnforcement extends CmsPersistentObject {
   @Column(name = "STREET_NO")
   private String streetNumber;
 
-  @Type(type = "integer")
-  @Column(name = "ZIP_NO", nullable = false)
+  @Column(name = "ZIP_NO")
   private Integer zipNumber;
 
-  @Type(type = "short")
   @Column(name = "ZIP_SFX_NO")
   private Short zipSuffixNumber;
 
   /**
    * Default constructor
    */
-  public LawEnforcement() {
-
+  public GovernmentOrganizationEntity() {
+    super();
   }
 
   /**
+   * @param id the identifier
    * @param archiveAssociationInd the archive Association Ind
    * @param cityName the city Name
-   * @param contactPhoneExtensionNumber the contact Phone Extension Number
-   * @param contactPersonName the contactPersonName
-   * @param contactPhoneNumber the contactPhoneNumber
-   * @param contactPositionTitleDescription the contactPositionTitleDescription
-   * @param emailAddress the emailAddress
-   * @param faxNumber the faxNumber
-   * @param governmentEntityType the governmentEntityType
-   * @param id the identifier
-   * @param lawEnforcementName the law Enforcement Name
-   * @param referenceNumber the reference Number
-   * @param stationName the station Name
+   * @param contactPersonName the contact Person Name
+   * @param contactPhoneNumber the contact Phone Number
+   * @param contactPhoneExtNumber the contact Phone Ext Number
+   * @param contactPositionTitleDescription the contact Position Title Description
+   * @param emailAddress the email Address
+   * @param faxNumber the fax Number
+   * @param federalInd the federal Ind
+   * @param governmentEntityType the government Entity Type
+   * @param governmentOrganizationType the government Organization Type
+   * @param governmentOrganizationName the government Organization Name
+   * @param stateCodeType the state Code Type
    * @param streetName the street Name
    * @param streetNumber the street Number
    * @param zipNumber the zip Number
    * @param zipSuffixNumber the zip Suffix Number
    */
-  public LawEnforcement(String archiveAssociationInd, String cityName,
-      Integer contactPhoneExtensionNumber, String contactPersonName, BigDecimal contactPhoneNumber,
+  public GovernmentOrganizationEntity(String id, String archiveAssociationInd, String cityName,
+      String contactPersonName, BigDecimal contactPhoneNumber, Integer contactPhoneExtNumber,
       String contactPositionTitleDescription, String emailAddress, BigDecimal faxNumber,
-      Short governmentEntityType, String id, String lawEnforcementName, Short referenceNumber,
-      String stationName, String streetName, String streetNumber, Integer zipNumber,
-      Short zipSuffixNumber) {
+      String federalInd, Short governmentEntityType, Short governmentOrganizationType,
+      String governmentOrganizationName, Short stateCodeType, String streetName,
+      String streetNumber, Integer zipNumber, Short zipSuffixNumber) {
     super();
+    this.id = id;
     this.archiveAssociationInd = archiveAssociationInd;
     this.cityName = cityName;
-    this.contactPhoneExtensionNumber = contactPhoneExtensionNumber;
     this.contactPersonName = contactPersonName;
     this.contactPhoneNumber = contactPhoneNumber;
+    this.contactPhoneExtNumber = contactPhoneExtNumber;
     this.contactPositionTitleDescription = contactPositionTitleDescription;
     this.emailAddress = emailAddress;
     this.faxNumber = faxNumber;
+    this.federalInd = federalInd;
     this.governmentEntityType = governmentEntityType;
-    this.id = id;
-    this.lawEnforcementName = lawEnforcementName;
-    this.referenceNumber = referenceNumber;
-    this.stationName = stationName;
+    this.governmentOrganizationType = governmentOrganizationType;
+    this.governmentOrganizationName = governmentOrganizationName;
+    this.stateCodeType = stateCodeType;
     this.streetName = streetName;
     this.streetNumber = streetNumber;
     this.zipNumber = zipNumber;
@@ -148,6 +148,13 @@ public class LawEnforcement extends CmsPersistentObject {
   }
 
   /**
+   * @return the id
+   */
+  public String getId() {
+    return id;
+  }
+
+  /**
    * @return the archiveAssociationInd
    */
   public String getArchiveAssociationInd() {
@@ -162,13 +169,6 @@ public class LawEnforcement extends CmsPersistentObject {
   }
 
   /**
-   * @return the contactPhoneExtensionNumber
-   */
-  public Integer getContactPhoneExtensionNumber() {
-    return contactPhoneExtensionNumber;
-  }
-
-  /**
    * @return the contactPersonName
    */
   public String getContactPersonName() {
@@ -180,6 +180,13 @@ public class LawEnforcement extends CmsPersistentObject {
    */
   public BigDecimal getContactPhoneNumber() {
     return contactPhoneNumber;
+  }
+
+  /**
+   * @return the contactPhoneExtNumber
+   */
+  public Integer getContactPhoneExtNumber() {
+    return contactPhoneExtNumber;
   }
 
   /**
@@ -204,38 +211,38 @@ public class LawEnforcement extends CmsPersistentObject {
   }
 
   /**
-   * @return the governmentEntityType
+   * @return the federalInd
+   */
+  public String getFederalInd() {
+    return federalInd;
+  }
+
+  /**
+   * @return teh governmentEntityType
    */
   public Short getGovernmentEntityType() {
     return governmentEntityType;
   }
 
   /**
-   * @return the id
+   * @return the governmentOrganizationType
    */
-  public String getId() {
-    return id;
+  public Short getGovernmentOrganizationType() {
+    return governmentOrganizationType;
   }
 
   /**
-   * @return the lawEnforcementName
+   * @return the governmentOrganizationName
    */
-  public String getLawEnforcementName() {
-    return lawEnforcementName;
+  public String getGovernmentOrganizationName() {
+    return governmentOrganizationName;
   }
 
   /**
-   * @return the referenceNumber
+   * @return the stateCodeType
    */
-  public Short getReferenceNumber() {
-    return referenceNumber;
-  }
-
-  /**
-   * @return the stationName
-   */
-  public String getStationName() {
-    return stationName;
+  public Short getStateCodeType() {
+    return stateCodeType;
   }
 
   /**
@@ -246,7 +253,7 @@ public class LawEnforcement extends CmsPersistentObject {
   }
 
   /**
-   * @return the streetName
+   * @return the streetNumber
    */
   public String getStreetNumber() {
     return streetNumber;
@@ -260,7 +267,7 @@ public class LawEnforcement extends CmsPersistentObject {
   }
 
   /**
-   * @return the zipSuffixNumber
+   * @return the zipSuffxNumber
    */
   public Short getZipSuffixNumber() {
     return zipSuffixNumber;

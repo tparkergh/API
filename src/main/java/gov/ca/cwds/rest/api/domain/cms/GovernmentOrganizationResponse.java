@@ -71,6 +71,10 @@ public class GovernmentOrganizationResponse implements Response, ApiMarker {
    * @param governmentOrganizations governmentOrganizations
    */
   public void setGovernmentOrganizations(List<GovernmentOrganization> governmentOrganizations) {
+    this.governmentOrganizations = governmentOrganizations;
+  }
+
+  public void addGovernmentOrganizations(List<GovernmentOrganization> governmentOrganizations) {
     this.governmentOrganizations.addAll(governmentOrganizations);
   }
 

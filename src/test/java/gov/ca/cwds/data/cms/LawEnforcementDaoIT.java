@@ -19,7 +19,7 @@ import org.junit.BeforeClass;
 import org.junit.Rule;
 import org.junit.Test;
 
-import gov.ca.cwds.data.persistence.cms.LawEnforcement;
+import gov.ca.cwds.data.persistence.cms.LawEnforcementEntity;
 import gov.ca.cwds.fixture.LawEnforcementEntityBuilder;
 
 /**
@@ -74,53 +74,53 @@ public class LawEnforcementDaoIT {
 
   @Test
   public void testFind() throws Exception {
-    LawEnforcement found = lawEnforcementDao.find(id);
+    LawEnforcementEntity found = lawEnforcementDao.find(id);
     assertThat(found.getId(), is(equalTo(id)));
   }
 
   @Test
   public void testFindEntityNotFoundException() throws Exception {
-    LawEnforcement found = lawEnforcementDao.find("9999999ZZZ");
+    LawEnforcementEntity found = lawEnforcementDao.find("9999999ZZZ");
     assertThat(found, is(nullValue()));
   }
 
   @Test
   public void testCreate() throws Exception {
-    LawEnforcement lawEnforcement = new LawEnforcementEntityBuilder().setId("ABc0987yt5").build();
-    LawEnforcement created = lawEnforcementDao.create(lawEnforcement);
+    LawEnforcementEntity lawEnforcement = new LawEnforcementEntityBuilder().setId("ABc0987yt5").build();
+    LawEnforcementEntity created = lawEnforcementDao.create(lawEnforcement);
     assertThat(created, is(lawEnforcement));
   }
 
   @Test(expected = EntityExistsException.class)
   public void testCreateExistingEntityException() throws Exception {
-    LawEnforcement lawEnforcement = new LawEnforcementEntityBuilder().setId(id).build();
+    LawEnforcementEntity lawEnforcement = new LawEnforcementEntityBuilder().setId(id).build();
     lawEnforcementDao.create(lawEnforcement);
   }
 
   @Test
   public void testDelete() throws Exception {
-    LawEnforcement deleted = lawEnforcementDao.delete(id);
+    LawEnforcementEntity deleted = lawEnforcementDao.delete(id);
     assertThat(deleted.getId(), is(id));
   }
 
   @Test
   public void testDeleteEntityNotFoundException() throws Exception {
     String id = "ABC1234568";
-    LawEnforcement deleted = lawEnforcementDao.delete(id);
+    LawEnforcementEntity deleted = lawEnforcementDao.delete(id);
     assertThat(deleted, is(nullValue()));
   }
 
   @Test
   public void testUpdate() throws Exception {
-    LawEnforcement lawEnforcement =
+    LawEnforcementEntity lawEnforcement =
         new LawEnforcementEntityBuilder().setCityName("Fremont").build();
-    LawEnforcement updated = lawEnforcementDao.update(lawEnforcement);
+    LawEnforcementEntity updated = lawEnforcementDao.update(lawEnforcement);
     assertThat(updated, is(lawEnforcement));
   }
 
   @Test(expected = EntityNotFoundException.class)
   public void testUpdateEntityNotFoundException() throws Exception {
-    LawEnforcement lawEnforcement = new LawEnforcementEntityBuilder().setId("ABc098vztZ").build();
+    LawEnforcementEntity lawEnforcement = new LawEnforcementEntityBuilder().setId("ABc098vztZ").build();
     lawEnforcementDao.update(lawEnforcement);
   }
 

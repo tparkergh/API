@@ -69,7 +69,7 @@ public class GovernmentOrganizationTest {
   @Test
   public void getGovernmentEntityType_Args__() throws Exception {
     GovernmentOrganization target = new GovernmentOrganization();
-    Short actual = target.getGovernmentEntityType();
+    Short actual = target.getCountyId();
     Short expected = null;
     assertThat(actual, is(equalTo(expected)));
   }

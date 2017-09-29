@@ -19,7 +19,7 @@ import org.junit.BeforeClass;
 import org.junit.Rule;
 import org.junit.Test;
 
-import gov.ca.cwds.data.persistence.cms.GovernmentOrganization;
+import gov.ca.cwds.data.persistence.cms.GovernmentOrganizationEntity;
 import gov.ca.cwds.fixture.GovernmentOrganizationEntityBuilder;
 
 /**
@@ -74,55 +74,55 @@ public class GovernmentOrganizationDaoIT {
 
   @Test
   public void testFind() throws Exception {
-    GovernmentOrganization found = governmentOrganizationDao.find(id);
+    GovernmentOrganizationEntity found = governmentOrganizationDao.find(id);
     assertThat(found.getId(), is(equalTo(id)));
   }
 
   @Test
   public void testFindEntityNotFoundException() throws Exception {
-    GovernmentOrganization found = governmentOrganizationDao.find("9999999ZZZ");
+    GovernmentOrganizationEntity found = governmentOrganizationDao.find("9999999ZZZ");
     assertThat(found, is(nullValue()));
   }
 
   @Test
   public void testCreate() throws Exception {
-    GovernmentOrganization governmentOrganization =
+    GovernmentOrganizationEntity governmentOrganization =
         new GovernmentOrganizationEntityBuilder().setId("123tU8oP0").build();
-    GovernmentOrganization created = governmentOrganizationDao.create(governmentOrganization);
+    GovernmentOrganizationEntity created = governmentOrganizationDao.create(governmentOrganization);
     assertThat(created, is(governmentOrganization));
   }
 
   @Test(expected = EntityExistsException.class)
   public void testCreateExistingEntityException() throws Exception {
-    GovernmentOrganization governmentOrganization =
+    GovernmentOrganizationEntity governmentOrganization =
         new GovernmentOrganizationEntityBuilder().setId(id).build();
     governmentOrganizationDao.create(governmentOrganization);
   }
 
   @Test
   public void testDelete() throws Exception {
-    GovernmentOrganization deleted = governmentOrganizationDao.delete(id);
+    GovernmentOrganizationEntity deleted = governmentOrganizationDao.delete(id);
     assertThat(deleted.getId(), is(id));
   }
 
   @Test
   public void testDeleteEntityNotFoundException() throws Exception {
     String id = "ABC1234568";
-    GovernmentOrganization deleted = governmentOrganizationDao.delete(id);
+    GovernmentOrganizationEntity deleted = governmentOrganizationDao.delete(id);
     assertThat(deleted, is(nullValue()));
   }
 
   @Test
   public void testUpdate() throws Exception {
-    GovernmentOrganization governmentOrganization =
+    GovernmentOrganizationEntity governmentOrganization =
         new GovernmentOrganizationEntityBuilder().setId(id).setCityName("Fremont").build();
-    GovernmentOrganization updated = governmentOrganizationDao.update(governmentOrganization);
+    GovernmentOrganizationEntity updated = governmentOrganizationDao.update(governmentOrganization);
     assertThat(updated, is(governmentOrganization));
   }
 
   @Test(expected = EntityNotFoundException.class)
   public void testUpdateEntityNotFoundException() throws Exception {
-    GovernmentOrganization governmentOrganization =
+    GovernmentOrganizationEntity governmentOrganization =
         new GovernmentOrganizationEntityBuilder().setId("09ojyF5f3E").build();
     governmentOrganizationDao.update(governmentOrganization);
   }

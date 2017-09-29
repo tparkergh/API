@@ -117,7 +117,7 @@ public class CrossReport extends CmsPersistentObject {
 
   @ManyToOne(optional = true)
   @JoinColumn(name = "FKLAW_ENFT", nullable = true, updatable = false, insertable = false)
-  private LawEnforcement lawEnforcement;
+  private LawEnforcementEntity lawEnforcement;
 
   @ManyToOne(optional = false)
   @JoinColumn(name = "FKSTFPERST", nullable = false, updatable = false, insertable = false)

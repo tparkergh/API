@@ -16,7 +16,7 @@ import org.junit.Test;
 import gov.ca.cwds.data.cms.LawEnforcementDao;
 import gov.ca.cwds.data.cms.ReferralDao;
 import gov.ca.cwds.data.cms.StaffPersonDao;
-import gov.ca.cwds.data.persistence.cms.LawEnforcement;
+import gov.ca.cwds.data.persistence.cms.LawEnforcementEntity;
 import gov.ca.cwds.fixture.CmsCrossReportResourceBuilder;
 import gov.ca.cwds.fixture.LawEnforcementEntityBuilder;
 import gov.ca.cwds.fixture.ReferralResourceBuilder;
@@ -126,7 +126,7 @@ public class RICrossReportTest {
     gov.ca.cwds.data.persistence.cms.StaffPerson staffPerson =
         new gov.ca.cwds.data.persistence.cms.StaffPerson("q1p", staffPersonDomain, "0X5");
 
-    LawEnforcement lawEnforcement = new LawEnforcementEntityBuilder().build();
+    LawEnforcementEntity lawEnforcement = new LawEnforcementEntityBuilder().build();
 
     RICrossReport target = new RICrossReport(referralDao, staffPersonDao, lawEnforcementDao);
     when(referralDao.find(any(String.class))).thenReturn(referral);

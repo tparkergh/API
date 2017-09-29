@@ -24,7 +24,7 @@ public class GovernmentOrganizationTest {
    */
   @Test
   public void testEmptyConstructor() throws Exception {
-    assertThat(GovernmentOrganization.class.newInstance(), is(notNullValue()));
+    assertThat(GovernmentOrganizationEntity.class.newInstance(), is(notNullValue()));
   }
 
   /**
@@ -35,10 +35,10 @@ public class GovernmentOrganizationTest {
   @Test
   public void testPersistentConstructor() throws Exception {
 
-    GovernmentOrganization ValidGovernmentOrganization =
+    GovernmentOrganizationEntity ValidGovernmentOrganization =
         new GovernmentOrganizationEntityBuilder().build();
 
-    GovernmentOrganization persistent = new GovernmentOrganization(id,
+    GovernmentOrganizationEntity persistent = new GovernmentOrganizationEntity(id,
         ValidGovernmentOrganization.getArchiveAssociationInd(),
         ValidGovernmentOrganization.getCityName(),
         ValidGovernmentOrganization.getContactPersonName(),

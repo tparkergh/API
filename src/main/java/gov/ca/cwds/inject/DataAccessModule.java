@@ -96,8 +96,8 @@ import gov.ca.cwds.data.persistence.cms.CrossReport;
 import gov.ca.cwds.data.persistence.cms.DrmsDocument;
 import gov.ca.cwds.data.persistence.cms.EducationProviderContact;
 import gov.ca.cwds.data.persistence.cms.ExternalInterface;
-import gov.ca.cwds.data.persistence.cms.GovernmentOrganization;
-import gov.ca.cwds.data.persistence.cms.LawEnforcement;
+import gov.ca.cwds.data.persistence.cms.GovernmentOrganizationEntity;
+import gov.ca.cwds.data.persistence.cms.LawEnforcementEntity;
 import gov.ca.cwds.data.persistence.cms.LongText;
 import gov.ca.cwds.data.persistence.cms.OtherAdultInPlacemtHome;
 import gov.ca.cwds.data.persistence.cms.OtherChildInPlacemtHome;
@@ -189,8 +189,8 @@ public class DataAccessModule extends AbstractModule {
           Tickle.class, ClientRelationship.class, ClientCollateral.class, AddressUc.class,
           ExternalInterface.class, DeliveredServiceEntity.class,
           ContactPartyDeliveredServiceEntity.class, ReferralClientDeliveredServiceEntity.class,
-          IndividualDeliveredServiceEntity.class, LawEnforcement.class, CaseLoad.class,
-          StaffPersonCaseLoad.class, ClientScpEthnicity.class, GovernmentOrganization.class),
+          IndividualDeliveredServiceEntity.class, LawEnforcementEntity.class, CaseLoad.class,
+          StaffPersonCaseLoad.class, ClientScpEthnicity.class, GovernmentOrganizationEntity.class),
 
   new ApiSessionFactoryFactory()) {
 
