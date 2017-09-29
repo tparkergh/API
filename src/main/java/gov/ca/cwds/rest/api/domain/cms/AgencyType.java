@@ -62,11 +62,6 @@ public enum AgencyType {
   }
 
   public static AgencyType getByName(String name) {
-    for (AgencyType agencyType : values()) {
-      if (agencyType.name().equals(name)) {
-        return agencyType;
-      }
-    }
-    return null;
+    return valueOf(name);
   }
 }

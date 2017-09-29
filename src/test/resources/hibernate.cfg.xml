@@ -75,10 +75,10 @@
 		<mapping class="gov.ca.cwds.data.persistence.cms.ClientRelationship"/>
 		<mapping class="gov.ca.cwds.data.persistence.cms.ClientCollateral"/>
 		<mapping class="gov.ca.cwds.data.persistence.cms.CaseLoad"/>
-		<mapping class="gov.ca.cwds.data.persistence.cms.LawEnforcement"/>
+		<mapping class="gov.ca.cwds.data.persistence.cms.LawEnforcementEntity"/>
 		<mapping class="gov.ca.cwds.data.persistence.cms.StaffPersonCaseLoad"/>
 		<mapping class="gov.ca.cwds.data.persistence.cms.ClientScpEthnicity"/>
-		<mapping class="gov.ca.cwds.data.persistence.cms.GovernmentOrganization"/>
+		<mapping class="gov.ca.cwds.data.persistence.cms.GovernmentOrganizationEntity"/>
 		<mapping class="gov.ca.cwds.data.persistence.contact.DeliveredServiceEntity"/>
 		<mapping class="gov.ca.cwds.data.persistence.contact.ContactPartyDeliveredServiceEntity"/>
 		<mapping class="gov.ca.cwds.data.persistence.contact.ReferralClientDeliveredServiceEntity"/> 
