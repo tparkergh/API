@@ -145,6 +145,20 @@ public class Address extends ReportingDomain implements Request, Response {
   }
 
   /**
+   * @return - CMS record description
+   */
+  public LegacyDescriptor getLegacyDescriptor() {
+    return this.legacyDescriptor;
+  }
+
+  /**
+   * @param legacyDescriptor - CMS record description
+   */
+  public void setLegacyDescriptor(LegacyDescriptor legacyDescriptor) {
+    this.legacyDescriptor = legacyDescriptor;
+  }
+
+  /**
    * @return street address
    */
   public String getStreetAddress() {

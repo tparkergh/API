@@ -1,6 +1,7 @@
 package gov.ca.cwds.rest.api.domain.investigation;
 
 import java.io.Serializable;
+
 import javax.validation.constraints.Size;
 
 import org.apache.commons.lang3.builder.EqualsBuilder;
@@ -11,7 +12,6 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
 import gov.ca.cwds.rest.api.domain.DomainObject;
-import gov.ca.cwds.rest.api.domain.LegacyDescriptor;
 import io.dropwizard.jackson.JsonSnakeCase;
 import io.swagger.annotations.ApiModelProperty;
 
@@ -24,7 +24,7 @@ import io.swagger.annotations.ApiModelProperty;
 @JsonPropertyOrder({"related_person_first_name", "related_person_last_name",
     "index_person_relationship", "relationship_context", "related_person_relationship",
     "legacy_description"})
-public final class RelationshipTo implements Serializable{
+public final class RelationshipTo implements Serializable {
 
   /**
    * Serialization version
@@ -58,7 +58,7 @@ public final class RelationshipTo implements Serializable{
   private String relatedPersonRelationship;
 
   @JsonProperty("legacy_descriptor")
-  private LegacyDescriptor legacyDescriptor;
+  private CmsRecordDescriptor cmsRecordDescriptor;
 
   /**
    * empty constructor
@@ -73,18 +73,18 @@ public final class RelationshipTo implements Serializable{
    * @param relationshipToPerson - relation of owning person
    * @param relationshipContext - context information
    * @param relatedPersonRelationship - relation to owning person
-   * @param legacyDescriptor - CMS record description
+   * @param cmsRecordDescriptor - CMS record description
    */
   public RelationshipTo(String relatedFirstName, String relatedLastName,
       String relationshipToPerson, String relationshipContext, String relatedPersonRelationship,
-      LegacyDescriptor legacyDescriptor) {
+      CmsRecordDescriptor cmsRecordDescriptor) {
     super();
     this.relatedFirstName = relatedFirstName;
     this.relatedLastName = relatedLastName;
     this.relationshipToPerson = relationshipToPerson;
     this.relationshipContext = relationshipContext;
     this.relatedPersonRelationship = relatedPersonRelationship;
-    this.legacyDescriptor = legacyDescriptor;
+    this.cmsRecordDescriptor = cmsRecordDescriptor;
   }
 
 
@@ -131,8 +131,8 @@ public final class RelationshipTo implements Serializable{
   /**
    * @return - CMS record description
    */
-  public LegacyDescriptor getLegacyDescriptor() {
-    return legacyDescriptor;
+  public CmsRecordDescriptor getCmsRecordDescriptor() {
+    return cmsRecordDescriptor;
   }
 
   /**

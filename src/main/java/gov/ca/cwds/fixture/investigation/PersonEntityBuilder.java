@@ -7,8 +7,8 @@ import java.util.Set;
 
 import org.joda.time.DateTime;
 
-import gov.ca.cwds.rest.api.domain.LegacyDescriptor;
 import gov.ca.cwds.rest.api.domain.RaceAndEthnicity;
+import gov.ca.cwds.rest.api.domain.investigation.CmsRecordDescriptor;
 import gov.ca.cwds.rest.api.domain.investigation.InvestigationAddress;
 import gov.ca.cwds.rest.api.domain.investigation.Person;
 import gov.ca.cwds.rest.api.domain.investigation.PhoneNumber;
@@ -16,7 +16,7 @@ import gov.ca.cwds.rest.api.domain.investigation.PhoneNumber;
 @SuppressWarnings("javadoc")
 public class PersonEntityBuilder {
 
-  private LegacyDescriptor legacyDescriptor;
+  private CmsRecordDescriptor cmsRecordDescriptor;
   protected String lastUpdatedBy = "0X5";
   protected String lastUpdatedAt = "2016-04-27T23:30:14.000Z";
   protected String firstName = "Art";
@@ -37,10 +37,11 @@ public class PersonEntityBuilder {
   protected Short phoneType = 1111;
 
   private BigDecimal phoneNumber = new BigDecimal(3219876);
-  private LegacyDescriptor phoneLegacyDescriptor =
-      new LegacyDescriptor("1234567ABC", "001-2000-3399-415790", now, "CLIENT_T", "Client");
+  private CmsRecordDescriptor phoneCmsRecordDescriptor =
+      new CmsRecordDescriptor("1234567ABC", "001-2000-3399-415790", now, "CLIENT_T", "Client");
 
-  private PhoneNumber phone = new PhoneNumber(phoneNumber, 3322, phoneType, phoneLegacyDescriptor);
+  private PhoneNumber phone =
+      new PhoneNumber(phoneNumber, 3322, phoneType, phoneCmsRecordDescriptor);
   private Set<PhoneNumber> phoneNumbers = new HashSet<>();
   private Set<String> roles = new HashSet<>();
 
@@ -52,21 +53,21 @@ public class PersonEntityBuilder {
     addresses.add(address);
     languages.add(primaryLanguage);
     languages.add(secondaryLanguage);
-    legacyDescriptor =
-        new LegacyDescriptor("1234567ABC", "111-222-333-4444", now, "CLIENT_T", "Client");
+    cmsRecordDescriptor =
+        new CmsRecordDescriptor("1234567ABC", "111-222-333-4444", now, "CLIENT_T", "Client");
     phoneNumbers.add(phone);
 
-    return new Person(legacyDescriptor, lastUpdatedBy, lastUpdatedAt, firstName, middleName,
+    return new Person(cmsRecordDescriptor, lastUpdatedBy, lastUpdatedAt, firstName, middleName,
         lastName, suffixTitle, gender, birthDate, ssn, languages, raceAndEthnicity, sensitive,
         sealed, phoneNumbers, roles, addresses);
   }
 
-  public LegacyDescriptor getLegacyDescriptor() {
-    return legacyDescriptor;
+  public CmsRecordDescriptor getCmsRecordDescriptor() {
+    return cmsRecordDescriptor;
   }
 
-  public PersonEntityBuilder setLegacyDescriptor(LegacyDescriptor legacyDescriptor) {
-    this.legacyDescriptor = legacyDescriptor;
+  public PersonEntityBuilder setCmsRecordDescriptor(CmsRecordDescriptor cmsRecordDescriptor) {
+    this.cmsRecordDescriptor = cmsRecordDescriptor;
     return this;
   }
 
@@ -223,12 +224,13 @@ public class PersonEntityBuilder {
     return this;
   }
 
-  public LegacyDescriptor getPhoneLegacyDescriptor() {
-    return phoneLegacyDescriptor;
+  public CmsRecordDescriptor getPhoneCmsRecordDescriptor() {
+    return phoneCmsRecordDescriptor;
   }
 
-  public PersonEntityBuilder setPhoneLegacyDescriptor(LegacyDescriptor phoneLegacyDescriptor) {
-    this.phoneLegacyDescriptor = phoneLegacyDescriptor;
+  public PersonEntityBuilder setPhoneCmsRecordDescriptor(
+      CmsRecordDescriptor phoneCmsRecordDescriptor) {
+    this.phoneCmsRecordDescriptor = phoneCmsRecordDescriptor;
     return this;
   }
 

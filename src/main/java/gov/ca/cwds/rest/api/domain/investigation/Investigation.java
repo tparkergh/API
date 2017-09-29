@@ -18,7 +18,6 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import gov.ca.cwds.rest.api.Request;
 import gov.ca.cwds.rest.api.Response;
 import gov.ca.cwds.rest.api.domain.DomainObject;
-import gov.ca.cwds.rest.api.domain.LegacyDescriptor;
 import gov.ca.cwds.rest.api.domain.ReportingDomain;
 import gov.ca.cwds.rest.api.domain.SystemCodeCategoryId;
 import gov.ca.cwds.rest.validation.Date;
@@ -43,7 +42,7 @@ public class Investigation extends ReportingDomain implements Request, Response 
 
   @NotNull
   @JsonProperty("legacy_descriptor")
-  private LegacyDescriptor legacyDescriptor;
+  private CmsRecordDescriptor cmsRecordDescriptor;
 
   @NotNull
   @JsonProperty("last_updated_by")
@@ -181,7 +180,7 @@ public class Investigation extends ReportingDomain implements Request, Response 
   }
 
   /**
-   * @param legacyDescriptor - CMS record description
+   * @param cmsRecordDescriptor - CMS record description
    * @param lastUpdatedBy - updated by staff id
    * @param lastUpdatedAt - updated date/time
    * @param incidentCounty - county code
@@ -205,7 +204,7 @@ public class Investigation extends ReportingDomain implements Request, Response 
    * @param people - people of investigation
    * @param relationships - relationships of people
    */
-  public Investigation(@JsonProperty("legacy_descriptor") LegacyDescriptor legacyDescriptor,
+  public Investigation(@JsonProperty("legacy_descriptor") CmsRecordDescriptor cmsRecordDescriptor,
       @JsonProperty("last_updated_by") String lastUpdatedBy,
       @JsonProperty("last_updated_at") DateTime lastUpdatedAt,
       @JsonProperty("incident_county") @ValidLogicalId(required = true,
@@ -228,7 +227,7 @@ public class Investigation extends ReportingDomain implements Request, Response 
       @JsonProperty("people") Set<Person> people,
       @JsonProperty("relationships") Set<Relationship> relationships) {
     super();
-    this.legacyDescriptor = legacyDescriptor;
+    this.cmsRecordDescriptor = cmsRecordDescriptor;
     this.lastUpdatedBy = lastUpdatedBy;
     this.lastUpdatedAt = lastUpdatedAt;
     this.incidentCounty = incidentCounty;
@@ -256,8 +255,8 @@ public class Investigation extends ReportingDomain implements Request, Response 
   /**
    * @return - CMS record description
    */
-  public LegacyDescriptor getLegacyDescriptor() {
-    return legacyDescriptor;
+  public CmsRecordDescriptor getCmsRecordDescriptor() {
+    return cmsRecordDescriptor;
   }
 
   /**

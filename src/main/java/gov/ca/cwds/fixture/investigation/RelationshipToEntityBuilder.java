@@ -2,7 +2,7 @@ package gov.ca.cwds.fixture.investigation;
 
 import org.joda.time.DateTime;
 
-import gov.ca.cwds.rest.api.domain.LegacyDescriptor;
+import gov.ca.cwds.rest.api.domain.investigation.CmsRecordDescriptor;
 import gov.ca.cwds.rest.api.domain.investigation.RelationshipTo;
 
 @SuppressWarnings("javadoc")
@@ -16,12 +16,12 @@ public class RelationshipToEntityBuilder {
   private String relationshipContext = "step";
   private DateTime now = new DateTime("2010-10-01T15:26:42.000-0700");
 
-  private LegacyDescriptor legacyDescriptor =
-      new LegacyDescriptor(id, "111-222-333-4444", now, tableName, "Client");
+  private CmsRecordDescriptor cmsRecordDescriptor =
+      new CmsRecordDescriptor(id, "111-222-333-4444", now, tableName, "Client");
 
   public RelationshipTo build() {
     return new RelationshipTo(relatedFirstName, relatedLastName, relationship, relationshipContext,
-        relationshipToPerson, legacyDescriptor);
+        relationshipToPerson, cmsRecordDescriptor);
   }
 
   public String getTableName() {
@@ -96,12 +96,13 @@ public class RelationshipToEntityBuilder {
     return this;
   }
 
-  public LegacyDescriptor getLegacyDescriptor() {
-    return legacyDescriptor;
+  public CmsRecordDescriptor getCmsRecordDescriptor() {
+    return cmsRecordDescriptor;
   }
 
-  public RelationshipToEntityBuilder setLegacyDescriptor(LegacyDescriptor legacyDescriptor) {
-    this.legacyDescriptor = legacyDescriptor;
+  public RelationshipToEntityBuilder setCmsRecordDescriptor(
+      CmsRecordDescriptor cmsRecordDescriptor) {
+    this.cmsRecordDescriptor = cmsRecordDescriptor;
     return this;
   }
 

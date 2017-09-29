@@ -10,7 +10,6 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
 import gov.ca.cwds.rest.api.Request;
 import gov.ca.cwds.rest.api.Response;
-import gov.ca.cwds.rest.api.domain.LegacyDescriptor;
 import gov.ca.cwds.rest.api.domain.ReportingDomain;
 import io.dropwizard.jackson.JsonSnakeCase;
 import io.swagger.annotations.ApiModelProperty;
@@ -39,7 +38,7 @@ public class PhoneNumber extends ReportingDomain implements Request, Response {
   private Short phoneType;
 
   @JsonProperty("legacy_descriptor")
-  private LegacyDescriptor legacyDescriptor;
+  private CmsRecordDescriptor cmsRecordDescriptor;
 
   /**
    * empty constructor
@@ -52,16 +51,16 @@ public class PhoneNumber extends ReportingDomain implements Request, Response {
    * @param phoneNumber - phone number
    * @param phoneExtension - extension
    * @param phoneType -type
-   * @param legacyDescriptor - CMS record description
+   * @param cmsRecordDescriptor - CMS record description
    */
   public PhoneNumber(@JsonProperty("number") BigDecimal phoneNumber,
       @JsonProperty("extension") Integer phoneExtension, @JsonProperty("type") Short phoneType,
-      @JsonProperty("legacy_descriptor") LegacyDescriptor legacyDescriptor) {
+      @JsonProperty("legacy_descriptor") CmsRecordDescriptor cmsRecordDescriptor) {
     super();
     this.phoneNumber = phoneNumber;
     this.phoneExtension = phoneExtension;
     this.phoneType = phoneType;
-    this.legacyDescriptor = legacyDescriptor;
+    this.cmsRecordDescriptor = cmsRecordDescriptor;
   }
 
   /**
@@ -88,8 +87,8 @@ public class PhoneNumber extends ReportingDomain implements Request, Response {
   /**
    * @return - CMS record description
    */
-  public LegacyDescriptor getLegacyDescriptor() {
-    return legacyDescriptor;
+  public CmsRecordDescriptor getCmsRecordDescriptor() {
+    return cmsRecordDescriptor;
   }
 
   /**

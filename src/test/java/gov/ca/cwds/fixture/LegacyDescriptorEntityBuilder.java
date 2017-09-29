@@ -4,6 +4,7 @@ import org.joda.time.DateTime;
 
 import gov.ca.cwds.rest.api.domain.LegacyDescriptor;
 
+@SuppressWarnings({"javadoc"})
 public class LegacyDescriptorEntityBuilder {
 
   protected String id = "1234567ABC";

@@ -14,7 +14,6 @@ import org.joda.time.DateTime;
 import org.junit.Test;
 
 import gov.ca.cwds.fixture.investigation.RelationshipToEntityBuilder;
-import gov.ca.cwds.rest.api.domain.LegacyDescriptor;
 import nl.jqno.equalsverifier.EqualsVerifier;
 import nl.jqno.equalsverifier.Warning;
 
@@ -30,21 +29,21 @@ public class RelationshipToTest {
   private String relationshipContext = "step";
   private DateTime now = new DateTime("2010-10-01T15:26:42.000-0700");
 
-  private LegacyDescriptor legacyDescriptor =
-      new LegacyDescriptor(id, "111-222-333-4444", now, tableName, "Client");
+  private CmsRecordDescriptor cmsRecordDescriptor =
+      new CmsRecordDescriptor(id, "111-222-333-4444", now, tableName, "Client");
 
 
   @Test
   public void testDomainConstructorSuccess() throws Exception {
     RelationshipTo relationshipTo = new RelationshipTo(relatedFirstName, relatedLastName,
-        relationship, relationshipContext, relationshipToPerson, legacyDescriptor);
+        relationship, relationshipContext, relationshipToPerson, cmsRecordDescriptor);
 
     assertThat(relatedFirstName, is(equalTo(relationshipTo.getRelatedFirstName())));
     assertThat(relatedLastName, is(equalTo(relationshipTo.getRelatedLastName())));
     assertThat(relationshipContext, is(equalTo(relationshipTo.getRelationshipContext())));
     assertThat(relationship, is(equalTo(relationshipTo.getRelationshipToPerson())));
     assertThat(relationshipToPerson, is(equalTo(relationshipTo.getRelatedPersonRelationship())));
-    assertThat(legacyDescriptor, is(equalTo(relationshipTo.getLegacyDescriptor())));
+    assertThat(cmsRecordDescriptor, is(equalTo(relationshipTo.getCmsRecordDescriptor())));
   }
 
   @Test

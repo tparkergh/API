@@ -11,7 +11,6 @@ import org.joda.time.DateTime;
 import org.junit.Test;
 
 import gov.ca.cwds.fixture.investigation.InvestigationAddressEntityBuilder;
-import gov.ca.cwds.rest.api.domain.LegacyDescriptor;
 import nl.jqno.equalsverifier.EqualsVerifier;
 import nl.jqno.equalsverifier.Warning;
 
@@ -26,8 +25,8 @@ public class InvestigationAddressTest {
   private DateTime now = new DateTime("2010-10-01T15:26:42.000-0700");
   private String id = "1234567ABC";
   private String tableName = "ADDRS_T";
-  private LegacyDescriptor legacyDescriptor =
-      new LegacyDescriptor(id, "111-222-333-4444", now, tableName, "Address");
+  private CmsRecordDescriptor cmsRecordDescriptor =
+      new CmsRecordDescriptor(id, "111-222-333-4444", now, tableName, "Address");
 
   @Test
   public void testEmptyConstructorSuccess() {
@@ -38,8 +37,8 @@ public class InvestigationAddressTest {
   @Test
   public void testDomainConstructorSuccess() {
     InvestigationAddress investigationAddress =
-        new InvestigationAddress(legacyDescriptor, streetAddress, city, state, zip, type);
-    assertThat(legacyDescriptor, is(equalTo(investigationAddress.getLegacyDescriptor())));
+        new InvestigationAddress(cmsRecordDescriptor, streetAddress, city, state, zip, type);
+    assertThat(cmsRecordDescriptor, is(equalTo(investigationAddress.getCmsRecordDescriptor())));
     assertThat(streetAddress, is(equalTo(investigationAddress.getStreetAddress())));
     assertThat(city, is(equalTo(investigationAddress.getCity())));
     assertThat(state, is(equalTo(investigationAddress.getState())));

@@ -20,14 +20,13 @@ import org.junit.Test;
 import gov.ca.cwds.fixture.investigation.InvestigationAddressEntityBuilder;
 import gov.ca.cwds.fixture.investigation.PersonEntityBuilder;
 import gov.ca.cwds.fixture.investigation.RaceAndEthnicityEntityBuilder;
-import gov.ca.cwds.rest.api.domain.LegacyDescriptor;
 import gov.ca.cwds.rest.api.domain.RaceAndEthnicity;
 import nl.jqno.equalsverifier.EqualsVerifier;
 import nl.jqno.equalsverifier.Warning;
 
 @SuppressWarnings("javadoc")
 public class PersonTest {
-  private LegacyDescriptor legacyDescriptor;
+  private CmsRecordDescriptor cmsRecordDescriptor;
   private String lastUpdatedBy = "0X5";
   private String lastUpdatedAt = "2016-04-27T23:30:14.000Z";
   private String firstName = "Art";
@@ -48,10 +47,11 @@ public class PersonTest {
   private Short phoneType = 1111;
 
   private BigDecimal phoneNumber = new BigDecimal(3219876);
-  private LegacyDescriptor phoneLegacyDescriptor =
-      new LegacyDescriptor("1234567ABC", "001-2000-3399-415790", now, "CLIENT_T", "Client");
+  private CmsRecordDescriptor phoneCmsRecordDescriptor =
+      new CmsRecordDescriptor("1234567ABC", "001-2000-3399-415790", now, "CLIENT_T", "Client");
 
-  private PhoneNumber phone = new PhoneNumber(phoneNumber, 3322, phoneType, phoneLegacyDescriptor);
+  private PhoneNumber phone =
+      new PhoneNumber(phoneNumber, 3322, phoneType, phoneCmsRecordDescriptor);
   private Set<PhoneNumber> phoneNumbers = new HashSet<PhoneNumber>();
 
   private Set<String> roles = new HashSet<>();
@@ -65,8 +65,8 @@ public class PersonTest {
     addresses.add(address);
     languages.add(primaryLanguage);
     languages.add(secondaryLanguage);
-    legacyDescriptor =
-        new LegacyDescriptor("1234567ABC", "111-222-333-4444", now, "CLIENT_T", "Client");
+    cmsRecordDescriptor =
+        new CmsRecordDescriptor("1234567ABC", "111-222-333-4444", now, "CLIENT_T", "Client");
     phoneNumbers.add(phone);
 
   }
@@ -79,10 +79,10 @@ public class PersonTest {
 
   @Test
   public void testDomainConstructorSuccess() {
-    Person person = new Person(legacyDescriptor, lastUpdatedBy, lastUpdatedAt, firstName,
+    Person person = new Person(cmsRecordDescriptor, lastUpdatedBy, lastUpdatedAt, firstName,
         middleName, lastName, suffixTitle, gender, birthDate, ssn, languages, raceAndEthnicity,
         sensitive, sealed, phoneNumbers, roles, addresses);
-    assertThat(legacyDescriptor, is(equalTo(person.getLegacyDescriptor())));
+    assertThat(cmsRecordDescriptor, is(equalTo(person.getCmsRecordDescriptor())));
     assertThat(lastUpdatedBy, is(equalTo(person.getLastUpdatedBy())));
     assertThat(lastUpdatedAt, is(equalTo(person.getLastUpdatedAt())));
     assertThat(firstName, is(equalTo(person.getFirstName())));
