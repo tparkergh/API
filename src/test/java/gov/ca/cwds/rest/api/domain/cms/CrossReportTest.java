@@ -23,6 +23,7 @@ import javax.ws.rs.client.Entity;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
+import org.assertj.core.util.Sets;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.ClassRule;
@@ -204,7 +205,8 @@ public class CrossReportTest {
     String informDate = "informDate";
     gov.ca.cwds.rest.api.domain.CrossReport nsCrossReport =
         new gov.ca.cwds.rest.api.domain.CrossReport(id, "legacy_source_table", "legacy_id",
-            "agency_type", agencyName, filedOutOfStateIndicator, 2095, informDate);
+            "agency_type", agencyName, filedOutOfStateIndicator, 2095, informDate,
+            Sets.newHashSet());
 
     CrossReport cmsCrossReport = CrossReport.createWithDefaults(id, nsCrossReport, referralId,
         staffId, outStateLawEnforcementAddr, countyCode, lawEnforcementIndicator,
@@ -246,7 +248,8 @@ public class CrossReportTest {
     String informDate = "informDate";
     gov.ca.cwds.rest.api.domain.CrossReport nsCrossReport =
         new gov.ca.cwds.rest.api.domain.CrossReport(id, "legacy_source_table", "legacy_id",
-            "agency_type", agencyName, filedOutOfStateIndicator, 2095, informDate);
+            "agency_type", agencyName, filedOutOfStateIndicator, 2095, informDate,
+            Sets.newHashSet());
 
     CrossReport cmsCrossReport = CrossReport.createWithDefaults(id, nsCrossReport, referralId,
         staffId, outStateLawEnforcementAddr, countyCode, lawEnforcementIndicator,

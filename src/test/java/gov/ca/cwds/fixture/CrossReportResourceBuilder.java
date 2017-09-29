@@ -1,5 +1,7 @@
 package gov.ca.cwds.fixture;
 
+import org.assertj.core.util.Sets;
+
 /**
  * 
  * @author CWDS API Team
@@ -88,6 +90,6 @@ public class CrossReportResourceBuilder {
    */
   public gov.ca.cwds.rest.api.domain.CrossReport createCrossReport() {
     return new gov.ca.cwds.rest.api.domain.CrossReport(id, legacySourceTable, legacyId, agencyType,
-        agencyName, filedOutOfState, method, informDate);
+        agencyName, filedOutOfState, method, informDate, Sets.newHashSet());
   }
 }
