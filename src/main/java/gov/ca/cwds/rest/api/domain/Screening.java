@@ -79,7 +79,7 @@ public class Screening extends ReportingDomain implements Request, Response {
   @JsonProperty("assignee_staff_id")
   @ApiModelProperty(required = true, readOnly = false, value = "Screening Assignee Id",
       example = "con")
-  private String assigneeId;
+  private String assigneeStaffId;
 
   /**
    * default constructor
@@ -97,7 +97,7 @@ public class Screening extends ReportingDomain implements Request, Response {
    * @param assignee - assignee
    * @param startedAt - startedAt
    * @param referralId referral id, if provided
-   * @param assigneeId - assignee Id
+   * @param assigneeStaffId - assignee Id
    */
   @JsonCreator
   public Screening(@JsonProperty("id") String id, @JsonProperty("name") String name,
@@ -106,7 +106,7 @@ public class Screening extends ReportingDomain implements Request, Response {
       @JsonProperty("screening_decision_detail") String screeningDecisionDetail,
       @JsonProperty("assignee") String assignee, @JsonProperty("started_at") String startedAt,
       @JsonProperty("referral_id") String referralId,
-      @JsonProperty("assignee_staff_id") String assigneeId) {
+      @JsonProperty("assignee_staff_id") String assigneeStaffId) {
     super();
     this.id = id;
     this.name = name;
@@ -116,7 +116,7 @@ public class Screening extends ReportingDomain implements Request, Response {
     this.assignee = assignee;
     this.startedAt = startedAt;
     this.referralId = referralId;
-    this.assigneeId = assigneeId;
+    this.assigneeStaffId = assigneeStaffId;
   }
 
   /**
@@ -176,10 +176,10 @@ public class Screening extends ReportingDomain implements Request, Response {
   }
 
   /**
-   * @return the assigneeId
+   * @return the assigneeStaffId
    */
-  public String getAssigneeId() {
-    return assigneeId;
+  public String getAssigneeStaffId() {
+    return assigneeStaffId;
   }
 
   /**

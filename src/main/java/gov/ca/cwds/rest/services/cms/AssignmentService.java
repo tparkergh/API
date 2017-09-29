@@ -192,12 +192,12 @@ public class AssignmentService implements
 
     String caseLoadId = "";
     String COUNTY_CODE = "00";
-    if (staffpersonDao.find(screeningToReferral.getAssigneeId()) == null) {
-      String message = "The given assigneeId is not found";
+    if (staffpersonDao.find(screeningToReferral.getAssigneeStaffId()) == null) {
+      String message = "The given assigneeStaffId is not found";
       ServiceException se = new ServiceException(message);
       messageBuilder.addMessageAndLog(message, se, LOGGER);
     } else {
-      caseLoadId = assignmentDao.findCaseId(screeningToReferral.getAssigneeId());
+      caseLoadId = assignmentDao.findCaseId(screeningToReferral.getAssigneeStaffId());
       if (caseLoadId == null) {
         String message = "CaseLoad is not found for the staffperson";
         ServiceException se = new ServiceException(message);
@@ -240,7 +240,8 @@ public class AssignmentService implements
     //
     // An assignment is the association between a Staff Person Case Load and the Referral
     //
-    gov.ca.cwds.rest.api.domain.cms.Assignment assignment = new gov.ca.cwds.rest.api.domain.cms.Assignment();
+    gov.ca.cwds.rest.api.domain.cms.Assignment assignment =
+        new gov.ca.cwds.rest.api.domain.cms.Assignment();
     return assignment.createDefaultReferralAssignment(countyCode, referralId, caseLoadId);
   }
 

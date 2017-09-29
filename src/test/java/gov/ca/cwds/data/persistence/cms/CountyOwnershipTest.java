@@ -14,15 +14,11 @@ import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import gov.ca.cwds.data.persistence.junit.template.PersistentTestTemplate;
-import nl.jqno.equalsverifier.EqualsVerifier;
-import nl.jqno.equalsverifier.Warning;
-
 /**
  * @author CWDS API Team
  *
  */
-public class CountyOwnershipTest implements PersistentTestTemplate {
+public class CountyOwnershipTest {
 
   private String entityId = "1234567ABC";
 
@@ -31,13 +27,21 @@ public class CountyOwnershipTest implements PersistentTestTemplate {
   /*
    * Constructor test
    */
-  @Override
+  /**
+   * Constructor test
+   * 
+   * @throws Exception - Exception
+   */
   @Test
   public void testEmptyConstructor() throws Exception {
     assertThat(CountyOwnership.class.newInstance(), is(notNullValue()));
   }
 
-  @Override
+  /**
+   * persistent constructor
+   * 
+   * @throws Exception - Exception
+   */
   @Test
   public void testPersistentConstructor() throws Exception {
 
@@ -132,24 +136,12 @@ public class CountyOwnershipTest implements PersistentTestTemplate {
     assertThat(persistent.getDeleteDate(), is(equalTo(vc.getDeleteDate())));
   }
 
-  @Override
-  @Test
-  public void testEqualsHashCodeWorks() {
-    EqualsVerifier.forClass(CountyOwnership.class).suppress(Warning.NONFINAL_FIELDS).verify();
-
-  }
-
   private CountyOwnership validCountyOwnership()
       throws JsonParseException, JsonMappingException, IOException {
 
     CountyOwnership validCountyOwnership = MAPPER.readValue(
         fixture("fixtures/persistent/CountyOwnership/valid/valid.json"), CountyOwnership.class);
     return validCountyOwnership;
-
-  }
-
-  @Override
-  public void testConstructorUsingDomain() throws Exception {
 
   }
 

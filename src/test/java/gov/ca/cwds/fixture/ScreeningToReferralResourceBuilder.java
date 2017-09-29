@@ -36,7 +36,7 @@ public class ScreeningToReferralResourceBuilder {
   private Short responseTime = 1516;
   private String startedAt = dateTimeFormat.format(new Date());
   private String assignee = "Michael Bastow";
-  private String assigneeId = "0X5";
+  private String assigneeStaffId = "0X5";
   private String additionalInformation = "additional information about the referral";
   private String screeningDecision = "Response time";
   private String screeningDecisionDetail = "Detail";
@@ -130,8 +130,8 @@ public class ScreeningToReferralResourceBuilder {
     return assignee;
   }
 
-  public String getAssigneeId() {
-    return assigneeId;
+  public String getassigneeStaffId() {
+    return assigneeStaffId;
   }
 
   public String getAdditionalInformation() {
@@ -252,8 +252,8 @@ public class ScreeningToReferralResourceBuilder {
     return this;
   }
 
-  public ScreeningToReferralResourceBuilder setAssigneeId(String assigneeId) {
-    this.assigneeId = assigneeId;
+  public ScreeningToReferralResourceBuilder setassigneeStaffId(String assigneeStaffId) {
+    this.assigneeStaffId = assigneeStaffId;
     return this;
   }
 
@@ -362,9 +362,9 @@ public class ScreeningToReferralResourceBuilder {
   public ScreeningToReferral createScreeningToReferral() {
     return new ScreeningToReferral(id, legacySourceTable, referralId, endedAt, incidentCounty,
         incidentDate, locationType, communicationMethod, name, reportNarrative, reference,
-        responseTime, startedAt, assignee, assigneeId, additionalInformation, screeningDecision,
-        screeningDecisionDetail, approvalStatus, familyAwareness, filedWithLawEnforcement,
-        responsibleAgency, limitedAccessCode, limitedAccessDescription, limitedAccessAgency,
-        limitedAccessDate, address, participants, crossReports, allegations);
+        responseTime, startedAt, assignee, assigneeStaffId, additionalInformation,
+        screeningDecision, screeningDecisionDetail, approvalStatus, familyAwareness,
+        filedWithLawEnforcement, responsibleAgency, limitedAccessCode, limitedAccessDescription,
+        limitedAccessAgency, limitedAccessDate, address, participants, crossReports, allegations);
   }
 }
