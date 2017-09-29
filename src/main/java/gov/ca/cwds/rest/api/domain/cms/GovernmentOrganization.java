@@ -10,6 +10,8 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
+import gov.ca.cwds.data.persistence.cms.GovernmentOrganizationEntity;
+import gov.ca.cwds.data.persistence.cms.LawEnforcementEntity;
 import gov.ca.cwds.rest.api.Request;
 import gov.ca.cwds.rest.api.Response;
 import gov.ca.cwds.rest.api.domain.DomainObject;
@@ -50,7 +52,7 @@ public class GovernmentOrganization extends ReportingDomain implements Request, 
   @Valid
   @JsonProperty("county_id")
   @ApiModelProperty(required = true, readOnly = false, value = "", example = "1094")
-  private Short governmentEntityType;
+  private Short countyId;
 
   /**
    * empty constructor
@@ -63,28 +65,35 @@ public class GovernmentOrganization extends ReportingDomain implements Request, 
    * @param id the identifier
    * @param agencyName the agency Name
    * @param agencyType the agency Type
-   * @param governmentEntityType the government Entity Type
+   * @param countyId the government Entity Type
    */
   @JsonCreator
   public GovernmentOrganization(@JsonProperty("id") String id,
       @JsonProperty("name") String agencyName, @JsonProperty("type") String agencyType,
-      @JsonProperty("county_id") Short governmentEntityType) {
+      @JsonProperty("county_id") Short countyId) {
     super();
     this.id = id;
     this.agencyName = agencyName;
-    this.agencyType = agencyType.toLowerCase();
-    this.governmentEntityType = governmentEntityType;
+    this.agencyType = agencyType;
+    this.countyId = countyId;
+  }
+
+  public GovernmentOrganization(GovernmentOrganizationEntity governmentOrganizationEntity) {
+    this.id = governmentOrganizationEntity.getId();
+    this.agencyName = governmentOrganizationEntity.getGovernmentOrganizationName();
+    this.agencyType =
+        AgencyType.getById(governmentOrganizationEntity.getGovernmentOrganizationType()).name();
+    this.countyId = governmentOrganizationEntity.getGovernmentEntityType();
   }
 
   /**
    * @param persistestedLawEnforcement - persistestedLawEnforcement
    */
-  public GovernmentOrganization(
-      gov.ca.cwds.data.persistence.cms.LawEnforcement persistestedLawEnforcement) {
+  public GovernmentOrganization(LawEnforcementEntity persistestedLawEnforcement) {
     this.id = persistestedLawEnforcement.getId();
     this.agencyName = persistestedLawEnforcement.getLawEnforcementName();
-    this.agencyType = "law_enforcement";
-    this.governmentEntityType = persistestedLawEnforcement.getGovernmentEntityType();
+    this.agencyType = AgencyType.LAW_ENFORCEMENT.name();
+    this.countyId = persistestedLawEnforcement.getGovernmentEntityType();
   }
 
   /**
@@ -109,10 +118,10 @@ public class GovernmentOrganization extends ReportingDomain implements Request, 
   }
 
   /**
-   * @return the governmentEntityType
+   * @return the countyId
    */
-  public Short getGovernmentEntityType() {
-    return governmentEntityType;
+  public Short getCountyId() {
+    return countyId;
   }
 
   /**

@@ -5,15 +5,15 @@ import org.hibernate.SessionFactory;
 import com.google.inject.Inject;
 
 import gov.ca.cwds.data.BaseDaoImpl;
-import gov.ca.cwds.data.persistence.cms.LawEnforcement;
+import gov.ca.cwds.data.persistence.cms.LawEnforcementEntity;
 import gov.ca.cwds.inject.CmsSessionFactory;
 
 /**
- * DAO for {@link LawEnforcement}.
+ * DAO for {@link LawEnforcementEntity}.
  * 
  * @author CWDS API Team
  */
-public class LawEnforcementDao extends BaseDaoImpl<LawEnforcement> {
+public class LawEnforcementDao extends BaseDaoImpl<LawEnforcementEntity> {
 
   /**
    * Constructor

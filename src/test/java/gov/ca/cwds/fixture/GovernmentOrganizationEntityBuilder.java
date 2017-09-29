@@ -2,7 +2,7 @@ package gov.ca.cwds.fixture;
 
 import java.math.BigDecimal;
 
-import gov.ca.cwds.data.persistence.cms.GovernmentOrganization;
+import gov.ca.cwds.data.persistence.cms.GovernmentOrganizationEntity;
 
 /**
  * @author CWDS API Team
@@ -30,8 +30,8 @@ public class GovernmentOrganizationEntityBuilder {
   Integer zipNumber = 95833;
   Short zipSuffixNumber = 0;
 
-  public GovernmentOrganization build() {
-    return new GovernmentOrganization(id, archiveAssociationInd, cityName, contactPersonName,
+  public GovernmentOrganizationEntity build() {
+    return new GovernmentOrganizationEntity(id, archiveAssociationInd, cityName, contactPersonName,
         contactPhoneNumber, contactPhoneExtNumber, contactPositionTitleDescription, emailAddress,
         faxNumber, federalInd, governmentEntityType, governmentOrganizationType,
         governmentOrganizationName, stateCodeType, streetName, streetNumber, zipNumber,

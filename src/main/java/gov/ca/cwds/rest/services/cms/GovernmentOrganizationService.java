@@ -1,7 +1,6 @@
 package gov.ca.cwds.rest.services.cms;
 
-import java.util.Arrays;
-import java.util.Iterator;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
@@ -13,13 +12,14 @@ import org.hibernate.service.spi.ServiceException;
 import com.google.common.cache.CacheBuilder;
 import com.google.common.cache.CacheLoader;
 import com.google.common.cache.LoadingCache;
+import com.google.common.collect.Lists;
 import com.google.inject.Inject;
 
 import gov.ca.cwds.data.cms.GovernmentOrganizationDao;
 import gov.ca.cwds.data.cms.LawEnforcementDao;
+import gov.ca.cwds.rest.api.domain.cms.AgencyType;
 import gov.ca.cwds.rest.api.domain.cms.GovernmentOrganization;
 import gov.ca.cwds.rest.api.domain.cms.GovernmentOrganizationResponse;
-import gov.ca.cwds.rest.api.domain.cms.SystemCodeCache;
 import gov.ca.cwds.rest.resources.SimpleResourceService;
 
 /**
@@ -30,11 +30,6 @@ import gov.ca.cwds.rest.resources.SimpleResourceService;
 public class GovernmentOrganizationService
     extends SimpleResourceService<String, GovernmentOrganization, GovernmentOrganizationResponse> {
 
-  private static final String LAWENFORCEMENT = "law_enforcement";
-  private static final String COUNTY_LICENSING = "county_licensing";
-  private static final String DISTRICT_ATTORNEY = "district_attorney";
-  private static final String DEPARTMENT_OF_JUSTICE = "department_of_justice";
-  private static final String COMMUNITY_CARE_LICENSING = "community_care_licensing";
   private static final String ALL_COUNTY_CACHE_KEY = "ALL_COUNTIES";
 
   private transient LoadingCache<String, GovernmentOrganizationResponse> governmentOrganizationResponseCache;
@@ -49,11 +44,12 @@ public class GovernmentOrganizationService
   public GovernmentOrganizationService(GovernmentOrganizationDao governmentOrganizationDao,
       LawEnforcementDao lawEnforcementDao) {
     super();
-
     GovernmentOrganizationCacheLoader cacheLoader =
         new GovernmentOrganizationCacheLoader(governmentOrganizationDao, lawEnforcementDao);
     governmentOrganizationResponseCache =
         CacheBuilder.newBuilder().refreshAfterWrite(15, TimeUnit.DAYS).build(cacheLoader);
+
+
   }
 
   @Override
@@ -63,15 +59,14 @@ public class GovernmentOrganizationService
 
   @Override
   protected GovernmentOrganizationResponse handleFind(String countyId) {
+    String key = StringUtils.isBlank(countyId) ? ALL_COUNTY_CACHE_KEY : countyId;
+    GovernmentOrganizationResponse governmentOrganizationResponse = null;
     try {
-      String key = ALL_COUNTY_CACHE_KEY;
-      if (!StringUtils.isBlank(countyId)) {
-        key = countyId;
-      }
-      return governmentOrganizationResponseCache.get(key);
+      governmentOrganizationResponse = governmentOrganizationResponseCache.get(key);
     } catch (ExecutionException e) {
-      throw new ServiceException(e.getMessage(), e);
+      throw new ServiceException("Unable to load government organization: " + key, e);
     }
+    return governmentOrganizationResponse;
   }
 
   /**
@@ -98,40 +93,44 @@ public class GovernmentOrganizationService
 
     @Override
     public GovernmentOrganizationResponse load(String key) throws Exception {
+      List<GovernmentOrganization> allAgencies = new ArrayList<>();
 
-      GovernmentOrganizationResponse governmentOrganizationResponse =
-          new GovernmentOrganizationResponse(governmentOrganizationDao.findAll().stream()
-              .map(temp -> new GovernmentOrganization(temp.getId(),
-                  temp.getGovernmentOrganizationName(),
-                  SystemCodeCache.global()
-                      .getSystemCodeShortDescription(temp.getGovernmentOrganizationType())
-                      .replace(' ', '_'),
-                  temp.getGovernmentEntityType()))
-              .collect(Collectors.toList()));
-
-      governmentOrganizationResponse.setGovernmentOrganizations(lawEnforcementDao.findAll().stream()
+      allAgencies.addAll(governmentOrganizationDao.findAll().stream()
           .map(GovernmentOrganization::new).collect(Collectors.toList()));
 
-      List<String> validCodes = Arrays.asList(new String[] {COMMUNITY_CARE_LICENSING,
-          DEPARTMENT_OF_JUSTICE, DISTRICT_ATTORNEY, COUNTY_LICENSING, LAWENFORCEMENT});
-      if (!ALL_COUNTY_CACHE_KEY.equals(key)) {
-        fetchAgencyByCounty(key, governmentOrganizationResponse, validCodes);
+      allAgencies.addAll(lawEnforcementDao.findAll().stream().map(GovernmentOrganization::new)
+          .collect(Collectors.toList()));
+
+      List<GovernmentOrganization> responseAgencies = null;
+      if (ALL_COUNTY_CACHE_KEY.equals(key)) {
+        responseAgencies = allAgencies;
+      } else {
+        responseAgencies = getSupportedAgenciesForCounty(key, allAgencies);
       }
-      return governmentOrganizationResponse;
+
+      return new GovernmentOrganizationResponse(responseAgencies);
     }
 
-    private static void fetchAgencyByCounty(String countyId,
-        GovernmentOrganizationResponse governmentOrganizationResponse, List<String> validCodes) {
+    private static List<GovernmentOrganization> getSupportedAgenciesForCounty(String countyId,
+        List<GovernmentOrganization> allAgencies) {
+
+      List<AgencyType> supportedAgencyTypes =
+          Lists.newArrayList(AgencyType.COMMUNITY_CARE_LICENSING, AgencyType.COUNTY_LICENSING,
+              AgencyType.DISTRICT_ATTORNEY, AgencyType.DEPARTMENT_OF_JUSTICE,
+              AgencyType.LAW_ENFORCEMENT);
+
       Short id = Short.valueOf(countyId);
-      for (Iterator<GovernmentOrganization> iterator =
-          governmentOrganizationResponse.getGovernmentOrganizations().iterator(); iterator
-              .hasNext();) {
-        GovernmentOrganization govOrg = iterator.next();
-        if (!(id.equals(govOrg.getGovernmentEntityType())
-            && validCodes.contains(govOrg.getAgencyType()))) {
-          iterator.remove();
+      List<GovernmentOrganization> supportedAgencies = new ArrayList<>();
+
+      for (GovernmentOrganization agency : allAgencies) {
+        AgencyType agencyType = AgencyType.getByName(agency.getAgencyType());
+        if (agency.getCountyId().equals(id)
+            && supportedAgencyTypes.contains(agencyType)) {
+          supportedAgencies.add(agency);
         }
       }
+
+      return supportedAgencies;
     }
   }
 }
