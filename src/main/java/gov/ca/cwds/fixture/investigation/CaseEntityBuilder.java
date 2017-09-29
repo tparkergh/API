@@ -40,7 +40,7 @@ public class CaseEntityBuilder {
     return this;
   }
 
-  public CaseEntityBuilder setLegacyDescriptor(SimpleLegacyDescriptor legacyDescriptor) {
+  public CaseEntityBuilder setCmsRecordDescriptor(SimpleLegacyDescriptor legacyDescriptor) {
     this.legacyDescriptor = legacyDescriptor;
     return this;
   }

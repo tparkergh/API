@@ -14,7 +14,6 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
 import gov.ca.cwds.rest.api.Request;
 import gov.ca.cwds.rest.api.Response;
-import gov.ca.cwds.rest.api.domain.LegacyDescriptor;
 import gov.ca.cwds.rest.api.domain.RaceAndEthnicity;
 import gov.ca.cwds.rest.api.domain.ReportingDomain;
 import gov.ca.cwds.rest.validation.Date;
@@ -36,7 +35,7 @@ public class Person extends ReportingDomain implements Request, Response {
   private static final long serialVersionUID = 1L;
 
   @JsonProperty("legacy_descriptor")
-  private LegacyDescriptor legacyDescriptor;
+  private CmsRecordDescriptor cmsRecordDescriptor;
 
   @JsonProperty("last_updated_by")
   @ApiModelProperty(required = false, readOnly = false, value = "staff person Id")
@@ -129,7 +128,7 @@ public class Person extends ReportingDomain implements Request, Response {
   }
 
   /**
-   * @param legacyDescriptor - CMS record description
+   * @param cmsRecordDescriptor - CMS record description
    * @param lastUpdatedBy - last updated by
    * @param lastUpdatedAt - last updated at
    * @param firstName - frist name
@@ -147,14 +146,14 @@ public class Person extends ReportingDomain implements Request, Response {
    * @param roles - roles
    * @param addresses - address information
    */
-  public Person(LegacyDescriptor legacyDescriptor, String lastUpdatedBy, String lastUpdatedAt,
+  public Person(CmsRecordDescriptor cmsRecordDescriptor, String lastUpdatedBy, String lastUpdatedAt,
       String firstName, String middleName, String lastName, String nameSuffix,
       @OneOf(value = {"M", "F", "U"}, ignoreCase = true, ignoreWhitespace = true) String gender,
       @Date(format = "yyyy-MM-dd", required = false) String dateOfBirth, String ssn,
       Set<Short> languages, RaceAndEthnicity raceAndEthnicity, Boolean sensitive, Boolean sealed,
       Set<PhoneNumber> phone, Set<String> roles, Set<InvestigationAddress> addresses) {
     super();
-    this.legacyDescriptor = legacyDescriptor;
+    this.cmsRecordDescriptor = cmsRecordDescriptor;
     this.lastUpdatedBy = lastUpdatedBy;
     this.lastUpdatedAt = lastUpdatedAt;
     this.firstName = firstName;
@@ -176,8 +175,8 @@ public class Person extends ReportingDomain implements Request, Response {
   /**
    * @return CMS record description
    */
-  public LegacyDescriptor getLegacyDescriptor() {
-    return legacyDescriptor;
+  public CmsRecordDescriptor getCmsRecordDescriptor() {
+    return cmsRecordDescriptor;
   }
 
 

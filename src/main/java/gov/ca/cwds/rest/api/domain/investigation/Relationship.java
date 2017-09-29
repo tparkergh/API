@@ -17,7 +17,6 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import gov.ca.cwds.rest.api.Request;
 import gov.ca.cwds.rest.api.Response;
 import gov.ca.cwds.rest.api.domain.DomainObject;
-import gov.ca.cwds.rest.api.domain.LegacyDescriptor;
 import gov.ca.cwds.rest.api.domain.ReportingDomain;
 import gov.ca.cwds.rest.validation.Date;
 import io.dropwizard.jackson.JsonSnakeCase;
@@ -82,7 +81,7 @@ public final class Relationship extends ReportingDomain implements Request, Resp
   private Boolean sealed;
 
   @JsonProperty("legacy_descirptor")
-  private LegacyDescriptor legacyDescriptor;
+  private CmsRecordDescriptor cmsRecordDescriptor;
 
   @JsonProperty("relationship_to")
   private Set<RelationshipTo> relatedTo;
@@ -104,12 +103,12 @@ public final class Relationship extends ReportingDomain implements Request, Resp
    * @param suffixName - suffix
    * @param sensitive - sensitive data
    * @param sealed - sealed data
-   * @param legacyDescriptor - CMS record description
+   * @param cmsRecordDescriptor - CMS record description
    * @param relatedTo - people realated to this person
    */
   public Relationship(String id, @Date(format = "yyyy-MM-dd", required = false) String dateOfBirth,
       String firstName, String middleName, String lastName, String suffixName, Boolean sensitive,
-      Boolean sealed, LegacyDescriptor legacyDescriptor, Set<RelationshipTo> relatedTo) {
+      Boolean sealed, CmsRecordDescriptor cmsRecordDescriptor, Set<RelationshipTo> relatedTo) {
     super();
     this.id = id;
     this.dateOfBirth = dateOfBirth;
@@ -119,7 +118,7 @@ public final class Relationship extends ReportingDomain implements Request, Resp
     this.suffixName = suffixName;
     this.sensitive = sensitive;
     this.sealed = sealed;
-    this.legacyDescriptor = legacyDescriptor;
+    this.cmsRecordDescriptor = cmsRecordDescriptor;
     this.relatedTo = relatedTo;
   }
 
@@ -183,8 +182,8 @@ public final class Relationship extends ReportingDomain implements Request, Resp
   /**
    * @return CMS record description
    */
-  public LegacyDescriptor getLegacyDescriptor() {
-    return legacyDescriptor;
+  public CmsRecordDescriptor getCmsRecordDescriptor() {
+    return cmsRecordDescriptor;
   }
 
   /**

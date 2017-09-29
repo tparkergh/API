@@ -2,12 +2,12 @@ package gov.ca.cwds.fixture.investigation;
 
 import org.joda.time.DateTime;
 
-import gov.ca.cwds.rest.api.domain.LegacyDescriptor;
+import gov.ca.cwds.rest.api.domain.investigation.CmsRecordDescriptor;
 import gov.ca.cwds.rest.api.domain.investigation.InvestigationAddress;
 
 @SuppressWarnings("javadoc")
 public class InvestigationAddressEntityBuilder {
-  protected LegacyDescriptor legacyDescriptor;
+  protected CmsRecordDescriptor cmsRecordDescriptor;
   protected String streetAddress = "741 Evergreen Ct";
   protected String city = "Springfield";
   protected Short state = 1828;
@@ -16,15 +16,16 @@ public class InvestigationAddressEntityBuilder {
   private DateTime now = new DateTime("2010-10-01T15:26:42.000-0700");
 
   public InvestigationAddress build() {
-    legacyDescriptor =
-        new LegacyDescriptor("1234567ABC", "001-2000-3399-415790", now, "CLIENT_T", "Client");
-    return new InvestigationAddress(legacyDescriptor, streetAddress, city, state, zip, type);
+    cmsRecordDescriptor =
+        new CmsRecordDescriptor("1234567ABC", "001-2000-3399-415790", now, "CLIENT_T", "Client");
+    return new InvestigationAddress(cmsRecordDescriptor, streetAddress, city, state, zip, type);
 
   }
 
-  public InvestigationAddressEntityBuilder setLegacyDescriptor(LegacyDescriptor legacyDescriptor) {
+  public InvestigationAddressEntityBuilder setCmsRecordDescriptor(
+      CmsRecordDescriptor cmsRecordDescriptor) {
 
-    this.legacyDescriptor = legacyDescriptor;
+    this.cmsRecordDescriptor = cmsRecordDescriptor;
     return this;
   }
 
@@ -53,8 +54,8 @@ public class InvestigationAddressEntityBuilder {
     return this;
   }
 
-  public LegacyDescriptor getLegacyDescriptor() {
-    return legacyDescriptor;
+  public CmsRecordDescriptor getCmsRecordDescriptor() {
+    return cmsRecordDescriptor;
   }
 
   public String getStreetAddress() {

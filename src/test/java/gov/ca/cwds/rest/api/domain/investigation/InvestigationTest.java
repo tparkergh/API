@@ -22,7 +22,6 @@ import gov.ca.cwds.fixture.investigation.InvestigationEntityBuilder;
 import gov.ca.cwds.fixture.investigation.PersonEntityBuilder;
 import gov.ca.cwds.fixture.investigation.RelationshipEntityBuilder;
 import gov.ca.cwds.fixture.investigation.SimpleScreeningEntityBuilder;
-import gov.ca.cwds.rest.api.domain.LegacyDescriptor;
 import nl.jqno.equalsverifier.EqualsVerifier;
 import nl.jqno.equalsverifier.Warning;
 
@@ -54,14 +53,14 @@ public class InvestigationTest {
   private DateTime now = new DateTime();
   private Short phoneType = 1111;
 
-  private LegacyDescriptor legacyDescriptor =
-      new LegacyDescriptor(id, "111-222-333-4444", now, tableName, "Referral");
+  private CmsRecordDescriptor cmsRecordDescriptor =
+      new CmsRecordDescriptor(id, "111-222-333-4444", now, tableName, "Referral");
 
   private Assignee assignee = new Assignee("CWS Staff", incidentCounty, "Madera CWS", "0X5");
 
   private Set<PhoneNumber> phoneNumbers = new HashSet<>();
   private PhoneNumber phoneNumber =
-      new PhoneNumber(phone, phoneExtension, phoneType, legacyDescriptor);
+      new PhoneNumber(phone, phoneExtension, phoneType, cmsRecordDescriptor);
 
   private LimitedAccess limitedAccess = new LimitedAccess("N", "20");
 
@@ -97,11 +96,12 @@ public class InvestigationTest {
 
   @Test
   public void testDomainConstructorSuccess() {
-    Investigation investigation = new Investigation(legacyDescriptor, lastUpdatedBy, lastUpdatedAt,
-        incidentCounty, incidentDate, locationType, communicationMethod, name, reportNarrative,
-        reference, responseTime, startedAt, assignee, additionalInformation, sensitive, sealed,
-        phoneNumbers, address, screening, historyOfInvolvement, allegations, people, relationships);
-    assertThat(legacyDescriptor, is(equalTo(investigation.getLegacyDescriptor())));
+    Investigation investigation = new Investigation(cmsRecordDescriptor, lastUpdatedBy,
+        lastUpdatedAt, incidentCounty, incidentDate, locationType, communicationMethod, name,
+        reportNarrative, reference, responseTime, startedAt, assignee, additionalInformation,
+        sensitive, sealed, phoneNumbers, address, screening, historyOfInvolvement, allegations,
+        people, relationships);
+    assertThat(cmsRecordDescriptor, is(equalTo(investigation.getCmsRecordDescriptor())));
     assertThat(lastUpdatedBy, is(equalTo(investigation.getLastUpdatedBy())));
     assertThat(lastUpdatedAt, is(equalTo(investigation.getLastUpdatedAt())));
     assertThat(incidentCounty, is(equalTo(investigation.getIncidentCounty())));

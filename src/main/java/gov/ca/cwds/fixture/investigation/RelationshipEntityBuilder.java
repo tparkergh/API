@@ -5,7 +5,7 @@ import java.util.Set;
 
 import org.joda.time.DateTime;
 
-import gov.ca.cwds.rest.api.domain.LegacyDescriptor;
+import gov.ca.cwds.rest.api.domain.investigation.CmsRecordDescriptor;
 import gov.ca.cwds.rest.api.domain.investigation.Relationship;
 import gov.ca.cwds.rest.api.domain.investigation.RelationshipTo;
 
@@ -16,8 +16,8 @@ public class RelationshipEntityBuilder {
   protected String id = "1234567ABC";
   private DateTime now = new DateTime("2010-10-01T15:26:42.000-0700");
 
-  private LegacyDescriptor legacyDescriptor =
-      new LegacyDescriptor(id, "111-222-333-4444", now, tableName, "Client");
+  private CmsRecordDescriptor cmsRecordDescriptor =
+      new CmsRecordDescriptor(id, "111-222-333-4444", now, tableName, "Client");
   protected String firstName = "Jackson";
   protected String middleName = "R";
   protected String lastName = "Greene";
@@ -31,7 +31,7 @@ public class RelationshipEntityBuilder {
   public Relationship build() {
     relationshipsTo.add(relationshipTo);
     return new Relationship(id, dateOfBirth, firstName, middleName, lastName, suffixTitle,
-        sensitive, sealed, legacyDescriptor, relationshipsTo);
+        sensitive, sealed, cmsRecordDescriptor, relationshipsTo);
 
   }
 

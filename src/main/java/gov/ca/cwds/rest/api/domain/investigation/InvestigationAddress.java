@@ -10,7 +10,6 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
 import gov.ca.cwds.rest.api.Request;
 import gov.ca.cwds.rest.api.Response;
-import gov.ca.cwds.rest.api.domain.LegacyDescriptor;
 import gov.ca.cwds.rest.api.domain.ReportingDomain;
 import gov.ca.cwds.rest.api.domain.SystemCodeCategoryId;
 import gov.ca.cwds.rest.validation.ValidSystemCodeId;
@@ -29,7 +28,7 @@ public class InvestigationAddress extends ReportingDomain implements Request, Re
 
   @JsonProperty("legacy_descriptor")
   @ApiModelProperty(required = true, readOnly = false, value = "CMS record description")
-  private LegacyDescriptor legacyDescriptor;
+  private CmsRecordDescriptor cmsRecordDescriptor;
 
   @JsonProperty("street_address")
   @ApiModelProperty(example = "742 Evergreen Terrace")
@@ -65,18 +64,18 @@ public class InvestigationAddress extends ReportingDomain implements Request, Re
   }
 
   /**
-   * @param legacyDescriptor - CMS record description
+   * @param cmsRecordDescriptor - CMS record description
    * @param streetAddress - street address
    * @param city - city
    * @param state - state code
    * @param zip - zip code
    * @param type - address type code
    */
-  public InvestigationAddress(LegacyDescriptor legacyDescriptor, String streetAddress, String city,
-      @ValidSystemCodeId(required = true, category = "STATE_C") Short state, String zip,
-      @ValidSystemCodeId(required = true, category = "ADDR_TPC") Short type) {
+  public InvestigationAddress(CmsRecordDescriptor cmsRecordDescriptor, String streetAddress,
+      String city, @ValidSystemCodeId(required = true, category = "STATE_C") Short state,
+      String zip, @ValidSystemCodeId(required = true, category = "ADDR_TPC") Short type) {
     super();
-    this.legacyDescriptor = legacyDescriptor;
+    this.cmsRecordDescriptor = cmsRecordDescriptor;
     this.streetAddress = streetAddress;
     this.city = city;
     this.state = state;
@@ -88,8 +87,8 @@ public class InvestigationAddress extends ReportingDomain implements Request, Re
   /**
    * @return - CMS record description
    */
-  public LegacyDescriptor getLegacyDescriptor() {
-    return legacyDescriptor;
+  public CmsRecordDescriptor getCmsRecordDescriptor() {
+    return cmsRecordDescriptor;
   }
 
 

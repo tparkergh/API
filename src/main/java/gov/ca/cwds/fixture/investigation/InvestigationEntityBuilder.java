@@ -6,9 +6,9 @@ import java.util.Set;
 
 import org.joda.time.DateTime;
 
-import gov.ca.cwds.rest.api.domain.LegacyDescriptor;
 import gov.ca.cwds.rest.api.domain.investigation.Allegation;
 import gov.ca.cwds.rest.api.domain.investigation.Assignee;
+import gov.ca.cwds.rest.api.domain.investigation.CmsRecordDescriptor;
 import gov.ca.cwds.rest.api.domain.investigation.HistoryOfInvolvement;
 import gov.ca.cwds.rest.api.domain.investigation.Investigation;
 import gov.ca.cwds.rest.api.domain.investigation.InvestigationAddress;
@@ -46,14 +46,14 @@ public class InvestigationEntityBuilder {
   DateTime now = new DateTime("2010-10-01T15:26:42.000-0700");
   Short phoneType = 1111;
 
-  private LegacyDescriptor legacyDescriptor =
-      new LegacyDescriptor(id, "111-222-333-4444", now, tableName, "Referral");
+  private CmsRecordDescriptor cmsRecordDescriptor =
+      new CmsRecordDescriptor(id, "111-222-333-4444", now, tableName, "Referral");
 
   private Assignee assignee = new Assignee("CWS Staff", incidentCounty, "Madera CWS", "0X5");
 
   private Set<PhoneNumber> phoneNumbers = new HashSet<>();
   private PhoneNumber phoneNumber =
-      new PhoneNumber(phone, phoneExtension, phoneType, legacyDescriptor);
+      new PhoneNumber(phone, phoneExtension, phoneType, cmsRecordDescriptor);
 
   private LimitedAccess limitedAccess = new LimitedAccess("N", "20");
 
@@ -79,7 +79,7 @@ public class InvestigationEntityBuilder {
     phoneNumbers.add(phoneNumber);
     relationships.add(relationship);
 
-    return new Investigation(legacyDescriptor, lastUpdatedBy, lastUpdatedAt, incidentCounty,
+    return new Investigation(cmsRecordDescriptor, lastUpdatedBy, lastUpdatedAt, incidentCounty,
         incidentDate, locationType, communicationMethod, name, reportNarrative, reference,
         responseTime, startedAt, assignee, additionalInformation, Boolean.FALSE, Boolean.FALSE,
         phoneNumbers, address, screening, historyOfInvolvement, allegations, people, relationships);
@@ -265,12 +265,13 @@ public class InvestigationEntityBuilder {
     return this;
   }
 
-  public LegacyDescriptor getLegacyDescriptor() {
-    return legacyDescriptor;
+  public CmsRecordDescriptor getCmsRecordDescriptor() {
+    return cmsRecordDescriptor;
   }
 
-  public InvestigationEntityBuilder setLegacyDescriptor(LegacyDescriptor legacyDescriptor) {
-    this.legacyDescriptor = legacyDescriptor;
+  public InvestigationEntityBuilder setCmsRecordDescriptor(
+      CmsRecordDescriptor cmsRecordDescriptor) {
+    this.cmsRecordDescriptor = cmsRecordDescriptor;
     return this;
   }
 

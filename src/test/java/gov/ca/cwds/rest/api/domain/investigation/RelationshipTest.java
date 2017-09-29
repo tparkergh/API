@@ -17,7 +17,6 @@ import org.junit.Test;
 
 import gov.ca.cwds.fixture.investigation.RelationshipEntityBuilder;
 import gov.ca.cwds.fixture.investigation.RelationshipToEntityBuilder;
-import gov.ca.cwds.rest.api.domain.LegacyDescriptor;
 import nl.jqno.equalsverifier.EqualsVerifier;
 import nl.jqno.equalsverifier.Warning;
 
@@ -28,8 +27,8 @@ public class RelationshipTest {
   private String id = "1234567ABC";
   private DateTime now = new DateTime();
 
-  private LegacyDescriptor legacyDescriptor =
-      new LegacyDescriptor(id, "111-222-333-4444", now, tableName, "Client");
+  private CmsRecordDescriptor cmsRecordDescriptor =
+      new CmsRecordDescriptor(id, "111-222-333-4444", now, tableName, "Client");
   private String firstName = "Jackson";
   private String middleName = "R";
   private String lastName = "Greene";
@@ -54,7 +53,7 @@ public class RelationshipTest {
   @Test
   public void testDomainConstructorSuccess() throws Exception {
     Relationship relationship = new Relationship(id, dateOfBirth, firstName, middleName, lastName,
-        suffixTitle, sensitive, sealed, legacyDescriptor, relationshipsTo);
+        suffixTitle, sensitive, sealed, cmsRecordDescriptor, relationshipsTo);
 
     assertThat(id, is(equalTo(relationship.getId())));
     assertThat(firstName, is(equalTo(relationship.getFirstName())));
@@ -63,7 +62,7 @@ public class RelationshipTest {
     assertThat(suffixTitle, is(equalTo(relationship.getSuffixName())));
     assertThat(sensitive, is(equalTo(relationship.getSensitive())));
     assertThat(sealed, is(equalTo(relationship.getSealed())));
-    assertThat(legacyDescriptor, is(equalTo(relationship.getLegacyDescriptor())));
+    assertThat(cmsRecordDescriptor, is(equalTo(relationship.getCmsRecordDescriptor())));
     assertThat(relationshipsTo, is(equalTo(relationship.getRelatedTo())));
   }
 
