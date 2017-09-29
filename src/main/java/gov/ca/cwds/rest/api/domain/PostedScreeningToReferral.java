@@ -46,7 +46,7 @@ public class PostedScreeningToReferral extends ScreeningToReferral implements Re
    * @param responseTime - response time frame
    * @param startedAt - started at
    * @param assignee - assigned to county worker
-   * @param assigneeId - assigneeId
+   * @param assigneeStaffId - assigneeStaffId
    * @param additionalInformation - additional information
    * @param screeningDecision - screening decision
    * @param screeningDecisionDetail - detail
@@ -66,7 +66,7 @@ public class PostedScreeningToReferral extends ScreeningToReferral implements Re
   public PostedScreeningToReferral(long id, String referralId, String legacySourceTable,
       @Date String endedAt, String incidentCounty, @Date String incidentDate, String locationType,
       Short communicationMethod, String name, String reportNarrative, String reference,
-      Short responseTime, @Date String startedAt, String assignee, String assigneeId,
+      Short responseTime, @Date String startedAt, String assignee, String assigneeStaffId,
       String additionalInformation, String screeningDecision, String screeningDecisionDetail,
       int approvalStatus, boolean familyAwareness, boolean filedWithLawEnforcement,
       String responsibleAgency, String limitedAccessCode, String limitedAccessDescription,
@@ -74,7 +74,7 @@ public class PostedScreeningToReferral extends ScreeningToReferral implements Re
       Set<Participant> participants, Set<CrossReport> crossReports, Set<Allegation> allegations) {
     super(id, legacySourceTable, referralId, endedAt, incidentCounty, incidentDate, locationType,
         communicationMethod, name, reportNarrative, reference, responseTime, startedAt, assignee,
-        assigneeId, additionalInformation, screeningDecision, screeningDecisionDetail,
+        assigneeStaffId, additionalInformation, screeningDecision, screeningDecisionDetail,
         approvalStatus, familyAwareness, filedWithLawEnforcement, responsibleAgency,
         limitedAccessCode, limitedAccessDescription, limitedAccessAgency, limitedAccessDate,
         address, participants, crossReports, allegations);
@@ -96,7 +96,7 @@ public class PostedScreeningToReferral extends ScreeningToReferral implements Re
         referral.getEndedAt(), referral.getIncidentCounty(), referral.getIncidentDate(),
         referral.getLocationType(), referral.getCommunicationMethod(), referral.getName(),
         referral.getReportNarrative(), referral.getReference(), referral.getResponseTime(),
-        referral.getStartedAt(), referral.getAssignee(), referral.getAssigneeId(),
+        referral.getStartedAt(), referral.getAssignee(), referral.getAssigneeStaffId(),
         referral.getAdditionalInformation(), referral.getScreeningDecision(),
         referral.getScreeningDecisionDetail(), referral.getApprovalStatus(),
         referral.isFamilyAwareness(), referral.isFiledWithLawEnforcement(),

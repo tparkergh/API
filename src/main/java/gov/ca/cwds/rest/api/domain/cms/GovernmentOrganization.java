@@ -78,6 +78,9 @@ public class GovernmentOrganization extends ReportingDomain implements Request, 
     this.countyId = countyId;
   }
 
+  /**
+   * @param governmentOrganizationEntity - governmentOrganizationEntity
+   */
   public GovernmentOrganization(GovernmentOrganizationEntity governmentOrganizationEntity) {
     this.id = governmentOrganizationEntity.getId();
     this.agencyName = governmentOrganizationEntity.getGovernmentOrganizationName();

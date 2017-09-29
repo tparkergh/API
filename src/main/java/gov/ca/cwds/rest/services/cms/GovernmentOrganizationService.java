@@ -49,7 +49,6 @@ public class GovernmentOrganizationService
     governmentOrganizationResponseCache =
         CacheBuilder.newBuilder().refreshAfterWrite(15, TimeUnit.DAYS).build(cacheLoader);
 
-
   }
 
   @Override
@@ -83,7 +82,7 @@ public class GovernmentOrganizationService
     /**
      * Construct the object
      * 
-     * @param systemCodeService
+     * @param governmentOrganizationService
      */
     GovernmentOrganizationCacheLoader(GovernmentOrganizationDao governmentOrganizationDao,
         LawEnforcementDao lawEnforcementDao) {
@@ -101,7 +100,7 @@ public class GovernmentOrganizationService
       allAgencies.addAll(lawEnforcementDao.findAll().stream().map(GovernmentOrganization::new)
           .collect(Collectors.toList()));
 
-      List<GovernmentOrganization> responseAgencies = null;
+      List<GovernmentOrganization> responseAgencies;
       if (ALL_COUNTY_CACHE_KEY.equals(key)) {
         responseAgencies = allAgencies;
       } else {
@@ -124,8 +123,7 @@ public class GovernmentOrganizationService
 
       for (GovernmentOrganization agency : allAgencies) {
         AgencyType agencyType = AgencyType.getByName(agency.getAgencyType());
-        if (agency.getCountyId().equals(id)
-            && supportedAgencyTypes.contains(agencyType)) {
+        if (agency.getCountyId().equals(id) && supportedAgencyTypes.contains(agencyType)) {
           supportedAgencies.add(agency);
         }
       }
