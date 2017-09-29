@@ -158,7 +158,6 @@ public class Address extends BaseAddress {
       this.streetSuffixCd = address.getStreetSuffixCd();
       this.unitDesignationCd = address.getUnitDesignationCd();
       this.unitNumber = address.getUnitNumber();
-
     } catch (ApiException e) {
       throw new PersistenceException(e);
     }
