@@ -87,7 +87,7 @@
 		<mapping class="gov.ca.cwds.data.persistence.cms.Assignment"/>
 		<mapping class="gov.ca.cwds.data.persistence.cms.ReferralAssignment"/>
 		<mapping class="gov.ca.cwds.data.persistence.cms.CaseAssignment"/>
-		<mapping class="gov.ca.cwds.data.persistence.cms.LawEnforcement"/>
+		
   		
 	</session-factory>
 </hibernate-configuration>
