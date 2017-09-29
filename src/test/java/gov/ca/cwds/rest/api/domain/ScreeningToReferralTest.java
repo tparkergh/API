@@ -23,6 +23,7 @@ import javax.ws.rs.client.Entity;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
+import org.assertj.core.util.Sets;
 import org.junit.Before;
 import org.junit.ClassRule;
 import org.junit.Test;
@@ -117,8 +118,8 @@ public class ScreeningToReferralTest {
     Address address = validAddress();
     Participant participant = validParticipant();
     participants.add(participant);
-    CrossReport crossReport =
-        new CrossReport("", "", "", agencyType, agencyName, filedOutOfState, method, informDate);
+    CrossReport crossReport = new CrossReport("", "", "", agencyType, agencyName, filedOutOfState,
+        method, informDate, Sets.newHashSet());
     crossReports.add(crossReport);
     Allegation allegation = validAllegation();
     allegations.add(allegation);
@@ -142,8 +143,8 @@ public class ScreeningToReferralTest {
     Address address = validAddress();
     Participant participant = validParticipant();
     participants.add(participant);
-    CrossReport crossReport =
-        new CrossReport("", "", "", agencyType, agencyName, filedOutOfState, method, informDate);
+    CrossReport crossReport = new CrossReport("", "", "", agencyType, agencyName, filedOutOfState,
+        method, informDate, Sets.newHashSet());
     crossReports.add(crossReport);
     Allegation allegation = validAllegation();
     allegations.add(allegation);

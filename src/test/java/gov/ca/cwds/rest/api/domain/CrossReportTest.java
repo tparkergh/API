@@ -13,6 +13,7 @@ import javax.validation.Validation;
 import javax.validation.Validator;
 import javax.validation.ValidatorFactory;
 
+import org.assertj.core.util.Sets;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -39,8 +40,9 @@ public class CrossReportTest {
 
   @Before
   public void setup() {
-    crossReport = new CrossReport("", "", "", "Law enforcement",
-        "Sacramento County Sheriff Deparment", filedOutOfState, 2095, "2017-03-15");
+    crossReport =
+        new CrossReport("", "", "", "Law enforcement", "Sacramento County Sheriff Deparment",
+            filedOutOfState, 2095, "2017-03-15", Sets.newHashSet());
   }
 
   /*
@@ -75,9 +77,9 @@ public class CrossReportTest {
   @Test
   public void testEquals() {
     CrossReport thisCrossReport = new CrossReport(id, legacySourceTable, legacyId, agencyType,
-        agencyName, filedOutOfState, method, informDate);
+        agencyName, filedOutOfState, method, informDate, Sets.newHashSet());
     CrossReport thatCrossReport = new CrossReport(id, legacySourceTable, legacyId, agencyType,
-        agencyName, filedOutOfState, method, informDate);
+        agencyName, filedOutOfState, method, informDate, Sets.newHashSet());
     assertEquals("Should be equal", thisCrossReport, thatCrossReport);
 
   }
@@ -85,7 +87,7 @@ public class CrossReportTest {
   @Test
   public void testDomainConstructorTest() throws Exception {
     CrossReport domain = new CrossReport(id, legacySourceTable, legacyId, agencyType, agencyName,
-        filedOutOfState, method, informDate);
+        filedOutOfState, method, informDate, Sets.newHashSet());
 
     assertThat(domain.getAgencyType(), is(equalTo(agencyType)));
     assertThat(domain.getAgencyName(), is(equalTo(agencyName)));
@@ -105,7 +107,7 @@ public class CrossReportTest {
 
     Integer validCrossReportMethod = 2095;
     CrossReport crossReport = new CrossReport(id, legacySourceTable, legacyId, agencyType,
-        agencyName, filedOutOfState, validCrossReportMethod, informDate);
+        agencyName, filedOutOfState, validCrossReportMethod, informDate, Sets.newHashSet());
 
     ValidatorFactory factory = Validation.buildDefaultValidatorFactory();
     Validator validator = factory.getValidator();
@@ -123,7 +125,7 @@ public class CrossReportTest {
 
     Integer invalidCrossReportMethod = 9999;
     CrossReport crossReport = new CrossReport(id, legacySourceTable, legacyId, agencyType,
-        agencyName, filedOutOfState, invalidCrossReportMethod, informDate);
+        agencyName, filedOutOfState, invalidCrossReportMethod, informDate, Sets.newHashSet());
 
     ValidatorFactory factory = Validation.buildDefaultValidatorFactory();
     Validator validator = factory.getValidator();
