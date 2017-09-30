@@ -71,8 +71,8 @@ public class GovernmentOrganizationResource {
     if (StringUtils.isEmpty(countyId)) {
       countyId = "";
     }
-    return simpleResourceDelegate.find(countyId);
 
+    return simpleResourceDelegate.find(countyId);
   }
 
 }

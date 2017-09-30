@@ -9,6 +9,7 @@ import org.slf4j.LoggerFactory;
 import com.google.inject.AbstractModule;
 import com.google.inject.Inject;
 import com.google.inject.Provides;
+import com.google.inject.Singleton;
 import com.google.inject.matcher.Matchers;
 
 import gov.ca.cwds.data.CmsSystemCodeSerializer;
@@ -144,6 +145,11 @@ public class ServicesModule extends AbstractModule {
     UnitOfWorkInterceptor interceptor = new UnitOfWorkInterceptor();
     bindInterceptor(Matchers.any(), Matchers.annotatedWith(UnitOfWork.class), interceptor);
     requestInjection(interceptor);
+
+    bind(GovernmentOrganizationService.class).in(Singleton.class);
+    // bind(GovernmentOrganizationService.class).asEagerSingleton();
+    // bindInterceptor(classMatcher, methodMatcher, interceptors);
+    // this.bindListener(bindingMatcher, listener);
   }
 
   @Provides
@@ -156,32 +162,41 @@ public class ServicesModule extends AbstractModule {
     return new MessageBuilder();
   }
 
+  // /**
+  // * @param governmentOrganizationDao - governmentOrganizationDao
+  // * @param lawEnforcementDao - lawEnforcementDao
+  // * @return the cross report agencies
+  // */
+  @Provides
+  @Singleton
+  @GovernmentOrganizationServiceSingleton
+  public synchronized GovernmentOrganizationService provideGovernmentOrganizationService(
+      GovernmentOrganizationDao governmentOrganizationDao, LawEnforcementDao lawEnforcementDao) {
+    // public GovernmentOrganizationService provideGovernmentOrganizationService(Injector injector)
+    // {
+    // if (governmentOrganizationService == null && governmentOrganizationDao != null
+    // && lawEnforcementDao != null) {
+    // governmentOrganizationService =
+    // new GovernmentOrganizationService(governmentOrganizationDao, lawEnforcementDao);
+    // }
+    // return governmentOrganizationService;
+    return new GovernmentOrganizationService(governmentOrganizationDao, lawEnforcementDao);
+    // return injector.getInstance(GovernmentOrganizationService.class);
+  }
+
+
   /**
    * @param systemCodeDao - systemCodeDao
    * @param systemMetaDao - systemMetaDao
    * @return the systemCodes
    */
   @Provides
+  // @Singleton
   public SystemCodeService provideSystemCodeService(SystemCodeDao systemCodeDao,
       SystemMetaDao systemMetaDao) {
     LOGGER.debug("provide syscode service");
     final long secondsToRefreshCache = 15L * 24 * 60 * 60; // 15 days
     return new CachingSystemCodeService(systemCodeDao, systemMetaDao, secondsToRefreshCache, false);
-  }
-
-  /**
-   * @param governmentOrganizationDao - governmentOrganizationDao
-   * @param lawEnforcementDao - lawEnforcementDao
-   * @return the cross report agencies
-   */
-  @Provides
-  public synchronized GovernmentOrganizationService provideGovernmentOrganizationService(
-      GovernmentOrganizationDao governmentOrganizationDao, LawEnforcementDao lawEnforcementDao) {
-    if (governmentOrganizationService == null) {
-      governmentOrganizationService =
-          new GovernmentOrganizationService(governmentOrganizationDao, lawEnforcementDao);
-    }
-    return governmentOrganizationService;
   }
 
   /**

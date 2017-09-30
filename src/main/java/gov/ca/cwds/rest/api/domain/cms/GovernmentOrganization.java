@@ -29,7 +29,7 @@ import io.swagger.annotations.ApiModelProperty;
 public class GovernmentOrganization extends ReportingDomain implements Request, Response {
 
   /**
-   * 
+   * Default serialization.
    */
   private static final long serialVersionUID = 1L;
 

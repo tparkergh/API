@@ -4,16 +4,20 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
 
 import org.apache.commons.lang3.StringUtils;
 import org.hibernate.service.spi.ServiceException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.google.common.cache.CacheBuilder;
 import com.google.common.cache.CacheLoader;
 import com.google.common.cache.LoadingCache;
 import com.google.common.collect.Lists;
 import com.google.inject.Inject;
+import com.google.inject.Singleton;
 
 import gov.ca.cwds.data.cms.GovernmentOrganizationDao;
 import gov.ca.cwds.data.cms.LawEnforcementDao;
@@ -27,10 +31,16 @@ import gov.ca.cwds.rest.resources.SimpleResourceService;
  * 
  * @author CWDS API Team
  */
+@Singleton
 public class GovernmentOrganizationService
     extends SimpleResourceService<String, GovernmentOrganization, GovernmentOrganizationResponse> {
 
   private static final String ALL_COUNTY_CACHE_KEY = "ALL_COUNTIES";
+
+  private static final Logger LOGGER = LoggerFactory.getLogger(GovernmentOrganizationService.class);
+  private static AtomicInteger factoryCounter = new AtomicInteger(0);
+
+  private final int instanceCounter;
 
   private transient LoadingCache<String, GovernmentOrganizationResponse> governmentOrganizationResponseCache;
 
@@ -49,6 +59,8 @@ public class GovernmentOrganizationService
     governmentOrganizationResponseCache =
         CacheBuilder.newBuilder().refreshAfterWrite(15, TimeUnit.DAYS).build(cacheLoader);
 
+    this.instanceCounter = factoryCounter.incrementAndGet();
+    LOGGER.info("Construct instance #" + this.instanceCounter);
   }
 
   @Override
@@ -131,4 +143,9 @@ public class GovernmentOrganizationService
       return supportedAgencies;
     }
   }
+
+  public int getInstanceCounter() {
+    return instanceCounter;
+  }
+
 }

@@ -165,6 +165,7 @@ import io.dropwizard.setup.Bootstrap;
  * DI (dependency injection) setup for data access objects (DAO).
  * 
  * @author CWDS API Team
+ * @see ApiSessionFactoryFactory
  */
 public class DataAccessModule extends AbstractModule {
 
@@ -191,8 +192,7 @@ public class DataAccessModule extends AbstractModule {
           ContactPartyDeliveredServiceEntity.class, ReferralClientDeliveredServiceEntity.class,
           IndividualDeliveredServiceEntity.class, LawEnforcementEntity.class, CaseLoad.class,
           StaffPersonCaseLoad.class, ClientScpEthnicity.class, GovernmentOrganizationEntity.class),
-
-  new ApiSessionFactoryFactory()) {
+          new ApiSessionFactoryFactory()) { // init API hibernate interceptor:
 
         @Override
         public DataSourceFactory getDataSourceFactory(ApiConfiguration configuration) {
@@ -239,9 +239,8 @@ public class DataAccessModule extends AbstractModule {
    */
   @Override
   protected void configure() {
-
     // Fails here. Call later.
-    // Method getSessionFactory() returns null at this point and fails method toInstance().
+    // Method getSessionFactory() returns null at this point and fails in method toInstance().
     // bind(SessionFactory.class).toInstance(cmsHibernateBundle.getSessionFactory());
 
     // CMS:
