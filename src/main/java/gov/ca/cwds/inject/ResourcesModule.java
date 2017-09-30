@@ -150,7 +150,6 @@ public class ResourcesModule extends AbstractModule {
     bind(AllegationPerpetratorHistoryResource.class);
     bind(CrossReportResource.class);
     bind(ChildClientResource.class);
-    // bind(SystemCodeResource.class);
     bind(DrmsDocumentResource.class);
     bind(AssignmentResource.class);
     bind(ClientRelationshipResource.class);
