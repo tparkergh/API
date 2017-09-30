@@ -45,11 +45,10 @@ public class ContactRequest implements Request {
       example = "2010-04-27T23:30:14.000Z")
   private String startedAt;
 
-  @NotEmpty
   @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'")
   @JsonProperty("ended_at")
-  @gov.ca.cwds.rest.validation.Date(format = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'", required = true)
-  @ApiModelProperty(required = true, readOnly = false, value = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'",
+  @gov.ca.cwds.rest.validation.Date(format = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'", required = false)
+  @ApiModelProperty(required = false, readOnly = false, value = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'",
       example = "2010-04-28T23:30:14.000Z")
   private String endedAt;
 
