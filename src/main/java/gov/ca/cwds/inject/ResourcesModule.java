@@ -380,10 +380,16 @@ public class ResourcesModule extends AbstractModule {
   }
 
   @Provides
+  // @Singleton
   @GovernmentOrganizationServiceBackedResource
   public SimpleResourceDelegate<String, GovernmentOrganization, GovernmentOrganizationResponse, GovernmentOrganizationService> governmentOrganizationResource(
       Injector injector) {
-    return new SimpleResourceDelegate<>(injector.getInstance(GovernmentOrganizationService.class));
+    return new SimpleResourceDelegate<>(injector.getInstance(GovernmentOrganizationService.class)
+    // injector.getInstance(Key.<GovernmentOrganizationService>get(
+    // GovernmentOrganizationService.class, Names.named("govt_org_svc")))
+    // injector.getInstance(
+    // Key.<GovernmentOrganizationService>get(GovernmentOrganizationService.class))
+    );
   }
 
   @Provides

@@ -17,10 +17,10 @@ import com.google.common.cache.CacheLoader;
 import com.google.common.cache.LoadingCache;
 import com.google.common.collect.Lists;
 import com.google.inject.Inject;
-import com.google.inject.Singleton;
 
 import gov.ca.cwds.data.cms.GovernmentOrganizationDao;
 import gov.ca.cwds.data.cms.LawEnforcementDao;
+import gov.ca.cwds.data.std.ApiMarker;
 import gov.ca.cwds.rest.api.domain.cms.AgencyType;
 import gov.ca.cwds.rest.api.domain.cms.GovernmentOrganization;
 import gov.ca.cwds.rest.api.domain.cms.GovernmentOrganizationResponse;
@@ -31,14 +31,22 @@ import gov.ca.cwds.rest.resources.SimpleResourceService;
  * 
  * @author CWDS API Team
  */
-@Singleton
+// @Singleton
+// @Named("govt_org_svc")
 public class GovernmentOrganizationService
-    extends SimpleResourceService<String, GovernmentOrganization, GovernmentOrganizationResponse> {
+    extends SimpleResourceService<String, GovernmentOrganization, GovernmentOrganizationResponse>
+    implements ApiMarker {
+
+  /**
+   * Default serialization.
+   */
+  private static final long serialVersionUID = 1L;
 
   private static final String ALL_COUNTY_CACHE_KEY = "ALL_COUNTIES";
 
   private static final Logger LOGGER = LoggerFactory.getLogger(GovernmentOrganizationService.class);
-  private static AtomicInteger factoryCounter = new AtomicInteger(0);
+
+  private static final AtomicInteger factoryCounter = new AtomicInteger(0);
 
   private final int instanceCounter;
 
@@ -51,8 +59,9 @@ public class GovernmentOrganizationService
    * @param lawEnforcementDao - lawEnforcementDao
    */
   @Inject
-  public GovernmentOrganizationService(GovernmentOrganizationDao governmentOrganizationDao,
-      LawEnforcementDao lawEnforcementDao) {
+  public GovernmentOrganizationService(
+      // @Named("something") String test,
+      GovernmentOrganizationDao governmentOrganizationDao, LawEnforcementDao lawEnforcementDao) {
     super();
     GovernmentOrganizationCacheLoader cacheLoader =
         new GovernmentOrganizationCacheLoader(governmentOrganizationDao, lawEnforcementDao);
