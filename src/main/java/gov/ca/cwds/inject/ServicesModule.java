@@ -153,7 +153,7 @@ public class ServicesModule extends AbstractModule {
     Names.bindProperties(binder(), p);
 
     // Singleton does not work with DropWizard Guice.
-    bind(GovernmentOrganizationService.class).toProvider(SingletonProvider.class);
+    bind(GovernmentOrganizationService.class).toProvider(GovtOrgSvcProvider.class);
 
     // bind(GovernmentOrganizationService.class).annotatedWith(Names.named("govt_org_svc"))
     // .to(GovernmentOrganizationService.class).in(Scopes.SINGLETON);
