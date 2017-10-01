@@ -1,5 +1,7 @@
 package gov.ca.cwds.inject;
 
+import java.util.Properties;
+
 import javax.validation.Validation;
 import javax.validation.Validator;
 
@@ -9,8 +11,8 @@ import org.slf4j.LoggerFactory;
 import com.google.inject.AbstractModule;
 import com.google.inject.Inject;
 import com.google.inject.Provides;
-import com.google.inject.Singleton;
 import com.google.inject.matcher.Matchers;
+import com.google.inject.name.Names;
 
 import gov.ca.cwds.data.CmsSystemCodeSerializer;
 import gov.ca.cwds.data.cms.GovernmentOrganizationDao;
@@ -146,10 +148,46 @@ public class ServicesModule extends AbstractModule {
     bindInterceptor(Matchers.any(), Matchers.annotatedWith(UnitOfWork.class), interceptor);
     requestInjection(interceptor);
 
-    bind(GovernmentOrganizationService.class).in(Singleton.class);
+    final Properties p = new Properties();
+    p.setProperty("something", "Some String");
+    Names.bindProperties(binder(), p);
+
+    // Singleton does not work with DropWizard Guice.
+    bind(GovernmentOrganizationService.class).toProvider(SingletonProvider.class);
+
+    // bind(GovernmentOrganizationService.class).annotatedWith(Names.named("govt_org_svc"))
+    // .to(GovernmentOrganizationService.class).in(Scopes.SINGLETON);
+
+    // bind(GovernmentOrganizationService.class).annotatedWith(Names.named("govt_org_svc"))
+    // .in(Singleton.class);
+
+    // bind(GovernmentOrganizationService.class).in(Scopes.SINGLETON);
+    // bind(GovernmentOrganizationService.class).in(Singleton.class);
     // bind(GovernmentOrganizationService.class).asEagerSingleton();
-    // bindInterceptor(classMatcher, methodMatcher, interceptors);
-    // this.bindListener(bindingMatcher, listener);
+  }
+
+  // /**
+  // * @param governmentOrganizationDao - governmentOrganizationDao
+  // * @param lawEnforcementDao - lawEnforcementDao
+  // * @return the cross report agencies
+  // */
+  // @Provides
+  // @Singleton
+  // @GovernmentOrganizationServiceSingleton
+  // @Named("govt_org_svc")
+  public GovernmentOrganizationService provideGovernmentOrganizationService(
+      // @CmsSessionFactory SessionFactory sessionFactory,
+      GovernmentOrganizationDao governmentOrganizationDao, LawEnforcementDao lawEnforcementDao) {
+    // public GovernmentOrganizationService provideGovernmentOrganizationService(Injector injector)
+    // {
+    // if (governmentOrganizationService == null && governmentOrganizationDao != null
+    // && lawEnforcementDao != null) {
+    // governmentOrganizationService =
+    // new GovernmentOrganizationService(governmentOrganizationDao, lawEnforcementDao);
+    // }
+    // return governmentOrganizationService;
+    // return injector.getInstance(GovernmentOrganizationService.class);
+    return new GovernmentOrganizationService(governmentOrganizationDao, lawEnforcementDao);
   }
 
   @Provides
@@ -161,29 +199,6 @@ public class ServicesModule extends AbstractModule {
   MessageBuilder provideMessageBuilder() {
     return new MessageBuilder();
   }
-
-  // /**
-  // * @param governmentOrganizationDao - governmentOrganizationDao
-  // * @param lawEnforcementDao - lawEnforcementDao
-  // * @return the cross report agencies
-  // */
-  @Provides
-  @Singleton
-  @GovernmentOrganizationServiceSingleton
-  public synchronized GovernmentOrganizationService provideGovernmentOrganizationService(
-      GovernmentOrganizationDao governmentOrganizationDao, LawEnforcementDao lawEnforcementDao) {
-    // public GovernmentOrganizationService provideGovernmentOrganizationService(Injector injector)
-    // {
-    // if (governmentOrganizationService == null && governmentOrganizationDao != null
-    // && lawEnforcementDao != null) {
-    // governmentOrganizationService =
-    // new GovernmentOrganizationService(governmentOrganizationDao, lawEnforcementDao);
-    // }
-    // return governmentOrganizationService;
-    return new GovernmentOrganizationService(governmentOrganizationDao, lawEnforcementDao);
-    // return injector.getInstance(GovernmentOrganizationService.class);
-  }
-
 
   /**
    * @param systemCodeDao - systemCodeDao
