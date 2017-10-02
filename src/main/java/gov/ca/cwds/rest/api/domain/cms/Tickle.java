@@ -41,7 +41,7 @@ public class Tickle extends ReportingDomain implements Request, Response, Serial
   @NotNull
   @Size(min = 1, max = 2)
   @OneOf(value = {"C", "CC", "CE", "CH", "CL", "CO", "CP", "CT", "CG", "R", "RL", "RP", "RH", "RO",
-      "RT", "RE", "UC", "UR", "UL"}, ignoreCase = true, ignoreWhitespace = true)
+      "RT", "RE", "UC", "UR", "UL"}, ignoreCase = false, ignoreWhitespace = true)
   @ApiModelProperty(required = true, readOnly = false, value = "client", example = "CC")
   private String affectedByCode;
 

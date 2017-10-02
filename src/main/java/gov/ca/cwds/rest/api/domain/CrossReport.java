@@ -245,6 +245,10 @@ public class CrossReport extends ReportingDomain implements Request, Response {
         "DEPARTMENT_OF_JUSTICE", "LAW_ENFORCEMENT"})
     private String type;
 
+    /**
+     * @param id - id
+     * @param type - type
+     */
     @JsonCreator
     public Agency(@JsonProperty("id") String id, @JsonProperty("type") String type) {
       this.id = id;

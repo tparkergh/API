@@ -153,6 +153,9 @@ public class GovernmentOrganizationService
     }
   }
 
+  /**
+   * @return the instance
+   */
   public int getInstanceCounter() {
     return instanceCounter;
   }
