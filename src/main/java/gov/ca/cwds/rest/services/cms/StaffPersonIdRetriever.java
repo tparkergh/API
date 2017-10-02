@@ -1,11 +1,12 @@
 package gov.ca.cwds.rest.services.cms;
 
-import gov.ca.cwds.auth.realms.PerryUserIdentity;
-
 import java.util.List;
 
+import org.apache.commons.lang3.StringUtils;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.subject.Subject;
+
+import gov.ca.cwds.auth.realms.PerryUserIdentity;
 
 /**
  * @author CWDS API Team
@@ -13,6 +14,8 @@ import org.apache.shiro.subject.Subject;
  */
 public class StaffPersonIdRetriever {
 
+  private static final String DEFAULT_STAFF_ID = "0X5";
+  private static final String DEFAULT_USER_ID = "CWDST";
 
   StaffPersonIdRetriever() {}
 
@@ -24,18 +27,40 @@ public class StaffPersonIdRetriever {
    * @return the last updated id for persistence, this is the Staff Person Id of the current user
    */
   public String getStaffPersonId() {
-    String staffPersonId = "0X5";
+
+    return getPerryUserIdentity().getStaffId();
+  }
+
+  /**
+   * @return the perry user
+   */
+  public static PerryUserIdentity getPerryUserIdentity() {
+
+    PerryUserIdentity userIdentity = null;
+
     Subject currentUser = SecurityUtils.getSubject();
     if (currentUser.getPrincipals() != null) {
       @SuppressWarnings("rawtypes")
       List principals = currentUser.getPrincipals().asList();
+
       if (principals.size() > 1 && principals.get(1) instanceof PerryUserIdentity) {
         PerryUserIdentity currentUserInfo = (PerryUserIdentity) principals.get(1);
-        staffPersonId =
-            currentUserInfo.getStaffId() != null ? currentUserInfo.getStaffId() : staffPersonId;
+        String staffPersonId = currentUserInfo.getStaffId();
+        if (!StringUtils.isBlank(staffPersonId)) {
+          userIdentity = currentUserInfo;
+        }
       }
     }
-    return staffPersonId;
+
+    if (userIdentity == null) {
+      String localDEvprop = System.getenv("LOCAL_DEV");
+      if (StringUtils.isNoneBlank(localDEvprop) && "true".equals(localDEvprop)) {
+        userIdentity = new PerryUserIdentity();
+        userIdentity.setStaffId(DEFAULT_STAFF_ID);
+        userIdentity.setUser(DEFAULT_USER_ID);
+      }
+    }
+    return userIdentity;
   }
 
 }
