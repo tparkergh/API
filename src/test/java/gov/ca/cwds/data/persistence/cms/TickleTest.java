@@ -17,6 +17,10 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import gov.ca.cwds.rest.api.domain.DomainChef;
 
+/**
+ * @author CWDS API Team
+ *
+ */
 public class TickleTest {
 
   private String id = "1234567ABC";

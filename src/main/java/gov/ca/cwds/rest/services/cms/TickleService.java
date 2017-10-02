@@ -54,7 +54,6 @@ public class TickleService implements
     gov.ca.cwds.rest.api.domain.cms.Tickle tickle = request;
 
     try {
-
       gov.ca.cwds.data.persistence.cms.Tickle managed = new gov.ca.cwds.data.persistence.cms.Tickle(
           CmsKeyIdGenerator.generate(lastUpdatedId), tickle, lastUpdatedId, lastUpdatedTime);
       managed = tickleDao.create(managed);
