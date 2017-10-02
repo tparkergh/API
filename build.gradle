@@ -169,6 +169,7 @@ test {
     // Gradle passes the literal string '$rootProject.projectDir' ???
     // systemProperty 'java.library.path', '.:$rootProject.projectDir/lib/:/var/lib/jenkins/workspace/API/:/usr/local/lib/'
     systemProperty 'java.library.path', '.:./lib:/var/lib/jenkins/workspace/API/lib:/usr/local/lib'
+    environment 'LOCAL_DEV', 'true'
 }
 
 task integrationTest(type: Test, dependsOn: testClasses) {
