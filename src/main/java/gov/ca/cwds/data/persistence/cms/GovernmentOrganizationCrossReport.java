@@ -5,8 +5,6 @@ import java.util.Date;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 import org.apache.commons.lang3.StringUtils;
@@ -44,24 +42,6 @@ public class GovernmentOrganizationCrossReport extends CmsPersistentObject {
 
   @Column(name = "ORG_TY_IND")
   private String organizationTypeInd;
-
-  /**
-   * #147241489: referential integrity check.
-   * <p>
-   * Doesn't actually load the data. Just checks the existence of the parent referral record.
-   * </p>
-   */
-  @ManyToOne(optional = false)
-  @JoinColumn(name = "FKCRSS_RPT", nullable = false, updatable = false, insertable = false)
-  private Referral referral;
-
-  @ManyToOne(optional = false)
-  @JoinColumn(name = "FKCRSS_RP0", nullable = false, updatable = false, insertable = false)
-  private CrossReport crossreport;
-
-  @ManyToOne(optional = true)
-  @JoinColumn(name = "FKGV_ORG_T", nullable = true, updatable = false, insertable = false)
-  private GovernmentOrganizationCrossReport governmentOrganizationCrossReportId;
 
   /**
    * Default constructor
@@ -106,7 +86,7 @@ public class GovernmentOrganizationCrossReport extends CmsPersistentObject {
       gov.ca.cwds.rest.api.domain.cms.GovernmentOrganizationCrossReport domainGovernmentOrganizationCrossReport,
       String lastUpdatedId, Date lastUpdatedTime) {
     super(lastUpdatedId, lastUpdatedTime);
-    this.thirdId = domainGovernmentOrganizationCrossReport.getThirdId();
+    this.thirdId = thirdId;
     this.countySpecificCode = domainGovernmentOrganizationCrossReport.getCountySpecificCode();
     this.crossReportThirdId = domainGovernmentOrganizationCrossReport.getCrossReportThirdId();
     this.referralId = domainGovernmentOrganizationCrossReport.getReferralId();
