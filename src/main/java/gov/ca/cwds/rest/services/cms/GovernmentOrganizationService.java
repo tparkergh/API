@@ -69,7 +69,7 @@ public class GovernmentOrganizationService
         CacheBuilder.newBuilder().refreshAfterWrite(15, TimeUnit.DAYS).build(cacheLoader);
 
     this.instanceCounter = factoryCounter.incrementAndGet();
-    LOGGER.info("Construct instance #" + this.instanceCounter);
+    LOGGER.info("Construct instance # {}", this.instanceCounter);
   }
 
   @Override
