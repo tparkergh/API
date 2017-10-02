@@ -2,18 +2,16 @@ package gov.ca.cwds.rest.filters;
 
 import java.util.Date;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
-import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
-import org.apache.shiro.SecurityUtils;
-import org.apache.shiro.subject.Subject;
+import org.apache.shiro.authz.AuthorizationException;
 
 import gov.ca.cwds.auth.realms.PerryUserIdentity;
+import gov.ca.cwds.rest.services.cms.StaffPersonIdRetriever;
 
 /**
  * Common information carrier for all requests. Includes the request start time stamp and user
@@ -111,24 +109,11 @@ class RequestExecutionContextImpl implements RequestExecutionContext {
    * 
    */
   static void startRequest() {
-    PerryUserIdentity userIdentity = new PerryUserIdentity();
-    userIdentity.setStaffId(DEFAULT_STAFF_ID);
-    userIdentity.setUser(DEFAULT_USER_ID);
+    PerryUserIdentity userIdentity = StaffPersonIdRetriever.getPerryUserIdentity();
 
-    Subject currentUser = SecurityUtils.getSubject();
-    if (currentUser.getPrincipals() != null) {
-      @SuppressWarnings("rawtypes")
-      List principals = currentUser.getPrincipals().asList();
-
-      if (principals.size() > 1 && principals.get(1) instanceof PerryUserIdentity) {
-        PerryUserIdentity currentUserInfo = (PerryUserIdentity) principals.get(1);
-        String staffPersonId = currentUserInfo.getStaffId();
-        if (!StringUtils.isBlank(staffPersonId)) {
-          userIdentity = currentUserInfo;
-        }
-      }
+    if (userIdentity == null) {
+      throw new AuthorizationException("User identity not determined");
     }
-
     RequestExecutionContextRegistry.register(new RequestExecutionContextImpl(userIdentity));
   }
 
