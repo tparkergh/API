@@ -354,7 +354,7 @@ public class ScreeningToReferralService implements CrudsService {
           lawEnforcementIndicator = Boolean.TRUE;
         }
 
-        if (crossReport.getLegacyId() == null || crossReport.getLegacyId().isEmpty()) {
+        if (StringUtils.isBlank(crossReport.getLegacyId())) {
           // String outStateLawEnforcementAddr = null;
           // create the cross report
           gov.ca.cwds.rest.api.domain.cms.CrossReport cmsCrossReport =
@@ -393,7 +393,7 @@ public class ScreeningToReferralService implements CrudsService {
    */
   private Set<Allegation> processAllegations(ScreeningToReferral scr, String referralId,
       HashMap<Long, String> perpatratorClient, HashMap<Long, String> victimClient, Date timestamp)
-          throws ServiceException {
+      throws ServiceException {
 
     Set<Allegation> processedAllegations = new HashSet<>();
     Set<Allegation> allegations;
@@ -442,13 +442,13 @@ public class ScreeningToReferralService implements CrudsService {
       }
 
       boolean allegationHasPerpPersonId = allegation.getPerpetratorPersonId() != 0;
-      boolean isNotPerpetrator = !ParticipantValidator.isPerpetratorParticipant(scr,
-            allegation.getPerpetratorPersonId());
+      boolean isNotPerpetrator =
+          !ParticipantValidator.isPerpetratorParticipant(scr, allegation.getPerpetratorPersonId());
       if (allegationHasPerpPersonId && isNotPerpetrator) {
-          String message =
-              "Allegation/Perpetrator Person Id does not contain a Participant with a role of Perpetrator";
-          ServiceException exception = new ServiceException(message);
-          logError(message, exception);
+        String message =
+            "Allegation/Perpetrator Person Id does not contain a Participant with a role of Perpetrator";
+        ServiceException exception = new ServiceException(message);
+        logError(message, exception);
       }
 
       if (perpatratorClient.containsKey(allegation.getPerpetratorPersonId())) {
@@ -468,7 +468,7 @@ public class ScreeningToReferralService implements CrudsService {
         gov.ca.cwds.rest.api.domain.cms.Allegation cmsAllegation =
             new gov.ca.cwds.rest.api.domain.cms.Allegation("", LegacyDefaultValues.DEFAULT_CODE, "",
                 scr.getLocationType(), "", allegationDispositionType, allegation.getType(), "", "",
-                Boolean.FALSE, (perpatratorClientId.equals("")) ? "U" : "N", Boolean.FALSE,
+                Boolean.FALSE, ("").equals(perpatratorClientId) ? "U" : "N", Boolean.FALSE,
                 victimClientId, perpatratorClientId, referralId, scr.getIncidentCounty(),
                 Boolean.FALSE, LegacyDefaultValues.DEFAULT_CODE);
 
