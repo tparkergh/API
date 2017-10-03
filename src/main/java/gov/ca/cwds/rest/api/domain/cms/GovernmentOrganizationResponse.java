@@ -5,8 +5,6 @@ import java.util.List;
 
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import com.fasterxml.jackson.annotation.JsonUnwrapped;
 import com.fasterxml.jackson.annotation.JsonValue;
@@ -30,10 +28,6 @@ public class GovernmentOrganizationResponse implements Response, ApiMarker {
    * Base serialization version. Increment by class version.
    */
   private static final long serialVersionUID = 1L;
-
-  private static final Logger LOGGER =
-      LoggerFactory.getLogger(GovernmentOrganizationResponse.class);
-
 
   @JsonUnwrapped
   private List<GovernmentOrganization> governmentOrganizations = new ArrayList<>();

@@ -103,8 +103,6 @@ public class ServicesModule extends AbstractModule {
 
   }
 
-  private GovernmentOrganizationService governmentOrganizationService;
-
   /**
    * Default, no-op constructor.
    */

@@ -1,6 +1,5 @@
 package gov.ca.cwds.rest.validation;
 
-import gov.ca.cwds.rest.api.domain.Role;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -10,6 +9,7 @@ import java.util.Locale;
 import java.util.Set;
 
 import gov.ca.cwds.rest.api.domain.Participant;
+import gov.ca.cwds.rest.api.domain.Role;
 import gov.ca.cwds.rest.api.domain.ScreeningToReferral;
 import gov.ca.cwds.rest.messages.MessageBuilder;
 import gov.ca.cwds.rest.services.ServiceException;
@@ -126,7 +126,8 @@ public class ParticipantValidator {
       if (roles.contains(Role.SELF_REPORTED_ROLE.getType())) {
         return Boolean.TRUE;
       }
-      if (roles.contains(Role.VICTIM_ROLE.getType()) && roles.contains(Role.NON_MANDATED_REPORTER_ROLE.getType())) {
+      if (roles.contains(Role.VICTIM_ROLE.getType())
+          && roles.contains(Role.NON_MANDATED_REPORTER_ROLE.getType())) {
         return Boolean.TRUE;
       }
     }
@@ -241,20 +242,25 @@ public class ParticipantValidator {
       return Boolean.TRUE;
     }
     // R - 00831
-    if (roles.contains(Role.ANONYMOUS_REPORTER_ROLE.getType()) && roles.contains(Role.SELF_REPORTED_ROLE.getType())) {
+    if (roles.contains(Role.ANONYMOUS_REPORTER_ROLE.getType())
+        && roles.contains(Role.SELF_REPORTED_ROLE.getType())) {
       return Boolean.FALSE;
     }
-    if (roles.contains(Role.ANONYMOUS_REPORTER_ROLE.getType()) && roles.contains(Role.VICTIM_ROLE.getType())) {
+    if (roles.contains(Role.ANONYMOUS_REPORTER_ROLE.getType())
+        && roles.contains(Role.VICTIM_ROLE.getType())) {
       return Boolean.FALSE;
     }
-    if (roles.contains(Role.ANONYMOUS_REPORTER_ROLE.getType()) && (roles.contains(Role.MANDATED_REPORTER_ROLE.getType())
-        || roles.contains(Role.NON_MANDATED_REPORTER_ROLE.getType()))) {
+    if (roles.contains(Role.ANONYMOUS_REPORTER_ROLE.getType())
+        && (roles.contains(Role.MANDATED_REPORTER_ROLE.getType())
+            || roles.contains(Role.NON_MANDATED_REPORTER_ROLE.getType()))) {
       return Boolean.FALSE;
     }
-    if (roles.contains(Role.VICTIM_ROLE.getType()) && roles.contains(Role.PERPETRATOR_ROLE.getType())) {
+    if (roles.contains(Role.VICTIM_ROLE.getType())
+        && roles.contains(Role.PERPETRATOR_ROLE.getType())) {
       return Boolean.FALSE;
     }
-    if (roles.contains(Role.MANDATED_REPORTER_ROLE.getType()) && roles.contains(Role.NON_MANDATED_REPORTER_ROLE.getType())) {
+    if (roles.contains(Role.MANDATED_REPORTER_ROLE.getType())
+        && roles.contains(Role.NON_MANDATED_REPORTER_ROLE.getType())) {
       return Boolean.FALSE;
     }
     return Boolean.TRUE;
@@ -269,7 +275,8 @@ public class ParticipantValidator {
   public static Boolean selfReported(Participant participant) throws ServiceException {
     Set<String> roles = participant.getRoles();
     if (roles != null) {
-      if (roles.contains(Role.VICTIM_ROLE.getType()) && roles.contains(Role.NON_MANDATED_REPORTER_ROLE.getType())) {
+      if (roles.contains(Role.VICTIM_ROLE.getType())
+          && roles.contains(Role.NON_MANDATED_REPORTER_ROLE.getType())) {
         return Boolean.TRUE;
       }
       if (roles.contains(Role.SELF_REPORTED_ROLE.getType())) {
@@ -306,7 +313,8 @@ public class ParticipantValidator {
    * @param perpetratorPersonId - Person Id of perpetrator
    * @return - True if participant has a role of Perpetrator
    */
-  public static Boolean isPerpetratorParticipant(ScreeningToReferral str, long perpetratorPersonId) {
+  public static Boolean isPerpetratorParticipant(ScreeningToReferral str,
+      long perpetratorPersonId) {
 
     if (str.getParticipants() != null) {
       Set<Participant> participants = str.getParticipants();
@@ -347,11 +355,10 @@ public class ParticipantValidator {
    * @param role - String role
    * @return - Boolean true if any reporter type
    *
-   * Returns true if role is any reporter role
+   *         Returns true if role is any reporter role
    */
   public static Boolean roleIsAnyReporter(String role) {
-    boolean specialReporterRole =  role.equalsIgnoreCase(Role.SELF_REPORTED_ROLE.getType());
-    if ( roleIsReporterType(role)|| roleIsAnonymousReporter(role) ||roleIsSelfReporter(role)) {
+    if (roleIsReporterType(role) || roleIsAnonymousReporter(role) || roleIsSelfReporter(role)) {
       return Boolean.TRUE;
     }
     return Boolean.FALSE;

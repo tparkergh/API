@@ -49,7 +49,7 @@ public class CmsDocReferralClientService
     CmsDocReferralClient retval = null;
 
     final String key = primaryKey;
-    LOGGER.info("primaryKey=", key);
+    LOGGER.info("primaryKey={}", key);
     List<gov.ca.cwds.data.persistence.cms.CmsDocReferralClient> docs =
         dao.listDocReferralClient(key);
     if (docs != null) {

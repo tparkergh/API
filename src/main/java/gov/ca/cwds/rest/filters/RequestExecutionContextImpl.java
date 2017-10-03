@@ -21,9 +21,6 @@ import gov.ca.cwds.rest.services.cms.StaffPersonIdRetriever;
  */
 class RequestExecutionContextImpl implements RequestExecutionContext {
 
-  private static final String DEFAULT_STAFF_ID = "0X5";
-  private static final String DEFAULT_USER_ID = "CWDST";
-
   /**
    * Context parameters
    */

@@ -159,7 +159,7 @@ public class SsaName3Dao {
        */
       if (returnCode != 0 && returnCode != 1) {
         LOGGER.error("Stored Procedure return message - ", returnMessage);
-        throw new DaoException("Stored Procedure returned with ERROR - " + returnMessage);
+        throw new DaoException("Stored Procedure returned with ERROR - {}" + returnMessage);
       }
 
     } catch (DaoException h) {

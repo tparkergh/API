@@ -6,6 +6,7 @@ import javax.persistence.EntityExistsException;
 import javax.persistence.EntityNotFoundException;
 import javax.validation.Validator;
 
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -104,7 +105,7 @@ public class AddressService implements
       upperCaseTables.createAddressUc(managed);
       return new PostedAddress(managed, true);
     } catch (EntityExistsException e) {
-      LOGGER.info("Address already exists : ()", address);
+      LOGGER.info("Address already exists : {}", address);
       throw new ServiceException(e);
     }
   }
@@ -118,8 +119,8 @@ public class AddressService implements
   public gov.ca.cwds.rest.api.domain.Address createAddressFromScreening(ScreeningToReferral scr,
       Date timestamp, MessageBuilder messageBuilder) {
     gov.ca.cwds.rest.api.domain.Address address = scr.getAddress();
-    if (address == null || address.getZip() == null || address.getStreetAddress() == null
-        || address.getStreetAddress().isEmpty() || address.getType() == null) {
+    if (address == null || address.getZip() == null
+        || StringUtils.isBlank(address.getStreetAddress()) || address.getType() == null) {
       String message = "Screening address is null or empty";
       messageBuilder.addMessageAndLog(message, LOGGER);
       return address;

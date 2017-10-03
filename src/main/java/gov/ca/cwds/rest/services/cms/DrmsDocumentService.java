@@ -68,18 +68,18 @@ public class DrmsDocumentService implements
   }
 
   @Override
-  public gov.ca.cwds.rest.api.domain.cms.DrmsDocument delete(String arg0) {
+  public gov.ca.cwds.rest.api.domain.cms.DrmsDocument delete(String primaryKey) {
     throw new NotImplementedException("delete not implement");
   }
 
   @Override
-  public gov.ca.cwds.rest.api.domain.cms.DrmsDocument find(String arg0) {
+  public gov.ca.cwds.rest.api.domain.cms.DrmsDocument find(String primaryKey) {
     throw new NotImplementedException("find not implement");
   }
 
   @Override
-  public gov.ca.cwds.rest.api.domain.cms.DrmsDocument update(String arg0,
-      gov.ca.cwds.rest.api.domain.cms.DrmsDocument arg1) {
+  public gov.ca.cwds.rest.api.domain.cms.DrmsDocument update(String primaryKey,
+      gov.ca.cwds.rest.api.domain.cms.DrmsDocument request) {
     throw new NotImplementedException("update not implement");
   }
 
