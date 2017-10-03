@@ -95,7 +95,7 @@ public class GovernmentOrganizationServiceTest {
   }
 
   @Test
-  public void handleFind_Args__Noresults() throws Exception {
+  public void handleFind_Args__OnlyStateLicensing() throws Exception {
     GovernmentOrganizationDao governmentOrganizationDao = mock(GovernmentOrganizationDao.class);
     LawEnforcementDao lawEnforcementDao = mock(LawEnforcementDao.class);
     List<GovernmentOrganizationEntity> govOrgs = new ArrayList<GovernmentOrganizationEntity>();
@@ -111,7 +111,7 @@ public class GovernmentOrganizationServiceTest {
         new GovernmentOrganizationService(governmentOrganizationDao, lawEnforcementDao);
     String searchForThis = "0";
     GovernmentOrganizationResponse actual = target.handleFind(searchForThis);
-    assertThat(actual.getGovernmentOrganizations().size(), is(equalTo(0)));
+    assertThat(actual.getGovernmentOrganizations().size(), is(equalTo(1)));
   }
 
   @Test

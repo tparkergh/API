@@ -135,16 +135,16 @@ public class GovernmentOrganizationService
         List<GovernmentOrganization> allAgencies) {
 
       List<AgencyType> supportedAgencyTypes =
-          Lists.newArrayList(AgencyType.COMMUNITY_CARE_LICENSING, AgencyType.COUNTY_LICENSING,
-              AgencyType.DISTRICT_ATTORNEY, AgencyType.DEPARTMENT_OF_JUSTICE,
-              AgencyType.LAW_ENFORCEMENT);
+          Lists.newArrayList(AgencyType.COUNTY_LICENSING, AgencyType.DISTRICT_ATTORNEY,
+              AgencyType.DEPARTMENT_OF_JUSTICE, AgencyType.LAW_ENFORCEMENT);
 
       Short id = Short.valueOf(countyId);
       List<GovernmentOrganization> supportedAgencies = new ArrayList<>();
 
       for (GovernmentOrganization agency : allAgencies) {
         AgencyType agencyType = AgencyType.getByName(agency.getAgencyType());
-        if (agency.getCountyId().equals(id) && supportedAgencyTypes.contains(agencyType)) {
+        if ((agency.getCountyId().equals(id) && supportedAgencyTypes.contains(agencyType))
+            || agencyType.equals(AgencyType.COMMUNITY_CARE_LICENSING)) {
           supportedAgencies.add(agency);
         }
       }
