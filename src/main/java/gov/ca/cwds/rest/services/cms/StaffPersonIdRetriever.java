@@ -5,8 +5,6 @@ import java.util.List;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.subject.Subject;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import gov.ca.cwds.auth.realms.PerryUserIdentity;
 
@@ -15,8 +13,6 @@ import gov.ca.cwds.auth.realms.PerryUserIdentity;
  *
  */
 public class StaffPersonIdRetriever {
-
-  private static final Logger LOGGER = LoggerFactory.getLogger(StaffPersonIdRetriever.class);
 
   private static final String DEFAULT_STAFF_ID = "0X5";
   private static final String DEFAULT_USER_ID = "CWDST";
@@ -54,22 +50,18 @@ public class StaffPersonIdRetriever {
           userIdentity = currentUserInfo;
         }
       }
-    } else {
-      userIdentity = new PerryUserIdentity();
-      userIdentity.setStaffId("0X5");
-      userIdentity.setUser("CWDST");
-      LOGGER.info("Unable to determine the logined user");
     }
 
     if (userIdentity == null) {
       String localDEvprop = System.getenv("LOCAL_DEV");
-      if (StringUtils.isNoneBlank(localDEvprop) && "true".equals(localDEvprop)) {
+      if (StringUtils.isNotBlank(localDEvprop) && "true".equals(localDEvprop)) {
         userIdentity = new PerryUserIdentity();
         userIdentity.setStaffId(DEFAULT_STAFF_ID);
         userIdentity.setUser(DEFAULT_USER_ID);
       }
+    } else {
+      return new PerryUserIdentity();
     }
     return userIdentity;
   }
-
 }
