@@ -58,10 +58,11 @@ public class StaffPersonIdRetriever {
         userIdentity = new PerryUserIdentity();
         userIdentity.setStaffId(DEFAULT_STAFF_ID);
         userIdentity.setUser(DEFAULT_USER_ID);
+      } else {
+        return new PerryUserIdentity();
       }
-    } else {
-      return new PerryUserIdentity();
     }
     return userIdentity;
   }
+
 }
