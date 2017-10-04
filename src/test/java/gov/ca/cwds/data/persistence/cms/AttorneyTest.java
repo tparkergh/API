@@ -28,13 +28,6 @@ public class AttorneyTest implements PersistentTestTemplate {
 
   private static final ObjectMapper MAPPER = SystemCodeTestHarness.MAPPER;
 
-
-  @Override
-  @Test
-  public void testEqualsHashCodeWorks() {
-    // EqualsVerifier.forClass(Attorney.class).suppress(Warning.NONFINAL_FIELDS).verify();
-  }
-
   /*
    * Constructor test
    */

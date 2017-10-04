@@ -17,6 +17,8 @@ import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import gov.ca.cwds.data.persistence.junit.template.PersistentTestTemplate;
+import gov.ca.cwds.fixture.ReporterResourceBuilder;
+import gov.ca.cwds.rest.api.domain.DomainChef;
 
 /**
  * @author CWDS API Team
@@ -37,47 +39,45 @@ public class ReporterTest implements PersistentTestTemplate {
   @Override
   @Test
   public void testConstructorUsingDomain() throws Exception {
-    // gov.ca.cwds.rest.api.domain.cms.Reporter domain = validReporterDomain();
-    // Reporter pers = new Reporter(domain, lastUpdatedId);
-    //
-    // assertThat(pers.getReferralId(), is(equalTo(domain.getReferralId())));
-    // assertThat(pers.getBadgeNumber(), is(equalTo(domain.getBadgeNumber())));
-    // assertThat(pers.getCityName(), is(equalTo(domain.getCityName())));
-    // assertThat(pers.getColltrClientRptrReltnshpType(),
-    // is(equalTo(domain.getColltrClientRptrReltnshpType())));
-    // assertThat(pers.getCommunicationMethodType(),
-    // is(equalTo(domain.getCommunicationMethodType())));
-    // assertThat(pers.getConfidentialWaiverIndicator(),
-    // is(equalTo(DomainChef.cookBoolean(domain.getConfidentialWaiverIndicator()))));
-    // assertThat(pers.getDrmsMandatedRprtrFeedback(),
-    // is(equalTo(domain.getDrmsMandatedRprtrFeedback())));
-    // assertThat(pers.getEmployerName(), is(equalTo(domain.getEmployerName())));
-    // assertThat(pers.getFeedbackDate(),
-    // is(equalTo(DomainChef.uncookDateString(domain.getFeedbackDate()))));
-    // assertThat(pers.getFeedbackRequiredIndicator(),
-    // is(equalTo(DomainChef.cookBoolean(domain.getFeedbackRequiredIndicator()))));
-    // assertThat(pers.getFirstName(), is(equalTo(domain.getFirstName())));
-    // assertThat(pers.getLastName(), is(equalTo(domain.getLastName())));
-    // assertThat(pers.getMandatedReporterIndicator(),
-    // is(equalTo(DomainChef.cookBoolean(domain.getMandatedReporterIndicator()))));
-    // assertThat(pers.getMessagePhoneExtensionNumber(),
-    // is(equalTo(domain.getMessagePhoneExtensionNumber())));
-    // assertThat(pers.getMessagePhoneNumber(), is(equalTo(domain.getMessagePhoneNumber())));
-    // assertThat(pers.getMiddleInitialName(), is(equalTo(domain.getMiddleInitialName())));
-    // assertThat(pers.getNamePrefixDescription(), is(equalTo(domain.getNamePrefixDescription())));
-    // assertThat(pers.getPrimaryPhoneNumber(), is(equalTo(domain.getPrimaryPhoneNumber())));
-    // assertThat(pers.getPrimaryPhoneExtensionNumber(),
-    // is(equalTo(domain.getPrimaryPhoneExtensionNumber())));
-    // assertThat(pers.getStateCodeType(), is(equalTo(domain.getStateCodeType())));
-    // assertThat(pers.getStreetName(), is(equalTo(domain.getStreetName())));
-    // assertThat(pers.getStreetNumber(), is(equalTo(domain.getStreetNumber())));
-    // assertThat(pers.getSuffixTitleDescription(),
-    // is(equalTo(domain.getSuffixTitleDescription())));
-    // assertThat(pers.getZipNumber(),
-    // is(equalTo(DomainChef.uncookZipcodeString(domain.getZipcode()))));
-    // assertThat(pers.getLawEnforcementId(), is(equalTo(domain.getLawEnforcementId())));
-    // assertThat(pers.getZipSuffixNumber(), is(equalTo(domain.getZipSuffixNumber())));
-    // assertThat(pers.getCountySpecificCode(), is(equalTo(domain.getCountySpecificCode())));
+    gov.ca.cwds.rest.api.domain.cms.Reporter domain = new ReporterResourceBuilder().build();
+    Reporter pers = new Reporter(domain, lastUpdatedId);
+
+    assertThat(pers.getReferralId(), is(equalTo(domain.getReferralId())));
+    assertThat(pers.getBadgeNumber(), is(equalTo(domain.getBadgeNumber())));
+    assertThat(pers.getCityName(), is(equalTo(domain.getCityName())));
+    assertThat(pers.getColltrClientRptrReltnshpType(),
+        is(equalTo(domain.getColltrClientRptrReltnshpType())));
+    assertThat(pers.getCommunicationMethodType(), is(equalTo(domain.getCommunicationMethodType())));
+    assertThat(pers.getConfidentialWaiverIndicator(),
+        is(equalTo(DomainChef.cookBoolean(domain.getConfidentialWaiverIndicator()))));
+    assertThat(pers.getDrmsMandatedRprtrFeedback(),
+        is(equalTo(domain.getDrmsMandatedRprtrFeedback())));
+    assertThat(pers.getEmployerName(), is(equalTo(domain.getEmployerName())));
+    assertThat(pers.getFeedbackDate(),
+        is(equalTo(DomainChef.uncookDateString(domain.getFeedbackDate()))));
+    assertThat(pers.getFeedbackRequiredIndicator(),
+        is(equalTo(DomainChef.cookBoolean(domain.getFeedbackRequiredIndicator()))));
+    assertThat(pers.getFirstName(), is(equalTo(domain.getFirstName())));
+    assertThat(pers.getLastName(), is(equalTo(domain.getLastName())));
+    assertThat(pers.getMandatedReporterIndicator(),
+        is(equalTo(DomainChef.cookBoolean(domain.getMandatedReporterIndicator()))));
+    assertThat(pers.getMessagePhoneExtensionNumber(),
+        is(equalTo(domain.getMessagePhoneExtensionNumber())));
+    assertThat(pers.getMessagePhoneNumber(), is(equalTo(domain.getMessagePhoneNumber())));
+    assertThat(pers.getMiddleInitialName(), is(equalTo(domain.getMiddleInitialName())));
+    assertThat(pers.getNamePrefixDescription(), is(equalTo(domain.getNamePrefixDescription())));
+    assertThat(pers.getPrimaryPhoneNumber(), is(equalTo(domain.getPrimaryPhoneNumber())));
+    assertThat(pers.getPrimaryPhoneExtensionNumber(),
+        is(equalTo(domain.getPrimaryPhoneExtensionNumber())));
+    assertThat(pers.getStateCodeType(), is(equalTo(domain.getStateCodeType())));
+    assertThat(pers.getStreetName(), is(equalTo(domain.getStreetName())));
+    assertThat(pers.getStreetNumber(), is(equalTo(domain.getStreetNumber())));
+    assertThat(pers.getSuffixTitleDescription(), is(equalTo(domain.getSuffixTitleDescription())));
+    assertThat(pers.getZipNumber(),
+        is(equalTo(DomainChef.uncookZipcodeString(domain.getZipcode()))));
+    assertThat(pers.getLawEnforcementId(), is(equalTo(domain.getLawEnforcementId())));
+    assertThat(pers.getZipSuffixNumber(), is(equalTo(domain.getZipSuffixNumber())));
+    assertThat(pers.getCountySpecificCode(), is(equalTo(domain.getCountySpecificCode())));
   }
 
   @Override
@@ -131,7 +131,7 @@ public class ReporterTest implements PersistentTestTemplate {
     assertThat(persistent.getLawEnforcementId(), is(equalTo(vp.getLawEnforcementId())));
     assertThat(persistent.getZipSuffixNumber(), is(equalTo(vp.getZipSuffixNumber())));
     assertThat(persistent.getCountySpecificCode(), is(equalTo(vp.getCountySpecificCode())));
-    // MAPPER.writerWithDefaultPrettyPrinter().writeValue(System.out, persistent);
+
   }
 
   @SuppressWarnings("javadoc")
@@ -157,20 +157,10 @@ public class ReporterTest implements PersistentTestTemplate {
     assertThat(MAPPER.writeValueAsString(persistent)).isEqualTo(expected);
   }
 
-  @Override
-  public void testEqualsHashCodeWorks() throws Exception {}
-
   private Reporter validReporter() throws JsonParseException, JsonMappingException, IOException {
     Reporter validReporter =
         MAPPER.readValue(fixture("fixtures/persistent/Reporter/valid/valid.json"), Reporter.class);
     return validReporter;
   }
 
-  private gov.ca.cwds.rest.api.domain.cms.Reporter validReporterDomain()
-      throws JsonParseException, JsonMappingException, IOException {
-    gov.ca.cwds.rest.api.domain.cms.Reporter validReporterDomain =
-        MAPPER.readValue(fixture("fixtures/domain/legacy/Reporter/valid/valid.json"),
-            gov.ca.cwds.rest.api.domain.cms.Reporter.class);
-    return validReporterDomain;
-  }
 }

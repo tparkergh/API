@@ -22,7 +22,7 @@ public class CmsCrossReportResourceBuilder {
   String recipientPositionTitleDesc = "";
   String referenceNumber = "";
   String referralId = "";
-  String lawEnforcementId = "";
+  String lawEnforcementId = null;
   String staffPersonId = "";
   String description = "";
   String recipientName = "";

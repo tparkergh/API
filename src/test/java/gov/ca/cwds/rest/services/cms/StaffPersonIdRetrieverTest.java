@@ -3,8 +3,6 @@ package gov.ca.cwds.rest.services.cms;
 import static org.junit.Assert.assertEquals;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
-import gov.ca.cwds.auth.realms.PerryUserIdentity;
-import io.dropwizard.jackson.Jackson;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -15,6 +13,9 @@ import org.junit.After;
 import org.junit.Test;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+
+import gov.ca.cwds.auth.realms.PerryUserIdentity;
+import io.dropwizard.jackson.Jackson;
 
 
 /**

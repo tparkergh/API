@@ -1,21 +1,17 @@
 package gov.ca.cwds.data.persistence.cms;
 
-import static io.dropwizard.testing.FixtureHelpers.fixture;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.notNullValue;
 
-import java.io.IOException;
 import java.math.BigDecimal;
 
 import org.junit.Test;
 
-import com.fasterxml.jackson.core.JsonParseException;
-import com.fasterxml.jackson.databind.JsonMappingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
-
 import gov.ca.cwds.data.persistence.junit.template.PersistentTestTemplate;
+import gov.ca.cwds.fixture.AddressEntityBuilder;
+import gov.ca.cwds.fixture.CmsAddressResourceBuilder;
 import gov.ca.cwds.rest.api.domain.DomainChef;
 
 /**
@@ -24,31 +20,29 @@ import gov.ca.cwds.rest.api.domain.DomainChef;
  */
 public class AddressTest implements PersistentTestTemplate {
 
-  private String id = "1234567ABC";
+  private String id = "ABc1r90Pg6";
   private String lastUpdatedId = "0X5";
   private String cityName = "Sacramento";
   private String description = "test CWS address";
-  private int emergencyPhoneExtension = 1234;
-  private BigDecimal emergencyPhoneNumber = new BigDecimal(9876543);
+  private int emergencyPhoneExtension = 0;
+  private BigDecimal emergencyPhoneNumber = new BigDecimal(0);
   private String foreignAddressIndicator = "N";
-  private Short governmentEntityType = 99;
-  private int messagePhoneExtension = 1234;
-  private BigDecimal messagePhoneNumber = new BigDecimal(9876543);
+  private Short governmentEntityType = 0;
+  private int messagePhoneExtension = 0;
+  private BigDecimal messagePhoneNumber = new BigDecimal(0);
   private String otherHeaderAddress = "";
   private String postDirectionTextCode = "";
   private String preDirectionTextCode = "";
-  private int primaryPhoneNumberExtension = 4321;
-  private BigDecimal primaryPhoneNumber = new BigDecimal(8765432);
-  private Short stateCodeType = 99;
+  private int primaryPhoneNumberExtension = 0;
+  private BigDecimal primaryPhoneNumber = new BigDecimal(0);
+  private Short stateCodeType = 1828;
   private String streetName = "First Street";
-  private String streetNumber = "1234";
-  private Short streetSuffixType = 0;
-  private Short unitDesignatorType = 0;
+  private String streetNumber = "1";
+  private Short streetSuffixType = 1;
+  private Short unitDesignatorType = 1;
   private String unitNumber = "";
-  private String zip = "95666";
-  private Short zipSuffix = 1234;
-
-  private static final ObjectMapper MAPPER = SystemCodeTestHarness.MAPPER;
+  private String zip = "98765";
+  private Short zipSuffix = 0;
 
   /*
    * Constructor test
@@ -63,12 +57,7 @@ public class AddressTest implements PersistentTestTemplate {
   @Test
   public void testPersistentConstructor() throws Exception {
 
-    gov.ca.cwds.data.persistence.cms.Address pa = new gov.ca.cwds.data.persistence.cms.Address(id,
-        cityName, emergencyPhoneNumber, emergencyPhoneExtension, foreignAddressIndicator,
-        governmentEntityType, messagePhoneNumber, messagePhoneExtension, otherHeaderAddress,
-        primaryPhoneNumber, primaryPhoneNumberExtension, stateCodeType, streetName, streetNumber,
-        zip, description, zipSuffix, postDirectionTextCode, preDirectionTextCode, streetSuffixType,
-        unitDesignatorType, unitNumber);
+    gov.ca.cwds.data.persistence.cms.Address pa = new AddressEntityBuilder().build();
 
     assertThat(pa.getId(), is(equalTo(id)));
     assertThat(pa.getAddressDescription(), is(equalTo(description)));
@@ -97,7 +86,7 @@ public class AddressTest implements PersistentTestTemplate {
   @Override
   @Test
   public void testConstructorUsingDomain() throws Exception {
-    gov.ca.cwds.rest.api.domain.cms.Address da = validDomainAddress();
+    gov.ca.cwds.rest.api.domain.cms.Address da = new CmsAddressResourceBuilder().buildCmsAddress();
     gov.ca.cwds.data.persistence.cms.Address pa =
         new gov.ca.cwds.data.persistence.cms.Address(id, da, lastUpdatedId);
 
@@ -126,20 +115,4 @@ public class AddressTest implements PersistentTestTemplate {
     assertThat(pa.getZip4(), is(equalTo(da.getZip4())));
   }
 
-  @Override
-  // @Test
-  public void testEqualsHashCodeWorks() throws Exception {
-    // EqualsVerifier.forClass(gov.ca.cwds.data.persistence.cms.Address.class)
-    // .suppress(Warning.NONFINAL_FIELDS).verify();
-  }
-
-  private gov.ca.cwds.rest.api.domain.cms.Address validDomainAddress()
-      throws JsonParseException, JsonMappingException, IOException {
-
-    gov.ca.cwds.rest.api.domain.cms.Address validDomainAddress =
-        MAPPER.readValue(fixture("fixtures/domain/legacy/Address/valid/validAddress.json"),
-            gov.ca.cwds.rest.api.domain.cms.Address.class);
-
-    return validDomainAddress;
-  }
 }

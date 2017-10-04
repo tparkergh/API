@@ -24,7 +24,7 @@ public class ReferralResourceBuilder {
   Boolean caretakersPerpetratorCode = false;
   String closureDate = "";
   Short communicationMethodType = 0;
-  String currentLocationOfChildren = "";
+  String currentLocationOfChildren = null;
   String drmsAllegationDescriptionDoc = "";
   String drmsErReferralDoc = "";
   String drmsInvestigationDoc = "";
@@ -48,10 +48,10 @@ public class ReferralResourceBuilder {
   String specificsIncludedCode = "N";
   String sufficientInformationCode = "N";
   String unfoundedSeriesCode = "N";
-  String linkToPrimaryReferralId = "";
-  String allegesAbuseOccurredAtAddressId = "";
-  String firstResponseDeterminedByStaffPersonId = "";
-  String primaryContactStaffPersonId = "";
+  String linkToPrimaryReferralId = null;
+  String allegesAbuseOccurredAtAddressId = null;
+  String firstResponseDeterminedByStaffPersonId = null;
+  String primaryContactStaffPersonId = null;
   String countySpecificCode = "";
   Boolean specialProjectReferralIndicator = false;
   Boolean zippyCreatedIndicator = false;

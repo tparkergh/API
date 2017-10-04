@@ -9,59 +9,84 @@ import gov.ca.cwds.data.persistence.cms.CrossReport;
 import gov.ca.cwds.data.persistence.cms.Referral;
 import gov.ca.cwds.data.persistence.cms.Reporter;
 
+/**
+ * @author CWDS API Team
+ *
+ */
+@SuppressWarnings("javadoc")
 public class ReferralEntityBuilder {
-  String id;
-  String additionalInfoIncludedCode;
-  String anonymousReporterIndicator;
-  String applicationForPetitionIndicator;
-  String approvalNumber;
-  Short approvalStatusType;
-  String caretakersPerpetratorCode;
-  Date closureDate;
-  Short communicationMethodType;
-  String currentLocationOfChildren;
-  String drmsAllegationDescriptionDoc;
-  String drmsErReferralDoc;
-  String drmsInvestigationDoc;
-  String filedSuspectedChildAbuseReporttoLawEnforcementIndicator;
-  String familyAwarenessIndicator;
-  Short govtEntityType;
-  String legalDefinitionCode;
-  String legalRightsNoticeIndicator;
-  String limitedAccessCode;
-  Date mandatedCrossReportReceivedDate;
-  String referralName;
-  String openAdequateCaseCode;
-  Date receivedDate;
-  Date receivedTime;
-  Short referralResponseType;
-  Short referredToResourceType;
-  Date responseDeterminationDate;
-  Date responseDeterminationTime;
-  String responseRationaleText;
-  String screenerNoteText;
-  String specificsIncludedCode;
-  String sufficientInformationCode;
-  String unfoundedSeriesCode;
-  String linkToPrimaryReferralId;
-  String allegesAbuseOccurredAtAddressId;
-  String firstResponseDeterminedByStaffPersonId;
-  String primaryContactStaffPersonId;
-  String countySpecificCode;
-  String specialProjectReferralIndicator;
-  String zippyCreatedIndicator;
-  String homelessIndicator;
-  String familyRefusedServicesIndicator;
-  Date firstEvaluatedOutApprovalDate;
-  String responsibleAgencyCode;
-  Short limitedAccessGovtAgencyType;
-  Date limitedAccessDate;
-  String limitedAccessDesc;
-  Date originalClosureDate;
-  Address addresses;
-  Set<Allegation> allegations;
-  Set<CrossReport> crossReports;
-  Set<Reporter> reporters;
+
+  String id = "AbiQCgu0Hj";
+  String additionalInfoIncludedCode = "N";
+  String anonymousReporterIndicator = "N";
+  String applicationForPetitionIndicator = "N";
+  String approvalNumber = "APP1234";
+  Short approvalStatusType = 122;
+  String caretakersPerpetratorCode = "676191600000";
+  Date closureDate = new Date();
+  Short communicationMethodType = 408;
+  String currentLocationOfChildren = null;
+  String drmsAllegationDescriptionDoc = null;
+  String drmsErReferralDoc = "ABC1234569";
+  String drmsInvestigationDoc = "ABC1234560";
+  String filedSuspectedChildAbuseReporttoLawEnforcementIndicator = "N";
+  String familyAwarenessIndicator = "N";
+  Short govtEntityType = 1077;
+  String legalDefinitionCode = "N";
+  String legalRightsNoticeIndicator = "N";
+  String limitedAccessCode = "N";
+  Date mandatedCrossReportReceivedDate = new Date();
+  String referralName = "referral Name";
+  String openAdequateCaseCode = "Y";
+  Date receivedDate = new Date();
+  Date receivedTime = new Date();
+  Short referralResponseType = 0;
+  Short referredToResourceType = 1536;
+  Date responseDeterminationDate = new Date();
+  Date responseDeterminationTime = new Date();
+  String responseRationaleText = "response rational";
+  String screenerNoteText = "screener notes";
+  String specificsIncludedCode = "N";
+  String sufficientInformationCode = "N";
+  String unfoundedSeriesCode = "N";
+  String linkToPrimaryReferralId = "ABC1234567";
+  String allegesAbuseOccurredAtAddressId = "ABC123456o";
+  String firstResponseDeterminedByStaffPersonId = "q1p";
+  String primaryContactStaffPersonId = "BTr";
+  String countySpecificCode = "99";
+  String specialProjectReferralIndicator = "N";
+  String zippyCreatedIndicator = "N";
+  String homelessIndicator = "N";
+  String familyRefusedServicesIndicator = "N";
+  Date firstEvaluatedOutApprovalDate = new Date();
+  String responsibleAgencyCode = "C";
+  Short limitedAccessGovtAgencyType = 1111;
+  Date limitedAccessDate = new Date();
+  String limitedAccessDesc = "";
+  Date originalClosureDate = new Date();
+  Address addresses = null;
+  Set<Allegation> allegations = null;
+  Set<CrossReport> crossReports = null;
+  Set<Reporter> reporters = null;
+
+  public Referral build() {
+    return new Referral(id, additionalInfoIncludedCode, anonymousReporterIndicator,
+        applicationForPetitionIndicator, approvalNumber, approvalStatusType,
+        caretakersPerpetratorCode, closureDate, communicationMethodType, currentLocationOfChildren,
+        drmsAllegationDescriptionDoc, drmsErReferralDoc, drmsInvestigationDoc,
+        filedSuspectedChildAbuseReporttoLawEnforcementIndicator, familyAwarenessIndicator,
+        govtEntityType, legalDefinitionCode, legalRightsNoticeIndicator, limitedAccessCode,
+        mandatedCrossReportReceivedDate, referralName, openAdequateCaseCode, receivedDate,
+        receivedTime, referralResponseType, referredToResourceType, responseDeterminationDate,
+        responseDeterminationTime, responseRationaleText, screenerNoteText, specificsIncludedCode,
+        sufficientInformationCode, unfoundedSeriesCode, linkToPrimaryReferralId,
+        allegesAbuseOccurredAtAddressId, firstResponseDeterminedByStaffPersonId,
+        primaryContactStaffPersonId, countySpecificCode, specialProjectReferralIndicator,
+        zippyCreatedIndicator, homelessIndicator, familyRefusedServicesIndicator,
+        firstEvaluatedOutApprovalDate, responsibleAgencyCode, limitedAccessGovtAgencyType,
+        limitedAccessDate, limitedAccessDesc, originalClosureDate, addresses, allegations,
+        crossReports, reporters);
+  }
 
   public ReferralEntityBuilder setId(String id) {
     this.id = id;
@@ -333,22 +358,4 @@ public class ReferralEntityBuilder {
     return this;
   }
 
-  public Referral build() {
-    return new Referral(id, additionalInfoIncludedCode, anonymousReporterIndicator,
-        applicationForPetitionIndicator, approvalNumber, approvalStatusType,
-        caretakersPerpetratorCode, closureDate, communicationMethodType, currentLocationOfChildren,
-        drmsAllegationDescriptionDoc, drmsErReferralDoc, drmsInvestigationDoc,
-        filedSuspectedChildAbuseReporttoLawEnforcementIndicator, familyAwarenessIndicator,
-        govtEntityType, legalDefinitionCode, legalRightsNoticeIndicator, limitedAccessCode,
-        mandatedCrossReportReceivedDate, referralName, openAdequateCaseCode, receivedDate,
-        receivedTime, referralResponseType, referredToResourceType, responseDeterminationDate,
-        responseDeterminationTime, responseRationaleText, screenerNoteText, specificsIncludedCode,
-        sufficientInformationCode, unfoundedSeriesCode, linkToPrimaryReferralId,
-        allegesAbuseOccurredAtAddressId, firstResponseDeterminedByStaffPersonId,
-        primaryContactStaffPersonId, countySpecificCode, specialProjectReferralIndicator,
-        zippyCreatedIndicator, homelessIndicator, familyRefusedServicesIndicator,
-        firstEvaluatedOutApprovalDate, responsibleAgencyCode, limitedAccessGovtAgencyType,
-        limitedAccessDate, limitedAccessDesc, originalClosureDate, addresses, allegations,
-        crossReports, reporters);
-  }
 }

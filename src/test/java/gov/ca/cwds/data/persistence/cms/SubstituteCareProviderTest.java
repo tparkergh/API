@@ -9,7 +9,6 @@ import static org.hamcrest.Matchers.notNullValue;
 
 import java.io.IOException;
 
-import org.junit.Ignore;
 import org.junit.Test;
 
 import com.fasterxml.jackson.core.JsonParseException;
@@ -17,8 +16,6 @@ import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import gov.ca.cwds.data.persistence.junit.template.PersistentTestTemplate;
-import nl.jqno.equalsverifier.EqualsVerifier;
-import nl.jqno.equalsverifier.Warning;
 
 /**
  * @author CWDS API Team
@@ -27,14 +24,6 @@ import nl.jqno.equalsverifier.Warning;
 public class SubstituteCareProviderTest implements PersistentTestTemplate {
 
   private static final ObjectMapper MAPPER = SystemCodeTestHarness.MAPPER;
-
-  @Override
-  @Test
-  @Ignore
-  public void testEqualsHashCodeWorks() throws Exception {
-    EqualsVerifier.forClass(SubstituteCareProvider.class).suppress(Warning.NONFINAL_FIELDS)
-        .verify();
-  }
 
   /*
    * Constructor test

@@ -289,12 +289,6 @@ public class ClientTest implements PersistentTestTemplate {
         is(equalTo(DomainChef.cookBoolean(vc.getZippyCreatedIndicator()))));
   }
 
-  @Override
-  @Test
-  public void testEqualsHashCodeWorks() throws Exception {
-    // EqualsVerifier.forClass(Attorney.class).suppress(Warning.NONFINAL_FIELDS).verify();
-  }
-
   @SuppressWarnings("javadoc")
   @Test
   public void testSerializeJson() throws Exception {

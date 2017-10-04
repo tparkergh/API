@@ -5,6 +5,11 @@ import java.util.Date;
 import gov.ca.cwds.data.persistence.cms.Allegation;
 import gov.ca.cwds.data.persistence.cms.Client;
 
+/**
+ * @author CWDS API Team
+ *
+ */
+@SuppressWarnings("javadoc")
 public class AllegationEntityBuilder {
   String id = "1234567890";
   Date abuseEndDate = new Date();

@@ -8,7 +8,6 @@ import static org.hamcrest.Matchers.notNullValue;
 
 import java.io.IOException;
 
-import org.junit.Ignore;
 import org.junit.Test;
 
 import com.fasterxml.jackson.core.JsonParseException;
@@ -17,8 +16,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import gov.ca.cwds.data.persistence.junit.template.PersistentTestTemplate;
 import io.dropwizard.jackson.Jackson;
-import nl.jqno.equalsverifier.EqualsVerifier;
-import nl.jqno.equalsverifier.Warning;
 
 /**
  * @author CWDS API Team
@@ -26,14 +23,6 @@ import nl.jqno.equalsverifier.Warning;
 public class OtherChildInPlacemtHomeTest implements PersistentTestTemplate {
 
   private static final ObjectMapper MAPPER = Jackson.newObjectMapper();
-
-  @Override
-  @Test
-  @Ignore
-  public void testEqualsHashCodeWorks() {
-    EqualsVerifier.forClass(OtherChildInPlacemtHome.class).suppress(Warning.NONFINAL_FIELDS)
-        .verify();
-  }
 
   /*
    * Constructor test

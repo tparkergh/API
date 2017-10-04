@@ -8,7 +8,6 @@ import static org.hamcrest.Matchers.notNullValue;
 
 import java.io.IOException;
 
-import org.junit.Ignore;
 import org.junit.Test;
 
 import com.fasterxml.jackson.core.JsonParseException;
@@ -16,9 +15,12 @@ import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import gov.ca.cwds.data.persistence.junit.template.PersistentTestTemplate;
-import nl.jqno.equalsverifier.EqualsVerifier;
-import nl.jqno.equalsverifier.Warning;
+import gov.ca.cwds.fixture.DrmsDocumentResourceBuilder;
 
+/**
+ * @author CWDS API Team
+ *
+ */
 public class DrmsDocumentTest implements PersistentTestTemplate {
 
   private String id = "1234567ABC";
@@ -57,7 +59,7 @@ public class DrmsDocumentTest implements PersistentTestTemplate {
   @Test
   public void testConstructorUsingDomain() throws Exception {
 
-    gov.ca.cwds.rest.api.domain.cms.DrmsDocument domain = validDomainDrmsDocument();
+    gov.ca.cwds.rest.api.domain.cms.DrmsDocument domain = new DrmsDocumentResourceBuilder().build();
 
     DrmsDocument persistent = new DrmsDocument(id, domain, lastUpdatedId);
 
@@ -71,28 +73,12 @@ public class DrmsDocumentTest implements PersistentTestTemplate {
     assertThat(persistent.getHandleName(), is(equalTo(domain.getHandleName())));
   }
 
-  @Override
-  @Test
-  @Ignore
-  public void testEqualsHashCodeWorks() {
-    EqualsVerifier.forClass(DrmsDocument.class).suppress(Warning.NONFINAL_FIELDS).verify();
-  }
-
   private DrmsDocument validDrmsDocument()
       throws JsonParseException, JsonMappingException, IOException {
 
     DrmsDocument validDrmsDocument = MAPPER.readValue(
         fixture("fixtures/persistent/DrmsDocument/valid/valid.json"), DrmsDocument.class);
     return validDrmsDocument;
-  }
-
-  private gov.ca.cwds.rest.api.domain.cms.DrmsDocument validDomainDrmsDocument()
-      throws JsonParseException, JsonMappingException, IOException {
-
-    gov.ca.cwds.rest.api.domain.cms.DrmsDocument validDomainDrmsDocument =
-        MAPPER.readValue(fixture("fixtures/domain/legacy/DrmsDocument/valid/valid.json"),
-            gov.ca.cwds.rest.api.domain.cms.DrmsDocument.class);
-    return validDomainDrmsDocument;
   }
 
 }

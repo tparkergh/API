@@ -28,7 +28,7 @@ import gov.ca.cwds.rest.validation.ReferentialIntegrityException;
  * <blockquote>
  * 
  * <pre>
- * &#64;ManyToOne(cascade = CascadeType.ALL)
+ * &#64;ManyToOne(cascade = CascadeType.ALL, optional = false)
  * &#64;JoinColumn(name = "FKADDRS_T", nullable = false, insertable = false, updatable = false)
  * private Address addresses;
  * 

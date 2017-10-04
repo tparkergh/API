@@ -70,7 +70,7 @@ public class ClientAddressDaoIT {
   }
 
   private void createClientRecords() {
-    Address address = new AddressEntityBuilder().setId(ADDRESS_ID).create();
+    Address address = new AddressEntityBuilder().setId(ADDRESS_ID).build();
     gov.ca.cwds.rest.api.domain.cms.Address cmsDomainAddress =
         new gov.ca.cwds.rest.api.domain.cms.Address(address, false);
     Address entityAddress = new Address(ADDRESS_ID, cmsDomainAddress, "OX5");
