@@ -8,22 +8,17 @@ import static org.hamcrest.Matchers.notNullValue;
 
 import java.io.IOException;
 
-import org.junit.Ignore;
 import org.junit.Test;
 
 import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import nl.jqno.equalsverifier.EqualsVerifier;
-import nl.jqno.equalsverifier.Warning;
-
 /**
  * @author CWDS API Team
  *
  */
 public class ExternalInterfaceTest {
-
 
   private static final ObjectMapper MAPPER = SystemCodeTestHarness.MAPPER;
 
@@ -37,6 +32,11 @@ public class ExternalInterfaceTest {
     assertThat(ExternalInterface.class.newInstance(), is(notNullValue()));
   }
 
+  /**
+   * Persistent Constructor
+   * 
+   * @throws Exception - Exception
+   */
   @Test
   public void testPersistentConstructor() throws Exception {
     ExternalInterface exin = validExternalInterface();
@@ -79,12 +79,6 @@ public class ExternalInterfaceTest {
     assertThat(persistent.getStartDate(), is(equalTo(exin.getStartDate())));
     assertThat(persistent.getSubmitlTimestamp(), is(equalTo(exin.getSubmitlTimestamp())));
     assertThat(persistent.getTableName(), is(equalTo(exin.getTableName())));
-  }
-
-  @Test
-  @Ignore
-  public void testEqualsHashCodeWorks() {
-    EqualsVerifier.forClass(ExternalInterface.class).suppress(Warning.NONFINAL_FIELDS).verify();
   }
 
   private ExternalInterface validExternalInterface()

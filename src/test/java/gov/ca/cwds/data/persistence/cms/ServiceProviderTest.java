@@ -9,15 +9,11 @@ import static org.hamcrest.Matchers.notNullValue;
 
 import java.io.IOException;
 
-import org.junit.Ignore;
 import org.junit.Test;
 
 import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-
-import nl.jqno.equalsverifier.EqualsVerifier;
-import nl.jqno.equalsverifier.Warning;
 
 
 /**
@@ -26,13 +22,6 @@ import nl.jqno.equalsverifier.Warning;
 public class ServiceProviderTest {
 
   private static final ObjectMapper MAPPER = SystemCodeTestHarness.MAPPER;
-
-  @SuppressWarnings("javadoc")
-  @Test
-  @Ignore
-  public void equalsHashCodeWork() {
-    EqualsVerifier.forClass(ServiceProvider.class).suppress(Warning.NONFINAL_FIELDS).verify();
-  }
 
   /*
    * Constructor test
