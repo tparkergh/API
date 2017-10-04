@@ -97,9 +97,8 @@ public class ChildClientDaoIT {
   }
 
 
-  @Test
+  @Test(expected = EntityExistsException.class)
   public void testCreateExistingEntityException() throws Exception {
-    thrown.expect(EntityExistsException.class);
     ChildClient childClient = new ChildClientEntityBuilder().setVictimClientId(victimId).build();
     childClientDao.create(childClient);
   }

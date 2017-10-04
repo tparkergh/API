@@ -143,9 +143,8 @@ public class OtherAdultInPlacemtHomeDaoIT implements DaoTestTemplate {
   }
 
   @Override
-  @Test
+  @Test(expected = EntityExistsException.class)
   public void testCreateExistingEntityException() throws Exception {
-    thrown.expect(EntityExistsException.class);
     Date birthDate = df.parse(birthDateString);
     Date startDate = df.parse(startDateString);
     Date endDate = df.parse(endDateString);
@@ -186,9 +185,8 @@ public class OtherAdultInPlacemtHomeDaoIT implements DaoTestTemplate {
   }
 
   @Override
-  @Test
+  @Test(expected = EntityNotFoundException.class)
   public void testUpdateEntityNotFoundException() throws Exception {
-    thrown.expect(EntityNotFoundException.class);
 
     Date birthDate = df.parse(birthDateString);
     Date startDate = df.parse(startDateString);

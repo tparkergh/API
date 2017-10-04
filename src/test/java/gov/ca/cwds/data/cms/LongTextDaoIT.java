@@ -110,13 +110,10 @@ public class LongTextDaoIT implements DaoTestTemplate {
   }
 
   @Override
-  @Test
+  @Test(expected = EntityExistsException.class)
   public void testCreateExistingEntityException() throws Exception {
 
-    thrown.expect(EntityExistsException.class);
-
     gov.ca.cwds.rest.api.domain.cms.LongText vdlt = validDomainLongText();
-
     LongText longText = new LongText(id, vdlt.getCountySpecificCode(), vdlt.getTextDescription());
     longTextDao.create(longText);
   }
@@ -143,25 +140,19 @@ public class LongTextDaoIT implements DaoTestTemplate {
   public void testUpdate() throws Exception {
 
     gov.ca.cwds.rest.api.domain.cms.LongText vdlt = validDomainLongText();
-
     LongText longText = new LongText(id, vdlt.getCountySpecificCode(), vdlt.getTextDescription());
     LongText updated = longTextDao.update(longText);
-
     assertThat(longText, is(updated));
 
   }
 
   @Override
-  @Test
+  @Test(expected = EntityNotFoundException.class)
   public void testUpdateEntityNotFoundException() throws Exception {
 
-    thrown.expect(EntityNotFoundException.class);
-
     gov.ca.cwds.rest.api.domain.cms.LongText vdlt = validDomainLongText();
-
     LongText longText =
         new LongText("ABC1234567", vdlt.getCountySpecificCode(), vdlt.getTextDescription());
-
     longTextDao.update(longText);
   }
 

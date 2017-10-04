@@ -103,9 +103,8 @@ public class CountyTriggerDaoIT {
     assertThat(created, is(countyTrigger));
   }
 
-  @Test
+  @Test(expected = EntityExistsException.class)
   public void testCreateExistingEntityException() throws Exception {
-    thrown.expect(EntityExistsException.class);
     CountyTrigger countyTrigger =
         new CountyTrigger(logicId, countyOwnership0, "LiFHJnZ0X5", integratorEntity, null);
     countyTriggerDao.create(countyTrigger);
@@ -136,9 +135,8 @@ public class CountyTriggerDaoIT {
     assertThat(updated, is(countyTrigger));
   }
 
-  @Test
+  @Test(expected = EntityNotFoundException.class)
   public void testUpdateEntityNotFoundException() throws Exception {
-    thrown.expect(EntityNotFoundException.class);
     CountyTrigger countyTrigger =
         new CountyTrigger(logicId, countyOwnership0, "ABC1234569", integratorEntity, null);
     countyTriggerDao.update(countyTrigger);

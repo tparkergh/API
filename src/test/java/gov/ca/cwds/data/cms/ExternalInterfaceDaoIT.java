@@ -119,12 +119,11 @@ public class ExternalInterfaceDaoIT implements DaoTestTemplate {
   }
 
   @Override
-  @Test
+  @Test(expected = EntityExistsException.class)
   public void testCreateExistingEntityException() throws Exception {
     String timestamp = "2004-08-03 15:11:22.761";
     DateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS");
     Date date = formatter.parse(timestamp);
-    thrown.expect(EntityExistsException.class);
     ExternalInterface externalInterface = new ExternalInterface((short) 0, "1", (short) 0, " ",
         (short) 1124, "SMITHBO ", "         ", "N", "DyN0KOO0V2", "12", "KZQ79se0V2", "          ",
         "          ", "          ", "          ", "          ", "          ", "          ",
@@ -172,9 +171,8 @@ public class ExternalInterfaceDaoIT implements DaoTestTemplate {
   }
 
   @Override
-  @Test
+  @Test(expected = EntityNotFoundException.class)
   public void testUpdateEntityNotFoundException() throws Exception {
-    thrown.expect(EntityNotFoundException.class);
     String timestamp = "2004-08-03 14:53:04.385";
     DateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS");
     Date date = formatter.parse(timestamp);

@@ -40,7 +40,6 @@ public class CaseDaoIT implements DaoTestTemplate {
   @BeforeClass
   public static void beforeClass() {
     sessionFactory = new Configuration().configure().buildSessionFactory();
-    // sessionFactory = AutocloseSessionFactory.getSessionFactory();
     dao = new CaseDao(sessionFactory);
   }
 

@@ -63,7 +63,6 @@ public class ReferralAssignmentDaoIT {
   @BeforeClass
   public static void beforeClass() {
     sessionFactory = new Configuration().configure().buildSessionFactory();
-    // sessionFactory = AutocloseSessionFactory.getSessionFactory();
     dao = new ReferralAssignmentDao(sessionFactory);
   }
 

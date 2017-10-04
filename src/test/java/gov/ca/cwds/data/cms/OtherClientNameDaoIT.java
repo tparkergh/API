@@ -141,9 +141,8 @@ public class OtherClientNameDaoIT implements DaoTestTemplate {
   }
 
   @Override
-  @Test
+  @Test(expected = EntityExistsException.class)
   public void testCreateExistingEntityException() throws Exception {
-    thrown.expect(EntityExistsException.class);
     OtherClientName otherClientName = new OtherClientName("Ab6Lwal0KL", "Gregg", "Hill", "Brian",
         "1", (short) 1, "1", "Ab6Lwal0Ki");
     otherClientNameDao.create(otherClientName);
@@ -176,9 +175,8 @@ public class OtherClientNameDaoIT implements DaoTestTemplate {
   }
 
   @Override
-  @Test
+  @Test(expected = EntityNotFoundException.class)
   public void testUpdateEntityNotFoundException() throws Exception {
-    thrown.expect(EntityNotFoundException.class);
     OtherClientName otherClientName = new OtherClientName("ZZZZZZZ999", "Gregory", "Hill", "Brian",
         "1", (short) 1, "1", "ZZZZZZZ999");
     otherClientNameDao.update(otherClientName);

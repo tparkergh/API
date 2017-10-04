@@ -141,9 +141,8 @@ public class EducationProviderContactDaoIT implements DaoTestTemplate {
   }
 
   @Override
-  @Test
+  @Test(expected = EntityExistsException.class)
   public void testCreateExistingEntityException() throws Exception {
-    thrown.expect(EntityExistsException.class);
     EducationProviderContact epc = validExistingEducationProviderContact();
 
     EducationProviderContact educationProviderContact = new EducationProviderContact(
@@ -189,9 +188,8 @@ public class EducationProviderContactDaoIT implements DaoTestTemplate {
   }
 
   @Override
-  @Test
+  @Test(expected = EntityNotFoundException.class)
   public void testUpdateEntityNotFoundException() throws Exception {
-    thrown.expect(EntityNotFoundException.class);
     EducationProviderContact epc = validEducationProviderContact();
 
     EducationProviderContact educationProviderContact = new EducationProviderContact(

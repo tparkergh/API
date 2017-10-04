@@ -105,14 +105,13 @@ public class ClientDaoIT {
     assertThat(created, is(pers));
   }
 
-  @Test
+  @Test(expected = EntityExistsException.class)
   public void shouldThrowExceptionWhenSavingClientGivenAClientIdThatAlreadyExists()
       throws Exception {
     String id = "AaiU7IW0Rt";
     Client pers = createClientWithId(id);
     clientDao.create(pers);
 
-    thrown.expect(EntityExistsException.class);
     Client clientWithExistingId = createClientWithId(id);
 
     clientDao.create(clientWithExistingId);
@@ -145,9 +144,8 @@ public class ClientDaoIT {
     assertThat(updated, is(pers));
   }
 
-  @Test
+  @Test(expected = EntityNotFoundException.class)
   public void shoudlThrowExceptionWhenIdNotFound() throws Exception {
-    thrown.expect(EntityNotFoundException.class);
     Client vc = validClient();
     Client pers = createClientWithId("AasRx3r0HA");
     clientDao.update(pers);

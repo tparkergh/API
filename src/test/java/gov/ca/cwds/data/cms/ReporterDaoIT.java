@@ -101,9 +101,8 @@ public class ReporterDaoIT implements DaoTestTemplate {
   }
 
   @Override
-  @Test
+  @Test(expected = EntityExistsException.class)
   public void testCreateExistingEntityException() throws Exception {
-    thrown.expect(EntityExistsException.class);
     Reporter reporter =
         new Reporter("AbiQCgu0Hj", "  ", "City", (short) 591, (short) 0, "N", null, " ", null, "N",
             "Fred", "Reporter", "N", 0, BigDecimal.valueOf(0), " ", " ", BigDecimal.valueOf(0L), 0,
@@ -139,9 +138,8 @@ public class ReporterDaoIT implements DaoTestTemplate {
   }
 
   @Override
-  @Test
+  @Test(expected = EntityNotFoundException.class)
   public void testUpdateEntityNotFoundException() throws Exception {
-    thrown.expect(EntityNotFoundException.class);
     Reporter reporter = new Reporter("ZZZZZZ", "  ", "City", (short) 591, (short) 0, "N", null, " ",
         null, "N", "Fred", "Reporter", "N", 0, BigDecimal.valueOf(0), " ", " ",
         BigDecimal.valueOf(0L), 0, (short) 1828, "Street", "12345", " ", new Integer(95845),

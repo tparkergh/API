@@ -109,13 +109,10 @@ public class ClientUcDaoIT implements DaoTestTemplate {
   }
 
   @Override
-  @Test
+  @Test(expected = EntityExistsException.class)
   public void testCreateExistingEntityException() throws Exception {
 
-    thrown.expect(EntityExistsException.class);
-
     gov.ca.cwds.rest.api.domain.cms.ClientUc vcluc = validDomainClientUc();
-
     ClientUc clientUc = new ClientUc(id, vcluc.getSourceTableCode(), vcluc.getCommonFirstName(),
         vcluc.getCommonLastName(), vcluc.getCommonMiddleName());
     clientUcDao.create(clientUc);
@@ -143,26 +140,20 @@ public class ClientUcDaoIT implements DaoTestTemplate {
   public void testUpdate() throws Exception {
 
     gov.ca.cwds.rest.api.domain.cms.ClientUc vcluc = validDomainClientUc();
-
     ClientUc clientUc = new ClientUc(id, vcluc.getSourceTableCode(), vcluc.getCommonFirstName(),
         vcluc.getCommonLastName(), vcluc.getCommonMiddleName());
     ClientUc updated = clientUcDao.update(clientUc);
-
     assertThat(clientUc, is(updated));
 
   }
 
   @Override
-  @Test
+  @Test(expected = EntityNotFoundException.class)
   public void testUpdateEntityNotFoundException() throws Exception {
 
-    thrown.expect(EntityNotFoundException.class);
-
     gov.ca.cwds.rest.api.domain.cms.ClientUc vcluc = validDomainClientUc();
-
     ClientUc clientUc = new ClientUc("ABC1234567", vcluc.getSourceTableCode(),
         vcluc.getCommonFirstName(), vcluc.getCommonLastName(), vcluc.getCommonMiddleName());
-
     clientUcDao.update(clientUc);
   }
 

@@ -132,9 +132,8 @@ public class OtherChildInPlacemtHomeDaoIT implements DaoTestTemplate {
   }
 
   @Override
-  @Test
+  @Test(expected = EntityExistsException.class)
   public void testCreateExistingEntityException() throws Exception {
-    thrown.expect(EntityExistsException.class);
     Date birthDate = df.parse(birthDateString);
     OtherChildInPlacemtHome otherChildInPlacemtHome = new OtherChildInPlacemtHome(BigDecimal.ZERO,
         birthDate, "0M401G20Mq", "F", "PT9kQgI0Mq", "Milly W.");
@@ -170,9 +169,8 @@ public class OtherChildInPlacemtHomeDaoIT implements DaoTestTemplate {
   }
 
   @Override
-  @Test
+  @Test(expected = EntityNotFoundException.class)
   public void testUpdateEntityNotFoundException() throws Exception {
-    thrown.expect(EntityNotFoundException.class);
 
     Date birthDate = df.parse(birthDateString);
     OtherChildInPlacemtHome otherChildInPlacemtHome = new OtherChildInPlacemtHome(BigDecimal.ZERO,

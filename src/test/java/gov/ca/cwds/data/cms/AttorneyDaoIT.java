@@ -143,9 +143,8 @@ public class AttorneyDaoIT implements DaoTestTemplate {
   }
 
   @Override
-  @Test
+  @Test(expected = EntityExistsException.class)
   public void testCreateExistingEntityException() throws Exception {
-    thrown.expect(EntityExistsException.class);
     Attorney attorney = new Attorney("N", " ", " ", " ", null, null, BigDecimal.ZERO, "Lance",
         (short) 0, "AcjOOPa0BU", (short) 1274, "Johnson", 0, BigDecimal.ZERO, " ", " ", "Attorney",
         0, BigDecimal.ZERO, (short) 0, " ", " ", " ", 0, (short) 0);
@@ -188,9 +187,8 @@ public class AttorneyDaoIT implements DaoTestTemplate {
   }
 
   @Override
-  @Test
+  @Test(expected = EntityNotFoundException.class)
   public void testUpdateEntityNotFoundException() throws Exception {
-    thrown.expect(EntityNotFoundException.class);
     Date endDate = df.parse(endDateString);
     Attorney attorney = new Attorney("N", " ", " ", " ", null, endDate, BigDecimal.ZERO, "Lance",
         (short) 0, "AcjOOPa0By", (short) 1274, "Johnson", 0, BigDecimal.ZERO, " ", " ", "Attorney",

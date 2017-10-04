@@ -90,9 +90,8 @@ public class StaffPersonDaoIT implements DaoTestTemplate {
   }
 
   @Override
-  @Test
+  @Test(expected = EntityExistsException.class)
   public void testCreateExistingEntityException() throws Exception {
-    thrown.expect(EntityExistsException.class);
     StaffPerson staffPerson = new StaffPerson("q1p", null, "External Interface",
         "external interface", "SCXCIN7", " ", "", BigDecimal.valueOf(9165672100L), 0, null, "    ",
         "N", "MIZN02k00E", "  ", "    ", "99", "N", "3XPCP92q38", null);
@@ -127,10 +126,9 @@ public class StaffPersonDaoIT implements DaoTestTemplate {
   }
 
   @Override
-  @Test
+  @Test(expected = EntityNotFoundException.class)
   public void testUpdateEntityNotFoundException() throws Exception {
     // TODO: depends on an id not created by this unit test.
-    thrown.expect(EntityNotFoundException.class);
     StaffPerson staffPerson = new StaffPerson("zzp", null, "External Interface",
         "external interface", "SCXCIN7", " ", "", BigDecimal.valueOf(9165672100L), 0, null, "    ",
         "N", "MIZN02k00E", "  ", "    ", "99", "N", "3XPCP92q38", null);
