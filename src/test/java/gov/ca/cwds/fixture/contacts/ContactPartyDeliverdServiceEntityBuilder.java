@@ -2,6 +2,8 @@ package gov.ca.cwds.fixture.contacts;
 
 import gov.ca.cwds.data.persistence.contact.ContactPartyDeliveredServiceEntity;
 
+import java.util.Date;
+
 /**
  * @author CWDS API Team
  *
@@ -13,10 +15,12 @@ public class ContactPartyDeliverdServiceEntityBuilder {
   Short contactPartyType = (short) 421;
   String countySpecificCode = "99";
   String deliveredServiceId = "ABC123456y";
+  private String lastUpdatedId = "0X5";
+  private Date lastUpdatedTime = new Date();
 
   public ContactPartyDeliveredServiceEntity buildContactPartyDeliveredService() {
     return new ContactPartyDeliveredServiceEntity(thirdId, contactPartyType, countySpecificCode,
-        deliveredServiceId);
+        deliveredServiceId, lastUpdatedId, lastUpdatedTime);
   }
 
   public String getThirdId() {
@@ -54,5 +58,26 @@ public class ContactPartyDeliverdServiceEntityBuilder {
     this.deliveredServiceId = deliveredServiceId;
     return this;
   }
+
+  public String getLastUpdatedId() {
+    return lastUpdatedId;
+  }
+
+  public ContactPartyDeliverdServiceEntityBuilder setLastUpdatedId(String lastUpdatedId) {
+    this.lastUpdatedId = lastUpdatedId;
+    return this;
+  }
+
+
+  public Date getLastUpdatedTime() {
+    return lastUpdatedTime;
+  }
+
+  public ContactPartyDeliverdServiceEntityBuilder setLastUpdatedTime(Date lastUpdatedTime) {
+    this.lastUpdatedTime = lastUpdatedTime;
+    return this;
+  }
+
+
 
 }

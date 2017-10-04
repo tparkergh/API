@@ -4,29 +4,32 @@ import gov.ca.cwds.rest.api.Request;
 import gov.ca.cwds.rest.api.Response;
 import gov.ca.cwds.rest.api.domain.DomainObject;
 import gov.ca.cwds.rest.api.domain.ReportingDomain;
+import io.dropwizard.jackson.JsonSnakeCase;
+import io.swagger.annotations.ApiModel;
 
 import java.util.Set;
 
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonInclude.Include;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonUnwrapped;
+import com.fasterxml.jackson.annotation.JsonValue;
 
 /**
  * {@link DomainObject} representing a Contact List response
  * 
  * @author CWDS API Team
  */
-@JsonInclude(Include.ALWAYS)
+@ApiModel
+@JsonSnakeCase
 public class ContactList extends ReportingDomain implements Request, Response {
 
   /**
    * 
    */
   private static final long serialVersionUID = 1L;
-  @JsonProperty("contacts")
+
+  @JsonUnwrapped
   private Set<Contact> contacts;
 
   /**
@@ -44,6 +47,7 @@ public class ContactList extends ReportingDomain implements Request, Response {
   /**
    * @return the contacts
    */
+  @JsonValue
   public Set<Contact> getContacts() {
     return contacts;
   }
@@ -68,6 +72,5 @@ public class ContactList extends ReportingDomain implements Request, Response {
   public final boolean equals(Object obj) {
     return EqualsBuilder.reflectionEquals(this, obj, false);
   }
-
 
 }

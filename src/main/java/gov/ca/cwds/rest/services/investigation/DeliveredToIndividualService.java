@@ -7,12 +7,17 @@ import gov.ca.cwds.data.cms.CollateralIndividualDao;
 import gov.ca.cwds.data.cms.ReporterDao;
 import gov.ca.cwds.data.cms.ServiceProviderDao;
 import gov.ca.cwds.data.cms.SubstituteCareProviderDao;
+import gov.ca.cwds.data.dao.contact.IndividualDeliveredServiceDao;
+import gov.ca.cwds.data.persistence.contact.DeliveredServiceEntity;
 import gov.ca.cwds.data.persistence.contact.IndividualDeliveredServiceEntity;
 import gov.ca.cwds.data.std.ApiPersonAware;
 import gov.ca.cwds.rest.api.ApiException;
 import gov.ca.cwds.rest.api.domain.PostedIndividualDeliveredService;
 
+import java.util.Date;
 import java.util.EnumMap;
+import java.util.HashSet;
+import java.util.Set;
 
 import org.apache.commons.lang3.StringUtils;
 
@@ -26,27 +31,33 @@ import com.google.inject.Inject;
 public class DeliveredToIndividualService {
 
   private EnumMap<Code, BaseDaoImpl<? extends ApiPersonAware>> codeToDaoImplememterMap;
+  private IndividualDeliveredServiceDao individualDeliveredServiceDao;
 
   /**
+   * Constructor
    * 
-   * @param clientDao the clientDao
-   * @param attorneyDao the attorneyDao
-   * @param collateralIndividualDao the collateralIndividualDao
-   * @param serviceProviderDao the serviceProviderDao
-   * @param substituteCareProviderDao the substituteCareProviderDao
-   * @param reporterDao the reporterDao
+   * @param clientDao the Client Dao
+   * @param attorneyDao the Attorney Dao
+   * @param collateralIndividualDao the CollateralIndividual Dao
+   * @param serviceProviderDao the ServiceProvider Dao
+   * @param substituteCareProviderDao the SubstituteCareProvider Dao
+   * @param reporterDao the Reporter Dao
+   * @param individualDeliveredServiceDao the IndividualDeliveredService Dao
    */
   @Inject
   public DeliveredToIndividualService(ClientDao clientDao, AttorneyDao attorneyDao,
       CollateralIndividualDao collateralIndividualDao, ServiceProviderDao serviceProviderDao,
-      SubstituteCareProviderDao substituteCareProviderDao, ReporterDao reporterDao) {
+      SubstituteCareProviderDao substituteCareProviderDao, ReporterDao reporterDao,
+      IndividualDeliveredServiceDao individualDeliveredServiceDao) {
     super();
     this.codeToDaoImplememterMap =
         deliveredToIndividualCodeToDaoImplementerMap(clientDao, attorneyDao,
             collateralIndividualDao, serviceProviderDao, substituteCareProviderDao, reporterDao);
+    this.individualDeliveredServiceDao = individualDeliveredServiceDao;
   }
 
   /**
+   * EnumMap that links each DeliveredToIndividualCode to the corresponding Dao
    * 
    * @param clientDao the clientDao
    * @param attorneyDao the attorneyDao
@@ -102,6 +113,33 @@ public class DeliveredToIndividualService {
   }
 
   /**
+   * Creates a record in IndividualDeliveredService for each person in people
+   * 
+   * @param people the people associated with the Contact
+   * @param deliveredServiceId the identifier of the Delivered Service
+   * @param countySpecificCode the county of the Referral
+   * @param endDate the end date
+   * @param serviceContactType the service contact type
+   * @param startDate the start date
+   * @param lastUpdatedId the id of the logged in user
+   * @param lastUpdatedTime the time of update
+   */
+  public void addPeopleToIndividualDeliveredService(Set<PostedIndividualDeliveredService> people,
+      String deliveredServiceId, String countySpecificCode, Date endDate, short serviceContactType,
+      Date startDate, String lastUpdatedId, Date lastUpdatedTime) {
+    for (PostedIndividualDeliveredService person : people) {
+      String deliveredToIndividualCode =
+          DeliveredToIndividualService.Code.lookupByValue(person.getTableName()).getCodeLiteral();
+      String deliveredToIndividualId = person.getId();
+      IndividualDeliveredServiceEntity ids =
+          new IndividualDeliveredServiceEntity(deliveredServiceId, deliveredToIndividualCode,
+              deliveredToIndividualId, countySpecificCode, endDate, serviceContactType, startDate,
+              lastUpdatedId, lastUpdatedTime);
+      individualDeliveredServiceDao.create(ids);
+    }
+  }
+
+  /**
    * Generic, reusable approach to fetch contact persons.
    * 
    * @param dao person aware DAO
@@ -131,9 +169,28 @@ public class DeliveredToIndividualService {
         "", "", "", deliveredToIndividualCode.getDescription());
   }
 
+  /**
+   * Find the IndividualDeliveredService persistence objects for the deliveredServiceEntity and
+   * include the person information for each
+   * 
+   * @param deliveredServiceEntity The persistence object
+   * @return People In IndividualDeliveredService
+   */
+  public Set<PostedIndividualDeliveredService> getPeopleInIndividualDeliveredService(
+      DeliveredServiceEntity deliveredServiceEntity) {
+    final Set<PostedIndividualDeliveredService> people = new HashSet<>();
+    final IndividualDeliveredServiceEntity[] individualDeliveredServices =
+        individualDeliveredServiceDao.findByDeliveredServiceId(deliveredServiceEntity.getId());
+    for (IndividualDeliveredServiceEntity individualDeliveredService : individualDeliveredServices) {
+      people.add(this.findPerson(individualDeliveredService));
+    }
+    return people;
+  }
+
+
 
   /**
-   * Representing a Deliverd To Individual Code
+   * Representing a Delivered To Individual Code
    * 
    * This defines each type of participant to whom a service was delivered. Only Clients (C) may
    * participate in any non-contact type of services. Service Providers (P), Collateral Individuals
@@ -176,7 +233,7 @@ public class DeliveredToIndividualService {
      * Lookup by Code
      * 
      * @param codeLiteral The Delivered to Individual code
-     * @return DeliveredToIndividualCode for given code if found, null otherwise.
+     * @return DeliveredToIndividualCode for given code if found.
      */
     public static Code lookupByCodeLiteral(String codeLiteral) {
       if (!StringUtils.isBlank(codeLiteral)) {
@@ -189,6 +246,25 @@ public class DeliveredToIndividualService {
       throw new ApiException("UNKNOWN DELIVERED TO INDIVIDUAL CODE: " + codeLiteral);
     }
 
+
+    /**
+     * Lookup by Value
+     * 
+     * @param value The Delivered to Individual code table name
+     * @return DeliveredToIndividualCode for given value if found.
+     */
+    public static Code lookupByValue(String value) {
+      if (!StringUtils.isBlank(value)) {
+        for (Code deliveredToIndividual : Code.values()) {
+          if (deliveredToIndividual.getValue().equals(value.trim())) {
+            return deliveredToIndividual;
+          }
+        }
+      }
+      throw new ApiException("UNKNOWN DELIVERED TO INDIVIDUAL CODE FOR TABLE_NAME: " + value);
+    }
+
   }
+
 
 }
