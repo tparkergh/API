@@ -11,21 +11,46 @@ import static org.junit.Assert.assertTrue;
 import java.util.HashSet;
 import java.util.Set;
 
+import org.junit.Before;
 import org.junit.Test;
 
 import gov.ca.cwds.fixture.investigation.AllegationEntityBuilder;
+import gov.ca.cwds.fixture.investigation.AllegationPersonEntityBuilder;
+import gov.ca.cwds.fixture.investigation.CmsRecordDescriptorEntityBuilder;
 import nl.jqno.equalsverifier.EqualsVerifier;
 import nl.jqno.equalsverifier.Warning;
 
 @SuppressWarnings("javadoc")
 public class AllegationTest {
 
-  private String victimFirstName = "sharon";
-  private String perpetratorLastName = "w.";
-  private String perpetratorFirstName = "ricky";
-  private String dispositionDescription = "substantiated";
-  private String victimLastName = "w.";
-  private String allegationDescription = "emotional abuse";
+  private Short injuryHarmType1 = 1372;
+  private Short injuryHarmType2 = 1372;
+  private Short injuryHarmSubType1 = 6;
+  private Short injuryHarmSubType2 = 7;
+
+  private Short otherAllegationType = 2177;
+
+  private AllegationSubType allegationSubType1 =
+      new AllegationSubType(injuryHarmType1, injuryHarmSubType1);
+  private AllegationSubType allegationSubType2 =
+      new AllegationSubType(injuryHarmType2, injuryHarmSubType2);
+  private Set<AllegationSubType> allegationSubTypes = new HashSet<>();
+
+  protected Short allegationType = 2179;
+  protected Boolean createdByScreener = false;
+  protected AllegationSubType allegationSubType;
+  protected Short dispositionType = 46;
+  protected String rational = "disposistion reason explained";
+  private CmsRecordDescriptor legacyDescriptor = new CmsRecordDescriptorEntityBuilder().build();
+  private AllegationPerson victim = new AllegationPersonEntityBuilder().build();
+  private AllegationPerson perpetrator = new AllegationPersonEntityBuilder().setFirstName("Jack")
+      .setLastName("Jones").setPrefixTitle("Mr").build();
+
+  @Before
+  public void setup() {
+    allegationSubTypes.add(allegationSubType1);
+    allegationSubTypes.add(allegationSubType2);
+  }
 
   @Test
   public void shouldCreateObjectWithDefaultConstructor() {
@@ -34,24 +59,27 @@ public class AllegationTest {
   }
 
   @Test
-  public void jsonCreatorConstructorTest() throws Exception {
-    Allegation domain = new Allegation(victimLastName, victimFirstName, perpetratorLastName,
-        perpetratorFirstName, dispositionDescription, allegationDescription);
-    assertThat(domain.getVictimLastName(), is(equalTo(victimLastName)));
-    assertThat(domain.getVictimFirstName(), is(equalTo(victimFirstName)));
-    assertThat(domain.getPerpetratorLastName(), is(equalTo(perpetratorLastName)));
-    assertThat(domain.getPerpetratorFirstName(), is(equalTo(perpetratorFirstName)));
-    assertThat(domain.getDispositionDescription(), is(equalTo(dispositionDescription)));
-    assertThat(domain.getAllegationDescription(), is(equalTo(allegationDescription)));
+  public void domainConstructorTest() {
+
+    Allegation domain = new Allegation(allegationType, createdByScreener, allegationSubTypes,
+        dispositionType, rational, legacyDescriptor, victim, perpetrator);
+    assertThat(domain.getAllegationType(), is(equalTo(allegationType)));
+    assertThat(domain.getCreatedByScreener(), is(equalTo(createdByScreener)));
+    assertThat(domain.getAllegationSubType(), is(equalTo(allegationSubTypes)));
+    assertThat(domain.getDispositionType(), is(equalTo(dispositionType)));
+    assertThat(domain.getRationale(), is(equalTo(rational)));
+    assertThat(domain.getLegacyDescriptor(), is(equalTo(legacyDescriptor)));
+    assertThat(domain.getVictim(), is(equalTo(victim)));
+    assertThat(domain.getPerpetrator(), is(equalTo(perpetrator)));
 
   }
 
   @Test
   public void shouldCompareEqualsToObjectWithSameValues() {
-    Allegation allegation = new Allegation(victimLastName, victimFirstName, perpetratorLastName,
-        perpetratorFirstName, dispositionDescription, allegationDescription);
-    Allegation otherAllegation = new Allegation(victimLastName, victimFirstName,
-        perpetratorLastName, perpetratorFirstName, dispositionDescription, allegationDescription);
+    Allegation allegation = new Allegation(allegationType, createdByScreener, allegationSubTypes,
+        dispositionType, rational, legacyDescriptor, victim, perpetrator);
+    Allegation otherAllegation = new Allegation(allegationType, createdByScreener,
+        allegationSubTypes, dispositionType, rational, legacyDescriptor, victim, perpetrator);
     assertEquals(allegation, otherAllegation);
 
   }
@@ -59,7 +87,8 @@ public class AllegationTest {
   @Test
   public void shouldCompareNotEqualsToObjectWithDifferentValues() {
     Allegation allegation = new AllegationEntityBuilder().build();
-    Allegation otherAllegation = new AllegationEntityBuilder().setVictimLastName("jones").build();
+    Allegation otherAllegation =
+        new AllegationEntityBuilder().setAllegationType(otherAllegationType).build();
     assertThat(allegation, is(not(equals(otherAllegation))));
   }
 
@@ -80,7 +109,8 @@ public class AllegationTest {
   @Test
   public void shouldFindMultipleItemInHashSetWhenItemsHaveWithDifferentValue() {
     Allegation allegation = new AllegationEntityBuilder().build();
-    Allegation otherAllegation = new AllegationEntityBuilder().setVictimFirstName("jerry").build();
+    Allegation otherAllegation =
+        new AllegationEntityBuilder().setAllegationType(otherAllegationType).build();
     Set<Allegation> items = new HashSet<>();
     items.add(allegation);
     items.add(otherAllegation);

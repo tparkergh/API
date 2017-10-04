@@ -7,10 +7,11 @@ import static org.hamcrest.Matchers.is;
 import java.util.HashSet;
 import java.util.Set;
 
+import org.junit.Test;
+
+import gov.ca.cwds.fixture.investigation.HistoryOfInvolvementAllegationEntityBuilder;
 import nl.jqno.equalsverifier.EqualsVerifier;
 import nl.jqno.equalsverifier.Warning;
-
-import org.junit.Test;
 
 @SuppressWarnings("javadoc")
 public class SimpleReferralTest {
@@ -25,7 +26,7 @@ public class SimpleReferralTest {
   private String limitedAccessGovernmentEntityId = "0";
   private String limitedAccessCode = "n";
   private String endDate = "2000-02-01";
-  private Set<Allegation> allegations = validAllegations();
+  private Set<HistoryOfInvolvementAllegation> allegations = validAllegations();
   private SimplePerson assignedSocialWorker = validSocialWorker();
   private LimitedAccess accessLimitation = validLimitedAccess();
   private SimpleLegacyDescriptor legacyDescriptor = validLegacyDescriptor();
@@ -58,11 +59,10 @@ public class SimpleReferralTest {
     assertThat(domain.getStartDate(), is(equalTo(startDate)));
   }
 
-  private Set<Allegation> validAllegations() {
-    Set<Allegation> validAllegations = new HashSet<Allegation>();
-    Allegation allegation =
-        new Allegation(victimLastName, victimFirstName, perpetratorLastName, perpetratorFirstName,
-            dispositionDescription, allegationDescription);
+  private Set<HistoryOfInvolvementAllegation> validAllegations() {
+    Set<HistoryOfInvolvementAllegation> validAllegations = new HashSet<>();
+    HistoryOfInvolvementAllegation allegation =
+        new HistoryOfInvolvementAllegationEntityBuilder().build();
     validAllegations.add(allegation);
     return validAllegations;
   }
