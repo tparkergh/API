@@ -1,6 +1,16 @@
 package gov.ca.cwds.rest.api.contact;
 
 import static gov.ca.cwds.data.persistence.cms.CmsPersistentObject.CMS_ID_LEN;
+import gov.ca.cwds.rest.api.Request;
+import gov.ca.cwds.rest.api.Response;
+import gov.ca.cwds.rest.api.domain.DomainChef;
+import gov.ca.cwds.rest.api.domain.DomainObject;
+import gov.ca.cwds.rest.api.domain.ReportingDomain;
+import gov.ca.cwds.rest.api.domain.SystemCodeCategoryId;
+import gov.ca.cwds.rest.validation.ValidSystemCodeId;
+import io.dropwizard.jackson.JsonSnakeCase;
+import io.dropwizard.validation.OneOf;
+import io.swagger.annotations.ApiModelProperty;
 
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
@@ -13,17 +23,6 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
-
-import gov.ca.cwds.rest.api.Request;
-import gov.ca.cwds.rest.api.Response;
-import gov.ca.cwds.rest.api.domain.DomainChef;
-import gov.ca.cwds.rest.api.domain.DomainObject;
-import gov.ca.cwds.rest.api.domain.ReportingDomain;
-import gov.ca.cwds.rest.api.domain.SystemCodeCategoryId;
-import gov.ca.cwds.rest.validation.ValidSystemCodeId;
-import io.dropwizard.jackson.JsonSnakeCase;
-import io.dropwizard.validation.OneOf;
-import io.swagger.annotations.ApiModelProperty;
 
 /**
  * {@link DomainObject} representing an DeliveredSevice
@@ -43,6 +42,9 @@ public class DeliveredServiceDomain extends ReportingDomain implements Request, 
    * 
    */
   private static final long serialVersionUID = 1L;
+
+  private static String DEFAULT_HARD_COPY_DOUMENT_ON_FILE_CODE = "N";
+  private static String DEFAULT_CONTACT_VISIT_CODE = "C";
 
   @Size(max = CMS_ID_LEN)
   @NotNull
@@ -115,7 +117,6 @@ public class DeliveredServiceDomain extends ReportingDomain implements Request, 
 
   @NotEmpty
   @JsonProperty("document_on_file")
-  @Size(min = 1, max = 1)
   @OneOf(value = {"N", "U", "Y"}, ignoreCase = false, ignoreWhitespace = true)
   @ApiModelProperty(required = false, readOnly = false, value = "", example = "N")
   private String hardCopyDocumentOnFileCode;
@@ -171,7 +172,6 @@ public class DeliveredServiceDomain extends ReportingDomain implements Request, 
 
   @NotNull
   @JsonProperty("wrap_around_service")
-  @ApiModelProperty(required = true, readOnly = false)
   private Boolean wraparoundServiceIndicator;
 
   /**
@@ -245,9 +245,9 @@ public class DeliveredServiceDomain extends ReportingDomain implements Request, 
   }
 
   /**
-   * Construct from persistence layer CMS tickle.
+   * Construct from persistence layer CMS Delivered Service
    * 
-   * @param persistedDeliverdService persisted tickle object
+   * @param persistedDeliverdService persisted delivered service
    */
   public DeliveredServiceDomain(
       gov.ca.cwds.data.persistence.contact.DeliveredServiceEntity persistedDeliverdService) {
@@ -450,6 +450,33 @@ public class DeliveredServiceDomain extends ReportingDomain implements Request, 
   @Override
   public final boolean equals(Object obj) {
     return EqualsBuilder.reflectionEquals(this, obj, false);
+  }
+
+  /**
+   * Delivered Service Domain created with some default values to match UI Specificaton
+   * 
+   * @param communicationMethod the communication method code
+   * @param location the contact location code
+   * @param countySpecificCode the county
+   * @param longTextId the long text id to detail text
+   * @param longTextContinuationId the long text id to detail text continuation
+   * @param endDate the end date
+   * @param endTime the end time
+   * @param serviceContactType the service contact type
+   * @param startDate the start date
+   * @param startTime the start time
+   * @param statusCode the status code
+   * @return the Delivered Service Domain created with default values
+   */
+  public static DeliveredServiceDomain createWithDefaults(Integer communicationMethod,
+      Integer location, String countySpecificCode, String longTextId,
+      String longTextContinuationId, String endDate, String endTime, Integer serviceContactType,
+      String startDate, String startTime, String statusCode) {
+
+    return new DeliveredServiceDomain("id", null, Boolean.FALSE, communicationMethod, location,
+        DEFAULT_CONTACT_VISIT_CODE, countySpecificCode, longTextId, longTextContinuationId,
+        endDate, endTime, "", DEFAULT_HARD_COPY_DOUMENT_ON_FILE_CODE, "", "", "",
+        serviceContactType, startDate, startTime, statusCode, "", Boolean.FALSE);
   }
 
 }

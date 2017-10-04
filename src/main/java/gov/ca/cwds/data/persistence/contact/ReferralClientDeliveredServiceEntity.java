@@ -2,6 +2,8 @@ package gov.ca.cwds.data.persistence.contact;
 
 import gov.ca.cwds.data.persistence.cms.CmsPersistentObject;
 
+import java.util.Date;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
@@ -51,10 +53,12 @@ public class ReferralClientDeliveredServiceEntity extends CmsPersistentObject {
    * @param referralId - referralId
    * @param clientId - clientId
    * @param countySpecificCode - countySpecificCode
+   * @param lastUpdatedId The Identifier of logged in user
+   * @param lastUpdatedTime The time of update
    */
   public ReferralClientDeliveredServiceEntity(String deliveredServiceId, String referralId,
-      String clientId, String countySpecificCode) {
-    super();
+      String clientId, String countySpecificCode, String lastUpdatedId, Date lastUpdatedTime) {
+    super(lastUpdatedId, lastUpdatedTime);
     this.countySpecificCode = countySpecificCode;
     this.referralClientDeliveredServiceEmbeddable =
         new ReferralClientDeliveredServiceEmbeddable(deliveredServiceId, referralId, clientId);

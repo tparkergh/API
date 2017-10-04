@@ -1,5 +1,9 @@
 package gov.ca.cwds.data.persistence.contact;
 
+import gov.ca.cwds.data.persistence.cms.CmsPersistentObject;
+
+import java.util.Date;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
@@ -9,8 +13,6 @@ import org.hibernate.annotations.Type;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
-
-import gov.ca.cwds.data.persistence.cms.CmsPersistentObject;
 
 /**
  * {@link CmsPersistentObject} Class representing an ContactPartyDeliveredService.
@@ -56,10 +58,13 @@ public class ContactPartyDeliveredServiceEntity extends CmsPersistentObject {
    * @param contactPartyType - contactPartyType
    * @param countySpecificCode - countySpecificCode
    * @param deliveredServiceId - deliveredServiceId
+   * @param lastUpdatedId - id of the staff person currently logged in
+   * @param lastUpdatedTime - time of update
    */
   public ContactPartyDeliveredServiceEntity(String thirdId, Short contactPartyType,
-      String countySpecificCode, String deliveredServiceId) {
-    super();
+      String countySpecificCode, String deliveredServiceId, String lastUpdatedId,
+      Date lastUpdatedTime) {
+    super(lastUpdatedId, lastUpdatedTime);
     this.thirdId = thirdId;
     this.contactPartyType = contactPartyType;
     this.countySpecificCode = countySpecificCode;

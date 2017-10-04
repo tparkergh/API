@@ -4,6 +4,10 @@ import static org.hamcrest.Matchers.nullValue;
 import static org.hamcrest.core.Is.is;
 import static org.hamcrest.core.IsEqual.equalTo;
 import static org.junit.Assert.assertThat;
+import gov.ca.cwds.data.persistence.contact.ReferralClientDeliveredServiceEmbeddable;
+import gov.ca.cwds.data.persistence.contact.ReferralClientDeliveredServiceEntity;
+
+import java.util.Date;
 
 import javax.persistence.EntityExistsException;
 import javax.persistence.EntityNotFoundException;
@@ -18,9 +22,6 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Rule;
 import org.junit.Test;
-
-import gov.ca.cwds.data.persistence.contact.ReferralClientDeliveredServiceEmbeddable;
-import gov.ca.cwds.data.persistence.contact.ReferralClientDeliveredServiceEntity;
 
 /**
  * @author CWDS API Team
@@ -39,6 +40,8 @@ public class ReferralClientDeliveredServiceDaoIT {
   private String deliveredServiceId = "DrbC4No0Hj";
   private String referralId = "AbiQCgu0Hj";
   private String clientId = "CeHWwE80Hj";
+  private String lastUpdatedId = "0X5";
+  private Date lastUpdatedTime = new Date();
 
   /**
    * 
@@ -98,7 +101,8 @@ public class ReferralClientDeliveredServiceDaoIT {
   @Test
   public void testCreate() throws Exception {
     ReferralClientDeliveredServiceEntity referralClientDeliveredService =
-        new ReferralClientDeliveredServiceEntity("ABC123456k", "ABC1209876", "NMo09754e1", "99");
+        new ReferralClientDeliveredServiceEntity("ABC123456k", "ABC1209876", "NMo09754e1", "99",
+            lastUpdatedId, lastUpdatedTime);
 
     ReferralClientDeliveredServiceEntity created =
         referralClientDeliveredServiceDao.create(referralClientDeliveredService);
@@ -109,7 +113,8 @@ public class ReferralClientDeliveredServiceDaoIT {
   public void testCreateExistingEntityException() throws Exception {
     thrown.expect(EntityExistsException.class);
     ReferralClientDeliveredServiceEntity referralClientDeliveredService =
-        new ReferralClientDeliveredServiceEntity(deliveredServiceId, referralId, clientId, "13");
+        new ReferralClientDeliveredServiceEntity(deliveredServiceId, referralId, clientId, "13",
+            lastUpdatedId, lastUpdatedTime);
 
     referralClientDeliveredServiceDao.create(referralClientDeliveredService);
   }
@@ -138,7 +143,8 @@ public class ReferralClientDeliveredServiceDaoIT {
   public void testUpdate() throws Exception {
 
     ReferralClientDeliveredServiceEntity referralClientDeliveredService =
-        new ReferralClientDeliveredServiceEntity(deliveredServiceId, referralId, clientId, "13");
+        new ReferralClientDeliveredServiceEntity(deliveredServiceId, referralId, clientId, "13",
+            lastUpdatedId, lastUpdatedTime);
 
     ReferralClientDeliveredServiceEntity updated =
         referralClientDeliveredServiceDao.update(referralClientDeliveredService);
@@ -149,7 +155,8 @@ public class ReferralClientDeliveredServiceDaoIT {
   public void testUpdateEntityNotFoundException() throws Exception {
     thrown.expect(EntityNotFoundException.class);
     ReferralClientDeliveredServiceEntity referralClientDeliveredService =
-        new ReferralClientDeliveredServiceEntity("hjadvbcH", "Gyhaytg5g", clientId, "13");
+        new ReferralClientDeliveredServiceEntity("hjadvbcH", "Gyhaytg5g", clientId, "13",
+            lastUpdatedId, lastUpdatedTime);
 
     referralClientDeliveredServiceDao.update(referralClientDeliveredService);
 

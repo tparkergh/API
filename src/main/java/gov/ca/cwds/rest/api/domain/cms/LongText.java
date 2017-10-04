@@ -1,19 +1,19 @@
 package gov.ca.cwds.rest.api.domain.cms;
 
+import gov.ca.cwds.rest.api.Request;
+import gov.ca.cwds.rest.api.Response;
+import gov.ca.cwds.rest.api.domain.DomainObject;
+import gov.ca.cwds.rest.api.domain.ReportingDomain;
+import io.swagger.annotations.ApiModelProperty;
+
 import javax.validation.constraints.Size;
 
-import gov.ca.cwds.rest.api.domain.ReportingDomain;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.hibernate.validator.constraints.NotEmpty;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
-
-import gov.ca.cwds.rest.api.Request;
-import gov.ca.cwds.rest.api.Response;
-import gov.ca.cwds.rest.api.domain.DomainObject;
-import io.swagger.annotations.ApiModelProperty;
 
 /**
  * {@link DomainObject} representing an LongText
@@ -34,7 +34,10 @@ public class LongText extends ReportingDomain implements Request, Response {
 
   @NotEmpty
   @Size(min = 1, max = 32700)
-  @ApiModelProperty(required = true, readOnly = false, value = "Text Description",
+  @ApiModelProperty(
+      required = true,
+      readOnly = false,
+      value = "Text Description",
       example = "Arrange for parents to have demonstrating home maker come to the home twice a week")
   private String textDescription;
 
@@ -58,6 +61,10 @@ public class LongText extends ReportingDomain implements Request, Response {
   public LongText(gov.ca.cwds.data.persistence.cms.LongText persistedLongText) {
     this.countySpecificCode = persistedLongText.getCountySpecificCode();
     this.textDescription = persistedLongText.getTextDescription();
+  }
+
+  public LongText() {
+    // TODO Auto-generated constructor stub
   }
 
   /**

@@ -6,6 +6,7 @@ import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.notNullValue;
 
 import java.io.IOException;
+import java.util.Date;
 
 import org.junit.Test;
 
@@ -21,6 +22,9 @@ public class ReferralClientDeliveredServiceEntityTest {
   private String deliveredServiceId = "ABC1234567";
   private String referralId = "ABX1234560";
   private String clientId = "APc109852u";
+  private String lastUpdatedId = "0X5";
+  private Date lastUpdatedTime = new Date();
+
 
   /**
    * Constructor test
@@ -42,7 +46,7 @@ public class ReferralClientDeliveredServiceEntityTest {
 
     ReferralClientDeliveredServiceEntity referralClientDeliveredServiceEntity =
         new ReferralClientDeliveredServiceEntity(deliveredServiceId, referralId, clientId,
-            valid.getCountySpecificCode());
+            valid.getCountySpecificCode(), lastUpdatedId, lastUpdatedTime);
 
     assertThat(referralClientDeliveredServiceEntity.getCountySpecificCode(),
         is(equalTo(valid.getCountySpecificCode())));
@@ -52,7 +56,8 @@ public class ReferralClientDeliveredServiceEntityTest {
       throws JsonParseException, JsonMappingException, IOException {
 
     ReferralClientDeliveredServiceEntity validReferralClientDeliveredService =
-        new ReferralClientDeliveredServiceEntity(deliveredServiceId, referralId, clientId, "99");
+        new ReferralClientDeliveredServiceEntity(deliveredServiceId, referralId, clientId, "99",
+            lastUpdatedId, lastUpdatedTime);
     return validReferralClientDeliveredService;
 
   }

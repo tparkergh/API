@@ -1,6 +1,20 @@
 package gov.ca.cwds.rest.api.domain.investigation.contact;
 
 import static gov.ca.cwds.data.persistence.cms.CmsPersistentObject.CMS_ID_LEN;
+import gov.ca.cwds.data.persistence.contact.DeliveredServiceEntity;
+import gov.ca.cwds.rest.api.Request;
+import gov.ca.cwds.rest.api.Response;
+import gov.ca.cwds.rest.api.contact.DeliveredServiceDomain;
+import gov.ca.cwds.rest.api.domain.DomainChef;
+import gov.ca.cwds.rest.api.domain.DomainObject;
+import gov.ca.cwds.rest.api.domain.LastUpdatedBy;
+import gov.ca.cwds.rest.api.domain.PostedIndividualDeliveredService;
+import gov.ca.cwds.rest.api.domain.ReportingDomain;
+import gov.ca.cwds.rest.api.domain.SystemCodeCategoryId;
+import gov.ca.cwds.rest.validation.ValidSystemCodeId;
+import io.dropwizard.jackson.JsonSnakeCase;
+import io.dropwizard.validation.OneOf;
+import io.swagger.annotations.ApiModelProperty;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -18,20 +32,6 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
-
-import gov.ca.cwds.data.persistence.contact.DeliveredServiceEntity;
-import gov.ca.cwds.rest.api.Request;
-import gov.ca.cwds.rest.api.Response;
-import gov.ca.cwds.rest.api.domain.DomainChef;
-import gov.ca.cwds.rest.api.domain.DomainObject;
-import gov.ca.cwds.rest.api.domain.LastUpdatedBy;
-import gov.ca.cwds.rest.api.domain.PostedIndividualDeliveredService;
-import gov.ca.cwds.rest.api.domain.ReportingDomain;
-import gov.ca.cwds.rest.api.domain.SystemCodeCategoryId;
-import gov.ca.cwds.rest.validation.ValidSystemCodeId;
-import io.dropwizard.jackson.JsonSnakeCase;
-import io.dropwizard.validation.OneOf;
-import io.swagger.annotations.ApiModelProperty;
 
 /**
  * {@link DomainObject} representing a Contact
@@ -81,7 +81,9 @@ public class Contact extends ReportingDomain implements Request, Response {
   @JsonProperty("purpose")
   // "service_contact" delivered service serviceContactType
   @ValidSystemCodeId(required = false, category = SystemCodeCategoryId.CONTACT_TYPE)
-  @ApiModelProperty(required = false, readOnly = false,
+  @ApiModelProperty(
+      required = false,
+      readOnly = false,
       value = "Delivered service contact type system code ID e.g)  -> 433 Conduct Client Evaluation ",
       example = "433")
   private Integer purpose;
@@ -187,6 +189,33 @@ public class Contact extends ReportingDomain implements Request, Response {
     this.status = persistedDeliverdService.getStatusCode();
     this.services = null;
     this.location = Integer.valueOf(persistedDeliverdService.getContactLocationType());
+    this.note = note;
+    this.people = people;
+  }
+
+  /**
+   * @param deliverdServiceDomain - DeliverdServiceDomain
+   * @param note - note
+   * @param people - people
+   */
+  public Contact(DeliveredServiceDomain deliverdServiceDomain, String note,
+      Set<PostedIndividualDeliveredService> people) {
+    super();
+    this.id = deliverdServiceDomain.getId();
+    this.lastUpdatedBy = lastUpdatedBy;
+    String startDate = deliverdServiceDomain.getStartDate();
+    if (StringUtils.isNotEmpty(startDate)) {
+      this.startedAt = startDate + "T" + deliverdServiceDomain.getStartTime() + "Z";
+    }
+    String endDate = deliverdServiceDomain.getEndDate();
+    if (StringUtils.isNotEmpty(endDate)) {
+      this.endedAt = endDate + "T" + deliverdServiceDomain.getEndTime() + "Z";
+    }
+    this.purpose = deliverdServiceDomain.getServiceContactType();
+    this.communicationMethod = deliverdServiceDomain.getCommunicationMethodType();
+    this.status = deliverdServiceDomain.getStatusCode();
+    this.services = null;
+    this.location = deliverdServiceDomain.getContactLocationType();
     this.note = note;
     this.people = people;
   }
