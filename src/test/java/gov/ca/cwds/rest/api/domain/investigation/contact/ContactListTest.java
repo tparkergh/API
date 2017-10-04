@@ -31,8 +31,8 @@ public class ContactListTest {
     LastUpdatedBy lastUpdatedByPerson =
         new LastUpdatedBy("0X5", "Joe", "M", "Friday", "Mr.", "Jr.");
     Contact contact =
-        new Contact("1234567ABC", lastUpdatedByPerson, "2010-04-27T23:30:14.000Z", "", 433, 408,
-            "C", services, 415,
+        new Contact("1234567ABC", lastUpdatedByPerson, "2010-04-27T23:30:14.000Z", "", "433",
+            "408", "C", services, "415",
             "some text describing the contact of up to 8000 characters can be stored in CMS",
             people);
     Set<Contact> contacts = new HashSet<>();

@@ -56,14 +56,14 @@ public class ContactRequest implements Request {
   @ValidSystemCodeId(required = false, category = SystemCodeCategoryId.CONTACT_TYPE)
   @ApiModelProperty(required = false, readOnly = false,
       value = "Delivered service contact type system code ID e.g)  -> ", example = "433")
-  private Integer purpose;
+  private String purpose;
 
   @JsonProperty("communication_method")
   @ValidSystemCodeId(required = false, category = SystemCodeCategoryId.COMMUNICATION_METHOD)
   @ApiModelProperty(required = false, readOnly = false,
       value = "Delivered service communication method type system code ID e.g) 408 -> In-Person",
       example = "408")
-  private Integer communicationMethod;
+  private String communicationMethod;
 
   @NotEmpty
   @JsonProperty("status")
@@ -82,7 +82,7 @@ public class ContactRequest implements Request {
   @ApiModelProperty(required = false, readOnly = false,
       value = "Delivered service contact location type system code ID e.g) 415 -> CWS Office",
       example = "415")
-  private Integer location;
+  private String location;
 
   @JsonProperty("note")
   @Size(max = 8000)
@@ -107,10 +107,10 @@ public class ContactRequest implements Request {
    */
   @JsonCreator
   public ContactRequest(@JsonProperty("started_at") String startedAt,
-      @JsonProperty("ended_at") String endedAt, @JsonProperty("purpose") Integer purpose,
-      @JsonProperty("communication_method") Integer communicationMethod,
+      @JsonProperty("ended_at") String endedAt, @JsonProperty("purpose") String purpose,
+      @JsonProperty("communication_method") String communicationMethod,
       @JsonProperty("status") String status, @JsonProperty("services") Set<Integer> services,
-      @JsonProperty("location") Integer location, @JsonProperty("note") String note,
+      @JsonProperty("location") String location, @JsonProperty("note") String note,
       @JsonProperty("people") Set<PostedIndividualDeliveredService> people) {
     this.startedAt = startedAt;
     this.endedAt = endedAt;
@@ -145,7 +145,7 @@ public class ContactRequest implements Request {
   /**
    * @return the purpose
    */
-  public Integer getPurpose() {
+  public String getPurpose() {
     return purpose;
   }
 
@@ -154,7 +154,7 @@ public class ContactRequest implements Request {
   /**
    * @return the communicationMethod
    */
-  public Integer getCommunicationMethod() {
+  public String getCommunicationMethod() {
     return communicationMethod;
   }
 
@@ -181,7 +181,7 @@ public class ContactRequest implements Request {
   /**
    * @return the location
    */
-  public Integer getLocation() {
+  public String getLocation() {
     return location;
   }
 

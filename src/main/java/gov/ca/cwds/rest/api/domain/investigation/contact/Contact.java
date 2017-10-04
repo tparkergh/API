@@ -86,14 +86,14 @@ public class Contact extends ReportingDomain implements Request, Response {
       readOnly = false,
       value = "Delivered service contact type system code ID e.g)  -> 433 Conduct Client Evaluation ",
       example = "433")
-  private Integer purpose;
+  private String purpose;
 
   @JsonProperty("communication_method")
   @ValidSystemCodeId(required = false, category = SystemCodeCategoryId.COMMUNICATION_METHOD)
   @ApiModelProperty(required = false, readOnly = false,
       value = "Delivered service communication method type system code ID e.g) 408 -> In-Person",
       example = "408")
-  private Integer communicationMethod;
+  private String communicationMethod;
 
   @NotEmpty
   @JsonProperty("status")
@@ -114,7 +114,7 @@ public class Contact extends ReportingDomain implements Request, Response {
   @ApiModelProperty(required = false, readOnly = false,
       value = "Delivered service contact location type system code ID e.g) 415 -> CWS Office",
       example = "415")
-  private Integer location;
+  private String location;
 
   @JsonProperty("note")
   // ("detail_text")
@@ -145,10 +145,10 @@ public class Contact extends ReportingDomain implements Request, Response {
   public Contact(@JsonProperty("id") String id,
       @JsonProperty("last_updated_by") LastUpdatedBy lastUpdatedBy,
       @JsonProperty("started_at") String startedAt, @JsonProperty("ended_at") String endedAt,
-      @JsonProperty("purpose") Integer purpose,
-      @JsonProperty("communication_method") Integer communicationMethod,
+      @JsonProperty("purpose") String purpose,
+      @JsonProperty("communication_method") String communicationMethod,
       @JsonProperty("status") String status, @JsonProperty("services") Set<Integer> services,
-      @JsonProperty("location") Integer location, @JsonProperty("note") String note,
+      @JsonProperty("location") String location, @JsonProperty("note") String note,
       @JsonProperty("people") Set<PostedIndividualDeliveredService> people) {
     super();
     this.id = id;
@@ -183,12 +183,11 @@ public class Contact extends ReportingDomain implements Request, Response {
     if (StringUtils.isNotEmpty(endDate)) {
       this.endedAt = endDate + "T" + cookTime(persistedDeliverdService.getEndTime()) + "Z";
     }
-    this.purpose = Integer.valueOf(persistedDeliverdService.getServiceContactType());
-    this.communicationMethod =
-        Integer.valueOf(persistedDeliverdService.getCommunicationMethodType());
+    this.purpose = persistedDeliverdService.getServiceContactType().toString();
+    this.communicationMethod = persistedDeliverdService.getCommunicationMethodType().toString();
     this.status = persistedDeliverdService.getStatusCode();
     this.services = null;
-    this.location = Integer.valueOf(persistedDeliverdService.getContactLocationType());
+    this.location = persistedDeliverdService.getContactLocationType().toString();
     this.note = note;
     this.people = people;
   }
@@ -211,11 +210,11 @@ public class Contact extends ReportingDomain implements Request, Response {
     if (StringUtils.isNotEmpty(endDate)) {
       this.endedAt = endDate + "T" + deliverdServiceDomain.getEndTime() + "Z";
     }
-    this.purpose = deliverdServiceDomain.getServiceContactType();
-    this.communicationMethod = deliverdServiceDomain.getCommunicationMethodType();
+    this.purpose = deliverdServiceDomain.getServiceContactType().toString();
+    this.communicationMethod = deliverdServiceDomain.getCommunicationMethodType().toString();
     this.status = deliverdServiceDomain.getStatusCode();
     this.services = null;
-    this.location = deliverdServiceDomain.getContactLocationType();
+    this.location = deliverdServiceDomain.getContactLocationType().toString();
     this.note = note;
     this.people = people;
   }
@@ -275,7 +274,7 @@ public class Contact extends ReportingDomain implements Request, Response {
   /**
    * @return the purpose
    */
-  public Integer getPurpose() {
+  public String getPurpose() {
     return purpose;
   }
 
@@ -284,7 +283,7 @@ public class Contact extends ReportingDomain implements Request, Response {
   /**
    * @return the communicationMethod
    */
-  public Integer getCommunicationMethod() {
+  public String getCommunicationMethod() {
     return communicationMethod;
   }
 
@@ -311,7 +310,7 @@ public class Contact extends ReportingDomain implements Request, Response {
   /**
    * @return the location
    */
-  public Integer getLocation() {
+  public String getLocation() {
     return location;
   }
 

@@ -296,7 +296,7 @@ public class ContactService implements TypedCrudsService<String, ContactReferral
 
     Date endedAt = extractDateTime(contactRequest.getEndedAt());
     Date startedAt = extractDateTime(contactRequest.getStartedAt());
-    Integer serviceContactType = contactRequest.getPurpose();
+    Integer serviceContactType = Integer.parseInt(contactRequest.getPurpose());
     Set<PostedIndividualDeliveredService> people = contactRequest.getPeople();
 
     String deliveredServiceId =
@@ -385,9 +385,11 @@ public class ContactService implements TypedCrudsService<String, ContactReferral
     String longTextContinuationId = createLongText(noteContinuation);
 
     DeliveredServiceDomain deliveredServiceDomain =
-        DeliveredServiceDomain.createWithDefaults(contactRequest.getCommunicationMethod(),
-            contactRequest.getLocation(), countySpecificCode, longTextId, longTextContinuationId,
-            endDate, endTime, serviceContactType, startDate, startTime, contactRequest.getStatus());
+        DeliveredServiceDomain.createWithDefaults(
+            Integer.parseInt(contactRequest.getCommunicationMethod()),
+            Integer.parseInt(contactRequest.getLocation()), countySpecificCode, longTextId,
+            longTextContinuationId, endDate, endTime, serviceContactType, startDate, startTime,
+            contactRequest.getStatus());
 
     try {
       gov.ca.cwds.data.persistence.contact.DeliveredServiceEntity persistedDeliveredService =
@@ -413,8 +415,8 @@ public class ContactService implements TypedCrudsService<String, ContactReferral
     final Set<PostedIndividualDeliveredService> people = validPeople();
     LastUpdatedBy lastUpdatedByPerson =
         new LastUpdatedBy("0X5", "Joe", "M", "Friday", "Mr.", "Jr.");
-    return new Contact("1234567ABC", lastUpdatedByPerson, "2010-04-27T23:30:14.000Z", "", 433, 408,
-        "C", services, 415,
+    return new Contact("1234567ABC", lastUpdatedByPerson, "2010-04-27T23:30:14.000Z", "", "433",
+        "408", "C", services, "415",
         "some text describing the contact of up to 8000 characters can be stored in CMS", people);
   }
 
