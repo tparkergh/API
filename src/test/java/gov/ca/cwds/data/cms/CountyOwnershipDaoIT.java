@@ -101,9 +101,8 @@ public class CountyOwnershipDaoIT implements DaoTestTemplate {
   }
 
   @Override
-  @Test
+  @Test(expected = EntityExistsException.class)
   public void testCreateExistingEntityException() throws Exception {
-    thrown.expect(EntityExistsException.class);
     CountyOwnership countyOwnership = new CountyOwnership("AaQshqm0Mb", "C", "N", "N", "N", "N",
         "N", "N", "N", "N", "N", "N", "N", "N", "N", "N", "N", "N", "N", "N", "N", "N", "N", "N",
         "N", "N", "N", "N", "N", "N", "N", "N", "N", "N", "N", "N", "N", "N", "N", "N", "N", "N",
@@ -141,9 +140,8 @@ public class CountyOwnershipDaoIT implements DaoTestTemplate {
   }
 
   @Override
-  @Test
+  @Test(expected = EntityNotFoundException.class)
   public void testUpdateEntityNotFoundException() throws Exception {
-    thrown.expect(EntityNotFoundException.class);
     CountyOwnership countyOwnership = new CountyOwnership("AaQshqm0ML", "C", "Y", "N", "N", "N",
         "N", "N", "N", "N", "N", "N", "N", "N", "N", "N", "N", "N", "N", "N", "N", "N", "N", "N",
         "N", "N", "N", "N", "N", "N", "N", "N", "N", "N", "N", "N", "N", "N", "N", "N", "N", "N",

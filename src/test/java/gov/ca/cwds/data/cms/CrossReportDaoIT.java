@@ -129,9 +129,8 @@ public class CrossReportDaoIT implements DaoTestTemplate {
   }
 
   @Override
-  @Test
+  @Test(expected = EntityNotFoundException.class)
   public void testUpdateEntityNotFoundException() throws Exception {
-    thrown.expect(EntityNotFoundException.class);
     CrossReport crossreport = new CrossReport("ZZ20cK10WS", "ZZDUfmj0WS", (short) 2094, "N", "N",
         null, "  ", 0, BigDecimal.ZERO, null, " ", " ", "925q4As0AC", "0AC", " ", " ", " ", "34",
         "N", "N", "N");

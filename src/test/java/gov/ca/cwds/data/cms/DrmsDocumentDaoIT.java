@@ -98,7 +98,6 @@ public class DrmsDocumentDaoIT {
   public void testCreate() throws Exception {
 
     gov.ca.cwds.rest.api.domain.cms.DrmsDocument vdd = new DrmsDocumentResourceBuilder().build();
-
     DrmsDocument drmsDocument =
         new DrmsDocument("ABC1234567", vdd.getCreationTimeStamp(), vdd.getDrmsDocumentTemplateId(),
             vdd.getFingerprintStaffPerson(), vdd.getStaffPersonId(), vdd.getHandleName());
@@ -107,12 +106,10 @@ public class DrmsDocumentDaoIT {
     assertThat(drmsDocument, is(create));
   }
 
-  @Test
+  @Test(expected = EntityExistsException.class)
   public void testCreateExistingEntityException() throws Exception {
 
-    thrown.expect(EntityExistsException.class);
     gov.ca.cwds.rest.api.domain.cms.DrmsDocument vdd = new DrmsDocumentResourceBuilder().build();
-
     DrmsDocument drmsDocument =
         new DrmsDocument(id, vdd.getCreationTimeStamp(), vdd.getDrmsDocumentTemplateId(),
             vdd.getFingerprintStaffPerson(), vdd.getStaffPersonId(), vdd.getHandleName());
@@ -146,7 +143,6 @@ public class DrmsDocumentDaoIT {
   public void testUpdate() throws Exception {
 
     gov.ca.cwds.rest.api.domain.cms.DrmsDocument vdd = new DrmsDocumentResourceBuilder().build();
-
     DrmsDocument drmsDocument =
         new DrmsDocument(id, vdd.getCreationTimeStamp(), vdd.getDrmsDocumentTemplateId(),
             vdd.getFingerprintStaffPerson(), vdd.getStaffPersonId(), vdd.getHandleName());
@@ -155,12 +151,10 @@ public class DrmsDocumentDaoIT {
     assertThat(drmsDocument, is(updated));
   }
 
-  @Test
+  @Test(expected = EntityNotFoundException.class)
   public void testUpdateEntityNotFoundException() throws Exception {
 
-    thrown.expect(EntityNotFoundException.class);
     gov.ca.cwds.rest.api.domain.cms.DrmsDocument vdd = new DrmsDocumentResourceBuilder().build();
-
     DrmsDocument drmsDocument =
         new DrmsDocument("1234567ABC", vdd.getCreationTimeStamp(), vdd.getDrmsDocumentTemplateId(),
             vdd.getFingerprintStaffPerson(), vdd.getStaffPersonId(), vdd.getHandleName());

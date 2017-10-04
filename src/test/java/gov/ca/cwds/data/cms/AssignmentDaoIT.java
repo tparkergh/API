@@ -85,7 +85,6 @@ public class AssignmentDaoIT {
     assertThat(found, is(nullValue()));
   }
 
-
   @Test
   public void testCreate() throws Exception {
     gov.ca.cwds.rest.api.domain.cms.Assignment da =
@@ -103,11 +102,9 @@ public class AssignmentDaoIT {
     assertThat(pa, is(create));
   }
 
-
-  @Test
+  @Test(expected = EntityExistsException.class)
   public void testCreateExistingEntityException() throws Exception {
 
-    thrown.expect(EntityExistsException.class);
     gov.ca.cwds.rest.api.domain.cms.Assignment da =
         new AssignmentResourceBuilder().buildAssignment();
 
@@ -122,20 +119,17 @@ public class AssignmentDaoIT {
     assignmentDao.create(pa);
   }
 
-
   @Test
   public void testDelete() throws Exception {
     Assignment deleted = assignmentDao.delete(id);
     assertThat(deleted.getId(), is(id));
   }
 
-
   @Test
   public void testDeleteEntityNotFoundException() throws Exception {
     Assignment deleted = assignmentDao.delete("9999999ZZZ");
     assertThat(deleted, is(nullValue()));
   }
-
 
   @Test
   public void testUpdate() throws Exception {
@@ -153,7 +147,6 @@ public class AssignmentDaoIT {
     Assignment updated = assignmentDao.update(pa);
     assertThat(pa, is(updated));
   }
-
 
   @Test(expected = EntityNotFoundException.class)
   public void testUpdateEntityNotFoundException() throws Exception {

@@ -126,9 +126,8 @@ public class ServiceProviderDaoIT implements DaoTestTemplate {
   }
 
   @Override
-  @Test
+  @Test(expected = EntityExistsException.class)
   public void testCreateExistingEntityException() throws Exception {
-    thrown.expect(EntityExistsException.class);
     ServiceProvider serviceProvider = new ServiceProvider("Test Agency", "N", " ", null,
         BigDecimal.ZERO, "Horacio", "Ao9dm8T0Ki", "G.", "Dr.", 0, BigDecimal.ZERO, "Kiddie Care",
         (short) 0, (short) 0, " ", " ", " ", 0, (short) 0);
@@ -164,9 +163,8 @@ public class ServiceProviderDaoIT implements DaoTestTemplate {
   }
 
   @Override
-  @Test
+  @Test(expected = EntityNotFoundException.class)
   public void testUpdateEntityNotFoundException() throws Exception {
-    thrown.expect(EntityNotFoundException.class);
 
     ServiceProvider serviceProvider = new ServiceProvider("Test Agency", "N", " ", null,
         BigDecimal.ZERO, "Horacio", "Ao9dm8T0Kk", "G.", "Dr.", 0, BigDecimal.ZERO, "Kiddie Care",

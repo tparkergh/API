@@ -102,10 +102,9 @@ public class TickleDaoIT implements DaoTestTemplate {
   }
 
   @Override
-  @Test
+  @Test(expected = EntityExistsException.class)
   public void testCreateExistingEntityException() throws Exception {
 
-    thrown.expect(EntityExistsException.class);
     Tickle tickle = new Tickle(id, "ABD1234589", "C", "K5Fk8Yd00F", null, (Date) null, "note text",
         Short.MAX_VALUE);
     tickleDao.create(tickle);
@@ -139,9 +138,8 @@ public class TickleDaoIT implements DaoTestTemplate {
   }
 
   @Override
-  @Test
+  @Test(expected = EntityNotFoundException.class)
   public void testUpdateEntityNotFoundException() throws Exception {
-    thrown.expect(EntityNotFoundException.class);
 
     Tickle tickle = new Tickle("R2VC6AK0X5", "ABD1234589", "C", "K5Fk8Yd00F", null, (Date) null,
         "note text1", Short.MAX_VALUE);

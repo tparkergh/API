@@ -94,9 +94,8 @@ public class ReferralClientDaoIT implements DaoTestTemplate {
   }
 
   @Override
-  @Test
+  @Test(expected = EntityExistsException.class)
   public void testCreateExistingEntityException() throws Exception {
-    thrown.expect(EntityExistsException.class);
     ReferralClient referralClient = new ReferralClient("LNuzMKw06s", "AazXkWY06s", "", (short) 122,
         (short) 681, "S", null, "N", "N", "", (short) 2, "", "", "Y", "N", "N");
     referralClientDao.create(referralClient);
@@ -127,9 +126,8 @@ public class ReferralClientDaoIT implements DaoTestTemplate {
   }
 
   @Override
-  @Test
+  @Test(expected = EntityNotFoundException.class)
   public void testUpdateEntityNotFoundException() throws Exception {
-    thrown.expect(EntityNotFoundException.class);
     ReferralClient referralClient = new ReferralClient("ZZuzMKw06s", "AazXkWY06s", "", (short) 122,
         (short) 681, "S", null, "N", "N", "", (short) 2, "", "", "Y", "N", "N");
     referralClientDao.update(referralClient);

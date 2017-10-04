@@ -90,9 +90,8 @@ public class AddressUcDaoIT {
     assertThat(created, is(addressUc));
   }
 
-  @Test
+  @Test(expected = EntityExistsException.class)
   public void testCreateExistingEntityException() throws Exception {
-    thrown.expect(EntityExistsException.class);
     AddressUc addressUc = new AddressUc("AbjqVmy04O", "C", "Sacramento", "Main Street", "123");
     addressUcDao.create(addressUc);
   }
@@ -118,9 +117,8 @@ public class AddressUcDaoIT {
     assertThat(updated, is(addressUc));
   }
 
-  @Test
+  @Test(expected = EntityNotFoundException.class)
   public void testUpdateEntityNotFoundException() throws Exception {
-    thrown.expect(EntityNotFoundException.class);
     AddressUc addressUc = new AddressUc("AbjqVmy04y", "C", "Sacramento", "Main Street", "123");
     addressUcDao.update(addressUc);
   }
