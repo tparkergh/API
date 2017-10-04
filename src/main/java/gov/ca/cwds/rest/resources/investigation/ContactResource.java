@@ -3,7 +3,7 @@ package gov.ca.cwds.rest.resources.investigation;
 import static gov.ca.cwds.rest.core.Api.RESOURCE_INVESTIGATIONS;
 import gov.ca.cwds.inject.ContactServiceBackedResource;
 import gov.ca.cwds.rest.api.domain.investigation.contact.Contact;
-import gov.ca.cwds.rest.api.domain.investigation.contact.ContactList;
+import gov.ca.cwds.rest.api.domain.investigation.contact.ContactReferralRequest;
 import gov.ca.cwds.rest.api.domain.investigation.contact.ContactRequest;
 import gov.ca.cwds.rest.resources.TypedResourceDelegate;
 import io.dropwizard.hibernate.UnitOfWork;
@@ -44,7 +44,7 @@ import com.google.inject.Inject;
 @Consumes(MediaType.APPLICATION_JSON)
 public class ContactResource {
 
-  private TypedResourceDelegate<String, ContactRequest> typedResourceDelegate;
+  private TypedResourceDelegate<String, ContactReferralRequest> typedResourceDelegate;
 
   /**
    * Constructor
@@ -53,7 +53,7 @@ public class ContactResource {
    */
   @Inject
   public ContactResource(
-      @ContactServiceBackedResource TypedResourceDelegate<String, ContactRequest> typedResourceDelegate) {
+      @ContactServiceBackedResource TypedResourceDelegate<String, ContactReferralRequest> typedResourceDelegate) {
     this.typedResourceDelegate = typedResourceDelegate;
   }
 
@@ -79,7 +79,9 @@ public class ContactResource {
   public Response create(@PathParam("id") @ApiParam(required = true, name = "id",
       value = "The id of the Referral ") String id, @Valid @ApiParam(hidden = false,
       required = true) ContactRequest contact) {
-    return typedResourceDelegate.create(contact);
+
+    ContactReferralRequest crr = new ContactReferralRequest(id, contact);
+    return typedResourceDelegate.create(crr);
   }
 
   /**
@@ -124,7 +126,7 @@ public class ContactResource {
       @ApiResponse(code = 409, message = "Conflict - already exists"),
       @ApiResponse(code = 422, message = "Unable to validate Contacts")})
   @Consumes(value = MediaType.APPLICATION_JSON)
-  @ApiOperation(value = "Create Contacts", code = HttpStatus.SC_OK, response = ContactList.class)
+  @ApiOperation(value = "Create Contacts", code = HttpStatus.SC_OK, response = Contact[].class)
   public Response findAll(@PathParam("id") @ApiParam(required = true, name = "id",
       value = "The id of the Referral ") String id) {
     return typedResourceDelegate.get(id);
@@ -154,7 +156,8 @@ public class ContactResource {
       value = "The id of the Referral ") String id, @PathParam("contact_id") @ApiParam(
       required = true, name = "contact_id", value = "The id of the Contact") String contactId,
       @Valid @ApiParam(hidden = false, required = true) ContactRequest contactToUpdate) {
-    return typedResourceDelegate.update(id, contactToUpdate);
+    ContactReferralRequest contactReferralRequest = new ContactReferralRequest(id, contactToUpdate);
+    return typedResourceDelegate.update(contactId, contactReferralRequest);
   }
 
 }

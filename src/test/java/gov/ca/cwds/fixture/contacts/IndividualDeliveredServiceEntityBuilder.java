@@ -1,8 +1,8 @@
 package gov.ca.cwds.fixture.contacts;
 
-import java.util.Date;
-
 import gov.ca.cwds.data.persistence.contact.IndividualDeliveredServiceEntity;
+
+import java.util.Date;
 
 /**
  * The Builder class for {@link IndividualDeliveredServiceEntity}
@@ -20,10 +20,13 @@ public class IndividualDeliveredServiceEntityBuilder {
   private String deliveredServiceId = "Aabg4cV0AB";
   private String deliveredToIndividualCode = "C";
   private String deliveredToIndividualId = "A0YcYQV0AB";
+  private String lastUpdatedId = "0X5";
+  private Date lastUpdatedTime = new Date();
 
   public IndividualDeliveredServiceEntity buildIndividualDeliveredServiceEntity() {
     return new IndividualDeliveredServiceEntity(deliveredServiceId, deliveredToIndividualCode,
-        deliveredToIndividualId, countySpecificCode, endDate, serviceContactType, startDate);
+        deliveredToIndividualId, countySpecificCode, endDate, serviceContactType, startDate,
+        lastUpdatedId, lastUpdatedTime);
   }
 
   /**

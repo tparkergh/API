@@ -4,10 +4,9 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.notNullValue;
+import gov.ca.cwds.fixture.contacts.ContactPartyDeliverdServiceEntityBuilder;
 
 import org.junit.Test;
-
-import gov.ca.cwds.fixture.contacts.ContactPartyDeliverdServiceEntityBuilder;
 
 
 /**
@@ -36,10 +35,13 @@ public class ContactPartyDeliveredServiceEntityTest {
         new ContactPartyDeliverdServiceEntityBuilder().buildContactPartyDeliveredService();
 
     gov.ca.cwds.data.persistence.contact.ContactPartyDeliveredServiceEntity persistent =
-        new ContactPartyDeliveredServiceEntity(validContactPartyDeliveredServiceEntity.getThirdId(),
+        new ContactPartyDeliveredServiceEntity(
+            validContactPartyDeliveredServiceEntity.getThirdId(),
             validContactPartyDeliveredServiceEntity.getContactPartyType(),
             validContactPartyDeliveredServiceEntity.getCountySpecificCode(),
-            validContactPartyDeliveredServiceEntity.getDeliveredServiceId());
+            validContactPartyDeliveredServiceEntity.getDeliveredServiceId(),
+            validContactPartyDeliveredServiceEntity.getLastUpdatedId(),
+            validContactPartyDeliveredServiceEntity.getLastUpdatedTime());
 
     assertThat(persistent.getThirdId(),
         is(equalTo(validContactPartyDeliveredServiceEntity.getThirdId())));
@@ -49,6 +51,10 @@ public class ContactPartyDeliveredServiceEntityTest {
         is(equalTo(validContactPartyDeliveredServiceEntity.getCountySpecificCode())));
     assertThat(persistent.getDeliveredServiceId(),
         is(equalTo(validContactPartyDeliveredServiceEntity.getDeliveredServiceId())));
+    assertThat(persistent.getLastUpdatedId(),
+        is(equalTo(validContactPartyDeliveredServiceEntity.getLastUpdatedId())));
+    assertThat(persistent.getLastUpdatedTime(),
+        is(equalTo(validContactPartyDeliveredServiceEntity.getLastUpdatedTime())));
   }
 
 }

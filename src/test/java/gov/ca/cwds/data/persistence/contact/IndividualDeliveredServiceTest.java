@@ -22,6 +22,9 @@ public class IndividualDeliveredServiceTest {
   private String deliveredServiceId = "ABC1234567";
   private String deliveredToIndividualCode = "C";
   private String deliveredToIndividualId = "AVC1098765";
+  private String lastUpdatedId = "0X5";
+  private Date lastUpdatedTime = new Date();
+
 
   /**
    * Constructor test
@@ -44,7 +47,7 @@ public class IndividualDeliveredServiceTest {
     IndividualDeliveredServiceEntity individualDeliveredServiceEntity =
         new IndividualDeliveredServiceEntity(deliveredServiceId, deliveredToIndividualCode,
             deliveredToIndividualId, valid.getCountySpecificCode(), valid.getEndDate(),
-            valid.getServiceContactType(), valid.getStartDate());
+            valid.getServiceContactType(), valid.getStartDate(), lastUpdatedId, lastUpdatedTime);
 
     assertThat(individualDeliveredServiceEntity.getCountySpecificCode(),
         is(equalTo(valid.getCountySpecificCode())));
@@ -52,6 +55,10 @@ public class IndividualDeliveredServiceTest {
         is(equalTo(valid.getServiceContactType())));
     assertThat(individualDeliveredServiceEntity.getEndDate(), is(equalTo(valid.getEndDate())));
     assertThat(individualDeliveredServiceEntity.getStartDate(), is(equalTo(valid.getStartDate())));
+    assertThat(individualDeliveredServiceEntity.getLastUpdatedId(),
+        is(equalTo(valid.getLastUpdatedId())));
+    assertThat(individualDeliveredServiceEntity.getLastUpdatedTime(),
+        is(equalTo(valid.getLastUpdatedTime())));
   }
 
   private IndividualDeliveredServiceEntity validIndividualDeliveredService()
@@ -59,7 +66,8 @@ public class IndividualDeliveredServiceTest {
 
     IndividualDeliveredServiceEntity validIndividualDeliveredService =
         new IndividualDeliveredServiceEntity(deliveredServiceId, deliveredToIndividualCode,
-            deliveredToIndividualId, "99", new Date(), (short) 420, new Date());
+            deliveredToIndividualId, "99", new Date(), (short) 420, new Date(), lastUpdatedId,
+            lastUpdatedTime);
     return validIndividualDeliveredService;
 
   }
