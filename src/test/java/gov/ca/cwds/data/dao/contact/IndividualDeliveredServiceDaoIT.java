@@ -4,6 +4,8 @@ import static org.hamcrest.Matchers.nullValue;
 import static org.hamcrest.core.Is.is;
 import static org.hamcrest.core.IsEqual.equalTo;
 import static org.junit.Assert.assertThat;
+import gov.ca.cwds.data.persistence.contact.IndividualDeliveredServiceEmbeddable;
+import gov.ca.cwds.data.persistence.contact.IndividualDeliveredServiceEntity;
 
 import java.util.Date;
 
@@ -20,9 +22,6 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Rule;
 import org.junit.Test;
-
-import gov.ca.cwds.data.persistence.contact.IndividualDeliveredServiceEmbeddable;
-import gov.ca.cwds.data.persistence.contact.IndividualDeliveredServiceEntity;
 
 /**
  * @author CWDS API Team
@@ -102,7 +101,7 @@ public class IndividualDeliveredServiceDaoIT {
   public void testCreate() throws Exception {
     IndividualDeliveredServiceEntity individualDeliveredServiceEntity =
         new IndividualDeliveredServiceEntity("ABC1234567", deliveredToIndividualCode, "ABC123458",
-            "99", new Date(), (short) 420, new Date());
+            "99", new Date(), (short) 420, new Date(), "", null);
 
     IndividualDeliveredServiceEntity created =
         individualDeliveredServiceDao.create(individualDeliveredServiceEntity);
@@ -114,7 +113,7 @@ public class IndividualDeliveredServiceDaoIT {
     thrown.expect(EntityExistsException.class);
     IndividualDeliveredServiceEntity individualDeliveredServiceEntity =
         new IndividualDeliveredServiceEntity(deliveredServiceId, deliveredToIndividualCode,
-            deliveredToIndividualId, "99", new Date(), (short) 420, new Date());
+            deliveredToIndividualId, "99", new Date(), (short) 420, new Date(), "", null);
 
     individualDeliveredServiceDao.create(individualDeliveredServiceEntity);
   }
@@ -146,7 +145,7 @@ public class IndividualDeliveredServiceDaoIT {
 
     IndividualDeliveredServiceEntity individualDeliveredServiceEntity =
         new IndividualDeliveredServiceEntity(deliveredServiceId, deliveredToIndividualCode,
-            deliveredToIndividualId, "00", new Date(), (short) 420, new Date());
+            deliveredToIndividualId, "00", new Date(), (short) 420, new Date(), "", null);
 
     IndividualDeliveredServiceEntity updated =
         individualDeliveredServiceDao.update(individualDeliveredServiceEntity);
@@ -158,7 +157,7 @@ public class IndividualDeliveredServiceDaoIT {
     thrown.expect(EntityNotFoundException.class);
     IndividualDeliveredServiceEntity individualDeliveredServiceEntity =
         new IndividualDeliveredServiceEntity("CVJSVCjnj", deliveredToIndividualCode, "sbdvh7chhv",
-            "00", new Date(), (short) 420, new Date());
+            "00", new Date(), (short) 420, new Date(), "", null);
 
     individualDeliveredServiceDao.update(individualDeliveredServiceEntity);
 

@@ -52,7 +52,8 @@ public class DeliveredToIndividualServiceTest {
     substituteCareProviderDao = mock(SubstituteCareProviderDao.class);
     deliveredToIndividualService =
         new DeliveredToIndividualService(clientDao, attorneyDao, collateralIndividualDao,
-            serviceProviderDao, substituteCareProviderDao, reporterDao);
+            serviceProviderDao, substituteCareProviderDao, reporterDao,
+            individualDeliveredServiceDao);
   }
 
   @Test

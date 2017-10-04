@@ -74,6 +74,8 @@ public class IndividualDeliveredServiceEntity extends CmsPersistentObject {
   }
 
   /**
+   * Constructor from fields
+   * 
    * @param deliveredServiceId The deliveredServiceId
    * @param deliveredToIndividualCode The deliveredToIndividualCode
    * @param deliveredToIndividualId The deliveredToIndividualId
@@ -81,11 +83,14 @@ public class IndividualDeliveredServiceEntity extends CmsPersistentObject {
    * @param endDate The endDate
    * @param serviceContactType The serviceContactType
    * @param startDate The startDate
+   * @param lastUpdatedId Id of the staff person currently logged in
+   * @param lastUpdatedTime Time of update
    */
   public IndividualDeliveredServiceEntity(String deliveredServiceId,
       String deliveredToIndividualCode, String deliveredToIndividualId, String countySpecificCode,
-      Date endDate, Short serviceContactType, Date startDate) {
-    super();
+      Date endDate, Short serviceContactType, Date startDate, String lastUpdatedId,
+      Date lastUpdatedTime) {
+    super(lastUpdatedId, lastUpdatedTime);
     this.countySpecificCode = countySpecificCode;
     this.endDate = endDate;
     this.serviceContactType = serviceContactType;
