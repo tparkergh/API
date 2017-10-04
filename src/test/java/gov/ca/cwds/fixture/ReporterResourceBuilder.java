@@ -1,46 +1,65 @@
 package gov.ca.cwds.fixture;
 
-import gov.ca.cwds.rest.api.domain.cms.Reporter;
 import java.math.BigDecimal;
+
 import org.joda.time.DateTime;
 
+import gov.ca.cwds.rest.api.domain.cms.Reporter;
+
+/**
+ * @author CWDS API Team
+ *
+ */
+@SuppressWarnings("javadoc")
 public class ReporterResourceBuilder {
   DateTime lastUpdatedTime = new DateTime();
   String badgeNumber = "";
-   String cityName = "";
-   Short colltrClientRptrReltnshpType = 0;
-   Short communicationMethodType = 0;
-   Boolean confidentialWaiverIndicator = false;
-   String drmsMandatedRprtrFeedback = "";
-   String employerName = "";
-   String feedbackDate = "";
-   Boolean feedbackRequiredIndicator = false;
-   String firstName = "Frank";
-   String lastName = "Johnson";
-   Boolean mandatedReporterIndicator = false;
-   Integer messagePhoneExtensionNumber = 123;
-   BigDecimal messagePhoneNumber = new BigDecimal(1235555);
-   String middleInitialName = "";
-   String namePrefixDescription = "";
-   BigDecimal primaryPhoneNumber = new BigDecimal(2223333);
-   Integer primaryPhoneExtensionNumber = 123;
-   Short stateCodeType = 0;
-   String streetName = "";
-   String streetNumber = "";
-   String suffixTitleDescription = "";
-   String zipcode = "";
-   String referralId = "";
-   String lawEnforcementId = "";
-   Short zipSuffixNumber = 0;
-   String countySpecificCode = "99";
+  String cityName = "";
+  Short colltrClientRptrReltnshpType = 0;
+  Short communicationMethodType = 0;
+  Boolean confidentialWaiverIndicator = false;
+  String drmsMandatedRprtrFeedback = "";
+  String employerName = "";
+  String feedbackDate = "";
+  Boolean feedbackRequiredIndicator = false;
+  String firstName = "Frank";
+  String lastName = "Johnson";
+  Boolean mandatedReporterIndicator = false;
+  Integer messagePhoneExtensionNumber = 123;
+  BigDecimal messagePhoneNumber = new BigDecimal(1235555);
+  String middleInitialName = "";
+  String namePrefixDescription = "";
+  BigDecimal primaryPhoneNumber = new BigDecimal(2223333);
+  Integer primaryPhoneExtensionNumber = 123;
+  Short stateCodeType = 0;
+  String streetName = "";
+  String streetNumber = "";
+  String suffixTitleDescription = "";
+  String zipcode = "";
+  String referralId = "";
+  String lawEnforcementId = null;
+  Short zipSuffixNumber = 0;
+  String countySpecificCode = "99";
 
-  public DateTime getLastUpdatedTime() {return lastUpdatedTime;}
+  public Reporter build() {
+    return new Reporter(lastUpdatedTime, badgeNumber, cityName, colltrClientRptrReltnshpType,
+        communicationMethodType, confidentialWaiverIndicator, drmsMandatedRprtrFeedback,
+        employerName, feedbackDate, feedbackRequiredIndicator, firstName, lastName,
+        mandatedReporterIndicator, messagePhoneExtensionNumber, messagePhoneNumber,
+        middleInitialName, namePrefixDescription, primaryPhoneNumber, primaryPhoneExtensionNumber,
+        stateCodeType, streetName, streetNumber, suffixTitleDescription, zipcode, referralId,
+        lawEnforcementId, zipSuffixNumber, countySpecificCode);
 
-  public ReporterResourceBuilder setLastUpdatedTime(DateTime updatedTime){
+  }
+
+  public DateTime getLastUpdatedTime() {
+    return lastUpdatedTime;
+  }
+
+  public ReporterResourceBuilder setLastUpdatedTime(DateTime updatedTime) {
     this.lastUpdatedTime = updatedTime;
     return this;
   }
-
 
   public ReporterResourceBuilder setBadgeNumber(String badgeNumber) {
     this.badgeNumber = badgeNumber;
@@ -52,7 +71,8 @@ public class ReporterResourceBuilder {
     return this;
   }
 
-  public ReporterResourceBuilder setColltrClientRptrReltnshpType(Short colltrClientRptrReltnshpType) {
+  public ReporterResourceBuilder setColltrClientRptrReltnshpType(
+      Short colltrClientRptrReltnshpType) {
     this.colltrClientRptrReltnshpType = colltrClientRptrReltnshpType;
     return this;
   }
@@ -62,7 +82,8 @@ public class ReporterResourceBuilder {
     return this;
   }
 
-  public ReporterResourceBuilder setConfidentialWaiverIndicator(Boolean confidentialWaiverIndicator) {
+  public ReporterResourceBuilder setConfidentialWaiverIndicator(
+      Boolean confidentialWaiverIndicator) {
     this.confidentialWaiverIndicator = confidentialWaiverIndicator;
     return this;
   }
@@ -102,7 +123,8 @@ public class ReporterResourceBuilder {
     return this;
   }
 
-  public ReporterResourceBuilder setMessagePhoneExtensionNumber(Integer messagePhoneExtensionNumber) {
+  public ReporterResourceBuilder setMessagePhoneExtensionNumber(
+      Integer messagePhoneExtensionNumber) {
     this.messagePhoneExtensionNumber = messagePhoneExtensionNumber;
     return this;
   }
@@ -127,7 +149,8 @@ public class ReporterResourceBuilder {
     return this;
   }
 
-  public ReporterResourceBuilder setPrimaryPhoneExtensionNumber(Integer primaryPhoneExtensionNumber) {
+  public ReporterResourceBuilder setPrimaryPhoneExtensionNumber(
+      Integer primaryPhoneExtensionNumber) {
     this.primaryPhoneExtensionNumber = primaryPhoneExtensionNumber;
     return this;
   }
@@ -177,13 +200,4 @@ public class ReporterResourceBuilder {
     return this;
   }
 
-  public Reporter build(){
-    return new Reporter(lastUpdatedTime,badgeNumber, cityName, colltrClientRptrReltnshpType,
-        communicationMethodType, confidentialWaiverIndicator,
-        drmsMandatedRprtrFeedback, employerName, feedbackDate, feedbackRequiredIndicator, firstName,
-        lastName, mandatedReporterIndicator, messagePhoneExtensionNumber, messagePhoneNumber, middleInitialName,
-        namePrefixDescription, primaryPhoneNumber, primaryPhoneExtensionNumber, stateCodeType, streetName, streetNumber, suffixTitleDescription,
-        zipcode, referralId, lawEnforcementId, zipSuffixNumber, countySpecificCode);
-
-  }
 }

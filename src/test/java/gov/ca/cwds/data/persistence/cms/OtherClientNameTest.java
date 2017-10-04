@@ -11,7 +11,6 @@ import java.io.IOException;
 import java.io.PrintStream;
 import java.util.Date;
 
-import org.junit.Ignore;
 import org.junit.Test;
 
 import com.fasterxml.jackson.core.JsonParseException;
@@ -27,13 +26,6 @@ import nl.jqno.equalsverifier.Warning;
  */
 public class OtherClientNameTest implements PersistentTestTemplate {
   private static final ObjectMapper MAPPER = SystemCodeTestHarness.MAPPER;
-
-  @Override
-  @Test
-  @Ignore
-  public void testEqualsHashCodeWorks() throws Exception {
-    EqualsVerifier.forClass(OtherClientName.class).suppress(Warning.NONFINAL_FIELDS).verify();
-  }
 
   @SuppressWarnings("javadoc")
   @Test

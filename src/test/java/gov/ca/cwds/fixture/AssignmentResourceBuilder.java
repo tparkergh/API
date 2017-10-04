@@ -17,7 +17,7 @@ public class AssignmentResourceBuilder {
   private String establishedForId = "1234567ABC";
   private String caseLoadId = "2345678ABC";
   private String outOfStateContactId = "";
-  private String id = "3456789ABC";
+  private String id = "SlCAr46088";
   private String responsibilityDescription = "Assignment responsibility description";
   private Short secondaryAssignmentRoleType = 0;
   private String startDate = "2017-06-20";

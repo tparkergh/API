@@ -42,8 +42,4 @@ public interface PersistentTestTemplate {
   @Test
   public void testConstructorUsingDomain() throws Exception;
 
-  @SuppressWarnings("javadoc")
-  @Test
-  public void testEqualsHashCodeWorks() throws Exception;
-
 }

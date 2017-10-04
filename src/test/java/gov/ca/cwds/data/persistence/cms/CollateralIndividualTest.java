@@ -9,7 +9,6 @@ import static org.hamcrest.Matchers.notNullValue;
 
 import java.io.IOException;
 
-import org.junit.Ignore;
 import org.junit.Test;
 
 import com.fasterxml.jackson.core.JsonParseException;
@@ -17,8 +16,6 @@ import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import gov.ca.cwds.data.persistence.junit.template.PersistentTestTemplate;
-import nl.jqno.equalsverifier.EqualsVerifier;
-import nl.jqno.equalsverifier.Warning;
 
 /**
  * @author CWDS API Team
@@ -36,13 +33,6 @@ public class CollateralIndividualTest implements PersistentTestTemplate {
             CollateralIndividual.class);
 
     return validCollateralIndividual;
-  }
-
-  @Override
-  @Test
-  @Ignore
-  public void testEqualsHashCodeWorks() {
-    EqualsVerifier.forClass(CollateralIndividual.class).suppress(Warning.NONFINAL_FIELDS).verify();
   }
 
   /*

@@ -1,23 +1,15 @@
 package gov.ca.cwds.data.persistence.cms;
 
-import static io.dropwizard.testing.FixtureHelpers.fixture;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.notNullValue;
 
-import java.io.IOException;
-
-import org.junit.Ignore;
 import org.junit.Test;
 
-import com.fasterxml.jackson.core.JsonParseException;
-import com.fasterxml.jackson.databind.JsonMappingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
-
 import gov.ca.cwds.data.persistence.junit.template.PersistentTestTemplate;
-import nl.jqno.equalsverifier.EqualsVerifier;
-import nl.jqno.equalsverifier.Warning;
+import gov.ca.cwds.fixture.LongTextEntityBuilder;
+import gov.ca.cwds.fixture.LongTextResourceBuilder;
 
 /**
  * @author CWDS API Team
@@ -26,8 +18,6 @@ public class LongTextTest implements PersistentTestTemplate {
 
   private String id = "ABC1234567";
   private String lastUpdatedId = "0X5";
-
-  private static final ObjectMapper MAPPER = SystemCodeTestHarness.MAPPER;
 
   /*
    * Constructor test
@@ -42,51 +32,29 @@ public class LongTextTest implements PersistentTestTemplate {
   @Test
   public void testPersistentConstructor() throws Exception {
 
-    LongText vl = validLongTest();
+    LongText validLongText = new LongTextEntityBuilder().build();
 
     gov.ca.cwds.data.persistence.cms.LongText persistent =
-        new gov.ca.cwds.data.persistence.cms.LongText(id, vl.getCountySpecificCode(),
-            vl.getTextDescription());
+        new gov.ca.cwds.data.persistence.cms.LongText(id, validLongText.getCountySpecificCode(),
+            validLongText.getTextDescription());
 
     assertThat(persistent.getId(), is(equalTo(id)));
-    assertThat(persistent.getCountySpecificCode(), is(equalTo(vl.getCountySpecificCode())));
-    assertThat(persistent.getTextDescription(), is(equalTo(vl.getTextDescription())));
+    assertThat(persistent.getCountySpecificCode(),
+        is(equalTo(validLongText.getCountySpecificCode())));
+    assertThat(persistent.getTextDescription(), is(equalTo(validLongText.getTextDescription())));
   }
 
   @Override
   @Test
   public void testConstructorUsingDomain() throws Exception {
 
-    gov.ca.cwds.rest.api.domain.cms.LongText domain = validDomainLongText();
+    gov.ca.cwds.rest.api.domain.cms.LongText domain = new LongTextResourceBuilder().build();
 
     LongText persistent = new LongText(id, domain, lastUpdatedId);
 
     assertThat(persistent.getId(), is(equalTo(id)));
     assertThat(persistent.getCountySpecificCode(), is(equalTo(domain.getCountySpecificCode())));
     assertThat(persistent.getTextDescription(), is(equalTo(domain.getTextDescription())));
-  }
-
-  @Override
-  @Test
-  @Ignore
-  public void testEqualsHashCodeWorks() {
-    EqualsVerifier.forClass(LongText.class).suppress(Warning.NONFINAL_FIELDS).verify();
-  }
-
-  private LongText validLongTest() throws JsonParseException, JsonMappingException, IOException {
-
-    LongText validLongText =
-        MAPPER.readValue(fixture("fixtures/persistent/LongText/valid/valid.json"), LongText.class);
-    return validLongText;
-  }
-
-  private gov.ca.cwds.rest.api.domain.cms.LongText validDomainLongText()
-      throws JsonParseException, JsonMappingException, IOException {
-
-    gov.ca.cwds.rest.api.domain.cms.LongText validDomainLongText =
-        MAPPER.readValue(fixture("fixtures/domain/legacy/LongText/valid/valid.json"),
-            gov.ca.cwds.rest.api.domain.cms.LongText.class);
-    return validDomainLongText;
   }
 
 }

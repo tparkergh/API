@@ -9,7 +9,6 @@ import static org.hamcrest.Matchers.notNullValue;
 
 import java.io.IOException;
 
-import org.junit.Ignore;
 import org.junit.Test;
 
 import com.fasterxml.jackson.core.JsonParseException;
@@ -17,8 +16,6 @@ import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import gov.ca.cwds.data.persistence.junit.template.PersistentTestTemplate;
-import nl.jqno.equalsverifier.EqualsVerifier;
-import nl.jqno.equalsverifier.Warning;
 
 /**
  * @author CWDS API Team
@@ -27,14 +24,6 @@ import nl.jqno.equalsverifier.Warning;
 public class ClientCollateralTest implements PersistentTestTemplate {
 
   private static final ObjectMapper MAPPER = SystemCodeTestHarness.MAPPER;
-
-  @Override
-  @Test
-  @Ignore
-  public void testEqualsHashCodeWorks() {
-    EqualsVerifier.forClass(ClientCollateral.class).suppress(Warning.STRICT_INHERITANCE)
-        .withRedefinedSuperclass().verify();
-  }
 
   /*
    * Constructor test
@@ -61,7 +50,6 @@ public class ClientCollateralTest implements PersistentTestTemplate {
     assertThat(persistent.getClientId(), is(equalTo(ci.getClientId())));
     assertThat(persistent.getCollateralIndividualId(), is(equalTo(ci.getCollateralIndividualId())));
     assertThat(persistent.getThirdId(), is(equalTo(ci.getThirdId())));
-    // MAPPER.writerWithDefaultPrettyPrinter().writeValue(System.out, persistent);
   }
 
   @Override

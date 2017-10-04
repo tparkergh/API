@@ -1,26 +1,19 @@
 package gov.ca.cwds.data.persistence.cms;
 
-import static io.dropwizard.testing.FixtureHelpers.fixture;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.notNullValue;
 
-import java.io.IOException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 
-import org.junit.Ignore;
 import org.junit.Test;
 
-import com.fasterxml.jackson.core.JsonParseException;
-import com.fasterxml.jackson.databind.JsonMappingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
-
 import gov.ca.cwds.data.persistence.junit.template.PersistentTestTemplate;
+import gov.ca.cwds.fixture.ChildClientEntityBuilder;
+import gov.ca.cwds.fixture.ChildClientResourceBuilder;
 import gov.ca.cwds.rest.api.domain.DomainChef;
-import nl.jqno.equalsverifier.EqualsVerifier;
-import nl.jqno.equalsverifier.Warning;
 
 /**
  * @author CWDS API Team
@@ -28,16 +21,8 @@ import nl.jqno.equalsverifier.Warning;
  */
 public class ChildClientTest implements PersistentTestTemplate {
   private final static DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
-  private static final ObjectMapper MAPPER = SystemCodeTestHarness.MAPPER;
 
   private String lastUpdatedId = "ABC";
-
-  @Override
-  @Test
-  @Ignore
-  public void testEqualsHashCodeWorks() throws Exception {
-    EqualsVerifier.forClass(CrossReport.class).suppress(Warning.NONFINAL_FIELDS).verify();
-  }
 
   /*
    * Constructor test
@@ -52,7 +37,8 @@ public class ChildClientTest implements PersistentTestTemplate {
   @Test
   public void testConstructorUsingDomain() throws Exception {
 
-    gov.ca.cwds.rest.api.domain.cms.ChildClient domain = validDomainChildClient();
+    gov.ca.cwds.rest.api.domain.cms.ChildClient domain =
+        new ChildClientResourceBuilder().buildChildClient();
 
     ChildClient persistent = new ChildClient(domain.getVictimClientId(), domain, lastUpdatedId);
 
@@ -134,7 +120,7 @@ public class ChildClientTest implements PersistentTestTemplate {
   @Test
   public void testPersistentConstructor() throws Exception {
 
-    ChildClient vchc = validChildClient();
+    ChildClient vchc = new ChildClientEntityBuilder().build();
     ChildClient persistent = new ChildClient(vchc.getVictimClientId(), vchc.getAdoptableCode(),
         vchc.getAdoptedAge(), vchc.getAfdcFcEligibilityIndicatorVar(),
         vchc.getAllEducationInfoOnFileIndicator(), vchc.getAllHealthInfoOnFileIndicator(),
@@ -232,18 +218,4 @@ public class ChildClientTest implements PersistentTestTemplate {
         is(equalTo(persistent.getTribalCustomaryAdoptionIndicator())));
   }
 
-  private ChildClient validChildClient()
-      throws JsonParseException, JsonMappingException, IOException {
-    ChildClient vchc = MAPPER
-        .readValue(fixture("fixtures/persistence/ChildClient/valid/valid.json"), ChildClient.class);
-    return vchc;
-  }
-
-  private gov.ca.cwds.rest.api.domain.cms.ChildClient validDomainChildClient()
-      throws JsonParseException, JsonMappingException, IOException {
-    gov.ca.cwds.rest.api.domain.cms.ChildClient validChildClient =
-        MAPPER.readValue(fixture("fixtures/domain/legacy/ChildClient/valid/valid.json"),
-            gov.ca.cwds.rest.api.domain.cms.ChildClient.class);
-    return validChildClient;
-  }
 }

@@ -11,7 +11,6 @@ import java.io.IOException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 
-import org.junit.Ignore;
 import org.junit.Test;
 
 import com.fasterxml.jackson.core.JsonParseException;
@@ -19,9 +18,8 @@ import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import gov.ca.cwds.data.persistence.junit.template.PersistentTestTemplate;
+import gov.ca.cwds.fixture.CmsCrossReportResourceBuilder;
 import gov.ca.cwds.rest.api.domain.DomainChef;
-import nl.jqno.equalsverifier.EqualsVerifier;
-import nl.jqno.equalsverifier.Warning;
 
 /**
  * @author CWDS API Team
@@ -33,14 +31,6 @@ public class CrossReportTest implements PersistentTestTemplate {
   private static final ObjectMapper MAPPER = SystemCodeTestHarness.MAPPER;
 
   private String lastUpdatedId = "ABC";
-
-
-  @Override
-  @Test
-  @Ignore
-  public void testEqualsHashCodeWorks() throws Exception {
-    EqualsVerifier.forClass(CrossReport.class).suppress(Warning.NONFINAL_FIELDS).verify();
-  }
 
   /*
    * Constructor test
@@ -55,7 +45,8 @@ public class CrossReportTest implements PersistentTestTemplate {
   @Test
   public void testConstructorUsingDomain() throws Exception {
 
-    gov.ca.cwds.rest.api.domain.cms.CrossReport domain = validDomainCrossReport();
+    gov.ca.cwds.rest.api.domain.cms.CrossReport domain =
+        new CmsCrossReportResourceBuilder().build();
 
     CrossReport persistent = new CrossReport(domain.getThirdId(), domain, lastUpdatedId);
 
@@ -66,12 +57,14 @@ public class CrossReportTest implements PersistentTestTemplate {
         is(equalTo(DomainChef.cookBoolean(domain.getFiledOutOfStateIndicator()))));
     assertThat(persistent.getGovernmentOrgCrossRptIndicatorVar(),
         is(equalTo(DomainChef.cookBoolean(domain.getGovernmentOrgCrossRptIndicatorVar()))));
-    assertThat(persistent.getInformTime(), is(equalTo(tf.parse(domain.getInformTime()))));
+    assertThat(persistent.getInformTime(),
+        is(equalTo(DomainChef.uncookTimeString(domain.getInformTime()))));
     assertThat(persistent.getRecipientBadgeNumber(), is(equalTo(domain.getRecipientBadgeNumber())));
     assertThat(persistent.getRecipientPhoneExtensionNumber(),
         is(equalTo(domain.getRecipientPhoneExtensionNumber())));
     assertThat(persistent.getRecipientPhoneNumber(), is(equalTo(domain.getRecipientPhoneNumber())));
-    assertThat(persistent.getInformDate(), is(equalTo(df.parse(domain.getInformDate()))));
+    assertThat(persistent.getInformDate(),
+        is(equalTo(DomainChef.uncookDateString(domain.getInformDate()))));
     assertThat(persistent.getRecipientPositionTitleDesc(),
         is(equalTo(domain.getRecipientPositionTitleDesc())));
     assertThat(persistent.getReferenceNumber(), is(equalTo(domain.getReferenceNumber())));
@@ -165,14 +158,6 @@ public class CrossReportTest implements PersistentTestTemplate {
     CrossReport vcp = MAPPER.readValue(fixture("fixtures/persistent/CrossReport/valid/valid.json"),
         CrossReport.class);
     return vcp;
-  }
-
-  private gov.ca.cwds.rest.api.domain.cms.CrossReport validDomainCrossReport()
-      throws JsonParseException, JsonMappingException, IOException {
-    gov.ca.cwds.rest.api.domain.cms.CrossReport validCrossReport =
-        MAPPER.readValue(fixture("fixtures/domain/legacy/CrossReport/valid/valid.json"),
-            gov.ca.cwds.rest.api.domain.cms.CrossReport.class);
-    return validCrossReport;
   }
 
 }

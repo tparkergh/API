@@ -1,12 +1,9 @@
 package gov.ca.cwds.data.cms;
 
-import static io.dropwizard.testing.FixtureHelpers.fixture;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.nullValue;
 import static org.hamcrest.core.IsEqual.equalTo;
-
-import java.io.IOException;
 
 import javax.persistence.EntityExistsException;
 import javax.persistence.EntityNotFoundException;
@@ -22,17 +19,15 @@ import org.junit.BeforeClass;
 import org.junit.Rule;
 import org.junit.Test;
 
-import com.fasterxml.jackson.core.JsonParseException;
-import com.fasterxml.jackson.databind.JsonMappingException;
-
-import gov.ca.cwds.data.junit.template.DaoTestTemplate;
 import gov.ca.cwds.data.persistence.cms.ChildClient;
+import gov.ca.cwds.fixture.ChildClientEntityBuilder;
 
 /**
  * 
- * @author CWDS API Team
+ * author CWDS API Team
  */
-public class ChildClientDaoIT implements DaoTestTemplate {
+@SuppressWarnings("javadoc")
+public class ChildClientDaoIT {
 
   private static SessionFactory sessionFactory;
   private static ChildClientDao childClientDao;
@@ -43,8 +38,8 @@ public class ChildClientDaoIT implements DaoTestTemplate {
    */
   private String victimId = "AazXkWY06s";
 
-  @SuppressWarnings("javadoc")
   @Rule
+
   public ExpectedException thrown = ExpectedException.none();
 
   /**
@@ -53,7 +48,6 @@ public class ChildClientDaoIT implements DaoTestTemplate {
   @BeforeClass
   public static void beforeClass() {
     sessionFactory = new Configuration().configure().buildSessionFactory();
-    // sessionFactory = AutocloseSessionFactory.getSessionFactory();
     childClientDao = new ChildClientDao(sessionFactory);
   }
 
@@ -65,14 +59,12 @@ public class ChildClientDaoIT implements DaoTestTemplate {
     sessionFactory.close();
   }
 
-  @Override
   @Before
   public void setup() {
     session = sessionFactory.getCurrentSession();
     session.beginTransaction();
   }
 
-  @Override
   @After
   public void teardown() {
     session.getTransaction().rollback();
@@ -81,14 +73,13 @@ public class ChildClientDaoIT implements DaoTestTemplate {
   /**
    * Find JUnit test
    */
-  @Override
   @Test
   public void testFind() throws Exception {
     ChildClient found = childClientDao.find(victimId);
     assertThat(found.getVictimClientId(), is(equalTo(victimId)));
   }
 
-  @Override
+
   @Test
   public void testFindEntityNotFoundException() throws Exception {
     ChildClient found = childClientDao.find("9999999ZZZ");
@@ -98,154 +89,54 @@ public class ChildClientDaoIT implements DaoTestTemplate {
   /**
    * Create JUnit test
    */
-  @Override
   @Test
   public void testCreate() throws Exception {
-    ChildClient vchc = validChildClient();
-
-    ChildClient childClient = new ChildClient("1234567ABC", vchc.getAdoptableCode(),
-        vchc.getAdoptedAge(), vchc.getAfdcFcEligibilityIndicatorVar(),
-        vchc.getAllEducationInfoOnFileIndicator(), vchc.getAllHealthInfoOnFileIndicator(),
-        vchc.getAttemptToAcquireEducInfoDesc(), vchc.getAttemptToAcquireHlthInfoDesc(),
-        vchc.getAwolAbductedCode(), vchc.getBirthHistoryIndicatorVar(),
-        vchc.getChildIndianAncestryIndicator(), vchc.getCollegeIndicator(), vchc.getCurrentCaseId(),
-        vchc.getDeathCircumstancesType(), vchc.getDisabilityDiagnosedCode(),
-        vchc.getDrmsHePassportDocOld(), vchc.getDrmsHealthEducPassportDoc(),
-        vchc.getDrmsVoluntaryPlcmntAgrmntDoc(), vchc.getFc2EligApplicationIndicatorVar(),
-        vchc.getFoodStampsApplicationDate(), vchc.getFoodStampsApplicationIndicator(),
-        vchc.getIcwaEligibilityCode(), vchc.getIntercountryAdoptDisruptedIndicator(),
-        vchc.getIntercountryAdoptDissolvedIndicator(),
-        vchc.getMedEligibilityApplicationIndicatorVar(), vchc.getMinorNmdParentIndicator(),
-        vchc.getParentalRightsLimitedIndicator(), vchc.getParentalRightsTermintnIndicatorVar(),
-        vchc.getPaternityIndividualIndicatorVar(), vchc.getPostsecVocIndicator(),
-        vchc.getPreviouslyAdoptedCode(), vchc.getSafelySurrendedBabiesIndicatorVar(),
-        vchc.getSaw1EligApplicationIndicatorVar(), vchc.getSawsCaseSerialNumber(),
-        vchc.getSijsScheduledInterviewDate(), vchc.getSiiNextScreeningDueDate(),
-        vchc.getSsiSspApplicationIndicator(), vchc.getTribalAncestryNotifctnIndicatorVar(),
-        vchc.getTribalCustomaryAdoptionDate(), vchc.getTribalCustomaryAdoptionIndicator());
-
+    ChildClient childClient = new ChildClientEntityBuilder().build();
     ChildClient create = childClientDao.create(childClient);
     assertThat(childClient, is(create));
   }
 
-  @Override
+
   @Test
   public void testCreateExistingEntityException() throws Exception {
     thrown.expect(EntityExistsException.class);
-    ChildClient vchc = validChildClient();
-    ChildClient pers = new ChildClient("AazXkWY06s", vchc.getAdoptableCode(), vchc.getAdoptedAge(),
-        vchc.getAfdcFcEligibilityIndicatorVar(), vchc.getAllEducationInfoOnFileIndicator(),
-        vchc.getAllHealthInfoOnFileIndicator(), vchc.getAttemptToAcquireEducInfoDesc(),
-        vchc.getAttemptToAcquireHlthInfoDesc(), vchc.getAwolAbductedCode(),
-        vchc.getBirthHistoryIndicatorVar(), vchc.getChildIndianAncestryIndicator(),
-        vchc.getCollegeIndicator(), vchc.getCurrentCaseId(), vchc.getDeathCircumstancesType(),
-        vchc.getDisabilityDiagnosedCode(), vchc.getDrmsHePassportDocOld(),
-        vchc.getDrmsHealthEducPassportDoc(), vchc.getDrmsVoluntaryPlcmntAgrmntDoc(),
-        vchc.getFc2EligApplicationIndicatorVar(), vchc.getFoodStampsApplicationDate(),
-        vchc.getFoodStampsApplicationIndicator(), vchc.getIcwaEligibilityCode(),
-        vchc.getIntercountryAdoptDisruptedIndicator(),
-        vchc.getIntercountryAdoptDissolvedIndicator(),
-        vchc.getMedEligibilityApplicationIndicatorVar(), vchc.getMinorNmdParentIndicator(),
-        vchc.getParentalRightsLimitedIndicator(), vchc.getParentalRightsTermintnIndicatorVar(),
-        vchc.getPaternityIndividualIndicatorVar(), vchc.getPostsecVocIndicator(),
-        vchc.getPreviouslyAdoptedCode(), vchc.getSafelySurrendedBabiesIndicatorVar(),
-        vchc.getSaw1EligApplicationIndicatorVar(), vchc.getSawsCaseSerialNumber(),
-        vchc.getSijsScheduledInterviewDate(), vchc.getSiiNextScreeningDueDate(),
-        vchc.getSsiSspApplicationIndicator(), vchc.getTribalAncestryNotifctnIndicatorVar(),
-        vchc.getTribalCustomaryAdoptionDate(), vchc.getTribalCustomaryAdoptionIndicator());
-
-    childClientDao.create(pers);
+    ChildClient childClient = new ChildClientEntityBuilder().setVictimClientId(victimId).build();
+    childClientDao.create(childClient);
   }
 
   /**
    * Delete JUnit test
    */
-  @Override
   @Test
   public void testDelete() throws Exception {
     ChildClient deleted = childClientDao.delete(victimId);
     assertThat(deleted.getVictimClientId(), is(victimId));
   }
 
-  @Override
+
   @Test
   public void testDeleteEntityNotFoundException() throws Exception {
     ChildClient deleted = childClientDao.delete("9999999ZZZ");
     assertThat(deleted, is(nullValue()));
   }
 
-  @Override
+  /**
+   * Update JUnit test
+   */
   @Test
   public void testUpdate() throws Exception {
-    ChildClient vchc = validChildClient();
-    ChildClient pers = new ChildClient("AazXkWY06s", vchc.getAdoptableCode(), vchc.getAdoptedAge(),
-        vchc.getAfdcFcEligibilityIndicatorVar(), vchc.getAllEducationInfoOnFileIndicator(),
-        vchc.getAllHealthInfoOnFileIndicator(), vchc.getAttemptToAcquireEducInfoDesc(),
-        vchc.getAttemptToAcquireHlthInfoDesc(), vchc.getAwolAbductedCode(),
-        vchc.getBirthHistoryIndicatorVar(), vchc.getChildIndianAncestryIndicator(),
-        vchc.getCollegeIndicator(), vchc.getCurrentCaseId(), vchc.getDeathCircumstancesType(),
-        vchc.getDisabilityDiagnosedCode(), vchc.getDrmsHePassportDocOld(),
-        vchc.getDrmsHealthEducPassportDoc(), vchc.getDrmsVoluntaryPlcmntAgrmntDoc(),
-        vchc.getFc2EligApplicationIndicatorVar(), vchc.getFoodStampsApplicationDate(),
-        vchc.getFoodStampsApplicationIndicator(), vchc.getIcwaEligibilityCode(),
-        vchc.getIntercountryAdoptDisruptedIndicator(),
-        vchc.getIntercountryAdoptDissolvedIndicator(),
-        vchc.getMedEligibilityApplicationIndicatorVar(), vchc.getMinorNmdParentIndicator(),
-        vchc.getParentalRightsLimitedIndicator(), vchc.getParentalRightsTermintnIndicatorVar(),
-        vchc.getPaternityIndividualIndicatorVar(), vchc.getPostsecVocIndicator(),
-        vchc.getPreviouslyAdoptedCode(), vchc.getSafelySurrendedBabiesIndicatorVar(),
-        vchc.getSaw1EligApplicationIndicatorVar(), vchc.getSawsCaseSerialNumber(),
-        vchc.getSijsScheduledInterviewDate(), vchc.getSiiNextScreeningDueDate(),
-        vchc.getSsiSspApplicationIndicator(), vchc.getTribalAncestryNotifctnIndicatorVar(),
-        vchc.getTribalCustomaryAdoptionDate(), vchc.getTribalCustomaryAdoptionIndicator());
-    ChildClient updated = childClientDao.update(pers);
-    assertThat(updated, is(pers));
+    ChildClient childClient = new ChildClientEntityBuilder().setVictimClientId(victimId)
+        .setTribalAncestryNotifctnIndicatorVar("Y").build();
+    ChildClient updated = childClientDao.update(childClient);
+    assertThat(updated, is(childClient));
   }
 
-  @Override
-  @Test
+  @Test(expected = EntityNotFoundException.class)
   public void testUpdateEntityNotFoundException() throws Exception {
-    thrown.expect(EntityNotFoundException.class);
-    ChildClient vchc = validChildClient();
-    ChildClient pers = new ChildClient("AbNNjTK0P2", vchc.getAdoptableCode(), vchc.getAdoptedAge(),
-        vchc.getAfdcFcEligibilityIndicatorVar(), vchc.getAllEducationInfoOnFileIndicator(),
-        vchc.getAllHealthInfoOnFileIndicator(), vchc.getAttemptToAcquireEducInfoDesc(),
-        vchc.getAttemptToAcquireHlthInfoDesc(), vchc.getAwolAbductedCode(),
-        vchc.getBirthHistoryIndicatorVar(), vchc.getChildIndianAncestryIndicator(),
-        vchc.getCollegeIndicator(), vchc.getCurrentCaseId(), vchc.getDeathCircumstancesType(),
-        vchc.getDisabilityDiagnosedCode(), vchc.getDrmsHePassportDocOld(),
-        vchc.getDrmsHealthEducPassportDoc(), vchc.getDrmsVoluntaryPlcmntAgrmntDoc(),
-        vchc.getFc2EligApplicationIndicatorVar(), vchc.getFoodStampsApplicationDate(),
-        vchc.getFoodStampsApplicationIndicator(), vchc.getIcwaEligibilityCode(),
-        vchc.getIntercountryAdoptDisruptedIndicator(),
-        vchc.getIntercountryAdoptDissolvedIndicator(),
-        vchc.getMedEligibilityApplicationIndicatorVar(), vchc.getMinorNmdParentIndicator(),
-        vchc.getParentalRightsLimitedIndicator(), vchc.getParentalRightsTermintnIndicatorVar(),
-        vchc.getPaternityIndividualIndicatorVar(), vchc.getPostsecVocIndicator(),
-        vchc.getPreviouslyAdoptedCode(), vchc.getSafelySurrendedBabiesIndicatorVar(),
-        vchc.getSaw1EligApplicationIndicatorVar(), vchc.getSawsCaseSerialNumber(),
-        vchc.getSijsScheduledInterviewDate(), vchc.getSiiNextScreeningDueDate(),
-        vchc.getSsiSspApplicationIndicator(), vchc.getTribalAncestryNotifctnIndicatorVar(),
-        vchc.getTribalCustomaryAdoptionDate(), vchc.getTribalCustomaryAdoptionIndicator());
+    ChildClient ChildClient =
+        new ChildClientEntityBuilder().setVictimClientId("AbNNjTK0P2").build();
 
-    childClientDao.update(pers);
-  }
-
-  @Override
-  public void testFindAllNamedQueryExist() throws Exception {
-
-  }
-
-  @Override
-  public void testFindAllReturnsCorrectList() throws Exception {
-
-  }
-
-  private ChildClient validChildClient()
-      throws JsonParseException, JsonMappingException, IOException {
-    ChildClient validChildClient = MAPPER
-        .readValue(fixture("fixtures/persistence/ChildClient/valid/valid.json"), ChildClient.class);
-    return validChildClient;
+    childClientDao.update(ChildClient);
   }
 
 }

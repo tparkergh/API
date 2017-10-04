@@ -1,14 +1,20 @@
 package gov.ca.cwds.fixture;
 
-import gov.ca.cwds.data.persistence.cms.Address;
 import java.math.BigDecimal;
 
+import gov.ca.cwds.data.persistence.cms.Address;
+
+/**
+ * @author CWDS API Team
+ *
+ */
+@SuppressWarnings("javadoc")
 public class AddressEntityBuilder {
-  String id = "ADDRESSIDX";
+  String id = "ABc1r90Pg6";
   String city = "Sacramento";
   java.math.BigDecimal emergencyNumber = BigDecimal.ZERO;
   Integer emergencyExtension = 0;
-  String frgAdrtB ="N";
+  String frgAdrtB = "N";
   Short governmentEntityCd = 0;
   BigDecimal messageNumber = new BigDecimal(0);
   Integer messageExtension = 0;
@@ -16,10 +22,10 @@ public class AddressEntityBuilder {
   BigDecimal primaryNumber = new BigDecimal(0);
   Integer primaryExtension = 0;
   Short state = 1828;
-  String streetName = "Main st";
+  String streetName = "First Street";
   String streetNumber = "1";
   String zip = "98765";
-  String addressDescription = "";
+  String addressDescription = "test CWS address";
   Short zip4 = 0;
   String postDirCd = "";
   String preDirCd = "";
@@ -27,14 +33,13 @@ public class AddressEntityBuilder {
   Short unitDesignationCd = 1;
   String unitNumber = "";
 
-  public Address create(){
-    return new Address(id, city, emergencyNumber, emergencyExtension,
-      frgAdrtB, governmentEntityCd, messageNumber, messageExtension,
-      headerAddress, primaryNumber, primaryExtension, state,
-      streetName, streetNumber, zip, addressDescription, zip4,
-      postDirCd, preDirCd, streetSuffixCd, unitDesignationCd,
-      unitNumber);
+  public Address build() {
+    return new Address(id, city, emergencyNumber, emergencyExtension, frgAdrtB, governmentEntityCd,
+        messageNumber, messageExtension, headerAddress, primaryNumber, primaryExtension, state,
+        streetName, streetNumber, zip, addressDescription, zip4, postDirCd, preDirCd,
+        streetSuffixCd, unitDesignationCd, unitNumber);
   }
+
   public String getId() {
     return id;
   }

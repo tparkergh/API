@@ -144,7 +144,7 @@ public class GovernmentOrganizationService
       for (GovernmentOrganization agency : allAgencies) {
         AgencyType agencyType = AgencyType.getByName(agency.getAgencyType());
         if ((agency.getCountyId().equals(id) && supportedAgencyTypes.contains(agencyType))
-            || agencyType.equals(AgencyType.COMMUNITY_CARE_LICENSING)) {
+            || agencyType == AgencyType.COMMUNITY_CARE_LICENSING) {
           supportedAgencies.add(agency);
         }
       }

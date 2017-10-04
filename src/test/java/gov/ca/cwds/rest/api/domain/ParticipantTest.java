@@ -140,7 +140,6 @@ public class ParticipantTest implements PersistentTestTemplate {
     assertThat(serialized, is(expected));
   }
 
-  @Override
   @Test
   public void testEqualsHashCodeWorks() {
     EqualsVerifier.forClass(Participant.class).suppress(Warning.NONFINAL_FIELDS)
