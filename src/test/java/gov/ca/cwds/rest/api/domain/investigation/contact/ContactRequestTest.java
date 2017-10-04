@@ -28,16 +28,16 @@ public class ContactRequestTest {
     Set<Integer> services = new HashSet<>();
     final Set<PostedIndividualDeliveredService> people = validPeople();
     ContactRequest domain =
-        new ContactRequest("2010-04-27T23:30:14.000Z", "", 433, 408, "C", services, 415,
+        new ContactRequest("2010-04-27T23:30:14.000Z", "", "433", "408", "C", services, "415",
             "some text describing the contact of up to 8000 characters can be stored in CMS",
             people);
     assertThat(domain.getStartedAt(), is(equalTo("2010-04-27T23:30:14.000Z")));
     assertThat(domain.getEndedAt(), is(equalTo("")));
-    assertThat(domain.getPurpose(), is(equalTo(433)));
-    assertThat(domain.getCommunicationMethod(), is(equalTo(408)));
+    assertThat(domain.getPurpose(), is(equalTo("433")));
+    assertThat(domain.getCommunicationMethod(), is(equalTo("408")));
     assertThat(domain.getStatus(), is(equalTo("C")));
     assertThat(domain.getServices(), is(equalTo(services)));
-    assertThat(domain.getLocation(), is(equalTo(415)));
+    assertThat(domain.getLocation(), is(equalTo("415")));
     assertThat(
         domain.getNote(),
         is(equalTo("some text describing the contact of up to 8000 characters can be stored in CMS")));
