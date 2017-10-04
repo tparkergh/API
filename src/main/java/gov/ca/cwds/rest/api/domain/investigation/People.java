@@ -8,6 +8,7 @@ import org.apache.commons.lang3.builder.HashCodeBuilder;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonValue;
 
 import gov.ca.cwds.rest.api.Request;
 import gov.ca.cwds.rest.api.Response;
@@ -43,6 +44,7 @@ public final class People extends ReportingDomain implements Request, Response {
   /**
    * @return - list of people associated with the investigationS
    */
+  @JsonValue
   public Set<Person> getPersons() {
     return persons;
   }

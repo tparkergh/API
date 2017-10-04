@@ -8,6 +8,7 @@ import org.apache.commons.lang3.builder.HashCodeBuilder;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonValue;
 
 import gov.ca.cwds.rest.api.Request;
 import gov.ca.cwds.rest.api.Response;
@@ -41,6 +42,7 @@ public class RelationshipList implements Request, Response {
   /**
    * @return - list of relationships of people for investigation
    */
+  @JsonValue
   public Set<Relationship> getRelationship() {
     return relationshipList;
   }
