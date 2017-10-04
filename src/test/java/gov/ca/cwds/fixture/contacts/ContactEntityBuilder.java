@@ -1,11 +1,11 @@
 package gov.ca.cwds.fixture.contacts;
 
-import java.util.HashSet;
-import java.util.Set;
-
 import gov.ca.cwds.rest.api.domain.LastUpdatedBy;
 import gov.ca.cwds.rest.api.domain.PostedIndividualDeliveredService;
 import gov.ca.cwds.rest.api.domain.investigation.contact.Contact;
+
+import java.util.HashSet;
+import java.util.Set;
 
 public class ContactEntityBuilder {
 
@@ -21,13 +21,13 @@ public class ContactEntityBuilder {
   private String note = "contact description";
   private Set<PostedIndividualDeliveredService> people = new HashSet();
 
-  private PostedIndividualDeliveredService person = new PostedIndividualDeliveredService("CLIENT_T",
-      "1234567ABC", "first", "middle", "last", "phd", "Mr", "teacher");
+  private PostedIndividualDeliveredService person = new PostedIndividualDeliveredService(
+      "CLIENT_T", "1234567ABC", "first", "middle", "last", "phd", "Mr", "teacher");
 
   public Contact build() {
     people.add(person);
-    return new Contact(id, lastUpdatedBy, startedAt, endedAt, purpose, communicationMetod, status,
-        services, location, note, people);
+    return new Contact(id, lastUpdatedBy, startedAt, endedAt, purpose.toString(),
+        communicationMetod.toString(), status, services, location.toString(), note, people);
   }
 
   public ContactEntityBuilder setLocation(Integer location) {

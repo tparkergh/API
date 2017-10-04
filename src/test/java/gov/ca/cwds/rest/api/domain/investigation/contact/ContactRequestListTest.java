@@ -28,7 +28,7 @@ public class ContactRequestListTest {
     Set<Integer> services = new HashSet<>();
     final Set<PostedIndividualDeliveredService> people = validPeople();
     ContactRequest contact =
-        new ContactRequest("2010-04-27T23:30:14.000Z", "", 433, 408, "C", services, 415,
+        new ContactRequest("2010-04-27T23:30:14.000Z", "", "433", "408", "C", services, "415",
             "some text describing the contact of up to 8000 characters can be stored in CMS",
             people);
     Set<ContactRequest> contacts = new HashSet<>();
