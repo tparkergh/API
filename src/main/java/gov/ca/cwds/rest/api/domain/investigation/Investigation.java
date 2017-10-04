@@ -160,7 +160,7 @@ public class Investigation extends ReportingDomain implements Request, Response 
   @JsonProperty("allegations")
   @ApiModelProperty(required = false, readOnly = false)
   @Valid
-  private Set<Allegation> allegations;
+  private Set<HistoryOfInvolvementAllegation> allegations;
 
   @JsonProperty("people")
   @ApiModelProperty(required = false, readOnly = false)
@@ -223,7 +223,7 @@ public class Investigation extends ReportingDomain implements Request, Response 
       @JsonProperty("incident_address") InvestigationAddress address,
       @JsonProperty("screening") SimpleScreening screening,
       @JsonProperty("history_of_involvement") HistoryOfInvolvement historyOfInvolvement,
-      @JsonProperty("allegations") Set<Allegation> allegations,
+      @JsonProperty("allegations") Set<HistoryOfInvolvementAllegation> allegations,
       @JsonProperty("people") Set<Person> people,
       @JsonProperty("relationships") Set<Relationship> relationships) {
     super();
@@ -395,7 +395,7 @@ public class Investigation extends ReportingDomain implements Request, Response 
   /**
    * @return - allegations
    */
-  public Set<Allegation> getAllegations() {
+  public Set<HistoryOfInvolvementAllegation> getAllegations() {
     return allegations;
   }
 

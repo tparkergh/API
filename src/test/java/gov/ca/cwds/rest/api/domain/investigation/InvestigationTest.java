@@ -15,9 +15,9 @@ import org.joda.time.DateTime;
 import org.junit.Before;
 import org.junit.Test;
 
-import gov.ca.cwds.fixture.investigation.AllegationEntityBuilder;
 import gov.ca.cwds.fixture.investigation.HistoryOfInvolvementEntityBuilder;
 import gov.ca.cwds.fixture.investigation.InvestigationAddressEntityBuilder;
+import gov.ca.cwds.fixture.investigation.HistoryOfInvolvementAllegationEntityBuilder;
 import gov.ca.cwds.fixture.investigation.InvestigationEntityBuilder;
 import gov.ca.cwds.fixture.investigation.PersonEntityBuilder;
 import gov.ca.cwds.fixture.investigation.RelationshipEntityBuilder;
@@ -71,8 +71,8 @@ public class InvestigationTest {
   private HistoryOfInvolvement historyOfInvolvement =
       new HistoryOfInvolvementEntityBuilder().build();
 
-  private Allegation allegation = new AllegationEntityBuilder().build();
-  private Set<Allegation> allegations = new HashSet<>();
+  private HistoryOfInvolvementAllegation allegation = new HistoryOfInvolvementAllegationEntityBuilder().build();
+  private Set<HistoryOfInvolvementAllegation> allegations = new HashSet<>();
 
   private Person person = new PersonEntityBuilder().build();
   private Set<Person> people = new HashSet<>();

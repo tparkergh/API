@@ -3,7 +3,7 @@ package gov.ca.cwds.fixture.investigation;
 import java.util.LinkedHashSet;
 import java.util.Set;
 
-import gov.ca.cwds.rest.api.domain.investigation.Allegation;
+import gov.ca.cwds.rest.api.domain.investigation.HistoryOfInvolvementAllegation;
 import gov.ca.cwds.rest.api.domain.investigation.LimitedAccess;
 import gov.ca.cwds.rest.api.domain.investigation.SimpleLegacyDescriptor;
 import gov.ca.cwds.rest.api.domain.investigation.SimplePerson;
@@ -17,12 +17,13 @@ public class SimpleReferralEntityBuilder {
   private SimplePerson reporter = new SimplePersonEntityBuilder().build();
   private String countyName = "Sacramento";
   private String responseTimeCode = "1525";
-  private Allegation allegation = new AllegationEntityBuilder().build();
+  private HistoryOfInvolvementAllegation allegation =
+      new HistoryOfInvolvementAllegationEntityBuilder().build();
   private SimplePerson assignedSocialWorker = new SimplePersonEntityBuilder().build();
   private LimitedAccess limitedAccess = new LimitedAccess("0", "N");
   private String responseTime = "3 day";
   private String startDate = "2017-09-01";
-  private Set<Allegation> allegations = new LinkedHashSet();
+  private Set<HistoryOfInvolvementAllegation> allegations = new LinkedHashSet();
 
   public SimpleReferral build() {
     allegations.add(allegation);
@@ -55,7 +56,8 @@ public class SimpleReferralEntityBuilder {
     return this;
   }
 
-  public SimpleReferralEntityBuilder setAllegations(Set<Allegation> allegations) {
+  public SimpleReferralEntityBuilder setAllegations(
+      Set<HistoryOfInvolvementAllegation> allegations) {
     this.allegations = allegations;
     return this;
   }
@@ -100,7 +102,7 @@ public class SimpleReferralEntityBuilder {
     return responseTimeCode;
   }
 
-  public Allegation getAllegation() {
+  public HistoryOfInvolvementAllegation getAllegation() {
     return allegation;
   }
 
@@ -120,7 +122,7 @@ public class SimpleReferralEntityBuilder {
     return startDate;
   }
 
-  public Set<Allegation> getAllegations() {
+  public Set<HistoryOfInvolvementAllegation> getAllegations() {
     return allegations;
   }
 

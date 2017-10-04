@@ -25,7 +25,7 @@ import io.swagger.annotations.ApiModelProperty;
  *         legacy_id - 10 characters in base 62 legacy_last_updated - date time stamp
  *         legacy_table_name - physical name of table in CMS database
  * 
- *         can be used to identify a record by caller legacy_ui_id - 19 characters in base 10
+ *         can be used to identify a record by caller - legacy_ui_id - 19 characters in base 10
  *         (digits) legacy_table_description - logical table name in CMS database
  * 
  */

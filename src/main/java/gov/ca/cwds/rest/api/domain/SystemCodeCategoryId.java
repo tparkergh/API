@@ -95,6 +95,17 @@ public final class SystemCodeCategoryId {
   public static final String ETHNICITY = "ETHNCTYC";
 
   /**
+   * Allegation type
+   */
+  public static final String ALLEGATION_TYPE = "INJR_HMC";
+
+  /**
+   * Injury to body part type
+   */
+  public static final String INJURY_TO_BODY_PART_TYPE = "ABS_BPTC";
+
+
+  /**
    * Private constructor
    */
   private SystemCodeCategoryId() {}

@@ -6,12 +6,12 @@ import java.util.Set;
 
 import org.joda.time.DateTime;
 
-import gov.ca.cwds.rest.api.domain.investigation.Allegation;
 import gov.ca.cwds.rest.api.domain.investigation.Assignee;
 import gov.ca.cwds.rest.api.domain.investigation.CmsRecordDescriptor;
 import gov.ca.cwds.rest.api.domain.investigation.HistoryOfInvolvement;
 import gov.ca.cwds.rest.api.domain.investigation.Investigation;
 import gov.ca.cwds.rest.api.domain.investigation.InvestigationAddress;
+import gov.ca.cwds.rest.api.domain.investigation.HistoryOfInvolvementAllegation;
 import gov.ca.cwds.rest.api.domain.investigation.LimitedAccess;
 import gov.ca.cwds.rest.api.domain.investigation.Person;
 import gov.ca.cwds.rest.api.domain.investigation.PhoneNumber;
@@ -64,8 +64,8 @@ public class InvestigationEntityBuilder {
   private HistoryOfInvolvement historyOfInvolvement =
       new HistoryOfInvolvementEntityBuilder().build();
 
-  private Allegation allegation = new AllegationEntityBuilder().build();
-  private Set<Allegation> allegations = new HashSet<>();
+  private HistoryOfInvolvementAllegation allegation = new HistoryOfInvolvementAllegationEntityBuilder().build();
+  private Set<HistoryOfInvolvementAllegation> allegations = new HashSet<>();
 
   private Person person = new PersonEntityBuilder().build();
   private Set<Person> people = new HashSet<>();
@@ -339,20 +339,20 @@ public class InvestigationEntityBuilder {
     return this;
   }
 
-  public Allegation getAllegation() {
+  public HistoryOfInvolvementAllegation getAllegation() {
     return allegation;
   }
 
-  public InvestigationEntityBuilder setAllegation(Allegation allegation) {
+  public InvestigationEntityBuilder setAllegation(HistoryOfInvolvementAllegation allegation) {
     this.allegation = allegation;
     return this;
   }
 
-  public Set<Allegation> getAllegations() {
+  public Set<HistoryOfInvolvementAllegation> getAllegations() {
     return allegations;
   }
 
-  public InvestigationEntityBuilder setAllegations(Set<Allegation> allegations) {
+  public InvestigationEntityBuilder setAllegations(Set<HistoryOfInvolvementAllegation> allegations) {
     this.allegations = allegations;
     return this;
   }

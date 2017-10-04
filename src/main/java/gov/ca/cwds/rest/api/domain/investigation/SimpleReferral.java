@@ -1,11 +1,5 @@
 package gov.ca.cwds.rest.api.domain.investigation;
 
-import gov.ca.cwds.rest.api.Response;
-import gov.ca.cwds.rest.api.domain.DomainObject;
-import gov.ca.cwds.rest.api.domain.ReportingDomain;
-import io.dropwizard.jackson.JsonSnakeCase;
-import io.swagger.annotations.ApiModelProperty;
-
 import java.util.Set;
 
 import org.apache.commons.lang3.builder.EqualsBuilder;
@@ -13,6 +7,12 @@ import org.apache.commons.lang3.builder.HashCodeBuilder;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
+
+import gov.ca.cwds.rest.api.Response;
+import gov.ca.cwds.rest.api.domain.DomainObject;
+import gov.ca.cwds.rest.api.domain.ReportingDomain;
+import io.dropwizard.jackson.JsonSnakeCase;
+import io.swagger.annotations.ApiModelProperty;
 
 /**
  * {@link DomainObject} representing a Simple Referral
@@ -45,7 +45,7 @@ public class SimpleReferral extends ReportingDomain implements Response {
   private String responseTimeId;
 
   @JsonProperty("allegations")
-  private Set<Allegation> allegations;
+  private Set<HistoryOfInvolvementAllegation> allegations;
 
   @JsonProperty("assigned_social_worker")
   private SimplePerson assignedSocialWorker;
@@ -80,7 +80,7 @@ public class SimpleReferral extends ReportingDomain implements Response {
       @JsonProperty("reporter") SimplePerson reporter,
       @JsonProperty("county_name") String countyName,
       @JsonProperty("response_time_id") String responseTimeId,
-      @JsonProperty("allegations") Set<Allegation> allegations,
+      @JsonProperty("allegations") Set<HistoryOfInvolvementAllegation> allegations,
       @JsonProperty("assigned_social_worker") SimplePerson assignedSocialWorker,
       @JsonProperty("access_limitation") LimitedAccess accessLimitation,
       @JsonProperty("response_time") String responseTime,
@@ -136,7 +136,7 @@ public class SimpleReferral extends ReportingDomain implements Response {
   /**
    * @return the allegations
    */
-  public Set<Allegation> getAllegations() {
+  public Set<HistoryOfInvolvementAllegation> getAllegations() {
     return allegations;
   }
 
