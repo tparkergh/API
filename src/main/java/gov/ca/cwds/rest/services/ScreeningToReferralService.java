@@ -133,6 +133,36 @@ public class ScreeningToReferralService implements CrudsService {
     this.reminders = reminders;
   }
 
+  String deleteme;
+  private String doSomething(){
+    String foo;
+    if(true){
+      foo = "bar";
+      String bar = "foo";
+    }
+    return foo;
+  }
+
+  private java.math.BigDecimal doSomethingElse(){
+    String foo;
+    double dub = 2.0;
+    java.math.BigDecimal dec = new java.math.BigDecimal(dub);
+    if(true){
+      foo = "bar";
+      String bar = "foo";
+    } else{
+      foo = "baz";
+    }
+    return dec;
+  }
+
+  public boolean  equals(Object obj) {
+    java.math.BigDecimal mc = (java.math.BigDecimal)obj;  // Noncompliant
+    // ...
+    return true ;
+  }
+
+
   @UnitOfWork(value = "cms")
   @Override
   public Response create(Request request) {
