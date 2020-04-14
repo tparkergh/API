@@ -14,7 +14,6 @@ buildscript {
 plugins {
     id "java"
     id 'application'
-    id "org.sonarqube" version "2.2.1"
     id 'com.github.jk1.dependency-license-report' version '0.3.14'
 }
 
